@@ -30,6 +30,8 @@
 
 class QWidget;
 
+#include <QtCore/QString>
+
 namespace Akonadi
 {
 namespace Filter
@@ -51,7 +53,43 @@ public:
   EditorFactory();
   virtual ~EditorFactory();
 
+protected:
+
+  /**
+   * The description of the "default" action that the filtering
+   * engine will perform when the end of a filter is reached
+   * without "hitting" any real action. This will usually be a no-op
+   * or something non destructive anyway ("leave message on server"
+   * or just "stop processing"...).
+   */ 
+  QString mDefaultActionDescription;
+
 public:
+
+  /**
+   * Use this to provide a description of the default action performed by your
+   * filtering engine when the end of a filter is reached without actually
+   * hitting an explicit action. This will usually be a no-op
+   * or something non destructive anyway ("leave message on server"
+   * or just "stop processing"...).
+   *
+   * If you don't provide a description then i18n( "stop processing here" )
+   * will be used.
+   */
+  void setDefaultActionDescription( const QString &defaultActionDescription )
+  {
+    mDefaultActionDescription = defaultActionDescription;
+  }
+
+  /**
+   * Returns the description of the default action. See setDefaultActionDescription()
+   * for more informations.
+   */
+  const QString & defaultActionDescription()
+  {
+    return mDefaultActionDescription;
+  }
+
   virtual RuleEditor * createRuleEditor( QWidget * parent, ComponentFactory * componentFactory );
   virtual RuleListEditor * createRuleListEditor( QWidget * parent, ComponentFactory * componentFactory );
   virtual ActionEditor * createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory );

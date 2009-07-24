@@ -26,7 +26,7 @@
 #ifndef _FILTERAGENT_H_
 #define _FILTERAGENT_H_
 
-#include <akonadi/agentbase.h>
+#include <akonadi/preprocessorbase.h>
 #include <akonadi/collection.h>
 
 #include <akonadi/filter/componentfactory.h>
@@ -40,13 +40,13 @@
 
 #include <QObject>
 
-class FilterAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
+class FilterAgent : public Akonadi::PreprocessorBase
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.freedesktop.Akonadi.FilterAgent" )
 public:
   FilterAgent( const QString &id );
-  ~FilterAgent();
+  virtual ~FilterAgent();
 
 protected:
 
@@ -194,10 +194,14 @@ public Q_SLOTS: // D-BUS Interface
   int changeFilter( const QString &filterId, const QString &source, const QList< Akonadi::Collection::Id > &attachedCollectionIds );
 
 protected:
+
+  virtual ProcessingResult processItem( const Akonadi::Item &item );
+
+/*
   virtual void configure( WId winId );
 
   virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-/*
+
   virtual void itemRemoved( const Akonadi::Item &item );
   virtual void collectionChanged( const Akonadi::Collection &collection );
 */

@@ -25,6 +25,6 @@ Icon=view-filter
 No_Icon=message-rfc822
 
 X-Akonadi-MimeTypes=message/rfc822,message/news
-X-Akonadi-Capabilities=Unique
+X-Akonadi-Capabilities=Unique, PreProcessor
 X-Akonadi-Identifier=akonadi_filter_agent
 

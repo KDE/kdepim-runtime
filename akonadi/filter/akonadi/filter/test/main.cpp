@@ -34,7 +34,7 @@ int main(int argc,char ** argv)
 {
 
   MyComponentFactory * f = new MyComponentFactory();
-  f->setDefaultActionDescription( i18n( "download message" ) );
+  //f->setDefaultActionDescription( i18n( "download message" ) );
   Akonadi::Filter::IO::SieveDecoder d( f );
   Akonadi::Filter::Program * p = d.run( "fileinto \"X\"" );
   if( p )

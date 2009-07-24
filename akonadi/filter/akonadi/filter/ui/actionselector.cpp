@@ -100,7 +100,7 @@ ActionSelector::ActionSelector( QWidget * parent, ComponentFactory * componentfa
 
   d = new ActionDescriptor;
   d->mType = Action::ActionTypeStop;
-  QString defaultActionDescription = mComponentFactory->defaultActionDescription();
+  QString defaultActionDescription = mEditorFactory->defaultActionDescription();
   if( defaultActionDescription.isEmpty() )
     d->mText = i18n( "stop processing here" );
   else

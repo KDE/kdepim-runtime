@@ -42,7 +42,7 @@
 FilterAgent * FilterAgent::mInstance = 0;
 
 FilterAgent::FilterAgent( const QString &id )
-  : Akonadi::AgentBase( id )
+  : Akonadi::PreprocessorBase( id )
 {
   Q_ASSERT( mInstance == 0 ); // must be unique
 
@@ -51,9 +51,17 @@ FilterAgent::FilterAgent( const QString &id )
   mInstance = this;
 
   Akonadi::Filter::ComponentFactory * f = new Akonadi::Filter::ComponentFactory();
+
+  f->registerStandardFunctionsForRfc822();
+  f->registerStandardDataMembersForRfc822();
+
   mComponentFactories.insert( QLatin1String( "message/rfc822" ), f );
 
   f = new Akonadi::Filter::ComponentFactory();
+
+  f->registerStandardFunctionsForRfc822();
+  f->registerStandardDataMembersForRfc822();
+
   mComponentFactories.insert( QLatin1String( "message/news" ), f );
 
   new FilterAgentAdaptor( this );
@@ -80,6 +88,7 @@ FilterAgent::~FilterAgent()
   mInstance = 0;
 }
 
+/*
 void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
   // find out the filter chain that we need to apply to this item
@@ -96,6 +105,31 @@ void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collectio
     if( !engine->run( item, collection ) )
       break;
   }
+}
+*/
+
+FilterAgent::ProcessingResult FilterAgent::processItem( const Akonadi::Item &item )
+{
+#if 0
+  // find out the filter chain that we need to apply to this item
+  QList< FilterEngine * > * filterChain = mFilterChains.value( collection.id(), 0 );
+
+  Q_ASSERT( filterChain ); // if this fails then we have received a notification for a collection we shouldn't be watching
+  Q_ASSERT( filterChain->count() > 0 );
+
+  kDebug() << "mailfilteragent: item added to collection " << collection.id() ;
+
+  // apply each filter
+  foreach( FilterEngine * engine, *filterChain )
+  {
+    if( !engine->run( item, collection ) )
+      break;
+  }
+#endif
+  ::sleep( 4 ); // generate some lag for testing
+
+
+  return ProcessingCompleted;
 }
 
 QStringList FilterAgent::enumerateFilters( const QString &mimeType )
@@ -353,11 +387,12 @@ void FilterAgent::saveConfiguration()
 {
 }
 
+/*
 void FilterAgent::configure( WId winId )
 {
 }
 
-/*
+
 void FilterAgent::itemRemoved(const Akonadi::Item & ref)
 {
 }

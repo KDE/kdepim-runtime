@@ -39,7 +39,7 @@ namespace Filter
 
 enum DataMemberIdentifiers
 {
-  // standard functions
+  // standard data members
   StandardDataMemberSubjectHeader = 1,
   StandardDataMemberFromHeader = 2,
   StandardDataMemberToHeader = 3,
@@ -51,7 +51,7 @@ enum DataMemberIdentifiers
   StandardDataMemberAllHeaders = 9,
   StandardDataMemberWholeItem = 10,
 
-  // custom functions
+  // custom data members start here
   DataMemberDescriptorCustomFirst = 10000
 };
 

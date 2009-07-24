@@ -44,6 +44,8 @@ namespace Akonadi
 namespace Filter
 {
 
+// Forward decls
+
 class Program;
 class Rule;
 class Component;
@@ -68,12 +70,16 @@ namespace Action
 /**
  * The Akonadi::Filter::ComponentFactory class plays a very central role in the filter management and customisation.
  *
- * - It's responsable for the creation of the filter tree components, either standard ones (the Program,
- *   the Rule, the RuleList, the And/Or/Not condition etc...) or customized ones.
+ * It's responsable for the creation of the filter tree components, either standard ones (the Program,
+ * the Rule, the RuleList, the And/Or/Not condition etc...) or customized ones.
  *
- * - It acts as repository of the FunctionDescriptors that can be tested in filter conditions
+ * It acts as repository of the FunctionDescriptors that can be tested in filter conditions.
  *
- * - It acts as repository of the Actions that the filter can perform
+ * It acts as repository of the Actions that the filter can perform.
+ *
+ * Both in your filtering engine and in your editing program you will need an instance of a ComponentFactory.
+ * The factory will have to contain the set of functions, operators, data members and actions that your
+ * filtering framework will handle. The same sets are needed on both sides (filtering engine and editing program).
  */
 class AKONADI_FILTER_EXPORT ComponentFactory
 {
@@ -82,20 +88,53 @@ public:
   virtual ~ComponentFactory();
 
 private:
+
+  /**
+   * Internal list of registered function descriptors.
+   * The pointers here are shallow (mFunctionDescriptorHash below owns them).
+   */
   QList< const FunctionDescriptor * > mFunctionDescriptorList;
+
+  /**
+   * Internal map of registered function descriptors indicized by
+   * their keyword (which must be unique). The pointers here are owned.
+   */
   QHash< QString, FunctionDescriptor * > mFunctionDescriptorHash;
 
+  /**
+   * Internal list of registered operators.
+   * The pointers here are shallow (mOperatorDescriptorMultiHash below owns them).
+   */
   QList< OperatorDescriptor * > mOperatorDescriptorList;
+
+  /**
+   * Internal map of registered operators indicized by
+   * their keyword (which must be unique). The pointers here are owned.
+   */
   QMultiHash< QString, OperatorDescriptor * > mOperatorDescriptorMultiHash;
 
+  /**
+   * Internal list of registered commands.
+   * The pointers here are shallow (mCommandDescriptorHash below owns them).
+   */
   QList< const CommandDescriptor * > mCommandDescriptorList;
+
+  /**
+   * Internal map of registered commands indicized by
+   * their keyword (which must be unique). The pointers here are owned.
+   */ 
   QHash< QString, CommandDescriptor * > mCommandDescriptorHash;
 
+  /**
+   * Internal map of registered data members indicized by
+   * their keyword (which must be unique). The pointers here are owned.
+   */ 
   QHash< QString, DataMemberDescriptor * > mDataMemberDescriptorHash;
 
+  /**
+   * The last error occured in this factory.
+   */ 
   QString mLastError;
-
-  QString mDefaultActionDescription;
 
 public:
 
@@ -120,6 +159,13 @@ public:
    * This is used primairly by the UI filter editors.
    */
   virtual const QList< const FunctionDescriptor * > * enumerateFunctions();
+
+  /**
+   * Registers a set of standard FunctionDescriptor objects suitable
+   * for filtering e-mail. This function is provided for your convenience:
+   * if you're going to filter e-mail messages then you probably need to call this.
+   */
+  void registerStandardFunctionsForRfc822();
 
   /**
    * Registers a CommandDescriptor to be used by the filter actions.
@@ -167,6 +213,13 @@ public:
    * given allowed input DataType set.
    */
   virtual QList< const DataMemberDescriptor * > enumerateDataMembers( int acceptableDataTypeMask );
+
+  /**
+   * Registers a set of standard DataMemberDescriptor objects suitable
+   * for filtering e-mail. This function is provided for your convenience:
+   * if you're going to filter e-mail messages then you probably need to call this.
+   */
+  void registerStandardDataMembersForRfc822();
 
   /**
    * Registers an OperatorDescriptor to be used by the filtering conditions.
@@ -429,26 +482,24 @@ public:
    */
   virtual Action::Stop * createStopAction( Component * parent );
 
-
-  void setDefaultActionDescription( const QString &defaultActionDescription )
+  /**
+   * Returns the last error occured in this component factory.
+   */
+  const QString & lastError() const
   {
-    mDefaultActionDescription = defaultActionDescription;
+    return mLastError;
   }
 
-  const QString & defaultActionDescription()
-  {
-    return mDefaultActionDescription;
-  }
+protected:
 
+  /**
+   * Sets the last error occured on this engine.
+   */
   void setLastError( const QString &error )
   {
     mLastError = error;
   }
 
-  const QString & lastError() const
-  {
-    return mLastError;
-  }
 }; // class ComponentFactory
 
 } // namespace Filter

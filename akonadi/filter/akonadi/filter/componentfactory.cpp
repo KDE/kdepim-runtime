@@ -39,96 +39,9 @@ namespace Akonadi
 namespace Filter 
 {
 
-
-
 ComponentFactory::ComponentFactory()
 {
-  // register the basic functions
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberFromHeader,
-          QString::fromAscii( "from" ),
-          i18n( "From address" ),
-          DataTypeAddress
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberToHeader,
-          QString::fromAscii( "to" ),
-          i18n( "To address" ),
-          DataTypeAddress
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberReplyToHeader,
-          QString::fromAscii( "replyto" ),
-          i18n( "Reply-To address" ),
-          DataTypeAddress
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberCcHeader,
-          QString::fromAscii( "cc" ),
-          i18n( "CC address list" ),
-          DataTypeAddressList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberAllRecipientHeaders,
-          QString::fromAscii( "anyrecipient" ),
-          i18n( "recipient address list" ),
-          DataTypeAddressList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberAllSenderHeaders,
-          QString::fromAscii( "anysender" ),
-          i18n( "sender address list" ),
-          DataTypeAddressList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberBccHeader,
-          QString::fromAscii( "bcc" ),
-          i18n( "BCC address list" ),
-          DataTypeAddressList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberAllHeaders,
-          QString::fromAscii( "anyheader" ),
-          i18n( "header list" ),
-          DataTypeStringList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberWholeItem,
-          QString::fromAscii( "item" ),
-          i18n( "whole item" ),
-          DataTypeString
-        )
-    );
-
-
-
-
+  // register the basic functions (everyone needs this)
 
   registerFunction(
       new FunctionDescriptor(
@@ -159,50 +72,6 @@ ComponentFactory::ComponentFactory()
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList
         )
     );
-
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionAnyEMailAddressIn,
-          QString::fromAscii( "address" ),
-          i18n( "if any address in" ),
-          DataTypeAddress | DataTypeAddressList,
-          DataTypeAddress | DataTypeAddressList
-        )
-    );
-
-#if 0
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionAnyEMailAddressIn,
-          QString::fromAscii( "address:all" ),
-          i18n( "if any address in" ),
-          DataTypeAddress | DataTypeAddressList,
-          DataTypeAddress | DataTypeAddressList
-        )
-    );
-#endif
-
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionAnyEMailAddressDomainIn,
-          QString::fromAscii( "address:domain" ),
-          i18n( "if any domain in" ),
-          DataTypeString | DataTypeStringList,
-          DataTypeAddress | DataTypeAddressList
-        )
-    );
-
-
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionAnyEMailAddressLocalPartIn,
-          QString::fromAscii( "address:local" ),
-          i18n( "if any username in" ),
-          DataTypeString | DataTypeStringList,
-          DataTypeAddress | DataTypeAddressList
-        )
-    );
-
 
   registerFunction(
       new FunctionDescriptor(
@@ -370,6 +239,136 @@ ComponentFactory::~ComponentFactory()
   qDeleteAll( mOperatorDescriptorList );
 }
 
+
+void ComponentFactory::registerStandardDataMembersForRfc822()
+{
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberFromHeader,
+          QString::fromAscii( "from" ),
+          i18n( "From address" ),
+          DataTypeAddress
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberToHeader,
+          QString::fromAscii( "to" ),
+          i18n( "To address" ),
+          DataTypeAddress
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberReplyToHeader,
+          QString::fromAscii( "replyto" ),
+          i18n( "Reply-To address" ),
+          DataTypeAddress
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberCcHeader,
+          QString::fromAscii( "cc" ),
+          i18n( "CC address list" ),
+          DataTypeAddressList
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberAllRecipientHeaders,
+          QString::fromAscii( "anyrecipient" ),
+          i18n( "recipient address list" ),
+          DataTypeAddressList
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberAllSenderHeaders,
+          QString::fromAscii( "anysender" ),
+          i18n( "sender address list" ),
+          DataTypeAddressList
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberBccHeader,
+          QString::fromAscii( "bcc" ),
+          i18n( "BCC address list" ),
+          DataTypeAddressList
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberAllHeaders,
+          QString::fromAscii( "anyheader" ),
+          i18n( "header list" ),
+          DataTypeStringList
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          StandardDataMemberWholeItem,
+          QString::fromAscii( "message" ),
+          i18n( "whole message" ),
+          DataTypeString
+        )
+    );  
+}
+
+void ComponentFactory::registerStandardFunctionsForRfc822()
+{
+  registerFunction(
+      new FunctionDescriptor(
+          StandardFunctionAnyEMailAddressIn,
+          QString::fromAscii( "address" ),
+          i18n( "if any address in" ),
+          DataTypeAddress | DataTypeAddressList,
+          DataTypeAddress | DataTypeAddressList
+        )
+    );
+
+#if 0
+  registerFunction(
+      new FunctionDescriptor(
+          StandardFunctionAnyEMailAddressIn,
+          QString::fromAscii( "address:all" ),
+          i18n( "if any address in" ),
+          DataTypeAddress | DataTypeAddressList,
+          DataTypeAddress | DataTypeAddressList
+        )
+    );
+#endif
+
+  registerFunction(
+      new FunctionDescriptor(
+          StandardFunctionAnyEMailAddressDomainIn,
+          QString::fromAscii( "address:domain" ),
+          i18n( "if any domain in" ),
+          DataTypeString | DataTypeStringList,
+          DataTypeAddress | DataTypeAddressList
+        )
+    );
+
+
+  registerFunction(
+      new FunctionDescriptor(
+          StandardFunctionAnyEMailAddressLocalPartIn,
+          QString::fromAscii( "address:local" ),
+          i18n( "if any username in" ),
+          DataTypeString | DataTypeStringList,
+          DataTypeAddress | DataTypeAddressList
+        )
+    );
+}
 
 void ComponentFactory::registerDataMember( DataMemberDescriptor * dataMember )
 {

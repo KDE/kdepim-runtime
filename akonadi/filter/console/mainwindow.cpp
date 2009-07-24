@@ -66,9 +66,15 @@ MainWindow::MainWindow()
   mFilterAgent = new OrgFreedesktopAkonadiFilterAgentInterface( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
 
   Akonadi::Filter::ComponentFactory * componentFactory = new Akonadi::Filter::ComponentFactory();
+  componentFactory->registerStandardFunctionsForRfc822();
+  componentFactory->registerStandardDataMembersForRfc822();
+
   mComponentFactories.insert( QLatin1String( "message/rfc822" ), componentFactory );
 
   componentFactory = new Akonadi::Filter::ComponentFactory();
+  componentFactory->registerStandardFunctionsForRfc822();
+  componentFactory->registerStandardDataMembersForRfc822();
+
   mComponentFactories.insert( QLatin1String( "message/news" ), componentFactory );
 
   Akonadi::Filter::UI::EditorFactory * editorFactory = new Akonadi::Filter::UI::EditorFactory();

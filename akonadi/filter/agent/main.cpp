@@ -25,5 +25,5 @@
 
 #include "filteragent.h"
 
-AKONADI_AGENT_MAIN( FilterAgent )
+AKONADI_PREPROCESSOR_MAIN( FilterAgent )
 
