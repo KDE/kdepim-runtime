@@ -37,12 +37,13 @@ class QStandardItemModel;
 class KJob;
 class KXmlGuiWindow;
 
+class AkonadiBrowserModel;
+
 namespace Akonadi {
 class EntityTreeView;
-class EntityTreeModel;
-class ItemModel;
 class Job;
 class StandardActionManager;
+class StatisticsToolTipProxyModel;
 class Monitor;
 }
 
@@ -58,7 +59,6 @@ class BrowserWidget: public QWidget
     void dumpToXml();
 
   private slots:
-    void collectionActivated( const QModelIndex &index );
     void itemActivated( const QModelIndex &index );
     void itemFetchDone( KJob *job );
     void modelChanged();
@@ -70,13 +70,15 @@ class BrowserWidget: public QWidget
     void dumpToXmlResult( KJob *job );
     void clear();
 
+//     void slotBrowserModelAboutToBeReset();
+//     void slotBrowserModelReset();
+
   private:
-    Akonadi::EntityTreeModel *mCollectionModel;
+    AkonadiBrowserModel *mBrowserModel;
     Akonadi::EntityTreeView *mCollectionView;
-    Akonadi::ItemModel *mItemModel;
+    Akonadi::StatisticsToolTipProxyModel *statisticsToolTipProxyModel;
     Ui::ItemViewWidget itemUi;
     Ui::ContentViewWidget contentUi;
-    Akonadi::Collection::Id mCurrentCollection;
     Akonadi::Item mCurrentItem;
     QStandardItemModel *mAttrModel;
 #ifdef NEPOMUK_FOUND

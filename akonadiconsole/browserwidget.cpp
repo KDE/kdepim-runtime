@@ -23,14 +23,12 @@
 #include "collectioninternalspage.h"
 #include "collectionaclpage.h"
 #include "settings.h"
+#include "akonadibrowsermodel.h"
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/job.h>
-#include <akonadi/collectionmodel.h>
-#include <akonadi/collectionstatisticsmodel.h>
-#include <akonadi/collectionview.h>
 #include <akonadi/control.h>
-#include <akonadi/entitytreemodel.h>
+#include <akonadi/entityfilterproxymodel.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -49,11 +47,8 @@
 #include <akonadi/statisticsproxymodel.h>
 #include <akonadi/statisticstooltipproxymodel.h>
 
-#include <kcal/kcalmodel.h>
+#include <kabc/addressee.h>
 #include <kcal/incidence.h>
-#include <kabc/kabcmodel.h>
-#include <kabc/kabcitembrowser.h>
-#include <akonadi/kmime/messagemodel.h>
 
 #include <libkdepim-copy/addresseeview.h>
 
@@ -86,8 +81,6 @@ AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionAclPageFactory, CollectionA
 
 BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
     QWidget( parent ),
-    mItemModel( 0 ),
-    mCurrentCollection( 0 ),
     mAttrModel( 0 ),
 #ifdef NEPOMUK_FOUND
     mNepomukModel( 0 ),
@@ -106,7 +99,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   splitter2->setObjectName( "ffvSplitter" );
 
   mCollectionView = new Akonadi::EntityTreeView( xmlGuiWindow, this );
-  connect( mCollectionView, SIGNAL(clicked(QModelIndex)), SLOT(collectionActivated(QModelIndex)) );
+  mCollectionView->setSelectionMode( QAbstractItemView::ExtendedSelection );
   splitter2->addWidget( mCollectionView );
 
   FavoriteCollectionsView *favoritesView = new FavoriteCollectionsView( xmlGuiWindow, this );
@@ -122,23 +115,42 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   monitor->setCollectionMonitored( Collection::root() );
   monitor->fetchCollection( true );
   monitor->setAllMonitored( true );
+  // TODO: Only fetch the envelope etc if possible.
+  monitor->itemFetchScope().fetchFullPayload(true);
 
-  mCollectionModel = new EntityTreeModel( session, monitor, this );
-  mCollectionModel->setItemPopulationStrategy( EntityTreeModel::NoItemPopulation );
+  mBrowserModel = new AkonadiBrowserModel( session, monitor, this );
 
-  StatisticsToolTipProxyModel *proxy1 = new StatisticsToolTipProxyModel( this );
-  proxy1->setSourceModel( mCollectionModel );
+  EntityFilterProxyModel *collectionFilter = new EntityFilterProxyModel( this );
+  collectionFilter->setSourceModel( mBrowserModel );
+  collectionFilter->addMimeTypeInclusionFilter( Collection::mimeType() );
+  collectionFilter->setHeaderSet( EntityTreeModel::CollectionTreeHeaders );
+  
+  statisticsToolTipProxyModel = new StatisticsToolTipProxyModel( this );
+  statisticsToolTipProxyModel->setSourceModel( collectionFilter );
 
-  StatisticsProxyModel *proxy2 = new StatisticsProxyModel( this );
-  proxy2->setSourceModel( proxy1 );
+  StatisticsProxyModel *statisticsProxyModel = new StatisticsProxyModel( this );
+  statisticsProxyModel->setSourceModel( statisticsToolTipProxyModel );
 
   QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
   sortModel->setDynamicSortFilter( true );
   sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
-  sortModel->setSourceModel( proxy2 );
+  sortModel->setSourceModel( statisticsProxyModel );
+
   mCollectionView->setModel( sortModel );
 
-  FavoriteCollectionsModel *favoritesModel = new FavoriteCollectionsModel( mCollectionModel, this );
+//   connect( mBrowserModel, SIGNAL( modelAboutToBeReset() ), SLOT( slotBrowserModelAboutToBeReset() ) );
+//   connect( mBrowserModel, SIGNAL( modelReset() ), SLOT( slotBrowserModelReset() ) );
+  
+  SelectionProxyModel *selectionProxyModel = new SelectionProxyModel( mCollectionView->selectionModel(), this );
+  selectionProxyModel->setSourceModel( mBrowserModel );
+  selectionProxyModel->setFilterBehavior( SelectionProxyModel::OnlySelectedChildren );
+
+  EntityFilterProxyModel *itemFilter = new EntityFilterProxyModel( this );
+  itemFilter->setSourceModel( selectionProxyModel );
+  itemFilter->addMimeTypeExclusionFilter( Collection::mimeType() );
+  itemFilter->setHeaderSet( EntityTreeModel::ItemListHeaders );
+
+  FavoriteCollectionsModel *favoritesModel = new FavoriteCollectionsModel( mBrowserModel, this );
   favoritesView->setModel( favoritesModel );
 
   QSplitter *splitter3 = new QSplitter( Qt::Vertical, this );
@@ -156,10 +168,10 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   QTimer::singleShot( 0, this, SLOT(modelChanged()) );
 
   itemUi.itemView->setXmlGuiWindow( xmlGuiWindow );
-  itemUi.itemView->setModel( mItemModel );
+  itemUi.itemView->setModel( itemFilter );
   itemUi.itemView->setSelectionMode( QAbstractItemView::ExtendedSelection );
-  connect( itemUi.itemView, SIGNAL(activated(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
-  connect( itemUi.itemView, SIGNAL(clicked(QModelIndex)), SLOT(itemActivated(QModelIndex)) );
+  connect( itemUi.itemView, SIGNAL( activated( QModelIndex ) ), SLOT(itemActivated( QModelIndex ) ) );
+  connect( itemUi.itemView, SIGNAL( clicked( QModelIndex ) ), SLOT(itemActivated( QModelIndex ) ) );
   splitter3->addWidget( itemViewParent );
   itemViewParent->layout()->setMargin( 0 );
 
@@ -217,19 +229,9 @@ void BrowserWidget::clear()
   contentUi.attrView->setModel( 0 );
 }
 
-void BrowserWidget::collectionActivated(const QModelIndex & index)
-{
-  mCurrentCollection = mCollectionView->model()->data( index, EntityTreeModel::CollectionIdRole ).toLongLong();
-  if ( mCurrentCollection <= 0 )
-    return;
-  const Collection col = mCollectionView->currentIndex().data( EntityTreeModel::CollectionRole ).value<Collection>();
-  mItemModel->setCollection( col );
-  clear();
-}
-
 void BrowserWidget::itemActivated(const QModelIndex & index)
 {
-  const Item item = mItemModel->itemForIndex( index );
+  const Item item = index.data( EntityTreeModel::ItemRole ).value< Item >();
   if ( !item.isValid() ) {
     clear();
     return;
@@ -238,7 +240,7 @@ void BrowserWidget::itemActivated(const QModelIndex & index)
   ItemFetchJob *job = new ItemFetchJob( item, this );
   job->fetchScope().fetchFullPayload();
   job->fetchScope().fetchAllAttributes();
-  connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchDone(KJob*)) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( itemFetchDone( KJob* ) ) );
 }
 
 void BrowserWidget::itemFetchDone(KJob * job)
@@ -341,27 +343,43 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
 
 void BrowserWidget::modelChanged()
 {
-  delete mItemModel;
+  // For some reason resetting the sourceModel crashes the app when trying to
+  // propagate the change through the proxies. This is probably because resetting
+  // in QAIM is broken (API bug: don't have beginResetModel and endResetModel, so
+  // the source model is already fully reset when the proxy emits beginResetModel
+  // http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=247023).
+  // I'll see about fixing it in time for Qt 4.6.
+  // To work around, we unset the sourceModel in the stats proxy, the model resets itself
+  // in setItemDisplayMode, and then we set the sourceModel again on the proxy.
+  // Of course, this sucks in other ways, like for example, that the view is empty while the
+  // model is being reset, so we can't save and restore view state in slots connected to beginResetModel
+  // and endResetModel.
+  // -- Stephen Kelly, 24. July 2009.
+
+  KConfigGroup saveConfig( KGlobal::config(), "CollectionViewState" );
+  EntityTreeViewStateSaver* saver = new EntityTreeViewStateSaver( mCollectionView );
+  saver->saveState( saveConfig );
+  saveConfig.sync();
+  
+  QAbstractItemModel *model = statisticsToolTipProxyModel->sourceModel();
+  statisticsToolTipProxyModel->setSourceModel(0);
   switch ( itemUi.modelBox->currentIndex() ) {
     case 1:
-      mItemModel = new MessageModel( this );
+      mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::MailMode);
       break;
     case 2:
-      mItemModel = new KABCModel( this );
+      mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::ContactsMode);
       break;
     case 3:
-      mItemModel = new KCalModel( this );
+      mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::CalendarMode);
       break;
     default:
-      mItemModel = new ItemModel( this );
+      mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::GenericMode);
   }
-  itemUi.itemView->setModel( mItemModel );
-  if ( mCurrentCollection > 0 ) {
-    const Collection col = mCollectionView->currentIndex().data( CollectionModel::CollectionRole ).value<Collection>();
-    mItemModel->setCollection( col );
-  }
-  if ( mStdActionManager )
-    mStdActionManager->setItemSelectionModel( itemUi.itemView->selectionModel() );
+  statisticsToolTipProxyModel->setSourceModel(model);
+
+  const KConfigGroup restoreConfig( KGlobal::config(), "CollectionViewState" );
+  saver->restoreState( restoreConfig );
 }
 
 void BrowserWidget::save()
@@ -422,7 +440,7 @@ void BrowserWidget::delAttribute()
 
 void BrowserWidget::dumpToXml()
 {
-  const Collection root = mCollectionView->currentIndex().data( CollectionModel::CollectionRole ).value<Collection>();
+  const Collection root = mCollectionView->currentIndex().data( EntityTreeModel::CollectionRole ).value<Collection>();
   if ( !root.isValid() )
     return;
   const QString fileName = KFileDialog::getSaveFileName( KUrl(), "*.xml", this, i18n( "Select XML file" ) );
@@ -437,5 +455,23 @@ void BrowserWidget::dumpToXmlResult( KJob* job )
   if ( job->error() )
     KMessageBox::error( this, job->errorString() );
 }
+
+
+// void BrowserWidget::slotBrowserModelAboutToBeReset()
+// {
+//   KConfigGroup cfg( KGlobal::config(), "CollectionViewState" );
+//   EntityTreeViewStateSaver saver( mCollectionView );
+//   saver.saveState( cfg );
+//   cfg.sync();
+// }
+
+
+// void BrowserWidget::slotBrowserModelReset()
+// {
+//   const KConfigGroup cfg( KGlobal::config(), "CollectionViewState" );
+//   EntityTreeViewStateSaver* saver = new EntityTreeViewStateSaver( mCollectionView );
+//   saver->restoreState( cfg );
+// }
+
 
 #include "browserwidget.moc"

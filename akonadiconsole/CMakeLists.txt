@@ -14,6 +14,7 @@ configure_file(config-akonadiconsole.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-
 
 set(akonadiconsole_bin_SRCS
   agentwidget.cpp
+  akonadibrowsermodel.cpp
   browserwidget.cpp
   collectionattributespage.cpp
   collectioninternalspage.cpp
