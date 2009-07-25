@@ -1,5 +1,4 @@
 /*
-    Copyright (c) 2006 Till Adam <adam@kde.org>
     Copyright (c) 2009 David Jarvie <djarvie@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -18,42 +17,20 @@
     02110-1301, USA.
 */
 
-#ifndef ICALRESOURCE_H
-#define ICALRESOURCE_H
+#ifndef NOTESRESOURCE_H
+#define NOTESRESOURCE_H
 
-#include "icalresourcebase.h"
+#include "icalresource.h"
 
-namespace KCal {
-  class IncidenceBase;
-  class AssignmentVisitor;
-}
-
-namespace Akonadi {
-  class KCalMimeTypeVisitor;
-}
-
-class ICalResource : public ICalResourceBase
+class NotesResource : public ICalResource
 {
   Q_OBJECT
 
   public:
-    ICalResource( const QString &id );
-    ~ICalResource();
+    NotesResource( const QString &id );
+    ~NotesResource();
 
   protected:
-    /**
-     * Constructor for derived classes.
-     * @param mimeTypes mimeTypes to be handled by the resource.
-     * @param icon icon name to use.
-     */
-    ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon );
-
-    virtual bool doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void doRetrieveItems( const Akonadi::Collection &col );
-
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection& );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-
     /**
       Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
     */
@@ -63,10 +40,6 @@ class ICalResource : public ICalResourceBase
       Returns a list of all calendar component sub MIME types.
      */
     virtual QStringList allMimeTypes() const;
-
-  private:
-    Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
-    KCal::AssignmentVisitor *mIncidenceAssigner;
 };
 
 #endif
