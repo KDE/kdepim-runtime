@@ -69,3 +69,5 @@ target_link_libraries( akonadi_desktop-couch_resource
 )
 
 install(TARGETS akonadi_desktop-couch_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+kde4_install_icons( ${ICON_INSTALL_DIR} )
+

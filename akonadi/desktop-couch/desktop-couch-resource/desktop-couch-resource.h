@@ -1,7 +1,7 @@
 /*
     Copyright (c) 2009 Canonical
 
-    Author: Till Adam <till@kdab.net>
+    Author: Till Adam <till@kdab.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -24,6 +24,7 @@
 
 #include <akonadi/resourcebase.h>
 #include <akonadi/agentbase.h>
+#include <akonadi/collection.h>
 #include <kabc/addressee.h>
 #include <couchdb-qt.h>
 
@@ -54,7 +55,8 @@ class DesktopCouchResource : public Akonadi::ResourceBase, public Akonadi::Agent
     void slotDocumentsListed( const CouchDBDocumentInfoList& );
     void slotDocumentRetrieved( const QVariant& v );
   private:
-    CouchDBQt db;
+    CouchDBQt m_db;
+    Akonadi::Collection m_root;
 };
 
 #endif

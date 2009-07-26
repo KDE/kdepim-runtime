@@ -1,7 +1,7 @@
 /*
     Copyright (c) 2009 Canonical
 
-    Author: Till Adam <till@kdab.net>
+    Author: Till Adam <till@kdab.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -24,6 +24,8 @@
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/collection.h>
 
 #include <kfiledialog.h>
 #include <klocale.h>
@@ -44,6 +46,18 @@ DesktopCouchResource::DesktopCouchResource( const QString &id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
                             */
+  m_root.setParent( Collection::root() );
+  m_root.setRemoteId( identifier() );
+  m_root.setName( identifier() );
+
+  QStringList mimeTypes;
+  mimeTypes << "text/directory";
+  m_root.setContentMimeTypes( mimeTypes );
+
+  EntityDisplayAttribute *attr = m_root.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attr->setDisplayName( i18n("Desktop Couch Addressbook") );
+  attr->setIconName( "couchdb" );
+
   changeRecorder()->itemFetchScope().fetchFullPayload();
   synchronizeCollectionTree();
 }
@@ -56,13 +70,13 @@ bool DesktopCouchResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
 {
   Q_UNUSED( parts );
   const QString rid = item.remoteId();
-  db.disconnect( this, SLOT( slotDocumentRetrieved(QVariant) ) );
-  db.connect( &db, SIGNAL( documentRetrieved(QVariant) ),
+  m_db.disconnect( this, SLOT( slotDocumentRetrieved(QVariant) ) );
+  m_db.connect( &m_db, SIGNAL( documentRetrieved(QVariant) ),
               this, SLOT( slotDocumentRetrieved(QVariant) ) );
   CouchDBDocumentInfo info;
   info.setId( rid );
   info.setDatabase( "contacts" );
-  db.requestDocument( info );
+  m_db.requestDocument( info );
 
   setProperty( "akonadiItem", QVariant::fromValue(item) );
 
@@ -183,7 +197,7 @@ void DesktopCouchResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     info.setId( item.remoteId() );
     info.setDatabase( "contacts" );
     QVariant v = addresseeToVariant( addressee );
-    db.updateDocument( info, v );
+    m_db.updateDocument( info, v );
 
     // FIXME make async and check error 
     // setProperty( "akonadiItem", QVariant::fromValue(item) );
@@ -210,10 +224,10 @@ void DesktopCouchResource::retrieveItems( const Akonadi::Collection & col )
   // CouchDB does not support folders so we can safely ignore the collection
   Q_UNUSED( col );
 
-  db.disconnect( this, SLOT( slotDocumentsListed(CouchDBDocumentInfoList) ) );
-  db.connect( &db, SIGNAL( documentsListed( CouchDBDocumentInfoList ) ),
+  m_db.disconnect( this, SLOT( slotDocumentsListed(CouchDBDocumentInfoList) ) );
+  m_db.connect( &m_db, SIGNAL( documentsListed( CouchDBDocumentInfoList ) ),
               this, SLOT( slotDocumentsListed(CouchDBDocumentInfoList) ) );
-  db.requestDocumentListing( "contacts" );
+  m_db.requestDocumentListing( "contacts" );
 }
 
 void DesktopCouchResource::slotDocumentsListed( const CouchDBDocumentInfoList& list )
@@ -232,17 +246,8 @@ void DesktopCouchResource::slotDocumentsListed( const CouchDBDocumentInfoList& l
 
 void DesktopCouchResource::retrieveCollections()
 {
-  Collection c;
-  c.setParent( Collection::root() );
-  c.setRemoteId( QLatin1String("contacts_root") );
-  c.setName( name() );
-
-  QStringList mimeTypes;
-  mimeTypes << "text/directory";
-  c.setContentMimeTypes( mimeTypes );
-
   Collection::List list;
-  list << c;
+  list << m_root;
   collectionsRetrieved( list );
 }
 
