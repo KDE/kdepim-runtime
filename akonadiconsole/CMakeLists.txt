@@ -81,6 +81,7 @@ target_link_libraries( akonadiconsole_bin
   akonadi-kabccommon
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   akonadi-kcal
+  ${KDEPIMLIBS_KCAL_LIBS}
   akonadi-xml
   kdepim-copy
   ${KDE4_KUTILS_LIBS}
