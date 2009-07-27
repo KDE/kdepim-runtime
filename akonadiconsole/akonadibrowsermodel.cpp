@@ -225,7 +225,11 @@ QVariant AkonadiBrowserModel::getData( const Item &item, int column, int role ) 
 {
   QVariant var = m_currentState->getData(item, column, role);
   if (!var.isValid())
-    return EntityTreeModel::getData(item, column, role);
+  {
+    if (column <1 )
+      return EntityTreeModel::getData(item, column, role);
+    return QString();
+  }
 
   return var;
 }
