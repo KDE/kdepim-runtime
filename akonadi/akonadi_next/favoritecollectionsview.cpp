@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2006 - 2007 Volker Krause <vkrause@kde.org>
     Copyright (c) 2008 Stephen Kelly <steveire@gmail.com>
+    Copyright (c) 2009 Kevin Ottens <ervin@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,7 +19,7 @@
     02110-1301, USA.
 */
 
-#include "entitytreeview.h"
+#include "favoritecollectionsview.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QTimer>
@@ -47,46 +48,32 @@ using namespace Akonadi;
 /**
  * @internal
  */
-class EntityTreeView::Private
+class FavoriteCollectionsView::Private
 {
 public:
-  Private( EntityTreeView *parent )
+  Private( FavoriteCollectionsView *parent )
       : mParent( parent ),
       xmlGuiClient( 0 )
   {
   }
 
   void init();
-  void dragExpand();
   void itemClicked( const QModelIndex& );
   void itemDoubleClicked( const QModelIndex& );
   void itemCurrentChanged( const QModelIndex& );
-  bool hasParent( const QModelIndex& idx, Collection::Id parentId );
 
-  EntityTreeView *mParent;
-  QModelIndex dragOverIndex;
-  QTimer dragExpandTimer;
+  FavoriteCollectionsView *mParent;
 
   KXMLGUIClient *xmlGuiClient;
 };
-void EntityTreeView::Private::init()
+
+void FavoriteCollectionsView::Private::init()
 {
-  mParent->header()->setClickable( true );
-  mParent->header()->setStretchLastSection( false );
-//   mParent->setRootIsDecorated( false );
-
-//   mParent->setAutoExpandDelay ( QApplication::startDragTime() );
-
-  mParent->setSortingEnabled( true );
-  mParent->sortByColumn( 0, Qt::AscendingOrder );
   mParent->setEditTriggers( QAbstractItemView::EditKeyPressed );
   mParent->setAcceptDrops( true );
   mParent->setDropIndicatorShown( true );
   mParent->setDragDropMode( DragDrop );
   mParent->setDragEnabled( true );
-
-  dragExpandTimer.setSingleShot( true );
-  mParent->connect( &dragExpandTimer, SIGNAL( timeout() ), SLOT( dragExpand() ) );
 
   mParent->connect( mParent, SIGNAL( clicked( const QModelIndex& ) ),
                     mParent, SLOT( itemClicked( const QModelIndex& ) ) );
@@ -96,25 +83,7 @@ void EntityTreeView::Private::init()
   Control::widgetNeedsAkonadi( mParent );
 }
 
-bool EntityTreeView::Private::hasParent( const QModelIndex& idx, Collection::Id parentId )
-{
-  QModelIndex idx2 = idx;
-  while ( idx2.isValid() ) {
-    if ( mParent->model()->data( idx2, EntityTreeModel::CollectionIdRole ).toLongLong() == parentId )
-      return true;
-
-    idx2 = idx2.parent();
-  }
-  return false;
-}
-
-void EntityTreeView::Private::dragExpand()
-{
-  mParent->setExpanded( dragOverIndex, true );
-  dragOverIndex = QModelIndex();
-}
-
-void EntityTreeView::Private::itemClicked( const QModelIndex &index )
+void FavoriteCollectionsView::Private::itemClicked( const QModelIndex &index )
 {
   if ( !index.isValid() )
     return;
@@ -122,14 +91,10 @@ void EntityTreeView::Private::itemClicked( const QModelIndex &index )
   const Collection collection = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
   if ( collection.isValid() ) {
     emit mParent->clicked( collection );
-  } else {
-    const Item item = index.model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
-    if ( item.isValid() )
-      emit mParent->clicked( item );
   }
 }
 
-void EntityTreeView::Private::itemDoubleClicked( const QModelIndex &index )
+void FavoriteCollectionsView::Private::itemDoubleClicked( const QModelIndex &index )
 {
   if ( !index.isValid() )
     return;
@@ -137,14 +102,10 @@ void EntityTreeView::Private::itemDoubleClicked( const QModelIndex &index )
   const Collection collection = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
   if ( collection.isValid() ) {
     emit mParent->doubleClicked( collection );
-  } else {
-    const Item item = index.model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
-    if ( item.isValid() )
-      emit mParent->doubleClicked( item );
   }
 }
 
-void EntityTreeView::Private::itemCurrentChanged( const QModelIndex &index )
+void FavoriteCollectionsView::Private::itemCurrentChanged( const QModelIndex &index )
 {
   if ( !index.isValid() )
     return;
@@ -152,15 +113,11 @@ void EntityTreeView::Private::itemCurrentChanged( const QModelIndex &index )
   const Collection collection = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
   if ( collection.isValid() ) {
     emit mParent->currentChanged( collection );
-  } else {
-    const Item item = index.model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
-    if ( item.isValid() )
-      emit mParent->currentChanged( item );
   }
 }
 
-EntityTreeView::EntityTreeView( QWidget * parent ) :
-    QTreeView( parent ),
+FavoriteCollectionsView::FavoriteCollectionsView( QWidget * parent ) :
+    QListView( parent ),
     d( new Private( this ) )
 {
 
@@ -168,38 +125,30 @@ EntityTreeView::EntityTreeView( QWidget * parent ) :
   d->init();
 }
 
-EntityTreeView::EntityTreeView( KXMLGUIClient *xmlGuiClient, QWidget * parent ) :
-    QTreeView( parent ),
+FavoriteCollectionsView::FavoriteCollectionsView( KXMLGUIClient *xmlGuiClient, QWidget * parent ) :
+    QListView( parent ),
     d( new Private( this ) )
 {
   d->xmlGuiClient = xmlGuiClient;
   d->init();
 }
 
-EntityTreeView::~EntityTreeView()
+FavoriteCollectionsView::~FavoriteCollectionsView()
 {
   delete d;
 }
 
-void EntityTreeView::setModel( QAbstractItemModel * model )
+void FavoriteCollectionsView::setModel( QAbstractItemModel * model )
 {
-  QTreeView::setModel( model );
-  header()->setStretchLastSection( true );
+  QListView::setModel( model );
 
   connect( selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ),
            this, SLOT( itemCurrentChanged( const QModelIndex& ) ) );
 }
 
-void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
+void FavoriteCollectionsView::dragMoveEvent( QDragMoveEvent * event )
 {
   QModelIndex index = indexAt( event->pos() );
-  if ( d->dragOverIndex != index ) {
-    d->dragExpandTimer.stop();
-    if ( index.isValid() && !isExpanded( index ) && itemsExpandable() ) {
-      d->dragExpandTimer.start( QApplication::startDragTime() );
-      d->dragOverIndex = index;
-    }
-  }
 
   // Check if the collection under the cursor accepts this data type
   Collection col = model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
@@ -221,17 +170,13 @@ void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
       if ( collection.isValid() ) {
         if ( !supportedContentTypes.contains( Collection::mimeType() ) )
           break;
-
-        // Check if we don't try to drop on one of the children
-        if ( d->hasParent( index, collection.id() ) )
-          break;
       } else { // This is an item.
         QString type = url.queryItems()[ QString::fromLatin1( "type" )];
         if ( !supportedContentTypes.contains( type ) )
           break;
       }
       // All urls are supported. process the event.
-      QTreeView::dragMoveEvent( event );
+      QListView::dragMoveEvent( event );
       return;
     }
   }
@@ -240,19 +185,14 @@ void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
   return;
 }
 
-void EntityTreeView::dragLeaveEvent( QDragLeaveEvent * event )
+void FavoriteCollectionsView::dragLeaveEvent( QDragLeaveEvent * event )
 {
-  d->dragExpandTimer.stop();
-  d->dragOverIndex = QModelIndex();
-  QTreeView::dragLeaveEvent( event );
+  QListView::dragLeaveEvent( event );
 }
 
 
-void EntityTreeView::dropEvent( QDropEvent * event )
+void FavoriteCollectionsView::dropEvent( QDropEvent * event )
 {
-  d->dragExpandTimer.stop();
-  d->dragOverIndex = QModelIndex();
-
   QModelIndexList idxs = selectedIndexes();
 
 
@@ -281,10 +221,10 @@ void EntityTreeView::dropEvent( QDropEvent * event )
   // TODO: Handle link action.
   else return;
 
-  QTreeView::dropEvent( event );
+  QListView::dropEvent( event );
 }
 
-void EntityTreeView::contextMenuEvent( QContextMenuEvent * event )
+void FavoriteCollectionsView::contextMenuEvent( QContextMenuEvent * event )
 {
   if ( !d->xmlGuiClient )
     return;
@@ -294,20 +234,17 @@ void EntityTreeView::contextMenuEvent( QContextMenuEvent * event )
   QMenu *popup = 0;
 
   // check if the index under the cursor is a collection or item
-  const Item item = model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
-  if ( item.isValid() )
+  const Collection collection = model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
+  if ( collection.isValid() )
     popup = static_cast<QMenu*>( d->xmlGuiClient->factory()->container(
-                                 QLatin1String( "akonadi_itemview_contextmenu" ), d->xmlGuiClient ) );
-  else
-    popup = static_cast<QMenu*>( d->xmlGuiClient->factory()->container(
-                                 QLatin1String( "akonadi_collectionview_contextmenu" ), d->xmlGuiClient ) );
+                                 QLatin1String( "akonadi_favoriteview_contextmenu" ), d->xmlGuiClient ) );
   if ( popup )
     popup->exec( event->globalPos() );
 }
 
-void EntityTreeView::setXmlGuiClient( KXMLGUIClient * xmlGuiClient )
+void FavoriteCollectionsView::setXmlGuiClient( KXMLGUIClient * xmlGuiClient )
 {
   d->xmlGuiClient = xmlGuiClient;
 }
 
-#include "entitytreeview.moc"
+#include "favoritecollectionsview.moc"

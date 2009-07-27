@@ -14,6 +14,7 @@ configure_file(config-akonadiconsole.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-
 
 set(akonadiconsole_bin_SRCS
   agentwidget.cpp
+  akonadibrowsermodel.cpp
   browserwidget.cpp
   collectionattributespage.cpp
   collectioninternalspage.cpp
@@ -80,6 +81,7 @@ target_link_libraries( akonadiconsole_bin
   akonadi-kabccommon
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   akonadi-kcal
+  ${KDEPIMLIBS_KCAL_LIBS}
   akonadi-xml
   kdepim-copy
   mailreader

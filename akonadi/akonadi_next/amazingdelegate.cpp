@@ -22,7 +22,7 @@
 #include <QPainter>
 
 #include <kdebug.h>
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 #include <kabc/addressee.h>
 #include <klocalizedstring.h>
 #include <akonadi/entitydisplayattribute.h>

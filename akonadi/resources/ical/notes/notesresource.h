@@ -1,7 +1,5 @@
 /*
-    This file is part of the Akonadi Mail example.
-
-    Copyright (c) 2009 Stephen Kelly <steveire@gmail.com>
+    Copyright (c) 2009 David Jarvie <djarvie@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,26 +17,29 @@
     02110-1301, USA.
 */
 
-#ifndef EMAILLINEEDIT_H
-#define EMAILLINEEDIT_H
+#ifndef NOTESRESOURCE_H
+#define NOTESRESOURCE_H
 
-#include <QLineEdit>
+#include "icalresource.h"
 
-#include "akonadi_next_export.h"
-
-// #include <KComboBox>
-
-namespace Akonadi
-{
-class Session;
-}
-
-class AKONADI_NEXT_EXPORT EmailLineEdit : public QLineEdit //  KComboBox //
+class NotesResource : public ICalResource
 {
   Q_OBJECT
-public:
-  EmailLineEdit(Akonadi::Session *session, QWidget *parent = 0);
 
+  public:
+    NotesResource( const QString &id );
+    ~NotesResource();
+
+  protected:
+    /**
+      Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
+    */
+    virtual QString mimeType( KCal::IncidenceBase *incidence );
+
+    /**
+      Returns a list of all calendar component sub MIME types.
+     */
+    virtual QStringList allMimeTypes() const;
 };
 
 #endif

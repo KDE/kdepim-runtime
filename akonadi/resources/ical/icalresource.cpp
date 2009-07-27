@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2006 Till Adam <adam@kde.org>
+    Copyright (c) 2009 David Jarvie <djarvie@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,8 +19,6 @@
 */
 
 #include "icalresource.h"
-#include "settingsadaptor.h"
-#include "singlefileresourceconfigdialog.h"
 #include "kcal/kcalmimetypevisitor.h"  // the kcal at the akonadi top-level
 
 #include <kcal/assignmentvisitor.h>
@@ -27,9 +26,7 @@
 #include <kcal/incidence.h>
 
 #include <kdebug.h>
-#include <kfiledialog.h>
 #include <klocale.h>
-#include <kurl.h>
 
 #include <boost/shared_ptr.hpp>
 
@@ -39,47 +36,35 @@ using namespace KCal;
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 ICalResource::ICalResource( const QString &id )
-    : SingleFileResource<Settings>( id ), mCalendar( 0 ),
-      mMimeVisitor( new KCalMimeTypeVisitor() ),
-      mIncidenceAssigner( new AssignmentVisitor() ),
-      mNotesMimeType( QLatin1String( "application/x-vnd.kde.notes" ) )
+    : ICalResourceBase( id, i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) ),
+      mMimeVisitor( new KCalMimeTypeVisitor ),
+      mIncidenceAssigner( new AssignmentVisitor() )
 {
   QStringList mimeTypes;
-  if ( isNotesResource() ) {
-    mimeTypes << mNotesMimeType;
-    setSupportedMimetypes( mimeTypes, "knotes" );
-  }
-  else {
-    mimeTypes << QLatin1String( "text/calendar" );
-    mimeTypes += mMimeVisitor->allMimeTypes();
-    setSupportedMimetypes( mimeTypes, "office-calendar" );
-  }
+  mimeTypes << QLatin1String( "text/calendar" );
+  mimeTypes += allMimeTypes();
+  initialise( mimeTypes, "office-calendar" );
+}
 
-
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
+ICalResource::ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon )
+    : ICalResourceBase( id, i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) ),
+      mMimeVisitor( new KCalMimeTypeVisitor ),
+      mIncidenceAssigner( new AssignmentVisitor() )
+{
+  initialise( mimeTypes, icon );
 }
 
 ICalResource::~ICalResource()
 {
-  delete mCalendar;
   delete mMimeVisitor;
   delete mIncidenceAssigner;
 }
 
-bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool ICalResource::doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
-  kDebug( 5251 ) << "Item:" << item.url();
-
-  if ( !mCalendar ) {
-    emit error( i18n("Calendar not loaded.") );
-    return false;
-  }
-
   const QString rid = item.remoteId();
-  Incidence* incidence = mCalendar->incidence( rid );
+  Incidence* incidence = calendar()->incidence( rid );
   if ( !incidence ) {
     emit error( i18n("Incidence with uid '%1' not found.", rid ) );
     return false;
@@ -88,63 +73,20 @@ bool ICalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   IncidencePtr incidencePtr( incidence->clone() );
 
   Item i = item;
-  QString mimeType;
-  if ( isNotesResource() )
-    mimeType = mNotesMimeType;
-  else
-    mimeType = mMimeVisitor->mimeType( incidencePtr.get() );
-
-  i.setMimeType( mimeType );
+  i.setMimeType( mimeType( incidencePtr.get() ) );
   i.setPayload<IncidencePtr>( incidencePtr );
   itemRetrieved( i );
   return true;
 }
 
-void ICalResource::aboutToQuit()
-{
-  if ( !Settings::self()->readOnly() )
-    writeFile();
-
-  Settings::self()->writeConfig();
-}
-
-void ICalResource::configure( WId windowId )
-{
-  if ( isNotesResource() )
-    Settings::self()->setPath( KGlobal::dirs()->saveLocation( "data", "knotes/" ) + "notes.ics" );
-
-  SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.setFilter( "*.ics *.ical|" + i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) );
-  dlg.setCaption( i18n("Select Calendar") );
-  if ( dlg.exec() == QDialog::Accepted ) {
-    reloadFile();
-  }
-}
-
-bool ICalResource::readFromFile( const QString &fileName )
-{
-  delete mCalendar;
-  mCalendar = 0;
-
-  mCalendar = new KCal::CalendarLocal( QLatin1String( "UTC" ) );
-  mCalendar->load( fileName );
-  return true;
-}
-
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
 {
-  if ( !mCalendar ) {
-    cancelTask( i18n("Calendar not loaded.") );
-    return;
-  }
-
-  if ( !item.hasPayload<IncidencePtr>() ) {
-    cancelTask( i18n("Unable to retrieve added item %1.").arg( item.id() ) );
+  if ( !checkItemAddedChanged<IncidencePtr>( item, CheckForAdded ) ) {
     return;
   }
 
   IncidencePtr i = item.payload<IncidencePtr>();
-  mCalendar->addIncidence( i.get()->clone() );
+  calendar()->addIncidence( i.get()->clone() );
   Item it( item );
   it.setRemoteId( i->uid() );
   fileDirty();
@@ -155,21 +97,15 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 {
   Q_UNUSED( parts )
 
-  if ( !mCalendar ) {
-    cancelTask( i18n("Calendar not loaded.") );
-    return;
-  }
-
-  if ( !item.hasPayload<IncidencePtr>() ) {
-    cancelTask( i18n("Unable to retrieve modified item %1.").arg( item.id() ) );
+  if ( !checkItemAddedChanged<IncidencePtr>( item, CheckForChanged ) ) {
     return;
   }
 
   IncidencePtr payload = item.payload<IncidencePtr>();
-  Incidence *incidence = mCalendar->incidence( item.remoteId() );
+  Incidence *incidence = calendar()->incidence( item.remoteId() );
   if ( !incidence ) {
     // not in the calendar yet, should not happen -> add it
-    mCalendar->addIncidence( payload.get()->clone() );
+    calendar()->addIncidence( payload.get()->clone() );
   } else {
     // make sure any observer the resource might have installed gets properly notified
     incidence->startUpdates();
@@ -181,43 +117,21 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
     if ( !assignResult ) {
       kWarning() << "Item changed incidence type. Replacing it.";
 
-      mCalendar->deleteIncidence( incidence );
-      mCalendar->addIncidence( payload.get()->clone() );
+      calendar()->deleteIncidence( incidence );
+      calendar()->addIncidence( payload.get()->clone() );
     }
   }
   fileDirty();
   changeCommitted( item );
 }
 
-void ICalResource::itemRemoved(const Akonadi::Item & item)
-{
-  if ( !mCalendar ) {
-    cancelTask( i18n("Calendar not loaded.") );
-    return;
-  }
-
-  Incidence *i = mCalendar->incidence( item.remoteId() );
-  if ( i )
-    mCalendar->deleteIncidence( i );
-  fileDirty();
-  changeProcessed();
-}
-
-void ICalResource::retrieveItems( const Akonadi::Collection & col )
+void ICalResource::doRetrieveItems( const Akonadi::Collection & col )
 {
   Q_UNUSED( col );
-  if ( !mCalendar )
-    return;
-
-  Incidence::List incidences = mCalendar->incidences();
+  Incidence::List incidences = calendar()->incidences();
   Item::List items;
   foreach ( Incidence *incidence, incidences ) {
-    QString mimeType;
-    if ( isNotesResource() )
-      mimeType = mNotesMimeType;
-    else
-      mimeType = mMimeVisitor->mimeType( incidence );
-    Item item ( mimeType );
+    Item item ( mimeType( incidence ) );
     item.setRemoteId( incidence->uid() );
     item.setPayload( IncidencePtr( incidence->clone() ) );
     items << item;
@@ -225,21 +139,14 @@ void ICalResource::retrieveItems( const Akonadi::Collection & col )
   itemsRetrieved( items );
 }
 
-bool ICalResource::writeToFile( const QString &fileName )
+QStringList ICalResource::allMimeTypes() const
 {
-  if ( !mCalendar->save( fileName ) ) {
-    emit error( i18n("Failed to save calendar file to %1", fileName ) );
-    return false;
-  }
-  return true;
+    return mMimeVisitor->allMimeTypes();
 }
 
-bool ICalResource::isNotesResource() const
+QString ICalResource::mimeType( IncidenceBase *incidence )
 {
-  return identifier().startsWith("akonadi_notes");
+  return mMimeVisitor->mimeType( incidence );
 }
-
-AKONADI_RESOURCE_MAIN( ICalResource )
-
 
 #include "icalresource.moc"

@@ -32,7 +32,7 @@
 */
 
 #include "incidence.h"
-#include "kdepim-version.h"
+#include "akonadi-version.h"
 
 #include <QFile>
 #include <QList>
@@ -41,8 +41,6 @@
 #include <kdebug.h>
 #include <kurl.h>
 #include <kio/netaccess.h>
-
-static const char korgVersion[] = KDEPIM_VERSION;
 
 using namespace Kolab;
 
@@ -977,7 +975,7 @@ void Incidence::saveTo( KCal::Incidence* incidence )
 
 QString Incidence::productID() const
 {
-  return QString( "KOrganizer %1, Kolab resource" ).arg( korgVersion );
+  return QString( "Akonadi %1, Kolab resource" ).arg( AKONADI_VERSION );
 }
 
 // Unhandled KCal::Incidence fields:

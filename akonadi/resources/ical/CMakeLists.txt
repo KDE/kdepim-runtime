@@ -6,15 +6,18 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
+add_subdirectory( notes )
 
 ########### next target ###############
 
 set( icalresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
+  icalresourcebase.cpp
   icalresource.cpp
+  icalresourcemain.cpp
 )
 
-install( FILES icalresource.desktop notesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 kde4_add_ui_files(icalresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kde4_add_kcfg_files(icalresource_SRCS settings.kcfgc)
@@ -28,4 +31,3 @@ kde4_add_executable(akonadi_ical_resource RUN_UNINSTALLED ${icalresource_SRCS})
 target_link_libraries(akonadi_ical_resource akonadi-kcal ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
 
 install(TARGETS akonadi_ical_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
-

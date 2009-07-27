@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2006 - 2007 Volker Krause <vkrause@kde.org>
     Copyright (c) 2008 Stephen Kelly <steveire@gmail.com>
+    Copyright (c) 2009 Kevin Ottens <ervin@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,12 +19,12 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_ENTITY_TREE_VIEW
-#define AKONADI_ENTITY_TREE_VIEW
+#ifndef AKONADI_FAVORITE_COLLECTIONS_VIEW
+#define AKONADI_FAVORITE_COLLECTIONS_VIEW
 
 #include "akonadi_next_export.h"
 
-#include <QtGui/QTreeView>
+#include <QtGui/QListView>
 
 class KXMLGUIClient;
 class QDragMoveEvent;
@@ -35,7 +36,7 @@ class Collection;
 class Item;
 
 /**
- * @short A view to show a collection tree provided by a CollectionModel.
+ * @short A view to show a list of collections provided by a FavoriteCollectionsModel.
  *
  * When a KXmlGuiWindow is passed to the constructor, the XMLGUI
  * defined context menu @c akonadi_collectionview_contextmenu is
@@ -51,10 +52,10 @@ class Item;
  *    MyWindow()
  *      : KXmlGuiWindow()
  *    {
- *      Akonadi::CollectionView *view = new Akonadi::CollectionView( this, this );
+ *      Akonadi::FavoriteCollectionsView *view = new Akonadi::FavoriteCollectionsView( this, this );
  *      setCentralWidget( view );
  *
- *      Akonadi::CollectionModel *model = new Akonadi::CollectionModel( this );
+ *      Akonadi::FavoriteCollectionsModel *model = new Akonadi::FavoriteCollectionsModel( ... );
  *      view->setModel( model );
  *    }
  * }
@@ -64,7 +65,7 @@ class Item;
  * @author Volker Krause <vkrause@kde.org>
  * @author Stephen Kelly <steveire@gmail.com>
  */
-class AKONADI_NEXT_EXPORT EntityTreeView : public QTreeView
+class AKONADI_NEXT_EXPORT FavoriteCollectionsView : public QListView
 {
   Q_OBJECT
 
@@ -74,7 +75,7 @@ public:
    *
    * @param parent The parent widget.
    */
-  explicit EntityTreeView( QWidget *parent = 0 );
+  explicit FavoriteCollectionsView( QWidget *parent = 0 );
 
   /**
    * Creates a new entity tree view.
@@ -84,12 +85,12 @@ public:
    *                     Passing 0 is ok and will disable the builtin context menu.
    * @param parent The parent widget.
    */
-  explicit EntityTreeView( KXMLGUIClient *xmlGuiClient, QWidget *parent = 0 );
+  explicit FavoriteCollectionsView( KXMLGUIClient *xmlGuiClient, QWidget *parent = 0 );
 
   /**
    * Destroys the entity tree view.
    */
-  virtual ~EntityTreeView();
+  virtual ~FavoriteCollectionsView();
 
   /**
    * Sets the XML GUI client which the view is used in.
@@ -112,28 +113,12 @@ Q_SIGNALS:
   void clicked( const Akonadi::Collection &collection );
 
   /**
-   * This signal is emitted whenever the user has clicked
-   * an item in the view.
-   *
-   * @param item The clicked item.
-   */
-  void clicked( const Akonadi::Item &item );
-
-  /**
    * This signal is emitted whenever the user has double clicked
    * a collection in the view.
    *
    * @param collection The double clicked collection.
    */
   void doubleClicked( const Akonadi::Collection &collection );
-
-  /**
-   * This signal is emitted whenever the user has double clicked
-   * an item in the view.
-   *
-   * @param item The double clicked item.
-   */
-  void doubleClicked( const Akonadi::Item &item );
 
   /**
    * This signal is emitted whenever the current collection
@@ -152,7 +137,7 @@ Q_SIGNALS:
   void currentChanged( const Akonadi::Item &item );
 
 protected:
-  using QTreeView::currentChanged;
+  using QListView::currentChanged;
   virtual void dragMoveEvent( QDragMoveEvent *event );
   virtual void dragLeaveEvent( QDragLeaveEvent *event );
   virtual void dropEvent( QDropEvent *event );
@@ -163,7 +148,6 @@ private:
   class Private;
   Private * const d;
 
-  Q_PRIVATE_SLOT( d, void dragExpand() )
   Q_PRIVATE_SLOT( d, void itemClicked( const QModelIndex& ) )
   Q_PRIVATE_SLOT( d, void itemDoubleClicked( const QModelIndex& ) )
   Q_PRIVATE_SLOT( d, void itemCurrentChanged( const QModelIndex& ) )

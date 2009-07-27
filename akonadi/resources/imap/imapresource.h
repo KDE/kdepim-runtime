@@ -105,8 +105,6 @@ private:
   QString mailBoxForRemoteId( const QString &remoteId ) const;
   bool needsNetwork() const;
 
-  Akonadi::Collection collectionFromRemoteId( const QString &remoteId );
-  Akonadi::Item itemFromRemoteId( const Akonadi::Collection &collection, const QString &remoteId );
   void itemsClear( const Akonadi::Collection &collection );
 
   bool manualAuth( const QString& username, QString &password );

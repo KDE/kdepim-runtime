@@ -22,7 +22,7 @@
 #ifndef MAILMODEL_H
 #define MAILMODEL_H
 
-#include "entitytreemodel.h"
+#include <akonadi/entitytreemodel.h>
 
 #include "akonadi_next_export.h"
 

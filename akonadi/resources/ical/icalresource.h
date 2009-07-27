@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2006 Till Adam <adam@kde.org>
+    Copyright (c) 2009 David Jarvie <djarvie@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -20,20 +21,18 @@
 #ifndef ICALRESOURCE_H
 #define ICALRESOURCE_H
 
-#include "singlefileresource.h"
-#include "settings.h"
+#include "icalresourcebase.h"
 
 namespace KCal {
-  class AssignmentVisitor;
-  class CalendarLocal;
   class IncidenceBase;
+  class AssignmentVisitor;
 }
 
 namespace Akonadi {
   class KCalMimeTypeVisitor;
 }
 
-class ICalResource : public Akonadi::SingleFileResource<Settings>
+class ICalResource : public ICalResourceBase
 {
   Q_OBJECT
 
@@ -41,29 +40,33 @@ class ICalResource : public Akonadi::SingleFileResource<Settings>
     ICalResource( const QString &id );
     ~ICalResource();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
-
-  protected Q_SLOTS:
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-
   protected:
-    bool readFromFile( const QString &fileName );
-    bool writeToFile( const QString &fileName );
-    virtual void aboutToQuit();
-    bool isNotesResource() const;
+    /**
+     * Constructor for derived classes.
+     * @param mimeTypes mimeTypes to be handled by the resource.
+     * @param icon icon name to use.
+     */
+    ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon );
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    virtual bool doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    virtual void doRetrieveItems( const Akonadi::Collection &col );
+
+    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection& );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+
+    /**
+      Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
+    */
+    virtual QString mimeType( KCal::IncidenceBase *incidence );
+
+    /**
+      Returns a list of all calendar component sub MIME types.
+     */
+    virtual QStringList allMimeTypes() const;
 
   private:
-    KCal::CalendarLocal *mCalendar;
     Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
     KCal::AssignmentVisitor *mIncidenceAssigner;
-
-    const QString mNotesMimeType;
 };
 
 #endif

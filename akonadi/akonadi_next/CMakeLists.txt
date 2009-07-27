@@ -18,28 +18,17 @@ include(KDE4Defaults)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 set( akonadi_next_SRCS
-  abstractitemmodel.cpp
-  abstractitemmodel_p.cpp
-  abstractproxymodel.cpp
 #   qsortfilterproxymodel.cpp
-  entitytreemodel.cpp
-  entitytreemodel_p.cpp
-  descendantentitiesproxymodel.cpp
-  entityfilterproxymodel.cpp
   entitytreeview.cpp
+  favoritecollectionsview.cpp
   collectionchildorderattribute.cpp
   modeltest.cpp
-  emaillineedit.cpp
   # TODO Move this to akonadi-kabc
   contactsmodel.cpp
   # TODO Move this to akonadi-mail?
   mailmodel.cpp
-  selectionproxymodel.cpp
-  statisticsproxymodel.cpp
-  statisticstooltipproxymodel.cpp
   amazingcompleter.cpp
   amazingdelegate.cpp
-  favoritecollectionsmodel.cpp
 )
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
@@ -58,5 +47,3 @@ set_target_properties(akonadi_next PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOV
 
 install(TARGETS akonadi_next ${INSTALL_TARGETS_DEFAULT_ARGS})
 
-add_subdirectory(tests)
-add_subdirectory(testapp)
