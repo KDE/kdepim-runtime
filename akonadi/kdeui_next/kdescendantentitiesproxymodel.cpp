@@ -727,6 +727,7 @@ QModelIndexList KDescendantEntitiesProxyModelPrivate::matchDescendants(const QMo
   QModelIndexList matches;
 
   const int column = start.column();
+  const int firstRow = 0;
   QModelIndex idx = start;
 
   while (idx.row() <= until)
@@ -735,17 +736,19 @@ QModelIndexList KDescendantEntitiesProxyModelPrivate::matchDescendants(const QMo
 
     if (q->sourceModel()->hasChildren(idx))
     {
-      matches << q->match(q->mapFromSource(idx.child(0, column)), role, value, hits, flags);
+      QModelIndex firstChild = idx.child(firstRow, column);
+      matches << q->match(q->mapFromSource(firstChild), role, value, hits, flags);
       if (!matchAll && (matches.size() >= hits))
       {
         return matches.mid(0, hits);
       }
     }
-
-    if (idx.row() == until)
+    int row = idx.row();
+    if (row == until)
+    {
       break;
-
-    idx = idx.sibling(idx.row() + 1, start.column());
+    }
+    idx = idx.sibling(row + 1, column);
   }
 
   return matches;
@@ -754,6 +757,9 @@ QModelIndexList KDescendantEntitiesProxyModelPrivate::matchDescendants(const QMo
 QModelIndexList KDescendantEntitiesProxyModel::match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
 {
   Q_D(const KDescendantEntitiesProxyModel );
+
+  // We only really need to do all this for the AmazingCompletionRole, but there's no clean way to
+  // determine what that is.
 
   QModelIndexList sourceList;
   QModelIndexList proxyList;
@@ -766,9 +772,10 @@ QModelIndexList KDescendantEntitiesProxyModel::match(const QModelIndex& start, i
 
   const bool matchAll = (hits == -1);
   const int firstHit = 1;
-  const int column = 1;
+  const int column = start.column();
   const int proxyRowCount = rowCount();
 
+  Q_ASSERT(sourceStart.column() == start.column());
   sourceList = sourceModel()->match(sourceStart, role, value, firstHit, flags);
 
   int lastRow;
@@ -791,6 +798,9 @@ QModelIndexList KDescendantEntitiesProxyModel::match(const QModelIndex& start, i
         lastRow = parentRowCount - 1;
       } else {
         firstIndexHit = sourceList.first();
+
+        Q_ASSERT(firstIndexHit.column() == start.column());
+
         lastRow = firstIndexHit.row() - 1;
       }
 
