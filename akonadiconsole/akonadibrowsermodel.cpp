@@ -198,7 +198,6 @@ public:
     }
     return QVariant();
   }
-
 };
 
 AkonadiBrowserModel::AkonadiBrowserModel( Session* session, Monitor* monitor, QObject* parent )
@@ -226,7 +225,7 @@ QVariant AkonadiBrowserModel::getData( const Item &item, int column, int role ) 
   QVariant var = m_currentState->getData(item, column, role);
   if (!var.isValid())
   {
-    if (column <1 )
+    if (column < 1 )
       return EntityTreeModel::getData(item, column, role);
     return QString();
   }
@@ -243,8 +242,6 @@ int AkonadiBrowserModel::getColumnCount(int headerSet) const
 {
   if (ItemListHeaders == headerSet)
   {
-    if (m_currentState == m_calendarState)
-      kDebug() << m_currentState->m_itemHeaders;
     return m_currentState->m_itemHeaders.size();
   }
 
