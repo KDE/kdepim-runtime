@@ -119,6 +119,9 @@ void EntityTreeView::Private::itemClicked( const QModelIndex &index )
   if ( !index.isValid() )
     return;
 
+  if (mParent->model()->canFetchMore(index))
+    mParent->model()->fetchMore(index);
+
   const Collection collection = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
   if ( collection.isValid() ) {
     emit mParent->clicked( collection );
