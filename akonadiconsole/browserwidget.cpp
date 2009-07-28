@@ -119,6 +119,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   monitor->itemFetchScope().fetchFullPayload(true);
 
   mBrowserModel = new AkonadiBrowserModel( session, monitor, this );
+  mBrowserModel->setItemPopulationStrategy( EntityTreeModel::LazyPopulation );
 
   EntityFilterProxyModel *collectionFilter = new EntityFilterProxyModel( this );
   collectionFilter->setSourceModel( mBrowserModel );
