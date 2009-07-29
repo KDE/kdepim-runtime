@@ -43,6 +43,8 @@ ImapIdleManager::ImapIdleManager( KIMAP::Session *session, ImapResource *parent 
   m_idle = new KIMAP::IdleJob( m_session );
   connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*, QString, int, int)),
            this, SLOT(onStatsReceived(KIMAP::IdleJob*, QString, int, int)) );
+  connect( m_idle, SIGNAL(result(KJob*)),
+           this, SLOT(onIdleStopped()) );
   m_idle->start();
 }
 
@@ -53,6 +55,16 @@ ImapIdleManager::~ImapIdleManager()
 KIMAP::Session * ImapIdleManager::session() const
 {
   return m_session;
+}
+
+void ImapIdleManager::onIdleStopped()
+{
+  kDebug() << "IDLE dropped maybe we should reconnect?";
+  if ( m_resource->isOnline() ) {
+    kDebug() << "Reconnecting!";
+    m_resource->setOnline( false );
+    m_resource->setOnline( true );
+  }
 }
 
 void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,

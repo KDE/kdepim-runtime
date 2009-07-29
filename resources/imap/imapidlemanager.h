@@ -45,6 +45,7 @@ public:
   KIMAP::Session *session() const;
 
 private slots:
+  void onIdleStopped();
   void onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,
                        int messageCount, int recentCount);
   void onCollectionFetchDone( KJob *job );
