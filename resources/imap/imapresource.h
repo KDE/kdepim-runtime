@@ -43,6 +43,7 @@ namespace KIMAP
 }
 
 class ImapAccount;
+class ImapIdleManager;
 
 class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
@@ -109,7 +110,10 @@ private:
 
   bool manualAuth( const QString& username, QString &password );
 
+  friend class ImapIdleManager;
+
   ImapAccount *m_account;
+  ImapIdleManager *m_idle;
 };
 
 #endif

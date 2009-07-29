@@ -87,13 +87,14 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include "imapquotaattribute.h"
 
 #include "imapaccount.h"
+#include "imapidlemanager.h"
 
 using namespace Akonadi;
 
 static const char AKONADI_COLLECTION[] = "akonadiCollection";
 
 ImapResource::ImapResource( const QString &id )
-        :ResourceBase( id ), m_account( 0 )
+        :ResourceBase( id ), m_account( 0 ), m_idle( 0 )
 {
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
@@ -231,6 +232,9 @@ void ImapResource::startConnect( bool forceManualAuth )
            this, SLOT( onConnectError( int, const QString& ) ) );
 
   m_account->connect( password );
+
+  delete m_idle;
+  m_idle = new ImapIdleManager( m_account->createExtraSession( password ), this );
 }
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
@@ -471,7 +475,12 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
       // If the folder is the Inbox, make some special settings.
       if ( currentPath.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
-        cachePolicy.setIntervalCheckTime( 1 );
+        if ( m_account->capabilities().contains( "IDLE" ) ) {
+          // We've IDLE, no need to poll the inbox
+          cachePolicy.setIntervalCheckTime( -1 );
+        } else {
+          cachePolicy.setIntervalCheckTime( 1 );
+        }
         EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Inbox" ) );
         attr->setIconName( "mail-folder-inbox" );
@@ -747,6 +756,7 @@ void ImapResource::onConnectError( int code, const QString &message )
   }
 
   m_account->disconnect();
+  m_account->disconnect( m_idle->session() );
   emit error( message );
 }
 
@@ -1112,10 +1122,12 @@ void ImapResource::itemsClear( const Collection &collection )
 
 void ImapResource::doSetOnline(bool online)
 {
-  if ( !online && m_account && m_account->session() && m_account->session()->state() != KIMAP::Session::Disconnected )
+  if ( !online && m_account && m_account->session() && m_account->session()->state() != KIMAP::Session::Disconnected ) {
     m_account->disconnect();
-  else if ( online )
+    m_account->disconnect( m_idle->session() );
+  } else if ( online ) {
     startConnect();
+  }
   ResourceBase::doSetOnline( online );
 }
 

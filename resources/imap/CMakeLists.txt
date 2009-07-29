@@ -11,6 +11,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set( imapresource_SRCS
   setupserver.cpp
   imapaccount.cpp
+  imapidlemanager.cpp
   imapresource.cpp
   settings.cpp
   uidvalidityattribute.cpp
