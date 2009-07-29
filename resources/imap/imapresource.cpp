@@ -170,20 +170,6 @@ void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64
   kDebug() << "Has Payload: " << i.hasPayload();
   kDebug() << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
-/*              kDebug() << "ANDRIS head: " << message->head();
-              kDebug() << "ANDRIS body: " << message->body();
-              Q_FOREACH(KMime::Content *c, message->contents()) {
-              kDebug() << "ANDRIS Chead: " << c->head();
-              kDebug() << "ANDRIS Cbody: " << c->body();
-  }
-              kDebug() << "ANDRIS payload: " << i.payloadData();
-MessagePtr m = i.payload<MessagePtr>();
-               kDebug() << "ANDRIS2 head: " << m->head();
-              kDebug() << "ANDRIS2 body: " << m->body();
-              Q_FOREACH(KMime::Content *c, m->contents()) {
-              kDebug() << "ANDRIS2 Chead: " << c->head();
-              kDebug() << "ANDRIS2 Cbody: " << c->body();
-  }*/
   itemRetrieved( i );
 }
 
