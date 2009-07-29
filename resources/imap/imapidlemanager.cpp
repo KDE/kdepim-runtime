@@ -96,14 +96,19 @@ void ImapIdleManager::onCollectionFetchDone( KJob *job )
 
   Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob*>( job );
 
-  // Get collection from job
-  Akonadi::Collection c = fetch->collections().first();
-  Akonadi::CollectionStatistics stats = c.statistics();
+  if ( fetch->error() == 0 ) {
+    // Get collection from job
+    Akonadi::Collection c = fetch->collections().first();
+    Akonadi::CollectionStatistics stats = c.statistics();
 
-  // It seems we're not in sync with the cache, resync is needed
-  if ( messageCount!=stats.count() || recentCount!=stats.unreadCount() ) {
-    kDebug() << "Resync needed for" << mailBox << c.id();
-    m_resource->synchronizeCollection( c.id() );
+    // It seems we're not in sync with the cache, resync is needed
+    if ( messageCount!=stats.count() || recentCount!=stats.unreadCount() ) {
+      kDebug() << "Resync needed for" << mailBox << c.id();
+      m_resource->synchronizeCollection( c.id() );
+    }
+  } else {
+    kError() << "CollectionFetch for mail box " << mailBox << "failed. error="
+             << job->error() << ", errorString=" << job->errorString();
   }
 }
 
