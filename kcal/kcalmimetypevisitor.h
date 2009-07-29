@@ -40,7 +40,7 @@ namespace Akonadi {
   foreach ( Incidence *incidence, incidences ) {
     incidence->accept( visitor );
 
-    Akonadi::Item item( visitor.mimeType );
+    Akonadi::Item item( visitor.mimeType() );
     item.setPayload<IncidencePtr>( IncidencePtr( incidence->clone() ) );
 
     items << item;
