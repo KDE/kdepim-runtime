@@ -62,7 +62,9 @@ public:
   ~ImapAccount();
 
   bool connect( const QString &password = QString() );
-  bool disconnect();
+  bool disconnect( KIMAP::Session *session = 0 );
+
+  KIMAP::Session *createExtraSession( const QString &password = QString() );
 
   void setServer( const QString &server );
   QString server() const;
