@@ -620,7 +620,11 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
     addedItems << i;
   }
 
-  itemsRetrievedIncremental( addedItems, Item::List() );
+  if ( sender()->property( "nonIncremental" ).toBool() ) {
+    itemsRetrieved( addedItems );
+  } else {
+    itemsRetrievedIncremental( addedItems, Item::List() );
+  }
 }
 
 void ImapResource::onHeadersFetchDone( KJob */*job*/ )
@@ -1023,10 +1027,9 @@ void ImapResource::onSelectDone( KJob *job )
     return;
   } else if ( messageCount != realMessageCount ) {
     // The amount on the server does not match the amount in the cache.
-    // that means we need reget the catch completely.
+    // that means we need reget the cache completely.
     kDebug() << "O OH: " << messageCount << " But: " << realMessageCount;
 
-    itemsClear( collection );
     setItemStreamingEnabled( true );
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->session() );
@@ -1041,6 +1044,7 @@ void ImapResource::onSelectDone( KJob *job )
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->setProperty( "nonIncremental", true );
     fetch->start();
     return;
   } else if ( messageCount == realMessageCount && oldNextUid != nextUid
@@ -1049,7 +1053,6 @@ void ImapResource::onSelectDone( KJob *job )
     // behind our back...
     kDebug() << "UIDNEXT check failed, refetching mailbox";
 
-    itemsClear( collection );
     setItemStreamingEnabled( true );
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->session() );
@@ -1064,6 +1067,7 @@ void ImapResource::onSelectDone( KJob *job )
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->setProperty( "nonIncremental", true );
     fetch->start();
     return;
   }
