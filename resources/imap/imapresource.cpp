@@ -241,6 +241,8 @@ void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
   const QString mailBox = mailBoxForRemoteId( collection.remoteId() );
 
+  kDebug() << "Got notification about item added for local id " << item.id() << " and remote id " << item.remoteId();
+
   // save message to the server.
   MessagePtr msg = item.payload<MessagePtr>();
 
@@ -268,7 +270,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
   Q_ASSERT( uid > 0 );
 
   const QString remoteId =  collectionRemoteId + "-+-" + QString::number( uid );
-  kDebug() << "Setting remote ID to " << remoteId;
+  kDebug() << "Setting remote ID to " << remoteId << " for item with local id " << item.id();
   item.setRemoteId( remoteId );
 
   changeCommitted( item );
@@ -347,6 +349,8 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
     store->setMode( KIMAP::StoreJob::SetFlags );
     connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
     store->start();
+  } else {
+    changeProcessed();
   }
 }
 
