@@ -32,11 +32,19 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/item.h>
+#include <akonadi/mimetypechecker.h>
 
 #include <akonadi/filter/io/sievedecoder.h>
 
+#include <QFile>
+#include <QTextStream>
+
 #include <KDebug>
 #include <KLocale>
+#include <KMimeType>
+#include <KConfig>
+#include <KConfigGroup>
+#include <KStandardDirs>
 
 
 FilterAgent * FilterAgent::mInstance = 0;
@@ -66,6 +74,7 @@ FilterAgent::FilterAgent( const QString &id )
 
   new FilterAgentAdaptor( this );
 
+#if 0
   // Kill the recorded queue
   while( !changeRecorder()->isEmpty() )
   {
@@ -74,60 +83,77 @@ FilterAgent::FilterAgent( const QString &id )
   }
 
   changeRecorder()->setChangeRecordingEnabled( false ); // we want notifications now!
+#endif
 
+  loadFilterMappings();
 
   //AttributeComponentFactory::registerAttribute<MessageThreadingAttribute>();
-  kDebug() << "mailfilteragent: ready and waiting..." ;
+  kDebug() << "filteragent: ready and waiting..." ;
 }
 
 FilterAgent::~FilterAgent()
 {
+  saveFilterMappings();
+
   qDeleteAll( mEngines );
   qDeleteAll( mFilterChains );
 
   mInstance = 0;
 }
 
-/*
-void FilterAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
+
+FilterAgent::ProcessingResult FilterAgent::processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType )
 {
   // find out the filter chain that we need to apply to this item
-  QList< FilterEngine * > * filterChain = mFilterChains.value( collection.id(), 0 );
 
-  Q_ASSERT( filterChain ); // if this fails then we have received a notification for a collection we shouldn't be watching
+  kDebug() << "filteragent: processItem(" << itemId << "," << collectionId << ",'" << mimeType << "')";
+
+  QList< FilterEngine * > * filterChain = mFilterChains.value( collectionId, 0 );
+
+  if( !filterChain )
+  {
+    kDebug() << "filteragent: no filter chain for collection" << collectionId;
+    return ProcessingRefused; // no chain for this collection
+  }
+
   Q_ASSERT( filterChain->count() > 0 );
 
-  kDebug() << "mailfilteragent: item added to collection " << collection.id() ;
+  kDebug() << "filteragent: will be processing item in collection" << collectionId;
+
+  Akonadi::Item item( itemId );
+  Akonadi::Collection collection( collectionId );
+
+  // We don't use MimeTypeChecker since we'd need to create one for each engine
+  // and resolve the mimeType multiple times. The KMimeType api is more "direct" here.
+
+  KMimeType::Ptr mimeTypePtr = KMimeType::mimeType( mimeType, KMimeType::ResolveAliases );
+  if( mimeTypePtr.isNull() )
+  {
+    kWarning() << "filteragent: invalid mimetype '" << mimeType << "' passed to FilterAgent::processItem()";
+    return ProcessingFailed;
+  }
 
   // apply each filter
   foreach( FilterEngine * engine, *filterChain )
   {
+    // Check mimetype first
+    if( !mimeTypePtr->is( engine->mimeType() ) )
+    {
+      kDebug() << "filteragent: item with mimetype '" << mimeType <<
+          "' appeared in collection " << collectionId <<
+          " but filter engine with id " << engine->id() <<
+          " attached to the collection handles mimetype '" << engine->mimeType() <<
+          "which doesn't match";
+      continue;
+    }
+
     if( !engine->run( item, collection ) )
-      break;
+      return ProcessingFailed;
+
+    // FIXME: TEST
+    ::sleep( 4 ); // generate some lag for testing
+    // FIXME: TEST
   }
-}
-*/
-
-FilterAgent::ProcessingResult FilterAgent::processItem( const Akonadi::Item &item )
-{
-#if 0
-  // find out the filter chain that we need to apply to this item
-  QList< FilterEngine * > * filterChain = mFilterChains.value( collection.id(), 0 );
-
-  Q_ASSERT( filterChain ); // if this fails then we have received a notification for a collection we shouldn't be watching
-  Q_ASSERT( filterChain->count() > 0 );
-
-  kDebug() << "mailfilteragent: item added to collection " << collection.id() ;
-
-  // apply each filter
-  foreach( FilterEngine * engine, *filterChain )
-  {
-    if( !engine->run( item, collection ) )
-      break;
-  }
-#endif
-  ::sleep( 4 ); // generate some lag for testing
-
 
   return ProcessingCompleted;
 }
@@ -135,6 +161,9 @@ FilterAgent::ProcessingResult FilterAgent::processItem( const Akonadi::Item &ite
 QStringList FilterAgent::enumerateFilters( const QString &mimeType )
 {
   QStringList ret;
+
+  // FIXME: Check the mimetype!
+  Q_UNUSED( mimeType ); // for now
 
   foreach( FilterEngine * engine, mEngines )
     ret.append( engine->id() );
@@ -153,7 +182,19 @@ QStringList FilterAgent::enumerateMimeTypes()
   return ret;
 }
 
+QString FilterAgent::fileNameForFilterId( const QString &filterId )
+{
+  QString fileName = QString::fromLatin1( "filteragent_source_%1.sieve" ).arg( filterId );
+  return KStandardDirs::locateLocal( "config", fileName, true );
+}
+
 int FilterAgent::createFilter( const QString &filterId, const QString &mimeType, const QString &source )
+{
+  return createFilterInternal( filterId, mimeType, source, true );
+}
+
+
+int FilterAgent::createFilterInternal( const QString &filterId, const QString &mimeType, const QString &source, bool saveConfiguration )
 {
   if( filterId.isEmpty() )
     return Akonadi::Filter::Agent::ErrorInvalidParameter;
@@ -175,14 +216,29 @@ int FilterAgent::createFilter( const QString &filterId, const QString &mimeType,
   if( !program )
     return Akonadi::Filter::Agent::ErrorFilterSyntaxError;
 
-  // TODO: store the program in a config file
+  if( saveConfiguration )
+  {
+    QString fileName = fileNameForFilterId( filterId );
+    QFile f( fileName );
+    if( f.open( QFile::WriteOnly | QFile::Truncate ) )
+    {
+      QTextStream stream( &f );
+      stream << source;
+      f.close();
+    } else {
+      kWarning() << "filteragent: failed to write the source for filter with id" << filterId << "to file" << fileName;
+    }
+  }
 
+  // FIXME: Create engines for other mimetypes
   engine = new FilterEngineRfc822( filterId, mimeType, source, program );
 
   mEngines.insert( filterId, engine );
 
-  kDebug() << "mailfilteragent: created filter" << filterId;
+  kDebug() << "filteragent: created filter" << filterId;
 
+  if( saveConfiguration )
+    saveFilterMappings();
 
   return Akonadi::Filter::Agent::Success;
 }
@@ -228,47 +284,83 @@ int FilterAgent::deleteFilter( const QString &filterId )
 
   mEngines.remove( filterId );
 
-  kDebug() << "mailfilteragent: destroyed filter" << filterId;
+  kDebug() << "filteragent: destroyed filter" << filterId;
 
   delete engine;
+
   return Akonadi::Filter::Agent::Success;
 }
 
 bool FilterAgent::attachEngine( FilterEngine * engine, Akonadi::Collection::Id collectionId )
 {
+  Q_ASSERT( engine );
+
+  // First of all fetch the collection: we need to verify that it exists
+  // and has the proper mimetype.
+  Akonadi::CollectionFetchJob job( Akonadi::Collection( collectionId ), Akonadi::CollectionFetchJob::Base );
+
+  bool collectionIsValid = job.exec();
+
+  if( !collectionIsValid )
+  {
+    kDebug() << "filteragent: could not fetch collection data in order to attach engine" << engine->id() << "to collection" << collectionId;
+    return false;
+  }
+
+  Akonadi::Collection::List collections = job.collections();
+
+  if( collections.count() < 1 )
+  {
+    kDebug() << "filteragent: ugly result while fetching collection data in order to attach engine" << engine->id() << "to collection" << collectionId;
+    return false; // HUH ?
+  }
+
+  Q_ASSERT( collections.count() == 1 );
+
+  Akonadi::Collection collection = collections[0];
+
+  // Here MimeTypeChecker helps :)
+  
+  Akonadi::MimeTypeChecker mimeTypeChecker;
+  mimeTypeChecker.addWantedMimeType( engine->mimeType() );
+
+  if( !mimeTypeChecker.isWantedCollection( collection ) )
+  {
+    kDebug() << "filteragent: refusing to attach engine" << engine->id() << "to collection" << collectionId <<
+        "since the collection can't contain the mimetype" << engine->mimeType() << "handled by the engine";
+    return false;
+  }
+
   QList< FilterEngine * > * chain = mFilterChains.value( collectionId, 0 );
   if( !chain )
   {
-    // no such chain, yet: need to verify that the collection exists
-    Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob( Akonadi::Collection( collectionId ), Akonadi::CollectionFetchJob::Recursive );
-
-    bool collectionIsValid = job->exec();
-
-    delete job;
-
-    if( !collectionIsValid )
-      return false;
+    // no such chain, yet: create it
 
     chain = new QList< FilterEngine * >();
     mFilterChains.insert( collectionId, chain );
 
-    kDebug() << "mailfilteragent: now monitoring collection" << collectionId;
-
-    changeRecorder()->setCollectionMonitored( Akonadi::Collection( collectionId ), true );
+    //kDebug() << "filteragent: now monitoring collection" << collectionId;
+    //changeRecorder()->setCollectionMonitored( Akonadi::Collection( collectionId ), true );
   }
 
   Q_ASSERT( chain );
 
   if( !chain->contains( engine ) )
   {
+    // FIXME: Check that engine mimetype matches the collection mimetype ?
     chain->append( engine );
-    kDebug() << "mailfilteragent: attached filter" << engine->id() << "to collection" << collectionId;
+    kDebug() << "filteragent: attached filter" << engine->id() << "to collection" << collectionId;
   }
 
   return true;
 }
 
 int FilterAgent::attachFilter( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds )
+{
+  return attachFilterInternal( filterId, attachedCollectionIds, true );
+}
+
+int FilterAgent::attachFilterInternal( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds, bool saveConfiguration )
 {
   FilterEngine * engine = mEngines.value( filterId, 0 );
   if( !engine )
@@ -281,6 +373,9 @@ int FilterAgent::attachFilter( const QString &filterId, const QList< Akonadi::Co
     if( !attachEngine( engine, collectionId ) )
       gotInvalidCollection = true;
   }
+
+  if( saveConfiguration )
+    saveFilterMappings();
 
   return gotInvalidCollection ? Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed : Akonadi::Filter::Agent::Success;
 }
@@ -320,14 +415,15 @@ int FilterAgent::detachFilter( const QString &filterId, const QList< Akonadi::Co
     if( chain->isEmpty() )
     {
 
-      kDebug() << "mailfilteragent: no longer monitoring collection" << collectionId;
-
-      changeRecorder()->setCollectionMonitored( Akonadi::Collection( collectionId ), false );
+      //kDebug() << "filteragent: no longer monitoring collection" << collectionId;
+      //changeRecorder()->setCollectionMonitored( Akonadi::Collection( collectionId ), false );
    
       mFilterChains.remove( collectionId );
       delete chain;
     }
   }
+
+  saveFilterMappings();
 
   return gotInvalidCollection ? Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed : Akonadi::Filter::Agent::Success;
 }
@@ -376,15 +472,122 @@ int FilterAgent::changeFilter( const QString &filterId, const QString &source, c
       gotInvalidCollection = true;
   }
 
+  saveFilterMappings();
+
   return gotInvalidCollection ? Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed : Akonadi::Filter::Agent::Success;
 }
 
-void FilterAgent::loadConfiguration()
+void FilterAgent::loadFilterMappings()
 {
+  KConfig cfg( QLatin1String( "filteragent_filtersrc" ), KConfig::SimpleConfig );
+
+  KConfigGroup group = cfg.group( QLatin1String( "Filters" ) );
+
+  QStringList engines = group.readEntry( QLatin1String( "EngineNames" ), QStringList() );
+
+  foreach( QString engineId, engines )
+  {
+    group = cfg.group( engineId );
+
+    QString mimeType = group.readEntry( QLatin1String( "MimeType" ), QString() );
+    if( mimeType.isEmpty() )
+    {
+      kWarning() << "filteragent: mimetype for configured engine" << engineId << "is empty: skipping";
+      continue;
+    }
+
+    QString fileName = fileNameForFilterId( engineId );
+    QFile f( fileName );
+    if( !f.open( QFile::ReadOnly ) )
+    {
+      kWarning() << "filteragent: could not open sieve source file" << fileName << "for configured engine" << engineId << ": skipping";
+      continue;
+    }
+
+    QTextStream stream( &f );
+    QString source = stream.readAll();
+    f.close();
+
+    if( source.isEmpty() )
+    {
+      kWarning() << "filteragent: the source file" << fileName << "for configured engine" << engineId << "is empty: skipping";
+      continue;
+    }
+
+    if( createFilterInternal( engineId, mimeType, source, false ) != Akonadi::Filter::Agent::Success )
+    {
+      kWarning() << "filteragent: failed to create the configured engine" << engineId << ": skipping";
+      continue;
+    }
+
+    QVariantList collections = group.readEntry( QLatin1String( "Collections" ), QVariantList() );
+
+    QList< Akonadi::Collection::Id > ids;
+    foreach( QVariant v, collections )
+    {
+      bool ok;
+      Akonadi::Collection::Id id = static_cast< Akonadi::Collection::Id >( v.toLongLong( &ok ) );
+      if( !ok )
+      {
+        kDebug() << "filteragent: could not decode attached collection id for the configured engine" << engineId << ": skipping";
+        continue;
+      }
+      ids.append( id );
+    }
+
+    if( ids.isEmpty() )
+    {
+      kDebug() << "filteragent: the configured engine" << engineId << "isn't attached";
+      continue;
+    }
+
+    if( attachFilterInternal( engineId, ids, true ) != Akonadi::Filter::Agent::Success )
+    {
+      kWarning() << "filteragent: got errors while attaching the configured engine" << engineId << ": some collections might not be filtered";
+      continue;
+    }
+
+  }
 }
 
-void FilterAgent::saveConfiguration()
+void FilterAgent::saveFilterMappings()
 {
+  KConfig cfg( QLatin1String( "filteragent_filtersrc" ), KConfig::SimpleConfig );
+
+  KConfigGroup group = cfg.group( QLatin1String( "Filters" ) );
+
+  group.deleteGroup(); // clear it
+
+  FilterEngine * engine;
+
+  QStringList engines;
+
+  foreach( engine, mEngines )
+    engines << engine->id();
+
+  group.writeEntry( QLatin1String( "EngineNames" ), engines );
+
+  foreach( engine, mEngines )
+  {
+    QHash< Akonadi::Collection::Id, QList< FilterEngine * > * >::Iterator it;
+
+    group = cfg.group( engine->id() );
+
+    group.writeEntry( QLatin1String( "MimeType" ), engine->mimeType() );
+
+    QVariantList collections;
+ 
+    for( it = mFilterChains.begin(); it != mFilterChains.end(); ++it )
+    {
+      Q_ASSERT( *it );
+      if( ( *it )->contains( engine ) )
+        collections.append( QVariant( (qlonglong)it.key() ) );
+    }
+
+    group.writeEntry( QLatin1String( "Collections" ), collections );
+  }
+
+  cfg.sync();
 }
 
 /*

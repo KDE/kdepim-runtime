@@ -96,7 +96,7 @@ public Q_SLOTS: // D-BUS Interface
    *
    * This is a D-BUS method handler.
    */
-  Q_SCRIPTABLE QStringList enumerateMimeTypes();
+  QStringList enumerateMimeTypes();
 
   /**
    * Returns the list of currently existing filter ids that match the specified mimetype.
@@ -195,7 +195,10 @@ public Q_SLOTS: // D-BUS Interface
 
 protected:
 
-  virtual ProcessingResult processItem( const Akonadi::Item &item );
+  virtual ProcessingResult processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType );
+
+  int createFilterInternal( const QString &filterId, const QString &mimeType, const QString &source, bool saveConfiguration );
+  int attachFilterInternal( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds, bool saveConfiguration );
 
 /*
   virtual void configure( WId winId );
@@ -206,11 +209,13 @@ protected:
   virtual void collectionChanged( const Akonadi::Collection &collection );
 */
 
+  QString fileNameForFilterId( const QString &filterId );
+
   void detachEngine( FilterEngine * engine );
   bool attachEngine( FilterEngine * engine, Akonadi::Collection::Id collectionId );
 
-  void loadConfiguration();
-  void saveConfiguration();
+  void loadFilterMappings();
+  void saveFilterMappings();
 };
 
 #endif //!_FILTERAGENT_H_

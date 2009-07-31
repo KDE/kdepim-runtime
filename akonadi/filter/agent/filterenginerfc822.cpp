@@ -28,6 +28,7 @@
 
 #include <akonadi/filter/program.h>
 
+#include <KDebug>
 
 FilterEngineRfc822::FilterEngineRfc822(
    const QString &id,
@@ -45,6 +46,8 @@ FilterEngineRfc822::~FilterEngineRfc822()
 
 bool FilterEngineRfc822::run( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
+  kDebug() << "Running filter engine RFC822 on item" << item.id() << "coming from collection" << collection.id();
+
   DataRfc822 data( item, collection );
 
   switch( program()->execute( &data ) )

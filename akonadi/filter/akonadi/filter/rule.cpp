@@ -66,11 +66,16 @@ bool Rule::isRule() const
 
 Rule::ProcessingStatus Rule::execute( Data * data )
 {
+  kDebug() << "Executing rule " << this;
+
   if( mCondition )
   {
     if( !mCondition->matches( data ) )
       return SuccessAndContinue; 
   }
+
+  kDebug() << "Condition matched: executing actions!";
+
 
   foreach( Action::Base * action, mActionList )
   {
@@ -84,7 +89,7 @@ Rule::ProcessingStatus Rule::execute( Data * data )
         return SuccessAndStop;
       break;
       case Failure:
-        setLastError( QObject::tr("Action execution failed: %1").arg( action->lastError() ) );
+        setLastError( QObject::tr( "Action execution failed: %1" ).arg( action->lastError() ) );
         return Failure;
       break;
       default:
