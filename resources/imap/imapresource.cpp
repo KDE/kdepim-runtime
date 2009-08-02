@@ -118,7 +118,7 @@ ImapResource::~ImapResource()
 bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
     if ( !m_account || !m_account->session() ) {
-        cancelTask( i18n( "There is curently no connection to the IMAP server." ) );
+        cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
         reconnect();
         return false;
     }
