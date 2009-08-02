@@ -459,7 +459,7 @@ void KolabProxyResource::imapItemRemoved(const Item& item)
   kDebug() << "IMAPITEMREMOVED";
   Item kolabItem;
   kolabItem.setRemoteId( QString::number( item.id() ) );
-  Q_FOREACH(KolabHandler *handler, m_monitoredCollections.values()) {
+  Q_FOREACH(KolabHandler *handler, m_monitoredCollections) {
     handler->itemDeleted(item);
   }
   ItemDeleteJob *job = new ItemDeleteJob( kolabItem );
