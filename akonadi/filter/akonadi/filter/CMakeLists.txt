@@ -35,6 +35,7 @@ set(
 		program.cpp
 		rule.cpp
 		rulelist.cpp
+		componentfactoryrfc822.cpp
 		io/afldecoder.cpp
 		io/decoder.cpp
 		io/encoder.cpp
@@ -95,6 +96,7 @@ install(
 			program.h
 			rule.h
 			rulelist.h
+			componentfactoryrfc822.h
 		DESTINATION
 			${INCLUDE_INSTALL_DIR}/akonadi/filter
 		COMPONENT

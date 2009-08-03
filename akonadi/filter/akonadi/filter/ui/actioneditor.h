@@ -52,7 +52,7 @@ class AKONADI_FILTER_UI_EXPORT ActionEditor : public QWidget
 {
   Q_OBJECT
 public:
-  ActionEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory );
+  ActionEditor( QWidget * parent, ComponentFactory * componentFactory, EditorFactory * editorFactory );
   virtual ~ActionEditor();
 
 protected:

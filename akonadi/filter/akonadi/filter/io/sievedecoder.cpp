@@ -43,8 +43,9 @@
 
 #define DEBUG_SIEVE_DECODER 1
 
-// Sieve is somewhat an ugly language. It's hard to parse, has some ambiguities
-// and a human has trouble understanding its constructs. We actually support
+// Sieve is an ugly language. It's hard to parse, has some ambiguities,
+// humans have trouble understanding its constructs and in the end it's very hard
+// to provide a "nice" object-oriented rappresentation of its structure. We actually support
 // a subset of the whole language and we extend it in other directions to support
 // constructs which the original specification is unable to encode.
 
@@ -288,7 +289,6 @@ void SieveDecoder::onTestEnd()
     }
 
     // lookup the function
-
     const FunctionDescriptor * function = componentFactory()->findFunction( functionKeyword );
     if ( !function )
     {
@@ -297,7 +297,6 @@ void SieveDecoder::onTestEnd()
       setLastError( i18n( "Unrecognized function '%1'", functionKeyword ) );
       return;
     }
-
 
     if( operatorKeyword.isEmpty() )
     {
@@ -423,7 +422,7 @@ void SieveDecoder::onTestEnd()
           }
 
           QString name = i18n( "the field '%1'", field );
-          DataMemberDescriptor * newDataMemberDescriptor = new DataMemberDescriptor( DataMemberDescriptorCustomFirst, field, name, DataTypeString );
+          DataMemberDescriptor * newDataMemberDescriptor = new DataMemberDescriptor( DataMemberCustomFirst, field, name, DataTypeString );
           componentFactory()->registerDataMember( newDataMemberDescriptor );
           dataMember = newDataMemberDescriptor;
         }
@@ -760,7 +759,7 @@ void SieveDecoder::onCommandDescriptorEnd()
         return;
       }
 
-      action = componentFactory()->createCommandAction( mCurrentComponent, command, mCurrentSimpleCommandArguments );
+      action = componentFactory()->createCommand( mCurrentComponent, command, mCurrentSimpleCommandArguments );
       if( !action )
       {
         mGotError = true; 

@@ -60,24 +60,15 @@ RuleListEditor * EditorFactory::createRuleListEditor( QWidget * parent, Componen
   return new RuleListEditor( parent, componentFactory, this );
 }
 
-ActionEditor * EditorFactory::createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory )
+CommandEditor * EditorFactory::createCommandEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory )
 {
-  switch( command->id() )
-  {
-    case StandardCommandLeaveMessageOnServer:
-      // this command has no parameters
-      Q_ASSERT( command->parameters()->isEmpty() );
-      // no need for an editor
-    break;
-    default:
-      kWarning() << "No idea on how to create ActionEditor for command" << command->keyword();
-      // If you have implemented a custom command then you probably need
-      // to reimplement createCommandActionEditor() and return an appropriate ActionEditor
-      // instance. If you haven't... then well.. there is a bug somewhere in this module.
-      Q_ASSERT( false );
-    break;
-  }
-  return 0; // no editor for this command
+  Q_ASSERT_X(
+      command->parameters()->count() == 0,
+      "EditorFactory::createCommandEditor",
+      "You should override EditorFactory::createCommandEditor() and return an implementation of CommandEditor suitable for this command"
+    );
+  
+  return 0; // no special editor needed for this command
 }
 
 } // namespace UI

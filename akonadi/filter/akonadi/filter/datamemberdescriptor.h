@@ -39,20 +39,8 @@ namespace Filter
 
 enum DataMemberIdentifiers
 {
-  // standard data members
-  StandardDataMemberSubjectHeader = 1,
-  StandardDataMemberFromHeader = 2,
-  StandardDataMemberToHeader = 3,
-  StandardDataMemberCcHeader = 4,
-  StandardDataMemberBccHeader = 5,
-  StandardDataMemberAllRecipientHeaders = 6,
-  StandardDataMemberAllSenderHeaders = 7, // reply-to, from
-  StandardDataMemberReplyToHeader = 8,
-  StandardDataMemberAllHeaders = 9,
-  StandardDataMemberWholeItem = 10,
-
   // custom data members start here
-  DataMemberDescriptorCustomFirst = 10000
+  DataMemberCustomFirst = 1000
 };
 
 /**

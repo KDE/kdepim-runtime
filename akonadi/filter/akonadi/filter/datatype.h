@@ -55,6 +55,11 @@ inline Integer variantToInteger( const QVariant &val, bool * ok )
   return val.toLongLong( ok );
 }
 
+inline QVariant integerToVariant( Integer val )
+{
+  return QVariant( val );
+}
+
 } // namespace Filter
 
 } // namespace Akonadi

@@ -238,7 +238,7 @@ public:
   /**
    * Returns the list of actual parameters associated with this command.
    */
-  const QList< QVariant > * params() const
+  const QList< QVariant > * parameters() const
   {
     return &mParams;
   }

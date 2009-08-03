@@ -36,6 +36,8 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QTreeView>
+#include <QTimer>
+#include <QShowEvent>
 
 #include <akonadi/filter/agent.h>
 
@@ -114,5 +116,31 @@ void FilterEditor::done( int result )
   mFilter->setId( id );  
 
   KDialog::done( result );
+}
+
+void FilterEditor::expandCollections( const QModelIndex &parentIdx )
+{
+  if( parentIdx.isValid() )
+    mCollectionList->setExpanded( parentIdx, true );
+  int cnt = mFilterCollectionModel->rowCount( parentIdx );
+  for( int i = 0; i < cnt; i++ )
+  {
+    QModelIndex idx = mFilterCollectionModel->index( i, 0, parentIdx );
+    Q_ASSERT( idx.isValid() );
+    expandCollections( idx );
+  }
+}
+
+void FilterEditor::showEvent( QShowEvent *e )
+{
+  KDialog::showEvent( e );
+
+  // Bleah :/
+  QTimer::singleShot( 500, this, SLOT( autoExpandCollections() ) );
+}
+
+void FilterEditor::autoExpandCollections()
+{
+  expandCollections( QModelIndex() );
 }
 

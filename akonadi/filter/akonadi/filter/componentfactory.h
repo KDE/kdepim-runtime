@@ -63,6 +63,7 @@ namespace Condition
 namespace Action
 {
   class Base;
+  class Command;
   class Stop;
   class RuleList;
 } // namespace Action
@@ -80,6 +81,12 @@ namespace Action
  * Both in your filtering engine and in your editing program you will need an instance of a ComponentFactory.
  * The factory will have to contain the set of functions, operators, data members and actions that your
  * filtering framework will handle. The same sets are needed on both sides (filtering engine and editing program).
+ *
+ * This class is in fact only the interface that provides the minimum necessary capabilities for filtering
+ * and it's substantially data type independant. Your filter implementation will almost surely need
+ * to register additional functions, data members and actions.
+ *
+ * The ComponentFactoryRfc822 is an example of how a real-world component factory might look like.
  */
 class AKONADI_FILTER_EXPORT ComponentFactory
 {
@@ -161,13 +168,6 @@ public:
   virtual const QList< const FunctionDescriptor * > * enumerateFunctions();
 
   /**
-   * Registers a set of standard FunctionDescriptor objects suitable
-   * for filtering e-mail. This function is provided for your convenience:
-   * if you're going to filter e-mail messages then you probably need to call this.
-   */
-  void registerStandardFunctionsForRfc822();
-
-  /**
    * Registers a CommandDescriptor to be used by the filter actions.
    */
   void registerCommand( CommandDescriptor * command );
@@ -213,13 +213,6 @@ public:
    * given allowed input DataType set.
    */
   virtual QList< const DataMemberDescriptor * > enumerateDataMembers( int acceptableDataTypeMask );
-
-  /**
-   * Registers a set of standard DataMemberDescriptor objects suitable
-   * for filtering e-mail. This function is provided for your convenience:
-   * if you're going to filter e-mail messages then you probably need to call this.
-   */
-  void registerStandardDataMembersForRfc822();
 
   /**
    * Registers an OperatorDescriptor to be used by the filtering conditions.
@@ -421,8 +414,6 @@ public:
     );
 
   /**
-   * FIXME: This needs work
-   *
    * Creates an instance of the Command Action.
    * The other components of the filtering framework will
    * call this function instead of directly instantiating the class.
@@ -439,7 +430,7 @@ public:
    * A failure in a subclass reimplementation should be signaled by a NULL return
    * value and should cause a call to setLastError().
    */
-  virtual Action::Base * createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params );
+  virtual Action::Command * createCommand( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params );
 
   /**
    * Creates an instance of the RuleList Action.

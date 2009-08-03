@@ -20,9 +20,12 @@ set(
 		AKONADI_FILTER_UI_LIB_SRCS
 		actioneditor.cpp
 		actionselector.cpp
+		commandeditor.cpp
+		commandeditorsrfc822.cpp
 		conditionselector.cpp
 		coolcombobox.cpp
 		editorfactory.cpp
+		editorfactoryrfc822.cpp
 		extensionlabel.cpp
 		expandingscrollarea.cpp
 		programeditor.cpp
@@ -72,8 +75,11 @@ install(
 
 install(
 		FILES
-			actionselector.h
+			actioneditor.h
 			conditionselector.h
+			commandeditor.h
+			editorfactory.h
+			editorfactoryrfc822.h
 			programeditor.h
 			ruleeditor.h
 			rulelisteditor.h
@@ -82,3 +88,4 @@ install(
 		COMPONENT
 			Devel
 	)
+

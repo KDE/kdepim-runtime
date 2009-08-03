@@ -192,6 +192,12 @@ public:
  *    OperatorDescriptor = "greater or equal" (expects an Integer on the left)
  *    Operand = 100KB (translated into Integer)
  *
+ * The application of a DataMember[Descriptor] (or "data extraction") always returns a single definite data type.
+ * The application of a Function[Descriptor] (or "data manipulation") to a data member either returns a definite
+ * data type or "passes through" the data type of the DataMember[Descriptor].
+ * The application of a Operator[Descriptor] (or "data testing") accepts a single data type on left and
+ * a single (but possibly different) data type on the right side (Operand).
+ *
  * The full combination of the FunctionDescriptor, DataMemberDescriptor and the OperatorDescriptor must return
  * a Boolean value which is exactly the result of this PropertyTest Condition.
  *

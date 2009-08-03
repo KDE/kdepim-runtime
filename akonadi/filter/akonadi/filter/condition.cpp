@@ -223,12 +223,16 @@ PropertyTest::~PropertyTest()
 
 bool PropertyTest::matches( Data * data )
 {
+  kDebug() << "Executing property test data member: '" << mDataMemberDescriptor->name() << "', function: '" << mFunctionDescriptor->name() << "'";
+
   // Generic function test implementation.
   //
   // Override this method in a derived class if you want to provide
   // an optimized/custom match (then override ComponentFactory::createPropertyTestCondition() to return your subclasses).
 
   QVariant val = data->getPropertyValue( mFunctionDescriptor, mDataMemberDescriptor );
+
+  kDebug() << "Data member value is '" << val << "'";
 
   bool ok;
 
@@ -254,13 +258,13 @@ bool PropertyTest::matches( Data * data )
 
       switch( mOperatorDescriptor->id() )
       {
-        case StandardOperatorGreaterThan:
+        case OperatorGreaterThan:
           return left > right;
         break;
-        case StandardOperatorLowerThan:
+        case OperatorLowerThan:
           return left < right;
         break;
-        case StandardOperatorIntegerIsEqualTo:
+        case OperatorIntegerIsEqualTo:
           return left == right;
         break;
         default:
@@ -278,26 +282,22 @@ bool PropertyTest::matches( Data * data )
 
       switch( mOperatorDescriptor->id() )
       {
-        case StandardOperatorStringIsEqualTo:
+        case OperatorStringIsEqualTo:
           return left == right;
         break;
-        case StandardOperatorContains:
+        case OperatorContains:
           return left.contains( right );
         break;
-        case StandardOperatorIntegerIsEqualTo:
+        case OperatorIntegerIsEqualTo:
           return left == right;
         break;
-        case StandardOperatorIsInAddressbook:
-          // FIXME: Implementation missing
-          Q_ASSERT_X( false, __FUNCTION__, "Not implemented yet" );
-        break;
-        case StandardOperatorStringMatchesRegexp:
+        case OperatorStringMatchesRegexp:
         {
           QRegExp exp( right );
           return left.contains( exp );
         }
         break;
-        case StandardOperatorStringMatchesWildcard:
+        case OperatorStringMatchesWildcard:
         {
           QRegExp exp( right, Qt::CaseSensitive, QRegExp::Wildcard );
           return left.contains( exp );
@@ -328,13 +328,13 @@ bool PropertyTest::matches( Data * data )
 
       switch( mOperatorDescriptor->id() )
       {
-        case StandardOperatorDateIsEqualTo:
+        case OperatorDateIsEqualTo:
           return left.date() == right.date();
         break;
-        case StandardOperatorDateIsAfter:
+        case OperatorDateIsAfter:
           return left.date() > right.date();
         break;
-        case StandardOperatorDateIsBefore:
+        case OperatorDateIsBefore:
           return left.date() < right.date();
         break;
         default:

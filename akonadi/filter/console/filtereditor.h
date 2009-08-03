@@ -34,6 +34,7 @@ class FilterCollectionModel;
 class QLineEdit;
 class QTreeView;
 class QPushButton;
+class QModelIndex;
 
 namespace Akonadi
 {
@@ -66,6 +67,11 @@ protected:
   FilterCollectionModel * mFilterCollectionModel;
 protected:
   virtual void done( int result );
+  virtual void showEvent( QShowEvent *e );
+private:
+  void expandCollections( const QModelIndex &parentIdx );
+private Q_SLOTS:
+  void autoExpandCollections();
 };
 
 #endif //!_FILTEREDITOR_H_

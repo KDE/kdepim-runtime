@@ -1,7 +1,7 @@
-/****************************************************************************** *
+/****************************************************************************** * *
  *
- *  File : data.h
- *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
+ *  File : commandeditor.h
+ *  Created on Mon 03 Aug 2009 01:35:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -13,7 +13,7 @@
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  but WITHOUT ANY WARRANTY; without even the editoried warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
@@ -23,41 +23,52 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_DATA_H_
-#define _AKONADI_FILTER_DATA_H_
+#ifndef _AKONADI_FILTER_UI_COMMANDACTIONEDITOR_H_
+#define _AKONADI_FILTER_UI_COMMANDACTIONEDITOR_H_
 
-#include <akonadi/filter/config-akonadi-filter.h>
+#include <akonadi/filter/ui/config-akonadi-filter-ui.h>
 
-#include <QtCore/QList>
-#include <QtCore/QVariant>
-
-#include <akonadi/filter/datatype.h>
+#include <akonadi/filter/ui/actioneditor.h>
 
 namespace Akonadi
 {
 namespace Filter
 {
 
-class FunctionDescriptor;
-class DataMemberDescriptor;
 class CommandDescriptor;
 
-class AKONADI_FILTER_EXPORT Data
+namespace UI
 {
-public:
-  Data();
-  virtual ~Data();
 
+class EditorFactory;
+
+class AKONADI_FILTER_UI_EXPORT CommandEditor : public ActionEditor
+{
+  Q_OBJECT
 public:
-  virtual QVariant getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember );
-  virtual bool executeCommand( const CommandDescriptor * command, const QList< QVariant > &params, QString &error );
+  CommandEditor(
+      QWidget * parent,
+      const CommandDescriptor * commandDescriptor,
+      ComponentFactory * componentFactory,
+      EditorFactory * editorFactory
+    );
+  virtual ~CommandEditor();
 
 protected:
-  virtual QVariant getDataMemberValue( const DataMemberDescriptor * dataMember );
-};
+  const CommandDescriptor * mCommandDescriptor;
+
+public:
+  const CommandDescriptor * commandDescriptor()
+  {
+    return mCommandDescriptor;
+  }
+
+}; // class CommandEditor
+
+} // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
 
-#endif //!_AKONADI_FILTER_DATA_H_
+#endif //!_AKONADI_FILTER_UI_ACTIONEDITOR_H_

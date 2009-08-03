@@ -42,17 +42,18 @@ namespace Filter
  */
 enum OperatorIdentifiers
 {
-  StandardOperatorGreaterThan = 1,         // Integer > Integer
-  StandardOperatorLowerThan,               // Integer < Integer
-  StandardOperatorIntegerIsEqualTo,        // Integer == Integer 
-  StandardOperatorStringIsEqualTo,         // String | Address == String
-  StandardOperatorContains,                // String | StringList | Address | AddressList contains String
-  StandardOperatorIsInAddressbook,         // Address | AddressList is in addressbook
-  StandardOperatorStringMatchesRegexp,     // String | StringList | Address | AddressList matches String (regexp)
-  StandardOperatorStringMatchesWildcard,   // String | StringList | Address | AddressList matches String (wildcard)
-  StandardOperatorDateIsEqualTo,           // DateTime == DateTime
-  StandardOperatorDateIsAfter,             // DateTime > DateTime
-  StandardOperatorDateIsBefore             // DateTime < DateTime
+  OperatorGreaterThan = 1,         // Integer > Integer
+  OperatorLowerThan,               // Integer < Integer
+  OperatorIntegerIsEqualTo,        // Integer == Integer 
+  OperatorStringIsEqualTo,         // String | Address == String
+  OperatorContains,                // String | StringList | Address | AddressList contains String
+  OperatorStringMatchesRegexp,     // String | StringList | Address | AddressList matches String (regexp)
+  OperatorStringMatchesWildcard,   // String | StringList | Address | AddressList matches String (wildcard)
+  OperatorDateIsEqualTo,           // DateTime == DateTime
+  OperatorDateIsAfter,             // DateTime > DateTime
+  OperatorDateIsBefore,            // DateTime < DateTime
+
+  OperatorCustomFirst
 };
 
 /**

@@ -37,7 +37,6 @@
 #include <akonadi/filter/io/sievedecoder.h>
 
 #include <QFile>
-#include <QTextStream>
 
 #include <KDebug>
 #include <KLocale>
@@ -58,19 +57,8 @@ FilterAgent::FilterAgent( const QString &id )
 
   mInstance = this;
 
-  Akonadi::Filter::ComponentFactory * f = new Akonadi::Filter::ComponentFactory();
-
-  f->registerStandardFunctionsForRfc822();
-  f->registerStandardDataMembersForRfc822();
-
-  mComponentFactories.insert( QLatin1String( "message/rfc822" ), f );
-
-  f = new Akonadi::Filter::ComponentFactory();
-
-  f->registerStandardFunctionsForRfc822();
-  f->registerStandardDataMembersForRfc822();
-
-  mComponentFactories.insert( QLatin1String( "message/news" ), f );
+  mComponentFactories.insert( QLatin1String( "message/rfc822" ), new Akonadi::Filter::ComponentFactoryRfc822() );
+  mComponentFactories.insert( QLatin1String( "message/news" ), new Akonadi::Filter::ComponentFactoryRfc822() );
 
   new FilterAgentAdaptor( this );
 
@@ -193,6 +181,31 @@ int FilterAgent::createFilter( const QString &filterId, const QString &mimeType,
   return createFilterInternal( filterId, mimeType, source, true );
 }
 
+bool FilterAgent::saveFilterSource( const QString &filterId, const QString &source )
+{
+  QString fileName = fileNameForFilterId( filterId );
+
+  QFile f( fileName );
+
+  if( !f.open( QFile::WriteOnly | QFile::Truncate ) )
+  {
+    kWarning() << "filteragent: failed to open the file" << fileName << "in order to save the source for filter" << filterId;
+    return false;
+  }
+
+  QByteArray sourceUtf8 = source.toUtf8();
+
+  if( f.write( sourceUtf8 ) != sourceUtf8.length() )
+  {
+    kWarning() << "filteragent: failed to write the source for filter with id" << filterId << "to file" << fileName << ":" << f.errorString();
+    f.close();
+    return false;
+  }
+
+  f.close();
+
+  return true;
+}
 
 int FilterAgent::createFilterInternal( const QString &filterId, const QString &mimeType, const QString &source, bool saveConfiguration )
 {
@@ -218,16 +231,8 @@ int FilterAgent::createFilterInternal( const QString &filterId, const QString &m
 
   if( saveConfiguration )
   {
-    QString fileName = fileNameForFilterId( filterId );
-    QFile f( fileName );
-    if( f.open( QFile::WriteOnly | QFile::Truncate ) )
-    {
-      QTextStream stream( &f );
-      stream << source;
-      f.close();
-    } else {
-      kWarning() << "filteragent: failed to write the source for filter with id" << filterId << "to file" << fileName;
-    }
+    if( !saveFilterSource( filterId, source ) )
+      return Akonadi::Filter::Agent::ErrorCouldNotSaveFilter;
   }
 
   // FIXME: Create engines for other mimetypes
@@ -297,9 +302,11 @@ bool FilterAgent::attachEngine( FilterEngine * engine, Akonadi::Collection::Id c
 
   // First of all fetch the collection: we need to verify that it exists
   // and has the proper mimetype.
-  Akonadi::CollectionFetchJob job( Akonadi::Collection( collectionId ), Akonadi::CollectionFetchJob::Base );
+  Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob( Akonadi::Collection( collectionId ), Akonadi::CollectionFetchJob::Base );
 
-  bool collectionIsValid = job.exec();
+  bool collectionIsValid = job->exec();
+
+  // The Akonadi::Job docs say that the job deletes itself...
 
   if( !collectionIsValid )
   {
@@ -307,7 +314,7 @@ bool FilterAgent::attachEngine( FilterEngine * engine, Akonadi::Collection::Id c
     return false;
   }
 
-  Akonadi::Collection::List collections = job.collections();
+  Akonadi::Collection::List collections = job->collections();
 
   if( collections.count() < 1 )
   {
@@ -458,6 +465,9 @@ int FilterAgent::changeFilter( const QString &filterId, const QString &source, c
   Akonadi::Filter::Program * program = decoder.run( source );
   if( !program )
     return Akonadi::Filter::Agent::ErrorFilterSyntaxError;
+
+  if( !saveFilterSource( filterId, source ) )
+    return Akonadi::Filter::Agent::ErrorCouldNotSaveFilter;
 
   engine->setSource( source );
   engine->setProgram( program );

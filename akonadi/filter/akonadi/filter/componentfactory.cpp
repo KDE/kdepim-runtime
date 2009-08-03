@@ -45,27 +45,7 @@ ComponentFactory::ComponentFactory()
 
   registerFunction(
       new FunctionDescriptor(
-          StandardFunctionSizeOf,
-          QString::fromAscii( "size" ),
-          i18n( "if the total size of" ),
-          DataTypeInteger,
-          DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList
-        )
-    );
-
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionCountOf,
-          QString::fromAscii( "count" ),
-          i18n( "if the total count of" ),
-          DataTypeInteger,
-          DataTypeStringList | DataTypeAddressList
-        )
-    );
-
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionValueOf,
+          FunctionValueOf,
           QString::fromAscii( "header" ),
           i18n( "if" ), // the value of
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
@@ -75,7 +55,27 @@ ComponentFactory::ComponentFactory()
 
   registerFunction(
       new FunctionDescriptor(
-          StandardFunctionDateIn,
+          FunctionSizeOf,
+          QString::fromAscii( "size" ),
+          i18n( "if the total size of" ),
+          DataTypeInteger,
+          DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList
+        )
+    );
+
+  registerFunction(
+      new FunctionDescriptor(
+          FunctionCountOf,
+          QString::fromAscii( "count" ),
+          i18n( "if the total count of" ),
+          DataTypeInteger,
+          DataTypeStringList | DataTypeAddressList
+        )
+    );
+
+  registerFunction(
+      new FunctionDescriptor(
+          FunctionDateIn,
           QString::fromAscii( "date" ),
           i18n( "if the date from" ),
           DataTypeDate,
@@ -85,7 +85,7 @@ ComponentFactory::ComponentFactory()
 
   registerFunction(
       new FunctionDescriptor(
-          StandardFunctionExists,
+          FunctionExists,
           QString::fromAscii( "exists" ),
           i18n( "if exists" ),
           DataTypeBoolean,
@@ -95,11 +95,9 @@ ComponentFactory::ComponentFactory()
 
 
 
-
-
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorGreaterThan,
+          OperatorGreaterThan,
           QString::fromAscii( "above" ),
           i18n( "is greater than" ),
           DataTypeInteger,
@@ -109,7 +107,7 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorLowerThan,
+          OperatorLowerThan,
           QString::fromAscii( "below" ),
           i18n( "is lower than" ),
           DataTypeInteger,
@@ -119,7 +117,7 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorIntegerIsEqualTo,
+          OperatorIntegerIsEqualTo,
           QString::fromAscii( "equals" ),
           i18n( "is equal to" ),
           DataTypeInteger,
@@ -129,7 +127,7 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorContains,
+          OperatorContains,
           QString::fromAscii( "contains" ),
           i18n( "contains string" ),
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
@@ -139,7 +137,7 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorStringIsEqualTo,
+          OperatorStringIsEqualTo,
           QString::fromAscii( "is" ),
           i18n( "is equal to" ),
           DataTypeString | DataTypeAddress,
@@ -149,7 +147,7 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorStringMatchesRegexp,
+          OperatorStringMatchesRegexp,
           QString::fromAscii( "matches" ),
           i18n( "matches regular expression" ),
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
@@ -159,7 +157,7 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorStringMatchesWildcard,
+          OperatorStringMatchesWildcard,
           QString::fromAscii( "like" ),
           i18n( "matches wildcard expression" ),
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
@@ -169,18 +167,7 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorIsInAddressbook,
-          QString::fromAscii( "inaddressbook" ),
-          i18n( "is in addressbook" ),
-          DataTypeAddress | DataTypeAddressList,
-          DataTypeNone
-        )
-    );
-
-
-  registerOperator(
-      new OperatorDescriptor(
-          StandardOperatorDateIsEqualTo,
+          OperatorDateIsEqualTo,
           QString::fromAscii( "equals" ),
           i18n( "is equal to" ),
           DataTypeDate,
@@ -190,7 +177,7 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorDateIsAfter,
+          OperatorDateIsAfter,
           QString::fromAscii( "after" ),
           i18n( "is after" ),
           DataTypeDate,
@@ -200,35 +187,13 @@ ComponentFactory::ComponentFactory()
 
   registerOperator(
       new OperatorDescriptor(
-          StandardOperatorDateIsBefore,
+          OperatorDateIsBefore,
           QString::fromAscii( "before" ),
           i18n( "is before" ),
           DataTypeDate,
           DataTypeDate
         )
     );
-
-
-  CommandDescriptor * cmd;
-  cmd = new CommandDescriptor(
-      StandardCommandLeaveMessageOnServer,
-      QString::fromAscii( "leaveonserver" ),
-      i18n( "leave the message on server and stop processing here" ),
-      true
-    );
-
-  registerCommand( cmd );
-
-#if 0
-  cmd = new CommandDescriptor(
-      StandardCommandMoveToCollection,
-      QString::fromAscii( "movetocollection" ),
-      i18n( "move the item to collection" ),
-      false
-    )
-  cmd.addParameter( DataTypeInteger, i18n( "collection id" ) );
-  registerCommand( cmd );
-#endif
 }
 
 ComponentFactory::~ComponentFactory()
@@ -240,135 +205,6 @@ ComponentFactory::~ComponentFactory()
 }
 
 
-void ComponentFactory::registerStandardDataMembersForRfc822()
-{
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberFromHeader,
-          QString::fromAscii( "from" ),
-          i18n( "From address" ),
-          DataTypeAddress
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberToHeader,
-          QString::fromAscii( "to" ),
-          i18n( "To address" ),
-          DataTypeAddress
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberReplyToHeader,
-          QString::fromAscii( "replyto" ),
-          i18n( "Reply-To address" ),
-          DataTypeAddress
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberCcHeader,
-          QString::fromAscii( "cc" ),
-          i18n( "CC address list" ),
-          DataTypeAddressList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberAllRecipientHeaders,
-          QString::fromAscii( "anyrecipient" ),
-          i18n( "recipient address list" ),
-          DataTypeAddressList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberAllSenderHeaders,
-          QString::fromAscii( "anysender" ),
-          i18n( "sender address list" ),
-          DataTypeAddressList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberBccHeader,
-          QString::fromAscii( "bcc" ),
-          i18n( "BCC address list" ),
-          DataTypeAddressList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberAllHeaders,
-          QString::fromAscii( "anyheader" ),
-          i18n( "header list" ),
-          DataTypeStringList
-        )
-    );
-
-  registerDataMember(
-      new DataMemberDescriptor(
-          StandardDataMemberWholeItem,
-          QString::fromAscii( "message" ),
-          i18n( "whole message" ),
-          DataTypeString
-        )
-    );  
-}
-
-void ComponentFactory::registerStandardFunctionsForRfc822()
-{
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionAnyEMailAddressIn,
-          QString::fromAscii( "address" ),
-          i18n( "if any address in" ),
-          DataTypeAddress | DataTypeAddressList,
-          DataTypeAddress | DataTypeAddressList
-        )
-    );
-
-#if 0
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionAnyEMailAddressIn,
-          QString::fromAscii( "address:all" ),
-          i18n( "if any address in" ),
-          DataTypeAddress | DataTypeAddressList,
-          DataTypeAddress | DataTypeAddressList
-        )
-    );
-#endif
-
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionAnyEMailAddressDomainIn,
-          QString::fromAscii( "address:domain" ),
-          i18n( "if any domain in" ),
-          DataTypeString | DataTypeStringList,
-          DataTypeAddress | DataTypeAddressList
-        )
-    );
-
-
-  registerFunction(
-      new FunctionDescriptor(
-          StandardFunctionAnyEMailAddressLocalPartIn,
-          QString::fromAscii( "address:local" ),
-          i18n( "if any username in" ),
-          DataTypeString | DataTypeStringList,
-          DataTypeAddress | DataTypeAddressList
-        )
-    );
-}
 
 void ComponentFactory::registerDataMember( DataMemberDescriptor * dataMember )
 {
@@ -551,12 +387,14 @@ Action::Stop * ComponentFactory::createStopAction( Component * parent )
   return new Action::Stop( parent );
 }
 
-Action::Base * ComponentFactory::createCommandAction( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params )
+Action::Command * ComponentFactory::createCommand( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params )
 {
   Q_ASSERT( parent );
   Q_ASSERT( command );
-  setLastError( i18n( "Command %1 is not supported", command->keyword() ) );
-  return 0;
+
+  // FIXME: Should check that the actual parameters match formal parameters ?
+
+  return new Action::Command( parent, command, params );
 }
 
 Condition::Base * ComponentFactory::createPropertyTestCondition(

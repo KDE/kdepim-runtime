@@ -29,7 +29,7 @@
 #include <akonadi/preprocessorbase.h>
 #include <akonadi/collection.h>
 
-#include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/componentfactoryrfc822.h>
 #include <akonadi/filter/agent.h>
 
 #include <QtCore/QList>
@@ -199,6 +199,8 @@ protected:
 
   int createFilterInternal( const QString &filterId, const QString &mimeType, const QString &source, bool saveConfiguration );
   int attachFilterInternal( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds, bool saveConfiguration );
+
+  bool saveFilterSource( const QString &filterId, const QString &source );
 
 /*
   virtual void configure( WId winId );

@@ -66,6 +66,9 @@ QString statusDescription( Status status )
     case ErrorNotAllCollectionsProcessed:
       return i18n( "Not all the specified collections could be attached or detached" );
     break;
+    case ErrorCouldNotSaveFilter:
+      return i18n( "Could not save the filter" );
+    break;
   }
 
   Q_ASSERT_X( false, __FUNCTION__, "You forgot to handle some Status code here" );

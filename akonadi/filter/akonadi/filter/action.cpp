@@ -24,8 +24,10 @@
  *******************************************************************************/
 
 #include <akonadi/filter/action.h>
+#include <akonadi/filter/data.h>
 
 #include <KDebug>
+#include <KLocale>
 
 #include <akonadi/filter/commanddescriptor.h>
 
@@ -97,8 +99,16 @@ Command::~Command()
 
 Command::ProcessingStatus Command::execute( Data * data )
 {
-  // FIXME: Impl missing here
-  return SuccessAndContinue;
+  QString error;
+
+  if( !data->executeCommand( mCommandDescriptor, mParams, error ) )
+  {
+    // error :/
+    setLastError( i18n( "command '%1' failed: %2", mCommandDescriptor->name(), error ) );
+    return Failure;
+  }
+
+  return mCommandDescriptor->isTerminal() ? SuccessAndStop : SuccessAndContinue;
 }
 
 void Command::dump( const QString &prefix )

@@ -1,7 +1,7 @@
 /****************************************************************************** * *
  *
- *  File : actioneditor.cpp
- *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
+ *  File : commandeditorsrfc822.h
+ *  Created on Mon 03 Aug 2009 00:46:12 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,44 +23,44 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/actioneditor.h>
-#include <akonadi/filter/ui/editorfactory.h>
+#ifndef _AKONADI_FILTER_UI_COMMANDEDITORSRFC822_H_
+#define _AKONADI_FILTER_UI_COMMANDEDITORSRFC822_H_
 
-#include <akonadi/filter/action.h>
-#include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/ui/config-akonadi-filter-ui.h>
 
-#include <QtGui/QLayout>
+#include <akonadi/filter/ui/commandeditor.h>
 
 namespace Akonadi
 {
+
+class CollectionRequester;
+
 namespace Filter
 {
 namespace UI
 {
 
-ActionEditor::ActionEditor( QWidget * parent, ComponentFactory * componentFactory, EditorFactory * editorFactory )
-  : QWidget( parent ), mComponentFactory( componentFactory ), mEditorFactory( editorFactory )
+class AKONADI_FILTER_UI_EXPORT CommandWithTargetCollectionEditor : public CommandEditor
 {
-  setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Preferred );
-}
+  Q_OBJECT
+public:
+  CommandWithTargetCollectionEditor(
+      QWidget * parent,
+      const CommandDescriptor * commandDescriptor,
+      ComponentFactory * componentFactory,
+      EditorFactory * editorFactory
+    );
 
-ActionEditor::~ActionEditor()
-{
-}
+  virtual ~CommandWithTargetCollectionEditor();
 
-QSize ActionEditor::sizeHint() const
-{
-  if( layout() )
-    return layout()->minimumSize();
-  return QWidget::sizeHint();
-}
+private:
+  CollectionRequester * mCollectionRequester;
 
-QSize ActionEditor::minimumSizeHint() const
-{
-  if( layout() )
-    return layout()->minimumSize();
-  return QWidget::minimumSizeHint();
-}
+public:
+  virtual void fillFromAction( Action::Base * action );
+  virtual Action::Base * commitState( Component * parent );
+
+}; // class CommandWithTargetCollectionEditor
 
 } // namespace UI
 
@@ -68,3 +68,4 @@ QSize ActionEditor::minimumSizeHint() const
 
 } // namespace Akonadi
 
+#endif //!_AKONADI_FILTER_UI_COMMANDEDITORSRFC822_H_

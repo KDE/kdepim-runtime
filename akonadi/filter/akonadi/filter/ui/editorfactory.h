@@ -43,10 +43,18 @@ class ComponentFactory;
 namespace UI
 {
 
-class ActionEditor;
+class CommandEditor;
 class RuleEditor;
 class RuleListEditor;
 
+/**
+ * This is the basic factory interface that the UI filter editing facilities
+ * need in order to operate. It is designed to operate closely to a ComponentFactory
+ * subclass. This factory, in fact, provides only the widgets that are required by a
+ * plain ComponentFactory and you will need to inherit from it in order to support
+ * your own actions. You may look at EditorFactoryRfc822 to get an idea about
+ * what a real world EditorFactory subclass is.
+ */
 class AKONADI_FILTER_UI_EXPORT EditorFactory
 {
 public:
@@ -90,9 +98,25 @@ public:
     return mDefaultActionDescription;
   }
 
+  /**
+   * Create a RuleEditor object. You can override this to provide customized rule editor widgets.
+   */
   virtual RuleEditor * createRuleEditor( QWidget * parent, ComponentFactory * componentFactory );
+
+  /**
+   * Create a RuleEditorList object. You can override this to provide customized rule list editor widgets.
+   */
   virtual RuleListEditor * createRuleListEditor( QWidget * parent, ComponentFactory * componentFactory );
-  virtual ActionEditor * createCommandActionEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory );
+
+  /**
+   * Create the CommandEditor for the specified CommandDescriptor.
+   * If the command requires no special editor (so choosing the description of the command
+   * suffices) then the returned object may be 0. The default implementation
+   * returns 0 if the command descriptor has no parameters and asserts if the CommandDescriptor has
+   * a non empty parameter list. You must override this function and return the proper editor for your
+   * command in this case.
+   */
+  virtual CommandEditor * createCommandEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory );
 
 }; // class EditorFactory
 

@@ -40,25 +40,20 @@ namespace Filter
 enum FunctionIdentifiers
 {
   // standard functions
-  StandardFunctionValueOf = 1,
-  StandardFunctionSizeOf = 2,
-  StandardFunctionCountOf = 3,
-  StandardFunctionExists = 4,
-  StandardFunctionDateIn = 5,
-
-  // e-mail related functions
-  StandardFunctionAnyEMailAddressIn = 101,
-  StandardFunctionAnyEMailAddressDomainIn = 102,
-  StandardFunctionAnyEMailAddressLocalPartIn = 103,
+  FunctionValueOf = 1,
+  FunctionSizeOf,
+  FunctionCountOf,
+  FunctionExists,
+  FunctionDateIn,
 
   // custom functions
-  FunctionDescriptorCustomFirst = 10000
+  FunctionCustomFirst = 1000
 };
 
 
 /**
- * 
- *
+ * This class describes a function to be applied on the result of the extraction of a data member
+ * (via DataMemberDescriptor) from a Data object.
  */
 class AKONADI_FILTER_EXPORT FunctionDescriptor
 {
@@ -71,7 +66,7 @@ public:
       int id,                          //< The id of the function: it should be unique within an application
       const QString &keyword,          //< Unique function keyword: it matches the keyword used in Sieve scripts.
       const QString &name,             //< The token that is displayed in the UI editors.
-      int outputDataTypeMask,          //< The mask of possible output data types of this function
+      int outputDataType,              //< The output data type of this function or DataTypeNone if this function is a "pass through"
       int acceptableInputDataTypeMask  //< The acceptable input data types of this function
     );
   virtual ~FunctionDescriptor();

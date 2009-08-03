@@ -31,7 +31,9 @@
 
 #include <akonadi/filter/ui/coolcombobox.h>
 #include <akonadi/filter/ui/editorfactory.h>
+#include <akonadi/filter/ui/extensionlabel.h>
 #include <akonadi/filter/ui/actioneditor.h>
+#include <akonadi/filter/ui/commandeditor.h>
 #include <akonadi/filter/ui/rulelisteditor.h>
 #include <akonadi/filter/ui/ruleeditor.h>
 
@@ -66,6 +68,7 @@ class ActionSelectorPrivate
 {
 public:
   Private::CoolComboBox * mTypeComboBox;
+  Private::ExtensionLabel * mExtensionLabel;
   QList< ActionDescriptor * > mActionDescriptorList; // FIXME: This could be shared between all the editors with the same componentfactory
   ActionEditor * mActionEditor;
   QGridLayout * mLayout;
@@ -77,6 +80,7 @@ ActionSelector::ActionSelector( QWidget * parent, ComponentFactory * componentfa
   mPrivate = new ActionSelectorPrivate;
 
   mPrivate->mActionEditor = 0;
+  mPrivate->mExtensionLabel = 0;
 
   mPrivate->mLayout = new QGridLayout( this );
   mPrivate->mLayout->setMargin( 1 );
@@ -161,6 +165,52 @@ ActionSelector::~ActionSelector()
 
 void ActionSelector::fillFromAction( Action::Base * action )
 {
+  ActionDescriptor * descriptor = 0;
+  int idx = 0;
+
+  switch( action->actionType() )
+  {
+    case Action::ActionTypeRuleList:
+    case Action::ActionTypeStop:
+    case Action::ActionTypeUnknown:
+      foreach( ActionDescriptor * d, mPrivate->mActionDescriptorList )
+      {
+        if( d->mType == action->actionType() )
+        {
+          descriptor = d;
+          break;
+        }
+        idx++;
+      }
+    break;
+    case Action::ActionTypeCommand:
+      foreach( ActionDescriptor * d, mPrivate->mActionDescriptorList )
+      {
+        if(
+            ( d->mType == Action::ActionTypeCommand ) &&
+            ( d->mCommandDescriptor == static_cast< Action::Command * >( action )->commandDescriptor() )
+          )
+        {
+          descriptor = d;
+          break;
+        }
+        idx++;
+      }
+    break;
+    default:
+      Q_ASSERT( false ); //unhandled condition type
+    break;
+  }
+
+  Q_ASSERT( descriptor ); // unhandled condition type
+  Q_ASSERT( idx >= 0 ); // same as above
+
+  mPrivate->mTypeComboBox->setCurrentIndex( idx );
+
+  setupUIForActiveType();
+
+  if( mPrivate->mActionEditor )
+    mPrivate->mActionEditor->fillFromAction( action );
 }
 
 Action::Base * ActionSelector::commitState( Component * parent )
@@ -186,7 +236,7 @@ Action::Base * ActionSelector::commitState( Component * parent )
     case Action::ActionTypeCommand:
       if( mPrivate->mActionEditor )
         return mPrivate->mActionEditor->commitState( parent );
-      return mComponentFactory->createCommandAction( parent, d->mCommandDescriptor, QList< QVariant >() );
+      return mComponentFactory->createCommand( parent, d->mCommandDescriptor, QList< QVariant >() );
     break;
     default:
       Q_ASSERT( false ); // unhandled action type
@@ -233,6 +283,9 @@ void ActionSelector::setupUIForActiveType()
   {
     delete mPrivate->mActionEditor;
     mPrivate->mActionEditor = 0;
+    Q_ASSERT( mPrivate->mExtensionLabel );
+    delete mPrivate->mExtensionLabel;
+    mPrivate->mExtensionLabel = 0;
   }
 
   switch( d->mType )
@@ -245,7 +298,7 @@ void ActionSelector::setupUIForActiveType()
     case Action::ActionTypeStop:
     break;
     case Action::ActionTypeCommand:
-      mPrivate->mActionEditor = mEditorFactory->createCommandActionEditor( this, d->mCommandDescriptor, mComponentFactory );
+      mPrivate->mActionEditor = mEditorFactory->createCommandEditor( this, d->mCommandDescriptor, mComponentFactory );
     break;
     default:
       Q_ASSERT( false ); // unhandled action type
@@ -254,6 +307,16 @@ void ActionSelector::setupUIForActiveType()
 
   if( mPrivate->mActionEditor )
   {
+    if ( !mPrivate->mExtensionLabel )
+    {
+      mPrivate->mExtensionLabel = new Private::ExtensionLabel( this );
+      mPrivate->mLayout->addWidget( mPrivate->mExtensionLabel, 1, 0 );
+      mPrivate->mExtensionLabel->show();
+    }
+
+    mPrivate->mExtensionLabel->setOverlayColor( d->mColor );
+    //mPrivate->mExtensionLabel->setFixedHeight( mPrivate->mActionEditor->sizeHint().height() - 5 );
+
     mPrivate->mLayout->addWidget( mPrivate->mActionEditor, 1, 1 );
     mPrivate->mActionEditor->show();
   }

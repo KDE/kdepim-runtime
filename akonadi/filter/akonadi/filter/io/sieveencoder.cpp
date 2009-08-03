@@ -378,11 +378,11 @@ bool SieveEncoder::encodeAction( Action::Base * action )
       if( params->count() > 0 )
       {
         QList< CommandDescriptor::ParameterDescriptor * >::ConstIterator it = params->begin();
-        QList< QVariant >::ConstIterator dataIt = static_cast< Action::Command * >( action )->params()->begin();
+        QList< QVariant >::ConstIterator dataIt = static_cast< Action::Command * >( action )->parameters()->begin();
 
         while( it != params->end() )
         {
-          Q_ASSERT( dataIt != static_cast< Action::Command * >( action )->params()->end() );
+          Q_ASSERT( dataIt != static_cast< Action::Command * >( action )->parameters()->end() );
 
           addLineData( QLatin1String( " " ) );
 

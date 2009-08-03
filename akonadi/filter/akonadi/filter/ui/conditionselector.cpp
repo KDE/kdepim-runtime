@@ -532,7 +532,8 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       {
         if(
             ( d->mType == Condition::ConditionTypePropertyTest ) &&
-            ( d->mFunctionDescriptor == static_cast< Condition::PropertyTest * >( condition )->function() )
+            ( d->mFunctionDescriptor == static_cast< Condition::PropertyTest * >( condition )->function() ) &&
+            ( d->mDataMemberDescriptor == static_cast< Condition::PropertyTest * >( condition )->dataMember() )
           )
         {
           descriptor = d;

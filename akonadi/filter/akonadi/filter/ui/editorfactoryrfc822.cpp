@@ -1,7 +1,7 @@
 /****************************************************************************** * *
  *
- *  File : actioneditor.cpp
- *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
+ *  File : editorfactoryrfc822.cpp
+ *  Created on Mon 03 Aug 2009 00:17:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,13 +23,17 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/actioneditor.h>
-#include <akonadi/filter/ui/editorfactory.h>
+#include <akonadi/filter/ui/editorfactoryrfc822.h>
 
-#include <akonadi/filter/action.h>
-#include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/ui/commandeditorsrfc822.h>
 
-#include <QtGui/QLayout>
+#include <akonadi/filter/componentfactoryrfc822.h>
+
+#include <akonadi/filter/commanddescriptor.h>
+
+#include <KDebug>
+
+#include <QtGui/QWidget>
 
 namespace Akonadi
 {
@@ -38,28 +42,30 @@ namespace Filter
 namespace UI
 {
 
-ActionEditor::ActionEditor( QWidget * parent, ComponentFactory * componentFactory, EditorFactory * editorFactory )
-  : QWidget( parent ), mComponentFactory( componentFactory ), mEditorFactory( editorFactory )
-{
-  setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Preferred );
-}
-
-ActionEditor::~ActionEditor()
+EditorFactoryRfc822::EditorFactoryRfc822()
 {
 }
 
-QSize ActionEditor::sizeHint() const
+EditorFactoryRfc822::~EditorFactoryRfc822()
 {
-  if( layout() )
-    return layout()->minimumSize();
-  return QWidget::sizeHint();
 }
 
-QSize ActionEditor::minimumSizeHint() const
+CommandEditor * EditorFactoryRfc822::createCommandEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory )
 {
-  if( layout() )
-    return layout()->minimumSize();
-  return QWidget::minimumSizeHint();
+  switch( command->id() )
+  {
+    case CommandRfc822MoveMessageToCollection:
+    case CommandRfc822CopyMessageToCollection:
+      return new CommandWithTargetCollectionEditor( parent, command, componentFactory, this );
+    break;
+    case CommandRfc822DeleteMessage:
+      return 0; // no special editor needed for this
+    break;
+    default:
+      // fall through
+    break;
+  }
+  return EditorFactory::createCommandEditor( parent, command, componentFactory );
 }
 
 } // namespace UI

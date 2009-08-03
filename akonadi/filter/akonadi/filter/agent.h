@@ -100,7 +100,13 @@ enum Status
    * It means that some of the collections specified in the call were invalid
    * and could not be attached/detached.
    */
-  ErrorNotAllCollectionsProcessed
+  ErrorNotAllCollectionsProcessed,
+
+  /**
+   * The method failed because the filter could not be saved for some reason...
+   * ... most likely because of permission/disk quota/bad file name issues.
+   */
+  ErrorCouldNotSaveFilter
 };
 
 /**

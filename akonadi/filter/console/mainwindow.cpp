@@ -26,11 +26,12 @@
 #include "mainwindow.h"
 
 #include <akonadi/control.h>
+#include <akonadi/collectionfetchjob.h>
 
-#include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/componentfactoryrfc822.h>
 #include <akonadi/filter/program.h>
 #include <akonadi/filter/agent.h>
-#include <akonadi/filter/ui/editorfactory.h>
+#include <akonadi/filter/ui/editorfactoryrfc822.h>
 #include <akonadi/filter/io/sieveencoder.h>
 #include <akonadi/filter/io/sievedecoder.h>
 
@@ -65,24 +66,11 @@ MainWindow::MainWindow()
 
   mFilterAgent = new OrgFreedesktopAkonadiFilterAgentInterface( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
 
-  Akonadi::Filter::ComponentFactory * componentFactory = new Akonadi::Filter::ComponentFactory();
-  componentFactory->registerStandardFunctionsForRfc822();
-  componentFactory->registerStandardDataMembersForRfc822();
+  mComponentFactories.insert( QLatin1String( "message/rfc822" ), new Akonadi::Filter::ComponentFactoryRfc822() );
+  mComponentFactories.insert( QLatin1String( "message/news" ), new Akonadi::Filter::ComponentFactoryRfc822() );
 
-  mComponentFactories.insert( QLatin1String( "message/rfc822" ), componentFactory );
-
-  componentFactory = new Akonadi::Filter::ComponentFactory();
-  componentFactory->registerStandardFunctionsForRfc822();
-  componentFactory->registerStandardDataMembersForRfc822();
-
-  mComponentFactories.insert( QLatin1String( "message/news" ), componentFactory );
-
-  Akonadi::Filter::UI::EditorFactory * editorFactory = new Akonadi::Filter::UI::EditorFactory();
-  mEditorFactories.insert( QLatin1String( "message/rfc822" ), editorFactory );
-
-  editorFactory = new Akonadi::Filter::UI::EditorFactory();
-  mEditorFactories.insert( QLatin1String( "message/news" ), editorFactory );
-
+  mEditorFactories.insert( QLatin1String( "message/rfc822" ), new Akonadi::Filter::UI::EditorFactoryRfc822() );
+  mEditorFactories.insert( QLatin1String( "message/news" ), new Akonadi::Filter::UI::EditorFactoryRfc822() );
 
   QWidget * base = new QWidget( this );
   setCentralWidget( base );
@@ -206,6 +194,36 @@ void MainWindow::slotEditFilterButtonClicked()
   filter.setComponentFactory( componentFactory );
   filter.setEditorFactory( editorFactory );
   filter.setProgram( prog );
+  foreach( Akonadi::Collection::Id id, attachedCollectionIds )
+  {
+    Akonadi::CollectionFetchJob job( Akonadi::Collection( id ), Akonadi::CollectionFetchJob::Base );
+
+    if( !job.exec() )
+    {
+      kDebug() << "Ooops... failed to execute the fetch job for collection" << id;
+      continue;
+    }
+
+    Akonadi::Collection::List collections = job.collections();
+
+    if( collections.count() < 1 )
+    {
+      kDebug() << "Ooops... the collection fetch job for collection" << id << "didn't fetch anything";
+      continue;
+    }
+
+    Q_ASSERT( collections.count() == 1 );
+
+    Akonadi::Collection collection = collections[0];
+
+    if( !collection.isValid() )
+    {
+      kDebug() << "Ooops... the filter seems to be attached to an invalid collection" << id;
+      continue;
+    }
+
+    filter.addCollection( new Akonadi::Collection( collection ) );
+  }
 
   FilterEditor ed( this, &filter );
   if( ed.exec() != KDialog::Accepted )
@@ -241,7 +259,6 @@ void MainWindow::slotEditFilterButtonClicked()
     KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not fetch filter properties" ) );
     return;
   }
-
 
   listFilters();
 }

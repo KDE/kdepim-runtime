@@ -45,20 +45,9 @@ namespace Filter
 enum CommandIdentifiers
 {
   /**
-   * The standard "Leave Message on Server" command.
-   * In Sieve this is encoded as "keep".
-   */
-  StandardCommandLeaveMessageOnServer = 1,
-
-  /**
-   * The standard "Move Item to Collection" command.
-   */
-  StandardCommandMoveItemToCollection = 2,
-
-  /**
    * The base identifier for user defined commands.
    */
-  CommandCustomFirst = 10000
+  CommandCustomFirst = 1000
 };
 
 
@@ -126,6 +115,7 @@ public:
       return mDataType;
     }
   }; // class ParameterDescriptor
+
 public:
 
   /**

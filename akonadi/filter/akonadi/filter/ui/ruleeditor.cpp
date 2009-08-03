@@ -94,7 +94,7 @@ void RuleEditor::fillFromRule( Rule * rule )
   QList< Action::Base * >::Iterator actionIterator = actionList->begin();
 
   // fill the existing action editors
-  while( actionIterator == actionList->end() )
+  while( actionIterator != actionList->end() )
   {
     Q_ASSERT( editorIterator != mPrivate->mActionSelectorList.end() );
     ( *editorIterator )->fillFromAction( *actionIterator );

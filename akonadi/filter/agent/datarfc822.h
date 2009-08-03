@@ -52,6 +52,7 @@ public:
 
   QVariant getPropertyValue( const Akonadi::Filter::FunctionDescriptor * function, const Akonadi::Filter::DataMemberDescriptor * dataMember );
   QVariant getDataMemberValue( const Akonadi::Filter::DataMemberDescriptor * dataMember );
+  bool executeCommand( const Akonadi::Filter::CommandDescriptor * command, const QList< QVariant > &params, QString &error );
 
 private:
   bool fetchHeader();

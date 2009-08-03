@@ -71,7 +71,10 @@ Rule::ProcessingStatus Rule::execute( Data * data )
   if( mCondition )
   {
     if( !mCondition->matches( data ) )
+    {
+      kDebug() << "Condition didn't match: skipping actions";
       return SuccessAndContinue; 
+    }
   }
 
   kDebug() << "Condition matched: executing actions!";

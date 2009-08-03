@@ -1,7 +1,7 @@
 /****************************************************************************** * *
  *
- *  File : actioneditor.cpp
- *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
+ *  File : editorfactoryrfc822.h
+ *  Created on Mon 03 Aug 2009 00:17:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,13 +23,12 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/actioneditor.h>
+#ifndef _AKONADI_FILTER_UI_EDITORFACTORYRFC822_H_
+#define _AKONADI_FILTER_UI_EDITORFACTORYRFC822_H_
+
+#include <akonadi/filter/ui/config-akonadi-filter-ui.h>
+
 #include <akonadi/filter/ui/editorfactory.h>
-
-#include <akonadi/filter/action.h>
-#include <akonadi/filter/componentfactory.h>
-
-#include <QtGui/QLayout>
 
 namespace Akonadi
 {
@@ -38,29 +37,24 @@ namespace Filter
 namespace UI
 {
 
-ActionEditor::ActionEditor( QWidget * parent, ComponentFactory * componentFactory, EditorFactory * editorFactory )
-  : QWidget( parent ), mComponentFactory( componentFactory ), mEditorFactory( editorFactory )
+/**
+ * This class provides the editors required by the actions supported by
+ * the ComponentFactoryRfc822 class.
+ */
+class AKONADI_FILTER_UI_EXPORT EditorFactoryRfc822 : public EditorFactory
 {
-  setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Preferred );
-}
+public:
+  EditorFactoryRfc822();
+  virtual ~EditorFactoryRfc822();
 
-ActionEditor::~ActionEditor()
-{
-}
+public:
+  /**
+   * Reimplemented from EditorFactory in order to return implementations
+   * or RFC822 specific action editors.
+   */
+  virtual CommandEditor * createCommandEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory );
 
-QSize ActionEditor::sizeHint() const
-{
-  if( layout() )
-    return layout()->minimumSize();
-  return QWidget::sizeHint();
-}
-
-QSize ActionEditor::minimumSizeHint() const
-{
-  if( layout() )
-    return layout()->minimumSize();
-  return QWidget::minimumSizeHint();
-}
+}; // class EditorFactoryRfc822
 
 } // namespace UI
 
@@ -68,3 +62,4 @@ QSize ActionEditor::minimumSizeHint() const
 
 } // namespace Akonadi
 
+#endif //!_AKONADI_FILTER_UI_EDITORFACTORYRFC822_H_

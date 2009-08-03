@@ -27,8 +27,14 @@
 
 #include <akonadi/filter/functiondescriptor.h>
 #include <akonadi/filter/datamemberdescriptor.h>
+#include <akonadi/filter/commanddescriptor.h>
 
+#include <QtCore/QStringList>
+#include <QtCore/QDateTime>
+
+#include <KDateTime>
 #include <KDebug>
+#include <KLocale>
 
 namespace Akonadi
 {
@@ -49,15 +55,75 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
 
   switch( function->id() )
   {
-    case StandardFunctionValueOf:
-      Q_ASSERT( dataMember->dataType() == DataTypeString );
+    case FunctionValueOf:
       return getDataMemberValue( dataMember );
     break;
-    case StandardFunctionSizeOf:
-    case StandardFunctionCountOf:
-    case StandardFunctionExists:
-    case StandardFunctionDateIn:
-
+    case FunctionSizeOf:
+    {
+      QVariant value = getDataMemberValue( dataMember );
+      switch( dataMember->dataType() )
+      {
+        case DataTypeNone:
+          return integerToVariant( 0 );
+        break;
+        case DataTypeString:
+        case DataTypeInteger:
+        case DataTypeBoolean:
+        case DataTypeAddress:
+        case DataTypeDate:
+          return integerToVariant( value.toString().length() );
+        break;
+        case DataTypeStringList:
+        case DataTypeAddressList:
+        {
+          Integer sum = 0;
+          QStringList sl = value.toStringList();
+          foreach( QString s, sl )
+            sum += s.length();
+          return integerToVariant( sum );
+        }
+        break;
+        default:
+          Q_ASSERT_X( false, "Data::getPropertyValue", "Unhandled DataType" );
+        break;
+      }
+    }
+    break;
+    case FunctionCountOf:
+    {
+      QVariant value = getDataMemberValue( dataMember );
+      switch( dataMember->dataType() )
+      {
+        case DataTypeNone:
+          return integerToVariant( 0 );
+        break;
+        case DataTypeString:
+        case DataTypeInteger:
+        case DataTypeBoolean:
+        case DataTypeAddress:
+        case DataTypeDate:
+          return integerToVariant( 1 );
+        break;
+        case DataTypeStringList:
+        case DataTypeAddressList:
+          return integerToVariant( value.toStringList().count() );
+        break;
+        default:
+          Q_ASSERT_X( false, "Data::getPropertyValue", "Unhandled DataType" );
+        break;
+      }
+    }
+    break;
+    case FunctionDateIn:
+    {
+      QVariant value = getDataMemberValue( dataMember );
+      if( value.isNull() )
+        return QVariant( QDateTime() );
+      if( value.type() == QVariant::DateTime )
+        return value;
+      // FIXME: Implement better parsing of dates from a QString
+      return QVariant( KDateTime::fromString( value.toString(), KDateTime::RFCDate ).dateTime() );
+    }
     break;
     default:
       // unrecognized function: you should provide a handler for it by overriding getPropertyValue()
@@ -66,7 +132,7 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
           ", keyword '" << function->keyword() <<
           "' and name '" << function->name() << "'. You should provide a handler by overriding Data::getPropertyValue()";
 
-      Q_ASSERT( false );
+      Q_ASSERT_X( false, "Data::getPropertyValue", "Unrecognized function: you should provide a handler for it" );
     break;
   }
   return QVariant();
@@ -77,6 +143,13 @@ QVariant Data::getDataMemberValue( const DataMemberDescriptor * dataMember )
   return QVariant();
 }
 
+bool Data::executeCommand( const CommandDescriptor * command, const QList< QVariant > &params, QString &error )
+{
+  Q_ASSERT_X( false, "Data::executeCommand", "You must provide an implementation for your commands here!" );
+
+  error = i18n( "Command %1 is not supported", command->name() );
+  return false;
+}
 
 } // namespace Filter
 
