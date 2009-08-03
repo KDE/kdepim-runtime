@@ -158,7 +158,6 @@ void SerializerPluginMail::serialize( const Item& item, const QByteArray& label,
   Q_UNUSED( version );
 
   boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
-  m->assemble();
   if ( label == MessagePart::Body ) {
     data.write( m->encodedContent() );
   } else if ( label == MessagePart::Envelope ) {
