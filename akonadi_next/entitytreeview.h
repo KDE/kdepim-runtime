@@ -167,6 +167,7 @@ private:
   Q_PRIVATE_SLOT( d, void itemClicked( const QModelIndex& ) )
   Q_PRIVATE_SLOT( d, void itemDoubleClicked( const QModelIndex& ) )
   Q_PRIVATE_SLOT( d, void itemCurrentChanged( const QModelIndex& ) )
+  Q_PRIVATE_SLOT( d, void slotSelectionChanged( const QItemSelection &, const QItemSelection & ) )
   //@endcond
 };
 

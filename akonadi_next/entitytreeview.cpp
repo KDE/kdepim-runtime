@@ -61,6 +61,9 @@ public:
   void itemClicked( const QModelIndex& );
   void itemDoubleClicked( const QModelIndex& );
   void itemCurrentChanged( const QModelIndex& );
+
+  void slotSelectionChanged( const QItemSelection & selected, const QItemSelection & deselected );
+
   bool hasParent( const QModelIndex& idx, Collection::Id parentId );
 
   EntityTreeView *mParent;
@@ -114,13 +117,27 @@ void EntityTreeView::Private::dragExpand()
   dragOverIndex = QModelIndex();
 }
 
+void EntityTreeView::Private::slotSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
+{
+  const int column = 0;
+  foreach (const QItemSelectionRange &range, selected)
+  {
+    QModelIndex idx = range.topLeft();
+    if (idx.column() > 0)
+      continue;
+    for (int row = idx.row(); row <= range.bottomRight().row(); ++row)
+    {
+      // Don't use canFetchMore here. We need to bypass the check in 
+      // the EntityFilterModel when it shows only collections.
+      mParent->model()->fetchMore(idx.sibling(row, column));
+    }
+  }
+}
+
 void EntityTreeView::Private::itemClicked( const QModelIndex &index )
 {
   if ( !index.isValid() )
     return;
-
-  if (mParent->model()->canFetchMore(index))
-    mParent->model()->fetchMore(index);
 
   const Collection collection = index.model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
   if ( collection.isValid() ) {
@@ -191,6 +208,9 @@ void EntityTreeView::setModel( QAbstractItemModel * model )
 
   connect( selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ),
            this, SLOT( itemCurrentChanged( const QModelIndex& ) ) );
+
+  connect( selectionModel(), SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
+           SLOT( slotSelectionChanged( const QItemSelection &, const QItemSelection & ) ) );
 }
 
 void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
