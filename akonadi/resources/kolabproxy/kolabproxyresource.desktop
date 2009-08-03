@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Kolab Groupware Server
+Name[es]=Servidor de Groupware Kolab
 Name[gl]=Servidor de traballo en grupo Kolab
 Name[nb]=Kolab groupware-tjener 
 Name[nds]=Kolab-Arbeitkoppel-Server
@@ -7,10 +8,12 @@ Name[nn]=Kolab Groupware-tenar
 Name[pt]=Servidor de Groupware Kolab
 Name[pt_BR]=Servidor groupware Kolab
 Name[sv]=Kolab grupprogramserver
+Name[tr]=Kolab Groupware Sunucusu
 Name[uk]=Сервер групової роботи Kolab
 Name[x-test]=xxKolab Groupware Serverxx
 Name[zh_TW]=Kolab 群組伺服器
 Comment=Provides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately).
+Comment[es]=Proporciona acceso a carpetas groupware de Kolab en un servidor IMAP (las cuentas IMAP necesitan ser configuradas por separado).
 Comment[gl]=Fornece acceso aos cartafoles de traballo en grupo de Kolab dun servidor de IMAP (hai que configurar as contas IMAP por separado).
 Comment[nb]=Gir tilgang til Kolab-mapper på en IMAP-tjener (IMAP-kontoer må settes opp separat).
 Comment[nds]=Stellt Togriep op Kolab-Arbeitkoppel-Ornern op en IMAP-Server praat (IMAP-Kontos mööt enkelt inricht warrn).
@@ -18,6 +21,7 @@ Comment[nn]=Gjev tilgang til Kolab gruppevare-mapper på ein IMAP-tenar (du må 
 Comment[pt]=Oferece o acesso às pastas de 'groupware' do Kolab num servidor IMAP (as contas de IMAP têm de ser definidas em separado).
 Comment[pt_BR]=Fornece acesso as pastas groupware Kolab em um servidor IMAP (as contas IMAP precisam ser definidas separadamente).
 Comment[sv]=Ger tillgång till Kolab grupprogramkorgar på en IMAP-server (IMAP-konton måste ställas in separat).
+Comment[tr]=IMAP sunucusu (IMAP hesapları ayrı ayrı yapılandırılmalıdır) üzerindeki Kolab groupware klasörlerine erişim sağlar.
 Comment[uk]=Надає доступ до тек групової роботи Kolab на сервері IMAP (облікові записи IMAP слід налаштувати окремо).
 Comment[x-test]=xxProvides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately).xx
 Comment[zh_TW]=提供存取某 IMAP 伺服器上的 Kolab 群組資料夾（IMAP 帳號要分別設定）

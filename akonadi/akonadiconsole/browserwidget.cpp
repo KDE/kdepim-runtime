@@ -119,12 +119,13 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   monitor->itemFetchScope().fetchFullPayload(true);
 
   mBrowserModel = new AkonadiBrowserModel( session, monitor, this );
+  mBrowserModel->setItemPopulationStrategy( EntityTreeModel::LazyPopulation );
 
   EntityFilterProxyModel *collectionFilter = new EntityFilterProxyModel( this );
   collectionFilter->setSourceModel( mBrowserModel );
   collectionFilter->addMimeTypeInclusionFilter( Collection::mimeType() );
   collectionFilter->setHeaderSet( EntityTreeModel::CollectionTreeHeaders );
-  
+
   statisticsToolTipProxyModel = new StatisticsToolTipProxyModel( this );
   statisticsToolTipProxyModel->setSourceModel( collectionFilter );
 
@@ -140,7 +141,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
 //   connect( mBrowserModel, SIGNAL( modelAboutToBeReset() ), SLOT( slotBrowserModelAboutToBeReset() ) );
 //   connect( mBrowserModel, SIGNAL( modelReset() ), SLOT( slotBrowserModelReset() ) );
-  
+
   SelectionProxyModel *selectionProxyModel = new SelectionProxyModel( mCollectionView->selectionModel(), this );
   selectionProxyModel->setSourceModel( mBrowserModel );
   selectionProxyModel->setFilterBehavior( SelectionProxyModel::OnlySelectedChildren );
@@ -231,7 +232,7 @@ void BrowserWidget::clear()
 
 void BrowserWidget::itemActivated(const QModelIndex & index)
 {
-  const Item item = index.data( EntityTreeModel::ItemRole ).value< Item >();
+  const Item item = index.sibling( index.row(), 0 ).data( EntityTreeModel::ItemRole ).value< Item >();
   if ( !item.isValid() ) {
     clear();
     return;
@@ -365,7 +366,7 @@ void BrowserWidget::modelChanged()
   EntityTreeViewStateSaver* saver = new EntityTreeViewStateSaver( mCollectionView );
   saver->saveState( saveConfig );
   saveConfig.sync();
-  
+
   QAbstractItemModel *model = statisticsToolTipProxyModel->sourceModel();
   statisticsToolTipProxyModel->setSourceModel(0);
   switch ( itemUi.modelBox->currentIndex() ) {

@@ -58,7 +58,7 @@ public:
   {
     if (Qt::DisplayRole != role)
       return QVariant();
-      
+
     switch (column)
     {
     case 0:
@@ -88,13 +88,13 @@ public:
   {
     if (Qt::DisplayRole != role)
       return QVariant();
-    
+
     if (!item.hasPayload<MessagePtr>())
     {
       return QVariant();
     }
     const MessagePtr mail = item.payload<MessagePtr>();
-    
+
     switch (column)
     {
     case 0:
@@ -104,10 +104,10 @@ public:
     case 2:
       return mail->date()->asUnicodeString();
     }
-    
+
     return QVariant();
   }
-  
+
 };
 
 class ContactsState : public AkonadiBrowserModel::State
@@ -124,7 +124,7 @@ public:
   {
     if (Qt::DisplayRole != role)
       return QVariant();
-    
+
     if ( !item.hasPayload<KABC::Addressee>() && !item.hasPayload<KABC::ContactGroup>() )
     {
       return QVariant();
@@ -173,7 +173,7 @@ public:
   {
     if (Qt::DisplayRole != role)
       return QVariant();
-    
+
     if ( !item.hasPayload<IncidencePtr>() )
     {
       return QVariant();
@@ -198,7 +198,6 @@ public:
     }
     return QVariant();
   }
-
 };
 
 AkonadiBrowserModel::AkonadiBrowserModel( Session* session, Monitor* monitor, QObject* parent )
@@ -210,7 +209,7 @@ AkonadiBrowserModel::AkonadiBrowserModel( Session* session, Monitor* monitor, QO
   m_mailState = new MailState();
   m_contactsState = new ContactsState();
   m_calendarState = new CalendarState();
-  
+
   m_currentState = m_genericState;
 }
 
@@ -225,7 +224,11 @@ QVariant AkonadiBrowserModel::getData( const Item &item, int column, int role ) 
 {
   QVariant var = m_currentState->getData(item, column, role);
   if (!var.isValid())
-    return EntityTreeModel::getData(item, column, role);
+  {
+    if (column < 1 )
+      return EntityTreeModel::getData(item, column, role);
+    return QString();
+  }
 
   return var;
 }
@@ -239,8 +242,6 @@ int AkonadiBrowserModel::getColumnCount(int headerSet) const
 {
   if (ItemListHeaders == headerSet)
   {
-    if (m_currentState == m_calendarState)
-      kDebug() << m_currentState->m_itemHeaders;
     return m_currentState->m_itemHeaders.size();
   }
 
@@ -249,7 +250,7 @@ int AkonadiBrowserModel::getColumnCount(int headerSet) const
     return m_currentState->m_collectionHeaders.size();
   }
   // Practically, this should never happen.
-  return columnCount();
+  return EntityTreeModel::getColumnCount(headerSet);
 }
 
 

@@ -181,9 +181,13 @@ QStringList ImapAccount::capabilities() const
 void ImapAccount::doConnect( const QString &password )
 {
   m_capabilities.clear();
+  m_session = createExtraSession( password );
+}
 
+KIMAP::Session *ImapAccount::createExtraSession( const QString &password )
+{
   if ( m_server.isEmpty() ) {
-    return;
+    return 0;
   }
 
   QString server = m_server.section( ":", 0, 0 );
@@ -194,7 +198,7 @@ void ImapAccount::doConnect( const QString &password )
     emit error( EncryptionError,
                 i18n( "You requested TLS/SSL to connect to %1, but your "
                       "system does not seem to be set up for that.", m_server ) );
-    return;
+    return 0;
   }
 
   if ( port <= 0 ) {
@@ -206,10 +210,10 @@ void ImapAccount::doConnect( const QString &password )
     }
   }
 
-  m_session = new KIMAP::Session( server, port, this );
-  m_session->setUiProxy( new SessionUiProxy );
+  KIMAP::Session *session = new KIMAP::Session( server, port, this );
+  session->setUiProxy( new SessionUiProxy );
 
-  KIMAP::LoginJob *loginJob = new KIMAP::LoginJob( m_session );
+  KIMAP::LoginJob *loginJob = new KIMAP::LoginJob( session );
   loginJob->setUserName( m_userName );
   loginJob->setPassword( password );
   loginJob->setEncryptionMode( m_encryption );
@@ -218,13 +222,18 @@ void ImapAccount::doConnect( const QString &password )
   QObject::connect( loginJob, SIGNAL( result( KJob* ) ),
                     this, SLOT( onLoginDone( KJob* ) ) );
   loginJob->start();
+
+  return session;
 }
 
 /******************* Slots  ***********************************************/
 
 void ImapAccount::onLoginDone( KJob *job )
 {
+  KIMAP::LoginJob *login = static_cast<KIMAP::LoginJob*>( job );
+
   if ( job->error()==0 ) {
+    if ( login->session()!=m_session ) return; // No need to test for extra sessions
     KIMAP::CapabilitiesJob *capJob = new KIMAP::CapabilitiesJob( m_session );
     QObject::connect( capJob, SIGNAL( result( KJob* ) ), SLOT( onCapabilitiesTestDone( KJob* ) ) );
     capJob->start();
@@ -232,7 +241,7 @@ void ImapAccount::onLoginDone( KJob *job )
   } else {
     emit error( LoginFailError,
                 i18n( "Could not connect to the IMAP-server %1.", m_server ) );
-    disconnect();
+    disconnect( login->session() );
   }
 }
 
@@ -285,15 +294,21 @@ bool ImapAccount::connect( const QString &password )
   }
 }
 
-bool ImapAccount::disconnect()
+bool ImapAccount::disconnect( KIMAP::Session *session )
 {
-  if ( m_session==0 ) {
+  if ( session==0 ) {
+    session = m_session;
+  }
+
+  if ( session==0 ) {
     return false;
   } else {
-    KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( m_session );
-    QObject::connect( logout, SIGNAL( result( KJob* ) ), m_session, SLOT( deleteLater() ) );
+    KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( session );
+    QObject::connect( logout, SIGNAL( result( KJob* ) ), session, SLOT( deleteLater() ) );
     logout->start();
-    m_session = 0;
+    if ( session==m_session ) {
+      m_session = 0;
+    }
     return true;
   }
 }

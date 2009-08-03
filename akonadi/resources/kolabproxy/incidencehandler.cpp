@@ -29,6 +29,7 @@
 #include <kmime/kmime_codecs.h>
 #include <kcal/comparisonvisitor.h>
 #include <kcal/calformat.h>
+#include <kcal/kcalmimetypevisitor.h>
 #include <libkdepim-copy/kincidencechooser.h>
 #include <KLocale>
 
@@ -60,6 +61,8 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
     KCal::Incidence *inc = incidenceFromKolab(payload);
     kDebug() << "KCal::Incidence " << inc;
     if (inc) {
+      Akonadi::KCalMimeTypeVisitor visitor;
+      inc->accept( visitor );
       IncidencePtr incidencePtr(inc);
       if (m_uidMap.contains(incidencePtr->uid())) {
         ConflictResolution res = resolveConflict(incidencePtr);
@@ -75,7 +78,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
         } else if (res == Both) {
           incidencePtr->setSummary( i18n("Copy of: %1", incidencePtr->summary() ) );
           incidencePtr->setUid( KCal::CalFormat::createUniqueId() );
-          Akonadi::Item copiedItem("text/calendar");
+          Akonadi::Item copiedItem( visitor.mimeType() );
           incidenceToItem(incidencePtr, copiedItem);
           Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
           job->fetchScope().fetchFullPayload();
@@ -86,7 +89,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
       }
       m_uidMap[incidencePtr->uid()] = StoredItem(item.id(), incidencePtr);
       kDebug() << "Add to uidMap: " << incidencePtr->uid() << item.id() << incidencePtr;
-      Akonadi::Item newItem("text/calendar");
+      Akonadi::Item newItem( visitor.mimeType() );
       newItem.setPayload(incidencePtr);
       newItem.setRemoteId(QString::number(item.id()));
       newItems << newItem;

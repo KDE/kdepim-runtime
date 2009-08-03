@@ -87,13 +87,14 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include "imapquotaattribute.h"
 
 #include "imapaccount.h"
+#include "imapidlemanager.h"
 
 using namespace Akonadi;
 
 static const char AKONADI_COLLECTION[] = "akonadiCollection";
 
 ImapResource::ImapResource( const QString &id )
-        :ResourceBase( id ), m_account( 0 )
+        :ResourceBase( id ), m_account( 0 ), m_idle( 0 )
 {
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
@@ -117,7 +118,7 @@ ImapResource::~ImapResource()
 bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
     if ( !m_account || !m_account->session() ) {
-        cancelTask( i18n( "There is curently no connection to the IMAP server." ) );
+        cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
         reconnect();
         return false;
     }
@@ -231,11 +232,16 @@ void ImapResource::startConnect( bool forceManualAuth )
            this, SLOT( onConnectError( int, const QString& ) ) );
 
   m_account->connect( password );
+
+  delete m_idle;
+  m_idle = new ImapIdleManager( m_account->createExtraSession( password ), this );
 }
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
   const QString mailBox = mailBoxForRemoteId( collection.remoteId() );
+
+  kDebug() << "Got notification about item added for local id " << item.id() << " and remote id " << item.remoteId();
 
   // save message to the server.
   MessagePtr msg = item.payload<MessagePtr>();
@@ -264,7 +270,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
   Q_ASSERT( uid > 0 );
 
   const QString remoteId =  collectionRemoteId + "-+-" + QString::number( uid );
-  kDebug() << "Setting remote ID to " << remoteId;
+  kDebug() << "Setting remote ID to " << remoteId << " for item with local id " << item.id();
   item.setRemoteId( remoteId );
 
   changeCommitted( item );
@@ -343,6 +349,8 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
     store->setMode( KIMAP::StoreJob::SetFlags );
     connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
     store->start();
+  } else {
+    changeProcessed();
   }
 }
 
@@ -471,7 +479,12 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
       // If the folder is the Inbox, make some special settings.
       if ( currentPath.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
-        cachePolicy.setIntervalCheckTime( 1 );
+        if ( m_account->capabilities().contains( "IDLE" ) ) {
+          // We've IDLE, no need to poll the inbox
+          cachePolicy.setIntervalCheckTime( -1 );
+        } else {
+          cachePolicy.setIntervalCheckTime( 1 );
+        }
         EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Inbox" ) );
         attr->setIconName( "mail-folder-inbox" );
@@ -611,7 +624,11 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
     addedItems << i;
   }
 
-  itemsRetrievedIncremental( addedItems, Item::List() );
+  if ( sender()->property( "nonIncremental" ).toBool() ) {
+    itemsRetrieved( addedItems );
+  } else {
+    itemsRetrievedIncremental( addedItems, Item::List() );
+  }
 }
 
 void ImapResource::onHeadersFetchDone( KJob */*job*/ )
@@ -747,6 +764,7 @@ void ImapResource::onConnectError( int code, const QString &message )
   }
 
   m_account->disconnect();
+  m_account->disconnect( m_idle->session() );
   emit error( message );
 }
 
@@ -1013,10 +1031,9 @@ void ImapResource::onSelectDone( KJob *job )
     return;
   } else if ( messageCount != realMessageCount ) {
     // The amount on the server does not match the amount in the cache.
-    // that means we need reget the catch completely.
+    // that means we need reget the cache completely.
     kDebug() << "O OH: " << messageCount << " But: " << realMessageCount;
 
-    itemsClear( collection );
     setItemStreamingEnabled( true );
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->session() );
@@ -1031,6 +1048,7 @@ void ImapResource::onSelectDone( KJob *job )
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->setProperty( "nonIncremental", true );
     fetch->start();
     return;
   } else if ( messageCount == realMessageCount && oldNextUid != nextUid
@@ -1039,7 +1057,6 @@ void ImapResource::onSelectDone( KJob *job )
     // behind our back...
     kDebug() << "UIDNEXT check failed, refetching mailbox";
 
-    itemsClear( collection );
     setItemStreamingEnabled( true );
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->session() );
@@ -1054,6 +1071,7 @@ void ImapResource::onSelectDone( KJob *job )
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->setProperty( "nonIncremental", true );
     fetch->start();
     return;
   }
@@ -1112,10 +1130,12 @@ void ImapResource::itemsClear( const Collection &collection )
 
 void ImapResource::doSetOnline(bool online)
 {
-  if ( !online && m_account && m_account->session() && m_account->session()->state() != KIMAP::Session::Disconnected )
+  if ( !online && m_account && m_account->session() && m_account->session()->state() != KIMAP::Session::Disconnected ) {
     m_account->disconnect();
-  else if ( online )
+    m_account->disconnect( m_idle->session() );
+  } else if ( online ) {
     startConnect();
+  }
   ResourceBase::doSetOnline( online );
 }
 

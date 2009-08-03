@@ -59,7 +59,7 @@ void AmazingContactItemDelegate::paint(QPainter* painter, const QStyleOptionView
   int yOffset = (option.rect.height() - PaintingScaleFactor) / 2;
   painter->translate(option.rect.x(), option.rect.y() + yOffset);
 
-  Collection parentCollection = index.data(EntityTreeModel::ParentCollection).value<Collection>();
+  Collection parentCollection = index.data(EntityTreeModel::ParentCollectionRole).value<Collection>();
 
   QString name = addressee.givenName() + " " + addressee.familyName();
 
@@ -70,7 +70,7 @@ void AmazingContactItemDelegate::paint(QPainter* painter, const QStyleOptionView
     QImage image = pic.data();
     painter->drawImage(QRect(0, 0, 40, 40), image);
   }
- 
+
   QString parentName;
   if (parentCollection.hasAttribute<EntityDisplayAttribute>() && !parentCollection.attribute<EntityDisplayAttribute>()->displayName().isEmpty())
   {
