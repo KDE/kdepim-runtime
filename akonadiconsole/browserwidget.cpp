@@ -125,7 +125,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   collectionFilter->setSourceModel( mBrowserModel );
   collectionFilter->addMimeTypeInclusionFilter( Collection::mimeType() );
   collectionFilter->setHeaderSet( EntityTreeModel::CollectionTreeHeaders );
-  
+
   statisticsToolTipProxyModel = new StatisticsToolTipProxyModel( this );
   statisticsToolTipProxyModel->setSourceModel( collectionFilter );
 
@@ -141,7 +141,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
 //   connect( mBrowserModel, SIGNAL( modelAboutToBeReset() ), SLOT( slotBrowserModelAboutToBeReset() ) );
 //   connect( mBrowserModel, SIGNAL( modelReset() ), SLOT( slotBrowserModelReset() ) );
-  
+
   SelectionProxyModel *selectionProxyModel = new SelectionProxyModel( mCollectionView->selectionModel(), this );
   selectionProxyModel->setSourceModel( mBrowserModel );
   selectionProxyModel->setFilterBehavior( SelectionProxyModel::OnlySelectedChildren );
@@ -361,7 +361,7 @@ void BrowserWidget::modelChanged()
   EntityTreeViewStateSaver* saver = new EntityTreeViewStateSaver( mCollectionView );
   saver->saveState( saveConfig );
   saveConfig.sync();
-  
+
   QAbstractItemModel *model = statisticsToolTipProxyModel->sourceModel();
   statisticsToolTipProxyModel->setSourceModel(0);
   switch ( itemUi.modelBox->currentIndex() ) {

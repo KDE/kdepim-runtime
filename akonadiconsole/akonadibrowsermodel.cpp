@@ -58,7 +58,7 @@ public:
   {
     if (Qt::DisplayRole != role)
       return QVariant();
-      
+
     switch (column)
     {
     case 0:
@@ -88,13 +88,13 @@ public:
   {
     if (Qt::DisplayRole != role)
       return QVariant();
-    
+
     if (!item.hasPayload<MessagePtr>())
     {
       return QVariant();
     }
     const MessagePtr mail = item.payload<MessagePtr>();
-    
+
     switch (column)
     {
     case 0:
@@ -104,10 +104,10 @@ public:
     case 2:
       return mail->date()->asUnicodeString();
     }
-    
+
     return QVariant();
   }
-  
+
 };
 
 class ContactsState : public AkonadiBrowserModel::State
@@ -124,7 +124,7 @@ public:
   {
     if (Qt::DisplayRole != role)
       return QVariant();
-    
+
     if ( !item.hasPayload<KABC::Addressee>() && !item.hasPayload<KABC::ContactGroup>() )
     {
       return QVariant();
@@ -173,7 +173,7 @@ public:
   {
     if (Qt::DisplayRole != role)
       return QVariant();
-    
+
     if ( !item.hasPayload<IncidencePtr>() )
     {
       return QVariant();
@@ -209,7 +209,7 @@ AkonadiBrowserModel::AkonadiBrowserModel( Session* session, Monitor* monitor, QO
   m_mailState = new MailState();
   m_contactsState = new ContactsState();
   m_calendarState = new CalendarState();
-  
+
   m_currentState = m_genericState;
 }
 
