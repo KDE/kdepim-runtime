@@ -56,6 +56,7 @@ public:
 
 private:
   bool fetchHeader();
+  bool fetchBody();
 }; // class DataRfc822
 
 

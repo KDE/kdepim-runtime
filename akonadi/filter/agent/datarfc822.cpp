@@ -30,6 +30,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemcopyjob.h>
 #include <akonadi/itemmovejob.h>
+
 #include <akonadi/kmime/messageparts.h>
 
 #include <akonadi/filter/datamemberdescriptor.h>
@@ -132,31 +133,85 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
 
   if( !mMessage )
   {
-     // We need AT LEAST the header.
-     if( !fetchHeader() )
-     {
-       kWarning() << "Fetching message header failed!";
-       return QVariant();
-     }
+    // We need AT LEAST the header.
+    if( !fetchHeader() )
+    {
+      kWarning() << "Fetching message header failed!";
+      return QVariant();
+    }
   }
 
   switch( dataMember->id() )
   {
     case Akonadi::Filter::DataMemberRfc822FromHeader:
+      kDebug() << "Returning From header '" << mMessage->from()->asUnicodeString() << "'";
       return mMessage->from()->asUnicodeString();
     break;
-    case Akonadi::Filter::DataMemberRfc822SubjectHeader:
-      kDebug() << "Returning subject '" << mMessage->subject()->asUnicodeString() << "'";
-      return mMessage->subject()->asUnicodeString();
-    break;
     case Akonadi::Filter::DataMemberRfc822ToHeader:
+      // FIXME: Parse the header to obtain a string list ?
+      kDebug() << "Returning To header '" << mMessage->to()->asUnicodeString() << "'";
       return mMessage->to()->asUnicodeString();
     break;
+    case Akonadi::Filter::DataMemberRfc822ReplyToHeader:
+      kDebug() << "Returning Reply-To header '" << mMessage->replyTo()->asUnicodeString() << "'";
+      return mMessage->replyTo()->asUnicodeString();
+    break;
+    case Akonadi::Filter::DataMemberRfc822SubjectHeader:
+      kDebug() << "Returning Subject header '" << mMessage->subject()->asUnicodeString() << "'";
+      return mMessage->subject()->asUnicodeString();
+    break;
     case Akonadi::Filter::DataMemberRfc822CcHeader:
+      // FIXME: Parse the header to obtain a string list ?
+      kDebug() << "Returning CC header '" << mMessage->cc()->asUnicodeString() << "'";
       return mMessage->cc()->asUnicodeString();
     break;
     case Akonadi::Filter::DataMemberRfc822BccHeader:
+      // FIXME: Parse the header to obtain a string list ?
+      kDebug() << "Returning BCC header '" << mMessage->bcc()->asUnicodeString() << "'";
       return mMessage->bcc()->asUnicodeString();
+    break;
+    case Akonadi::Filter::DataMemberRfc822AllRecipientHeaders:
+    {
+      QStringList recipients;
+      QString hdr = mMessage->to()->asUnicodeString();
+      if( !hdr.isEmpty() )
+        recipients << hdr;
+      hdr = mMessage->cc()->asUnicodeString();
+      if( !hdr.isEmpty() )
+        recipients << hdr;
+      hdr = mMessage->bcc()->asUnicodeString();
+      if( !hdr.isEmpty() )
+        recipients << hdr;
+      return recipients;
+    }
+    break;
+    case Akonadi::Filter::DataMemberRfc822AllHeaders:
+      // FIXME: Which is the head encoding ? ... should we decode all the headers ?
+      return QString::fromAscii( mMessage->head() );
+    break;
+    case Akonadi::Filter::DataMemberRfc822MessageBody:
+      if( !mFetchedBody )
+      {
+        if( !fetchBody() )
+        {
+          kWarning() << "Fetching message body failed!";
+          return QVariant();
+        }
+      }
+      // Hum.. not sure about this..
+      return QString::fromAscii( mMessage->body() );
+    break;
+    case Akonadi::Filter::DataMemberRfc822WholeMessage:
+      if( !mFetchedBody )
+      {
+        if( !fetchBody() )
+        {
+          kWarning() << "Fetching message body failed!";
+          return QVariant();
+        }
+      }
+      // Hum.. not sure about this..
+      return QString::fromAscii( "%1\r\n%2" ).arg( QString::fromAscii( mMessage->head() ) ).arg( QString::fromAscii( mMessage->body() ) );
     break;
     default:
       // not my data member: fall through
@@ -173,16 +228,30 @@ bool DataRfc822::fetchHeader()
   Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob( mItem );
 
   job->setCollection( mCollection );
-  job->fetchScope().fetchPayloadPart( QByteArray( Akonadi::MessagePart::Header ) );
+
+  // FIXME: this doesn't work with IMAP for now :/
+  //job->fetchScope().fetchPayloadPart( QByteArray( Akonadi::MessagePart::Header ) ); 
+  job->fetchScope().fetchFullPayload();
 
   if( !job->exec() )
+  {
+    kWarning() << "Fetching the message header via" << Akonadi::MessagePart::Header << "failed with error '" << job->errorString() << "'";
     return false;
+  }
 
   Q_ASSERT( job->items().count() == 1 );
 
   mItem = job->items().first();
+
+  kDebug() << "Fetched item has id" << mItem.id() << "and mimetype" << mItem.mimeType();
+
+  kDebug() << "Raw payload is" << mItem.payloadData();
+
   if( !mItem.hasPayload< MessagePtr >() )
+  {
+    kWarning() << "Fetching the message header via" << Akonadi::MessagePart::Header << "failed: the fetched item has no MessagePtr payload!";
     return false;
+  }
 
   mMessage = mItem.payload< MessagePtr >();
 
@@ -191,3 +260,35 @@ bool DataRfc822::fetchHeader()
   return mMessage;
 }
 
+bool DataRfc822::fetchBody()
+{
+  Q_ASSERT( !mFetchedBody );
+
+  kDebug() << "Fetching message body...";
+
+  Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob( mItem );
+
+  job->setCollection( mCollection );
+
+  job->fetchScope().fetchFullPayload();
+
+  if( !job->exec() )
+    return false;
+
+  Q_ASSERT( job->items().count() == 1 );
+
+  mItem = job->items().first();
+
+  kDebug() << "Fetched item has id" << mItem.id() << "and mimetype" << mItem.mimeType();
+
+  kDebug() << "Raw payload is" << mItem.payloadData();
+
+  if( !mItem.hasPayload< MessagePtr >() )
+    return false;
+
+  mMessage = mItem.payload< MessagePtr >();
+
+  kDebug() << "Message body fetched: head is '" << mMessage->head() << "'";
+
+  return mMessage;
+}
