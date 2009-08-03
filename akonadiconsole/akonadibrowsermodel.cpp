@@ -250,7 +250,7 @@ int AkonadiBrowserModel::getColumnCount(int headerSet) const
     return m_currentState->m_collectionHeaders.size();
   }
   // Practically, this should never happen.
-  return columnCount();
+  return EntityTreeModel::getColumnCount(headerSet);
 }
 
 
