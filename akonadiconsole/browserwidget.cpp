@@ -232,7 +232,7 @@ void BrowserWidget::clear()
 
 void BrowserWidget::itemActivated(const QModelIndex & index)
 {
-  const Item item = index.data( EntityTreeModel::ItemRole ).value< Item >();
+  const Item item = index.sibling( index.row(), 0 ).data( EntityTreeModel::ItemRole ).value< Item >();
   if ( !item.isValid() ) {
     clear();
     return;
