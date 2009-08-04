@@ -393,7 +393,7 @@ bool XmlOperations::compareAttributes(const Entity& entity, const Entity& refEnt
   for ( int i = 0; i < attrs.count(); ++i ) {
     Attribute* attr = attrs.at( i );
     if ( refAttrs.count() <= i ) {
-      mErrorMsg = QString::fromLatin1( "Additional attribute of type '%1' for object with remote id '%1' was found." )
+      mErrorMsg = QString::fromLatin1( "Additional attribute of type '%1' for object with remote id '%2' was found." )
         .arg( QString::fromLatin1( attr->type() ) ).arg( entity.remoteId() );
       return false;
     }
