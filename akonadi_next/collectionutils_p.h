@@ -75,7 +75,7 @@ namespace CollectionUtils
         return QLatin1String( "x-office-address-book" );
       // TODO: add all other content types and/or fix their mimetypes
       if ( content.contains( QLatin1String( "akonadi/event" ) ) || content.contains( QLatin1String( "text/ical" ) ) )
-        return QLatin1String( "view-pim-calendar" );
+        return QLatin1String( "view-calendar" );
       if ( content.contains( QLatin1String( "akonadi/task" ) ) )
         return QLatin1String( "view-pim-tasks" );
     } else if ( content.isEmpty() ) {
