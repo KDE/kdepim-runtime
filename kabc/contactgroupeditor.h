@@ -23,6 +23,8 @@
 #include "akonadi-kabccommon_export.h"
 #include <QtGui/QWidget>
 
+class QAbstractItemModel;
+
 namespace Akonadi {
 
 class Collection;
@@ -60,6 +62,13 @@ class AKONADI_KABCCOMMON_EXPORT ContactGroupEditor : public QWidget
      * Destroys the contact group editor.
      */
     virtual ~ContactGroupEditor();
+
+    /**
+     * Sets the contact completion @p model.
+     *
+     * @note Must be called before the first loadContactGroup() call.
+     */
+    void setCompletionModel( QAbstractItemModel *model );
 
   public Q_SLOTS:
     /**

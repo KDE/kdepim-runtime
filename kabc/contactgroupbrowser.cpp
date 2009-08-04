@@ -80,6 +80,10 @@ static QString contactGroupToHtml( const KABC::ContactGroup &group )
 
     strGroup.append( QString::fromLatin1( "<tr><td align=\"left\" colspan=\"2\">%1</td></tr>" ).arg( entry ) );
   }
+  for ( unsigned int i = 0; i < group.contactReferenceCount(); ++i ) {
+    const KABC::ContactGroup::ContactReference reference = group.contactReference( i );
+    strGroup.append( QString::fromLatin1( "<tr><td align=\"left\" colspan=\"2\">%1</td></tr>" ).arg( reference.uid() ) );
+  }
 
   strGroup.append( QString::fromLatin1( "</table></div>\n" ) );
 
