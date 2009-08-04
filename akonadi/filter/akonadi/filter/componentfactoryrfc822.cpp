@@ -139,7 +139,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new FunctionDescriptor(
           FunctionRfc822AnyEMailAddressIn,
           QString::fromAscii( "address" ),
-          i18n( "if any address in" ),
+          i18n( "any address in" ),
           DataTypeAddress | DataTypeAddressList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -149,7 +149,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new FunctionDescriptor(
           FunctionRfc822AnyEMailAddressDomainIn,
           QString::fromAscii( "address:domain" ),
-          i18n( "if any domain in" ),
+          i18n( "any domain in" ),
           DataTypeStringList,
           DataTypeAddress | DataTypeAddressList
         )
@@ -160,7 +160,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new FunctionDescriptor(
           FunctionRfc822AnyEMailAddressLocalPartIn,
           QString::fromAscii( "address:local" ),
-          i18n( "if any username in" ),
+          i18n( "any username in" ),
           DataTypeStringList,
           DataTypeAddress | DataTypeAddressList
         )

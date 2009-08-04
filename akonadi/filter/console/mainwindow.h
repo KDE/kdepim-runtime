@@ -55,8 +55,10 @@ public:
   virtual ~MainWindow();
 public:
   QListWidget * mFilterListWidget;
-  QPushButton * mNewFilterButton;
-  QPushButton * mEditFilterButton;
+  QPushButton * mNewFilterButtonLBB;
+  QPushButton * mNewFilterButtonTBB;
+  QPushButton * mEditFilterButtonLBB;
+  QPushButton * mEditFilterButtonTBB;
   QPushButton * mDeleteFilterButton;
   static MainWindow * mInstance;
   OrgFreedesktopAkonadiFilterAgentInterface * mFilterAgent;
@@ -74,10 +76,14 @@ public:
  
 protected:
   void listFilters();
+  void newFilter( bool lbb );
+  void editFilter( bool lbb );
 
 protected slots:
-  void slotNewFilterButtonClicked();
-  void slotEditFilterButtonClicked();
+  void slotNewFilterLBBButtonClicked();
+  void slotNewFilterTBBButtonClicked();
+  void slotEditFilterLBBButtonClicked();
+  void slotEditFilterTBBButtonClicked();
   void slotDeleteFilterButtonClicked();
 };
 

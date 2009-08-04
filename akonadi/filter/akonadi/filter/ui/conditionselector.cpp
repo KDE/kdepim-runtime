@@ -33,6 +33,7 @@
 #include <akonadi/filter/ui/extensionlabel.h>
 #include <akonadi/filter/ui/editorfactory.h>
 #include <akonadi/filter/ui/valueeditor.h>
+#include <akonadi/filter/ui/ruleeditor.h>
 
 #include <KLocale>
 
@@ -81,9 +82,11 @@ ConditionSelector::ConditionSelector(
     QWidget * parent,
     ComponentFactory * componentfactory,
     EditorFactory * editorComponentFactory,
-    ConditionSelector * parentConditionSelector
+    RuleEditor * ruleEditor,
+    ConditionSelector * parentConditionSelector,
+    bool isFirst
   )
-  : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory )
+  : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory ), mRuleEditor( ruleEditor )
 {
   mParentConditionSelector = parentConditionSelector;
 
@@ -112,7 +115,7 @@ ConditionSelector::ConditionSelector(
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeNot;
-  d->mText = i18n( "if the condition below is NOT met" );
+  d->mText = i18n( "the condition below is NOT met" );
   d->mColor = Qt::red;
   d->mFunctionDescriptor = 0;
   d->mDataMemberDescriptor = 0;
@@ -120,7 +123,7 @@ ConditionSelector::ConditionSelector(
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeAnd;
-  d->mText = i18n( "if ALL of the conditions below are met" );
+  d->mText = i18n( "ALL of the conditions below are met" );
   d->mColor = Qt::blue;
   d->mFunctionDescriptor = 0;
   d->mDataMemberDescriptor = 0;
@@ -128,7 +131,7 @@ ConditionSelector::ConditionSelector(
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeOr;
-  d->mText = i18n( "if ANY of the conditions below is met" );
+  d->mText = i18n( "ANY of the conditions below is met" );
   d->mColor = Qt::darkGreen;
   d->mFunctionDescriptor = 0;
   d->mDataMemberDescriptor = 0;
@@ -146,7 +149,8 @@ ConditionSelector::ConditionSelector(
       d = new ConditionDescriptor;
       d->mType = Condition::ConditionTypePropertyTest;
       d->mText = prop->name();
-      d->mText += QChar(' ');
+      if( !d->mText.isEmpty() )
+        d->mText += QChar(' ');
       d->mText += dm->name();
       d->mColor = QColor(); // no overlay
       d->mFunctionDescriptor = prop;
@@ -157,7 +161,7 @@ ConditionSelector::ConditionSelector(
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeTrue;
-  d->mText = i18n( "if true (so always)" );
+  d->mText = i18n( "true (so always)" );
   d->mColor = QColor( 0, 60, 0 );
   d->mFunctionDescriptor = 0;
   d->mDataMemberDescriptor = 0;
@@ -165,7 +169,7 @@ ConditionSelector::ConditionSelector(
 
   d = new ConditionDescriptor;
   d->mType = Condition::ConditionTypeFalse;
-  d->mText = i18n( "if false (so never)" );
+  d->mText = i18n( "false (so never)" );
   d->mColor = QColor( 60, 0, 0 );
   d->mFunctionDescriptor = 0;
   d->mDataMemberDescriptor = 0;
@@ -175,9 +179,38 @@ ConditionSelector::ConditionSelector(
 
   QColor clrText = palette().color( QPalette::Text );
 
+  
   foreach( d, mPrivate->mConditionDescriptorList )
   {
-    mPrivate->mTypeComboBox->addItem( d->mText, QVariant( idx ) );
+    if( mParentConditionSelector )
+    {
+      if( isFirst )
+      {
+        mPrivate->mTypeComboBox->addItem( d->mText, QVariant( idx ) );
+      } else {
+        ConditionDescriptor * parentCondition = mParentConditionSelector->conditionDescriptorForActiveType();
+        switch( parentCondition->mType )
+        {
+          case Condition::ConditionTypeAnd:
+            mPrivate->mTypeComboBox->addItem( i18n( "and %1", d->mText ), QVariant( idx ) );
+          break;
+          case Condition::ConditionTypeOr:
+            mPrivate->mTypeComboBox->addItem( i18n( "or %1", d->mText ), QVariant( idx ) );
+          break;
+          default:
+            // hum... should be NOT, right ?
+            Q_ASSERT( parentCondition->mType == Condition::ConditionTypeNot );
+            mPrivate->mTypeComboBox->addItem( d->mText, QVariant( idx ) );
+          break;
+        }
+      }
+    } else {
+      if( d->mText.isEmpty() )
+        mPrivate->mTypeComboBox->addItem( i18n( "if" ), QVariant( idx ) );
+      else
+        mPrivate->mTypeComboBox->addItem( i18n( "if %1", d->mText ), QVariant( idx ) );
+    }
+
     if( d->mColor.isValid() )
     {
       QColor clrMerged = QColor::fromRgb(
@@ -308,7 +341,7 @@ void ConditionSelector::setupUIForActiveType()
 
       if( mPrivate->mChildConditionSelectorList.count() == 0 )
       {
-        ConditionSelector * child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, this );
+        ConditionSelector * child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, mRuleEditor, this, true );
         mPrivate->mChildConditionSelectorList.append( child );
         mPrivate->mChildConditionListLayout->addWidget( child );
       }
@@ -322,6 +355,54 @@ void ConditionSelector::setupUIForActiveType()
   }
 
 }
+
+QString ConditionSelector::conditionDescription()
+{
+  ConditionDescriptor * d = conditionDescriptorForActiveType();
+
+  switch( d->mType )
+  {
+    case Condition::ConditionTypeAnd:
+      return i18n( "multiple conditions apply" );
+    break;
+    case Condition::ConditionTypeOr:
+      return i18n( "some conditions apply" );
+    break;
+    case Condition::ConditionTypeNot:
+    {
+      QString childCondition;
+      if( mPrivate->mChildConditionSelectorList.count() > 0 )
+      {
+        ConditionSelector * sel = mPrivate->mChildConditionSelectorList.first();
+        Q_ASSERT( sel );
+
+        childCondition = sel->conditionDescription();
+      }
+      if( childCondition.isEmpty() )
+        childCondition = QString::fromAscii( "???" );
+
+      return i18n( "not ( %1 )", childCondition );
+    }
+    break;
+    case Condition::ConditionTypeTrue:
+      return QString(); // like an empty condition
+    break;
+    case Condition::ConditionTypeFalse:
+      return i18n( "false" );
+    break;
+    case Condition::ConditionTypePropertyTest:
+      return d->mText;
+    break;
+    case Condition::ConditionTypeUnknown:
+      return QString(); // empty condition
+    break;
+    default:
+    break;
+  }
+
+  return QString::fromAscii( "???" );
+}
+
 
 void ConditionSelector::childEditorTypeChanged( ConditionSelector * child )
 {
@@ -342,7 +423,7 @@ void ConditionSelector::childEditorTypeChanged( ConditionSelector * child )
     if( !child->isEmpty() )
     {
       // need a new one
-      child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, this );
+      child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, mRuleEditor, this, false );
       mPrivate->mChildConditionSelectorList.append( child );
       mPrivate->mChildConditionListLayout->addWidget( child );
     }
@@ -400,6 +481,8 @@ void ConditionSelector::typeComboBoxActivated( int )
 
   if( mParentConditionSelector )
     mParentConditionSelector->childEditorTypeChanged( this );
+
+  mRuleEditor->childConditionSelectorContentsChanged();
 }
 
 Condition::ConditionType ConditionSelector::currentConditionType()
@@ -474,6 +557,7 @@ void ConditionSelector::operatorDescriptorComboBoxActivated( int )
   if( !op )
   {
     mPrivate->mValueEditor->widget()->hide();
+    mRuleEditor->childConditionSelectorContentsChanged();
     return;
   }
 
@@ -481,6 +565,7 @@ void ConditionSelector::operatorDescriptorComboBoxActivated( int )
   {
     case DataTypeNone:
       mPrivate->mValueEditor->widget()->hide();
+      mRuleEditor->childConditionSelectorContentsChanged();
       return;
     break;
     case DataTypeString:
@@ -503,6 +588,8 @@ void ConditionSelector::operatorDescriptorComboBoxActivated( int )
     mPrivate->mRightControlsLayout->addWidget( mPrivate->mValueEditor->widget(), 0, 2 );
   }
   mPrivate->mValueEditor->widget()->show();
+
+  mRuleEditor->childConditionSelectorContentsChanged();
 }
 
 void ConditionSelector::fillFromCondition( Condition::Base * condition )
@@ -574,7 +661,14 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       
       while( mPrivate->mChildConditionSelectorList.count() < expectedEditorCount )
       {
-        child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, this );
+        child = new ConditionSelector(
+            mPrivate->mChildConditionListBase,
+            mComponentFactory,
+            mEditorFactory,
+            mRuleEditor,
+            this,
+            mPrivate->mChildConditionSelectorList.count() == 0
+          );
         mPrivate->mChildConditionSelectorList.append( child );
         mPrivate->mChildConditionListLayout->addWidget( child );
       }
@@ -603,7 +697,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       {
         if( mPrivate->mChildConditionSelectorList.count() == 0 )
         {
-          child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, this );
+          child = new ConditionSelector( mPrivate->mChildConditionListBase, mComponentFactory, mEditorFactory, mRuleEditor, this, true );
           mPrivate->mChildConditionSelectorList.append( child );
           mPrivate->mChildConditionListLayout->addWidget( child );
         } else {

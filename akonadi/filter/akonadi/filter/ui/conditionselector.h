@@ -48,13 +48,21 @@ class EditorFactory;
 
 class ConditionDescriptor;
 class ConditionSelectorPrivate;
+class RuleEditor;
 
 class AKONADI_FILTER_UI_EXPORT ConditionSelector : public QWidget
 {
   Q_OBJECT
 
 public:
-  ConditionSelector( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory, ConditionSelector * parentConditionSelector = 0 );
+  ConditionSelector(
+      QWidget * parent,
+      ComponentFactory * componentfactory,
+      EditorFactory * editorComponentFactory,
+      RuleEditor * ruleEditor,
+      ConditionSelector * parentConditionSelector = 0,
+      bool isFirst = true
+    );
   virtual ~ConditionSelector();
 
 protected:
@@ -63,6 +71,7 @@ protected:
   EditorFactory * mEditorFactory;
   ConditionSelector * mParentConditionSelector;
   ConditionSelectorPrivate * mPrivate;
+  RuleEditor * mRuleEditor;
 
 public:
   virtual void fillFromCondition( Condition::Base * condition );
@@ -70,6 +79,8 @@ public:
   Condition::ConditionType currentConditionType();
   void reset();
   bool isEmpty();
+
+  QString conditionDescription();
 
 protected:
   void childEditorTypeChanged( ConditionSelector * child );

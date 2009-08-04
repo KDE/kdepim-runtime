@@ -53,7 +53,13 @@ class AKONADI_FILTER_UI_EXPORT ActionSelector : public QWidget
 {
   Q_OBJECT
 public:
-  ActionSelector( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory, RuleEditor * ruleEditor );
+  ActionSelector(
+      QWidget * parent,
+      ComponentFactory * componentfactory,
+      EditorFactory * editorComponentFactory,
+      RuleEditor * ruleEditor,
+      bool isFirst
+    );
   virtual ~ActionSelector();
 
 protected:
@@ -67,6 +73,7 @@ public:
   virtual Action::Base * commitState( Component * parent );
   Action::ActionType currentActionType();
   bool currentActionIsTerminal();
+  bool isEmpty();
 protected slots:
   void typeComboBoxActivated( int index );
 private:

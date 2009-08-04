@@ -32,9 +32,12 @@
 #include <akonadi/filter/componentfactory.h>
 #include <akonadi/filter/rule.h>
 
+#include <QtCore/QTimer>
+
 #include <QtGui/QLayout>
 
 #include <KDebug>
+#include <KLocale>
 
 namespace Akonadi
 {
@@ -49,12 +52,15 @@ public:
   ConditionSelector * mConditionSelector;
   QList< ActionSelector * > mActionSelectorList;
   QVBoxLayout * mLayout;
+  bool mEmitRuleChangedPending;
 };
 
 RuleEditor::RuleEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory )
   : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory )
 {
   mPrivate = new RuleEditorPrivate;
+
+  mPrivate->mEmitRuleChangedPending = false;
 
   setSizePolicy( QSizePolicy::Preferred, QSizePolicy::MinimumExpanding );
 
@@ -63,10 +69,10 @@ RuleEditor::RuleEditor( QWidget * parent, ComponentFactory * componentfactory, E
 
   mPrivate->mLayout->addStretch();
 
-  mPrivate->mConditionSelector = new ConditionSelector( this, componentfactory, editorComponentFactory );
+  mPrivate->mConditionSelector = new ConditionSelector( this, componentfactory, editorComponentFactory, this );
   mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, mPrivate->mConditionSelector );
 
-  ActionSelector * actionEditor = new ActionSelector( this, componentfactory, editorComponentFactory, this );
+  ActionSelector * actionEditor = new ActionSelector( this, componentfactory, editorComponentFactory, this, true );
   mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionEditor );
   mPrivate->mActionSelectorList.append( actionEditor );
 }
@@ -76,6 +82,22 @@ RuleEditor::~RuleEditor()
   qDeleteAll( mPrivate->mActionSelectorList );
   delete mPrivate;
 }
+
+bool RuleEditor::isEmpty()
+{
+  if( !mPrivate->mConditionSelector->isEmpty() )
+    return false;
+  if( mPrivate->mActionSelectorList.count() > 0 )
+    return false;
+  ActionSelector * selector = mPrivate->mActionSelectorList.first();
+  Q_ASSERT( selector );
+
+  if( !selector->isEmpty() )
+    return false;
+
+  return true;
+}
+
 
 void RuleEditor::fillFromRule( Rule * rule )
 {
@@ -146,6 +168,9 @@ Rule * RuleEditor::commitState( Component * parent )
 
 void RuleEditor::setSelectorCount( int count )
 {
+  if( count == mPrivate->mActionSelectorList.count() )
+    return;
+
   while( mPrivate->mActionSelectorList.count() > count )
   {
     delete mPrivate->mActionSelectorList.last();
@@ -156,11 +181,13 @@ void RuleEditor::setSelectorCount( int count )
 
   while( mPrivate->mActionSelectorList.count() < count )
   {
-    actionSelector = new ActionSelector( this, mComponentFactory, mEditorFactory, this );
+    actionSelector = new ActionSelector( this, mComponentFactory, mEditorFactory, this, mPrivate->mActionSelectorList.count() == 0 );
     mPrivate->mLayout->insertWidget( mPrivate->mLayout->count() - 1, actionSelector );
     mPrivate->mActionSelectorList.append( actionSelector );
     actionSelector->show();
   }
+
+  delayedEmitRuleChanged();
 }
 
 void RuleEditor::fixupVisibleSelectorList()
@@ -191,6 +218,8 @@ void RuleEditor::fixupVisibleSelectorList()
     countToKill++;
   }  
 
+  bool ruleHasChanged = countToKill > 0;
+
   // kill the excess of editors then
   while( countToKill > 0 )
   {
@@ -201,13 +230,35 @@ void RuleEditor::fixupVisibleSelectorList()
 
   // FIXME: it would be nice to check for "continue processing" and "stop processing"
   //        in the middle and move them to the end, eventually.
+
+  if( ruleHasChanged )
+    delayedEmitRuleChanged();
 }
 
 void RuleEditor::childActionSelectorTypeChanged( ActionSelector * )
 {
   fixupVisibleSelectorList();
+  delayedEmitRuleChanged();
 }
 
+void RuleEditor::childConditionSelectorContentsChanged()
+{
+  delayedEmitRuleChanged();
+}
+
+void RuleEditor::delayedEmitRuleChanged()
+{
+  if( mPrivate->mEmitRuleChangedPending )
+    return;
+  mPrivate->mEmitRuleChangedPending = true;
+  QTimer::singleShot( 100, this, SLOT( emitRuleChanged() ) );
+}
+
+void RuleEditor::emitRuleChanged()
+{
+  emit ruleChanged();
+  mPrivate->mEmitRuleChangedPending = false;
+}
 
 QSize RuleEditor::sizeHint() const
 {
@@ -217,6 +268,25 @@ QSize RuleEditor::sizeHint() const
 QSize RuleEditor::minimumSizeHint() const
 {
   return layout()->minimumSize();
+}
+
+QString RuleEditor::ruleDescription()
+{
+  if( isEmpty() )
+    return i18n( "empty rule" );
+
+  QString conditionDescription = mPrivate->mConditionSelector->conditionDescription();
+
+  QString actionsDescription = i18n( "do nuthin..." );
+
+  if( conditionDescription.isEmpty() )
+    return actionsDescription;
+
+  if( conditionDescription == i18n( "false" ) ) // ok... this is a HACK :D
+    return i18n( "never %1", actionsDescription );
+
+  return i18n( "if %1 then %2", conditionDescription, actionsDescription );
+
 }
 
 } // namespace UI

@@ -56,7 +56,7 @@ class FilterEditor : public KDialog
 {
   Q_OBJECT
 public:
-  FilterEditor( QWidget * parent, Filter * filter );
+  FilterEditor( QWidget * parent, Filter * filter, bool lbb );
   virtual ~FilterEditor();
 
 protected:

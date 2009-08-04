@@ -55,7 +55,7 @@
 
 
 
-FilterEditor::FilterEditor( QWidget * parent, Filter * filter )
+FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
   : KDialog( parent ), mFilter( filter )
 {
   setCaption( i18n( "Filter Editor" ) );
@@ -83,9 +83,16 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter )
 
   g->setRowStretch( 1, 1 );
 
-  mProgramEditor = new Akonadi::Filter::UI::ProgramEditor( tabWidget, mFilter->componentFactory(), mFilter->editorFactory() );
+  mProgramEditor = new Akonadi::Filter::UI::ProgramEditor(
+      tabWidget,
+      mFilter->componentFactory(),
+      mFilter->editorFactory(),
+      lbb ? Akonadi::Filter::UI::ProgramEditor::ListBoxBased : Akonadi::Filter::UI::ProgramEditor::ToolBoxBased
+    );
   tabWidget->addTab( mProgramEditor, i18n( "Program" ) );
   mProgramEditor->fillFromProgram( filter->program() );
+
+  setMinimumSize( 640, 480 );
 }
 
 FilterEditor::~FilterEditor()

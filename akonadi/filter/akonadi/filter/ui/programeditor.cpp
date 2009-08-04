@@ -37,8 +37,8 @@ namespace Filter
 namespace UI
 {
 
-ProgramEditor::ProgramEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory )
-  : RuleListEditor( parent, componentfactory, editorComponentFactory )
+ProgramEditor::ProgramEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory, EditorStyle style )
+  : RuleListEditor( parent, componentfactory, editorComponentFactory, style )
 {
   setAutoExpand( false );
 }

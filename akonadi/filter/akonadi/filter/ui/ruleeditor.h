@@ -44,11 +44,13 @@ namespace UI
 
 class EditorFactory;
 class ActionSelector;
+class ConditionSelector;
 class RuleEditorPrivate;
 
 class AKONADI_FILTER_UI_EXPORT RuleEditor : public QWidget
 {
   friend class ActionSelector;
+  friend class ConditionSelector;
   Q_OBJECT
 public:
   RuleEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory );
@@ -60,16 +62,27 @@ protected:
   RuleEditorPrivate * mPrivate;
 
 public:
+  bool isEmpty();
   virtual void fillFromRule( Rule * rule );
   virtual Rule * commitState( Component * parent );
 
+  QString ruleDescription();
+
 protected:
   void childActionSelectorTypeChanged( ActionSelector * child );
+  void childConditionSelectorContentsChanged();
   void setSelectorCount( int count );
   void fixupVisibleSelectorList();
+  void delayedEmitRuleChanged();
 
   virtual QSize sizeHint() const;
   virtual QSize minimumSizeHint() const;
+
+protected Q_SLOTS:
+  void emitRuleChanged();
+
+Q_SIGNALS:
+  void ruleChanged();
 
 }; // class RuleEditor
 

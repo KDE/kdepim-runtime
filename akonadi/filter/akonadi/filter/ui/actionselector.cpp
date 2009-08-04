@@ -74,7 +74,13 @@ public:
   QGridLayout * mLayout;
 };
 
-ActionSelector::ActionSelector( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory, RuleEditor * ruleEditor )
+ActionSelector::ActionSelector(
+    QWidget * parent,
+    ComponentFactory * componentfactory,
+    EditorFactory * editorComponentFactory,
+    RuleEditor * ruleEditor,
+    bool isFirst
+  )
   : QWidget( parent ), mComponentFactory( componentfactory ), mEditorFactory( editorComponentFactory ), mRuleEditor( ruleEditor )
 {
   mPrivate = new ActionSelectorPrivate;
@@ -139,7 +145,11 @@ ActionSelector::ActionSelector( QWidget * parent, ComponentFactory * componentfa
 
   foreach( d, mPrivate->mActionDescriptorList )
   {
-    mPrivate->mTypeComboBox->addItem( d->mText, idx );
+    if( isFirst )
+      mPrivate->mTypeComboBox->addItem( i18n( "then %1", d->mText ), idx );
+    else
+      mPrivate->mTypeComboBox->addItem( i18n( "and %1", d->mText ), idx );
+
     if( d->mColor.isValid() )
     {
       QColor clrMerged = QColor::fromRgb(
@@ -260,6 +270,13 @@ Action::ActionType ActionSelector::currentActionType()
   ActionDescriptor * d = descriptorForActiveType();
   Q_ASSERT( d );
   return d->mType; 
+}
+
+bool ActionSelector::isEmpty()
+{
+  ActionDescriptor * d = descriptorForActiveType();
+  Q_ASSERT( d );
+  return d->mType == Action::ActionTypeUnknown;
 }
 
 ActionDescriptor * ActionSelector::descriptorForActiveType()

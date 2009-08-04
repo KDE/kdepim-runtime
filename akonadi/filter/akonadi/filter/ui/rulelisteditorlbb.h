@@ -1,7 +1,7 @@
 /****************************************************************************** * *
  *
- *  File : rulelisteditor.h
- *  Created on Fri 15 May 2009 04:53:16 by Szymon Tomasz Stefanek
+ *  File : rulelisteditorlbb.h
+ *  Created on Tue 04 Aug 2009 02:31:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
@@ -23,17 +23,24 @@
  *
  *******************************************************************************/
 
-#ifndef _AKONADI_FILTER_UI_RULELISTEDITOR_H_
-#define _AKONADI_FILTER_UI_RULELISTEDITOR_H_
+#ifndef _AKONADI_FILTER_UI_RULELISTEDITORLBB_H_
+#define _AKONADI_FILTER_UI_RULELISTEDITORLBB_H_
 
 #include <akonadi/filter/ui/config-akonadi-filter-ui.h>
 
-#include <akonadi/filter/ui/actioneditor.h>
+#include <QtGui/QSplitter>
+
+class QListWidget;
+class QLabel;
+class QPushButton;
 
 namespace Akonadi
 {
 namespace Filter
 {
+
+class ComponentFactory;
+
 namespace Action
 {
   class RuleList;
@@ -42,37 +49,55 @@ namespace Action
 namespace UI
 {
 
-class RuleListEditorTBB;
-class RuleListEditorLBB;
+class EditorFactory;
+class ExpandingScrollArea;
 
-class AKONADI_FILTER_UI_EXPORT RuleListEditor : public ActionEditor
+class AKONADI_FILTER_UI_EXPORT RuleListEditorLBB : public QSplitter
 {
   Q_OBJECT
+
 public:
-  enum EditorStyle
-  {
-    ToolBoxBased,
-    ListBoxBased
-  };
-public:
-  RuleListEditor(
-      QWidget * parent,
-      ComponentFactory * componentfactory,
-      EditorFactory * editorComponentFactory,
-      EditorStyle style = ToolBoxBased
-    );
-  virtual ~RuleListEditor();
+  RuleListEditorLBB( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory );
+  virtual ~RuleListEditorLBB();
+
 protected:
-  RuleListEditorTBB * mToolBoxBasedEditor;
-  RuleListEditorLBB * mListBoxBasedEditor;
-  EditorStyle mStyle;
+  QListWidget * mListWidget;
+  ExpandingScrollArea * mScrollArea;
+  QLabel * mEmptyEditor;
+  QPushButton * mNewRuleButton;
+  QPushButton * mDeleteRuleButton;
+  QPushButton * mMoveRuleUpButton;
+  QPushButton * mMoveRuleDownButton;
+
+  ComponentFactory * mComponentFactory;
+  EditorFactory * mEditorFactory;
+
 public:
+  ComponentFactory * componentFactory()
+  {
+    return mComponentFactory;
+  }
+
+  EditorFactory * editorFactory()
+  {
+    return mEditorFactory;
+  }
+
+  bool autoExpand();
   void setAutoExpand( bool b );
-  bool autoExpand() const;
-  virtual void fillFromAction( Action::Base * action );
-  virtual void fillFromRuleList( Action::RuleList * ruleList );
+
+  void fillFromRuleList( Action::RuleList * ruleList );
   bool commitStateToRuleList( Action::RuleList * ruleList );
-  virtual Action::Base * commitState( Component * parent );
+private:
+  void activateEditor( QWidget * editor );
+  void reindexItems();
+private Q_SLOTS:
+  void slotNewRuleButtonClicked();
+  void slotDeleteRuleButtonClicked();
+  void slotMoveRuleUpButtonClicked();
+  void slotMoveRuleDownButtonClicked();
+  void slotListWidgetSelectionChanged();
+  void slotRuleChanged();
 };
 
 } // namespace UI

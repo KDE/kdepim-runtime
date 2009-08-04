@@ -31,6 +31,8 @@ set(
 		programeditor.cpp
 		ruleeditor.cpp
 		rulelisteditor.cpp
+		rulelisteditorlbb.cpp
+		rulelisteditortbb.cpp
 		valueeditor.cpp
 	)
 

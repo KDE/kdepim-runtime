@@ -63,7 +63,12 @@ public:
    * existence must be guaranteed by the caller for the entire lifetime
    * of the ProgramEditor instance.
    */
-  ProgramEditor( QWidget * parent, ComponentFactory * componentfactory, EditorFactory * editorComponentFactory );
+  ProgramEditor(
+      QWidget * parent,
+      ComponentFactory * componentfactory,
+      EditorFactory * editorComponentFactory,
+      EditorStyle style = ListBoxBased
+    );
 
   /**
    * Destroys the program editor.

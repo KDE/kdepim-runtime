@@ -47,7 +47,7 @@ ComponentFactory::ComponentFactory()
       new FunctionDescriptor(
           FunctionValueOf,
           QString::fromAscii( "header" ),
-          i18n( "if" ), // the value of
+          QString::fromAscii( "" ), // the value of
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList
         )
@@ -57,7 +57,7 @@ ComponentFactory::ComponentFactory()
       new FunctionDescriptor(
           FunctionSizeOf,
           QString::fromAscii( "size" ),
-          i18n( "if the total size of" ),
+          i18n( "the total size of" ),
           DataTypeInteger,
           DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList
         )
@@ -67,7 +67,7 @@ ComponentFactory::ComponentFactory()
       new FunctionDescriptor(
           FunctionCountOf,
           QString::fromAscii( "count" ),
-          i18n( "if the total count of" ),
+          i18n( "the total count of" ),
           DataTypeInteger,
           DataTypeStringList | DataTypeAddressList
         )
@@ -77,7 +77,7 @@ ComponentFactory::ComponentFactory()
       new FunctionDescriptor(
           FunctionDateIn,
           QString::fromAscii( "date" ),
-          i18n( "if the date from" ),
+          i18n( "the date from" ),
           DataTypeDate,
           DataTypeString | DataTypeDate
         )
@@ -87,7 +87,7 @@ ComponentFactory::ComponentFactory()
       new FunctionDescriptor(
           FunctionExists,
           QString::fromAscii( "exists" ),
-          i18n( "if exists" ),
+          i18n( "exists" ),
           DataTypeBoolean,
           DataTypeString | DataTypeStringList | DataTypeDate | DataTypeInteger | DataTypeBoolean | DataTypeAddress | DataTypeAddressList
         )

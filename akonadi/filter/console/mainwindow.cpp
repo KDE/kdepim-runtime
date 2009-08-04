@@ -79,27 +79,43 @@ MainWindow::MainWindow()
   g->setMargin( 2 );
 
   mFilterListWidget = new QListWidget( base );
-  g->addWidget( mFilterListWidget, 0, 0, 1, 3 );
+  g->addWidget( mFilterListWidget, 0, 0, 1, 5 );
 
-  mNewFilterButton = new QPushButton( base );
-  mNewFilterButton->setIcon( KIcon( "edit-new" ) );
-  mNewFilterButton->setText( i18n( "New Filter") );
-  g->addWidget( mNewFilterButton, 1, 0 );
+  mNewFilterButtonLBB = new QPushButton( base );
+  mNewFilterButtonLBB->setIcon( KIcon( "edit-new" ) );
+  mNewFilterButtonLBB->setText( i18n( "New Filter (LBB)") );
+  g->addWidget( mNewFilterButtonLBB, 1, 0 );
 
-  connect( mNewFilterButton, SIGNAL( clicked() ), this, SLOT( slotNewFilterButtonClicked() ) );
+  connect( mNewFilterButtonLBB, SIGNAL( clicked() ), this, SLOT( slotNewFilterLBBButtonClicked() ) );
 
-  mEditFilterButton = new QPushButton( base );
-  mEditFilterButton->setIcon( KIcon( "edit" ) );
-  mEditFilterButton->setText( i18n( "Edit Filter") );
-  g->addWidget( mEditFilterButton, 1, 1 );
+  mNewFilterButtonTBB = new QPushButton( base );
+  mNewFilterButtonTBB->setIcon( KIcon( "edit-new" ) );
+  mNewFilterButtonTBB->setText( i18n( "New Filter (TBB)") );
+  g->addWidget( mNewFilterButtonTBB, 1, 1 );
 
-  connect( mEditFilterButton, SIGNAL( clicked() ), this, SLOT( slotEditFilterButtonClicked() ) );
+  connect( mNewFilterButtonTBB, SIGNAL( clicked() ), this, SLOT( slotNewFilterTBBButtonClicked() ) );
+
+
+  mEditFilterButtonLBB = new QPushButton( base );
+  mEditFilterButtonLBB->setIcon( KIcon( "edit" ) );
+  mEditFilterButtonLBB->setText( i18n( "Edit Filter (LBB)") );
+  g->addWidget( mEditFilterButtonLBB, 1, 2 );
+
+  connect( mEditFilterButtonLBB, SIGNAL( clicked() ), this, SLOT( slotEditFilterLBBButtonClicked() ) );
+
+
+  mEditFilterButtonTBB = new QPushButton( base );
+  mEditFilterButtonTBB->setIcon( KIcon( "edit" ) );
+  mEditFilterButtonTBB->setText( i18n( "Edit Filter (TBB)") );
+  g->addWidget( mEditFilterButtonTBB, 1, 3 );
+
+  connect( mEditFilterButtonTBB, SIGNAL( clicked() ), this, SLOT( slotEditFilterTBBButtonClicked() ) );
 
 
   mDeleteFilterButton = new QPushButton( base );
   mDeleteFilterButton->setIcon( KIcon( "edit-delete" ) );
   mDeleteFilterButton->setText( i18n( "Delete Filter") );
-  g->addWidget( mDeleteFilterButton, 1, 2 );
+  g->addWidget( mDeleteFilterButton, 1, 4 );
 
   connect( mDeleteFilterButton, SIGNAL( clicked() ), this, SLOT( slotDeleteFilterButtonClicked() ) );
 
@@ -133,7 +149,17 @@ void MainWindow::listFilters()
   mFilterListWidget->addItems( r.value() );
 }
 
-void MainWindow::slotEditFilterButtonClicked()
+void MainWindow::slotEditFilterLBBButtonClicked()
+{
+  editFilter( true );
+}
+
+void MainWindow::slotEditFilterTBBButtonClicked()
+{
+  editFilter( false );
+}
+
+void MainWindow::editFilter( bool lbb )
 {
   QString filterId;
 
@@ -225,7 +251,7 @@ void MainWindow::slotEditFilterButtonClicked()
     filter.addCollection( new Akonadi::Collection( collection ) );
   }
 
-  FilterEditor ed( this, &filter );
+  FilterEditor ed( this, &filter, lbb );
   if( ed.exec() != KDialog::Accepted )
     return;
 
@@ -263,7 +289,17 @@ void MainWindow::slotEditFilterButtonClicked()
   listFilters();
 }
 
-void MainWindow::slotNewFilterButtonClicked()
+void MainWindow::slotNewFilterLBBButtonClicked()
+{
+  newFilter( true );
+}
+
+void MainWindow::slotNewFilterTBBButtonClicked()
+{
+  newFilter( false );
+}
+
+void MainWindow::newFilter( bool lbb )
 {
   QDBusPendingReply< QStringList > rMimeTypes = mFilterAgent->enumerateMimeTypes();
   rMimeTypes.waitForFinished();
@@ -300,7 +336,7 @@ void MainWindow::slotNewFilterButtonClicked()
   filter.setEditorFactory( editorFactory );
   filter.setProgram( new Akonadi::Filter::Program() );
 
-  FilterEditor ed( this, &filter );
+  FilterEditor ed( this, &filter, lbb );
   if( ed.exec() != KDialog::Accepted )
     return;
 
