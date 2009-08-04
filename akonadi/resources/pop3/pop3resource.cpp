@@ -100,6 +100,8 @@ POP3Resource::~POP3Resource()
     createJobsMap.clear();
     saveUidList();
   }
+
+  Settings::self()->writeConfig();
 }
 
 void POP3Resource::retrieveCollections()
