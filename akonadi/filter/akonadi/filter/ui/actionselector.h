@@ -74,6 +74,7 @@ public:
   Action::ActionType currentActionType();
   bool currentActionIsTerminal();
   bool isEmpty();
+  QString actionDescription();
 protected slots:
   void typeComboBoxActivated( int index );
 private:

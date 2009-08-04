@@ -38,6 +38,7 @@ class QLineEdit;
 class QFrame;
 class QHBoxLayout;
 class QToolButton;
+class QTimer;
 
 namespace Akonadi
 {
@@ -138,6 +139,8 @@ protected:
   QFrame * mBase;
   ComponentFactory * mComponentFactory;
   EditorFactory * mEditorFactory;
+  QTimer * mHeartbeatTimer;
+  RuleListEditorTBBItem * mCurrentItem;
 
 public:
   ComponentFactory * componentFactory()
@@ -166,6 +169,7 @@ protected slots:
   void itemHeaderMoveUpRequest( RuleListEditorTBBItemHeader *header );
   void itemHeaderMoveDownRequest( RuleListEditorTBBItemHeader *header );
   void slotRuleChanged();
+  void slotHeartbeat();
 };
 
 } // namespace UI

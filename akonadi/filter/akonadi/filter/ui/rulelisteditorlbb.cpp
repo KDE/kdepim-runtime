@@ -33,6 +33,8 @@
 #include <akonadi/filter/rulelist.h>
 #include <akonadi/filter/rule.h>
 
+#include <QtCore/QTimer>
+
 #include <QtGui/QLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
@@ -97,6 +99,8 @@ RuleListEditorLBB::RuleListEditorLBB( QWidget * parent, ComponentFactory * compo
   mListWidget->setSelectionMode( QListWidget::SingleSelection );
   mListWidget->setMinimumSize( 200, 120 );
 
+  mPreviousCurrentItem = 0;
+
   connect( mListWidget, SIGNAL( itemSelectionChanged() ), this, SLOT( slotListWidgetSelectionChanged() ) );
 
   g->addWidget( mListWidget, 0, 0, 5, 1 );
@@ -112,7 +116,7 @@ RuleListEditorLBB::RuleListEditorLBB( QWidget * parent, ComponentFactory * compo
 
 
   mDeleteRuleButton = new QPushButton( base );
-  mDeleteRuleButton->setIcon( KIcon( "list-del" ) );
+  mDeleteRuleButton->setIcon( KIcon( "list-remove" ) );
   mDeleteRuleButton->setText( i18n( "Delete Rule" ) );
 
   connect( mDeleteRuleButton, SIGNAL( clicked() ), this, SLOT( slotDeleteRuleButtonClicked() ) );
@@ -157,6 +161,11 @@ RuleListEditorLBB::RuleListEditorLBB( QWidget * parent, ComponentFactory * compo
   setSizes( initialSizes );
 
   mEmptyEditor = 0;
+
+  mHeartbeatTimer = new QTimer( this );
+  connect( mHeartbeatTimer, SIGNAL( timeout() ), this, SLOT( slotHeartbeat() ) );
+
+  mHeartbeatTimer->start( 2000 );
 }
 
 RuleListEditorLBB::~RuleListEditorLBB()
@@ -227,6 +236,7 @@ void RuleListEditorLBB::activateEditor( QWidget * editor )
 
   if( thatItem )
   {
+    thatItem->updateText();
     if( thatItem != static_cast< RuleListEditorLBBListWidgetItem * >( mListWidget->currentItem() ) )
       mListWidget->setCurrentItem( thatItem );
   }
@@ -235,6 +245,8 @@ void RuleListEditorLBB::activateEditor( QWidget * editor )
 
 void RuleListEditorLBB::fillFromRuleList( Action::RuleList * ruleList )
 {
+  mPreviousCurrentItem = 0;
+
   mListWidget->clear();
 
   const QList< Rule * > * rules = ruleList->ruleList();
@@ -324,6 +336,10 @@ void RuleListEditorLBB::slotDeleteRuleButtonClicked()
 
   RuleEditor * editor = item->editor();
   Q_ASSERT( editor );
+
+  if( mPreviousCurrentItem == item )
+    mPreviousCurrentItem = 0;
+
   delete item;
   delete editor;
 
@@ -386,18 +402,17 @@ void RuleListEditorLBB::slotListWidgetSelectionChanged()
   if( !item )
     return;
 
+  if( mPreviousCurrentItem )
+    mPreviousCurrentItem->updateText();
+
   activateEditor( item->editor() ); 
 }
 
 void RuleListEditorLBB::slotRuleChanged()
 {
-  kDebug() << "rule seems to be changed";
-
   RuleEditor * editor = dynamic_cast< RuleEditor * >( sender() );
   if( !editor )
     return; // hum
-
-  kDebug() << "got the editor";
 
   int count = mListWidget->count();
 
@@ -415,9 +430,19 @@ void RuleListEditorLBB::slotRuleChanged()
   if( !thatItem )
     return;
 
-  kDebug() << "Updating text for item" << thatItem->text();
-
   thatItem->updateText();
+}
+
+void RuleListEditorLBB::slotHeartbeat()
+{
+  RuleListEditorLBBListWidgetItem * item = static_cast< RuleListEditorLBBListWidgetItem * >( mListWidget->currentItem() );
+  if( !item )
+  {
+    mPreviousCurrentItem = 0;
+    return;
+  }
+
+  item->updateText();
 }
 
 

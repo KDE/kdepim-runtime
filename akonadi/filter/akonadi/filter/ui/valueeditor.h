@@ -56,7 +56,7 @@ public:
   virtual ~ValueEditor();
 public:
   virtual DataType dataType() = 0;
-  virtual QVariant value() = 0;
+  virtual QVariant value( bool showMessageBoxOnError = true ) = 0;
   virtual void setValue( const QVariant &val ) = 0;
   virtual QWidget * widget() = 0;
 
@@ -71,7 +71,7 @@ public:
   virtual ~StringValueEditor();
 public:
   DataType dataType();
-  virtual QVariant value();
+  virtual QVariant value( bool showMessageBoxOnError = true );
   virtual void setValue( const QVariant &val );
   virtual QWidget * widget();
 };
@@ -84,7 +84,7 @@ public:
   virtual ~IntegerValueEditor();
 public:
   DataType dataType();
-  virtual QVariant value();
+  virtual QVariant value( bool showMessageBoxOnError = true );
   virtual void setValue( const QVariant &val );
   virtual QWidget * widget();
 };
@@ -97,7 +97,7 @@ public:
   virtual ~DateValueEditor();
 public:
   DataType dataType();
-  virtual QVariant value();
+  virtual QVariant value( bool showMessageBoxOnError = true );
   virtual void setValue( const QVariant &val );
   virtual QWidget * widget();
 };

@@ -391,7 +391,36 @@ QString ConditionSelector::conditionDescription()
       return i18n( "false" );
     break;
     case Condition::ConditionTypePropertyTest:
+    {
+      const OperatorDescriptor * op = operatorDescriptorForActiveType();
+
+      if( !op )
+        return d->mText;
+
+      switch( op->rightOperandDataType() )
+      {
+        case DataTypeNone:
+          return QString::fromAscii( "%1 %2" ).arg( d->mText ).arg( op->name() );
+        break;
+        case DataTypeInteger:
+          return QString::fromAscii( "%1 %2 %3" ).arg( d->mText ).arg( op->name() ).arg( mPrivate->mValueEditor->value( false ).toString() );
+        break;
+        case DataTypeString:
+        case DataTypeDate:
+        {
+          QString val = mPrivate->mValueEditor->value( false ).toString();
+          if( val.length() > 20 )
+            val = val.left( 20 ) + QString::fromAscii( "..." );
+          return QString::fromAscii( "%1 %2 \"%3\"" ).arg( d->mText ).arg( op->name() ).arg( val );
+        }
+        break;
+        default:
+          Q_ASSERT_X( false, __FUNCTION__, "Unhandled operator data type" );
+        break;
+      }
+
       return d->mText;
+    }
     break;
     case Condition::ConditionTypeUnknown:
       return QString(); // empty condition

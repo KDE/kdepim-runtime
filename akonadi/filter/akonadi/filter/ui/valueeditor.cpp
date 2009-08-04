@@ -82,8 +82,9 @@ DataType StringValueEditor::dataType()
   return DataTypeString;
 }
 
-QVariant StringValueEditor::value()
+QVariant StringValueEditor::value( bool showMessageBoxOnError )
 {
+  Q_UNUSED( showMessageBoxOnError );
   return text();
 }
 
@@ -114,15 +115,18 @@ DataType IntegerValueEditor::dataType()
   return DataTypeInteger;
 }
 
-QVariant IntegerValueEditor::value()
+QVariant IntegerValueEditor::value( bool showMessageBoxOnError )
 {
   QString val = text();
   bool ok;
   Integer i = val.toLongLong( &ok );
   if( !ok )
   {
-    KMessageBox::error( this, i18n( "The operand must be numeric!" ), i18n( "Invalid value" ) );
-    setFocus();
+    if( showMessageBoxOnError )
+    {
+      KMessageBox::error( this, i18n( "The operand must be numeric!" ), i18n( "Invalid value" ) );
+      setFocus();
+    }
     return QVariant();
   }
   return QVariant( i );
@@ -160,8 +164,9 @@ DataType DateValueEditor::dataType()
   return DataTypeDate;
 }
 
-QVariant DateValueEditor::value()
+QVariant DateValueEditor::value( bool showMessageBoxOnError )
 {
+  Q_UNUSED( showMessageBoxOnError );
   return QVariant( date() );
 }
 

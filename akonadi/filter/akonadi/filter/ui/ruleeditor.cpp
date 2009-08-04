@@ -277,7 +277,30 @@ QString RuleEditor::ruleDescription()
 
   QString conditionDescription = mPrivate->mConditionSelector->conditionDescription();
 
-  QString actionsDescription = i18n( "do nuthin..." );
+  QString actionsDescription;
+  if( mPrivate->mActionSelectorList.count() < 1 )
+  {
+    actionsDescription = i18n( "do nothing" );
+  } else if( mPrivate->mActionSelectorList.count() == 1 )
+  {
+    ActionSelector * sel = mPrivate->mActionSelectorList.first();
+    Q_ASSERT( sel );
+    actionsDescription = sel->actionDescription();
+  } else if( mPrivate->mActionSelectorList.count() == 2 )
+  {
+    ActionSelector * sel = mPrivate->mActionSelectorList[1];
+    Q_ASSERT( sel );
+    if( sel->isEmpty() )
+    {
+      sel = mPrivate->mActionSelectorList.first();
+      Q_ASSERT( sel );
+      actionsDescription = sel->actionDescription();
+    } else {
+      actionsDescription = i18n( "execute multiple actions" );
+    }
+  } else {
+    actionsDescription = i18n( "execute multiple actions" );
+  }
 
   if( conditionDescription.isEmpty() )
     return actionsDescription;

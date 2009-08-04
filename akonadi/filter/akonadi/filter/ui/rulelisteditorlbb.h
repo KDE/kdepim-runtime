@@ -33,6 +33,7 @@
 class QListWidget;
 class QLabel;
 class QPushButton;
+class QTimer;
 
 namespace Akonadi
 {
@@ -51,6 +52,7 @@ namespace UI
 
 class EditorFactory;
 class ExpandingScrollArea;
+class RuleListEditorLBBListWidgetItem;
 
 class AKONADI_FILTER_UI_EXPORT RuleListEditorLBB : public QSplitter
 {
@@ -68,6 +70,8 @@ protected:
   QPushButton * mDeleteRuleButton;
   QPushButton * mMoveRuleUpButton;
   QPushButton * mMoveRuleDownButton;
+  RuleListEditorLBBListWidgetItem * mPreviousCurrentItem;
+  QTimer * mHeartbeatTimer;
 
   ComponentFactory * mComponentFactory;
   EditorFactory * mEditorFactory;
@@ -98,6 +102,7 @@ private Q_SLOTS:
   void slotMoveRuleDownButtonClicked();
   void slotListWidgetSelectionChanged();
   void slotRuleChanged();
+  void slotHeartbeat();
 };
 
 } // namespace UI

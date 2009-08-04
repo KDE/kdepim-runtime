@@ -279,6 +279,37 @@ bool ActionSelector::isEmpty()
   return d->mType == Action::ActionTypeUnknown;
 }
 
+QString ActionSelector::actionDescription()
+{
+  if( isEmpty() )
+    return i18n( "do nothing" );
+
+  ActionDescriptor * d = descriptorForActiveType();
+  Q_ASSERT( d );
+
+  switch( d->mType )
+  {
+    case Action::ActionTypeUnknown:
+      return i18n( "do nothing" );
+    break;
+    case Action::ActionTypeRuleList:
+      return i18n( "execute a subprogram" );
+    break;
+    case Action::ActionTypeStop:
+      return i18n( "stop processing" );
+    break;
+    case Action::ActionTypeCommand:
+      return d->mText;
+    break;
+    default:
+      Q_ASSERT( false ); // unhandled action type
+    break;
+  }
+
+  return QString::fromAscii( "???" );
+}
+
+
 ActionDescriptor * ActionSelector::descriptorForActiveType()
 {
   int idx = mPrivate->mTypeComboBox->currentIndex();

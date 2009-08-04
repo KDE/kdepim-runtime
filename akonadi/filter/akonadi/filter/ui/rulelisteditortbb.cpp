@@ -35,6 +35,8 @@
 
 #include <QtCore/QEvent>
 #include <QtCore/QList>
+#include <QtCore/QTimer>
+
 #include <QtGui/QFrame>
 #include <QtGui/QLabel>
 #include <QtGui/QLayout>
@@ -257,6 +259,8 @@ RuleListEditorTBB::RuleListEditorTBB( QWidget * parent, ComponentFactory * compo
 {
   setFrameStyle( QFrame::NoFrame );
 
+  mCurrentItem = 0;
+
   mBase = new QFrame( this );
   mBase->setFrameStyle( QFrame::NoFrame );
   setWidget( mBase );
@@ -274,6 +278,11 @@ RuleListEditorTBB::RuleListEditorTBB( QWidget * parent, ComponentFactory * compo
   setBackgroundRole( QPalette::Button );
 
   reLayout();
+
+  mHeartbeatTimer = new QTimer( this );
+  connect( mHeartbeatTimer, SIGNAL( timeout() ), this, SLOT( slotHeartbeat() ) );
+
+  mHeartbeatTimer->start( 2000 );
 }
 
 RuleListEditorTBB::~RuleListEditorTBB()
@@ -286,6 +295,8 @@ void RuleListEditorTBB::fillFromRuleList( Action::RuleList * ruleList )
 {
   const QList< Rule * > * rules = ruleList->ruleList();
   Q_ASSERT( rules );
+
+  mCurrentItem = 0;
 
   foreach( Rule * rule, *rules )
   {
@@ -438,11 +449,17 @@ void RuleListEditorTBB::reLayout()
 
 void RuleListEditorTBB::setCurrentItem( RuleListEditorTBBItem *item )
 {
+  if( mCurrentItem )
+    mCurrentItem->mHeader->setDescription( mCurrentItem->mRuleEditor->ruleDescription() );
+
+  mCurrentItem = 0;
+
   foreach( RuleListEditorTBBItem * it, mPrivate->mItemList )
   {
     if( it == item )
     {
       it->mScrollArea->show();
+      mCurrentItem = item;
     } else {
       it->mScrollArea->hide();
     }
@@ -479,6 +496,8 @@ void RuleListEditorTBB::itemHeaderDeleteRequest( RuleListEditorTBBItemHeader *he
        ) != KMessageBox::Yes
     )
      return;
+
+  mCurrentItem = 0;
 
   delete item->mHeader;
   delete item->mRuleEditor;
@@ -521,6 +540,14 @@ void RuleListEditorTBB::itemHeaderMoveDownRequest( RuleListEditorTBBItemHeader *
   mPrivate->mItemList.insert( idx + 1, item );
 
   reLayout();
+}
+
+void RuleListEditorTBB::slotHeartbeat()
+{
+  if( !mCurrentItem )
+    return;
+
+  mCurrentItem->mHeader->setDescription( mCurrentItem->mRuleEditor->ruleDescription() );
 }
 
 } // namespace UI
