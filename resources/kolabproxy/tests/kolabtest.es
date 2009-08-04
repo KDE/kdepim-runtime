@@ -47,8 +47,9 @@ function setupKolab()
   System.exec( "create_ldap_users.py", ["-h", "localhost", "-p", QEmu.portOffset() + 389,
     "-n", "2", "--set-password", "nichtgeheim", "dc=example,dc=com", "add", "nichtgeheim" ] );
 
-  // the server needs some time to update the user db apparently
-  System.sleep( 20 );
+  // Wait until the user accounts have been fully created
+  runImapCmd( "autotest0", [ "waitformailbox", "INBOX"] );
+  runImapCmd( "autotest1", [ "waitformailbox", "INBOX"] );
 
   // creates folders and messages for the primary test user
   createKolabFolders( "autotest0" );
