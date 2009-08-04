@@ -3,6 +3,7 @@
 import sys
 import optparse
 import inspect
+import time
 import imaplib
 
 class AnnotationsMixin:
@@ -115,6 +116,9 @@ class ImapConnection(object):
     def append(self, *args):
         return self.check_res(self.imap.append(*args))
 
+    def list(self, *args):
+        return self.check_res(self.imap.list(*args))
+
 
 def command_create(connection, mailbox):
     """Create a mailbox.  Parameter: MAILBOX
@@ -139,6 +143,18 @@ def command_append(connection, mailbox, filename):
     Example: append INBOX/MyCalendar testdata/mytestmail
     """
     connection.append(mailbox, None, None, open(filename).read())
+
+def command_waitformailbox(connection, mailbox):
+    timeout = 20
+    start = time.time()
+    while time.time() - start < timeout:
+        found = connection.list("", mailbox)
+        if found:
+            break
+        time.sleep(1)
+    else:
+        raise RuntimeError("waitformailbox timed out after %s seconds" %
+                           (time.time() - start,))
 
 
 def find_commands():
