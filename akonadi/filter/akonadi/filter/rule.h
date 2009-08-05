@@ -31,8 +31,9 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
-#include <akonadi/filter/component.h>
 #include <akonadi/filter/action.h>
+#include <akonadi/filter/component.h>
+#include <akonadi/filter/propertybag.h>
 
 namespace Akonadi
 {
@@ -46,11 +47,19 @@ namespace Condition
   class Base;
 } // namespace Condition
 
-class AKONADI_FILTER_EXPORT Rule : public Component
+/**
+ * A single rule in the filtering program.
+ *
+ * A rule is made of a condition and a set of actions.
+ * If the condition matches then the actions are executed in sequence.
+ */
+class AKONADI_FILTER_EXPORT Rule : public Component, public PropertyBag
 {
 public:
   Rule( Component * parent );
+
   virtual ~Rule();
+
 protected:
 
   /**
@@ -58,9 +67,24 @@ protected:
    */
   Condition::Base * mCondition;
 
+  /**
+   * The list of actions attachhed to this rule, owned pointers. May be empty.
+   */
   QList< Action::Base * > mActionList;
 
 public:
+
+  /**
+   * Returns the description of this program.
+   * This is equivalent to property( QString::fromAscii( "description" ) ).
+   */
+  QString description() const;
+
+  /**
+   * Sets the user supplied name of this filtering program.
+   * This is equivalent to setProperty( QString::fromAscii( "description" ), description ).
+   */
+  void setDescription( const QString &description );
 
   virtual bool isRule() const;
 

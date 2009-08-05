@@ -626,16 +626,19 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
   ConditionDescriptor * descriptor = 0;
   int idx = 0;
 
-  switch( condition->conditionType() )
+  Condition::ConditionType type = condition ? condition->conditionType() : Condition::ConditionTypeUnknown;
+
+  switch( type )
   {
     case Condition::ConditionTypeAnd:
     case Condition::ConditionTypeOr:
     case Condition::ConditionTypeNot:
     case Condition::ConditionTypeFalse:
     case Condition::ConditionTypeTrue:
+    case Condition::ConditionTypeUnknown:
       foreach( ConditionDescriptor * d, mPrivate->mConditionDescriptorList )
       {
-        if( d->mType == condition->conditionType() )
+        if( d->mType == type )
         {
           descriptor = d;
           break;
@@ -644,6 +647,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       }
     break;
     case Condition::ConditionTypePropertyTest:
+      Q_ASSERT( condition );
       foreach( ConditionDescriptor * d, mPrivate->mConditionDescriptorList )
       {
         if(
@@ -668,7 +672,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
 
   mPrivate->mTypeComboBox->setCurrentIndex( idx );
 
-  switch( condition->conditionType() )
+  switch( type )
   {
     case Condition::ConditionTypeAnd:
     case Condition::ConditionTypeOr:
@@ -746,6 +750,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
     break;
     case Condition::ConditionTypeTrue:
     case Condition::ConditionTypeFalse:
+    case Condition::ConditionTypeUnknown:
       qDeleteAll( mPrivate->mChildConditionSelectorList );
       mPrivate->mChildConditionSelectorList.clear();
     break;

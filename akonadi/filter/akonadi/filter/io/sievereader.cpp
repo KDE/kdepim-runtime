@@ -48,112 +48,95 @@ SieveReader::~SieveReader()
 
 void SieveReader::taggedArgument( const QString & tag )
 {
-  qDebug( "Tagged argument '%s'", tag.toUtf8().data() );
   mDecoder->onTaggedArgument( tag );
 }
 
 void SieveReader::stringArgument( const QString & string, bool multiLine, const QString & embeddedHashComment )
 {
-  qDebug( "String argument '%s' (multiline=%d, comment='%s')", string.toUtf8().data(), multiLine, embeddedHashComment.toUtf8().data() );
   mDecoder->onStringArgument( string, multiLine, embeddedHashComment );
 }
 
 void SieveReader::numberArgument( unsigned long number, char quantifier )
 {
-  qDebug( "Number argument %lu (quantifier=%d)", number, quantifier );
   mDecoder->onNumberArgument( number, quantifier );
 }
 
 void SieveReader::stringListArgumentStart()
 {
-  qDebug( "String list argument start" );
   mDecoder->onStringListArgumentStart();
 }
 
 void SieveReader::stringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment )
 {
-  qDebug( "String list entry '%s' (multiline=%d, comment='%s')", string.toUtf8().data(), multiLine, embeddedHashComment.toUtf8().data() );
   mDecoder->onStringListEntry( string, multiLine, embeddedHashComment );
 }
 
 void SieveReader::stringListArgumentEnd()
 {
-  qDebug( "String list argument end" );
   mDecoder->onStringListArgumentEnd();
 }
 
 void SieveReader::commandStart( const QString & identifier )
 {
-  qDebug( "CommandDescriptor start '%s'", identifier.toUtf8().data() );
   mDecoder->onCommandDescriptorStart( identifier );
 }
 
 void SieveReader::commandEnd()
 {
-  qDebug( "CommandDescriptor end" );
   mDecoder->onCommandDescriptorEnd();
 }
 
 void SieveReader::testStart( const QString & identifier )
 {
-  qDebug( "Test start '%s'", identifier.toUtf8().data() );
   mDecoder->onTestStart( identifier );  
 }
 
 void SieveReader::testEnd()
 {
-  qDebug( "Test end" );
   mDecoder->onTestEnd();
 }
 
 void SieveReader::testListStart()
 {
-  qDebug( "Test list start" );
   mDecoder->onTestListStart();
 }
 
 void SieveReader::testListEnd()
 {
-  qDebug( "Test list end" );
   mDecoder->onTestListEnd();
 }
 
 void SieveReader::blockStart()
 {
-  qDebug( "Block start" );
   mDecoder->onBlockStart();
 }
 
 void SieveReader::blockEnd()
 {
-  qDebug( "Block end" );
   mDecoder->onBlockEnd();
 }
 
 void SieveReader::hashComment( const QString & comment )
 {
-  qDebug( "Hash comment ('%s')", comment.toUtf8().data() );
+  mDecoder->onComment( comment );
 }
 
 void SieveReader::bracketComment( const QString & comment )
 {
-  qDebug( "Bracket comment ('%s')", comment.toUtf8().data() );
+  mDecoder->onComment( comment );
 }
 
 void SieveReader::lineFeed()
 {
-  qDebug( "Line feed" );
 }
 
 void SieveReader::error( const KSieve::Error & error )
 {
-  qDebug( "Error: %s", error.asString().toUtf8().data() );
   mDecoder->onError( error.asString() );
 }
 
 void SieveReader::finished()
 {
-  qDebug( "Finished" );
 }
 
 } // namespace Private

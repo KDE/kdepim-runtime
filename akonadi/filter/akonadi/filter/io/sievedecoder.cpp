@@ -37,6 +37,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QByteArray>
+#include <QtCore/QUrl>
 
 #include <KDebug>
 #include <KLocale>
@@ -664,6 +665,13 @@ void SieveDecoder::onTestListEnd()
   setLastError( i18n( "Unexpected end of test list" ) );
 }
 
+Rule * SieveDecoder::createRule( Component * parentComponent )
+{
+  Rule * rule = componentFactory()->createRule( parentComponent );
+  rule->setAllProperties( mCurrentRuleProperties );
+  mCurrentRuleProperties.clear();
+  return rule;
+}
 
 void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
 {
@@ -694,7 +702,7 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
     {
       // a rule for the current rule list
       ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
-      rule = componentFactory()->createRule( mCurrentComponent );
+      rule = createRule( mCurrentComponent );
       ruleList->addRule( rule );
       mCurrentComponent = rule;
       return;
@@ -709,7 +717,7 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
     rule->addAction( ruleList );
 
     // create the rule and add it to the rule list we've just created
-    rule = componentFactory()->createRule( mCurrentComponent );
+    rule = createRule( mCurrentComponent );
     ruleList->addRule( rule );
     mCurrentComponent = rule;
 
@@ -776,7 +784,7 @@ void SieveDecoder::onCommandDescriptorEnd()
     {
       // unconditional rule start with an action
       Action::RuleList * ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
-      Rule * rule = componentFactory()->createRule( mCurrentComponent );
+      Rule * rule = createRule( mCurrentComponent );
       ruleList->addRule( rule );
 
       rule->addAction( action );
@@ -825,7 +833,48 @@ void SieveDecoder::onBlockEnd()
 {
   if( mGotError )
     return; // ignore everything
+}
 
+void SieveDecoder::onComment( const QString &comment )
+{
+  if( mGotError )
+    return; // ignore everything
+
+  // we encode stuff in comments... no other way
+  QStringList lines = comment.split( QChar( '\n' ), QString::SkipEmptyParts );
+  foreach ( QString line, lines )
+  {
+    QString trimmed = line.trimmed();
+    bool programProperty;
+
+    if( trimmed.startsWith( QLatin1String( "program::" ) ) )
+      programProperty = true;
+    else if( trimmed.startsWith( QLatin1String( "rule::" ) ) )
+      programProperty = false;
+    else
+      continue; // nothing interesting here
+
+    trimmed.remove( 0, programProperty ? 9 : 6 );
+
+    int idx = trimmed.indexOf( QChar( '=' ) );
+    if( idx < 1 )
+      continue; // doh
+
+    QString name = QUrl::fromPercentEncoding( trimmed.left( idx ).trimmed().toLatin1() );
+    QString value = QUrl::fromPercentEncoding( trimmed.remove( 0, idx + 1 ).trimmed().toLatin1() );
+
+    if( name.isEmpty() )
+      continue; // shouldn't happen but well...
+
+    if( programProperty )
+    {
+      Q_ASSERT( mProgram );
+      mProgram->setProperty( name, value );
+    } else {
+      mCurrentRuleProperties.insert( name, value );
+    }
+
+  }
 }
 
 Program * SieveDecoder::run( const QString &source )

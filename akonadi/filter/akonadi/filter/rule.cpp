@@ -38,7 +38,7 @@ namespace Filter
 {
 
 Rule::Rule( Component * parent )
-  : Component( parent ), mCondition( 0 )
+  : Component( parent ), PropertyBag(), mCondition( 0 )
 {
   Q_ASSERT( parent );
 }
@@ -49,6 +49,16 @@ Rule::~Rule()
     delete mCondition;
 
   qDeleteAll( mActionList );
+}
+
+QString Rule::description() const
+{
+  return property( QString::fromAscii( "description" ) ).toString();
+}
+
+void Rule::setDescription( const QString &description )
+{
+  setProperty( QString::fromAscii( "description" ), QVariant( description ) );
 }
 
 void Rule::setCondition( Condition::Base * condition )

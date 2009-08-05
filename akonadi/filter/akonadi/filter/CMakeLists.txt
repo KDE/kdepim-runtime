@@ -33,6 +33,7 @@ set(
 		functiondescriptor.cpp
 		operatordescriptor.cpp
 		program.cpp
+		propertybag.cpp
 		rule.cpp
 		rulelist.cpp
 		componentfactoryrfc822.cpp
@@ -94,6 +95,7 @@ install(
 			functiondescriptor.h
 			operatordescriptor.h
 			program.h
+			propertybag.h
 			rule.h
 			rulelist.h
 			componentfactoryrfc822.h

@@ -36,6 +36,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QStringList>
+#include <QtCore/QUrl>
 
 #include <KLocale>
 
@@ -45,6 +46,15 @@ namespace Filter
 {
 namespace IO
 {
+
+
+static inline QString encode_property_field( const QString &field, bool encodeEqualitySign )
+{
+  if( encodeEqualitySign )
+    return QString::fromLatin1( QUrl::toPercentEncoding( field, " =,!?(){}[]/\\", "" ) ); // value, particular exclude chars, particular include chars
+  return QString::fromLatin1( QUrl::toPercentEncoding( field, " ,!?(){}[]/\\", "" ) ); // value, particular exclude chars, particular include chars
+}
+
 
 SieveEncoder::SieveEncoder()
   : Encoder()
@@ -102,9 +112,24 @@ QString SieveEncoder::run( Program * program )
   mIndentLevel = 0;
 
   addLine( QLatin1String( "# Akonadi Filter Program" ) );
-  addLine( QString( "# Encoded at %1" ).arg( QDateTime::currentDateTime().toString() ) );
+  addLine( QString::fromAscii( "# Encoded at %1" ).arg( QDateTime::currentDateTime().toString() ) );
 
   addLine( QString() );
+
+  const QHash< QString, QVariant > & props = program->allProperties();
+
+  if( !props.isEmpty() )
+  {
+    for( QHash< QString, QVariant >::ConstIterator it = props.constBegin(); it != props.constEnd(); ++it )
+    {
+      addLine(
+          QString::fromAscii( "# program::%1 = %2" )
+              .arg( encode_property_field( it.key(), true ) )
+              .arg( encode_property_field( it.value().toString(), false ) )
+        );
+    }
+    addLine( QString() );
+  }
 
   if( !encodeRuleList( program ) )
     return QString();
@@ -141,6 +166,26 @@ bool SieveEncoder::encodeRule( Rule * rule, bool isFirst, bool isLast )
   Condition::Base * condition = rule->condition();
 
   bool startedScope = false;
+
+  const QHash< QString, QVariant > & props = rule->allProperties();
+
+  if( !props.isEmpty() )
+  {
+    addLine( QString() );
+
+    for( QHash< QString, QVariant >::ConstIterator it = props.constBegin(); it != props.constEnd(); ++it )
+    {
+      QString value = it.value().toString();
+      if( value.isEmpty() )
+        continue;
+
+      addLine(
+          QString::fromAscii( "# rule::%1 = %2" )
+              .arg( encode_property_field( it.key(), true ) )
+              .arg( encode_property_field( it.value().toString(), false ) )
+        );
+    }
+  }
 
   if( condition )
   {
@@ -359,7 +404,7 @@ bool SieveEncoder::encodeAction( Action::Base * action )
   switch( action->actionType() )
   {
     case Action::ActionTypeStop:
-      addLine( QLatin1String( "keep;" ) );
+      addLine( QLatin1String( "stop;" ) );
     break;
     case Action::ActionTypeRuleList:
       if( !encodeRuleList( static_cast< Action::RuleList * >( action ) ) )

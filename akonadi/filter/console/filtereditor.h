@@ -60,11 +60,14 @@ public:
   virtual ~FilterEditor();
 
 protected:
+
   Filter * mFilter;
   QLineEdit * mIdLineEdit;
+  QLineEdit * mNameLineEdit;
   QTreeView * mCollectionList;
   Akonadi::Filter::UI::ProgramEditor * mProgramEditor;
   FilterCollectionModel * mFilterCollectionModel;
+
 protected:
   virtual void done( int result );
   virtual void showEvent( QShowEvent *e );

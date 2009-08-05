@@ -30,24 +30,27 @@
 #include <KLocale>
 #include <KIcon>
 
-#include <QLayout>
-#include <QTabWidget>
-#include <QWidget>
-#include <QLineEdit>
-#include <QLabel>
-#include <QTreeView>
-#include <QTimer>
-#include <QShowEvent>
+#include <QtCore/QDateTime>
+#include <QtCore/QTimer>
 
-#include <akonadi/filter/agent.h>
-
-#include <akonadi/filter/ui/programeditor.h>
-#include <akonadi/filter/componentfactory.h>
-#include <akonadi/filter/ui/editorfactory.h>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QLineEdit>
+#include <QtGui/QShowEvent>
+#include <QtGui/QTabWidget>
+#include <QtGui/QTreeView>
+#include <QtGui/QWidget>
 
 #include <akonadi/collection.h>
-#include <akonadi/entitydisplayattribute.h>
 #include <akonadi/collectionmodel.h>
+#include <akonadi/entitydisplayattribute.h>
+
+#include <akonadi/filter/agent.h>
+#include <akonadi/filter/componentfactory.h>
+#include <akonadi/filter/program.h>
+
+#include <akonadi/filter/ui/programeditor.h>
+#include <akonadi/filter/ui/editorfactory.h>
 
 #include "filter.h"
 #include "filtercollectionmodel.h"
@@ -68,28 +71,60 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
 
   QGridLayout * g = new QGridLayout( tab );
 
-  QLabel * l = new QLabel( i18n( "Filter Id" ), tab );
+  QLabel * l = new QLabel( i18n( "Id" ), tab );
   g->addWidget( l, 0, 0 );
 
   mIdLineEdit = new QLineEdit( tab );
-  mIdLineEdit->setText( filter->id() );
+
+  QString id = filter->id();
+  if( id.isEmpty() )
+  {
+    // generate an unique id
+    id = QString::fromAscii( "my_filter_%1" ).arg( QDateTime::currentDateTime().toTime_t() );
+  }
+
+  mIdLineEdit->setText( id );
+
+  mIdLineEdit->setToolTip(
+      i18n(
+          "The unique identifier of this filtering program.<br>" \
+          "It can be any string, it's enough that it's globally unique.<br>" \
+          "In user applications this will be usually automatically assigned and hidden."
+        )
+    );
+
   g->addWidget( mIdLineEdit, 0, 1, 1, 2 );
+
+  l = new QLabel( i18n( "Name" ), tab );
+  g->addWidget( l, 1, 0 );
+
+  mNameLineEdit = new QLineEdit( tab );
+  mNameLineEdit->setText( filter->program()->name() );
+
+  mNameLineEdit->setToolTip(
+      i18n( "The user-visible name of this filtering program: can be any string." )
+    );
+
+  g->addWidget( mNameLineEdit, 1, 1, 1, 2 );
 
   mFilterCollectionModel = new FilterCollectionModel( this, filter );
 
   mCollectionList = new QTreeView( tab );
-  g->addWidget( mCollectionList, 1, 0, 1, 3 );
+  g->addWidget( mCollectionList, 2, 0, 1, 3 );
   mCollectionList->setModel( mFilterCollectionModel );
 
-  g->setRowStretch( 1, 1 );
+  g->setRowStretch( 2, 1 );
 
+  // Our mighty program editor :)
   mProgramEditor = new Akonadi::Filter::UI::ProgramEditor(
       tabWidget,
       mFilter->componentFactory(),
       mFilter->editorFactory(),
       lbb ? Akonadi::Filter::UI::ProgramEditor::ListBoxBased : Akonadi::Filter::UI::ProgramEditor::ToolBoxBased
     );
+
   tabWidget->addTab( mProgramEditor, i18n( "Program" ) );
+
   mProgramEditor->fillFromProgram( filter->program() );
 
   setMinimumSize( 640, 480 );
@@ -117,6 +152,8 @@ void FilterEditor::done( int result )
   Akonadi::Filter::Program * prog = mProgramEditor->commit();
   if( !prog )
     return;
+
+  prog->setName( mNameLineEdit->text().trimmed() );
 
   mFilter->setProgram( prog );
 

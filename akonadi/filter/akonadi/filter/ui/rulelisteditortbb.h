@@ -87,7 +87,7 @@ protected:
 Q_SIGNALS:
   void activated( RuleListEditorTBBHeader * header );
 
-};
+}; // class RuleListEditorTBBHeader
 
 class RuleListEditorTBBItemHeader : public RuleListEditorTBBHeader
 {
@@ -103,6 +103,7 @@ protected:
   QToolButton * mMoveDownButton;
   QToolButton * mDeleteButton;
 public:
+  bool descriptionEditHasFocus();
   void setDescription( const QString &description );
   QString description();
   void setMoveUpEnabled( bool b );
@@ -113,12 +114,13 @@ Q_SIGNALS:
   void moveUpRequest( RuleListEditorTBBItemHeader * header );
   void moveDownRequest( RuleListEditorTBBItemHeader * header );
   void deleteRequest( RuleListEditorTBBItemHeader * header );
+  void descriptionEdited( RuleListEditorTBBItemHeader * header );
 protected slots:
   void moveUpButtonClicked();
   void moveDownButtonClicked();
   void deleteButtonClicked();
-
-};
+  void slotDescriptionEditTextEdited( const QString & );
+}; // class RuleListEditorTBBItemHeader
 
 
 
@@ -156,7 +158,7 @@ public:
   void fillFromRuleList( Action::RuleList * ruleList );
   bool commitStateToRuleList( Action::RuleList * ruleList );
 private:
-  RuleListEditorTBBItem * addRuleEditor( RuleEditor * editor );
+  RuleListEditorTBBItem * addRuleEditor( RuleEditor * editor, const QString &ruleDescription );
   RuleListEditorTBBItem * findItemByRuleEditor( RuleEditor * editor );
   RuleListEditorTBBItem * findItemByHeader( RuleListEditorTBBItemHeader *header );
 
@@ -168,19 +170,15 @@ protected slots:
   void itemHeaderDeleteRequest( RuleListEditorTBBItemHeader *header );
   void itemHeaderMoveUpRequest( RuleListEditorTBBItemHeader *header );
   void itemHeaderMoveDownRequest( RuleListEditorTBBItemHeader *header );
+  void itemHeaderDescriptionEdited( RuleListEditorTBBItemHeader *header );
   void slotRuleChanged();
   void slotHeartbeat();
-};
+}; // class RuleListEditorTBB
 
 } // namespace UI
 
 } // namespace Filter
 
 } // namespace Akonadi
-
-
-
-
-
 
 #endif //!_AKONADI_FILTER_UI_RULELISTEDITORTBB_H_

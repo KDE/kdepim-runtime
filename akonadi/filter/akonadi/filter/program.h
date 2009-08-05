@@ -32,8 +32,9 @@
 #include <QtCore/QString>
 
 #include <akonadi/filter/component.h>
-#include <akonadi/filter/rulelist.h>
 #include <akonadi/filter/data.h>
+#include <akonadi/filter/propertybag.h>
+#include <akonadi/filter/rulelist.h>
 
 namespace Akonadi
 {
@@ -45,7 +46,7 @@ namespace Filter
  *
  * The program is made up of a list of rules that are applied in sequence.
  */
-class AKONADI_FILTER_EXPORT Program : public Action::RuleList
+class AKONADI_FILTER_EXPORT Program : public Action::RuleList, public PropertyBag
 {
 public:
 
@@ -62,27 +63,16 @@ public:
 public:
 
   /**
-   * The user supplied description of this filtering program.
+   * Returns the name of this program.
+   * This is equivalent to property( QString::fromAscii( "name" ) ).
    */
-  QString mDescription;
-
-public:
-
-  /**
-   * Returns the user supplied description attacched to this program.
-   */
-  const QString & description() const
-  {
-    return mDescription;
-  }
+  QString name() const;
 
   /**
-   * Sets the user supplied description of this filtering program.
+   * Sets the user supplied name of this filtering program.
+   * This is equivalent to setProperty( QString::fromAscii( "name" ), name ).
    */
-  void setDescription( const QString &description )
-  {
-    mDescription = description;
-  }
+  void setName( const QString &name );
 
   /**
    * Reimplemented from Component. Returns true.
@@ -93,7 +83,8 @@ public:
    * Reimplemented from Component: dumps the program on the console.
    */
   virtual void dump( const QString &prefix );
-};
+
+}; // class Program
 
 } // namespace Filter
 

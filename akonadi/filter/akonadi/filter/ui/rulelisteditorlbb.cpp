@@ -56,10 +56,11 @@ class RuleListEditorLBBListWidgetItem : public QListWidgetItem
 {
 protected:
   RuleEditor * mEditor;
+  QString mUserDescription;
   int mIndex;
 public:
-  RuleListEditorLBBListWidgetItem( QListWidget * parent, RuleEditor * editor, int index )
-    : QListWidgetItem( parent ), mEditor( editor ), mIndex( index )
+  RuleListEditorLBBListWidgetItem( QListWidget * parent, RuleEditor * editor, const QString &userDescription, int index )
+    : QListWidgetItem( parent ), mEditor( editor ), mUserDescription( userDescription ), mIndex( index )
   {
     setIcon( SmallIcon( "application-x-executable" ) );
     updateText();
@@ -81,9 +82,23 @@ public:
     return mIndex;
   }
 
+  const QString & userDescription()
+  {
+    return mUserDescription;
+  }
+
+  void setUserDescription( const QString &text )
+  {
+    mUserDescription = text;
+    updateText();
+  }
+
   void updateText()
   {
-    setText( i18n( "Rule %1: %2", mIndex + 1, mEditor->ruleDescription() ) );    
+    if( mUserDescription.isEmpty() )
+      setText( i18n( "Rule %1: %2", mIndex + 1, mEditor->ruleDescription() ) );
+    else
+      setText( i18n( "Rule %1: %2", mIndex + 1, mUserDescription ) );
   }
 };
 
@@ -271,7 +286,9 @@ void RuleListEditorLBB::fillFromRuleList( Action::RuleList * ruleList )
 
     ruleEditor->fillFromRule( rule );
 
-    RuleListEditorLBBListWidgetItem * item = new RuleListEditorLBBListWidgetItem( mListWidget, ruleEditor, index );
+    RuleListEditorLBBListWidgetItem * item = new RuleListEditorLBBListWidgetItem( mListWidget, ruleEditor, rule->description(), index );
+    Q_UNUSED( item );
+
     index++;
   }
 
@@ -288,16 +305,21 @@ bool RuleListEditorLBB::commitStateToRuleList( Action::RuleList * ruleList )
   {
     RuleListEditorLBBListWidgetItem * item = static_cast< RuleListEditorLBBListWidgetItem * >( mListWidget->item( i ) );
     Q_ASSERT( item );
+    Q_UNUSED( item );
 
     if( item->editor()->isEmpty() )
       continue; // senseless empty rule
 
     Rule * rule = item->editor()->commitState( ruleList );
+
     if( !rule )
     {
       kDebug() << "Failed to create rule";
       return false; // error already shown
     }
+
+    rule->setDescription( item->userDescription() );
+
     ruleList->addRule( rule );
   }
 
@@ -321,7 +343,7 @@ void RuleListEditorLBB::slotNewRuleButtonClicked()
   Q_ASSERT( ruleEditor );
   connect( ruleEditor, SIGNAL( ruleChanged() ), this, SLOT( slotRuleChanged() ) );
 
-  RuleListEditorLBBListWidgetItem * item = new RuleListEditorLBBListWidgetItem( mListWidget, ruleEditor, mListWidget->count() );
+  RuleListEditorLBBListWidgetItem * item = new RuleListEditorLBBListWidgetItem( mListWidget, ruleEditor, QString(), mListWidget->count() );
 
   activateEditor( ruleEditor );
 }

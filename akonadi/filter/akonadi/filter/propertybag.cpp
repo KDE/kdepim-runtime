@@ -1,11 +1,11 @@
 /****************************************************************************** *
  *
- *  File : program.cpp
- *  Created on Thu 07 May 2009 13:30:16 by Szymon Tomasz Stefanek
+ *  File : propertybag.cpp
+ *  Created on Wed 05 Aug 2009 01:13:34 by Szymon Stefanek
  *
  *  This file is part of the Akonadi Filtering Framework
  *
- *  Copyright 2009 Szymon Tomasz Stefanek <pragma@kvirc.net>
+ *  Copyright 2009 Szymon Tomasz Stefanek <s.stefanek at gmail dot com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,48 +23,27 @@
  *
  *******************************************************************************/
 
-#include "program.h"
+#include "propertybag.h"
 
-#include <QObject>
-
-#include <KDebug>
-
-namespace Akonadi
-{
-namespace Filter 
-{
-
-Program::Program()
-  : Action::RuleList( 0 ), PropertyBag()
+PropertyBag::PropertyBag()
 {
 }
 
-Program::~Program()
+PropertyBag::~PropertyBag()
 {
 }
 
-bool Program::isProgram() const
+QVariant PropertyBag::property( const QString &name ) const
 {
-  return true;
+  return mProperties.value( name, QVariant() );
 }
 
-QString Program::name() const
+void PropertyBag::setProperty( const QString &name, const QVariant &value )
 {
-  return property( QString::fromAscii( "name" ) ).toString();
+  mProperties.insert( name, value );
 }
 
-void Program::setName( const QString &name )
+void PropertyBag::setAllProperties( const QHash< QString, QVariant > &all )
 {
-  setProperty( QString::fromAscii( "name" ), QVariant( name ) );
+  mProperties = all;
 }
-
-void Program::dump( const QString &prefix )
-{
-  debugOutput( prefix, "Program" );
-  dumpRuleList( prefix );
-}
-
-} // namespace Filter
-
-} // namespace Akonadi
-

@@ -67,6 +67,16 @@ public:
   RuleListEditorTBBItemHeader * mHeader;
   ExpandingScrollArea * mScrollArea;
   RuleEditor * mRuleEditor;
+  bool mDescriptionModifiedByUser;
+
+  void updateDescription()
+  {
+    if( mDescriptionModifiedByUser )
+      return; // don't touch
+    if( mHeader->descriptionEditHasFocus() )
+      return; // don't touch again
+    mHeader->setDescription( mRuleEditor->ruleDescription() );
+  }
 };
 
 class RuleListEditorTBBPrivate
@@ -169,6 +179,9 @@ RuleListEditorTBBItemHeader::RuleListEditorTBBItemHeader( QWidget *parent )
   mDescriptionEdit = new QLineEdit( this );
   mDescriptionEdit->setFrame( false );
   mDescriptionEdit->setBackgroundRole( QPalette::Button ); // this doesn't work (style ignores this)
+
+  connect( mDescriptionEdit, SIGNAL( textEdited( const QString & ) ), this, SLOT( slotDescriptionEditTextEdited( const QString & ) ) );
+
   QPalette pal = palette();
   pal.setColor( QPalette::Base, pal.color( QPalette::Button ) );
   mDescriptionEdit->setPalette( pal );
@@ -201,6 +214,11 @@ RuleListEditorTBBItemHeader::RuleListEditorTBBItemHeader( QWidget *parent )
 RuleListEditorTBBItemHeader::~RuleListEditorTBBItemHeader()
 {
 
+}
+
+bool RuleListEditorTBBItemHeader::descriptionEditHasFocus()
+{
+  return mDescriptionEdit->hasFocus();
 }
 
 void RuleListEditorTBBItemHeader::setDescription( const QString &description )
@@ -236,6 +254,11 @@ void RuleListEditorTBBItemHeader::moveDownButtonClicked()
 void RuleListEditorTBBItemHeader::deleteButtonClicked()
 {
   emit deleteRequest( this );
+}
+
+void RuleListEditorTBBItemHeader::slotDescriptionEditTextEdited( const QString & )
+{
+  emit descriptionEdited( this );
 }
 
 bool RuleListEditorTBBItemHeader::eventFilter( QObject *o, QEvent *e )
@@ -305,7 +328,7 @@ void RuleListEditorTBB::fillFromRuleList( Action::RuleList * ruleList )
 
     ruleEditor->fillFromRule( rule );
     //ruleEditor->setBackgroundRole( QPalette::ToolTipBase );
-    addRuleEditor( ruleEditor );
+    addRuleEditor( ruleEditor, rule->description() );
   }
 
   reLayout();
@@ -330,6 +353,10 @@ bool RuleListEditorTBB::commitStateToRuleList( Action::RuleList * ruleList )
       kDebug() << "Failed to create rule";
       return false; // error already shown
     }
+
+    if( item->mDescriptionModifiedByUser )
+      rule->setDescription( item->mHeader->description() );
+
     ruleList->addRule( rule );
   }
 
@@ -357,7 +384,7 @@ RuleListEditorTBBItem * RuleListEditorTBB::findItemByHeader( RuleListEditorTBBIt
 }
 
 
-RuleListEditorTBBItem * RuleListEditorTBB::addRuleEditor( RuleEditor * editor )
+RuleListEditorTBBItem * RuleListEditorTBB::addRuleEditor( RuleEditor * editor, const QString &ruleDescription )
 {
   Q_ASSERT( editor );
 
@@ -369,6 +396,7 @@ RuleListEditorTBBItem * RuleListEditorTBB::addRuleEditor( RuleEditor * editor )
   connect( item->mHeader, SIGNAL( moveUpRequest( RuleListEditorTBBItemHeader * ) ), this, SLOT( itemHeaderMoveUpRequest( RuleListEditorTBBItemHeader * ) ) );
   connect( item->mHeader, SIGNAL( moveDownRequest( RuleListEditorTBBItemHeader * ) ), this, SLOT( itemHeaderMoveDownRequest( RuleListEditorTBBItemHeader * ) ) );
   connect( item->mHeader, SIGNAL( deleteRequest( RuleListEditorTBBItemHeader * ) ), this, SLOT( itemHeaderDeleteRequest( RuleListEditorTBBItemHeader * ) ) );
+  connect( item->mHeader, SIGNAL( descriptionEdited( RuleListEditorTBBItemHeader * ) ), this, SLOT( itemHeaderDescriptionEdited( RuleListEditorTBBItemHeader * ) ) );
 
   item->mScrollArea = new ExpandingScrollArea( mBase );
   item->mScrollArea->setWidget( editor );
@@ -383,7 +411,14 @@ RuleListEditorTBBItem * RuleListEditorTBB::addRuleEditor( RuleEditor * editor )
 
   mPrivate->mItemList.append( item );
 
-  item->mHeader->setDescription( editor->ruleDescription() );
+  if( ruleDescription.isEmpty() )
+  {
+    item->mHeader->setDescription( editor->ruleDescription() );
+    item->mDescriptionModifiedByUser = false;
+  } else {
+    item->mHeader->setDescription( ruleDescription );
+    item->mDescriptionModifiedByUser = true;
+  }
 
   item->mHeader->show();
 
@@ -402,7 +437,7 @@ void RuleListEditorTBB::slotRuleChanged()
   {
     if( item->mRuleEditor == editor )
     {
-      item->mHeader->setDescription( editor->ruleDescription() );
+      item->updateDescription();
       return;
     }
   }
@@ -450,7 +485,7 @@ void RuleListEditorTBB::reLayout()
 void RuleListEditorTBB::setCurrentItem( RuleListEditorTBBItem *item )
 {
   if( mCurrentItem )
-    mCurrentItem->mHeader->setDescription( mCurrentItem->mRuleEditor->ruleDescription() );
+    mCurrentItem->updateDescription();
 
   mCurrentItem = 0;
 
@@ -471,7 +506,16 @@ void RuleListEditorTBB::setCurrentItem( RuleListEditorTBBItem *item )
 
 void RuleListEditorTBB::addRuleHeaderActivated( RuleListEditorTBBHeader *header )
 {
-  addRuleEditor( new RuleEditor( mBase, mComponentFactory, mEditorFactory ) );
+  Q_UNUSED( header );
+  addRuleEditor( new RuleEditor( mBase, mComponentFactory, mEditorFactory ), QString() );
+}
+
+void RuleListEditorTBB::itemHeaderDescriptionEdited( RuleListEditorTBBItemHeader *header )
+{
+  RuleListEditorTBBItem * item = findItemByHeader( static_cast< RuleListEditorTBBItemHeader * >( header ) );
+  Q_ASSERT( item );
+
+  item->mDescriptionModifiedByUser = !header->description().isEmpty();
 }
 
 void RuleListEditorTBB::itemHeaderActivated( RuleListEditorTBBHeader *header )
@@ -547,7 +591,7 @@ void RuleListEditorTBB::slotHeartbeat()
   if( !mCurrentItem )
     return;
 
-  mCurrentItem->mHeader->setDescription( mCurrentItem->mRuleEditor->ruleDescription() );
+  mCurrentItem->updateDescription();
 }
 
 } // namespace UI

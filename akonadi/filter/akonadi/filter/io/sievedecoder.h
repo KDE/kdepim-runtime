@@ -33,6 +33,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QList>
+#include <QtCore/QHash>
 #include <QtCore/QVariant>
 
 namespace Akonadi
@@ -42,6 +43,7 @@ namespace Filter
 
 class Program;
 class Component;
+class Rule;
 
 namespace Condition
 {
@@ -75,6 +77,7 @@ protected:
   QStringList mCurrentStringList;
   bool mGotError;
   bool mCreationOfCustomDataMemberDescriptorsEnabled;
+  QHash< QString, QVariant > mCurrentRuleProperties;
 public:
   void setSreationOfCustomDataMemberDescriptorsEnabled( bool enable )
   {
@@ -104,8 +107,9 @@ protected:
   void onStringListArgumentStart();
   void onStringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment );
   void onStringListArgumentEnd();
-
+  void onComment( const QString &comment );
 private:
+  Rule * createRule( Component * parentComponent );
   bool addConditionToCurrentComponent( Condition::Base * condition, const QString &identifier );
 
 };
