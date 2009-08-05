@@ -102,6 +102,24 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
 
   registerDataMember(
       new DataMemberDescriptor(
+          DataMemberRfc822Date,
+          QString::fromAscii( "date" ),
+          i18n( "Date" ),
+          DataTypeString
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          DataMemberRfc822Organization,
+          QString::fromAscii( "organization" ),
+          i18n( "Organization" ),
+          DataTypeString
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
           DataMemberRfc822AllHeaders,
           QString::fromAscii( "anyheader" ),
           i18n( "header list" ),
@@ -127,8 +145,41 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
         )
     );  
 
+  registerDataMember(
+      new DataMemberDescriptor(
+          DataMemberRfc822UserAgent,
+          QString::fromAscii( "useragent" ),
+          i18n( "User Agent" ),
+          DataTypeString
+        )
+    );
 
+  registerDataMember(
+      new DataMemberDescriptor(
+          DataMemberRfc822MessageID,
+          QString::fromAscii( "messageid" ),
+          i18n( "Message Id" ),
+          DataTypeString
+        )
+    );
 
+  registerDataMember(
+      new DataMemberDescriptor(
+          DataMemberRfc822References,
+          QString::fromAscii( "references" ),
+          i18n( "References Id" ),
+          DataTypeString
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          DataMemberRfc822InReplyTo,
+          QString::fromAscii( "inreplyto" ),
+          i18n( "InReplyTo Id" ),
+          DataTypeString
+        )
+    );
 
 
 
@@ -250,6 +301,23 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
   cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeInteger, i18n( "Target collection id" ) ) );
   registerCommand( cmd );
 
+  cmd = new CommandDescriptor(
+      CommandRfc822RunProgram,
+      QString::fromAscii( "exec" ),
+      i18n( "run the following command" ),
+      false
+    );
+  cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeString, i18n( "Command" ) ) );
+  registerCommand( cmd );
+
+  cmd = new CommandDescriptor(
+      CommandRfc822PipeThrough,
+      QString::fromAscii( "pipe" ),
+      i18n( "pipe through the following command" ),
+      false
+    );
+  cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeString, i18n( "Command" ) ) );
+  registerCommand( cmd );
 }
 
 ComponentFactoryRfc822::~ComponentFactoryRfc822()

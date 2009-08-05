@@ -74,6 +74,11 @@ Stop::~Stop()
 {
 }
 
+bool Stop::isTerminal() const
+{
+  return true;
+}
+
 Stop::ProcessingStatus Stop::execute( Data * data )
 {
   return SuccessAndStop;
@@ -96,6 +101,12 @@ Command::Command( Component * parent, const CommandDescriptor * command, const Q
 Command::~Command()
 {
 }
+
+bool Command::isTerminal() const
+{
+  return mCommandDescriptor->isTerminal();
+}
+
 
 Command::ProcessingStatus Command::execute( Data * data )
 {

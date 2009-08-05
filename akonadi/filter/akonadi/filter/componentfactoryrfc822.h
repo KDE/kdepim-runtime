@@ -46,6 +46,12 @@ enum DataMemberRfc822Identifiers
   DataMemberRfc822SubjectHeader,
   DataMemberRfc822CcHeader,
   DataMemberRfc822BccHeader,
+  DataMemberRfc822MessageID,
+  DataMemberRfc822Date,
+  DataMemberRfc822Organization,
+  DataMemberRfc822References,
+  DataMemberRfc822UserAgent,
+  DataMemberRfc822InReplyTo,
   DataMemberRfc822AllRecipientHeaders,
   DataMemberRfc822AllHeaders,
   DataMemberRfc822MessageBody,
@@ -78,7 +84,19 @@ enum CommandRfc822Identifiers
    * The "Delete Message" command.
    * This is Akonadi based, terminal and has no arguments.
    */
-  CommandRfc822DeleteMessage
+  CommandRfc822DeleteMessage,
+
+  /**
+   * The "Run program" command.
+   * Non terminal with one argument.
+   */
+  CommandRfc822RunProgram,
+
+  /**
+   * The "Pipe through" command.
+   * Non terminal with one argument.
+   */
+  CommandRfc822PipeThrough
 
 }; // enum CommandRfc822Identifiers
 

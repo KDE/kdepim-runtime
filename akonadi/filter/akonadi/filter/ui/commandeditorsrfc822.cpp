@@ -38,10 +38,12 @@
 #include <KLocale>
 #include <KMessageBox>
 
-#include <QLayout>
-#include <QLabel>
-#include <QStringList>
-#include <QVariant>
+#include <QtCore/QStringList>
+#include <QtCore/QVariant>
+
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QLineEdit>
 
 namespace Akonadi
 {
@@ -83,8 +85,6 @@ CommandWithTargetCollectionEditor::~CommandWithTargetCollectionEditor()
 
 void CommandWithTargetCollectionEditor::fillFromAction( Action::Base * action )
 {
-  kDebug() << "Filling command with target collection...";
-
   Q_ASSERT( action );
   Q_ASSERT( action->actionType() == Action::ActionTypeCommand );
 
@@ -111,8 +111,6 @@ void CommandWithTargetCollectionEditor::fillFromAction( Action::Base * action )
     return;
   }
 
-
-  kDebug() << "Target collection id is" << id;
   // Must fetch the collection to have its name displayed...
 
   Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob( Akonadi::Collection( id ), Akonadi::CollectionFetchJob::Base );
@@ -167,6 +165,82 @@ Action::Base * CommandWithTargetCollectionEditor::commitState( Component * paren
 
   return cmd;
 }
+
+
+
+
+
+
+
+CommandWithStringParamEditor::CommandWithStringParamEditor(
+    QWidget * parent,
+    const CommandDescriptor * commandDescriptor,
+    ComponentFactory * componentFactory,
+    EditorFactory * editorFactory
+  )
+  : CommandEditor( parent, commandDescriptor, componentFactory, editorFactory )
+{
+  QGridLayout * g = new QGridLayout( this );
+
+  const CommandDescriptor::ParameterDescriptor * param = commandDescriptor->parameters()->first();
+  Q_ASSERT( param );
+
+  QLabel * l = new QLabel( this );
+  l->setText( QString::fromAscii( "%1:" ).arg( param->name() ) );
+
+  g->addWidget( l, 0, 0 );
+
+  mParameterLineEdit = new QLineEdit( this );
+
+  g->addWidget( mParameterLineEdit, 0, 1 );
+
+  g->setColumnStretch( 1, 1 );
+}
+
+CommandWithStringParamEditor::~CommandWithStringParamEditor()
+{
+}
+
+void CommandWithStringParamEditor::fillFromAction( Action::Base * action )
+{
+  Q_ASSERT( action );
+  Q_ASSERT( action->actionType() == Action::ActionTypeCommand );
+
+  Action::Command * cmd = dynamic_cast< Action::Command * >( action );
+  Q_ASSERT( cmd );
+  Q_ASSERT( cmd->parameters()->count() >= 1 ); // tollerate broken sieve scripts which have more than one param here
+
+  const CommandDescriptor * cmdDescriptor = cmd->commandDescriptor();
+  Q_ASSERT( cmdDescriptor );
+  Q_ASSERT( cmdDescriptor->parameters()->count() == 1 );
+
+  const CommandDescriptor::ParameterDescriptor * formalParam = cmdDescriptor->parameters()->first();
+  Q_ASSERT( formalParam );
+
+  Q_ASSERT( formalParam->dataType() == DataTypeString );
+
+  QString val = cmd->parameters()->first().toString();
+
+  mParameterLineEdit->setText( val );
+}
+
+Action::Base * CommandWithStringParamEditor::commitState( Component * parent )
+{
+  QList< QVariant > params;
+
+  params.append( mParameterLineEdit->text() );
+
+  Action::Command * cmd = componentFactory()->createCommand( parent, commandDescriptor(), params );
+  if( !cmd )
+  {
+    KMessageBox::sorry( this, componentFactory()->lastError(), i18n( "Failed to commit the action" ) );
+    return 0;
+  }
+
+  return cmd;
+}
+
+
 
 
 } // namespace UI

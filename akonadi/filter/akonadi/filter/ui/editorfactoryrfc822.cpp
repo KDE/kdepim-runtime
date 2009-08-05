@@ -58,6 +58,10 @@ CommandEditor * EditorFactoryRfc822::createCommandEditor( QWidget * parent, cons
     case CommandRfc822CopyMessageToCollection:
       return new CommandWithTargetCollectionEditor( parent, command, componentFactory, this );
     break;
+    case CommandRfc822RunProgram:
+    case CommandRfc822PipeThrough:
+      return new CommandWithStringParamEditor( parent, command, componentFactory, this );
+    break;
     case CommandRfc822DeleteMessage:
       return 0; // no special editor needed for this
     break;

@@ -678,51 +678,118 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
   if( mGotError )
     return; // ignore everything
 
-  if ( !( mCurrentComponent->isRuleList() || mCurrentComponent->isRule() ) )
+  if ( !mCurrentSimpleCommandName.isEmpty() )
+  {
+    mGotError = true;
+    setLastError( i18n( "Unexpected start of command inside a simple command... how you did that ?" ) );
+    return;
+  }
+
+  if ( !( mCurrentComponent->isProgram() || mCurrentComponent->isRule() ) )
   {
     // unrecognized command
     mGotError = true; 
-    setLastError( i18n( "Unexpected start of command '%1' outside of a rule list/rule", identifier ) );
+    setLastError( i18n( "Unexpected start of command '%1'", identifier ) );
     return;
   }
 
   Rule * rule;
   Action::RuleList * ruleList;
 
-  if(
-      ( QString::compare( identifier, QLatin1String( "if" ), Qt::CaseInsensitive ) == 0 ) ||
-      ( QString::compare( identifier, QLatin1String( "elsif" ), Qt::CaseInsensitive ) == 0 ) ||
-      ( QString::compare( identifier, QLatin1String( "else" ), Qt::CaseInsensitive ) == 0 )
-    )
+  bool isIf = QString::compare( identifier, QLatin1String( "if" ), Qt::CaseInsensitive ) == 0;
+  bool isElse;
+  if( !isIf )
+  {
+    isElse = (
+        ( QString::compare( identifier, QLatin1String( "elsif" ), Qt::CaseInsensitive ) == 0 ) ||
+        ( QString::compare( identifier, QLatin1String( "else" ), Qt::CaseInsensitive ) == 0 )
+      );
+  } else {
+    isElse = false;
+  }
+
+  if( isIf || isElse )
   {
     mCurrentSimpleCommandName = QString(); // this is not a simple command
 
     // conditional rule start
-    if( mCurrentComponent->isRuleList() )
+    if( mCurrentComponent->isProgram() )
     {
       // a rule for the current rule list
       ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
-      rule = createRule( mCurrentComponent );
-      ruleList->addRule( rule );
-      mCurrentComponent = rule;
-      return;
+
+    } else {
+      // Not inside a program... so inside a rule.
+
+      Q_ASSERT( mCurrentComponent->isRule() );
+
+      // look if the rule's last action is a RuleList, if it isn't then create one.
+
+      rule = static_cast< Rule * >( mCurrentComponent );
+
+      ruleList = 0;
+
+      if( rule->actionList()->count() > 0 )
+      {
+        if( rule->actionList()->last()->isRuleList() )
+          ruleList = static_cast< Action::RuleList * >( rule->actionList()->last() );
+      }
+
+      if( !ruleList )
+      {
+        // create the rule list and add it as action
+        ruleList = componentFactory()->createRuleList( mCurrentComponent );
+        rule->addAction( ruleList );
+      }
     }
 
-    // a rule-list action
-    Q_ASSERT( mCurrentComponent->isRule() );
+    Q_ASSERT( ruleList );
 
-    // create the rule list and add it as action
-    rule = static_cast< Rule * >( mCurrentComponent );
-    ruleList = componentFactory()->createRuleList( mCurrentComponent );
-    rule->addAction( ruleList );
+    if( isElse )
+    {
+      // There must have been at least one previous rule in the list
 
-    // create the rule and add it to the rule list we've just created
-    rule = createRule( mCurrentComponent );
+      rule = ruleList->ruleList()->last();
+      if( !rule )
+      {
+        mGotError = true; 
+        setLastError( i18n( "Unexpected else/elseif without a previous if" ) );
+        return;
+      }
+
+      // If the previous rule wasn't terminal we should add a stop command inside
+      // otherwise processing will continue in the elseif/else after the if has been
+      // matched... and it's not nice :D
+
+      QList< Action::Base * > * actions = rule->actionList();
+      Q_ASSERT( actions );
+
+      bool isTerminal = false;
+      foreach( Action::Base * action, *actions )
+      {
+        if( action->isTerminal() )
+        {
+          isTerminal = true;
+          break;
+        }
+      }
+
+      if ( !isTerminal )
+      {
+        // Not terminal by itself: add a trailing stop action
+        rule->addAction( componentFactory()->createStopAction( ruleList ) );
+      }
+    }
+
+    // create the rule and add it to the rule list we've just found/created
+    rule = createRule( ruleList );
     ruleList->addRule( rule );
     mCurrentComponent = rule;
 
     return;
   }
+
+  // The simple commands can't have nested blocks...
 
   // We delay the creation of simple commands to the onCommandDescriptorEnd() so we have all the arguments
   mCurrentSimpleCommandName = identifier;
@@ -734,11 +801,28 @@ void SieveDecoder::onCommandDescriptorEnd()
   if( mGotError )
     return; // ignore everything
 
+  if( !( mCurrentComponent->isProgram() || mCurrentComponent->isRule() ) )
+  {
+    mGotError = true; 
+    setLastError( i18n( "Unexpected end of command out of a rule or toplevel rule list" ) );
+    return;
+  }
+
   if( !mCurrentSimpleCommandName.isEmpty() )
   {
     // delayed simple command creation
 
-    Q_ASSERT( mCurrentComponent->isRuleList() || mCurrentComponent->isRule() );
+    if ( mCurrentComponent->isProgram() )
+    {
+      // unconditional rule start with an action
+      Action::RuleList * ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
+      Rule * rule = createRule( ruleList );
+      ruleList->addRule( rule );
+
+      mCurrentComponent = rule;
+    }
+
+    Q_ASSERT( mCurrentComponent->isRule() );
 
     Action::Base * action;
     if(
@@ -774,46 +858,33 @@ void SieveDecoder::onCommandDescriptorEnd()
         setLastError( i18n( "Could not create action '%1': %2", mCurrentSimpleCommandName, componentFactory()->lastError() ) );
         return;
       }
-
     }
 
     Q_ASSERT( action );
-    mCurrentSimpleCommandName = QString();
-
-    if ( mCurrentComponent->isRuleList() )
-    {
-      // unconditional rule start with an action
-      Action::RuleList * ruleList = static_cast< Action::RuleList * >( mCurrentComponent );
-      Rule * rule = createRule( mCurrentComponent );
-      ruleList->addRule( rule );
-
-      rule->addAction( action );
-
-      mCurrentComponent = action;
-      return;
-    }
-
-    Q_ASSERT( mCurrentComponent->isRule() );
 
     // a plain action within the current rule
     static_cast< Rule * >( mCurrentComponent )->addAction( action );
 
-    mCurrentComponent = action;
+    mCurrentSimpleCommandName = QString();
 
-  }
-
-  // not a simple command
-
-  if( !( mCurrentComponent->isRule() || mCurrentComponent->isAction()) )
-  {
-    mGotError = true;
-    setLastError( i18n( "Unexpected end of command outside of a rule/action" ) );
+    // nothing more to do: remain within the same rule now
     return;
   }
 
+  if( mCurrentComponent->isProgram() )
+    return; // nothing to pop
 
-  // pop
+  // so it's a rule: pop it
   mCurrentComponent = mCurrentComponent->parent();
+
+  Q_ASSERT( mCurrentComponent ); // must exist
+  Q_ASSERT( mCurrentComponent->isRuleList() );
+
+  // pop again, unless we're in a program (which can't be popped)
+  if( !mCurrentComponent->isProgram() )
+    mCurrentComponent = mCurrentComponent->parent();
+
+  Q_ASSERT( mCurrentComponent->isProgram() || mCurrentComponent->isRule() );
 }
 
 void SieveDecoder::onBlockStart()
@@ -825,6 +896,13 @@ void SieveDecoder::onBlockStart()
   {
     mGotError = true;
     setLastError( i18n( "Unexpected start of block outside of a rule." ) );
+    return;
+  }
+
+  if ( !mCurrentSimpleCommandName.isEmpty() )
+  {
+    mGotError = true;
+    setLastError( i18n( "Unexpected start of block after a simple command." ) );
     return;
   }
 }

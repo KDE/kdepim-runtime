@@ -163,6 +163,9 @@ bool SieveEncoder::encodeRuleList( Action::RuleList * ruleList )
 
 bool SieveEncoder::encodeRule( Rule * rule, bool isFirst, bool isLast )
 {
+  Q_UNUSED( isFirst );
+  Q_UNUSED( isLast );
+
   Condition::Base * condition = rule->condition();
 
   bool startedScope = false;
@@ -171,7 +174,7 @@ bool SieveEncoder::encodeRule( Rule * rule, bool isFirst, bool isLast )
 
   if( !props.isEmpty() )
   {
-    addLine( QString() );
+    //addLine( QString() );
 
     for( QHash< QString, QVariant >::ConstIterator it = props.constBegin(); it != props.constEnd(); ++it )
     {
@@ -187,32 +190,24 @@ bool SieveEncoder::encodeRule( Rule * rule, bool isFirst, bool isLast )
     }
   }
 
+  //if( !isFirst )
+    //addLine( QString() );
+
   if( condition )
   {
     beginLine();
 
-    if( isFirst )
-      addLineData( QLatin1String( "if " ) );
-    else
-      addLineData( QLatin1String( "elsif " ) );
+    addLineData( QLatin1String( "if " ) );
 
     if( !encodeCondition( condition ) )
       return false;
 
     addLineData( QLatin1String( " {" ) );
+
     endLine();
 
     startedScope = true;
     pushIndent();
-  } else {
-    Q_ASSERT( isFirst || isLast );
-
-    if ( !isFirst )
-    {
-      addLine( QLatin1String( "else {" ) );
-      startedScope = true;
-      pushIndent();
-    }
   }
 
   QList< Action::Base * > * actions = rule->actionList();

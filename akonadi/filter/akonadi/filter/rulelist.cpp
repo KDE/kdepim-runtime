@@ -51,6 +51,11 @@ bool RuleList::isRuleList() const
   return true;
 }
 
+bool RuleList::isTerminal() const
+{
+  return false;
+}
+
 
 RuleList::ProcessingStatus RuleList::execute( Data * data )
 {

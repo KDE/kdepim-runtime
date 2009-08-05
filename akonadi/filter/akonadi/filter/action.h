@@ -126,6 +126,11 @@ public:
   virtual bool isAction() const;
 
   /**
+   * Returns true if this action is terminal (that is it stops processing) or false otherwise.
+   */
+  virtual bool isTerminal() const = 0;
+
+  /**
    * Executes the action on the specified data object
    * and returs a ProcessingStatus (which is either SuccessAndContinue,
    * SuccessAndStop or Failure).
@@ -165,6 +170,11 @@ public:
   virtual ~Stop();
 
 public:
+
+  /**
+   * Returns true.
+   */
+  virtual bool isTerminal() const;
 
   /**
    * Executes the Stop action. This function simply returns SuccessAndStop
@@ -234,6 +244,12 @@ public:
   {
     return mCommandDescriptor;
   }
+
+  /**
+   * Returns true if this command is terminal (that is it stops processing) or false otherwise.
+   * This depends on the CommandDescriptor.
+   */
+  virtual bool isTerminal() const;
 
   /**
    * Returns the list of actual parameters associated with this command.

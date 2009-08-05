@@ -56,6 +56,17 @@ QString Rule::description() const
   return property( QString::fromAscii( "description" ) ).toString();
 }
 
+bool Rule::isEmpty() const
+{
+  if( mCondition )
+    return false;
+  if( !mActionList.isEmpty() )
+    return false;
+
+  return true;
+}
+
+
 void Rule::setDescription( const QString &description )
 {
   setProperty( QString::fromAscii( "description" ), QVariant( description ) );

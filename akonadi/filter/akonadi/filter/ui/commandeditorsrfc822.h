@@ -30,6 +30,8 @@
 
 #include <akonadi/filter/ui/commandeditor.h>
 
+class QLineEdit;
+
 namespace Akonadi
 {
 
@@ -61,6 +63,28 @@ public:
   virtual Action::Base * commitState( Component * parent );
 
 }; // class CommandWithTargetCollectionEditor
+
+class AKONADI_FILTER_UI_EXPORT CommandWithStringParamEditor : public CommandEditor
+{
+  Q_OBJECT
+public:
+  CommandWithStringParamEditor(
+      QWidget * parent,
+      const CommandDescriptor * commandDescriptor,
+      ComponentFactory * componentFactory,
+      EditorFactory * editorFactory
+    );
+
+  virtual ~CommandWithStringParamEditor();
+
+private:
+  QLineEdit * mParameterLineEdit;
+
+public:
+  virtual void fillFromAction( Action::Base * action );
+  virtual Action::Base * commitState( Component * parent );
+
+}; // class CommandWithStringParamEditor
 
 } // namespace UI
 

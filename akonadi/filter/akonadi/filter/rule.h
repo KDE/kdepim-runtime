@@ -88,6 +88,8 @@ public:
 
   virtual bool isRule() const;
 
+  bool isEmpty() const;
+
   Condition::Base * condition() const
   {
     return mCondition;

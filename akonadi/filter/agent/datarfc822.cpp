@@ -113,6 +113,14 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
       return true;
     }
     break;
+    case Akonadi::Filter::CommandRfc822RunProgram:
+      // TODO
+      return true;
+    break;
+    case Akonadi::Filter::CommandRfc822PipeThrough:
+      // TODO
+      return true;
+    break;
     default:
       // not my command: fall through
     break;
@@ -124,6 +132,30 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
 
 QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor * function, const Akonadi::Filter::DataMemberDescriptor * dataMember )
 {
+  // Optimize certain properties, when possible
+
+  if( !mMessage )
+  {
+    // We need AT LEAST the header.
+    if( !fetchHeader() )
+    {
+      kWarning() << "Fetching message header failed!";
+      return QVariant();
+    }
+  }
+
+  switch( function->id() )
+  {
+    case Akonadi::Filter::FunctionDateIn:
+      if( dataMember->id() == Akonadi::Filter::DataMemberRfc822Date )
+      {
+        // This is pre-parsed by KMime
+        kDebug() << "Returning message Date in QDateTime format (string is '" << mMessage->date()->asUnicodeString() << "')";
+        return QVariant( mMessage->date()->dateTime().dateTime() );
+      }
+    break;
+  }
+
   return Data::getPropertyValue( function, dataMember );
 }
 
@@ -148,7 +180,6 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
       return mMessage->from()->asUnicodeString();
     break;
     case Akonadi::Filter::DataMemberRfc822ToHeader:
-      // FIXME: Parse the header to obtain a string list ?
       kDebug() << "Returning To header '" << mMessage->to()->asUnicodeString() << "'";
       return mMessage->to()->asUnicodeString();
     break;
@@ -161,14 +192,36 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
       return mMessage->subject()->asUnicodeString();
     break;
     case Akonadi::Filter::DataMemberRfc822CcHeader:
-      // FIXME: Parse the header to obtain a string list ?
       kDebug() << "Returning CC header '" << mMessage->cc()->asUnicodeString() << "'";
       return mMessage->cc()->asUnicodeString();
     break;
     case Akonadi::Filter::DataMemberRfc822BccHeader:
-      // FIXME: Parse the header to obtain a string list ?
       kDebug() << "Returning BCC header '" << mMessage->bcc()->asUnicodeString() << "'";
       return mMessage->bcc()->asUnicodeString();
+    break;
+    case Akonadi::Filter::DataMemberRfc822MessageID:
+      kDebug() << "Returning MessageId header '" << mMessage->messageID()->asUnicodeString() << "'";
+      return mMessage->messageID()->asUnicodeString();
+    break;
+    case Akonadi::Filter::DataMemberRfc822Date:
+      kDebug() << "Returning Date header '" << mMessage->date()->asUnicodeString() << "'";
+      return mMessage->date()->asUnicodeString();
+    break;
+    case Akonadi::Filter::DataMemberRfc822Organization:
+      kDebug() << "Returning Organization header '" << mMessage->organization()->asUnicodeString() << "'";
+      return mMessage->organization()->asUnicodeString();
+    break;
+    case Akonadi::Filter::DataMemberRfc822References:
+      kDebug() << "Returning References header '" << mMessage->references()->asUnicodeString() << "'";
+      return mMessage->references()->asUnicodeString();
+    break;
+    case Akonadi::Filter::DataMemberRfc822UserAgent:
+      kDebug() << "Returning UserAgent header '" << mMessage->userAgent()->asUnicodeString() << "'";
+      return mMessage->userAgent()->asUnicodeString();
+    break;
+    case Akonadi::Filter::DataMemberRfc822InReplyTo:
+      kDebug() << "Returning InReplyTo header '" << mMessage->inReplyTo()->asUnicodeString() << "'";
+      return mMessage->inReplyTo()->asUnicodeString();
     break;
     case Akonadi::Filter::DataMemberRfc822AllRecipientHeaders:
     {

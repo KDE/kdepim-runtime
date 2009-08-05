@@ -61,6 +61,7 @@ public:
 
   /**
    * Returns the list of rules that this program is composed of.
+   * The returned pointer is never null.
    */
   const QList< Rule * > * ruleList() const
   {
@@ -78,6 +79,16 @@ public:
   }
 
   virtual bool isRuleList() const;
+
+  /**
+   * Returns false. The rule list *COULD* actually
+   * contain a terminal leaf that is reached unconditionally
+   * but this is a particular case that is hard to detect with
+   * a simple code. If you really need to decide if a rule list is
+   * terminal then drop me a mail at s dot stefanek at gmail dot com
+   * and I'll see what can be done about it :D
+   */
+  virtual bool isTerminal() const;
 
   /**
    * Runs this filtering rule list on the specified filtering Data set.
