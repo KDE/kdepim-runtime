@@ -210,6 +210,7 @@ KSubscription::KSubscription( QWidget *parent, const QString &caption,
   : KDialog( parent ),
     mAcct( acct )
 {
+  KGlobal::locale()->insertCatalog("libkdepim");
   setCaption( caption );
   setButtons( buttons | Help | Ok | Cancel );
   setDefaultButton( Ok );
