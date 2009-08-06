@@ -41,7 +41,6 @@ qt4_add_dbus_adaptor(
 	)
 
 include(PkgConfigGetVar)
-dbus_add_activation_service( org.freedesktop.Akonadi.Agent.akonadi_filter_agent.service.cmake )
 
 kde4_add_executable(
 		akonadi_filter_agent
