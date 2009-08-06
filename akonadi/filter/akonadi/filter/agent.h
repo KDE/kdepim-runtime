@@ -38,7 +38,7 @@
  * This type is used in the agent D-BUS methods.
  * In xml it is encoded as... (what?)
  */
-Q_DECLARE_METATYPE( QList< Akonadi::Collection::Id > );
+Q_DECLARE_METATYPE( QList< Akonadi::Collection::Id > )
 
 namespace Akonadi
 {
