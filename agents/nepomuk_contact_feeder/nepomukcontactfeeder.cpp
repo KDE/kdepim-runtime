@@ -268,7 +268,13 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
     contact.setBirthDate( addressee.birthday().date() );
 
   if ( addressee.url().isValid() ) {
-    NepomukFast::Website website( addressee.url(), graphUri );
+    KUrl url = addressee.url();
+
+    // Nepomuk doesn't like URLs without a protocol
+    if ( url.protocol().isEmpty() )
+      url.setProtocol( "http" );
+
+    NepomukFast::Website website( url, graphUri );
     contact.addWebsiteUrl( website );
   }
 
