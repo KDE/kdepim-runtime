@@ -23,15 +23,15 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/rulelisteditorlbb.h>
-#include <akonadi/filter/ui/rulelisteditor.h>
+#include "rulelisteditorlbb.h"
+#include "rulelisteditor.h"
 
-#include <akonadi/filter/ui/ruleeditor.h>
-#include <akonadi/filter/ui/expandingscrollarea.h>
-#include <akonadi/filter/ui/editorfactory.h>
+#include "ruleeditor.h"
+#include "expandingscrollarea.h"
+#include "editorfactory.h"
 
-#include <akonadi/filter/rulelist.h>
-#include <akonadi/filter/rule.h>
+#include "../rulelist.h"
+#include "../rule.h"
 
 #include <QtCore/QTimer>
 

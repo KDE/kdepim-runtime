@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/agent.h>
+#include "agent.h"
 
 #include <QtDBus/QtDBus>
 

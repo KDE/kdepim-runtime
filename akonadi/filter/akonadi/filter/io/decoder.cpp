@@ -23,9 +23,9 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/io/decoder.h>
+#include "decoder.h"
 
-#include <akonadi/filter/componentfactory.h>
+#include "../componentfactory.h"
 
 namespace Akonadi
 {

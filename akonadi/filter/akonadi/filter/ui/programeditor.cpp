@@ -23,12 +23,12 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/programeditor.h>
+#include "programeditor.h"
 
-#include <akonadi/filter/ui/editorfactory.h>
+#include "editorfactory.h"
 
-#include <akonadi/filter/program.h>
-#include <akonadi/filter/componentfactory.h>
+#include "../program.h"
+#include "../componentfactory.h"
 
 namespace Akonadi
 {

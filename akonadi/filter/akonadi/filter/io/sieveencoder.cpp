@@ -23,16 +23,16 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/io/sieveencoder.h>
-#include <akonadi/filter/functiondescriptor.h>
-#include <akonadi/filter/datamemberdescriptor.h>
-#include <akonadi/filter/operatordescriptor.h>
-#include <akonadi/filter/commanddescriptor.h>
-#include <akonadi/filter/action.h>
-#include <akonadi/filter/condition.h>
-#include <akonadi/filter/program.h>
-#include <akonadi/filter/rule.h>
-#include <akonadi/filter/rulelist.h>
+#include "sieveencoder.h"
+#include "../functiondescriptor.h"
+#include "../datamemberdescriptor.h"
+#include "../operatordescriptor.h"
+#include "../commanddescriptor.h"
+#include "../action.h"
+#include "../condition.h"
+#include "../program.h"
+#include "../rule.h"
+#include "../rulelist.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QStringList>

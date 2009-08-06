@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/commandeditor.h>
+#include "commandeditor.h"
 
 namespace Akonadi
 {

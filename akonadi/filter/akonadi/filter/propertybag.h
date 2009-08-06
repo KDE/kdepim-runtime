@@ -32,12 +32,22 @@
 #include <QtCore/QString>
 #include <QtCore/QVariant>
 
-
+/**
+ * This class rappresents a property container. It's basically
+ * a hashtable mapping QString keys to QVariant values: quite simple.
+ */
 class AKONADI_FILTER_EXPORT PropertyBag
 {
 public:
+
+  /**
+   * Create a PropertyBag with an empty set of properties.
+   */
   PropertyBag();
 
+  /**
+   * Kill the PropertyBag (and thus all the properties).
+   */
   virtual ~PropertyBag();
 
 protected:
@@ -51,14 +61,29 @@ protected:
 
 public:
 
+  /**
+   * Returns the hash table of the properties stored
+   * in this PropertyBag.
+   */
   const QHash< QString, QVariant > & allProperties() const
   {
     return mProperties;
   }
 
+  /**
+   * Allows setting the whole set of properties at once.
+   */
   void setAllProperties( const QHash< QString, QVariant > &all );
 
+  /**
+   * Returns the property corresponding to the specified name (key)
+   * or a null variant if no such property exists.
+   */
   QVariant property( const QString &name ) const;
+
+  /**
+   * Sets the value of the property with the specified name (key).
+   */
   void setProperty( const QString &name, const QVariant &value );
 
 }; // class PropertyBag

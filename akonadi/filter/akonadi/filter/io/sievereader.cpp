@@ -23,8 +23,8 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/io/sievereader.h>
-#include <akonadi/filter/io/sievedecoder.h>
+#include "sievereader.h"
+#include "sievedecoder.h"
 
 namespace Akonadi
 {

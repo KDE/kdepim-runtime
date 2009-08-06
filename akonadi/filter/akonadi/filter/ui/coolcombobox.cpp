@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/coolcombobox.h>
+#include "coolcombobox.h"
 
 #include <QtGui/QPaintEvent>
 #include <QtGui/QStyleOption>

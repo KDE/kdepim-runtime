@@ -41,6 +41,7 @@ namespace Filter
 class AKONADI_FILTER_EXPORT Component
 {
 public:
+
   /**
    * These status codes are returned by the filter execution routines.
    */
@@ -89,6 +90,7 @@ protected:
    * The parent component: shallow, may be null.
    */
   Component * mParent;
+
 public:
 
   /**

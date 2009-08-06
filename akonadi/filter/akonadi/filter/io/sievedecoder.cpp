@@ -23,16 +23,16 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/io/sievedecoder.h>
+#include "sievedecoder.h"
 
-#include <akonadi/filter/io/sievereader.h>
+#include "sievereader.h"
 
-#include <akonadi/filter/componentfactory.h>
-#include <akonadi/filter/program.h>
-#include <akonadi/filter/rule.h>
-#include <akonadi/filter/condition.h>
-#include <akonadi/filter/rulelist.h>
-#include <akonadi/filter/functiondescriptor.h>
+#include "../componentfactory.h"
+#include "../program.h"
+#include "../rule.h"
+#include "../condition.h"
+#include "../rulelist.h"
+#include "../functiondescriptor.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>

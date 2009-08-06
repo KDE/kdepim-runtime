@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/valueeditor.h>
+#include "valueeditor.h"
 
 #include <KMessageBox>
 #include <KLocale>

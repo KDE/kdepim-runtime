@@ -57,6 +57,7 @@ protected:
    * The Rule objects are owned.
    */
   QList< Rule * > mRuleList;
+
 public:
 
   /**

@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/datamemberdescriptor.h>
+#include "datamemberdescriptor.h"
 
 #include <KDebug>
 

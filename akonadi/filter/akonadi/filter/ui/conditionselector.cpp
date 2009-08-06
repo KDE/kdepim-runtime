@@ -23,17 +23,17 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/conditionselector.h>
+#include "conditionselector.h"
 
-#include <akonadi/filter/condition.h>
-#include <akonadi/filter/componentfactory.h>
-#include <akonadi/filter/functiondescriptor.h>
+#include "../condition.h"
+#include "../componentfactory.h"
+#include "../functiondescriptor.h"
 
-#include <akonadi/filter/ui/coolcombobox.h>
-#include <akonadi/filter/ui/extensionlabel.h>
-#include <akonadi/filter/ui/editorfactory.h>
-#include <akonadi/filter/ui/valueeditor.h>
-#include <akonadi/filter/ui/ruleeditor.h>
+#include "coolcombobox.h"
+#include "extensionlabel.h"
+#include "editorfactory.h"
+#include "valueeditor.h"
+#include "ruleeditor.h"
 
 #include <KLocale>
 

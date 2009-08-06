@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/component.h>
+#include "component.h"
 
 #include <KDebug>
 

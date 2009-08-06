@@ -25,8 +25,8 @@
 
 #include <akonadi/filter/ui/commandeditorsrfc822.h>
 
-#include <akonadi/filter/action.h>
-#include <akonadi/filter/commanddescriptor.h>
+#include "../action.h"
+#include "../commanddescriptor.h"
 
 #include <akonadi/filter/componentfactoryrfc822.h>
 

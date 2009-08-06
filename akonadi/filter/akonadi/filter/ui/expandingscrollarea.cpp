@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/expandingscrollarea.h>
+#include "expandingscrollarea.h"
 
 #include <QtCore/QEvent>
 #include <QtGui/QLayout>

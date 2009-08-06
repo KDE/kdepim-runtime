@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/rulelist.h>
+#include "rulelist.h"
 
 #include <QtCore/QObject>
 

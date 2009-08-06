@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/ui/extensionlabel.h>
+#include "extensionlabel.h"
 
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPainter>

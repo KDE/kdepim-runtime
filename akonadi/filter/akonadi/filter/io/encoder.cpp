@@ -23,7 +23,7 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/io/encoder.h>
+#include "encoder.h"
 
 namespace Akonadi
 {

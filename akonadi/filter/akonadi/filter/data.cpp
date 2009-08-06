@@ -23,11 +23,11 @@
  *
  *******************************************************************************/
 
-#include <akonadi/filter/data.h>
+#include "data.h"
 
-#include <akonadi/filter/functiondescriptor.h>
-#include <akonadi/filter/datamemberdescriptor.h>
-#include <akonadi/filter/commanddescriptor.h>
+#include "functiondescriptor.h"
+#include "datamemberdescriptor.h"
+#include "commanddescriptor.h"
 
 #include <QtCore/QStringList>
 #include <QtCore/QDateTime>

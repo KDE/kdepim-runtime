@@ -29,7 +29,7 @@
 
 #include <akonadi/filter/componentfactoryrfc822.h>
 
-#include <akonadi/filter/commanddescriptor.h>
+#include "../commanddescriptor.h"
 
 #include <KDebug>
 
