@@ -40,8 +40,6 @@ qt4_add_dbus_adaptor(
 		FilterAgent
 	)
 
-include(PkgConfigGetVar)
-
 kde4_add_executable(
 		akonadi_filter_agent
 		RUN_UNINSTALLED
