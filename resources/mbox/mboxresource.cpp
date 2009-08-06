@@ -114,7 +114,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   QString colId = QString::number( col.id() );
   QString colRid = col.remoteId();
   foreach ( const MsgInfo &entry, entryList ) {
-    // TODO: Use cache policy to see what actualy has to been set as payload.
+    // TODO: Use cache policy to see what actually has to been set as payload.
     //       Currently most views need a minimal amount of information so the
     //       Items get Envelopes as payload.
     KMime::Message *mail = new KMime::Message();
@@ -249,6 +249,12 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
   }
 
   changeProcessed();
+}
+
+void MboxResource::handleHashChange()
+{
+  emit warning( i18n( "The MBox file was changed by another program, deleted "
+                      "messages that where not purged will reappear." ) );
 }
 
 bool MboxResource::readFromFile( const QString &fileName )
