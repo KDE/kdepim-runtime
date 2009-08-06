@@ -58,6 +58,22 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
 
   protected:
     /**
+     * Returns a pointer to the KConfig object which is used to store runtime
+     * information of the resource.
+     */
+    KSharedConfig::Ptr runtimeConfig() const;
+
+
+    /**
+     * Handles everything needed when the hash of a file has changed between the
+     * last write and the first read. This stores the new hash in a config file
+     * and notifies implementing resources to handle a hash change if the
+     * previous known hash was not empty. Finally this method clears the cache
+     * and calls synchronize.
+     */
+    void readLocalFile( const QString &fileName );
+
+    /**
      * Reimplement to read your data from the given file.
      * The file is always local, loading from the network is done
      * automatically if needed.
@@ -72,6 +88,21 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     virtual bool writeToFile( const QString &fileName ) = 0;
 
     /**
+     * It is not always needed to parse the file when a resources is started.
+     * (e.g. When the hash of the file is the same as the last time the resource
+     * has written changes to the file). In this case setActualFileName is
+     * called so that the implementing resource does know which file to read
+     * when it actually needs to read the file.
+     *
+     * The default implementation will just call readFromFile( fileName ), so
+     * implementing resources will have to explictly reimplement this method to
+     * actually get any profit of this.
+     *
+     * @p fileName This will always be a path to a local file.
+     */
+    virtual void setLocalFileName( const QString &fileName );
+
+    /**
      * Generates the full path for the cache file in the case that a remote file
      * is used.
      */
@@ -82,6 +113,27 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
      * or the path is empty, this will return an emty QByteArray.
      */
     QByteArray calculateHash( const QString &fileName ) const;
+
+    /**
+     * This method is called when the hash of the file has changed between the
+     * last writeFile() and a readFile() call. This means that the file was
+     * changed by another program.
+     *
+     * Note: This method is <em>not</em> called when the last known hash is
+     *       empty. In that case it is assumed that the file is loaded for the
+     *       first time.
+     */
+    virtual void handleHashChange();
+
+    /**
+     * Returns the hash that was stored to a cache file.
+     */
+    QByteArray loadHash() const;
+
+    /**
+     * Stores the given hash into a cache file.
+     */
+    void saveHash( const QByteArray &hash ) const;
 
   protected:
     QTimer mDirtyTimer;

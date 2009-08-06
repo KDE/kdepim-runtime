@@ -76,6 +76,12 @@ class SingleFileResource : public SingleFileResourceBase
       }
 
       mCurrentUrl = KUrl( Settings::self()->path() );
+      if ( mCurrentHash.isEmpty() ) {
+        // First call to readFile() lets see if there is a hash stored in a
+        // cache file. If both are the same than there is no need to load the
+        // file and synchronize the resource.
+        mCurrentHash = loadHash();
+      }
 
       if ( mCurrentUrl.isLocalFile() )
       {
@@ -101,25 +107,14 @@ class SingleFileResource : public SingleFileResourceBase
           }
         }
 
-        const QByteArray newHash = calculateHash( mCurrentUrl.toLocalFile() );
-        if ( mCurrentHash != newHash ) {
-          if ( !readFromFile( mCurrentUrl.toLocalFile() ) ) {
-            mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
-            return;
-          }
-
-          synchronize();
-        }
-
-        mPreviousHash = mCurrentHash;
-        mCurrentHash = newHash;
+        readLocalFile( mCurrentUrl.toLocalFile() );
 
         if ( Settings::self()->monitorFile() )
           KDirWatch::self()->addFile( mCurrentUrl.toLocalFile() );
 
         emit status( Idle, i18nc( "@info:status", "Ready" ) );
       }
-      else
+      else // !mCurrentUrl.isLocalFile()
       {
         if ( mDownloadJob )
         {
@@ -171,6 +166,7 @@ class SingleFileResource : public SingleFileResourceBase
         // Update the hash so we can detect at fileChanged() if the file actually
         // did change.
         mCurrentHash = calculateHash( mCurrentUrl.toLocalFile() );
+        saveHash( mCurrentHash );
         KDirWatch::self()->startScan();
         if ( !writeResult )
           return;
@@ -195,6 +191,7 @@ class SingleFileResource : public SingleFileResourceBase
         // Update the hash so we can detect at fileChanged() if the file actually
         // did change.
         mCurrentHash = calculateHash( cacheFile() );
+        saveHash( mCurrentHash );
 
         KGlobal::ref();
         // Start a job to upload the localy cached file to the remote location.
