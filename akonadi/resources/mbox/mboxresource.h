@@ -48,6 +48,7 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
     virtual void itemRemoved( const Akonadi::Item &item );
 
     // From SingleFileResourceBase
+    virtual void handleHashChange();
     virtual bool readFromFile( const QString &fileName );
     virtual bool writeToFile( const QString &fileName );
 

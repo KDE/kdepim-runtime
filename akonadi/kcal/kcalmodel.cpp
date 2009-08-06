@@ -143,7 +143,7 @@ QVariant KCalModel::data( const QModelIndex &index,  int role ) const
       } else if ( incidence->type() == "Journal" ) {
         return SmallIcon( QLatin1String( "view-pim-journal" ) );
       } else if ( incidence->type() == "Event" ) {
-        return SmallIcon( QLatin1String( "view-pim-calendar" ) );
+        return SmallIcon( QLatin1String( "view-calendar" ) );
       } else {
         return SmallIcon( QLatin1String( "network-wired" ) );
       }
