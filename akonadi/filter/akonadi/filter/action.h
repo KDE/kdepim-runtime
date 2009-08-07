@@ -105,7 +105,7 @@ public:
    */
   virtual ~Base();
 
-public:
+protected:
   /**
    * The action type this object belongs to.
    */

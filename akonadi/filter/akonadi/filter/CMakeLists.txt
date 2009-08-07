@@ -27,10 +27,11 @@ set(
 		agent.cpp
 		commanddescriptor.cpp
 		component.cpp
+		componentfactory.cpp
 		condition.cpp
 		data.cpp
 		datamemberdescriptor.cpp
-		componentfactory.cpp
+		errorstack.cpp
 		functiondescriptor.cpp
 		operatordescriptor.cpp
 		program.cpp
@@ -88,11 +89,12 @@ install(
 			agent.h
 			commanddescriptor.h
 			component.h
+			componentfactory.h
 			condition.h
 			data.h
 			datamemberdescriptor.h
 			datatype.h
-			componentfactory.h
+			errorstack.h
 			functiondescriptor.h
 			operatordescriptor.h
 			program.h

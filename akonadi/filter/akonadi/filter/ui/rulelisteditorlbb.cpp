@@ -344,6 +344,7 @@ void RuleListEditorLBB::slotNewRuleButtonClicked()
   connect( ruleEditor, SIGNAL( ruleChanged() ), this, SLOT( slotRuleChanged() ) );
 
   RuleListEditorLBBListWidgetItem * item = new RuleListEditorLBBListWidgetItem( mListWidget, ruleEditor, QString(), mListWidget->count() );
+  Q_UNUSED( item );
 
   activateEditor( ruleEditor );
 }

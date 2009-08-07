@@ -39,7 +39,7 @@ namespace Private
 {
 
 ExtensionLabel::ExtensionLabel( QWidget * parent )
-  : QWidget( parent ), mFixedHeight( -1 ), mOpacity( 1.0 )
+  : QWidget( parent ), mOpacity( 1.0 ), mFixedHeight( -1 )
 {
 }
 

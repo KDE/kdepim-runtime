@@ -205,10 +205,16 @@ void MainWindow::editFilter( bool lbb )
   }
 
   Akonadi::Filter::IO::SieveDecoder decoder( componentFactory );
-  Akonadi::Filter::Program * prog = decoder.run( source );
+  Akonadi::Filter::Program * prog = decoder.run( source.toUtf8() );
   if( !prog )
   {
-    KMessageBox::error( this, i18n( "Failed to decode the filter from sieve format: %1", decoder.lastError() ), i18n( "Could not edit filter" ) );
+    KMessageBox::error(
+        this,
+        decoder.errorStack().htmlErrorMessage(
+            i18n( "Failed to decode the filter from sieve format" )
+          ),
+        i18n( "Could not edit filter" )
+      );
     return;    
   }
 
@@ -220,6 +226,7 @@ void MainWindow::editFilter( bool lbb )
   filter.setComponentFactory( componentFactory );
   filter.setEditorFactory( editorFactory );
   filter.setProgram( prog );
+
   foreach( Akonadi::Collection::Id id, attachedCollectionIds )
   {
     Akonadi::CollectionFetchJob job( Akonadi::Collection( id ), Akonadi::CollectionFetchJob::Base );
@@ -256,16 +263,24 @@ void MainWindow::editFilter( bool lbb )
     return;
 
   Akonadi::Filter::IO::SieveEncoder encoder;
-  source = encoder.run( filter.program() );
+  QByteArray utf8Source = encoder.run( filter.program() );
 
-  if( source.isEmpty() )
+  if( utf8Source.isEmpty() )
   {
-    KMessageBox::error( this, i18n( "Failed to encode the filter to sieve format: %1", encoder.lastError() ), i18n( "Could not edit filter" ) );
+    KMessageBox::error(
+        this,
+        encoder.errorStack().htmlErrorMessage(
+            i18n( "Failed to encode the filter to sieve format" )
+          ),
+        i18n( "Could not edit filter" )
+      );
     return;    
   }
 
+  source = QString::fromUtf8( utf8Source );
+
   qDebug( "FILTER SOURCE:" );
-  qDebug( "%s", source.toUtf8().data() );
+  qDebug( "%s", utf8Source.data() );
   qDebug( "END OF FILTER SOURCE:" );
 
 
@@ -341,17 +356,26 @@ void MainWindow::newFilter( bool lbb )
     return;
 
   Akonadi::Filter::IO::SieveEncoder encoder;
-  QString source = encoder.run( filter.program() );
+  QByteArray utf8Source = encoder.run( filter.program() );
 
-  if( source.isEmpty() )
+  if( utf8Source.isEmpty() )
   {
-    KMessageBox::error( this, i18n( "Failed to encode the filter to sieve format: %1", encoder.lastError() ), i18n( "Could not crate new filter" ) );
+    KMessageBox::error(
+        this,
+        encoder.errorStack().htmlErrorMessage(
+            i18n( "Failed to encode the filter to sieve format" )
+          ),
+        i18n( "Could not edit filter" )
+      );
     return;    
   }
 
+  QString source = QString::fromUtf8( utf8Source );
+
   qDebug( "FILTER SOURCE:" );
-  qDebug( "%s", source.toUtf8().data() );
+  qDebug( "%s", utf8Source.data() );
   qDebug( "END OF FILTER SOURCE:" );
+
 
   QDBusPendingReply< int > rCreate = mFilterAgent->createFilter( filter.id(), filter.mimeType(), source );
   rCreate.waitForFinished();

@@ -50,6 +50,13 @@ class SieveDecoder;
 namespace Private
 {
 
+/**
+ * @private
+ *
+ * Auxiliary class needed for sieve script parsing.
+ * We keep it as standalone class in order to hide the dependency
+ * on KSieve from the Filter library users.
+ */
 class SieveReader : public KSieve::ScriptBuilder
 {
 public:

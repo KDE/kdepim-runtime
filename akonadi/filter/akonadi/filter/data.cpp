@@ -140,11 +140,14 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
 
 QVariant Data::getDataMemberValue( const DataMemberDescriptor * dataMember )
 {
+  Q_UNUSED( dataMember );
   return QVariant();
 }
 
 bool Data::executeCommand( const CommandDescriptor * command, const QList< QVariant > &params, QString &error )
 {
+  Q_UNUSED( params );
+
   Q_ASSERT_X( false, "Data::executeCommand", "You must provide an implementation for your commands here!" );
 
   error = i18n( "Command %1 is not supported", command->name() );

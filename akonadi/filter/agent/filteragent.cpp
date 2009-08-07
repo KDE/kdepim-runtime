@@ -225,9 +225,12 @@ int FilterAgent::createFilterInternal( const QString &filterId, const QString &m
 
   Akonadi::Filter::IO::SieveDecoder decoder( factory );
 
-  Akonadi::Filter::Program * program = decoder.run( source );
+  Akonadi::Filter::Program * program = decoder.run( source.toUtf8() );
   if( !program )
+  {
+    kDebug() << decoder.errorStack().errorMessage( i18n( "Filter decoding error" ) );
     return Akonadi::Filter::Agent::ErrorFilterSyntaxError;
+  }
 
   if( saveConfiguration )
   {
@@ -462,9 +465,12 @@ int FilterAgent::changeFilter( const QString &filterId, const QString &source, c
 
   Akonadi::Filter::IO::SieveDecoder decoder( factory );
 
-  Akonadi::Filter::Program * program = decoder.run( source );
+  Akonadi::Filter::Program * program = decoder.run( source.toUtf8() );
   if( !program )
+  {
+    kDebug() << decoder.errorStack().errorMessage( i18n( "Filter decoding error" ) );
     return Akonadi::Filter::Agent::ErrorFilterSyntaxError;
+  }
 
   if( !saveFilterSource( filterId, source ) )
     return Akonadi::Filter::Agent::ErrorCouldNotSaveFilter;

@@ -60,6 +60,7 @@ bool Base::isCondition() const
 
 bool Base::matches( Data * data )
 {
+  Q_UNUSED( data );
   return false;
 }
 
@@ -133,6 +134,7 @@ And::~And()
 
 bool And::matches( Data * data )
 {
+  Q_UNUSED( data );
   return false;
 }
 
@@ -154,6 +156,7 @@ Or::~Or()
 
 bool Or::matches( Data * data )
 {
+  Q_UNUSED( data );
   return false;
 }
 
@@ -173,8 +176,9 @@ True::~True()
 {
 }
 
-bool True::matches( Data * )
+bool True::matches( Data *data )
 {
+  Q_UNUSED( data );
   // this always matches
   return true;
 }
@@ -194,8 +198,9 @@ False::~False()
 {
 }
 
-bool False::matches( Data * )
+bool False::matches( Data *data )
 {
+  Q_UNUSED( data );
   // this never matches
   return false;
 }

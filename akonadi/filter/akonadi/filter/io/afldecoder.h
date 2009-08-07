@@ -51,7 +51,7 @@ protected:
   Program * mProgram;
 public:
 
-  virtual Program * run( const QString &source );
+  virtual Program * run( const QByteArray &encodedFilter );
 protected:
   void parseComment();
   void nextChar();

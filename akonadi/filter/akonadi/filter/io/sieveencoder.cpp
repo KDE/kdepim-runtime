@@ -106,12 +106,14 @@ void SieveEncoder::popIndent()
     mCurrentIndentPrefix += mIndentText;
 }
 
-QString SieveEncoder::run( Program * program )
+QByteArray SieveEncoder::run( Program * program )
 {
+  errorStack().clearErrors();
+
   mCurrentIndentPrefix = QString();
   mIndentLevel = 0;
 
-  addLine( QLatin1String( "# Akonadi Filter Program" ) );
+  addLine( QLatin1String( "# Akonadi Filtering Program" ) );
   addLine( QString::fromAscii( "# Encoded at %1" ).arg( QDateTime::currentDateTime().toString() ) );
 
   addLine( QString() );
@@ -132,13 +134,16 @@ QString SieveEncoder::run( Program * program )
   }
 
   if( !encodeRuleList( program ) )
-    return QString();
+  {
+    errorStack().pushError( i18n( "encoder main" ), i18n( "Could not encode program" ) );
+    return QByteArray();
+  }
 
   addLine( QString() ); // empty line at end
 
   Q_ASSERT( mIndentLevel == 0 );
 
-  return mBuffer;
+  return mBuffer.toUtf8();
 }
 
 bool SieveEncoder::encodeRuleList( Action::RuleList * ruleList )
@@ -250,7 +255,10 @@ bool SieveEncoder::encodeData( const QVariant &data, DataType dataType )
       qint64 val = data.toLongLong( &ok );
       if( !ok )
       {
-        setLastError( i18n( "The filter is invalid: expected data type is integer, but the data instance could not be converted to a number" ) );
+        errorStack().pushError(
+            i18n( "encode data" ),
+            i18n( "The filter is invalid: expected data type is integer, but the data instance could not be converted to a number" )
+          );
         return false;
       }
       addLineData( QString( "%1" ).arg( val ) ); 
@@ -262,7 +270,10 @@ bool SieveEncoder::encodeData( const QVariant &data, DataType dataType )
       QStringList sl = data.toStringList();
       if( sl.isEmpty() )
       {
-        setLastError( i18n( "The filter is invalid: expected data type is string list, but the data instance could not be converted to a string list" ) );
+        errorStack().pushError(
+            i18n( "encode data" ),
+            i18n( "The filter is invalid: expected data type is string list, but the data instance could not be converted to a string list" )
+          );
         return false;
       }
 
@@ -316,7 +327,10 @@ bool SieveEncoder::encodeCondition( Condition::Base * condition )
       Q_ASSERT( childConditions );
       if( childConditions->isEmpty() )
       {
-        setLastError( i18n( "The filter is invalid: and/or condition with no children" ) );
+        errorStack().pushError(
+            i18n( "encode condition" ),
+            i18n( "The filter is invalid: and/or condition with no children" )
+          );
         return false;
       }
 
@@ -348,7 +362,13 @@ bool SieveEncoder::encodeCondition( Condition::Base * condition )
     case Condition::ConditionTypeNot:
       addLineData( QLatin1String( "not " ) );
       if( !encodeCondition( static_cast< Condition::Not * >( condition )->childCondition() ) )
+      {
+        errorStack().pushError(
+            i18n( "encode not" ),
+            i18n( "Could not encode the not inner condition" )
+          );
         return false;
+      }
     break;
     case Condition::ConditionTypeTrue:
       addLineData( QLatin1String( "true" ) );
@@ -383,7 +403,13 @@ bool SieveEncoder::encodeCondition( Condition::Base * condition )
       QVariant data = test->operand();
 
       if( !encodeData( test->operand(), test->functionOperatorDescriptor()->rightOperandDataType() ) )
+      {
+        errorStack().pushError(
+            i18n( "encode property test" ),
+            i18n( "Could not parameter data" )
+          );
         return false;
+      }
     }
     break;
     default:
@@ -403,7 +429,13 @@ bool SieveEncoder::encodeAction( Action::Base * action )
     break;
     case Action::ActionTypeRuleList:
       if( !encodeRuleList( static_cast< Action::RuleList * >( action ) ) )
+      {
+        errorStack().pushError(
+            i18n( "encode action" ),
+            i18n( "Could not encode inner rule list" )
+          );
         return false;
+      }
     break;
     case Action::ActionTypeCommand:
     {
@@ -427,7 +459,13 @@ bool SieveEncoder::encodeAction( Action::Base * action )
           addLineData( QLatin1String( " " ) );
 
           if( !encodeData( *dataIt, ( *it )->dataType() ) )
+          {
+            errorStack().pushError(
+                i18n( "encode command" ),
+                i18n( "Could not encode command parameter" )
+              );
             return false;
+          }
 
           ++it;
           ++dataIt;

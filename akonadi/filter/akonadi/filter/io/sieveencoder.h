@@ -55,6 +55,16 @@ namespace Filter
 namespace IO
 {
 
+/**
+ * A sieve encoder for filtering programs.
+ *
+ * This encoder uses the basic format of the Sieve language but also
+ * includes some (compatible) extensions. The information stored in the
+ * extensions is limited to the specific Akonadi needs and is somewhat
+ * optional: a filter can live even without that.
+ *
+ * The filtering framework contains a corresponding Decoder class (see SieveDecoder).
+ */
 class AKONADI_FILTER_EXPORT SieveEncoder : public Encoder
 {
 public:
@@ -67,7 +77,9 @@ protected:
   QString mLineSeparator;
   QString mCurrentIndentPrefix;
   int mIndentLevel;
+
 public:
+
   const QString & lineSeparator() const
   {
     return mLineSeparator;
@@ -89,7 +101,7 @@ public:
     mIndentText = indentText;
   }
  
-  virtual QString run( Program * program );
+  virtual QByteArray run( Program * program );
 
 protected:
   void beginLine();

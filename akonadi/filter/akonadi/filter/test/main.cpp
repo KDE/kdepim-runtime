@@ -13,27 +13,11 @@
 #include <KAboutData>
 #include <KDebug>
 
-class MyComponentFactory : public Akonadi::Filter::ComponentFactory
-{
-public:
-  MyComponentFactory() : ComponentFactory() {};
-  virtual ~MyComponentFactory(){};
-public:
-  virtual Akonadi::Filter::Action::Base * createGenericAction( Akonadi::Filter::Component * parent, const QString &identifier )
-  {
-    return new Akonadi::Filter::Action::Stop( parent );
-  }
-  virtual Akonadi::Filter::Condition::Base * createGenericCondition( Akonadi::Filter::Component * parent, const QString &identifier )
-  {
-    return new Akonadi::Filter::Condition::True( parent );
-  }
-};
-
 
 int main(int argc,char ** argv)
 {
 
-  MyComponentFactory * f = new MyComponentFactory();
+  Akonadi::Filter::ComponentFactory * f = new Akonadi::Filter::ComponentFactory();
   //f->setDefaultActionDescription( i18n( "download message" ) );
   Akonadi::Filter::IO::SieveDecoder d( f );
   Akonadi::Filter::Program * p = d.run( "fileinto \"X\"" );

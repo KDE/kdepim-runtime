@@ -49,6 +49,8 @@ Base::~Base()
 
 Base::ProcessingStatus Base::execute( Data * data )
 {
+  Q_UNUSED( data );
+
   return SuccessAndContinue;
 }
 
@@ -81,6 +83,8 @@ bool Stop::isTerminal() const
 
 Stop::ProcessingStatus Stop::execute( Data * data )
 {
+  Q_UNUSED( data );
+
   return SuccessAndStop;
 }
 

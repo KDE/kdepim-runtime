@@ -63,7 +63,7 @@ void CoolComboBox::setOverlayColor( const QColor &clr )
 }
 
 
-void CoolComboBox::paintEvent( QPaintEvent * e )
+void CoolComboBox::paintEvent( QPaintEvent * )
 {
   QStylePainter painter( this );
   painter.setPen( palette().color( QPalette::Text ) );

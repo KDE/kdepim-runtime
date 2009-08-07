@@ -128,6 +128,7 @@ void SieveReader::bracketComment( const QString & comment )
 
 void SieveReader::lineFeed()
 {
+  mDecoder->onLineFeed();
 }
 
 void SieveReader::error( const KSieve::Error & error )

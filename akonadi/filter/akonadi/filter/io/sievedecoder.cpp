@@ -68,10 +68,16 @@ SieveDecoder::~SieveDecoder()
     delete mProgram;
 }
 
+void SieveDecoder::pushError( const QString &error )
+{
+  errorStack().pushError( i18n( "line %1", mLineNumber ), error );
+}
+
+
 void SieveDecoder::onError( const QString & error )
 {
   mGotError = true;
-  setLastError( error );
+  pushError( error );
 }
 
 bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, const QString &identifier )
@@ -83,7 +89,7 @@ bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
     {
       delete condition;
       mGotError = true; 
-      setLastError( i18n( "Unexpected start of test '%1' after a previous test", identifier ) );
+      pushError( i18n( "Unexpected start of test '%1' after a previous test", identifier ) );
       return false;  
     }
     rule->setCondition( condition );
@@ -135,7 +141,7 @@ bool SieveDecoder::addConditionToCurrentComponent( Condition::Base * condition, 
   delete condition;
 
   mGotError = true;
-  setLastError( i18n( "Unexpected start of test '%1' outside of a rule or a condition", identifier ) );
+  pushError( i18n( "Unexpected start of test '%1' outside of a rule or a condition", identifier ) );
   return false;
 }
 
@@ -148,7 +154,7 @@ void SieveDecoder::onTestStart( const QString & identifier )
   {
     // a test can't start inside a simple test
     mGotError = true; 
-    setLastError( i18n( "Unexpected start of test '%1' inside a simple test", identifier ) );
+    pushError( i18n( "Unexpected start of test '%1' inside a simple test", identifier ) );
     return;  
   }
 
@@ -295,7 +301,7 @@ void SieveDecoder::onTestEnd()
     {
       // unrecognized test
       mGotError = true; 
-      setLastError( i18n( "Unrecognized function '%1'", functionKeyword ) );
+      pushError( i18n( "Unrecognized function '%1'", functionKeyword ) );
       return;
     }
 
@@ -315,7 +321,7 @@ void SieveDecoder::onTestEnd()
     {
       // unrecognized test
       mGotError = true;
-      setLastError( i18n( "Unrecognized operator '%1' for function '%2'", operatorKeyword, functionKeyword ) );
+      pushError( i18n( "Unrecognized operator '%1' for function '%2'", operatorKeyword, functionKeyword ) );
       return;
     }
 
@@ -330,7 +336,7 @@ void SieveDecoder::onTestEnd()
       if( nonTaggedArguments.isEmpty() )
       {
         mGotError = true;
-        setLastError( i18n( "The operator '%1' expects a value argument", operatorKeyword ) );
+        pushError( i18n( "The operator '%1' expects a value argument", operatorKeyword ) );
         return;
       }
 
@@ -353,7 +359,7 @@ void SieveDecoder::onTestEnd()
       if( !qVariantCanConvert< QStringList >( fields ) )
       {
         mGotError = true;
-        setLastError( i18n( "The field name argument must be convertible to a string list" ) );
+        pushError( i18n( "The field name argument must be convertible to a string list" ) );
         return;
       }
 
@@ -405,7 +411,6 @@ void SieveDecoder::onTestEnd()
       multiTest = true;
     }
 
-    int first = true;
     foreach( QString field, fieldList )
     {
       Q_ASSERT( !field.isEmpty() );
@@ -418,7 +423,7 @@ void SieveDecoder::onTestEnd()
           if( ( !mCreationOfCustomDataMemberDescriptorsEnabled ) || ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) )
           {
             mGotError = true;
-            setLastError( i18n( "Test on data member '%1' is not supported.", field ) );
+            pushError( i18n( "Test on data member '%1' is not supported.", field ) );
             return;
           }
 
@@ -433,7 +438,7 @@ void SieveDecoder::onTestEnd()
         if( !( dataMember->dataType() & function->acceptableInputDataTypeMask() ) )
         {
           mGotError = true; 
-          setLastError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
+          pushError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
           return;
         }
 
@@ -442,7 +447,7 @@ void SieveDecoder::onTestEnd()
         {
           // unrecognized test
           mGotError = true; 
-          setLastError( i18n( "Test on function '%1' is not supported: %2", field, componentFactory()->lastError() ) );
+          pushError( i18n( "Test on function '%1' is not supported: %2", field, componentFactory()->lastError() ) );
           return;
         }
 
@@ -466,7 +471,7 @@ void SieveDecoder::onTestEnd()
   if( !mCurrentComponent->isCondition() )
   {
     mGotError = true;
-    setLastError( i18n( "Unexpected end of test outside of a condition" ) );
+    pushError( i18n( "Unexpected end of test outside of a condition" ) );
     return;
   }
 
@@ -499,11 +504,14 @@ void SieveDecoder::onTaggedArgument( const QString & tag )
   }
 
   mGotError = true;
-  setLastError( i18n( "Unexpected tagged argument outside of a simple test or simple command" ) );
+  pushError( i18n( "Unexpected tagged argument outside of a simple test or simple command" ) );
 }
 
 void SieveDecoder::onStringArgument( const QString & string, bool multiLine, const QString & embeddedHashComment )
 {
+  Q_UNUSED( multiLine );
+  Q_UNUSED( embeddedHashComment );
+
   if( mGotError )
     return; // ignore everything
 
@@ -523,11 +531,13 @@ void SieveDecoder::onStringArgument( const QString & string, bool multiLine, con
   }
 
   mGotError = true;
-  setLastError( i18n( "Unexpected string argument outside of a simple test or simple command" ) );
+  pushError( i18n( "Unexpected string argument outside of a simple test or simple command" ) );
 }
 
 void SieveDecoder::onNumberArgument( unsigned long number, char quantifier )
 {
+  Q_UNUSED( quantifier );
+
   if( mGotError )
     return; // ignore everything
 
@@ -547,7 +557,7 @@ void SieveDecoder::onNumberArgument( unsigned long number, char quantifier )
   }
 
   mGotError = true;
-  setLastError( i18n( "Unexpected number argument outside of a simple test or simple command" ) );
+  pushError( i18n( "Unexpected number argument outside of a simple test or simple command" ) );
 }
 
 void SieveDecoder::onStringListArgumentStart()
@@ -558,12 +568,15 @@ void SieveDecoder::onStringListArgumentStart()
   if( !mCurrentStringList.isEmpty() )
   {
     mGotError = true;
-    setLastError( i18n( "Unexpected start of string list inside a string list" ) ); 
+    pushError( i18n( "Unexpected start of string list inside a string list" ) ); 
   }
 }
 
 void SieveDecoder::onStringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment )
 {
+  Q_UNUSED( multiLine );
+  Q_UNUSED( embeddedHashComment );
+
   if( mGotError )
     return; // ignore everything
 
@@ -593,7 +606,7 @@ void SieveDecoder::onStringListArgumentEnd()
   }
 
   mGotError = true;
-  setLastError( i18n( "Unexpected string list argument outside of a simple test or simple command" ) );
+  pushError( i18n( "Unexpected string list argument outside of a simple test or simple command" ) );
 }
 
 void SieveDecoder::onTestListStart()
@@ -608,7 +621,7 @@ void SieveDecoder::onTestListStart()
     if ( rule->condition() )
     {
       mGotError = true; 
-      setLastError( i18n( "Unexpected start of test list after a previous test" ) );
+      pushError( i18n( "Unexpected start of test list after a previous test" ) );
       return;  
     }
     Condition::Or * condition = componentFactory()->createOrCondition( mCurrentComponent );
@@ -635,7 +648,7 @@ void SieveDecoder::onTestListStart()
   }
 
   mGotError = true;
-  setLastError( i18n( "Unexpected start of test list" ) );
+  pushError( i18n( "Unexpected start of test list" ) );
 
 }
 
@@ -662,7 +675,7 @@ void SieveDecoder::onTestListEnd()
   }
 
   mGotError = true;
-  setLastError( i18n( "Unexpected end of test list" ) );
+  pushError( i18n( "Unexpected end of test list" ) );
 }
 
 Rule * SieveDecoder::createRule( Component * parentComponent )
@@ -681,7 +694,7 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
   if ( !mCurrentSimpleCommandName.isEmpty() )
   {
     mGotError = true;
-    setLastError( i18n( "Unexpected start of command inside a simple command... how you did that ?" ) );
+    pushError( i18n( "Unexpected start of command inside a simple command... how you did that ?" ) );
     return;
   }
 
@@ -689,7 +702,7 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
   {
     // unrecognized command
     mGotError = true; 
-    setLastError( i18n( "Unexpected start of command '%1'", identifier ) );
+    pushError( i18n( "Unexpected start of command '%1'", identifier ) );
     return;
   }
 
@@ -753,7 +766,7 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
       if( !rule )
       {
         mGotError = true; 
-        setLastError( i18n( "Unexpected else/elseif without a previous if" ) );
+        pushError( i18n( "Unexpected else/elseif without a previous if" ) );
         return;
       }
 
@@ -804,7 +817,7 @@ void SieveDecoder::onCommandDescriptorEnd()
   if( !( mCurrentComponent->isProgram() || mCurrentComponent->isRule() ) )
   {
     mGotError = true; 
-    setLastError( i18n( "Unexpected end of command out of a rule or toplevel rule list" ) );
+    pushError( i18n( "Unexpected end of command out of a rule or toplevel rule list" ) );
     return;
   }
 
@@ -840,14 +853,14 @@ void SieveDecoder::onCommandDescriptorEnd()
       if( !command )
       {
         mGotError = true; 
-        setLastError( i18n( "Unrecognized action '%1'", mCurrentSimpleCommandName ) );
+        pushError( i18n( "Unrecognized action '%1'", mCurrentSimpleCommandName ) );
         return;
       }
 
       if( mCurrentSimpleCommandArguments.count() < command->parameters()->count() )
       {
         mGotError = true; 
-        setLastError( i18n( "Action '%1' required at least %2 arguments", mCurrentSimpleCommandName, command->parameters()->count() ) );
+        pushError( i18n( "Action '%1' required at least %2 arguments", mCurrentSimpleCommandName, command->parameters()->count() ) );
         return;
       }
 
@@ -855,7 +868,7 @@ void SieveDecoder::onCommandDescriptorEnd()
       if( !action )
       {
         mGotError = true; 
-        setLastError( i18n( "Could not create action '%1': %2", mCurrentSimpleCommandName, componentFactory()->lastError() ) );
+        pushError( i18n( "Could not create action '%1': %2", mCurrentSimpleCommandName, componentFactory()->lastError() ) );
         return;
       }
     }
@@ -895,14 +908,14 @@ void SieveDecoder::onBlockStart()
   if ( !mCurrentComponent->isRule() )
   {
     mGotError = true;
-    setLastError( i18n( "Unexpected start of block outside of a rule." ) );
+    pushError( i18n( "Unexpected start of block outside of a rule." ) );
     return;
   }
 
   if ( !mCurrentSimpleCommandName.isEmpty() )
   {
     mGotError = true;
-    setLastError( i18n( "Unexpected start of block after a simple command." ) );
+    pushError( i18n( "Unexpected start of block after a simple command." ) );
     return;
   }
 }
@@ -911,6 +924,11 @@ void SieveDecoder::onBlockEnd()
 {
   if( mGotError )
     return; // ignore everything
+}
+
+void SieveDecoder::onLineFeed()
+{
+  mLineNumber++;
 }
 
 void SieveDecoder::onComment( const QString &comment )
@@ -955,11 +973,13 @@ void SieveDecoder::onComment( const QString &comment )
   }
 }
 
-Program * SieveDecoder::run( const QString &source )
+Program * SieveDecoder::run( const QByteArray &encodedFilter )
 {
-  QByteArray utf8Script = source.toUtf8();
+  mLineNumber = 1;
 
-  KSieve::Parser parser( utf8Script.data(), utf8Script.data() + utf8Script.length() );
+  errorStack().clearErrors();
+
+  KSieve::Parser parser( encodedFilter.data(), encodedFilter.data() + encodedFilter.length() );
 
   Private::SieveReader sieveReader( this );
 
@@ -980,13 +1000,16 @@ Program * SieveDecoder::run( const QString &source )
     if( !mGotError )
     {
       mGotError = true;
-      setLastError( i18n( "Internal sieve library error" ) );
+      errorStack().pushError( "Sieve Decoder", i18n( "Internal sieve library error" ) );
+    } else {
+      errorStack().pushError( "Sieve Parser", parser.error().asString() );
+      errorStack().pushError( "Sieve Decoder", i18n( "Sieve parsing error" ) );
     }
   }
 
 #ifdef DEBUG_SIEVE_DECODER
   qDebug( "\nDECODING SIEVE SCRIPT\n" );
-  qDebug( "%s", source.toUtf8().data() );
+  qDebug( "%s", encodedFilter.data() );
   qDebug( "\nDECODED TREE\n" );
   if ( mProgram )
   {
@@ -994,13 +1017,13 @@ Program * SieveDecoder::run( const QString &source )
     mProgram->dump( prefix );
   }
   qDebug( "\n" );
+
+  if( mGotError )
+    errorStack().dumpErrorMessage( "FILTER DECODING ERROR" );
 #endif //DEBUG_SIEVE_DECODER
 
   if( mGotError )
-  {
-    qDebug( "DECODING ERROR: %s", lastError().toUtf8().data() );
     return 0;
-  }
 
   Program * prog = mProgram;
   mProgram = 0;

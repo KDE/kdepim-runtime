@@ -135,7 +135,7 @@ QVariant IntegerValueEditor::value( bool showMessageBoxOnError )
 void IntegerValueEditor::setValue( const QVariant &val )
 {
   bool ok;
-  Integer i = val.toLongLong( &ok );
+  val.toLongLong( &ok );
   if( ok )
     setText( val.toString() );
   else

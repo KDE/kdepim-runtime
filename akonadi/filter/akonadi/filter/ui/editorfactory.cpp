@@ -62,6 +62,9 @@ RuleListEditor * EditorFactory::createRuleListEditor( QWidget * parent, Componen
 
 CommandEditor * EditorFactory::createCommandEditor( QWidget * parent, const CommandDescriptor * command, ComponentFactory * componentFactory )
 {
+  Q_UNUSED( parent );
+  Q_UNUSED( componentFactory );
+
   Q_ASSERT_X(
       command->parameters()->count() == 0,
       "EditorFactory::createCommandEditor",

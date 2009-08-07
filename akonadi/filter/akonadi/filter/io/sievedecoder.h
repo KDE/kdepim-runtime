@@ -58,40 +58,138 @@ namespace Private
   class SieveReader;
 } // namespace Private
 
+/**
+ * A sieve decoder for filtering programs.
+ *
+ * This decoder supports a large subset of constructs reccomended by RFC 5228
+ * but not all of them. Some exotic filters can't be parsed due to their
+ * ambiguous nature or ugly required implementation. The decoder, also,
+ * needs a ComponentFactory able to decode the commands used in the script.
+ * For instance: "keep" is a command of the sieve specification which
+ * must be registered with the ComponentFactory in order for this class to handle it.
+ *
+ * The SieveDecoder also supports some extensions to the Sieve language
+ * which aren't described by any RFC. This is needed in order to be able
+ * to store all the extended properties specific to Akonadi filtering.
+ *
+ * The filtering framework contains a corresponding encoder class (see SieveEncoder).
+ * This decoder is able to read all the filters encoded by SieveEncoder.
+ */
 class AKONADI_FILTER_EXPORT SieveDecoder : public Decoder
 {
   friend class Private::SieveReader;
 public:
+
+  /**
+   * Create a sieve decoder associated to the specified ComponentFactory.
+   */
   SieveDecoder( ComponentFactory * componentFactory );
-  ~SieveDecoder();
+
+  /**
+   * Destroy the sieve decoder and all the associated resrouces.
+   */
+  virtual ~SieveDecoder();
+
 protected:
+
+  /**
+   * The source that this decoder is operating on.
+   */
   QString mSource;
 
-  Program * mProgram; // the currently parsed program
+  /**
+   * The currently parsed Program. Owned pointer (until released).
+   * May be null.
+   */
+  Program * mProgram;
 
-  Component * mCurrentComponent; // the component we're 'in'
+  /**
+   * The currently parsed Program component. This is usually
+   * a shallow pointer to an object owned by the Program above.
+   */
+  Component * mCurrentComponent;
+
+  /**
+   * The name of the current "simple test" we're parsing.
+   */
   QString mCurrentSimpleTestName;
+
+  /**
+   * The arguments of the current "simple test" we're parsing
+   */
   QList< QVariant > mCurrentSimpleTestArguments;
+
+  /**
+   * The name of the current "simple command" we're parsing.
+   */
   QString mCurrentSimpleCommandName;
+
+  /**
+   * The arguments of the current "simple command" we're parsing
+   */
   QList< QVariant > mCurrentSimpleCommandArguments;
+
+  /**
+   * The currently parsed string list (parameters)
+   */
   QStringList mCurrentStringList;
+
+  /**
+   * True if we encountered a decoding error, false otherwise.
+   */
   bool mGotError;
+
+  /**
+   * True if we're allowed to create "custom" data members
+   * which aren't described by the associated ComponentFactory.
+   */
   bool mCreationOfCustomDataMemberDescriptorsEnabled;
+
+  /**
+   * The hash of the properties that we'll associate to the
+   * currently parsed rule. This is an extension to sieve.
+   */
   QHash< QString, QVariant > mCurrentRuleProperties;
+
+  /**
+   * Keeps track of the current sieve source line number.
+   */
+  int mLineNumber;
+
 public:
+
+  /**
+   * Enables or disables automatic creation of data members
+   * not explicitly described by the ComponentFactory we're attached to.
+   */
   void setSreationOfCustomDataMemberDescriptorsEnabled( bool enable )
   {
     mCreationOfCustomDataMemberDescriptorsEnabled = enable;
   }
 
+  /**
+   * Returns true if the automatic creation of data members
+   * is enabled and false otherwise.
+   */
   bool creationOfCustomDataMemberDescriptorsEnabled()
   {
     return mCreationOfCustomDataMemberDescriptorsEnabled;
   }
 
+  /**
+   * Reimplemented from Decoder.
+   *
+   * This is the main decoding routine. You pass it an UTF8 encodedFilter
+   * and get in return a complete filtering Program tree or 0 in case
+   * of error. In the latter case you can use the errorStack() to
+   * obtain a description of the error.
+   */
+  virtual Program * run( const QByteArray &encodedFilter );
 
-  virtual Program * run( const QString &source );
 protected:
+
+  // Interface exposed only to Private::SieveReader
+
   void onCommandDescriptorStart( const QString & identifier );
   void onCommandDescriptorEnd();
   void onTestStart( const QString & identifier );
@@ -108,11 +206,17 @@ protected:
   void onStringListEntry( const QString & string, bool multiLine, const QString & embeddedHashComment );
   void onStringListArgumentEnd();
   void onComment( const QString &comment );
+  void onLineFeed();
+
 private:
+
+  // Private stuff: don't look
+
+  void pushError( const QString &error );
   Rule * createRule( Component * parentComponent );
   bool addConditionToCurrentComponent( Condition::Base * condition, const QString &identifier );
 
-};
+}; // class SieveDecoder
 
 } // namespace IO
 

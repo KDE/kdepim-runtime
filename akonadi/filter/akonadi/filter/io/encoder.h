@@ -28,6 +28,8 @@
 
 #include <akonadi/filter/config-akonadi-filter.h>
 
+#include <akonadi/filter/errorstack.h>
+
 #include <QtCore/QString>
 
 namespace Akonadi
@@ -35,35 +37,63 @@ namespace Akonadi
 namespace Filter
 {
 
-  class Program;
+class Program;
 
 namespace IO
 {
 
-class AKONADI_FILTER_EXPORT Encoder
+/**
+ * The base class of all filter Encoders.
+ *
+ * The Encoder instances take a filtering Program and convert
+ * it to some rappresentation stored inside a QByteArray.
+ *
+ * The run() method is pure virtual and must be overridden
+ * in derived classes in order to provide the implementation of
+ * the encoding process.
+ */
+class AKONADI_FILTER_EXPORT Encoder : public ErrorStack
 {
 public:
+
+  /**
+   * Create an Encoder instance
+   */
   Encoder();
+
+  /**
+   * Kill an Encoder instance and all the associated resources.
+   */
   virtual ~Encoder();
 
 protected:
-  QString mLastError;
+
+  /**
+   * The stack of errors encountered during the encoding process.
+   */
+  ErrorStack mErrorStack;
 
 public:
+
   /**
-   * Returns the last error occured in this component execution run.
+   * Returns the stack of errors encountered during the encoding process.
    */
-  const QString & lastError() const
+  ErrorStack & errorStack()
   {
-    return mLastError;
+    return mErrorStack;
   }
 
-  void setLastError( const QString &error )
-  {
-    mLastError = error;
-  }
-
-  virtual QString run( Program * program ) = 0;
+  /**
+   * This method must be overridden by subclasses in order
+   * to provide an implementation of the encoding process.
+   *
+   * The method should serialize the Program into a QByteArray
+   * which should be at least 1 byte long.
+   *
+   * In case of error the method should return a null QByteArray
+   * and a description of the error should be avaiable via errorStack().
+   */
+  virtual QByteArray run( Program * program ) = 0;
 
 }; // class Encoder
 

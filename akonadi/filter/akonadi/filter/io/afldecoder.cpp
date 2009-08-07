@@ -170,8 +170,10 @@ bool AFLDecoder::parseDeclaration()
   return true;
 }
 
-Program * AFLDecoder::run( const QString &source )
+Program * AFLDecoder::run( const QByteArray &encodedFilter )
 {
+  Q_UNUSED( encodedFilter ); // for now
+
   if( mProgram )
   {
     delete mProgram;
