@@ -442,7 +442,7 @@ void MainWindow::newFilter( bool lbb )
 
   if( ret != Akonadi::Filter::Agent::Success )
   {
-    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not fetch filter properties" ) );
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not crate new filter" ) );
     return;
   }
 
@@ -458,10 +458,9 @@ void MainWindow::newFilter( bool lbb )
 
   if( ret != Akonadi::Filter::Agent::Success )
   {
-    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not fetch filter properties" ) );
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not crate new filter" ) );
     return;
   }
-
 
   listFilters();
 
@@ -470,5 +469,27 @@ void MainWindow::newFilter( bool lbb )
 
 void MainWindow::slotDeleteFilterButtonClicked()
 {
+  FilterListWidgetItem * item = dynamic_cast< FilterListWidgetItem * >( mFilterListWidget->currentItem() );
+  if( !item )
+    return;
+
+  QDBusPendingReply< int > rDelete = mFilterAgent->deleteFilter( item->filter()->id() );
+  rDelete.waitForFinished();
+
+  if( rDelete.isError() )
+  {
+    KMessageBox::error( this, rDelete.error().message(), i18n( "Could not delete filter" ) );
+    return;
+  }
+
+  Akonadi::Filter::Agent::Status ret = static_cast< Akonadi::Filter::Agent::Status >( rDelete.argumentAt< 0 >() );
+
+  if( ret != Akonadi::Filter::Agent::Success )
+  {
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not delete filter" ) );
+    return;
+  }
+
+  listFilters();
 }
 

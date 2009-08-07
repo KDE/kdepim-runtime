@@ -265,6 +265,16 @@ void FilterAgent::detachEngine( FilterEngine * engine )
     filterChain = *it;
     Q_ASSERT( filterChain );
 
+    if( !filterChain->contains( engine ) )
+      continue;
+
+    filterChain->removeOne( engine );
+
+    Q_ASSERT( !filterChain->contains( engine ) );
+
+    kDebug() << "filteragent: detached filter" << engine->id() << "from collection" << it.key();
+
+
     if( filterChain->isEmpty() )
       emptyChains.append( it.key() );
   }
@@ -275,7 +285,7 @@ void FilterAgent::detachEngine( FilterEngine * engine )
     Q_ASSERT( filterChain );
     Q_ASSERT( filterChain->isEmpty() );
 
-    changeRecorder()->setCollectionMonitored( Akonadi::Collection( id ), false );
+    //changeRecorder()->setCollectionMonitored( Akonadi::Collection( id ), false );
    
     mFilterChains.remove( id );
     delete filterChain;
@@ -360,6 +370,8 @@ bool FilterAgent::attachEngine( FilterEngine * engine, Akonadi::Collection::Id c
     // FIXME: Check that engine mimetype matches the collection mimetype ?
     chain->append( engine );
     kDebug() << "filteragent: attached filter" << engine->id() << "to collection" << collectionId;
+  } else {
+    kDebug() << "filteragent: filter" << engine->id() << "is already attached to collection" << collectionId;    
   }
 
   return true;
@@ -484,6 +496,7 @@ int FilterAgent::changeFilter( const QString &filterId, const QString &source, c
 
   foreach( Akonadi::Collection::Id collectionId, attachedCollectionIds )
   {
+    kDebug() << "Attaching filer engine " << filterId << " to collection" << collectionId;
     if( !attachEngine( engine, collectionId ) )
       gotInvalidCollection = true;
   }

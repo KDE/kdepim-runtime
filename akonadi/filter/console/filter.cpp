@@ -102,7 +102,7 @@ QTextDocument * Filter::descriptionDocument( const QString &textColor )
         "<body>"
           "<table>"
             "<tr>"
-              "<td rowspan=\"3\"><img src=\"filter_icon\">&nbsp;&nbsp;</td>"
+              "<td rowspan=\"4\"><img src=\"filter_icon\">&nbsp;&nbsp;</td>"
               "<td><b>%2</b></td>"
             "</tr>"
             "<tr>"
@@ -110,6 +110,9 @@ QTextDocument * Filter::descriptionDocument( const QString &textColor )
             "</tr>"
             "<tr>"
               "<td><font size=\"-1\">%5: %6</font></td>"
+            "</tr>"
+            "<tr>"
+              "<td><font size=\"-1\">%7: %8</font></td>"
             "</tr>"
           "</table>" 
         "</body>" 
@@ -119,6 +122,8 @@ QTextDocument * Filter::descriptionDocument( const QString &textColor )
       .arg( name )
       .arg( i18n( "Id" ) )
       .arg( mId )
+      .arg( i18n( "Mime-Type" ) )
+      .arg( mMimeType )
       .arg( i18n( "Collections" ) )
       .arg( coll );
 

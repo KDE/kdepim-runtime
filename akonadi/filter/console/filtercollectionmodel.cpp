@@ -28,6 +28,8 @@
 
 #include <QStringList>
 
+#include <KDebug>
+
 FilterCollectionModel::FilterCollectionModel( QObject * parent, Filter * filter )
   : Akonadi::CollectionModel( parent ), mFilter( filter )
 {
@@ -103,11 +105,12 @@ bool FilterCollectionModel::setData( const QModelIndex &index, const QVariant & 
 
     if( val == Qt::Checked )
     {
-      if( !mFilter->hasCollection( (Akonadi::Collection::Id)id ) )
+      if( !mFilter->hasCollection( static_cast< Akonadi::Collection::Id >( id ) ) )
         mFilter->addCollection( new Akonadi::Collection( id ) );
     } else {
-      if( mFilter->hasCollection( (Akonadi::Collection::Id)id ) )
-        mFilter->removeCollection( (Akonadi::Collection::Id)id );
+      kDebug() << "Unchedked";
+      if( mFilter->hasCollection( static_cast< Akonadi::Collection::Id >( id ) ) )
+        mFilter->removeCollection( static_cast< Akonadi::Collection::Id >( id ) );
     }
 
     emit dataChanged( index, index );
