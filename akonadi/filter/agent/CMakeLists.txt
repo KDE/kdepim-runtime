@@ -29,6 +29,7 @@ set(
 		filteragent.cpp
 		filterengine.cpp
 		filterenginerfc822.cpp
+		filterjob.cpp
 		main.cpp
 	)
 

@@ -67,6 +67,7 @@ public:
   QPushButton * mDeleteFilterButton;
   static MainWindow * mInstance;
   OrgFreedesktopAkonadiFilterAgentInterface * mFilterAgent;
+  qlonglong mPendingFilteringJobId;
   /**
    * The hash table of the filter component factories indicized by mimetype.
    */
@@ -87,6 +88,7 @@ protected:
   void enableDisableButtons();
 
 protected slots:
+  void slotFilteringJobTerminated( qlonglong jobId, int status );
   void slotListFilters();
   void slotNewFilterLBBButtonClicked();
   void slotNewFilterTBBButtonClicked();

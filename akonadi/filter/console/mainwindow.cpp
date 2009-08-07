@@ -41,9 +41,10 @@
 #include <KLocale>
 #include <KIcon>
 
-#include <QPushButton>
-#include <QListWidget>
-#include <QLayout>
+#include <QtGui/QInputDialog>
+#include <QtGui/QLayout>
+#include <QtGui/QListWidget>
+#include <QtGui/QPushButton>
 
 #include "filter.h"
 #include "filtereditor.h"
@@ -58,6 +59,8 @@ MainWindow::MainWindow()
 {
   mInstance = this;
 
+  mPendingFilteringJobId = -1;
+
   if( !Akonadi::Control::start( this ) )
   {
     kDebug() << "Failed to start the akonadi server";
@@ -66,6 +69,8 @@ MainWindow::MainWindow()
   Akonadi::Filter::Agent::registerMetaTypes();
 
   mFilterAgent = new OrgFreedesktopAkonadiFilterAgentInterface( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
+
+  connect( mFilterAgent, SIGNAL( jobTerminated( qlonglong, int ) ), this, SLOT( slotFilteringJobTerminated( qlonglong, int ) ) );
 
   mComponentFactories.insert( QLatin1String( "message/rfc822" ), new Akonadi::Filter::ComponentFactoryRfc822() );
   mComponentFactories.insert( QLatin1String( "message/news" ), new Akonadi::Filter::ComponentFactoryRfc822() );
@@ -183,8 +188,8 @@ void MainWindow::enableDisableButtons()
   //mNewFilterButtonTBB->setEnabled( true );
   mEditFilterButtonLBB->setEnabled( gotSelected );
   mEditFilterButtonTBB->setEnabled( gotSelected );
-  mApplyFilterToItemButton->setEnabled( gotSelected );
-  mApplyFilterToCollectionButton->setEnabled( gotSelected );
+  mApplyFilterToItemButton->setEnabled( gotSelected && ( mPendingFilteringJobId == -1 ) );
+  mApplyFilterToCollectionButton->setEnabled( gotSelected && ( mPendingFilteringJobId == -1 ) );
   mDeleteFilterButton->setEnabled( gotSelected );
 }
 
@@ -549,7 +554,60 @@ void MainWindow::slotFilterListWidgetSelectionChanged()
 
 void MainWindow::slotApplyFilterToItemButtonClicked()
 {
+  if( mPendingFilteringJobId != -1 )
+    return;
+
+  bool ok;
+  int val = QInputDialog::getInteger( this, i18n( "Apply filter to item" ), i18n( "Please insert the Akonadi ID of the item to process" ), 0, -2147483647, 2147483647, 1, &ok );
+
+  if( !ok )
+    return;
+
+  FilterListWidgetItem * item = dynamic_cast< FilterListWidgetItem * >( mFilterListWidget->currentItem() );
+  if( !item )
+    return;
+
+  QList< QVariant > itemIds;
+  itemIds.append( QVariant( static_cast< qlonglong >( val ) ) );
+
+  QDBusPendingReply< int, qlonglong > rJob = mFilterAgent->applyFilterToItems( item->filter()->id(), itemIds );
+  rJob.waitForFinished();
+
+  if( rJob.isError() )
+  {
+    KMessageBox::error( this, rJob.error().message(), i18n( "Could not trigger filter application..." ) );
+    return;
+  }
+
+  Akonadi::Filter::Agent::Status ret = static_cast< Akonadi::Filter::Agent::Status >( rJob.argumentAt< 0 >() );
+
+  if( ret != Akonadi::Filter::Agent::Success )
+  {
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not trigger filter application..." ) );
+    return;
+  }
+
+  // filter application has been triggered: will be executed asynchronously
+  mPendingFilteringJobId = rJob.argumentAt< 1 >();
+
+  enableDisableButtons();
 }
+
+void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status )
+{
+  if( jobId != mPendingFilteringJobId )
+    return;
+
+  mPendingFilteringJobId = -1;
+
+  enableDisableButtons();
+
+  if( status == Akonadi::Filter::Agent::Success )
+    KMessageBox::information( this, i18n( "Filter applied succesfully" ), i18n( "Filter application complete" ) );
+  else
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( static_cast< Akonadi::Filter::Agent::Status >( status ) ), i18n( "Filter application failed" ) );
+}
+
 
 void MainWindow::slotApplyFilterToCollectionButtonClicked()
 {

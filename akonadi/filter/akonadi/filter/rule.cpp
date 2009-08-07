@@ -113,6 +113,7 @@ Rule::ProcessingStatus Rule::execute( Data * data )
         return SuccessAndStop;
       break;
       case Failure:
+        kDebug() << "Action execution failed:" << action->lastError();
         setLastError( QObject::tr( "Action execution failed: %1" ).arg( action->lastError() ) );
         return Failure;
       break;

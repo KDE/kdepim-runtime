@@ -39,8 +39,8 @@
 #include <KLocale>
 #include <KDebug>
 
-DataRfc822::DataRfc822( const Akonadi::Item &item, const Akonadi::Collection &collection )
-  : Data(), mItem( item ), mCollection( collection ), mFetchedBody( false )
+DataRfc822::DataRfc822( const Akonadi::Item &item )
+  : Data(), mItem( item ), mFetchedBody( false )
 {
 }
 
@@ -280,7 +280,7 @@ bool DataRfc822::fetchHeader()
 
   Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob( mItem );
 
-  job->setCollection( mCollection );
+  //job->setCollection( mCollection );
 
   // FIXME: this doesn't work with IMAP for now :/
   //job->fetchScope().fetchPayloadPart( QByteArray( Akonadi::MessagePart::Header ) ); 
@@ -321,7 +321,7 @@ bool DataRfc822::fetchBody()
 
   Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob( mItem );
 
-  job->setCollection( mCollection );
+  //job->setCollection( mCollection );
 
   job->fetchScope().fetchFullPayload();
 

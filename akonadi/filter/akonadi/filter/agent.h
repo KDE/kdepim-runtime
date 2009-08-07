@@ -40,7 +40,7 @@
  * In xml it is encoded as... (what?)
  */
 Q_DECLARE_METATYPE( QList< Akonadi::Collection::Id > )
-//Q_DECLARE_METATYPE( QList< Akonadi::Item::Id > ) <-- this is the same as the above call
+Q_DECLARE_METATYPE( QList< QVariant > )
 
 namespace Akonadi
 {
@@ -108,7 +108,18 @@ enum Status
    * The method failed because the filter could not be saved for some reason...
    * ... most likely because of permission/disk quota/bad file name issues.
    */
-  ErrorCouldNotSaveFilter
+  ErrorCouldNotSaveFilter,
+
+  /**
+   * The method (or a job) failed because of an aynchronous abort request.
+   */
+  ErrorJobAborted,
+
+  /**
+   * A method or job has failed because the execution of a filter engine
+   * triggered an error. See the log for more informations.
+   */
+  ErrorFilterExecutionFailed
 };
 
 /**

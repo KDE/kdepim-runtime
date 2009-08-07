@@ -44,11 +44,11 @@ FilterEngineRfc822::~FilterEngineRfc822()
 {
 }
 
-bool FilterEngineRfc822::run( const Akonadi::Item &item, const Akonadi::Collection &collection )
+bool FilterEngineRfc822::run( const Akonadi::Item &item )
 {
-  kDebug() << "Running filter engine RFC822 on item" << item.id() << "coming from collection" << collection.id();
+  kDebug() << "Running filter engine RFC822 on item" << item.id();
 
-  DataRfc822 data( item, collection );
+  DataRfc822 data( item );
 
   switch( program()->execute( &data ) )
   {
@@ -60,7 +60,7 @@ bool FilterEngineRfc822::run( const Akonadi::Item &item, const Akonadi::Collecti
     break;
     case Akonadi::Filter::Program::Failure:
       // filter failed, but continue processing
-      return true; // continue processing anyway
+      return false; // error: stop processing this item
     break;
     default:
       Q_ASSERT_X( false, __FUNCTION__, "You forgot to handle a Program::execute() result, or it returned something unexpected anyway" );

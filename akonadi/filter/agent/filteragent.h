@@ -35,10 +35,14 @@
 #include <QtCore/QList>
 #include <QtCore/QHash>
 #include <QtCore/QStringList>
+#include <QtCore/QTimer>
 
 #include "filterengine.h"
+#include "filterjob.h"
 
 #include <QObject>
+
+
 
 class FilterAgent : public Akonadi::PreprocessorBase
 {
@@ -76,6 +80,22 @@ protected:
    * because we want to have control of the engine order.
    */
   QHash< Akonadi::Collection::Id, QList< FilterEngine * > * > mFilterChains;
+
+  /**
+   * The queue of filtering jobs. Owned pointers.
+   */
+  QList< FilterJob * > mJobQueue;
+
+  /**
+   * The single shot timer we're using to start a job.
+   */
+  QTimer * mJobStartTimer;
+
+  /**
+   * Our busy flag. We set this when running a job so
+   * an eventual event-look re-entrancy does not start another job in the meantime.
+   */
+  bool mBusy;
 
 public:
 
@@ -193,9 +213,7 @@ public Q_SLOTS: // D-BUS Interface
    */
   int changeFilter( const QString &filterId, const QString &source, const QList< Akonadi::Collection::Id > &attachedCollectionIds );
 
-  int applyFilterToItems( const QString &filterId, const QList< Akonadi::Item::Id > &itemIds );
-
-  int applyFilterToCollections( const QString &filterId, const QList< Akonadi::Collection::Id > &collectionIds );
+  int applyFilterToItems( const QString &filterId, const QList< QVariant > &itemIds, qlonglong &allocatedJobId );
 
 protected:
 
@@ -204,7 +222,16 @@ protected:
    */
   virtual ProcessingResult processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType );
 
+private Q_SLOTS:
+  void slotRunOneJob();
+  void slotAbortRequested();
+
+Q_SIGNALS:
+  void jobTerminated( qlonglong jobId, int status );
+
 private:
+  Akonadi::Filter::Agent::Status runJob( FilterJob * job );
+
   int createFilterInternal( const QString &filterId, const QString &mimeType, const QString &source, bool saveConfiguration );
   int attachFilterInternal( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds, bool saveConfiguration );
 

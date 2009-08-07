@@ -29,7 +29,6 @@
 #include <QtCore/QString>
 
 #include <akonadi/item.h>
-#include <akonadi/collection.h>
 
 namespace Akonadi
 {
@@ -40,7 +39,7 @@ namespace Filter
 } // namespace Akonadi
 
 /**
- * A single mail filtering engine descriptor.
+ * A single filtering engine descriptor.
  *
  * This object contains all the informations about a single filter (which can be attached
  * to multiple collections by the FilterAgent.
@@ -156,7 +155,7 @@ public:
    * The method should return true if processing should continue (and eventually
    * other filter engines should be applied) or false if processing should stop.
    */
-  virtual bool run( const Akonadi::Item &item, const Akonadi::Collection &collection ) = 0;
+  virtual bool run( const Akonadi::Item &item ) = 0;
 };
 
 #endif //!_FILTERENGINE_H_

@@ -118,6 +118,7 @@ Command::ProcessingStatus Command::execute( Data * data )
 
   if( !data->executeCommand( mCommandDescriptor, mParams, error ) )
   {
+    kDebug() << "Execution of command" << mCommandDescriptor->name() << "failed with error" << error;
     // error :/
     setLastError( i18n( "command '%1' failed: %2", mCommandDescriptor->name(), error ) );
     return Failure;

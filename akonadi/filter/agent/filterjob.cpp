@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  File : filterenginerfc822.h
- *  Created on Sat 20 Jun 2009 14:36:26 by Szymon Tomasz Stefanek
+ *  File : filterjob.cpp
+ *  Created on Fri 7 Aug 2009 21:10:16 by Szymon Tomasz Stefanek
  *
  *  This file is part of the Akonadi Mail Filtering Agent
  *
@@ -23,42 +23,25 @@
  *
  *******************************************************************************/
 
-#ifndef _FILTERENGINERFC822_H_
-#define _FILTERENGINERFC822_H_
+#include "filterjob.h"
 
-#include "filterengine.h"
-
-class FilterEngineRfc822 : public FilterEngine
+FilterJob::FilterJob( Type type, Akonadi::Item::Id itemId )
 {
-public:
+  mType = type;
+  mItemId = itemId;
+  mCollectionId = -1;
+  mEmitJobTerminated = false;
 
-  /**
-   * Create an instance of a message/rfc822 filtering engine.
-   *
-   * \param id
-   *   The unique id of the engine
-   * \param mimeType
-   *   The mimetype associated to the filtering program
-   * \param source
-   *   The sieve source code of the program
-   * \param program
-   *   The program decoded from the sieve source: the engine takes the ownership of this pointer
-   */
-  FilterEngineRfc822(
-      const QString &id,
-      const QString &mimeType,
-      const QString &source,
-      Akonadi::Filter::Program * program
-    );
+  static qint64 gNextJobId = 1;
 
-  virtual ~FilterEngineRfc822();
+  mId = gNextJobId;
+  gNextJobId++;
 
-protected:
+}
 
-  /**
-   * Reimplemented from FilterEngine
-   */
-  virtual bool run( const Akonadi::Item &item );
-};
 
-#endif //!_FILTERENGINERFC822_H_
+FilterJob::~FilterJob()
+{
+
+}
+

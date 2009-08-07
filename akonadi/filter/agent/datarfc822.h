@@ -42,12 +42,11 @@ class DataRfc822 : public Akonadi::Filter::Data
 {
 protected:
   Akonadi::Item mItem;
-  Akonadi::Collection mCollection;
   MessagePtr mMessage;
   bool mFetchedBody;
 
 public:
-  DataRfc822( const Akonadi::Item &item, const Akonadi::Collection &collection );
+  DataRfc822( const Akonadi::Item &item );
   virtual ~DataRfc822();
 
   QVariant getPropertyValue( const Akonadi::Filter::FunctionDescriptor * function, const Akonadi::Filter::DataMemberDescriptor * dataMember );

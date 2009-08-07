@@ -47,15 +47,14 @@
     </method>
     <method name="applyFilterToItems">
       <arg name="filterId" type="s" direction="in"/>
-      <arg name="itemIds" type="ax" direction="in"/>
-      <annotation name="com.trolltech.QtDBus.QtTypeName.In1" value="QList&lt;Akonadi::Item::Id&gt;"/>
+      <arg name="itemIds" type="av" direction="in"/>
+      <annotation name="com.trolltech.QtDBus.QtTypeName.In1" value="QList&lt;QVariant&gt;"/>
       <arg type="i" direction="out"/>
+      <arg name="allocatedJobId" type="x" direction="out"/>
     </method>
-    <method name="applyFilterToCollections">
-      <arg name="filterId" type="s" direction="in"/>
-      <arg name="collectionIds" type="ax" direction="in"/>
-      <annotation name="com.trolltech.QtDBus.QtTypeName.In1" value="QList&lt;Akonadi::Collection::Id&gt;"/>
-      <arg type="i" direction="out"/>
-    </method>
+    <signal name="jobTerminated">
+      <arg name="jobId" type="x" direction="out"/>
+      <arg name="status" type="i" direction="out"/>
+    </signal>
   </interface>
 </node>

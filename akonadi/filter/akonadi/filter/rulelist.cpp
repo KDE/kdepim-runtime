@@ -75,6 +75,7 @@ RuleList::ProcessingStatus RuleList::execute( Data * data )
         return SuccessAndStop;
       break;
       case Failure:
+        kDebug() << "Rule execution failed:" << rule->lastError();
         setLastError( QObject::tr( "Rule execution failed: %1" ).arg( rule->lastError() ) );
         return Failure;
       break;

@@ -55,6 +55,7 @@ FilterAgent::FilterAgent( const QString &id )
 
   Akonadi::Filter::Agent::registerMetaTypes();
 
+  mBusy = false;
   mInstance = this;
 
   mComponentFactories.insert( QLatin1String( "message/rfc822" ), new Akonadi::Filter::ComponentFactoryRfc822() );
@@ -62,18 +63,15 @@ FilterAgent::FilterAgent( const QString &id )
 
   new FilterAgentAdaptor( this );
 
-#if 0
-  // Kill the recorded queue
-  while( !changeRecorder()->isEmpty() )
-  {
-    changeRecorder()->replayNext();
-    changeRecorder()->changeProcessed();
-  }
-
-  changeRecorder()->setChangeRecordingEnabled( false ); // we want notifications now!
-#endif
-
   loadFilterMappings();
+
+  mJobStartTimer = new QTimer( this );
+  mJobStartTimer->setSingleShot( true );
+
+  connect( mJobStartTimer, SIGNAL( timeout() ), this, SLOT( slotRunOneJob() ) );
+
+  // Nicely handle abort requests
+  connect( this, SIGNAL( abortRequested() ), this, SLOT( slotAbortRequested() ) );
 
   //AttributeComponentFactory::registerAttribute<MessageThreadingAttribute>();
   kDebug() << "filteragent: ready and waiting..." ;
@@ -81,14 +79,48 @@ FilterAgent::FilterAgent( const QString &id )
 
 FilterAgent::~FilterAgent()
 {
+  Q_ASSERT( !mBusy ); // should have exited any local even loop
+
+  slotAbortRequested();
+
   saveFilterMappings();
 
   qDeleteAll( mEngines );
   qDeleteAll( mFilterChains );
+  qDeleteAll( mJobQueue );
+
+  delete mJobStartTimer;
 
   mInstance = 0;
 }
 
+void FilterAgent::slotAbortRequested()
+{
+  if( mJobStartTimer->isActive() )
+    mJobStartTimer->stop();
+
+  // kill any pending jobs
+  foreach( FilterJob * job, mJobQueue )
+  {
+    switch( job->type() )
+    {
+      case FilterJob::ApplyFilterChainByCollection:
+        // This was a normal preprocessor job from processItem(): we have one at a time of them
+        terminateProcessing( ProcessingFailed );
+      break;
+      case FilterJob::ApplySpecificFilter:
+        // This was an "apply filter now" job
+        if( job->emitJobTerminated() )
+          emit jobTerminated( job->id(), Akonadi::Filter::Agent::ErrorJobAborted );
+      break;
+      default:
+        Q_ASSERT_X( false, __FUNCTION__, "Unhandled FilterJob::Type" );
+      break;
+    }
+  }
+
+  qDeleteAll( mJobQueue );
+}
 
 FilterAgent::ProcessingResult FilterAgent::processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType )
 {
@@ -106,40 +138,148 @@ FilterAgent::ProcessingResult FilterAgent::processItem( Akonadi::Item::Id itemId
 
   Q_ASSERT( filterChain->count() > 0 );
 
-  kDebug() << "filteragent: will be processing item in collection" << collectionId;
+  FilterJob * job = new FilterJob( FilterJob::ApplyFilterChainByCollection, itemId );
+  job->setCollectionId( collectionId );
+  job->setMimeType( mimeType );
 
-  Akonadi::Item item( itemId );
-  Akonadi::Collection collection( collectionId );
+  mJobQueue.append( job );
 
-  // We don't use MimeTypeChecker since we'd need to create one for each engine
-  // and resolve the mimeType multiple times. The KMimeType api is more "direct" here.
+  if( !mJobStartTimer->isActive() && !mBusy )
+    mJobStartTimer->start( 0 );
 
-  KMimeType::Ptr mimeTypePtr = KMimeType::mimeType( mimeType, KMimeType::ResolveAliases );
-  if( mimeTypePtr.isNull() )
+  return ProcessingDelayed;
+}
+
+Akonadi::Filter::Agent::Status FilterAgent::runJob( FilterJob * job )
+{
+  kDebug() << "filteragent: run job...";
+
+  switch( job->type() )
   {
-    kWarning() << "filteragent: invalid mimetype '" << mimeType << "' passed to FilterAgent::processItem()";
-    return ProcessingFailed;
-  }
-
-  // apply each filter
-  foreach( FilterEngine * engine, *filterChain )
-  {
-    // Check mimetype first
-    if( !mimeTypePtr->is( engine->mimeType() ) )
+    case FilterJob::ApplyFilterChainByCollection:
     {
-      kDebug() << "filteragent: item with mimetype '" << mimeType <<
-          "' appeared in collection " << collectionId <<
-          " but filter engine with id " << engine->id() <<
-          " attached to the collection handles mimetype '" << engine->mimeType() <<
-          "which doesn't match";
-      continue;
-    }
+      kDebug() << "filteragent: will be processing item" << job->itemId() << "in collection" << job->collectionId();
 
-    if( !engine->run( item, collection ) )
-      return ProcessingFailed;
+      QList< FilterEngine * > * filterChain = mFilterChains.value( job->collectionId(), 0 );
+
+      if( !filterChain )
+      {
+        kDebug() << "filteragent: filter chain for collection" << job->collectionId() << "is gone...";
+        return Akonadi::Filter::Agent::ErrorNoSuchFilter; // no chain for this collection
+      }
+
+      Q_ASSERT( filterChain->count() > 0 );
+
+      Akonadi::Item item( job->itemId() );
+      Akonadi::Collection collection( job->collectionId() );
+
+      // We don't use MimeTypeChecker since we'd need to create one for each engine
+      // and resolve the mimeType multiple times. The KMimeType api is more "direct" here.
+
+      KMimeType::Ptr mimeTypePtr = KMimeType::mimeType( job->mimeType(), KMimeType::ResolveAliases );
+      if( mimeTypePtr.isNull() )
+      {
+        kWarning() << "filteragent: invalid mimetype" << job->mimeType() << "passed to FilterAgent::processItem()";
+        return Akonadi::Filter::Agent::ErrorInvalidParameter;
+      }
+
+      // apply each filter
+      foreach( FilterEngine * engine, *filterChain )
+      {
+        // Check mimetype first
+        if( !mimeTypePtr->is( engine->mimeType() ) )
+        {
+          kDebug() << "filteragent: item with mimetype '" << job->mimeType() <<
+              "' appeared in collection " << job->collectionId() <<
+              " but filter engine with id " << engine->id() <<
+              " attached to the collection handles mimetype '" << engine->mimeType() <<
+              "which doesn't match";
+          continue;
+        }
+
+        if( !engine->run( item ) )
+        {
+          kDebug() << "filteragent: filter engine" << engine->id() << "execution failed for item" << job->itemId();
+          return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
+        }
+      }
+
+      return Akonadi::Filter::Agent::Success;
+    }
+    break;
+    case FilterJob::ApplySpecificFilter:
+    {
+      kDebug() << "filteragent: will be processing item" << job->itemId() << "and unconditionally applying filter" << job->filterId();
+
+      FilterEngine * engine = mEngines.value( job->filterId(), 0 );
+      if( !engine )
+      {
+        kDebug() << "filteragent: filter engine" << job->filterId() << "is gone..." << job->collectionId();
+        return Akonadi::Filter::Agent::ErrorNoSuchFilter; // no such filter
+      }
+
+      Akonadi::Item item( job->itemId() );
+
+      if( !engine->run( item ) )
+      {
+        kDebug() << "filteragent: filter engine" << job->filterId() << "execution failed for item" << job->itemId();
+        return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
+      }
+
+      return Akonadi::Filter::Agent::Success;
+    }
+    break;
+    default:
+      Q_ASSERT_X( false, __FUNCTION__, "Unhandled FilterJob::Type" );
+    break;
   }
 
-  return ProcessingCompleted;
+  Q_ASSERT_X( false, __FUNCTION__, "This point should never be reached" );
+  return Akonadi::Filter::Agent::Success; // should be never reached though
+}
+
+void FilterAgent::slotRunOneJob()
+{
+  mJobStartTimer->stop();
+
+  if( mJobQueue.isEmpty() )
+  {
+    kWarning() << "Job start slot triggered with an empty job queue";
+    return; // nothing to do
+  }
+
+  FilterJob * job = mJobQueue.takeFirst();
+  Q_ASSERT( job );
+
+  Q_ASSERT( !mBusy );
+
+  mBusy = true; // protect agains local event loops inside the filters
+
+  Akonadi::Filter::Agent::Status res = runJob( job );
+
+  mBusy = false;
+
+  switch( job->type() )
+  {
+    case FilterJob::ApplyFilterChainByCollection:
+      // This was a normal preprocessor job from processItem(): we have one at a time of them
+      terminateProcessing( ( res == Akonadi::Filter::Agent::Success ) ? ProcessingCompleted : ProcessingFailed );
+    break;
+    case FilterJob::ApplySpecificFilter:
+      // This was an "apply filter now" job
+    break;
+    default:
+      Q_ASSERT_X( false, __FUNCTION__, "Unhandled FilterJob::Type" );
+    break;
+  }
+
+  if( job->emitJobTerminated() )
+    emit jobTerminated( job->id(), res );
+
+  delete job;
+
+  if( mJobQueue.count() > 0 )
+    mJobStartTimer->start( 0 );
 }
 
 QStringList FilterAgent::enumerateFilters( const QString &mimeType )
@@ -502,18 +642,44 @@ int FilterAgent::changeFilter( const QString &filterId, const QString &source, c
   return gotInvalidCollection ? Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed : Akonadi::Filter::Agent::Success;
 }
 
-int FilterAgent::applyFilterToItems( const QString &filterId, const QList< Akonadi::Item::Id > &itemIds )
+int FilterAgent::applyFilterToItems( const QString &filterId, const QList< QVariant > &itemIds, qlonglong &allocatedJobId )
 {
   Q_UNUSED( filterId );
   Q_UNUSED( itemIds );
 
-  return Akonadi::Filter::Agent::Success;
-}
+  FilterEngine * engine = mEngines.value( filterId, 0 );
 
-int FilterAgent::applyFilterToCollections( const QString &filterId, const QList< Akonadi::Collection::Id > &collectionIds )
-{
-  Q_UNUSED( filterId );
-  Q_UNUSED( collectionIds );
+  if( !engine )
+  {
+    kDebug() << "filteragent: no filter engine with id" << filterId;
+    return Akonadi::Filter::Agent::ErrorNoSuchFilter;
+  }
+
+  bool first = true;
+
+  foreach( QVariant v, itemIds )
+  {
+    bool ok;
+    Akonadi::Item::Id itemId = v.toLongLong( &ok );
+    if( !ok )
+      return Akonadi::Filter::Agent::ErrorInvalidParameter;
+
+    FilterJob * job = new FilterJob( FilterJob::ApplySpecificFilter, itemId );
+    job->setFilterId( filterId );
+
+    if( first )
+    {
+      first = false;
+      allocatedJobId = job->id();
+      job->setEmitJobTerminated( true );
+    }
+
+    // The "immediate" jobs go before the server requests
+    mJobQueue.prepend( job );
+  }
+
+  if( !mJobStartTimer->isActive() && !mBusy )
+    mJobStartTimer->start( 0 );
 
   return Akonadi::Filter::Agent::Success;
 }
@@ -630,6 +796,7 @@ void FilterAgent::saveFilterMappings()
 
   cfg.sync();
 }
+
 
 /*
 void FilterAgent::configure( WId winId )

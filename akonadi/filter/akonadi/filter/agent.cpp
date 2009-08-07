@@ -39,7 +39,7 @@ namespace Agent
 void registerMetaTypes()
 {
   qDBusRegisterMetaType< QList< Collection::Id > >();
-  //qDBusRegisterMetaType< QList< Item::Id > >(); <-- this is the same as the call above
+  qDBusRegisterMetaType< QList< QVariant > >();
 }
 
 QString statusDescription( Status status )
@@ -69,6 +69,12 @@ QString statusDescription( Status status )
     break;
     case ErrorCouldNotSaveFilter:
       return i18n( "Could not save the filter" );
+    break;
+    case ErrorJobAborted:
+      return i18n( "Filtering job aborted" );
+    break;
+    case ErrorFilterExecutionFailed:
+      return i18n( "Filter execution failed" );
     break;
   }
 
