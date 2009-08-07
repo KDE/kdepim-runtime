@@ -28,6 +28,7 @@
 #include "debugwidget.h"
 #include "rawsocketconsole.h"
 #include "searchdialog.h"
+#include "searchwidget.h"
 #include "jobtrackerwidget.h"
 #include "notificationmonitor.h"
 
@@ -63,6 +64,7 @@ MainWidget::MainWidget( KXmlGuiWindow *parent )
   tabWidget->addTab( new JobTrackerWidget( "jobtracker", tabWidget ), "Job Tracker" );
   tabWidget->addTab( new JobTrackerWidget( "resourcesJobtracker", tabWidget ), "Resources Schedulers" );
   tabWidget->addTab( new NotificationMonitor( tabWidget ), "Notification Monitor" );
+  tabWidget->addTab( new SearchWidget( tabWidget ), "Item Search" );
 
   KAction *action = parent->actionCollection()->addAction( "akonadiconsole_search" );
   action->setText( "Create Search..." );
