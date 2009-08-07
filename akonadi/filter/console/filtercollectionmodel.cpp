@@ -108,7 +108,6 @@ bool FilterCollectionModel::setData( const QModelIndex &index, const QVariant & 
       if( !mFilter->hasCollection( static_cast< Akonadi::Collection::Id >( id ) ) )
         mFilter->addCollection( new Akonadi::Collection( id ) );
     } else {
-      kDebug() << "Unchedked";
       if( mFilter->hasCollection( static_cast< Akonadi::Collection::Id >( id ) ) )
         mFilter->removeCollection( static_cast< Akonadi::Collection::Id >( id ) );
     }

@@ -28,6 +28,7 @@
 
 #include <akonadi/filter/config-akonadi-filter.h>
 
+#include <akonadi/item.h>
 #include <akonadi/collection.h>
 
 #include <QtCore/QMetaType>
@@ -39,6 +40,7 @@
  * In xml it is encoded as... (what?)
  */
 Q_DECLARE_METATYPE( QList< Akonadi::Collection::Id > )
+//Q_DECLARE_METATYPE( QList< Akonadi::Item::Id > ) <-- this is the same as the above call
 
 namespace Akonadi
 {

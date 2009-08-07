@@ -80,50 +80,75 @@ MainWindow::MainWindow()
   g->setMargin( 2 );
 
   mFilterListWidget = new FilterListWidget( base );
-  g->addWidget( mFilterListWidget, 0, 0, 1, 5 );
+  g->addWidget( mFilterListWidget, 0, 0, 11, 1 );
+
+  connect( mFilterListWidget, SIGNAL( itemSelectionChanged() ), this, SLOT( slotFilterListWidgetSelectionChanged() ) );
 
   mNewFilterButtonLBB = new QPushButton( base );
-  mNewFilterButtonLBB->setIcon( KIcon( "edit-new" ) );
-  mNewFilterButtonLBB->setText( i18n( "New Filter (LBB)") );
-  g->addWidget( mNewFilterButtonLBB, 1, 0 );
+  mNewFilterButtonLBB->setIcon( KIcon( "document-new" ) );
+  mNewFilterButtonLBB->setText( i18n( "New Filter") );
+  g->addWidget( mNewFilterButtonLBB, 0, 1 );
 
   connect( mNewFilterButtonLBB, SIGNAL( clicked() ), this, SLOT( slotNewFilterLBBButtonClicked() ) );
 
   mNewFilterButtonTBB = new QPushButton( base );
-  mNewFilterButtonTBB->setIcon( KIcon( "edit-new" ) );
-  mNewFilterButtonTBB->setText( i18n( "New Filter (TBB)") );
+  mNewFilterButtonTBB->setIcon( KIcon( "document-new" ) );
+  mNewFilterButtonTBB->setText( i18n( "New Filter (Alt. UI)") );
   g->addWidget( mNewFilterButtonTBB, 1, 1 );
 
   connect( mNewFilterButtonTBB, SIGNAL( clicked() ), this, SLOT( slotNewFilterTBBButtonClicked() ) );
 
+  g->addItem( new QSpacerItem( 10, 10 ), 2, 1 );
+
 
   mEditFilterButtonLBB = new QPushButton( base );
-  mEditFilterButtonLBB->setIcon( KIcon( "edit" ) );
-  mEditFilterButtonLBB->setText( i18n( "Edit Filter (LBB)") );
-  g->addWidget( mEditFilterButtonLBB, 1, 2 );
+  mEditFilterButtonLBB->setIcon( KIcon( "document-edit" ) );
+  mEditFilterButtonLBB->setText( i18n( "Edit Filter") );
+  g->addWidget( mEditFilterButtonLBB, 3, 1 );
 
   connect( mEditFilterButtonLBB, SIGNAL( clicked() ), this, SLOT( slotEditFilterLBBButtonClicked() ) );
 
 
   mEditFilterButtonTBB = new QPushButton( base );
-  mEditFilterButtonTBB->setIcon( KIcon( "edit" ) );
-  mEditFilterButtonTBB->setText( i18n( "Edit Filter (TBB)") );
-  g->addWidget( mEditFilterButtonTBB, 1, 3 );
+  mEditFilterButtonTBB->setIcon( KIcon( "document-edit" ) );
+  mEditFilterButtonTBB->setText( i18n( "Edit Filter (Alt. UI)") );
+  g->addWidget( mEditFilterButtonTBB, 4, 1 );
 
   connect( mEditFilterButtonTBB, SIGNAL( clicked() ), this, SLOT( slotEditFilterTBBButtonClicked() ) );
 
+  g->addItem( new QSpacerItem( 10, 10 ), 5, 1 );
+
 
   mDeleteFilterButton = new QPushButton( base );
-  mDeleteFilterButton->setIcon( KIcon( "edit-delete" ) );
+  mDeleteFilterButton->setIcon( KIcon( "document-close" ) );
   mDeleteFilterButton->setText( i18n( "Delete Filter") );
-  g->addWidget( mDeleteFilterButton, 1, 4 );
+  g->addWidget( mDeleteFilterButton, 6, 1 );
 
   connect( mDeleteFilterButton, SIGNAL( clicked() ), this, SLOT( slotDeleteFilterButtonClicked() ) );
 
-  g->setRowStretch( 0, 1 );
+  g->addItem( new QSpacerItem( 10, 10 ), 7, 1 );
 
-  setMinimumSize( 300, 400 );
+  mApplyFilterToItemButton = new QPushButton( base );
+  mApplyFilterToItemButton->setIcon( KIcon( "roll" ) );
+  mApplyFilterToItemButton->setText( i18n( "Apply To Item") );
+  g->addWidget( mApplyFilterToItemButton, 8, 1 );
 
+  connect( mApplyFilterToItemButton, SIGNAL( clicked() ), this, SLOT( slotApplyFilterToItemButtonClicked() ) );
+
+  mApplyFilterToCollectionButton = new QPushButton( base );
+  mApplyFilterToCollectionButton->setIcon( KIcon( "roll" ) );
+  mApplyFilterToCollectionButton->setText( i18n( "Apply To Collection") );
+  g->addWidget( mApplyFilterToCollectionButton, 9, 1 );
+
+  connect( mApplyFilterToCollectionButton, SIGNAL( clicked() ), this, SLOT( slotApplyFilterToCollectionButtonClicked() ) );
+
+
+  g->setColumnStretch( 0, 1 );
+  g->setRowStretch( 10, 1 );
+
+  setMinimumSize( 500, 400 );
+
+  enableDisableButtons();
 
   Akonadi::Control::widgetNeedsAkonadi( mFilterListWidget );
 
@@ -148,7 +173,22 @@ void MainWindow::slotListFilters()
   listFilters();
 }
 
-bool MainWindow::fetchFilterData( Filter * filter )
+void MainWindow::enableDisableButtons()
+{
+  int sel = mFilterListWidget->selectedItems().count();
+
+  bool gotSelected = sel > 0;
+
+  //mNewFilterButtonLBB->setEnabled( true );
+  //mNewFilterButtonTBB->setEnabled( true );
+  mEditFilterButtonLBB->setEnabled( gotSelected );
+  mEditFilterButtonTBB->setEnabled( gotSelected );
+  mApplyFilterToItemButton->setEnabled( gotSelected );
+  mApplyFilterToCollectionButton->setEnabled( gotSelected );
+  mDeleteFilterButton->setEnabled( gotSelected );
+}
+
+bool MainWindow::fetchFilterData( Filter * filter, QString &source )
 {
   Q_ASSERT( filter );
 
@@ -175,7 +215,7 @@ bool MainWindow::fetchFilterData( Filter * filter )
   }
 
   QString mimeType = rProps.argumentAt< 1 >();
-  QString source = rProps.argumentAt< 2 >();
+  source = rProps.argumentAt< 2 >();
   QList< Akonadi::Collection::Id > attachedCollectionIds = rProps.argumentAt< 3 >();
 
   Akonadi::Filter::ComponentFactory * componentFactory = mComponentFactories.value( mimeType, 0 );
@@ -259,6 +299,7 @@ void MainWindow::listFilters()
   if( r.isError() )
   {
     KMessageBox::error( this, r.error().message(), i18n( "Could not enumerate filters" ) );
+    enableDisableButtons();
     return;
   }
 
@@ -270,7 +311,10 @@ void MainWindow::listFilters()
   {
     Filter * filter = new Filter();
     filter->setId( id );
-    if( !fetchFilterData( filter ) )
+
+    QString source;
+
+    if( !fetchFilterData( filter, source ) )
     {
       delete filter;
       kWarning() << "Could not fetch data for filter with id" << id;
@@ -278,7 +322,10 @@ void MainWindow::listFilters()
     }
 
     item = new FilterListWidgetItem( mFilterListWidget, filter );
+    item->setToolTip( source );
   }
+
+  enableDisableButtons();
 }
 
 void MainWindow::slotEditFilterLBBButtonClicked()
@@ -299,7 +346,9 @@ void MainWindow::editFilter( bool lbb )
   if( !item )
     return;
 
-  if( !fetchFilterData( item->filter() ) )
+  QString source;
+
+  if( !fetchFilterData( item->filter(), source ) )
   {
     KMessageBox::error(
         this,
@@ -329,7 +378,7 @@ void MainWindow::editFilter( bool lbb )
     return;    
   }
 
-  QString source = QString::fromUtf8( utf8Source );
+  source = QString::fromUtf8( utf8Source );
 
   qDebug( "FILTER SOURCE:" );
   qDebug( "%s", utf8Source.data() );
@@ -493,3 +542,15 @@ void MainWindow::slotDeleteFilterButtonClicked()
   listFilters();
 }
 
+void MainWindow::slotFilterListWidgetSelectionChanged()
+{
+  enableDisableButtons();
+}
+
+void MainWindow::slotApplyFilterToItemButtonClicked()
+{
+}
+
+void MainWindow::slotApplyFilterToCollectionButtonClicked()
+{
+}

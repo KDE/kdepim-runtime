@@ -39,6 +39,7 @@ namespace Agent
 void registerMetaTypes()
 {
   qDBusRegisterMetaType< QList< Collection::Id > >();
+  //qDBusRegisterMetaType< QList< Item::Id > >(); <-- this is the same as the call above
 }
 
 QString statusDescription( Status status )

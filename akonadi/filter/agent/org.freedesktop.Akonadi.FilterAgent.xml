@@ -45,5 +45,17 @@
       <annotation name="com.trolltech.QtDBus.QtTypeName.In2" value="QList&lt;Akonadi::Collection::Id&gt;"/>
       <arg type="i" direction="out"/>
     </method>
+    <method name="applyFilterToItems">
+      <arg name="filterId" type="s" direction="in"/>
+      <arg name="itemIds" type="ax" direction="in"/>
+      <annotation name="com.trolltech.QtDBus.QtTypeName.In1" value="QList&lt;Akonadi::Item::Id&gt;"/>
+      <arg type="i" direction="out"/>
+    </method>
+    <method name="applyFilterToCollections">
+      <arg name="filterId" type="s" direction="in"/>
+      <arg name="collectionIds" type="ax" direction="in"/>
+      <annotation name="com.trolltech.QtDBus.QtTypeName.In1" value="QList&lt;Akonadi::Collection::Id&gt;"/>
+      <arg type="i" direction="out"/>
+    </method>
   </interface>
 </node>

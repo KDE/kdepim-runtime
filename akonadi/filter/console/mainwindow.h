@@ -31,6 +31,7 @@
 #include <QHash>
 
 class FilterListWidget;
+class FilterListWidgetItem;
 class QPushButton;
 
 class Filter;
@@ -61,6 +62,8 @@ public:
   QPushButton * mNewFilterButtonTBB;
   QPushButton * mEditFilterButtonLBB;
   QPushButton * mEditFilterButtonTBB;
+  QPushButton * mApplyFilterToItemButton;
+  QPushButton * mApplyFilterToCollectionButton;
   QPushButton * mDeleteFilterButton;
   static MainWindow * mInstance;
   OrgFreedesktopAkonadiFilterAgentInterface * mFilterAgent;
@@ -80,7 +83,8 @@ protected:
   void listFilters();
   void newFilter( bool lbb );
   void editFilter( bool lbb );
-  bool fetchFilterData( Filter * filter );
+  bool fetchFilterData( Filter * filter, QString &source );
+  void enableDisableButtons();
 
 protected slots:
   void slotListFilters();
@@ -89,6 +93,9 @@ protected slots:
   void slotEditFilterLBBButtonClicked();
   void slotEditFilterTBBButtonClicked();
   void slotDeleteFilterButtonClicked();
+  void slotApplyFilterToItemButtonClicked();
+  void slotApplyFilterToCollectionButtonClicked();
+  void slotFilterListWidgetSelectionChanged();
 };
 
 #endif //!_MAINWINDOW_H_

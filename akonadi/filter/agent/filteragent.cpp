@@ -137,10 +137,6 @@ FilterAgent::ProcessingResult FilterAgent::processItem( Akonadi::Item::Id itemId
 
     if( !engine->run( item, collection ) )
       return ProcessingFailed;
-
-    // FIXME: TEST
-    ::sleep( 4 ); // generate some lag for testing
-    // FIXME: TEST
   }
 
   return ProcessingCompleted;
@@ -504,6 +500,22 @@ int FilterAgent::changeFilter( const QString &filterId, const QString &source, c
   saveFilterMappings();
 
   return gotInvalidCollection ? Akonadi::Filter::Agent::ErrorNotAllCollectionsProcessed : Akonadi::Filter::Agent::Success;
+}
+
+int FilterAgent::applyFilterToItems( const QString &filterId, const QList< Akonadi::Item::Id > &itemIds )
+{
+  Q_UNUSED( filterId );
+  Q_UNUSED( itemIds );
+
+  return Akonadi::Filter::Agent::Success;
+}
+
+int FilterAgent::applyFilterToCollections( const QString &filterId, const QList< Akonadi::Collection::Id > &collectionIds )
+{
+  Q_UNUSED( filterId );
+  Q_UNUSED( collectionIds );
+
+  return Akonadi::Filter::Agent::Success;
 }
 
 void FilterAgent::loadFilterMappings()

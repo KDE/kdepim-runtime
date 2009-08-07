@@ -193,23 +193,22 @@ public Q_SLOTS: // D-BUS Interface
    */
   int changeFilter( const QString &filterId, const QString &source, const QList< Akonadi::Collection::Id > &attachedCollectionIds );
 
+  int applyFilterToItems( const QString &filterId, const QList< Akonadi::Item::Id > &itemIds );
+
+  int applyFilterToCollections( const QString &filterId, const QList< Akonadi::Collection::Id > &collectionIds );
+
 protected:
 
+  /**
+   * Reimplemented from PreprocessorBase in order to handle item processing.
+   */
   virtual ProcessingResult processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType );
 
+private:
   int createFilterInternal( const QString &filterId, const QString &mimeType, const QString &source, bool saveConfiguration );
   int attachFilterInternal( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds, bool saveConfiguration );
 
   bool saveFilterSource( const QString &filterId, const QString &source );
-
-/*
-  virtual void configure( WId winId );
-
-  virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-
-  virtual void itemRemoved( const Akonadi::Item &item );
-  virtual void collectionChanged( const Akonadi::Collection &collection );
-*/
 
   QString fileNameForFilterId( const QString &filterId );
 
