@@ -27,18 +27,124 @@
 
 #include <akonadi/filter/program.h>
 
+#include <akonadi/collection.h>
+
+#include <QtGui/QTextDocument>
+#include <QtGui/QPalette>
+
+#include <QtCore/QUrl>
+
+#include <KIcon>
+#include <KLocale>
+
 Filter::Filter()
 {
   mProgram = 0;
   mEditorFactory = 0;
   mComponentFactory = 0;
+  mDescriptionDocument = 0;
 }
 
 Filter::~Filter()
 {
+  if( mDescriptionDocument )
+    delete mDescriptionDocument;
   if( mProgram )
     delete mProgram;
   qDeleteAll( mCollections );
+}
+
+QTextDocument * Filter::descriptionDocument( const QString &textColor )
+{
+  if( mDescriptionDocument )
+  {
+    if( mDescriptionDocumentTextColor == textColor )
+      return mDescriptionDocument;
+
+    delete mDescriptionDocument;
+  }
+
+  mDescriptionDocumentTextColor = textColor;
+  mDescriptionDocument = new QTextDocument( 0 );
+
+  QString icon = mProgram ? mProgram->property( QString::fromAscii( "icon" ) ).toString() : QString();
+  if( icon.isEmpty() )
+    icon = QString::fromAscii( "akonadi" );
+
+  mDescriptionDocument->addResource(
+      QTextDocument::ImageResource,
+      QUrl( QLatin1String( "filter_icon" ) ),
+      //KIcon( "view-filter" ).pixmap( QSize( 64, 64 ) )
+      KIcon( icon ).pixmap( QSize( 64, 64 ) )
+    );
+ 
+
+  QString name = mProgram ? mProgram->name() : QString::fromAscii( "???" );
+  if( name.isEmpty() )
+    name = mId;
+
+  QString coll;
+
+  foreach( Akonadi::Collection * c, mCollections )
+  {
+    if( !coll.isEmpty() )
+      coll += QString::fromAscii( ", " );
+    coll += c->name();
+  }
+
+  if( coll.isEmpty() )
+    coll = i18n( "none" );
+  else if( coll.length() > 80 )
+    coll = coll.left( 80 ) + QString::fromAscii( "..." );
+
+  QString content = QString::fromLatin1(
+      "<html style=\"color:%1\">"
+        "<body>"
+          "<table>"
+            "<tr>"
+              "<td rowspan=\"3\"><img src=\"filter_icon\">&nbsp;&nbsp;</td>"
+              "<td><b>%2</b></td>"
+            "</tr>"
+            "<tr>"
+              "<td>%3: %4</td>"
+            "</tr>"
+            "<tr>"
+              "<td><font size=\"-1\">%5: %6</font></td>"
+            "</tr>"
+          "</table>" 
+        "</body>" 
+      "</html>"
+    )
+      .arg( textColor )
+      .arg( name )
+      .arg( i18n( "Id" ) )
+      .arg( mId )
+      .arg( i18n( "Collections" ) )
+      .arg( coll );
+
+  mDescriptionDocument->setHtml( content );
+
+  return mDescriptionDocument;
+
+}
+
+void Filter::invalidateDescriptionDocument()
+{
+  if( mDescriptionDocument )
+    delete mDescriptionDocument;
+  mDescriptionDocument = 0;
+}
+
+void Filter::setId( const QString &id )
+{
+  mId = id;
+  invalidateDescriptionDocument();
+}
+
+void Filter::setMimeType( const QString &mimeType )
+{
+  mMimeType = mimeType;
+  invalidateDescriptionDocument();
 }
 
 void Filter::setProgram( Akonadi::Filter::Program * prog )
@@ -47,6 +153,7 @@ void Filter::setProgram( Akonadi::Filter::Program * prog )
   if( mProgram )
     delete mProgram;
   mProgram = prog;
+  invalidateDescriptionDocument();
 }
 
 Akonadi::Collection * Filter::findCollection( Akonadi::Collection::Id id )
@@ -85,6 +192,7 @@ void Filter::addCollection( Akonadi::Collection * collection )
 {
   Q_ASSERT( !hasCollection( collection->id() ) );
   mCollections.append( collection );
+  invalidateDescriptionDocument();
 }
 
 void Filter::removeCollection( Akonadi::Collection::Id id )
@@ -93,11 +201,13 @@ void Filter::removeCollection( Akonadi::Collection::Id id )
   Q_ASSERT( c );
   mCollections.removeOne( c );
   delete c;
+  invalidateDescriptionDocument();
 }
 
 void Filter::removeAllCollections()
 {
   qDeleteAll(mCollections);
   mCollections.clear();
+  invalidateDescriptionDocument();
 }
 

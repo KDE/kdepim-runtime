@@ -7,6 +7,7 @@ set(
 		filter.cpp
 		filtercollectionmodel.cpp
 		filtereditor.cpp
+		filterlistwidget.cpp
 		main.cpp
 		mainwindow.cpp
 		mimetypeselectiondialog.cpp

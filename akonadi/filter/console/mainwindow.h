@@ -30,8 +30,10 @@
 
 #include <QHash>
 
-class QListWidget;
+class FilterListWidget;
 class QPushButton;
+
+class Filter;
 
 namespace Akonadi {
 namespace Filter {
@@ -54,7 +56,7 @@ public:
   MainWindow();
   virtual ~MainWindow();
 public:
-  QListWidget * mFilterListWidget;
+  FilterListWidget * mFilterListWidget;
   QPushButton * mNewFilterButtonLBB;
   QPushButton * mNewFilterButtonTBB;
   QPushButton * mEditFilterButtonLBB;
@@ -78,8 +80,10 @@ protected:
   void listFilters();
   void newFilter( bool lbb );
   void editFilter( bool lbb );
+  bool fetchFilterData( Filter * filter );
 
 protected slots:
+  void slotListFilters();
   void slotNewFilterLBBButtonClicked();
   void slotNewFilterTBBButtonClicked();
   void slotEditFilterLBBButtonClicked();

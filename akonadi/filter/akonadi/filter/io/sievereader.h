@@ -51,7 +51,7 @@ namespace Private
 {
 
 /**
- * @private
+ * @internal
  *
  * Auxiliary class needed for sieve script parsing.
  * We keep it as standalone class in order to hide the dependency

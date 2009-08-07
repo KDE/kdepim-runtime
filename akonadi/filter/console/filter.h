@@ -30,6 +30,9 @@
 
 #include <QList>
 
+class QTextDocument;
+class QWidget;
+
 namespace Akonadi
 {
 
@@ -56,31 +59,26 @@ public:
 protected:
   QString mId;
   QList< Akonadi::Collection * > mCollections;
-  QString mFileName;
   QString mMimeType;
   Akonadi::Filter::Program * mProgram;
   Akonadi::Filter::ComponentFactory * mComponentFactory;
   Akonadi::Filter::UI::EditorFactory * mEditorFactory;
+  QTextDocument * mDescriptionDocument;
+  QString mDescriptionDocumentTextColor;
 public:
   const QString & id() const
   {
     return mId;
   }
 
-  void setId( const QString &id )
-  {
-    mId = id;
-  }
+  void setId( const QString &id );
 
   const QString & mimeType() const
   {
     return mMimeType;
   }
 
-  void setMimeType( const QString &mimeType )
-  {
-    mMimeType = mimeType;
-  }
+  void setMimeType( const QString &mimeType );
 
   QList< Akonadi::Collection * > * collections()
   {
@@ -94,16 +92,6 @@ public:
   void removeCollection( Akonadi::Collection::Id id );
   Akonadi::Collection * findCollection( Akonadi::Collection::Id id );
   void removeAllCollections();
-
-  const QString & fileName() const
-  {
-    return mFileName;
-  }
-
-  void setFileName( const QString &fileName )
-  {
-    mFileName = fileName;
-  }
 
   Akonadi::Filter::Program * program()
   {
@@ -132,6 +120,11 @@ public:
 
   void setProgram( Akonadi::Filter::Program * prog );
 
+
+  QTextDocument * descriptionDocument( const QString & textColor );
+
+private:
+  void invalidateDescriptionDocument();
 };
 
 #endif //!_FILTER_H_

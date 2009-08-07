@@ -27,6 +27,7 @@
 
 #include <akonadi/control.h>
 #include <akonadi/collectionfetchjob.h>
+#include <akonadi/servermanager.h>
 
 #include <akonadi/filter/componentfactoryrfc822.h>
 #include <akonadi/filter/program.h>
@@ -47,6 +48,7 @@
 #include "filter.h"
 #include "filtereditor.h"
 #include "filteragentinterface.h"
+#include "filterlistwidget.h"
 #include "mimetypeselectiondialog.h"
 
 MainWindow * MainWindow::mInstance = 0;
@@ -58,8 +60,7 @@ MainWindow::MainWindow()
 
   if( !Akonadi::Control::start( this ) )
   {
-    kDebug() << "Could not start akonadi server";
-    return;
+    kDebug() << "Failed to start the akonadi server";
   }
 
   Akonadi::Filter::Agent::registerMetaTypes();
@@ -78,7 +79,7 @@ MainWindow::MainWindow()
   QGridLayout * g = new QGridLayout( base );
   g->setMargin( 2 );
 
-  mFilterListWidget = new QListWidget( base );
+  mFilterListWidget = new FilterListWidget( base );
   g->addWidget( mFilterListWidget, 0, 0, 1, 5 );
 
   mNewFilterButtonLBB = new QPushButton( base );
@@ -123,7 +124,10 @@ MainWindow::MainWindow()
 
   setMinimumSize( 300, 400 );
 
-  listFilters();
+
+  Akonadi::Control::widgetNeedsAkonadi( mFilterListWidget );
+
+  QTimer::singleShot( 500, this, SLOT( slotListFilters() ) );
 }
 
 MainWindow::~MainWindow()
@@ -133,41 +137,25 @@ MainWindow::~MainWindow()
   delete mFilterAgent;
 }
 
-void MainWindow::listFilters()
+void MainWindow::slotListFilters()
 {
-  QDBusPendingReply< QStringList > r = mFilterAgent->enumerateFilters( QString() );
-  r.waitForFinished();
-
-  mFilterListWidget->clear();
-
-  if( r.isError() )
+  if( !Akonadi::ServerManager::isRunning() )
   {
-    KMessageBox::error( this, r.error().message(), i18n( "Could not enumerate filters" ) );
+    QTimer::singleShot( 1000, this, SLOT( slotListFilters() ) );
     return;
   }
 
-  mFilterListWidget->addItems( r.value() );
+  listFilters();
 }
 
-void MainWindow::slotEditFilterLBBButtonClicked()
+bool MainWindow::fetchFilterData( Filter * filter )
 {
-  editFilter( true );
-}
+  Q_ASSERT( filter );
 
-void MainWindow::slotEditFilterTBBButtonClicked()
-{
-  editFilter( false );
-}
+  QString filterId = filter->id();
 
-void MainWindow::editFilter( bool lbb )
-{
-  QString filterId;
+  Q_ASSERT( !filterId.isEmpty() );
 
-  QListWidgetItem * item = mFilterListWidget->currentItem();
-  if( !item )
-    return;  
-
-  filterId = item->text();
 
   QDBusPendingReply< int, QString, QString, QList< Akonadi::Collection::Id > > rProps = mFilterAgent->getFilterProperties( filterId );
   rProps.waitForFinished();
@@ -175,7 +163,7 @@ void MainWindow::editFilter( bool lbb )
   if( rProps.isError() )
   {
     KMessageBox::error( this, rProps.error().message(), i18n( "Could not fetch filter properties" ) );
-    return;
+    return false;
   }
 
   Akonadi::Filter::Agent::Status ret = static_cast< Akonadi::Filter::Agent::Status >( rProps.argumentAt< 0 >() );
@@ -183,7 +171,7 @@ void MainWindow::editFilter( bool lbb )
   if( ret != Akonadi::Filter::Agent::Success )
   {
     KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not fetch filter properties" ) );
-    return;
+    return false;
   }
 
   QString mimeType = rProps.argumentAt< 1 >();
@@ -194,14 +182,14 @@ void MainWindow::editFilter( bool lbb )
   if( !componentFactory )
   {
     KMessageBox::error( this, i18n( "The filter mimetype has no installed component factory" ), i18n( "Internal error" ) );
-    return;
+    return false;
   }
 
   Akonadi::Filter::UI::EditorFactory * editorFactory = mEditorFactories.value( mimeType, 0 );
   if( !editorFactory )
   {
     KMessageBox::error( this, i18n( "The filter mimetype has no installed editor factory" ), i18n( "Internal error" ) );
-    return;
+    return false;
   }
 
   Akonadi::Filter::IO::SieveDecoder decoder( componentFactory );
@@ -215,29 +203,29 @@ void MainWindow::editFilter( bool lbb )
           ),
         i18n( "Could not edit filter" )
       );
-    return;    
+    return false;    
   }
 
+  filter->setMimeType( mimeType );
+  filter->setComponentFactory( componentFactory );
+  filter->setEditorFactory( editorFactory );
+  filter->setProgram( prog );
 
-  Filter filter;
-
-  filter.setId( filterId );
-  filter.setMimeType( mimeType );
-  filter.setComponentFactory( componentFactory );
-  filter.setEditorFactory( editorFactory );
-  filter.setProgram( prog );
+  filter->removeAllCollections();
 
   foreach( Akonadi::Collection::Id id, attachedCollectionIds )
   {
-    Akonadi::CollectionFetchJob job( Akonadi::Collection( id ), Akonadi::CollectionFetchJob::Base );
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob( Akonadi::Collection( id ), Akonadi::CollectionFetchJob::Base );
 
-    if( !job.exec() )
+    if( !job->exec() )
     {
       kDebug() << "Ooops... failed to execute the fetch job for collection" << id;
       continue;
     }
 
-    Akonadi::Collection::List collections = job.collections();
+    Akonadi::Collection::List collections = job->collections();
+
+    // The job deletes itself
 
     if( collections.count() < 1 )
     {
@@ -255,15 +243,79 @@ void MainWindow::editFilter( bool lbb )
       continue;
     }
 
-    filter.addCollection( new Akonadi::Collection( collection ) );
+    filter->addCollection( new Akonadi::Collection( collection ) );
   }
 
-  FilterEditor ed( this, &filter, lbb );
+  return true;
+}
+
+void MainWindow::listFilters()
+{
+  QDBusPendingReply< QStringList > r = mFilterAgent->enumerateFilters( QString() );
+  r.waitForFinished();
+
+  mFilterListWidget->clear();
+
+  if( r.isError() )
+  {
+    KMessageBox::error( this, r.error().message(), i18n( "Could not enumerate filters" ) );
+    return;
+  }
+
+  QStringList filters = r.value();
+
+  FilterListWidgetItem * item;
+
+  foreach( QString id, filters )
+  {
+    Filter * filter = new Filter();
+    filter->setId( id );
+    if( !fetchFilterData( filter ) )
+    {
+      delete filter;
+      kWarning() << "Could not fetch data for filter with id" << id;
+      continue;
+    }
+
+    item = new FilterListWidgetItem( mFilterListWidget, filter );
+  }
+}
+
+void MainWindow::slotEditFilterLBBButtonClicked()
+{
+  editFilter( true );
+}
+
+void MainWindow::slotEditFilterTBBButtonClicked()
+{
+  editFilter( false );
+}
+
+void MainWindow::editFilter( bool lbb )
+{
+  QString filterId;
+
+  FilterListWidgetItem * item = dynamic_cast< FilterListWidgetItem * >( mFilterListWidget->currentItem() );
+  if( !item )
+    return;
+
+  if( !fetchFilterData( item->filter() ) )
+  {
+    KMessageBox::error(
+        this,
+        i18n( "Could not fetch filter data" ),
+        i18n( "Could not edit filter" )
+      );
+    listFilters();
+    return;    
+  }
+
+  FilterEditor ed( this, item->filter(), lbb );
   if( ed.exec() != KDialog::Accepted )
     return;
 
   Akonadi::Filter::IO::SieveEncoder encoder;
-  QByteArray utf8Source = encoder.run( filter.program() );
+  QByteArray utf8Source = encoder.run( item->filter()->program() );
 
   if( utf8Source.isEmpty() )
   {
@@ -277,14 +329,14 @@ void MainWindow::editFilter( bool lbb )
     return;    
   }
 
-  source = QString::fromUtf8( utf8Source );
+  QString source = QString::fromUtf8( utf8Source );
 
   qDebug( "FILTER SOURCE:" );
   qDebug( "%s", utf8Source.data() );
   qDebug( "END OF FILTER SOURCE:" );
 
 
-  QDBusPendingReply< int > rChange = mFilterAgent->changeFilter( filter.id(), source, filter.collectionsAsIdList() );
+  QDBusPendingReply< int > rChange = mFilterAgent->changeFilter( item->filter()->id(), source, item->filter()->collectionsAsIdList() );
   rChange.waitForFinished();
 
   if( rChange.isError() )
@@ -293,7 +345,7 @@ void MainWindow::editFilter( bool lbb )
     return;
   }
 
-  ret = static_cast< Akonadi::Filter::Agent::Status >( rChange.argumentAt< 0 >() );
+  Akonadi::Filter::Agent::Status ret = static_cast< Akonadi::Filter::Agent::Status >( rChange.argumentAt< 0 >() );
 
   if( ret != Akonadi::Filter::Agent::Success )
   {
