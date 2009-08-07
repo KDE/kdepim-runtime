@@ -68,7 +68,6 @@ void QEmu::start()
 
   KConfigGroup emuConf( mVMConfig, "Emulator" );
   QStringList args = KShell::splitArgs( emuConf.readEntry( "Arguments", QString() ) );
-  args << "-snapshot";
   const QList<int> ports = emuConf.readEntry( "Ports", QList<int>() );
   foreach ( int port, ports ) {
     args << "-redir" << QString::fromLatin1( "tcp:%1::%2" ).arg( port + mPortOffset ).arg( port );
@@ -76,6 +75,18 @@ void QEmu::start()
   mMonitorPort = emuConf.readEntry( "MonitorPort", 23 ) + mPortOffset;
   args << "-serial" << QString::fromLatin1( "mon:telnet:127.0.0.1:%1,server,nowait" ).arg( mMonitorPort );
   args << "-hda" << vmImage();
+
+  // If a SnapshotName is given in the configuration, load that snapshot
+  // with -loadvm and assume that it's OK to write to he image file.
+  // Othewise, use the -snapshot option to avoid changing the image
+  // file.
+  QString snapshotName = emuConf.readEntry( "SnapshotName", "" );
+  if ( snapshotName.isEmpty() ) {
+    args << "-snapshot";
+  } else {
+    args << "-loadvm" << snapshotName;
+  }
+
   kDebug() << "Starting QEMU with arguments" << args << "...";
 
   mVMProcess = new KProcess( this );
