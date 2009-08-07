@@ -12,8 +12,8 @@ function testImap( vm ) {
   System.exec( "create_ldap_users.py", ["-h", "localhost", "-p", QEmu.portOffset() + 389,
     "-n", "1", "--set-password", "nichtgeheim", "dc=example,dc=com", "add", "nichtgeheim" ] );
 
-  // the server needs some time to update the user db apparently
-  System.sleep( 20 );
+  // Wait until the user accounts have been fully created
+  runImapCmd( [ "waitformailbox", "INBOX"] );
 
   runImapCmd( [ "create", "INBOX/Calendar" ] );
   runImapCmd( [ "append", "INBOX", "testmail.mbox" ] );
