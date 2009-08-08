@@ -46,7 +46,7 @@ class AKONADI_KABCCOMMON_EXPORT ContactLineEdit : public QLineEdit
      * @param model The contact/contact group model the line edit uses for completion.
      * @param parent The parent widget.
      */
-    ContactLineEdit( KABCModel *model, QWidget *parent = 0 );
+    explicit ContactLineEdit( KABCModel *model, QWidget *parent = 0 );
 
     /**
      * Returns the item the user typed in/selected or an invalid item
