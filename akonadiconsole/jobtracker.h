@@ -59,8 +59,9 @@ class JobTracker : public QObject
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.freedesktop.Akonadi.JobTracker" )
+
 public:
-  JobTracker( const char *name, QObject* parent = 0 );
+  explicit JobTracker( const char *name, QObject* parent = 0 );
   ~JobTracker();
   QStringList sessions() const;
 
@@ -78,6 +79,7 @@ public:
   JobInfo info( int ) const;
 
   bool isEnabled() const;
+
 Q_SIGNALS:
   void updated();
 

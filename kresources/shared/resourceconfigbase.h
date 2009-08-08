@@ -46,7 +46,7 @@ class ResourceConfigBase : public KRES::ConfigWidget
   Q_OBJECT
 
   public:
-    ResourceConfigBase( const QStringList &mimeList, QWidget *parent = 0 );
+    explicit ResourceConfigBase( const QStringList &mimeList, QWidget *parent = 0 );
 
     ~ResourceConfigBase();
 

@@ -57,7 +57,7 @@ public:
     IncompatibleServerError
   };
 
-  ImapAccount( Settings *settings, QObject *parent = 0 );
+  explicit ImapAccount( Settings *settings, QObject *parent = 0 );
   ImapAccount( QObject *parent = 0 );
   ~ImapAccount();
 
