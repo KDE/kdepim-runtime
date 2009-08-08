@@ -408,7 +408,12 @@ bool DataRfc822::fetchHeader()
     return false;
   }
 
-  Q_ASSERT( job->items().count() == 1 );
+  if( job->items().count() < 1 )
+  {
+    kWarning() << "Fetching the message via" << Akonadi::MessagePart::Header << "failed: the job didn't return an item";
+    pushError( i18n( "Could not retrieve message body" ) );
+    return false;
+  }
 
   mItem = job->items().first();
 
@@ -449,7 +454,12 @@ bool DataRfc822::fetchBody()
     return false;
   }
 
-  Q_ASSERT( job->items().count() == 1 );
+  if( job->items().count() < 1 )
+  {
+    kWarning() << "Fetching the message via" << Akonadi::MessagePart::Header << "failed: the job didn't return an item";
+    pushError( i18n( "Could not retrieve message body" ) );
+    return false;
+  }
 
   mItem = job->items().first();
 

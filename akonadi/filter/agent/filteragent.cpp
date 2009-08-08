@@ -75,6 +75,8 @@ FilterAgent::FilterAgent( const QString &id )
 
   //AttributeComponentFactory::registerAttribute<MessageThreadingAttribute>();
   kDebug() << "filteragent: ready and waiting..." ;
+
+  emit status( Idle, i18n( "Waiting for workload..." ) );
 }
 
 FilterAgent::~FilterAgent()
@@ -120,6 +122,12 @@ void FilterAgent::slotAbortRequested()
   }
 
   qDeleteAll( mJobQueue );
+  mJobQueue.clear();
+
+  if( mBusy )
+    emit status( Running, i18n( "Waiting for the uninterruptible job to complete" ) );
+  else
+    emit status( Idle, i18n( "Job queue empty" ) );
 }
 
 FilterAgent::ProcessingResult FilterAgent::processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType )
@@ -146,6 +154,8 @@ FilterAgent::ProcessingResult FilterAgent::processItem( Akonadi::Item::Id itemId
 
   if( !mJobStartTimer->isActive() && !mBusy )
     mJobStartTimer->start( 0 );
+
+  emit status( Running, i18n( "Processing items: queue length is %1", mJobQueue.count() ) );
 
   return ProcessingDelayed;
 }
@@ -299,7 +309,12 @@ void FilterAgent::slotRunOneJob()
   delete job;
 
   if( mJobQueue.count() > 0 )
+  {
     mJobStartTimer->start( 0 );
+    emit status( Running, i18n( "Processing items: queue length is %1", mJobQueue.count() ) );
+  } else {
+    emit status( Idle, i18n( "Job queue empty" ) );
+  }
 }
 
 QStringList FilterAgent::enumerateFilters( const QString &mimeType )
@@ -667,6 +682,8 @@ int FilterAgent::applyFilterToItems( const QString &filterId, const QList< QVari
   Q_UNUSED( filterId );
   Q_UNUSED( itemIds );
 
+  kDebug() << "filteragent: apply filter" << filterId << "to items" << itemIds;
+
   FilterEngine * engine = mEngines.value( filterId, 0 );
 
   if( !engine )
@@ -700,6 +717,8 @@ int FilterAgent::applyFilterToItems( const QString &filterId, const QList< QVari
 
   if( !mJobStartTimer->isActive() && !mBusy )
     mJobStartTimer->start( 0 );
+
+  emit status( Running, i18n( "Processing items: queue length is %1", mJobQueue.count() ) );
 
   return Akonadi::Filter::Agent::Success;
 }
@@ -816,20 +835,4 @@ void FilterAgent::saveFilterMappings()
 
   cfg.sync();
 }
-
-
-/*
-void FilterAgent::configure( WId winId )
-{
-}
-
-
-void FilterAgent::itemRemoved(const Akonadi::Item & ref)
-{
-}
-
-void FilterAgent::collectionChanged( const Akonadi::Collection &col )
-{
-}
-*/
 

@@ -29,10 +29,13 @@
 #include <KMessageBox>
 #include <KLocale>
 #include <KIcon>
+#include <KIconButton>
+#include <KKeySequenceWidget>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 
+#include <QtGui/QKeySequence>
 #include <QtGui/QLabel>
 #include <QtGui/QLayout>
 #include <QtGui/QLineEdit>
@@ -87,13 +90,15 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
 
   mIdLineEdit->setToolTip(
       i18n(
-          "The unique identifier of this filtering program.<br>" \
-          "It can be any string, it's enough that it's globally unique.<br>" \
-          "In user applications this will be usually automatically assigned and hidden."
+          "<p>" \
+          "The unique identifier of this filtering program. " \
+          "It can be any string, it's enough that it's globally unique. " \
+          "In user applications this will be usually automatically assigned and hidden." \
+          "</p>"
         )
     );
 
-  g->addWidget( mIdLineEdit, 0, 1, 1, 2 );
+  g->addWidget( mIdLineEdit, 0, 1, 1, 1 );
 
   l = new QLabel( i18n( "Name" ), tab );
   g->addWidget( l, 1, 0 );
@@ -102,18 +107,81 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
   mNameLineEdit->setText( filter->program()->name() );
 
   mNameLineEdit->setToolTip(
-      i18n( "The user-visible name of this filtering program: can be any string." )
+      i18n(
+          "<p>" \
+          "The user-visible name of this filtering program. " \
+          "It can be any string and in fact the filtering agent doesn't care at all." \
+          "</p>"
+        )
     );
 
-  g->addWidget( mNameLineEdit, 1, 1, 1, 2 );
+  g->addWidget( mNameLineEdit, 1, 1, 1, 1 );
+
+
+  l = new QLabel( i18n( "Shortcut" ), tab );
+  g->addWidget( l, 2, 0 );
+
+
+  mShortcutEditor = new KKeySequenceWidget( tab );
+  mShortcutEditor->setKeySequence(
+      QKeySequence( filter->program()->property( QString::fromAscii( "shortcut" ) ).toString() ),
+      KKeySequenceWidget::NoValidate
+    );
+
+  mShortcutEditor->setToolTip(
+      i18n(
+          "<p>" \
+          "The shortcut for the application of this filter. " \
+          "This is a purely client side property and the filtering framework " \
+          "will just pass is through. In this console it doesn't even do anything " \
+          "useful: it's just here to show that it can be encoded in the filter " \
+          "and preserved." \
+          "</p>"
+        )
+    );
+
+  g->addWidget( mShortcutEditor, 2, 1 );
+
+  mIconButton = new KIconButton( tab );
+
+  QString icon = filter->program()->property( QString::fromAscii( "icon" ) ).toString();
+  if( icon.isEmpty() )
+    icon = QString::fromAscii( "akonadi" ); // nice default
+
+  mIconButton->setIcon( icon );
+  mIconButton->setIconSize( 64 );
+
+  mIconButton->setToolTip(
+      i18n(
+          "<p>" \
+          "The icon associated to this filter. " \
+          "Ths is a client side property: the filtering agent doesn't care " \
+          "and the filter IO engines just 'pass it through'..." \
+          "</p>"
+        )
+    );
+
+  g->addWidget( mIconButton, 0, 2, 3, 1 );
+
 
   mFilterCollectionModel = new FilterCollectionModel( this, filter );
 
   mCollectionList = new QTreeView( tab );
-  g->addWidget( mCollectionList, 2, 0, 1, 3 );
+  g->addWidget( mCollectionList, 3, 0, 1, 3 );
   mCollectionList->setModel( mFilterCollectionModel );
 
-  g->setRowStretch( 2, 1 );
+  mCollectionList->setToolTip(
+      i18n(
+          "<p>" \
+          "The collections that this filter is attached to. " \
+          "The filtering agent will push through this filter " \
+          "all the newly arrived items in these collections." \
+          "</p>"
+        )
+    );
+
+  g->setColumnStretch( 1, 1 );
+  g->setRowStretch( 3, 1 );
 
   // Our mighty program editor :)
   mProgramEditor = new Akonadi::Filter::UI::ProgramEditor(
@@ -154,6 +222,16 @@ void FilterEditor::done( int result )
     return;
 
   prog->setName( mNameLineEdit->text().trimmed() );
+
+  QString icon = mIconButton->icon();
+  if( icon.isEmpty() )
+    icon = QString::fromAscii( "akonadi" );
+
+  // The icon is a client side property
+  prog->setProperty( QString::fromAscii( "icon" ), QVariant( icon ) );
+
+  // The shortcut is a client side property
+  prog->setProperty( QString::fromAscii( "shortcut" ), QVariant( mShortcutEditor->keySequence().toString() ) );
 
   mFilter->setProgram( prog );
 

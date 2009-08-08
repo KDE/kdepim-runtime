@@ -36,6 +36,9 @@ class QTreeView;
 class QPushButton;
 class QModelIndex;
 
+class KIconButton;
+class KKeySequenceWidget;
+
 namespace Akonadi
 {
   class Collection;
@@ -64,6 +67,8 @@ protected:
   Filter * mFilter;
   QLineEdit * mIdLineEdit;
   QLineEdit * mNameLineEdit;
+  KIconButton * mIconButton;
+  KKeySequenceWidget * mShortcutEditor;
   QTreeView * mCollectionList;
   Akonadi::Filter::UI::ProgramEditor * mProgramEditor;
   FilterCollectionModel * mFilterCollectionModel;

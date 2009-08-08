@@ -181,7 +181,8 @@ void MainWindow::enableDisableButtons()
   //mNewFilterButtonTBB->setEnabled( true );
   mEditFilterButtonLBB->setEnabled( gotSelected );
   mEditFilterButtonTBB->setEnabled( gotSelected );
-  mApplyFilterToItemButton->setEnabled( gotSelected && ( mPendingFilteringJobId == -1 ) );
+  //mApplyFilterToItemButton->setEnabled( gotSelected && ( mPendingFilteringJobId == -1 ) );
+  mApplyFilterToItemButton->setEnabled( gotSelected );
   mDeleteFilterButton->setEnabled( gotSelected );
 }
 
@@ -546,8 +547,8 @@ void MainWindow::slotFilterListWidgetSelectionChanged()
 
 void MainWindow::slotApplyFilterToItemButtonClicked()
 {
-  if( mPendingFilteringJobId != -1 )
-    return;
+  //if( mPendingFilteringJobId != -1 )
+  //  return;
 
   bool ok;
   int val = QInputDialog::getInteger( this, i18n( "Apply filter to item" ), i18n( "Please insert the Akonadi ID of the item to process" ), 0, -2147483647, 2147483647, 1, &ok );
