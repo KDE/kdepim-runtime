@@ -49,8 +49,8 @@ QString JobInfo::stateAsString() const
 class JobTracker::Private
 {
 public:
-  Private(JobTracker* _q)
-  :q(_q), lastId(42), timer( _q )
+  Private( JobTracker *_q )
+  :lastId( 42 ), timer( _q ), q( _q )
   {
     timer.setSingleShot( true );
     timer.setInterval( 200 );
