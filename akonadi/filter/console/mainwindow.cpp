@@ -182,7 +182,6 @@ void MainWindow::enableDisableButtons()
   mEditFilterButtonLBB->setEnabled( gotSelected );
   mEditFilterButtonTBB->setEnabled( gotSelected );
   mApplyFilterToItemButton->setEnabled( gotSelected && ( mPendingFilteringJobId == -1 ) );
-  mApplyFilterToCollectionButton->setEnabled( gotSelected && ( mPendingFilteringJobId == -1 ) );
   mDeleteFilterButton->setEnabled( gotSelected );
 }
 

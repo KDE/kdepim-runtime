@@ -30,6 +30,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemcopyjob.h>
 #include <akonadi/itemmovejob.h>
+#include <akonadi/itemmodifyjob.h>
 
 #include <akonadi/kmime/messageparts.h>
 
@@ -38,6 +39,7 @@
 
 #include <KLocale>
 #include <KDebug>
+#include <KProcess>
 
 DataRfc822::DataRfc822( const Akonadi::Item &item )
   : Data(), mItem( item ), mFetchedBody( false )
@@ -117,12 +119,113 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
     }
     break;
     case Akonadi::Filter::CommandRfc822RunProgram:
-      // TODO
+    {
+      Q_ASSERT( params.count() >= 1 ); // must have at least one parameter (tollerate buggy sieve scripts which have more)
+
+      QString cmd = params.first().toString();
+      if ( cmd.isEmpty() )
+      {
+        pushError( i18n( "Invalid empty commandline specified" ) );
+        return false;
+      }
+
+      if( KProcess::startDetached( cmd ) == 0 )
+      {
+        pushError( i18n( "Failed to run the program '%1'", cmd ) );
+        return false;
+      }
+
+      kDebug() << "Started slave command" << cmd;
       return true;
+    }
     break;
     case Akonadi::Filter::CommandRfc822PipeThrough:
-      // TODO
+    {
+      Q_ASSERT( params.count() >= 1 ); // must have at least one parameter (tollerate buggy sieve scripts which have more)
+
+      QString cmd = params.first().toString();
+      if ( cmd.isEmpty() )
+      {
+        pushError( i18n( "Invalid empty commandline specified" ) );
+        pushError( i18n( "Pipe through action failed" ) );
+        return false;
+      }
+
+      if( !mFetchedBody )
+      {
+        if( !fetchBody() )
+        {
+          kWarning() << "Fetching message body failed!";
+          pushError( i18n( "Could not fetch message body to pipe it through command" ) );
+          pushError( i18n( "Pipe through '%1' failed", cmd ) );
+          return false;
+        }
+      }
+
+      KProcess proc;
+      proc.setOutputChannelMode( KProcess::OnlyStdoutChannel );
+      proc.setShellCommand( cmd );
+      proc.start();
+
+      if( !proc.waitForStarted( 5000 ) )
+      {
+        pushError( i18n( "Failed to run the program" ) );
+        pushError( i18n( "Pipe through '%1' failed", cmd ) );
+        return false;
+      }
+
+      Q_ASSERT( proc.state() == QProcess::Running );
+      
+      Q_ASSERT( mMessage );
+
+      QByteArray content = mMessage->encodedContent();
+
+      if( proc.write( content ) != content.length() )
+      {
+        pushError( i18n( "Failed to write the message contents to the slave process stdin" ) );
+        pushError( i18n( "Pipe through '%1' failed", cmd ) );
+        return false;
+      }
+
+      proc.closeWriteChannel();
+
+      if( !proc.waitForFinished( 10000 ) )
+      {
+        pushError( i18n( "The process didn't complete within 10 seconds: too long for a pipe" ) );
+        pushError( i18n( "Pipe through '%1' failed", cmd ) );
+        return false;
+      }
+
+      if( proc.exitStatus() != QProcess::NormalExit )
+      {
+        pushError( i18n( "The process terminated abnormally (crashed?)" ) );
+        pushError( i18n( "Pipe through '%1' failed", cmd ) );
+        return false;
+      }
+
+      content = proc.readAll();
+
+      if( content.isEmpty() )
+      {
+        pushError( i18n( "The slave process didn't output anything" ) );
+        pushError( i18n( "Pipe through '%1' failed", cmd ) );
+        return false;
+      }
+
+      mMessage->setContent( content );
+      mMessage->parse();
+
+      Akonadi::ItemModifyJob * job = new Akonadi::ItemModifyJob( mItem );
+      if ( !job->exec() )
+      {
+        kWarning() << "Updating the item" << mItem.id() << "failed:" << job->errorString();
+        pushError( job->errorString() );
+        pushError( i18n( "Updating the message '%1' failed", mItem.id() ) );
+        pushError( i18n( "Pipe through '%1' failed", cmd ) );
+        return false;
+      }
       return true;
+    }
     break;
     default:
       // not my command: fall through
