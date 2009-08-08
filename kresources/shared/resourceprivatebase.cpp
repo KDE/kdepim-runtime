@@ -218,12 +218,12 @@ void ResourcePrivateBase::writeConfig( KConfigGroup &config ) const
   // if we have new store config, then delete the old keys
   if ( !mStoreCollectionsByMimeType.isEmpty() ) {
     defaultStoreCollection = Akonadi::Collection();
-    defaultResourceIdentifier = QString();
+    defaultResourceIdentifier.clear();
   }
 
   // if we have a valid default store collection, then delete the resource identifier key
   if ( defaultStoreCollection.isValid() ) {
-    defaultResourceIdentifier = QString();
+    defaultResourceIdentifier.clear();
     config.writeEntry( urlKey, defaultStoreCollection.url() );
   } else {
     config.deleteEntry( urlKey );
@@ -457,7 +457,7 @@ void ResourcePrivateBase::subResourceAdded( SubResourceBase *subResource )
     if ( !mDefaultResourceIdentifier.isEmpty() ) {
       if ( subResource->collection().resource() == mDefaultResourceIdentifier ) {
         mDefaultStoreCollection = subResource->collection();
-        mDefaultResourceIdentifier = QString();
+        mDefaultResourceIdentifier.clear();
       }
     }
   } else if ( mDefaultStoreCollection == subResource->collection() ) {

@@ -119,12 +119,12 @@ void KMailMigrator::migrationFailed( const QString &errorMsg,
 {
   const KConfigGroup group( mConfig, mCurrentAccount );
   emit message( Error, i18n( "Migration of '%1' to akonadi resource failed: %2",
-                             group.readEntry( "Name " ), errorMsg ) ); 
+                             group.readEntry( "Name " ), errorMsg ) );
 
   if ( instance.isValid() )
     AgentManager::self()->removeInstance( instance );
 
-  mCurrentAccount = QString();
+  mCurrentAccount.clear();
   migrateNext();
 }
 
@@ -134,7 +134,7 @@ void KMailMigrator::migrationCompleted( const AgentInstance &instance  )
   setMigrationState( group.readEntry( "Id" ), Complete, instance.identifier(),
                      group.readEntry( "Type" ).toLower() );
   emit message( Success, i18n( "Migration of '%1' succeeded.", group.readEntry( "Name" ) ) );
-  mCurrentAccount = QString();
+  mCurrentAccount.clear();
   //mManager->remove( mCurrentAccount );
   migrateNext();
 }

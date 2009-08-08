@@ -1091,7 +1091,7 @@ bool ImapResource::manualAuth( const QString& username, QString &password )
     password = dlg.password();
     return true;
   } else {
-    password = QString();
+    password.clear();
     return false;
   }
 }
