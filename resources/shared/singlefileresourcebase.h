@@ -110,7 +110,7 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
 
     /**
      * Calculates an MD5 hash for given file. If the file does not exists
-     * or the path is empty, this will return an emty QByteArray.
+     * or the path is empty, this will return an empty QByteArray.
      */
     QByteArray calculateHash( const QString &fileName ) const;
 

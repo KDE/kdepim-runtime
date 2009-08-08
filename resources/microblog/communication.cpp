@@ -87,7 +87,7 @@ void Communication::slotCheckAuthData( KJob *job )
     dom.setContent( data );
     QDomNodeList nodeList = dom.elementsByTagName( "user" );
     if ( nodeList.count() > 0 ) {
-        kDebug() << "Authorisation is OK";
+        kDebug() << "Authorization is OK";
         emit authOk();
         return;
     }
