@@ -279,14 +279,14 @@ void Incidence::saveAlarms( QDomElement& element ) const
       e.setAttribute( "type", "email" );
       QDomElement addresses = e.ownerDocument().createElement( "addresses" );
       e.appendChild( addresses );
-      foreach ( KCal::Person person, a->mailAddresses() ) {
+      foreach ( const KCal::Person &person, a->mailAddresses() ) {
         writeString( addresses, "address", person.fullName() );
       }
       writeString( e, "subject", a->mailSubject() );
       writeString( e, "mail-text", a->mailText() );
       QDomElement attachments = e.ownerDocument().createElement( "attachments" );
       e.appendChild( attachments );
-      foreach ( QString attachment, a->mailAttachments() ) {
+      foreach ( const QString &attachment, a->mailAttachments() ) {
         writeString( attachments, "attachment", attachment );
       }
       break;

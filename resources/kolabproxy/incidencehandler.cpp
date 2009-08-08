@@ -51,7 +51,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
 {
   kDebug() << "translateItems" << items.size();
   Akonadi::Item::List newItems;
-  Q_FOREACH(Akonadi::Item item, items)
+  Q_FOREACH(const Akonadi::Item &item, items)
   {
     if (!item.hasPayload<MessagePtr>()) {
       kWarning() << "Payload is not a MessagePtr!";

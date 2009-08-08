@@ -221,7 +221,7 @@ QList<JobInfo> JobTracker::jobs( const QString & parent ) const
   assert( d->jobs.contains(parent) );
   const QStringList jobs = d->jobs[parent];
   QList<JobInfo> infos;
-  Q_FOREACH( QString job, jobs )
+  Q_FOREACH( const QString &job, jobs )
   {
     infos << d->infos[job];
   }
