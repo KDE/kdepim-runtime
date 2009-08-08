@@ -56,8 +56,16 @@ namespace Condition
 class AKONADI_FILTER_EXPORT Rule : public Component, public PropertyBag
 {
 public:
+
+  /**
+   * Creates a rule with the specified parent as component.
+   * The parent will be usually a RuleList.
+   */
   Rule( Component * parent );
 
+  /**
+   * Destroys the Rule object and all the objects contained inside.
+   */
   virtual ~Rule();
 
 protected:
@@ -147,6 +155,9 @@ public:
    * and the ProcessingStatus result is propagated from that.
    * You shouldn't need to override this function unless you want to implement
    * a very strange filter.
+   *
+   * If the execution of the rule fails for some reason then a description
+   * of the error should be available via errorStack().
    */
   virtual ProcessingStatus execute( Data * data );
 

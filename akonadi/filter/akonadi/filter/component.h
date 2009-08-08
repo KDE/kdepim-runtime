@@ -28,6 +28,8 @@
 
 #include <akonadi/filter/config-akonadi-filter.h>
 
+#include <akonadi/filter/errorstack.h>
+
 #include <QtCore/QString>
 
 namespace Akonadi
@@ -82,9 +84,9 @@ public:
 protected:
 
   /**
-   * The last error occured in the execution of this Component methods.
+   * The stack of errors occured during the execution of this component.
    */
-  QString mLastError;
+  ErrorStack mErrorStack;
 
   /**
    * The parent component: shallow, may be null.
@@ -133,11 +135,11 @@ public:
   virtual bool isRuleList() const;
 
   /**
-   * Returns the last error occured in this component execution run.
+   * Returns the (read only) stack of errors occurred in the execution of this Component.
    */
-  const QString & lastError() const
+  ErrorStack & errorStack()
   {
-    return mLastError;
+    return mErrorStack;
   }
 
   /**
@@ -160,16 +162,6 @@ protected:
    * Subclasses should use this to print their output on the console.
    */
   void debugOutput( const QString &prefix, const QString &text );
-
-  /**
-   * Sets the last error occured in this component execution run.
-   * Subclasses should use this method to provide mode information
-   * about an execution failure.
-   */
-  void setLastError( const QString &error )
-  {
-    mLastError = error;
-  }
 
 }; // class Component
 

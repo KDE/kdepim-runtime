@@ -3,7 +3,7 @@
  *  File : engine.h
  *  Created on Mon 8 Jun 2009 04:17:16 by Szymon Tomasz Stefanek
  *
- *  This file is part of the Akonadi Mail Filtering Agent
+ *  This file is part of the Akonadi Filtering Agent
  *
  *  Copyright 2009 Szymon Tomasz Stefanek <pragma@kvirc.net>
  *
@@ -29,6 +29,8 @@
 #include <QtCore/QString>
 
 #include <akonadi/item.h>
+
+#include <akonadi/filter/errorstack.h>
 
 namespace Akonadi
 {
@@ -98,6 +100,11 @@ protected:
    */
   Akonadi::Filter::Program * mProgram;
 
+  /**
+   * The stack of errors generated in a run() call.
+   */
+  Akonadi::Filter::ErrorStack mErrorStack;
+
 public:
 
   /**
@@ -125,6 +132,22 @@ public:
   }
 
   /**
+   * Returns the name of the program stored in the engine
+   * or the id string if the program is null or its name is empty.
+   * This is useful for displaying messages to the user.
+   */
+  QString nameOrId() const;
+
+  /**
+   * Returns the (read only) stack of errors generated during a run() call
+   */
+  Akonadi::Filter::ErrorStack & errorStack()
+  {
+    return mErrorStack;
+  }
+
+
+  /**
    * Sets the sieve source of the filtering program this engine executes.
    * You *MUST* call setProgram() with the corresponding Akonadi::Filter::Program
    * object in order to preserve coherency.
@@ -149,13 +172,13 @@ public:
     return mProgram;
   }
 
-
   /**
    * This must be reimplemented by subclasses to handle item processing.
    * The method should return true if processing should continue (and eventually
    * other filter engines should be applied) or false if processing should stop.
    */
   virtual bool run( const Akonadi::Item &item ) = 0;
+
 };
 
 #endif //!_FILTERENGINE_H_

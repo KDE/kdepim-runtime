@@ -42,6 +42,7 @@ namespace Filter
 {
 
 Data::Data()
+  : ErrorStack()
 {
 }
 
@@ -51,6 +52,8 @@ Data::~Data()
 
 QVariant Data::getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember )
 {
+  clearErrors();
+
   Q_ASSERT( function->acceptableInputDataTypeMask() & dataMember->dataType() );
 
   switch( function->id() )
@@ -118,7 +121,7 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
     {
       QVariant value = getDataMemberValue( dataMember );
       if( value.isNull() )
-        return QVariant( QDateTime() );
+        return QVariant();
       if( value.type() == QVariant::DateTime )
         return value;
       // FIXME: Implement better parsing of dates from a QString
@@ -135,23 +138,9 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
       Q_ASSERT_X( false, "Data::getPropertyValue", "Unrecognized function: you should provide a handler for it" );
     break;
   }
+
+  pushError( i18n( "Unrecognized function requested" ) );
   return QVariant();
-}
-
-QVariant Data::getDataMemberValue( const DataMemberDescriptor * dataMember )
-{
-  Q_UNUSED( dataMember );
-  return QVariant();
-}
-
-bool Data::executeCommand( const CommandDescriptor * command, const QList< QVariant > &params, QString &error )
-{
-  Q_UNUSED( params );
-
-  Q_ASSERT_X( false, "Data::executeCommand", "You must provide an implementation for your commands here!" );
-
-  error = i18n( "Command %1 is not supported", command->name() );
-  return false;
 }
 
 } // namespace Filter

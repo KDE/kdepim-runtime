@@ -199,8 +199,19 @@ Akonadi::Filter::Agent::Status FilterAgent::runJob( FilterJob * job )
 
         if( !engine->run( item ) )
         {
-          kDebug() << "filteragent: filter engine" << engine->id() << "execution failed for item" << job->itemId();
-          return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
+          if( engine->errorStack().hasErrors() )
+          {
+            engine->errorStack().dumpErrorMessage(
+                i18n(
+                    "Execution of filter '%1' failed for item '%2'",
+                    engine->nameOrId(),
+                    job->itemId()
+                  )
+              );
+            return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
+          }
+
+          break; // no error, but stop processing
         }
       }
 
@@ -222,8 +233,17 @@ Akonadi::Filter::Agent::Status FilterAgent::runJob( FilterJob * job )
 
       if( !engine->run( item ) )
       {
-        kDebug() << "filteragent: filter engine" << job->filterId() << "execution failed for item" << job->itemId();
-        return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
+        if( engine->errorStack().hasErrors() )
+        {
+            engine->errorStack().dumpErrorMessage(
+                i18n(
+                    "Execution of filter '%1' failed for item '%2'",
+                    engine->nameOrId(),
+                    job->itemId()
+                  )
+              );
+          return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
+        }
       }
 
       return Akonadi::Filter::Agent::Success;

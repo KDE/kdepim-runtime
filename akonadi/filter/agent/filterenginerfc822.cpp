@@ -29,6 +29,7 @@
 #include <akonadi/filter/program.h>
 
 #include <KDebug>
+#include <KLocale>
 
 FilterEngineRfc822::FilterEngineRfc822(
    const QString &id,
@@ -46,6 +47,8 @@ FilterEngineRfc822::~FilterEngineRfc822()
 
 bool FilterEngineRfc822::run( const Akonadi::Item &item )
 {
+  errorStack().clearErrors();
+
   kDebug() << "Running filter engine RFC822 on item" << item.id();
 
   DataRfc822 data( item );
@@ -60,6 +63,8 @@ bool FilterEngineRfc822::run( const Akonadi::Item &item )
     break;
     case Akonadi::Filter::Program::Failure:
       // filter failed, but continue processing
+      errorStack().pushErrorStack( program()->errorStack() );
+      errorStack().pushError( i18n( "Execution of the RFC822 filter engine failed" ) );
       return false; // error: stop processing this item
     break;
     default:

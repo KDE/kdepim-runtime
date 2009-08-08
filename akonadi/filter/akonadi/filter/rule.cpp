@@ -31,6 +31,7 @@
 #include <QtCore/QObject>
 
 #include <KDebug>
+#include <KLocale>
 
 namespace Akonadi
 {
@@ -87,19 +88,33 @@ bool Rule::isRule() const
 
 Rule::ProcessingStatus Rule::execute( Data * data )
 {
+  errorStack().clearErrors();
+
   kDebug() << "Executing rule " << this;
 
   if( mCondition )
   {
-    if( !mCondition->matches( data ) )
+    switch( mCondition->matches( data ) )
     {
-      kDebug() << "Condition didn't match: skipping actions";
-      return SuccessAndContinue; 
+      case Condition::Base::ConditionMatches:
+        // ok, condition matched
+      break;
+      case Condition::Base::ConditionDoesNotMatch:
+        kDebug() << "Condition didn't match: skipping actions";
+        return SuccessAndContinue; 
+      break;
+      case Condition::Base::ConditionMatchError:
+        errorStack().pushErrorStack( mCondition->errorStack() );
+        errorStack().pushError( i18n( "Evaluation of the condition failed" ) );
+        return Failure;
+      break;
     }
   }
 
   kDebug() << "Condition matched: executing actions!";
 
+
+  int idx = 0;
 
   foreach( Action::Base * action, mActionList )
   {
@@ -113,8 +128,8 @@ Rule::ProcessingStatus Rule::execute( Data * data )
         return SuccessAndStop;
       break;
       case Failure:
-        kDebug() << "Action execution failed:" << action->lastError();
-        setLastError( QObject::tr( "Action execution failed: %1" ).arg( action->lastError() ) );
+        errorStack().pushErrorStack( action->errorStack() );
+        errorStack().pushError( i18n( "Execution of action #%1 failed", idx + 1 ) );
         return Failure;
       break;
       default:
@@ -122,6 +137,8 @@ Rule::ProcessingStatus Rule::execute( Data * data )
         return Failure;
       break;
     }
+
+    idx++;
   }
 
   return SuccessAndContinue;

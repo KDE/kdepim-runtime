@@ -40,6 +40,14 @@
  * In xml it is encoded as... (what?)
  */
 Q_DECLARE_METATYPE( QList< Akonadi::Collection::Id > )
+
+// the following declaration will confuse the meta type system
+// to the point it will refuse to map any QList< qlonglong >
+//
+// Q_DECLARE_METATYPE( QList< Akonadi::Item::Id > )
+//
+// better use a QList< QVariant > instead
+
 Q_DECLARE_METATYPE( QList< QVariant > )
 
 namespace Akonadi

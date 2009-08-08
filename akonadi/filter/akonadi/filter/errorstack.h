@@ -90,18 +90,19 @@ public:
   void clearErrors();
 
   /**
-   * Pushes an error on top of the stack. Location can be an empty string,
-   * if unknown/unspecified. The description shouldn't be empty and it should
-   * be localized.
+   * Returns true if this error stack contains at least one error.
    */
-  void pushError( const QString &location, const QString &description );
+  bool hasErrors() const
+  {
+    return mErrorList.count() > 0;
+  }
 
   /**
    * Pushes an error on top of the stack. Location can be an empty string,
    * if unknown/unspecified. The description shouldn't be empty and it should
    * be localized.
    */
-  void pushError( const char *location, const QString &description );
+  void pushError( const QString &description, const QString &location = QString() );
 
   /**
    * Pushes a whole error stack on top of this stack.
@@ -117,7 +118,7 @@ public:
    * most generalized error message. This will be usually something like
    * "Filter Execution Failed" (and the detailed stack follows).
    */
-  QString errorMessage( const QString &topError = QString() );
+  QString errorMessage( const QString &topError = QString() ) const;
 
   /**
    * Returns a nicely formatted html error message to be displayed to the user
@@ -129,12 +130,12 @@ public:
    * most generalized error message. This will be usually something like
    * "Filter Execution Failed" (and the detailed stack follows).
    */
-  QString htmlErrorMessage( const QString &topError = QString() );
+  QString htmlErrorMessage( const QString &topError = QString() ) const;
 
   /**
    * Dumps the errorMessage() to the console. Useful for debugging.
    */
-  void dumpErrorMessage( const QString &topError = QString() );
+  void dumpErrorMessage( const QString &topError = QString() ) const;
 
 }; // class ErrorStack
 

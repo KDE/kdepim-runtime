@@ -3,7 +3,7 @@
  *  File : engine.cpp
  *  Created on Mon 8 Jun 2009 04:17:16 by Szymon Tomasz Stefanek
  *
- *  This file is part of the Akonadi  Filtering Agent
+ *  This file is part of the Akonadi Filtering Agent
  *
  *  Copyright 2009 Szymon Tomasz Stefanek <pragma@kvirc.net>
  *
@@ -53,3 +53,11 @@ void FilterEngine::setProgram( Akonadi::Filter::Program * program )
   mProgram = program;
 }
 
+QString FilterEngine::nameOrId() const
+{
+  if( !mProgram )
+    return id();
+  if( mProgram->name().isEmpty() )
+    return id();
+  return mProgram->name();
+}

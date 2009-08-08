@@ -60,6 +60,14 @@ enum ConditionType
 class AKONADI_FILTER_EXPORT Base : public Component
 {
 public:
+  enum MatchResult
+  {
+    ConditionMatches,
+    ConditionDoesNotMatch,
+    ConditionMatchError
+  };
+
+
   Base( ConditionType type, Component * parent );
   virtual ~Base();
 protected:
@@ -71,9 +79,7 @@ public:
   {
     return mConditionType;
   }
-  virtual bool matches( Data * data );
-
-  virtual void dump( const QString &prefix );
+  virtual MatchResult matches( Data * data ) = 0;
 }; // class Base
 
 class AKONADI_FILTER_EXPORT Multi : public Base
@@ -125,7 +131,7 @@ public:
     Q_ASSERT( !mChildCondition );
     mChildCondition = condition;
   }
-  virtual bool matches( Data * data );
+  virtual MatchResult matches( Data * data );
 
   virtual void dump( const QString &prefix );
 };
@@ -136,7 +142,7 @@ public:
   And( Component * parent );
   virtual ~And();
 public:
-  virtual bool matches( Data * data );
+  virtual MatchResult matches( Data * data );
   virtual void dump( const QString &prefix );
 }; // class And
 
@@ -146,7 +152,7 @@ public:
   Or( Component * parent );
   virtual ~Or();
 public:
-  virtual bool matches( Data * data );
+  virtual MatchResult matches( Data * data );
 
   virtual void dump( const QString &prefix );
 }; // class Or
@@ -157,7 +163,7 @@ public:
   True( Component * parent );
   virtual ~True();
 public:
-  virtual bool matches( Data * data );
+  virtual MatchResult matches( Data * data );
   virtual void dump( const QString &prefix );
 };
 
@@ -167,7 +173,7 @@ public:
   False( Component * parent );
   virtual ~False();
 public:
-  virtual bool matches( Data * data );
+  virtual MatchResult matches( Data * data );
   virtual void dump( const QString &prefix );
 };
 
@@ -274,9 +280,13 @@ public:
     return mOperand;
   }
 
-  virtual bool matches( Data * data );
+  virtual MatchResult matches( Data * data );
 
   virtual void dump( const QString &prefix );
+
+private:
+  void pushError( const QString &error );
+
 }; // class PropertyTest
 
 } // namespace Condition

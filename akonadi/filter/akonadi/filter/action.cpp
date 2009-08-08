@@ -114,13 +114,14 @@ bool Command::isTerminal() const
 
 Command::ProcessingStatus Command::execute( Data * data )
 {
-  QString error;
+  errorStack().clearErrors();
 
-  if( !data->executeCommand( mCommandDescriptor, mParams, error ) )
+  if( !data->executeCommand( mCommandDescriptor, mParams ) )
   {
-    kDebug() << "Execution of command" << mCommandDescriptor->name() << "failed with error" << error;
+    errorStack().pushErrorStack( *data );
+    errorStack().pushError( i18n( "Execution of command '%1' failed", mCommandDescriptor->name() ) );
+    kDebug() << "Execution of command" << mCommandDescriptor->name() << "failed";
     // error :/
-    setLastError( i18n( "command '%1' failed: %2", mCommandDescriptor->name(), error ) );
     return Failure;
   }
 

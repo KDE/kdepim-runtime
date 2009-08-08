@@ -47,14 +47,9 @@ void ErrorStack::clearErrors()
   mErrorList.clear();
 }
 
-void ErrorStack::pushError( const QString &location, const QString &description )
+void ErrorStack::pushError( const QString &description, const QString &location )
 {
   mErrorList.append( qMakePair( location, description ) );
-}
-
-void ErrorStack::pushError( const char *location, const QString &description )
-{
-  mErrorList.append( qMakePair( QString::fromLatin1( location ), description ) );
 }
 
 void ErrorStack::pushErrorStack( const ErrorStack &stack )
@@ -62,10 +57,10 @@ void ErrorStack::pushErrorStack( const ErrorStack &stack )
   const QList< QPair< QString, QString > > & errorList = stack.errors();
   QPair< QString, QString > error;
   foreach( error, errorList )
-    pushError( error.first, error.second );
+    pushError( error.second, error.first );
 }
 
-QString ErrorStack::errorMessage( const QString &topError )
+QString ErrorStack::errorMessage( const QString &topError ) const
 {
   QString ret;
 
@@ -75,12 +70,16 @@ QString ErrorStack::errorMessage( const QString &topError )
   QString stack;
 
   QPair< QString, QString > error;
+
+  int idx = 0;
+
   foreach( error, mErrorList )
   {
     if( error.first.isEmpty() )
-      stack += QString::fromAscii( "  ??: %1\n" ).arg( error.second );
+      stack += QString::fromAscii( "  [%1] %2\n" ).arg( idx ).arg( error.second );
     else
-      stack += QString::fromAscii( "  %1: %2\n" ).arg( error.first ).arg( error.second );
+      stack += QString::fromAscii( "  [%1] %2: %3\n" ).arg( idx ).arg( error.first ).arg( error.second );
+    idx++;
   }
 
   if( !stack.isEmpty() )
@@ -92,7 +91,7 @@ QString ErrorStack::errorMessage( const QString &topError )
   return ret;
 }
 
-QString ErrorStack::htmlErrorMessage( const QString &topError )
+QString ErrorStack::htmlErrorMessage( const QString &topError ) const
 {
   QString ret;
 
@@ -101,13 +100,16 @@ QString ErrorStack::htmlErrorMessage( const QString &topError )
 
   QString stack;
 
+  int idx = 0;
+
   QPair< QString, QString > error;
   foreach( error, mErrorList )
   {
     if( error.first.isEmpty() )
-      stack += QString::fromAscii( "<li>??: %1</li>" ).arg( error.second );
+      stack += QString::fromAscii( "<li>[%1] %2</li>" ).arg( idx ).arg( error.second );
     else
-      stack += QString::fromAscii( "<li>%1: %2</li>" ).arg( error.first ).arg( error.second );
+      stack += QString::fromAscii( "<li>[%1] %2: %3</li>" ).arg( idx ).arg( error.first ).arg( error.second );
+    idx++;
   }
 
   if( !stack.isEmpty() )
@@ -119,7 +121,7 @@ QString ErrorStack::htmlErrorMessage( const QString &topError )
   return ret;
 }
 
-void ErrorStack::dumpErrorMessage( const QString &topError )
+void ErrorStack::dumpErrorMessage( const QString &topError ) const
 {
   qDebug() << errorMessage( topError );
 }

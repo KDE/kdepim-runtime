@@ -85,7 +85,7 @@ MainWindow::MainWindow()
   g->setMargin( 2 );
 
   mFilterListWidget = new FilterListWidget( base );
-  g->addWidget( mFilterListWidget, 0, 0, 11, 1 );
+  g->addWidget( mFilterListWidget, 0, 0, 10, 1 );
 
   connect( mFilterListWidget, SIGNAL( itemSelectionChanged() ), this, SLOT( slotFilterListWidgetSelectionChanged() ) );
 
@@ -140,16 +140,9 @@ MainWindow::MainWindow()
 
   connect( mApplyFilterToItemButton, SIGNAL( clicked() ), this, SLOT( slotApplyFilterToItemButtonClicked() ) );
 
-  mApplyFilterToCollectionButton = new QPushButton( base );
-  mApplyFilterToCollectionButton->setIcon( KIcon( "roll" ) );
-  mApplyFilterToCollectionButton->setText( i18n( "Apply To Collection") );
-  g->addWidget( mApplyFilterToCollectionButton, 9, 1 );
-
-  connect( mApplyFilterToCollectionButton, SIGNAL( clicked() ), this, SLOT( slotApplyFilterToCollectionButtonClicked() ) );
-
 
   g->setColumnStretch( 0, 1 );
-  g->setRowStretch( 10, 1 );
+  g->setRowStretch( 9, 1 );
 
   setMinimumSize( 500, 400 );
 
@@ -608,7 +601,3 @@ void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status )
     KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( static_cast< Akonadi::Filter::Agent::Status >( status ) ), i18n( "Filter application failed" ) );
 }
 
-
-void MainWindow::slotApplyFilterToCollectionButtonClicked()
-{
-}

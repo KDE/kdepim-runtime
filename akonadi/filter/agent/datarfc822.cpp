@@ -48,7 +48,7 @@ DataRfc822::~DataRfc822()
 {
 }
 
-bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * command, const QList< QVariant > &params, QString &error )
+bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * command, const QList< QVariant > &params )
 {
   switch( command->id() )
   {
@@ -60,7 +60,7 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
       if ( !ok )
       {
         kWarning() << "Moving the item" << mItem.id() << "failed: the target collection id is not valid";
-        error = i18n( "The target collection doesn't exist" );
+        pushError( i18n( "Invalid target collection specified" ) );
         return false;
       }
 
@@ -68,7 +68,8 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
       if ( !job->exec() )
       {
         kWarning() << "Moving the item" << mItem.id() << "failed:" << job->errorString();
-        error = job->errorString();
+        pushError( job->errorString() );
+        pushError( i18n( "Moving the message '%1' to collection '%2' failed", mItem.id(), id ) );
         return false;
       }
       // The Akonadi::Job docs say that the job deletes itself...
@@ -83,7 +84,7 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
       if ( !ok )
       {
         kWarning() << "Copying the item" << mItem.id() << "failed: the target collection id is not valid";
-        error = i18n( "The target collection doesn't exist" );
+        pushError( i18n( "Invalid target collection specified" ) );
         return false;
       }
 
@@ -91,7 +92,8 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
       if ( !job->exec() )
       {
         kWarning() << "Copying the item" << mItem.id() << "failed:" << job->errorString();
-        error = job->errorString();
+        pushError( job->errorString() );
+        pushError( i18n( "Copying the message '%1' to collection '%2' failed", mItem.id(), id ) );
         return false;
       }
       // The Akonadi::Job docs say that the job deletes itself...
@@ -104,7 +106,8 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
       if ( !job->exec() )
       {
         kWarning() << "Deleting the item" << mItem.id() << "failed:" << job->errorString();
-        error = job->errorString();
+        pushError( job->errorString() );
+        pushError( i18n( "Deleting the message '%1' failed", mItem.id() ) );
         return false;
       }
       // The Akonadi::Job docs say that the job deletes itself...
@@ -123,10 +126,13 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
     break;
     default:
       // not my command: fall through
+      Q_ASSERT_X( false, __FUNCTION__, "Unhandled command" );
     break;
   }
 
-  return Data::executeCommand( command, params, error );
+  Q_ASSERT_X( false, __FUNCTION__, "This point should be never reached" );
+  pushError( i18n( "Unhandled command" ) );
+  return false;
 }
 
 
@@ -140,6 +146,7 @@ QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor
     if( !fetchHeader() )
     {
       kWarning() << "Fetching message header failed!";
+      pushError( i18n( "Fetching message header failed" ) );
       return QVariant();
     }
   }
@@ -169,6 +176,7 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
     if( !fetchHeader() )
     {
       kWarning() << "Fetching message header failed!";
+      pushError( i18n( "Fetching message header failed" ) );
       return QVariant();
     }
   }
@@ -248,6 +256,7 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
         if( !fetchBody() )
         {
           kWarning() << "Fetching message body failed!";
+          pushError( i18n( "Fetching message body failed" ) );
           return QVariant();
         }
       }
@@ -260,6 +269,7 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
         if( !fetchBody() )
         {
           kWarning() << "Fetching message body failed!";
+          pushError( i18n( "Fetching message body failed" ) );
           return QVariant();
         }
       }
@@ -267,10 +277,12 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
       return QString::fromAscii( "%1\r\n%2" ).arg( QString::fromAscii( mMessage->head() ) ).arg( QString::fromAscii( mMessage->body() ) );
     break;
     default:
-      // not my data member: fall through
+      Q_ASSERT_X( false, __FUNCTION__, "Unhandled data member" );
+      pushError( i18n( "Unrecognized data member '%1'", dataMember->name() ) );
     break;
   }
 
+  Q_ASSERT_X( false, __FUNCTION__, "This point should be never reached" );
   return QVariant();
 }
 
@@ -289,6 +301,7 @@ bool DataRfc822::fetchHeader()
   if( !job->exec() )
   {
     kWarning() << "Fetching the message header via" << Akonadi::MessagePart::Header << "failed with error '" << job->errorString() << "'";
+    pushError( job->errorString() );
     return false;
   }
 
@@ -303,6 +316,7 @@ bool DataRfc822::fetchHeader()
   if( !mItem.hasPayload< MessagePtr >() )
   {
     kWarning() << "Fetching the message header via" << Akonadi::MessagePart::Header << "failed: the fetched item has no MessagePtr payload!";
+    pushError( i18n( "The fetched item has no MessagePtr payload!" ) );
     return false;
   }
 
@@ -326,7 +340,11 @@ bool DataRfc822::fetchBody()
   job->fetchScope().fetchFullPayload();
 
   if( !job->exec() )
+  {
+    kWarning() << "Fetching the message via" << Akonadi::MessagePart::Header << "failed with error '" << job->errorString() << "'";
+    pushError( job->errorString() );
     return false;
+  }
 
   Q_ASSERT( job->items().count() == 1 );
 
@@ -337,7 +355,10 @@ bool DataRfc822::fetchBody()
   kDebug() << "Raw payload is" << mItem.payloadData();
 
   if( !mItem.hasPayload< MessagePtr >() )
+  {
+    pushError( i18n( "The fetched item has no MessagePtr payload!" ) );
     return false;
+  }
 
   mMessage = mItem.payload< MessagePtr >();
 

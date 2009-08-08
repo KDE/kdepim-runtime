@@ -28,6 +28,7 @@
 #include <QtCore/QObject>
 
 #include <KDebug>
+#include <KLocale>
 
 namespace Akonadi
 {
@@ -61,7 +62,7 @@ RuleList::ProcessingStatus RuleList::execute( Data * data )
 {
   Q_ASSERT( data );
 
-  setLastError( QString() );
+  errorStack().clearErrors();
 
   foreach ( Rule * rule, mRuleList )
   {
@@ -75,12 +76,13 @@ RuleList::ProcessingStatus RuleList::execute( Data * data )
         return SuccessAndStop;
       break;
       case Failure:
-        kDebug() << "Rule execution failed:" << rule->lastError();
-        setLastError( QObject::tr( "Rule execution failed: %1" ).arg( rule->lastError() ) );
+        errorStack().pushErrorStack( rule->errorStack() );
+        errorStack().pushError( i18n( "Rule list execution failed" ) );
         return Failure;
       break;
       default:
         Q_ASSERT( false ); // invalid rule execution result
+        errorStack().pushError( i18n( "Internal error" ) );
         return Failure;
       break;
     }
