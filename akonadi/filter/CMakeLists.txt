@@ -12,6 +12,7 @@ include_directories(
     ${KDE4_INCLUDES}
     ${KDEPIMLIBS_INCLUDE_DIR}
     ${QT_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 include(KDE4Defaults)
