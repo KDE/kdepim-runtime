@@ -563,7 +563,7 @@ void Incidence::saveCustomAttributes( QDomElement& element ) const
   foreach ( const Custom& custom, mCustomList ) {
     QString key( custom.key );
     Q_ASSERT( !key.isEmpty() );
-    if ( key.startsWith( "X-KDE-KolabUnhandled-" ) ) {
+    if ( key.startsWith( QLatin1String( "X-KDE-KolabUnhandled-" ) ) ) {
       key = key.mid( strlen( "X-KDE-KolabUnhandled-" ) );
       writeString( element, key, custom.value );
     } else {

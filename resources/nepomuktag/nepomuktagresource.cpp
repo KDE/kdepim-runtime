@@ -90,7 +90,7 @@ void NepomukTagResource::retrieveItems( const Akonadi::Collection & col )
     Nepomuk::Tag tag( col.remoteId() );
     QList<Nepomuk::Resource> list = tag.tagOf();
     foreach( const Nepomuk::Resource& resource, list ) {
-        if ( !resource.resourceUri().toString().startsWith( "akonadi:" ) )
+        if ( !resource.resourceUri().toString().startsWith( QLatin1String( "akonadi:" ) ) )
             continue;
         kDebug() << "Found message: " << resource.resourceUri();
         taggedMessages << Item::fromUrl( KUrl( resource.resourceUri() ) );
