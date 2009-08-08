@@ -1109,7 +1109,7 @@ QString ImapResource::remoteIdForMailBox( const QString &path ) const
 QString ImapResource::mailBoxForRemoteId( const QString &remoteId ) const
 {
   QString path = remoteId;
-  path.replace( rootRemoteId(), "" );
+  path.remove( rootRemoteId() );
   return path;
 }
 
@@ -1141,7 +1141,7 @@ void ImapResource::doSetOnline(bool online)
 
 bool ImapResource::needsNetwork() const
 {
-  const QString hostName = Settings::self()->imapServer().section( ":", 0, 0 );
+  const QString hostName = Settings::self()->imapServer().section( ':', 0, 0 );
   // ### is there a better way to do this?
   if ( hostName == QLatin1String( "127.0.0.1" ) ||
        hostName == QLatin1String( "localhost" ) ||

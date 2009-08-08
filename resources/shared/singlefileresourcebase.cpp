@@ -206,7 +206,7 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     QString lostFoundFileName;
     do {
       lostFoundFileName = KStandardDirs::locateLocal( "data", identifier() + QDir::separator()
-          + prevUrl.fileName() + "-" + QString::number( ++i ) );
+          + prevUrl.fileName() + '-' + QString::number( ++i ) );
     } while ( KStandardDirs::exists( lostFoundFileName ) );
     mCurrentUrl = KUrl( lostFoundFileName );
     writeFile();

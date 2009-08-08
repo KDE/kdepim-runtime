@@ -167,9 +167,9 @@ void IncidenceHandler::incidenceToItem(IncidencePtr incidencePtr, Akonadi::Item 
 
   MessagePtr message(new KMime::Message);
   QString header;
-  header += "From: " + incidencePtr->organizer().fullName() + "<" + incidencePtr->organizer().email() + ">\n";
-  header += "Subject: " + incidencePtr->uid() + "\n";
-  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
+  header += "From: " + incidencePtr->organizer().fullName() + '<' + incidencePtr->organizer().email() + ">\n";
+  header += "Subject: " + incidencePtr->uid() + '\n';
+  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + '\n';
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
   header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
