@@ -92,7 +92,7 @@ void WidgetHighlighter::triggerSwitchHighlightingOff()
 
   connect( mSwitchOffTimer, SIGNAL( timeout() ), this, SLOT( slotSwitchHighlightingOff() ) );
 
-  mSwitchOffTimer->start( 1000 );
+  mSwitchOffTimer->start( 500 );
 
   if( mFlashTimer->isActive() )
     mFlashTimer->stop();

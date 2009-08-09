@@ -315,13 +315,21 @@ void SieveDecoder::onTestEnd()
 
     const OperatorDescriptor * op = 0;
 
-    op = componentFactory()->findOperator( operatorKeyword, function->outputDataTypeMask() );
+    op = componentFactory()->findOperator( operatorKeyword, function->outputDataType() );
 
     if( !op )
     {
       // unrecognized test
       mGotError = true;
       pushError( i18n( "Unrecognized operator '%1' for function '%2'", operatorKeyword, functionKeyword ) );
+      return;
+    }
+
+    if( ( op->requiredLeftOperandFeatureMask() & function->outputFeatureMask() ) != op->requiredLeftOperandFeatureMask() )
+    {
+      // unrecognized test
+      mGotError = true;
+      pushError( i18n( "Operator '%1' can't be applied on top of function '%2'", operatorKeyword, functionKeyword ) );
       return;
     }
 
@@ -420,7 +428,11 @@ void SieveDecoder::onTestEnd()
         const DataMemberDescriptor * dataMember = componentFactory()->findDataMember( field );
         if( !dataMember )
         {
-          if( ( !mCreationOfCustomDataMemberDescriptorsEnabled ) || ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) )
+          if(
+              ( !mCreationOfCustomDataMemberDescriptorsEnabled ) ||
+              ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) ||
+              ( function->requiredInputFeatureMask() != 0 )
+            )
           {
             mGotError = true;
             pushError( i18n( "Test on data member '%1' is not supported.", field ) );
@@ -435,7 +447,14 @@ void SieveDecoder::onTestEnd()
 
         Q_ASSERT( dataMember );
 
-        if( !( dataMember->dataType() & function->acceptableInputDataTypeMask() ) )
+        if(
+            !(
+               // The data type is acceptable for the function
+               ( dataMember->dataType() & function->acceptableInputDataTypeMask() ) &&
+               // The data member provides the feature bits required by the function
+               ( ( dataMember->featureMask() & function->requiredInputFeatureMask() ) == function->requiredInputFeatureMask() )
+             )
+          )
         {
           mGotError = true; 
           pushError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );

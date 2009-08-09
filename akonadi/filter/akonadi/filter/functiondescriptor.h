@@ -66,8 +66,10 @@ public:
       int id,                          //< The id of the function: it should be unique within an application
       const QString &keyword,          //< Unique function keyword: it matches the keyword used in Sieve scripts.
       const QString &name,             //< The token that is displayed in the UI editors.
-      int outputDataType,              //< The output data type of this function or DataTypeNone if this function is a "pass through"
-      int acceptableInputDataTypeMask  //< The acceptable input data types of this function
+      DataType outputDataType,         //< The output data type of this function
+      int outputFeatureMask,           //< The features provided by this function
+      int acceptableInputDataTypeMask, //< The acceptable input data types of this function
+      int requiredInputFeatureMask = 0 //< The required input data member feature mask, 0 means none
     );
   virtual ~FunctionDescriptor();
 
@@ -89,14 +91,24 @@ protected:
   QString mName;
 
   /**
-   * The possible output types of this function
+   * The output type of this function
    */
-  int mOutputDataTypeMask;
+  DataType mOutputDataType;
+
+  /**
+   * The mask of features provided by this function.
+   */
+  int mOutputFeatureMask;
 
   /**
    * The acceptable input data types
    */
   int mAcceptableInputDataTypeMask;
+
+  /**
+   * The mask of required features (in input data)
+   */
+  int mRequiredInputFeatureMask;
 
 public:
 
@@ -115,15 +127,26 @@ public:
     return mName;
   }
 
-  int outputDataTypeMask() const
+  DataType outputDataType() const
   {
-    return mOutputDataTypeMask;
+    return mOutputDataType;
+  }
+
+  int outputFeatureMask() const
+  {
+    return mOutputFeatureMask;
   }
 
   int acceptableInputDataTypeMask() const
   {
     return mAcceptableInputDataTypeMask;
   }
+
+  int requiredInputFeatureMask() const
+  {
+    return mRequiredInputFeatureMask;
+  }
+
 
 }; // class FunctionDescriptor
 

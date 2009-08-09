@@ -206,13 +206,13 @@ public:
 
   /**
    * Enumerates the DataMemberDescriptor descriptors that are matched by the
-   * specified data type mask.
+   * specified data type and provide ALL the required feature bits.
    *
    * This is used primairly by the UI filter editors to find the
    * DataMemberDescriptor objects that can be "used by" a FunctionDescriptor with a
    * given allowed input DataType set.
    */
-  virtual QList< const DataMemberDescriptor * > enumerateDataMembers( int acceptableDataTypeMask );
+  virtual QList< const DataMemberDescriptor * > enumerateDataMembers( int acceptableDataTypeMask, int requiredFeatureBits );
 
   /**
    * Registers an OperatorDescriptor to be used by the filtering conditions.
@@ -220,15 +220,15 @@ public:
   void registerOperator( OperatorDescriptor * op );
 
   /**
-   * Finds a registered OperatorDescriptor object which has the specified keyword
-   * and supports all the DataTypes specified by leftOperandDataTypeMask.
+   * Finds a registered OperatorDescriptor object which has the specified keyword and
+   * supports the DataTypes specified by leftOperandDataType.
    * This is used by the Decoder subclasses.
    *
    * Returns 0 if no register OperatorDescriptor matches the specified conditions.
    *
    * Please note that the keywords are case insensitive.
    */
-  virtual const OperatorDescriptor * findOperator( const QString &keyword, int leftOperandDataTypeMask );
+  virtual const OperatorDescriptor * findOperator( const QString &keyword, DataType leftOperandDataType );
 
   /**
    * Enumerates the OperatorDescriptor objects that are matched by the specified
@@ -236,9 +236,9 @@ public:
    *
    * This is used primairly by the UI filter editors to find the
    * OperatorDescriptor objects that can be applied to the result of a FunctionDescriptor
-   * with a given possible ouptut DataType set.
+   * with a given ouptut DataType and feature bits.
    */
-  virtual QList< const OperatorDescriptor * > enumerateOperators( int leftOperandDataTypeMask );
+  virtual QList< const OperatorDescriptor * > enumerateOperators( DataType leftOperandDataType, int featureBits );
 
   /**
    * Creates an instance of a filtering program.

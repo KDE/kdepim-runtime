@@ -181,11 +181,14 @@ CommandWithStringParamEditor::CommandWithStringParamEditor(
     QWidget * parent,
     const CommandDescriptor * commandDescriptor,
     ComponentFactory * componentFactory,
-    EditorFactory * editorFactory
+    EditorFactory * editorFactory,
+    bool mayBeEmpty
   )
   : CommandEditor( parent, commandDescriptor, componentFactory, editorFactory )
 {
   QGridLayout * g = new QGridLayout( this );
+
+  mMayBeEmpty = mayBeEmpty;
 
   const CommandDescriptor::ParameterDescriptor * param = commandDescriptor->parameters()->first();
   Q_ASSERT( param );
@@ -233,7 +236,25 @@ Action::Base * CommandWithStringParamEditor::commitState( Component * parent )
 {
   QList< QVariant > params;
 
-  params.append( mParameterLineEdit->text() );
+  QString txt = mParameterLineEdit->text();
+
+  const CommandDescriptor * cmdDescriptor = commandDescriptor();
+  Q_ASSERT( cmdDescriptor );
+  Q_ASSERT( cmdDescriptor->parameters()->count() == 1 );
+
+  const CommandDescriptor::ParameterDescriptor * formalParam = cmdDescriptor->parameters()->first();
+  Q_ASSERT( formalParam );
+
+  Q_ASSERT( formalParam->dataType() == DataTypeString );
+
+  if( txt.isEmpty() && ( !mMayBeEmpty ) )
+  {
+    KMessageBox::sorry( this, i18n( "The field '%1' can't be empty", formalParam->name() ) , i18n( "Invalid parameter" ) );
+    new Private::WidgetHighlighter( this );
+    return 0;    
+  }
+
+  params.append( txt );
 
   Action::Command * cmd = componentFactory()->createCommand( parent, commandDescriptor(), params );
   if( !cmd )

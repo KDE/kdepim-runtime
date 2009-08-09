@@ -48,8 +48,9 @@ ComponentFactory::ComponentFactory()
           FunctionValueOf,
           QString::fromAscii( "header" ),
           QString::fromAscii( "" ), // the value of
-          DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
-          DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList
+          DataTypeString,
+          0, // provides no special features
+          DataTypeString
         )
     );
 
@@ -59,7 +60,8 @@ ComponentFactory::ComponentFactory()
           QString::fromAscii( "size" ),
           i18n( "the total size of" ),
           DataTypeInteger,
-          DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList
+          0, // provides no special features
+          DataTypeString | DataTypeStringList
         )
     );
 
@@ -69,7 +71,8 @@ ComponentFactory::ComponentFactory()
           QString::fromAscii( "count" ),
           i18n( "the total count of" ),
           DataTypeInteger,
-          DataTypeStringList | DataTypeAddressList
+          0, // provides no special features
+          DataTypeStringList
         )
     );
 
@@ -79,20 +82,24 @@ ComponentFactory::ComponentFactory()
           QString::fromAscii( "date" ),
           i18n( "the date from" ),
           DataTypeDate,
+          0, // provides no special features
           DataTypeString | DataTypeDate
         )
     );
 
+#if 0
+  // This is basically "sizeof() > 0"
   registerFunction(
       new FunctionDescriptor(
           FunctionExists,
           QString::fromAscii( "exists" ),
           i18n( "exists" ),
           DataTypeBoolean,
-          DataTypeString | DataTypeStringList | DataTypeDate | DataTypeInteger | DataTypeBoolean | DataTypeAddress | DataTypeAddressList
+          0,
+          DataTypeString | DataTypeStringList | DataTypeDate | DataTypeInteger | DataTypeBoolean
         )
     );
-
+#endif
 
 
   registerOperator(
@@ -100,7 +107,8 @@ ComponentFactory::ComponentFactory()
           OperatorGreaterThan,
           QString::fromAscii( "above" ),
           i18n( "is greater than" ),
-          DataTypeInteger,
+          DataTypeInteger, // left operand must be integer
+          0, // and no special features are requested from it
           DataTypeInteger
         )
     );
@@ -110,7 +118,8 @@ ComponentFactory::ComponentFactory()
           OperatorLowerThan,
           QString::fromAscii( "below" ),
           i18n( "is lower than" ),
-          DataTypeInteger,
+          DataTypeInteger, // left operand must be integer
+          0, // and no special features are requested from it
           DataTypeInteger
         )
     );
@@ -120,7 +129,8 @@ ComponentFactory::ComponentFactory()
           OperatorIntegerIsEqualTo,
           QString::fromAscii( "equals" ),
           i18n( "is equal to" ),
-          DataTypeInteger,
+          DataTypeInteger, // left operand must be integer
+          0, // and no special features are requested from it
           DataTypeInteger
         )
     );
@@ -130,7 +140,8 @@ ComponentFactory::ComponentFactory()
           OperatorContains,
           QString::fromAscii( "contains" ),
           i18n( "contains string" ),
-          DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
+          DataTypeString | DataTypeStringList, // left operand must be string or string list
+          0, // and no special features are requested from it
           DataTypeString
         )
     );
@@ -140,7 +151,8 @@ ComponentFactory::ComponentFactory()
           OperatorStringIsEqualTo,
           QString::fromAscii( "is" ),
           i18n( "is equal to" ),
-          DataTypeString | DataTypeAddress,
+          DataTypeString, // left operand must be string or string list
+          0, // and no special features are requested from it
           DataTypeString
         )
     );
@@ -150,7 +162,8 @@ ComponentFactory::ComponentFactory()
           OperatorStringMatchesRegexp,
           QString::fromAscii( "matches" ),
           i18n( "matches regular expression" ),
-          DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
+          DataTypeString | DataTypeStringList, // left operand must be string or string list
+          0, // and no special features are requested from it
           DataTypeString
         )
     );
@@ -160,7 +173,8 @@ ComponentFactory::ComponentFactory()
           OperatorStringMatchesWildcard,
           QString::fromAscii( "like" ),
           i18n( "matches wildcard expression" ),
-          DataTypeString | DataTypeStringList | DataTypeAddress | DataTypeAddressList,
+          DataTypeString | DataTypeStringList, // left operand must be string or string list
+          0, // and no special features are requested from it
           DataTypeString
         )
     );
@@ -170,7 +184,8 @@ ComponentFactory::ComponentFactory()
           OperatorDateIsEqualTo,
           QString::fromAscii( "equals" ),
           i18n( "is equal to" ),
-          DataTypeDate,
+          DataTypeDate, // left operand must be date
+          0, // and no special features are requested from it
           DataTypeDate
         )
     );
@@ -180,7 +195,8 @@ ComponentFactory::ComponentFactory()
           OperatorDateIsAfter,
           QString::fromAscii( "after" ),
           i18n( "is after" ),
-          DataTypeDate,
+          DataTypeDate, // left operand must be date
+          0, // and no special features are requested from it
           DataTypeDate
         )
     );
@@ -190,7 +206,8 @@ ComponentFactory::ComponentFactory()
           OperatorDateIsBefore,
           QString::fromAscii( "before" ),
           i18n( "is before" ),
-          DataTypeDate,
+          DataTypeDate, // left operand must be date
+          0, // and no special features are requested from it
           DataTypeDate
         )
     );
@@ -218,13 +235,17 @@ const DataMemberDescriptor * ComponentFactory::findDataMember( const QString &ke
   return mDataMemberDescriptorHash.value( keyword.toLower(), 0 );
 }
 
-QList< const DataMemberDescriptor * > ComponentFactory::enumerateDataMembers( int acceptableDataTypeMask )
+QList< const DataMemberDescriptor * > ComponentFactory::enumerateDataMembers( int acceptableDataTypeMask, int requiredFeatureBits )
 {
   QList< const DataMemberDescriptor * > lReturn;
   foreach( DataMemberDescriptor * dataMember, mDataMemberDescriptorHash )
   {
-    if( dataMember->dataType() & acceptableDataTypeMask )
-      lReturn.append( dataMember );
+    if( !( dataMember->dataType() & acceptableDataTypeMask ) )
+      continue;
+    if( ( dataMember->featureMask() & requiredFeatureBits ) != requiredFeatureBits )
+      continue;
+
+    lReturn.append( dataMember );
   }
   return lReturn;
 }
@@ -269,27 +290,29 @@ void ComponentFactory::registerOperator( OperatorDescriptor * op )
   mOperatorDescriptorList.append( op );
 }
 
-const OperatorDescriptor * ComponentFactory::findOperator( const QString &keyword, int leftOperandDataTypeMask )
+const OperatorDescriptor * ComponentFactory::findOperator( const QString &keyword, DataType leftOperandDataType )
 {
   // Get the list of operators with the same keyword
   QList< OperatorDescriptor * > existingOperatorDescriptors = mOperatorDescriptorMultiHash.values( keyword.toLower() );
   foreach( OperatorDescriptor * op, existingOperatorDescriptors )
   {
     // the operator must cover ALL the left operand data types
-    if( ( leftOperandDataTypeMask & op->acceptableLeftOperandDataTypeMask() ) == leftOperandDataTypeMask )
+    if( leftOperandDataType & op->acceptableLeftOperandDataTypeMask() )
       return op;
   }
   return 0;
 }
 
-QList< const OperatorDescriptor * > ComponentFactory::enumerateOperators( int leftOperandDataTypeMask )
+QList< const OperatorDescriptor * > ComponentFactory::enumerateOperators( DataType leftOperandDataType, int featureBits )
 {
   QList< const OperatorDescriptor * > ret;
   foreach( OperatorDescriptor * op, mOperatorDescriptorList )
   {
-    // the operator must cover ALL the left operand data types
-    if( ( leftOperandDataTypeMask & op->acceptableLeftOperandDataTypeMask() ) == leftOperandDataTypeMask )
-      ret.append( op );
+    if( !( leftOperandDataType & op->acceptableLeftOperandDataTypeMask() ) )
+      continue;
+    if( ( featureBits & op->requiredLeftOperandFeatureMask() ) != op->requiredLeftOperandFeatureMask() )
+      continue;
+    ret.append( op );
   }
 
   return ret;
@@ -405,7 +428,7 @@ Condition::Base * ComponentFactory::createPropertyTestCondition(
     const QVariant &operand
   )
 {
-  Q_ASSERT( ( function->outputDataTypeMask() & op->acceptableLeftOperandDataTypeMask() ) == function->outputDataTypeMask() );
+  Q_ASSERT( function->outputDataType() & op->acceptableLeftOperandDataTypeMask() );
   return new Condition::PropertyTest( parent, function, dataMember, op, operand );
 }
 

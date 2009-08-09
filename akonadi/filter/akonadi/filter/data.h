@@ -39,9 +39,10 @@ namespace Akonadi
 namespace Filter
 {
 
-class FunctionDescriptor;
-class DataMemberDescriptor;
 class CommandDescriptor;
+class DataMemberDescriptor;
+class FunctionDescriptor;
+class OperatorDescriptor;
 
 /**
  * This is the base class for the Data object that you "throw" through a filter tree
@@ -55,6 +56,54 @@ public:
   virtual ~Data();
 
 public:
+
+  /**
+   * The result of a performPropertyTest() call.
+   */
+  enum PropertyTestResult
+  {
+    /**
+     * The property test is verified (condition matched).
+     */
+    PropertyTestVerified,
+
+    /**
+     * The property test is not verified (condition didn't match).
+     */
+    PropertyTestNotVerified,
+
+    /**
+     * An error has been encountered during the evaluation of the test.
+     */
+    PropertyTestError
+  };
+
+  /**
+   * Perform a property test on the data.
+   *
+   * The function/dataMember pair define the property you should retrieve via
+   * a call to getPropertyValue(). The op is the descriptor of the operator
+   * you should apply to the property and the right operand.
+   *
+   * If the operator right data type is DataTypeNone then operand is a null
+   * variant and it should be ignored by the implementation.
+   *
+   * Thedefault implementation is something like:
+   *
+   *   evaluateOperator( getPropertyValue( function, dataMember ), op, operand );
+   *
+   * If you use only the standard functions and operators provided by this library
+   * then the current implementation of this function will work out of the box.
+   * If you use additional functions, additional operators or you want to provide
+   * a super-efficient implementation of some data member/function/operator combination
+   * then you can override this function.
+   */
+  virtual PropertyTestResult performPropertyTest(
+      const FunctionDescriptor * function,
+      const DataMemberDescriptor * dataMember,
+      const OperatorDescriptor * op,
+      const QVariant &operand
+    );
 
   /**
    * Retrieve a value of a property which is defined to be the application
@@ -99,8 +148,6 @@ public:
    * return false and push some errors on the stack (see the ErrorStack base classe).
    */
   virtual bool executeCommand( const CommandDescriptor * command, const QList< QVariant > &params ) = 0;
-
-protected:
 
   /**
    * You must implement this function in order to retrieve the data member

@@ -36,14 +36,18 @@ FunctionDescriptor::FunctionDescriptor(
     int id,
     const QString &keyword,
     const QString &name,
-    int outputDataTypeMask,
-    int acceptableInputDataTypeMask
+    DataType outputDataType,
+    int outputFeatureMask,
+    int acceptableInputDataTypeMask,
+    int requiredInputFeatureMask
   ) :
   mId( id ),
   mKeyword( keyword ),
   mName( name ),
-  mOutputDataTypeMask( outputDataTypeMask ),
-  mAcceptableInputDataTypeMask( acceptableInputDataTypeMask )
+  mOutputDataType( outputDataType ),
+  mOutputFeatureMask( outputFeatureMask ),
+  mAcceptableInputDataTypeMask( acceptableInputDataTypeMask ),
+  mRequiredInputFeatureMask( requiredInputFeatureMask )
 {
 }
 

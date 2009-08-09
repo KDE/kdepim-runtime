@@ -37,12 +37,14 @@ OperatorDescriptor::OperatorDescriptor(
     const QString &keyword,
     const QString &name,
     int acceptableLeftOperandDataTypeMask,
+    int requiredLeftOperandFeatureMask,
     DataType rightOperandDataType
   ) :
   mId( id ),
   mKeyword( keyword ),
   mName( name ),
   mAcceptableLeftOperandDataTypeMask( acceptableLeftOperandDataTypeMask ),
+  mRequiredLeftOperandFeatureMask( requiredLeftOperandFeatureMask ),
   mRightOperandDataType( rightOperandDataType )
 {
 }

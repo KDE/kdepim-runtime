@@ -285,7 +285,7 @@ public:
   virtual void dump( const QString &prefix );
 
 private:
-  void pushError( const QString &error );
+  void pushStandardErrors();
 
 }; // class PropertyTest
 

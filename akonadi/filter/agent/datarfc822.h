@@ -49,6 +49,12 @@ public:
   DataRfc822( const Akonadi::Item &item );
   virtual ~DataRfc822();
 
+  virtual Akonadi::Filter::Data::PropertyTestResult performPropertyTest(
+      const Akonadi::Filter::FunctionDescriptor * function,
+      const Akonadi::Filter::DataMemberDescriptor * dataMember,
+      const Akonadi::Filter::OperatorDescriptor * op,
+      const QVariant &operand
+    );
   QVariant getPropertyValue( const Akonadi::Filter::FunctionDescriptor * function, const Akonadi::Filter::DataMemberDescriptor * dataMember );
   QVariant getDataMemberValue( const Akonadi::Filter::DataMemberDescriptor * dataMember );
   bool executeCommand( const Akonadi::Filter::CommandDescriptor * command, const QList< QVariant > &params );

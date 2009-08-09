@@ -274,7 +274,7 @@ PropertyTest::PropertyTest( Component * parent, const FunctionDescriptor * funct
 
   if( mOperatorDescriptor )
   {
-    Q_ASSERT( ( mFunctionDescriptor->outputDataTypeMask() & mOperatorDescriptor->acceptableLeftOperandDataTypeMask() ) == mFunctionDescriptor->outputDataTypeMask() );
+    Q_ASSERT( mFunctionDescriptor->outputDataType() & mOperatorDescriptor->acceptableLeftOperandDataTypeMask() );
   }
 }
 
@@ -282,11 +282,8 @@ PropertyTest::~PropertyTest()
 {
 }
 
-void PropertyTest::pushError( const QString &error )
+void PropertyTest::pushStandardErrors()
 {
-  errorStack().pushError( error );
-
-
   QString description;
 
   if( mOperatorDescriptor )
@@ -321,156 +318,33 @@ PropertyTest::MatchResult PropertyTest::matches( Data * data )
 {
   errorStack().clearErrors();
 
-  kDebug() << "Executing property test data member: '" << mDataMemberDescriptor->name() << "', function: '" << mFunctionDescriptor->name() << "'";
-
-  // Generic function test implementation.
-  //
-  // Override this method in a derived class if you want to provide
-  // an optimized/custom match (then override ComponentFactory::createPropertyTestCondition() to return your subclasses).
-
-  QVariant val = data->getPropertyValue( mFunctionDescriptor, mDataMemberDescriptor );
-
-  kDebug() << "Data member value is '" << val << "'";
-
-  if( val.isNull() )
+  switch(
+      data->performPropertyTest(
+          mFunctionDescriptor,
+          mDataMemberDescriptor,
+          mOperatorDescriptor,
+          mOperand
+        )
+    )
   {
-    if( data->hasErrors() )
-    {
+    case Data::PropertyTestVerified:
+      return ConditionMatches;
+    break;
+    case Data::PropertyTestNotVerified:
+      return ConditionDoesNotMatch;
+    break;
+    case Data::PropertyTestError:
       errorStack().pushErrorStack( *data );
-      pushError( i18n( "Error retrieving property value" ) );
+      pushStandardErrors();
       return ConditionMatchError;
-    }
-  }
-
-  bool ok;
-
-  switch( mOperatorDescriptor->rightOperandDataType() )
-  {
-    case DataTypeInteger:
-    {
-      Integer left = variantToInteger( val, &ok );
-      if( !ok )
-      {
-        pushError( i18n( "Could not convert the left operand '%1' to integer", val.toString() ) );
-        return ConditionMatchError;
-      }
-
-      Integer right = variantToInteger( mOperand, &ok );
-      if( !ok )
-      {
-        pushError( i18n( "Could not convert the right operand '%1' to integer", mOperand.toString() ) );
-        return ConditionMatchError;
-      } 
-
-      Q_ASSERT( mOperatorDescriptor );
-
-      switch( mOperatorDescriptor->id() )
-      {
-        case OperatorGreaterThan:
-          return left > right ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        case OperatorLowerThan:
-          return left < right ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        case OperatorIntegerIsEqualTo:
-          return left == right ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        default:
-          Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of the PropertyTest class" );
-          pushError( i18n( "Internal error" ) );
-          return ConditionMatchError;
-        break;
-      }
-    }
-    break;
-    case DataTypeString:
-    {
-      QString left = val.toString();
-      QString right = mOperand.toString();
-
-      Q_ASSERT( mOperatorDescriptor );
-
-      switch( mOperatorDescriptor->id() )
-      {
-        case OperatorStringIsEqualTo:
-          return left == right ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        case OperatorContains:
-          return left.contains( right ) ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        case OperatorIntegerIsEqualTo:
-          return left == right ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        case OperatorStringMatchesRegexp:
-        {
-          QRegExp exp( right );
-          return left.contains( exp ) ? ConditionMatches : ConditionDoesNotMatch;
-        }
-        break;
-        case OperatorStringMatchesWildcard:
-        {
-          QRegExp exp( right, Qt::CaseSensitive, QRegExp::Wildcard );
-          return left.contains( exp ) ? ConditionMatches : ConditionDoesNotMatch;
-        }
-        break;
-        default:
-          Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of the PropertyTest class" );
-          pushError( i18n( "Internal error" ) );
-          return ConditionMatchError;
-        break;
-      }
-    }
-    break;
-    case DataTypeDate:
-    {
-      QDateTime left = val.toDateTime();
-      if( !left.isValid() )
-      {
-        pushError( i18n( "Could not convert the left operand '%1' to date/time", val.toString() ) );
-        return ConditionMatchError;
-      }
-      QDateTime right = mOperand.toDateTime();
-      if( !right.isValid() )
-      {
-        pushError( i18n( "Could not convert the right operand '%1' to date/time", mOperand.toString() ) );
-        return ConditionMatchError;
-      }
-
-      Q_ASSERT( mOperatorDescriptor );
-
-      switch( mOperatorDescriptor->id() )
-      {
-        case OperatorDateIsEqualTo:
-          return left.date() == right.date() ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        case OperatorDateIsAfter:
-          return left.date() > right.date() ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        case OperatorDateIsBefore:
-          return left.date() < right.date() ? ConditionMatches : ConditionDoesNotMatch;
-        break;
-        default:
-          Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of the PropertyTest class" );
-          pushError( i18n( "Internal error" ) );
-          return ConditionMatchError;
-        break;
-      }
-    }
-    break;
-    case DataTypeNone:
-    {
-      // left operand type should be boolean!
-    }
     break;
     default:
-      Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of the PropertyTest class" );
-      pushError( i18n( "Internal error" ) );
-      return ConditionMatchError;
+      Q_ASSERT_X( false, __FUNCTION__, "Invalid result returned from Data::performPropertyTest()" );
     break;
   }
 
-  Q_ASSERT_X( false, __FUNCTION__, "This point should be never reached" );
-  pushError( i18n( "Internal error" ) );
+  errorStack().pushError( i18n( "Unhandled property test type" ) );
+  pushStandardErrors();
   return ConditionMatchError;
 }
 

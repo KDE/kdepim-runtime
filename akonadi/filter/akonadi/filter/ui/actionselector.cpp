@@ -52,7 +52,6 @@ namespace Filter
 namespace UI
 {
 
-static int gSpacing = -1; // 0 would be nice for several reasons, but it looks confusing in windows and cde styles... -1 means default
 static int gIndent = 20;
 static const qreal gSemiTransparentWidgetsOpacity = 0.5;
 

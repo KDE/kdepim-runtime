@@ -36,12 +36,14 @@ DataMemberDescriptor::DataMemberDescriptor(
     int id,
     const QString &keyword,
     const QString &name,
-    DataType dataType
+    DataType dataType,
+    int featureMask
   ) :
   mId( id ),
   mKeyword( keyword ),
   mName( name ),
-  mDataType( dataType )
+  mDataType( dataType ),
+  mFeatureMask( featureMask )
 {
 }
 

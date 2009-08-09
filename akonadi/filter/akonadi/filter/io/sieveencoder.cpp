@@ -244,9 +244,8 @@ bool SieveEncoder::encodeData( const QVariant &data, DataType dataType )
       // nuthin
     break;
     case DataTypeString:
-    case DataTypeAddress:
       addLineData( QLatin1String( "\"" ) );
-      addLineData( data.toString() );
+      addLineData( data.toString().replace( QChar( '\\' ), QLatin1String( "\\\\" ) ).replace( QChar( '"' ), QLatin1String( "\"" ) ) );
       addLineData( QLatin1String( "\"" ) );
     break;
     case DataTypeInteger:
@@ -261,11 +260,10 @@ bool SieveEncoder::encodeData( const QVariant &data, DataType dataType )
           );
         return false;
       }
-      addLineData( QString( "%1" ).arg( val ) ); 
+      addLineData( QString::fromAscii( "%1" ).arg( val ) ); 
     }
     break;
     case DataTypeStringList:
-    case DataTypeAddressList:
     {
       QStringList sl = data.toStringList();
       if( sl.isEmpty() )
@@ -285,7 +283,7 @@ bool SieveEncoder::encodeData( const QVariant &data, DataType dataType )
       foreach( QString s, sl )
       {
         addLineData( QLatin1String( "\"" ) );
-        addLineData( s );
+        addLineData( s.replace( QChar( '\\' ), QLatin1String( "\\\\" ) ).replace( QChar( '"' ), QLatin1String( "\"" ) ) );
         addLineData( QLatin1String( "\"" ) );
         if( idx < ( cnt - 1 ) )
           addLineData( QLatin1String( ", " ) );

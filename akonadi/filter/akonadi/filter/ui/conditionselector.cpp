@@ -57,6 +57,7 @@ namespace UI
 class ConditionDescriptor
 {
 public:
+  bool mIsSeparator;
   Condition::ConditionType mType;
   QString mText;
   QColor mColor;
@@ -108,6 +109,7 @@ ConditionSelector::ConditionSelector(
   ConditionDescriptor * d;
 
   d = new ConditionDescriptor;
+  d->mIsSeparator = false;
   d->mType = Condition::ConditionTypeUnknown;
   d->mText = i18n( "<...select to activate condition...>" );
   d->mColor = palette().color( QPalette::Button );
@@ -116,6 +118,11 @@ ConditionSelector::ConditionSelector(
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
+  d->mIsSeparator = true;
+  mPrivate->mConditionDescriptorList.append( d );
+
+  d = new ConditionDescriptor;
+  d->mIsSeparator = false;
   d->mType = Condition::ConditionTypeNot;
   d->mText = i18n( "the condition below is NOT met" );
   d->mColor = Qt::red;
@@ -124,6 +131,7 @@ ConditionSelector::ConditionSelector(
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
+  d->mIsSeparator = false;
   d->mType = Condition::ConditionTypeAnd;
   d->mText = i18n( "ALL of the conditions below are met" );
   d->mColor = Qt::blue;
@@ -132,6 +140,7 @@ ConditionSelector::ConditionSelector(
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
+  d->mIsSeparator = false;
   d->mType = Condition::ConditionTypeOr;
   d->mText = i18n( "ANY of the conditions below is met" );
   d->mColor = Qt::darkGreen;
@@ -144,11 +153,16 @@ ConditionSelector::ConditionSelector(
 
   foreach( const FunctionDescriptor *prop, *props )
   {
-    QList< const DataMemberDescriptor * > dataMembers = mComponentFactory->enumerateDataMembers( prop->acceptableInputDataTypeMask() );
+    d = new ConditionDescriptor;
+    d->mIsSeparator = true;
+    mPrivate->mConditionDescriptorList.append( d );
+
+    QList< const DataMemberDescriptor * > dataMembers = mComponentFactory->enumerateDataMembers( prop->acceptableInputDataTypeMask(), prop->requiredInputFeatureMask() );
 
     foreach( const DataMemberDescriptor * dm, dataMembers )
     {
       d = new ConditionDescriptor;
+      d->mIsSeparator = false;
       d->mType = Condition::ConditionTypePropertyTest;
       d->mText = prop->name();
       if( !d->mText.isEmpty() )
@@ -162,6 +176,11 @@ ConditionSelector::ConditionSelector(
   }
 
   d = new ConditionDescriptor;
+  d->mIsSeparator = true;
+  mPrivate->mConditionDescriptorList.append( d );
+
+  d = new ConditionDescriptor;
+  d->mIsSeparator = false;
   d->mType = Condition::ConditionTypeTrue;
   d->mText = i18n( "true (so always)" );
   d->mColor = QColor( 0, 60, 0 );
@@ -170,6 +189,7 @@ ConditionSelector::ConditionSelector(
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
+  d->mIsSeparator = false;
   d->mType = Condition::ConditionTypeFalse;
   d->mText = i18n( "false (so never)" );
   d->mColor = QColor( 60, 0, 0 );
@@ -184,6 +204,13 @@ ConditionSelector::ConditionSelector(
   
   foreach( d, mPrivate->mConditionDescriptorList )
   {
+    if( d->mIsSeparator )
+    {
+      mPrivate->mTypeComboBox->insertSeparator( mPrivate->mTypeComboBox->count() );
+      idx++;
+      continue;
+    }
+
     if( mParentConditionSelector )
     {
       if( isFirst )
@@ -222,6 +249,7 @@ ConditionSelector::ConditionSelector(
         );
       mPrivate->mTypeComboBox->setItemData( idx, QVariant( clrMerged ), Qt::ForegroundRole );
     }
+
     idx++;
   }
 
@@ -301,6 +329,7 @@ void ConditionSelector::setupUIForActiveType()
 
   ConditionDescriptor * d = mPrivate->mConditionDescriptorList.at( index );
   Q_ASSERT( d );
+  Q_ASSERT( !d->mIsSeparator );
 
   mPrivate->mTypeComboBox->setOverlayColor( d->mColor );
 
@@ -530,7 +559,10 @@ ConditionDescriptor * ConditionSelector::conditionDescriptorForActiveType()
   if( idx < 0 )
     idx = 0;
   Q_ASSERT( idx < mPrivate->mConditionDescriptorList.count() );
-  return mPrivate->mConditionDescriptorList.at( idx );
+  ConditionDescriptor * d = mPrivate->mConditionDescriptorList.at( idx );
+  Q_ASSERT( d );
+  Q_ASSERT( !d->mIsSeparator );
+  return d;
 }
 
 
@@ -566,7 +598,10 @@ void ConditionSelector::fillPropertyTestControls( ConditionDescriptor * descript
 {
   mPrivate->mOperatorDescriptorComboBox->clear();
 
-  QList< const OperatorDescriptor * > operators = mComponentFactory->enumerateOperators( descriptor->mFunctionDescriptor->outputDataTypeMask() );
+  QList< const OperatorDescriptor * > operators = mComponentFactory->enumerateOperators(
+      descriptor->mFunctionDescriptor->outputDataType(),
+      descriptor->mFunctionDescriptor->outputFeatureMask()
+    );
   if( operators.isEmpty() )
   {
     // doesn't need an operator
@@ -852,7 +887,14 @@ Condition::Base * ConditionSelector::commitState( Component * parent )
 
       if( multiCondition->childConditions()->count() < 1 )
       {
-        KMessageBox::sorry( this, i18n( "The '%1' condition must have at least one valid child condition", d->mText ), i18n( "Invalid condition" ) );
+        KMessageBox::sorry(
+            this,
+            i18n(
+                "The '%1' condition must have at least one valid child condition",
+                ( d->mType == Condition::ConditionTypeAnd ) ? QLatin1String( "all of" ) : QLatin1String( "any of" )
+              ),
+            i18n( "Invalid condition" )
+          );
         new Private::WidgetHighlighter( this );
         return 0;
       }

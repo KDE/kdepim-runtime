@@ -53,6 +53,8 @@ target_link_libraries(
 		akonadi-kmime
 		${KDEPIMLIBS_AKONADI_LIBS}
 		ksieve
+		kpimutils
+		kabc
 		${KDE4_KDECORE_LIBS}
 		${QT_QTCORE_LIBRARY}
 		${QT_QTDBUS_LIBRARY}

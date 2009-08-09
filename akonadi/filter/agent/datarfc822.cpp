@@ -37,6 +37,10 @@
 #include <akonadi/filter/datamemberdescriptor.h>
 #include <akonadi/filter/componentfactoryrfc822.h>
 
+#include <kpimutils/email.h>
+
+#include <kabc/stdaddressbook.h>
+
 #include <KLocale>
 #include <KDebug>
 #include <KProcess>
@@ -241,8 +245,6 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
 
 QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor * function, const Akonadi::Filter::DataMemberDescriptor * dataMember )
 {
-  // Optimize certain properties, when possible
-
   if( !mMessage )
   {
     // We need AT LEAST the header.
@@ -257,6 +259,7 @@ QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor
   switch( function->id() )
   {
     case Akonadi::Filter::FunctionDateIn:
+      // Optimize this one, if possible
       if( dataMember->id() == Akonadi::Filter::DataMemberRfc822Date )
       {
         // This is pre-parsed by KMime
@@ -264,10 +267,98 @@ QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor
         return QVariant( mMessage->date()->dateTime().dateTime() );
       }
     break;
+    case Akonadi::Filter::FunctionRfc822AnyEMailAddressIn:
+    {
+      // this is RFC822 specific
+      QVariant value = getDataMemberValue( dataMember );
+      if( value.isNull() && hasErrors() )
+        return value;
+
+      switch( dataMember->dataType() )
+      {
+        case Akonadi::Filter::DataTypeNone:
+        case Akonadi::Filter::DataTypeInteger:
+        case Akonadi::Filter::DataTypeBoolean:
+        case Akonadi::Filter::DataTypeDate:
+          pushError( i18n( "Can't extract an e-mail address from this kind of field" ) );
+          return QVariant();
+        break;
+        case Akonadi::Filter::DataTypeString:
+        case Akonadi::Filter::DataTypeStringList:
+        {
+          QStringList values = value.toStringList();
+          QStringList result;
+          foreach( QString val, values )
+          {
+            QStringList fullAddressList = KPIMUtils::splitAddressList( val );
+            foreach( QString fullAddress, fullAddressList )
+            {
+              QString addressOnly = KPIMUtils::extractEmailAddress( fullAddress );
+              if( !addressOnly.isEmpty() )
+                result.append( addressOnly );
+            }
+          }
+
+          return QVariant( result );
+        }
+        break;
+        default:
+          Q_ASSERT_X( false, __FUNCTION__, "Unhandled DataType" );
+        break;
+      }
+    }
+    break;
+    case Akonadi::Filter::FunctionRfc822AnyEMailAddressDomainIn:
+      // this is RFC822 specific
+    break;
+    case Akonadi::Filter::FunctionRfc822AnyEMailAddressLocalPartIn:
+      // this is RFC822 specific
+    break;
   }
 
   return Data::getPropertyValue( function, dataMember );
 }
+
+Akonadi::Filter::Data::PropertyTestResult DataRfc822::performPropertyTest(
+      const Akonadi::Filter::FunctionDescriptor * function,
+      const Akonadi::Filter::DataMemberDescriptor * dataMember,
+      const Akonadi::Filter::OperatorDescriptor * op,
+      const QVariant &operand
+    )
+{
+  if( op->id() == Akonadi::Filter::OperatorRfc822IsInAddressbook )
+  {
+    Q_ASSERT( op->rightOperandDataType() == Akonadi::Filter::DataTypeNone );
+    Q_ASSERT( operand.isNull() );
+
+    QVariant val = getPropertyValue( function, dataMember );
+
+    kDebug() << "Data member value is '" << val << "'";
+
+    if( val.isNull() )
+    {
+       if( hasErrors() )
+       {
+         pushError( i18n( "Error retrieving property value" ) );
+         return Akonadi::Filter::Data::PropertyTestError;
+      }
+    }
+
+    QStringList sl = val.toStringList();
+
+    KABC::AddressBook *stdAb = KABC::StdAddressBook::self( true );
+
+    foreach( QString addr, sl )
+    {
+      if ( !stdAb->findByEmail( addr ).isEmpty() )
+        return Akonadi::Filter::Data::PropertyTestVerified;
+    }
+    return Akonadi::Filter::Data::PropertyTestNotVerified;
+  }
+
+  return Akonadi::Filter::Data::performPropertyTest( function, dataMember, op, operand );
+}
+
 
 QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescriptor * dataMember )
 {

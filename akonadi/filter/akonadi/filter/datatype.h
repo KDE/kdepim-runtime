@@ -43,9 +43,7 @@ enum DataType
   DataTypeInteger     = 1 << 1,
   DataTypeStringList  = 1 << 2,
   DataTypeDate        = 1 << 3,
-  DataTypeBoolean     = 1 << 4,
-  DataTypeAddress     = 1 << 5,
-  DataTypeAddressList = 1 << 6
+  DataTypeBoolean     = 1 << 4
 };
 
 typedef qint64 Integer;

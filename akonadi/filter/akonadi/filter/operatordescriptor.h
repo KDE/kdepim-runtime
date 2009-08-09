@@ -65,6 +65,9 @@ enum OperatorIdentifiers
  * to a DataMemberDescriptor which in turn extracts stuff from the item being filtered) and none or exactly
  * one right data type (which is the data type of the constant the operator compares "against").
  *
+ * The operator may also require a set of features from the left operand (and thus from the FunctionDescriptor
+ * that produces it). See the Data class description for a discussion of the features.
+ *
  * The OperatorDescriptor has a keyword and an id which *must* be unique inside a filtering application set.
  * The keyword is used in filter storage (sieve scripts at the time of writing) while the integer id
  * can be used for fast identification inside the filter implementations.
@@ -83,6 +86,7 @@ public:
       const QString &keyword,
       const QString &name,
       int acceptableLeftOperandDataTypeMask,
+      int requiredLeftOperandFeatureMask,
       DataType rightOperandDataType
     );
   virtual ~OperatorDescriptor();
@@ -110,6 +114,11 @@ protected:
   int mAcceptableLeftOperandDataTypeMask;
 
   /**
+   * The mask of required features (in the left operand)
+   */
+  int mRequiredLeftOperandFeatureMask;
+
+  /**
    * The expected data type of the right operand (may be DataTypeNone for no right operand)
    */
   DataType mRightOperandDataType;
@@ -124,6 +133,11 @@ public:
   int acceptableLeftOperandDataTypeMask() const
   {
     return mAcceptableLeftOperandDataTypeMask;
+  }
+
+  int requiredLeftOperandFeatureMask() const
+  {
+    return mRequiredLeftOperandFeatureMask;
   }
 
   DataType rightOperandDataType() const

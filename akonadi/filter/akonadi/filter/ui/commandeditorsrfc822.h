@@ -72,13 +72,15 @@ public:
       QWidget * parent,
       const CommandDescriptor * commandDescriptor,
       ComponentFactory * componentFactory,
-      EditorFactory * editorFactory
+      EditorFactory * editorFactory,
+      bool mayBeEmpty
     );
 
   virtual ~CommandWithStringParamEditor();
 
 private:
   QLineEdit * mParameterLineEdit;
+  bool mMayBeEmpty;
 
 public:
   virtual void fillFromAction( Action::Base * action );

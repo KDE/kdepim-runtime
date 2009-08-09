@@ -41,7 +41,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822SubjectHeader,
           QString::fromAscii( "subject" ),
-          i18n( "Subject" ),
+          i18n( "the Subject header" ),
           DataTypeString
         )
     );
@@ -50,8 +50,9 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822FromHeader,
           QString::fromAscii( "from" ),
-          i18n( "From address" ),
-          DataTypeAddress
+          i18n( "the From header" ),
+          DataTypeString,
+          FeatureRfc822ContainsAddresses
         )
     );
 
@@ -59,8 +60,9 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822ToHeader,
           QString::fromAscii( "to" ),
-          i18n( "To address list" ),
-          DataTypeAddressList
+          i18n( "the To header" ),
+          DataTypeString,
+          FeatureRfc822ContainsAddresses
         )
     );
 
@@ -68,8 +70,9 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822ReplyToHeader,
           QString::fromAscii( "replyto" ),
-          i18n( "Reply-To address" ),
-          DataTypeAddress
+          i18n( "the Reply-To header" ),
+          DataTypeString,
+          FeatureRfc822ContainsAddresses
         )
     );
 
@@ -77,8 +80,9 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822CcHeader,
           QString::fromAscii( "cc" ),
-          i18n( "Cc address list" ),
-          DataTypeAddressList
+          i18n( "the CC header" ),
+          DataTypeString,
+          FeatureRfc822ContainsAddresses
         )
     );
 
@@ -86,8 +90,9 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822BccHeader,
           QString::fromAscii( "bcc" ),
-          i18n( "Bcc address list" ),
-          DataTypeAddressList
+          i18n( "the BCC header" ),
+          DataTypeString,
+          FeatureRfc822ContainsAddresses
         )
     );
 
@@ -95,8 +100,9 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822AllRecipientHeaders,
           QString::fromAscii( "anyrecipient" ),
-          i18n( "recipient address list" ),
-          DataTypeAddressList
+          i18n( "all the recipient headers" ),
+          DataTypeStringList,
+          FeatureRfc822ContainsAddresses
         )
     );
 
@@ -104,7 +110,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822Date,
           QString::fromAscii( "date" ),
-          i18n( "Date" ),
+          i18n( "the Date header" ),
           DataTypeString
         )
     );
@@ -113,7 +119,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822Organization,
           QString::fromAscii( "organization" ),
-          i18n( "Organization" ),
+          i18n( "the Organization header" ),
           DataTypeString
         )
     );
@@ -122,7 +128,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822AllHeaders,
           QString::fromAscii( "anyheader" ),
-          i18n( "header list" ),
+          i18n( "all the headers" ),
           DataTypeStringList
         )
     );
@@ -131,7 +137,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822MessageBody,
           QString::fromAscii( "body" ),
-          i18n( "message body" ),
+          i18n( "the message body" ),
           DataTypeString
         )
     ); 
@@ -140,7 +146,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822WholeMessage,
           QString::fromAscii( "message" ),
-          i18n( "whole message" ),
+          i18n( "the whole message" ),
           DataTypeString
         )
     );  
@@ -149,7 +155,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822UserAgent,
           QString::fromAscii( "useragent" ),
-          i18n( "User Agent" ),
+          i18n( "the User-Agent header" ),
           DataTypeString
         )
     );
@@ -158,7 +164,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822MessageID,
           QString::fromAscii( "messageid" ),
-          i18n( "Message Id" ),
+          i18n( "the Message-ID header" ),
           DataTypeString
         )
     );
@@ -167,7 +173,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822References,
           QString::fromAscii( "references" ),
-          i18n( "References Id" ),
+          i18n( "the References-ID header" ),
           DataTypeString
         )
     );
@@ -176,7 +182,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822InReplyTo,
           QString::fromAscii( "inreplyto" ),
-          i18n( "InReplyTo Id" ),
+          i18n( "the In-Reply-To header" ),
           DataTypeString
         )
     );
@@ -191,8 +197,10 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           FunctionRfc822AnyEMailAddressIn,
           QString::fromAscii( "address" ),
           i18n( "any address in" ),
-          DataTypeAddress | DataTypeAddressList,
-          DataTypeAddress | DataTypeAddressList
+          DataTypeStringList,
+          FeatureRfc822ContainsAddresses, // spits out addresses
+          DataTypeString | DataTypeStringList,
+          FeatureRfc822ContainsAddresses
         )
     );
 
@@ -202,7 +210,9 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           QString::fromAscii( "address:domain" ),
           i18n( "any domain in" ),
           DataTypeStringList,
-          DataTypeAddress | DataTypeAddressList
+          0, // provides no special features
+          DataTypeString | DataTypeStringList,
+          FeatureRfc822ContainsAddresses
         )
     );
 
@@ -213,23 +223,24 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           QString::fromAscii( "address:local" ),
           i18n( "any username in" ),
           DataTypeStringList,
-          DataTypeAddress | DataTypeAddressList
+          0, // provides no special features
+          DataTypeString | DataTypeStringList,
+          FeatureRfc822ContainsAddresses
         )
     );
 
 
 
-#if 0
   registerOperator(
       new OperatorDescriptor(
           OperatorRfc822IsInAddressbook,
           QString::fromAscii( "inaddressbook" ),
           i18n( "is in addressbook" ),
-          DataTypeAddress | DataTypeAddressList,
+          DataTypeString | DataTypeStringList,  // accepts strings and string lists
+          FeatureRfc822ContainsAddresses, // but the input must provide addresses
           DataTypeNone
         )
     );
-#endif
 
 
 

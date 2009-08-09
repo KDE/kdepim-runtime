@@ -28,6 +28,7 @@
 #include "functiondescriptor.h"
 #include "datamemberdescriptor.h"
 #include "commanddescriptor.h"
+#include "operatordescriptor.h"
 
 #include <QtCore/QStringList>
 #include <QtCore/QDateTime>
@@ -50,11 +51,178 @@ Data::~Data()
 {
 }
 
+Data::PropertyTestResult Data::performPropertyTest(
+    const FunctionDescriptor * function,
+    const DataMemberDescriptor * dataMember,
+    const OperatorDescriptor * op,
+    const QVariant &operand
+  )
+{
+  kDebug() << "Executing property test data member: '" << dataMember->name() << "', function: '" << function->name() << "'";
+
+  // Generic function test implementation.
+  //
+  // Override this method in a derived class if you want to provide
+  // an optimized/custom match (then override ComponentFactory::createPropertyTestCondition() to return your subclasses).
+
+  QVariant val = getPropertyValue( function, dataMember );
+
+  kDebug() << "Data member value is '" << val << "'";
+
+  if( val.isNull() )
+  {
+    if( hasErrors() )
+    {
+      pushError( i18n( "Error retrieving property value" ) );
+      return PropertyTestError;
+    }
+  }
+
+  bool ok;
+
+  switch( op->rightOperandDataType() )
+  {
+    case DataTypeInteger:
+    {
+      Integer left = variantToInteger( val, &ok );
+      if( !ok )
+      {
+        pushError( i18n( "Could not convert the left operand '%1' to integer", val.toString() ) );
+        return PropertyTestError;
+      }
+
+      Integer right = variantToInteger( operand, &ok );
+      if( !ok )
+      {
+        pushError( i18n( "Could not convert the right operand '%1' to integer", operand.toString() ) );
+        return PropertyTestError;
+      } 
+
+      Q_ASSERT( op );
+
+      switch( op->id() )
+      {
+        case OperatorGreaterThan:
+          return left > right ? PropertyTestVerified : PropertyTestNotVerified;
+        break;
+        case OperatorLowerThan:
+          return left < right ? PropertyTestVerified : PropertyTestNotVerified;
+        break;
+        case OperatorIntegerIsEqualTo:
+          return left == right ? PropertyTestVerified : PropertyTestNotVerified;
+        break;
+        default:
+          Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of Data::performPropertyTest()" );
+          pushError( i18n( "Unhandled operator" ) );
+          return PropertyTestError;
+        break;
+      }
+    }
+    break;
+    case DataTypeString:
+    {
+      QStringList leftOperands = val.toStringList();
+      QString right = operand.toString();
+
+      Q_ASSERT( op );
+
+      foreach( QString left, leftOperands )
+      {
+        switch( op->id() )
+        {
+          case OperatorStringIsEqualTo:
+            return left == right ? PropertyTestVerified : PropertyTestNotVerified;
+          break;
+          case OperatorContains:
+            return left.contains( right ) ? PropertyTestVerified : PropertyTestNotVerified;
+          break;
+          case OperatorIntegerIsEqualTo:
+            return left == right ? PropertyTestVerified : PropertyTestNotVerified;
+          break;
+          case OperatorStringMatchesRegexp:
+          {
+            QRegExp exp( right );
+            return left.contains( exp ) ? PropertyTestVerified : PropertyTestNotVerified;
+          }
+          break;
+          case OperatorStringMatchesWildcard:
+          {
+            QRegExp exp( right, Qt::CaseSensitive, QRegExp::Wildcard );
+            return left.contains( exp ) ? PropertyTestVerified : PropertyTestNotVerified;
+          }
+          break;
+          default:
+            Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of Data::performPropertyTest()" );
+            pushError( i18n( "Unhandled operator" ) );
+            return PropertyTestError;
+          break;
+        }
+      }
+    }
+    break;
+    case DataTypeDate:
+    {
+      QDateTime left = val.toDateTime();
+      if( !left.isValid() )
+      {
+        pushError( i18n( "Could not convert the left operand '%1' to date/time", val.toString() ) );
+        return PropertyTestError;
+      }
+      QDateTime right = operand.toDateTime();
+      if( !right.isValid() )
+      {
+        pushError( i18n( "Could not convert the right operand '%1' to date/time", operand.toString() ) );
+        return PropertyTestError;
+      }
+
+      Q_ASSERT( op );
+
+      switch( op->id() )
+      {
+        case OperatorDateIsEqualTo:
+          return left.date() == right.date() ? PropertyTestVerified : PropertyTestNotVerified;
+        break;
+        case OperatorDateIsAfter:
+          return left.date() > right.date() ? PropertyTestVerified : PropertyTestNotVerified;
+        break;
+        case OperatorDateIsBefore:
+          return left.date() < right.date() ? PropertyTestVerified : PropertyTestNotVerified;
+        break;
+        default:
+          Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of Data::performPropertyTest()" );
+          pushError( i18n( "Unhandled operator" ) );
+          return PropertyTestError;
+        break;
+      }
+    }
+    break;
+    case DataTypeNone:
+    {
+      // left operand type should be boolean!
+    }
+    break;
+    default:
+      Q_ASSERT_X( false, __FUNCTION__, "You either forgot to handle an operator or to provide your own implementation of Data::performPropertyTest()" );
+      pushError( i18n( "Unhandled data type" ) );
+      return PropertyTestError;
+    break;
+  }
+
+  Q_ASSERT_X( false, __FUNCTION__, "This point should be never reached" );
+  pushError( i18n( "Internal error" ) );
+  return PropertyTestError;
+}
+
 QVariant Data::getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember )
 {
   clearErrors();
 
-  Q_ASSERT( function->acceptableInputDataTypeMask() & dataMember->dataType() );
+  Q_ASSERT(
+      // data member has a data type acceptable for the function
+      ( function->acceptableInputDataTypeMask() & dataMember->dataType() ) && 
+      // data member provides the function's required feature bits
+      ( ( dataMember->featureMask() & function->requiredInputFeatureMask() ) == function->requiredInputFeatureMask() )
+    );
 
   switch( function->id() )
   {
@@ -64,6 +232,8 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
     case FunctionSizeOf:
     {
       QVariant value = getDataMemberValue( dataMember );
+      if( value.isNull() && hasErrors() )
+        return value;
       switch( dataMember->dataType() )
       {
         case DataTypeNone:
@@ -72,12 +242,10 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
         case DataTypeString:
         case DataTypeInteger:
         case DataTypeBoolean:
-        case DataTypeAddress:
         case DataTypeDate:
           return integerToVariant( value.toString().length() );
         break;
         case DataTypeStringList:
-        case DataTypeAddressList:
         {
           Integer sum = 0;
           QStringList sl = value.toStringList();
@@ -95,6 +263,8 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
     case FunctionCountOf:
     {
       QVariant value = getDataMemberValue( dataMember );
+      if( value.isNull() && hasErrors() )
+        return value;
       switch( dataMember->dataType() )
       {
         case DataTypeNone:
@@ -103,12 +273,10 @@ QVariant Data::getPropertyValue( const FunctionDescriptor * function, const Data
         case DataTypeString:
         case DataTypeInteger:
         case DataTypeBoolean:
-        case DataTypeAddress:
         case DataTypeDate:
           return integerToVariant( 1 );
         break;
         case DataTypeStringList:
-        case DataTypeAddressList:
           return integerToVariant( value.toStringList().count() );
         break;
         default:

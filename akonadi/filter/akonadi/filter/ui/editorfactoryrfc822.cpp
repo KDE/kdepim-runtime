@@ -60,7 +60,7 @@ CommandEditor * EditorFactoryRfc822::createCommandEditor( QWidget * parent, cons
     break;
     case CommandRfc822RunProgram:
     case CommandRfc822PipeThrough:
-      return new CommandWithStringParamEditor( parent, command, componentFactory, this );
+      return new CommandWithStringParamEditor( parent, command, componentFactory, this, false );
     break;
     case CommandRfc822DeleteMessage:
       return 0; // no special editor needed for this

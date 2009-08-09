@@ -36,6 +36,20 @@ namespace Filter
 {
 
 /**
+ * The feature bits this kind of filter uses
+ */
+enum FeaturesRfc822
+{
+  /**
+   * This object contains e-mail addresses.
+   *
+   * This is used on the message header data members
+   * that are known to contain address lists.
+   */
+  FeatureRfc822ContainsAddresses = 1
+};
+
+/**
  * The data members supported by the ComponentFactoryRfc822 class.
  */
 enum DataMemberRfc822Identifiers
