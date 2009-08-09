@@ -30,6 +30,8 @@
 
 #include <QtCore/QDate>
 
+#include "widgethighlighter.h"
+
 namespace Akonadi
 {
 namespace Filter
@@ -125,6 +127,7 @@ QVariant IntegerValueEditor::value( bool showMessageBoxOnError )
     if( showMessageBoxOnError )
     {
       KMessageBox::error( this, i18n( "The operand must be numeric!" ), i18n( "Invalid value" ) );
+      new Private::WidgetHighlighter( this );
       setFocus();
     }
     return QVariant();

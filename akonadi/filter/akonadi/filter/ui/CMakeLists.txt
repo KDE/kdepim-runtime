@@ -34,6 +34,7 @@ set(
 		rulelisteditorlbb.cpp
 		rulelisteditortbb.cpp
 		valueeditor.cpp
+		widgethighlighter.cpp
 	)
 
 kde4_add_library(

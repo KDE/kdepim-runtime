@@ -30,8 +30,9 @@
 
 #include <QtGui/QSplitter>
 
-class QListWidget;
 class QLabel;
+class QLineEdit;
+class QListWidget;
 class QPushButton;
 class QTimer;
 
@@ -66,6 +67,8 @@ protected:
   QListWidget * mListWidget;
   ExpandingScrollArea * mScrollArea;
   QLabel * mEmptyEditor;
+  QLabel * mDescriptionLabel;
+  QLineEdit * mDescriptionLineEdit;
   QPushButton * mNewRuleButton;
   QPushButton * mDeleteRuleButton;
   QPushButton * mMoveRuleUpButton;
@@ -95,7 +98,9 @@ public:
 private:
   void activateEditor( QWidget * editor );
   void reindexItems();
+  void updateDescriptionEdit();
 private Q_SLOTS:
+  void slotDescriptionLineEditTextEdited( const QString & );
   void slotNewRuleButtonClicked();
   void slotDeleteRuleButtonClicked();
   void slotMoveRuleUpButtonClicked();

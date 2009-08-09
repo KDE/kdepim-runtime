@@ -42,7 +42,7 @@
 #include <KDebug>
 #include <KLocale>
 
-#define DEBUG_SIEVE_DECODER 1
+//#define DEBUG_SIEVE_DECODER 1
 
 // Sieve is an ugly language. It's hard to parse, has some ambiguities,
 // humans have trouble understanding its constructs and in the end it's very hard

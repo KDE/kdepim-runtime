@@ -37,6 +37,7 @@
 
 #include <QtGui/QLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 #include <QtGui/QListWidget>
 #include <QtGui/QPushButton>
 
@@ -93,12 +94,14 @@ public:
     updateText();
   }
 
+  QString description()
+  {
+    return mUserDescription.isEmpty() ? mEditor->ruleDescription() : mUserDescription;
+  }
+
   void updateText()
   {
-    if( mUserDescription.isEmpty() )
-      setText( i18n( "Rule %1: %2", mIndex + 1, mEditor->ruleDescription() ) );
-    else
-      setText( i18n( "Rule %1: %2", mIndex + 1, mUserDescription ) );
+    setText( i18n( "Rule %1: %2", mIndex + 1, description() ) );
   }
 };
 
@@ -163,10 +166,43 @@ RuleListEditorLBB::RuleListEditorLBB( QWidget * parent, ComponentFactory * compo
 
   addWidget( base );
 
+
+  base = new QWidget( this );
+
+  g = new QGridLayout( base );
+
+  mDescriptionLabel = new QLabel( base );
+  mDescriptionLabel->setText( QString::fromAscii( " %1" ).arg( i18n( "Rule:" ) ) );
+  mDescriptionLabel->setEnabled( false );
+
+  g->addWidget( mDescriptionLabel, 0, 0, 1, 1 );
+
+  mDescriptionLineEdit = new QLineEdit( base );
+  mDescriptionLineEdit->setEnabled( false );
+
+  connect( mDescriptionLineEdit, SIGNAL( textEdited( const QString & ) ), this, SLOT( slotDescriptionLineEditTextEdited( const QString & ) ) );
+
+  mDescriptionLineEdit->setToolTip(
+      i18n(
+          "<p>" \
+            "Put here a description of your filtering rule. " \
+            "If you leave the field empty a description will be automatically generated." \
+          "</p>"
+        )
+    );
+
+  g->addWidget( mDescriptionLineEdit, 0, 1, 1, 1 );
+
   mScrollArea = new ExpandingScrollArea( this );
   mScrollArea->setAutoExpand( false );
 
-  addWidget( mScrollArea );
+  g->addWidget( mScrollArea, 1, 0, 1, 2 );
+
+  g->setColumnStretch( 1, 1 );
+  g->setRowStretch( 1, 1 );
+  g->setMargin( 0 );
+
+  addWidget( base );
 
   //mScrollArea->setFrameStyle( QFrame::NoFrame );
 
@@ -195,6 +231,19 @@ bool RuleListEditorLBB::autoExpand()
 void RuleListEditorLBB::setAutoExpand( bool b )
 {
   mScrollArea->setAutoExpand( b );
+}
+
+void RuleListEditorLBB::slotDescriptionLineEditTextEdited( const QString & )
+{
+  RuleListEditorLBBListWidgetItem * item = static_cast< RuleListEditorLBBListWidgetItem * >( mListWidget->currentItem() );
+  if( !item )
+    return;
+
+  Q_ASSERT( static_cast< QListWidgetItem * >( item ) == mListWidget->item( item->index() ) );
+
+  item->setUserDescription( mDescriptionLineEdit->text().trimmed() );
+
+  item->updateText();  
 }
 
 void RuleListEditorLBB::activateEditor( QWidget * editor )
@@ -255,6 +304,8 @@ void RuleListEditorLBB::activateEditor( QWidget * editor )
     if( thatItem != static_cast< RuleListEditorLBBListWidgetItem * >( mListWidget->currentItem() ) )
       mListWidget->setCurrentItem( thatItem );
   }
+
+  updateDescriptionEdit();
 }
 
 
@@ -315,6 +366,7 @@ bool RuleListEditorLBB::commitStateToRuleList( Action::RuleList * ruleList )
     if( !rule )
     {
       kDebug() << "Failed to create rule";
+      activateEditor( item->editor() );
       return false; // error already shown
     }
 
@@ -334,7 +386,9 @@ void RuleListEditorLBB::reindexItems()
     RuleListEditorLBBListWidgetItem * item = static_cast< RuleListEditorLBBListWidgetItem * >( mListWidget->item( i ) );
     Q_ASSERT( item );
     item->setIndex( i );
-  }  
+  }
+
+  updateDescriptionEdit();
 }
 
 void RuleListEditorLBB::slotNewRuleButtonClicked()
@@ -359,6 +413,16 @@ void RuleListEditorLBB::slotDeleteRuleButtonClicked()
 
   RuleEditor * editor = item->editor();
   Q_ASSERT( editor );
+
+
+  if(
+     KMessageBox::questionYesNo(
+         this,
+         i18n( "Do you really want to delete the specified rule?" ),
+         i18n( "Confirm Rule Deletion")
+       ) != KMessageBox::Yes
+    )
+     return;
 
   if( mPreviousCurrentItem == item )
     mPreviousCurrentItem = 0;
@@ -454,6 +518,30 @@ void RuleListEditorLBB::slotRuleChanged()
     return;
 
   thatItem->updateText();
+
+  updateDescriptionEdit();
+}
+
+void RuleListEditorLBB::updateDescriptionEdit()
+{
+  RuleListEditorLBBListWidgetItem * item = static_cast< RuleListEditorLBBListWidgetItem * >( mListWidget->currentItem() );
+  if( !item )
+  {
+    mDescriptionLineEdit->setText( QString() );
+    mDescriptionLineEdit->setEnabled( false );
+    mDescriptionLabel->setText( QString::fromAscii( " %1" ).arg( i18n( "Rule:" ) ) );
+    mDescriptionLabel->setEnabled( false );
+    return;
+  }
+
+  mDescriptionLabel->setText( QString::fromAscii( " %1" ).arg( i18n( "Rule %1:", item->index() + 1 ) ) );
+  mDescriptionLabel->setEnabled( true );
+
+  if( mDescriptionLineEdit->hasFocus() )
+    return; // don't auto-update while the user is typing
+
+  mDescriptionLineEdit->setText( item->description() );
+  mDescriptionLineEdit->setEnabled( true );
 }
 
 void RuleListEditorLBB::slotHeartbeat()
@@ -466,6 +554,8 @@ void RuleListEditorLBB::slotHeartbeat()
   }
 
   item->updateText();
+
+  updateDescriptionEdit();
 }
 
 

@@ -28,6 +28,8 @@
 #include "../action.h"
 #include "../commanddescriptor.h"
 
+#include "widgethighlighter.h"
+
 #include <akonadi/filter/componentfactoryrfc822.h>
 
 #include <akonadi/collectionrequester.h>
@@ -140,7 +142,8 @@ Action::Base * CommandWithTargetCollectionEditor::commitState( Component * paren
   Collection col = mCollectionRequester->collection();
   if( !col.isValid() )
   {
-    KMessageBox::sorry( this, i18n( "You must select a target collection for the message" ), i18n( "Invalid target collection" ) );
+    KMessageBox::sorry( this, i18n( "You must select a target folder for the message" ), i18n( "Invalid target folder" ) );
+    new Private::WidgetHighlighter( this );
     return 0;
   }
 
@@ -148,7 +151,8 @@ Action::Base * CommandWithTargetCollectionEditor::commitState( Component * paren
 
   if( !job->exec() )
   {
-    KMessageBox::sorry( this, i18n( "Could not find the specified target collection\r\n%1", job->errorString() ), i18n( "Invalid target collection" ) );
+    KMessageBox::sorry( this, i18n( "Could not find the specified target folder\r\n%1", job->errorString() ), i18n( "Invalid target folder" ) );
+    new Private::WidgetHighlighter( this );
     return 0;    
   }
 
@@ -160,6 +164,7 @@ Action::Base * CommandWithTargetCollectionEditor::commitState( Component * paren
   if( !cmd )
   {
     KMessageBox::sorry( this, componentFactory()->lastError(), i18n( "Failed to commit the action" ) );
+    new Private::WidgetHighlighter( this );
     return 0;
   }
 
@@ -234,6 +239,7 @@ Action::Base * CommandWithStringParamEditor::commitState( Component * parent )
   if( !cmd )
   {
     KMessageBox::sorry( this, componentFactory()->lastError(), i18n( "Failed to commit the action" ) );
+    new Private::WidgetHighlighter( this );
     return 0;
   }
 

@@ -351,6 +351,7 @@ bool RuleListEditorTBB::commitStateToRuleList( Action::RuleList * ruleList )
     if( !rule )
     {
       kDebug() << "Failed to create rule";
+      setCurrentItem( item );
       return false; // error already shown
     }
 

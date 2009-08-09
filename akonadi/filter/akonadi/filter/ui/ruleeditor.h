@@ -47,6 +47,10 @@ class ActionSelector;
 class ConditionSelector;
 class RuleEditorPrivate;
 
+/**
+ * An editor for a filtering program rule. This is a quite complex widget
+ * using a ConditionSelector and several ActionSelector sub-widgets.
+ */
 class AKONADI_FILTER_UI_EXPORT RuleEditor : public QWidget
 {
   friend class ActionSelector;

@@ -35,6 +35,7 @@
 #include "actioneditor.h"
 #include "commandeditor.h"
 #include "rulelisteditor.h"
+#include "widgethighlighter.h"
 #include "ruleeditor.h"
 
 #include <QtGui/QLayout>
@@ -233,6 +234,7 @@ Action::Base * ActionSelector::commitState( Component * parent )
     case Action::ActionTypeUnknown:
       KMessageBox::sorry( this, i18n( "You must select a valid action type" ), i18n( "Invalid condition selection" ) );
       mPrivate->mTypeComboBox->setOverlayColor( Qt::red );
+      new Private::WidgetHighlighter( this );
       return 0;
     break;
     case Action::ActionTypeRuleList:

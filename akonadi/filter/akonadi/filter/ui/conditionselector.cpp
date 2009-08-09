@@ -34,8 +34,10 @@
 #include "editorfactory.h"
 #include "valueeditor.h"
 #include "ruleeditor.h"
+#include "widgethighlighter.h"
 
 #include <KLocale>
+#include <KMessageBox>
 
 #include <QtGui/QLayout>
 #include <QtCore/QList>
@@ -848,6 +850,13 @@ Condition::Base * ConditionSelector::commitState( Component * parent )
         multiCondition->addChildCondition( child );
       }
 
+      if( multiCondition->childConditions()->count() < 1 )
+      {
+        KMessageBox::sorry( this, i18n( "The '%1' condition must have at least one valid child condition", d->mText ), i18n( "Invalid condition" ) );
+        new Private::WidgetHighlighter( this );
+        return 0;
+      }
+
       return multiCondition;     
     }
     break;
@@ -858,7 +867,11 @@ Condition::Base * ConditionSelector::commitState( Component * parent )
       Q_ASSERT( ed );
 
       if( ed->currentConditionType() == Condition::ConditionTypeUnknown )
-        return mComponentFactory->createFalseCondition( parent );
+      {
+        KMessageBox::sorry( this, i18n( "The 'not' condition must have a valid child condition" ), i18n( "Invalid condition" ) );
+        new Private::WidgetHighlighter( this );
+        return 0;
+      }
 
       Condition::Not * notCondition = mComponentFactory->createNotCondition( parent );
       Q_ASSERT( notCondition );
