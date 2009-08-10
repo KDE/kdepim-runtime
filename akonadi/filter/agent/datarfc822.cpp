@@ -720,7 +720,7 @@ bool DataRfc822::fetchBody()
 
   mMessage = mItem.payload< MessagePtr >();
 
-  kDebug() << "Message body fetched: head is '" << mMessage->head() << "'";
+  mFetchedBody = true;
 
   return mMessage;
 }
