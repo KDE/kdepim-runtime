@@ -73,7 +73,7 @@ void QEmu::start()
     args << "-redir" << QString::fromLatin1( "tcp:%1::%2" ).arg( port + mPortOffset ).arg( port );
   }
   mMonitorPort = emuConf.readEntry( "MonitorPort", 23 ) + mPortOffset;
-  args << "-serial" << QString::fromLatin1( "mon:telnet:127.0.0.1:%1,server,nowait" ).arg( mMonitorPort );
+  args << "-monitor" << QString::fromLatin1( "tcp:127.0.0.1:%1,server,nowait" ).arg( mMonitorPort );
   args << "-hda" << vmImage();
 
   // If a SnapshotName is given in the configuration, load that snapshot
@@ -112,19 +112,21 @@ void QEmu::stop()
   kDebug() << "Stopping QEMU...";
 
   // send stop command via QEMU monitor
-  // TODO doesn't really work apparently, although the same command send with netcat triggers a shutdown
   QTcpSocket socket;
   socket.connectToHost( "localhost", mMonitorPort );
   if ( socket.waitForConnected() ) {
-    socket.write( "\x01c\nq\n");
+    socket.write( "quit\n");
     socket.flush();
     socket.waitForBytesWritten();
+    mVMProcess->waitForFinished(10000);
   } else {
     kDebug() << "Unable to connect to QEMU monitor:" << socket.errorString();
   }
 
-  if ( mVMProcess->state() == QProcess::Running )
+  if ( mVMProcess->state() == QProcess::Running ) {
+    kDebug() << "qemu is still running. terminating";
     mVMProcess->terminate();
+  }
 
   delete mVMProcess;
   mVMProcess = 0;
