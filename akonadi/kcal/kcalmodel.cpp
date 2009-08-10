@@ -57,7 +57,7 @@ class KCalModel::Private
     }
     bool collectionMatchesMimeTypes() const
     {
-      Q_FOREACH( QString type, allMimeTypes() ) {
+      Q_FOREACH( const QString &type, allMimeTypes() ) {
       if ( q->collection().contentMimeTypes().contains( type ) )
         return true;
       }

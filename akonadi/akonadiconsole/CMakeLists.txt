@@ -31,6 +31,7 @@ set(akonadiconsole_bin_SRCS
   notificationmonitor.cpp
   rawsocketconsole.cpp
   searchdialog.cpp
+  searchwidget.cpp
   jobtracker.cpp
   jobtrackerwidget.cpp
   jobtrackermodel.cpp

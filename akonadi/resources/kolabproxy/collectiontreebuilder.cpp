@@ -72,7 +72,7 @@ void CollectionTreeBuilder::collectionFetchResult(KJob* job)
 
   // step 1: build the minimal sub-tree that contains all Kolab collections
   QHash<Collection::Id, Collection::List> remainingTree;
-  foreach ( const Collection kolabCollection, m_kolabCollections ) {
+  foreach ( const Collection &kolabCollection, m_kolabCollections ) {
     Collection child = kolabCollection;
     Collection::Id parentId = child.parent();
     while ( child.isValid() && !remainingTree.value( parentId ).contains( child ) ) {
@@ -86,7 +86,7 @@ void CollectionTreeBuilder::collectionFetchResult(KJob* job)
   // TODO
 
   // step 3: flatten the tree and adjust root node
-  foreach ( Collection topLevel, remainingTree.value( Collection::root().id() ) ) {
+  foreach ( Collection topLevel, remainingTree.value( Collection::root().id() ) ) { //krazy:exclude=foreach
     topLevel.setParent( resource()->root() );
     m_resultCollections.append( topLevel );
     m_resultCollections += treeToList( remainingTree, topLevel );

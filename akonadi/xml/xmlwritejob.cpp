@@ -105,7 +105,7 @@ void XmlWriteJobPrivate::itemFetchResult(KJob* job)
     return;
   ItemFetchJob *fetch = dynamic_cast<ItemFetchJob*>( job );
   Q_ASSERT( fetch );
-  foreach ( const Item item, fetch->items() )
+  foreach ( const Item &item, fetch->items() )
     XmlWriter::writeItem( item, elementStack.top() );
   pendingSiblings.top().removeFirst();
   elementStack.pop();

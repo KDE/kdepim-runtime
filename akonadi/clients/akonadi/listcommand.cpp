@@ -32,7 +32,7 @@ using namespace Akonadi;
 ListCommand::ListCommand( const QString &path )
   : mPath( path )
 {
-  if ( mPath.isEmpty() ) mPath = "/";
+  if ( mPath.isEmpty() ) mPath = '/';
 }
 
 void ListCommand::exec()

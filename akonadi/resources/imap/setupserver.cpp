@@ -178,8 +178,8 @@ void SetupServer::slotTest()
   delete m_serverTest;
   m_serverTest = new MailTransport::ServerTest( this );
 
-  QString server = m_ui->imapServer->text().section( ":", 0, 0 );
-  int port = m_ui->imapServer->text().section( ":", 1, 1 ).toInt();
+  QString server = m_ui->imapServer->text().section( ':', 0, 0 );
+  int port = m_ui->imapServer->text().section( ':', 1, 1 ).toInt();
 
   m_serverTest->setServer( server );
 

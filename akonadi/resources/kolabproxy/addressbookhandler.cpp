@@ -161,9 +161,9 @@ void AddressBookHandler::contactToKolabFormat(const Kolab::Contact& contact, Ako
 
   MessagePtr message(new KMime::Message);
   QString header;
-  header += "From: " + contact.fullEmail() + "\n";
-  header += "Subject: " + contact.uid() + "\n";
-  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
+  header += "From: " + contact.fullEmail() + '\n';
+  header += "Subject: " + contact.uid() + '\n';
+  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + '\n';
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
   header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
@@ -238,9 +238,9 @@ void AddressBookHandler::distListToKolabFormat(const Kolab::DistributionList& di
 
   MessagePtr message(new KMime::Message);
   QString header;
-  header += "From: " + distList.name() + "\n";
-  header += "Subject: " + distList.uid() + "\n";
-  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + "\n";
+  header += "From: " + distList.name() + '\n';
+  header += "Subject: " + distList.uid() + '\n';
+  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + '\n';
   header += "User-Agent: Akonadi Kolab Proxy Resource \n";
   header += "MIME-Version: 1.0\n";
   header += "X-Kolab-Type: " + m_mimeType + ".distlist\n\n\n";

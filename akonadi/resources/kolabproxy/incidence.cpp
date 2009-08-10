@@ -279,14 +279,14 @@ void Incidence::saveAlarms( QDomElement& element ) const
       e.setAttribute( "type", "email" );
       QDomElement addresses = e.ownerDocument().createElement( "addresses" );
       e.appendChild( addresses );
-      foreach ( KCal::Person person, a->mailAddresses() ) {
+      foreach ( const KCal::Person &person, a->mailAddresses() ) {
         writeString( addresses, "address", person.fullName() );
       }
       writeString( e, "subject", a->mailSubject() );
       writeString( e, "mail-text", a->mailText() );
       QDomElement attachments = e.ownerDocument().createElement( "attachments" );
       e.appendChild( attachments );
-      foreach ( QString attachment, a->mailAttachments() ) {
+      foreach ( const QString &attachment, a->mailAttachments() ) {
         writeString( attachments, "attachment", attachment );
       }
       break;
@@ -563,7 +563,7 @@ void Incidence::saveCustomAttributes( QDomElement& element ) const
   foreach ( const Custom& custom, mCustomList ) {
     QString key( custom.key );
     Q_ASSERT( !key.isEmpty() );
-    if ( key.startsWith( "X-KDE-KolabUnhandled-" ) ) {
+    if ( key.startsWith( QLatin1String( "X-KDE-KolabUnhandled-" ) ) ) {
       key = key.mid( strlen( "X-KDE-KolabUnhandled-" ) );
       writeString( element, key, custom.value );
     } else {

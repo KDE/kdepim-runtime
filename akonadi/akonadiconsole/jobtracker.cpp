@@ -49,8 +49,8 @@ QString JobInfo::stateAsString() const
 class JobTracker::Private
 {
 public:
-  Private(JobTracker* _q)
-  :q(_q), lastId(42), timer( _q )
+  Private( JobTracker *_q )
+  :lastId( 42 ), timer( _q ), q( _q )
   {
     timer.setSingleShot( true );
     timer.setInterval( 200 );
@@ -221,7 +221,7 @@ QList<JobInfo> JobTracker::jobs( const QString & parent ) const
   assert( d->jobs.contains(parent) );
   const QStringList jobs = d->jobs[parent];
   QList<JobInfo> infos;
-  Q_FOREACH( QString job, jobs )
+  Q_FOREACH( const QString &job, jobs )
   {
     infos << d->infos[job];
   }

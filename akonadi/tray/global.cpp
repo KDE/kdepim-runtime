@@ -43,7 +43,7 @@ void Global::init()
     const QString host = settings.value( "Host", "" ).toString();
     if ( host.isEmpty() ) {
         const QString options = settings.value( "Options", "" ).toString();
-        const QStringList list = options.split( "=" );
+        const QStringList list = options.split( '=' );
         m_dboptions.append( "--socket=" + list.at( 1 ) );
     } else {
         m_dboptions.append( "--host=" + host );

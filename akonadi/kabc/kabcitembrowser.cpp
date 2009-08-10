@@ -161,7 +161,7 @@ static QString addresseeToHtml( const KABC::Addressee &addr )
   }
 
   if ( !addr.customs().empty() ) {
-    foreach ( QString custom, addr.customs() ) {
+    foreach ( QString custom, addr.customs() ) { //krazy:exclude=foreach
       if ( custom.startsWith( QLatin1String( "KADDRESSBOOK-" ) ) ) {
         custom.remove( QLatin1String( "KADDRESSBOOK-X-" ) );
         custom.remove( QLatin1String( "KADDRESSBOOK-" ) );

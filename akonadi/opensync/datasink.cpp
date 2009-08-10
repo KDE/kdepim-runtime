@@ -411,7 +411,7 @@ const Item DataSink::fetchItem( const QString& id )
   fetchJob->fetchScope().fetchFullPayload();
 
   if( fetchJob->exec() ) {
-    foreach ( Item item, fetchJob->items() ) {
+    foreach ( const Item &item, fetchJob->items() ) {
       if( QString::number( item.id() ) == id ) {
         kDebug() << "got item";
         return item;

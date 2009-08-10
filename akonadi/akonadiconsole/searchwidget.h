@@ -1,7 +1,7 @@
 /*
     This file is part of Akonadi.
 
-    Copyright (c) 2009 Till Adam <adam@kde.org>
+    Copyright (c) 2009 Tobias Koenig <tokoe@kde.org>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,24 +19,46 @@
     USA.
 */
 
-#ifndef JOBTRACKERWIDGET_H
-#define JOBTRACKERWIDGET_H
+#ifndef SEARCHWIDGET_H
+#define SEARCHWIDGET_H
 
 #include <QtGui/QWidget>
 
-class JobTrackerWidget : public QWidget
+namespace Akonadi
+{
+class ItemFetchJob;
+}
+
+class KJob;
+class QComboBox;
+class QListView;
+class QModelIndex;
+class QStringListModel;
+class QTextBrowser;
+class QTextEdit;
+
+class SearchWidget : public QWidget
 {
   Q_OBJECT
 
   public:
-    explicit JobTrackerWidget( const char *name, QWidget *parent = 0 );
+    SearchWidget( QWidget *parent = 0 );
+    ~SearchWidget();
 
-  private slots:
-    void contextMenu(const QPoint& pos);
+  private Q_SLOTS:
+    void search();
+    void searchFinished( KJob* );
+    void querySelected( int );
+    void fetchItem( const QModelIndex& );
+    void itemFetched( KJob* );
 
   private:
-    class Private;
-    Private* const d;
+    QComboBox* mQueryCombo;
+    QTextEdit* mQueryWidget;
+    QListView* mResultView;
+    QTextBrowser* mItemView;
+    QStringListModel *mResultModel;
+    Akonadi::ItemFetchJob *mFetchJob;
 };
 
 #endif

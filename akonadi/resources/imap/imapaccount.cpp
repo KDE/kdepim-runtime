@@ -190,8 +190,8 @@ KIMAP::Session *ImapAccount::createExtraSession( const QString &password )
     return 0;
   }
 
-  QString server = m_server.section( ":", 0, 0 );
-  int port = m_server.section( ":", 1, 1 ).toInt();
+  QString server = m_server.section( ':', 0, 0 );
+  int port = m_server.section( ':', 1, 1 ).toInt();
 
   if ( m_encryption != KIMAP::LoginJob::Unencrypted && !QSslSocket::supportsSsl() ) {
     kWarning() << "Crypto not supported!";

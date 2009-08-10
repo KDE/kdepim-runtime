@@ -155,7 +155,7 @@ void ImapQuotaAttribute::deserialize( const QByteArray &data )
     QMap<QByteArray, qint64> limitsMap;
     QStringList strLines = limits.split( "%%" );
     QList<QByteArray> lines;
-    foreach ( const QString strLine, strLines ) {
+    foreach ( const QString &strLine, strLines ) {
       lines << strLine.trimmed().toUtf8();
     }
 
@@ -176,7 +176,7 @@ void ImapQuotaAttribute::deserialize( const QByteArray &data )
     QMap<QByteArray, qint64> usagesMap;
     QStringList strLines = usages.split( "%%" );
     QList<QByteArray> lines;
-    foreach ( const QString strLine, strLines ) {
+    foreach ( const QString &strLine, strLines ) {
       lines << strLine.trimmed().toUtf8();
     }
 

@@ -81,7 +81,7 @@ bool ContactsModel::match(Collection col, const QVariant& matchData, Qt::MatchFl
     return false;
 
   const QString matchString = matchData.toString();
-  
+
   if (col.hasAttribute<EntityDisplayAttribute>() &&
       !col.attribute<EntityDisplayAttribute>()->displayName().isEmpty() )
     return col.attribute<EntityDisplayAttribute>()->displayName().startsWith(matchString);
@@ -124,7 +124,7 @@ QVariant ContactsModel::getData(const Item &item, int column, int role) const
       case 2:
         return addr.preferredEmail();
       case 3:
-        return addr.givenName() + " " + addr.familyName() + " " + "<" + addr.preferredEmail() + ">";
+        return addr.givenName() + ' ' + addr.familyName() + ' ' + '<' + addr.preferredEmail() + '>';
       }
     }
   }

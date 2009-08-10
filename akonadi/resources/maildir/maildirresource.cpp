@@ -309,7 +309,7 @@ void MaildirResource::ensureDirExists()
   Maildir root( Settings::self()->path() );
   if ( !root.isValid() ) {
     if ( !root.create() )
-      emit status( Broken, i18n( "Unable to create maildir '%1'." ).arg( Settings::self()->path() ) );
+      emit status( Broken, i18n( "Unable to create maildir '%1'.", Settings::self()->path() ) );
   }
 }
 
