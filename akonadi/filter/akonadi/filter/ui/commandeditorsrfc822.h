@@ -88,6 +88,29 @@ public:
 
 }; // class CommandWithStringParamEditor
 
+
+class AKONADI_FILTER_UI_EXPORT CommandWithSoundFileEditor : public CommandEditor
+{
+  Q_OBJECT
+public:
+  CommandWithSoundFileEditor(
+      QWidget * parent,
+      const CommandDescriptor * commandDescriptor,
+      ComponentFactory * componentFactory,
+      EditorFactory * editorFactory
+    );
+
+  virtual ~CommandWithSoundFileEditor();
+
+private:
+  QLineEdit * mSoundFileLineEdit;
+
+public:
+  virtual void fillFromAction( Action::Base * action );
+  virtual Action::Base * commitState( Component * parent );
+
+}; // class CommandWithStringParamEditor
+
 } // namespace UI
 
 } // namespace Filter

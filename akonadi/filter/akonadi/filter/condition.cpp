@@ -269,12 +269,38 @@ void False::dump( const QString &prefix )
 PropertyTest::PropertyTest( Component * parent, const FunctionDescriptor * function, const DataMemberDescriptor * dataMember, const OperatorDescriptor * op, const QVariant &operand )
   : Base( ConditionTypePropertyTest, parent ), mFunctionDescriptor( function ), mDataMemberDescriptor( dataMember ), mOperatorDescriptor( op ), mOperand( operand )
 {
-  Q_ASSERT( mFunctionDescriptor );
   Q_ASSERT( mDataMemberDescriptor );
 
-  if( mOperatorDescriptor )
+  // gcc will optimize this out in non debug compilation
+
+  if( mFunctionDescriptor )
   {
-    Q_ASSERT( mFunctionDescriptor->outputDataType() & mOperatorDescriptor->acceptableLeftOperandDataTypeMask() );
+    // the function must accept the data member output data type
+    Q_ASSERT( mFunctionDescriptor->acceptableInputDataTypeMask() & mDataMemberDescriptor->dataType() );
+    // the data member must provide the feature bits required by the function
+    Q_ASSERT( ( mFunctionDescriptor->requiredInputFeatureMask() & mDataMemberDescriptor->featureMask() ) == mFunctionDescriptor->requiredInputFeatureMask() );
+
+    if( mOperatorDescriptor )
+    {
+      // The operator must accept the function output data type
+      Q_ASSERT( mFunctionDescriptor->outputDataType() & mOperatorDescriptor->acceptableLeftOperandDataTypeMask() );
+      // the function must provide the feature bits required by the operator
+      Q_ASSERT( ( mOperatorDescriptor->requiredLeftOperandFeatureMask() & mFunctionDescriptor->outputFeatureMask() ) == mOperatorDescriptor->requiredLeftOperandFeatureMask() );
+    } else {
+      // The function must have a boolean return value
+      Q_ASSERT( mFunctionDescriptor->outputDataType() == DataTypeBoolean );
+    }
+  } else {
+    if( mOperatorDescriptor )
+    {
+      // The operator must accept the data member output data type
+      Q_ASSERT( mDataMemberDescriptor->dataType() & mOperatorDescriptor->acceptableLeftOperandDataTypeMask() );
+      // the data member must provide the feature bits required by the operator
+      Q_ASSERT( ( mOperatorDescriptor->requiredLeftOperandFeatureMask() & mDataMemberDescriptor->featureMask() ) == mOperatorDescriptor->requiredLeftOperandFeatureMask() );
+    } else {
+      // The data member must have a boolean return value
+      Q_ASSERT( mDataMemberDescriptor->dataType() == DataTypeBoolean );
+    }
   }
 }
 
@@ -293,7 +319,7 @@ void PropertyTest::pushStandardErrors()
       errorStack().pushError(
           i18n(
               "Evaluation of property test '%1 %2 %3 %4' failed",
-              mFunctionDescriptor->name(),
+              mFunctionDescriptor ? mFunctionDescriptor->name() : QString::fromAscii( "value of" ),
               mDataMemberDescriptor->name(),
               mOperatorDescriptor->name(),
               mOperand.toString()
@@ -303,14 +329,20 @@ void PropertyTest::pushStandardErrors()
       errorStack().pushError(
           i18n(
               "Evaluation of property test '%1 %2 %3' failed",
-              mFunctionDescriptor->name(),
+              mFunctionDescriptor ? mFunctionDescriptor->name() : QString::fromAscii( "value of" ),
               mDataMemberDescriptor->name(),
               mOperatorDescriptor->name()
             )
         );
     }
   } else {
-    errorStack().pushError( i18n( "Evaluation of property test '%1 %2' failed", mFunctionDescriptor->name(), mDataMemberDescriptor->name() ) );
+    errorStack().pushError(
+        i18n(
+            "Evaluation of property test '%1 %2' failed",
+            mFunctionDescriptor ? mFunctionDescriptor->name() : QString::fromAscii( "value of" ),
+            mDataMemberDescriptor->name()
+          )
+      );
   }
 }
 
@@ -351,7 +383,7 @@ PropertyTest::MatchResult PropertyTest::matches( Data * data )
 void PropertyTest::dump( const QString &prefix )
 {
   debugOutput( prefix, QString::fromAscii( "Condition::PropertyTest(%1,%2,%3,%4)" )
-      .arg( mFunctionDescriptor->name() )
+      .arg( mFunctionDescriptor ? mFunctionDescriptor->name() : QString::fromAscii( "value of" ) )
       .arg( mDataMemberDescriptor->name() )
       .arg( mOperatorDescriptor ? mOperatorDescriptor->name() : QString::fromAscii( "Boolean" ) )
       .arg( mOperand.toString() )

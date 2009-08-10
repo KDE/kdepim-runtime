@@ -70,7 +70,7 @@ SieveDecoder::~SieveDecoder()
 
 void SieveDecoder::pushError( const QString &error )
 {
-  errorStack().pushError( i18n( "line %1", mLineNumber ), error );
+  errorStack().pushError( error, i18n( "line %1", mLineNumber ) );
 }
 
 
@@ -299,38 +299,53 @@ void SieveDecoder::onTestEnd()
     const FunctionDescriptor * function = componentFactory()->findFunction( functionKeyword );
     if ( !function )
     {
-      // unrecognized test
-      mGotError = true; 
-      pushError( i18n( "Unrecognized function '%1'", functionKeyword ) );
-      return;
-    }
-
-    if( operatorKeyword.isEmpty() )
-    {
-      // FIXME: Use a default "forwarding" operator that accepts only boolean results ?
-      kDebug() << "OperatorDescriptor keyword is empty in function" << functionKeyword;
+      // unrecognized test unless it's "header", which means "value of"
+      if(
+          ( QString::compare( functionKeyword, QString::fromAscii( "header" ), Qt::CaseInsensitive ) != 0 ) &&
+          ( QString::compare( functionKeyword, QString::fromAscii( "valueof" ), Qt::CaseInsensitive ) != 0 )
+        )
+      {
+        mGotError = true; 
+        pushError( i18n( "Unrecognized function '%1'", functionKeyword ) );
+        return;
+      }
     }
 
     // look up the operator
 
     const OperatorDescriptor * op = 0;
 
-    op = componentFactory()->findOperator( operatorKeyword, function->outputDataType() );
-
-    if( !op )
+    if( !operatorKeyword.isEmpty() )
     {
-      // unrecognized test
-      mGotError = true;
-      pushError( i18n( "Unrecognized operator '%1' for function '%2'", operatorKeyword, functionKeyword ) );
-      return;
-    }
+      op = componentFactory()->findOperator( operatorKeyword );
 
-    if( ( op->requiredLeftOperandFeatureMask() & function->outputFeatureMask() ) != op->requiredLeftOperandFeatureMask() )
-    {
-      // unrecognized test
-      mGotError = true;
-      pushError( i18n( "Operator '%1' can't be applied on top of function '%2'", operatorKeyword, functionKeyword ) );
-      return;
+      if( !op )
+      {
+        // unrecognized test
+        mGotError = true;
+        pushError( i18n( "Unrecognized operator '%1' for function '%2'", operatorKeyword, functionKeyword ) );
+        return;
+      }
+
+      if( function )
+      {
+        if( ( op->requiredLeftOperandFeatureMask() & function->outputFeatureMask() ) != op->requiredLeftOperandFeatureMask() )
+        {
+          mGotError = true;
+          pushError( i18n( "Operator '%1' can't be applied on top of function '%2'", operatorKeyword, functionKeyword ) );
+          return;
+        }
+      }
+    } else {
+      if( function )
+      {
+        if( function->outputDataType() != DataTypeBoolean )
+        {
+          mGotError = true;
+          pushError( i18n( "Function '%2' required an operator", functionKeyword ) );
+          return;
+        }
+      }
     }
 
     // now we may or may not have additional arguments: [field_list] [value_list]
@@ -338,7 +353,7 @@ void SieveDecoder::onTestEnd()
     QVariant values;
     QVariant fields;
 
-    if( op->rightOperandDataType() != DataTypeNone )
+    if( op && ( op->rightOperandDataType() != DataTypeNone ) )
     {
       // we expect a right operand (list)
       if( nonTaggedArguments.isEmpty() )
@@ -430,8 +445,13 @@ void SieveDecoder::onTestEnd()
         {
           if(
               ( !mCreationOfCustomDataMemberDescriptorsEnabled ) ||
-              ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) ||
-              ( function->requiredInputFeatureMask() != 0 )
+              (
+                function &&
+                (
+                  ( !( function->acceptableInputDataTypeMask() & DataTypeString ) ) ||
+                  ( function->requiredInputFeatureMask() != 0 )
+                )
+              )
             )
           {
             mGotError = true;
@@ -447,18 +467,45 @@ void SieveDecoder::onTestEnd()
 
         Q_ASSERT( dataMember );
 
-        if(
-            !(
-               // The data type is acceptable for the function
-               ( dataMember->dataType() & function->acceptableInputDataTypeMask() ) &&
-               // The data member provides the feature bits required by the function
-               ( ( dataMember->featureMask() & function->requiredInputFeatureMask() ) == function->requiredInputFeatureMask() )
-             )
-          )
+        if( function )
         {
-          mGotError = true; 
-          pushError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
-          return;
+          if(
+              !(
+                 // The data type is acceptable for the function
+                 ( dataMember->dataType() & function->acceptableInputDataTypeMask() ) &&
+                 // The data member provides the feature bits required by the function
+                 ( ( dataMember->featureMask() & function->requiredInputFeatureMask() ) == function->requiredInputFeatureMask() )
+               )
+            )
+          {
+            mGotError = true; 
+            pushError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
+            return;
+          }
+        } else {
+          if( op )
+          {
+            if(
+                !(
+                   // The data type is acceptable for the operator
+                   ( dataMember->dataType() & op->acceptableLeftOperandDataTypeMask() ) &&
+                   // The data member provides the feature bits required by the operator
+                   ( ( dataMember->featureMask() & op->requiredLeftOperandFeatureMask() ) == op->requiredLeftOperandFeatureMask() )
+                 )
+              )
+            {
+              mGotError = true; 
+              pushError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
+              return;
+            }
+          } else {
+            if( dataMember->dataType() != DataTypeBoolean )
+            {
+              mGotError = true; 
+              pushError( i18n( "Data member '%1' requires a function or an operator", field ) );
+              return;
+            }
+          }
         }
 
         Condition::Base * condition = componentFactory()->createPropertyTestCondition( mCurrentComponent, function, dataMember, op, value );

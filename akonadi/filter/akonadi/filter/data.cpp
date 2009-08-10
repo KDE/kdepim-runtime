@@ -58,7 +58,7 @@ Data::PropertyTestResult Data::performPropertyTest(
     const QVariant &operand
   )
 {
-  kDebug() << "Executing property test data member: '" << dataMember->name() << "', function: '" << function->name() << "'";
+  kDebug() << "Executing property test data member: '" << dataMember->name() << "', function: '" << ( function ? function->name() : QString::fromAscii( "valueof" ) ) << "'";
 
   // Generic function test implementation.
   //
@@ -78,7 +78,21 @@ Data::PropertyTestResult Data::performPropertyTest(
     }
   }
 
+
+  if( !op )
+  {
+    if( function )
+    {
+      Q_ASSERT( function->outputDataType() == DataTypeBoolean );
+    } else {
+      Q_ASSERT( dataMember->dataType() == DataTypeBoolean );
+    }
+
+    return val.toBool() ? PropertyTestVerified : PropertyTestNotVerified;
+  }
+
   bool ok;
+
 
   switch( op->rightOperandDataType() )
   {
@@ -131,24 +145,29 @@ Data::PropertyTestResult Data::performPropertyTest(
         switch( op->id() )
         {
           case OperatorStringIsEqualTo:
-            return left == right ? PropertyTestVerified : PropertyTestNotVerified;
+            if( left == right )
+              return PropertyTestVerified;
           break;
           case OperatorContains:
-            return left.contains( right ) ? PropertyTestVerified : PropertyTestNotVerified;
+            if( left.contains( right ) )
+              return PropertyTestVerified;
           break;
           case OperatorIntegerIsEqualTo:
-            return left == right ? PropertyTestVerified : PropertyTestNotVerified;
+            if( left == right )
+              return PropertyTestVerified;
           break;
           case OperatorStringMatchesRegexp:
           {
             QRegExp exp( right );
-            return left.contains( exp ) ? PropertyTestVerified : PropertyTestNotVerified;
+            if( left.contains( exp ) )
+              return PropertyTestVerified;
           }
           break;
           case OperatorStringMatchesWildcard:
           {
             QRegExp exp( right, Qt::CaseSensitive, QRegExp::Wildcard );
-            return left.contains( exp ) ? PropertyTestVerified : PropertyTestNotVerified;
+            if( left.contains( exp ) )
+              return PropertyTestVerified;
           }
           break;
           default:
@@ -158,6 +177,8 @@ Data::PropertyTestResult Data::performPropertyTest(
           break;
         }
       }
+
+      return PropertyTestNotVerified;
     }
     break;
     case DataTypeDate:
@@ -216,6 +237,10 @@ Data::PropertyTestResult Data::performPropertyTest(
 QVariant Data::getPropertyValue( const FunctionDescriptor * function, const DataMemberDescriptor * dataMember )
 {
   clearErrors();
+
+
+  if( !function )
+    return getDataMemberValue( dataMember ); // value of ("header" in sieve)
 
   Q_ASSERT(
       // data member has a data type acceptable for the function

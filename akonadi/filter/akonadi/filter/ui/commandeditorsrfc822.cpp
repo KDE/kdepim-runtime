@@ -270,6 +270,101 @@ Action::Base * CommandWithStringParamEditor::commitState( Component * parent )
 
 
 
+
+
+
+
+
+CommandWithSoundFileEditor::CommandWithSoundFileEditor(
+    QWidget * parent,
+    const CommandDescriptor * commandDescriptor,
+    ComponentFactory * componentFactory,
+    EditorFactory * editorFactory
+  )
+  : CommandEditor( parent, commandDescriptor, componentFactory, editorFactory )
+{
+  QGridLayout * g = new QGridLayout( this );
+
+  const CommandDescriptor::ParameterDescriptor * param = commandDescriptor->parameters()->first();
+  Q_ASSERT( param );
+
+  QLabel * l = new QLabel( this );
+  l->setText( QString::fromAscii( "%1:" ).arg( param->name() ) );
+
+  g->addWidget( l, 0, 0 );
+
+  mSoundFileLineEdit = new QLineEdit( this );
+
+  g->addWidget( mSoundFileLineEdit, 0, 1 );
+
+  g->setColumnStretch( 1, 1 );
+}
+
+CommandWithSoundFileEditor::~CommandWithSoundFileEditor()
+{
+}
+
+void CommandWithSoundFileEditor::fillFromAction( Action::Base * action )
+{
+  Q_ASSERT( action );
+  Q_ASSERT( action->actionType() == Action::ActionTypeCommand );
+
+  Action::Command * cmd = dynamic_cast< Action::Command * >( action );
+  Q_ASSERT( cmd );
+  Q_ASSERT( cmd->parameters()->count() >= 1 ); // tollerate broken sieve scripts which have more than one param here
+
+  const CommandDescriptor * cmdDescriptor = cmd->commandDescriptor();
+  Q_ASSERT( cmdDescriptor );
+  Q_ASSERT( cmdDescriptor->parameters()->count() == 1 );
+
+  const CommandDescriptor::ParameterDescriptor * formalParam = cmdDescriptor->parameters()->first();
+  Q_ASSERT( formalParam );
+
+  Q_ASSERT( formalParam->dataType() == DataTypeString );
+
+  QString val = cmd->parameters()->first().toString();
+
+  mSoundFileLineEdit->setText( val );
+}
+
+Action::Base * CommandWithSoundFileEditor::commitState( Component * parent )
+{
+  QList< QVariant > params;
+
+  QString txt = mSoundFileLineEdit->text();
+
+  const CommandDescriptor * cmdDescriptor = commandDescriptor();
+  Q_ASSERT( cmdDescriptor );
+  Q_ASSERT( cmdDescriptor->parameters()->count() == 1 );
+
+  const CommandDescriptor::ParameterDescriptor * formalParam = cmdDescriptor->parameters()->first();
+  Q_ASSERT( formalParam );
+
+  Q_ASSERT( formalParam->dataType() == DataTypeString );
+
+  if( txt.isEmpty() )
+  {
+    KMessageBox::sorry( this, i18n( "You must select a sound file!" ) , i18n( "Invalid parameter" ) );
+    new Private::WidgetHighlighter( this );
+    return 0;    
+  }
+
+  params.append( txt );
+
+  Action::Command * cmd = componentFactory()->createCommand( parent, commandDescriptor(), params );
+  if( !cmd )
+  {
+    KMessageBox::sorry( this, componentFactory()->lastError(), i18n( "Failed to commit the action" ) );
+    new Private::WidgetHighlighter( this );
+    return 0;
+  }
+
+  return cmd;
+}
+
+
+
+
 } // namespace UI
 
 } // namespace Filter

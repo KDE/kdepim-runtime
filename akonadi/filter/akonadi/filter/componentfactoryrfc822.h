@@ -41,12 +41,21 @@ namespace Filter
 enum FeaturesRfc822
 {
   /**
-   * This object contains e-mail addresses.
+   * This object contains e-mail addresses with comments.
    *
    * This is used on the message header data members
    * that are known to contain address lists.
    */
-  FeatureRfc822ContainsAddresses = 1
+  FeatureRfc822ContainsAddressesWithComments = FeatureCustomFirstBit,
+
+  /**
+   * This object contains e-mail addresses.
+   *
+   * This is used on the functions that extract e-mail
+   * addresses from fields that are known to contain
+   * addresses with comments.
+   */
+  FeatureRfc822ContainsAddresses = FeatureCustomFirstBit << 1
 };
 
 /**
@@ -62,6 +71,7 @@ enum DataMemberRfc822Identifiers
   DataMemberRfc822BccHeader,
   DataMemberRfc822MessageID,
   DataMemberRfc822Date,
+  DataMemberRfc822ResentDate,
   DataMemberRfc822Organization,
   DataMemberRfc822References,
   DataMemberRfc822UserAgent,
@@ -69,7 +79,9 @@ enum DataMemberRfc822Identifiers
   DataMemberRfc822AllRecipientHeaders,
   DataMemberRfc822AllHeaders,
   DataMemberRfc822MessageBody,
-  DataMemberRfc822WholeMessage
+  DataMemberRfc822WholeMessage,
+  DataMemberRfc822HasAttachments,
+  DataMemberRfc822EncodedAttachmentList
 
 }; // enum DataMemberIdentifiersRfc822
 
@@ -110,7 +122,13 @@ enum CommandRfc822Identifiers
    * The "Pipe through" command.
    * Non terminal with one argument.
    */
-  CommandRfc822PipeThrough
+  CommandRfc822PipeThrough,
+
+  /**
+   * The "Play sound" command.
+   * Non terminal with one argument.
+   */
+  CommandRfc822PlaySound
 
 }; // enum CommandRfc822Identifiers
 

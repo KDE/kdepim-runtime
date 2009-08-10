@@ -36,6 +36,11 @@
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
+namespace Phonon
+{
+  class MediaObject;
+}
+
 #include <QtCore/QVariant>
 
 class DataRfc822 : public Akonadi::Filter::Data
@@ -44,7 +49,7 @@ protected:
   Akonadi::Item mItem;
   MessagePtr mMessage;
   bool mFetchedBody;
-
+  Phonon::MediaObject * mPlayer;
 public:
   DataRfc822( const Akonadi::Item &item );
   virtual ~DataRfc822();
@@ -60,6 +65,8 @@ public:
   bool executeCommand( const Akonadi::Filter::CommandDescriptor * command, const QList< QVariant > &params );
 
 private:
+  QStringList getEMailAddressList( const Akonadi::Filter::DataMemberDescriptor * dataMember );
+
   bool fetchHeader();
   bool fetchBody();
 }; // class DataRfc822

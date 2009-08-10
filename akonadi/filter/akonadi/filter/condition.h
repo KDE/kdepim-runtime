@@ -270,7 +270,7 @@ public:
     return mDataMemberDescriptor;
   }
 
-  const OperatorDescriptor * functionOperatorDescriptor() const
+  const OperatorDescriptor * operatorDescriptor() const
   {
     return mOperatorDescriptor;
   }

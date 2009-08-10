@@ -68,6 +68,13 @@ namespace Action
   class RuleList;
 } // namespace Action
 
+enum Features
+{
+  FeatureContainsDate = 1,
+
+  FeatureCustomFirstBit = (1 << 1)
+};
+
 /**
  * The Akonadi::Filter::ComponentFactory class plays a very central role in the filter management and customisation.
  *
@@ -109,16 +116,10 @@ private:
   QHash< QString, FunctionDescriptor * > mFunctionDescriptorHash;
 
   /**
-   * Internal list of registered operators.
-   * The pointers here are shallow (mOperatorDescriptorMultiHash below owns them).
-   */
-  QList< OperatorDescriptor * > mOperatorDescriptorList;
-
-  /**
    * Internal map of registered operators indicized by
    * their keyword (which must be unique). The pointers here are owned.
    */
-  QMultiHash< QString, OperatorDescriptor * > mOperatorDescriptorMultiHash;
+  QHash< QString, OperatorDescriptor * > mOperatorDescriptorHash;
 
   /**
    * Internal list of registered commands.
@@ -215,20 +216,25 @@ public:
   virtual QList< const DataMemberDescriptor * > enumerateDataMembers( int acceptableDataTypeMask, int requiredFeatureBits );
 
   /**
+   * Enumerates all the DataMemberDescriptor descriptors.
+   */
+  virtual QList< const DataMemberDescriptor * > enumerateDataMembers();
+
+
+  /**
    * Registers an OperatorDescriptor to be used by the filtering conditions.
    */
   void registerOperator( OperatorDescriptor * op );
 
   /**
-   * Finds a registered OperatorDescriptor object which has the specified keyword and
-   * supports the DataTypes specified by leftOperandDataType.
-   * This is used by the Decoder subclasses.
+   * Finds the registered OperatorDescriptor objects which has the specified keyword and
+   * supports the DataType specified by leftOperandDataType.
    *
-   * Returns 0 if no register OperatorDescriptor matches the specified conditions.
+   * This is used by the Decoder subclasses.
    *
    * Please note that the keywords are case insensitive.
    */
-  virtual const OperatorDescriptor * findOperator( const QString &keyword, DataType leftOperandDataType );
+  virtual const OperatorDescriptor * findOperator( const QString &keyword );
 
   /**
    * Enumerates the OperatorDescriptor objects that are matched by the specified
@@ -404,6 +410,10 @@ public:
    *
    * A failure in a subclass reimplementation should be signaled by a NULL return
    * value and should cause a call to setLastError().
+   *
+   * Please note that function may be null: it means "straight value of the dataMember".
+   * op may also be null: in that case the result of the function (or the dataMember)
+   * must be boolean and the operand parameter should be ignored.
    */
   virtual Condition::Base * createPropertyTestCondition(
       Component * parent,
@@ -430,7 +440,11 @@ public:
    * A failure in a subclass reimplementation should be signaled by a NULL return
    * value and should cause a call to setLastError().
    */
-  virtual Action::Command * createCommand( Component * parent, const CommandDescriptor * command, const QList< QVariant > &params );
+  virtual Action::Command * createCommand(
+      Component * parent,
+      const CommandDescriptor * command,
+      const QList< QVariant > &params
+    );
 
   /**
    * Creates an instance of the RuleList Action.

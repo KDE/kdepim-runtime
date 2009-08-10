@@ -378,7 +378,12 @@ bool SieveEncoder::encodeCondition( Condition::Base * condition )
     {
       Condition::PropertyTest * test = static_cast< Condition::PropertyTest * >( condition );
 
-      QStringList tokens = test->function()->keyword().split( QChar( ':' ) );
+      QStringList tokens;
+      if( test->function() )
+        tokens = test->function()->keyword().split( QChar( ':' ) );
+      else
+        tokens << QString::fromAscii( "header" ); // sieve compatible "valueof"
+
       idx = 0;
       foreach( QString tok, tokens )
       {
@@ -391,22 +396,29 @@ bool SieveEncoder::encodeCondition( Condition::Base * condition )
         idx++;
       }
 
-      addLineData(
-          QString( ":%1 \"%2\" " )
-            .arg( test->functionOperatorDescriptor()->keyword() )
-            .arg( test->dataMember()->keyword() )
-        );
-
-
-      QVariant data = test->operand();
-
-      if( !encodeData( test->operand(), test->functionOperatorDescriptor()->rightOperandDataType() ) )
+      if( test->operatorDescriptor() )
       {
-        errorStack().pushError(
-            i18n( "encode property test" ),
-            i18n( "Could not parameter data" )
+        addLineData(
+            QString( ":%1 \"%2\" " )
+              .arg( test->operatorDescriptor()->keyword() )
+              .arg( test->dataMember()->keyword() )
           );
-        return false;
+
+        QVariant data = test->operand();
+
+        if( !encodeData( test->operand(), test->operatorDescriptor()->rightOperandDataType() ) )
+        {
+          errorStack().pushError(
+              i18n( "encode property test" ),
+              i18n( "Could not parameter data" )
+            );
+          return false;
+        }
+      } else {
+        addLineData(
+            QString( "\"%2\" " )
+              .arg( test->dataMember()->keyword() )
+          );
       }
     }
     break;

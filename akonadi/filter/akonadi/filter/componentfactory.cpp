@@ -43,6 +43,8 @@ ComponentFactory::ComponentFactory()
 {
   // register the basic functions (everyone needs this)
 
+#if 0
+  // handled by "header", automagically
   registerFunction(
       new FunctionDescriptor(
           FunctionValueOf,
@@ -53,6 +55,7 @@ ComponentFactory::ComponentFactory()
           DataTypeString
         )
     );
+#endif
 
   registerFunction(
       new FunctionDescriptor(
@@ -83,7 +86,8 @@ ComponentFactory::ComponentFactory()
           i18n( "the date from" ),
           DataTypeDate,
           0, // provides no special features
-          DataTypeString | DataTypeDate
+          DataTypeString,
+          FeatureContainsDate // requires feature "contains date"
         )
     );
 
@@ -151,7 +155,7 @@ ComponentFactory::ComponentFactory()
           OperatorStringIsEqualTo,
           QString::fromAscii( "is" ),
           i18n( "is equal to" ),
-          DataTypeString, // left operand must be string or string list
+          DataTypeString | DataTypeStringList, // left operand must be string or string list
           0, // and no special features are requested from it
           DataTypeString
         )
@@ -182,7 +186,7 @@ ComponentFactory::ComponentFactory()
   registerOperator(
       new OperatorDescriptor(
           OperatorDateIsEqualTo,
-          QString::fromAscii( "equals" ),
+          QString::fromAscii( "on" ),
           i18n( "is equal to" ),
           DataTypeDate, // left operand must be date
           0, // and no special features are requested from it
@@ -218,7 +222,7 @@ ComponentFactory::~ComponentFactory()
   qDeleteAll( mCommandDescriptorHash );
   qDeleteAll( mFunctionDescriptorHash );
   qDeleteAll( mDataMemberDescriptorHash );
-  qDeleteAll( mOperatorDescriptorList );
+  qDeleteAll( mOperatorDescriptorHash );
 }
 
 
@@ -234,6 +238,15 @@ const DataMemberDescriptor * ComponentFactory::findDataMember( const QString &ke
 {
   return mDataMemberDescriptorHash.value( keyword.toLower(), 0 );
 }
+
+QList< const DataMemberDescriptor * > ComponentFactory::enumerateDataMembers()
+{
+  QList< const DataMemberDescriptor * > lReturn;
+  foreach( DataMemberDescriptor * dataMember, mDataMemberDescriptorHash )
+    lReturn.append( dataMember );
+  return lReturn;
+}
+
 
 QList< const DataMemberDescriptor * > ComponentFactory::enumerateDataMembers( int acceptableDataTypeMask, int requiredFeatureBits )
 {
@@ -256,57 +269,18 @@ void ComponentFactory::registerOperator( OperatorDescriptor * op )
 
   QString lowerKeyword = op->keyword().toLower();
 
-  // Get the list of operators with the same keyword
-  QList< OperatorDescriptor * > existingOperatorDescriptors = mOperatorDescriptorMultiHash.values( lowerKeyword );
-  if( !existingOperatorDescriptors.isEmpty() )
-  {
-    QList< OperatorDescriptor * > toRemove;
-    OperatorDescriptor * existing;
-
-    foreach( existing, existingOperatorDescriptors )
-    {
-      if( existing->id() == op->id() )
-      {
-        // the same operator registered twice!
-        toRemove.append( existing );       
-      } else {
-        // warn about input data type collision
-        if( existing->acceptableLeftOperandDataTypeMask() & op->acceptableLeftOperandDataTypeMask() )
-        {
-          kWarning() << "Multiple definitions of operator " << existing->keyword() << "collide in the input operand data types: the wrong operator may be choosen by the encoding/decoding engines";
-        }
-      }
-    }
-
-    foreach( existing, toRemove )
-    {
-      mOperatorDescriptorMultiHash.remove( lowerKeyword, existing );
-      mOperatorDescriptorList.removeOne( existing );
-      delete existing;
-    }
-  }
-
-  mOperatorDescriptorMultiHash.insertMulti( lowerKeyword, op );
-  mOperatorDescriptorList.append( op );
+  mOperatorDescriptorHash.insert( lowerKeyword, op );
 }
 
-const OperatorDescriptor * ComponentFactory::findOperator( const QString &keyword, DataType leftOperandDataType )
+const OperatorDescriptor * ComponentFactory::findOperator( const QString &keyword )
 {
-  // Get the list of operators with the same keyword
-  QList< OperatorDescriptor * > existingOperatorDescriptors = mOperatorDescriptorMultiHash.values( keyword.toLower() );
-  foreach( OperatorDescriptor * op, existingOperatorDescriptors )
-  {
-    // the operator must cover ALL the left operand data types
-    if( leftOperandDataType & op->acceptableLeftOperandDataTypeMask() )
-      return op;
-  }
-  return 0;
+  return mOperatorDescriptorHash.value( keyword.toLower(), 0 );
 }
 
 QList< const OperatorDescriptor * > ComponentFactory::enumerateOperators( DataType leftOperandDataType, int featureBits )
 {
   QList< const OperatorDescriptor * > ret;
-  foreach( OperatorDescriptor * op, mOperatorDescriptorList )
+  foreach( OperatorDescriptor * op, mOperatorDescriptorHash )
   {
     if( !( leftOperandDataType & op->acceptableLeftOperandDataTypeMask() ) )
       continue;
@@ -428,7 +402,10 @@ Condition::Base * ComponentFactory::createPropertyTestCondition(
     const QVariant &operand
   )
 {
-  Q_ASSERT( function->outputDataType() & op->acceptableLeftOperandDataTypeMask() );
+  if( function )
+  {
+    Q_ASSERT( function->outputDataType() & op->acceptableLeftOperandDataTypeMask() );
+  }
   return new Condition::PropertyTest( parent, function, dataMember, op, operand );
 }
 

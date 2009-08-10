@@ -38,6 +38,7 @@
 
 #include <KLocale>
 #include <KMessageBox>
+#include <KDebug>
 
 #include <QtGui/QLayout>
 #include <QtCore/QList>
@@ -102,6 +103,7 @@ ConditionSelector::ConditionSelector(
 
   mPrivate->mTypeComboBox = new Private::CoolComboBox( false, this );
   mPrivate->mTypeComboBox->setOpacity( gSemiTransparentWidgetsOpacity );
+  mPrivate->mTypeComboBox->setMaxVisibleItems( 20 );
   connect( mPrivate->mTypeComboBox, SIGNAL( activated( int ) ), this, SLOT( typeComboBoxActivated( int ) ) );
 
   g->addWidget( mPrivate->mTypeComboBox, 0, 0, 1, 2 );
@@ -119,6 +121,7 @@ ConditionSelector::ConditionSelector(
 
   d = new ConditionDescriptor;
   d->mIsSeparator = true;
+  d->mType = Condition::ConditionTypeUnknown;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
@@ -148,6 +151,26 @@ ConditionSelector::ConditionSelector(
   d->mDataMemberDescriptor = 0;
   mPrivate->mConditionDescriptorList.append( d );
 
+  d = new ConditionDescriptor;
+  d->mIsSeparator = true;
+  d->mType = Condition::ConditionTypeUnknown;
+  mPrivate->mConditionDescriptorList.append( d );
+
+  QList< const DataMemberDescriptor * > dataMembers = mComponentFactory->enumerateDataMembers();
+  const DataMemberDescriptor * dm;
+
+  foreach( dm, dataMembers )
+  {
+    d = new ConditionDescriptor;
+    d->mIsSeparator = false;
+    d->mType = Condition::ConditionTypePropertyTest;
+    d->mText = dm->name();
+    d->mColor = QColor(); // no overlay
+    d->mFunctionDescriptor = 0;
+    d->mDataMemberDescriptor = dm;
+    mPrivate->mConditionDescriptorList.append( d );
+  }
+
   const QList< const FunctionDescriptor * > * props = mComponentFactory->enumerateFunctions();
   Q_ASSERT( props );
 
@@ -155,11 +178,12 @@ ConditionSelector::ConditionSelector(
   {
     d = new ConditionDescriptor;
     d->mIsSeparator = true;
+    d->mType = Condition::ConditionTypeUnknown;
     mPrivate->mConditionDescriptorList.append( d );
 
-    QList< const DataMemberDescriptor * > dataMembers = mComponentFactory->enumerateDataMembers( prop->acceptableInputDataTypeMask(), prop->requiredInputFeatureMask() );
+    dataMembers = mComponentFactory->enumerateDataMembers( prop->acceptableInputDataTypeMask(), prop->requiredInputFeatureMask() );
 
-    foreach( const DataMemberDescriptor * dm, dataMembers )
+    foreach( dm, dataMembers )
     {
       d = new ConditionDescriptor;
       d->mIsSeparator = false;
@@ -177,6 +201,7 @@ ConditionSelector::ConditionSelector(
 
   d = new ConditionDescriptor;
   d->mIsSeparator = true;
+  d->mType = Condition::ConditionTypeUnknown;
   mPrivate->mConditionDescriptorList.append( d );
 
   d = new ConditionDescriptor;
@@ -266,7 +291,7 @@ ConditionSelector::ConditionSelector(
   mPrivate->mOperatorDescriptorComboBox = new KComboBox( false, mPrivate->mRightControlsBase );
   mPrivate->mOperatorDescriptorComboBox->hide();
   mPrivate->mOperatorDescriptorComboBox->setFixedWidth( 200 );
-  mPrivate->mRightControlsLayout->addWidget( mPrivate->mOperatorDescriptorComboBox, 0, 1 );
+  mPrivate->mRightControlsLayout->addWidget( mPrivate->mOperatorDescriptorComboBox, 0, 1, Qt::AlignLeft | Qt::AlignVCenter );
   connect( mPrivate->mOperatorDescriptorComboBox, SIGNAL( activated( int ) ), this, SLOT( operatorDescriptorComboBoxActivated( int ) ) );
 
   mPrivate->mValueEditor = Private::ValueEditor::editorForDataType( DataTypeString, mPrivate->mRightControlsBase );
@@ -355,8 +380,7 @@ void ConditionSelector::setupUIForActiveType()
     case Condition::ConditionTypePropertyTest:
       mPrivate->mRightControlsBase->show();
       mPrivate->mTypeComboBox->setOpacity( 1.0 );
-      mPrivate->mOperatorDescriptorComboBox->show();
-      mPrivate->mValueEditor->widget()->show();
+     // Don't touch operator and value editor (managed by fillPropertyTestControls())
       mPrivate->mChildConditionListBase->hide();
       mPrivate->mExtensionLabel->hide();
     break;
@@ -597,22 +621,34 @@ void ConditionSelector::reset()
 void ConditionSelector::fillPropertyTestControls( ConditionDescriptor * descriptor )
 {
   mPrivate->mOperatorDescriptorComboBox->clear();
-
+ 
   QList< const OperatorDescriptor * > operators = mComponentFactory->enumerateOperators(
-      descriptor->mFunctionDescriptor->outputDataType(),
-      descriptor->mFunctionDescriptor->outputFeatureMask()
+      descriptor->mFunctionDescriptor ?
+        descriptor->mFunctionDescriptor->outputDataType() : descriptor->mDataMemberDescriptor->dataType(),
+      descriptor->mFunctionDescriptor ? 
+        descriptor->mFunctionDescriptor->outputFeatureMask() : descriptor->mDataMemberDescriptor->featureMask()
     );
+
   if( operators.isEmpty() )
   {
-    // doesn't need an operator
+    // no operator for this kind of property test
+    if( descriptor->mFunctionDescriptor )
+    {
+      Q_ASSERT( descriptor->mFunctionDescriptor->outputDataType() == DataTypeBoolean );
+    } else {
+      Q_ASSERT( descriptor->mDataMemberDescriptor->dataType() == DataTypeBoolean );
+    }
+
     mPrivate->mOperatorDescriptorComboBox->hide();
     mPrivate->mValueEditor->widget()->hide();
     return;
   }
+
+  mPrivate->mOperatorDescriptorComboBox->show();
+
   foreach( const OperatorDescriptor * op, operators )
-  {
     mPrivate->mOperatorDescriptorComboBox->addItem( op->name(), QVariant( (qlonglong)op ) );
-  }
+
   operatorDescriptorComboBoxActivated( -1 );
 }
 
@@ -685,9 +721,11 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
     break;
     case Condition::ConditionTypePropertyTest:
       Q_ASSERT( condition );
+
       foreach( ConditionDescriptor * d, mPrivate->mConditionDescriptorList )
       {
         if(
+            ( !d->mIsSeparator ) && 
             ( d->mType == Condition::ConditionTypePropertyTest ) &&
             ( d->mFunctionDescriptor == static_cast< Condition::PropertyTest * >( condition )->function() ) &&
             ( d->mDataMemberDescriptor == static_cast< Condition::PropertyTest * >( condition )->dataMember() )
@@ -704,7 +742,7 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
     break;
   }
 
-  Q_ASSERT( descriptor ); // unhandled condition type
+  Q_ASSERT( descriptor );
   Q_ASSERT( idx >= 0 ); // same as above
 
   mPrivate->mTypeComboBox->setCurrentIndex( idx );
@@ -796,19 +834,20 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
       qDeleteAll( mPrivate->mChildConditionSelectorList );
       mPrivate->mChildConditionSelectorList.clear();
       fillPropertyTestControls( descriptor );
+
       int cnt = mPrivate->mOperatorDescriptorComboBox->count();
       for( int idx = 0; idx < cnt; idx++ )
       {
         QVariant v = mPrivate->mOperatorDescriptorComboBox->itemData( idx );
         if( v.isNull() )
-          continue;
+        continue;
 
         bool ok;
         qlonglong ptr = v.toLongLong( &ok );
         if( !ok )
           continue;
         const OperatorDescriptor * op = reinterpret_cast< const OperatorDescriptor * >( ptr );
-        if( op == static_cast< Condition::PropertyTest * >( condition )->functionOperatorDescriptor() )
+        if( op == static_cast< Condition::PropertyTest * >( condition )->operatorDescriptor() )
         {
           mPrivate->mOperatorDescriptorComboBox->setCurrentIndex( idx );
           operatorDescriptorComboBoxActivated( idx );
@@ -824,7 +863,6 @@ void ConditionSelector::fillFromCondition( Condition::Base * condition )
   }
 
   setupUIForActiveType();
-
 }
 
 const OperatorDescriptor * ConditionSelector::operatorDescriptorForActiveType()
@@ -832,6 +870,7 @@ const OperatorDescriptor * ConditionSelector::operatorDescriptorForActiveType()
   int idx = mPrivate->mOperatorDescriptorComboBox->currentIndex();
   if( idx < 0 )
     return 0;
+
   QVariant v = mPrivate->mOperatorDescriptorComboBox->itemData( idx );
   if( v.isNull() )
     return 0;
@@ -930,15 +969,18 @@ Condition::Base * ConditionSelector::commitState( Component * parent )
     break;
     case Condition::ConditionTypePropertyTest:
     {
-      Q_ASSERT( d->mFunctionDescriptor );
       Q_ASSERT( d->mDataMemberDescriptor );
 
-      QVariant val = mPrivate->mValueEditor->value();
-      if( !val.isValid() )
-        return 0; // message already shown
+      QVariant val;
 
       const OperatorDescriptor * op = operatorDescriptorForActiveType();
-      Q_ASSERT( op );
+
+      if( op && ( op->rightOperandDataType() != DataTypeNone ) )
+      {
+        val = mPrivate->mValueEditor->value();
+        if( !val.isValid() )
+          return 0; // message already shown
+      }
 
       return mComponentFactory->createPropertyTestCondition(
           parent,

@@ -56,6 +56,7 @@ target_link_libraries(
 		kpimutils
 		kabc
 		${KDE4_KDECORE_LIBS}
+		${KDE4_PHONON_LIBRARY}
 		${QT_QTCORE_LIBRARY}
 		${QT_QTDBUS_LIBRARY}
 	)

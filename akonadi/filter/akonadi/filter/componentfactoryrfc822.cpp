@@ -52,7 +52,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           QString::fromAscii( "from" ),
           i18n( "the From header" ),
           DataTypeString,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments
         )
     );
 
@@ -62,7 +62,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           QString::fromAscii( "to" ),
           i18n( "the To header" ),
           DataTypeString,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments
         )
     );
 
@@ -72,7 +72,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           QString::fromAscii( "replyto" ),
           i18n( "the Reply-To header" ),
           DataTypeString,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments
         )
     );
 
@@ -82,7 +82,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           QString::fromAscii( "cc" ),
           i18n( "the CC header" ),
           DataTypeString,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments
         )
     );
 
@@ -92,7 +92,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           QString::fromAscii( "bcc" ),
           i18n( "the BCC header" ),
           DataTypeString,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments
         )
     );
 
@@ -100,9 +100,9 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822AllRecipientHeaders,
           QString::fromAscii( "anyrecipient" ),
-          i18n( "all the recipient headers" ),
+          i18n( "the recipient header list" ),
           DataTypeStringList,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments
         )
     );
 
@@ -111,7 +111,18 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           DataMemberRfc822Date,
           QString::fromAscii( "date" ),
           i18n( "the Date header" ),
-          DataTypeString
+          DataTypeString,
+          FeatureContainsDate
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          DataMemberRfc822ResentDate,
+          QString::fromAscii( "resentdate" ),
+          i18n( "the Resent-Date header" ),
+          DataTypeString,
+          FeatureContainsDate
         )
     );
 
@@ -128,7 +139,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822AllHeaders,
           QString::fromAscii( "anyheader" ),
-          i18n( "all the headers" ),
+          i18n( "the header list" ),
           DataTypeStringList
         )
     );
@@ -187,6 +198,23 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
         )
     );
 
+  registerDataMember(
+      new DataMemberDescriptor(
+          DataMemberRfc822EncodedAttachmentList,
+          QString::fromAscii( "encodedattachments" ),
+          i18n( "the list of encoded attachments" ),
+          DataTypeStringList
+        )
+    );
+
+  registerDataMember(
+      new DataMemberDescriptor(
+          DataMemberRfc822HasAttachments,
+          QString::fromAscii( "hasattachments" ),
+          i18n( "the message has attachments" ),
+          DataTypeBoolean
+        )
+    );
 
 
 
@@ -200,7 +228,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           DataTypeStringList,
           FeatureRfc822ContainsAddresses, // spits out addresses
           DataTypeString | DataTypeStringList,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments // accepts addresses with comments
         )
     );
 
@@ -212,7 +240,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           DataTypeStringList,
           0, // provides no special features
           DataTypeString | DataTypeStringList,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments // accepts addresses with comments
         )
     );
 
@@ -225,7 +253,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
           DataTypeStringList,
           0, // provides no special features
           DataTypeString | DataTypeStringList,
-          FeatureRfc822ContainsAddresses
+          FeatureRfc822ContainsAddressesWithComments // accepts addresses with comments
         )
     );
 
@@ -300,7 +328,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       i18n( "move the message to folder" ),
       false
     );
-  cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeInteger, i18n( "Target collection id" ) ) );
+  cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeInteger, i18n( "Target Collection Id" ) ) );
   registerCommand( cmd );
 
   cmd = new CommandDescriptor(
@@ -309,13 +337,13 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       i18n( "create a copy in folder" ),
       false
     );
-  cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeInteger, i18n( "Target collection id" ) ) );
+  cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeInteger, i18n( "Target Collection Id" ) ) );
   registerCommand( cmd );
 
   cmd = new CommandDescriptor(
       CommandRfc822RunProgram,
       QString::fromAscii( "exec" ),
-      i18n( "run the following command" ),
+      i18n( "run a program" ),
       false
     );
   cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeString, i18n( "Command" ) ) );
@@ -324,11 +352,21 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
   cmd = new CommandDescriptor(
       CommandRfc822PipeThrough,
       QString::fromAscii( "pipe" ),
-      i18n( "pipe through the following command" ),
+      i18n( "pipe through a program" ),
       false
     );
   cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeString, i18n( "Command" ) ) );
   registerCommand( cmd );
+
+  cmd = new CommandDescriptor(
+      CommandRfc822PlaySound,
+      QString::fromAscii( "play" ),
+      i18n( "play a sound file" ),
+      false
+    );
+  cmd->addParameter( new CommandDescriptor::ParameterDescriptor( DataTypeString, i18n( "Sound File" ) ) );
+  registerCommand( cmd );
+
 }
 
 ComponentFactoryRfc822::~ComponentFactoryRfc822()

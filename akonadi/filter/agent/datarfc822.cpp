@@ -34,12 +34,16 @@
 
 #include <akonadi/kmime/messageparts.h>
 
+#include <kmime/kmime_header_parsing.h>
+
 #include <akonadi/filter/datamemberdescriptor.h>
 #include <akonadi/filter/componentfactoryrfc822.h>
 
 #include <kpimutils/email.h>
 
 #include <kabc/stdaddressbook.h>
+
+#include <Phonon/MediaObject>
 
 #include <KLocale>
 #include <KDebug>
@@ -48,10 +52,13 @@
 DataRfc822::DataRfc822( const Akonadi::Item &item )
   : Data(), mItem( item ), mFetchedBody( false )
 {
+  mPlayer = 0;
 }
 
 DataRfc822::~DataRfc822()
 {
+  if( mPlayer )
+    delete mPlayer;
 }
 
 bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * command, const QList< QVariant > &params )
@@ -133,7 +140,11 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
         return false;
       }
 
-      if( KProcess::startDetached( cmd ) == 0 )
+      // trick to workaround some API limitations
+      KProcess dummy;
+      dummy.setShellCommand( cmd );
+
+      if( KProcess::startDetached( dummy.program() ) == 0 )
       {
         pushError( i18n( "Failed to run the program '%1'", cmd ) );
         return false;
@@ -231,6 +242,26 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
       return true;
     }
     break;
+    case Akonadi::Filter::CommandRfc822PlaySound:
+    {
+      Q_ASSERT( params.count() >= 1 ); // must have at least one parameter (tollerate buggy sieve scripts which have more)
+
+      QString sound = params.first().toString();
+      if ( sound.isEmpty() )
+      {
+        pushError( i18n( "Invalid empty sound file specified" ) );
+        return false;
+      }
+
+      if ( !mPlayer )
+        mPlayer = Phonon::createPlayer( Phonon::NotificationCategory );
+
+      mPlayer->setCurrentSource( sound );
+      mPlayer->play();
+
+      return true;
+    }
+    break;
     default:
       // not my command: fall through
       Q_ASSERT_X( false, __FUNCTION__, "Unhandled command" );
@@ -240,6 +271,49 @@ bool DataRfc822::executeCommand( const Akonadi::Filter::CommandDescriptor * comm
   Q_ASSERT_X( false, __FUNCTION__, "This point should be never reached" );
   pushError( i18n( "Unhandled command" ) );
   return false;
+}
+
+
+QStringList DataRfc822::getEMailAddressList( const Akonadi::Filter::DataMemberDescriptor * dataMember )
+{
+  QVariant value = getDataMemberValue( dataMember );
+  if( value.isNull() && hasErrors() )
+    return QStringList();
+
+  switch( dataMember->dataType() )
+  {
+    case Akonadi::Filter::DataTypeNone:
+    case Akonadi::Filter::DataTypeInteger:
+    case Akonadi::Filter::DataTypeBoolean:
+    case Akonadi::Filter::DataTypeDate:
+      pushError( i18n( "Can't extract an e-mail address from this kind of field" ) );
+    break;
+    case Akonadi::Filter::DataTypeString:
+    case Akonadi::Filter::DataTypeStringList:
+    {
+      QStringList values = value.toStringList();
+      QStringList result;
+      foreach( QString val, values )
+      {
+        QStringList fullAddressList = KPIMUtils::splitAddressList( val );
+        foreach( QString fullAddress, fullAddressList )
+        {
+          QString addressOnly = KPIMUtils::extractEmailAddress( fullAddress );
+          if( !addressOnly.isEmpty() )
+            result.append( addressOnly );
+        }
+      }
+
+      return result;
+    }
+    break;
+    default:
+      Q_ASSERT_X( false, __FUNCTION__, "Unhandled DataType" );
+      pushError( i18n( "Internal error" ) );
+    break;
+  }
+
+  return QStringList();
 }
 
 
@@ -256,6 +330,12 @@ QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor
     }
   }
 
+  if( !function )
+  {
+    // "value of(data member)": this is provided by the default Data object.
+    return Akonadi::Filter::Data::getPropertyValue( function, dataMember );
+  }
+
   switch( function->id() )
   {
     case Akonadi::Filter::FunctionDateIn:
@@ -270,49 +350,48 @@ QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor
     case Akonadi::Filter::FunctionRfc822AnyEMailAddressIn:
     {
       // this is RFC822 specific
-      QVariant value = getDataMemberValue( dataMember );
-      if( value.isNull() && hasErrors() )
-        return value;
+      QStringList emails = getEMailAddressList( dataMember );
+      if( emails.isEmpty() && hasErrors() )
+        return QVariant();
 
-      switch( dataMember->dataType() )
-      {
-        case Akonadi::Filter::DataTypeNone:
-        case Akonadi::Filter::DataTypeInteger:
-        case Akonadi::Filter::DataTypeBoolean:
-        case Akonadi::Filter::DataTypeDate:
-          pushError( i18n( "Can't extract an e-mail address from this kind of field" ) );
-          return QVariant();
-        break;
-        case Akonadi::Filter::DataTypeString:
-        case Akonadi::Filter::DataTypeStringList:
-        {
-          QStringList values = value.toStringList();
-          QStringList result;
-          foreach( QString val, values )
-          {
-            QStringList fullAddressList = KPIMUtils::splitAddressList( val );
-            foreach( QString fullAddress, fullAddressList )
-            {
-              QString addressOnly = KPIMUtils::extractEmailAddress( fullAddress );
-              if( !addressOnly.isEmpty() )
-                result.append( addressOnly );
-            }
-          }
-
-          return QVariant( result );
-        }
-        break;
-        default:
-          Q_ASSERT_X( false, __FUNCTION__, "Unhandled DataType" );
-        break;
-      }
+      return emails;
     }
     break;
     case Akonadi::Filter::FunctionRfc822AnyEMailAddressDomainIn:
+    {
       // this is RFC822 specific
+      QStringList emails = getEMailAddressList( dataMember );
+      if( emails.isEmpty() && hasErrors() )
+        return QVariant();
+
+      QStringList ret;
+      foreach( QString mail, emails )
+      {
+        int idx = mail.indexOf( QChar( '@' ) );
+        if( ( idx >= 0 ) && ( mail.length() > ( idx + 1 ) ) )
+          ret << mail.mid( idx + 1 );
+      }
+
+      return ret;
+    }
     break;
     case Akonadi::Filter::FunctionRfc822AnyEMailAddressLocalPartIn:
+    {
       // this is RFC822 specific
+      QStringList emails = getEMailAddressList( dataMember );
+      if( emails.isEmpty() && hasErrors() )
+        return QVariant();
+
+      QStringList ret;
+      foreach( QString mail, emails )
+      {
+        int idx = mail.indexOf( QChar( '@' ) );
+        if( idx >= 0 )
+          ret << mail.left( idx );
+      }
+
+      return ret;
+    }
     break;
   }
 
@@ -326,6 +405,12 @@ Akonadi::Filter::Data::PropertyTestResult DataRfc822::performPropertyTest(
       const QVariant &operand
     )
 {
+  if( !op )
+  {
+    // not something we want to handle here
+    return Akonadi::Filter::Data::performPropertyTest( function, dataMember, op, operand );
+  }
+
   if( op->id() == Akonadi::Filter::OperatorRfc822IsInAddressbook )
   {
     Q_ASSERT( op->rightOperandDataType() == Akonadi::Filter::DataTypeNone );
@@ -375,6 +460,8 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
     }
   }
 
+  KMime::Headers::Base * header;
+
   switch( dataMember->id() )
   {
     case Akonadi::Filter::DataMemberRfc822FromHeader:
@@ -409,6 +496,15 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
       kDebug() << "Returning Date header '" << mMessage->date()->asUnicodeString() << "'";
       return mMessage->date()->asUnicodeString();
     break;
+    case Akonadi::Filter::DataMemberRfc822ResentDate:
+    {
+      header = mMessage->headerByType( "Resent-Date" );
+      if( !header )
+        return QVariant();
+      kDebug() << "Returning Resent-Date header '" << header->asUnicodeString() << "'";
+      return header->asUnicodeString();
+    }
+    break;
     case Akonadi::Filter::DataMemberRfc822Organization:
       kDebug() << "Returning Organization header '" << mMessage->organization()->asUnicodeString() << "'";
       return mMessage->organization()->asUnicodeString();
@@ -441,8 +537,32 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
     }
     break;
     case Akonadi::Filter::DataMemberRfc822AllHeaders:
-      // FIXME: Which is the head encoding ? ... should we decode all the headers ?
-      return QString::fromAscii( mMessage->head() );
+    {
+      // Hum.. KMime has no way to enumerate all the headers ...at the moment, at least.
+      // FIXME: When you look at this, please check if KMime has support for listing the
+      // headers (we want them as a QStringList in the end) and use that.
+      QByteArray head = mMessage->head();
+
+      QStringList ret;
+
+      int len = head.length();
+
+      while( !head.isEmpty() )
+      {
+        header = KMime::HeaderParsing::extractFirstHeader( head );
+        if( !header )
+          break;
+
+        Q_ASSERT( head.length() < len );
+        len = head.length();
+
+        ret << header->asUnicodeString();
+ 
+        delete header;
+      }
+
+      return ret;
+    }
     break;
     case Akonadi::Filter::DataMemberRfc822MessageBody:
       if( !mFetchedBody )
@@ -467,8 +587,42 @@ QVariant DataRfc822::getDataMemberValue( const Akonadi::Filter::DataMemberDescri
           return QVariant();
         }
       }
-      // Hum.. not sure about this..
-      return QString::fromAscii( "%1\r\n%2" ).arg( QString::fromAscii( mMessage->head() ) ).arg( QString::fromAscii( mMessage->body() ) );
+      // Hum.. not sure about this.. should it be decoded in some way ?
+      return QString::fromAscii( mMessage->encodedContent() );
+    break;
+    case Akonadi::Filter::DataMemberRfc822HasAttachments:
+      if( !mFetchedBody )
+      {
+        if( !fetchBody() )
+        {
+          kWarning() << "Fetching message body failed!";
+          pushError( i18n( "Fetching message body failed" ) );
+          return QVariant();
+        }
+      }
+      
+      return QVariant( !mMessage->attachments().isEmpty() );
+    break;
+    case Akonadi::Filter::DataMemberRfc822EncodedAttachmentList:
+    {
+      if( !mFetchedBody )
+      {
+        if( !fetchBody() )
+        {
+          kWarning() << "Fetching message body failed!";
+          pushError( i18n( "Fetching message body failed" ) );
+          return QVariant();
+        }
+      }
+
+      QStringList res;
+
+      KMime::Content::List list = mMessage->attachments();
+      foreach( KMime::Content * content, list )
+        res << QString::fromAscii( content->encodedContent() );
+
+      return res;
+    }
     break;
     default:
       Q_ASSERT_X( false, __FUNCTION__, "Unhandled data member" );
