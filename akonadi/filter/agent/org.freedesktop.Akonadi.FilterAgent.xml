@@ -55,6 +55,7 @@
     <signal name="jobTerminated">
       <arg name="jobId" type="x" direction="out"/>
       <arg name="status" type="i" direction="out"/>
+      <arg name="executionErrorDetails" type="s" direction="out"/>
     </signal>
   </interface>
 </node>

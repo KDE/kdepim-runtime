@@ -87,7 +87,7 @@ protected:
   void enableDisableButtons();
 
 protected slots:
-  void slotFilteringJobTerminated( qlonglong jobId, int status );
+  void slotFilteringJobTerminated( qlonglong jobId, int status, const QString &executionErrorDetail );
   void slotListFilters();
   void slotNewFilterLBBButtonClicked();
   void slotNewFilterTBBButtonClicked();

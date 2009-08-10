@@ -31,6 +31,7 @@
 
 #include <akonadi/filter/componentfactoryrfc822.h>
 #include <akonadi/filter/program.h>
+#include <akonadi/filter/errorstack.h>
 #include <akonadi/filter/agent.h>
 #include <akonadi/filter/ui/editorfactoryrfc822.h>
 #include <akonadi/filter/io/sieveencoder.h>
@@ -70,7 +71,7 @@ MainWindow::MainWindow()
 
   mFilterAgent = new OrgFreedesktopAkonadiFilterAgentInterface( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
 
-  connect( mFilterAgent, SIGNAL( jobTerminated( qlonglong, int ) ), this, SLOT( slotFilteringJobTerminated( qlonglong, int ) ) );
+  connect( mFilterAgent, SIGNAL( jobTerminated( qlonglong, int, const QString & ) ), this, SLOT( slotFilteringJobTerminated( qlonglong, int, const QString & ) ) );
 
   mComponentFactories.insert( QLatin1String( "message/rfc822" ), new Akonadi::Filter::ComponentFactoryRfc822() );
   mComponentFactories.insert( QLatin1String( "message/news" ), new Akonadi::Filter::ComponentFactoryRfc822() );
@@ -586,7 +587,7 @@ void MainWindow::slotApplyFilterToItemButtonClicked()
   enableDisableButtons();
 }
 
-void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status )
+void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status, const QString &executionErrorDetail )
 {
   if( jobId != mPendingFilteringJobId )
     return;
@@ -597,7 +598,19 @@ void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status )
 
   if( status == Akonadi::Filter::Agent::Success )
     KMessageBox::information( this, i18n( "Filter applied succesfully" ), i18n( "Filter application complete" ) );
-  else
-    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( static_cast< Akonadi::Filter::Agent::Status >( status ) ), i18n( "Filter application failed" ) );
+  else {
+    Akonadi::Filter::ErrorStack stack; 
+
+    QString fixedError = executionErrorDetail;
+    fixedError.replace( QChar( '\n' ), QString::fromAscii( "<br>" ), Qt::CaseSensitive );
+
+    KMessageBox::error(
+        this,
+        QString::fromAscii( "<p>%1</p><p>%2</p>" )
+            .arg( Akonadi::Filter::Agent::statusDescription( static_cast< Akonadi::Filter::Agent::Status >( status ) ) )
+            .arg( fixedError ),
+        i18n( "Filter application failed" )
+      );
+  }
 }
 

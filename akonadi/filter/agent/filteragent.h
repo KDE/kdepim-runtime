@@ -42,7 +42,13 @@
 
 #include <QObject>
 
-
+namespace Akonadi
+{
+  namespace Filter
+  {
+    class ErrorStack;
+  } // namespace Filter
+} // namespace Akonadi
 
 class FilterAgent : public Akonadi::PreprocessorBase
 {
@@ -227,10 +233,11 @@ private Q_SLOTS:
   void slotAbortRequested();
 
 Q_SIGNALS:
-  void jobTerminated( qlonglong jobId, int status );
+  void jobTerminated( qlonglong jobId, int status, const QString &executionErrorDetail );
 
 private:
-  Akonadi::Filter::Agent::Status runJob( FilterJob * job );
+  Akonadi::Filter::Agent::Status runApplyFilterChainByCollectionJob( FilterJob * job );
+  Akonadi::Filter::Agent::Status runApplySpecificFilterJob( FilterJob * job, Akonadi::Filter::ErrorStack &errorStack );
 
   int createFilterInternal( const QString &filterId, const QString &mimeType, const QString &source, bool saveConfiguration );
   int attachFilterInternal( const QString &filterId, const QList< Akonadi::Collection::Id > &attachedCollectionIds, bool saveConfiguration );

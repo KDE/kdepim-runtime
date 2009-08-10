@@ -113,7 +113,7 @@ void FilterAgent::slotAbortRequested()
       case FilterJob::ApplySpecificFilter:
         // This was an "apply filter now" job
         if( job->emitJobTerminated() )
-          emit jobTerminated( job->id(), Akonadi::Filter::Agent::ErrorJobAborted );
+          emit jobTerminated( job->id(), Akonadi::Filter::Agent::ErrorJobAborted, i18n( "Job aborted by remote request" ) );
       break;
       default:
         Q_ASSERT_X( false, __FUNCTION__, "Unhandled FilterJob::Type" );
@@ -160,112 +160,100 @@ FilterAgent::ProcessingResult FilterAgent::processItem( Akonadi::Item::Id itemId
   return ProcessingDelayed;
 }
 
-Akonadi::Filter::Agent::Status FilterAgent::runJob( FilterJob * job )
+Akonadi::Filter::Agent::Status FilterAgent::runApplyFilterChainByCollectionJob( FilterJob * job )
 {
-  kDebug() << "filteragent: run job...";
+  kDebug() << "filteragent: will be processing item" << job->itemId() << "in collection" << job->collectionId();
 
-  switch( job->type() )
+  QList< FilterEngine * > * filterChain = mFilterChains.value( job->collectionId(), 0 );
+
+  if( !filterChain )
   {
-    case FilterJob::ApplyFilterChainByCollection:
-    {
-      kDebug() << "filteragent: will be processing item" << job->itemId() << "in collection" << job->collectionId();
-
-      QList< FilterEngine * > * filterChain = mFilterChains.value( job->collectionId(), 0 );
-
-      if( !filterChain )
-      {
-        kDebug() << "filteragent: filter chain for collection" << job->collectionId() << "is gone...";
-        return Akonadi::Filter::Agent::ErrorNoSuchFilter; // no chain for this collection
-      }
-
-      Q_ASSERT( filterChain->count() > 0 );
-
-      Akonadi::Item item( job->itemId() );
-      Akonadi::Collection collection( job->collectionId() );
-
-      // We don't use MimeTypeChecker since we'd need to create one for each engine
-      // and resolve the mimeType multiple times. The KMimeType api is more "direct" here.
-
-      KMimeType::Ptr mimeTypePtr = KMimeType::mimeType( job->mimeType(), KMimeType::ResolveAliases );
-      if( mimeTypePtr.isNull() )
-      {
-        kWarning() << "filteragent: invalid mimetype" << job->mimeType() << "passed to FilterAgent::processItem()";
-        return Akonadi::Filter::Agent::ErrorInvalidParameter;
-      }
-
-      // apply each filter
-      foreach( FilterEngine * engine, *filterChain )
-      {
-        // Check mimetype first
-        if( !mimeTypePtr->is( engine->mimeType() ) )
-        {
-          kDebug() << "filteragent: item with mimetype '" << job->mimeType() <<
-              "' appeared in collection " << job->collectionId() <<
-              " but filter engine with id " << engine->id() <<
-              " attached to the collection handles mimetype '" << engine->mimeType() <<
-              "which doesn't match";
-          continue;
-        }
-
-        if( !engine->run( item ) )
-        {
-          if( engine->errorStack().hasErrors() )
-          {
-            engine->errorStack().dumpErrorMessage(
-                i18n(
-                    "Execution of filter '%1' failed for item '%2'",
-                    engine->nameOrId(),
-                    job->itemId()
-                  )
-              );
-            return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
-          }
-
-          break; // no error, but stop processing
-        }
-      }
-
-      return Akonadi::Filter::Agent::Success;
-    }
-    break;
-    case FilterJob::ApplySpecificFilter:
-    {
-      kDebug() << "filteragent: will be processing item" << job->itemId() << "and unconditionally applying filter" << job->filterId();
-
-      FilterEngine * engine = mEngines.value( job->filterId(), 0 );
-      if( !engine )
-      {
-        kDebug() << "filteragent: filter engine" << job->filterId() << "is gone..." << job->collectionId();
-        return Akonadi::Filter::Agent::ErrorNoSuchFilter; // no such filter
-      }
-
-      Akonadi::Item item( job->itemId() );
-
-      if( !engine->run( item ) )
-      {
-        if( engine->errorStack().hasErrors() )
-        {
-            engine->errorStack().dumpErrorMessage(
-                i18n(
-                    "Execution of filter '%1' failed for item '%2'",
-                    engine->nameOrId(),
-                    job->itemId()
-                  )
-              );
-          return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
-        }
-      }
-
-      return Akonadi::Filter::Agent::Success;
-    }
-    break;
-    default:
-      Q_ASSERT_X( false, __FUNCTION__, "Unhandled FilterJob::Type" );
-    break;
+    kDebug() << "filteragent: filter chain for collection" << job->collectionId() << "is gone...";
+    return Akonadi::Filter::Agent::ErrorNoSuchFilter; // no chain for this collection
   }
 
-  Q_ASSERT_X( false, __FUNCTION__, "This point should never be reached" );
-  return Akonadi::Filter::Agent::Success; // should be never reached though
+  Q_ASSERT( filterChain->count() > 0 );
+
+  Akonadi::Item item( job->itemId() );
+  Akonadi::Collection collection( job->collectionId() );
+
+  // We don't use MimeTypeChecker since we'd need to create one for each engine
+  // and resolve the mimeType multiple times. The KMimeType api is more "direct" here.
+
+  KMimeType::Ptr mimeTypePtr = KMimeType::mimeType( job->mimeType(), KMimeType::ResolveAliases );
+  if( mimeTypePtr.isNull() )
+  {
+    kWarning() << "filteragent: invalid mimetype" << job->mimeType() << "passed to FilterAgent::processItem()";
+    return Akonadi::Filter::Agent::ErrorInvalidParameter;
+  }
+
+  // apply each filter
+  foreach( FilterEngine * engine, *filterChain )
+  {
+    // Check mimetype first
+    if( !mimeTypePtr->is( engine->mimeType() ) )
+    {
+      kDebug() << "filteragent: item with mimetype '" << job->mimeType() <<
+          "' appeared in collection " << job->collectionId() <<
+          " but filter engine with id " << engine->id() <<
+          " attached to the collection handles mimetype '" << engine->mimeType() <<
+          "which doesn't match";
+      continue;
+    }
+
+    if( !engine->run( item ) )
+    {
+      if( engine->errorStack().hasErrors() )
+      {
+        engine->errorStack().dumpErrorMessage(
+            i18n(
+                "Execution of filter '%1' failed for item '%2'",
+                engine->nameOrId(),
+                job->itemId()
+              )
+          );
+        return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
+      }
+
+      break; // no error, but stop processing
+    }
+  }
+
+  return Akonadi::Filter::Agent::Success;
+}
+
+Akonadi::Filter::Agent::Status FilterAgent::runApplySpecificFilterJob( FilterJob * job, Akonadi::Filter::ErrorStack &errorStack )
+{
+  kDebug() << "filteragent: will be processing item" << job->itemId() << "and unconditionally applying filter" << job->filterId();
+
+  FilterEngine * engine = mEngines.value( job->filterId(), 0 );
+  if( !engine )
+  {
+    kDebug() << "filteragent: filter engine" << job->filterId() << "is gone..." << job->collectionId();
+    errorStack.pushError( i18n( "Filter engine with id '%1' does not exist", job->filterId() ) );
+    return Akonadi::Filter::Agent::ErrorNoSuchFilter; // no such filter
+  }
+
+  Akonadi::Item item( job->itemId() );
+
+  if( !engine->run( item ) )
+  {
+    if( engine->errorStack().hasErrors() )
+    {
+      QString err = i18n(
+          "Execution of filter '%1' failed for item '%2'",
+          engine->nameOrId(),
+          job->itemId()
+        );
+
+      engine->errorStack().dumpErrorMessage( err );
+      errorStack.pushErrorStack( engine->errorStack() );
+      errorStack.pushError( err );
+      return Akonadi::Filter::Agent::ErrorFilterExecutionFailed;
+    }
+  }
+
+  return Akonadi::Filter::Agent::Success;
 }
 
 void FilterAgent::slotRunOneJob()
@@ -285,26 +273,32 @@ void FilterAgent::slotRunOneJob()
 
   mBusy = true; // protect agains local event loops inside the filters
 
-  Akonadi::Filter::Agent::Status res = runJob( job );
+  Akonadi::Filter::Agent::Status res;
 
   mBusy = false;
 
   switch( job->type() )
   {
     case FilterJob::ApplyFilterChainByCollection:
+      res = runApplyFilterChainByCollectionJob( job );
+
+      Q_ASSERT( !job->emitJobTerminated() );
       // This was a normal preprocessor job from processItem(): we have one at a time of them
       terminateProcessing( ( res == Akonadi::Filter::Agent::Success ) ? ProcessingCompleted : ProcessingFailed );
     break;
     case FilterJob::ApplySpecificFilter:
-      // This was an "apply filter now" job
+    {
+      Akonadi::Filter::ErrorStack errorStack;
+      res = runApplySpecificFilterJob( job, errorStack );
+
+      if( job->emitJobTerminated() )
+        emit jobTerminated( job->id(), res, errorStack.errorMessage() );
+    }
     break;
     default:
       Q_ASSERT_X( false, __FUNCTION__, "Unhandled FilterJob::Type" );
     break;
   }
-
-  if( job->emitJobTerminated() )
-    emit jobTerminated( job->id(), res );
 
   delete job;
 

@@ -656,7 +656,7 @@ bool DataRfc822::fetchHeader()
   if( job->items().count() < 1 )
   {
     kWarning() << "Fetching the message via" << Akonadi::MessagePart::Header << "failed: the job didn't return an item";
-    pushError( i18n( "Could not retrieve message body" ) );
+    pushError( i18n( "Could not retrieve message header: the message doesn't exist" ) );
     return false;
   }
 
@@ -694,15 +694,15 @@ bool DataRfc822::fetchBody()
 
   if( !job->exec() )
   {
-    kWarning() << "Fetching the message via" << Akonadi::MessagePart::Header << "failed with error '" << job->errorString() << "'";
+    kWarning() << "Fetching the message failed with error '" << job->errorString() << "'";
     pushError( job->errorString() );
     return false;
   }
 
   if( job->items().count() < 1 )
   {
-    kWarning() << "Fetching the message via" << Akonadi::MessagePart::Header << "failed: the job didn't return an item";
-    pushError( i18n( "Could not retrieve message body" ) );
+    kWarning() << "Fetching the message failed: the job didn't return an item";
+    pushError( i18n( "Could not retrieve message body: the message doesn't exist" ) );
     return false;
   }
 
