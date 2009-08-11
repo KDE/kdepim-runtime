@@ -39,6 +39,7 @@ class Filter;
 namespace Akonadi {
 namespace Filter {
   class ComponentFactory;
+  class ErrorStack;
 
   namespace UI {
     class EditorFactory;
@@ -87,7 +88,7 @@ protected:
   void enableDisableButtons();
 
 protected slots:
-  void slotFilteringJobTerminated( qlonglong jobId, int status, const QString &executionErrorDetail );
+  void slotFilteringJobTerminated( qlonglong jobId, int status, const Akonadi::Filter::ErrorStack &errorStack );
   void slotListFilters();
   void slotNewFilterLBBButtonClicked();
   void slotNewFilterTBBButtonClicked();

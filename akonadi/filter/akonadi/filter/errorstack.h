@@ -28,6 +28,7 @@
 
 #include <akonadi/filter/config-akonadi-filter.h>
 
+#include <QtDBus/QDBusArgument>
 #include <QtCore/QList>
 #include <QtCore/QPair>
 #include <QtCore/QString>
@@ -52,11 +53,19 @@ namespace Filter
 class AKONADI_FILTER_EXPORT ErrorStack
 {
 public:
+  typedef QPair< QString, QString > Descriptor;
+
+public:
 
   /**
    * Creates an empty ErrorStack.
    */
   ErrorStack();
+
+  /**
+   * Creates an exact copy of the ErrorStack src.
+   */
+  ErrorStack( const ErrorStack &src );
 
   /**
    * Destroy the ErrorStack and all the erroneous errors it contains.
@@ -70,7 +79,7 @@ private:
    * The first element in the pair contains the location of the error,
    * the second element contains the description.
    */
-  QList< QPair< QString, QString > > mErrorList;
+  QList< Descriptor > mErrorList;
 
 public:
 
@@ -80,9 +89,17 @@ public:
    * The first element in the pair contains the location of the error,
    * the second element contains the description.
    */
-  const QList< QPair< QString, QString > > & errors() const
+  const QList< Descriptor > & errors() const
   {
     return mErrorList;
+  }
+
+  /**
+   * Sets the whole internal stack of errors at once.
+   */
+  void setErrors( const QList< Descriptor > &errors )
+  {
+    mErrorList = errors;
   }
 
   /**
@@ -138,10 +155,49 @@ public:
    */
   void dumpErrorMessage( const QString &topError = QString() ) const;
 
+  /**
+   * Make this ErrorStack be an exact copy of the ErrorStack src.
+   * Returns a reference to this ErrorStack.
+   */
+  ErrorStack & operator = (const ErrorStack & src );
+
+  /**
+   * Registers this class's metatype. You need to call this if you're
+   * using this class as a queued signal/slot parameter or throw it
+   * into D-Bus calls.
+   */
+  static void registerMetaType();
+
 }; // class ErrorStack
 
 } // namespace Filter
 
 } // namespace Akonadi
+
+/**
+ * Marshals an ErrorStack::Descriptor into a QDBusArgument. Needed by the Qt D-Bus system.
+ */
+QDBusArgument & operator << ( QDBusArgument &arg, const Akonadi::Filter::ErrorStack::Descriptor &d );
+
+/**
+ * Extracts an ErrorStack::Descriptor from a QDBusArgument. Needed by the Qt D-Bus system.
+ */
+const QDBusArgument & operator >> ( const QDBusArgument &arg, Akonadi::Filter::ErrorStack::Descriptor &d );
+
+
+/**
+ * Marshals an ErrorStack into a QDBusArgument. Needed by the Qt D-Bus system.
+ */
+QDBusArgument & operator << ( QDBusArgument &arg, const Akonadi::Filter::ErrorStack &stack );
+
+/**
+ * Extracts an ErrorStack from a QDBusArgument. Needed by the Qt D-Bus system.
+ */
+const QDBusArgument & operator >> ( const QDBusArgument &arg, Akonadi::Filter::ErrorStack &stack );
+
+
+// D-Bus signature: (asas)
+Q_DECLARE_METATYPE( Akonadi::Filter::ErrorStack )
+
 
 #endif //!_AKONADI_FILTER_ERRORSTACK_H_

@@ -55,7 +55,10 @@
     <signal name="jobTerminated">
       <arg name="jobId" type="x" direction="out"/>
       <arg name="status" type="i" direction="out"/>
-      <arg name="executionErrorDetails" type="s" direction="out"/>
+      <arg name="errorStack" type="(asas)" direction="out"/>
+      <annotation name="com.trolltech.QtDBus.QtTypeName.Out2" value="const Akonadi::Filter::ErrorStack &amp;"/>
+      <!-- In2 annotation for compatability with qdbusxml2cpp from Qt4.3.0 -->
+      <annotation name="com.trolltech.QtDBus.QtTypeName.In2" value="const Akonadi::Filter::ErrorStack &amp;"/>
     </signal>
   </interface>
 </node>

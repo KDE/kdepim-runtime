@@ -40,6 +40,7 @@ void registerMetaTypes()
 {
   qDBusRegisterMetaType< QList< Collection::Id > >();
   qDBusRegisterMetaType< QList< QVariant > >();
+  ErrorStack::registerMetaType();
 }
 
 QString statusDescription( Status status )

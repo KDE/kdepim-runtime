@@ -239,10 +239,10 @@ Q_SIGNALS:
    *
    * @param jobId The unique identifier of the job that terminated. 
    * @param status An Akonadi::Filter::Agent::Status code
-   * @param executionErrorDetail A string describing error details if status is not Success
+   * @param errorStack An error stack describing error details if status is not Success
    *              and an empty string otherwise.
    */
-  void jobTerminated( qlonglong jobId, int status, const QString &executionErrorDetail );
+  void jobTerminated( qlonglong jobId, int status, const Akonadi::Filter::ErrorStack &errorStack );
 
 protected:
 

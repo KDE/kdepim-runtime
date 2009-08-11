@@ -71,7 +71,7 @@ MainWindow::MainWindow()
 
   mFilterAgent = new OrgFreedesktopAkonadiFilterAgentInterface( QLatin1String( "org.freedesktop.Akonadi.Agent.akonadi_filter_agent" ), QLatin1String( "/" ), QDBusConnection::sessionBus() );
 
-  connect( mFilterAgent, SIGNAL( jobTerminated( qlonglong, int, const QString & ) ), this, SLOT( slotFilteringJobTerminated( qlonglong, int, const QString & ) ) );
+  connect( mFilterAgent, SIGNAL( jobTerminated( qlonglong, int, const Akonadi::Filter::ErrorStack & ) ), this, SLOT( slotFilteringJobTerminated( qlonglong, int, const Akonadi::Filter::ErrorStack & ) ) );
 
   mComponentFactories.insert( QLatin1String( "message/rfc822" ), new Akonadi::Filter::ComponentFactoryRfc822() );
   mComponentFactories.insert( QLatin1String( "message/news" ), new Akonadi::Filter::ComponentFactoryRfc822() );
@@ -587,7 +587,7 @@ void MainWindow::slotApplyFilterToItemButtonClicked()
   enableDisableButtons();
 }
 
-void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status, const QString &executionErrorDetail )
+void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status, const Akonadi::Filter::ErrorStack &errorStack )
 {
   if( jobId != mPendingFilteringJobId )
     return;
@@ -599,16 +599,9 @@ void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status, const 
   if( status == Akonadi::Filter::Agent::Success )
     KMessageBox::information( this, i18n( "Filter applied succesfully" ), i18n( "Filter application complete" ) );
   else {
-    Akonadi::Filter::ErrorStack stack; 
-
-    QString fixedError = executionErrorDetail;
-    fixedError.replace( QChar( '\n' ), QString::fromAscii( "<br>" ), Qt::CaseSensitive );
-
     KMessageBox::error(
         this,
-        QString::fromAscii( "<p>%1</p><p>%2</p>" )
-            .arg( Akonadi::Filter::Agent::statusDescription( static_cast< Akonadi::Filter::Agent::Status >( status ) ) )
-            .arg( fixedError ),
+        errorStack.htmlErrorMessage( Akonadi::Filter::Agent::statusDescription( static_cast< Akonadi::Filter::Agent::Status >( status ) ) ),
         i18n( "Filter application failed" )
       );
   }

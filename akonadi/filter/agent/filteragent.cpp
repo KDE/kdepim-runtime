@@ -114,7 +114,11 @@ void FilterAgent::slotAbortRequested()
       case FilterJob::ApplySpecificFilter:
         // This was an "apply filter now" job
         if( job->emitJobTerminated() )
-          emit jobTerminated( job->id(), Akonadi::Filter::Agent::ErrorJobAborted, i18n( "Job aborted by remote request" ) );
+        {
+          Akonadi::Filter::ErrorStack err;
+          err.pushError( i18n( "Job aborted by remote request" ) );
+          emit jobTerminated( job->id(), Akonadi::Filter::Agent::ErrorJobAborted, err );
+        }
       break;
       default:
         Q_ASSERT_X( false, __FUNCTION__, "Unhandled FilterJob::Type" );
@@ -293,7 +297,7 @@ void FilterAgent::slotRunOneJob()
       res = runApplySpecificFilterJob( job, errorStack );
 
       if( job->emitJobTerminated() )
-        emit jobTerminated( job->id(), res, errorStack.errorMessage() );
+        emit jobTerminated( job->id(), res, errorStack );
     }
     break;
     default:
@@ -833,5 +837,7 @@ void FilterAgent::saveFilterMappings()
 
 void FilterAgent::configure( WId windowId )
 {
+  Q_UNUSED( windowId );
+
   KProcess::startDetached( QLatin1String( "akonadi_filter_console" ) );
 }

@@ -27,7 +27,57 @@
 
 #include <KLocale>
 
+#include <QtDBus/QDBusMetaType>
 #include <QtCore/QDebug>
+
+
+QDBusArgument & operator << ( QDBusArgument &arg, const Akonadi::Filter::ErrorStack &stack )
+{
+  arg.beginStructure();
+  QStringList locations;
+  QStringList errors;
+  QList< Akonadi::Filter::ErrorStack::Descriptor > descriptors = stack.errors();
+  foreach( Akonadi::Filter::ErrorStack::Descriptor err, descriptors )
+  {
+    locations << err.first;
+    errors << err.second;
+  }
+  arg << locations;
+  arg << errors;
+  arg.endStructure();
+  return arg;
+}
+
+const QDBusArgument & operator >> ( const QDBusArgument &arg, Akonadi::Filter::ErrorStack &stack )
+{
+  arg.beginStructure();
+
+  QStringList locations;
+  QStringList errors;
+
+  QList< Akonadi::Filter::ErrorStack::Descriptor > descriptors;
+
+
+  arg >> locations;
+  arg >> errors;
+
+  QStringList::Iterator it1 = locations.begin();
+  QStringList::Iterator it2 = errors.begin();
+
+  while( ( it1 != locations.end() ) && ( it2 != errors.end() ) )
+  {
+    descriptors.append( qMakePair( *it1, *it2 ) );
+    ++it1;
+    ++it2;
+  }
+
+  stack.setErrors( descriptors );
+
+  arg.endStructure();
+
+  return arg;
+}
+
 
 namespace Akonadi
 {
@@ -38,8 +88,26 @@ ErrorStack::ErrorStack()
 {
 }
 
+ErrorStack::ErrorStack( const ErrorStack &src )
+  : mErrorList( src.mErrorList )
+{
+}
+
+
 ErrorStack::~ErrorStack()
 {
+}
+
+ErrorStack & ErrorStack::operator = (const ErrorStack & src )
+{
+  mErrorList = src.mErrorList;
+  return *this;
+}
+
+void ErrorStack::registerMetaType()
+{
+  qRegisterMetaType< ErrorStack >();
+  qDBusRegisterMetaType< ErrorStack >();
 }
 
 void ErrorStack::clearErrors()
@@ -54,8 +122,8 @@ void ErrorStack::pushError( const QString &description, const QString &location 
 
 void ErrorStack::pushErrorStack( const ErrorStack &stack )
 {
-  const QList< QPair< QString, QString > > & errorList = stack.errors();
-  QPair< QString, QString > error;
+  const QList< Descriptor > & errorList = stack.errors();
+  Descriptor error;
   foreach( error, errorList )
     pushError( error.second, error.first );
 }
@@ -69,7 +137,7 @@ QString ErrorStack::errorMessage( const QString &topError ) const
 
   QString stack;
 
-  QPair< QString, QString > error;
+  Descriptor error;
 
   int idx = 0;
 
@@ -102,7 +170,7 @@ QString ErrorStack::htmlErrorMessage( const QString &topError ) const
 
   int idx = 0;
 
-  QPair< QString, QString > error;
+  Descriptor error;
   foreach( error, mErrorList )
   {
     if( error.first.isEmpty() )
