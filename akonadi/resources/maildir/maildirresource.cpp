@@ -220,19 +220,22 @@ Collection::List listRecursive( const Collection &root, const Maildir &dir )
 
 void MaildirResource::retrieveCollections()
 {
-  Maildir dir( Settings::self()->path() );
+  Maildir dir( Settings::self()->path(), Settings::self()->topLevelIsContainer() );
   QString errMsg;
   if ( !dir.isValid( errMsg ) ) {
     emit error( errMsg );
     collectionsRetrieved( Collection::List() );
+    return;
   }
 
   Collection root;
-  root.setParent( Collection::root() );
+  root.setParentCollection( Collection::root() );
   root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << "message/rfc822" << Collection::mimeType();
+  mimeTypes << Collection::mimeType();
+  if ( !Settings::self()->topLevelIsContainer() )
+    mimeTypes << "message/rfc822";
   root.setContentMimeTypes( mimeTypes );
 
   Collection::List list;
