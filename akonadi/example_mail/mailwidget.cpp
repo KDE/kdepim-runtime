@@ -204,7 +204,7 @@ void MailWidget::renderMail(const QModelIndex &idx)
   Item i = itemList->data( idx, EntityTreeModel::ItemRole ).value< Item >();
   if ( i.isValid() )
   {
-    if (!i.hasPayload<MessagePtr>());
+    if (!i.hasPayload<MessagePtr>())
     {
       kWarning() << "not a MessagePtr" << i.id() << i.remoteId() << i.mimeType();
       return;
