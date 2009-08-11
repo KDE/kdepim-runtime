@@ -1,0 +1,9 @@
+[Misc]
+Name=QImage Serializer
+Name[x-test]=xxQImage Serializerxx
+Comment=An Akonadi serializer plugin for QImage objects
+Comment[x-test]=xxAn Akonadi serializer plugin for QImage objectsxx
+
+[Plugin]
+Type=image/bmp,image/gif,image/jpg,image/png,image/pbm,image/pgm,image/ppm,image/tiff,image/xbm,image/xpm
+X-KDE-Library=akonadi_serializer_qimage
