@@ -61,4 +61,38 @@ void MailSerializerPluginTest::testMailPlugin()
   QCOMPARE( data, serialized );
 }
 
+void MailSerializerPluginTest::testMessageIntegrity()
+{
+  // A message that will be slightly modified if KMime::Content::assemble() is
+  // called.  We want to avoid this, because it breaks signatures.
+  QByteArray serialized = 
+    "from: sender@example.com\n"
+    "to: receiver@example.com\n"
+    "Subject: Serializer Test\n"
+    "Date: Thu, 30 Jul 2009 13:46:31 +0300\n"
+    "MIME-Version: 1.0\n"
+    "Content-type: text/plain; charset=us-ascii\n"
+    "\n"
+    "Bla bla bla.";
+
+  // Deserialize.
+  Item item;
+  item.setMimeType( "message/rfc822" );
+  item.setPayloadFromData( serialized );
+
+  QVERIFY( item.hasPayload<MessagePtr>() );
+  MessagePtr msg = item.payload<MessagePtr>();
+  QVERIFY( msg != 0 );
+
+  kDebug() << "original data:" << serialized;
+  kDebug() << "message content:" << msg->encodedContent();
+  QCOMPARE( msg->encodedContent(), serialized );
+
+  // Serialize.
+  QByteArray data = item.payloadData();
+  kDebug() << "original data:" << serialized;
+  kDebug() << "serialized data:" << data;
+  QCOMPARE( data, serialized );
+}
+
 #include "mailserializerplugintest.moc"
