@@ -1,0 +1,46 @@
+
+{% extends "base.html" %}
+
+{% block style %}
+{{ super }}
+
+table { margin-left: 20px; }
+div.content { margin-left: 20px; }
+table.blackstrip { margin-top: 10px; margin-bottom: 0px; }
+table { margin-left: 20px; }
+div.content { margin-left: 20px; }
+{% endblock %}
+
+{% block header %}
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr>
+<td align="left" valign="top" width="30%"><img src="{% media_finder "qtlogo-2009.png" %}" align="left" border="0" /></td>
+<td valign="top" width="70%"></td></tr>
+</tr></table>
+
+<table bgcolor="#363534" width="100%" class="blackstrip" ><tr><td>&nbsp;</td></tr></table>
+
+<h1 align="center">{{ subject }}</h1><br />
+
+<table align="center" cellpadding="2" cellspacing="1" border="0" width="100%">
+<tr valign="top" >
+  <th width="33%"><img src="{% media_finder "im-user.png" %}" /></th>
+  <th width="33%"><img src="{% media_finder "mail-receive.png" %}" /></th>
+  <th width="33%"><img src="{% media_finder "xclock.png" %}" /></th>
+</tr>
+<tr style="color: #0046AD; font-weight: bold;">
+  <td valign="top"><center>
+  {{ from }}
+  </center></td>
+  <td valign="top"><center>
+  {{ to }}
+  </center></td>
+  <td valign="top"><center>
+  {{ date|date:"dd MMM yyyy" }}<br />
+  {{ date|time:"hh:mm" }}<br />
+  {{ date|timesince }}
+  </center></td>
+</tr>
+</table>
+<br />
+
+{% endblock %}

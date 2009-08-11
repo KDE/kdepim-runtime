@@ -1,10 +1,43 @@
-<html>
-<body>
-<h1 style="color:blue;" >{{ subject }}</h1>
-<h2>From: {{ from }} ({{ date }})</h2>
-<div>
-{{ messageContent|safe }}
-</div>
 
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block header %}
+
+<table bgcolor="#afd34d" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="30%"><img src="{% media_finder "qtlogo-2007.png" %}" align="left" border="0" /></td>
+<td valign="top" width="70%">
+</td>
+</tr>
+</tr></table>
+<br />
+<h1 align="center">{{ subject }}<br />
+</h1>
+
+<table align="center" cellpadding="2" cellspacing="1" border="0" width="100%" bgcolor="#e5e5e5">
+<tr valign="top" bgcolor="#A6CE39" >
+  <th width="33%">From</th>
+  <th width="33%">To</th>
+  <th width="33%">Date</th>
+</tr>
+<tr bgcolor="#ababab" style="color:white">
+  <td valign="top"><center>
+  {{ from }}
+  </center></td>
+
+  <td valign="top"><center>
+  {{ to }}
+  </center></td>
+
+  <td valign="top"><center>
+  {{ date|date:"dd MMM yyyy" }}<br />
+  {{ date|time:"hh:mm" }}<br />
+  {{ date|timesince }}
+  </center></td>
+
+</tr>
+
+</table>
+
+{% endblock %}
+

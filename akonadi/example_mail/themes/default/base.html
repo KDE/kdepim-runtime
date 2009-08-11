@@ -1,0 +1,26 @@
+<html>
+<head>
+<style>
+{% block style %}
+  h1, h2, h3 { font-family: "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif;
+  font-weight: normal }
+  body { background: #ffffff; color: #333333; margin: 10px }
+  div.content { margin-left: 10px; }
+{% endblock %}
+</style>
+</head>
+<body>
+
+{% block header %}
+{% endblock header %}
+
+<br />
+<div class="content" >
+{{ messageContent|safe }}
+</div>
+
+{% block footer %}
+{% endblock footer %}
+
+</body>
+</html>
