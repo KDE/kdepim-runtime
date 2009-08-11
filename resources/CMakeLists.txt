@@ -34,6 +34,7 @@ add_subdirectory( knut )
 add_subdirectory( kolabproxy )
 add_subdirectory( localbookmarks )
 add_subdirectory( maildir )
+add_subdirectory( mailtransport_dummy )
 add_subdirectory( mbox )
 add_subdirectory( microblog )
 
