@@ -173,8 +173,17 @@ bool Maildir::isValid() const
 
 bool Maildir::isValid( QString &error ) const
 {
-    if ( d->accessIsPossible( error ) ) {
-        return true;
+    if ( !d->isRoot ) {
+      if ( d->accessIsPossible( error ) ) {
+          return true;
+      }
+    } else {
+      foreach ( const QString &sf, subFolderList() ) {
+        const Maildir subMd = Maildir( path() + '/' + sf );
+        if ( !subMd.isValid( error ) )
+          return false;
+      }
+      return true;
     }
     return false;
 }
@@ -235,7 +244,7 @@ bool Maildir::removeSubFolder( const QString& folderName )
     return KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + '/' + folderName );
 }
 
-Maildir Maildir::subFolder( const QString& subFolder )
+Maildir Maildir::subFolder( const QString& subFolder ) const
 {
     if ( isValid() ) {
         // make the subdir dir

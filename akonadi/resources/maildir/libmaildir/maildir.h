@@ -31,6 +31,14 @@ namespace KPIM {
 class MAILDIR_EXPORT Maildir
 {
 public:
+    /**
+      Create a new Maildir object.
+      @param path The path to the maildir, if @p isRoot is @c false, that's the path
+      to the folder containing the cur/new/tmp folders, if @p isRoot is @c true this
+      is the path to a folder containing a number of maildirs.
+      @param isRoot Indicate whether this is a maildir containing mails and various
+      sub-folders or a container only containing maildirs.
+    */
     explicit Maildir( const QString& path = QString(), bool isRoot = false );
     /* Copy constructor */
     Maildir(const Maildir & rhs);
@@ -95,7 +103,7 @@ public:
      * exists, the Maildir object will be valid, otherwise you can call create()
      * on it, to make a subfolder with that name.
      */
-    Maildir subFolder( const QString& folderName );
+    Maildir subFolder( const QString& folderName ) const;
 
     /**
      * Returns the size of the file in the maildir with the given @param key.

@@ -33,11 +33,13 @@ class ConfigDialog : public KDialog
     ConfigDialog( QWidget *parent = 0 );
 
   private slots:
+    void checkPath();
     void save();
 
   private:
     Ui::ConfigDialog ui;
     KConfigDialogManager* mManager;
+    bool mToplevelIsContainer;
 };
 
 #endif
