@@ -47,6 +47,12 @@ RuleList::~RuleList()
   qDeleteAll( mRuleList );
 }
 
+void RuleList::clear()
+{
+  qDeleteAll( mRuleList );
+  mRuleList.clear();
+}
+
 bool RuleList::isRuleList() const
 {
   return true;

@@ -38,13 +38,58 @@
 
 namespace Akonadi
 {
+
+/**
+ * @namespace Akonadi::Filter
+ * @brief The root namespace of the Akonadi Filtering Framework
+ */
 namespace Filter
 {
 
 /**
- * A complete filtering program.
+ * @class Akonadi::Filter::Program
+ * @brief A complete filtering program.
  *
  * The program is made up of a list of rules that are applied in sequence.
+ *
+ * In terms of C++ classes this is a tree similar to
+ *
+ * @code
+ *   Program
+ *      Rule                 ( see rule.h )
+ *         Condition
+ *            Condition      ( see condition.h )
+ *            Condition
+ *               Condition
+ *            Condition
+ *            ...
+ *         Action
+ *         Action
+ *         ...
+ *      Rule
+ *         Condition
+ *         Condition
+ *         ...
+ *         Action
+ *         ...
+ *      ...
+ * @endcode
+ *
+ * You have three ways to get a complete filtering program object in memory.
+ *
+ * The first way is to simply build up the tree by joining instances
+ * of the components above. You can do it, altough it's not reccomended.
+ *
+ * The second way is to use a IO::Decoder subclass to decode a filtering
+ * program stored on disk. IO::SieveDecoder is the one that currently works.
+ *
+ * The third way is to link to the akonadi-filter-ui library and fire up
+ * an UI::ProgramEditor widget. This one will allow visual editing of the filter
+ * and return you a nice Program object in memory.
+ *
+ * This class inherits Action::RuleList and in particular it inherits its
+ * execute() method which is the "core" filtering call. Via execute() you will
+ * "throw" an instance of Data through the filtering tree.
  */
 class AKONADI_FILTER_EXPORT Program : public Action::RuleList, public PropertyBag
 {

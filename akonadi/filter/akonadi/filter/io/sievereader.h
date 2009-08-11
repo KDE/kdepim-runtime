@@ -26,10 +26,10 @@
 #ifndef _AKONADI_FILTER_IO_PRIVATE_SIEVEREADER_H_
 #define _AKONADI_FILTER_IO_PRIVATE_SIEVEREADER_H_
 
-///
-/// This file is internal and shouldn't be installed as public API
-/// as it depends on the ksieve headers.
-///
+//
+// This file is internal and shouldn't be installed as public API
+// as it depends on the ksieve headers.
+//
 
 #include <akonadi/filter/config-akonadi-filter.h>
 

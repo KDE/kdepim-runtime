@@ -39,6 +39,10 @@ namespace Filter
 
 class Program;
 
+/**
+ * @namespace Akonadi::Filter::IO
+ * @brief Filter storage I/O classes and routines.
+ */
 namespace IO
 {
 

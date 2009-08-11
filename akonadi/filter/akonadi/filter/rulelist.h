@@ -44,10 +44,31 @@ class Data;
 namespace Action
 {
 
+/**
+ * @class Akonadi::Filter::Action::RuleList
+ * @brief A list of Rule objects to be applied in sequence.
+ *
+ * The RuleList is either meant to be a toplevel object (see @ref Program)
+ * or a child Action of a Rule. This allows infinite nesting in the tree
+ * and thus filtering programs trees of arbitrary complexity.
+ *
+ * To execute a RuleList you usually throw a Data object into the
+ * execute() method which will apply each contained Rule in turn
+ * until it runs out of rules, it encounters an error or one of the
+ * action returns SuccessAndStop.
+ */
 class AKONADI_FILTER_EXPORT RuleList : public Base
 {
 public:
+  /**
+   * Create a rule with the specified parent Component.
+   * The parent will be usually a Rule instance.
+   */
   RuleList( Component * parent );
+
+  /**
+   * Destroy the Rule object and all the children.
+   */
   ~RuleList();
 
 protected:
@@ -69,27 +90,21 @@ public:
     return &mRuleList;
   }
 
-  void clear()
-  {
-    mRuleList.clear();
-  }
+  /**
+   * Remove and delete all the rules contained inside the rule list.
+   */
+  void clear();
 
+  /**
+   * Add a rule to this RuleList. The ownership of the Rule passes
+   * to this object.
+   *
+   * @param rule The Rule object to add. Must not be null.
+   */
   void addRule( Rule * rule )
   {
     mRuleList.append( rule );
   }
-
-  virtual bool isRuleList() const;
-
-  /**
-   * Returns false. The rule list *COULD* actually
-   * contain a terminal leaf that is reached unconditionally
-   * but this is a particular case that is hard to detect with
-   * a simple code. If you really need to decide if a rule list is
-   * terminal then drop me a mail at s dot stefanek at gmail dot com
-   * and I'll see what can be done about it :D
-   */
-  virtual bool isTerminal() const;
 
   /**
    * Runs this filtering rule list on the specified filtering Data set.
@@ -101,9 +116,32 @@ public:
    */
   virtual ProcessingStatus execute( Data * data );
 
+  /**
+   * Reimplemented from Component: returns true.
+   */
+  virtual bool isRuleList() const;
+
+  /**
+   * Reimplemented from Action: returns false. The rule list *COULD* actually
+   * contain a terminal leaf that is reached unconditionally
+   * but this is a particular case that is hard to detect with
+   * a simple code. If you really need to decide if a rule list is
+   * terminal then drop me a mail at s dot stefanek at gmail dot com
+   * and I'll see what can be done about it :D
+   */
+  virtual bool isTerminal() const;
+
+  /**
+   * Debugging aid.
+   */
   virtual void dumpRuleList( const QString &prefix );
+
+  /**
+   * Reimplemented from Component. Debugging aid.
+   */
   virtual void dump( const QString &prefix );
-};
+
+}; // class RuleList
 
 } // namespace Action
 

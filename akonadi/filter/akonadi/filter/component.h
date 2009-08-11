@@ -38,7 +38,8 @@ namespace Filter
 {
 
 /**
- * The base class of the nodes of a filtering tree.
+ * @class Akonadi::Filter::Component
+ * @brief The base class of the nodes of a filtering tree.
  */
 class AKONADI_FILTER_EXPORT Component
 {

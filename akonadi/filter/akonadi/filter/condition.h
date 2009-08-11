@@ -43,9 +43,30 @@ class DataMemberDescriptor;
 class FunctionDescriptor;
 class OperatorDescriptor;
 
+/**
+ * @namespace Akonadi::Filter::Condition
+ * @brief The namespace containing the conditions a filter can verify
+ *
+ * Each Rule inside a Program has a condition which must be matched
+ * in order for the Rule to apply. The conditions can be very simple
+ * (a single test or even an "always true" test) or very complex
+ * (a multilevel tree).
+ *
+ *
+ * Some of the conditions are builtin while others are provided
+ * by the context-specific implementation. At the time of writing the builtins
+ * are the True condition (always matches), the False condition (never matches)
+ * the Not conditon (which inverts the match of a child condition), the
+ * And condition (which matches if all its children match) and the Or condition
+ * (which matches if at least one of the children matches). The PropertyTest
+ * condition is a skeleton for implementing the context-specific tests.
+ */
 namespace Condition
 {
 
+/**
+ * A rough classification of the condition types.
+ */
 enum ConditionType
 {
   ConditionTypeAnd,
@@ -57,67 +78,330 @@ enum ConditionType
   ConditionTypeUnknown // this is used only in the editor
 };
 
+/**
+ * @class Akonadi::Filter::Condition::Base
+ * @brief The base class of all the condition objects.
+ *
+ * This class contains pure virtuals which must
+ * be implemented by the real condition subclasses.
+ */
 class AKONADI_FILTER_EXPORT Base : public Component
 {
 public:
+
+  /**
+   * The possible results of the matches() function.
+   */
   enum MatchResult
   {
+    /**
+     * Condition matches, no error.
+     */
     ConditionMatches,
+
+    /**
+     * Condition does not match, no error.
+     */
     ConditionDoesNotMatch,
+
+    /**
+     * Error evaluating the condition, match undefined.
+     */
     ConditionMatchError
   };
 
-
-  Base( ConditionType type, Component * parent );
-  virtual ~Base();
-protected:
-  ConditionType mConditionType;
 public:
+
+  /**
+   * Create a condition with a specific type
+   * and parent Component (which will be either a Rule
+   * object or another Base subclass).
+   *
+   * @param type The condition type
+   * @param parent The parent Component
+   */
+  Base( ConditionType type, Component * parent );
+
+  /**
+   * Destroy the condition and all the children.
+   */
+  virtual ~Base();
+
+protected:
+
+  /**
+   * The real type of the condition. This is set to a
+   * specific value by the subclasses.
+   */
+  ConditionType mConditionType;
+
+public:
+
+  /**
+   * Reimplemented from Component: returns true.
+   */
   virtual bool isCondition() const;
 
+  /**
+   * Returns the type of this condition.
+   */
   ConditionType conditionType() const
   {
     return mConditionType;
   }
+
+  /**
+   * This method must be reimplemented in subclasses in order
+   * to verify the condition match on the specified Data object.
+   *
+   * If the specific implementation of the condition matches then
+   * the method must return ConditionMatches. If the condition doesn't
+   * match then it must return ConditionDoesNotMatch. If there is
+   * an error in the condition evaluation then the method must
+   * return ConditionMatchError. Quite simple.
+   *
+   * ConditionMatchError will stop the evaluation of the filter on
+   * this instance of Data.
+   *
+   * @param data The Data subclass on that the test has to be performed.
+   *             Must not be null.
+   */
   virtual MatchResult matches( Data * data ) = 0;
+
 }; // class Base
 
+
+/**
+ * @class Akonadi::Filter::Condition::True
+ * @brief A trivial always-true condition
+ */
+class AKONADI_FILTER_EXPORT True : public Base
+{
+public:
+
+  True( Component * parent );
+
+  virtual ~True();
+
+public:
+
+  /**
+   * Reimplemented from Condition::Base.
+   * Returns ConditionMatches, unconditionally.
+   */
+  virtual MatchResult matches( Data * data );
+
+  /**
+   * Reimplemented from Component. Debugging aid.
+   */
+  virtual void dump( const QString &prefix );
+
+}; // class True
+
+
+/**
+ * @class Akonadi::Filter::Condition::False
+ * @brief A trivial always-false condition
+ */
+class AKONADI_FILTER_EXPORT False : public Base
+{
+public:
+
+  False( Component * parent );
+
+  virtual ~False();
+
+public:
+
+  /**
+   * Reimplemented from Condition::Base.
+   * Returns ConditionDoesNotMatch, unconditionally.
+   */
+  virtual MatchResult matches( Data * data );
+
+  /**
+   * Reimplemented from Component. Debugging aid.
+   */
+  virtual void dump( const QString &prefix );
+
+}; // class False
+
+
+/**
+ * @class Akonadi::Filter::Condition::Multi
+ * @brief The base class of conditions with multiple children
+ *
+ * This is used as base class for the And and the Or conditions
+ * and still contains pure virtuals from Base.
+ */
 class AKONADI_FILTER_EXPORT Multi : public Base
 {
 public:
+
+  /**
+   * Create a Multi condition with a specific type
+   * and parent Component (which will be either a Rule
+   * object or another Base subclass).
+   *
+   * @param type The condition type
+   * @param parent The parent Component
+   */
   Multi( ConditionType type, Component * parent );
-  ~Multi();
+
+  /**
+   * Destroy the condition and all the children.
+   */
+  virtual ~Multi();
+
 protected:
+
+  /**
+   * The list of child conditions. Owned pointers.
+   */
   QList< Condition::Base * > mChildConditions;
+
 public:
+
+  /**
+   * Add a child condition. The ownership of the pointer
+   * is taken by this class.
+   *
+   * @param condition The child condition to add. Must not be null.
+   */
   void addChildCondition( Condition::Base * condition )
   {
     mChildConditions.append( condition );
   }
 
+  /**
+   * Returns the list of child conditions contained in this object.
+   * The returned pointer is never null.
+   */
   const QList< Condition::Base * > * childConditions()
   {
     return &mChildConditions;
   }
 
-  void dumpChildConditions( const QString &prefix );
-  virtual void dump( const QString &prefix );
-};
+  /**
+   * Removes all the child conditions, deleting them.
+   */
+  void clearChildConditions();
 
+  /**
+   * Debugging aid used by dump()
+   */
+  void dumpChildConditions( const QString &prefix );
+
+  /**
+   * Reimplemented from Component. Debugging aid.
+   * Dumps the condition and all the children on the console.
+   */
+  virtual void dump( const QString &prefix );
+
+}; // class Multi
+
+
+/**
+ * @class Akonadi::Filter::Condition::And
+ * @brief Matches if all the children match
+ */
+class AKONADI_FILTER_EXPORT And : public Multi
+{
+public:
+
+  And( Component * parent );
+  virtual ~And();
+
+public:
+
+  /**
+   * Reimplemented from Condition::Base.
+   * Returns ConditionMatches if all the children conditions match.
+   * This implementation is short circuiting: if the N-th child condition
+   * doesn't match then the following ones aren't tested at all.
+   *
+   * An And without child conditions always matches.
+   */
+  virtual MatchResult matches( Data * data );
+
+  /**
+   * Reimplemented from Component. Debugging aid.
+   */
+  virtual void dump( const QString &prefix );
+
+}; // class And
+
+
+/**
+ * @class Akonadi::Filter::Condition::Or
+ * @brief Matches if at least one child matches
+ */
+class AKONADI_FILTER_EXPORT Or : public Multi
+{
+public:
+
+  Or( Component * parent );
+  virtual ~Or();
+
+public:
+
+  /**
+   * Reimplemented from Condition::Base.
+   * Returns ConditionMatches if at least one child condition matches.
+   * This implementation is short circuiting: if the N-th child condition
+   * matches then the following ones aren't tested at all.
+   *
+   * An Or without child conditions never matches.
+   */
+  virtual MatchResult matches( Data * data );
+
+  /**
+   * Reimplemented from Component. Debugging aid.
+   */
+  virtual void dump( const QString &prefix );
+
+}; // class Or
+
+
+/**
+ * @class Not
+ * @brief Negates the result of a child condition
+ *
+ * The Not condition has a single child. The Not's implementation
+ * of the matches() function negates the result returned by
+ * a call to the child matches().
+ *
+ * A Not without a child condition never matches (as an empty
+ * condition is assumed to always match).
+ */
 class AKONADI_FILTER_EXPORT Not : public Base
 {
 public:
+
   Not( Component * parent );
-  ~Not();
+  virtual ~Not();
+
 protected:
+
+  /**
+   * The child condition of this Not. Owned pointer.
+   */
   Condition::Base * mChildCondition;
+
 public:
 
+  /**
+   * Returns the pointer to the child condition.
+   * The returned pointer may be null.
+   */
   Condition::Base * childCondition()
   {
     return mChildCondition;
   }
 
+  /**
+   * Releases the child condition without deleting it.
+   */
   Condition::Base * releaseChildCondition()
   {
     Condition::Base * cond = mChildCondition;
@@ -125,78 +409,59 @@ public:
     return cond;
   }
 
+  /**
+   * Set the child condition pointer. The ownership
+   * is transferred to this object.
+   * Any previously set condition is deleted.
+   */
+  void setChildCondition( Condition::Base * condition );
 
-  void setChildCondition( Condition::Base * condition )
-  {
-    Q_ASSERT( !mChildCondition );
-    mChildCondition = condition;
-  }
+  /**
+   * Reimplemented from Condition::Base.
+   * If the child condition evaluates succesfully then it
+   * returns its result negated. If the child condition evaluation
+   * fails then propagates the ConditionMatchError to the caller.
+   */
   virtual MatchResult matches( Data * data );
 
+  /**
+   * Reimplemented from Component. Debugging aid.
+   */
   virtual void dump( const QString &prefix );
-};
 
-class AKONADI_FILTER_EXPORT And : public Multi
-{
-public:
-  And( Component * parent );
-  virtual ~And();
-public:
-  virtual MatchResult matches( Data * data );
-  virtual void dump( const QString &prefix );
-}; // class And
+}; // class Not
 
-class AKONADI_FILTER_EXPORT Or : public Multi
-{
-public:
-  Or( Component * parent );
-  virtual ~Or();
-public:
-  virtual MatchResult matches( Data * data );
-
-  virtual void dump( const QString &prefix );
-}; // class Or
-
-class AKONADI_FILTER_EXPORT True : public Base
-{
-public:
-  True( Component * parent );
-  virtual ~True();
-public:
-  virtual MatchResult matches( Data * data );
-  virtual void dump( const QString &prefix );
-};
-
-class AKONADI_FILTER_EXPORT False : public Base
-{
-public:
-  False( Component * parent );
-  virtual ~False();
-public:
-  virtual MatchResult matches( Data * data );
-  virtual void dump( const QString &prefix );
-};
 
 /**
- * The PropertyTest is a highly customizable condition with a "standard" implementation.
+ * @class Akonadi::Filter::Condition::PropertyTest
+ * @brief Highly customizable condition with a "standard" implementation.
+ *
  * The basic schema is something like
  *
+ * @code
  *    PropertyTest( Data ) = FunctionDescriptor( DataMemberDescriptor( Data ) ) [ OperatorDescriptor [ Operand ] ]
+ * @endcode
  *
  * Which in most cases (when OperatorDescriptor and Operand aren't omitted) can be seen also as
  *
+ * @code
  *    PropertyTest( Data ) = OperatorDescriptor( FunctionDescriptor( DataMemberDescriptor( Data ) ) , Operand )
+ * @endcode
  *
  * For instance a condition like
  *
+ * @code
  *    sizeof( From ) >= 100KB
+ * @endcode
  *
  * is turned into
  *
+ * @code
  *    DataMemberDescriptor = "From field" (returns String)
  *    FunctionDescriptor = "sizeof" (expects a String parameter, returns Integer)
  *    OperatorDescriptor = "greater or equal" (expects an Integer on the left)
  *    Operand = 100KB (translated into Integer)
+ * @endcode
  *
  * The application of a DataMember[Descriptor] (or "data extraction") always returns a single definite data type.
  * The application of a Function[Descriptor] (or "data manipulation") to a data member either returns a definite
@@ -211,24 +476,30 @@ public:
  * For instance the condition "if any address extracted from the CC field is in the addressbook"
  * is encoded as 
  *
+ * @code
  *    isinaddressbook( anyaddress( CC ) )
+ * @endcode
  *
  * in that
  *
+ * @code
  *    DataMemberDescriptor = "CC field" (returns String)
  *    FunctionDescriptor = "anyaddress" (expects Address, AddressList, String or StringList as input, returns Address or AddressList)
  *    OperatorDescriptor = "isinaddressbook" (expects an Address or AddressList on the left)
  *    Operand = none (null variant)
+ * @endcode
  *
  * In very special cases the OperatorDescriptor can be omitted too (0 is used). This may
  * happen only if the FunctionDescriptor object returns a Boolean value (so no operator is required
  * to turn the result into a boolean). For instance the "exists X-Mailer field" condition
  * is simply
  *
+ * @code
  *    DataMemberDescriptor = "X-Mailer" (returns String)
  *    FunctionDescriptor = "exists" (expects any data type, returns Boolean)
  *    OperatorDescriptor = none (0)
  *    Operand = none (null variant)
+ * @endcode
  *
  * There two main reasons that lead to this kind of rappresentation of property tests.
  *
@@ -252,13 +523,47 @@ public:
 class AKONADI_FILTER_EXPORT PropertyTest : public Base
 {
 public:
-  PropertyTest( Component * parent, const FunctionDescriptor * function, const DataMemberDescriptor * dataMember, const OperatorDescriptor * op, const QVariant &operand );
+
+  PropertyTest(
+      Component * parent,
+      const FunctionDescriptor * function,
+      const DataMemberDescriptor * dataMember,
+      const OperatorDescriptor * op,
+      const QVariant &operand
+    );
+
   virtual ~PropertyTest();
+
 protected:
-  const FunctionDescriptor * mFunctionDescriptor; // shallow, never null
-  const DataMemberDescriptor * mDataMemberDescriptor; // shallow, never null
-  const OperatorDescriptor * mOperatorDescriptor; // may be null (only when FunctionDescriptor returns Boolean)
-  QVariant mOperand; // may be null (only if FunctionDescriptor is boolean or OperatorDescriptor is unary and thus doesn't expect a right operand)
+
+  /**
+   * The descriptor of the data member this PropertyTest is applied to.
+   * The pointer is owned by the ComponentFactory class and is never null.
+   */
+  const DataMemberDescriptor * mDataMemberDescriptor;
+
+  /**
+   * The descriptor of the function applied to the data member.
+   * The pointer is owned by the ComponentFactory class and may be null
+   * (when the PropertyTest is applied on the plain data member).
+   */
+  const FunctionDescriptor * mFunctionDescriptor;
+
+  /**
+   * The descriptor of the operator applied on the result of the function
+   * (the left operand) and optionally a constant right operand.
+   * The pointer is owned by the ComponentFactory class and may be null
+   * (when the result of the function is boolean).
+   */
+  const OperatorDescriptor * mOperatorDescriptor;
+
+  /**
+   * The operand used with the operator defined by mOperatorDescriptor.
+   * This member is meaningful only if mOperatorDescriptor is non null
+   * and its DataType is not DataTypeNone (so not an unary operator).
+   */
+  QVariant mOperand;
+
 public:
   const FunctionDescriptor * function() const
   {

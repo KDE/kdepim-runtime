@@ -35,10 +35,10 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 
-/**
- * This type is used in the agent D-BUS methods.
- * In xml it is encoded as... (what?)
- */
+//
+// This type is used in the agent D-BUS methods.
+// In xml it is encoded as ax
+//
 Q_DECLARE_METATYPE( QList< Akonadi::Collection::Id > )
 
 // the following declaration will confuse the meta type system
@@ -56,8 +56,8 @@ namespace Filter
 {
 
 /**
- * This namespace contains definitions useful in the implementation
- * of the filtering agent.
+ * @namespace Akonadi::Filter::Agent
+ * @brief Shared definitions useful with a filtering Agent
  */
 namespace Agent
 {

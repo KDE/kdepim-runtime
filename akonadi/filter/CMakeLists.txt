@@ -24,3 +24,16 @@ include(FindKdepimLibs)
 add_subdirectory(akonadi)
 add_subdirectory(agent)
 add_subdirectory(console)
+
+add_custom_target(
+	docs
+	@echo Generating api documentation
+)
+
+add_custom_command(
+	COMMENT "generate the api documentation"
+	COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/doc/api
+	COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} && doxygen ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
+	TARGET docs
+)
+

@@ -42,13 +42,17 @@ class Data;
 class CommandDescriptor;
 
 /**
+ * @namespace Akonadi::Filter::Action
+ * @brief The namespace containing the actions a filter can perform
+ *
  * Each rule inside a filter has a list of associated actions which are executed
  * in sequence.
  *
- * Some of the actions are "builtin" while others are provided
+ * Some of the actions are builtin while others are provided
  * by the context-specific implementation. At the time of writing the builtins
  * are the Stop action (which succesfully terminates the script) and
- * the RuleList action which jumps inside a filtering "sub-program".
+ * the RuleList action which jumps inside a filtering sub-program.
+ * The Command class is a skeleton for context-specific actions.
  */
 namespace Action
 {
@@ -56,7 +60,7 @@ namespace Action
 /**
  * The action type.
  *
- * This, in fact, is a "rough" classification: the "commands", for instance,
+ * This, in fact, is only a "rough" classification: the "command actions", for instance,
  * can be of several types. However, this is enough for several components to make
  * their choices about the methods of creation and editing of the Action objects.
  */
@@ -88,7 +92,9 @@ enum ActionType
 }; // enum ActionType
 
 /**
- * The base class of all the actions that can be executed by the filters.
+ * @class Akonadi::Filter::Action::Base
+ * @brief The base class of all the filtering actions
+ *
  * It contains some pure virtuals which must be implemented by the subclasses.
  */
 class AKONADI_FILTER_EXPORT Base : public Component
@@ -148,7 +154,8 @@ public:
 }; // class Base
 
 /**
- * A standard "succesfull stop" action.
+ * @class Akonadi::Filter::Action::Stop
+ * @brief A standard "succesfull stop" action.
  *
  * The execution of this action simply terminates the filtering script
  * with the result SuccessAndStop.
@@ -191,7 +198,8 @@ public:
 }; // class Stop
 
 /**
- * A standard factory-customizable command action.
+ * @class Akonadi::Filter::Action::Command
+ * @brief A standard factory-customizable command action.
  *
  * This is the primary mean to implement actions on the agent and IO side.
  *

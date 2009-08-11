@@ -67,6 +67,12 @@ Multi::~Multi()
   qDeleteAll( mChildConditions );
 }
 
+void Multi::clearChildConditions()
+{
+  qDeleteAll( mChildConditions );
+  mChildConditions.clear();
+}
+
 void Multi::dumpChildConditions( const QString &prefix )
 {
   QString localPrefix = prefix;
@@ -88,7 +94,17 @@ Not::Not( Component * parent )
 
 Not::~Not()
 {
+  if( mChildCondition )
+    delete mChildCondition;
 }
+
+void Not::setChildCondition( Condition::Base * condition )
+{
+  if( mChildCondition )
+    delete mChildCondition;
+  mChildCondition = condition;
+}
+
 
 Not::MatchResult Not::matches( Data * data )
 {

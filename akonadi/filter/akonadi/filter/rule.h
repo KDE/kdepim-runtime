@@ -48,7 +48,8 @@ namespace Condition
 } // namespace Condition
 
 /**
- * A single rule in the filtering program.
+ * @class Akonadi::Filter::Rule
+ * @brief A single rule in the filtering program.
  *
  * A rule is made of a condition and a set of actions.
  * If the condition matches then the actions are executed in sequence.
@@ -125,11 +126,9 @@ public:
 
   /**
    * Clears the list of actions associated to this Rule.
+   * The actions are deleted.
    */
-  void clearActionList()
-  {
-    mActionList.clear();
-  }
+  void clearActionList();
 
   /**
    * Appends an action to the list of actions belonging to this Rule.

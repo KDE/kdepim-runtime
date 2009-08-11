@@ -52,6 +52,13 @@ Rule::~Rule()
   qDeleteAll( mActionList );
 }
 
+void Rule::clearActionList()
+{
+  qDeleteAll( mActionList );
+  mActionList.clear();
+}
+
+
 QString Rule::description() const
 {
   return property( QString::fromAscii( "description" ) ).toString();
