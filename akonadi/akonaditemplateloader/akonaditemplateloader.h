@@ -40,6 +40,10 @@ public:
   Template *loadByName( const QString &name ) const;
   MutableTemplate *loadMutableByName( const QString &name ) const;
 
+  QString getMediaUri( const QString &fileName ) const;
+
+  Akonadi::Item getItem( const KUrl &url ) const;
+
 private:
   Akonadi::Item getItem( const QString &name ) const;
 

@@ -27,6 +27,8 @@
 
 #include <QAbstractItemModel>
 
+#include <KUrl>
+
 #include <kdebug.h>
 
 using namespace Akonadi;
@@ -88,6 +90,32 @@ Grantlee::Template *AkonadiTemplateLoader::loadByName( const QString& name ) con
   QString content = templateItem.payloadData();
   Template *t = Engine::instance()->newTemplate( content );
   return t;
+}
+
+QString AkonadiTemplateLoader::getMediaUri(const QString &fileName) const
+{
+  Item mediaItem = getItem( fileName );
+
+  if (!mediaItem.isValid())
+    return QString();
+
+  return mediaItem.url().url();
+}
+
+
+Item AkonadiTemplateLoader::getItem(const KUrl& url) const
+{
+  Item requestedItem = Item::fromUrl( url );
+
+  QModelIndexList list = m_model->indexesForItem( requestedItem );
+
+  if ( list.isEmpty() )
+    return Item();
+
+  Item retrievedItem = list.at(0).data(EntityTreeModel::ItemRole).value<Item>();
+
+  return retrievedItem;
+
 }
 
 
