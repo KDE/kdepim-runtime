@@ -436,7 +436,7 @@ public:
  * @class Akonadi::Filter::Condition::PropertyTest
  * @brief Highly customizable condition with a "standard" implementation.
  *
- * The basic schema is something like
+ * The most general schema is something like
  *
  * @code
  *    PropertyTest( Data ) = FunctionDescriptor( DataMemberDescriptor( Data ) ) [ OperatorDescriptor [ Operand ] ]
@@ -501,6 +501,9 @@ public:
  *    Operand = none (null variant)
  * @endcode
  *
+ * Finally the FunctionDescriptor object can be omitted too. This means that the PropertyTest
+ * will be aplied directory to the result of the extraction of the DataMember[Descriptor].
+ *
  * There two main reasons that lead to this kind of rappresentation of property tests.
  *
  * In the first place this is the simplest model that can "enclose" the Sieve format
@@ -514,7 +517,8 @@ public:
  * extraction. There is a set of "standard" FunctionDescriptors (sizeof(), countof(), exists etc..)
  * which the core library can provide. You can, then, provide optimized implementations
  * of the FunctionDescriptor(DataMemberDescriptor) combinations or even register your own FunctionDescriptors.
- * The OperatorDescriptor objects describe very common operations which are applied to the
+ *
+ * The OperatorDescriptor objects define very common operations which are applied to the
  * result of the FunctionDescriptor(DataMemberDescriptor) combination above. It's very unlikely that
  * you'll need an OperatorDescriptor which is not already provided by the core filtering library.
  * The Operand, then, is a parameter that depends on the OperatorDescriptor and is again handled
@@ -524,6 +528,13 @@ class AKONADI_FILTER_EXPORT PropertyTest : public Base
 {
 public:
 
+  /**
+   * Create a PropertyTest object.
+   *
+   * The function, dataMember and op parameters, if not null,
+   * must be kept alive during the lifetime of this object.
+   * The owner of these pointers is usually a ComponentFactory instance.
+   */
   PropertyTest(
       Component * parent,
       const FunctionDescriptor * function,
@@ -532,6 +543,9 @@ public:
       const QVariant &operand
     );
 
+  /**
+   * Destroy a property test object.
+   */
   virtual ~PropertyTest();
 
 protected:
@@ -565,31 +579,61 @@ protected:
   QVariant mOperand;
 
 public:
+
+  /**
+   * The descriptor of the function applied to the data member.
+   * The returned pointer may be null (when the PropertyTest is applied on the plain data member).
+   */
   const FunctionDescriptor * function() const
   {
     return mFunctionDescriptor;
   }
 
+  /**
+   * Returns the descriptor of the data member this PropertyTest is applied to.
+   * The returned pointer is never null.
+   */
   const DataMemberDescriptor * dataMember() const
   {
     return mDataMemberDescriptor;
   }
 
+  /**
+   * Returns the descriptor of the operator applied on the result of the function
+   * (the left operand) and optionally a constant right operand.
+   * The returned pointer may be null (when the result of the function is boolean).
+   */
   const OperatorDescriptor * operatorDescriptor() const
   {
     return mOperatorDescriptor;
   }
 
+  /**
+   * Returns the operand used with the operator defined by mOperatorDescriptor.
+   * This member is meaningful only if mOperatorDescriptor is non null
+   * and its DataType is not DataTypeNone (so not an unary operator).
+   */
   const QVariant & operand() const
   {
     return mOperand;
   }
 
+  /**
+   * Implements the PropertyMatch algorithm. See the main class documentation
+   * for more informations.
+   */
   virtual MatchResult matches( Data * data );
 
+  /**
+   * Reimplemented from Component. Debugging aid.
+   */
   virtual void dump( const QString &prefix );
 
 private:
+
+  /**
+   * Pushes a description of the PropertyTest on the error stack.
+   */
   void pushStandardErrors();
 
 }; // class PropertyTest
