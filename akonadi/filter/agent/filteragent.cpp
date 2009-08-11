@@ -38,11 +38,12 @@
 
 #include <QFile>
 
+#include <KConfig>
+#include <KConfigGroup>
 #include <KDebug>
 #include <KLocale>
 #include <KMimeType>
-#include <KConfig>
-#include <KConfigGroup>
+#include <KProcess>
 #include <KStandardDirs>
 
 
@@ -830,3 +831,7 @@ void FilterAgent::saveFilterMappings()
   cfg.sync();
 }
 
+void FilterAgent::configure( WId windowId )
+{
+  KProcess::startDetached( QLatin1String( "akonadi_filter_console" ) );
+}

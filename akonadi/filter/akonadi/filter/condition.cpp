@@ -282,8 +282,18 @@ void False::dump( const QString &prefix )
   debugOutput( prefix, "Condition::False" );
 }
 
-PropertyTest::PropertyTest( Component * parent, const FunctionDescriptor * function, const DataMemberDescriptor * dataMember, const OperatorDescriptor * op, const QVariant &operand )
-  : Base( ConditionTypePropertyTest, parent ), mFunctionDescriptor( function ), mDataMemberDescriptor( dataMember ), mOperatorDescriptor( op ), mOperand( operand )
+PropertyTest::PropertyTest(
+    Component * parent,
+    const FunctionDescriptor * function,
+    const DataMemberDescriptor * dataMember,
+    const OperatorDescriptor * op,
+    const QVariant &operand
+  )
+  : Base( ConditionTypePropertyTest, parent ),
+    mDataMemberDescriptor( dataMember ),
+    mFunctionDescriptor( function ),
+    mOperatorDescriptor( op ),
+    mOperand( operand )
 {
   Q_ASSERT( mDataMemberDescriptor );
 

@@ -219,7 +219,30 @@ public Q_SLOTS: // D-BUS Interface
    */
   int changeFilter( const QString &filterId, const QString &source, const QList< Akonadi::Collection::Id > &attachedCollectionIds );
 
+  /**
+   * Queue an explicit request for the application of a filter to a number of Akonadi Items. The request
+   * is assigned an unique identifier which is returned in the allocatedJobId parameter. The dbus interface
+   * will emit the jobTerminated() signal once the filter has been applied to all the requested items.
+   *
+   * This is a D-BUS method handler.
+   *
+   * If the method succeeds at D-BUS level (so you get a non-error reply)
+   * then the result is returned as a member of the Akonadi::Filter::Agent::Status enumeration:
+   * Success on success and an Error* constant in case of failure.
+   */
   int applyFilterToItems( const QString &filterId, const QList< QVariant > &itemIds, qlonglong &allocatedJobId );
+
+Q_SIGNALS:
+
+  /**
+   * Emitted to signal the termination of a job triggered by a call to applyFilterToItems().
+   *
+   * @param jobId The unique identifier of the job that terminated. 
+   * @param status An Akonadi::Filter::Agent::Status code
+   * @param executionErrorDetail A string describing error details if status is not Success
+   *              and an empty string otherwise.
+   */
+  void jobTerminated( qlonglong jobId, int status, const QString &executionErrorDetail );
 
 protected:
 
@@ -228,12 +251,15 @@ protected:
    */
   virtual ProcessingResult processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType );
 
+  /**
+   * Reimplemented from AgentBase: launches the filtering console.
+   */
+  virtual void configure( WId windowId );
+
 private Q_SLOTS:
+
   void slotRunOneJob();
   void slotAbortRequested();
-
-Q_SIGNALS:
-  void jobTerminated( qlonglong jobId, int status, const QString &executionErrorDetail );
 
 private:
   Akonadi::Filter::Agent::Status runApplyFilterChainByCollectionJob( FilterJob * job );
