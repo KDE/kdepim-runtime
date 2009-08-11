@@ -41,7 +41,6 @@ set( resourcetester_SRCS
   global.cpp
   main.cpp
   resource.cpp
-  resourcesynchronizationjob.cpp
   script.cpp
   test.cpp
   xmloperations.cpp

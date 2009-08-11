@@ -19,7 +19,7 @@
 #include "resource.h"
 
 #include "global.h"
-#include "resourcesynchronizationjob.h"
+#include <akonadi/resourcesynchronizationjob.h>
 #include "test.h"
 
 #include <akonadi/agentmanager.h>
