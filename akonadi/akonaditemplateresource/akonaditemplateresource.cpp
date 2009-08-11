@@ -80,12 +80,19 @@ void TemplateResource::retrieveCollections()
 void TemplateResource::retrieveItems( const Akonadi::Collection& col )
 {
   QDir dir( m_rootDir.canonicalPath() + "/" + col.remoteId() );
-  const QStringList files = dir.entryList(QStringList() << "*.html", QDir::Files );
+
+  // Make images and html files part of Grantlee themes.
+  QStringList files = dir.entryList(QStringList() << "*.html", QDir::Files );
+  files << dir.entryList(QStringList() << "*.png", QDir::Files );
+
   Item::List list;
-  foreach(const  QString& filename, files ) {
+  foreach(const QString& filename, files ) {
     Item item;
     item.setRemoteId( filename );
-    item.setMimeType( "text/x-vnd.grantlee-template" );
+    if ( filename.endsWith( ".html" ) )
+      item.setMimeType( "text/x-vnd.grantlee-template" );
+    else if ( filename.endsWith( ".png" ) )
+      item.setMimeType( "image/png" );
     list << item;
   }
   itemsRetrieved( list );
@@ -94,12 +101,30 @@ void TemplateResource::retrieveItems( const Akonadi::Collection& col )
 bool TemplateResource::retrieveItem( const Akonadi::Item& item, const QSet< QByteArray >& parts )
 {
   QFile file( m_rootDir.canonicalPath() + "/default/" + item.remoteId() );
-  if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
-    return false;
-  Item retrievedItem = item;
-  retrievedItem.setPayloadFromData( file.readAll() );
 
-  itemRetrieved( retrievedItem );
+  // TODO: Refactor:
+  if ( item.remoteId().endsWith( ".html" ) )
+  {
+    if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+      return false;
+    Item retrievedItem = item;
+    QByteArray ba = file.readAll();
+
+    retrievedItem.setPayloadFromData( ba );
+    itemRetrieved( retrievedItem );
+  } else if ( item.remoteId().endsWith( ".png" ) )
+  {
+    if ( !file.open( QIODevice::ReadOnly ) )
+      return false;
+
+    Item retrievedItem = item;
+    QByteArray ba = file.readAll().toBase64();
+    retrievedItem.setPayloadFromData( ba );
+    QByteArray pd = retrievedItem.payloadData();
+
+    itemRetrieved( retrievedItem );
+
+  }
   return true;
 }
 
@@ -107,7 +132,6 @@ void TemplateResource::collectionAdded( const Akonadi::Collection& collection, c
 {
   Akonadi::AgentBase::Observer::collectionAdded( collection, parent );
 }
-
 
 void TemplateResource::collectionChanged( const Akonadi::Collection& collection )
 {
