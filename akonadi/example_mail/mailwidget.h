@@ -47,7 +47,6 @@ public:
   ~MailWidget();
 
 protected slots:
-  void treeSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
   void listSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
   void modelDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight);
   void someSlot(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers);

@@ -165,10 +165,6 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   browser->setDocument(td);
   hSplitter->addWidget(browser);
 
-  connect( treeview->selectionModel(),
-      SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
-      SLOT( treeSelectionChanged ( const QItemSelection &, const QItemSelection & ) ) );
-
   connect( listView->selectionModel(),
       SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
       SLOT( listSelectionChanged ( const QItemSelection &, const QItemSelection & ) ) );
@@ -244,21 +240,6 @@ void MailWidget::renderMail(const QModelIndex &idx)
     QString renderedContent = t->render(&c);
     browser->setHtml( renderedContent );
   }
-}
-
-void MailWidget::treeSelectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
-{
-//   if ( selected.indexes().size() == 1 )
-//   {
-    QModelIndex idx = selected.indexes().at(0);
-
-    QModelIndex etmIndex = collectionTree->mapToSource( idx );
-
-    itemList->setRootIndex(etmIndex);
-    QModelIndex filteredListIndex = itemList->mapFromSource(etmIndex);
-
-    listView->setRootIndex(filteredListIndex);
-//   }
 }
 
 void MailWidget::modelDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight)
