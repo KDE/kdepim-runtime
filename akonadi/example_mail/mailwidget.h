@@ -60,6 +60,7 @@ protected:
 private:
   QTextBrowser   *browser;
   Akonadi::EntityTreeModel *etm;
+  Akonadi::EntityTreeModel *m_templateModel;
   Akonadi::EntityTreeView *treeview;
   Akonadi::EntityTreeView *listView;
   Akonadi::EntityFilterProxyModel *collectionTree;

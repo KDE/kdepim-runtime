@@ -53,6 +53,8 @@
 #include <boost/shared_ptr.hpp>
 
 #include <KDebug>
+#include "akonaditextdocument.h"
+#include <kselectionproxymodel.h>
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
@@ -76,8 +78,11 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   templateMonitor->setCollectionMonitored( Collection::root() );
   templateMonitor->setMimeTypeMonitored( "text/x-vnd.grantlee-template" );
 
-  AkonadiTemplateLoader *akoLoader = new AkonadiTemplateLoader(templateMonitor, this);
+  Session *templateSession = new Session( QByteArray( "AkonadiTemplateLoader-" ) + QByteArray::number( qrand() ), this );
 
+  EntityTreeModel *m_templateModel = new EntityTreeModel( templateSession, templateMonitor, this );
+
+  AkonadiTemplateLoader *akoLoader = new AkonadiTemplateLoader(templateMonitor, this);
 
   connect( templateMonitor, SIGNAL( itemChanged(const Akonadi::Item &, const QSet< QByteArray > &) ),
            SLOT(someSlot( const Akonadi::Item &, const QSet< QByteArray > & ) ) );
@@ -138,8 +143,12 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   treeview->setColumnHidden(2, true);
   QSplitter *hSplitter = new QSplitter(Qt::Vertical, splitter);
 
+  KSelectionProxyModel *selectionProxy = new KSelectionProxyModel(treeview->selectionModel(), this);
+  selectionProxy->setSourceModel( etm );
+  selectionProxy->setFilterBehavior( KSelectionProxyModel::OnlySelectedChildren );
+
   itemList = new EntityFilterProxyModel(this);
-  itemList->setSourceModel(etm);
+  itemList->setSourceModel(selectionProxy);
 
   // Exclude collections from the list view.
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
@@ -152,6 +161,8 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   layout->addWidget( splitter );
 
   browser = new QTextBrowser( splitter );
+  Akonadi::TextDocument *td = new Akonadi::TextDocument(akoLoader, this);
+  browser->setDocument(td);
   hSplitter->addWidget(browser);
 
   connect( treeview->selectionModel(),
@@ -221,7 +232,8 @@ void MailWidget::renderMail(const QModelIndex &idx)
       return;
     QVariantHash h;
     h.insert( "subject", mail->subject()->asUnicodeString() );
-    h.insert( "date", mail->date()->asUnicodeString() );
+    h.insert( "date", mail->date()->dateTime().dateTime() );
+    h.insert( "to", mail->to()->asUnicodeString() );
     h.insert( "from", mail->from()->asUnicodeString() );
 
     QString messageHtml = content->decodedContent();
@@ -229,7 +241,8 @@ void MailWidget::renderMail(const QModelIndex &idx)
     h.insert( "messageContent", messageHtml );
 
     Grantlee::Context c(h);
-    browser->setHtml( t->render(&c) );
+    QString renderedContent = t->render(&c);
+    browser->setHtml( renderedContent );
   }
 }
 

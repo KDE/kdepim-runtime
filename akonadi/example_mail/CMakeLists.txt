@@ -6,6 +6,7 @@ set(example_mail_SRCS
     #    mailmodel.cpp
     mailcomposer.cpp
     mainwindow.cpp
+    akonaditextdocument.cpp
     #    modeltest.cpp
     #    ../example_contacts/contactsmodel.cpp
     #   ../akonadi_next/tests/dynamictreemodel.cpp
