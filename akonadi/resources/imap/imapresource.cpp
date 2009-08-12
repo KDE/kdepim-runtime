@@ -1086,7 +1086,8 @@ void ImapResource::onSelectDone( KJob *job )
 bool ImapResource::manualAuth( const QString& username, QString &password )
 {
   KPasswordDialog dlg( 0 );
-  dlg.setPrompt( i18n( "Could not find a valid password, please enter it here." ) );
+  dlg.setPrompt( i18n( "Could not find a valid password for user '%1' on IMAP server '%2', please enter it here.",
+                       username, Settings::self()->imapServer() ) );
   if ( dlg.exec() == QDialog::Accepted ) {
     password = dlg.password();
     return true;
