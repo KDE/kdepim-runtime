@@ -1,4 +1,6 @@
 /*
+    This file is part of Akonadi Contact.
+
     Copyright (c) 2009 Tobias Koenig <tokoe@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -20,7 +22,8 @@
 #ifndef AKONADI_CONTACTGROUPEDITOR_H
 #define AKONADI_CONTACTGROUPEDITOR_H
 
-#include "akonadi-kabccommon_export.h"
+#include "akonadi-contact_export.h"
+
 #include <QtGui/QWidget>
 
 class QAbstractItemModel;
@@ -36,7 +39,7 @@ class Item;
  * @author Tobias Koenig <tokoe@kde.org>
  * @since 4.3
  */
-class AKONADI_KABCCOMMON_EXPORT ContactGroupEditor : public QWidget
+class AKONADI_CONTACT_EXPORT ContactGroupEditor : public QWidget
 {
   Q_OBJECT
 
@@ -104,6 +107,7 @@ class AKONADI_KABCCOMMON_EXPORT ContactGroupEditor : public QWidget
     void error( const QString &errorMsg );
 
   private:
+    //@cond PRIVATE
     class Private;
     Private* const d;
 
@@ -113,6 +117,7 @@ class AKONADI_KABCCOMMON_EXPORT ContactGroupEditor : public QWidget
     Q_PRIVATE_SLOT( d, void storeDone( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
     Q_PRIVATE_SLOT( d, void memberChanged() )
+    //@endcond
 };
 
 }

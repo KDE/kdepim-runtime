@@ -35,7 +35,7 @@
 #include <klocale.h>
 
 #include "ui_kabcitemeditor.h"
-#include "waitingoverlay.h"
+//#include "waitingoverlay.h"
 
 using namespace Akonadi;
 
@@ -292,7 +292,7 @@ void KABCItemEditor::loadContact( const Akonadi::Item &item )
   d->setupMonitor();
   d->mMonitor->setItemMonitored( item );
 
-  new WaitingOverlay( job, this );
+//  new WaitingOverlay( job, this );
 }
 
 void KABCItemEditor::saveContact()

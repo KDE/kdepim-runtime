@@ -34,9 +34,9 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
-#include "contactgrouplineedit.h"
+#include "contactgrouplineedit_p.h"
 #include "ui_contactgroupeditor.h"
-#include "waitingoverlay.h"
+#include "waitingoverlay_p.h"
 
 namespace Akonadi
 {
