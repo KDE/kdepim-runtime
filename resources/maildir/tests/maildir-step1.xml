@@ -1,7 +1,7 @@
 <knut>
   <collection content="message/rfc822,inode/directory" rid="newmaildir" name="akonadi_maildir_resource_1" >
     <collection content="message/rfc822,inode/directory" rid="test folder" name="test folder" >
-      <item mimetype="message/rfc822" rid=".newmaildir.directory/test folder/{e0473600-7911-4606-bc45-e50eeaf22458}" >
+      <item mimetype="message/rfc822" rid="{e0473600-7911-4606-bc45-e50eeaf22458}" >
         <payload>From: Volker Krause &lt;vkrause@kde.org>
 To: kde-commits@kde.org
 Subject: playground/pim/akonaditest/resourcetester

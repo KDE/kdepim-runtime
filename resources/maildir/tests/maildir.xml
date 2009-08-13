@@ -3,7 +3,7 @@
     <collection content="message/rfc822,inode/directory" rid="child2" name="child2" />
     <collection content="message/rfc822,inode/directory" rid="child1" name="child1" >
       <collection content="message/rfc822,inode/directory" rid="grandchild" name="grandchild" >
-        <item mimetype="message/rfc822" rid="maildir/.root.directory/.child1.directory/grandchild/1237726881.6570.rfoxg:2,S" >
+        <item mimetype="message/rfc822" rid="1237726881.6570.rfoxg:2,S" >
           <payload>Return-Path: &lt;commitfilter@new.kstuff.org>
 Received: from localhost (localhost [127.0.0.1])
 	 by smykowski.kdab.net (Cyrus v2.2.12) with LMTPA;
@@ -289,7 +289,7 @@ collections.
 </payload>
         </item>
       </collection>
-      <item mimetype="message/rfc822" rid="maildir/.root.directory/child1/1237726858.6570.dtdn4:2,S" >
+      <item mimetype="message/rfc822" rid="1237726858.6570.dtdn4:2,S" >
         <payload>Return-Path: &lt;commitfilter@new.kstuff.org>
 Received: from localhost (localhost [127.0.0.1])
 	 by smykowski.kdab.net (Cyrus v2.2.12) with LMTPA;
@@ -399,7 +399,7 @@ Add CMake macro to run resource tests.
    + 
 </payload>
       </item>
-      <item mimetype="message/rfc822" rid="maildir/.root.directory/child1/1237726875.6570.R4KOW:2,S" >
+      <item mimetype="message/rfc822" rid="1237726875.6570.R4KOW:2,S" >
         <payload>Return-Path: &lt;commitfilter@new.kstuff.org>
 Received: from localhost (localhost [127.0.0.1])
 	 by smykowski.kdab.net (Cyrus v2.2.12) with LMTPA;
@@ -553,7 +553,7 @@ SVN commit 942656 by vkrause:
 </payload>
       </item>
     </collection>
-    <item mimetype="message/rfc822" rid="maildir/root/1237726845.6570.BejQg:2,S" >
+    <item mimetype="message/rfc822" rid="1237726845.6570.BejQg:2,S" >
       <payload>Return-Path: &lt;commitfilter@new.kstuff.org>
 Received: from localhost (localhost [127.0.0.1])
 	 by smykowski.kdab.net (Cyrus v2.2.12) with LMTPA;
