@@ -47,22 +47,6 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 using KPIM::Maildir;
 
-static QString maildirPath( const QString &remoteId )
-{
-  const int pos = remoteId.lastIndexOf( QDir::separator() );
-  if ( pos >= 0 )
-    return remoteId.left( pos );
-  return QString();
-}
-
-static QString maildirId( const QString &remoteId )
-{
-  const int pos = remoteId.lastIndexOf( QDir::separator() );
-  if ( pos >= 0 )
-    return remoteId.mid( pos + 1 );
-  return QString();
-}
-
 /** Creates a maildir object for the collection @p col, given it has the full ancestor chain set. */
 static Maildir maildirForCollection( const Collection &col )
 {
@@ -104,17 +88,14 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
 {
   Q_UNUSED( parts );
 
-  const QString dir = maildirPath( item.remoteId() );
-  const QString entry = maildirId( item.remoteId() );
-
-  Maildir md( dir );
+  const Maildir md = maildirForCollection( item.parentCollection() );
   if ( !md.isValid() ) {
     cancelTask( i18n( "Unable to fetch item: The maildir folder \"%1\" is not valid.",
                       md.path() ) );
     return false;
   }
 
-  const QByteArray data = md.readEntry( entry );
+  const QByteArray data = md.readEntry( item.remoteId() );
   KMime::Message *mail = new KMime::Message();
   mail->setContent( KMime::CRLFtoLF( data ) );
   mail->parse();
@@ -157,7 +138,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
-    const QString rid = collection.remoteId() + QDir::separator() + dir.addEntry( mail->encodedContent() );
+    const QString rid = dir.addEntry( mail->encodedContent() );
     Item i( item );
     i.setRemoteId( rid );
     changeCommitted( i );
@@ -170,10 +151,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
       return;
     }
 
-    const QString path = maildirPath( item.remoteId() );
-    const QString entry = maildirId( item.remoteId() );
-
-    Maildir dir( path );
+    Maildir dir = maildirForCollection( item.parentCollection() );
     QString errMsg;
     if ( !dir.isValid( errMsg ) ) {
         cancelTask( errMsg );
@@ -185,23 +163,20 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         return;
     }
     const MessagePtr mail = item.payload<MessagePtr>();
-    dir.writeEntry( entry, mail->encodedContent() );
+    dir.writeEntry( item.remoteId(), mail->encodedContent() );
     changeCommitted( item );
 }
 
 void MaildirResource::itemRemoved(const Akonadi::Item & item)
 {
   if ( !Settings::self()->readOnly() ) {
-    const QString path = maildirPath( item.remoteId() );
-    const QString entry = maildirId( item.remoteId() );
-
-    Maildir dir( path );
+    Maildir dir = maildirForCollection( item.parentCollection() );
     QString errMsg;
     if ( !dir.isValid( errMsg ) ) {
       cancelTask( errMsg );
       return;
     }
-    if ( !dir.removeEntry( entry ) ) {
+    if ( !dir.removeEntry( item.remoteId() ) ) {
       emit error( i18n("Failed to delete item: %1", item.remoteId()) );
     }
   }
@@ -269,9 +244,8 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
 
   Item::List items;
   foreach ( const QString &entry, entryList ) {
-    const QString rid = md.path() + QDir::separator() + entry;
     Item item;
-    item.setRemoteId( rid );
+    item.setRemoteId( entry );
     item.setMimeType( "message/rfc822" );
     item.setSize( md.size( entry ) );
     KMime::Message *msg = new KMime::Message;
