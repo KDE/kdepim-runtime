@@ -28,6 +28,8 @@
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/collectionfetchscope.h>
+
 #include <kdebug.h>
 #include <kurl.h>
 #include <kfiledialog.h>
@@ -61,13 +63,20 @@ static QString maildirId( const QString &remoteId )
   return QString();
 }
 
-static QString maildirSubdirPath( const QString &parentPath, const QString &subName )
+/** Creates a maildir object for the collection @p col, given it has the full ancestor chain set. */
+static Maildir maildirForCollection( const Collection &col )
 {
-  QString basePath = maildirPath( parentPath );
-  if ( !basePath.endsWith( QDir::separator() ) )
-    basePath += QDir::separator();
-  const QString name = maildirId( parentPath );
-  return basePath + '.' + name + ".directory" + QDir::separator() + subName;
+  if ( col.remoteId().isEmpty() ) {
+    kWarning() << "Got incomplete ancestor chain:" << col;
+    return Maildir();
+  }
+
+  if ( col.parentCollection() == Collection::root() ) {
+    kWarning( col.remoteId() != Settings::self()->path() ) << "RID mismatch, is " << col.remoteId() << " expected " << Settings::self()->path();
+    return Maildir( col.remoteId(), Settings::self()->topLevelIsContainer() );
+  }
+  Maildir parentMd = maildirForCollection( col.parentCollection() );
+  return parentMd.subFolder( col.remoteId() );
 }
 
 MaildirResource::MaildirResource( const QString &id )
@@ -83,6 +92,8 @@ MaildirResource::MaildirResource( const QString &id )
   // is added.
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
+  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
+  changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 }
 
 MaildirResource::~ MaildirResource()
@@ -119,7 +130,6 @@ void MaildirResource::aboutToQuit()
   // The settings may not have been saved if e.g. they have been modified via
   // DBus instead of the config dialog.
   Settings::self()->writeConfig();
-  kDebug( 5254 ) << "Implement me!" ;
 }
 
 void MaildirResource::configure( WId windowId )
@@ -135,7 +145,7 @@ void MaildirResource::configure( WId windowId )
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
-    Maildir dir( collection.remoteId() );
+    Maildir dir = maildirForCollection( collection );
     QString errMsg;
     if ( Settings::readOnly() || !dir.isValid( errMsg ) ) {
       cancelTask( errMsg );
@@ -203,15 +213,16 @@ Collection::List listRecursive( const Collection &root, const Maildir &dir )
   Collection::List list;
   const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::mimeType();
   foreach ( const QString &sub, dir.subFolderList() ) {
-    const QString path = maildirSubdirPath( root.remoteId(), sub );
-    Maildir md( path );
-    if ( !md.isValid() )
-      continue;
     Collection c;
     c.setName( sub );
-    c.setRemoteId( path );
-    c.setParent( root );
+    c.setRemoteId( sub );
+    c.setParentCollection( root );
     c.setContentMimeTypes( mimeTypes );
+
+    const Maildir md = maildirForCollection( c );
+    if ( !md.isValid() )
+      continue;
+ 
     list << c;
     list += listRecursive( c, md );
   }
@@ -246,17 +257,16 @@ void MaildirResource::retrieveCollections()
 
 void MaildirResource::retrieveItems( const Akonadi::Collection & col )
 {
-  Maildir md( col.remoteId() );
+  const Maildir md = maildirForCollection( col );
   if ( !md.isValid() ) {
-    emit error( i18n("Invalid maildir: %1", col.remoteId() ) );
-    itemsRetrieved( Item::List() );
+    cancelTask( i18n("Maildir '%1' for collection '%2' is invalid.", md.path(), col.remoteId() ) );
     return;
   }
-  QStringList entryList = md.entryList();
+  const QStringList entryList = md.entryList();
 
   Item::List items;
   foreach ( const QString &entry, entryList ) {
-    const QString rid = col.remoteId() + QDir::separator() + entry;
+    const QString rid = md.path() + QDir::separator() + entry;
     Item item;
     item.setRemoteId( rid );
     item.setMimeType( "message/rfc822" );
@@ -272,7 +282,7 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
 
 void MaildirResource::collectionAdded(const Collection & collection, const Collection &parent)
 {
-  Maildir md( parent.remoteId() );
+  Maildir md = maildirForCollection( parent );
   kDebug( 5254 ) << md.subFolderList() << md.entryList();
   if ( Settings::self()->readOnly() || !md.isValid() ) {
     changeProcessed();
@@ -280,7 +290,7 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
   }
   else {
 
-    QString newFolderPath = md.addSubFolder( collection.name() );
+    const QString newFolderPath = md.addSubFolder( collection.name() );
     if ( newFolderPath.isEmpty() ) {
       changeProcessed();
       return;
@@ -289,7 +299,7 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
     kDebug( 5254 ) << md.subFolderList() << md.entryList();
 
     Collection col = collection;
-    col.setRemoteId( newFolderPath );
+    col.setRemoteId( collection.name() );
     changeCommitted( col );
   }
 
