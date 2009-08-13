@@ -1,8 +1,8 @@
 <knut>
   <collection content="message/rfc822,inode/directory" rid="maildir/root" name="akonadi_maildir_resource_1" >
-    <collection content="message/rfc822,inode/directory" rid="maildir/.root.directory/child2" name="child2" />
-    <collection content="message/rfc822,inode/directory" rid="maildir/.root.directory/child1" name="child1" >
-      <collection content="message/rfc822,inode/directory" rid="maildir/.root.directory/.child1.directory/grandchild" name="grandchild" >
+    <collection content="message/rfc822,inode/directory" rid="child2" name="child2" />
+    <collection content="message/rfc822,inode/directory" rid="child1" name="child1" >
+      <collection content="message/rfc822,inode/directory" rid="grandchild" name="grandchild" >
         <item mimetype="message/rfc822" rid="maildir/.root.directory/.child1.directory/grandchild/1237726881.6570.rfoxg:2,S" >
           <payload>Return-Path: &lt;commitfilter@new.kstuff.org>
 Received: from localhost (localhost [127.0.0.1])
