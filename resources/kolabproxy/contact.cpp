@@ -1167,7 +1167,7 @@ void Contact::saveTo( KABC::Addressee* addressee )
     QString app = (*it).app.isEmpty() ? QString::fromLatin1( "KADDRESSBOOK" ) : (*it).app;
     addressee->insertCustom( app, (*it).name, (*it).value );
   }
-  //kDebug(5006) << addressee->customs();
+  //kDebug() << addressee->customs();
 }
 
 QImage Contact::loadPictureFromAddressee( const KABC::Picture& picture )
