@@ -243,6 +243,9 @@ void MaildirResource::retrieveCollections()
   root.setParentCollection( Collection::root() );
   root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
+// FIXME: enable once r1010699 is merged, doesn't build otherwise
+//  root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem 
+//                | Collection::CanChangeCollection | Collection::CanCreateCollection );
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
   if ( !Settings::self()->topLevelIsContainer() )
@@ -313,8 +316,16 @@ void MaildirResource::collectionChanged(const Collection & collection)
 
 void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
 {
-  kDebug( 5254 ) << "Implement me!";
-  AgentBase::Observer::collectionRemoved( collection );
+  if ( collection.parentCollection() == Collection::root() ) {
+    emit error( i18n("Cannot delete top-level maildir folder '%1'.", Settings::self()->path() ) );
+    changeProcessed();
+    return;
+  }
+
+  Maildir md = maildirForCollection( collection.parentCollection() );
+  if ( !md.removeSubFolder( collection.remoteId() ) )
+    emit error( i18n("Failed to delete sub-folder '%1'.", collection.remoteId() ) );
+  changeProcessed();
 }
 
 void MaildirResource::ensureDirExists()
