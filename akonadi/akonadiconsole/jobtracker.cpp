@@ -1,7 +1,8 @@
 /*
  This file is part of Akonadi.
 
- Copyright (c) 2009 Till Adam <adam@kde.org>
+ Copyright (c) 2009 KDAB
+ Author: Till Adam <adam@kde.org>
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -25,6 +26,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
+#include <QtCore/QPair>
+#include <QtCore/QList>
 
 #include <cassert>
 
@@ -54,7 +57,7 @@ public:
   {
     timer.setSingleShot( true );
     timer.setInterval( 200 );
-    connect( &timer, SIGNAL(timeout()), q, SIGNAL(updated()) );
+    connect( &timer, SIGNAL(timeout()), q, SLOT(signalUpdates()) );
   }
 
   bool isSession( int id ) const
@@ -76,6 +79,8 @@ public:
   int lastId;
   QTimer timer;
   bool disabled;
+  QList< QPair<int, int> > unpublishedAdds;
+  QList< QPair<int, int> > unpublishedUpdates;
 private:
   JobTracker* const q;
 };
@@ -134,12 +139,12 @@ void JobTracker::jobCreated( const QString & session, const QString & job, const
     qWarning() << "JobTracker: Job arrived before it's parent! Fix the library!";
     jobCreated( session, parent, QString(),"dummy job type" );
   }
-
   // check if it's a new session, if so, add it
   if (!d->sessions.contains( session ) )
   {
     d->sessions.append( session );
     d->jobs.insert( session, QStringList() );
+    d->unpublishedAdds << QPair<int, int>( d->sessions.count()-1, -1 );
   }
 
   // deal with the job
@@ -170,8 +175,10 @@ void JobTracker::jobCreated( const QString & session, const QString & job, const
   assert(!daddy.isEmpty());
   QStringList kids = d->jobs[daddy];
   kids << job;
+  const int pos = d->jobs[daddy].size();
   d->jobs[daddy] = kids;
 
+  d->unpublishedAdds << QPair<int, int>( pos, info.parent );
   d->emitUpdated();
 }
 
@@ -189,6 +196,7 @@ void JobTracker::jobEnded( const QString& job, const QString& error )
   }
   d->infos[job] = info;
 
+  d->unpublishedUpdates << QPair<int, int>( d->jobs[jobForId(info.parent)].size()-1, info.parent );
   d->emitUpdated();
 }
 
@@ -201,6 +209,7 @@ void JobTracker::jobStarted( const QString & job )
   info.state = JobInfo::Running;
   d->infos[job] = info;
 
+  d->unpublishedUpdates << QPair<int, int>( d->jobs[jobForId(info.parent)].size()-1, info.parent );
   d->emitUpdated();
 }
 
@@ -234,8 +243,6 @@ int JobTracker::idForJob(const QString & job) const
   assert( d->idToSequence.contains(job) );
   return d->idToSequence[job];
 }
-
-
 
 QString JobTracker::jobForId(int id) const
 {
@@ -287,7 +294,7 @@ JobInfo JobTracker::info(const QString & job) const
   return d->infos[job];
 }
 
-void JobTracker::reset()
+void JobTracker::triggerReset()
 {
   d->sessions.clear();
   d->idToSequence.clear();
@@ -295,7 +302,7 @@ void JobTracker::reset()
   d->jobs.clear();
   d->infos.clear();
 
-  emit updated();
+  emit reset();
 }
 
 void JobTracker::setEnabled( bool on )
@@ -306,6 +313,14 @@ void JobTracker::setEnabled( bool on )
 bool JobTracker::isEnabled() const
 {
   return !d->disabled;
+}
+
+void JobTracker::signalUpdates()
+{
+  emit added( d->unpublishedAdds );
+  emit updated( d->unpublishedUpdates );
+  d->unpublishedAdds.clear();
+  d->unpublishedUpdates.clear();
 }
 
 #include "jobtracker.moc"
