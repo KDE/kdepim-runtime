@@ -22,8 +22,8 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QUuid>
-#include <QDebug>
 
+#include <kdebug.h>
 #include <klocale.h>
 #include <kpimutils/kfileio.h>
 
@@ -91,6 +91,31 @@ public:
     {
         QDir dir( path );
         return QString::fromLatin1(".%1.directory").arg( dir.dirName() );
+    }
+
+    bool moveAndRename( QDir &dest, const QString &newName )
+    {
+      if ( !dest.exists() ) {
+        kDebug() << "Destination does not exist";
+        return false;
+      }
+      if ( dest.exists( newName ) || dest.exists( QString::fromLatin1( ".%1.directory" ).arg( newName ) ) ) {
+        kDebug() << "New name already in use";
+        return false;
+      }
+
+      if ( !dest.rename( path, newName ) ) {
+        kDebug() << "Failed to rename maildir";
+        return false;
+      }
+      const QDir subDirs( subDirPath() );
+      if ( subDirs.exists() && !dest.rename( subDirPath(), QString::fromLatin1( ".%1.directory" ).arg( newName ) ) ) {
+        kDebug() << "Failed to rename subfolders";
+        return false;
+      }
+
+      path = dest.path() + QDir::separator() + newName;
+      return true;
     }
 
     QString path;
@@ -206,6 +231,12 @@ bool Maildir::create()
 QString Maildir::path() const
 {
     return d->path;
+}
+
+QString Maildir::name() const
+{
+  const QDir dir( d->path );
+  return dir.dirName();
 }
 
 QString Maildir::addSubFolder( const QString& path )
@@ -406,4 +437,34 @@ bool Maildir::removeEntry( const QString& key )
     return QFile::remove(realKey);
 }
 
+bool Maildir::moveTo( const Maildir &newParent )
+{
+  if ( d->isRoot )
+    return false; // not supported
+
+  QDir newDir( newParent.path() );
+  if ( !newParent.d->isRoot )
+    newDir.cdUp();
+
+  QDir currentDir( d->path );
+  currentDir.cdUp();
+
+  if ( newDir == currentDir )
+    return true;
+
+  return d->moveAndRename( newDir, name() );
+}
+
+bool Maildir::rename( const QString &newName )
+{
+  if ( name() == newName )
+    return true;
+  if ( d->isRoot )
+    return false; // not (yet) supported
+
+  QDir dir( d->path );
+  dir.cdUp();
+
+  return d->moveAndRename( dir, newName ); 
+}
 

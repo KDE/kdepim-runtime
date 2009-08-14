@@ -220,7 +220,7 @@ void MaildirResource::retrieveCollections()
   root.setName( name() );
 // FIXME: enable once r1010699 is merged, doesn't build otherwise
 //  root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem 
-//                | Collection::CanChangeCollection | Collection::CanCreateCollection );
+//                | Collection::CanCreateCollection );
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
   if ( !Settings::self()->topLevelIsContainer() )
@@ -284,8 +284,18 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 
 void MaildirResource::collectionChanged(const Collection & collection)
 {
-  kDebug( 5254 ) << "Implement me!";
-  AgentBase::Observer::collectionChanged( collection );
+  if ( collection.remoteId() == collection.name() ) {
+    changeProcessed();
+    return;
+  }
+  Maildir md = maildirForCollection( collection );
+  if ( !md.rename( collection.name() ) ) {
+    emit error( i18n("Unable to rename maildir folder '%1'.", collection.name() ) );
+    return;
+  }
+  Collection c( collection );
+  c.setRemoteId( collection.name() );
+  changeCommitted( c );
 }
 
 void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )

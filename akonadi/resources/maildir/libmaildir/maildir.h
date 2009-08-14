@@ -74,6 +74,11 @@ public:
     QString path() const;
 
     /**
+     * Returns the name of this maildir.
+     */
+    QString name() const;
+
+    /**
      * Returns the list of items (mails) in the maildir. These are keys, which
      * map to filenames, internally, but that's an implementation detail, which
      * should not be relied on.
@@ -136,6 +141,17 @@ public:
      * Removes the entry with the given @key. Returns success or failure.
      */
     bool removeEntry( const QString& key );
+
+    /**
+     * Moves this maildir into @p destination.
+     */
+    bool moveTo( const Maildir &destination );
+
+    /**
+     * Renames this maildir to @p newName.
+     */
+    bool rename( const QString &newName );
+
 private:
     void swap( const Maildir& );
     class Private;
