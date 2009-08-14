@@ -31,6 +31,14 @@ namespace KPIM {
 class MAILDIR_EXPORT Maildir
 {
 public:
+    /**
+      Create a new Maildir object.
+      @param path The path to the maildir, if @p isRoot is @c false, that's the path
+      to the folder containing the cur/new/tmp folders, if @p isRoot is @c true this
+      is the path to a folder containing a number of maildirs.
+      @param isRoot Indicate whether this is a maildir containing mails and various
+      sub-folders or a container only containing maildirs.
+    */
     explicit Maildir( const QString& path = QString(), bool isRoot = false );
     /* Copy constructor */
     Maildir(const Maildir & rhs);
@@ -66,6 +74,11 @@ public:
     QString path() const;
 
     /**
+     * Returns the name of this maildir.
+     */
+    QString name() const;
+
+    /**
      * Returns the list of items (mails) in the maildir. These are keys, which
      * map to filenames, internally, but that's an implementation detail, which
      * should not be relied on.
@@ -95,7 +108,7 @@ public:
      * exists, the Maildir object will be valid, otherwise you can call create()
      * on it, to make a subfolder with that name.
      */
-    Maildir subFolder( const QString& folderName );
+    Maildir subFolder( const QString& folderName ) const;
 
     /**
      * Returns the size of the file in the maildir with the given @param key.
@@ -128,6 +141,17 @@ public:
      * Removes the entry with the given @key. Returns success or failure.
      */
     bool removeEntry( const QString& key );
+
+    /**
+     * Moves this maildir into @p destination.
+     */
+    bool moveTo( const Maildir &destination );
+
+    /**
+     * Renames this maildir to @p newName.
+     */
+    bool rename( const QString &newName );
+
 private:
     void swap( const Maildir& );
     class Private;

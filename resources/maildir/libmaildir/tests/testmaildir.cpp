@@ -100,6 +100,8 @@ void MaildirTest::testMaildirInstantiation()
   QVERIFY(d == d2);
   QVERIFY(d3 == d2);
   QVERIFY(d == d3);
+  QCOMPARE( d.path(), QString("/foo/bar/Mail") );
+  QCOMPARE( d.name(), QString("Mail") );
 
   QVERIFY(!d.isValid());
 
@@ -248,6 +250,31 @@ void MaildirTest::testMaildirRemoveSubfolder()
   QVERIFY( folderPath.endsWith( ".directory/subFolderTest" ) );
   bool removingWorked = d.removeSubFolder( "subFolderTest" );
   QVERIFY( removingWorked );
+
+  cleanupTestCase();
+}
+
+void MaildirTest::testMaildirRename()
+{
+  initTestCase();
+  Maildir d( m_temp->name() );
+  QVERIFY( d.isValid() );
+
+  QString folderPath = d.addSubFolder( "rename me!" );
+  QVERIFY( !folderPath.isEmpty() );
+
+  Maildir d2( folderPath );
+  QVERIFY( d2.isValid() );
+  QVERIFY( d2.rename( "renamed" ) );
+  QCOMPARE( d2.name(), QString( "renamed" ) );
+
+  // same again, should not fail
+  QVERIFY( d2.rename( "renamed" ) );
+  QCOMPARE( d2.name(), QString( "renamed" ) );
+
+  // already existing name
+  QVERIFY( !d.addSubFolder( "this name is already taken" ).isEmpty() );
+  QVERIFY( !d2.rename( "this name is already taken" ) );
 
   cleanupTestCase();
 }
