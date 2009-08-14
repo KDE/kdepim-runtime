@@ -43,7 +43,7 @@ XmlOperations.ignoreItemField( "RemoteId" );
 XmlOperations.assertEqual();
 
 // folder modification (doesn't work yet)
-/*CollectionTest.setCollection( Resource.identifier() + "/test folder" );
+CollectionTest.setCollection( Resource.identifier() + "/test folder" );
 CollectionTest.setName( "changed folder" );
 CollectionTest.update();
 
@@ -51,11 +51,10 @@ Resource.recreate();
 
 XmlOperations.setXmlFile( "maildir-step2.xml" );
 XmlOperations.setRootCollections( Resource.identifier() );
-XmlOperations.assertEqual();*/
+XmlOperations.assertEqual();
 
 // folder deletion 
-//CollectionTest.setCollection( Resource.identifier() + "/changed folder" );
-CollectionTest.setCollection( Resource.identifier() + "/test folder" );
+CollectionTest.setCollection( Resource.identifier() + "/changed folder" );
 CollectionTest.remove();
 
 Resource.recreate();
