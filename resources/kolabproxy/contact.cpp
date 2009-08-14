@@ -47,10 +47,10 @@ static const char* s_soundAttachmentName = "sound";
 static const char* s_unhandledTagAppName = "KOLABUNHANDLED"; // no hyphens in appnames!
 
 // saving (addressee->xml)
-Contact::Contact( const KABC::Addressee* addr, KABC::AddressBook* addressBook )
+Contact::Contact( const KABC::Addressee* addr )
   : mHasGeo( false )
 {
-  setFields( addr, addressBook );
+  setFields( addr );
 }
 
 // loading (xml->addressee)
@@ -938,7 +938,7 @@ static const char* s_knownCustomFields[] = {
 
 
 // The saving is addressee -> Contact -> xml, this is the first part
-void Contact::setFields( const KABC::Addressee* addressee, KABC::AddressBook* addressBook )
+void Contact::setFields( const KABC::Addressee* addressee )
 {
   KolabBase::setFields( addressee );
 

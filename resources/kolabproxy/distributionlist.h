@@ -36,7 +36,6 @@
 
 namespace KABC {
   class Addressee;
-  class AddressBook;
   class ContactGroup;
 }
 
@@ -44,7 +43,7 @@ namespace Kolab {
 
 class DistributionList : public KolabBase {
 public:
-  explicit DistributionList( const KABC::ContactGroup* contactGroup, KABC::AddressBook* addressBook );
+  explicit DistributionList( const KABC::ContactGroup* contactGroup );
   DistributionList( const QString& xml );
   ~DistributionList();
 
@@ -70,7 +69,7 @@ public:
   QString productID() const;
 
 protected:
-  void setFields( const KABC::ContactGroup*, KABC::AddressBook* );
+  void setFields( const KABC::ContactGroup* );
 
 private:
   void loadDistrListMember( const QDomElement& element );
