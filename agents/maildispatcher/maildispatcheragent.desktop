@@ -5,6 +5,7 @@ Name[pt_BR]=Agente de despacho de e-mails
 Name[sv]=E-postsändningsmodul
 Name[tr]=E-posta Yönetim Aracı
 Name[uk]=Агент розподілу пошти
+Name[x-test]=xxMail Dispatcher Agentxx
 Type=AkonadiAgent
 Exec=akonadi_maildispatcher_agent
 Icon=mail-folder-outbox
