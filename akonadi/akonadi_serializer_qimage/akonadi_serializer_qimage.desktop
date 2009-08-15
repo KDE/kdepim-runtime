@@ -5,12 +5,14 @@ Name[pt_BR]=Serializador do QImage
 Name[sv]=QImage-serialisering
 Name[tr]=QImage Sıralandırıcı
 Name[uk]=Серіалізатор QImage
+Name[x-test]=xxQImage Serializerxx
 Comment=An Akonadi serializer plugin for QImage objects
 Comment[pt]=Um 'plugin' de serialização do Akonadi para objectos QImage
 Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para objectos QImage
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av QImage-objekt
 Comment[tr]=QImage nesneleri için bir Akonadi sıralandırıcısı
 Comment[uk]=Втулок серіалізації Akonadi для об'єктів QImage
+Comment[x-test]=xxAn Akonadi serializer plugin for QImage objectsxx
 
 [Plugin]
 Type=image/bmp,image/gif,image/jpg,image/png,image/pbm,image/pgm,image/ppm,image/tiff,image/xbm,image/xpm
