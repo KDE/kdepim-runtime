@@ -218,9 +218,8 @@ void MaildirResource::retrieveCollections()
   root.setParentCollection( Collection::root() );
   root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
-// FIXME: enable once r1010699 is merged, doesn't build otherwise
-//  root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem 
-//                | Collection::CanCreateCollection );
+  root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
+                | Collection::CanCreateCollection );
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
   if ( !Settings::self()->topLevelIsContainer() )
@@ -284,6 +283,13 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 
 void MaildirResource::collectionChanged(const Collection & collection)
 {
+  if ( collection.parentCollection() == Collection::root() ) {
+    if ( collection.name() != name() )
+      setName( collection.name() );
+    changeProcessed();
+    return;
+  }
+
   if ( collection.remoteId() == collection.name() ) {
     changeProcessed();
     return;
