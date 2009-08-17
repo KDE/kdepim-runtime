@@ -60,6 +60,11 @@ JobTrackerWidget::JobTrackerWidget( const char *name, QWidget *parent )
   Akonadi::Control::widgetNeedsAkonadi( this );
 }
 
+JobTrackerWidget::~JobTrackerWidget()
+{
+  delete d;
+}
+
 void JobTrackerWidget::contextMenu( const QPoint &pos )
 {
   QMenu menu;
