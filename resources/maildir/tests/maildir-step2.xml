@@ -1,5 +1,6 @@
 <knut>
   <collection content="message/rfc822,inode/directory" rid="newmaildir" name="akonadi_maildir_resource_223" >
+    <attribute type="AccessRights" >wcdC</attribute>
     <collection content="message/rfc822,inode/directory" rid="changed folder" name="changed folder" >
       <item mimetype="message/rfc822" rid="{998d3576-4a2f-45ca-8a3e-43c5d41f7d70}" >
         <payload>From: Volker Krause &lt;vkrause@kde.org>

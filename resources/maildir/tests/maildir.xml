@@ -1,5 +1,6 @@
 <knut>
   <collection content="message/rfc822,inode/directory" rid="maildir/root" name="akonadi_maildir_resource_1" >
+    <attribute type="AccessRights" >wcdC</attribute>
     <collection content="message/rfc822,inode/directory" rid="child2" name="child2" />
     <collection content="message/rfc822,inode/directory" rid="child1" name="child1" >
       <collection content="message/rfc822,inode/directory" rid="grandchild" name="grandchild" >
