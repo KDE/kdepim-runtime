@@ -41,6 +41,8 @@ public:
   bool isEnabled() const;
 public slots:
   void resetTracker();
+  void jobsAdded( const QList< QPair<int, int> >& );
+  void jobsUpdated( const QList< QPair<int, int> >& );
   void setEnabled(bool);
 
 private:
