@@ -22,7 +22,7 @@
 
 #include <akonadi/resourcebase.h>
 
-class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
 {
   Q_OBJECT
 
@@ -43,10 +43,12 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+//     virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source, const Akonadi::Collection &dest );
     virtual void itemRemoved( const Akonadi::Item &item );
 
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
+    virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &dest );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
 
   private slots:

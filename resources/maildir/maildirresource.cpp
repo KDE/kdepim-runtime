@@ -78,6 +78,8 @@ MaildirResource::MaildirResource( const QString &id )
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
+
+  enableHierarchicalRemoteIdentifiers( true );
 }
 
 MaildirResource::~ MaildirResource()
@@ -302,6 +304,32 @@ void MaildirResource::collectionChanged(const Collection & collection)
   Collection c( collection );
   c.setRemoteId( collection.name() );
   changeCommitted( c );
+}
+
+void MaildirResource::collectionMoved( const Collection &collection, const Collection &source, const Collection &dest )
+{
+  kDebug() << collection << source << dest;
+  if ( collection.parentCollection() == Collection::root() ) {
+    emit error( i18n( "Cannot move root maildir folder '%1'." ).arg( collection.remoteId() ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( source == dest ) { // should not happen, but who knows...
+    changeProcessed();
+    return;
+  }
+
+  Collection c( collection );
+  c.setParentCollection( source );
+  Maildir md = maildirForCollection( c );
+  Maildir destMd = maildirForCollection( dest );
+  if ( !md.moveTo( destMd ) ) {
+    emit error( i18n("Unable to move maildir folder '%1' from '%2' to '%3'.", collection.remoteId(), source.remoteId(), dest.remoteId() ) );
+    changeProcessed();
+  } else {
+    changeCommitted( collection );
+  }
 }
 
 void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
