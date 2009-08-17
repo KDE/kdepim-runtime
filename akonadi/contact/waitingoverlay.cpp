@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include "waitingoverlay.h"
+#include "waitingoverlay_p.h"
 
 #include <KDebug>
 #include <KIcon>

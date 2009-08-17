@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include "contactgrouplineedit.h"
+#include "contactgrouplineedit_p.h"
 
 #include <akonadi/entitytreemodel.h>
 #include <klocale.h>
@@ -37,7 +37,6 @@ ContactGroupLineEdit::ContactGroupLineEdit( QWidget *parent )
 void ContactGroupLineEdit::setCompletionModel( QAbstractItemModel *model )
 {
   mModel = model;
-  qDebug( "completer rows = %d", model->rowCount() );
 
   mCompleter = new QCompleter( mModel, this );
   mCompleter->setCompletionColumn( 0 );
@@ -110,8 +109,7 @@ void ContactGroupLineEdit::updateView( const QString &uid, const QString &prefer
     return;
   }
 
-  Akonadi::Item::Id updateId = uid.toLongLong();
-  qDebug( "look for id %llu", updateId );
+  const Akonadi::Item::Id updateId = uid.toLongLong();
 
   for ( int i = 0; i < mModel->rowCount(); ++i ) {
     const QModelIndex index = mModel->index( i, 0 );
@@ -122,7 +120,6 @@ void ContactGroupLineEdit::updateView( const QString &uid, const QString &prefer
     if ( !item.isValid() )
       continue;
 
-    qDebug( "compare %llu == %llu", item.id(), updateId );
     if ( item.id() == updateId ) {
       updateView( item, preferredEmail );
       break;
@@ -184,4 +181,4 @@ QString ContactGroupLineEdit::requestPreferredEmail( const KABC::Addressee &cont
   return emails.at( action->data().toInt() );
 }
 
-#include "contactgrouplineedit.moc"
+#include "contactgrouplineedit_p.moc"

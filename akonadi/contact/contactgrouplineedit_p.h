@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef CONTACTGROUPLINEEDIT_H
-#define CONTACTGROUPLINEEDIT_H
+#ifndef CONTACTLINEEDIT_H
+#define CONTACTLINEEDIT_H
 
 #include <QtGui/QLineEdit>
 

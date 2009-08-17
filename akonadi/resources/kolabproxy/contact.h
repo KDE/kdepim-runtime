@@ -38,7 +38,6 @@
 
 namespace KABC {
   class Addressee;
-  class AddressBook;
   class ResourceKolab;
   class Picture;
   class Sound;
@@ -69,7 +68,7 @@ public:
     QString country;
   };
 
-  explicit Contact( const KABC::Addressee* address, KABC::AddressBook* addressBook );
+  explicit Contact( const KABC::Addressee* address );
   Contact( const QString& xml );
   ~Contact();
 
@@ -201,7 +200,7 @@ public:
   QString saveXML() const;
 
 protected:
-  void setFields( const KABC::Addressee*, KABC::AddressBook* );
+  void setFields( const KABC::Addressee* );
 
 private:
   bool loadNameAttribute( QDomElement& element );

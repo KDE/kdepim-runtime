@@ -12,6 +12,7 @@ set(kdepim-copy_LIB_SRCS
     diffalgo.cpp
     htmldiffalgodisplay.cpp
     kaccount.cpp
+    kdatepickerpopup.cpp
     kincidencechooser.cpp
     ksubscription.cpp
     sendsmsdialog.cpp

@@ -24,7 +24,6 @@
 
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
-#include <kabc/stdaddressbook.h>
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
 
@@ -34,9 +33,6 @@
 AddressBookHandler::AddressBookHandler(): KolabHandler()
 {
   m_mimeType = "application/x-vnd.kolab.contact";
-
-  // TODO using old KABC API should really be avoided
-  mAddressBook = KABC::StdAddressBook::self(true);
 }
 
 
@@ -141,12 +137,12 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
 {
   if (item.hasPayload<KABC::Addressee>()) {
     KABC::Addressee addressee = item.payload<KABC::Addressee>();
-    Kolab::Contact contact(&addressee, 0);
+    Kolab::Contact contact(&addressee);
 
     contactToKolabFormat(contact, imapItem);
   } else if (item.hasPayload<KABC::ContactGroup>()) {
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
-    Kolab::DistributionList distList(&contactGroup, mAddressBook);
+    Kolab::DistributionList distList(&contactGroup);
 
     distListToKolabFormat(distList, imapItem);
   } else {

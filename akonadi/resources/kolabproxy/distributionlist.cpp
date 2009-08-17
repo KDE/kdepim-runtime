@@ -31,8 +31,9 @@
 
 #include "distributionlist.h"
 
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 #include <kabc/addressee.h>
-#include <kabc/addressbook.h>
 #include <kabc/contactgroup.h>
 #include <kdebug.h>
 
@@ -41,9 +42,9 @@ using namespace Kolab;
 static const char* s_unhandledTagAppName = "KOLABUNHANDLED"; // no hyphens in appnames!
 
 // saving (contactgroup->xml)
-DistributionList::DistributionList( const KABC::ContactGroup* contactGroup, KABC::AddressBook* addressBook )
+DistributionList::DistributionList( const KABC::ContactGroup* contactGroup )
 {
-  setFields( contactGroup, addressBook );
+  setFields( contactGroup );
 }
 
 // loading (xml->contactgroup)
@@ -177,7 +178,7 @@ QString DistributionList::productID() const
 }
 
 // The saving is contactgroup -> DistributionList -> xml, this is the first part
-void DistributionList::setFields( const KABC::ContactGroup* contactGroup, KABC::AddressBook* addressBook )
+void DistributionList::setFields( const KABC::ContactGroup* contactGroup )
 {
   KolabBase::setFields( contactGroup );
 
@@ -195,12 +196,22 @@ void DistributionList::setFields( const KABC::ContactGroup* contactGroup, KABC::
   // Hopefully all resources are available during saving, so we can look up
   // in the addressbook to get name+email from the UID.
   // TODO proxy should at least know the addressees it created
-  if ( addressBook != 0 ) {
-    for ( uint index = 0; index < contactGroup->contactReferenceCount(); ++index ) {
-      const KABC::ContactGroup::ContactReference& reference = contactGroup->contactReference( index );
+  for ( uint index = 0; index < contactGroup->contactReferenceCount(); ++index ) {
+    const KABC::ContactGroup::ContactReference& reference = contactGroup->contactReference( index );
 
-      const KABC::Addressee addressee = addressBook->findByUid( reference.uid() );
+    const Akonadi::Item item( reference.uid() );
+    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
+    job->fetchScope().fetchFullPayload();
+    if ( !job->exec() )
+      continue;
 
+    const Akonadi::Item::List items = job->items();
+    if ( items.count() != 1 )
+      continue;
+
+    const KABC::Addressee addressee = job->items().first().payload<KABC::Addressee>();
+
+    if ( !addressee.isEmpty() ) {
       Member m;
       m.displayName = addressee.formattedName();
       m.email = reference.preferredEmail();
@@ -208,10 +219,6 @@ void DistributionList::setFields( const KABC::ContactGroup* contactGroup, KABC::
         m.email = addressee.preferredEmail();
       mDistrListMembers.append( m );
     }
-  } else {
-    kWarning() << "No AddressBook, can't resolv "
-               << contactGroup->contactReferenceCount()
-               << "contactgroup references";
   }
 }
 
