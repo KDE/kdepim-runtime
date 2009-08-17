@@ -61,6 +61,11 @@ AmazingCompleter::AmazingCompleter( /* QAbstractItemModel* model, */ QObject* pa
 
 }
 
+AmazingCompleter::~AmazingCompleter()
+{
+  delete d_ptr;
+}
+
 void AmazingCompleter::setCompletionPrefixString(const QString& matchData)
 {
   if (matchData.isEmpty())
@@ -88,7 +93,7 @@ void AmazingCompleter::setCompletionPrefix(const QVariant& matchData)
     return;
   }
 
-  
+
   QModelIndex idx = d->m_model->index(0, 0);
 
   if (!idx.isValid())
