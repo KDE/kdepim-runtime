@@ -26,8 +26,6 @@ CollectionTest.addContentType( "message/rfc822" );
 CollectionTest.setName( "test folder" );
 CollectionTest.create();
 
-alert( "wait" );
-
 // item creation
 ItemTest.setParentCollection( Resource.identifier() + "/test folder" );
 ItemTest.setMimeType( "message/rfc822" );
@@ -42,7 +40,7 @@ XmlOperations.setItemKey( "None" );
 XmlOperations.ignoreItemField( "RemoteId" );
 XmlOperations.assertEqual();
 
-// folder modification (doesn't work yet)
+// folder modification
 CollectionTest.setCollection( Resource.identifier() + "/test folder" );
 CollectionTest.setName( "changed folder" );
 CollectionTest.update();
