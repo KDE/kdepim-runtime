@@ -169,6 +169,37 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     changeCommitted( item );
 }
 
+void MaildirResource::itemMoved( const Item &item, const Collection &source, const Collection &destination )
+{
+  if ( source == destination ) { // should not happen but would confuse Maildir::moveEntryTo
+    changeProcessed();
+    return;
+  }
+
+  Maildir sourceDir = maildirForCollection( source );
+  QString errMsg;
+  if ( !sourceDir.isValid( errMsg ) ) {
+    cancelTask( i18n( "Source folder is invalid: '%1'.", errMsg ) );
+    return;
+  }
+
+  Maildir destDir = maildirForCollection( destination );
+  if ( !destDir.isValid( errMsg ) ) {
+    cancelTask( i18n( "Destination folder is invalid: '%1'.", errMsg ) );
+    return;
+  }
+
+  const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
+  if ( newRid.isEmpty() ) {
+    cancelTask( i18n( "Could not move message '%1'.", item.remoteId() ) );
+    return;
+  }
+
+  Item i( item );
+  i.setRemoteId( newRid );
+  changeCommitted( i );
+}
+
 void MaildirResource::itemRemoved(const Akonadi::Item & item)
 {
   if ( !Settings::self()->readOnly() ) {

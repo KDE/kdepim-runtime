@@ -152,6 +152,12 @@ public:
      */
     bool rename( const QString &newName );
 
+    /**
+     * Moves the file with the given @p key into the Maildir @p destination.
+     * @returns The new file name inside @p destination.
+     */
+    QString moveEntryTo( const QString &key, const Maildir &destination );
+
 private:
     void swap( const Maildir& );
     class Private;

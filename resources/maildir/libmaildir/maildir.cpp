@@ -472,3 +472,20 @@ bool Maildir::rename( const QString &newName )
   return d->moveAndRename( dir, newName ); 
 }
 
+QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
+{
+  const QString realKey( d->findRealKey( key ) );
+  if ( realKey.isEmpty() ) {
+    kDebug() << "Unable to find" << key;
+    return QString();
+  }
+  QFile f( realKey );
+  // ### is this safe regarding the maildir locking scheme?
+  const QString targetKey = destination.path() + QDir::separator() + QLatin1String( "new" ) + QDir::separator() + key;
+  if ( !f.rename( targetKey ) ) {
+    kDebug() << "Failed to rename" << realKey << "to" << targetKey;
+    return QString();
+  }
+
+  return key;
+}
