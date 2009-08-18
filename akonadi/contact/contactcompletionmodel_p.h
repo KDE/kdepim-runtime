@@ -18,61 +18,38 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DATEEDITWIDGET_H
-#define DATEEDITWIDGET_H
+#ifndef AKONADI_CONTACTCOMPLETIONMODEL_H
+#define AKONADI_CONTACTCOMPLETIONMODEL_H
 
-#include <QtCore/QDate>
-#include <QtGui/QLabel>
-#include <QtGui/QWidget>
+#include <akonadi/entitytreemodel.h>
 
-namespace KPIM
-{
-class KDatePickerPopup;
-}
+namespace Akonadi {
 
-class QContextMenuEvent;
-class QToolButton;
-
-class DateView : public QLabel
+class ContactCompletionModel : public EntityTreeModel
 {
   Q_OBJECT
 
   public:
-    DateView( QWidget *parent = 0 );
+    enum Columns
+    {
+      NameColumn,         ///< The name of the contact.
+      NameAndEmailColumn, ///< The name and the email of the contact.
+      EmailColumn         ///< The preferred email of the contact.
+    };
 
-  Q_SIGNALS:
-    void resetDate();
+    ContactCompletionModel( Session *session, Monitor *monitor, QObject *parent = 0 );
+    virtual ~ContactCompletionModel();
 
-  protected:
-    virtual void contextMenuEvent( QContextMenuEvent* );
+    virtual QVariant getData( const Item &item, int column, int role = Qt::DisplayRole ) const;
+    virtual int columnCount( const QModelIndex &parent ) const;
+    virtual int getColumnCount( int ) const;
 
-  private Q_SLOTS:
-    void emitSignal();
-};
-
-class DateEditWidget : public QWidget
-{
-  Q_OBJECT
-
-  public:
-    DateEditWidget( QWidget *parent = 0 );
-    ~DateEditWidget();
-
-    void setDate( const QDate &date );
-    QDate date() const;
-
-    void setReadOnly( bool readOnly );
-
-  private Q_SLOTS:
-    void dateSelected( const QDate& );
-    void resetDate();
-    void updateView();
+    static QAbstractItemModel* self();
 
   private:
-    QDate mDate;
-    DateView *mView;
-    QToolButton *mButton;
-    KPIM::KDatePickerPopup *mMenu;
+    static QAbstractItemModel* mSelf;
 };
+
+}
 
 #endif

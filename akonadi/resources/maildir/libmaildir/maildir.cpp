@@ -443,8 +443,12 @@ bool Maildir::moveTo( const Maildir &newParent )
     return false; // not supported
 
   QDir newDir( newParent.path() );
-  if ( !newParent.d->isRoot )
+  if ( !newParent.d->isRoot ) {
     newDir.cdUp();
+    if ( !newDir.exists( newParent.d->subDirPath() ) )
+      newDir.mkdir( newParent.d->subDirPath() );
+    newDir.cd( newParent.d->subDirPath() );
+  }
 
   QDir currentDir( d->path );
   currentDir.cdUp();

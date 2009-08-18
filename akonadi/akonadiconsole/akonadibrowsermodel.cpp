@@ -256,6 +256,9 @@ int AkonadiBrowserModel::getColumnCount(int headerSet) const
 
 QVariant AkonadiBrowserModel::getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const
 {
+  if (section < 0)
+    return QVariant();
+
   if (orientation == Qt::Vertical)
      return EntityTreeModel::getHeaderData(section, orientation, role, headerSet);
 
