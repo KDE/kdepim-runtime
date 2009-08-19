@@ -327,6 +327,7 @@ void MaildirResource::collectionChanged(const Collection & collection)
   Maildir md = maildirForCollection( collection );
   if ( !md.rename( collection.name() ) ) {
     emit error( i18n("Unable to rename maildir folder '%1'.", collection.name() ) );
+    changeProcessed();
     return;
   }
   Collection c( collection );
