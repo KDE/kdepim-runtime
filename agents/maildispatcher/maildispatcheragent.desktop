@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Mail Dispatcher Agent
+Name[nb]=Agent for e-postsending
 Name[pt]=Agente de Despacho do Correio
 Name[pt_BR]=Agente de despacho de e-mails
 Name[sv]=E-postsändningsmodul
