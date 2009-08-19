@@ -169,17 +169,45 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     changeCommitted( item );
 }
 
+void MaildirResource::itemMoved( const Item &item, const Collection &source, const Collection &destination )
+{
+  if ( source == destination ) { // should not happen but would confuse Maildir::moveEntryTo
+    changeProcessed();
+    return;
+  }
+
+  Maildir sourceDir = maildirForCollection( source );
+  QString errMsg;
+  if ( !sourceDir.isValid( errMsg ) ) {
+    cancelTask( i18n( "Source folder is invalid: '%1'.", errMsg ) );
+    return;
+  }
+
+  Maildir destDir = maildirForCollection( destination );
+  if ( !destDir.isValid( errMsg ) ) {
+    cancelTask( i18n( "Destination folder is invalid: '%1'.", errMsg ) );
+    return;
+  }
+
+  const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
+  if ( newRid.isEmpty() ) {
+    cancelTask( i18n( "Could not move message '%1'.", item.remoteId() ) );
+    return;
+  }
+
+  Item i( item );
+  i.setRemoteId( newRid );
+  changeCommitted( i );
+}
+
 void MaildirResource::itemRemoved(const Akonadi::Item & item)
 {
   if ( !Settings::self()->readOnly() ) {
     Maildir dir = maildirForCollection( item.parentCollection() );
-    QString errMsg;
-    if ( !dir.isValid( errMsg ) ) {
-      cancelTask( errMsg );
-      return;
-    }
-    if ( !dir.removeEntry( item.remoteId() ) ) {
-      emit error( i18n("Failed to delete item: %1", item.remoteId()) );
+    // !dir.isValid() means that our parent folder has been deleted already,
+    // so we don't care at all as that one will be recursive anyway
+    if ( dir.isValid() && !dir.removeEntry( item.remoteId() ) ) {
+      emit error( i18n("Failed to delete message: %1", item.remoteId()) );
     }
   }
   changeProcessed();
@@ -342,7 +370,9 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
   }
 
   Maildir md = maildirForCollection( collection.parentCollection() );
-  if ( !md.removeSubFolder( collection.remoteId() ) )
+  // !md.isValid() means that our parent folder has been deleted already,
+  // so we don't care at all as that one will be recursive anyway
+  if ( md.isValid() && !md.removeSubFolder( collection.remoteId() ) )
     emit error( i18n("Failed to delete sub-folder '%1'.", collection.remoteId() ) );
   changeProcessed();
 }
