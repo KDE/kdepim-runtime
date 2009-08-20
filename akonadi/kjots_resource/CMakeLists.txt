@@ -18,7 +18,6 @@ include_directories( ${PROJECT_BINARY_DIR}/../kjots_common )
 
 set( kjotsresource_SRCS
   kjotsresource.cpp
-  kjotsbook.cpp
 )
 
 install(FILES kjotsresource.desktop

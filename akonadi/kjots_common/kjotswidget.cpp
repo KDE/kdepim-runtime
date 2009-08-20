@@ -53,6 +53,7 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 #include <akonadi/selectionproxymodel.h>
+// #include <akonadi/partfetcher.h>
 
 #include <grantlee/template.h>
 #include <grantlee/engine.h>
@@ -135,7 +136,8 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   Collection rootCollection = Collection::root();
 
   ItemFetchScope scope;
-  scope.fetchFullPayload( true ); // Need to have full item when adding it to the internal data structure
+  scope.fetchPayloadPart( "title" );
+//   scope.fetchFullPayload( true ); // Need to have full item when adding it to the internal data structure
 //   scope.fetchAttribute< CollectionChildOrderAttribute >();
   scope.fetchAttribute< EntityDisplayAttribute >();
 
@@ -190,8 +192,6 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   connect(selProxy, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(renderSelection()));
   connect(selProxy, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), SLOT(renderSelection()));
 
-  connect(selProxy, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)), SLOT(savePage(const QModelIndex &, int, int) ) );
-
   stackedWidget = new QStackedWidget( splitter );
 
   editor = new KTextEdit( stackedWidget );
@@ -204,6 +204,26 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   stackedWidget->setCurrentWidget( browser );
 }
 
+void KJotsWidget::itemActivated(const QModelIndex& index )
+{
+  return;
+}
+
+void KJotsWidget::partFetched(const QModelIndex& index, Item item, const QByteArray& partName)
+{
+  disconnect (sender(), SIGNAL(partFetched(QModelIndex,Item,QByteArray)), this, SLOT(partFetched(QModelIndex,Item,QByteArray)));
+  disconnect (sender(), SIGNAL(invalidated()), this, SLOT(invalidated()));
+
+  delete sender();
+}
+
+void KJotsWidget::invalidated()
+{
+  kDebug() << sender() << "invalidated";
+}
+
+
+
 KJotsWidget::~KJotsWidget()
 {
 
@@ -212,12 +232,8 @@ KJotsWidget::~KJotsWidget()
 
 void KJotsWidget::savePage(const QModelIndex &parent, int start, int end)
 {
-//   QModelIndexList deselectedIndexes = deselected.indexes();
-//   if (deselectedIndexes.size() != 1)
-//     return;
-//
-//   QModelIndex idx = deselectedIndexes.at(0);
-
+  // Disable this for now.
+  return;
 
   if(parent.isValid() || start != 0 || end != 0)
     return;
@@ -227,6 +243,10 @@ void KJotsWidget::savePage(const QModelIndex &parent, int start, int end)
   Item item = idx.data(EntityTreeModel::ItemRole).value<Item>();
   if (!item.isValid())
     return;
+
+  if (!item.hasPayload<KJotsPage>())
+    return;
+
   KJotsPage page = item.payload<KJotsPage>();
 
   page.setContent(editor->toPlainText());
@@ -245,6 +265,16 @@ QString KJotsWidget::renderSelectionToHtml()
   for (int row = 0; row < rows; ++row)
   {
     QModelIndex idx = selProxy->index(row, column, QModelIndex());
+
+//     PartFetcher *fetcher = new PartFetcher(this);
+//     connect (fetcher, SIGNAL(partFetched(QModelIndex,Item,QByteArray)), SLOT(partFetched(QModelIndex,Item,QByteArray)));
+//     connect (fetcher, SIGNAL(invalidated()), SLOT(invalidated()));
+//     if (!fetcher->fetchPart(idx, "content"))
+//     {
+//       disconnect (fetcher, SIGNAL(partFetched(QModelIndex,Item,QByteArray)), this, SLOT(partFetched(QModelIndex,Item,QByteArray)));
+//       disconnect (fetcher, SIGNAL(invalidated()), this, SLOT(invalidated()));
+//     }
+
     QObject *obj = idx.data(KJotsModel::GrantleeObjectRole).value<QObject*>();
     objectList << QVariant::fromValue(obj);
   }
@@ -268,9 +298,21 @@ void KJotsWidget::renderSelection()
   if (rows == 1)
   {
     QModelIndex idx = selProxy->index( 0, 0, QModelIndex());
+
+//     PartFetcher *fetcher = new PartFetcher(this);
+//     connect (fetcher, SIGNAL(partFetched(QModelIndex,Item,QByteArray)), SLOT(partFetched(QModelIndex,Item,QByteArray)));
+//     connect (fetcher, SIGNAL(invalidated()), SLOT(invalidated()));
+//     if (!fetcher->fetchPart(idx, "content"))
+//     {
+//       disconnect (fetcher, SIGNAL(partFetched(QModelIndex,Item,QByteArray)), this, SLOT(partFetched(QModelIndex,Item,QByteArray)));
+//       disconnect (fetcher, SIGNAL(invalidated()), this, SLOT(invalidated()));
+//     }
+
     Item item = idx.data(EntityTreeModel::ItemRole).value<Item>();
     if (item.isValid())
     {
+      if (!item.hasPayload<KJotsPage>())
+        return;
       KJotsPage page = item.payload<KJotsPage>();
       editor->setText( page.content() );
       stackedWidget->setCurrentWidget( editor );

@@ -42,8 +42,6 @@
 #include <kdebug.h>
 
 #include "kjotspage.h"
-#include "kjotsakonadipage.h"
-#include "kjotsbook.h"
 
 #include "datadir.h"
 
@@ -61,6 +59,93 @@ QString KJotsResource::findParent( const QString &remoteId )
   return QString();
 }
 
+QString KJotsResource::getFileUrl( const Collection &col ) const
+{
+  return m_rootDataPath + '/' + col.remoteId();
+}
+
+QString KJotsResource::getFileUrl( const Item &item ) const
+{
+  return m_rootDataPath + '/' + item.remoteId();
+}
+
+Collection::List KJotsResource::getDescendantCollections(Collection& col) const
+{
+  Collection::List list;
+  QString fileUrl = getFileUrl( col );
+  KUrl bookUrl( fileUrl );
+  QFile bookFile( bookUrl.toLocalFile() );
+
+  QDomDocument doc;
+  doc.setContent( &bookFile );
+
+  QDomElement rootElement = doc.documentElement();
+
+  QDomElement title = rootElement.firstChildElement( "Title" );
+  QString bookname = title.text();
+
+  if (col.parentCollection() != Collection::root() )
+  {
+    EntityDisplayAttribute *displayAttribute = new EntityDisplayAttribute();
+    displayAttribute->setDisplayName( bookname );
+    displayAttribute->setIconName( "x-office-address-book" );
+    col.addAttribute( displayAttribute );
+  }
+  col.setName( bookname );
+
+  QDomElement contents = rootElement.firstChildElement( "Contents" );
+
+  QDomElement entity = contents.firstChildElement();
+  QString filename;
+  while ( !entity.isNull() ) {
+    if ( entity.tagName() == "KJotsBook" ) {
+      filename = entity.attribute( "filename" );
+      Collection child;
+      child.setRemoteId( filename );
+      child.setContentMimeTypes( QStringList() << Collection::mimeType() << KJotsPage::mimeType() );
+      child.setParentCollection( col );
+      list << getDescendantCollections( child );
+      list << child;
+    }
+    entity = entity.nextSiblingElement();
+  }
+
+  return list;
+}
+
+Item::List KJotsResource::getContainedItems( const Collection &col ) const
+{
+  Item::List list;
+
+  QString fileUrl = getFileUrl( col );
+  KUrl bookUrl( fileUrl );
+  QFile bookFile( bookUrl.toLocalFile() );
+
+  QDomDocument doc;
+  doc.setContent( &bookFile );
+
+  QDomElement rootElement = doc.documentElement();
+
+  QDomElement contents = rootElement.firstChildElement( "Contents" );
+
+  QDomElement entity = contents.firstChildElement();
+  QString filename;
+  while ( !entity.isNull() ) {
+    filename = entity.attribute( "filename" ) ;
+    if ( entity.tagName() == "KJotsPage" ) {
+      Item item;
+      item.setRemoteId( filename );
+      item.setMimeType( KJotsPage::mimeType() );
+      item.setParentCollection( col );
+      list << item;
+    }
+    entity = entity.nextSiblingElement();
+  }
+
+  return list;
+}
+
+
 KJotsResource::KJotsResource( const QString &id )
     : ResourceBase( id )
 {
@@ -69,6 +154,7 @@ KJotsResource::KJotsResource( const QString &id )
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->itemFetchScope().fetchAttribute<CollectionChildOrderAttribute>();
   changeRecorder()->itemFetchScope().fetchAttribute<EntityDisplayAttribute>();
+  setHierarchicalRemoteIdentifiersEnabled(true);
 
   // Temporary for development.
   m_rootDataPath = QString( DATADIR );
@@ -84,59 +170,74 @@ KJotsResource::~KJotsResource()
 
 void KJotsResource::retrieveCollections()
 {
-  kDebug();
   Collection::List list;
 
-  // The bookshelf is not really a collection.
-  KJotsBook book = KJotsBook::getBookshelf();
-  book.setCollection( Collection::root() );
-//   Collection::List colList = book.getCollections();
+  Collection resourceRootCollection;
+  resourceRootCollection.setRemoteId( "/kjots.bookshelf" );
+  resourceRootCollection.setParentCollection( Collection::root() );
+  // The bookshelf can not contain pages.
+  resourceRootCollection.setContentMimeTypes( QStringList()
+                                              << Collection::mimeType() );
 
-//   Collection col = book.getCollection();
-//   col.setParent( Collection::root() );
-
-//   No, that's something the resource should do.
-//   Collection::List list = KJotsBook::getTopLevelCollections();
-
-
-
-//   m_parentBook[ "Collection::root" ].append( col.remoteId() );
-
-  Collection::List colList = book.getCollections( KJotsBook::ReadCollectionsRecursive );
-
-  // parentRemoteId doesn't survive until we need it in removeCollection.
-  // Persist it now.
-  foreach( Collection col, colList ) {
-    kDebug() << col.remoteId();
-    m_parentBook[ col.parentRemoteId() ].append( col.remoteId() );
-  }
-
-//   list << col;
-  list << colList;
-
+  list << getDescendantCollections(resourceRootCollection);
+  list << resourceRootCollection;
   collectionsRetrieved( list );
 
 }
 
 void KJotsResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  kDebug();
-  QString colRId = collection.remoteId();
-  KJotsBook book( colRId );
-  Item::List items = book.retrieveItems();
+  Item::List items = getContainedItems( collection );
+  itemsRetrieved( items );
+}
 
-  foreach( Item item, items ) {
-    m_parentBook[ colRId ].append( item.remoteId() );
+KJotsPage KJotsResource::getPage( const Akonadi::Item& item, QSet<QByteArray> parts ) const
+{
+  QString fileUrl = getFileUrl( item );
+  KUrl pageUrl( fileUrl );
+  QFile pageFile( pageUrl.toLocalFile() );
+
+  KJotsPage page;
+  QDomDocument doc;
+  doc.setContent( &pageFile );
+
+  QDomElement pageRootElement = doc.documentElement();
+
+  if ( pageRootElement.tagName() ==  "KJotsPage" ) {
+    QDomNode n = pageRootElement.firstChild();
+    while ( !n.isNull() ) {
+      QDomElement e = n.toElement();
+      if ( !e.isNull() ) {
+        if ( e.tagName() == "Title" ) {
+          if ( parts.contains( "title" ) || parts.contains( Item::FullPayload ) )
+            page.setTitle( e.text() );
+        }
+
+        if ( e.tagName() == "Content" ) {
+          if ( parts.contains( "content" ) || parts.contains( Item::FullPayload ) )
+            page.setContent( QString( e.text() ) );
+        }
+      }
+      n = n.nextSibling();
+    }
   }
 
-  itemsRetrieved( items );
+  return page;
 }
 
 bool KJotsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  Q_UNUSED( parts );
-
   Item newItem = item;
+
+  KJotsPage page = getPage( item, parts );
+
+  newItem.setPayload<KJotsPage>( page );
+
+  EntityDisplayAttribute *displayAttribute = new EntityDisplayAttribute();
+  displayAttribute->setDisplayName( page.title() );
+  displayAttribute->setIconName( "text-x-generic" );
+  newItem.addAttribute( displayAttribute );
+
   itemRetrieved( newItem );
   return true;
 }
@@ -158,37 +259,18 @@ void KJotsResource::configure( WId windowId )
 
 void KJotsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  kDebug() << collection.remoteId() << item.remoteId() << item.id();
-  KJotsBook parent( collection.remoteId() );
-  Item newItem = parent.addItem( item );
-  m_parentBook[ collection.remoteId()].append( newItem.remoteId() );
 
-  changeCommitted( newItem );
+  changeCommitted( item );
 }
 
 void KJotsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  KJotsPage page = item.payload<KJotsPage>();
-
-  // FIXME: page should already know its remoteId... ?
-  page.setRemoteId(item.remoteId());
-
-  if ( page.save() )
-  {
-    Item newItem = item;
-    changeCommitted( newItem );
-  }
+  changeCommitted( item );
 }
 
 void KJotsResource::itemRemoved( const Akonadi::Item &item )
 {
-  QString parentBookRemoteId = findParent( item.remoteId() );
-  kDebug() << parentBookRemoteId << item.remoteId();
-  KJotsBook book = KJotsBook( parentBookRemoteId );
-  Item newItem = book.removeItem( item );
-  m_parentBook[ parentBookRemoteId ].removeOne( item.remoteId() );
-
-  changeCommitted( newItem );
+  changeCommitted( item );
 
 }
 
@@ -196,58 +278,22 @@ void KJotsResource::itemMoved( const Akonadi::Item &item,
                                const Akonadi::Collection &source,
                                const Akonadi::Collection &destination )
 {
-  kDebug() << item.remoteId() << source.remoteId() << destination.remoteId() << destination.id();
-
-  if ( source != destination )
-  {
-    KJotsBook sourceBook (source.remoteId() );
-    KJotsBook destinationBook (destination.remoteId() );
-    sourceBook.removeEntity( item.remoteId() );
-    kDebug() << "removed";
-    destinationBook.addEntity( item.remoteId() );
-    kDebug() << "added";
-    Item newItem = item;
-    changeCommitted( newItem );
-  }
-  // Reordering is done on the collectionChanged signal?
 
 }
 
 void KJotsResource::collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent )
 {
-  kDebug() << collection.name() << collection.remoteId() << parent.remoteId();
-  KJotsBook parentBook( parent.remoteId() );
-  Collection newCollection = parentBook.addCollection( collection );
-  newCollection.setParent( parent );
-
-  changeCommitted( newCollection );
-
+  changeCommitted( collection );
 }
 
 void KJotsResource::collectionRemoved( const Akonadi::Collection &collection )
 {
-  QString parentBookRemoteId = findParent( collection.remoteId() );
-  kDebug() << collection.remoteId() << collection.parentRemoteId() << parentBookRemoteId;
-//   QString parentBookRemoteId = collection.parentRemoteId();
-  KJotsBook book = KJotsBook( parentBookRemoteId );
-  Collection newCollection = book.removeCollection( collection );
-
-  changeCommitted( newCollection );
+  changeCommitted( collection );
 }
 
 void KJotsResource::collectionChanged( const Akonadi::Collection &collection )
 {
-
-  QString parentBookRemoteId = findParent( collection.remoteId() );
-
-  kDebug() << collection.remoteId() << "in" << parentBookRemoteId << "changed.";
-
-  KJotsBook book = KJotsBook( collection.remoteId() );
-
-  Collection newCollection = book.updateCollection( collection );
-
-
-  changeCommitted( newCollection );
+  changeCommitted( collection );
 
 }
 
@@ -255,23 +301,6 @@ void KJotsResource::collectionMoved( const Akonadi::Collection &collection,
                                      const Akonadi::Collection &source,
                                      const Akonadi::Collection &destination )
 {
-  kDebug() << collection.remoteId() << source.remoteId() << destination.remoteId() << destination.id();
-
-  // Temporary for development.
-  QString rootDataPath = QString( DATADIR );
-  //     rootDataPath = KStandardDirs::locateLocal( "data", "kjots/" );
-
-  if ( source != destination )
-  {
-    KJotsBook sourceBook (source.remoteId() );
-    KJotsBook destinationBook (destination.remoteId() );
-    sourceBook.removeEntity( collection.remoteId() );
-    destinationBook.addEntity( collection.remoteId() );
-
-    Collection newCollection = collection;
-    changeCommitted( newCollection );
-  }
-  // Reordering is done on the collectionChanged signal?
 
 }
 

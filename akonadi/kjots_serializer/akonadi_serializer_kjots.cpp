@@ -31,32 +31,47 @@
 
 #include "kjotspage.h"
 
-#include <kdebug.h>
-
 bool SerializerPluginKJots::deserialize( Item & item, const QByteArray &label, QIODevice &data, int version )
 {
   Q_UNUSED( version );
 
-  if ( label != Item::FullPayload ) {
-    return false;
+  KJotsPage page;
+  if (item.hasPayload<KJotsPage>())
+    page = item.payload<KJotsPage>();
+
+  QDomDocument doc;
+  doc.setContent( &data );
+
+  QDomElement pageRootElement = doc.documentElement();
+
+  if ( pageRootElement.tagName() ==  "KJotsPage" ) {
+    QDomNode n = pageRootElement.firstChild();
+    while ( !n.isNull() ) {
+      QDomElement e = n.toElement();
+      if ( !e.isNull() ) {
+        if ( e.tagName() == "Title" ) {
+          if ( label == "title" || label == Item::FullPayload )
+            page.setTitle( e.text() );
+        }
+
+        if ( e.tagName() == "Content" ) {
+          if ( label == "content" || label == Item::FullPayload )
+            page.setContent( QString( e.text() ) );
+        }
+      }
+      n = n.nextSibling();
+    }
   }
 
-  KJotsPage page = KJotsPage::fromIODevice( &data );
-
-  if ( page.isValid() ) {
-    item.setPayload< KJotsPage > ( page );
-    return true;
-  }
-
-
-  return false;
+  item.setPayload< KJotsPage > ( page );
+  return true;
 }
 
 void SerializerPluginKJots::serialize( const Item &item, const QByteArray &label, QIODevice &data, int &version )
 {
   Q_UNUSED( version );
 
-  if ( label != Item::FullPayload || !item.hasPayload() ) {
+  if ( !item.hasPayload() ) {
     return;
   }
 
@@ -66,16 +81,85 @@ void SerializerPluginKJots::serialize( const Item &item, const QByteArray &label
   QDomElement root = doc.createElement( "KJotsPage" );
   doc.appendChild( root );
 
-  QDomElement title = doc.createElement( "Title" );
-  title.appendChild( doc.createTextNode( page.title().toUtf8() ) );
-  root.appendChild( title );
+  if ( "title" == label || label == Item::FullPayload )
+  {
+    QDomElement title = doc.createElement( "Title" );
+    title.appendChild( doc.createTextNode( page.title().toUtf8() ) );
+    root.appendChild( title );
+  }
 
-  QDomElement content = doc.createElement( "Content" );
-  content.appendChild( doc.createCDATASection( page.content().toUtf8() ) );
-  root.appendChild( content );
+  if ( "content" == label || label == Item::FullPayload ) {
+    QDomElement content = doc.createElement( "Content" );
+    content.appendChild( doc.createCDATASection( page.content().toUtf8() ) );
+    root.appendChild( content );
+  }
 
   data.write( doc.toString().toUtf8() );
 }
+
+QSet< QByteArray > SerializerPluginKJots::parts(const Akonadi::Item& item) const
+{
+  QSet<QByteArray> loadedParts;
+
+  if ( !item.hasPayload<KJotsPage>() )
+    return loadedParts;
+
+  KJotsPage page = item.payload<KJotsPage>();
+
+  if (!page.title().isEmpty())
+  {
+    loadedParts << "title";
+  }
+
+  if (!page.content().isEmpty())
+  {
+    loadedParts << "content";
+    if (!page.title().isEmpty())
+      loadedParts << Item::FullPayload;
+  }
+
+  return loadedParts;
+}
+
+QSet< QByteArray > SerializerPluginKJots::availableParts(const Akonadi::Item& item) const
+{
+  QSet<QByteArray> available;
+  if (!item.hasPayload<KJotsPage>())
+    return available;
+
+  KJotsPage page = item.payload<KJotsPage>();
+
+  if (page.title().isEmpty())
+    available << "title";
+
+  if (page.content().isEmpty())
+  {
+    available << "content";
+    if (page.title().isEmpty())
+      available << Item::FullPayload;
+  }
+
+  return available;
+}
+
+
+void SerializerPluginKJots::merge(Item& item, const Akonadi::Item& other)
+{
+  if (!item.hasPayload<KJotsPage>() || !other.hasPayload<KJotsPage>())
+    return;
+
+  KJotsPage p1 = item.payload<KJotsPage>();
+  KJotsPage p2 = other.payload<KJotsPage>();
+
+  if (!p2.title().isEmpty())
+    p1.setTitle(p2.title());
+
+  if (!p2.content().isEmpty())
+    p1.setContent(p2.content());
+
+  item.setPayload(p1);
+}
+
 
 Q_EXPORT_PLUGIN2( akonadi_serializer_kjots, SerializerPluginKJots )
 

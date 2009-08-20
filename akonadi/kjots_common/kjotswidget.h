@@ -22,6 +22,11 @@
 #ifndef KJOTSWIDGET_H
 #define KJOTSWIDGET_H
 
+#include <QWidget>
+#include <QModelIndexList>
+#include "kjots_common_export.h"
+#include <akonadi/item.h>
+
 class KTextEdit;
 class QTextBrowser;
 class QTextCursor;
@@ -45,9 +50,7 @@ class FileSystemTemplateLoader;
 
 class KJotsPage;
 
-#include <QWidget>
-#include <QModelIndexList>
-#include "kjots_common_export.h"
+using namespace Akonadi;
 
 class KJOTS_COMMON_EXPORT KJotsWidget : public QWidget
 {
@@ -66,6 +69,10 @@ protected slots:
   void changeTheme();
   void exportSelection();
   void savePage(const QModelIndex &, int, int);
+  void itemActivated(const QModelIndex &);
+  void partFetched(const QModelIndex &index, Item item, const QByteArray &partName);
+  void invalidated();
+
 //   void dataChanged(const QModelIndex &, const QModelIndex &);
 
 private:

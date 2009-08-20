@@ -22,13 +22,13 @@
 #ifndef KJOTSRESOURCE_H
 #define KJOTSRESOURCE_H
 
-#include "kjotsbook.h"
-
-class QString;
-
 #include <QStringList>
 
+#include <akonadi/collection.h>
+#include <akonadi/item.h>
 #include <akonadi/resourcebase.h>
+
+#include "kjotspage.h"
 
 
 class KJotsResource : public Akonadi::ResourceBase,
@@ -98,6 +98,12 @@ protected:
                           const Akonadi::Collection &destination );
 
   Akonadi::Collection::List addToParentRecursive( Akonadi::Collection &book );
+
+  Akonadi::Collection::List getDescendantCollections( Akonadi::Collection &col ) const;
+  Akonadi::Item::List getContainedItems( const Akonadi::Collection &col ) const;
+  QString getFileUrl( const Akonadi::Collection &col ) const;
+  QString getFileUrl( const Akonadi::Item &item ) const;
+  KJotsPage getPage( const Akonadi::Item &item, QSet<QByteArray> parts ) const;
 
 private:
   QString m_rootDataPath;

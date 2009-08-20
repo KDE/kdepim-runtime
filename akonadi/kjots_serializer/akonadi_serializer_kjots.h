@@ -28,14 +28,21 @@
 
 using namespace Akonadi;
 
-class SerializerPluginKJots : public QObject, public ItemSerializerPlugin
+class SerializerPluginKJots : public QObject, public ItemSerializerPlugin // ItemSerializerPluginV2
 {
   Q_OBJECT
   Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+//   Q_INTERFACES( Akonadi::ItemSerializerPluginV2 )
 
 public:
   bool deserialize( Item &item, const QByteArray &label, QIODevice &data, int version );
   void serialize( const Item &item, const QByteArray &label, QIODevice &data, int &version );
+
+  virtual QSet< QByteArray > parts(const Akonadi::Item& item) const;
+
+  virtual QSet< QByteArray > availableParts(const Akonadi::Item& item) const;
+
+  virtual void merge(Item& item, const Akonadi::Item& other);
 
 };
 
