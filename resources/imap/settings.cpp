@@ -66,14 +66,15 @@ void Settings::setWinId( WId winId )
 
 QString Settings::password() const
 {
-    QString password;
+    if ( !m_password.isEmpty() )
+      return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() && wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
-        wallet->readPassword( config()->name(), password );
+        wallet->readPassword( config()->name(), m_password );
     }
     delete wallet;
-    return password;
+    return m_password;
 }
 
 bool Settings::passwordPossible() const
@@ -89,6 +90,9 @@ bool Settings::passwordPossible() const
 
 void Settings::setPassword( const QString & password )
 {
+    if ( password == m_password )
+        return;
+    m_password = password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
         if ( !wallet->hasFolder( "imap" ) )
