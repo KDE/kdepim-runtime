@@ -163,6 +163,10 @@ public:
    * ConditionMatchError will stop the evaluation of the filter on
    * this instance of Data.
    *
+   * If you override this method then you should be prepared to handle
+   * multiple matches() calls one after another with different instances of data:
+   * the condition objects are intended to be reusable.
+   *
    * @param data The Data subclass on that the test has to be performed.
    *             Must not be null.
    */

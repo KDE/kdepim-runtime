@@ -142,6 +142,10 @@ public:
    * SuccessAndStop or Failure).
    *
    * This is a pure virtual that must be implemented by the subclasses.
+   *
+   * If you override this method then you should be prepared to handle
+   * multiple execute() calls one after another with different instances of data:
+   * the action objects are intended to be reusable.
    */
   virtual ProcessingStatus execute( Data * data ) = 0;
 

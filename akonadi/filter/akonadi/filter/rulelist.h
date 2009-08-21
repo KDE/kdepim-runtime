@@ -113,6 +113,10 @@ public:
    * if the execution was succesfull and it wasn't stopped explicitly
    * by any inner rule. Returns Failure in case of a processing error:
    * lastError() can be used to obtain more informations.
+   *
+   * If you override this method then you should be prepared to handle
+   * multiple execute() calls one after another with different instances of data:
+   * the RuleList objects are intended to be reusable.
    */
   virtual ProcessingStatus execute( Data * data );
 

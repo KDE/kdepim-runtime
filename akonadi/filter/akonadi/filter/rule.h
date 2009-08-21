@@ -157,6 +157,10 @@ public:
    *
    * If the execution of the rule fails for some reason then a description
    * of the error should be available via errorStack().
+   *
+   * If you override this method then you should be prepared to handle
+   * multiple execute() calls one after another with different instances of data:
+   * the Rule objects are intended to be reusable.
    */
   virtual ProcessingStatus execute( Data * data );
 

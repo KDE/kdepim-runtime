@@ -90,6 +90,13 @@ namespace Filter
  * This class inherits Action::RuleList and in particular it inherits its
  * execute() method which is the "core" filtering call. Via execute() you will
  * "throw" an instance of Data through the filtering tree.
+ *
+ * Please note that the filtering Program tree is not meant to be thread-safe.
+ * That is, multiple threads should NOT manipulate it directly without external
+ * synchronization. If you want to create a pool of filters then you need 
+ * multiple instances of the Program tree. If your program components serialize
+ * nicely via Sieve (all the library provided components do) then creating
+ * multiple instances should be as easy as calling clone().
  */
 class AKONADI_FILTER_EXPORT Program : public Action::RuleList, public PropertyBag
 {
