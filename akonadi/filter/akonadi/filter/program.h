@@ -46,6 +46,8 @@ namespace Akonadi
 namespace Filter
 {
 
+class ComponentFactory;
+
 /**
  * @class Akonadi::Filter::Program
  * @brief A complete filtering program.
@@ -104,13 +106,25 @@ public:
 
   /**
    * Creates an empty filtering program.
+   *
+   * @param factory The ComponentFactory used to create this Program. The ownership
+   *        of the factory is NOT transferred and the caller must ensure the validity
+   *        of the pointer through the entire lifetime of the Program object.
    */
-  Program();
+  Program( ComponentFactory * factory );
 
   /**
    * Destroys the filtering program including any included rules.
    */
   virtual ~Program();
+
+protected:
+  /**
+   * The component factory used to create this Program object.
+   * This is a shallow pointer: the creator of this object must ensure
+   * its validity through the entire lifetime.
+   */
+  ComponentFactory * mComponentFactory;
 
 public:
 
@@ -125,6 +139,18 @@ public:
    * This is equivalent to setProperty( QString::fromAscii( "name" ), name ).
    */
   void setName( const QString &name );
+
+  /**
+   * Creates an exact clone of this Program. 
+   * The ownership of the newly created tree is given to the caller.
+   * If cloning fails for some reason then 0 is returned and a detailed
+   * error is made available via errorStack().
+   * 
+   * You shouldn't need to override this as long as all your components can be serialized
+   * via IO::SieveEncoder / IO::SieveDecoder. This is true for all the "naked" components
+   * provided by this library, even if customized via ComponentFactory.
+   */
+  virtual Program * clone();
 
   /**
    * Reimplemented from Component. Returns true.

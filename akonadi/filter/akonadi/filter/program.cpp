@@ -27,16 +27,23 @@
 
 #include <QObject>
 
+#include <KLocale>
 #include <KDebug>
+
+#include "componentfactory.h"
+
+#include "io/sieveencoder.h"
+#include "io/sievedecoder.h"
 
 namespace Akonadi
 {
 namespace Filter 
 {
 
-Program::Program()
-  : Action::RuleList( 0 ), PropertyBag()
+Program::Program( ComponentFactory * factory )
+  : Action::RuleList( 0 ), PropertyBag(), mComponentFactory( factory )
 {
+  Q_ASSERT( mComponentFactory );
 }
 
 Program::~Program()
@@ -62,6 +69,31 @@ void Program::dump( const QString &prefix )
 {
   debugOutput( prefix, "Program" );
   dumpRuleList( prefix );
+}
+
+Program * Program::clone()
+{
+  errorStack().clearErrors();
+
+  IO::SieveEncoder encoder;
+  QByteArray serialized = encoder.run( this );
+  if( serialized.isEmpty() )
+  {
+    errorStack().pushErrorStack( encoder.errorStack() );
+    errorStack().pushError( i18n( "Encoding of the program into Sieve source failed" ) );
+    return 0;
+  }
+
+  IO::SieveDecoder decoder( mComponentFactory );
+  Program * prog = decoder.run( serialized );
+  if( !prog )
+  {
+    errorStack().pushErrorStack( decoder.errorStack() );
+    errorStack().pushError( i18n( "Decoding of the program from Sieve source failed" ) );
+    return 0;
+  }
+
+  return prog;
 }
 
 } // namespace Filter

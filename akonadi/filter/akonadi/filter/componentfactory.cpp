@@ -346,7 +346,7 @@ const QList< const CommandDescriptor * > * ComponentFactory::enumerateCommands()
 
 Program * ComponentFactory::createProgram()
 {
-  return new Program();
+  return new Program( this );
 }
 
 Rule * ComponentFactory::createRule( Component * parent )

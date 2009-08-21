@@ -68,12 +68,25 @@ namespace Action
   class RuleList;
 } // namespace Action
 
+/**
+ * The feature bits used for logically matching components in the editors and
+ * the IO classes.
+ */
 enum Features
 {
+  /**
+   * The component/object contains a QDateTime field.
+   */
   FeatureContainsDate = 1,
 
+  /**
+   * The first bit that can be used for custom features.
+   * Use this bit in your own enumeration and shift it one
+   * position left at each feature you add.
+   */
   FeatureCustomFirstBit = (1 << 1)
-};
+
+}; // enum Features
 
 /**
  * The Akonadi::Filter::ComponentFactory class plays a very central role in the filter management and customisation.

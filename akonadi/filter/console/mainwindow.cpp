@@ -449,7 +449,15 @@ void MainWindow::newFilter( bool lbb )
   filter.setMimeType( mimeType );
   filter.setComponentFactory( componentFactory );
   filter.setEditorFactory( editorFactory );
-  filter.setProgram( new Akonadi::Filter::Program() );
+
+  Akonadi::Filter::Program * prog = componentFactory->createProgram();
+  if( !prog )
+  {
+    KMessageBox::error( this, i18n( "The component factory failed to create the filtering program instance" ), i18n( "Internal error" ) );
+    return;
+  }
+
+  filter.setProgram( prog );
 
   FilterEditor ed( this, &filter, lbb );
   if( ed.exec() != KDialog::Accepted )
