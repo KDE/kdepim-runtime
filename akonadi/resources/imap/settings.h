@@ -39,6 +39,7 @@ public slots:
 
 private:
     WId m_winId;
+    mutable QString m_password;
 };
 
 #endif
