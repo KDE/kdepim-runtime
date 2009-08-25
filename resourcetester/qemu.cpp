@@ -147,7 +147,9 @@ QString QEmu::vmImage() const
   const QString localArchiveFileName = Global::vmPath() + imageArchiveFileName;
   if ( !QFile::exists( localArchiveFileName ) ) {
     kDebug() << "Downloading VM image from" << imageUrl << "to" << localArchiveFileName << "...";
-    Q_ASSERT( KIO::NetAccess::file_copy( imageUrl, localArchiveFileName, 0 ) );
+    const bool result = KIO::NetAccess::file_copy( imageUrl, localArchiveFileName, 0 );
+    if ( !result )
+      kFatal() << "Downloading" << imageUrl << "failed!";
     kDebug() << "Downloading VM image complete.";
   }
 
