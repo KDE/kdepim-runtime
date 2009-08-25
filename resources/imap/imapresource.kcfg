@@ -24,4 +24,9 @@
       <default>false</default>
     </entry>
   </group>
+  <group name="idle">
+    <entry name="IdleRidPath" type="StringList">
+      <label>RID path to the mailbox to watch for changes</label>
+    </entry>
+  </group>
 </kcfg>

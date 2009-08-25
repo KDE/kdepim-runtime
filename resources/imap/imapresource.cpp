@@ -80,6 +80,7 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/session.h>
 #include <akonadi/transactionsequence.h>
+#include <akonadi/collectionfetchscope.h>
 
 #include "collectionflagsattribute.h"
 #include "collectionannotationsattribute.h"
@@ -92,6 +93,8 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 static const char AKONADI_COLLECTION[] = "akonadiCollection";
+static const char REPORTED_COLLECTIONS[] = "reportedCollections";
+static const char PREVIOUS_REMOTEID[] = "previousRemoteId";
 
 ImapResource::ImapResource( const QString &id )
         :ResourceBase( id ), m_account( 0 ), m_idle( 0 )
@@ -105,7 +108,11 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<ImapQuotaAttribute>();
 
   changeRecorder()->fetchCollection( true );
+  changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
+  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
+
+  setHierarchicalRemoteIdentifiersEnabled( true );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
   reconnect();
@@ -123,10 +130,8 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
         return false;
     }
 
-    const QString remoteId = item.remoteId();
-    const QStringList temp = remoteId.split( "-+-" );
-    const QString mailBox = mailBoxForRemoteId( temp[0] );
-    const qint64 uid = temp[1].toLongLong();
+    const QString mailBox = mailBoxForCollection( item.parentCollection() );
+    const qint64 uid = item.remoteId().toLongLong();
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
     select->setMailBox( mailBox );
@@ -220,6 +225,8 @@ void ImapResource::startConnect( bool forceManualAuth )
     if ( !manualAuth( Settings::self()->userName(), password ) ) {
       emit status( Broken, i18n( "Autentication failed." ) );
       return;
+    } else {
+      Settings::self()->setPassword( password );
     }
   }
 
@@ -233,13 +240,12 @@ void ImapResource::startConnect( bool forceManualAuth )
 
   m_account->connect( password );
 
-  delete m_idle;
-  m_idle = new ImapIdleManager( m_account->createExtraSession( password ), this );
+  startIdle();
 }
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
-  const QString mailBox = mailBoxForRemoteId( collection.remoteId() );
+  const QString mailBox = mailBoxForCollection( collection );
 
   kDebug() << "Got notification about item added for local id " << item.id() << " and remote id " << item.remoteId();
 
@@ -259,7 +265,6 @@ void ImapResource::onAppendMessageDone( KJob *job )
 {
   KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>( job );
 
-  const QString collectionRemoteId = remoteIdForMailBox( append->mailBox() );
   Item item = job->property( "akonadiItem" ).value<Item>();
 
   if ( append->error() ) {
@@ -269,7 +274,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
   qint64 uid = append->uid();
   Q_ASSERT( uid > 0 );
 
-  const QString remoteId =  collectionRemoteId + "-+-" + QString::number( uid );
+  const QString remoteId =  QString::number( uid );
   kDebug() << "Setting remote ID to " << remoteId << " for item with local id " << item.id();
   item.setRemoteId( remoteId );
 
@@ -318,10 +323,8 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
 {
   kDebug() << item.remoteId() << parts;
 
-  const QString remoteId = item.remoteId();
-  const QStringList temp = remoteId.split( "-+-" );
-  const QString mailBox = mailBoxForRemoteId( temp[0] );
-  const qint64 uid = temp[1].toLongLong();
+  const QString mailBox = mailBoxForCollection( item.parentCollection() );
+  const qint64 uid = item.remoteId().toLongLong();
 
   if ( parts.contains( "PLD:RFC822" ) ) {
     // save message to the server.
@@ -380,10 +383,8 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   // set the \Deleted flag. The message will actually be deleted when EXPUNGE will
   // be issued on the next retrieveItems().
 
-  const QString remoteId = item.remoteId();
-  const QStringList temp = remoteId.split( "-+-" );
-  const QString mailBox = mailBoxForRemoteId( temp[0] );
-  const qint64 uid = temp[1].toLongLong();
+  const QString mailBox = mailBoxForCollection( item.parentCollection() );
+  const qint64 uid = item.remoteId().toLongLong();
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
   select->setMailBox( mailBox );
@@ -399,6 +400,9 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   store->start();
 }
 
+typedef QHash<QString, Collection> StringCollectionMap;
+Q_DECLARE_METATYPE( StringCollectionMap )
+
 void ImapResource::retrieveCollections()
 {
   if ( !m_account || !m_account->session() ) {
@@ -413,6 +417,7 @@ void ImapResource::retrieveCollections()
   root.setRemoteId( rootRemoteId() );
   root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
   root.setRights( Collection::ReadOnly );
+  root.setParentCollection( Collection::root() );
 
   CachePolicy policy;
   policy.setInheritFromParent( false );
@@ -422,18 +427,22 @@ void ImapResource::retrieveCollections()
   setCollectionStreamingEnabled( true );
   collectionsRetrievedIncremental( Collection::List() << root, Collection::List() );
 
+  QHash<QString, Collection> reportedCollections;
+  reportedCollections.insert( QString(), root );
+
   KIMAP::ListJob *listJob = new KIMAP::ListJob( m_account->session() );
   listJob->setIncludeUnsubscribed( !m_account->isSubscriptionEnabled() );
   connect( listJob, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
            this, SLOT( onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
   connect( listJob, SIGNAL(result(KJob*)), SLOT(onMailBoxesReceiveDone(KJob*)) );
+  listJob->setProperty( REPORTED_COLLECTIONS, QVariant::fromValue<StringCollectionMap>( reportedCollections ) );
   listJob->start();
 }
 
 void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > &descriptors,
                                         const QList< QList<QByteArray> > &flags )
 {
-  QStringList reportedPaths = sender()->property("reportedPaths").toStringList();
+  QHash<QString, Collection> reportedCollections = sender()->property( REPORTED_COLLECTIONS ).value< QHash<QString, Collection> >();
 
   Collection::List collections;
   QStringList contentTypes;
@@ -442,34 +451,32 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
   for ( int i=0; i<descriptors.size(); ++i ) {
     KIMAP::MailBoxDescriptor descriptor = descriptors[i];
 
-    QStringList pathParts = descriptor.name.split(descriptor.separator);
-    QString separator = descriptor.separator;
+    const QStringList pathParts = descriptor.name.split(descriptor.separator);
+    const QString separator = descriptor.separator;
+    Q_ASSERT( separator.size() == 1 ); // that's what the spec says
 
     QString parentPath;
     QString currentPath;
 
-    foreach ( const QString &pathPart, pathParts ) {
-      const bool isDummy = pathPart != pathParts.last();
-      currentPath+='/'+pathPart;
-      if ( currentPath.startsWith( '/' ) ) {
-        currentPath.remove( 0, 1 );
-      }
+    for ( int i = 0; i < pathParts.size(); ++i ) {
+      const bool isDummy = i != pathParts.size() - 1;
+      const QString pathPart = pathParts.at( i );
+      currentPath += separator + pathPart;
 
-      if ( reportedPaths.contains( currentPath ) ) {
+      if ( reportedCollections.contains( currentPath ) ) {
         if ( !isDummy )
           kWarning() << "Something is wrong here, we already have created a collection for" << currentPath;
         parentPath = currentPath;
         continue;
-      } else {
-        reportedPaths << currentPath;
       }
 
       const QList<QByteArray> currentFlags  = isDummy ? (QList<QByteArray>() << "\\NoSelect") : flags[i];
 
       Collection c;
       c.setName( pathPart );
-      c.setRemoteId( remoteIdForMailBox( currentPath ) );
-      c.setParentRemoteId( remoteIdForMailBox( parentPath ) );
+      c.setRemoteId( separator + pathPart );
+      const Collection parentCollection = reportedCollections.value( parentPath );
+      c.setParentCollection( parentCollection );
       c.setContentMimeTypes( contentTypes );
 
       CachePolicy cachePolicy;
@@ -478,7 +485,7 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
       cachePolicy.setSyncOnDemand( true );
 
       // If the folder is the Inbox, make some special settings.
-      if ( currentPath.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
+      if ( currentPath.compare( separator + QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
         if ( m_account->capabilities().contains( "IDLE" ) ) {
           // We've IDLE, no need to poll the inbox
           cachePolicy.setIntervalCheckTime( -1 );
@@ -488,6 +495,16 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
         EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Inbox" ) );
         attr->setIconName( "mail-folder-inbox" );
+        QStringList ridPath;
+        Collection *curCol = &c;
+        while ( (*curCol) != Collection::root() && !curCol->remoteId().isEmpty() ) {
+          ridPath.append( curCol->remoteId() );
+          curCol = &curCol->parentCollection();
+        }
+        Settings::self()->setIdleRidPath( ridPath );
+        Settings::self()->writeConfig();
+        if ( !m_idle )
+          startIdle();
       }
 
       // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
@@ -508,11 +525,13 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
       c.setCachePolicy( cachePolicy );
 
       collections << c;
+
+      reportedCollections.insert( currentPath, c );
       parentPath = currentPath;
     }
   }
 
-  sender()->setProperty("reportedPaths", reportedPaths);
+  sender()->setProperty( REPORTED_COLLECTIONS, QVariant::fromValue<StringCollectionMap>( reportedCollections ) );
   collectionsRetrievedIncremental( collections, Collection::List() );
 }
 
@@ -544,7 +563,7 @@ void ImapResource::retrieveItems( const Collection &col )
     }
   }
 
-  const QString mailBox = mailBoxForRemoteId( col.remoteId() );
+  const QString mailBox = mailBoxForCollection( col );
   const QStringList capabilities = m_account->capabilities();
 
   // First get the annotations from the mailbox if it's supported
@@ -612,7 +631,7 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
 
   foreach ( qint64 number, uids.keys() ) {
     Akonadi::Item i;
-    i.setRemoteId( remoteIdForMailBox( mailBox ) + "-+-" + QString::number( uids[number] ) );
+    i.setRemoteId( QString::number( uids[number] ) );
     i.setMimeType( "message/rfc822" );
     i.setPayload( MessagePtr( messages[number] ) );
     i.setSize( sizes[number] );
@@ -641,18 +660,25 @@ void ImapResource::onHeadersFetchDone( KJob */*job*/ )
 
 void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
-  const QString remoteName = parent.remoteId() + '/' + collection.name();
+  if ( parent.remoteId().isEmpty() ) {
+    emit error( i18n("Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.", collection.name(), parent.name() ) );
+    changeProcessed();
+    return;
+  }
 
-  kDebug( ) << "New folder: " << remoteName;
+  QString newMailBox = mailBoxForCollection( parent );
+  if ( !newMailBox.isEmpty() )
+    newMailBox += parent.remoteId().at( 0 ); // separator for non-toplevel mailboxes
+  newMailBox += collection.name();
+
+  kDebug( ) << "New folder: " << newMailBox;
 
   Collection c = collection;
-  c.setRemoteId( remoteName );
-
-  const QString mailBox = mailBoxForRemoteId( remoteName );
+  c.setRemoteId( parent.remoteId().at( 0 ) + collection.name() );
 
   KIMAP::CreateJob *job = new KIMAP::CreateJob( m_account->session() );
   job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( c ) );
-  job->setMailBox( mailBox );
+  job->setMailBox( newMailBox );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onCreateMailBoxDone( KJob* ) ) );
   job->start();
 }
@@ -673,20 +699,22 @@ void ImapResource::onCreateMailBoxDone( KJob *job )
 
 void ImapResource::collectionChanged( const Collection & collection )
 {
-  QString oldRemoteId = collection.remoteId();
-  QString parentRemoteId = oldRemoteId.mid( 0, oldRemoteId.lastIndexOf('/') );
-
-  QString newRemoteId = parentRemoteId + '/' + collection.name();
+  if ( collection.remoteId().isEmpty() ) {
+    emit error( i18n("Cannot modify IMAP folder '%1', it does not exist on the server.", collection.name() ) );
+    changeProcessed();
+    return;
+  }
 
   Collection c = collection;
-  c.setRemoteId( newRemoteId );
+  c.setRemoteId( collection.remoteId().at( 0 ) + collection.name() );
 
-  const QString oldMailBox = mailBoxForRemoteId( oldRemoteId );
-  const QString newMailBox = mailBoxForRemoteId( newRemoteId );
+  const QString oldMailBox = mailBoxForCollection( collection );
+  const QString newMailBox = mailBoxForCollection( c );
 
   if ( oldMailBox != newMailBox ) {
     KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
     job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( c ) );
+    job->setProperty( PREVIOUS_REMOTEID, collection.remoteId() );
     job->setSourceMailBox( oldMailBox );
     job->setDestinationMailBox( newMailBox );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
@@ -707,8 +735,10 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
 
     // rename the collection again.
     kDebug() << "Failed to rename the folder, resetting it in akonadi again";
-    collection.setName( rename->sourceMailBox().split('/').last() );
-    collection.setRemoteId( remoteIdForMailBox( rename->sourceMailBox() ) );
+    const QString prevRid = job->property( PREVIOUS_REMOTEID ).toString();
+    Q_ASSERT( !prevRid.isEmpty() );
+    collection.setName( prevRid.mid( 1 ) );
+    collection.setRemoteId( prevRid );
     emit warning( i18n( "Failed to rename the folder, restoring folder list." ) );
     changeCommitted( collection );
   }
@@ -716,7 +746,7 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
 
 void ImapResource::collectionRemoved( const Collection &collection )
 {
-  const QString mailBox = mailBoxForRemoteId( collection.remoteId() );
+  const QString mailBox = mailBoxForCollection( collection );
 
   KIMAP::DeleteJob *job = new KIMAP::DeleteJob( m_account->session() );
   job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
@@ -764,7 +794,8 @@ void ImapResource::onConnectError( int code, const QString &message )
   }
 
   m_account->disconnect();
-  m_account->disconnect( m_idle->session() );
+  if ( m_idle )
+    m_account->disconnect( m_idle->session() );
   emit error( message );
 }
 
@@ -1102,16 +1133,25 @@ QString ImapResource::rootRemoteId() const
   return "imap://"+m_account->userName()+'@'+m_account->server()+'/';
 }
 
-QString ImapResource::remoteIdForMailBox( const QString &path ) const
+QString ImapResource::mailBoxForCollection( const Collection& col ) const
 {
-  return rootRemoteId()+path;
-}
+  if ( col.remoteId().isEmpty() ) {
+    kWarning() << "Got incomplete ancestor chain:" << col;
+    return QString();
+  }
 
-QString ImapResource::mailBoxForRemoteId( const QString &remoteId ) const
-{
-  QString path = remoteId;
-  path.remove( rootRemoteId() );
-  return path;
+  if ( col.parentCollection() == Collection::root() ) {
+    kWarning( col.remoteId() != rootRemoteId() ) << "RID mismatch, is " << col.remoteId() << " expected " << rootRemoteId();
+    return QString( "" );
+  }
+  const QString parentMailbox = mailBoxForCollection( col.parentCollection() );
+  if ( parentMailbox.isNull() ) // invalid, != isEmpty() here!
+    return QString();
+
+  const QString mailbox =  parentMailbox + col.remoteId();
+  if ( parentMailbox.isEmpty() )
+    return mailbox.mid( 1 ); // strip of the separator on top-level mailboxes
+  return mailbox;
 }
 
 void ImapResource::itemsClear( const Collection &collection )
@@ -1133,7 +1173,8 @@ void ImapResource::doSetOnline(bool online)
 {
   if ( !online && m_account && m_account->session() && m_account->session()->state() != KIMAP::Session::Disconnected ) {
     m_account->disconnect();
-    m_account->disconnect( m_idle->session() );
+    if ( m_idle )
+      m_account->disconnect( m_idle->session() );
   } else if ( online ) {
     startConnect();
   }
@@ -1159,6 +1200,32 @@ void ImapResource::reconnect()
   setOnline( !needsNetwork() ||
              Solid::Networking::status() == Solid::Networking::Unknown ||
              Solid::Networking::status() == Solid::Networking::Connected );
+}
+
+void ImapResource::startIdle()
+{
+  delete m_idle;
+  m_idle = 0;
+
+  // FIXME: capabilities is empty here
+//   if ( !m_account || !m_account->capabilities().contains( "IDLE" ) )
+//     return;
+
+  const QString password = Settings::self()->password();
+  const QStringList ridPath = Settings::self()->idleRidPath();
+  if ( password.isEmpty() || ridPath.size() < 2 )
+    return;
+
+  Collection c, p;
+  p.setParentCollection( Collection::root() );
+  for ( int i = ridPath.size() - 1; i > 0; --i ) {
+    p.setRemoteId( ridPath.at( i ) );
+    c.setParentCollection( p );
+    p = c;
+  }
+  c.setRemoteId( ridPath.first() );
+
+  m_idle = new ImapIdleManager( c, m_account->createExtraSession( password ), this );
 }
 
 AKONADI_RESOURCE_MAIN( ImapResource )

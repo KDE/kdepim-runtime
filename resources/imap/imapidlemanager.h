@@ -22,6 +22,7 @@
 #ifndef __IMAP_IDLEMANAGER_H__
 #define __IMAP_IDLEMANAGER_H__
 
+#include <akonadi/collection.h>
 #include <QtCore/QObject>
 
 namespace KIMAP
@@ -39,7 +40,7 @@ class ImapIdleManager : public QObject
   Q_OBJECT
 
 public:
-  ImapIdleManager( KIMAP::Session *session, ImapResource *parent );
+  ImapIdleManager( Akonadi::Collection &col, KIMAP::Session *session, ImapResource *parent );
   ~ImapIdleManager();
 
   KIMAP::Session *session() const;
@@ -54,6 +55,7 @@ private:
   KIMAP::Session *m_session;
   KIMAP::IdleJob *m_idle;
   ImapResource *m_resource;
+  Akonadi::Collection m_collection;
 };
 
 #endif
