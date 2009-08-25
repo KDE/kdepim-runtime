@@ -1,29 +1,29 @@
 <knut>
   <collection content="inode/directory" rid="imap://autotest0@example.com@localhost:42143/" name="localhost:42143/autotest0@example.com" >
-    <collection content="inode/directory" rid="imap://autotest0@example.com@localhost:42143/user" name="user" >
-      <collection content="inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1" name="autotest1" >
-        <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/child2" name="child2" >
-          <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/child2/grandchild1" name="grandchild1" >
+    <collection content="inode/directory" rid="/user" name="user" >
+      <collection content="inode/directory" rid="/autotest1" name="autotest1" >
+        <collection content="message/rfc822,inode/directory" rid="/child2" name="child2" >
+          <collection content="message/rfc822,inode/directory" rid="/grandchild1" name="grandchild1" >
             <attribute type="uidnext" >1</attribute>
             <attribute type="AccessRights" ></attribute>
             <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-            <attribute type="uidvalidity" >1250774987</attribute>
+            <attribute type="uidvalidity" >1251191271</attribute>
             <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
           </collection>
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
           <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-          <attribute type="uidvalidity" >1250774986</attribute>
+          <attribute type="uidvalidity" >1251191271</attribute>
           <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
         </collection>
-        <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/child1" name="child1" >
-          <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/child1/grandchild1" name="grandchild1" >
+        <collection content="message/rfc822,inode/directory" rid="/child1" name="child1" >
+          <collection content="message/rfc822,inode/directory" rid="/grandchild1" name="grandchild1" >
             <attribute type="uidnext" >2</attribute>
             <attribute type="AccessRights" ></attribute>
             <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-            <attribute type="uidvalidity" >1250774987</attribute>
+            <attribute type="uidvalidity" >1251191271</attribute>
             <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 627</attribute>
-            <item mimetype="message/rfc822" rid="imap://autotest0@example.com@localhost:42143/user/autotest1/child1/grandchild1-+-1" >
+            <item mimetype="message/rfc822" rid="1" >
               <payload>From: Volker Krause &lt;vkrause@kde.org>
 To: kde-commits@kde.org
 Subject: playground/pim/akonaditest/resourcetester
@@ -50,24 +50,23 @@ if syncing is extremely fast.
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
           <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
-          <attribute type="uidvalidity" >1250774986</attribute>
+          <attribute type="uidvalidity" >1251191271</attribute>
           <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
         </collection>
         <attribute type="AccessRights" ></attribute>
         <attribute type="noselect" >1</attribute>
       </collection>
-      <attribute type="ENTITYDISPLAY" >("Shared Folders" "x-mail-distribution-list")</attribute>
       <attribute type="AccessRights" ></attribute>
       <attribute type="noselect" >1</attribute>
     </collection>
-    <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX" name="INBOX" >
-      <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX/test folder" name="test folder" >
+    <collection content="message/rfc822,inode/directory" rid="/INBOX" name="INBOX" >
+      <collection content="message/rfc822,inode/directory" rid="/test folder" name="test folder" >
         <attribute type="uidnext" >2</attribute>
         <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-        <attribute type="uidvalidity" >1250774989</attribute>
+        <attribute type="uidvalidity" >1251191279</attribute>
         <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 627</attribute>
-        <item mimetype="message/rfc822" rid="imap://autotest0@example.com@localhost:42143/INBOX/test folder-+-1" >
+        <item mimetype="message/rfc822" rid="1" >
           <payload>From: Volker Krause &lt;vkrause@kde.org>
 To: kde-commits@kde.org
 Subject: playground/pim/akonaditest/resourcetester
@@ -91,20 +90,19 @@ if syncing is extremely fast.
           <flag>\Seen</flag>
         </item>
       </collection>
-      <collection content="message/rfc822,inode/directory" rid="imap://autotest0@example.com@localhost:42143/INBOX/Calendar" name="Calendar" >
+      <collection content="message/rfc822,inode/directory" rid="/Calendar" name="Calendar" >
         <attribute type="uidnext" >1</attribute>
         <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-        <attribute type="uidvalidity" >1250774986</attribute>
+        <attribute type="uidvalidity" >1251191270</attribute>
         <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
       </collection>
-      <attribute type="ENTITYDISPLAY" >("Inbox" "mail-folder-inbox")</attribute>
       <attribute type="uidnext" >2</attribute>
       <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
       <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
-      <attribute type="uidvalidity" >1250774985</attribute>
+      <attribute type="uidvalidity" >1251191270</attribute>
       <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 627</attribute>
-      <item mimetype="message/rfc822" rid="imap://autotest0@example.com@localhost:42143/INBOX-+-1" >
+      <item mimetype="message/rfc822" rid="1" >
         <payload>From: Volker Krause &lt;vkrause@kde.org>
 To: kde-commits@kde.org
 Subject: playground/pim/akonaditest/resourcetester
