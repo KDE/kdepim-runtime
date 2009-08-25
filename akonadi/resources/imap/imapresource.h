@@ -102,9 +102,9 @@ private Q_SLOTS:
 
 private:
   QString rootRemoteId() const;
-  QString remoteIdForMailBox( const QString &path ) const;
-  QString mailBoxForRemoteId( const QString &remoteId ) const;
+  QString mailBoxForCollection( const Akonadi::Collection &col ) const;
   bool needsNetwork() const;
+  void startIdle();
 
   void itemsClear( const Akonadi::Collection &collection );
 

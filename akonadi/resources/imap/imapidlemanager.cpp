@@ -33,11 +33,11 @@
 
 #include "imapresource.h"
 
-ImapIdleManager::ImapIdleManager( KIMAP::Session *session, ImapResource *parent )
-  : QObject( parent ), m_session( session ), m_idle( 0 ), m_resource( parent )
+ImapIdleManager::ImapIdleManager( Akonadi::Collection &col, KIMAP::Session *session, ImapResource *parent )
+  : QObject( parent ), m_session( session ), m_idle( 0 ), m_resource( parent ),  m_collection( col )
 {
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-  select->setMailBox( "INBOX" );
+  select->setMailBox( m_resource->mailBoxForCollection( col ) );
   select->start();
 
   m_idle = new KIMAP::IdleJob( m_session );
@@ -72,15 +72,12 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
 {
   kDebug() << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
 
-  Akonadi::Collection c;
-  c.setRemoteId( m_resource->remoteIdForMailBox( mailBox ) );
-
   Akonadi::CollectionFetchScope scope;
   scope.setIncludeStatistics( true );
   scope.setResource( m_resource->identifier() );
 
   Akonadi::CollectionFetchJob *fetch
-    = new Akonadi::CollectionFetchJob( c, Akonadi::CollectionFetchJob::Base, this );
+    = new Akonadi::CollectionFetchJob( m_collection, Akonadi::CollectionFetchJob::Base, this );
   fetch->setFetchScope( scope );
   fetch->setProperty( "mailBox", mailBox );
   fetch->setProperty( "messageCount", messageCount );
