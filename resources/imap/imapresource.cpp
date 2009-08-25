@@ -508,7 +508,7 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
       }
 
       // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
-      if ( currentPath == QLatin1String( "user" ) && currentFlags.contains( "\\NoSelect" ) ) {
+      if ( currentPath == (separator + QLatin1String( "user" )) && currentFlags.contains( "\\NoSelect" ) ) {
         EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Shared Folders" ) );
         attr->setIconName( "x-mail-distribution-list" );
