@@ -22,6 +22,7 @@
 #include "test.h"
 
 #include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionfetchscope.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/xml/xmlwritejob.h>
@@ -76,7 +77,8 @@ Collection XmlOperations::getCollectionByRemoteId(const QString& rid)
 void XmlOperations::setRootCollections(const QString& resourceId)
 {
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
-  job->setResource( resourceId );
+  job->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
+  job->fetchScope().setResource( resourceId );
   if ( job->exec() )
     setRootCollections( job->collections() );
   else
@@ -170,7 +172,7 @@ bool XmlOperations::compare()
     return false;
   }
 
-  const Collection::List docRoots = mDocument.childCollections( QString() );
+  const Collection::List docRoots = mDocument.childCollections( Collection::root() );
   if ( compareCollections( mRoots, docRoots ) )
     return true;
 
@@ -287,12 +289,13 @@ bool XmlOperations::compareCollection(const Collection& col, const Collection& r
 
   // compare child collections
   CollectionFetchJob *cjob = new CollectionFetchJob( col, CollectionFetchJob::FirstLevel, this );
+  cjob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
   if ( !cjob->exec() ) {
     mErrorMsg = cjob->errorText();
     return false;
   }
   const Collection::List cols = cjob->collections();
-  const Collection::List refCols = mDocument.childCollections( refCol.remoteId() );
+  const Collection::List refCols = mDocument.childCollections( refCol );
   return compareCollections( cols, refCols );
 }
 
