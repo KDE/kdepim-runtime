@@ -193,7 +193,7 @@ void VCardDirResource::itemRemoved( const Akonadi::Item &item )
 void VCardDirResource::retrieveCollections()
 {
   Collection c;
-  c.setParent( Collection::root() );
+  c.setParentCollection( Collection::root() );
   c.setRemoteId( vCardDirectoryName() );
   c.setName( name() );
   QStringList mimeTypes;
