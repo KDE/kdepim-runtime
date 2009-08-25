@@ -230,6 +230,8 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
   }
   MessagePtr payload = item.payload<MessagePtr>();
   KCal::Incidence *e = incidenceFromKolab(payload);
+  if ( !e )
+    return;
   IncidencePtr incidence(e);
   m_uidMap[e->uid()] = StoredItem(item.id(), incidence);
   kDebug() << "Add to uidMap: " << incidence->uid() << item.id() << incidence;
