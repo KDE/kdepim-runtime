@@ -155,76 +155,42 @@ void AddressBookHandler::contactToKolabFormat(const Kolab::Contact& contact, Ako
 {
   imapItem.setMimeType( "message/rfc822" );
 
-  MessagePtr message(new KMime::Message);
-  QString header;
-  header += "From: " + contact.fullEmail() + '\n';
-  header += "Subject: " + contact.uid() + '\n';
-  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + '\n';
-  header += "User-Agent: Akonadi Kolab Proxy Resource \n";
-  header += "MIME-Version: 1.0\n";
-  header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
-  message->setContent(header.toLatin1());
+  KMime::Message::Ptr message = createMessage( m_mimeType );
+  message->subject()->fromUnicodeString( contact.uid(), "utf-8" );
+  message->from()->fromUnicodeString( contact.fullEmail(), "utf-8" );
 
-  KMime::Content *content = new KMime::Content();
-  QByteArray contentData = QByteArray("Content-Type: text/plain; charset=\"us-ascii\"\nContent-Transfer-Encoding: 7bit\n\n") +
-  "This is a Kolab Groupware object.\n" +
-  "To view this object you will need an email client that can understand the Kolab Groupware format.\n" +
-  "For a list of such email clients please visit\n"
-  "http://www.kolab.org/kolab2-clients.html\n";
-  content->setContent(contentData);
-  message->addContent(content);
+  KMime::Content* content = createMainPart( m_mimeType, contact.saveXML().toUtf8() );
+  message->addContent( content );
 
-  content = new KMime::Content();
-  header = "Content-Type: " + m_mimeType + "; name=\"kolab.xml\"\n";
-  header += "Content-Transfer-Encoding: quoted-printable\n";
-  header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
-  content->setHead(header.toLatin1());
-  KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
-  content->setBody(codec->encode(contact.saveXML().toUtf8()));
-  message->addContent(content);
-
-  if (!contact.pictureAttachmentName().isEmpty()) {
-    header = "Content-Type: image/png; name=\"kolab-picture.png\"\n";
-    header += "Content-Transfer-Encoding: base64\n";
-    header += "Content-Disposition: attachment; filename=\"kolab-picture.png\"";
-    content = new KMime::Content();
-    content->setHead(header.toLatin1());
+  if ( !contact.picture().isNull() ) {
     QByteArray pic;
     QBuffer buffer(&pic);
     buffer.open(QIODevice::WriteOnly);
     contact.picture().save(&buffer, "PNG");
     buffer.close();
-    content->setBody(pic.toBase64());
+
+    content = createAttachmentPart( "image/png", "kolab-picture.png", pic );
     message->addContent(content);
   }
 
-  if (!contact.logoAttachmentName().isEmpty()) {
-    header = "Content-Type: image/png; name=\"kolab-logo.png\"\n";
-    header += "Content-Transfer-Encoding: base64\n";
-    header += "Content-Disposition: attachment; filename=\"kolab-logo.png\"";
-    content = new KMime::Content();
-    content->setHead(header.toLatin1());
+  if ( !contact.logo().isNull() ) {
     QByteArray pic;
     QBuffer buffer(&pic);
     buffer.open(QIODevice::WriteOnly);
     contact.logo().save(&buffer, "PNG");
     buffer.close();
-    content->setBody(pic.toBase64());
+
+    content = createAttachmentPart( "image/png", "kolab-logo.png", pic );
     message->addContent(content);
   }
 
 
-  if (!contact.soundAttachmentName().isEmpty()) {
-    header = "Content-Type: audio/unknown; name=\"sound\"\n";
-    header += "Content-Transfer-Encoding: base64\n";
-    header += "Content-Disposition: attachment; filename=\"sound\"";
-    content = new KMime::Content();
-    content->setHead(header.toLatin1());
-    content->setBody(contact.sound().toBase64());
+  if ( !contact.sound().isEmpty() ) {
+    content = createAttachmentPart( "audio/unknown", "sound", contact.sound() );
     message->addContent(content);
   }
 
-
+  message->assemble();
   imapItem.setPayload(message);
 }
 
@@ -232,34 +198,14 @@ void AddressBookHandler::distListToKolabFormat(const Kolab::DistributionList& di
 {
   imapItem.setMimeType( "message/rfc822" );
 
-  MessagePtr message(new KMime::Message);
-  QString header;
-  header += "From: " + distList.name() + '\n';
-  header += "Subject: " + distList.uid() + '\n';
-  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + '\n';
-  header += "User-Agent: Akonadi Kolab Proxy Resource \n";
-  header += "MIME-Version: 1.0\n";
-  header += "X-Kolab-Type: " + m_mimeType + ".distlist\n\n\n";
-  message->setContent(header.toLatin1());
+  KMime::Message::Ptr message = createMessage( m_mimeType + ".distlist" );
+  message->subject()->fromUnicodeString( distList.uid(), "utf-8" );
+  message->from()->fromUnicodeString( distList.uid(), "utf-8" );
 
-  KMime::Content *content = new KMime::Content();
-  QByteArray contentData = QByteArray("Content-Type: text/plain; charset=\"us-ascii\"\nContent-Transfer-Encoding: 7bit\n\n") +
-  "This is a Kolab Groupware object.\n" +
-  "To view this object you will need an email client that can understand the Kolab Groupware format.\n" +
-  "For a list of such email clients please visit\n"
-  "http://www.kolab.org/kolab2-clients.html\n";
-  content->setContent(contentData);
-  message->addContent(content);
+  KMime::Content* content = createMainPart( m_mimeType + ".distlist", distList.saveXML().toUtf8() );
+  message->addContent( content );
 
-  content = new KMime::Content();
-  header = "Content-Type: " + m_mimeType + ".distlist; name=\"kolab.xml\"\n";
-  header += "Content-Transfer-Encoding: quoted-printable\n";
-  header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
-  content->setHead(header.toLatin1());
-  KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
-  content->setBody(codec->encode(distList.saveXML().toUtf8()));
-  message->addContent(content);
-
+  message->assemble();
   imapItem.setPayload(message);
 }
 
