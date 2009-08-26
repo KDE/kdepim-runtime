@@ -80,6 +80,15 @@ protected:
   KMime::Content *findContentByType(MessagePtr data, const QByteArray &type);
   KMime::Content *findContentByName(MessagePtr data, const QString &name, QByteArray &type);
 
+  /** Create the top-level message object of an Kolab MIME message, including the explanation part. */
+  static KMime::Message::Ptr createMessage( const QString &mimeType );
+  /** Creates the explanation part added to every Kolab MIME message. */
+  static KMime::Content* createExplanationPart();
+  /** Creates the main Kolab MIME part. */
+  static KMime::Content* createMainPart( const QString &mimeType, const QByteArray &decodedContent );
+  /** Create a MIME part for an attachment. */
+  static KMime::Content* createAttachmentPart( const QString &mimeType, const QString &fileName, const QByteArray &decodedContent );
+
   QByteArray m_mimeType;
 };
 

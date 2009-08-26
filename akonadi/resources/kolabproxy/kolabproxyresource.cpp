@@ -208,7 +208,7 @@ void KolabProxyResource::itemAdded( const Item &item, const Collection &collecti
 
   KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
   if ( !handler ) {
-    kWarning() << "No handler found";
+    kWarning() << "No handler found for collection" << collection << ", available handlers: " << m_monitoredCollections;
     cancelTask();
     return;
   }

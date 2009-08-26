@@ -109,3 +109,56 @@ KMime::Content* KolabHandler::findContentByName(MessagePtr data, const QString &
 
 }
 
+
+KMime::Content* KolabHandler::createExplanationPart()
+{
+  KMime::Content *content = new KMime::Content();
+  content->contentType()->setMimeType( "text/plain" );
+  content->contentType()->setCharset( "us-ascii" );
+  content->contentTransferEncoding()->setEncoding( KMime::Headers::CE7Bit );
+  content->setBody( "This is a Kolab Groupware object.\n"
+                    "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
+                    "For a list of such email clients please visit\n"
+                    "http://www.kolab.org/kolab2-clients.html\n" );
+  return content;
+}
+
+
+KMime::Message::Ptr KolabHandler::createMessage(const QString& mimeType)
+{
+  KMime::Message::Ptr message( new KMime::Message );
+  message->date()->setDateTime( KDateTime::currentLocalDateTime() );
+  KMime::Headers::Generic *h = new KMime::Headers::Generic( "X-Kolab-Type", message.get(), mimeType, "utf-8" );
+  message->appendHeader( h );
+  message->userAgent()->from7BitString( "Akonadi Kolab Proxy Resource" );
+  message->contentType()->setMimeType( "multipart/mixed" );
+  message->contentType()->setBoundary( KMime::multiPartBoundary() );
+
+  message->addContent( createExplanationPart() );
+  return message;
+}
+
+
+KMime::Content* KolabHandler::createMainPart(const QString& mimeType, const QByteArray& decodedContent)
+{
+  KMime::Content* content = new KMime::Content();
+  content->contentType()->setMimeType( mimeType.toLatin1() );
+  content->contentType()->setName( "kolab.xml", "us-ascii" );
+  content->contentTransferEncoding()->setEncoding( KMime::Headers::CEquPr );
+  content->contentDisposition()->setDisposition( KMime::Headers::CDattachment );
+  content->contentDisposition()->setFilename( "kolab.xml" );
+  content->setBody( decodedContent );
+  return content;
+}
+
+KMime::Content* KolabHandler::createAttachmentPart(const QString& mimeType, const QString& fileName, const QByteArray& decodedContent)
+{
+  KMime::Content* content = new KMime::Content();
+  content->contentType()->setMimeType( mimeType.toLatin1() );
+  content->contentType()->setName( fileName, "us-ascii" );
+  content->contentTransferEncoding()->setEncoding( KMime::Headers::CEbase64 );
+  content->contentDisposition()->setDisposition( KMime::Headers::CDattachment );
+  content->contentDisposition()->setFilename( fileName );
+  content->setBody( decodedContent );
+  return content;
+}

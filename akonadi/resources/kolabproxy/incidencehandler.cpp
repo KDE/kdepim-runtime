@@ -165,45 +165,19 @@ void IncidenceHandler::incidenceToItem(IncidencePtr incidencePtr, Akonadi::Item 
   }
   imapItem.setMimeType( "message/rfc822" );
 
-  MessagePtr message(new KMime::Message);
-  QString header;
-  header += "From: " + incidencePtr->organizer().fullName() + '<' + incidencePtr->organizer().email() + ">\n";
-  header += "Subject: " + incidencePtr->uid() + '\n';
-  header += "Date: " + QDateTime::currentDateTime().toString(Qt::TextDate) + '\n';
-  header += "User-Agent: Akonadi Kolab Proxy Resource \n";
-  header += "MIME-Version: 1.0\n";
-  header += "X-Kolab-Type: " + m_mimeType + "\n\n\n";
-  message->setHead(header.toLatin1());
+  MessagePtr message = createMessage( m_mimeType );
+  message->from()->addAddress( incidencePtr->organizer().email().toUtf8(), incidencePtr->organizer().name() );
+  message->subject()->fromUnicodeString( incidencePtr->uid(), "utf-8" );
 
-  KMime::Content *content = new KMime::Content();
-  QByteArray contentData = QByteArray("Content-Type: text/plain; charset=\"us-ascii\"\nContent-Transfer-Encoding: 7bit\n\n") +
-      "This is a Kolab Groupware object.\n" +
-      "To view this object you will need an email client that can understand the Kolab Groupware format.\n" +
-      "For a list of such email clients please visit\n"
-      "http://www.kolab.org/kolab2-clients.html\n";
-  content->setContent(contentData);
-  message->addContent(content);
-
-  content = new KMime::Content();
-  header = "Content-Type: " + m_mimeType + "; name=\"kolab.xml\"\n";
-  header += "Content-Transfer-Encoding: quoted-printable\n";
-  header += "Content-Disposition: attachment; filename=\"kolab.xml\"";
-  content->setHead(header.toLatin1());
-  KMime::Codec *codec = KMime::Codec::codecForName( "quoted-printable" );
-  content->setBody(codec->encode(incidenceToXml(incidencePtr.get())));
-  message->addContent(content);
+  KMime::Content *content = createMainPart( m_mimeType, incidenceToXml(incidencePtr.get() ) );
+  message->addContent( content );
 
   Q_FOREACH (KCal::Attachment *attachment, incidencePtr->attachments()) {
-    header = "Content-Type: "  +attachment->mimeType() + "; name=\""  + attachment->label() + "\"\n";
-    header += "Content-Transfer-Encoding: base64\n";
-    header += "Content-Disposition: attachment; filename=\"" + attachment->label() + "\"";
-    content = new KMime::Content();
-    content->setHead(header.toLatin1());
-    content->setBody(attachment->data());
-    message->addContent(content);
-
+    content = createAttachmentPart( attachment->mimeType(), attachment->label(), attachment->decodedData() );
+    message->addContent( content );
   }
 
+  message->assemble();
   imapItem.setPayload(message);
 }
 
