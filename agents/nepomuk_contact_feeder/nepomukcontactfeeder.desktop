@@ -69,5 +69,5 @@ Exec=akonadi_nepomuk_contact_feeder
 Icon=nepomuk
 
 X-Akonadi-MimeTypes=text/directory
-X-Akonadi-Capabilities=Unique,NoConfig
+X-Akonadi-Capabilities=Unique,Autostart,NoConfig
 X-Akonadi-Identifier=akonadi_nepomuk_contact_feeder
