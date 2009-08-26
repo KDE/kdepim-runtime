@@ -268,7 +268,9 @@ void ImapResource::onAppendMessageDone( KJob *job )
   Item item = job->property( "akonadiItem" ).value<Item>();
 
   if ( append->error() ) {
+    emit error( append->errorString() );
     deferTask();
+    return;
   }
 
   qint64 uid = append->uid();
