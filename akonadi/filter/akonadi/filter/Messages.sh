@@ -1,2 +1,2 @@
 #! /bin/sh
-$XGETTEXT *.cpp -o $podir/akonadi-filter.pot
+$XGETTEXT `find . -name '*.cpp' ` -o $podir/akonadi-filter.pot
