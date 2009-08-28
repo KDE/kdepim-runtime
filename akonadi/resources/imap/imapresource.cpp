@@ -460,9 +460,9 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
     QString parentPath;
     QString currentPath;
 
-    for ( int i = 0; i < pathParts.size(); ++i ) {
-      const bool isDummy = i != pathParts.size() - 1;
-      const QString pathPart = pathParts.at( i );
+    for ( int j = 0; j < pathParts.size(); ++j ) {
+      const bool isDummy = j != pathParts.size() - 1;
+      const QString pathPart = pathParts.at( j );
       currentPath += separator + pathPart;
 
       if ( reportedCollections.contains( currentPath ) ) {
