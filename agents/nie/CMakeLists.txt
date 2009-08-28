@@ -6,6 +6,7 @@ NEPOMUK_ADD_ONTOLOGY_CLASSES(
   ${CMAKE_CURRENT_SOURCE_DIR}/nfo.rdfs
   ${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs
   ${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs
+  ${CMAKE_CURRENT_SOURCE_DIR}/ncal.rdfs
   )
 
 kde4_add_library(nie STATIC ${nie_SRCS})

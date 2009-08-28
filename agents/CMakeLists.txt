@@ -25,6 +25,7 @@ if( Nepomuk_FOUND AND NOT Q_WS_MAC )
     add_subdirectory( nie_fast )
     add_subdirectory( nepomuk_email_feeder )
     add_subdirectory( nepomuk_contact_feeder )
+    add_subdirectory( nepomuk_calendar_feeder )
   endif(SOPRANO_PLUGIN_RAPTORPARSER_FOUND)
 
 endif( Nepomuk_FOUND AND NOT Q_WS_MAC )
