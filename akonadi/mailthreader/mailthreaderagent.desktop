@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Mail Threader Agent
 Name[et]=Kirjalõime agent
+Name[fr]=Agent de mise en file de messages
 Name[gl]=Axente de fíos de correo
 Name[km]=ភ្នាក់ងារ​ខ្សែស្រឡាយ​សំបុត្រ
 Name[pt]=Agente de Tópicos de Correio
@@ -11,6 +12,7 @@ Name[uk]=Агент розгалуження пошти
 Name[x-test]=xxMail Threader Agentxx
 Comment=Thread mails in a collection
 Comment[et]=Kirjade seadmine lõime kogus
+Comment[fr]=Met en file des messages dans une collection
 Comment[gl]=Coloca as mensaxes dunha colección en fíos
 Comment[km]=ដាក់​សំបុត្រ​ជា​ខ្សែ​ស្រឡាយ​នៅ​ក្នុង​សម្រាំង
 Comment[pt]=Colocar as mensagens por tópicos numa colecção
