@@ -1,8 +1,6 @@
 [Desktop Entry]
 Name=Nepomuk Calendar Feeder
-Name[x-test]=xxNepomuk Calendar Feederxx
 Comment=Extension to push events, journals and todos into Nepomuk
-Comment[x-test]=xxExtension to push events, journals and todos into Nepomukxx
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_calendar_feeder
 Icon=nepomuk
