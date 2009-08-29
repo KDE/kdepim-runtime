@@ -151,7 +151,7 @@ Action::Base * CommandWithTargetCollectionEditor::commitState( Component * paren
 
   if( !job->exec() )
   {
-    KMessageBox::sorry( this, i18n( "Could not find the specified target folder\r\n%1", job->errorString() ), i18n( "Invalid target folder" ) );
+    KMessageBox::sorry( this, i18n( "Could not find the specified target folder\n\n%1", job->errorString() ), i18n( "Invalid target folder" ) );
     new Private::WidgetHighlighter( this );
     return 0;    
   }
