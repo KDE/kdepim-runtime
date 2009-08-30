@@ -1,6 +1,11 @@
 [Desktop Entry]
 Name=Nepomuk Calendar Feeder
+Name[uk]=Передавач календарів Nepomuk
+Name[x-test]=xxNepomuk Calendar Feederxx
 Comment=Extension to push events, journals and todos into Nepomuk
+Comment[uk]=Додаток для передачі записів подій, журналу та завдань до Nepomuk
+Comment[x-test]=xxExtension to push events, journals and todos into Nepomukxx
+Comment[zh_TW]=將事件、日誌與待辦事項送進 Nepomuk 的延伸程式
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_calendar_feeder
 Icon=nepomuk
