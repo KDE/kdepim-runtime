@@ -47,11 +47,11 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
   Q_FOREACH(const Akonadi::Item &item, items)
   {
 //     kDebug() << item.id();
-    if (!item.hasPayload<MessagePtr>()) {
+    if (!item.hasPayload<KMime::Message::Ptr>()) {
       kWarning() << "Payload is not a MessagePtr!";
       continue;
     }
-    MessagePtr payload = item.payload<MessagePtr>();
+    const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
     KABC::Addressee addressee;
     KABC::ContactGroup contactGroup;
     if (addresseFromKolab(payload, addressee)) {
@@ -70,7 +70,7 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
   return newItems;
 }
 
-bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &addressee)
+bool AddressBookHandler::addresseFromKolab( const KMime::Message::Ptr &data, KABC::Addressee &addressee)
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {
@@ -120,7 +120,7 @@ bool AddressBookHandler::addresseFromKolab(MessagePtr data, KABC::Addressee &add
   return false;
 }
 
-bool AddressBookHandler::contactGroupFromKolab(MessagePtr data, KABC::ContactGroup &contactGroup)
+bool AddressBookHandler::contactGroupFromKolab(const KMime::Message::Ptr &data, KABC::ContactGroup &contactGroup)
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType + ".distlist");
   if (xmlContent) {

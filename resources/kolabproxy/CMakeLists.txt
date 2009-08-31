@@ -10,8 +10,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 ########### next target ###############
 
-set( kolabproxyresource_SRCS
-  kolabproxyresource.cpp
+set( kolabproxyresource_shared_SRCS
   contact.cpp
   distributionlist.cpp
   event.cpp
@@ -25,7 +24,12 @@ set( kolabproxyresource_SRCS
   calendarhandler.cpp
   taskshandler.cpp
   journalhandler.cpp
+)
+
+set( kolabproxyresource_SRCS
+  kolabproxyresource.cpp
   collectiontreebuilder.cpp
+  ${kolabproxyresource_shared_SRCS}
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
 )
 
@@ -46,3 +50,5 @@ target_link_libraries(akonadi_kolabproxy_resource ${KDEPIMLIBS_AKONADI_LIBS} ${Q
 install(TARGETS akonadi_kolabproxy_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 kde4_install_icons( ${ICON_INSTALL_DIR} )
+
+add_subdirectory( tests )

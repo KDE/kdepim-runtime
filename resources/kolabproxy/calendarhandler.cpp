@@ -41,12 +41,12 @@ CalendarHandler::~CalendarHandler()
 {
 }
 
-KCal::Incidence* CalendarHandler::incidenceFromKolab(MessagePtr data)
+KCal::Incidence* CalendarHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
 {
    return calendarFromKolab(data);
 }
 
-KCal::Event * CalendarHandler::calendarFromKolab(MessagePtr data)
+KCal::Event * CalendarHandler::calendarFromKolab(const KMime::Message::Ptr &data)
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {

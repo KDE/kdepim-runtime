@@ -39,13 +39,13 @@ JournalHandler::~JournalHandler()
 {
 }
 
-KCal::Incidence* JournalHandler::incidenceFromKolab(MessagePtr data)
+KCal::Incidence* JournalHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
 {
   return journalFromKolab(data);
 }
 
 
-KCal::Journal * JournalHandler::journalFromKolab(MessagePtr data)
+KCal::Journal * JournalHandler::journalFromKolab(const KMime::Message::Ptr &data)
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {

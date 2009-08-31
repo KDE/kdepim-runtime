@@ -80,7 +80,7 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   connect(m_collectionMonitor, SIGNAL(collectionChanged(const Akonadi::Collection &)), this, SLOT(imapCollectionChanged(const Akonadi::Collection &)));
 
   m_root.setName( identifier() );
-  m_root.setParent( Collection::root() );
+  m_root.setParentCollection( Collection::root() );
   EntityDisplayAttribute *attr = m_root.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
   attr->setDisplayName( i18n("Kolab") );
   attr->setIconName( "kolab" );
@@ -340,8 +340,8 @@ void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, 
   imapCollection.setId( -1 );
   imapCollection.setRemoteId( QString() );
   imapCollection.setContentMimeTypes( QStringList() << Collection::mimeType() << QLatin1String( "message/rfc822" ) );
-  Collection imapParent( parent.remoteId().toLongLong() );
-  imapCollection.setParent( imapParent );
+  const Collection imapParent( parent.remoteId().toLongLong() );
+  imapCollection.setParentCollection( imapParent );
   CollectionAnnotationsAttribute* attr =
     imapCollection.attribute<CollectionAnnotationsAttribute>( Collection::AddIfMissing );
   QMap<QByteArray, QByteArray> annotations = attr->annotations();

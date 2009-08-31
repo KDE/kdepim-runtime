@@ -22,8 +22,6 @@
 
 #include "incidencehandler.h"
 #include <kcal/event.h>
-#include <boost/shared_ptr.hpp>
-typedef boost::shared_ptr<KCal::Event> EventPtr;
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -37,8 +35,8 @@ public:
 
 private:
   virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
-  virtual KCal::Incidence* incidenceFromKolab(MessagePtr data);
-  KCal::Event * calendarFromKolab(MessagePtr data);
+  virtual KCal::Incidence* incidenceFromKolab(const KMime::Message::Ptr &data);
+  KCal::Event * calendarFromKolab(const KMime::Message::Ptr &data);
 };
 
 #endif

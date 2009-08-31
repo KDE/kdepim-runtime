@@ -25,8 +25,6 @@
 
 #include <boost/shared_ptr.hpp>
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
 namespace Akonadi {
   class Collection;
 }
@@ -68,8 +66,8 @@ public:
   virtual QByteArray mimeType() const;
   virtual void setMimeType(const QByteArray& type);
 
-  virtual void itemDeleted(const Akonadi::Item &item){};
-  virtual void itemAdded(const Akonadi::Item &item){};
+  virtual void itemDeleted(const Akonadi::Item &item) { Q_UNUSED( item ); }
+  virtual void itemAdded(const Akonadi::Item &item) { Q_UNUSED( item ); }
 
 Q_SIGNALS:
     void deleteItemFromImap(const Akonadi::Item& item);
@@ -77,8 +75,8 @@ Q_SIGNALS:
 
 protected:
   explicit KolabHandler();
-  KMime::Content *findContentByType(MessagePtr data, const QByteArray &type);
-  KMime::Content *findContentByName(MessagePtr data, const QString &name, QByteArray &type);
+  KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type);
+  KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type);
 
   /** Create the top-level message object of an Kolab MIME message, including the explanation part. */
   static KMime::Message::Ptr createMessage( const QString &mimeType );
