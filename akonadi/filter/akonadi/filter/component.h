@@ -51,13 +51,13 @@ public:
   enum ProcessingStatus
   {
     /**
-     * The filter node execution completed succesfully. Continue
+     * The filter node execution completed successfully. Continue
      * executing the script.
      */
     SuccessAndContinue,
 
     /**
-     * The filter node execution completed succesfully. Stop
+     * The filter node execution completed successfully. Stop
      * the script execution.
      */
     SuccessAndStop,

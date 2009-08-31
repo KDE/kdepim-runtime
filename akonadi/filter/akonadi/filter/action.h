@@ -50,7 +50,7 @@ class CommandDescriptor;
  *
  * Some of the actions are builtin while others are provided
  * by the context-specific implementation. At the time of writing the builtins
- * are the Stop action (which succesfully terminates the script) and
+ * are the Stop action (which successfully terminates the script) and
  * the RuleList action which jumps inside a filtering sub-program.
  * The Command class is a skeleton for context-specific actions.
  */
@@ -67,7 +67,7 @@ namespace Action
 enum ActionType
 {
   /**
-   * The action is a simple stop action: it immediately and succesfully terminates
+   * The action is a simple stop action: it immediately and successfully terminates
    * the processing in the filter.
    */
   ActionTypeStop,
@@ -159,7 +159,7 @@ public:
 
 /**
  * @class Akonadi::Filter::Action::Stop
- * @brief A standard "succesfull stop" action.
+ * @brief A standard "successful stop" action.
  *
  * The execution of this action simply terminates the filtering script
  * with the result SuccessAndStop.

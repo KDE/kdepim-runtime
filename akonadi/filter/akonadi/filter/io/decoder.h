@@ -110,7 +110,7 @@ public:
    * to provide an implementation of the decoding process.
    *
    * The method should parse the encodedFilter and upon
-   * succesfull execution should return a complete and valid
+   * successful execution should return a complete and valid
    * filtering Program object (created by the ComponentFactory).
    *
    * In case of error the method should return 0 and a description

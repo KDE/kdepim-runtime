@@ -108,9 +108,9 @@ public:
 
   /**
    * Runs this filtering rule list on the specified filtering Data set.
-   * Returns SuccessAndStop if the execution was succesfull and was
+   * Returns SuccessAndStop if the execution was successful and was
    * explicitly stopped by an inner rule. Returns SuccessAndContinue
-   * if the execution was succesfull and it wasn't stopped explicitly
+   * if the execution was successful and it wasn't stopped explicitly
    * by any inner rule. Returns Failure in case of a processing error:
    * lastError() can be used to obtain more informations.
    *

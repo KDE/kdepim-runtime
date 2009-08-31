@@ -422,7 +422,7 @@ public:
 
   /**
    * Reimplemented from Condition::Base.
-   * If the child condition evaluates succesfully then it
+   * If the child condition evaluates successfully then it
    * returns its result negated. If the child condition evaluation
    * fails then propagates the ConditionMatchError to the caller.
    */

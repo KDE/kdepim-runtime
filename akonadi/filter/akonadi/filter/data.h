@@ -134,7 +134,7 @@ public:
    * determine its existence without actually fetching the whole data
    * then reimplementing this function might be a great performance improvement.
    *
-   * Upon succesfull execution you should return the value of the function
+   * Upon successful execution you should return the value of the function
    * applied to the data member. If the execution fails then you should
    * return a null QVariant and push some errors on the stack (see the ErrorStack
    * base classe).
@@ -144,7 +144,7 @@ public:
   /**
    * You must implement this function in order to execute your Command type actions.
    *
-   * Upon succesfull execution you should return true while on failure you should
+   * Upon successful execution you should return true while on failure you should
    * return false and push some errors on the stack (see the ErrorStack base classe).
    */
   virtual bool executeCommand( const CommandDescriptor * command, const QList< QVariant > &params ) = 0;
@@ -153,7 +153,7 @@ public:
    * You must implement this function in order to retrieve the data member
    * specified by the DataMemberDescriptor.
    * 
-   * Upon succesfull execution you should return the value of the data member.
+   * Upon successful execution you should return the value of the data member.
    * If the execution fails then you should return a null QVariant and push some errors
    * on the stack (see the ErrorStack base classe).
    */

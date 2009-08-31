@@ -125,7 +125,7 @@ public:
       int id,                          //< The id of the command: it should be unique within an application
       const QString &keyword,          //< Unique command keyword: it matches the keyword used in Sieve scripts.
       const QString &name,             //< The token that is displayed in the UI editors.
-      bool isTerminal = false          //< Is this command terminal ? Terminal commands stop the script upon succesfull execution.
+      bool isTerminal = false          //< Is this command terminal ? Terminal commands stop the script upon successful execution.
     );
 
   /**
@@ -188,7 +188,7 @@ public:
 
   /**
    * Returns true if this action is terminal and terminates the filtering
-   * script execution upon succesfull execution. Returns false otherwise.
+   * script execution upon successful execution. Returns false otherwise.
    */
   bool isTerminal() const
   {

@@ -155,7 +155,7 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
       i18n(
           "<p>" \
           "The icon associated to this filter. " \
-          "Ths is a client side property: the filtering agent doesn't care " \
+          "This is a client side property: the filtering agent doesn't care " \
           "and the filter IO engines just 'pass it through'..." \
           "</p>"
         )

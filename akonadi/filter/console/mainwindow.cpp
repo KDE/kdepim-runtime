@@ -490,7 +490,7 @@ void MainWindow::newFilter( bool lbb )
 
   if( rCreate.isError() )
   {
-    KMessageBox::error( this, rCreate.error().message(), i18n( "Could not crate new filter" ) );
+    KMessageBox::error( this, rCreate.error().message(), i18n( "Could not create new filter" ) );
     return;
   }
 
@@ -498,7 +498,7 @@ void MainWindow::newFilter( bool lbb )
 
   if( ret != Akonadi::Filter::Agent::Success )
   {
-    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not crate new filter" ) );
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not create new filter" ) );
     return;
   }
 
@@ -506,7 +506,7 @@ void MainWindow::newFilter( bool lbb )
 
   if( rAttach.isError() )
   {
-    KMessageBox::error( this, rAttach.error().message(), i18n( "Could not crate new filter" ) );
+    KMessageBox::error( this, rAttach.error().message(), i18n( "Could not create new filter" ) );
     return;
   }
 
@@ -514,7 +514,7 @@ void MainWindow::newFilter( bool lbb )
 
   if( ret != Akonadi::Filter::Agent::Success )
   {
-    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not crate new filter" ) );
+    KMessageBox::error( this, Akonadi::Filter::Agent::statusDescription( ret ), i18n( "Could not create new filter" ) );
     return;
   }
 
@@ -605,7 +605,7 @@ void MainWindow::slotFilteringJobTerminated( qlonglong jobId, int status, const 
   enableDisableButtons();
 
   if( status == Akonadi::Filter::Agent::Success )
-    KMessageBox::information( this, i18n( "Filter applied succesfully" ), i18n( "Filter application complete" ) );
+    KMessageBox::information( this, i18n( "Filter applied successfully" ), i18n( "Filter application complete" ) );
   else {
     KMessageBox::error(
         this,
