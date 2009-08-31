@@ -68,6 +68,7 @@ class MailDispatcherAgent::Private
     void abort();
     void dispatch();
     void itemFetched( Item &item );
+    void queueError( const QString &message );
     void sendPercent( KJob *job, unsigned long percent );
     void sendResult( KJob *job );
     void emitStatusReady();
@@ -160,6 +161,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   connect( d->queue, SIGNAL( newItems() ), this, SLOT( dispatch() ) );
   connect( d->queue, SIGNAL( itemReady( Akonadi::Item& ) ),
       this, SLOT( itemFetched( Akonadi::Item& ) ) );
+  connect( d->queue, SIGNAL(error(QString)), this, SLOT(queueError(QString)) );
   connect( this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
       d->queue, SLOT(itemProcessed(Akonadi::Item,bool)) );
   connect( this, SIGNAL(abortRequested()), this, SLOT(abort()) );
@@ -211,6 +213,12 @@ void MailDispatcherAgent::Private::itemFetched( Item &item )
   connect( currentJob, SIGNAL(percent(KJob*,unsigned long)),
       q, SLOT(sendPercent(KJob*,unsigned long)) );
   currentJob->start();
+}
+
+void MailDispatcherAgent::Private::queueError( const QString &message )
+{
+  emit q->error( message );
+  // FIXME figure out why this does not set the status to Broken, etc.
 }
 
 void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long percent )

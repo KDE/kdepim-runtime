@@ -24,6 +24,7 @@
 #include <QTimer>
 
 #include <KDebug>
+#include <KLocalizedString>
 
 #include <Akonadi/Attribute>
 #include <Akonadi/Item>
@@ -32,6 +33,7 @@
 #include <Akonadi/Monitor>
 #include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/localfolders.h>
+#include <akonadi/kmime/localfoldersrequestjob.h>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
@@ -88,7 +90,8 @@ class OutboxQueue::Private
     void checkFuture();
     void collectionFetched( KJob *job );
     void itemFetched( KJob *job );
-    void outboxChanged();
+    void localFoldersChanged();
+    void localFoldersRequestResult( KJob *job );
     void itemAdded( const Item &item );
     void itemChanged( const Item &item );
     void itemMoved( const Item &item, const Collection &source, const Collection &dest );
@@ -260,20 +263,47 @@ void OutboxQueue::Private::itemFetched( KJob *job )
   emit q->itemReady( fjob->items().first() );
 }
 
-void OutboxQueue::Private::outboxChanged()
+void OutboxQueue::Private::localFoldersChanged()
 {
   // Called on startup, and whenever the local folders change.
-  Collection col = LocalFolders::self()->outbox();
-  Q_ASSERT( col.isValid() );
-  if( col == outbox ) {
+
+  if( LocalFolders::self()->hasDefaultFolder( LocalFolders::Outbox ) ) {
+    // Outbox is ready, init the queue from it.
+    Collection col = LocalFolders::self()->defaultFolder( LocalFolders::Outbox );
+    Q_ASSERT( col.isValid() );
+
+    if( outbox != col ) {
+      monitor->setCollectionMonitored( outbox, false );
+      monitor->setCollectionMonitored( col, true );
+      outbox = col;
+      kDebug() << "Changed outbox to" << outbox.id();
+      initQueue();
+    }
+  } else {
+    // Outbox is not ready. Request it, since otherwise we will not know when
+    // new messages appear.
+    // (Note that we are a separate process, so we get no notification when
+    // MessageQueueJob requests the Outbox.)
+    monitor->setCollectionMonitored( outbox, false );
+    outbox = Collection( -1 );
+    LocalFoldersRequestJob *rjob = new LocalFoldersRequestJob( q );
+    rjob->requestDefaultFolder( LocalFolders::Outbox );
+    connect( rjob, SIGNAL(result(KJob*)), q, SLOT(localFoldersRequestResult(KJob*)) );
+    kDebug() << "Requesting outbox folder.";
+    rjob->start();
+  }
+}
+
+void OutboxQueue::Private::localFoldersRequestResult( KJob *job )
+{
+  if( job->error() ) {
+    kWarning() << "Failed to get outbox folder.";
+    emit q->error( i18n( "Could not access the outbox folder (%1).", job->errorString() ) );
     return;
   }
 
-  monitor->setCollectionMonitored( outbox, false );
-  monitor->setCollectionMonitored( col, true );
-  outbox = col;
-  kDebug() << "Changed outbox to" << outbox.id();
-  initQueue();
+  Q_ASSERT( LocalFolders::self()->hasDefaultFolder( LocalFolders::Outbox ) );
+  localFoldersChanged();
 }
 
 void OutboxQueue::Private::itemAdded( const Item &item )
@@ -338,9 +368,8 @@ OutboxQueue::OutboxQueue( QObject *parent )
   connect( d->monitor, SIGNAL( itemRemoved( Akonadi::Item ) ),
       this, SLOT( itemRemoved( Akonadi::Item ) ) );
 
-  connect( LocalFolders::self(), SIGNAL( foldersReady() ),
-      this, SLOT( outboxChanged() ) );
-  LocalFolders::self()->fetch();
+  connect( LocalFolders::self(), SIGNAL(defaultFoldersChanged()), this, SLOT(localFoldersChanged()) );
+  d->localFoldersChanged();
 
   d->futureTimer = new QTimer( this );
   connect( d->futureTimer, SIGNAL(timeout()), this, SLOT(checkFuture()) );

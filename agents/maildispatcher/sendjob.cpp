@@ -110,7 +110,10 @@ void SendJob::Private::doTransport()
     return;
   }
   TransportType type = tA->transport()->transportType();
-  Q_ASSERT( type.isValid() );
+  if( !type.isValid() ) {
+    storeResult( false, i18n( "Could not send message. Invalid transport." ) );
+    return;
+  }
   if( type.type() == Transport::EnumType::Akonadi ) {
     // Send the item directly to the resource that will send it.
     resourceId = tA->transport()->host();

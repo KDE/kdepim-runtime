@@ -56,6 +56,7 @@ class OutboxQueue : public QObject
   signals:
     void itemReady( Akonadi::Item &item );
     void newItems();
+    void error( const QString &error );
 
   private:
     class Private;
@@ -64,7 +65,8 @@ class OutboxQueue : public QObject
     Q_PRIVATE_SLOT( d, void checkFuture() )
     Q_PRIVATE_SLOT( d, void collectionFetched( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemFetched( KJob* ) )
-    Q_PRIVATE_SLOT( d, void outboxChanged() )
+    Q_PRIVATE_SLOT( d, void localFoldersChanged() )
+    Q_PRIVATE_SLOT( d, void localFoldersRequestResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemAdded( Akonadi::Item ) )
     Q_PRIVATE_SLOT( d, void itemChanged( Akonadi::Item ) )
     Q_PRIVATE_SLOT( d, void itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) )
