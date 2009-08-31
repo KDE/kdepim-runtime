@@ -83,7 +83,7 @@ class AKONADI_CONTACT_EXPORT ContactEditor : public QWidget
     /**
      * Saves the contact from the editor back to the storage.
      */
-    void saveContact();
+    bool saveContact();
 
     /**
      * Sets the @p collection which shall be used to store new
@@ -110,7 +110,8 @@ class AKONADI_CONTACT_EXPORT ContactEditor : public QWidget
     class Private;
     Private* const d;
 
-    Q_PRIVATE_SLOT( d, void fetchDone( KJob* ) )
+    Q_PRIVATE_SLOT( d, void itemFetchDone( KJob* ) )
+    Q_PRIVATE_SLOT( d, void parentCollectionFetchDone( KJob* ) )
     Q_PRIVATE_SLOT( d, void storeDone( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemChanged( const Akonadi::Item&, const QSet<QByteArray>& ) )
     //@endcond PRIVATE

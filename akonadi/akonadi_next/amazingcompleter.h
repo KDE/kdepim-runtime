@@ -30,6 +30,9 @@ class QAbstractItemView;
 
 class AmazingCompleterPrivate;
 
+namespace Akonadi
+{
+
 class AKONADI_NEXT_EXPORT AmazingCompleter : public QObject
 {
   Q_OBJECT
@@ -73,5 +76,7 @@ private:
   AmazingCompleterPrivate *d_ptr;
 
 };
+
+}
 
 #endif

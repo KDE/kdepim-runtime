@@ -19,25 +19,28 @@
 
 #include "contactgroupeditor.h"
 
-#include <QtGui/QGridLayout>
-#include <QtGui/QMessageBox>
+#include "addressbookselectiondialog.h"
+#include "autoqpointer.h"
+#include "contactcompletionmodel_p.h"
+#include "contactgrouplineedit_p.h"
+#include "ui_contactgroupeditor.h"
+#include "waitingoverlay_p.h"
 
-#include <kabc/addressee.h>
-#include <kabc/contactgroup.h>
-#include <klocale.h>
-#include <klineedit.h>
-#include <kmessagebox.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
+#include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
+#include <klocale.h>
+#include <klineedit.h>
+#include <kmessagebox.h>
 
-#include "contactcompletionmodel_p.h"
-#include "contactgrouplineedit_p.h"
-#include "ui_contactgroupeditor.h"
-#include "waitingoverlay_p.h"
+#include <QtGui/QGridLayout>
+#include <QtGui/QMessageBox>
 
 namespace Akonadi
 {
@@ -56,7 +59,8 @@ class ContactGroupEditor::Private
       delete mMonitor;
     }
 
-    void fetchDone( KJob* );
+    void itemFetchDone( KJob* );
+    void parentCollectionFetchDone( KJob* );
     void storeDone( KJob* );
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& );
     void memberChanged();
@@ -83,7 +87,7 @@ class ContactGroupEditor::Private
 
 using namespace Akonadi;
 
-void ContactGroupEditor::Private::fetchDone( KJob *job )
+void ContactGroupEditor::Private::itemFetchDone( KJob *job )
 {
   if ( job->error() )
     return;
@@ -97,13 +101,35 @@ void ContactGroupEditor::Private::fetchDone( KJob *job )
 
   mItem = fetchJob->items().first();
 
+  mReadOnly = false;
   if ( mMode == ContactGroupEditor::EditMode ) {
-    mReadOnly = false;
+    // if in edit mode we have to fetch the parent collection to find out
+    // about the modify rights of the item
 
-    const Akonadi::Collection parentCollection = mItem.parentCollection();
-    if ( parentCollection.isValid() )
-      mReadOnly = !(parentCollection.rights() & Collection::CanChangeItem);
+    Akonadi::CollectionFetchJob *collectionFetchJob = new Akonadi::CollectionFetchJob( mItem.parentCollection(),
+                                                                                       Akonadi::CollectionFetchJob::Base );
+    mParent->connect( collectionFetchJob, SIGNAL( result( KJob* ) ),
+                      SLOT( parentCollectionFetchDone( KJob* ) ) );
+  } else {
+    const KABC::ContactGroup group = mItem.payload<KABC::ContactGroup>();
+    loadContactGroup( group );
+
+    setReadOnly( mReadOnly );
   }
+}
+
+void ContactGroupEditor::Private::parentCollectionFetchDone( KJob *job )
+{
+  if ( job->error() )
+    return;
+
+  Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>( job );
+  if ( !fetchJob )
+    return;
+
+  const Akonadi::Collection parentCollection = fetchJob->collections().first();
+  if ( parentCollection.isValid() )
+    mReadOnly = !(parentCollection.rights() & Collection::CanChangeItem);
 
   const KABC::ContactGroup group = mItem.payload<KABC::ContactGroup>();
   loadContactGroup( group );
@@ -137,7 +163,7 @@ void ContactGroupEditor::Private::itemChanged( const Item&, const QSet<QByteArra
     job->fetchScope().fetchFullPayload();
     job->fetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
 
-    mParent->connect( job, SIGNAL( result( KJob* ) ), mParent, SLOT( fetchDone( KJob* ) ) );
+    mParent->connect( job, SIGNAL( result( KJob* ) ), mParent, SLOT( itemFetchDone( KJob* ) ) );
     new WaitingOverlay( job, mParent );
   }
 }
@@ -194,18 +220,9 @@ bool ContactGroupEditor::Private::storeContactGroup( KABC::ContactGroup &group )
         if ( text.simplified().isEmpty() ) // we handle empty members as 'to be removed'
           continue;
 
-        QString fullName, email;
-        KABC::Addressee::parseEmailAddress( text, fullName, email );
-
-        if ( fullName.isEmpty() ) {
-          KMessageBox::error( mParent, i18n( "The contact '%1' is missing a name.", text ) );
-          return false;
-        }
-        if ( email.isEmpty() ) {
-          KMessageBox::error( mParent, i18n( "The contact '%1' is missing an email address.", text ) );
-          return false;
-        }
-
+        KMessageBox::error( mParent, i18n( "<qt>The contact '%1' has not the correct format.<br/>"
+                                           "Use <b>Name &lt;email@address&gt;</b></qt>", text ) );
+        return false;
       } else {
         group.append( data );
       }
@@ -300,7 +317,7 @@ void ContactGroupEditor::loadContactGroup( const Akonadi::Item &item )
   job->fetchScope().fetchFullPayload();
   job->fetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
 
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchDone( KJob* ) ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( itemFetchDone( KJob* ) ) );
 
   d->setupMonitor();
   d->mMonitor->setItemMonitored( item );
@@ -327,7 +344,13 @@ bool ContactGroupEditor::saveContactGroup()
     ItemModifyJob *job = new ItemModifyJob( d->mItem );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( storeDone( KJob* ) ) );
   } else if ( d->mMode == CreateMode ) {
-    Q_ASSERT_X( d->mDefaultCollection.isValid(), "ContactGroupEditor::saveContactGroup", "Using invalid default collection for saving!" );
+    if ( !d->mDefaultCollection.isValid() ) {
+      AutoQPointer<AddressBookSelectionDialog> dlg = new AddressBookSelectionDialog( AddressBookSelectionDialog::ContactsOnly, this );
+      if ( dlg->exec() == KDialog::Accepted )
+        setDefaultCollection( dlg->selectedAddressBook() );
+      else
+        return false;
+    }
 
     KABC::ContactGroup group;
     if ( !d->storeContactGroup( group ) )

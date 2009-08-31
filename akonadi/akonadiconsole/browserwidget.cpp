@@ -142,9 +142,9 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 //   connect( mBrowserModel, SIGNAL( modelAboutToBeReset() ), SLOT( slotBrowserModelAboutToBeReset() ) );
 //   connect( mBrowserModel, SIGNAL( modelReset() ), SLOT( slotBrowserModelReset() ) );
 
-  SelectionProxyModel *selectionProxyModel = new SelectionProxyModel( mCollectionView->selectionModel(), this );
+  KSelectionProxyModel *selectionProxyModel = new KSelectionProxyModel( mCollectionView->selectionModel(), this );
   selectionProxyModel->setSourceModel( mBrowserModel );
-  selectionProxyModel->setFilterBehavior( SelectionProxyModel::OnlySelectedChildren );
+  selectionProxyModel->setFilterBehavior( KSelectionProxyModel::OnlySelectedChildren );
 
   EntityFilterProxyModel *itemFilter = new EntityFilterProxyModel( this );
   itemFilter->setSourceModel( selectionProxyModel );

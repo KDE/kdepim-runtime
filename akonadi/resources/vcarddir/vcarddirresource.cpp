@@ -62,6 +62,8 @@ void VCardDirResource::configure( WId windowId )
     clearCache();
     initializeVCardDirectory();
     loadAddressees();
+
+    synchronize();
   }
 }
 

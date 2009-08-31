@@ -19,14 +19,17 @@
 
 #include "addressbookcombobox.h"
 
+#include "collectionfiltermodel_p.h"
+
 #include <akonadi/collectionfetchscope.h>
-#include <akonadi/descendantsproxymodel.h>
 #include <akonadi/entitytreemodel.h>
 #include <akonadi/entityfilterproxymodel.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
+
+#include <kdescendantsproxymodel.h>
 
 #include <QtCore/QAbstractItemModel>
 #include <QtGui/QComboBox>
@@ -59,27 +62,19 @@ class AddressBookComboBox::Private
         mMonitor->setMimeTypeMonitored( mimeType, true );
 
       mModel = new EntityTreeModel( Session::defaultSession(), mMonitor );
+      mModel->setItemPopulationStrategy( EntityTreeModel::NoItemPopulation );
 
-      EntityFilterProxyModel *filter = new EntityFilterProxyModel( parent );
-      filter->setSourceModel( mModel );
-      filter->addMimeTypeInclusionFilter( Akonadi::Collection::mimeType() );
-      filter->setHeaderSet( EntityTreeModel::CollectionTreeHeaders );
+      KDescendantsProxyModel *proxyModel = new KDescendantsProxyModel( parent );
+      proxyModel->setSourceModel( mModel );
 
-      DescendantsProxyModel *descProxy = new DescendantsProxyModel( parent );
-      descProxy->setSourceModel( filter );
+      // filter for collections that support saving of contacts / contact groups
+      CollectionFilterModel *filterModel = new CollectionFilterModel( mParent );
+      foreach ( const QString &contentMimeType, contentTypes )
+        filterModel->addContentMimeTypeFilter( contentMimeType );
+      filterModel->setRightsFilter( Akonadi::Collection::CanCreateItem );
+      filterModel->setSourceModel( proxyModel );
 
-/*
-        // flatten the collection tree structure to a collection list
-        Akonadi::DescendantsProxyModel *descendantModel = new Akonadi::DescendantsProxyModel( q );
-        descendantModel->setSourceModel( collectionModel );
-
-        // filter for collections that support contacts
-        CollectionFilterModel *filterModel = new CollectionFilterModel( q );
-        filterModel->addContentMimeTypeFilter( KABC::Addressee::mimeType() );
-        filterModel->setRightsFilter( Akonadi::Collection::CanCreateItem );
-        filterModel->setSourceModel( descendantModel );
-*/
-      mComboBox->setModel( descProxy );
+      mComboBox->setModel( filterModel );
     }
 
     ~Private()

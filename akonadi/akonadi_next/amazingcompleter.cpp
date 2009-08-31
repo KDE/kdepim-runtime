@@ -20,7 +20,7 @@
 
 #include "amazingcompleter.h"
 
-#include <akonadi/selectionproxymodel.h>
+#include <kselectionproxymodel.h>
 #include <qlistview.h>
 
 #include <kdebug.h>
@@ -40,7 +40,7 @@ public:
   }
 
   QAbstractItemModel *m_model;
-  SelectionProxyModel *m_selectionProxyModel;
+  KSelectionProxyModel *m_selectionProxyModel;
   QItemSelectionModel *m_itemSelectionModel;
   QAbstractItemView *m_view;
   QWidget *m_widget;
@@ -124,7 +124,7 @@ void AmazingCompleter::setModel(QAbstractItemModel* model)
   Q_D(AmazingCompleter);
   d->m_model = model;
   d->m_itemSelectionModel = new QItemSelectionModel(model, this);
-  d->m_selectionProxyModel = new SelectionProxyModel(d->m_itemSelectionModel, this);
+  d->m_selectionProxyModel = new KSelectionProxyModel(d->m_itemSelectionModel, this);
   d->m_selectionProxyModel->setSourceModel(d->m_model);
 
 

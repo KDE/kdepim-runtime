@@ -20,7 +20,8 @@
 
 #include "contactcompletionmodel_p.h"
 
-#include <akonadi/descendantsproxymodel.h>
+#include <kdescendantsproxymodel.h>
+
 #include <akonadi/entityfilterproxymodel.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
@@ -45,7 +46,7 @@ QAbstractItemModel* ContactCompletionModel::self()
 
   ContactCompletionModel *model = new ContactCompletionModel( Session::defaultSession(), monitor );
 
-  Akonadi::DescendantsProxyModel *descModel = new DescendantsProxyModel( model );
+  KDescendantsProxyModel *descModel = new KDescendantsProxyModel( model );
   descModel->setSourceModel( model );
 
   EntityFilterProxyModel *filter = new Akonadi::EntityFilterProxyModel( model );
@@ -88,7 +89,20 @@ QVariant ContactCompletionModel::getData( const Item &item, int column, int role
           return contact.assembledName();
         break;
       case NameAndEmailColumn:
-        return contact.fullEmail();
+        {
+          QString name = QString::fromLatin1( "%1 %2" ).arg( contact.givenName() )
+                                                       .arg( contact.familyName() ).simplified();
+          if ( name.isEmpty() )
+            name = contact.organization().simplified();
+          if ( name.isEmpty() )
+            return QString();
+
+          const QString email = contact.preferredEmail().simplified();
+          if ( email.isEmpty() )
+            return QString();
+
+          return QString::fromLatin1( "%1 <%2>" ).arg( name ).arg( email );
+        }
         break;
       case EmailColumn:
         return contact.preferredEmail();
