@@ -80,6 +80,9 @@ X-KADDRESSBOOK-X-ManagersName:Manager
 X-KADDRESSBOOK-X-Office:Office
 X-KADDRESSBOOK-X-Profession:Profession
 X-KADDRESSBOOK-X-SpousesName:Partner
+X-KOLAB-PictureAttachmentName:kolab-picture.png
+X-KOLAB-LogoAttachmentName:kolab-logo.png
+X-KOLAB-SoundAttachmentName:sound
 END:VCARD
 
 
