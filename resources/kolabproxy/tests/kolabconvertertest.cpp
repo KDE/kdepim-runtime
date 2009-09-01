@@ -25,6 +25,9 @@
 #include <kolabhandler.h>
 #include <kabc/vcardconverter.h>
 #include <algorithm>
+#include <kcal/incidence.h>
+#include <kcal/icalformat.h>
+#include <kcal/comparisonvisitor.h>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -80,25 +83,15 @@ static bool compareMimeMessage( const KMime::Message::Ptr &msg, const KMime::Mes
   return true;
 }
 
-template <typename T>
-static bool LexicographicalCompare( const T &_x, const T &_y )
+template <template <typename> class Op, typename T>
+static bool LexicographicalCmp( const T &_x, const T &_y )
 {
   T x( _x );
   x.setId( QString() );
   T y( _y );
   y.setId( QString() );
-  kDebug( x.toString() != y.toString() ) << x.toString() << y.toString();
-  return x.toString() == y.toString();
-}
-
-template <typename T>
-static bool LexicographicalLessThan( const T &_x, const T &_y )
-{
-  T x( _x );
-  x.setId( QString() );
-  T y( _y );
-  y.setId( QString() );
-  return x.toString() < y.toString();
+  Op<QString> op;
+  return op( x.toString(), y.toString() );
 }
 
 static bool normalizePhoneNumbers( KABC::Addressee &addressee, const KABC::Addressee &refAddressee )
@@ -107,13 +100,13 @@ static bool normalizePhoneNumbers( KABC::Addressee &addressee, const KABC::Addre
   KABC::PhoneNumber::List refPhoneNumbers = refAddressee.phoneNumbers();
   if ( phoneNumbers.size() != refPhoneNumbers.size() )
     return false;
-  std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalLessThan<KABC::PhoneNumber> );
-  std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalLessThan<KABC::PhoneNumber> );
+  std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalCmp<std::less, KABC::PhoneNumber> );
+  std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalCmp<std::less, KABC::PhoneNumber> );
 
   for ( int i = 0; i < phoneNumbers.size(); ++i ) {
     KABC::PhoneNumber phoneNumber = phoneNumbers.at( i );
     const KABC::PhoneNumber refPhoneNumber = refPhoneNumbers.at( i );
-    KCOMPARE( LexicographicalCompare( phoneNumber, refPhoneNumber ), true );
+    KCOMPARE( LexicographicalCmp<std::equal_to>( phoneNumber, refPhoneNumber ), true );
     addressee.removePhoneNumber( phoneNumber );
     phoneNumber.setId( refPhoneNumber.id() );
     addressee.insertPhoneNumber( phoneNumber );
@@ -128,13 +121,13 @@ static bool normalizeAddresses( KABC::Addressee &addressee, const KABC::Addresse
   KABC::Address::List refAddresses = refAddressee.addresses();
   if ( addresses.size() != refAddresses.size() )
     return false;
-  std::sort( addresses.begin(), addresses.end(), LexicographicalLessThan<KABC::Address> );
-  std::sort( refAddresses.begin(), refAddresses.end(), LexicographicalLessThan<KABC::Address> );
+  std::sort( addresses.begin(), addresses.end(), LexicographicalCmp<std::less, KABC::Address> );
+  std::sort( refAddresses.begin(), refAddresses.end(), LexicographicalCmp<std::less, KABC::Address> );
 
   for ( int i = 0; i < addresses.size(); ++i ) {
     KABC::Address address = addresses.at( i );
     const KABC::Address refAddress = refAddresses.at( i );
-    KCOMPARE( LexicographicalCompare( address, refAddress ), true );
+    KCOMPARE( LexicographicalCmp<std::equal_to>( address, refAddress ), true );
     addressee.removeAddress( address );
     address.setId( refAddress.id() );
     addressee.insertAddress( address );
@@ -178,8 +171,8 @@ class KolabConverterTest : public QObject
 
       QFile vcardFile( vcardFileName );
       QVERIFY( vcardFile.open( QFile::ReadOnly ) );
-      KABC::VCardConverter m_converter;
-      const KABC::Addressee realAddressee = m_converter.parseVCard( vcardFile.readAll() );
+      KABC::VCardConverter converter;
+      const KABC::Addressee realAddressee = converter.parseVCard( vcardFile.readAll() );
 
       // fix up the converted addressee for comparisson
       convertedAddressee.setName( realAddressee.name() ); // name() apparently is something strange
@@ -198,6 +191,67 @@ class KolabConverterTest : public QObject
       Item vcardItem( "text/directory" );
       vcardItem.setPayload( realAddressee );
       handler->toKolabFormat( vcardItem, convertedKolabItem );
+      QVERIFY( convertedKolabItem.hasPayload<KMime::Message::Ptr>() );
+
+      const KMime::Message::Ptr convertedMime = convertedKolabItem.payload<KMime::Message::Ptr>();
+      const KMime::Message::Ptr realMime = kolabItem.payload<KMime::Message::Ptr>();
+
+//       qDebug() << convertedMime->encodedContent();
+//       qDebug() << realMime->encodedContent();
+      QVERIFY( compareMimeMessage( convertedMime, realMime ) );
+
+      delete handler;
+    }
+
+    void testIncidences_data()
+    {
+      QTest::addColumn<QString>( "type" );
+      QTest::addColumn<QString>( "icalFileName" );
+      QTest::addColumn<QString>( "mimeFileName" );
+
+      const QStringList types = QStringList() << "event" << "task" << "journal" << "note";
+
+      foreach ( const QString &type, types ) {
+        const QDir dir( QString::fromLatin1( "%1/%2" ).arg( KDESRCDIR ).arg( type ) );
+        const QStringList entries = dir.entryList( QStringList("*.ics"), QDir::Files | QDir::Readable | QDir::NoSymLinks );
+        foreach( const QString &entry, entries ) {
+          QTest::newRow( QString::fromLatin1( "%1-%2" ).arg( type ).arg( entry ).toLatin1() ) << type << (dir.path() + '/' + entry) << QString::fromLatin1( "%1/%2.mime" ).arg( dir.path() ).arg( entry );
+        }
+      }
+    }
+
+    void testIncidences()
+    {
+      QFETCH( QString, type );
+      QFETCH( QString, icalFileName );
+      QFETCH( QString, mimeFileName );
+
+      KolabHandler *handler = KolabHandler::createHandler( type.toLatin1() );
+      QVERIFY( handler );
+
+      // mime -> vcard conversion
+      const Item kolabItem = readMimeFile( mimeFileName );
+      QVERIFY( kolabItem.hasPayload() );
+
+      Item::List icalItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
+      QCOMPARE( icalItems.size(), 1 );
+      QVERIFY( icalItems.first().hasPayload<KCal::Incidence::Ptr>() );
+      KCal::Incidence::Ptr convertedIncidence = icalItems.first().payload<KCal::Incidence::Ptr>();
+
+      QFile icalFile( icalFileName );
+      QVERIFY( icalFile.open( QFile::ReadOnly ) );
+      KCal::ICalFormat format;
+      const KCal::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
+
+      KCal::ComparisonVisitor visitor;
+      QVERIFY( visitor.compare( realIncidence.get(), convertedIncidence.get() ) );
+
+
+      // and now the other way around
+      Item convertedKolabItem;
+      Item icalItem( QString::fromLatin1( handler->mimeType() ) );
+      icalItem.setPayload( realIncidence );
+      handler->toKolabFormat( icalItem, convertedKolabItem );
       QVERIFY( convertedKolabItem.hasPayload<KMime::Message::Ptr>() );
 
       const KMime::Message::Ptr convertedMime = convertedKolabItem.payload<KMime::Message::Ptr>();
