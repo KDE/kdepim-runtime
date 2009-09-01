@@ -30,7 +30,7 @@ Content-Disposition: attachment; filename="kolab.xml"
  <name>                                                   
   <given-name>Firstname</given-name>                      
   <last-name>Lastname</last-name>                         
-  <full-name>Firstname Lastnam</full-name>                
+  <full-name>Displayname</full-name>                
  </name>                                                  
  <organization>Organization</organization>                
  <web-page>www.homepage.org</web-page>                    

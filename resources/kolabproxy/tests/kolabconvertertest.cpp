@@ -124,7 +124,7 @@ class KolabConverterTest : public QObject
 
 //       qDebug() << m_converter.createVCard( realAddressee );
 //       qDebug() << m_converter.createVCard( convertedAddressee );
-      qDebug() << convertedAddressee.toString();
+//       qDebug() << convertedAddressee.toString();
       QCOMPARE( realAddressee, convertedAddressee );
 
 
