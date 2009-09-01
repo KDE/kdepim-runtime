@@ -77,7 +77,7 @@ bool AddressBookHandler::addresseFromKolab( const KMime::Message::Ptr &data, KAB
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
     Kolab::Contact contact(QString::fromUtf8(xmlData));
-    QString pictureAttachmentName = contact.pictureAttachmentName();
+    const QString pictureAttachmentName = contact.pictureAttachmentName();
     if (!pictureAttachmentName.isEmpty()) {
       QByteArray type;
       KMime::Content *imgContent = findContentByName(data, "kolab-picture.png", type);

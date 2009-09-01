@@ -1092,11 +1092,7 @@ void Contact::saveTo( KABC::Addressee* addressee )
   addressee->setOrganization( organization() );
   addressee->setUrl( webPage() );
   addressee->insertCustom( "KADDRESSBOOK", "X-IMAddress", imAddress() );
-#if KDE_IS_VERSION(3,5,8)
   addressee->setDepartment( department() );
-#else
-  addressee->insertCustom( "KADDRESSBOOK", "X-Department", department() );
-#endif
   addressee->insertCustom( "KADDRESSBOOK", "X-Office", officeLocation() );
   addressee->insertCustom( "KADDRESSBOOK", "X-Profession", profession() );
   addressee->setRole( role() );
