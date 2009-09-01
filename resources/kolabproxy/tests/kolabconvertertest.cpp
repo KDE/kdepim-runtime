@@ -84,7 +84,7 @@ static bool compareMimeMessage( const KMime::Message::Ptr &msg, const KMime::Mes
 }
 
 template <template <typename> class Op, typename T>
-static bool LexicographicalCmp( const T &_x, const T &_y )
+static bool LexicographicalCompare( const T &_x, const T &_y )
 {
   T x( _x );
   x.setId( QString() );
@@ -100,13 +100,13 @@ static bool normalizePhoneNumbers( KABC::Addressee &addressee, const KABC::Addre
   KABC::PhoneNumber::List refPhoneNumbers = refAddressee.phoneNumbers();
   if ( phoneNumbers.size() != refPhoneNumbers.size() )
     return false;
-  std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalCmp<std::less, KABC::PhoneNumber> );
-  std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalCmp<std::less, KABC::PhoneNumber> );
+  std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalCompare<std::less, KABC::PhoneNumber> );
+  std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalCompare<std::less, KABC::PhoneNumber> );
 
   for ( int i = 0; i < phoneNumbers.size(); ++i ) {
     KABC::PhoneNumber phoneNumber = phoneNumbers.at( i );
     const KABC::PhoneNumber refPhoneNumber = refPhoneNumbers.at( i );
-    KCOMPARE( LexicographicalCmp<std::equal_to>( phoneNumber, refPhoneNumber ), true );
+    KCOMPARE( LexicographicalCompare<std::equal_to>( phoneNumber, refPhoneNumber ), true );
     addressee.removePhoneNumber( phoneNumber );
     phoneNumber.setId( refPhoneNumber.id() );
     addressee.insertPhoneNumber( phoneNumber );
@@ -121,13 +121,13 @@ static bool normalizeAddresses( KABC::Addressee &addressee, const KABC::Addresse
   KABC::Address::List refAddresses = refAddressee.addresses();
   if ( addresses.size() != refAddresses.size() )
     return false;
-  std::sort( addresses.begin(), addresses.end(), LexicographicalCmp<std::less, KABC::Address> );
-  std::sort( refAddresses.begin(), refAddresses.end(), LexicographicalCmp<std::less, KABC::Address> );
+  std::sort( addresses.begin(), addresses.end(), LexicographicalCompare<std::less, KABC::Address> );
+  std::sort( refAddresses.begin(), refAddresses.end(), LexicographicalCompare<std::less, KABC::Address> );
 
   for ( int i = 0; i < addresses.size(); ++i ) {
     KABC::Address address = addresses.at( i );
     const KABC::Address refAddress = refAddresses.at( i );
-    KCOMPARE( LexicographicalCmp<std::equal_to>( address, refAddress ), true );
+    KCOMPARE( LexicographicalCompare<std::equal_to>( address, refAddress ), true );
     addressee.removeAddress( address );
     address.setId( refAddress.id() );
     addressee.insertAddress( address );
@@ -243,6 +243,8 @@ class KolabConverterTest : public QObject
       KCal::ICalFormat format;
       const KCal::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
 
+//       qDebug() << format.toString( realIncidence.get() );
+//       qDebug() << format.toString( convertedIncidence.get() );
       KCal::ComparisonVisitor visitor;
       QVERIFY( visitor.compare( realIncidence.get(), convertedIncidence.get() ) );
 

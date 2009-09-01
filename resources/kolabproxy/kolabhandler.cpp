@@ -102,7 +102,7 @@ KMime::Content* KolabHandler::findContentByName(const KMime::Message::Ptr &data,
   Q_FOREACH(KMime::Content *c, list)
   {
     if ( c->contentType()->name() == name ) {
-      type = QByteArray(c->contentType()->type());
+      type = c->contentType()->mimeType();
       return c;
     }
   }

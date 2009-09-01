@@ -513,9 +513,11 @@ bool Incidence::loadAttribute( QDomElement& element )
     int revision = element.text().toInt( &ok );
     if ( ok )
       setRevision( revision );
-  } else if ( tagName == "x-custom" )
+  } else if ( tagName == "x-custom" ) {
     loadCustomAttributes( element );
-  else {
+  } else if ( tagName == "inline-attachment"  ) {
+    // we handle that separately later on, so no need to create a KolabUnhandled entry for it
+  } else {
     bool ok = KolabBase::loadAttribute( element );
     if ( !ok ) {
         // Unhandled tag - save for later storage

@@ -63,8 +63,9 @@ KCal::Event * CalendarHandler::calendarFromKolab(const KMime::Message::Ptr &data
       KMime::Content *content = findContentByName(data, name, type);
       QByteArray c = content->decodedContent().toBase64();
       KCal::Attachment *attachment = new KCal::Attachment(c.data(), QString::fromLatin1(type));
+      attachment->setLabel( name );
       calendarEvent->addAttachment(attachment);
-      kDebug() << "ATTACHEMENT NAME" << name;
+      kDebug() << "ATTACHEMENT NAME" << name << type;
     }
 
     return calendarEvent;
