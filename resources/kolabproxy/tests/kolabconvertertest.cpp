@@ -251,9 +251,13 @@ class KolabConverterTest : public QObject
         if ( !todo->hasDueDate() && !todo->hasStartDate() )
           convertedIncidence->setAllDay( realIncidence->allDay() ); // all day has no meaning if there are no start and due dates but may differ nevertheless
       }
+      // recurrence objects are created on demand, but KCal::Incidence::operator==() doesn't take that into account
+      // so make sure both incidences have one
+      realIncidence->recurrence();
+      convertedIncidence->recurrence();
 
-      qDebug() << format.toString( realIncidence.get() );
-      qDebug() << format.toString( convertedIncidence.get() );
+//       qDebug() << format.toString( realIncidence.get() );
+//       qDebug() << format.toString( convertedIncidence.get() );
       KCal::ComparisonVisitor visitor;
       QVERIFY( visitor.compare( realIncidence.get(), convertedIncidence.get() ) );
 
