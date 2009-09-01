@@ -21,6 +21,7 @@
 
 #include "diffalgo.h"
 #include <QList>
+#include <string.h>
 
 using namespace KPIM;
 
