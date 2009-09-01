@@ -80,30 +80,64 @@ static bool compareMimeMessage( const KMime::Message::Ptr &msg, const KMime::Mes
   return true;
 }
 
-static bool LexicographicalPhoneNumberCompare( const KABC::PhoneNumber &p1, const KABC::PhoneNumber &p2 )
+template <typename T>
+static bool LexicographicalCompare( const T &_x, const T &_y )
 {
-  if ( p1.type() == p2.type() )
-    return p1.number() < p2.number();
-  return p1.type() < p2.type();
+  T x( _x );
+  x.setId( QString() );
+  T y( _y );
+  y.setId( QString() );
+  kDebug( x.toString() != y.toString() ) << x.toString() << y.toString();
+  return x.toString() == y.toString();
 }
 
-static bool alignPhoneNumbers( KABC::Addressee &addressee, const KABC::Addressee &refAddressee )
+template <typename T>
+static bool LexicographicalLessThan( const T &_x, const T &_y )
+{
+  T x( _x );
+  x.setId( QString() );
+  T y( _y );
+  y.setId( QString() );
+  return x.toString() < y.toString();
+}
+
+static bool normalizePhoneNumbers( KABC::Addressee &addressee, const KABC::Addressee &refAddressee )
 {
   KABC::PhoneNumber::List phoneNumbers = addressee.phoneNumbers();
   KABC::PhoneNumber::List refPhoneNumbers = refAddressee.phoneNumbers();
   if ( phoneNumbers.size() != refPhoneNumbers.size() )
     return false;
-  std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalPhoneNumberCompare );
-  std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalPhoneNumberCompare );
+  std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalLessThan<KABC::PhoneNumber> );
+  std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalLessThan<KABC::PhoneNumber> );
 
   for ( int i = 0; i < phoneNumbers.size(); ++i ) {
     KABC::PhoneNumber phoneNumber = phoneNumbers.at( i );
     const KABC::PhoneNumber refPhoneNumber = refPhoneNumbers.at( i );
-    KCOMPARE( phoneNumber.type(), refPhoneNumber.type() );
-    KCOMPARE( phoneNumber.number(), refPhoneNumber.number() );
+    KCOMPARE( LexicographicalCompare( phoneNumber, refPhoneNumber ), true );
     addressee.removePhoneNumber( phoneNumber );
     phoneNumber.setId( refPhoneNumber.id() );
     addressee.insertPhoneNumber( phoneNumber );
+  }
+
+  return true;
+}
+
+static bool normalizeAddresses( KABC::Addressee &addressee, const KABC::Addressee &refAddressee )
+{
+  KABC::Address::List addresses = addressee.addresses();
+  KABC::Address::List refAddresses = refAddressee.addresses();
+  if ( addresses.size() != refAddresses.size() )
+    return false;
+  std::sort( addresses.begin(), addresses.end(), LexicographicalLessThan<KABC::Address> );
+  std::sort( refAddresses.begin(), refAddresses.end(), LexicographicalLessThan<KABC::Address> );
+
+  for ( int i = 0; i < addresses.size(); ++i ) {
+    KABC::Address address = addresses.at( i );
+    const KABC::Address refAddress = refAddresses.at( i );
+    KCOMPARE( LexicographicalCompare( address, refAddress ), true );
+    addressee.removeAddress( address );
+    address.setId( refAddress.id() );
+    addressee.insertAddress( address );
   }
 
   return true;
@@ -151,7 +185,8 @@ class KolabConverterTest : public QObject
       convertedAddressee.setName( realAddressee.name() ); // name() apparently is something strange
       QVERIFY( !convertedAddressee.custom( "KOLAB", "CreationDate" ).isEmpty() );
       convertedAddressee.removeCustom( "KOLAB", "CreationDate" ); // that's conversion time !?
-      QVERIFY( alignPhoneNumbers( convertedAddressee, realAddressee ) ); // phone number ids are random
+      QVERIFY( normalizePhoneNumbers( convertedAddressee, realAddressee ) ); // phone number ids are random
+      QVERIFY( normalizeAddresses( convertedAddressee, realAddressee ) ); // same here
 
 //       qDebug() << convertedAddressee.toString();
 //       qDebug() << realAddressee.toString();
