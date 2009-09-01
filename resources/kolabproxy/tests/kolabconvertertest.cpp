@@ -24,6 +24,7 @@
 #include <kmime/kmime_message.h>
 #include <kolabhandler.h>
 #include <kabc/vcardconverter.h>
+#include <algorithm>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -79,6 +80,35 @@ static bool compareMimeMessage( const KMime::Message::Ptr &msg, const KMime::Mes
   return true;
 }
 
+static bool LexicographicalPhoneNumberCompare( const KABC::PhoneNumber &p1, const KABC::PhoneNumber &p2 )
+{
+  if ( p1.type() == p2.type() )
+    return p1.number() < p2.number();
+  return p1.type() < p2.type();
+}
+
+static bool alignPhoneNumbers( KABC::Addressee &addressee, const KABC::Addressee &refAddressee )
+{
+  KABC::PhoneNumber::List phoneNumbers = addressee.phoneNumbers();
+  KABC::PhoneNumber::List refPhoneNumbers = refAddressee.phoneNumbers();
+  if ( phoneNumbers.size() != refPhoneNumbers.size() )
+    return false;
+  std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalPhoneNumberCompare );
+  std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalPhoneNumberCompare );
+
+  for ( int i = 0; i < phoneNumbers.size(); ++i ) {
+    KABC::PhoneNumber phoneNumber = phoneNumbers.at( i );
+    const KABC::PhoneNumber refPhoneNumber = refPhoneNumbers.at( i );
+    KCOMPARE( phoneNumber.type(), refPhoneNumber.type() );
+    KCOMPARE( phoneNumber.number(), refPhoneNumber.number() );
+    addressee.removePhoneNumber( phoneNumber );
+    phoneNumber.setId( refPhoneNumber.id() );
+    addressee.insertPhoneNumber( phoneNumber );
+  }
+
+  return true;
+}
+
 class KolabConverterTest : public QObject
 {
   Q_OBJECT
@@ -121,10 +151,10 @@ class KolabConverterTest : public QObject
       convertedAddressee.setName( realAddressee.name() ); // name() apparently is something strange
       QVERIFY( !convertedAddressee.custom( "KOLAB", "CreationDate" ).isEmpty() );
       convertedAddressee.removeCustom( "KOLAB", "CreationDate" ); // that's conversion time !?
+      QVERIFY( alignPhoneNumbers( convertedAddressee, realAddressee ) ); // phone number ids are random
 
-//       qDebug() << m_converter.createVCard( realAddressee );
-//       qDebug() << m_converter.createVCard( convertedAddressee );
 //       qDebug() << convertedAddressee.toString();
+//       qDebug() << realAddressee.toString();
       QCOMPARE( realAddressee, convertedAddressee );
 
 
