@@ -28,6 +28,7 @@
 #include <kcal/incidence.h>
 #include <kcal/icalformat.h>
 #include <kcal/comparisonvisitor.h>
+#include <kcal/todo.h>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -243,8 +244,16 @@ class KolabConverterTest : public QObject
       KCal::ICalFormat format;
       const KCal::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
 
-//       qDebug() << format.toString( realIncidence.get() );
-//       qDebug() << format.toString( convertedIncidence.get() );
+      // fix up the converted incidence for comparisson
+      if ( type == "task" ) {
+        QVERIFY( icalItems.first().hasPayload<KCal::Todo::Ptr>() );
+        KCal::Todo::Ptr todo = icalItems.first().payload<KCal::Todo::Ptr>();
+        if ( !todo->hasDueDate() && !todo->hasStartDate() )
+          convertedIncidence->setAllDay( realIncidence->allDay() ); // all day has no meaning if there are no start and due dates but may differ nevertheless
+      }
+
+      qDebug() << format.toString( realIncidence.get() );
+      qDebug() << format.toString( convertedIncidence.get() );
       KCal::ComparisonVisitor visitor;
       QVERIFY( visitor.compare( realIncidence.get(), convertedIncidence.get() ) );
 

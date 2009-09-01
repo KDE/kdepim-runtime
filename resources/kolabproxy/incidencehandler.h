@@ -46,6 +46,7 @@ Q_SIGNALS:
 protected:
   virtual KCal::Incidence* incidenceFromKolab(const KMime::Message::Ptr &data) = 0;
   virtual QByteArray incidenceToXml(KCal::Incidence *incidence) = 0;
+  static void attachmentsFromKolab( const KMime::Message::Ptr &data, const QByteArray &xmlData, KCal::Incidence* incidence );
   void incidenceToItem(const KCal::Incidence::Ptr &e, Akonadi::Item &imapItem);
 
   struct StoredItem{

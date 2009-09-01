@@ -75,8 +75,8 @@ Q_SIGNALS:
 
 protected:
   explicit KolabHandler();
-  KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type);
-  KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type);
+  static KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type);
+  static KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type);
 
   /** Create the top-level message object of an Kolab MIME message, including the explanation part. */
   static KMime::Message::Ptr createMessage( const QString &mimeType );
