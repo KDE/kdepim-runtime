@@ -48,9 +48,9 @@ public:
     virtual QStringList contentMimeTypes();
 
 private:
-    bool addresseFromKolab(MessagePtr data, KABC::Addressee &addressee);
+    bool addresseFromKolab(const KMime::Message::Ptr &data, KABC::Addressee &addressee);
 
-    bool contactGroupFromKolab(MessagePtr data, KABC::ContactGroup &contactGroup);
+    bool contactGroupFromKolab(const KMime::Message::Ptr &data, KABC::ContactGroup &contactGroup);
 
     void contactToKolabFormat(const Kolab::Contact &contact, Akonadi::Item &imapItem);
 

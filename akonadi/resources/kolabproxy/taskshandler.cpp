@@ -39,13 +39,13 @@ TasksHandler::~TasksHandler()
 {
 }
 
-KCal::Incidence* TasksHandler::incidenceFromKolab(MessagePtr data)
+KCal::Incidence* TasksHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
 {
   return todoFromKolab(data);
 }
 
 
-KCal::Todo * TasksHandler::todoFromKolab(MessagePtr data)
+KCal::Todo * TasksHandler::todoFromKolab(const KMime::Message::Ptr &data)
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {

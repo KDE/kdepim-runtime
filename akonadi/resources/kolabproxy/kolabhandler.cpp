@@ -84,9 +84,9 @@ void KolabHandler::setMimeType(const QByteArray &type)
 }
 
 
-KMime::Content* KolabHandler::findContentByType(MessagePtr data, const QByteArray &type)
+KMime::Content* KolabHandler::findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
 {
-  KMime::Content::List list = data->contents();
+  const KMime::Content::List list = data->contents();
   Q_FOREACH(KMime::Content *c, list)
   {
     if (c->contentType()->mimeType() ==  type)
@@ -96,9 +96,9 @@ KMime::Content* KolabHandler::findContentByType(MessagePtr data, const QByteArra
 
 }
 
-KMime::Content* KolabHandler::findContentByName(MessagePtr data, const QString &name, QByteArray &type)
+KMime::Content* KolabHandler::findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type)
 {
-  KMime::Content::List list = data->contents();
+  const KMime::Content::List list = data->contents();
   Q_FOREACH(KMime::Content *c, list)
   {
     if (c->contentType()->name() == name)

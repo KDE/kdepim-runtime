@@ -23,8 +23,6 @@
 
 #include "incidencehandler.h"
 #include <kcal/journal.h>
-#include <boost/shared_ptr.hpp>
-typedef boost::shared_ptr<KCal::Journal> JournalPtr;
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -38,8 +36,8 @@ public:
 
 private:
   virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
-  virtual KCal::Incidence* incidenceFromKolab(MessagePtr data);
-  KCal::Journal *journalFromKolab(MessagePtr data);
+  virtual KCal::Incidence* incidenceFromKolab(const KMime::Message::Ptr &data);
+  KCal::Journal *journalFromKolab(const KMime::Message::Ptr &data);
 };
 
 #endif

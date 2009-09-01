@@ -53,17 +53,17 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
   Akonadi::Item::List newItems;
   Q_FOREACH(const Akonadi::Item &item, items)
   {
-    if (!item.hasPayload<MessagePtr>()) {
+    if (!item.hasPayload<KMime::Message::Ptr>()) {
       kWarning() << "Payload is not a MessagePtr!";
       continue;
     }
-    MessagePtr payload = item.payload<MessagePtr>();
+    const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
     KCal::Incidence *inc = incidenceFromKolab(payload);
     kDebug() << "KCal::Incidence " << inc;
     if (inc) {
       Akonadi::KCalMimeTypeVisitor visitor;
       inc->accept( visitor );
-      IncidencePtr incidencePtr(inc);
+      KCal::Incidence::Ptr incidencePtr(inc);
       if (m_uidMap.contains(incidencePtr->uid())) {
         ConflictResolution res = resolveConflict(incidencePtr);
         kDebug() << "ConflictResolution " << res;
@@ -99,7 +99,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
   return newItems;
 }
 
-IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( IncidencePtr inc)
+IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KCal::Incidence::Ptr &inc)
 {
   /*
   if ( ! isResolveConflictSet() ) {
@@ -148,15 +148,15 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( Incidenc
 void IncidenceHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
   kDebug() << "toKolabFormat";
-  IncidencePtr incidencePtr;
-  if (item.hasPayload<IncidencePtr>()) {
-    incidencePtr = item.payload<IncidencePtr>();
+  KCal::Incidence::Ptr incidencePtr;
+  if (item.hasPayload<KCal::Incidence::Ptr>()) {
+    incidencePtr = item.payload<KCal::Incidence::Ptr>();
   }
   kDebug() << "item payload: " << item.payloadData();
   incidenceToItem(incidencePtr, imapItem);
 }
 
-void IncidenceHandler::incidenceToItem(IncidencePtr incidencePtr, Akonadi::Item &imapItem)
+void IncidenceHandler::incidenceToItem(const KCal::Incidence::Ptr &incidencePtr, Akonadi::Item &imapItem)
 {
   if (!incidencePtr.get())
   {
@@ -165,7 +165,7 @@ void IncidenceHandler::incidenceToItem(IncidencePtr incidencePtr, Akonadi::Item 
   }
   imapItem.setMimeType( "message/rfc822" );
 
-  MessagePtr message = createMessage( m_mimeType );
+  KMime::Message::Ptr message = createMessage( m_mimeType );
   message->from()->addAddress( incidencePtr->organizer().email().toUtf8(), incidencePtr->organizer().name() );
   message->subject()->fromUnicodeString( incidencePtr->uid(), "utf-8" );
 
@@ -198,15 +198,15 @@ void IncidenceHandler::itemDeleted(const Akonadi::Item &item)
 
 void IncidenceHandler::itemAdded(const Akonadi::Item& item)
 {
-  if (!item.hasPayload<MessagePtr>()) {
+  if (!item.hasPayload<KMime::Message::Ptr>()) {
     kWarning() << "Payload is not a MessagePtr!";
     return;
   }
-  MessagePtr payload = item.payload<MessagePtr>();
+  KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
   KCal::Incidence *e = incidenceFromKolab(payload);
   if ( !e )
     return;
-  IncidencePtr incidence(e);
+  const KCal::Incidence::Ptr incidence(e);
   m_uidMap[e->uid()] = StoredItem(item.id(), incidence);
   kDebug() << "Add to uidMap: " << incidence->uid() << item.id() << incidence;
 }

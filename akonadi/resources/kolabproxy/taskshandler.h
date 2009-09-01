@@ -23,8 +23,6 @@
 
 #include "incidencehandler.h"
 #include <kcal/todo.h>
-#include <boost/shared_ptr.hpp>
-typedef boost::shared_ptr<KCal::Todo> TodoPtr;
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -37,8 +35,8 @@ public:
 
 private:
   virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
-  virtual KCal::Incidence* incidenceFromKolab(MessagePtr data);
-  KCal::Todo *todoFromKolab(MessagePtr data);
+  virtual KCal::Incidence* incidenceFromKolab(const KMime::Message::Ptr &data);
+  KCal::Todo *todoFromKolab(const KMime::Message::Ptr &data);
 
 };
 
