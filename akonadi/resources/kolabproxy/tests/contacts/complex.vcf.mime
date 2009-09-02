@@ -1,10 +1,10 @@
-Date: Mon, 31 Aug 2009 18:23:30 +0200                                                                      
-X-Kolab-Type: application/x-vnd.kolab.contact                                                                   
-User-Agent: Akonadi Kolab Proxy Resource                                                                        
-Content-Type: multipart/mixed; boundary="nextPart3762459.HDmZFN3AqE"                                            
-Subject: Huu5X7hfYy                                                                                             
-From: Firstname Lastnam <first@email.org>                                                                       
-MIME-Version: 1.0                                                                                               
+Date: Mon, 31 Aug 2009 18:23:30 +0200
+X-Kolab-Type: application/x-vnd.kolab.contact
+User-Agent: Akonadi Kolab Proxy Resource
+Content-Type: multipart/mixed; boundary="nextPart3762459.HDmZFN3AqE"
+Subject: Huu5X7hfYy
+From: Displayname <first@email.org>
+MIME-Version: 1.0
 
 
 --nextPart3762459.HDmZFN3AqE
@@ -30,7 +30,7 @@ Content-Disposition: attachment; filename="kolab.xml"
  <name>                                                   
   <given-name>Firstname</given-name>                      
   <last-name>Lastname</last-name>                         
-  <full-name>Firstname Lastnam</full-name>                
+  <full-name>Displayname</full-name>                
  </name>                                                  
  <organization>Organization</organization>                
  <web-page>www.homepage.org</web-page>                    

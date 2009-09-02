@@ -211,3 +211,20 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
   kDebug() << "Add to uidMap: " << incidence->uid() << item.id() << incidence;
 }
 
+
+void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, const QByteArray& xmlData, KCal::Incidence* incidence)
+{
+  QDomDocument doc;
+  doc.setContent(QString::fromUtf8(xmlData));
+  QDomNodeList nodes = doc.elementsByTagName("inline-attachment");
+  for (int i = 0; i < nodes.size(); i++ ) {
+    const QString name = nodes.at(i).toElement().text();
+    QByteArray type;
+    KMime::Content *content = findContentByName(data, name, type);
+    const QByteArray c = content->decodedContent().toBase64();
+    KCal::Attachment *attachment = new KCal::Attachment(c.data(), QString::fromLatin1(type));
+    attachment->setLabel( name );
+    incidence->addAttachment(attachment);
+    kDebug() << "ATTACHEMENT NAME" << name << type;
+  }
+}

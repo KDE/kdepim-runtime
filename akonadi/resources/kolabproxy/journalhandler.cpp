@@ -49,23 +49,10 @@ KCal::Journal * JournalHandler::journalFromKolab(const KMime::Message::Ptr &data
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {
-    QByteArray xmlData = xmlContent->decodedContent();
+    const QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
-
     KCal::Journal *journal = Kolab::Journal::xmlToJournal(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
-    QDomDocument doc;
-    doc.setContent(QString::fromUtf8(xmlData));
-    QDomNodeList nodes = doc.elementsByTagName("inline-attachment");
-    for (int i = 0; i < nodes.size(); i++ ) {
-      QString name = nodes.at(i).toElement().text();
-      QByteArray type;
-      KMime::Content *content = findContentByName(data, name, type);
-      QByteArray c = content->decodedContent().toBase64();
-      KCal::Attachment *attachment = new KCal::Attachment(c.data(), QString::fromLatin1(type));
-      journal->addAttachment(attachment);
-      kDebug() << "ATTACHEMENT NAME" << name;
-    }
-
+    attachmentsFromKolab( data, xmlData, journal );
     return journal;
   }
   return 0L;
