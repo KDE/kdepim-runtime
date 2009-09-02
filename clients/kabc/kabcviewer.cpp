@@ -27,7 +27,7 @@
 #include <kcmdlineargs.h>
 #include <klocale.h>
 
-#include "kabc/kabcitembrowser.h"
+#include <akonadi/contact/contactviewer.h>
 
 Dialog::Dialog( QWidget *parent )
   : KDialog( parent )
@@ -39,7 +39,7 @@ Dialog::Dialog( QWidget *parent )
   QWidget *wdg = new QWidget( this );
   QVBoxLayout *layout = new QVBoxLayout( wdg );
 
-  mBrowser = new Akonadi::KABCItemBrowser( wdg );
+  mBrowser = new Akonadi::ContactViewer( wdg );
   layout->addWidget( mBrowser );
 
   setMainWidget( wdg );
@@ -53,7 +53,7 @@ Dialog::~Dialog()
 
 void Dialog::loadUid( Akonadi::Item::Id uid )
 {
-  mBrowser->setItem( Akonadi::Item( uid ) );
+  mBrowser->setContact( Akonadi::Item( uid ) );
 }
 
 int main( int argc, char **argv )

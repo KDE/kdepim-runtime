@@ -27,7 +27,7 @@
 class QLineEdit;
 
 namespace Akonadi {
-  class KABCItemEditor;
+  class ContactEditor;
 }
 
 class Dialog : public KDialog
@@ -43,7 +43,7 @@ class Dialog : public KDialog
     void save();
 
   private:
-    Akonadi::KABCItemEditor *mEditor;
+    Akonadi::ContactEditor *mEditor;
     QLineEdit *mId;
 };
 
