@@ -28,10 +28,11 @@
 
 class QAbstractItemView;
 
-class AmazingCompleterPrivate;
 
 namespace Akonadi
 {
+
+class AmazingCompleterPrivate;
 
 class AKONADI_NEXT_EXPORT AmazingCompleter : public QObject
 {

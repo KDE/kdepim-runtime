@@ -27,7 +27,7 @@
 
 using namespace Akonadi;
 
-class AmazingCompleterPrivate
+class Akonadi::AmazingCompleterPrivate
 {
 public:
   AmazingCompleterPrivate(AmazingCompleter *completer) //, QAbstractItemModel *model)
