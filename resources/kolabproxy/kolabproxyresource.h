@@ -59,10 +59,12 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void imapItemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    void imapItemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination);
     void imapItemRemoved(const Akonadi::Item &item);
     void imapCollectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
     void imapCollectionRemoved(const Akonadi::Collection &collection);
     void imapCollectionChanged(const Akonadi::Collection &collection);
+    void imapCollectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination);
     void itemCreatedDone(KJob *job);
     void collectionFetchDone(KJob *job);
     void retrieveItemFetchDone(KJob *);

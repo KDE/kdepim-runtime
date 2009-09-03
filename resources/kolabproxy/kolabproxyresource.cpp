@@ -90,10 +90,12 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   m_collectionMonitor->ignoreSession( Session::defaultSession() );
 
   connect(m_monitor, SIGNAL(itemAdded(const Akonadi::Item & , const Akonadi::Collection &)), this, SLOT(imapItemAdded(const Akonadi::Item & , const Akonadi::Collection &)));
+  connect(m_monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)), this, SLOT(imapItemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)));
   connect(m_monitor, SIGNAL(itemRemoved(const Akonadi::Item &)), this, SLOT(imapItemRemoved(const Akonadi::Item &)));
   connect(m_collectionMonitor, SIGNAL(collectionAdded(const Akonadi::Collection &, const Akonadi::Collection &)), this, SLOT(imapCollectionAdded(const Akonadi::Collection &, const Akonadi::Collection &)));
   connect(m_collectionMonitor, SIGNAL(collectionRemoved(const Akonadi::Collection &)), this, SLOT(imapCollectionRemoved(const Akonadi::Collection &)));
   connect(m_collectionMonitor, SIGNAL(collectionChanged(const Akonadi::Collection &)), this, SLOT(imapCollectionChanged(const Akonadi::Collection &)));
+  connect(m_collectionMonitor, SIGNAL(collectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)), this, SLOT(imapCollectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)) );
 
   m_root.setName( identifier() );
   m_root.setParentCollection( Collection::root() );
@@ -486,12 +488,18 @@ void KolabProxyResource::itemCreatedDone(KJob *job)
 void KolabProxyResource::imapItemRemoved(const Item& item)
 {
   kDebug() << "IMAPITEMREMOVED";
-  Item kolabItem;
-  kolabItem.setRemoteId( QString::number( item.id() ) );
+  const Item kolabItem = imapToKolab( item );
   Q_FOREACH(KolabHandler *handler, m_monitoredCollections) {
     handler->itemDeleted(item);
   }
-  ItemDeleteJob *job = new ItemDeleteJob( kolabItem );
+  ItemDeleteJob *job = new ItemDeleteJob( kolabItem, this );
+}
+
+void KolabProxyResource::imapItemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination)
+{
+  kDebug();
+  Q_UNUSED( collectionSource );
+  new ItemMoveJob( imapToKolab( item ), imapToKolab( collectionDestination ), this );
 }
 
 void KolabProxyResource::imapCollectionAdded(const Collection &collection, const Collection &parent)
@@ -544,6 +552,13 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
     CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
     connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
   }
+}
+
+void KolabProxyResource::imapCollectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination)
+{
+  kDebug();
+  Q_UNUSED( source );
+  new CollectionMoveJob( imapToKolab( collection ), imapToKolab( destination ), this );
 }
 
 void KolabProxyResource::kolabFolderChangeResult(KJob* job)
