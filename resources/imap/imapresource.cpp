@@ -846,18 +846,22 @@ void ImapResource::onRightsReceived( KJob *job )
     newRights|= Collection::CanCreateItem;
   }
 
-  if ( imapRights & KIMAP::Acl::DeleteMessage ) {
+  if ( imapRights & ( KIMAP::Acl::DeleteMessage | KIMAP::Acl::Delete ) ) {
     newRights|= Collection::CanDeleteItem;
   }
 
-  if ( imapRights & KIMAP::Acl::CreateMailbox ) {
+  if ( imapRights & ( KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create ) ) {
     newRights|= Collection::CanChangeCollection;
     newRights|= Collection::CanCreateCollection;
   }
 
-  if ( imapRights & KIMAP::Acl::DeleteMailbox ) {
+  if ( imapRights & ( KIMAP::Acl::DeleteMailbox | KIMAP::Acl::Delete ) ) {
     newRights|= Collection::CanDeleteCollection;
   }
+
+  kDebug() << "imapRights:" << imapRights
+           << "newRights:" << newRights
+           << "oldRights:" << collection.rights();
 
   if ( newRights != collection.rights() ) {
     collection.setRights( newRights );
