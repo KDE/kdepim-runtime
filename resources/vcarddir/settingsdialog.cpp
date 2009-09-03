@@ -32,13 +32,13 @@ SettingsDialog::SettingsDialog( WId windowId )
   : KDialog()
 {
   ui.setupUi( mainWidget() );
-  ui.kcfg_Path->setMode( KFile::Directory );
+  ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
   setButtons( Ok | Cancel );
 
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
 
   connect( ui.kcfg_Path, SIGNAL( textChanged( QString ) ), SLOT( validate() ) );
   connect( ui.kcfg_ReadOnly, SIGNAL( toggled( bool ) ), SLOT( validate() ) );
@@ -53,7 +53,7 @@ SettingsDialog::SettingsDialog( WId windowId )
 void SettingsDialog::save()
 {
   mManager->updateSettings();
-  Settings::self()->setPath( ui.kcfg_Path->url().url() );
+  Settings::self()->setPath( ui.kcfg_Path->url().toLocalFile() );
   Settings::self()->writeConfig();
 }
 
