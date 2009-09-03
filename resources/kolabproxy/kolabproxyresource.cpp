@@ -40,18 +40,34 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/session.h>
+#include <akonadi/collectionmodifyjob.h>
+#include <akonadi/collectionmovejob.h>
+#include <akonadi/itemmovejob.h>
 
 #include <KLocale>
 
 #include <QtDBus/QDBusConnection>
 #include <QSet>
-#include <akonadi/collectionmodifyjob.h>
 
 using namespace Akonadi;
 
 static const char KOLAB_COLLECTION[] = "KolabCollection";
 static const char KOLAB_ITEM[] = "KolabItem";
 static const char IMAP_COLLECTION[] = "ImapCollection";
+
+template <typename T>
+static inline T kolabToImap( const T &kolabObject )
+{
+  return T( kolabObject.remoteId().toLongLong() );
+}
+
+template <typename T>
+static inline T imapToKolab( const T &imapObject )
+{
+  T kolabObject;
+  kolabObject.setRemoteId( QString::number( imapObject.id() ) );
+  return kolabObject;
+}
 
 KolabProxyResource::KolabProxyResource( const QString &id )
   : ResourceBase( id )
@@ -132,7 +148,7 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
 {
   kDebug() << "RETRIEVEITEMS";
   m_retrieveState = RetrieveItems;
-  ItemFetchJob *job = new ItemFetchJob( Collection(collection.remoteId().toUInt()) );
+  ItemFetchJob *job = new ItemFetchJob( kolabToImap( collection ) );
   job->fetchScope().fetchFullPayload();
   connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
 }
@@ -141,7 +157,7 @@ bool KolabProxyResource::retrieveItem( const Item &item, const QSet<QByteArray> 
 {
   kDebug() << "RETRIEVEITEM";
   m_retrieveState = RetrieveItem;
-  ItemFetchJob *job = new ItemFetchJob( item );
+  ItemFetchJob *job = new ItemFetchJob( kolabToImap( item ) );
   job->fetchScope().fetchFullPayload();
   connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
   return true;
@@ -204,7 +220,7 @@ void KolabProxyResource::itemAdded( const Item &item, const Collection &collecti
   Item kolabItem( item );
 //   kDebug() << "Item added " << item.id() << collection.remoteId() << collection.id();
 
-  const Collection imapCollection( collection.remoteId().toUInt() );
+  const Collection imapCollection = kolabToImap( collection );
 
   KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
   if ( !handler ) {
@@ -247,7 +263,7 @@ void KolabProxyResource::itemChanged( const Item &kolabItem, const QSet<QByteArr
 {
   kDebug() << "ITEMCHANGED" << kolabItem.id() << kolabItem.remoteId();
 
-  ItemFetchJob* job = new ItemFetchJob( Item(kolabItem.remoteId().toUInt()) );
+  ItemFetchJob* job = new ItemFetchJob( kolabToImap( kolabItem ), this );
   job->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
   connect( job, SIGNAL(result(KJob*)), SLOT(imapItemUpdateFetchResult(KJob*)) );
 }
@@ -295,7 +311,7 @@ void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob* job )
 
   const Item kolabItem = job->property( KOLAB_ITEM ).value<Item>();
   const Collection kolabCollection = fetchJob->collections().first();
-  const Collection imapCollection( kolabCollection.remoteId().toUInt() );
+  const Collection imapCollection = kolabToImap( kolabCollection );
 
   KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
   if ( !handler ) {
@@ -322,6 +338,13 @@ void KolabProxyResource::imapItemUpdateResult(KJob* job)
   changeCommitted( kolabItem );
 }
 
+void KolabProxyResource::itemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination)
+{
+  Q_UNUSED( collectionSource );
+  new ItemMoveJob( kolabToImap( item ), kolabToImap( collectionDestination ), this );
+  changeCommitted( item );
+}
+
 void KolabProxyResource::itemRemoved( const Item &item )
 {
   kDebug() << "ITEMREMOVED";
@@ -340,7 +363,7 @@ void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, 
   imapCollection.setId( -1 );
   imapCollection.setRemoteId( QString() );
   imapCollection.setContentMimeTypes( QStringList() << Collection::mimeType() << QLatin1String( "message/rfc822" ) );
-  const Collection imapParent( parent.remoteId().toLongLong() );
+  const Collection imapParent = kolabToImap( parent );
   imapCollection.setParentCollection( imapParent );
   CollectionAnnotationsAttribute* attr =
     imapCollection.attribute<CollectionAnnotationsAttribute>( Collection::AddIfMissing );
@@ -378,10 +401,16 @@ void KolabProxyResource::collectionChanged(const Akonadi::Collection& collection
   changeCommitted( collection );
 }
 
+void KolabProxyResource::collectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination)
+{
+  Q_UNUSED( source );
+  new CollectionMoveJob( kolabToImap( collection ), kolabToImap( destination ), this );
+  changeCommitted( collection );
+}
+
 void KolabProxyResource::collectionRemoved(const Akonadi::Collection& collection)
 {
-  Collection imapCollection;
-  imapCollection.setId( collection.remoteId().toLongLong() );
+  Collection imapCollection = kolabToImap( collection );
 
   CollectionDeleteJob *job = new CollectionDeleteJob( imapCollection, this );
   // TODO wait for result
@@ -545,10 +574,10 @@ void KolabProxyResource::imapCollectionRemoved(const Collection &imapCollection)
 Collection KolabProxyResource::createCollection(const Collection& imapCollection)
 {
   Collection c;
-  if ( imapCollection.parentRemoteId() == m_root.remoteId() )
-    c.setParent( m_root );
+  if ( imapCollection.parentCollection().remoteId() == m_root.remoteId() )
+    c.setParentCollection( m_root );
   else
-    c.setParentRemoteId( QString::number( imapCollection.parent() ) );
+    c.parentCollection().setRemoteId( QString::number( imapCollection.parentCollection().id() ) );
   EntityDisplayAttribute *imapAttr = imapCollection.attribute<EntityDisplayAttribute>();
   if ( imapAttr ) {
     EntityDisplayAttribute *kolabAttr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
