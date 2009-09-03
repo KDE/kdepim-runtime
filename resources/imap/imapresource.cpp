@@ -687,15 +687,13 @@ void ImapResource::collectionAdded( const Collection & collection, const Collect
 
 void ImapResource::onCreateMailBoxDone( KJob *job )
 {
-  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+  const Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   if ( !job->error() ) {
     changeCommitted( collection );
   } else {
-    // remove the collection again.
-    kDebug() << "Failed to create the folder, deleting it in akonadi again";
-    emit warning( i18n( "Failed to create the folder, restoring folder list." ) );
-    new CollectionDeleteJob( collection, this );
+    emit error( i18n( "Failed to create folder '%1' on the IMAP server.", collection.name() ) );
+    changeProcessed();
   }
 }
 
