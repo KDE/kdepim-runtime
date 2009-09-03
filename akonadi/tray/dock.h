@@ -21,15 +21,14 @@
 #ifndef DOCK_H
 #define DOCK_H
 
-#include <knotificationitem.h>
 #include <QWidget>
+
+#include <KNotificationItem>
 
 #include <akonadi/agentinstance.h>
 
 class QLabel;
 class QAction;
-
-using namespace Experimental;
 
 class Tray : public QWidget
 {

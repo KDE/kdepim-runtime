@@ -27,7 +27,7 @@
 #include "kdialog.h"
 
 namespace Akonadi {
-  class KABCItemBrowser;
+  class ContactViewer;
 }
 
 class Dialog : public KDialog
@@ -41,7 +41,7 @@ class Dialog : public KDialog
     void loadUid( Akonadi::Item::Id uid );
 
   private:
-    Akonadi::KABCItemBrowser *mBrowser;
+    Akonadi::ContactViewer *mBrowser;
 };
 
 #endif

@@ -26,11 +26,10 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include <akonadi/contact/contacteditor.h>
 #include <akonadi/item.h>
 #include <kapplication.h>
 #include <kcmdlineargs.h>
-
-#include "kabc/kabcitemeditor.h"
 
 Dialog::Dialog( QWidget *parent )
   : KDialog( parent )
@@ -43,7 +42,7 @@ Dialog::Dialog( QWidget *parent )
   QWidget *wdg = new QWidget( this );
   QGridLayout *layout = new QGridLayout( wdg );
 
-  mEditor = new Akonadi::KABCItemEditor( Akonadi::KABCItemEditor::EditMode, wdg );
+  mEditor = new Akonadi::ContactEditor( Akonadi::ContactEditor::EditMode, wdg );
   layout->addWidget( mEditor, 0, 0, 1, 3 );
 
   QLabel *label = new QLabel( "Item Id:", wdg );

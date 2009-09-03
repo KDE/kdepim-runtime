@@ -26,10 +26,6 @@ macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applica
 find_package(Nepomuk)
 macro_log_feature(Nepomuk_FOUND "Nepomuk" "The Nepomuk libraries" "http://www.kde.org" FALSE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
 
-find_package(LibKNotificationItem-1_New)
-macro_log_feature(LIBKNOTIFICATIONITEM-1_FOUND "LibKNotificationItem-1" "An experimental library" "svn://anonsvn.kde.org/home/kde/trunk/KDE/kdelibs/experimental" TRUE "" "LibKNotificationItem-1 is an unfinished library which is required by korgac and akonaditray.")
-
-
 ############### search programs & libraries used by kpim-runtime ###############
 
 find_program(XSLTPROC_EXECUTABLE xsltproc)
@@ -81,7 +77,6 @@ add_subdirectory(resources)
 add_subdirectory(agents)
 add_subdirectory(kioslave)
 add_subdirectory(plugins)
-add_subdirectory(kabc)
 add_subdirectory(kcal)
 add_subdirectory(kcm)
 add_subdirectory(tray)
