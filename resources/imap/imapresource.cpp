@@ -230,7 +230,9 @@ void ImapResource::startConnect( bool forceManualAuth )
     }
   }
 
-  delete m_account;
+  m_account->deleteLater();
+  disconnect( m_account, 0, this, 0 );
+
   m_account = new ImapAccount( Settings::self(), this );
 
   connect( m_account, SIGNAL( success() ),
