@@ -239,8 +239,6 @@ void ImapResource::startConnect( bool forceManualAuth )
            this, SLOT( onConnectError( int, const QString& ) ) );
 
   m_account->connect( password );
-
-  startIdle();
 }
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
@@ -803,6 +801,7 @@ void ImapResource::onConnectError( int code, const QString &message )
 
 void ImapResource::onConnectSuccess()
 {
+  startIdle();
   emit status( Idle, i18n( "Connection established." ) );
   synchronizeCollectionTree();
 }
@@ -1209,9 +1208,8 @@ void ImapResource::startIdle()
   delete m_idle;
   m_idle = 0;
 
-  // FIXME: capabilities is empty here
-//   if ( !m_account || !m_account->capabilities().contains( "IDLE" ) )
-//     return;
+  if ( !m_account || !m_account->capabilities().contains( "IDLE" ) )
+    return;
 
   const QString password = Settings::self()->password();
   const QStringList ridPath = Settings::self()->idleRidPath();
