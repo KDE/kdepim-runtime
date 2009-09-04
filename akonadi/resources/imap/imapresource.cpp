@@ -230,7 +230,9 @@ void ImapResource::startConnect( bool forceManualAuth )
     }
   }
 
-  delete m_account;
+  m_account->deleteLater();
+  disconnect( m_account, 0, this, 0 );
+
   m_account = new ImapAccount( Settings::self(), this );
 
   connect( m_account, SIGNAL( success() ),
@@ -239,8 +241,6 @@ void ImapResource::startConnect( bool forceManualAuth )
            this, SLOT( onConnectError( int, const QString& ) ) );
 
   m_account->connect( password );
-
-  startIdle();
 }
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
@@ -687,15 +687,13 @@ void ImapResource::collectionAdded( const Collection & collection, const Collect
 
 void ImapResource::onCreateMailBoxDone( KJob *job )
 {
-  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+  const Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   if ( !job->error() ) {
     changeCommitted( collection );
   } else {
-    // remove the collection again.
-    kDebug() << "Failed to create the folder, deleting it in akonadi again";
-    emit warning( i18n( "Failed to create the folder, restoring folder list." ) );
-    new CollectionDeleteJob( collection, this );
+    emit error( i18n( "Failed to create folder '%1' on the IMAP server.", collection.name() ) );
+    changeProcessed();
   }
 }
 
@@ -803,6 +801,7 @@ void ImapResource::onConnectError( int code, const QString &message )
 
 void ImapResource::onConnectSuccess()
 {
+  startIdle();
   emit status( Idle, i18n( "Connection established." ) );
   synchronizeCollectionTree();
 }
@@ -845,18 +844,22 @@ void ImapResource::onRightsReceived( KJob *job )
     newRights|= Collection::CanCreateItem;
   }
 
-  if ( imapRights & KIMAP::Acl::DeleteMessage ) {
+  if ( imapRights & ( KIMAP::Acl::DeleteMessage | KIMAP::Acl::Delete ) ) {
     newRights|= Collection::CanDeleteItem;
   }
 
-  if ( imapRights & KIMAP::Acl::CreateMailbox ) {
+  if ( imapRights & ( KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create ) ) {
     newRights|= Collection::CanChangeCollection;
     newRights|= Collection::CanCreateCollection;
   }
 
-  if ( imapRights & KIMAP::Acl::DeleteMailbox ) {
+  if ( imapRights & ( KIMAP::Acl::DeleteMailbox | KIMAP::Acl::Delete ) ) {
     newRights|= Collection::CanDeleteCollection;
   }
+
+  kDebug() << "imapRights:" << imapRights
+           << "newRights:" << newRights
+           << "oldRights:" << collection.rights();
 
   if ( newRights != collection.rights() ) {
     collection.setRights( newRights );
@@ -1209,9 +1212,8 @@ void ImapResource::startIdle()
   delete m_idle;
   m_idle = 0;
 
-  // FIXME: capabilities is empty here
-//   if ( !m_account || !m_account->capabilities().contains( "IDLE" ) )
-//     return;
+  if ( !m_account || !m_account->capabilities().contains( "IDLE" ) )
+    return;
 
   const QString password = Settings::self()->password();
   const QStringList ridPath = Settings::self()->idleRidPath();

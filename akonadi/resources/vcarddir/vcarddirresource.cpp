@@ -204,7 +204,7 @@ void VCardDirResource::retrieveCollections()
   if ( Settings::self()->readOnly() ) {
     c.setRights( Collection::CanChangeCollection );
   } else {
-    Collection::Rights rights;
+    Collection::Rights rights = Collection::ReadOnly;
     rights |= Collection::CanChangeItem;
     rights |= Collection::CanCreateItem;
     rights |= Collection::CanDeleteItem;
@@ -236,12 +236,12 @@ void VCardDirResource::retrieveItems( const Akonadi::Collection& )
 
 QString VCardDirResource::vCardDirectoryName() const
 {
-  return Settings::self()->path().mid( 7 );
+  return Settings::self()->path();
 }
 
 QString VCardDirResource::vCardDirectoryFileName( const QString &file ) const
 {
-  return Settings::self()->path().mid( 7 ) + QDir::separator() + file;
+  return Settings::self()->path() + QDir::separator() + file;
 }
 
 void VCardDirResource::initializeVCardDirectory() const

@@ -31,7 +31,7 @@ namespace Akonadi {
 class KolabHandler;
 
 class KolabProxyResource : public Akonadi::ResourceBase,
-                           public Akonadi::AgentBase::Observer
+                           public Akonadi::AgentBase::Observer2
 {
   Q_OBJECT
 
@@ -59,10 +59,12 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void imapItemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    void imapItemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination);
     void imapItemRemoved(const Akonadi::Item &item);
     void imapCollectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
     void imapCollectionRemoved(const Akonadi::Collection &collection);
     void imapCollectionChanged(const Akonadi::Collection &collection);
+    void imapCollectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination);
     void itemCreatedDone(KJob *job);
     void collectionFetchDone(KJob *job);
     void retrieveItemFetchDone(KJob *);
@@ -76,9 +78,11 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    virtual void itemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination);
     virtual void itemRemoved( const Akonadi::Item &item );
     virtual void collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent);
     virtual void collectionChanged(const Akonadi::Collection& collection);
+    virtual void collectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination);
     virtual void collectionRemoved(const Akonadi::Collection& collection);
 
   private:

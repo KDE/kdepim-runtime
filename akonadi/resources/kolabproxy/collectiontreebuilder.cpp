@@ -74,11 +74,11 @@ void CollectionTreeBuilder::collectionFetchResult(KJob* job)
   QHash<Collection::Id, Collection::List> remainingTree;
   foreach ( const Collection &kolabCollection, m_kolabCollections ) {
     Collection child = kolabCollection;
-    Collection::Id parentId = child.parent();
+    Collection::Id parentId = child.parentCollection().id();
     while ( child.isValid() && !remainingTree.value( parentId ).contains( child ) ) {
       remainingTree[ parentId ].append( child );
       child = m_allCollections.value( parentId );
-      parentId = child.parent();
+      parentId = child.parentCollection().id();
     }
   }
 
@@ -87,7 +87,7 @@ void CollectionTreeBuilder::collectionFetchResult(KJob* job)
 
   // step 3: flatten the tree and adjust root node
   foreach ( Collection topLevel, remainingTree.value( Collection::root().id() ) ) { //krazy:exclude=foreach
-    topLevel.setParent( resource()->root() );
+    topLevel.setParentCollection( resource()->root() );
     m_resultCollections.append( topLevel );
     m_resultCollections += treeToList( remainingTree, topLevel );
   }
