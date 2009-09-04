@@ -27,7 +27,7 @@
           <enum>QFrame::Sunken</enum>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="unsupportedTypePage">
           <layout class="QVBoxLayout">
@@ -60,7 +60,7 @@
          <widget class="QWidget" name="mailViewPage">
           <layout class="QGridLayout" name="gridLayout">
            <item row="0" column="0">
-            <widget class="KMReaderWin" name="mailView"/>
+            <widget class="MailViewer" name="mailView"/>
            </item>
           </layout>
          </widget>
@@ -360,7 +360,7 @@
    <header location="global">kcal/kcalitembrowser.h</header>
   </customwidget>
   <customwidget>
-   <class>KMReaderWin</class>
+   <class>MailViewer</class>
    <extends>KTextBrowser</extends>
    <header location="global">libmailreader/kmreaderwin.h</header>
   </customwidget>
