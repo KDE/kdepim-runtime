@@ -25,13 +25,13 @@
 class QTextBrowser;
 class QModelIndex;
 class QItemSelection;
+class KDescendantsProxyModel;
 
 namespace Akonadi
 {
 class EntityTreeModel;
 class EntityTreeView;
 class EntityFilterProxyModel;
-class DescendantsProxyModel;
 }
 
 #include <QWidget>
@@ -56,7 +56,7 @@ private:
   Akonadi::EntityTreeView *treeview;
   Akonadi::EntityTreeView *listView;
   Akonadi::EntityFilterProxyModel *collectionTree;
-  Akonadi::DescendantsProxyModel *descList;
+  KDescendantsProxyModel *descList;
   Akonadi::EntityFilterProxyModel *itemList;
 };
 

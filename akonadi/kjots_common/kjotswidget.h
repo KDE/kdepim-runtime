@@ -35,12 +35,12 @@ class QModelIndex;
 class QItemSelection;
 class QColumnView;
 class QAbstractItemView;
+class KSelectionProxyModel;
 
 namespace Akonadi
 {
 class EntityTreeModel;
 class EntityTreeView;
-class SelectionProxyModel;
 }
 
 namespace Grantlee
@@ -80,7 +80,7 @@ private:
   QTextBrowser   *browser;
   QStackedWidget *stackedWidget;
   Akonadi::EntityTreeModel *etm;
-  Akonadi::SelectionProxyModel *selProxy;
+  KSelectionProxyModel *selProxy;
   Grantlee::FileSystemTemplateLoader *m_loader;
 //   Akonadi::EntityTreeView *treeview;
 //   QColumnView *treeview;

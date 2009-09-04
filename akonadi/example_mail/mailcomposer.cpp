@@ -36,7 +36,7 @@
 #include <akonadi/session.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/descendantsproxymodel.h>
+#include <kdescendantsproxymodel.h>
 #include <akonadi/entityfilterproxymodel.h>
 
 #include "contactsmodel.h"
@@ -63,9 +63,9 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
 
   ContactsModel *contactsModel = new ContactsModel( session, monitor, this);
 
-  DescendantsProxyModel *descProxyModel = new DescendantsProxyModel(this);
+  KDescendantsProxyModel *descProxyModel = new KDescendantsProxyModel(this);
   descProxyModel->setSourceModel(contactsModel);
-  descProxyModel->setHeaderSet(EntityTreeModel::ItemListHeaders);
+//  descProxyModel->setHeaderSet(EntityTreeModel::ItemListHeaders);
 
   EntityFilterProxyModel *filter = new EntityFilterProxyModel(this);
   filter->setSourceModel(descProxyModel);

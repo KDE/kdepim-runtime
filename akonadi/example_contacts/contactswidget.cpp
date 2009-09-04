@@ -26,7 +26,7 @@
 #include <QTextBrowser>
 
 #include <akonadi/control.h>
-#include <akonadi/descendantsproxymodel.h>
+#include <kdescendantsproxymodel.h>
 #include <akonadi/entitydisplayattribute.h>
 // #include "entitytreemodel.h"
 #include <akonadi/entityfilterproxymodel.h>
@@ -35,7 +35,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
-#include <akonadi/selectionproxymodel.h>
+#include <kselectionproxymodel.h>
 
 #include <KLocale>
 
@@ -99,13 +99,13 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 
   treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  SelectionProxyModel *selProxy = new SelectionProxyModel(treeview->selectionModel(), this);
+  KSelectionProxyModel *selProxy = new KSelectionProxyModel(treeview->selectionModel(), this);
   selProxy->setSourceModel(etm);
 //   new ModelTest(selProxy, this);
 
-  descList = new DescendantsProxyModel(this);
+  descList = new KDescendantsProxyModel(this);
   descList->setSourceModel(selProxy);
-  descList->setHeaderSet(EntityTreeModel::ItemListHeaders);
+//  descList->setHeaderSet(EntityTreeModel::ItemListHeaders);
 //   new ModelTest(descList, this);
 
   itemList = new EntityFilterProxyModel(this);

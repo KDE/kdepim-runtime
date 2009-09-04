@@ -42,7 +42,7 @@
 #include "collectionchildorderattribute.h"
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodel.h>
-#include <akonadi/descendantsproxymodel.h>
+#include <kdescendantsproxymodel.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entityfilterproxymodel.h>
 #include <akonadi/entitytreemodel.h>
@@ -52,7 +52,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
-#include <akonadi/selectionproxymodel.h>
+#include <kselectionproxymodel.h>
 // #include <akonadi/partfetcher.h>
 
 #include <grantlee/template.h>
@@ -184,7 +184,7 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   treeview->setModel( etm );
   treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  selProxy = new SelectionProxyModel(treeview->selectionModel(), this);
+  selProxy = new KSelectionProxyModel(treeview->selectionModel(), this);
   selProxy->setSourceModel(etm);
 
   // TODO: Write a QAbstractItemView subclass to render kjots selection.
