@@ -29,7 +29,7 @@
 
 #include <QtDBus/QDBusConnection>
 
-// we need this two includes for accessing the system's user database
+// we need these two includes for accessing the system's user database
 #include <sys/types.h>
 #include <pwd.h>
 
@@ -58,7 +58,7 @@ SystemUsersResource::~SystemUsersResource()
 // as a reaction to us calling synchronize() in the constructor
 void SystemUsersResource::retrieveCollections()
 {
-  // create a single collection (visiable as a folder in clients)
+  // create a single collection (visible as a folder in clients)
   Collection collection;
 
   // let it be a top level collection, so its parent has to be the root collection
