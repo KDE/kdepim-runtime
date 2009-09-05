@@ -62,7 +62,7 @@ void SystemUsersResource::retrieveCollections()
   Collection collection;
 
   // let it be a top level collection, so its parent has to be the root collection
-  collection.setParent( Collection::root() );
+  collection.setParentCollection( Collection::root() );
 
   // we only have one collection so we can use anything as the remote identifier
   // because we won't have to use it later on for identification purposes.
