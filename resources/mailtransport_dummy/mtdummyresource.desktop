@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Dummy MailTransport Resource
+Name[es]=Recurso de transporte de correo para pruebas
 Name[nb]=Attrapp-ressurs for e-posttransport
 Name[nds]=Platzholl-Nettpostöverdreegmetoden-Ressource
 Name[pt]=Recurso de Transporte de Correio para Testes
@@ -9,6 +10,7 @@ Name[uk]=Тестовий ресурс MailTransport
 Name[x-test]=xxDummy MailTransport Resourcexx
 Name[zh_TW]=空白郵件傳輸資源
 Comment=Dummy Resource implementing mail transport interface
+Comment[es]=Recurso de prueba que implementa una interfaz de transporte de correo
 Comment[nb]=Attrappressurs som implementerer grensesnitt for e-posttransport
 Comment[nds]=Platzhollressource mit inbuut Nettpostöverdreegmetood-Koppelsteed
 Comment[pt]=Uma interface de transporte de correio que implementa um recurso de testes
