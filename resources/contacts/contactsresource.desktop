@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Personal Contacts
+Name[x-test]=xxPersonal Contactsxx
+Comment=The address book with personal contacts
+Comment[x-test]=xxThe address book with personal contactsxx
+Type=AkonadiResource
+Exec=akonadi_contacts_resource
+Icon=text-directory
+
+X-Akonadi-MimeTypes=text/directory,application/x-vnd.kde.contactgroup
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_contacts_resource
