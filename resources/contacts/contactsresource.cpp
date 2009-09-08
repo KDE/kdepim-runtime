@@ -291,7 +291,7 @@ void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
     newItem.setRemoteId( item.remoteId() );
 
   } else {
-    cancelTask( i18n( "Received item with unkown payload %1", item.mimeType() ) );
+    cancelTask( i18n( "Received item with unknown payload %1", item.mimeType() ) );
     return;
   }
 
