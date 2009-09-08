@@ -45,7 +45,7 @@ namespace KIMAP
 class ImapAccount;
 class ImapIdleManager;
 
-class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
@@ -66,10 +66,14 @@ protected:
   virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
   virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
   virtual void itemRemoved( const Akonadi::Item &item );
+  virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
+                          const Akonadi::Collection &destination );
 
   virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
   virtual void collectionChanged( const Akonadi::Collection &collection );
   virtual void collectionRemoved( const Akonadi::Collection &collection );
+  virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
+                                const Akonadi::Collection &destination );
 
   virtual void doSetOnline(bool online);
 
@@ -94,8 +98,13 @@ private Q_SLOTS:
   void onCreateMailBoxDone( KJob *job );
   void onRenameMailBoxDone( KJob *job );
   void onDeleteMailBoxDone( KJob *job );
+  void onMailBoxMoveDone( KJob *job );
+  void onSubscribeDone( KJob *job );
   void onAppendMessageDone( KJob *job );
   void onStoreFlagsDone( KJob *job );
+  void onPreItemMoveSelectDone( KJob *job );
+  void onCopyMessageDone( KJob *job );
+  void onPostItemMoveStoreFlagsDone( KJob *job );
 
   void startConnect( bool forceManualAuth = false );
   void reconnect();

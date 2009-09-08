@@ -46,6 +46,7 @@
 
 #include <kimap/appendjob.h>
 #include <kimap/capabilitiesjob.h>
+#include <kimap/copyjob.h>
 #include <kimap/createjob.h>
 #include <kimap/deletejob.h>
 #include <kimap/expungejob.h>
@@ -60,6 +61,7 @@
 #include <kimap/renamejob.h>
 #include <kimap/selectjob.h>
 #include <kimap/storejob.h>
+#include <kimap/subscribejob.h>
 
 #include <kmime/kmime_message.h>
 
@@ -93,8 +95,11 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 using namespace Akonadi;
 
 static const char AKONADI_COLLECTION[] = "akonadiCollection";
+static const char AKONADI_ITEM[] = "akonadiItem";
 static const char REPORTED_COLLECTIONS[] = "reportedCollections";
 static const char PREVIOUS_REMOTEID[] = "previousRemoteId";
+static const char SOURCE_COLLECTION[] = "sourceCollection";
+static const char DESTINATION_COLLECTION[] = "destinationCollection";
 
 ImapResource::ImapResource( const QString &id )
         :ResourceBase( id ), m_account( 0 ), m_idle( 0 )
@@ -400,6 +405,124 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   store->setMode( KIMAP::StoreJob::AppendFlags );
   connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
   store->start();
+}
+
+void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
+                              const Akonadi::Collection &destination )
+{
+  if ( item.remoteId().isEmpty() ) {
+    emit error( i18n( "Cannot move message, it does not exist on the server." ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( source.remoteId().isEmpty() ) {
+    emit error( i18n( "Cannot move message out of '%1', '%1' does not exist on the server.",
+                      source.name() ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( destination.remoteId().isEmpty() ) {
+    emit error( i18n( "Cannot move message to '%1', '%1' does not exist on the server.",
+                      source.name() ) );
+    changeProcessed();
+    return;
+  }
+
+  const QString oldMailBox = mailBoxForCollection( source );
+  const QString newMailBox = mailBoxForCollection( destination );
+
+  if ( oldMailBox != newMailBox ) {
+    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
+    select->setMailBox( oldMailBox );
+    select->setProperty( AKONADI_ITEM, QVariant::fromValue( item ) );
+    select->setProperty( SOURCE_COLLECTION, QVariant::fromValue( source ) );
+    select->setProperty( DESTINATION_COLLECTION, QVariant::fromValue( destination ) );
+    connect( select, SIGNAL( result( KJob* ) ), SLOT( onPreItemMoveSelectDone( KJob* ) ) );
+    select->start();
+  } else {
+    changeProcessed();
+  }
+}
+
+void ImapResource::onPreItemMoveSelectDone( KJob *job )
+{
+  if ( !job->error() ) {
+    Item item = job->property( AKONADI_ITEM ).value<Item>();
+    const qint64 uid = item.remoteId().toLongLong();
+
+    Collection destination = job->property( DESTINATION_COLLECTION ).value<Collection>();
+    const QString newMailBox = mailBoxForCollection( destination );
+
+    KIMAP::CopyJob *copy = new KIMAP::CopyJob( m_account->session() );
+    copy->setProperty( AKONADI_ITEM, job->property( AKONADI_ITEM ) );
+    copy->setProperty( SOURCE_COLLECTION, job->property( SOURCE_COLLECTION ) );
+    copy->setProperty( DESTINATION_COLLECTION, job->property( DESTINATION_COLLECTION ) );
+    copy->setUidBased( true );
+    copy->setSequenceSet( KIMAP::ImapSet( uid ) );
+    copy->setMailBox( newMailBox );
+    connect( copy, SIGNAL( result( KJob* ) ), SLOT( onCopyMessageDone( KJob* ) ) );
+    copy->start();
+
+  } else {
+    const Collection source = job->property( SOURCE_COLLECTION ).value<Collection>();
+    Q_ASSERT( source.isValid() );
+    emit error( i18n( "Failed to move message out of '%1' on the IMAP server. Couldn't select '%1'.",
+                      source.name() ) );
+    changeProcessed();
+  }
+}
+
+void ImapResource::onCopyMessageDone( KJob *job )
+{
+  if ( !job->error() ) {
+    Item item = job->property( AKONADI_ITEM ).value<Item>();
+    Collection destination = job->property( DESTINATION_COLLECTION ).value<Collection>();
+    const qint64 oldUid = item.remoteId().toLongLong();
+
+    // Go ahead, UIDPLUS is supposed to be supported and we copied a single message
+    KIMAP::CopyJob *copy = static_cast<KIMAP::CopyJob*>( job );
+    const qint64 newUid = copy->resultingUids().intervals().first().begin();
+
+    // Update the item content with the new UID from the copy
+    item.setRemoteId( QString::number( newUid ) );
+    item.setParentCollection( destination );
+
+    // Mark the old one ready for deletion
+    KIMAP::StoreJob *store = new KIMAP::StoreJob( m_account->session() );
+    store->setProperty( AKONADI_ITEM, QVariant::fromValue( item ) );
+    store->setProperty( SOURCE_COLLECTION, job->property( SOURCE_COLLECTION ) );
+    store->setProperty( DESTINATION_COLLECTION, job->property( DESTINATION_COLLECTION ) );
+    store->setUidBased( true );
+    store->setSequenceSet( KIMAP::ImapSet( oldUid ) );
+    store->setFlags( QList<QByteArray>() << "\\Deleted" );
+    store->setMode( KIMAP::StoreJob::AppendFlags );
+    connect( store, SIGNAL( result( KJob* ) ), SLOT( onPostItemMoveStoreFlagsDone( KJob* ) ) );
+    store->start();
+
+  } else {
+    const Collection destination = job->property( DESTINATION_COLLECTION ).value<Collection>();
+    Q_ASSERT( destination.isValid() );
+    emit error( i18n( "Failed to move message to '%1' on the IMAP server. Couldn't copy into '%1'.",
+                      destination.name() ) );
+    changeProcessed();
+  }
+}
+
+void ImapResource::onPostItemMoveStoreFlagsDone( KJob *job )
+{
+  Item item = job->property( AKONADI_ITEM ).value<Item>();
+
+  if ( job->error() ) {
+    const Collection source = job->property( SOURCE_COLLECTION ).value<Collection>();
+    Q_ASSERT( source.isValid() );
+    emit warning( i18n( "Failed to mark the message from '%1' for delection on the IMAP server. "
+                        "It will reappear on next sync.",
+                        source.name() ) );
+  }
+
+  changeCommitted( item );
 }
 
 typedef QHash<QString, Collection> StringCollectionMap;
@@ -765,6 +888,80 @@ void ImapResource::onDeleteMailBoxDone( KJob *job )
         emit warning( i18n( "Failed to delete the folder, restoring folder list." ) );
         synchronizeCollectionTree();
     }
+}
+
+
+void ImapResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
+                                    const Akonadi::Collection &destination )
+{
+  if ( collection.remoteId().isEmpty() ) {
+    emit error( i18n( "Cannot move IMAP folder '%1', it does not exist on the server.",
+                      collection.name() ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( source.remoteId().isEmpty() ) {
+    emit error( i18n( "Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server.",
+                      collection.name(),
+                      source.name() ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( destination.remoteId().isEmpty() ) {
+    emit error( i18n( "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server.",
+                      collection.name(),
+                      source.name() ) );
+    changeProcessed();
+    return;
+  }
+
+  // collection.remoteId() already includes the separator
+  const QString oldMailBox = mailBoxForCollection( source )+collection.remoteId();
+  const QString newMailBox = mailBoxForCollection( destination )+collection.remoteId();
+
+  if ( oldMailBox != newMailBox ) {
+    KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
+    job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    job->setProperty( SOURCE_COLLECTION, QVariant::fromValue( source ) );
+    job->setSourceMailBox( oldMailBox );
+    job->setDestinationMailBox( newMailBox );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onMailBoxMoveDone( KJob* ) ) );
+    job->start();
+  } else {
+    changeProcessed();
+  }
+}
+
+void ImapResource::onMailBoxMoveDone( KJob *job )
+{
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+
+  if ( !job->error() ) {
+    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_account->session() );
+    subscribe->setMailBox( static_cast<KIMAP::RenameJob*>( job )->destinationMailBox() );
+    subscribe->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onSubscribeDone( KJob* ) ) );
+    subscribe->start();
+  } else {
+    const Collection parent = job->property( SOURCE_COLLECTION ).value<Collection>();
+    Q_ASSERT(  parent.isValid() );
+    emit error( i18n( "Failed to move folder '%1' out of '%2' on the IMAP server.", collection.name(), parent.name() ) );
+    changeProcessed();
+  }
+}
+
+void ImapResource::onSubscribeDone( KJob *job )
+{
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+
+  if ( job->error() ) { // Just warn about the failed subscription
+    emit warning( i18n( "Failed to subcribe to the newly moved folder '%1' on the IMAP server.",
+                      collection.name() ) );
+  }
+
+  changeCommitted( collection );
 }
 
 /******************* Slots  ***********************************************/
