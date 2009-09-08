@@ -25,6 +25,7 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 )
 
 add_subdirectory( birthdays )
+add_subdirectory( contacts )
 add_subdirectory( distlist )
 add_subdirectory( ical )
 add_subdirectory( imap )
