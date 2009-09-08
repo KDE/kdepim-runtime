@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Personal Contacts
-Name[x-test]=xxPersonal Contactsxx
+Name[uk]=Особисті контакти
 Comment=The address book with personal contacts
-Comment[x-test]=xxThe address book with personal contactsxx
+Comment[uk]=Адресна книга з особистими записами контактів
 Type=AkonadiResource
 Exec=akonadi_contacts_resource
 Icon=text-directory
