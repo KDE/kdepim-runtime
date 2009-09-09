@@ -517,7 +517,7 @@ void ImapResource::onPostItemMoveStoreFlagsDone( KJob *job )
   if ( job->error() ) {
     const Collection source = job->property( SOURCE_COLLECTION ).value<Collection>();
     Q_ASSERT( source.isValid() );
-    emit warning( i18n( "Failed to mark the message from '%1' for delection on the IMAP server. "
+    emit warning( i18n( "Failed to mark the message from '%1' for deletion on the IMAP server. "
                         "It will reappear on next sync.",
                         source.name() ) );
   }
