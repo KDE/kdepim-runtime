@@ -1,8 +1,18 @@
 [Desktop Entry]
 Name=Personal Contacts
+Name[nds]=Persöönlich Kontakten
+Name[pt]=Contactos Pessoais
+Name[pt_BR]=Contatos pessoais
+Name[sv]=Personliga kontakter
 Name[uk]=Особисті контакти
+Name[zh_TW]=個人聯絡人
 Comment=The address book with personal contacts
+Comment[nds]=Dat Adressbook mit persöönlich Kontakten
+Comment[pt]=O livro de endereços com os contactos pessoais
+Comment[pt_BR]=O livro de endereços com contatos pessoais
+Comment[sv]=Adressboken med personliga kontakter
 Comment[uk]=Адресна книга з особистими записами контактів
+Comment[zh_TW]=個人聯絡人的通訊錄
 Type=AkonadiResource
 Exec=akonadi_contacts_resource
 Icon=text-directory
