@@ -44,6 +44,13 @@
 #include <soprano/nrlmodel.h>
 
 // ontology includes
+#include "attendee.h"
+#include "emailaddress.h"
+#include "event.h"
+#include "eventstatus.h"
+#include "journal.h"
+#include "participationstatus.h"
+#include "personcontact.h"
 
 #include <QtCore/QTime>
 #include <QtCore/QTimer>
@@ -67,6 +74,25 @@ static void removeItemFromNepomuk( const Akonadi::Item &item )
 
   foreach ( const Soprano::Node &node, list )
     Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
+}
+
+static NepomukFast::Contact findNepomukContact( const QString &name, const QString &email )
+{
+  // find person using name and email
+  QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
+                QString( "prefix nco:<http://www.semanticdesktop.org/ontologies/2007/03/22/nco#>"
+                          "select ?person where {"
+                          "  ?person nco:fullname \"%1\"^^<http://www.w3.org/2001/XMLSchema#string> ."
+                          "  ?person nco:hasEmailAddress ?email ."
+                          "  ?email nco:emailAddress \"%2\"^^<http://www.w3.org/2001/XMLSchema#string> ."
+                          "}" )
+                        .arg( name, email ),
+                Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
+  foreach ( const Soprano::Node &node, list )
+    if ( node.isResource () )
+      return NepomukFast::Contact( node.uri() );
+
+  return NepomukFast::Contact();
 }
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
@@ -174,23 +200,93 @@ void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )
 
   KCal::Incidence *incidence = incidencePtr.get();
 
-  if ( incidence->type() == "Event" )
-    updateEventItem( item, graphUri );
-  else if ( incidence->type() == "Journal" )
-    updateJournalItem( item, graphUri );
-  else if ( incidence->type() == "Todo" )
-    updateTodoItem( item, graphUri );
+  if ( incidence->type() == "Event" ) {
+    updateEventItem( item, static_cast<KCal::Event*>( incidence), graphUri );
+  } else if ( incidence->type() == "Journal" ) {
+    updateJournalItem( item, static_cast<KCal::Journal*>( incidence), graphUri );
+  } else if ( incidence->type() == "Todo" ) {
+    updateTodoItem( item, static_cast<KCal::Todo*>( incidence), graphUri );
+  }
 }
 
-void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, KCal::Event *calEvent, const QUrl &graphUri )
 {
+  // create event with the graph reference
+  NepomukFast::Event event( item.url(), graphUri );
+
+  event.setLabel( calEvent->summary() );
+
+  QString uri;
+  switch ( calEvent->status() ) {
+    case KCal::Incidence::StatusCanceled:
+      uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#cancelledEventStatus";
+      break;
+    case KCal::Incidence::StatusConfirmed:
+      uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#confirmedEventStatus";
+      break;
+    case KCal::Incidence::StatusTentative:
+      uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#tentativeEventStatus";
+      break;
+    default: // other states are not available in the ontology
+      break;
+  }
+
+  if ( !uri.isEmpty() ) {
+    NepomukFast::EventStatus status( QUrl( uri ), graphUri );
+    event.addEventStatus( status );
+  }
+
+  foreach ( const KCal::Attendee *calAttendee, calEvent->attendees() ) {
+    NepomukFast::Contact contact = findNepomukContact( calAttendee->name(), calAttendee->email() );
+    if ( !contact.uri().isValid() ) {
+      contact.setLabel( calAttendee->name() );
+      NepomukFast::EmailAddress email( QUrl( "mailto:" + calAttendee->email() ) );
+      email.setEmailAddress( calAttendee->email() );
+      contact.addEmailAddress( email );
+    }
+
+    NepomukFast::Attendee attendee( QUrl(), graphUri );
+    attendee.addInvolvedContact( contact );
+
+    uri.clear();
+    switch( calAttendee->status() ) {
+      case KCal::Attendee::NeedsAction:
+        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#needsActionParticipationStatus";
+        break;
+      case KCal::Attendee::Accepted:
+        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#acceptedParticipationStatus";
+        break;
+      case KCal::Attendee::Declined:
+        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#declinedParticipationStatus";
+        break;
+      case KCal::Attendee::Tentative:
+        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#tentativeParticipationStatus";
+        break;
+      case KCal::Attendee::Delegated:
+        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#delegatedParticipationStatus";
+        break;
+      default: // other states are not available in the ontology
+        break;
+    }
+
+    if ( !uri.isEmpty() ) {
+      NepomukFast::ParticipationStatus partStatus( QUrl( uri ), graphUri );
+      attendee.addPartstat( partStatus );
+    }
+
+    event.addAttendee( attendee );
+  }
 }
 
-void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, KCal::Journal *calJournal, const QUrl &graphUri )
 {
+    // create journal entry with the graph reference
+    NepomukFast::Journal journal( item.url(), graphUri );
+
+    journal.setLabel( calJournal->summary() );
 }
 
-void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, KCal::Todo *calTodo, const QUrl &graphUri )
 {
 }
 

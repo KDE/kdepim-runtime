@@ -28,6 +28,13 @@ namespace Soprano
 class NRLModel;
 }
 
+namespace KCal
+{
+class Event;
+class Journal;
+class Todo;
+}
+
 namespace Akonadi {
 
 class NepomukCalendarFeeder : public AgentBase, public AgentBase::Observer
@@ -53,9 +60,9 @@ class NepomukCalendarFeeder : public AgentBase, public AgentBase::Observer
 
   private:
     void updateItem( const Akonadi::Item &item );
-    void updateEventItem( const Akonadi::Item &item, const QUrl& );
-    void updateTodoItem( const Akonadi::Item &item, const QUrl& );
-    void updateJournalItem( const Akonadi::Item &item, const QUrl& );
+    void updateEventItem( const Akonadi::Item &item, KCal::Event*, const QUrl& );
+    void updateJournalItem( const Akonadi::Item &item, KCal::Journal*, const QUrl& );
+    void updateTodoItem( const Akonadi::Item &item, KCal::Todo*, const QUrl& );
 
     bool mForceUpdate;
     Soprano::NRLModel *mNrlModel;
