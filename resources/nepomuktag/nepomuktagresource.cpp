@@ -151,6 +151,26 @@ void NepomukTagResource::configure( WId )
     synchronizeCollectionTree();
 }
 
+void NepomukTagResource::itemLinked(const Akonadi::Item& item, const Akonadi::Collection& collection)
+{
+    kDebug() << "Tagging" << item.id() << " with " << collection.remoteId();
+    Nepomuk::Resource res( item.url() );
+    const Nepomuk::Tag tag( collection.remoteId() );
+    res.addTag( tag );
+    changeProcessed();
+}
+
+void NepomukTagResource::itemUnlinked(const Akonadi::Item& item, const Akonadi::Collection& collection)
+{
+    kDebug() << "Untagging" << item.id() << " with " << collection.remoteId();
+    Nepomuk::Resource res( item.url() );
+    QList<Nepomuk::Tag> allTags = res.tags();
+    const Nepomuk::Tag tag( collection.remoteId() );
+    allTags.removeAll( tag );
+    res.setTags( allTags );
+    changeProcessed();
+}
+
 void NepomukTagResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
     Q_UNUSED( parent );

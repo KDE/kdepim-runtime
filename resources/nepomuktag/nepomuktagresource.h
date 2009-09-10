@@ -22,7 +22,7 @@
 
 #include <akonadi/resourcebase.h>
 
-class NepomukTagResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class NepomukTagResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
 {
     Q_OBJECT
     Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.NepomukTag.Resource" )
@@ -44,6 +44,8 @@ private Q_SLOTS:
     void slotLinkResult( KJob* job );
 
 protected:
+    virtual void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    virtual void itemUnlinked( const Akonadi::Item& item, const Akonadi::Collection& collection );
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionRemoved( const Akonadi::Collection& collection );
 };
