@@ -40,7 +40,8 @@ protected Q_SLOTS:
     virtual bool retrieveItem( const Akonadi::Item &, const QSet<QByteArray> & ) { return true; };
 
 private Q_SLOTS:
-    void slotResult( KJob* );
+    void slotLocalListResult( KJob* job );
+    void slotLinkResult( KJob* job );
 
 protected:
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );

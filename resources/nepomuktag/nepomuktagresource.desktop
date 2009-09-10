@@ -69,5 +69,5 @@ Exec=akonadi_nepomuktag_resource
 Icon=nepomuk
 
 X-Akonadi-MimeTypes=message/rfc822
-X-Akonadi-Capabilities=Resource,Virtual
+X-Akonadi-Capabilities=Resource,Virtual,Unique,NoConfig
 X-Akonadi-Identifier=akonadi_nepomuktag_resource
