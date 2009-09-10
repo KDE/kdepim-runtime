@@ -75,7 +75,7 @@ void NepomukTagResource::retrieveCollections()
         c.setRemoteId( tag.genericLabel() );
         c.setRights( Collection::ReadOnly );
         c.setContentMimeTypes( contentTypes );
-        c.setParentRemoteId( root.remoteId() );
+        c.setParentCollection( root );
         c.setCachePolicy( policy );
         collections[ tag.genericLabel()] = c;
     }

@@ -66,8 +66,8 @@ Comment[zh_CN]=含有 Nepomuk 标记，用于选择信件的虚拟文件夹。
 Comment[zh_TW]=用於選擇有 Nepomuk 標籤訊息用的虛擬資料夾
 Type=AkonadiResource
 Exec=akonadi_nepomuktag_resource
-Icon=message-rfc822
+Icon=nepomuk
 
 X-Akonadi-MimeTypes=message/rfc822
-X-Akonadi-Capabilities=Resource
+X-Akonadi-Capabilities=Resource,Virtual
 X-Akonadi-Identifier=akonadi_nepomuktag_resource
