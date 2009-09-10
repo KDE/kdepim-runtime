@@ -82,7 +82,7 @@ void NepomukTagResource::retrieveCollections()
         Collection c;
         c.setName( tag.genericLabel() );
         c.setRemoteId( tag.genericLabel() );
-        c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection );
+        c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
         c.setContentMimeTypes( contentTypes );
         c.setParentCollection( root );
         c.setCachePolicy( policy );
@@ -201,7 +201,7 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
     }
     // ---
 
-    newCollection.setRights( Collection::ReadOnly | Collection::CanDeleteCollection );
+    newCollection.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
     changeCommitted( newCollection );
 }
 
