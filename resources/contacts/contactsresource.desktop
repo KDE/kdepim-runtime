@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Personal Contacts
+Name[nb]=Personlige kontakter
 Name[nds]=Persöönlich Kontakten
 Name[pt]=Contactos Pessoais
 Name[pt_BR]=Contatos pessoais
@@ -7,6 +8,7 @@ Name[sv]=Personliga kontakter
 Name[uk]=Особисті контакти
 Name[zh_TW]=個人聯絡人
 Comment=The address book with personal contacts
+Comment[nb]=Adresseboka med personlige kontakter.
 Comment[nds]=Dat Adressbook mit persöönlich Kontakten
 Comment[pt]=O livro de endereços com os contactos pessoais
 Comment[pt_BR]=O livro de endereços com contatos pessoais
