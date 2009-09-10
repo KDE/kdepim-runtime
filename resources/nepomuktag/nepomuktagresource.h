@@ -45,6 +45,7 @@ private Q_SLOTS:
 
 protected:
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
+    virtual void collectionRemoved( const Akonadi::Collection& collection );
 };
 
 #endif

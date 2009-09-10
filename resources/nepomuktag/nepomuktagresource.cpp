@@ -82,7 +82,7 @@ void NepomukTagResource::retrieveCollections()
         Collection c;
         c.setName( tag.genericLabel() );
         c.setRemoteId( tag.genericLabel() );
-        c.setRights( Collection::ReadOnly );
+        c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection );
         c.setContentMimeTypes( contentTypes );
         c.setParentCollection( root );
         c.setCachePolicy( policy );
@@ -181,10 +181,15 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
     }
     // ---
 
+    newCollection.setRights( Collection::ReadOnly | Collection::CanDeleteCollection );
     changeCommitted( newCollection );
+}
 
-    // TODO: sync folder list, as it does not seem to update automatically????
-    synchronizeCollectionTree();
+void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection)
+{
+    Nepomuk::Tag tag( collection.remoteId() );
+    tag.remove();
+    changeCommitted( collection );
 }
 
 AKONADI_RESOURCE_MAIN( NepomukTagResource )
