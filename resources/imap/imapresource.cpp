@@ -65,8 +65,6 @@
 
 #include <kmime/kmime_message.h>
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionfetchjob.h>
@@ -175,7 +173,7 @@ void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64
   KIMAP::MessagePtr message = messages[messages.keys().first()];
 
   i.setMimeType( "message/rfc822" );
-  i.setPayload( MessagePtr( message ) );
+  i.setPayload( KMime::Message::Ptr( message ) );
 
   kDebug() << "Has Payload: " << i.hasPayload();
   kDebug() << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
@@ -250,12 +248,17 @@ void ImapResource::startConnect( bool forceManualAuth )
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
+  if ( !item.hasPayload<KMime::Message::Ptr>() ) {
+    changeProcessed();
+    return;
+  }
+
   const QString mailBox = mailBoxForCollection( collection );
 
   kDebug() << "Got notification about item added for local id " << item.id() << " and remote id " << item.remoteId();
 
   // save message to the server.
-  MessagePtr msg = item.payload<MessagePtr>();
+  KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
   KIMAP::AppendJob *job = new KIMAP::AppendJob( m_account->session() );
   job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
@@ -334,8 +337,12 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
   const qint64 uid = item.remoteId().toLongLong();
 
   if ( parts.contains( "PLD:RFC822" ) ) {
+    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
+      changeProcessed();
+      return;
+    }
     // save message to the server.
-    MessagePtr msg = item.payload<MessagePtr>();
+    KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
     KIMAP::AppendJob *job = new KIMAP::AppendJob( m_account->session() );
     job->setProperty( "akonadiItem", QVariant::fromValue( item ) );
@@ -758,7 +765,7 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
     Akonadi::Item i;
     i.setRemoteId( QString::number( uids[number] ) );
     i.setMimeType( "message/rfc822" );
-    i.setPayload( MessagePtr( messages[number] ) );
+    i.setPayload( KMime::Message::Ptr( messages[number] ) );
     i.setSize( sizes[number] );
 
     foreach( const QByteArray &flag, flags[number] ) {
