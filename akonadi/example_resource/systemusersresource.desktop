@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=System Users
+Name[bg]=Потребители на системата
 Name[gl]=Usuarios do sistema
 Name[pt]=Utilizadores do Sistema
 Name[pt_BR]=Utilizadores do Sistema
@@ -8,6 +9,7 @@ Name[tr]=Sistem Kullanıcıları
 Name[uk]=Користувачі системи
 Name[x-test]=xxSystem Usersxx
 Comment=Users on the local system
+Comment[bg]=Потребители на локалната система
 Comment[gl]=Usuarios no sistema local
 Comment[pt]=Utilizadores no sistema local
 Comment[pt_BR]=Utilizadores no sistema local
