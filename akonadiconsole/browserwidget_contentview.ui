@@ -14,7 +14,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="KTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
