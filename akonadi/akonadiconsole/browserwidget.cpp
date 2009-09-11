@@ -310,6 +310,10 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
 #ifdef NEPOMUK_FOUND
   if ( Settings::self()->nepomukEnabled() ) {
     Nepomuk::Resource res( item.url() );
+
+    contentUi.tagWidget->setTaggedResource( res );
+    contentUi.ratingWidget->setRating( res.rating() );
+
     delete mNepomukModel;
     mNepomukModel = 0;
     if ( res.isValid() ) {
@@ -415,6 +419,13 @@ void BrowserWidget::save()
 
   ItemModifyJob *store = new ItemModifyJob( item, this );
   connect( store, SIGNAL(result(KJob*)), SLOT(saveResult(KJob*)) );
+
+#ifdef NEPOMUK_FOUND
+  if ( Settings::self()->nepomukEnabled() ) {
+    Nepomuk::Resource res( item.url() );
+    res.setRating( contentUi.ratingWidget->rating() );
+  }
+#endif
 }
 
 void BrowserWidget::saveResult(KJob * job)

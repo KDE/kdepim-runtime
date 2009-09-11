@@ -26,14 +26,23 @@
 #include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/linkjob.h>
+#include <akonadi/unlinkjob.h>
+#include <akonadi/itemfetchjob.h>
 
 #include <nepomuk/tag.h>
+#include <nepomuk/resourcemanager.h>
+
+#include <boost/bind.hpp>
+#include <algorithm>
+
 using namespace Akonadi;
 
 NepomukTagResource::NepomukTagResource( const QString &id )
         : ResourceBase( id )
 {
+    Nepomuk::ResourceManager::instance()->init();
     changeRecorder()->fetchCollection( true );
+    setName( i18n( "Tags" ) );
 }
 
 NepomukTagResource::~NepomukTagResource()
@@ -73,9 +82,9 @@ void NepomukTagResource::retrieveCollections()
         Collection c;
         c.setName( tag.genericLabel() );
         c.setRemoteId( tag.genericLabel() );
-        c.setRights( Collection::ReadOnly );
+        c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
         c.setContentMimeTypes( contentTypes );
-        c.setParentRemoteId( root.remoteId() );
+        c.setParentCollection( root );
         c.setCachePolicy( policy );
         collections[ tag.genericLabel()] = c;
     }
@@ -85,9 +94,16 @@ void NepomukTagResource::retrieveCollections()
 void NepomukTagResource::retrieveItems( const Akonadi::Collection & col )
 {
     kDebug() << "Requested items for: " << col.remoteId();
+    ItemFetchJob *fetch = new ItemFetchJob( col, this );
+    connect( fetch, SIGNAL(result(KJob*)), SLOT(slotLocalListResult(KJob*)) );
+}
+
+void NepomukTagResource::slotLocalListResult( KJob *job )
+{
+    Item::List existingMessages = qobject_cast<ItemFetchJob*>( job )->items();
 
     Item::List taggedMessages;
-    Nepomuk::Tag tag( col.remoteId() );
+    const Nepomuk::Tag tag( currentCollection().remoteId() );
     QList<Nepomuk::Resource> list = tag.tagOf();
     foreach( const Nepomuk::Resource& resource, list ) {
         if ( !resource.resourceUri().toString().startsWith( QLatin1String( "akonadi:" ) ) )
@@ -96,13 +112,31 @@ void NepomukTagResource::retrieveItems( const Akonadi::Collection & col )
         taggedMessages << Item::fromUrl( KUrl( resource.resourceUri() ) );
     }
 
-    kDebug() << "Messages found: " << taggedMessages.count();
+    std::sort( existingMessages.begin(), existingMessages.end(), boost::bind( &Item::id, _1 ) < boost::bind( &Item::id, _2 ) );
+    std::sort( taggedMessages.begin(), taggedMessages.end(), boost::bind( &Item::id, _1 ) < boost::bind( &Item::id, _2 ) );
 
-    Akonadi::LinkJob* job = new Akonadi::LinkJob( col, taggedMessages, this );
-    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotResult( KJob* ) ) );
+    Item::List itemsToLink, itemsToUnlink;
+    std::set_difference( taggedMessages.begin(), taggedMessages.end(),
+                         existingMessages.begin(), existingMessages.end(),
+                         std::back_inserter( itemsToLink ),
+                         boost::bind( &Item::id, _1 ) < boost::bind( &Item::id, _2 ) );
+    std::set_difference( existingMessages.begin(), existingMessages.end(),
+                         taggedMessages.begin(), taggedMessages.end(),
+                         std::back_inserter( itemsToUnlink ),
+                         boost::bind( &Item::id, _1 ) < boost::bind( &Item::id, _2 ) );
+
+    if ( !itemsToUnlink.isEmpty() )
+      new Akonadi::UnlinkJob( currentCollection(), itemsToUnlink, this );
+
+    if ( !itemsToLink.isEmpty() ) {
+      Akonadi::LinkJob* linkJob = new Akonadi::LinkJob( currentCollection(), itemsToLink, this );
+      connect( linkJob, SIGNAL( result( KJob* ) ), this, SLOT( slotLinkResult( KJob* ) ) );
+    } else {
+      itemsRetrievalDone();
+    }
 }
 
-void NepomukTagResource::slotResult( KJob* job )
+void NepomukTagResource::slotLinkResult( KJob* job )
 {
     kDebug();
     if ( job->error() ) {
@@ -115,6 +149,26 @@ void NepomukTagResource::slotResult( KJob* job )
 void NepomukTagResource::configure( WId )
 {
     synchronizeCollectionTree();
+}
+
+void NepomukTagResource::itemLinked(const Akonadi::Item& item, const Akonadi::Collection& collection)
+{
+    kDebug() << "Tagging" << item.id() << " with " << collection.remoteId();
+    Nepomuk::Resource res( item.url() );
+    const Nepomuk::Tag tag( collection.remoteId() );
+    res.addTag( tag );
+    changeProcessed();
+}
+
+void NepomukTagResource::itemUnlinked(const Akonadi::Item& item, const Akonadi::Collection& collection)
+{
+    kDebug() << "Untagging" << item.id() << " with " << collection.remoteId();
+    Nepomuk::Resource res( item.url() );
+    QList<Nepomuk::Tag> allTags = res.tags();
+    const Nepomuk::Tag tag( collection.remoteId() );
+    allTags.removeAll( tag );
+    res.setTags( allTags );
+    changeProcessed();
 }
 
 void NepomukTagResource::collectionAdded( const Collection & collection, const Collection &parent )
@@ -147,10 +201,15 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
     }
     // ---
 
+    newCollection.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
     changeCommitted( newCollection );
+}
 
-    // TODO: sync folder list, as it does not seem to update automatically????
-    synchronizeCollectionTree();
+void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection)
+{
+    Nepomuk::Tag tag( collection.remoteId() );
+    tag.remove();
+    changeCommitted( collection );
 }
 
 AKONADI_RESOURCE_MAIN( NepomukTagResource )

@@ -57,13 +57,13 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="mailViewPage">
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0">
-            <widget class="MailViewer" name="mailView"/>
-           </item>
-          </layout>
-         </widget>
+         <widget class="QWidget" name="mailViewPage">                                                                                                                                                              
+          <layout class="QGridLayout" name="gridLayout">                                                                                                                                                           
+           <item row="0" column="0">                                                                                                                                                                               
+            <widget class="MailViewer" name="mailView"/>                                                                                                                                                           
+           </item>                                                                                                                                                                                                 
+          </layout>                                                                                                                                                                                                
+         </widget>                                                                                                                                                                                                 
         </widget>
        </item>
       </layout>
@@ -280,9 +280,43 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="nepomukTab">
+     <widget class="QWidget" name="tab_5">
       <attribute name="title">
        <string>Nepomuk</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Tags:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Nepomuk::TagWidget" name="tagWidget" native="true"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Rating:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="KRatingWidget" name="ratingWidget">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="nepomukTab">
+      <attribute name="title">
+       <string>RDF</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
@@ -360,9 +394,21 @@
    <header location="global">kcal/kcalitembrowser.h</header>
   </customwidget>
   <customwidget>
-   <class>MailViewer</class>
-   <extends>KTextBrowser</extends>
-   <header location="global">libmailreader/kmreaderwin.h</header>
+   <class>MailViewer</class>                                                                                                                                                                                       
+   <extends>KTextBrowser</extends>                                                                                                                                                                                 
+   <header location="global">libmailreader/kmreaderwin.h</header>                                                                                                                                                  
+  </customwidget>
+  <customwidget>
+   <class>Nepomuk::TagWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">nepomuk/kmetadatatagwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KRatingWidget</class>
+   <extends>QFrame</extends>
+   <header location="global">nepomuk/kratingwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
