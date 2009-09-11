@@ -65,6 +65,7 @@ public:
   void slotSelectionChanged( const QItemSelection & selected, const QItemSelection & deselected );
 
   bool hasParent( const QModelIndex& idx, Collection::Id parentId );
+  Collection currentDropTarget( QDropEvent* event ) const;
 
   EntityTreeView *mParent;
   QModelIndex dragOverIndex;
@@ -179,6 +180,20 @@ void EntityTreeView::Private::itemCurrentChanged( const QModelIndex &index )
   }
 }
 
+
+Collection EntityTreeView::Private::currentDropTarget(QDropEvent* event) const
+{
+  const QModelIndex index = mParent->indexAt( event->pos() );
+  Collection col = mParent->model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
+  if ( !col.isValid() ) {
+    const Item item = mParent->model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
+    if ( item.isValid() )
+      col = mParent->model()->data( index.parent(), EntityTreeModel::CollectionRole ).value<Collection>();
+  }
+  return col;
+}
+
+
 EntityTreeView::EntityTreeView( QWidget * parent ) :
     QTreeView( parent ),
     d( new Private( this ) )
@@ -215,7 +230,7 @@ void EntityTreeView::setModel( QAbstractItemModel * model )
 
 void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
 {
-  QModelIndex index = indexAt( event->pos() );
+  const QModelIndex index = indexAt( event->pos() );
   if ( d->dragOverIndex != index ) {
     d->dragExpandTimer.stop();
     if ( index.isValid() && !isExpanded( index ) && itemsExpandable() ) {
@@ -225,15 +240,7 @@ void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
   }
 
   // Check if the collection under the cursor accepts this data type
-  Collection col = model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
-  if (!col.isValid())
-  {
-    Item item = model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
-    if (item.isValid())
-    {
-      col = model()->data( index.parent(), EntityTreeModel::CollectionRole ).value<Collection>();
-    }
-  }
+  const Collection col = d->currentDropTarget( event );
   if ( col.isValid() )
   {
     QStringList supportedContentTypes = col.contentMimeTypes();
@@ -276,28 +283,34 @@ void EntityTreeView::dropEvent( QDropEvent * event )
   d->dragExpandTimer.stop();
   d->dragOverIndex = QModelIndex();
 
-  QModelIndexList idxs = selectedIndexes();
-
+  const Collection target = d->currentDropTarget( event );
+  if ( !target.isValid() )
+    return;
 
   QMenu popup( this );
-  QAction* moveDropAction;
+  QAction* moveDropAction = 0;
   // TODO If possible, hide unavailable actions ...
   // Use the model to determine if a move is ok.
-//   if (...)
-//   {
-  moveDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-rename" ) ), i18n( "&Move here" ) );
-//   }
+  if ( target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem) )
+    moveDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-rename" ) ), i18n( "&Move here" ) );
 
   //TODO: If dropping on one of the selectedIndexes, just return.
   // open a context menu offering different drop actions (move, copy and cancel)
-  QAction* copyDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-copy" ) ), i18n( "&Copy here" ) );
-  QAction* linkAction = popup.addAction( KIcon( QLatin1String( "edit-link" ) ), i18n( "&Link here" ) );
+  QAction* copyDropAction = 0;
+  if ( target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem) )
+    copyDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-copy" ) ), i18n( "&Copy here" ) );
+  QAction* linkAction = 0;
+  if ( target.rights() & Collection::CanLinkItem )
+    linkAction = popup.addAction( KIcon( QLatin1String( "edit-link" ) ), i18n( "&Link here" ) );
+
   popup.addSeparator();
   popup.addAction( KIcon( QString::fromLatin1( "process-stop" ) ), i18n( "Cancel" ) );
 
   QAction *activatedAction = popup.exec( QCursor::pos() );
 
-  if ( activatedAction == moveDropAction ) {
+  if ( !activatedAction ) {
+    return;
+  } else if ( activatedAction == moveDropAction ) {
     event->setDropAction( Qt::MoveAction );
   } else if ( activatedAction == copyDropAction ) {
     event->setDropAction( Qt::CopyAction );
