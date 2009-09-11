@@ -291,6 +291,7 @@ void EntityTreeView::dropEvent( QDropEvent * event )
   //TODO: If dropping on one of the selectedIndexes, just return.
   // open a context menu offering different drop actions (move, copy and cancel)
   QAction* copyDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-copy" ) ), i18n( "&Copy here" ) );
+  QAction* linkAction = popup.addAction( KIcon( QLatin1String( "edit-link" ) ), i18n( "&Link here" ) );
   popup.addSeparator();
   popup.addAction( KIcon( QString::fromLatin1( "process-stop" ) ), i18n( "Cancel" ) );
 
@@ -300,9 +301,11 @@ void EntityTreeView::dropEvent( QDropEvent * event )
     event->setDropAction( Qt::MoveAction );
   } else if ( activatedAction == copyDropAction ) {
     event->setDropAction( Qt::CopyAction );
+  } else if ( activatedAction == linkAction ) {
+    event->setDropAction( Qt::LinkAction );
+  } else {
+    return;
   }
-  // TODO: Handle link action.
-  else return;
 
   QTreeView::dropEvent( event );
 }
