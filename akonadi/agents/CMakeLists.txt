@@ -1,7 +1,7 @@
 add_subdirectory( maildispatcher )
 add_subdirectory( strigifeeder )
 
-if( Nepomuk_FOUND AND NOT Q_WS_MAC )
+if( Nepomuk_FOUND )
 
   #The following code to compute SOPRANO_PLUGIN_RAPTORPARSER_FOUND is lifted
   #from KDE4.2's FindSoprano.cmake. We have this code here for backwards
@@ -28,4 +28,4 @@ if( Nepomuk_FOUND AND NOT Q_WS_MAC )
     add_subdirectory( nepomuk_calendar_feeder )
   endif(SOPRANO_PLUGIN_RAPTORPARSER_FOUND)
 
-endif( Nepomuk_FOUND AND NOT Q_WS_MAC )
+endif( Nepomuk_FOUND )
