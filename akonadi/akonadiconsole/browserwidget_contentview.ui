@@ -14,7 +14,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="KTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -75,7 +75,7 @@
             <number>0</number>
            </property>
            <item row="0" column="0">
-            <widget class="MailViewer" name="mailView"/>
+            <widget class="Message::Viewer" name="mailView"/>
            </item>
           </layout>
          </widget>
@@ -415,9 +415,9 @@
    <header location="global">kcal/kcalitembrowser.h</header>
   </customwidget>
   <customwidget>
-   <class>MailViewer</class>
+   <class>Message::Viewer</class>
    <extends>KTextBrowser</extends>
-   <header location="global">libmailreader/kmreaderwin.h</header>
+   <header location="global">libmessageviewer/viewer.h</header>
   </customwidget>
   <customwidget>
    <class>Nepomuk::TagWidget</class>

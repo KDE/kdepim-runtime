@@ -84,7 +84,7 @@ target_link_libraries( akonadiconsole_bin
   ${KDEPIMLIBS_KCAL_LIBS}
   akonadi-xml
   kdepim-copy
-  mailreader
+  messageviewer
   ${KDE4_KUTILS_LIBS}
   ${KDE4_KIO_LIBS}
   ${AKONADICONSOLE_EXTRA_LIBS}
