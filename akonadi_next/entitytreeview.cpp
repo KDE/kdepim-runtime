@@ -370,4 +370,52 @@ void EntityTreeView::setXmlGuiClient( KXMLGUIClient * xmlGuiClient )
   d->xmlGuiClient = xmlGuiClient;
 }
 
+void EntityTreeView::startDrag(Qt::DropActions _supportedActions)
+{
+  QModelIndexList indexes;
+  bool sourceReadable = true;
+  foreach ( const QModelIndex &index, selectionModel()->selectedRows() ) {
+    if ( !model()->flags( index ) & Qt::ItemIsDragEnabled )
+      continue;
+
+    if ( sourceReadable ) {
+      Collection source = index.data( EntityTreeModel::CollectionRole ).value<Collection>();
+      if ( !source.isValid() ) {
+        // index points to an item
+        source = index.data( EntityTreeModel::ParentCollectionRole ).value<Collection>();
+        sourceReadable = source.rights() & Collection::CanDeleteItem;
+      } else {
+        // index points to a collection
+        sourceReadable = source.rights() & Collection::CanDeleteCollection;
+      }
+    }
+
+    indexes.append( index );
+  }
+
+  if ( indexes.isEmpty() )
+    return;
+
+  QMimeData *mimeData = model()->mimeData( indexes );
+  if ( !mimeData )
+    return;
+
+  QDrag *drag = new QDrag( this );
+  drag->setMimeData( mimeData );
+  kDebug() << indexes.size();
+  if ( indexes.size() > 1 ) {
+    drag->setPixmap( KIcon( "document-multiple" ).pixmap( QSize( 22, 22 ) ) );
+  } else {
+    QPixmap pixmap = indexes.first().data( Qt::DecorationRole ).value<QIcon>().pixmap( QSize( 22, 22 ) );
+    if ( pixmap.isNull() )
+      pixmap = KIcon( "text-plain" ).pixmap( QSize( 22, 22 ) );
+    drag->setPixmap( pixmap );
+  }
+
+  Qt::DropActions supportedActions( _supportedActions );
+  if ( !sourceReadable )
+    supportedActions &= ~Qt::MoveAction;
+  drag->exec( supportedActions, Qt::CopyAction );
+}
+
 #include "entitytreeview.moc"

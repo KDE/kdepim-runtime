@@ -168,7 +168,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   connect( itemUi.modelBox, SIGNAL(activated(int)), SLOT(modelChanged()) );
   QTimer::singleShot( 0, this, SLOT(modelChanged()) );
 
-  itemUi.itemView->setXmlGuiWindow( xmlGuiWindow );
+  itemUi.itemView->setXmlGuiClient( xmlGuiWindow );
   itemUi.itemView->setModel( itemFilter );
   itemUi.itemView->setSelectionMode( QAbstractItemView::ExtendedSelection );
   connect( itemUi.itemView, SIGNAL( activated( QModelIndex ) ), SLOT(itemActivated( QModelIndex ) ) );

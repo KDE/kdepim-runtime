@@ -1,8 +1,9 @@
-<ui version="4.0" >
- <author>Volker Krause &lt;vkrause@kde.org></author>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>Volker Krause &lt;vkrause@kde.org&gt;</author>
  <class>ItemViewWidget</class>
- <widget class="QWidget" name="ItemViewWidget" >
-  <property name="geometry" >
+ <widget class="QWidget" name="ItemViewWidget">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,13 +11,13 @@
     <height>322</height>
    </rect>
   </property>
-  <layout class="QGridLayout" >
-   <item row="0" column="0" >
+  <layout class="QGridLayout">
+   <item row="0" column="0">
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>40</width>
        <height>20</height>
@@ -24,28 +25,28 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="1" >
-    <widget class="QLabel" name="label" >
-     <property name="text" >
+   <item row="0" column="1">
+    <widget class="QLabel" name="label">
+     <property name="text">
       <string>Model:</string>
      </property>
-     <property name="buddy" >
+     <property name="buddy">
       <cstring>modelBox</cstring>
      </property>
     </widget>
    </item>
-   <item row="0" column="2" >
-    <widget class="QComboBox" name="modelBox" />
+   <item row="0" column="2">
+    <widget class="QComboBox" name="modelBox"/>
    </item>
-   <item row="1" column="0" colspan="3" >
-    <widget class="Akonadi::ItemView" name="itemView" >
-     <property name="dragEnabled" >
+   <item row="1" column="0" colspan="3">
+    <widget class="Akonadi::EntityTreeView" name="itemView">
+     <property name="dragEnabled">
       <bool>true</bool>
      </property>
-     <property name="alternatingRowColors" >
+     <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
-     <property name="rootIsDecorated" >
+     <property name="rootIsDecorated">
       <bool>false</bool>
      </property>
     </widget>
@@ -54,9 +55,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Akonadi::ItemView</class>
+   <class>Akonadi::EntityTreeView</class>
    <extends>QTreeView</extends>
-   <header location="global" >akonadi/itemview.h</header>
+   <header location="global">akonadi_next/entitytreeview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
