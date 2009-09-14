@@ -99,6 +99,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   splitter2->setObjectName( "ffvSplitter" );
 
   mCollectionView = new Akonadi::EntityTreeView( xmlGuiWindow, this );
+  mCollectionView->setObjectName( "CollectionView" );
   mCollectionView->setSelectionMode( QAbstractItemView::ExtendedSelection );
   splitter2->addWidget( mCollectionView );
 
