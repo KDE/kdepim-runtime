@@ -37,9 +37,6 @@ QTEST_AKONADIMAIN( Pop3Test, NoGUI )
 
 using namespace Akonadi;
 
-#include <sys/types.h>
-#include <signal.h>
-
 void Pop3Test::initTestCase()
 {
   //
@@ -69,9 +66,7 @@ void Pop3Test::initTestCase()
   QDBusReply<QString> getPathReply = mMaildirSettingsInterface->path();
   QCOMPARE( getPathReply.value(), maildirRootPath );
   AgentManager::self()->instance( mMaildirIdentifier ).synchronize();
-
-  //kWarning() << "========================== STOPPING ==================================";
-  //kill( QCoreApplication::applicationPid(), SIGSTOP );
+  
   //
   // Find the root maildir collection
   //
@@ -239,7 +234,7 @@ void Pop3Test::checkMailsInMaildir( const QList<QByteArray> &mails )
       break;
     }
     QVERIFY( static_cast<int>( maildir.entryList( QDir::NoDotAndDotDot ).count() ) <= mails.count() );
-    QVERIFY( time.elapsed() < 60000 * 10 || time.elapsed() > 80000000 );
+    QVERIFY( time.elapsed() < 60000 || time.elapsed() > 80000000 );
   }
 
   // TODO: check file contents as well or is this overkill?
