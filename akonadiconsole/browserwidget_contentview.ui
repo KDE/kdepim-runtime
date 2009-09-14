@@ -21,6 +21,9 @@
        <string>Payload</string>
       </attribute>
       <layout class="QVBoxLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QStackedWidget" name="stack">
          <property name="frameShadow">
@@ -31,6 +34,9 @@
          </property>
          <widget class="QWidget" name="unsupportedTypePage">
           <layout class="QVBoxLayout">
+           <property name="margin">
+            <number>0</number>
+           </property>
            <item>
             <widget class="QLabel" name="unsupportedType">
              <property name="text">
@@ -45,6 +51,9 @@
          </widget>
          <widget class="QWidget" name="addresseeViewPage">
           <layout class="QVBoxLayout">
+           <property name="margin">
+            <number>0</number>
+           </property>
            <item>
             <widget class="KPIM::AddresseeView" name="addresseeView"/>
            </item>
@@ -52,6 +61,9 @@
          </widget>
          <widget class="QWidget" name="incidenceViewPage">
           <layout class="QVBoxLayout">
+           <property name="margin">
+            <number>0</number>
+           </property>
            <item>
             <widget class="Akonadi::KCalItemBrowser" name="incidenceView"/>
            </item>
@@ -101,6 +113,9 @@
        <string>Raw Payload</string>
       </attribute>
       <layout class="QGridLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item row="0" column="0" colspan="2">
         <widget class="QTextEdit" name="dataView">
          <property name="lineWrapMode">
@@ -312,6 +327,9 @@
        <string>RDF</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QTreeView" name="nepomukView">
          <property name="rootIsDecorated">
