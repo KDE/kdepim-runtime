@@ -197,7 +197,6 @@ Content-Disposition: attachment; filename="kolab.xml"
 
 --Boundary-00=_VJd4J1dXKX5M02c--
 </payload>
-          <flag>\Seen</flag>
         </item>
         <item mimetype="message/rfc822" rid="imap://autotest0@example.com@localhost:42143/INBOX/Calendar-+-2" >
           <payload>From: Volker Krause &lt;vkrause@kde.org>, vkrause@kde.org
