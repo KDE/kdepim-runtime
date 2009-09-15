@@ -69,20 +69,8 @@
 
 namespace Akonadi {
 
-static void removeItemFromNepomuk( const Akonadi::Item &item )
-{
-  // find the graph that contains our item and delete the complete graph
-  QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
-                QString( "select ?g where { ?g <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor> %1. }")
-                       .arg( Soprano::Node::resourceToN3( item.url() ) ),
-                Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
-
-  foreach ( const Soprano::Node &node, list )
-    Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
-}
-
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
-  : AgentBase( id ),
+  : NepomukFeederAgent( id ),
     mForceUpdate( false )
 {
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -96,31 +84,12 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   // The line below is not necessary anymore once AgentBase also exports scriptable slots
   QDBusConnection::sessionBus().registerObject( "/nepomukcontactfeeder", this, QDBusConnection::ExportScriptableSlots );
 
-  // initialize Nepomuk
-  Nepomuk::ResourceManager::instance()->init();
-
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
 
 NepomukContactFeeder::~NepomukContactFeeder()
 {
   delete mNrlModel;
-}
-
-void NepomukContactFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
-{
-  itemChanged( item, QSet<QByteArray>() );
-}
-
-void NepomukContactFeeder::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
-{
-  if ( item.hasPayload<KABC::Addressee>() || item.hasPayload<KABC::ContactGroup>() )
-    updateItem( item );
-}
-
-void NepomukContactFeeder::itemRemoved( const Akonadi::Item &item )
-{
-  removeItemFromNepomuk( item );
 }
 
 void NepomukContactFeeder::slotInitialItemScan()

@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2007 Tobias Koenig <tokoe@kde.org>
                   2008 Sebastian Trueg <trueg@kde.org>
+                  2009 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,45 +19,34 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_NEPOMUK_CONTACT_FEEDER_H
-#define AKONADI_NEPOMUK_CONTACT_FEEDER_H
+#ifndef NEPOMUKFEEDERAGENT_H
+#define NEPOMUKFEEDERAGENT_H
 
-#include <nepomukfeederagent.h>
 #include <akonadi/agentbase.h>
-#include <akonadi/item.h>
 
-namespace Soprano
+namespace Akonadi
 {
-class NRLModel;
+  class Item;
 }
 
-namespace Akonadi {
-
-class NepomukContactFeeder : public NepomukFeederAgent
+/** Shared base class for all Nepomuk feeders. */
+class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.akonadi.NepomukContactFeeder" )
 
   public:
-    NepomukContactFeeder( const QString &id );
-    ~NepomukContactFeeder();
+    NepomukFeederAgent(const QString& id);
+    ~NepomukFeederAgent();
 
-  public Q_SLOTS:
-    Q_SCRIPTABLE void updateAll( bool force = false );
+    static void removeItemFromNepomuk( const Akonadi::Item &item );
 
-  private Q_SLOTS:
-    void slotInitialItemScan();
-    void slotItemsReceivedForInitialScan( const Akonadi::Item::List& items );
+    /** Reimplement to do the actual work. */
+    virtual void updateItem( const Akonadi::Item &item ) = 0;
 
-  private:
-    void updateItem( const Akonadi::Item &item );
-    void updateContactItem( const Akonadi::Item &item, const QUrl& );
-    void updateGroupItem( const Akonadi::Item &item, const QUrl& );
-
-    bool mForceUpdate;
-    Soprano::NRLModel *mNrlModel;
+  protected:
+    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
+    void itemRemoved(const Akonadi::Item &item);
 };
-
-}
 
 #endif

@@ -64,18 +64,6 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 namespace Akonadi {
 
-static void removeItemFromNepomuk( const Akonadi::Item &item )
-{
-  // find the graph that contains our item and delete the complete graph
-  QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
-                QString( "select ?g where { ?g <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor> %1. }")
-                       .arg( Soprano::Node::resourceToN3( item.url() ) ),
-                Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
-
-  foreach ( const Soprano::Node &node, list )
-    Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
-}
-
 static NepomukFast::Contact findNepomukContact( const QString &name, const QString &email )
 {
   // find person using name and email
@@ -96,7 +84,7 @@ static NepomukFast::Contact findNepomukContact( const QString &name, const QStri
 }
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
-  : AgentBase( id ),
+  : NepomukFeederAgent( id ),
     mForceUpdate( false )
 {
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -109,31 +97,12 @@ NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
   // The line below is not necessary anymore once AgentBase also exports scriptable slots
   QDBusConnection::sessionBus().registerObject( "/nepomukcalendarfeeder", this, QDBusConnection::ExportScriptableSlots );
 
-  // initialize Nepomuk
-  Nepomuk::ResourceManager::instance()->init();
-
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
 
 NepomukCalendarFeeder::~NepomukCalendarFeeder()
 {
   delete mNrlModel;
-}
-
-void NepomukCalendarFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
-{
-  itemChanged( item, QSet<QByteArray>() );
-}
-
-void NepomukCalendarFeeder::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
-{
-  if ( item.hasPayload<IncidencePtr>() )
-    updateItem( item );
-}
-
-void NepomukCalendarFeeder::itemRemoved( const Akonadi::Item &item )
-{
-  removeItemFromNepomuk( item );
 }
 
 void NepomukCalendarFeeder::slotInitialItemScan()

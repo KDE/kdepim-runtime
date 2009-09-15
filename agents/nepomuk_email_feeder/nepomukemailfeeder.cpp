@@ -49,32 +49,15 @@
 #define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
 #include <soprano/nrlmodel.h>
 
-
 using namespace Akonadi;
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
-static void removeItemFromNepomuk( const Akonadi::Item &item )
-{
-  // find the graph that contains our item and delete the complete graph
-  QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
-                QString( "select ?g where { ?g <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor> %1. }")
-                       .arg( Soprano::Node::resourceToN3( item.url() ) ),
-                Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
-
-  foreach ( const Soprano::Node &node, list )
-    Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
-}
 
 Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
-  AgentBase( id )
+  NepomukFeederAgent( id )
 {
   changeRecorder()->itemFetchScope().fetchPayloadPart( MessagePart::Envelope );
   changeRecorder()->setMimeTypeMonitored( "message/rfc822" );
   changeRecorder()->setMimeTypeMonitored( "message/news" );
   changeRecorder()->setChangeRecordingEnabled( false );
-
-  // initialize Nepomuk
-  Nepomuk::ResourceManager::instance()->init();
 
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
@@ -84,16 +67,9 @@ NepomukEMailFeeder::~NepomukEMailFeeder()
   delete mNrlModel;
 }
 
-void NepomukEMailFeeder::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
+void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
 {
-  Q_UNUSED( collection );
-  itemChanged( item, QSet<QByteArray>() );
-}
-
-void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByteArray> & partIdentifiers)
-{
-  Q_UNUSED( partIdentifiers );
-  if ( !item.hasPayload<MessagePtr>() )
+  if ( !item.hasPayload<KMime::Message::Ptr>() )
     return;
 
   // first remove the item: since we use a graph that has a reference to all parts
@@ -109,7 +85,7 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
                            QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
                            item.url(), metaDataGraphUri );
 
-  MessagePtr msg = item.payload<MessagePtr>();
+  const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
   // FIXME: make a distinction between email and news
   NepomukFast::Email r( item.url(), graphUri );
@@ -154,11 +130,6 @@ void NepomukEMailFeeder::itemChanged(const Akonadi::Item & item, const QSet<QByt
   }
 
   // IDEA: use Strigi to index the attachments
-}
-
-void NepomukEMailFeeder::itemRemoved(const Akonadi::Item & item)
-{
-  removeItemFromNepomuk( item );
 }
 
 QList<NepomukFast::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs,

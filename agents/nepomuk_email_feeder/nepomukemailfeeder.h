@@ -28,6 +28,7 @@
 #include <QtCore/QList>
 
 #include <kmime/kmime_header_parsing.h>
+#include <nepomukfeederagent.h>
 
 namespace Soprano
 {
@@ -36,17 +37,14 @@ class NRLModel;
 
 namespace Akonadi {
 
-class NepomukEMailFeeder : public AgentBase, public AgentBase::Observer
+class NepomukEMailFeeder : public NepomukFeederAgent
 {
   Q_OBJECT
   public:
     NepomukEMailFeeder( const QString &id );
     ~NepomukEMailFeeder();
 
-  protected:
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
-    void itemRemoved(const Akonadi::Item &item);
+    void updateItem( const Akonadi::Item &item );
 
   private:
     QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl& );

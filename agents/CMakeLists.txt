@@ -2,6 +2,11 @@ add_subdirectory( maildispatcher )
 add_subdirectory( strigifeeder )
 
 if( Nepomuk_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
+    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder )
+    set( NEPOMUKFEEDER_SHARED_SRCS
+         ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederagent.cpp
+     )
+
 #    add_subdirectory( nie )
     add_subdirectory( nie_fast )
     add_subdirectory( nepomuk_email_feeder )
