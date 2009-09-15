@@ -2,4 +2,5 @@
   <kdehome>kdehome</kdehome>
   <confighome>xdgconfig-mysql.db</confighome>
   <datahome>xdglocal</datahome>
+  <envvar name="AKONADI_DISABLE_AGENT_AUTOSTART">true</envvar>
 </config>
