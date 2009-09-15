@@ -28,6 +28,10 @@ target_link_libraries( resourcetester
   ${QT_QTDBUS_LIBRARY}
   ${QT_QTNETWORK_LIBRARY}
   ${QT_QTTEST_LIBRARY}
+  ${KDE4_KROSSCORE_LIBS}
   ${KDE4_KROSSUI_LIBS}
+  ${KDE4_KDECORE_LIBS}
+  ${KDE4_KDEUI_LIBS}
+  ${KDE4_KIO_LIBS}
 )
 
