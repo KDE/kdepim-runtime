@@ -22,7 +22,7 @@
 
 #include <akonadi/collection.h>
 #include <akonadi/item.h>
-#include <akonadi/xml/xmldocument.h>
+#include "xml/xmldocument.h"
 
 #include <QtCore/QMetaEnum>
 #include <QtCore/QObject>
