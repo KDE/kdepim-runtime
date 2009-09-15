@@ -288,20 +288,42 @@ void EntityTreeView::dropEvent( QDropEvent * event )
     return;
 
   QMenu popup( this );
+  int actionCount = 0;
+  Qt::DropAction defaultAction;
   QAction* moveDropAction = 0;
-  // TODO If possible, hide unavailable actions ...
-  // Use the model to determine if a move is ok.
-  if ( target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem) )
-    moveDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-rename" ) ), i18n( "&Move here" ) );
+  // TODO check if the source supports moving
 
-  //TODO: If dropping on one of the selectedIndexes, just return.
-  // open a context menu offering different drop actions (move, copy and cancel)
+  if ( (target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem))
+    && (event->possibleActions() & Qt::MoveAction) ) {
+    moveDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-rename" ) ), i18n( "&Move here" ) );
+    ++actionCount;
+    defaultAction = Qt::MoveAction;
+  }
   QAction* copyDropAction = 0;
-  if ( target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem) )
+  if ( (target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem))
+    && (event->possibleActions() & Qt::CopyAction) ) {
     copyDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-copy" ) ), i18n( "&Copy here" ) );
+    ++actionCount;
+    defaultAction = Qt::CopyAction;
+  }
   QAction* linkAction = 0;
-  if ( target.rights() & Collection::CanLinkItem )
+  if ( (target.rights() & Collection::CanLinkItem) && (event->possibleActions() & Qt::LinkAction) ) {
     linkAction = popup.addAction( KIcon( QLatin1String( "edit-link" ) ), i18n( "&Link here" ) );
+    ++actionCount;
+    defaultAction = Qt::LinkAction;
+  }
+
+  if ( actionCount == 0 ) {
+    kDebug() << "Cannot drop here:" << event->possibleActions() << model()->supportedDragActions() << model()->supportedDropActions();
+    return;
+  }
+
+  if ( actionCount == 1 ) {
+    kDebug() << "Selecting drop action" << defaultAction << ", there are no other possibilities";
+    event->setDropAction( defaultAction );
+    QTreeView::dropEvent( event );
+    return;
+  }
 
   popup.addSeparator();
   popup.addAction( KIcon( QString::fromLatin1( "process-stop" ) ), i18n( "Cancel" ) );
@@ -319,7 +341,6 @@ void EntityTreeView::dropEvent( QDropEvent * event )
   } else {
     return;
   }
-
   QTreeView::dropEvent( event );
 }
 
@@ -347,6 +368,54 @@ void EntityTreeView::contextMenuEvent( QContextMenuEvent * event )
 void EntityTreeView::setXmlGuiClient( KXMLGUIClient * xmlGuiClient )
 {
   d->xmlGuiClient = xmlGuiClient;
+}
+
+void EntityTreeView::startDrag(Qt::DropActions _supportedActions)
+{
+  QModelIndexList indexes;
+  bool sourceReadable = true;
+  foreach ( const QModelIndex &index, selectionModel()->selectedRows() ) {
+    if ( !model()->flags( index ) & Qt::ItemIsDragEnabled )
+      continue;
+
+    if ( sourceReadable ) {
+      Collection source = index.data( EntityTreeModel::CollectionRole ).value<Collection>();
+      if ( !source.isValid() ) {
+        // index points to an item
+        source = index.data( EntityTreeModel::ParentCollectionRole ).value<Collection>();
+        sourceReadable = source.rights() & Collection::CanDeleteItem;
+      } else {
+        // index points to a collection
+        sourceReadable = source.rights() & Collection::CanDeleteCollection;
+      }
+    }
+
+    indexes.append( index );
+  }
+
+  if ( indexes.isEmpty() )
+    return;
+
+  QMimeData *mimeData = model()->mimeData( indexes );
+  if ( !mimeData )
+    return;
+
+  QDrag *drag = new QDrag( this );
+  drag->setMimeData( mimeData );
+  kDebug() << indexes.size();
+  if ( indexes.size() > 1 ) {
+    drag->setPixmap( KIcon( "document-multiple" ).pixmap( QSize( 22, 22 ) ) );
+  } else {
+    QPixmap pixmap = indexes.first().data( Qt::DecorationRole ).value<QIcon>().pixmap( QSize( 22, 22 ) );
+    if ( pixmap.isNull() )
+      pixmap = KIcon( "text-plain" ).pixmap( QSize( 22, 22 ) );
+    drag->setPixmap( pixmap );
+  }
+
+  Qt::DropActions supportedActions( _supportedActions );
+  if ( !sourceReadable )
+    supportedActions &= ~Qt::MoveAction;
+  drag->exec( supportedActions, Qt::CopyAction );
 }
 
 #include "entitytreeview.moc"

@@ -157,6 +157,7 @@ protected:
   virtual void dragLeaveEvent( QDragLeaveEvent *event );
   virtual void dropEvent( QDropEvent *event );
   virtual void contextMenuEvent( QContextMenuEvent *event );
+  virtual void startDrag( Qt::DropActions supportedActions );
 
 private:
   //@cond PRIVATE
