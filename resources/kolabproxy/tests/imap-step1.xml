@@ -44,7 +44,6 @@ if syncing is extremely fast.
  M  +40 -0     resourcesynchronizationjob.cpp  
  M  +1 -1      resourcesynchronizationjob.h  
 </payload>
-              <flag>\Seen</flag>
             </item>
           </collection>
           <attribute type="uidnext" >1</attribute>
@@ -93,7 +92,6 @@ if syncing is extremely fast.
  M  +40 -0     resourcesynchronizationjob.cpp  
  M  +1 -1      resourcesynchronizationjob.h  
 </payload>
-        <flag>\Seen</flag>
       </item>
     </collection>
     <attribute type="AccessRights" ></attribute>
