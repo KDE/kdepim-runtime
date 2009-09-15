@@ -21,7 +21,7 @@ if( Nepomuk_FOUND )
   endif(EXISTS ${_PLUGIN_DIR}/raptorparser.desktop)
 
   if(SOPRANO_PLUGIN_RAPTORPARSER_FOUND)
-    add_subdirectory( nie )
+#    add_subdirectory( nie )
     add_subdirectory( nie_fast )
     add_subdirectory( nepomuk_email_feeder )
     add_subdirectory( nepomuk_contact_feeder )
