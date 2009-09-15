@@ -7,7 +7,6 @@ if( Nepomuk_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederagent.cpp
      )
 
-#    add_subdirectory( nie )
     add_subdirectory( nie_fast )
     add_subdirectory( nepomuk_email_feeder )
     add_subdirectory( nepomuk_contact_feeder )
