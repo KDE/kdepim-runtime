@@ -72,7 +72,7 @@ void CollectionTest::addContentType(const QString& type)
 
 void CollectionTest::create()
 {
-  mCollection.setParent( mParent );
+  mCollection.setParentCollection( mParent );
   CollectionCreateJob* job = new CollectionCreateJob( mCollection, this );
   if ( !job->exec() )
     Test::instance()->fail( job->errorString() );
