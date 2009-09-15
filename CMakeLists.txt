@@ -83,7 +83,7 @@ macro( akonadi_add_resourcetest _testname _script )
     set(_resourcetester ${_resourcetester}.shell)
   endif (UNIX)
 
-  add_test( akonadi-mysql-db-${_testname} akonaditest -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config-mysql-db.xml ${_resourcetester} -c ${CMAKE_CURRENT_SOURCE_DIR}/${_script} )
+  add_test( akonadi-mysql-db-${_testname} akonaditest -c ${kdepim-runtime_SOURCE_DIR}/resourcetester/tests/unittestenv/config-mysql-db.xml ${_resourcetester} -c ${CMAKE_CURRENT_SOURCE_DIR}/${_script} )
 endmacro( akonadi_add_resourcetest )
 
 ############### Now, we add the components ###############
