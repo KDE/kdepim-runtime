@@ -45,6 +45,7 @@
 #include "journal.h"
 #include "participationstatus.h"
 #include "personcontact.h"
+#include "todo.h"
 
 #include <QtCore/QTime>
 #include <QtCore/QTimer>
@@ -190,6 +191,8 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
 
     event.addAttendee( attendee );
   }
+
+  tagsFromCategories( event, calEvent->categories() );
 }
 
 void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCal::Journal::Ptr &calJournal, const QUrl &graphUri )
@@ -198,10 +201,15 @@ void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const 
     NepomukFast::Journal journal( item.url(), graphUri );
 
     journal.setLabel( calJournal->summary() );
+
+    tagsFromCategories( journal, calJournal->categories() );
 }
 
 void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCal::Todo::Ptr &calTodo, const QUrl &graphUri )
 {
+  NepomukFast::Todo todo( item.url(), graphUri );
+  todo.setLabel( calTodo->summary() );
+  tagsFromCategories( todo, calTodo->categories() );
 }
 
 } // namespace Akonadi

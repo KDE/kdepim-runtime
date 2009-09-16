@@ -259,6 +259,8 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
 
     contact.addPostalAddress( address );
   }
+
+  tagsFromCategories( contact, addressee.categories() );
 }
 
 void NepomukContactFeeder::updateGroupItem( const Akonadi::Item &item, const QUrl &graphUri )

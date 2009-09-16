@@ -31,6 +31,7 @@
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
+#include <nepomuk/tag.h>
 
 #include <KUrl>
 
@@ -141,5 +142,14 @@ void NepomukFeederAgent::itemsReceived(const Akonadi::Item::List& items)
   std::for_each( items.constBegin(), items.constEnd(), boost::bind( &NepomukFeederAgent::updateItem, this, _1 ) );
 }
 
+void NepomukFeederAgent::tagsFromCategories(NepomukFast::Resource& resource, const QStringList& categories)
+{
+  // FIXME: this voids the usage of the XFast classes...
+  Nepomuk::Resource res( resource.uri() );
+  foreach ( const QString &category, categories ) {
+    const Nepomuk::Tag tag( category );
+    res.addTag( tag );
+  }
+}
 
 #include "nepomukfeederagent.moc"

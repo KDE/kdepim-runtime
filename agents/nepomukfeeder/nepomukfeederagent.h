@@ -27,6 +27,8 @@
 #include <akonadi/item.h>
 #include <akonadi/mimetypechecker.h>
 
+#include "resource.h"
+
 #include <QStringList>
 
 namespace Akonadi
@@ -45,6 +47,9 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     /** Remove all references to the given item from Nepomuk. */
     static void removeItemFromNepomuk( const Akonadi::Item &item );
+
+    /** Adds tags to @p resource based on the given string list. */
+    static void tagsFromCategories( NepomukFast::Resource &resource, const QStringList &categories );
 
     /** Add a supported mimetype. */
     void addSupportedMimeType( const QString &mimeType );
