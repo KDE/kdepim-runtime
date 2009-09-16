@@ -22,6 +22,12 @@
 #include "nepomukfeederagent.h"
 
 #include <akonadi/item.h>
+#include <akonadi/changerecorder.h>
+#include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionfetchscope.h>
+#include <akonadi/mimetypechecker.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -32,10 +38,20 @@
 #include <Soprano/NodeIterator>
 #include <Soprano/QueryResultIterator>
 
+#include <QtCore/QTimer>
+
+#include <boost/bind.hpp>
+
+using namespace Akonadi;
+
 NepomukFeederAgent::NepomukFeederAgent(const QString& id) : AgentBase(id)
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
+
+ changeRecorder()->setChangeRecordingEnabled( false );
+
+ QTimer::singleShot( 0, this, SLOT(updateAll()) );
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -73,5 +89,57 @@ void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
   removeItemFromNepomuk( item );
 }
+
+void NepomukFeederAgent::addSupportedMimeType( const QString &mimeType )
+{
+  mSupportedMimeTypes.append( mimeType );
+  changeRecorder()->setMimeTypeMonitored( mimeType );
+  mMimeTypeChecker.setWantedMimeTypes( mSupportedMimeTypes );
+}
+
+void NepomukFeederAgent::updateAll()
+{
+  CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
+  collectionFetch->fetchScope().setContentMimeTypes( mSupportedMimeTypes );
+  connect( collectionFetch, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
+}
+
+void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& collections)
+{
+  mMimeTypeChecker.setWantedMimeTypes( mSupportedMimeTypes );
+  foreach( const Collection &collection, collections ) {
+    kDebug() << "checking collection" << collection.name();
+    if ( mMimeTypeChecker.isWantedCollection( collection ) ) {
+      kDebug() << "fetching items from collection" << collection.name();
+      ItemFetchJob *itemFetch = new ItemFetchJob( collection, this );
+      connect( itemFetch, SIGNAL(itemsReceived( Akonadi::Item::List)), SLOT(itemHeadersReceived(Akonadi::Item::List)) );
+    }
+  }
+}
+
+void NepomukFeederAgent::itemHeadersReceived(const Akonadi::Item::List& items)
+{
+  kDebug() << items.count();
+  Akonadi::Item::List itemsToUpdate;
+  foreach( const Item &item, items ) {
+    if ( !mMimeTypeChecker.isWantedItem( item ) )
+      continue;
+    // update item if it does not exist
+    if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(), Soprano::Node(), Soprano::Node() ) )
+      itemsToUpdate.append( item );
+  }
+
+  ItemFetchJob *itemFetch = new ItemFetchJob( items, this );
+  itemFetch->setFetchScope( changeRecorder()->itemFetchScope() );
+  connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemsReceived(Akonadi::Item::List)) );
+  kDebug() << "done";
+}
+
+void NepomukFeederAgent::itemsReceived(const Akonadi::Item::List& items)
+{
+  kDebug() << items.size();
+  std::for_each( items.constBegin(), items.constEnd(), boost::bind( &NepomukFeederAgent::updateItem, this, _1 ) );
+}
+
 
 #include "nepomukfeederagent.moc"

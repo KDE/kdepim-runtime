@@ -73,16 +73,10 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   : NepomukFeederAgent( id ),
     mForceUpdate( false )
 {
+  addSupportedMimeType( KABC::Addressee::mimeType() );
+  addSupportedMimeType( KABC::ContactGroup::mimeType() );
+
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  changeRecorder()->setMimeTypeMonitored( KABC::Addressee::mimeType() );
-  changeRecorder()->setMimeTypeMonitored( KABC::ContactGroup::mimeType() );
-  changeRecorder()->setChangeRecordingEnabled( false );
-
-  // do the initial scan to make sure all items have been fed to nepomuk
-  QTimer::singleShot( 0, this, SLOT( slotInitialItemScan() ) );
-
-  // The line below is not necessary anymore once AgentBase also exports scriptable slots
-  QDBusConnection::sessionBus().registerObject( "/nepomukcontactfeeder", this, QDBusConnection::ExportScriptableSlots );
 
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
@@ -90,62 +84,6 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
 NepomukContactFeeder::~NepomukContactFeeder()
 {
   delete mNrlModel;
-}
-
-void NepomukContactFeeder::slotInitialItemScan()
-{
-  kDebug();
-  updateAll( false );
-}
-
-void NepomukContactFeeder::updateAll( bool force )
-{
-  mForceUpdate = force;
-
-  CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-  if ( collectionFetch->exec() ) {
-    Collection::List collections = collectionFetch->collections();
-
-    MimeTypeChecker contactFilter;
-    contactFilter.addWantedMimeType( KABC::Addressee::mimeType() );
-    contactFilter.addWantedMimeType( KABC::ContactGroup::mimeType() );
-    foreach( const Collection &collection, collections) {
-      kDebug() << "checking collection" << collection.name();
-      if ( contactFilter.isWantedCollection( collection ) ) {
-        kDebug() << "fetching items from collection" << collection.name();
-        ItemFetchJob *itemFetch = new ItemFetchJob( collection );
-        itemFetch->fetchScope().fetchFullPayload();
-        connect( itemFetch, SIGNAL( itemsReceived( Akonadi::Item::List ) ),
-                 this, SLOT( slotItemsReceivedForInitialScan( Akonadi::Item::List ) ) );
-      }
-    }
-  }
-}
-
-void NepomukContactFeeder::slotItemsReceivedForInitialScan( const Akonadi::Item::List& items )
-{
-  kDebug() << items.count();
-  foreach( const Item &item, items ) {
-    // only update the item if it does not exist
-    if ( mForceUpdate ||
-         !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(), Soprano::Node(), Soprano::Node() ) ) {
-      // FIXME: the idea is that we only fetch the full payload for items that need updating
-      //        However, the code below always returns an empty list!
-//       ItemFetchJob *itemFetch = new ItemFetchJob( item );
-//       itemFetch->fetchScope().fetchFullPayload();
-//       if ( itemFetch->exec() ) {
-//         Akonadi::Item::List fullItems = itemFetch->items();
-//         if ( fullItems.isEmpty() ) {
-//           kDebug() << "Failed to get full payload for item" << item.url();
-//         }
-//         else {
-//           updateItem( itemFetch->items().first() );
-//         }
-//       }
-      updateItem( item );
-    }
-  }
-  kDebug() << "done";
 }
 
 namespace {

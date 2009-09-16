@@ -29,6 +29,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/mimetypechecker.h>
+#include <kcal/kcalmimetypevisitor.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -87,15 +88,12 @@ NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
   : NepomukFeederAgent( id ),
     mForceUpdate( false )
 {
+  addSupportedMimeType( KCalMimeTypeVisitor::eventMimeType() );
+  addSupportedMimeType( KCalMimeTypeVisitor::todoMimeType() );
+  addSupportedMimeType( KCalMimeTypeVisitor::journalMimeType() );
+  addSupportedMimeType( KCalMimeTypeVisitor::freeBusyMimeType() );
+
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  changeRecorder()->setMimeTypeMonitored( "text/calendar" );
-  changeRecorder()->setChangeRecordingEnabled( false );
-
-  // do the initial scan to make sure all items have been fed to nepomuk
-  QTimer::singleShot( 0, this, SLOT( slotInitialItemScan() ) );
-
-  // The line below is not necessary anymore once AgentBase also exports scriptable slots
-  QDBusConnection::sessionBus().registerObject( "/nepomukcalendarfeeder", this, QDBusConnection::ExportScriptableSlots );
 
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
@@ -103,45 +101,6 @@ NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
 NepomukCalendarFeeder::~NepomukCalendarFeeder()
 {
   delete mNrlModel;
-}
-
-void NepomukCalendarFeeder::slotInitialItemScan()
-{
-  kDebug();
-  updateAll( false );
-}
-
-void NepomukCalendarFeeder::updateAll( bool force )
-{
-  mForceUpdate = force;
-
-  CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-  if ( collectionFetch->exec() ) {
-    Collection::List collections = collectionFetch->collections();
-
-    MimeTypeChecker calendarFilter;
-    calendarFilter.addWantedMimeType( "text/calendar" );
-    foreach ( const Collection &collection, collections ) {
-      if ( calendarFilter.isWantedCollection( collection ) ) {
-        ItemFetchJob *itemFetch = new ItemFetchJob( collection );
-        itemFetch->fetchScope().fetchFullPayload();
-        connect( itemFetch, SIGNAL( itemsReceived( Akonadi::Item::List ) ),
-                 this, SLOT( slotItemsReceivedForInitialScan( Akonadi::Item::List ) ) );
-      }
-    }
-  }
-}
-
-void NepomukCalendarFeeder::slotItemsReceivedForInitialScan( const Akonadi::Item::List& items )
-{
-  kDebug() << items.count();
-  foreach( const Item &item, items ) {
-    // only update the item if it does not exist
-    if ( mForceUpdate ||
-         !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(), Soprano::Node(), Soprano::Node() ) ) {
-      updateItem( item );
-    }
-  }
 }
 
 void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )

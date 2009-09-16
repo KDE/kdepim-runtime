@@ -35,18 +35,9 @@ namespace Akonadi {
 class NepomukContactFeeder : public NepomukFeederAgent
 {
   Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.akonadi.NepomukContactFeeder" )
-
   public:
     NepomukContactFeeder( const QString &id );
     ~NepomukContactFeeder();
-
-  public Q_SLOTS:
-    Q_SCRIPTABLE void updateAll( bool force = false );
-
-  private Q_SLOTS:
-    void slotInitialItemScan();
-    void slotItemsReceivedForInitialScan( const Akonadi::Item::List& items );
 
   private:
     void updateItem( const Akonadi::Item &item );

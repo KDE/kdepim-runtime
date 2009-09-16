@@ -41,18 +41,10 @@ namespace Akonadi {
 class NepomukCalendarFeeder : public NepomukFeederAgent
 {
   Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.akonadi.NepomukCalendarFeeder" )
 
   public:
     NepomukCalendarFeeder( const QString &id );
     ~NepomukCalendarFeeder();
-
-  public Q_SLOTS:
-    Q_SCRIPTABLE void updateAll( bool force = false );
-
-  private Q_SLOTS:
-    void slotInitialItemScan();
-    void slotItemsReceivedForInitialScan( const Akonadi::Item::List& items );
 
   private:
     void updateItem( const Akonadi::Item &item );
