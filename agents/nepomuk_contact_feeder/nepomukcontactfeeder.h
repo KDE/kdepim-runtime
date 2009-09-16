@@ -44,7 +44,6 @@ class NepomukContactFeeder : public NepomukFeederAgent
     void updateContactItem( const Akonadi::Item &item, const QUrl& );
     void updateGroupItem( const Akonadi::Item &item, const QUrl& );
 
-    bool mForceUpdate;
     Soprano::NRLModel *mNrlModel;
 };
 

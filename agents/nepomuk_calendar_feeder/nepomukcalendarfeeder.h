@@ -52,7 +52,6 @@ class NepomukCalendarFeeder : public NepomukFeederAgent
     void updateJournalItem( const Akonadi::Item &item, KCal::Journal*, const QUrl& );
     void updateTodoItem( const Akonadi::Item &item, KCal::Todo*, const QUrl& );
 
-    bool mForceUpdate;
     Soprano::NRLModel *mNrlModel;
 };
 

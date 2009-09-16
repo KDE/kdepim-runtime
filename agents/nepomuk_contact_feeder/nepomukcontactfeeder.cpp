@@ -24,11 +24,7 @@
 #include <kabc/contactgroup.h>
 
 #include <akonadi/changerecorder.h>
-#include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/mimetypechecker.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -61,17 +57,12 @@
 #include "voicephonenumber.h"
 #include "website.h"
 
-#include <QtCore/QTime>
-#include <QtCore/QTimer>
-#include <QtDBus/QDBusConnection>
-
 #include <KDebug>
 
 namespace Akonadi {
 
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
-  : NepomukFeederAgent( id ),
-    mForceUpdate( false )
+  : NepomukFeederAgent( id )
 {
   addSupportedMimeType( KABC::Addressee::mimeType() );
   addSupportedMimeType( KABC::ContactGroup::mimeType() );

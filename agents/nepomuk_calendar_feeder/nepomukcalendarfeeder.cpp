@@ -26,9 +26,6 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/mimetypechecker.h>
 #include <kcal/kcalmimetypevisitor.h>
 
 #include <nepomuk/resource.h>
@@ -85,8 +82,7 @@ static NepomukFast::Contact findNepomukContact( const QString &name, const QStri
 }
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
-  : NepomukFeederAgent( id ),
-    mForceUpdate( false )
+  : NepomukFeederAgent( id )
 {
   addSupportedMimeType( KCalMimeTypeVisitor::eventMimeType() );
   addSupportedMimeType( KCalMimeTypeVisitor::todoMimeType() );
