@@ -67,11 +67,30 @@ macro(kcfg_generate_dbus_interface _kcfg _name)
     )
 endmacro(kcfg_generate_dbus_interface)
 
+# resource tests
+macro( akonadi_add_resourcetest _testname _script )
+  if ( ${EXECUTABLE_OUTPUT_PATH} )
+    set( _exepath ${EXECUTABLE_OUTPUT_PATH} )
+  else ( ${EXECUTABLE_OUTPUT_PATH} )
+    set( _exepath ${kdepim-runtime_BINARY_DIR}/resourcetester )
+  endif ( ${EXECUTABLE_OUTPUT_PATH} )
+  if (WIN32)
+    set(_resourcetester ${_exepath}/resourcetester.bat)
+  else (WIN32)
+    set(_resourcetester ${_exepath}/resourcetester)
+  endif (WIN32)
+  if (UNIX)
+    set(_resourcetester ${_resourcetester}.shell)
+  endif (UNIX)
+
+  add_test( akonadi-mysql-db-${_testname} akonaditest -c ${kdepim-runtime_SOURCE_DIR}/resourcetester/tests/unittestenv/config-mysql-db.xml ${_resourcetester} -c ${CMAKE_CURRENT_SOURCE_DIR}/${_script} )
+endmacro( akonadi_add_resourcetest )
 
 ############### Now, we add the components ###############
 
 add_subdirectory(libkdepim-copy)
 add_subdirectory(xml)
+add_subdirectory(resourcetester)
 add_subdirectory(clients)
 add_subdirectory(resources)
 add_subdirectory(agents)
