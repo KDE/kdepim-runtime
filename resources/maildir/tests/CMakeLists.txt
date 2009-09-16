@@ -38,4 +38,5 @@ endmacro(add_akonadi_isolated_test)
 
 
 add_akonadi_isolated_test( synctest.cpp )
+akonadi_add_resourcetest( maildir maildir.js )
 
