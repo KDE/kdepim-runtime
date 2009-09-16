@@ -6,6 +6,7 @@ Name[nds]=Nepomuk-Kalenneringaav
 Name[pt]=Alimentação do Calendário para o Nepomuk
 Name[pt_BR]=Alimentador de calendário para o Nepomuk
 Name[sv]=Kontaktinmatning till Nepomuk
+Name[tr]=Nepomuk Takvim Besleyici
 Name[uk]=Передавач календарів Nepomuk
 Name[x-test]=xxNepomuk Calendar Feederxx
 Comment=Extension to push events, journals and todos into Nepomuk
