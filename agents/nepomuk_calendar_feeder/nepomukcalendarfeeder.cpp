@@ -19,10 +19,6 @@
 
 #include "nepomukcalendarfeeder.h"
 
-#include <kcal/event.h>
-#include <kcal/journal.h>
-#include <kcal/todo.h>
-
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
@@ -57,8 +53,6 @@
 #include <KDebug>
 
 #include <boost/shared_ptr.hpp>
-
-typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 namespace Akonadi {
 
@@ -101,7 +95,7 @@ NepomukCalendarFeeder::~NepomukCalendarFeeder()
 
 void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )
 {
-  if ( !item.hasPayload<IncidencePtr>() ) {
+  if ( !item.hasPayload<KCal::Incidence::Ptr>() ) {
     kDebug() << "Got item without payload. Mimetype:" << item.mimeType()
              << "Id:" << item.id();
     return;
@@ -120,20 +114,16 @@ void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )
                            QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
                            item.url(), metaDataGraphUri );
 
-  IncidencePtr incidencePtr = item.payload<IncidencePtr>();
-
-  KCal::Incidence *incidence = incidencePtr.get();
-
-  if ( incidence->type() == "Event" ) {
-    updateEventItem( item, static_cast<KCal::Event*>( incidence), graphUri );
-  } else if ( incidence->type() == "Journal" ) {
-    updateJournalItem( item, static_cast<KCal::Journal*>( incidence), graphUri );
-  } else if ( incidence->type() == "Todo" ) {
-    updateTodoItem( item, static_cast<KCal::Todo*>( incidence), graphUri );
+  if ( item.hasPayload<KCal::Event::Ptr>() ) {
+    updateEventItem( item, item.payload<KCal::Event::Ptr>(), graphUri );
+  } else if ( item.hasPayload<KCal::Journal::Ptr>() ) {
+    updateJournalItem( item, item.payload<KCal::Journal::Ptr>(), graphUri );
+  } else if ( item.hasPayload<KCal::Todo::Ptr>() ) {
+    updateTodoItem( item, item.payload<KCal::Todo::Ptr>(), graphUri );
   }
 }
 
-void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, KCal::Event *calEvent, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCal::Event::Ptr &calEvent, const QUrl &graphUri )
 {
   // create event with the graph reference
   NepomukFast::Event event( item.url(), graphUri );
@@ -202,7 +192,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, KCal::Ev
   }
 }
 
-void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, KCal::Journal *calJournal, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCal::Journal::Ptr &calJournal, const QUrl &graphUri )
 {
     // create journal entry with the graph reference
     NepomukFast::Journal journal( item.url(), graphUri );
@@ -210,7 +200,7 @@ void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, KCal::
     journal.setLabel( calJournal->summary() );
 }
 
-void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, KCal::Todo *calTodo, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCal::Todo::Ptr &calTodo, const QUrl &graphUri )
 {
 }
 

@@ -20,20 +20,18 @@
 #ifndef AKONADI_NEPOMUK_CALENDAR_FEEDER_H
 #define AKONADI_NEPOMUK_CALENDAR_FEEDER_H
 
+#include <nepomukfeederagent.h>
+
 #include <akonadi/agentbase.h>
 #include <akonadi/item.h>
-#include <nepomukfeederagent.h>
+
+#include <kcal/event.h>
+#include <kcal/journal.h>
+#include <kcal/todo.h>
 
 namespace Soprano
 {
 class NRLModel;
-}
-
-namespace KCal
-{
-class Event;
-class Journal;
-class Todo;
 }
 
 namespace Akonadi {
@@ -48,9 +46,9 @@ class NepomukCalendarFeeder : public NepomukFeederAgent
 
   private:
     void updateItem( const Akonadi::Item &item );
-    void updateEventItem( const Akonadi::Item &item, KCal::Event*, const QUrl& );
-    void updateJournalItem( const Akonadi::Item &item, KCal::Journal*, const QUrl& );
-    void updateTodoItem( const Akonadi::Item &item, KCal::Todo*, const QUrl& );
+    void updateEventItem( const Akonadi::Item& item, const KCal::Event::Ptr&, const QUrl& );
+    void updateJournalItem( const Akonadi::Item& item, const KCal::Journal::Ptr&, const QUrl& );
+    void updateTodoItem( const Akonadi::Item& item, const KCal::Todo::Ptr&, const QUrl& );
 
     Soprano::NRLModel *mNrlModel;
 };
