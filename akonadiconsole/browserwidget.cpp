@@ -313,6 +313,7 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
     delete mNepomukModel;
     mNepomukModel = 0;
     if ( res.isValid() ) {
+      contentUi.rdfClassName->setText( res.className() );
       QHash<QUrl, Nepomuk::Variant> props = res.properties();
       mNepomukModel = new QStandardItemModel( props.count(), 2, this );
       QStringList labels;
