@@ -44,7 +44,7 @@ AkiNotes::AkiNotes(QObject *_parent)
 	connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)),
 	    this, SLOT(noteItemAdded(Akonadi::Item)));
 
-	// TODO: test
+	// TODO: test 
 	connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)),
 	    this, SLOT(noteItemAdded(Akonadi::Item)));
 
@@ -75,7 +75,7 @@ AkiNotes::noteItemAdded(const Akonadi::Item &_item)
 		AkiNoteItem *item = new AkiNoteItem(_item);
 		m_items[_item.id()] = item;
 #ifdef LSN_PLASMA_GUI_AVAILABLE
-		// replace with plasma item
+		// replace with remote item
 		new StickyNotes::StandaloneNoteItem(item);
 #elif LSN_STANDALONE_GUI_AVAILABLE
 		new StickyNotes::StandaloneNoteItem(item);
@@ -112,6 +112,7 @@ AkiNotes::fetchNoteDone(KJob* _job)
 {
 	if (_job->error()) {
 		kDebug() << "Note job failed:" << _job->errorString();
+		return;
 	}
 
 	Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob*>(_job)->items();
