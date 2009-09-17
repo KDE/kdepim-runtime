@@ -2,7 +2,6 @@
 Name=QImage Serializer
 Name[gl]=Serializador de QImage
 Name[pt]=Serializador do QImage
-Name[pt_BR]=Serializador do QImage
 Name[sv]=QImage-serialisering
 Name[tr]=QImage Sıralandırıcı
 Name[uk]=Серіалізатор QImage
@@ -10,7 +9,6 @@ Name[x-test]=xxQImage Serializerxx
 Comment=An Akonadi serializer plugin for QImage objects
 Comment[gl]=Un engadido de Akonadi para serializar obxectos QImage
 Comment[pt]=Um 'plugin' de serialização do Akonadi para objectos QImage
-Comment[pt_BR]=Um 'plugin' de serialização do Akonadi para objectos QImage
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av QImage-objekt
 Comment[tr]=QImage nesneleri için bir Akonadi sıralandırıcısı
 Comment[uk]=Втулок серіалізації Akonadi для об'єктів QImage
