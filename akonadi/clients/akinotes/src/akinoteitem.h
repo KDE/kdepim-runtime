@@ -22,16 +22,18 @@
 #ifndef AKINOTEITEM_H
 #define AKINOTEITEM_H
 
+#include <Akonadi/Item>
 #include <StickyNotes/BaseNoteItem>
 #include <boost/shared_ptr.hpp>
 
-namespace Akonadi { class Item; };
 namespace KCal { class Incidence; };
+
+class AkiNotes;
 
 class AkiNoteItem : public StickyNotes::BaseNoteItem
 {
 public:
-	AkiNoteItem(const Akonadi::Item &_item);
+	AkiNoteItem(const Akonadi::Item &_item, AkiNotes &_owner);
 	virtual ~AkiNoteItem(void);
 
 	bool isValid(void) const;
@@ -52,7 +54,9 @@ protected:
 	    const QString &_subject);
 
 private:
-	boost::shared_ptr<KCal::Incidence> m_item;
+	boost::shared_ptr<KCal::Incidence> m_incidence;
+	Akonadi::Item m_item;
+	AkiNotes &m_owner;
 	bool m_valid;
 };
 

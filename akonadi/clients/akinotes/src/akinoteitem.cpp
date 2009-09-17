@@ -23,7 +23,7 @@
 
 #include <QByteArray>
 
-#include <Akonadi/Item>
+#include <Akonadi/ItemModifyJob>
 #include <KCal/Incidence>
 
 
@@ -35,11 +35,11 @@ using namespace StickyNotes;
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
-AkiNoteItem::AkiNoteItem(const Akonadi::Item &_item)
-: BaseNoteItem(0), m_valid(false)
+AkiNoteItem::AkiNoteItem(const Akonadi::Item &_item, AkiNotes &_owner)
+: BaseNoteItem(0), m_item(_item), m_owner(_owner), m_valid(false)
 {
-	if (_item.hasPayload<IncidencePtr>()) {
-		m_item = _item.payload<IncidencePtr>();
+	if (m_item.hasPayload<IncidencePtr>()) {
+		m_incidence = m_item.payload<IncidencePtr>();
 		m_valid = true;
 	}
 }
@@ -57,7 +57,7 @@ AkiNoteItem::isValid(void) const
 QVariant
 AkiNoteItem::attribute(const QString &_name) const
 {
-	return (m_item->nonKDECustomProperty(_name.toAscii()));
+	return (m_incidence->nonKDECustomProperty(_name.toAscii()));
 }
 
 QList<QString>
@@ -65,7 +65,7 @@ AkiNoteItem::attributeNames(void) const
 {
 	QList<QString> keys;
 
-	foreach(QByteArray key, m_item->customProperties().keys())
+	foreach(QByteArray key, m_incidence->customProperties().keys())
 		keys << key;
 
 	return (keys);
@@ -74,13 +74,13 @@ AkiNoteItem::attributeNames(void) const
 QString
 AkiNoteItem::content(void) const
 {
-	return (m_item->description());
+	return (m_incidence->description());
 }
 
 QString
 AkiNoteItem::subject(void) const
 {
-	return (m_item->summary());
+	return (m_incidence->summary());
 }
 
 bool
@@ -90,7 +90,14 @@ AkiNoteItem::applyAttribute(BaseNoteItem * const _sender,
 	if (attribute(_name) == _value)
 		return false;
 
-	m_item->setNonKDECustomProperty(_name.toAscii(), _value.toString());
+	m_incidence->setNonKDECustomProperty(_name.toAscii(), _value.toString());
+	m_item.setPayload<IncidencePtr>(m_incidence);
+
+	Akonadi::ItemModifyJob* sJob = new Akonadi::ItemModifyJob(m_item);
+	if (!sJob->exec()) {
+		kDebug() << sJob->errorString();
+		return (false);
+	}
 
 	return (true);
 }
@@ -102,7 +109,14 @@ AkiNoteItem::applyContent(BaseNoteItem * const _sender,
 	if (0 == content().compare(_content))
 		return (false);
 
-	m_item->setDescription(_content);
+	m_incidence->setDescription(_content);
+	m_item.setPayload<IncidencePtr>(m_incidence);
+
+	Akonadi::ItemModifyJob* sJob = new Akonadi::ItemModifyJob(m_item);
+	if (!sJob->exec()) {
+		kDebug() << sJob->errorString();
+		return (false);
+	}
 
 	return (true);
 }
@@ -114,7 +128,14 @@ AkiNoteItem::applySubject(BaseNoteItem * const _sender,
 	if (0 == subject().compare(_subject))
 		return (false);
 
-	m_item->setSummary(_subject);
+	m_incidence->setSummary(_subject);
+	m_item.setPayload<IncidencePtr>(m_incidence);
+
+	Akonadi::ItemModifyJob* sJob = new Akonadi::ItemModifyJob(m_item);
+	if (!sJob->exec()) {
+		kDebug() << sJob->errorString();
+		return (false);
+	}
 
 	return (true);
 }

@@ -44,6 +44,7 @@ public:
 
 private slots:
 	void noteItemAdded(const Akonadi::Item &_item);
+	void noteItemChanged(const Akonadi::Item &_item);
         void fetchNoteCollectionsDone(KJob* _job);
         void fetchNoteDone(KJob* _job);
 

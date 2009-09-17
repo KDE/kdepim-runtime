@@ -44,9 +44,8 @@ AkiNotes::AkiNotes(QObject *_parent)
 	connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)),
 	    this, SLOT(noteItemAdded(Akonadi::Item)));
 
-	// TODO: test 
 	connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)),
-	    this, SLOT(noteItemAdded(Akonadi::Item)));
+	    this, SLOT(noteItemChanged(Akonadi::Item)));
 
         Akonadi::Collection noteCollection(Akonadi::Collection::root());
         noteCollection.setContentMimeTypes(QStringList() << "application/x-vnd.kde.notes");
@@ -69,21 +68,29 @@ AkiNotes::~AkiNotes(void)
 void
 AkiNotes::noteItemAdded(const Akonadi::Item &_item)
 {
-	if (m_items.contains(_item.id())) {
-		// TODO: test, update item if needed
-	} else {
-		AkiNoteItem *item = new AkiNoteItem(_item);
-		m_items[_item.id()] = item;
-#ifdef LSN_PLASMA_GUI_AVAILABLE
-		// replace with remote item
-		new StickyNotes::StandaloneNoteItem(item);
-#elif LSN_STANDALONE_GUI_AVAILABLE
-		new StickyNotes::StandaloneNoteItem(item);
-#else
-		kDebug() << "No GUI Available";
-#endif
+	AkiNoteItem *item = new AkiNoteItem(_item, *this);
 
+	if (!item->isValid()) {
+	    delete item;
+	    return;
 	}
+
+	m_monitor->setItemMonitored(_item);
+
+	m_items[_item.id()] = item;
+#ifdef LSN_PLASMA_GUI_AVAILABLE
+	// replace with remote item
+	new StickyNotes::StandaloneNoteItem(item);
+#elif LSN_STANDALONE_GUI_AVAILABLE
+	new StickyNotes::StandaloneNoteItem(item);
+#else
+	kDebug() << "No GUI Available";
+#endif
+}
+
+void
+AkiNotes::noteItemChanged(const Akonadi::Item &_item)
+{
 }
 
 void
