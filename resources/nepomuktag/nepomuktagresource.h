@@ -21,6 +21,7 @@
 #define __NEPOMUKTAG_RESOURCE_H__
 
 #include <akonadi/resourcebase.h>
+#include <soprano/statement.h>
 
 class NepomukTagResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
 {
@@ -42,6 +43,9 @@ protected Q_SLOTS:
 private Q_SLOTS:
     void slotLocalListResult( KJob* job );
     void slotLinkResult( KJob* job );
+
+    void statementAdded( const Soprano::Statement &statement );
+    void statementRemoved( const Soprano::Statement &statement );
 
 protected:
     virtual void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );

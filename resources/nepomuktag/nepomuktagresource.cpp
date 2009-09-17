@@ -31,6 +31,8 @@
 
 #include <nepomuk/tag.h>
 #include <nepomuk/resourcemanager.h>
+#include <soprano/signalcachemodel.h>
+#include <soprano/nao.h>
 
 #include <boost/bind.hpp>
 #include <algorithm>
@@ -43,6 +45,10 @@ NepomukTagResource::NepomukTagResource( const QString &id )
     Nepomuk::ResourceManager::instance()->init();
     changeRecorder()->fetchCollection( true );
     setName( i18n( "Tags" ) );
+
+    Soprano::Util::SignalCacheModel* model = new Soprano::Util::SignalCacheModel( Nepomuk::ResourceManager::instance()->mainModel() );
+    connect( model, SIGNAL(statementAdded(Soprano::Statement)), SLOT(statementAdded(Soprano::Statement)) );
+    connect( model, SIGNAL(statementRemoved(Soprano::Statement)), SLOT(statementRemoved(Soprano::Statement)) );
 }
 
 NepomukTagResource::~NepomukTagResource()
@@ -211,6 +217,32 @@ void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection
     tag.remove();
     changeCommitted( collection );
 }
+
+
+void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
+{
+  if ( statement.predicate() != Soprano::Vocabulary::NAO::hasTag() )
+    return;
+  const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
+  if ( !item.isValid() )
+    return;
+  kDebug() << statement;
+  // TODO run a link job instead, but we need on that operates on RIDs first, and sort out our RID mess here
+  synchronize();
+}
+
+void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
+{
+  if ( statement.predicate() != Soprano::Vocabulary::NAO::hasTag() )
+    return;
+  const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
+  if ( !item.isValid() )
+    return;
+  kDebug() << statement;
+  // TODO run an unlink job instead, but we need on that operates on RIDs first, and sort out our RID mess here
+  synchronize();
+}
+
 
 AKONADI_RESOURCE_MAIN( NepomukTagResource )
 
