@@ -228,8 +228,9 @@ void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
   if ( !item.isValid() )
     return;
   kDebug() << statement;
-  // TODO run a link job instead, but we need on that operates on RIDs first, and sort out our RID mess here
-  synchronize();
+  Collection tagCollection;
+  tagCollection.setRemoteId( statement.object().uri().toString() );
+  new LinkJob( tagCollection, Item::List() << item, this );
 }
 
 void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
@@ -240,8 +241,9 @@ void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
   if ( !item.isValid() )
     return;
   kDebug() << statement;
-  // TODO run an unlink job instead, but we need on that operates on RIDs first, and sort out our RID mess here
-  synchronize();
+  Collection tagCollection;
+  tagCollection.setRemoteId( statement.object().uri().toString() );
+  new UnlinkJob( tagCollection, Item::List() << item, this );
 }
 
 
