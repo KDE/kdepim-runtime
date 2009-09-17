@@ -71,7 +71,7 @@ void NepomukTagResource::retrieveCollections()
 
     CachePolicy policy;
     policy.setInheritFromParent( false );
-    policy.setSyncOnDemand( true );
+    policy.setSyncOnDemand( false );
     policy.setIntervalCheckTime( -1 );
     root.setCachePolicy( policy );
 
