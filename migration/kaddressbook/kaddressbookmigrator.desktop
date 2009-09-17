@@ -1,8 +1,14 @@
 [Desktop Entry]
 Name=kaddressbookmigrator
+Name[pt]=kaddressbookmigrator
+Name[uk]=kaddressbookmigrator
+Name[x-test]=xxkaddressbookmigratorxx
 Exec=kaddressbookmigrator --disable-autostart
 Type=Application
 Comment=Tool to migrate the old kresource based address book to Akonadi.
+Comment[pt]=Uma ferramenta para migrar os livros de endereços antigos com KResources para o Akonadi.
+Comment[uk]=Інструмент для перетворення старої, заснованої на kresource адресної книги на адресну книгу Akonadi.
+Comment[x-test]=xxTool to migrate the old kresource based address book to Akonadi.xx
 Terminal=false
 NoDisplay=true
 X-KDE-autostart-condition=kaddressbookmigratorrc:Startup:EnableAutostart:true
