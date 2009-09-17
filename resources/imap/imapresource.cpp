@@ -226,7 +226,7 @@ void ImapResource::startConnect( bool forceManualAuth )
 
   if ( password.isEmpty() || forceManualAuth ) {
     if ( !manualAuth( Settings::self()->userName(), password ) ) {
-      emit status( Broken, i18n( "Autentication failed." ) );
+      emit status( Broken, i18n( "Authentication failed." ) );
       return;
     } else {
       Settings::self()->setPassword( password );
