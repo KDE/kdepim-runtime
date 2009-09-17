@@ -24,11 +24,6 @@
 
 #include <QtGui/QWidget>
 
-namespace Akonadi
-{
-class ItemFetchJob;
-}
-
 class KJob;
 class QComboBox;
 class QListView;
@@ -58,7 +53,6 @@ class SearchWidget : public QWidget
     QListView* mResultView;
     QTextBrowser* mItemView;
     QStringListModel *mResultModel;
-    Akonadi::ItemFetchJob *mFetchJob;
 };
 
 #endif

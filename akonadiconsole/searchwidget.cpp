@@ -81,7 +81,6 @@ void SearchWidget::search()
 {
   Akonadi::ItemSearchJob *job = new Akonadi::ItemSearchJob( mQueryWidget->toPlainText() );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( searchFinished( KJob* ) ) );
-  job->start();
 }
 
 void SearchWidget::searchFinished( KJob *job )
@@ -131,10 +130,9 @@ void SearchWidget::fetchItem( const QModelIndex &index )
     return;
 
   const QString uid = index.data( Qt::DisplayRole ).toString();
-  mFetchJob = new Akonadi::ItemFetchJob( Akonadi::Item( uid.toLongLong() ) );
-  mFetchJob->fetchScope().fetchFullPayload();
-  connect( mFetchJob, SIGNAL( result( KJob* ) ), this, SLOT( itemFetched( KJob* ) ) );
-  mFetchJob->start();
+  Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob( Akonadi::Item( uid.toLongLong() ) );
+  fetchJob->fetchScope().fetchFullPayload();
+  connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( itemFetched( KJob* ) ) );
 }
 
 void SearchWidget::itemFetched( KJob *job )
@@ -146,10 +144,11 @@ void SearchWidget::itemFetched( KJob *job )
     return;
   }
 
-  const Akonadi::Item item = mFetchJob->items().first();
-  mItemView->setPlainText( QString::fromUtf8( item.payloadData() ) );
-
-  mFetchJob = 0;
+  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
+  if ( !fetchJob->items().isEmpty() ) {
+    const Akonadi::Item item = fetchJob->items().first();
+    mItemView->setPlainText( QString::fromUtf8( item.payloadData() ) );
+  }
 }
 
 #include "searchwidget.moc"
