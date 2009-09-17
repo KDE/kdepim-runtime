@@ -87,7 +87,7 @@ void NepomukTagResource::retrieveCollections()
             continue;
         Collection c;
         c.setName( tag.genericLabel() );
-        c.setRemoteId( tag.genericLabel() );
+        c.setRemoteId( tag.resourceUri().toString() );
         c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
         c.setContentMimeTypes( contentTypes );
         c.setParentCollection( root );
@@ -194,15 +194,16 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
         QListIterator<Nepomuk::Tag> tagIt( l );
         while ( tagIt.hasNext() ) {
             const Nepomuk::Tag& tag = tagIt.next();
-            if ( tag.label() == s ||
-                    tag.identifiers().contains( s ) ) {
+            if ( tag.label() == s || tag.identifiers().contains( s ) ) {
                 emit warning( i18n( "The tag %1 already exists", s ) );
+                newCollection.setRemoteId( tag.resourceUri().toString() );
                 exists = true;
             }
         }
         if ( !exists ) {
-            Nepomuk::Tag( s ).setLabel( s );
-            newCollection.setRemoteId( s );
+            Nepomuk::Tag tag( s );
+            tag.setLabel( s );
+            newCollection.setRemoteId( tag.resourceUri().toString() );
         }
     }
     // ---
