@@ -55,7 +55,11 @@ AkiNoteItem::assign(const Akonadi::Item &_item)
 	if (m_item.hasPayload<IncidencePtr>()) {
 		m_incidence = m_item.payload<IncidencePtr>();
 
-		//TODO: PUSH CODE HERE
+		pushSubject(this, subject());
+		pushContent(this, content());
+
+		foreach(QByteArray key, m_incidence->customProperties().keys())
+			pushAttribute(this, key, attribute(key));
 
 		m_valid = true;
 	}
