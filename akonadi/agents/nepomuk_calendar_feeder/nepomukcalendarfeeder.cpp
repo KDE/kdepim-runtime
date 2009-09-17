@@ -19,16 +19,10 @@
 
 #include "nepomukcalendarfeeder.h"
 
-#include <kcal/event.h>
-#include <kcal/journal.h>
-#include <kcal/todo.h>
-
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/mimetypechecker.h>
+#include <kcal/kcalmimetypevisitor.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -51,6 +45,7 @@
 #include "journal.h"
 #include "participationstatus.h"
 #include "personcontact.h"
+#include "todo.h"
 
 #include <QtCore/QTime>
 #include <QtCore/QTimer>
@@ -59,8 +54,6 @@
 #include <KDebug>
 
 #include <boost/shared_ptr.hpp>
-
-typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 namespace Akonadi {
 
@@ -84,18 +77,14 @@ static NepomukFast::Contact findNepomukContact( const QString &name, const QStri
 }
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
-  : NepomukFeederAgent( id ),
-    mForceUpdate( false )
+  : NepomukFeederAgent( id )
 {
+  addSupportedMimeType( KCalMimeTypeVisitor::eventMimeType() );
+  addSupportedMimeType( KCalMimeTypeVisitor::todoMimeType() );
+  addSupportedMimeType( KCalMimeTypeVisitor::journalMimeType() );
+  addSupportedMimeType( KCalMimeTypeVisitor::freeBusyMimeType() );
+
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  changeRecorder()->setMimeTypeMonitored( "text/calendar" );
-  changeRecorder()->setChangeRecordingEnabled( false );
-
-  // do the initial scan to make sure all items have been fed to nepomuk
-  QTimer::singleShot( 0, this, SLOT( slotInitialItemScan() ) );
-
-  // The line below is not necessary anymore once AgentBase also exports scriptable slots
-  QDBusConnection::sessionBus().registerObject( "/nepomukcalendarfeeder", this, QDBusConnection::ExportScriptableSlots );
 
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
@@ -105,48 +94,9 @@ NepomukCalendarFeeder::~NepomukCalendarFeeder()
   delete mNrlModel;
 }
 
-void NepomukCalendarFeeder::slotInitialItemScan()
-{
-  kDebug();
-  updateAll( false );
-}
-
-void NepomukCalendarFeeder::updateAll( bool force )
-{
-  mForceUpdate = force;
-
-  CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-  if ( collectionFetch->exec() ) {
-    Collection::List collections = collectionFetch->collections();
-
-    MimeTypeChecker calendarFilter;
-    calendarFilter.addWantedMimeType( "text/calendar" );
-    foreach ( const Collection &collection, collections ) {
-      if ( calendarFilter.isWantedCollection( collection ) ) {
-        ItemFetchJob *itemFetch = new ItemFetchJob( collection );
-        itemFetch->fetchScope().fetchFullPayload();
-        connect( itemFetch, SIGNAL( itemsReceived( Akonadi::Item::List ) ),
-                 this, SLOT( slotItemsReceivedForInitialScan( Akonadi::Item::List ) ) );
-      }
-    }
-  }
-}
-
-void NepomukCalendarFeeder::slotItemsReceivedForInitialScan( const Akonadi::Item::List& items )
-{
-  kDebug() << items.count();
-  foreach( const Item &item, items ) {
-    // only update the item if it does not exist
-    if ( mForceUpdate ||
-         !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(), Soprano::Node(), Soprano::Node() ) ) {
-      updateItem( item );
-    }
-  }
-}
-
 void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )
 {
-  if ( !item.hasPayload<IncidencePtr>() ) {
+  if ( !item.hasPayload<KCal::Incidence::Ptr>() ) {
     kDebug() << "Got item without payload. Mimetype:" << item.mimeType()
              << "Id:" << item.id();
     return;
@@ -165,20 +115,16 @@ void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )
                            QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
                            item.url(), metaDataGraphUri );
 
-  IncidencePtr incidencePtr = item.payload<IncidencePtr>();
-
-  KCal::Incidence *incidence = incidencePtr.get();
-
-  if ( incidence->type() == "Event" ) {
-    updateEventItem( item, static_cast<KCal::Event*>( incidence), graphUri );
-  } else if ( incidence->type() == "Journal" ) {
-    updateJournalItem( item, static_cast<KCal::Journal*>( incidence), graphUri );
-  } else if ( incidence->type() == "Todo" ) {
-    updateTodoItem( item, static_cast<KCal::Todo*>( incidence), graphUri );
+  if ( item.hasPayload<KCal::Event::Ptr>() ) {
+    updateEventItem( item, item.payload<KCal::Event::Ptr>(), graphUri );
+  } else if ( item.hasPayload<KCal::Journal::Ptr>() ) {
+    updateJournalItem( item, item.payload<KCal::Journal::Ptr>(), graphUri );
+  } else if ( item.hasPayload<KCal::Todo::Ptr>() ) {
+    updateTodoItem( item, item.payload<KCal::Todo::Ptr>(), graphUri );
   }
 }
 
-void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, KCal::Event *calEvent, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCal::Event::Ptr &calEvent, const QUrl &graphUri )
 {
   // create event with the graph reference
   NepomukFast::Event event( item.url(), graphUri );
@@ -245,18 +191,25 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, KCal::Ev
 
     event.addAttendee( attendee );
   }
+
+  tagsFromCategories( event, calEvent->categories() );
 }
 
-void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, KCal::Journal *calJournal, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCal::Journal::Ptr &calJournal, const QUrl &graphUri )
 {
     // create journal entry with the graph reference
     NepomukFast::Journal journal( item.url(), graphUri );
 
     journal.setLabel( calJournal->summary() );
+
+    tagsFromCategories( journal, calJournal->categories() );
 }
 
-void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, KCal::Todo *calTodo, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCal::Todo::Ptr &calTodo, const QUrl &graphUri )
 {
+  NepomukFast::Todo todo( item.url(), graphUri );
+  todo.setLabel( calTodo->summary() );
+  tagsFromCategories( todo, calTodo->categories() );
 }
 
 } // namespace Akonadi

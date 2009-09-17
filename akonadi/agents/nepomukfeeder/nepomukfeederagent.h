@@ -23,6 +23,13 @@
 #define NEPOMUKFEEDERAGENT_H
 
 #include <akonadi/agentbase.h>
+#include <akonadi/collection.h>
+#include <akonadi/item.h>
+#include <akonadi/mimetypechecker.h>
+
+#include "resource.h"
+
+#include <QStringList>
 
 namespace Akonadi
 {
@@ -38,15 +45,35 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     NepomukFeederAgent(const QString& id);
     ~NepomukFeederAgent();
 
+    /** Remove all references to the given item from Nepomuk. */
     static void removeItemFromNepomuk( const Akonadi::Item &item );
+
+    /** Adds tags to @p resource based on the given string list. */
+    static void tagsFromCategories( NepomukFast::Resource &resource, const QStringList &categories );
+
+    /** Add a supported mimetype. */
+    void addSupportedMimeType( const QString &mimeType );
 
     /** Reimplement to do the actual work. */
     virtual void updateItem( const Akonadi::Item &item ) = 0;
+
+  public slots:
+    /** Trigger a complete update of all items. */
+    void updateAll();
 
   protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved(const Akonadi::Item &item);
+
+  private slots:
+    void collectionsReceived( const Akonadi::Collection::List &collections );
+    void itemHeadersReceived( const Akonadi::Item::List &items );
+    void itemsReceived( const Akonadi::Item::List &items );
+
+  private:
+    QStringList mSupportedMimeTypes;
+    Akonadi::MimeTypeChecker mMimeTypeChecker;
 };
 
 #endif

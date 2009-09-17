@@ -19,6 +19,7 @@ target_link_libraries(akonadi_nepomuk_calendar_feeder
   ${NEPOMUK_LIBRARIES}
   ${SOPRANO_LIBRARIES}
   ${KDE4_KDECORE_LIBS}
+  akonadi-kcal
   )
 
 install(TARGETS akonadi_nepomuk_calendar_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})

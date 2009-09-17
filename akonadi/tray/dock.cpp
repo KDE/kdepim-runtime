@@ -36,7 +36,6 @@
 #include <KMessageBox>
 #include <KPassivePopup>
 #include <KStandardShortcut>
-#include <KSystemTrayIcon>
 
 #include <akonadi/control.h>
 #include <akonadi/agentinstance.h>

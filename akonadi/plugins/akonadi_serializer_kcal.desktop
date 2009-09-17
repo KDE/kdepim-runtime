@@ -69,5 +69,5 @@ Comment[zh_CN]=对事项、任务和日记项进行序列转换的 Akonadi 插�
 Comment[zh_TW]=事件、工作與日誌項目物件的 Akonadi 序列器外掛程式
 
 [Plugin]
-Type=text/calendar,application/x-vnd.akonadi.note
+Type=text/calendar,application/x-vnd.akonadi.note,application/x-vnd.kde.notes
 X-KDE-Library=akonadi_serializer_kcal
