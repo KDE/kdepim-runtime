@@ -35,17 +35,30 @@ using namespace StickyNotes;
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
-AkiNoteItem::AkiNoteItem(const Akonadi::Item &_item, AkiNotes &_owner)
-: BaseNoteItem(0), m_item(_item), m_owner(_owner), m_valid(false)
+AkiNoteItem::AkiNoteItem(const Akonadi::Item *_item)
+: BaseNoteItem(0), m_valid(false)
 {
-	if (m_item.hasPayload<IncidencePtr>()) {
-		m_incidence = m_item.payload<IncidencePtr>();
-		m_valid = true;
-	}
+	if (_item)
+		assign(*_item);
 }
 
 AkiNoteItem::~AkiNoteItem(void)
 {
+}
+
+void
+AkiNoteItem::assign(const Akonadi::Item &_item)
+{
+	m_valid = false;
+	m_item = _item;
+
+	if (m_item.hasPayload<IncidencePtr>()) {
+		m_incidence = m_item.payload<IncidencePtr>();
+
+		//TODO: PUSH CODE HERE
+
+		m_valid = true;
+	}
 }
 
 bool

@@ -41,17 +41,18 @@ AkiNotes::AkiNotes(QObject *_parent)
 	m_monitor->setCollectionMonitored(Akonadi::Collection::root(), false);
 	m_monitor->itemFetchScope().fetchFullPayload();
 
-	connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)),
-	    this, SLOT(noteItemAdded(Akonadi::Item)));
-
-	connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)),
-	    this, SLOT(noteItemChanged(Akonadi::Item)));
+	connect(m_monitor, SIGNAL(itemAdded(const Akonadi::Item &, const Akonadi::Collection &)),
+	    this, SLOT(noteItemAdded(const Akonadi::Item &, const Akonadi::Collection &)));
+	connect(m_monitor, SIGNAL(itemChanged(const Akonadi::Item &, const QSet<QByteArray> &)),
+	    this, SLOT(noteItemChanged(const Akonadi::Item &, const QSet<QByteArray> &)));
+	connect(m_monitor, SIGNAL(itemRemoved(const Akonadi::Item &)),
+	    this, SLOT(noteItemRemoved(const Akonadi::Item &)));
 
         Akonadi::Collection noteCollection(Akonadi::Collection::root());
         noteCollection.setContentMimeTypes(QStringList() << "application/x-vnd.kde.notes");
         Akonadi::CollectionFetchJob *fetch =
 	    new Akonadi::CollectionFetchJob(noteCollection, Akonadi::CollectionFetchJob::Recursive);
-        connect(fetch, SIGNAL(result(KJob*)), SLOT(fetchNoteCollectionsDone(KJob*)));
+        connect(fetch, SIGNAL(result(KJob*)), SLOT(noteFetchCollectionsDone(KJob*)));
 }
 
 AkiNotes::~AkiNotes(void)
@@ -66,9 +67,10 @@ AkiNotes::~AkiNotes(void)
 }
 
 void
-AkiNotes::noteItemAdded(const Akonadi::Item &_item)
+AkiNotes::noteItemAdded(const Akonadi::Item &_item, const Akonadi::Collection &_collection)
 {
-	AkiNoteItem *item = new AkiNoteItem(_item, *this);
+	kDebug() << "Add note " << _item.id();
+	AkiNoteItem *item = new AkiNoteItem(&_item);
 
 	if (!item->isValid()) {
 	    delete item;
@@ -89,12 +91,31 @@ AkiNotes::noteItemAdded(const Akonadi::Item &_item)
 }
 
 void
-AkiNotes::noteItemChanged(const Akonadi::Item &_item)
+AkiNotes::noteItemChanged(const Akonadi::Item &_item, const QSet<QByteArray> &_partIdentifiers)
 {
+	kDebug() << "Update note " << _item.id();
+	if (m_items.contains(_item.id())) {
+		m_items[_item.id()]->assign(_item);
+
+		if (!m_items[_item.id()]->isValid()) {
+			delete  m_items[_item.id()];
+			m_items.remove(_item.id());
+		}
+	}
 }
 
 void
-AkiNotes::fetchNoteCollectionsDone(KJob* _job)
+AkiNotes::noteItemRemoved(const Akonadi::Item &_item)
+{
+	kDebug() << "Remove note " << _item.id();
+	if (m_items.contains(_item.id())) {
+		delete  m_items[_item.id()];
+		m_items.remove(_item.id());
+	}
+}
+
+void
+AkiNotes::noteFetchCollectionsDone(KJob* _job)
 {
 	if (_job->error() ) {
 		kDebug() << "Job Error:" << _job->errorString();
@@ -109,13 +130,13 @@ AkiNotes::fetchNoteCollectionsDone(KJob* _job)
 			Akonadi::ItemFetchJob *fetch = new Akonadi::ItemFetchJob(collection);
 			m_monitor->setCollectionMonitored(collection, true);
 			fetch->fetchScope().fetchFullPayload();
-			connect(fetch, SIGNAL(result(KJob*)), SLOT(fetchNoteDone(KJob*)));
+			connect(fetch, SIGNAL(result(KJob*)), SLOT(noteFetchDone(KJob*)));
 		}
 	}
 }
 
 void
-AkiNotes::fetchNoteDone(KJob* _job)
+AkiNotes::noteFetchDone(KJob* _job)
 {
 	if (_job->error()) {
 		kDebug() << "Note job failed:" << _job->errorString();
@@ -126,6 +147,6 @@ AkiNotes::fetchNoteDone(KJob* _job)
 	kDebug() << "Adding notes" << items.count();
 
 	foreach (const Akonadi::Item &item, items) 
-		noteItemAdded(item);
+		noteItemAdded(item, Akonadi::Collection::root());
 }
 

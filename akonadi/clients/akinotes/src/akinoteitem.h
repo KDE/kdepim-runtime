@@ -33,9 +33,10 @@ class AkiNotes;
 class AkiNoteItem : public StickyNotes::BaseNoteItem
 {
 public:
-	AkiNoteItem(const Akonadi::Item &_item, AkiNotes &_owner);
+	explicit AkiNoteItem(const Akonadi::Item *_item = 0);
 	virtual ~AkiNoteItem(void);
 
+	void assign(const Akonadi::Item &_item);
 	bool isValid(void) const;
 
 	/* virtual */
@@ -56,7 +57,6 @@ protected:
 private:
 	boost::shared_ptr<KCal::Incidence> m_incidence;
 	Akonadi::Item m_item;
-	AkiNotes &m_owner;
 	bool m_valid;
 };
 

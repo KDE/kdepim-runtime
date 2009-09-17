@@ -43,11 +43,11 @@ public:
 	~AkiNotes(void);
 
 private slots:
-	void noteItemAdded(const Akonadi::Item &_item);
-	void noteItemChanged(const Akonadi::Item &_item);
-        void fetchNoteCollectionsDone(KJob* _job);
-        void fetchNoteDone(KJob* _job);
-
+	void noteItemAdded(const Akonadi::Item &_item, const Akonadi::Collection &_collection);
+	void noteItemChanged(const Akonadi::Item &_item, const QSet<QByteArray> &_partIdentifiers);
+	void noteItemRemoved(const Akonadi::Item &_item);
+        void noteFetchCollectionsDone(KJob* _job);
+        void noteFetchDone(KJob* _job);
 private:
 	QMap<Akonadi::Entity::Id, AkiNoteItem *> m_items;
 	Akonadi::Monitor *m_monitor;
