@@ -27,6 +27,8 @@
 #include "kjots_common_export.h"
 #include <akonadi/item.h>
 
+#include <grantlee/templateloader.h>
+
 class KTextEdit;
 class QTextBrowser;
 class QTextCursor;
@@ -41,11 +43,6 @@ namespace Akonadi
 {
 class EntityTreeModel;
 class EntityTreeView;
-}
-
-namespace Grantlee
-{
-class FileSystemTemplateLoader;
 }
 
 class KJotsPage;
@@ -81,7 +78,7 @@ private:
   QStackedWidget *stackedWidget;
   Akonadi::EntityTreeModel *etm;
   KSelectionProxyModel *selProxy;
-  Grantlee::FileSystemTemplateLoader *m_loader;
+  Grantlee::FileSystemTemplateLoader::Ptr m_loader;
 //   Akonadi::EntityTreeView *treeview;
 //   QColumnView *treeview;
   QAbstractItemView *treeview;

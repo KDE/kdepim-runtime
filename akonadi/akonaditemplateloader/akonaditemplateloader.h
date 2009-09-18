@@ -33,12 +33,15 @@ class Monitor;
 
 class GRANTLEE_EXPORT AkonadiTemplateLoader : public AbstractTemplateLoader
 {
-  Q_OBJECT
 public:
+  typedef QSharedPointer<AkonadiTemplateLoader> Ptr;
+
   AkonadiTemplateLoader(Akonadi::Monitor *monitor, QObject *parent = 0 );
 
-  Template *loadByName( const QString &name ) const;
-  MutableTemplate *loadMutableByName( const QString &name ) const;
+  Template loadByName( const QString &name ) const;
+  MutableTemplate loadMutableByName( const QString &name ) const;
+
+  virtual bool canLoadTemplate(const QString& name) const;
 
   QString getMediaUri( const QString &fileName ) const;
 

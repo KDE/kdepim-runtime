@@ -25,11 +25,10 @@
 #include <QImage>
 
 #include <KUrl>
-#include <akonaditemplateloader.h>
 
 using namespace Akonadi;
 
-TextDocument::TextDocument(AkonadiTemplateLoader *loader, QObject* parent)
+TextDocument::TextDocument(AkonadiTemplateLoader::Ptr loader, QObject* parent)
     : QTextDocument(parent), m_templateLoader(loader)
 {
 

@@ -87,11 +87,11 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   Engine *engine = Engine::instance();
   engine->setPluginDirs(KStd.findDirs("lib", "grantlee"));
 
-  m_loader = new FileSystemTemplateLoader(this);
+  m_loader = FileSystemTemplateLoader::Ptr( new FileSystemTemplateLoader() );
   m_loader->setTemplateDirs(KStd.findDirs("data", QString("kjotsrewrite/themes")));
   m_loader->setTheme("default");
 
-  engine->addTemplateLoader(m_loader);
+  engine->addTemplateLoader( m_loader );
 
   treeview = new EntityTreeView( splitter );
 //   treeview = new QColumnView(splitter);
@@ -283,7 +283,7 @@ QString KJotsWidget::renderSelectionToHtml()
   Context c(hash);
 
   Engine *engine = Engine::instance();
-  Template *t = engine->loadByName("template.html", this);
+  Template t = engine->loadByName("template.html");
 
   QString result = t->render(&c);
   // TODO: handle errors.

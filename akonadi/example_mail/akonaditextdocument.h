@@ -24,7 +24,7 @@
 
 #include <QTextDocument>
 
-class AkonadiTemplateLoader;
+#include "akonaditemplateloader.h"
 
 namespace Akonadi
 {
@@ -35,12 +35,12 @@ class TextDocument : public QTextDocument
 {
   Q_OBJECT
 public:
-  TextDocument(AkonadiTemplateLoader *templateLoader, QObject* parent = 0);
+  TextDocument(AkonadiTemplateLoader::Ptr templateLoader, QObject* parent = 0);
 
   virtual QVariant loadResource(int type, const QUrl& name);
 
 private:
-  AkonadiTemplateLoader *m_templateLoader;
+  AkonadiTemplateLoader::Ptr m_templateLoader;
 
 };
 

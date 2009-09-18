@@ -82,7 +82,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   EntityTreeModel *m_templateModel = new EntityTreeModel( templateSession, templateMonitor, this );
 
-  AkonadiTemplateLoader *akoLoader = new AkonadiTemplateLoader(templateMonitor, this);
+  AkonadiTemplateLoader::Ptr akoLoader = AkonadiTemplateLoader::Ptr( new AkonadiTemplateLoader(templateMonitor, this ) );
 
   connect( templateMonitor, SIGNAL( itemChanged(const Akonadi::Item &, const QSet< QByteArray > &) ),
            SLOT(someSlot( const Akonadi::Item &, const QSet< QByteArray > & ) ) );
@@ -223,7 +223,7 @@ void MailWidget::renderMail(const QModelIndex &idx)
     QByteArray ba = i.payloadData();
 
     Grantlee::Engine *engine = Grantlee::Engine::instance();
-    Grantlee::Template *t = engine->loadByName("template.html", this);
+    Grantlee::Template t = engine->loadByName("template.html");
     if (!t)
       return;
     QVariantHash h;

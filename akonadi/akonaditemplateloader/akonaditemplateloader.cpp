@@ -34,24 +34,24 @@
 using namespace Akonadi;
 
 AkonadiTemplateLoader::AkonadiTemplateLoader(Akonadi::Monitor *monitor,  QObject* parent )
-  : AbstractTemplateLoader( parent ), m_themeName("default")
+  : m_themeName("default")
 {
   Collection rootCollection = Collection::root();
 
-  Session *session = new Session( QByteArray( "AkonadiTemplateLoader-" ) + QByteArray::number( qrand() ), this );
+  Session *session = new Session( QByteArray( "AkonadiTemplateLoader-" ) + QByteArray::number( qrand() ), parent );
 
-  m_model = new EntityTreeModel( session, monitor, this );
+  m_model = new EntityTreeModel( session, monitor, parent );
 
 }
 
-Grantlee::MutableTemplate* AkonadiTemplateLoader::loadMutableByName( const QString &name ) const
+Grantlee::MutableTemplate AkonadiTemplateLoader::loadMutableByName( const QString &name ) const
 {
   Item templateItem = getItem( name );
   if ( !templateItem.isValid() )
-    return 0;
+    throw Grantlee::Exception( TagSyntaxError, QString( "Couldn't load template from %1. Template does not exist.").arg( name ) );
 
   QString content = templateItem.payloadData();
-  MutableTemplate *t = Engine::instance()->newMutableTemplate( content );
+  MutableTemplate t = Engine::instance()->newMutableTemplate( content, name );
   return t;
 }
 
@@ -81,14 +81,19 @@ Akonadi::Item AkonadiTemplateLoader::getItem( const QString& name ) const
   return templateIndex.data(EntityTreeModel::ItemRole).value<Item>();
 }
 
-Grantlee::Template *AkonadiTemplateLoader::loadByName( const QString& name ) const
+bool AkonadiTemplateLoader::canLoadTemplate(const QString& name) const
+{
+  return getItem( name ).isValid();
+}
+
+Grantlee::Template AkonadiTemplateLoader::loadByName( const QString& name ) const
 {
   Item templateItem = getItem( name );
   if ( !templateItem.isValid() )
-    return 0;
+    throw Grantlee::Exception( TagSyntaxError, QString( "Couldn't load template from %1. Template does not exist.").arg( name ) );
 
   QString content = templateItem.payloadData();
-  Template *t = Engine::instance()->newTemplate( content );
+  Template t = Engine::instance()->newTemplate( content, name );
   return t;
 }
 
