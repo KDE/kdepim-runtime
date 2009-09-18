@@ -145,8 +145,10 @@ QList<NepomukFast::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( co
     if ( mbox.hasAddress() ) {
       bool found = false;
       NepomukFast::Contact c = findContact( mbox.address(), graphUri, &found );
-      if ( !found && mbox.hasName() )
+      if ( !found && mbox.hasName() ) {
         c.addFullname( mbox.name() );
+        c.setLabel( mbox.name() );
+      }
       contacts << c;
     }
   }
