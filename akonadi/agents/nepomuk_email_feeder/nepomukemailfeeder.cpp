@@ -92,6 +92,7 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
 
   if ( msg->subject( false ) ) {
     r.setMessageSubject( msg->subject()->asUnicodeString() );
+    r.setLabel( msg->subject()->asUnicodeString() );
   }
 
   if ( msg->date( false ) ) {
@@ -99,8 +100,11 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
   }
 
   if ( msg->from( false ) ) {
-    r.setSenders( extractContactsFromMailboxes( msg->from()->mailboxes(), graphUri ) );
+    r.setFroms( extractContactsFromMailboxes( msg->from()->mailboxes(), graphUri ) );
   }
+
+  if ( msg->sender( false ) )
+    r.setSenders( extractContactsFromMailboxes( msg->sender()->mailboxes(), graphUri ) );
 
   if ( msg->to( false ) ) {
     r.setTos( extractContactsFromMailboxes( msg->to()->mailboxes(), graphUri ) );
@@ -118,15 +122,15 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
 
   // FIXME: simplyfy this text as in: remove all html tags. Is there a quick way to do this?
   if ( content ) {
-    QString text = content->decodedText( true, true );
+    const QString text = content->decodedText( true, true );
     if ( !text.isEmpty() ) {
       r.addProperty( Soprano::Vocabulary::Xesam::asText(), Soprano::LiteralValue( text ) );
+      r.setPlainTextMessageContents( QStringList( text ) );
     }
   }
 
-  // FIXME: is xesam:id the best idea here?
   if ( msg->messageID( false ) ) {
-    r.addProperty( Soprano::Vocabulary::Xesam::id(), Soprano::LiteralValue( msg->messageID()->asUnicodeString() ) );
+    r.setMessageIds( QStringList( msg->messageID()->asUnicodeString() ) );
   }
 
   // IDEA: use Strigi to index the attachments

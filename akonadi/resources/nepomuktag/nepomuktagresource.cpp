@@ -31,6 +31,8 @@
 
 #include <nepomuk/tag.h>
 #include <nepomuk/resourcemanager.h>
+#include <soprano/signalcachemodel.h>
+#include <soprano/nao.h>
 
 #include <boost/bind.hpp>
 #include <algorithm>
@@ -43,6 +45,10 @@ NepomukTagResource::NepomukTagResource( const QString &id )
     Nepomuk::ResourceManager::instance()->init();
     changeRecorder()->fetchCollection( true );
     setName( i18n( "Tags" ) );
+
+    Soprano::Util::SignalCacheModel* model = new Soprano::Util::SignalCacheModel( Nepomuk::ResourceManager::instance()->mainModel() );
+    connect( model, SIGNAL(statementAdded(Soprano::Statement)), SLOT(statementAdded(Soprano::Statement)) );
+    connect( model, SIGNAL(statementRemoved(Soprano::Statement)), SLOT(statementRemoved(Soprano::Statement)) );
 }
 
 NepomukTagResource::~NepomukTagResource()
@@ -65,7 +71,7 @@ void NepomukTagResource::retrieveCollections()
 
     CachePolicy policy;
     policy.setInheritFromParent( false );
-    policy.setSyncOnDemand( true );
+    policy.setSyncOnDemand( false );
     policy.setIntervalCheckTime( -1 );
     root.setCachePolicy( policy );
 
@@ -81,7 +87,7 @@ void NepomukTagResource::retrieveCollections()
             continue;
         Collection c;
         c.setName( tag.genericLabel() );
-        c.setRemoteId( tag.genericLabel() );
+        c.setRemoteId( tag.resourceUri().toString() );
         c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
         c.setContentMimeTypes( contentTypes );
         c.setParentCollection( root );
@@ -188,15 +194,16 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
         QListIterator<Nepomuk::Tag> tagIt( l );
         while ( tagIt.hasNext() ) {
             const Nepomuk::Tag& tag = tagIt.next();
-            if ( tag.label() == s ||
-                    tag.identifiers().contains( s ) ) {
+            if ( tag.label() == s || tag.identifiers().contains( s ) ) {
                 emit warning( i18n( "The tag %1 already exists", s ) );
+                newCollection.setRemoteId( tag.resourceUri().toString() );
                 exists = true;
             }
         }
         if ( !exists ) {
-            Nepomuk::Tag( s ).setLabel( s );
-            newCollection.setRemoteId( s );
+            Nepomuk::Tag tag( s );
+            tag.setLabel( s );
+            newCollection.setRemoteId( tag.resourceUri().toString() );
         }
     }
     // ---
@@ -211,6 +218,34 @@ void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection
     tag.remove();
     changeCommitted( collection );
 }
+
+
+void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
+{
+  if ( statement.predicate() != Soprano::Vocabulary::NAO::hasTag() )
+    return;
+  const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
+  if ( !item.isValid() )
+    return;
+  kDebug() << statement;
+  Collection tagCollection;
+  tagCollection.setRemoteId( statement.object().uri().toString() );
+  new LinkJob( tagCollection, Item::List() << item, this );
+}
+
+void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
+{
+  if ( statement.predicate() != Soprano::Vocabulary::NAO::hasTag() )
+    return;
+  const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
+  if ( !item.isValid() )
+    return;
+  kDebug() << statement;
+  Collection tagCollection;
+  tagCollection.setRemoteId( statement.object().uri().toString() );
+  new UnlinkJob( tagCollection, Item::List() << item, this );
+}
+
 
 AKONADI_RESOURCE_MAIN( NepomukTagResource )
 
