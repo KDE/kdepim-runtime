@@ -113,6 +113,7 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
     if ( mMimeTypeChecker.isWantedCollection( collection ) ) {
       kDebug() << "fetching items from collection" << collection.name();
       ItemFetchJob *itemFetch = new ItemFetchJob( collection, this );
+      itemFetch->fetchScope().setCacheOnly( true );
       connect( itemFetch, SIGNAL(itemsReceived( Akonadi::Item::List)), SLOT(itemHeadersReceived(Akonadi::Item::List)) );
     }
   }
