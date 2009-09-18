@@ -63,6 +63,7 @@ private slots:
 	void on_monitor_itemAdded(const Akonadi::Item &_item, const Akonadi::Collection &_collection);
 	void on_monitor_itemChanged(const Akonadi::Item &_item, const QSet<QByteArray> &_partIdentifiers);
 	void on_monitor_itemRemoved(const Akonadi::Item &_item);
+	void on_remoteController_fallback(void);
 	void on_remoteSocket_connected(void);
 	void on_remoteSocket_disconnected(void);
 	void on_remoteSocket_error(QAbstractSocket::SocketError _socketError);

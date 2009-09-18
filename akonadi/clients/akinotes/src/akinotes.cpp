@@ -23,6 +23,7 @@
 
 #include <QStringList>
 #include <QTcpSocket>
+#include <QTimer>
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemFetchJob>
@@ -41,6 +42,8 @@ AkiNotes::AkiNotes(QObject *_parent, AkiNotes::Ui _ui)
 : QObject(_parent), m_monitor(0), m_remoteController(0), m_remoteSocket(0),
     m_ui(_ui)
 {
+	kDebug() << "hello";
+
 	createAkonadiMonitor();
 
 	if (uiStandalone != m_ui)
@@ -49,6 +52,8 @@ AkiNotes::AkiNotes(QObject *_parent, AkiNotes::Ui _ui)
 
 AkiNotes::~AkiNotes(void)
 {
+	kDebug() << "hello";
+
 	if (uiStandalone != m_ui)
 		destroyRemoteController();
 
@@ -58,6 +63,8 @@ AkiNotes::~AkiNotes(void)
 void
 AkiNotes::clearGUItems(void)
 {
+	kDebug() << "hello";
+
 	foreach(StickyNotes::BaseNoteItem *guitem, m_guitems)
 		delete guitem;
 
@@ -67,6 +74,8 @@ AkiNotes::clearGUItems(void)
 void
 AkiNotes::createAkonadiMonitor(void)
 {
+	kDebug() << "hello";
+
 	m_monitor = new Akonadi::Monitor(this);
 
 	Akonadi::CollectionFetchJob *fetch;
@@ -94,6 +103,8 @@ AkiNotes::createAkonadiMonitor(void)
 void
 AkiNotes::createGUItem(AkiNoteItem *_item)
 {
+	kDebug() << "hello";
+
 	StickyNotes::BaseNoteItem *guitem;
 
 	switch (m_ui) {
@@ -101,9 +112,11 @@ AkiNotes::createGUItem(AkiNoteItem *_item)
 			guitem = m_remoteController->createItem();
 			guitem->setParent(_item);
 		break;
+
 		case uiStandalone:
 			guitem = new StickyNotes::StandaloneNoteItem(_item);
 		break;
+
 		default:
 			kDebug() << "No ui selected";
 			return;
@@ -114,18 +127,22 @@ AkiNotes::createGUItem(AkiNoteItem *_item)
 void
 AkiNotes::createGUItems(void)
 {
-	kDebug() << "createGUItems";
+	kDebug() << "hello";
 
 	if (!m_guitems.isEmpty())
 		clearGUItems();
 
+	kDebug() << "1";
 	foreach(AkiNoteItem *item, m_items.values())
 		createGUItem(item);
+	kDebug() << "2";
 }
 
 void
 AkiNotes::createRemoteController(void)
 {
+	kDebug() << "hello";
+
 	m_remoteSocket = new QTcpSocket(this);
 	m_remoteController = new StickyNotes::RemoteNoteController(*m_remoteSocket);
 
@@ -143,6 +160,8 @@ AkiNotes::createRemoteController(void)
 void
 AkiNotes::destroyAkonadiMonitor(void)
 {
+	kDebug() << "hello";
+
 	foreach(AkiNoteItem *item, m_items.values())
 		delete item;
 
@@ -161,7 +180,8 @@ AkiNotes::destroyAkonadiMonitor(void)
 void
 AkiNotes::destroyRemoteController(void)
 {
-	m_remoteController->stopListening();
+	kDebug() << "hello";
+
 	delete m_remoteController;
 
 	connect(m_remoteSocket, SIGNAL(error(QAbstractSocket::SocketError)),
@@ -177,6 +197,8 @@ AkiNotes::destroyRemoteController(void)
 void
 AkiNotes::on_monitor_itemAdded(const Akonadi::Item &_item, const Akonadi::Collection &_collection)
 {
+	kDebug() << "hello";
+
 	Q_UNUSED(_collection);
 
 	kDebug() << "Add note " << _item.id();
@@ -198,6 +220,8 @@ AkiNotes::on_monitor_itemAdded(const Akonadi::Item &_item, const Akonadi::Collec
 void
 AkiNotes::on_monitor_itemChanged(const Akonadi::Item &_item, const QSet<QByteArray> &_partIdentifiers)
 {
+	kDebug() << "hello";
+
 	Q_UNUSED(_partIdentifiers);
 
 	kDebug() << "Update note " << _item.id();
@@ -214,6 +238,8 @@ AkiNotes::on_monitor_itemChanged(const Akonadi::Item &_item, const QSet<QByteArr
 void
 AkiNotes::on_monitor_itemRemoved(const Akonadi::Item &_item)
 {
+	kDebug() << "hello";
+
 	kDebug() << "Remove note " << _item.id();
 	if (m_items.contains(_item.id())) {
 		delete  m_items[_item.id()];
@@ -222,8 +248,23 @@ AkiNotes::on_monitor_itemRemoved(const Akonadi::Item &_item)
 }
 
 void
+AkiNotes::on_remoteController_fallback(void)
+{
+	kDebug() << "hello";
+	/* TODO: More smarts needed
+	 * Should we retry or fallback to standalone
+	 */
+
+	destroyRemoteController();
+	m_ui = uiStandalone;
+	createGUItems();
+}
+
+void
 AkiNotes::on_remoteSocket_connected(void)
 {
+	kDebug() << "hello";
+
 	m_remoteController->startListening();
 	m_ui = uiRemote;
 	createGUItems();
@@ -232,28 +273,33 @@ AkiNotes::on_remoteSocket_connected(void)
 void
 AkiNotes::on_remoteSocket_disconnected(void)
 {
-	/* TODO: More smarts needed
-	 * Should we retry or fallback to standalone
-	 */
-	destroyRemoteController();
-	m_ui = uiStandalone;
-	createGUItems();
+	kDebug() << "hello";
+
+	QTimer::singleShot(0, this,
+	    SLOT(on_remoteController_fallback()));
 }
 
 void
 AkiNotes::on_remoteSocket_error(QAbstractSocket::SocketError _socketError)
 {
-	/* TODO: More smarts needed
-	 * Should we retry or fallback to standalone
-	 */
-	destroyRemoteController();
-	m_ui = uiStandalone;
-	createGUItems();
+	kDebug() << "hello";
+	switch (_socketError) {
+		case QAbstractSocket::RemoteHostClosedError:
+			// Do nothing, just look pretty
+		break;
+
+		default:
+			QTimer::singleShot(0, this,
+			    SLOT(on_remoteController_fallback()));
+		break;
+	}
 }
 
 void
 AkiNotes::on_fetchCollectionsJob_done(KJob* _job)
 {
+	kDebug() << "hello";
+
 	if (_job->error() ) {
 		kDebug() << "Job Error:" << _job->errorString();
 		return;
@@ -274,6 +320,8 @@ AkiNotes::on_fetchCollectionsJob_done(KJob* _job)
 void
 AkiNotes::on_fetchItemJob_done(KJob* _job)
 {
+	kDebug() << "hello";
+
 	if (_job->error()) {
 		kDebug() << "Note job failed:" << _job->errorString();
 		return;
