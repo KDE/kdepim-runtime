@@ -24,34 +24,58 @@
 
 #include <QObject>
 
-#include <QMap>
-
 #include <Akonadi/Entity>
+
+#include <QAbstractSocket>
+#include <QList>
+#include <QMap>
 
 namespace Akonadi { class Monitor;
 		    class Item; };
 
+namespace StickyNotes {	class BaseNoteItem;
+			class RemoteNoteController; }
+
 class AkiNoteItem;
 class KJob;
+class QTcpSocket;
 
 class AkiNotes : public QObject
 {
 Q_OBJECT
 
 public:
-	AkiNotes(QObject *_parent = 0);
+	enum Ui{uiStandalone, uiRemote, uiAuto};
+public:
+	AkiNotes(QObject *_parent = 0, Ui _ui = uiAuto);
 	~AkiNotes(void);
 
-private slots:
-	void noteItemAdded(const Akonadi::Item &_item, const Akonadi::Collection &_collection);
-	void noteItemChanged(const Akonadi::Item &_item, const QSet<QByteArray> &_partIdentifiers);
-	void noteItemRemoved(const Akonadi::Item &_item);
-        void noteFetchCollectionsDone(KJob* _job);
-        void noteFetchDone(KJob* _job);
 private:
+	void clearGUItems(void);
+	void createAkonadiMonitor(void);
+	void createGUItem(AkiNoteItem *_item);
+	void createGUItems(void);
+	void createRemoteController(void);
+	void destroyAkonadiMonitor(void);
+	void destroyRemoteController(void);
+
+private slots:
+	void on_monitor_itemAdded(const Akonadi::Item &_item, const Akonadi::Collection &_collection);
+	void on_monitor_itemChanged(const Akonadi::Item &_item, const QSet<QByteArray> &_partIdentifiers);
+	void on_monitor_itemRemoved(const Akonadi::Item &_item);
+	void on_remoteSocket_connected(void);
+	void on_remoteSocket_disconnected(void);
+	void on_remoteSocket_error(QAbstractSocket::SocketError _socketError);
+        void on_fetchCollectionsJob_done(KJob* _job);
+        void on_fetchItemJob_done(KJob* _job);
+
+private:
+	QList<StickyNotes::BaseNoteItem *> m_guitems;
 	QMap<Akonadi::Entity::Id, AkiNoteItem *> m_items;
 	Akonadi::Monitor *m_monitor;
-	
+	StickyNotes::RemoteNoteController *m_remoteController;
+	QTcpSocket *m_remoteSocket;
+	Ui   m_ui;
 };
 
 #endif // !AKINOTES_H
