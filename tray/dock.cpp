@@ -34,7 +34,7 @@
 #include <KLocale>
 #include <KMenu>
 #include <KMessageBox>
-#include <KPassivePopup>
+#include <KNotification>
 #include <KStandardShortcut>
 
 #include <akonadi/control.h>
@@ -179,8 +179,8 @@ void Dock::slotInstanceWarning( const Akonadi::AgentInstance& agent, const QStri
 
 void Dock::infoMessage( const QString &message, const QString &title )
 {
-    KPassivePopup::message( title.isEmpty() ? i18n( "Akonadi message" ) : title,
-                            message, m_parentWidget  );
+    KNotification::event( KNotification::Notification, title.isEmpty() ? i18n( "Akonadi message" ) : title,
+                            message, QPixmap(), m_parentWidget  );
 }
 
 void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString& message )
