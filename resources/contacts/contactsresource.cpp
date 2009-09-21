@@ -67,6 +67,10 @@ void ContactsResource::configure( WId windowId )
     initializeDirectory( baseDirectoryPath() );
 
     synchronize();
+
+    emit configurationDialogAccepted();
+  } else {
+    emit configurationDialogRejected();
   }
 }
 

@@ -67,16 +67,24 @@ void LocalBookmarksResource::configure( WId windowId )
     url = KUrl::fromPath( oldFile );
   else
     url = KUrl::fromPath( QDir::homePath() );
-  QString newFile = KFileDialog::getOpenFileNameWId( url, "*.xml |" + i18nc("Filedialog filter for *.xml", "XML Bookmark file"), windowId, i18n("Select Bookmarks File") );
-  if ( newFile.isEmpty() )
+
+  const QString newFile = KFileDialog::getOpenFileNameWId( url, "*.xml |" + i18nc("Filedialog filter for *.xml", "XML Bookmark file"), windowId, i18n("Select Bookmarks File") );
+  if ( newFile.isEmpty() ) {
+    emit configurationDialogRejected();
     return;
-  if ( oldFile == newFile )
+  }
+
+  if ( oldFile == newFile ) {
+    emit configurationDialogAccepted();
     return;
+  }
+
   Settings::self()->setPath( newFile );
 
   mBookmarkManager = KBookmarkManager::managerForFile( newFile, name() );
 
   synchronize();
+  emit configurationDialogAccepted();
 }
 
 void LocalBookmarksResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& col )

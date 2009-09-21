@@ -213,6 +213,8 @@ void KolabProxyResource::configure( WId windowId )
   // The given window ID is usually useful to get the correct
   // "on top of parent" behavior if the running window manager applies any kind
   // of focus stealing prevention technique
+
+  emit configurationDialogAccepted();
 }
 
 void KolabProxyResource::itemAdded( const Item &item, const Collection &collection )

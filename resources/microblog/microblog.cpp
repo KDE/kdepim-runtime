@@ -191,7 +191,11 @@ void MicroblogResource::configure( WId windowId )
     ConfigDialog dlg;
     if ( windowId )
         KWindowSystem::setMainWindow( &dlg, windowId );
-    dlg.exec();
+    if ( dlg.exec() ) {
+      emit configurationDialogAccepted();
+    } else {
+      emit configurationDialogRejected();
+    }
     if ( !Settings::self()->name().isEmpty() )
         setName( i18n( "%1's microblog", Settings::self()->name() ) );
     initComm();

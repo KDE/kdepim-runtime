@@ -86,6 +86,10 @@ void KCalResource::configure( WId windowId )
     if ( dlg.exec() ) {
       setName( mResource->resourceName() );
       mManager->writeConfig( KGlobal::config().data() );
+
+      emit configurationDialogAccepted();
+    } else {
+      emit configurationDialogRejected();
     }
 
     emit status( Idle, QString() );

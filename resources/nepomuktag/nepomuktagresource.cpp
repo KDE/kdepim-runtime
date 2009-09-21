@@ -155,6 +155,7 @@ void NepomukTagResource::slotLinkResult( KJob* job )
 void NepomukTagResource::configure( WId )
 {
     synchronizeCollectionTree();
+    emit configurationDialogAccepted();
 }
 
 void NepomukTagResource::itemLinked(const Akonadi::Item& item, const Akonadi::Collection& collection)

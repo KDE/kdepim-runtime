@@ -64,6 +64,10 @@ void VCardDirResource::configure( WId windowId )
     loadAddressees();
 
     synchronize();
+
+    emit configurationDialogAccepted();
+  } else {
+    emit configurationDialogRejected();
   }
 }
 
