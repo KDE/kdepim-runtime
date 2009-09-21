@@ -271,6 +271,7 @@ void NepomukContactFeeder::updateGroupItem( const Akonadi::Item &item, const QUr
   const KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
 
   group.setContactGroupName( contactGroup.name() );
+  group.setLabel( contactGroup.name() );
 
   for ( uint i = 0; i < contactGroup.contactReferenceCount(); ++i ) {
     const Akonadi::Item contactItem( contactGroup.contactReference( i ).uid().toLongLong() );

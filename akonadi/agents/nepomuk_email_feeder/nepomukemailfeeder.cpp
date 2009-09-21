@@ -57,7 +57,7 @@ Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   addSupportedMimeType( "message/rfc822" );
   addSupportedMimeType( "message/news" );
 
-  changeRecorder()->itemFetchScope().fetchPayloadPart( MessagePart::Envelope );
+  changeRecorder()->itemFetchScope().fetchFullPayload();
 
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
@@ -145,8 +145,10 @@ QList<NepomukFast::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( co
     if ( mbox.hasAddress() ) {
       bool found = false;
       NepomukFast::Contact c = findContact( mbox.address(), graphUri, &found );
-      if ( !found && mbox.hasName() )
+      if ( !found && mbox.hasName() ) {
         c.addFullname( mbox.name() );
+        c.setLabel( mbox.name() );
+      }
       contacts << c;
     }
   }
@@ -170,7 +172,9 @@ NepomukFast::PersonContact NepomukEMailFeeder::findContact( const QByteArray& ad
                                                                      Soprano::Query::QueryLanguageSparql );
   if ( it.next() ) {
     *found = true;
-    return NepomukFast::PersonContact( it.binding( 0 ).uri(), graphUri );
+    const QUrl uri = it.binding( 0 ).uri();
+    it.close();
+    return NepomukFast::PersonContact( uri, graphUri );
   }
   else {
     *found = false;

@@ -128,26 +128,25 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
 {
   // create event with the graph reference
   NepomukFast::Event event( item.url(), graphUri );
+  updateIncidenceItem( calEvent, event, graphUri );
 
-  event.setLabel( calEvent->summary() );
-
-  QString uri;
+  QUrl uri;
   switch ( calEvent->status() ) {
     case KCal::Incidence::StatusCanceled:
-      uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#cancelledEventStatus";
+      uri = Vocabulary::NCAL::cancelledEventStatus();
       break;
     case KCal::Incidence::StatusConfirmed:
-      uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#confirmedEventStatus";
+      uri = Vocabulary::NCAL::confirmedStatus();
       break;
     case KCal::Incidence::StatusTentative:
-      uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#tentativeEventStatus";
+      uri = Vocabulary::NCAL::tentativeStatus();
       break;
     default: // other states are not available in the ontology
       break;
   }
 
   if ( !uri.isEmpty() ) {
-    NepomukFast::EventStatus status( QUrl( uri ), graphUri );
+    NepomukFast::EventStatus status( uri, graphUri );
     event.addEventStatus( status );
   }
 
@@ -166,50 +165,44 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
     uri.clear();
     switch( calAttendee->status() ) {
       case KCal::Attendee::NeedsAction:
-        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#needsActionParticipationStatus";
+        uri = Vocabulary::NCAL::needsActionParticipationStatus();
         break;
       case KCal::Attendee::Accepted:
-        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#acceptedParticipationStatus";
+        uri = Vocabulary::NCAL::acceptedParticipationStatus();
         break;
       case KCal::Attendee::Declined:
-        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#declinedParticipationStatus";
+        uri = Vocabulary::NCAL::declinedParticipationStatus();
         break;
       case KCal::Attendee::Tentative:
-        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#tentativeParticipationStatus";
+        uri = Vocabulary::NCAL::tentativeParticipationStatus();
         break;
       case KCal::Attendee::Delegated:
-        uri = "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#delegatedParticipationStatus";
+        uri = Vocabulary::NCAL::delegatedParticipationStatus();
         break;
       default: // other states are not available in the ontology
         break;
     }
 
     if ( !uri.isEmpty() ) {
-      NepomukFast::ParticipationStatus partStatus( QUrl( uri ), graphUri );
+      NepomukFast::ParticipationStatus partStatus( uri, graphUri );
       attendee.addPartstat( partStatus );
     }
 
     event.addAttendee( attendee );
   }
-
-  tagsFromCategories( event, calEvent->categories() );
 }
 
 void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCal::Journal::Ptr &calJournal, const QUrl &graphUri )
 {
     // create journal entry with the graph reference
     NepomukFast::Journal journal( item.url(), graphUri );
-
-    journal.setLabel( calJournal->summary() );
-
-    tagsFromCategories( journal, calJournal->categories() );
+    updateIncidenceItem( calJournal, journal, graphUri );
 }
 
 void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCal::Todo::Ptr &calTodo, const QUrl &graphUri )
 {
   NepomukFast::Todo todo( item.url(), graphUri );
-  todo.setLabel( calTodo->summary() );
-  tagsFromCategories( todo, calTodo->categories() );
+  updateIncidenceItem( calTodo, todo, graphUri );
 }
 
 } // namespace Akonadi

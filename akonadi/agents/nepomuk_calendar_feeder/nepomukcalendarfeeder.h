@@ -29,6 +29,8 @@
 #include <kcal/journal.h>
 #include <kcal/todo.h>
 
+#include "ncal.h"
+
 namespace Soprano
 {
 class NRLModel;
@@ -49,6 +51,21 @@ class NepomukCalendarFeeder : public NepomukFeederAgent
     void updateEventItem( const Akonadi::Item& item, const KCal::Event::Ptr&, const QUrl& );
     void updateJournalItem( const Akonadi::Item& item, const KCal::Journal::Ptr&, const QUrl& );
     void updateTodoItem( const Akonadi::Item& item, const KCal::Todo::Ptr&, const QUrl& );
+
+    template <typename IncidencePtr>
+    void updateIncidenceItem( const IncidencePtr &calInc, NepomukFast::Resource &incidence, const QUrl &graphUri )
+    {
+      Q_UNUSED( graphUri );
+
+      incidence.setLabel( calInc->summary() );
+      incidence.addProperty( Vocabulary::NCAL::summary(), Soprano::LiteralValue( calInc->summary() ) );
+      if ( !calInc->location().isEmpty() )
+        incidence.addProperty( Vocabulary::NCAL::location(), Soprano::LiteralValue( calInc->location() ) );
+      if ( !calInc->description().isEmpty() )
+        incidence.addProperty( Vocabulary::NCAL::description(), Soprano::LiteralValue( calInc->description() ) );
+
+      tagsFromCategories( incidence, calInc->categories() );
+    }
 
     Soprano::NRLModel *mNrlModel;
 };

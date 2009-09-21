@@ -8,7 +8,11 @@ include_directories(
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 add_definitions(-DNEPOMUK_RESOURCE_STATIC)
 
-kde4_add_executable(akonadi_nepomuk_calendar_feeder RUN_UNINSTALLED nepomukcalendarfeeder.cpp ${NEPOMUKFEEDER_SHARED_SRCS})
+# FIXME: currently the ontology2vocabularyclass tool generates invalid code on the NCAL ontology
+#soprano_add_ontology(vocabulary_srcs ${CMAKE_CURRENT_SOURCE_DIR}/../nie_fast/ncal.rdfs "NCAL" "Vocabulary" "rdfxml")
+set( vocabulary_srcs ncal.cpp )
+
+kde4_add_executable(akonadi_nepomuk_calendar_feeder RUN_UNINSTALLED nepomukcalendarfeeder.cpp ${NEPOMUKFEEDER_SHARED_SRCS} ${vocabulary_srcs})
 
 target_link_libraries(akonadi_nepomuk_calendar_feeder
   niefast
