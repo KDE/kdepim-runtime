@@ -22,6 +22,7 @@
 #include "email.h"
 #include "emailaddress.h"
 #include "personcontact.h"
+#include "selectsqarqlbuilder.h"
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
@@ -163,13 +164,14 @@ NepomukFast::PersonContact NepomukEMailFeeder::findContact( const QByteArray& ad
   // are case insensitive. But for the moment we stick to it and hope Nepomuk
   // alignment fixes any duplicates
   //
-  Soprano::QueryResultIterator it =
-    Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString( "select distinct ?r where { ?r <%1> ?a . ?a <%2> \"%3\"^^<%4> . }" )
-                                                                     .arg( NepomukFast::Role::emailAddressUri().toString() )
-                                                                     .arg( NepomukFast::EmailAddress::emailAddressUri().toString() )
-                                                                     .arg( QString::fromAscii( address ) )
-                                                                     .arg( Soprano::Vocabulary::XMLSchema::string().toString() ),
-                                                                     Soprano::Query::QueryLanguageSparql );
+  SelectSparqlBuilder::BasicGraphPattern graph;
+  graph.addTriple( "?r", NepomukFast::Role::emailAddressUri(), SparqlBuilder::QueryVariable("?a") );
+  graph.addTriple( "?a", NepomukFast::EmailAddress::emailAddressUri(), QString::fromAscii( address ) );
+  SelectSparqlBuilder qb;
+  qb.setGraphPattern( graph );
+  qb.addQueryVariable( "?r" );
+  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(), Soprano::Query::QueryLanguageSparql );
+
   if ( it.next() ) {
     *found = true;
     const QUrl uri = it.binding( 0 ).uri();
