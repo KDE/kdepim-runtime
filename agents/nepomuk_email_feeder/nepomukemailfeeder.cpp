@@ -125,7 +125,7 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
   if ( content ) {
     const QString text = content->decodedText( true, true );
     if ( !text.isEmpty() ) {
-      r.setPlainTextMessageContents( QStringList( text )` );
+      r.setPlainTextMessageContents( QStringList( text ) );
     }
   }
 
