@@ -18,6 +18,8 @@
 */
 
 #include "nepomukcalendarfeeder.h"
+#include "selectsqarqlbuilder.h"
+#include "nco.h"
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
@@ -60,18 +62,20 @@ namespace Akonadi {
 static NepomukFast::Contact findNepomukContact( const QString &name, const QString &email )
 {
   // find person using name and email
-  QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
-                QString( "prefix nco:<http://www.semanticdesktop.org/ontologies/2007/03/22/nco#>"
-                          "select ?person where {"
-                          "  ?person nco:fullname \"%1\"^^<http://www.w3.org/2001/XMLSchema#string> ."
-                          "  ?person nco:hasEmailAddress ?email ."
-                          "  ?email nco:emailAddress \"%2\"^^<http://www.w3.org/2001/XMLSchema#string> ."
-                          "}" )
-                        .arg( name, email ),
-                Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
-  foreach ( const Soprano::Node &node, list )
+  SparqlBuilder::BasicGraphPattern graph;
+  graph.addTriple( "?person", Vocabulary::NCO::fullname(), name );
+  graph.addTriple( "?person", Vocabulary::NCO::hasEmailAddress(), SparqlBuilder::QueryVariable( "?email" ) );
+  graph.addTriple( "?email", Vocabulary::NCO::emailAddress(), email );
+  SelectSparqlBuilder qb;
+  qb.addQueryVariable( "?person" );
+  qb.setGraphPattern( graph );
+  const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(),
+      Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
+
+  foreach ( const Soprano::Node &node, list ) {
     if ( node.isResource () )
       return NepomukFast::Contact( node.uri() );
+  }
 
   return NepomukFast::Contact();
 }

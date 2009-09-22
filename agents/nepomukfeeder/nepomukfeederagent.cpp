@@ -20,6 +20,8 @@
 */
 
 #include "nepomukfeederagent.h"
+#include "selectsqarqlbuilder.h"
+#include "nie.h"
 
 #include <akonadi/item.h>
 #include <akonadi/changerecorder.h>
@@ -62,10 +64,15 @@ NepomukFeederAgent::~NepomukFeederAgent()
 void NepomukFeederAgent::removeItemFromNepomuk( const Akonadi::Item &item )
 {
   // find the graph that contains our item and delete the complete graph
-  QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
-                QString( "select ?g where { ?g <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor> %1. }")
-                       .arg( Soprano::Node::resourceToN3( item.url() ) ),
-                Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
+  SparqlBuilder::BasicGraphPattern graph;
+  // FIXME: why isn't that in the ontology?
+//   graph.addTriple( "?g", Vocabulary::Nie::dataGraphFor(), item.url() );
+  graph.addTriple( "?g", QUrl( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ), item.url() );
+  SelectSparqlBuilder qb;
+  qb.addQueryVariable( "?g" );
+  qb.setGraphPattern( graph );
+  const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(),
+      Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
 
   foreach ( const Soprano::Node &node, list )
     Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
