@@ -37,12 +37,18 @@
 
 #include <KLocale>
 #include <KUrl>
+#include <KProcess>
+#include <KMessageBox>
 
 #include <Soprano/Model>
 #include <Soprano/NodeIterator>
 #include <Soprano/QueryResultIterator>
 
 #include <QtCore/QTimer>
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusReply>
+#include <QtDBus/QDBusConnectionInterface>
+#include <QtDBus/QDBusInterface>
 
 #include <boost/bind.hpp>
 
@@ -59,7 +65,9 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 
   changeRecorder()->setChangeRecordingEnabled( false );
 
-  QTimer::singleShot( 0, this, SLOT(updateAll()) );
+  selfTest();
+  if ( isOnline() )
+    QTimer::singleShot( 0, this, SLOT(updateAll()) );
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -195,5 +203,58 @@ void NepomukFeederAgent::tagsFromCategories(NepomukFast::Resource& resource, con
     res.addTag( tag );
   }
 }
+
+
+void NepomukFeederAgent::selfTest()
+{
+  QStringList errorMessages;
+
+  // if Nepomuk is not running, try to start it
+  if ( !QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.NepomukStorage" ) ) {
+    KProcess process;
+    if ( process.startDetached( QLatin1String( "nepomukserver" ) ) == 0 )
+      errorMessages.append( i18n( "Unable to start the Nepomuk server." ) );
+  }
+
+  // if it is already running, check if the backend is correct
+  if ( QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.NepomukStorage" ) ) {
+    static const QStringList backendBlacklist = QStringList() << QLatin1String( "redland" );
+    // check which backend is used
+    QDBusInterface interface( "org.kde.NepomukStorage", "/nepomukstorage" );
+    QDBusReply<QString> reply = interface.call( "usedSopranoBackend" );
+    if ( reply.isValid() ) {
+      const QString backend = reply.value().toLower();
+      if ( backendBlacklist.contains( backend ) )
+        errorMessages.append( i18n( "A blacklisted backend is used: '%1'.", backend ) );
+    } else {
+      errorMessages.append( i18n( "Calling the Nepomuk storage service failed: '%1'.", reply.error().message() ) );
+    }
+  } else {
+    errorMessages.append( i18n( "Nepomuk is not running." ) );
+  }
+
+  if ( errorMessages.isEmpty() ) {
+    setOnline( true );
+    return;
+  }
+
+  setOnline( false );
+
+  QString message = i18n( "<b>Nepomuk indexing agents have been disabled</b><br/>"
+                          "The Nepomuk service is not available or fully operational and attempts to rectify this have failed. "
+                          "Therefore indexing of all data stored in the Akonadi PIM service has been disabled, which will "
+                          "severely limit the capabilities of any application using this data.<br/><br/>"
+                          "The following problems were detected:<ul><li>%1</li></ul>"
+                          "Additional help can be found here: <a href=\"http://userbase.kde.org/Akonadi\">userbase.kde.org/Akonadi</a>",
+                          errorMessages.join( "</li><li>" ) );
+
+  // prevent a message storm from all agents
+  emit status( Broken, i18n( "Nepomuk not operational" ) );
+  if ( !QDBusConnection::sessionBus().registerService( "org.kde.pim.nepomukfeeder.selftestreport" ) )
+    return;
+  KMessageBox::error( 0, message, i18n( "Nepomuk indexing disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
+  QDBusConnection::sessionBus().unregisterService( "org.kde.pim.nepomukfeeder.selftestreport" );
+}
+
 
 #include "nepomukfeederagent.moc"

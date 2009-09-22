@@ -70,6 +70,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
   private:
     void processNextCollection();
+    void selfTest();
 
   private slots:
     void collectionsReceived( const Akonadi::Collection::List &collections );
