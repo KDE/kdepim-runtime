@@ -126,6 +126,10 @@ void KABCResource::configure( WId windowId )
     if ( dlg.exec() ) {
       setName( mBaseResource->resourceName() );
       manager->writeConfig( KGlobal::config().data() );
+
+      emit configurationDialogAccepted();
+    } else {
+      emit configurationDialogRejected();
     }
 
     emit status( Idle, QString() );

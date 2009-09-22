@@ -149,7 +149,11 @@ void OCResource::configure( WId windowId )
   ProfileDialog configDialog( this );
   if ( windowId )
     KWindowSystem::setMainWindow( &configDialog, windowId );
-  configDialog.exec();
+  if ( configDialog.exec() ) {
+    emit configurationDialogAccepted();
+  } else {
+    emit configurationDialogRejected();
+  }
 }
 
 void OCResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )

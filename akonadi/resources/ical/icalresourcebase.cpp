@@ -79,6 +79,9 @@ void ICalResourceBase::configure( WId windowId )
   dlg.setCaption( i18n("Select Calendar") );
   if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
+    emit configurationDialogAccepted();
+  } else {
+    emit configurationDialogRejected();
   }
 }
 

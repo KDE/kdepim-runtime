@@ -88,6 +88,10 @@ void MboxResource::configure( WId windowId )
   dlg->setCaption( i18n( "Select MBox file" ) );
   if ( dlg->exec() == QDialog::Accepted ) {
     reloadFile();
+
+    emit configurationDialogAccepted();
+  } else {
+    emit configurationDialogRejected();
   }
 
   delete dlg;

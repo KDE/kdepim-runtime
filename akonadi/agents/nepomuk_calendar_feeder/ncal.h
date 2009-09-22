@@ -670,6 +670,18 @@ namespace Vocabulary {
         QUrl chairRole();
 
         /**
+         * http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#class 
+         * 
+         * Defines the access classification for a calendar component. 
+         * Inspired by RFC 2445 sec. 4.8.1.3 with the following reservations: 
+         * this property has limited vocabulary. Possible values are: 
+         * PUBLIC, PRIVATE and CONFIDENTIAL. The default is PUBLIC. Those 
+         * values are expressed as instances of the AccessClassification 
+         * class. The user may create his/her own if necessary. 
+         */
+        QUrl ncalClass();
+
+        /**
          * http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#comment 
          * 
          * Non-processing information intended to provide a comment 

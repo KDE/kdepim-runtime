@@ -55,6 +55,9 @@ void DistListResource::configure( WId windowId )
   dlg.setCaption( i18n("Select Distribution List File") );
   if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
+    emit configurationDialogAccepted();
+  } else {
+    emit configurationDialogRejected();
   }
 }
 
