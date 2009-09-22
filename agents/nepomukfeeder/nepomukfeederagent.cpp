@@ -35,6 +35,7 @@
 #include <nepomuk/resourcemanager.h>
 #include <nepomuk/tag.h>
 
+#include <KLocale>
 #include <KUrl>
 
 #include <Soprano/Model>
@@ -47,14 +48,18 @@
 
 using namespace Akonadi;
 
-NepomukFeederAgent::NepomukFeederAgent(const QString& id) : AgentBase(id)
+NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
+  AgentBase(id),
+  mTotalAmount( 0 ),
+  mProcessedAmount( 0 ),
+  mPendingJobs( 0 )
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
 
- changeRecorder()->setChangeRecordingEnabled( false );
+  changeRecorder()->setChangeRecordingEnabled( false );
 
- QTimer::singleShot( 0, this, SLOT(updateAll()) );
+  QTimer::singleShot( 0, this, SLOT(updateAll()) );
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -116,14 +121,25 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
 {
   mMimeTypeChecker.setWantedMimeTypes( mSupportedMimeTypes );
   foreach( const Collection &collection, collections ) {
-    kDebug() << "checking collection" << collection.name();
-    if ( mMimeTypeChecker.isWantedCollection( collection ) ) {
-      kDebug() << "fetching items from collection" << collection.name();
-      ItemFetchJob *itemFetch = new ItemFetchJob( collection, this );
-      itemFetch->fetchScope().setCacheOnly( true );
-      connect( itemFetch, SIGNAL(itemsReceived( Akonadi::Item::List)), SLOT(itemHeadersReceived(Akonadi::Item::List)) );
-    }
+    if ( mMimeTypeChecker.isWantedCollection( collection ) )
+      mCollectionQueue.append( collection );
   }
+  processNextCollection();
+}
+
+void NepomukFeederAgent::processNextCollection()
+{
+  if ( mCurrentCollection.isValid() || mCollectionQueue.isEmpty() )
+    return;
+  mCurrentCollection = mCollectionQueue.takeFirst();
+  emit status( AgentBase::Running, i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
+  kDebug() << "Indexing collection" << mCurrentCollection.name();
+  ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
+  itemFetch->fetchScope().setCacheOnly( true );
+  connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemHeadersReceived(Akonadi::Item::List)) );
+  connect( itemFetch, SIGNAL(result(KJob*)), SLOT(itemFetchResult(KJob*)) );
+  ++mPendingJobs;
+  mTotalAmount = 0;
 }
 
 void NepomukFeederAgent::itemHeadersReceived(const Akonadi::Item::List& items)
@@ -138,16 +154,36 @@ void NepomukFeederAgent::itemHeadersReceived(const Akonadi::Item::List& items)
       itemsToUpdate.append( item );
   }
 
-  ItemFetchJob *itemFetch = new ItemFetchJob( itemsToUpdate, this );
-  itemFetch->setFetchScope( changeRecorder()->itemFetchScope() );
-  connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemsReceived(Akonadi::Item::List)) );
-  kDebug() << "done";
+  if ( !itemsToUpdate.isEmpty() ) {
+    ItemFetchJob *itemFetch = new ItemFetchJob( itemsToUpdate, this );
+    itemFetch->setFetchScope( changeRecorder()->itemFetchScope() );
+    connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemsReceived(Akonadi::Item::List)) );
+    connect( itemFetch, SIGNAL(result(KJob*)), SLOT(itemFetchResult(KJob*)) );
+    ++mPendingJobs;
+    mTotalAmount += itemsToUpdate.size();
+  }
+}
+
+void NepomukFeederAgent::itemFetchResult(KJob* job)
+{
+  if ( job->error() )
+    kDebug() << job->errorString();
+
+  --mPendingJobs;
+  if ( mPendingJobs == 0 ) {
+    mCurrentCollection = Collection();
+    emit status( Idle, i18n( "Indexing completed." ) );
+    processNextCollection();
+    return;
+  }
 }
 
 void NepomukFeederAgent::itemsReceived(const Akonadi::Item::List& items)
 {
   kDebug() << items.size();
   std::for_each( items.constBegin(), items.constEnd(), boost::bind( &NepomukFeederAgent::updateItem, this, _1 ) );
+  mProcessedAmount += items.count();
+  emit percent( (mProcessedAmount * 100) / (mTotalAmount * 100) );
 }
 
 void NepomukFeederAgent::tagsFromCategories(NepomukFast::Resource& resource, const QStringList& categories)

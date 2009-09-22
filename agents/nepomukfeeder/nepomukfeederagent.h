@@ -36,6 +36,8 @@ namespace Akonadi
   class Item;
 }
 
+class KJob;
+
 /** Shared base class for all Nepomuk feeders. */
 class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
 {
@@ -66,14 +68,21 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved(const Akonadi::Item &item);
 
+  private:
+    void processNextCollection();
+
   private slots:
     void collectionsReceived( const Akonadi::Collection::List &collections );
     void itemHeadersReceived( const Akonadi::Item::List &items );
     void itemsReceived( const Akonadi::Item::List &items );
+    void itemFetchResult( KJob* job );
 
   private:
     QStringList mSupportedMimeTypes;
     Akonadi::MimeTypeChecker mMimeTypeChecker;
+    Akonadi::Collection::List mCollectionQueue;
+    Akonadi::Collection mCurrentCollection;
+    int mTotalAmount, mProcessedAmount, mPendingJobs;
 };
 
 #endif
