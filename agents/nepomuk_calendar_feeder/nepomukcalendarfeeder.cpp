@@ -59,7 +59,7 @@
 
 namespace Akonadi {
 
-static NepomukFast::Contact findNepomukContact( const QString &name, const QString &email )
+static NepomukFast::Contact findOrMakeNepomukContact( const QString &name, const QString &email )
 {
   // find person using name and email
   SparqlBuilder::BasicGraphPattern graph;
@@ -77,7 +77,13 @@ static NepomukFast::Contact findNepomukContact( const QString &name, const QStri
       return NepomukFast::Contact( node.uri() );
   }
 
-  return NepomukFast::Contact();
+  NepomukFast::Contact contact;
+  contact.setLabel( name.isEmpty() ? email : name );
+  contact.addFullname( name );
+  NepomukFast::EmailAddress emailRes( QUrl( "mailto:" + email ) );
+  emailRes.setEmailAddress( email );
+  contact.addEmailAddress( emailRes );
+  return contact;
 }
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
@@ -155,14 +161,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
   }
 
   foreach ( const KCal::Attendee *calAttendee, calEvent->attendees() ) {
-    NepomukFast::Contact contact = findNepomukContact( calAttendee->name(), calAttendee->email() );
-    if ( !contact.uri().isValid() ) {
-      contact.setLabel( calAttendee->name() );
-      NepomukFast::EmailAddress email( QUrl( "mailto:" + calAttendee->email() ) );
-      email.setEmailAddress( calAttendee->email() );
-      contact.addEmailAddress( email );
-    }
-
+    NepomukFast::Contact contact = findOrMakeNepomukContact( calAttendee->name(), calAttendee->email() );
     NepomukFast::Attendee attendee( QUrl(), graphUri );
     attendee.addInvolvedContact( contact );
 
