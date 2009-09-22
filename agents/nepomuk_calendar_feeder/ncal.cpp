@@ -873,6 +873,11 @@ QUrl Vocabulary::NCAL::chairRole()
     return s_ncal()->ncal_chairRole;
 }
 
+QUrl Vocabulary::NCAL::ncalClass()
+{
+    return s_ncal()->ncal_class;
+}
+
 QUrl Vocabulary::NCAL::comment()
 {
     return s_ncal()->ncal_comment;
