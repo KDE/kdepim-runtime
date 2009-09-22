@@ -110,9 +110,7 @@ bool SetupServer::shouldClearCache() const
 void SetupServer::applySettings()
 {
   m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
-                    || ( Settings::self()->userName() != m_ui->userName->text() )
-                    || ( Settings::self()->subscriptionEnabled() != m_subscriptionEnabled )
-                    || m_subscriptionsChanged;
+                    || ( Settings::self()->userName() != m_ui->userName->text() );
 
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setUserName( m_ui->userName->text() );
