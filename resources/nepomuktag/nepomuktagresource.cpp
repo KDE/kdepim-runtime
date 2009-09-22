@@ -28,6 +28,7 @@
 #include <akonadi/linkjob.h>
 #include <akonadi/unlinkjob.h>
 #include <akonadi/itemfetchjob.h>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <nepomuk/tag.h>
 #include <nepomuk/resourcemanager.h>
@@ -92,6 +93,11 @@ void NepomukTagResource::retrieveCollections()
         c.setContentMimeTypes( contentTypes );
         c.setParentCollection( root );
         c.setCachePolicy( policy );
+        if ( !tag.symbols().isEmpty() ) {
+          const QString icon = tag.symbols().first();
+          EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+          attr->setIconName( icon );
+        }
         collections[ tag.genericLabel()] = c;
     }
     collectionsRetrieved( collections.values() );
