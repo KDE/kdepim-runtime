@@ -43,6 +43,7 @@
 #include <Soprano/Model>
 #include <Soprano/NodeIterator>
 #include <Soprano/QueryResultIterator>
+#include <Soprano/Vocabulary/NAO>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
@@ -196,13 +197,12 @@ void NepomukFeederAgent::itemsReceived(const Akonadi::Item::List& items)
   emit percent( (mProcessedAmount * 100) / (mTotalAmount * 100) );
 }
 
+
 void NepomukFeederAgent::tagsFromCategories(NepomukFast::Resource& resource, const QStringList& categories)
 {
-  // FIXME: this voids the usage of the XFast classes...
-  Nepomuk::Resource res( resource.uri() );
   foreach ( const QString &category, categories ) {
     const Nepomuk::Tag tag( category );
-    res.addTag( tag );
+    resource.addProperty( Soprano::Vocabulary::NAO::hasTag(), tag.resourceUri() );
   }
 }
 
