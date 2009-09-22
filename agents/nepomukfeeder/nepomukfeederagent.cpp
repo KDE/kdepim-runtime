@@ -155,6 +155,8 @@ void NepomukFeederAgent::itemHeadersReceived(const Akonadi::Item::List& items)
   kDebug() << items.count();
   Akonadi::Item::List itemsToUpdate;
   foreach( const Item &item, items ) {
+    if ( item.storageCollectionId() != mCurrentCollection.id() )
+      continue; // stay away from links
     if ( !mMimeTypeChecker.isWantedItem( item ) )
       continue;
     // update item if it does not exist
