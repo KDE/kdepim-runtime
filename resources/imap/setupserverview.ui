@@ -224,6 +224,13 @@ p, li { white-space: pre-wrap; }
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
+      <widget class="QCheckBox" name="subscriptionEnabled">
+       <property name="text">
+        <string>Enable Serverside Subscriptions</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -238,6 +245,9 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <widget class="KPushButton" name="subscriptionButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Serverside Subscription...</string>
        </property>
@@ -283,7 +293,24 @@ p, li { white-space: pre-wrap; }
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>subscriptionEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>subscriptionButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>131</x>
+     <y>431</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>331</x>
+     <y>432</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <buttongroups>
   <buttongroup name="authImapGroup"/>
   <buttongroup name="safeImapGroup"/>
