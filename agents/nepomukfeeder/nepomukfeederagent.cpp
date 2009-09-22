@@ -138,7 +138,7 @@ void NepomukFeederAgent::itemHeadersReceived(const Akonadi::Item::List& items)
       itemsToUpdate.append( item );
   }
 
-  ItemFetchJob *itemFetch = new ItemFetchJob( items, this );
+  ItemFetchJob *itemFetch = new ItemFetchJob( itemsToUpdate, this );
   itemFetch->setFetchScope( changeRecorder()->itemFetchScope() );
   connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemsReceived(Akonadi::Item::List)) );
   kDebug() << "done";
