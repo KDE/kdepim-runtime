@@ -373,20 +373,20 @@ void EntityTreeView::setXmlGuiClient( KXMLGUIClient * xmlGuiClient )
 void EntityTreeView::startDrag(Qt::DropActions _supportedActions)
 {
   QModelIndexList indexes;
-  bool sourceReadable = true;
+  bool sourceDeletable = true;
   foreach ( const QModelIndex &index, selectionModel()->selectedRows() ) {
     if ( !model()->flags( index ) & Qt::ItemIsDragEnabled )
       continue;
 
-    if ( sourceReadable ) {
+    if ( sourceDeletable ) {
       Collection source = index.data( EntityTreeModel::CollectionRole ).value<Collection>();
       if ( !source.isValid() ) {
         // index points to an item
         source = index.data( EntityTreeModel::ParentCollectionRole ).value<Collection>();
-        sourceReadable = source.rights() & Collection::CanDeleteItem;
+        sourceDeletable = source.rights() & Collection::CanDeleteItem;
       } else {
         // index points to a collection
-        sourceReadable = source.rights() & Collection::CanDeleteCollection;
+        sourceDeletable = source.rights() & Collection::CanDeleteCollection;
       }
     }
 
@@ -413,7 +413,7 @@ void EntityTreeView::startDrag(Qt::DropActions _supportedActions)
   }
 
   Qt::DropActions supportedActions( _supportedActions );
-  if ( !sourceReadable )
+  if ( !sourceDeletable )
     supportedActions &= ~Qt::MoveAction;
   drag->exec( supportedActions, Qt::CopyAction );
 }
