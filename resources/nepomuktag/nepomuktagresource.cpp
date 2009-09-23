@@ -219,6 +219,20 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
     changeCommitted( newCollection );
 }
 
+void NepomukTagResource::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
+{
+  Q_UNUSED( partIdentifiers );
+  Nepomuk::Tag tag( collection.remoteId() );
+  EntityDisplayAttribute* attr = collection.attribute<EntityDisplayAttribute>();
+  if ( attr && !attr->displayName().isEmpty() )
+    tag.setLabel( attr->displayName() );
+  else
+    tag.setLabel( collection.name() );
+  if ( attr && !attr->iconName().isEmpty() )
+    tag.setSymbols( QStringList() << attr->iconName() );
+  changeCommitted( collection );
+}
+
 void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection)
 {
     Nepomuk::Tag tag( collection.remoteId() );
