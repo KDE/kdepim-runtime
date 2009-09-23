@@ -561,7 +561,7 @@ void ImapResource::retrieveCollections()
   root.setCachePolicy( policy );
 
   setCollectionStreamingEnabled( true );
-  collectionsRetrievedIncremental( Collection::List() << root, Collection::List() );
+  collectionsRetrieved( Collection::List() << root );
 
   QHash<QString, Collection> reportedCollections;
   reportedCollections.insert( QString(), root );
@@ -668,7 +668,7 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
   }
 
   sender()->setProperty( REPORTED_COLLECTIONS, QVariant::fromValue<StringCollectionMap>( reportedCollections ) );
-  collectionsRetrievedIncremental( collections, Collection::List() );
+  collectionsRetrieved( collections );
 }
 
 void ImapResource::onMailBoxesReceiveDone(KJob* job)

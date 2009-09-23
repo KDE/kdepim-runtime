@@ -47,7 +47,7 @@
 #include "ui_setupserverview.h"
 
 SetupServer::SetupServer( WId parent )
-  : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0), m_subscriptionEnabled(false),
+  : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0),
     m_subscriptionsChanged(false), m_shouldClearCache(false)
 {
   Settings::self()->setWinId( parent );
@@ -110,16 +110,14 @@ bool SetupServer::shouldClearCache() const
 void SetupServer::applySettings()
 {
   m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
-                    || ( Settings::self()->userName() != m_ui->userName->text() )
-                    || ( Settings::self()->subscriptionEnabled() != m_subscriptionEnabled )
-                    || m_subscriptionsChanged;
+                    || ( Settings::self()->userName() != m_ui->userName->text() );
 
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setUserName( m_ui->userName->text() );
   Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
   Settings::self()->setAuthentication( m_ui->authImapGroup->checkedId() );
   Settings::self()->setPassword( m_ui->password->text() );
-  Settings::self()->setSubscriptionEnabled( m_subscriptionEnabled );
+  Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 }
@@ -159,7 +157,7 @@ void SetupServer::readSettings()
     m_ui->password->insert( Settings::self()->password() );
   }
 
-  m_subscriptionEnabled = Settings::self()->subscriptionEnabled();
+  m_ui->subscriptionEnabled->setChecked( Settings::self()->subscriptionEnabled() );
 
   delete currentUser;
 }
@@ -300,7 +298,7 @@ void SetupServer::slotManageSubscriptions()
   ImapAccount account;
   account.setServer( m_ui->imapServer->text() );
   account.setUserName( m_ui->userName->text() );
-  account.setSubscriptionEnabled( m_subscriptionEnabled );
+  account.setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
 
   switch ( m_ui->safeImapGroup->checkedId() ) {
   case 1:
@@ -354,7 +352,7 @@ void SetupServer::slotManageSubscriptions()
   account.connect( m_ui->password->text() );
   subscriptions->exec();
 
-  m_subscriptionEnabled = account.isSubscriptionEnabled();
+  m_ui->subscriptionEnabled->setChecked( account.isSubscriptionEnabled() );
 }
 
 #include "setupserver.moc"

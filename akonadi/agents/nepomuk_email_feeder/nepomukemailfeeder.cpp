@@ -125,7 +125,6 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
   if ( content ) {
     const QString text = content->decodedText( true, true );
     if ( !text.isEmpty() ) {
-      r.addProperty( Soprano::Vocabulary::Xesam::asText(), Soprano::LiteralValue( text ) );
       r.setPlainTextMessageContents( QStringList( text ) );
     }
   }
@@ -146,9 +145,13 @@ QList<NepomukFast::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( co
     if ( mbox.hasAddress() ) {
       bool found = false;
       NepomukFast::Contact c = findContact( mbox.address(), graphUri, &found );
-      if ( !found && mbox.hasName() ) {
-        c.addFullname( mbox.name() );
-        c.setLabel( mbox.name() );
+      if ( !found ) {
+        if ( mbox.hasName() ) {
+          c.addFullname( mbox.name() );
+          c.setLabel( mbox.name() );
+        } else {
+          c.setLabel( mbox.address() );
+        }
       }
       contacts << c;
     }

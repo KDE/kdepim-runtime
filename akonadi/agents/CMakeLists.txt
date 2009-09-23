@@ -8,7 +8,7 @@ if( Nepomuk_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/sparqlbuilder.cpp
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/selectsparqlbuilder.cpp
      )
-
+    include( SopranoAddOntology )
     add_subdirectory( nie_fast )
     add_subdirectory( nepomukfeeder )
     add_subdirectory( nepomuk_email_feeder )
