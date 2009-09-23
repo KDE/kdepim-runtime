@@ -52,6 +52,7 @@
 #include <QtDBus/QDBusInterface>
 
 #include <boost/bind.hpp>
+#include <akonadi/entitydisplayattribute.h>
 
 using namespace Akonadi;
 
@@ -130,8 +131,12 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
 {
   mMimeTypeChecker.setWantedMimeTypes( mSupportedMimeTypes );
   foreach( const Collection &collection, collections ) {
-    if ( mMimeTypeChecker.isWantedCollection( collection ) )
-      mCollectionQueue.append( collection );
+    if ( !mMimeTypeChecker.isWantedCollection( collection ) )
+      continue;
+    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+    if ( attr && attr->isHidden() )
+      continue;
+    mCollectionQueue.append( collection );
   }
   processNextCollection();
 }
