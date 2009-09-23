@@ -69,3 +69,8 @@ QStringList  TasksHandler::contentMimeTypes()
 {
   return QStringList() << Akonadi::KCalMimeTypeVisitor::todoMimeType();
 }
+
+QString TasksHandler::iconName() const
+{
+  return QString::fromLatin1( "view-pim-tasks" );
+}

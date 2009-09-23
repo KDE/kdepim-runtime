@@ -41,9 +41,7 @@ KolabHandler *KolabHandler::createHandler(const QByteArray& type)
   } else if (type ==  "journal.default" || type ==  "journal") {
     return new JournalHandler();
   } else if (type ==  "note.default" || type ==  "note") {
-    JournalHandler *handler =  new JournalHandler();
-    handler->setMimeType("application/x-vnd.kolab.note");
-    return handler;
+    return new NotesHandler();
   } else {
     return 0L;
   }
@@ -77,12 +75,6 @@ QByteArray KolabHandler::mimeType() const
 {
   return m_mimeType;
 }
-
-void KolabHandler::setMimeType(const QByteArray &type)
-{
-  m_mimeType = type;
-}
-
 
 KMime::Content* KolabHandler::findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
 {

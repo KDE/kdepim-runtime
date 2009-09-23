@@ -596,8 +596,8 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
   else
     c.parentCollection().setRemoteId( QString::number( imapCollection.parentCollection().id() ) );
   EntityDisplayAttribute *imapAttr = imapCollection.attribute<EntityDisplayAttribute>();
+  EntityDisplayAttribute *kolabAttr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
   if ( imapAttr ) {
-    EntityDisplayAttribute *kolabAttr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
     if ( imapAttr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
       kolabAttr->setDisplayName( i18n( "My Data" ) );
       kolabAttr->setIconName( QLatin1String( "view-pim-summary" ) );
@@ -610,12 +610,13 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
   QStringList contentTypes;
   contentTypes.append( Collection::mimeType() );
-  if ( handler )
+  if ( handler ) {
     contentTypes.append( handler->contentMimeTypes() );
+    kolabAttr->setIconName( handler->iconName() );
+  }
   c.setContentMimeTypes( contentTypes );
   c.setRights( imapCollection.rights() );
   c.setRemoteId(QString::number(imapCollection.id()));
-
   return c;
 }
 

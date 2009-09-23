@@ -63,8 +63,12 @@ public:
    */
   virtual QStringList contentMimeTypes() = 0;
 
+  /**
+   * Returns the default icon for this folder type.
+   */
+  virtual QString iconName() const = 0;
+
   virtual QByteArray mimeType() const;
-  virtual void setMimeType(const QByteArray& type);
 
   virtual void itemDeleted(const Akonadi::Item &item) { Q_UNUSED( item ); }
   virtual void itemAdded(const Akonadi::Item &item) { Q_UNUSED( item ); }

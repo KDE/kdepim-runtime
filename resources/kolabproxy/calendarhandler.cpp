@@ -69,4 +69,7 @@ QStringList  CalendarHandler::contentMimeTypes()
   return QStringList() << Akonadi::KCalMimeTypeVisitor::eventMimeType();
 }
 
-
+QString CalendarHandler::iconName() const
+{
+  return QString::fromLatin1( "view-calendar" );
+}
