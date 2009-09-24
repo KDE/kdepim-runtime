@@ -154,7 +154,9 @@ Q_SIGNALS:
 protected:
   using QTreeView::currentChanged;
   virtual void dragMoveEvent( QDragMoveEvent *event );
-  virtual void dragLeaveEvent( QDragLeaveEvent *event );
+
+  virtual void timerEvent(QTimerEvent *event);
+
   virtual void dropEvent( QDropEvent *event );
   virtual void contextMenuEvent( QContextMenuEvent *event );
   virtual void startDrag( Qt::DropActions supportedActions );
@@ -164,7 +166,6 @@ private:
   class Private;
   Private * const d;
 
-  Q_PRIVATE_SLOT( d, void dragExpand() )
   Q_PRIVATE_SLOT( d, void itemClicked( const QModelIndex& ) )
   Q_PRIVATE_SLOT( d, void itemDoubleClicked( const QModelIndex& ) )
   Q_PRIVATE_SLOT( d, void itemCurrentChanged( const QModelIndex& ) )
