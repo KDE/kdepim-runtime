@@ -613,6 +613,14 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
   if ( handler ) {
     contentTypes.append( handler->contentMimeTypes() );
     kolabAttr->setIconName( handler->iconName() );
+
+    // hide Kolab folders on the IMAP server
+    if ( !imapAttr || !imapAttr->isHidden() ) {
+      Collection hiddenImapCol( imapCollection );
+      imapAttr = hiddenImapCol.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+      imapAttr->setHidden( true );
+      new CollectionModifyJob( hiddenImapCol, this );
+    }
   }
   c.setContentMimeTypes( contentTypes );
   c.setRights( imapCollection.rights() );

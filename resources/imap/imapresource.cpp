@@ -1135,12 +1135,6 @@ void ImapResource::onGetMetaDataDone( KJob *job )
 
   Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
-  // hide groupware folders on Kolab/Scalix etc.
-  if ( !annotations.value( "/vendor/kolab/folder-type" ).contains( "mail" ) ) {
-    EntityDisplayAttribute* attr = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-    attr->setHidden( true );
-  }
-
   // Store the mailbox metadata
   CollectionAnnotationsAttribute *annotationsAttribute =
     collection.attribute<CollectionAnnotationsAttribute>( Collection::AddIfMissing );
