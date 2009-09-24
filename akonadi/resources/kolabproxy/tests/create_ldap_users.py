@@ -40,11 +40,13 @@ import re
 import sys
 import getopt
 import ldap
+import ldap.dn
 import ldap.modlist
 import getpass
 import time
 import sha
 import base64
+import httplib
 
 def open_ldap(ldapuri, admin_dn_part, pwd = None):
     conn = ldap.initialize(ldapuri)
@@ -55,8 +57,15 @@ def open_ldap(ldapuri, admin_dn_part, pwd = None):
     return conn
 
 def fetch_kolab_info(conn):
-    return conn.search_s("k=kolab," + base_dn, ldap.SCOPE_BASE,
-                         filterstr='(objectClass=*)')[0][1]
+    try:
+        return conn.search_s("k=kolab," + base_dn, ldap.SCOPE_BASE,
+                             filterstr='(objectClass=*)')[0][1]
+    except ldap.INVALID_DN_SYNTAX:
+        # should only happen if the server is no Kolab server, because
+        # k=... is only valid on Kolab servers.  Since the script should
+        # also support non-kolab servers to an extent, we return None to
+        # indicate that the server is no Kolab server.
+        return None
 
 def set_delete_flag(conn, filterstr, offset):
     hosts = fetch_kolab_info(conn)["kolabHost"]
@@ -82,22 +91,47 @@ def encode_ssha(password, salt):
     digester.update(salt)
     return SSHA_PREFIX + base64.b64encode(digester.digest() + salt)
 
+def encode_clear(password, salt):
+    return password
 
-def add_user(conn, num_users, offset, set_password=None):
-    kolab_info = fetch_kolab_info(conn)
 
-    mail_domain = kolab_info["postfix-mydomain"][0]
-    # use the first of the kolab hosts as home server.
-    kolab_home_server = kolab_info["kolabHost"][0]
+def mail_domain_from_basedn(base_dn):
+    """Determine the mail-domain from the dn.
+    The function simple concatenates the values of the dc=... parts of
+    the dn separated by periods."""
+    print "mail_domain_from_basedn", base_dn
+    return ".".join([item[0][1]
+                     for item in ldap.dn.str2dn(base_dn) if item[0][0] == "dc"])
 
+
+def add_user(conn, num_users, offset, set_password=None,
+             http_hostname="localhost", http_port=80):
     common_attrs = {
-        'objectClass': ['top', 'inetOrgPerson', 'kolabInetOrgPerson'],
-        'kolabHomeServer': [kolab_home_server],
-        'kolabInvitationPolicy': ['ACT_MANUAL'],
+        'objectClass': ['top', 'inetOrgPerson'],
         }
 
+    kolab_info = fetch_kolab_info(conn)
+
+    if kolab_info:
+        mail_domain = kolab_info["postfix-mydomain"][0]
+        # use the first of the kolab hosts as home server.
+        kolab_home_server = kolab_info["kolabHost"][0]
+
+        common_attrs['objectClass'].append("kolabInetOrgPerson")
+        common_attrs['kolabHomeServer'] = [kolab_home_server]
+        common_attrs['kolabInvitationPolicy'] = ['ACT_MANUAL']
+
+        password_encoder = encode_ssha
+    else:
+        # The server is not a Kolab server, which currently means that
+        # it's the courier server in the qemu image.  Here, the password
+        # is unencrypted and the domain can be inferred from the base
+        # dn.
+        mail_domain = mail_domain_from_basedn(base_dn)
+        password_encoder = encode_clear
+
     if set_password is not None:
-        common_attrs["userPassword"] = encode_ssha(set_password, random_salt(8))
+        common_attrs["userPassword"] = password_encoder(set_password, random_salt(8))
 
     users =  [("test%d" % n, "auto", "autotest%d" % n)
               for n in range(offset, num_users + offset)]
@@ -112,6 +146,17 @@ def add_user(conn, num_users, offset, set_password=None):
         dn = "cn=" + cn + "," + base_dn
         print dn, descr
         print conn.add_s(dn, ldap.modlist.addModlist(descr))
+
+    if not kolab_info:
+        # The server is not a Kolab server, which currently means that
+        # it's the courier server in the qemu image which requires an
+        # extra step to finish the user creation process.
+        conn = httplib.HTTPConnection(http_hostname, http_port)
+        conn.request("GET", "/courier-maildir-trigger")
+        response = conn.getresponse()
+        if response.status != 200:
+            raise RuntimeError("User creation trigger failed: %d: %s"
+                               % (response.status, response.reason))
 
 
 def delete_auto_users(conn, offset):
@@ -198,15 +243,25 @@ def main():
 
 
     if port is not None:
-        hostname += ":%d" % port
+        ldap_uri ="ldap://%s:%d" % (hostname, port)
+    else:
+        ldap_uri ="ldap://%s" % (hostname,)
 
-    uri = "ldap://" + hostname
 
 
-    conn = open_ldap(uri, admin_dn_part, pwd)
+    # derive the http_port from the ldap port, assuming both are the
+    # standard ports for the respective protocol and are offset by the
+    # same value.
+    if port is not None:
+        http_port = port - 389 + 80
+    else:
+        http_port = 80
+
+    conn = open_ldap(ldap_uri, admin_dn_part, pwd)
     if entry_type == "user":
         if cmd == "add":
-            add_user(conn, num_entries, offset, set_password=set_password)
+            add_user(conn, num_entries, offset, set_password=set_password,
+                     http_hostname=hostname, http_port=http_port)
         elif cmd == "delete":
             delete_auto_users(conn, offset)
     elif entry_type == "group":
