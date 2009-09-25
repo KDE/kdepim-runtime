@@ -32,6 +32,7 @@ public:
   TasksHandler();
   virtual ~TasksHandler();
   virtual QStringList contentMimeTypes();
+  virtual QString iconName() const;
 
 private:
   virtual QByteArray incidenceToXml(KCal::Incidence *incidence);

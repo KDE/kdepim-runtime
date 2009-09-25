@@ -33,11 +33,19 @@ public:
   virtual ~JournalHandler();
 
   virtual QStringList contentMimeTypes();
+  virtual QString iconName() const;
 
 private:
   virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
   virtual KCal::Incidence* incidenceFromKolab(const KMime::Message::Ptr &data);
   KCal::Journal *journalFromKolab(const KMime::Message::Ptr &data);
+};
+
+class NotesHandler : public JournalHandler
+{
+  public:
+    NotesHandler();
+    virtual QString iconName() const;
 };
 
 #endif

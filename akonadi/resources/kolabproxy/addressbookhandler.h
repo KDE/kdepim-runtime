@@ -46,6 +46,7 @@ public:
     virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
     virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
     virtual QStringList contentMimeTypes();
+    virtual QString iconName() const;
 
 private:
     bool addresseFromKolab(const KMime::Message::Ptr &data, KABC::Addressee &addressee);

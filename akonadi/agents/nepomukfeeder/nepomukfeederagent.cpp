@@ -52,6 +52,7 @@
 #include <QtDBus/QDBusInterface>
 
 #include <boost/bind.hpp>
+#include <akonadi/entitydisplayattribute.h>
 
 using namespace Akonadi;
 
@@ -59,16 +60,22 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
   mTotalAmount( 0 ),
   mProcessedAmount( 0 ),
-  mPendingJobs( 0 )
+  mPendingJobs( 0 ),
+  mNepomukStartupAttempted( false ),
+  mInitialUpdateDone( false )
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
 
   changeRecorder()->setChangeRecordingEnabled( false );
 
+  mNepomukStartupTimeout.setInterval( 60 * 1000 );
+  mNepomukStartupTimeout.setSingleShot( true );
+  connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
+  connect( QDBusConnection::sessionBus().interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)), SLOT(serviceOwnerChanged(QString,QString,QString)) );
+
+  setOnline( false );
   selfTest();
-  if ( isOnline() )
-    QTimer::singleShot( 0, this, SLOT(updateAll()) );
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -130,8 +137,12 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
 {
   mMimeTypeChecker.setWantedMimeTypes( mSupportedMimeTypes );
   foreach( const Collection &collection, collections ) {
-    if ( mMimeTypeChecker.isWantedCollection( collection ) )
-      mCollectionQueue.append( collection );
+    if ( !mMimeTypeChecker.isWantedCollection( collection ) )
+      continue;
+    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+    if ( attr && attr->isHidden() )
+      continue;
+    mCollectionQueue.append( collection );
   }
   processNextCollection();
 }
@@ -212,10 +223,18 @@ void NepomukFeederAgent::selfTest()
   QStringList errorMessages;
 
   // if Nepomuk is not running, try to start it
-  if ( !QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.NepomukStorage" ) ) {
+  if ( !mNepomukStartupAttempted && !QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.NepomukStorage" ) ) {
     KProcess process;
-    if ( process.startDetached( QLatin1String( "nepomukserver" ) ) == 0 )
+    if ( process.startDetached( QLatin1String( "nepomukserver" ) ) == 0 ) {
       errorMessages.append( i18n( "Unable to start the Nepomuk server." ) );
+    } else {
+      mNepomukStartupAttempted = true;
+      mNepomukStartupTimeout.start();
+      // wait for Nepomuk to start
+      setOnline( false );
+      emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
+      return;
+    }
   }
 
   // if it is already running, check if the backend is correct
@@ -237,6 +256,13 @@ void NepomukFeederAgent::selfTest()
 
   if ( errorMessages.isEmpty() ) {
     setOnline( true );
+    mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
+    if ( !mInitialUpdateDone ) {
+      mInitialUpdateDone = true;
+      QTimer::singleShot( 0, this, SLOT(updateAll()) );
+    } else {
+      emit status( Idle, i18n( "Ready to index data." ) );
+    }
     return;
   }
 
@@ -258,5 +284,13 @@ void NepomukFeederAgent::selfTest()
   QDBusConnection::sessionBus().unregisterService( "org.kde.pim.nepomukfeeder.selftestreport" );
 }
 
+void NepomukFeederAgent::serviceOwnerChanged(const QString& name, const QString& oldOwner, const QString& newOwner)
+{
+  Q_UNUSED( oldOwner );
+  Q_UNUSED( newOwner );
+
+  if ( name == QLatin1String("org.kde.NepomukStorage") )
+    selfTest();
+}
 
 #include "nepomukfeederagent.moc"

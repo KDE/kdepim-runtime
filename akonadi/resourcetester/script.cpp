@@ -16,6 +16,7 @@
  */
 
 #include "script.h"
+#include "global.h"
 #include <KDebug>
 #include <qcoreapplication.h>
 
@@ -23,18 +24,7 @@ Script::Script()
 {
   action = new Kross::Action(this, "ResourceTester");
   connect( action, SIGNAL(finished(Kross::Action*)), SLOT(finished(Kross::Action*)) );
-}
-
-void Script::configure(const QString &path, QHash<QString, QObject * > hash)
-{
-  action->setFile(path);
- 
-  QHashIterator<QString, QObject * > i(hash);
-
-  while( i.hasNext()) {
-    i.next();
-    action->addObject( i.value(), i.key());
-  }
+  action->addObject( this, QLatin1String( "Script" ) );
 }
 
 void Script::configure(const QString &path)
@@ -45,6 +35,15 @@ void Script::configure(const QString &path)
 void Script::insertObject(QObject *object, const QString &objectName)
 {
   action->addObject(object, objectName);
+}
+
+void Script::include(const QString& path)
+{
+  QFile f( Global::basePath() + path );
+  if ( !f.open( QFile::ReadOnly ) )
+    kError() << "Unable to open file" << Global::basePath() + path;
+  else
+    action->evaluate( f.readAll() );
 }
 
 void Script::start()

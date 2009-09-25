@@ -57,7 +57,6 @@ public:
   }
 
   void init();
-  void dragExpand();
   void itemClicked( const QModelIndex& );
   void itemDoubleClicked( const QModelIndex& );
   void itemCurrentChanged( const QModelIndex& );
@@ -68,8 +67,7 @@ public:
   Collection currentDropTarget( QDropEvent* event ) const;
 
   EntityTreeView *mParent;
-  QModelIndex dragOverIndex;
-  QTimer dragExpandTimer;
+  QBasicTimer dragExpandTimer;
 
   KXMLGUIClient *xmlGuiClient;
 };
@@ -79,6 +77,10 @@ void EntityTreeView::Private::init()
   mParent->header()->setStretchLastSection( false );
 //   mParent->setRootIsDecorated( false );
 
+  // QTreeView::autoExpandDelay has very strange behaviour. It toggles the collapse/expand state
+  // of the item the cursor is currently over when a timer event fires.
+  // The behaviour we want is to expand a collapsed row on drag-over, but not collapse it.
+  // dragExpandTimer is used to achieve this.
 //   mParent->setAutoExpandDelay ( QApplication::startDragTime() );
 
   mParent->setSortingEnabled( true );
@@ -88,9 +90,6 @@ void EntityTreeView::Private::init()
   mParent->setDropIndicatorShown( true );
   mParent->setDragDropMode( DragDrop );
   mParent->setDragEnabled( true );
-
-  dragExpandTimer.setSingleShot( true );
-  mParent->connect( &dragExpandTimer, SIGNAL( timeout() ), SLOT( dragExpand() ) );
 
   mParent->connect( mParent, SIGNAL( clicked( const QModelIndex& ) ),
                     mParent, SLOT( itemClicked( const QModelIndex& ) ) );
@@ -112,12 +111,6 @@ bool EntityTreeView::Private::hasParent( const QModelIndex& idx, Collection::Id 
   return false;
 }
 
-void EntityTreeView::Private::dragExpand()
-{
-  mParent->setExpanded( dragOverIndex, true );
-  dragOverIndex = QModelIndex();
-}
-
 void EntityTreeView::Private::slotSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
 {
   const int column = 0;
@@ -128,7 +121,7 @@ void EntityTreeView::Private::slotSelectionChanged(const QItemSelection & select
       continue;
     for (int row = idx.row(); row <= range.bottomRight().row(); ++row)
     {
-      // Don't use canFetchMore here. We need to bypass the check in 
+      // Don't use canFetchMore here. We need to bypass the check in
       // the EntityFilterModel when it shows only collections.
       mParent->model()->fetchMore(idx.sibling(row, column));
     }
@@ -228,16 +221,22 @@ void EntityTreeView::setModel( QAbstractItemModel * model )
            SLOT( slotSelectionChanged( const QItemSelection &, const QItemSelection & ) ) );
 }
 
-void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
+
+void EntityTreeView::timerEvent(QTimerEvent* event)
 {
-  const QModelIndex index = indexAt( event->pos() );
-  if ( d->dragOverIndex != index ) {
-    d->dragExpandTimer.stop();
-    if ( index.isValid() && !isExpanded( index ) && itemsExpandable() ) {
-      d->dragExpandTimer.start( QApplication::startDragTime() );
-      d->dragOverIndex = index;
+  if ( event->timerId() == d->dragExpandTimer.timerId() ) {
+    QPoint pos = viewport()->mapFromGlobal( QCursor::pos() );
+    if ( state() == QAbstractItemView::DraggingState
+          && viewport()->rect().contains( pos ) ) {
+      setExpanded( indexAt( pos ), true );
     }
   }
+  QTreeView::timerEvent( event );
+}
+
+void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
+{
+  d->dragExpandTimer.start( QApplication::startDragTime() , this );
 
   // Check if the collection under the cursor accepts this data type
   const Collection col = d->currentDropTarget( event );
@@ -253,7 +252,7 @@ void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
           break;
 
         // Check if we don't try to drop on one of the children
-        if ( d->hasParent( index, collection.id() ) )
+        if ( d->hasParent( indexAt( event->pos() ), collection.id() ) )
           break;
       } else { // This is an item.
         QString type = url.queryItems()[ QString::fromLatin1( "type" )];
@@ -270,19 +269,8 @@ void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
   return;
 }
 
-void EntityTreeView::dragLeaveEvent( QDragLeaveEvent * event )
-{
-  d->dragExpandTimer.stop();
-  d->dragOverIndex = QModelIndex();
-  QTreeView::dragLeaveEvent( event );
-}
-
-
 void EntityTreeView::dropEvent( QDropEvent * event )
 {
-  d->dragExpandTimer.stop();
-  d->dragOverIndex = QModelIndex();
-
   const Collection target = d->currentDropTarget( event );
   if ( !target.isValid() )
     return;
@@ -373,20 +361,20 @@ void EntityTreeView::setXmlGuiClient( KXMLGUIClient * xmlGuiClient )
 void EntityTreeView::startDrag(Qt::DropActions _supportedActions)
 {
   QModelIndexList indexes;
-  bool sourceReadable = true;
+  bool sourceDeletable = true;
   foreach ( const QModelIndex &index, selectionModel()->selectedRows() ) {
     if ( !model()->flags( index ) & Qt::ItemIsDragEnabled )
       continue;
 
-    if ( sourceReadable ) {
+    if ( sourceDeletable ) {
       Collection source = index.data( EntityTreeModel::CollectionRole ).value<Collection>();
       if ( !source.isValid() ) {
         // index points to an item
         source = index.data( EntityTreeModel::ParentCollectionRole ).value<Collection>();
-        sourceReadable = source.rights() & Collection::CanDeleteItem;
+        sourceDeletable = source.rights() & Collection::CanDeleteItem;
       } else {
         // index points to a collection
-        sourceReadable = source.rights() & Collection::CanDeleteCollection;
+        sourceDeletable = source.rights() & Collection::CanDeleteCollection;
       }
     }
 
@@ -413,7 +401,7 @@ void EntityTreeView::startDrag(Qt::DropActions _supportedActions)
   }
 
   Qt::DropActions supportedActions( _supportedActions );
-  if ( !sourceReadable )
+  if ( !sourceDeletable )
     supportedActions &= ~Qt::MoveAction;
   drag->exec( supportedActions, Qt::CopyAction );
 }

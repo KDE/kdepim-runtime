@@ -67,3 +67,20 @@ QStringList  JournalHandler::contentMimeTypes()
 {
   return QStringList() << Akonadi::KCalMimeTypeVisitor::journalMimeType();
 }
+
+QString JournalHandler::iconName() const
+{
+  return QString::fromLatin1( "view-pim-journal" );
+}
+
+
+
+NotesHandler::NotesHandler() : JournalHandler()
+{
+  m_mimeType = "application/x-vnd.kolab.note";
+}
+
+QString NotesHandler::iconName() const
+{
+  return QString::fromLatin1( "view-pim-notes" );
+}

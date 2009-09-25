@@ -51,6 +51,7 @@ protected:
     virtual void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemUnlinked( const Akonadi::Item& item, const Akonadi::Collection& collection );
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
+    virtual void collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers);
     virtual void collectionRemoved( const Akonadi::Collection& collection );
 };
 

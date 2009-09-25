@@ -30,6 +30,7 @@
 #include "resource.h"
 
 #include <QStringList>
+#include <QtCore/QTimer>
 
 namespace Akonadi
 {
@@ -70,7 +71,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
   private:
     void processNextCollection();
-    void selfTest();
 
   private slots:
     void collectionsReceived( const Akonadi::Collection::List &collections );
@@ -78,12 +78,18 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void itemsReceived( const Akonadi::Item::List &items );
     void itemFetchResult( KJob* job );
 
+    void selfTest();
+    void serviceOwnerChanged( const QString &name, const QString &oldOwner, const QString &newOwner );
+
   private:
     QStringList mSupportedMimeTypes;
     Akonadi::MimeTypeChecker mMimeTypeChecker;
     Akonadi::Collection::List mCollectionQueue;
     Akonadi::Collection mCurrentCollection;
     int mTotalAmount, mProcessedAmount, mPendingJobs;
+    QTimer mNepomukStartupTimeout;
+    bool mNepomukStartupAttempted;
+    bool mInitialUpdateDone;
 };
 
 #endif

@@ -214,3 +214,8 @@ QStringList AddressBookHandler::contentMimeTypes()
   return QStringList() << KABC::Addressee::mimeType()
                        << KABC::ContactGroup::mimeType();
 }
+
+QString AddressBookHandler::iconName() const
+{
+  return QString::fromLatin1( "view-pim-contacts" );
+}

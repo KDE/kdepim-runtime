@@ -26,14 +26,14 @@ class Script : public QObject
   Q_OBJECT
   public:
     Script();
-    void configure(const QString &path, QHash<QString, QObject *> hash);
     void configure(const QString &path);
     void insertObject(QObject *object, const QString &objectName);
 
   public slots:
-    void start();
+    Q_SCRIPTABLE void include( const QString &path );
 
   private slots:
+    void start();
     void finished( Kross::Action *action );
 
   private:
