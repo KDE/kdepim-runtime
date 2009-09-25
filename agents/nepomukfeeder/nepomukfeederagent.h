@@ -37,6 +37,11 @@ namespace Akonadi
   class Item;
 }
 
+namespace Soprano
+{
+  class NRLModel;
+}
+
 class KJob;
 
 /** Shared base class for all Nepomuk feeders. */
@@ -59,6 +64,9 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     /** Reimplement to do the actual work. */
     virtual void updateItem( const Akonadi::Item &item ) = 0;
+
+    /** Create a graph for the given item with we use to mark all information created by the feeder agent. */
+    QUrl createGraphForItem( const Akonadi::Item &item );
 
   public slots:
     /** Trigger a complete update of all items. */
@@ -88,6 +96,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     Akonadi::Collection mCurrentCollection;
     int mTotalAmount, mProcessedAmount, mPendingJobs;
     QTimer mNepomukStartupTimeout;
+    Soprano::NRLModel *mNrlModel;
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
 };

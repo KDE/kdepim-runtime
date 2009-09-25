@@ -34,10 +34,6 @@
 #include <Soprano/Model>
 #include <Soprano/NodeIterator>
 #include <Soprano/QueryResultIterator>
-#include <soprano/nrl.h>
-
-#define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
-#include <soprano/nrlmodel.h>
 
 // ontology includes
 #include "attendee.h"
@@ -95,13 +91,10 @@ NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
   addSupportedMimeType( KCalMimeTypeVisitor::freeBusyMimeType() );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
-
-  mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
 
 NepomukCalendarFeeder::~NepomukCalendarFeeder()
 {
-  delete mNrlModel;
 }
 
 void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )
@@ -115,15 +108,7 @@ void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )
   // first remove the item: since we use a graph that has a reference to all parts
   // of the item's semantic representation this is a really fast operation
   removeItemFromNepomuk( item );
-
-  // create a new graph for the item
-  QUrl metaDataGraphUri;
-  QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
-
-  // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
-  mNrlModel->addStatement( graphUri,
-                           QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
-                           item.url(), metaDataGraphUri );
+  const QUrl graphUri = createGraphForItem( item );
 
   if ( item.hasPayload<KCal::Event::Ptr>() ) {
     updateEventItem( item, item.payload<KCal::Event::Ptr>(), graphUri );

@@ -31,11 +31,6 @@
 
 #include "ncal.h"
 
-namespace Soprano
-{
-class NRLModel;
-}
-
 namespace Akonadi {
 
 class NepomukCalendarFeeder : public NepomukFeederAgent
@@ -66,8 +61,6 @@ class NepomukCalendarFeeder : public NepomukFeederAgent
 
       tagsFromCategories( incidence, calInc->categories() );
     }
-
-    Soprano::NRLModel *mNrlModel;
 };
 
 }

@@ -38,17 +38,10 @@
 #include <Nepomuk/Variant>
 #include <kurl.h>
 
-#include <Soprano/Vocabulary/Xesam>
-#include <Soprano/Vocabulary/NAO>
-#include <Soprano/Vocabulary/XMLSchema>
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>
-#include <soprano/node.h>
-#include <soprano/nodeiterator.h>
-#include <soprano/nrl.h>
-
-#define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
-#include <soprano/nrlmodel.h>
+#include <Soprano/Vocabulary/NAO>
+#include <Soprano/Vocabulary/XMLSchema>
 
 using namespace Akonadi;
 
@@ -59,13 +52,10 @@ Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   addSupportedMimeType( "message/news" );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
-
-  mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
 
 NepomukEMailFeeder::~NepomukEMailFeeder()
 {
-  delete mNrlModel;
 }
 
 void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
@@ -76,16 +66,7 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
   // first remove the item: since we use a graph that has a reference to all parts
   // of the item's semantic representation this is a really fast operation
   removeItemFromNepomuk( item );
-
-  // create a new graph for the item
-  QUrl metaDataGraphUri;
-  QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
-
-  // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
-  mNrlModel->addStatement( graphUri,
-                           QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
-                           item.url(), metaDataGraphUri );
-
+  const QUrl graphUri = createGraphForItem( item );
   const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
   // FIXME: make a distinction between email and news

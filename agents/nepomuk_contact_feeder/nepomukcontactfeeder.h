@@ -25,11 +25,6 @@
 #include <akonadi/agentbase.h>
 #include <akonadi/item.h>
 
-namespace Soprano
-{
-class NRLModel;
-}
-
 namespace Akonadi {
 
 class NepomukContactFeeder : public NepomukFeederAgent
@@ -43,8 +38,6 @@ class NepomukContactFeeder : public NepomukFeederAgent
     void updateItem( const Akonadi::Item &item );
     void updateContactItem( const Akonadi::Item &item, const QUrl& );
     void updateGroupItem( const Akonadi::Item &item, const QUrl& );
-
-    Soprano::NRLModel *mNrlModel;
 };
 
 }

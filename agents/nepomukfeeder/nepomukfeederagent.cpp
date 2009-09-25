@@ -44,6 +44,10 @@
 #include <Soprano/NodeIterator>
 #include <Soprano/QueryResultIterator>
 #include <Soprano/Vocabulary/NAO>
+#include <Soprano/Vocabulary/NRL>
+
+#define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
+#include <Soprano/NRLModel>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
@@ -61,11 +65,13 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mTotalAmount( 0 ),
   mProcessedAmount( 0 ),
   mPendingJobs( 0 ),
+  mNrlModel( 0 ),
   mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false )
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
+  mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 
   changeRecorder()->setChangeRecordingEnabled( false );
 
@@ -80,6 +86,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 
 NepomukFeederAgent::~NepomukFeederAgent()
 {
+  delete mNrlModel;
 }
 
 void NepomukFeederAgent::removeItemFromNepomuk( const Akonadi::Item &item )
@@ -291,6 +298,19 @@ void NepomukFeederAgent::serviceOwnerChanged(const QString& name, const QString&
 
   if ( name == QLatin1String("org.kde.NepomukStorage") )
     selfTest();
+}
+
+QUrl NepomukFeederAgent::createGraphForItem(const Akonadi::Item& item)
+{
+  QUrl metaDataGraphUri;
+  const QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
+
+  // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
+  mNrlModel->addStatement( graphUri,
+                           QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
+                           item.url(), metaDataGraphUri );
+
+  return graphUri;
 }
 
 #include "nepomukfeederagent.moc"
