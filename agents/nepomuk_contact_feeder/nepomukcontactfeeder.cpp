@@ -75,23 +75,15 @@ namespace {
   }
 }
 
-void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
+void NepomukContactFeeder::updateItem( const Akonadi::Item &item, const QUrl &graphUri )
 {
-  if ( !item.hasPayload<KABC::Addressee>() && !item.hasPayload<KABC::ContactGroup>() ) {
-    kDebug() << "Got item without payload. Mimetype:" << item.mimeType()
-             << "Id:" << item.id();
-    return;
-  }
-
-  // first remove the item: since we use a graph that has a reference to all parts
-  // of the item's semantic representation this is a really fast operation
-  removeItemFromNepomuk( item );
-  const QUrl graphUri = createGraphForItem( item );
-
   if ( item.hasPayload<KABC::Addressee>() )
     updateContactItem( item, graphUri );
-  else
+  else if ( item.hasPayload<KABC::ContactGroup>() )
     updateGroupItem( item, graphUri );
+  else
+    kDebug() << "Got item without known payload. Mimetype:" << item.mimeType()
+             << "Id:" << item.id();
 }
 
 void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const QUrl &graphUri )

@@ -58,15 +58,10 @@ NepomukEMailFeeder::~NepomukEMailFeeder()
 {
 }
 
-void NepomukEMailFeeder::updateItem(const Akonadi::Item & item)
+void NepomukEMailFeeder::updateItem(const Akonadi::Item & item, const QUrl &graphUri)
 {
   if ( !item.hasPayload<KMime::Message::Ptr>() )
     return;
-
-  // first remove the item: since we use a graph that has a reference to all parts
-  // of the item's semantic representation this is a really fast operation
-  removeItemFromNepomuk( item );
-  const QUrl graphUri = createGraphForItem( item );
   const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
   // FIXME: make a distinction between email and news

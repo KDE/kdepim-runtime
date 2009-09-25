@@ -39,7 +39,7 @@ class NepomukEMailFeeder : public NepomukFeederAgent
     NepomukEMailFeeder( const QString &id );
     ~NepomukEMailFeeder();
 
-    void updateItem( const Akonadi::Item &item );
+    void updateItem( const Akonadi::Item &item, const QUrl &graphUri );
 
   private:
     QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl& );

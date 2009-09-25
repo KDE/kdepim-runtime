@@ -63,7 +63,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void addSupportedMimeType( const QString &mimeType );
 
     /** Reimplement to do the actual work. */
-    virtual void updateItem( const Akonadi::Item &item ) = 0;
+    virtual void updateItem( const Akonadi::Item &item, const QUrl &graphUri ) = 0;
 
     /** Create a graph for the given item with we use to mark all information created by the feeder agent. */
     QUrl createGraphForItem( const Akonadi::Item &item );

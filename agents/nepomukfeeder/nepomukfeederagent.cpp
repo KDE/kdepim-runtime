@@ -30,6 +30,7 @@
 #include <akonadi/mimetypechecker.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -54,9 +55,6 @@
 #include <QtDBus/QDBusReply>
 #include <QtDBus/QDBusConnectionInterface>
 #include <QtDBus/QDBusInterface>
-
-#include <boost/bind.hpp>
-#include <akonadi/entitydisplayattribute.h>
 
 using namespace Akonadi;
 
@@ -111,14 +109,16 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
 {
   Q_UNUSED( collection );
   if ( item.hasPayload() )
-    updateItem( item );
+    updateItem( item, createGraphForItem( item ) );
 }
 
 void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
   // TODO: check part identfiers if anything interesting changed at all
-  if ( item.hasPayload() )
-    updateItem( item );
+  if ( item.hasPayload() ) {
+    removeItemFromNepomuk( item );
+    updateItem( item, createGraphForItem( item ) );
+  }
 }
 
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
@@ -210,7 +210,10 @@ void NepomukFeederAgent::itemFetchResult(KJob* job)
 void NepomukFeederAgent::itemsReceived(const Akonadi::Item::List& items)
 {
   kDebug() << items.size();
-  std::for_each( items.constBegin(), items.constEnd(), boost::bind( &NepomukFeederAgent::updateItem, this, _1 ) );
+  foreach ( const Item &item, items ) {
+    // we only get here if the item is not anywhere in Nepomuk yet, so no need to delete it
+    updateItem( item, createGraphForItem( item ) );
+  }
   mProcessedAmount += items.count();
   emit percent( (mProcessedAmount * 100) / (mTotalAmount * 100) );
 }

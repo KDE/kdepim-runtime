@@ -42,7 +42,7 @@ class NepomukCalendarFeeder : public NepomukFeederAgent
     ~NepomukCalendarFeeder();
 
   private:
-    void updateItem( const Akonadi::Item &item );
+    void updateItem( const Akonadi::Item &item, const QUrl &graphUri );
     void updateEventItem( const Akonadi::Item& item, const KCal::Event::Ptr&, const QUrl& );
     void updateJournalItem( const Akonadi::Item& item, const KCal::Journal::Ptr&, const QUrl& );
     void updateTodoItem( const Akonadi::Item& item, const KCal::Todo::Ptr&, const QUrl& );

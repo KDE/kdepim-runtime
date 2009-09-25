@@ -97,25 +97,17 @@ NepomukCalendarFeeder::~NepomukCalendarFeeder()
 {
 }
 
-void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item )
+void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item, const QUrl &graphUri )
 {
-  if ( !item.hasPayload<KCal::Incidence::Ptr>() ) {
-    kDebug() << "Got item without payload. Mimetype:" << item.mimeType()
-             << "Id:" << item.id();
-    return;
-  }
-
-  // first remove the item: since we use a graph that has a reference to all parts
-  // of the item's semantic representation this is a really fast operation
-  removeItemFromNepomuk( item );
-  const QUrl graphUri = createGraphForItem( item );
-
   if ( item.hasPayload<KCal::Event::Ptr>() ) {
     updateEventItem( item, item.payload<KCal::Event::Ptr>(), graphUri );
   } else if ( item.hasPayload<KCal::Journal::Ptr>() ) {
     updateJournalItem( item, item.payload<KCal::Journal::Ptr>(), graphUri );
   } else if ( item.hasPayload<KCal::Todo::Ptr>() ) {
     updateTodoItem( item, item.payload<KCal::Todo::Ptr>(), graphUri );
+  } else {
+    kDebug() << "Got item without known payload. Mimetype:" << item.mimeType()
+             << "Id:" << item.id();
   }
 }
 

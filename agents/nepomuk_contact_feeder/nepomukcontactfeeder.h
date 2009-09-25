@@ -35,7 +35,7 @@ class NepomukContactFeeder : public NepomukFeederAgent
     ~NepomukContactFeeder();
 
   private:
-    void updateItem( const Akonadi::Item &item );
+    void updateItem( const Akonadi::Item &item, const QUrl &graphUri );
     void updateContactItem( const Akonadi::Item &item, const QUrl& );
     void updateGroupItem( const Akonadi::Item &item, const QUrl& );
 };
