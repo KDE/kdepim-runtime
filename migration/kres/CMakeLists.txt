@@ -30,6 +30,5 @@ target_link_libraries(kres-migrator
     ${QT_QTGUI_LIBRARY}
 )
 
-add_subdirectory(tests)
 install(TARGETS kres-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES kres-migratorrc DESTINATION ${CONFIG_INSTALL_DIR})
