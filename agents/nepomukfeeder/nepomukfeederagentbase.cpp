@@ -204,8 +204,9 @@ void NepomukFeederAgentBase::itemFetchResult(KJob* job)
 void NepomukFeederAgentBase::itemsReceived(const Akonadi::Item::List& items)
 {
   kDebug() << items.size();
-  foreach ( const Item &item, items ) {
+  foreach ( Item item, items ) {
     // we only get here if the item is not anywhere in Nepomuk yet, so no need to delete it
+    item.setParentCollection( mCurrentCollection );
     updateItem( item, createGraphForEntity( item ) );
   }
   mProcessedAmount += items.count();

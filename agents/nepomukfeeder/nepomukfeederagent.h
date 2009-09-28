@@ -22,6 +22,8 @@
 
 #include "nepomukfeederagentbase.h"
 
+#include "nie.h"
+#include <akonadi/collection.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <Soprano/Vocabulary/NAO>
 
@@ -42,6 +44,14 @@ class NepomukFeederAgent : public NepomukFeederAgentBase
         r.setLabel( collection.name() );
       if ( attr && !attr->iconName().isEmpty() )
         r.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( attr->iconName() ) );
+      setParent( r, collection );
+    }
+
+    template <typename R, typename E>
+    void setParent( R& res, const E &entity )
+    {
+      if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() )
+        res.addProperty( Vocabulary::NIE::isPartOf(), entity.parentCollection().url() );
     }
 };
 

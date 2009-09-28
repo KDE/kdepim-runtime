@@ -66,6 +66,7 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item, const QUrl &grap
 
   // FIXME: make a distinction between email and news
   NepomukFast::Email r( item.url(), graphUri );
+  setParent( r, item );
 
   if ( msg->subject( false ) ) {
     r.setMessageSubject( msg->subject()->asUnicodeString() );
