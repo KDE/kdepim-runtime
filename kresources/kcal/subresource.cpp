@@ -64,7 +64,7 @@ bool SubResource::createChildSubResource( const QString &resourceName )
 
   Akonadi::Collection collection;
   collection.setName( resourceName );
-  collection.setParent( mCollection );
+  collection.setParentCollection( mCollection );
 
   // TODO should we set content mime types at all?
   collection.setContentMimeTypes( mCollection.contentMimeTypes() );

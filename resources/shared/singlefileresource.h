@@ -209,7 +209,7 @@ class SingleFileResource : public SingleFileResourceBase
     void retrieveCollections()
     {
       Collection c;
-      c.setParent( Collection::root() );
+      c.setParentCollection( Collection::root() );
       c.setRemoteId( Settings::self()->path() );
       c.setName( identifier() );
       QStringList mimeTypes;

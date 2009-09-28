@@ -148,7 +148,7 @@ void KCalResource::retrieveCollections()
   }
 
   Collection topLevelCollection;
-  topLevelCollection.setParent( Collection::root() );
+  topLevelCollection.setParentCollection( Collection::root() );
   topLevelCollection.setRemoteId( mResource->identifier() );
   topLevelCollection.setName( mResource->resourceName() );
 
@@ -187,7 +187,7 @@ void KCalResource::retrieveCollections()
   foreach ( const QString &subResource, subResources ) {
     // TODO check with KOrganizer how it handles subresources
     Collection childCollection;
-    childCollection.setParent( topLevelCollection );
+    childCollection.setParentCollection( topLevelCollection );
     childCollection.setRemoteId( subResource );
     childCollection.setName( mResource->labelForSubresource( subResource ) );
 
@@ -241,7 +241,7 @@ void KCalResource::retrieveItems( const Akonadi::Collection &collection )
   foreach ( KCal::Incidence *incidence, incidenceList ) {
     const QString subResource = mResource->subresourceIdentifier( incidence );
     if ( subResource == collection.remoteId() ||
-         ( subResource.isEmpty() && collection.parent() == Collection::root().id() ) ) {
+         ( subResource.isEmpty() && collection.parentCollection() == Collection::root() ) ) {
       Item item( mMimeVisitor->mimeType( incidence ) );
       item.setRemoteId( incidence->uid() );
       if ( mFullItemRetrieve )
@@ -454,7 +454,7 @@ void KCalResource::collectionChanged( const Akonadi::Collection &collection )
   }
 
   // currently only changing the top level collection's name supported
-  if ( collection.parent() == Collection::root().id() ) {
+  if ( collection.parentCollection() == Collection::root() ) {
     QString newName = collection.name();
     if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
       EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();

@@ -86,7 +86,7 @@ void BirthdaysResource::configure( WId windowId )
 void BirthdaysResource::retrieveCollections()
 {
   Collection c;
-  c.setParent( Collection::root() );
+  c.setParentCollection( Collection::root() );
   c.setRemoteId( "akonadi_birthdays_resource" );
   c.setName( name() );
   c.setContentMimeTypes( QStringList() << "application/x-vnd.akonadi.calendar.event" );

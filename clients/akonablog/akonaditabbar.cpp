@@ -23,6 +23,7 @@
 #include <KTabBar>
 #include <akonadi/collection.h>
 #include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionfetchscope.h>
 
 using namespace Akonadi;
 
@@ -71,11 +72,11 @@ void AkonadiTabBar::setResource( const QString &resource )
     // fetching all collections recursive, starting at the root collection
     Collection col;
     CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-    job->setResource( resource );
+    job->fetchScope().setResource( resource );
     if ( job->exec() ) {
         Collection::List collections = job->collections();
         foreach( const Collection &collection, collections ) {
-            if ( collection.parent() != Collection::root().id() ) {
+            if ( collection.parentCollection() != Collection::root() ) {
                 int tab = addTab( collection.name() );
                 d->tabs[ tab ] = collection;
             }

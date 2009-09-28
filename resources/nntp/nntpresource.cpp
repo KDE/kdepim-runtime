@@ -75,7 +75,7 @@ void NntpResource::retrieveCollections()
 {
   remoteCollections.clear();
   Collection rootCollection;
-  rootCollection.setParent( Collection::root() );
+  rootCollection.setParentCollection( Collection::root() );
   rootCollection.setRemoteId( baseUrl().url() );
   rootCollection.setName( Settings::self()->name() );
   CachePolicy policy;
@@ -148,12 +148,12 @@ void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
 
     if ( Settings::self()->flatHierarchy() ) {
       c.setName( name );
-      c.setParentRemoteId( baseUrl().url() );
+      c.parentCollection().setRemoteId( baseUrl().url() );
     } else {
       const QStringList path = name.split( '.' );
       Q_ASSERT( !path.isEmpty() );
       c.setName( path.last() );
-      c.setParentRemoteId( findParent( path ) );
+      c.parentCollection().setRemoteId( findParent( path ) );
     }
 
     remoteCollections << c;
@@ -312,7 +312,7 @@ QString NntpResource::findParent(const QStringList & _path)
   QStringList ct;
   ct << Collection::mimeType();
   parent.setContentMimeTypes( ct );
-  parent.setParentRemoteId( findParent( path ) );
+  parent.parentCollection().setRemoteId( findParent( path ) );
   parent.setName( path.last() );
   remoteCollections << parent;
   return parent.remoteId();
