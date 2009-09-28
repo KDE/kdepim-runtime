@@ -53,6 +53,25 @@ class NepomukFeederAgent : public NepomukFeederAgentBase
       if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() )
         res.addProperty( Vocabulary::NIE::isPartOf(), entity.parentCollection().url() );
     }
+
+    void itemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination)
+    {
+      entityMoved( item, collectionSource, collectionDestination );
+    }
+
+    void collectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination)
+    {
+      entityMoved( collection, source, destination );
+    }
+
+  private:
+    template <typename E>
+    void entityMoved( const E &entity, const Akonadi::Collection &source, const Akonadi::Collection &destination )
+    {
+      Soprano::Model *model = Nepomuk::ResourceManager::instance()->mainModel();
+      model->removeStatement( Soprano::Statement( entity.url(), Vocabulary::NIE::isPartOf(), source.url() ) );
+      model->addStatement( Soprano::Statement( entity.url(), Vocabulary::NIE::isPartOf(), destination.url() ) );
+    }
 };
 
 #endif
