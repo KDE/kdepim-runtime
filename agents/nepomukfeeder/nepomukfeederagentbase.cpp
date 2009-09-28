@@ -19,7 +19,7 @@
     02110-1301, USA.
 */
 
-#include "nepomukfeederagent.h"
+#include "nepomukfeederagentbase.h"
 #include "nie.h"
 
 #include <akonadi/item.h>
@@ -49,7 +49,7 @@
 
 using namespace Akonadi;
 
-NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
+NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   AgentBase(id),
   mTotalAmount( 0 ),
   mProcessedAmount( 0 ),
@@ -74,19 +74,19 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   selfTest();
 }
 
-NepomukFeederAgent::~NepomukFeederAgent()
+NepomukFeederAgentBase::~NepomukFeederAgentBase()
 {
   delete mNrlModel;
 }
 
-void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
+void NepomukFeederAgentBase::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
   Q_UNUSED( collection );
   if ( item.hasPayload() )
     updateItem( item, createGraphForEntity( item ) );
 }
 
-void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
+void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
   // TODO: check part identfiers if anything interesting changed at all
   if ( item.hasPayload() ) {
@@ -95,44 +95,44 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
   }
 }
 
-void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
+void NepomukFeederAgentBase::itemRemoved(const Akonadi::Item& item)
 {
   removeEntityFromNepomuk( item );
 }
 
-void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
+void NepomukFeederAgentBase::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
 {
   Q_UNUSED( parent );
   updateCollection( collection, createGraphForEntity( collection ) );
 }
 
-void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
+void NepomukFeederAgentBase::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
 {
   Q_UNUSED( partIdentifiers );
   removeEntityFromNepomuk( collection );
   updateCollection( collection, createGraphForEntity( collection ) );
 }
 
-void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection)
+void NepomukFeederAgentBase::collectionRemoved(const Akonadi::Collection& collection)
 {
   removeEntityFromNepomuk( collection );
 }
 
-void NepomukFeederAgent::addSupportedMimeType( const QString &mimeType )
+void NepomukFeederAgentBase::addSupportedMimeType( const QString &mimeType )
 {
   mSupportedMimeTypes.append( mimeType );
   changeRecorder()->setMimeTypeMonitored( mimeType );
   mMimeTypeChecker.setWantedMimeTypes( mSupportedMimeTypes );
 }
 
-void NepomukFeederAgent::updateAll()
+void NepomukFeederAgentBase::updateAll()
 {
   CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
   collectionFetch->fetchScope().setContentMimeTypes( mSupportedMimeTypes );
   connect( collectionFetch, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
 }
 
-void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& collections)
+void NepomukFeederAgentBase::collectionsReceived(const Akonadi::Collection::List& collections)
 {
   mMimeTypeChecker.setWantedMimeTypes( mSupportedMimeTypes );
   foreach( const Collection &collection, collections ) {
@@ -146,13 +146,15 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
   processNextCollection();
 }
 
-void NepomukFeederAgent::processNextCollection()
+void NepomukFeederAgentBase::processNextCollection()
 {
   if ( mCurrentCollection.isValid() || mCollectionQueue.isEmpty() )
     return;
   mCurrentCollection = mCollectionQueue.takeFirst();
   emit status( AgentBase::Running, i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
   kDebug() << "Indexing collection" << mCurrentCollection.name();
+  if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( mCurrentCollection.url(), Soprano::Node(), Soprano::Node() ) )
+    updateCollection( mCurrentCollection, createGraphForEntity( mCurrentCollection ) );
   ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
   itemFetch->fetchScope().setCacheOnly( true );
   connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemHeadersReceived(Akonadi::Item::List)) );
@@ -161,7 +163,7 @@ void NepomukFeederAgent::processNextCollection()
   mTotalAmount = 0;
 }
 
-void NepomukFeederAgent::itemHeadersReceived(const Akonadi::Item::List& items)
+void NepomukFeederAgentBase::itemHeadersReceived(const Akonadi::Item::List& items)
 {
   kDebug() << items.count();
   Akonadi::Item::List itemsToUpdate;
@@ -185,7 +187,7 @@ void NepomukFeederAgent::itemHeadersReceived(const Akonadi::Item::List& items)
   }
 }
 
-void NepomukFeederAgent::itemFetchResult(KJob* job)
+void NepomukFeederAgentBase::itemFetchResult(KJob* job)
 {
   if ( job->error() )
     kDebug() << job->errorString();
@@ -199,7 +201,7 @@ void NepomukFeederAgent::itemFetchResult(KJob* job)
   }
 }
 
-void NepomukFeederAgent::itemsReceived(const Akonadi::Item::List& items)
+void NepomukFeederAgentBase::itemsReceived(const Akonadi::Item::List& items)
 {
   kDebug() << items.size();
   foreach ( const Item &item, items ) {
@@ -211,7 +213,7 @@ void NepomukFeederAgent::itemsReceived(const Akonadi::Item::List& items)
 }
 
 
-void NepomukFeederAgent::tagsFromCategories(NepomukFast::Resource& resource, const QStringList& categories)
+void NepomukFeederAgentBase::tagsFromCategories(NepomukFast::Resource& resource, const QStringList& categories)
 {
   foreach ( const QString &category, categories ) {
     const Nepomuk::Tag tag( category );
@@ -220,7 +222,7 @@ void NepomukFeederAgent::tagsFromCategories(NepomukFast::Resource& resource, con
 }
 
 
-void NepomukFeederAgent::selfTest()
+void NepomukFeederAgentBase::selfTest()
 {
   QStringList errorMessages;
 
@@ -286,7 +288,7 @@ void NepomukFeederAgent::selfTest()
   QDBusConnection::sessionBus().unregisterService( "org.kde.pim.nepomukfeeder.selftestreport" );
 }
 
-void NepomukFeederAgent::serviceOwnerChanged(const QString& name, const QString& oldOwner, const QString& newOwner)
+void NepomukFeederAgentBase::serviceOwnerChanged(const QString& name, const QString& oldOwner, const QString& newOwner)
 {
   Q_UNUSED( oldOwner );
   Q_UNUSED( newOwner );
@@ -295,4 +297,4 @@ void NepomukFeederAgent::serviceOwnerChanged(const QString& name, const QString&
     selfTest();
 }
 
-#include "nepomukfeederagent.moc"
+#include "nepomukfeederagentbase.moc"

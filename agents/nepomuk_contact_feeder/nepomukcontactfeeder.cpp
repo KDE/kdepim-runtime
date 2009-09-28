@@ -54,7 +54,7 @@
 namespace Akonadi {
 
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
-  : NepomukFeederAgent( id )
+  : NepomukFeederAgent<NepomukFast::ContactList>( id )
 {
   addSupportedMimeType( KABC::Addressee::mimeType() );
   addSupportedMimeType( KABC::ContactGroup::mimeType() );

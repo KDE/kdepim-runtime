@@ -83,7 +83,7 @@ static NepomukFast::Contact findOrMakeNepomukContact( const QString &name, const
 }
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
-  : NepomukFeederAgent( id )
+  : NepomukFeederAgent<NepomukFast::Calendar>( id )
 {
   addSupportedMimeType( KCalMimeTypeVisitor::eventMimeType() );
   addSupportedMimeType( KCalMimeTypeVisitor::todoMimeType() );

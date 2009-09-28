@@ -46,7 +46,7 @@
 using namespace Akonadi;
 
 Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
-  NepomukFeederAgent( id )
+  NepomukFeederAgent<NepomukFast::Mailbox>( id )
 {
   addSupportedMimeType( "message/rfc822" );
   addSupportedMimeType( "message/news" );
