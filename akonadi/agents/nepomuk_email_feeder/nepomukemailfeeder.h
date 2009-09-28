@@ -30,11 +30,6 @@
 #include <kmime/kmime_header_parsing.h>
 #include <nepomukfeederagent.h>
 
-namespace Soprano
-{
-class NRLModel;
-}
-
 namespace Akonadi {
 
 class NepomukEMailFeeder : public NepomukFeederAgent
@@ -44,12 +39,11 @@ class NepomukEMailFeeder : public NepomukFeederAgent
     NepomukEMailFeeder( const QString &id );
     ~NepomukEMailFeeder();
 
-    void updateItem( const Akonadi::Item &item );
+    void updateItem( const Akonadi::Item &item, const QUrl &graphUri );
 
   private:
     QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl& );
     NepomukFast::PersonContact findContact( const QByteArray& address, const QUrl&, bool *found );
-    Soprano::NRLModel *mNrlModel;
 };
 
 }

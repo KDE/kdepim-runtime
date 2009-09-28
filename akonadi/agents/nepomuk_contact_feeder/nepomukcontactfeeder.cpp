@@ -31,14 +31,6 @@
 #include <nepomuk/variant.h>
 #include <kurl.h>
 
-#include <Soprano/Model>
-#include <Soprano/NodeIterator>
-#include <Soprano/QueryResultIterator>
-#include <soprano/nrl.h>
-
-#define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
-#include <soprano/nrlmodel.h>
-
 // ontology includes
 #include "bbsnumber.h"
 #include "carphonenumber.h"
@@ -68,13 +60,10 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   addSupportedMimeType( KABC::ContactGroup::mimeType() );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
-
-  mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 }
 
 NepomukContactFeeder::~NepomukContactFeeder()
 {
-  delete mNrlModel;
 }
 
 namespace {
@@ -86,31 +75,15 @@ namespace {
   }
 }
 
-void NepomukContactFeeder::updateItem( const Akonadi::Item &item )
+void NepomukContactFeeder::updateItem( const Akonadi::Item &item, const QUrl &graphUri )
 {
-  if ( !item.hasPayload<KABC::Addressee>() && !item.hasPayload<KABC::ContactGroup>() ) {
-    kDebug() << "Got item without payload. Mimetype:" << item.mimeType()
-             << "Id:" << item.id();
-    return;
-  }
-
-  // first remove the item: since we use a graph that has a reference to all parts
-  // of the item's semantic representation this is a really fast operation
-  removeItemFromNepomuk( item );
-
-  // create a new graph for the item
-  QUrl metaDataGraphUri;
-  QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
-
-  // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
-  mNrlModel->addStatement( graphUri,
-                           QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
-                           item.url(), metaDataGraphUri );
-
   if ( item.hasPayload<KABC::Addressee>() )
     updateContactItem( item, graphUri );
-  else
+  else if ( item.hasPayload<KABC::ContactGroup>() )
     updateGroupItem( item, graphUri );
+  else
+    kDebug() << "Got item without known payload. Mimetype:" << item.mimeType()
+             << "Id:" << item.id();
 }
 
 void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const QUrl &graphUri )
