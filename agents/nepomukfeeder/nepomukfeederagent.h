@@ -22,12 +22,23 @@
 #ifndef NEPOMUKFEEDERAGENT_H
 #define NEPOMUKFEEDERAGENT_H
 
+#include "selectsqarqlbuilder.h"
+#include "resource.h"
+
 #include <akonadi/agentbase.h>
 #include <akonadi/collection.h>
 #include <akonadi/item.h>
 #include <akonadi/mimetypechecker.h>
 
-#include "resource.h"
+#include <nepomuk/resourcemanager.h>
+
+#include <Soprano/Model>
+#include <Soprano/NodeIterator>
+#include <Soprano/Query/QueryLanguage>
+#include <Soprano/QueryResultIterator>
+#include <Soprano/Vocabulary/NRL>
+#define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
+#include <Soprano/NRLModel>
 
 #include <QStringList>
 #include <QtCore/QTimer>
@@ -45,7 +56,7 @@ namespace Soprano
 class KJob;
 
 /** Shared base class for all Nepomuk feeders. */
-class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
+class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer2
 {
   Q_OBJECT
 
@@ -54,7 +65,23 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     ~NepomukFeederAgent();
 
     /** Remove all references to the given item from Nepomuk. */
-    static void removeItemFromNepomuk( const Akonadi::Item &item );
+    template <typename T>
+    static void removeEntityFromNepomuk( const T &entity )
+    {
+      // find the graph that contains our item and delete the complete graph
+      SparqlBuilder::BasicGraphPattern graph;
+      // FIXME: why isn't that in the ontology?
+      // graph.addTriple( "?g", Vocabulary::Nie::dataGraphFor(), item.url() );
+      graph.addTriple( "?g", QUrl( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ), entity.url() );
+      SelectSparqlBuilder qb;
+      qb.addQueryVariable( "?g" );
+      qb.setGraphPattern( graph );
+      const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(),
+          Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
+
+      foreach ( const Soprano::Node &node, list )
+        Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
+    }
 
     /** Adds tags to @p resource based on the given string list. */
     static void tagsFromCategories( NepomukFast::Resource &resource, const QStringList &categories );
@@ -64,9 +91,22 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     /** Reimplement to do the actual work. */
     virtual void updateItem( const Akonadi::Item &item, const QUrl &graphUri ) = 0;
+    virtual void updateCollection( const Akonadi::Collection &collection, const QUrl &graphUri ) {}
 
     /** Create a graph for the given item with we use to mark all information created by the feeder agent. */
-    QUrl createGraphForItem( const Akonadi::Item &item );
+    template <typename T>
+    QUrl createGraphForEntity( const T &item )
+    {
+      QUrl metaDataGraphUri;
+      const QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
+
+      // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
+      mNrlModel->addStatement( graphUri,
+                              QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
+                              item.url(), metaDataGraphUri );
+
+      return graphUri;
+    }
 
   public slots:
     /** Trigger a complete update of all items. */
@@ -76,6 +116,10 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved(const Akonadi::Item &item);
+
+    void collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent);
+    void collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers);
+    void collectionRemoved(const Akonadi::Collection& collection);
 
   private:
     void processNextCollection();

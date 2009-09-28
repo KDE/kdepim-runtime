@@ -20,7 +20,6 @@
 */
 
 #include "nepomukfeederagent.h"
-#include "selectsqarqlbuilder.h"
 #include "nie.h"
 
 #include <akonadi/item.h>
@@ -33,7 +32,6 @@
 #include <akonadi/entitydisplayattribute.h>
 
 #include <nepomuk/resource.h>
-#include <nepomuk/resourcemanager.h>
 #include <nepomuk/tag.h>
 
 #include <KLocale>
@@ -41,14 +39,7 @@
 #include <KProcess>
 #include <KMessageBox>
 
-#include <Soprano/Model>
-#include <Soprano/NodeIterator>
-#include <Soprano/QueryResultIterator>
 #include <Soprano/Vocabulary/NAO>
-#include <Soprano/Vocabulary/NRL>
-
-#define USING_SOPRANO_NRLMODEL_UNSTABLE_API 1
-#include <Soprano/NRLModel>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
@@ -72,6 +63,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 
   changeRecorder()->setChangeRecordingEnabled( false );
+  changeRecorder()->fetchCollection( true );
 
   mNepomukStartupTimeout.setInterval( 60 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
@@ -87,43 +79,43 @@ NepomukFeederAgent::~NepomukFeederAgent()
   delete mNrlModel;
 }
 
-void NepomukFeederAgent::removeItemFromNepomuk( const Akonadi::Item &item )
-{
-  // find the graph that contains our item and delete the complete graph
-  SparqlBuilder::BasicGraphPattern graph;
-  // FIXME: why isn't that in the ontology?
-//   graph.addTriple( "?g", Vocabulary::Nie::dataGraphFor(), item.url() );
-  graph.addTriple( "?g", QUrl( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ), item.url() );
-  SelectSparqlBuilder qb;
-  qb.addQueryVariable( "?g" );
-  qb.setGraphPattern( graph );
-  const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(),
-      Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
-
-  foreach ( const Soprano::Node &node, list )
-    Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
-}
-
-
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
   Q_UNUSED( collection );
   if ( item.hasPayload() )
-    updateItem( item, createGraphForItem( item ) );
+    updateItem( item, createGraphForEntity( item ) );
 }
 
 void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
   // TODO: check part identfiers if anything interesting changed at all
   if ( item.hasPayload() ) {
-    removeItemFromNepomuk( item );
-    updateItem( item, createGraphForItem( item ) );
+    removeEntityFromNepomuk( item );
+    updateItem( item, createGraphForEntity( item ) );
   }
 }
 
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
-  removeItemFromNepomuk( item );
+  removeEntityFromNepomuk( item );
+}
+
+void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
+{
+  Q_UNUSED( parent );
+  updateCollection( collection, createGraphForEntity( collection ) );
+}
+
+void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
+{
+  Q_UNUSED( partIdentifiers );
+  removeEntityFromNepomuk( collection );
+  updateCollection( collection, createGraphForEntity( collection ) );
+}
+
+void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection)
+{
+  removeEntityFromNepomuk( collection );
 }
 
 void NepomukFeederAgent::addSupportedMimeType( const QString &mimeType )
@@ -212,7 +204,7 @@ void NepomukFeederAgent::itemsReceived(const Akonadi::Item::List& items)
   kDebug() << items.size();
   foreach ( const Item &item, items ) {
     // we only get here if the item is not anywhere in Nepomuk yet, so no need to delete it
-    updateItem( item, createGraphForItem( item ) );
+    updateItem( item, createGraphForEntity( item ) );
   }
   mProcessedAmount += items.count();
   emit percent( (mProcessedAmount * 100) / (mTotalAmount * 100) );
@@ -301,19 +293,6 @@ void NepomukFeederAgent::serviceOwnerChanged(const QString& name, const QString&
 
   if ( name == QLatin1String("org.kde.NepomukStorage") )
     selfTest();
-}
-
-QUrl NepomukFeederAgent::createGraphForItem(const Akonadi::Item& item)
-{
-  QUrl metaDataGraphUri;
-  const QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
-
-  // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
-  mNrlModel->addStatement( graphUri,
-                           QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
-                           item.url(), metaDataGraphUri );
-
-  return graphUri;
 }
 
 #include "nepomukfeederagent.moc"
