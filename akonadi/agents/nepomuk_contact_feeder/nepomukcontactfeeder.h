@@ -22,12 +22,13 @@
 #define AKONADI_NEPOMUK_CONTACT_FEEDER_H
 
 #include <nepomukfeederagent.h>
+#include "contactlist.h"
 #include <akonadi/agentbase.h>
 #include <akonadi/item.h>
 
 namespace Akonadi {
 
-class NepomukContactFeeder : public NepomukFeederAgent
+class NepomukContactFeeder : public NepomukFeederAgent<NepomukFast::ContactList>
 {
   Q_OBJECT
   public:

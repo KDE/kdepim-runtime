@@ -112,7 +112,7 @@ void MicroblogResource::retrieveCollections()
         c.setRemoteId( folders.at( i ) );
         c.setContentMimeTypes( contentTypes );
         c.setName( foldersI18n.at( i ) );
-        c.setParentRemoteId( "microblog" );
+        c.parentCollection().setRemoteId( "microblog" );
         c.setRights( Collection::ReadOnly );
 
         CachePolicy policy;

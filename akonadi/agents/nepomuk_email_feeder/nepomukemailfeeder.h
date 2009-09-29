@@ -24,6 +24,7 @@
 #include <akonadi/agentbase.h>
 
 #include "personcontact.h"
+#include "mailbox.h"
 
 #include <QtCore/QList>
 
@@ -32,7 +33,7 @@
 
 namespace Akonadi {
 
-class NepomukEMailFeeder : public NepomukFeederAgent
+class NepomukEMailFeeder : public NepomukFeederAgent<NepomukFast::Mailbox>
 {
   Q_OBJECT
   public:

@@ -46,7 +46,7 @@
 using namespace Akonadi;
 
 Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
-  NepomukFeederAgent( id )
+  NepomukFeederAgent<NepomukFast::Mailbox>( id )
 {
   addSupportedMimeType( "message/rfc822" );
   addSupportedMimeType( "message/news" );
@@ -66,6 +66,7 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item, const QUrl &grap
 
   // FIXME: make a distinction between email and news
   NepomukFast::Email r( item.url(), graphUri );
+  setParent( r, item );
 
   if ( msg->subject( false ) ) {
     r.setMessageSubject( msg->subject()->asUnicodeString() );

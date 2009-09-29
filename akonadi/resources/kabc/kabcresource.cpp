@@ -194,7 +194,7 @@ void KABCResource::retrieveCollections()
   }
 
   Collection topLevelCollection;
-  topLevelCollection.setParent( Collection::root() );
+  topLevelCollection.setParentCollection( Collection::root() );
   topLevelCollection.setRemoteId( mBaseResource->identifier() );
   topLevelCollection.setName( mBaseResource->resourceName() );
 
@@ -230,7 +230,7 @@ void KABCResource::retrieveCollections()
     kDebug() << "subResources" << subResources;
     foreach ( const QString &subResource, subResources ) {
       Collection childCollection;
-      childCollection.setParent( topLevelCollection );
+      childCollection.setParentCollection( topLevelCollection );
       childCollection.setRemoteId( subResource );
       childCollection.setName( mFolderResource->subresourceLabel( subResource ) );
       childCollection.setContentMimeTypes( mimeTypes );
@@ -268,7 +268,7 @@ void KABCResource::retrieveItems( const Akonadi::Collection &col )
       if ( findIt.value() != col.remoteId() )
         continue;
     } else {
-      if ( col.parent() != Collection::root().id() )
+      if ( col.parentCollection() != Collection::root() )
         continue;
     }
 
@@ -516,7 +516,7 @@ void KABCResource::collectionChanged( const Akonadi::Collection &collection )
     return;
   }
 
-  if ( collection.parent() == Collection::root().id() ) {
+  if ( collection.parentCollection() == Collection::root() ) {
     QString newName = collection.name();
     if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
       EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();

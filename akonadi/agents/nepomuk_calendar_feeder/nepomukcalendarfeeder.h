@@ -21,6 +21,7 @@
 #define AKONADI_NEPOMUK_CALENDAR_FEEDER_H
 
 #include <nepomukfeederagent.h>
+#include "calendar.h"
 
 #include <akonadi/agentbase.h>
 #include <akonadi/item.h>
@@ -33,7 +34,7 @@
 
 namespace Akonadi {
 
-class NepomukCalendarFeeder : public NepomukFeederAgent
+class NepomukCalendarFeeder : public NepomukFeederAgent<NepomukFast::Calendar>
 {
   Q_OBJECT
 

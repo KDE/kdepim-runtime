@@ -139,7 +139,7 @@ Collection::List listRecursive( const KBookmarkGroup& parent, const Collection& 
     Collection col;
     col.setName( bkg.fullText() + '(' + bkg.address() + ')' ); // has to be unique
     col.setRemoteId( bkg.address() );
-    col.setParent( parentCol );
+    col.setParentCollection( parentCol );
     col.setContentMimeTypes( mimeTypes ); // ###
     list << col;
     list << listRecursive( bkg, col );
@@ -151,7 +151,7 @@ Collection::List listRecursive( const KBookmarkGroup& parent, const Collection& 
 void LocalBookmarksResource::retrieveCollections()
 {
   Collection root;
-  root.setParent( Collection::root() );
+  root.setParentCollection( Collection::root() );
   root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
   QStringList mimeTypes;

@@ -54,7 +54,7 @@
 namespace Akonadi {
 
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
-  : NepomukFeederAgent( id )
+  : NepomukFeederAgent<NepomukFast::ContactList>( id )
 {
   addSupportedMimeType( KABC::Addressee::mimeType() );
   addSupportedMimeType( KABC::ContactGroup::mimeType() );
@@ -90,6 +90,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
 {
   // create the contact with the graph reference
   NepomukFast::PersonContact contact( item.url(), graphUri );
+  setParent( contact, item );
 
   const KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
@@ -240,6 +241,7 @@ void NepomukContactFeeder::updateGroupItem( const Akonadi::Item &item, const QUr
 {
   // create the contact group with the graph reference
   NepomukFast::ContactGroup group( item.url(), graphUri );
+  setParent( group, item );
 
   const KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
 

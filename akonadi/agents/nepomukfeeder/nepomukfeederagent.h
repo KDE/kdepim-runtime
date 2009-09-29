@@ -1,7 +1,5 @@
 /*
-    Copyright (c) 2007 Tobias Koenig <tokoe@kde.org>
-                  2008 Sebastian Trueg <trueg@kde.org>
-                  2009 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2009 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -22,83 +20,58 @@
 #ifndef NEPOMUKFEEDERAGENT_H
 #define NEPOMUKFEEDERAGENT_H
 
-#include <akonadi/agentbase.h>
+#include "nepomukfeederagentbase.h"
+
+#include "nie.h"
 #include <akonadi/collection.h>
-#include <akonadi/item.h>
-#include <akonadi/mimetypechecker.h>
+#include <akonadi/entitydisplayattribute.h>
+#include <Soprano/Vocabulary/NAO>
 
-#include "resource.h"
-
-#include <QStringList>
-#include <QtCore/QTimer>
-
-namespace Akonadi
+/** Template part of the shared base class, split out of NepomukFeederAgentBase since moc can't handle templates. */
+template <typename CollectionResource>
+class NepomukFeederAgent : public NepomukFeederAgentBase
 {
-  class Item;
-}
-
-namespace Soprano
-{
-  class NRLModel;
-}
-
-class KJob;
-
-/** Shared base class for all Nepomuk feeders. */
-class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer
-{
-  Q_OBJECT
-
   public:
-    NepomukFeederAgent(const QString& id);
-    ~NepomukFeederAgent();
+    NepomukFeederAgent(const QString& id) : NepomukFeederAgentBase( id ) {}
 
-    /** Remove all references to the given item from Nepomuk. */
-    static void removeItemFromNepomuk( const Akonadi::Item &item );
+    void updateCollection(const Akonadi::Collection& collection, const QUrl& graphUri)
+    {
+      CollectionResource r( collection.url(), graphUri );
+      Akonadi::EntityDisplayAttribute *attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
+      if ( attr && !attr->displayName().isEmpty() )
+        r.setLabel( attr->displayName() );
+      else
+        r.setLabel( collection.name() );
+      if ( attr && !attr->iconName().isEmpty() )
+        r.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( attr->iconName() ) );
+      setParent( r, collection );
+    }
 
-    /** Adds tags to @p resource based on the given string list. */
-    static void tagsFromCategories( NepomukFast::Resource &resource, const QStringList &categories );
+    template <typename R, typename E>
+    void setParent( R& res, const E &entity )
+    {
+      if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() )
+        res.addProperty( Vocabulary::NIE::isPartOf(), entity.parentCollection().url() );
+    }
 
-    /** Add a supported mimetype. */
-    void addSupportedMimeType( const QString &mimeType );
+    void itemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination)
+    {
+      entityMoved( item, collectionSource, collectionDestination );
+    }
 
-    /** Reimplement to do the actual work. */
-    virtual void updateItem( const Akonadi::Item &item, const QUrl &graphUri ) = 0;
-
-    /** Create a graph for the given item with we use to mark all information created by the feeder agent. */
-    QUrl createGraphForItem( const Akonadi::Item &item );
-
-  public slots:
-    /** Trigger a complete update of all items. */
-    void updateAll();
-
-  protected:
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
-    void itemRemoved(const Akonadi::Item &item);
-
-  private:
-    void processNextCollection();
-
-  private slots:
-    void collectionsReceived( const Akonadi::Collection::List &collections );
-    void itemHeadersReceived( const Akonadi::Item::List &items );
-    void itemsReceived( const Akonadi::Item::List &items );
-    void itemFetchResult( KJob* job );
-
-    void selfTest();
-    void serviceOwnerChanged( const QString &name, const QString &oldOwner, const QString &newOwner );
+    void collectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination)
+    {
+      entityMoved( collection, source, destination );
+    }
 
   private:
-    QStringList mSupportedMimeTypes;
-    Akonadi::MimeTypeChecker mMimeTypeChecker;
-    Akonadi::Collection::List mCollectionQueue;
-    Akonadi::Collection mCurrentCollection;
-    int mTotalAmount, mProcessedAmount, mPendingJobs;
-    QTimer mNepomukStartupTimeout;
-    Soprano::NRLModel *mNrlModel;
-    bool mNepomukStartupAttempted;
-    bool mInitialUpdateDone;
+    template <typename E>
+    void entityMoved( const E &entity, const Akonadi::Collection &source, const Akonadi::Collection &destination )
+    {
+      Soprano::Model *model = Nepomuk::ResourceManager::instance()->mainModel();
+      model->removeStatement( Soprano::Statement( entity.url(), Vocabulary::NIE::isPartOf(), source.url() ) );
+      model->addStatement( Soprano::Statement( entity.url(), Vocabulary::NIE::isPartOf(), destination.url() ) );
+    }
 };
 
 #endif

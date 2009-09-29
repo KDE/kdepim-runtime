@@ -4,7 +4,7 @@ add_subdirectory( strigifeeder )
 if( Nepomuk_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
     include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder ${CMAKE_CURRENT_BINARY_DIR}/nie_fast )
     set( NEPOMUKFEEDER_SHARED_SRCS
-         ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederagent.cpp
+         ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederagentbase.cpp
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/sparqlbuilder.cpp
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/selectsparqlbuilder.cpp
      )

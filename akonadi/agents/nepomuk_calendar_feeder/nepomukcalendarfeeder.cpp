@@ -83,7 +83,7 @@ static NepomukFast::Contact findOrMakeNepomukContact( const QString &name, const
 }
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
-  : NepomukFeederAgent( id )
+  : NepomukFeederAgent<NepomukFast::Calendar>( id )
 {
   addSupportedMimeType( KCalMimeTypeVisitor::eventMimeType() );
   addSupportedMimeType( KCalMimeTypeVisitor::todoMimeType() );
@@ -115,6 +115,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
 {
   // create event with the graph reference
   NepomukFast::Event event( item.url(), graphUri );
+  setParent( event, item );
   updateIncidenceItem( calEvent, event, graphUri );
 
   QUrl uri;
@@ -176,12 +177,14 @@ void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const 
 {
     // create journal entry with the graph reference
     NepomukFast::Journal journal( item.url(), graphUri );
+    setParent( journal, item );
     updateIncidenceItem( calJournal, journal, graphUri );
 }
 
 void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCal::Todo::Ptr &calTodo, const QUrl &graphUri )
 {
   NepomukFast::Todo todo( item.url(), graphUri );
+  setParent( todo, item );
   updateIncidenceItem( calTodo, todo, graphUri );
 }
 
