@@ -24,6 +24,7 @@
 
 #include "selectsqarqlbuilder.h"
 #include "resource.h"
+#include <nie.h>
 
 #include <akonadi/agentbase.h>
 #include <akonadi/collection.h>
@@ -117,7 +118,14 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
         @param found Used to indicate if the contact is already there are was just newly created. In the latter case you might
         want to add additional information you have available for it.
     */
-    NepomukFast::PersonContact findOrCreateContact( const QString &email, const QString &name, const QUrl &graphUri, bool *found = 0 );
+    static NepomukFast::PersonContact findOrCreateContact( const QString &email, const QString &name, const QUrl &graphUri, bool *found = 0 );
+
+    template <typename R, typename E>
+    static void setParent( R& res, const E &entity )
+    {
+      if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() )
+        res.addProperty( Vocabulary::NIE::isPartOf(), entity.parentCollection().url() );
+    }
 
   public slots:
     /** Trigger a complete update of all items. */

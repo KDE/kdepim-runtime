@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2006 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2006, 2009 Volker Krause <vkrause@kde.org>
     Copyright (c) 2008 Sebastian Trueg <trueg@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -18,33 +18,33 @@
     02110-1301, USA.
 */
 
-#include "nepomukemailfeeder.h"
-#include "messageanalyzer.h"
+#ifndef MESSAGEANALYZER_H
+#define MESSAGEANALYZER_H
 
-#include <kmime/kmime_message.h>
+#include "contact.h"
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/item.h>
-#include <akonadi/itemfetchscope.h>
+#include <kmime/kmime_headers.h>
 
-using namespace Akonadi;
+#include <QtCore/QObject>
 
-Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
-  NepomukFeederAgent<NepomukFast::Mailbox>( id )
-{
-  addSupportedMimeType( "message/rfc822" );
-  addSupportedMimeType( "message/news" );
+class NepomukFeederAgentBase;
 
-  changeRecorder()->itemFetchScope().fetchFullPayload();
+namespace Akonadi {
+  class Item;
 }
 
-void NepomukEMailFeeder::updateItem(const Akonadi::Item & item, const QUrl &graphUri)
+/**
+  Does the actual analysis of the email, split out from the feeder agent due to possibly asynchronous
+  operations in the OTP, so we need to isolate state in case multiple items are processed at the same time.
+  Also gives us the possibility to parallelizer this later on.
+*/
+class MessageAnalyzer : public QObject
 {
-  if ( !item.hasPayload<KMime::Message::Ptr>() )
-    return;
-  new MessageAnalyzer( item, graphUri, this );
-}
+  Q_OBJECT
+  public:
+    MessageAnalyzer( const Akonadi::Item &item, const QUrl &graphUri, QObject* parent = 0 );
 
-AKONADI_AGENT_MAIN( NepomukEMailFeeder )
-
-#include "nepomukemailfeeder.moc"
+  private:
+    QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl&graphUri );
+};
+#endif
