@@ -27,6 +27,7 @@
 #include <kmime/kmime_headers.h>
 #include <kmime/kmime_message.h>
 
+#include <KDE/KUrl>
 #include <QtCore/QObject>
 
 class NepomukFeederAgentBase;
@@ -52,6 +53,7 @@ class MessageAnalyzer : public QObject
     QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl&graphUri );
     void processHeaders( const KMime::Message::Ptr &msg );
     void processPart( KMime::Content *content );
+    void processAttachmentBody( const KUrl &url, KMime::Content *content );
 
   private:
     NepomukFast::Email m_email;

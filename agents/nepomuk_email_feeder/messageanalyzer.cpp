@@ -33,8 +33,6 @@
 #include <Nepomuk/ResourceManager>
 #include <Nepomuk/Variant>
 
-#include <kurl.h>
-
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>
 
@@ -62,8 +60,6 @@ MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri
       m_email.setPlainTextMessageContents( QStringList( text ) );
     }
   }
-
-  // IDEA: use Strigi to index the attachments
 
   deleteLater();
 }
@@ -130,6 +126,7 @@ void MessageAnalyzer::processPart(KMime::Content* content)
     if ( content->contentDescription( false ) && !content->contentDescription()->asUnicodeString().isEmpty() )
       attachment.addProperty( Vocabulary::NIE::description(), Soprano::LiteralValue( content->contentDescription()->asUnicodeString() ) );
     m_email.addAttachment( attachment );
+    processAttachmentBody( attachmentUrl, content );
   }
 }
 
