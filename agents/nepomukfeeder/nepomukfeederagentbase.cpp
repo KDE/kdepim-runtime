@@ -20,7 +20,10 @@
 */
 
 #include "nepomukfeederagentbase.h"
-#include "nie.h"
+#include <nie.h>
+#include <nco.h>
+#include <personcontact.h>
+#include <emailaddress.h>
 
 #include <akonadi/item.h>
 #include <akonadi/changerecorder.h>
@@ -296,6 +299,46 @@ void NepomukFeederAgentBase::serviceOwnerChanged(const QString& name, const QStr
 
   if ( name == QLatin1String("org.kde.NepomukStorage") )
     selfTest();
+}
+
+NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QString& emailAddress, const QString& name, const QUrl& graphUri, bool* found)
+{
+  //
+  // Querying with the exact address string is not perfect since email addresses
+  // are case insensitive. But for the moment we stick to it and hope Nepomuk
+  // alignment fixes any duplicates
+  //
+  SelectSparqlBuilder::BasicGraphPattern graph;
+  if ( emailAddress.isEmpty() ) {
+    graph.addTriple( "?person", Vocabulary::NCO::fullname(), name );
+  } else {
+    graph.addTriple( "?person", Vocabulary::NCO::hasEmailAddress(), SparqlBuilder::QueryVariable( "?email" ) );
+    graph.addTriple( "?email", Vocabulary::NCO::emailAddress(), emailAddress );
+  }
+  SelectSparqlBuilder qb;
+  qb.setGraphPattern( graph );
+  qb.addQueryVariable( "?person" );
+  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(), Soprano::Query::QueryLanguageSparql );
+
+  if ( it.next() ) {
+    if ( found ) *found = true;
+    const QUrl uri = it.binding( 0 ).uri();
+    it.close();
+    return NepomukFast::PersonContact( uri, graphUri );
+  }
+  if ( found ) *found = false;
+  // create a new contact
+  kDebug() << "Did not find " << name << emailAddress << ", creating a new PersonContact";
+  NepomukFast::PersonContact contact( QUrl(), graphUri );
+  contact.setLabel( name.isEmpty() ? emailAddress : name );
+  if ( !emailAddress.isEmpty() ) {
+    NepomukFast::EmailAddress emailRes( QUrl( "mailto:" + emailAddress ), graphUri );
+    emailRes.setEmailAddress( emailAddress );
+    contact.addEmailAddress( emailRes );
+  }
+  if ( !name.isEmpty() )
+    contact.addFullname( name );
+  return contact;
 }
 
 #include "nepomukfeederagentbase.moc"

@@ -21,15 +21,14 @@
 #ifndef AKONADI_NEPOMUK_EMAIL_FEEDER_H
 #define AKONADI_NEPOMUK_EMAIL_FEEDER_H
 
-#include <akonadi/agentbase.h>
+#include <nepomukfeederagent.h>
 
-#include "personcontact.h"
-#include "mailbox.h"
+#include <mailbox.h>
+#include <contact.h>
 
 #include <QtCore/QList>
 
 #include <kmime/kmime_header_parsing.h>
-#include <nepomukfeederagent.h>
 
 namespace Akonadi {
 
@@ -44,7 +43,6 @@ class NepomukEMailFeeder : public NepomukFeederAgent<NepomukFast::Mailbox>
 
   private:
     QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl& );
-    NepomukFast::PersonContact findContact( const QByteArray& address, const QUrl&, bool *found );
 };
 
 }

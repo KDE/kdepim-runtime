@@ -20,7 +20,6 @@
 
 #include "nepomukemailfeeder.h"
 #include "email.h"
-#include "emailaddress.h"
 #include "personcontact.h"
 #include "selectsqarqlbuilder.h"
 
@@ -120,53 +119,12 @@ QList<NepomukFast::Contact> NepomukEMailFeeder::extractContactsFromMailboxes( co
 
   foreach( const KMime::Types::Mailbox& mbox, mbs ) {
     if ( mbox.hasAddress() ) {
-      bool found = false;
-      NepomukFast::Contact c = findContact( mbox.address(), graphUri, &found );
-      if ( !found ) {
-        if ( mbox.hasName() ) {
-          c.addFullname( mbox.name() );
-          c.setLabel( mbox.name() );
-        } else {
-          c.setLabel( mbox.address() );
-        }
-      }
+      const NepomukFast::Contact c = findOrCreateContact( QString::fromLatin1( mbox.address() ), mbox.name(), graphUri );
       contacts << c;
     }
   }
 
   return contacts;
-}
-
-NepomukFast::PersonContact NepomukEMailFeeder::findContact( const QByteArray& address, const QUrl &graphUri, bool *found )
-{
-  //
-  // Querying with the exact address string is not perfect since email addresses
-  // are case insensitive. But for the moment we stick to it and hope Nepomuk
-  // alignment fixes any duplicates
-  //
-  SelectSparqlBuilder::BasicGraphPattern graph;
-  graph.addTriple( "?r", NepomukFast::Role::emailAddressUri(), SparqlBuilder::QueryVariable("?a") );
-  graph.addTriple( "?a", NepomukFast::EmailAddress::emailAddressUri(), QString::fromAscii( address ) );
-  SelectSparqlBuilder qb;
-  qb.setGraphPattern( graph );
-  qb.addQueryVariable( "?r" );
-  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(), Soprano::Query::QueryLanguageSparql );
-
-  if ( it.next() ) {
-    *found = true;
-    const QUrl uri = it.binding( 0 ).uri();
-    it.close();
-    return NepomukFast::PersonContact( uri, graphUri );
-  }
-  else {
-    *found = false;
-    // create a new contact
-    NepomukFast::PersonContact contact( QUrl(), graphUri );
-    NepomukFast::EmailAddress email( QUrl( "mailto:" + address ), graphUri );
-    email.setEmailAddress( QString::fromAscii( address ) );
-    contact.addEmailAddress( email );
-    return contact;
-  }
 }
 
 AKONADI_AGENT_MAIN( NepomukEMailFeeder )

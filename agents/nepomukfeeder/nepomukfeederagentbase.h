@@ -53,6 +53,11 @@ namespace Soprano
   class NRLModel;
 }
 
+namespace NepomukFast
+{
+  class PersonContact;
+}
+
 class KJob;
 
 /** Shared base class for all Nepomuk feeders. */
@@ -107,6 +112,12 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
 
       return graphUri;
     }
+
+    /** Finds (or if it doesn't exist creates) a PersonContact object for the given name and address.
+        @param found Used to indicate if the contact is already there are was just newly created. In the latter case you might
+        want to add additional information you have available for it.
+    */
+    NepomukFast::PersonContact findOrCreateContact( const QString &email, const QString &name, const QUrl &graphUri, bool *found = 0 );
 
   public slots:
     /** Trigger a complete update of all items. */
