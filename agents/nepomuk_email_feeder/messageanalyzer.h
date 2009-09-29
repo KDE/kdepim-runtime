@@ -21,9 +21,11 @@
 #ifndef MESSAGEANALYZER_H
 #define MESSAGEANALYZER_H
 
-#include "contact.h"
+#include <contact.h>
+#include <email.h>
 
 #include <kmime/kmime_headers.h>
+#include <kmime/kmime_message.h>
 
 #include <QtCore/QObject>
 
@@ -44,7 +46,16 @@ class MessageAnalyzer : public QObject
   public:
     MessageAnalyzer( const Akonadi::Item &item, const QUrl &graphUri, QObject* parent = 0 );
 
+    inline QUrl graphUri() const { return m_graphUri; }
+
   private:
     QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl&graphUri );
+    void processHeaders( const KMime::Message::Ptr &msg );
+    void processPart( KMime::Content *content );
+
+  private:
+    NepomukFast::Email m_email;
+    QUrl m_graphUri;
 };
+
 #endif
