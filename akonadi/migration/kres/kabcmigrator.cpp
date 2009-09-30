@@ -75,7 +75,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   OrgKdeAkonadiVCardSettingsInterface *iface = new OrgKdeAkonadiVCardSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
     return;
   }
   iface->setPath( kresCfg.readPathEntry( "FileName", KStandardDirs::locateLocal( "data", "kabc/std.vcf" ) ) );

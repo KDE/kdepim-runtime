@@ -62,7 +62,7 @@ void KCalMigrator::fileResourceCreated(KJob * job)
   OrgKdeAkonadiICalSettingsInterface *iface = new OrgKdeAkonadiICalSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
     return;
   }
   iface->setPath( kresCfg.readPathEntry( "CalendarURL", "" ) );
@@ -86,7 +86,7 @@ void KCalMigrator::birthdaysResourceCreated(KJob* job)
     new OrgKdeAkonadiBirthdaysSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
                                                  "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
     return;
   }
   iface->setEnableAlarm( kresCfg.readEntry( "Alarm", true ) );
