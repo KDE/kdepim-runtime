@@ -21,6 +21,7 @@
 #define CONTACTSMODEL_H
 
 #include <akonadi/entitytreemodel.h>
+#include <akonadi/changerecorder.h>
 
 #include "akonadi_next_export.h"
 
