@@ -276,7 +276,7 @@ void NepomukFeederAgentBase::selfTest()
 
   setOnline( false );
 
-  QString message = i18n( "<b>Nepomuk indexing agents have been disabled</b><br/>"
+  QString message = i18n( "<b>Nepomuk Indexing Agents Have Been Disabled</b><br/>"
                           "The Nepomuk service is not available or fully operational and attempts to rectify this have failed. "
                           "Therefore indexing of all data stored in the Akonadi PIM service has been disabled, which will "
                           "severely limit the capabilities of any application using this data.<br/><br/>"
@@ -288,7 +288,7 @@ void NepomukFeederAgentBase::selfTest()
   emit status( Broken, i18n( "Nepomuk not operational" ) );
   if ( !QDBusConnection::sessionBus().registerService( "org.kde.pim.nepomukfeeder.selftestreport" ) )
     return;
-  KMessageBox::error( 0, message, i18n( "Nepomuk indexing disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
+  KMessageBox::error( 0, message, i18n( "Nepomuk Indexing Disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
   QDBusConnection::sessionBus().unregisterService( "org.kde.pim.nepomukfeeder.selftestreport" );
 }
 
