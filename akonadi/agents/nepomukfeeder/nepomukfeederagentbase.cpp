@@ -20,7 +20,10 @@
 */
 
 #include "nepomukfeederagentbase.h"
-#include "nie.h"
+#include <nie.h>
+#include <nco.h>
+#include <personcontact.h>
+#include <emailaddress.h>
 
 #include <akonadi/item.h>
 #include <akonadi/changerecorder.h>
@@ -273,7 +276,7 @@ void NepomukFeederAgentBase::selfTest()
 
   setOnline( false );
 
-  QString message = i18n( "<b>Nepomuk indexing agents have been disabled</b><br/>"
+  QString message = i18n( "<b>Nepomuk Indexing Agents Have Been Disabled</b><br/>"
                           "The Nepomuk service is not available or fully operational and attempts to rectify this have failed. "
                           "Therefore indexing of all data stored in the Akonadi PIM service has been disabled, which will "
                           "severely limit the capabilities of any application using this data.<br/><br/>"
@@ -285,7 +288,7 @@ void NepomukFeederAgentBase::selfTest()
   emit status( Broken, i18n( "Nepomuk not operational" ) );
   if ( !QDBusConnection::sessionBus().registerService( "org.kde.pim.nepomukfeeder.selftestreport" ) )
     return;
-  KMessageBox::error( 0, message, i18n( "Nepomuk indexing disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
+  KMessageBox::error( 0, message, i18n( "Nepomuk Indexing Disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
   QDBusConnection::sessionBus().unregisterService( "org.kde.pim.nepomukfeeder.selftestreport" );
 }
 
@@ -296,6 +299,46 @@ void NepomukFeederAgentBase::serviceOwnerChanged(const QString& name, const QStr
 
   if ( name == QLatin1String("org.kde.NepomukStorage") )
     selfTest();
+}
+
+NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QString& emailAddress, const QString& name, const QUrl& graphUri, bool* found)
+{
+  //
+  // Querying with the exact address string is not perfect since email addresses
+  // are case insensitive. But for the moment we stick to it and hope Nepomuk
+  // alignment fixes any duplicates
+  //
+  SelectSparqlBuilder::BasicGraphPattern graph;
+  if ( emailAddress.isEmpty() ) {
+    graph.addTriple( "?person", Vocabulary::NCO::fullname(), name );
+  } else {
+    graph.addTriple( "?person", Vocabulary::NCO::hasEmailAddress(), SparqlBuilder::QueryVariable( "?email" ) );
+    graph.addTriple( "?email", Vocabulary::NCO::emailAddress(), emailAddress );
+  }
+  SelectSparqlBuilder qb;
+  qb.setGraphPattern( graph );
+  qb.addQueryVariable( "?person" );
+  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(), Soprano::Query::QueryLanguageSparql );
+
+  if ( it.next() ) {
+    if ( found ) *found = true;
+    const QUrl uri = it.binding( 0 ).uri();
+    it.close();
+    return NepomukFast::PersonContact( uri, graphUri );
+  }
+  if ( found ) *found = false;
+  // create a new contact
+  kDebug() << "Did not find " << name << emailAddress << ", creating a new PersonContact";
+  NepomukFast::PersonContact contact( QUrl(), graphUri );
+  contact.setLabel( name.isEmpty() ? emailAddress : name );
+  if ( !emailAddress.isEmpty() ) {
+    NepomukFast::EmailAddress emailRes( QUrl( "mailto:" + emailAddress ), graphUri );
+    emailRes.setEmailAddress( emailAddress );
+    contact.addEmailAddress( emailRes );
+  }
+  if ( !name.isEmpty() )
+    contact.addFullname( name );
+  return contact;
 }
 
 #include "nepomukfeederagentbase.moc"

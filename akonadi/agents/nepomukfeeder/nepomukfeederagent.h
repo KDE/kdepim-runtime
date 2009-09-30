@@ -25,6 +25,7 @@
 #include "nie.h"
 #include <akonadi/collection.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <KDE/KUrl>
 #include <Soprano/Vocabulary/NAO>
 
 /** Template part of the shared base class, split out of NepomukFeederAgentBase since moc can't handle templates. */
@@ -45,13 +46,6 @@ class NepomukFeederAgent : public NepomukFeederAgentBase
       if ( attr && !attr->iconName().isEmpty() )
         r.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( attr->iconName() ) );
       setParent( r, collection );
-    }
-
-    template <typename R, typename E>
-    void setParent( R& res, const E &entity )
-    {
-      if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() )
-        res.addProperty( Vocabulary::NIE::isPartOf(), entity.parentCollection().url() );
     }
 
     void itemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination)

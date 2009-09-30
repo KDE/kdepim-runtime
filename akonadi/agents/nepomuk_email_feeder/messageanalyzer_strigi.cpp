@@ -1,6 +1,5 @@
 /*
-    Copyright (c) 2006 Volker Krause <vkrause@kde.org>
-    Copyright (c) 2008 Sebastian Trueg <trueg@kde.org>
+    Copyright (c) 2009 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,29 +17,14 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_NEPOMUK_EMAIL_FEEDER_H
-#define AKONADI_NEPOMUK_EMAIL_FEEDER_H
+#include "messageanalyzer.h"
 
-#include <nepomukfeederagent.h>
+#include <kmime/kmime_content.h>
 
-#include <mailbox.h>
-#include <contact.h>
+#include <strigi/qtdbus/strigiclient.h>
 
-#include <QtCore/QList>
-
-#include <kmime/kmime_header_parsing.h>
-
-namespace Akonadi {
-
-class NepomukEMailFeeder : public NepomukFeederAgent<NepomukFast::Mailbox>
+void MessageAnalyzer::processAttachmentBody(const KUrl& url, KMime::Content* content)
 {
-  Q_OBJECT
-  public:
-    NepomukEMailFeeder( const QString &id );
-
-    void updateItem( const Akonadi::Item &item, const QUrl &graphUri );
-};
-
+  StrigiClient strigi;
+  strigi.indexFile( url.url(), QDateTime::currentDateTime().toTime_t(), content->decodedContent() );
 }
-
-#endif

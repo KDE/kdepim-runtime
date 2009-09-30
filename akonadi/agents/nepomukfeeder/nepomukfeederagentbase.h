@@ -24,6 +24,7 @@
 
 #include "selectsqarqlbuilder.h"
 #include "resource.h"
+#include <nie.h>
 
 #include <akonadi/agentbase.h>
 #include <akonadi/collection.h>
@@ -51,6 +52,11 @@ namespace Akonadi
 namespace Soprano
 {
   class NRLModel;
+}
+
+namespace NepomukFast
+{
+  class PersonContact;
 }
 
 class KJob;
@@ -106,6 +112,19 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
                               item.url(), metaDataGraphUri );
 
       return graphUri;
+    }
+
+    /** Finds (or if it doesn't exist creates) a PersonContact object for the given name and address.
+        @param found Used to indicate if the contact is already there are was just newly created. In the latter case you might
+        want to add additional information you have available for it.
+    */
+    static NepomukFast::PersonContact findOrCreateContact( const QString &email, const QString &name, const QUrl &graphUri, bool *found = 0 );
+
+    template <typename R, typename E>
+    static void setParent( R& res, const E &entity )
+    {
+      if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() )
+        res.addProperty( Vocabulary::NIE::isPartOf(), entity.parentCollection().url() );
     }
 
   public slots:
