@@ -21,6 +21,7 @@
 #define AKONADIBROWSERMODEL_H
 
 #include <akonadi/entitytreemodel.h>
+#include <akonadi/changerecorder.h>
 
 using namespace Akonadi;
 
