@@ -7,6 +7,8 @@ include_directories(
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 add_definitions(-DNEPOMUK_RESOURCE_STATIC)
 
+if ( STRIGIQTDBUSCLIENT_LIBRARY )
+
 set(akonadi_nepomuk_email_feeder_SRCS
   nepomukemailfeeder.cpp
   messageanalyzer.cpp
@@ -33,3 +35,5 @@ target_link_libraries(akonadi_nepomuk_email_feeder
 
 install(TARGETS akonadi_nepomuk_email_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES nepomukemailfeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+
+endif ( STRIGIQTDBUSCLIENT_LIBRARY )
