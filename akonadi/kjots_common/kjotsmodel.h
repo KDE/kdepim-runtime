@@ -26,7 +26,7 @@
 
 namespace Akonadi
 {
-class Monitor;
+class ChangeRecorder;
 class Session;
 }
 
@@ -64,7 +64,7 @@ class KJotsModel : public EntityTreeModel
 {
   Q_OBJECT
 public:
-  KJotsModel(Session *session, Monitor *monitor, QObject *parent = 0);
+  KJotsModel(Session *session, ChangeRecorder *monitor, QObject *parent = 0);
   virtual ~KJotsModel();
 
   enum KJotsRoles

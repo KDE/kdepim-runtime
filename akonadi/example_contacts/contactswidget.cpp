@@ -25,6 +25,7 @@
 #include <QSplitter>
 #include <QTextBrowser>
 
+#include <akonadi/changerecorder.h>
 #include <akonadi/control.h>
 #include <kdescendantsproxymodel.h>
 #include <akonadi/entitydisplayattribute.h>
@@ -67,7 +68,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 //   scope.fetchAttribute< CollectionChildOrderAttribute >();
   scope.fetchAttribute< EntityDisplayAttribute >();
 
-  Monitor *monitor = new Monitor( this );
+  ChangeRecorder *monitor = new ChangeRecorder( this );
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );

@@ -32,7 +32,7 @@
 #include "amazingdelegate.h"
 #include <akonadi/entitytreemodel.h>
 
-#include <akonadi/monitor.h>
+#include <akonadi/changerecorder.h>
 #include <akonadi/session.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
@@ -55,7 +55,7 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   //   scope.fetchAttribute< CollectionChildOrderAttribute >();
   scope.fetchAttribute< EntityDisplayAttribute >();
 
-  Monitor *monitor = new Monitor( this );
+  ChangeRecorder *monitor = new ChangeRecorder( this );
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );

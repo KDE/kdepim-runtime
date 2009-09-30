@@ -21,6 +21,8 @@
 
 #include "kjotsmodel.h"
 
+#include <akonadi/changerecorder.h>
+
 #include "kjotspage.h"
 
 #include <kdebug.h>
@@ -96,7 +98,7 @@ QVariantList KJotsEntity::entities()
   return list;
 }
 
-KJotsModel::KJotsModel(Session *session, Monitor *monitor, QObject *parent)
+KJotsModel::KJotsModel(Session *session, ChangeRecorder *monitor, QObject *parent)
   : EntityTreeModel(session, monitor, parent)
 {
 

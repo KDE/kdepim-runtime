@@ -38,6 +38,7 @@
 #include <akonadi/agentinstancecreatejob.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/agenttype.h>
+#include <akonadi/changerecorder.h>
 #include <akonadi/control.h>
 #include "collectionchildorderattribute.h"
 #include <akonadi/collectionfetchjob.h>
@@ -141,7 +142,7 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
 //   scope.fetchAttribute< CollectionChildOrderAttribute >();
   scope.fetchAttribute< EntityDisplayAttribute >();
 
-  Monitor *monitor = new Monitor( this );
+  ChangeRecorder *monitor = new ChangeRecorder( this );
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );

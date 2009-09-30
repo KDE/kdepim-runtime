@@ -28,7 +28,7 @@
 namespace Akonadi
 {
 class EntityTreeModel;
-class Monitor;
+class ChangeRecorder;
 }
 
 class GRANTLEE_EXPORT AkonadiTemplateLoader : public AbstractTemplateLoader
@@ -36,7 +36,7 @@ class GRANTLEE_EXPORT AkonadiTemplateLoader : public AbstractTemplateLoader
 public:
   typedef QSharedPointer<AkonadiTemplateLoader> Ptr;
 
-  AkonadiTemplateLoader(Akonadi::Monitor *monitor, QObject *parent = 0 );
+  AkonadiTemplateLoader(Akonadi::ChangeRecorder *monitor, QObject *parent = 0 );
 
   Template loadByName( const QString &name ) const;
   MutableTemplate loadMutableByName( const QString &name ) const;

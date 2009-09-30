@@ -25,6 +25,7 @@
 #include <QSplitter>
 #include <QTextBrowser>
 
+#include <akonadi/changerecorder.h>
 #include <akonadi/control.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entitytreemodel.h>
@@ -32,7 +33,6 @@
 #include "entitytreeview.h"
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
 #include "mailmodel.h"
@@ -72,7 +72,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   ItemFetchScope templateScope;
   templateScope.fetchFullPayload( true );
 
-  Monitor *templateMonitor = new Monitor( this );
+  ChangeRecorder *templateMonitor = new ChangeRecorder( this );
   templateMonitor->fetchCollection( true );
   templateMonitor->setItemFetchScope( templateScope );
   templateMonitor->setCollectionMonitored( Collection::root() );
@@ -115,7 +115,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   scope.fetchFullPayload( true ); // Need to have full item when adding it to the internal data structure
   scope.fetchAttribute< EntityDisplayAttribute >();
 
-  Monitor *monitor = new Monitor( this );
+  ChangeRecorder *monitor = new ChangeRecorder( this );
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   // Only monitoring the root collection works.

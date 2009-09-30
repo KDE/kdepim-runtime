@@ -33,7 +33,7 @@
 
 using namespace Akonadi;
 
-AkonadiTemplateLoader::AkonadiTemplateLoader(Akonadi::Monitor *monitor,  QObject* parent )
+AkonadiTemplateLoader::AkonadiTemplateLoader(Akonadi::ChangeRecorder *monitor,  QObject* parent )
   : m_themeName("default")
 {
   Collection rootCollection = Collection::root();
