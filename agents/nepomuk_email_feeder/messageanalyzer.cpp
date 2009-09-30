@@ -36,6 +36,14 @@
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>
 
+#include <strigi/analyzerconfiguration.h>
+#include <strigi/analysisresult.h>
+#include <strigi/indexpluginloader.h>
+#include <strigi/indexmanager.h>
+#include <strigi/indexwriter.h>
+#include <strigi/streamanalyzer.h>
+#include <strigi/stringstream.h>
+
 #include <boost/shared_ptr.hpp>
 
 MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri, QObject* parent) :
@@ -128,6 +136,24 @@ void MessageAnalyzer::processPart(KMime::Content* content)
     m_email.addAttachment( attachment );
     processAttachmentBody( attachmentUrl, content );
   }
+}
+
+void MessageAnalyzer::processAttachmentBody(const KUrl& url, KMime::Content* content)
+{
+  const QByteArray decodedContent = content->decodedContent();
+
+  Strigi::IndexManager* indexManager = Strigi::IndexPluginLoader::createIndexManager( "sopranobackend", 0 );
+  Q_ASSERT( indexManager );
+
+  Strigi::IndexWriter* writer = indexManager->indexWriter();
+  Strigi::AnalyzerConfiguration ic;
+  Strigi::StreamAnalyzer streamindexer( ic );
+  streamindexer.setIndexWriter( *writer );
+  Strigi::StringInputStream sr( decodedContent.constData(), decodedContent.size(), false );
+  Strigi::AnalysisResult idx( url.url().toLatin1().constData(), QDateTime::currentDateTime().toTime_t(), *writer, streamindexer );
+  idx.index( &sr );
+
+  Strigi::IndexPluginLoader::deleteIndexManager( indexManager );
 }
 
 QList< NepomukFast::Contact > MessageAnalyzer::extractContactsFromMailboxes(const KMime::Types::Mailbox::List& mbs, const QUrl&graphUri )

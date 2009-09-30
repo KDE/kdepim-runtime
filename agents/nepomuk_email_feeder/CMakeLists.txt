@@ -10,7 +10,6 @@ add_definitions(-DNEPOMUK_RESOURCE_STATIC)
 set(akonadi_nepomuk_email_feeder_SRCS
   nepomukemailfeeder.cpp
   messageanalyzer.cpp
-  messageanalyzer_strigi.cpp
   ${NEPOMUKFEEDER_SHARED_SRCS}
 )
 
