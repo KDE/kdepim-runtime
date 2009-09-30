@@ -28,7 +28,7 @@ class AkonadiBrowserModel : public EntityTreeModel
 {
   Q_OBJECT
 public:
-  AkonadiBrowserModel( Session* session, Monitor* monitor, QObject* parent = 0 );
+  AkonadiBrowserModel( Session* session, ChangeRecorder* monitor, QObject* parent = 0 );
 
   enum ItemDisplayMode
   {
@@ -37,7 +37,7 @@ public:
     ContactsMode,
     CalendarMode
   };
-  
+
   void setItemDisplayMode( ItemDisplayMode itemDisplayMode );
   ItemDisplayMode itemDisplayMode() const;
 
@@ -58,14 +58,14 @@ protected:
   void invalidatePersistentIndexes();
   void beginResetModel();
   void endResetModel();
-  
+
 private:
   State *m_currentState;
   State *m_genericState;
   State *m_mailState;
   State *m_contactsState;
   State *m_calendarState;
-  
+
   ItemDisplayMode m_itemDisplayMode;
 
 };

@@ -38,7 +38,7 @@ public:
     EmailCompletionRole = EntityTreeModel::UserRole
   };
 
-  ContactsModel(Session *session, Monitor *monitor, QObject *parent = 0);
+  ContactsModel(Session *session, ChangeRecorder *monitor, QObject *parent = 0);
   virtual ~ContactsModel();
 
   virtual QVariant getData(const Item &item, int column, int role=Qt::DisplayRole) const;

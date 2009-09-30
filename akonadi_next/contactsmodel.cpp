@@ -89,7 +89,7 @@ bool ContactsModel::match(Collection col, const QVariant& matchData, Qt::MatchFl
 }
 
 
-ContactsModel::ContactsModel(Session *session, Monitor *monitor, QObject *parent)
+ContactsModel::ContactsModel(Session *session, ChangeRecorder *monitor, QObject *parent)
   : EntityTreeModel(session, monitor, parent), d_ptr(new ContactsModelPrivate(this))
 {
 

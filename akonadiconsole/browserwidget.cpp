@@ -26,17 +26,17 @@
 #include "akonadibrowsermodel.h"
 
 #include <akonadi/attributefactory.h>
-#include <akonadi/job.h>
+#include <akonadi/changerecorder.h>
 #include <akonadi/control.h>
 #include <akonadi/entityfilterproxymodel.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemmodifyjob.h>
+#include <akonadi/job.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionpropertiesdialog.h>
 #include <akonadi/standardactionmanager.h>
-#include <akonadi/monitor.h>
 #include <akonadi/session.h>
 #include <xml/xmlwritejob.h>
 
@@ -112,7 +112,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   Session *session = new Session( "AkonadiConsole Browser Widget", this );
 
   // monitor collection changes
-  Monitor *monitor = new Monitor( this );
+  ChangeRecorder *monitor = new ChangeRecorder( this );
   monitor->setCollectionMonitored( Collection::root() );
   monitor->fetchCollection( true );
   monitor->setAllMonitored( true );
