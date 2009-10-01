@@ -23,6 +23,7 @@
 #define MAILMODEL_H
 
 #include <akonadi/entitytreemodel.h>
+#include <akonadi/changerecorder.h>
 
 #include "akonadi_next_export.h"
 
@@ -35,7 +36,7 @@ class AKONADI_NEXT_EXPORT MailModel : public EntityTreeModel
   Q_OBJECT
 public:
 
-  MailModel(Session *session, Monitor *monitor, QObject *parent = 0);
+  MailModel(Session *session, ChangeRecorder *monitor, QObject *parent = 0);
   virtual ~MailModel();
 
   virtual QVariant getData(const Item &item, int column, int role=Qt::DisplayRole) const;

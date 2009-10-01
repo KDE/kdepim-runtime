@@ -103,12 +103,12 @@ void ModelTest::runAllTests()
 void ModelTest::nonDestructiveBasicTest()
 {
     Q_ASSERT ( model->buddy ( QModelIndex() ) == QModelIndex() );
-    model->canFetchMore ( QModelIndex() );
+//     model->canFetchMore ( QModelIndex() );
     Q_ASSERT ( model->columnCount ( QModelIndex() ) >= 0 );
     Q_ASSERT ( model->data ( QModelIndex() ) == QVariant() );
-    fetchingMore = true;
-    model->fetchMore ( QModelIndex() );
-    fetchingMore = false;
+//     fetchingMore = true;
+//     model->fetchMore ( QModelIndex() );
+//     fetchingMore = false;
     Qt::ItemFlags flags = model->flags ( QModelIndex() );
     Q_ASSERT ( flags == Qt::ItemIsDropEnabled || flags == 0 );
     model->hasChildren ( QModelIndex() );
@@ -299,11 +299,11 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
         p = p.parent();
 
     // For models that are dynamically populated
-    if ( model->canFetchMore ( parent ) ) {
-        fetchingMore = true;
-        model->fetchMore ( parent );
-        fetchingMore = false;
-    }
+//     if ( model->canFetchMore ( parent ) ) {
+//         fetchingMore = true;
+//         model->fetchMore ( parent );
+//         fetchingMore = false;
+//     }
 
     int rows = model->rowCount ( parent );
     int columns = model->columnCount ( parent );
@@ -323,11 +323,11 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
     Q_ASSERT ( model->hasIndex ( rows, 0, parent ) == false );
     Q_ASSERT ( model->index(rows, 0, parent).isValid() == false );
     for ( int r = 0; r < rows; ++r ) {
-        if ( model->canFetchMore ( parent ) ) {
-            fetchingMore = true;
-            model->fetchMore ( parent );
-            fetchingMore = false;
-        }
+//         if ( model->canFetchMore ( parent ) ) {
+//             fetchingMore = true;
+//             model->fetchMore ( parent );
+//             fetchingMore = false;
+//         }
         Q_ASSERT ( model->hasIndex ( r, columns, parent ) == false );
         Q_ASSERT ( model->index(r, columns, parent).isValid() == false );
         for ( int c = 0; c < columns; ++c ) {
