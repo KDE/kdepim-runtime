@@ -367,6 +367,12 @@ void NepomukFeederAgentBase::setNeedsStrigi(bool enableStrigi)
 
 void NepomukFeederAgentBase::indexData(const KUrl& url, const QByteArray& data, const QDateTime& mtime)
 {
+  Q_ASSERT( mNeedsStrigi );
+  if ( !mStrigiIndexManager ) {
+    emit status( Broken, i18n( "Strigi is not available for indexing." ) );
+    return;
+  }
+
   Strigi::IndexWriter* writer = mStrigiIndexManager->indexWriter();
   Strigi::AnalyzerConfiguration ic;
   Strigi::StreamAnalyzer streamindexer( ic );
