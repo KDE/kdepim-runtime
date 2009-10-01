@@ -44,6 +44,14 @@
 
 #include <Soprano/Vocabulary/NAO>
 
+#include <strigi/analyzerconfiguration.h>
+#include <strigi/analysisresult.h>
+#include <strigi/indexpluginloader.h>
+#include <strigi/indexmanager.h>
+#include <strigi/indexwriter.h>
+#include <strigi/streamanalyzer.h>
+#include <strigi/stringstream.h>
+
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusReply>
@@ -58,8 +66,10 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   mProcessedAmount( 0 ),
   mPendingJobs( 0 ),
   mNrlModel( 0 ),
+  mStrigiIndexManager( 0 ),
   mNepomukStartupAttempted( false ),
-  mInitialUpdateDone( false )
+  mInitialUpdateDone( false ),
+  mNeedsStrigi( false )
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
@@ -74,12 +84,14 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   connect( QDBusConnection::sessionBus().interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)), SLOT(serviceOwnerChanged(QString,QString,QString)) );
 
   setOnline( false );
-  selfTest();
+  QTimer::singleShot( 0, this, SLOT(selfTest()) );
 }
 
 NepomukFeederAgentBase::~NepomukFeederAgentBase()
 {
   delete mNrlModel;
+  if ( mStrigiIndexManager )
+    Strigi::IndexPluginLoader::deleteIndexManager( mStrigiIndexManager );
 }
 
 void NepomukFeederAgentBase::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
@@ -262,6 +274,13 @@ void NepomukFeederAgentBase::selfTest()
     errorMessages.append( i18n( "Nepomuk is not running." ) );
   }
 
+  // try to obtain a Strigi index manager with a Soprano backend
+  if ( !mStrigiIndexManager && mNeedsStrigi ) {
+    Strigi::IndexManager* indexManager = Strigi::IndexPluginLoader::createIndexManager( "sopranobackend", 0 );
+    if ( !indexManager )
+      errorMessages.append( i18n( "Soprano backend for Strigi is not available." ) );
+  }
+
   if ( errorMessages.isEmpty() ) {
     setOnline( true );
     mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
@@ -339,6 +358,22 @@ NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QSt
   if ( !name.isEmpty() )
     contact.addFullname( name );
   return contact;
+}
+
+void NepomukFeederAgentBase::setNeedsStrigi(bool enableStrigi)
+{
+  mNeedsStrigi = enableStrigi;
+}
+
+void NepomukFeederAgentBase::indexData(const KUrl& url, const QByteArray& data, const QDateTime& mtime)
+{
+  Strigi::IndexWriter* writer = mStrigiIndexManager->indexWriter();
+  Strigi::AnalyzerConfiguration ic;
+  Strigi::StreamAnalyzer streamindexer( ic );
+  streamindexer.setIndexWriter( *writer );
+  Strigi::StringInputStream sr( data.constData(), data.size(), false );
+  Strigi::AnalysisResult idx( url.url().toLatin1().constData(), mtime.toTime_t(), *writer, streamindexer );
+  idx.index( &sr );
 }
 
 #include "nepomukfeederagentbase.moc"

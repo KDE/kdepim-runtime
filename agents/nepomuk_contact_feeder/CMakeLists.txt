@@ -11,15 +11,9 @@ add_definitions(-DNEPOMUK_RESOURCE_STATIC)
 kde4_add_executable(akonadi_nepomuk_contact_feeder RUN_UNINSTALLED nepomukcontactfeeder.cpp ${NEPOMUKFEEDER_SHARED_SRCS} )
 
 target_link_libraries(akonadi_nepomuk_contact_feeder
-  niefast
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTDBUS_LIBRARY}
   ${KDEPIMLIBS_KABC_LIBS}
-  ${NEPOMUK_LIBRARIES}
-  ${SOPRANO_LIBRARIES}
-  ${KDE4_KDECORE_LIBS}
-  )
+  ${NEPOMUKFEEDER_SHARED_LIBS}
+)
 
 install(TARGETS akonadi_nepomuk_contact_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES nepomukcontactfeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")

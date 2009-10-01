@@ -36,18 +36,11 @@
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>
 
-#include <strigi/analyzerconfiguration.h>
-#include <strigi/analysisresult.h>
-#include <strigi/indexpluginloader.h>
-#include <strigi/indexmanager.h>
-#include <strigi/indexwriter.h>
-#include <strigi/streamanalyzer.h>
-#include <strigi/stringstream.h>
-
 #include <boost/shared_ptr.hpp>
 
-MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri, QObject* parent) :
+MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri, NepomukFeederAgentBase* parent) :
   QObject( parent ),
+  m_item( item ),
   m_email( item.url(), graphUri ),
   m_graphUri( graphUri )
 {
@@ -134,26 +127,8 @@ void MessageAnalyzer::processPart(KMime::Content* content)
     if ( content->contentDescription( false ) && !content->contentDescription()->asUnicodeString().isEmpty() )
       attachment.addProperty( Vocabulary::NIE::description(), Soprano::LiteralValue( content->contentDescription()->asUnicodeString() ) );
     m_email.addAttachment( attachment );
-    processAttachmentBody( attachmentUrl, content );
+    m_parent->indexData( attachmentUrl, content->decodedContent(), m_item.modificationTime() );
   }
-}
-
-void MessageAnalyzer::processAttachmentBody(const KUrl& url, KMime::Content* content)
-{
-  const QByteArray decodedContent = content->decodedContent();
-
-  Strigi::IndexManager* indexManager = Strigi::IndexPluginLoader::createIndexManager( "sopranobackend", 0 );
-  Q_ASSERT( indexManager );
-
-  Strigi::IndexWriter* writer = indexManager->indexWriter();
-  Strigi::AnalyzerConfiguration ic;
-  Strigi::StreamAnalyzer streamindexer( ic );
-  streamindexer.setIndexWriter( *writer );
-  Strigi::StringInputStream sr( decodedContent.constData(), decodedContent.size(), false );
-  Strigi::AnalysisResult idx( url.url().toLatin1().constData(), QDateTime::currentDateTime().toTime_t(), *writer, streamindexer );
-  idx.index( &sr );
-
-  Strigi::IndexPluginLoader::deleteIndexManager( indexManager );
 }
 
 QList< NepomukFast::Contact > MessageAnalyzer::extractContactsFromMailboxes(const KMime::Types::Mailbox::List& mbs, const QUrl&graphUri )

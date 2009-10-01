@@ -24,6 +24,8 @@
 #include <contact.h>
 #include <email.h>
 
+#include <akonadi/item.h>
+
 #include <kmime/kmime_headers.h>
 #include <kmime/kmime_message.h>
 
@@ -31,10 +33,6 @@
 #include <QtCore/QObject>
 
 class NepomukFeederAgentBase;
-
-namespace Akonadi {
-  class Item;
-}
 
 /**
   Does the actual analysis of the email, split out from the feeder agent due to possibly asynchronous
@@ -45,7 +43,7 @@ class MessageAnalyzer : public QObject
 {
   Q_OBJECT
   public:
-    MessageAnalyzer( const Akonadi::Item &item, const QUrl &graphUri, QObject* parent = 0 );
+    MessageAnalyzer( const Akonadi::Item &item, const QUrl &graphUri, NepomukFeederAgentBase* parent = 0 );
 
     inline QUrl graphUri() const { return m_graphUri; }
 
@@ -53,9 +51,10 @@ class MessageAnalyzer : public QObject
     QList<NepomukFast::Contact> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, const QUrl&graphUri );
     void processHeaders( const KMime::Message::Ptr &msg );
     void processPart( KMime::Content *content );
-    void processAttachmentBody( const KUrl &url, KMime::Content *content );
 
   private:
+    NepomukFeederAgentBase *m_parent;
+    Akonadi::Item m_item;
     NepomukFast::Email m_email;
     QUrl m_graphUri;
 };
