@@ -76,7 +76,7 @@ KMailMigrator::~KMailMigrator()
 
 void KMailMigrator::migrate()
 {
-  emit message( Info, "Beginning KMail migration" );
+  emit message( Info, i18n("Beginning KMail migration") );
   const QString &kmailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmailrc" ) );
   mConfig = new KConfig( kmailCfgFile );
   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
@@ -188,7 +188,7 @@ void KMailMigrator::imapAccountCreated( KJob *job )
     "/Settings", QDBusConnection::sessionBus(), this );
 
   if (!iface->isValid() ) {
-    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
     return;
   }
 
@@ -293,7 +293,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
     "/Settings", QDBusConnection::sessionBus(), this );
 
   if (!iface->isValid() ) {
-    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
     return;
   }
 
@@ -330,7 +330,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
     "/Settings", QDBusConnection::sessionBus(), this );
 
   if (!iface->isValid() ) {
-    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
     return;
   }
 
