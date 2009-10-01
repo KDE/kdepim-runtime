@@ -75,7 +75,7 @@
             <number>0</number>
            </property>
            <item row="0" column="0">
-            <widget class="Message::Viewer" name="mailView"/>
+            <widget class="MessageViewer::Viewer" name="mailView"/>
            </item>
           </layout>
          </widget>
@@ -443,7 +443,7 @@
    <header location="global">kcal/kcalitembrowser.h</header>
   </customwidget>
   <customwidget>
-   <class>Message::Viewer</class>
+   <class>MessageViewer::Viewer</class>
    <extends>KTextBrowser</extends>
    <header location="global">libmessageviewer/viewer.h</header>
   </customwidget>
