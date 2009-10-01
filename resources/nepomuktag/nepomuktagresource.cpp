@@ -29,11 +29,13 @@
 #include <akonadi/unlinkjob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/collectioncreatejob.h>
 
 #include <nepomuk/tag.h>
 #include <nepomuk/resourcemanager.h>
 #include <soprano/signalcachemodel.h>
 #include <soprano/nao.h>
+#include <soprano/rdf.h>
 
 #include <boost/bind.hpp>
 #include <algorithm>
@@ -47,9 +49,27 @@ NepomukTagResource::NepomukTagResource( const QString &id )
     changeRecorder()->fetchCollection( true );
     setName( i18n( "Tags" ) );
 
+    m_root.setName( i18n( "Tags" ) );
+    m_root.setRemoteId( "nepomuktags" );
+    m_root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
+    Collection::Rights rights = Collection::CanCreateCollection;
+    m_root.setRights( rights );
+
+    CachePolicy policy;
+    policy.setInheritFromParent( false );
+    policy.setSyncOnDemand( false );
+    policy.setIntervalCheckTime( -1 );
+    m_root.setCachePolicy( policy );
+
     Soprano::Util::SignalCacheModel* model = new Soprano::Util::SignalCacheModel( Nepomuk::ResourceManager::instance()->mainModel() );
     connect( model, SIGNAL(statementAdded(Soprano::Statement)), SLOT(statementAdded(Soprano::Statement)) );
     connect( model, SIGNAL(statementRemoved(Soprano::Statement)), SLOT(statementRemoved(Soprano::Statement)) );
+
+    m_pendingTagsTimer.setSingleShot( true );
+    m_pendingTagsTimer.setInterval( 500 );
+    connect( &m_pendingTagsTimer, SIGNAL(timeout()), SLOT(createPendingTagCollections()) );
+ 
+    synchronize();
 }
 
 NepomukTagResource::~NepomukTagResource()
@@ -58,46 +78,22 @@ NepomukTagResource::~NepomukTagResource()
 
 void NepomukTagResource::retrieveCollections()
 {
+    m_pendingTagsTimer.stop();
+    m_pendingTagUris.clear();
+
     QHash<QString,Collection> collections;
 
     QStringList contentTypes;
     contentTypes << "message/rfc822" << Collection::mimeType();
 
-    Collection root;
-    root.setName( i18n( "Tags" ) );
-    root.setRemoteId( "nepomuktags" );
-    root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
-    Collection::Rights rights = Collection::CanCreateCollection;
-    root.setRights( rights );
-
-    CachePolicy policy;
-    policy.setInheritFromParent( false );
-    policy.setSyncOnDemand( false );
-    policy.setIntervalCheckTime( -1 );
-    root.setCachePolicy( policy );
-
-    collections[ "rootfolderunique" ] = root;
-
-    // for all the folders, inherit it from the parent.
-    policy.setInheritFromParent( true );
+    collections[ "rootfolderunique" ] = m_root;
 
     QList<Nepomuk::Tag> tags = Nepomuk::Tag::allTags();
     foreach( const Nepomuk::Tag& tag, tags ) {
         kDebug() << "Found Nepomuk Tag:" << tag.genericLabel();
         if ( collections.contains( tag.genericLabel() ) )
             continue;
-        Collection c;
-        c.setName( tag.genericLabel() );
-        c.setRemoteId( tag.resourceUri().toString() );
-        c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
-        c.setContentMimeTypes( contentTypes );
-        c.setParentCollection( root );
-        c.setCachePolicy( policy );
-        if ( !tag.symbols().isEmpty() ) {
-          const QString icon = tag.symbols().first();
-          EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-          attr->setIconName( icon );
-        }
+        const Collection c = collectionFromTag( tag );
         collections[ tag.genericLabel()] = c;
     }
     collectionsRetrieved( collections.values() );
@@ -243,28 +239,65 @@ void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection
 
 void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
 {
-  if ( statement.predicate() != Soprano::Vocabulary::NAO::hasTag() )
-    return;
-  const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
-  if ( !item.isValid() )
-    return;
-  kDebug() << statement;
-  Collection tagCollection;
-  tagCollection.setRemoteId( statement.object().uri().toString() );
-  new LinkJob( tagCollection, Item::List() << item, this );
+  if ( statement.predicate() == Soprano::Vocabulary::NAO::hasTag() ) {
+    const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
+    if ( !item.isValid() )
+      return;
+    Collection tagCollection;
+    tagCollection.setRemoteId( statement.object().uri().toString() );
+    new LinkJob( tagCollection, Item::List() << item, this );
+  } else if ( statement.predicate() == Soprano::Vocabulary::RDF::type() && statement.object() == Soprano::Vocabulary::NAO::Tag() ) {
+    // we need to delay the actual folder creation a bit, otherwise we will not see the fully created tag yet
+    m_pendingTagUris.append( statement.subject().uri() );
+    if ( !m_pendingTagsTimer.isActive() )
+      m_pendingTagsTimer.start();
+  }
 }
 
 void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
 {
-  if ( statement.predicate() != Soprano::Vocabulary::NAO::hasTag() )
-    return;
-  const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
-  if ( !item.isValid() )
-    return;
-  kDebug() << statement;
-  Collection tagCollection;
-  tagCollection.setRemoteId( statement.object().uri().toString() );
-  new UnlinkJob( tagCollection, Item::List() << item, this );
+  if ( statement.predicate() == Soprano::Vocabulary::NAO::hasTag() ) {
+    const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
+    if ( !item.isValid() )
+      return;
+    Collection tagCollection;
+    tagCollection.setRemoteId( statement.object().uri().toString() );
+    new UnlinkJob( tagCollection, Item::List() << item, this );
+  }
+}
+
+Collection NepomukTagResource::collectionFromTag(const Nepomuk::Tag& tag)
+{
+  Collection c;
+  c.setName( tag.genericLabel() );
+  c.setRemoteId( tag.resourceUri().toString() );
+  c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
+  c.setParentCollection( m_root );
+  if ( !tag.symbols().isEmpty() ) {
+    const QString icon = tag.symbols().first();
+    EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+    attr->setIconName( icon );
+  }
+  return c;
+}
+
+void NepomukTagResource::createPendingTagCollections()
+{
+  QList<QUrl> stillPendingTagUris;
+  foreach ( const QUrl &tagUri, m_pendingTagUris ) {
+    const Nepomuk::Tag tag( tagUri );
+    kDebug() << tagUri << tag.label();
+    if ( tag.label().isEmpty() ) {
+      stillPendingTagUris.append( tagUri );
+    } else {
+      const Collection c = collectionFromTag( tag );
+      new CollectionCreateJob( c, this );
+    }
+  }
+
+  m_pendingTagUris = stillPendingTagUris;
+  if ( !stillPendingTagUris.isEmpty() )
+    m_pendingTagsTimer.start();
 }
 
 
