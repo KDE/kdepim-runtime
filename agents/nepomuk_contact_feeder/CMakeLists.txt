@@ -8,7 +8,7 @@ include_directories(
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 add_definitions(-DNEPOMUK_RESOURCE_STATIC)
 
-kde4_add_executable(akonadi_nepomuk_contact_feeder RUN_UNINSTALLED nepomukcontactfeeder.cpp ${NEPOMUKFEEDER_SHARED_SRCS} )
+kde4_add_executable(akonadi_nepomuk_contact_feeder nepomukcontactfeeder.cpp ${NEPOMUKFEEDER_SHARED_SRCS} )
 
 target_link_libraries(akonadi_nepomuk_contact_feeder
   ${KDEPIMLIBS_KABC_LIBS}

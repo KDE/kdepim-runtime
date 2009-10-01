@@ -12,7 +12,7 @@ add_definitions(-DNEPOMUK_RESOURCE_STATIC)
 #soprano_add_ontology(vocabulary_srcs ${CMAKE_CURRENT_SOURCE_DIR}/../nie_fast/ncal.rdfs "NCAL" "Vocabulary" "rdfxml")
 set( vocabulary_srcs ncal.cpp )
 
-kde4_add_executable(akonadi_nepomuk_calendar_feeder RUN_UNINSTALLED nepomukcalendarfeeder.cpp ${NEPOMUKFEEDER_SHARED_SRCS} ${vocabulary_srcs})
+kde4_add_executable(akonadi_nepomuk_calendar_feeder nepomukcalendarfeeder.cpp ${NEPOMUKFEEDER_SHARED_SRCS} ${vocabulary_srcs})
 
 target_link_libraries(akonadi_nepomuk_calendar_feeder
   ${NEPOMUKFEEDER_SHARED_LIBS}

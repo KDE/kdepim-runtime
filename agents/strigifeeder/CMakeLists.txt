@@ -12,7 +12,7 @@ if ( STRIGIQTDBUSCLIENT_LIBRARY )
 
 include_directories(${STRIGI_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR}/strigi)
 
-kde4_add_executable(akonadi_strigi_feeder RUN_UNINSTALLED strigifeeder.cpp)
+kde4_add_executable(akonadi_strigi_feeder strigifeeder.cpp)
 target_link_libraries(akonadi_strigi_feeder
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTCORE_LIBRARY}

@@ -20,7 +20,7 @@ qt4_add_dbus_adaptor(distlistresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.DistList.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_distlist_resource RUN_UNINSTALLED ${distlistresource_SRCS})
+kde4_add_executable(akonadi_distlist_resource ${distlistresource_SRCS})
 
 target_link_libraries(akonadi_distlist_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDE4_KIO_LIBS})
 

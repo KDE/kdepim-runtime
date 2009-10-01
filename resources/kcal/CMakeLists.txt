@@ -17,7 +17,7 @@ set( kcalresource_SRCS
 install( FILES kcalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 
-kde4_add_executable(akonadi_kcal_resource RUN_UNINSTALLED ${kcalresource_SRCS})
+kde4_add_executable(akonadi_kcal_resource ${kcalresource_SRCS})
 
 target_link_libraries(akonadi_kcal_resource ${KDEPIMLIBS_AKONADI_LIBS} akonadi-kcal ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
 

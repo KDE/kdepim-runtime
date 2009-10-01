@@ -17,7 +17,7 @@ set(akonadi_nepomuk_email_feeder_SRCS
 
 kde4_add_app_icon(akonadi_nepomuk_email_feeder_SRCS "${KDE4_ICON_DIR}/oxygen/*/apps/nepomuk.png")
 
-kde4_add_executable(akonadi_nepomuk_email_feeder RUN_UNINSTALLED ${akonadi_nepomuk_email_feeder_SRCS})
+kde4_add_executable(akonadi_nepomuk_email_feeder ${akonadi_nepomuk_email_feeder_SRCS})
 
 target_link_libraries(akonadi_nepomuk_email_feeder
   ${NEPOMUKFEEDER_SHARED_LIBS}

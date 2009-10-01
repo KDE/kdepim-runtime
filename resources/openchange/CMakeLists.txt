@@ -19,7 +19,7 @@ set( ocresource_SRCS
 
 install( FILES ocresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_executable(akonadi_oc_resource RUN_UNINSTALLED ${ocresource_SRCS})
+kde4_add_executable(akonadi_oc_resource ${ocresource_SRCS})
 
 target_link_libraries(akonadi_oc_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS})
 
