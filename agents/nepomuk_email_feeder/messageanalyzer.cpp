@@ -24,6 +24,8 @@
 #include <personcontact.h>
 #include <nepomukfeederagentbase.h>
 #include <attachment.h>
+#include <nmo.h>
+#include <mailboxdataobject.h>
 
 #include <akonadi/item.h>
 
@@ -47,8 +49,12 @@ MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri
   m_mainBodyPart( 0 )
 {
   NepomukFeederAgentBase::setParent( m_email, item );
-  const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
+  // the \Seen flag is in MailboxDataObject instead of Email...
+  NepomukFast::MailboxDataObject mdb( item.url(), graphUri );
+  mdb.setIsReads( QList<bool>() << item.flags().contains( "\\Seen" ) );
+
+  const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
   processHeaders( msg );
 
   if ( !msg->body().isEmpty() || !msg->contents().isEmpty() ) {
