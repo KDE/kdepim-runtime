@@ -57,6 +57,7 @@ class MessageAnalyzer : public QObject
     Akonadi::Item m_item;
     NepomukFast::Email m_email;
     QUrl m_graphUri;
+    KMime::Content *m_mainBodyPart;
 };
 
 #endif

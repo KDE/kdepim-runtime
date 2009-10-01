@@ -40,26 +40,30 @@
 
 MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri, NepomukFeederAgentBase* parent) :
   QObject( parent ),
+  m_parent( parent ),
   m_item( item ),
   m_email( item.url(), graphUri ),
-  m_graphUri( graphUri )
+  m_graphUri( graphUri ),
+  m_mainBodyPart( 0 )
 {
   NepomukFeederAgentBase::setParent( m_email, item );
   const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
   processHeaders( msg );
-  processPart( msg.get() );
 
-  // TODO: run OTP for decryption
+  if ( !msg->body().isEmpty() || !msg->contents().isEmpty() ) {
 
-  KMime::Content* content = msg->mainBodyPart( "text/plain" );
+    // TODO: run OTP for decryption
 
-  // FIXME: simplyfy this text as in: remove all html tags. Is there a quick way to do this?
-  if ( content ) {
-    const QString text = content->decodedText( true, true );
-    if ( !text.isEmpty() ) {
-      m_email.setPlainTextMessageContents( QStringList( text ) );
+    // before we walk the part node tree, let's see if there is a main plain text body, so we don't interpret that as an attachment later on
+    m_mainBodyPart = msg->mainBodyPart( "text/plain" );
+    if ( m_mainBodyPart ) {
+      const QString text = m_mainBodyPart->decodedText( true, true );
+      if ( !text.isEmpty() )
+        m_email.setPlainTextMessageContents( QStringList( text ) );
     }
+
+    processPart( msg.get() );
   }
 
   deleteLater();
@@ -109,8 +113,16 @@ void MessageAnalyzer::processPart(KMime::Content* content)
       processPart( child );
   }
 
-  // main body part 
-  // TODO handle primary body part and put the code from the ctor here
+  // plain text main body part, we already dealt with that
+  else if ( content == m_mainBodyPart ) {
+    return;
+  }
+
+  // non plain text main body part, let strigi figure out what to do about that
+  else if ( !m_mainBodyPart ) {
+    m_mainBodyPart = content;
+    m_parent->indexData( m_email.uri(), content->decodedContent(), m_item.modificationTime() );
+  }
 
   // attachment -> delegate to strigi
   else {
