@@ -49,13 +49,17 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="addresseeViewPage">
-          <layout class="QVBoxLayout">
-           <property name="margin">
-            <number>0</number>
-           </property>
+         <widget class="QWidget" name="contactViewPage">
+          <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <widget class="KPIM::AddresseeView" name="addresseeView"/>
+            <widget class="Akonadi::ContactViewer" name="contactView" native="true"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="contactGroupViewPage">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="Akonadi::ContactGroupViewer" name="contactGroupView" native="true"/>
            </item>
           </layout>
          </widget>
@@ -423,11 +427,6 @@
    <header>ktextbrowser.h</header>
   </customwidget>
   <customwidget>
-   <class>KPIM::AddresseeView</class>
-   <extends>KTextBrowser</extends>
-   <header location="global">libkdepim-copy/addresseeview.h</header>
-  </customwidget>
-  <customwidget>
    <class>Akonadi::KCalItemBrowser</class>
    <extends>KTextBrowser</extends>
    <header location="global">kcal/kcalitembrowser.h</header>
@@ -442,6 +441,18 @@
    <class>KRatingWidget</class>
    <extends>QFrame</extends>
    <header location="global">nepomuk/kratingwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Akonadi::ContactViewer</class>
+   <extends>QWidget</extends>
+   <header location="global">akonadi/contact/contactviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Akonadi::ContactGroupViewer</class>
+   <extends>QWidget</extends>
+   <header location="global">akonadi/contact/contactgroupviewer.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -48,9 +48,8 @@
 #include <akonadi/statisticstooltipproxymodel.h>
 
 #include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
 #include <kcal/incidence.h>
-
-#include <libkdepim-copy/addresseeview.h>
 
 #include <kdebug.h>
 #include <kconfig.h>
@@ -263,10 +262,11 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
 {
   mCurrentItem = item;
   if ( item.hasPayload<KABC::Addressee>() ) {
-    const KABC::Addressee addr = item.payload<KABC::Addressee>();
-
-    contentUi.addresseeView->setAddressee( addr );
-    contentUi.stack->setCurrentWidget( contentUi.addresseeViewPage );
+    contentUi.contactView->setItem( item );
+    contentUi.stack->setCurrentWidget( contentUi.contactViewPage );
+  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+    contentUi.contactGroupView->setItem( item );
+    contentUi.stack->setCurrentWidget( contentUi.contactGroupViewPage );
   } else if ( item.hasPayload<KCal::Incidence::Ptr>() ) {
     contentUi.incidenceView->setItem( item );
     contentUi.stack->setCurrentWidget( contentUi.incidenceViewPage );
