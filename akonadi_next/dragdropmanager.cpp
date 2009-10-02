@@ -152,6 +152,53 @@ bool DragDropManager::processDropEvent( QDropEvent *event )
   return true;
 }
 
+void DragDropManager::startDrag( Qt::DropActions _supportedActions )
+{
+  QModelIndexList indexes;
+  bool sourceDeletable = true;
+  foreach ( const QModelIndex &index, m_view->selectionModel()->selectedRows() ) {
+    if ( !m_view->model()->flags( index ) & Qt::ItemIsDragEnabled )
+      continue;
+
+    if ( sourceDeletable ) {
+      Collection source = index.data( EntityTreeModel::CollectionRole ).value<Collection>();
+      if ( !source.isValid() ) {
+        // index points to an item
+        source = index.data( EntityTreeModel::ParentCollectionRole ).value<Collection>();
+        sourceDeletable = source.rights() & Collection::CanDeleteItem;
+      } else {
+        // index points to a collection
+        sourceDeletable = source.rights() & Collection::CanDeleteCollection;
+      }
+    }
+
+    indexes.append( index );
+  }
+
+  if ( indexes.isEmpty() )
+    return;
+
+  QMimeData *mimeData = m_view->model()->mimeData( indexes );
+  if ( !mimeData )
+    return;
+
+  QDrag *drag = new QDrag( m_view );
+  drag->setMimeData( mimeData );
+  if ( indexes.size() > 1 ) {
+    drag->setPixmap( KIcon( "document-multiple" ).pixmap( QSize( 22, 22 ) ) );
+  } else {
+    QPixmap pixmap = indexes.first().data( Qt::DecorationRole ).value<QIcon>().pixmap( QSize( 22, 22 ) );
+    if ( pixmap.isNull() )
+      pixmap = KIcon( "text-plain" ).pixmap( QSize( 22, 22 ) );
+    drag->setPixmap( pixmap );
+  }
+
+  Qt::DropActions supportedActions( _supportedActions );
+  if ( !sourceDeletable )
+    supportedActions &= ~Qt::MoveAction;
+  drag->exec( supportedActions, Qt::CopyAction );
+}
+
 
 
 
