@@ -35,6 +35,8 @@ Akonadi::NepomukEMailFeeder::NepomukEMailFeeder( const QString &id ) :
   addSupportedMimeType( "message/rfc822" );
   addSupportedMimeType( "message/news" );
 
+  setNeedsStrigi( true );
+
   changeRecorder()->itemFetchScope().fetchFullPayload();
 }
 

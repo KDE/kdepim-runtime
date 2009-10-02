@@ -11,7 +11,7 @@ qt4_add_dbus_adaptor( nepomuktagresource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.NepomukTag.Resource.xml
         nepomuktagresource.h NepomukTagResource
      )
-kde4_add_executable(akonadi_nepomuktag_resource RUN_UNINSTALLED ${nepomuktagresource_SRCS})
+kde4_add_executable(akonadi_nepomuktag_resource ${nepomuktagresource_SRCS})
 
 target_link_libraries(akonadi_nepomuktag_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${KDE4_NEPOMUK_LIBS} )
 

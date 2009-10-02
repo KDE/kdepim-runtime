@@ -16,7 +16,7 @@ set( kabcresource_SRCS
 install( FILES kabcresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 
-kde4_add_executable(akonadi_kabc_resource RUN_UNINSTALLED ${kabcresource_SRCS})
+kde4_add_executable(akonadi_kabc_resource ${kabcresource_SRCS})
 
 target_link_libraries(akonadi_kabc_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDE4_KIO_LIBS})
 

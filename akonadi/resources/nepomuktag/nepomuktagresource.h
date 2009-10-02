@@ -23,6 +23,12 @@
 #include <akonadi/resourcebase.h>
 #include <soprano/statement.h>
 
+#include <QTimer>
+
+namespace Nepomuk {
+class Tag;
+}
+
 class NepomukTagResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
 {
     Q_OBJECT
@@ -40,12 +46,6 @@ protected Q_SLOTS:
     virtual void retrieveItems( const Akonadi::Collection &col );
     virtual bool retrieveItem( const Akonadi::Item &, const QSet<QByteArray> & ) { return true; };
 
-private Q_SLOTS:
-    void slotLocalListResult( KJob* job );
-    void slotLinkResult( KJob* job );
-
-    void statementAdded( const Soprano::Statement &statement );
-    void statementRemoved( const Soprano::Statement &statement );
 
 protected:
     virtual void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -53,6 +53,23 @@ protected:
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers);
     virtual void collectionRemoved( const Akonadi::Collection& collection );
+
+  private:
+    Akonadi::Collection collectionFromTag( const Nepomuk::Tag &tag );
+
+  private Q_SLOTS:
+    void slotLocalListResult( KJob* job );
+    void slotLinkResult( KJob* job );
+
+    void statementAdded( const Soprano::Statement &statement );
+    void statementRemoved( const Soprano::Statement &statement );
+
+    void createPendingTagCollections();
+
+  private:
+    Akonadi::Collection m_root;
+    QList<QUrl> m_pendingTagUris;
+    QTimer m_pendingTagsTimer;
 };
 
 #endif

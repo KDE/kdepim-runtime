@@ -34,7 +34,7 @@ qt4_add_dbus_adaptor(mboxresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Mbox.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_mbox_resource RUN_UNINSTALLED ${mboxresource_SRCS})
+kde4_add_executable(akonadi_mbox_resource ${mboxresource_SRCS})
 
 target_link_libraries(akonadi_mbox_resource mbox ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
 

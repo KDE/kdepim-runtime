@@ -19,7 +19,7 @@ qt4_add_dbus_adaptor( microblogresource_SRCS
 
 kde4_add_ui_files(microblogresource_SRCS microblogconfig.ui)
 kde4_add_kcfg_files(microblogresource_SRCS settingsbase.kcfgc)
-kde4_add_executable(akonadi_microblog_resource RUN_UNINSTALLED ${microblogresource_SRCS})
+kde4_add_executable(akonadi_microblog_resource ${microblogresource_SRCS})
 
 target_link_libraries(akonadi_microblog_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTXML_LIBRARY} ${KDEPIMLIBS_KPIMUTILS_LIBS} ${KDEPIMLIBS_MICROBLOG_LIBS})
 

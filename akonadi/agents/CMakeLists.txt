@@ -7,7 +7,18 @@ if( Nepomuk_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederagentbase.cpp
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/sparqlbuilder.cpp
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/selectsparqlbuilder.cpp
-     )
+    )
+    set( NEPOMUKFEEDER_SHARED_LIBS
+      niefast
+      ${SOPRANO_LIBRARIES}
+      ${KDE4_KDEUI_LIBRARY}
+      ${KDE4_KDECORE_LIBS}
+      ${KDEPIMLIBS_AKONADI_LIBS}
+      ${QT_QTCORE_LIBRARY}
+      ${QT_QTDBUS_LIBRARY}
+      ${NEPOMUK_LIBRARIES}
+      ${STRIGI_STREAMANALYZER_LIBRARY}
+    )
     include( SopranoAddOntology )
     add_subdirectory( nie_fast )
     add_subdirectory( nepomukfeeder )

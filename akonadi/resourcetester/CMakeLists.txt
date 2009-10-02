@@ -17,7 +17,7 @@ set( resourcetester_SRCS
   wrappedobject.cpp
 )
 
-kde4_add_executable(resourcetester RUN_UNINSTALLED ${resourcetester_SRCS})
+kde4_add_executable(resourcetester ${resourcetester_SRCS})
 
 target_link_libraries( resourcetester
   akonadi-xml

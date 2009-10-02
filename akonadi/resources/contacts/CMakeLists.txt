@@ -22,7 +22,7 @@ qt4_add_dbus_adaptor(contactsresource_SRCS
 
 install( FILES contactsresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_executable(akonadi_contacts_resource RUN_UNINSTALLED ${contactsresource_SRCS})
+kde4_add_executable(akonadi_contacts_resource ${contactsresource_SRCS})
 target_link_libraries(akonadi_contacts_resource
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTCORE_LIBRARY}

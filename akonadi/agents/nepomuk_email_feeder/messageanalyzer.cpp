@@ -24,6 +24,8 @@
 #include <personcontact.h>
 #include <nepomukfeederagentbase.h>
 #include <attachment.h>
+#include <nmo.h>
+#include <mailboxdataobject.h>
 
 #include <akonadi/item.h>
 
@@ -36,37 +38,38 @@
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>
 
-#include <strigi/analyzerconfiguration.h>
-#include <strigi/analysisresult.h>
-#include <strigi/indexpluginloader.h>
-#include <strigi/indexmanager.h>
-#include <strigi/indexwriter.h>
-#include <strigi/streamanalyzer.h>
-#include <strigi/stringstream.h>
-
 #include <boost/shared_ptr.hpp>
 
-MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri, QObject* parent) :
+MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri, NepomukFeederAgentBase* parent) :
   QObject( parent ),
+  m_parent( parent ),
+  m_item( item ),
   m_email( item.url(), graphUri ),
-  m_graphUri( graphUri )
+  m_graphUri( graphUri ),
+  m_mainBodyPart( 0 )
 {
   NepomukFeederAgentBase::setParent( m_email, item );
+
+  // the \Seen flag is in MailboxDataObject instead of Email...
+  NepomukFast::MailboxDataObject mdb( item.url(), graphUri );
+  mdb.setIsReads( QList<bool>() << item.flags().contains( "\\Seen" ) );
+
   const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
-
   processHeaders( msg );
-  processPart( msg.get() );
 
-  // TODO: run OTP for decryption
+  if ( !msg->body().isEmpty() || !msg->contents().isEmpty() ) {
 
-  KMime::Content* content = msg->mainBodyPart( "text/plain" );
+    // TODO: run OTP for decryption
 
-  // FIXME: simplyfy this text as in: remove all html tags. Is there a quick way to do this?
-  if ( content ) {
-    const QString text = content->decodedText( true, true );
-    if ( !text.isEmpty() ) {
-      m_email.setPlainTextMessageContents( QStringList( text ) );
+    // before we walk the part node tree, let's see if there is a main plain text body, so we don't interpret that as an attachment later on
+    m_mainBodyPart = msg->mainBodyPart( "text/plain" );
+    if ( m_mainBodyPart ) {
+      const QString text = m_mainBodyPart->decodedText( true, true );
+      if ( !text.isEmpty() )
+        m_email.setPlainTextMessageContents( QStringList( text ) );
     }
+
+    processPart( msg.get() );
   }
 
   deleteLater();
@@ -116,8 +119,16 @@ void MessageAnalyzer::processPart(KMime::Content* content)
       processPart( child );
   }
 
-  // main body part 
-  // TODO handle primary body part and put the code from the ctor here
+  // plain text main body part, we already dealt with that
+  else if ( content == m_mainBodyPart ) {
+    return;
+  }
+
+  // non plain text main body part, let strigi figure out what to do about that
+  else if ( !m_mainBodyPart ) {
+    m_mainBodyPart = content;
+    m_parent->indexData( m_email.uri(), content->decodedContent(), m_item.modificationTime() );
+  }
 
   // attachment -> delegate to strigi
   else {
@@ -134,26 +145,8 @@ void MessageAnalyzer::processPart(KMime::Content* content)
     if ( content->contentDescription( false ) && !content->contentDescription()->asUnicodeString().isEmpty() )
       attachment.addProperty( Vocabulary::NIE::description(), Soprano::LiteralValue( content->contentDescription()->asUnicodeString() ) );
     m_email.addAttachment( attachment );
-    processAttachmentBody( attachmentUrl, content );
+    m_parent->indexData( attachmentUrl, content->decodedContent(), m_item.modificationTime() );
   }
-}
-
-void MessageAnalyzer::processAttachmentBody(const KUrl& url, KMime::Content* content)
-{
-  const QByteArray decodedContent = content->decodedContent();
-
-  Strigi::IndexManager* indexManager = Strigi::IndexPluginLoader::createIndexManager( "sopranobackend", 0 );
-  Q_ASSERT( indexManager );
-
-  Strigi::IndexWriter* writer = indexManager->indexWriter();
-  Strigi::AnalyzerConfiguration ic;
-  Strigi::StreamAnalyzer streamindexer( ic );
-  streamindexer.setIndexWriter( *writer );
-  Strigi::StringInputStream sr( decodedContent.constData(), decodedContent.size(), false );
-  Strigi::AnalysisResult idx( url.url().toLatin1().constData(), QDateTime::currentDateTime().toTime_t(), *writer, streamindexer );
-  idx.index( &sr );
-
-  Strigi::IndexPluginLoader::deleteIndexManager( indexManager );
 }
 
 QList< NepomukFast::Contact > MessageAnalyzer::extractContactsFromMailboxes(const KMime::Types::Mailbox::List& mbs, const QUrl&graphUri )

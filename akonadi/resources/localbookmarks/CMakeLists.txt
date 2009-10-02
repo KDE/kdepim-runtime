@@ -22,7 +22,7 @@ qt4_add_dbus_adaptor(localbookmarksresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.LocalBookmarks.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_localbookmarks_resource RUN_UNINSTALLED ${localbookmarksresource_SRCS})
+kde4_add_executable(akonadi_localbookmarks_resource ${localbookmarksresource_SRCS})
 
 target_link_libraries(akonadi_localbookmarks_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
 

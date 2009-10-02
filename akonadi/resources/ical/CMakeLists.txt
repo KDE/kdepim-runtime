@@ -27,7 +27,7 @@ qt4_add_dbus_adaptor(icalresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_ical_resource RUN_UNINSTALLED ${icalresource_SRCS})
+kde4_add_executable(akonadi_ical_resource ${icalresource_SRCS})
 
 target_link_libraries(akonadi_ical_resource akonadi-kcal ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
 

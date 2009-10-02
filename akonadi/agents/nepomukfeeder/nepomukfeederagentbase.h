@@ -43,6 +43,12 @@
 
 #include <QStringList>
 #include <QtCore/QTimer>
+#include <QtCore/QDateTime>
+
+namespace NepomukFast
+{
+  class PersonContact;
+}
 
 namespace Akonadi
 {
@@ -54,9 +60,9 @@ namespace Soprano
   class NRLModel;
 }
 
-namespace NepomukFast
+namespace Strigi
 {
-  class PersonContact;
+  class IndexManager;
 }
 
 class KJob;
@@ -127,6 +133,16 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
         res.addProperty( Vocabulary::NIE::isPartOf(), entity.parentCollection().url() );
     }
 
+    /**
+      Enables Strigi support for indexing attachments.
+    */
+    void setNeedsStrigi( bool enableStrigi );
+
+    /**
+      Index the given data with Strigi. Use for e.g. attachments.
+     */
+    void indexData( const KUrl &url, const QByteArray &data, const QDateTime &mtime = QDateTime::currentDateTime() );
+
   public slots:
     /** Trigger a complete update of all items. */
     void updateAll();
@@ -160,8 +176,10 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     int mTotalAmount, mProcessedAmount, mPendingJobs;
     QTimer mNepomukStartupTimeout;
     Soprano::NRLModel *mNrlModel;
+    Strigi::IndexManager *mStrigiIndexManager;
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
+    bool mNeedsStrigi;
 };
 
 #endif
