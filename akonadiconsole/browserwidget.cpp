@@ -38,12 +38,10 @@
 #include <akonadi/collectionpropertiesdialog.h>
 #include <akonadi/standardactionmanager.h>
 #include <akonadi/session.h>
-#include <xml/xmlwritejob.h>
-
-#include <akonadi_next/entitytreeview.h>
+#include <akonadi/entitytreeview.h>
 #include <akonadi/entitytreeviewstatesaver.h>
 #include <akonadi/favoritecollectionsmodel.h>
-#include <akonadi_next/favoritecollectionsview.h>
+#include <akonadi/favoritecollectionsview.h>
 #include <akonadi/statisticsproxymodel.h>
 #include <akonadi/statisticstooltipproxymodel.h>
 
@@ -58,6 +56,8 @@
 #include <kmessagebox.h>
 #include <kxmlguiwindow.h>
 
+#include <xml/xmlwritejob.h>
+
 #ifdef NEPOMUK_FOUND
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -71,6 +71,8 @@
 #include <QtGui/QSortFilterProxyModel>
 #include <QStandardItemModel>
 #include <QTimer>
+
+#include <akonadi_next/modeltest.h>
 
 using namespace Akonadi;
 
@@ -121,6 +123,8 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   mBrowserModel = new AkonadiBrowserModel( session, monitor, this );
   mBrowserModel->setItemPopulationStrategy( EntityTreeModel::LazyPopulation );
   mBrowserModel->setShowHiddenEntities(true);
+
+  new ModelTest( mBrowserModel );
 
   EntityFilterProxyModel *collectionFilter = new EntityFilterProxyModel( this );
   collectionFilter->setSourceModel( mBrowserModel );
