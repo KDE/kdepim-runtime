@@ -20,8 +20,11 @@
 #include "dragdropmanager_p.h"
 
 #include <QtGui/QDropEvent>
+#include <QtGui/QMenu>
 
 #include <KDE/KUrl>
+#include <KDE/KIcon>
+#include <KDE/KLocale>
 
 #include "akonadi/collection.h"
 #include "akonadi/entitytreemodel.h"
@@ -86,4 +89,69 @@ bool DragDropManager::hasAncestor( const QModelIndex& idx, Collection::Id parent
   }
   return false;
 }
+
+bool DragDropManager::processDropEvent( QDropEvent *event )
+{
+  const Collection target = currentDropTarget( event );
+  if ( !target.isValid() )
+    return false;
+
+  QMenu popup( m_view );
+  int actionCount = 0;
+  Qt::DropAction defaultAction;
+  QAction* moveDropAction = 0;
+  // TODO check if the source supports moving
+
+  if ( (target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem))
+        && (event->possibleActions() & Qt::MoveAction) ) {
+    moveDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-rename" ) ), i18n( "&Move here" ) );
+    ++actionCount;
+    defaultAction = Qt::MoveAction;
+  }
+  QAction* copyDropAction = 0;
+  if ( (target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem))
+        && (event->possibleActions() & Qt::CopyAction) ) {
+    copyDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-copy" ) ), i18n( "&Copy here" ) );
+    ++actionCount;
+    defaultAction = Qt::CopyAction;
+  }
+  QAction* linkAction = 0;
+  if ( (target.rights() & Collection::CanLinkItem) && (event->possibleActions() & Qt::LinkAction) ) {
+    linkAction = popup.addAction( KIcon( QLatin1String( "edit-link" ) ), i18n( "&Link here" ) );
+    ++actionCount;
+    defaultAction = Qt::LinkAction;
+  }
+
+  if ( actionCount == 0 ) {
+    kDebug() << "Cannot drop here:" << event->possibleActions() << m_view->model()->supportedDragActions() << m_view->model()->supportedDropActions();
+    return false;
+  }
+
+  if ( actionCount == 1 ) {
+    kDebug() << "Selecting drop action" << defaultAction << ", there are no other possibilities";
+    event->setDropAction( defaultAction );
+    return true;
+  }
+
+  popup.addSeparator();
+  popup.addAction( KIcon( QString::fromLatin1( "process-stop" ) ), i18n( "Cancel" ) );
+
+  QAction *activatedAction = popup.exec( QCursor::pos() );
+
+  if ( !activatedAction ) {
+    return false;
+  } else if ( activatedAction == moveDropAction ) {
+    event->setDropAction( Qt::MoveAction );
+  } else if ( activatedAction == copyDropAction ) {
+    event->setDropAction( Qt::CopyAction );
+  } else if ( activatedAction == linkAction ) {
+    event->setDropAction( Qt::LinkAction );
+  } else {
+    return false;
+  }
+  return true;
+}
+
+
+
 

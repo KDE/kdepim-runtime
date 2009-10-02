@@ -37,6 +37,15 @@ public:
   */
   bool dropAllowed( QDragMoveEvent * event );
 
+  /**
+    Process an attempted drop event.
+
+    Attempts to show a popup menu with possible actions for @p event.
+
+    @returns True if the event should be further processed, and false otherwise.
+  */
+  bool processDropEvent( QDropEvent *event );
+
 private:
   Collection currentDropTarget(QDropEvent* event) const;
 

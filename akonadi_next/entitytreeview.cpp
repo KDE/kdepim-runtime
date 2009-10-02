@@ -65,8 +65,6 @@ public:
 
   void slotSelectionChanged( const QItemSelection & selected, const QItemSelection & deselected );
 
-  Collection currentDropTarget( QDropEvent* event ) const;
-
   EntityTreeView *mParent;
   QBasicTimer dragExpandTimer;
   DragDropManager *m_dragDropManager;
@@ -163,20 +161,6 @@ void EntityTreeView::Private::itemCurrentChanged( const QModelIndex &index )
   }
 }
 
-
-Collection EntityTreeView::Private::currentDropTarget(QDropEvent* event) const
-{
-  const QModelIndex index = mParent->indexAt( event->pos() );
-  Collection col = mParent->model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
-  if ( !col.isValid() ) {
-    const Item item = mParent->model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
-    if ( item.isValid() )
-      col = mParent->model()->data( index.parent(), EntityTreeModel::CollectionRole ).value<Collection>();
-  }
-  return col;
-}
-
-
 EntityTreeView::EntityTreeView( QWidget * parent ) :
     QTreeView( parent ),
     d( new Private( this ) )
@@ -241,65 +225,8 @@ void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
 
 void EntityTreeView::dropEvent( QDropEvent * event )
 {
-  const Collection target = d->currentDropTarget( event );
-  if ( !target.isValid() )
-    return;
-
-  QMenu popup( this );
-  int actionCount = 0;
-  Qt::DropAction defaultAction;
-  QAction* moveDropAction = 0;
-  // TODO check if the source supports moving
-
-  if ( (target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem))
-    && (event->possibleActions() & Qt::MoveAction) ) {
-    moveDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-rename" ) ), i18n( "&Move here" ) );
-    ++actionCount;
-    defaultAction = Qt::MoveAction;
-  }
-  QAction* copyDropAction = 0;
-  if ( (target.rights() & (Collection::CanCreateCollection | Collection::CanCreateItem))
-    && (event->possibleActions() & Qt::CopyAction) ) {
-    copyDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-copy" ) ), i18n( "&Copy here" ) );
-    ++actionCount;
-    defaultAction = Qt::CopyAction;
-  }
-  QAction* linkAction = 0;
-  if ( (target.rights() & Collection::CanLinkItem) && (event->possibleActions() & Qt::LinkAction) ) {
-    linkAction = popup.addAction( KIcon( QLatin1String( "edit-link" ) ), i18n( "&Link here" ) );
-    ++actionCount;
-    defaultAction = Qt::LinkAction;
-  }
-
-  if ( actionCount == 0 ) {
-    kDebug() << "Cannot drop here:" << event->possibleActions() << model()->supportedDragActions() << model()->supportedDropActions();
-    return;
-  }
-
-  if ( actionCount == 1 ) {
-    kDebug() << "Selecting drop action" << defaultAction << ", there are no other possibilities";
-    event->setDropAction( defaultAction );
+  if ( d->m_dragDropManager->processDropEvent( event ) )
     QTreeView::dropEvent( event );
-    return;
-  }
-
-  popup.addSeparator();
-  popup.addAction( KIcon( QString::fromLatin1( "process-stop" ) ), i18n( "Cancel" ) );
-
-  QAction *activatedAction = popup.exec( QCursor::pos() );
-
-  if ( !activatedAction ) {
-    return;
-  } else if ( activatedAction == moveDropAction ) {
-    event->setDropAction( Qt::MoveAction );
-  } else if ( activatedAction == copyDropAction ) {
-    event->setDropAction( Qt::CopyAction );
-  } else if ( activatedAction == linkAction ) {
-    event->setDropAction( Qt::LinkAction );
-  } else {
-    return;
-  }
-  QTreeView::dropEvent( event );
 }
 
 void EntityTreeView::contextMenuEvent( QContextMenuEvent * event )
