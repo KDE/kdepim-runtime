@@ -51,8 +51,10 @@ setupServer = function()
   runImapCmd( "autotest1", [ "setacl", "INBOX/child2/grandchild1", "autotest0@example.com", "lrs" ] );
 }
 
-/** The actual tests for the IMAP resource, @p vm is the name of the server VM config file. */
-function testImap( vm )
+/** The actual tests for the IMAP resource, @p vm is the name of the VM
+ * to use.  The names of the VM config file and the XML files with the
+ * expected contents of hte resources are derived from this. */
+testImap = function( vm )
 {
   QEmu.setVMConfig( vm + "vm.conf" );
   QEmu.start();
@@ -66,7 +68,7 @@ function testImap( vm )
   imapResource.create();
 
   // verify reading by checking if we can read the initial server state
-  XmlOperations.setXmlFile( "imap-step1.xml" );
+  XmlOperations.setXmlFile( "imaptest-" + vm + "-step1.xml" );
   XmlOperations.setRootCollections( imapResource.identifier() );
   // FIXME: one of the attributes contains a current date/time breaking the comparison
   XmlOperations.ignoreCollectionField( "Attributes" );
@@ -85,7 +87,7 @@ function testImap( vm )
   ItemTest.create();
 
   imapResource.recreate();
-  XmlOperations.setXmlFile( "imap-step2.xml" );
+  XmlOperations.setXmlFile( "imaptest-" + vm + "-step2.xml" );
   XmlOperations.setRootCollections( imapResource.identifier() );
   // FIXME: one of the attributes contains a current date/time breaking the comparison
   XmlOperations.ignoreCollectionField( "Attributes" );
@@ -97,7 +99,7 @@ function testImap( vm )
   CollectionTest.setCollection( "localhost:42143\\/autotest0@example.com/INBOX/test folder" );
   CollectionTest.remove();
 
-  XmlOperations.setXmlFile( "imap-step1.xml" );
+  XmlOperations.setXmlFile( "imaptest-" + vm + "-step1.xml" );
   XmlOperations.setRootCollections( imapResource.identifier() );
   // FIXME: one of the attributes contains a current date/time breaking the comparison
   XmlOperations.ignoreCollectionField( "Attributes" );
