@@ -186,11 +186,20 @@ EntityTreeView::~EntityTreeView()
 
 void EntityTreeView::setModel( QAbstractItemModel * model )
 {
+  if ( selectionModel() )
+  {
+    disconnect( selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ),
+           this, SLOT( itemCurrentChanged( const QModelIndex& ) ) );
+
+    disconnect( selectionModel(), SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
+           this, SLOT( slotSelectionChanged( const QItemSelection &, const QItemSelection & ) ) );
+  }
+
   QTreeView::setModel( model );
   header()->setStretchLastSection( true );
 
   connect( selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ),
-           this, SLOT( itemCurrentChanged( const QModelIndex& ) ) );
+           SLOT( itemCurrentChanged( const QModelIndex& ) ) );
 
   connect( selectionModel(), SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
            SLOT( slotSelectionChanged( const QItemSelection &, const QItemSelection & ) ) );
