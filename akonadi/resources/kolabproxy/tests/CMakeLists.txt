@@ -11,5 +11,6 @@ target_link_libraries(kolabconvertertest ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_L
 
 
 #akonadi_add_resourcetest( imap-kolab imaptest-kolab.es )
+#akonadi_add_resourcetest( imap-dovecot imaptest-dovecot.es )
 #akonadi_add_resourcetest( kolab kolabtest.es )
 
