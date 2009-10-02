@@ -42,6 +42,7 @@
 #include <akonadi/entitytreemodel.h>
 
 #include <kdebug.h>
+#include "dragdropmanager_p.h"
 
 using namespace Akonadi;
 
@@ -55,6 +56,7 @@ public:
       : mParent( parent ),
       xmlGuiClient( 0 )
   {
+    m_dragDropManager = new DragDropManager( mParent );
   }
 
   void init();
@@ -63,6 +65,7 @@ public:
   void itemCurrentChanged( const QModelIndex& );
 
   FavoriteCollectionsView *mParent;
+  DragDropManager *m_dragDropManager;
 
   KXMLGUIClient *xmlGuiClient;
 };
@@ -135,93 +138,42 @@ FavoriteCollectionsView::FavoriteCollectionsView( KXMLGUIClient *xmlGuiClient, Q
 
 FavoriteCollectionsView::~FavoriteCollectionsView()
 {
+  delete d->m_dragDropManager;
   delete d;
 }
 
 void FavoriteCollectionsView::setModel( QAbstractItemModel * model )
 {
+  if ( selectionModel() )
+  {
+    disconnect( selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ),
+           this, SLOT( itemCurrentChanged( const QModelIndex& ) ) );
+  }
+
   QListView::setModel( model );
 
   connect( selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ),
-           this, SLOT( itemCurrentChanged( const QModelIndex& ) ) );
+           SLOT( itemCurrentChanged( const QModelIndex& ) ) );
 }
 
 void FavoriteCollectionsView::dragMoveEvent( QDragMoveEvent * event )
 {
-  QModelIndex index = indexAt( event->pos() );
-
-  // Check if the collection under the cursor accepts this data type
-  Collection col = model()->data( index, EntityTreeModel::CollectionRole ).value<Collection>();
-  if (!col.isValid())
+  if ( d->m_dragDropManager->dropAllowed( event ) )
   {
-    Item item = model()->data( index, EntityTreeModel::ItemRole ).value<Item>();
-    if (item.isValid())
-    {
-      col = model()->data( index.parent(), EntityTreeModel::CollectionRole ).value<Collection>();
-    }
+    // All urls are supported. process the event.
+    QListView::dragMoveEvent( event );
+    return;
   }
-  if ( col.isValid() )
-  {
-    QStringList supportedContentTypes = col.contentMimeTypes();
-    const QMimeData *data = event->mimeData();
-    KUrl::List urls = KUrl::List::fromMimeData( data );
-    foreach( const KUrl &url, urls ) {
-      const Collection collection = Collection::fromUrl( url );
-      if ( collection.isValid() ) {
-        if ( !supportedContentTypes.contains( Collection::mimeType() ) )
-          break;
-      } else { // This is an item.
-        QString type = url.queryItems()[ QString::fromLatin1( "type" )];
-        if ( !supportedContentTypes.contains( type ) )
-          break;
-      }
-      // All urls are supported. process the event.
-      QListView::dragMoveEvent( event );
-      return;
-    }
-  }
-
   event->setDropAction( Qt::IgnoreAction );
   return;
 }
 
-void FavoriteCollectionsView::dragLeaveEvent( QDragLeaveEvent * event )
-{
-  QListView::dragLeaveEvent( event );
-}
-
-
 void FavoriteCollectionsView::dropEvent( QDropEvent * event )
 {
-  QModelIndexList idxs = selectedIndexes();
-
-
-  QMenu popup( this );
-  QAction* moveDropAction;
-  // TODO If possible, hide unavailable actions ...
-  // Use the model to determine if a move is ok.
-//   if (...)
-//   {
-  moveDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-rename" ) ), i18n( "&Move here" ) );
-//   }
-
-  //TODO: If dropping on one of the selectedIndexes, just return.
-  // open a context menu offering different drop actions (move, copy and cancel)
-  QAction* copyDropAction = popup.addAction( KIcon( QString::fromLatin1( "edit-copy" ) ), i18n( "&Copy here" ) );
-  popup.addSeparator();
-  popup.addAction( KIcon( QString::fromLatin1( "process-stop" ) ), i18n( "Cancel" ) );
-
-  QAction *activatedAction = popup.exec( QCursor::pos() );
-
-  if ( activatedAction == moveDropAction ) {
-    event->setDropAction( Qt::MoveAction );
-  } else if ( activatedAction == copyDropAction ) {
-    event->setDropAction( Qt::CopyAction );
+  if ( d->m_dragDropManager->processDropEvent( event ) )
+  {
+    QListView::dropEvent( event );
   }
-  // TODO: Handle link action.
-  else return;
-
-  QListView::dropEvent( event );
 }
 
 void FavoriteCollectionsView::contextMenuEvent( QContextMenuEvent * event )
@@ -245,6 +197,11 @@ void FavoriteCollectionsView::contextMenuEvent( QContextMenuEvent * event )
 void FavoriteCollectionsView::setXmlGuiClient( KXMLGUIClient * xmlGuiClient )
 {
   d->xmlGuiClient = xmlGuiClient;
+}
+
+void FavoriteCollectionsView::startDrag( Qt::DropActions _supportedActions )
+{
+  d->m_dragDropManager->startDrag( _supportedActions );
 }
 
 #include "favoritecollectionsview.moc"
