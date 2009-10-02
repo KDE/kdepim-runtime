@@ -46,6 +46,11 @@ void Script::include(const QString& path)
     action->evaluate( f.readAll() );
 }
 
+QString Script::absoluteFileName(const QString& path)
+{
+  return Global::basePath() + path;
+}
+
 void Script::start()
 {
   action->trigger();

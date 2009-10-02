@@ -31,6 +31,7 @@ class Script : public QObject
 
   public slots:
     Q_SCRIPTABLE void include( const QString &path );
+    Q_SCRIPTABLE QString absoluteFileName( const QString &path );
 
   private slots:
     void start();

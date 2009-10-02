@@ -37,14 +37,16 @@ setupServer = function()
 
   // creates folders and messages for the primary test user
   runImapCmd( "autotest0", [ "create", "INBOX/Calendar" ] );
-  runImapCmd( "autotest0", [ "append", "INBOX", "testmail.mbox" ] );
+  runImapCmd( "autotest0", [ "append", "INBOX", 
+			     Script.absoluteFileName( "testmail.mbox" ) ] );
 
   // creates folders and messages for the secondary test user and share them with the first one
   runImapCmd( "autotest1", [ "create", "INBOX/child1" ] );
   runImapCmd( "autotest1", [ "create", "INBOX/child2" ] );
   runImapCmd( "autotest1", [ "create", "INBOX/child1/grandchild1" ] );
   runImapCmd( "autotest1", [ "create", "INBOX/child2/grandchild1" ] );
-  runImapCmd( "autotest1", [ "append", "INBOX/child1/grandchild1", "testmail.mbox" ] );
+  runImapCmd( "autotest1", [ "append", "INBOX/child1/grandchild1", 
+			     Script.absoluteFileName( "testmail.mbox" ) ] );
   runImapCmd( "autotest1", [ "setacl", "INBOX/child1", "autotest0@example.com", "lrs" ] );
   runImapCmd( "autotest1", [ "setacl", "INBOX/child2", "autotest0@example.com", "lrs" ] );
   runImapCmd( "autotest1", [ "setacl", "INBOX/child1/grandchild1", "autotest0@example.com", "lrs" ] );
