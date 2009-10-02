@@ -18,7 +18,7 @@
 */
 
 /** helper function to run IMAP commands for the initial VM setup */
-function runImapCmd( user, cmd )
+runImapCmd = function( user, cmd )
 {
   var args = ["--port", QEmu.portOffset() + 143, "--user", user + "@example.com", "--password", "nichtgeheim" ];
   args = args.concat( cmd );
@@ -26,7 +26,7 @@ function runImapCmd( user, cmd )
 }
 
 /** creates two user accounts with a standard set of Kolab folders shared between two users */
-function setupServer()
+setupServer = function()
 {
   System.exec( "create_ldap_users.py", ["-h", "localhost", "-p", QEmu.portOffset() + 389,
     "-n", "2", "--set-password", "nichtgeheim", "dc=example,dc=com", "add", "nichtgeheim" ] );
@@ -54,7 +54,7 @@ function setupServer()
 /** The actual tests for the IMAP resource, @p vm is the name of the server VM config file. */
 function testImap( vm )
 {
-  QEmu.setVMConfig( vm );
+  QEmu.setVMConfig( vm + "vm.conf" );
   QEmu.start();
 
   setupServer();
@@ -106,6 +106,3 @@ function testImap( vm )
   imapResource.destroy();
   QEmu.stop();
 }
-
-testImap( "kolabvm.conf" );
-testImap( "dovecotvm.conf" );
