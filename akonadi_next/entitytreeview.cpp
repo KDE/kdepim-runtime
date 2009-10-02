@@ -41,6 +41,7 @@
 #include <akonadi/entitytreemodel.h>
 
 #include <kdebug.h>
+#include "dragdropmanager_p.h"
 
 using namespace Akonadi;
 
@@ -54,6 +55,7 @@ public:
       : mParent( parent ),
       xmlGuiClient( 0 )
   {
+    m_dragDropManager = new DragDropManager(mParent);
   }
 
   void init();
@@ -63,14 +65,14 @@ public:
 
   void slotSelectionChanged( const QItemSelection & selected, const QItemSelection & deselected );
 
-  bool hasParent( const QModelIndex& idx, Collection::Id parentId );
   Collection currentDropTarget( QDropEvent* event ) const;
 
   EntityTreeView *mParent;
   QBasicTimer dragExpandTimer;
-
+  DragDropManager *m_dragDropManager;
   KXMLGUIClient *xmlGuiClient;
 };
+
 void EntityTreeView::Private::init()
 {
   mParent->header()->setClickable( true );
@@ -97,18 +99,6 @@ void EntityTreeView::Private::init()
                     mParent, SLOT( itemDoubleClicked( const QModelIndex& ) ) );
 
   Control::widgetNeedsAkonadi( mParent );
-}
-
-bool EntityTreeView::Private::hasParent( const QModelIndex& idx, Collection::Id parentId )
-{
-  QModelIndex idx2 = idx;
-  while ( idx2.isValid() ) {
-    if ( mParent->model()->data( idx2, EntityTreeModel::CollectionIdRole ).toLongLong() == parentId )
-      return true;
-
-    idx2 = idx2.parent();
-  }
-  return false;
 }
 
 void EntityTreeView::Private::slotSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
@@ -206,6 +196,7 @@ EntityTreeView::EntityTreeView( KXMLGUIClient *xmlGuiClient, QWidget * parent ) 
 
 EntityTreeView::~EntityTreeView()
 {
+  delete d->m_dragDropManager;
   delete d;
 }
 
@@ -238,33 +229,12 @@ void EntityTreeView::dragMoveEvent( QDragMoveEvent * event )
 {
   d->dragExpandTimer.start( QApplication::startDragTime() , this );
 
-  // Check if the collection under the cursor accepts this data type
-  const Collection col = d->currentDropTarget( event );
-  if ( col.isValid() )
+  if ( d->m_dragDropManager->dropAllowed( event ) )
   {
-    QStringList supportedContentTypes = col.contentMimeTypes();
-    const QMimeData *data = event->mimeData();
-    KUrl::List urls = KUrl::List::fromMimeData( data );
-    foreach( const KUrl &url, urls ) {
-      const Collection collection = Collection::fromUrl( url );
-      if ( collection.isValid() ) {
-        if ( !supportedContentTypes.contains( Collection::mimeType() ) )
-          break;
-
-        // Check if we don't try to drop on one of the children
-        if ( d->hasParent( indexAt( event->pos() ), collection.id() ) )
-          break;
-      } else { // This is an item.
-        QString type = url.queryItems()[ QString::fromLatin1( "type" )];
-        if ( !supportedContentTypes.contains( type ) )
-          break;
-      }
-      // All urls are supported. process the event.
-      QTreeView::dragMoveEvent( event );
-      return;
-    }
+    // All urls are supported. process the event.
+    QTreeView::dragMoveEvent( event );
+    return;
   }
-
   event->setDropAction( Qt::IgnoreAction );
   return;
 }
