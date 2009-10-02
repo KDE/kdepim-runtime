@@ -31,7 +31,7 @@
 #include <akonadi/entitydisplayattribute.h>
 // #include "entitytreemodel.h"
 #include <akonadi/entityfilterproxymodel.h>
-#include "entitytreeview.h"
+#include <akonadi/entitytreeview.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
