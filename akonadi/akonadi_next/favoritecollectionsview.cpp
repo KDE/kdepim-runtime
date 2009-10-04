@@ -182,7 +182,6 @@ void FavoriteCollectionsView::dragMoveEvent( QDragMoveEvent * event )
   }
 
   event->setDropAction( Qt::IgnoreAction );
-  return;
 }
 
 void FavoriteCollectionsView::dragLeaveEvent( QDragLeaveEvent * event )
