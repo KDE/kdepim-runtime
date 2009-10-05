@@ -38,19 +38,16 @@
 #include <akonadi/collectionpropertiesdialog.h>
 #include <akonadi/standardactionmanager.h>
 #include <akonadi/session.h>
-#include <xml/xmlwritejob.h>
-
-#include <akonadi_next/entitytreeview.h>
+#include <akonadi/entitytreeview.h>
 #include <akonadi/entitytreeviewstatesaver.h>
 #include <akonadi/favoritecollectionsmodel.h>
-#include <akonadi_next/favoritecollectionsview.h>
+#include <akonadi/favoritecollectionsview.h>
 #include <akonadi/statisticsproxymodel.h>
 #include <akonadi/statisticstooltipproxymodel.h>
 
 #include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
 #include <kcal/incidence.h>
-
-#include <libkdepim-copy/addresseeview.h>
 
 #include <kdebug.h>
 #include <kconfig.h>
@@ -58,6 +55,8 @@
 #include <kfiledialog.h>
 #include <kmessagebox.h>
 #include <kxmlguiwindow.h>
+
+#include <xml/xmlwritejob.h>
 
 #ifdef NEPOMUK_FOUND
 #include <nepomuk/resource.h>
@@ -72,6 +71,8 @@
 #include <QtGui/QSortFilterProxyModel>
 #include <QStandardItemModel>
 #include <QTimer>
+
+#include <akonadi_next/modeltest.h>
 
 using namespace Akonadi;
 
@@ -122,6 +123,8 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   mBrowserModel = new AkonadiBrowserModel( session, monitor, this );
   mBrowserModel->setItemPopulationStrategy( EntityTreeModel::LazyPopulation );
   mBrowserModel->setShowHiddenEntities(true);
+
+  new ModelTest( mBrowserModel );
 
   EntityFilterProxyModel *collectionFilter = new EntityFilterProxyModel( this );
   collectionFilter->setSourceModel( mBrowserModel );
@@ -263,10 +266,11 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
 {
   mCurrentItem = item;
   if ( item.hasPayload<KABC::Addressee>() ) {
-    const KABC::Addressee addr = item.payload<KABC::Addressee>();
-
-    contentUi.addresseeView->setAddressee( addr );
-    contentUi.stack->setCurrentWidget( contentUi.addresseeViewPage );
+    contentUi.contactView->setItem( item );
+    contentUi.stack->setCurrentWidget( contentUi.contactViewPage );
+  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+    contentUi.contactGroupView->setItem( item );
+    contentUi.stack->setCurrentWidget( contentUi.contactGroupViewPage );
   } else if ( item.hasPayload<KCal::Incidence::Ptr>() ) {
     contentUi.incidenceView->setItem( item );
     contentUi.stack->setCurrentWidget( contentUi.incidenceViewPage );

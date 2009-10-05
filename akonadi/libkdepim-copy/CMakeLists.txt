@@ -7,7 +7,6 @@ add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 
 set(kdepim-copy_LIB_SRCS
-    addresseeview.cpp
     calendardiffalgo.cpp
     diffalgo.cpp
     htmldiffalgodisplay.cpp
@@ -15,7 +14,6 @@ set(kdepim-copy_LIB_SRCS
     kdatepickerpopup.cpp
     kincidencechooser.cpp
     ksubscription.cpp
-    sendsmsdialog.cpp
     uistatesaver.cpp
 )
 
