@@ -1,0 +1,93 @@
+<knut>
+  <collection content="inode/directory" rid="imap://autotest0@example.com@localhost:42143/" name="localhost:42143/autotest0@example.com" >
+    <collection content="inode/directory" rid="/user" name="user" >
+      <collection content="message/rfc822,inode/directory" rid="/autotest1@example.com" name="autotest1@example.com" >
+        <collection content="message/rfc822,inode/directory" rid="/child2" name="child2" >
+          <collection content="message/rfc822,inode/directory" rid="/grandchild1" name="grandchild1" >
+            <attribute type="uidnext" >1</attribute>
+            <attribute type="AccessRights" ></attribute>
+            <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+            <attribute type="uidvalidity" >1249661411</attribute>
+          </collection>
+          <attribute type="uidnext" >1</attribute>
+          <attribute type="AccessRights" ></attribute>
+          <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+          <attribute type="uidvalidity" >1249661412</attribute>
+        </collection>
+        <collection content="message/rfc822,inode/directory" rid="/child1" name="child1" >
+          <collection content="message/rfc822,inode/directory" rid="/grandchild1" name="grandchild1" >
+            <attribute type="uidnext" >2</attribute>
+            <attribute type="AccessRights" ></attribute>
+            <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+            <attribute type="uidvalidity" >1249661409</attribute>
+            <item mimetype="message/rfc822" rid="1" >
+              <payload>From: Volker Krause &lt;vkrause@kde.org>
+To: kde-commits@kde.org
+Subject: playground/pim/akonaditest/resourcetester
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Date: Sun, 22 Mar 2009 12:50:30 +0000
+Message-Id: &lt;1237726230.394911.25706.nullmailer@svn.kde.org>
+
+SVN commit 942677 by vkrause:
+
+Add a safety timeout in case we do not receive the synchronized() signal
+or the resource hangs during syncing. The first seems to happen randomly
+if syncing is extremely fast.
+
+
+ M  +40 -0     resourcesynchronizationjob.cpp  
+ M  +1 -1      resourcesynchronizationjob.h  
+</payload>
+            </item>
+          </collection>
+          <attribute type="uidnext" >1</attribute>
+          <attribute type="AccessRights" ></attribute>
+          <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+          <attribute type="uidvalidity" >1249661410</attribute>
+        </collection>
+      </collection>
+      <attribute type="ENTITYDISPLAY" >("Shared Folders" "x-mail-distribution-list" false)</attribute>
+      <attribute type="AccessRights" ></attribute>
+      <attribute type="noselect" >1</attribute>
+    </collection>
+    <collection content="message/rfc822,inode/directory" rid="/INBOX" name="INBOX" >
+      <collection content="message/rfc822,inode/directory" rid="/Calendar" name="Calendar" >
+        <attribute type="uidnext" >1</attribute>
+        <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+        <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
+        <attribute type="uidvalidity" >1249661407</attribute>
+      </collection>
+      <attribute type="ENTITYDISPLAY" >("Inbox" "mail-folder-inbox" false)</attribute>
+      <attribute type="uidnext" >2</attribute>
+      <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+      <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
+      <attribute type="uidvalidity" >1249661406</attribute>
+      <item mimetype="message/rfc822" rid="1" >
+        <payload>From: Volker Krause &lt;vkrause@kde.org>
+To: kde-commits@kde.org
+Subject: playground/pim/akonaditest/resourcetester
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Date: Sun, 22 Mar 2009 12:50:30 +0000
+Message-Id: &lt;1237726230.394911.25706.nullmailer@svn.kde.org>
+
+SVN commit 942677 by vkrause:
+
+Add a safety timeout in case we do not receive the synchronized() signal
+or the resource hangs during syncing. The first seems to happen randomly
+if syncing is extremely fast.
+
+
+ M  +40 -0     resourcesynchronizationjob.cpp  
+ M  +1 -1      resourcesynchronizationjob.h  
+</payload>
+      </item>
+    </collection>
+    <attribute type="AccessRights" ></attribute>
+  </collection>
+</knut>

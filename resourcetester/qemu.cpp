@@ -183,7 +183,7 @@ void QEmu::waitForPort(int port)
       QTest::qWait( 5000 );
       continue;
     }
-    if ( QTest::kWaitForSignal( &socket, SIGNAL(readyRead()), 5000 ) )
+    if ( socket.waitForReadyRead( 5000 ) )
       break;
   }
 }

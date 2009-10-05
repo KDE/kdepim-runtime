@@ -10,6 +10,7 @@ kde4_add_unit_test(kolabconvertertest ${kolabproxy_shared_relative_SRCS} ${AKONA
 target_link_libraries(kolabconvertertest ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${QT_QTTEST_LIBRARY}  kdepim-copy akonadi-kcal)
 
 
-#akonadi_add_resourcetest( imap imaptest.es )
+#akonadi_add_resourcetest( imap-kolab imaptest-kolab.es )
+#akonadi_add_resourcetest( imap-dovecot imaptest-dovecot.es )
 #akonadi_add_resourcetest( kolab kolabtest.es )
 
