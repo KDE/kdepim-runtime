@@ -19,6 +19,7 @@
 */
 
 #include "messageanalyzer.h"
+#include "settings.h"
 
 #include <email.h>
 #include <personcontact.h>
@@ -59,7 +60,9 @@ MessageAnalyzer::MessageAnalyzer(const Akonadi::Item& item, const QUrl& graphUri
 
   if ( !msg->body().isEmpty() || !msg->contents().isEmpty() ) {
 
-    // TODO: run OTP for decryption
+    if ( Settings::self()->indexEncryptedContent() != Settings::NoIndexing ) {
+      // TODO: run OTP for decryption
+    }
 
     // before we walk the part node tree, let's see if there is a main plain text body, so we don't interpret that as an attachment later on
     m_mainBodyPart = msg->mainBodyPart( "text/plain" );
@@ -114,7 +117,9 @@ void MessageAnalyzer::processPart(KMime::Content* content)
 {
   // multipart -> recurse
   if ( content->contentType()->isMultipart() ) {
-    // TODO: handle multipart/alternative and multipart/encrypted separately
+    if ( content->contentType()->isSubtype( "encrypted" ) && Settings::self()->indexEncryptedContent() == Settings::NoIndexing )
+      return;
+    // TODO what about multipart/alternative?
     foreach ( KMime::Content* child, content->contents() )
       processPart( child );
   }

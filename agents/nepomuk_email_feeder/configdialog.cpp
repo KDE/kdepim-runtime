@@ -18,30 +18,31 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_NEPOMUK_EMAIL_FEEDER_H
-#define AKONADI_NEPOMUK_EMAIL_FEEDER_H
+#include "configdialog.h"
+#include "settings.h"
 
-#include <nepomukfeederagent.h>
+#include <KConfigDialogManager>
+#include <kwindowsystem.h>
 
-#include <mailbox.h>
-#include <contact.h>
-
-#include <QtCore/QList>
-
-#include <kmime/kmime_header_parsing.h>
-
-namespace Akonadi {
-
-class NepomukEMailFeeder : public NepomukFeederAgent<NepomukFast::Mailbox>
+ConfigDialog::ConfigDialog( WId windowId, QWidget * parent ) : KDialog( parent )
 {
-  Q_OBJECT
-  public:
-    NepomukEMailFeeder( const QString &id );
-    void configure(WId windowId);
+  ui.setupUi( mainWidget() );
+  setButtons( Ok | Cancel );
 
-    void updateItem( const Akonadi::Item &item, const QUrl &graphUri );
-};
+  if ( windowId )
+    KWindowSystem::setMainWindow( this, windowId );
 
+  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+
+  m_manager = new KConfigDialogManager( this, Settings::self() );
+  m_manager->updateWidgets();
 }
 
-#endif
+
+void ConfigDialog::save()
+{
+  m_manager->updateSettings();
+  Settings::self()->writeConfig();
+}
+
+#include "configdialog.moc"

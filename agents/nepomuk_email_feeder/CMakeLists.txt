@@ -12,10 +12,13 @@ if ( STRIGIQTDBUSCLIENT_LIBRARY )
 set(akonadi_nepomuk_email_feeder_SRCS
   nepomukemailfeeder.cpp
   messageanalyzer.cpp
+  configdialog.cpp
   ${NEPOMUKFEEDER_SHARED_SRCS}
 )
 
 kde4_add_app_icon(akonadi_nepomuk_email_feeder_SRCS "${KDE4_ICON_DIR}/oxygen/*/apps/nepomuk.png")
+kde4_add_kcfg_files(akonadi_nepomuk_email_feeder_SRCS settings.kcfgc)
+kde4_add_ui_files(akonadi_nepomuk_email_feeder_SRCS configdialog.ui)
 
 kde4_add_executable(akonadi_nepomuk_email_feeder ${akonadi_nepomuk_email_feeder_SRCS})
 
