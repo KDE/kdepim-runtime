@@ -259,7 +259,11 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
   QStringList expected;
   expected << "IMAP4rev1";
 
-  if ( !m_capabilities.contains( "X-GM-EXT-1" ) ) {
+  // Both GMail and GMX servers seem to be lying about there capabilities
+  // The don't report UIDPLUS correctly so don't check for it explicitely
+  // if it's one of those servers.
+  if ( !m_capabilities.contains( "X-GM-EXT-1" )
+    && !capJob->session()->serverGreeting().contains( "GMX" ) ) {
     expected << "UIDPLUS";
   }
 
