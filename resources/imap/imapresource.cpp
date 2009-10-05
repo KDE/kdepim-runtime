@@ -60,6 +60,8 @@
 #include <kimap/myrightsjob.h>
 #include <kimap/renamejob.h>
 #include <kimap/selectjob.h>
+#include <kimap/setacljob.h>
+#include <kimap/setmetadatajob.h>
 #include <kimap/storejob.h>
 #include <kimap/subscribejob.h>
 
@@ -94,6 +96,7 @@ using namespace Akonadi;
 
 static const char AKONADI_COLLECTION[] = "akonadiCollection";
 static const char AKONADI_ITEM[] = "akonadiItem";
+static const char AKONADI_PARTS[] = "akonadiParts";
 static const char REPORTED_COLLECTIONS[] = "reportedCollections";
 static const char PREVIOUS_REMOTEID[] = "previousRemoteId";
 static const char SOURCE_COLLECTION[] = "sourceCollection";
@@ -831,7 +834,7 @@ void ImapResource::onCreateMailBoxDone( KJob *job )
   }
 }
 
-void ImapResource::collectionChanged( const Collection & collection )
+void ImapResource::collectionChanged( const Collection &collection, const QSet<QByteArray> &parts )
 {
   if ( collection.remoteId().isEmpty() ) {
     emit error( i18n("Cannot modify IMAP folder '%1', it does not exist on the server.", collection.name() ) );
@@ -839,31 +842,163 @@ void ImapResource::collectionChanged( const Collection & collection )
     return;
   }
 
-  Collection c = collection;
-  c.setRemoteId( collection.remoteId().at( 0 ) + collection.name() );
+  QStringList encodedParts;
+  foreach ( const QByteArray &part, parts ) {
+    encodedParts << QString::fromUtf8( part );
+  }
 
-  const QString oldMailBox = mailBoxForCollection( collection );
-  const QString newMailBox = mailBoxForCollection( c );
+  kDebug() << "parts:" << encodedParts;
 
-  if ( oldMailBox != newMailBox ) {
-    KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
-    job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( c ) );
-    job->setProperty( PREVIOUS_REMOTEID, collection.remoteId() );
-    job->setSourceMailBox( oldMailBox );
-    job->setDestinationMailBox( newMailBox );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
+  triggerNextCollectionChangeJob( collection, encodedParts );
+}
+
+void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
+                                                   const QStringList &remainingParts )
+{
+  if ( remainingParts.isEmpty() ) { // We processed all parts, we're done here
+    changeCommitted( collection );
+    return;
+  }
+
+  QStringList parts = remainingParts;
+  QString currentPart = parts.takeFirst();
+
+  if ( currentPart == "NAME" ) {
+    Collection c = collection;
+    c.setRemoteId( collection.remoteId().at( 0 ) + collection.name() );
+
+    const QString oldMailBox = mailBoxForCollection( collection );
+    const QString newMailBox = mailBoxForCollection( c );
+
+    if ( oldMailBox != newMailBox ) {
+      KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->session() );
+      job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( c ) );
+      job->setProperty( AKONADI_PARTS, parts );
+      job->setProperty( PREVIOUS_REMOTEID, collection.remoteId() );
+      job->setSourceMailBox( oldMailBox );
+      job->setDestinationMailBox( newMailBox );
+      connect( job, SIGNAL( result( KJob* ) ), SLOT( onRenameMailBoxDone( KJob* ) ) );
+      job->start();
+    } else {
+      triggerNextCollectionChangeJob( collection, parts );
+    }
+
+  } else if ( currentPart == "AccessRights" ) {
+    ImapAclAttribute *aclAttribute =
+      collection.attribute<ImapAclAttribute>();
+
+    if ( aclAttribute==0 ) {
+      emit error( i18n( "ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL change",
+                        collection.name() ) );
+      triggerNextCollectionChangeJob( collection, parts );
+      return;
+    }
+
+    KIMAP::Acl::Rights imapRights = aclAttribute->rights()[m_account->userName().toUtf8()];
+    Collection::Rights newRights = collection.rights();
+
+    if ( newRights & Collection::CanChangeItem ) {
+      imapRights|= KIMAP::Acl::Write;
+    } else {
+      imapRights&= ~KIMAP::Acl::Write;
+    }
+
+    if ( newRights & Collection::CanCreateItem ) {
+      imapRights|= KIMAP::Acl::Insert;
+    } else {
+      imapRights&= ~KIMAP::Acl::Insert;
+    }
+
+    if ( newRights & Collection::CanDeleteItem ) {
+      imapRights|= KIMAP::Acl::DeleteMessage;
+    } else {
+      imapRights&= ~KIMAP::Acl::DeleteMessage;
+    }
+
+    if ( newRights & ( Collection::CanChangeCollection | Collection::CanCreateCollection ) ) {
+      imapRights|= KIMAP::Acl::CreateMailbox;
+      imapRights|= KIMAP::Acl::Create;
+    } else {
+      imapRights&= ~KIMAP::Acl::CreateMailbox;
+      imapRights&= ~KIMAP::Acl::Create;
+    }
+
+    if ( newRights & Collection::CanDeleteCollection ) {
+      imapRights|= KIMAP::Acl::DeleteMailbox;
+    } else {
+      imapRights&= ~KIMAP::Acl::DeleteMailbox;
+    }
+
+    if ( ( newRights & Collection::CanDeleteItem )
+      && ( newRights & Collection::CanDeleteCollection ) ) {
+      imapRights|= KIMAP::Acl::Delete;
+    } else {
+      imapRights&= ~KIMAP::Acl::Delete;
+    }
+
+    kDebug() << "imapRights:" << imapRights
+             << "newRights:" << newRights;
+
+    KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->session() );
+    job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    job->setProperty( AKONADI_PARTS, parts );
+    job->setMailBox( mailBoxForCollection( collection ) );
+    job->setRights( KIMAP::SetAclJob::Change, imapRights );
+    job->setIdentifier( m_account->userName().toUtf8() );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetAclDone( KJob* ) ) );
     job->start();
-  } else {
-    changeProcessed();
+
+  } else if ( currentPart == "collectionannotations" ) {
+    CollectionAnnotationsAttribute *annotationsAttribute =
+      collection.attribute<CollectionAnnotationsAttribute>();
+
+    if ( annotationsAttribute==0 ) { // No annotations it seems... server is lieing to us?
+      triggerNextCollectionChangeJob( collection, parts );
+    }
+
+    KIMAP::SetMetaDataJob *job = 0;
+
+    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+    kDebug() << "All annotations: " << annotations;
+    foreach ( const QByteArray &entry, annotations.keys() ) {
+      job = new KIMAP::SetMetaDataJob( m_account->session() );
+      if ( m_account->capabilities().contains( "METADATA" ) ) {
+        job->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
+      } else {
+        job->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
+      }
+
+      QByteArray attribute = entry;
+      if ( job->serverCapability()==KIMAP::MetaDataJobBase::Annotatemore ) {
+        attribute = "value.shared";
+      }
+
+      job->setMailBox( mailBoxForCollection( collection ) );
+      job->setEntry( entry );
+      job->addMetaData( attribute, annotations[entry] );
+      kDebug() << "Job got entry:" << entry << " attribute:" << attribute << "value:" << annotations[entry];
+
+      job->start();
+    }
+
+    // We'll get info out of the last job only to trigger the next phase
+    // of the collection change. The other ones we fire and forget.
+    // Obviously we assume here that they will all succeed or all fail.
+    job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    job->setProperty( AKONADI_PARTS, parts );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetMetaDataDone( KJob* ) ) );
+
   }
 }
+
 
 void ImapResource::onRenameMailBoxDone( KJob *job )
 {
   Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+  QStringList parts = job->property( AKONADI_PARTS ).toStringList();
 
   if ( !job->error() ) {
-    changeCommitted( collection );
+    triggerNextCollectionChangeJob( collection, parts );
   } else {
     KIMAP::RenameJob *rename = qobject_cast<KIMAP::RenameJob*>( job );
 
@@ -876,6 +1011,32 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
     emit warning( i18n( "Failed to rename the folder, restoring folder list." ) );
     changeCommitted( collection );
   }
+}
+
+void ImapResource::onSetAclDone( KJob *job )
+{
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+  QStringList parts = job->property( AKONADI_PARTS ).toStringList();
+
+  if ( job->error() ) {
+    emit error( i18n( "Failed to write the new ACLs for '%1' on the IMAP server. %2",
+                      collection.name(), job->errorText() ) );
+  }
+
+  triggerNextCollectionChangeJob( collection, parts );
+}
+
+void ImapResource::onSetMetaDataDone( KJob *job )
+{
+  Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+  QStringList parts = job->property( AKONADI_PARTS ).toStringList();
+
+  if ( job->error() ) {
+    emit error( i18n( "Failed to write the new annotations for '%1' on the IMAP server. %2",
+                      collection.name(), job->errorText() ) );
+  }
+
+  triggerNextCollectionChangeJob( collection, parts );
 }
 
 void ImapResource::collectionRemoved( const Collection &collection )
