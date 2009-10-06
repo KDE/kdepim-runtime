@@ -123,7 +123,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
   mBrowserModel = new AkonadiBrowserModel( session, monitor, this );
   mBrowserModel->setItemPopulationStrategy( EntityTreeModel::LazyPopulation );
-  mBrowserModel->setShowHiddenEntities(true);
+  mBrowserModel->setShowSystemEntities(true);
 
   new ModelTest( mBrowserModel );
 
