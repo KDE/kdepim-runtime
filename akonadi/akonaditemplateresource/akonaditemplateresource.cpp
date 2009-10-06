@@ -28,7 +28,7 @@ TemplateResource::TemplateResource( const QString& id ): ResourceBase( id )
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload();
 
-  m_rootDir = QDir( "/home/kde-devel/kde/src/playground/pim/akonadi/example_mail/themes/" );
+  m_rootDir = QDir( QLatin1String( "/home/kde-devel/kde/src/playground/pim/akonadi/example_mail/themes/" ) );
 }
 
 TemplateResource::~TemplateResource()
@@ -56,15 +56,15 @@ void TemplateResource::retrieveCollections()
   Collection rootCol;
   rootCol.setRemoteId( m_rootDir.canonicalPath() );
   rootCol.setParent( Collection::root() );
-  rootCol.setName( "m_rootDir" );
+  rootCol.setName( QLatin1String( "m_rootDir" ) );
   rootCol.setContentMimeTypes( QStringList() << Collection::mimeType()
-                               << "text/x-vnd.grantlee-template" );
+                               << QLatin1String( "text/x-vnd.grantlee-template" ) );
 
   list << rootCol;
 
   const QStringList dirs = m_rootDir.entryList( QDir::AllDirs );
   foreach( const QString& dir, dirs ) {
-    if ( dir.startsWith( "." ) )
+    if ( dir.startsWith( QLatin1String( "." ) ) )
       continue;
     Collection col;
     col.setRemoteId( dir );
@@ -79,20 +79,20 @@ void TemplateResource::retrieveCollections()
 
 void TemplateResource::retrieveItems( const Akonadi::Collection& col )
 {
-  QDir dir( m_rootDir.canonicalPath() + "/" + col.remoteId() );
+  QDir dir( m_rootDir.canonicalPath() + QLatin1Char( '/' ) + col.remoteId() );
 
   // Make images and html files part of Grantlee themes.
-  QStringList files = dir.entryList(QStringList() << "*.html", QDir::Files );
-  files << dir.entryList(QStringList() << "*.png", QDir::Files );
+  QStringList files = dir.entryList(QStringList() << QLatin1String( "*.html" ), QDir::Files );
+  files << dir.entryList(QStringList() << QLatin1String( "*.png" ), QDir::Files );
 
   Item::List list;
   foreach(const QString& filename, files ) {
     Item item;
     item.setRemoteId( filename );
-    if ( filename.endsWith( ".html" ) )
-      item.setMimeType( "text/x-vnd.grantlee-template" );
-    else if ( filename.endsWith( ".png" ) )
-      item.setMimeType( "image/png" );
+    if ( filename.endsWith( QLatin1String( ".html" ) ) )
+      item.setMimeType( QLatin1String( "text/x-vnd.grantlee-template" ) );
+    else if ( filename.endsWith( QLatin1String( ".png" ) ) )
+      item.setMimeType( QLatin1String( "image/png" ) );
     list << item;
   }
   itemsRetrieved( list );
@@ -100,10 +100,10 @@ void TemplateResource::retrieveItems( const Akonadi::Collection& col )
 
 bool TemplateResource::retrieveItem( const Akonadi::Item& item, const QSet< QByteArray >& parts )
 {
-  QFile file( m_rootDir.canonicalPath() + "/default/" + item.remoteId() );
+  QFile file( m_rootDir.canonicalPath() + QLatin1String( "/default/" ) + item.remoteId() );
 
   // TODO: Refactor:
-  if ( item.remoteId().endsWith( ".html" ) )
+  if ( item.remoteId().endsWith( QLatin1String( ".html" ) ) )
   {
     if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
       return false;
@@ -112,7 +112,7 @@ bool TemplateResource::retrieveItem( const Akonadi::Item& item, const QSet< QByt
 
     retrievedItem.setPayloadFromData( ba );
     itemRetrieved( retrievedItem );
-  } else if ( item.remoteId().endsWith( ".png" ) )
+  } else if ( item.remoteId().endsWith( QLatin1String( ".png" ) ) )
   {
     if ( !file.open( QIODevice::ReadOnly ) )
       return false;

@@ -34,7 +34,7 @@
 using namespace Akonadi;
 
 AkonadiTemplateLoader::AkonadiTemplateLoader(Akonadi::ChangeRecorder *monitor,  QObject* parent )
-  : m_themeName("default")
+  : m_themeName( QLatin1String( "default" ) )
 {
   Collection rootCollection = Collection::root();
 
@@ -48,9 +48,9 @@ Grantlee::MutableTemplate AkonadiTemplateLoader::loadMutableByName( const QStrin
 {
   Item templateItem = getItem( name );
   if ( !templateItem.isValid() )
-    throw Grantlee::Exception( TagSyntaxError, QString( "Couldn't load template from %1. Template does not exist.").arg( name ) );
+    throw Grantlee::Exception( TagSyntaxError, QString::fromLatin1( "Couldn't load template from %1. Template does not exist.").arg( name ) );
 
-  QString content = templateItem.payloadData();
+  QString content = QString::fromLatin1( templateItem.payloadData() );
   MutableTemplate t = Engine::instance()->newMutableTemplate( content, name );
   return t;
 }
@@ -90,9 +90,9 @@ Grantlee::Template AkonadiTemplateLoader::loadByName( const QString& name ) cons
 {
   Item templateItem = getItem( name );
   if ( !templateItem.isValid() )
-    throw Grantlee::Exception( TagSyntaxError, QString( "Couldn't load template from %1. Template does not exist.").arg( name ) );
+    throw Grantlee::Exception( TagSyntaxError, QString::fromLatin1( "Couldn't load template from %1. Template does not exist.").arg( name ) );
 
-  QString content = templateItem.payloadData();
+  QString content = QString::fromLatin1( templateItem.payloadData() );
   Template t = Engine::instance()->newTemplate( content, name );
   return t;
 }

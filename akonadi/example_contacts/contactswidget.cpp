@@ -72,7 +72,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );
-  monitor->setMimeTypeMonitored( "text/directory" );
+  monitor->setMimeTypeMonitored( QLatin1String( "text/directory" ) );
 
   Session *session = new Session( QByteArray( "ContactsApplication-" ) + QByteArray::number( qrand() ), this );
 
@@ -148,7 +148,7 @@ void ContactsWidget::listSelectionChanged( const QItemSelection & selected, cons
     if ( i.isValid() )
     {
       QByteArray ba = i.payloadData();
-      browser->setText( ba );
+      browser->setText( QString::fromLatin1( ba ) );
     }
 //   }
 }

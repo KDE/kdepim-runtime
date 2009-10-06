@@ -42,11 +42,11 @@ KJotsReWrite::KJotsReWrite() : KXmlGuiWindow()
   setCentralWidget( kjw );
 
   KAction *action;
-  action = actionCollection()->addAction( "change_theme");
+  action = actionCollection()->addAction( QLatin1String( "change_theme" ) );
   action->setText( i18n("Change Theme...") );
   connect(action, SIGNAL(triggered()), kjw, SLOT(changeTheme()));
 
-  action = actionCollection()->addAction( "export_selection");
+  action = actionCollection()->addAction( QLatin1String( "export_selection" ) );
   action->setText( i18n("Export...") );
   connect(action, SIGNAL(triggered()), kjw, SLOT(exportSelection()));
 

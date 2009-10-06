@@ -48,7 +48,7 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   QGridLayout *layout = new QGridLayout();
 
   QLabel *toLabel = new QLabel(this);
-  toLabel->setText("To:");
+  toLabel->setText( QLatin1String( "To:" ) );
 
   ItemFetchScope scope;
   scope.fetchFullPayload( true ); // Need to have full item when adding it to the internal data structure
@@ -59,7 +59,7 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );
-  monitor->setMimeTypeMonitored( "text/directory" );
+  monitor->setMimeTypeMonitored( QLatin1String( "text/directory" ) );
 
   ContactsModel *contactsModel = new ContactsModel( session, monitor, this);
 
@@ -74,7 +74,7 @@ MailComposer::MailComposer(Akonadi::Session *session, QWidget *parent)
   QLineEdit *emailLineEdit = new QLineEdit(this);
 
   QLabel *subjectLabel = new QLabel(this);
-  subjectLabel->setText("Subject:");
+  subjectLabel->setText( QLatin1String( "Subject:" ) );
   QLineEdit *subjectLineEdit = new QLineEdit(this);
 
   QTextEdit *textEdit = new QTextEdit(this);

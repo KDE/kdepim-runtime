@@ -61,15 +61,15 @@ QString KJotsResource::findParent( const QString &remoteId )
 
 QString KJotsResource::getFileUrl( const Collection &col ) const
 {
-  return m_rootDataPath + '/' + col.remoteId();
+  return m_rootDataPath + QLatin1Char( '/' ) + col.remoteId();
 }
 
 QString KJotsResource::getFileUrl( const Item &item ) const
 {
-  return m_rootDataPath + '/' + item.remoteId();
+  return m_rootDataPath + QLatin1Char( '/' ) + item.remoteId();
 }
 
-Collection::List KJotsResource::getDescendantCollections(Collection& col) const
+Collection::List KJotsResource::getDescendantCollections( Collection& col ) const
 {
   Collection::List list;
   QString fileUrl = getFileUrl( col );
@@ -81,25 +81,25 @@ Collection::List KJotsResource::getDescendantCollections(Collection& col) const
 
   QDomElement rootElement = doc.documentElement();
 
-  QDomElement title = rootElement.firstChildElement( "Title" );
+  QDomElement title = rootElement.firstChildElement( QLatin1String( "Title" ) );
   QString bookname = title.text();
 
   if (col.parentCollection() != Collection::root() )
   {
     EntityDisplayAttribute *displayAttribute = new EntityDisplayAttribute();
     displayAttribute->setDisplayName( bookname );
-    displayAttribute->setIconName( "x-office-address-book" );
+    displayAttribute->setIconName( QLatin1String( "x-office-address-book" ) );
     col.addAttribute( displayAttribute );
   }
   col.setName( bookname );
 
-  QDomElement contents = rootElement.firstChildElement( "Contents" );
+  QDomElement contents = rootElement.firstChildElement( QLatin1String( "Contents" ) );
 
   QDomElement entity = contents.firstChildElement();
   QString filename;
   while ( !entity.isNull() ) {
-    if ( entity.tagName() == "KJotsBook" ) {
-      filename = entity.attribute( "filename" );
+    if ( entity.tagName() == QLatin1String( "KJotsBook" ) ) {
+      filename = entity.attribute( QLatin1String( "filename" ) );
       Collection child;
       child.setRemoteId( filename );
       child.setContentMimeTypes( QStringList() << Collection::mimeType() << KJotsPage::mimeType() );
@@ -126,13 +126,13 @@ Item::List KJotsResource::getContainedItems( const Collection &col ) const
 
   QDomElement rootElement = doc.documentElement();
 
-  QDomElement contents = rootElement.firstChildElement( "Contents" );
+  QDomElement contents = rootElement.firstChildElement( QLatin1String( "Contents" ) );
 
   QDomElement entity = contents.firstChildElement();
   QString filename;
   while ( !entity.isNull() ) {
-    filename = entity.attribute( "filename" ) ;
-    if ( entity.tagName() == "KJotsPage" ) {
+    filename = entity.attribute( QLatin1String( "filename" ) );
+    if ( entity.tagName() == QLatin1String( "KJotsPage" ) ) {
       Item item;
       item.setRemoteId( filename );
       item.setMimeType( KJotsPage::mimeType() );
@@ -149,16 +149,13 @@ Item::List KJotsResource::getContainedItems( const Collection &col ) const
 KJotsResource::KJotsResource( const QString &id )
     : ResourceBase( id )
 {
-  kDebug() << DATADIR;
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->itemFetchScope().fetchAttribute<CollectionChildOrderAttribute>();
   changeRecorder()->itemFetchScope().fetchAttribute<EntityDisplayAttribute>();
   setHierarchicalRemoteIdentifiersEnabled(true);
 
-  // Temporary for development.
-  m_rootDataPath = QString( DATADIR );
-  //     m_rootDataPath = KStandardDirs::locateLocal( "data", "kjots/" );
+  m_rootDataPath = KStandardDirs::locateLocal( "data", QLatin1String( "kjots-port/" ) );
 
   AttributeFactory::registerAttribute<CollectionChildOrderAttribute>();
 }
@@ -173,7 +170,7 @@ void KJotsResource::retrieveCollections()
   Collection::List list;
 
   Collection resourceRootCollection;
-  resourceRootCollection.setRemoteId( "/kjots.bookshelf" );
+  resourceRootCollection.setRemoteId( QLatin1String( "/kjots.bookshelf" ) );
   resourceRootCollection.setParentCollection( Collection::root() );
   // The bookshelf can not contain pages.
   resourceRootCollection.setContentMimeTypes( QStringList()
@@ -203,19 +200,17 @@ KJotsPage KJotsResource::getPage( const Akonadi::Item& item, QSet<QByteArray> pa
 
   QDomElement pageRootElement = doc.documentElement();
 
-  if ( pageRootElement.tagName() ==  "KJotsPage" ) {
+  if ( pageRootElement.tagName() == QLatin1String( "KJotsPage" ) ) {
     QDomNode n = pageRootElement.firstChild();
     while ( !n.isNull() ) {
       QDomElement e = n.toElement();
       if ( !e.isNull() ) {
-        if ( e.tagName() == "Title" ) {
-          if ( parts.contains( "title" ) || parts.contains( Item::FullPayload ) )
-            page.setTitle( e.text() );
+        if ( e.tagName() == QLatin1String( "Title" ) ) {
+          page.setTitle( e.text() );
         }
 
-        if ( e.tagName() == "Content" ) {
-          if ( parts.contains( "content" ) || parts.contains( Item::FullPayload ) )
-            page.setContent( QString( e.text() ) );
+        if ( e.tagName() == QLatin1String( "Content" ) ) {
+          page.setContent( QString( e.text() ) );
         }
       }
       n = n.nextSibling();
@@ -235,7 +230,7 @@ bool KJotsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
 
   EntityDisplayAttribute *displayAttribute = new EntityDisplayAttribute();
   displayAttribute->setDisplayName( page.title() );
-  displayAttribute->setIconName( "text-x-generic" );
+  displayAttribute->setIconName( QLatin1String( "text-x-generic" ) );
   newItem.addAttribute( displayAttribute );
 
   itemRetrieved( newItem );
@@ -252,6 +247,7 @@ void KJotsResource::configure( WId windowId )
 {
   Q_UNUSED( windowId );
 
+
   // This resource doesn't need to be configured.
 
   synchronize();
@@ -259,6 +255,7 @@ void KJotsResource::configure( WId windowId )
 
 void KJotsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
+
 
   changeCommitted( item );
 }

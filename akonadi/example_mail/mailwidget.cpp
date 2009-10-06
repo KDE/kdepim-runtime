@@ -76,7 +76,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   templateMonitor->fetchCollection( true );
   templateMonitor->setItemFetchScope( templateScope );
   templateMonitor->setCollectionMonitored( Collection::root() );
-  templateMonitor->setMimeTypeMonitored( "text/x-vnd.grantlee-template" );
+  templateMonitor->setMimeTypeMonitored( QLatin1String( "text/x-vnd.grantlee-template" ) );
 
   Session *templateSession = new Session( QByteArray( "AkonadiTemplateLoader-" ) + QByteArray::number( qrand() ), this );
 
@@ -91,7 +91,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   Grantlee::Engine *engine = Grantlee::Engine::instance();
   KStandardDirs KStd;
-  engine->setPluginDirs(KStd.findDirs("lib", "grantlee"));
+  engine->setPluginDirs(KStd.findDirs("lib", QLatin1String( "grantlee" ) ) );
 
   engine->addTemplateLoader(akoLoader);
 
@@ -120,7 +120,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->setItemFetchScope( scope );
   // Only monitoring the root collection works.
   monitor->setCollectionMonitored( Collection::root() );
-  monitor->setMimeTypeMonitored( "message/rfc822" );
+  monitor->setMimeTypeMonitored( QLatin1String( "message/rfc822" ) );
 //   monitor->setCollectionMonitored( rootCollection );
 //   monitor->fetchCollectionStatistics( false );
 
@@ -223,18 +223,18 @@ void MailWidget::renderMail(const QModelIndex &idx)
     QByteArray ba = i.payloadData();
 
     Grantlee::Engine *engine = Grantlee::Engine::instance();
-    Grantlee::Template t = engine->loadByName("template.html");
+    Grantlee::Template t = engine->loadByName( QLatin1String( "template.html" ) );
     if (!t)
       return;
     QVariantHash h;
-    h.insert( "subject", mail->subject()->asUnicodeString() );
-    h.insert( "date", mail->date()->dateTime().dateTime() );
-    h.insert( "to", mail->to()->asUnicodeString() );
-    h.insert( "from", mail->from()->asUnicodeString() );
+    h.insert( QLatin1String( "subject" ), mail->subject()->asUnicodeString() );
+    h.insert( QLatin1String( "date" ), mail->date()->dateTime().dateTime() );
+    h.insert( QLatin1String( "to" ), mail->to()->asUnicodeString() );
+    h.insert( QLatin1String( "from" ), mail->from()->asUnicodeString() );
 
-    QString messageHtml = content->decodedContent();
-    messageHtml.replace("\n", "<br />");
-    h.insert( "messageContent", messageHtml );
+    QString messageHtml = QString::fromLatin1( content->decodedContent() );
+    messageHtml.replace( QLatin1Char( '\n' ), QLatin1String( "<br />" ) );
+    h.insert( QLatin1String( "messageContent" ), messageHtml );
 
     Grantlee::Context c(h);
     QString renderedContent = t->render(&c);

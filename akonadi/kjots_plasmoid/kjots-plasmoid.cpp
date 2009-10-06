@@ -27,7 +27,7 @@
 KJotsPlasmoid::KJotsPlasmoid( QObject *parent, const QVariantList &args )
     : Plasma::PopupApplet( parent, args ), w( 0 )
 {
-  setPopupIcon( "kjots" );
+  setPopupIcon( QLatin1String( "kjots" ) );
 }
 
 

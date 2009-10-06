@@ -48,6 +48,8 @@ protected Q_SLOTS:
   void retrieveItems( const Akonadi::Collection &col );
   bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
+
+
 protected:
   virtual void aboutToQuit();
 
@@ -55,8 +57,6 @@ protected:
   Creates a new .kjpage file. Updates the .kjbook file to contain a reference to it.
   */
   virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-
-//   virtual void itemAdded( const Akonadi::Item &item, const QStringList &locationHeirarchy );
 
   /**
   Changes a .kjpage file. If the change is a change to the ItemAbove,

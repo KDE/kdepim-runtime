@@ -86,11 +86,11 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
 
   KStandardDirs KStd;
   Engine *engine = Engine::instance();
-  engine->setPluginDirs(KStd.findDirs("lib", "grantlee"));
+  engine->setPluginDirs(KStd.findDirs("lib", QLatin1String( "grantlee" ) ) );
 
   m_loader = FileSystemTemplateLoader::Ptr( new FileSystemTemplateLoader() );
-  m_loader->setTemplateDirs(KStd.findDirs("data", QString("kjotsrewrite/themes")));
-  m_loader->setTheme("default");
+  m_loader->setTemplateDirs(KStd.findDirs("data", QLatin1String("kjotsrewrite/themes")));
+  m_loader->setTheme( QLatin1String( "default" ) );
 
   engine->addTemplateLoader( m_loader );
 
@@ -280,11 +280,11 @@ QString KJotsWidget::renderSelectionToHtml()
     objectList << QVariant::fromValue(obj);
   }
 
-  hash.insert("entities", objectList);
+  hash.insert( QLatin1String( "entities" ), objectList);
   Context c(hash);
 
   Engine *engine = Engine::instance();
-  Template t = engine->loadByName("template.html");
+  Template t = engine->loadByName( QLatin1String( "template.html" ) );
 
   QString result = t->render(&c);
   // TODO: handle errors.
@@ -338,7 +338,7 @@ QString KJotsWidget::getThemeFromUser()
                                       m_loader->themeName(), &ok);
   if (!ok || text.isEmpty())
   {
-    return QString("default");
+    return QLatin1String("default");
   }
 
   return text;
@@ -358,7 +358,7 @@ void KJotsWidget::exportSelection()
   QString themeName = getThemeFromUser();
   if (themeName.isEmpty())
   {
-    themeName = "default";
+    themeName = QLatin1String( "default" );
   }
   m_loader->setTheme(themeName);
 

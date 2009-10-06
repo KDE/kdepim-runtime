@@ -64,8 +64,8 @@ class MailThreaderAgent::Private
   {
     // ### Used to be configurable in KMail (see kmmsgbase)
     QStringList sReplySubjPrefixes, sForwardSubjPrefixes;
-    sReplySubjPrefixes << "Re\\s*:" << "Re\\[\\d+\\]:" << "Re\\d+:";
-    sForwardSubjPrefixes << "Fwd:" << "FW:";
+    sReplySubjPrefixes << QLatin1String( "Re\\s*:" ) << QLatin1String( "Re\\[\\d+\\]:" ) << QLatin1String( "Re\\d+:" );
+    sForwardSubjPrefixes << QLatin1String( "Fwd:" ) << QLatin1String( "FW:" );
 
     return replacePrefixes( str, sReplySubjPrefixes + sForwardSubjPrefixes,
                             true, QString() ).trimmed();
@@ -82,7 +82,7 @@ class MailThreaderAgent::Private
     // 1. is anchored to the beginning of str (sans whitespace)
     // 2. matches at least one of the part regexps in prefixRegExps
     QString bigRegExp = QString::fromLatin1("^(?:\\s+|(?:%1))+\\s*")
-                        .arg( prefixRegExps.join(")|(?:") );
+                        .arg( prefixRegExps.join( QLatin1String( ")|(?:" ) ) );
     QRegExp rx( bigRegExp, Qt::CaseInsensitive );
     if ( !rx.isValid() ) {
       kWarning( 5258 ) << "bigRegExp = \""
@@ -95,11 +95,11 @@ class MailThreaderAgent::Private
       if ( rx.indexIn( tmp ) == 0 ) {
         recognized = true;
         if ( replace )
-          return tmp.replace( 0, rx.matchedLength(), newPrefix + ' ' );
+          return tmp.replace( 0, rx.matchedLength(), newPrefix + QLatin1Char( ' ' ) );
       }
     }
     if ( !recognized )
-      return newPrefix + ' ' + str;
+      return newPrefix + QLatin1Char( ' ' ) + str;
     else
       return str;
   }
@@ -262,7 +262,7 @@ class MailThreaderAgent::Private
     QString secondReplyId = msg->references()->asUnicodeString();
     // references contains two items, use the first one
     // (the second to last reference)
-    const int rightAngle = secondReplyId.indexOf( '>' );
+    const int rightAngle = secondReplyId.indexOf( QLatin1Char( '>' ) );
     if( rightAngle != -1 )
       secondReplyId.truncate( rightAngle + 1 );
 

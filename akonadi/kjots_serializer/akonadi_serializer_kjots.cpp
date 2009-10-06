@@ -44,19 +44,17 @@ bool SerializerPluginKJots::deserialize( Item & item, const QByteArray &label, Q
 
   QDomElement pageRootElement = doc.documentElement();
 
-  if ( pageRootElement.tagName() ==  "KJotsPage" ) {
+  if ( pageRootElement.tagName() == QLatin1String( "KJotsPage" ) ) {
     QDomNode n = pageRootElement.firstChild();
     while ( !n.isNull() ) {
       QDomElement e = n.toElement();
       if ( !e.isNull() ) {
-        if ( e.tagName() == "Title" ) {
-          if ( label == "title" || label == Item::FullPayload )
+        if ( e.tagName() == QLatin1String( "Title" ) ) {
             page.setTitle( e.text() );
         }
 
-        if ( e.tagName() == "Content" ) {
-          if ( label == "content" || label == Item::FullPayload )
-            page.setContent( QString( e.text() ) );
+        if ( e.tagName() == QLatin1String( "Content" ) ) {
+            page.setContent( e.text() );
         }
       }
       n = n.nextSibling();
@@ -77,22 +75,17 @@ void SerializerPluginKJots::serialize( const Item &item, const QByteArray &label
 
   KJotsPage page = item.payload< KJotsPage >();
 
-  QDomDocument doc( "KJotsPage" );
-  QDomElement root = doc.createElement( "KJotsPage" );
+  QDomDocument doc( QLatin1String( "KJotsPage" ) );
+  QDomElement root = doc.createElement( QLatin1String( "KJotsPage" ) );
   doc.appendChild( root );
 
-  if ( "title" == label || label == Item::FullPayload )
-  {
-    QDomElement title = doc.createElement( "Title" );
-    title.appendChild( doc.createTextNode( page.title().toUtf8() ) );
-    root.appendChild( title );
-  }
+  QDomElement title = doc.createElement( QLatin1String( "Title" ) );
+  title.appendChild( doc.createTextNode( page.title() ) );
+  root.appendChild( title );
 
-  if ( "content" == label || label == Item::FullPayload ) {
-    QDomElement content = doc.createElement( "Content" );
-    content.appendChild( doc.createCDATASection( page.content().toUtf8() ) );
-    root.appendChild( content );
-  }
+  QDomElement content = doc.createElement( QLatin1String( "Content" ) );
+  content.appendChild( doc.createCDATASection( page.content() ) );
+  root.appendChild( content );
 
   data.write( doc.toString().toUtf8() );
 }

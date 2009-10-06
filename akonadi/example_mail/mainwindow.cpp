@@ -36,7 +36,7 @@ MainWindow::MainWindow() : KXmlGuiWindow()
   setCentralWidget( mw );
 
   KAction *action;
-  action = actionCollection()->addAction( "compose_mail");
+  action = actionCollection()->addAction( QLatin1String( "compose_mail" ) );
   action->setText( i18n("New Mail") );
   connect(action, SIGNAL(triggered()), SLOT(compose()));
 
