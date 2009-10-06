@@ -70,7 +70,7 @@ protected:
                           const Akonadi::Collection &destination );
 
   virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-  virtual void collectionChanged( const Akonadi::Collection &collection );
+  virtual void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &parts );
   virtual void collectionRemoved( const Akonadi::Collection &collection );
   virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                 const Akonadi::Collection &destination );
@@ -97,6 +97,8 @@ private Q_SLOTS:
   void onContentFetchDone( KJob *job );
   void onCreateMailBoxDone( KJob *job );
   void onRenameMailBoxDone( KJob *job );
+  void onSetAclDone( KJob *job );
+  void onSetMetaDataDone( KJob *job );
   void onDeleteMailBoxDone( KJob *job );
   void onMailBoxMoveDone( KJob *job );
   void onSubscribeDone( KJob *job );
@@ -110,6 +112,9 @@ private Q_SLOTS:
   void reconnect();
 
 private:
+  void triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
+                                       const QStringList &remainingParts );
+
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
   bool needsNetwork() const;

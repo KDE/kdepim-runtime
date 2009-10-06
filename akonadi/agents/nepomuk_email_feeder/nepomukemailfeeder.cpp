@@ -20,6 +20,7 @@
 
 #include "nepomukemailfeeder.h"
 #include "messageanalyzer.h"
+#include "configdialog.h"
 
 #include <kmime/kmime_message.h>
 
@@ -45,6 +46,13 @@ void NepomukEMailFeeder::updateItem(const Akonadi::Item & item, const QUrl &grap
   if ( !item.hasPayload<KMime::Message::Ptr>() )
     return;
   new MessageAnalyzer( item, graphUri, this );
+}
+
+void NepomukEMailFeeder::configure(WId windowId)
+{
+  ConfigDialog* dlg = new ConfigDialog( windowId );
+  dlg->setAttribute( Qt::WA_DeleteOnClose );
+  dlg->show();
 }
 
 AKONADI_AGENT_MAIN( NepomukEMailFeeder )
