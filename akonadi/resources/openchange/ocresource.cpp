@@ -1563,7 +1563,7 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
   ItemFetchJob *fetch = new ItemFetchJob( collection );
   if ( !fetch->exec() ) {
     emit status( Broken,
-                 QString( "Unable to fetch listing of collection '%1': %2" ).arg( collection.name() ).arg( fetch->errorString() ) );
+                 i18n( "Unable to fetch listing of collection '%1': %2" , collection.name() ,fetch->errorString() ) );
     return;
   }
 
