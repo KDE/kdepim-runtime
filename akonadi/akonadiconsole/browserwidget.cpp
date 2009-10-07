@@ -36,8 +36,9 @@
 #include <akonadi/job.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionpropertiesdialog.h>
-#include <akonadi/standardactionmanager.h>
+#include <akonadi/selectionproxymodel.h>
 #include <akonadi/session.h>
+#include <akonadi/standardactionmanager.h>
 #include <akonadi/entitytreeview.h>
 #include <akonadi/entitytreeviewstatesaver.h>
 #include <akonadi/favoritecollectionsmodel.h>
@@ -122,7 +123,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
   mBrowserModel = new AkonadiBrowserModel( session, monitor, this );
   mBrowserModel->setItemPopulationStrategy( EntityTreeModel::LazyPopulation );
-  mBrowserModel->setShowHiddenEntities(true);
+  mBrowserModel->setShowSystemEntities(true);
 
   new ModelTest( mBrowserModel );
 
@@ -147,7 +148,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 //   connect( mBrowserModel, SIGNAL( modelAboutToBeReset() ), SLOT( slotBrowserModelAboutToBeReset() ) );
 //   connect( mBrowserModel, SIGNAL( modelReset() ), SLOT( slotBrowserModelReset() ) );
 
-  KSelectionProxyModel *selectionProxyModel = new KSelectionProxyModel( mCollectionView->selectionModel(), this );
+  Akonadi::SelectionProxyModel *selectionProxyModel = new Akonadi::SelectionProxyModel( mCollectionView->selectionModel(), this );
   selectionProxyModel->setSourceModel( mBrowserModel );
   selectionProxyModel->setFilterBehavior( KSelectionProxyModel::OnlySelectedChildren );
 
