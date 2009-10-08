@@ -50,15 +50,22 @@ QString KJotsResource::getFileUrl( const Item &item ) const
   return m_rootDataPath + QLatin1Char( '/' ) + item.remoteId();
 }
 
-Collection::List KJotsResource::getDescendantCollections( Collection& col ) const
+QDomDocument KJotsResource::getBook( const Collection &collection ) const
 {
-  Collection::List list;
-  QString fileUrl = getFileUrl( col );
+  QString fileUrl = getFileUrl( collection );
   KUrl bookUrl( fileUrl );
   QFile bookFile( bookUrl.toLocalFile() );
 
   QDomDocument doc;
   doc.setContent( &bookFile );
+  return doc;
+}
+
+Collection::List KJotsResource::getDescendantCollections( Collection& col ) const
+{
+  Collection::List list;
+
+  QDomDocument doc = getBook( col );
 
   QDomElement rootElement = doc.documentElement();
 
@@ -98,12 +105,7 @@ Item::List KJotsResource::getContainedItems( const Collection &col ) const
 {
   Item::List list;
 
-  QString fileUrl = getFileUrl( col );
-  KUrl bookUrl( fileUrl );
-  QFile bookFile( bookUrl.toLocalFile() );
-
-  QDomDocument doc;
-  doc.setContent( &bookFile );
+  QDomDocument doc = getBook( col );
 
   QDomElement rootElement = doc.documentElement();
 
@@ -124,6 +126,118 @@ Item::List KJotsResource::getContainedItems( const Collection &col ) const
   }
 
   return list;
+}
+
+KJotsPage KJotsResource::getPage( const Akonadi::Item& item, QSet<QByteArray> parts ) const
+{
+  QString fileUrl = getFileUrl( item );
+  KUrl pageUrl( fileUrl );
+  QFile pageFile( pageUrl.toLocalFile() );
+
+  KJotsPage page;
+  QDomDocument doc;
+  doc.setContent( &pageFile );
+
+  QDomElement pageRootElement = doc.documentElement();
+
+  if ( pageRootElement.tagName() == QLatin1String( "KJotsPage" ) ) {
+    QDomNode n = pageRootElement.firstChild();
+    while ( !n.isNull() ) {
+      QDomElement e = n.toElement();
+      if ( !e.isNull() ) {
+        if ( e.tagName() == QLatin1String( "Title" ) ) {
+          page.setTitle( e.text() );
+        }
+
+        if ( e.tagName() == QLatin1String( "Content" ) ) {
+          page.setContent( QString( e.text() ) );
+        }
+      }
+      n = n.nextSibling();
+    }
+  }
+
+  return page;
+}
+
+bool KJotsResource::addContentEntry( const Collection &parent, const QString &contentFilename ) const
+{
+  QString destinationFile = getFileUrl( parent );
+  KUrl destBook( destinationFile );
+  QFile destBookFile( destBook.toLocalFile() );
+
+  QDomDocument destBookDoc;
+  destBookDoc.setContent( &destBookFile );
+  destBookFile.close();
+  if ( !destBookFile.open( QFile::WriteOnly ) )
+  {
+    return false;
+  }
+  QDomElement rootElement = destBookDoc.documentElement();
+
+  QDomElement contents = rootElement.firstChildElement( QLatin1String( "Contents" ) );
+
+  QDomElement newElement;
+  if ( contentFilename.endsWith( QLatin1String( ".kjbook" ) ) )
+    newElement = destBookDoc.createElement( QLatin1String( "KJotsBook" ) );
+  else
+    newElement = destBookDoc.createElement( QLatin1String( "KJotsPage" ) );
+
+  newElement.setAttribute( QLatin1String( "filename" ), contentFilename );
+  contents.appendChild( newElement );
+
+  destBookFile.write( destBookDoc.toString().toUtf8() );
+  destBookFile.close();
+
+  return true;
+}
+
+bool KJotsResource::removeContentEntry( const Collection &parent, const QString &contentFilename ) const
+{
+  QString fileUrl = getFileUrl( parent );
+  KUrl bookUrl( fileUrl );
+  QFile bookFile( bookUrl.toLocalFile() );
+
+  QDomDocument bookDoc;
+  bookDoc.setContent( &bookFile );
+  bookFile.close();
+  if ( !bookFile.open( QFile::WriteOnly ) )
+  {
+    return false;
+  }
+
+  QDomElement rootElement = bookDoc.documentElement();
+
+  QDomElement contents = rootElement.firstChildElement( QLatin1String( "Contents" ) );
+  QDomElement pageElement = contents.firstChildElement( QLatin1String( "KJotsPage" ) );
+  while ( !pageElement.isNull() )
+  {
+    if ( pageElement.attribute( QLatin1String( "filename" ) ) == contentFilename )
+    {
+      contents.removeChild( pageElement );
+    }
+  }
+  bookFile.write( bookDoc.toString().toUtf8() );
+  bookFile.close();
+
+  return true;
+}
+
+QDomDocument KJotsResource::getDomDocument( const KJotsPage &page ) const
+{
+  QDomDocument pageDoc;
+  QDomElement pageElement = pageDoc.createElement( QLatin1String( "KJotsPage" ) );
+  pageDoc.appendChild( pageElement );
+
+  QDomElement titleElement = pageDoc.createElement( QLatin1String( "Title" ) );
+  titleElement.appendChild( pageDoc.createTextNode( page.title() ) );
+  pageElement.appendChild( titleElement );
+
+  QDomElement contentElement = pageDoc.createElement( QLatin1String( "Content" ) );
+  contentElement.appendChild( pageDoc.createCDATASection( page.content() ) );
+  pageElement.appendChild( contentElement );
+
+  return pageDoc;
 }
 
 
@@ -169,38 +283,6 @@ void KJotsResource::retrieveItems( const Akonadi::Collection &collection )
   itemsRetrieved( items );
 }
 
-KJotsPage KJotsResource::getPage( const Akonadi::Item& item, QSet<QByteArray> parts ) const
-{
-  QString fileUrl = getFileUrl( item );
-  KUrl pageUrl( fileUrl );
-  QFile pageFile( pageUrl.toLocalFile() );
-
-  KJotsPage page;
-  QDomDocument doc;
-  doc.setContent( &pageFile );
-
-  QDomElement pageRootElement = doc.documentElement();
-
-  if ( pageRootElement.tagName() == QLatin1String( "KJotsPage" ) ) {
-    QDomNode n = pageRootElement.firstChild();
-    while ( !n.isNull() ) {
-      QDomElement e = n.toElement();
-      if ( !e.isNull() ) {
-        if ( e.tagName() == QLatin1String( "Title" ) ) {
-          page.setTitle( e.text() );
-        }
-
-        if ( e.tagName() == QLatin1String( "Content" ) ) {
-          page.setContent( QString( e.text() ) );
-        }
-      }
-      n = n.nextSibling();
-    }
-  }
-
-  return page;
-}
-
 bool KJotsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Item newItem = item;
@@ -236,18 +318,68 @@ void KJotsResource::configure( WId windowId )
 
 void KJotsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
+  KTemporaryFile tempFile;
+  tempFile.setPrefix( m_rootDataPath );
+  tempFile.setSuffix( QLatin1String( ".kjpage" ) );
+  tempFile.setAutoRemove( false );
 
+  if ( !tempFile.open() )
+    return;
 
-  changeCommitted( item );
+  KJotsPage page;
+  page = item.payload<KJotsPage>();
+
+  QDomDocument pageDoc = getDomDocument(page);
+
+  QString remoteId = tempFile.fileName().split( QLatin1String(  "/" ) ).last();
+
+  tempFile.write( pageDoc.toByteArray() );
+  tempFile.close();
+
+  if ( !addContentEntry( collection, remoteId ) )
+    return;
+
+  Item newItem = item;
+  newItem.setRemoteId( remoteId );
+
+//   EntityDisplayAttribute *eda = new EntityDisplayAttribute;
+//   eda->setDisplayName( page.title() );
+//   eda->setIconName( QLatin1String( "text-x-generic" ) );
+//   newItem.addAttribute(eda);
+
+  changeCommitted( newItem );
 }
 
 void KJotsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
+  QString fileUrl = getFileUrl( item );
+  KUrl pageUrl( fileUrl );
+  QFile pageFile( pageUrl.toLocalFile() );
+
+  if ( !item.hasPayload<KJotsPage>() )
+    return;
+
+  KJotsPage page = item.payload<KJotsPage>();
+
+  if ( !pageFile.open( QFile::WriteOnly ) )
+    return;
+
+  QDomDocument pageDoc = getDomDocument( page );
+
+  pageFile.write( pageDoc.toByteArray() );
+  pageFile.close();
+
   changeCommitted( item );
 }
 
 void KJotsResource::itemRemoved( const Akonadi::Item &item )
 {
+  QFile::remove( item.remoteId() );
+
+  Collection parentBook = item.parentCollection();
+
+  removeContentEntry( parentBook, item.remoteId() );
+
   changeCommitted( item );
 
 }
@@ -256,30 +388,108 @@ void KJotsResource::itemMoved( const Akonadi::Item &item,
                                const Akonadi::Collection &source,
                                const Akonadi::Collection &destination )
 {
+  if ( !entityMoved( item, source, destination ) )
+    return;
 
+  changeCommitted( item );
 }
 
 void KJotsResource::collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent )
 {
-  changeCommitted( collection );
+  KTemporaryFile tempFile;
+  tempFile.setPrefix( m_rootDataPath );
+  tempFile.setSuffix( QLatin1String( ".kjbook" ) );
+  tempFile.setAutoRemove( false );
+
+  if ( !tempFile.open() )
+    return;
+
+  QDomDocument bookDoc;
+
+  QDomElement bookElement = bookDoc.createElement( QLatin1String( "KJotsBook" ) );
+  bookDoc.appendChild( bookElement );
+
+  QDomElement titleElement = bookDoc.createElement( QLatin1String( "Title" ) );
+  bookElement.appendChild( titleElement );
+  QDomElement contentElement = bookDoc.createElement( QLatin1String( "Contents" ) );
+  bookElement.appendChild( contentElement );
+
+  tempFile.write( bookDoc.toString().toUtf8() );
+
+  QString remoteId = tempFile.fileName().split( QLatin1String(  "/" ) ).last();
+
+  tempFile.close();
+
+  if ( !addContentEntry( parent, remoteId ) )
+    return;
+
+  Collection newCollection = collection;
+  newCollection.setRemoteId( remoteId );
+
+  changeCommitted( newCollection );
 }
 
 void KJotsResource::collectionRemoved( const Akonadi::Collection &collection )
 {
+  QFile::remove( collection.remoteId() );
+
+  Collection parentBook = collection.parentCollection();
+
+  removeContentEntry( parentBook, collection.remoteId() );
+
   changeCommitted( collection );
 }
 
 void KJotsResource::collectionChanged( const Akonadi::Collection &collection )
 {
-  changeCommitted( collection );
+  QString bookFilename = getFileUrl( collection );
+  KUrl bookUrl( bookFilename );
+  QFile bookFile( bookUrl.toLocalFile() );
 
+  QDomDocument bookDoc;
+  bookDoc.setContent( &bookFile );
+  bookFile.close();
+  if ( !bookFile.open( QFile::WriteOnly ) )
+  {
+    return;
+  }
+
+  QDomElement root = bookDoc.documentElement();
+  QDomElement titleElement = root.firstChildElement( QLatin1String( "Title" ) );
+  titleElement.clear();
+
+  QString title = collection.name();
+
+  if (collection.hasAttribute<EntityDisplayAttribute>())
+    title = collection.attribute<EntityDisplayAttribute>()->displayName();
+
+  // TODO: Handle the CollectionChildOrderAttribute
+
+  titleElement.appendChild( bookDoc.createTextNode( title ) );
+
+  changeCommitted( collection );
 }
+
 
 void KJotsResource::collectionMoved( const Akonadi::Collection &collection,
                                      const Akonadi::Collection &source,
                                      const Akonadi::Collection &destination )
 {
+  if ( !entityMoved( collection, source, destination ) )
+    return;
 
+  changeCommitted( collection );
+}
+
+bool KJotsResource::entityMoved( const Akonadi::Entity &entity,
+                                     const Akonadi::Collection &source,
+                                     const Akonadi::Collection &destination )
+{
+  // TODO: Maybe undo the remove if the add fails.
+  if ( removeContentEntry( source, entity.remoteId() ) && addContentEntry( destination, entity.remoteId() ) )
+    return true;
+
+  return false;
 }
 
 AKONADI_RESOURCE_MAIN( KJotsResource )

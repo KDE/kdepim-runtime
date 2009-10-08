@@ -32,7 +32,7 @@
 
 
 class KJotsResource : public Akonadi::ResourceBase,
-      public Akonadi::AgentBase::Observer
+      public Akonadi::AgentBase::Observer2
 {
   Q_OBJECT
 
@@ -47,8 +47,6 @@ protected Q_SLOTS:
   void retrieveCollections();
   void retrieveItems( const Akonadi::Collection &col );
   bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-
-
 
 protected:
   virtual void aboutToQuit();
@@ -108,9 +106,17 @@ protected:
 private:
   QString m_rootDataPath;
 
-  QString findParent( const QString &remoteId );
-  QHash <QString, QStringList> m_parentBook;
+  /**
+    @returns the Collection at
+  */
+  QDomDocument getBook( const Akonadi::Collection &collection ) const;
+  QDomDocument getDomDocument( const KJotsPage &page ) const;
+  bool removeContentEntry( const Akonadi::Collection &parent, const QString &contentFilename ) const;
+  bool addContentEntry( const Akonadi::Collection &parent, const QString &contentFilename ) const;
 
+  bool entityMoved( const Akonadi::Entity &entity,
+                    const Akonadi::Collection &source,
+                    const Akonadi::Collection &destination );
 
 };
 
