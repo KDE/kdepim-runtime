@@ -83,6 +83,9 @@ class SingleFileResource : public SingleFileResourceBase
 
       if ( mCurrentUrl.isLocalFile() )
       {
+        if ( ( name().isEmpty() || name() == identifier() ) && !mCurrentUrl.isEmpty() )
+          setName( mCurrentUrl.fileName() );
+
         // check if the file does not exist yet, if so, create it
         if ( !QFile::exists( mCurrentUrl.toLocalFile() ) ) {
           QFile f( mCurrentUrl.toLocalFile() );
