@@ -30,7 +30,7 @@ include(FindKdepimLibs)
 
 add_subdirectory(akonadi_next)
 add_subdirectory(mailthreader)
-add_subdirectory(akonadicli)
+#add_subdirectory(akonadicli)
 
 # http://gitorious.org/grantlee
 find_package(Grantlee)
