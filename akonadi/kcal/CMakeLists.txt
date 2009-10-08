@@ -13,6 +13,10 @@ set( kcalakonadi_LIB_SRC
      kcalmodel.cpp
      kcalitembrowser.cpp
      itembrowser.cpp
+     calendarbase.cpp
+     calendarnull.cpp
+     akonadicalendar.cpp
+     utils.cpp
 )
 
 kde4_add_library( akonadi-kcal SHARED ${kcalakonadi_LIB_SRC} )
