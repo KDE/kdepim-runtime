@@ -444,7 +444,7 @@
   <customwidget>
    <class>MessageViewer::Viewer</class>
    <extends>KTextBrowser</extends>
-   <header location="global">libmessageviewer/viewer.h</header>
+   <header location="global">messageviewer/viewer.h</header>
   </customwidget>
   <customwidget>
    <class>Nepomuk::TagWidget</class>
