@@ -54,6 +54,27 @@ namespace Akonadi
   * returns the journal from an akonadi item, or a null pointer if the item has no such payload
   */
  AKONADI_KCAL_EXPORT KCal::Journal::Ptr journal( const Akonadi::Item &item );
+
+ /**
+  * returns whether an Akonadi item contains an incidence
+  */
+ AKONADI_KCAL_EXPORT bool hasIncidence( const Akonadi::Item &item );
+
+ /**
+  * returns whether an Akonadi item contains an event
+  */
+ AKONADI_KCAL_EXPORT bool hasEvent( const Akonadi::Item &item );
+
+ /**
+  * returns whether an Akonadi item contains a todo
+  */
+ AKONADI_KCAL_EXPORT bool hasTodo( const Akonadi::Item &item );
+
+ /**
+  * returns whether an Akonadi item contains a journal
+  */
+ AKONADI_KCAL_EXPORT bool hasJournal( const Akonadi::Item &item );
+
 }
 
 #endif

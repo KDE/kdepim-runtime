@@ -26,18 +26,38 @@
 
 #include <Akonadi/Item>
 
-KCal::Incidence::Ptr Akonadi::incidence( const Akonadi::Item &item ) {
-  return item.hasPayload<KCal::Incidence::Ptr>() ? item.payload<KCal::Incidence::Ptr>() : KCal::Incidence::Ptr();
+using namespace KCal;
+using namespace Akonadi;
+
+Incidence::Ptr Akonadi::incidence( const Item &item ) {
+  return item.hasPayload<Incidence::Ptr>() ? item.payload<Incidence::Ptr>() : Incidence::Ptr();
 }
 
-KCal::Event::Ptr Akonadi::event( const Akonadi::Item &item ) {
-  return item.hasPayload<KCal::Event::Ptr>() ? item.payload<KCal::Event::Ptr>() : KCal::Event::Ptr();
+Event::Ptr Akonadi::event( const Item &item ) {
+  return item.hasPayload<Event::Ptr>() ? item.payload<Event::Ptr>() : Event::Ptr();
 }
 
-KCal::Todo::Ptr Akonadi::todo( const Akonadi::Item &item ) {
-  return item.hasPayload<KCal::Todo::Ptr>() ? item.payload<KCal::Todo::Ptr>() : KCal::Todo::Ptr();
+Todo::Ptr Akonadi::todo( const Item &item ) {
+  return item.hasPayload<Todo::Ptr>() ? item.payload<Todo::Ptr>() : Todo::Ptr();
 }
 
-KCal::Journal::Ptr Akonadi::journal( const Akonadi::Item &item ) {
-  return item.hasPayload<KCal::Journal::Ptr>() ? item.payload<KCal::Journal::Ptr>() : KCal::Journal::Ptr();
+Journal::Ptr Akonadi::journal( const Item &item ) {
+  return item.hasPayload<Journal::Ptr>() ? item.payload<Journal::Ptr>() : Journal::Ptr();
 }
+
+bool Akonadi::hasIncidence( const Item& item ) {
+  return item.hasPayload<Incidence::Ptr>();
+}
+
+bool Akonadi::hasEvent( const Item& item ) {
+  return item.hasPayload<Event::Ptr>();
+}
+
+bool Akonadi::hasTodo( const Item& item ) {
+  return item.hasPayload<Todo::Ptr>();
+}
+
+bool Akonadi::hasJournal( const Item& item ) {
+  return item.hasPayload<Journal::Ptr>();
+}
+
