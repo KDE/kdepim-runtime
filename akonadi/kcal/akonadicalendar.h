@@ -53,9 +53,15 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 
     Akonadi::Item itemForIncidence(KCal::Incidence *incidence) const;
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool beginChange( KCal::Incidence *incidence );
     bool beginChangeFORAKONADI( const Akonadi::Item &incidence );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool endChange( KCal::Incidence *incidence );
     bool endChangeFORAKONADI( const Akonadi::Item &incidence );
 
@@ -64,67 +70,138 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     void close(); //TODO remove, atm abstract in Calendar
 
     bool addAgent( const KUrl &mUrl );
+
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool addIncidence( KCal::Incidence *incidence );
     bool addIncidenceFORAKONADI( const Akonadi::Item &incidence );
+
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool deleteIncidence( KCal::Incidence *incidence );
     bool deleteIncidenceFORAKONADI( const Akonadi::Item &incidence );
 
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool addEvent( KCal::Event *event );
     bool addEventFORAKONADI( const Akonadi::Item &event );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool deleteEvent( KCal::Event *event );
     bool deleteEventFORAKONADI( const Akonadi::Item &event );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     void deleteAllEvents() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
     void deleteAllEventsFORAKONADI() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Event::List rawEvents( EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item ::List rawEventsFORAKONADI( EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
+
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Event::List rawEvents( const QDate &start, const QDate &end, const KDateTime::Spec &timeSpec = KDateTime::Spec(), bool inclusive = false );
     Akonadi::Item ::List rawEventsFORAKONADI( const QDate &start, const QDate &end, const KDateTime::Spec &timeSpec = KDateTime::Spec(), bool inclusive = false );
+
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Event::List rawEventsForDate( const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(), EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item ::List rawEventsForDateFORAKONADI( const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(), EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
+
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Event::List rawEventsForDate( const KDateTime &dt );
     Akonadi::Item::List rawEventsForDateFORAKONADI( const KDateTime &dt );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Event *event( const QString &uid );
     Akonadi::Item eventFORAKONADI( const Akonadi::Item::Id &id );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool addTodo( KCal::Todo *todo );
     bool addTodoFORAKONADI( const Akonadi::Item &todo );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool deleteTodo( KCal::Todo *todo );
     bool deleteTodoFORAKONADI( const Akonadi::Item &todo );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     void deleteAllTodos() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
     void deleteAllTodosFORAKONADI() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Todo::List rawTodos( TodoSortField sortField = TodoSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item::List rawTodosFORAKONADI( TodoSortField sortField = TodoSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Todo::List rawTodosForDate( const QDate &date );
     Akonadi::Item::List rawTodosForDateFORAKONADI( const QDate &date );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Todo *todo( const QString &uid );
     Akonadi::Item todoFORAKONADI( const Akonadi::Item::Id &uid );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool addJournal( KCal::Journal *journal );
     bool addJournalFORAKONADI( const Akonadi::Item &journal );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     bool deleteJournal( KCal::Journal *journal );
     bool deleteJournalFORAKONADI( const Akonadi::Item &journal );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     void deleteAllJournals() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
     void deleteAllJournalsFORAKONADI() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Journal::List rawJournals( JournalSortField sortField = JournalSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item::List rawJournalsFORAKONADI( JournalSortField sortField = JournalSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Journal::List rawJournalsForDate( const QDate &date );
     Akonadi::Item ::List rawJournalsForDateFORAKONADI( const QDate &date );
 
+    /**
+     * @deprecated: FORAKONADI
+     */
     KCal::Journal *journal( const QString &uid );
     Akonadi::Item journalFORAKONADI( const Akonadi::Item::Id &id );
 
@@ -134,6 +211,9 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     using QObject::event;   // prevent warning about hidden virtual method
 
   public Q_SLOTS:
+    /**
+     * @deprecated: FORAKONADI
+     */
     void deleteIncidenceProxyMethod( KCal::Incidence *incidence ) { deleteIncidence(incidence); }
     void deleteIncidenceProxyMethodFORAKONADI( const Akonadi::Item &incidence ) { deleteIncidenceFORAKONADI(incidence); }
 
