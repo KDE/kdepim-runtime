@@ -1093,7 +1093,7 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
 
   case TodoSortStartDate:
     alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
+    for ( eit = alphaList.constBegin(); eit != alphaList.constEnd(); ++eit ) {
       const Todo::Ptr e = Akonadi::todo( *eit );
       if ( e->hasStartDate() ) {
         sortIt = todoListSorted.begin();
@@ -1126,7 +1126,7 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
 
   case TodoSortDueDate:
     alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
+    for ( eit = alphaList.constBegin(); eit != alphaList.constEnd(); ++eit ) {
       const Todo::Ptr e = Akonadi::todo( *eit );
       if ( e->hasDueDate() ) {
         sortIt = todoListSorted.begin();
@@ -1159,7 +1159,7 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
 
   case TodoSortPriority:
     alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
+    for ( eit = alphaList.constBegin(); eit != alphaList.constEnd(); ++eit ) {
       const Todo::Ptr e = Akonadi::todo( *eit );
       sortIt = todoListSorted.begin();
       if ( sortDirection == SortDirectionAscending ) {
@@ -1179,7 +1179,7 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
 
   case TodoSortPercentComplete:
     alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
+    for ( eit = alphaList.constBegin(); eit != alphaList.constEnd(); ++eit ) {
       const Todo::Ptr e = Akonadi::todo( *eit );
       sortIt = todoListSorted.begin();
       if ( sortDirection == SortDirectionAscending ) {
@@ -1341,7 +1341,7 @@ Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList_,
     break;
 
   case JournalSortSummary:
-    for ( eit = journalList.begin(); eit != journalList.end(); ++eit ) {
+    for ( eit = journalList.constBegin(); eit != journalList.constEnd(); ++eit ) {
       const Journal::Ptr e = Akonadi::journal( *eit );
       sortIt = journalListSorted.begin();
       if ( sortDirection == SortDirectionAscending ) {
