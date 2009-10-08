@@ -42,12 +42,12 @@ public:
   void setContent( const QString &content );
   void setRemoteId( const QString &remoteId );
 
-  bool isValid();
-  bool save();
+  bool isValid() const;
+  bool save() const;
 
-  QString title();
-  QString content();
-  QString remoteId();
+  QString title() const;
+  QString content() const;
+  QString remoteId() const;
 
   static QLatin1String mimeType() {
     return QLatin1String( "application/x-vnd.kde-app-kjots-page" );

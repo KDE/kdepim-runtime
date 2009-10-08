@@ -99,18 +99,18 @@ void KJotsPage::setRemoteId( const QString &remoteId )
   m_remoteId = remoteId;
 }
 
-QString KJotsPage::title()
+QString KJotsPage::title() const
 {
   return m_title;
 }
 
-QString KJotsPage::content()
+QString KJotsPage::content() const
 {
   return m_content;
 }
 
 
-QString KJotsPage::remoteId()
+QString KJotsPage::remoteId() const
 {
   return m_remoteId;
 }
@@ -124,12 +124,12 @@ KJotsPage KJotsPage::fromIODevice( QIODevice *dev )
   return page;
 }
 
-bool KJotsPage::isValid()
+bool KJotsPage::isValid() const
 {
   return !title().isNull();
 }
 
-bool KJotsPage::save()
+bool KJotsPage::save() const
 {
   QDomDocument newDoc( QLatin1String( "KJotsPage" ) );
   QDomElement root = newDoc.createElement( QLatin1String( "KJotsPage" ) );
