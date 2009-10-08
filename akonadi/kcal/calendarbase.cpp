@@ -52,6 +52,52 @@ using namespace Akonadi;
 using namespace KCal;
 using namespace KOrg;
 
+namespace {
+  class Visitor {
+    bool visit( const Item& ) {
+    }
+  };
+
+  class AddVisitor : public IncidenceBase::Visitor {
+    CalendarBase* const mCalendar;
+    const Item mItem;
+  public:
+    explicit AddVisitor( CalendarBase* cal, const Item& item ) : mCalendar( cal ), mItem( item ) {}
+
+    /* reimp */ bool visit( Event * ) {
+      return mCalendar->addEventFORAKONADI( mItem );
+    }
+
+    /* reimp */ bool visit( Todo * ) {
+      return mCalendar->addTodoFORAKONADI( mItem );
+    }
+
+    /* reimp */ bool visit( Journal * ) {
+      return mCalendar->addJournalFORAKONADI( mItem );
+    }
+  };
+
+  class DeleteVisitor : public IncidenceBase::Visitor {
+    CalendarBase* const mCalendar;
+    const Item mItem;
+  public:
+    explicit DeleteVisitor( CalendarBase* cal, const Item& item ) : mCalendar( cal ), mItem( item ) {}
+
+    /* reimp */ bool visit( Event * ) {
+      return mCalendar->deleteEventFORAKONADI( mItem );
+    }
+
+    /* reimp */ bool visit( Todo * ) {
+      return mCalendar->deleteTodoFORAKONADI( mItem );
+    }
+
+    /* reimp */ bool visit( Journal * ) {
+      return mCalendar->deleteJournalFORAKONADI( mItem );
+    }
+  };
+
+}
+
 /**
   Private class that helps to provide binary compatibility between releases.
   @internal
@@ -604,15 +650,13 @@ bool CalendarBase::addIncidence( Incidence *incidence )
   return incidence->accept( v );
 }
 
-bool CalendarBase::addIncidenceFORAKONADI( const Item &incidence )
+bool CalendarBase::addIncidenceFORAKONADI( const Item &item )
 {
-#ifdef AKONADI_PORT_DISABLED
-  Incidence::AddVisitor<CalendarBase> v( this );
-
+  AddVisitor v( this, item );
+  const Incidence::Ptr incidence = Akonadi::incidence( item );
+  if ( !incidence )
+    return false;
   return incidence->accept( v );
-#else
-  return false;
-#endif
 }
 
 bool CalendarBase::deleteIncidence( Incidence *incidence )
@@ -627,20 +671,18 @@ bool CalendarBase::deleteIncidence( Incidence *incidence )
   }
 }
 
-bool CalendarBase::deleteIncidenceFORAKONADI( const Item &incidence )
+bool CalendarBase::deleteIncidenceFORAKONADI( const Item &item )
 {
-#ifdef AKONADI_PORT_DISABLED
-  if ( beginChange( incidence ) ) {
-    Incidence::DeleteVisitor<CalendarBase> v( this );
-    bool result = incidence->accept( v );
-    endChange( incidence );
-    return result;
-  } else {
+  if ( !beginChangeFORAKONADI( item ) )
     return false;
+  const Incidence::Ptr incidence = Akonadi::incidence( item );
+  bool result = false;
+  if ( incidence  ) {
+    DeleteVisitor v( this, item );
+    result = incidence->accept( v );
   }
-#else
-  return false;
-#endif
+  endChangeFORAKONADI( item );
+  return result;
 }
 
 // Dissociate a single occurrence or all future occurrences from a recurring
