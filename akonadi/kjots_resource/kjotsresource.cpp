@@ -22,7 +22,6 @@
 #include "kjotsresource.h"
 
 #include <QtCore/QDir>
-#include <QtDBus/QDBusConnection>
 #include <QtXml/QDomDocument>
 
 #include <akonadi/changerecorder.h>
@@ -30,8 +29,6 @@
 #include <akonadi/entitydisplayattribute.h>
 #include "collectionchildorderattribute.h"
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/itemfetchjob.h>
 
 #include <KUrl>
 #include <KStandardDirs>
@@ -39,25 +36,9 @@
 #include <klocalizedstring.h>
 #include <KTemporaryFile>
 
-#include <kdebug.h>
-
 #include "kjotspage.h"
 
-#include "datadir.h"
-
 using namespace Akonadi;
-
-QString KJotsResource::findParent( const QString &remoteId )
-{
-  QHashIterator<QString, QStringList> i( m_parentBook );
-  while ( i.hasNext() ) {
-    i.next();
-    if ( i.value().contains( remoteId ) ) {
-      return i.key();
-    }
-  }
-  return QString();
-}
 
 QString KJotsResource::getFileUrl( const Collection &col ) const
 {
