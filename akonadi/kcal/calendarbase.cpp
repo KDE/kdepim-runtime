@@ -1070,16 +1070,16 @@ Todo::List CalendarBase::sortTodos( Todo::List *todoList,
   return todoListSorted;
 }
 
-Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList,
+Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
                                 TodoSortField sortField,
                                 SortDirection sortDirection )
 {
-#ifdef AKONADI_PORT_DISABLED
-  Todo::List todoListSorted;
-  Todo::List tempList, t;
-  Todo::List alphaList;
-  Todo::List::Iterator sortIt;
-  Todo::List::Iterator eit;
+  Item::List todoList( todoList_ );
+  Item::List todoListSorted;
+  Item::List tempList, t;
+  Item::List alphaList;
+  Item::List::Iterator sortIt;
+  Item::List::ConstIterator eit;
 
   // Notice we alphabetically presort Summaries first.
   // We do this so comparison "ties" stay in a nice order.
@@ -1088,22 +1088,23 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList,
 
   switch( sortField ) {
   case TodoSortUnsorted:
-    todoListSorted = *todoList;
+    todoListSorted = todoList;
     break;
 
   case TodoSortStartDate:
-    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
+    alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
     for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
-      if ( (*eit)->hasStartDate() ) {
+      const Todo::Ptr e = Akonadi::todo( *eit );
+      if ( e->hasStartDate() ) {
         sortIt = todoListSorted.begin();
         if ( sortDirection == SortDirectionAscending ) {
           while ( sortIt != todoListSorted.end() &&
-                  (*eit)->dtStart() >= (*sortIt)->dtStart() ) {
+                  e->dtStart() >= Akonadi::todo(*sortIt)->dtStart() ) {
             ++sortIt;
           }
         } else {
           while ( sortIt != todoListSorted.end() &&
-                  (*eit)->dtStart() < (*sortIt)->dtStart() ) {
+                  e->dtStart() < Akonadi::todo(*sortIt)->dtStart() ) {
             ++sortIt;
           }
         }
@@ -1124,18 +1125,19 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList,
     break;
 
   case TodoSortDueDate:
-    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
+    alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
     for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
-      if ( (*eit)->hasDueDate() ) {
+      const Todo::Ptr e = Akonadi::todo( *eit );
+      if ( e->hasDueDate() ) {
         sortIt = todoListSorted.begin();
         if ( sortDirection == SortDirectionAscending ) {
           while ( sortIt != todoListSorted.end() &&
-                  (*eit)->dtDue() >= (*sortIt)->dtDue() ) {
+                  e->dtDue() >= Akonadi::todo( *sortIt )->dtDue() ) {
             ++sortIt;
           }
         } else {
           while ( sortIt != todoListSorted.end() &&
-                  (*eit)->dtDue() < (*sortIt)->dtDue() ) {
+                  e->dtDue() < Akonadi::todo( *sortIt )->dtDue() ) {
             ++sortIt;
           }
         }
@@ -1156,17 +1158,18 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList,
     break;
 
   case TodoSortPriority:
-    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
+    alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
     for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
+      const Todo::Ptr e = Akonadi::todo( *eit );
       sortIt = todoListSorted.begin();
       if ( sortDirection == SortDirectionAscending ) {
         while ( sortIt != todoListSorted.end() &&
-                (*eit)->priority() >= (*sortIt)->priority() ) {
+                e->priority() >= Akonadi::todo(*sortIt)->priority() ) {
           ++sortIt;
         }
       } else {
         while ( sortIt != todoListSorted.end() &&
-                (*eit)->priority() < (*sortIt)->priority() ) {
+                e->priority() < Akonadi::todo(*sortIt)->priority() ) {
           ++sortIt;
         }
       }
@@ -1175,17 +1178,18 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList,
     break;
 
   case TodoSortPercentComplete:
-    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
+    alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
     for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
+      const Todo::Ptr e = Akonadi::todo( *eit );
       sortIt = todoListSorted.begin();
       if ( sortDirection == SortDirectionAscending ) {
         while ( sortIt != todoListSorted.end() &&
-                (*eit)->percentComplete() >= (*sortIt)->percentComplete() ) {
+                e->percentComplete() >= Akonadi::todo(*sortIt)->percentComplete() ) {
           ++sortIt;
         }
       } else {
         while ( sortIt != todoListSorted.end() &&
-                (*eit)->percentComplete() < (*sortIt)->percentComplete() ) {
+                e->percentComplete() < Akonadi::todo(*sortIt)->percentComplete() ) {
           ++sortIt;
         }
       }
@@ -1194,16 +1198,17 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList,
     break;
 
   case TodoSortSummary:
-    for ( eit = todoList->begin(); eit != todoList->end(); ++eit ) {
+    for ( eit = todoList.constBegin(); eit != todoList.constEnd(); ++eit ) {
+      const Todo::Ptr e = Akonadi::todo( *eit );
       sortIt = todoListSorted.begin();
       if ( sortDirection == SortDirectionAscending ) {
         while ( sortIt != todoListSorted.end() &&
-                (*eit)->summary() >= (*sortIt)->summary() ) {
+                e->summary() >= Akonadi::todo(*sortIt)->summary() ) {
           ++sortIt;
         }
       } else {
         while ( sortIt != todoListSorted.end() &&
-                (*eit)->summary() < (*sortIt)->summary() ) {
+                e->summary() < Akonadi::todo(*sortIt)->summary() ) {
           ++sortIt;
         }
       }
@@ -1213,9 +1218,6 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList,
   }
 
   return todoListSorted;
-#else // AKONADI_PORT_DISABLED
-  return Item::List();
-#endif // AKONADI_PORT_DISABLED
 }
 
 Todo::List CalendarBase::todos( TodoSortField sortField,
@@ -1305,31 +1307,32 @@ Journal::List CalendarBase::sortJournals( Journal::List *journalList,
   return journalListSorted;
 }
 
-Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList,
+Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList_,
                                       JournalSortField sortField,
                                       SortDirection sortDirection )
 {
-#ifdef AKONADI_PORT_DISABLED
-  Journal::List journalListSorted;
-  Journal::List::Iterator sortIt;
-  Journal::List::Iterator eit;
+  Item::List journalList( journalList_ );
+  Item::List journalListSorted;
+  Item::List::Iterator sortIt;
+  Item::List::ConstIterator eit;
 
   switch( sortField ) {
   case JournalSortUnsorted:
-    journalListSorted = *journalList;
+    journalListSorted = journalList;
     break;
 
   case JournalSortDate:
-    for ( eit = journalList->begin(); eit != journalList->end(); ++eit ) {
+    for ( eit = journalList.constBegin(); eit != journalList.constEnd(); ++eit ) {
+      const Journal::Ptr e = Akonadi::journal( *eit );
       sortIt = journalListSorted.begin();
       if ( sortDirection == SortDirectionAscending ) {
         while ( sortIt != journalListSorted.end() &&
-                (*eit)->dtStart() >= (*sortIt)->dtStart() ) {
+                e->dtStart() >= Akonadi::journal(*sortIt)->dtStart() ) {
           ++sortIt;
         }
       } else {
         while ( sortIt != journalListSorted.end() &&
-                (*eit)->dtStart() < (*sortIt)->dtStart() ) {
+                e->dtStart() < Akonadi::journal(*sortIt)->dtStart() ) {
           ++sortIt;
         }
       }
@@ -1338,16 +1341,17 @@ Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList,
     break;
 
   case JournalSortSummary:
-    for ( eit = journalList->begin(); eit != journalList->end(); ++eit ) {
+    for ( eit = journalList.begin(); eit != journalList.end(); ++eit ) {
+      const Journal::Ptr e = Akonadi::journal( *eit );
       sortIt = journalListSorted.begin();
       if ( sortDirection == SortDirectionAscending ) {
         while ( sortIt != journalListSorted.end() &&
-                (*eit)->summary() >= (*sortIt)->summary() ) {
+                e->summary() >= Akonadi::journal(*sortIt)->summary() ) {
           ++sortIt;
         }
       } else {
         while ( sortIt != journalListSorted.end() &&
-                (*eit)->summary() < (*sortIt)->summary() ) {
+                e->summary() < Akonadi::journal(*sortIt)->summary() ) {
           ++sortIt;
         }
       }
@@ -1357,9 +1361,6 @@ Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList,
   }
 
   return journalListSorted;
-#else // AKONADI_PORT_DISABLED
-  return Item::List();
-#endif // AKONADI_PORT_DISABLED
 }
 
 Journal::List CalendarBase::journals( JournalSortField sortField,
@@ -1904,10 +1905,12 @@ void CalendarBase::appendAlarms( Alarm::List &alarms, Incidence *incidence,
   }
 }
 
-void CalendarBase::appendAlarmsFORAKONADI( Alarm::List &alarms, const Item &incidence,
+void CalendarBase::appendAlarmsFORAKONADI( Alarm::List &alarms, const Item &item,
                              const KDateTime &from, const KDateTime &to )
 {
-#ifdef AKONADI_PORT_DISABLED
+  const Incidence::Ptr incidence = Akonadi::incidence( item );
+  Q_ASSERT( incidence );
+
   KDateTime preTime = from.addSecs(-1);
 
   Alarm::List alarmlist = incidence->alarms();
@@ -1920,7 +1923,6 @@ void CalendarBase::appendAlarmsFORAKONADI( Alarm::List &alarms, const Item &inci
       }
     }
   }
-#endif // AKONADI_PORT_DISABLED
 }
 
 void CalendarBase::appendRecurringAlarms( Alarm::List &alarms,
