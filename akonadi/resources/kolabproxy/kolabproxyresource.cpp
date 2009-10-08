@@ -443,7 +443,8 @@ void KolabProxyResource::imapItemAdded(const Item& item, const Collection &colle
     return;
   }
 //TODO: slow, would be nice if ItemCreateJob would work with a Collection having only the remoteId set
-  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
+  const Collection kolabCol = imapToKolab( collection );
+  CollectionFetchJob *job = new CollectionFetchJob( kolabCol, CollectionFetchJob::Base, this );
   connect(job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchDone(KJob *)));
   m_ids[job] = QString::number(collection.id());
   m_items[job] = item;

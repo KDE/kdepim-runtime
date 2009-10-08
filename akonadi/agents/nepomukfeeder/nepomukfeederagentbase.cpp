@@ -60,6 +60,14 @@
 
 using namespace Akonadi;
 
+static inline bool entityIsHidden( const Entity &entity )
+{
+  EntityDisplayAttribute* attr = entity.attribute<EntityDisplayAttribute>();
+  if ( attr && attr->isHidden() )
+    return true;
+  return false;
+}
+
 NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   AgentBase(id),
   mTotalAmount( 0 ),
@@ -96,13 +104,16 @@ NepomukFeederAgentBase::~NepomukFeederAgentBase()
 
 void NepomukFeederAgentBase::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-  Q_UNUSED( collection );
+  if ( entityIsHidden( collection ) )
+    return;
   if ( item.hasPayload() )
     updateItem( item, createGraphForEntity( item ) );
 }
 
 void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
+  if ( entityIsHidden( item.parentCollection() ) )
+    return;
   // TODO: check part identfiers if anything interesting changed at all
   if ( item.hasPayload() ) {
     removeEntityFromNepomuk( item );

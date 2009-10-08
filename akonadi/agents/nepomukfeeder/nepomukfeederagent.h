@@ -39,6 +39,8 @@ class NepomukFeederAgent : public NepomukFeederAgentBase
     {
       CollectionResource r( collection.url(), graphUri );
       Akonadi::EntityDisplayAttribute *attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
+      if ( attr && attr->isHidden() )
+        return;
       if ( attr && !attr->displayName().isEmpty() )
         r.setLabel( attr->displayName() );
       else
