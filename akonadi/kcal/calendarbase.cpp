@@ -581,11 +581,8 @@ Item::List CalendarBase::eventsFORAKONADI( const QDate &date,
                               EventSortField sortField,
                               SortDirection sortDirection )
 {
-  Item::List el = rawEventsForDateFORAKONADI( date, timeSpec, sortField, sortDirection );
-#ifdef AKONADI_PORT_DISABLED
-  d->mFilter->apply( &el );
-#endif
-  return el;
+  const Item::List el = rawEventsForDateFORAKONADI( date, timeSpec, sortField, sortDirection );
+  return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
 Event::List CalendarBase::events( const KDateTime &dt )
@@ -597,11 +594,8 @@ Event::List CalendarBase::events( const KDateTime &dt )
 
 Item::List CalendarBase::eventsFORAKONADI( const KDateTime &dt )
 {
-  Item::List el = rawEventsForDateFORAKONADI( dt );
-#ifdef AKONADI_PORT_DISABLED
-  d->mFilter->apply( &el );
-#endif
-  return el;
+  const Item::List el = rawEventsForDateFORAKONADI( dt );
+  return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
 Event::List CalendarBase::events( const QDate &start, const QDate &end,
@@ -618,11 +612,8 @@ Item::List CalendarBase::eventsFORAKONADI( const QDate &start, const QDate &end,
                               const KDateTime::Spec &timeSpec,
                               bool inclusive )
 {
-  Item::List el = rawEventsFORAKONADI( start, end, timeSpec, inclusive );
-#ifdef AKONADI_PORT_DISABLED
-  d->mFilter->apply( &el );
-#endif
-  return el;
+  const Item::List el = rawEventsFORAKONADI( start, end, timeSpec, inclusive );
+  return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
 Event::List CalendarBase::events( EventSortField sortField,
@@ -636,11 +627,8 @@ Event::List CalendarBase::events( EventSortField sortField,
 Item::List CalendarBase::eventsFORAKONADI( EventSortField sortField,
                               SortDirection sortDirection )
 {
-  Item::List el = rawEventsFORAKONADI( sortField, sortDirection );
-#ifdef AKONADI_PORT_DISABLED
-  d->mFilter->apply( &el );
-#endif
-  return el;
+  const Item::List el = rawEventsFORAKONADI( sortField, sortDirection );
+  return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
 bool CalendarBase::addIncidence( Incidence *incidence )
@@ -1231,11 +1219,8 @@ Todo::List CalendarBase::todos( TodoSortField sortField,
 Item::List CalendarBase::todosFORAKONADI( TodoSortField sortField,
                             SortDirection sortDirection )
 {
-  Item::List tl = rawTodosFORAKONADI( sortField, sortDirection );
-#ifdef AKONADI_PORT_DISABLED
-  d->mFilter->apply( &tl );
-#endif // AKONADI_PORT_DISABLED
-  return tl;
+  const Item::List tl = rawTodosFORAKONADI( sortField, sortDirection );
+  return Akonadi::applyCalFilter( tl, d->mFilter );
 }
 
 Todo::List CalendarBase::todos( const QDate &date )
@@ -1248,10 +1233,7 @@ Todo::List CalendarBase::todos( const QDate &date )
 Item::List CalendarBase::todosFORAKONADI( const QDate &date )
 {
   Item::List el = rawTodosForDateFORAKONADI( date );
-#ifdef AKONADI_PORT_DISABLED
-  d->mFilter->apply( &el );
-#endif // AKONADI_PORT_DISABLED
-  return el;
+  return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
 Journal::List CalendarBase::sortJournals( Journal::List *journalList,
@@ -1374,11 +1356,8 @@ Journal::List CalendarBase::journals( JournalSortField sortField,
 Item::List CalendarBase::journalsFORAKONADI( JournalSortField sortField,
                                   SortDirection sortDirection )
 {
-  Item::List jl = rawJournalsFORAKONADI( sortField, sortDirection );
-#ifdef AKONADI_PORT_DISABLED
-  d->mFilter->apply( &jl );
-#endif // AKONADI_PORT_DISABLED
-  return jl;
+  const Item::List jl = rawJournalsFORAKONADI( sortField, sortDirection );
+  return Akonadi::applyCalFilter( jl, d->mFilter );
 }
 
 Journal::List CalendarBase::journals( const QDate &date )
@@ -1391,10 +1370,7 @@ Journal::List CalendarBase::journals( const QDate &date )
 Item::List CalendarBase::journalsFORAKONADI( const QDate &date )
 {
   Item::List el = rawJournalsForDateFORAKONADI( date );
-#ifdef AKONADI_PORT_DISABLED
-  d->mFilter->apply( &el );
-#endif // AKONADI_PORT_DISABLED
-  return el;
+  return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
 void CalendarBase::beginBatchAdding()

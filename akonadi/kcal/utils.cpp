@@ -24,8 +24,16 @@
 
 #include "utils.h"
 
+#include <KCal/CalFilter>
+
 #include <Akonadi/Item>
 
+#include <boost/bind.hpp>\
+
+#include <algorithm>
+#include <cassert>
+
+using namespace boost;
 using namespace KCal;
 using namespace Akonadi;
 
@@ -61,3 +69,17 @@ bool Akonadi::hasJournal( const Item& item ) {
   return item.hasPayload<Journal::Ptr>();
 }
 
+static bool itemMatches( const Item& item, const CalFilter* filter ) {
+  assert( filter );
+  Incidence::Ptr inc = Akonadi::incidence( item );
+  if ( !inc )
+    return false;
+  return filter->filterIncidence( inc.get() );
+}
+
+Item::List Akonadi::applyCalFilter( const Item::List &items_, const CalFilter* filter ) {
+  assert( filter );
+  Item::List items( items_ );
+  items.erase( std::remove_if( items.begin(), items.end(), !bind( itemMatches, _1, filter ) ), items.end() );
+  return items;
+}

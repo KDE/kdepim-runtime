@@ -26,14 +26,19 @@
 
 #include "akonadi-kcal_export.h"
 
+#include <Akonadi/Item>
+
 #include <KCal/Event>
 #include <KCal/Incidence>
 #include <KCal/Journal>
 #include <KCal/Todo>
 
+namespace KCal {
+  class CalFilter;
+}
+
 namespace Akonadi
 {
-  class Item;
 
   /**
    * returns the incidence from an akonadi item, or a null pointer if the item has no such payload
@@ -75,6 +80,15 @@ namespace Akonadi
   */
  AKONADI_KCAL_EXPORT bool hasJournal( const Akonadi::Item &item );
 
+ /**
+  * applies a filter to a list of items containing incidences. Items not containing incidences or not matching the filter are removed.
+  * Helper method anologous to KCal::CalFilter::apply()
+  * @see KCal::CalFilter::apply()
+  * @param items the list of items to filter
+  * @param filter the filter to apply to the list of items
+  * @return the filtered list of items
+  */
+ AKONADI_KCAL_EXPORT Akonadi::Item::List applyCalFilter( const Akonadi::Item::List &items, const KCal::CalFilter* filter );
 }
 
 #endif
