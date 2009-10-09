@@ -61,7 +61,7 @@ void AmazingContactItemDelegate::paint(QPainter* painter, const QStyleOptionView
 
   Collection parentCollection = index.data(EntityTreeModel::ParentCollectionRole).value<Collection>();
 
-  QString name = addressee.givenName() + ' ' + addressee.familyName();
+  QString name = addressee.givenName() + QLatin1Char( ' ' ) + addressee.familyName();
 
   KABC::Picture pic =addressee.photo();
 

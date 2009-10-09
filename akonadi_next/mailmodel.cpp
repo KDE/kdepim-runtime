@@ -37,8 +37,8 @@ public:
   MailModelPrivate(MailModel *model)
     : q_ptr(model)
   {
-    m_collectionHeaders << "Folder" << "Count";
-    m_itemHeaders << "Subject" << "From" << "Date";
+    m_collectionHeaders << QLatin1String( "Folder" ) << QLatin1String( "Count" );
+    m_itemHeaders << QLatin1String( "Subject" ) << QLatin1String( "From" ) << QLatin1String( "Date" );
   }
   Q_DECLARE_PUBLIC(MailModel)
   MailModel *q_ptr;
@@ -81,9 +81,9 @@ QVariant MailModel::getData(const Item &item, int column, int role) const
   } else if (role == Qt::ToolTipRole)
   {
     QString d;
-    d.append(QString("Subject: %1\n").arg(mail->subject()->asUnicodeString()));
-    d.append(QString("From: %1\n").arg(mail->from()->asUnicodeString()));
-    d.append(QString("Date: %1\n").arg(mail->date()->asUnicodeString()));
+    d.append(QString::fromLatin1("Subject: %1\n").arg(mail->subject()->asUnicodeString()));
+    d.append(QString::fromLatin1("From: %1\n").arg(mail->from()->asUnicodeString()));
+    d.append(QString::fromLatin1("Date: %1\n").arg(mail->date()->asUnicodeString()));
     return d;
   }
   return EntityTreeModel::getData(item, column, role);

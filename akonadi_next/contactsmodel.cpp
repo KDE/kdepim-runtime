@@ -33,8 +33,8 @@ public:
   ContactsModelPrivate(ContactsModel *model)
     : q_ptr(model)
   {
-    m_collectionHeaders << "Collection" << "Count";
-    m_itemHeaders << "Given Name" << "Family Name" << "Email";
+    m_collectionHeaders << QLatin1String( "Collection" ) << QLatin1String( "Count" );
+    m_itemHeaders << QLatin1String( "Given Name" ) << QLatin1String( "Family Name" ) << QLatin1String( "Email" );
   }
 
   Q_DECLARE_PUBLIC(ContactsModel)
@@ -102,7 +102,7 @@ ContactsModel::~ContactsModel()
 
 QVariant ContactsModel::getData(const Item &item, int column, int role) const
 {
-  if ( item.mimeType() == "text/directory" )
+  if ( item.mimeType() == QLatin1String( "text/directory" ) )
   {
     if ( !item.hasPayload<KABC::Addressee>() )
     {
@@ -123,8 +123,6 @@ QVariant ContactsModel::getData(const Item &item, int column, int role) const
         return addr.familyName();
       case 2:
         return addr.preferredEmail();
-      case 3:
-        return addr.givenName() + ' ' + addr.familyName() + ' ' + '<' + addr.preferredEmail() + '>';
       }
     }
   }
