@@ -245,7 +245,7 @@ bool SieveEncoder::encodeData( const QVariant &data, DataType dataType )
     break;
     case DataTypeString:
       addLineData( QLatin1String( "\"" ) );
-      addLineData( data.toString().replace( QChar( '\\' ), QLatin1String( "\\\\" ) ).replace( QChar( '"' ), QLatin1String( "\"" ) ) );
+      addLineData( data.toString().replace( QLatin1Char( '\\' ), QLatin1String( "\\\\" ) ).replace( QLatin1Char( '"' ), QLatin1String( "\"" ) ) );
       addLineData( QLatin1String( "\"" ) );
     break;
     case DataTypeInteger:
@@ -283,7 +283,7 @@ bool SieveEncoder::encodeData( const QVariant &data, DataType dataType )
       foreach( QString s, sl )
       {
         addLineData( QLatin1String( "\"" ) );
-        addLineData( s.replace( QChar( '\\' ), QLatin1String( "\\\\" ) ).replace( QChar( '"' ), QLatin1String( "\"" ) ) );
+        addLineData( s.replace( QLatin1Char( '\\' ), QLatin1String( "\\\\" ) ).replace( QLatin1Char( '"' ), QLatin1String( "\"" ) ) );
         addLineData( QLatin1String( "\"" ) );
         if( idx < ( cnt - 1 ) )
           addLineData( QLatin1String( ", " ) );
@@ -380,7 +380,7 @@ bool SieveEncoder::encodeCondition( Condition::Base * condition )
 
       QStringList tokens;
       if( test->function() )
-        tokens = test->function()->keyword().split( QChar( ':' ) );
+        tokens = test->function()->keyword().split( QLatin1Char( ':' ) );
       else
         tokens << QString::fromAscii( "header" ); // sieve compatible "valueof"
 
@@ -399,7 +399,7 @@ bool SieveEncoder::encodeCondition( Condition::Base * condition )
       if( test->operatorDescriptor() )
       {
         addLineData(
-            QString( ":%1 \"%2\" " )
+            QString::fromAscii( ":%1 \"%2\" " )
               .arg( test->operatorDescriptor()->keyword() )
               .arg( test->dataMember()->keyword() )
           );
@@ -416,7 +416,7 @@ bool SieveEncoder::encodeCondition( Condition::Base * condition )
         }
       } else {
         addLineData(
-            QString( "\"%2\" " )
+            QString::fromAscii( "\"%2\" " )
               .arg( test->dataMember()->keyword() )
           );
       }

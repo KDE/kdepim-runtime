@@ -91,14 +91,14 @@ MainWindow::MainWindow()
   connect( mFilterListWidget, SIGNAL( itemSelectionChanged() ), this, SLOT( slotFilterListWidgetSelectionChanged() ) );
 
   mNewFilterButtonLBB = new QPushButton( base );
-  mNewFilterButtonLBB->setIcon( KIcon( "document-new" ) );
+  mNewFilterButtonLBB->setIcon( KIcon( QLatin1String( "document-new" ) ) );
   mNewFilterButtonLBB->setText( i18n( "New Filter") );
   g->addWidget( mNewFilterButtonLBB, 0, 1 );
 
   connect( mNewFilterButtonLBB, SIGNAL( clicked() ), this, SLOT( slotNewFilterLBBButtonClicked() ) );
 
   mNewFilterButtonTBB = new QPushButton( base );
-  mNewFilterButtonTBB->setIcon( KIcon( "document-new" ) );
+  mNewFilterButtonTBB->setIcon( KIcon( QLatin1String( "document-new" ) ) );
   mNewFilterButtonTBB->setText( i18n( "New Filter (Alt. UI)") );
   g->addWidget( mNewFilterButtonTBB, 1, 1 );
 
@@ -108,7 +108,7 @@ MainWindow::MainWindow()
 
 
   mEditFilterButtonLBB = new QPushButton( base );
-  mEditFilterButtonLBB->setIcon( KIcon( "document-edit" ) );
+  mEditFilterButtonLBB->setIcon( KIcon( QLatin1String( "document-edit" ) ) );
   mEditFilterButtonLBB->setText( i18n( "Edit Filter") );
   g->addWidget( mEditFilterButtonLBB, 3, 1 );
 
@@ -116,7 +116,7 @@ MainWindow::MainWindow()
 
 
   mEditFilterButtonTBB = new QPushButton( base );
-  mEditFilterButtonTBB->setIcon( KIcon( "document-edit" ) );
+  mEditFilterButtonTBB->setIcon( KIcon( QLatin1String( "document-edit" ) ) );
   mEditFilterButtonTBB->setText( i18n( "Edit Filter (Alt. UI)") );
   g->addWidget( mEditFilterButtonTBB, 4, 1 );
 
@@ -126,7 +126,7 @@ MainWindow::MainWindow()
 
 
   mDeleteFilterButton = new QPushButton( base );
-  mDeleteFilterButton->setIcon( KIcon( "document-close" ) );
+  mDeleteFilterButton->setIcon( KIcon( QLatin1String( "document-close" ) ) );
   mDeleteFilterButton->setText( i18n( "Delete Filter") );
   g->addWidget( mDeleteFilterButton, 6, 1 );
 
@@ -135,7 +135,7 @@ MainWindow::MainWindow()
   g->addItem( new QSpacerItem( 10, 10 ), 7, 1 );
 
   mApplyFilterToItemButton = new QPushButton( base );
-  mApplyFilterToItemButton->setIcon( KIcon( "roll" ) );
+  mApplyFilterToItemButton->setIcon( KIcon( QLatin1String( "roll" ) ) );
   mApplyFilterToItemButton->setText( i18n( "Apply To Item") );
   g->addWidget( mApplyFilterToItemButton, 8, 1 );
 

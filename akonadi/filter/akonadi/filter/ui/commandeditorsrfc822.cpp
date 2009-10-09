@@ -72,7 +72,7 @@ CommandWithTargetCollectionEditor::CommandWithTargetCollectionEditor(
   mCollectionRequester = new CollectionRequester( this );
 
   QStringList mimes;
-  mimes << "message/rfc822";
+  mimes << QLatin1String( "message/rfc822" );
 
   mCollectionRequester->setMimeTypeFilter( mimes );
 

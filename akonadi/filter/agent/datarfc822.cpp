@@ -367,7 +367,7 @@ QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor
       QStringList ret;
       foreach( QString mail, emails )
       {
-        int idx = mail.indexOf( QChar( '@' ) );
+        int idx = mail.indexOf( QLatin1Char( '@' ) );
         if( ( idx >= 0 ) && ( mail.length() > ( idx + 1 ) ) )
           ret << mail.mid( idx + 1 );
       }
@@ -385,7 +385,7 @@ QVariant DataRfc822::getPropertyValue( const Akonadi::Filter::FunctionDescriptor
       QStringList ret;
       foreach( QString mail, emails )
       {
-        int idx = mail.indexOf( QChar( '@' ) );
+        int idx = mail.indexOf( QLatin1Char( '@' ) );
         if( idx >= 0 )
           ret << mail.left( idx );
       }

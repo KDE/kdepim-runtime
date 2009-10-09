@@ -142,7 +142,7 @@ void IntegerValueEditor::setValue( const QVariant &val )
   if( ok )
     setText( val.toString() );
   else
-    setText( "0" );
+    setText( QLatin1String( "0" ) );
 }
 
 QWidget * IntegerValueEditor::widget()

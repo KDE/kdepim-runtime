@@ -63,7 +63,7 @@ public:
   RuleListEditorLBBListWidgetItem( QListWidget * parent, RuleEditor * editor, const QString &userDescription, int index )
     : QListWidgetItem( parent ), mEditor( editor ), mUserDescription( userDescription ), mIndex( index )
   {
-    setIcon( SmallIcon( "application-x-executable" ) );
+    setIcon( SmallIcon( QLatin1String( "application-x-executable" ) ) );
     updateText();
   }
 
@@ -125,7 +125,7 @@ RuleListEditorLBB::RuleListEditorLBB( QWidget * parent, ComponentFactory * compo
 
 
   mNewRuleButton = new QPushButton( base );
-  mNewRuleButton->setIcon( KIcon( "list-add" ) );
+  mNewRuleButton->setIcon( KIcon( QLatin1String( "list-add" ) ) );
   mNewRuleButton->setText( i18n( "Add Rule" ) );
 
   connect( mNewRuleButton, SIGNAL( clicked() ), this, SLOT( slotNewRuleButtonClicked() ) );
@@ -134,7 +134,7 @@ RuleListEditorLBB::RuleListEditorLBB( QWidget * parent, ComponentFactory * compo
 
 
   mDeleteRuleButton = new QPushButton( base );
-  mDeleteRuleButton->setIcon( KIcon( "list-remove" ) );
+  mDeleteRuleButton->setIcon( KIcon( QLatin1String( "list-remove" ) ) );
   mDeleteRuleButton->setText( i18n( "Delete Rule" ) );
 
   connect( mDeleteRuleButton, SIGNAL( clicked() ), this, SLOT( slotDeleteRuleButtonClicked() ) );
@@ -143,7 +143,7 @@ RuleListEditorLBB::RuleListEditorLBB( QWidget * parent, ComponentFactory * compo
 
 
   mMoveRuleUpButton = new QPushButton( base );
-  mMoveRuleUpButton->setIcon( KIcon( "arrow-up" ) );
+  mMoveRuleUpButton->setIcon( KIcon( QLatin1String( "arrow-up" ) ) );
   mMoveRuleUpButton->setText( i18n( "Move Up" ) );
 
   connect( mMoveRuleUpButton, SIGNAL( clicked() ), this, SLOT( slotMoveRuleUpButtonClicked() ) );
@@ -152,7 +152,7 @@ RuleListEditorLBB::RuleListEditorLBB( QWidget * parent, ComponentFactory * compo
 
 
   mMoveRuleDownButton = new QPushButton( base );
-  mMoveRuleDownButton->setIcon( KIcon( "arrow-down" ) );
+  mMoveRuleDownButton->setIcon( KIcon( QLatin1String( "arrow-down" ) ) );
   mMoveRuleDownButton->setText( i18n( "Move Down" ) );
 
   connect( mMoveRuleDownButton, SIGNAL( clicked() ), this, SLOT( slotMoveRuleDownButtonClicked() ) );

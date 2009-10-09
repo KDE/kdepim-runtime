@@ -189,21 +189,21 @@ RuleListEditorTBBItemHeader::RuleListEditorTBBItemHeader( QWidget *parent )
   addWidgetToLayout( mDescriptionEdit );
 
   mMoveDownButton = new QToolButton( this );
-  mMoveDownButton->setIcon( SmallIcon( "arrow-down" ) );
+  mMoveDownButton->setIcon( SmallIcon( QLatin1String( "arrow-down" ) ) );
   mMoveDownButton->setAutoRaise( true );
   mMoveDownButton->setToolTip( i18n( "Move this rule down" ) );
   connect( mMoveDownButton, SIGNAL( clicked() ), this, SLOT( moveDownButtonClicked() ) );
   addWidgetToLayout( mMoveDownButton );
 
   mMoveUpButton = new QToolButton( this );
-  mMoveUpButton->setIcon( SmallIcon( "arrow-up" ) );
+  mMoveUpButton->setIcon( SmallIcon( QLatin1String( "arrow-up" ) ) );
   mMoveUpButton->setAutoRaise( true );
   mMoveUpButton->setToolTip( i18n( "Move this rule up" ) );
   connect( mMoveUpButton, SIGNAL( clicked() ), this, SLOT( moveUpButtonClicked() ) );
   addWidgetToLayout( mMoveUpButton );
 
   mDeleteButton = new QToolButton( this );
-  mDeleteButton->setIcon( SmallIcon( "edit-delete" ) );
+  mDeleteButton->setIcon( SmallIcon( QLatin1String( "edit-delete" ) ) );
   mDeleteButton->setAutoRaise( true );
   mDeleteButton->setToolTip( i18n( "Delete this rule" ) );
   connect( mDeleteButton, SIGNAL( clicked() ), this, SLOT( deleteButtonClicked() ) );
@@ -295,7 +295,7 @@ RuleListEditorTBB::RuleListEditorTBB( QWidget * parent, ComponentFactory * compo
   mPrivate->mFiller->setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
   mPrivate->mAddRuleHeader = new RuleListEditorTBBHeader( mBase );
   mPrivate->mAddRuleHeader->setText( i18n( "Add Rule" ) );
-  mPrivate->mAddRuleHeader->setIcon( SmallIcon( "list-add" ) );
+  mPrivate->mAddRuleHeader->setIcon( SmallIcon( QLatin1String( "list-add" ) ) );
   connect( mPrivate->mAddRuleHeader, SIGNAL( activated( RuleListEditorTBBHeader * ) ), this, SLOT( addRuleHeaderActivated( RuleListEditorTBBHeader * ) ) );
 
   setBackgroundRole( QPalette::Button );
@@ -392,7 +392,7 @@ RuleListEditorTBBItem * RuleListEditorTBB::addRuleEditor( RuleEditor * editor, c
   RuleListEditorTBBItem * item = new RuleListEditorTBBItem;
   item->mHeader = new RuleListEditorTBBItemHeader( mBase );
   connect( item->mHeader, SIGNAL( activated( RuleListEditorTBBHeader * ) ), this, SLOT( itemHeaderActivated( RuleListEditorTBBHeader * ) ) );
-  item->mHeader->setIcon( SmallIcon( "application-x-executable" ) );
+  item->mHeader->setIcon( SmallIcon( QLatin1String( "application-x-executable" ) ) );
 
   connect( item->mHeader, SIGNAL( moveUpRequest( RuleListEditorTBBItemHeader * ) ), this, SLOT( itemHeaderMoveUpRequest( RuleListEditorTBBItemHeader * ) ) );
   connect( item->mHeader, SIGNAL( moveDownRequest( RuleListEditorTBBItemHeader * ) ), this, SLOT( itemHeaderMoveDownRequest( RuleListEditorTBBItemHeader * ) ) );

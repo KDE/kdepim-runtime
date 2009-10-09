@@ -190,7 +190,7 @@ ConditionSelector::ConditionSelector(
       d->mType = Condition::ConditionTypePropertyTest;
       d->mText = prop->name();
       if( !d->mText.isEmpty() )
-        d->mText += QChar(' ');
+        d->mText += QLatin1Char(' ');
       d->mText += dm->name();
       d->mColor = QColor(); // no overlay
       d->mFunctionDescriptor = prop;

@@ -227,7 +227,7 @@ void SieveDecoder::onTestEnd()
         continue;
       }
 
-      if( arg.at( 0 ) != QChar(':') )
+      if( arg.at( 0 ) != QLatin1Char(':') )
       {
         nonTaggedArguments.append( *it );
         ++it;
@@ -290,7 +290,7 @@ void SieveDecoder::onTestEnd()
 
       foreach( arg, taggedArguments )
       {
-        functionKeyword += QChar(':');
+        functionKeyword += QLatin1Char(':');
         functionKeyword += arg;
       }
     }
@@ -389,7 +389,7 @@ void SieveDecoder::onTestEnd()
       fieldList = fields.toStringList();
     } else {
       // use a single "item" data member (the whole item)
-      fieldList.append( "item" );
+      fieldList.append( QLatin1String( "item" ) );
     }
     
 
@@ -563,7 +563,7 @@ void SieveDecoder::onTaggedArgument( const QString & tag )
   if( !mCurrentSimpleTestName.isEmpty() )
   {
     // argument to a simple test
-    QString bleah = QChar( ':' );
+    QString bleah = QLatin1String( ":" );
     bleah += tag;
     mCurrentSimpleTestArguments.append( QVariant( bleah ) );
     return;
@@ -1003,7 +1003,7 @@ void SieveDecoder::onComment( const QString &comment )
     return; // ignore everything
 
   // we encode stuff in comments... no other way
-  QStringList lines = comment.split( QChar( '\n' ), QString::SkipEmptyParts );
+  QStringList lines = comment.split( QLatin1Char( '\n' ), QString::SkipEmptyParts );
   foreach ( QString line, lines )
   {
     QString trimmed = line.trimmed();
@@ -1018,7 +1018,7 @@ void SieveDecoder::onComment( const QString &comment )
 
     trimmed.remove( 0, programProperty ? 9 : 6 );
 
-    int idx = trimmed.indexOf( QChar( '=' ) );
+    int idx = trimmed.indexOf( QLatin1Char( '=' ) );
     if( idx < 1 )
       continue; // doh
 
@@ -1066,10 +1066,10 @@ Program * SieveDecoder::run( const QByteArray &encodedFilter )
     if( !mGotError )
     {
       mGotError = true;
-      errorStack().pushError( "Sieve Decoder", i18n( "Internal sieve library error" ) );
+      errorStack().pushError( QLatin1String( "Sieve Decoder" ), i18n( "Internal sieve library error" ) );
     } else {
-      errorStack().pushError( "Sieve Parser", parser.error().asString() );
-      errorStack().pushError( "Sieve Decoder", i18n( "Sieve parsing error" ) );
+      errorStack().pushError( QLatin1String( "Sieve Parser" ), parser.error().asString() );
+      errorStack().pushError( QLatin1String( "Sieve Decoder" ), i18n( "Sieve parsing error" ) );
     }
   }
 
