@@ -186,7 +186,7 @@ void ProfileEditDialog::commitProfile()
   mapi_profile_add_string_attr(m_profileNameEdit->text().toUtf8().constData(),
                                "codepage", "0x4e4");
   mapi_profile_add_string_attr(m_profileNameEdit->text().toUtf8().constData(),
-                               "language", "0x40c");
+                               "language", "0x409"); // default to en-US for now TODO: create an option for this
   mapi_profile_add_string_attr(m_profileNameEdit->text().toUtf8().constData(),
                                "method", "0x409");
 
