@@ -97,7 +97,7 @@ p, li { white-space: pre-wrap; }
         <string>The username.</string>
        </property>
        <property name="text">
-        <string>User name:</string>
+        <string>Username:</string>
        </property>
        <property name="buddy">
         <cstring>userName</cstring>
