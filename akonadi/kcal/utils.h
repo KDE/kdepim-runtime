@@ -39,6 +39,7 @@ namespace KCal {
   class CalFilter;
 }
 
+class QDrag;
 class QMimeData;
 
 class KUrl;
@@ -66,6 +67,27 @@ namespace Akonadi
   */
  AKONADI_KCAL_EXPORT KCal::Journal::Ptr journal( const Akonadi::Item &item );
 
+
+  /**
+   * returns whether an Akonadi item contains an incidence
+   */
+  AKONADI_KCAL_EXPORT bool hasIncidence( const Akonadi::Item &item );
+
+  /**
+   * returns whether an Akonadi item contains an event
+   */
+  AKONADI_KCAL_EXPORT bool hasEvent( const Akonadi::Item &item );
+
+  /**
+   * returns whether an Akonadi item contains a todo
+   */
+  AKONADI_KCAL_EXPORT bool hasTodo( const Akonadi::Item &item );
+
+  /**
+   * returns whether an Akonadi item contains a journal
+   */
+  AKONADI_KCAL_EXPORT bool hasJournal( const Akonadi::Item &item );
+
  /**
   * returns @p true iff the URL represents an Akonadi item and has one of the given mimetypes.
   */
@@ -82,24 +104,14 @@ namespace Akonadi
  AKONADI_KCAL_EXPORT QMimeData* createMimeData( const Akonadi::Item::List &items, const KDateTime::Spec &timeSpec );
 
  /**
-  * returns whether an Akonadi item contains an incidence
+  * creates a drag object for dragging an akonadi item containing an incidence
   */
- AKONADI_KCAL_EXPORT bool hasIncidence( const Akonadi::Item &item );
+ AKONADI_KCAL_EXPORT QDrag* createDrag( const Akonadi::Item &item, const KDateTime::Spec &timeSpec, QWidget* parent );
 
  /**
-  * returns whether an Akonadi item contains an event
+  * creates a drag object for dragging akonadi items containing an incidence
   */
- AKONADI_KCAL_EXPORT bool hasEvent( const Akonadi::Item &item );
-
- /**
-  * returns whether an Akonadi item contains a todo
-  */
- AKONADI_KCAL_EXPORT bool hasTodo( const Akonadi::Item &item );
-
- /**
-  * returns whether an Akonadi item contains a journal
-  */
- AKONADI_KCAL_EXPORT bool hasJournal( const Akonadi::Item &item );
+ AKONADI_KCAL_EXPORT QDrag* createDrag( const Akonadi::Item::List &items, const KDateTime::Spec &timeSpec, QWidget* parent );
 
  /**
   * applies a filter to a list of items containing incidences. Items not containing incidences or not matching the filter are removed.

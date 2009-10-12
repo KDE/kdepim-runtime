@@ -31,9 +31,12 @@
 
 #include <Akonadi/Item>
 
+#include <KIconLoader>
 #include <KUrl>
 
+#include <QDrag>
 #include <QMimeData>
+#include <QPixmap>
 
 #include <boost/bind.hpp>\
 
@@ -110,6 +113,39 @@ QMimeData* Akonadi::createMimeData( const Item::List &items, const KDateTime::Sp
 
 QMimeData* Akonadi::createMimeData( const Item &item, const KDateTime::Spec &timeSpec )  {
   return createMimeData( Item::List() << item, timeSpec );
+}
+
+QDrag* Akonadi::createDrag( const Item &item, const KDateTime::Spec &timeSpec, QWidget* parent ) {
+  return createDrag( Item::List() << item, timeSpec, parent );
+}
+
+static QByteArray findMostCommonType( const Item::List &items ) {
+  QByteArray prev;
+  if ( items.isEmpty() )
+    return "Incidence";
+  Q_FOREACH( const Item &item, items ) {
+    if ( !Akonadi::hasIncidence( item ) )
+      continue;
+    const QByteArray type = Akonadi::incidence( item )->type();
+    if ( !prev.isEmpty() && type != prev )
+      return "Incidence";
+    prev = type;
+  }
+  return prev;
+}
+
+QDrag* Akonadi::createDrag( const Item::List &items, const KDateTime::Spec &timeSpec, QWidget* parent ) {
+  std::auto_ptr<QDrag> drag( new QDrag( parent ) );
+  drag->setMimeData( Akonadi::createMimeData( items, timeSpec ) );
+
+  const QByteArray common = findMostCommonType( items );
+  if ( common == "Event" ) {
+    drag->setPixmap( BarIcon( QLatin1String("view-calendar-day") ) );
+  } else if ( common == "Todo" ) {
+    drag->setPixmap( BarIcon( QLatin1String("view-calendar-tasks") ) );
+  }
+
+  return drag.release();
 }
 
 static bool itemMatches( const Item& item, const CalFilter* filter ) {
