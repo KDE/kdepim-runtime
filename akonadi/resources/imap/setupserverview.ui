@@ -97,7 +97,7 @@ p, li { white-space: pre-wrap; }
         <string>The username.</string>
        </property>
        <property name="text">
-        <string>User name:</string>
+        <string>Username:</string>
        </property>
        <property name="buddy">
         <cstring>userName</cstring>
@@ -226,7 +226,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="QCheckBox" name="subscriptionEnabled">
        <property name="text">
-        <string>Enable Serverside Subscriptions</string>
+        <string>Enable Server-Side Subscriptions</string>
        </property>
       </widget>
      </item>

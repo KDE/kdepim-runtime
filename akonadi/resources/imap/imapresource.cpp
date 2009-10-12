@@ -482,7 +482,7 @@ void ImapResource::onPreItemMoveSelectDone( KJob *job )
   } else {
     const Collection source = job->property( SOURCE_COLLECTION ).value<Collection>();
     Q_ASSERT( source.isValid() );
-    emit error( i18n( "Failed to move message out of '%1' on the IMAP server. Couldn't select '%1'.",
+    emit error( i18n( "Failed to move message out of '%1' on the IMAP server. Could not select '%1'.",
                       source.name() ) );
     changeProcessed();
   }
@@ -518,7 +518,7 @@ void ImapResource::onCopyMessageDone( KJob *job )
   } else {
     const Collection destination = job->property( DESTINATION_COLLECTION ).value<Collection>();
     Q_ASSERT( destination.isValid() );
-    emit error( i18n( "Failed to move message to '%1' on the IMAP server. Couldn't copy into '%1'.",
+    emit error( i18n( "Failed to move message to '%1' on the IMAP server. Could not copy into '%1'.",
                       destination.name() ) );
     changeProcessed();
   }

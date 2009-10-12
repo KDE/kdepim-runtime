@@ -243,7 +243,9 @@ void NepomukFeederAgentBase::itemsReceived(const Akonadi::Item::List& items)
 void NepomukFeederAgentBase::tagsFromCategories(NepomukFast::Resource& resource, const QStringList& categories)
 {
   foreach ( const QString &category, categories ) {
-    const Nepomuk::Tag tag( category );
+    Nepomuk::Tag tag( category );
+    if ( tag.label().isEmpty() )
+      tag.setLabel( category );
     resource.addProperty( Soprano::Vocabulary::NAO::hasTag(), tag.resourceUri() );
   }
 }

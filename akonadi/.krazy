@@ -1,1 +1,3 @@
 SKIP /libkdepim-copy/\|/resources/openchange/
+EXTRA defines,kdebug,null,qenums,tipsandthis
+STRICT super

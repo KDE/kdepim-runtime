@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Nepomuk Calendar Feeder
+Name[en_GB]=Nepomuk Calendar Feeder
 Name[es]=Proveedor de calendarios de Nepomuk
 Name[gl]=Fornecedor de calendario do Nepomuk
 Name[nb]=Kalendersender til Nepomuk
@@ -12,6 +13,7 @@ Name[uk]=Передавач календарів Nepomuk
 Name[x-test]=xxNepomuk Calendar Feederxx
 Name[zh_TW]=Nepomuk Calendar Feeder
 Comment=Extension to push events, journals and todos into Nepomuk
+Comment[en_GB]=Extension to push events, journals and todos into Nepomuk
 Comment[es]=Extensión para introducir eventos, diarios y tareas en Nepomuk
 Comment[gl]=Engadido para lle pasar os enventos, os diarios e as tarefas ao Nepomuk
 Comment[nb]=Utvidelse som sender hendelser, dagboksnotater og gjøremål inn til Nepomuk
