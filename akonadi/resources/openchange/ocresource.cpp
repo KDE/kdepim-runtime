@@ -20,7 +20,10 @@
     02110-1301, USA.
 */
 
-#include <iostream> // for debugging
+#include <iostream>   // for debugging
+#include <unistd.h>   // for access()
+#include <cstdlib>    // for getenv()
+#include <sys/stat.h> // fir mkdir()
 
 #include <QtDBus/QDBusConnection>
 
@@ -73,7 +76,7 @@ void throw_exception(std::exception const & e)
 }
 #endif
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
+typedef boost::shared_ptr<KMime::Message>  MessagePtr;
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 using namespace Akonadi;
@@ -81,12 +84,34 @@ using namespace libmapipp;
 using KMime::Content;
 
 OCResource::OCResource( const QString &id ) 
-  : ResourceBase( id )
+  : ResourceBase( id ), m_session(NULL)
 {
+  // Assume we're using default location for profile database
+  std::string db_default_path = getenv("HOME");
+  db_default_path += "/.openchange";
+
+  // Check if database exists
+  if (access(db_default_path.c_str(), F_OK) != 0) {
+    qDebug() << "OpenChange MAPI Profile database doesn't exist... creating one";
+    mkdir(db_default_path.c_str(), 0700);
+    db_default_path += "profile.ldb";
+    libmapipp::profile::create_profile_store(db_default_path.c_str(), "/usr/local/samba/share/setup"); // Assume samba4 is at /usr/local/sanba for now
+    qDebug() << "Successfully created OpenChange database!";
+  }
+
+  try {
+    m_session = new libmapipp::session;
+    qDebug() << "Successfully created MAPI Session";
+  } catch (mapi_exception e) {
+    delete m_session;
+    qDebug() << "MAPI EXception: " << e.what();
+    emit error(e.what());
+  }
 }
 
 OCResource::~OCResource()
 {
+  if (m_session != NULL) delete m_session;
 }
 
 bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
@@ -99,7 +124,7 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
 
   libmapipp::message* messagePointer = NULL;
   try {
-   messagePointer = new libmapipp::message(m_session, folder_id, message_id);
+   messagePointer = new libmapipp::message(*m_session, folder_id, message_id);
   }
   catch (mapi_exception e) {
     cancelTask(e.what());
@@ -173,7 +198,7 @@ void OCResource::itemRemoved(const Akonadi::Item & item)
   mapi_id_t message_id = ids[0].toULongLong();
   mapi_id_t folder_id = ids[1].toULongLong();
 
-  folder aFolder(m_session.get_message_store(), folder_id);
+  folder aFolder(m_session->get_message_store(), folder_id);
 
   aFolder.delete_message(message_id);
 
@@ -240,7 +265,7 @@ void OCResource::login()
 {
   try {
     // TODO: handle password (third argument)
-    m_session.login();
+    m_session->login();
   }
   catch(mapi_exception e)
   {
@@ -257,7 +282,7 @@ void OCResource::retrieveCollections()
 
   Collection::List collections;
 
-  property_container storeProperties = m_session.get_message_store().get_property_container();
+  property_container storeProperties = m_session->get_message_store().get_property_container();
   try {
     /* Retrieve the mailbox folder name */
     storeProperties << PR_DISPLAY_NAME;
@@ -271,7 +296,7 @@ void OCResource::retrieveCollections()
 
   Collection account;
   account.setParent( Collection::root() );
-  account.setRemoteId( m_session.get_profile_name().c_str() );
+  account.setRemoteId( m_session->get_profile_name().c_str() );
   account.setName( QString( (const char*) *(storeProperties.begin()) ) + QString( " (OpenChange)" ) );
   QStringList mimeTypes;
   mimeTypes << "inode/directory";
@@ -281,7 +306,7 @@ void OCResource::retrieveCollections()
   folder* top_folder= NULL;
   try {
     /* Prepare the directory listing */
-    message_store& store = m_session.get_message_store();
+    message_store& store = m_session->get_message_store();
     mapi_id_t topFolderId = store.get_default_folder(olFolderTopInformationStore);
     top_folder = new folder(store, topFolderId);
   }
@@ -328,8 +353,8 @@ QString OCResource::resolveMapiName(const char* username)
   struct SPropTagArray* flagList = NULL;
   SRowSet* rowSet = NULL;
   const char* usernames[2] = { username, NULL };
-  if (ResolveNames(m_session.get_mapi_session(), usernames, tagArray, &rowSet, &flagList, 0) != MAPI_E_SUCCESS) {
-    if (ResolveNames(m_session.get_mapi_session(), usernames, tagArray, &rowSet, &flagList, MAPI_UNICODE) != MAPI_E_SUCCESS) {
+  if (ResolveNames(m_session->get_mapi_session(), usernames, tagArray, &rowSet, &flagList, 0) != MAPI_E_SUCCESS) {
+    if (ResolveNames(m_session->get_mapi_session(), usernames, tagArray, &rowSet, &flagList, MAPI_UNICODE) != MAPI_E_SUCCESS) {
        qDebug() << "*** COULD NOT RESOLVE EXCHANGE EMAIL ADDRESS ***";
     }
   }
@@ -1253,7 +1278,7 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
   } else {
     mapi_object_t objStream;
     mapi_object_init(&objStream);
-    OpenStream(&mapi_message.data(), PR_BODY, 0, &objStream);
+    OpenStream(&mapi_message.data(), PR_BODY, OpenStream_ReadOnly, &objStream);
 
     uint32_t dataSize;
     GetStreamSize(&objStream, &dataSize);
@@ -1504,7 +1529,7 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
   } else {
     mapi_object_t objStream;
     mapi_object_init(&objStream);
-    OpenStream(&mapi_message.data(), PR_BODY, 0, &objStream);
+    OpenStream(&mapi_message.data(), PR_BODY, OpenStream_ReadOnly, &objStream);
 
     uint32_t dataSize;
     GetStreamSize(&objStream, &dataSize);
@@ -1575,7 +1600,7 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
   folder::message_container_type* messages = NULL;
   QString contentType;
   try {
-    folderPtr = new folder(m_session.get_message_store(), collection.remoteId().toULongLong());
+    folderPtr = new folder(m_session->get_message_store(), collection.remoteId().toULongLong());
     messages = new folder::message_container_type(folderPtr->fetch_messages());
     property_container folderProperties = folderPtr->get_property_container();
     folderProperties << PR_CONTAINER_CLASS;
