@@ -226,7 +226,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="QCheckBox" name="subscriptionEnabled">
        <property name="text">
-        <string>Enable Serverside Subscriptions</string>
+        <string>Enable Server-Side Subscriptions</string>
        </property>
       </widget>
      </item>
