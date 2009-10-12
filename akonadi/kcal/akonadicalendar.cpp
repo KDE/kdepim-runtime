@@ -199,7 +199,10 @@ bool AkonadiCalendar::endChange( Incidence *incidence )
 
 bool AkonadiCalendar::endChangeFORAKONADI( const Item &item )
 {
-  Q_ASSERT( item.isValid() );
+  if( ! item.isValid() ) {
+    kWarning() << "Item is invalid";
+    return false;
+  }
   const Incidence::Ptr incidence = Akonadi::incidence( item );
   Q_ASSERT( incidence );
 
