@@ -141,19 +141,18 @@ bool AkonadiCalendar::beginChange( Incidence *incidence )
   return true;
 }
 
-bool AkonadiCalendar::beginChangeFORAKONADI( const Item &incidence )
+bool AkonadiCalendar::beginChangeFORAKONADI( const Item &item )
 {
-#ifdef AKONADI_PORT_DISABLED
-  if( ! CalendarBase::beginChange( incidence ) ) {
+  if( ! CalendarBase::beginChangeFORAKONADI( item ) )
     return false;
-  }
+
+  const Incidence::Ptr incidence = Akonadi::incidence( item );
+  Q_ASSERT( incidence );
+
   Q_ASSERT( ! d->m_changes.contains( incidence->uid() ) ); //no nested changes, right?
   d->m_changes << incidence->uid();
   d->m_incidenceBeingChanged = KCal::Incidence::Ptr( incidence->clone() );
   return true;
-#else //AKONADI_PORT_DISABLED
-  return false;
-#endif // AKONADI_PORT_DISABLED
 }
 
 bool AkonadiCalendar::endChange( Incidence *incidence )
