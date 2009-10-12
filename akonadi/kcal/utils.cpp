@@ -28,6 +28,8 @@
 
 #include <Akonadi/Item>
 
+#include <KUrl>
+
 #include <boost/bind.hpp>\
 
 #include <algorithm>
@@ -82,4 +84,12 @@ Item::List Akonadi::applyCalFilter( const Item::List &items_, const CalFilter* f
   Item::List items( items_ );
   items.erase( std::remove_if( items.begin(), items.end(), !bind( itemMatches, _1, filter ) ), items.end() );
   return items;
+}
+
+bool Akonadi::isValidIncidenceItemUrl( const KUrl &url, const QStringList &supportedMimeTypes ) {
+  if ( !url.isValid() )
+    return false;
+  if ( url.scheme() != QLatin1String("akonadi") )
+    return false;
+  return supportedMimeTypes.contains( url.queryItem( QLatin1String("type") ) );
 }

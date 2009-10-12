@@ -37,6 +37,8 @@ namespace KCal {
   class CalFilter;
 }
 
+class KUrl;
+
 namespace Akonadi
 {
 
@@ -59,6 +61,11 @@ namespace Akonadi
   * returns the journal from an akonadi item, or a null pointer if the item has no such payload
   */
  AKONADI_KCAL_EXPORT KCal::Journal::Ptr journal( const Akonadi::Item &item );
+
+ /**
+  * returns @p true iff the URL represents an Akonadi item and has one of the given mimetypes.
+  */
+ AKONADI_KCAL_EXPORT bool isValidIncidenceItemUrl( const KUrl &url, const QStringList &supportedMimeTypes );
 
  /**
   * returns whether an Akonadi item contains an incidence
