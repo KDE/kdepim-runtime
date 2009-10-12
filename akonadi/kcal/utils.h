@@ -39,10 +39,10 @@ namespace KCal {
   class CalFilter;
 }
 
+class KUrl;
+
 class QDrag;
 class QMimeData;
-
-class KUrl;
 
 namespace Akonadi
 {
@@ -92,6 +92,30 @@ namespace Akonadi
   * returns @p true iff the URL represents an Akonadi item and has one of the given mimetypes.
   */
  AKONADI_KCAL_EXPORT bool isValidIncidenceItemUrl( const KUrl &url, const QStringList &supportedMimeTypes );
+
+ AKONADI_KCAL_EXPORT bool isValidIncidenceItemUrl( const KUrl &url );
+
+ /**
+  * returns @p true iff the mime data object contains any of the following:
+  *
+  * * An akonadi item with a supported KCal mimetype
+  * * an iCalendar
+  * * a VCard
+  */
+ AKONADI_KCAL_EXPORT bool canDecode( const QMimeData* mimeData );
+
+ AKONADI_KCAL_EXPORT QList<KUrl> incidenceItemUrls( const QMimeData* mimeData );
+
+ AKONADI_KCAL_EXPORT QList<KUrl> todoItemUrls( const QMimeData* mimeData );
+
+ AKONADI_KCAL_EXPORT bool mimeDataHasTodo( const QMimeData* mimeData );
+
+ AKONADI_KCAL_EXPORT QList<KCal::Todo::Ptr> todos( const QMimeData* mimeData, const KDateTime::Spec &timeSpec );
+
+ /**
+  * returns @p true iff the URL represents an Akonadi item and has one of the given mimetypes.
+  */
+ AKONADI_KCAL_EXPORT bool isValidTodoItemUrl( const KUrl &url );
 
  /**
   * creates mime data object for dragging an akonadi item containing an incidence

@@ -26,6 +26,7 @@
 
 #include <KCal/CalendarLocal>
 #include <KCal/CalFilter>
+#include <KCal/DndFactory>
 #include <KCal/ICalDrag>
 #include <KCal/VCalDrag>
 
@@ -37,6 +38,7 @@
 #include <QDrag>
 #include <QMimeData>
 #include <QPixmap>
+#include <QUrl>
 
 #include <boost/bind.hpp>\
 
@@ -47,6 +49,17 @@
 using namespace boost;
 using namespace KCal;
 using namespace Akonadi;
+
+static QLatin1String sEventType( "application/x-vnd.akonadi.calendar.event" );
+static QLatin1String sTodoType( "application/x-vnd.akonadi.calendar.todo" );
+static QLatin1String sJournalType( "application/x-vnd.akonadi.calendar.journal" );
+static QLatin1String sFreeBusyType( "application/x-vnd.akonadi.calendar.freebusy" );
+
+static QStringList kcalTypes() {
+  QStringList l;
+  l << sEventType << sTodoType << sJournalType << sFreeBusyType;
+  return l;
+}
 
 Incidence::Ptr Akonadi::incidence( const Item &item ) {
   return item.hasPayload<Incidence::Ptr>() ? item.payload<Incidence::Ptr>() : Incidence::Ptr();
@@ -170,3 +183,55 @@ bool Akonadi::isValidIncidenceItemUrl( const KUrl &url, const QStringList &suppo
     return false;
   return supportedMimeTypes.contains( url.queryItem( QLatin1String("type") ) );
 }
+
+bool Akonadi::isValidIncidenceItemUrl( const KUrl &url ) {
+  return isValidIncidenceItemUrl( url, kcalTypes() );
+}
+
+static bool containsValidIncidenceItemUrl( const QList<QUrl>& urls ) {
+  return std::find_if( urls.begin(), urls.end(), bind( Akonadi::isValidIncidenceItemUrl, _1 ) ) != urls.constEnd();
+}
+
+bool Akonadi::isValidTodoItemUrl( const KUrl &url ) {
+  if ( !url.isValid() )
+    return false;
+  if ( url.scheme() != QLatin1String("akonadi") )
+    return false;
+  return url.queryItem( QLatin1String("type") ) == sTodoType;
+}
+
+bool Akonadi::canDecode( const QMimeData* md ) {
+  Q_ASSERT( md );
+  return containsValidIncidenceItemUrl( md->urls() ) || ICalDrag::canDecode( md ) || VCalDrag::canDecode( md );
+}
+
+QList<KUrl> Akonadi::incidenceItemUrls( const QMimeData* mimeData ) {
+  QList<KUrl> urls;
+  Q_FOREACH( const KUrl& i, mimeData->urls() )
+    if ( isValidIncidenceItemUrl( i ) )
+      urls.push_back( i );
+  return urls;
+}
+
+QList<KUrl> Akonadi::todoItemUrls( const QMimeData* mimeData ) {
+  QList<KUrl> urls;
+  Q_FOREACH( const KUrl& i, mimeData->urls() )
+    if ( isValidIncidenceItemUrl( i , QStringList() << sTodoType ) )
+      urls.push_back( i );
+  return urls;
+}
+
+bool Akonadi::mimeDataHasTodo( const QMimeData* mimeData ) {
+  return !todoItemUrls( mimeData ).isEmpty() || !todos( mimeData, KDateTime::Spec() ).isEmpty();
+}
+
+QList<Todo::Ptr> Akonadi::todos( const QMimeData* mimeData, const KDateTime::Spec &spec ) {
+  std::auto_ptr<KCal::Calendar> cal( KCal::DndFactory::createDropCalendar( mimeData, spec ) );
+  if ( !cal.get() )
+    return QList<Todo::Ptr>();
+  QList<Todo::Ptr> todos;
+  Q_FOREACH( Todo* const i, cal->todos() )
+      todos.push_back( Todo::Ptr( i->clone() ) );
+  return todos;
+}
+
