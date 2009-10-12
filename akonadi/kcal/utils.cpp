@@ -24,15 +24,21 @@
 
 #include "utils.h"
 
+#include <KCal/CalendarLocal>
 #include <KCal/CalFilter>
+#include <KCal/ICalDrag>
+#include <KCal/VCalDrag>
 
 #include <Akonadi/Item>
 
 #include <KUrl>
 
+#include <QMimeData>
+
 #include <boost/bind.hpp>\
 
 #include <algorithm>
+#include <memory>
 #include <cassert>
 
 using namespace boost;
@@ -69,6 +75,41 @@ bool Akonadi::hasTodo( const Item& item ) {
 
 bool Akonadi::hasJournal( const Item& item ) {
   return item.hasPayload<Journal::Ptr>();
+}
+
+QMimeData* Akonadi::createMimeData( const Item::List &items, const KDateTime::Spec &timeSpec ) {
+  if ( items.isEmpty() )
+    return 0;
+
+  KCal::CalendarLocal cal( timeSpec );
+
+  QList<QUrl> urls;
+  int incidencesFound = 0;
+  Q_FOREACH ( const Item &item, items ) {
+    const KCal::Incidence::Ptr incidence( Akonadi::incidence( item ) );
+    if ( !incidence )
+      continue;
+    ++incidencesFound;
+    urls.push_back( item.url() );
+    Incidence *i = incidence->clone();
+    cal.addIncidence( i );
+  }
+
+  if ( incidencesFound == 0 )
+    return 0;
+
+  std::auto_ptr<QMimeData> mimeData( new QMimeData );
+
+  mimeData->setUrls( urls );
+
+  ICalDrag::populateMimeData( mimeData.get(), &cal );
+  VCalDrag::populateMimeData( mimeData.get(), &cal );
+
+  return mimeData.release();
+}
+
+QMimeData* Akonadi::createMimeData( const Item &item, const KDateTime::Spec &timeSpec )  {
+  return createMimeData( Item::List() << item, timeSpec );
 }
 
 static bool itemMatches( const Item& item, const CalFilter* filter ) {

@@ -33,9 +33,13 @@
 #include <KCal/Journal>
 #include <KCal/Todo>
 
+#include <KDateTime>
+
 namespace KCal {
   class CalFilter;
 }
+
+class QMimeData;
 
 class KUrl;
 
@@ -66,6 +70,16 @@ namespace Akonadi
   * returns @p true iff the URL represents an Akonadi item and has one of the given mimetypes.
   */
  AKONADI_KCAL_EXPORT bool isValidIncidenceItemUrl( const KUrl &url, const QStringList &supportedMimeTypes );
+
+ /**
+  * creates mime data object for dragging an akonadi item containing an incidence
+  */
+ AKONADI_KCAL_EXPORT QMimeData* createMimeData( const Akonadi::Item &item, const KDateTime::Spec &timeSpec );
+
+ /**
+  * creates mime data object for dragging akonadi items containing an incidence
+  */
+ AKONADI_KCAL_EXPORT QMimeData* createMimeData( const Akonadi::Item::List &items, const KDateTime::Spec &timeSpec );
 
  /**
   * returns whether an Akonadi item contains an incidence
