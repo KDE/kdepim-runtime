@@ -75,7 +75,7 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
      * @deprecated: FORAKONADI
      */
     bool addIncidence( KCal::Incidence *incidence );
-    bool addIncidenceFORAKONADI( const Akonadi::Item &incidence );
+    bool addIncidenceFORAKONADI( const KCal::Incidence::Ptr &incidence );
 
     /**
      * @deprecated: FORAKONADI
@@ -89,7 +89,7 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
      * @deprecated: FORAKONADI
      */
     bool addEvent( KCal::Event *event );
-    bool addEventFORAKONADI( const Akonadi::Item &event );
+    bool addEventFORAKONADI( const KCal::Event::Ptr &event );
 
     /**
      * @deprecated: FORAKONADI
@@ -137,7 +137,7 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
      * @deprecated: FORAKONADI
      */
     bool addTodo( KCal::Todo *todo );
-    bool addTodoFORAKONADI( const Akonadi::Item &todo );
+    bool addTodoFORAKONADI( const KCal::Todo::Ptr &todo );
 
     /**
      * @deprecated: FORAKONADI
@@ -173,7 +173,7 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
      * @deprecated: FORAKONADI
      */
     bool addJournal( KCal::Journal *journal );
-    bool addJournalFORAKONADI( const Akonadi::Item &journal );
+    bool addJournalFORAKONADI( const KCal::Journal::Ptr &journal );
 
     /**
      * @deprecated: FORAKONADI

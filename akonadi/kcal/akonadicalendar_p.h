@@ -170,13 +170,11 @@ class KOrg::AkonadiCalendar::Private : public QObject
       return true;
     }
 
-    bool addIncidenceFORAKONADI( const Akonadi::Item & item_ )
+    bool addIncidenceFORAKONADI( const Incidence::Ptr &incidence )
     {
       kDebug();
-      Akonadi::Item item = item_;
-      const Incidence::Ptr incidence = Akonadi::incidence( item );
       Akonadi::CollectionDialog dlg( 0 ); //PENDING(AKONADI_PORT) we really need a parent here
-      dlg.setMimeTypeFilter( QStringList() << QString::fromLatin1( "text/calendar" ) );
+      dlg.setMimeTypeFilter( QStringList() << QLatin1String( "text/calendar" ) );
       if ( ! dlg.exec() ) {
         return false;
       }
@@ -185,6 +183,8 @@ class KOrg::AkonadiCalendar::Private : public QObject
       //Q_ASSERT( m_collectionMap.contains( collection.id() ) ); //we can add items to collections we don't show yet
       Q_ASSERT( ! m_uidToItemId.contains( incidence->uid() ) ); //but we can not have the same incidence in 2 collections //PENDING(AKONADI_PORT) remove this assert (and the map)
 
+      Akonadi::Item item;
+      item.setPayload( incidence );
       //the sub-mimetype of text/calendar as defined at kdepim/akonadi/kcal/kcalmimetypevisitor.cpp
       item.setMimeType( QString::fromLatin1("application/x-vnd.akonadi.calendar.%1").arg(QLatin1String(incidence->type().toLower())) ); //PENDING(AKONADI_PORT) shouldn't be hardcoded?
       Akonadi::ItemCreateJob *job = new Akonadi::ItemCreateJob( item, collection, m_session );

@@ -390,7 +390,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
     */
     virtual bool addIncidence( KCal::Incidence *incidence );
 
-    virtual bool addIncidenceFORAKONADI( const Akonadi::Item &incidence );
+    virtual bool addIncidenceFORAKONADI( const KCal::Incidence::Ptr &incidence );
 
     /**
       Removes an KCal::Incidence from the calendar.
@@ -554,7 +554,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
     */
     virtual bool addEvent( KCal::Event *event ) = 0;
 
-    virtual bool addEventFORAKONADI( const Akonadi::Item &event ) = 0;
+    virtual bool addEventFORAKONADI( const KCal::Event::Ptr &event ) = 0;
 
     /**
       Removes an KCal::Event from the calendar.
@@ -768,7 +768,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @see deleteTodo()
     */
     virtual bool addTodo( KCal::Todo *todo ) = 0;
-    virtual bool addTodoFORAKONADI( const Akonadi::Item &todo ) = 0;
+    virtual bool addTodoFORAKONADI( const KCal::Todo::Ptr &todo ) = 0;
 
     /**
       Removes a KCal::Todo from the calendar.
@@ -888,7 +888,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @see deleteJournal()
     */
     virtual bool addJournal( KCal::Journal *journal ) = 0;
-    virtual bool addJournalFORAKONADI( const Akonadi::Item &journal ) = 0;
+    virtual bool addJournalFORAKONADI( const KCal::Journal::Ptr &journal ) = 0;
 
     /**
       Removes a KCal::Journal from the calendar.

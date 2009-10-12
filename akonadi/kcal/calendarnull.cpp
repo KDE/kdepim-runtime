@@ -91,7 +91,7 @@ bool CalendarNull::addEvent( Event *event )
   return false;
 }
 
-bool CalendarNull::addEventFORAKONADI( const Item &event )
+bool CalendarNull::addEventFORAKONADI( const Event::Ptr &event )
 {
   Q_UNUSED ( event );
   return false;
@@ -210,7 +210,7 @@ bool CalendarNull::addTodo( Todo *todo )
   return false;
 }
 
-bool CalendarNull::addTodoFORAKONADI( const Item &todo )
+bool CalendarNull::addTodoFORAKONADI( const Todo::Ptr &todo )
 {
   Q_UNUSED( todo );
   return false;
@@ -282,7 +282,7 @@ bool CalendarNull::addJournal( Journal *journal )
   return false;
 }
 
-bool CalendarNull::addJournalFORAKONADI( const Item &journal )
+bool CalendarNull::addJournalFORAKONADI( const Journal::Ptr &journal )
 {
   Q_UNUSED( journal );
   return false;

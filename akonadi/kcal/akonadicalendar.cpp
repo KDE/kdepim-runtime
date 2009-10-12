@@ -300,7 +300,7 @@ bool AkonadiCalendar::addIncidence( Incidence *incidence )
 }
 
 
-bool AkonadiCalendar::addIncidenceFORAKONADI( const Item &incidence )
+bool AkonadiCalendar::addIncidenceFORAKONADI( const Incidence::Ptr &incidence )
 {
   kDebug();
   // dispatch to addEvent/addTodo/addJournal
@@ -340,7 +340,7 @@ bool AkonadiCalendar::addEvent( Event *event )
   return d->addIncidence(event);
 }
 
-bool AkonadiCalendar::addEventFORAKONADI( const Item &event )
+bool AkonadiCalendar::addEventFORAKONADI( const Event::Ptr &event )
 {
   kDebug();
   return d->addIncidenceFORAKONADI(event);
@@ -395,7 +395,7 @@ bool AkonadiCalendar::addTodo( Todo *todo )
   return d->addIncidence(todo);
 }
 
-bool AkonadiCalendar::addTodoFORAKONADI( const Item &todo )
+bool AkonadiCalendar::addTodoFORAKONADI( const Todo::Ptr &todo )
 {
   kDebug();
   /*
@@ -782,7 +782,7 @@ bool AkonadiCalendar::addJournal( Journal *journal )
   return d->addIncidence(journal);
 }
 
-bool AkonadiCalendar::addJournalFORAKONADI( const Item &journal )
+bool AkonadiCalendar::addJournalFORAKONADI( const Journal::Ptr &journal )
 {
   kDebug();
   return d->addIncidenceFORAKONADI(journal);

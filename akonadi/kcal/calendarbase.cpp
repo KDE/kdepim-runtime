@@ -49,31 +49,27 @@ extern "C" {
 }
 
 using namespace Akonadi;
+using namespace boost;
 using namespace KCal;
 using namespace KOrg;
 
 namespace {
-  class Visitor {
-    bool visit( const Item& ) {
-    }
-  };
-
   class AddVisitor : public IncidenceBase::Visitor {
     CalendarBase* const mCalendar;
-    const Item mItem;
+    const Incidence::Ptr mInc;
   public:
-    explicit AddVisitor( CalendarBase* cal, const Item& item ) : mCalendar( cal ), mItem( item ) {}
+    explicit AddVisitor( CalendarBase* cal, const Incidence::Ptr& inc ) : mCalendar( cal ), mInc( inc ) {}
 
     /* reimp */ bool visit( Event * ) {
-      return mCalendar->addEventFORAKONADI( mItem );
+      return mCalendar->addEventFORAKONADI( static_pointer_cast<Event>( mInc ) );
     }
 
     /* reimp */ bool visit( Todo * ) {
-      return mCalendar->addTodoFORAKONADI( mItem );
+      return mCalendar->addTodoFORAKONADI( static_pointer_cast<Todo>( mInc ) );
     }
 
     /* reimp */ bool visit( Journal * ) {
-      return mCalendar->addJournalFORAKONADI( mItem );
+      return mCalendar->addJournalFORAKONADI( static_pointer_cast<Journal>( mInc ) );
     }
   };
 
@@ -638,12 +634,9 @@ bool CalendarBase::addIncidence( Incidence *incidence )
   return incidence->accept( v );
 }
 
-bool CalendarBase::addIncidenceFORAKONADI( const Item &item )
+bool CalendarBase::addIncidenceFORAKONADI( const Incidence::Ptr &incidence )
 {
-  AddVisitor v( this, item );
-  const Incidence::Ptr incidence = Akonadi::incidence( item );
-  if ( !incidence )
-    return false;
+  AddVisitor v( this, incidence );
   return incidence->accept( v );
 }
 

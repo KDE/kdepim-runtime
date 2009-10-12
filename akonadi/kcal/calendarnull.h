@@ -105,7 +105,7 @@ class AKONADI_KCAL_EXPORT CalendarNull : public CalendarBase
       Calendar::addEvent()
     */
     bool addEvent( KCal::Event *event );
-    bool addEventFORAKONADI( const Akonadi::Item &event );
+    bool addEventFORAKONADI( const KCal::Event::Ptr &event );
 
     /**
       @copydoc
@@ -182,7 +182,7 @@ class AKONADI_KCAL_EXPORT CalendarNull : public CalendarBase
       Calendar::addTodo()
     */
     bool addTodo( KCal::Todo *todo );
-    bool addTodoFORAKONADI( const Akonadi::Item &todo );
+    bool addTodoFORAKONADI( const KCal::Todo::Ptr &todo );
 
     /**
       @copydoc
@@ -228,7 +228,7 @@ class AKONADI_KCAL_EXPORT CalendarNull : public CalendarBase
       Calendar::addJournal()
     */
     bool addJournal( KCal::Journal *journal );
-    bool addJournalFORAKONADI( const Akonadi::Item &journal );
+    bool addJournalFORAKONADI( const KCal::Journal::Ptr &journal );
 
     /**
       @copydoc
