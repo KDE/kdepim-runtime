@@ -743,7 +743,7 @@ Incidence *CalendarBase::dissociateOccurrence( Incidence *incidence,
   return newInc;
 }
 
-Item CalendarBase::dissociateOccurrenceFORAKONADI( const Item &incidence,
+Incidence::Ptr CalendarBase::dissociateOccurrenceFORAKONADI( const Item &incidence,
                                            const QDate &date,
                                            const KDateTime::Spec &spec,
                                            bool single )
@@ -817,7 +817,7 @@ Item CalendarBase::dissociateOccurrenceFORAKONADI( const Item &incidence,
   }
   return newInc;
 #else //AKONADI_PORT_DISABLED
-  return Item();
+  return Incidence::Ptr();
 #endif // AKONADI_PORT_DISABLED
 }
 

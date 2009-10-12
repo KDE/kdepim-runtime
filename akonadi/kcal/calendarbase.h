@@ -536,9 +536,9 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
                                      const KDateTime::Spec &spec,
                                      bool single = true );
 
-    Akonadi::Item dissociateOccurrenceFORAKONADI( const Akonadi::Item &incidence, const QDate &date,
-                                     const KDateTime::Spec &spec,
-                                     bool single = true );
+    KCal::Incidence::Ptr dissociateOccurrenceFORAKONADI( const Akonadi::Item &incidence, const QDate &date,
+                                                         const KDateTime::Spec &spec,
+                                                         bool single = true );
 
   // KCal::Event Specific Methods //
 
