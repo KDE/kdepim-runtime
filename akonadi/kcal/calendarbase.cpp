@@ -319,19 +319,9 @@ QStringList CalendarBase::categories()
   return cats;
 }
 
-Incidence::List CalendarBase::incidences( const QDate &date )
-{
-  return mergeIncidenceList( events( date ), todos( date ), journals( date ) );
-}
-
 Item::List CalendarBase::incidencesFORAKONADI( const QDate &date )
 {
   return mergeIncidenceListFORAKONADI( eventsFORAKONADI( date ), todosFORAKONADI( date ), journalsFORAKONADI( date ) );
-}
-
-Incidence::List CalendarBase::incidences()
-{
-  return mergeIncidenceList( events(), todos(), journals() );
 }
 
 Item::List CalendarBase::incidencesFORAKONADI()

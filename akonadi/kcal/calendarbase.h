@@ -412,8 +412,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return the list of all filtered KCal::Incidences.
     */
-    virtual KCal::Incidence::List incidences();
-
     virtual Akonadi::Item::List incidencesFORAKONADI();
 
     /**
@@ -424,7 +422,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return the list of filtered KCal::Incidences occurring on the specified date.
     */
-    virtual KCal::Incidence::List incidences( const QDate &date );
 
     virtual Akonadi::Item::List incidencesFORAKONADI( const QDate& date );
 
@@ -434,8 +431,9 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return the list of all unfiltered KCal::Incidences.
     */
+private:
     virtual KCal::Incidence::List rawIncidences();
-
+public:
     virtual Akonadi::Item::List rawIncidencesFORAKONADI();
 
     /**
@@ -448,7 +446,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       A null pointer is returned if no such KCal::Incidence exists.
     */
     KCal::Incidence *incidence( const QString &uid );
-
     Akonadi::Item incidenceFORAKONADI( const Akonadi::Item::Id &id );
 
     /**
