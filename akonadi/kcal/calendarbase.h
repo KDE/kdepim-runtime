@@ -403,8 +403,9 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @see addIncidence()
     */
+  protected:
     virtual bool deleteIncidence( KCal::Incidence *incidence );
-
+  public:
     virtual bool deleteIncidenceFORAKONADI( const Akonadi::Item &incidence );
 
     /**

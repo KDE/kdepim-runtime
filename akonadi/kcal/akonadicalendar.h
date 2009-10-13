@@ -86,7 +86,9 @@ public:
     /**
      * @deprecated: FORAKONADI
      */
+  private:
     bool deleteIncidence( KCal::Incidence *incidence );
+  public:
     bool deleteIncidenceFORAKONADI( const Akonadi::Item &incidence );
 
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
