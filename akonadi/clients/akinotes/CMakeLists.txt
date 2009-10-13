@@ -1,18 +1,10 @@
 PROJECT(stickynotes)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-
-SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
-
-
-FIND_PACKAGE(KDE4 REQUIRED)
-
-INCLUDE(KDE4Defaults)
-
-FIND_PACKAGE(StickyNotes REQUIRED)
-
-
-INCLUDE_DIRECTORIES(${KDE4_INCLUDES} ${QT_INCLUDES})
+INCLUDE_DIRECTORIES(
+  ${CMAKE_SOURCE_DIR}/libstickynotes/include
+  ${CMAKE_BINARY_DIR}/libstickynotes/include 
+  ${CMAKE_SOURCE_DIR}/libstickynotes/gui/standalone/include
+)
 
 ADD_SUBDIRECTORY(src)
 

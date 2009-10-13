@@ -26,7 +26,7 @@
 #include <StickyNotes/BaseNoteItem>
 #include <boost/shared_ptr.hpp>
 
-namespace KCal { class Incidence; };
+namespace KCal { class Incidence; }
 
 class AkiNotes;
 

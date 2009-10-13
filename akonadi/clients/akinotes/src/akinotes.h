@@ -31,7 +31,7 @@
 #include <QMap>
 
 namespace Akonadi { class Monitor;
-		    class Item; };
+		    class Item; }
 
 namespace StickyNotes {	class BaseNoteItem;
 			class RemoteNoteController; }
