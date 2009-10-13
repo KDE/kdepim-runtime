@@ -388,8 +388,9 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @deprecated: FORAKONADI
       @see deleteIncidence()
     */
+  protected:
     virtual bool addIncidence( KCal::Incidence *incidence );
-
+  public:
     virtual bool addIncidenceFORAKONADI( const KCal::Incidence::Ptr &incidence );
 
     /**
@@ -431,9 +432,9 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return the list of all unfiltered KCal::Incidences.
     */
-private:
+  private:
     virtual KCal::Incidence::List rawIncidences();
-public:
+  public:
     virtual Akonadi::Item::List rawIncidencesFORAKONADI();
 
     /**
@@ -445,7 +446,9 @@ public:
       @return a pointer to the KCal::Incidence.
       A null pointer is returned if no such KCal::Incidence exists.
     */
+  protected:
     KCal::Incidence *incidence( const QString &uid );
+  public:
     Akonadi::Item incidenceFORAKONADI( const Akonadi::Item::Id &id );
 
     /**
@@ -457,8 +460,9 @@ public:
       @return a pointer to the KCal::Incidence.
       A null pointer is returned if no such KCal::Incidence exists.
     */
+  protected:
     KCal::Incidence *incidenceFromSchedulingID( const QString &sid );
-
+  public:
     Akonadi::Item incidenceFromSchedulingIDFORAKONADI( const QString &sid );
 
     /**
@@ -468,8 +472,9 @@ public:
 
       @param sid is a unique scheduling identifier string.
      */
+  protected:
     KCal::Incidence::List incidencesFromSchedulingID( const QString &sid );
-
+  public:
     Akonadi::Item::List incidencesFromSchedulingIDFORAKONADI( const QString &sid );
 
     /**
@@ -482,10 +487,11 @@ public:
 
       @return a list of merged KCal::Incidences.
     */
+  private:
     static KCal::Incidence::List mergeIncidenceList( const KCal::Event::List &events,
                                                const KCal::Todo::List &todos,
                                                const KCal::Journal::List &journals );
-
+  public:
 
     static Akonadi::Item::List mergeIncidenceListFORAKONADI( const Akonadi::Item::List &events,
                                                const Akonadi::Item::List &todos,
@@ -497,8 +503,9 @@ public:
 
       @param incidence is a pointer to the KCal::Incidence that will be changing.
     */
+  protected:
     virtual bool beginChange( KCal::Incidence *incidence );
-
+  public:
     virtual bool beginChangeFORAKONADI( const Akonadi::Item &incidence );
 
     /**
@@ -507,7 +514,9 @@ public:
 
       @param incidence is a pointer to the KCal::Incidence that was changed.
     */
+protected:
     virtual bool endChange( KCal::Incidence *incidence );
+public:
 
     virtual bool endChangeFORAKONADI( const Akonadi::Item &incidence );
 
@@ -529,10 +538,11 @@ public:
 
       @return a pointer to a new recurring KCal::Incidence if @a single is false.
     */
+  protected:
     KCal::Incidence *dissociateOccurrence( KCal::Incidence *incidence, const QDate &date,
                                      const KDateTime::Spec &spec,
                                      bool single = true );
-
+  public:
     KCal::Incidence::Ptr dissociateOccurrenceFORAKONADI( const Akonadi::Item &incidence, const QDate &date,
                                                          const KDateTime::Spec &spec,
                                                          bool single = true );
@@ -549,8 +559,9 @@ public:
 
       @see deleteEvent()
     */
+  protected:
     virtual bool addEvent( KCal::Event *event ) = 0;
-
+  public:
     virtual bool addEventFORAKONADI( const KCal::Event::Ptr &event ) = 0;
 
     /**
@@ -569,12 +580,9 @@ public:
 
     /**
       Removes all KCal::Events from the calendar.
-      @deprecated: FORAKONADI
 
       @see deleteEvent()
     */
-    virtual void deleteAllEvents() = 0;
-
     virtual void deleteAllEventsFORAKONADI() = 0;
 
     /**
@@ -587,9 +595,11 @@ public:
 
       @return a list of KCal::Events sorted as specified.
     */
+  protected:
     static KCal::Event::List sortEvents( KCal::Event::List *eventList,
                                    EventSortField sortField,
                                    SortDirection sortDirection );
+  public:
     static Akonadi::Item::List sortEventsFORAKONADI( const Akonadi::Item::List &eventList,
                                    EventSortField sortField,
                                    SortDirection sortDirection );
@@ -603,9 +613,11 @@ public:
 
       @return the list of all filtered KCal::Events sorted as specified.
     */
+  private:
     virtual KCal::Event::List events(
       EventSortField sortField = EventSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
+  public:
     virtual Akonadi::Item::List eventsFORAKONADI(
       EventSortField sortField = EventSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
@@ -618,7 +630,9 @@ public:
 
       @return the list of filtered KCal::Events occurring on the specified timestamp.
     */
+  private:
     KCal::Event::List events( const KDateTime &dt );
+  public:
     Akonadi::Item::List eventsFORAKONADI( const KDateTime &dt );
 
     /**
@@ -635,9 +649,11 @@ public:
       @return the list of filtered KCal::Events occurring within the specified
       date range.
     */
+  private:
     KCal::Event::List events( const QDate &start, const QDate &end,
                         const KDateTime::Spec &timeSpec = KDateTime::Spec(),
                         bool inclusive = false );
+  public:
     Akonadi::Item::List eventsFORAKONADI( const QDate &start, const QDate &end,
                         const KDateTime::Spec &timeSpec = KDateTime::Spec(),
                         bool inclusive = false );
@@ -656,11 +672,13 @@ public:
 
       @return the list of sorted, filtered KCal::Events occurring on @a date.
     */
+  private:
     KCal::Event::List events(
       const QDate &date,
       const KDateTime::Spec &timeSpec = KDateTime::Spec(),
       EventSortField sortField = EventSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
+  public:
     Akonadi::Item::List eventsFORAKONADI(
       const QDate &date,
       const KDateTime::Spec &timeSpec = KDateTime::Spec(),
@@ -1272,6 +1290,8 @@ public:
                                 const KDateTime &from, const KDateTime &to );
 
   private:
+    friend class ::KCal::Incidence::AddVisitor<KOrg::CalendarBase>; //PENDING(AKONADI_PORT) for addEvent,Journal,Todo get rid of this
+
     //@cond PRIVATE
     class Private;
     Private *const d;

@@ -69,6 +69,14 @@ Event::Ptr Akonadi::event( const Item &item ) {
   return item.hasPayload<Event::Ptr>() ? item.payload<Event::Ptr>() : Event::Ptr();
 }
 
+QList<Event::Ptr> Akonadi::eventsFromItems( const Item::List &items ) {
+  QList<Event::Ptr> events;
+  Q_FOREACH ( const Item &item, items )
+    if ( const Event::Ptr e = Akonadi::event( item ) )
+      events.push_back( e );
+  return events;
+}
+
 Todo::Ptr Akonadi::todo( const Item &item ) {
   return item.hasPayload<Todo::Ptr>() ? item.payload<Todo::Ptr>() : Todo::Ptr();
 }

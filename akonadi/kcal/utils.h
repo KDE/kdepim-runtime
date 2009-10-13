@@ -57,6 +57,11 @@ namespace Akonadi
    */
   AKONADI_KCAL_EXPORT KCal::Event::Ptr event( const Akonadi::Item &item );
 
+  /**
+   * returns event pointers from an akonadi item, or a null pointer if the item has no such payload
+   */
+  AKONADI_KCAL_EXPORT QList<KCal::Event::Ptr> eventsFromItems( const Akonadi::Item::List &items );
+
  /**
   * returns the todo from an akonadi item, or a null pointer if the item has no such payload
   */

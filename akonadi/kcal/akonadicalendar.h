@@ -56,13 +56,17 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     /**
      * @deprecated: FORAKONADI
      */
+private:
     bool beginChange( KCal::Incidence *incidence );
+public:
     bool beginChangeFORAKONADI( const Akonadi::Item &incidence );
 
     /**
      * @deprecated: FORAKONADI
      */
+private:
     bool endChange( KCal::Incidence *incidence );
+public:
     bool endChangeFORAKONADI( const Akonadi::Item &incidence );
 
     bool reload(); //TODO remove, atm abstract in Calendar
@@ -74,7 +78,9 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     /**
      * @deprecated: FORAKONADI
      */
+  private:
     bool addIncidence( KCal::Incidence *incidence );
+  public:
     bool addIncidenceFORAKONADI( const KCal::Incidence::Ptr &incidence );
 
     /**
@@ -88,7 +94,9 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     /**
      * @deprecated: FORAKONADI
      */
+  private:
     bool addEvent( KCal::Event *event );
+  public:
     bool addEventFORAKONADI( const KCal::Event::Ptr &event );
 
     /**
@@ -100,7 +108,6 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     /**
      * @deprecated: FORAKONADI
      */
-    void deleteAllEvents() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
     void deleteAllEventsFORAKONADI() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
     /**
