@@ -118,6 +118,8 @@ void SetupServer::applySettings()
   Settings::self()->setAuthentication( m_ui->authImapGroup->checkedId() );
   Settings::self()->setPassword( m_ui->password->text() );
   Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
+  Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
+  Settings::self()->setDisconnectedModeEnabled( m_ui->disconnectedModeEnabled->isChecked() );
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 }
@@ -158,6 +160,9 @@ void SetupServer::readSettings()
   }
 
   m_ui->subscriptionEnabled->setChecked( Settings::self()->subscriptionEnabled() );
+
+  m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
+  m_ui->disconnectedModeEnabled->setChecked( Settings::self()->disconnectedModeEnabled() );
 
   delete currentUser;
 }

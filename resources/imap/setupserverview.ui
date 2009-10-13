@@ -10,7 +10,7 @@
     <height>497</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,1">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
@@ -222,34 +222,57 @@ p, li { white-space: pre-wrap; }
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
+    <layout class="QFormLayout" name="formLayout_2">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Check interval:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
       <widget class="QCheckBox" name="subscriptionEnabled">
        <property name="text">
         <string>Enable Server-Side Subscriptions</string>
        </property>
       </widget>
      </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
+     <item row="3" column="1">
       <widget class="KPushButton" name="subscriptionButton">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="text">
         <string>Serverside Subscription...</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="disconnectedModeEnabled">
+       <property name="text">
+        <string>Enable Disconnected Mode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="KIntNumInput" name="checkInterval">
+       <property name="value">
+        <number>1</number>
+       </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="suffix">
+        <string> minutes</string>
+       </property>
+       <property name="prefix">
+        <string/>
+       </property>
+       <property name="specialValueText">
+        <string extracomment="no interval mail check">Never</string>
        </property>
       </widget>
      </item>
@@ -290,6 +313,11 @@ p, li { white-space: pre-wrap; }
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KIntNumInput</class>
+   <extends>QWidget</extends>
+   <header>knuminput.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
