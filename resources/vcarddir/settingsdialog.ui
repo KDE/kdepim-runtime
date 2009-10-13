@@ -122,15 +122,12 @@
           </widget>
          </item>
          <item>
-          <widget class="KIntNumInput" name="kcfg_AutosaveInterval" >
+          <widget class="KIntSpinBox" name="kcfg_AutosaveInterval" >
            <property name="value" >
             <number>1</number>
            </property>
            <property name="minimum" >
             <number>0</number>
-           </property>
-           <property name="suffix" >
-            <string>min</string>
            </property>
           </widget>
          </item>
@@ -170,8 +167,8 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KIntNumInput</class>
-   <extends>QWidget</extends>
+   <class>KIntSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>knuminput.h</header>
   </customwidget>
   <customwidget>
