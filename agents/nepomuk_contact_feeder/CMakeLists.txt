@@ -1,7 +1,6 @@
 include_directories(
   ${kdepim-runtime_SOURCE_DIR}
   ${Boost_INCLUDE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR}/../nie_fast
   ${NEPOMUK_INCLUDES}
   )
 
