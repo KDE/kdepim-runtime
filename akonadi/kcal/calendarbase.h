@@ -317,14 +317,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
     KCal::ICalTimeZones *timeZones() const;
 
     /**
-       Set the time zone collection used by the calendar.
-
-       @param zones time zones collection. Important: all time zones references
-                    in the calendar must be included in the collection.
-     */
-    void setTimeZones( const KCal::ICalTimeZones &zones );
-
-    /**
       Sets if the calendar has been modified.
 
       @param modified is true if the calendar has been modified since open
