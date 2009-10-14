@@ -18,6 +18,7 @@ target_link_libraries(kjots_common
                       akonadi_next
                       grantlee_core_library
                       ${KDEPIMLIBS_AKONADI_LIBS}
+                      ${KDEPIMLIBS_KMIME_LIBS}
                       ${KDE4_KIO_LIBS}
 )
 

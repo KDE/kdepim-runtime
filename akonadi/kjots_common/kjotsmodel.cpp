@@ -23,9 +23,8 @@
 
 #include <akonadi/changerecorder.h>
 
-#include "kjotspage.h"
-
 #include <kdebug.h>
+#include <KMime/KMimeMessage>
 
 KJotsEntity::KJotsEntity(const QModelIndex &index, QObject *parent)
   : QObject(parent)
@@ -38,8 +37,8 @@ QString KJotsEntity::title()
   Item item = m_index.data(EntityTreeModel::ItemRole).value<Item>();
   if (item.isValid())
   {
-    KJotsPage page = item.payload<KJotsPage>();
-    return page.title();
+    KMime::Message::Ptr page = item.payload<KMime::Message::Ptr>();
+    return page->subject()->asUnicodeString();
   } else {
     Collection col = m_index.data(EntityTreeModel::CollectionRole).value<Collection>();
     if (col.isValid())
@@ -55,9 +54,8 @@ QString KJotsEntity::content()
   Item item = m_index.data(EntityTreeModel::ItemRole).value<Item>();
   if (item.isValid())
   {
-    KJotsPage page = item.payload<KJotsPage>();
-    return page.content().replace( QLatin1String( "\n" ), QLatin1String( "<br />" ) );
-//     return page.content();
+    KMime::Message::Ptr page = item.payload<KMime::Message::Ptr>();
+    return page->mainBodyPart()->decodedText();
   }
   return QString();
 }
@@ -68,7 +66,7 @@ bool KJotsEntity::isBook()
 
   if (col.isValid())
   {
-    return col.contentMimeTypes().contains(KJotsPage::mimeType());
+    return col.contentMimeTypes().contains(KMime::Message::mimeType());
   }
   return false;
 }
@@ -78,7 +76,7 @@ bool KJotsEntity::isPage()
   Item item = m_index.data(EntityTreeModel::ItemRole).value<Item>();
   if (item.isValid())
   {
-    return item.hasPayload<KJotsPage>();
+    return item.hasPayload<KMime::Message::Ptr>();
   }
   return false;
 }
@@ -117,6 +115,16 @@ QVariant KJotsModel::data(const QModelIndex &index, int role) const
     return QVariant::fromValue(obj);
   }
   return EntityTreeModel::data(index, role);
+}
+
+QVariant KJotsModel::getData( const Akonadi::Item& item, int column, int role) const
+{
+  if ( role == Qt::DisplayRole && item.hasPayload<KMime::Message::Ptr>() )
+  {
+    KMime::Message::Ptr page = item.payload<KMime::Message::Ptr>();
+    return page->subject()->asUnicodeString();
+  }
+  return EntityTreeModel::getData( item, column, role );
 }
 
 #include "kjotsmodel.moc"

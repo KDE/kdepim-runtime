@@ -65,6 +65,7 @@
 #include <KFileDialog>
 #include <KMessageBox>
 #include <KStandardDirs>
+#include <KMime/KMimeMessage>
 
 #include "kjotspage.h"
 #include "kjotsmodel.h"
@@ -137,8 +138,8 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   Collection rootCollection = Collection::root();
 
   ItemFetchScope scope;
-  scope.fetchPayloadPart( "title" );
-//   scope.fetchFullPayload( true ); // Need to have full item when adding it to the internal data structure
+//   scope.fetchPayloadPart( "title" );
+  scope.fetchFullPayload( true ); // Need to have full item when adding it to the internal data structure
 //   scope.fetchAttribute< CollectionChildOrderAttribute >();
   scope.fetchAttribute< EntityDisplayAttribute >();
 
@@ -146,7 +147,7 @@ KJotsWidget::KJotsWidget( QWidget * parent, Qt::WindowFlags f )
   monitor->fetchCollection( true );
   monitor->setItemFetchScope( scope );
   monitor->setCollectionMonitored( Collection::root() );
-  monitor->setMimeTypeMonitored( KJotsPage::mimeType() );
+  monitor->setMimeTypeMonitored( QLatin1String( "text/x-vnd.akonadi.note" ) );
 //   monitor->setCollectionMonitored( rootCollection );
 //   monitor->fetchCollectionStatistics( false );
 
@@ -245,12 +246,14 @@ void KJotsWidget::savePage(const QModelIndex &parent, int start, int end)
   if (!item.isValid())
     return;
 
-  if (!item.hasPayload<KJotsPage>())
+  if (!item.hasPayload<KMime::Message::Ptr>())
     return;
 
-  KJotsPage page = item.payload<KJotsPage>();
+  KMime::Message::Ptr page = item.payload<KMime::Message::Ptr>();
 
-  page.setContent(editor->toPlainText());
+
+
+//   page.setContent(editor->toPlainText());
   item.setPayload(page);
   selProxy->setData(idx, QVariant::fromValue(item), EntityTreeModel::ItemRole );
 }
@@ -312,10 +315,11 @@ void KJotsWidget::renderSelection()
     Item item = idx.data(EntityTreeModel::ItemRole).value<Item>();
     if (item.isValid())
     {
-      if (!item.hasPayload<KJotsPage>())
+      if (!item.hasPayload<KMime::Message::Ptr>())
         return;
-      KJotsPage page = item.payload<KJotsPage>();
-      editor->setText( page.content() );
+
+      KMime::Message::Ptr page = item.payload<KMime::Message::Ptr>();
+      editor->setText( page->mainBodyPart()->decodedText() );
       stackedWidget->setCurrentWidget( editor );
       return;
     }
