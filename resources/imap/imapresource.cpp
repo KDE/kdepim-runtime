@@ -1288,8 +1288,8 @@ void ImapResource::onQuotasReceived( KJob *job )
     const QString &decodedRoot = QString::fromUtf8( KIMAP::decodeImapFolderName( root ) );
 
     if ( newRoots.size() == 1 || decodedRoot == mailBox ) {
-      newCurrent = newUsages.last()["STORAGE"];
-      newMax = newLimits.last()["STORAGE"];
+      newCurrent = newUsages.last()["STORAGE"] * 1024;
+      newMax = newLimits.last()["STORAGE"] * 1024;
     }
   }
 
