@@ -51,8 +51,6 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     void addCollection( const Akonadi::Collection &collection );
     void removeCollection( const Akonadi::Collection &collection );
 
-    Akonadi::Item itemForIncidence(KCal::Incidence *incidence) const;
-
     /**
      * @deprecated: FORAKONADI
      */
