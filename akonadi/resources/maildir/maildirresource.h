@@ -20,7 +20,13 @@
 #ifndef __MAILDIR_RESOURCE_H__
 #define __MAILDIR_RESOURCE_H__
 
+#include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
+
+namespace KPIM
+{
+class Maildir;
+}
 
 class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
 {
@@ -39,6 +45,8 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   protected:
+    virtual QString itemMimeType();
+
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -53,6 +61,9 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
 
   private slots:
     void ensureDirExists();
+
+  private:
+    Akonadi::Collection::List listRecursive( const Akonadi::Collection &root, const KPIM::Maildir &dir );
 
 };
 

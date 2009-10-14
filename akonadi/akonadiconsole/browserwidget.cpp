@@ -43,6 +43,7 @@
 #include <akonadi/entitytreeviewstatesaver.h>
 #include <akonadi/favoritecollectionsmodel.h>
 #include <akonadi/favoritecollectionsview.h>
+#include <akonadi_next/quotacolorproxymodel.h>
 #include <akonadi/statisticsproxymodel.h>
 #include <akonadi/statisticstooltipproxymodel.h>
 
@@ -138,10 +139,14 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   StatisticsProxyModel *statisticsProxyModel = new StatisticsProxyModel( this );
   statisticsProxyModel->setSourceModel( statisticsToolTipProxyModel );
 
+  QuotaColorProxyModel *quotaProxyModel = new QuotaColorProxyModel( this );
+  quotaProxyModel->setWarningThreshold( 80.0 );
+  quotaProxyModel->setSourceModel( statisticsProxyModel );
+
   QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
   sortModel->setDynamicSortFilter( true );
   sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
-  sortModel->setSourceModel( statisticsProxyModel );
+  sortModel->setSourceModel( quotaProxyModel );
 
   mCollectionView->setModel( sortModel );
 

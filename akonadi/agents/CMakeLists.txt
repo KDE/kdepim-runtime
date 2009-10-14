@@ -1,8 +1,7 @@
 add_subdirectory( maildispatcher )
-add_subdirectory( strigifeeder )
 
 if( Nepomuk_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
-    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder ${CMAKE_CURRENT_BINARY_DIR}/nie_fast )
+    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder ${CMAKE_CURRENT_BINARY_DIR}/ontologies )
     set( NEPOMUKFEEDER_SHARED_SRCS
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederagentbase.cpp
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/sparqlbuilder.cpp
@@ -20,7 +19,7 @@ if( Nepomuk_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
       ${STRIGI_STREAMANALYZER_LIBRARY}
     )
     include( SopranoAddOntology )
-    add_subdirectory( nie_fast )
+    add_subdirectory( ontologies )
     add_subdirectory( nepomukfeeder )
     add_subdirectory( nepomuk_email_feeder )
     add_subdirectory( nepomuk_contact_feeder )

@@ -15,8 +15,8 @@ set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
 )
 
 set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionflagsattribute.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionannotationsattribute.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionflagsattribute.cpp
 )
 
 set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
