@@ -5,6 +5,8 @@ import optparse
 import inspect
 import time
 import imaplib
+import re
+
 
 class AnnotationsMixin:
 
@@ -60,6 +62,22 @@ class ImapError(Exception):
         self.imap_result = imap_result
 
 
+def extract_namespaces(raw_namespaces):
+    # Unfortunately, Python's imaplib doesn't contain a parser for IMAP
+    # data structures.  This insufficient parser can at least extract
+    # most namespace definitions for common imap servers.
+    namespaces = []
+    while raw_namespaces:
+        match = re.search(r'\("([^")]*)"[ \t]+"([^")]*)"\)', raw_namespaces)
+        if match:
+            namespaces.append((match.group(1), match.group(2)))
+            raw_namespaces = raw_namespaces[match.end(0):]
+        else:
+            break
+    return namespaces
+
+
+
 class ImapConnection(object):
 
     def __init__(self, host, port, login, password, use_ssl):
@@ -70,6 +88,7 @@ class ImapConnection(object):
         else:
             cls = IMAP4_annotations
         self.error_class = cls.error
+        self.cached_namespaces = None
         self.imap = cls(host, port)
         self.auth_plain(login, password)
 
@@ -85,6 +104,31 @@ class ImapConnection(object):
             data = []
         return data
 
+    def lookup_namespace(self, mailbox):
+        if self.cached_namespaces is None:
+            self.cached_namespaces = extract_namespaces(self.namespace()[0])
+        for prefix, separator in self.cached_namespaces:
+            if mailbox.startswith(prefix):
+                return (prefix, separator)
+        return (None, None)
+
+    def convert_separator(self, mailbox):
+        split_mailbox = mailbox.split("/")
+        cache = dict()
+
+        if self.cached_namespaces is None:
+            self.cached_namespaces = extract_namespaces(self.namespace()[0])
+
+        for prefix, separator in self.cached_namespaces:
+            if separator in cache:
+                converted_mailbox = cache[separator]
+            else:
+                converted_mailbox = separator.join(split_mailbox)
+                cache[separator] = converted_mailbox
+            if converted_mailbox.startswith(prefix):
+                return converted_mailbox
+        return mailbox
+
     def auth_plain(self, login, password):
         self.check_res(self.imap.login(login, password))
 
@@ -94,6 +138,9 @@ class ImapConnection(object):
     @property
     def capabilities(self):
         return self.imap.capabilities
+
+    def namespace(self):
+        return self.check_res(self.imap.namespace())
 
     def create(self, mailbox):
         self.check_res(self.imap.create(mailbox))
@@ -124,27 +171,30 @@ def command_create(connection, mailbox):
     """Create a mailbox.  Parameter: MAILBOX
     Example: create INBOX/MyCalendar
     """
-    connection.create(mailbox)
+    connection.create(connection.convert_separator(mailbox))
 
 def command_setacl(connection, mailbox, user, rights):
     """Set an ACL. Parameters: MAILBOX USERNAME RIGHTS
     Example: setacl INBOX/MyCalendar someone@example.com lrs
     """
-    connection.setacl(mailbox, user, rights)
+    connection.setacl(connection.convert_separator(mailbox), user, rights)
 
 def command_setannotation(connection, mailbox, annotation, value):
     """Set an annotation.  Parameters: MAILBOX ANNOTATION VALUE
     Example: setannotation INBOX/MyCalendar /vendor/kolab/folder-type event
     """
-    connection.setannotation(mailbox, annotation, ["value.shared", value])
+    connection.setannotation(connection.convert_separator(mailbox),
+                             annotation, ["value.shared", value])
 
 def command_append(connection, mailbox, filename):
     """Append a message to a mailbox.  Parameters: MAILBOX FILENAME
     Example: append INBOX/MyCalendar testdata/mytestmail
     """
-    connection.append(mailbox, None, None, open(filename).read())
+    connection.append(connection.convert_separator(mailbox),
+                      None, None, open(filename).read())
 
 def command_waitformailbox(connection, mailbox):
+    mailbox = connection.convert_separator(mailbox)
     timeout = 20
     start = time.time()
     while time.time() - start < timeout:
