@@ -1,7 +1,0 @@
-File=nepomuk_email_feeder.kcfg
-ClassName=Settings
-Mutators=true
-ItemAccessors=true
-SetUserTexts=true
-Singleton=true
-GlobalEnums=true
