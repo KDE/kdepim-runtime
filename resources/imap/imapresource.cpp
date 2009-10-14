@@ -59,6 +59,7 @@
 #include <kimap/logoutjob.h>
 #include <kimap/myrightsjob.h>
 #include <kimap/renamejob.h>
+#include <kimap/rfccodecs.h>
 #include <kimap/selectjob.h>
 #include <kimap/setacljob.h>
 #include <kimap/setmetadatajob.h>
@@ -86,8 +87,10 @@
 
 #include <akonadi/kmime/messageparts.h>
 
-#include "collectionflagsattribute.h"
 #include "collectionannotationsattribute.h"
+#include "collectionflagsattribute.h"
+#include "collectionquotaattribute.h"
+
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 
@@ -110,8 +113,11 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
-  Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
+
   Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<CollectionQuotaAttribute>();
+
   Akonadi::AttributeFactory::registerAttribute<ImapAclAttribute>();
   Akonadi::AttributeFactory::registerAttribute<ImapQuotaAttribute>();
 
@@ -1268,28 +1274,56 @@ void ImapResource::onQuotasReceived( KJob *job )
 
   KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob*>( job );
   Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+  const QString &mailBox = mailBoxForCollection( collection );
 
   QList<QByteArray> newRoots = quotaJob->roots();
   QList< QMap<QByteArray, qint64> > newLimits;
   QList< QMap<QByteArray, qint64> > newUsages;
+  qint64 newCurrent = -1;
+  qint64 newMax = -1;
 
   foreach ( const QByteArray &root, newRoots ) {
     newLimits << quotaJob->allLimits( root );
     newUsages << quotaJob->allUsages( root );
+
+    const QString &decodedRoot = QString::fromUtf8( KIMAP::decodeImapFolderName( root ) );
+
+    if ( decodedRoot == mailBox ) {
+      newCurrent = newUsages.last()["STORAGE"];
+      newMax = newLimits.last()["STORAGE"];
+    }
   }
 
-  // Store the mailbox Quotas
-  ImapQuotaAttribute *quotaAttribute = collection.attribute<ImapQuotaAttribute>( Collection::AddIfMissing );
-  const QList<QByteArray> oldRoots = quotaAttribute->roots();
-  const QList< QMap<QByteArray, qint64> > oldLimits = quotaAttribute->limits();
-  const QList< QMap<QByteArray, qint64> > oldUsages = quotaAttribute->usages();
+  bool updateNeeded = false;
+
+  // Store the mailbox IMAP Quotas
+  ImapQuotaAttribute *imapQuotaAttribute = collection.attribute<ImapQuotaAttribute>( Collection::AddIfMissing );
+  const QList<QByteArray> oldRoots = imapQuotaAttribute->roots();
+  const QList< QMap<QByteArray, qint64> > oldLimits = imapQuotaAttribute->limits();
+  const QList< QMap<QByteArray, qint64> > oldUsages = imapQuotaAttribute->usages();
 
   if ( oldRoots != newRoots
     || oldLimits != newLimits
     || oldUsages != newUsages )
   {
-    quotaAttribute->setQuotas( newRoots, newLimits, newUsages );
-    CollectionModifyJob *modify = new CollectionModifyJob( collection );
+    imapQuotaAttribute->setQuotas( newRoots, newLimits, newUsages );
+    updateNeeded = true;
+  }
+
+  // Store the collection Quota
+  CollectionQuotaAttribute *quotaAttribute
+    = collection.attribute<CollectionQuotaAttribute>( Collection::AddIfMissing );
+  qint64 oldCurrent = quotaAttribute->currentValue();
+  qint64 oldMax = quotaAttribute->maxValue();
+
+  if ( oldCurrent != newCurrent
+    || oldMax != newMax ) {
+    quotaAttribute->setValues( newCurrent, newMax );
+    updateNeeded = true;
+  }
+
+  if ( updateNeeded ) {
+    new CollectionModifyJob( collection );
   }
 }
 
