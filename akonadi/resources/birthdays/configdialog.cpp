@@ -29,6 +29,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
   ui.setupUi( mainWidget() );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
+  ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));
 
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
 }

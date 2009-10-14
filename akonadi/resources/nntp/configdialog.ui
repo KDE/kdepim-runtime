@@ -237,9 +237,6 @@
             <property name="minimum" >
              <number>1</number>
             </property>
-            <property name="suffix" >
-             <string> articles</string>
-            </property>
            </widget>
           </item>
           <item>

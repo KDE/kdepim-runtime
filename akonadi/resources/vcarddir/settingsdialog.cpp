@@ -46,6 +46,7 @@ SettingsDialog::SettingsDialog( WId windowId )
   QTimer::singleShot( 0, this, SLOT( validate() ) );
 
   ui.kcfg_Path->setUrl( KUrl( Settings::self()->path() ) );
+  ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 }

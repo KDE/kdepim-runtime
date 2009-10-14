@@ -29,6 +29,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.password->setText( Settings::self()->password() );
+  ui.kcfg_MaxDownload->setSuffix(ki18np(" article", " articles"));
 
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
 }

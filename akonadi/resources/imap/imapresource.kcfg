@@ -24,6 +24,16 @@
       <default>false</default>
     </entry>
   </group>
+  <group name="cache">
+    <entry name="DisconnectedModeEnabled" type="Bool">
+      <label>Defines if all the IMAP data should be cached locally all the time</label>
+      <default>false</default>
+    </entry>
+    <entry name="IntervalCheckTime" type="Int">
+      <label>Check interval in minutes</label>
+      <default>5</default>
+    </entry>
+  </group>
   <group name="idle">
     <entry name="IdleRidPath" type="StringList">
       <label>RID path to the mailbox to watch for changes</label>

@@ -84,6 +84,8 @@
 #include <akonadi/transactionsequence.h>
 #include <akonadi/collectionfetchscope.h>
 
+#include <akonadi/kmime/messageparts.h>
+
 #include "collectionflagsattribute.h"
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
@@ -557,10 +559,29 @@ void ImapResource::retrieveCollections()
   root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
   root.setRights( Collection::ReadOnly );
   root.setParentCollection( Collection::root() );
+  root.addAttribute( new NoSelectAttribute( true ) );
 
   CachePolicy policy;
   policy.setInheritFromParent( false );
   policy.setSyncOnDemand( true );
+
+  QStringList localParts;
+  localParts << Akonadi::MessagePart::Envelope
+             << Akonadi::MessagePart::Header;
+  int cacheTimeout = 60;
+
+  if ( Settings::self()->disconnectedModeEnabled() ) {
+    // For disconnected mode we also cache the body
+    // and we keep all data indifinitely
+    localParts << Akonadi::MessagePart::Body;
+    cacheTimeout = -1;
+  }
+
+  policy.setLocalParts( localParts );
+  policy.setCacheTimeout( cacheTimeout );
+
+  policy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+
   root.setCachePolicy( policy );
 
   setCollectionStreamingEnabled( true );
@@ -618,19 +639,8 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
       c.setParentCollection( parentCollection );
       c.setContentMimeTypes( contentTypes );
 
-      CachePolicy cachePolicy;
-      cachePolicy.setInheritFromParent( false );
-      cachePolicy.setIntervalCheckTime( -1 );
-      cachePolicy.setSyncOnDemand( true );
-
       // If the folder is the Inbox, make some special settings.
       if ( currentPath.compare( separator + QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
-        if ( m_account->capabilities().contains( "IDLE" ) ) {
-          // We've IDLE, no need to poll the inbox
-          cachePolicy.setIntervalCheckTime( -1 );
-        } else {
-          cachePolicy.setIntervalCheckTime( 1 );
-        }
         EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Inbox" ) );
         attr->setIconName( "mail-folder-inbox" );
@@ -655,13 +665,10 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
       // If this folder is a noselect folder, make some special settings.
       if ( currentFlags.contains( "\\NoSelect" ) ) {
-        cachePolicy.setSyncOnDemand( false );
         c.addAttribute( new NoSelectAttribute( true ) );
         c.setContentMimeTypes( QStringList() << Collection::mimeType() );
         c.setRights( Collection::ReadOnly );
       }
-
-      c.setCachePolicy( cachePolicy );
 
       collections << c;
 
@@ -1378,6 +1385,15 @@ void ImapResource::onSelectDone( KJob *job )
 
   CollectionModifyJob *modify = new CollectionModifyJob( collection );
 
+  KIMAP::FetchJob::FetchScope scope;
+  scope.parts.clear();
+  scope.mode = KIMAP::FetchJob::FetchScope::Headers;
+
+  if ( collection.cachePolicy()
+       .localParts().contains( Akonadi::MessagePart::Body ) ) {
+    scope.mode = KIMAP::FetchJob::FetchScope::Full;
+  }
+
   // First check the uidvalidity, if this has changed, it means the folder
   // has been deleted and recreated. So we wipe out the messages and
   // retrieve all.
@@ -1389,10 +1405,7 @@ void ImapResource::onSelectDone( KJob *job )
     setItemStreamingEnabled( true );
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->session() );
-    KIMAP::FetchJob::FetchScope scope;
     fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
-    scope.parts.clear();
-    scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
     connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                              QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
@@ -1424,10 +1437,7 @@ void ImapResource::onSelectDone( KJob *job )
     setItemStreamingEnabled( true );
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->session() );
-    KIMAP::FetchJob::FetchScope scope;
     fetch->setSequenceSet( KIMAP::ImapSet( realMessageCount+1, messageCount ) );
-    scope.parts.clear();
-    scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
     connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                              QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
@@ -1445,10 +1455,7 @@ void ImapResource::onSelectDone( KJob *job )
     setItemStreamingEnabled( true );
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->session() );
-    KIMAP::FetchJob::FetchScope scope;
     fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
-    scope.parts.clear();
-    scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
     connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                              QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
@@ -1468,10 +1475,7 @@ void ImapResource::onSelectDone( KJob *job )
     setItemStreamingEnabled( true );
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->session() );
-    KIMAP::FetchJob::FetchScope scope;
     fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
-    scope.parts.clear();
-    scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetch->setScope( scope );
     connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                              QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
