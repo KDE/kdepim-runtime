@@ -1313,11 +1313,12 @@ void ImapResource::onQuotasReceived( KJob *job )
   CollectionQuotaAttribute *quotaAttribute
     = collection.attribute<CollectionQuotaAttribute>( Collection::AddIfMissing );
   qint64 oldCurrent = quotaAttribute->currentValue();
-  qint64 oldMax = quotaAttribute->maxValue();
+  qint64 oldMax = quotaAttribute->maximumValue();
 
   if ( oldCurrent != newCurrent
     || oldMax != newMax ) {
-    quotaAttribute->setValues( newCurrent, newMax );
+    quotaAttribute->setCurrentValue( newCurrent );
+    quotaAttribute->setMaximumValue( newMax );
     updateNeeded = true;
   }
 
