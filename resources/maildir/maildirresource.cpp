@@ -41,9 +41,6 @@
 
 #include <kmime/kmime_message.h>
 
-#include <boost/shared_ptr.hpp>
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
 using namespace Akonadi;
 using KPIM::Maildir;
 
@@ -103,9 +100,14 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
   mail->parse();
 
   Item i( item );
-  i.setPayload( MessagePtr( mail ) );
+  i.setPayload( KMime::Message::Ptr( mail ) );
   itemRetrieved( i );
   return true;
+}
+
+QString MaildirResource::itemMimeType()
+{
+  return KMime::Message::mimeType();
 }
 
 void MaildirResource::aboutToQuit()
@@ -138,12 +140,13 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       cancelTask( errMsg );
       return;
     }
+
     // we can only deal with mail
-    if ( item.mimeType() != "message/rfc822" ) {
-      cancelTask( i18n("Only email messages can be added to the Maildir resource.") );
+    if ( item.hasPayload<KMime::Message::Ptr>() ) {
+      cancelTask( i18n("Error: Unsupported type.") );
       return;
     }
-    const MessagePtr mail = item.payload<MessagePtr>();
+    const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
     const QString rid = dir.addEntry( mail->encodedContent() );
     Item i( item );
     i.setRemoteId( rid );
@@ -164,11 +167,11 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         return;
     }
     // we can only deal with mail
-    if ( item.mimeType() != "message/rfc822" ) {
-        cancelTask( i18n("Only email messages can be added to the Maildir resource.") );
+    if ( item.hasPayload<KMime::Message::Ptr>() ) {
+        cancelTask( i18n("Error: Unsupported type.") );
         return;
     }
-    const MessagePtr mail = item.payload<MessagePtr>();
+    const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
     dir.writeEntry( item.remoteId(), mail->encodedContent() );
     changeCommitted( item );
 }
@@ -217,10 +220,10 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
   changeProcessed();
 }
 
-Collection::List listRecursive( const Collection &root, const Maildir &dir )
+Collection::List MaildirResource::listRecursive( const Collection &root, const Maildir &dir )
 {
   Collection::List list;
-  const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::mimeType();
+  const QStringList mimeTypes = QStringList() << itemMimeType() << Collection::mimeType();
   foreach ( const QString &sub, dir.subFolderList() ) {
     Collection c;
     c.setName( sub );
@@ -231,7 +234,7 @@ Collection::List listRecursive( const Collection &root, const Maildir &dir )
     const Maildir md = maildirForCollection( c );
     if ( !md.isValid() )
       continue;
- 
+
     list << c;
     list += listRecursive( c, md );
   }
@@ -257,7 +260,7 @@ void MaildirResource::retrieveCollections()
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
   if ( !Settings::self()->topLevelIsContainer() )
-    mimeTypes << "message/rfc822";
+    mimeTypes << itemMimeType();
   root.setContentMimeTypes( mimeTypes );
 
   Collection::List list;
@@ -279,12 +282,12 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
   foreach ( const QString &entry, entryList ) {
     Item item;
     item.setRemoteId( entry );
-    item.setMimeType( "message/rfc822" );
+    item.setMimeType( itemMimeType() );
     item.setSize( md.size( entry ) );
     KMime::Message *msg = new KMime::Message;
     msg->setHead( KMime::CRLFtoLF( md.readEntryHeaders( entry ) ) );
     msg->parse();
-    item.setPayload( MessagePtr( msg ) );
+    item.setPayload( KMime::Message::Ptr( msg ) );
     items << item;
   }
   itemsRetrieved( items );
@@ -389,8 +392,5 @@ void MaildirResource::ensureDirExists()
       emit status( Broken, i18n( "Unable to create maildir '%1'.", Settings::self()->path() ) );
   }
 }
-
-
-AKONADI_RESOURCE_MAIN( MaildirResource )
 
 #include "maildirresource.moc"
