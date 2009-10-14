@@ -72,6 +72,7 @@
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
+#include <akonadi/collectionquotaattribute.h>
 #include <akonadi/collectionstatisticsjob.h>
 #include <akonadi/collectionstatistics.h>
 #include <akonadi/monitor.h>
@@ -89,7 +90,6 @@
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"
-#include "collectionquotaattribute.h"
 
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
@@ -116,7 +116,6 @@ ImapResource::ImapResource( const QString &id )
 
   Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
   Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
-  Akonadi::AttributeFactory::registerAttribute<CollectionQuotaAttribute>();
 
   Akonadi::AttributeFactory::registerAttribute<ImapAclAttribute>();
   Akonadi::AttributeFactory::registerAttribute<ImapQuotaAttribute>();
