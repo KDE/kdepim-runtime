@@ -679,6 +679,12 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
   sender()->setProperty( REPORTED_COLLECTIONS, QVariant::fromValue<StringCollectionMap>( reportedCollections ) );
   collectionsRetrieved( collections );
+
+  if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
+    foreach ( const Collection &c, collections ) {
+      triggerCollectionExtraInfoJobs( c );
+    }
+  }
 }
 
 void ImapResource::onMailBoxesReceiveDone(KJob* job)
@@ -688,6 +694,52 @@ void ImapResource::onMailBoxesReceiveDone(KJob* job)
 }
 
 // ----------------------------------------------------------------------------------
+
+void ImapResource::triggerCollectionExtraInfoJobs( const Collection &collection )
+{
+  const QString mailBox = mailBoxForCollection( collection );
+  const QStringList capabilities = m_account->capabilities();
+
+  // First get the annotations from the mailbox if it's supported
+  if ( capabilities.contains( "METADATA" ) || capabilities.contains( "ANNOTATEMORE" ) ) {
+    KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob( m_account->session() );
+    meta->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    meta->setMailBox( mailBox );
+    if ( capabilities.contains( "METADATA" ) ) {
+      meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
+      meta->addEntry( "*" );
+    } else {
+      meta->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
+      meta->addEntry( "*", "value.shared" );
+    }
+    connect( meta, SIGNAL( result( KJob* ) ), SLOT( onGetMetaDataDone( KJob* ) ) );
+    meta->start();
+  }
+
+  // Get the ACLs from the mailbox if it's supported
+  if ( capabilities.contains( "ACL" ) ) {
+    KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( m_account->session() );
+    acl->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    acl->setMailBox( mailBox );
+    connect( acl, SIGNAL( result( KJob* ) ), SLOT( onGetAclDone( KJob* ) ) );
+    acl->start();
+
+    KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( m_account->session() );
+    rights->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    rights->setMailBox( mailBox );
+    connect( rights, SIGNAL( result( KJob* ) ), SLOT( onRightsReceived( KJob* ) ) );
+    rights->start();
+  }
+
+  // Get the QUOTA info from the mailbox if it's supported
+  if ( capabilities.contains( "QUOTA" ) ) {
+    KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( m_account->session() );
+    quota->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    quota->setMailBox( mailBox );
+    connect( quota, SIGNAL( result( KJob* ) ), SLOT( onQuotasReceived( KJob* ) ) );
+    quota->start();
+  }
+}
 
 void ImapResource::retrieveItems( const Collection &col )
 {
@@ -709,48 +761,9 @@ void ImapResource::retrieveItems( const Collection &col )
     }
   }
 
+  triggerCollectionExtraInfoJobs( col );
+
   const QString mailBox = mailBoxForCollection( col );
-  const QStringList capabilities = m_account->capabilities();
-
-  // First get the annotations from the mailbox if it's supported
-  if ( capabilities.contains( "METADATA" ) || capabilities.contains( "ANNOTATEMORE" ) ) {
-    KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob( m_account->session() );
-    meta->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
-    meta->setMailBox( mailBox );
-    if ( capabilities.contains( "METADATA" ) ) {
-      meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
-      meta->addEntry( "*" );
-    } else {
-      meta->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
-      meta->addEntry( "*", "value.shared" );
-    }
-    connect( meta, SIGNAL( result( KJob* ) ), SLOT( onGetMetaDataDone( KJob* ) ) );
-    meta->start();
-  }
-
-  // Get the ACLs from the mailbox if it's supported
-  if ( capabilities.contains( "ACL" ) ) {
-    KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( m_account->session() );
-    acl->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
-    acl->setMailBox( mailBox );
-    connect( acl, SIGNAL( result( KJob* ) ), SLOT( onGetAclDone( KJob* ) ) );
-    acl->start();
-
-    KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( m_account->session() );
-    rights->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
-    rights->setMailBox( mailBox );
-    connect( rights, SIGNAL( result( KJob* ) ), SLOT( onRightsReceived( KJob* ) ) );
-    rights->start();
-  }
-
-  // Get the QUOTA info from the mailbox if it's supported
-  if ( capabilities.contains( "QUOTA" ) ) {
-    KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( m_account->session() );
-    quota->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
-    quota->setMailBox( mailBox );
-    connect( quota, SIGNAL( result( KJob* ) ), SLOT( onQuotasReceived( KJob* ) ) );
-    quota->start();
-  }
 
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );

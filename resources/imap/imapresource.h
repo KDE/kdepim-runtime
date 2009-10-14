@@ -114,6 +114,7 @@ private Q_SLOTS:
 private:
   void triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
                                        const QStringList &remainingParts );
+  void triggerCollectionExtraInfoJobs( const Akonadi::Collection &collection );
 
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;

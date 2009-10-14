@@ -33,6 +33,11 @@
       <label>Check interval in minutes</label>
       <default>5</default>
     </entry>
+    <entry name="RetrieveMetadataOnFolderListing" type="Bool">
+      <label>Defines if the annotations, ACLs and quota information of mailboxes should
+             also be retrieved when the mailboxes get listed.</label>
+      <default>true</default>
+    </entry>
   </group>
   <group name="idle">
     <entry name="IdleRidPath" type="StringList">
