@@ -1287,9 +1287,9 @@ void ImapResource::onQuotasReceived( KJob *job )
 
     const QString &decodedRoot = QString::fromUtf8( KIMAP::decodeImapFolderName( root ) );
 
-    if ( decodedRoot == mailBox ) {
-      newCurrent = newUsages.last()["STORAGE"];
-      newMax = newLimits.last()["STORAGE"];
+    if ( newRoots.size() == 1 || decodedRoot == mailBox ) {
+      newCurrent = newUsages.last()["STORAGE"] * 1024;
+      newMax = newLimits.last()["STORAGE"] * 1024;
     }
   }
 
@@ -1313,11 +1313,12 @@ void ImapResource::onQuotasReceived( KJob *job )
   CollectionQuotaAttribute *quotaAttribute
     = collection.attribute<CollectionQuotaAttribute>( Collection::AddIfMissing );
   qint64 oldCurrent = quotaAttribute->currentValue();
-  qint64 oldMax = quotaAttribute->maxValue();
+  qint64 oldMax = quotaAttribute->maximumValue();
 
   if ( oldCurrent != newCurrent
     || oldMax != newMax ) {
-    quotaAttribute->setValues( newCurrent, newMax );
+    quotaAttribute->setCurrentValue( newCurrent );
+    quotaAttribute->setMaximumValue( newMax );
     updateNeeded = true;
   }
 
