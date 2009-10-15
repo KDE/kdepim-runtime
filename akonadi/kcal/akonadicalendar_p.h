@@ -354,7 +354,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
         Q_ASSERT( m_itemMap.contains(uid) );
         Q_ASSERT( item.storageCollectionId() == m_itemMap.value(uid).storageCollectionId() ); // there was once a bug that resulted in items forget there collectionId...
         m_itemMap.insert( uid, item );
-        q->notifyIncidenceChanged( incidence.get() );
+        q->notifyIncidenceChangedFORAKONADI( item );
         q->setModified( true );
         emit q->calendarChanged();
         assertInvariants();
@@ -371,7 +371,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
         kDebug() << "Item changed uid=" << uid << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
         Q_ASSERT( m_itemMap.contains(uid) );
         m_itemMap.insert( uid, item );
-        q->notifyIncidenceChanged( incidence.get() );
+        q->notifyIncidenceChangedFORAKONADI( item );
         q->setModified( true );
         emit q->calendarChanged();
         assertInvariants();
@@ -425,7 +425,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
             m_uidToItemId.insert( incidence->uid(), uid );
             assertInvariants();
             incidence->registerObserver( q );
-            q->notifyIncidenceAdded( incidence.get() );
+            q->notifyIncidenceAddedFORAKONADI( item );
         }
         q->setModified( true );
         emit q->calendarChanged();
@@ -471,7 +471,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
             }
 
             //incidence->unregisterObserver( q );
-            q->notifyIncidenceDeleted( incidence.get() );
+            q->notifyIncidenceDeletedFORAKONADI( item );
             m_uidToItemId.remove( incidence->uid() );
         }
         q->setModified( true );

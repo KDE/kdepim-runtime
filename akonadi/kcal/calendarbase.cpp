@@ -985,27 +985,12 @@ void CalendarBase::CalendarObserver::calendarModified( bool modified, CalendarBa
   Q_UNUSED( calendar );
 }
 
-void CalendarBase::CalendarObserver::calendarIncidenceAdded( Incidence *incidence )
-{
-  Q_UNUSED( incidence );
-}
-
 void CalendarBase::CalendarObserver::calendarIncidenceAddedFORAKONADI( const Item &incidence )
 {
   Q_UNUSED( incidence );
 }
 
-void CalendarBase::CalendarObserver::calendarIncidenceChanged( Incidence *incidence )
-{
-  Q_UNUSED( incidence );
-}
-
 void CalendarBase::CalendarObserver::calendarIncidenceChangedFORAKONADI( const Item &incidence )
-{
-  Q_UNUSED( incidence );
-}
-
-void CalendarBase::CalendarObserver::calendarIncidenceDeleted( Incidence *incidence )
 {
   Q_UNUSED( incidence );
 }
@@ -1057,8 +1042,9 @@ void CalendarBase::incidenceUpdated( IncidenceBase *incidence )
   // need to verify with ical documentation.
 
   // The static_cast is ok as the CalendarLocal only observes Incidence objects
+#ifdef AKONADI_PORT_DISABLED
   notifyIncidenceChanged( static_cast<Incidence *>( incidence ) );
-
+#endif
   setModified( true );
 }
 
@@ -1067,16 +1053,6 @@ void CalendarBase::doSetTimeSpec( const KDateTime::Spec &timeSpec )
   Q_UNUSED( timeSpec );
 }
 
-void CalendarBase::notifyIncidenceAdded( Incidence *i )
-{
-  if ( !d->mObserversEnabled ) {
-    return;
-  }
-
-  foreach ( CalendarObserver *observer, d->mObservers ) {
-    observer->calendarIncidenceAdded( i );
-  }
-}
 
 void CalendarBase::notifyIncidenceAddedFORAKONADI( const Item &i )
 {
@@ -1086,17 +1062,6 @@ void CalendarBase::notifyIncidenceAddedFORAKONADI( const Item &i )
 
   foreach ( CalendarObserver *observer, d->mObservers ) {
     observer->calendarIncidenceAddedFORAKONADI( i );
-  }
-}
-
-void CalendarBase::notifyIncidenceChanged( Incidence *i )
-{
-  if ( !d->mObserversEnabled ) {
-    return;
-  }
-
-  foreach ( CalendarObserver *observer, d->mObservers ) {
-    observer->calendarIncidenceChanged( i );
   }
 }
 
@@ -1111,16 +1076,6 @@ void CalendarBase::notifyIncidenceChangedFORAKONADI( const Item &i )
   }
 }
 
-void CalendarBase::notifyIncidenceDeleted( Incidence *i )
-{
-  if ( !d->mObserversEnabled ) {
-    return;
-  }
-
-  foreach ( CalendarObserver *observer, d->mObservers ) {
-    observer->calendarIncidenceDeleted( i );
-  }
-}
 
 void CalendarBase::notifyIncidenceDeletedFORAKONADI( const Item &i )
 {
@@ -1187,23 +1142,6 @@ void CalendarBase::setObserversEnabled( bool enabled )
   d->mObserversEnabled = enabled;
 }
 
-void CalendarBase::appendAlarms( Alarm::List &alarms, Incidence *incidence,
-                             const KDateTime &from, const KDateTime &to )
-{
-  KDateTime preTime = from.addSecs(-1);
-
-  Alarm::List alarmlist = incidence->alarms();
-  for ( int i = 0, iend = alarmlist.count();  i < iend;  ++i ) {
-    if ( alarmlist[i]->enabled() ) {
-      KDateTime dt = alarmlist[i]->nextRepetition( preTime );
-      if ( dt.isValid() && dt <= to ) {
-        kDebug() << incidence->summary() << "':" << dt.toString();
-        alarms.append( alarmlist[i] );
-      }
-    }
-  }
-}
-
 void CalendarBase::appendAlarmsFORAKONADI( Alarm::List &alarms, const Item &item,
                              const KDateTime &from, const KDateTime &to )
 {
@@ -1220,118 +1158,6 @@ void CalendarBase::appendAlarmsFORAKONADI( Alarm::List &alarms, const Item &item
         kDebug() << incidence->summary() << "':" << dt.toString();
         alarms.append( alarmlist[i] );
       }
-    }
-  }
-}
-
-void CalendarBase::appendRecurringAlarms( Alarm::List &alarms,
-                                      Incidence *incidence,
-                                      const KDateTime &from,
-                                      const KDateTime &to )
-{
-  KDateTime dt;
-  bool endOffsetValid = false;
-  Duration endOffset( 0 );
-  Duration period( from, to );
-
-  Alarm::List alarmlist = incidence->alarms();
-  for ( int i = 0, iend = alarmlist.count();  i < iend;  ++i ) {
-    Alarm *a = alarmlist[i];
-    if ( a->enabled() ) {
-      if ( a->hasTime() ) {
-        // The alarm time is defined as an absolute date/time
-        dt = a->nextRepetition( from.addSecs(-1) );
-        if ( !dt.isValid() || dt > to ) {
-          continue;
-        }
-      } else {
-        // Alarm time is defined by an offset from the event start or end time.
-        // Find the offset from the event start time, which is also used as the
-        // offset from the recurrence time.
-        Duration offset( 0 );
-        if ( a->hasStartOffset() ) {
-          offset = a->startOffset();
-        } else if ( a->hasEndOffset() ) {
-          offset = a->endOffset();
-          if ( !endOffsetValid ) {
-            endOffset = Duration( incidence->dtStart(), incidence->dtEnd() );
-            endOffsetValid = true;
-          }
-        }
-
-        // Find the incidence's earliest alarm
-        KDateTime alarmStart =
-          offset.end( a->hasEndOffset() ? incidence->dtEnd() : incidence->dtStart() );
-//        KDateTime alarmStart = incidence->dtStart().addSecs( offset );
-        if ( alarmStart > to ) {
-          continue;
-        }
-        KDateTime baseStart = incidence->dtStart();
-        if ( from > alarmStart ) {
-          alarmStart = from;   // don't look earlier than the earliest alarm
-          baseStart = (-offset).end( (-endOffset).end( alarmStart ) );
-        }
-
-        // Adjust the 'alarmStart' date/time and find the next recurrence at or after it.
-        // Treate the two offsets separately in case one is daily and the other not.
-        dt = incidence->recurrence()->getNextDateTime( baseStart.addSecs(-1) );
-        if ( !dt.isValid() ||
-             ( dt = endOffset.end( offset.end( dt ) ) ) > to ) // adjust 'dt' to get the alarm time
-        {
-          // The next recurrence is too late.
-          if ( !a->repeatCount() ) {
-            continue;
-          }
-
-          // The alarm has repetitions, so check whether repetitions of previous
-          // recurrences fall within the time period.
-          bool found = false;
-          Duration alarmDuration = a->duration();
-          for ( KDateTime base = baseStart;
-                ( dt = incidence->recurrence()->getPreviousDateTime( base ) ).isValid();
-                base = dt ) {
-            if ( a->duration().end( dt ) < base ) {
-              break;  // this recurrence's last repetition is too early, so give up
-            }
-
-            // The last repetition of this recurrence is at or after 'alarmStart' time.
-            // Check if a repetition occurs between 'alarmStart' and 'to'.
-            int snooze = a->snoozeTime().value();   // in seconds or days
-            if ( a->snoozeTime().isDaily() ) {
-              Duration toFromDuration( dt, base );
-              int toFrom = toFromDuration.asDays();
-              if ( a->snoozeTime().end( from ) <= to ||
-                   ( toFromDuration.isDaily() && toFrom % snooze == 0 ) ||
-                   ( toFrom / snooze + 1 ) * snooze <= toFrom + period.asDays() ) {
-                found = true;
-#ifndef NDEBUG
-                // for debug output
-                dt = offset.end( dt ).addDays( ( ( toFrom - 1 ) / snooze + 1 ) * snooze );
-#endif
-                break;
-              }
-            } else {
-              int toFrom = dt.secsTo( base );
-              if ( period.asSeconds() >= snooze ||
-                   toFrom % snooze == 0 ||
-                   ( toFrom / snooze + 1 ) * snooze <= toFrom + period.asSeconds() )
-              {
-                found = true;
-#ifndef NDEBUG
-                // for debug output
-                dt = offset.end( dt ).addSecs( ( ( toFrom - 1 ) / snooze + 1 ) * snooze );
-#endif
-                break;
-              }
-            }
-          }
-          if ( !found ) {
-            continue;
-          }
-        }
-      }
-      kDebug() << incidence->summary() << "':" << dt.toString();
-      alarms.append( a );
     }
   }
 }

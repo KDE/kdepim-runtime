@@ -1009,7 +1009,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
           @param incidence is a pointer to the KCal::Incidence that was inserted.
         */
-        virtual void calendarIncidenceAdded( KCal::Incidence *incidence );
         virtual void calendarIncidenceAddedFORAKONADI( const Akonadi::Item &incidence );
 
         /**
@@ -1018,7 +1017,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
           @param incidence is a pointer to the KCal::Incidence that was modified.
         */
-        virtual void calendarIncidenceChanged( KCal::Incidence *incidence );
         virtual void calendarIncidenceChangedFORAKONADI( const Akonadi::Item  &incidence );
 
         /**
@@ -1027,7 +1025,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
           @param incidence is a pointer to the KCal::Incidence that was removed.
         */
-        virtual void calendarIncidenceDeleted( KCal::Incidence *incidence );
         virtual void calendarIncidenceDeletedFORAKONADI( const Akonadi::Item &incidence );
 
     };
@@ -1104,7 +1101,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param incidence is a pointer to the KCal::Incidence object that was inserted.
     */
-    void notifyIncidenceAdded( KCal::Incidence *incidence );
     void notifyIncidenceAddedFORAKONADI( const Akonadi::Item &incidence );
 
     /**
@@ -1113,7 +1109,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param incidence is a pointer to the KCal::Incidence object that was modified.
     */
-    void notifyIncidenceChanged( KCal::Incidence *incidence );
     void notifyIncidenceChangedFORAKONADI( const Akonadi::Item &incidence );
 
     /**
@@ -1122,7 +1117,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param incidence is a pointer to the KCal::Incidence object that was removed.
     */
-    void notifyIncidenceDeleted( KCal::Incidence *incidence );
     void notifyIncidenceDeletedFORAKONADI( const Akonadi::Item &incidence );
 
     /**
@@ -1150,8 +1144,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @deprecated: FORAKONADI
 
     */
-    void appendAlarms( KCal::Alarm::List &alarms, KCal::Incidence *incidence,
-                       const KDateTime &from, const KDateTime &to );
     void appendAlarmsFORAKONADI( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
                        const KDateTime &from, const KDateTime &to );
 
@@ -1166,8 +1158,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @deprecated: FORAKONADI
 
     */
-    void appendRecurringAlarms( KCal::Alarm::List &alarms, KCal::Incidence *incidence,
-                                const KDateTime &from, const KDateTime &to );
     void appendRecurringAlarmsFORAKONADI( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
                                 const KDateTime &from, const KDateTime &to );
 
