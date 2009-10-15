@@ -896,6 +896,8 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
     virtual Akonadi::Item findParent( const Akonadi::Item& item ) const = 0;
     virtual Akonadi::Item::List findChildren( const Akonadi::Item &item ) const = 0;
+    virtual bool isChild( const Akonadi::Item& parent, const Akonadi::Item &child ) const = 0;
+
     /**
       Emits the beginBatchAdding() signal.
 

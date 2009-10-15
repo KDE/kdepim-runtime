@@ -257,6 +257,7 @@ class AKONADI_KCAL_EXPORT CalendarNull : public CalendarBase
 
     /* reimp */ Akonadi::Item findParent( const Akonadi::Item& item ) const;
     /* reimp */ Akonadi::Item::List findChildren( const Akonadi::Item &item ) const;
+    /* reimp */ bool isChild( const Akonadi::Item& parent, const Akonadi::Item &child ) const;
 
     using QObject::event;   // prevent warning about hidden virtual method
 

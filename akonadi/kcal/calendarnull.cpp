@@ -237,3 +237,7 @@ Item CalendarNull::findParent( const Item & ) const {
 Item::List CalendarNull::findChildren( const Item & ) const {
   return Item::List();
 }
+
+bool CalendarNull::isChild( const Item &, const Item & ) const {
+  return false;
+}

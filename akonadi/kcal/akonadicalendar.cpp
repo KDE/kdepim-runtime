@@ -542,12 +542,15 @@ Item::List AkonadiCalendar::rawJournalsForDate( const QDate &date )
   return journalList;
 }
 
-Item AkonadiCalendar::findParent( const Item & ) const {
-  //TODO (AKONADI_PORT)
-  return Item();
+Item AkonadiCalendar::findParent( const Item &child ) const
+{
+  return d->m_childToParent.value( child.id() );
 }
 
-Item::List AkonadiCalendar::findChildren( const Item & ) const {
-  //TODO (AKONADI_PORT)
-  return Item::List();
+Item::List AkonadiCalendar::findChildren( const Item &parent ) const {
+  return d->m_parentToChildren.value( parent.id() );
+}
+
+bool AkonadiCalendar::isChild( const Item &parent, const Item &child ) const {
+  return d->m_childToParent.value( child.id() ).id() == parent.id();
 }
