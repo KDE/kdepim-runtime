@@ -1,8 +1,6 @@
-/*   -*- c++ -*-
- *   accountdialog.h
- *
- *   kmail: KDE mail client
+/*4
  *   Copyright (C) 2000 Espen Sand, espen@kde.org
+ *   Copyright 2009 Thomas McGuire <mcguire@kde.org>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,50 +23,34 @@
 
 #include "ui_popsettings.h"
 
-#include <kdialog.h>
-#include <klineedit.h>
+#include <Akonadi/Collection>
 
-#include <QPointer>
-#include <QList>
+#include <KDialog>
+#include <KLineEdit>
 
-class QRegExpValidator;
-class QCheckBox;
-class QPushButton;
-class QLabel;
-class QRadioButton;
-class QToolButton;
-class KIntNumInput;
-class KMAccount;
-class KMFolder;
-class QButtonGroup;
-class QGroupBox;
+#include <QRegExpValidator>
+//class QCheckBox;
+//class QPushButton;
+//class QLabel;
+//class QRadioButton;
+//class QToolButton;
+//class KIntNumInput;
+//class QButtonGroup;
+//class QGroupBox;
 
 namespace MailTransport {
 class ServerTest;
 }
 
-namespace KPIMIdentities {
-class IdentityCombo;
-}
+class POP3Resource;
 
-class SieveConfigEditor;
-class FolderRequester;
-
-class AccountDialog : public KDialog
+class AccountDialog : public KDialog, private Ui::PopPage
 {
   Q_OBJECT
 
   public:
-    AccountDialog( QWidget *parent=0 );
+    AccountDialog( POP3Resource *parentResource, WId parentWindow );
     virtual ~AccountDialog();
-  private:
-
-    struct PopWidgets
-    {
-      Ui::PopPage ui;
-      QButtonGroup *encryptionButtonGroup;
-      QButtonGroup *authButtonGroup;
-    };
 
   private slots:
     virtual void slotOk();
@@ -87,24 +69,21 @@ class AccountDialog : public KDialog
     void slotLeaveOnServerDaysChanged( int value );
     void slotLeaveOnServerCountChanged( int value );
     void slotFilterOnServerSizeChanged( int value );
-    void slotIdentityCheckboxChanged();
+    void targetCollectionReceived( Akonadi::Collection::List collections );
 
   private:
-    void makePopAccountPage();
-    void setupSettings();
+    void setupWidgets();
+    void loadSettings();
     void saveSettings();
     void checkHighest( QButtonGroup * );
     void enablePopFeatures();
-    void initAccountForConnect();
-    const QString namespaceListToString( const QStringList& list );
 
   private:
-    PopWidgets   mPop;
-    KMAccount    *mAccount;
-    QList<QPointer<KMFolder> > mFolderList;
-    QStringList  mFolderNames;
+    POP3Resource *mParentResource;
+    QButtonGroup *encryptionButtonGroup;
+    QButtonGroup *authButtonGroup;
     MailTransport::ServerTest *mServerTest;
-    QRegExpValidator *mValidator;
+    QRegExpValidator mValidator;
     bool mServerTestFailed;
 };
 

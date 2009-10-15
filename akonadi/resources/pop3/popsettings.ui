@@ -38,6 +38,9 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <property name="movable">
+      <bool>false</bool>
+     </property>
      <widget class="QWidget" name="page1">
       <attribute name="title">
        <string>General</string>
@@ -392,10 +395,7 @@ However, if KWallet is not available, the password will be stored in KMail's con
          <item row="0" column="0">
           <widget class="QLabel" name="label_8">
            <property name="text">
-            <string>Des&amp;tination folder:</string>
-           </property>
-           <property name="buddy">
-            <cstring>folderCombo</cstring>
+            <string>Destination folder:</string>
            </property>
           </widget>
          </item>
@@ -420,9 +420,12 @@ However, if KWallet is not available, the password will be stored in KMail's con
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="KComboBox" name="folderCombo">
-           <property name="toolTip">
-            <string>Set the folder where new messages from this account are put</string>
+          <widget class="Akonadi::CollectionRequester" name="folderRequester">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
            </property>
           </widget>
          </item>
@@ -636,12 +639,6 @@ However, if KWallet is not available, the password will be stored in KMail's con
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>KComboBox</class>
-   <extends>QComboBox</extends>
-   <header>kcombobox.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>KTabWidget</class>
    <extends>QTabWidget</extends>
    <header>ktabwidget.h</header>
@@ -656,6 +653,12 @@ However, if KWallet is not available, the password will be stored in KMail's con
    <class>KSeparator</class>
    <extends>QFrame</extends>
    <header>kseparator.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Akonadi::CollectionRequester</class>
+   <extends>QFrame</extends>
+   <header>Akonadi/CollectionRequester</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

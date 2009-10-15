@@ -18,12 +18,11 @@
 */
 #include "pop3resource.h"
 #include "accountdialog.h"
-
 #include "settings.h"
 #include "settingsadaptor.h"
 
 #include <Akonadi/ItemCreateJob>
-#include <kmime/kmime_util.h>
+#include <KMime/KMimeUtil>
 
 #include <KLocalizedString>
 #include <KIO/Scheduler>
@@ -37,35 +36,13 @@
 #include <QtDBus/QDBusConnection>
 
 #include <algorithm>
-#include <kmime/kmime_message.h>
 
 using namespace Akonadi;
-
-// List of prime numbers shamelessly stolen from GCC STL
-enum { num_primes = 29 };
 
 static const unsigned short int pop3DefaultPort = 110;
 
 #define POP_PROTOCOL "pop3"
 #define POP_SSL_PROTOCOL "pop3s"
-
-static const unsigned long prime_list[ num_primes ] =
-{
-  31ul,        53ul,         97ul,         193ul,       389ul,
-  769ul,       1543ul,       3079ul,       6151ul,      12289ul,
-  24593ul,     49157ul,      98317ul,      196613ul,    393241ul,
-  786433ul,    1572869ul,    3145739ul,    6291469ul,   12582917ul,
-  25165843ul,  50331653ul,   100663319ul,  201326611ul, 402653189ul,
-  805306457ul, 1610612741ul, 3221225473ul, 4294967291ul
-};
-
-static inline unsigned long nextPrime( unsigned long n )
-{
-  const unsigned long *first = prime_list;
-  const unsigned long *last = prime_list + num_primes;
-  const unsigned long *pos = std::lower_bound( first, last, n );
-  return pos == last ? *( last - 1 ) : *pos;
-}
 
 POP3Resource::POP3Resource( const QString &id )
   : ResourceBase( id ),
@@ -94,7 +71,6 @@ POP3Resource::POP3Resource( const QString &id )
 POP3Resource::~POP3Resource()
 {
   if ( mJob ) {
-    kDebug() << "Killing jobs and saving UID list.";
     mJob->kill();
     mMsgsPendingDownload.clear();
     createJobsMap.clear();
@@ -106,7 +82,6 @@ POP3Resource::~POP3Resource()
 
 void POP3Resource::retrieveCollections()
 { 
-  kDebug() << "Starting mail check...";
   emit status( Running, i18n( "Starting mail check..." ) );
 
   if ( mStage == Idle ) {
@@ -146,7 +121,6 @@ void POP3Resource::retrieveCollections()
     QString seenUidList;
     QStringList uidsOfSeenMsgs = Settings::seenUidList();
     mUidsOfSeenMsgsDict.clear();
-    mUidsOfSeenMsgsDict.reserve( nextPrime( ( uidsOfSeenMsgs.count() * 11 ) / 10 ) );
     for ( int i = 0; i < uidsOfSeenMsgs.count(); ++i ) {
       // we use mUidsOfSeenMsgsDict to just provide fast random access to the
       // keys, so we can store the index that corresponds to the index of
@@ -259,9 +233,7 @@ void POP3Resource::aboutToQuit()
 
 void POP3Resource::configure( WId windowId )
 {
-  Q_UNUSED( windowId );
-
-  AccountDialog accountDialog;
+  AccountDialog accountDialog( this, windowId );
   accountDialog.exec();
 
   synchronize();
@@ -479,11 +451,8 @@ void POP3Resource::slotData( KIO::Job* job, const QByteArray &data )
 
     mSizeOfNextSeenMsgsDict.insert( uid, mMsgsPendingDownload[id] );
     if ( mUidsOfSeenMsgsDict.contains( uid ) ) {
-      if ( mMsgsPendingDownload.contains( id ) ) {
-        mMsgsPendingDownload.remove( id );
-      }
-      else
-        kDebug() << "Synchronization failure.";
+      Q_ASSERT( mMsgsPendingDownload.contains( id ) );
+      mMsgsPendingDownload.remove( id );
       idsOfMsgsToDelete.insert( id );
       mUidsOfNextSeenMsgsDict.insert( uid, 1 );
       if ( mTimeOfSeenMsgsVector.empty() ) {
@@ -534,10 +503,9 @@ void POP3Resource::slotResult( KJob* )
 void POP3Resource::slotJobFinished()
 {
   if ( mStage == List ) {
-    kDebug() << "Finished LIST stage.";
     // set the initial size of mUidsOfNextSeenMsgsDict to the number of
     // messages on the server + 10%
-    mUidsOfNextSeenMsgsDict.reserve( nextPrime( ( idsOfMsgs.count() * 11 ) / 10 ) );
+    mUidsOfNextSeenMsgsDict.reserve( idsOfMsgs.count() * 11 / 10 );
     KUrl url = getUrl();
     url.setPath( "/uidl" );
     mJob = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
@@ -545,7 +513,6 @@ void POP3Resource::slotJobFinished()
     mStage = Uidl;
   }
   else if ( mStage == Uidl ) {
-    kDebug() << "Finished UIDL stage.";
     mUidlFinished = true;
 
     if ( Settings::leaveOnServer() && mUidForIdMap.isEmpty() &&
@@ -564,10 +531,8 @@ void POP3Resource::slotJobFinished()
     /*if ( mFilterOnServer == true) {
       for ( QMap<QByteArray, int>::const_iterator hids = mMsgsPendingDownload.constBegin();
             hids != mMsgsPendingDownload.constEnd(); ++hids ) {
-          kDebug() <<"Length:" << hids.value();
           //check for mails bigger mFilterOnServerCheckSize
           if ( (unsigned int)hids.value() >= mFilterOnServerCheckSize ) {
-            kDebug() <<"bigger than" << mFilterOnServerCheckSize;
             const QByteArray uid = mUidForIdMap[ hids.key() ];
             KMPopHeaders *header = new KMPopHeaders( hids.key(), uid, Later );
             //set Action if already known
@@ -588,7 +553,6 @@ void POP3Resource::slotJobFinished()
       mHeaderDownUids.clear();
       mHeaderLaterUids.clear();
     }*/
-    // kDebug() <<"Num of Msgs to Filter:" << mHeadersOnServer.count();
     // if there are mails which should be checkedc download the headers
     /* if ( ( mHeadersOnServer.count() > 0 ) && ( mFilterOnServer == true ) ) {
       KUrl url = getUrl();
@@ -628,7 +592,6 @@ void POP3Resource::slotJobFinished()
     }
   }
   /*else if (stage == Head) {
-    kDebug() <<"stage == Head";
 
     // All headers have been downloaded, check which mail you want to get
     // data is in list mHeadersOnServer
@@ -740,7 +703,6 @@ void POP3Resource::slotJobFinished()
     mPopFilterConfirmationDialog = 0;
   }*/
   else if ( mStage == Retr ) {
-    kDebug() << "Finished RETR stage.";
     emit percent( 100 );
     emit status( Running, i18n( "Adding remaining messages to the target folder." ) );
     mStage = ProcessRemainingMessages;
@@ -748,7 +710,6 @@ void POP3Resource::slotJobFinished()
   }
   else if ( mStage == ProcessRemainingMessages ) {
 
-    kDebug() << "Finished ProcessRemainingMessages stage.";
     mHeaderDeleteUids.clear();
     mHeaderDownUids.clear();
     mHeaderLaterUids.clear();
@@ -776,8 +737,6 @@ void POP3Resource::slotJobFinished()
 
     if ( Settings::leaveOnServer() && !idsOfMsgsToDelete.isEmpty() ) {
 
-      kDebug() << "We're going to leave some messages on the server.";
-
       // If the time-limited leave rule is checked, add the newer messages to
       // the list of messages to keep
       if ( Settings::leaveOnServerDays() > 0 && !mTimeOfNextSeenMsgsMap.isEmpty() ) {
@@ -787,7 +746,6 @@ void POP3Resource::slotJobFinished()
           time_t msgTime = mTimeOfNextSeenMsgsMap[ mUidForIdMap[*it] ];
           if ( msgTime >= timeLimit || msgTime == 0 ) {
             QPair<time_t, QByteArray> pair( msgTime, *it );
-            kDebug() << "Going to save id" << *it;
             idsToSave.append( pair );
           }
         }
@@ -797,7 +755,6 @@ void POP3Resource::slotJobFinished()
       // be reduced in the following number-limited leave rule and size-limited
       // leave rule checks
       else {
-        kDebug() << "Keeping all messages on the server.";
         foreach ( const QByteArray& id, idsOfMsgsToDelete ) {
           time_t msgTime = mTimeOfNextSeenMsgsMap[ mUidForIdMap[id] ];
           QPair<time_t, QByteArray> pair( msgTime, id );
@@ -834,9 +791,7 @@ void POP3Resource::slotJobFinished()
           idsToSave = idsToSave.mid( firstMsgToKeep );
       }
       // Save msgs from deletion
-      kDebug() << "Going to keep" << idsToSave.count() << "messages";
       for ( int i = 0; i < idsToSave.count(); ++i ) {
-        //kDebug() << "keeping msg id" << idsToSave[i].second;
         idsOfMsgsToDelete.remove( idsToSave[i].second );
       }
     }
@@ -860,10 +815,8 @@ void POP3Resource::slotJobFinished()
         ids += ',';
         ids += *it;
       }
-      kDebug() << "Going to delete these messages:" << ids;
       url.setPath( "/remove/" + ids );
     } else {
-      kDebug() << "No messages to delete.";
       mStage = Quit;
       emit status( Running, i18np( "Fetched 1 message from %2. Terminating transmission...",
                                    "Fetched %1 messages from %2. Terminating transmission...",
@@ -874,7 +827,6 @@ void POP3Resource::slotJobFinished()
     connectJob();
   }
   else if (mStage == Dele) {
-    kDebug() << "Finished DELE stage";
     // remove the uids of all messages which have been deleted
     for ( QSet<QByteArray>::const_iterator it = idsOfMsgsToDelete.constBegin();
           it != idsOfMsgsToDelete.constEnd(); ++it ) {
@@ -891,7 +843,6 @@ void POP3Resource::slotJobFinished()
     connectJob();
   }
   else if (mStage == Quit) {
-    kDebug() << "Finished QUIT stage";
     saveUidList();
     mJob = 0;
     if ( mSlave )
@@ -930,20 +881,16 @@ void POP3Resource::slotGetNextMsg()
     curMsgStrm = new QDataStream( &curMsgData, QIODevice::WriteOnly );
     curMsgLen = next.value();
     ++indexOfCurrentMsg;
-    kDebug() << "Length of message about to get:" << curMsgLen;
     mMsgsPendingDownload.erase( next );
   }
 }
 
 void POP3Resource::slotProcessPendingMsgs()
 {
-  kDebug() << "Going to process pending messages, we have" << msgsAwaitingProcessing.count() << "pending.";
-
   // If we are in the processing stage and have nothing to process, advance to the
   // next stage immediately
   if ( msgsAwaitingProcessing.isEmpty() && mStage == ProcessRemainingMessages &&
        createJobsMap.isEmpty() ) {
-    kDebug() << "No more messages to process, going to next stage.";
     slotJobFinished();
     return;
   }
@@ -953,16 +900,15 @@ void POP3Resource::slotProcessPendingMsgs()
   // When such a job is complete, slotItemCreateResult() is called.
   while ( !msgsAwaitingProcessing.isEmpty() ) {
 
-    MessagePtr msg = msgsAwaitingProcessing.dequeue();
+    KMime::Message::Ptr msg = msgsAwaitingProcessing.dequeue();
     const QByteArray curId = msgIdsAwaitingProcessing.dequeue();
     const QByteArray curUid = msgUidsAwaitingProcessing.dequeue();
 
-    kDebug() << "Going to add message with id" << curId << "to the target folder.";
     Q_ASSERT( Collection( Settings::targetCollection() ).isValid() );
 
     Akonadi::Item item;
     item.setMimeType( "message/rfc822" );
-    item.setPayload<MessagePtr>( msg );
+    item.setPayload<KMime::Message::Ptr>( msg );
     Akonadi::Collection collection( Settings::targetCollection() );
     ItemCreateJob *job = new ItemCreateJob( item, collection );
     IdUidPair pair( curId, curUid );
@@ -999,8 +945,6 @@ void POP3Resource::slotItemCreateResult( KJob* job )
   else {
     QByteArray curId = pair.first;
     QByteArray curUid = pair.second;
-    kDebug() << "Processed mail with POP3 ID" << curId << "and UID" << curUid
-             << ". The Akonadi ID is" << createJob->item().id();
 
     // Now that the message is added to the folder correctly, we can delete it
     // from the server.
@@ -1037,12 +981,9 @@ void POP3Resource::slotMsgRetrieved( KJob*, const QString &infoMsg, const QStrin
   if ( infoMsg != "message complete" )
     return;
 
-  kDebug() << "Got a complete message with id" << idsOfMsgs[indexOfCurrentMsg];
-
-
   // Make sure to use LF as line ending to make the processing easier
   // when piping through external programs
-  MessagePtr msg( new KMime::Message );
+  KMime::Message::Ptr msg( new KMime::Message );
   msg->setContent( KMime::CRLFtoLF( curMsgData ) );
   msg->parse();
 
@@ -1050,14 +991,11 @@ void POP3Resource::slotMsgRetrieved( KJob*, const QString &infoMsg, const QStrin
   //FIXME:
     KMPopHeaders *header = mHeadersOnServer[ mHeaderIndex ];
     int size = mMsgsPendingDownload[ header->id() ];
-    kDebug() <<"Size of Message:" << size;
     msg->setMsgLength( size );
     header->setHeader( msg );
     ++mHeaderIndex;
     slotGetNextHdr();
   } else*/ {
-    //kDebug() << kfuncinfo <<"stage == Retr";
-    //kDebug() <<"curMsgData.size() =" << curMsgData.size();
     //msg->setMsgLength( curMsgData.size() );
     msgsAwaitingProcessing.enqueue( msg );
     msgIdsAwaitingProcessing.enqueue( idsOfMsgs[indexOfCurrentMsg] );
@@ -1093,8 +1031,6 @@ void POP3Resource::processRemainingQueuedMessages()
 
 void POP3Resource::saveUidList()
 {
-  kDebug() << "Going to save the UID list of messages which are still on the server.";
-
   // Don't update the seen uid list unless we successfully got
   // a new list from the server
   if ( !mUidlFinished )
@@ -1121,7 +1057,6 @@ void POP3Resource::saveUidList()
 
 void POP3Resource::slotAbortRequested()
 {
-  kDebug() << "Aborting mail check, going to the quit stage.";
   if ( mStage == Idle )
     return;
   //disconnect( mMailCheckProgressItem, SIGNAL( progressItemCanceled( KPIM::ProgressItem* ) ),
@@ -1137,7 +1072,6 @@ void POP3Resource::slotAbortRequested()
 
 void POP3Resource::slotCancel()
 {
-  kDebug() << "Canceling mail check.";
   mMsgsPendingDownload.clear();
   createJobsMap.clear();
   processMsgsTimer.stop();

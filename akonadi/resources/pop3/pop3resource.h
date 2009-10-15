@@ -21,6 +21,7 @@
 
 #include <akonadi/resourcebase.h>
 
+#include <KMime/Message>
 #include <kio/global.h>
 #include <KUrl>
 
@@ -36,18 +37,12 @@ class Slave;
 class Job;
 }
 
-namespace KMime {
-class Message;
-}
-
 namespace Akonadi {
 class ItemCreateJob;
 }
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
 class POP3Resource : public Akonadi::ResourceBase,
-                           public Akonadi::AgentBase::Observer
+                     public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
@@ -114,23 +109,35 @@ class POP3Resource : public Akonadi::ResourceBase,
     QDataStream *curMsgStrm;
     QByteArray curMsgData;
     int dataCounter;
-    // Map of ID's vs. sizes of messages which should be downloaded; use QMap because the order needs to be
-    // predictable
+
+    // Map of ID's vs. sizes of messages which should be downloaded; use QMap because
+    // the order needs to be predictable
     QMap<QByteArray, int> mMsgsPendingDownload;
+
     // All IDs that we'll delete in any case, even if we have "leave on server"
     // checked. This is only used when the server issues an invalid UIDL response
     // and we can't map a UID to the ID. See bug 127696.
     QSet<QByteArray> idsOfForcedDeletes;
 
-    QQueue<MessagePtr> msgsAwaitingProcessing;
+    QQueue<KMime::Message::Ptr> msgsAwaitingProcessing;
     QQueue<QByteArray> msgIdsAwaitingProcessing;
     QQueue<QByteArray> msgUidsAwaitingProcessing;
 
-    QHash<QByteArray, QByteArray> mUidForIdMap; // maps message ID (i.e. index on the server) to UID
-    QHash<QByteArray, int> mUidsOfSeenMsgsDict; // set of UIDs of previously seen messages (for fast lookup)
-    QHash<QByteArray, int> mUidsOfNextSeenMsgsDict; // set of UIDs of seen messages (for the next check)
-    QVector<int> mTimeOfSeenMsgsVector; // list of times of previously seen messages
-    QHash<QByteArray, int> mTimeOfNextSeenMsgsMap; // map of uid to times of seen messages
+    // maps message ID (i.e. index on the server) to UID
+    QHash<QByteArray, QByteArray> mUidForIdMap;
+
+    // set of UIDs of previously seen messages (for fast lookup)
+    QHash<QByteArray, int> mUidsOfSeenMsgsDict;
+
+    // set of UIDs of seen messages (for the next check)
+    QHash<QByteArray, int> mUidsOfNextSeenMsgsDict;
+
+    // list of times of previously seen messages
+    QVector<int> mTimeOfSeenMsgsVector;
+
+    // map of uid to times of seen messages
+    QHash<QByteArray, int> mTimeOfNextSeenMsgsMap;
+
     QHash<QByteArray, int> mSizeOfNextSeenMsgsDict;
     QSet<QByteArray> idsOfMsgsToDelete;
 

@@ -8,7 +8,6 @@ BUGS
 - After fetching 25 items, only 20 or so are really added to the maildir (not strictly a POP3 problem,
   the items do end up on the server
 - additional \n in item
-- (!) big fetch test fails
 
 TODO
 ====
@@ -50,11 +49,17 @@ TODO
 - listen to collection removals -> complain if no longer there
 - proof read and coverage test
 - kconfigxt: labels, tooltips, whatsthis etc
+- config
+    - make setting the name work
+    - "include in manual mail check -> remove?
+    - make collectioncombobox work
+    - make intervalcheck setting work
 
 Later:
 
 - delete on server: monitor + store item UIDs somewhere
 - refactoring: each stage in command classes or such
+               get rid of pop3 ioslave
 - header filtering framework
 - config file migration from kmail
   -> now DeleteLater group

@@ -54,7 +54,7 @@ class Pop3Test : public QObject
     QString listSequence( const QList<QByteArray> &mails ) const;
     QString uidSequence( const QStringList &uids ) const;
 
-    FakeServer *mFakeServer;
+    FakeServerThread *mFakeServerThread;
 
     OrgKdeAkonadiPOP3SettingsInterface *mPOP3SettingsInterface;
     OrgKdeAkonadiMaildirSettingsInterface *mMaildirSettingsInterface;

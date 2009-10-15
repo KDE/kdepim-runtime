@@ -28,22 +28,60 @@
 // KDE
 #include <KDebug>
 
-FakeServer::FakeServer( QObject* parent )
-    : QThread( parent ),
-      mConnections( 0 )
+FakeServerThread::FakeServerThread( QObject *parent )
+  : QThread( parent ),
+    mServer( 0 )
 {
 }
 
+void FakeServerThread::run()
+{
+  mServer = new FakeServer();
+
+  // Run forever, until someone from the outside calls quit() on us and quits the
+  // event loop
+  exec();
+
+  delete mServer;
+  mServer = 0;
+}
+
+FakeServer *FakeServerThread::server() const
+{
+  Q_ASSERT( mServer != 0 );
+  return mServer;
+}
+
+FakeServer::FakeServer( QObject* parent )
+    : QObject( parent ),
+      mConnections( 0 ),
+      mProgress( 0 ),
+      mGotDisconnected( false )
+{
+  mTcpServer = new QTcpServer();
+  if ( !mTcpServer->listen( QHostAddress( QHostAddress::LocalHost ), 5989 ) ) {
+    kFatal() << "Unable to start the server";
+  }
+
+  connect( mTcpServer, SIGNAL(newConnection()),
+           this, SLOT(newConnection()) );
+}
 
 FakeServer::~FakeServer()
 {
-  quit();
-  wait();
+  if ( mConnections > 0 )
+    disconnect( mTcpServerConnection, SIGNAL(readyRead()),
+                this, SLOT(dataAvailable()) );
+
+  delete mTcpServer;
+  mTcpServer = 0;
 }
 
 QByteArray FakeServer::parseDeleteMark( const QByteArray &expectedData,
                                         const QByteArray &dataReceived )
 {
+  // Only called from parseResponse(), which is already thread-safe
+
   const QByteArray deleteMark = QString( "%DELE%" ).toUtf8();
   if ( expectedData.contains( deleteMark ) ) {
     Q_ASSERT( !mAllowedDeletions.isEmpty() );
@@ -55,6 +93,8 @@ QByteArray FakeServer::parseDeleteMark( const QByteArray &expectedData,
         return substituted;
       }
     }
+    qWarning() << "Received:" << dataReceived.data()
+               << "\nExpected:" << expectedData.data();
     Q_ASSERT_X( false, "FakeServer::parseDeleteMark", "Unable to substitute data!" );
     return QByteArray();
   }
@@ -64,6 +104,8 @@ QByteArray FakeServer::parseDeleteMark( const QByteArray &expectedData,
 QByteArray FakeServer::parseRetrMark( const QByteArray &expectedData,
                                       const QByteArray &dataReceived )
 {
+  // Only called from parseResponse(), which is already thread-safe
+
   const QByteArray retrMark = QString( "%RETR%" ).toUtf8();
   if ( expectedData.contains( retrMark ) ) {
     Q_ASSERT( !mAllowedRetrieves.isEmpty() );
@@ -75,14 +117,19 @@ QByteArray FakeServer::parseRetrMark( const QByteArray &expectedData,
         return substituted;
       }
     }
+    qWarning() << "Received:" << dataReceived.data()
+               << "\nExpected:" << expectedData.data();
     Q_ASSERT_X( false, "FakeServer::parseRetrMark", "Unable to substitute data!" );
     return QByteArray();
   }
   else return expectedData;
 }
 
-QByteArray FakeServer::parseResponse( const QByteArray& expectedData, const QByteArray& dataReceived )
+QByteArray FakeServer::parseResponse( const QByteArray& expectedData,
+                                      const QByteArray& dataReceived )
 {
+  // Only called from dataAvailable, which is already thread-safe
+
   QByteArray result;
   result = parseDeleteMark( expectedData, dataReceived );
   if ( result != expectedData )
@@ -90,34 +137,36 @@ QByteArray FakeServer::parseResponse( const QByteArray& expectedData, const QByt
   else return parseRetrMark( expectedData,dataReceived );
 }
 
+/*
+// Used only for the debug output in dataAvailable()
 static QByteArray removeCRLF( const QByteArray &ba )
 {
   QByteArray returnArray = ba;
   returnArray.replace( "\r\n", QByteArray() );
   return returnArray;
 }
+*/
 
 void FakeServer::dataAvailable()
 {
   QMutexLocker locker( &mMutex );
-
-  emit progress();
+  mProgress++;
 
   // We got data, so we better expect it and have an answer!
   Q_ASSERT( !mReadData.isEmpty() );
   Q_ASSERT( !mWriteData.isEmpty() );
 
   const QByteArray data = mTcpServerConnection->readAll();
-  qDebug() << "Got data:" << removeCRLF( data );
+  //qDebug() << "Got data:" << removeCRLF( data );
   const QByteArray expected( mReadData.takeFirst() );
-  qDebug() << "Expected data:" << removeCRLF( expected );
+  //qDebug() << "Expected data:" << removeCRLF( expected );
   const QByteArray reallyExpected = parseResponse( expected, data );
-  qDebug() << "Really expected:" << removeCRLF( reallyExpected );
+  //qDebug() << "Really expected:" << removeCRLF( reallyExpected );
 
   Q_ASSERT( data == reallyExpected );
 
   QByteArray toWrite = mWriteData.takeFirst();
-  qDebug() << "Going to write data:" << removeCRLF( toWrite );
+  //qDebug() << "Going to write data:" << removeCRLF( toWrite );
   Q_ASSERT( mTcpServerConnection->write( toWrite ) == toWrite.size() );
   Q_ASSERT( mTcpServerConnection->flush() );
 }
@@ -125,9 +174,9 @@ void FakeServer::dataAvailable()
 void FakeServer::newConnection()
 {
   QMutexLocker locker( &mMutex );
-
   Q_ASSERT( mConnections == 0 );
   mConnections++;
+  mGotDisconnected = false;
 
   mTcpServerConnection = mTcpServer->nextPendingConnection();
   mTcpServerConnection->write( QByteArray( "+OK Initech POP3 server ready.\r\n" ) );
@@ -137,9 +186,9 @@ void FakeServer::newConnection()
 
 void FakeServer::slotDisconnected()
 {
-  qDebug() << "FakeServer got disconnected.";
   QMutexLocker locker( &mMutex );
   mConnections--;
+  mGotDisconnected = true;
   Q_ASSERT( mConnections == 0 );
   Q_ASSERT( mAllowedDeletions.isEmpty() );
   Q_ASSERT( mAllowedRetrieves.isEmpty() );
@@ -148,26 +197,10 @@ void FakeServer::slotDisconnected()
   emit disconnected();
 }
 
-void FakeServer::run()
-{
-  mTcpServer = new QTcpServer();
-  if ( !mTcpServer->listen( QHostAddress( QHostAddress::LocalHost ), 5989 ) ) {
-    kFatal() << "Unable to start the server";
-  }
-
-  connect( mTcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()) );
-
-  exec();
-
-  if ( mConnections > 0 )
-    disconnect( mTcpServerConnection, SIGNAL(readyRead()), this, SLOT(dataAvailable()) );
-
-  delete mTcpServer;
-  mTcpServer = 0;
-}
-
 void FakeServer::setAllowedDeletions( const QString &deleteIds )
 {
+  QMutexLocker locker( &mMutex );
+  mAllowedDeletions.clear();
   QStringList ids = deleteIds.split( ',' );
   foreach( const QString &id, ids ) {
     mAllowedDeletions.append( id.toUtf8() );
@@ -176,6 +209,8 @@ void FakeServer::setAllowedDeletions( const QString &deleteIds )
 
 void FakeServer::setAllowedRetrieves( const QString &retrieveIds )
 {
+  QMutexLocker locker( &mMutex );
+  mAllowedRetrieves.clear();
   QStringList ids = retrieveIds.split( ',' );
   foreach( const QString &id, ids ) {
     mAllowedRetrieves.append( id.toUtf8() );
@@ -184,6 +219,7 @@ void FakeServer::setAllowedRetrieves( const QString &retrieveIds )
 
 void FakeServer::setMails( const QList<QByteArray> &mails)
 {
+  QMutexLocker locker( &mMutex );
   mMails = mails;
 }
 
@@ -196,6 +232,7 @@ void FakeServer::setNextConversation( const QString& conversation,
   Q_ASSERT( mWriteData.isEmpty() );
   Q_ASSERT( !conversation.isEmpty() );
 
+  mGotDisconnected = false;
   QStringList lines = conversation.split( "\r\n", QString::SkipEmptyParts );
   Q_ASSERT( lines.first().startsWith( "C:" ) );
 
@@ -237,6 +274,18 @@ void FakeServer::setNextConversation( const QString& conversation,
       }
     }
   }
+}
+
+int FakeServer::progress() const
+{
+  QMutexLocker locker( &mMutex );
+  return mProgress;
+}
+
+bool FakeServer::gotDisconnected() const
+{
+  QMutexLocker locker( &mMutex );
+  return mGotDisconnected;
 }
 
 #include "fakeserver.moc"
