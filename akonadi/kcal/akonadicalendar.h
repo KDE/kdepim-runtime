@@ -103,12 +103,12 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 
     Akonadi::Item::List rawJournals( JournalSortField sortField = JournalSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
 
-    Akonadi::Item ::List rawJournalsForDate( const QDate &date );
+    Akonadi::Item::List rawJournalsForDate( const QDate &date );
 
     Akonadi::Item journal( const Akonadi::Item::Id &id );
 
-    KCal::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
-    KCal::Alarm::List alarmsTo( const KDateTime &to );
+    Akonadi::Item::List alarms( const KDateTime &from, const KDateTime &to );
+    Akonadi::Item::List alarmsTo( const KDateTime &to );
 
     /* reimp */ Akonadi::Item findParent( const Akonadi::Item& item ) const;
     /* reimp */ Akonadi::Item::List findChildren( const Akonadi::Item &item ) const;

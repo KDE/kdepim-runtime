@@ -353,17 +353,18 @@ Item::List AkonadiCalendar::rawTodosForDate( const QDate &date )
   return todoList;
 }
 
-Alarm::List AkonadiCalendar::alarmsTo( const KDateTime &to )
+Akonadi::Item::List AkonadiCalendar::alarmsTo( const KDateTime &to )
 {
   kDebug();
   return alarms( KDateTime( QDate( 1900, 1, 1 ) ), to );
 }
 
-Alarm::List AkonadiCalendar::alarms( const KDateTime &from, const KDateTime &to )
+Akonadi::Item::List AkonadiCalendar::alarms( const KDateTime &from, const KDateTime &to )
 {
   kDebug();
-  Alarm::List alarmList;
+  Akonadi::Item::List alarmList;
 #if 0
+  Alarm::List alarmList;
   QHashIterator<QString, Event *>ie( d->mEvents );
   Event *e;
   while ( ie.hasNext() ) {

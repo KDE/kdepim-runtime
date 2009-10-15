@@ -957,7 +957,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return the list of KCal::Alarms for the for the specified time range.
     */
-    virtual KCal::Alarm::List alarms( const KDateTime &from,
+    virtual Akonadi::Item::List alarms( const KDateTime &from,
                                 const KDateTime &to ) = 0;
 
   // Observer Specific Methods //

@@ -218,11 +218,11 @@ Item CalendarNull::journal( const Item::Id &uid )
   return Item();
 }
 
-Alarm::List CalendarNull::alarms( const KDateTime &from, const KDateTime &to )
+Akonadi::Item::List CalendarNull::alarms( const KDateTime &from, const KDateTime &to )
 {
   Q_UNUSED( from );
   Q_UNUSED( to );
-  return Alarm::List();
+  return Akonadi::Item::List();
 }
 
 void CalendarNull::incidenceUpdated( IncidenceBase *incidenceBase )

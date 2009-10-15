@@ -245,7 +245,7 @@ class AKONADI_KCAL_EXPORT CalendarNull : public CalendarBase
       @copydoc
       Calendar::alarms()
     */
-    KCal::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
+    Akonadi::Item::List alarms( const KDateTime &from, const KDateTime &to );
 
   // Observer Specific Methods //
 
