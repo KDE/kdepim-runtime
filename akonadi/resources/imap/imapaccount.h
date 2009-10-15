@@ -38,6 +38,7 @@ namespace KMime
 
 namespace KIMAP
 {
+  class MailBoxDescriptor;
   class Session;
 }
 
@@ -83,6 +84,7 @@ public:
 
   KIMAP::Session *session() const;
   QStringList capabilities() const;
+  QList<KIMAP::MailBoxDescriptor> namespaces() const;
 
 Q_SIGNALS:
   void success();
@@ -91,12 +93,14 @@ Q_SIGNALS:
 private Q_SLOTS:
   void onLoginDone( KJob *job );
   void onCapabilitiesTestDone( KJob *job );
+  void onNamespacesTestDone( KJob *job );
 
 private:
   void doConnect( const QString &password );
 
   KIMAP::Session *m_session;
   QStringList m_capabilities;
+  QList<KIMAP::MailBoxDescriptor> m_namespaces;
   QString m_server;
   QString m_userName;
   KIMAP::LoginJob::EncryptionMode m_encryption;
