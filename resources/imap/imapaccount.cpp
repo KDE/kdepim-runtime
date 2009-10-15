@@ -36,6 +36,8 @@
 #include <kimap/sessionuiproxy.h>
 
 #include <kimap/capabilitiesjob.h>
+#include <kimap/namespacejob.h>
+#include <kimap/listjob.h>
 #include <kimap/loginjob.h>
 #include <kimap/logoutjob.h>
 
@@ -178,9 +180,15 @@ QStringList ImapAccount::capabilities() const
   return m_capabilities;
 }
 
+QList<KIMAP::MailBoxDescriptor> ImapAccount::namespaces() const
+{
+  return m_namespaces;
+}
+
 void ImapAccount::doConnect( const QString &password )
 {
   m_capabilities.clear();
+  m_namespaces.clear();
   m_session = createExtraSession( password );
 }
 
@@ -281,6 +289,37 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
                       "Please ask your sysadmin to upgrade the server.", m_server, missing.join( ", " ) ) );
     disconnect();
     return;
+  }
+
+  // If the extension is supported, grab the namespaces from the server
+  if ( m_capabilities.contains( "NAMESPACE" ) ) {
+    KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob( m_session );
+    QObject::connect( nsJob, SIGNAL( result( KJob* ) ), SLOT( onNamespacesTestDone( KJob* ) ) );
+    nsJob->start();
+    return;
+  } else {
+    emit success();
+  }
+}
+
+void ImapAccount::onNamespacesTestDone( KJob *job )
+{
+  KIMAP::NamespaceJob *nsJob = qobject_cast<KIMAP::NamespaceJob*>( job );
+
+  if ( nsJob->containsEmptyNamespace() ) {
+    // When we got the empty namespace here, we assume that the other
+    // ones can be freely ignored and that the server will give us all
+    // the mailboxes if we list from the empty namespace itself...
+
+    m_namespaces.clear();
+
+  } else {
+    // ... otherwise we assume that we have to list explicitely each
+    // namespace
+
+    m_namespaces = nsJob->personalNamespaces()
+                 + nsJob->userNamespaces()
+                 + nsJob->sharedNamespaces();
   }
 
   emit success();
