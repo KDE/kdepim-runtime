@@ -91,19 +91,19 @@ class KOrg::AkonadiCalendar::Private : public QObject
       m_monitor->itemFetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
       m_monitor->ignoreSession( m_session );
 
-      connect( m_monitor, SIGNAL(itemChanged( const Akonadi::Item&, const QSet<QByteArray>& )),
-               this, SLOT(itemChanged( const Akonadi::Item&, const QSet<QByteArray>& )) );
-      connect( m_monitor, SIGNAL(itemMoved( const Akonadi::Item&, const Akonadi::Collection&, const Akonadi::Collection& )),
-               this, SLOT(itemMoved( const Akonadi::Item&, const Akonadi::Collection&, const Akonadi::Collection& ) ) );
-      connect( m_monitor, SIGNAL(itemAdded( const Akonadi::Item&, const Akonadi::Collection& )),
-               this, SLOT(itemAdded( const Akonadi::Item& )) );
-      connect( m_monitor, SIGNAL(itemRemoved( const Akonadi::Item& )),
-               this, SLOT(itemRemoved( const Akonadi::Item& )) );
+      connect( m_monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray> )),
+               this, SLOT(itemChanged(Akonadi::Item,QSet<QByteArray> )) );
+      connect( m_monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection )),
+               this, SLOT(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection ) ) );
+      connect( m_monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection )),
+               this, SLOT(itemAdded(Akonadi::Item )) );
+      connect( m_monitor, SIGNAL(itemRemoved(Akonadi::Item )),
+               this, SLOT(itemRemoved(Akonadi::Item )) );
       /*
-      connect( m_monitor, SIGNAL(itemLinked(const Akonadi::Item&, const Akonadi::Collection&)),
-               this, SLOT(itemAdded(const Akonadi::Item&, const Akonadi::Collection&)) );
-      connect( m_monitor, SIGNAL(itemUnlinked( const Akonadi::Item&, const Akonadi::Collection& )),
-               this, SLOT(itemRemoved( const Akonadi::Item&, const Akonadi::Collection& )) );
+      connect( m_monitor, SIGNAL(itemLinked(const Akonadi::Item,Akonadi::Collection)),
+               this, SLOT(itemAdded(const Akonadi::Item,Akonadi::Collection)) );
+      connect( m_monitor, SIGNAL(itemUnlinked(Akonadi::Item,Akonadi::Collection )),
+               this, SLOT(itemRemoved(Akonadi::Item,Akonadi::Collection )) );
       */
     }
 
