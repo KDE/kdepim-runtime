@@ -268,21 +268,20 @@ void CalendarBase::shiftTimes( const KDateTime::Spec &oldSpec,
                            const KDateTime::Spec &newSpec )
 {
   setTimeSpec( newSpec );
-
   int i, end;
-  Event::List ev = events();
+  Item::List ev = eventsFORAKONADI();
   for ( i = 0, end = ev.count();  i < end;  ++i ) {
-    ev[i]->shiftTimes( oldSpec, newSpec );
+    Akonadi::event( ev[i] )->shiftTimes( oldSpec, newSpec );
   }
 
-  Todo::List to = todos();
+  Item::List to = todosFORAKONADI();
   for ( i = 0, end = to.count();  i < end;  ++i ) {
-    to[i]->shiftTimes( oldSpec, newSpec );
+    Akonadi::todo( to[i] )->shiftTimes( oldSpec, newSpec );
   }
 
-  Journal::List jo = journals();
+  Item::List jo = journalsFORAKONADI();
   for ( i = 0, end = jo.count();  i < end;  ++i ) {
-    jo[i]->shiftTimes( oldSpec, newSpec );
+    Akonadi::journal( jo[i] )->shiftTimes( oldSpec, newSpec );
   }
 }
 
@@ -302,13 +301,12 @@ CalFilter *CalendarBase::filter()
 
 QStringList CalendarBase::categories()
 {
-  Incidence::List rawInc( rawIncidences() );
+  Item::List rawInc( rawIncidencesFORAKONADI() );
   QStringList cats, thisCats;
   // @TODO: For now just iterate over all incidences. In the future,
   // the list of categories should be built when reading the file.
-  for ( Incidence::List::ConstIterator i = rawInc.constBegin();
-        i != rawInc.constEnd(); ++i ) {
-    thisCats = (*i)->categories();
+  Q_FOREACH( const Item &i, rawInc ) {
+    thisCats = Akonadi::incidence( i )->categories();
     for ( QStringList::ConstIterator si = thisCats.constBegin();
           si != thisCats.constEnd(); ++si ) {
       if ( !cats.contains( *si ) ) {
@@ -329,117 +327,9 @@ Item::List CalendarBase::incidencesFORAKONADI()
   return mergeIncidenceListFORAKONADI( eventsFORAKONADI(), todosFORAKONADI(), journalsFORAKONADI() );
 }
 
-Incidence::List CalendarBase::rawIncidences()
-{
-  return mergeIncidenceList( rawEvents(), rawTodos(), rawJournals() );
-}
-
 Item::List CalendarBase::rawIncidencesFORAKONADI()
 {
   return mergeIncidenceListFORAKONADI( rawEventsFORAKONADI(), rawTodosFORAKONADI(), rawJournalsFORAKONADI() );
-}
-
-Event::List CalendarBase::sortEvents( Event::List *eventList,
-                                  EventSortField sortField,
-                                  SortDirection sortDirection )
-{
-  Event::List eventListSorted;
-  Event::List tempList, t;
-  Event::List alphaList;
-  Event::List::Iterator sortIt;
-  Event::List::Iterator eit;
-
-  // Notice we alphabetically presort Summaries first.
-  // We do this so comparison "ties" stay in a nice order.
-
-  switch( sortField ) {
-  case EventSortUnsorted:
-    eventListSorted = *eventList;
-    break;
-
-  case EventSortStartDate:
-    alphaList = sortEvents( eventList, EventSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
-      if ( (*eit)->dtStart().isDateOnly() ) {
-        tempList.append( *eit );
-        continue;
-      }
-      sortIt = eventListSorted.begin();
-      if ( sortDirection == SortDirectionAscending ) {
-        while ( sortIt != eventListSorted.end() &&
-                (*eit)->dtStart() >= (*sortIt)->dtStart() ) {
-          ++sortIt;
-        }
-      } else {
-        while ( sortIt != eventListSorted.end() &&
-                (*eit)->dtStart() < (*sortIt)->dtStart() ) {
-          ++sortIt;
-        }
-      }
-      eventListSorted.insert( sortIt, *eit );
-    }
-    if ( sortDirection == SortDirectionAscending ) {
-      // Prepend the list of Events without End DateTimes
-      tempList += eventListSorted;
-      eventListSorted = tempList;
-    } else {
-      // Append the list of Events without End DateTimes
-      eventListSorted += tempList;
-    }
-    break;
-
-  case EventSortEndDate:
-    alphaList = sortEvents( eventList, EventSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
-      if ( (*eit)->hasEndDate() ) {
-        sortIt = eventListSorted.begin();
-        if ( sortDirection == SortDirectionAscending ) {
-          while ( sortIt != eventListSorted.end() &&
-                  (*eit)->dtEnd() >= (*sortIt)->dtEnd() ) {
-            ++sortIt;
-          }
-        } else {
-          while ( sortIt != eventListSorted.end() &&
-                  (*eit)->dtEnd() < (*sortIt)->dtEnd() ) {
-            ++sortIt;
-          }
-        }
-      } else {
-        // Keep a list of the Events without End DateTimes
-        tempList.append( *eit );
-      }
-      eventListSorted.insert( sortIt, *eit );
-    }
-    if ( sortDirection == SortDirectionAscending ) {
-      // Append the list of Events without End DateTimes
-      eventListSorted += tempList;
-    } else {
-      // Prepend the list of Events without End DateTimes
-      tempList += eventListSorted;
-      eventListSorted = tempList;
-    }
-    break;
-
-  case EventSortSummary:
-    for ( eit = eventList->begin(); eit != eventList->end(); ++eit ) {
-      sortIt = eventListSorted.begin();
-      if ( sortDirection == SortDirectionAscending ) {
-        while ( sortIt != eventListSorted.end() &&
-                (*eit)->summary() >= (*sortIt)->summary() ) {
-          ++sortIt;
-        }
-      } else {
-        while ( sortIt != eventListSorted.end() &&
-                (*eit)->summary() < (*sortIt)->summary() ) {
-          ++sortIt;
-        }
-      }
-      eventListSorted.insert( sortIt, *eit );
-    }
-    break;
-  }
-
-  return eventListSorted;
 }
 
 Item::List CalendarBase::sortEventsFORAKONADI( const Item::List &eventList_,
@@ -552,16 +442,6 @@ Item::List CalendarBase::sortEventsFORAKONADI( const Item::List &eventList_,
   return eventListSorted;
 }
 
-Event::List CalendarBase::events( const QDate &date,
-                              const KDateTime::Spec &timeSpec,
-                              EventSortField sortField,
-                              SortDirection sortDirection )
-{
-  Event::List el = rawEventsForDate( date, timeSpec, sortField, sortDirection );
-  d->mFilter->apply( &el );
-  return el;
-}
-
 Item::List CalendarBase::eventsFORAKONADI( const QDate &date,
                               const KDateTime::Spec &timeSpec,
                               EventSortField sortField,
@@ -571,26 +451,11 @@ Item::List CalendarBase::eventsFORAKONADI( const QDate &date,
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
-Event::List CalendarBase::events( const KDateTime &dt )
-{
-  Event::List el = rawEventsForDate( dt );
-  d->mFilter->apply( &el );
-  return el;
-}
 
 Item::List CalendarBase::eventsFORAKONADI( const KDateTime &dt )
 {
   const Item::List el = rawEventsForDateFORAKONADI( dt );
   return Akonadi::applyCalFilter( el, d->mFilter );
-}
-
-Event::List CalendarBase::events( const QDate &start, const QDate &end,
-                              const KDateTime::Spec &timeSpec,
-                              bool inclusive )
-{
-  Event::List el = rawEvents( start, end, timeSpec, inclusive );
-  d->mFilter->apply( &el );
-  return el;
 }
 
 
@@ -602,14 +467,6 @@ Item::List CalendarBase::eventsFORAKONADI( const QDate &start, const QDate &end,
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
-Event::List CalendarBase::events( EventSortField sortField,
-                              SortDirection sortDirection )
-{
-  Event::List el = rawEvents( sortField, sortDirection );
-  d->mFilter->apply( &el );
-  return el;
-}
-
 Item::List CalendarBase::eventsFORAKONADI( EventSortField sortField,
                               SortDirection sortDirection )
 {
@@ -617,29 +474,10 @@ Item::List CalendarBase::eventsFORAKONADI( EventSortField sortField,
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
-bool CalendarBase::addIncidence( Incidence *incidence )
-{
-  Incidence::AddVisitor<CalendarBase> v( this );
-
-  return incidence->accept( v );
-}
-
 bool CalendarBase::addIncidenceFORAKONADI( const Incidence::Ptr &incidence )
 {
   AddVisitor v( this, incidence );
   return incidence->accept( v );
-}
-
-bool CalendarBase::deleteIncidence( Incidence *incidence )
-{
-  if ( beginChange( incidence ) ) {
-    Incidence::DeleteVisitor<CalendarBase> v( this );
-    bool result = incidence->accept( v );
-    endChange( incidence );
-    return result;
-  } else {
-    return false;
-  }
 }
 
 bool CalendarBase::deleteIncidenceFORAKONADI( const Item &item )
@@ -654,83 +492,6 @@ bool CalendarBase::deleteIncidenceFORAKONADI( const Item &item )
   }
   endChangeFORAKONADI( item );
   return result;
-}
-
-// Dissociate a single occurrence or all future occurrences from a recurring
-// sequence. The new incidence is returned, but not automatically inserted
-// into the calendar, which is left to the calling application.
-Incidence *CalendarBase::dissociateOccurrence( Incidence *incidence,
-                                           const QDate &date,
-                                           const KDateTime::Spec &spec,
-                                           bool single )
-{
-  if ( !incidence || !incidence->recurs() ) {
-    return 0;
-  }
-
-  Incidence *newInc = incidence->clone();
-  newInc->recreate();
-  // Do not call setRelatedTo() when dissociating recurring to-dos, otherwise the new to-do
-  // will appear as a child.  Originally, we planned to set a relation with reltype SIBLING
-  // when dissociating to-dos, but currently kcal only supports reltype PARENT.
-  // We can uncomment the following line when we support the PARENT reltype.
-  //newInc->setRelatedTo( incidence );
-  Recurrence *recur = newInc->recurrence();
-  if ( single ) {
-    recur->clear();
-  } else {
-    // Adjust the recurrence for the future incidences. In particular adjust
-    // the "end after n occurrences" rules! "No end date" and "end by ..."
-    // don't need to be modified.
-    int duration = recur->duration();
-    if ( duration > 0 ) {
-      int doneduration = recur->durationTo( date.addDays( -1 ) );
-      if ( doneduration >= duration ) {
-        kDebug() << "The dissociated event already occurred more often"
-                 << "than it was supposed to ever occur. ERROR!";
-        recur->clear();
-      } else {
-        recur->setDuration( duration - doneduration );
-      }
-    }
-  }
-  // Adjust the date of the incidence
-  if ( incidence->type() == "Event" ) {
-    Event *ev = static_cast<Event *>( newInc );
-    KDateTime start( ev->dtStart() );
-    int daysTo = start.toTimeSpec( spec ).date().daysTo( date );
-    ev->setDtStart( start.addDays( daysTo ) );
-    ev->setDtEnd( ev->dtEnd().addDays( daysTo ) );
-  } else if ( incidence->type() == "Todo" ) {
-    Todo *td = static_cast<Todo *>( newInc );
-    bool haveOffset = false;
-    int daysTo = 0;
-    if ( td->hasDueDate() ) {
-      KDateTime due( td->dtDue() );
-      daysTo = due.toTimeSpec( spec ).date().daysTo( date );
-      td->setDtDue( due.addDays( daysTo ), true );
-      haveOffset = true;
-    }
-    if ( td->hasStartDate() ) {
-      KDateTime start( td->dtStart() );
-      if ( !haveOffset ) {
-        daysTo = start.toTimeSpec( spec ).date().daysTo( date );
-      }
-      td->setDtStart( start.addDays( daysTo ) );
-      haveOffset = true;
-    }
-  }
-  recur = incidence->recurrence();
-  if ( recur ) {
-    if ( single ) {
-      recur->addExDate( date );
-    } else {
-      // Make sure the recurrence of the past events ends
-      // at the corresponding day
-      recur->setEndDate( date.addDays(-1) );
-    }
-  }
-  return newInc;
 }
 
 Incidence::Ptr CalendarBase::dissociateOccurrenceFORAKONADI( const Item &incidence,
@@ -811,22 +572,6 @@ Incidence::Ptr CalendarBase::dissociateOccurrenceFORAKONADI( const Item &inciden
 #endif // AKONADI_PORT_DISABLED
 }
 
-Incidence *CalendarBase::incidence( const QString &uid )
-{
-  Incidence *i = event( uid );
-  if ( i ) {
-    return i;
-  }
-
-  i = todo( uid );
-  if ( i ) {
-    return i;
-  }
-
-  i = journal( uid );
-  return i;
-}
-
 Item CalendarBase::incidenceFORAKONADI( const Item::Id &uid )
 {
   Item i = eventFORAKONADI( uid );
@@ -843,18 +588,6 @@ Item CalendarBase::incidenceFORAKONADI( const Item::Id &uid )
   return i;
 }
 
-Incidence::List CalendarBase::incidencesFromSchedulingID( const QString &sid )
-{
-  Incidence::List result;
-  const Incidence::List incidences = rawIncidences();
-  Incidence::List::const_iterator it = incidences.begin();
-  for ( ; it != incidences.end(); ++it ) {
-    if ( (*it)->schedulingID() == sid ) {
-      result.append( *it );
-    }
-  }
-  return result;
-}
 
 Item::List CalendarBase::incidencesFromSchedulingIDFORAKONADI( const QString &sid )
 {
@@ -869,20 +602,6 @@ Item::List CalendarBase::incidencesFromSchedulingIDFORAKONADI( const QString &si
   return result;
 }
 
-Incidence *CalendarBase::incidenceFromSchedulingID( const QString &UID )
-{
-  const Incidence::List incidences = rawIncidences();
-  Incidence::List::const_iterator it = incidences.begin();
-  for ( ; it != incidences.end(); ++it ) {
-    if ( (*it)->schedulingID() == UID ) {
-      // Touchdown, and the crowd goes wild
-      return *it;
-    }
-  }
-  // Not found
-  return 0;
-}
-
 Item CalendarBase::incidenceFromSchedulingIDFORAKONADI( const QString &UID )
 {
   const Item::List incidences = rawIncidencesFORAKONADI();
@@ -895,150 +614,6 @@ Item CalendarBase::incidenceFromSchedulingIDFORAKONADI( const QString &UID )
   }
   // Not found
   return Item();
-}
-
-Todo::List CalendarBase::sortTodos( Todo::List *todoList,
-                                TodoSortField sortField,
-                                SortDirection sortDirection )
-{
-  Todo::List todoListSorted;
-  Todo::List tempList, t;
-  Todo::List alphaList;
-  Todo::List::Iterator sortIt;
-  Todo::List::Iterator eit;
-
-  // Notice we alphabetically presort Summaries first.
-  // We do this so comparison "ties" stay in a nice order.
-
-  // Note that To-dos may not have Start DateTimes nor due DateTimes.
-
-  switch( sortField ) {
-  case TodoSortUnsorted:
-    todoListSorted = *todoList;
-    break;
-
-  case TodoSortStartDate:
-    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
-      if ( (*eit)->hasStartDate() ) {
-        sortIt = todoListSorted.begin();
-        if ( sortDirection == SortDirectionAscending ) {
-          while ( sortIt != todoListSorted.end() &&
-                  (*eit)->dtStart() >= (*sortIt)->dtStart() ) {
-            ++sortIt;
-          }
-        } else {
-          while ( sortIt != todoListSorted.end() &&
-                  (*eit)->dtStart() < (*sortIt)->dtStart() ) {
-            ++sortIt;
-          }
-        }
-        todoListSorted.insert( sortIt, *eit );
-      } else {
-        // Keep a list of the To-dos without Start DateTimes
-        tempList.append( *eit );
-      }
-    }
-    if ( sortDirection == SortDirectionAscending ) {
-      // Append the list of To-dos without Start DateTimes
-      todoListSorted += tempList;
-    } else {
-      // Prepend the list of To-dos without Start DateTimes
-      tempList += todoListSorted;
-      todoListSorted = tempList;
-    }
-    break;
-
-  case TodoSortDueDate:
-    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
-      if ( (*eit)->hasDueDate() ) {
-        sortIt = todoListSorted.begin();
-        if ( sortDirection == SortDirectionAscending ) {
-          while ( sortIt != todoListSorted.end() &&
-                  (*eit)->dtDue() >= (*sortIt)->dtDue() ) {
-            ++sortIt;
-          }
-        } else {
-          while ( sortIt != todoListSorted.end() &&
-                  (*eit)->dtDue() < (*sortIt)->dtDue() ) {
-            ++sortIt;
-          }
-        }
-        todoListSorted.insert( sortIt, *eit );
-      } else {
-        // Keep a list of the To-dos without Due DateTimes
-        tempList.append( *eit );
-      }
-    }
-    if ( sortDirection == SortDirectionAscending ) {
-      // Append the list of To-dos without Due DateTimes
-      todoListSorted += tempList;
-    } else {
-      // Prepend the list of To-dos without Due DateTimes
-      tempList += todoListSorted;
-      todoListSorted = tempList;
-    }
-    break;
-
-  case TodoSortPriority:
-    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
-      sortIt = todoListSorted.begin();
-      if ( sortDirection == SortDirectionAscending ) {
-        while ( sortIt != todoListSorted.end() &&
-                (*eit)->priority() >= (*sortIt)->priority() ) {
-          ++sortIt;
-        }
-      } else {
-        while ( sortIt != todoListSorted.end() &&
-                (*eit)->priority() < (*sortIt)->priority() ) {
-          ++sortIt;
-        }
-      }
-      todoListSorted.insert( sortIt, *eit );
-    }
-    break;
-
-  case TodoSortPercentComplete:
-    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
-    for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
-      sortIt = todoListSorted.begin();
-      if ( sortDirection == SortDirectionAscending ) {
-        while ( sortIt != todoListSorted.end() &&
-                (*eit)->percentComplete() >= (*sortIt)->percentComplete() ) {
-          ++sortIt;
-        }
-      } else {
-        while ( sortIt != todoListSorted.end() &&
-                (*eit)->percentComplete() < (*sortIt)->percentComplete() ) {
-          ++sortIt;
-        }
-      }
-      todoListSorted.insert( sortIt, *eit );
-    }
-    break;
-
-  case TodoSortSummary:
-    for ( eit = todoList->begin(); eit != todoList->end(); ++eit ) {
-      sortIt = todoListSorted.begin();
-      if ( sortDirection == SortDirectionAscending ) {
-        while ( sortIt != todoListSorted.end() &&
-                (*eit)->summary() >= (*sortIt)->summary() ) {
-          ++sortIt;
-        }
-      } else {
-        while ( sortIt != todoListSorted.end() &&
-                (*eit)->summary() < (*sortIt)->summary() ) {
-          ++sortIt;
-        }
-      }
-      todoListSorted.insert( sortIt, *eit );
-    }
-    break;
-  }
-
-  return todoListSorted;
 }
 
 Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
@@ -1191,14 +766,6 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
   return todoListSorted;
 }
 
-Todo::List CalendarBase::todos( TodoSortField sortField,
-                            SortDirection sortDirection )
-{
-  Todo::List tl = rawTodos( sortField, sortDirection );
-  d->mFilter->apply( &tl );
-  return tl;
-}
-
 Item::List CalendarBase::todosFORAKONADI( TodoSortField sortField,
                             SortDirection sortDirection )
 {
@@ -1206,70 +773,10 @@ Item::List CalendarBase::todosFORAKONADI( TodoSortField sortField,
   return Akonadi::applyCalFilter( tl, d->mFilter );
 }
 
-Todo::List CalendarBase::todos( const QDate &date )
-{
-  Todo::List el = rawTodosForDate( date );
-  d->mFilter->apply( &el );
-  return el;
-}
-
 Item::List CalendarBase::todosFORAKONADI( const QDate &date )
 {
   Item::List el = rawTodosForDateFORAKONADI( date );
   return Akonadi::applyCalFilter( el, d->mFilter );
-}
-
-Journal::List CalendarBase::sortJournals( Journal::List *journalList,
-                                      JournalSortField sortField,
-                                      SortDirection sortDirection )
-{
-  Journal::List journalListSorted;
-  Journal::List::Iterator sortIt;
-  Journal::List::Iterator eit;
-
-  switch( sortField ) {
-  case JournalSortUnsorted:
-    journalListSorted = *journalList;
-    break;
-
-  case JournalSortDate:
-    for ( eit = journalList->begin(); eit != journalList->end(); ++eit ) {
-      sortIt = journalListSorted.begin();
-      if ( sortDirection == SortDirectionAscending ) {
-        while ( sortIt != journalListSorted.end() &&
-                (*eit)->dtStart() >= (*sortIt)->dtStart() ) {
-          ++sortIt;
-        }
-      } else {
-        while ( sortIt != journalListSorted.end() &&
-                (*eit)->dtStart() < (*sortIt)->dtStart() ) {
-          ++sortIt;
-        }
-      }
-      journalListSorted.insert( sortIt, *eit );
-    }
-    break;
-
-  case JournalSortSummary:
-    for ( eit = journalList->begin(); eit != journalList->end(); ++eit ) {
-      sortIt = journalListSorted.begin();
-      if ( sortDirection == SortDirectionAscending ) {
-        while ( sortIt != journalListSorted.end() &&
-                (*eit)->summary() >= (*sortIt)->summary() ) {
-          ++sortIt;
-        }
-      } else {
-        while ( sortIt != journalListSorted.end() &&
-                (*eit)->summary() < (*sortIt)->summary() ) {
-          ++sortIt;
-        }
-      }
-      journalListSorted.insert( sortIt, *eit );
-    }
-    break;
-  }
-
-  return journalListSorted;
 }
 
 Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList_,
@@ -1328,26 +835,11 @@ Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList_,
   return journalListSorted;
 }
 
-Journal::List CalendarBase::journals( JournalSortField sortField,
-                                  SortDirection sortDirection )
-{
-  Journal::List jl = rawJournals( sortField, sortDirection );
-  d->mFilter->apply( &jl );
-  return jl;
-}
-
 Item::List CalendarBase::journalsFORAKONADI( JournalSortField sortField,
                                   SortDirection sortDirection )
 {
   const Item::List jl = rawJournalsFORAKONADI( sortField, sortDirection );
   return Akonadi::applyCalFilter( jl, d->mFilter );
-}
-
-Journal::List CalendarBase::journals( const QDate &date )
-{
-  Journal::List el = rawJournalsForDate( date );
-  d->mFilter->apply( &el );
-  return el;
 }
 
 Item::List CalendarBase::journalsFORAKONADI( const QDate &date )
@@ -1366,44 +858,6 @@ void CalendarBase::endBatchAdding()
   emit batchAddingEnds();
 }
 
-// When this is called, the to-dos have already been added to the calendar.
-// This method is only about linking related to-dos.
-void CalendarBase::setupRelations( Incidence *forincidence )
-{
-  if ( !forincidence ) {
-    return;
-  }
-
-  QString uid = forincidence->uid();
-
-  // First, go over the list of orphans and see if this is their parent
-  QList<Incidence*> l = d->mOrphans.values( uid );
-  d->mOrphans.remove( uid );
-  for ( int i = 0, end = l.count();  i < end;  ++i ) {
-    l[i]->setRelatedTo( forincidence );
-    forincidence->addRelation( l[i] );
-    d->mOrphanUids.remove( l[i]->uid() );
-  }
-
-  // Now see about this incidences parent
-  if ( !forincidence->relatedTo() && !forincidence->relatedToUid().isEmpty() ) {
-    // Incidence has a uid it is related to but is not registered to it yet.
-    // Try to find it
-    Incidence *parent = incidence( forincidence->relatedToUid() );
-    if ( parent ) {
-      // Found it
-      forincidence->setRelatedTo( parent );
-      parent->addRelation( forincidence );
-    } else {
-      // Not found, put this in the mOrphans list
-      // Note that the mOrphans dict might contain multiple entries with the
-      // same key! which are multiple children that wait for the parent
-      // incidence to be inserted.
-      d->mOrphans.insert( forincidence->relatedToUid(), forincidence );
-      d->mOrphanUids.insert( forincidence->uid(), forincidence );
-    }
-  }
-}
 
 void CalendarBase::setupRelationsFORAKONADI( const Item &forincidence )
 {
@@ -1442,85 +896,6 @@ void CalendarBase::setupRelationsFORAKONADI( const Item &forincidence )
     }
   }
 #endif // AKONADI_PORT_DISABLED
-}
-
-// If a to-do with sub-to-dos is deleted, move it's sub-to-dos to the orphan list
-void CalendarBase::removeRelations( Incidence *incidence )
-{
-  if ( !incidence ) {
-    kDebug() << "Warning: incidence is 0";
-    return;
-  }
-
-  QString uid = incidence->uid();
-  foreach ( Incidence *i, incidence->relations() ) {
-    if ( !d->mOrphanUids.contains( i->uid() ) ) {
-      d->mOrphans.insert( uid, i );
-      d->mOrphanUids.insert( i->uid(), i );
-      i->setRelatedTo( 0 );
-      i->setRelatedToUid( uid );
-    }
-  }
-
-  // If this incidence is related to something else, tell that about it
-  if ( incidence->relatedTo() ) {
-    incidence->relatedTo()->removeRelation( incidence );
-  }
-
-  // Remove this one from the orphans list
-  if ( d->mOrphanUids.remove( uid ) ) {
-    // This incidence is located in the orphans list - it should be removed
-    // Since the mOrphans dict might contain the same key (with different
-    // child incidence pointers!) multiple times, take care that we remove
-    // the correct one. So we need to remove all items with the given
-    // parent UID, and readd those that are not for this item. Also, there
-    // might be other entries with differnet UID that point to this
-    // incidence (this might happen when the relatedTo of the item is
-    // changed before its parent is inserted. This might happen with
-    // groupware servers....). Remove them, too
-    QStringList relatedToUids;
-
-    // First, create a list of all keys in the mOrphans list which point
-    // to the removed item
-    relatedToUids << incidence->relatedToUid();
-    for ( QMultiHash<QString, Incidence*>::Iterator it = d->mOrphans.begin();
-          it != d->mOrphans.end(); ++it ) {
-      if ( it.value()->uid() == uid ) {
-        relatedToUids << it.key();
-      }
-    }
-
-    // now go through all uids that have one entry that point to the incidence
-    for ( QStringList::const_iterator uidit = relatedToUids.constBegin();
-          uidit != relatedToUids.constEnd(); ++uidit ) {
-      Incidence::List tempList;
-      // Remove all to get access to the remaining entries
-      QList<Incidence*> l = d->mOrphans.values( *uidit );
-      d->mOrphans.remove( *uidit );
-      foreach ( Incidence *i, l ) {
-        if ( i != incidence ) {
-          tempList.append( i );
-        }
-      }
-      // Readd those that point to a different orphan incidence
-      for ( Incidence::List::Iterator incit = tempList.begin();
-            incit != tempList.end(); ++incit ) {
-        d->mOrphans.insert( *uidit, *incit );
-      }
-    }
-  }
-
-  // Make sure the deleted incidence doesn't relate to a non-deleted incidence,
-  // since that would cause trouble in CalendarLocal::close(), as the deleted
-  // incidences are destroyed after the non-deleted incidences. The destructor
-  // of the deleted incidences would then try to access the already destroyed
-  // non-deleted incidence, which would segfault.
-  //
-  // So in short: Make sure dead incidences don't point to alive incidences
-  // via the relation.
-  //
-  // This crash is tested in CalendarLocalTest::testRelationsCrash().
-  incidence->setRelatedTo( 0 );
 }
 
 // If a to-do with sub-to-dos is deleted, move it's sub-to-dos to the orphan list
@@ -1773,28 +1148,6 @@ QString CalendarBase::productId() const
   return d->mProductId;
 }
 
-Incidence::List CalendarBase::mergeIncidenceList( const Event::List &events,
-                                              const Todo::List &todos,
-                                              const Journal::List &journals )
-{
-  Incidence::List incidences;
-
-  int i, end;
-  for ( i = 0, end = events.count();  i < end;  ++i ) {
-    incidences.append( events[i] );
-  }
-
-  for ( i = 0, end = todos.count();  i < end;  ++i ) {
-    incidences.append( todos[i] );
-  }
-
-  for ( i = 0, end = journals.count();  i < end;  ++i ) {
-    incidences.append( journals[i] );
-  }
-
-  return incidences;
-}
-
 Item::List CalendarBase::mergeIncidenceListFORAKONADI( const Item::List &events,
                                               const Item::List &todos,
                                               const Item::List &journals )
@@ -1817,24 +1170,11 @@ Item::List CalendarBase::mergeIncidenceListFORAKONADI( const Item::List &events,
   return incidences;
 }
 
-bool CalendarBase::beginChange( Incidence *incidence )
-{
-  Q_UNUSED( incidence );
-  return true;
-}
-
 bool CalendarBase::beginChangeFORAKONADI( const Item &incidence )
 {
   Q_UNUSED( incidence );
   return true;
 }
-
-bool CalendarBase::endChange( Incidence *incidence )
-{
-  Q_UNUSED( incidence );
-  return true;
-}
-
 
 bool CalendarBase::endChangeFORAKONADI( const Item &incidence )
 {

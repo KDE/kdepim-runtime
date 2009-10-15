@@ -380,9 +380,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @deprecated: FORAKONADI
       @see deleteIncidence()
     */
-  protected:
-    virtual bool addIncidence( KCal::Incidence *incidence );
-  public:
     virtual bool addIncidenceFORAKONADI( const KCal::Incidence::Ptr &incidence );
 
     /**
@@ -395,9 +392,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @see addIncidence()
     */
-  protected:
-    virtual bool deleteIncidence( KCal::Incidence *incidence );
-  public:
     virtual bool deleteIncidenceFORAKONADI( const Akonadi::Item &incidence );
 
     /**
@@ -425,9 +419,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return the list of all unfiltered KCal::Incidences.
     */
-  private:
-    virtual KCal::Incidence::List rawIncidences();
-  public:
     virtual Akonadi::Item::List rawIncidencesFORAKONADI();
 
     /**
@@ -439,9 +430,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @return a pointer to the KCal::Incidence.
       A null pointer is returned if no such KCal::Incidence exists.
     */
-  protected:
-    KCal::Incidence *incidence( const QString &uid );
-  public:
     Akonadi::Item incidenceFORAKONADI( const Akonadi::Item::Id &id );
 
     /**
@@ -453,9 +441,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @return a pointer to the KCal::Incidence.
       A null pointer is returned if no such KCal::Incidence exists.
     */
-  protected:
-    KCal::Incidence *incidenceFromSchedulingID( const QString &sid );
-  public:
     Akonadi::Item incidenceFromSchedulingIDFORAKONADI( const QString &sid );
 
     /**
@@ -465,9 +450,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param sid is a unique scheduling identifier string.
      */
-  protected:
-    KCal::Incidence::List incidencesFromSchedulingID( const QString &sid );
-  public:
     Akonadi::Item::List incidencesFromSchedulingIDFORAKONADI( const QString &sid );
 
     /**
@@ -480,12 +462,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return a list of merged KCal::Incidences.
     */
-  private:
-    static KCal::Incidence::List mergeIncidenceList( const KCal::Event::List &events,
-                                               const KCal::Todo::List &todos,
-                                               const KCal::Journal::List &journals );
-  public:
-
     static Akonadi::Item::List mergeIncidenceListFORAKONADI( const Akonadi::Item::List &events,
                                                const Akonadi::Item::List &todos,
                                                const Akonadi::Item::List &journals );
@@ -496,9 +472,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param incidence is a pointer to the KCal::Incidence that will be changing.
     */
-  protected:
-    virtual bool beginChange( KCal::Incidence *incidence );
-  public:
     virtual bool beginChangeFORAKONADI( const Akonadi::Item &incidence );
 
     /**
@@ -507,10 +480,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param incidence is a pointer to the KCal::Incidence that was changed.
     */
-protected:
-    virtual bool endChange( KCal::Incidence *incidence );
-public:
-
     virtual bool endChangeFORAKONADI( const Akonadi::Item &incidence );
 
     /**
@@ -531,11 +500,6 @@ public:
 
       @return a pointer to a new recurring KCal::Incidence if @a single is false.
     */
-  protected:
-    KCal::Incidence *dissociateOccurrence( KCal::Incidence *incidence, const QDate &date,
-                                     const KDateTime::Spec &spec,
-                                     bool single = true );
-  public:
     KCal::Incidence::Ptr dissociateOccurrenceFORAKONADI( const Akonadi::Item &incidence, const QDate &date,
                                                          const KDateTime::Spec &spec,
                                                          bool single = true );
@@ -552,9 +516,6 @@ public:
 
       @see deleteEvent()
     */
-  protected:
-    virtual bool addEvent( KCal::Event *event ) = 0;
-  public:
     virtual bool addEventFORAKONADI( const KCal::Event::Ptr &event ) = 0;
 
     /**
@@ -567,9 +528,6 @@ public:
 
       @see addEvent(), deleteAllEvents()
     */
-  protected:
-    virtual bool deleteEvent( KCal::Event *event ) = 0;
-  public:
     virtual bool deleteEventFORAKONADI( const Akonadi::Item &event ) = 0;
 
     /**
@@ -589,11 +547,6 @@ public:
 
       @return a list of KCal::Events sorted as specified.
     */
-  protected:
-    static KCal::Event::List sortEvents( KCal::Event::List *eventList,
-                                   EventSortField sortField,
-                                   SortDirection sortDirection );
-  public:
     static Akonadi::Item::List sortEventsFORAKONADI( const Akonadi::Item::List &eventList,
                                    EventSortField sortField,
                                    SortDirection sortDirection );
@@ -607,11 +560,6 @@ public:
 
       @return the list of all filtered KCal::Events sorted as specified.
     */
-  private:
-    virtual KCal::Event::List events(
-      EventSortField sortField = EventSortUnsorted,
-      SortDirection sortDirection = SortDirectionAscending );
-  public:
     virtual Akonadi::Item::List eventsFORAKONADI(
       EventSortField sortField = EventSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
@@ -624,9 +572,6 @@ public:
 
       @return the list of filtered KCal::Events occurring on the specified timestamp.
     */
-  private:
-    KCal::Event::List events( const KDateTime &dt );
-  public:
     Akonadi::Item::List eventsFORAKONADI( const KDateTime &dt );
 
     /**
@@ -643,11 +588,6 @@ public:
       @return the list of filtered KCal::Events occurring within the specified
       date range.
     */
-  private:
-    KCal::Event::List events( const QDate &start, const QDate &end,
-                        const KDateTime::Spec &timeSpec = KDateTime::Spec(),
-                        bool inclusive = false );
-  public:
     Akonadi::Item::List eventsFORAKONADI( const QDate &start, const QDate &end,
                         const KDateTime::Spec &timeSpec = KDateTime::Spec(),
                         bool inclusive = false );
@@ -666,13 +606,6 @@ public:
 
       @return the list of sorted, filtered KCal::Events occurring on @a date.
     */
-  private:
-    KCal::Event::List events(
-      const QDate &date,
-      const KDateTime::Spec &timeSpec = KDateTime::Spec(),
-      EventSortField sortField = EventSortUnsorted,
-      SortDirection sortDirection = SortDirectionAscending );
-  public:
     Akonadi::Item::List eventsFORAKONADI(
       const QDate &date,
       const KDateTime::Spec &timeSpec = KDateTime::Spec(),
@@ -688,11 +621,6 @@ public:
 
       @return the list of all unfiltered KCal::Events sorted as specified.
     */
-  protected:
-    virtual KCal::Event::List rawEvents(
-      EventSortField sortField = EventSortUnsorted,
-      SortDirection sortDirection = SortDirectionAscending ) = 0;
-  public:
     virtual Akonadi::Item::List rawEventsFORAKONADI(
       EventSortField sortField = EventSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending ) = 0;
@@ -707,9 +635,6 @@ public:
       @return the list of unfiltered KCal::Events occurring on the specified
       timestamp.
     */
-  protected:
-    virtual KCal::Event::List rawEventsForDate( const KDateTime &dt ) = 0;
-  public:
     virtual Akonadi::Item::List rawEventsForDateFORAKONADI( const KDateTime &dt ) = 0;
 
     /**
@@ -726,11 +651,6 @@ public:
       @return the list of unfiltered KCal::Events occurring within the specified
       date range.
     */
-  protected:
-    virtual KCal::Event::List rawEvents( const QDate &start, const QDate &end,
-                                   const KDateTime::Spec &timeSpec = KDateTime::Spec(),
-                                   bool inclusive = false ) = 0;
-  public:
     virtual Akonadi::Item::List rawEventsFORAKONADI( const QDate &start, const QDate &end,
                                            const KDateTime::Spec &timeSpec = KDateTime::Spec(),
                                            bool inclusive = false ) = 0;
@@ -749,12 +669,6 @@ public:
 
       @return the list of sorted, unfiltered KCal::Events occurring on @p date
     */
-  protected:
-    virtual KCal::Event::List rawEventsForDate(
-      const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(),
-      EventSortField sortField = EventSortUnsorted,
-      SortDirection sortDirection = SortDirectionAscending ) = 0;
-  public:
     virtual Akonadi::Item::List rawEventsForDateFORAKONADI(
       const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(),
       EventSortField sortField = EventSortUnsorted,
@@ -769,9 +683,6 @@ public:
       @return a pointer to the KCal::Event.
       A null pointer is returned if no such KCal::Event exists.
     */
-  protected:
-    virtual KCal::Event *event( const QString &uid ) = 0;
-  public:
     virtual Akonadi::Item eventFORAKONADI( const Akonadi::Item::Id &uid ) = 0;
 
   // KCal::Todo Specific Methods //
@@ -786,9 +697,6 @@ public:
 
       @see deleteTodo()
     */
-  protected:
-    virtual bool addTodo( KCal::Todo *todo ) = 0;
-  public:
     virtual bool addTodoFORAKONADI( const KCal::Todo::Ptr &todo ) = 0;
 
     /**
@@ -801,9 +709,6 @@ public:
 
       @see addTodo(), deleteAllTodos()
     */
-  protected:
-    virtual bool deleteTodo( KCal::Todo *todo ) = 0;
-  public:
     virtual bool deleteTodoFORAKONADI( const Akonadi::Item &todo ) = 0;
 
     /**
@@ -811,9 +716,6 @@ public:
       @deprecated: FORAKONADI
       @see deleteTodo()
     */
-  protected:
-    virtual void deleteAllTodos() = 0;
-  public:
     virtual void deleteAllTodosFORAKONADI() = 0;
 
     /**
@@ -826,11 +728,6 @@ public:
 
       @return a list of KCal::Todos sorted as specified.
     */
-  protected:
-    static KCal::Todo::List sortTodos( KCal::Todo::List *todoList,
-                                 TodoSortField sortField,
-                                 SortDirection sortDirection );
-  public:
     static Akonadi::Item::List sortTodosFORAKONADI( const Akonadi::Item::List &todoList,
                                  TodoSortField sortField,
                                  SortDirection sortDirection );
@@ -844,11 +741,6 @@ public:
 
       @return the list of all filtered KCal::Todos sorted as specified.
     */
-  protected:
-    virtual KCal::Todo::List todos(
-      TodoSortField sortField = TodoSortUnsorted,
-      SortDirection sortDirection = SortDirectionAscending );
-  public:
     virtual Akonadi::Item::List todosFORAKONADI(
       TodoSortField sortField = TodoSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
@@ -861,9 +753,6 @@ public:
 
       @return the list of filtered KCal::Todos due on the specified date.
     */
-  protected:
-    virtual KCal::Todo::List todos( const QDate &date );
-  public:
     virtual Akonadi::Item::List todosFORAKONADI( const QDate &date );
 
     /**
@@ -875,11 +764,6 @@ public:
 
       @return the list of all unfiltered KCal::Todos sorted as specified.
     */
-  protected:
-    virtual KCal::Todo::List rawTodos(
-      TodoSortField sortField = TodoSortUnsorted,
-      SortDirection sortDirection = SortDirectionAscending ) = 0;
-  public:
     virtual Akonadi::Item::List rawTodosFORAKONADI(
       TodoSortField sortField = TodoSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending ) = 0;
@@ -893,9 +777,6 @@ public:
 
       @return the list of unfiltered KCal::Todos due on the specified date.
     */
-  protected:
-    virtual KCal::Todo::List rawTodosForDate( const QDate &date ) = 0;
-  public:
     virtual Akonadi::Item::List rawTodosForDateFORAKONADI( const QDate &date ) = 0;
 
     /**
@@ -907,9 +788,6 @@ public:
       @return a pointer to the KCal::Todo.
       A null pointer is returned if no such KCal::Todo exists.
     */
-  protected:
-    virtual KCal::Todo *todo( const QString &uid ) = 0;
-  public:
     virtual Akonadi::Item todoFORAKONADI( const Akonadi::Item::Id &id ) = 0;
 
   // KCal::Journal Specific Methods //
@@ -924,9 +802,6 @@ public:
 
       @see deleteJournal()
     */
-  protected:
-    virtual bool addJournal( KCal::Journal *journal ) = 0;
-  public:
     virtual bool addJournalFORAKONADI( const KCal::Journal::Ptr &journal ) = 0;
 
     /**
@@ -939,9 +814,6 @@ public:
 
       @see addJournal(), deleteAllJournals()
     */
-  protected:
-    virtual bool deleteJournal( KCal::Journal *journal ) = 0;
-  public:
     virtual bool deleteJournalFORAKONADI( const Akonadi::Item &journal ) = 0;
 
     /**
@@ -949,9 +821,6 @@ public:
       @deprecated: FORAKONADI
       @see deleteJournal()
     */
-  protected:
-    virtual void deleteAllJournals() = 0;
-  public:
     virtual void deleteAllJournalsFORAKONADI() = 0;
 
     /**
@@ -964,11 +833,6 @@ public:
 
       @return a list of KCal::Journals sorted as specified.
     */
-  protected:
-    static KCal::Journal::List sortJournals( KCal::Journal::List *journalList,
-                                       JournalSortField sortField,
-                                       SortDirection sortDirection );
-  public:
     static Akonadi::Item::List sortJournalsFORAKONADI( const Akonadi::Item::List &journalList,
                                        JournalSortField sortField,
                                        SortDirection sortDirection );
@@ -982,11 +846,6 @@ public:
 
       @return the list of all filtered KCal::Journals sorted as specified.
     */
-  protected:
-    virtual KCal::Journal::List journals(
-      JournalSortField sortField = JournalSortUnsorted,
-      SortDirection sortDirection = SortDirectionAscending );
-  public:
     virtual Akonadi::Item::List journalsFORAKONADI(
       JournalSortField sortField = JournalSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
@@ -999,9 +858,6 @@ public:
 
       @return the list of filtered KCal::Journals for the specified date.
     */
-  protected:
-    virtual KCal::Journal::List journals( const QDate &date );
-  public:
     virtual Akonadi::Item::List journalsFORAKONADI( const QDate &date );
 
     /**
@@ -1013,11 +869,6 @@ public:
 
       @return the list of all unfiltered KCal::Journals sorted as specified.
     */
-  protected:
-    virtual KCal::Journal::List rawJournals(
-      JournalSortField sortField = JournalSortUnsorted,
-      SortDirection sortDirection = SortDirectionAscending ) = 0;
-  public:
     virtual Akonadi::Item::List rawJournalsFORAKONADI(
       JournalSortField sortField = JournalSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending ) = 0;
@@ -1030,9 +881,6 @@ public:
 
       @return the list of unfiltered KCal::Journals for the specified date.
     */
-  protected:
-    virtual KCal::Journal::List rawJournalsForDate( const QDate &date ) = 0;
-  public:
     virtual Akonadi::Item::List rawJournalsForDateFORAKONADI( const QDate &date ) = 0;
 
     /**
@@ -1044,9 +892,6 @@ public:
       @return a pointer to the KCal::Journal.
       A null pointer is returned if no such KCal::Journal exists.
     */
-  protected:
-    virtual KCal::Journal *journal( const QString &uid ) = 0;
-  public:
     virtual Akonadi::Item journalFORAKONADI( const Akonadi::Item::Id &id ) = 0;
 
     /**
@@ -1082,7 +927,6 @@ public:
       Relation setup.
       @deprecated: FORAKONADI
     */
-    virtual void setupRelations( KCal::Incidence *incidence );
     virtual void setupRelationsFORAKONADI( const Akonadi::Item& incidence );
 
     /**
@@ -1093,7 +937,6 @@ public:
 
       @deprecated: FORAKONADI
     */
-    virtual void removeRelations( KCal::Incidence *incidence );
     virtual void removeRelationsFORAKONADI( const Akonadi::Item &incidence );
 
   // Filter Specific Methods //

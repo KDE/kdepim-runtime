@@ -51,20 +51,8 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     void addCollection( const Akonadi::Collection &collection );
     void removeCollection( const Akonadi::Collection &collection );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-private:
-    bool beginChange( KCal::Incidence *incidence );
-public:
     bool beginChangeFORAKONADI( const Akonadi::Item &incidence );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-private:
-    bool endChange( KCal::Incidence *incidence );
-public:
     bool endChangeFORAKONADI( const Akonadi::Item &incidence );
 
     bool reload(); //TODO remove, atm abstract in Calendar
@@ -73,179 +61,50 @@ public:
 
     bool addAgent( const KUrl &mUrl );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    bool addIncidence( KCal::Incidence *incidence );
-  public:
     bool addIncidenceFORAKONADI( const KCal::Incidence::Ptr &incidence );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    bool deleteIncidence( KCal::Incidence *incidence );
-  public:
     bool deleteIncidenceFORAKONADI( const Akonadi::Item &incidence );
 
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    bool addEvent( KCal::Event *event );
-  public:
     bool addEventFORAKONADI( const KCal::Event::Ptr &event );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    bool deleteEvent( KCal::Event *event );
-  public:
     bool deleteEventFORAKONADI( const Akonadi::Item &event );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
     void deleteAllEventsFORAKONADI() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Event::List rawEvents( EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
-  public:
     Akonadi::Item ::List rawEventsFORAKONADI( EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Event::List rawEvents( const QDate &start, const QDate &end, const KDateTime::Spec &timeSpec = KDateTime::Spec(), bool inclusive = false );
-  public:
     Akonadi::Item ::List rawEventsFORAKONADI( const QDate &start, const QDate &end, const KDateTime::Spec &timeSpec = KDateTime::Spec(), bool inclusive = false );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Event::List rawEventsForDate( const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(), EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
-  public:
     Akonadi::Item ::List rawEventsForDateFORAKONADI( const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(), EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Event::List rawEventsForDate( const KDateTime &dt );
-  public:
     Akonadi::Item::List rawEventsForDateFORAKONADI( const KDateTime &dt );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Event *event( const QString &uid );
-  public:
     Akonadi::Item eventFORAKONADI( const Akonadi::Item::Id &id );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    bool addTodo( KCal::Todo *todo );
-  public:
     bool addTodoFORAKONADI( const KCal::Todo::Ptr &todo );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    bool deleteTodo( KCal::Todo *todo );
-  public:
     bool deleteTodoFORAKONADI( const Akonadi::Item &todo );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    void deleteAllTodos() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
-  public:
     void deleteAllTodosFORAKONADI() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Todo::List rawTodos( TodoSortField sortField = TodoSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
-  public:
     Akonadi::Item::List rawTodosFORAKONADI( TodoSortField sortField = TodoSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Todo::List rawTodosForDate( const QDate &date );
-  public:
     Akonadi::Item::List rawTodosForDateFORAKONADI( const QDate &date );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Todo *todo( const QString &uid );
-  public:
     Akonadi::Item todoFORAKONADI( const Akonadi::Item::Id &uid );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    bool addJournal( KCal::Journal *journal );
-  public:
     bool addJournalFORAKONADI( const KCal::Journal::Ptr &journal );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    bool deleteJournal( KCal::Journal *journal );
-  public:
     bool deleteJournalFORAKONADI( const Akonadi::Item &journal );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    void deleteAllJournals() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
-  public:
     void deleteAllJournalsFORAKONADI() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Journal::List rawJournals( JournalSortField sortField = JournalSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
-  public:
     Akonadi::Item::List rawJournalsFORAKONADI( JournalSortField sortField = JournalSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Journal::List rawJournalsForDate( const QDate &date );
-  public:
     Akonadi::Item ::List rawJournalsForDateFORAKONADI( const QDate &date );
 
-    /**
-     * @deprecated: FORAKONADI
-     */
-  private:
-    KCal::Journal *journal( const QString &uid );
-  public:
     Akonadi::Item journalFORAKONADI( const Akonadi::Item::Id &id );
 
     KCal::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
@@ -257,7 +116,6 @@ public:
     /**
      * @deprecated: FORAKONADI
      */
-    void deleteIncidenceProxyMethod( KCal::Incidence *incidence ) { deleteIncidence(incidence); }
     void deleteIncidenceProxyMethodFORAKONADI( const Akonadi::Item &incidence ) { deleteIncidenceFORAKONADI(incidence); }
 
   Q_SIGNALS:
