@@ -85,8 +85,8 @@ QVariant QuotaColorProxyModel::data( const QModelIndex & index, int role) const
     if ( collection.isValid() && collection.hasAttribute<CollectionQuotaAttribute>() ) {
       CollectionQuotaAttribute *quota = collection.attribute<CollectionQuotaAttribute>();
 
-      if ( quota->currentValue() > -1 && quota->maxValue() > 0 ) {
-        qreal percentage = ( 100.0 * quota->currentValue() ) / quota->maxValue();
+      if ( quota->currentValue() > -1 && quota->maximumValue() > 0 ) {
+        qreal percentage = ( 100.0 * quota->currentValue() ) / quota->maximumValue();
 
         if ( percentage >= d->mThreshold ) {
           return d->mColor;
