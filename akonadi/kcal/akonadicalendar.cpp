@@ -555,3 +555,10 @@ Item::List AkonadiCalendar::findChildren( const Item &parent ) const {
 bool AkonadiCalendar::isChild( const Item &parent, const Item &child ) const {
   return d->m_childToParent.value( child.id() ).id() == parent.id();
 }
+
+Akonadi::Item::Id AkonadiCalendar::itemIdForIncidenceUid(const QString &uid) const {
+  //AKONADI_PORT_DISABLED
+  //TODO implement this method. it's used in e.g. KOAlarmClient to migrate
+  // previous remembered incidences to Akonadi Item's.
+  return -1;
+}
