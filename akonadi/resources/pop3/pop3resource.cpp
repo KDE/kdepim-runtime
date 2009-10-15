@@ -22,7 +22,6 @@
 #include "settingsadaptor.h"
 
 #include <Akonadi/ItemCreateJob>
-#include <KMime/KMimeUtil>
 
 #include <KLocalizedString>
 #include <KIO/Scheduler>
