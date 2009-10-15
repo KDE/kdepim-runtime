@@ -193,10 +193,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
     bool deleteIncidence( const Akonadi::Item &item )
     {
       kDebug();
-      Incidence::Ptr incidence = Akonadi::incidence( item );
-      if ( !incidence )
-        return false;
-      m_changes.removeAll( incidence->uid() ); //abort changes to this incidence cause we will just delete it
+      m_changes.removeAll( item.id() ); //abort changes to this incidence cause we will just delete it
       Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( item, m_session );
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( deleteDone( KJob* ) ) );
       return true;
@@ -211,7 +208,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
     Akonadi::Session *m_session;
     QHash<Akonadi::Entity::Id, AkonadiCalendarCollection*> m_collectionMap;
     QHash<Akonadi::Item::Id, Akonadi::Item> m_itemMap; // akonadi id to items
-    QList<QString> m_changes; //list of Incidence->uid() that are modified atm
+    QList<Akonadi::Item::Id> m_changes; //list of item ids that are modified atm
     KCal::Incidence::Ptr m_incidenceBeingChanged; // clone of the incidence currently being modified, for rollback and to check if something actually changed
 
     //CalFormat *mFormat;                    // calendar format
@@ -309,12 +306,12 @@ class KOrg::AkonadiCalendar::Private : public QObject
         Q_ASSERT( item.hasPayload<KCal::Incidence::Ptr>() );
         const KCal::Incidence::Ptr incidence = item.payload<KCal::Incidence::Ptr>();
         Q_ASSERT( incidence );
-        const Akonadi::Item::Id uid = item.id();
-        //kDebug()<<"Old storageCollectionId="<<m_itemMap[uid]->m_item.storageCollectionId();
-        kDebug() << "Item modify done uid=" << uid << "storageCollectionId=" << item.storageCollectionId();
-        Q_ASSERT( m_itemMap.contains(uid) );
-        Q_ASSERT( item.storageCollectionId() == m_itemMap.value(uid).storageCollectionId() ); // there was once a bug that resulted in items forget there collectionId...
-        m_itemMap.insert( uid, item );
+        const Akonadi::Item::Id id = item.id();
+        //kDebug()<<"Old storageCollectionId="<<m_itemMap[id]->m_item.storageCollectionId();
+        kDebug() << "Item modify done item id=" << id << "storageCollectionId=" << item.storageCollectionId();
+        Q_ASSERT( m_itemMap.contains(id) );
+        Q_ASSERT( item.storageCollectionId() == m_itemMap.value(id).storageCollectionId() ); // there was once a bug that resulted in items forget there collectionId...
+        m_itemMap.insert( id, item );
         q->notifyIncidenceChanged( item );
         q->setModified( true );
         emit q->calendarChanged();
@@ -325,13 +322,13 @@ class KOrg::AkonadiCalendar::Private : public QObject
     {
         assertInvariants();
         Q_ASSERT( item.isValid() );
-        Q_ASSERT( item.hasPayload<KCal::Incidence::Ptr>() );
-        const KCal::Incidence::Ptr incidence = item.payload<KCal::Incidence::Ptr>();
-        Q_ASSERT( incidence );
-        const Akonadi::Item::Id uid = item.id();
-        kDebug() << "Item changed uid=" << uid << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
-        Q_ASSERT( m_itemMap.contains(uid) );
-        m_itemMap.insert( uid, item );
+        const Akonadi::Item::Id id = item.id();
+        const Incidence::ConstPtr incidence = Akonadi::incidence( item );
+        if ( !incidence )
+          return;
+        kDebug() << "Item changed item id=" << id << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
+        Q_ASSERT( m_itemMap.contains(id) );
+        m_itemMap.insert( id, item );
         q->notifyIncidenceChanged( item );
         q->setModified( true );
         emit q->calendarChanged();
@@ -355,12 +352,12 @@ class KOrg::AkonadiCalendar::Private : public QObject
             if ( !m_collectionMap.contains( item.parentCollection().id() ) )  // collection got deselected again in the meantime
               continue;
             Q_ASSERT( item.isValid() );
-            if ( !item.hasPayload<KCal::Incidence::Ptr>() )
+            if ( !Akonadi::hasIncidence( item ) )
               continue;
             const KCal::Incidence::Ptr incidence = item.payload<KCal::Incidence::Ptr>();
             kDebug() << "Add akonadi id=" << item.id() << "uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
-            const Akonadi::Item::Id uid = item.id();
-            Q_ASSERT( ! m_itemMap.contains( uid ) ); //uh, 2 incidences with the same uid?
+            const Akonadi::Item::Id id = item.id();
+            Q_ASSERT( ! m_itemMap.contains( id ) ); //uh, 2 incidences with the same item id?
             if( const Event::Ptr e = dynamic_pointer_cast<Event>( incidence ) ) {
               if ( !e->recurs() && !e->isMultiDay() ) {
                 m_itemsForDate.insert( e->dtStart().date().toString(), item );
@@ -376,7 +373,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
               continue;
             }
     
-            m_itemMap.insert( uid, item );
+            m_itemMap.insert( id, item );
             m_itemsForDate.insert( incidence->dtStart().date().toString(), item );
             assertInvariants();
             incidence->registerObserver( q );

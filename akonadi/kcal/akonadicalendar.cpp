@@ -124,8 +124,8 @@ bool AkonadiCalendar::beginChange( const Item &item )
   const Incidence::Ptr incidence = Akonadi::incidence( item );
   Q_ASSERT( incidence );
 
-  Q_ASSERT( ! d->m_changes.contains( incidence->uid() ) ); //no nested changes, right?
-  d->m_changes << incidence->uid();
+  Q_ASSERT( ! d->m_changes.contains( item.id() ) ); //no nested changes, right?
+  d->m_changes.push_back( item.id() );
   d->m_incidenceBeingChanged = KCal::Incidence::Ptr( incidence->clone() );
   return true;
 }
@@ -140,19 +140,18 @@ bool AkonadiCalendar::endChange( const Item &item )
   const Incidence::Ptr incidence = Akonadi::incidence( item );
   Q_ASSERT( incidence );
 
-  const bool isModification = d->m_changes.removeAll( incidence->uid() ) >= 1;
-  const QString uid = incidence->uid();
+  const bool isModification = d->m_changes.removeAll( item.id() ) >= 1;
 
   if( ! CalendarBase::endChange( item ) ) {
     // should not happen, but well...
-    kDebug() << "Abort modify uid=" << uid << "summary=" << incidence->summary() << "type=" << incidence->type();
+    kDebug() << "Abort modify uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
     return false;
   }
 
   if( ! isModification || !d->m_incidenceBeingChanged ) {
     // only if beginChange() with the incidence was called then this is a modification else it
     // is e.g. a new event/todo/journal that was not added yet or an existing one got deleted.
-    kDebug() << "Skipping modify uid=" << uid << "summary=" << incidence->summary() << "type=" << incidence->type();
+    kDebug() << "Skipping modify uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
     return false;
   }
 
@@ -167,7 +166,7 @@ bool AkonadiCalendar::endChange( const Item &item )
   if ( v.compare( incidence.get(), incidencePtr.get() ) )
     return true;
 
-  kDebug() << "modify uid=" << uid << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
+  kDebug() << "modify uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
   Akonadi::ItemModifyJob *job = new Akonadi::ItemModifyJob( item, d->m_session );
 
   connect( job, SIGNAL(result( KJob*)), d, SLOT(modifyDone(KJob*)) );
