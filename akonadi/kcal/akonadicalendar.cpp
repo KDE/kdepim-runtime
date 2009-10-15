@@ -251,10 +251,6 @@ void AkonadiCalendar::incidenceUpdated( IncidenceBase *incidence )
   incidence->setLastModified( nowUTC );
   KCal::Incidence* i = dynamic_cast<KCal::Incidence*>( incidence );
   Q_ASSERT( i );
-  Q_ASSERT( d->m_uidToItemId.contains( i->uid() ) );
-  Akonadi::Item item = d->itemForUid( i->uid() );
-  Q_ASSERT( item.isValid() );
-  kDebug() << "Updated uid=" << i->uid() << "summary=" << i->summary() << "type=" << i->type() << "storageCollectionId=" << item.storageCollectionId();
 }
 
 bool AkonadiCalendar::addEvent( const Event::Ptr &event )

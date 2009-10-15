@@ -158,7 +158,6 @@ class KOrg::AkonadiCalendar::Private : public QObject
       const Akonadi::Collection collection = dlg.selectedCollection();
       Q_ASSERT( collection.isValid() );
       //Q_ASSERT( m_collectionMap.contains( collection.id() ) ); //we can add items to collections we don't show yet
-      Q_ASSERT( ! m_uidToItemId.contains( incidence->uid() ) ); //but we can not have the same incidence in 2 collections
 
       Akonadi::Item item;
       //the sub-mimetype of text/calendar as defined at kdepim/akonadi/kcal/kcalmimetypevisitor.cpp
@@ -181,7 +180,6 @@ class KOrg::AkonadiCalendar::Private : public QObject
       const Akonadi::Collection collection = dlg.selectedCollection();
       Q_ASSERT( collection.isValid() );
       //Q_ASSERT( m_collectionMap.contains( collection.id() ) ); //we can add items to collections we don't show yet
-      Q_ASSERT( ! m_uidToItemId.contains( incidence->uid() ) ); //but we can not have the same incidence in 2 collections //PENDING(AKONADI_PORT) remove this assert (and the map)
 
       Akonadi::Item item;
       item.setPayload( incidence );
@@ -189,18 +187,6 @@ class KOrg::AkonadiCalendar::Private : public QObject
       item.setMimeType( QString::fromLatin1("application/x-vnd.akonadi.calendar.%1").arg(QLatin1String(incidence->type().toLower())) ); //PENDING(AKONADI_PORT) shouldn't be hardcoded?
       Akonadi::ItemCreateJob *job = new Akonadi::ItemCreateJob( item, collection, m_session );
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( createDone( KJob* ) ) );
-      return true;
-    }
-
-    bool deleteIncidence( Incidence *incidence )
-    {
-      kDebug();
-      m_changes.removeAll( incidence->uid() ); //abort changes to this incidence cause we will just delete it
-      Q_ASSERT( m_uidToItemId.contains( incidence->uid() ) );
-      Akonadi::Item item = itemForUid( incidence->uid() );
-      Q_ASSERT( item.isValid() );
-      Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( item, m_session );
-      connect( job, SIGNAL( result( KJob* ) ), this, SLOT( deleteDone( KJob* ) ) );
       return true;
     }
 
@@ -216,31 +202,8 @@ class KOrg::AkonadiCalendar::Private : public QObject
       return true;
     }
 
-    Akonadi::Item itemForUid( const QString& uid ) const
-    {
-      if ( m_uidToItemId.contains( uid ) ) {
-        const Akonadi::Item::Id id = m_uidToItemId.value( uid );
-        Q_ASSERT( m_itemMap.contains( id ) );
-        return m_itemMap.value( id );
-      }
-      return Akonadi::Item();
-    }
-
-    void removeIncidenceFromMultiHashByUID(const Incidence::Ptr &incidence, const QString &key)
-    {
-      const QList<KCal::Incidence::Ptr> values = m_incidenceForDate.values( key );
-      QListIterator<KCal::Incidence::Ptr> it(values);
-      while( it.hasNext() ) {
-        KCal::Incidence::Ptr inc = it.next();
-        if( inc->uid() == incidence->uid() ) {
-          m_incidenceForDate.remove( key, inc );
-        }
-      }
-    }
-
     void assertInvariants() const
     {
-      Q_ASSERT(  m_itemMap.size() == m_uidToItemId.size() );
     }
 
     AkonadiCalendar *q;
@@ -248,13 +211,11 @@ class KOrg::AkonadiCalendar::Private : public QObject
     Akonadi::Session *m_session;
     QHash<Akonadi::Entity::Id, AkonadiCalendarCollection*> m_collectionMap;
     QHash<Akonadi::Item::Id, Akonadi::Item> m_itemMap; // akonadi id to items
-    QMap<QString, Akonadi::Item::Id> m_uidToItemId;
     QList<QString> m_changes; //list of Incidence->uid() that are modified atm
     KCal::Incidence::Ptr m_incidenceBeingChanged; // clone of the incidence currently being modified, for rollback and to check if something actually changed
 
     //CalFormat *mFormat;                    // calendar format
     //QHash<QString, Event *>mEvents;        // hash on uids of all Events
-    QMultiHash<QString, KCal::Incidence::Ptr> m_incidenceForDate;// on start dates of non-recurring, single-day Incidences
     QMultiHash<QString, Akonadi::Item> m_itemsForDate;// on start dates of non-recurring, single-day Incidences
 
     //QMultiHash<QString, Event *>mEventsForDate;// on start dates of non-recurring, single-day Events
@@ -400,19 +361,15 @@ class KOrg::AkonadiCalendar::Private : public QObject
             kDebug() << "Add akonadi id=" << item.id() << "uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
             const Akonadi::Item::Id uid = item.id();
             Q_ASSERT( ! m_itemMap.contains( uid ) ); //uh, 2 incidences with the same uid?
-            Q_ASSERT( ! m_uidToItemId.contains( incidence->uid() ) ); // If this triggers, we have the same items in different collections (violates equal map size assertion in assertInvariants())
             if( const Event::Ptr e = dynamic_pointer_cast<Event>( incidence ) ) {
               if ( !e->recurs() && !e->isMultiDay() ) {
-                m_incidenceForDate.insert( e->dtStart().date().toString(), incidence );
                 m_itemsForDate.insert( e->dtStart().date().toString(), item );
               }
             } else if( const Todo::Ptr t = dynamic_pointer_cast<Todo>( incidence ) ) {
               if ( t->hasDueDate() ) {
-                m_incidenceForDate.insert( t->dtDue().date().toString(), incidence );
                 m_itemsForDate.insert( t->dtDue().date().toString(), item );
               }
             } else if( const Journal::Ptr j = dynamic_pointer_cast<Journal>( incidence ) ) {
-                m_incidenceForDate.insert( j->dtStart().date().toString(), incidence );
                 m_itemsForDate.insert( j->dtStart().date().toString(), item );
             } else {
               Q_ASSERT(false);
@@ -420,9 +377,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
             }
     
             m_itemMap.insert( uid, item );
-            m_incidenceForDate.insert( incidence->dtStart().date().toString(), incidence );
             m_itemsForDate.insert( incidence->dtStart().date().toString(), item );
-            m_uidToItemId.insert( incidence->uid(), uid );
             assertInvariants();
             incidence->registerObserver( q );
             q->notifyIncidenceAdded( item );
@@ -454,16 +409,13 @@ class KOrg::AkonadiCalendar::Private : public QObject
 
             if( const Event::Ptr e = dynamic_pointer_cast<Event>(incidence) ) {
             if ( !e->recurs() ) {
-                removeIncidenceFromMultiHashByUID( incidence, e->dtStart().date().toString() );
                 m_itemsForDate.remove( e->dtStart().date().toString(), item );
             }
             } else if( const Todo::Ptr t = dynamic_pointer_cast<Todo>( incidence ) ) {
               if ( t->hasDueDate() ) {
-                removeIncidenceFromMultiHashByUID( incidence, t->dtDue().date().toString() );
                 m_itemsForDate.remove( t->dtDue().date().toString(), item );
               }
             } else if( const Journal::Ptr j = dynamic_pointer_cast<Journal>( incidence ) ) {
-              removeIncidenceFromMultiHashByUID( incidence, j->dtStart().date().toString() );
               m_itemsForDate.remove( j->dtStart().date().toString(), item );
             } else {
               Q_ASSERT(false);
@@ -472,7 +424,6 @@ class KOrg::AkonadiCalendar::Private : public QObject
 
             //incidence->unregisterObserver( q );
             q->notifyIncidenceDeleted( item );
-            m_uidToItemId.remove( incidence->uid() );
         }
         q->setModified( true );
         emit q->calendarChanged();
