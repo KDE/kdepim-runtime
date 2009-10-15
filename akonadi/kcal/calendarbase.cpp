@@ -61,15 +61,15 @@ namespace {
     explicit AddVisitor( CalendarBase* cal, const Incidence::Ptr& inc ) : mCalendar( cal ), mInc( inc ) {}
 
     /* reimp */ bool visit( Event * ) {
-      return mCalendar->addEventFORAKONADI( static_pointer_cast<Event>( mInc ) );
+      return mCalendar->addEvent( static_pointer_cast<Event>( mInc ) );
     }
 
     /* reimp */ bool visit( Todo * ) {
-      return mCalendar->addTodoFORAKONADI( static_pointer_cast<Todo>( mInc ) );
+      return mCalendar->addTodo( static_pointer_cast<Todo>( mInc ) );
     }
 
     /* reimp */ bool visit( Journal * ) {
-      return mCalendar->addJournalFORAKONADI( static_pointer_cast<Journal>( mInc ) );
+      return mCalendar->addJournal( static_pointer_cast<Journal>( mInc ) );
     }
   };
 
@@ -80,15 +80,15 @@ namespace {
     explicit DeleteVisitor( CalendarBase* cal, const Item& item ) : mCalendar( cal ), mItem( item ) {}
 
     /* reimp */ bool visit( Event * ) {
-      return mCalendar->deleteEventFORAKONADI( mItem );
+      return mCalendar->deleteEvent( mItem );
     }
 
     /* reimp */ bool visit( Todo * ) {
-      return mCalendar->deleteTodoFORAKONADI( mItem );
+      return mCalendar->deleteTodo( mItem );
     }
 
     /* reimp */ bool visit( Journal * ) {
-      return mCalendar->deleteJournalFORAKONADI( mItem );
+      return mCalendar->deleteJournal( mItem );
     }
   };
 
@@ -269,17 +269,17 @@ void CalendarBase::shiftTimes( const KDateTime::Spec &oldSpec,
 {
   setTimeSpec( newSpec );
   int i, end;
-  Item::List ev = eventsFORAKONADI();
+  Item::List ev = events();
   for ( i = 0, end = ev.count();  i < end;  ++i ) {
     Akonadi::event( ev[i] )->shiftTimes( oldSpec, newSpec );
   }
 
-  Item::List to = todosFORAKONADI();
+  Item::List to = todos();
   for ( i = 0, end = to.count();  i < end;  ++i ) {
     Akonadi::todo( to[i] )->shiftTimes( oldSpec, newSpec );
   }
 
-  Item::List jo = journalsFORAKONADI();
+  Item::List jo = journals();
   for ( i = 0, end = jo.count();  i < end;  ++i ) {
     Akonadi::journal( jo[i] )->shiftTimes( oldSpec, newSpec );
   }
@@ -301,7 +301,7 @@ CalFilter *CalendarBase::filter()
 
 QStringList CalendarBase::categories()
 {
-  Item::List rawInc( rawIncidencesFORAKONADI() );
+  Item::List rawInc( rawIncidences() );
   QStringList cats, thisCats;
   // @TODO: For now just iterate over all incidences. In the future,
   // the list of categories should be built when reading the file.
@@ -317,22 +317,22 @@ QStringList CalendarBase::categories()
   return cats;
 }
 
-Item::List CalendarBase::incidencesFORAKONADI( const QDate &date )
+Item::List CalendarBase::incidences( const QDate &date )
 {
-  return mergeIncidenceListFORAKONADI( eventsFORAKONADI( date ), todosFORAKONADI( date ), journalsFORAKONADI( date ) );
+  return mergeIncidenceList( events( date ), todos( date ), journals( date ) );
 }
 
-Item::List CalendarBase::incidencesFORAKONADI()
+Item::List CalendarBase::incidences()
 {
-  return mergeIncidenceListFORAKONADI( eventsFORAKONADI(), todosFORAKONADI(), journalsFORAKONADI() );
+  return mergeIncidenceList( events(), todos(), journals() );
 }
 
-Item::List CalendarBase::rawIncidencesFORAKONADI()
+Item::List CalendarBase::rawIncidences()
 {
-  return mergeIncidenceListFORAKONADI( rawEventsFORAKONADI(), rawTodosFORAKONADI(), rawJournalsFORAKONADI() );
+  return mergeIncidenceList( rawEvents(), rawTodos(), rawJournals() );
 }
 
-Item::List CalendarBase::sortEventsFORAKONADI( const Item::List &eventList_,
+Item::List CalendarBase::sortEvents( const Item::List &eventList_,
                                   EventSortField sortField,
                                   SortDirection sortDirection )
 {
@@ -352,7 +352,7 @@ Item::List CalendarBase::sortEventsFORAKONADI( const Item::List &eventList_,
     break;
 
   case EventSortStartDate:
-    alphaList = sortEventsFORAKONADI( eventList, EventSortSummary, sortDirection );
+    alphaList = sortEvents( eventList, EventSortSummary, sortDirection );
     for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit) {
       Event::Ptr e = Akonadi::event( *eit );
       Q_ASSERT( e );
@@ -385,7 +385,7 @@ Item::List CalendarBase::sortEventsFORAKONADI( const Item::List &eventList_,
     break;
 
   case EventSortEndDate:
-    alphaList = sortEventsFORAKONADI( eventList, EventSortSummary, sortDirection );
+    alphaList = sortEvents( eventList, EventSortSummary, sortDirection );
     for ( eit = alphaList.begin(); eit != alphaList.end(); ++eit ) {
       Event::Ptr e = Akonadi::event( *eit );
       Q_ASSERT( e );
@@ -442,47 +442,47 @@ Item::List CalendarBase::sortEventsFORAKONADI( const Item::List &eventList_,
   return eventListSorted;
 }
 
-Item::List CalendarBase::eventsFORAKONADI( const QDate &date,
+Item::List CalendarBase::events( const QDate &date,
                               const KDateTime::Spec &timeSpec,
                               EventSortField sortField,
                               SortDirection sortDirection )
 {
-  const Item::List el = rawEventsForDateFORAKONADI( date, timeSpec, sortField, sortDirection );
+  const Item::List el = rawEventsForDate( date, timeSpec, sortField, sortDirection );
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
 
-Item::List CalendarBase::eventsFORAKONADI( const KDateTime &dt )
+Item::List CalendarBase::events( const KDateTime &dt )
 {
-  const Item::List el = rawEventsForDateFORAKONADI( dt );
+  const Item::List el = rawEventsForDate( dt );
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
 
-Item::List CalendarBase::eventsFORAKONADI( const QDate &start, const QDate &end,
+Item::List CalendarBase::events( const QDate &start, const QDate &end,
                               const KDateTime::Spec &timeSpec,
                               bool inclusive )
 {
-  const Item::List el = rawEventsFORAKONADI( start, end, timeSpec, inclusive );
+  const Item::List el = rawEvents( start, end, timeSpec, inclusive );
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
-Item::List CalendarBase::eventsFORAKONADI( EventSortField sortField,
+Item::List CalendarBase::events( EventSortField sortField,
                               SortDirection sortDirection )
 {
-  const Item::List el = rawEventsFORAKONADI( sortField, sortDirection );
+  const Item::List el = rawEvents( sortField, sortDirection );
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
-bool CalendarBase::addIncidenceFORAKONADI( const Incidence::Ptr &incidence )
+bool CalendarBase::addIncidence( const Incidence::Ptr &incidence )
 {
   AddVisitor v( this, incidence );
   return incidence->accept( v );
 }
 
-bool CalendarBase::deleteIncidenceFORAKONADI( const Item &item )
+bool CalendarBase::deleteIncidence( const Item &item )
 {
-  if ( !beginChangeFORAKONADI( item ) )
+  if ( !beginChange( item ) )
     return false;
   const Incidence::Ptr incidence = Akonadi::incidence( item );
   bool result = false;
@@ -490,11 +490,11 @@ bool CalendarBase::deleteIncidenceFORAKONADI( const Item &item )
     DeleteVisitor v( this, item );
     result = incidence->accept( v );
   }
-  endChangeFORAKONADI( item );
+  endChange( item );
   return result;
 }
 
-Incidence::Ptr CalendarBase::dissociateOccurrenceFORAKONADI( const Item &incidence,
+Incidence::Ptr CalendarBase::dissociateOccurrence( const Item &incidence,
                                            const QDate &date,
                                            const KDateTime::Spec &spec,
                                            bool single )
@@ -572,27 +572,27 @@ Incidence::Ptr CalendarBase::dissociateOccurrenceFORAKONADI( const Item &inciden
 #endif // AKONADI_PORT_DISABLED
 }
 
-Item CalendarBase::incidenceFORAKONADI( const Item::Id &uid )
+Item CalendarBase::incidence( const Item::Id &uid )
 {
-  Item i = eventFORAKONADI( uid );
+  Item i = event( uid );
   if ( i.isValid() ) {
     return i;
   }
 
-  i = todoFORAKONADI( uid );
+  i = todo( uid );
   if ( i.isValid() ) {
     return i;
   }
 
-  i = journalFORAKONADI( uid );
+  i = journal( uid );
   return i;
 }
 
 
-Item::List CalendarBase::incidencesFromSchedulingIDFORAKONADI( const QString &sid )
+Item::List CalendarBase::incidencesFromSchedulingID( const QString &sid )
 {
   Item::List result;
-  const Item::List incidences = rawIncidencesFORAKONADI();
+  const Item::List incidences = rawIncidences();
   Item::List::const_iterator it = incidences.begin();
   for ( ; it != incidences.end(); ++it ) {
     if ( Akonadi::incidence(*it)->schedulingID() == sid ) {
@@ -602,9 +602,9 @@ Item::List CalendarBase::incidencesFromSchedulingIDFORAKONADI( const QString &si
   return result;
 }
 
-Item CalendarBase::incidenceFromSchedulingIDFORAKONADI( const QString &UID )
+Item CalendarBase::incidenceFromSchedulingID( const QString &UID )
 {
-  const Item::List incidences = rawIncidencesFORAKONADI();
+  const Item::List incidences = rawIncidences();
   Item::List::const_iterator it = incidences.begin();
   for ( ; it != incidences.end(); ++it ) {
     if ( Akonadi::incidence(*it)->schedulingID() == UID ) {
@@ -616,7 +616,7 @@ Item CalendarBase::incidenceFromSchedulingIDFORAKONADI( const QString &UID )
   return Item();
 }
 
-Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
+Item::List CalendarBase::sortTodos( const Item::List &todoList_,
                                 TodoSortField sortField,
                                 SortDirection sortDirection )
 {
@@ -638,7 +638,7 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
     break;
 
   case TodoSortStartDate:
-    alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
+    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
     for ( eit = alphaList.constBegin(); eit != alphaList.constEnd(); ++eit ) {
       const Todo::Ptr e = Akonadi::todo( *eit );
       if ( e->hasStartDate() ) {
@@ -671,7 +671,7 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
     break;
 
   case TodoSortDueDate:
-    alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
+    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
     for ( eit = alphaList.constBegin(); eit != alphaList.constEnd(); ++eit ) {
       const Todo::Ptr e = Akonadi::todo( *eit );
       if ( e->hasDueDate() ) {
@@ -704,7 +704,7 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
     break;
 
   case TodoSortPriority:
-    alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
+    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
     for ( eit = alphaList.constBegin(); eit != alphaList.constEnd(); ++eit ) {
       const Todo::Ptr e = Akonadi::todo( *eit );
       sortIt = todoListSorted.begin();
@@ -724,7 +724,7 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
     break;
 
   case TodoSortPercentComplete:
-    alphaList = sortTodosFORAKONADI( todoList, TodoSortSummary, sortDirection );
+    alphaList = sortTodos( todoList, TodoSortSummary, sortDirection );
     for ( eit = alphaList.constBegin(); eit != alphaList.constEnd(); ++eit ) {
       const Todo::Ptr e = Akonadi::todo( *eit );
       sortIt = todoListSorted.begin();
@@ -766,20 +766,20 @@ Item::List CalendarBase::sortTodosFORAKONADI( const Item::List &todoList_,
   return todoListSorted;
 }
 
-Item::List CalendarBase::todosFORAKONADI( TodoSortField sortField,
+Item::List CalendarBase::todos( TodoSortField sortField,
                             SortDirection sortDirection )
 {
-  const Item::List tl = rawTodosFORAKONADI( sortField, sortDirection );
+  const Item::List tl = rawTodos( sortField, sortDirection );
   return Akonadi::applyCalFilter( tl, d->mFilter );
 }
 
-Item::List CalendarBase::todosFORAKONADI( const QDate &date )
+Item::List CalendarBase::todos( const QDate &date )
 {
-  Item::List el = rawTodosForDateFORAKONADI( date );
+  Item::List el = rawTodosForDate( date );
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
-Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList_,
+Item::List CalendarBase::sortJournals( const Item::List &journalList_,
                                       JournalSortField sortField,
                                       SortDirection sortDirection )
 {
@@ -835,16 +835,16 @@ Item::List CalendarBase::sortJournalsFORAKONADI( const Item::List &journalList_,
   return journalListSorted;
 }
 
-Item::List CalendarBase::journalsFORAKONADI( JournalSortField sortField,
+Item::List CalendarBase::journals( JournalSortField sortField,
                                   SortDirection sortDirection )
 {
-  const Item::List jl = rawJournalsFORAKONADI( sortField, sortDirection );
+  const Item::List jl = rawJournals( sortField, sortDirection );
   return Akonadi::applyCalFilter( jl, d->mFilter );
 }
 
-Item::List CalendarBase::journalsFORAKONADI( const QDate &date )
+Item::List CalendarBase::journals( const QDate &date )
 {
-  Item::List el = rawJournalsForDateFORAKONADI( date );
+  Item::List el = rawJournalsForDate( date );
   return Akonadi::applyCalFilter( el, d->mFilter );
 }
 
@@ -859,7 +859,7 @@ void CalendarBase::endBatchAdding()
 }
 
 
-void CalendarBase::setupRelationsFORAKONADI( const Item &forincidence )
+void CalendarBase::setupRelations( const Item &forincidence )
 {
 #ifdef AKONADI_PORT_DISABLED
   if ( !forincidence ) {
@@ -899,7 +899,7 @@ void CalendarBase::setupRelationsFORAKONADI( const Item &forincidence )
 }
 
 // If a to-do with sub-to-dos is deleted, move it's sub-to-dos to the orphan list
-void CalendarBase::removeRelationsFORAKONADI( const Item &incidence )
+void CalendarBase::removeRelations( const Item &incidence )
 {
 #ifdef AKONADI_PORT_DISABLED
   if ( !incidence ) {
@@ -985,17 +985,17 @@ void CalendarBase::CalendarObserver::calendarModified( bool modified, CalendarBa
   Q_UNUSED( calendar );
 }
 
-void CalendarBase::CalendarObserver::calendarIncidenceAddedFORAKONADI( const Item &incidence )
+void CalendarBase::CalendarObserver::calendarIncidenceAdded( const Item &incidence )
 {
   Q_UNUSED( incidence );
 }
 
-void CalendarBase::CalendarObserver::calendarIncidenceChangedFORAKONADI( const Item &incidence )
+void CalendarBase::CalendarObserver::calendarIncidenceChanged( const Item &incidence )
 {
   Q_UNUSED( incidence );
 }
 
-void CalendarBase::CalendarObserver::calendarIncidenceDeletedFORAKONADI( const Item &incidence )
+void CalendarBase::CalendarObserver::calendarIncidenceDeleted( const Item &incidence )
 {
   Q_UNUSED( incidence );
 }
@@ -1054,37 +1054,37 @@ void CalendarBase::doSetTimeSpec( const KDateTime::Spec &timeSpec )
 }
 
 
-void CalendarBase::notifyIncidenceAddedFORAKONADI( const Item &i )
+void CalendarBase::notifyIncidenceAdded( const Item &i )
 {
   if ( !d->mObserversEnabled ) {
     return;
   }
 
   foreach ( CalendarObserver *observer, d->mObservers ) {
-    observer->calendarIncidenceAddedFORAKONADI( i );
+    observer->calendarIncidenceAdded( i );
   }
 }
 
-void CalendarBase::notifyIncidenceChangedFORAKONADI( const Item &i )
+void CalendarBase::notifyIncidenceChanged( const Item &i )
 {
   if ( !d->mObserversEnabled ) {
     return;
   }
 
   foreach ( CalendarObserver *observer, d->mObservers ) {
-    observer->calendarIncidenceChangedFORAKONADI( i );
+    observer->calendarIncidenceChanged( i );
   }
 }
 
 
-void CalendarBase::notifyIncidenceDeletedFORAKONADI( const Item &i )
+void CalendarBase::notifyIncidenceDeleted( const Item &i )
 {
   if ( !d->mObserversEnabled ) {
     return;
   }
 
   foreach ( CalendarObserver *observer, d->mObservers ) {
-    observer->calendarIncidenceDeletedFORAKONADI( i );
+    observer->calendarIncidenceDeleted( i );
   }
 }
 
@@ -1103,7 +1103,7 @@ QString CalendarBase::productId() const
   return d->mProductId;
 }
 
-Item::List CalendarBase::mergeIncidenceListFORAKONADI( const Item::List &events,
+Item::List CalendarBase::mergeIncidenceList( const Item::List &events,
                                               const Item::List &todos,
                                               const Item::List &journals )
 {
@@ -1125,13 +1125,13 @@ Item::List CalendarBase::mergeIncidenceListFORAKONADI( const Item::List &events,
   return incidences;
 }
 
-bool CalendarBase::beginChangeFORAKONADI( const Item &incidence )
+bool CalendarBase::beginChange( const Item &incidence )
 {
   Q_UNUSED( incidence );
   return true;
 }
 
-bool CalendarBase::endChangeFORAKONADI( const Item &incidence )
+bool CalendarBase::endChange( const Item &incidence )
 {
   Q_UNUSED( incidence );
   return true;
@@ -1142,7 +1142,7 @@ void CalendarBase::setObserversEnabled( bool enabled )
   d->mObserversEnabled = enabled;
 }
 
-void CalendarBase::appendAlarmsFORAKONADI( Alarm::List &alarms, const Item &item,
+void CalendarBase::appendAlarms( Alarm::List &alarms, const Item &item,
                              const KDateTime &from, const KDateTime &to )
 {
   const Incidence::Ptr incidence = Akonadi::incidence( item );
@@ -1162,7 +1162,7 @@ void CalendarBase::appendAlarmsFORAKONADI( Alarm::List &alarms, const Item &item
   }
 }
 
-void CalendarBase::appendRecurringAlarmsFORAKONADI( Alarm::List &alarms,
+void CalendarBase::appendRecurringAlarms( Alarm::List &alarms,
                                       const Item &incidence,
                                       const KDateTime &from,
                                       const KDateTime &to )

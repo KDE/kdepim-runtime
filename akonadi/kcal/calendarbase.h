@@ -377,10 +377,10 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param incidence is a pointer to the KCal::Incidence to insert.
 
       @return true if the KCal::Incidence was successfully inserted; false otherwise.
-      @deprecated: FORAKONADI
+      @deprecated: 
       @see deleteIncidence()
     */
-    virtual bool addIncidenceFORAKONADI( const KCal::Incidence::Ptr &incidence );
+    virtual bool addIncidence( const KCal::Incidence::Ptr &incidence );
 
     /**
       Removes an KCal::Incidence from the calendar.
@@ -388,69 +388,69 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param incidence is a pointer to the KCal::Incidence to remove.
 
       @return true if the KCal::Incidence was successfully removed; false otherwise.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @see addIncidence()
     */
-    virtual bool deleteIncidenceFORAKONADI( const Akonadi::Item &incidence );
+    virtual bool deleteIncidence( const Akonadi::Item &incidence );
 
     /**
       Returns a filtered list of all KCal::Incidences for this Calendar.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of all filtered KCal::Incidences.
     */
-    virtual Akonadi::Item::List incidencesFORAKONADI();
+    virtual Akonadi::Item::List incidences();
 
     /**
       Returns a filtered list of all KCal::Incidences which occur on the given date.
 
       @param date request filtered KCal::Incidence list for this QDate only.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of filtered KCal::Incidences occurring on the specified date.
     */
 
-    virtual Akonadi::Item::List incidencesFORAKONADI( const QDate& date );
+    virtual Akonadi::Item::List incidences( const QDate& date );
 
     /**
       Returns an unfiltered list of all KCal::Incidences for this Calendar.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of all unfiltered KCal::Incidences.
     */
-    virtual Akonadi::Item::List rawIncidencesFORAKONADI();
+    virtual Akonadi::Item::List rawIncidences();
 
     /**
       Returns the KCal::Incidence associated with the given unique identifier.
 
       @param uid is a unique identifier string.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a pointer to the KCal::Incidence.
       A null pointer is returned if no such KCal::Incidence exists.
     */
-    Akonadi::Item incidenceFORAKONADI( const Akonadi::Item::Id &id );
+    Akonadi::Item incidence( const Akonadi::Item::Id &id );
 
     /**
       Returns the KCal::Incidence associated with the given scheduling identifier.
 
       @param sid is a unique scheduling identifier string.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a pointer to the KCal::Incidence.
       A null pointer is returned if no such KCal::Incidence exists.
     */
-    Akonadi::Item incidenceFromSchedulingIDFORAKONADI( const QString &sid );
+    Akonadi::Item incidenceFromSchedulingID( const QString &sid );
 
     /**
       Searches all events and todos for an incidence with this
       scheduling identifiere. Returns a list of matching results.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @param sid is a unique scheduling identifier string.
      */
-    Akonadi::Item::List incidencesFromSchedulingIDFORAKONADI( const QString &sid );
+    Akonadi::Item::List incidencesFromSchedulingID( const QString &sid );
 
     /**
       Create a merged list of KCal::Events, KCal::Todos, and KCal::Journals.
@@ -458,29 +458,29 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param events is an KCal::Event list to merge.
       @param todos is a KCal::Todo list to merge.
       @param journals is a KCal::Journal list to merge.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a list of merged KCal::Incidences.
     */
-    static Akonadi::Item::List mergeIncidenceListFORAKONADI( const Akonadi::Item::List &events,
+    static Akonadi::Item::List mergeIncidenceList( const Akonadi::Item::List &events,
                                                const Akonadi::Item::List &todos,
                                                const Akonadi::Item::List &journals );
 
     /**
       Flag that a change to a Calendar KCal::Incidence is starting.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @param incidence is a pointer to the KCal::Incidence that will be changing.
     */
-    virtual bool beginChangeFORAKONADI( const Akonadi::Item &incidence );
+    virtual bool beginChange( const Akonadi::Item &incidence );
 
     /**
       Flag that a change to a Calendar KCal::Incidence has completed.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @param incidence is a pointer to the KCal::Incidence that was changed.
     */
-    virtual bool endChangeFORAKONADI( const Akonadi::Item &incidence );
+    virtual bool endChange( const Akonadi::Item &incidence );
 
     /**
       Dissociate an KCal::Incidence from a recurring KCal::Incidence.
@@ -496,11 +496,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param spec is the spec in which the @a date is formulated.
       @param single is a flag meaning that a new KCal::Incidence should be created
       from the recurring KCal::Incidences after @a date.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a pointer to a new recurring KCal::Incidence if @a single is false.
     */
-    KCal::Incidence::Ptr dissociateOccurrenceFORAKONADI( const Akonadi::Item &incidence, const QDate &date,
+    KCal::Incidence::Ptr dissociateOccurrence( const Akonadi::Item &incidence, const QDate &date,
                                                          const KDateTime::Spec &spec,
                                                          bool single = true );
 
@@ -510,32 +510,32 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       Inserts an KCal::Event into the calendar.
 
       @param event is a pointer to the KCal::Event to insert.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return true if the KCal::Event was successfully inserted; false otherwise.
 
       @see deleteEvent()
     */
-    virtual bool addEventFORAKONADI( const KCal::Event::Ptr &event ) = 0;
+    virtual bool addEvent( const KCal::Event::Ptr &event ) = 0;
 
     /**
       Removes an KCal::Event from the calendar.
 
       @param event is a pointer to the KCal::Event to remove.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return true if the KCal::Event was successfully remove; false otherwise.
 
       @see addEvent(), deleteAllEvents()
     */
-    virtual bool deleteEventFORAKONADI( const Akonadi::Item &event ) = 0;
+    virtual bool deleteEvent( const Akonadi::Item &event ) = 0;
 
     /**
       Removes all KCal::Events from the calendar.
 
       @see deleteEvent()
     */
-    virtual void deleteAllEventsFORAKONADI() = 0;
+    virtual void deleteAllEvents() = 0;
 
     /**
       Sort a list of KCal::Events.
@@ -543,11 +543,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param eventList is a pointer to a list of KCal::Events.
       @param sortField specifies the EventSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a list of KCal::Events sorted as specified.
     */
-    static Akonadi::Item::List sortEventsFORAKONADI( const Akonadi::Item::List &eventList,
+    static Akonadi::Item::List sortEvents( const Akonadi::Item::List &eventList,
                                    EventSortField sortField,
                                    SortDirection sortDirection );
 
@@ -556,11 +556,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param sortField specifies the EventSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of all filtered KCal::Events sorted as specified.
     */
-    virtual Akonadi::Item::List eventsFORAKONADI(
+    virtual Akonadi::Item::List events(
       EventSortField sortField = EventSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
 
@@ -568,11 +568,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       Returns a filtered list of all KCal::Events which occur on the given timestamp.
 
       @param dt request filtered KCal::Event list for this KDateTime only.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of filtered KCal::Events occurring on the specified timestamp.
     */
-    Akonadi::Item::List eventsFORAKONADI( const KDateTime &dt );
+    Akonadi::Item::List events( const KDateTime &dt );
 
     /**
       Returns a filtered list of all KCal::Events occurring within a date range.
@@ -583,12 +583,12 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
                       or the calendar's default time spec if none is specified
       @param inclusive if true only KCal::Events which are completely included
       within the date range are returned.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of filtered KCal::Events occurring within the specified
       date range.
     */
-    Akonadi::Item::List eventsFORAKONADI( const QDate &start, const QDate &end,
+    Akonadi::Item::List events( const QDate &start, const QDate &end,
                         const KDateTime::Spec &timeSpec = KDateTime::Spec(),
                         bool inclusive = false );
 
@@ -602,11 +602,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
                       or the calendar's default time spec if none is specified
       @param sortField specifies the EventSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of sorted, filtered KCal::Events occurring on @a date.
     */
-    Akonadi::Item::List eventsFORAKONADI(
+    Akonadi::Item::List events(
       const QDate &date,
       const KDateTime::Spec &timeSpec = KDateTime::Spec(),
       EventSortField sortField = EventSortUnsorted,
@@ -617,11 +617,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param sortField specifies the EventSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of all unfiltered KCal::Events sorted as specified.
     */
-    virtual Akonadi::Item::List rawEventsFORAKONADI(
+    virtual Akonadi::Item::List rawEvents(
       EventSortField sortField = EventSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending ) = 0;
 
@@ -630,12 +630,12 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       timestamp.
 
       @param dt request unfiltered KCal::Event list for this KDateTime only.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of unfiltered KCal::Events occurring on the specified
       timestamp.
     */
-    virtual Akonadi::Item::List rawEventsForDateFORAKONADI( const KDateTime &dt ) = 0;
+    virtual Akonadi::Item::List rawEventsForDate( const KDateTime &dt ) = 0;
 
     /**
       Returns an unfiltered list of all KCal::Events occurring within a date range.
@@ -646,12 +646,12 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
                       or the calendar's default time spec if none is specified
       @param inclusive if true only KCal::Events which are completely included
       within the date range are returned.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of unfiltered KCal::Events occurring within the specified
       date range.
     */
-    virtual Akonadi::Item::List rawEventsFORAKONADI( const QDate &start, const QDate &end,
+    virtual Akonadi::Item::List rawEvents( const QDate &start, const QDate &end,
                                            const KDateTime::Spec &timeSpec = KDateTime::Spec(),
                                            bool inclusive = false ) = 0;
 
@@ -665,11 +665,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
                       or the calendar's default time spec if none is specified
       @param sortField specifies the EventSortField
       @param sortDirection specifies the SortDirection
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of sorted, unfiltered KCal::Events occurring on @p date
     */
-    virtual Akonadi::Item::List rawEventsForDateFORAKONADI(
+    virtual Akonadi::Item::List rawEventsForDate(
       const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(),
       EventSortField sortField = EventSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending ) = 0;
@@ -678,12 +678,12 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       Returns the KCal::Event associated with the given unique identifier.
 
       @param uid is a unique identifier string.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a pointer to the KCal::Event.
       A null pointer is returned if no such KCal::Event exists.
     */
-    virtual Akonadi::Item eventFORAKONADI( const Akonadi::Item::Id &uid ) = 0;
+    virtual Akonadi::Item event( const Akonadi::Item::Id &uid ) = 0;
 
   // KCal::Todo Specific Methods //
 
@@ -693,30 +693,30 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param todo is a pointer to the KCal::Todo to insert.
 
       @return true if the KCal::Todo was successfully inserted; false otherwise.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @see deleteTodo()
     */
-    virtual bool addTodoFORAKONADI( const KCal::Todo::Ptr &todo ) = 0;
+    virtual bool addTodo( const KCal::Todo::Ptr &todo ) = 0;
 
     /**
       Removes a KCal::Todo from the calendar.
 
       @param todo is a pointer to the KCal::Todo to remove.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return true if the KCal::Todo was successfully removed; false otherwise.
 
       @see addTodo(), deleteAllTodos()
     */
-    virtual bool deleteTodoFORAKONADI( const Akonadi::Item &todo ) = 0;
+    virtual bool deleteTodo( const Akonadi::Item &todo ) = 0;
 
     /**
       Removes all To-dos from the calendar.
-      @deprecated: FORAKONADI
+      @deprecated: 
       @see deleteTodo()
     */
-    virtual void deleteAllTodosFORAKONADI() = 0;
+    virtual void deleteAllTodos() = 0;
 
     /**
       Sort a list of KCal::Todos.
@@ -724,11 +724,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param todoList is a pointer to a list of KCal::Todos.
       @param sortField specifies the TodoSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a list of KCal::Todos sorted as specified.
     */
-    static Akonadi::Item::List sortTodosFORAKONADI( const Akonadi::Item::List &todoList,
+    static Akonadi::Item::List sortTodos( const Akonadi::Item::List &todoList,
                                  TodoSortField sortField,
                                  SortDirection sortDirection );
 
@@ -737,11 +737,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param sortField specifies the TodoSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of all filtered KCal::Todos sorted as specified.
     */
-    virtual Akonadi::Item::List todosFORAKONADI(
+    virtual Akonadi::Item::List todos(
       TodoSortField sortField = TodoSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
 
@@ -749,22 +749,22 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       Returns a filtered list of all KCal::Todos which are due on the specified date.
 
       @param date request filtered KCal::Todos due on this QDate.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of filtered KCal::Todos due on the specified date.
     */
-    virtual Akonadi::Item::List todosFORAKONADI( const QDate &date );
+    virtual Akonadi::Item::List todos( const QDate &date );
 
     /**
       Returns a sorted, unfiltered list of all KCal::Todos for this Calendar.
 
       @param sortField specifies the TodoSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of all unfiltered KCal::Todos sorted as specified.
     */
-    virtual Akonadi::Item::List rawTodosFORAKONADI(
+    virtual Akonadi::Item::List rawTodos(
       TodoSortField sortField = TodoSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending ) = 0;
 
@@ -773,22 +773,22 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       Returns an unfiltered list of all KCal::Todos which due on the specified date.
 
       @param date request unfiltered KCal::Todos due on this QDate.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of unfiltered KCal::Todos due on the specified date.
     */
-    virtual Akonadi::Item::List rawTodosForDateFORAKONADI( const QDate &date ) = 0;
+    virtual Akonadi::Item::List rawTodosForDate( const QDate &date ) = 0;
 
     /**
       Returns the KCal::Todo associated with the given unique identifier.
 
       @param uid is a unique identifier string.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a pointer to the KCal::Todo.
       A null pointer is returned if no such KCal::Todo exists.
     */
-    virtual Akonadi::Item todoFORAKONADI( const Akonadi::Item::Id &id ) = 0;
+    virtual Akonadi::Item todo( const Akonadi::Item::Id &id ) = 0;
 
   // KCal::Journal Specific Methods //
 
@@ -796,32 +796,32 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       Inserts a KCal::Journal into the calendar.
 
       @param journal is a pointer to the KCal::Journal to insert.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return true if the KCal::Journal was successfully inserted; false otherwise.
 
       @see deleteJournal()
     */
-    virtual bool addJournalFORAKONADI( const KCal::Journal::Ptr &journal ) = 0;
+    virtual bool addJournal( const KCal::Journal::Ptr &journal ) = 0;
 
     /**
       Removes a KCal::Journal from the calendar.
 
       @param journal is a pointer to the KCal::Journal to remove.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return true if the KCal::Journal was successfully removed; false otherwise.
 
       @see addJournal(), deleteAllJournals()
     */
-    virtual bool deleteJournalFORAKONADI( const Akonadi::Item &journal ) = 0;
+    virtual bool deleteJournal( const Akonadi::Item &journal ) = 0;
 
     /**
       Removes all KCal::Journals from the calendar.
-      @deprecated: FORAKONADI
+      @deprecated: 
       @see deleteJournal()
     */
-    virtual void deleteAllJournalsFORAKONADI() = 0;
+    virtual void deleteAllJournals() = 0;
 
     /**
       Sort a list of KCal::Journals.
@@ -829,11 +829,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param journalList is a pointer to a list of KCal::Journals.
       @param sortField specifies the JournalSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a list of KCal::Journals sorted as specified.
     */
-    static Akonadi::Item::List sortJournalsFORAKONADI( const Akonadi::Item::List &journalList,
+    static Akonadi::Item::List sortJournals( const Akonadi::Item::List &journalList,
                                        JournalSortField sortField,
                                        SortDirection sortDirection );
 
@@ -842,11 +842,11 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param sortField specifies the JournalSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of all filtered KCal::Journals sorted as specified.
     */
-    virtual Akonadi::Item::List journalsFORAKONADI(
+    virtual Akonadi::Item::List journals(
       JournalSortField sortField = JournalSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending );
 
@@ -854,22 +854,22 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       Returns a filtered list of all KCal::Journals for on the specified date.
 
       @param date request filtered KCal::Journals for this QDate only.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of filtered KCal::Journals for the specified date.
     */
-    virtual Akonadi::Item::List journalsFORAKONADI( const QDate &date );
+    virtual Akonadi::Item::List journals( const QDate &date );
 
     /**
       Returns a sorted, unfiltered list of all KCal::Journals for this Calendar.
 
       @param sortField specifies the JournalSortField.
       @param sortDirection specifies the SortDirection.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of all unfiltered KCal::Journals sorted as specified.
     */
-    virtual Akonadi::Item::List rawJournalsFORAKONADI(
+    virtual Akonadi::Item::List rawJournals(
       JournalSortField sortField = JournalSortUnsorted,
       SortDirection sortDirection = SortDirectionAscending ) = 0;
 
@@ -877,22 +877,22 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       Returns an unfiltered list of all KCal::Journals for on the specified date.
 
       @param date request unfiltered KCal::Journals for this QDate only.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of unfiltered KCal::Journals for the specified date.
     */
-    virtual Akonadi::Item::List rawJournalsForDateFORAKONADI( const QDate &date ) = 0;
+    virtual Akonadi::Item::List rawJournalsForDate( const QDate &date ) = 0;
 
     /**
       Returns the KCal::Journal associated with the given unique identifier.
 
       @param uid is a unique identifier string.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return a pointer to the KCal::Journal.
       A null pointer is returned if no such KCal::Journal exists.
     */
-    virtual Akonadi::Item journalFORAKONADI( const Akonadi::Item::Id &id ) = 0;
+    virtual Akonadi::Item journal( const Akonadi::Item::Id &id ) = 0;
 
     /**
       Emits the beginBatchAdding() signal.
@@ -925,9 +925,9 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param incidence is a pointer to the KCal::Incidence to have a
       Relation setup.
-      @deprecated: FORAKONADI
+      @deprecated: 
     */
-    virtual void setupRelationsFORAKONADI( const Akonadi::Item& incidence );
+    virtual void setupRelations( const Akonadi::Item& incidence );
 
     /**
       Removes all Relations from an KCal::Incidence.
@@ -935,9 +935,9 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @param incidence is a pointer to the KCal::Incidence to have a
       Relation removed.
 
-      @deprecated: FORAKONADI
+      @deprecated: 
     */
-    virtual void removeRelationsFORAKONADI( const Akonadi::Item &incidence );
+    virtual void removeRelations( const Akonadi::Item &incidence );
 
   // Filter Specific Methods //
 
@@ -946,7 +946,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param filter a pointer to a CalFilter object which will be
       used to filter Calendar KCal::Incidences.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @see filter()
     */
@@ -957,7 +957,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return a pointer to the calendar CalFilter.
       A null pointer is returned if no such CalFilter exists.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @see setFilter()
     */
@@ -970,7 +970,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @param from is the starting timestamp.
       @param to is the ending timestamp.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @return the list of KCal::Alarms for the for the specified time range.
     */
@@ -998,34 +998,34 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
           @param modified set if the calendar has been modified.
           @param calendar is a pointer to the Calendar object that
           is being observed.
-          @deprecated: FORAKONADI
+          @deprecated: 
 
         */
         virtual void calendarModified( bool modified, CalendarBase *calendar );
 
         /**
           Notify the Observer that an KCal::Incidence has been inserted.
-          @deprecated: FORAKONADI
+          @deprecated: 
 
           @param incidence is a pointer to the KCal::Incidence that was inserted.
         */
-        virtual void calendarIncidenceAddedFORAKONADI( const Akonadi::Item &incidence );
+        virtual void calendarIncidenceAdded( const Akonadi::Item &incidence );
 
         /**
           Notify the Observer that an KCal::Incidence has been modified.
-          @deprecated: FORAKONADI
+          @deprecated: 
 
           @param incidence is a pointer to the KCal::Incidence that was modified.
         */
-        virtual void calendarIncidenceChangedFORAKONADI( const Akonadi::Item  &incidence );
+        virtual void calendarIncidenceChanged( const Akonadi::Item  &incidence );
 
         /**
           Notify the Observer that an KCal::Incidence has been removed.
-          @deprecated: FORAKONADI
+          @deprecated: 
 
           @param incidence is a pointer to the KCal::Incidence that was removed.
         */
-        virtual void calendarIncidenceDeletedFORAKONADI( const Akonadi::Item &incidence );
+        virtual void calendarIncidenceDeleted( const Akonadi::Item &incidence );
 
     };
 
@@ -1097,27 +1097,27 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
     /**
       Let Calendar subclasses notify that they inserted an KCal::Incidence.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @param incidence is a pointer to the KCal::Incidence object that was inserted.
     */
-    void notifyIncidenceAddedFORAKONADI( const Akonadi::Item &incidence );
+    void notifyIncidenceAdded( const Akonadi::Item &incidence );
 
     /**
       Let Calendar subclasses notify that they modified an KCal::Incidence.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @param incidence is a pointer to the KCal::Incidence object that was modified.
     */
-    void notifyIncidenceChangedFORAKONADI( const Akonadi::Item &incidence );
+    void notifyIncidenceChanged( const Akonadi::Item &incidence );
 
     /**
       Let Calendar subclasses notify that they removed an KCal::Incidence.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
       @param incidence is a pointer to the KCal::Incidence object that was removed.
     */
-    void notifyIncidenceDeletedFORAKONADI( const Akonadi::Item &incidence );
+    void notifyIncidenceDeleted( const Akonadi::Item &incidence );
 
     /**
       @copydoc
@@ -1141,10 +1141,10 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       to be appended.
       @param from is the lower range of the next KCal::Alarm repitition.
       @param to is the upper range of the next KCal::Alarm repitition.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
     */
-    void appendAlarmsFORAKONADI( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
+    void appendAlarms( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
                        const KDateTime &from, const KDateTime &to );
 
     /**
@@ -1155,10 +1155,10 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       to be appended.
       @param from is the lower range of the next KCal::Alarm repitition.
       @param to is the upper range of the next KCal::Alarm repitition.
-      @deprecated: FORAKONADI
+      @deprecated: 
 
     */
-    void appendRecurringAlarmsFORAKONADI( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
+    void appendRecurringAlarms( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
                                 const KDateTime &from, const KDateTime &to );
 
   private:

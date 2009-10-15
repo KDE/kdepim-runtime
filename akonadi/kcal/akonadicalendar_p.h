@@ -170,7 +170,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
       return true;
     }
 
-    bool addIncidenceFORAKONADI( const Incidence::Ptr &incidence )
+    bool addIncidence( const Incidence::Ptr &incidence )
     {
       kDebug();
       Akonadi::CollectionDialog dlg( 0 ); //PENDING(AKONADI_PORT) we really need a parent here
@@ -204,7 +204,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
       return true;
     }
 
-    bool deleteIncidenceFORAKONADI( const Akonadi::Item &item )
+    bool deleteIncidence( const Akonadi::Item &item )
     {
       kDebug();
       Incidence::Ptr incidence = Akonadi::incidence( item );
@@ -354,7 +354,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
         Q_ASSERT( m_itemMap.contains(uid) );
         Q_ASSERT( item.storageCollectionId() == m_itemMap.value(uid).storageCollectionId() ); // there was once a bug that resulted in items forget there collectionId...
         m_itemMap.insert( uid, item );
-        q->notifyIncidenceChangedFORAKONADI( item );
+        q->notifyIncidenceChanged( item );
         q->setModified( true );
         emit q->calendarChanged();
         assertInvariants();
@@ -371,7 +371,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
         kDebug() << "Item changed uid=" << uid << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
         Q_ASSERT( m_itemMap.contains(uid) );
         m_itemMap.insert( uid, item );
-        q->notifyIncidenceChangedFORAKONADI( item );
+        q->notifyIncidenceChanged( item );
         q->setModified( true );
         emit q->calendarChanged();
         assertInvariants();
@@ -425,7 +425,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
             m_uidToItemId.insert( incidence->uid(), uid );
             assertInvariants();
             incidence->registerObserver( q );
-            q->notifyIncidenceAddedFORAKONADI( item );
+            q->notifyIncidenceAdded( item );
         }
         q->setModified( true );
         emit q->calendarChanged();
@@ -471,7 +471,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
             }
 
             //incidence->unregisterObserver( q );
-            q->notifyIncidenceDeletedFORAKONADI( item );
+            q->notifyIncidenceDeleted( item );
             m_uidToItemId.remove( incidence->uid() );
         }
         q->setModified( true );

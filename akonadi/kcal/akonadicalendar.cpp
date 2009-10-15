@@ -116,9 +116,9 @@ void AkonadiCalendar::removeCollection( const Akonadi::Collection &collection )
   emit calendarChanged();
 }
 
-bool AkonadiCalendar::beginChangeFORAKONADI( const Item &item )
+bool AkonadiCalendar::beginChange( const Item &item )
 {
-  if( ! CalendarBase::beginChangeFORAKONADI( item ) )
+  if( ! CalendarBase::beginChange( item ) )
     return false;
 
   const Incidence::Ptr incidence = Akonadi::incidence( item );
@@ -131,7 +131,7 @@ bool AkonadiCalendar::beginChangeFORAKONADI( const Item &item )
 }
 
 
-bool AkonadiCalendar::endChangeFORAKONADI( const Item &item )
+bool AkonadiCalendar::endChange( const Item &item )
 {
   if( ! item.isValid() ) {
     kWarning() << "Item is invalid";
@@ -143,7 +143,7 @@ bool AkonadiCalendar::endChangeFORAKONADI( const Item &item )
   const bool isModification = d->m_changes.removeAll( incidence->uid() ) >= 1;
   const QString uid = incidence->uid();
 
-  if( ! CalendarBase::endChangeFORAKONADI( item ) ) {
+  if( ! CalendarBase::endChange( item ) ) {
     // should not happen, but well...
     kDebug() << "Abort modify uid=" << uid << "summary=" << incidence->summary() << "type=" << incidence->type();
     return false;
@@ -229,19 +229,19 @@ bool AkonadiCalendar::addAgent( const KUrl &url )
 }
 
 
-bool AkonadiCalendar::addIncidenceFORAKONADI( const Incidence::Ptr &incidence )
+bool AkonadiCalendar::addIncidence( const Incidence::Ptr &incidence )
 {
   kDebug();
   // dispatch to addEvent/addTodo/addJournal
-  return CalendarBase::addIncidenceFORAKONADI( incidence );
+  return CalendarBase::addIncidence( incidence );
 }
 
 
-bool AkonadiCalendar::deleteIncidenceFORAKONADI( const Item &incidence )
+bool AkonadiCalendar::deleteIncidence( const Item &incidence )
 {
   kDebug();
   // dispatch to deleteEvent/deleteTodo/deleteJournal
-  return CalendarBase::deleteIncidenceFORAKONADI( incidence );
+  return CalendarBase::deleteIncidence( incidence );
 }
 
 // This method will be called probably multiple times if a series of changes where done. One finished the endChange() method got called.
@@ -257,22 +257,22 @@ void AkonadiCalendar::incidenceUpdated( IncidenceBase *incidence )
   kDebug() << "Updated uid=" << i->uid() << "summary=" << i->summary() << "type=" << i->type() << "storageCollectionId=" << item.storageCollectionId();
 }
 
-bool AkonadiCalendar::addEventFORAKONADI( const Event::Ptr &event )
+bool AkonadiCalendar::addEvent( const Event::Ptr &event )
 {
   kDebug();
-  return d->addIncidenceFORAKONADI(event);
+  return d->addIncidence(event);
 }
 
 // this is e.g. called by pimlibs/kcal/icalformat_p.cpp on import to replace
 // existing events with newer ones. We probably like to just update in that
 // case rather then to delete+create...
-bool AkonadiCalendar::deleteEventFORAKONADI( const Item &event )
+bool AkonadiCalendar::deleteEvent( const Item &event )
 {
   kDebug();
-  return d->deleteIncidenceFORAKONADI(event);
+  return d->deleteIncidence(event);
 }
 
-Item AkonadiCalendar::eventFORAKONADI( const Item::Id &id )
+Item AkonadiCalendar::event( const Item::Id &id )
 {
   const Akonadi::Item item = d->m_itemMap.value( id );
   if ( Akonadi::event( item ) )
@@ -281,7 +281,7 @@ Item AkonadiCalendar::eventFORAKONADI( const Item::Id &id )
     return Akonadi::Item();
 }
 
-bool AkonadiCalendar::addTodoFORAKONADI( const Todo::Ptr &todo )
+bool AkonadiCalendar::addTodo( const Todo::Ptr &todo )
 {
   kDebug();
   /*
@@ -294,10 +294,10 @@ bool AkonadiCalendar::addTodoFORAKONADI( const Todo::Ptr &todo )
   setModified( true );
   notifyIncidenceAdded( todo );
   */
-  return d->addIncidenceFORAKONADI(todo);
+  return d->addIncidence(todo);
 }
 
-bool AkonadiCalendar::deleteTodoFORAKONADI( const Item &todo )
+bool AkonadiCalendar::deleteTodo( const Item &todo )
 {
   kDebug();
   /*
@@ -316,11 +316,11 @@ bool AkonadiCalendar::deleteTodoFORAKONADI( const Item &todo )
     return false;
   }
   */
-  return d->deleteIncidenceFORAKONADI(todo);
+  return d->deleteIncidence(todo);
 }
 
 
-Item AkonadiCalendar::todoFORAKONADI( const Item::Id &id )
+Item AkonadiCalendar::todo( const Item::Id &id )
 {
   const Akonadi::Item item = d->m_itemMap.value( id );
   if ( Akonadi::todo( item ) )
@@ -329,7 +329,7 @@ Item AkonadiCalendar::todoFORAKONADI( const Item::Id &id )
     return Akonadi::Item();
 }
 
-Item::List AkonadiCalendar::rawTodosFORAKONADI( TodoSortField sortField, SortDirection sortDirection )
+Item::List AkonadiCalendar::rawTodos( TodoSortField sortField, SortDirection sortDirection )
 {
   kDebug()<<sortField<<sortDirection;
   Item::List todoList;
@@ -339,12 +339,12 @@ Item::List AkonadiCalendar::rawTodosFORAKONADI( TodoSortField sortField, SortDir
     if( Akonadi::todo( i.value() ) )
       todoList.append( i.value() );
   }
-  return sortTodosFORAKONADI( todoList, sortField, sortDirection );
+  return sortTodos( todoList, sortField, sortDirection );
 }
 
 
 
-Item::List AkonadiCalendar::rawTodosForDateFORAKONADI( const QDate &date )
+Item::List AkonadiCalendar::rawTodosForDate( const QDate &date )
 {
   kDebug()<<date.toString();
   Item::List todoList;
@@ -390,7 +390,7 @@ Alarm::List AkonadiCalendar::alarms( const KDateTime &from, const KDateTime &to 
   return alarmList;
 }
 
-Item::List AkonadiCalendar::rawEventsForDateFORAKONADI( const QDate &date, const KDateTime::Spec &timespec, EventSortField sortField, SortDirection sortDirection )
+Item::List AkonadiCalendar::rawEventsForDate( const QDate &date, const KDateTime::Spec &timespec, EventSortField sortField, SortDirection sortDirection )
 {
   kDebug()<<date.toString();
   Item::List eventList;
@@ -436,10 +436,10 @@ Item::List AkonadiCalendar::rawEventsForDateFORAKONADI( const QDate &date, const
       }
     }
   }
-  return sortEventsFORAKONADI( eventList, sortField, sortDirection );
+  return sortEvents( eventList, sortField, sortDirection );
 }
 
-Item::List AkonadiCalendar::rawEventsFORAKONADI( const QDate &start, const QDate &end, const KDateTime::Spec &timespec, bool inclusive )
+Item::List AkonadiCalendar::rawEvents( const QDate &start, const QDate &end, const KDateTime::Spec &timespec, bool inclusive )
 {
   kDebug()<<start.toString()<<end.toString()<<inclusive;
   Item::List eventList;
@@ -479,13 +479,13 @@ Item::List AkonadiCalendar::rawEventsFORAKONADI( const QDate &start, const QDate
   return eventList;
 }
 
-Item::List AkonadiCalendar::rawEventsForDateFORAKONADI( const KDateTime &kdt )
+Item::List AkonadiCalendar::rawEventsForDate( const KDateTime &kdt )
 {
   kDebug();
-  return rawEventsForDateFORAKONADI( kdt.date(), kdt.timeSpec() );
+  return rawEventsForDate( kdt.date(), kdt.timeSpec() );
 }
 
-Item::List AkonadiCalendar::rawEventsFORAKONADI( EventSortField sortField, SortDirection sortDirection )
+Item::List AkonadiCalendar::rawEvents( EventSortField sortField, SortDirection sortDirection )
 {
   kDebug()<<sortField<<sortDirection;
   Item::List eventList;
@@ -495,23 +495,23 @@ Item::List AkonadiCalendar::rawEventsFORAKONADI( EventSortField sortField, SortD
     if( Akonadi::event( i.value() ) )
       eventList.append( i.value() );
   }
-  return sortEventsFORAKONADI( eventList, sortField, sortDirection );
+  return sortEvents( eventList, sortField, sortDirection );
 }
 
-bool AkonadiCalendar::addJournalFORAKONADI( const Journal::Ptr &journal )
+bool AkonadiCalendar::addJournal( const Journal::Ptr &journal )
 {
   kDebug();
-  return d->addIncidenceFORAKONADI(journal);
+  return d->addIncidence(journal);
 }
 
-bool AkonadiCalendar::deleteJournalFORAKONADI( const Item &journal )
+bool AkonadiCalendar::deleteJournal( const Item &journal )
 {
   kDebug();
-  return d->deleteIncidenceFORAKONADI(journal);
+  return d->deleteIncidence(journal);
 }
 
 
-Item AkonadiCalendar::journalFORAKONADI( const Item::Id &id )
+Item AkonadiCalendar::journal( const Item::Id &id )
 {
   const Akonadi::Item item = d->m_itemMap.value( id );
   if ( Akonadi::journal( item ) )
@@ -520,7 +520,7 @@ Item AkonadiCalendar::journalFORAKONADI( const Item::Id &id )
     return Akonadi::Item();
 }
 
-Item::List AkonadiCalendar::rawJournalsFORAKONADI( JournalSortField sortField, SortDirection sortDirection )
+Item::List AkonadiCalendar::rawJournals( JournalSortField sortField, SortDirection sortDirection )
 {
   kDebug()<<sortField<<sortDirection;
   Item::List journalList;
@@ -530,10 +530,10 @@ Item::List AkonadiCalendar::rawJournalsFORAKONADI( JournalSortField sortField, S
     if( Akonadi::journal( i.value() ) )
       journalList.append( i.value() );
   }
-  return sortJournalsFORAKONADI( journalList, sortField, sortDirection );
+  return sortJournals( journalList, sortField, sortDirection );
 }
 
-Item::List AkonadiCalendar::rawJournalsForDateFORAKONADI( const QDate &date )
+Item::List AkonadiCalendar::rawJournalsForDate( const QDate &date )
 {
   kDebug()<<date.toString();
   Item::List journalList;
