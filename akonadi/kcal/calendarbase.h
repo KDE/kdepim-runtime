@@ -918,27 +918,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
     */
     void endBatchAdding();
 
-  // Relations Specific Methods //
-
-    /**
-      Setup Relations for an KCal::Incidence.
-
-      @param incidence is a pointer to the KCal::Incidence to have a
-      Relation setup.
-      @deprecated: 
-    */
-    virtual void setupRelations( const Akonadi::Item& incidence );
-
-    /**
-      Removes all Relations from an KCal::Incidence.
-
-      @param incidence is a pointer to the KCal::Incidence to have a
-      Relation removed.
-
-      @deprecated: 
-    */
-    virtual void removeRelations( const Akonadi::Item &incidence );
-
   // Filter Specific Methods //
 
     /**

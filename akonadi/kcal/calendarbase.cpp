@@ -140,9 +140,11 @@ class KOrg::CalendarBase::Private
     CalFilter *mDefaultFilter;
     CalFilter *mFilter;
 
+#ifdef AKONADI_PORT_DISABLED
     // These lists are used to put together related To-dos
     QMultiHash<QString, Incidence*> mOrphans;
     QMultiHash<QString, Incidence*> mOrphanUids;
+#endif
 };
 //@endcond
 
@@ -858,10 +860,10 @@ void CalendarBase::endBatchAdding()
   emit batchAddingEnds();
 }
 
+#ifdef AKONADI_PORT_DISABLED
 
 void CalendarBase::setupRelations( const Item &forincidence )
 {
-#ifdef AKONADI_PORT_DISABLED
   if ( !forincidence ) {
     return;
   }
@@ -895,13 +897,13 @@ void CalendarBase::setupRelations( const Item &forincidence )
       d->mOrphanUids.insert( forincidence->uid(), forincidence );
     }
   }
-#endif // AKONADI_PORT_DISABLED
 }
+#endif // AKONADI_PORT_DISABLED
 
+#ifdef AKONADI_PORT_DISABLED
 // If a to-do with sub-to-dos is deleted, move it's sub-to-dos to the orphan list
 void CalendarBase::removeRelations( const Item &incidence )
 {
-#ifdef AKONADI_PORT_DISABLED
   if ( !incidence ) {
     kDebug() << "Warning: incidence is 0";
     return;
@@ -976,8 +978,8 @@ void CalendarBase::removeRelations( const Item &incidence )
   //
   // This crash is tested in CalendarLocalTest::testRelationsCrash().
   incidence->setRelatedTo( 0 );
-#endif // AKONADI_PORT_DISABLED
 }
+#endif // AKONADI_PORT_DISABLED
 
 void CalendarBase::CalendarObserver::calendarModified( bool modified, CalendarBase *calendar )
 {
