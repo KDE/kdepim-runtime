@@ -110,6 +110,9 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     KCal::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
     KCal::Alarm::List alarmsTo( const KDateTime &to );
 
+    /* reimp */ Akonadi::Item findParent( const Akonadi::Item& item ) const;
+    /* reimp */ Akonadi::Item::List findChildren( const Akonadi::Item &item ) const;
+
     using QObject::event;   // prevent warning about hidden virtual method
 
   public Q_SLOTS:

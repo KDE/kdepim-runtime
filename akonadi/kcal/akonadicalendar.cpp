@@ -83,7 +83,7 @@ void AkonadiCalendar::addCollection( const Akonadi::Collection &collection )
   d->m_monitor->setCollectionMonitored( collection, true );
 
   // start a new job and fetch all items
-  Akonadi::ItemFetchJob* job = new Akonadi::ItemFetchJob( collection, d->m_session );
+  ItemFetchJob* job = new ItemFetchJob( collection, d->m_session );
   job->setFetchScope( d->m_monitor->itemFetchScope() );
   connect( job, SIGNAL(result(KJob*)), d, SLOT(listingDone(KJob*)) );
 }
@@ -99,13 +99,13 @@ void AkonadiCalendar::removeCollection( const Akonadi::Collection &collection )
   AkonadiCalendarCollection *c = d->m_collectionMap.take( collection.id() );
   delete c;
 
-  QHash<Akonadi::Item::Id, Akonadi::Item>::Iterator it( d->m_itemMap.begin() ), end( d->m_itemMap.end() );
+  QHash<Item::Id, Item>::Iterator it( d->m_itemMap.begin() ), end( d->m_itemMap.end() );
   while( it != end) {
     if( it.value().storageCollectionId() == collection.id() ) {
-      Akonadi::Item i = *it;
+      Item i = *it;
       it = d->m_itemMap.erase(it);
-      Q_ASSERT( i.hasPayload<KCal::Incidence::Ptr>() );
-      const KCal::Incidence::Ptr incidence = i.payload<KCal::Incidence::Ptr>();
+      Q_ASSERT( i.hasPayload<Incidence::Ptr>() );
+      const Incidence::Ptr incidence = i.payload<Incidence::Ptr>();
       Q_ASSERT( incidence.get() );
     } else {
       ++it;
@@ -126,7 +126,7 @@ bool AkonadiCalendar::beginChange( const Item &item )
 
   Q_ASSERT( ! d->m_changes.contains( item.id() ) ); //no nested changes, right?
   d->m_changes.push_back( item.id() );
-  d->m_incidenceBeingChanged = KCal::Incidence::Ptr( incidence->clone() );
+  d->m_incidenceBeingChanged = Incidence::Ptr( incidence->clone() );
   return true;
 }
 
@@ -161,13 +161,13 @@ bool AkonadiCalendar::endChange( const Item &item )
   // without any actual changes happening. Nested modify jobs confuse the
   // conflict detection in Akonadi, so let's avoid them.
   ComparisonVisitor v;
-  KCal::Incidence::Ptr incidencePtr( d->m_incidenceBeingChanged );
-  d->m_incidenceBeingChanged = KCal::Incidence::Ptr();
+  Incidence::Ptr incidencePtr( d->m_incidenceBeingChanged );
+  d->m_incidenceBeingChanged = Incidence::Ptr();
   if ( v.compare( incidence.get(), incidencePtr.get() ) )
     return true;
 
   kDebug() << "modify uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
-  Akonadi::ItemModifyJob *job = new Akonadi::ItemModifyJob( item, d->m_session );
+  ItemModifyJob *job = new ItemModifyJob( item, d->m_session );
 
   connect( job, SIGNAL(result( KJob*)), d, SLOT(modifyDone(KJob*)) );
   return true;
@@ -248,7 +248,7 @@ void AkonadiCalendar::incidenceUpdated( IncidenceBase *incidence )
 {
   KDateTime nowUTC = KDateTime::currentUtcDateTime();
   incidence->setLastModified( nowUTC );
-  KCal::Incidence* i = dynamic_cast<KCal::Incidence*>( incidence );
+  Incidence* i = dynamic_cast<Incidence*>( incidence );
   Q_ASSERT( i );
 }
 
@@ -269,11 +269,11 @@ bool AkonadiCalendar::deleteEvent( const Item &event )
 
 Item AkonadiCalendar::event( const Item::Id &id )
 {
-  const Akonadi::Item item = d->m_itemMap.value( id );
+  const Item item = d->m_itemMap.value( id );
   if ( Akonadi::event( item ) )
     return item;
   else
-    return Akonadi::Item();
+    return Item();
 }
 
 bool AkonadiCalendar::addTodo( const Todo::Ptr &todo )
@@ -317,18 +317,18 @@ bool AkonadiCalendar::deleteTodo( const Item &todo )
 
 Item AkonadiCalendar::todo( const Item::Id &id )
 {
-  const Akonadi::Item item = d->m_itemMap.value( id );
+  const Item item = d->m_itemMap.value( id );
   if ( Akonadi::todo( item ) )
     return item;
   else
-    return Akonadi::Item();
+    return Item();
 }
 
 Item::List AkonadiCalendar::rawTodos( TodoSortField sortField, SortDirection sortDirection )
 {
   kDebug()<<sortField<<sortDirection;
   Item::List todoList;
-  QHashIterator<Akonadi::Item::Id, Akonadi::Item> i( d->m_itemMap );
+  QHashIterator<Item::Id, Item> i( d->m_itemMap );
   while ( i.hasNext() ) {
     i.next();
     if( Akonadi::todo( i.value() ) )
@@ -344,7 +344,7 @@ Item::List AkonadiCalendar::rawTodosForDate( const QDate &date )
   kDebug()<<date.toString();
   Item::List todoList;
   QString dateStr = date.toString();
-  QMultiHash<QString, Akonadi::Item>::const_iterator it = d->m_itemsForDate.constFind( dateStr );
+  QMultiHash<QString, Item>::const_iterator it = d->m_itemsForDate.constFind( dateStr );
   while ( it != d->m_itemsForDate.constEnd() && it.key() == dateStr ) {
     if( Akonadi::todo( it.value() ) )
       todoList.append( it.value() );
@@ -392,7 +392,7 @@ Item::List AkonadiCalendar::rawEventsForDate( const QDate &date, const KDateTime
   // Find the hash for the specified date
   QString dateStr = date.toString();
   // Iterate over all non-recurring, single-day events that start on this date
-  QMultiHash<QString, Akonadi::Item>::const_iterator it = d->m_itemsForDate.constFind( dateStr );
+  QMultiHash<QString, Item>::const_iterator it = d->m_itemsForDate.constFind( dateStr );
   KDateTime::Spec ts = timespec.isValid() ? timespec : timeSpec();
   KDateTime kdt( date, ts );
   while ( it != d->m_itemsForDate.constEnd() && it.key() == dateStr ) {
@@ -406,7 +406,7 @@ Item::List AkonadiCalendar::rawEventsForDate( const QDate &date, const KDateTime
     ++it;
   }
   // Iterate over all events. Look for recurring events that occur on this date
-  QHashIterator<Akonadi::Item::Id, Akonadi::Item> i( d->m_itemMap );
+  QHashIterator<Item::Id, Item> i( d->m_itemMap );
   while ( i.hasNext() ) {
     i.next();
     if( Event::Ptr ev = Akonadi::event( i.value() ) ) {
@@ -443,7 +443,7 @@ Item::List AkonadiCalendar::rawEvents( const QDate &start, const QDate &end, con
   KDateTime nd( end, ts );
   KDateTime yesterStart = st.addDays( -1 );
   // Get non-recurring events
-  QHashIterator<Akonadi::Item::Id, Akonadi::Item> i( d->m_itemMap );
+  QHashIterator<Item::Id, Item> i( d->m_itemMap );
   while ( i.hasNext() ) {
     i.next();
     if( Event::Ptr event = Akonadi::event( i.value() ) ) {
@@ -484,7 +484,7 @@ Item::List AkonadiCalendar::rawEvents( EventSortField sortField, SortDirection s
 {
   kDebug()<<sortField<<sortDirection;
   Item::List eventList;
-  QHashIterator<Akonadi::Item::Id, Akonadi::Item> i( d->m_itemMap );
+  QHashIterator<Item::Id, Item> i( d->m_itemMap );
   while ( i.hasNext() ) {
     i.next();
     if( Akonadi::event( i.value() ) )
@@ -508,18 +508,18 @@ bool AkonadiCalendar::deleteJournal( const Item &journal )
 
 Item AkonadiCalendar::journal( const Item::Id &id )
 {
-  const Akonadi::Item item = d->m_itemMap.value( id );
+  const Item item = d->m_itemMap.value( id );
   if ( Akonadi::journal( item ) )
     return item;
   else
-    return Akonadi::Item();
+    return Item();
 }
 
 Item::List AkonadiCalendar::rawJournals( JournalSortField sortField, SortDirection sortDirection )
 {
   kDebug()<<sortField<<sortDirection;
   Item::List journalList;
-  QHashIterator<Akonadi::Item::Id, Akonadi::Item> i( d->m_itemMap );
+  QHashIterator<Item::Id, Item> i( d->m_itemMap );
   while ( i.hasNext() ) {
     i.next();
     if( Akonadi::journal( i.value() ) )
@@ -533,11 +533,21 @@ Item::List AkonadiCalendar::rawJournalsForDate( const QDate &date )
   kDebug()<<date.toString();
   Item::List journalList;
   QString dateStr = date.toString();
-  QMultiHash<QString, Akonadi::Item>::const_iterator it = d->m_itemsForDate.constFind( dateStr );
+  QMultiHash<QString, Item>::const_iterator it = d->m_itemsForDate.constFind( dateStr );
   while ( it != d->m_itemsForDate.constEnd() && it.key() == dateStr ) {
     if( Akonadi::journal( it.value() ) )
       journalList.append( it.value() );
     ++it;
   }
   return journalList;
+}
+
+Item AkonadiCalendar::findParent( const Item & ) const {
+  //TODO (AKONADI_PORT)
+  return Item();
+}
+
+Item::List AkonadiCalendar::findChildren( const Item & ) const {
+  //TODO (AKONADI_PORT)
+  return Item::List();
 }

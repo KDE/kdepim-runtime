@@ -229,3 +229,11 @@ void CalendarNull::incidenceUpdated( IncidenceBase *incidenceBase )
 {
   Q_UNUSED( incidenceBase );
 }
+
+Item CalendarNull::findParent( const Item & ) const {
+  return Item();
+}
+
+Item::List CalendarNull::findChildren( const Item & ) const {
+  return Item::List();
+}

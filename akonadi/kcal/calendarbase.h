@@ -894,6 +894,8 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
     */
     virtual Akonadi::Item journal( const Akonadi::Item::Id &id ) = 0;
 
+    virtual Akonadi::Item findParent( const Akonadi::Item& item ) const = 0;
+    virtual Akonadi::Item::List findChildren( const Akonadi::Item &item ) const = 0;
     /**
       Emits the beginBatchAdding() signal.
 
