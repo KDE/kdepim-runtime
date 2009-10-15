@@ -77,27 +77,6 @@ class AkonadiCalendarCollection : public QObject
     }
 };
 
-class AkonadiCalendarItem
-{
-  public:
-    Akonadi::Item m_item; //needed to keep an instance to increment shared_ptr ref-counter
-
-    AkonadiCalendarItem(const Akonadi::Item &item)
-      : m_item(item)
-    {
-    }
-
-    ~AkonadiCalendarItem()
-    {
-    }
-
-    KCal::Incidence::Ptr incidence() const
-    {
-      Q_ASSERT( m_item.hasPayload<KCal::Incidence::Ptr>() );
-      return m_item.payload<KCal::Incidence::Ptr>();
-    }
-};
-
 class KOrg::AkonadiCalendar::Private : public QObject
 {
     Q_OBJECT
