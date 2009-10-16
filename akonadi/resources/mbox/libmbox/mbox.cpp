@@ -71,10 +71,6 @@ static QString sMBoxSeperatorRegExp( "^From .*[0-9][0-9]:[0-9][0-9]" );
 
 /// private static methods.
 
-QByteArray quoteAndEncode( const QString &str )
-{
-  return QFile::encodeName( KShell::quoteArg( str ) );
-}
 
 /// public methods.
 
@@ -239,9 +235,9 @@ bool MBox::lock()
     case ProcmailLockfile:
       args << "-l20" << "-r5";
       if ( !d->mLockFileName.isEmpty() )
-        args << quoteAndEncode(d->mLockFileName);
+        args << QFile::encodeName( d->mLockFileName );
       else
-        args << quoteAndEncode(d->mMboxFile.fileName() + ".lock");
+        args << QFile::encodeName( d->mMboxFile.fileName() + ".lock" );
 
       rc = QProcess::execute("lockfile", args);
       if( rc != 0 ) {
@@ -255,7 +251,7 @@ bool MBox::lock()
       break;
 
     case MuttDotlock:
-      args << quoteAndEncode( d->mMboxFile.fileName() );
+      args << QFile::encodeName( d->mMboxFile.fileName() );
       rc = QProcess::execute( "mutt_dotlock", args );
 
       if( rc != 0 ) {
@@ -269,7 +265,7 @@ bool MBox::lock()
       break;
 
     case MuttDotlockPrivileged:
-      args << "-p" << quoteAndEncode( d->mMboxFile.fileName() );
+      args << "-p" << QFile::encodeName( d->mMboxFile.fileName() );
       rc = QProcess::execute( "mutt_dotlock", args );
 
       if( rc != 0 ) {
@@ -552,12 +548,12 @@ bool MBox::unlock()
       break;
 
     case MuttDotlock:
-      args << "-u" << quoteAndEncode( d->mMboxFile.fileName() );
+      args << "-u" << QFile::encodeName( d->mMboxFile.fileName() );
       rc = QProcess::execute( "mutt_dotlock", args );
       break;
 
     case MuttDotlockPrivileged:
-      args << "-u" << "-p" << quoteAndEncode( d->mMboxFile.fileName() );
+      args << "-u" << "-p" << QFile::encodeName( d->mMboxFile.fileName() );
       rc = QProcess::execute( "mutt_dotlock", args );
       break;
 
