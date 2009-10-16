@@ -14,7 +14,6 @@ set( kcalakonadi_LIB_SRC
      kcalitembrowser.cpp
      itembrowser.cpp
      calendarbase.cpp
-     calendarnull.cpp
      akonadicalendar.cpp
      utils.cpp
 )
