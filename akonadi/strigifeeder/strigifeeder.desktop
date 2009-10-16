@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=Strigi Feeder
+Name[uk]=Передавач Strigi
 Comment=Strigi-based fulltext search
 Comment[ga]=Cuardach lántéacs bunaithe ar Strigi
 Comment[hi]=स्ट्रिगि आधारित संपूर्ण-पाठ खोज
+Comment[uk]=Повнотекстовий пошук на основі Strigi
 Type=AkonadiAgent
 Exec=akonadi_strigi_feeder
 
