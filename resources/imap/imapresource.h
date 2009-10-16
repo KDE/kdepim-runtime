@@ -107,6 +107,7 @@ private Q_SLOTS:
   void onPreItemMoveSelectDone( KJob *job );
   void onCopyMessageDone( KJob *job );
   void onPostItemMoveStoreFlagsDone( KJob *job );
+  void onIdleCollectionFetchDone( KJob *job );
 
   void startConnect( bool forceManualAuth = false );
   void reconnect();

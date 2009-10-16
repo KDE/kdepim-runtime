@@ -1639,9 +1639,8 @@ void ImapResource::startIdle()
   if ( !m_account || !m_account->capabilities().contains( "IDLE" ) )
     return;
 
-  const QString password = Settings::self()->password();
   const QStringList ridPath = Settings::self()->idleRidPath();
-  if ( password.isEmpty() || ridPath.size() < 2 )
+  if ( ridPath.size() < 2 )
     return;
 
   Collection c, p;
@@ -1653,7 +1652,39 @@ void ImapResource::startIdle()
   }
   c.setRemoteId( ridPath.first() );
 
-  m_idle = new ImapIdleManager( c, m_account->createExtraSession( password ), this );
+  Akonadi::CollectionFetchScope scope;
+  scope.setResource( identifier() );
+
+  Akonadi::CollectionFetchJob *fetch
+    = new Akonadi::CollectionFetchJob( c, Akonadi::CollectionFetchJob::Base, this );
+  fetch->setFetchScope( scope );
+  fetch->setProperty( "mailBox", mailBoxForCollection( c ) );
+
+  connect( fetch, SIGNAL(result(KJob*)),
+           this, SLOT(onIdleCollectionFetchDone(KJob*)) );
+}
+
+void ImapResource::onIdleCollectionFetchDone( KJob *job )
+{
+  const QString mailBox = job->property( "mailBox" ).toString();
+
+  if ( job->error() == 0 ) {
+    Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob*>( job );
+    Akonadi::Collection c = fetch->collections().first();
+
+    const QString password = Settings::self()->password();
+    if ( password.isEmpty() )
+      return;
+
+    m_idle = new ImapIdleManager( c, mailBox,
+                                  m_account->createExtraSession( password ),
+                                  this );
+
+  } else {
+    kWarning() << "CollectionFetch for mail box "
+               << mailBox << "failed. error="
+               << job->error() << ", errorString=" << job->errorString();
+  }
 }
 
 AKONADI_RESOURCE_MAIN( ImapResource )
