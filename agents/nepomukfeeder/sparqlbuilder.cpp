@@ -19,12 +19,14 @@
 
 #include "sparqlbuilder.h"
 
+#include <Soprano/Node>
+#include <Soprano/LiteralValue>
 #include <Soprano/Vocabulary/XMLSchema>
 #include <QStringList>
 
 static inline QString urlToString( const QUrl &url )
 {
-  return QLatin1Char( '<' ) + url.toString() + QLatin1Char( '>' );
+  return Soprano::Node::resourceToN3( url );
 }
 
 void SparqlBuilder::TriplePattern::setSubject(const QUrl& subject)
@@ -54,22 +56,9 @@ void SparqlBuilder::TriplePattern::setObject(const QString& object)
 
 void SparqlBuilder::TriplePattern::setObject(const QVariant& object)
 {
-  switch ( object.type() ) {
-    case QVariant::String:
-      m_object = valueToString( object.toString(), Soprano::Vocabulary::XMLSchema::string() );
-      break;
-    case QVariant::Bool:
-      if ( object.toBool() )
-        m_object = valueToString( QLatin1String( "true" ), Soprano::Vocabulary::XMLSchema::boolean() );
-      else
-        m_object = valueToString( QLatin1String( "false" ), Soprano::Vocabulary::XMLSchema::boolean() );
-      break;
-    case QVariant::Int:
-      m_object = valueToString( QString::number( object.toInt() ), Soprano::Vocabulary::XMLSchema::integer() );
-      break;
-    default:
-      Q_ASSERT( "Type not supported (yet)" == false );
-  }
+  Soprano::LiteralValue l( object );
+  Q_ASSERT( l.isValid() );
+  m_object = Soprano::Node::literalToN3( l );
 }
 
 void SparqlBuilder::TriplePattern::setObject(const SparqlBuilder::QueryVariable& variable)
