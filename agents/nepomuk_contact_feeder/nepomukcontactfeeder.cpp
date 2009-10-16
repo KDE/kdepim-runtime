@@ -90,6 +90,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
 {
   // create the contact with the graph reference
   NepomukFast::PersonContact contact( item.url(), graphUri );
+  contact.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( "view-pim-contacts" ) );
   setParent( contact, item );
 
   const KABC::Addressee addressee = item.payload<KABC::Addressee>();
