@@ -118,9 +118,6 @@ void AkonadiCalendar::removeCollection( const Akonadi::Collection &collection )
 
 bool AkonadiCalendar::beginChange( const Item &item )
 {
-  if( ! CalendarBase::beginChange( item ) )
-    return false;
-
   const Incidence::Ptr incidence = Akonadi::incidence( item );
   Q_ASSERT( incidence );
 
@@ -141,12 +138,6 @@ bool AkonadiCalendar::endChange( const Item &item )
   Q_ASSERT( incidence );
 
   const bool isModification = d->m_changes.removeAll( item.id() ) >= 1;
-
-  if( ! CalendarBase::endChange( item ) ) {
-    // should not happen, but well...
-    kDebug() << "Abort modify uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
-    return false;
-  }
 
   if( ! isModification || !d->m_incidenceBeingChanged ) {
     // only if beginChange() with the incidence was called then this is a modification else it

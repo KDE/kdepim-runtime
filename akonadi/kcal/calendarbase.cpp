@@ -1127,18 +1127,6 @@ Item::List CalendarBase::mergeIncidenceList( const Item::List &events,
   return incidences;
 }
 
-bool CalendarBase::beginChange( const Item &incidence )
-{
-  Q_UNUSED( incidence );
-  return true;
-}
-
-bool CalendarBase::endChange( const Item &incidence )
-{
-  Q_UNUSED( incidence );
-  return true;
-}
-
 void CalendarBase::setObserversEnabled( bool enabled )
 {
   d->mObserversEnabled = enabled;
