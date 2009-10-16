@@ -545,15 +545,18 @@ Item::List AkonadiCalendar::rawJournalsForDate( const QDate &date )
 
 Item AkonadiCalendar::findParent( const Item &child ) const
 {
-  return d->m_childToParent.value( child.id() );
+  return d->m_itemMap.value( d->m_childToParent.value( child.id() ) );
 }
 
 Item::List AkonadiCalendar::findChildren( const Item &parent ) const {
-  return d->m_parentToChildren.value( parent.id() );
+  Item::List l;
+  Q_FOREACH( const Item::Id &id, d->m_parentToChildren.value( parent.id() ) )
+      l.push_back( d->m_itemMap.value( id ) );
+  return l;
 }
 
 bool AkonadiCalendar::isChild( const Item &parent, const Item &child ) const {
-  return d->m_childToParent.value( child.id() ).id() == parent.id();
+  return d->m_childToParent.value( child.id() ) == parent.id();
 }
 
 Akonadi::Item::Id AkonadiCalendar::itemIdForIncidenceUid(const QString &uid) const {

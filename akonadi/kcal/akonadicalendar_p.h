@@ -78,7 +78,7 @@ class AkonadiCalendarCollection : public QObject
     }
 };
 
-namespace {
+namespace KOrg {
   struct UnseenItem {
     Akonadi::Entity::Id collection;
     QString uid;
@@ -90,6 +90,7 @@ namespace {
     }
   };
 }
+
 class KOrg::AkonadiCalendar::Private : public QObject
 {
     Q_OBJECT
@@ -201,16 +202,13 @@ class KOrg::AkonadiCalendar::Private : public QObject
     QHash<Akonadi::Entity::Id, AkonadiCalendarCollection*> m_collectionMap;
     QHash<Akonadi::Item::Id, Akonadi::Item> m_itemMap; // akonadi id to items
 
-    QHash<Akonadi::Item::Id, Akonadi::Item> m_childToParent; // child to parent map, for already cached parents
-    QHash<Akonadi::Item::Id, Akonadi::Item::List> m_parentToChildren; //parent to children map, for alread cached children
-    QMap<UnseenItem, Akonadi::Item::Id> m_UidToItemId;
+    QHash<Akonadi::Item::Id, Akonadi::Item::Id> m_childToParent; // child to parent map, for already cached parents
+    QHash<Akonadi::Item::Id, QVector<Akonadi::Item::Id> > m_parentToChildren; //parent to children map, for alread cached children
+    QMap<UnseenItem, Akonadi::Item::Id> m_uidToItemId;
 
-    /*
     QHash<Akonadi::Item::Id, UnseenItem> m_childToUnseenParent; // child to parent map, unknown/not cached parent items
-    QMap<UnseenItem, Akonadi::Item::Id> mUnseenChildToParent;
-    QHash<Akonadi::Item::Id, QVector<UnseenItem> > m_parentToUnseenChildren;  //parent to children map, for unknown/not cached child items
     QMap<UnseenItem, QVector<Akonadi::Item::Id> > m_unseenParentToChildren;
-    */
+
     QList<Akonadi::Item::Id> m_changes; //list of item ids that are modified atm
     KCal::Incidence::Ptr m_incidenceBeingChanged; // clone of the incidence currently being modified, for rollback and to check if something actually changed
 
@@ -270,10 +268,78 @@ class KOrg::AkonadiCalendar::Private : public QObject
       ui.collection = item.storageCollectionId();
       ui.uid = incidence->uid();
 
+      //REVIEW(AKONADI_PORT)
+      //UIDs might be duplicated and thus not unique, so for now we assume that the relatedTo
+      // UID refers to an item in the same collection.
+      //this might break with virtual collections, so we might fall back to a global UID
+      //to akonadi item mapping, and pick just any item (or the first found, or whatever strategy makes sense)
+      //from the ones with the same UID
+      const QString parentUID = incidence->relatedToUid();
+      const bool hasParent = !parentUID.isEmpty();
+      UnseenItem parentItem;
+      QMap<UnseenItem,Akonadi::Item::Id>::const_iterator parentIt = m_uidToItemId.constEnd();
+      bool knowParent = false;
+      bool parentNotChanged = false;
+      if ( hasParent ) {
+        parentItem.collection = item.storageCollectionId();
+        parentItem.uid = parentUID;
+        QMap<UnseenItem,Akonadi::Item::Id>::const_iterator parentIt = m_uidToItemId.constFind( parentItem );
+        knowParent = parentIt != m_uidToItemId.constEnd();
+      }
+
       if ( alreadyExisted ) {
-        Q_ASSERT( m_UidToItemId.value( ui ) == item.id() );
+        Q_ASSERT( m_uidToItemId.value( ui ) == item.id() );
+        QHash<Akonadi::Item::Id,Akonadi::Item::Id>::Iterator oldParentIt = m_childToParent.find( id );
+        if ( oldParentIt != m_childToParent.constEnd() ) {
+          const Incidence::Ptr parentInc = Akonadi::incidence( m_itemMap.value( oldParentIt.value() ) );
+          Q_ASSERT( parentInc );
+          if ( parentInc->uid() != parentUID ) {
+            //parent changed, remove old entries
+            Akonadi::incidence( item )->setRelatedTo( 0 );
+            QVector<Akonadi::Item::Id>& l = m_parentToChildren[oldParentIt.value()];
+            l.erase( std::remove( l.begin(), l.end(), id ), l.end() );
+            m_childToParent.remove( id );
+          } else
+            parentNotChanged = true;
+        } else { //old parent not seen, maybe unseen?
+          QHash<Akonadi::Item::Id,UnseenItem>::Iterator oldUnseenParentIt = m_childToUnseenParent.find( id );
+          if ( oldUnseenParentIt != m_childToUnseenParent.constEnd() ) {
+            if ( oldUnseenParentIt.value().uid != parentUID ) {
+              //parent changed, remove old entries
+              QVector<Akonadi::Item::Id>& l = m_unseenParentToChildren[oldUnseenParentIt.value()];
+              l.erase( std::remove( l.begin(), l.end(), id ), l.end() );
+              m_childToUnseenParent.remove( id );
+            }
+            else
+              parentNotChanged = true;
+          }
+        }
+
       } else {
-        m_UidToItemId.insert( ui, item.id() );
+        m_uidToItemId.insert( ui, item.id() );
+
+        //check for already known children:
+        const QVector<Akonadi::Item::Id> orphanedChildren = m_unseenParentToChildren.value( ui );
+        if ( !orphanedChildren.isEmpty() )
+          m_parentToChildren.insert( id, orphanedChildren );
+        Q_FOREACH ( const Akonadi::Item::Id &cid, orphanedChildren )
+          m_childToParent.insert( cid, id );
+        m_unseenParentToChildren.remove( ui );
+        m_childToUnseenParent.remove( id );
+      }
+
+      if ( hasParent && !parentNotChanged ) {
+        if ( knowParent ) {
+          Q_ASSERT( !m_parentToChildren.value( parentIt.value() ).contains( id ) );
+          const Incidence::Ptr parentInc = Akonadi::incidence( m_itemMap.value( parentIt.value() ) );
+          Q_ASSERT( parentInc );
+          Akonadi::incidence( item )->setRelatedTo( parentInc.get() );
+          m_parentToChildren[parentIt.value()].push_back( id );
+          m_childToParent.insert( id, parentIt.value() );
+        } else {
+          m_childToUnseenParent.insert( id, parentItem );
+          m_unseenParentToChildren[parentItem].push_back( id );
+        }
       }
 
       if ( !alreadyExisted ) {
