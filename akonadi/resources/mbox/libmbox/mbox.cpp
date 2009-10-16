@@ -184,7 +184,11 @@ bool MBox::load( const QString &fileName )
 
     line = d->mMboxFile.readLine();
 
-    if ( regexp.indexIn( line ) >= 0 || d->mMboxFile.atEnd() ) {
+    // if atEnd, use mail only if there was a separator line at all,
+    // otherwise it's not a valid mbox
+    if ( regexp.indexIn( line ) >= 0 ||
+         ( d->mMboxFile.atEnd() && ( prevSeparator.size() != 0 ) ) ) {
+
       // Found the separator or at end of file, the message starts at offs
       quint64 msgSize = pos - offs;
 
@@ -217,7 +221,7 @@ bool MBox::load( const QString &fileName )
     }
   }
 
-  return unlock(); // FIXME: What if unlock fails?
+  return unlock() && ( prevSeparator.size() != 0 ); // FIXME: What if unlock fails?
 }
 
 bool MBox::lock()
