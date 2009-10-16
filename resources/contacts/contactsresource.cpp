@@ -36,6 +36,8 @@ using namespace Akonadi;
 ContactsResource::ContactsResource( const QString &id )
   : ResourceBase( id )
 {
+  setHierarchicalRemoteIdentifiersEnabled( true );
+
   // setup the resource
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
