@@ -96,9 +96,9 @@ void MTDummyResource::sendItem( const Item &message )
 void MTDummyResource::jobResult( KJob *job )
 {
   if( job->error() ) {
-    itemSent( currentlySending, TransportFailed, job->errorString() );
+    itemSent( Item( currentlySending ), TransportFailed, job->errorString() );
   } else {
-    itemSent( currentlySending, TransportSucceeded );
+    itemSent( Item( currentlySending ), TransportSucceeded );
   }
   currentlySending = -1;
 }
