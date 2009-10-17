@@ -86,6 +86,10 @@ install(
 			programeditor.h
 			ruleeditor.h
 			rulelisteditor.h
+            editorfactory.h
+            actioneditor.h
+            expandingscrollarea.h
+            ${CMAKE_CURRENT_BINARY_DIR}/config-akonadi-filter-ui.h
 		DESTINATION
 			${INCLUDE_INSTALL_DIR}/akonadi/filter/ui
 		COMPONENT
