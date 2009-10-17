@@ -64,6 +64,7 @@ SearchWidget::SearchWidget( QWidget *parent )
   mQueryCombo->addItem( "Empty" );
   mQueryCombo->addItem( "Contacts by email address" );
   mQueryCombo->addItem( "Contacts by name" );
+  mQueryCombo->addItem( "Email by From/Full Name" );
 
   connect( button, SIGNAL( clicked() ), this, SLOT( search() ) );
   connect( mQueryCombo, SIGNAL( activated( int ) ), this, SLOT( querySelected( int ) ) );
@@ -119,6 +120,13 @@ void SearchWidget::querySelected( int index )
                                 "prefix nco:<http://www.semanticdesktop.org/ontologies/2007/03/22/nco#>\n"
                                 "SELECT ?r WHERE {\n"
                                 "  ?r nco:fullname \"Tobias Koenig\"^^<http://www.w3.org/2001/XMLSchema#string>.\n"
+                                "}\n"
+                              );
+  } else if ( index == 3 ) {
+    mQueryWidget->setPlainText( "SELECT ?mail WHERE {\n"
+                                " ?mail <http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#from> ?person .\n"
+                                " ?person <http://www.semanticdesktop.org/ontologies/2007/03/22/nco#fullname> "
+                                  "'Martin Koller'^^<http://www.w3.org/2001/XMLSchema#string> .\n"
                                 "}\n"
                               );
   }
