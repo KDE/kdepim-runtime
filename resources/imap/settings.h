@@ -34,7 +34,7 @@ public:
     void setWinId( WId );
 
 public slots:
-    Q_SCRIPTABLE QString password() const;
+    Q_SCRIPTABLE QString password( bool *userRejected = 0 ) const;
     Q_SCRIPTABLE void setPassword( const QString &password );
 
 private:

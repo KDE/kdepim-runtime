@@ -64,14 +64,20 @@ void Settings::setWinId( WId winId )
     m_winId = winId;
 }
 
-QString Settings::password() const
+QString Settings::password(bool *userRejected) const
 {
+    if ( userRejected != 0 ) {
+      *userRejected = false;
+    }
+
     if ( !m_password.isEmpty() )
       return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() && wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), m_password );
+    } else if ( userRejected != 0 ) {
+        *userRejected = true;
     }
     delete wallet;
     return m_password;

@@ -128,7 +128,6 @@ ImapResource::ImapResource( const QString &id )
   setHierarchicalRemoteIdentifiersEnabled( true );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
-  reconnect();
 }
 
 ImapResource::~ImapResource()
@@ -236,9 +235,14 @@ void ImapResource::startConnect( bool forceManualAuth )
     return;
   }
 
-  QString password = Settings::self()->password();
+  bool userRejected = false;
+  QString password = Settings::self()->password( &userRejected );
 
-  if ( password.isEmpty() || forceManualAuth ) {
+  if ( userRejected ) {
+      emit status( Broken, i18n( "Couldn't read the password, user rejected wallet access." ) );
+      return;
+
+  } else if ( password.isEmpty() || forceManualAuth ) {
     if ( !manualAuth( Settings::self()->userName(), password ) ) {
       emit status( Broken, i18n( "Authentication failed." ) );
       return;
