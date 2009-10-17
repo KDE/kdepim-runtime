@@ -37,7 +37,7 @@ class MTDummyResource : public Akonadi::ResourceBase, public Akonadi::TransportR
     virtual void configure( WId windowId );
 
     /* reimpl from ResourceBase::Transport */
-    virtual void sendItem( Akonadi::Item::Id message );
+    virtual void sendItem( const Akonadi::Item &message );
 
   protected Q_SLOTS:
     void retrieveCollections();
