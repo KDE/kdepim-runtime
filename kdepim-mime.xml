@@ -17,4 +17,8 @@ Notes:
     <sub-class-of type="text/plain"/>
     <comment>KDE "Sticky" Notes</comment>
   </mime-type>
+  <mime-type type="text/x-vnd.akonadi.note">
+    <sub-class-of type="message/rfc822"/>
+    <comment>Akonadi Note</comment>
+  </mime-type>
 </mime-info>
