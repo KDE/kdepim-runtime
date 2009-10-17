@@ -37,6 +37,8 @@ class MboxTest : public QObject
     void testAppend();
     void testSaveAndLoad();
     void testBlankLines();
+    void testNoLockPerformance();
+    void testProcfileLockPerformance();
     void cleanupTestCase();
     void testEntries();
     void testPurge();

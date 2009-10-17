@@ -342,6 +342,54 @@ void MboxTest::testPurge()
   QCOMPARE( list2.size(), 0 ); // Are the messages actually gone?
 }
 
+void MboxTest::testNoLockPerformance()
+{
+  mMail1 = MessagePtr( new KMime::Message );
+  mMail1->setContent( KMime::CRLFtoLF( sEntry1 ) );
+  mMail1->parse();
+
+  MBox mbox;
+  mbox.setLockType(MBox::None);
+  mbox.load(fileName());
+  QBENCHMARK {
+    for (int i = 0; i < 1000; ++i) {
+      mbox.appendEntry(mMail1);
+    }
+    mbox.save(fileName());
+
+    MBox mbox2;
+    mbox2.setLockType(MBox::None);
+    mbox2.load(fileName());
+    foreach (MsgInfo const &info, mbox2.entryList()) {
+      mbox2.readEntry(info.first);
+    }
+  }
+}
+
+void MboxTest::testProcfileLockPerformance()
+{
+  mMail1 = MessagePtr( new KMime::Message );
+  mMail1->setContent( KMime::CRLFtoLF( sEntry1 ) );
+  mMail1->parse();
+
+  MBox mbox;
+  mbox.setLockType(MBox::ProcmailLockfile);
+  mbox.load(fileName());
+  QBENCHMARK {
+    for (int i = 0; i < 1000; ++i) {
+      mbox.appendEntry(mMail1);
+    }
+    mbox.save(fileName());
+
+    MBox mbox2;
+    mbox2.setLockType(MBox::ProcmailLockfile);
+    mbox2.load(fileName());
+    foreach (MsgInfo const &info, mbox2.entryList()) {
+      mbox2.readEntry(info.first);
+    }
+  }
+}
+
 void MboxTest::cleanupTestCase()
 {
   mTempDir->unlink();
