@@ -15,6 +15,7 @@ TARGET_LINK_LIBRARIES(akinotes	${KDE4_KDEUI_LIBS}
 				${KDE4_AKONADI_KMIME_LIBS}
 				${KDE4_AKONADI_LIBS}
 				${KDEPIMLIBS_KCAL_LIBS}
+				${QT_QTNETWORK_LIBRARY}
 				stickynotes
 				stickynotes-standalone)
 
