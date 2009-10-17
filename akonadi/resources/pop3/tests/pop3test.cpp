@@ -200,8 +200,10 @@ static const QByteArray simpleMail4 =
 void Pop3Test::cleanupMaildir( Akonadi::Item::List items )
 {
   // Delete all mails so the maildir is clean for the next test
-  ItemDeleteJob *job = new ItemDeleteJob( items );
-  QVERIFY( job->exec() );
+  if ( !items.isEmpty() ) {
+    ItemDeleteJob *job = new ItemDeleteJob( items );
+    QVERIFY( job->exec() );
+  }
 
   QTime time;
   time.start();
@@ -459,6 +461,57 @@ static bool sortedEqual( const QStringList &list1, const QStringList &list2 )
   sorted2.sort();
 
   return qEqual( sorted1.begin(), sorted1.end(), sorted2.begin() );
+}
+
+void Pop3Test::testSeenUIDCleanup()
+{
+  //
+  // First, fetch 3 normal mails, but leave them on the server.
+  //
+  mPOP3SettingsInterface->setLeaveOnServer( true );
+  QList<QByteArray> mails;
+  mails << simpleMail1 << simpleMail2 << simpleMail3;
+  QStringList uids;
+  uids << "UID1" << "UID2" << "UID3";
+  mFakeServerThread->server()->setAllowedDeletions( QString() );
+  mFakeServerThread->server()->setAllowedRetrieves( "1,2,3" );
+  mFakeServerThread->server()->setMails( mails );
+  mFakeServerThread->server()->setNextConversation(
+      loginSequence() +
+      listSequence( mails ) +
+      uidSequence( uids ) +
+      retrieveSequence( mails ) +
+      quitSequence()
+      );
+
+  syncAndWaitForFinish();
+  Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
+  checkMailsInMaildir( mails );
+  cleanupMaildir( items );
+
+  QVERIFY( sortedEqual( uids, mPOP3SettingsInterface->seenUidList().value() ) );
+
+  //
+  // Now, pretend that the messages were removed from the server in the meantime
+  // by having no mails on the fake server.
+  //
+  mFakeServerThread->server()->setMails( QList<QByteArray>() );
+  mFakeServerThread->server()->setAllowedRetrieves( QString() );
+  mFakeServerThread->server()->setAllowedDeletions( QString() );
+  mFakeServerThread->server()->setNextConversation(
+    loginSequence() +
+    listSequence( QList<QByteArray>() ) +
+    uidSequence( uids ) +
+    quitSequence()
+  );
+  syncAndWaitForFinish();
+  items = checkMailsOnAkonadiServer( QList<QByteArray>() );
+  checkMailsInMaildir( QList<QByteArray>() );
+  cleanupMaildir( items );
+
+  QVERIFY( mPOP3SettingsInterface->seenUidList().value().isEmpty() );
+
+  mPOP3SettingsInterface->setLeaveOnServer(false );
 }
 
 void Pop3Test::testSimpleLeaveOnServer()

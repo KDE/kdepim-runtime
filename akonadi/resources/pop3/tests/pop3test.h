@@ -40,6 +40,7 @@ class Pop3Test : public QObject
     void testSimpleDownload();
     void testSimpleLeaveOnServer();
     void testBigFetch();
+    void testSeenUIDCleanup();
 
   private:
     void cleanupMaildir( Akonadi::Item::List items );
