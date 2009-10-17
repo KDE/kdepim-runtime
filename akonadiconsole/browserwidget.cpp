@@ -131,7 +131,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   MimeTypeFilterProxyModel *collectionFilter = new MimeTypeFilterProxyModel( this );
   collectionFilter->setSourceModel( mBrowserModel );
   collectionFilter->addMimeTypeInclusionFilter( Collection::mimeType() );
-  collectionFilter->setHeaderSet( EntityTreeModel::CollectionTreeHeaders );
+  collectionFilter->setHeaderGroup( EntityTreeModel::CollectionTreeHeaders );
 
   statisticsToolTipProxyModel = new StatisticsToolTipProxyModel( this );
   statisticsToolTipProxyModel->setSourceModel( collectionFilter );
@@ -160,7 +160,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   MimeTypeFilterProxyModel *itemFilter = new MimeTypeFilterProxyModel( this );
   itemFilter->setSourceModel( selectionProxyModel );
   itemFilter->addMimeTypeExclusionFilter( Collection::mimeType() );
-  itemFilter->setHeaderSet( EntityTreeModel::ItemListHeaders );
+  itemFilter->setHeaderGroup( EntityTreeModel::ItemListHeaders );
 
   FavoriteCollectionsModel *favoritesModel = new FavoriteCollectionsModel( mBrowserModel, this );
   favoritesView->setModel( favoritesModel );
