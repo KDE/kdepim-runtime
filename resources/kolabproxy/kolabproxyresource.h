@@ -31,7 +31,7 @@ namespace Akonadi {
 class KolabHandler;
 
 class KolabProxyResource : public Akonadi::ResourceBase,
-                           public Akonadi::AgentBase::Observer2
+                           public Akonadi::AgentBase::ObserverV2
 {
   Q_OBJECT
 
