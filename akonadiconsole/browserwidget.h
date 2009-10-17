@@ -43,7 +43,7 @@ namespace Akonadi {
 class EntityTreeView;
 class Job;
 class StandardActionManager;
-class StatisticsToolTipProxyModel;
+class StatisticsProxyModel;
 class Monitor;
 }
 
@@ -76,7 +76,7 @@ class BrowserWidget: public QWidget
   private:
     AkonadiBrowserModel *mBrowserModel;
     Akonadi::EntityTreeView *mCollectionView;
-    Akonadi::StatisticsToolTipProxyModel *statisticsToolTipProxyModel;
+    Akonadi::StatisticsProxyModel *statisticsProxyModel;
     Ui::ItemViewWidget itemUi;
     Ui::ContentViewWidget contentUi;
     Akonadi::Item mCurrentItem;

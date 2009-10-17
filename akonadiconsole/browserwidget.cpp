@@ -45,7 +45,6 @@
 #include <akonadi/favoritecollectionsmodel.h>
 #include <akonadi_next/quotacolorproxymodel.h>
 #include <akonadi/statisticsproxymodel.h>
-#include <akonadi/statisticstooltipproxymodel.h>
 
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
@@ -133,11 +132,9 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   collectionFilter->addMimeTypeInclusionFilter( Collection::mimeType() );
   collectionFilter->setHeaderGroup( EntityTreeModel::CollectionTreeHeaders );
 
-  statisticsToolTipProxyModel = new StatisticsToolTipProxyModel( this );
-  statisticsToolTipProxyModel->setSourceModel( collectionFilter );
-
-  StatisticsProxyModel *statisticsProxyModel = new StatisticsProxyModel( this );
-  statisticsProxyModel->setSourceModel( statisticsToolTipProxyModel );
+  statisticsProxyModel = new StatisticsProxyModel( this );
+  statisticsProxyModel->setToolTipEnabled( true );
+  statisticsProxyModel->setSourceModel( collectionFilter );
 
   QuotaColorProxyModel *quotaProxyModel = new QuotaColorProxyModel( this );
   quotaProxyModel->setWarningThreshold( 50.0 );
@@ -379,8 +376,8 @@ void BrowserWidget::modelChanged()
   saver->saveState( saveConfig );
   saveConfig.sync();
 
-  QAbstractItemModel *model = statisticsToolTipProxyModel->sourceModel();
-  statisticsToolTipProxyModel->setSourceModel(0);
+  QAbstractItemModel *model = statisticsProxyModel->sourceModel();
+  statisticsProxyModel->setSourceModel(0);
   switch ( itemUi.modelBox->currentIndex() ) {
     case 1:
       mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::MailMode);
@@ -394,7 +391,7 @@ void BrowserWidget::modelChanged()
     default:
       mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::GenericMode);
   }
-  statisticsToolTipProxyModel->setSourceModel(model);
+  statisticsProxyModel->setSourceModel(model);
 
   const KConfigGroup restoreConfig( KGlobal::config(), "CollectionViewState" );
   saver->restoreState( restoreConfig );
