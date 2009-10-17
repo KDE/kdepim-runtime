@@ -27,6 +27,8 @@
 // KDEPIMLIBS includes
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
+#include <akonadi/kmime/localfolders.h>
+#include <akonadi/kmime/localfoldersrequestjob.h>
 #include <Mailtransport/ServerTest>
 
 // KDELIBS includes
@@ -190,6 +192,9 @@ void AccountDialog::loadSettings()
   //if ( !intervalCheckingEnabled ) // Default to 5 minutes when the user enables
   //  interval = 5;                 // interval checking for the first time
 
+  if ( mParentResource->name() == mParentResource->identifier() )
+    mParentResource->setName( i18n( "POP3 Account") );
+
   nameEdit->setText( mParentResource->name() );
   nameEdit->setFocus();
   loginEdit->setText( Settings::self()->login() );
@@ -249,12 +254,23 @@ void AccountDialog::loadSettings()
   // We need to fetch the collection, as the CollectionRequester needs the name
   // of it to work correctly
   Collection targetCollection( Settings::self()->targetCollection() );
-  CollectionFetchJob *fetchJob = new CollectionFetchJob( targetCollection,
-                                                         CollectionFetchJob::Base,
-                                                         this );
-  connect( fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
-           this, SLOT(targetCollectionReceived(Akonadi::Collection::List)) );
-  // TODO: Make sure the inbox is shown here by default
+  if ( targetCollection.isValid() ) {
+    CollectionFetchJob *fetchJob = new CollectionFetchJob( targetCollection,
+                                                           CollectionFetchJob::Base,
+                                                           this );
+    connect( fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
+             this, SLOT(targetCollectionReceived(Akonadi::Collection::List)) );
+  }
+  else {
+    // FIXME: This is a bit duplicated from POP3Resource...
+
+    // No target collection set in the config? Try requesting a default inbox
+    LocalFoldersRequestJob *requestJob = new LocalFoldersRequestJob( this );
+    requestJob->requestDefaultFolder( LocalFolders::Inbox );
+    requestJob->start();
+    connect ( requestJob, SIGNAL(result(KJob*)),
+              this, SLOT(localFolderRequestJobFinished(KJob*)) );
+  }
 }
 
 void AccountDialog::slotLeaveOnServerClicked()
@@ -593,6 +609,15 @@ void AccountDialog::slotFontChanged( void )
 void AccountDialog::targetCollectionReceived( Akonadi::Collection::List collections )
 {
   folderRequester->setCollection( collections.first() );
+}
+
+void AccountDialog::localFolderRequestJobFinished( KJob *job )
+{
+  if ( !job->error() ) {
+    Collection targetCollection = LocalFolders::self()->defaultFolder( LocalFolders::Inbox );
+    Q_ASSERT( targetCollection.isValid() );
+    folderRequester->setCollection( targetCollection );
+  }
 }
 
 #include "accountdialog.moc"

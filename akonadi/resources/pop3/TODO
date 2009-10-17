@@ -12,7 +12,16 @@ BUGS
 TODO
 ====
 
+FEATURES
+--------
+- precommand
+- interval mail check
+- wallet
+- online/offline handling
+- filter on server
+
 - get rid of "interactive"
+- online/offline handling
 - Coding Style
   - astyle
   - rename vars, functions
@@ -23,16 +32,11 @@ TODO
   - clean up cmakefiles, remove code duplication with kdepimlibs
   - grep for kmail and remove references
 
-- (!) Implement canceling of a sync
-- (!) password handling / kwallet
-- (!) Config UI
-  -> target collection chooser
-      -> auto-create local inbox
-  -> make resource name configureable
 - unit tests
   - test ssl/tls
   - test with disabled cache
   - all leave on server rules
+  - test cancel mail + seenuidlist
   - weird bugs in svn log (for example the forcedIdsToDelete stuff)
   - add fails -> second check will still work
   - correct error messages passed from pop3 server?
@@ -41,18 +45,12 @@ TODO
   (!) abort requested during mail check
     -> no duplicate messages on next mail check, already added mails added to the seen
        UID list
-- compare each function with popaccount.cpp, find out what is missing, write it down
-- fix FIXMEs
-- error handling
-    - parents for messageboxes (or no messageboxes at all and signal error?)
-    - mail progress items / status messages / done signal
+
 - listen to collection removals -> complain if no longer there
 - proof read and coverage test
 - kconfigxt: labels, tooltips, whatsthis etc
 - config
-    - make setting the name work
     - "include in manual mail check -> remove?
-    - make collectioncombobox work
     - make intervalcheck setting work
 
 Later:

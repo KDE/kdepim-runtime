@@ -29,20 +29,13 @@
 #include <KLineEdit>
 
 #include <QRegExpValidator>
-//class QCheckBox;
-//class QPushButton;
-//class QLabel;
-//class QRadioButton;
-//class QToolButton;
-//class KIntNumInput;
-//class QButtonGroup;
-//class QGroupBox;
 
 namespace MailTransport {
 class ServerTest;
 }
 
 class POP3Resource;
+class KJob;
 
 class AccountDialog : public KDialog, private Ui::PopPage
 {
@@ -69,7 +62,9 @@ class AccountDialog : public KDialog, private Ui::PopPage
     void slotLeaveOnServerDaysChanged( int value );
     void slotLeaveOnServerCountChanged( int value );
     void slotFilterOnServerSizeChanged( int value );
+
     void targetCollectionReceived( Akonadi::Collection::List collections );
+    void localFolderRequestJobFinished( KJob *job );
 
   private:
     void setupWidgets();

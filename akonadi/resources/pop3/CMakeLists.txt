@@ -38,6 +38,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set( pop3resource_SRCS
   pop3resource.cpp
   accountdialog.cpp
+  jobs.cpp
 )
 
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
