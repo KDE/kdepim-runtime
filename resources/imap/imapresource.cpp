@@ -140,6 +140,8 @@ ImapResource::~ImapResource()
 
 bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
+    Q_UNUSED( parts );
+
     if ( !m_account || !m_account->session() ) {
         cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
         reconnect();
@@ -173,6 +175,8 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
                                        const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
+  Q_UNUSED( mailBox );
+
   KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( sender() );
   Q_ASSERT( fetch!=0 );
   Q_ASSERT( uids.size()==1 );
@@ -347,7 +351,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
       uidAttr->setUidNext( uid+1 );
     }
 
-    CollectionModifyJob *modify = new CollectionModifyJob( collection );
+    new CollectionModifyJob( collection );
   }
 }
 
@@ -704,6 +708,7 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 void ImapResource::onMailBoxesReceiveDone(KJob* job)
 {
   // TODO error handling
+  Q_UNUSED( job );
   collectionsRetrievalDone();
 }
 
@@ -808,6 +813,8 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
                                       const QMap<qint64, KIMAP::MessageFlags> &flags,
                                       const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
+  Q_UNUSED( mailBox );
+
   Item::List addedItems;
 
   foreach ( qint64 number, uids.keys() ) {
@@ -1045,9 +1052,6 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
   if ( !job->error() ) {
     triggerNextCollectionChangeJob( collection, parts );
   } else {
-    KIMAP::RenameJob *rename = qobject_cast<KIMAP::RenameJob*>( job );
-
-    // rename the collection again.
     kDebug() << "Failed to rename the folder, resetting it in akonadi again";
     const QString prevRid = job->property( PREVIOUS_REMOTEID ).toString();
     Q_ASSERT( !prevRid.isEmpty() );
@@ -1234,7 +1238,7 @@ void ImapResource::onGetAclDone( KJob *job )
   const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
   if ( oldRights != acl->allRights() ) {
     aclAttribute->setRights( acl->allRights() );
-    CollectionModifyJob *modify = new CollectionModifyJob( collection );
+    new CollectionModifyJob( collection );
   }
 }
 
@@ -1278,7 +1282,7 @@ void ImapResource::onRightsReceived( KJob *job )
   if ( newRights != collection.rights() ) {
     collection.setRights( newRights );
 
-    CollectionModifyJob *modify = new CollectionModifyJob( collection );
+    new CollectionModifyJob( collection );
   }
 }
 
@@ -1376,7 +1380,7 @@ void ImapResource::onGetMetaDataDone( KJob *job )
   const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
   if ( oldAnnotations != annotations ) {
     annotationsAttribute->setAnnotations( annotations );
-    CollectionModifyJob *modify = new CollectionModifyJob( collection );
+    new CollectionModifyJob( collection );
   }
 }
 
@@ -1447,7 +1451,7 @@ void ImapResource::onSelectDone( KJob *job )
     }
   }
 
-  CollectionModifyJob *modify = new CollectionModifyJob( collection );
+  new CollectionModifyJob( collection );
 
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();

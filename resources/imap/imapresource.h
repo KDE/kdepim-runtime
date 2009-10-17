@@ -50,6 +50,8 @@ class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
 
+  using Akonadi::AgentBase::Observer::collectionChanged;
+
 public:
   ImapResource( const QString &id );
   ~ImapResource();
