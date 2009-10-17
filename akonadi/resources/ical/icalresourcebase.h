@@ -44,7 +44,6 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     virtual void configure( WId windowId );
 
   protected Q_SLOTS:
-    void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   protected:
@@ -54,6 +53,7 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     bool readFromFile( const QString &fileName );
     bool writeToFile( const QString &fileName );
     virtual void aboutToQuit();
+    virtual void retrieveItemsFromFile( const Akonadi::Collection &col );
 
     /**
      * Retrieve an incidence from the calendar, and set it into a new item's payload.

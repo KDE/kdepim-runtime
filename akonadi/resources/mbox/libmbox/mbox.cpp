@@ -463,7 +463,7 @@ QByteArray MBox::readEntryHeaders( quint64 offset )
 
   Q_ASSERT( d->mFileLocked );
   Q_ASSERT( d->mMboxFile.isOpen() );
-  Q_ASSERT( d->mMboxFile.size() > 0 );
+  Q_ASSERT( d->mMboxFile.size() > offset );
   Q_ASSERT( static_cast<quint64>(d->mMboxFile.size()) > offset );
 
   d->mMboxFile.seek( offset );

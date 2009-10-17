@@ -107,7 +107,7 @@ void ICalResourceBase::itemRemoved(const Akonadi::Item & item)
   changeProcessed();
 }
 
-void ICalResourceBase::retrieveItems( const Akonadi::Collection & col )
+void ICalResourceBase::retrieveItemsFromFile( const Akonadi::Collection & col )
 {
   if ( !mCalendar )
     return;
