@@ -247,9 +247,9 @@ void POP3Resource::doStateStep()
   case Delete:
     {
       kDebug() << "================ Starting state Delete ===========================";
-      emit status( Running, i18n( "Deleting messages from the server.") );
       QList<int> idsToKill = idsToDelete();
       if ( !idsToKill.isEmpty() ) {
+        emit status( Running, i18n( "Deleting messages from the server.") );
         DeleteJob *deleteJob = new DeleteJob( mPopSession );
         deleteJob->setDeleteIds( idsToKill );
         connect( deleteJob, SIGNAL(result(KJob*)),
