@@ -28,7 +28,7 @@
 #include <akonadi/attributefactory.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/control.h>
-#include <akonadi/entityfilterproxymodel.h>
+#include <akonadi/mimetypefilterproxymodel.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -128,7 +128,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
   new ModelTest( mBrowserModel );
 
-  EntityFilterProxyModel *collectionFilter = new EntityFilterProxyModel( this );
+  MimeTypeFilterProxyModel *collectionFilter = new MimeTypeFilterProxyModel( this );
   collectionFilter->setSourceModel( mBrowserModel );
   collectionFilter->addMimeTypeInclusionFilter( Collection::mimeType() );
   collectionFilter->setHeaderSet( EntityTreeModel::CollectionTreeHeaders );
@@ -157,7 +157,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   selectionProxyModel->setSourceModel( mBrowserModel );
   selectionProxyModel->setFilterBehavior( KSelectionProxyModel::OnlySelectedChildren );
 
-  EntityFilterProxyModel *itemFilter = new EntityFilterProxyModel( this );
+  MimeTypeFilterProxyModel *itemFilter = new MimeTypeFilterProxyModel( this );
   itemFilter->setSourceModel( selectionProxyModel );
   itemFilter->addMimeTypeExclusionFilter( Collection::mimeType() );
   itemFilter->setHeaderSet( EntityTreeModel::ItemListHeaders );
