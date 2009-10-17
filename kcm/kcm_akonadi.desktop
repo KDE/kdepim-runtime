@@ -11,7 +11,7 @@ X-KDE-HasReadOnlyMode=false
 X-KDE-ParentApp=kcontrol
 X-KDE-ParentComponents=
 X-KDE-CfgDlgHierarchy=
-X-KDE-System-Settings-Parent-Category=advanced-user-settings
+X-KDE-System-Settings-Parent-Category=
 
 Name=Akonadi Configuration
 Name[da]=Konfiguration af Akonadi
