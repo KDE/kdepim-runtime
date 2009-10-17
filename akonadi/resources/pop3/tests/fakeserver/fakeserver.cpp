@@ -250,7 +250,8 @@ void FakeServer::setNextConversation( const QString& conversation,
 
     if ( lineData.contains( mailSizeMarker ) ) {
       Q_ASSERT( mMails.size() > sizeIndex );
-      lineData.replace( mailSizeMarker, QString( mMails[sizeIndex++].size() ).toAscii() );
+      lineData.replace( mailSizeMarker,
+                        QString::number( mMails[sizeIndex++].size() ).toAscii() );
     }
     if ( lineData.contains( mailMarker ) ) {
       while( exceptions.contains( mailIndex + 1 ) )
