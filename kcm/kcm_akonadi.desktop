@@ -8,10 +8,9 @@ X-KDE-ModuleType=Library
 X-KDE-Library=kcm_akonadi
 X-KDE-FactoryName=kcm_akonadi
 X-KDE-HasReadOnlyMode=false
-X-KDE-ParentApp=kcontrol
+X-KDE-ParentApp=
 X-KDE-ParentComponents=
 X-KDE-CfgDlgHierarchy=
-X-KDE-System-Settings-Parent-Category=
 
 Name=Akonadi Configuration
 Name[da]=Konfiguration af Akonadi
