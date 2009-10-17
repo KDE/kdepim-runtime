@@ -404,8 +404,7 @@ void POP3Resource::messageFinished( int messageId, KMime::Message::Ptr message )
   item.setMimeType( "message/rfc822" );
   item.setPayload<KMime::Message::Ptr>( message );
 
-  // TEST ItemCreateJob *itemCreateJob = new ItemCreateJob( item, mTargetCollection );
-  ItemCreateJob *itemCreateJob = new ItemCreateJob( item, Collection( -1 ) );
+  ItemCreateJob *itemCreateJob = new ItemCreateJob( item, mTargetCollection );
 
   mPendingCreateJobs.insert( itemCreateJob, messageId );
   connect( itemCreateJob, SIGNAL(result(KJob*)),
@@ -586,8 +585,7 @@ QList<int> POP3Resource::idsToDelete() const
 
   // I don't trust this enough...
   kDebug() << "Going to delete" << idsToDeleteFromServer.size() << idsToDeleteFromServer;
-  // TEST return idsToDeleteFromServer;
-  return QList<int>();
+  return idsToDeleteFromServer;
 }
 
 void POP3Resource::deleteJobResult( KJob *job )
@@ -739,3 +737,5 @@ void POP3Resource::retrieveCollections()
         i18n( "Mail check already in progress, unable to start a second check." ) );
   }
 }
+
+AKONADI_RESOURCE_MAIN( POP3Resource )
