@@ -39,10 +39,10 @@
 #include <akonadi/selectionproxymodel.h>
 #include <akonadi/session.h>
 #include <akonadi/standardactionmanager.h>
+#include <akonadi/entitylistview.h>
 #include <akonadi/entitytreeview.h>
 #include <akonadi/entitytreeviewstatesaver.h>
 #include <akonadi/favoritecollectionsmodel.h>
-#include <akonadi/favoritecollectionsview.h>
 #include <akonadi_next/quotacolorproxymodel.h>
 #include <akonadi/statisticsproxymodel.h>
 #include <akonadi/statisticstooltipproxymodel.h>
@@ -106,7 +106,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   mCollectionView->setSelectionMode( QAbstractItemView::ExtendedSelection );
   splitter2->addWidget( mCollectionView );
 
-  FavoriteCollectionsView *favoritesView = new FavoriteCollectionsView( xmlGuiWindow, this );
+  EntityListView *favoritesView = new EntityListView( xmlGuiWindow, this );
   favoritesView->setViewMode( QListView::IconMode );
   splitter2->addWidget( favoritesView );
 
