@@ -97,6 +97,8 @@
 #include "imapaccount.h"
 #include "imapidlemanager.h"
 
+#include "resourceadaptor.h"
+
 using namespace Akonadi;
 
 static const char AKONADI_COLLECTION[] = "akonadiCollection";
@@ -128,6 +130,8 @@ ImapResource::ImapResource( const QString &id )
   setHierarchicalRemoteIdentifiersEnabled( true );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
+
+  new ResourceAdaptor( this );
 }
 
 ImapResource::~ImapResource()
@@ -776,7 +780,9 @@ void ImapResource::retrieveItems( const Collection &col )
   const QString mailBox = mailBoxForCollection( col );
 
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
-  triggerExpunge( mailBox );
+  if ( Settings::self()->automaticExpungeEnabled() ) {
+    triggerExpunge( mailBox );
+  }
 
   // Issue another select to get the updated info from the mailbox
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
@@ -1695,6 +1701,24 @@ void ImapResource::onIdleCollectionFetchDone( KJob *job )
                << mailBox << "failed. error="
                << job->error() << ", errorString=" << job->errorString();
   }
+}
+
+void ImapResource::requestManualExpunge( const QString &mailBox )
+{
+  if ( !Settings::self()->automaticExpungeEnabled() ) {
+    scheduleCustomTask( this, "expungeRequested", mailBox );
+  }
+}
+
+void ImapResource::expungeRequested( const QVariant &mailBoxArgument )
+{
+  const QString mailBox = mailBoxArgument.toString();
+
+  if ( !mailBox.isEmpty() ) {
+    triggerExpunge( mailBox );
+  }
+
+  changeProcessed();
 }
 
 AKONADI_RESOURCE_MAIN( ImapResource )
