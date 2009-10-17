@@ -149,7 +149,7 @@ void AbortTest::testAbort()
 
   // Tell the MDA to abort.
   QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Running );
-  iface->dispatcherInstance().abort();
+  iface->dispatcherInstance().abortCurrentTask();
   for( int ds = 0; iface->dispatcherInstance().status() != AgentInstance::Idle; ds++ ) {
     QTest::qWait( 100 );
     if( ds % 10 == 0 ) {
@@ -202,7 +202,7 @@ void AbortTest::testAbortWhileIdle()
 
   // Abort thin air.
   QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
-  iface->dispatcherInstance().abort();
+  iface->dispatcherInstance().abortCurrentTask();
   QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
 
   // Queue a message (to check that subsequent messages are being sent).
