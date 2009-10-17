@@ -119,6 +119,9 @@ class POP3Resource : public Akonadi::ResourceBase,
     // This can be empty, if the server doesn't support UIDL
     QMap<int,QString> mIdsToUidsMap;
 
+    // Whether we actually received a valid UID list from the server
+    bool mUidListValid;
+
     // IDs of messages that we have sucessfully downloaded. This does _not_ mean
     // that the messages corresponding to the IDs are stored in Akonadi yet
     QList<int> mDownloadedIDs;

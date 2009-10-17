@@ -353,8 +353,8 @@ void POP3Resource::uidListJobResult( KJob *job )
     mIdsToUidsMap = listJob->uidList();
     kDebug() << "IdToUidMap:" << mIdsToUidsMap;
 
-    if ( Settings::leaveOnServer() && mIdsToUidsMap.isEmpty() &&
-         !mIdsToSizeMap.isEmpty() ) {
+    mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
+    if ( Settings::leaveOnServer() && !mUidListValid ) {
       // FIXME: this needs a proper parent window
       KMessageBox::sorry( 0,
             i18n( "Your POP3 server (Account: %1) does not support "
@@ -654,14 +654,17 @@ void POP3Resource::slotSessionError( int errorCode, const QString &errorMessage 
 
 void POP3Resource::saveSeenUIDList()
 {
+  QList<QString> seenUIDs = Settings::seenUidList();
+  QList<int> timeOfSeenUIDs = Settings::seenUidTimeList();
+
+  //
   // Find the messages that we have sucessfully stored, but did not actually get
-  // deleted
+  // deleted.
+  // Those messages, we have to remember, so we don't download them again.
+  //
   QList<int> idsOfMessagesDownloadedButNotDeleted = mIDsStored;
   foreach( int deletedId, mDeletedIDs )
     idsOfMessagesDownloadedButNotDeleted.removeAll( deletedId );
-
-  // Those messages, we have to remember, so we don't download them again. Therefore,
-  // we save the UIDs of those messages in the settings.
   QList<QString> uidsOfMessagesDownloadedButNotDeleted;
   foreach( int id, idsOfMessagesDownloadedButNotDeleted ) {
     QString uid = mIdsToUidsMap.value( id );
@@ -669,19 +672,45 @@ void POP3Resource::saveSeenUIDList()
       uidsOfMessagesDownloadedButNotDeleted.append( uid );
     }
   }
-
-  QList<QString> seenUIDs = Settings::seenUidList();
-  QList<int> timeOfSeenUIDs = Settings::seenUidTimeList();
   Q_ASSERT( seenUIDs.size() == timeOfSeenUIDs.size() );
   foreach( const QString uid, uidsOfMessagesDownloadedButNotDeleted ) {
     if ( !seenUIDs.contains( uid ) ) {
-      // Test
-      kDebug() << "Appending to seen UID list:" << uid;
       seenUIDs.append( uid );
       timeOfSeenUIDs.append( time( 0 ) );
     }
   }
 
+  //
+  // If we have a valid UID list from the server, delete those UIDs that are in
+  // the seenUidList but are not on the server.
+  // This can happen if someone else than this resource deleted the mails from the
+  // server which we kept here.
+  //
+  if ( mUidListValid ) {
+    QList<QString>::iterator uidIt = seenUIDs.begin();
+    QList<int>::iterator timeIt = timeOfSeenUIDs.begin();
+    while ( uidIt != seenUIDs.end() ) {
+      const QString curSeenUID = *uidIt;
+      if ( !mIdsToUidsMap.values().contains( curSeenUID ) ) {
+        // Ok, we have a UID in the seen UID list that is not anymore on the server.
+        // Therefore remove it from the seen UID list, it is not needed there anymore,
+        // it just wastes space.
+        uidIt = seenUIDs.erase( uidIt );
+        timeIt = timeOfSeenUIDs.erase( timeIt );
+      }
+      else {
+        uidIt++;
+        timeIt++;
+      }
+    }
+  }
+  else
+    kWarning() << "UID list from server is not valid.";
+
+
+  //
+  // Now save it in the settings
+  //
   kDebug() << "The seen UID list has" << seenUIDs.size() << "entries";
   Settings::setSeenUidList( seenUIDs );
   Settings::setSeenUidTimeList( timeOfSeenUIDs );
@@ -714,6 +743,7 @@ void POP3Resource::resetState()
   mPendingCreateJobs.clear();
   mIDsStored.clear();
   mDeletedIDs.clear();
+  mUidListValid = false;
   if ( mPopSession ) {
     // Closing the POP session means the KIO slave will get disconnected, which
     // automatically issues the QUIT command.

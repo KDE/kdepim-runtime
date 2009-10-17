@@ -501,7 +501,7 @@ void Pop3Test::testSeenUIDCleanup()
   mFakeServerThread->server()->setNextConversation(
     loginSequence() +
     listSequence( QList<QByteArray>() ) +
-    uidSequence( uids ) +
+    uidSequence( QStringList() ) +
     quitSequence()
   );
   syncAndWaitForFinish();
