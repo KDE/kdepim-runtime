@@ -116,6 +116,7 @@ private:
   void triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
                                        const QStringList &remainingParts );
   void triggerCollectionExtraInfoJobs( const Akonadi::Collection &collection );
+  void triggerExpunge( const QString &mailBox );
 
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
