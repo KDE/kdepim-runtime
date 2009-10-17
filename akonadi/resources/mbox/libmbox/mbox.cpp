@@ -92,6 +92,10 @@ MBox::~MBox()
   delete d;
 }
 
+// Appended entries works as follows: When an mbox file is loaded from disk,
+// d->mInitialMboxFileSize is set to the file size at that moment. New entries
+// are stored in memory (d->mAppendedEntries). The initial file size and the size
+// of the buffer determine the offset for the next message to append.
 qint64 MBox::appendEntry( const MessagePtr &entry )
 {
   if ( d->mMboxFile.fileName().isEmpty() )
