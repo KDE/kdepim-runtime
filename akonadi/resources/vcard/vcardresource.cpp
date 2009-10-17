@@ -127,7 +127,7 @@ void VCardResource::itemRemoved(const Akonadi::Item & item)
   changeProcessed();
 }
 
-void VCardResource::retrieveItemsFromFile( const Akonadi::Collection & col )
+void VCardResource::retrieveItems( const Akonadi::Collection & col )
 {
   // VCard does not support folders so we can safely ignore the collection
   Q_UNUSED( col );

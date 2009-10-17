@@ -39,12 +39,12 @@ class VCardResource : public Akonadi::SingleFileResource<Settings>
 
   protected Q_SLOTS:
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveItems( const Akonadi::Collection &col );
 
   protected:
     bool readFromFile( const QString &fileName );
     bool writeToFile( const QString &fileName );
     virtual void aboutToQuit();
-    virtual void retrieveItemsFromFile( const Akonadi::Collection &col );
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );

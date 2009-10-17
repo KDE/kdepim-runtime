@@ -56,22 +56,7 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     virtual void readFile() = 0;
     virtual void writeFile() = 0;
 
-  protected Q_SLOTS:
-    /**
-     * This does not actually retrieve the items but checks if the resources is
-     * has unwritten changes and write them before calling retrieveItemsFromFile().
-     */
-    virtual void retrieveItems( const Akonadi::Collection &col );
-
   protected:
-    /**
-     * This is the real implementation of retrieveItems( const Akonadi::Collection &col )
-     * and should be implemented by the specific resourses. When this method is
-     * called it can be assumed that changes there are no pending changes that
-     * need to be written to file.
-     */
-    virtual void retrieveItemsFromFile( const Akonadi::Collection &col ) = 0;
-
     /**
      * Returns a pointer to the KConfig object which is used to store runtime
      * information of the resource.
@@ -159,12 +144,11 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     KIO::FileCopyJob *mUploadJob;
     QByteArray mPreviousHash;
     QByteArray mCurrentHash;
-    bool mHasUnwrittenChanges;
 
   private Q_SLOTS:
     void handleProgress( KJob *, unsigned long );
     void fileChanged( const QString &fileName );
-    void markAsDirty(); /// Called when changes are added to the ChangeRecorder.
+    void scheduleWrite(); /// Called when changes are added to the ChangeRecorder.
     void slotDownloadJobResult( KJob * );
     void slotUploadJobResult( KJob * );
 };

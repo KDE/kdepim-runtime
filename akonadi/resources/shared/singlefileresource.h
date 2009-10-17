@@ -169,7 +169,6 @@ class SingleFileResource : public SingleFileResourceBase
         if ( !writeResult )
           return;
 
-        mHasUnwrittenChanges = false;
         emit status( Idle, i18nc( "@info:status", "Ready" ) );
       } else {
         // Check if there is a download or an upload in progress.

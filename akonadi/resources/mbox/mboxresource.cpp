@@ -97,7 +97,7 @@ void MboxResource::configure( WId windowId )
   delete dlg;
 }
 
-void MboxResource::retrieveItemsFromFile( const Akonadi::Collection &col )
+void MboxResource::retrieveItems( const Akonadi::Collection &col )
 {
   Q_UNUSED( col );
   if ( !mMBox )

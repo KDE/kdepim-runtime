@@ -38,10 +38,10 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
 
   protected Q_SLOTS:
     virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    virtual void retrieveItems( const Akonadi::Collection &col );
 
   protected:
     virtual void aboutToQuit();
-    virtual void retrieveItemsFromFile( const Akonadi::Collection &col );
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );

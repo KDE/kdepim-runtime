@@ -37,7 +37,7 @@
 using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase( const QString & id )
-  : ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 ), mHasUnwrittenChanges(false)
+  : ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 )
 {
   connect( &mDirtyTimer, SIGNAL( timeout() ), SLOT( writeFile() ) );
   mDirtyTimer.setSingleShot( true );
@@ -48,20 +48,12 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->fetchCollection( true );
 
-  connect( changeRecorder(), SIGNAL( changesAdded() ), SLOT( markAsDirty() ) );
+  connect( changeRecorder(), SIGNAL( changesAdded() ), SLOT( scheduleWrite() ) );
 
   connect( KDirWatch::self(), SIGNAL( dirty( QString ) ), SLOT( fileChanged( QString ) ) );
   connect( KDirWatch::self(), SIGNAL( created( QString ) ), SLOT( fileChanged( QString ) ) );
 
   KGlobal::locale()->insertCatalog( "akonadi_singlefile_resource" );
-}
-
-void SingleFileResourceBase::retrieveItems( const Akonadi::Collection &col )
-{
-  if ( mHasUnwrittenChanges )
-    writeFile();
-
-  retrieveItemsFromFile( col );
 }
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
@@ -240,9 +232,9 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
   }
 }
 
-void SingleFileResourceBase::markAsDirty()
+void SingleFileResourceBase::scheduleWrite()
 {
-  mHasUnwrittenChanges = true;
+  scheduleCustomTask(this, "writeFile", QVariant(), ResourceBase::AfterChangeReplay);
 }
 
 void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
@@ -268,7 +260,6 @@ void SingleFileResourceBase::slotUploadJobResult( KJob *job )
   mUploadJob = 0;
   KGlobal::deref();
 
-  mHasUnwrittenChanges = false;
   emit status( Idle, i18nc( "@info:status", "Ready" ) );
 }
 
