@@ -40,22 +40,25 @@ class ImapIdleManager : public QObject
   Q_OBJECT
 
 public:
-  ImapIdleManager( Akonadi::Collection &col, KIMAP::Session *session, ImapResource *parent );
+  ImapIdleManager( Akonadi::Collection &col, const QString &mailBox,
+                   KIMAP::Session *session, ImapResource *parent );
   ~ImapIdleManager();
 
   KIMAP::Session *session() const;
 
 private slots:
+  void onSelectDone( KJob *job );
   void onIdleStopped();
-  void onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,
-                       int messageCount, int recentCount);
-  void onCollectionFetchDone( KJob *job );
+  void onStatsReceived( KIMAP::IdleJob *job, const QString &mailBox,
+                        int messageCount, int recentCount );
 
 private:
   KIMAP::Session *m_session;
   KIMAP::IdleJob *m_idle;
   ImapResource *m_resource;
   Akonadi::Collection m_collection;
+  qint64 m_lastMessageCount;
+  qint64 m_lastRecentCount;
 };
 
 #endif

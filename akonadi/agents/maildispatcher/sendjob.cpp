@@ -355,7 +355,7 @@ void SendJob::abort()
     kDebug() << "Abort called, propagating to resource.";
     // Abort resource doing transport.
     AgentInstance instance = AgentManager::self()->instance( d->resourceId );
-    instance.abort();
+    instance.abortCurrentTask();
   } else {
     kDebug() << "Abort called, but no transport job is active.";
     // Either transport has not started, in which case doTransport will

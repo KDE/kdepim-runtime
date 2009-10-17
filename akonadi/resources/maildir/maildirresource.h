@@ -28,7 +28,7 @@ namespace KPIM
 class Maildir;
 }
 
-class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
+class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
   Q_OBJECT
 

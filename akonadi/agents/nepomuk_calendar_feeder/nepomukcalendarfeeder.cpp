@@ -88,6 +88,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
 {
   // create event with the graph reference
   NepomukFast::Event event( item.url(), graphUri );
+  event.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( "view-pim-calendar" ) );
   setParent( event, item );
   updateIncidenceItem( calEvent, event, graphUri );
 
@@ -150,6 +151,7 @@ void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const 
 {
     // create journal entry with the graph reference
     NepomukFast::Journal journal( item.url(), graphUri );
+    journal.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( "view-pim-journal" ) );
     setParent( journal, item );
     updateIncidenceItem( calJournal, journal, graphUri );
 }
@@ -158,6 +160,7 @@ void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCa
 {
   NepomukFast::Todo todo( item.url(), graphUri );
   setParent( todo, item );
+  todo.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( "view-pim-task" ) );
   updateIncidenceItem( calTodo, todo, graphUri );
 }
 

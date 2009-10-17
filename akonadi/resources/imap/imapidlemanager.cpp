@@ -21,10 +21,6 @@
 
 #include "imapidlemanager.h"
 
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/collectionstatistics.h>
-
 #include <KDE/KDebug>
 
 #include <kimap/idlejob.h>
@@ -33,11 +29,16 @@
 
 #include "imapresource.h"
 
-ImapIdleManager::ImapIdleManager( Akonadi::Collection &col, KIMAP::Session *session, ImapResource *parent )
-  : QObject( parent ), m_session( session ), m_idle( 0 ), m_resource( parent ),  m_collection( col )
+ImapIdleManager::ImapIdleManager( Akonadi::Collection &col, const QString &mailBox,
+                                  KIMAP::Session *session, ImapResource *parent )
+  : QObject( parent ), m_session( session ),
+    m_idle( 0 ), m_resource( parent ),  m_collection( col ),
+    m_lastMessageCount( -1 ), m_lastRecentCount( -1 )
 {
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-  select->setMailBox( m_resource->mailBoxForCollection( col ) );
+  select->setMailBox( mailBox );
+  connect( select, SIGNAL(result(KJob*)),
+           this, SLOT(onSelectDone(KJob*)) );
   select->start();
 
   m_idle = new KIMAP::IdleJob( m_session );
@@ -52,9 +53,17 @@ ImapIdleManager::~ImapIdleManager()
 {
 }
 
-KIMAP::Session * ImapIdleManager::session() const
+KIMAP::Session *ImapIdleManager::session() const
 {
   return m_session;
+}
+
+void ImapIdleManager::onSelectDone( KJob *job )
+{
+  KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
+
+  m_lastMessageCount = select->messageCount();
+  m_lastRecentCount = select->recentCount();
 }
 
 void ImapIdleManager::onIdleStopped()
@@ -71,41 +80,16 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
                                       int messageCount, int recentCount)
 {
   kDebug() << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
+  kDebug() << "Cached information:" << m_collection.remoteId() << m_collection.id()
+           << m_lastMessageCount << m_lastRecentCount;
 
-  Akonadi::CollectionFetchScope scope;
-  scope.setIncludeStatistics( true );
-  scope.setResource( m_resource->identifier() );
+  // It seems we're not in sync with the cache, resync is needed
+  if ( messageCount!=m_lastMessageCount || recentCount!=m_lastRecentCount ) {
+    m_lastMessageCount = messageCount;
+    m_lastRecentCount = recentCount;
 
-  Akonadi::CollectionFetchJob *fetch
-    = new Akonadi::CollectionFetchJob( m_collection, Akonadi::CollectionFetchJob::Base, this );
-  fetch->setFetchScope( scope );
-  fetch->setProperty( "mailBox", mailBox );
-  fetch->setProperty( "messageCount", messageCount );
-  fetch->setProperty( "recentCount", recentCount );
-  connect( fetch, SIGNAL(result(KJob*)), this, SLOT(onCollectionFetchDone(KJob*)) );
-}
-
-void ImapIdleManager::onCollectionFetchDone( KJob *job )
-{
-  QString mailBox = job->property( "mailBox" ).toString();
-  int messageCount = job->property( "messageCount" ).toInt();
-  int recentCount = job->property( "recentCount" ).toInt();
-
-  Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob*>( job );
-
-  if ( fetch->error() == 0 ) {
-    // Get collection from job
-    Akonadi::Collection c = fetch->collections().first();
-    Akonadi::CollectionStatistics stats = c.statistics();
-
-    // It seems we're not in sync with the cache, resync is needed
-    if ( messageCount!=stats.count() || recentCount!=stats.unreadCount() ) {
-      kDebug() << "Resync needed for" << mailBox << c.id();
-      m_resource->synchronizeCollection( c.id() );
-    }
-  } else {
-    kError() << "CollectionFetch for mail box " << mailBox << "failed. error="
-             << job->error() << ", errorString=" << job->errorString();
+    kDebug() << "Resync needed for" << mailBox << m_collection.id();
+    m_resource->synchronizeCollection( m_collection.id() );
   }
 }
 

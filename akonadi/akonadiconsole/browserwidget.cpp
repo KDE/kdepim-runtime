@@ -140,7 +140,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   statisticsProxyModel->setSourceModel( statisticsToolTipProxyModel );
 
   QuotaColorProxyModel *quotaProxyModel = new QuotaColorProxyModel( this );
-  quotaProxyModel->setWarningThreshold( 80.0 );
+  quotaProxyModel->setWarningThreshold( 50.0 );
   quotaProxyModel->setSourceModel( statisticsProxyModel );
 
   QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );

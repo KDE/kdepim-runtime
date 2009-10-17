@@ -142,7 +142,7 @@ void AgentWidget::abortAgent()
 {
   AgentInstance agent = ui.instanceWidget->currentAgentInstance();
   if ( agent.isValid() )
-    agent.abort();
+    agent.abortCurrentTask();
 }
 
 void AgentWidget::restartAgent()

@@ -128,7 +128,7 @@ void MailDispatcherAgent::Private::dispatch()
       // Finished marking messages as 'aborted'.
       aborting = false;
       sentAnything = false;
-      emit q->status( AgentBase::Idle, i18n( "Sending cancelled." ) );
+      emit q->status( AgentBase::Idle, i18n( "Sending canceled." ) );
       QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
     } else {
       if( sentAnything ) {

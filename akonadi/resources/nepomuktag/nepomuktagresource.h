@@ -29,7 +29,7 @@ namespace Nepomuk {
 class Tag;
 }
 
-class NepomukTagResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
+class NepomukTagResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
     Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.NepomukTag.Resource" )

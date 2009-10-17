@@ -68,7 +68,7 @@ namespace Strigi
 class KJob;
 
 /** Shared base class for all Nepomuk feeders. */
-class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentBase::Observer2
+class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
   Q_OBJECT
 

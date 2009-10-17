@@ -45,7 +45,7 @@ namespace KIMAP
 class ImapAccount;
 class ImapIdleManager;
 
-class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer2
+class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
@@ -107,6 +107,7 @@ private Q_SLOTS:
   void onPreItemMoveSelectDone( KJob *job );
   void onCopyMessageDone( KJob *job );
   void onPostItemMoveStoreFlagsDone( KJob *job );
+  void onIdleCollectionFetchDone( KJob *job );
 
   void startConnect( bool forceManualAuth = false );
   void reconnect();
