@@ -324,7 +324,10 @@ void KJotsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
   tempFile.setAutoRemove( false );
 
   if ( !tempFile.open() )
+  {
+    changeProcessed();
     return;
+  }
 
   KJotsPage page;
   page = item.payload<KJotsPage>();
@@ -337,7 +340,10 @@ void KJotsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
   tempFile.close();
 
   if ( !addContentEntry( collection, remoteId ) )
+  {
+    changeProcessed();
     return;
+  }
 
   Item newItem = item;
   newItem.setRemoteId( remoteId );
@@ -357,12 +363,18 @@ void KJotsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArra
   QFile pageFile( pageUrl.toLocalFile() );
 
   if ( !item.hasPayload<KJotsPage>() )
+  {
+    changeProcessed();
     return;
+  }
 
   KJotsPage page = item.payload<KJotsPage>();
 
   if ( !pageFile.open( QFile::WriteOnly ) )
+  {
+    changeProcessed();
     return;
+  }
 
   QDomDocument pageDoc = getDomDocument( page );
 
@@ -389,7 +401,10 @@ void KJotsResource::itemMoved( const Akonadi::Item &item,
                                const Akonadi::Collection &destination )
 {
   if ( !entityMoved( item, source, destination ) )
+  {
+    changeProcessed();
     return;
+  }
 
   changeCommitted( item );
 }
@@ -402,7 +417,10 @@ void KJotsResource::collectionAdded( const Akonadi::Collection &collection, cons
   tempFile.setAutoRemove( false );
 
   if ( !tempFile.open() )
+  {
+    changeProcessed();
     return;
+  }
 
   QDomDocument bookDoc;
 
@@ -421,7 +439,10 @@ void KJotsResource::collectionAdded( const Akonadi::Collection &collection, cons
   tempFile.close();
 
   if ( !addContentEntry( parent, remoteId ) )
+  {
+    changeProcessed();
     return;
+  }
 
   Collection newCollection = collection;
   newCollection.setRemoteId( remoteId );
@@ -451,6 +472,7 @@ void KJotsResource::collectionChanged( const Akonadi::Collection &collection )
   bookFile.close();
   if ( !bookFile.open( QFile::WriteOnly ) )
   {
+    changeProcessed();
     return;
   }
 
@@ -476,7 +498,10 @@ void KJotsResource::collectionMoved( const Akonadi::Collection &collection,
                                      const Akonadi::Collection &destination )
 {
   if ( !entityMoved( collection, source, destination ) )
+  {
+    changeProcessed();
     return;
+  }
 
   changeCommitted( collection );
 }

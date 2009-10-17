@@ -109,7 +109,7 @@ void FilterAgent::slotAbortRequested()
     {
       case FilterJob::ApplyFilterChainByCollection:
         // This was a normal preprocessor job from processItem(): we have one at a time of them
-        terminateProcessing( ProcessingFailed );
+        finishProcessing( ProcessingFailed );
       break;
       case FilterJob::ApplySpecificFilter:
         // This was an "apply filter now" job
@@ -289,7 +289,7 @@ void FilterAgent::slotRunOneJob()
 
       Q_ASSERT( !job->emitJobTerminated() );
       // This was a normal preprocessor job from processItem(): we have one at a time of them
-      terminateProcessing( ( res == Akonadi::Filter::Agent::Success ) ? ProcessingCompleted : ProcessingFailed );
+      finishProcessing( ( res == Akonadi::Filter::Agent::Success ) ? ProcessingCompleted : ProcessingFailed );
     break;
     case FilterJob::ApplySpecificFilter:
     {

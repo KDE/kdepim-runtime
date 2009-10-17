@@ -48,7 +48,7 @@ endif (Grantlee_FOUND)
 
 #### Clients ####
 
-add_subdirectory(filter)
+#add_subdirectory(filter)
 add_subdirectory(akonadi_serializer_qimage)
 add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)
