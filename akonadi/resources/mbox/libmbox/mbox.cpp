@@ -221,7 +221,9 @@ bool MBox::load( const QString &fileName )
     }
   }
 
-  return unlock() && ( prevSeparator.size() != 0 ); // FIXME: What if unlock fails?
+  // FIXME: What if unlock fails?
+  // if no separator was found, the file is still valid if it is empty
+  return unlock() && ( ( prevSeparator.size() != 0 ) || ( d->mMboxFile.size() == 0 ) );
 }
 
 bool MBox::lock()
