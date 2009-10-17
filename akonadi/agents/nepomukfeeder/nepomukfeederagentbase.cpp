@@ -41,6 +41,7 @@
 #include <KUrl>
 #include <KProcess>
 #include <KMessageBox>
+#include <KStandardDirs>
 
 #include <Soprano/Vocabulary/NAO>
 
@@ -258,7 +259,8 @@ void NepomukFeederAgentBase::selfTest()
   // if Nepomuk is not running, try to start it
   if ( !mNepomukStartupAttempted && !QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.NepomukStorage" ) ) {
     KProcess process;
-    if ( process.startDetached( QLatin1String( "nepomukserver" ) ) == 0 ) {
+    const QString nepomukserver = KStandardDirs::findExe( QLatin1String("nepomukserver") );
+    if ( process.startDetached( nepomukserver ) == 0 ) {
       errorMessages.append( i18n( "Unable to start the Nepomuk server." ) );
     } else {
       mNepomukStartupAttempted = true;
