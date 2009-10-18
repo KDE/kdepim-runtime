@@ -35,8 +35,8 @@
 #include <Akonadi/Monitor>
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/private/collectionpathresolver_p.h>
-#include <akonadi/kmime/localfolders.h>
-#include <akonadi/kmime/localfoldersrequestjob.h>
+#include <akonadi/kmime/specialcollections.h>
+#include <akonadi/kmime/specialcollectionsrequestjob.h>
 
 #include <mailtransport/dispatcherinterface.h>
 #include <mailtransport/errorattribute.h>
@@ -63,10 +63,10 @@ void AbortTest::initTestCase()
   QTest::qWait( 1000 );
 
   // Get the outbox and clear it.
-  LocalFoldersRequestJob *rjob = new LocalFoldersRequestJob( this );
-  rjob->requestDefaultFolder( LocalFolders::Outbox );
+  SpecialCollectionsRequestJob *rjob = new SpecialCollectionsRequestJob( this );
+  rjob->requestDefaultCollection( SpecialCollections::Outbox );
   QTest::kWaitForSignal( rjob, SIGNAL(result(KJob*)) );
-  outbox = LocalFolders::self()->defaultFolder( LocalFolders::Outbox );
+  outbox = SpecialCollections::self()->defaultCollection( SpecialCollections::Outbox );
   QVERIFY( outbox.isValid() );
   ItemDeleteJob *djob = new ItemDeleteJob( outbox );
   djob->exec(); // may give error if outbox empty
