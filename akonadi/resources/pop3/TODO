@@ -22,6 +22,8 @@ FEATURES
   -> store-passwd -> store_passwd (also: use_ssl, use_tls and all the others
 - progressbar integration for client apps, especially the old SSL icon stuff
 - get rid of pop3 ioslave
+- help (there is a a help button in the config dialog)
+  -> maybe copy over most of KMail's POP3 help
 
 CLEANUP
 -------
