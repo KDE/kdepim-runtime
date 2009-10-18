@@ -183,6 +183,16 @@ void AccountDialog::setupWidgets()
 
   connect(KGlobalSettings::self(),SIGNAL(kdisplayFontChanged()),
           SLOT(slotFontChanged()));
+
+  // FIXME: Hide widgets which are not supported yet
+  includeInCheck->hide();
+  intervalCheck->hide();
+  intervalLabel->hide();
+  intervalSpin->hide();
+  filterOnServerCheck->hide();
+  filterOnServerSizeSpin->hide();
+  preCommandLabel->hide();
+  precommand->hide();
 }
 
 void AccountDialog::loadSettings()
