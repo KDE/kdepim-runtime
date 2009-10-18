@@ -27,6 +27,8 @@
 #include <QDebug>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QMessageBox>
+#include <QCloseEvent>
 
 extern "C" {
 #include <libmapi/libmapi.h>
@@ -224,11 +226,20 @@ void ProfileDialog::setAsDefaultProfile()
 
 void ProfileDialog::closeEvent(QCloseEvent* closeEvent)
 {
-  Q_UNUSED(closeEvent);
   char *profileName = NULL;
   ::GetDefaultProfile(&profileName);
-  if (profileName != NULL)
+  if (profileName != NULL) {
     setResult(QDialog::Accepted);
-  else
-    setResult(QDialog::Rejected);  
+  } else {
+    QMessageBox::StandardButton pressed;
+    pressed = QMessageBox::question(this,
+                                    "Configure OpenChange Profile", 
+                                    "An OpenChange User profile has not been configured. After creating a profile, you need to set the profile as [Default]. Would you like to go back and configure your profile?",
+                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+    if (pressed == QMessageBox::No)
+        setResult(QDialog::Rejected);
+    else
+      closeEvent->ignore();
+  }
 }
