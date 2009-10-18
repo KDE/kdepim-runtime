@@ -800,6 +800,8 @@ void ImapResource::retrieveItems( const Collection &col )
 
 void ImapResource::triggerExpunge( const QString &mailBox )
 {
+  kDebug() << mailBox;
+
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->session() );
   select->setMailBox( mailBox );
   select->start();
@@ -1707,19 +1709,58 @@ void ImapResource::onIdleCollectionFetchDone( KJob *job )
   }
 }
 
-void ImapResource::requestManualExpunge( const QString &mailBox )
+void ImapResource::requestManualExpunge( qint64 collectionId )
 {
   if ( !Settings::self()->automaticExpungeEnabled() ) {
-    scheduleCustomTask( this, "expungeRequested", mailBox );
+    scheduleCustomTask( this, "expungeRequested",
+                        QVariant::fromValue( Collection( collectionId ) ) );
   }
 }
 
-void ImapResource::expungeRequested( const QVariant &mailBoxArgument )
+void ImapResource::expungeRequested( const QVariant &collectionArgument )
 {
-  const QString mailBox = mailBoxArgument.toString();
+  const Collection collection = collectionArgument.value<Collection>();
 
-  if ( !mailBox.isEmpty() ) {
-    triggerExpunge( mailBox );
+  if ( collection.isValid() ) {
+    Akonadi::CollectionFetchScope scope;
+    scope.setResource( identifier() );
+    scope.setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
+
+    Akonadi::CollectionFetchJob *fetch
+      = new Akonadi::CollectionFetchJob( collection,
+                                         Akonadi::CollectionFetchJob::Base,
+                                         this );
+    fetch->setFetchScope( scope );
+    fetch->setProperty( AKONADI_COLLECTION, collection.id() );
+
+    connect( fetch, SIGNAL(result(KJob*)),
+             this, SLOT(onExpungeCollectionFetchDone(KJob*)) );
+  } else {
+    changeProcessed();
+  }
+}
+
+void ImapResource::onExpungeCollectionFetchDone( KJob *job )
+{
+  const Collection::Id collectionId = job->property( AKONADI_COLLECTION ).toLongLong();
+
+  if ( job->error() == 0 ) {
+    Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob*>( job );
+
+    foreach ( const Akonadi::Collection &c, fetch->collections() ) {
+      if ( c.id() == collectionId ) {
+        const QString mailBox = mailBoxForCollection( c );
+
+        if ( !mailBox.isEmpty() ) {
+          triggerExpunge( mailBox );
+        }
+        break;
+      }
+    }
+  } else {
+    kWarning() << "CollectionFetch for collection "
+               << collectionId << "failed. error="
+               << job->error() << ", errorString=" << job->errorString();
   }
 
   changeProcessed();

@@ -58,7 +58,7 @@ public:
 
 public Q_SLOTS:
   virtual void configure( WId windowId );
-  void requestManualExpunge( const QString &mailBox );
+  void requestManualExpunge( qint64 collectionId );
 
 protected Q_SLOTS:
   void retrieveCollections();
@@ -115,13 +115,14 @@ private Q_SLOTS:
   void startConnect( bool forceManualAuth = false );
   void reconnect();
 
-  void expungeRequested( const QVariant &mailBox );
+  void expungeRequested( const QVariant &collectionArgument );
+  void onExpungeCollectionFetchDone( KJob *job );
 
 private:
   void triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
                                        const QStringList &remainingParts );
   void triggerCollectionExtraInfoJobs( const Akonadi::Collection &collection );
-  void triggerExpunge( const QString &mailBoxArgument );
+  void triggerExpunge( const QString &mailBox );
 
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
