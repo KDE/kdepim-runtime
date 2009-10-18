@@ -235,7 +235,10 @@ bool MBox::lock()
   if ( d->mMboxFile.fileName().isEmpty() )
     return false; // We cannot lock if there is no file loaded.
 
-  d->mFileLocked = false;
+  // We can't load another file when the mbox currently is locked so if d->mFileLocked
+  // is true atm just return true.
+  if (d->mFileLocked)
+    return true;
 
   QStringList args;
   int rc = 0;
@@ -504,6 +507,7 @@ bool MBox::save( const QString &fileName )
   d->mMboxFile.seek( d->mMboxFile.size() );
   d->mMboxFile.write( d->mAppendedEntries );
   d->mAppendedEntries.clear();
+  d->mInitialMboxFileSize = d->mMboxFile.size();
 
   return unlock();
 }
