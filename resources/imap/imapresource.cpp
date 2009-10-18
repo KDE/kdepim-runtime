@@ -247,7 +247,7 @@ void ImapResource::startConnect( bool forceManualAuth )
   QString password = Settings::self()->password( &userRejected );
 
   if ( userRejected ) {
-      emit status( Broken, i18n( "Couldn't read the password, user rejected wallet access." ) );
+      emit status( Broken, i18n( "Could not read the password: user rejected wallet access." ) );
       return;
 
   } else if ( password.isEmpty() || forceManualAuth ) {
