@@ -202,21 +202,6 @@ class MBOX_EXPORT MBox
     bool unlock();
 
   private:
-    bool open();
-
-    static QByteArray escapeFrom( const QByteArray &msg );
-
-    /**
-     * Generates a mbox message sperator line for given message.
-     */
-    static QByteArray mboxMessageSeparator( const QByteArray &msg );
-
-    /**
-     * Unescapes the raw message read from the file.
-     */
-    static void unescapeFrom( char *msg, size_t size );
-
-  private:
     friend class MBoxPrivate;
     MBoxPrivate * const d;
 };

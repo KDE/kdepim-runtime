@@ -72,7 +72,7 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
   if ( d->mMboxFile.fileName().isEmpty() )
     return -1; // It doesn't make sense to add entries when we don't have an reference file.
 
-  const QByteArray rawEntry = escapeFrom( entry->encodedContent() );
+  const QByteArray rawEntry = MBoxPrivate::escapeFrom( entry->encodedContent() );
 
   if ( rawEntry.size() <= 0 ) {
     kDebug() << "Message added to folder `" << d->mMboxFile.fileName()
@@ -105,7 +105,7 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
     }
   }
 
-  d->mAppendedEntries.append( mboxMessageSeparator( rawEntry ) );
+  d->mAppendedEntries.append( MBoxPrivate::mboxMessageSeparator( rawEntry ) );
   d->mAppendedEntries.append( rawEntry );
   if ( rawEntry[rawEntry.size() - 1] != '\n' ) {
     d->mAppendedEntries.append( "\n\n" );
@@ -213,7 +213,7 @@ bool MBox::lock()
 
   if ( d->mLockType == None ) {
     d->mFileLocked = true;
-    if ( open() ) {
+    if ( d->open() ) {
       d->startTimerIfNeeded();
       return true;
     }
@@ -280,7 +280,7 @@ bool MBox::lock()
   }
 
   if ( d->mFileLocked ) {
-    if ( !open() ) {
+    if ( !d->open() ) {
       const bool unlocked = unlock();
       Q_ASSERT( unlocked ); // If this fails we're in trouble.
       Q_UNUSED( unlocked );
@@ -438,7 +438,7 @@ KMime::Message *MBox::readEntry(quint64 offset)
   if ( message.endsWith( '\n' ) )
     message.chop(1);
 
-  unescapeFrom( message.data(), message.size() );
+  MBoxPrivate::unescapeFrom( message.data(), message.size() );
 
   if ( ! wasLocked ) {
     if ( !d->startTimerIfNeeded() ) {
@@ -587,117 +587,3 @@ bool MBox::unlock()
 
   return !d->mFileLocked;
 }
-
-/// private methods
-
-bool MBox::open()
-{
-  if ( d->mMboxFile.isOpen() )
-    return true;  // already open
-
-  if ( !d->mMboxFile.open( QIODevice::ReadWrite ) ) { // messages file
-    kDebug() << "Cannot open mbox file `" << d->mMboxFile.fileName() << "' FileError:"
-             << d->mMboxFile.error();
-    return false;
-  }
-
-  return true;
-}
-
-QByteArray MBox::mboxMessageSeparator( const QByteArray &msg )
-{
-  KMime::Message mail;
-  mail.setHead( KMime::CRLFtoLF( msg ) );
-  mail.parse();
-
-  QByteArray separator = "From ";
-
-  KMime::Headers::From *from = mail.from( false );
-  if ( !from || from->addresses().isEmpty() )
-    separator += "unknown@unknown.invalid";
-  else
-    separator += from->addresses().first() + ' ';
-
-  KMime::Headers::Date *date = mail.date(false);
-  if (!date || date->isEmpty())
-    separator += QDateTime::currentDateTime().toString( Qt::TextDate ).toUtf8() + '\n';
-  else
-    separator += date->as7BitString(false) + '\n';
-
-  return separator;
-}
-
-#define STRDIM(x) (sizeof(x)/sizeof(*x)-1)
-
-QByteArray MBox::escapeFrom( const QByteArray &str )
-{
-  const unsigned int strLen = str.length();
-  if ( strLen <= STRDIM( "From " ) )
-    return str;
-
-  // worst case: \nFrom_\nFrom_\nFrom_... => grows to 7/6
-  QByteArray result( int( strLen + 5 ) / 6 * 7 + 1, '\0');
-
-  const char * s = str.data();
-  const char * const e = s + strLen - STRDIM( "From ");
-  char * d = result.data();
-
-  bool onlyAnglesAfterLF = false; // dont' match ^From_
-  while ( s < e ) {
-    switch ( *s ) {
-    case '\n':
-      onlyAnglesAfterLF = true;
-      break;
-    case '>':
-      break;
-    case 'F':
-      if ( onlyAnglesAfterLF && qstrncmp( s+1, "rom ", STRDIM("rom ") ) == 0 )
-        *d++ = '>';
-      // fall through
-    default:
-      onlyAnglesAfterLF = false;
-      break;
-    }
-    *d++ = *s++;
-  }
-  while ( s < str.data() + strLen )
-    *d++ = *s++;
-
-  result.truncate( d - result.data() );
-  return result;
-}
-
-// performs (\n|^)>{n}From_ -> \1>{n-1}From_ conversion
-void MBox::unescapeFrom( char* str, size_t strLen )
-{
-  if ( !str )
-    return;
-  if ( strLen <= STRDIM(">From ") )
-    return;
-
-  // yes, *d++ = *s++ is a no-op as long as d == s (until after the
-  // first >From_), but writes are cheap compared to reads and the
-  // data is already in the cache from the read, so special-casing
-  // might even be slower...
-  const char * s = str;
-  char * d = str;
-  const char * const e = str + strLen - STRDIM( ">From ");
-
-  while ( s < e ) {
-    if ( *s == '\n' && *(s+1) == '>' ) { // we can do the lookahead, since e is 6 chars from the end!
-      *d++ = *s++;  // == '\n'
-      *d++ = *s++;  // == '>'
-      while ( s < e && *s == '>' )
-        *d++ = *s++;
-      if ( qstrncmp( s, "From ", STRDIM( "From ") ) == 0 )
-        --d;
-    }
-    *d++ = *s++; // yes, s might be e here, but e is not the end :-)
-  }
-  // copy the rest:
-  while ( s < str + strLen )
-    *d++ = *s++;
-  if ( d < s ) // only NUL-terminate if it's shorter
-    *d = 0;
-}
-#undef STRDIM

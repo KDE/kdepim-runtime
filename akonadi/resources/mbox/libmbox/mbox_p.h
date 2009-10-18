@@ -1,3 +1,22 @@
+/*
+  Copyright (c) 2009 Bertjan Broeksema <b.broeksema@kdemail.net>
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
+
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
+*/
+
 #ifndef MBOX_P_H
 #define MBOX_P_H
 
@@ -13,35 +32,15 @@ class MBoxPrivate : public QObject
   Q_OBJECT;
 
   public:
-    MBoxPrivate(MBox *mbox) : mInitialMboxFileSize( 0 ), mMBox(mbox)
-    {
-      qDebug() << "MBOX PRIVATE:";
-      connect(&mUnlockTimer, SIGNAL(timeout()), SLOT(unlockMBox()));
-    }
+    MBoxPrivate(MBox *mbox);
 
-    virtual ~MBoxPrivate()
-    {
-      if ( mMboxFile.isOpen() )
-        mMboxFile.close();
-    }
+    virtual ~MBoxPrivate();
 
-    void close()
-    {
-      if ( mMboxFile.isOpen() )
-        mMboxFile.close();
+    void close();
 
-      mFileLocked = false;
-    }
+    bool open();
 
-    bool startTimerIfNeeded()
-    {
-      if (mUnlockTimer.interval() > 0) {
-        mUnlockTimer.start();
-        return true;
-      }
-
-      return false;
-    }
+    bool startTimerIfNeeded();
 
   public Q_SLOTS:
     void unlockMBox()
@@ -61,6 +60,19 @@ class MBoxPrivate : public QObject
     QFile          mMboxFile;
     bool           mReadOnly;
     QTimer         mUnlockTimer;
+
+  public: /// Static helper methods
+    static QByteArray escapeFrom( const QByteArray &msg );
+
+    /**
+     * Generates a mbox message sperator line for given message.
+     */
+    static QByteArray mboxMessageSeparator( const QByteArray &msg );
+
+    /**
+     * Unescapes the raw message read from the file.
+     */
+    static void unescapeFrom( char *msg, size_t size );
 };
 
 #endif // MBOX_P_H
