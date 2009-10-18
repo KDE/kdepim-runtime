@@ -585,6 +585,7 @@ void Pop3Test::testSimpleLeaveOnServer()
   mPOP3SettingsInterface->setLeaveOnServer( false );
 
   mFakeServerThread->server()->setAllowedDeletions( "1,2,3,4" );
+  mFakeServerThread->server()->setAllowedRetrieves( QString() );
   mFakeServerThread->server()->setNextConversation(
     loginSequence() +
     listSequence( newMails ) +
@@ -600,4 +601,74 @@ void Pop3Test::testSimpleLeaveOnServer()
   QVERIFY( mPOP3SettingsInterface->seenUidList().value().isEmpty() );
   QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
            mPOP3SettingsInterface->seenUidList().value().size() );
+}
+
+void Pop3Test::testTimeBasedLeaveRule()
+{
+  mPOP3SettingsInterface->setLeaveOnServer( true );
+  mPOP3SettingsInterface->setLeaveOnServerDays( 2 );
+
+  //
+  // First download 3 mails and leave them on the server
+  //
+  QList<QByteArray> mails;
+  mails << simpleMail1 << simpleMail2 << simpleMail3;
+  QStringList uids;
+  uids << "UID1" << "UID2" << "UID3";
+  mFakeServerThread->server()->setMails( mails );
+  mFakeServerThread->server()->setAllowedRetrieves("1,2,3");
+  mFakeServerThread->server()->setNextConversation(
+    loginSequence() +
+    listSequence( mails ) +
+    uidSequence( uids ) +
+    retrieveSequence( mails ) +
+    quitSequence()
+  );
+
+  syncAndWaitForFinish();
+  Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
+  checkMailsInMaildir( mails );
+
+  QVERIFY( sortedEqual( uids, mPOP3SettingsInterface->seenUidList().value() ) );
+  QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
+           mPOP3SettingsInterface->seenUidList().value().size() );
+
+  //
+  // Now, modify the seenUidTimeList on the server for UID2 to pretend it
+  // was downloaded 3 days ago, which means it should be deleted.
+  //
+  int index = mPOP3SettingsInterface->seenUidList().value().indexOf( "UID2" );
+  QList<int> seenTimeList = mPOP3SettingsInterface->seenUidTimeList().value();
+  int msgTime = seenTimeList.at( index );
+  msgTime -= 60 * 60 * 24 * 3;
+  seenTimeList.replace( index, msgTime );
+  mPOP3SettingsInterface->setSeenUidTimeList( seenTimeList );
+
+  QList<int> idsToNotDownload;
+  idsToNotDownload << 1 << 3;
+  mFakeServerThread->server()->setAllowedDeletions( "2" );
+  mFakeServerThread->server()->setAllowedRetrieves( QString() );
+  mFakeServerThread->server()->setNextConversation(
+    loginSequence() +
+    listSequence( mails ) +
+    uidSequence( uids ) +
+    deleteSequence( 1 ) +
+    quitSequence(),
+    idsToNotDownload
+  );
+  syncAndWaitForFinish();
+  items = checkMailsOnAkonadiServer( mails );
+  checkMailsInMaildir( mails );
+  cleanupMaildir( items );
+
+  uids.removeAll( "UID2" );
+  QVERIFY( sortedEqual( uids, mPOP3SettingsInterface->seenUidList().value() ) );
+  QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
+           mPOP3SettingsInterface->seenUidList().value().size() );
+  foreach( int seenTime, mPOP3SettingsInterface->seenUidTimeList().value() ) {
+    QVERIFY( seenTime >= time( 0 ) - 10 * 60 );
+  }
+
+  mPOP3SettingsInterface->setLeaveOnServer( false );
+  mPOP3SettingsInterface->setLeaveOnServerDays( 0 );
 }

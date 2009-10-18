@@ -39,6 +39,9 @@ UNIT TESTS
   - test ssl/tls
   - test with disabled cache
   - all leave on server rules
+      -> leave the last x messages
+      -> leave the last x MB
+      -> every leave rule mixed
   - test cancel mail + seenuidlist
   - weird bugs in svn log of old kmail
   - add fails -> second check will still work
