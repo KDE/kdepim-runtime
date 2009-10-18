@@ -61,6 +61,9 @@ class POP3Resource : public Akonadi::ResourceBase,
     void targetCollectionFetchJobFinished( KJob *job );
     void localFolderRequestJobFinished( KJob *job );
 
+    // For state Precommand
+    void precommandResult( KJob *job );
+
     // For state Login
     void loginJobResult( KJob *job );
 
@@ -92,6 +95,7 @@ class POP3Resource : public Akonadi::ResourceBase,
     enum State {
       Idle,
       FetchTargetCollection,
+      Precommand,
       Connect,
       Login,
       List,

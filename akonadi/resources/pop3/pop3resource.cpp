@@ -26,11 +26,13 @@
 #include <Akonadi/ItemCreateJob>
 #include <akonadi/kmime/localfoldersrequestjob.h>
 #include <akonadi/kmime/localfolders.h>
+#include <Mailtransport/PrecommandJob>
 
 #include <KIO/PasswordDialog>
 #include <KMessageBox>
 
 using namespace Akonadi;
+using namespace MailTransport;
 
 POP3Resource::POP3Resource( const QString &id )
     : ResourceBase( id ),
@@ -121,6 +123,22 @@ void POP3Resource::doStateStep()
         fetchJob->start();
         connect( fetchJob, SIGNAL(result(KJob*)),
                  this, SLOT(targetCollectionFetchJobFinished(KJob*)) );
+      }
+      break;
+    }
+  case Precommand:
+    {
+      kDebug() << "================ Starting state Precommand =====================";
+      if ( !Settings::precommand().isEmpty() ) {
+        PrecommandJob *precommandJob = new PrecommandJob( Settings::precommand(), this );
+        connect( precommandJob, SIGNAL(result(KJob*)),
+                 this, SLOT(precommandResult(KJob*)) );
+        precommandJob->start();
+        emit status( Running, i18n( "Executing precommand..." ) );
+      }
+      else {
+        mState = Connect;
+        doStateStep();
       }
       break;
     }
@@ -284,7 +302,7 @@ void POP3Resource::localFolderRequestJobFinished( KJob *job )
 
   mTargetCollection = LocalFolders::self()->defaultFolder( LocalFolders::Inbox );
   Q_ASSERT( mTargetCollection.isValid() );
-  mState = Connect;
+  mState = Precommand;
   doStateStep();
 }
 
@@ -306,6 +324,19 @@ void POP3Resource::targetCollectionFetchJobFinished( KJob *job )
   }
   else {
     mTargetCollection = fetchJob->collections().first();
+    mState = Precommand;
+    doStateStep();
+  }
+}
+
+void POP3Resource::precommandResult( KJob *job )
+{
+  if ( job->error() ) {
+    cancelSync( i18n( "Error while executing precommand." ) +
+                '\n' + job->errorString() );
+    return;
+  }
+  else {
     mState = Connect;
     doStateStep();
   }

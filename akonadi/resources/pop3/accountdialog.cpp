@@ -191,8 +191,6 @@ void AccountDialog::setupWidgets()
   intervalSpin->hide();
   filterOnServerCheck->hide();
   filterOnServerSizeSpin->hide();
-  preCommandLabel->hide();
-  precommand->hide();
 }
 
 void AccountDialog::loadSettings()
@@ -211,6 +209,7 @@ void AccountDialog::loadSettings()
   passwordEdit->setText( Settings::self()->password());
   hostEdit->setText( Settings::self()->host() );
   portEdit->setValue( Settings::self()->port() );
+  precommand->setText( Settings::self()->precommand() );
   usePipeliningCheck->setChecked( Settings::self()->pipelining() );
   storePasswordCheck->setChecked( Settings::self()->storePassword() );
   leaveOnServerCheck->setChecked( Settings::self()->leaveOnServer() );
@@ -541,6 +540,7 @@ void AccountDialog::saveSettings()
   Settings::self()->setLogin( loginEdit->text().trimmed() );
   Settings::self()->setStorePassword( storePasswordCheck->isChecked() );
   Settings::self()->setPassword( passwordEdit->text() );
+  Settings::self()->setPrecommand( precommand->text() );
   Settings::self()->setUseSSL( encryptionSSL->isChecked() );
   Settings::self()->setUseTLS( encryptionTLS->isChecked() );
   if (authUser->isChecked())
