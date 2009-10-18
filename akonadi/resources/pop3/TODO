@@ -6,6 +6,7 @@ BUGS
 ----
 
 - additional \n in item, see the test
+- not storing password does not work
 
 FEATURES
 --------
