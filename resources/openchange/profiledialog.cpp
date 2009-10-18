@@ -227,7 +227,7 @@ void ProfileDialog::closeEvent(QCloseEvent* closeEvent)
   Q_UNUSED(closeEvent);
   char *profileName = NULL;
   ::GetDefaultProfile(&profileName);
-  if (profileName == NULL)
+  if (profileName != NULL)
     setResult(QDialog::Accepted);
   else
     setResult(QDialog::Rejected);  
