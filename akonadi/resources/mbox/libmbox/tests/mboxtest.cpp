@@ -150,6 +150,7 @@ void MboxTest::testAppend()
   QCOMPARE( info.size(), static_cast<qint64>( 0 ) );
 
   MBox mbox;
+  mbox.load(fileName());
   mbox.setLockType( MBox::None );
 
   // When no file is loaded no entries should get added to the mbox.
@@ -356,58 +357,6 @@ void MboxTest::testLockTimeout()
 
   QTest::qWait(1010);
   QVERIFY(!mbox.locked());
-}
-
-void MboxTest::testNoLockPerformance()
-{
-  mMail1 = MessagePtr( new KMime::Message );
-  mMail1->setContent( KMime::CRLFtoLF( sEntry1 ) );
-  mMail1->parse();
-
-  MBox mbox;
-  mbox.setLockType(MBox::None);
-  mbox.load(fileName());
-
-  for (int i = 0; i < 1000; ++i)
-    mbox.appendEntry(mMail1);
-
-  mbox.save(fileName());
-
-  QBENCHMARK {
-    MBox mbox2;
-    mbox2.setLockType(MBox::None);
-    mbox2.setUnlockTimeout(5000);
-    mbox2.load(fileName());
-    foreach (MsgInfo const &info, mbox2.entryList()) {
-      mbox2.readEntry(info.first);
-    }
-  }
-}
-
-void MboxTest::testProcfileLockPerformance()
-{
-  mMail1 = MessagePtr( new KMime::Message );
-  mMail1->setContent( KMime::CRLFtoLF( sEntry1 ) );
-  mMail1->parse();
-
-  MBox mbox;
-  mbox.setLockType(MBox::ProcmailLockfile);
-  mbox.load(fileName());
-  for (int i = 0; i < 1000; ++i)
-    mbox.appendEntry(mMail1);
-
-  mbox.save(fileName());
-
-  QBENCHMARK {
-    MBox mbox2;
-    mbox2.setLockType(MBox::ProcmailLockfile);
-    mbox2.load(fileName());
-    mbox2.setUnlockTimeout(5000); // Keep the mbox locked for five seconds.
-
-    foreach (MsgInfo const &info, mbox2.entryList())
-      mbox2.readEntry(info.first);
-
-  }
 }
 
 void MboxTest::cleanupTestCase()

@@ -17,40 +17,30 @@
   Boston, MA 02110-1301, USA.
 */
 
-#ifndef MBOXTEST_H
-#define MBOXTEST_H
+#ifndef MBOXBENCHMARK_H
+#define MBOXBENCHMARK_H
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include "../mbox.h"
 
 class KTempDir;
 
-class MboxTest : public QObject
+class MBoxBenchmark : public QObject
 {
   Q_OBJECT
   private Q_SLOTS:
     void initTestCase();
-    void testSetLockMethod();
-    void testLockBeforeLoad();
-    void testProcMailLock();
-    void testAppend();
-    void testSaveAndLoad();
-    void testBlankLines();
-    void testLockTimeout();
     void cleanupTestCase();
-    void testEntries();
-    void testPurge();
+    void testNoLockPerformance();
+    void testProcfileLockPerformance();
 
   private:
     QString fileName();
-    QString lockFileName();
-    void removeTestFile();
 
   private:
     KTempDir *mTempDir;
     MessagePtr mMail1;
-    MessagePtr mMail2;
 };
 
-#endif // MBOXTEST_H
+#endif // MBOXBENCHMARK_H
