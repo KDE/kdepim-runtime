@@ -24,48 +24,17 @@
           Bertjan Broeksema, april 2009
 */
 
-#include "mbox.h"
-
-#include <QtCore/QFileInfo>
-#include <QtCore/QProcess>
-#include <QtCore/QReadWriteLock>
+#include "mbox_p.h"
 
 #include <fcntl.h>
+
+#include <QtCore/QProcess>
+
 #include <kdebug.h>
 #include <klocalizedstring.h>
 #include <kshell.h>
 #include <kstandarddirs.h>
 #include <kurl.h>
-
-class MBox::Private
-{
-  public:
-    Private() : mInitialMboxFileSize( 0 )
-    {}
-
-    ~Private()
-    {
-      if ( mMboxFile.isOpen() )
-        mMboxFile.close();
-    }
-
-    void close()
-    {
-      if ( mMboxFile.isOpen() )
-        mMboxFile.close();
-
-      mFileLocked = false;
-    }
-
-    QByteArray mAppendedEntries;
-    QList<MsgInfo> mEntries;
-    bool mFileLocked;
-    quint64 mInitialMboxFileSize;
-    LockType mLockType;
-    QFile mMboxFile;
-    QString mLockFileName;
-    bool mReadOnly;
-};
 
 static QString sMBoxSeperatorRegExp( "^From .*[0-9][0-9]:[0-9][0-9]" );
 
@@ -74,12 +43,14 @@ static QString sMBoxSeperatorRegExp( "^From .*[0-9][0-9]:[0-9][0-9]" );
 
 /// public methods.
 
-MBox::MBox()
-  : d( new Private() )
+MBox::MBox() : d( new MBoxPrivate(this) )
 {
   // Set some sane defaults
   d->mFileLocked = false;
   d->mLockType = None; //
+
+  d->mUnlockTimer.setInterval(0);
+  d->mUnlockTimer.setSingleShot(true);
 }
 
 MBox::~MBox()
@@ -168,11 +139,11 @@ bool MBox::load( const QString &fileName )
     return false;
 
   d->mMboxFile.setFileName( KUrl( fileName ).toLocalFile() );
-  if ( !d->mMboxFile.exists() && !d->mMboxFile.open( QIODevice::WriteOnly ) )
-    return false;
 
-  if ( !lock() )
+  if ( !lock() ) {
+    kDebug() << "Failed to lock";
     return false;
+  }
 
   d->mInitialMboxFileSize = d->mMboxFile.size();
   d->mAppendedEntries.clear();
@@ -237,8 +208,19 @@ bool MBox::lock()
 
   // We can't load another file when the mbox currently is locked so if d->mFileLocked
   // is true atm just return true.
-  if (d->mFileLocked)
+  if ( locked() )
     return true;
+
+  if ( d->mLockType == None ) {
+    d->mFileLocked = true;
+    if ( open() ) {
+      d->startTimerIfNeeded();
+      return true;
+    }
+
+    d->mFileLocked = false;
+    return false;
+  }
 
   QStringList args;
   int rc = 0;
@@ -305,6 +287,12 @@ bool MBox::lock()
     }
   }
 
+  d->startTimerIfNeeded();
+  return d->mFileLocked;
+}
+
+bool MBox::locked() const
+{
   return d->mFileLocked;
 }
 
@@ -351,7 +339,6 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
 
   quint64 origFileSize = d->mMboxFile.size();
 
-  qDebug() << "ENTRIES:" << d->mEntries;
   QListIterator<MsgInfo> i( d->mEntries );
   while ( i.hasNext() ) {
     MsgInfo entry = i.next();
@@ -410,10 +397,11 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
 
 KMime::Message *MBox::readEntry(quint64 offset)
 {
-  bool wasLocked = d->mFileLocked;
-  if ( ! wasLocked )
+  bool wasLocked = locked();
+  if ( ! wasLocked ) {
     if ( ! lock() )
       return 0;
+  }
 
   // TODO: Add error handling in case locking failed.
 
@@ -422,7 +410,8 @@ KMime::Message *MBox::readEntry(quint64 offset)
   Q_ASSERT( d->mMboxFile.size() > 0 );
 
   if ( offset > static_cast<quint64>( d->mMboxFile.size() ) ) {
-    unlock();
+    if ( !wasLocked )
+      unlock();
     return 0;
   }
 
@@ -432,7 +421,9 @@ KMime::Message *MBox::readEntry(quint64 offset)
   QRegExp regexp( sMBoxSeperatorRegExp );
 
   if ( regexp.indexIn( line ) < 0) {
-    unlock();
+    kDebug() << "[MBox::readEntry] Invalid entry at:" << offset;
+    if ( !wasLocked )
+      unlock();
     return 0; // The file is messed up or the index is incorrect.
   }
 
@@ -450,9 +441,11 @@ KMime::Message *MBox::readEntry(quint64 offset)
   unescapeFrom( message.data(), message.size() );
 
   if ( ! wasLocked ) {
-    const bool unlocked = unlock();
-    Q_ASSERT( unlocked );
-    Q_UNUSED( unlocked );
+    if ( !d->startTimerIfNeeded() ) {
+      const bool unlocked = unlock();
+      Q_ASSERT( unlocked );
+      Q_UNUSED( unlocked );
+    }
   }
 
   KMime::Message *mail = new KMime::Message();
@@ -546,8 +539,19 @@ void MBox::setLockFile( const QString &lockFile )
   d->mLockFileName = lockFile;
 }
 
+void MBox::setUnlockTimeout( int msec )
+{
+  d->mUnlockTimer.setInterval(msec);
+}
+
 bool MBox::unlock()
 {
+  if ( d->mLockType == None && !d->mFileLocked ) {
+    d->mFileLocked = false;
+    d->mMboxFile.close();
+    return true;
+  }
+
   int rc = 0;
   QStringList args;
 

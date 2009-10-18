@@ -177,6 +177,7 @@ void MboxTest::testSaveAndLoad()
   MBox mbox;
   QVERIFY( mbox.setLockType( MBox::None ) );
   QVERIFY( mbox.load( fileName() ) );
+  QVERIFY( mbox.entryList().isEmpty() );
   mbox.appendEntry( mMail1 );
   mbox.appendEntry( mMail2 );
 
@@ -342,6 +343,21 @@ void MboxTest::testPurge()
   QCOMPARE( list2.size(), 0 ); // Are the messages actually gone?
 }
 
+void MboxTest::testLockTimeout()
+{
+  MBox mbox;
+  mbox.load(fileName());
+  mbox.setLockType(MBox::None);
+  mbox.setUnlockTimeout(1000);
+
+  QVERIFY(!mbox.locked());
+  mbox.lock();
+  QVERIFY(mbox.locked());
+
+  QTest::qWait(1010);
+  QVERIFY(!mbox.locked());
+}
+
 void MboxTest::testNoLockPerformance()
 {
   mMail1 = MessagePtr( new KMime::Message );
@@ -351,14 +367,16 @@ void MboxTest::testNoLockPerformance()
   MBox mbox;
   mbox.setLockType(MBox::None);
   mbox.load(fileName());
-  QBENCHMARK {
-    for (int i = 0; i < 1000; ++i) {
-      mbox.appendEntry(mMail1);
-    }
-    mbox.save(fileName());
 
+  for (int i = 0; i < 1000; ++i)
+    mbox.appendEntry(mMail1);
+
+  mbox.save(fileName());
+
+  QBENCHMARK {
     MBox mbox2;
     mbox2.setLockType(MBox::None);
+    mbox2.setUnlockTimeout(5000);
     mbox2.load(fileName());
     foreach (MsgInfo const &info, mbox2.entryList()) {
       mbox2.readEntry(info.first);
@@ -375,18 +393,20 @@ void MboxTest::testProcfileLockPerformance()
   MBox mbox;
   mbox.setLockType(MBox::ProcmailLockfile);
   mbox.load(fileName());
-  QBENCHMARK {
-    for (int i = 0; i < 1000; ++i) {
-      mbox.appendEntry(mMail1);
-    }
-    mbox.save(fileName());
+  for (int i = 0; i < 1000; ++i)
+    mbox.appendEntry(mMail1);
 
+  mbox.save(fileName());
+
+  QBENCHMARK {
     MBox mbox2;
     mbox2.setLockType(MBox::ProcmailLockfile);
     mbox2.load(fileName());
-    foreach (MsgInfo const &info, mbox2.entryList()) {
+    mbox2.setUnlockTimeout(5000); // Keep the mbox locked for five seconds.
+
+    foreach (MsgInfo const &info, mbox2.entryList())
       mbox2.readEntry(info.first);
-    }
+
   }
 }
 

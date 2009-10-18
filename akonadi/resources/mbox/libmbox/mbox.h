@@ -21,14 +21,18 @@
 #define MBOX_H
 
 #include <boost/shared_ptr.hpp>
-#include <kmime/kmime_message.h>
+
 #include <QtCore/QSet>
 #include <QtCore/QString>
+
+#include <kmime/kmime_message.h>
 
 #include "mbox_export.h"
 
 typedef QPair<quint64, quint64> MsgInfo; // QPair<offset, size>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
+
+class MBoxPrivate;
 
 class MBOX_EXPORT MBox
 {
@@ -97,6 +101,11 @@ class MBOX_EXPORT MBox
      * @see setLockType( LockType ), unlock()
      */
     bool lock();
+
+    /**
+     * Returns wether or not the mbox currently is locked.
+     */
+    bool locked() const;
 
     /**
      * Removes all messages at given offsets from the current reference file
@@ -176,6 +185,14 @@ class MBOX_EXPORT MBox
     void setLockFile( const QString &lockFile );
 
     /**
+     * By default the unlock method will directly unlock the file. However this
+     * is expensive in case of many consecutive calls to readEntry. Setting the
+     * time out to a non zero value will keep the lock open until the timeout has
+     * passed. On each read the timer will be reset.
+     */
+    void setUnlockTimeout( int msec );
+
+    /**
      * Unlock the mbox file.
      *
      * @return true if the unlock was successful, false otherwise.
@@ -200,8 +217,8 @@ class MBOX_EXPORT MBox
     static void unescapeFrom( char *msg, size_t size );
 
   private:
-    class Private;
-    Private *d;
+    friend class MBoxPrivate;
+    MBoxPrivate * const d;
 };
 
 #endif // MBOX_H
