@@ -336,26 +336,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
     bool isModified() const;
 
     /**
-      Clears out the current calendar, freeing all used memory etc.
-    */
-    virtual void close() = 0;
-
-    /**
-      Syncs changes in memory to persistent storage.
-
-      @return true if the save was successful; false otherwise.
-    */
-    virtual bool save() = 0;
-
-    /**
-      Loads the calendar contents from storage. This requires that the
-      calendar has been previously loaded (initialized).
-
-      @return true if the reload was successful; otherwise false.
-    */
-    virtual bool reload() = 0;
-
-    /**
       Determine if the calendar is currently being saved.
 
       @return true if the calendar is currently being saved; false otherwise.

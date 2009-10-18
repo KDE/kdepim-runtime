@@ -67,8 +67,8 @@ class AKONADI_KCAL_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
 
     virtual ~AkonadiCalendarAdaptor() {}
     
-    virtual bool save() { kDebug(); } //unused
-    virtual bool reload() { kDebug(); } //unused
+    virtual bool save() { kDebug(); return true; } //unused
+    virtual bool reload() { kDebug(); return true; } //unused
     virtual void close() { kDebug(); } //unused
     
     virtual bool addEvent( Event *event )

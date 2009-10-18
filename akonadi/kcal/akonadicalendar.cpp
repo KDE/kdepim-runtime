@@ -64,7 +64,6 @@ AkonadiCalendar::AkonadiCalendar( const KDateTime::Spec &timeSpec )
 
 AkonadiCalendar::~AkonadiCalendar()
 {
-  close();
   delete d;
 }
 
@@ -162,49 +161,6 @@ bool AkonadiCalendar::endChange( const Item &item )
 
   connect( job, SIGNAL(result( KJob*)), d, SLOT(modifyDone(KJob*)) );
   return true;
-}
-
-bool AkonadiCalendar::reload()
-{
-  kDebug();
-#if 0
-  const QString filename = d->mFileName;
-  save();
-  close();
-  d->mFileName = filename;
-  FileStorage storage( this, d->mFileName );
-  return storage.load();
-#else
-  return true;
-#endif
-}
-
-bool AkonadiCalendar::save()
-{
-  kDebug();
-#if 0
-  if ( d->mFileName.isEmpty() ) return false;
-  if ( ! isModified() ) return true;
-  FileStorage storage( this, d->mFileName, d->mFormat );
-  return storage.save();
-#else
-  return true;
-#endif
-}
-
-void AkonadiCalendar::close()
-{
-  kDebug();
-  setObserversEnabled( false );
-#if 0
-  d->mFileName.clear();
-  deleteAllEvents();
-  deleteAllTodos();
-  deleteAllJournals();
-  d->mDeletedIncidences.clearAll();
-#endif
-  setModified( false );
-  setObserversEnabled( true );
 }
 
 bool AkonadiCalendar::addAgent( const KUrl &url )
