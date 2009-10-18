@@ -490,6 +490,8 @@ void Pop3Test::testSeenUIDCleanup()
   cleanupMaildir( items );
 
   QVERIFY( sortedEqual( uids, mPOP3SettingsInterface->seenUidList().value() ) );
+  QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
+           mPOP3SettingsInterface->seenUidList().value().size() );
 
   //
   // Now, pretend that the messages were removed from the server in the meantime
@@ -510,6 +512,8 @@ void Pop3Test::testSeenUIDCleanup()
   cleanupMaildir( items );
 
   QVERIFY( mPOP3SettingsInterface->seenUidList().value().isEmpty() );
+  QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
+           mPOP3SettingsInterface->seenUidList().value().size() );
 
   mPOP3SettingsInterface->setLeaveOnServer(false );
 }
@@ -564,6 +568,8 @@ void Pop3Test::testSimpleLeaveOnServer()
   items = checkMailsOnAkonadiServer( newMails );
   checkMailsInMaildir( newMails );
   QVERIFY( sortedEqual( newUids, mPOP3SettingsInterface->seenUidList().value() ) );
+  QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
+           mPOP3SettingsInterface->seenUidList().value().size() );
 
   //
   // Ok, next test: When turning off leaving on the server, all mails should be deleted, but
@@ -585,4 +591,6 @@ void Pop3Test::testSimpleLeaveOnServer()
   checkMailsInMaildir( newMails );
   cleanupMaildir( items );
   QVERIFY( mPOP3SettingsInterface->seenUidList().value().isEmpty() );
+  QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
+           mPOP3SettingsInterface->seenUidList().value().size() );
 }
