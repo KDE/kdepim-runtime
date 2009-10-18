@@ -542,6 +542,13 @@ void Pop3Test::testSimpleLeaveOnServer()
 
   // The resource should have saved the UIDs of the seen messages
   QVERIFY( sortedEqual( uids, mPOP3SettingsInterface->seenUidList().value() ) );
+  QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
+           mPOP3SettingsInterface->seenUidList().value().size() );
+  foreach( int seenTime, mPOP3SettingsInterface->seenUidTimeList().value() ) {
+    // Those message were just downloaded from the fake server, so they are at maximum
+    // 10 minutes old (for slooooow running tests)
+    QVERIFY( seenTime >= time( 0 ) - 10 * 60 );
+  }
 
   //
   // OK, next mail check: We have to check that the old seen messages are not downloaded again,

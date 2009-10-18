@@ -1,70 +1,47 @@
-BUGS
 ====
-
-- itemcreatejob not executed the second time after first one fails (comment out target collection test)
-- gmail ssl not working (still?)
-- createJobResult: duplicate messages after cancel
-- Status shows percentages instead of full status message sometimes
-- After fetching 25 items, only 20 or so are really added to the maildir (not strictly a POP3 problem,
-  the items do end up on the server
-- additional \n in item
-
 TODO
 ====
 
+BUGS
+----
+
+- additional \n in item, see the test
+
 FEATURES
 --------
+
 - precommand
 - interval mail check
 - wallet
 - online/offline handling
 - filter on server
+- delete on server
+- fix "include in manual mail check", should be something in the akonadi libs
+- migration from old KMail accounts
+  -> now DeleteLater group
+  -> store-passwd -> store_passwd (also: use_ssl, use_tls and all the others
+- progressbar integration for client apps, especially the old SSL icon stuff
+- get rid of pop3 ioslave
 
-- get rid of "interactive"
-- online/offline handling
-- Coding Style
-  - astyle
-  - rename vars, functions
-  - kdebug
-  - api documentation (also for fakeserver)
-  - for -> foreach
-  - clean up includes
-  - clean up cmakefiles, remove code duplication with kdepimlibs
-  - grep for kmail and remove references
+CLEANUP
+-------
 
-- unit tests
+- api documentation (also for fakeserver)
+- clean up cmakefiles, remove code duplication with kdepimlibs
+- grep for kmail and remove references
+- kconfigxt: labels, tooltips, whatsthis etc
+
+UNIT TESTS
+----------
   - test ssl/tls
   - test with disabled cache
   - all leave on server rules
   - test cancel mail + seenuidlist
-  - weird bugs in svn log (for example the forcedIdsToDelete stuff)
+  - weird bugs in svn log of old kmail
   - add fails -> second check will still work
   - correct error messages passed from pop3 server?
   - byte stuffing
   - pipelining
-  (!) abort requested during mail check
+  - abort requested during mail check
     -> no duplicate messages on next mail check, already added mails added to the seen
        UID list
-
-- listen to collection removals -> complain if no longer there
-- proof read and coverage test
-- kconfigxt: labels, tooltips, whatsthis etc
-- config
-    - "include in manual mail check -> remove?
-    - make intervalcheck setting work
-
-Later:
-
-- delete on server: monitor + store item UIDs somewhere
-- refactoring: each stage in command classes or such
-               get rid of pop3 ioslave
-- header filtering framework
-- config file migration from kmail
-  -> now DeleteLater group
-  -> store-passwd -> store_passwd (also: use_ssl, use_tls and all the others
-  -> kwallet?
-
-Missing Stuff
-=============
-
-Progress stuff - SSL icons. Needs to be added to akonadi client / progressmanagaer
