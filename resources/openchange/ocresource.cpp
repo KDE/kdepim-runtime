@@ -95,7 +95,7 @@ OCResource::OCResource( const QString &id )
     qDebug() << "OpenChange MAPI Profile database doesn't exist... creating one";
     mkdir(db_default_path.c_str(), 0700);
     db_default_path += "profile.ldb";
-    libmapipp::profile::create_profile_store(db_default_path.c_str(), "/usr/local/samba/share/setup"); // Assume samba4 is at /usr/local/sanba for now
+    libmapipp::profile::create_profile_store(db_default_path.c_str());
     qDebug() << "Successfully created OpenChange database!";
   }
 
