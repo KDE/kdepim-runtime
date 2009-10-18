@@ -69,8 +69,8 @@ MBox::~MBox()
 // of the buffer determine the offset for the next message to append.
 qint64 MBox::appendEntry( const MessagePtr &entry )
 {
-  if ( d->mMboxFile.fileName().isEmpty() )
-    return -1; // It doesn't make sense to add entries when we don't have an reference file.
+  // It doesn't make sense to add entries when we don't have an reference file.
+  Q_ASSERT( !d->mMboxFile.fileName().isEmpty() );
 
   const QByteArray rawEntry = MBoxPrivate::escapeFrom( entry->encodedContent() );
 
@@ -138,16 +138,12 @@ bool MBox::load( const QString &fileName )
   if ( d->mFileLocked )
     return false;
 
-  d->mMboxFile.setFileName( KUrl( fileName ).toLocalFile() );
+  d->initLoad( fileName );
 
   if ( !lock() ) {
     kDebug() << "Failed to lock";
     return false;
   }
-
-  d->mInitialMboxFileSize = d->mMboxFile.size();
-  d->mAppendedEntries.clear();
-  d->mEntries.clear();
 
   QRegExp regexp( sMBoxSeperatorRegExp );
   QByteArray line;

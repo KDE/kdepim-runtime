@@ -20,6 +20,7 @@
 #include "mbox_p.h"
 
 #include <kdebug.h>
+#include <kurl.h>
 
 MBoxPrivate::MBoxPrivate(MBox *mbox) : mInitialMboxFileSize( 0 ), mMBox(mbox)
 {
@@ -53,6 +54,14 @@ void MBoxPrivate::close()
   mFileLocked = false;
 }
 
+void MBoxPrivate::initLoad( QString const &fileName )
+{
+  mMboxFile.setFileName( KUrl( fileName ).toLocalFile() );
+  mInitialMboxFileSize = mMboxFile.size();
+  mAppendedEntries.clear();
+  mEntries.clear();
+}
+
 bool MBoxPrivate::startTimerIfNeeded()
 {
   if (mUnlockTimer.interval() > 0) {
@@ -61,6 +70,11 @@ bool MBoxPrivate::startTimerIfNeeded()
   }
 
   return false;
+}
+
+void MBoxPrivate::unlockMBox()
+{
+  mMBox->unlock();
 }
 
 QByteArray MBoxPrivate::mboxMessageSeparator( const QByteArray &msg )

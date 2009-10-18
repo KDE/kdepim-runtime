@@ -38,16 +38,14 @@ class MBoxPrivate : public QObject
 
     void close();
 
+    void initLoad( QString const &fileName );
+
     bool open();
 
     bool startTimerIfNeeded();
 
   public Q_SLOTS:
-    void unlockMBox()
-    {
-      qDebug() <<  "TIMED OUT!";
-      mMBox->unlock();
-    }
+    void unlockMBox();
 
   public:
     QByteArray     mAppendedEntries;

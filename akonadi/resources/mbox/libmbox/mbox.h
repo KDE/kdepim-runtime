@@ -55,8 +55,9 @@ class MBOX_EXPORT MBox
     /**
      * Appends @param entry to the MBox. Returns the offset in the file
      * where the added message starts or -1 if the entry was not added (e.g.
-     * when it doesn't contain data). Entries are only added after a call to
-     * load( const QString& ). The returned offset is <em>only</em> valid for
+     * when it doesn't contain data). You must load a mbox file by makeing a call
+     * to load( const QString& ) before appending entries. The returned offset
+     * is <em>only</em> valid for
      * that particular file.
      *
      * @param entry The message to append to the mbox.
@@ -78,11 +79,11 @@ class MBOX_EXPORT MBox
     QList<MsgInfo> entryList( const QSet<quint64> &deletedItems = QSet<quint64>() ) const;
 
     /**
-     * Loads a mbox on disk  into the current mbox. Messages already present are
-     * *not* preserved. This method does not load the full messages into memory
-     * but only the offsets of the messages and their sizes. If the file
-     * currently is locked this method will do nothing and return false.
-     * Appended messages that are not written yet will get lost.
+     * Loads the raw mbox data from disk into the current MBox object. Messages
+     * already present are <em>not</em> preserved. This method does not load the
+     * full messages into memory but only the offsets of the messages and their
+     * sizes. If the file currently is locked this method will do nothing and
+     * return false. Appended messages that are not written yet will get lost.
      *
      * @param fileName the name of the mbox on disk.
      * @return true, if successful, false on error.
@@ -95,6 +96,9 @@ class MBOX_EXPORT MBox
      * Locks the mbox file using the configured lock method. This can be used
      * for consecutive calls to readEntry and readEntryHeaders. Calling lock()
      * before these calls prevents the mbox file being locked for every call.
+     *
+     * NOTE: Even when the lock method is None the mbox is internally marked as
+     *       locked. This means that it must be unlocked before calling load().
      *
      * @return true if locked successful, false on error.
      *
