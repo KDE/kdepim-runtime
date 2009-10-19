@@ -155,7 +155,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
   Akonadi::SelectionProxyModel *selectionProxyModel = new Akonadi::SelectionProxyModel( mCollectionView->selectionModel(), this );
   selectionProxyModel->setSourceModel( mBrowserModel );
-  selectionProxyModel->setFilterBehavior( KSelectionProxyModel::OnlySelectedChildren );
+  selectionProxyModel->setFilterBehavior( KSelectionProxyModel::ChildrenOfExactSelection );
 
   EntityFilterProxyModel *itemFilter = new EntityFilterProxyModel( this );
   itemFilter->setSourceModel( selectionProxyModel );
