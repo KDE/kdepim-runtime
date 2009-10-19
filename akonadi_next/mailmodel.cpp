@@ -59,7 +59,7 @@ MailModel::~MailModel()
    delete d_ptr;
 }
 
-QVariant MailModel::getData(const Item &item, int column, int role) const
+QVariant MailModel::entityData(const Item &item, int column, int role) const
 {
   if (!item.hasPayload<MessagePtr>())
   {
@@ -89,7 +89,7 @@ QVariant MailModel::getData(const Item &item, int column, int role) const
   return EntityTreeModel::getData(item, column, role);
 }
 
-QVariant MailModel::getData(const Collection &collection, int column, int role) const
+QVariant MailModel::entityData(const Collection &collection, int column, int role) const
 {
   if (role == Qt::DisplayRole)
   {
@@ -114,7 +114,7 @@ int MailModel::columnCount(const QModelIndex &index) const
   return 3;
 }
 
-QVariant MailModel::getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const
+QVariant MailModel::entityHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const
 {
   Q_D(const MailModel);
 
