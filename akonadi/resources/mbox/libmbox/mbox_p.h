@@ -29,7 +29,7 @@
 
 class MBoxPrivate : public QObject
 {
-  Q_OBJECT;
+  Q_OBJECT
 
   public:
     MBoxPrivate(MBox *mbox);
