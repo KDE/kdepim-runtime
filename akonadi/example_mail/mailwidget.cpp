@@ -145,7 +145,7 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
 
   KSelectionProxyModel *selectionProxy = new KSelectionProxyModel(treeview->selectionModel(), this);
   selectionProxy->setSourceModel( etm );
-  selectionProxy->setFilterBehavior( KSelectionProxyModel::OnlySelectedChildren );
+  selectionProxy->setFilterBehavior( KSelectionProxyModel::ChildrenOfExactSelection );
 
   itemList = new EntityMimeTypeFilterModel(this);
   itemList->setSourceModel(selectionProxy);
