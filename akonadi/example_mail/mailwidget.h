@@ -30,7 +30,7 @@ namespace Akonadi
 {
 class EntityTreeModel;
 class EntityTreeView;
-class EntityFilterProxyModel;
+class EntityMimeTypeFilterModel;
 }
 
 #include <QWidget>
@@ -62,8 +62,8 @@ private:
   Akonadi::EntityTreeModel *m_templateModel;
   Akonadi::EntityTreeView *treeview;
   Akonadi::EntityTreeView *listView;
-  Akonadi::EntityFilterProxyModel *collectionTree;
-  Akonadi::EntityFilterProxyModel *itemList;
+  Akonadi::EntityMimeTypeFilterModel *collectionTree;
+  Akonadi::EntityMimeTypeFilterModel *itemList;
 };
 
 #endif

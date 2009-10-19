@@ -37,14 +37,14 @@ int main( int argc, char **argv )
 
   out() << "Akonadi Command Line Client (Version 0.1)" << endl;
 
-  QString cmdarg;
+  QByteArray cmdarg;
   QString patharg;
   QByteArray part;
   QString content;
   if ( argc >= 2 ) cmdarg = argv[ 1 ];
-  if ( argc >= 3 ) patharg = argv[ 2 ];
+  if ( argc >= 3 ) patharg = QString::fromLocal8Bit( argv[ 2 ] );
   if ( argc >= 4 ) part = argv[ 3 ];
-  if ( argc >= 5 ) content = argv[ 4 ];
+  if ( argc >= 5 ) content = QString::fromLocal8Bit( argv[ 4 ] );
   Command *cmd = 0;
 
   if ( cmdarg == "ls" ) {
@@ -60,7 +60,7 @@ int main( int argc, char **argv )
     cmd = new StoreCommand( patharg, content );
   }
   else if ( cmdarg == "append" ) {
-    cmd = new AppendCommand( patharg, part, content );
+    cmd = new AppendCommand( patharg, QString::fromLocal8Bit( part ), content );
   }
 
   if ( !cmd ) {

@@ -29,7 +29,7 @@
 #include <akonadi/control.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entitytreemodel.h>
-#include <akonadi/entityfilterproxymodel.h>
+#include <akonadi/entitymimetypefiltermodel.h>
 #include <akonadi/entitytreeview.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
@@ -131,13 +131,13 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   // TODO: This stuff should probably be in the mailmodel constructor.
   etm->setItemPopulationStrategy(EntityTreeModel::LazyPopulation);
 
-  collectionTree = new EntityFilterProxyModel(this);
+  collectionTree = new EntityMimeTypeFilterModel(this);
 
   collectionTree->setSourceModel(etm);
 
   // Include only collections in this proxy model.
   collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
-  collectionTree->setHeaderSet(EntityTreeModel::CollectionTreeHeaders);
+  collectionTree->setHeaderGroup(EntityTreeModel::CollectionTreeHeaders);
 
   treeview->setModel(collectionTree);
   treeview->setColumnHidden(2, true);
@@ -147,12 +147,12 @@ MailWidget::MailWidget( QWidget * parent, Qt::WindowFlags f )
   selectionProxy->setSourceModel( etm );
   selectionProxy->setFilterBehavior( KSelectionProxyModel::OnlySelectedChildren );
 
-  itemList = new EntityFilterProxyModel(this);
+  itemList = new EntityMimeTypeFilterModel(this);
   itemList->setSourceModel(selectionProxy);
 
   // Exclude collections from the list view.
   itemList->addMimeTypeExclusionFilter( Collection::mimeType() );
-  itemList->setHeaderSet(EntityTreeModel::ItemListHeaders);
+  itemList->setHeaderGroup(EntityTreeModel::ItemListHeaders);
 
   listView = new EntityTreeView(splitter);
   listView->setModel(itemList);

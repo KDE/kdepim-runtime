@@ -30,7 +30,7 @@
 #include <kdescendantsproxymodel.h>
 #include <akonadi/entitydisplayattribute.h>
 // #include "entitytreemodel.h"
-#include <akonadi/entityfilterproxymodel.h>
+#include <akonadi/entitymimetypefiltermodel.h>
 #include <akonadi/entitytreeview.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
@@ -85,13 +85,13 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
   etm->setIncludeRootCollection(true);
   etm->setRootCollectionDisplayName(i18nc("Name of top level for all collections in the application", "[All]"));
 
-  collectionTree = new EntityFilterProxyModel(this);
+  collectionTree = new EntityMimeTypeFilterModel(this);
   collectionTree->setSourceModel(etm);
 
   // Include only collections in this proxy model.
   collectionTree->addMimeTypeInclusionFilter( Collection::mimeType() );
 
-  collectionTree->setHeaderSet(EntityTreeModel::CollectionTreeHeaders);
+  collectionTree->setHeaderGroup(EntityTreeModel::CollectionTreeHeaders);
 
   treeview->setModel(collectionTree);
   treeview->setColumnHidden(1, true);
@@ -109,7 +109,7 @@ ContactsWidget::ContactsWidget( QWidget * parent, Qt::WindowFlags f )
 //  descList->setHeaderSet(EntityTreeModel::ItemListHeaders);
 //   new ModelTest(descList, this);
 
-  itemList = new EntityFilterProxyModel(this);
+  itemList = new EntityMimeTypeFilterModel(this);
   itemList->setSourceModel(descList);
 
   // Exclude collections from the list view.
