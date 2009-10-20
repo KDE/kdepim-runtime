@@ -39,6 +39,7 @@
 #include <akonadi/item.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/entityhiddenattribute.h>
 #include <akonadi/session.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/collectionmovejob.h>
@@ -616,10 +617,9 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     kolabAttr->setIconName( handler->iconName() );
 
     // hide Kolab folders on the IMAP server
-    if ( !imapAttr || !imapAttr->isHidden() ) {
+    if ( !imapCollection.hasAttribute<EntityHiddenAttribute>() ) {
       Collection hiddenImapCol( imapCollection );
-      imapAttr = hiddenImapCol.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-      imapAttr->setHidden( true );
+      hiddenImapCol.attribute<EntityHiddenAttribute>( Collection::AddIfMissing );
       new CollectionModifyJob( hiddenImapCol, this );
     }
   }
