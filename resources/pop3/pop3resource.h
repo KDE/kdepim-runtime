@@ -19,35 +19,18 @@
 #ifndef POP3RESOURCE_H
 #define POP3RESOURCE_H
 
-#include <akonadi/resourcebase.h>
-
-#include <kio/global.h>
-#include <KUrl>
-
-#include <QPointer>
-#include <QTimer>
-#include <QQueue>
-
-#include <boost/shared_ptr.hpp>
-
-namespace KIO {
-class SimpleJob;
-class Slave;
-class Job;
-}
-
-namespace KMime {
-class Message;
-}
+#include <Akonadi/ResourceBase>
+#include <KMime/Message>
+#include <KJob>
 
 namespace Akonadi {
 class ItemCreateJob;
 }
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
+class POPSession;
 
 class POP3Resource : public Akonadi::ResourceBase,
-                           public Akonadi::AgentBase::Observer
+                     public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
@@ -63,80 +46,107 @@ class POP3Resource : public Akonadi::ResourceBase,
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
-    void slotSlaveError( KIO::Slave*, int, const QString & );
-    void slotData( KIO::Job* job, const QByteArray &data );
-    void slotResult( KJob* );
-    void slotJobFinished();
-    void slotGetNextMsg();
-    void slotProcessPendingMsgs();
-    void slotMsgRetrieved( KJob*, const QString &infoMsg, const QString & );
-    void slotAbortRequested();
-    void slotCancel();
-    void slotItemCreateResult( KJob* job );
-
   protected:
 
-    const KUrl getUrl() const;
-    void connectJob();
-    KIO::MetaData slaveConfig() const;
-
     virtual void aboutToQuit();
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+
+  private Q_SLOTS:
+
+    void slotAbortRequested();
+
+    // Error unrelated to a state
+    void slotSessionError( int errorCode, const QString &errorMessage );
+
+    // For state FetchTargetCollection
+    void targetCollectionFetchJobFinished( KJob *job );
+    void localFolderRequestJobFinished( KJob *job );
+
+    // For state Precommand
+    void precommandResult( KJob *job );
+
+    // For state Login
+    void loginJobResult( KJob *job );
+
+    // For state List
+    void listJobResult( KJob *job );
+
+    // For state UIDList
+    void uidListJobResult( KJob *job );
+
+    // For state Download
+    void messageFinished( int messageId, KMime::Message::Ptr message );
+    void fetchJobResult( KJob *job );
+    void messageDownloadProgress( KJob *job, KJob::Unit unit, qulonglong totalBytes );
+
+    // For state Save
+    void itemCreateJobResult( KJob *job );
+
+    // For state Delete
+    void deleteJobResult( KJob *job );
+    QList<int> idsToDelete() const;
+    int idToTime( int id ) const;
+    int idOfOldestMessage( QList<int> &idList ) const;
+
+    // For state Quit
+    void quitJobResult( KJob *job );
 
   private:
 
-    typedef QPair<QByteArray, QByteArray> IdUidPair;
-    enum Stage { Idle, List, Uidl, Head, Retr, ProcessRemainingMessages, Dele, Quit };
+    enum State {
+      Idle,
+      FetchTargetCollection,
+      Precommand,
+      Connect,
+      Login,
+      List,
+      UIDList,
+      Download,
+      Save,
+      Delete,
+      Quit
+    };
 
-    QMap<Akonadi::ItemCreateJob*, IdUidPair> createJobsMap;
-    unsigned short int defaultPort() const;
-    QString protocol() const;
-    void processRemainingQueuedMessages();
-    void saveUidList();
-    void startJob();
-    void cancelMailCheck();
-    
-    KIO::SimpleJob *mJob;
-    QPointer<KIO::Slave> mSlave;
-    Stage mStage;
+    void resetState();
+    void doStateStep();
+    void cancelSync( const QString &errorMessage, bool error = true );
+    void saveSeenUIDList();
 
-    QTimer processMsgsTimer;
-    int numBytesRead, numMsgBytesRead, curMsgLen, numBytes, numBytesToRead, numMsgs;
+    State mState;
+    Akonadi::Collection mTargetCollection;
+    POPSession *mPopSession;
     bool mAskAgain;
-    QList<QByteArray> idsOfMsgs;
-    int indexOfCurrentMsg;
-    int processingDelay;
-    bool headers;
-    bool interactive;
-    bool mUidlFinished;
-    QDataStream *curMsgStrm;
-    QByteArray curMsgData;
-    int dataCounter;
-    // Map of ID's vs. sizes of messages which should be downloaded; use QMap because the order needs to be
-    // predictable
-    QMap<QByteArray, int> mMsgsPendingDownload;
-    // All IDs that we'll delete in any case, even if we have "leave on server"
-    // checked. This is only used when the server issues an invalid UIDL response
-    // and we can't map a UID to the ID. See bug 127696.
-    QSet<QByteArray> idsOfForcedDeletes;
 
-    QQueue<MessagePtr> msgsAwaitingProcessing;
-    QQueue<QByteArray> msgIdsAwaitingProcessing;
-    QQueue<QByteArray> msgUidsAwaitingProcessing;
+    // Maps IDs on the server to message sizes on the server
+    QMap<int,int> mIdsToSizeMap;
 
-    QHash<QByteArray, QByteArray> mUidForIdMap; // maps message ID (i.e. index on the server) to UID
-    QHash<QByteArray, int> mUidsOfSeenMsgsDict; // set of UIDs of previously seen messages (for fast lookup)
-    QHash<QByteArray, int> mUidsOfNextSeenMsgsDict; // set of UIDs of seen messages (for the next check)
-    QVector<int> mTimeOfSeenMsgsVector; // list of times of previously seen messages
-    QHash<QByteArray, int> mTimeOfNextSeenMsgsMap; // map of uid to times of seen messages
-    QHash<QByteArray, int> mSizeOfNextSeenMsgsDict;
-    QSet<QByteArray> idsOfMsgsToDelete;
+    // Maps IDs on the server to UIDs on the server.
+    // This can be empty, if the server doesn't support UIDL
+    QMap<int,QString> mIdsToUidsMap;
 
-    QSet<QByteArray> mHeaderDeleteUids;
-    QSet<QByteArray> mHeaderDownUids;
-    QSet<QByteArray> mHeaderLaterUids;
+    // Whether we actually received a valid UID list from the server
+    bool mUidListValid;
+
+    // IDs of messages that we have sucessfully downloaded. This does _not_ mean
+    // that the messages corresponding to the IDs are stored in Akonadi yet
+    QList<int> mDownloadedIDs;
+
+    // IDs of messages that we want to download and that have have started the
+    // FetchJob with. After the FetchJob, this should be empty, except if there
+    // was some error
+    QList<int> mIdsToDownload;
+
+    // After downloading a message, we store it in Akonadi by using an ItemCreateJob.
+    // This map stores the currently running ItemCreateJob's and their corresponding
+    // POP3 IDs.
+    // When an ItemCreateJob finished, it is removed from this map.
+    // The Save state waits until this map becomes empty.
+    QMap<Akonadi::ItemCreateJob*,int> mPendingCreateJobs;
+
+    // List of message IDs that were sucessfully stored in Akonadi
+    QList<int> mIDsStored;
+
+    // List of message IDs that were sucessfully deleted
+    QList<int> mDeletedIDs;
 };
 
 #endif

@@ -17,8 +17,10 @@ macro(add_akonadi_isolated_test _source)
   get_filename_component(_targetName ${_source} NAME_WE)
   set(_srcList ${_source} fakeserver/fakeserver.cpp)
 
-  set(pop3settingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/../org.kde.Akonadi.POP3.Settings.xml)
-  set(maildirsettingsinterface_xml ${KDE4_DBUS_INTERFACES_DIR}/org.kde.Akonadi.Maildir.Settings.xml)
+  kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../pop3resource.kcfg org.kde.Akonadi.POP3.Settings)
+  set(pop3settingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml)
+  kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../../maildir/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
+  set(maildirsettingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml)
   set_source_files_properties(${pop3settingsinterface_xml} PROPERTIES INCLUDE "../metatype.h")
   qt4_add_dbus_interface(_srcList ${pop3settingsinterface_xml} pop3settings)
   qt4_add_dbus_interface(_srcList ${maildirsettingsinterface_xml} maildirsettings)
@@ -33,6 +35,7 @@ macro(add_akonadi_isolated_test _source)
     ${KDE4_KDECORE_LIBS}
     ${KDE4_KMIME_LIBS}
     ${QT_QTCORE_LIBRARY}
+    ${QT_QTNETWORK_LIBRARY}
     ${QT_QTDBUS_LIBRARY}
   )
 

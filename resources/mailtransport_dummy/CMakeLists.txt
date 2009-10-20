@@ -17,6 +17,6 @@ qt4_add_dbus_adaptor(mtdummyresource_SRCS
 
 kde4_add_executable(akonadi_mailtransport_dummy_resource ${mtdummyresource_SRCS})
 
-target_link_libraries(akonadi_mailtransport_dummy_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KDEUI_LIBS})
+target_link_libraries(akonadi_mailtransport_dummy_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS})
 
 install(TARGETS akonadi_mailtransport_dummy_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

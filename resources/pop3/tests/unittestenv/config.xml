@@ -2,4 +2,5 @@
   <kdehome>kdehome</kdehome>
   <confighome>xdgconfig</confighome>
   <datahome>xdglocal</datahome>
+  <envvar name="AKONADI_DISABLE_AGENT_AUTOSTART">true</envvar>
 </config>

@@ -40,6 +40,8 @@ class Pop3Test : public QObject
     void testSimpleDownload();
     void testSimpleLeaveOnServer();
     void testBigFetch();
+    void testSeenUIDCleanup();
+    void testTimeBasedLeaveRule();
 
   private:
     void cleanupMaildir( Akonadi::Item::List items );
@@ -54,7 +56,7 @@ class Pop3Test : public QObject
     QString listSequence( const QList<QByteArray> &mails ) const;
     QString uidSequence( const QStringList &uids ) const;
 
-    FakeServer *mFakeServer;
+    FakeServerThread *mFakeServerThread;
 
     OrgKdeAkonadiPOP3SettingsInterface *mPOP3SettingsInterface;
     OrgKdeAkonadiMaildirSettingsInterface *mMaildirSettingsInterface;
