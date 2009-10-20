@@ -56,10 +56,12 @@ kde4_add_executable(akonadi_pop3_resource RUN_UNINSTALLED ${pop3resource_SRCS})
 
 target_link_libraries( akonadi_pop3_resource
   ${KDE4_AKONADI_LIBS}
+  ${KDE4_AKONADI_KMIME_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTGUI_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KDECORE_LIBS}
+  ${KDE4_KIO_LIBS}
   ${KDE4_KMIME_LIBS}
   ${KDE4_MAILTRANSPORT_LIBRARY}
 )
