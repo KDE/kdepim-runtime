@@ -68,8 +68,6 @@ class SingleFileResource : public SingleFileResourceBase
       if ( KDirWatch::self()->contains( mCurrentUrl.toLocalFile() ) )
         KDirWatch::self()->removeFile( mCurrentUrl.toLocalFile() );
 
-      const bool nameWasChanged = mCurrentUrl.fileName() != name() && !mCurrentUrl.isEmpty();
-
       if ( Settings::self()->path().isEmpty() ) {
         emit status( Broken, i18n( "No file selected." ) );
         return;
@@ -85,7 +83,7 @@ class SingleFileResource : public SingleFileResourceBase
 
       if ( mCurrentUrl.isLocalFile() )
       {
-        if ( !nameWasChanged )
+        if ( ( name().isEmpty() || name() == identifier() ) && !mCurrentUrl.isEmpty() )
           setName( mCurrentUrl.fileName() );
 
         // check if the file does not exist yet, if so, create it
