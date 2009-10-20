@@ -29,7 +29,10 @@ macro_log_feature(Soprano_FOUND "Soprano" "Semantic Desktop Storing" "http://sop
 find_package(Nepomuk)
 macro_log_feature(Nepomuk_FOUND "Nepomuk" "The Nepomuk libraries" "http://www.kde.org" FALSE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
 
-############### search programs & libraries used by kpim-runtime ###############
+find_package(Strigi)
+macro_log_feature(STRIGI_FOUND "Strigi" "Index metadata of files" "http://strigi.sourceforge.net" FALSE "" "")
+
+############### search programs & libraries used by kdepim-runtime ###############
 
 find_program(XSLTPROC_EXECUTABLE xsltproc)
 macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" TRUE "" "Required for building Akonadi.")
