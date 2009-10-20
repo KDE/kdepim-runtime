@@ -41,6 +41,7 @@
 #include <KUrl>
 #include <KProcess>
 #include <KMessageBox>
+#include <KStandardDirs>
 
 #include <Soprano/Vocabulary/NAO>
 
@@ -256,9 +257,10 @@ void NepomukFeederAgentBase::selfTest()
   QStringList errorMessages;
 
   // if Nepomuk is not running, try to start it
-  if ( !mNepomukStartupAttempted && !QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.NepomukStorage" ) ) {
+  if ( !mNepomukStartupAttempted && !QDBusConnection::sessionBus().interface()->isServiceRegistered( QLatin1String( "org.kde.NepomukStorage" ) ) ) {
     KProcess process;
-    if ( process.startDetached( QLatin1String( "nepomukserver" ) ) == 0 ) {
+    const QString nepomukserver = KStandardDirs::findExe( QLatin1String("nepomukserver") );
+    if ( process.startDetached( nepomukserver ) == 0 ) {
       errorMessages.append( i18n( "Unable to start the Nepomuk server." ) );
     } else {
       mNepomukStartupAttempted = true;
@@ -271,11 +273,11 @@ void NepomukFeederAgentBase::selfTest()
   }
 
   // if it is already running, check if the backend is correct
-  if ( QDBusConnection::sessionBus().interface()->isServiceRegistered( "org.kde.NepomukStorage" ) ) {
+  if ( QDBusConnection::sessionBus().interface()->isServiceRegistered( QLatin1String( "org.kde.NepomukStorage" ) ) ) {
     static const QStringList backendBlacklist = QStringList() << QLatin1String( "redland" );
     // check which backend is used
-    QDBusInterface interface( "org.kde.NepomukStorage", "/nepomukstorage" );
-    QDBusReply<QString> reply = interface.call( "usedSopranoBackend" );
+    QDBusInterface interface( QLatin1String( "org.kde.NepomukStorage" ), QLatin1String( "/nepomukstorage" ) );
+    QDBusReply<QString> reply = interface.call( QLatin1String( "usedSopranoBackend" ) );
     if ( reply.isValid() ) {
       const QString backend = reply.value().toLower();
       if ( backendBlacklist.contains( backend ) )
@@ -314,14 +316,14 @@ void NepomukFeederAgentBase::selfTest()
                           "severely limit the capabilities of any application using this data.<br/><br/>"
                           "The following problems were detected:<ul><li>%1</li></ul>"
                           "Additional help can be found here: <a href=\"http://userbase.kde.org/Akonadi\">userbase.kde.org/Akonadi</a>",
-                          errorMessages.join( "</li><li>" ) );
+                          errorMessages.join( QLatin1String( "</li><li>" ) ) );
 
   // prevent a message storm from all agents
   emit status( Broken, i18n( "Nepomuk not operational" ) );
-  if ( !QDBusConnection::sessionBus().registerService( "org.kde.pim.nepomukfeeder.selftestreport" ) )
+  if ( !QDBusConnection::sessionBus().registerService( QLatin1String( "org.kde.pim.nepomukfeeder.selftestreport" ) ) )
     return;
   KMessageBox::error( 0, message, i18n( "Nepomuk Indexing Disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
-  QDBusConnection::sessionBus().unregisterService( "org.kde.pim.nepomukfeeder.selftestreport" );
+  QDBusConnection::sessionBus().unregisterService( QLatin1String( "org.kde.pim.nepomukfeeder.selftestreport" ) );
 }
 
 void NepomukFeederAgentBase::serviceOwnerChanged(const QString& name, const QString& oldOwner, const QString& newOwner)
@@ -342,14 +344,14 @@ NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QSt
   //
   SelectSparqlBuilder::BasicGraphPattern graph;
   if ( emailAddress.isEmpty() ) {
-    graph.addTriple( "?person", Vocabulary::NCO::fullname(), name );
+    graph.addTriple( QLatin1String( "?person" ), Vocabulary::NCO::fullname(), name );
   } else {
-    graph.addTriple( "?person", Vocabulary::NCO::hasEmailAddress(), SparqlBuilder::QueryVariable( "?email" ) );
-    graph.addTriple( "?email", Vocabulary::NCO::emailAddress(), emailAddress );
+    graph.addTriple( QLatin1String( "?person" ), Vocabulary::NCO::hasEmailAddress(), SparqlBuilder::QueryVariable( "?email" ) );
+    graph.addTriple( QLatin1String( "?email" ), Vocabulary::NCO::emailAddress(), emailAddress );
   }
   SelectSparqlBuilder qb;
   qb.setGraphPattern( graph );
-  qb.addQueryVariable( "?person" );
+  qb.addQueryVariable( QLatin1String( "?person" ) );
   Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(), Soprano::Query::QueryLanguageSparql );
 
   if ( it.next() ) {
@@ -364,7 +366,7 @@ NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QSt
   NepomukFast::PersonContact contact( QUrl(), graphUri );
   contact.setLabel( name.isEmpty() ? emailAddress : name );
   if ( !emailAddress.isEmpty() ) {
-    NepomukFast::EmailAddress emailRes( QUrl( "mailto:" + emailAddress ), graphUri );
+    NepomukFast::EmailAddress emailRes( QUrl( QLatin1String( "mailto:" ) + emailAddress ), graphUri );
     emailRes.setEmailAddress( emailAddress );
     contact.addEmailAddress( emailRes );
   }

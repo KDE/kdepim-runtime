@@ -84,9 +84,9 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
       SparqlBuilder::BasicGraphPattern graph;
       // FIXME: why isn't that in the ontology?
       // graph.addTriple( "?g", Vocabulary::Nie::dataGraphFor(), item.url() );
-      graph.addTriple( "?g", QUrl( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ), entity.url() );
+      graph.addTriple( QLatin1String( "?g" ), QUrl( QLatin1String( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ) ), entity.url() );
       SelectSparqlBuilder qb;
-      qb.addQueryVariable( "?g" );
+      qb.addQueryVariable( QLatin1String( "?g" ) );
       qb.setGraphPattern( graph );
       const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(),
           Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
