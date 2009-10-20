@@ -53,8 +53,6 @@
 #include <Akonadi/Item>
 
 namespace KCal {
-    class ICalTimeZone;
-    class ICalTimeZones;
     class CalFilter;
     class Person;
 }
@@ -306,15 +304,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
       @see isLocalTime()
     */
     void shiftTimes( const KDateTime::Spec &oldSpec, const KDateTime::Spec &newSpec );
-
-    /**
-      Returns the time zone collection used by the calendar.
-
-      @return the time zones collection.
-
-      @see setLocalTime()
-    */
-    KCal::ICalTimeZones *timeZones() const;
 
     /**
       Sets if the calendar has been modified.

@@ -261,11 +261,6 @@ QString CalendarBase::viewTimeZoneId() const
   return tz.isValid() ? tz.name() : QString();
 }
 
-ICalTimeZones *CalendarBase::timeZones() const
-{
-  return d->mTimeZones;
-}
-
 void CalendarBase::shiftTimes( const KDateTime::Spec &oldSpec,
                            const KDateTime::Spec &newSpec )
 {
