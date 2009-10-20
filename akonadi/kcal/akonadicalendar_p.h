@@ -143,7 +143,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
     bool addIncidence( Incidence *incidence )
     {
       kDebug();
-      Akonadi::CollectionDialog dlg( 0 );
+      Akonadi::CollectionDialog dlg;
       dlg.setMimeTypeFilter( QStringList() << QString::fromLatin1( "text/calendar" ) );
       if ( ! dlg.exec() ) {
         return false;
@@ -165,7 +165,7 @@ class KOrg::AkonadiCalendar::Private : public QObject
     bool addIncidence( const Incidence::Ptr &incidence )
     {
       kDebug();
-      Akonadi::CollectionDialog dlg( 0 ); //PENDING(AKONADI_PORT) we really need a parent here
+      Akonadi::CollectionDialog dlg; //PENDING(AKONADI_PORT) we really need a parent here
       dlg.setMimeTypeFilter( QStringList() << QLatin1String( "text/calendar" ) );
       if ( ! dlg.exec() ) {
         return false;

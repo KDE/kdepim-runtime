@@ -24,8 +24,8 @@
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemCreateJob>
-#include <akonadi/kmime/localfoldersrequestjob.h>
-#include <akonadi/kmime/localfolders.h>
+#include <akonadi/kmime/specialcollectionsrequestjob.h>
+#include <akonadi/kmime/specialcollections.h>
 #include <Mailtransport/PrecommandJob>
 
 #include <KIO/PasswordDialog>
@@ -111,8 +111,8 @@ void POP3Resource::doStateStep()
       Collection targetCollection( Settings::targetCollection() );
       if ( !targetCollection.isValid() ) {
         // No target collection set in the config? Try requesting a default inbox
-        LocalFoldersRequestJob *requestJob = new LocalFoldersRequestJob( this );
-        requestJob->requestDefaultFolder( LocalFolders::Inbox );
+        SpecialCollectionsRequestJob *requestJob = new SpecialCollectionsRequestJob( this );
+        requestJob->requestDefaultCollection( SpecialCollections::Inbox );
         requestJob->start();
         connect ( requestJob, SIGNAL(result(KJob*)),
                   this, SLOT(localFolderRequestJobFinished(KJob*)) );
@@ -300,7 +300,7 @@ void POP3Resource::localFolderRequestJobFinished( KJob *job )
     return;
   }
 
-  mTargetCollection = LocalFolders::self()->defaultFolder( LocalFolders::Inbox );
+  mTargetCollection = SpecialCollections::self()->defaultCollection( SpecialCollections::Inbox );
   Q_ASSERT( mTargetCollection.isValid() );
   mState = Precommand;
   doStateStep();

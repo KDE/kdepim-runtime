@@ -1,4 +1,5 @@
 [Desktop Entry]
+Exec=kcmshell4 kcm_akonadi_server
 Icon=akonadi
 Type=Service
 ServiceTypes=KCModule

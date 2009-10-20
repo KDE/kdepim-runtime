@@ -42,13 +42,13 @@ public:
   ContactsModel(Session *session, ChangeRecorder *monitor, QObject *parent = 0);
   virtual ~ContactsModel();
 
-  virtual QVariant getData(const Item &item, int column, int role=Qt::DisplayRole) const;
+  virtual QVariant entityData(const Item &item, int column, int role=Qt::DisplayRole) const;
 
-  virtual QVariant getData(const Collection &collection, int column, int role=Qt::DisplayRole) const;
+  virtual QVariant entityData(const Collection &collection, int column, int role=Qt::DisplayRole) const;
 
   virtual int columnCount(const QModelIndex &index = QModelIndex()) const;
 
-  virtual QVariant getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const;
+  virtual QVariant entityHeaderData( int section, Qt::Orientation orientation, int role, HeaderGroup headerGroup ) const;
 
   /**
     Returns true if @p matchdata matches @p item using @p flags.

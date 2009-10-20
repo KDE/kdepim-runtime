@@ -59,7 +59,7 @@ MailModel::~MailModel()
    delete d_ptr;
 }
 
-QVariant MailModel::getData(const Item &item, int column, int role) const
+QVariant MailModel::entityData(const Item &item, int column, int role) const
 {
   if (!item.hasPayload<MessagePtr>())
   {
@@ -86,17 +86,17 @@ QVariant MailModel::getData(const Item &item, int column, int role) const
     d.append(QString::fromLatin1("Date: %1\n").arg(mail->date()->asUnicodeString()));
     return d;
   }
-  return EntityTreeModel::getData(item, column, role);
+  return EntityTreeModel::entityData(item, column, role);
 }
 
-QVariant MailModel::getData(const Collection &collection, int column, int role) const
+QVariant MailModel::entityData(const Collection &collection, int column, int role) const
 {
   if (role == Qt::DisplayRole)
   {
     switch (column)
     {
     case 0:
-      return EntityTreeModel::getData(collection, column, role);
+      return EntityTreeModel::entityData(collection, column, role);
     case 1:
       return rowCount(EntityTreeModel::indexForCollection(collection));
     default:
@@ -105,7 +105,7 @@ QVariant MailModel::getData(const Collection &collection, int column, int role) 
   //     return QVariant();
     }
   }
-  return EntityTreeModel::getData(collection, column, role);
+  return EntityTreeModel::entityData(collection, column, role);
 }
 
 int MailModel::columnCount(const QModelIndex &index) const
@@ -114,13 +114,13 @@ int MailModel::columnCount(const QModelIndex &index) const
   return 3;
 }
 
-QVariant MailModel::getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const
+QVariant MailModel::entityHeaderData( int section, Qt::Orientation orientation, int role, HeaderGroup headerGroup ) const
 {
   Q_D(const MailModel);
 
   if (orientation == Qt::Horizontal)
   {
-    if (headerSet == EntityTreeModel::CollectionTreeHeaders)
+    if (headerGroup == EntityTreeModel::CollectionTreeHeaders)
     {
       if (role == Qt::DisplayRole)
       {
@@ -128,7 +128,7 @@ QVariant MailModel::getHeaderData( int section, Qt::Orientation orientation, int
           return QVariant();
         return d->m_collectionHeaders.at(section);
       }
-    } else if (headerSet == EntityTreeModel::ItemListHeaders)
+    } else if (headerGroup == EntityTreeModel::ItemListHeaders)
     {
       if (role == Qt::DisplayRole)
       {
@@ -138,5 +138,5 @@ QVariant MailModel::getHeaderData( int section, Qt::Orientation orientation, int
       }
     }
   }
-  return EntityTreeModel::getHeaderData(section, orientation, role, headerSet);
+  return EntityTreeModel::entityHeaderData(section, orientation, role, headerGroup);
 }

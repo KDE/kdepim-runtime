@@ -84,21 +84,21 @@ void MTDummyResource::configure( WId windowId )
   }
 }
 
-void MTDummyResource::sendItem( Item::Id message )
+void MTDummyResource::sendItem( const Item &message )
 {
-  kDebug() << "id" << message;
+  kDebug() << "id" << message.id();
   Q_ASSERT( currentlySending == -1 );
-  currentlySending = message;
-  ItemCopyJob *job = new ItemCopyJob( Item( message ), Collection( Settings::self()->sink() ) );
+  currentlySending = message.id();
+  ItemCopyJob *job = new ItemCopyJob( message, Collection( Settings::self()->sink() ) );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)) );
 }
 
 void MTDummyResource::jobResult( KJob *job )
 {
   if( job->error() ) {
-    emitTransportResult( currentlySending, false, job->errorString() );
+    itemSent( Item( currentlySending ), TransportFailed, job->errorString() );
   } else {
-    emitTransportResult( currentlySending, true );
+    itemSent( Item( currentlySending ), TransportSucceeded );
   }
   currentlySending = -1;
 }

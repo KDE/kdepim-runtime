@@ -28,7 +28,7 @@
 #include <akonadi/attributefactory.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/control.h>
-#include <akonadi/entityfilterproxymodel.h>
+#include <akonadi/entitymimetypefiltermodel.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
@@ -39,13 +39,12 @@
 #include <akonadi/selectionproxymodel.h>
 #include <akonadi/session.h>
 #include <akonadi/standardactionmanager.h>
+#include <akonadi/entitylistview.h>
 #include <akonadi/entitytreeview.h>
 #include <akonadi/entitytreeviewstatesaver.h>
 #include <akonadi/favoritecollectionsmodel.h>
-#include <akonadi/favoritecollectionsview.h>
 #include <akonadi_next/quotacolorproxymodel.h>
 #include <akonadi/statisticsproxymodel.h>
-#include <akonadi/statisticstooltipproxymodel.h>
 
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
@@ -106,7 +105,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   mCollectionView->setSelectionMode( QAbstractItemView::ExtendedSelection );
   splitter2->addWidget( mCollectionView );
 
-  FavoriteCollectionsView *favoritesView = new FavoriteCollectionsView( xmlGuiWindow, this );
+  EntityListView *favoritesView = new EntityListView( xmlGuiWindow, this );
   //favoritesView->setViewMode( QListView::IconMode );
   splitter2->addWidget( favoritesView );
 
@@ -128,16 +127,14 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
   new ModelTest( mBrowserModel );
 
-  EntityFilterProxyModel *collectionFilter = new EntityFilterProxyModel( this );
+  EntityMimeTypeFilterModel *collectionFilter = new EntityMimeTypeFilterModel( this );
   collectionFilter->setSourceModel( mBrowserModel );
   collectionFilter->addMimeTypeInclusionFilter( Collection::mimeType() );
-  collectionFilter->setHeaderSet( EntityTreeModel::CollectionTreeHeaders );
+  collectionFilter->setHeaderGroup( EntityTreeModel::CollectionTreeHeaders );
 
-  statisticsToolTipProxyModel = new StatisticsToolTipProxyModel( this );
-  statisticsToolTipProxyModel->setSourceModel( collectionFilter );
-
-  StatisticsProxyModel *statisticsProxyModel = new StatisticsProxyModel( this );
-  statisticsProxyModel->setSourceModel( statisticsToolTipProxyModel );
+  statisticsProxyModel = new StatisticsProxyModel( this );
+  statisticsProxyModel->setToolTipEnabled( true );
+  statisticsProxyModel->setSourceModel( collectionFilter );
 
   QuotaColorProxyModel *quotaProxyModel = new QuotaColorProxyModel( this );
   quotaProxyModel->setWarningThreshold( 50.0 );
@@ -157,10 +154,10 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   selectionProxyModel->setSourceModel( mBrowserModel );
   selectionProxyModel->setFilterBehavior( KSelectionProxyModel::ChildrenOfExactSelection );
 
-  EntityFilterProxyModel *itemFilter = new EntityFilterProxyModel( this );
+  EntityMimeTypeFilterModel *itemFilter = new EntityMimeTypeFilterModel( this );
   itemFilter->setSourceModel( selectionProxyModel );
   itemFilter->addMimeTypeExclusionFilter( Collection::mimeType() );
-  itemFilter->setHeaderSet( EntityTreeModel::ItemListHeaders );
+  itemFilter->setHeaderGroup( EntityTreeModel::ItemListHeaders );
 
   FavoriteCollectionsModel *favoritesModel = new FavoriteCollectionsModel( mBrowserModel, this );
   favoritesView->setModel( favoritesModel );
@@ -384,8 +381,8 @@ void BrowserWidget::modelChanged()
   saver->saveState( saveConfig );
   saveConfig.sync();
 
-  QAbstractItemModel *model = statisticsToolTipProxyModel->sourceModel();
-  statisticsToolTipProxyModel->setSourceModel(0);
+  QAbstractItemModel *model = statisticsProxyModel->sourceModel();
+  statisticsProxyModel->setSourceModel(0);
   switch ( itemUi.modelBox->currentIndex() ) {
     case 1:
       mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::MailMode);
@@ -399,7 +396,7 @@ void BrowserWidget::modelChanged()
     default:
       mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::GenericMode);
   }
-  statisticsToolTipProxyModel->setSourceModel(model);
+  statisticsProxyModel->setSourceModel(model);
 
   const KConfigGroup restoreConfig( KGlobal::config(), "CollectionViewState" );
   saver->restoreState( restoreConfig );

@@ -100,7 +100,7 @@ ContactsModel::~ContactsModel()
    delete d_ptr;
 }
 
-QVariant ContactsModel::getData(const Item &item, int column, int role) const
+QVariant ContactsModel::entityData(const Item &item, int column, int role) const
 {
   if ( item.mimeType() == QLatin1String( "text/directory" ) )
   {
@@ -126,17 +126,17 @@ QVariant ContactsModel::getData(const Item &item, int column, int role) const
       }
     }
   }
-  return EntityTreeModel::getData(item, column, role);
+  return EntityTreeModel::entityData(item, column, role);
 }
 
-QVariant ContactsModel::getData(const Collection &collection, int column, int role) const
+QVariant ContactsModel::entityData(const Collection &collection, int column, int role) const
 {
   if (role == Qt::DisplayRole)
   {
     switch (column)
     {
     case 0:
-      return EntityTreeModel::getData(collection, column, role);
+      return EntityTreeModel::entityData(collection, column, role);
     case 1:
       return rowCount(EntityTreeModel::indexForCollection(collection));
     default:
@@ -145,7 +145,7 @@ QVariant ContactsModel::getData(const Collection &collection, int column, int ro
   //     return QVariant();
     }
   }
-  return EntityTreeModel::getData(collection, column, role);
+  return EntityTreeModel::entityData(collection, column, role);
 }
 
 int ContactsModel::columnCount(const QModelIndex &index) const
@@ -154,13 +154,13 @@ int ContactsModel::columnCount(const QModelIndex &index) const
   return 4;
 }
 
-QVariant ContactsModel::getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const
+QVariant ContactsModel::entityHeaderData( int section, Qt::Orientation orientation, int role, HeaderGroup headerGroup ) const
 {
   Q_D(const ContactsModel);
 
   if (orientation == Qt::Horizontal)
   {
-    if ( headerSet == EntityTreeModel::CollectionTreeHeaders )
+    if ( headerGroup == EntityTreeModel::CollectionTreeHeaders )
     {
       if (role == Qt::DisplayRole)
       {
@@ -168,7 +168,7 @@ QVariant ContactsModel::getHeaderData( int section, Qt::Orientation orientation,
           return QVariant();
         return d->m_collectionHeaders.at(section);
       }
-    } else if (headerSet == EntityTreeModel::ItemListHeaders)
+    } else if (headerGroup == EntityTreeModel::ItemListHeaders)
     {
       if (role == Qt::DisplayRole)
       {
@@ -179,7 +179,7 @@ QVariant ContactsModel::getHeaderData( int section, Qt::Orientation orientation,
     }
   }
 
-  return EntityTreeModel::getHeaderData(section, orientation, role, headerSet);
+  return EntityTreeModel::entityHeaderData(section, orientation, role, headerGroup);
 }
 
 #include "contactsmodel.moc"

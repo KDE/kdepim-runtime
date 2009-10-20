@@ -35,6 +35,7 @@ class ProfileDialog : public QDialog
 
   public:
     explicit ProfileDialog( OCResource *resource, QWidget *parent = 0 );
+    void closeEvent(QCloseEvent *closeEvent);
 
   private Q_SLOTS:
     void addNewProfile();

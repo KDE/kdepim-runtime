@@ -220,66 +220,66 @@ int AkonadiBrowserModel::columnCount(const QModelIndex& parent) const
   return qMax(m_currentState->m_collectionHeaders.size(), m_currentState->m_itemHeaders.size());
 }
 
-QVariant AkonadiBrowserModel::getData( const Item &item, int column, int role ) const
+QVariant AkonadiBrowserModel::entityData( const Item &item, int column, int role ) const
 {
-  QVariant var = m_currentState->getData(item, column, role);
-  if (!var.isValid())
+  QVariant var = m_currentState->getData( item, column, role );
+  if ( !var.isValid() )
   {
-    if (column < 1 )
-      return EntityTreeModel::getData(item, column, role);
+    if ( column < 1 )
+      return EntityTreeModel::entityData( item, column, role );
     return QString();
   }
 
   return var;
 }
 
-QVariant AkonadiBrowserModel::getData(const Akonadi::Collection& collection, int column, int role) const
+QVariant AkonadiBrowserModel::entityData(const Akonadi::Collection& collection, int column, int role) const
 {
-  return Akonadi::EntityTreeModel::getData(collection, column, role);
+  return Akonadi::EntityTreeModel::entityData( collection, column, role );
 }
 
-int AkonadiBrowserModel::getColumnCount(int headerSet) const
+int AkonadiBrowserModel::entityColumnCount( HeaderGroup headerGroup ) const
 {
-  if (ItemListHeaders == headerSet)
+  if ( ItemListHeaders == headerGroup )
   {
     return m_currentState->m_itemHeaders.size();
   }
 
-  if (CollectionTreeHeaders == headerSet)
+  if ( CollectionTreeHeaders == headerGroup )
   {
     return m_currentState->m_collectionHeaders.size();
   }
   // Practically, this should never happen.
-  return EntityTreeModel::getColumnCount(headerSet);
+  return EntityTreeModel::entityColumnCount( headerGroup );
 }
 
 
-QVariant AkonadiBrowserModel::getHeaderData( int section, Qt::Orientation orientation, int role, int headerSet ) const
+QVariant AkonadiBrowserModel::entityHeaderData( int section, Qt::Orientation orientation, int role, HeaderGroup headerGroup ) const
 {
-  if (section < 0)
+  if ( section < 0 )
     return QVariant();
 
-  if (orientation == Qt::Vertical)
-     return EntityTreeModel::getHeaderData(section, orientation, role, headerSet);
+  if ( orientation == Qt::Vertical )
+     return EntityTreeModel::entityHeaderData( section, orientation, role, headerGroup );
 
-  if ( headerSet == EntityTreeModel::CollectionTreeHeaders )
+  if ( headerGroup == EntityTreeModel::CollectionTreeHeaders )
   {
-    if (role == Qt::DisplayRole)
+    if ( role == Qt::DisplayRole )
     {
-      if (section >= m_currentState->m_collectionHeaders.size() )
+      if ( section >= m_currentState->m_collectionHeaders.size() )
         return QVariant();
-      return m_currentState->m_collectionHeaders.at(section);
+      return m_currentState->m_collectionHeaders.at( section );
     }
-  } else if (headerSet == EntityTreeModel::ItemListHeaders)
+  } else if ( headerGroup == EntityTreeModel::ItemListHeaders )
   {
-    if (role == Qt::DisplayRole)
+    if ( role == Qt::DisplayRole )
     {
-      if (section >= m_currentState->m_itemHeaders.size() )
+      if ( section >= m_currentState->m_itemHeaders.size() )
         return QVariant();
-      return m_currentState->m_itemHeaders.at(section);
+      return m_currentState->m_itemHeaders.at( section );
     }
   }
-  return EntityTreeModel::getHeaderData(section, orientation, role, headerSet);
+  return EntityTreeModel::entityHeaderData( section, orientation, role, headerGroup );
 }
 
 AkonadiBrowserModel::ItemDisplayMode AkonadiBrowserModel::itemDisplayMode() const

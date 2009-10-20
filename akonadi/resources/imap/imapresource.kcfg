@@ -38,6 +38,11 @@
              also be retrieved when the mailboxes get listed.</label>
       <default>true</default>
     </entry>
+    <entry name="AutomaticExpungeEnabled" type="Bool">
+      <label>Defines if the expunge command is issued automatically, otherwise it should be
+             triggered manually through the D-Bus interface.</label>
+      <default>true</default>
+    </entry>
   </group>
   <group name="idle">
     <entry name="IdleRidPath" type="StringList">
