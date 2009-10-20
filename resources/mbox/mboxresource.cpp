@@ -117,6 +117,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   Item::List items;
   QString colId = QString::number( col.id() );
   QString colRid = col.remoteId();
+  double count = 1;
   foreach ( const MsgInfo &entry, entryList ) {
     // TODO: Use cache policy to see what actually has to been set as payload.
     //       Currently most views need a minimal amount of information so the
@@ -130,6 +131,8 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     item.setMimeType( "message/rfc822" );
     item.setSize( entry.second );
     item.setPayload( MessagePtr( mail ) );
+
+    emit percent(count++ / entryList.size());
     items << item;
   }
 

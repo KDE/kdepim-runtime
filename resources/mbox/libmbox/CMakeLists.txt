@@ -1,4 +1,7 @@
-set(mbox_LIB_SRCS mbox.cpp)
+set(mbox_LIB_SRCS
+    mbox_p.cpp
+    mbox.cpp
+)
 
 add_subdirectory(tests)
 

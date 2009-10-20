@@ -24,66 +24,33 @@
           Bertjan Broeksema, april 2009
 */
 
-#include "mbox.h"
-
-#include <QtCore/QFileInfo>
-#include <QtCore/QProcess>
-#include <QtCore/QReadWriteLock>
+#include "mbox_p.h"
 
 #include <fcntl.h>
+
+#include <QtCore/QProcess>
+
 #include <kdebug.h>
 #include <klocalizedstring.h>
 #include <kshell.h>
 #include <kstandarddirs.h>
 #include <kurl.h>
 
-class MBox::Private
-{
-  public:
-    Private() : mInitialMboxFileSize( 0 )
-    {}
-
-    ~Private()
-    {
-      if ( mMboxFile.isOpen() )
-        mMboxFile.close();
-    }
-
-    void close()
-    {
-      if ( mMboxFile.isOpen() )
-        mMboxFile.close();
-
-      mFileLocked = false;
-    }
-
-    QByteArray mAppendedEntries;
-    QList<MsgInfo> mEntries;
-    bool mFileLocked;
-    quint64 mInitialMboxFileSize;
-    LockType mLockType;
-    QFile mMboxFile;
-    QString mLockFileName;
-    bool mReadOnly;
-};
-
 static QString sMBoxSeperatorRegExp( "^From .*[0-9][0-9]:[0-9][0-9]" );
 
 /// private static methods.
 
-QByteArray quoteAndEncode( const QString &str )
-{
-  return QFile::encodeName( KShell::quoteArg( str ) );
-}
 
 /// public methods.
 
-MBox::MBox()
-  : d( new Private() )
+MBox::MBox() : d( new MBoxPrivate(this) )
 {
   // Set some sane defaults
   d->mFileLocked = false;
   d->mLockType = None; //
+
+  d->mUnlockTimer.setInterval(0);
+  d->mUnlockTimer.setSingleShot(true);
 }
 
 MBox::~MBox()
@@ -96,12 +63,16 @@ MBox::~MBox()
   delete d;
 }
 
+// Appended entries works as follows: When an mbox file is loaded from disk,
+// d->mInitialMboxFileSize is set to the file size at that moment. New entries
+// are stored in memory (d->mAppendedEntries). The initial file size and the size
+// of the buffer determine the offset for the next message to append.
 qint64 MBox::appendEntry( const MessagePtr &entry )
 {
-  if ( d->mMboxFile.fileName().isEmpty() )
-    return -1; // It doesn't make sense to add entries when we don't have an reference file.
+  // It doesn't make sense to add entries when we don't have an reference file.
+  Q_ASSERT( !d->mMboxFile.fileName().isEmpty() );
 
-  const QByteArray rawEntry = escapeFrom( entry->encodedContent() );
+  const QByteArray rawEntry = MBoxPrivate::escapeFrom( entry->encodedContent() );
 
   if ( rawEntry.size() <= 0 ) {
     kDebug() << "Message added to folder `" << d->mMboxFile.fileName()
@@ -134,7 +105,7 @@ qint64 MBox::appendEntry( const MessagePtr &entry )
     }
   }
 
-  d->mAppendedEntries.append( mboxMessageSeparator( rawEntry ) );
+  d->mAppendedEntries.append( MBoxPrivate::mboxMessageSeparator( rawEntry ) );
   d->mAppendedEntries.append( rawEntry );
   if ( rawEntry[rawEntry.size() - 1] != '\n' ) {
     d->mAppendedEntries.append( "\n\n" );
@@ -167,16 +138,12 @@ bool MBox::load( const QString &fileName )
   if ( d->mFileLocked )
     return false;
 
-  d->mMboxFile.setFileName( KUrl( fileName ).toLocalFile() );
-  if ( !d->mMboxFile.exists() && !d->mMboxFile.open( QIODevice::WriteOnly ) )
-    return false;
+  d->initLoad( fileName );
 
-  if ( !lock() )
+  if ( !lock() ) {
+    kDebug() << "Failed to lock";
     return false;
-
-  d->mInitialMboxFileSize = d->mMboxFile.size();
-  d->mAppendedEntries.clear();
-  d->mEntries.clear();
+  }
 
   QRegExp regexp( sMBoxSeperatorRegExp );
   QByteArray line;
@@ -188,7 +155,11 @@ bool MBox::load( const QString &fileName )
 
     line = d->mMboxFile.readLine();
 
-    if ( regexp.indexIn( line ) >= 0 || d->mMboxFile.atEnd() ) {
+    // if atEnd, use mail only if there was a separator line at all,
+    // otherwise it's not a valid mbox
+    if ( regexp.indexIn( line ) >= 0 ||
+         ( d->mMboxFile.atEnd() && ( prevSeparator.size() != 0 ) ) ) {
+
       // Found the separator or at end of file, the message starts at offs
       quint64 msgSize = pos - offs;
 
@@ -221,7 +192,9 @@ bool MBox::load( const QString &fileName )
     }
   }
 
-  return unlock(); // FIXME: What if unlock fails?
+  // FIXME: What if unlock fails?
+  // if no separator was found, the file is still valid if it is empty
+  return unlock() && ( ( prevSeparator.size() != 0 ) || ( d->mMboxFile.size() == 0 ) );
 }
 
 bool MBox::lock()
@@ -229,7 +202,21 @@ bool MBox::lock()
   if ( d->mMboxFile.fileName().isEmpty() )
     return false; // We cannot lock if there is no file loaded.
 
-  d->mFileLocked = false;
+  // We can't load another file when the mbox currently is locked so if d->mFileLocked
+  // is true atm just return true.
+  if ( locked() )
+    return true;
+
+  if ( d->mLockType == None ) {
+    d->mFileLocked = true;
+    if ( d->open() ) {
+      d->startTimerIfNeeded();
+      return true;
+    }
+
+    d->mFileLocked = false;
+    return false;
+  }
 
   QStringList args;
   int rc = 0;
@@ -239,9 +226,9 @@ bool MBox::lock()
     case ProcmailLockfile:
       args << "-l20" << "-r5";
       if ( !d->mLockFileName.isEmpty() )
-        args << quoteAndEncode(d->mLockFileName);
+        args << QFile::encodeName( d->mLockFileName );
       else
-        args << quoteAndEncode(d->mMboxFile.fileName() + ".lock");
+        args << QFile::encodeName( d->mMboxFile.fileName() + ".lock" );
 
       rc = QProcess::execute("lockfile", args);
       if( rc != 0 ) {
@@ -255,7 +242,7 @@ bool MBox::lock()
       break;
 
     case MuttDotlock:
-      args << quoteAndEncode( d->mMboxFile.fileName() );
+      args << QFile::encodeName( d->mMboxFile.fileName() );
       rc = QProcess::execute( "mutt_dotlock", args );
 
       if( rc != 0 ) {
@@ -269,7 +256,7 @@ bool MBox::lock()
       break;
 
     case MuttDotlockPrivileged:
-      args << "-p" << quoteAndEncode( d->mMboxFile.fileName() );
+      args << "-p" << QFile::encodeName( d->mMboxFile.fileName() );
       rc = QProcess::execute( "mutt_dotlock", args );
 
       if( rc != 0 ) {
@@ -289,13 +276,19 @@ bool MBox::lock()
   }
 
   if ( d->mFileLocked ) {
-    if ( !open() ) {
+    if ( !d->open() ) {
       const bool unlocked = unlock();
       Q_ASSERT( unlocked ); // If this fails we're in trouble.
       Q_UNUSED( unlocked );
     }
   }
 
+  d->startTimerIfNeeded();
+  return d->mFileLocked;
+}
+
+bool MBox::locked() const
+{
   return d->mFileLocked;
 }
 
@@ -342,7 +335,6 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
 
   quint64 origFileSize = d->mMboxFile.size();
 
-  qDebug() << "ENTRIES:" << d->mEntries;
   QListIterator<MsgInfo> i( d->mEntries );
   while ( i.hasNext() ) {
     MsgInfo entry = i.next();
@@ -401,10 +393,11 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
 
 KMime::Message *MBox::readEntry(quint64 offset)
 {
-  bool wasLocked = d->mFileLocked;
-  if ( ! wasLocked )
+  bool wasLocked = locked();
+  if ( ! wasLocked ) {
     if ( ! lock() )
       return 0;
+  }
 
   // TODO: Add error handling in case locking failed.
 
@@ -413,7 +406,8 @@ KMime::Message *MBox::readEntry(quint64 offset)
   Q_ASSERT( d->mMboxFile.size() > 0 );
 
   if ( offset > static_cast<quint64>( d->mMboxFile.size() ) ) {
-    unlock();
+    if ( !wasLocked )
+      unlock();
     return 0;
   }
 
@@ -423,7 +417,9 @@ KMime::Message *MBox::readEntry(quint64 offset)
   QRegExp regexp( sMBoxSeperatorRegExp );
 
   if ( regexp.indexIn( line ) < 0) {
-    unlock();
+    kDebug() << "[MBox::readEntry] Invalid entry at:" << offset;
+    if ( !wasLocked )
+      unlock();
     return 0; // The file is messed up or the index is incorrect.
   }
 
@@ -438,12 +434,14 @@ KMime::Message *MBox::readEntry(quint64 offset)
   if ( message.endsWith( '\n' ) )
     message.chop(1);
 
-  unescapeFrom( message.data(), message.size() );
+  MBoxPrivate::unescapeFrom( message.data(), message.size() );
 
   if ( ! wasLocked ) {
-    const bool unlocked = unlock();
-    Q_ASSERT( unlocked );
-    Q_UNUSED( unlocked );
+    if ( !d->startTimerIfNeeded() ) {
+      const bool unlocked = unlock();
+      Q_ASSERT( unlocked );
+      Q_UNUSED( unlocked );
+    }
   }
 
   KMime::Message *mail = new KMime::Message();
@@ -461,7 +459,7 @@ QByteArray MBox::readEntryHeaders( quint64 offset )
 
   Q_ASSERT( d->mFileLocked );
   Q_ASSERT( d->mMboxFile.isOpen() );
-  Q_ASSERT( d->mMboxFile.size() > 0 );
+  Q_ASSERT( d->mMboxFile.size() > offset );
   Q_ASSERT( static_cast<quint64>(d->mMboxFile.size()) > offset );
 
   d->mMboxFile.seek( offset );
@@ -498,6 +496,7 @@ bool MBox::save( const QString &fileName )
   d->mMboxFile.seek( d->mMboxFile.size() );
   d->mMboxFile.write( d->mAppendedEntries );
   d->mAppendedEntries.clear();
+  d->mInitialMboxFileSize = d->mMboxFile.size();
 
   return unlock();
 }
@@ -536,8 +535,19 @@ void MBox::setLockFile( const QString &lockFile )
   d->mLockFileName = lockFile;
 }
 
+void MBox::setUnlockTimeout( int msec )
+{
+  d->mUnlockTimer.setInterval(msec);
+}
+
 bool MBox::unlock()
 {
+  if ( d->mLockType == None && !d->mFileLocked ) {
+    d->mFileLocked = false;
+    d->mMboxFile.close();
+    return true;
+  }
+
   int rc = 0;
   QStringList args;
 
@@ -552,12 +562,12 @@ bool MBox::unlock()
       break;
 
     case MuttDotlock:
-      args << "-u" << quoteAndEncode( d->mMboxFile.fileName() );
+      args << "-u" << QFile::encodeName( d->mMboxFile.fileName() );
       rc = QProcess::execute( "mutt_dotlock", args );
       break;
 
     case MuttDotlockPrivileged:
-      args << "-u" << "-p" << quoteAndEncode( d->mMboxFile.fileName() );
+      args << "-u" << "-p" << QFile::encodeName( d->mMboxFile.fileName() );
       rc = QProcess::execute( "mutt_dotlock", args );
       break;
 
@@ -573,117 +583,3 @@ bool MBox::unlock()
 
   return !d->mFileLocked;
 }
-
-/// private methods
-
-bool MBox::open()
-{
-  if ( d->mMboxFile.isOpen() )
-    return true;  // already open
-
-  if ( !d->mMboxFile.open( QIODevice::ReadWrite ) ) { // messages file
-    kDebug() << "Cannot open mbox file `" << d->mMboxFile.fileName() << "' FileError:"
-             << d->mMboxFile.error();
-    return false;
-  }
-
-  return true;
-}
-
-QByteArray MBox::mboxMessageSeparator( const QByteArray &msg )
-{
-  KMime::Message mail;
-  mail.setHead( KMime::CRLFtoLF( msg ) );
-  mail.parse();
-
-  QByteArray separator = "From ";
-
-  KMime::Headers::From *from = mail.from( false );
-  if ( !from || from->addresses().isEmpty() )
-    separator += "unknown@unknown.invalid";
-  else
-    separator += from->addresses().first() + ' ';
-
-  KMime::Headers::Date *date = mail.date(false);
-  if (!date || date->isEmpty())
-    separator += QDateTime::currentDateTime().toString( Qt::TextDate ).toUtf8() + '\n';
-  else
-    separator += date->as7BitString(false) + '\n';
-
-  return separator;
-}
-
-#define STRDIM(x) (sizeof(x)/sizeof(*x)-1)
-
-QByteArray MBox::escapeFrom( const QByteArray &str )
-{
-  const unsigned int strLen = str.length();
-  if ( strLen <= STRDIM( "From " ) )
-    return str;
-
-  // worst case: \nFrom_\nFrom_\nFrom_... => grows to 7/6
-  QByteArray result( int( strLen + 5 ) / 6 * 7 + 1, '\0');
-
-  const char * s = str.data();
-  const char * const e = s + strLen - STRDIM( "From ");
-  char * d = result.data();
-
-  bool onlyAnglesAfterLF = false; // dont' match ^From_
-  while ( s < e ) {
-    switch ( *s ) {
-    case '\n':
-      onlyAnglesAfterLF = true;
-      break;
-    case '>':
-      break;
-    case 'F':
-      if ( onlyAnglesAfterLF && qstrncmp( s+1, "rom ", STRDIM("rom ") ) == 0 )
-        *d++ = '>';
-      // fall through
-    default:
-      onlyAnglesAfterLF = false;
-      break;
-    }
-    *d++ = *s++;
-  }
-  while ( s < str.data() + strLen )
-    *d++ = *s++;
-
-  result.truncate( d - result.data() );
-  return result;
-}
-
-// performs (\n|^)>{n}From_ -> \1>{n-1}From_ conversion
-void MBox::unescapeFrom( char* str, size_t strLen )
-{
-  if ( !str )
-    return;
-  if ( strLen <= STRDIM(">From ") )
-    return;
-
-  // yes, *d++ = *s++ is a no-op as long as d == s (until after the
-  // first >From_), but writes are cheap compared to reads and the
-  // data is already in the cache from the read, so special-casing
-  // might even be slower...
-  const char * s = str;
-  char * d = str;
-  const char * const e = str + strLen - STRDIM( ">From ");
-
-  while ( s < e ) {
-    if ( *s == '\n' && *(s+1) == '>' ) { // we can do the lookahead, since e is 6 chars from the end!
-      *d++ = *s++;  // == '\n'
-      *d++ = *s++;  // == '>'
-      while ( s < e && *s == '>' )
-        *d++ = *s++;
-      if ( qstrncmp( s, "From ", STRDIM( "From ") ) == 0 )
-        --d;
-    }
-    *d++ = *s++; // yes, s might be e here, but e is not the end :-)
-  }
-  // copy the rest:
-  while ( s < str + strLen )
-    *d++ = *s++;
-  if ( d < s ) // only NUL-terminate if it's shorter
-    *d = 0;
-}
-#undef STRDIM

@@ -150,6 +150,7 @@ void MboxTest::testAppend()
   QCOMPARE( info.size(), static_cast<qint64>( 0 ) );
 
   MBox mbox;
+  mbox.load(fileName());
   mbox.setLockType( MBox::None );
 
   // When no file is loaded no entries should get added to the mbox.
@@ -177,6 +178,7 @@ void MboxTest::testSaveAndLoad()
   MBox mbox;
   QVERIFY( mbox.setLockType( MBox::None ) );
   QVERIFY( mbox.load( fileName() ) );
+  QVERIFY( mbox.entryList().isEmpty() );
   mbox.appendEntry( mMail1 );
   mbox.appendEntry( mMail2 );
 
@@ -340,6 +342,21 @@ void MboxTest::testPurge()
   QVERIFY( mbox2.load( fileName() ) );
   list2 = mbox2.entryList();
   QCOMPARE( list2.size(), 0 ); // Are the messages actually gone?
+}
+
+void MboxTest::testLockTimeout()
+{
+  MBox mbox;
+  mbox.load(fileName());
+  mbox.setLockType(MBox::None);
+  mbox.setUnlockTimeout(1000);
+
+  QVERIFY(!mbox.locked());
+  mbox.lock();
+  QVERIFY(mbox.locked());
+
+  QTest::qWait(1010);
+  QVERIFY(!mbox.locked());
 }
 
 void MboxTest::cleanupTestCase()

@@ -7,6 +7,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(testmbox_SRCS mboxtest.cpp )
 
 kde4_add_unit_test(testmbox TESTNAME mbox-testmbox ${testmbox_SRCS})
+kde4_add_unit_test(mboxbenchmark TESTNAME mbox-benchmark mboxbenchmark.cpp)
 
 target_link_libraries(testmbox ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${QT_QTTEST_LIBRARY} mbox )
+target_link_libraries(mboxbenchmark ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${QT_QTTEST_LIBRARY} mbox )
 

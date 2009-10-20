@@ -48,6 +48,8 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->fetchCollection( true );
 
+  connect( changeRecorder(), SIGNAL( changesAdded() ), SLOT( scheduleWrite() ) );
+
   connect( KDirWatch::self(), SIGNAL( dirty( QString ) ), SLOT( fileChanged( QString ) ) );
   connect( KDirWatch::self(), SIGNAL( created( QString ) ), SLOT( fileChanged( QString ) ) );
 
@@ -228,6 +230,11 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     clearCache();
     synchronize();
   }
+}
+
+void SingleFileResourceBase::scheduleWrite()
+{
+  scheduleCustomTask(this, "writeFile", QVariant(), ResourceBase::AfterChangeReplay);
 }
 
 void SingleFileResourceBase::slotDownloadJobResult( KJob *job )

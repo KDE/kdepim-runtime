@@ -21,14 +21,18 @@
 #define MBOX_H
 
 #include <boost/shared_ptr.hpp>
-#include <kmime/kmime_message.h>
+
 #include <QtCore/QSet>
 #include <QtCore/QString>
+
+#include <kmime/kmime_message.h>
 
 #include "mbox_export.h"
 
 typedef QPair<quint64, quint64> MsgInfo; // QPair<offset, size>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
+
+class MBoxPrivate;
 
 class MBOX_EXPORT MBox
 {
@@ -51,8 +55,9 @@ class MBOX_EXPORT MBox
     /**
      * Appends @param entry to the MBox. Returns the offset in the file
      * where the added message starts or -1 if the entry was not added (e.g.
-     * when it doesn't contain data). Entries are only added after a call to
-     * load( const QString& ). The returned offset is <em>only</em> valid for
+     * when it doesn't contain data). You must load a mbox file by makeing a call
+     * to load( const QString& ) before appending entries. The returned offset
+     * is <em>only</em> valid for
      * that particular file.
      *
      * @param entry The message to append to the mbox.
@@ -74,11 +79,11 @@ class MBOX_EXPORT MBox
     QList<MsgInfo> entryList( const QSet<quint64> &deletedItems = QSet<quint64>() ) const;
 
     /**
-     * Loads a mbox on disk  into the current mbox. Messages already present are
-     * *not* preserved. This method does not load the full messages into memory
-     * but only the offsets of the messages and their sizes. If the file
-     * currently is locked this method will do nothing and return false.
-     * Appended messages that are not written yet will get lost.
+     * Loads the raw mbox data from disk into the current MBox object. Messages
+     * already present are <em>not</em> preserved. This method does not load the
+     * full messages into memory but only the offsets of the messages and their
+     * sizes. If the file currently is locked this method will do nothing and
+     * return false. Appended messages that are not written yet will get lost.
      *
      * @param fileName the name of the mbox on disk.
      * @return true, if successful, false on error.
@@ -92,11 +97,19 @@ class MBOX_EXPORT MBox
      * for consecutive calls to readEntry and readEntryHeaders. Calling lock()
      * before these calls prevents the mbox file being locked for every call.
      *
+     * NOTE: Even when the lock method is None the mbox is internally marked as
+     *       locked. This means that it must be unlocked before calling load().
+     *
      * @return true if locked successful, false on error.
      *
      * @see setLockType( LockType ), unlock()
      */
     bool lock();
+
+    /**
+     * Returns wether or not the mbox currently is locked.
+     */
+    bool locked() const;
 
     /**
      * Removes all messages at given offsets from the current reference file
@@ -176,6 +189,14 @@ class MBOX_EXPORT MBox
     void setLockFile( const QString &lockFile );
 
     /**
+     * By default the unlock method will directly unlock the file. However this
+     * is expensive in case of many consecutive calls to readEntry. Setting the
+     * time out to a non zero value will keep the lock open until the timeout has
+     * passed. On each read the timer will be reset.
+     */
+    void setUnlockTimeout( int msec );
+
+    /**
      * Unlock the mbox file.
      *
      * @return true if the unlock was successful, false otherwise.
@@ -185,23 +206,8 @@ class MBOX_EXPORT MBox
     bool unlock();
 
   private:
-    bool open();
-
-    static QByteArray escapeFrom( const QByteArray &msg );
-
-    /**
-     * Generates a mbox message sperator line for given message.
-     */
-    static QByteArray mboxMessageSeparator( const QByteArray &msg );
-
-    /**
-     * Unescapes the raw message read from the file.
-     */
-    static void unescapeFrom( char *msg, size_t size );
-
-  private:
-    class Private;
-    Private *d;
+    friend class MBoxPrivate;
+    MBoxPrivate * const d;
 };
 
 #endif // MBOX_H

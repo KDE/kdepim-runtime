@@ -38,8 +38,8 @@ class VCardResource : public Akonadi::SingleFileResource<Settings>
     virtual void configure( WId windowId );
 
   protected Q_SLOTS:
-    void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveItems( const Akonadi::Collection &col );
 
   protected:
     bool readFromFile( const QString &fileName );

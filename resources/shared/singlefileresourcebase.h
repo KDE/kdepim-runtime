@@ -148,6 +148,7 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
   private Q_SLOTS:
     void handleProgress( KJob *, unsigned long );
     void fileChanged( const QString &fileName );
+    void scheduleWrite(); /// Called when changes are added to the ChangeRecorder.
     void slotDownloadJobResult( KJob * );
     void slotUploadJobResult( KJob * );
 };
