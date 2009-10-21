@@ -50,11 +50,11 @@ class SparqlBuilderTest : public QObject
       qb.addQueryVariable( "$a" );
       qb.setDistinct( true );
       qb.setGraphPattern( graph );
-      QTest::newRow( "distinct, int value" ) << qb << QString( "SELECT DISTINCT $a WHERE { $a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#integer> }" );
+      QTest::newRow( "distinct, int value" ) << qb << QString( "SELECT DISTINCT $a WHERE { $a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#int> }" );
 
       graph.addTriple( QUrl( "foo" ), QUrl("is"), SparqlBuilder::QueryVariable("$a") );
       qb.setGraphPattern( graph );
-      QTest::newRow( "variable object" ) << qb << QString( "SELECT DISTINCT $a WHERE { $a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#integer> . <foo> <is> $a }" );
+      QTest::newRow( "variable object" ) << qb << QString( "SELECT DISTINCT $a WHERE { $a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#int> . <foo> <is> $a }" );
     }
 
     void testSelectBuilder()
