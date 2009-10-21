@@ -2,6 +2,7 @@
 Name=Personal Contacts
 Name[en_GB]=Personal Contacts
 Name[es]=Contactos personales
+Name[et]=Isiklikud kontaktid
 Name[gl]=Contactos persoais
 Name[nb]=Personlige kontakter
 Name[nds]=Persöönlich Kontakten
@@ -16,6 +17,7 @@ Name[zh_TW]=個人聯絡人
 Comment=The address book with personal contacts
 Comment[en_GB]=The address book with personal contacts
 Comment[es]=La libreta de direcciones con contactos personales
+Comment[et]=Isiklikke kontakte sisaldav aadressiraamat
 Comment[gl]=O caderno de enderezos cos contactos persoais
 Comment[nb]=Adresseboka med personlige kontakter.
 Comment[nds]=Dat Adressbook mit persöönlich Kontakten
