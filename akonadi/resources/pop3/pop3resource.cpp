@@ -38,7 +38,8 @@ POP3Resource::POP3Resource( const QString &id )
     : ResourceBase( id ),
       mState( Idle ),
       mPopSession( 0 ),
-      mAskAgain( false )
+      mAskAgain( false ),
+      mIntervalTimer( new QTimer( this ) )
 {
   new SettingsAdaptor( Settings::self() );
 
@@ -46,11 +47,31 @@ POP3Resource::POP3Resource( const QString &id )
                             Settings::self(), QDBusConnection::ExportAdaptors );
   connect( this, SIGNAL(abortRequested()),
            this, SLOT(slotAbortRequested()) );
+  connect( mIntervalTimer, SIGNAL(timeout()),
+           this, SLOT(intervalCheckTriggered()) );
 }
 
 POP3Resource::~POP3Resource()
 {
   Settings::self()->writeConfig();
+}
+
+void POP3Resource::updateIntervalTimer()
+{
+  if ( Settings::intervalCheckEnabled() && mState == Idle ) {
+    mIntervalTimer->start( Settings::intervalCheckInterval() * 1000 * 60 );
+  }
+  else {
+    mIntervalTimer->stop();
+  }
+}
+
+void POP3Resource::intervalCheckTriggered()
+{
+  kDebug() << "Starting interval mail check.";
+  Q_ASSERT( mState == Idle );
+  startMailCheck();
+  mIntervalCheckInProgress = true;
 }
 
 void POP3Resource::aboutToQuit()
@@ -69,6 +90,7 @@ void POP3Resource::configure( WId windowId )
 {
   QPointer<AccountDialog> accountDialog( new AccountDialog( this, windowId ) );
   if ( accountDialog->exec() == QDialog::Accepted ) {
+    updateIntervalTimer();
     emit configurationDialogAccepted();
   }
   else {
@@ -666,7 +688,8 @@ void POP3Resource::quitJobResult( KJob *job )
 
   kDebug() << "================= Mail check finished. =============================";
   saveSeenUIDList();
-  collectionsRetrieved( Akonadi::Collection::List() );
+  if ( !mIntervalCheckInProgress )
+    collectionsRetrieved( Akonadi::Collection::List() );
   if ( mDownloadedIDs.isEmpty() )
     emit status( Idle, i18n( "Finished mail check, no message downloaded." ) );
   else
@@ -775,6 +798,9 @@ void POP3Resource::resetState()
   mIDsStored.clear();
   mDeletedIDs.clear();
   mUidListValid = false;
+  mIntervalCheckInProgress = false;
+  updateIntervalTimer();
+
   if ( mPopSession ) {
     // Closing the POP session means the KIO slave will get disconnected, which
     // automatically issues the QUIT command.
@@ -785,13 +811,19 @@ void POP3Resource::resetState()
   }
 }
 
+void POP3Resource::startMailCheck()
+{
+  resetState();
+  mIntervalTimer->stop();
+  emit percent( 0 ); // Otherwise the value from the last sync is taken
+  mState = FetchTargetCollection;
+  doStateStep();
+}
+
 void POP3Resource::retrieveCollections()
 {
   if ( mState == Idle ) {
-    resetState();
-    emit percent( 0 ); // Otherwise the value from the last sync is taken
-    mState = FetchTargetCollection;
-    doStateStep();
+    startMailCheck();
   }
   else {
     cancelSync(
