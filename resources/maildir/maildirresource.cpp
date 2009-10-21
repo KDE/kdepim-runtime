@@ -142,7 +142,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     }
 
     // we can only deal with mail
-    if ( item.hasPayload<KMime::Message::Ptr>() ) {
+    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
       cancelTask( i18n("Error: Unsupported type.") );
       return;
     }
@@ -167,7 +167,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         return;
     }
     // we can only deal with mail
-    if ( item.hasPayload<KMime::Message::Ptr>() ) {
+    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
         cancelTask( i18n("Error: Unsupported type.") );
         return;
     }
