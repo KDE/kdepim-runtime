@@ -38,7 +38,7 @@ namespace KMime
 
 namespace KIMAP
 {
-  class MailBoxDescriptor;
+  struct MailBoxDescriptor;
   class Session;
 }
 

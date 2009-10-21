@@ -840,7 +840,7 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
   }
 }
 
-void ImapResource::onHeadersFetchDone( KJob */*job*/ )
+void ImapResource::onHeadersFetchDone( KJob * /*job*/ )
 {
   itemsRetrievalDone();
 }

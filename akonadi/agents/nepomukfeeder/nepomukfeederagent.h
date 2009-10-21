@@ -25,6 +25,7 @@
 #include "nie.h"
 #include <akonadi/collection.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/entityhiddenattribute.h>
 #include <KDE/KUrl>
 #include <Soprano/Vocabulary/NAO>
 
@@ -38,9 +39,11 @@ class NepomukFeederAgent : public NepomukFeederAgentBase
     void updateCollection(const Akonadi::Collection& collection, const QUrl& graphUri)
     {
       CollectionResource r( collection.url(), graphUri );
-      Akonadi::EntityDisplayAttribute *attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
-      if ( attr && attr->isHidden() )
+      if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
         return;
+
+      const Akonadi::EntityDisplayAttribute *attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
+
       if ( attr && !attr->displayName().isEmpty() )
         r.setLabel( attr->displayName() );
       else

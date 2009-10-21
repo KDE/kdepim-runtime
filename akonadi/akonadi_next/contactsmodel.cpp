@@ -46,7 +46,7 @@ public:
 };
 
 
-bool ContactsModel::match(Item item, const QVariant& matchData, Qt::MatchFlags flags) const
+bool ContactsModel::entityMatch(Item item, const QVariant& matchData, Qt::MatchFlags flags) const
 {
   if (!item.hasPayload<KABC::Addressee>())
     return false;
@@ -75,7 +75,7 @@ bool ContactsModel::match(Item item, const QVariant& matchData, Qt::MatchFlags f
 }
 
 
-bool ContactsModel::match(Collection col, const QVariant& matchData, Qt::MatchFlags flags) const
+bool ContactsModel::entityMatch(Collection col, const QVariant& matchData, Qt::MatchFlags flags) const
 {
   if (!matchData.canConvert(QVariant::String))
     return false;
@@ -138,7 +138,11 @@ QVariant ContactsModel::entityData(const Collection &collection, int column, int
     case 0:
       return EntityTreeModel::entityData(collection, column, role);
     case 1:
-      return rowCount(EntityTreeModel::indexForCollection(collection));
+    {
+      QModelIndexList indexList = match( QModelIndex(), collection.id(), EntityTreeModel::CollectionIdRole );
+      Q_ASSERT( indexList.size() == 1 );
+      return rowCount(indexList.at( 0 ) );
+    }
     default:
       // Return a QString to pass modeltest.
       return QString();

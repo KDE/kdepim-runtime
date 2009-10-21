@@ -42,6 +42,7 @@ public:
   ContactsModel(Session *session, ChangeRecorder *monitor, QObject *parent = 0);
   virtual ~ContactsModel();
 
+protected:
   virtual QVariant entityData(const Item &item, int column, int role=Qt::DisplayRole) const;
 
   virtual QVariant entityData(const Collection &collection, int column, int role=Qt::DisplayRole) const;
@@ -53,12 +54,12 @@ public:
   /**
     Returns true if @p matchdata matches @p item using @p flags.
   */
-  virtual bool match(Item item, const QVariant &matchData, Qt::MatchFlags flags ) const;
+  virtual bool entityMatch(Item item, const QVariant &matchData, Qt::MatchFlags flags ) const;
 
   /**
     Returns true if @p matchdata matches @p col using @p flags.
   */
-  virtual bool match(Collection col, const QVariant &matchData, Qt::MatchFlags flags ) const;
+  virtual bool entityMatch(Collection col, const QVariant &matchData, Qt::MatchFlags flags ) const;
 
 private:
     Q_DECLARE_PRIVATE(ContactsModel)

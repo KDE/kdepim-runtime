@@ -40,7 +40,7 @@ public:
   QStringList m_collectionHeaders;
   QStringList m_itemHeaders;
 
-  virtual QVariant getData( const Item &item, int column, int role ) const = 0;
+  virtual QVariant entityData( const Item &item, int column, int role ) const = 0;
 
 };
 
@@ -54,7 +54,7 @@ public:
   }
   virtual ~GenericState() {}
 
-  QVariant getData( const Item &item, int column, int role ) const
+  QVariant entityData( const Item &item, int column, int role ) const
   {
     if (Qt::DisplayRole != role)
       return QVariant();
@@ -84,7 +84,7 @@ public:
   }
   virtual ~MailState() {}
 
-  QVariant getData( const Item &item, int column, int role ) const
+  QVariant entityData( const Item &item, int column, int role ) const
   {
     if (Qt::DisplayRole != role)
       return QVariant();
@@ -120,7 +120,7 @@ public:
   }
   virtual ~ContactsState() {}
 
-  QVariant getData( const Item &item, int column, int role ) const
+  QVariant entityData( const Item &item, int column, int role ) const
   {
     if (Qt::DisplayRole != role)
       return QVariant();
@@ -169,7 +169,7 @@ public:
   }
   virtual ~CalendarState() {}
 
-  QVariant getData( const Item &item, int column, int role ) const
+  QVariant entityData( const Item &item, int column, int role ) const
   {
     if (Qt::DisplayRole != role)
       return QVariant();
@@ -222,7 +222,7 @@ int AkonadiBrowserModel::columnCount(const QModelIndex& parent) const
 
 QVariant AkonadiBrowserModel::entityData( const Item &item, int column, int role ) const
 {
-  QVariant var = m_currentState->getData( item, column, role );
+  QVariant var = m_currentState->entityData( item, column, role );
   if ( !var.isValid() )
   {
     if ( column < 1 )

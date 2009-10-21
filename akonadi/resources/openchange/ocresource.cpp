@@ -39,8 +39,6 @@
 
 #include <KWindowSystem>
 
-#include <boost/shared_ptr.hpp>
-
 #include <kmime/kmime_message.h>
 #include <kabc/vcardconverter.h>
 #include <kcal/incidence.h>
@@ -63,21 +61,6 @@
 #include "ocresource.h"
 
 #include "profiledialog.h"
-
-
-// - Boost.Exception will look for this function if BOOST_NO_EXCEPTIONS is defined.
-// - Because we compile with -fnoexception the function doesn't throw the exception.
-#ifdef BOOST_NO_EXCEPTIONS
-namespace boost 
-{
-void throw_exception(std::exception const & e)
-{
-}
-}
-#endif
-
-typedef boost::shared_ptr<KMime::Message>  MessagePtr;
-typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 using namespace Akonadi;
 using namespace libmapipp;
@@ -217,7 +200,7 @@ void OCResource::getChildFolders( folder& mapi_folder,
     folderProperty.fetch();
 
     Collection thisFolder;
-    thisFolder.setParent(parentCollection);
+    thisFolder.setParentCollection(parentCollection);
     thisFolder.setRemoteId(QString::number( hierarchy[i]->get_id() ));
     thisFolder.setName( (const char* ) folderProperty[PR_DISPLAY_NAME] );
     QStringList folderMimeType;
@@ -295,7 +278,7 @@ void OCResource::retrieveCollections()
   }
 
   Collection account;
-  account.setParent( Collection::root() );
+  account.setParentCollection( Collection::root() );
   account.setRemoteId( m_session->get_profile_name().c_str() );
   account.setName( QString( (const char*) *(storeProperties.begin()) ) + QString( " (OpenChange)" ) );
   QStringList mimeTypes;
@@ -383,7 +366,7 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
                      << PR_MESSAGE_SIZE << PR_HASATTACH << PR_BODY << PR_BODY_UNICODE << PR_HTML << PR_CREATION_TIME << PR_CONVERSATION_TOPIC;
 
   message_properties.fetch();
-  MessagePtr msg_ptr ( new KMime::Message );
+  KMime::Message::Ptr msg_ptr ( new KMime::Message );
 
   const char* senderNameStr = (const char*) message_properties[PR_SENDER_NAME];
   QString senderName;
@@ -1417,7 +1400,7 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
   }
 */
 
-  item.setPayload( IncidencePtr( dynamic_cast<KCal::Incidence*>( event ) ) );
+  item.setPayload( KCal::Incidence::Ptr( dynamic_cast<KCal::Incidence*>( event ) ) );
 }
 
 void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::Item & item )
@@ -1574,7 +1557,7 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
     appendRecurrenceToEvent( binData->lpb, todo->recurrence(), startTime ); // TODO: Use message startTime for now.
   }
 
-  item.setPayload( IncidencePtr( dynamic_cast<KCal::Incidence*>( todo ) ) );
+  item.setPayload( KCal::Incidence::Ptr( dynamic_cast<KCal::Incidence*>( todo ) ) );
 }
 
 void OCResource::appendJournalToItem( libmapipp::message & mapi_message, Akonadi::Item & item )

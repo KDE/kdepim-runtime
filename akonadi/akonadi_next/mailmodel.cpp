@@ -98,7 +98,11 @@ QVariant MailModel::entityData(const Collection &collection, int column, int rol
     case 0:
       return EntityTreeModel::entityData(collection, column, role);
     case 1:
-      return rowCount(EntityTreeModel::indexForCollection(collection));
+    {
+      QModelIndexList indexList = match( QModelIndex(), collection.id(), EntityTreeModel::CollectionIdRole );
+      Q_ASSERT( indexList.size() == 1 );
+      return rowCount(indexList.at( 0 ) );
+    }
     default:
       // Return a QString to pass modeltest.
       return QString();

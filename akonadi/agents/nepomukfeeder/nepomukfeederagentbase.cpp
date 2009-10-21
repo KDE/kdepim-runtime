@@ -25,14 +25,14 @@
 #include <personcontact.h>
 #include <emailaddress.h>
 
-#include <akonadi/item.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
-#include <akonadi/mimetypechecker.h>
+#include <akonadi/entityhiddenattribute.h>
+#include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/mimetypechecker.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/tag.h>
@@ -63,10 +63,7 @@ using namespace Akonadi;
 
 static inline bool entityIsHidden( const Entity &entity )
 {
-  EntityDisplayAttribute* attr = entity.attribute<EntityDisplayAttribute>();
-  if ( attr && attr->isHidden() )
-    return true;
-  return false;
+  return entity.hasAttribute<EntityHiddenAttribute>();
 }
 
 NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
@@ -111,7 +108,7 @@ void NepomukFeederAgentBase::itemAdded(const Akonadi::Item& item, const Akonadi:
     updateItem( item, createGraphForEntity( item ) );
 }
 
-void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
+void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >&)
 {
   if ( entityIsHidden( item.parentCollection() ) )
     return;
@@ -165,9 +162,10 @@ void NepomukFeederAgentBase::collectionsReceived(const Akonadi::Collection::List
   foreach( const Collection &collection, collections ) {
     if ( !mMimeTypeChecker.isWantedCollection( collection ) )
       continue;
-    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-    if ( attr && attr->isHidden() )
+
+    if ( entityIsHidden( collection ) )
       continue;
+
     mCollectionQueue.append( collection );
   }
   processNextCollection();
