@@ -159,7 +159,8 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   itemFilter->addMimeTypeExclusionFilter( Collection::mimeType() );
   itemFilter->setHeaderGroup( EntityTreeModel::ItemListHeaders );
 
-  FavoriteCollectionsModel *favoritesModel = new FavoriteCollectionsModel( mBrowserModel, this );
+  const KConfigGroup group = KGlobal::config()->group( "FavoriteCollectionsModel" );
+  FavoriteCollectionsModel *favoritesModel = new FavoriteCollectionsModel( mBrowserModel, group, this );
   favoritesView->setModel( favoritesModel );
 
   QSplitter *splitter3 = new QSplitter( Qt::Vertical, this );
