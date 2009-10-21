@@ -119,8 +119,7 @@ bool AkonadiCalendar::beginChange( const Item &item )
 {
   const Incidence::Ptr incidence = Akonadi::incidence( item );
   Q_ASSERT( incidence );
-
-  Q_ASSERT( ! d->m_changes.contains( item.id() ) ); //no nested changes, right?
+  Q_ASSERT( ! d->m_changes.contains( item.id() ) ); // no nested changes allowed
   d->m_changes.push_back( item.id() );
   d->m_incidenceBeingChanged = Incidence::Ptr( incidence->clone() );
   return true;
@@ -153,8 +152,10 @@ bool AkonadiCalendar::endChange( const Item &item )
   ComparisonVisitor v;
   Incidence::Ptr incidencePtr( d->m_incidenceBeingChanged );
   d->m_incidenceBeingChanged = Incidence::Ptr();
-  if ( v.compare( incidence.get(), incidencePtr.get() ) )
+  if ( v.compare( incidence.get(), incidencePtr.get() ) ) {
+    kDebug()<<"Incidence is unmodified";
     return true;
+  }
 
   kDebug() << "modify uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
   ItemModifyJob *job = new ItemModifyJob( item, d->m_session );
