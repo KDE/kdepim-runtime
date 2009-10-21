@@ -17,6 +17,7 @@ if( Nepomuk_FOUND AND STRIGI_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
       ${QT_QTDBUS_LIBRARY}
       ${NEPOMUK_LIBRARIES}
       ${STRIGI_STREAMANALYZER_LIBRARY}
+      ${STRIGI_STREAMS_LIBRARY}
     )
     include( SopranoAddOntology )
     add_subdirectory( ontologies )
