@@ -695,7 +695,7 @@ void POP3Resource::quitJobResult( KJob *job )
   else
     emit status( Idle, i18np( "Finished mail check, 1 message downloaded.",
                               "Finished mail check, %1 messages downloaded.",
-                              mDownloadedIDs.size(), mDownloadedIDs.size() ) );
+                              mDownloadedIDs.size() ) );
 
   resetState();
 }

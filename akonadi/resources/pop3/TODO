@@ -6,6 +6,7 @@ BUGS
 ----
 
 - additional \n in item, see the test
+- config dialog: enter key selects collection, and not the Ok button
 - not storing password does not work
 
 FEATURES
