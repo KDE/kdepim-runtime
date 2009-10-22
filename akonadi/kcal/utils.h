@@ -151,6 +151,16 @@ namespace Akonadi
   * @return the filtered list of items
   */
  AKONADI_KCAL_EXPORT Akonadi::Item::List applyCalFilter( const Akonadi::Item::List &items, const KCal::CalFilter* filter );
+
+ /**
+  * Shows a modal dialog that allows to select a collection.
+  *
+  * @param parent The optional parent of the modal dialog.
+  * @return The select collection or an invalid collection if
+  * there was no collection selected.
+  */
+ AKONADI_KCAL_EXPORT Akonadi::Collection selectCollection( QWidget *parent = 0 );
+
 }
 
 #endif

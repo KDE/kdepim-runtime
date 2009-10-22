@@ -31,6 +31,8 @@
 #include <KCal/VCalDrag>
 
 #include <Akonadi/Item>
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionDialog>
 
 #include <KIconLoader>
 #include <KUrl>
@@ -243,3 +245,15 @@ QList<Todo::Ptr> Akonadi::todos( const QMimeData* mimeData, const KDateTime::Spe
   return todos;
 }
 
+Akonadi::Collection Akonadi::selectCollection( QWidget *parent )
+{
+  Akonadi::CollectionDialog dlg( parent );
+  dlg.setMimeTypeFilter( QStringList() << QLatin1String( "text/calendar" ) );
+  if ( ! dlg.exec() ) {
+    return Akonadi::Collection();
+  }
+  const Akonadi::Collection collection = dlg.selectedCollection();
+  Q_ASSERT( collection.isValid() );
+  return collection;
+}
+    
