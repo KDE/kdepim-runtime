@@ -341,16 +341,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
   // KCal::Incidence Specific Methods //
 
     /**
-      Removes an KCal::Incidence from the calendar.
-
-      @param incidence is a pointer to the KCal::Incidence to remove.
-
-      @return true if the KCal::Incidence was successfully removed; false otherwise.
-      @deprecated: 
-    */
-    virtual bool deleteIncidence( const Akonadi::Item &incidence );
-
-    /**
       Returns a filtered list of all KCal::Incidences for this Calendar.
       @deprecated: 
 
@@ -461,25 +451,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
                                                          bool single = true );
 
   // KCal::Event Specific Methods //
-
-    /**
-      Removes an KCal::Event from the calendar.
-
-      @param event is a pointer to the KCal::Event to remove.
-      @deprecated: 
-
-      @return true if the KCal::Event was successfully remove; false otherwise.
-
-      @see addEvent(), deleteAllEvents()
-    */
-    virtual bool deleteEvent( const Akonadi::Item &event ) = 0;
-
-    /**
-      Removes all KCal::Events from the calendar.
-
-      @see deleteEvent()
-    */
-    virtual void deleteAllEvents() = 0;
 
     /**
       Sort a list of KCal::Events.
@@ -631,26 +602,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
   // KCal::Todo Specific Methods //
 
-
-    /**
-      Removes a KCal::Todo from the calendar.
-
-      @param todo is a pointer to the KCal::Todo to remove.
-      @deprecated: 
-
-      @return true if the KCal::Todo was successfully removed; false otherwise.
-
-      @see deleteAllTodos()
-    */
-    virtual bool deleteTodo( const Akonadi::Item &todo ) = 0;
-
-    /**
-      Removes all To-dos from the calendar.
-      @deprecated: 
-      @see deleteTodo()
-    */
-    virtual void deleteAllTodos() = 0;
-
     /**
       Sort a list of KCal::Todos.
 
@@ -724,25 +675,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
     virtual Akonadi::Item todo( const Akonadi::Item::Id &id ) = 0;
 
   // KCal::Journal Specific Methods //
-
-    /**
-      Removes a KCal::Journal from the calendar.
-
-      @param journal is a pointer to the KCal::Journal to remove.
-      @deprecated: 
-
-      @return true if the KCal::Journal was successfully removed; false otherwise.
-
-      @see addJournal(), deleteAllJournals()
-    */
-    virtual bool deleteJournal( const Akonadi::Item &journal ) = 0;
-
-    /**
-      Removes all KCal::Journals from the calendar.
-      @deprecated: 
-      @see deleteJournal()
-    */
-    virtual void deleteAllJournals() = 0;
 
     /**
       Sort a list of KCal::Journals.

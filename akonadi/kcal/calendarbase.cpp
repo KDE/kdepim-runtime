@@ -53,27 +53,6 @@ using namespace boost;
 using namespace KCal;
 using namespace KOrg;
 
-namespace {
-  class DeleteVisitor : public IncidenceBase::Visitor {
-    CalendarBase* const mCalendar;
-    const Item mItem;
-  public:
-    explicit DeleteVisitor( CalendarBase* cal, const Item& item ) : mCalendar( cal ), mItem( item ) {}
-
-    /* reimp */ bool visit( Event * ) {
-      return mCalendar->deleteEvent( mItem );
-    }
-
-    /* reimp */ bool visit( Todo * ) {
-      return mCalendar->deleteTodo( mItem );
-    }
-
-    /* reimp */ bool visit( Journal * ) {
-      return mCalendar->deleteJournal( mItem );
-    }
-  };
-
-}
 
 /**
   Private class that helps to provide binary compatibility between releases.
@@ -450,20 +429,6 @@ Item::List CalendarBase::events( EventSortField sortField,
 {
   const Item::List el = rawEvents( sortField, sortDirection );
   return Akonadi::applyCalFilter( el, d->mFilter );
-}
-
-bool CalendarBase::deleteIncidence( const Item &item )
-{
-  if ( !beginChange( item ) )
-    return false;
-  const Incidence::Ptr incidence = Akonadi::incidence( item );
-  bool result = false;
-  if ( incidence  ) {
-    DeleteVisitor v( this, item );
-    result = incidence->accept( v );
-  }
-  endChange( item );
-  return result;
 }
 
 Incidence::Ptr CalendarBase::dissociateOccurrence( const Item &incidence,

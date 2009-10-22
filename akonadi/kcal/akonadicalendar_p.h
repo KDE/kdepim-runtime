@@ -134,8 +134,6 @@ public:
 public Q_SLOTS:  
   void listingDone( KJob *job );
   void agentCreated( KJob *job );
-  void createDone( KJob *job );
-  void deleteDone( KJob *job );
   void modifyDone( KJob *job );
   void itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& );
   void itemMoved( const Akonadi::Item &item, const Akonadi::Collection& colSrc, const Akonadi::Collection& colDst );

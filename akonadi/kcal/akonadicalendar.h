@@ -56,11 +56,7 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 
     bool addAgent( const KUrl &mUrl );
 
-    bool deleteIncidence( const Akonadi::Item &incidence );
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
-
-    bool deleteEvent( const Akonadi::Item &event );
-    void deleteAllEvents() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
     Akonadi::Item ::List rawEvents( EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item ::List rawEvents( const QDate &start, const QDate &end, const KDateTime::Spec &timeSpec = KDateTime::Spec(), bool inclusive = false );
@@ -69,16 +65,10 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 
     Akonadi::Item event( const Akonadi::Item::Id &id );
 
-    bool deleteTodo( const Akonadi::Item &todo );
-    void deleteAllTodos() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
-
     Akonadi::Item::List rawTodos( TodoSortField sortField = TodoSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item::List rawTodosForDate( const QDate &date );
 
     Akonadi::Item todo( const Akonadi::Item::Id &uid );
-
-    bool deleteJournal( const Akonadi::Item &journal );
-    void deleteAllJournals() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
     Akonadi::Item::List rawJournals( JournalSortField sortField = JournalSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item::List rawJournalsForDate( const QDate &date );
@@ -95,12 +85,6 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     Akonadi::Item::Id itemIdForIncidenceUid(const QString &uid) const;
  
     using QObject::event;   // prevent warning about hidden virtual method
-
-  public Q_SLOTS:
-    /**
-     * @deprecated: 
-     */
-    void deleteIncidenceProxyMethod( const Akonadi::Item &incidence ) { deleteIncidence(incidence); }
 
   Q_SIGNALS:
     void signalErrorMessage( const QString& );

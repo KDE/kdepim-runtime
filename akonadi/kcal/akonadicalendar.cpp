@@ -88,14 +88,6 @@ AkonadiCalendar::Private::~Private()
   delete m_session;
 }
 
-bool AkonadiCalendar::Private::deleteIncidence( const Item &item )
-{
-  kDebug();
-  m_changes.removeAll( item.id() ); //abort changes to this incidence cause we will just delete it
-  ItemDeleteJob *job = new ItemDeleteJob( item, m_session );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( deleteDone( KJob* ) ) );
-  return true;
-}
 
 void AkonadiCalendar::Private::assertInvariants() const
 {
@@ -262,37 +254,6 @@ void AkonadiCalendar::Private::agentCreated( KJob *job )
     Q_ASSERT( ! path.isEmpty() );
     iface.call(QLatin1String("setPath"), path);
     instance.reconfigure();
-}
-
-void AkonadiCalendar::Private::createDone( KJob *job )
-{
-    kDebug();
-    if ( job->error() ) {
-        kWarning( 5250 ) << "Item create failed:" << job->errorString();
-        emit q->signalErrorMessage( job->errorString() );
-        return;
-    }
-    ItemCreateJob *createjob = static_cast<ItemCreateJob*>( job );
-    if ( m_collectionMap.contains( createjob->item().parentCollection().id() ) ) {
-      // yes, adding to an un-viewed collection happens
-      itemAdded( createjob->item() );
-    } else {
-      // FIXME show dialog indicating that the creation worked, but the incidence will
-      // not show, since the collection isn't
-      kWarning() << "Collection with id=" << createjob->item().parentCollection() << " not in m_collectionMap";
-    }
-}
-
-void AkonadiCalendar::Private::deleteDone( KJob *job )
-{
-    kDebug();
-    if ( job->error() ) {
-        kWarning( 5250 ) << "Item delete failed:" << job->errorString();
-        emit q->signalErrorMessage( job->errorString() );
-        return;
-    }
-    ItemDeleteJob *deletejob = static_cast<ItemDeleteJob*>( job );
-    itemsRemoved( deletejob->deletedItems() );
 }
 
 void AkonadiCalendar::Private::modifyDone( KJob *job )
@@ -529,15 +490,6 @@ bool AkonadiCalendar::addAgent( const KUrl &url )
   return true;
 }
 
-
-
-bool AkonadiCalendar::deleteIncidence( const Item &incidence )
-{
-  kDebug();
-  // dispatch to deleteEvent/deleteTodo/deleteJournal
-  return CalendarBase::deleteIncidence( incidence );
-}
-
 // This method will be called probably multiple times if a series of changes where done. One finished the endChange() method got called.
 void AkonadiCalendar::incidenceUpdated( IncidenceBase *incidence )
 {
@@ -545,15 +497,6 @@ void AkonadiCalendar::incidenceUpdated( IncidenceBase *incidence )
   incidence->setLastModified( nowUTC );
   Incidence* i = dynamic_cast<Incidence*>( incidence );
   Q_ASSERT( i );
-}
-
-// this is e.g. called by pimlibs/kcal/icalformat_p.cpp on import to replace
-// existing events with newer ones. We probably like to just update in that
-// case rather then to delete+create...
-bool AkonadiCalendar::deleteEvent( const Item &event )
-{
-  kDebug();
-  return d->deleteIncidence(event);
 }
 
 Item AkonadiCalendar::event( const Item::Id &id )
@@ -564,29 +507,6 @@ Item AkonadiCalendar::event( const Item::Id &id )
   else
     return Item();
 }
-
-bool AkonadiCalendar::deleteTodo( const Item &todo )
-{
-  kDebug();
-  /*
-  // Handle orphaned children
-  removeRelations( todo );
-  if ( d->mTodos.remove( todo->uid() ) ) {
-    setModified( true );
-    notifyIncidenceDeleted( todo );
-    d->mDeletedIncidences.append( todo );
-    if ( todo->hasDueDate() ) {
-      removeIncidenceFromMultiHashByUID<Todo *>( d->mTodosForDate, todo->dtDue().date().toString(), todo->uid() );
-    }
-    return true;
-  } else {
-    kWarning() << "AkonadiCalendar::deleteTodo(): Todo not found.";
-    return false;
-  }
-  */
-  return d->deleteIncidence(todo);
-}
-
 
 Item AkonadiCalendar::todo( const Item::Id &id )
 {
@@ -765,12 +685,6 @@ Item::List AkonadiCalendar::rawEvents( EventSortField sortField, SortDirection s
       eventList.append( i.value() );
   }
   return sortEvents( eventList, sortField, sortDirection );
-}
-
-bool AkonadiCalendar::deleteJournal( const Item &journal )
-{
-  kDebug();
-  return d->deleteIncidence(journal);
 }
 
 
