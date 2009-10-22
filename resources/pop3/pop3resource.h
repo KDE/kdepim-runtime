@@ -29,6 +29,8 @@ class ItemCreateJob;
 
 class POPSession;
 
+class QTimer;
+
 class POP3Resource : public Akonadi::ResourceBase,
                      public Akonadi::AgentBase::Observer
 {
@@ -53,6 +55,7 @@ class POP3Resource : public Akonadi::ResourceBase,
   private Q_SLOTS:
 
     void slotAbortRequested();
+    void intervalCheckTriggered();
 
     // Error unrelated to a state
     void slotSessionError( int errorCode, const QString &errorMessage );
@@ -83,9 +86,6 @@ class POP3Resource : public Akonadi::ResourceBase,
 
     // For state Delete
     void deleteJobResult( KJob *job );
-    QList<int> idsToDelete() const;
-    int idToTime( int id ) const;
-    int idOfOldestMessage( QList<int> &idList ) const;
 
     // For state Quit
     void quitJobResult( KJob *job );
@@ -110,11 +110,18 @@ class POP3Resource : public Akonadi::ResourceBase,
     void doStateStep();
     void cancelSync( const QString &errorMessage, bool error = true );
     void saveSeenUIDList();
+    QList<int> idsToDelete() const;
+    int idToTime( int id ) const;
+    int idOfOldestMessage( QList<int> &idList ) const;
+    void startMailCheck();
+    void updateIntervalTimer();
 
     State mState;
     Akonadi::Collection mTargetCollection;
     POPSession *mPopSession;
     bool mAskAgain;
+    QTimer *mIntervalTimer;
+    bool mIntervalCheckInProgress;
 
     // Maps IDs on the server to message sizes on the server
     QMap<int,int> mIdsToSizeMap;

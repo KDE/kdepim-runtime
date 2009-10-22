@@ -89,11 +89,8 @@ AccountDialog::AccountDialog( POP3Resource *parentResource, WId parentWindow )
     mValidator( this )
 {
   KWindowSystem::setMainWindow( this, parentWindow );
-  setButtons( Ok|Cancel|Help );
+  setButtons( Ok|Cancel );
   mValidator.setRegExp( QRegExp( "[A-Za-z0-9-_:.]*" ) );
-
-  // FIXME: help??
-  setHelp("receiving-mail");
 
   setupWidgets();
   loadSettings();
@@ -157,6 +154,8 @@ void AccountDialog::setupWidgets()
 
   connect( encryptionButtonGroup, SIGNAL(buttonClicked(int)),
            SLOT(slotPopEncryptionChanged(int)) );
+  connect( intervalCheck, SIGNAL(toggled(bool)),
+           intervalSpin, SLOT(setEnabled(bool)) );
 
   // FIXME: Does this still work for non-ioslave POP3?
   if ( KProtocolInfo::capabilities("pop3").contains("SASL") == 0 )
@@ -186,9 +185,6 @@ void AccountDialog::setupWidgets()
 
   // FIXME: Hide widgets which are not supported yet
   includeInCheck->hide();
-  intervalCheck->hide();
-  intervalLabel->hide();
-  intervalSpin->hide();
   filterOnServerCheck->hide();
   filterOnServerSizeSpin->hide();
 }
@@ -227,10 +223,10 @@ void AccountDialog::loadSettings()
                                            Settings::self()->leaveOnServerSize() : 10 );
   filterOnServerCheck->setChecked( Settings::self()->filterOnServer() );
   filterOnServerSizeSpin->setValue( Settings::self()->filterCheckSize() );
-  //intervalCheck->setChecked( intervalCheckingEnabled );
-  //intervalSpin->setValue( interval );
+  intervalCheck->setChecked( Settings::self()->intervalCheckEnabled() );
+  intervalSpin->setValue( Settings::self()->intervalCheckInterval() );
+  intervalSpin->setEnabled( Settings::self()->intervalCheckEnabled() );
   //includeInCheck->setChecked( !mAccount->checkExclude() );
-  //precommand->setText( Settings::self()->precommand() );
   if (Settings::self()->useSSL())
     encryptionSSL->setChecked( true );
   else if (Settings::self()->useTLS())
@@ -284,7 +280,7 @@ void AccountDialog::loadSettings()
 
 void AccountDialog::slotLeaveOnServerClicked()
 {
-  bool state = leaveOnServerCheck->isChecked();
+  const bool state = leaveOnServerCheck->isChecked();
   leaveOnServerDaysCheck->setEnabled( state );
   leaveOnServerCountCheck->setEnabled( state );
   leaveOnServerSizeCheck->setEnabled( state );
@@ -531,10 +527,9 @@ void AccountDialog::slotOk()
 void AccountDialog::saveSettings()
 {
   mParentResource->setName( nameEdit->text() );
-  //Settings::self()->setCheckInterval( intervalCheck->isChecked() ?
-  //                            intervalSpin->value() : 0 );
-  //Settings::self()->setCheckExclude( !includeInCheck->isChecked() );
 
+  Settings::self()->setIntervalCheckEnabled( intervalCheck->checkState() == Qt::Checked );
+  Settings::self()->setIntervalCheckInterval( intervalSpin->value() );
   Settings::self()->setHost( hostEdit->text().trimmed() );
   Settings::self()->setPort( portEdit->value() );
   Settings::self()->setLogin( loginEdit->text().trimmed() );
@@ -577,7 +572,6 @@ void AccountDialog::saveSettings()
   Settings::self()->setFilterCheckSize (filterOnServerSizeSpin->value() );
   Settings::self()->setTargetCollection( folderRequester->collection().id() );
   Settings::self()->writeConfig();
-  //Settings::self()->setPrecommand( precommand->text() );
 }
 
 void AccountDialog::slotEnableLeaveOnServerDays( bool state )

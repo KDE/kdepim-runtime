@@ -6,12 +6,12 @@ BUGS
 ----
 
 - additional \n in item, see the test
+- config dialog: enter key selects collection, and not the Ok button
 - not storing password does not work
 
 FEATURES
 --------
 
-- interval mail check
 - wallet
 - online/offline handling
 - filter on server
@@ -30,7 +30,6 @@ CLEANUP
 
 - api documentation (also for fakeserver)
 - clean up cmakefiles, remove code duplication with kdepimlibs
-- grep for kmail and remove references
 - kconfigxt: labels, tooltips, whatsthis etc
 
 UNIT TESTS
