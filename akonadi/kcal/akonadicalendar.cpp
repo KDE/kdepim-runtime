@@ -88,54 +88,32 @@ AkonadiCalendar::Private::~Private()
   delete m_session;
 }
 
-bool AkonadiCalendar::Private::addIncidence( Incidence *incidence )
-{
-  kDebug();
-  Akonadi::CollectionDialog dlg;
-  dlg.setMimeTypeFilter( QStringList() << QString::fromLatin1( "text/calendar" ) );
-  if ( ! dlg.exec() ) {
-    return false;
-  }
-  const Akonadi::Collection collection = dlg.selectedCollection();
-  Q_ASSERT( collection.isValid() );
-  //Q_ASSERT( m_collectionMap.contains( collection.id() ) ); //we can add items to collections we don't show yet
-
-  Akonadi::Item item;
-  //the sub-mimetype of text/calendar as defined at kdepim/akonadi/kcal/kcalmimetypevisitor.cpp
-  item.setMimeType( QString::fromLatin1("application/x-vnd.akonadi.calendar.%1").arg(QLatin1String(incidence->type().toLower())) );
-  KCal::Incidence::Ptr incidencePtr( incidence ); //no clone() needed
-  item.setPayload<KCal::Incidence::Ptr>( incidencePtr );
-  Akonadi::ItemCreateJob *job = new Akonadi::ItemCreateJob( item, collection, m_session );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( createDone( KJob* ) ) );
-  return true;
-}
-
 bool AkonadiCalendar::Private::addIncidence( const Incidence::Ptr &incidence )
 {
   kDebug();
-  Akonadi::CollectionDialog dlg; //PENDING(AKONADI_PORT) we really need a parent here
+  CollectionDialog dlg; //PENDING(AKONADI_PORT) we really need a parent here
   dlg.setMimeTypeFilter( QStringList() << QLatin1String( "text/calendar" ) );
   if ( ! dlg.exec() ) {
     return false;
   }
-  const Akonadi::Collection collection = dlg.selectedCollection();
+  const Collection collection = dlg.selectedCollection();
   Q_ASSERT( collection.isValid() );
   //Q_ASSERT( m_collectionMap.contains( collection.id() ) ); //we can add items to collections we don't show yet
 
-  Akonadi::Item item;
+  Item item;
   item.setPayload( incidence );
   //the sub-mimetype of text/calendar as defined at kdepim/akonadi/kcal/kcalmimetypevisitor.cpp
   item.setMimeType( QString::fromLatin1("application/x-vnd.akonadi.calendar.%1").arg(QLatin1String(incidence->type().toLower())) ); //PENDING(AKONADI_PORT) shouldn't be hardcoded?
-  Akonadi::ItemCreateJob *job = new Akonadi::ItemCreateJob( item, collection, m_session );
+  ItemCreateJob *job = new ItemCreateJob( item, collection, m_session );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( createDone( KJob* ) ) );
   return true;
 }
 
-bool AkonadiCalendar::Private::deleteIncidence( const Akonadi::Item &item )
+bool AkonadiCalendar::Private::deleteIncidence( const Item &item )
 {
   kDebug();
   m_changes.removeAll( item.id() ); //abort changes to this incidence cause we will just delete it
-  Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( item, m_session );
+  ItemDeleteJob *job = new ItemDeleteJob( item, m_session );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( deleteDone( KJob* ) ) );
   return true;
 }
@@ -144,10 +122,10 @@ void AkonadiCalendar::Private::assertInvariants() const
 {
 }
 
-void AkonadiCalendar::Private::updateItem( const Akonadi::Item &item, UpdateMode mode ) {
+void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
   assertInvariants();
   const bool alreadyExisted = m_itemMap.contains( item.id() );
-  const Akonadi::Item::Id id = item.id();
+  const Item::Id id = item.id();
 
   Q_ASSERT( mode == DontCare || alreadyExisted == ( mode == AssertExists ) );
 
@@ -174,7 +152,7 @@ void AkonadiCalendar::Private::updateItem( const Akonadi::Item &item, UpdateMode
     return;
   }
 
-  const KCal::Incidence::Ptr incidence = Akonadi::incidence( item );
+  const Incidence::Ptr incidence = Akonadi::incidence( item );
   Q_ASSERT( incidence );
 
   if ( alreadyExisted ) {
@@ -200,36 +178,36 @@ void AkonadiCalendar::Private::updateItem( const Akonadi::Item &item, UpdateMode
   const QString parentUID = incidence->relatedToUid();
   const bool hasParent = !parentUID.isEmpty();
   UnseenItem parentItem;
-  QMap<UnseenItem,Akonadi::Item::Id>::const_iterator parentIt = m_uidToItemId.constEnd();
+  QMap<UnseenItem,Item::Id>::const_iterator parentIt = m_uidToItemId.constEnd();
   bool knowParent = false;
   bool parentNotChanged = false;
   if ( hasParent ) {
     parentItem.collection = item.storageCollectionId();
     parentItem.uid = parentUID;
-    QMap<UnseenItem,Akonadi::Item::Id>::const_iterator parentIt = m_uidToItemId.constFind( parentItem );
+    QMap<UnseenItem,Item::Id>::const_iterator parentIt = m_uidToItemId.constFind( parentItem );
     knowParent = parentIt != m_uidToItemId.constEnd();
   }
 
   if ( alreadyExisted ) {
     Q_ASSERT( m_uidToItemId.value( ui ) == item.id() );
-    QHash<Akonadi::Item::Id,Akonadi::Item::Id>::Iterator oldParentIt = m_childToParent.find( id );
+    QHash<Item::Id,Item::Id>::Iterator oldParentIt = m_childToParent.find( id );
     if ( oldParentIt != m_childToParent.constEnd() ) {
       const Incidence::Ptr parentInc = Akonadi::incidence( m_itemMap.value( oldParentIt.value() ) );
       Q_ASSERT( parentInc );
       if ( parentInc->uid() != parentUID ) {
         //parent changed, remove old entries
         Akonadi::incidence( item )->setRelatedTo( 0 );
-        QVector<Akonadi::Item::Id>& l = m_parentToChildren[oldParentIt.value()];
+        QVector<Item::Id>& l = m_parentToChildren[oldParentIt.value()];
         l.erase( std::remove( l.begin(), l.end(), id ), l.end() );
         m_childToParent.remove( id );
       } else
         parentNotChanged = true;
     } else { //old parent not seen, maybe unseen?
-      QHash<Akonadi::Item::Id,UnseenItem>::Iterator oldUnseenParentIt = m_childToUnseenParent.find( id );
+      QHash<Item::Id,UnseenItem>::Iterator oldUnseenParentIt = m_childToUnseenParent.find( id );
       if ( oldUnseenParentIt != m_childToUnseenParent.constEnd() ) {
         if ( oldUnseenParentIt.value().uid != parentUID ) {
           //parent changed, remove old entries
-          QVector<Akonadi::Item::Id>& l = m_unseenParentToChildren[oldUnseenParentIt.value()];
+          QVector<Item::Id>& l = m_unseenParentToChildren[oldUnseenParentIt.value()];
           l.erase( std::remove( l.begin(), l.end(), id ), l.end() );
           m_childToUnseenParent.remove( id );
         }
@@ -242,10 +220,10 @@ void AkonadiCalendar::Private::updateItem( const Akonadi::Item &item, UpdateMode
     m_uidToItemId.insert( ui, item.id() );
 
     //check for already known children:
-    const QVector<Akonadi::Item::Id> orphanedChildren = m_unseenParentToChildren.value( ui );
+    const QVector<Item::Id> orphanedChildren = m_unseenParentToChildren.value( ui );
     if ( !orphanedChildren.isEmpty() )
       m_parentToChildren.insert( id, orphanedChildren );
-    Q_FOREACH ( const Akonadi::Item::Id &cid, orphanedChildren )
+    Q_FOREACH ( const Item::Id &cid, orphanedChildren )
       m_childToParent.insert( cid, id );
     m_unseenParentToChildren.remove( ui );
     m_childToUnseenParent.remove( id );
@@ -275,7 +253,7 @@ void AkonadiCalendar::Private::updateItem( const Akonadi::Item &item, UpdateMode
 void AkonadiCalendar::Private::listingDone( KJob *job )
 {
     kDebug();
-    Akonadi::ItemFetchJob *fetchjob = static_cast<Akonadi::ItemFetchJob*>( job );
+    ItemFetchJob *fetchjob = static_cast<ItemFetchJob*>( job );
     if ( job->error() ) {
         kWarning( 5250 ) << "Item query failed:" << job->errorString();
         emit q->signalErrorMessage( job->errorString() );
@@ -287,13 +265,13 @@ void AkonadiCalendar::Private::listingDone( KJob *job )
 void AkonadiCalendar::Private::agentCreated( KJob *job )
 {
     kDebug();
-    Akonadi::AgentInstanceCreateJob *createjob = dynamic_cast<Akonadi::AgentInstanceCreateJob*>( job );
+    AgentInstanceCreateJob *createjob = dynamic_cast<AgentInstanceCreateJob*>( job );
     if ( createjob->error() ) {
         kWarning( 5250 ) << "Agent create failed:" << createjob->errorString();
         emit q->signalErrorMessage( createjob->errorString() );
         return;
     }
-    Akonadi::AgentInstance instance = createjob->instance();
+    AgentInstance instance = createjob->instance();
     //instance.setName( CalendarName );
     QDBusInterface iface( QString::fromLatin1("org.freedesktop.Akonadi.Resource.%1").arg( instance.identifier() ), QLatin1String("/Settings") );
     if( ! iface.isValid() ) {
@@ -315,7 +293,7 @@ void AkonadiCalendar::Private::createDone( KJob *job )
         emit q->signalErrorMessage( job->errorString() );
         return;
     }
-    Akonadi::ItemCreateJob *createjob = static_cast<Akonadi::ItemCreateJob*>( job );
+    ItemCreateJob *createjob = static_cast<ItemCreateJob*>( job );
     if ( m_collectionMap.contains( createjob->item().parentCollection().id() ) ) {
       // yes, adding to an un-viewed collection happens
       itemAdded( createjob->item() );
@@ -334,7 +312,7 @@ void AkonadiCalendar::Private::deleteDone( KJob *job )
         emit q->signalErrorMessage( job->errorString() );
         return;
     }
-    Akonadi::ItemDeleteJob *deletejob = static_cast<Akonadi::ItemDeleteJob*>( job );
+    ItemDeleteJob *deletejob = static_cast<ItemDeleteJob*>( job );
     itemsRemoved( deletejob->deletedItems() );
 }
 
@@ -344,17 +322,16 @@ void AkonadiCalendar::Private::modifyDone( KJob *job )
     // itself when certain things change. need to verify with ical documentation.
 
     assertInvariants();
-    Akonadi::ItemModifyJob *modifyjob = static_cast<Akonadi::ItemModifyJob*>( job );
+    ItemModifyJob *modifyjob = static_cast<ItemModifyJob*>( job );
     if ( modifyjob->error() ) {
         kWarning( 5250 ) << "Item modify failed:" << job->errorString();
         emit q->signalErrorMessage( job->errorString() );
         return;
     }
-    Akonadi::Item item = modifyjob->item();
-    Q_ASSERT( item.hasPayload<KCal::Incidence::Ptr>() );
-    const KCal::Incidence::Ptr incidence = item.payload<KCal::Incidence::Ptr>();
+    Item item = modifyjob->item();
+    const Incidence::Ptr incidence = Akonadi::incidence( item );
     Q_ASSERT( incidence );
-    const Akonadi::Item::Id id = item.id();
+    const Item::Id id = item.id();
     //kDebug()<<"Old storageCollectionId="<<m_itemMap[id]->m_item.storageCollectionId();
     kDebug() << "Item modify done item id=" << id << "storageCollectionId=" << item.storageCollectionId();
     updateItem( item, AssertExists );
@@ -364,11 +341,11 @@ void AkonadiCalendar::Private::modifyDone( KJob *job )
     assertInvariants();
 }
 
-void AkonadiCalendar::Private::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& )
+void AkonadiCalendar::Private::itemChanged( const Item& item, const QSet<QByteArray>& )
 {
     assertInvariants();
     Q_ASSERT( item.isValid() );
-    const Akonadi::Item::Id id = item.id();
+    const Item::Id id = item.id();
     const Incidence::ConstPtr incidence = Akonadi::incidence( item );
     if ( !incidence )
       return;
@@ -380,7 +357,7 @@ void AkonadiCalendar::Private::itemChanged( const Akonadi::Item& item, const QSe
     assertInvariants();
 }
 
-void AkonadiCalendar::Private::itemMoved( const Akonadi::Item &item, const Akonadi::Collection& colSrc, const Akonadi::Collection& colDst )
+void AkonadiCalendar::Private::itemMoved( const Item &item, const Collection& colSrc, const Collection& colDst )
 {
     kDebug();
     if( m_collectionMap.contains(colSrc.id()) && ! m_collectionMap.contains(colDst.id()) )
@@ -389,18 +366,18 @@ void AkonadiCalendar::Private::itemMoved( const Akonadi::Item &item, const Akona
         itemAdded( item );
 }
 
-void AkonadiCalendar::Private::itemsAdded( const Akonadi::Item::List &items )
+void AkonadiCalendar::Private::itemsAdded( const Item::List &items )
 {
     kDebug();
     assertInvariants();
-    foreach( const Akonadi::Item &item, items ) {
+    foreach( const Item &item, items ) {
         if ( !m_collectionMap.contains( item.parentCollection().id() ) )  // collection got deselected again in the meantime
           continue;
         Q_ASSERT( item.isValid() );
         if ( !Akonadi::hasIncidence( item ) )
           continue;
         updateItem( item, AssertNew );
-        const KCal::Incidence::Ptr incidence = item.payload<KCal::Incidence::Ptr>();
+        const Incidence::Ptr incidence = item.payload<Incidence::Ptr>();
         kDebug() << "Add akonadi id=" << item.id() << "uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
 
         incidence->registerObserver( q );
@@ -411,24 +388,24 @@ void AkonadiCalendar::Private::itemsAdded( const Akonadi::Item::List &items )
     assertInvariants();
 }
 
-void AkonadiCalendar::Private::itemAdded( const Akonadi::Item &item )
+void AkonadiCalendar::Private::itemAdded( const Item &item )
 {
     kDebug();
     Q_ASSERT( item.isValid() );
     if( ! m_itemMap.contains( item.id() ) ) {
-      itemsAdded( Akonadi::Item::List() << item );
+      itemsAdded( Item::List() << item );
     }
 }
 
-void AkonadiCalendar::Private::itemsRemoved( const Akonadi::Item::List &items )
+void AkonadiCalendar::Private::itemsRemoved( const Item::List &items )
 {
     assertInvariants();
     //kDebug()<<items.count();
-    foreach(const Akonadi::Item& item, items) {
+    foreach(const Item& item, items) {
         Q_ASSERT( item.isValid() );
-        Akonadi::Item ci( m_itemMap.take( item.id() ) );
-        Q_ASSERT( ci.hasPayload<KCal::Incidence::Ptr>() );
-        const KCal::Incidence::Ptr incidence = ci.payload<KCal::Incidence::Ptr>();
+        Item ci( m_itemMap.take( item.id() ) );
+        Q_ASSERT( ci.hasPayload<Incidence::Ptr>() );
+        const Incidence::Ptr incidence = ci.payload<Incidence::Ptr>();
         kDebug() << "Remove uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
 
         if( const Event::Ptr e = dynamic_pointer_cast<Event>(incidence) ) {
@@ -454,10 +431,10 @@ void AkonadiCalendar::Private::itemsRemoved( const Akonadi::Item::List &items )
     assertInvariants();
 }
 
-void AkonadiCalendar::Private::itemRemoved( const Akonadi::Item &item )
+void AkonadiCalendar::Private::itemRemoved( const Item &item )
 {
     kDebug();
-    itemsRemoved( Akonadi::Item::List() << item );
+    itemsRemoved( Item::List() << item );
 }
 
 
@@ -472,12 +449,12 @@ AkonadiCalendar::~AkonadiCalendar()
   delete d;
 }
 
-bool AkonadiCalendar::hasCollection( const Akonadi::Collection &collection ) const
+bool AkonadiCalendar::hasCollection( const Collection &collection ) const
 {
   return d->m_collectionMap.contains( collection.id() );
 }
 
-void AkonadiCalendar::addCollection( const Akonadi::Collection &collection )
+void AkonadiCalendar::addCollection( const Collection &collection )
 {
   kDebug();
   Q_ASSERT( ! d->m_collectionMap.contains( collection.id() ) );
@@ -492,7 +469,7 @@ void AkonadiCalendar::addCollection( const Akonadi::Collection &collection )
   connect( job, SIGNAL(result(KJob*)), d, SLOT(listingDone(KJob*)) );
 }
 
-void AkonadiCalendar::removeCollection( const Akonadi::Collection &collection )
+void AkonadiCalendar::removeCollection( const Collection &collection )
 {
   kDebug();
   d->assertInvariants();
@@ -572,8 +549,8 @@ bool AkonadiCalendar::endChange( const Item &item )
 bool AkonadiCalendar::addAgent( const KUrl &url )
 {
   kDebug()<< url;
-  Akonadi::AgentType type = Akonadi::AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
-  Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( type, d->m_session );
+  AgentType type = AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
+  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, d->m_session );
   job->setProperty("path", url.path());
   connect( job, SIGNAL( result( KJob * ) ), d, SLOT( agentCreated( KJob * ) ) );
   job->start();
@@ -706,16 +683,16 @@ Item::List AkonadiCalendar::rawTodosForDate( const QDate &date )
   return todoList;
 }
 
-Akonadi::Item::List AkonadiCalendar::alarmsTo( const KDateTime &to )
+Item::List AkonadiCalendar::alarmsTo( const KDateTime &to )
 {
   kDebug();
   return alarms( KDateTime( QDate( 1900, 1, 1 ) ), to );
 }
 
-Akonadi::Item::List AkonadiCalendar::alarms( const KDateTime &from, const KDateTime &to )
+Item::List AkonadiCalendar::alarms( const KDateTime &from, const KDateTime &to )
 {
   kDebug();
-  Akonadi::Item::List alarmList;
+  Item::List alarmList;
 #if 0
   Alarm::List alarmList;
   QHashIterator<QString, Event *>ie( d->mEvents );
@@ -912,7 +889,7 @@ bool AkonadiCalendar::isChild( const Item &parent, const Item &child ) const {
   return d->m_childToParent.value( child.id() ) == parent.id();
 }
 
-Akonadi::Item::Id AkonadiCalendar::itemIdForIncidenceUid(const QString &uid) const {
+Item::Id AkonadiCalendar::itemIdForIncidenceUid(const QString &uid) const {
   //AKONADI_PORT_DISABLED
   //TODO implement this method. it's used in e.g. KOAlarmClient to migrate
   // previous remembered incidences to Akonadi Item's.

@@ -101,7 +101,6 @@ public:
   explicit Private( AkonadiCalendar *q );
   ~Private();
 
-  bool addIncidence( KCal::Incidence* );
   bool addIncidence( const KCal::Incidence::Ptr & );
   bool deleteIncidence( const Akonadi::Item & );
 
