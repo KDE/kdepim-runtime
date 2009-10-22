@@ -2,6 +2,7 @@
 Name=Kolab Groupware Server
 Name[en_GB]=Kolab Groupware Server
 Name[es]=Servidor de Groupware Kolab
+Name[et]=Kolabi grupitöö server
 Name[gl]=Servidor de traballo en grupo Kolab
 Name[nb]=Kolab groupware-tjener 
 Name[nds]=Kolab-Arbeitkoppel-Server
@@ -18,6 +19,7 @@ Name[zh_TW]=Kolab 群組伺服器
 Comment=Provides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately).
 Comment[en_GB]=Provides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately).
 Comment[es]=Proporciona acceso a carpetas groupware de Kolab en un servidor IMAP (las cuentas IMAP necesitan ser configuradas por separado).
+Comment[et]=Ligipääsu tagamine Kolabi grupitöökaustadele IMAP serveris (IMAP kontod tuleb eraldi seadistada).
 Comment[gl]=Fornece acceso aos cartafoles de traballo en grupo de Kolab dun servidor de IMAP (hai que configurar as contas IMAP por separado).
 Comment[nb]=Gir tilgang til Kolab-mapper på en IMAP-tjener (IMAP-kontoer må settes opp separat).
 Comment[nds]=Stellt Togriep op Kolab-Arbeitkoppel-Ornern op en IMAP-Server praat (IMAP-Kontos mööt enkelt inricht warrn).
