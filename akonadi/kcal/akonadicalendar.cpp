@@ -28,7 +28,6 @@
 #include <kcal/todo.h>
 #include <kcal/journal.h>
 #include <kcal/filestorage.h>
-#include <kcal/comparisonvisitor.h>
 
 #include <QtCore/QDate>
 #include <QtCore/QHash>
@@ -60,11 +59,9 @@ AkonadiCalendar::Private::Private( AkonadiCalendar *q )
   : q( q )
   , m_monitor( new Akonadi::Monitor() )
   , m_session( new Akonadi::Session( QCoreApplication::instance()->applicationName().toUtf8() + QByteArray("-AkonadiCal-") + QByteArray::number(qrand()) ) )
-  , m_incidenceBeingChanged()
 {
   m_monitor->itemFetchScope().fetchFullPayload();
   m_monitor->itemFetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
-  m_monitor->ignoreSession( m_session );
 
   connect( m_monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray> )),
            this, SLOT(itemChanged(Akonadi::Item,QSet<QByteArray> )) );
@@ -256,21 +253,6 @@ void AkonadiCalendar::Private::agentCreated( KJob *job )
     instance.reconfigure();
 }
 
-void AkonadiCalendar::Private::modifyDone( KJob *job )
-{
-    // we should probably update the revision number here,or internally in the Event
-    // itself when certain things change. need to verify with ical documentation.
-
-    assertInvariants();
-    ItemModifyJob *modifyjob = static_cast<ItemModifyJob*>( job );
-    if ( modifyjob->error() ) {
-        kWarning( 5250 ) << "Item modify failed:" << job->errorString();
-        emit q->signalErrorMessage( job->errorString() );
-        return;
-    }
-    itemChanged( modifyjob->item() );
-}
-
 void AkonadiCalendar::Private::itemChanged( const Item& item )
 {
   assertInvariants();
@@ -430,54 +412,6 @@ void AkonadiCalendar::removeCollection( const Collection &collection )
   emit calendarChanged();
 }
 
-bool AkonadiCalendar::beginChange( const Item &item )
-{
-  const Incidence::Ptr incidence = Akonadi::incidence( item );
-  Q_ASSERT( incidence );
-  Q_ASSERT( ! d->m_changes.contains( item.id() ) ); // no nested changes allowed
-  d->m_changes.push_back( item.id() );
-  d->m_incidenceBeingChanged = Incidence::Ptr( incidence->clone() );
-  return true;
-}
-
-
-bool AkonadiCalendar::endChange( const Item &item )
-{
-  if( ! item.isValid() ) {
-    kWarning() << "Item is invalid";
-    return false;
-  }
-  const Incidence::Ptr incidence = Akonadi::incidence( item );
-  Q_ASSERT( incidence );
-
-  const bool isModification = d->m_changes.removeAll( item.id() ) >= 1;
-
-  if( ! isModification || !d->m_incidenceBeingChanged ) {
-    // only if beginChange() with the incidence was called then this is a modification else it
-    // is e.g. a new event/todo/journal that was not added yet or an existing one got deleted.
-    kDebug() << "Skipping modify uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
-    return false;
-  }
-
-  // check if there was an actual change to the incidence since beginChange
-  // if not, don't kick off a modify job. The reason this is useful is that
-  // begin/endChange is used for locking as well, so it is called quite often
-  // without any actual changes happening. Nested modify jobs confuse the
-  // conflict detection in Akonadi, so let's avoid them.
-  ComparisonVisitor v;
-  Incidence::Ptr incidencePtr( d->m_incidenceBeingChanged );
-  d->m_incidenceBeingChanged = Incidence::Ptr();
-  if ( v.compare( incidence.get(), incidencePtr.get() ) ) {
-    kDebug()<<"Incidence is unmodified";
-    return true;
-  }
-
-  kDebug() << "modify uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
-  ItemModifyJob *job = new ItemModifyJob( item, d->m_session );
-
-  connect( job, SIGNAL(result( KJob*)), d, SLOT(modifyDone(KJob*)) );
-  return true;
-}
 
 bool AkonadiCalendar::addAgent( const KUrl &url )
 {

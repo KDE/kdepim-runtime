@@ -51,9 +51,6 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     void addCollection( const Akonadi::Collection &collection );
     void removeCollection( const Akonadi::Collection &collection );
 
-    bool beginChange( const Akonadi::Item &incidence );
-    bool endChange( const Akonadi::Item &incidence );
-
     bool addAgent( const KUrl &mUrl );
 
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );

@@ -126,15 +126,11 @@ public:
   QHash<Akonadi::Item::Id, UnseenItem> m_childToUnseenParent; // child to parent map, unknown/not cached parent items
   QMap<UnseenItem, QVector<Akonadi::Item::Id> > m_unseenParentToChildren;
 
-  QList<Akonadi::Item::Id> m_changes; //list of item ids that are modified atm
-  KCal::Incidence::Ptr m_incidenceBeingChanged; // clone of the incidence currently being modified, for rollback and to check if something actually changed
-
   QMultiHash<QString, Akonadi::Item> m_itemsForDate;// on start dates of non-recurring, single-day Incidences
 
 public Q_SLOTS:  
   void listingDone( KJob *job );
   void agentCreated( KJob *job );
-  void modifyDone( KJob *job );
   void itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& );
   void itemMoved( const Akonadi::Item &item, const Akonadi::Collection& colSrc, const Akonadi::Collection& colDst );
   void itemsAdded( const Akonadi::Item::List &items );

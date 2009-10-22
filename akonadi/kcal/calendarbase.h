@@ -412,21 +412,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
                                                const Akonadi::Item::List &todos,
                                                const Akonadi::Item::List &journals );
 
-    /**
-      Flag that a change to a Calendar KCal::Incidence is starting.
-      @deprecated: 
-
-      @param incidence is a pointer to the KCal::Incidence that will be changing.
-    */
-    virtual bool beginChange( const Akonadi::Item &incidence ) = 0;
-
-    /**
-      Flag that a change to a Calendar KCal::Incidence has completed.
-      @deprecated: 
-
-      @param incidence is a pointer to the KCal::Incidence that was changed.
-    */
-    virtual bool endChange( const Akonadi::Item &incidence ) = 0;
 
     /**
       Dissociate an KCal::Incidence from a recurring KCal::Incidence.
