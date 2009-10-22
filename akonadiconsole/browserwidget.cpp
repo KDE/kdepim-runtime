@@ -125,7 +125,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   mBrowserModel->setItemPopulationStrategy( EntityTreeModel::LazyPopulation );
   mBrowserModel->setShowSystemEntities( true );
 
-  new ModelTest( mBrowserModel );
+//   new ModelTest( mBrowserModel );
 
   EntityMimeTypeFilterModel *collectionFilter = new EntityMimeTypeFilterModel( this );
   collectionFilter->setSourceModel( mBrowserModel );
@@ -147,12 +147,12 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
 
   mCollectionView->setModel( sortModel );
 
-//   connect( mBrowserModel, SIGNAL( modelAboutToBeReset() ), SLOT( slotBrowserModelAboutToBeReset() ) );
-//   connect( mBrowserModel, SIGNAL( modelReset() ), SLOT( slotBrowserModelReset() ) );
-
   Akonadi::SelectionProxyModel *selectionProxyModel = new Akonadi::SelectionProxyModel( mCollectionView->selectionModel(), this );
   selectionProxyModel->setSourceModel( mBrowserModel );
   selectionProxyModel->setFilterBehavior( KSelectionProxyModel::ChildrenOfExactSelection );
+
+  connect( selectionProxyModel, SIGNAL( modelAboutToBeReset() ), SLOT( slotBrowserModelAboutToBeReset() ) );
+  connect( selectionProxyModel, SIGNAL( modelReset() ), SLOT( slotBrowserModelReset() ) );
 
   EntityMimeTypeFilterModel *itemFilter = new EntityMimeTypeFilterModel( this );
   itemFilter->setSourceModel( selectionProxyModel );
@@ -359,26 +359,6 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
 
 void BrowserWidget::modelChanged()
 {
-  // For some reason resetting the sourceModel crashes the app when trying to
-  // propagate the change through the proxies. This is probably because resetting
-  // in QAIM is broken (API bug: don't have beginResetModel and endResetModel, so
-  // the source model is already fully reset when the proxy emits beginResetModel
-  // http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=247023).
-  // I'll see about fixing it in time for Qt 4.6.
-  // To work around, we unset the sourceModel in the stats proxy, the model resets itself
-  // in setItemDisplayMode, and then we set the sourceModel again on the proxy.
-  // Of course, this sucks in other ways, like for example, that the view is empty while the
-  // model is being reset, so we can't save and restore view state in slots connected to beginResetModel
-  // and endResetModel.
-  // -- Stephen Kelly, 24. July 2009.
-
-  KConfigGroup saveConfig( KGlobal::config(), "CollectionViewState" );
-  EntityTreeViewStateSaver* saver = new EntityTreeViewStateSaver( mCollectionView );
-  saver->saveState( saveConfig );
-  saveConfig.sync();
-
-  QAbstractItemModel *model = statisticsProxyModel->sourceModel();
-  statisticsProxyModel->setSourceModel(0);
   switch ( itemUi.modelBox->currentIndex() ) {
     case 1:
       mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::MailMode);
@@ -392,10 +372,6 @@ void BrowserWidget::modelChanged()
     default:
       mBrowserModel->setItemDisplayMode(AkonadiBrowserModel::GenericMode);
   }
-  statisticsProxyModel->setSourceModel(model);
-
-  const KConfigGroup restoreConfig( KGlobal::config(), "CollectionViewState" );
-  saver->restoreState( restoreConfig );
 }
 
 void BrowserWidget::save()
@@ -479,22 +455,20 @@ void BrowserWidget::dumpToXmlResult( KJob* job )
     KMessageBox::error( this, job->errorString() );
 }
 
+void BrowserWidget::slotBrowserModelAboutToBeReset()
+{
+  KConfigGroup cfg( KGlobal::config(), "CollectionViewState" );
+  EntityTreeViewStateSaver saver( mCollectionView );
+  saver.saveState( cfg );
+  cfg.sync();
+}
 
-// void BrowserWidget::slotBrowserModelAboutToBeReset()
-// {
-//   KConfigGroup cfg( KGlobal::config(), "CollectionViewState" );
-//   EntityTreeViewStateSaver saver( mCollectionView );
-//   saver.saveState( cfg );
-//   cfg.sync();
-// }
-
-
-// void BrowserWidget::slotBrowserModelReset()
-// {
-//   const KConfigGroup cfg( KGlobal::config(), "CollectionViewState" );
-//   EntityTreeViewStateSaver* saver = new EntityTreeViewStateSaver( mCollectionView );
-//   saver->restoreState( cfg );
-// }
+void BrowserWidget::slotBrowserModelReset()
+{
+  const KConfigGroup cfg( KGlobal::config(), "CollectionViewState" );
+  EntityTreeViewStateSaver* saver = new EntityTreeViewStateSaver( mCollectionView );
+  saver->restoreState( cfg );
+}
 
 
 #include "browserwidget.moc"
