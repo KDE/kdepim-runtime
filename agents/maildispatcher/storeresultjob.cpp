@@ -67,7 +67,7 @@ void StoreResultJob::Private::fetchDone( KJob *job )
   if( fjob->items().count() != 1 ) {
     kError() << "Fetched" << fjob->items().count() << "items, expected 1.";
     q->setError( Unknown );
-    q->setErrorText( QLatin1String( "Failed to fetch item." ) );
+    q->setErrorText( i18n( "Failed to fetch item." ) );
     q->commit();
     return;
   }
