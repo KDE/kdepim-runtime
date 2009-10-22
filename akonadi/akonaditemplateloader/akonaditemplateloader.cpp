@@ -112,7 +112,7 @@ Item AkonadiTemplateLoader::getItem(const KUrl& url) const
 {
   Item requestedItem = Item::fromUrl( url );
 
-  QModelIndexList list = m_model->indexesForItem( requestedItem );
+  QModelIndexList list = m_model->match(QModelIndex(), EntityTreeModel::ItemIdRole, requestedItem.id() );
 
   if ( list.isEmpty() )
     return Item();
