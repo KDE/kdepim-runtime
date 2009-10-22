@@ -328,33 +328,26 @@ void AkonadiCalendar::Private::modifyDone( KJob *job )
         emit q->signalErrorMessage( job->errorString() );
         return;
     }
-    Item item = modifyjob->item();
-    const Incidence::Ptr incidence = Akonadi::incidence( item );
-    Q_ASSERT( incidence );
-    const Item::Id id = item.id();
-    //kDebug()<<"Old storageCollectionId="<<m_itemMap[id]->m_item.storageCollectionId();
-    kDebug() << "Item modify done item id=" << id << "storageCollectionId=" << item.storageCollectionId();
-    updateItem( item, AssertExists );
-    q->notifyIncidenceChanged( item );
-    q->setModified( true );
-    emit q->calendarChanged();
-    assertInvariants();
+    itemChanged( modifyjob->item() );
+}
+
+void AkonadiCalendar::Private::itemChanged( const Item& item )
+{
+  assertInvariants();
+  Q_ASSERT( item.isValid() );
+  const Incidence::ConstPtr incidence = Akonadi::incidence( item );
+  if ( !incidence )
+    return;
+  updateItem( item, AssertExists );
+  q->notifyIncidenceChanged( item );
+  q->setModified( true );
+  emit q->calendarChanged();
+  assertInvariants();
 }
 
 void AkonadiCalendar::Private::itemChanged( const Item& item, const QSet<QByteArray>& )
 {
-    assertInvariants();
-    Q_ASSERT( item.isValid() );
-    const Item::Id id = item.id();
-    const Incidence::ConstPtr incidence = Akonadi::incidence( item );
-    if ( !incidence )
-      return;
-    kDebug() << "Item changed item id=" << id << "summary=" << incidence->summary() << "type=" << incidence->type() << "storageCollectionId=" << item.storageCollectionId();
-    updateItem( item, AssertExists );
-    q->notifyIncidenceChanged( item );
-    q->setModified( true );
-    emit q->calendarChanged();
-    assertInvariants();
+  itemChanged( item );
 }
 
 void AkonadiCalendar::Private::itemMoved( const Item &item, const Collection& colSrc, const Collection& colDst )

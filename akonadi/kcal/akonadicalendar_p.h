@@ -111,6 +111,7 @@ public:
   };
 
   void updateItem( const Akonadi::Item &item, UpdateMode mode );
+  void itemChanged( const Akonadi::Item& item );
 
   void assertInvariants() const;
 
