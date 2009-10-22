@@ -54,25 +54,6 @@ using namespace KCal;
 using namespace KOrg;
 
 namespace {
-  class AddVisitor : public IncidenceBase::Visitor {
-    CalendarBase* const mCalendar;
-    const Incidence::Ptr mInc;
-  public:
-    explicit AddVisitor( CalendarBase* cal, const Incidence::Ptr& inc ) : mCalendar( cal ), mInc( inc ) {}
-
-    /* reimp */ bool visit( Event * ) {
-      return mCalendar->addEvent( static_pointer_cast<Event>( mInc ) );
-    }
-
-    /* reimp */ bool visit( Todo * ) {
-      return mCalendar->addTodo( static_pointer_cast<Todo>( mInc ) );
-    }
-
-    /* reimp */ bool visit( Journal * ) {
-      return mCalendar->addJournal( static_pointer_cast<Journal>( mInc ) );
-    }
-  };
-
   class DeleteVisitor : public IncidenceBase::Visitor {
     CalendarBase* const mCalendar;
     const Item mItem;
@@ -469,12 +450,6 @@ Item::List CalendarBase::events( EventSortField sortField,
 {
   const Item::List el = rawEvents( sortField, sortDirection );
   return Akonadi::applyCalFilter( el, d->mFilter );
-}
-
-bool CalendarBase::addIncidence( const Incidence::Ptr &incidence )
-{
-  AddVisitor v( this, incidence );
-  return incidence->accept( v );
 }
 
 bool CalendarBase::deleteIncidence( const Item &item )

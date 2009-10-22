@@ -56,11 +56,9 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 
     bool addAgent( const KUrl &mUrl );
 
-    bool addIncidence( const KCal::Incidence::Ptr &incidence );
     bool deleteIncidence( const Akonadi::Item &incidence );
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
 
-    bool addEvent( const KCal::Event::Ptr &event );
     bool deleteEvent( const Akonadi::Item &event );
     void deleteAllEvents() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
@@ -71,7 +69,6 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 
     Akonadi::Item event( const Akonadi::Item::Id &id );
 
-    bool addTodo( const KCal::Todo::Ptr &todo );
     bool deleteTodo( const Akonadi::Item &todo );
     void deleteAllTodos() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 
@@ -80,7 +77,6 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 
     Akonadi::Item todo( const Akonadi::Item::Id &uid );
 
-    bool addJournal( const KCal::Journal::Ptr &journal );
     bool deleteJournal( const Akonadi::Item &journal );
     void deleteAllJournals() { Q_ASSERT(false); } //TODO remove, atm abstract in Calendar
 

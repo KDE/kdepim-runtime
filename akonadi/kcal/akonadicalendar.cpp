@@ -88,27 +88,6 @@ AkonadiCalendar::Private::~Private()
   delete m_session;
 }
 
-bool AkonadiCalendar::Private::addIncidence( const Incidence::Ptr &incidence )
-{
-  kDebug();
-  CollectionDialog dlg; //PENDING(AKONADI_PORT) we really need a parent here
-  dlg.setMimeTypeFilter( QStringList() << QLatin1String( "text/calendar" ) );
-  if ( ! dlg.exec() ) {
-    return false;
-  }
-  const Collection collection = dlg.selectedCollection();
-  Q_ASSERT( collection.isValid() );
-  //Q_ASSERT( m_collectionMap.contains( collection.id() ) ); //we can add items to collections we don't show yet
-
-  Item item;
-  item.setPayload( incidence );
-  //the sub-mimetype of text/calendar as defined at kdepim/akonadi/kcal/kcalmimetypevisitor.cpp
-  item.setMimeType( QString::fromLatin1("application/x-vnd.akonadi.calendar.%1").arg(QLatin1String(incidence->type().toLower())) ); //PENDING(AKONADI_PORT) shouldn't be hardcoded?
-  ItemCreateJob *job = new ItemCreateJob( item, collection, m_session );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( createDone( KJob* ) ) );
-  return true;
-}
-
 bool AkonadiCalendar::Private::deleteIncidence( const Item &item )
 {
   kDebug();
@@ -551,13 +530,6 @@ bool AkonadiCalendar::addAgent( const KUrl &url )
 }
 
 
-bool AkonadiCalendar::addIncidence( const Incidence::Ptr &incidence )
-{
-  kDebug();
-  // dispatch to addEvent/addTodo/addJournal
-  return CalendarBase::addIncidence( incidence );
-}
-
 
 bool AkonadiCalendar::deleteIncidence( const Item &incidence )
 {
@@ -573,12 +545,6 @@ void AkonadiCalendar::incidenceUpdated( IncidenceBase *incidence )
   incidence->setLastModified( nowUTC );
   Incidence* i = dynamic_cast<Incidence*>( incidence );
   Q_ASSERT( i );
-}
-
-bool AkonadiCalendar::addEvent( const Event::Ptr &event )
-{
-  kDebug();
-  return d->addIncidence(event);
 }
 
 // this is e.g. called by pimlibs/kcal/icalformat_p.cpp on import to replace
@@ -597,22 +563,6 @@ Item AkonadiCalendar::event( const Item::Id &id )
     return item;
   else
     return Item();
-}
-
-bool AkonadiCalendar::addTodo( const Todo::Ptr &todo )
-{
-  kDebug();
-  /*
-  d->mTodos.insert( uid, todo );
-  if ( todo->hasDueDate() ) {
-    mTodosForDate.insert( todo->dtDue().date().toString(), todo );
-  }
-  todo->registerObserver( this );
-  setupRelations( todo ); // Set up sub-to-do relations
-  setModified( true );
-  notifyIncidenceAdded( todo );
-  */
-  return d->addIncidence(todo);
 }
 
 bool AkonadiCalendar::deleteTodo( const Item &todo )
@@ -815,12 +765,6 @@ Item::List AkonadiCalendar::rawEvents( EventSortField sortField, SortDirection s
       eventList.append( i.value() );
   }
   return sortEvents( eventList, sortField, sortDirection );
-}
-
-bool AkonadiCalendar::addJournal( const Journal::Ptr &journal )
-{
-  kDebug();
-  return d->addIncidence(journal);
 }
 
 bool AkonadiCalendar::deleteJournal( const Item &journal )

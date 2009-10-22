@@ -341,25 +341,12 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
   // KCal::Incidence Specific Methods //
 
     /**
-      Inserts an KCal::Incidence into the calendar.
-
-      @param incidence is a pointer to the KCal::Incidence to insert.
-
-      @return true if the KCal::Incidence was successfully inserted; false otherwise.
-      @deprecated: 
-      @see deleteIncidence()
-    */
-    virtual bool addIncidence( const KCal::Incidence::Ptr &incidence );
-
-    /**
       Removes an KCal::Incidence from the calendar.
 
       @param incidence is a pointer to the KCal::Incidence to remove.
 
       @return true if the KCal::Incidence was successfully removed; false otherwise.
       @deprecated: 
-
-      @see addIncidence()
     */
     virtual bool deleteIncidence( const Akonadi::Item &incidence );
 
@@ -474,18 +461,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
                                                          bool single = true );
 
   // KCal::Event Specific Methods //
-
-    /**
-      Inserts an KCal::Event into the calendar.
-
-      @param event is a pointer to the KCal::Event to insert.
-      @deprecated: 
-
-      @return true if the KCal::Event was successfully inserted; false otherwise.
-
-      @see deleteEvent()
-    */
-    virtual bool addEvent( const KCal::Event::Ptr &event ) = 0;
 
     /**
       Removes an KCal::Event from the calendar.
@@ -656,17 +631,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
   // KCal::Todo Specific Methods //
 
-    /**
-      Inserts a KCal::Todo into the calendar.
-
-      @param todo is a pointer to the KCal::Todo to insert.
-
-      @return true if the KCal::Todo was successfully inserted; false otherwise.
-      @deprecated: 
-
-      @see deleteTodo()
-    */
-    virtual bool addTodo( const KCal::Todo::Ptr &todo ) = 0;
 
     /**
       Removes a KCal::Todo from the calendar.
@@ -676,7 +640,7 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
 
       @return true if the KCal::Todo was successfully removed; false otherwise.
 
-      @see addTodo(), deleteAllTodos()
+      @see deleteAllTodos()
     */
     virtual bool deleteTodo( const Akonadi::Item &todo ) = 0;
 
@@ -760,18 +724,6 @@ class AKONADI_KCAL_EXPORT CalendarBase : public QObject, public KCal::CustomProp
     virtual Akonadi::Item todo( const Akonadi::Item::Id &id ) = 0;
 
   // KCal::Journal Specific Methods //
-
-    /**
-      Inserts a KCal::Journal into the calendar.
-
-      @param journal is a pointer to the KCal::Journal to insert.
-      @deprecated: 
-
-      @return true if the KCal::Journal was successfully inserted; false otherwise.
-
-      @see deleteJournal()
-    */
-    virtual bool addJournal( const KCal::Journal::Ptr &journal ) = 0;
 
     /**
       Removes a KCal::Journal from the calendar.
