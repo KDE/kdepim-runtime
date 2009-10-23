@@ -129,15 +129,23 @@ public:
 
   QMultiHash<QString, Akonadi::Item> m_itemsForDate;// on start dates of non-recurring, single-day Incidences
 
+  void clear();
+  void readFromModel();
+
 public Q_SLOTS:  
   void listingDone( KJob *job );
   void agentCreated( KJob *job );
   void itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& );
-  void itemMoved( const Akonadi::Item &item, const Akonadi::Collection& colSrc, const Akonadi::Collection& colDst );
   void itemsAdded( const Akonadi::Item::List &items );
   void itemAdded( const Akonadi::Item &item );
   void itemsRemoved( const Akonadi::Item::List &items );
   void itemRemoved( const Akonadi::Item &item );
+
+  void rowsInserted( const QModelIndex& index, int start, int end );
+  void rowsAboutToBeRemoved( const QModelIndex& index, int start, int end );
+  void layoutChanged();
+  void modelReset();
+  void dataChanged( const QModelIndex& topLeft, const QModelIndex& bottomRight );
 };
 
 #endif

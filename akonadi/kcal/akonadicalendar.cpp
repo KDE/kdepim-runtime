@@ -44,6 +44,7 @@
 #include <akonadi/collectionview.h>
 #include <akonadi/collectionfilterproxymodel.h>
 #include <akonadi/collectionmodel.h>
+#include <akonadi/entitytreemodel.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemdeletejob.h>
@@ -64,15 +65,21 @@ AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *q
 {
   m_monitor->itemFetchScope().fetchFullPayload();
   m_monitor->itemFetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
-
+#if 0
   connect( m_monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray> )),
            this, SLOT(itemChanged(Akonadi::Item,QSet<QByteArray> )) );
-  connect( m_monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection )),
-           this, SLOT(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection ) ) );
   connect( m_monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection )),
            this, SLOT(itemAdded(Akonadi::Item )) );
   connect( m_monitor, SIGNAL(itemRemoved(Akonadi::Item )),
            this, SLOT(itemRemoved(Akonadi::Item )) );
+#endif
+  connect( m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)) );
+  connect( m_model, SIGNAL(layoutChanged()), this, SLOT(layoutChanged()) );
+  connect( m_model, SIGNAL(modelReset()), this, SLOT(modelReset()) );
+  connect( m_model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)) );
+  connect( m_model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(rowsAboutToBeRemoved(QModelIndex,int,int)) );
+
+  readFromModel();
   /*
   connect( m_monitor, SIGNAL(itemLinked(const Akonadi::Item,Akonadi::Collection)),
            this, SLOT(itemAdded(const Akonadi::Item,Akonadi::Collection)) );
@@ -80,6 +87,80 @@ AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *q
            this, SLOT(itemRemoved(Akonadi::Item,Akonadi::Collection )) );
   */
 }
+
+static Item itemFromIndex( const QModelIndex& idx ) {
+  return idx.data( EntityTreeModel::ItemRole ).value<Item>();
+}
+
+void AkonadiCalendar::Private::rowsInserted( const QModelIndex& parent, int start, int end ) {
+  Q_ASSERT( start <= end );
+  Item::List items;
+  for ( int i = start; i <= end; ++i ) {
+    const Item item = itemFromIndex( m_model->index( i, 0, parent ) );
+    if ( Akonadi::hasIncidence( item ) )
+      items << item;
+  }
+  itemsAdded( items );
+}
+
+void AkonadiCalendar::Private::rowsAboutToBeRemoved( const QModelIndex& parent, int start, int end ) {
+  Q_ASSERT( start <= end );
+  Item::List items;
+  for ( int i = start; i <= end; ++i ) {
+    const Item item = itemFromIndex( m_model->index( i, 0, parent ) );
+    if ( Akonadi::hasIncidence( item ) )
+      items << item;
+  }
+  itemsRemoved( items );
+}
+
+void AkonadiCalendar::Private::layoutChanged() {
+
+}
+
+void AkonadiCalendar::Private::modelReset() {
+  clear();
+  readFromModel();
+}
+
+void AkonadiCalendar::Private::clear() {
+  itemsRemoved( m_itemMap.values() );
+  Q_ASSERT( m_itemMap.isEmpty() );
+  m_childToParent.clear();
+  m_parentToChildren.clear();
+  m_childToUnseenParent.clear();
+  m_unseenParentToChildren.clear();
+  m_itemsForDate.clear();
+}
+
+void AkonadiCalendar::Private::readFromModel() {
+  Item::List items;
+  const int endRow = m_model->rowCount();
+  int row = 0;
+  QModelIndex i = m_model->index( 0, 0 );
+  while ( row <= endRow ) {
+    const Item item = itemFromIndex( i );
+    if ( Akonadi::hasIncidence( item ) )
+      items << item;
+    ++row;
+    i = i.sibling( row, 0 );
+
+  }
+  itemsAdded( items );
+}
+
+void AkonadiCalendar::Private::dataChanged( const QModelIndex& topLeft, const QModelIndex& bottomRight ) {
+  Q_ASSERT( topLeft.row() <= bottomRight.row() );
+  const int endRow = bottomRight.row();
+  QModelIndex i( topLeft );
+  int row = i.row();
+  while ( row <= endRow ) {
+    updateItem( itemFromIndex( i ), AssertExists );
+    ++row;
+    i = i.sibling( row, topLeft.column() );
+  }
+}
+
 
 AkonadiCalendar::Private::~Private()
 {
@@ -274,22 +355,11 @@ void AkonadiCalendar::Private::itemChanged( const Item& item, const QSet<QByteAr
   itemChanged( item );
 }
 
-void AkonadiCalendar::Private::itemMoved( const Item &item, const Collection& colSrc, const Collection& colDst )
-{
-    kDebug();
-    if( m_collectionMap.contains(colSrc.id()) && ! m_collectionMap.contains(colDst.id()) )
-        itemRemoved( item );
-    else if( m_collectionMap.contains(colDst.id()) && ! m_collectionMap.contains(colSrc.id()) )
-        itemAdded( item );
-}
-
 void AkonadiCalendar::Private::itemsAdded( const Item::List &items )
 {
-    kDebug();
+    kDebug() << "adding items: " << items.count();
     assertInvariants();
     foreach( const Item &item, items ) {
-        if ( !m_collectionMap.contains( item.parentCollection().id() ) )  // collection got deselected again in the meantime
-          continue;
         Q_ASSERT( item.isValid() );
         if ( !Akonadi::hasIncidence( item ) )
           continue;
