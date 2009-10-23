@@ -28,12 +28,13 @@ using namespace Akonadi;
 
 class DateRangeFilterProxyModel::Private {
   public:
-    explicit Private() : column( 0 ), startT( 0 ), endT( 0 ) {}
+    explicit Private() : column( 0 ), startT( 0 ), endT( 0 ), includeStartAndEnd( true ) {}
     int column;
     KDateTime start;
     KDateTime end;
     uint startT;
     uint endT;
+    bool includeStartAndEnd;
 };
 
 DateRangeFilterProxyModel::DateRangeFilterProxyModel( QObject* parent ) : QSortFilterProxyModel( parent ), d( new Private ) {
@@ -48,8 +49,11 @@ KDateTime DateRangeFilterProxyModel::startDate() const {
 }
 
 void DateRangeFilterProxyModel::setStartDate( const KDateTime& date ) {
+  if ( date == d->start )
+    return;
   d->start = date;
   d->startT = date.toTime_t();
+  invalidateFilter();
 }
 
 KDateTime DateRangeFilterProxyModel::endDate() const {
@@ -57,8 +61,11 @@ KDateTime DateRangeFilterProxyModel::endDate() const {
 }
 
 void DateRangeFilterProxyModel::setEndDate( const KDateTime& date ) {
+  if ( date == d->end )
+    return;
   d->end = date;
   d->endT = date.toTime_t();
+  invalidateFilter();
 }
   
 int DateRangeFilterProxyModel::dateColumn() const {
@@ -66,7 +73,10 @@ int DateRangeFilterProxyModel::dateColumn() const {
 }
 
 void DateRangeFilterProxyModel::setDateColumn( int column ) {
+  if ( column == d->column )
+    return;
   d->column = column;
+  invalidateFilter();
 }
 
 bool DateRangeFilterProxyModel::filterAcceptsRow( int source_row, const QModelIndex& source_parent ) const {
@@ -82,5 +92,16 @@ bool DateRangeFilterProxyModel::filterAcceptsRow( int source_row, const QModelIn
     return false;
   if ( d->end.isValid() && tt > d->endT )
     return false;
-  return true;
+  return d->includeStartAndEnd || ( d->startT != tt && d->endT != tt );
+}
+
+bool DateRangeFilterProxyModel::includeExactStartAndEndDates() const {
+  return d->includeStartAndEnd;
+}
+
+void DateRangeFilterProxyModel::setIncludeExactStartAndEndDates( bool include ) {
+  if ( include == d->includeStartAndEnd )
+    return;
+  d->includeStartAndEnd = include;
+  invalidateFilter();
 }

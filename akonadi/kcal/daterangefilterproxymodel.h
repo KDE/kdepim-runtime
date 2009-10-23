@@ -36,6 +36,9 @@ namespace Akonadi {
     KDateTime endDate() const;
     void setEndDate( const KDateTime& date );
     
+    bool includeExactStartAndEndDates() const;
+    void setIncludeExactStartAndEndDates( bool include );
+
     int dateColumn() const;
     void setDateColumn( int column );
     
