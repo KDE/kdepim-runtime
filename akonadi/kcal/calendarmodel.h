@@ -37,6 +37,11 @@ class AKONADI_KCAL_EXPORT CalendarModel : public EntityTreeModel
       ItemColumnCount
     };
 
+    enum CollectionColumn {
+      CollectionTitle=0,
+      CollectionColumnCount
+    };
+
     enum Role {
       SortRole=EntityTreeModel::UserRole
     };
@@ -46,8 +51,6 @@ class AKONADI_KCAL_EXPORT CalendarModel : public EntityTreeModel
 
 
     /* reimp */ QVariant entityData( const Akonadi::Item& item, int column, int role=Qt::DisplayRole ) const;
-
-    /* reimp */ QVariant entityData( const Akonadi::Collection& collection, int column, int role=Qt::DisplayRole ) const;
 
     /* reimp */ int entityColumnCount( EntityTreeModel::HeaderGroup headerSet ) const;
 
