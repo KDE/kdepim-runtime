@@ -49,8 +49,9 @@ class AKONADI_KCAL_EXPORT CalendarModel : public EntityTreeModel
     explicit CalendarModel( Akonadi::Session *session, Akonadi::ChangeRecorder* monitor, QObject *parent = 0 );
     ~CalendarModel();
 
-
     /* reimp */ QVariant entityData( const Akonadi::Item& item, int column, int role=Qt::DisplayRole ) const;
+
+    /* reimp */ QVariant entityData( const Akonadi::Collection &collection, int column, int role=Qt::DisplayRole ) const;
 
     /* reimp */ int entityColumnCount( EntityTreeModel::HeaderGroup headerSet ) const;
 

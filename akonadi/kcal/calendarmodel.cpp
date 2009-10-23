@@ -108,6 +108,10 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
   return QVariant();
 }
 
+QVariant CalendarModel::entityData( const Akonadi::Collection &collection, int column, int role ) const {
+  return EntityTreeModel::entityData( collection, column, role );
+}
+
 int CalendarModel::entityColumnCount( EntityTreeModel::HeaderGroup headerSet ) const {
   if ( headerSet == EntityTreeModel::ItemListHeaders )
     return ItemColumnCount;
