@@ -37,6 +37,10 @@ class AKONADI_KCAL_EXPORT CalendarModel : public EntityTreeModel
       ItemColumnCount
     };
 
+    enum Role {
+      SortRole=EntityTreeModel::UserRole
+    };
+
     explicit CalendarModel( Akonadi::Session *session, Akonadi::ChangeRecorder* monitor, QObject *parent = 0 );
     ~CalendarModel();
 

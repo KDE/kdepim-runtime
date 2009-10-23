@@ -87,6 +87,19 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
     default:
       break;
     }
+    case SortRole:
+    switch( column ) {
+    case Summary:
+      return incidence->summary();
+    case DateTimeStart:
+      return incidence->dtStart().toTime_t();
+    case DateTimeEnd:
+      return incidence->dtEnd().toTime_t();
+    case Type:
+      return incidence->type();
+    default:
+      break;
+    }
     return QVariant();
   default:
     return QVariant();
