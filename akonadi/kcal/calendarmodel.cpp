@@ -136,6 +136,14 @@ QVariant CalendarModel::entityHeaderData( int section, Qt::Orientation orientati
       return QVariant();
     }
   }
+  if ( headerSet == EntityTreeModel::CollectionTreeHeaders ) {
+    switch ( section ) {
+      case CollectionTitle:
+        return i18nc( "@title:column, calendar title", "Calendar" );
+      default:
+        return QVariant();
+    }
+  }
   return QVariant();
 }
 
