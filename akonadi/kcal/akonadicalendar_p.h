@@ -98,7 +98,7 @@ private:
   AkonadiCalendar* const q;
 
 public:
-  explicit Private( Akonadi::CalendarModel* model, AkonadiCalendar *q );
+  explicit Private( QAbstractItemModel* model, AkonadiCalendar *q );
   ~Private();
 
   bool deleteIncidence( const Akonadi::Item & );
@@ -114,7 +114,7 @@ public:
 
   void assertInvariants() const;
 
-  Akonadi::CalendarModel *m_model;
+  QAbstractItemModel *m_model;
   Akonadi::Monitor *m_monitor;
   Akonadi::Session *m_session;
   QHash<Akonadi::Entity::Id, AkonadiCalendarCollection*> m_collectionMap;

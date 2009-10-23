@@ -33,6 +33,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QMultiHash>
 #include <QtCore/QString>
+#include <QAbstractItemModel>
 
 #include <kdebug.h>
 #include <kdatetime.h>
@@ -55,7 +56,7 @@ using namespace Akonadi;
 using namespace KCal;
 using namespace KOrg;
 
-AkonadiCalendar::Private::Private( CalendarModel *model, AkonadiCalendar *q )
+AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *q )
   : q( q )
   , m_model( model )
   , m_monitor( new Akonadi::Monitor() )
@@ -354,7 +355,7 @@ void AkonadiCalendar::Private::itemRemoved( const Item &item )
 }
 
 
-AkonadiCalendar::AkonadiCalendar( CalendarModel *model, const KDateTime::Spec &timeSpec )
+AkonadiCalendar::AkonadiCalendar( QAbstractItemModel *model, const KDateTime::Spec &timeSpec )
   : KOrg::CalendarBase( timeSpec )
   , d( new AkonadiCalendar::Private( model, this ) )
 {
