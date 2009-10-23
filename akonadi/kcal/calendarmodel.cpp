@@ -82,6 +82,21 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
       return incidence->dtStart().toString();
     case DateTimeEnd:
       return incidence->dtEnd().toString();
+    case DateTimeDue:
+      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+        return todo->dtDue().toString();
+      else
+        return QVariant();
+    case Priority:
+      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+        return todo->priority();
+      else
+        return QVariant();
+    case PercentComplete:
+      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+        return todo->percentComplete();
+      else
+        return QVariant();
     case Type:
       return incidence->type();
     default:
@@ -95,6 +110,21 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
       return incidence->dtStart().toTime_t();
     case DateTimeEnd:
       return incidence->dtEnd().toTime_t();
+    case DateTimeDue:
+      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+        return todo->dtDue().toTime_t();
+      else
+        return QVariant();
+    case Priority:
+      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+        return todo->priority();
+      else
+        return QVariant();
+    case PercentComplete:
+      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+        return todo->percentComplete();
+      else
+        return QVariant();
     case Type:
       return incidence->type();
     default:

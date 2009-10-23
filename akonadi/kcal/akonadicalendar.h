@@ -27,6 +27,7 @@
 #include "calendarbase.h"
 
 namespace Akonadi {
+  class CalendarModel;
   class Collection;
   class Item;
 }
@@ -44,7 +45,7 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 {
     Q_OBJECT
   public:
-    explicit AkonadiCalendar( const KDateTime::Spec &timeSpec );
+    explicit AkonadiCalendar( Akonadi::CalendarModel *model, const KDateTime::Spec &timeSpec );
     ~AkonadiCalendar();
 
     bool hasCollection( const Akonadi::Collection &collection ) const;

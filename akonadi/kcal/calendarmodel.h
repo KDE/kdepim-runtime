@@ -31,16 +31,21 @@ class AKONADI_KCAL_EXPORT CalendarModel : public EntityTreeModel
   public:
     enum ItemColumn {
       Summary=0,
+      Type,
       DateTimeStart,
       DateTimeEnd,
-      Type,
+      DateTimeDue,
+      Priority,
+      PercentComplete,
       ItemColumnCount
     };
+
 
     enum CollectionColumn {
       CollectionTitle=0,
       CollectionColumnCount
     };
+
 
     enum Role {
       SortRole=EntityTreeModel::UserRole

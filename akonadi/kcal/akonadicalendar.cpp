@@ -22,7 +22,7 @@
 
 #include "akonadicalendar.h"
 #include "akonadicalendar_p.h"
-
+#include <akonadi/agentbase.h>
 #include <kcal/incidence.h>
 #include <kcal/event.h>
 #include <kcal/todo.h>
@@ -55,8 +55,9 @@ using namespace Akonadi;
 using namespace KCal;
 using namespace KOrg;
 
-AkonadiCalendar::Private::Private( AkonadiCalendar *q )
+AkonadiCalendar::Private::Private( CalendarModel *model, AkonadiCalendar *q )
   : q( q )
+  , m_model( model )
   , m_monitor( new Akonadi::Monitor() )
   , m_session( new Akonadi::Session( QCoreApplication::instance()->applicationName().toUtf8() + QByteArray("-AkonadiCal-") + QByteArray::number(qrand()) ) )
 {
@@ -353,9 +354,9 @@ void AkonadiCalendar::Private::itemRemoved( const Item &item )
 }
 
 
-AkonadiCalendar::AkonadiCalendar( const KDateTime::Spec &timeSpec )
+AkonadiCalendar::AkonadiCalendar( CalendarModel *model, const KDateTime::Spec &timeSpec )
   : KOrg::CalendarBase( timeSpec )
-  , d( new AkonadiCalendar::Private(this) )
+  , d( new AkonadiCalendar::Private( model, this ) )
 {
 }
 
