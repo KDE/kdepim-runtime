@@ -249,7 +249,7 @@ protected:
   /**
    * Reimplemented from PreprocessorBase in order to handle item processing.
    */
-  virtual ProcessingResult processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType );
+  virtual ProcessingResult processItem( const Akonadi::Item &item );
 
   /**
    * Reimplemented from AgentBase: launches the filtering console.

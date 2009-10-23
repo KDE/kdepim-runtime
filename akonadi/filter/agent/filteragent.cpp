@@ -135,25 +135,25 @@ void FilterAgent::slotAbortRequested()
     emit status( Idle, i18n( "Job queue empty" ) );
 }
 
-FilterAgent::ProcessingResult FilterAgent::processItem( Akonadi::Item::Id itemId, Akonadi::Collection::Id collectionId, const QString &mimeType )
+FilterAgent::ProcessingResult FilterAgent::processItem( const Akonadi::Item &item )
 {
   // find out the filter chain that we need to apply to this item
 
-  kDebug() << "filteragent: processItem(" << itemId << "," << collectionId << ",'" << mimeType << "')";
+  kDebug() << "filteragent: processItem(" << item.id() << "," << item.parentCollection().id() << ",'" << item.mimeType() << "')";
 
-  QList< FilterEngine * > * filterChain = mFilterChains.value( collectionId, 0 );
+  QList< FilterEngine * > * filterChain = mFilterChains.value( item.parentCollection().id(), 0 );
 
   if( !filterChain )
   {
-    kDebug() << "filteragent: no filter chain for collection" << collectionId;
+    kDebug() << "filteragent: no filter chain for collection" << item.parentCollection().id();
     return ProcessingRefused; // no chain for this collection
   }
 
   Q_ASSERT( filterChain->count() > 0 );
 
-  FilterJob * job = new FilterJob( FilterJob::ApplyFilterChainByCollection, itemId );
-  job->setCollectionId( collectionId );
-  job->setMimeType( mimeType );
+  FilterJob * job = new FilterJob( FilterJob::ApplyFilterChainByCollection, item.id() );
+  job->setCollectionId( item.parentCollection().id() );
+  job->setMimeType( item.mimeType() );
 
   mJobQueue.append( job );
 
