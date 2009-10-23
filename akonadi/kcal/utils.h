@@ -159,7 +159,7 @@ namespace Akonadi
   * @return The select collection or an invalid collection if
   * there was no collection selected.
   */
- AKONADI_KCAL_EXPORT Akonadi::Collection selectCollection( QWidget *parent = 0 );
+ AKONADI_KCAL_EXPORT Akonadi::Collection selectCollection( QWidget *parent );
 
 }
 

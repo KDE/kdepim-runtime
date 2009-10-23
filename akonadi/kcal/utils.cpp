@@ -40,6 +40,7 @@
 #include <QDrag>
 #include <QMimeData>
 #include <QPixmap>
+#include <QPointer>
 #include <QUrl>
 
 #include <boost/bind.hpp>\
@@ -247,13 +248,12 @@ QList<Todo::Ptr> Akonadi::todos( const QMimeData* mimeData, const KDateTime::Spe
 
 Akonadi::Collection Akonadi::selectCollection( QWidget *parent )
 {
-  Akonadi::CollectionDialog dlg( parent );
-  dlg.setMimeTypeFilter( QStringList() << QLatin1String( "text/calendar" ) );
-  if ( ! dlg.exec() ) {
-    return Akonadi::Collection();
-  }
-  const Akonadi::Collection collection = dlg.selectedCollection();
-  Q_ASSERT( collection.isValid() );
+  QPointer<CollectionDialog> dlg( new CollectionDialog( parent ) );
+  dlg->setMimeTypeFilter( QStringList() << QLatin1String( "text/calendar" ) );
+  Akonadi::Collection collection;
+  if ( dlg->exec() == QDialog::Accepted )
+    collection = dlg->selectedCollection();
+  delete dlg;
   return collection;
 }
     
