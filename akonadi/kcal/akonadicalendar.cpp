@@ -35,23 +35,15 @@
 #include <QtCore/QString>
 #include <QAbstractItemModel>
 
-#include <kdebug.h>
-#include <kdatetime.h>
-#include <klocale.h>
-#include <kmessagebox.h>
+#include <KDebug>
+#include <KDateTime>
+#include <KLocale>
+#include <KMessageBox>
 
-#include <akonadi/collection.h>
-#include <akonadi/collectionview.h>
-#include <akonadi/collectionfilterproxymodel.h>
-#include <akonadi/collectionmodel.h>
-#include <akonadi/entitytreemodel.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/agentinstancecreatejob.h>
-#include <akonadi/monitor.h>
-#include <akonadi/session.h>
+#include <Akonadi/Collection>
+#include <Akonadi/EntityTreeModel>
+#include <Akonadi/AgentManager>
+#include <Akonadi/AgentInstanceCreateJob>
 
 using namespace Akonadi;
 using namespace KCal;
@@ -60,19 +52,7 @@ using namespace KOrg;
 AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *q )
   : q( q )
   , m_model( model )
-  , m_monitor( new Akonadi::Monitor() )
-  , m_session( new Akonadi::Session( QCoreApplication::instance()->applicationName().toUtf8() + QByteArray("-AkonadiCal-") + QByteArray::number(qrand()) ) )
 {
-  m_monitor->itemFetchScope().fetchFullPayload();
-  m_monitor->itemFetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
-#if 0
-  connect( m_monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray> )),
-           this, SLOT(itemChanged(Akonadi::Item,QSet<QByteArray> )) );
-  connect( m_monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection )),
-           this, SLOT(itemAdded(Akonadi::Item )) );
-  connect( m_monitor, SIGNAL(itemRemoved(Akonadi::Item )),
-           this, SLOT(itemRemoved(Akonadi::Item )) );
-#endif
   connect( m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)) );
   connect( m_model, SIGNAL(layoutChanged()), this, SLOT(layoutChanged()) );
   connect( m_model, SIGNAL(modelReset()), this, SLOT(modelReset()) );
@@ -164,8 +144,6 @@ void AkonadiCalendar::Private::dataChanged( const QModelIndex& topLeft, const QM
 
 AkonadiCalendar::Private::~Private()
 {
-  delete m_monitor;
-  delete m_session;
 }
 
 
@@ -301,18 +279,6 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
   assertInvariants();
 }
 
-void AkonadiCalendar::Private::listingDone( KJob *job )
-{
-    kDebug();
-    ItemFetchJob *fetchjob = static_cast<ItemFetchJob*>( job );
-    if ( job->error() ) {
-        kWarning( 5250 ) << "Item query failed:" << job->errorString();
-        emit q->signalErrorMessage( job->errorString() );
-        return;
-    }
-    itemsAdded( fetchjob->items() );
-}
-
 void AkonadiCalendar::Private::agentCreated( KJob *job )
 {
     kDebug();
@@ -350,11 +316,6 @@ void AkonadiCalendar::Private::itemChanged( const Item& item )
   assertInvariants();
 }
 
-void AkonadiCalendar::Private::itemChanged( const Item& item, const QSet<QByteArray>& )
-{
-  itemChanged( item );
-}
-
 void AkonadiCalendar::Private::itemsAdded( const Item::List &items )
 {
     kDebug() << "adding items: " << items.count();
@@ -373,15 +334,6 @@ void AkonadiCalendar::Private::itemsAdded( const Item::List &items )
     q->setModified( true );
     emit q->calendarChanged();
     assertInvariants();
-}
-
-void AkonadiCalendar::Private::itemAdded( const Item &item )
-{
-    kDebug();
-    Q_ASSERT( item.isValid() );
-    if( ! m_itemMap.contains( item.id() ) ) {
-      itemsAdded( Item::List() << item );
-    }
 }
 
 void AkonadiCalendar::Private::itemsRemoved( const Item::List &items )
@@ -418,13 +370,6 @@ void AkonadiCalendar::Private::itemsRemoved( const Item::List &items )
     assertInvariants();
 }
 
-void AkonadiCalendar::Private::itemRemoved( const Item &item )
-{
-    kDebug();
-    itemsRemoved( Item::List() << item );
-}
-
-
 AkonadiCalendar::AkonadiCalendar( QAbstractItemModel *model, const KDateTime::Spec &timeSpec )
   : KOrg::CalendarBase( timeSpec )
   , d( new AkonadiCalendar::Private( model, this ) )
@@ -436,60 +381,11 @@ AkonadiCalendar::~AkonadiCalendar()
   delete d;
 }
 
-bool AkonadiCalendar::hasCollection( const Collection &collection ) const
-{
-  return d->m_collectionMap.contains( collection.id() );
-}
-
-void AkonadiCalendar::addCollection( const Collection &collection )
-{
-  kDebug();
-  Q_ASSERT( ! d->m_collectionMap.contains( collection.id() ) );
-  AkonadiCalendarCollection *c = new AkonadiCalendarCollection( this, collection );
-  d->m_collectionMap[ collection.id() ] = c; //TODO remove again if failed!
-
-  d->m_monitor->setCollectionMonitored( collection, true );
-
-  // start a new job and fetch all items
-  ItemFetchJob* job = new ItemFetchJob( collection, d->m_session );
-  job->setFetchScope( d->m_monitor->itemFetchScope() );
-  connect( job, SIGNAL(result(KJob*)), d, SLOT(listingDone(KJob*)) );
-}
-
-void AkonadiCalendar::removeCollection( const Collection &collection )
-{
-  kDebug();
-  d->assertInvariants();
-  if ( !d->m_collectionMap.contains( collection.id() ) )
-    return;
-  Q_ASSERT( d->m_collectionMap.contains( collection.id() ) );
-  d->m_monitor->setCollectionMonitored( collection, false );
-  AkonadiCalendarCollection *c = d->m_collectionMap.take( collection.id() );
-  delete c;
-
-  QHash<Item::Id, Item>::Iterator it( d->m_itemMap.begin() ), end( d->m_itemMap.end() );
-  while( it != end) {
-    if( it.value().storageCollectionId() == collection.id() ) {
-      Item i = *it;
-      it = d->m_itemMap.erase(it);
-      Q_ASSERT( i.hasPayload<Incidence::Ptr>() );
-      const Incidence::Ptr incidence = i.payload<Incidence::Ptr>();
-      Q_ASSERT( incidence.get() );
-    } else {
-      ++it;
-    }
-  }
-  d->assertInvariants();
-
-  emit calendarChanged();
-}
-
-
 bool AkonadiCalendar::addAgent( const KUrl &url )
 {
   kDebug()<< url;
   AgentType type = AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
-  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, d->m_session );
+  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
   job->setProperty("path", url.path());
   connect( job, SIGNAL( result( KJob * ) ), d, SLOT( agentCreated( KJob * ) ) );
   job->start();

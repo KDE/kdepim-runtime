@@ -48,8 +48,6 @@
 #include <akonadi/agentmanager.h>
 #include <akonadi/agenttype.h>
 #include <akonadi/agentinstancecreatejob.h>
-#include <akonadi/monitor.h>
-#include <akonadi/session.h>
 
 #include <KCal/Incidence>
 
@@ -115,9 +113,6 @@ public:
   void assertInvariants() const;
 
   QAbstractItemModel *m_model;
-  Akonadi::Monitor *m_monitor;
-  Akonadi::Session *m_session;
-  QHash<Akonadi::Entity::Id, AkonadiCalendarCollection*> m_collectionMap;
   QHash<Akonadi::Item::Id, Akonadi::Item> m_itemMap; // akonadi id to items
 
   QHash<Akonadi::Item::Id, Akonadi::Item::Id> m_childToParent; // child to parent map, for already cached parents
@@ -133,13 +128,9 @@ public:
   void readFromModel();
 
 public Q_SLOTS:  
-  void listingDone( KJob *job );
   void agentCreated( KJob *job );
-  void itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& );
   void itemsAdded( const Akonadi::Item::List &items );
-  void itemAdded( const Akonadi::Item &item );
   void itemsRemoved( const Akonadi::Item::List &items );
-  void itemRemoved( const Akonadi::Item &item );
 
   void rowsInserted( const QModelIndex& index, int start, int end );
   void rowsAboutToBeRemoved( const QModelIndex& index, int start, int end );

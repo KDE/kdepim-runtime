@@ -49,10 +49,6 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
     explicit AkonadiCalendar( QAbstractItemModel *model, const KDateTime::Spec &timeSpec );
     ~AkonadiCalendar();
 
-    bool hasCollection( const Akonadi::Collection &collection ) const;
-    void addCollection( const Akonadi::Collection &collection );
-    void removeCollection( const Akonadi::Collection &collection );
-
     bool addAgent( const KUrl &mUrl );
 
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
@@ -87,25 +83,6 @@ class AKONADI_KCAL_EXPORT AkonadiCalendar : public CalendarBase
 
   Q_SIGNALS:
     void signalErrorMessage( const QString& );
-    // Same signals Akonadi::Monitor provides to allow later to refactor code to
-    // use Collection+Monitor+etc direct rather then the AkonadiCalendar class.
-    /*
-    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
-    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemRemoved( const Akonadi::Item &item );
-    void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemUnlinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-    void collectionChanged( const Akonadi::Collection &collection );
-    void collectionRemoved( const Akonadi::Collection &collection );
-    void collectionStatisticsChanged( Akonadi::Collection::Id id, const Akonadi::CollectionStatistics &statistics );
-    void collectionMonitored( const Akonadi::Collection &collection, bool monitored );
-    void itemMonitored( const Akonadi::Item &item, bool monitored );
-    void resourceMonitored( const QByteArray &identifier, bool monitored );
-    void mimeTypeMonitored( const QString &mimeType, bool monitored );
-    void allMonitored( bool monitored );
-    */
 
   private:
     Q_DISABLE_COPY( AkonadiCalendar )
