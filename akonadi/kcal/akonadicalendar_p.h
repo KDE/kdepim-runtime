@@ -48,8 +48,12 @@
 #include <akonadi/agentmanager.h>
 #include <akonadi/agenttype.h>
 #include <akonadi/agentinstancecreatejob.h>
+#include <akonadi/monitor.h>
+#include <akonadi/session.h>
 
 #include <KCal/Incidence>
+#include <kcal/calfilter.h>
+#include <kcal/icaltimezones.h>
 
 #include <KLocalizedString>
 
@@ -111,6 +115,25 @@ public:
   void itemChanged( const Akonadi::Item& item );
 
   void assertInvariants() const;
+
+  //CalendarBase begin
+
+  KDateTime::Spec timeZoneIdSpec( const QString &timeZoneId, bool view );
+  QString mProductId;
+  Person mOwner;
+  ICalTimeZones *mTimeZones; // collection of time zones used in this calendar
+  ICalTimeZone mBuiltInTimeZone;   // cached time zone lookup
+  ICalTimeZone mBuiltInViewTimeZone;   // cached viewing time zone lookup
+  KDateTime::Spec mTimeSpec;
+  mutable KDateTime::Spec mViewTimeSpec;
+  bool mModified;
+  bool mNewObserver;
+  bool mObserversEnabled;
+  QList<CalendarObserver*> mObservers;
+
+  CalFilter *mDefaultFilter;
+  CalFilter *mFilter;
+  //CalendarBase end
 
   QAbstractItemModel *m_model;
   QHash<Akonadi::Item::Id, Akonadi::Item> m_itemMap; // akonadi id to items
