@@ -765,6 +765,10 @@ public:
     explicit AkonadiCalendar( QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject* parent=0 );
     ~AkonadiCalendar();
 
+    QAbstractItemModel* model() const;
+
+    QAbstractItemModel* unfilteredModel() const;
+
     bool addAgent( const KUrl &mUrl );
 
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );

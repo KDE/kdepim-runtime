@@ -33,12 +33,15 @@
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionDialog>
+#include <akonadi/entitytreemodel.h>
 
 #include <KIconLoader>
 #include <KUrl>
 
+#include <QAbstractItemModel>
 #include <QDrag>
 #include <QMimeData>
+#include <QModelIndex>
 #include <QPixmap>
 #include <QPointer>
 #include <QUrl>
@@ -256,4 +259,22 @@ Akonadi::Collection Akonadi::selectCollection( QWidget *parent )
   delete dlg;
   return collection;
 }
-    
+
+Item Akonadi::itemFromIndex( const QModelIndex& idx ) {
+  return idx.data( EntityTreeModel::ItemRole ).value<Item>();
+}
+
+Item::List Akonadi::itemsFromModel( QAbstractItemModel* model, int start, int end ) {
+  const int endRow = end >= 0 ? end : model->rowCount() - 1;
+  Item::List items;
+  int row = start;
+  QModelIndex i = model->index( row, 0 );
+  while ( row <= endRow ) {
+    const Item item = itemFromIndex( i );
+    if ( Akonadi::hasIncidence( item ) )
+      items << item;
+    ++row;
+    i = i.sibling( row, 0 );
+  }
+  return items;
+}

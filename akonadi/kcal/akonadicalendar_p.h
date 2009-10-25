@@ -25,6 +25,7 @@
 #define AKONADICALENDAR_P_H
 
 #include "akonadicalendar.h"
+#include "calfilterproxymodel.h"
 #include "utils.h"
 
 #include <QObject>
@@ -132,10 +133,10 @@ public:
   QList<CalendarObserver*> mObservers;
 
   CalFilter *mDefaultFilter;
-  CalFilter *mFilter;
   //CalendarBase end
 
   QAbstractItemModel *m_model;
+  Akonadi::CalFilterProxyModel* m_filterProxy;
   QHash<Akonadi::Item::Id, Akonadi::Item> m_itemMap; // akonadi id to items
 
   QHash<Akonadi::Item::Id, Akonadi::Item::Id> m_childToParent; // child to parent map, for already cached parents

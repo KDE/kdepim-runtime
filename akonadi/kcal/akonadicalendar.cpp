@@ -49,8 +49,8 @@ using namespace Akonadi;
 using namespace KCal;
 using namespace KOrg;
 
-AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *q )
-  : q( q ),
+AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *qq )
+  : q( qq ),
     mTimeZones( new ICalTimeZones ),
     mModified( false ),
     mNewObserver( false ),
@@ -59,8 +59,11 @@ AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *q
     m_model( model )
 {
   // Setup default filter, which does nothing
-  mFilter = mDefaultFilter;
-  mFilter->setEnabled( false );
+  mDefaultFilter->setEnabled( false );
+  m_filterProxy = new CalFilterProxyModel( q );
+  m_filterProxy->setSourceModel( m_model );
+  m_filterProxy->setFilter( mDefaultFilter );
+
 
   // user information...
   mOwner.setName( i18n( "Unknown Name" ) );
@@ -72,7 +75,6 @@ AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *q
   connect( m_model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)) );
   connect( m_model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(rowsAboutToBeRemoved(QModelIndex,int,int)) );
 
-  readFromModel();
   /*
   connect( m_monitor, SIGNAL(itemLinked(const Akonadi::Item,Akonadi::Collection)),
            this, SLOT(itemAdded(const Akonadi::Item,Akonadi::Collection)) );
@@ -81,30 +83,13 @@ AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *q
   */
 }
 
-static Item itemFromIndex( const QModelIndex& idx ) {
-  return idx.data( EntityTreeModel::ItemRole ).value<Item>();
+
+void AkonadiCalendar::Private::rowsInserted( const QModelIndex&, int start, int end ) {
+  itemsAdded( itemsFromModel( m_model, start, end ) );
 }
 
-void AkonadiCalendar::Private::rowsInserted( const QModelIndex& parent, int start, int end ) {
-  Q_ASSERT( start <= end );
-  Item::List items;
-  for ( int i = start; i <= end; ++i ) {
-    const Item item = itemFromIndex( m_model->index( i, 0, parent ) );
-    if ( Akonadi::hasIncidence( item ) )
-      items << item;
-  }
-  itemsAdded( items );
-}
-
-void AkonadiCalendar::Private::rowsAboutToBeRemoved( const QModelIndex& parent, int start, int end ) {
-  Q_ASSERT( start <= end );
-  Item::List items;
-  for ( int i = start; i <= end; ++i ) {
-    const Item item = itemFromIndex( m_model->index( i, 0, parent ) );
-    if ( Akonadi::hasIncidence( item ) )
-      items << item;
-  }
-  itemsRemoved( items );
+void AkonadiCalendar::Private::rowsAboutToBeRemoved( const QModelIndex&, int start, int end ) {
+  itemsRemoved( itemsFromModel( m_model, start, end ) );
 }
 
 void AkonadiCalendar::Private::layoutChanged() {
@@ -127,19 +112,7 @@ void AkonadiCalendar::Private::clear() {
 }
 
 void AkonadiCalendar::Private::readFromModel() {
-  Item::List items;
-  const int endRow = m_model->rowCount();
-  int row = 0;
-  QModelIndex i = m_model->index( 0, 0 );
-  while ( row <= endRow ) {
-    const Item item = itemFromIndex( i );
-    if ( Akonadi::hasIncidence( item ) )
-      items << item;
-    ++row;
-    i = i.sibling( row, 0 );
-
-  }
-  itemsAdded( items );
+  itemsAdded( itemsFromModel( m_model ) );
 }
 
 void AkonadiCalendar::Private::dataChanged( const QModelIndex& topLeft, const QModelIndex& bottomRight ) {
@@ -391,11 +364,20 @@ AkonadiCalendar::AkonadiCalendar( QAbstractItemModel *model, const KDateTime::Sp
 {
   d->mTimeSpec = timeSpec;
   d->mViewTimeSpec = timeSpec;
+  d->readFromModel();
 }
 
 AkonadiCalendar::~AkonadiCalendar()
 {
   delete d;
+}
+
+QAbstractItemModel* AkonadiCalendar::model() const {
+  return d->m_filterProxy;
+}
+
+QAbstractItemModel* AkonadiCalendar::unfilteredModel() const {
+  return d->m_model;
 }
 
 bool AkonadiCalendar::addAgent( const KUrl &url )
@@ -794,16 +776,12 @@ void AkonadiCalendar::shiftTimes( const KDateTime::Spec &oldSpec,
 
 void AkonadiCalendar::setFilter( CalFilter *filter )
 {
-  if ( filter ) {
-    d->mFilter = filter;
-  } else {
-    d->mFilter = d->mDefaultFilter;
-  }
+  d->m_filterProxy->setFilter( filter ? filter : d->mDefaultFilter );
 }
 
 CalFilter *AkonadiCalendar::filter()
 {
-  return d->mFilter;
+  return d->m_filterProxy->filter();
 }
 
 QStringList AkonadiCalendar::categories()
@@ -955,14 +933,14 @@ Item::List AkonadiCalendar::events( const QDate &date,
                               SortDirection sortDirection )
 {
   const Item::List el = rawEventsForDate( date, timeSpec, sortField, sortDirection );
-  return Akonadi::applyCalFilter( el, d->mFilter );
+  return Akonadi::applyCalFilter( el, filter() );
 }
 
 
 Item::List AkonadiCalendar::events( const KDateTime &dt )
 {
   const Item::List el = rawEventsForDate( dt );
-  return Akonadi::applyCalFilter( el, d->mFilter );
+  return Akonadi::applyCalFilter( el, filter() );
 }
 
 
@@ -971,14 +949,14 @@ Item::List AkonadiCalendar::events( const QDate &start, const QDate &end,
                               bool inclusive )
 {
   const Item::List el = rawEvents( start, end, timeSpec, inclusive );
-  return Akonadi::applyCalFilter( el, d->mFilter );
+  return Akonadi::applyCalFilter( el, filter() );
 }
 
 Item::List AkonadiCalendar::events( EventSortField sortField,
                               SortDirection sortDirection )
 {
   const Item::List el = rawEvents( sortField, sortDirection );
-  return Akonadi::applyCalFilter( el, d->mFilter );
+  return Akonadi::applyCalFilter( el, filter() );
 }
 
 Incidence::Ptr AkonadiCalendar::dissociateOccurrence( const Item &incidence,
@@ -1257,13 +1235,13 @@ Item::List AkonadiCalendar::todos( TodoSortField sortField,
                             SortDirection sortDirection )
 {
   const Item::List tl = rawTodos( sortField, sortDirection );
-  return Akonadi::applyCalFilter( tl, d->mFilter );
+  return Akonadi::applyCalFilter( tl, filter() );
 }
 
 Item::List AkonadiCalendar::todos( const QDate &date )
 {
   Item::List el = rawTodosForDate( date );
-  return Akonadi::applyCalFilter( el, d->mFilter );
+  return Akonadi::applyCalFilter( el, filter() );
 }
 
 Item::List AkonadiCalendar::sortJournals( const Item::List &journalList_,
@@ -1326,13 +1304,13 @@ Item::List AkonadiCalendar::journals( JournalSortField sortField,
                                   SortDirection sortDirection )
 {
   const Item::List jl = rawJournals( sortField, sortDirection );
-  return Akonadi::applyCalFilter( jl, d->mFilter );
+  return Akonadi::applyCalFilter( jl, filter() );
 }
 
 Item::List AkonadiCalendar::journals( const QDate &date )
 {
   Item::List el = rawJournalsForDate( date );
-  return Akonadi::applyCalFilter( el, d->mFilter );
+  return Akonadi::applyCalFilter( el, filter() );
 }
 
 void AkonadiCalendar::beginBatchAdding()

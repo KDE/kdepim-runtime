@@ -41,12 +41,13 @@ namespace KCal {
 
 class KUrl;
 
+class QAbstractItemModel;
 class QDrag;
 class QMimeData;
+class QModelIndex;
 
 namespace Akonadi
 {
-
   /**
    * returns the incidence from an akonadi item, or a null pointer if the item has no such payload
    */
@@ -93,56 +94,56 @@ namespace Akonadi
    */
   AKONADI_KCAL_EXPORT bool hasJournal( const Akonadi::Item &item );
 
- /**
+  /**
   * returns @p true iff the URL represents an Akonadi item and has one of the given mimetypes.
   */
- AKONADI_KCAL_EXPORT bool isValidIncidenceItemUrl( const KUrl &url, const QStringList &supportedMimeTypes );
+  AKONADI_KCAL_EXPORT bool isValidIncidenceItemUrl( const KUrl &url, const QStringList &supportedMimeTypes );
 
- AKONADI_KCAL_EXPORT bool isValidIncidenceItemUrl( const KUrl &url );
+  AKONADI_KCAL_EXPORT bool isValidIncidenceItemUrl( const KUrl &url );
 
- /**
+  /**
   * returns @p true iff the mime data object contains any of the following:
   *
   * * An akonadi item with a supported KCal mimetype
   * * an iCalendar
   * * a VCard
   */
- AKONADI_KCAL_EXPORT bool canDecode( const QMimeData* mimeData );
+  AKONADI_KCAL_EXPORT bool canDecode( const QMimeData* mimeData );
 
- AKONADI_KCAL_EXPORT QList<KUrl> incidenceItemUrls( const QMimeData* mimeData );
+  AKONADI_KCAL_EXPORT QList<KUrl> incidenceItemUrls( const QMimeData* mimeData );
 
- AKONADI_KCAL_EXPORT QList<KUrl> todoItemUrls( const QMimeData* mimeData );
+  AKONADI_KCAL_EXPORT QList<KUrl> todoItemUrls( const QMimeData* mimeData );
 
- AKONADI_KCAL_EXPORT bool mimeDataHasTodo( const QMimeData* mimeData );
+  AKONADI_KCAL_EXPORT bool mimeDataHasTodo( const QMimeData* mimeData );
 
- AKONADI_KCAL_EXPORT QList<KCal::Todo::Ptr> todos( const QMimeData* mimeData, const KDateTime::Spec &timeSpec );
+  AKONADI_KCAL_EXPORT QList<KCal::Todo::Ptr> todos( const QMimeData* mimeData, const KDateTime::Spec &timeSpec );
 
- /**
+  /**
   * returns @p true iff the URL represents an Akonadi item and has one of the given mimetypes.
   */
- AKONADI_KCAL_EXPORT bool isValidTodoItemUrl( const KUrl &url );
+  AKONADI_KCAL_EXPORT bool isValidTodoItemUrl( const KUrl &url );
 
- /**
+  /**
   * creates mime data object for dragging an akonadi item containing an incidence
   */
- AKONADI_KCAL_EXPORT QMimeData* createMimeData( const Akonadi::Item &item, const KDateTime::Spec &timeSpec );
+  AKONADI_KCAL_EXPORT QMimeData* createMimeData( const Akonadi::Item &item, const KDateTime::Spec &timeSpec );
 
- /**
+  /**
   * creates mime data object for dragging akonadi items containing an incidence
   */
- AKONADI_KCAL_EXPORT QMimeData* createMimeData( const Akonadi::Item::List &items, const KDateTime::Spec &timeSpec );
+  AKONADI_KCAL_EXPORT QMimeData* createMimeData( const Akonadi::Item::List &items, const KDateTime::Spec &timeSpec );
 
- /**
+  /**
   * creates a drag object for dragging an akonadi item containing an incidence
   */
- AKONADI_KCAL_EXPORT QDrag* createDrag( const Akonadi::Item &item, const KDateTime::Spec &timeSpec, QWidget* parent );
+  AKONADI_KCAL_EXPORT QDrag* createDrag( const Akonadi::Item &item, const KDateTime::Spec &timeSpec, QWidget* parent );
 
- /**
+  /**
   * creates a drag object for dragging akonadi items containing an incidence
   */
- AKONADI_KCAL_EXPORT QDrag* createDrag( const Akonadi::Item::List &items, const KDateTime::Spec &timeSpec, QWidget* parent );
+  AKONADI_KCAL_EXPORT QDrag* createDrag( const Akonadi::Item::List &items, const KDateTime::Spec &timeSpec, QWidget* parent );
 
- /**
+  /**
   * applies a filter to a list of items containing incidences. Items not containing incidences or not matching the filter are removed.
   * Helper method anologous to KCal::CalFilter::apply()
   * @see KCal::CalFilter::apply()
@@ -150,17 +151,20 @@ namespace Akonadi
   * @param filter the filter to apply to the list of items
   * @return the filtered list of items
   */
- AKONADI_KCAL_EXPORT Akonadi::Item::List applyCalFilter( const Akonadi::Item::List &items, const KCal::CalFilter* filter );
+  AKONADI_KCAL_EXPORT Akonadi::Item::List applyCalFilter( const Akonadi::Item::List &items, const KCal::CalFilter* filter );
 
- /**
+  /**
   * Shows a modal dialog that allows to select a collection.
   *
   * @param parent The optional parent of the modal dialog.
   * @return The select collection or an invalid collection if
   * there was no collection selected.
   */
- AKONADI_KCAL_EXPORT Akonadi::Collection selectCollection( QWidget *parent );
+  AKONADI_KCAL_EXPORT Akonadi::Collection selectCollection( QWidget *parent );
 
+  AKONADI_KCAL_EXPORT Akonadi::Item itemFromIndex( const QModelIndex &index );
+
+  AKONADI_KCAL_EXPORT Akonadi::Item::List itemsFromModel( QAbstractItemModel* model, int start=0, int end=-1 );
 }
 
 #endif
