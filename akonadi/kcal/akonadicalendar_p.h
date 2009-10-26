@@ -152,7 +152,6 @@ public:
   void readFromModel();
 
 public Q_SLOTS:  
-  void agentCreated( KJob *job );
   void itemsAdded( const Akonadi::Item::List &items );
   void itemsRemoved( const Akonadi::Item::List &items );
 

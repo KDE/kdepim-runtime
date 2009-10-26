@@ -733,8 +733,6 @@ public:
 
     QAbstractItemModel* unfilteredModel() const;
 
-    bool addAgent( const KUrl &mUrl );
-
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
 
     Akonadi::Item ::List rawEvents( EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );

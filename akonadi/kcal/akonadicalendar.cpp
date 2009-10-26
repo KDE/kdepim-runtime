@@ -42,8 +42,6 @@
 
 #include <Akonadi/Collection>
 #include <Akonadi/EntityTreeModel>
-#include <Akonadi/AgentManager>
-#include <Akonadi/AgentInstanceCreateJob>
 
 using namespace Akonadi;
 using namespace KCal;
@@ -266,29 +264,6 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
   assertInvariants();
 }
 
-void AkonadiCalendar::Private::agentCreated( KJob *job )
-{
-    kDebug();
-    AgentInstanceCreateJob *createjob = dynamic_cast<AgentInstanceCreateJob*>( job );
-    if ( createjob->error() ) {
-        kWarning( 5250 ) << "Agent create failed:" << createjob->errorString();
-        emit q->signalErrorMessage( createjob->errorString() );
-        return;
-    }
-    AgentInstance instance = createjob->instance();
-    //instance.setName( CalendarName );
-    QDBusInterface iface( QString::fromLatin1("org.freedesktop.Akonadi.Resource.%1").arg( instance.identifier() ), QLatin1String("/Settings") );
-    if( ! iface.isValid() ) {
-        kWarning( 5250 ) << "Failed to obtain D-Bus interface for remote configuration.";
-        emit q->signalErrorMessage( i18n("Failed to obtain D-Bus interface for remote configuration.") );
-        return;
-    }
-    QString path = createjob->property( "path" ).toString();
-    Q_ASSERT( ! path.isEmpty() );
-    iface.call(QLatin1String("setPath"), path);
-    instance.reconfigure();
-}
-
 void AkonadiCalendar::Private::itemChanged( const Item& item )
 {
   assertInvariants();
@@ -374,17 +349,6 @@ QAbstractItemModel* AkonadiCalendar::model() const {
 
 QAbstractItemModel* AkonadiCalendar::unfilteredModel() const {
   return d->m_model;
-}
-
-bool AkonadiCalendar::addAgent( const KUrl &url )
-{
-  kDebug()<< url;
-  AgentType type = AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
-  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-  job->setProperty("path", url.path());
-  connect( job, SIGNAL( result( KJob * ) ), d, SLOT( agentCreated( KJob * ) ) );
-  job->start();
-  return true;
 }
 
 // This method will be called probably multiple times if a series of changes where done. One finished the endChange() method got called.
