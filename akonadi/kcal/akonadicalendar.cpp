@@ -777,9 +777,9 @@ CalFilter *AkonadiCalendar::filter()
   return d->m_filterProxy->filter();
 }
 
-QStringList AkonadiCalendar::categories()
+QStringList AkonadiCalendar::categories( AkonadiCalendar* cal )
 {
-  Item::List rawInc( rawIncidences() );
+  Item::List rawInc( cal->rawIncidences() );
   QStringList cats, thisCats;
   // @TODO: For now just iterate over all incidences. In the future,
   // the list of categories should be built when reading the file.
@@ -802,12 +802,12 @@ Item::List AkonadiCalendar::incidences( const QDate &date )
 
 Item::List AkonadiCalendar::incidences()
 {
-  return mergeIncidenceList( events(), todos(), journals() );
+  return itemsFromModel( d->m_filterProxy );
 }
 
 Item::List AkonadiCalendar::rawIncidences()
 {
-  return mergeIncidenceList( rawEvents(), rawTodos(), rawJournals() );
+  return itemsFromModel( d->m_model );
 }
 
 Item::List AkonadiCalendar::sortEvents( const Item::List &eventList_,

@@ -250,11 +250,12 @@ public:
   void shiftTimes( const KDateTime::Spec &oldSpec, const KDateTime::Spec &newSpec );
 
   /**
-    Returns a list of all categories used by KCal::Incidences in this Calendar.
+    Returns a list of all categories used by KCal::Incidences in the calendar @p cal.
 
+    @param cal the calendar to return incidences from
     @return a QStringList containing all the categories.
   */
-  QStringList categories();
+  static QStringList categories( AkonadiCalendar* cal );
 
 // KCal::Incidence Specific Methods //
 
@@ -264,7 +265,7 @@ public:
 
     @return the list of all filtered KCal::Incidences.
   */
-  virtual Akonadi::Item::List incidences();
+  Akonadi::Item::List incidences();
 
   /**
     Returns a filtered list of all KCal::Incidences which occur on the given date.
@@ -275,7 +276,7 @@ public:
     @return the list of filtered KCal::Incidences occurring on the specified date.
   */
 
-  virtual Akonadi::Item::List incidences( const QDate& date );
+  Akonadi::Item::List incidences( const QDate& date );
 
   /**
     Returns an unfiltered list of all KCal::Incidences for this Calendar.
@@ -283,7 +284,7 @@ public:
 
     @return the list of all unfiltered KCal::Incidences.
   */
-  virtual Akonadi::Item::List rawIncidences();
+  Akonadi::Item::List rawIncidences();
 
   /**
     Returns the KCal::Incidence associated with the given unique identifier.
