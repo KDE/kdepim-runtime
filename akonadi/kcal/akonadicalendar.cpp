@@ -260,6 +260,8 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
   if ( !alreadyExisted ) {
     incidence->registerObserver( q );
     q->notifyIncidenceAdded( item );
+  } else {
+    q->notifyIncidenceChanged( item );
   }
   assertInvariants();
 }
@@ -272,7 +274,6 @@ void AkonadiCalendar::Private::itemChanged( const Item& item )
   if ( !incidence )
     return;
   updateItem( item, AssertExists );
-  q->notifyIncidenceChanged( item );
   emit q->calendarChanged();
   assertInvariants();
 }
