@@ -278,3 +278,18 @@ Item::List Akonadi::itemsFromModel( QAbstractItemModel* model, int start, int en
   }
   return items;
 }
+
+Collection Akonadi::collectionFromIndex( const QModelIndex &index ) {
+  return index.data( Akonadi::EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
+}
+
+Collection::Id Akonadi::collectionIdFromIndex( const QModelIndex &index ) {
+  return index.data( Akonadi::EntityTreeModel::CollectionIdRole ).value<Akonadi::Collection::Id>();
+}
+
+Collection::List Akonadi::collectionsFromIndexes( const QModelIndexList &indexes ) {
+  Collection::List l;
+  Q_FOREACH( const QModelIndex &idx, indexes )
+      l.push_back( collectionFromIndex( idx ) );
+  return l;
+}

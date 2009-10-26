@@ -4,6 +4,7 @@
     Copyright (c) 2009 KDAB
     Authors: Sebastian Sauer <sebsauer@kdab.net>
              Till Adam <till@kdab.net>
+             Frank Osterfeld <frank@kdab.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

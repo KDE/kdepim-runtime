@@ -26,6 +26,7 @@
 
 #include "akonadi-kcal_export.h"
 
+#include <Akonadi/Collection>
 #include <Akonadi/Item>
 
 #include <KCal/Event>
@@ -45,6 +46,7 @@ class QAbstractItemModel;
 class QDrag;
 class QMimeData;
 class QModelIndex;
+typedef QList<QModelIndex> QModelIndexList;
 
 namespace Akonadi
 {
@@ -165,6 +167,12 @@ namespace Akonadi
   AKONADI_KCAL_EXPORT Akonadi::Item itemFromIndex( const QModelIndex &index );
 
   AKONADI_KCAL_EXPORT Akonadi::Item::List itemsFromModel( QAbstractItemModel* model, int start=0, int end=-1 );
+
+  AKONADI_KCAL_EXPORT Collection collectionFromIndex( const QModelIndex &index );
+
+  AKONADI_KCAL_EXPORT Collection::Id collectionIdFromIndex( const QModelIndex &index );
+
+  AKONADI_KCAL_EXPORT Collection::List collectionsFromIndexes( const QModelIndexList &indexes );
 }
 
 #endif
