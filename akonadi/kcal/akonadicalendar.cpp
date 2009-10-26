@@ -305,6 +305,7 @@ void AkonadiCalendar::Private::itemsRemoved( const Item::List &items )
     foreach(const Item& item, items) {
         Q_ASSERT( item.isValid() );
         Item ci( m_itemMap.take( item.id() ) );
+        kDebug()<<item.id();
         Q_ASSERT( ci.hasPayload<Incidence::Ptr>() );
         const Incidence::Ptr incidence = ci.payload<Incidence::Ptr>();
         kDebug() << "Remove uid=" << incidence->uid() << "summary=" << incidence->summary() << "type=" << incidence->type();
