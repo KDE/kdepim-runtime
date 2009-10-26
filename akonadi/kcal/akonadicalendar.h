@@ -250,32 +250,6 @@ public:
   void shiftTimes( const KDateTime::Spec &oldSpec, const KDateTime::Spec &newSpec );
 
   /**
-    Sets if the calendar has been modified.
-
-    @param modified is true if the calendar has been modified since open
-    or last save.
-
-    @see isModified()
-  */
-  void setModified( bool modified );
-
-  /**
-    Determine the calendar's modification status.
-
-    @return true if the calendar has been modified since open or last save.
-
-    @see setModified()
-  */
-  bool isModified() const;
-
-  /**
-    Determine if the calendar is currently being saved.
-
-    @return true if the calendar is currently being saved; false otherwise.
-  */
-  virtual bool isSaving();
-
-  /**
     Returns a list of all categories used by KCal::Incidences in this Calendar.
 
     @return a QStringList containing all the categories.
@@ -595,17 +569,6 @@ public:
         Destructor.
       */
       virtual ~CalendarObserver() {}
-
-      /**
-        Notify the Observer that a Calendar has been modified.
-
-        @param modified set if the calendar has been modified.
-        @param calendar is a pointer to the Calendar object that
-        is being observed.
-        @deprecated:
-
-      */
-      virtual void calendarModified( bool modified, AkonadiCalendar *calendar );
 
       /**
         Notify the Observer that an KCal::Incidence has been inserted.

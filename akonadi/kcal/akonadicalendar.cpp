@@ -52,7 +52,6 @@ using namespace KOrg;
 AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *qq )
   : q( qq ),
     mTimeZones( new ICalTimeZones ),
-    mModified( false ),
     mNewObserver( false ),
     mObserversEnabled( true ),
     mDefaultFilter( new CalFilter ),
@@ -299,7 +298,6 @@ void AkonadiCalendar::Private::itemChanged( const Item& item )
     return;
   updateItem( item, AssertExists );
   q->notifyIncidenceChanged( item );
-  q->setModified( true );
   emit q->calendarChanged();
   assertInvariants();
 }
@@ -319,7 +317,6 @@ void AkonadiCalendar::Private::itemsAdded( const Item::List &items )
         incidence->registerObserver( q );
         q->notifyIncidenceAdded( item );
     }
-    q->setModified( true );
     emit q->calendarChanged();
     assertInvariants();
 }
@@ -353,7 +350,6 @@ void AkonadiCalendar::Private::itemsRemoved( const Item::List &items )
         //incidence->unregisterObserver( q );
         q->notifyIncidenceDeleted( item );
     }
-    q->setModified( true );
     emit q->calendarChanged();
     assertInvariants();
 }
@@ -403,7 +399,6 @@ void AkonadiCalendar::incidenceUpdated( IncidenceBase *incidence )
 #ifdef AKONADI_PORT_DISABLED
   notifyIncidenceChanged( static_cast<Incidence *>( incidence ) );
 #endif
-  setModified( true );
 }
 
 Item AkonadiCalendar::event( const Item::Id &id )
@@ -666,8 +661,6 @@ Person AkonadiCalendar::owner() const
 void AkonadiCalendar::setOwner( const Person &owner )
 {
   d->mOwner = owner;
-
-  setModified( true );
 }
 
 void AkonadiCalendar::setTimeSpec( const KDateTime::Spec &timeSpec )
@@ -1444,11 +1437,6 @@ void AkonadiCalendar::removeRelations( const Item &incidence )
 }
 #endif // AKONADI_PORT_DISABLED
 
-void AkonadiCalendar::CalendarObserver::calendarModified( bool modified, AkonadiCalendar *calendar )
-{
-  Q_UNUSED( modified );
-  Q_UNUSED( calendar );
-}
 
 void AkonadiCalendar::CalendarObserver::calendarIncidenceAdded( const Item &incidence )
 {
@@ -1478,26 +1466,6 @@ void AkonadiCalendar::unregisterObserver( CalendarObserver *observer )
   d->mObservers.removeAll( observer );
 }
 
-bool AkonadiCalendar::isSaving()
-{
-  return false;
-}
-
-void AkonadiCalendar::setModified( bool modified )
-{
-  if ( modified != d->mModified || d->mNewObserver ) {
-    d->mNewObserver = false;
-    foreach ( CalendarObserver *observer, d->mObservers ) {
-      observer->calendarModified( modified, this );
-    }
-    d->mModified = modified;
-  }
-}
-
-bool AkonadiCalendar::isModified() const
-{
-  return d->mModified;
-}
 
 void AkonadiCalendar::doSetTimeSpec( const KDateTime::Spec &timeSpec )
 {
@@ -1541,7 +1509,6 @@ void AkonadiCalendar::notifyIncidenceDeleted( const Item &i )
 
 void AkonadiCalendar::customPropertyUpdated()
 {
-  setModified( true );
 }
 
 void AkonadiCalendar::setProductId( const QString &id )
