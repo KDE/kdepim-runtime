@@ -141,6 +141,7 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
   const bool alreadyExisted = m_itemMap.contains( item.id() );
   const Item::Id id = item.id();
 
+  kDebug()<<item.id()<<alreadyExisted;
   Q_ASSERT( mode == DontCare || alreadyExisted == ( mode == AssertExists ) );
 
   if ( alreadyExisted ) {
