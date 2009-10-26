@@ -43,6 +43,9 @@ namespace Akonadi {
     bool showTodos() const;
     void setShowTodos( bool show );
 
+    void showAll();
+    void hideAll();
+
   protected:
     /* reimp */ bool filterAcceptsRow( int source_row, const QModelIndex& source_parent ) const;
     

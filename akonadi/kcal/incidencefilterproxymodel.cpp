@@ -77,11 +77,9 @@ IncidenceFilterProxyModel::~IncidenceFilterProxyModel() {
   delete d;
 }
 
-
 bool IncidenceFilterProxyModel::showEvents() const {
   return d->showEvents;
 }
-
 
 void IncidenceFilterProxyModel::setShowEvents( bool show ) {
   if ( d->showEvents == show )
@@ -109,6 +107,24 @@ void IncidenceFilterProxyModel::setShowTodos( bool show ) {
   if ( d->showTodos == show )
     return;
   d->showTodos = show;
+  invalidateFilter();
+}
+
+void IncidenceFilterProxyModel::showAll() {
+  if ( d->showEvents && d->showJournals && d->showTodos )
+    return;
+  d->showEvents = true;
+  d->showJournals = true;
+  d->showTodos = true;
+  invalidateFilter();
+}
+
+void IncidenceFilterProxyModel::hideAll() {
+  if ( !d->showEvents && !d->showJournals && !d->showTodos )
+    return;
+  d->showEvents = false;
+  d->showJournals = false;
+  d->showTodos = false;
   invalidateFilter();
 }
 
