@@ -326,7 +326,7 @@ void AkonadiCalendar::Private::itemsRemoved( const Item::List &items )
           continue;
         }
 
-        //incidence->unregisterObserver( q );
+        incidence->unRegisterObserver( q );
         q->notifyIncidenceDeleted( item );
     }
     emit q->calendarChanged();
