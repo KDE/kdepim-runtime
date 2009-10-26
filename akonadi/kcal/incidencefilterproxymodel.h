@@ -17,8 +17,8 @@
     Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301, USA.
 */
-#ifndef AKONADI_KCAL_CALFILTERPROXYMODEL_H
-#define AKONADI_KCAL_CALFILTERPROXYMODEL_H
+#ifndef AKONADI_KCAL_INCIDENCEFILTERPROXYMODEL_H
+#define AKONADI_KCAL_INCIDENCEFILTERPROXYMODEL_H
 
 #include <QtGui/QSortFilterProxyModel>
 
@@ -28,22 +28,30 @@ namespace KCal {
 
 class KDateTime;
 namespace Akonadi {
-  class CalFilterProxyModel : public QSortFilterProxyModel {
+  class IncidenceFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT
   public:
-    explicit CalFilterProxyModel( QObject* parent=0 );
-    ~CalFilterProxyModel();
+    explicit IncidenceFilterProxyModel( QObject* parent=0 );
+    ~IncidenceFilterProxyModel();
 
-    KCal::CalFilter* filter() const;
-    void setFilter( KCal::CalFilter* filter );
-    
+    bool showJournals() const;
+    void setShowJournals( bool show );
+
+    bool showEvents() const;
+    void setShowEvents( bool show );
+
+    bool showTodos() const;
+    void setShowTodos( bool show );
+
   protected:
     /* reimp */ bool filterAcceptsRow( int source_row, const QModelIndex& source_parent ) const;
     
   private:
+    class Visitor;
+    friend class Akonadi::IncidenceFilterProxyModel::Visitor;
     class Private;
     Private* const d;
   };
 }
 
-#endif // AKONADI_KCAL_CALFILTERPROXYMODEL_H
+#endif // AKONADI_KCAL_INCIDENCEFILTERPROXYMODEL_H

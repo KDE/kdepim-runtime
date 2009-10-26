@@ -12,6 +12,7 @@ set( kcalakonadi_LIB_SRC
      calendarmodel.cpp
      calfilterproxymodel.cpp
      daterangefilterproxymodel.cpp
+     incidencefilterproxymodel.cpp
      kcalmimetypevisitor.cpp
      kcalmodel.cpp
      kcalitembrowser.cpp
