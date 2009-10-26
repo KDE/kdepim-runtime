@@ -91,10 +91,11 @@ void AkonadiCalendar::Private::rowsAboutToBeRemoved( const QModelIndex&, int sta
 }
 
 void AkonadiCalendar::Private::layoutChanged() {
-
+  kDebug();
 }
 
 void AkonadiCalendar::Private::modelReset() {
+  kDebug();
   clear();
   readFromModel();
 }
@@ -114,6 +115,7 @@ void AkonadiCalendar::Private::readFromModel() {
 }
 
 void AkonadiCalendar::Private::dataChanged( const QModelIndex& topLeft, const QModelIndex& bottomRight ) {
+  kDebug();
   Q_ASSERT( topLeft.row() <= bottomRight.row() );
   const int endRow = bottomRight.row();
   QModelIndex i( topLeft );
@@ -123,6 +125,7 @@ void AkonadiCalendar::Private::dataChanged( const QModelIndex& topLeft, const QM
     ++row;
     i = i.sibling( row, topLeft.column() );
   }
+  emit q->calendarChanged();
 }
 
 
@@ -270,6 +273,7 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
 
 void AkonadiCalendar::Private::itemChanged( const Item& item )
 {
+  kDebug() << "item changed: " << item.id();
   assertInvariants();
   Q_ASSERT( item.isValid() );
   const Incidence::ConstPtr incidence = Akonadi::incidence( item );
