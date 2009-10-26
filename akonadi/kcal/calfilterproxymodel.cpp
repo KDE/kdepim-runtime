@@ -19,6 +19,7 @@
 */
 
 #include "calfilterproxymodel.h"
+#include "calendarmodel.h"
 
 #include <akonadi/entitytreemodel.h>
 #include <Akonadi/Item>
@@ -36,6 +37,8 @@ class CalFilterProxyModel::Private {
 };
 
 CalFilterProxyModel::CalFilterProxyModel( QObject* parent ) : QSortFilterProxyModel( parent ), d( new Private ) {
+  setSortRole( CalendarModel::SortRole );
+  setFilterKeyColumn( 0 );
 }
 
 CalFilterProxyModel::~CalFilterProxyModel() {
