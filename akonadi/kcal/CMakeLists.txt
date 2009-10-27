@@ -12,6 +12,7 @@ set( kcalakonadi_LIB_SRC
      collectionselection.cpp
      calendarmodel.cpp
      calfilterproxymodel.cpp
+     collectionselectionproxymodel.cpp
      daterangefilterproxymodel.cpp
      entitymodelstatesaver.cpp
      incidencefilterproxymodel.cpp

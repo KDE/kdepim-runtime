@@ -61,7 +61,7 @@ namespace Akonadi {
         class Private;
         Private* const d;
         Q_PRIVATE_SLOT( d, void rowsInserted( const QModelIndex&, int, int ) )
-  };
+    };
 }
 
 #endif // AKONADI_MODELSTATESAVER_H
