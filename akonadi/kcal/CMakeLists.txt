@@ -13,10 +13,12 @@ set( kcalakonadi_LIB_SRC
      calendarmodel.cpp
      calfilterproxymodel.cpp
      daterangefilterproxymodel.cpp
+     entitymodelstatesaver.cpp
      incidencefilterproxymodel.cpp
      kcalmimetypevisitor.cpp
      kcalmodel.cpp
      kcalitembrowser.cpp
+     modelstatesaver.cpp
      itembrowser.cpp
      akonadicalendar.cpp
      utils.cpp
