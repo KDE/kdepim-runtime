@@ -30,7 +30,7 @@
 
 using namespace Akonadi;
 
-class CollectionSelection::Private
+class Akonadi::CollectionSelection::Private
 {
 public:
   explicit Private( QItemSelectionModel* model_ ) : model( model_ ) {

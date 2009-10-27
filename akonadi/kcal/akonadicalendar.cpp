@@ -121,7 +121,9 @@ void AkonadiCalendar::Private::dataChanged( const QModelIndex& topLeft, const QM
   QModelIndex i( topLeft );
   int row = i.row();
   while ( row <= endRow ) {
-    updateItem( itemFromIndex( i ), AssertExists );
+    const Item item = itemFromIndex( i );
+    if ( item.isValid() )
+      updateItem( item, AssertExists );
     ++row;
     i = i.sibling( row, topLeft.column() );
   }
