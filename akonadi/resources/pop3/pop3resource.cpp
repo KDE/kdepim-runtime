@@ -250,6 +250,14 @@ void POP3Resource::doStateStep()
     {
       kDebug() << "================ Starting state RequestPassword ================";
 
+      // Don't show any wallet or password prompts when we are unit-testing
+      if ( !Settings::unitTestPassword().isEmpty() ) {
+        mPassword = Settings::unitTestPassword();
+        mState = Connect;
+        doStateStep();
+        break;
+      }
+
       const bool passwordNeeded = Settings::authenticationMethod() != "GSSAPI";
       const bool loadPasswordFromWallet = Settings::storePassword() && !mAskAgain &&
                                 passwordNeeded && !Settings::login().isEmpty();
