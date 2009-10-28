@@ -74,15 +74,10 @@ AccountDialog::AccountDialog( POP3Resource *parentResource, WId parentWindow )
 
   setupWidgets();
   loadSettings();
-  connect( this, SIGNAL(okClicked()),
-           this, SLOT(slotOk()) );
 }
 
 AccountDialog::~AccountDialog()
 {
-  if ( mWallet ) {
-    mWallet->closeWallet( Wallet::NetworkWallet(), false );
-  }
   delete mWallet;
   mWallet = 0;
   delete mServerTest;
