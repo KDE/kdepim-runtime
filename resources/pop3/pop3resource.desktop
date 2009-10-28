@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=POP3
 Name[en_GB]=POP3
+Name[es]=POP3
+Name[et]=POP3
 Name[pt]=POP3
 Name[pt_BR]=POP3
 Name[sv]=Pop3
@@ -8,6 +10,8 @@ Name[uk]=POP3
 Name[x-test]=xxPOP3xx
 Comment=Fetches mail from a POP3 server
 Comment[en_GB]=Fetches mail from a POP3 server
+Comment[es]=Recupera correo desde un servidor POP3
+Comment[et]=Kirjade tõmbamine POP3 serverist
 Comment[pt]=Obtém o correio de um servidor POP3
 Comment[pt_BR]=Obtém e-mails de um servidor POP3
 Comment[sv]=Hämtar post från en Pop3-server
