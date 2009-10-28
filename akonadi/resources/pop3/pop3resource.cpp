@@ -211,7 +211,7 @@ void POP3Resource::doStateStep()
   case FetchTargetCollection:
     {
       kDebug() << "================ Starting state FetchTargetCollection ==========";
-      emit status( Running, i18n( "Preparing transmission from \"%1\"...", name() ) );
+      emit status( Running, i18n( "Preparing transmission from \"%1\".", name() ) );
       Collection targetCollection( Settings::targetCollection() );
       if ( !targetCollection.isValid() ) {
         // No target collection set in the config? Try requesting a default inbox
@@ -238,7 +238,7 @@ void POP3Resource::doStateStep()
         connect( precommandJob, SIGNAL(result(KJob*)),
                  this, SLOT(precommandResult(KJob*)) );
         precommandJob->start();
-        emit status( Running, i18n( "Executing precommand..." ) );
+        emit status( Running, i18n( "Executing precommand." ) );
       }
       else {
         mState = RequestPassword;
@@ -304,7 +304,7 @@ void POP3Resource::doStateStep()
   case List:
     {
       kDebug() << "================ Starting state List ===========================";
-      emit status( Running, i18n( "Starting mail check..." ) );
+      emit status( Running, i18n( "Fetching mail listing." ) );
       ListJob *listJob = new ListJob( mPopSession );
       connect( listJob, SIGNAL(result(KJob*)),
                this, SLOT(listJobResult(KJob*)) );
@@ -363,7 +363,7 @@ void POP3Resource::doStateStep()
       kDebug() << "================ Starting state Save ===========================";
       kDebug() << mPendingCreateJobs.size() << "item create jobs are pending";
       if ( mPendingCreateJobs.size() > 0 )
-        emit status( Running, i18n( "Saving downloaded messages..." ) );
+        emit status( Running, i18n( "Saving downloaded messages." ) );
 
       // It can happen that the create job map is empty, for example if there was no
       // mail to download or if all ItemCreateJob's finished before reaching this
@@ -742,7 +742,6 @@ QList<int> POP3Resource::idsToDelete() const
     }
   }
 
-  // I don't trust this enough...
   kDebug() << "Going to delete" << idsToDeleteFromServer.size() << idsToDeleteFromServer;
   return idsToDeleteFromServer;
 }
