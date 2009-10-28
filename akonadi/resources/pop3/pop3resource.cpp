@@ -126,7 +126,10 @@ void POP3Resource::walletOpenedForLoading( bool success )
   if ( success ) {
     if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
       mWallet->setFolder( "pop3" );
-      mWallet->readPassword( identifier(), mPassword );
+      if ( mWallet->hasEntry( identifier() ) )
+        mWallet->readPassword( identifier(), mPassword );
+      else
+        passwordLoaded = false;
     }
     else {
       passwordLoaded = false;
