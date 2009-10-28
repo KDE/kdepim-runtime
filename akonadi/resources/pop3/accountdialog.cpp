@@ -32,35 +32,14 @@
 #include <Mailtransport/ServerTest>
 
 // KDELIBS includes
-#include <KComboBox>
-#include <KGlobalSettings>
-#include <KFileDialog>
-#include <KLocale>
-#include <KDebug>
 #include <KMessageBox>
-#include <KNumInput>
-#include <KSeparator>
 #include <KProtocolInfo>
-#include <KIconLoader>
-#include <KMenu>
 #include <KWindowSystem>
-
-// Qt includes
-#include <QButtonGroup>
-#include <QCheckBox>
-#include <QLayout>
-#include <QRadioButton>
-#include <QValidator>
-#include <QLabel>
-#include <QPushButton>
-#include <QToolButton>
-#include <QGroupBox>
-#include <QGridLayout>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
+#include <kwallet.h>
 
 using namespace MailTransport;
 using namespace Akonadi;
+using namespace KWallet;
 
 namespace {
 
@@ -86,7 +65,8 @@ AccountDialog::AccountDialog( POP3Resource *parentResource, WId parentWindow )
   : KDialog(),
     mParentResource( parentResource ),
     mServerTest( 0 ),
-    mValidator( this )
+    mValidator( this ),
+    mWallet( 0 )
 {
   KWindowSystem::setMainWindow( this, parentWindow );
   setButtons( Ok|Cancel );
@@ -100,6 +80,11 @@ AccountDialog::AccountDialog( POP3Resource *parentResource, WId parentWindow )
 
 AccountDialog::~AccountDialog()
 {
+  if ( mWallet ) {
+    mWallet->closeWallet( Wallet::NetworkWallet(), false );
+  }
+  delete mWallet;
+  mWallet = 0;
   delete mServerTest;
   mServerTest = 0;
 }
@@ -137,11 +122,6 @@ void AccountDialog::setupWidgets()
   connect( filterOnServerCheck, SIGNAL( clicked() ),
            this, SLOT( slotFilterOnServerClicked() ) );
 
-  connect( intervalCheck, SIGNAL(toggled(bool)),
-           this, SLOT(slotEnablePopInterval(bool)) );
-//  intervalSpin->setRange( GlobalSettings::self()->minimumCheckInterval(),
-//                                  10000, 1 );
-
   connect( checkCapabilities, SIGNAL(clicked()),
            SLOT(slotCheckPopCapabilities()) );
   encryptionButtonGroup = new QButtonGroup();
@@ -155,7 +135,7 @@ void AccountDialog::setupWidgets()
   connect( encryptionButtonGroup, SIGNAL(buttonClicked(int)),
            SLOT(slotPopEncryptionChanged(int)) );
   connect( intervalCheck, SIGNAL(toggled(bool)),
-           intervalSpin, SLOT(setEnabled(bool)) );
+           this, SLOT(slotEnablePopInterval(bool)) );
 
   // FIXME: Does this still work for non-ioslave POP3?
   if ( KProtocolInfo::capabilities("pop3").contains("SASL") == 0 )
@@ -191,23 +171,18 @@ void AccountDialog::setupWidgets()
 
 void AccountDialog::loadSettings()
 {
-  //bool intervalCheckingEnabled = ( mAccount->checkInterval() > 0 );
-  //int interval = mAccount->checkInterval();
-  //if ( !intervalCheckingEnabled ) // Default to 5 minutes when the user enables
-  //  interval = 5;                 // interval checking for the first time
-
   if ( mParentResource->name() == mParentResource->identifier() )
     mParentResource->setName( i18n( "POP3 Account") );
 
   nameEdit->setText( mParentResource->name() );
   nameEdit->setFocus();
   loginEdit->setText( Settings::self()->login() );
-  passwordEdit->setText( Settings::self()->password());
   hostEdit->setText( Settings::self()->host() );
   portEdit->setValue( Settings::self()->port() );
   precommand->setText( Settings::self()->precommand() );
   usePipeliningCheck->setChecked( Settings::self()->pipelining() );
   storePasswordCheck->setChecked( Settings::self()->storePassword() );
+  mInitallyStorePassword = Settings::self()->storePassword();
   leaveOnServerCheck->setChecked( Settings::self()->leaveOnServer() );
   leaveOnServerDaysCheck->setEnabled( Settings::self()->leaveOnServer() );
   leaveOnServerDaysCheck->setChecked( Settings::self()->leaveOnServerDays() >= 1 );
@@ -226,7 +201,6 @@ void AccountDialog::loadSettings()
   intervalCheck->setChecked( Settings::self()->intervalCheckEnabled() );
   intervalSpin->setValue( Settings::self()->intervalCheckInterval() );
   intervalSpin->setEnabled( Settings::self()->intervalCheckEnabled() );
-  //includeInCheck->setChecked( !mAccount->checkExclude() );
   if (Settings::self()->useSSL())
     encryptionSSL->setChecked( true );
   else if (Settings::self()->useTLS())
@@ -254,7 +228,6 @@ void AccountDialog::loadSettings()
                                 Settings::self()->leaveOnServerCount() >= 1 : 0);
   slotEnableLeaveOnServerSize( leaveOnServerSizeCheck->isEnabled() ?
                                Settings::self()->leaveOnServerSize() >= 1 : 0);
-  //slotEnablePopInterval( intervalCheckingEnabled );
 
   // We need to fetch the collection, as the CollectionRequester needs the name
   // of it to work correctly
@@ -276,6 +249,70 @@ void AccountDialog::loadSettings()
     connect ( requestJob, SIGNAL(result(KJob*)),
               this, SLOT(localFolderRequestJobFinished(KJob*)) );
   }
+
+  if ( Settings::storePassword() ) {
+    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
+                                  Wallet::Asynchronous );
+    connect( mWallet, SIGNAL(walletOpened(bool)),
+             this, SLOT(walletOpenedForLoading(bool)) );
+  }
+}
+
+void AccountDialog::walletOpenedForLoading( bool success )
+{
+  if ( success ) {
+    if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
+      QString password;
+      mWallet->setFolder( "pop3" );
+      mWallet->readPassword( mParentResource->identifier(), password );
+      passwordEdit->setText( password );
+      mInitalPassword = password;
+    }
+    else {
+      kWarning() << "Wallet not open or doesn't have pop3 folder.";
+    }
+  }
+  else {
+    storePasswordCheck->setChecked( false );
+    kWarning() << "Failed to open wallet for loading the password.";
+  }
+
+  delete mWallet;
+  mWallet = 0;
+}
+
+void AccountDialog::walletOpenedForSaving( bool success )
+{
+  if ( success ) {
+    if ( mWallet && mWallet->isOpen() ) {
+
+      // Remove the password from the wallet if the user doesn't want to store it
+      if ( !Settings::self()->storePassword() && mWallet->hasFolder( "pop3" ) ) {
+        mWallet->setFolder( "pop3" );
+        mWallet->removeEntry( mParentResource->identifier() );
+      }
+
+      // Store the password in the wallet if the user wants that
+      else if ( Settings::self()->storePassword() ) {
+        if ( !mWallet->hasFolder( "pop3" ) ) {
+          mWallet->createFolder( "pop3" );
+        }
+        mWallet->setFolder( "pop3" );
+        mWallet->writePassword( mParentResource->identifier(), passwordEdit->text() );
+      }
+    }
+    else {
+      kWarning() << "Wallet not open.";
+    }
+  }
+  else {
+    // Should we alert the user here?
+    kWarning() << "Failed to open wallet for loading the password.";
+  }
+
+  delete mWallet;
+  mWallet = 0;
+  accept();
 }
 
 void AccountDialog::slotLeaveOnServerClicked()
@@ -516,13 +553,20 @@ void AccountDialog::checkHighest( QButtonGroup *btnGroup )
   }
 }
 
-
-void AccountDialog::slotOk()
+void AccountDialog::slotButtonClicked( int button )
 {
-  saveSettings();
-  accept();
-}
+  switch( button ) {
+  case Ok:
+    saveSettings();
 
+    // Don't call accept() yet, saveSettings() triggers an asnychronous wallet operation,
+    // which will call accept() when it is finished
+    break;
+  case Cancel:
+    reject();
+    return;
+  }
+}
 
 void AccountDialog::saveSettings()
 {
@@ -534,7 +578,6 @@ void AccountDialog::saveSettings()
   Settings::self()->setPort( portEdit->value() );
   Settings::self()->setLogin( loginEdit->text().trimmed() );
   Settings::self()->setStorePassword( storePasswordCheck->isChecked() );
-  Settings::self()->setPassword( passwordEdit->text() );
   Settings::self()->setPrecommand( precommand->text() );
   Settings::self()->setUseSSL( encryptionSSL->isChecked() );
   Settings::self()->setUseTLS( encryptionTLS->isChecked() );
@@ -572,6 +615,24 @@ void AccountDialog::saveSettings()
   Settings::self()->setFilterCheckSize (filterOnServerSizeSpin->value() );
   Settings::self()->setTargetCollection( folderRequester->collection().id() );
   Settings::self()->writeConfig();
+
+  // Now, either save the password or delete it from the wallet. For both, we need
+  // to open it.
+  const bool userChangedPassword = mInitalPassword != passwordEdit->text();
+  const bool userWantsToDeletePassword =
+      !Settings::self()->storePassword() && mInitallyStorePassword;
+
+  if ( ( Settings::self()->storePassword() && userChangedPassword ) ||
+       userWantsToDeletePassword ) {
+    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
+                                  Wallet::Asynchronous );
+    connect( mWallet, SIGNAL(walletOpened(bool)),
+             this, SLOT(walletOpenedForSaving(bool)) );
+  }
+  else {
+    // Neither save nor delete the password, we're done!
+    accept();
+  }
 }
 
 void AccountDialog::slotEnableLeaveOnServerDays( bool state )

@@ -28,7 +28,6 @@ class ItemCreateJob;
 }
 
 class POPSession;
-
 class QTimer;
 
 class POP3Resource : public Akonadi::ResourceBase,
