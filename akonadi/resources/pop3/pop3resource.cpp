@@ -142,8 +142,7 @@ void POP3Resource::walletOpenedForLoading( bool success )
     showPasswordDialog( queryText );
   }
   else {
-    mState = Connect;
-    doStateStep();
+    advanceState( Connect );
   }
 }
 
@@ -193,9 +192,14 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
       Settings::setStorePassword( false );
     };
     mAskAgain = false;
-    mState = Connect;
-    doStateStep();
+    advanceState( Connect );
   }
+}
+
+void POP3Resource::advanceState( State nextState )
+{
+  mState = nextState;
+  doStateStep();
 }
 
 void POP3Resource::doStateStep()
@@ -241,8 +245,7 @@ void POP3Resource::doStateStep()
         emit status( Running, i18n( "Executing precommand." ) );
       }
       else {
-        mState = RequestPassword;
-        doStateStep();
+        advanceState( RequestPassword );
       }
       break;
     }
@@ -253,8 +256,7 @@ void POP3Resource::doStateStep()
       // Don't show any wallet or password prompts when we are unit-testing
       if ( !Settings::unitTestPassword().isEmpty() ) {
         mPassword = Settings::unitTestPassword();
-        mState = Connect;
-        doStateStep();
+        advanceState( Connect );
         break;
       }
 
@@ -282,8 +284,7 @@ void POP3Resource::doStateStep()
       }
       else {
         // No password needed, go on with Connect
-        mState = Connect;
-        doStateStep();
+        advanceState( Connect );
       }
 
       break;
@@ -295,8 +296,7 @@ void POP3Resource::doStateStep()
       mPopSession = new POPSession( mPassword );
       connect( mPopSession, SIGNAL( slaveError(int,const QString &)),
                this, SLOT(slotSessionError(int, const QString&)) );
-      mState = Login;
-      doStateStep();
+      advanceState( Login );
       break;
     }
   case Login:
@@ -377,8 +377,7 @@ void POP3Resource::doStateStep()
       // mail to download or if all ItemCreateJob's finished before reaching this
       // stage
       if ( mPendingCreateJobs.isEmpty() ) {
-        mState = Delete;
-        doStateStep();
+        advanceState( Delete );
       }
     }
     break;
@@ -395,8 +394,7 @@ void POP3Resource::doStateStep()
         deleteJob->start();
       }
       else {
-        mState = Quit;
-        doStateStep();
+        advanceState( Quit );
       }
     }
     break;
@@ -438,8 +436,7 @@ void POP3Resource::localFolderRequestJobFinished( KJob *job )
 
   mTargetCollection = SpecialCollections::self()->defaultCollection( SpecialCollections::Inbox );
   Q_ASSERT( mTargetCollection.isValid() );
-  mState = Precommand;
-  doStateStep();
+  advanceState( Precommand );
 }
 
 void POP3Resource::targetCollectionFetchJobFinished( KJob *job )
@@ -460,8 +457,7 @@ void POP3Resource::targetCollectionFetchJobFinished( KJob *job )
   }
   else {
     mTargetCollection = fetchJob->collections().first();
-    mState = Precommand;
-    doStateStep();
+    advanceState( Precommand );
   }
 }
 
@@ -473,8 +469,7 @@ void POP3Resource::precommandResult( KJob *job )
     return;
   }
   else {
-    mState = RequestPassword;
-    doStateStep();
+    advanceState( RequestPassword );
   }
 }
 
@@ -487,8 +482,7 @@ void POP3Resource::loginJobResult( KJob *job )
                 '\n' + job->errorString() );
   }
   else {
-    mState = List;
-    doStateStep();
+    advanceState( List );
   }
 }
 
@@ -503,8 +497,7 @@ void POP3Resource::listJobResult( KJob *job )
     Q_ASSERT( listJob );
     mIdsToSizeMap = listJob->idList();
     kDebug() << "IdsToSizeMap:" << mIdsToSizeMap;
-    mState = UIDList;
-    doStateStep();
+    advanceState( UIDList );
   }
 }
 
@@ -531,8 +524,7 @@ void POP3Resource::uidListJobResult( KJob *job )
                   "work properly.", name() ) );
     }
 
-    mState = Download;
-    doStateStep();
+    advanceState( Download );
   }
 }
 
@@ -551,8 +543,7 @@ void POP3Resource::fetchJobResult( KJob *job )
                     "IDs, even though we requested their download:" << mIdsToDownload;
     }
 
-    mState = Save;
-    doStateStep();
+    advanceState( Save );
   }
 }
 
@@ -639,8 +630,7 @@ void POP3Resource::itemCreateJobResult( KJob *job )
 
   // Have all create jobs finished? Go to the next state, then
   if ( mState == Save && mPendingCreateJobs.isEmpty() ) {
-    mState = Delete;
-    doStateStep();
+    advanceState( Delete );
   }
 }
 
@@ -787,8 +777,7 @@ void POP3Resource::deleteJobResult( KJob *job )
   Settings::setSeenUidTimeList( timeOfSeenUids );
   Settings::self()->writeConfig(),
 
-  mState = Quit;
-  doStateStep();
+  advanceState( Quit );
 }
 
 void POP3Resource::finish()
@@ -815,8 +804,7 @@ void POP3Resource::quitJobResult( KJob *job )
     return;
   }
 
-  mState = SavePassword;
-  doStateStep();
+  advanceState( SavePassword );
 }
 
 void POP3Resource::slotSessionError( int errorCode, const QString &errorMessage )
@@ -941,8 +929,7 @@ void POP3Resource::startMailCheck()
   resetState();
   mIntervalTimer->stop();
   emit percent( 0 ); // Otherwise the value from the last sync is taken
-  mState = FetchTargetCollection;
-  doStateStep();
+  advanceState( FetchTargetCollection );
 }
 
 void POP3Resource::retrieveCollections()

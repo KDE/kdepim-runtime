@@ -118,6 +118,7 @@ class POP3Resource : public Akonadi::ResourceBase,
 
     void resetState();
     void doStateStep();
+    void advanceState( State nextState );
     void cancelSync( const QString &errorMessage, bool error = true );
     void saveSeenUIDList();
     QList<int> idsToDelete() const;
