@@ -185,15 +185,14 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
   } else {
     Settings::setLogin( login );
     Settings::self()->writeConfig();
+    Settings::setStorePassword( false );
     if ( rememberPassword ) {
       // setStorePassword( true ) is called only after the password is written into
       // the wallet, as otherwise, the resource thinks the password is in the wallet
       // and loads an empty password from it
       mSavePassword = true;
     }
-    else {
-      Settings::setStorePassword( false );
-    };
+
     mAskAgain = false;
     advanceState( Connect );
   }
