@@ -41,12 +41,15 @@ namespace Akonadi {
   {
     Q_OBJECT
   public:
-    explicit CollectionSelection( QItemSelectionModel *selectionModel );
+    explicit CollectionSelection( QItemSelectionModel *selectionModel, QObject *parent = 0 );
     ~CollectionSelection();
 
     QItemSelectionModel* model() const;
     Akonadi::Collection::List selectedCollections() const;
     QList<Akonadi::Collection::Id> selectedCollectionIds() const;
+    bool contains( const Akonadi::Collection &c ) const;
+    bool contains( const Akonadi::Collection::Id &id ) const;
+
     bool hasSelection() const;
 
   Q_SIGNALS:

@@ -40,7 +40,7 @@ public:
   QItemSelectionModel* model;
 };
 
-CollectionSelection::CollectionSelection( QItemSelectionModel *selectionModel ) : QObject( selectionModel ), d( new Private ( selectionModel ) )
+CollectionSelection::CollectionSelection( QItemSelectionModel *selectionModel, QObject *parent ) : QObject( parent ), d( new Private ( selectionModel ) )
 {
   connect( selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(slotSelectionChanged(QItemSelection,QItemSelection)) );
 }
@@ -58,6 +58,17 @@ QItemSelectionModel* CollectionSelection::model() const
 bool CollectionSelection::hasSelection() const
 {
   return d->model->hasSelection();
+}
+
+bool CollectionSelection::contains( const Collection &c ) const
+{
+  return selectedCollectionIds().contains( c.id() );
+}
+
+
+bool CollectionSelection::contains( const Collection::Id &id ) const
+{
+  return selectedCollectionIds().contains( id );
 }
 
 Collection::List CollectionSelection::selectedCollections() const

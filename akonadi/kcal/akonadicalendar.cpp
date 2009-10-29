@@ -48,12 +48,13 @@ using namespace Akonadi;
 using namespace KCal;
 using namespace KOrg;
 
-AkonadiCalendar::Private::Private( QAbstractItemModel *model, AkonadiCalendar *qq )
+AkonadiCalendar::Private::Private( QAbstractItemModel* treeModel, QAbstractItemModel *model, AkonadiCalendar *qq )
   : q( qq ),
     mTimeZones( new ICalTimeZones ),
     mNewObserver( false ),
     mObserversEnabled( true ),
     mDefaultFilter( new CalFilter ),
+    m_treeModel( treeModel ),
     m_model( model )
 {
   // Setup default filter, which does nothing
@@ -339,9 +340,9 @@ void AkonadiCalendar::Private::itemsRemoved( const Item::List &items )
     assertInvariants();
 }
 
-AkonadiCalendar::AkonadiCalendar( QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject *parent )
+AkonadiCalendar::AkonadiCalendar( QAbstractItemModel* treeModel, QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject *parent )
   : QObject( parent )
-  , d( new Private( model, this ) )
+  , d( new Private( treeModel, model, this ) )
 {
   d->mTimeSpec = timeSpec;
   d->mViewTimeSpec = timeSpec;
@@ -351,6 +352,10 @@ AkonadiCalendar::AkonadiCalendar( QAbstractItemModel *model, const KDateTime::Sp
 AkonadiCalendar::~AkonadiCalendar()
 {
   delete d;
+}
+
+QAbstractItemModel* AkonadiCalendar::treeModel() const {
+  return d->m_treeModel;
 }
 
 QAbstractItemModel* AkonadiCalendar::model() const {

@@ -102,7 +102,7 @@ private:
   AkonadiCalendar* const q;
 
 public:
-  explicit Private( QAbstractItemModel* model, AkonadiCalendar *q );
+  explicit Private( QAbstractItemModel* treeModel, QAbstractItemModel* model, AkonadiCalendar *q );
   ~Private();
 
   bool deleteIncidence( const Akonadi::Item & );
@@ -136,6 +136,7 @@ public:
   CalFilter *mDefaultFilter;
   //CalendarBase end
 
+  QAbstractItemModel *m_treeModel;
   QAbstractItemModel *m_model;
   Akonadi::CalFilterProxyModel* m_filterProxy;
   QHash<Akonadi::Item::Id, Akonadi::Item> m_itemMap; // akonadi id to items

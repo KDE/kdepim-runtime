@@ -727,12 +727,14 @@ protected:
   void appendRecurringAlarms( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
                               const KDateTime &from, const KDateTime &to );
 public:
-    explicit AkonadiCalendar( QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject* parent=0 );
+    explicit AkonadiCalendar( QAbstractItemModel* treeModel, QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject* parent=0 );
     ~AkonadiCalendar();
 
     QAbstractItemModel* model() const;
 
     QAbstractItemModel* unfilteredModel() const;
+
+    QAbstractItemModel* treeModel() const;
 
     void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
 
