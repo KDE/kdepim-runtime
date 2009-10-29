@@ -2,6 +2,7 @@
 Name=Strigi Feeder
 Name[pt]=Fonte do Strigi
 Name[sv]=Inmatning till Strigi
+Name[tr]=Strigi Besleyici
 Name[uk]=Передавач Strigi
 Name[x-test]=xxStrigi Feederxx
 Comment=Strigi-based fulltext search
@@ -9,6 +10,7 @@ Comment[ga]=Cuardach lántéacs bunaithe ar Strigi
 Comment[hi]=स्ट्रिगि आधारित संपूर्ण-पाठ खोज
 Comment[pt]=Pesquisa por texto completo baseada no Strigi
 Comment[sv]=Fulltextsökning baserad på Strigi
+Comment[tr]=Strigi-tabanlı tam metin araması
 Comment[uk]=Повнотекстовий пошук на основі Strigi
 Comment[x-test]=xxStrigi-based fulltext searchxx
 Type=AkonadiAgent
