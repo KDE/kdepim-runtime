@@ -127,6 +127,7 @@ class POP3Resource : public Akonadi::ResourceBase,
     void startMailCheck();
     void updateIntervalTimer();
     void showPasswordDialog( const QString &queryText );
+    QString buildLabelForPasswordDialog( const QString &detailedError ) const;
     void finish();
 
     State mState;

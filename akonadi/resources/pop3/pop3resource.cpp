@@ -120,6 +120,14 @@ bool POP3Resource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   return false;
 }
 
+QString POP3Resource::buildLabelForPasswordDialog( const QString &detailedError ) const
+{
+  QString queryText = i18n( "Please enter the username and password for account '%1'.",
+                            agentName() );
+  queryText += "<br>" + detailedError;
+  return queryText;
+}
+
 void POP3Resource::walletOpenedForLoading( bool success )
 {
   bool passwordLoaded = success;
@@ -139,9 +147,8 @@ void POP3Resource::walletOpenedForLoading( bool success )
   mWallet = 0;
 
   if ( !passwordLoaded ) {
-    QString queryText = i18n( "Please enter the username and password for account '%1'.",
-                              agentName() );
-    queryText += "<br>" + i18n( "You are asked here because the password could not be loaded from the wallet." );
+    QString queryText = buildLabelForPasswordDialog(
+        i18n( "You are asked here because the password could not be loaded from the wallet." ) );
     showPasswordDialog( queryText );
   }
   else {
@@ -273,16 +280,15 @@ void POP3Resource::doStateStep()
                  this, SLOT(walletOpenedForLoading(bool)) );
       }
       else if ( passwordNeeded ) {
-        QString queryText = i18n( "Please enter the username and password for account '%1'.",
-                                  agentName() );        
+        QString detail;
         if ( mAskAgain )
-          queryText += "<br>" + i18n( "You are asked here because the previous login was not successful." );
+          detail = i18n( "You are asked here because the previous login was not successful." );
         else if ( Settings::login().isEmpty() )
-          queryText += "<br>" + i18n( "You are asked here because the username you supplied is empty." );
+          detail = i18n( "You are asked here because the username you supplied is empty." );
         else if ( !Settings::storePassword() )
-          queryText += "<br>" + i18n( "You are asked here because you choose to not store the password in the wallet." );
+          detail = i18n( "You are asked here because you choose to not store the password in the wallet." );
 
-        showPasswordDialog( queryText );
+        showPasswordDialog( buildLabelForPasswordDialog( detail ) );
       }
       else {
         // No password needed, go on with Connect
