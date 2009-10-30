@@ -24,6 +24,7 @@ set( kolabproxyresource_shared_SRCS
   calendarhandler.cpp
   taskshandler.cpp
   journalhandler.cpp
+  notehandler.cpp
 )
 
 set( kolabproxyresource_SRCS

@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2009 Klar?lvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
-    Copyright (c) 2009 Andras Mantia <andras@kdab.net>
+    Copyright (c) 2009 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,27 +17,25 @@
     02110-1301, USA.
 */
 
-#ifndef JOURNALHANDLER_H
-#define JOURNALHANDLER_H
+#ifndef KOLAB_NOTEHANDLER_H
+#define KOLAB_NOTEHANDLER_H
 
-#include "incidencehandler.h"
-#include <kcal/journal.h>
+#include "journalhandler.h"
 
-/**
-	@author Andras Mantia <amantia@kde.org>
-*/
-class JournalHandler : public IncidenceHandler {
-public:
-  JournalHandler();
-  virtual ~JournalHandler();
+class NotesHandler : public JournalHandler
+{
+  public:
+    NotesHandler();
 
-  virtual QStringList contentMimeTypes();
-  virtual QString iconName() const;
+    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & kolabItems);
+    virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
+    virtual QStringList contentMimeTypes();
+    virtual QString iconName() const;
 
-private:
-  virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
-  virtual KCal::Incidence* incidenceFromKolab(const KMime::Message::Ptr &data);
-  KCal::Journal *journalFromKolab(const KMime::Message::Ptr &data);
+  private:
+    bool noteFromKolab( const KMime::Message::Ptr &kolabMsg, Akonadi::Item &noteItem );
+    void noteToKolab( const KMime::Message::Ptr &note, Akonadi::Item &kolabItem );
 };
+
 
 #endif

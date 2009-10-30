@@ -21,6 +21,7 @@
 #include "calendarhandler.h"
 #include "taskshandler.h"
 #include "journalhandler.h"
+#include "notehandler.h"
 
 #include <akonadi/collection.h>
 #include <kcal/kcalmimetypevisitor.h>
@@ -59,7 +60,7 @@ QByteArray KolabHandler::kolabTypeForCollection(const Akonadi::Collection& colle
     return "task";
   } else if ( contentMimeTypes.contains( Akonadi::KCalMimeTypeVisitor::journalMimeType() ) ) {
     return "journal";
-  } else if ( contentMimeTypes.contains( "application/x-vnd.akonadi.notes" ) ) {
+  } else if ( contentMimeTypes.contains( "application/x-vnd.akonadi.note" ) ) {
     return "note";
   }
   return QByteArray();
