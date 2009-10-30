@@ -28,6 +28,7 @@
 #include "utils.h"
 
 #include <QItemSelectionModel>
+#include <KDebug>
 
 using namespace Akonadi;
 
@@ -42,7 +43,8 @@ CollectionSelectionProxyModel::CollectionSelectionProxyModel( QObject *parent ) 
 
 CollectionSelectionProxyModel::~CollectionSelectionProxyModel()
 {
-    delete d;
+  kDebug() << this;
+  delete d;
 }
 
 QItemSelectionModel *CollectionSelectionProxyModel::selectionModel() const
@@ -67,42 +69,33 @@ Qt::ItemFlags CollectionSelectionProxyModel::flags( const QModelIndex &index ) c
 
 QVariant CollectionSelectionProxyModel::data( const QModelIndex &index, int role ) const
 {
-    if ( !index.isValid() )
+  if ( !index.isValid() )
+      return QVariant();
+  if ( d->selectionModel ) {
+    if ( role == Qt::CheckStateRole ) {
+      if ( index.column() != CalendarModel::CollectionTitle )
         return QVariant();
-    if ( !d->selectionModel )
-        return QVariant();
-    switch (role) {
-    case Qt::CheckStateRole: {
-        if ( index.column() != CalendarModel::CollectionTitle )
-            return QVariant();
-        const Akonadi::Collection collection = Akonadi::collectionFromIndex( index );
-        if ( collection.contentMimeTypes().isEmpty() )
-            return QVariant();
-        return d->selectionModel->isSelected( index ) ? Qt::Checked : Qt::Unchecked;
-        }
-        break;
-    default:
-        break;
+      const Akonadi::Collection collection = Akonadi::collectionFromIndex( index );
+      if ( collection.contentMimeTypes().isEmpty() )
+          return QVariant();
+      return d->selectionModel->isSelected( index ) ? Qt::Checked : Qt::Unchecked;
     }
-    return QSortFilterProxyModel::data(index, role);
+  }
+  return QSortFilterProxyModel::data(index, role);
 }
 
 bool CollectionSelectionProxyModel::setData( const QModelIndex &index, const QVariant &value, int role )
 {
-    switch(role) {
-    case Qt::CheckStateRole: {
-        Q_ASSERT( index.isValid() );
-        if ( index.column() != CalendarModel::CollectionTitle )
-            return false;
-        const Akonadi::Collection collection = Akonadi::collectionFromIndex( index );
-        Q_ASSERT( collection.isValid() );
-        const bool checked = value.toInt() == Qt::Checked;
-        d->selectionModel->select( index, checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect );
-        }
-        return true;
-    default:
-        return QSortFilterProxyModel::setData(index, value, role);
-    }
+  if ( d->selectionModel && role == Qt::CheckStateRole ) {
+    if ( index.column() != CalendarModel::CollectionTitle )
+        return false;
+    const Akonadi::Collection collection = Akonadi::collectionFromIndex( index );
+    Q_ASSERT( collection.isValid() );
+    const bool checked = value.toInt() == Qt::Checked;
+    d->selectionModel->select( index, checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect );
+    return true;
+  }
+  return QSortFilterProxyModel::setData(index, value, role);
 }
 
 bool CollectionSelectionProxyModel::filterAcceptsColumn( int source_column, const QModelIndex& source_parent ) const

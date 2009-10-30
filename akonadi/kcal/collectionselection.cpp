@@ -65,7 +65,6 @@ bool CollectionSelection::contains( const Collection &c ) const
   return selectedCollectionIds().contains( c.id() );
 }
 
-
 bool CollectionSelection::contains( const Collection::Id &id ) const
 {
   return selectedCollectionIds().contains( id );
@@ -88,6 +87,7 @@ QList<Collection::Id> CollectionSelection::selectedCollectionIds() const {
 
 void CollectionSelection::slotSelectionChanged( const QItemSelection &selectedIndexes, const QItemSelection &deselectedIndexes )
 {
+  kDebug();
   const Collection::List selected = collectionsFromIndexes( selectedIndexes.indexes() );
   const Collection::List deselected = collectionsFromIndexes( deselectedIndexes.indexes() );
 
