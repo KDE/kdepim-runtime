@@ -36,8 +36,6 @@ using namespace Akonadi;
 ContactsResource::ContactsResource( const QString &id )
   : ResourceBase( id )
 {
-  setHierarchicalRemoteIdentifiersEnabled( true );
-
   // setup the resource
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -47,6 +45,8 @@ ContactsResource::ContactsResource( const QString &id )
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
+
+  setHierarchicalRemoteIdentifiersEnabled( true );
 
   mSupportedMimeTypes << KABC::Addressee::mimeType() << KABC::ContactGroup::mimeType() << Collection::mimeType();
 }
@@ -311,6 +311,14 @@ void ContactsResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
+  // If the parent collection has no valid remote id, the parent
+  // collection will be removed in a second, so stop here and remove
+  // all items in collectionRemoved().
+  if ( item.parentCollection().remoteId().isEmpty() ) {
+    changeProcessed();
+    return;
+  }
+
   const QString fileName = directoryForCollection( item.parentCollection() ) + QDir::separator() + item.remoteId();
 
   if ( !QFile::remove( fileName ) ) {
@@ -374,6 +382,28 @@ void ContactsResource::collectionChanged( const Akonadi::Collection &collection 
   changeCommitted( newCollection );
 }
 
+/**
+ * Removes a @p directory recursively.
+ */
+static bool removeDirectory( const QDir &directory )
+{
+  const QFileInfoList infos = directory.entryInfoList( QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot );
+  foreach ( const QFileInfo &info, infos ) {
+    if ( info.isDir() ) {
+      if ( !removeDirectory( QDir( info.absoluteFilePath() ) ) )
+        return false;
+    } else {
+      if ( !QFile::remove( info.filePath() ) )
+        return false;
+    }
+  }
+
+  if ( !QDir::root().rmdir( directory.absolutePath() ) )
+    return false;
+
+  return true;
+}
+
 void ContactsResource::collectionRemoved( const Akonadi::Collection &collection )
 {
   if ( Settings::self()->readOnly() ) {
@@ -381,7 +411,7 @@ void ContactsResource::collectionRemoved( const Akonadi::Collection &collection 
     return;
   }
 
-  if ( !QFile::remove( directoryForCollection( collection ) ) ) {
+  if ( !removeDirectory( directoryForCollection( collection ) ) ) {
     cancelTask( i18n("Unable to delete folder '%1'.", collection.name() ) );
     return;
   }
