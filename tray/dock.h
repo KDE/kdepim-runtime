@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-#include <KNotificationItem>
+#include <KStatusNotifierItem>
 
 #include <akonadi/agentinstance.h>
 
@@ -39,7 +39,7 @@ protected:
     void setVisible( bool );
 };
 
-class Dock : public KNotificationItem
+class Dock : public KStatusNotifierItem
 {
     Q_OBJECT
     Q_CLASSINFO( "D-Bus Interface", "org.kde.akonaditray" )
