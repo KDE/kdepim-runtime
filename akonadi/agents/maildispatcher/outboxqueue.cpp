@@ -126,7 +126,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   }
 
   if( item.remoteId().isEmpty() ) {
-    kDebug() << "Item" << item.id() << "has an empty remoteId.";
+    kWarning() << "Item" << item.id() << "has an empty remoteId.";
     // HACK:
     // This probably means that it hasn't yet been stored on disk by the
     // maildir resource, so I'll let it go for now, and process it when
@@ -307,7 +307,7 @@ void OutboxQueue::Private::localFoldersRequestResult( KJob *job )
 }
 
 void OutboxQueue::Private::itemAdded( const Item &item )
-{
+{ 
   addIfComplete( item );
 }
 
