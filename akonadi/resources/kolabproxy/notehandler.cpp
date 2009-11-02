@@ -18,7 +18,7 @@
 */
 
 #include "notehandler.h"
-#include "journal.h"
+#include "note.h"
 
 #include <akonadi/item.h>
 #include <QStringList>
@@ -74,7 +74,7 @@ bool NotesHandler::noteFromKolab(const KMime::Message::Ptr& kolabMsg, Akonadi::I
   if ( !xmlContent )
     return false;
   const QByteArray xmlData = xmlContent->decodedContent();
-  Kolab::Journal j( QString::null );
+  Kolab::Note j;
   if ( j.load( xmlData ) )
     return false;
 
@@ -88,7 +88,7 @@ bool NotesHandler::noteFromKolab(const KMime::Message::Ptr& kolabMsg, Akonadi::I
 
 void NotesHandler::noteToKolab(const KMime::Message::Ptr& note, Akonadi::Item& kolabItem)
 {
-  Kolab::Journal j( QString::null );
+  Kolab::Note j;
   j.setSummary( note->subject( true )->asUnicodeString() );
   j.setBody( note->textContent()->decodedText() );
 
