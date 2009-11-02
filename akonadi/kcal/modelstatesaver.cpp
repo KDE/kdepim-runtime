@@ -62,6 +62,7 @@ public:
         Q_FOREACH( const Role& r, roles )
         {
             const QVariant v = index.data( r.role );
+            kDebug() << v << r.defaultValue;
             if ( v != r.defaultValue )
                 values[r.identifier].push_back( qMakePair( cfgKey, v ) );
         }
