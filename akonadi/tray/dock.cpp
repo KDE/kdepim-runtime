@@ -57,7 +57,7 @@ void Tray::setVisible( bool )
 }
 
 Dock::Dock( QWidget *parent )
-        : KNotificationItem( 0 ), m_explicitStart( false )
+        : KStatusNotifierItem( 0 ), m_explicitStart( false )
 {
     m_parentWidget = parent;
   
