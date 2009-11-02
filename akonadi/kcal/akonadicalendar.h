@@ -564,7 +564,7 @@ public:
 
     The CalendarObserver class.
   */
-  class CalendarObserver //krazy:exclude=dpointer
+  class AKONADI_KCAL_EXPORT CalendarObserver //krazy:exclude=dpointer
   {
     public:
       /**
