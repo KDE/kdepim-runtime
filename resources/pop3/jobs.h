@@ -43,7 +43,7 @@ class POPSession : public QObject
 {
   Q_OBJECT
 public:
-  POPSession();
+  explicit POPSession( const QString &password );
   ~POPSession();
   bool connectSlave();
 
@@ -71,6 +71,7 @@ private:
 
   QPointer<KIO::Slave> mSlave;
   SlaveBaseJob *mCurrentJob;
+  QString mPassword;
 };
 
 

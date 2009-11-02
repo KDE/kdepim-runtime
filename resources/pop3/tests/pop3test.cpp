@@ -137,9 +137,9 @@ void Pop3Test::initTestCase()
   QVERIFY( reply3.isValid() );
   QVERIFY( reply3.value() == "HansWurst" );
 
-  mPOP3SettingsInterface->setPassword( "Geheim" );
+  mPOP3SettingsInterface->setUnitTestPassword( "Geheim" );
   AgentManager::self()->instance( mPop3Identifier ).reconfigure();
-  QDBusReply<QString> reply4 = mPOP3SettingsInterface->password();
+  QDBusReply<QString> reply4 = mPOP3SettingsInterface->unitTestPassword();
   QVERIFY( reply4.isValid() );
   QVERIFY( reply4.value() == "Geheim" );
 

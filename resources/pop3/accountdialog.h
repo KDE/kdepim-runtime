@@ -23,15 +23,11 @@
 
 #include "ui_popsettings.h"
 
-#include <Akonadi/Collection>
-
-#include <KDialog>
-#include <KLineEdit>
-
-#include <QRegExpValidator>
-
 namespace MailTransport {
 class ServerTest;
+}
+namespace KWallet {
+  class Wallet;
 }
 
 class POP3Resource;
@@ -46,7 +42,7 @@ class AccountDialog : public KDialog, private Ui::PopPage
     virtual ~AccountDialog();
 
   private slots:
-    virtual void slotOk();
+    virtual void slotButtonClicked( int button );
     void slotEnablePopInterval( bool state );
     void slotFontChanged();
     void slotLeaveOnServerClicked();
@@ -65,6 +61,8 @@ class AccountDialog : public KDialog, private Ui::PopPage
 
     void targetCollectionReceived( Akonadi::Collection::List collections );
     void localFolderRequestJobFinished( KJob *job );
+    void walletOpenedForLoading( bool success );
+    void walletOpenedForSaving( bool success );
 
   private:
     void setupWidgets();
@@ -80,6 +78,9 @@ class AccountDialog : public KDialog, private Ui::PopPage
     MailTransport::ServerTest *mServerTest;
     QRegExpValidator mValidator;
     bool mServerTestFailed;
+    KWallet::Wallet *mWallet;
+    bool mInitallyStorePassword;
+    QString mInitalPassword;
 };
 
 #endif

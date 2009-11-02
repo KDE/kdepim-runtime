@@ -30,16 +30,19 @@
 
 #include <KIO/PasswordDialog>
 #include <KMessageBox>
+#include <kwallet.h>
 
 using namespace Akonadi;
 using namespace MailTransport;
+using namespace KWallet;
 
 POP3Resource::POP3Resource( const QString &id )
     : ResourceBase( id ),
       mState( Idle ),
       mPopSession( 0 ),
       mAskAgain( false ),
-      mIntervalTimer( new QTimer( this ) )
+      mIntervalTimer( new QTimer( this ) ),
+      mWallet( 0 )
 {
   new SettingsAdaptor( Settings::self() );
 
@@ -91,6 +94,7 @@ void POP3Resource::configure( WId windowId )
   QPointer<AccountDialog> accountDialog( new AccountDialog( this, windowId ) );
   if ( accountDialog->exec() == QDialog::Accepted ) {
     updateIntervalTimer();
+    mAskAgain = false; // the user might have changed the password
     emit configurationDialogAccepted();
   }
   else {
@@ -116,6 +120,97 @@ bool POP3Resource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   return false;
 }
 
+QString POP3Resource::buildLabelForPasswordDialog( const QString &detailedError ) const
+{
+  QString queryText = i18n( "Please enter the username and password for account '%1'.",
+                            agentName() );
+  queryText += "<br>" + detailedError;
+  return queryText;
+}
+
+void POP3Resource::walletOpenedForLoading( bool success )
+{
+  bool passwordLoaded = success;
+  if ( success ) {
+    if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
+      mWallet->setFolder( "pop3" );
+      if ( mWallet->hasEntry( identifier() ) )
+        mWallet->readPassword( identifier(), mPassword );
+      else
+        passwordLoaded = false;
+    }
+    else {
+      passwordLoaded = false;
+    }
+  }
+  delete mWallet;
+  mWallet = 0;
+
+  if ( !passwordLoaded ) {
+    QString queryText = buildLabelForPasswordDialog(
+        i18n( "You are asked here because the password could not be loaded from the wallet." ) );
+    showPasswordDialog( queryText );
+  }
+  else {
+    advanceState( Connect );
+  }
+}
+
+void POP3Resource::walletOpenedForSaving( bool success )
+{
+  if ( success ) {    
+    if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
+      if ( !mWallet->hasFolder( "pop3" ) ) {
+        mWallet->createFolder( "pop3" );
+      }
+      mWallet->setFolder( "pop3" );
+      mWallet->writePassword( identifier(), mPassword );
+      Settings::setStorePassword( true );
+    }
+  }
+  else
+    kWarning() << "Unable to write the password to the wallet.";
+
+  delete mWallet;
+  mWallet = 0;
+  finish();
+}
+
+
+void POP3Resource::showPasswordDialog( const QString &queryText )
+{
+  QString login = Settings::login();
+  bool rememberPassword = Settings::storePassword();
+
+  // FIXME: give this a proper parent widget
+  if ( KIO::PasswordDialog::getNameAndPassword(
+       login, mPassword, &rememberPassword, queryText,
+       false, name(), name(), i18n( "Account:" ) ) != KDialog::Accepted )
+    {
+    cancelSync( i18n( "No username and password supplied." ) );
+    return;
+  } else {
+    Settings::setLogin( login );
+    Settings::self()->writeConfig();
+    Settings::setStorePassword( false );
+    if ( rememberPassword ) {
+      // setStorePassword( true ) is called only after the password is written into
+      // the wallet, as otherwise, the resource thinks the password is in the wallet
+      // and loads an empty password from it
+      mSavePassword = true;
+    }
+
+    mAskAgain = false;
+    advanceState( Connect );
+  }
+}
+
+void POP3Resource::advanceState( State nextState )
+{
+  mState = nextState;
+  doStateStep();
+}
+
 void POP3Resource::doStateStep()
 {
   switch ( mState )
@@ -129,7 +224,7 @@ void POP3Resource::doStateStep()
   case FetchTargetCollection:
     {
       kDebug() << "================ Starting state FetchTargetCollection ==========";
-      emit status( Running, i18n( "Preparing transmission from \"%1\"...", name() ) );
+      emit status( Running, i18n( "Preparing transmission from \"%1\".", name() ) );
       Collection targetCollection( Settings::targetCollection() );
       if ( !targetCollection.isValid() ) {
         // No target collection set in the config? Try requesting a default inbox
@@ -156,54 +251,65 @@ void POP3Resource::doStateStep()
         connect( precommandJob, SIGNAL(result(KJob*)),
                  this, SLOT(precommandResult(KJob*)) );
         precommandJob->start();
-        emit status( Running, i18n( "Executing precommand..." ) );
+        emit status( Running, i18n( "Executing precommand." ) );
       }
       else {
-        mState = Connect;
-        doStateStep();
+        advanceState( RequestPassword );
       }
+      break;
+    }
+  case RequestPassword:
+    {
+      kDebug() << "================ Starting state RequestPassword ================";
+
+      // Don't show any wallet or password prompts when we are unit-testing
+      if ( !Settings::unitTestPassword().isEmpty() ) {
+        mPassword = Settings::unitTestPassword();
+        advanceState( Connect );
+        break;
+      }
+
+      const bool passwordNeeded = Settings::authenticationMethod() != "GSSAPI";
+      const bool loadPasswordFromWallet = Settings::storePassword() && !mAskAgain &&
+                                passwordNeeded && !Settings::login().isEmpty();
+      if ( loadPasswordFromWallet ) {
+        // FIXME: use a proper parent widget
+        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0,
+                                      Wallet::Asynchronous );
+        connect( mWallet, SIGNAL(walletOpened(bool)),
+                 this, SLOT(walletOpenedForLoading(bool)) );
+      }
+      else if ( passwordNeeded ) {
+        QString detail;
+        if ( mAskAgain )
+          detail = i18n( "You are asked here because the previous login was not successful." );
+        else if ( Settings::login().isEmpty() )
+          detail = i18n( "You are asked here because the username you supplied is empty." );
+        else if ( !Settings::storePassword() )
+          detail = i18n( "You are asked here because you choose to not store the password in the wallet." );
+
+        showPasswordDialog( buildLabelForPasswordDialog( detail ) );
+      }
+      else {
+        // No password needed, go on with Connect
+        advanceState( Connect );
+      }
+
       break;
     }
   case Connect:
     {
       kDebug() << "================ Starting state Connect ========================";
       Q_ASSERT( !mPopSession );
-      mPopSession = new POPSession();
+      mPopSession = new POPSession( mPassword );
       connect( mPopSession, SIGNAL( slaveError(int,const QString &)),
                this, SLOT(slotSessionError(int, const QString&)) );
-      mState = Login;
-      doStateStep();
+      advanceState( Login );
       break;
     }
   case Login:
     {
       kDebug() << "================ Starting state Login ==========================";
-      // Show the user/password dialog if needed
-      if ( ( mAskAgain || Settings::password().isEmpty() || Settings::login().isEmpty() ) &&
-           Settings::authenticationMethod() != "GSSAPI" ) {
-        QString password = Settings::password();
-        QString login = Settings::login();
-        bool rememberPassword = Settings::storePassword();
-
-        // FIXME: give this a proper parent widget
-        if ( KIO::PasswordDialog::getNameAndPassword(
-             login, password, &rememberPassword,
-             i18n( "You need to supply a username and a password to access this "
-                   "mailbox." ),
-             false, name(), name(), i18n( "Account:" ) ) != KDialog::Accepted )
-          {
-          cancelSync( i18n( "No username and password supplied." ) );
-          return;
-        } else {
-          Settings::setPassword( password );
-          Settings::setLogin( login );
-          Settings::setStorePassword( rememberPassword );
-          if ( rememberPassword ) {
-            Settings::self()->writeConfig();
-          }
-          mAskAgain = false;
-        }
-      }
 
       LoginJob *loginJob = new LoginJob( mPopSession );
       connect( loginJob, SIGNAL(result(KJob*)),
@@ -213,8 +319,8 @@ void POP3Resource::doStateStep()
     }
   case List:
     {
-      kDebug() << "================ Starting state List =============================";
-      emit status( Running, i18n( "Starting mail check..." ) );
+      kDebug() << "================ Starting state List ===========================";
+      emit status( Running, i18n( "Fetching mail listing." ) );
       ListJob *listJob = new ListJob( mPopSession );
       connect( listJob, SIGNAL(result(KJob*)),
                this, SLOT(listJobResult(KJob*)) );
@@ -232,7 +338,7 @@ void POP3Resource::doStateStep()
     break;
   case Download:
     {
-      kDebug() << "================ Starting state Download =========================";
+      kDebug() << "================ Starting state Download =======================";
       FetchJob *fetchJob = new FetchJob( mPopSession );
 
       // Determine which mails we want to download. Those are all mails which are
@@ -270,23 +376,22 @@ void POP3Resource::doStateStep()
     break;
   case Save:
     {
-      kDebug() << "================ Starting state Save =============================";
+      kDebug() << "================ Starting state Save ===========================";
       kDebug() << mPendingCreateJobs.size() << "item create jobs are pending";
       if ( mPendingCreateJobs.size() > 0 )
-        emit status( Running, i18n( "Saving downloaded messages..." ) );
+        emit status( Running, i18n( "Saving downloaded messages." ) );
 
       // It can happen that the create job map is empty, for example if there was no
       // mail to download or if all ItemCreateJob's finished before reaching this
       // stage
       if ( mPendingCreateJobs.isEmpty() ) {
-        mState = Delete;
-        doStateStep();
+        advanceState( Delete );
       }
     }
     break;
   case Delete:
     {
-      kDebug() << "================ Starting state Delete ===========================";
+      kDebug() << "================ Starting state Delete =========================";
       QList<int> idsToKill = idsToDelete();
       if ( !idsToKill.isEmpty() ) {
         emit status( Running, i18n( "Deleting messages from the server.") );
@@ -297,20 +402,35 @@ void POP3Resource::doStateStep()
         deleteJob->start();
       }
       else {
-        mState = Quit;
-        doStateStep();
+        advanceState( Quit );
       }
     }
     break;
   case Quit:
     {
-      kDebug() << "================ Starting state Quit =============================";
+      kDebug() << "================ Starting state Quit ===========================";
       QuitJob *quitJob = new QuitJob( mPopSession );
       connect( quitJob, SIGNAL(result(KJob*)),
                this, SLOT(quitJobResult(KJob*)) );
       quitJob->start();
     }
     break;
+  case SavePassword:
+    {
+      kDebug() << "================ Starting state SavePassword ===================";
+      if ( !mSavePassword )
+        finish();
+      else {
+        kDebug() << "Writing password back to the wallet.";
+        emit status( Running, i18n( "Saving password to the wallet." ) );
+        // FIXME: use a proper parent widget
+        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0,
+                                      Wallet::Asynchronous );
+        connect( mWallet, SIGNAL(walletOpened(bool)),
+                 this, SLOT(walletOpenedForSaving(bool)) );
+      }
+      break;
+    }
   }
 }
 
@@ -324,8 +444,7 @@ void POP3Resource::localFolderRequestJobFinished( KJob *job )
 
   mTargetCollection = SpecialCollections::self()->defaultCollection( SpecialCollections::Inbox );
   Q_ASSERT( mTargetCollection.isValid() );
-  mState = Precommand;
-  doStateStep();
+  advanceState( Precommand );
 }
 
 void POP3Resource::targetCollectionFetchJobFinished( KJob *job )
@@ -346,8 +465,7 @@ void POP3Resource::targetCollectionFetchJobFinished( KJob *job )
   }
   else {
     mTargetCollection = fetchJob->collections().first();
-    mState = Precommand;
-    doStateStep();
+    advanceState( Precommand );
   }
 }
 
@@ -359,8 +477,7 @@ void POP3Resource::precommandResult( KJob *job )
     return;
   }
   else {
-    mState = Connect;
-    doStateStep();
+    advanceState( RequestPassword );
   }
 }
 
@@ -373,8 +490,7 @@ void POP3Resource::loginJobResult( KJob *job )
                 '\n' + job->errorString() );
   }
   else {
-    mState = List;
-    doStateStep();
+    advanceState( List );
   }
 }
 
@@ -389,8 +505,7 @@ void POP3Resource::listJobResult( KJob *job )
     Q_ASSERT( listJob );
     mIdsToSizeMap = listJob->idList();
     kDebug() << "IdsToSizeMap:" << mIdsToSizeMap;
-    mState = UIDList;
-    doStateStep();
+    advanceState( UIDList );
   }
 }
 
@@ -417,8 +532,7 @@ void POP3Resource::uidListJobResult( KJob *job )
                   "work properly.", name() ) );
     }
 
-    mState = Download;
-    doStateStep();
+    advanceState( Download );
   }
 }
 
@@ -437,8 +551,7 @@ void POP3Resource::fetchJobResult( KJob *job )
                     "IDs, even though we requested their download:" << mIdsToDownload;
     }
 
-    mState = Save;
-    doStateStep();
+    advanceState( Save );
   }
 }
 
@@ -450,8 +563,8 @@ void POP3Resource::messageFinished( int messageId, KMime::Message::Ptr message )
     return;
   }
 
-  kDebug() << "Got message" << messageId
-           << "with subject" << message->subject()->asUnicodeString();
+  //kDebug() << "Got message" << messageId
+  //         << "with subject" << message->subject()->asUnicodeString();
 
   Akonadi::Item item;
   item.setMimeType( "message/rfc822" );
@@ -520,13 +633,12 @@ void POP3Resource::itemCreateJobResult( KJob *job )
   Q_ASSERT( idOfMessageJustCreated != -1 );
   mPendingCreateJobs.remove( createJob );
   mIDsStored.append( idOfMessageJustCreated );
-  kDebug() << "Just stored message with ID" << idOfMessageJustCreated
-           << "on the Akonadi server";
+  //kDebug() << "Just stored message with ID" << idOfMessageJustCreated
+  //         << "on the Akonadi server";
 
   // Have all create jobs finished? Go to the next state, then
   if ( mState == Save && mPendingCreateJobs.isEmpty() ) {
-    mState = Delete;
-    doStateStep();
+    advanceState( Delete );
   }
 }
 
@@ -636,7 +748,6 @@ QList<int> POP3Resource::idsToDelete() const
     }
   }
 
-  // I don't trust this enough...
   kDebug() << "Going to delete" << idsToDeleteFromServer.size() << idsToDeleteFromServer;
   return idsToDeleteFromServer;
 }
@@ -674,18 +785,11 @@ void POP3Resource::deleteJobResult( KJob *job )
   Settings::setSeenUidTimeList( timeOfSeenUids );
   Settings::self()->writeConfig(),
 
-  mState = Quit;
-  doStateStep();
+  advanceState( Quit );
 }
 
-void POP3Resource::quitJobResult( KJob *job )
+void POP3Resource::finish()
 {
-  if ( job->error() ) {
-    cancelSync( i18n( "Unable to complete the mail fetch." ) +
-                '\n' + job->errorString() );
-    return;
-  }
-
   kDebug() << "================= Mail check finished. =============================";
   saveSeenUIDList();
   if ( !mIntervalCheckInProgress )
@@ -698,6 +802,17 @@ void POP3Resource::quitJobResult( KJob *job )
                               mDownloadedIDs.size() ) );
 
   resetState();
+}
+
+void POP3Resource::quitJobResult( KJob *job )
+{
+  if ( job->error() ) {
+    cancelSync( i18n( "Unable to complete the mail fetch." ) +
+                '\n' + job->errorString() );
+    return;
+  }
+
+  advanceState( SavePassword );
 }
 
 void POP3Resource::slotSessionError( int errorCode, const QString &errorMessage )
@@ -790,6 +905,7 @@ void POP3Resource::resetState()
 {
   mState = Idle;
   mTargetCollection = Collection( -1 );
+  mPassword.clear();
   mIdsToSizeMap.clear();
   mIdsToUidsMap.clear();
   mDownloadedIDs.clear();
@@ -799,7 +915,12 @@ void POP3Resource::resetState()
   mDeletedIDs.clear();
   mUidListValid = false;
   mIntervalCheckInProgress = false;
+  mSavePassword = false;
   updateIntervalTimer();
+  if ( mWallet ) {
+    delete mWallet;
+    mWallet = 0;
+  }
 
   if ( mPopSession ) {
     // Closing the POP session means the KIO slave will get disconnected, which
@@ -816,8 +937,7 @@ void POP3Resource::startMailCheck()
   resetState();
   mIntervalTimer->stop();
   emit percent( 0 ); // Otherwise the value from the last sync is taken
-  mState = FetchTargetCollection;
-  doStateStep();
+  advanceState( FetchTargetCollection );
 }
 
 void POP3Resource::retrieveCollections()

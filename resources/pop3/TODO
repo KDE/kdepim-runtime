@@ -12,7 +12,6 @@ BUGS
 FEATURES
 --------
 
-- wallet
 - online/offline handling
 - filter on server
 - delete on server

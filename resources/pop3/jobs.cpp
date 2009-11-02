@@ -25,7 +25,8 @@
 #include <KDebug>
 #include <KLocalizedString>
 
-POPSession::POPSession()
+POPSession::POPSession( const QString &password )
+  : mPassword( password )
 {
   KIO::Scheduler::connect(
     SIGNAL( slaveError( KIO::Slave *, int, const QString & ) ), this,
@@ -99,7 +100,7 @@ KUrl POPSession::getUrl() const
     url.setProtocol( "pop3" );
 
   url.setUser( Settings::login() );
-  url.setPass( Settings::password() );
+  url.setPass( mPassword );
   url.setHost( Settings::host() );
   url.setPort( Settings::port() );
   return url;

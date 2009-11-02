@@ -26,9 +26,11 @@
 namespace Akonadi {
 class ItemCreateJob;
 }
+namespace KWallet {
+class Wallet;
+}
 
 class POPSession;
-
 class QTimer;
 
 class POP3Resource : public Akonadi::ResourceBase,
@@ -67,6 +69,9 @@ class POP3Resource : public Akonadi::ResourceBase,
     // For state Precommand
     void precommandResult( KJob *job );
 
+    // For state RequestPassword
+    void walletOpenedForLoading( bool success );
+
     // For state Login
     void loginJobResult( KJob *job );
 
@@ -90,12 +95,16 @@ class POP3Resource : public Akonadi::ResourceBase,
     // For state Quit
     void quitJobResult( KJob *job );
 
+    // For state SavePassword
+    void walletOpenedForSaving( bool success );
+
   private:
 
     enum State {
       Idle,
       FetchTargetCollection,
       Precommand,
+      RequestPassword,
       Connect,
       Login,
       List,
@@ -103,11 +112,13 @@ class POP3Resource : public Akonadi::ResourceBase,
       Download,
       Save,
       Delete,
-      Quit
+      Quit,
+      SavePassword
     };
 
     void resetState();
     void doStateStep();
+    void advanceState( State nextState );
     void cancelSync( const QString &errorMessage, bool error = true );
     void saveSeenUIDList();
     QList<int> idsToDelete() const;
@@ -115,6 +126,9 @@ class POP3Resource : public Akonadi::ResourceBase,
     int idOfOldestMessage( QList<int> &idList ) const;
     void startMailCheck();
     void updateIntervalTimer();
+    void showPasswordDialog( const QString &queryText );
+    QString buildLabelForPasswordDialog( const QString &detailedError ) const;
+    void finish();
 
     State mState;
     Akonadi::Collection mTargetCollection;
@@ -122,6 +136,9 @@ class POP3Resource : public Akonadi::ResourceBase,
     bool mAskAgain;
     QTimer *mIntervalTimer;
     bool mIntervalCheckInProgress;
+    QString mPassword;
+    bool mSavePassword;
+    KWallet::Wallet *mWallet;
 
     // Maps IDs on the server to message sizes on the server
     QMap<int,int> mIdsToSizeMap;
