@@ -90,7 +90,9 @@ bool CollectionSelectionProxyModel::setData( const QModelIndex &index, const QVa
     if ( index.column() != CalendarModel::CollectionTitle )
         return false;
     const Akonadi::Collection collection = Akonadi::collectionFromIndex( index );
-    Q_ASSERT( collection.isValid() );
+    if ( !collection.isValid() )
+      return false;
+
     const bool checked = value.toInt() == Qt::Checked;
     d->selectionModel->select( index, checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect );
     return true;
