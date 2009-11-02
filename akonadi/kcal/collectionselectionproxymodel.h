@@ -35,6 +35,7 @@ namespace Akonadi {
 
     class AKONADI_KCAL_EXPORT CollectionSelectionProxyModel : public QSortFilterProxyModel
     {
+      Q_OBJECT
     public:
         explicit CollectionSelectionProxyModel( QObject *parent=0 );
         ~CollectionSelectionProxyModel();

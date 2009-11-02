@@ -43,7 +43,6 @@ CollectionSelectionProxyModel::CollectionSelectionProxyModel( QObject *parent ) 
 
 CollectionSelectionProxyModel::~CollectionSelectionProxyModel()
 {
-  kDebug() << this;
   delete d;
 }
 
