@@ -26,6 +26,8 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
+class KJob;
+
 class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
@@ -37,13 +39,16 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
+  private Q_SLOTS:
+    void fetchCollectionResult( KJob *job );
+    void fetchItemResult( KJob *job );
+
   protected:
     virtual void doSetOnline( bool online );
 
   private:
-    class Private;
-    Private* const d;
-
+    bool handleInvitation( const QString &vcal );
+    
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     virtual void itemRemoved( const Akonadi::Item &item );
