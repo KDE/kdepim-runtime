@@ -1,0 +1,15 @@
+==== What's this ? ====
+
+This is an Akonadi resource to access DAV-enabled PIM storages.
+
+Actually only calendars and todo are supported, using either GroupDAV
+or CalDAV, but support for contacts (using GroupDAV and CardDAV) is planned.
+Finally support for notes over GroupDAV will be added.
+
+
+==== Build ====
+
+As this is an Akonadi resource still in playground you must copy it
+into kdepim/akonadi/resources/ and edit kdepim/akonadi/resources/CMakeLists.txt
+to add a line with 'add_subdirectory( dav )'.
+
