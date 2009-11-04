@@ -25,31 +25,60 @@
 #include <Akonadi/AgentBase>
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
+#include <Akonadi/ItemCreateJob>
 
 class KJob;
+
+namespace KCal {
+  class Calendar;
+  class Incidence;
+  class ScheduleMessage;
+}
+
+class InvitationsAgent;
+
+class InvitationsAgentItem : public QObject
+{
+    Q_OBJECT
+  public:
+    InvitationsAgentItem(InvitationsAgent *a, const Akonadi::Item &originalItem);
+    virtual ~InvitationsAgentItem();
+    void add(const Akonadi::Item &newItem);
+
+  private Q_SLOTS:
+    void createItemResult( KJob *job );
+    void fetchItemDone( KJob* );
+    void modifyItemDone( KJob *job );
+
+  private:
+    InvitationsAgent *a;
+    const Akonadi::Item originalItem;
+    QList<Akonadi::ItemCreateJob*> jobs;
+};
 
 class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 
   public:
-    InvitationsAgent( const QString &id );
-    ~InvitationsAgent();
+    explicit InvitationsAgent( const QString &id );
+    virtual ~InvitationsAgent();
+
+    Akonadi::Collection& invitations();
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
   private Q_SLOTS:
-    void fetchCollectionResult( KJob *job );
-    void fetchItemResult( KJob *job );
-
-  protected:
-    virtual void doSetOnline( bool online );
+    void fetchInvitationCollectionResult( KJob* );
 
   private:
-    bool handleInvitation( const QString &vcal );
-    
+    void init();
+    Akonadi::Item handleContent( const QString &vcal, KCal::Calendar* calendar, const Akonadi::Item &item );
+
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+
+    /*
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     virtual void itemRemoved( const Akonadi::Item &item );
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
@@ -61,6 +90,10 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     virtual void itemUnlinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
     virtual void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes );
+    */
+
+  private:
+    Akonadi::Collection m_invitations;
 };
 
 #endif // MAILDISPATCHERAGENT_H

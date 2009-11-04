@@ -30,8 +30,6 @@
 
 #include <KMime/Message>
 #include <KMime/Content>
-//#include <kmime/kmime_content.h>
-//#include <kmime/kmime_message.h>
 
 //#include <mailtransport/transport.h>
 //#include <mailtransport/transporttype.h>
@@ -44,71 +42,129 @@
 //#include <Akonadi/Item>
 //#include <Akonadi/ItemFetchJob>
 //#include <Akonadi/ItemFetchScope>
-//#include <Akonadi/ItemCreateJob>
 //#include <Akonadi/ItemModifyJob>
-//#include <Akonadi/CollectionFetchJob>
-//#include <Akonadi/CollectionFetchScope>
+
+//
 //#include <Akonadi/CollectionCreateJob>
 //#include <Akonadi/AgentManager>
 //#include <Akonadi/AgentInstance>
 //#include <akonadi/kmime/specialcollections.h>
 //#include <akonadi/kmime/specialcollectionsrequestjob.h>
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
+#include <kemailsettings.h>
+
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemModifyJob>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
+
+#include <akonadi/kmime/specialcollections.h>
+#include <akonadi/kmime/specialcollectionsrequestjob.h>
+#include <akonadi/kcal/incidenceattribute.h>
 
 #include <QFileInfo>
 #include <KDebug>
 #include <KSystemTimeZones>
 #include <KJob>
+#include <KLocale>
+
+#include <kpimidentities/identitymanager.h>
 
 AKONADI_AGENT_MAIN( InvitationsAgent )
 
 using namespace Akonadi;
 
-/*
-class KORGANIZER_INTERFACES_EXPORT CalendarAdaptor : public KCal::Calendar
+InvitationsAgentItem::InvitationsAgentItem(InvitationsAgent *a, const Akonadi::Item &originalItem)
+  : QObject(a), a(a), originalItem(originalItem)
 {
-  public:
-    explicit CalendarAdaptor() : KCal::Calendar( KOPrefs::instance()->timeSpec() ) {}
-    virtual ~CalendarAdaptor() {}
-    virtual bool save() { Q_ASSERT(false); return true; } //unused
-    virtual bool reload() { Q_ASSERT(false); return true; } //unused
-    virtual void close() { Q_ASSERT(false); } //unused
-    virtual bool addEvent( Event *event ) { Q_ASSERT(false); return true; }
-    virtual bool deleteEvent( Event *event ) { Q_ASSERT(false); return true; }
-    virtual void deleteAllEvents() { Q_ASSERT(false); } //unused
-    virtual Event::List rawEvents(KCal::EventSortField sortField = KCal::EventSortUnsorted, KCal::SortDirection sortDirection = KCal::SortDirectionAscending ) { Q_ASSERT(false); return Event::List; }
-    virtual Event::List rawEventsForDate( const KDateTime &dt ) { Q_ASSERT(false); return Event::List; }
-    virtual Event::List rawEvents( const QDate &start, const QDate &end, const KDateTime::Spec &timeSpec = KDateTime::Spec(), bool inclusive = false )  { Q_ASSERT(false); return Event::List; }
-    virtual Event::List rawEventsForDate( const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(), KCal::EventSortField sortField = KCal::EventSortUnsorted, KCal::SortDirection sortDirection = KCal::SortDirectionAscending ) { Q_ASSERT(false); return Event::List; }
-    virtual Event *event( const QString &uid ) { Q_ASSERT(false); return 0; }
-    virtual bool addTodo( Todo *todo ) { Q_ASSERT(false); return true; }
-    virtual bool deleteTodo( Todo *todo ) { Q_ASSERT(false); return true; }
-    virtual void deleteAllTodos() { Q_ASSERT(false); } //unused
-    virtual Todo::List rawTodos( KCal::TodoSortField sortField = KCal::TodoSortUnsorted, KCal::SortDirection sortDirection = KCal::SortDirectionAscending ) { Q_ASSERT(false); return Todo::List; }
-    virtual Todo::List rawTodosForDate( const QDate &date ) { Q_ASSERT(false); return Todo::List; }
-    virtual Todo *todo( const QString &uid ) { Q_ASSERT(false); return 0; }
-    virtual bool addJournal( Journal *journal ) { Q_ASSERT(false); return true; }
-    virtual bool deleteJournal( Journal *journal ) { Q_ASSERT(false); return true; }
-    virtual void deleteAllJournals() { Q_ASSERT(false); }
-    virtual Journal::List rawJournals( KCal::JournalSortField sortField = KCal::JournalSortUnsorted, KCal::SortDirection sortDirection = KCal::SortDirectionAscending ) { Q_ASSERT(false); return Journal::List; }
-    virtual Journal::List rawJournalsForDate( const QDate &dt ) { Q_ASSERT(false); return Journal::List; }
-    virtual Journal *journal( const QString &uid ) { Q_ASSERT(false); return 0; }
-    virtual Alarm::List alarms( const KDateTime &from, const KDateTime &to ) { Q_ASSERT(false); return Alarm::List; }
-};
-*/
+}
+
+InvitationsAgentItem::~InvitationsAgentItem()
+{
+}
+
+void InvitationsAgentItem::add(const Akonadi::Item &newItem)
+{
+  Akonadi::ItemCreateJob *j = new Akonadi::ItemCreateJob( newItem, a->invitations() );
+  connect( j, SIGNAL( result( KJob* ) ), this, SLOT( createItemResult( KJob* ) ) );
+  jobs << j;
+  j->start();
+}
+
+void InvitationsAgentItem::createItemResult( KJob *job )
+{
+  Akonadi::ItemCreateJob *j = static_cast<Akonadi::ItemCreateJob*>( job );
+  jobs.removeAll( j );
+  if( j->error() ) {
+    kWarning() << "Failed to create new Akonadi::Item in invitations collection." << j->errorText();
+    return;
+  }
+
+  if( ! jobs.isEmpty() ) {
+    return;
+  }
+
+  Akonadi::ItemFetchJob *fj = new Akonadi::ItemFetchJob( originalItem, this );
+  connect( fj, SIGNAL( result( KJob* ) ), this, SLOT( fetchItemDone( KJob* ) ) );
+  fj->start();
+}
+
+void InvitationsAgentItem::fetchItemDone( KJob *job )
+{
+  if( job->error() ) {
+    kWarning() << "Failed to fetch Akonadi::Item in invitations collection." << job->errorText();
+    return;
+  }
+
+  Akonadi::ItemFetchJob *fj = static_cast<Akonadi::ItemFetchJob*>( job );
+  Q_ASSERT( fj->items().count() == 1 );
+  Akonadi::Item modifiedItem = fj->items().first();
+  Q_ASSERT( modifiedItem.isValid() );
+  modifiedItem.setFlag( "invitation" );
+  Akonadi::ItemModifyJob *mj = new Akonadi::ItemModifyJob( modifiedItem, this );
+  connect( mj, SIGNAL( result( KJob* ) ), this, SLOT( modifyItemDone( KJob* ) ) );
+  mj->start();  
+}
+
+void InvitationsAgentItem::modifyItemDone( KJob *job )
+{
+  if( job->error() ) {
+    kWarning() << "Failed to modify Akonadi::Item in invitations collection." << job->errorText();
+    return;
+  }
+
+  //Akonadi::ItemModifyJob *mj = static_cast<Akonadi::ItemModifyJob*>( job );
+  //kDebug()<<"Job successful done.";
+}
 
 InvitationsAgent::InvitationsAgent( const QString &id )
-  : Akonadi::AgentBase( id )
-  , Akonadi::AgentBase::ObserverV2()
+  : Akonadi::AgentBase( id ), Akonadi::AgentBase::ObserverV2() //, m m_IdentityManager( 0 )
 {
-  kDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-
+  kDebug();
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Akonadi::Monitor
+
+  if( Akonadi::SpecialCollections::self()->hasDefaultCollection( Akonadi::SpecialCollections::Invitations ) ) {
+    m_invitations = Akonadi::SpecialCollections::self()->defaultCollection( Akonadi::SpecialCollections::Invitations );
+    Q_ASSERT( m_invitations.isValid() );
+    init();
+  } else {
+    emit status( AgentBase::Running, "Loading..." );
+
+    Akonadi::SpecialCollectionsRequestJob *j = new Akonadi::SpecialCollectionsRequestJob;
+    connect( j, SIGNAL( result( KJob* ) ), this, SLOT( fetchInvitationCollectionResult( KJob* ) ) );
+    j->requestDefaultCollection( Akonadi::SpecialCollections::Invitations );
+    j->start();
+  }
+}
+
+InvitationsAgent::~InvitationsAgent()
+{
+}
+
+void InvitationsAgent::init()
+{
   changeRecorder()->itemFetchScope().fetchFullPayload(); //FIXME don't fetch all!
   //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType() );
   //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType() );
@@ -117,143 +173,129 @@ InvitationsAgent::InvitationsAgent( const QString &id )
   //changeRecorder()->setMimeTypeMonitored( "text/calendar", true );
   changeRecorder()->setMimeTypeMonitored( "message/rfc822", true );
   //changeRecorder()->setCollectionMonitored( Collection::root(), true );
-
-  //setNeedsNetwork( true );
-  //setOnline( true );
-  emit status( AgentBase::Idle, "Ready to move invitations into calendars" );
+  
+  emit status( AgentBase::Idle, "Ready to dispatch invitations" );
 }
 
-InvitationsAgent::~InvitationsAgent()
+Akonadi::Collection& InvitationsAgent::invitations()
 {
-  kDebug() << "!!!!!!!!!!!!!!!!!!!";
+  return m_invitations;
 }
 
-class MyCollectionFetchJob : public Akonadi::CollectionFetchJob
+#if 0
+KPIMIdentities::IdentityManager* InvitationsAgent::identityManager()
 {
-  public:
-    explicit MyCollectionFetchJob( KCal::ScheduleMessage *message )
-      : Akonadi::CollectionFetchJob( Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive )
-      , m_message( message )
-    {
-    }
-    ~MyCollectionFetchJob()
-    {
-    }
-    KCal::ScheduleMessage *m_message;
-};
-
-class MyItemFetchJob : public Akonadi::ItemFetchJob
-{
-  public:
-    MyItemFetchJob( const Akonadi::Collection &c, KCal::ScheduleMessage *message )
-      : Akonadi::ItemFetchJob( c )
-      , m_message( message )
-    {
-    }
-    ~MyItemFetchJob()
-    {
-    }
-    KCal::ScheduleMessage *m_message;
-};
-
-bool InvitationsAgent::handleInvitation( const QString &vcal )
-{
-  KCal::CalendarLocal calendar( KSystemTimeZones::local() ) ;
-  KCal::ICalFormat format;
-  KCal::ScheduleMessage *message = format.parseScheduleMessage( &calendar, vcal );
-  if( ! message ) {
-    kWarning() << "Invalid invitation:" << vcal;
-    return false;
-  }
-
-  Q_ASSERT( message->event() );
-
-  Akonadi::CollectionFetchJob *cfj = new MyCollectionFetchJob( message );
-  Akonadi::CollectionFetchScope cfs;
-  cfs.setIncludeStatistics( false );
-  cfs.setContentMimeTypes( QStringList() << "text/calendar" );
-  cfj->setFetchScope(cfs);
-  connect( cfj, SIGNAL( result( KJob* ) ), this, SLOT( fetchCollectionResult( KJob* ) ) );
-  cfj->start();
-
-  /*
-  const QString query = "SELECT ?id { ?remoteId \""+ incidence->uid() +"\" }";
-  Akonadi::ItemSearchJob* job = new Akonadi::ItemSearchJob( query );
-  job->fetchScope().fetchFullPayload();
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( searchResult( KJob* ) ) );
-  */
-
-  return true;
+  if( ! m_IdentityManager)
+    m_IdentityManager = new KPIMIdentities::IdentityManager( true /* readonly */, this );
+  return m_IdentityManager;
 }
-
-void InvitationsAgent::fetchCollectionResult( KJob *job )
-{
-  MyCollectionFetchJob *cfj = static_cast<MyCollectionFetchJob*>( job );
-  KCal::Incidence *incidence = static_cast<KCal::Incidence*>( cfj->m_message->event() );
-  Q_ASSERT( incidence );
-
-  foreach( const Akonadi::Collection &c, cfj->collections() ) {
-    if( ! c.contentMimeTypes().contains("text/calendar") )
-      continue;
-
-    Akonadi::ItemFetchJob *ifj = new MyItemFetchJob( c, cfj->m_message );
-    ItemFetchScope ifs;
-    ifs.fetchAllAttributes( true );
-    ifs.fetchFullPayload( true );
-    ifj->setFetchScope( ifs );
-    connect( ifj, SIGNAL( result( KJob* ) ), this, SLOT( fetchItemResult( KJob* ) ) );
-    ifj->start();
-  }
-}
-
-void InvitationsAgent::fetchItemResult( KJob *job )
-{
-  MyItemFetchJob *ifj = static_cast<MyItemFetchJob*>( job );
-  foreach( const Akonadi::Item &itm, ifj->items() ) {
-    if( ! itm.hasPayload<KCal::Incidence::Ptr>() )
-      continue;
-
-    KCal::Incidence::Ptr inc = itm.payload<KCal::Incidence::Ptr>();
-    if( itm.remoteId() != inc->uid() )
-      continue;
-
-    // time to deliver the new KCal::ScheduleMessage...
-    kDebug() << "status=" << ifj->m_message->status() << "item=" << inc->uid() << inc->summary();
-
-    //TODO
-    
-  }
-}
+#endif
 
 void InvitationsAgent::configure( WId windowId )
 {
   kDebug() << windowId;
 }
 
-void InvitationsAgent::doSetOnline( bool online )
+void InvitationsAgent::fetchInvitationCollectionResult( KJob *job )
 {
-  kDebug() << online;
+  Akonadi::SpecialCollectionsRequestJob *j = static_cast<Akonadi::SpecialCollectionsRequestJob*>( job );
+  if( j->error() ) {
+    emit status( AgentBase::Broken, i18n("Failed to fetch the invitations collection: ",j->errorText()) );
+    return;
+  }
+  m_invitations = j->collection();
+  Q_ASSERT( m_invitations.isValid() );
+  init();
+}
+
+#if 0
+void InvitationsAgent::fetchCollectionResult( KJob *job )
+{
+  kDebug();
+  /*
+  Akonadi::CollectionFetchJob *j = static_cast<Akonadi::CollectionFetchJob*>( job );
+  //foreach( const Akonadi::Collection &c, j->collections() )
+  Akonadi::Collection collection;
+  collection.setParent( Akonadi::Collection::root() );
+  collection.setName( "Invitations" );
+  collection.setContentMimeTypes( QStringList() << "text/calendar" );
+  */
+}
+#endif
+
+Akonadi::Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calendar, const Akonadi::Item &item )
+{
+  KCal::ICalFormat format;
+  KCal::ScheduleMessage *message = format.parseScheduleMessage( calendar, vcal );
+  if( ! message ) {
+    kWarning() << "Invalid invitation:" << vcal;
+    return Akonadi::Item();
+  }
+
+  kDebug() << "id=" << item.id() << "remoteId=" << item.remoteId() << "vcal=" << vcal;
+
+  KCal::Incidence* incidence = static_cast<KCal::Incidence*>( message->event() );
+  Q_ASSERT( incidence );
+
+  Akonadi::IncidenceAttribute *attr = new Akonadi::IncidenceAttribute;
+  attr->setStatus( "new" ); //TODO
+  //attr->setFrom( message->from()->asUnicodeString() );
+  attr->setReference( item.id() );
+
+  Akonadi::Item newItem;
+  newItem.setMimeType( QString::fromLatin1("application/x-vnd.akonadi.calendar.%1").arg(QLatin1String(incidence->type().toLower())) );
+  newItem.addAttribute( attr );
+  newItem.setPayload<KCal::Incidence::Ptr>( KCal::Incidence::Ptr(incidence->clone()) );
+  return newItem;
 }
 
 void InvitationsAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  if( ! item.hasPayload<KMime::Message::Ptr>() )
+  if( ! m_invitations.isValid() ) {
     return;
+  }
 
-  // check if there is an invitation attachment
+  if( ! item.hasPayload<KMime::Message::Ptr>() ) {
+    return;
+  }
+
   KMime::Message::Ptr message = item.payload<KMime::Message::Ptr>();
+
+  //TODO check if we are the sender and need to ignore the message...
+  //const QString sender = message->sender()->asUnicodeString();
+  //if( identityManager()->thatIsMe(sender) ) return;
+
+  KCal::CalendarLocal calendar( KSystemTimeZones::local() ) ;
   if( message->contentType()->isMultipart() ) {
+    InvitationsAgentItem *it = 0;
     foreach( KMime::Content *c, message->attachments() ) {
       KMime::Headers::ContentDisposition *ds = c->header< KMime::Headers::ContentDisposition >();
-      Q_ASSERT(ds);
-      if( ds && c->hasContent() && QFileInfo(ds->filename()).suffix().toLower() == "ics" ) {
-        kDebug() << "id=" << item.id() << "remoteId=" << item.remoteId() << "attachment=" << ds->filename() << "bidy=" << c->body();
-        handleInvitation( c->body() );
+      if( !ds || QFileInfo(ds->filename()).suffix().toLower() != "ics" ) {
+        continue;
       }
+      Akonadi::Item newItem = handleContent( c->body(), &calendar, item );
+      if( ! newItem.hasPayload() ) {
+        continue;
+      }
+      if( ! it) {
+        it = new InvitationsAgentItem( this, item );
+      }
+      it->add( newItem );
     }
+  } else {
+
+    //TODO check what is allowed/possible here.
+    Akonadi::Item newItem = handleContent( message->body(), &calendar, item );
+    if( ! newItem.hasPayload() ) {
+      return;
+    }
+    InvitationsAgentItem *it = new InvitationsAgentItem( this, item );
+    it->add( newItem );
   }
+
 }
 
+#if 0
 void InvitationsAgent::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers )
 {
   //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
@@ -303,3 +345,4 @@ void InvitationsAgent::collectionChanged( const Akonadi::Collection &collection,
 {
   //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
 }
+#endif

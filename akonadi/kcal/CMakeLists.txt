@@ -23,6 +23,7 @@ set( kcalakonadi_LIB_SRC
      itembrowser.cpp
      akonadicalendar.cpp
      utils.cpp
+     incidenceattribute.cpp
 )
 
 kde4_add_library( akonadi-kcal SHARED ${kcalakonadi_LIB_SRC} )

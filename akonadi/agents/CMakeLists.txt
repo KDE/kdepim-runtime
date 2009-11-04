@@ -1,4 +1,5 @@
 add_subdirectory( maildispatcher )
+add_subdirectory( invitations )
 add_subdirectory( calendarsearch )
 
 if( Nepomuk_FOUND AND STRIGI_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
