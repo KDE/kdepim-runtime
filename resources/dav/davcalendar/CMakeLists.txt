@@ -64,6 +64,6 @@ qt4_add_dbus_adaptor(davcalendarresource_SRCS
 
 kde4_add_executable(akonadi_davcalendar_resource RUN_UNINSTALLED ${davcalendarresource_SRCS})
 
-target_link_libraries(akonadi_davcalendar_resource ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} akonadi-kcal)
+target_link_libraries(akonadi_davcalendar_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} akonadi-kcal)
 
 install(TARGETS akonadi_davcalendar_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
