@@ -1,4 +1,5 @@
 add_subdirectory( maildispatcher )
+add_subdirectory( calendarsearch )
 
 if( Nepomuk_FOUND AND STRIGI_FOUND AND SOPRANO_PLUGIN_RAPTORPARSER_FOUND )
     include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder ${CMAKE_CURRENT_BINARY_DIR}/ontologies ${STRIGI_INCLUDE_DIR})
