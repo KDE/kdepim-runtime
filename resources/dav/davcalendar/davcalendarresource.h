@@ -25,7 +25,7 @@
 
 namespace Akonadi {
   class KCalMimeTypeVisitor;
-};
+}
 
 class davCalendarResource : public Akonadi::ResourceBase,
                             public Akonadi::AgentBase::Observer
