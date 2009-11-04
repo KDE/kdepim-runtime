@@ -17,6 +17,8 @@
 */
 
 #include <QVariant>
+#include <QFile>
+#include <QDataStream>
 
 #include <kio/davjob.h>
 #include <kio/jobclasses.h>
@@ -24,6 +26,7 @@
 #include <kio/deletejob.h>
 #include <klocalizedstring.h>
 #include <kdebug.h>
+#include <kstandarddirs.h>
 
 #include "davaccessor.h"
 
@@ -35,6 +38,49 @@ davItem::davItem()
 davItem::davItem( const QString &u, const QString &c, const QByteArray &d )
   : url( u ), contentType( c ), data( d )
 {
+}
+
+QDataStream& operator<<( QDataStream &out, const davItem &item )
+{
+  out << item.url;
+  out << item.contentType;
+  out << item.data;
+  return out;
+}
+
+QDataStream& operator>>( QDataStream &in, davItem &item)
+{
+  in >> item.url;
+  in >> item.contentType;
+  in >> item.data;
+  return in;
+}
+
+davAccessor::davAccessor()
+{
+  kDebug() << "Loading cache from disk";
+  
+  QString tmp = KStandardDirs::locateLocal( "cache", "akonadi-dav/etags" );
+  if( QFile::exists( tmp ) ) {
+    QFile etagsCacheFile( tmp );
+    if( etagsCacheFile.open( QIODevice::ReadOnly ) ) {
+      QDataStream in( &etagsCacheFile );
+      in >> etagsCache;
+      etagsCacheFile.close();
+    }
+  }
+  
+  tmp = KStandardDirs::locateLocal( "cache", "akonadi-dav/items" );
+  if( QFile::exists( tmp ) ) {
+    QFile itemsCacheFile( tmp );
+    if( itemsCacheFile.open( QIODevice::ReadOnly ) ) {
+      QDataStream in( &itemsCacheFile );
+      in >> itemsCache;
+      itemsCacheFile.close();
+    }
+  }
+  
+  kDebug() << "Done loading cache from disk";
 }
 
 davAccessor::~davAccessor()
@@ -108,6 +154,35 @@ void davAccessor::validateCache()
   kDebug() << "Finished cache validation";
 }
 
+void davAccessor::saveCache()
+{
+  kDebug() << "Saving cache to disk";
+  
+  QFile etagsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/etags" ) );
+  QFile itemsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/items" ) );
+  
+  if( ! etagsCacheFile.open( QIODevice::WriteOnly ) ) {
+    emit accessorError( i18n( "Unable to open cache file for writing : %1" ).arg( etagsCacheFile.errorString() ), false );
+    return;
+  }
+  
+  if( ! itemsCacheFile.open( QIODevice::WriteOnly ) ) {
+    emit accessorError( i18n( "Unable to open cache file for writing : %1" ).arg( itemsCacheFile.errorString() ), false );
+    return;
+  }
+  
+  QDataStream out( &etagsCacheFile );
+  out.setVersion( QDataStream::Qt_4_6 );
+  out << etagsCache;
+  etagsCacheFile.close();
+  
+  out.setDevice( &itemsCacheFile );
+  out << itemsCache;
+  itemsCacheFile.close();
+  
+  kDebug() << "Done saving cache to disk";
+}
+
 KIO::DavJob* davAccessor::doPropfind( const KUrl &url, const QDomDocument &props, const QString &davDepth )
 {
   KIO::DavJob *job = KIO::davPropFind( url, props, davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
@@ -161,6 +236,7 @@ davItemCacheStatus davAccessor::itemCacheStatus( const QString &url, const QStri
 
 davItem davAccessor::getItemFromCache( const QString &url )
 {
+  kDebug() << "Serving " << url << " from cache";
   return itemsCache.value( url );
 }
 

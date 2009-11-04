@@ -254,7 +254,7 @@ void davCalendarResource::accessorRetrievedCollections()
 
 void davCalendarResource::accessorRetrievedItem( const davItem &item )
 {
-  kDebug() << "Accessor retrieved a new item at " << item.url;
+  kDebug() << "Accessor retrieved an item at " << item.url;
   
   Akonadi::Item i = createItem( item.data );
   i.setRemoteId( item.url );
@@ -341,6 +341,7 @@ void davCalendarResource::backendItemsRemoved( const QList<davItem> &items )
   
   itemsRetrievedIncremental( Akonadi::Item::List(), removed );
   itemsRetrievalDone();
+  accessor->saveCache();
 }
 
 void davCalendarResource::accessorStatus( const QString &s )

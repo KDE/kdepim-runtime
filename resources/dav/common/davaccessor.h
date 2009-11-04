@@ -41,6 +41,9 @@ struct davItem
   QByteArray data;
 };
 
+QDataStream& operator<<( QDataStream &out, const davItem &item );
+QDataStream& operator>>( QDataStream &in, davItem &item);
+
 enum davItemCacheStatus {
   NOT_CACHED,
   EXPIRED,
@@ -52,12 +55,14 @@ class davAccessor : public QObject
   Q_OBJECT
   
   public:
+    davAccessor();
     virtual ~davAccessor();
     virtual void retrieveCollections( const KUrl &url ) = 0;
     virtual void retrieveItems( const KUrl &url ) = 0;
     virtual void retrieveItem( const KUrl &url ) = 0;
     virtual void putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag = false );
     virtual void removeItem( const KUrl &url );
+    void saveCache();
     
   public Q_SLOTS:
     void validateCache();
