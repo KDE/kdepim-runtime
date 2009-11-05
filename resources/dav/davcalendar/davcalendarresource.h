@@ -67,9 +67,10 @@ class davCalendarResource : public Akonadi::ResourceBase,
   private:
     void createAccessor();
     Akonadi::Item createItem( const QByteArray &data );
+    
     Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
     davAccessor *accessor;
-    
+    Akonadi::Collection davCollectionRoot;
     QMap<QString, Akonadi::Item> putItems;
 };
 

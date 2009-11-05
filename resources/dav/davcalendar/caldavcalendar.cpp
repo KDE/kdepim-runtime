@@ -83,10 +83,15 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
     if( tmp.length() == 0 )
       continue;
     href = tmp.item( 0 ).firstChild().toText().data();
+    
+    if( !href.endsWith( "/" ) )
+      href.append( "/" );
+    
     if( href.startsWith( "/" ) )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
+    href = QUrl::fromPercentEncoding( url.url().toAscii() );
     
     tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
     if( tmp.length() == 0 )
@@ -130,9 +135,10 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
     if( tmp.length() != 0 )
       displayname = tmp.item( 0 ).firstChild().toText().data();
     else
-      displayname = "GroupDAV calendar at " + url.url();
+      displayname = "CalDAV calendar at " + href;
     
-    emit( collectionRetrieved( url.url(), displayname ) );
+    kDebug() << "Seen collection at " << href << " (url)" << url.url();
+    emit( collectionRetrieved( href, displayname ) );
   }
   
   emit collectionsRetrieved();
@@ -175,7 +181,8 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     return;
   }
   
-  clearSeenUrls( job->url().url() );
+  QString collectionUrl = QUrl::fromPercentEncoding( job->url().url().toAscii() );
+  clearSeenUrls( collectionUrl );
   
   QDomDocument xml = job->response();
   QDomElement root = xml.documentElement();
@@ -197,15 +204,17 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     if( tmp.length() == 0 )
       continue;
     href = tmp.item( 0 ).firstChild().toText().data();
+    kDebug() << "Got href : " << href;
     if( href.startsWith( "/" ) )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = url.url();
+    href = QUrl::fromPercentEncoding( url.url().toAscii() );
     
     // NOTE: nothing below should invalidate the item (return an error
     // and exit the function)
     seenUrl( job->url().url(), href );
+    kDebug() << "Seen item at " << href << " in collection " << job->url().url();
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
     if( tmp.length() != 0 ) {
@@ -218,10 +227,10 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
       }
     }
     
-    fetchItemsQueue[job->url().url()] << href;
+    fetchItemsQueue[collectionUrl] << href;
   }
   
-  runItemsFetch( job->url().url() );
+  runItemsFetch( collectionUrl );
 }
 
 void caldavCalendarAccessor::runItemsFetch( const QString &collection )
@@ -293,7 +302,7 @@ void caldavCalendarAccessor::multigetFinished( KJob *j )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = url.url();
+    href = QUrl::fromPercentEncoding( url.url().toAscii() );
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
     if( tmp.length() == 0 )

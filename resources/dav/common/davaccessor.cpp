@@ -115,6 +115,9 @@ void davAccessor::putItem( const KUrl &url, const QString &contentType, const QB
 void davAccessor::removeItem( const KUrl &url )
 {
   QString etag = etagsCache.value( url.url() );
+  
+  kDebug() << "Requesting removal of item at " << url.url() << " with etag " << etag;
+  
   if( etag.isEmpty() )
     emit( accessorError( i18n( "No item on the remote server for URL %1", url.url() ), true ) );
   
@@ -122,6 +125,13 @@ void davAccessor::removeItem( const KUrl &url )
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", "If-Match: "+etag );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemDelFinished( KJob* ) ) );
+  connect(job, SIGNAL(warning(KJob*, const QString&, const QString&)), this, SLOT(jobWarning(KJob*, const QString&, const QString&)));
+}
+
+void davAccessor::jobWarning( KJob* j, const QString &p, const QString &r )
+{
+  kDebug() << "Warning : " << p;
+  emit accessorError( p, true );
 }
 
 void davAccessor::validateCache()
@@ -254,6 +264,8 @@ void davAccessor::itemDelFinished( KJob *j )
     return;
   }
   
+  kDebug() << job->queryMetaData( "HTTP-Headers" );
+  
   if( job->error() && job->queryMetaData( "response-code" ) != "404" ) {
     emit accessorError( job->errorString(), true );
     return;
@@ -294,23 +306,22 @@ void davAccessor::itemPutFinished( KJob *j )
   
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
   
-  // NOTE: check if aborting here can lead to troubles
-  if( etag.isEmpty() ) {
-    emit accessorError( i18n( "The server returned an invalid answer (no etag header)" ), true );
-    return;
-  }
+  kDebug() << "Last put item at (old)" << oldUrl.url() << " (new)" << newUrl.url() << " (etag)" << etag;
+  kDebug() << job->queryMetaData( "HTTP-Headers" );
   
-  etagsCache[newUrl.url()] = etag;
-  
-  if( oldUrl != newUrl ) {
-    if( etagsCache.contains( oldUrl.url() ) ) {
-      etagsCache.remove( oldUrl.url() );
-    }
-    if( itemsCache.contains( oldUrl.url() ) ) {
-      // itemsCache[oldUrl.url()] has been modified by putItem() before the job starts
-      itemsCache[newUrl.url()] = itemsCache[oldUrl.url()];
-      itemsCache[newUrl.url()].url = newUrl.url();
-      itemsCache.remove( oldUrl.url() );
+  if( !etag.isEmpty() ) {
+    etagsCache[newUrl.url()] = etag;
+    
+    if( oldUrl != newUrl ) {
+      if( etagsCache.contains( oldUrl.url() ) ) {
+        etagsCache.remove( oldUrl.url() );
+      }
+      if( itemsCache.contains( oldUrl.url() ) ) {
+        // itemsCache[oldUrl.url()] has been modified by putItem() before the job starts
+        itemsCache[newUrl.url()] = itemsCache[oldUrl.url()];
+        itemsCache[newUrl.url()].url = newUrl.url();
+        itemsCache.remove( oldUrl.url() );
+      }
     }
   }
   
@@ -333,7 +344,7 @@ QString davAccessor::getEtagFromHeaders( const QString &headers )
   QStringList allHeaders = headers.split( "\n" );
   
   foreach( QString hdr, allHeaders ) {
-    if( hdr.startsWith( "etag:" ) ) {
+    if( hdr.startsWith( "etag:", Qt::CaseInsensitive ) ) {
       etag = hdr.section( ' ', 1 );
     }
   }

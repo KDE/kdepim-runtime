@@ -82,6 +82,7 @@ class davAccessor : public QObject
   private Q_SLOTS:
     void itemPutFinished( KJob *j );
     void itemDelFinished( KJob *j );
+    void jobWarning( KJob*, const QString&, const QString& );
     
   private:
     QMap<QString, QSet<QString> > lastSeenItems; // collection url, items url

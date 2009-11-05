@@ -114,10 +114,15 @@ void groupdavCalendarAccessor::collectionsPropfindFinished( KJob *j )
     if( tmp.length() == 0 )
       continue;
     href = tmp.item( 0 ).firstChild().toText().data();
+    
+    if( !href.endsWith( "/" ) )
+      href.append( "/" );
+    
     if( href.startsWith( "/" ) )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
+    href = QUrl::fromPercentEncoding( url.url().toAscii() );
     
     tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
     if( tmp.length() == 0 )
@@ -145,9 +150,9 @@ void groupdavCalendarAccessor::collectionsPropfindFinished( KJob *j )
     if( tmp.length() != 0 )
       displayname = tmp.item( 0 ).firstChild().toText().data();
     else
-      displayname = "GroupDAV calendar at " + url.url();
+      displayname = "GroupDAV calendar at " + href;
     
-    emit( collectionRetrieved( url.url(), displayname ) );
+    emit( collectionRetrieved( href, displayname ) );
   }
   
   emit collectionsRetrieved();
@@ -164,7 +169,8 @@ void groupdavCalendarAccessor::itemsPropfindFinished( KJob *j )
     return;
   }
   
-  clearSeenUrls( job->url().url() );
+  QString collectionUrl = QUrl::fromPercentEncoding( job->url().url().toAscii() );
+  clearSeenUrls( collectionUrl );
   
   QDomDocument xml = job->response();
   QDomElement root = xml.documentElement();
@@ -190,7 +196,7 @@ void groupdavCalendarAccessor::itemsPropfindFinished( KJob *j )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = url.url();
+    href = QUrl::fromPercentEncoding( url.url().toAscii() );
     
     tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
     if( tmp.length() == 0 )
@@ -206,7 +212,7 @@ void groupdavCalendarAccessor::itemsPropfindFinished( KJob *j )
     
     // NOTE: nothing below should invalidate the item (return an error
     // and exit the function)
-    seenUrl( job->url().url(), href );
+    seenUrl( collectionUrl, href );
     
     tmp = propstat.elementsByTagNameNS( "DAV:", "getetag" );
     if( tmp.length() != 0 ) {
@@ -237,7 +243,7 @@ void groupdavCalendarAccessor::itemGetFinished( KJob *j )
   }
   
   QByteArray d = job->data();
-  QString url = job->url().url();
+  QString url = QUrl::fromPercentEncoding( job->url().url().toAscii() );
   QString mimeType = job->queryMetaData( "content-type" );
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
   

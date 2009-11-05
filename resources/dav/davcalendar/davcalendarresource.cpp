@@ -48,6 +48,25 @@ davCalendarResource::davCalendarResource( const QString &id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
+  davCollectionRoot.setParentCollection( Akonadi::Collection::root() );
+  davCollectionRoot.setName( name() );
+  davCollectionRoot.setRemoteId( "davcalendar_resource" );
+  
+  int refreshInterval = Settings::self()->refreshInterval();
+  if( refreshInterval == 0 )
+    refreshInterval = -1;
+  
+  Akonadi::CachePolicy cachePolicy;
+  cachePolicy.setInheritFromParent( false );
+  cachePolicy.setSyncOnDemand( true );
+  cachePolicy.setCacheTimeout( -1 );
+  cachePolicy.setIntervalCheckTime( refreshInterval );
+  davCollectionRoot.setCachePolicy( cachePolicy );
+  
+  QStringList mimeTypes;
+  mimeTypes << "inode/directory";
+  davCollectionRoot.setContentMimeTypes( mimeTypes );
+  
   changeRecorder()->fetchCollection( true );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
@@ -57,9 +76,7 @@ davCalendarResource::davCalendarResource( const QString &id )
 
 davCalendarResource::~davCalendarResource()
 {
-  if( accessor ) {
-    delete accessor;
-  }
+  delete accessor;
 }
 
 void davCalendarResource::retrieveCollections()
@@ -75,6 +92,11 @@ void davCalendarResource::retrieveCollections()
   setCollectionStreamingEnabled( true );
   
   emit status( Running, i18n( "Fetching collections" ) );
+  
+  Akonadi::Collection::List tmp;
+  tmp << davCollectionRoot;
+  collectionsRetrievedIncremental( tmp, Akonadi::Collection::List() );
+  
   accessor->retrieveCollections( Settings::self()->remoteUrl() );
 }
 
@@ -123,9 +145,19 @@ void davCalendarResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dialog, windowId );
   dialog.exec();
   
-  if( accessor ) {
-    delete accessor;
+  if( !Settings::self()->remoteUrl().endsWith( "/" ) )
+    Settings::self()->setRemoteUrl( Settings::self()->remoteUrl() + "/" );
+  
+  int newICT = Settings::self()->refreshInterval();
+  if( newICT == 0 )
+    newICT = -1;
+  if( newICT != davCollectionRoot.cachePolicy().intervalCheckTime() ) {
+    Akonadi::CachePolicy cachePolicy = davCollectionRoot.cachePolicy();
+    cachePolicy.setIntervalCheckTime( newICT );
+    davCollectionRoot.setCachePolicy( cachePolicy );
   }
+  
+  delete accessor;
   createAccessor();
 }
 
@@ -163,7 +195,7 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
     return;
   }
   
-  KUrl url( basePath + "/" + fileName );
+  KUrl url( basePath + fileName + ".ics" );
   KCal::ICalFormat formatter;
   QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
   
@@ -211,34 +243,30 @@ void davCalendarResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
+  kDebug() << "Requesting deletion of item at " << item.remoteId();
   accessor->removeItem( KUrl( item.remoteId() ) );
 }
 
 void davCalendarResource::accessorRetrievedCollection( const QString &url, const QString &name )
 {
   kDebug() << "Accessor retrieved a collection named " << name << " at " << url;
+  
   Akonadi::Collection c;
-  c.setParentCollection( Akonadi::Collection::root() );
+  c.setParentCollection( davCollectionRoot );
   c.setRemoteId( url );
   if( name.isEmpty() )
     c.setName( this->name() );
   else
     c.setName( name );
   
+  
   QStringList mimeTypes;
   mimeTypes << "text/calendar";
   mimeTypes += mMimeVisitor->allMimeTypes();
   c.setContentMimeTypes( mimeTypes );
   
-  int refreshInterval = Settings::self()->refreshInterval();
-  if( refreshInterval == 0 )
-    refreshInterval = -1;
-  
   Akonadi::CachePolicy cachePolicy;
-  cachePolicy.setInheritFromParent( false );
-  cachePolicy.setSyncOnDemand( true );
-  cachePolicy.setCacheTimeout( -1 );
-  cachePolicy.setIntervalCheckTime( refreshInterval );
+  cachePolicy.setInheritFromParent( true );
   c.setCachePolicy( cachePolicy );
   
   Akonadi::Collection::List tmp;
