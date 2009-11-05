@@ -22,9 +22,6 @@ if(WIN32)
                         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} )
 endif(WIN32)
 
-# Is this still needed??
-set(KDE4_ICON_DIR ${KDE4_INSTALL_DIR}/share/icons)
-
 include_directories(
     ${KDE4_INCLUDES}
     ${KDEPIMLIBS_INCLUDE_DIRS}
