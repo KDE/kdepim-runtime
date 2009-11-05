@@ -1,6 +1,12 @@
 [Desktop Entry]
 Name=DAV calendar resource
+Name[pt]=Recurso de calendário por DAV
+Name[uk]=Ресурс календаря DAV
+Name[x-test]=xxDAV calendar resourcexx
 Comment=Resource to manage DAV calendars (CalDAV, GroupDAV)
+Comment[pt]=Recurso para gerir calendários por DAV (CalDAV, GroupDAV)
+Comment[uk]=Ресурс для керування календарями DAV (CalDAV, GroupDAV)
+Comment[x-test]=xxResource to manage DAV calendars (CalDAV, GroupDAV)xx
 Type=AkonadiResource
 Exec=akonadi_davcalendar_resource
 Icon=text-calendar
