@@ -13,6 +13,7 @@ X-KDE-ParentComponents=
 X-KDE-CfgDlgHierarchy=
 
 Name=Akonadi Configuration
+Name[cs]=Nastavení Akonadi
 Name[da]=Konfiguration af Akonadi
 Name[de]=Akonadi-Einrichtung
 Name[en_GB]=Akonadi Configuration
