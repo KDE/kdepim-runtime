@@ -31,27 +31,7 @@
 #include <KMime/Message>
 #include <KMime/Content>
 
-//#include <mailtransport/transport.h>
-//#include <mailtransport/transporttype.h>
-//#include <mailtransport/transportmanager.h>
-//#include <mailtransport/smtpjob.h>
-//#include <mailtransport/sendmailjob.h>
-//#include <mailtransport/messagequeuejob.h>
-//#include <mailtransport/sentbehaviourattribute.h>
-
-//#include <Akonadi/Item>
-//#include <Akonadi/ItemFetchJob>
-//#include <Akonadi/ItemFetchScope>
-//#include <Akonadi/ItemModifyJob>
-
-//
-//#include <Akonadi/CollectionCreateJob>
-//#include <Akonadi/AgentManager>
-//#include <Akonadi/AgentInstance>
-//#include <akonadi/kmime/specialcollections.h>
-//#include <akonadi/kmime/specialcollectionsrequestjob.h>
-
-#include <kemailsettings.h>
+//#include <kemailsettings.h>
 
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/ItemFetchJob>
@@ -87,7 +67,7 @@ InvitationsAgentItem::~InvitationsAgentItem()
 
 void InvitationsAgentItem::add(const Akonadi::Item &newItem)
 {
-  Akonadi::ItemCreateJob *j = new Akonadi::ItemCreateJob( newItem, a->invitations() );
+  Akonadi::ItemCreateJob *j = new Akonadi::ItemCreateJob( newItem, a->invitations(), this );
   connect( j, SIGNAL( result( KJob* ) ), this, SLOT( createItemResult( KJob* ) ) );
   jobs << j;
   j->start();
@@ -150,7 +130,7 @@ InvitationsAgent::InvitationsAgent( const QString &id )
     Q_ASSERT( m_invitations.isValid() );
     init();
   } else {
-    emit status( AgentBase::Running, "Loading..." );
+    emit status( AgentBase::Running, i18n( "Loading..." ) );
 
     Akonadi::SpecialCollectionsRequestJob *j = new Akonadi::SpecialCollectionsRequestJob;
     connect( j, SIGNAL( result( KJob* ) ), this, SLOT( fetchInvitationCollectionResult( KJob* ) ) );
@@ -174,7 +154,7 @@ void InvitationsAgent::init()
   changeRecorder()->setMimeTypeMonitored( "message/rfc822", true );
   //changeRecorder()->setCollectionMonitored( Collection::root(), true );
   
-  emit status( AgentBase::Idle, "Ready to dispatch invitations" );
+  emit status( AgentBase::Idle, i18n("Ready to dispatch invitations") );
 }
 
 Akonadi::Collection& InvitationsAgent::invitations()
@@ -194,13 +174,23 @@ KPIMIdentities::IdentityManager* InvitationsAgent::identityManager()
 void InvitationsAgent::configure( WId windowId )
 {
   kDebug() << windowId;
+  /*
+  QWidget *parent = QWidget::find( windowId );
+  KDialog *dialog = new KDialog( parent );
+  QVBoxLayout *layout = new QVBoxLayout( dialog->mainWidget() );
+  QCheckBox *c = new QComboBox( dialog->mainWidget() );
+  c->setText( i18n( "Delete mail after creating the invitation" ) );
+  c->setChecked(  );
+  layout->addWidget( c );
+  dialog->mainWidget()->setLayout( layout );
+  */
 }
 
 void InvitationsAgent::fetchInvitationCollectionResult( KJob *job )
 {
   Akonadi::SpecialCollectionsRequestJob *j = static_cast<Akonadi::SpecialCollectionsRequestJob*>( job );
   if( j->error() ) {
-    emit status( AgentBase::Broken, i18n("Failed to fetch the invitations collection: ",j->errorText()) );
+    emit status( AgentBase::Broken, i18n( "Failed to fetch the invitations collection: ",j->errorText() ) );
     return;
   }
   m_invitations = j->collection();
@@ -294,55 +284,3 @@ void InvitationsAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
   }
 
 }
-
-#if 0
-void InvitationsAgent::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::itemRemoved( const Akonadi::Item &item )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::collectionChanged( const Akonadi::Collection &collection )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::collectionRemoved( const Akonadi::Collection &collection )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::itemUnlinked( const Akonadi::Item &item, const Akonadi::Collection &collection )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-
-void InvitationsAgent::collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes )
-{
-  //kDebug()<<"!!!!!!!!!!!!!!!!!!!";
-}
-#endif

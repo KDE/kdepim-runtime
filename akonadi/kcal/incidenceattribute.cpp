@@ -20,6 +20,7 @@
 #include "incidenceattribute.h"
 
 #include <QtCore/QString>
+#include <QtCore/QTextStream>
 
 using namespace Akonadi;
 
@@ -55,12 +56,19 @@ Attribute* IncidenceAttribute::clone() const
  
 QByteArray IncidenceAttribute::serialized() const
 {
-  return d->status.toUtf8();
+  QString data;
+  QTextStream out( &data );
+  out << d->status;
+  out << d->referenceId;
+  return data.toUtf8();
 }
 
 void IncidenceAttribute::deserialize( const QByteArray &data )
 {
-  d->status = QString::fromUtf8( data );
+  QString s( QString::fromUtf8( data ) );
+  QTextStream in( &s );
+  in >> d->status;
+  in >> d->referenceId;
 }
 
 QString IncidenceAttribute::status() const
