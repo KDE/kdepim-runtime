@@ -39,9 +39,6 @@ using namespace Akonadi;
 SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   : ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 )
 {
-  connect( &mDirtyTimer, SIGNAL( timeout() ), SLOT( writeFile() ) );
-  mDirtyTimer.setSingleShot( true );
-
   connect( this, SIGNAL( reloadConfiguration() ), SLOT( reloadFile() ) );
   QTimer::singleShot( 0, this, SLOT( readFile() ) );
 
@@ -61,7 +58,7 @@ KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
   return KSharedConfig::openConfig( name() + "rc", KConfig::SimpleConfig, "cache" );
 }
 
-void SingleFileResourceBase::readLocalFile( const QString &fileName )
+bool SingleFileResourceBase::readLocalFile( const QString &fileName )
 {
   const QByteArray newHash = calculateHash( fileName );
   if ( mCurrentHash != newHash ) {
@@ -74,7 +71,7 @@ void SingleFileResourceBase::readLocalFile( const QString &fileName )
     if ( !readFromFile( fileName ) ) {
       mCurrentHash.clear();
       mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
-      return;
+      return false;
     }
 
     if ( mCurrentHash.isEmpty() ) {
@@ -99,6 +96,7 @@ void SingleFileResourceBase::readLocalFile( const QString &fileName )
 
   mPreviousHash = mCurrentHash;
   mCurrentHash = newHash;
+  return true;
 }
 
 void SingleFileResourceBase::setLocalFileName( const QString &fileName )
@@ -202,7 +200,7 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     return;
 
   // handle conflicts
-  if ( mDirtyTimer.isActive() && !mCurrentUrl.isEmpty() ) {
+  if ( !mCurrentUrl.isEmpty() ) {
     const KUrl prevUrl = mCurrentUrl;
     int i = 0;
     QString lostFoundFileName;

@@ -70,8 +70,9 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
      * and notifies implementing resources to handle a hash change if the
      * previous known hash was not empty. Finally this method clears the cache
      * and calls synchronize.
+     * Returns true on succes, false otherwise.
      */
-    void readLocalFile( const QString &fileName );
+    bool readLocalFile( const QString &fileName );
 
     /**
      * Reimplement to read your data from the given file.
@@ -136,7 +137,6 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     void saveHash( const QByteArray &hash ) const;
 
   protected:
-    QTimer mDirtyTimer;
     KUrl mCurrentUrl;
     QStringList mSupportedMimetypes;
     QString mCollectionIcon;
@@ -145,10 +145,12 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     QByteArray mPreviousHash;
     QByteArray mCurrentHash;
 
+  protected Q_SLOTS:
+    void scheduleWrite(); /// Called when changes are added to the ChangeRecorder.
+
   private Q_SLOTS:
     void handleProgress( KJob *, unsigned long );
     void fileChanged( const QString &fileName );
-    void scheduleWrite(); /// Called when changes are added to the ChangeRecorder.
     void slotDownloadJobResult( KJob * );
     void slotUploadJobResult( KJob * );
 };

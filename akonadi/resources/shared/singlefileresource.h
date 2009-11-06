@@ -50,17 +50,6 @@ class SingleFileResource : public SingleFileResourceBase
     }
 
     /**
-     * Indicate that there are pending changes.
-     */
-    void fileDirty()
-    {
-      if( !mDirtyTimer.isActive() ) {
-        mDirtyTimer.setInterval( Settings::self()->autosaveInterval() * 60 * 1000 );
-        mDirtyTimer.start();
-      }
-    }
-
-    /**
      * Read changes from the backend file.
      */
     void readFile()
@@ -105,7 +94,12 @@ class SingleFileResource : public SingleFileResourceBase
           }
         }
 
-        readLocalFile( mCurrentUrl.toLocalFile() );
+        // Cache, because readLocalFile will clear mCurrentUrl on failure.
+        const QString localFileName = mCurrentUrl.toLocalFile();
+        if ( !readLocalFile( mCurrentUrl.toLocalFile() ) ) {
+          emit status( Broken, i18n( "Could not read file '%1'", localFileName ) );
+          return;
+        }
 
         if ( Settings::self()->monitorFile() )
           KDirWatch::self()->addFile( mCurrentUrl.toLocalFile() );
@@ -148,8 +142,6 @@ class SingleFileResource : public SingleFileResourceBase
         emit error( i18n( "Trying to write to a read-only file: '%1'.", Settings::self()->path() ) );
         return;
       }
-
-      mDirtyTimer.stop();
 
       // We don't use the Settings::self()->path() here as that might have changed
       // and in that case it would probably cause data lose.

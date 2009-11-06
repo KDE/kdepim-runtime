@@ -89,7 +89,7 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
   calendar()->addIncidence( i.get()->clone() );
   Item it( item );
   it.setRemoteId( i->uid() );
-  fileDirty();
+  scheduleWrite();
   changeCommitted( it );
 }
 
@@ -121,7 +121,7 @@ void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
       calendar()->addIncidence( payload.get()->clone() );
     }
   }
-  fileDirty();
+  scheduleWrite();
   changeCommitted( item );
 }
 

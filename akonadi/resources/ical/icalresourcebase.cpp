@@ -103,7 +103,7 @@ void ICalResourceBase::itemRemoved(const Akonadi::Item & item)
   Incidence *i = mCalendar->incidence( item.remoteId() );
   if ( i )
     mCalendar->deleteIncidence( i );
-  fileDirty();
+  scheduleWrite();
   changeProcessed();
 }
 
