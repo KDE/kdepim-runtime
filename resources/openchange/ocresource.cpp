@@ -1638,7 +1638,7 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
     ItemCreateJob *append = new ItemCreateJob( item, collection );
     if ( !append->exec() ) {
       emit percent( 0 );
-      emit status( Broken, QString( "Appending new message failed: %1" ).arg( append->errorString() ) );
+      emit status( Broken, i18n( "Appending new message failed: %1" , append->errorString() ) );
     }
   }
 
