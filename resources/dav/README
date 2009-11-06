@@ -30,6 +30,7 @@ not listed here.
   https://host/groupdav.php
   - GroupDAV calendar not fully working : events edition from the client
     deletes them on the backend.
+  - CalDAV not working.
 
 * SOGo (version 1.0.4 and 1.1.0)
   https://host/SOGo/dav/<USER>/Calendar

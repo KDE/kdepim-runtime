@@ -49,7 +49,6 @@ class davCalendarResource : public Akonadi::ResourceBase,
     void accessorRetrievedCollection( const QString &url, const QString &name );
     void accessorRetrievedCollections();
     void accessorRetrievedItem( const davItem &item );
-    void accessorRetrievedItemFromCache( const davItem &item );
     void accessorRetrievedItems();
     void accessorRemovedItem();
     void accessorPutItem( const KUrl &oldUrl, const KUrl &newUrl );

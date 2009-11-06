@@ -297,12 +297,6 @@ void davCalendarResource::accessorRetrievedItem( const davItem &item )
   itemsRetrievedIncremental( tmp, Akonadi::Item::List() );
 }
 
-void davCalendarResource::accessorRetrievedItemFromCache( const davItem &item )
-{
-  kDebug() << "Accessor retrieved a cached item at " << item.url;
-  this->accessorRetrievedItem( item );
-}
-
 void davCalendarResource::accessorRetrievedItems()
 {
   kDebug() << "Accessor finished retrieving items";

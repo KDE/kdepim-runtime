@@ -157,7 +157,7 @@ void caldavCalendarAccessor::retrieveItems( const KUrl &url )
       "     <C:comp-filter name=\"VTODO\"/>"
       "   </C:comp-filter name=\"VCALENDAR\">"
       " </C:filter>"
-      "</D:calendar-query>";
+      "</C:calendar-query>";
   QDomDocument rep;
   rep.setContent( report );
   
