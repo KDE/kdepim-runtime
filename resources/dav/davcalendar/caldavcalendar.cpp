@@ -25,6 +25,7 @@
 #include "caldavcalendar.h"
 
 caldavCalendarAccessor::caldavCalendarAccessor()
+  : runningQueries( 0 )
 {
 }
 
@@ -146,6 +147,9 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
 
 void caldavCalendarAccessor::retrieveItems( const KUrl &url )
 {
+  QString collectionUrl = QUrl::fromPercentEncoding( url.url().toAscii() );
+  clearSeenUrls( collectionUrl );
+  
   QString report = 
       "<C:calendar-query xmlns:D=\"DAV:\" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"
       " <D:prop>"
@@ -154,15 +158,32 @@ void caldavCalendarAccessor::retrieveItems( const KUrl &url )
       " <C:filter>"
       "   <C:comp-filter name=\"VCALENDAR\">"
       "     <C:comp-filter name=\"VEVENT\"/>"
-      "     <C:comp-filter name=\"VTODO\"/>"
       "   </C:comp-filter name=\"VCALENDAR\">"
       " </C:filter>"
       "</C:calendar-query>";
   QDomDocument rep;
   rep.setContent( report );
   
-  KIO::DavJob *job = doReport( url, rep, "1" );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
+  KIO::DavJob *eventJob = doReport( url, rep, "1" );
+  connect( eventJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
+  ++runningQueries;
+  
+  report = 
+      "<C:calendar-query xmlns:D=\"DAV:\" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"
+      " <D:prop>"
+      "   <D:getetag/>"
+      " </D:prop>"
+      " <C:filter>"
+      "   <C:comp-filter name=\"VCALENDAR\">"
+      "     <C:comp-filter name=\"VTODO\"/>"
+      "   </C:comp-filter name=\"VCALENDAR\">"
+      " </C:filter>"
+      "</C:calendar-query>";
+  rep.setContent( report );
+  
+  KIO::DavJob *todoJob = doReport( url, rep, "1" );
+  connect( todoJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
+  ++runningQueries;
 }
 
 void caldavCalendarAccessor::retrieveItem( const KUrl &url )
@@ -182,7 +203,6 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
   }
   
   QString collectionUrl = QUrl::fromPercentEncoding( job->url().url().toAscii() );
-  clearSeenUrls( collectionUrl );
   
   QDomDocument xml = job->response();
   QDomElement root = xml.documentElement();
@@ -230,7 +250,10 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     fetchItemsQueue[collectionUrl] << href;
   }
   
-  runItemsFetch( collectionUrl );
+  --runningQueries;
+  
+  if( runningQueries == 0 )
+    runItemsFetch( collectionUrl );
 }
 
 void caldavCalendarAccessor::runItemsFetch( const QString &collection )

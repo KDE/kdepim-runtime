@@ -46,6 +46,7 @@ class caldavCalendarAccessor : public davAccessor
     
   private:
     QMap<QString, QStringList> fetchItemsQueue; // collection url, items urls
+    int runningQueries;
 };
 
 #endif
