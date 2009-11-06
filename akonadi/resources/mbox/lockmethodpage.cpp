@@ -49,6 +49,8 @@ void LockMethodPage::checkAvailableLockMethods()
     {
       if ( ui.procmail->isEnabled() )
         ui.procmail->setChecked(true);
+      else
+        ui.none->setChecked(true);
     }
   }
 }
