@@ -22,6 +22,8 @@
 
 #include <Akonadi/AgentBase>
 
+#include <QVariantMap>
+
 class CalendarSearchAgent : public Akonadi::AgentBase
 {
   Q_OBJECT
@@ -29,6 +31,8 @@ class CalendarSearchAgent : public Akonadi::AgentBase
   public:
     explicit CalendarSearchAgent( const QString &id );
     ~CalendarSearchAgent();
+
+    QVariantMap createSearch( const QString& startDate, const QString& endDate );
 
   public Q_SLOTS:
     /* reimp */

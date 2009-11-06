@@ -18,6 +18,10 @@
 */
 
 #include "calendarsearchagent.h"
+#include "calendarsearchagentadaptor.h"
+
+#include <KDateTime>
+#include <KDebug>
 
 using namespace Akonadi;
 
@@ -40,11 +44,26 @@ CalendarSearchAgent::CalendarSearchAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
+  new CalendarSearchAgentAdaptor( this );
+  if ( !QDBusConnection::sessionBus().registerObject( QLatin1String( "/CalendarSearchAgent" ),
+       this, QDBusConnection::ExportAdaptors ) ) {
+      kWarning() << "Couldn't register a D-Bus service";
+      kWarning() << QDBusConnection::sessionBus().lastError().message();
+  }
 }
 
 CalendarSearchAgent::~CalendarSearchAgent()
 {
     delete d;
+}
+
+QVariantMap CalendarSearchAgent::createSearch( const QString& startDateStr, const QString& endDateStr )
+{
+  const KDateTime startDate = KDateTime::fromString( startDateStr );
+  const KDateTime endDate = KDateTime::fromString( endDateStr );
+  //setDelayedReply( true );
+  //TODO start job
+  return QVariantMap();
 }
 
 void CalendarSearchAgent::doSetOnline( bool )

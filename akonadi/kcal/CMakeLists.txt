@@ -11,6 +11,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO
 set( kcalakonadi_LIB_SRC
      collectionselection.cpp
      calendarmodel.cpp
+     calendarsearchcreatejob.cpp
      calfilterproxymodel.cpp
      collectionselectionproxymodel.cpp
      daterangefilterproxymodel.cpp
@@ -25,6 +26,7 @@ set( kcalakonadi_LIB_SRC
      utils.cpp
      incidenceattribute.cpp
 )
+qt4_add_dbus_interface(kcalakonadi_LIB_SRC ${CMAKE_SOURCE_DIR}/akonadi/agents/calendarsearch/org.freedesktop.Akonadi.CalendarSearchAgent.xml calendarsearchinterface)
 
 kde4_add_library( akonadi-kcal SHARED ${kcalakonadi_LIB_SRC} )
 
