@@ -32,16 +32,15 @@ groupdavCalendarAccessor::groupdavCalendarAccessor()
 
 void groupdavCalendarAccessor::retrieveCollections( const KUrl &url )
 {
-  QString propfind =
-      "<propfind xmlns=\"DAV:\">"
-      "  <prop>"
-      "    <displayname/>"
-      "    <resourcetype/>"
-      "  </prop>"
-      "</propfind>";
-  
   QDomDocument props;
-  props.setContent( propfind );
+  QDomElement root = props.createElementNS( "DAV:", "propfind" );
+  props.appendChild( root );
+  QDomElement e1 = props.createElementNS( "DAV:", "prop" );
+  root.appendChild( e1 );
+  QDomElement e2 = props.createElementNS( "DAV:", "displayname" );
+  e1.appendChild( e2 );
+  e2 = props.createElementNS( "DAV:", "resourcetype" );
+  e1.appendChild( e2 );
   
   KIO::DavJob *job = doPropfind( url, props, "1" );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( collectionsPropfindFinished( KJob* ) ) );
@@ -49,17 +48,17 @@ void groupdavCalendarAccessor::retrieveCollections( const KUrl &url )
 
 void groupdavCalendarAccessor::retrieveItems( const KUrl &url )
 {
-  QString propfind =
-      "<propfind xmlns=\"DAV:\">"
-      "  <prop>"
-      "    <displayname/>"
-      "    <resourcetype/>"
-      "    <getetag/>"
-      "  </prop>"
-      "</propfind>";
-  
   QDomDocument props;
-  props.setContent( propfind );
+  QDomElement root = props.createElementNS( "DAV:", "propfind" );
+  props.appendChild( root );
+  QDomElement e1 = props.createElementNS( "DAV:", "prop" );
+  root.appendChild( e1 );
+  QDomElement e2 = props.createElementNS( "DAV:", "displayname" );
+  e1.appendChild( e2 );
+  e2 = props.createElementNS( "DAV:", "resourcetype" );
+  e1.appendChild( e2 );
+  e2 = props.createElementNS( "DAV:", "getetag" );
+  e1.appendChild( e2 );
   
   KIO::DavJob *job = doPropfind( url, props, "1" );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemsPropfindFinished( KJob* ) ) );

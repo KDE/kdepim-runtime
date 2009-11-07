@@ -29,8 +29,10 @@ not listed here.
 * Egroupware (1.6.002)
   https://host/groupdav.php
   - GroupDAV calendar not fully working : events edition from the client
-    deletes them on the backend.
-  - CalDAV not working.
+    deletes them on the backend. Looks like when an event is modified from
+    Korganizer the attendee available in the item is different from the
+    one the server expects : it lacks the X-EGROUPWARE-UID property.
+  - CalDAV has the same problem.
 
 * SOGo (version 1.0.4 and 1.1.0)
   https://host/SOGo/dav/<USER>/Calendar

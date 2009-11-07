@@ -31,17 +31,28 @@ caldavCalendarAccessor::caldavCalendarAccessor()
 
 void caldavCalendarAccessor::retrieveCollections( const KUrl &url )
 {
-  QString propfind =
-      "<D:propfind xmlns:D=\"DAV:\" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"
-      " <D:prop>"
-      "   <D:displayname/>"
-      "   <D:resourcetype/>"
-      "   <C:supported-calendar-component-set/>"
-      " </D:prop>"
-      "</D:propfind>";
+//   QString propfind =
+//       "<D:propfind xmlns:D=\"DAV:\" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"
+//       " <D:prop>"
+//       "   <D:displayname/>"
+//       "   <D:resourcetype/>"
+//       "   <C:supported-calendar-component-set/>"
+//       " </D:prop>"
+//       "</D:propfind>";
   
   QDomDocument props;
-  props.setContent( propfind );
+  QDomElement root = props.createElementNS( "DAV:", "propfind" );
+  props.appendChild( root );
+  QDomElement e1 = props.createElementNS( "DAV:", "prop" );
+  root.appendChild( e1 );
+  QDomElement e2 = props.createElementNS( "DAV:", "displayname" );
+  e1.appendChild( e2 );
+  e2 = props.createElementNS( "DAV:", "resourcetype" );
+  e1.appendChild( e2 );
+  e2 = props.createElementNS( "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
+  e1.appendChild( e2 );
+  
+//   props.setContent( propfind );
   
   KIO::DavJob *job = doPropfind( url, props, "1" );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( collectionsPropfindFinished( KJob* ) ) );
@@ -150,36 +161,51 @@ void caldavCalendarAccessor::retrieveItems( const KUrl &url )
   QString collectionUrl = QUrl::fromPercentEncoding( url.url().toAscii() );
   clearSeenUrls( collectionUrl );
   
-  QString report = 
-      "<C:calendar-query xmlns:D=\"DAV:\" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"
-      " <D:prop>"
-      "   <D:getetag/>"
-      " </D:prop>"
-      " <C:filter>"
-      "   <C:comp-filter name=\"VCALENDAR\">"
-      "     <C:comp-filter name=\"VEVENT\"/>"
-      "   </C:comp-filter name=\"VCALENDAR\">"
-      " </C:filter>"
-      "</C:calendar-query>";
   QDomDocument rep;
-  rep.setContent( report );
+  QDomElement root = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
+  rep.appendChild( root );
+  QDomElement e1 = rep.createElementNS( "DAV:", "prop" );
+  root.appendChild( e1 );
+  QDomElement e2 = rep.createElementNS( "DAV:", "getetag" );
+  e1.appendChild( e2 );
+  e1 = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "filter" );
+  root.appendChild( e1 );
+  e2 = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+  QDomAttr a1 = rep.createAttribute( "name" );
+  a1.setValue( "VCALENDAR" );
+  e2.setAttributeNode( a1 );
+  e1.appendChild( e2 );
+  QDomElement e3 = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+  a1 = rep.createAttribute( "name" );
+  a1.setValue( "VEVENT" );
+  e3.setAttributeNode( a1 );
+  e2.appendChild( e3 );
   
   KIO::DavJob *eventJob = doReport( url, rep, "1" );
   connect( eventJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
   ++runningQueries;
   
-  report = 
-      "<C:calendar-query xmlns:D=\"DAV:\" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"
-      " <D:prop>"
-      "   <D:getetag/>"
-      " </D:prop>"
-      " <C:filter>"
-      "   <C:comp-filter name=\"VCALENDAR\">"
-      "     <C:comp-filter name=\"VTODO\"/>"
-      "   </C:comp-filter name=\"VCALENDAR\">"
-      " </C:filter>"
-      "</C:calendar-query>";
-  rep.setContent( report );
+  rep.clear();
+  root = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
+  rep.appendChild( root );
+  e1 = rep.createElementNS( "DAV:", "prop" );
+  root.appendChild( e1 );
+  e2 = rep.createElementNS( "DAV:", "getetag" );
+  e1.appendChild( e2 );
+  e1 = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "filter" );
+  root.appendChild( e1 );
+  e2 = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+  a1 = rep.createAttribute( "name" );
+  a1.setValue( "VCALENDAR" );
+  e2.setAttributeNode( a1 );
+  e1.appendChild( e2 );
+  e3 = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+  a1 = rep.createAttribute( "name" );
+  a1.setValue( "VTODO" );
+  e3.setAttributeNode( a1 );
+  e2.appendChild( e3 );
+  
+//   rep.setContent( report );
   
   KIO::DavJob *todoJob = doReport( url, rep, "1" );
   connect( todoJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
