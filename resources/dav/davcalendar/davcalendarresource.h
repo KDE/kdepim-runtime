@@ -50,7 +50,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     void accessorRetrievedCollections();
     void accessorRetrievedItem( const davItem &item );
     void accessorRetrievedItems();
-    void accessorRemovedItem();
+    void accessorRemovedItem( const KUrl &url );
     void accessorPutItem( const KUrl &oldUrl, const KUrl &newUrl );
     
     void backendItemChanged( const davItem &item );
@@ -71,6 +71,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     davAccessor *accessor;
     Akonadi::Collection davCollectionRoot;
     QMap<QString, Akonadi::Item> putItems;
+    QMap<QString, Akonadi::Item> delItems;
 };
 
 #endif

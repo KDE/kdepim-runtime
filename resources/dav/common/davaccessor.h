@@ -97,7 +97,7 @@ class davAccessor : public QObject
     void itemRetrieved( const davItem &item );
     void itemsRetrieved();
     void itemPut( const KUrl &oldUrl, const KUrl &newUrl );
-    void itemRemoved();
+    void itemRemoved( const KUrl &url );
     void backendItemChanged( const davItem &item );
     void backendItemsRemoved( const QList<davItem> &items );
 };

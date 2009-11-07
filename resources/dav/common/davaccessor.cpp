@@ -89,7 +89,8 @@ davAccessor::~davAccessor()
 
 void davAccessor::putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag )
 {
-  davItem i( url.url(), contentType, data );
+  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  davItem i( urlStr, contentType, data );
   itemsCache[url.url()] = i;
   
   QString headers = "Content-Type: ";
@@ -271,7 +272,7 @@ void davAccessor::itemDelFinished( KJob *j )
     return;
   }
   
-  emit itemRemoved();
+  emit itemRemoved( job->urls().first() );
 }
 
 void davAccessor::itemPutFinished( KJob *j )
@@ -291,7 +292,9 @@ void davAccessor::itemPutFinished( KJob *j )
   QStringList allHeaders = job->queryMetaData( "HTTP-Headers" ).split( "\n" );
   QString location;
   KUrl oldUrl = job->url();
+  QString oldUrlStr = QUrl::fromPercentEncoding( oldUrl.url().toAscii() );
   KUrl newUrl;
+  QString newUrlStr;
   
   foreach( QString hdr, allHeaders ) {
     if( hdr.startsWith( "Location:" ) ) {
@@ -299,10 +302,13 @@ void davAccessor::itemPutFinished( KJob *j )
     }
   }
   
-  if( location.isEmpty() )
+  if( location.isEmpty() ) {
     newUrl = job->url();
-  else
+  }
+  else {
     newUrl = location;
+  }
+  newUrlStr = QUrl::fromPercentEncoding( newUrl.url().toAscii() );
   
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
   
@@ -310,17 +316,17 @@ void davAccessor::itemPutFinished( KJob *j )
   kDebug() << job->queryMetaData( "HTTP-Headers" );
   
   if( !etag.isEmpty() ) {
-    etagsCache[newUrl.url()] = etag;
+    etagsCache[newUrlStr] = etag;
     
     if( oldUrl != newUrl ) {
-      if( etagsCache.contains( oldUrl.url() ) ) {
-        etagsCache.remove( oldUrl.url() );
+      if( etagsCache.contains( oldUrlStr ) ) {
+        etagsCache.remove( oldUrlStr );
       }
-      if( itemsCache.contains( oldUrl.url() ) ) {
+      if( itemsCache.contains( oldUrlStr ) ) {
         // itemsCache[oldUrl.url()] has been modified by putItem() before the job starts
-        itemsCache[newUrl.url()] = itemsCache[oldUrl.url()];
-        itemsCache[newUrl.url()].url = newUrl.url();
-        itemsCache.remove( oldUrl.url() );
+        itemsCache[newUrlStr] = itemsCache[oldUrlStr];
+        itemsCache[newUrlStr].url = newUrlStr;
+        itemsCache.remove( oldUrlStr );
       }
     }
   }

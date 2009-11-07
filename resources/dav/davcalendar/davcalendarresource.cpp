@@ -201,7 +201,8 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   
   kDebug() << "Item " << item.id() << " will be put to " << url.url();
   
-  putItems[url.url()] = item;
+  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  putItems[urlStr] = item;
   accessor->putItem( url, "text/calendar", rawData );
 }
 
@@ -231,7 +232,8 @@ void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
   
   kDebug() << "Item " << item.id() << " will be put to " << url.url();
   
-  putItems[url.url()] = item;
+  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  putItems[urlStr] = item;
   accessor->putItem( url, "text/calendar", rawData, true );
 }
 
@@ -242,9 +244,13 @@ void davCalendarResource::itemRemoved( const Akonadi::Item &item )
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
+  
+  KUrl url( item.remoteId() );
+  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  delItems[urlStr] = item;
 
-  kDebug() << "Requesting deletion of item at " << item.remoteId();
-  accessor->removeItem( KUrl( item.remoteId() ) );
+  kDebug() << "Requesting deletion of item at " << urlStr;
+  accessor->removeItem( url );
 }
 
 void davCalendarResource::accessorRetrievedCollection( const QString &url, const QString &name )
@@ -304,24 +310,50 @@ void davCalendarResource::accessorRetrievedItems()
   accessor->validateCache();
 }
 
-void davCalendarResource::accessorRemovedItem()
+void davCalendarResource::accessorRemovedItem( const KUrl &url )
 {
-  emit status( Idle, i18n( "Using GroupDAV" ) );
+  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  
+  if( !delItems.contains( urlStr ) ) {
+    emit error( i18n( "Unable to find an upload request for URL %1." ).arg( urlStr ) );
+    return;
+  }
+  
   changeProcessed();
+  
+  // Force a refresh of the collection containing the item
+  Akonadi::Item i = delItems[urlStr];
+  delItems.remove( urlStr );
+  Akonadi::Entity::Id collId = i.storageCollectionId();
+  if( collId != -1 )
+    synchronizeCollection( collId );
+  else
+    synchronize();
 }
 
 void davCalendarResource::accessorPutItem( const KUrl &oldUrl, const KUrl &newUrl )
 {
-  if( !putItems.contains( oldUrl.url() ) ) {
-    emit error( i18n( "Unable to find an upload request for URL %1." ).arg( oldUrl.url() ) );
+  QString oldUrlStr = QUrl::fromPercentEncoding( oldUrl.url().toAscii() );
+  QString newUrlStr = QUrl::fromPercentEncoding( newUrl.url().toAscii() );
+  
+  if( !putItems.contains( oldUrlStr ) ) {
+    emit error( i18n( "Unable to find an upload request for URL %1." ).arg( oldUrlStr ) );
     return;
   }
   
-  kDebug() << "Item URL changed from " << oldUrl << " to " << newUrl;
+  kDebug() << "Item URL changed from " << oldUrlStr << " to " << newUrlStr;
   
-  Akonadi::Item i = putItems[oldUrl.url()];
-  i.setRemoteId( newUrl.url() );
+  Akonadi::Item i = putItems[oldUrlStr];
+  putItems.remove( oldUrlStr );
+  i.setRemoteId( newUrlStr );
   changeCommitted( i );
+  
+  // Force a refresh of the collection containing the item
+  Akonadi::Entity::Id collId = i.storageCollectionId();
+  if( collId != -1 )
+    synchronizeCollection( collId );
+  else
+    synchronize();
 }
 
 void davCalendarResource::backendItemChanged( const davItem &item )
@@ -409,8 +441,8 @@ void davCalendarResource::createAccessor()
   connect( accessor, SIGNAL( itemsRetrieved() ),
            this, SLOT( accessorRetrievedItems() ) );
   
-  connect( accessor, SIGNAL( itemRemoved() ),
-           this, SLOT( accessorRemovedItem() ) );
+  connect( accessor, SIGNAL( itemRemoved( const KUrl& ) ),
+           this, SLOT( accessorRemovedItem( const KUrl& ) ) );
   
   connect( accessor, SIGNAL( itemPut( const KUrl&, const KUrl& ) ),
            this, SLOT( accessorPutItem( const KUrl&, const KUrl& ) ) );
