@@ -89,7 +89,7 @@ davAccessor::~davAccessor()
 
 void davAccessor::putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag )
 {
-  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   davItem i( urlStr, contentType, data );
   itemsCache[url.url()] = i;
   
@@ -292,7 +292,7 @@ void davAccessor::itemPutFinished( KJob *j )
   QStringList allHeaders = job->queryMetaData( "HTTP-Headers" ).split( "\n" );
   QString location;
   KUrl oldUrl = job->url();
-  QString oldUrlStr = QUrl::fromPercentEncoding( oldUrl.url().toAscii() );
+  QString oldUrlStr = oldUrl.prettyUrl(); //QUrl::fromPercentEncoding( oldUrl.url().toAscii() );
   KUrl newUrl;
   QString newUrlStr;
   
@@ -308,7 +308,7 @@ void davAccessor::itemPutFinished( KJob *j )
   else {
     newUrl = location;
   }
-  newUrlStr = QUrl::fromPercentEncoding( newUrl.url().toAscii() );
+  newUrlStr = newUrl.prettyUrl(); //QUrl::fromPercentEncoding( newUrl.url().toAscii() );
   
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
   

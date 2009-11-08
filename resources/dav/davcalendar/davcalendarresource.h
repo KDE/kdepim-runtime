@@ -64,7 +64,8 @@ class davCalendarResource : public Akonadi::ResourceBase,
     virtual void itemRemoved( const Akonadi::Item &item );
     
   private:
-    void createAccessor();
+    void doResourceInitialization();
+    bool configurationIsValid();
     Akonadi::Item createItem( const QByteArray &data );
     
     Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
@@ -72,6 +73,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     Akonadi::Collection davCollectionRoot;
     QMap<QString, Akonadi::Item> putItems;
     QMap<QString, Akonadi::Item> delItems;
+    QString password;
 };
 
 #endif

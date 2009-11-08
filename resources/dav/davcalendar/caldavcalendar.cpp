@@ -103,7 +103,7 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = QUrl::fromPercentEncoding( url.url().toAscii() );
+    href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
     
     tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
     if( tmp.length() == 0 )
@@ -158,7 +158,7 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
 
 void caldavCalendarAccessor::retrieveItems( const KUrl &url )
 {
-  QString collectionUrl = QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString collectionUrl = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   clearSeenUrls( collectionUrl );
   
   QDomDocument rep;
@@ -228,7 +228,7 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     return;
   }
   
-  QString collectionUrl = QUrl::fromPercentEncoding( job->url().url().toAscii() );
+  QString collectionUrl = job->url().prettyUrl(); //QUrl::fromPercentEncoding( job->url().url().toAscii() );
   
   QDomDocument xml = job->response();
   QDomElement root = xml.documentElement();
@@ -255,12 +255,12 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = QUrl::fromPercentEncoding( url.url().toAscii() );
+    href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
     
     // NOTE: nothing below should invalidate the item (return an error
     // and exit the function)
     seenUrl( job->url().url(), href );
-    kDebug() << "Seen item at " << href << " in collection " << job->url().url();
+    kDebug() << "Seen item at " << href << " in collection " << job->url().prettyUrl();
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
     if( tmp.length() != 0 ) {
@@ -351,7 +351,7 @@ void caldavCalendarAccessor::multigetFinished( KJob *j )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = QUrl::fromPercentEncoding( url.url().toAscii() );
+    href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
     if( tmp.length() == 0 )

@@ -35,7 +35,9 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/itemdeletejob.h>
+#include <kwallet.h>
 
+using namespace KWallet;
 using namespace KCal;
 using namespace Akonadi;
 
@@ -71,7 +73,8 @@ davCalendarResource::davCalendarResource( const QString &id )
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
-  createAccessor();
+  
+  doResourceInitialization();
 }
 
 davCalendarResource::~davCalendarResource()
@@ -83,8 +86,8 @@ void davCalendarResource::retrieveCollections()
 {
   kDebug() << "Retrieving collections list";
   
-  if( !accessor ) {
-    emit status( Broken, i18n( "No protocol configured" ) );
+  if( !configurationIsValid() ) {
+    emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -97,21 +100,27 @@ void davCalendarResource::retrieveCollections()
   tmp << davCollectionRoot;
   collectionsRetrievedIncremental( tmp, Akonadi::Collection::List() );
   
-  accessor->retrieveCollections( Settings::self()->remoteUrl() );
+  KUrl url = Settings::self()->remoteUrl();
+  url.setUser( Settings::self()->username() );
+  url.setPass( password );
+  accessor->retrieveCollections( url );
 }
 
 void davCalendarResource::retrieveItems( const Akonadi::Collection &collection )
 {
   kDebug() << "Retrieving items";
   
-  if( !accessor ) {
-    emit status( Broken, i18n( "No protocol configured" ) );
+  if( !configurationIsValid() ) {
+    emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
   
   setItemStreamingEnabled( true );
-  accessor->retrieveItems( KUrl( collection.remoteId() ) );
+  KUrl url = collection.remoteId();
+  url.setUser( Settings::self()->username() );
+  url.setPass( password );
+  accessor->retrieveItems( url );
 }
 
 bool davCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
@@ -120,13 +129,12 @@ bool davCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
   
   kDebug() << "Retrieving single item. Remote id = " << item.remoteId();
   
-  if( !accessor ) {
-    emit status( Broken, i18n( "No protocol configured" ) );
+  if( !configurationIsValid() ) {
+    emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return false;
   }
   
-  // NOTE: do the call to davAccessor::retrieveItem
   itemRetrieved( item );
   return true;
 }
@@ -157,8 +165,25 @@ void davCalendarResource::configure( WId windowId )
     davCollectionRoot.setCachePolicy( cachePolicy );
   }
   
+  if( Settings::self()->authenticationRequired() &&
+      !Settings::self()->username().isEmpty() &&
+      !Settings::self()->password().isEmpty() ) {
+    password = Settings::self()->password();
+    Settings::self()->setPassword( "" );
+    
+    QString folder = "dav-akonadi-resource_"+Settings::self()->remoteUrl();
+    Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), windowId );
+    if( wallet && wallet->isOpen() ) {
+      if( !wallet->hasFolder( folder ) )
+        wallet->createFolder( folder );
+      wallet->setFolder( folder );
+      wallet->writePassword( Settings::self()->username(), password );
+      delete wallet;
+    }
+  }
+  
   delete accessor;
-  createAccessor();
+  doResourceInitialization();
 }
 
 void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
@@ -167,8 +192,8 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
       << item.id() << ". Remote id = " << item.remoteId()
       << ". Collection remote id = " << collection.remoteId();
   
-  if( !accessor ) {
-    emit status( Broken, i18n( "No protocol configured" ) );
+  if( !configurationIsValid() ) {
+    emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -201,8 +226,10 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   
   kDebug() << "Item " << item.id() << " will be put to " << url.url();
   
-  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   putItems[urlStr] = item;
+  url.setUser( Settings::self()->username() );
+  url.setPass( password );
   accessor->putItem( url, "text/calendar", rawData );
 }
 
@@ -213,8 +240,8 @@ void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
   kDebug() << "Received notification for changed item. Local id = " << item.id()
       << ". Remote id = " << item.remoteId();
   
-  if( !accessor ) {
-    emit status( Broken, i18n( "No protocol configured" ) );
+  if( !configurationIsValid() ) {
+    emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -232,24 +259,28 @@ void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
   
   kDebug() << "Item " << item.id() << " will be put to " << url.url();
   
-  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   putItems[urlStr] = item;
+  url.setUser( Settings::self()->username() );
+  url.setPass( password );
   accessor->putItem( url, "text/calendar", rawData, true );
 }
 
 void davCalendarResource::itemRemoved( const Akonadi::Item &item )
 {
-  if( !accessor ) {
-    emit status( Broken, i18n( "No protocol configured" ) );
+  if( !configurationIsValid() ) {
+    emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
   
   KUrl url( item.remoteId() );
-  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   delItems[urlStr] = item;
 
   kDebug() << "Requesting deletion of item at " << urlStr;
+  url.setUser( Settings::self()->username() );
+  url.setPass( password );
   accessor->removeItem( url );
 }
 
@@ -312,7 +343,7 @@ void davCalendarResource::accessorRetrievedItems()
 
 void davCalendarResource::accessorRemovedItem( const KUrl &url )
 {
-  QString urlStr = QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   
   if( !delItems.contains( urlStr ) ) {
     emit error( i18n( "Unable to find an upload request for URL %1." ).arg( urlStr ) );
@@ -333,8 +364,8 @@ void davCalendarResource::accessorRemovedItem( const KUrl &url )
 
 void davCalendarResource::accessorPutItem( const KUrl &oldUrl, const KUrl &newUrl )
 {
-  QString oldUrlStr = QUrl::fromPercentEncoding( oldUrl.url().toAscii() );
-  QString newUrlStr = QUrl::fromPercentEncoding( newUrl.url().toAscii() );
+  QString oldUrlStr = oldUrl.prettyUrl(); //QUrl::fromPercentEncoding( oldUrl.url().toAscii() );
+  QString newUrlStr = newUrl.prettyUrl(); //QUrl::fromPercentEncoding( newUrl.url().toAscii() );
   
   if( !putItems.contains( oldUrlStr ) ) {
     emit error( i18n( "Unable to find an upload request for URL %1." ).arg( oldUrlStr ) );
@@ -410,8 +441,11 @@ void davCalendarResource::accessorError( const QString &err, bool cancelRequest 
   emit error( err );
 }
 
-void davCalendarResource::createAccessor()
+void davCalendarResource::doResourceInitialization()
 {
+  if( !configurationIsValid() )
+    return;
+  
   switch( Settings::self()->remoteProtocol() ) {
     case Settings::groupdav:
       accessor = new groupdavCalendarAccessor();
@@ -454,6 +488,38 @@ void davCalendarResource::createAccessor()
            this, SLOT( backendItemsRemoved( const QList<davItem>& ) ) );
   
   synchronizeCollectionTree();
+}
+
+bool davCalendarResource::configurationIsValid()
+{
+  if( !(Settings::self()->remoteProtocol() == Settings::groupdav ||
+      Settings::self()->remoteProtocol() == Settings::caldav ) )
+    return false;
+  
+  if( Settings::self()->remoteUrl().isEmpty() )
+    return false;
+  
+  if( Settings::self()->authenticationRequired() ) {
+    if( Settings::self()->username().isEmpty() )
+      return false;
+    
+    if( password.isEmpty() ) {
+      QString folder = "dav-akonadi-resource_"+Settings::self()->remoteUrl();
+      Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
+      if( wallet && wallet->isOpen() ) {
+        if( wallet->hasFolder( folder ) ) {
+          wallet->setFolder( folder );
+          wallet->readPassword( Settings::self()->username(), password );
+        }
+        delete wallet;
+      }
+    }
+    
+    if( password.isEmpty() )
+      return false;
+  }
+  
+  return true;
 }
 
 Akonadi::Item davCalendarResource::createItem( const QByteArray &data )
