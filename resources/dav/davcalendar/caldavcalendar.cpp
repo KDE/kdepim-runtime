@@ -149,7 +149,7 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
     else
       displayname = "CalDAV calendar at " + href;
     
-    kDebug() << "Seen collection at " << href << " (url)" << url.url();
+    kDebug() << "Seen collection at " << href << " (url)" << url.prettyUrl();
     emit( collectionRetrieved( href, displayname ) );
   }
   
