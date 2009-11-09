@@ -75,6 +75,7 @@ SetupServer::SetupServer( WId parent )
 
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
+  m_ui->imapServer->setFocus();
   connect( m_ui->testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
 
   connect( m_ui->imapServer, SIGNAL( textChanged( const QString & ) ),

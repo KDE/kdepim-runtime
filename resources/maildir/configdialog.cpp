@@ -40,7 +40,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
 
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
   connect( ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()) );
-
+  ui.kcfg_Path->lineEdit()->setFocus();
   checkPath();
 }
 
