@@ -141,11 +141,11 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 {
     Q_UNUSED( parts );
 
-    if ( !isSessionAvailable() ) {
-        cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
-        reconnect();
-        return false;
-    }
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Ignoring this request. Probably there is no connection.";
+    cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
+    return false;
+  }
 
     const QString mailBox = mailBoxForCollection( item.parentCollection() );
     const qint64 uid = item.remoteId().toLongLong();
@@ -283,6 +283,12 @@ void ImapResource::onPasswordRequestCompleted( const QString &password, bool use
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    return;
+  }
+
   if ( !item.hasPayload<KMime::Message::Ptr>() ) {
     changeProcessed();
     return;
@@ -368,6 +374,12 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
 {
   kDebug() << item.remoteId() << parts;
 
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    return;
+  }
+
   const QString mailBox = mailBoxForCollection( item.parentCollection() );
   const qint64 uid = item.remoteId().toLongLong();
 
@@ -428,6 +440,12 @@ void ImapResource::onStoreFlagsDone( KJob *job )
 
 void ImapResource::itemRemoved( const Akonadi::Item &item )
 {
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    return;
+  }
+
   // The imap specs do not allow for a single message to be deleted. We can only
   // set the \Deleted flag. The message will actually be deleted when EXPUNGE will
   // be issued on the next retrieveItems().
@@ -452,6 +470,12 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
 void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
                               const Akonadi::Collection &destination )
 {
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    return;
+  }
+
   if ( item.remoteId().isEmpty() ) {
     emit error( i18n( "Cannot move message, it does not exist on the server." ) );
     changeProcessed();
@@ -772,8 +796,8 @@ void ImapResource::triggerCollectionExtraInfoJobs( const Collection &collection 
 void ImapResource::retrieveItems( const Collection &col )
 {
   if ( !isSessionAvailable() ) {
+    kDebug() << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
-    reconnect();
     return;
   }
 
@@ -859,6 +883,12 @@ void ImapResource::onHeadersFetchDone( KJob * /*job*/ )
 
 void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    return;
+  }
+
   if ( parent.remoteId().isEmpty() ) {
     emit error( i18n("Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.", collection.name(), parent.name() ) );
     changeProcessed();
@@ -896,6 +926,12 @@ void ImapResource::onCreateMailBoxDone( KJob *job )
 
 void ImapResource::collectionChanged( const Collection &collection, const QSet<QByteArray> &parts )
 {
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    return;
+  }
+
   if ( collection.remoteId().isEmpty() ) {
     emit error( i18n("Cannot modify IMAP folder '%1', it does not exist on the server.", collection.name() ) );
     changeProcessed();
@@ -1101,6 +1137,12 @@ void ImapResource::onSetMetaDataDone( KJob *job )
 
 void ImapResource::collectionRemoved( const Collection &collection )
 {
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    return;
+  }
+
   const QString mailBox = mailBoxForCollection( collection );
 
   KIMAP::DeleteJob *job = new KIMAP::DeleteJob( m_account->mainSession() );
@@ -1126,6 +1168,12 @@ void ImapResource::onDeleteMailBoxDone( KJob *job )
 void ImapResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                     const Akonadi::Collection &destination )
 {
+  if ( !isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    return;
+  }
+
   if ( collection.remoteId().isEmpty() ) {
     emit error( i18n( "Cannot move IMAP folder '%1', it does not exist on the server.",
                       collection.name() ) );
