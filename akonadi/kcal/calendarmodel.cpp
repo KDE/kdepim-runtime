@@ -162,6 +162,12 @@ QVariant CalendarModel::entityHeaderData( int section, Qt::Orientation orientati
       return i18nc( "@title:column, calendar event end date and time", "End Date and Time" );
     case Type:
       return i18nc( "@title:column, calendar event type", "Type" );
+    case DateTimeDue:
+      return i18nc( "@title:column, todo item due date and time", "Due Date and Time" );
+    case Priority:
+      return i18nc( "@title:column, todo item priority", "Priority" );
+    case PercentComplete:
+      return i18nc( "@title:column, todo item completion in percent", "Complete" );
     default:
       return QVariant();
     }

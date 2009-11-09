@@ -18,6 +18,7 @@
     02110-1301, USA.
 */
 
+#include "calendarmodel.h"
 #include "daterangefilterproxymodel.h"
 
 #include <KDateTime>
@@ -28,16 +29,17 @@ using namespace Akonadi;
 
 class DateRangeFilterProxyModel::Private {
   public:
-    explicit Private() : column( 0 ), startT( 0 ), endT( 0 ), includeStartAndEnd( true ) {}
-    int column;
+  explicit Private() : startColumn( CalendarModel::DateTimeStart ), endColumn( CalendarModel::DateTimeEnd ), startT( 0 ), endT( 0 ) {}
+    int startColumn;
+    int endColumn;
     KDateTime start;
     KDateTime end;
     uint startT;
     uint endT;
-    bool includeStartAndEnd;
 };
 
 DateRangeFilterProxyModel::DateRangeFilterProxyModel( QObject* parent ) : QSortFilterProxyModel( parent ), d( new Private ) {
+  setFilterRole( CalendarModel::SortRole );
 }
 
 DateRangeFilterProxyModel::~DateRangeFilterProxyModel() {
@@ -68,40 +70,43 @@ void DateRangeFilterProxyModel::setEndDate( const KDateTime& date ) {
   invalidateFilter();
 }
   
-int DateRangeFilterProxyModel::dateColumn() const {
-  return d->column;
+int DateRangeFilterProxyModel::startDateColumn() const {
+  return d->startColumn;
 }
 
-void DateRangeFilterProxyModel::setDateColumn( int column ) {
-  if ( column == d->column )
+void DateRangeFilterProxyModel::setStartDateColumn( int column ) {
+  if ( column == d->startColumn )
     return;
-  d->column = column;
+  d->startColumn = column;
   invalidateFilter();
 }
 
+int DateRangeFilterProxyModel::endDateColumn() const {
+  return d->endColumn;
+}
+
+void DateRangeFilterProxyModel::setEndDateColumn( int column ) {
+  if ( column == d->endColumn )
+    return;
+  d->endColumn = column;
+  invalidateFilter();
+}
 bool DateRangeFilterProxyModel::filterAcceptsRow( int source_row, const QModelIndex& source_parent ) const {
-  const QModelIndex idx = source_parent.child( source_row, d->column );
-  const QVariant v = idx.data( filterRole() );
-  if ( !v.isValid() )
-    return false;
-  bool ok;
-  const uint tt = v.toUInt( &ok );
-  if ( !ok )
-    return false;
-  if ( d->start.isValid() && tt < d->startT )
-    return false;
-  if ( d->end.isValid() && tt > d->endT )
-    return false;
-  return d->includeStartAndEnd || ( d->startT != tt && d->endT != tt );
-}
-
-bool DateRangeFilterProxyModel::includeExactStartAndEndDates() const {
-  return d->includeStartAndEnd;
-}
-
-void DateRangeFilterProxyModel::setIncludeExactStartAndEndDates( bool include ) {
-  if ( include == d->includeStartAndEnd )
-    return;
-  d->includeStartAndEnd = include;
-  invalidateFilter();
+  if ( d->end.isValid() ) {
+    const QModelIndex idx = sourceModel()->index( source_row, d->startColumn, source_parent );
+    const QVariant v = idx.data( filterRole() );
+    bool ok;
+    const uint start = v.toUInt( &ok );
+    if ( ok && start > d->endT )
+      return false;
+  }
+  if ( d->start.isValid() ) {
+    const QModelIndex idx = sourceModel()->index( source_row, d->endColumn, source_parent );
+    const QVariant v = idx.data( filterRole() );
+    bool ok;
+    const uint end = v.toUInt( &ok );
+    if ( ok && end < d->startT )
+      return false;
+  }
+  return true;
 }

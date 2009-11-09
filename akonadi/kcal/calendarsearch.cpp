@@ -22,6 +22,7 @@
 #include "calendarsearchinterface.h"
 #include "kcalmimetypevisitor.h"
 #include "daterangefilterproxymodel.h"
+#include "utils.h"
 
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
@@ -39,7 +40,7 @@
 
 #include <QItemSelection>
 #include <QItemSelectionModel>
-#include <QSortFilterProxyModel>
+#include <QSet>
 #include <QTimer>
 #include <QtDBus/QDBusConnection>
 
@@ -105,9 +106,15 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
     monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType(), true );
     calendarModel = new CalendarModel( session, monitor, q );
 
+    selectionModel = new QItemSelectionModel( calendarModel );
+    selectionProxyModel = new KSelectionProxyModel( selectionModel, q );
+    selectionProxyModel->setFilterBehavior( KSelectionProxyModel::ChildrenOfExactSelection );
+    selectionProxyModel->setSourceModel( calendarModel );
+
     filterProxy = new EntityMimeTypeFilterModel( q );
     filterProxy->setHeaderGroup( EntityTreeModel::ItemListHeaders );
     filterProxy->setSortRole( CalendarModel::SortRole );
+    filterProxy->setSourceModel( selectionProxyModel );
     filterProxy->setDynamicSortFilter( true );
 
     dateRangeProxyModel = new DateRangeFilterProxyModel;
@@ -219,9 +226,36 @@ void CalendarSearch::setEndDate( const KDateTime& endDate ) {
 //    d->triggerDelayedUpdate();
 }
 
+static QModelIndex findIndex( QAbstractItemModel* m, const QModelIndex& parent, const Collection& c ) {
+    const int rows = m->rowCount( parent );
+    for ( int i=0; i < rows; ++i ) {
+      const QModelIndex idx = m->index( i, 0, parent );
+      const Collection found = Akonadi::collectionFromIndex( idx );
+      if ( found == c )
+        return idx;
+      if ( found.isValid() ) {
+        const QModelIndex inChildren = findIndex( m, idx, c );
+        if ( inChildren.isValid() )
+          return inChildren;
+      }
+    }
+    return QModelIndex();
+}
+
 void CalendarSearch::Private::collectionSelectionChanged( const QItemSelection& newSelection, const QItemSelection& oldSelection ) {
-    Q_UNUSED( newSelection );
-    Q_UNUSED( oldSelection );
+    kDebug();
+    QSet<QModelIndex> oldIndexes = oldSelection.indexes().toSet();
+    QSet<QModelIndex> newIndexes = newSelection.indexes().toSet();
+    Q_FOREACH( const QModelIndex& i, oldIndexes - newIndexes ) {
+        const QModelIndex idx = findIndex( calendarModel, QModelIndex(), Akonadi::collectionFromIndex( i ) );
+        if ( idx.isValid() )
+            selectionModel->select( idx, QItemSelectionModel::Deselect );
+    }
+    Q_FOREACH( const QModelIndex& i, newIndexes ) {
+        const QModelIndex idx = findIndex( calendarModel, QModelIndex(), Akonadi::collectionFromIndex( i ) );
+        if ( idx.isValid() )
+            selectionModel->select( idx, QItemSelectionModel::Select );
+    }
 }
 
 QItemSelectionModel* CalendarSearch::selectionModel() const {
@@ -229,19 +263,7 @@ QItemSelectionModel* CalendarSearch::selectionModel() const {
 }
 
 void CalendarSearch::setSelectionModel( QItemSelectionModel* selectionModel ) {
-    if ( d->selectionModel == selectionModel )
-        return;
-    if ( d->selectionModel )
-        d->selectionModel->disconnect( this );
-    d->selectionModel = selectionModel;
-    connect( d->selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(collectionSelectionChanged(QItemSelection,QItemSelection)) );
-    if ( d->selectionProxyModel )
-        delete d->selectionProxyModel;
-    d->selectionProxyModel = new KSelectionProxyModel( selectionModel, this );
-    d->selectionProxyModel->setFilterBehavior( KSelectionProxyModel::ChildrenOfExactSelection );
-    d->selectionProxyModel->setSourceModel( d->calendarModel );
-    d->filterProxy->setSourceModel( d->selectionProxyModel );
-    d->triggerDelayedUpdate();
+    connect( selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(collectionSelectionChanged(QItemSelection,QItemSelection)) );
 }
 
 #include "calendarsearch.moc"

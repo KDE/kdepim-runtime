@@ -36,12 +36,12 @@ namespace Akonadi {
     KDateTime endDate() const;
     void setEndDate( const KDateTime& date );
     
-    bool includeExactStartAndEndDates() const;
-    void setIncludeExactStartAndEndDates( bool include );
+    int startDateColumn() const;
+    void setStartDateColumn( int column );
 
-    int dateColumn() const;
-    void setDateColumn( int column );
-    
+    int endDateColumn() const;
+    void setEndDateColumn( int column );
+
   protected:
     /* reimp */ bool filterAcceptsRow( int source_row, const QModelIndex& source_parent ) const;
     
