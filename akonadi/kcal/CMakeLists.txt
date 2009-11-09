@@ -11,7 +11,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO
 set( kcalakonadi_LIB_SRC
      collectionselection.cpp
      calendarmodel.cpp
-     calendarsearchcreatejob.cpp
+     calendarsearch.cpp
      calfilterproxymodel.cpp
      collectionselectionproxymodel.cpp
      daterangefilterproxymodel.cpp
