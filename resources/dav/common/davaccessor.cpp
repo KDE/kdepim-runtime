@@ -312,7 +312,7 @@ void davAccessor::itemPutFinished( KJob *j )
   
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
   
-  kDebug() << "Last put item at (old)" << oldUrl.url() << " (new)" << newUrl.url() << " (etag)" << etag;
+  kDebug() << "Last put item at (old)" << oldUrlStr << " (new)" << newUrlStr << " (etag)" << etag;
   kDebug() << job->queryMetaData( "HTTP-Headers" );
   
   if( !etag.isEmpty() ) {
