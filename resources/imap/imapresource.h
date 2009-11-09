@@ -81,6 +81,8 @@ protected:
   virtual void doSetOnline(bool online);
 
 private Q_SLOTS:
+  void onPasswordRequestCompleted( const QString &password, bool userRejected );
+
   void onConnectSuccess( KIMAP::Session *session );
   void onConnectError( KIMAP::Session *session, int code, const QString &message );
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
@@ -127,11 +129,10 @@ private:
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
   bool needsNetwork() const;
+  bool isSessionAvailable() const;
   void startIdle();
 
   void itemsClear( const Akonadi::Collection &collection );
-
-  bool manualAuth( const QString& username, QString &password );
 
   friend class ImapIdleManager;
 

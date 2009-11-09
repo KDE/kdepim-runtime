@@ -34,7 +34,6 @@
 
 #include <kdebug.h>
 #include <klocale.h>
-#include <kpassworddialog.h>
 #include <kmessagebox.h>
 #include <KWindowSystem>
 #include <KAboutData>
@@ -142,7 +141,7 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 {
     Q_UNUSED( parts );
 
-    if ( !m_account || !m_account->mainSession() ) {
+    if ( !isSessionAvailable() ) {
         cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
         reconnect();
         return false;
@@ -243,20 +242,28 @@ void ImapResource::startConnect( bool forceManualAuth )
     return;
   }
 
-  bool userRejected = false;
-  QString password = Settings::self()->password( &userRejected );
+  connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
+           this, SLOT(onPasswordRequestCompleted(QString, bool)) );
+  if ( forceManualAuth ) {
+    Settings::self()->requestManualAuth();
+  } else {
+    Settings::self()->requestPassword();
+  }
+}
+
+void ImapResource::onPasswordRequestCompleted( const QString &password, bool userRejected )
+{
+  disconnect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
+              this, SLOT(onPasswordRequestCompleted(QString, bool)) );
 
   if ( userRejected ) {
-      emit status( Broken, i18n( "Could not read the password: user rejected wallet access." ) );
-      return;
-
-  } else if ( password.isEmpty() || forceManualAuth ) {
-    if ( !manualAuth( Settings::self()->userName(), password ) ) {
-      emit status( Broken, i18n( "Authentication failed." ) );
-      return;
-    } else {
-      Settings::self()->setPassword( password );
-    }
+    emit status( Broken, i18n( "Could not read the password: user rejected wallet access." ) );
+    return;
+  } else if ( password.isEmpty() ) {
+    emit status( Broken, i18n( "Authentication failed." ) );
+    return;
+  } else {
+    Settings::self()->setPassword( password );
   }
 
   if ( m_account!=0 ) {
@@ -565,7 +572,7 @@ Q_DECLARE_METATYPE( StringCollectionMap )
 
 void ImapResource::retrieveCollections()
 {
-  if ( !m_account || !m_account->mainSession() ) {
+  if ( !isSessionAvailable() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
     reconnect();
@@ -764,7 +771,7 @@ void ImapResource::triggerCollectionExtraInfoJobs( const Collection &collection 
 
 void ImapResource::retrieveItems( const Collection &col )
 {
-  if ( !m_account ) {
+  if ( !isSessionAvailable() ) {
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
     reconnect();
     return;
@@ -1573,20 +1580,6 @@ void ImapResource::onSelectDone( KJob *job )
 
 /******************* Private ***********************************************/
 
-bool ImapResource::manualAuth( const QString& username, QString &password )
-{
-  KPasswordDialog dlg( 0 );
-  dlg.setPrompt( i18n( "Could not find a valid password for user '%1' on IMAP server '%2', please enter it here.",
-                       username, Settings::self()->imapServer() ) );
-  if ( dlg.exec() == QDialog::Accepted ) {
-    password = dlg.password();
-    return true;
-  } else {
-    password.clear();
-    return false;
-  }
-}
-
 QString ImapResource::rootRemoteId() const
 {
   return "imap://"+m_account->userName()+'@'+m_account->server()+'/';
@@ -1630,8 +1623,7 @@ void ImapResource::itemsClear( const Collection &collection )
 
 void ImapResource::doSetOnline(bool online)
 {
-  if ( !online && m_account && m_account->mainSession()
-    && m_account->mainSession()->state() != KIMAP::Session::Disconnected ) {
+  if ( !online && isSessionAvailable() ) {
     m_account->disconnect();
   } else if ( online ) {
     startConnect();
@@ -1649,6 +1641,12 @@ bool ImapResource::needsNetwork() const
     return false;
   }
   return true;
+}
+
+bool ImapResource::isSessionAvailable() const
+{
+  return m_account && m_account->mainSession()
+      && m_account->mainSession()->state() != KIMAP::Session::Disconnected;
 }
 
 void ImapResource::reconnect()
