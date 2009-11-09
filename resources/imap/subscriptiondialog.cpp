@@ -226,7 +226,7 @@ void SubscriptionDialogBase::slotLoadFolders()
 {
   ImapAccount* ai = static_cast<ImapAccount*>(account());
   // we need a connection
-  if ( !ai->session() || ai->session()->state() != KIMAP::Session::Authenticated )
+  if ( !ai->mainSession() || ai->mainSession()->state() != KIMAP::Session::Authenticated )
   {
     kWarning() <<"SubscriptionDialog - got no connection";
     return;
@@ -253,7 +253,7 @@ void SubscriptionDialogBase::processNext()
 
   ImapAccount* ai = static_cast<ImapAccount*>(account());
 
-  KIMAP::ListJob *list = new KIMAP::ListJob( ai->session() );
+  KIMAP::ListJob *list = new KIMAP::ListJob( ai->mainSession() );
   list->setIncludeUnsubscribed( !mSubscribed );
   connect( list, SIGNAL( result(KJob*) ), this, SLOT( slotListDirectory(KJob*) ) );
   list->start();
@@ -337,7 +337,7 @@ bool SubscriptionDialog::doSave()
   QTreeWidgetItemIterator it(subView);
   for ( ; *it; ++it)
   {
-    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( ai->session() );
+    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( ai->mainSession() );
     subscribe->setMailBox(
       static_cast<GroupItem*>(*it)->info().path
     );
@@ -349,7 +349,7 @@ bool SubscriptionDialog::doSave()
   QTreeWidgetItemIterator it2(unsubView);
   for ( ; *it2; ++it2)
   {
-    KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( ai->session() );
+    KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( ai->mainSession() );
     unsubscribe->setMailBox(
       static_cast<GroupItem*>(*it2)->info().path
     );

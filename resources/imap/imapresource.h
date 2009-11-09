@@ -81,8 +81,8 @@ protected:
   virtual void doSetOnline(bool online);
 
 private Q_SLOTS:
-  void onConnectSuccess();
-  void onConnectError( int code, const QString &message );
+  void onConnectSuccess( KIMAP::Session *session );
+  void onConnectError( KIMAP::Session *session, int code, const QString &message );
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
                             const QList< QList<QByteArray> > &flags );
   void onMailBoxesReceiveDone( KJob *job );
