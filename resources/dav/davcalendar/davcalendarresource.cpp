@@ -146,8 +146,6 @@ void davCalendarResource::aboutToQuit()
 
 void davCalendarResource::configure( WId windowId )
 {
-  Q_UNUSED( windowId );
-  
   ConfigDialog dialog;
   if( windowId )
     KWindowSystem::setMainWindow( &dialog, windowId );
@@ -505,7 +503,7 @@ bool davCalendarResource::configurationIsValid()
     
     if( password.isEmpty() ) {
       QString folder = "dav-akonadi-resource_"+Settings::self()->remoteUrl();
-      Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
+      Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs() );
       if( wallet && wallet->isOpen() ) {
         if( wallet->hasFolder( folder ) ) {
           wallet->setFolder( folder );
