@@ -158,22 +158,6 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
     // new-only goes here
   }
 
-  QDate typeSpecificDate;
-  if( const Event::Ptr e = Akonadi::event( item ) ) {
-    if ( !e->recurs() && !e->isMultiDay() ) {
-      typeSpecificDate = e->dtStart().date();
-    }
-  } else if( const Todo::Ptr t = Akonadi::todo( item ) ) {
-    if ( t->hasDueDate() ) {
-      typeSpecificDate = t->dtDue().date();
-    }
-  } else if( const Journal::Ptr j = Akonadi::journal( item ) ) {
-      typeSpecificDate = j->dtStart().date();
-  } else {
-    Q_ASSERT( false );
-    return;
-  }
-
   const Incidence::Ptr incidence = Akonadi::incidence( item );
   Q_ASSERT( incidence );
 
@@ -181,9 +165,18 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
     //TODO(AKONADI_PORT): for changed items, we should remove existing date entries (they might have changed)
   }
 
-  if ( typeSpecificDate.isValid() )
-    m_itemsForDate.insert( typeSpecificDate.toString(), item );
-  m_itemsForDate.insert( incidence->dtStart().date().toString(), item );
+  if( const Todo::Ptr t = Akonadi::todo( item ) ) {
+    if ( t->hasDueDate() )
+      m_itemsForDate.insert( t->dtDue().date().toString(), item );
+  } else if( const Event::Ptr e = Akonadi::event( item ) ) {
+    if ( !e->recurs() && !e->isMultiDay() )
+      m_itemsForDate.insert( e->dtStart().date().toString(), item );
+  } else if( const Journal::Ptr j = Akonadi::journal( item ) ) {
+      m_itemsForDate.insert( j->dtStart().date().toString(), item );
+  }  else {
+    Q_ASSERT( false );
+    return;
+  }
 
   m_itemMap.insert( id, item );
 
