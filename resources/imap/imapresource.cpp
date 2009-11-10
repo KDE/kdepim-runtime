@@ -916,6 +916,12 @@ void ImapResource::onCreateMailBoxDone( KJob *job )
 {
   const Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
+  // Automatically subscribe to newly created mailbox
+  KIMAP::CreateJob *create = static_cast<KIMAP::CreateJob*>( job );
+  KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_account->mainSession() );
+  subscribe->setMailBox( create->mailBox() );
+  subscribe->start();
+
   if ( !job->error() ) {
     changeCommitted( collection );
   } else {
