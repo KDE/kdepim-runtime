@@ -55,7 +55,7 @@ class SessionUiProxy : public KIMAP::SessionUiProxy {
 };
 
 ImapAccount::ImapAccount( Settings *settings, QObject *parent )
-  : QObject( parent ), m_session( 0 ),
+  : QObject( parent ), m_mainSession( 0 ),
     m_encryption( KIMAP::LoginJob::Unencrypted ),
     m_authentication( KIMAP::LoginJob::ClearText ),
     m_subscriptionEnabled( false )
@@ -109,7 +109,7 @@ ImapAccount::ImapAccount( Settings *settings, QObject *parent )
 }
 
 ImapAccount::ImapAccount( QObject *parent )
-  : QObject( parent ), m_session( 0 ),
+  : QObject( parent ), m_mainSession( 0 ),
     m_encryption( KIMAP::LoginJob::Unencrypted ),
     m_authentication( KIMAP::LoginJob::ClearText ),
     m_subscriptionEnabled( false )
@@ -170,9 +170,9 @@ bool ImapAccount::isSubscriptionEnabled() const
   return m_subscriptionEnabled;
 }
 
-KIMAP::Session *ImapAccount::session() const
+KIMAP::Session *ImapAccount::mainSession() const
 {
-  return m_session;
+  return m_mainSession;
 }
 
 QStringList ImapAccount::capabilities() const
@@ -189,10 +189,29 @@ void ImapAccount::doConnect( const QString &password )
 {
   m_capabilities.clear();
   m_namespaces.clear();
-  m_session = createExtraSession( password );
+  m_mainSession = createSessionInternal( password );
 }
 
-KIMAP::Session *ImapAccount::createExtraSession( const QString &password )
+KIMAP::Session *ImapAccount::extraSession( const QString &id, const QString &password )
+{
+  if ( id.isEmpty() ) {
+    return 0;
+  }
+
+  if ( m_extraSessions.contains( id ) ) {
+    return m_extraSessions[id];
+  }
+
+  KIMAP::Session *session = createSessionInternal( password );
+
+  if ( session!=0 ) {
+    m_extraSessions[id] = session;
+  }
+
+  return session;
+}
+
+KIMAP::Session *ImapAccount::createSessionInternal( const QString &password )
 {
   if ( m_server.isEmpty() ) {
     return 0;
@@ -203,7 +222,7 @@ KIMAP::Session *ImapAccount::createExtraSession( const QString &password )
 
   if ( m_encryption != KIMAP::LoginJob::Unencrypted && !QSslSocket::supportsSsl() ) {
     kWarning() << "Crypto not supported!";
-    emit error( EncryptionError,
+    emit error( 0, EncryptionError,
                 i18n( "You requested TLS/SSL to connect to %1, but your "
                       "system does not seem to be set up for that.", m_server ) );
     return 0;
@@ -241,28 +260,44 @@ void ImapAccount::onLoginDone( KJob *job )
   KIMAP::LoginJob *login = static_cast<KIMAP::LoginJob*>( job );
 
   if ( job->error()==0 ) {
-    if ( login->session()!=m_session ) return; // No need to test for extra sessions
-    KIMAP::CapabilitiesJob *capJob = new KIMAP::CapabilitiesJob( m_session );
+    if ( login->session()!=m_mainSession ) return; // No need to test for extra sessions
+    KIMAP::CapabilitiesJob *capJob = new KIMAP::CapabilitiesJob( m_mainSession );
     QObject::connect( capJob, SIGNAL( result( KJob* ) ), SLOT( onCapabilitiesTestDone( KJob* ) ) );
     capJob->start();
     return;
   } else {
-    emit error( LoginFailError,
+    emit error( login->session(), LoginFailError,
                 i18n( "Could not connect to the IMAP-server %1.", m_server ) );
-    disconnect( login->session() );
+
+    QString id = m_extraSessions.key( login->session() );
+    if ( !id.isEmpty() ) {
+      m_extraSessions.remove( id );
+    }
+
+    if ( login->session() == m_mainSession ) {
+      m_mainSession = 0;
+    }
+
+    KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( login->session() );
+    QObject::connect( logout, SIGNAL( result( KJob* ) ),
+                      login->session(), SLOT( deleteLater() ) );
+    logout->start();
+
   }
 }
 
 void ImapAccount::onCapabilitiesTestDone( KJob *job )
 {
+  KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
+
   if ( job->error() ) {
-    emit error( CapabilitiesTestError,
+    emit error( capJob->session(),
+                CapabilitiesTestError,
                 i18n( "Could not test the capabilities supported by the IMAP server %1.", m_server ) );
     disconnect();
     return;
   }
 
-  KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
   m_capabilities = capJob->capabilities();
   QStringList expected;
   expected << "IMAP4rev1";
@@ -284,7 +319,8 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
   }
 
   if ( !missing.isEmpty() ) {
-    emit error( IncompatibleServerError,
+    emit error( capJob->session(),
+                IncompatibleServerError,
                 i18n( "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
                       "Please ask your sysadmin to upgrade the server.", m_server, missing.join( ", " ) ) );
     disconnect();
@@ -293,12 +329,12 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
 
   // If the extension is supported, grab the namespaces from the server
   if ( m_capabilities.contains( "NAMESPACE" ) ) {
-    KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob( m_session );
+    KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob( m_mainSession );
     QObject::connect( nsJob, SIGNAL( result( KJob* ) ), SLOT( onNamespacesTestDone( KJob* ) ) );
     nsJob->start();
     return;
   } else {
-    emit success();
+    emit success( capJob->session() );
   }
 }
 
@@ -322,14 +358,14 @@ void ImapAccount::onNamespacesTestDone( KJob *job )
                  + nsJob->sharedNamespaces();
   }
 
-  emit success();
+  emit success( nsJob->session() );
 }
 
 /******************* Private ***********************************************/
 
 bool ImapAccount::connect( const QString &password )
 {
-  if ( m_session==0 ) {
+  if ( m_mainSession==0 ) {
     doConnect( password );
     return true;
   } else {
@@ -337,23 +373,20 @@ bool ImapAccount::connect( const QString &password )
   }
 }
 
-bool ImapAccount::disconnect( KIMAP::Session *session )
+void ImapAccount::disconnect()
 {
-  if ( session==0 ) {
-    session = m_session;
-  }
+  QList<KIMAP::Session*> sessions;
+  sessions << m_mainSession;
+  sessions+= m_extraSessions.values();
 
-  if ( session==0 ) {
-    return false;
-  } else {
+  foreach ( KIMAP::Session *session, sessions ) {
     KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( session );
     QObject::connect( logout, SIGNAL( result( KJob* ) ), session, SLOT( deleteLater() ) );
     logout->start();
-    if ( session==m_session ) {
-      m_session = 0;
-    }
-    return true;
   }
+
+  m_mainSession = 0;
+  m_extraSessions.clear();
 }
 
 #include "imapaccount.moc"

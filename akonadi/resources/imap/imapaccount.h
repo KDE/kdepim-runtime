@@ -63,9 +63,9 @@ public:
   ~ImapAccount();
 
   bool connect( const QString &password = QString() );
-  bool disconnect( KIMAP::Session *session = 0 );
+  void disconnect();
 
-  KIMAP::Session *createExtraSession( const QString &password = QString() );
+  KIMAP::Session *extraSession( const QString &id, const QString &password = QString() );
 
   void setServer( const QString &server );
   QString server() const;
@@ -82,13 +82,13 @@ public:
   void setSubscriptionEnabled( bool enabled );
   bool isSubscriptionEnabled() const;
 
-  KIMAP::Session *session() const;
+  KIMAP::Session *mainSession() const;
   QStringList capabilities() const;
   QList<KIMAP::MailBoxDescriptor> namespaces() const;
 
 Q_SIGNALS:
-  void success();
-  void error( int code, const QString &message );
+  void success( KIMAP::Session *session );
+  void error( KIMAP::Session *session, int code, const QString &message );
 
 private Q_SLOTS:
   void onLoginDone( KJob *job );
@@ -96,9 +96,11 @@ private Q_SLOTS:
   void onNamespacesTestDone( KJob *job );
 
 private:
+  KIMAP::Session *createSessionInternal( const QString &password );
   void doConnect( const QString &password );
 
-  KIMAP::Session *m_session;
+  KIMAP::Session *m_mainSession;
+  QMap<QString, KIMAP::Session*> m_extraSessions;
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
   QString m_server;

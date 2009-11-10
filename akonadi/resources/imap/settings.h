@@ -33,9 +33,19 @@ public:
     bool passwordPossible() const;
     void setWinId( WId );
 
+    void requestPassword();
+    void requestManualAuth();
+
+signals:
+    void passwordRequestCompleted( const QString &password, bool userRejected );
+
 public slots:
     Q_SCRIPTABLE QString password( bool *userRejected = 0 ) const;
     Q_SCRIPTABLE void setPassword( const QString &password );
+
+private slots:
+    void onWalletOpened( bool success );
+    void onDialogFinished( int result );
 
 private:
     WId m_winId;

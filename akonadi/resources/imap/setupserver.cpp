@@ -352,7 +352,7 @@ void SetupServer::slotManageSubscriptions()
   m_subscriptionsChanged = false;
   SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."), &account, m_subscriptionsChanged );
 
-  connect( &account, SIGNAL( success() ),
+  connect( &account, SIGNAL( success( KIMAP::Session* ) ),
            subscriptions, SLOT( slotConnectionSuccess() ) );
 
   account.connect( m_ui->password->text() );

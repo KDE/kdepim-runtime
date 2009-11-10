@@ -25,6 +25,8 @@
 using KWallet::Wallet;
 
 #include <kglobal.h>
+#include <klocale.h>
+#include <kpassworddialog.h>
 
 #include <QDBusConnection>
 
@@ -62,6 +64,52 @@ Settings::Settings( WId winId ) : SettingsBase(), m_winId( winId )
 void Settings::setWinId( WId winId )
 {
     m_winId = winId;
+}
+
+void Settings::requestPassword()
+{
+  if ( !m_password.isEmpty() ) {
+    emit passwordRequestCompleted( m_password, false );
+  } else {
+    Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous );
+    connect( wallet, SIGNAL( walletOpened(bool) ),
+             this, SLOT( onWalletOpened(bool) ) );
+  }
+}
+
+void Settings::onWalletOpened( bool success )
+{
+  if ( !success ) {
+    emit passwordRequestCompleted( QString(), true );
+  } else {
+    Wallet *wallet = qobject_cast<Wallet*>( sender() );
+    if ( wallet && wallet->hasFolder( "imap" ) ) {
+        wallet->setFolder( "imap" );
+        wallet->readPassword( config()->name(), m_password );
+    }
+    emit passwordRequestCompleted( m_password, false );
+    wallet->deleteLater();
+  }
+}
+
+void Settings::requestManualAuth()
+{
+  KPasswordDialog *dlg = new KPasswordDialog( 0 );
+  dlg->setPrompt( i18n( "Could not find a valid password for user '%1' on IMAP server '%2', please enter it here.",
+                        userName(), imapServer() ) );
+  dlg->setAttribute( Qt::WA_DeleteOnClose );
+  connect( dlg, SIGNAL(finished(int)), this, SLOT(onDialogFinished(int)) );
+  dlg->show();
+}
+
+void Settings::onDialogFinished( int result )
+{
+  if ( result == QDialog::Accepted ) {
+    KPasswordDialog *dlg = qobject_cast<KPasswordDialog*>( sender() );
+    emit passwordRequestCompleted( dlg->password(), false );
+  } else {
+    emit passwordRequestCompleted( QString(), true );
+  }
 }
 
 QString Settings::password(bool *userRejected) const
