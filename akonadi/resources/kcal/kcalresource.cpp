@@ -291,7 +291,8 @@ void KCalResource::aboutToQuit()
 {
   mManager->writeConfig( KGlobal::config().data() );
 
-  mResource->save();
+  if ( mResource )
+    mResource->save();
 }
 
 void KCalResource::doSetOnline( bool online )
