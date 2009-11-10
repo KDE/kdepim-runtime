@@ -38,7 +38,10 @@ ConcurrentJobBase::JobRunner::JobRunner( ConcurrentJobBase *parent )
 
 void ConcurrentJobBase::JobRunner::run()
 {
-  QMutexLocker mutexLocker( &(mParent->mMutex) );
+  const bool lockNeeded = mParent->lockNeeded();
+  if ( lockNeeded ) {
+    mParent->mMutex.lock();
+  }
 
   mParent->createJob();
   Job *job = mParent->job();
@@ -53,6 +56,9 @@ void ConcurrentJobBase::JobRunner::run()
 
   delete job;
 
+  if( lockNeeded ) {
+    mParent->mMutex.unlock();
+  }
   mParent->mCondition.wakeAll();
 }
 

@@ -56,6 +56,9 @@ class ConcurrentJobBase
     QWaitCondition mCondition;
 
   protected:
+
+    virtual bool lockNeeded() const = 0;
+
     virtual void createJob() = 0;
 
     virtual void handleSuccess() = 0;
@@ -99,6 +102,8 @@ class ConcurrentJob : public ConcurrentJobBase
 
   protected:
     JobClass *mJob;
+
+    virtual bool lockNeeded() const { return false; }
 
   protected:
     Akonadi::Job *job()
