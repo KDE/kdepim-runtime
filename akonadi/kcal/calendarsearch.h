@@ -45,6 +45,15 @@ namespace Akonadi {
             SomeError=1
         };
 
+        enum IncidenceType {
+          None=0x0,
+          Events=0x1,
+          Todos=0x2,
+          Journals=0x4
+        };
+
+        Q_DECLARE_FLAGS( IncidenceTypes, IncidenceType )
+
         explicit CalendarSearch( QObject* parent=0 );
         ~CalendarSearch();
 
@@ -60,6 +69,9 @@ namespace Akonadi {
 
         QItemSelectionModel* selectionModel() const;
         void setSelectionModel( QItemSelectionModel* selectionModel );
+
+        IncidenceTypes incidenceTypes() const;
+        void setIncidenceTypes( IncidenceTypes types );
 
     public Q_SLOTS:
         void setStartDate( const KDateTime& startDate );

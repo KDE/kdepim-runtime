@@ -22,6 +22,7 @@
 #include "calendarsearchinterface.h"
 #include "kcalmimetypevisitor.h"
 #include "daterangefilterproxymodel.h"
+#include "incidencefilterproxymodel.h"
 #include "utils.h"
 
 #include <Akonadi/Collection>
@@ -31,6 +32,7 @@
 #include <akonadi/entitymimetypefiltermodel.h>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Session>
+
 
 #include <KDateTime>
 #include <KDebug>
@@ -74,7 +76,10 @@ public:
     EntityMimeTypeFilterModel* filterProxy;
     KSelectionProxyModel* selectionProxyModel;
     DateRangeFilterProxyModel* dateRangeProxyModel;
+    IncidenceFilterProxyModel* incidenceFilterProxyModel;
     QItemSelectionModel* selectionModel;
+    ChangeRecorder *monitor;
+    CalendarSearch::IncidenceTypes incidenceTypes;
 };
 
 CalendarSearch::Private::Private( CalendarSearch* qq )
@@ -85,13 +90,14 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
                  q ) )
   , error( CalendarSearch::NoError )
   , selectionProxyModel( 0 )
-  , selectionModel( 0 ) {
+  , selectionModel( 0 )
+  , incidenceTypes( CalendarSearch::Events|CalendarSearch::Todos|CalendarSearch::Journals ) {
     updateTimer.setSingleShot( true );
     updateTimer.setInterval( 0 );
     q->connect( &updateTimer, SIGNAL(timeout()), q, SLOT(updateSearch()) );
 
     Session *session = new Session( "CalendarSearch-" + KRandom::randomString( 8 ).toLatin1(), q );
-    ChangeRecorder *monitor = new ChangeRecorder( q );
+    monitor = new ChangeRecorder( q );
 
     ItemFetchScope scope;
     scope.fetchFullPayload( true );
@@ -117,9 +123,14 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
     filterProxy->setSourceModel( selectionProxyModel );
     filterProxy->setDynamicSortFilter( true );
 
+    incidenceFilterProxyModel = new IncidenceFilterProxyModel( q );
+    incidenceFilterProxyModel->setDynamicSortFilter( true );
+    incidenceFilterProxyModel->setSourceModel( filterProxy );
+    incidenceFilterProxyModel->showAll();
+
     dateRangeProxyModel = new DateRangeFilterProxyModel;
     dateRangeProxyModel->setDynamicSortFilter( true );
-    dateRangeProxyModel->setSourceModel( filterProxy );
+    dateRangeProxyModel->setSourceModel( incidenceFilterProxyModel );
 }
 
 void CalendarSearch::Private::updateSearch() {
@@ -260,6 +271,26 @@ void CalendarSearch::Private::collectionSelectionChanged( const QItemSelection& 
 
 QItemSelectionModel* CalendarSearch::selectionModel() const {
     return d->selectionModel;
+}
+
+CalendarSearch::IncidenceTypes CalendarSearch::incidenceTypes() const
+{
+  return d->incidenceTypes;
+}
+
+void CalendarSearch::setIncidenceTypes( IncidenceTypes types )
+{
+  const bool showEvents = types.testFlag( Events );
+  const bool showTodos = types.testFlag( Todos );
+  const bool showJournals = types.testFlag( Journals );
+
+  d->incidenceTypes = types;
+  d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType(), showEvents );
+  d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType(), showTodos );
+  d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType(), showJournals );
+  d->incidenceFilterProxyModel->setShowEvents( showEvents );
+  d->incidenceFilterProxyModel->setShowTodos( showTodos );
+  d->incidenceFilterProxyModel->setShowJournals( showJournals );
 }
 
 void CalendarSearch::setSelectionModel( QItemSelectionModel* selectionModel ) {

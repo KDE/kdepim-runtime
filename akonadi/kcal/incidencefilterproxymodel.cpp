@@ -42,30 +42,30 @@ class IncidenceFilterProxyModel::Visitor : public IncidenceBase::Visitor {
 public:
   explicit Visitor( IncidenceFilterProxyModel::Private* dd ) : d( dd ), acceptLastIncidence( false ) {}
 
-  bool visitJournal( Journal* );
-  bool visitTodo( Todo* );
-  bool visitEvent( Event* );
-  bool visitFreeBusy( FreeBusy* );
+  /* reimp */ bool visit( Journal* );
+  /* reimp */ bool visit( Todo* );
+  /* reimp */ bool visit( Event* );
+  /* reimp */ bool visit( FreeBusy* );
 
   bool acceptLastIncidence : 1;
 };
 
-bool IncidenceFilterProxyModel::Visitor::visitJournal( Journal* ) {
+bool IncidenceFilterProxyModel::Visitor::visit( Journal* ) {
   acceptLastIncidence = d->showJournals;
   return true;
 }
 
-bool IncidenceFilterProxyModel::Visitor::visitTodo( Todo* ) {
+bool IncidenceFilterProxyModel::Visitor::visit( Todo* ) {
   acceptLastIncidence = d->showTodos;
   return true;
 }
 
-bool IncidenceFilterProxyModel::Visitor::visitEvent( Event* ) {
+bool IncidenceFilterProxyModel::Visitor::visit( Event* ) {
   acceptLastIncidence = d->showEvents;
   return true;
 }
 
-bool IncidenceFilterProxyModel::Visitor::visitFreeBusy( FreeBusy* ) {
+bool IncidenceFilterProxyModel::Visitor::visit( FreeBusy* ) {
   acceptLastIncidence = false;
   return true;
 }
@@ -141,6 +141,5 @@ bool IncidenceFilterProxyModel::filterAcceptsRow( int source_row, const QModelIn
 
   Visitor v( d );
   inc->accept( v );
-  
   return v.acceptLastIncidence;
 }
