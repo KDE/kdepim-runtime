@@ -58,6 +58,16 @@ CalendarModel::~CalendarModel()
   delete d;
 }
 
+static KDateTime primaryDateForIncidence( const Item& item ) {
+  if( const Todo::Ptr t = Akonadi::todo( item ) )
+    return t->hasDueDate() ? t->dtDue() : KDateTime();
+  if( const Event::Ptr e = Akonadi::event( item ) )
+    return ( !e->recurs() && !e->isMultiDay() ) ? e->dtStart() : KDateTime();
+  if( const Journal::Ptr j = Akonadi::journal( item ) )
+    return j->dtStart();
+  return KDateTime();
+}
+
 QVariant CalendarModel::entityData( const Item& item, int column, int role ) const {
   const Incidence::Ptr incidence = Akonadi::incidence( item );
   if ( !incidence )
@@ -97,6 +107,8 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
         return todo->percentComplete();
       else
         return QVariant();
+    case PrimaryDate:
+      return primaryDateForIncidence( item ).toString();
     case Type:
       return incidence->type();
     default:
@@ -115,6 +127,8 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
         return todo->dtDue().toTime_t();
       else
         return QVariant();
+    case PrimaryDate:
+      return primaryDateForIncidence( item ).toTime_t();
     case Priority:
       if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
         return todo->priority();

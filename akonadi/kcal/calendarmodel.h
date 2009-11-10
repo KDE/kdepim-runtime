@@ -35,6 +35,7 @@ class AKONADI_KCAL_EXPORT CalendarModel : public EntityTreeModel
       DateTimeStart,
       DateTimeEnd,
       DateTimeDue,
+      PrimaryDate,
       Priority,
       PercentComplete,
       ItemColumnCount
