@@ -213,7 +213,7 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
   if ( alreadyExisted ) {
     Q_ASSERT( m_uidToItemId.value( ui ) == item.id() );
     QHash<Item::Id,Item::Id>::Iterator oldParentIt = m_childToParent.find( id );
-    if ( oldParentIt != m_childToParent.constEnd() ) {
+    if ( oldParentIt != m_childToParent.end() ) {
       const Incidence::Ptr parentInc = Akonadi::incidence( m_itemMap.value( oldParentIt.value() ) );
       Q_ASSERT( parentInc );
       if ( parentInc->uid() != parentUID ) {
@@ -226,7 +226,7 @@ void AkonadiCalendar::Private::updateItem( const Item &item, UpdateMode mode ) {
         parentNotChanged = true;
     } else { //old parent not seen, maybe unseen?
       QHash<Item::Id,UnseenItem>::Iterator oldUnseenParentIt = m_childToUnseenParent.find( id );
-      if ( oldUnseenParentIt != m_childToUnseenParent.constEnd() ) {
+      if ( oldUnseenParentIt != m_childToUnseenParent.end() ) {
         if ( oldUnseenParentIt.value().uid != parentUID ) {
           //parent changed, remove old entries
           QVector<Item::Id>& l = m_unseenParentToChildren[oldUnseenParentIt.value()];
