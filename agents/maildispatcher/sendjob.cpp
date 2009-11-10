@@ -47,6 +47,7 @@
 #include <akonadi/agentmanager.h>
 #include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/messageparts.h>
+#include <akonadi/kmime/specialcollections.h>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -249,15 +250,14 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
       currentJob = new ItemDeleteJob( item );
       QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
     } else {
-#if 0 // intra-resource moves do not work
       Collection moveTo( sA->moveToCollection() );
       if( sA->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection ) {
-        if( !LocalFolders::self()->isReady() ) {
+        if( !SpecialCollections::self()->hasDefaultCollection( SpecialCollections::SentMail ) ) {
           // We were unlucky and LocalFolders is recreating its stuff right now.
           // We will not wait for it.
           moveTo = Collection();
         } else {
-          moveTo = LocalFolders::self()->sentMail();
+          moveTo = SpecialCollections::self()->defaultCollection( SpecialCollections::SentMail );
         }
       }
       kDebug() << "Moving to sent-mail collection with id" << moveTo.id();
@@ -267,11 +267,9 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         storeResult( false, q->errorString() );
       } else {
         Q_ASSERT( currentJob == 0 );
-        currentJob = new ItemMoveJob( item, sentMail );
+        currentJob = new ItemMoveJob( item, moveTo, q );
         QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
       }
-#endif
-      storeResult( true );
     }
   }
 }
