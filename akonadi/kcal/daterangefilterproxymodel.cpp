@@ -92,6 +92,7 @@ void DateRangeFilterProxyModel::setEndDateColumn( int column ) {
   invalidateFilter();
 }
 bool DateRangeFilterProxyModel::filterAcceptsRow( int source_row, const QModelIndex& source_parent ) const {
+
   if ( d->end.isValid() ) {
     const QModelIndex idx = sourceModel()->index( source_row, d->startColumn, source_parent );
     const QVariant v = idx.data( filterRole() );
@@ -100,6 +101,12 @@ bool DateRangeFilterProxyModel::filterAcceptsRow( int source_row, const QModelIn
     if ( ok && start > d->endT )
       return false;
   }
+
+  const bool recurs = sourceModel()->index( source_row, 0, source_parent ).data( CalendarModel::RecursRole ).toBool();
+
+  if ( recurs ) // that's fuzzy and might return events not actually recurring in the range
+    return true;
+
   if ( d->start.isValid() ) {
     const QModelIndex idx = sourceModel()->index( source_row, d->endColumn, source_parent );
     const QVariant v = idx.data( filterRole() );

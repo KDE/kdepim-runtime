@@ -131,6 +131,8 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
       break;
     }
     return QVariant();
+  case RecursRole:
+    return incidence->recurs();
   default:
     return QVariant();
   }

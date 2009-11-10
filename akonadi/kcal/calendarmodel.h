@@ -48,7 +48,8 @@ class AKONADI_KCAL_EXPORT CalendarModel : public EntityTreeModel
 
 
     enum Role {
-      SortRole=EntityTreeModel::UserRole
+      SortRole=EntityTreeModel::UserRole,
+      RecursRole
     };
 
     explicit CalendarModel( Akonadi::Session *session, Akonadi::ChangeRecorder* monitor, QObject *parent = 0 );
