@@ -74,7 +74,7 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
       msg->setContent( buffer );
       msg->parse();
     } else if ( label == MessagePart::Header ) {
-      if ( !msg->body().isEmpty() && !msg->contents().isEmpty() ) {
+      if ( msg->body().isEmpty() && msg->contents().isEmpty() ) {
         msg->setHead( buffer );
         msg->parse();
       }

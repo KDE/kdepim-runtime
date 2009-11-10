@@ -29,6 +29,8 @@ class MailSerializerTest : public QObject
     void testEnvelopeDeserialize();
     void testEnvelopeSerialize();
     void testParts();
+    void testHeaderFetch();
+    void testMultiDeserialize();
 };
 
 

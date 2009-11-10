@@ -111,4 +111,107 @@ void MailSerializerTest::testParts()
   delete serializer;
 }
 
+void MailSerializerTest::testHeaderFetch()
+{
+  Item i;
+  i.setMimeType( "message/rfc822" );
+
+  SerializerPluginMail *serializer = new SerializerPluginMail();
+
+
+  QByteArray headerData( "From: David Johnson <david@usermode.org>\n"
+                         "To: kde-commits@kde.org\n"
+                         "MIME-Version: 1.0\n"
+                         "Date: Sun, 01 Feb 2009 06:25:22 +0000\n"
+                         "Message-Id: <1233469522.741324.18468.nullmailer@svn.kde.org>\n"
+                         "Subject: [kde-doc-english] KDE/kdeutils/kcalc\n" );
+
+  QString expectedSubject = QString::fromUtf8( "[kde-doc-english] KDE/kdeutils/kcalc" );
+  QString expectedFrom = QString::fromUtf8( "David Johnson <david@usermode.org>" );
+  QString expectedTo = QString::fromUtf8( "kde-commits@kde.org" );
+
+  // envelope
+  QBuffer buffer;
+  buffer.setData( headerData );
+  buffer.open( QIODevice::ReadOnly );
+  buffer.seek( 0 );
+  serializer->deserialize( i, MessagePart::Header, buffer, 0 );
+  QVERIFY( i.hasPayload<MessagePtr>() );
+
+  MessagePtr msg = i.payload<MessagePtr>();
+  QCOMPARE( msg->subject()->asUnicodeString(), expectedSubject );
+  QCOMPARE( msg->from()->asUnicodeString(), expectedFrom );
+  QCOMPARE( msg->to()->asUnicodeString(), expectedTo );
+
+  delete serializer;
+}
+
+void MailSerializerTest::testMultiDeserialize()
+{
+  // The Body part includes the Header.
+  // When serialization is done a second time, we should already have the header deserialized.
+  // We change the header data for the second deserialization (which is an unrealistic scenario)
+  // to demonstrate that it is not deserialized again.
+
+  Item i;
+  i.setMimeType( "message/rfc822" );
+
+  SerializerPluginMail *serializer = new SerializerPluginMail();
+
+
+  QByteArray messageData( "From: David Johnson <david@usermode.org>\n"
+                          "To: kde-commits@kde.org\n"
+                          "MIME-Version: 1.0\n"
+                          "Date: Sun, 01 Feb 2009 06:25:22 +0000\n"
+                          "Subject: [kde-doc-english] KDE/kdeutils/kcalc\n"
+                          "Content-Type: text/plain\n"
+                          "\n"
+                          "This is content" );
+
+  QString expectedSubject = QString::fromUtf8( "[kde-doc-english] KDE/kdeutils/kcalc" );
+  QString expectedFrom = QString::fromUtf8( "David Johnson <david@usermode.org>" );
+  QString expectedTo = QString::fromUtf8( "kde-commits@kde.org" );
+  QByteArray expectedBody( "This is content" );
+
+  // envelope
+  QBuffer buffer;
+  buffer.setData( messageData );
+  buffer.open( QIODevice::ReadOnly );
+  buffer.seek( 0 );
+  serializer->deserialize( i, MessagePart::Body, buffer, 0 );
+  QVERIFY( i.hasPayload<MessagePtr>() );
+
+  MessagePtr msg = i.payload<MessagePtr>();
+  QCOMPARE( msg->subject()->asUnicodeString(), expectedSubject );
+  QCOMPARE( msg->from()->asUnicodeString(), expectedFrom );
+  QCOMPARE( msg->to()->asUnicodeString(), expectedTo );
+  QCOMPARE( msg->body(), expectedBody );
+
+  buffer.close();
+
+  messageData = QByteArray ( "From: DIFFERENT CONTACT <DIFFERENTCONTACT@example.org>\n"
+                             "To: kde-commits@kde.org\n"
+                             "MIME-Version: 1.0\n"
+                             "Date: Sun, 01 Feb 2009 06:25:22 +0000\n"
+                             "Message-Id: <1233469522.741324.18468.nullmailer@svn.kde.org>\n"
+                             "Subject: [kde-doc-english] KDE/kdeutils/kcalc\n"
+                             "Content-Type: text/plain\n"
+                             "\r\n"
+                             "This is content" );
+
+  buffer.setData( messageData );
+  buffer.open( QIODevice::ReadOnly );
+  buffer.seek( 0 );
+
+  serializer->deserialize( i, MessagePart::Header, buffer, 0 );
+  QVERIFY( i.hasPayload<MessagePtr>() );
+
+  msg = i.payload<MessagePtr>();
+  QCOMPARE( msg->subject()->asUnicodeString(), expectedSubject );
+  QCOMPARE( msg->from()->asUnicodeString(), expectedFrom );
+  QCOMPARE( msg->to()->asUnicodeString(), expectedTo );
+
+  delete serializer;
+}
+
 
