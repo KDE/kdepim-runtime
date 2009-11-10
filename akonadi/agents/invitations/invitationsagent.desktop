@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Invitations Agent
+Name=Invitations Dispatcher Agent
 Type=AkonadiAgent
 Exec=akonadi_invitations_agent
 Icon=mail-folder-outbox

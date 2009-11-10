@@ -70,7 +70,10 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     virtual void configure( WId windowId );
 
   private Q_SLOTS:
-    void fetchInvitationCollectionResult( KJob* );
+    void createAgentResult( KJob *job );
+    void resourceSyncResult( KJob *job );
+    void collectionFetchResult( KJob *job );
+    void collectionCreateResult( KJob *job );
 
   private:
     void init();
@@ -93,6 +96,8 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     */
 
   private:
+    QString m_resourceId;
+    bool newAgentCreated;
     Akonadi::Collection m_invitations;
 };
 
