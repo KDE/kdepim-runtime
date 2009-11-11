@@ -12,6 +12,7 @@ kde4_add_executable(akonadi_calendarsearch_agent ${CALENDARSEARCHAGENT_SRCS})
 
 target_link_libraries(akonadi_calendarsearch_agent
   ${KDEPIMLIBS_KCAL_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
   akonadi-kcal
 )
 
