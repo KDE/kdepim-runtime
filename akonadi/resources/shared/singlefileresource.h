@@ -59,6 +59,7 @@ class SingleFileResource : public SingleFileResourceBase
 
       if ( Settings::self()->path().isEmpty() ) {
         emit status( Broken, i18n( "No file selected." ) );
+        cancelTask();
         return;
       }
 
@@ -90,6 +91,7 @@ class SingleFileResource : public SingleFileResourceBase
           } else {
             emit status( Broken, i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() ) );
             mCurrentUrl.clear();
+            cancelTask();
             return;
           }
         }
@@ -98,6 +100,7 @@ class SingleFileResource : public SingleFileResourceBase
         const QString localFileName = mCurrentUrl.toLocalFile();
         if ( !readLocalFile( mCurrentUrl.toLocalFile() ) ) {
           emit status( Broken, i18n( "Could not read file '%1'", localFileName ) );
+          cancelTask();
           return;
         }
 
@@ -111,12 +114,14 @@ class SingleFileResource : public SingleFileResourceBase
         if ( mDownloadJob )
         {
           emit error( i18n( "Another download is still in progress." ) );
+          cancelTask();
           return;
         }
 
         if ( mUploadJob )
         {
           emit error( i18n( "Another file upload is still in progress." ) );
+          cancelTask();
           return;
         }
 
@@ -140,6 +145,7 @@ class SingleFileResource : public SingleFileResourceBase
     {
       if ( Settings::self()->readOnly() ) {
         emit error( i18n( "Trying to write to a read-only file: '%1'.", Settings::self()->path() ) );
+        cancelTask();
         return;
       }
 
@@ -147,6 +153,7 @@ class SingleFileResource : public SingleFileResourceBase
       // and in that case it would probably cause data lose.
       if ( mCurrentUrl.isEmpty() ) {
         emit status( Broken, i18n( "No file specified." ) );
+        cancelTask();
         return;
       }
 
@@ -159,24 +166,32 @@ class SingleFileResource : public SingleFileResourceBase
         saveHash( mCurrentHash );
         KDirWatch::self()->startScan();
         if ( !writeResult )
+        {
+          cancelTask();
           return;
-
+        }
         emit status( Idle, i18nc( "@info:status", "Ready" ) );
+
       } else {
         // Check if there is a download or an upload in progress.
         if ( mDownloadJob ) {
           emit error( i18n( "A download is still in progress." ) );
+          cancelTask();
           return;
         }
 
         if ( mUploadJob ) {
           emit error( i18n( "Another file upload is still in progress." ) );
+          cancelTask();
           return;
         }
 
         // Write te items to the localy cached file.
         if ( !writeToFile( cacheFile() ) )
+        {
+          cancelTask();
           return;
+        }
 
         // Update the hash so we can detect at fileChanged() if the file actually
         // did change.
@@ -193,6 +208,7 @@ class SingleFileResource : public SingleFileResourceBase
 
         emit status( Running, i18n( "Uploading cached file to remote location." ) );
       }
+      taskDone();
     }
 
   protected:
