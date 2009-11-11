@@ -98,27 +98,5 @@ QVariant QuotaColorProxyModel::data( const QModelIndex & index, int role) const
   return QAbstractProxyModel::data( index, role );
 }
 
-bool QuotaColorProxyModel::dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent )
-{
-  Q_ASSERT(sourceModel());
-  const QModelIndex sourceParent = mapToSource(parent);
-  return sourceModel()->dropMimeData(data, action, row, column, sourceParent);
-}
-
-QMimeData* QuotaColorProxyModel::mimeData( const QModelIndexList & indexes ) const
-{
-  Q_ASSERT(sourceModel());
-  QModelIndexList sourceIndexes;
-  foreach(const QModelIndex& index, indexes)
-    sourceIndexes << mapToSource(index);
-  return sourceModel()->mimeData(sourceIndexes);
-}
-
-QStringList QuotaColorProxyModel::mimeTypes() const
-{
-  Q_ASSERT(sourceModel());
-  return sourceModel()->mimeTypes();
-}
-
 #include "quotacolorproxymodel.moc"
 
