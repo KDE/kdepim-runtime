@@ -22,7 +22,9 @@
 #include "utils.h"
 
 #include <Akonadi/Item>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/Collection>
+#include <Akonadi/ChangeRecorder>
 
 #include <KCal/Incidence>
 #include <KCal/Event>
@@ -51,6 +53,7 @@ CalendarModel::CalendarModel( Session *session, ChangeRecorder* monitor, QObject
   : EntityTreeModel( session, monitor, parent ),
     d( new Private( this ) )
 {
+  monitor->itemFetchScope().fetchAllAttributes( true );
 }
 
 CalendarModel::~CalendarModel()
