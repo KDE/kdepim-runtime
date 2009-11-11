@@ -33,6 +33,7 @@
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionDialog>
+#include <Akonadi/EntityDisplayAttribute>
 #include <akonadi/entitytreemodel.h>
 
 #include <KIconLoader>
@@ -292,4 +293,9 @@ Collection::List Akonadi::collectionsFromIndexes( const QModelIndexList &indexes
   Q_FOREACH( const QModelIndex &idx, indexes )
       l.push_back( collectionFromIndex( idx ) );
   return l;
+}
+
+QString Akonadi::displayName( const Collection &c ) {
+  const EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>();
+  return ( attr && !attr->displayName().isEmpty() ) ? attr->displayName() : c.name();
 }

@@ -65,16 +65,15 @@ namespace Akonadi
    */
   AKONADI_KCAL_EXPORT QList<KCal::Event::Ptr> eventsFromItems( const Akonadi::Item::List &items );
 
- /**
+  /**
   * returns the todo from an akonadi item, or a null pointer if the item has no such payload
   */
- AKONADI_KCAL_EXPORT KCal::Todo::Ptr todo( const Akonadi::Item &item );
+  AKONADI_KCAL_EXPORT KCal::Todo::Ptr todo( const Akonadi::Item &item );
 
- /**
+  /**
   * returns the journal from an akonadi item, or a null pointer if the item has no such payload
   */
- AKONADI_KCAL_EXPORT KCal::Journal::Ptr journal( const Akonadi::Item &item );
-
+  AKONADI_KCAL_EXPORT KCal::Journal::Ptr journal( const Akonadi::Item &item );
 
   /**
    * returns whether an Akonadi item contains an incidence
@@ -173,6 +172,9 @@ namespace Akonadi
   AKONADI_KCAL_EXPORT Collection::Id collectionIdFromIndex( const QModelIndex &index );
 
   AKONADI_KCAL_EXPORT Collection::List collectionsFromIndexes( const QModelIndexList &indexes );
+
+  AKONADI_KCAL_EXPORT QString displayName( const Akonadi::Collection &coll );
+
 }
 
 #endif
