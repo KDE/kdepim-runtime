@@ -295,6 +295,11 @@ void CalendarSearch::setIncidenceTypes( IncidenceTypes types )
 
 void CalendarSearch::setSelectionModel( QItemSelectionModel* selectionModel ) {
     connect( selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(collectionSelectionChanged(QItemSelection,QItemSelection)) );
+    Q_FOREACH( const QModelIndex& i, selectionModel->selectedIndexes() ) {
+      const QModelIndex idx = findIndex( d->calendarModel, QModelIndex(), Akonadi::collectionFromIndex( i ) );
+      if ( idx.isValid() )
+          d->selectionModel->select( idx, QItemSelectionModel::Select );
+    }
 }
 
 #include "calendarsearch.moc"
