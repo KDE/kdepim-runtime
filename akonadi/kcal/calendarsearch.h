@@ -85,6 +85,7 @@ namespace Akonadi {
         Private* const d;
         Q_PRIVATE_SLOT( d, void updateSearch() )
         Q_PRIVATE_SLOT( d, void collectionSelectionChanged( const QItemSelection &, const QItemSelection & ) )
+        Q_PRIVATE_SLOT( d, void rowsInserted( const QModelIndex &, int, int ) )
 //        Q_PRIVATE_SLOT( d, void searchCreated( const QVariantMap & ) )
 //        Q_PRIVATE_SLOT( d, void collectionFetched( KJob * ) )
     };

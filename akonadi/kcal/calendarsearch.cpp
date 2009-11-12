@@ -65,6 +65,8 @@ public:
     void searchCreated( const QVariantMap& result );
     void collectionSelectionChanged( const QItemSelection &, const QItemSelection & );
     void collectionFetched( KJob* job );
+    void rowsInserted( const QModelIndex&, int, int );
+
     Collection createdCollection;
     KDateTime startDate;
     KDateTime endDate;
@@ -80,6 +82,7 @@ public:
     QItemSelectionModel* selectionModel;
     ChangeRecorder *monitor;
     CalendarSearch::IncidenceTypes incidenceTypes;
+    QList<Collection::Id> preselectedCollections;
 };
 
 CalendarSearch::Private::Private( CalendarSearch* qq )
@@ -110,7 +113,9 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
     monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType(), true );
     monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType(), true );
     monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType(), true );
+
     calendarModel = new CalendarModel( session, monitor, q );
+    connect( calendarModel, SIGNAL(rowsInserted(QModelIndex,int,int)), q, SLOT(rowsInserted(QModelIndex,int,int)) );
 
     selectionModel = new QItemSelectionModel( calendarModel );
     selectionProxyModel = new KSelectionProxyModel( selectionModel, q );
@@ -237,33 +242,33 @@ void CalendarSearch::setEndDate( const KDateTime& endDate ) {
 //    d->triggerDelayedUpdate();
 }
 
-static QModelIndex findIndex( QAbstractItemModel* m, const QModelIndex& parent, const Collection& c ) {
+
+static QModelIndex findIndex( QAbstractItemModel* m, const QModelIndex& parent, const Collection::Id& cid ) {
     const int rows = m->rowCount( parent );
     for ( int i=0; i < rows; ++i ) {
       const QModelIndex idx = m->index( i, 0, parent );
-      const Collection found = Akonadi::collectionFromIndex( idx );
-      if ( found == c )
+      const Collection::Id found = Akonadi::collectionIdFromIndex( idx );
+      if ( found < 0 )
+        return QModelIndex(); // we only care about collections
+      if ( found == cid )
         return idx;
-      if ( found.isValid() ) {
-        const QModelIndex inChildren = findIndex( m, idx, c );
-        if ( inChildren.isValid() )
-          return inChildren;
-      }
+      const QModelIndex inChildren = findIndex( m, idx, cid );
+      if ( inChildren.isValid() )
+        return inChildren;
     }
     return QModelIndex();
 }
 
 void CalendarSearch::Private::collectionSelectionChanged( const QItemSelection& newSelection, const QItemSelection& oldSelection ) {
-    kDebug();
     QSet<QModelIndex> oldIndexes = oldSelection.indexes().toSet();
     QSet<QModelIndex> newIndexes = newSelection.indexes().toSet();
     Q_FOREACH( const QModelIndex& i, oldIndexes - newIndexes ) {
-        const QModelIndex idx = findIndex( calendarModel, QModelIndex(), Akonadi::collectionFromIndex( i ) );
+        const QModelIndex idx = findIndex( calendarModel, QModelIndex(), Akonadi::collectionIdFromIndex( i ) );
         if ( idx.isValid() )
             selectionModel->select( idx, QItemSelectionModel::Deselect );
     }
     Q_FOREACH( const QModelIndex& i, newIndexes ) {
-        const QModelIndex idx = findIndex( calendarModel, QModelIndex(), Akonadi::collectionFromIndex( i ) );
+        const QModelIndex idx = findIndex( calendarModel, QModelIndex(), Akonadi::collectionIdFromIndex( i ) );
         if ( idx.isValid() )
             selectionModel->select( idx, QItemSelectionModel::Select );
     }
@@ -280,25 +285,44 @@ CalendarSearch::IncidenceTypes CalendarSearch::incidenceTypes() const
 
 void CalendarSearch::setIncidenceTypes( IncidenceTypes types )
 {
-  const bool showEvents = types.testFlag( Events );
-  const bool showTodos = types.testFlag( Todos );
-  const bool showJournals = types.testFlag( Journals );
+    const bool showEvents = types.testFlag( Events );
+    const bool showTodos = types.testFlag( Todos );
+    const bool showJournals = types.testFlag( Journals );
 
-  d->incidenceTypes = types;
-  d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType(), showEvents );
-  d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType(), showTodos );
-  d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType(), showJournals );
-  d->incidenceFilterProxyModel->setShowEvents( showEvents );
-  d->incidenceFilterProxyModel->setShowTodos( showTodos );
-  d->incidenceFilterProxyModel->setShowJournals( showJournals );
+    d->incidenceTypes = types;
+    d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType(), showEvents );
+    d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType(), showTodos );
+    d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType(), showJournals );
+    d->incidenceFilterProxyModel->setShowEvents( showEvents );
+    d->incidenceFilterProxyModel->setShowTodos( showTodos );
+    d->incidenceFilterProxyModel->setShowJournals( showJournals );
+}
+
+void CalendarSearch::Private::rowsInserted( const QModelIndex& parent, int start, int end ) {
+
+    for ( int i = start; i <= end; ++i ) {
+        const QModelIndex idx = calendarModel->index( i, 0, parent );
+        const Collection::Id id = Akonadi::collectionIdFromIndex( idx );
+        for ( int j = 0; j < preselectedCollections.size(); ++j ) {
+            if ( preselectedCollections[j] == id )
+                selectionModel->select( idx, QItemSelectionModel::Select );
+            const QModelIndex cidx = findIndex( calendarModel, idx, preselectedCollections[j] );
+            if ( cidx.isValid() )
+              selectionModel->select( cidx, QItemSelectionModel::Select );
+        }
+    }
 }
 
 void CalendarSearch::setSelectionModel( QItemSelectionModel* selectionModel ) {
     connect( selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(collectionSelectionChanged(QItemSelection,QItemSelection)) );
     Q_FOREACH( const QModelIndex& i, selectionModel->selectedIndexes() ) {
-      const QModelIndex idx = findIndex( d->calendarModel, QModelIndex(), Akonadi::collectionFromIndex( i ) );
-      if ( idx.isValid() )
-          d->selectionModel->select( idx, QItemSelectionModel::Select );
+      const Collection::Id cid = Akonadi::collectionIdFromIndex( i );
+      kDebug() << cid;
+        const QModelIndex idx = findIndex( d->calendarModel, QModelIndex(), cid );
+        if ( idx.isValid() )
+            d->selectionModel->select( idx, QItemSelectionModel::Select );
+        else
+            d->preselectedCollections.append( cid );
     }
 }
 
