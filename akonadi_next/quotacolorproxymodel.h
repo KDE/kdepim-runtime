@@ -70,11 +70,6 @@ class AKONADI_NEXT_EXPORT QuotaColorProxyModel : public QSortFilterProxyModel
 
     virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 
-    // QAbstractProxyModel does not proxy all methods...
-    virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent );
-    virtual QMimeData* mimeData( const QModelIndexList & indexes ) const;
-    virtual QStringList mimeTypes() const;
-
   private:
     //@cond PRIVATE
     class Private;
