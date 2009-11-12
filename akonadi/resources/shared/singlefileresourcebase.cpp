@@ -200,19 +200,16 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     return;
 
   // handle conflicts
+  QString lostFoundFileName;
+  const KUrl prevUrl = mCurrentUrl;
   if ( !mCurrentUrl.isEmpty() ) {
-    const KUrl prevUrl = mCurrentUrl;
     int i = 0;
-    QString lostFoundFileName;
     do {
       lostFoundFileName = KStandardDirs::locateLocal( "data", identifier() + QDir::separator()
           + prevUrl.fileName() + '-' + QString::number( ++i ) );
     } while ( KStandardDirs::exists( lostFoundFileName ) );
     mCurrentUrl = KUrl( lostFoundFileName );
     writeFile();
-    emit warning( i18n( "The file '%1' was changed on disk while there were still pending changes in Akonadi. "
-        "To avoid data loss, a backup of the internal changes has been created at '%2'.",
-         prevUrl.prettyUrl(), mCurrentUrl.prettyUrl() ) );
     mCurrentUrl = prevUrl;
   }
 
@@ -222,11 +219,19 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
   // process. AT this point we're sure that it is the file that the resource
   // was configured for because of the check at the beginning of this function.
   if ( mPreviousHash != mCurrentHash ) {
+    emit warning( i18n( "The file '%1' was changed on disk while there were still pending changes in Akonadi. "
+        "To avoid data loss, a backup of the internal changes has been created at '%2'.",
+         prevUrl.prettyUrl(), KUrl( lostFoundFileName ).prettyUrl() ) );
+
     // Notify resources, so that information bound to the file like indexes etc.
     // can be updated.
     handleHashChange();
     clearCache();
     synchronize();
+  } else {
+    // The file didn't change, don't notify the user and remove the backup file.
+    QFile lostFoundFile( lostFoundFileName );
+    lostFoundFile.remove();
   }
 }
 
