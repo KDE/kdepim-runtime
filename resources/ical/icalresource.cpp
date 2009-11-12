@@ -86,7 +86,12 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
   }
 
   IncidencePtr i = item.payload<IncidencePtr>();
-  calendar()->addIncidence( i.get()->clone() );
+  if ( !calendar()->addIncidence( i.get()->clone() ) )
+  {
+    cancelTask();
+    return;
+  }
+
   Item it( item );
   it.setRemoteId( i->uid() );
   scheduleWrite();
