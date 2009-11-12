@@ -133,6 +133,11 @@ QList<MsgInfo> MBox::entryList(const QSet<quint64> &deletedItems) const
   return result;
 }
 
+QString MBox::fileName() const
+{
+  return d->mMboxFile.fileName();
+}
+
 bool MBox::load( const QString &fileName )
 {
   if ( d->mFileLocked )
@@ -478,10 +483,24 @@ QByteArray MBox::readEntryHeaders( quint64 offset )
 
 bool MBox::save( const QString &fileName )
 {
-  if ( !fileName.isEmpty() && KUrl( fileName ).toLocalFile() != d->mMboxFile.fileName() )
-  {
-    // File saved != file loaded from
-    return false; // FIXME: Implement this case
+  if ( !fileName.isEmpty() && KUrl( fileName ).toLocalFile() != d->mMboxFile.fileName() ) {
+    if ( !d->mMboxFile.copy( fileName ) )
+      return false;
+
+    if ( d->mAppendedEntries.size() == 0 )
+      return true; // Nothing to do
+
+    QFile otherFile( fileName );
+    Q_ASSERT( otherFile.exists() );
+    if ( !otherFile.open( QIODevice::ReadWrite ) )
+      return false;
+
+    otherFile.seek( d->mMboxFile.size() );
+    otherFile.write( d->mAppendedEntries );
+
+    // Don't clear mAppendedEntries and don't update mInitialFileSize. These
+    // are still valid for the original file.
+    return true;
   }
 
   if ( d->mAppendedEntries.size() == 0 )
