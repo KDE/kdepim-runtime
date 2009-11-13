@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>317</width>
-    <height>344</height>
+    <height>369</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@ p, li { white-space: pre-wrap; }
          <string>Procmail loc&amp;kfile</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -64,12 +64,18 @@ p, li { white-space: pre-wrap; }
       <item row="3" column="0" colspan="2">
        <widget class="QRadioButton" name="none">
         <property name="text">
-         <string>Non&amp;e (Use with care)</string>
+         <string>Non&amp;e</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="KComboBox" name="kcfg_Lockfile">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="editable">
          <bool>true</bool>
         </property>
@@ -78,6 +84,16 @@ p, li { white-space: pre-wrap; }
           <string>.lock</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>None, the default configuration, should be save in most cases. Select the appropriate lock method if programs that don't make use of akonadi are accessing the configured mbox file too. In the latter case you have make sure that both the resource and the program use the same locking method.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
