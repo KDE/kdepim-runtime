@@ -20,6 +20,8 @@
 #include "mboxbenchmark.h"
 #include "mboxbenchmark.moc"
 
+#include <QtCore/QCryptographicHash>
+
 #include <qtest_kde.h>
 #include <kstandarddirs.h>
 #include <ktempdir.h>
@@ -94,5 +96,31 @@ void MBoxBenchmark::testProcfileLockPerformance()
 
     foreach (MsgInfo const &info, mbox2.entryList())
       mbox2.readEntry(info.first);
+  }
+}
+
+void MBoxBenchmark::voidTestMD5Performance()
+{
+  MBox mbox;
+  mbox.setLockType(MBox::None);
+  mbox.load(fileName());
+
+  for (int i = 0; i < 1000; ++i)
+    mbox.appendEntry(mMail1);
+
+  mbox.save(fileName());
+
+  QBENCHMARK {
+    QFile file( fileName() );
+    QVERIFY( file.exists() );
+    QVERIFY( file.open( QIODevice::ReadOnly ) );
+
+    QCryptographicHash hash( QCryptographicHash::Md5 );
+    qint64 blockSize = 512 * 1024; // Read blocks of 512K
+
+    while ( !file.atEnd() )
+      hash.addData( file.read( blockSize ) );
+
+    file.close();
   }
 }

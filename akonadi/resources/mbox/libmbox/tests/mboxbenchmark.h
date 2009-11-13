@@ -34,6 +34,7 @@ class MBoxBenchmark : public QObject
     void cleanupTestCase();
     void testNoLockPerformance();
     void testProcfileLockPerformance();
+    void voidTestMD5Performance();
 
   private:
     QString fileName();
