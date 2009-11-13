@@ -151,8 +151,9 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   selectionProxyModel->setSourceModel( mBrowserModel );
   selectionProxyModel->setFilterBehavior( KSelectionProxyModel::ChildrenOfExactSelection );
 
-  connect( selectionProxyModel, SIGNAL( modelAboutToBeReset() ), SLOT( slotBrowserModelAboutToBeReset() ) );
-  connect( selectionProxyModel, SIGNAL( modelReset() ), SLOT( slotBrowserModelReset() ) );
+  connect( selectionProxyModel, SIGNAL(modelAboutToBeReset()), SLOT(slotBrowserModelAboutToBeReset()) );
+  // Use a Queued connection here so that all proxies get a chance to process the reset before trying to restore the state.
+  connect( selectionProxyModel, SIGNAL(modelReset()), SLOT(slotBrowserModelReset()), Qt::QueuedConnection );
 
   EntityMimeTypeFilterModel *itemFilter = new EntityMimeTypeFilterModel( this );
   itemFilter->setSourceModel( selectionProxyModel );
