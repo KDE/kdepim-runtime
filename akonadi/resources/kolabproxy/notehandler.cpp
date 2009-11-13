@@ -57,6 +57,9 @@ Akonadi::Item::List NotesHandler::translateItems(const Akonadi::Item::List& kola
     if ( noteFromKolab(payload, noteItem ) ) {
       noteItem.setRemoteId( QString::number( item.id() ) );
       newItems.append( noteItem );
+    } else {
+      kWarning() << "Failed to convert kolab item ( id:" << item.id() << "rid:" << item.remoteId() << ") to Note message";
+      continue;
     }
   }
 
