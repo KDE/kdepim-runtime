@@ -95,7 +95,7 @@ QVariant QuotaColorProxyModel::data( const QModelIndex & index, int role) const
     }
   }
 
-  return QAbstractProxyModel::data( index, role );
+  return QSortFilterProxyModel::data( index, role );
 }
 
 #include "quotacolorproxymodel.moc"
