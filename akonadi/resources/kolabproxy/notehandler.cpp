@@ -75,7 +75,7 @@ bool NotesHandler::noteFromKolab(const KMime::Message::Ptr& kolabMsg, Akonadi::I
     return false;
   const QByteArray xmlData = xmlContent->decodedContent();
   Kolab::Note j;
-  if ( j.load( xmlData ) )
+  if ( !j.load( xmlData ) )
     return false;
 
   KMime::Message::Ptr note( new KMime::Message );
