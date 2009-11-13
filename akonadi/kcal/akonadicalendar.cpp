@@ -420,36 +420,26 @@ Item::List AkonadiCalendar::rawTodosForDate( const QDate &date )
   return todoList;
 }
 
-Item::List AkonadiCalendar::alarmsTo( const KDateTime &to )
+Alarm::List AkonadiCalendar::alarmsTo( const KDateTime &to )
 {
   kDebug();
   return alarms( KDateTime( QDate( 1900, 1, 1 ) ), to );
 }
 
-Item::List AkonadiCalendar::alarms( const KDateTime &from, const KDateTime &to )
+Alarm::List AkonadiCalendar::alarms( const KDateTime &from, const KDateTime &to )
 {
-  kDebug();
-  Item::List alarmList;
-#if 0
+    qWarning() << "Alarms:" << d->m_itemMap.count();
   Alarm::List alarmList;
-  QHashIterator<QString, Event *>ie( d->mEvents );
-  Event *e;
-  while ( ie.hasNext() ) {
-    ie.next();
-    e = ie.value();
-    if ( e->recurs() ) appendRecurringAlarms( alarmList, e, from, to ); else appendAlarms( alarmList, e, from, to );
+  QHashIterator<Item::Id, Item> i( d->m_itemMap );
+  while ( i.hasNext() ) {
+    const Item item = i.next().value();
+    Incidence::Ptr e = Akonadi::event( item );
+    qWarning() << e->summary();
+    if ( e->recurs() )
+        appendRecurringAlarms( alarmList, item, from, to );
+    else
+        appendAlarms( alarmList, item, from, to );
   }
-
-  QHashIterator<QString, Todo *>it( d->mTodos );
-  Todo *t;
-  while ( it.hasNext() ) {
-    it.next();
-    t = it.value();
-    if (! t->isCompleted() ) appendAlarms( alarmList, t, from, to );
-  }
-#else
-  kWarning()<<"TODO";
-#endif
   return alarmList;
 }
 
@@ -615,9 +605,17 @@ bool AkonadiCalendar::isChild( const Item &parent, const Item &child ) const {
 }
 
 Item::Id AkonadiCalendar::itemIdForIncidenceUid(const QString &uid) const {
-  //AKONADI_PORT_DISABLED
-  //TODO implement this method. it's used in e.g. KOAlarmClient to migrate
-  // previous remembered incidences to Akonadi Item's.
+  QHashIterator<Item::Id, Item> i( d->m_itemMap );
+  while ( i.hasNext() ) {
+    i.next();
+    const Item item = i.value();
+    Q_ASSERT( item.isValid());
+    Q_ASSERT( item.hasPayload<Incidence::Ptr>());
+    Incidence::Ptr inc = item.payload<Incidence::Ptr>();
+    if ( inc->uid() == uid )
+        return item.id();
+  }
+  qWarning() << "Failed to find Akonadi::Item for KCal uid " << uid;
   return -1;
 }
 
