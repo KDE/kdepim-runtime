@@ -79,6 +79,11 @@ class MBOX_EXPORT MBox
     QList<MsgInfo> entryList( const QSet<quint64> &deletedItems = QSet<quint64>() ) const;
 
     /**
+     * Returns the file name that was passed to the last call to load.
+     */
+    QString fileName() const;
+
+    /**
      * Loads the raw mbox data from disk into the current MBox object. Messages
      * already present are <em>not</em> preserved. This method does not load the
      * full messages into memory but only the offsets of the messages and their

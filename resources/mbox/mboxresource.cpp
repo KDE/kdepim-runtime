@@ -260,8 +260,11 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
 
 void MboxResource::handleHashChange()
 {
-  emit warning( i18n( "The MBox file was changed by another program, deleted "
-                      "messages that where not purged will reappear." ) );
+  emit warning( i18n( "The MBox file was changed by another program. "
+                      "A copy of the new file was made and pending changes "
+                      "are appened too that copy. Too prevent this from happening "
+                      "use locking and make sure that all programs accessing the mbox "
+                      "use the same locking method." ) );
 }
 
 bool MboxResource::readFromFile( const QString &fileName )
@@ -293,6 +296,23 @@ bool MboxResource::writeToFile( const QString &fileName )
     emit error( i18n( "Failed to save mbox file to %1", fileName ) );
     return false;
   }
+
+  // HACK: When writeToFile is called with another file than with which the mbox
+  // was loaded we assume that a backup is made as result of the fileChanged slot
+  // in SingleFileResourceBase. The problem is that SingleFileResource assumes that
+  // the implementing resources can save/retrieve the data from before the file
+  // change we have a problem at this point in the mbox resource. Therefore we
+  // copy the original file and append pending changes to it but also add an extra
+  // '\n' to make sure that the hashes differ and the user gets notified. Normally
+  // if this happens the user should make use of locking in all applications that
+  // use the mbox file.
+  if ( fileName != mMBox->fileName() ) {
+    QFile file( fileName );
+    file.open( QIODevice::WriteOnly );
+    file.seek(file.size());
+    file.write("\n");
+  }
+
   return true;
 }
 

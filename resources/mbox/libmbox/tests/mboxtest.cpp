@@ -150,13 +150,7 @@ void MboxTest::testAppend()
   QCOMPARE( info.size(), static_cast<qint64>( 0 ) );
 
   MBox mbox;
-  mbox.load(fileName());
   mbox.setLockType( MBox::None );
-
-  // When no file is loaded no entries should get added to the mbox.
-  QCOMPARE( mbox.entryList().size(), 0 );
-  QCOMPARE( mbox.appendEntry( mMail1 ), static_cast<qint64>( -1 ) );
-  QCOMPARE( mbox.entryList().size(), 0 );
 
   QVERIFY( mbox.load( fileName() ) );
 
