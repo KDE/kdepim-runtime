@@ -309,24 +309,3 @@ void AkonadiBrowserModel::setItemDisplayMode( AkonadiBrowserModel::ItemDisplayMo
   }
   endResetModel();
 }
-
-void AkonadiBrowserModel::invalidatePersistentIndexes()
-{
-  QModelIndexList oldList = this->persistentIndexList();
-  QModelIndexList newList;
-  for (int i=0; i < oldList.size(); i++)
-    newList << QModelIndex();
-  this->changePersistentIndexList(oldList, newList);
-}
-
-void AkonadiBrowserModel::beginResetModel()
-{
-  QMetaObject::invokeMethod(this, "modelAboutToBeReset", Qt::DirectConnection);
-}
-
-void AkonadiBrowserModel::endResetModel()
-{
-  invalidatePersistentIndexes();
-  QMetaObject::invokeMethod(this, "modelReset", Qt::DirectConnection);
-}
-
