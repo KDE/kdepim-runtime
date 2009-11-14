@@ -214,7 +214,7 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   QString fileName = ptr->uid();
   if( fileName.isEmpty() ) {
     kError() << "Invalid incidence uid";
-    cancelTask( i18n( "Client didn't create an UID for item %1." ).arg( item.id() ) );
+    cancelTask( i18n( "Client did not create a UID for item %1." ).arg( item.id() ) );
     return;
   }
   
