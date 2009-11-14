@@ -332,7 +332,7 @@ void SieveDecoder::onTestEnd()
         if( ( op->requiredLeftOperandFeatureMask() & function->outputFeatureMask() ) != op->requiredLeftOperandFeatureMask() )
         {
           mGotError = true;
-          pushError( i18n( "Operator '%1' can't be applied on top of function '%2'", operatorKeyword, functionKeyword ) );
+          pushError( i18n( "Operator '%1' cannot be applied on top of function '%2'", operatorKeyword, functionKeyword ) );
           return;
         }
       }
@@ -342,7 +342,7 @@ void SieveDecoder::onTestEnd()
         if( function->outputDataType() != DataTypeBoolean )
         {
           mGotError = true;
-          pushError( i18n( "Function '%2' required an operator", functionKeyword ) );
+          pushError( i18n( "Function '%2' requires an operator", functionKeyword ) );
           return;
         }
       }
@@ -479,7 +479,7 @@ void SieveDecoder::onTestEnd()
             )
           {
             mGotError = true; 
-            pushError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
+            pushError( i18n( "Function '%1' cannot be applied to data member '%2'.", function->keyword(), field ) );
             return;
           }
         } else {
@@ -495,7 +495,7 @@ void SieveDecoder::onTestEnd()
               )
             {
               mGotError = true; 
-              pushError( i18n( "Function '%1' can't be applied to data member '%2'.", function->keyword(), field ) );
+              pushError( i18n( "Function '%1' cannot be applied to data member '%2'.", function->keyword(), field ) );
               return;
             }
           } else {
@@ -760,7 +760,7 @@ void SieveDecoder::onCommandDescriptorStart( const QString & identifier )
   if ( !mCurrentSimpleCommandName.isEmpty() )
   {
     mGotError = true;
-    pushError( i18n( "Unexpected start of command inside a simple command... how you did that ?" ) );
+    pushError( i18n( "Unexpected start of command inside a simple command." ) );
     return;
   }
 
@@ -926,7 +926,7 @@ void SieveDecoder::onCommandDescriptorEnd()
       if( mCurrentSimpleCommandArguments.count() < command->parameters()->count() )
       {
         mGotError = true; 
-        pushError( i18n( "Action '%1' required at least %2 arguments", mCurrentSimpleCommandName, command->parameters()->count() ) );
+        pushError( i18np( "Action '%2' requires an argument", "Action '%2' requires at least %1 arguments", command->parameters()->count(), mCurrentSimpleCommandName ) );
         return;
       }
 

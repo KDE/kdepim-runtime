@@ -120,7 +120,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new DataMemberDescriptor(
           DataMemberRfc822ResentDate,
           QString::fromAscii( "resentdate" ),
-          i18n( "the Resent-Date header" ),
+          i18nc( "means re-sent, i.e. sent again, rather than resent", "the Resent-Date header" ),
           DataTypeString,
           FeatureContainsDate
         )
@@ -263,7 +263,7 @@ ComponentFactoryRfc822::ComponentFactoryRfc822()
       new OperatorDescriptor(
           OperatorRfc822IsInAddressbook,
           QString::fromAscii( "inaddressbook" ),
-          i18n( "is in addressbook" ),
+          i18n( "is in address book" ),
           DataTypeString | DataTypeStringList,  // accepts strings and string lists
           FeatureRfc822ContainsAddresses, // but the input must provide addresses
           DataTypeNone

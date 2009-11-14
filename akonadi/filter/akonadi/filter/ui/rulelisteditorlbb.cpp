@@ -265,7 +265,7 @@ void RuleListEditorLBB::activateEditor( QWidget * editor )
               "Each rule contains a <b>condition</b> and a sequence of <b>actions</b>.<br>" \
               "If the condition matches then the actions are executed one after another.<br>" \
               "If a terminal action is encountered then filter application terminates.<br>" \
-              "If the condition doesn't match or no terminal action is executed<br>" \
+              "If the condition does not match, or no terminal action is executed,<br>" \
               "then control is given to the next rule.<br>" \
               "<br>" \
               "Now click \"Add Rule\" above to start editing the filter."

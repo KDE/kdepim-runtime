@@ -63,7 +63,7 @@ QString statusDescription( Status status )
       return i18n( "Syntax error in filter" );
     break;
     case ErrorNoSuchFilter:
-      return i18n( "The specified filter doesn't exist" );
+      return i18n( "The specified filter does not exist" );
     break;
     case ErrorNotAllCollectionsProcessed:
       return i18n( "Not all the specified collections could be attached or detached" );

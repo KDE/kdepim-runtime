@@ -249,7 +249,7 @@ Action::Base * CommandWithStringParamEditor::commitState( Component * parent )
 
   if( txt.isEmpty() && ( !mMayBeEmpty ) )
   {
-    KMessageBox::sorry( this, i18n( "The field '%1' can't be empty", formalParam->name() ) , i18n( "Invalid parameter" ) );
+    KMessageBox::sorry( this, i18n( "The field '%1' cannot be empty", formalParam->name() ) , i18n( "Invalid parameter" ) );
     new Private::WidgetHighlighter( this );
     return 0;    
   }
@@ -344,7 +344,7 @@ Action::Base * CommandWithSoundFileEditor::commitState( Component * parent )
 
   if( txt.isEmpty() )
   {
-    KMessageBox::sorry( this, i18n( "You must select a sound file!" ) , i18n( "Invalid parameter" ) );
+    KMessageBox::sorry( this, i18n( "You must select a sound file." ) , i18n( "Invalid parameter" ) );
     new Private::WidgetHighlighter( this );
     return 0;    
   }

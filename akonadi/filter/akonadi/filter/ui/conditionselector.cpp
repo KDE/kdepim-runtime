@@ -145,7 +145,7 @@ ConditionSelector::ConditionSelector(
   d = new ConditionDescriptor;
   d->mIsSeparator = false;
   d->mType = Condition::ConditionTypeOr;
-  d->mText = i18n( "ANY of the conditions below is met" );
+  d->mText = i18n( "ANY of the conditions below are met" );
   d->mColor = Qt::darkGreen;
   d->mFunctionDescriptor = 0;
   d->mDataMemberDescriptor = 0;
