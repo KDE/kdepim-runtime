@@ -39,7 +39,7 @@ using KABC::PhoneNumber;
 DesktopCouchResource::DesktopCouchResource( const QString &id )
   : ResourceBase( id )
 {
-  setName( i18n("Desktop Couch Addressbook") );
+  setName( i18n("Desktop Couch Address Book") );
 //  setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), "office-address-book" );
 /*
   new SettingsAdaptor( Settings::self() );
@@ -55,7 +55,7 @@ DesktopCouchResource::DesktopCouchResource( const QString &id )
   m_root.setContentMimeTypes( mimeTypes );
 
   EntityDisplayAttribute *attr = m_root.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-  attr->setDisplayName( i18n("Desktop Couch Addressbook") );
+  attr->setDisplayName( i18n("Desktop Couch Address Book") );
   attr->setIconName( "couchdb" );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
