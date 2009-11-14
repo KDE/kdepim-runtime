@@ -262,7 +262,7 @@ void MboxResource::handleHashChange()
 {
   emit warning( i18n( "The MBox file was changed by another program. "
                       "A copy of the new file was made and pending changes "
-                      "are appened too that copy. Too prevent this from happening "
+                      "are appended to that copy. To prevent this from happening "
                       "use locking and make sure that all programs accessing the mbox "
                       "use the same locking method." ) );
 }
