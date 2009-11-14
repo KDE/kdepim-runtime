@@ -92,8 +92,8 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
       i18n(
           "<p>" \
           "The unique identifier of this filtering program. " \
-          "It can be any string, it's enough that it's globally unique. " \
-          "In user applications this will be usually automatically assigned and hidden." \
+          "It can be any string, as long as it is globally unique. " \
+          "In user applications this will usually be automatically assigned and hidden." \
           "</p>"
         )
     );
@@ -110,7 +110,7 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
       i18n(
           "<p>" \
           "The user-visible name of this filtering program. " \
-          "It can be any string and in fact the filtering agent doesn't care at all." \
+          "It can be any string: its value will not change the behavior of the filtering agent." \
           "</p>"
         )
     );
@@ -132,9 +132,9 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
       i18n(
           "<p>" \
           "The shortcut for the application of this filter. " \
-          "This is a purely client side property and the filtering framework " \
-          "will just pass is through. In this console it doesn't even do anything " \
-          "useful: it's just here to show that it can be encoded in the filter " \
+          "This is a purely client-side property and the filtering framework " \
+          "will pass it through as-is. In this console it has no useful purpose: " \
+          "it is here only to show that it can be encoded in the filter " \
           "and preserved." \
           "</p>"
         )
@@ -154,9 +154,9 @@ FilterEditor::FilterEditor( QWidget * parent, Filter * filter, bool lbb )
   mIconButton->setToolTip(
       i18n(
           "<p>" \
-          "The icon associated to this filter. " \
-          "This is a client side property: the filtering agent doesn't care " \
-          "and the filter IO engines just 'pass it through'..." \
+          "The icon associated with this filter. " \
+          "This is a client-side property: it has no effect on the filtering agent, " \
+          "and the filter IO engines pass it through as-is." \
           "</p>"
         )
     );
@@ -213,7 +213,7 @@ void FilterEditor::done( int result )
   QString id = mIdLineEdit->text().trimmed();
   if( id.isEmpty() )
   {
-    KMessageBox::error( this, i18n( "The filter id can't be empty" ), i18n( "Can't commit filter" ) );
+    KMessageBox::error( this, i18n( "The filter ID cannot be empty." ), i18n( "Cannot commit filter" ) );
     return;
   }
 
