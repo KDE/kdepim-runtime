@@ -49,6 +49,13 @@
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="imageViewPage">
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="imageView"/>
+           </item>
+          </layout>
+         </widget>
          <widget class="QWidget" name="contactViewPage">
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>

@@ -278,6 +278,9 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
   } else if ( item.hasPayload<KCal::Incidence::Ptr>() ) {
     contentUi.incidenceView->setItem( item );
     contentUi.stack->setCurrentWidget( contentUi.incidenceViewPage );
+  } else if ( item.hasPayload<QPixmap>() ) {
+    contentUi.imageView->setPixmap( item.payload<QPixmap>() );
+    contentUi.stack->setCurrentWidget( contentUi.imageViewPage );
   } else {
     contentUi.stack->setCurrentWidget( contentUi.unsupportedTypePage );
   }
