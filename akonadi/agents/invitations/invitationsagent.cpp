@@ -136,7 +136,7 @@ InvitationsAgent::InvitationsAgent( const QString &id )
   m_resourceId = group.readEntry( "DefaultCalendarAgent", "default_ical_resource" );
   AgentInstance resource = AgentManager::self()->instance( m_resourceId );
   if( resource.isValid() ) {
-    createAgentResult( 0 );
+    QMetaObject::invokeMethod( this, "createAgentResult", Qt::QueuedConnection );
   } else {
     AgentType type = AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
     AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
@@ -164,7 +164,7 @@ void InvitationsAgent::init()
   KConfig config( "akonadi_invitations_agent" );
   KConfigGroup group = config.group( "General" );
   group.writeEntry( "DefaultCalendarCollection", m_invitations.id() );
-  
+
   emit status( AgentBase::Idle, i18n("Ready to dispatch invitations") );
 }
 
@@ -353,6 +353,8 @@ Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calen
 
 void InvitationsAgent::itemAdded( const Item &item, const Collection &collection )
 {
+  Q_UNUSED( collection );
+
   if( ! m_invitations.isValid() ) {
     return;
   }
