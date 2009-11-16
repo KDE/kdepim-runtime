@@ -1090,6 +1090,28 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
     job->setProperty( AKONADI_PARTS, parts );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetMetaDataDone( KJob* ) ) );
 
+  } else if ( currentPart == "imapacl" ) {
+    ImapAclAttribute *aclAttribute = collection.attribute<ImapAclAttribute>();
+    const QMap<QByteArray, KIMAP::Acl::Rights> rights = aclAttribute->rights();
+    const QList<QByteArray> ids = rights.keys();
+
+    for ( int i = 0; i<ids.size(); i++ ) {
+      const QByteArray id = ids[i];
+
+      KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
+      job->setMailBox( mailBoxForCollection( collection ) );
+      job->setIdentifier( id );
+      job->setRights( KIMAP::SetAclJob::Change, rights[id] );
+
+      if ( i < ids.size()-1 ) {
+        // Only the last set acl job will trigger the next collection change job
+        job->setProperty( "dontTriggerNextJob", true );
+      }
+
+      connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetAclDone( KJob* ) ) );
+      job->start();
+    }
+
   } else {
     // unknown part
     triggerNextCollectionChangeJob( collection, parts );
@@ -1125,7 +1147,9 @@ void ImapResource::onSetAclDone( KJob *job )
                       collection.name(), job->errorText() ) );
   }
 
-  triggerNextCollectionChangeJob( collection, parts );
+  if ( !job->property( "dontTriggerNextJob" ).toBool() ) {
+    triggerNextCollectionChangeJob( collection, parts );
+  }
 }
 
 void ImapResource::onSetMetaDataDone( KJob *job )
