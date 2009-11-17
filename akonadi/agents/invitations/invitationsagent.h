@@ -72,6 +72,7 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
   private Q_SLOTS:
     void initStart();
     void createAgentResult( KJob *job = 0 );
+    void resourceSyncResult( KJob *job = 0 );
     void collectionFetchResult( KJob *job );
     void collectionCreateResult( KJob *job );
   private:
