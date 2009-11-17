@@ -300,7 +300,7 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
 
   m_capabilities = capJob->capabilities();
   QStringList expected;
-  expected << "IMAP4rev1";
+  expected << "IMAP4REV1";
 
   // Both GMail and GMX servers seem to be lying about there capabilities
   // The don't report UIDPLUS correctly so don't check for it explicitely
