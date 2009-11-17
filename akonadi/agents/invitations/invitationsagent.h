@@ -70,13 +70,12 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     virtual void configure( WId windowId );
 
   private Q_SLOTS:
+    void initStart();
     void createAgentResult( KJob *job = 0 );
-    void resourceSyncResult( KJob *job );
     void collectionFetchResult( KJob *job );
     void collectionCreateResult( KJob *job );
-
   private:
-    void init();
+    void initDone();
     Akonadi::Item handleContent( const QString &vcal, KCal::Calendar* calendar, const Akonadi::Item &item );
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );

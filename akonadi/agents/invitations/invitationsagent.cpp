@@ -49,6 +49,7 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QFileInfo>
+#include <QTimer>
 #include <KDebug>
 #include <KSystemTimeZones>
 #include <KJob>
@@ -72,6 +73,8 @@ InvitationsAgentItem::~InvitationsAgentItem()
 
 void InvitationsAgentItem::add(const Item &newItem)
 {
+  kDebug();
+
   ItemCreateJob *j = new ItemCreateJob( newItem, a->invitations(), this );
   connect( j, SIGNAL( result( KJob* ) ), this, SLOT( createItemResult( KJob* ) ) );
   jobs << j;
@@ -131,25 +134,36 @@ InvitationsAgent::InvitationsAgent( const QString &id )
   KGlobal::locale()->insertCatalog( "akonadi_invitations_agent" );
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Monitor
 
-  KConfig config( "akonadi_invitations_agent" );
-  KConfigGroup group = config.group( "General" );
-  m_resourceId = group.readEntry( "DefaultCalendarAgent", "default_ical_resource" );
-  AgentInstance resource = AgentManager::self()->instance( m_resourceId );
-  if( resource.isValid() ) {
-    QMetaObject::invokeMethod( this, "createAgentResult", Qt::QueuedConnection );
-  } else {
-    AgentType type = AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
-    AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-    connect( job, SIGNAL( result( KJob * ) ), this, SLOT( createAgentResult( KJob * ) ) );
-    job->start();
-  }
+  connect( this, SIGNAL(reloadConfiguration()), this, SLOT(initStart()) );
+  QTimer::singleShot( 0, this, SLOT(initStart()) );
 }
 
 InvitationsAgent::~InvitationsAgent()
 {
 }
 
-void InvitationsAgent::init()
+void InvitationsAgent::initStart()
+{
+  kDebug();
+  KConfig config( "akonadi_invitations_agent" );
+  KConfigGroup group = config.group( "General" );
+  m_resourceId = group.readEntry( "DefaultCalendarAgent", "default_ical_resource" );
+  newAgentCreated = false;
+  m_invitations = Akonadi::Collection();
+  AgentInstance resource = AgentManager::self()->instance( m_resourceId );
+  if( resource.isValid() ) {
+    emit status( AgentBase::Running, i18n("Reading...") );
+    QMetaObject::invokeMethod( this, "createAgentResult", Qt::QueuedConnection );
+  } else {
+    emit status( AgentBase::Running, i18n("Creating...") );
+    AgentType type = AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
+    AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
+    connect( job, SIGNAL( result( KJob * ) ), this, SLOT( createAgentResult( KJob * ) ) );
+    job->start();
+  }  
+}
+
+void InvitationsAgent::initDone()
 {
   kDebug();
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -192,13 +206,16 @@ void InvitationsAgent::configure( WId windowId )
   //layout->addWidget(  );
   dialog->mainWidget()->setLayout( layout );
   */
+  initStart(); //reload
 }
 
 void InvitationsAgent::createAgentResult( KJob *job )
 {
+  kDebug();
   AgentInstance agent;
   if( job ) {
     if( job->error() ) {
+      kWarning() << job->errorString();
       emit status( AgentBase::Broken, i18n( "Failed to create resource: %1", job->errorString() ) );
       return;
     }
@@ -215,6 +232,7 @@ void InvitationsAgent::createAgentResult( KJob *job )
                                         KGlobal::dirs()->localxdgdatadir() + "akonadi_ical_resource" );
 
     if( !reply.isValid() ) {
+      kWarning() << "dbus call failed, m_resourceId=" << m_resourceId;
       emit status( AgentBase::Broken, i18n( "Failed to set the directory for invitations via D-Bus" ) );
       AgentManager::self()->removeInstance( agent );
       return;
@@ -272,7 +290,7 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
     // and we just use that one.
     Q_ASSERT( fj->collections().count() == 1 );
     m_invitations = fj->collections().first();
-    init();
+    initDone();
     return;
   }
 
@@ -287,7 +305,7 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
     foreach( const Collection &c, fj->collections() ) {
       if( c.id() == id ) {
         m_invitations = c;
-        init();
+        initDone();
         return;
       }
     }
@@ -322,7 +340,7 @@ void InvitationsAgent::collectionCreateResult( KJob *job )
   }
   CollectionCreateJob *j = static_cast<CollectionCreateJob*>( job );
   m_invitations = j->collection();
-  init();
+  initDone();
 }
 
 Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calendar, const Item &item )
