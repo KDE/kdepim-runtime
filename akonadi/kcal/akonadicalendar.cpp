@@ -428,12 +428,14 @@ Alarm::List AkonadiCalendar::alarmsTo( const KDateTime &to )
 
 Alarm::List AkonadiCalendar::alarms( const KDateTime &from, const KDateTime &to )
 {
-    qWarning() << "Alarms:" << d->m_itemMap.count();
+  qWarning() << "Alarms:" << d->m_itemMap.count();
   Alarm::List alarmList;
   QHashIterator<Item::Id, Item> i( d->m_itemMap );
   while ( i.hasNext() ) {
     const Item item = i.next().value();
     Incidence::Ptr e = Akonadi::event( item );
+    if( ! e )
+      continue;
     qWarning() << e->summary();
     if ( e->recurs() )
         appendRecurringAlarms( alarmList, item, from, to );
