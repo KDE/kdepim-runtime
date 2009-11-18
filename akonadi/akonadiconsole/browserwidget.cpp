@@ -283,8 +283,10 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
   {
     contentUi.mailView->setMessageItem( item, MessageViewer::Viewer::Force );
     contentUi.stack->setCurrentWidget( contentUi.mailViewPage );
-  } else
-  {
+  } else if ( item.hasPayload<QPixmap>() ) {
+    contentUi.imageView->setPixmap( item.payload<QPixmap>() );
+    contentUi.stack->setCurrentWidget( contentUi.imageViewPage );
+  } else {
     contentUi.stack->setCurrentWidget( contentUi.unsupportedTypePage );
   }
 
