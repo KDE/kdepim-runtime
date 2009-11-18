@@ -27,7 +27,7 @@
         <choice name="mutt_dotlock_privileged"/>
         <choice name="none"/>
       </choices>
-      <default>procmail</default>
+      <default>none</default>
     </entry>
     <entry name="Lockfile" type="String">
       <label>Lockfile</label>
