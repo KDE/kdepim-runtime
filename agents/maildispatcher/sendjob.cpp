@@ -47,7 +47,7 @@
 #include <akonadi/agentmanager.h>
 #include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/messageparts.h>
-#include <akonadi/kmime/specialcollections.h>
+#include <akonadi/kmime/specialmailcollections.h>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -252,12 +252,12 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
     } else {
       Collection moveTo( sA->moveToCollection() );
       if( sA->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection ) {
-        if( !SpecialCollections::self()->hasDefaultCollection( SpecialCollections::SentMail ) ) {
+        if( !SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
           // We were unlucky and LocalFolders is recreating its stuff right now.
           // We will not wait for it.
           moveTo = Collection();
         } else {
-          moveTo = SpecialCollections::self()->defaultCollection( SpecialCollections::SentMail );
+          moveTo = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail );
         }
       }
       kDebug() << "Moving to sent-mail collection with id" << moveTo.id();
