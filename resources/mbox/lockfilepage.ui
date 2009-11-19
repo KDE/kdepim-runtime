@@ -89,7 +89,7 @@ p, li { white-space: pre-wrap; }
       <item row="4" column="0" colspan="2">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>None, the default configuration, should be save in most cases. Select the appropriate lock method if programs that don't make use of akonadi are accessing the configured mbox file too. In the latter case you have make sure that both the resource and the program use the same locking method.</string>
+         <string>None, the default configuration, should be safe in most cases.  However, if programs that do not make use of akonadi are also accessing the configured mbox file, you will need to set an appropriate locking method. Note that if this is the case, the resource and the other programs must all use the same locking method.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
