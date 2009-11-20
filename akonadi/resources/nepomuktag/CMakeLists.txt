@@ -19,6 +19,7 @@ target_link_libraries(akonadi_nepomuktag_resource
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTDBUS_LIBRARY}
   ${QT_QTCORE_LIBRARY}
+  ${SOPRANO_LIBRARIES}
   ${NEPOMUK_LIBRARIES}
 )
 
