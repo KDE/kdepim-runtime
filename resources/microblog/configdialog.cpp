@@ -97,6 +97,9 @@ void ConfigDialog::slotAuthOk()
 
 void ConfigDialog::slotAuthFailed( const QString& error )
 {
+    Q_UNUSED( error );
+#warnig: what is the need of the unused parameter(s)?
+//TODO what is the need of the unused parameter(s)?
     unsetCursor();
     ui.statusLabel->setText( i18n( "Failed" ) );
     ui.statusImageLabel->setPixmap( KIcon( "dialog-cancel" ).pixmap( 16 ) );
