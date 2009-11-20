@@ -50,7 +50,7 @@ LocalBookmarksResource::~ LocalBookmarksResource()
 bool LocalBookmarksResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( item ); Q_UNUSED( parts );
-#warnig: what is the need of the unused parameter(s)?
+#warning: what is the need of the unused parameter(s)?
 //TODO what is the need of the unused parameter(s)?
   // TODO use remote id to retrieve the item in the file
   return true;
