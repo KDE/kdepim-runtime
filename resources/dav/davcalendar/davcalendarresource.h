@@ -71,6 +71,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
     davAccessor *accessor;
     Akonadi::Collection davCollectionRoot;
+    Akonadi::Item::List retrievedItems;
     QMap<QString, Akonadi::Item> putItems;
     QMap<QString, Akonadi::Item> delItems;
     QString password;

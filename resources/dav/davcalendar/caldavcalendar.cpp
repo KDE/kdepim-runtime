@@ -205,8 +205,6 @@ void caldavCalendarAccessor::retrieveItems( const KUrl &url )
   e3.setAttributeNode( a1 );
   e2.appendChild( e3 );
   
-//   rep.setContent( report );
-  
   KIO::DavJob *todoJob = doReport( url, rep, "1" );
   connect( todoJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
   ++runningQueries;
@@ -250,7 +248,7 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     if( tmp.length() == 0 )
       continue;
     href = tmp.item( 0 ).firstChild().toText().data();
-    kDebug() << "Got href : " << href;
+//     kDebug() << "Got href : " << href;
     if( href.startsWith( "/" ) )
       url.setEncodedPath( href.toAscii() );
     else
@@ -260,7 +258,7 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     // NOTE: nothing below should invalidate the item (return an error
     // and exit the function)
     seenUrl( job->url().url(), href );
-    kDebug() << "Seen item at " << href << " in collection " << job->url().prettyUrl();
+//     kDebug() << "Seen item at " << href << " in collection " << job->url().prettyUrl();
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
     if( tmp.length() != 0 ) {

@@ -320,6 +320,11 @@ void davCalendarResource::accessorRetrievedItem( const davItem &item )
   kDebug() << "Accessor retrieved an item at " << item.url;
   
   Akonadi::Item i = createItem( item.data );
+  
+  IncidencePtr ptr = i.payload<IncidencePtr>();
+  if( !ptr.get() )
+    return;
+  
   i.setRemoteId( item.url );
   
   if( item.contentType.isEmpty() )
@@ -327,15 +332,17 @@ void davCalendarResource::accessorRetrievedItem( const davItem &item )
   else
     i.setMimeType( item.contentType );
   
-  Akonadi::Item::List tmp;
-  tmp << i;
-  itemsRetrievedIncremental( tmp, Akonadi::Item::List() );
+  retrievedItems << i;
 }
 
 void davCalendarResource::accessorRetrievedItems()
 {
   kDebug() << "Accessor finished retrieving items";
   
+  // TODO: lock here
+  Akonadi::Item::List tmp = retrievedItems;
+  retrievedItems.clear();
+  itemsRetrievedIncremental( tmp, Akonadi::Item::List() );
   accessor->validateCache();
 }
 
