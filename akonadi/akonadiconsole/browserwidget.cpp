@@ -251,7 +251,7 @@ void BrowserWidget::itemActivated(const QModelIndex & index)
   ItemFetchJob *job = new ItemFetchJob( item, this );
   job->fetchScope().fetchFullPayload();
   job->fetchScope().fetchAllAttributes();
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( itemFetchDone( KJob* ) ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( itemFetchDone( KJob* ) ), Qt::QueuedConnection );
 }
 
 void BrowserWidget::itemFetchDone(KJob * job)
