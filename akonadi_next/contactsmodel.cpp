@@ -48,6 +48,7 @@ public:
 
 bool ContactsModel::entityMatch(Item item, const QVariant& matchData, Qt::MatchFlags flags) const
 {
+  Q_UNUSED( flags );
   if (!item.hasPayload<KABC::Addressee>())
     return false;
 
@@ -77,6 +78,7 @@ bool ContactsModel::entityMatch(Item item, const QVariant& matchData, Qt::MatchF
 
 bool ContactsModel::entityMatch(Collection col, const QVariant& matchData, Qt::MatchFlags flags) const
 {
+  Q_UNUSED( flags );
   if (!matchData.canConvert(QVariant::String))
     return false;
 
