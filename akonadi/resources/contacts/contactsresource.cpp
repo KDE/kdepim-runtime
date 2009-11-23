@@ -49,6 +49,8 @@ ContactsResource::ContactsResource( const QString &id )
   setHierarchicalRemoteIdentifiersEnabled( true );
 
   mSupportedMimeTypes << KABC::Addressee::mimeType() << KABC::ContactGroup::mimeType() << Collection::mimeType();
+
+  setName( i18n( "Personal Contacts" ) );
 }
 
 ContactsResource::~ContactsResource()
@@ -107,7 +109,7 @@ void ContactsResource::retrieveCollections()
   Collection resourceCollection;
   resourceCollection.setParentCollection( Collection::root() );
   resourceCollection.setRemoteId( baseDirectoryPath() );
-  resourceCollection.setName( i18n( "Personal Contacts" ) );
+  resourceCollection.setName( name() );
   resourceCollection.setContentMimeTypes( mSupportedMimeTypes );
   resourceCollection.setRights( supportedRights() );
 

@@ -32,8 +32,8 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Monitor>
 #include <akonadi/kmime/addressattribute.h>
-#include <akonadi/kmime/specialcollections.h>
-#include <akonadi/kmime/specialcollectionsrequestjob.h>
+#include <akonadi/kmime/specialmailcollections.h>
+#include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
@@ -267,9 +267,9 @@ void OutboxQueue::Private::localFoldersChanged()
 {
   // Called on startup, and whenever the local folders change.
 
-  if( SpecialCollections::self()->hasDefaultCollection( SpecialCollections::Outbox ) ) {
+  if( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::Outbox ) ) {
     // Outbox is ready, init the queue from it.
-    Collection col = SpecialCollections::self()->defaultCollection( SpecialCollections::Outbox );
+    Collection col = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::Outbox );
     Q_ASSERT( col.isValid() );
 
     if( outbox != col ) {
@@ -286,8 +286,8 @@ void OutboxQueue::Private::localFoldersChanged()
     // MessageQueueJob requests the Outbox.)
     monitor->setCollectionMonitored( outbox, false );
     outbox = Collection( -1 );
-    SpecialCollectionsRequestJob *rjob = new SpecialCollectionsRequestJob( q );
-    rjob->requestDefaultCollection( SpecialCollections::Outbox );
+    SpecialMailCollectionsRequestJob *rjob = new SpecialMailCollectionsRequestJob( q );
+    rjob->requestDefaultCollection( SpecialMailCollections::Outbox );
     connect( rjob, SIGNAL(result(KJob*)), q, SLOT(localFoldersRequestResult(KJob*)) );
     kDebug() << "Requesting outbox folder.";
     rjob->start();
@@ -367,7 +367,7 @@ OutboxQueue::OutboxQueue( QObject *parent )
   connect( d->monitor, SIGNAL( itemRemoved( Akonadi::Item ) ),
       this, SLOT( itemRemoved( Akonadi::Item ) ) );
 
-  connect( SpecialCollections::self(), SIGNAL(defaultCollectionsChanged()), this, SLOT(localFoldersChanged()) );
+  connect( SpecialMailCollections::self(), SIGNAL(defaultCollectionsChanged()), this, SLOT(localFoldersChanged()) );
   d->localFoldersChanged();
 
   d->futureTimer = new QTimer( this );

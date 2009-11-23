@@ -68,6 +68,9 @@ Collection::List CollectionTreeBuilder::treeToList( const QHash< Entity::Id, Col
 
 void CollectionTreeBuilder::collectionFetchResult(KJob* job)
 {
+  Q_UNUSED( job );
+#warning: what is the need of the unused parameter(s)?
+//TODO what is the need of the unused parameter(s)?
   m_resultCollections.clear();
 
   // step 1: build the minimal sub-tree that contains all Kolab collections

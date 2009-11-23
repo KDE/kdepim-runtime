@@ -27,8 +27,8 @@
 // KDEPIMLIBS includes
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
-#include <akonadi/kmime/specialcollections.h>
-#include <akonadi/kmime/specialcollectionsrequestjob.h>
+#include <akonadi/kmime/specialmailcollections.h>
+#include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 #include <Mailtransport/ServerTest>
 
 // KDELIBS includes
@@ -238,8 +238,8 @@ void AccountDialog::loadSettings()
     // FIXME: This is a bit duplicated from POP3Resource...
 
     // No target collection set in the config? Try requesting a default inbox
-    SpecialCollectionsRequestJob *requestJob = new SpecialCollectionsRequestJob( this );
-    requestJob->requestDefaultCollection( SpecialCollections::Inbox );
+    SpecialMailCollectionsRequestJob *requestJob = new SpecialMailCollectionsRequestJob( this );
+    requestJob->requestDefaultCollection( SpecialMailCollections::Inbox );
     requestJob->start();
     connect ( requestJob, SIGNAL(result(KJob*)),
               this, SLOT(localFolderRequestJobFinished(KJob*)) );
@@ -678,7 +678,7 @@ void AccountDialog::targetCollectionReceived( Akonadi::Collection::List collecti
 void AccountDialog::localFolderRequestJobFinished( KJob *job )
 {
   if ( !job->error() ) {
-    Collection targetCollection = SpecialCollections::self()->defaultCollection( SpecialCollections::Inbox );
+    Collection targetCollection = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::Inbox );
     Q_ASSERT( targetCollection.isValid() );
     folderRequester->setCollection( targetCollection );
   }
