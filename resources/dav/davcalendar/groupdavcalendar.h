@@ -47,7 +47,6 @@ class groupdavCalendarAccessor : public davAccessor
   private:
     QList<QString> fetchItemsQueue;
     QMutex fetchItemsQueueMtx;
-    QSet<QString> backendChangedItems;
 };
 
 #endif

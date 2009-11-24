@@ -222,10 +222,6 @@ void groupdavCalendarAccessor::itemsPropfindFinished( KJob *j )
         emit itemRetrieved( getItemFromCache( href ) );
         continue;
       }
-      else if( itemStatus == EXPIRED ) {
-        // TODO: get rid of this, see TODO in itemGetFinished()
-        backendChangedItems << href;
-      }
     }
     
     fetchItemsQueue << href;
@@ -256,14 +252,7 @@ void groupdavCalendarAccessor::itemGetFinished( KJob *j )
   davItem i( url, mimeType, d );
   addItemToCache( i, etag );
   
-  // TODO: get rid of this as in the resource it all boils down to the same code
-  if( backendChangedItems.contains( url ) ) {
-    emit backendItemChanged( i );
-    backendChangedItems.remove( url );
-  }
-  else {
-    emit itemRetrieved( i );
-  }
+  emit itemRetrieved( i );
   
   runItemsFetch();
 }

@@ -402,23 +402,6 @@ void davCalendarResource::accessorPutItem( const KUrl &oldUrl, const KUrl &newUr
     synchronize();
 }
 
-void davCalendarResource::backendItemChanged( const davItem &item )
-{
-  kDebug() << "The item at " << item.url << " changed on the backend";
-  
-  Akonadi::Item i = createItem( item.data );
-  i.setRemoteId( item.url );
-  
-  if( item.contentType.isEmpty() )
-    i.setMimeType( "text/calendar" );
-  else
-    i.setMimeType( item.contentType );
-  
-  Akonadi::Item::List tmp;
-  tmp << i;
-  itemsRetrievedIncremental( tmp, Akonadi::Item::List() );
-}
-
 void davCalendarResource::backendItemsRemoved( const QList<davItem> &items )
 {
   kDebug() << "Got " << items.size() << " items removed on the backend";
@@ -495,9 +478,6 @@ void davCalendarResource::doResourceInitialization()
   
   connect( accessor, SIGNAL( itemPut( const KUrl&, const KUrl& ) ),
            this, SLOT( accessorPutItem( const KUrl&, const KUrl& ) ) );
-  
-  connect( accessor, SIGNAL( backendItemChanged( const davItem& ) ),
-           this, SLOT( backendItemChanged( const davItem& ) ) );
   
   connect( accessor, SIGNAL( backendItemsRemoved( const QList<davItem>& ) ),
            this, SLOT( backendItemsRemoved( const QList<davItem>& ) ) );
