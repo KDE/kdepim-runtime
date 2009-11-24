@@ -258,7 +258,7 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     
     // NOTE: nothing below should invalidate the item (return an error
     // and exit the function)
-    seenUrl( job->url().url(), href );
+    seenUrl( collectionUrl, href );
 //     kDebug() << "Seen item at " << href << " in collection " << job->url().prettyUrl();
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
