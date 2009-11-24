@@ -91,14 +91,14 @@ void davAccessor::putItem( const KUrl &url, const QString &contentType, const QB
 {
   QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   davItem i( urlStr, contentType, data );
-  itemsCache[url.url()] = i;
+  itemsCache[urlStr] = i;
   
   QString headers = "Content-Type: ";
   headers += contentType;
   headers += "\r\n";
   
-  if( useCachedEtag && etagsCache.contains( url.url() ) ) {
-    headers += "If-Match: "+etagsCache[url.url()];
+  if( useCachedEtag && etagsCache.contains( urlStr ) ) {
+    headers += "If-Match: "+etagsCache[urlStr];
   }
   else {
     headers += "If-None-Match: *";
