@@ -19,6 +19,8 @@
 #ifndef GROUPDAVCALENDAR_H
 #define GROUPDAVCALENDAR_H
 
+#include <QMutex>
+
 #include "../common/davaccessor.h"
 
 class KJob;
@@ -44,6 +46,7 @@ class groupdavCalendarAccessor : public davAccessor
     
   private:
     QList<QString> fetchItemsQueue;
+    QMutex fetchItemsQueueMtx;
     QSet<QString> backendChangedItems;
 };
 

@@ -25,6 +25,7 @@
 #include "caldavcalendar.h"
 
 #include <QtDBus/QDBusConnection>
+#include <QMutexLocker>
 #include <kcal/incidence.h>
 #include <kcal/kcalmimetypevisitor.h>
 #include <kcal/icalformat.h>
@@ -339,9 +340,10 @@ void davCalendarResource::accessorRetrievedItems()
 {
   kDebug() << "Accessor finished retrieving items";
   
-  // TODO: lock here
+  QMutexLocker locker( &retrievedItemsMtx );
   Akonadi::Item::List tmp = retrievedItems;
   retrievedItems.clear();
+  locker.unlock();
   itemsRetrievedIncremental( tmp, Akonadi::Item::List() );
   accessor->validateCache();
 }
@@ -350,6 +352,8 @@ void davCalendarResource::accessorRemovedItem( const KUrl &url )
 {
   QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   
+  QMutexLocker locker( &delItemsMtx );
+  
   if( !delItems.contains( urlStr ) ) {
     emit error( i18n( "Unable to find an upload request for URL %1." ).arg( urlStr ) );
     return;
@@ -357,9 +361,11 @@ void davCalendarResource::accessorRemovedItem( const KUrl &url )
   
   changeProcessed();
   
-  // Force a refresh of the collection containing the item
   Akonadi::Item i = delItems[urlStr];
   delItems.remove( urlStr );
+  locker.unlock();
+  
+  // Force a refresh of the collection containing the item
   Akonadi::Entity::Id collId = i.storageCollectionId();
   if( collId != -1 )
     synchronizeCollection( collId );
@@ -372,6 +378,8 @@ void davCalendarResource::accessorPutItem( const KUrl &oldUrl, const KUrl &newUr
   QString oldUrlStr = oldUrl.prettyUrl(); //QUrl::fromPercentEncoding( oldUrl.url().toAscii() );
   QString newUrlStr = newUrl.prettyUrl(); //QUrl::fromPercentEncoding( newUrl.url().toAscii() );
   
+  QMutexLocker locker( &putItemsMtx );
+  
   if( !putItems.contains( oldUrlStr ) ) {
     emit error( i18n( "Unable to find an upload request for URL %1." ).arg( oldUrlStr ) );
     return;
@@ -381,6 +389,8 @@ void davCalendarResource::accessorPutItem( const KUrl &oldUrl, const KUrl &newUr
   
   Akonadi::Item i = putItems[oldUrlStr];
   putItems.remove( oldUrlStr );
+  locker.unlock();
+  
   i.setRemoteId( newUrlStr );
   changeCommitted( i );
   

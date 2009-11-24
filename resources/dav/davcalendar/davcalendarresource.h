@@ -19,6 +19,8 @@
 #ifndef DAVCALENDARRESOURCE_H
 #define DAVCALENDARRESOURCE_H
 
+#include <QMutex>
+
 #include <akonadi/resourcebase.h>
 
 #include "../common/davaccessor.h"
@@ -72,8 +74,11 @@ class davCalendarResource : public Akonadi::ResourceBase,
     davAccessor *accessor;
     Akonadi::Collection davCollectionRoot;
     Akonadi::Item::List retrievedItems;
+    QMutex retrievedItemsMtx;
     QMap<QString, Akonadi::Item> putItems;
+    QMutex putItemsMtx;
     QMap<QString, Akonadi::Item> delItems;
+    QMutex delItemsMtx;
     QString password;
 };
 

@@ -223,6 +223,7 @@ void groupdavCalendarAccessor::itemsPropfindFinished( KJob *j )
         continue;
       }
       else if( itemStatus == EXPIRED ) {
+        // TODO: get rid of this, see TODO in itemGetFinished()
         backendChangedItems << href;
       }
     }
@@ -255,6 +256,7 @@ void groupdavCalendarAccessor::itemGetFinished( KJob *j )
   davItem i( url, mimeType, d );
   addItemToCache( i, etag );
   
+  // TODO: get rid of this as in the resource it all boils down to the same code
   if( backendChangedItems.contains( url ) ) {
     emit backendItemChanged( i );
     backendChangedItems.remove( url );
@@ -268,11 +270,14 @@ void groupdavCalendarAccessor::itemGetFinished( KJob *j )
 
 void groupdavCalendarAccessor::runItemsFetch()
 {
+  QMutexLocker locker( &fetchItemsQueueMtx );
+  
   if( fetchItemsQueue.isEmpty() ) {
     emit itemsRetrieved();
     return;
   }
   
   QString next = fetchItemsQueue.takeFirst();
+  locker.unlock();
   getItem( next );
 }

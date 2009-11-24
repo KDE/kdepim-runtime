@@ -21,6 +21,7 @@
 
 #include <QMap>
 #include <QStringList>
+#include <QMutex>
 
 #include "../common/davaccessor.h"
 
@@ -46,6 +47,7 @@ class caldavCalendarAccessor : public davAccessor
     
   private:
     QMap<QString, QStringList> fetchItemsQueue; // collection url, items urls
+    QMutex fetchItemsQueueMtx;
     int runningQueries;
 };
 

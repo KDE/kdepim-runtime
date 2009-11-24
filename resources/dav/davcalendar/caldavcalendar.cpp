@@ -17,6 +17,7 @@
 */
 
 #include <QDomDocument>
+#include <QMutexLocker>
 
 #include <kio/davjob.h>
 #include <klocalizedstring.h>
@@ -292,8 +293,11 @@ void caldavCalendarAccessor::runItemsFetch( const QString &collection )
   e1 = multiget.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-data" );
   prop.appendChild( e1 );
   
+  QMutexLocker locker( &fetchItemsQueueMtx );
   QStringList urls = fetchItemsQueue[collection];
   fetchItemsQueue[collection].clear();
+  locker.unlock();
+  
   kDebug() << "Got " << urls.length() << " items for collection at " << collection;
   
   foreach( QString url, urls ) {
