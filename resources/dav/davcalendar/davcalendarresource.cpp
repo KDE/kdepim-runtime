@@ -83,6 +83,12 @@ davCalendarResource::~davCalendarResource()
   delete accessor;
 }
 
+void davCalendarResource::cleanup()
+{
+  if( accessor )
+    accessor->removeCache( name() );
+}
+
 void davCalendarResource::retrieveCollections()
 {
   kDebug() << "Retrieving collections list";
@@ -424,7 +430,7 @@ void davCalendarResource::backendItemsRemoved( const QList<davItem> &items )
   
   itemsRetrievedIncremental( Akonadi::Item::List(), removed );
   itemsRetrievalDone();
-  accessor->saveCache();
+  accessor->saveCache( name() );
 }
 
 void davCalendarResource::accessorStatus( const QString &s )

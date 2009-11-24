@@ -165,12 +165,14 @@ void davAccessor::validateCache()
   kDebug() << "Finished cache validation";
 }
 
-void davAccessor::saveCache()
+void davAccessor::saveCache( const QString &suffix )
 {
   kDebug() << "Saving cache to disk";
   
-  QFile etagsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/etags" ) );
-  QFile itemsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/items" ) );
+  KUrl suffixPath( suffix );
+  suffixPath.cleanPath();
+  QFile etagsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/etags-" + suffixPath.url() ) );
+  QFile itemsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/items-" + suffixPath.url() ) );
   
   if( ! etagsCacheFile.open( QIODevice::WriteOnly ) ) {
     emit accessorError( i18n( "Unable to open cache file for writing : %1" ).arg( etagsCacheFile.errorString() ), false );
@@ -192,6 +194,16 @@ void davAccessor::saveCache()
   itemsCacheFile.close();
   
   kDebug() << "Done saving cache to disk";
+}
+
+void davAccessor::removeCache( const QString &suffix )
+{
+  KUrl suffixPath( suffix );
+  suffixPath.cleanPath();
+  QFile etagsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/etags-" + suffixPath.url() ) );
+  QFile itemsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/items-" + suffixPath.url() ) );
+  etagsCacheFile.remove();
+  itemsCacheFile.remove();
 }
 
 KIO::DavJob* davAccessor::doPropfind( const KUrl &url, const QDomDocument &props, const QString &davDepth )

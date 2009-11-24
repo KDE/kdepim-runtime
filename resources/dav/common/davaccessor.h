@@ -62,7 +62,8 @@ class davAccessor : public QObject
     virtual void retrieveItem( const KUrl &url ) = 0;
     virtual void putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag = false );
     virtual void removeItem( const KUrl &url );
-    void saveCache();
+    void saveCache( const QString &suffix );
+    void removeCache( const QString &suffix );
     
   public Q_SLOTS:
     void validateCache();

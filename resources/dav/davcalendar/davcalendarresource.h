@@ -37,6 +37,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
   public:
     davCalendarResource( const QString &id );
     ~davCalendarResource();
+    void cleanup();
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
