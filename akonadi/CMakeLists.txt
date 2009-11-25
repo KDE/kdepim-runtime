@@ -41,7 +41,7 @@ if (Grantlee_FOUND)
   add_subdirectory(akonaditemplateloader)
   add_subdirectory(akonaditemplateresource)
 
-  add_subdirectory(example_mail)
+#  add_subdirectory(example_mail)
 
 endif (Grantlee_FOUND)
 
@@ -50,6 +50,6 @@ endif (Grantlee_FOUND)
 
 add_subdirectory(filter)
 add_subdirectory(akonadi_serializer_qimage)
-add_subdirectory(example_contacts)
+#add_subdirectory(example_contacts)
 #add_subdirectory(example_rss)
 add_subdirectory(strigifeeder)
