@@ -302,7 +302,6 @@ void OutboxQueue::Private::localFoldersRequestResult( KJob *job )
     return;
   }
 
-  Q_ASSERT( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::Outbox ) );
   localFoldersChanged();
 }
 
