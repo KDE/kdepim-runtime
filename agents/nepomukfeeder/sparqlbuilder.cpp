@@ -97,12 +97,15 @@ QString SparqlBuilder::BasicGraphPattern::toStringInternal() const
   return patterns.join( QLatin1String( " . " ) );
 }
 
-
 QString SparqlBuilder::GroupGraphPattern::toStringInternal() const
 {
-  return QLatin1String( "TODO" );
+  QStringList graphs;
+  foreach ( const boost::shared_ptr<GraphPattern> &pattern, m_graphPatterns )
+    graphs.append( pattern->toString() );
+  if ( m_isUnion )
+    return graphs.join( QLatin1String( " UNION " ) );
+  return graphs.join( QLatin1String( " " ) );
 }
-
 
 
 SparqlBuilder::SparqlBuilder()

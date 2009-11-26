@@ -150,6 +150,8 @@ class SparqlBuilder
           m_graphPatterns.append( boost::shared_ptr<GraphPattern>( new GraphPatternType( graph ) ) );
         }
 
+        bool isEmpty() const { return m_graphPatterns.isEmpty(); }
+
       protected:
         QString toStringInternal() const;
 

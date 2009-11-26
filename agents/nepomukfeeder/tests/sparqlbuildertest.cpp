@@ -55,6 +55,20 @@ class SparqlBuilderTest : public QObject
       graph.addTriple( QUrl( "foo" ), QUrl("is"), SparqlBuilder::QueryVariable("$a") );
       qb.setGraphPattern( graph );
       QTest::newRow( "variable object" ) << qb << QString( "SELECT DISTINCT $a WHERE { $a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#int> . <foo> <is> $a }" );
+
+      SparqlBuilder::GroupGraphPattern groupGraph;
+      graph = SparqlBuilder::BasicGraphPattern();
+      graph.addTriple( "?a", QUrl("is"), "10" );
+      groupGraph.addGraphPattern( graph );
+      graph = SparqlBuilder::BasicGraphPattern();
+      graph.addTriple( "?b", QUrl("is"), 20 );
+      groupGraph.addGraphPattern( graph );
+      qb.setGraphPattern( groupGraph );
+      QTest::newRow( "group graph, no union" ) << qb << QString( "SELECT DISTINCT $a WHERE { { ?a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#string> } { ?b <is> \"20\"^^<http://www.w3.org/2001/XMLSchema#int> } }" );
+
+      groupGraph.setUnion( true );
+      qb.setGraphPattern( groupGraph );
+      QTest::newRow( "group graph, no union" ) << qb << QString( "SELECT DISTINCT $a WHERE { { ?a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#string> } UNION { ?b <is> \"20\"^^<http://www.w3.org/2001/XMLSchema#int> } }" );
     }
 
     void testSelectBuilder()
