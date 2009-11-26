@@ -81,6 +81,8 @@ AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionAttributePageFactory, Colle
 AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionInternalsPageFactory, CollectionInternalsPage)
 AKONADI_COLLECTION_PROPERTIES_PAGE_FACTORY(CollectionAclPageFactory, CollectionAclPage)
 
+Q_DECLARE_METATYPE( QSet<QByteArray> )
+
 BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
     QWidget( parent ),
     mAttrModel( 0 ),
@@ -358,7 +360,8 @@ void BrowserWidget::setItem( const Akonadi::Item &item )
   mMonitor->setItemMonitored( item );
   mMonitor->itemFetchScope().fetchFullPayload();
   mMonitor->itemFetchScope().fetchAllAttributes();
-  connect( mMonitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)), SLOT(setItem(Akonadi::Item)) );
+  qRegisterMetaType<QSet<QByteArray> >();
+  connect( mMonitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)), SLOT(setItem(Akonadi::Item)), Qt::QueuedConnection );
 }
 
 void BrowserWidget::modelChanged()
