@@ -98,7 +98,6 @@ void ConfigDialog::slotAuthOk()
 void ConfigDialog::slotAuthFailed( const QString& error )
 {
     Q_UNUSED( error );
-#warning: what is the need of the unused parameter(s)?
 //TODO what is the need of the unused parameter(s)?
 // should error be shown to the user?
     unsetCursor();
