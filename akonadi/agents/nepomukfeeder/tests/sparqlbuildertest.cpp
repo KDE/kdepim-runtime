@@ -69,6 +69,11 @@ class SparqlBuilderTest : public QObject
       groupGraph.setUnion( true );
       qb.setGraphPattern( groupGraph );
       QTest::newRow( "group graph, no union" ) << qb << QString( "SELECT DISTINCT $a WHERE { { ?a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#string> } UNION { ?b <is> \"20\"^^<http://www.w3.org/2001/XMLSchema#int> } }" );
+
+      groupGraph.addGraphPattern( SparqlBuilder::BasicGraphPattern() );
+      groupGraph.addGraphPattern( SparqlBuilder::GroupGraphPattern() );
+      qb.setGraphPattern( groupGraph );
+      QTest::newRow( "empty graph patterns" ) << qb << QString( "SELECT DISTINCT $a WHERE { { ?a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#string> } UNION { ?b <is> \"20\"^^<http://www.w3.org/2001/XMLSchema#int> } }" );
     }
 
     void testSelectBuilder()
