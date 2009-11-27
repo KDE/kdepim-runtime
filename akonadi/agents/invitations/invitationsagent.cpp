@@ -45,6 +45,8 @@
 #include <Akonadi/AgentInstanceCreateJob>
 #include <akonadi/resourcesynchronizationjob.h>
 #include <akonadi/kcal/incidenceattribute.h>
+#include <akonadi/specialcollections.h>
+#include <akonadi/specialcollectionsrequestjob.h>
 
 #include <QDBusInterface>
 #include <QDBusReply>
@@ -55,12 +57,86 @@
 #include <KJob>
 #include <KLocale>
 #include <KStandardDirs>
+#include <KConfig>
+#include <KConfigSkeleton>
 
 #include <kpimidentities/identitymanager.h>
 
 AKONADI_AGENT_MAIN( InvitationsAgent )
 
 using namespace Akonadi;
+
+class InvitationsCollectionRequestJob : public SpecialCollectionsRequestJob
+{
+  public:
+    InvitationsCollectionRequestJob( SpecialCollections* collection, InvitationsAgent *agent ) : SpecialCollectionsRequestJob( collection, agent ) {
+      setDefaultResourceType( QLatin1String( "akonadi_ical_resource" ) );
+
+      QVariantMap options;
+      options.insert( QLatin1String( "Path" ), KGlobal::dirs()->localxdgdatadir() + "akonadi_invitations" );
+      options.insert( QLatin1String( "Name" ), i18n("Invitations") );
+      setDefaultResourceOptions( options );
+
+      QMap<QByteArray, QString> displayNameMap;
+      displayNameMap.insert( "invitations", i18n("Invitations") );
+      setTypes( displayNameMap.keys() );
+      setNameForTypeMap( displayNameMap );
+
+      QMap<QByteArray, QString> iconNameMap;
+      iconNameMap.insert( "invitations", QLatin1String( "folder" ) );
+      setIconForTypeMap( iconNameMap );
+    }
+    virtual ~InvitationsCollectionRequestJob() {}
+};
+
+class  InvitationsCollection : public SpecialCollections
+{
+  public:
+
+    class Settings : public KCoreConfigSkeleton
+    {
+      public:
+        Settings() : KCoreConfigSkeleton() {
+          setCurrentGroup("Invitations");
+          addItemLongLong("DefaultResourceId", m_id, -1);
+        }
+        virtual ~Settings() {}
+      private:
+        qlonglong m_id;
+    };
+
+    InvitationsCollection( InvitationsAgent *agent ) : Akonadi::SpecialCollections( new Settings ), m_agent( agent ), sInvitationsType( "invitations" ) {}
+    virtual ~InvitationsCollection() {}
+    /*
+    bool registerCollection( const Collection &collection ) {
+      return SpecialCollections::registerCollection( sInvitationsType, collection );
+    }
+    */
+    void clear() {
+      m_collection = Collection();
+    }
+    bool hasDefaultCollection() const {
+      return SpecialCollections::hasDefaultCollection( sInvitationsType );
+    }
+    Collection defaultCollection() const {
+      if( ! m_collection.isValid() )
+        m_collection = SpecialCollections::defaultCollection( sInvitationsType );
+      return m_collection;
+    }
+    void registerDefaultCollection() {
+      Q_ASSERT( m_collection.isValid() );
+      registerCollection( sInvitationsType, m_collection );
+    }
+    SpecialCollectionsRequestJob* reguestJob() const {
+      InvitationsCollectionRequestJob *j = new InvitationsCollectionRequestJob( const_cast<InvitationsCollection*>(this), m_agent );
+      j->requestDefaultCollection( sInvitationsType );
+      return j;
+    }
+  private:
+    InvitationsAgent *m_agent;
+    const QByteArray sInvitationsType;
+    mutable Collection m_collection;
+};
 
 InvitationsAgentItem::InvitationsAgentItem(InvitationsAgent *a, const Item &originalItem)
   : QObject(a), a(a), originalItem(originalItem)
@@ -74,10 +150,12 @@ InvitationsAgentItem::~InvitationsAgentItem()
 void InvitationsAgentItem::add(const Item &newItem)
 {
   kDebug();
+  Collection c = a->collection();
+  Q_ASSERT( c.isValid() );
 
-  ItemCreateJob *j = new ItemCreateJob( newItem, a->invitations(), this );
-  connect( j, SIGNAL( result( KJob* ) ), this, SLOT( createItemResult( KJob* ) ) );
+  ItemCreateJob *j = new ItemCreateJob( newItem, c, this );
   jobs << j;
+  connect( j, SIGNAL( result( KJob* ) ), this, SLOT( createItemResult( KJob* ) ) );
   j->start();
 }
 
@@ -128,11 +206,21 @@ void InvitationsAgentItem::modifyItemDone( KJob *job )
 }
 
 InvitationsAgent::InvitationsAgent( const QString &id )
-  : AgentBase( id ), AgentBase::ObserverV2(), newAgentCreated( false )
+  : AgentBase( id ), AgentBase::ObserverV2()
+  , m_InvitationsCollection( new InvitationsCollection(this) )
 {
   kDebug();
   KGlobal::locale()->insertCatalog( "akonadi_invitations_agent" );
+
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Monitor
+  changeRecorder()->itemFetchScope().fetchFullPayload();
+  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType() );
+  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType() );
+  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType() );
+  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::freeBusyMimeType() );
+  //changeRecorder()->setMimeTypeMonitored( "text/calendar", true );
+  changeRecorder()->setMimeTypeMonitored( "message/rfc822", true );
+  //changeRecorder()->setCollectionMonitored( Collection::root(), true );
 
   connect( this, SIGNAL(reloadConfiguration()), this, SLOT(initStart()) );
   QTimer::singleShot( 0, this, SLOT(initStart()) );
@@ -140,11 +228,23 @@ InvitationsAgent::InvitationsAgent( const QString &id )
 
 InvitationsAgent::~InvitationsAgent()
 {
+  delete m_InvitationsCollection;
 }
 
 void InvitationsAgent::initStart()
 {
   kDebug();
+
+  m_InvitationsCollection->clear();
+  if( m_InvitationsCollection->hasDefaultCollection() ) {
+    initDone();
+  } else {
+    SpecialCollectionsRequestJob *j = m_InvitationsCollection->reguestJob();
+    connect( j, SIGNAL( result(KJob*) ), this, SLOT( initDone(KJob*) ) );
+    j->start();
+  }
+
+  /*
   KConfig config( "akonadi_invitations_agent" );
   KConfigGroup group = config.group( "General" );
   m_resourceId = group.readEntry( "DefaultCalendarAgent", "default_ical_resource" );
@@ -160,31 +260,27 @@ void InvitationsAgent::initStart()
     AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
     connect( job, SIGNAL( result( KJob * ) ), this, SLOT( createAgentResult( KJob * ) ) );
     job->start();
-  }  
+  }
+  */
 }
 
-void InvitationsAgent::initDone()
+void InvitationsAgent::initDone( KJob *job )
 {
-  kDebug();
-  changeRecorder()->itemFetchScope().fetchFullPayload();
-  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType() );
-  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType() );
-  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType() );
-  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::freeBusyMimeType() );
-  //changeRecorder()->setMimeTypeMonitored( "text/calendar", true );
-  changeRecorder()->setMimeTypeMonitored( "message/rfc822", true );
-  //changeRecorder()->setCollectionMonitored( Collection::root(), true );
+  if( job ) {
+    if( job->error() ) {
+      kWarning() << "Failed to request default collection:" << job->errorText();
+      return;
+    }
+    m_InvitationsCollection->registerDefaultCollection();
+  }
 
-  KConfig config( "akonadi_invitations_agent" );
-  KConfigGroup group = config.group( "General" );
-  group.writeEntry( "DefaultCalendarCollection", m_invitations.id() );
-
+  Q_ASSERT( m_InvitationsCollection->defaultCollection().isValid() );
   emit status( AgentBase::Idle, i18n("Ready to dispatch invitations") );
 }
 
-Collection& InvitationsAgent::invitations()
+Collection InvitationsAgent::collection()
 {
-  return m_invitations;
+  return m_InvitationsCollection->defaultCollection();
 }
 
 #if 0
@@ -209,6 +305,7 @@ void InvitationsAgent::configure( WId windowId )
   initStart(); //reload
 }
 
+#if 0
 void InvitationsAgent::createAgentResult( KJob *job )
 {
   kDebug();
@@ -342,6 +439,7 @@ void InvitationsAgent::collectionCreateResult( KJob *job )
   m_invitations = j->collection();
   initDone();
 }
+#endif
 
 Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calendar, const Item &item )
 {
@@ -373,7 +471,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
 {
   Q_UNUSED( collection );
 
-  if( ! m_invitations.isValid() ) {
+  if( ! m_InvitationsCollection->defaultCollection().isValid() ) {
     return;
   }
 

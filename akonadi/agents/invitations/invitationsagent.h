@@ -36,6 +36,7 @@ namespace KCal {
 }
 
 class InvitationsAgent;
+class InvitationsCollection;
 
 class InvitationsAgentItem : public QObject
 {
@@ -64,19 +65,16 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     explicit InvitationsAgent( const QString &id );
     virtual ~InvitationsAgent();
 
-    Akonadi::Collection& invitations();
+    Akonadi::Collection collection();
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
   private Q_SLOTS:
     void initStart();
-    void createAgentResult( KJob *job = 0 );
-    void resourceSyncResult( KJob *job = 0 );
-    void collectionFetchResult( KJob *job );
-    void collectionCreateResult( KJob *job );
+    void initDone( KJob *job = 0 );
+
   private:
-    void initDone();
     Akonadi::Item handleContent( const QString &vcal, KCal::Calendar* calendar, const Akonadi::Item &item );
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -97,8 +95,8 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
 
   private:
     QString m_resourceId;
-    bool newAgentCreated;
-    Akonadi::Collection m_invitations;
+    InvitationsCollection *m_InvitationsCollection;
+    Akonadi::Collection m_collection;
 };
 
 #endif // MAILDISPATCHERAGENT_H
