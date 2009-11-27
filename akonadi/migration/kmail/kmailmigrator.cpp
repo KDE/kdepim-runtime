@@ -221,6 +221,12 @@ void KMailMigrator::imapAccountCreated( KJob *job )
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
+  iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
+  iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
+  iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
+  iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
+  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
+
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
   //instance.reconfigure();

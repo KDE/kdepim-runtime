@@ -49,4 +49,25 @@
       <label>RID path to the mailbox to watch for changes</label>
     </entry>
   </group>
+  <group name="siever">
+    <entry name="SieveSupport" type="Bool">
+      <label>Define if server supports sieve</label>
+      <default>false</default>
+    </entry>
+    <entry name="SieveReuseConfig" type="Bool">
+      <label>Define if we reuse host and login configuration</label>
+      <default>true</default>
+    </entry>
+    <entry name="SievePort" type="Int">
+      <label>Define sieve port</label>
+      <default>2000</default>
+    </entry>
+    <entry name="SieveAlternateUrl" type="String">
+      <label>Define alternate url</label>
+    </entry>
+    <entry name="SieveVacationFilename" type="String">
+      <label>Define default sieve vacation filename</label>
+      <default>kmail-vacation.siv</default>
+    </entry>
+  </group>
 </kcfg>
