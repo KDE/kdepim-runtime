@@ -76,6 +76,7 @@ private:
   MailTransport::ServerTest *m_serverTest;
   bool m_subscriptionsChanged;
   bool m_shouldClearCache;
+  QString m_vacationFileName;
 
 private slots:
   void slotTest();
@@ -84,6 +85,7 @@ private slots:
   void slotComplete();
   void slotSafetyChanged();
   void slotManageSubscriptions();
+  void slotEnableWidgets();
 };
 
 #endif

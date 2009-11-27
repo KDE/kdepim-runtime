@@ -87,6 +87,12 @@ SetupServer::SetupServer( WId parent )
 
   connect( m_ui->subscriptionButton, SIGNAL( pressed() ), SLOT( slotManageSubscriptions() ) );
 
+  connect( m_ui->managesieveCheck, SIGNAL(toggled(bool)),
+           SLOT(slotEnableWidgets()) );
+  connect( m_ui->sameConfigCheck, SIGNAL(toggled(bool)),
+           SLOT(slotEnableWidgets()) );
+
+
   readSettings();
   slotTestChanged();
   slotComplete();
@@ -121,6 +127,13 @@ void SetupServer::applySettings()
   Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
   Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
   Settings::self()->setDisconnectedModeEnabled( m_ui->disconnectedModeEnabled->isChecked() );
+
+  Settings::self()->setSieveSupport( m_ui->managesieveCheck->isChecked() );
+  Settings::self()->setSieveReuseConfig( m_ui->sameConfigCheck->isChecked() );
+  Settings::self()->setSievePort( m_ui->portSpin->value() );
+  Settings::self()->setSieveAlternateUrl( m_ui->alternateURL->text() );
+  Settings::self()->setSieveVacationFilename( m_vacationFileName );
+
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 }
@@ -164,6 +177,14 @@ void SetupServer::readSettings()
 
   m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
   m_ui->disconnectedModeEnabled->setChecked( Settings::self()->disconnectedModeEnabled() );
+
+  m_ui->managesieveCheck->setChecked(Settings::self()->sieveSupport());
+  m_ui->sameConfigCheck->setChecked( Settings::self()->sieveReuseConfig() );
+  m_ui->portSpin->setValue( Settings::self()->sievePort() );
+  m_ui->alternateURL->setText( Settings::self()->sieveAlternateUrl() );
+  m_vacationFileName = Settings::self()->sieveVacationFilename();
+  if ( m_vacationFileName.isEmpty() )
+    m_vacationFileName = "kmail-vacation.siv";
 
   delete currentUser;
 }
@@ -241,6 +262,16 @@ void SetupServer::slotTestChanged()
   // do not use imapConnectionPossible, as the data is not yet saved.
   m_ui->testButton->setEnabled( true /* TODO Global::connectionPossible() ||
                                         m_ui->imapServer->text() == "localhost"*/ );
+}
+
+void SetupServer::slotEnableWidgets()
+{
+  bool haveSieve = m_ui->managesieveCheck->isChecked();
+  bool reuseConfig = m_ui->sameConfigCheck->isChecked();
+
+  m_ui->sameConfigCheck->setEnabled( haveSieve );
+  m_ui->portSpin->setEnabled( haveSieve && reuseConfig );
+  m_ui->alternateURL->setEnabled( haveSieve && !reuseConfig );
 }
 
 void SetupServer::slotComplete()
