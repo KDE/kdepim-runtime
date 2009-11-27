@@ -28,6 +28,7 @@ set( akonadi_next_SRCS
   mailmodel.cpp
   amazingcompleter.cpp
   amazingdelegate.cpp
+  krecursivefilterproxymodel.cpp
 )
 
 kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
