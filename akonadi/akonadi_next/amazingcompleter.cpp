@@ -114,6 +114,9 @@ kDebug() << matchingIndexes.size();
 
 void AmazingCompleter::sourceRowsInserted(const QModelIndex &parent, int start, int end)
 {
+  Q_UNUSED( parent );
+  Q_UNUSED( start );
+  Q_UNUSED( end );
   Q_D(AmazingCompleter);
   if (d->m_matchData.isValid())
     setCompletionPrefix(d->m_matchData);

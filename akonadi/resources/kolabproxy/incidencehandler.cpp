@@ -109,19 +109,18 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KC
 }
   */
   const QString origUid = inc->uid();
-  KCal::Incidence* local = m_uidMap[origUid].incidence.get();
-  KCal::Incidence* localIncidence = 0;
-  KCal::Incidence* addedIncidence = 0;
-  KCal::Incidence*  result = 0;
-  if ( local ) {
+  KCal::Incidence* localIncidence = m_uidMap[origUid].incidence.get();
+  KCal::Incidence* addedIncidence = inc.get();
+  KCal::Incidence* result = 0;
+  if ( localIncidence ) {
     KCal::ComparisonVisitor visitor;
-    kDebug() << "Compare  " << local << inc.get();
-    if ( visitor.compare( local, inc.get() ) ) {
-        // real duplicate, remove the second one
+    kDebug() << "Compare  " << localIncidence << addedIncidence;
+    if ( visitor.compare( localIncidence, addedIncidence ) ) {
+      // real duplicate, remove the second one
       return Duplicate;
     } else {
       KPIM::KIncidenceChooser* ch = new KPIM::KIncidenceChooser();
-      ch->setIncidence( local ,inc.get() );
+      ch->setIncidence( localIncidence, addedIncidence );
       if ( KPIM::KIncidenceChooser::chooseMode == KPIM::KIncidenceChooser::ask ) {
         connect ( this, SIGNAL( useGlobalMode() ), ch, SLOT (  useGlobalMode() ) );
         if ( ch->exec() )
@@ -132,12 +131,12 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KC
       delete ch;
     }
   } else {
-      // nothing there locally, just take the new one. Can't Happen (TM)
-    result = inc.get();
+    // nothing there locally, just take the new one. Can't Happen (TM)
+    result = addedIncidence;
   }
-  if ( result == local ) { //take local
+  if ( result == localIncidence ) { //take local
     return Local;
-  } else  if ( result == inc.get() ) { //take remote (inc)
+  } else  if ( result == addedIncidence ) { //take remote (inc)
     return Remote;
   } else if ( result == 0 ) { // take both
     return Both;
