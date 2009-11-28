@@ -56,7 +56,7 @@ protected:
 
 protected:
   RecursiveCollectionFilterProxyModelPrivate * const d_ptr;
-  Q_DECLARE_PRIVATE(RecursiveCollectionFilterProxyModel);
+  Q_DECLARE_PRIVATE(RecursiveCollectionFilterProxyModel)
 };
 
 }

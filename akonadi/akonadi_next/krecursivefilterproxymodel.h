@@ -45,7 +45,7 @@ protected:
 protected:
   RecursiveFilterProxyModelPrivate * const d_ptr;
 
-  Q_DECLARE_PRIVATE(RecursiveFilterProxyModel);
+  Q_DECLARE_PRIVATE(RecursiveFilterProxyModel)
 
   Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &source_top_left, const QModelIndex &source_bottom_right))
   Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &source_parent, int start, int end))
