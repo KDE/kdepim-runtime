@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Open-Xchange Groupware Server
+Comment=Provides access to the appointments, tasks and contacts of a Open-Xchange groupware server
+Type=AkonadiResource
+Exec=akonadi_openxchange_resource
+Icon=calgo
+
+X-Akonadi-MimeTypes=text/directory,text/calendar,application/x-vnd.kde.contactgroup
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_openxchange_resource
