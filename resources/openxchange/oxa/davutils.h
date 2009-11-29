@@ -34,7 +34,7 @@ namespace DAVUtils
   QDomElement addDavElement( QDomDocument &document, QDomNode &parentNode, const QString &tag );
   QDomElement addOxElement( QDomDocument &document, QDomNode &parentNode, const QString &tag, const QString &text = QString() );
   void setOxAttribute( QDomElement &element, const QString &name, const QString &value );
-};
+}
 
 }
 

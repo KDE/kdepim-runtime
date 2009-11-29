@@ -43,7 +43,7 @@ namespace OXUtils
   QString readName( const QString &text );
   KDateTime readDateTime( const QString &text );
   KDateTime readDate( const QString &text );
-};
+}
 
 }
 
