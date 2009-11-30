@@ -66,26 +66,16 @@ bool RecursiveCollectionFilterProxyModel::acceptRow(int sourceRow, const QModelI
   QModelIndex rowIndex = sourceModel()->index(sourceRow, 0, sourceParent);
   Akonadi::Collection col = rowIndex.data(Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
   if (!col.isValid())
-  {
-    kDebug() << "colNotvalid";
     return false;
-  }
 
   if (d->includedMimeTypes.isEmpty())
     return true;
 
   QSet<QString> contentMimeTypes = col.contentMimeTypes().toSet();
 
-
-  kDebug() << col.name() << !contentMimeTypes.intersect(d->includedMimeTypes).isEmpty();
-
-  return !contentMimeTypes.intersect(d->includedMimeTypes).isEmpty();
-
-  if (col.contentMimeTypes().contains(KMime::Message::mimeType()))
-  {
-    return true;
-  }
-  return false;
+  if ( contentMimeTypes.intersect(d->includedMimeTypes).isEmpty())
+    return false;
+  return true;
 }
 
 void RecursiveCollectionFilterProxyModel::addContentMimeTypeInclusionFilter(const QString& mimeType)
