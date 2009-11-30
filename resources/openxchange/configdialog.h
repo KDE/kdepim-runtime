@@ -1,6 +1,4 @@
 /*
-    This file is part of oxaccess.
-
     Copyright (c) 2009 Tobias Koenig <tokoe@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -19,39 +17,26 @@
     02110-1301, USA.
 */
 
-#ifndef OXA_DAVMANAGER_H
-#define OXA_DAVMANAGER_H
+#ifndef CONFIGDIALOG_H
+#define CONFIGDIALOG_H
 
-#include <kurl.h>
+#include <kdialog.h>
 
-namespace KIO {
-class DavJob;
-}
+class KConfigDialogManager;
 
-class QDomDocument;
-
-namespace OXA {
-
-class DavManager
+class ConfigDialog : public KDialog
 {
+  Q_OBJECT
+
   public:
-    ~DavManager();
+    ConfigDialog( WId windowId );
 
-    static DavManager* self();
-
-    void setBaseUrl( const KUrl &url );
-    KUrl baseUrl() const;
-
-    KIO::DavJob* createFindJob( const QString &path, const QDomDocument &document ) const;
-    KIO::DavJob* createPatchJob( const QString &path, const QDomDocument &document ) const;
+  private Q_SLOTS:
+    void save();
+    void showAboutDialog();
 
   private:
-    DavManager();
-
-    KUrl mBaseUrl;
-    static DavManager* mSelf;
+    KConfigDialogManager *mManager;
 };
-
-}
 
 #endif

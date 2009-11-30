@@ -49,6 +49,7 @@ class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentB
     virtual void collectionRemoved( const Akonadi::Collection &collection );
 
   private Q_SLOTS:
+    void onUserIdRequestJobFinished( KJob* );
     void onFoldersRequestJobFinished( KJob* );
 
   private:

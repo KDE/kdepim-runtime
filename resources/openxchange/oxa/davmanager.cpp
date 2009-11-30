@@ -52,6 +52,11 @@ void DavManager::setBaseUrl( const KUrl &url )
   mBaseUrl = url;
 }
 
+KUrl DavManager::baseUrl() const
+{
+  return mBaseUrl;
+}
+
 KIO::DavJob* DavManager::createFindJob( const QString &path, const QDomDocument &document ) const
 {
   KUrl url( mBaseUrl );

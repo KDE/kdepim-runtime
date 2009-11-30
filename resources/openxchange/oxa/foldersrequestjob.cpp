@@ -73,21 +73,14 @@ void FoldersRequestJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   const QDomDocument &document = davJob->response();
-//  qDebug() << document.toString();
 
   QDomElement multistatus = document.documentElement();
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
   while ( !response.isNull() ) {
-    qDebug("found folder");
     const QDomNodeList props = response.elementsByTagName( "prop" );
     const QDomElement prop = props.at( 0 ).toElement();
     mFolders.append( parseFolder( prop ) );
     response = response.nextSiblingElement();
-  }
-
-  for ( int i = 0; i < mFolders.count(); ++i ) {
-    qDebug() << "Folder(" << mFolders.at( i ).objectId() <<  "):" << mFolders.at( i ).title();
-    qDebug() << "      parent:" << mFolders.at( i ).folderId();
   }
 
   emitResult();

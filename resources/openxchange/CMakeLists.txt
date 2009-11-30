@@ -56,9 +56,13 @@ set( openxchangeresource_SRCS
   oxa/foldersjobshared.cpp
   oxa/foldersrequestjob.cpp
   oxa/oxutils.cpp
+  oxa/useridrequestjob.cpp
 
+  configdialog.cpp
   openxchangeresource.cpp
 )
+
+kde4_add_ui_files( openxchangeresource_SRCS configdialog.ui )
 
 install( FILES openxchangeresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 

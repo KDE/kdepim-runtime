@@ -19,37 +19,29 @@
     02110-1301, USA.
 */
 
-#ifndef OXA_DAVMANAGER_H
-#define OXA_DAVMANAGER_H
+#ifndef OXA_USERIDREQUESTJOB_H
+#define OXA_USERIDREQUESTJOB_H
 
-#include <kurl.h>
-
-namespace KIO {
-class DavJob;
-}
-
-class QDomDocument;
+#include <kjob.h>
 
 namespace OXA {
 
-class DavManager
+class UserIdRequestJob : public KJob
 {
+  Q_OBJECT
+
   public:
-    ~DavManager();
+    UserIdRequestJob( QObject *parent = 0 );
 
-    static DavManager* self();
+    virtual void start();
 
-    void setBaseUrl( const KUrl &url );
-    KUrl baseUrl() const;
+    qlonglong userId() const;
 
-    KIO::DavJob* createFindJob( const QString &path, const QDomDocument &document ) const;
-    KIO::DavJob* createPatchJob( const QString &path, const QDomDocument &document ) const;
+  private Q_SLOTS:
+    void davJobFinished( KJob* );
 
   private:
-    DavManager();
-
-    KUrl mBaseUrl;
-    static DavManager* mSelf;
+    qlonglong mUserId;
 };
 
 }

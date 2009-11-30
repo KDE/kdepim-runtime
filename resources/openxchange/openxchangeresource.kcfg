@@ -8,5 +8,14 @@
     <entry name="BaseUrl" type="String">
       <label>Server URL</label>
     </entry>
+    <entry name="Username" type="String">
+      <label>Username</label>
+    </entry>
+    <entry name="Password" type="Password">
+      <label>Password</label>
+    </entry>
+  </group>
+  <group name="Internal">
+    <entry name="UserId" type="LongLong"/>
   </group>
 </kcfg>

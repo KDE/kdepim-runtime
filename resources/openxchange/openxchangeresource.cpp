@@ -19,6 +19,7 @@
 
 #include "openxchangeresource.h"
 
+#include "configdialog.h"
 #include "settingsadaptor.h"
 
 #include <akonadi/changerecorder.h>
@@ -31,6 +32,7 @@
 
 #include <oxa/davmanager.h>
 #include <oxa/foldersrequestjob.h>
+#include <oxa/useridrequestjob.h>
 
 using namespace Akonadi;
 
@@ -50,6 +52,11 @@ OpenXchangeResource::OpenXchangeResource( const QString &id )
   setHierarchicalRemoteIdentifiersEnabled( true );
 
   setName( i18n( "Open-Xchange" ) );
+
+  KUrl baseUrl = Settings::self()->baseUrl();
+  baseUrl.setUserName( Settings::self()->username() );
+  baseUrl.setPassword( Settings::self()->password() );
+  OXA::DavManager::self()->setBaseUrl( baseUrl );
 }
 
 OpenXchangeResource::~OpenXchangeResource()
@@ -62,7 +69,35 @@ void OpenXchangeResource::aboutToQuit()
 
 void OpenXchangeResource::configure( WId windowId )
 {
-  OXA::DavManager::self()->setBaseUrl( KUrl( "https://tko@localhost:1443" ) );
+  ConfigDialog dlg( windowId );
+  if ( dlg.exec() ) {
+    KUrl baseUrl = Settings::self()->baseUrl();
+    baseUrl.setUserName( Settings::self()->username() );
+    baseUrl.setPassword( Settings::self()->password() );
+    OXA::DavManager::self()->setBaseUrl( baseUrl );
+
+    // find out the uid of the user before we continue
+    OXA::UserIdRequestJob *job = new OXA::UserIdRequestJob( this );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onUserIdRequestJobFinished( KJob* ) ) );
+    job->start();
+  } else {
+    emit configurationDialogRejected();
+  }
+}
+
+void OpenXchangeResource::onUserIdRequestJobFinished( KJob *job )
+{
+  if ( job->error() ) {
+    //TODO: proper error handling
+    return;
+  }
+
+  OXA::UserIdRequestJob *requestJob = qobject_cast<OXA::UserIdRequestJob*>( job );
+  Q_ASSERT( requestJob );
+
+  Settings::self()->setUserId( requestJob->userId() );
+
+  // now we have the user id, so continue synchronization
   synchronize();
   emit configurationDialogAccepted();
 }
