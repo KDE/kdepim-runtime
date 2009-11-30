@@ -19,8 +19,6 @@
 
 #include "krecursivefilterproxymodel.h"
 
-#include <QSignalSpy>
-
 #include <kdebug.h>
 
 class RecursiveFilterProxyModelPrivate
@@ -30,39 +28,35 @@ class RecursiveFilterProxyModelPrivate
 public:
   RecursiveFilterProxyModelPrivate(KRecursiveFilterProxyModel *model)
     : q_ptr(model),
-      insertSpy(0),
-      removeSpy(0),
-      changeSpy(0)
+      ignoreRemove(false),
+      invalidate(false)
   {
     qRegisterMetaType<QModelIndex>("QModelIndex");
   }
 
   void sourceDataChanged(const QModelIndex &source_top_left, const QModelIndex &source_bottom_right);
+  void sourceRowsAboutToBeInserted(const QModelIndex &source_parent, int start, int end);
   void sourceRowsInserted(const QModelIndex &source_parent, int start, int end);
+  void sourceRowsAboutToBeRemoved(const QModelIndex &source_parent, int start, int end);
   void sourceRowsRemoved(const QModelIndex &source_parent, int start, int end);
 
-  QSignalSpy *insertSpy;
-  QSignalSpy *removeSpy;
-  QSignalSpy *changeSpy;
+  bool ignoreRemove;
+  bool invalidate;
+
 };
 
 void RecursiveFilterProxyModelPrivate::sourceDataChanged(const QModelIndex &source_top_left, const QModelIndex &source_bottom_right)
 {
   Q_Q(KRecursiveFilterProxyModel);
+  q->invalidate();
+  return;
 
-  Q_ASSERT(changeSpy);
-  changeSpy->clear();
-  QMetaObject::invokeMethod(q, "_q_sourceDataChanged", Qt::DirectConnection, Q_ARG(QModelIndex, source_top_left), Q_ARG(QModelIndex, source_bottom_right));
-  if (!changeSpy->isEmpty())
-    return; // The changed rows were processed by QSFPM.
-
-  // Some rows with newly updated data might match the filter.
   QModelIndex parent = source_top_left.parent();
   int start = -1;
   int end = -1;
-  for (int row = source_top_left.row(); row < source_bottom_right.row(); ++row)
+  for (int row = source_top_left.row(); row <= source_bottom_right.row(); ++row)
   {
-    if (q->acceptRow(row, parent))
+    if (q->filterAcceptsRow(row, parent))
     {
       end = row;
       if (start == -1)
@@ -84,15 +78,24 @@ void RecursiveFilterProxyModelPrivate::sourceDataChanged(const QModelIndex &sour
   sourceRowsInserted(parent, start, end);
 }
 
+
+void RecursiveFilterProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &source_parent, int start, int end)
+{
+  return;
+}
+
 void RecursiveFilterProxyModelPrivate::sourceRowsInserted(const QModelIndex &source_parent, int start, int end)
 {
   Q_Q(KRecursiveFilterProxyModel);
+  q->invalidate();
+  return;
 
-  Q_ASSERT(insertSpy);
-  insertSpy->clear();
-  QMetaObject::invokeMethod(q, "_q_sourceRowsInserted", Qt::DirectConnection, Q_ARG(QModelIndex, source_parent), Q_ARG(int, start), Q_ARG(int, end));
-  if (!insertSpy->isEmpty())
-    return; // The proxy inserted row(s).
+  if (!source_parent.isValid() || q->acceptRow(source_parent.row(), source_parent.parent()))
+  {
+    // If the parent is already in the model, we can just pass on the signal.
+    QMetaObject::invokeMethod(q, "_q_sourceRowsInserted", Qt::DirectConnection, Q_ARG(QModelIndex, source_parent), Q_ARG(int, start), Q_ARG(int, end));
+    return;
+  }
 
   bool requireRow = false;
   for (int row = start; row <= end; ++row)
@@ -104,58 +107,75 @@ void RecursiveFilterProxyModelPrivate::sourceRowsInserted(const QModelIndex &sou
     }
   }
   if (!requireRow)
+    // The row doesn't have descendants that match the filter. Filter it out.
     return;
 
   QModelIndex sourceAscendant = source_parent;
   int lastRow;
-  while(insertSpy->isEmpty())
+  // We got a matching descendant, so find the right place to insert the row.
+  while(!q->acceptRow(lastRow, sourceAscendant) && sourceAscendant.isValid())
   {
-    lastRow = source_parent.row();
+    lastRow = sourceAscendant.row();
     sourceAscendant = sourceAscendant.parent();
-    // new rows were inserted as children of a top level index.
-    QMetaObject::invokeMethod(q, "_q_sourceRowsInserted", Qt::DirectConnection,
-        Q_ARG(QModelIndex, sourceAscendant),
-        Q_ARG(int, lastRow),
-        Q_ARG(int, lastRow));
   }
 
+  QMetaObject::invokeMethod(q, "_q_sourceRowsInserted", Qt::DirectConnection,
+      Q_ARG(QModelIndex, sourceAscendant),
+      Q_ARG(int, lastRow),
+      Q_ARG(int, lastRow));
+
+  return;
+}
+
+void RecursiveFilterProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &source_parent, int start, int end)
+{
+  Q_Q(KRecursiveFilterProxyModel);
+
+  return;
+
+  bool accepted = false;
+  for (int row = start; row < end; ++row)
+  {
+    if (q->filterAcceptsRow(row, source_parent))
+    {
+      accepted = true;
+      break;
+    }
+  }
+  if (!accepted)
+  {
+    ignoreRemove = true;
+    return; // All removed rows are already filtered out. We don't care about the signal.
+  }
+
+  if (q->acceptRow(source_parent.row(), source_parent.parent()))
+  {
+    QMetaObject::invokeMethod(q, "_q_sourceRowsAboutToBeRemoved", Qt::DirectConnection, Q_ARG(QModelIndex, source_parent), Q_ARG(int, start), Q_ARG(int, end));
+    return;
+  }
+
+  // Unfortunately we need to invalidate the model because although we could invoke the method that a parent was removed,
+  // it was not actually removed, so we would get breakage.
+  ignoreRemove = true;
+  invalidate = true;
   return;
 }
 
 void RecursiveFilterProxyModelPrivate::sourceRowsRemoved(const QModelIndex &source_parent, int start, int end)
 {
   Q_Q(KRecursiveFilterProxyModel);
-
-  Q_ASSERT(removeSpy);
-  removeSpy->clear();
-  QMetaObject::invokeMethod(q, "_q_sourceRowsRemoved", Qt::DirectConnection, Q_ARG(QModelIndex, source_parent), Q_ARG(int, start), Q_ARG(int, end));
-  if (!removeSpy->isEmpty())
-    return; // Nothing to do.
-
-  // Rows were removed. Need to check if that means we no longer care about ascendants.
-  QModelIndex ascendant = source_parent.parent();
-  int lastRow = source_parent.row();
-  if (q->filterAcceptsRow(lastRow, ascendant))
-    return;
-
   q->invalidate();
   return;
 
-  // Unfortunately this does not work because though it invokes the method that a row was removed, it was not actually removed, so we get breakage.
-  // We need to invalidate the filter entirely instead.
-#if 0
-  lastRow = ascendant.row();
-  ascendant = ascendant.parent();
+  if (!ignoreRemove)
+    QMetaObject::invokeMethod(q, "_q_sourceRowsRemoved", Qt::DirectConnection, Q_ARG(QModelIndex, source_parent), Q_ARG(int, start), Q_ARG(int, end));
 
-  while (!q->acceptRow(lastRow, ascendant))
-  {
-    lastRow = ascendant.row();
-    ascendant = ascendant.parent();
-    if (!ascendant.isValid())
-      break;
-  }
-  QMetaObject::invokeMethod(q, "_q_sourceRowsRemoved", Qt::DirectConnection, Q_ARG(QModelIndex, ascendant), Q_ARG(int, lastRow), Q_ARG(int, lastRow));
-#endif
+  ignoreRemove = false;
+
+  if (invalidate)
+    q->invalidate();
+
+  invalidate = false;
 }
 
 KRecursiveFilterProxyModel::KRecursiveFilterProxyModel(QObject* parent)
@@ -174,7 +194,10 @@ bool KRecursiveFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelInd
   QVariant da = sourceModel()->index(sourceRow, 0, sourceParent).data();
 
   if (acceptRow(sourceRow, sourceParent))
+  {
+//     kDebug() << "Direct accepted" << da;
     return true;
+  }
 
   QModelIndex source_index = sourceModel()->index(sourceRow, 0, sourceParent);
   bool accepted = false;
@@ -182,6 +205,7 @@ bool KRecursiveFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelInd
     if (filterAcceptsRow(row, source_index))
       accepted = true; // Need to do this in a loop so that all siblings in a parent get processed, not just the first.
 
+//   kDebug() << "#### Indirect accepted" << da;
   return accepted;
 }
 
@@ -198,8 +222,14 @@ void KRecursiveFilterProxyModel::setSourceModel(QAbstractItemModel* model)
   disconnect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
       this, SLOT(_q_sourceDataChanged(QModelIndex,QModelIndex)));
 
+  disconnect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
+      this, SLOT(_q_sourceRowsAboutToBeInserted(QModelIndex,int,int)));
+
   disconnect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
       this, SLOT(_q_sourceRowsInserted(QModelIndex,int,int)));
+
+  disconnect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+      this, SLOT(_q_sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
 
   disconnect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
       this, SLOT(_q_sourceRowsRemoved(QModelIndex,int,int)));
@@ -208,8 +238,14 @@ void KRecursiveFilterProxyModel::setSourceModel(QAbstractItemModel* model)
   disconnect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
       this, SLOT(sourceDataChanged(QModelIndex,QModelIndex)));
 
+  disconnect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
+      this, SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)));
+
   disconnect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
       this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
+
+  disconnect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+      this, SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
 
   disconnect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
       this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
@@ -220,15 +256,17 @@ void KRecursiveFilterProxyModel::setSourceModel(QAbstractItemModel* model)
   connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
       this, SLOT(sourceDataChanged(QModelIndex,QModelIndex)));
 
+  connect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
+      this, SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)));
+
   connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
       this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
 
+  connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+      this, SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
+
   connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
       this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-
-  d->insertSpy = new QSignalSpy(this, SIGNAL(rowsInserted(QModelIndex,int,int)));
-  d->removeSpy = new QSignalSpy(this, SIGNAL(rowsRemoved(QModelIndex,int,int)));
-  d->changeSpy = new QSignalSpy(this, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
 }
 
 #include "krecursivefilterproxymodel.moc"
