@@ -128,6 +128,8 @@ class SparqlBuilder
         }
         void addValueConstraint( const ValueConstraint &constraint ) { m_constraints.append( constraint ); }
 
+        bool isEmpty() const { return m_triples.isEmpty() && m_constraints.isEmpty(); }
+
       protected:
         QString toStringInternal() const;
 
@@ -147,7 +149,8 @@ class SparqlBuilder
         template <typename GraphPatternType>
         void addGraphPattern( const GraphPatternType &graph )
         {
-          m_graphPatterns.append( boost::shared_ptr<GraphPattern>( new GraphPatternType( graph ) ) );
+          if ( !graph.isEmpty() )
+            m_graphPatterns.append( boost::shared_ptr<GraphPattern>( new GraphPatternType( graph ) ) );
         }
 
         bool isEmpty() const { return m_graphPatterns.isEmpty(); }
