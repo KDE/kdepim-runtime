@@ -51,9 +51,8 @@ class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentB
   private Q_SLOTS:
     void onUserIdRequestJobFinished( KJob* );
     void onFoldersRequestJobFinished( KJob* );
-
-  private:
-
+    void onFolderCreateJobFinished( KJob* );
+    void onFolderDeleteJobFinished( KJob* );
 };
 
 #endif

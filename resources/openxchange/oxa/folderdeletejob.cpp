@@ -32,8 +32,8 @@
 
 using namespace OXA;
 
-FolderDeleteJob::FolderDeleteJob( const Folder &folder, QObject *parent )
-  : KJob( parent ), mFolder( folder )
+FolderDeleteJob::FolderDeleteJob( qlonglong objectId, const QString &lastModified, QObject *parent )
+  : KJob( parent ), mObjectId( objectId ), mLastModified( lastModified )
 {
 }
 
@@ -43,9 +43,9 @@ void FolderDeleteJob::start()
   QDomElement propertyupdate = DAVUtils::addDavElement( document, document, QLatin1String( "propertyupdate" ) );
   QDomElement set = DAVUtils::addDavElement( document, propertyupdate, QLatin1String( "set" ) );
   QDomElement prop = DAVUtils::addDavElement( document, set, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
+  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mObjectId ) );
   DAVUtils::addOxElement( document, prop, QLatin1String( "method" ), OXUtils::writeString( QLatin1String( "DELETE" ) ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "last_modified" ), OXUtils::writeString( mFolder.lastModified() ) );
+  DAVUtils::addOxElement( document, prop, QLatin1String( "last_modified" ), OXUtils::writeString( mLastModified ) );
 
   const QString path = QLatin1String( "/servlet/webdav.folders" );
 
@@ -65,16 +65,7 @@ void FolderDeleteJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   const QDomDocument &document = davJob->response();
-  qDebug() << document.toString();
-/*
-  QDomElement multistatus = document.documentElement();
-  QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
-  const QDomNodeList props = response.elementsByTagName( "prop" );
-  const QDomElement prop = props.at( 0 ).toElement();
-  mFolder = parseFolder( prop );
 
-  qDebug() << "Folder:" << mFolder.title();
-*/
   emitResult();
 }
 

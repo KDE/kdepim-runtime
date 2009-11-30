@@ -24,8 +24,6 @@
 
 #include <kjob.h>
 
-#include "folder.h"
-
 namespace OXA {
 
 class FolderDeleteJob : public KJob
@@ -33,7 +31,7 @@ class FolderDeleteJob : public KJob
   Q_OBJECT
 
   public:
-    FolderDeleteJob( const Folder &folder, QObject *parent = 0 );
+    FolderDeleteJob( qlonglong objectId, const QString &lastModified, QObject *parent = 0 );
 
     virtual void start();
 
@@ -41,7 +39,8 @@ class FolderDeleteJob : public KJob
     void davJobFinished( KJob* );
 
   private:
-    Folder mFolder;
+    qlonglong mObjectId;
+    QString mLastModified;
 };
 
 }

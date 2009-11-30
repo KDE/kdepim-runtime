@@ -54,6 +54,7 @@ void FolderCreateJob::start()
     case Folder::Calendar: module = QLatin1String( "calendar" ); break;
     case Folder::Contacts: module = QLatin1String( "contact" ); break;
     case Folder::Tasks: module = QLatin1String( "task" ); break;
+    default: break;
   }
   DAVUtils::addOxElement( document, prop, QLatin1String( "module" ), OXUtils::writeString( module ) );
 

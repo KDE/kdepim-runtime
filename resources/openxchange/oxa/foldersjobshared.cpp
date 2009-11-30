@@ -56,7 +56,7 @@ Folder OXA::parseFolder( const QDomElement &propElement )
       else if ( content == QLatin1String( "task" ) )
         folder.setModule( Folder::Tasks );
       else
-        Q_ASSERT( false );
+        folder.setModule( Folder::Unbound );
     } else if ( element.tagName() == QLatin1String( "type" ) ) {
       const QString content = OXUtils::readString( element.text() );
       if ( content == QLatin1String( "public" ) )

@@ -47,6 +47,7 @@ class Folder
 
     enum Module
     {
+      Unbound,
       Calendar,
       Contacts,
       Tasks
@@ -60,7 +61,8 @@ class Folder
           NoPermission = 0,
           FolderIsVisible = 2,
           CreateObjects = 4,
-          CreateSubfolders = 8
+          CreateSubfolders = 8,
+          AdminPermission = 128
         };
 
         enum ObjectReadPermission
@@ -68,7 +70,7 @@ class Folder
           NoReadPermission = 0,
           ReadOwnObjects = 2,
           ReadAllObjects = 4,
-          AdminReadPermission = 8
+          AdminReadPermission = 128
         };
 
         enum ObjectWritePermission
@@ -76,7 +78,7 @@ class Folder
           NoWritePermission = 0,
           WriteOwnObjects = 2,
           WriteAllObjects = 4,
-          AdminWritePermission = 8
+          AdminWritePermission = 128
         };
 
         enum ObjectDeletePermission
@@ -84,7 +86,7 @@ class Folder
           NoDeletePermission = 0,
           DeleteOwnObjects = 2,
           DeleteAllObjects = 4,
-          AdminDeletePermission = 8
+          AdminDeletePermission = 128
         };
 
         Permissions();
