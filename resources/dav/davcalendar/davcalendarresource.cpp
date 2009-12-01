@@ -68,6 +68,8 @@ davCalendarResource::davCalendarResource( const QString &id )
   
   QStringList mimeTypes;
   mimeTypes << "inode/directory";
+  mimeTypes << "text/calendar";
+  mimeTypes += mMimeVisitor->allMimeTypes();
   davCollectionRoot.setContentMimeTypes( mimeTypes );
   
   changeRecorder()->fetchCollection( true );
