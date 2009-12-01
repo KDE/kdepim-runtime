@@ -248,6 +248,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
   iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
   iface->setDisconnectedModeEnabled( disconnected );
+  iface->setAutomaticExpungeEnabled( config.readEntry("auto-expunge", true ) );
+
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
   //instance.reconfigure();
