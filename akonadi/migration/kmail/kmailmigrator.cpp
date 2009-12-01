@@ -160,7 +160,7 @@ bool KMailMigrator::migrateCurrentAccount()
   }
   else if ( type == "pop" ) {
     createAgentInstance( "akonadi_pop3_resource", this,
-                         SLOT( pop3AccountCreated( KJob * ) ) ); 
+                         SLOT( pop3AccountCreated( KJob * ) ) );
   }
   else if ( type == "maildir" ) {
     createAgentInstance( "akonadi_maildir_resource", this,
@@ -299,7 +299,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   iface->setIntervalCheckEnabled( config.readEntry( "check-exclude",false ) );
   iface->setIntervalCheckInterval( config.readEntry( "check-interval", 0 ) );
   iface->setAuthenticationMethod( config.readEntry( "auth" ));
-
+  iface->setPrecommand( config.readPathEntry( "precommand" ,QString() ) );
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 
   //instance.reconfigure();
