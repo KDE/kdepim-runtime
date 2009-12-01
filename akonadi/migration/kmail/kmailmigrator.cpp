@@ -240,7 +240,11 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
-  iface->setIntervalCheckTime( config.readEntry( "check-interval", 0 ) );
+  if ( config.readEntry( "check-exclude" ).toLower() == "false" )
+    iface->setIntervalCheckTime( config.readEntry( "check-interval", 0 ) );
+  else
+    iface->setIntervalCheckTime( -1 ); //Exclude
+
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
   iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
