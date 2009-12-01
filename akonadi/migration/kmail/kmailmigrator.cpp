@@ -149,9 +149,14 @@ bool KMailMigrator::migrateCurrentAccount()
   emit message( Info, i18n( "Trying to migrate '%1' to resource...", group.readEntry( "Name" ) ) );
 
   const QString type = group.readEntry( "Type" ).toLower();
-  if ( type == "imap" || type == "dimap" ) {
+  if ( type == "imap" ) {
     createAgentInstance( "akonadi_imap_resource", this,
                          SLOT( imapAccountCreated( KJob * ) ) );
+  }
+  else if ( type == "dimap" ) {
+    createAgentInstance( "akonadi_imap_resource", this,
+                         SLOT( imapDisconnectedAccountCreated( KJob * ) ) );
+
   }
   else if ( type == "pop" ) {
     /* createAgentInstance( "akonadi_pop3_resource", this,
@@ -173,6 +178,16 @@ bool KMailMigrator::migrateCurrentAccount()
   return true;
 }
 
+void KMailMigrator::imapDisconnectedAccountCreated( KJob * job )
+{
+  if ( job->error() ) {
+    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
+    return;
+  }
+  emit message( Info, i18n( "Created disconnected imap resource" ) );
+  migrateImapAccount( job, true );
+}
+
 void KMailMigrator::imapAccountCreated( KJob *job )
 {
   if ( job->error() ) {
@@ -180,7 +195,12 @@ void KMailMigrator::imapAccountCreated( KJob *job )
     return;
   }
   emit message( Info, i18n( "Created imap resource" ) );
+  migrateImapAccount( job, false );
+}
 
+
+void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
+{
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   const KConfigGroup config( mConfig, mCurrentAccount );
 
@@ -226,7 +246,7 @@ void KMailMigrator::imapAccountCreated( KJob *job )
   iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
   iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
   iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
-
+  iface->setDisconnectedModeEnabled( disconnected );
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
   //instance.reconfigure();
