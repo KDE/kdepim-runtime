@@ -33,14 +33,23 @@ ConfigDialog::ConfigDialog( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
+  setButtons( Ok | Cancel | User1 );
+  setButtonText( User1, i18n( "About..." ) );
+
+  setCaption( i18n( "Open-Xchange Configuration" ) );
+
   Ui::ConfigDialog ui;
   ui.setupUi( mainWidget() );
+
+  ui.kcfg_BaseUrl->setWhatsThis( i18n( "Enter the http or https URL to your Open-Xchange installation here." ) );
+  ui.kcfg_Username->setWhatsThis( i18n( "Enter the username of your Open-Xchange account here." ) );
+  ui.kcfg_Password->setWhatsThis( i18n( "Enter the password of your Open-Xchange account here." ) );
 
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
-  connect( ui.kurllabel_about, SIGNAL( leftClickedUrl() ), this, SLOT( showAboutDialog() ) );
   connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
+  connect( this, SIGNAL( user1Clicked() ), this, SLOT( showAboutDialog() ) );
 }
 
 void ConfigDialog::save()
