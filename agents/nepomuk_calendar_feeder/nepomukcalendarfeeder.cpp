@@ -44,6 +44,7 @@
 #include "participationstatus.h"
 #include "personcontact.h"
 #include "todo.h"
+#include "unionofalarmeventfreebusyjournaltodo.h"
 
 #include <QtCore/QTime>
 #include <QtCore/QTimer>
@@ -143,7 +144,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
       attendee.addPartstat( partStatus );
     }
 
-    event.addAttendee( attendee );
+    event.toUnionOfAlarmEventFreebusyJournalTodo().addAttendee( attendee );
   }
 }
 

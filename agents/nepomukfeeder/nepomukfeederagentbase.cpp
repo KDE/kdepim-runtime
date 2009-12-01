@@ -369,7 +369,7 @@ NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QSt
     contact.addEmailAddress( emailRes );
   }
   if ( !name.isEmpty() )
-    contact.addFullname( name );
+    contact.setFullname( name );
   return contact;
 }
 

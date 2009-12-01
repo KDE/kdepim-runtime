@@ -507,6 +507,7 @@
     <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/elements/1.1/title"/>
     <rdfs:domain rdf:resource="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <nrl:maxCardinality>1</nrl:maxCardinality>
   </rdf:Property>
   <rdf:Property rdf:about="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#imID">
     <rdfs:label>imID</rdfs:label>
