@@ -241,6 +241,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
+  iface->setIntervalCheckTime( config.readEntry( "check-interval", 0 ) );
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
   iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
@@ -295,6 +296,8 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     iface->setFilterOnServer( true );
     iface->setFilterCheckSize( config.readEntry( "filter-on-server" ).toUInt() );
   }
+  iface->setIntervalCheckEnabled( config.readEntry( "check-exclude",false ) );
+  iface->setIntervalCheckInterval( config.readEntry( "check-interval", 0 ) );
   iface->setAuthenticationMethod( config.readEntry( "auth" ));
 
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
