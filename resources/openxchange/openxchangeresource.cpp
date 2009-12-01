@@ -432,7 +432,11 @@ void OpenXchangeResource::collectionRemoved( const Akonadi::Collection &collecti
 {
   const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
 
-  OXA::FolderDeleteJob *job = new OXA::FolderDeleteJob( remoteIdentifier.objectId(), remoteIdentifier.lastModified(), this );
+  OXA::Folder folder;
+  folder.setObjectId( remoteIdentifier.objectId() );
+  folder.setLastModified( remoteIdentifier.lastModified() );
+
+  OXA::FolderDeleteJob *job = new OXA::FolderDeleteJob( folder, this );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderDeleteJobFinished( KJob* ) ) );
 
   job->start();
