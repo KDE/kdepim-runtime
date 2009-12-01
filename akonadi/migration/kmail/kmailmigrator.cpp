@@ -302,6 +302,8 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   iface->setPrecommand( config.readPathEntry( "precommand" ,QString() ) );
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 
+  //TODO port "Folder" to akonadi collection id
+
   //instance.reconfigure();
   migrationCompleted( instance );
 }
