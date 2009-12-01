@@ -51,7 +51,7 @@ class KMailMigrator : public KMigratorBase
   private slots:
     void imapAccountCreated( KJob *job );
     void imapDisconnectedAccountCreated( KJob *job );
-  //void pop3AccountCreated( KJob *job );
+    void pop3AccountCreated( KJob *job );
     void mboxAccountCreated( KJob *job );
     void maildirAccountCreated( KJob *job );
 

@@ -20,7 +20,7 @@
 #include "kmailmigrator.h"
 
 #include "imapsettings.h"
-//#include "pop3settings.h"
+#include "pop3settings.h"
 #include "mboxsettings.h"
 #include "maildirsettings.h"
 
@@ -159,9 +159,8 @@ bool KMailMigrator::migrateCurrentAccount()
 
   }
   else if ( type == "pop" ) {
-    /* createAgentInstance( "akonadi_pop3_resource", this,
-                         SLOT( pop3AccountCreated( KJob * ) ) ); */
-    return false;
+    createAgentInstance( "akonadi_pop3_resource", this,
+                         SLOT( pop3AccountCreated( KJob * ) ) ); 
   }
   else if ( type == "maildir" ) {
     createAgentInstance( "akonadi_maildir_resource", this,
@@ -256,7 +255,6 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   migrationCompleted( instance );
 }
 
-/*
 void KMailMigrator::pop3AccountCreated( KJob *job )
 {
   if ( job->error() ) {
@@ -307,7 +305,6 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   //instance.reconfigure();
   migrationCompleted( instance );
 }
-*/
 
 void KMailMigrator::mboxAccountCreated( KJob *job )
 {
