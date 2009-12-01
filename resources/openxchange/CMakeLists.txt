@@ -52,6 +52,8 @@ set( openxchangeresource_SRCS
   oxa/folder.cpp
   oxa/foldercreatejob.cpp
   oxa/folderdeletejob.cpp
+  oxa/foldermodifyjob.cpp
+  oxa/foldermovejob.cpp
   oxa/folderrequestjob.cpp
   oxa/foldersjobshared.cpp
   oxa/foldersrequestjob.cpp

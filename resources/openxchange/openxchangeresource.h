@@ -22,7 +22,7 @@
 
 #include <akonadi/resourcebase.h>
 
-class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
   Q_OBJECT
 
@@ -43,15 +43,22 @@ class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentB
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                            const Akonadi::Collection &collectionDestination );
+
 
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
+    virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
+                                  const Akonadi::Collection &collectionDestination );
 
   private Q_SLOTS:
     void onUserIdRequestJobFinished( KJob* );
     void onFoldersRequestJobFinished( KJob* );
     void onFolderCreateJobFinished( KJob* );
+    void onFolderModifyJobFinished( KJob* );
+    void onFolderMoveJobFinished( KJob* );
     void onFolderDeleteJobFinished( KJob* );
 };
 

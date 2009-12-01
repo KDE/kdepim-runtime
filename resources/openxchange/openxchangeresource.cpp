@@ -33,6 +33,8 @@
 #include <oxa/davmanager.h>
 #include <oxa/foldercreatejob.h>
 #include <oxa/folderdeletejob.h>
+#include <oxa/foldermodifyjob.h>
+#include <oxa/foldermovejob.h>
 #include <oxa/foldersrequestjob.h>
 #include <oxa/useridrequestjob.h>
 
@@ -193,6 +195,137 @@ void OpenXchangeResource::configure( WId windowId )
   }
 }
 
+void OpenXchangeResource::retrieveCollections()
+{
+  OXA::FoldersRequestJob *job = new OXA::FoldersRequestJob;
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFoldersRequestJobFinished( KJob* ) ) );
+  job->start();
+}
+
+void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
+{
+  Item::List items;
+
+  itemsRetrieved( items );
+}
+
+bool OpenXchangeResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
+{
+  cancelTask( i18n( "No items available" ) );
+  return false;
+}
+
+void OpenXchangeResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
+{
+  cancelTask( i18n( "Trying to write to a read-only directory" ) );
+  return;
+}
+
+void OpenXchangeResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
+{
+  cancelTask( i18n( "Trying to write to a read-only directory" ) );
+  return;
+}
+
+void OpenXchangeResource::itemRemoved( const Akonadi::Item &item )
+{
+  cancelTask( i18n( "Trying to write to a read-only directory" ) );
+  return;
+}
+
+void OpenXchangeResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                                     const Akonadi::Collection &collectionDestination )
+{
+  cancelTask( i18n( "Trying to write to a read-only directory" ) );
+  return;
+}
+
+void OpenXchangeResource::collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent )
+{
+  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( parent.remoteId() );
+
+  OXA::Folder folder;
+  folder.setTitle( collection.name() );
+  folder.setFolderId( parentRemoteIdentifier.objectId() );
+  folder.setType( OXA::Folder::Private );
+
+  // the folder 'inherits' the module type of its parent collection
+  folder.setModule( parentRemoteIdentifier.module() );
+
+  // fill permissions
+  OXA::Folder::Permissions permissions;
+  permissions.setFolderPermission( OXA::Folder::Permissions::CreateSubfolders );
+  permissions.setObjectReadPermission( OXA::Folder::Permissions::ReadOwnObjects );
+  permissions.setObjectWritePermission( OXA::Folder::Permissions::WriteOwnObjects );
+  permissions.setObjectDeletePermission( OXA::Folder::Permissions::DeleteOwnObjects );
+  permissions.setAdminFlag( true );
+
+  // assign permissions to user
+  OXA::Folder::UserPermissions userPermissions;
+  userPermissions.insert( Settings::self()->userId(), permissions );
+
+  // set user permissions of folder
+  folder.setUserPermissions( userPermissions );
+
+  OXA::FolderCreateJob *job = new OXA::FolderCreateJob( folder, this );
+  job->setProperty( "collection", QVariant::fromValue( collection ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderCreateJobFinished( KJob* ) ) );
+  job->start();
+}
+
+void OpenXchangeResource::collectionChanged( const Akonadi::Collection &collection )
+{
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( collection.parentCollection().remoteId() );
+
+  OXA::Folder folder;
+  folder.setObjectId( remoteIdentifier.objectId() );
+  folder.setFolderId( parentRemoteIdentifier.objectId() );
+  folder.setTitle( collection.name() );
+  folder.setLastModified( remoteIdentifier.lastModified() );
+
+  OXA::FolderModifyJob *job = new OXA::FolderModifyJob( folder, this );
+  job->setProperty( "collection", QVariant::fromValue( collection ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderModifyJobFinished( KJob* ) ) );
+}
+
+void OpenXchangeResource::collectionRemoved( const Akonadi::Collection &collection )
+{
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+
+  OXA::Folder folder;
+  folder.setObjectId( remoteIdentifier.objectId() );
+  folder.setLastModified( remoteIdentifier.lastModified() );
+
+  OXA::FolderDeleteJob *job = new OXA::FolderDeleteJob( folder, this );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderDeleteJobFinished( KJob* ) ) );
+
+  job->start();
+}
+
+void OpenXchangeResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
+                                           const Akonadi::Collection &collectionDestination )
+{
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( collectionSource.remoteId() );
+  const RemoteIdentifier newParentRemoteIdentifier = RemoteIdentifier::fromString( collectionDestination.remoteId() );
+
+  OXA::Folder folder;
+  folder.setObjectId( remoteIdentifier.objectId() );
+  folder.setFolderId( parentRemoteIdentifier.objectId() );
+
+  OXA::Folder destinationFolder;
+  destinationFolder.setObjectId( newParentRemoteIdentifier.objectId() );
+
+  OXA::FolderMoveJob *job = new OXA::FolderMoveJob( folder, destinationFolder, this );
+  job->setProperty( "collection", QVariant::fromValue( collection ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderMoveJobFinished( KJob* ) ) );
+
+  job->start();
+}
+
+//// job result slots
+
 void OpenXchangeResource::onUserIdRequestJobFinished( KJob *job )
 {
   if ( job->error() ) {
@@ -208,13 +341,6 @@ void OpenXchangeResource::onUserIdRequestJobFinished( KJob *job )
   // now we have the user id, so continue synchronization
   synchronize();
   emit configurationDialogAccepted();
-}
-
-void OpenXchangeResource::retrieveCollections()
-{
-  OXA::FoldersRequestJob *job = new OXA::FoldersRequestJob;
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFoldersRequestJobFinished( KJob* ) ) );
-  job->start();
 }
 
 void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
@@ -324,70 +450,6 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
   collectionsRetrieved( collections );
 }
 
-void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
-{
-  Item::List items;
-
-  itemsRetrieved( items );
-}
-
-bool OpenXchangeResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
-{
-  cancelTask( i18n( "No items available" ) );
-  return false;
-}
-
-void OpenXchangeResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
-{
-  cancelTask( i18n( "Trying to write to a read-only directory" ) );
-  return;
-}
-
-void OpenXchangeResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
-{
-  cancelTask( i18n( "Trying to write to a read-only directory" ) );
-  return;
-}
-
-void OpenXchangeResource::itemRemoved( const Akonadi::Item &item )
-{
-  cancelTask( i18n( "Trying to write to a read-only directory" ) );
-  return;
-}
-
-void OpenXchangeResource::collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent )
-{
-  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( parent.remoteId() );
-
-  OXA::Folder folder;
-  folder.setTitle( collection.name() );
-  folder.setFolderId( parentRemoteIdentifier.objectId() );
-  folder.setType( OXA::Folder::Private );
-
-  // the folder 'inherits' the module type of its parent collection
-  folder.setModule( parentRemoteIdentifier.module() );
-
-  // fill permissions
-  OXA::Folder::Permissions permissions;
-  permissions.setFolderPermission( OXA::Folder::Permissions::CreateSubfolders );
-  permissions.setObjectReadPermission( OXA::Folder::Permissions::ReadOwnObjects );
-  permissions.setObjectWritePermission( OXA::Folder::Permissions::WriteOwnObjects );
-  permissions.setObjectDeletePermission( OXA::Folder::Permissions::DeleteOwnObjects );
-  permissions.setAdminFlag( true );
-
-  // assign permissions to user
-  OXA::Folder::UserPermissions userPermissions;
-  userPermissions.insert( Settings::self()->userId(), permissions );
-
-  // set user permissions of folder
-  folder.setUserPermissions( userPermissions );
-
-  OXA::FolderCreateJob *job = new OXA::FolderCreateJob( folder, this );
-  job->setProperty( "collection", QVariant::fromValue( collection ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderCreateJobFinished( KJob* ) ) );
-  job->start();
-}
-
 void OpenXchangeResource::onFolderCreateJobFinished( KJob *job )
 {
   if ( job->error() ) {
@@ -422,24 +484,48 @@ void OpenXchangeResource::onFolderCreateJobFinished( KJob *job )
   changeCommitted( collection );
 }
 
-void OpenXchangeResource::collectionChanged( const Akonadi::Collection &collection )
+void OpenXchangeResource::onFolderModifyJobFinished( KJob *job )
 {
-  cancelTask( i18n( "Trying to write to a read-only directory" ) );
-  return;
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  OXA::FolderModifyJob *modifyJob = qobject_cast<OXA::FolderModifyJob*>( job );
+  Q_ASSERT( modifyJob );
+
+  const OXA::Folder folder = modifyJob->folder();
+
+  Collection collection = job->property( "collection" ).value<Collection>();
+
+  // update last_modified property
+  RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  remoteIdentifier.setLastModified( folder.lastModified() );
+  collection.setRemoteId( remoteIdentifier.toString() );
+
+  changeCommitted( collection );
 }
 
-void OpenXchangeResource::collectionRemoved( const Akonadi::Collection &collection )
+void OpenXchangeResource::onFolderMoveJobFinished( KJob *job )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
 
-  OXA::Folder folder;
-  folder.setObjectId( remoteIdentifier.objectId() );
-  folder.setLastModified( remoteIdentifier.lastModified() );
+  OXA::FolderMoveJob *moveJob = qobject_cast<OXA::FolderMoveJob*>( job );
+  Q_ASSERT( moveJob );
 
-  OXA::FolderDeleteJob *job = new OXA::FolderDeleteJob( folder, this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderDeleteJobFinished( KJob* ) ) );
+  const OXA::Folder folder = moveJob->folder();
 
-  job->start();
+  Collection collection = job->property( "collection" ).value<Collection>();
+
+  // update last_modified property
+  RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  remoteIdentifier.setLastModified( folder.lastModified() );
+  collection.setRemoteId( remoteIdentifier.toString() );
+
+  changeCommitted( collection );
 }
 
 void OpenXchangeResource::onFolderDeleteJobFinished( KJob *job )
