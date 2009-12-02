@@ -67,9 +67,8 @@ davCalendarResource::davCalendarResource( const QString &id )
   davCollectionRoot.setCachePolicy( cachePolicy );
   
   QStringList mimeTypes;
-  mimeTypes << "inode/directory";
+  mimeTypes << Collection::mimeType();
   mimeTypes << "text/calendar";
-  mimeTypes += mMimeVisitor->allMimeTypes();
   davCollectionRoot.setContentMimeTypes( mimeTypes );
   
   changeRecorder()->fetchCollection( true );
@@ -105,9 +104,9 @@ void davCalendarResource::retrieveCollections()
   
   emit status( Running, i18n( "Fetching collections" ) );
   
-  Akonadi::Collection::List tmp;
-  tmp << davCollectionRoot;
-  collectionsRetrievedIncremental( tmp, Akonadi::Collection::List() );
+//   Akonadi::Collection::List tmp;
+//   tmp << davCollectionRoot;
+//   collectionsRetrievedIncremental( tmp, Akonadi::Collection::List() );
   
   KUrl url = Settings::self()->remoteUrl();
   url.setUser( Settings::self()->username() );
@@ -296,21 +295,27 @@ void davCalendarResource::accessorRetrievedCollection( const QString &url, const
   kDebug() << "Accessor retrieved a collection named " << name << " at " << url;
   
   Akonadi::Collection c;
-  c.setParentCollection( davCollectionRoot );
+  c.setParentCollection( Collection::root() );
   c.setRemoteId( url );
   if( name.isEmpty() )
     c.setName( this->name() );
   else
     c.setName( name );
   
-  
   QStringList mimeTypes;
   mimeTypes << "text/calendar";
   mimeTypes += mMimeVisitor->allMimeTypes();
   c.setContentMimeTypes( mimeTypes );
   
+  int refreshInterval = Settings::self()->refreshInterval();
+  if( refreshInterval == 0 )
+    refreshInterval = -1;
+  
   Akonadi::CachePolicy cachePolicy;
-  cachePolicy.setInheritFromParent( true );
+  cachePolicy.setInheritFromParent( false );
+  cachePolicy.setSyncOnDemand( true );
+  cachePolicy.setCacheTimeout( -1 );
+  cachePolicy.setIntervalCheckTime( refreshInterval );
   c.setCachePolicy( cachePolicy );
   
   Akonadi::Collection::List tmp;
