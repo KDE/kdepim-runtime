@@ -16,10 +16,10 @@ soprano_add_ontology(nie_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/nco.rdfs "NCO" "Vocabu
 soprano_add_ontology(nie_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/nmo.rdfs "NMO" "Vocabulary" "rdfxml")
 soprano_add_ontology(nie_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/nrss.rdfs "NRSS" "Vocabulary" "rdfxml")
 
-configure_file(nrss.desktop.cmake ${CMAKE_CURRENT_BINARY_DIR}/nrss.desktop)
-install(FILES nrss.rdfs ${CMAKE_CURRENT_BINARY_DIR}/nrss.desktop
-        DESTINATION ${DATA_INSTALL_DIR}/nepomuk/ontologies
-)
+#configure_file(nrss.desktop.cmake ${CMAKE_CURRENT_BINARY_DIR}/nrss.desktop)
+#install(FILES nrss.rdfs ${CMAKE_CURRENT_BINARY_DIR}/nrss.desktop
+#        DESTINATION ${DATA_INSTALL_DIR}/nepomuk/ontologies
+#)
 
 kde4_add_library(niefast STATIC ${nie_SRCS})
 target_link_libraries(niefast ${QT_QTCORE_LIBRARY} ${NEPOMUK_LIBRARIES})
