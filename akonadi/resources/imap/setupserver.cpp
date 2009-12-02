@@ -80,6 +80,11 @@ SetupServer::SetupServer( WId parent )
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
   m_ui->imapServer->setFocus();
+
+  m_ui->folderRequester->setMimeTypeFilter(
+    QStringList() << QLatin1String( "message/rfc822" ) );
+
+
   connect( m_ui->testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
 
   connect( m_ui->imapServer, SIGNAL( textChanged( const QString & ) ),
