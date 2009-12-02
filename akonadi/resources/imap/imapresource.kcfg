@@ -43,6 +43,10 @@
              triggered manually through the D-Bus interface.</label>
       <default>true</default>
     </entry>
+    <entry name="TrashCollection" type="LongLong">
+       <label>Define which folder is used for trash</label>
+       <default>-1</default>
+    </entry>
   </group>
   <group name="idle">
     <entry name="IdleRidPath" type="StringList">

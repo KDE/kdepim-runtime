@@ -34,6 +34,10 @@
 #include <mailtransport/transport.h>
 #include <mailtransport/servertest.h>
 
+#include <akonadi/collectionfetchjob.h>
+#include <akonadi/kmime/specialmailcollections.h>
+#include <akonadi/kmime/specialmailcollectionsrequestjob.h>
+
 #include <kemailsettings.h>
 #include <klocale.h>
 #include <kpushbutton.h>
@@ -134,6 +138,8 @@ void SetupServer::applySettings()
   Settings::self()->setSieveAlternateUrl( m_ui->alternateURL->text() );
   Settings::self()->setSieveVacationFilename( m_vacationFileName );
 
+  Settings::self()->setTrashCollection( m_ui->folderRequester->collection().id() );
+
   Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
 
   Settings::self()->writeConfig();
@@ -185,6 +191,21 @@ void SetupServer::readSettings()
   m_ui->portSpin->setValue( Settings::self()->sievePort() );
   m_ui->alternateURL->setText( Settings::self()->sieveAlternateUrl() );
   m_vacationFileName = Settings::self()->sieveVacationFilename();
+
+
+  Akonadi::Collection trashCollection( Settings::self()->trashCollection() );
+  if ( trashCollection.isValid() ) {
+    Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob( trashCollection,Akonadi::CollectionFetchJob::Base,this );
+    connect( fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
+             this, SLOT(targetCollectionReceived(Akonadi::Collection::List)) );
+  }
+  else {
+    Akonadi::SpecialMailCollectionsRequestJob *requestJob = new Akonadi::SpecialMailCollectionsRequestJob( this );
+    connect ( requestJob, SIGNAL(result(KJob*)),
+              this, SLOT(localFolderRequestJobFinished(KJob*)) );
+    requestJob->requestDefaultCollection( Akonadi::SpecialMailCollections::Trash );
+    requestJob->start();
+  }
 
   m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
 
@@ -396,5 +417,22 @@ void SetupServer::slotManageSubscriptions()
 
   m_ui->subscriptionEnabled->setChecked( account.isSubscriptionEnabled() );
 }
+
+
+void SetupServer::targetCollectionReceived( Akonadi::Collection::List collections )
+{
+  m_ui->folderRequester->setCollection( collections.first() );
+}
+
+void SetupServer::localFolderRequestJobFinished( KJob *job )
+{
+  if ( !job->error() ) {
+    Akonadi::Collection targetCollection = Akonadi::SpecialMailCollections::self()->defaultCollection( Akonadi::SpecialMailCollections::Trash );
+    Q_ASSERT( targetCollection.isValid() );
+    m_ui->folderRequester->setCollection( targetCollection );
+  }
+}
+
+
 
 #include "setupserver.moc"

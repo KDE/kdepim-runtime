@@ -326,6 +326,24 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Trash folder:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Akonadi::CollectionRequester" name="folderRequester">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -430,6 +448,12 @@ p, li { white-space: pre-wrap; }
    <class>KIntNumInput</class>
    <extends>QWidget</extends>
    <header>knuminput.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Akonadi::CollectionRequester</class>
+   <extends>QFrame</extends>
+   <header>Akonadi/CollectionRequester</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -22,6 +22,8 @@
 
 #include <klineedit.h>
 #include <kdialog.h>
+#include <akonadi/collection.h>
+#include <KJob>
 
 class QProgressBar;
 class QButtonGroup;
@@ -86,6 +88,8 @@ private slots:
   void slotSafetyChanged();
   void slotManageSubscriptions();
   void slotEnableWidgets();
+  void targetCollectionReceived( Akonadi::Collection::List collections );
+  void localFolderRequestJobFinished( KJob *job );
 };
 
 #endif
