@@ -873,11 +873,58 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
   }
 }
 
-void ImapResource::onHeadersFetchDone( KJob * /*job*/ )
+void ImapResource::onHeadersFetchDone( KJob *job )
+{
+  if ( job->property( "nonIncremental" ).toBool() ) {
+    itemsRetrievalDone();
+  } else {
+
+    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( job );
+    KIMAP::ImapSet alreadyFetched = fetch->sequenceSet();
+
+    KIMAP::FetchJob::FetchScope scope;
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+
+    fetch = new KIMAP::FetchJob( m_account->mainSession() );
+    fetch->setSequenceSet( KIMAP::ImapSet( 1, alreadyFetched.intervals().first().begin()-1 ) );
+    fetch->setScope( scope );
+    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
+             this, SLOT( onFlagsReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                          QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+    connect( fetch, SIGNAL( result( KJob* ) ),
+             this, SLOT( onFlagsFetchDone( KJob* ) ) );
+    fetch->start();
+  }
+}
+
+void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+                                    const QMap<qint64, qint64> &sizes,
+                                    const QMap<qint64, KIMAP::MessageFlags> &flags,
+                                    const QMap<qint64, KIMAP::MessagePtr> &messages )
+{
+  Q_UNUSED( mailBox );
+
+  Item::List changedItems;
+
+  foreach ( qint64 number, uids.keys() ) {
+    Akonadi::Item i;
+    i.setRemoteId( QString::number( uids[number] ) );
+    i.setMimeType( "message/rfc822" );
+    i.setFlags( Akonadi::Item::Flags::fromList( flags[number] ) );
+
+    kDebug(5327) << "Flags: " << i.flags();
+    changedItems << i;
+  }
+
+  itemsRetrievedIncremental( changedItems, Item::List() );
+}
+
+void ImapResource::onFlagsFetchDone( KJob * /*job*/ )
 {
   itemsRetrievalDone();
 }
-
 
 // ----------------------------------------------------------------------------------
 
@@ -1576,6 +1623,7 @@ void ImapResource::onSelectDone( KJob *job )
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->setProperty( "nonIncremental", true );
     fetch->start();
     return;
   }
@@ -1651,8 +1699,23 @@ void ImapResource::onSelectDone( KJob *job )
     return;
   }
 
-  kDebug(5327) << "All fine, nothing to do";
-  itemsRetrievalDone();
+  kDebug(5327) << "All fine, asking for all message flags looking for changes";
+
+  setItemStreamingEnabled( true );
+
+  scope.parts.clear();
+  scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+
+  KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->mainSession() );
+  fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
+  fetch->setScope( scope );
+  connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                           QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
+           this, SLOT( onFlagsReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                        QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+  connect( fetch, SIGNAL( result( KJob* ) ),
+           this, SLOT( onFlagsFetchDone( KJob* ) ) );
+  fetch->start();
 }
 
 
