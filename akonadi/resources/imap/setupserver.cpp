@@ -134,6 +134,8 @@ void SetupServer::applySettings()
   Settings::self()->setSieveAlternateUrl( m_ui->alternateURL->text() );
   Settings::self()->setSieveVacationFilename( m_vacationFileName );
 
+  Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
+
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 }
@@ -183,6 +185,9 @@ void SetupServer::readSettings()
   m_ui->portSpin->setValue( Settings::self()->sievePort() );
   m_ui->alternateURL->setText( Settings::self()->sieveAlternateUrl() );
   m_vacationFileName = Settings::self()->sieveVacationFilename();
+
+  m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
+
   if ( m_vacationFileName.isEmpty() )
     m_vacationFileName = "kmail-vacation.siv";
 
