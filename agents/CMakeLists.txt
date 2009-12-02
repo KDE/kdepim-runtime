@@ -19,6 +19,7 @@ if( Nepomuk_FOUND AND STRIGI_FOUND )
       ${STRIGI_STREAMANALYZER_LIBRARY}
       ${STRIGI_STREAMS_LIBRARY}
     )
+    include( SopranoAddOntology )
     add_subdirectory( ontologies )
     add_subdirectory( nepomukfeeder )
     add_subdirectory( nepomuk_contact_feeder )
