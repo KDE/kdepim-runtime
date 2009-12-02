@@ -83,7 +83,7 @@ SetupServer::SetupServer( WId parent )
 
   m_ui->folderRequester->setMimeTypeFilter(
     QStringList() << QLatin1String( "message/rfc822" ) );
-
+  m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::AllRights );
 
   connect( m_ui->testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
 
