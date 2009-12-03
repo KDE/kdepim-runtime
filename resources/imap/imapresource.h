@@ -97,6 +97,10 @@ private Q_SLOTS:
                           const QMap<qint64, qint64> &sizes, const QMap<qint64, KIMAP::MessageFlags> &flags,
                           const QMap<qint64, KIMAP::MessagePtr> &messages );
   void onHeadersFetchDone( KJob *job );
+  void onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+                        const QMap<qint64, qint64> &sizes, const QMap<qint64, KIMAP::MessageFlags> &flags,
+                        const QMap<qint64, KIMAP::MessagePtr> &messages );
+  void onFlagsFetchDone( KJob *job );
   void onMessagesReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
                            const QMap<qint64, KIMAP::MessagePtr> &messages );
   void onContentFetchDone( KJob *job );

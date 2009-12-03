@@ -183,7 +183,7 @@ void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64
 
   Item i = fetch->property( "akonadiItem" ).value<Item>();
 
-  kDebug() << "MESSAGE from Imap server" << i.remoteId();
+  kDebug(5327) << "MESSAGE from Imap server" << i.remoteId();
   Q_ASSERT( i.isValid() );
 
   KIMAP::MessagePtr message = messages[messages.keys().first()];
@@ -191,8 +191,8 @@ void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64
   i.setMimeType( "message/rfc822" );
   i.setPayload( KMime::Message::Ptr( message ) );
 
-  kDebug() << "Has Payload: " << i.hasPayload();
-  kDebug() << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
+  kDebug(5327) << "Has Payload: " << i.hasPayload();
+  kDebug(5327) << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
   itemRetrieved( i );
 }
@@ -296,7 +296,7 @@ void ImapResource::itemAdded( const Item &item, const Collection &collection )
 
   const QString mailBox = mailBoxForCollection( collection );
 
-  kDebug() << "Got notification about item added for local id " << item.id() << " and remote id " << item.remoteId();
+  kDebug(5327) << "Got notification about item added for local id " << item.id() << " and remote id " << item.remoteId();
 
   // save message to the server.
   KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
@@ -326,7 +326,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
   Q_ASSERT( uid > 0 );
 
   const QString remoteId =  QString::number( uid );
-  kDebug() << "Setting remote ID to " << remoteId << " for item with local id " << item.id();
+  kDebug(5327) << "Setting remote ID to " << remoteId << " for item with local id " << item.id();
   item.setRemoteId( remoteId );
 
   changeCommitted( item );
@@ -372,7 +372,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
 
 void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts )
 {
-  kDebug() << item.remoteId() << parts;
+  kDebug(5327) << item.remoteId() << parts;
 
   if ( !isSessionAvailable() ) {
     kDebug() << "Defering this request. Probably there is no connection.";
@@ -597,7 +597,7 @@ Q_DECLARE_METATYPE( StringCollectionMap )
 void ImapResource::retrieveCollections()
 {
   if ( !isSessionAvailable() ) {
-    kDebug() << "Ignoring this request. Probably there is no connection.";
+    kDebug(5327) << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
     reconnect();
     return;
@@ -801,13 +801,13 @@ void ImapResource::retrieveItems( const Collection &col )
     return;
   }
 
-  kDebug( ) << col.remoteId();
+  kDebug(5327) << col.remoteId();
 
   // Prevent fetching items from noselect folders.
   if ( col.hasAttribute( "noselect" ) ) {
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( col.attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
-      kDebug() << "No Select folder";
+      kDebug(5327) << "No Select folder";
       itemsRetrievalDone();
       return;
     }
@@ -833,7 +833,7 @@ void ImapResource::retrieveItems( const Collection &col )
 
 void ImapResource::triggerExpunge( const QString &mailBox )
 {
-  kDebug() << mailBox;
+  kDebug(5327) << mailBox;
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->mainSession() );
   select->setMailBox( mailBox );
@@ -862,7 +862,7 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
     foreach( const QByteArray &flag, flags[number] ) {
       i.setFlag( flag );
     }
-    kDebug() << "Flags: " << i.flags();
+    kDebug(5327) << "Flags: " << i.flags();
     addedItems << i;
   }
 
@@ -873,11 +873,58 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
   }
 }
 
-void ImapResource::onHeadersFetchDone( KJob * /*job*/ )
+void ImapResource::onHeadersFetchDone( KJob *job )
+{
+  if ( job->property( "nonIncremental" ).toBool() ) {
+    itemsRetrievalDone();
+  } else {
+
+    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( job );
+    KIMAP::ImapSet alreadyFetched = fetch->sequenceSet();
+
+    KIMAP::FetchJob::FetchScope scope;
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+
+    fetch = new KIMAP::FetchJob( m_account->mainSession() );
+    fetch->setSequenceSet( KIMAP::ImapSet( 1, alreadyFetched.intervals().first().begin()-1 ) );
+    fetch->setScope( scope );
+    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
+             this, SLOT( onFlagsReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                          QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+    connect( fetch, SIGNAL( result( KJob* ) ),
+             this, SLOT( onFlagsFetchDone( KJob* ) ) );
+    fetch->start();
+  }
+}
+
+void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+                                    const QMap<qint64, qint64> &sizes,
+                                    const QMap<qint64, KIMAP::MessageFlags> &flags,
+                                    const QMap<qint64, KIMAP::MessagePtr> &messages )
+{
+  Q_UNUSED( mailBox );
+
+  Item::List changedItems;
+
+  foreach ( qint64 number, uids.keys() ) {
+    Akonadi::Item i;
+    i.setRemoteId( QString::number( uids[number] ) );
+    i.setMimeType( "message/rfc822" );
+    i.setFlags( Akonadi::Item::Flags::fromList( flags[number] ) );
+
+    kDebug(5327) << "Flags: " << i.flags();
+    changedItems << i;
+  }
+
+  itemsRetrievedIncremental( changedItems, Item::List() );
+}
+
+void ImapResource::onFlagsFetchDone( KJob * /*job*/ )
 {
   itemsRetrievalDone();
 }
-
 
 // ----------------------------------------------------------------------------------
 
@@ -900,7 +947,7 @@ void ImapResource::collectionAdded( const Collection & collection, const Collect
     newMailBox += parent.remoteId().at( 0 ); // separator for non-toplevel mailboxes
   newMailBox += collection.name();
 
-  kDebug( ) << "New folder: " << newMailBox;
+  kDebug(5327) << "New folder: " << newMailBox;
 
   Collection c = collection;
   c.setRemoteId( parent.remoteId().at( 0 ) + collection.name() );
@@ -949,7 +996,7 @@ void ImapResource::collectionChanged( const Collection &collection, const QSet<Q
     encodedParts << QString::fromUtf8( part );
   }
 
-  kDebug() << "parts:" << encodedParts;
+  kDebug(5327) << "parts:" << encodedParts;
 
   triggerNextCollectionChangeJob( collection, encodedParts );
 }
@@ -1038,8 +1085,8 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
       imapRights&= ~KIMAP::Acl::Delete;
     }
 
-    kDebug() << "imapRights:" << imapRights
-             << "newRights:" << newRights;
+    kDebug(5327) << "imapRights:" << imapRights
+                 << "newRights:" << newRights;
 
     KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
     job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
@@ -1061,7 +1108,7 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
     KIMAP::SetMetaDataJob *job = 0;
 
     QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-    kDebug() << "All annotations: " << annotations;
+    kDebug(5327) << "All annotations: " << annotations;
     foreach ( const QByteArray &entry, annotations.keys() ) {
       job = new KIMAP::SetMetaDataJob( m_account->mainSession() );
       if ( m_account->capabilities().contains( "METADATA" ) ) {
@@ -1078,7 +1125,7 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
       job->setMailBox( mailBoxForCollection( collection ) );
       job->setEntry( entry );
       job->addMetaData( attribute, annotations[entry] );
-      kDebug() << "Job got entry:" << entry << " attribute:" << attribute << "value:" << annotations[entry];
+      kDebug(5327) << "Job got entry:" << entry << " attribute:" << attribute << "value:" << annotations[entry];
 
       job->start();
     }
@@ -1127,7 +1174,7 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
   if ( !job->error() ) {
     triggerNextCollectionChangeJob( collection, parts );
   } else {
-    kDebug() << "Failed to rename the folder, resetting it in akonadi again";
+    kDebug(5327) << "Failed to rename the folder, resetting it in akonadi again";
     const QString prevRid = job->property( PREVIOUS_REMOTEID ).toString();
     Q_ASSERT( !prevRid.isEmpty() );
     collection.setName( prevRid.mid( 1 ) );
@@ -1188,7 +1235,7 @@ void ImapResource::onDeleteMailBoxDone( KJob *job )
   changeProcessed();
 
     if ( job->error() ) {
-        kDebug() << "Failed to delete the folder, resync the folder tree";
+        kDebug(5327) << "Failed to delete the folder, resync the folder tree";
         emit warning( i18n( "Failed to delete the folder, restoring folder list." ) );
         synchronizeCollectionTree();
     }
@@ -1370,9 +1417,9 @@ void ImapResource::onRightsReceived( KJob *job )
     newRights|= Collection::CanDeleteCollection;
   }
 
-  kDebug() << "imapRights:" << imapRights
-           << "newRights:" << newRights
-           << "oldRights:" << collection.rights();
+  kDebug(5327) << "imapRights:" << imapRights
+               << "newRights:" << newRights
+               << "oldRights:" << collection.rights();
 
   if ( newRights != collection.rights() ) {
     collection.setRights( newRights );
@@ -1562,8 +1609,8 @@ void ImapResource::onSelectDone( KJob *job )
   // retrieve all.
   if ( oldUidValidity != uidValidity && !firstTime
     && oldUidValidity != 0 ) {
-    kDebug() << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-             << uidValidity <<") refetching "<< mailBox;
+    kDebug(5327) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
+                 << uidValidity <<") refetching "<< mailBox;
 
     setItemStreamingEnabled( true );
 
@@ -1576,6 +1623,7 @@ void ImapResource::onSelectDone( KJob *job )
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    fetch->setProperty( "nonIncremental", true );
     fetch->start();
     return;
   }
@@ -1590,12 +1638,12 @@ void ImapResource::onSelectDone( KJob *job )
     }
   }
 
-  kDebug() << "integrity: " << mailBox << " should be: " << messageCount << " current: " << realMessageCount;
+  kDebug(5327) << "integrity: " << mailBox << " should be: " << messageCount << " current: " << realMessageCount;
 
   if ( messageCount > realMessageCount ) {
     // The amount on the server is bigger than that we have in the cache
     // that probably means that there is new mail. Fetch missing.
-    kDebug() << "Fetch missing: " << messageCount << " But: " << realMessageCount;
+    kDebug(5327) << "Fetch missing: " << messageCount << " But: " << realMessageCount;
 
     setItemStreamingEnabled( true );
 
@@ -1613,7 +1661,7 @@ void ImapResource::onSelectDone( KJob *job )
   } else if ( messageCount != realMessageCount ) {
     // The amount on the server does not match the amount in the cache.
     // that means we need reget the cache completely.
-    kDebug() << "O OH: " << messageCount << " But: " << realMessageCount;
+    kDebug(5327) << "O OH: " << messageCount << " But: " << realMessageCount;
 
     setItemStreamingEnabled( true );
 
@@ -1633,7 +1681,7 @@ void ImapResource::onSelectDone( KJob *job )
            && oldNextUid != 0 && !firstTime ) {
     // amount is right but uidnext is different.... something happened
     // behind our back...
-    kDebug() << "UIDNEXT check failed, refetching mailbox";
+    kDebug(5327) << "UIDNEXT check failed, refetching mailbox";
 
     setItemStreamingEnabled( true );
 
@@ -1651,8 +1699,23 @@ void ImapResource::onSelectDone( KJob *job )
     return;
   }
 
-  kDebug() << "All fine, nothing to do";
-  itemsRetrievalDone();
+  kDebug(5327) << "All fine, asking for all message flags looking for changes";
+
+  setItemStreamingEnabled( true );
+
+  scope.parts.clear();
+  scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+
+  KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->mainSession() );
+  fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
+  fetch->setScope( scope );
+  connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                           QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
+           this, SLOT( onFlagsReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
+                                        QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+  connect( fetch, SIGNAL( result( KJob* ) ),
+           this, SLOT( onFlagsFetchDone( KJob* ) ) );
+  fetch->start();
 }
 
 
