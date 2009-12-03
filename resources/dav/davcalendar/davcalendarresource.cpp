@@ -51,9 +51,9 @@ davCalendarResource::davCalendarResource( const QString &id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
-  davCollectionRoot.setParentCollection( Akonadi::Collection::root() );
-  davCollectionRoot.setName( name() );
-  davCollectionRoot.setRemoteId( "davcalendar_resource" );
+//   davCollectionRoot.setParentCollection( Akonadi::Collection::root() );
+//   davCollectionRoot.setName( name() );
+//   davCollectionRoot.setRemoteId( "davcalendar_resource" );
   
   int refreshInterval = Settings::self()->refreshInterval();
   if( refreshInterval == 0 )
@@ -64,12 +64,12 @@ davCalendarResource::davCalendarResource( const QString &id )
   cachePolicy.setSyncOnDemand( true );
   cachePolicy.setCacheTimeout( -1 );
   cachePolicy.setIntervalCheckTime( refreshInterval );
-  davCollectionRoot.setCachePolicy( cachePolicy );
+//   davCollectionRoot.setCachePolicy( cachePolicy );
   
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
   mimeTypes << "text/calendar";
-  davCollectionRoot.setContentMimeTypes( mimeTypes );
+//   davCollectionRoot.setContentMimeTypes( mimeTypes );
   
   changeRecorder()->fetchCollection( true );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
@@ -165,11 +165,11 @@ void davCalendarResource::configure( WId windowId )
   int newICT = Settings::self()->refreshInterval();
   if( newICT == 0 )
     newICT = -1;
-  if( newICT != davCollectionRoot.cachePolicy().intervalCheckTime() ) {
-    Akonadi::CachePolicy cachePolicy = davCollectionRoot.cachePolicy();
-    cachePolicy.setIntervalCheckTime( newICT );
-    davCollectionRoot.setCachePolicy( cachePolicy );
-  }
+//   if( newICT != davCollectionRoot.cachePolicy().intervalCheckTime() ) {
+//     Akonadi::CachePolicy cachePolicy = davCollectionRoot.cachePolicy();
+//     cachePolicy.setIntervalCheckTime( newICT );
+//     davCollectionRoot.setCachePolicy( cachePolicy );
+//   }
   
   if( Settings::self()->authenticationRequired() &&
       !Settings::self()->username().isEmpty() &&

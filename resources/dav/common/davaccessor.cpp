@@ -117,7 +117,7 @@ void davAccessor::removeItem( const KUrl &url )
 {
   QString etag = etagsCache.value( url.url() );
   
-  kDebug() << "Requesting removal of item at " << url.url() << " with etag " << etag;
+  kDebug() << "Requesting removal of item at " << url.prettyUrl() << " with etag " << etag;
   
   if( etag.isEmpty() )
     emit( accessorError( i18n( "No item on the remote server for URL %1", url.url() ), true ) );
