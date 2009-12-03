@@ -21,10 +21,13 @@
 
 #include "objectutils.h"
 
+#include "davutils.h"
 #include "oxutils.h"
 
 #include <kcal/event.h>
 #include <kcal/todo.h>
+
+#include <QtXml/QDomElement>
 
 using namespace OXA;
 
@@ -236,3 +239,40 @@ Object OXA::ObjectUtils::parseObject( const QDomElement &propElement, Object::Ty
   return object;
 }
 
+static void addContactElements( QDomElement &propElement, const Object &object )
+{
+}
+
+static void addEventElements( QDomElement &propElement, const Object &object )
+{
+}
+
+static void addTaskElements( QDomElement &propElement, const Object &object )
+{
+}
+
+void OXA::ObjectUtils::addObjectElements( QDomDocument &document, QDomElement &propElement, const Object &object )
+{
+  if ( object.folderId() != -1 )
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "folder_id" ), OXUtils::writeNumber( object.folderId() ) );
+  if ( !object.lastModified().isEmpty() )
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "last_modified" ), OXUtils::writeString( object.lastModified() ) );
+
+  switch ( object.type() ) {
+    case Object::Contact: addContactElements( propElement, object ); break;
+    case Object::Event: addEventElements( propElement, object ); break;
+    case Object::Task: addTaskElements( propElement, object ); break;
+  }
+}
+
+QString OXA::ObjectUtils::davPath( const Object &object )
+{
+  switch ( object.type() ) {
+    case Object::Contact: return QLatin1String( "/servlet/webdav.contacts" ); break;
+    case Object::Event: return QLatin1String( "/servlet/webdav.calendar" ); break;
+    case Object::Task: return QLatin1String( "/servlet/webdav.tasks" ); break;
+  }
+
+  Q_ASSERT(false);
+  return QString();
+}

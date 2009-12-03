@@ -58,6 +58,11 @@ set( openxchangeresource_SRCS
   oxa/foldersrequestjob.cpp
   oxa/folderutils.cpp
   oxa/object.cpp
+  oxa/objectcreatejob.cpp
+  oxa/objectdeletejob.cpp
+  oxa/objectmovejob.cpp
+  oxa/objectrequestjob.cpp
+  oxa/objectsrequestjob.cpp
   oxa/objectutils.cpp
   oxa/oxutils.cpp
   oxa/useridrequestjob.cpp

@@ -84,6 +84,7 @@ bool Folder::Permissions::adminFlag() const
 
 
 Folder::Folder()
+  : mObjectId( -1 ), mFolderId( -1 )
 {
 }
 

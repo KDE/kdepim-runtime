@@ -54,6 +54,7 @@ class Object
     void setLastModified( const QString &timeStamp );
     QString lastModified() const;
 
+    void setType( Type type );
     Type type() const;
 
     void setContact( const KABC::Addressee &contact );

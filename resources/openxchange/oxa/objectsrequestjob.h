@@ -19,31 +19,34 @@
     02110-1301, USA.
 */
 
-#ifndef OXA_FOLDERREQUESTJOB_H
-#define OXA_FOLDERREQUESTJOB_H
+#ifndef OXA_OBJECTSREQUESTJOB_H
+#define OXA_OBJECTSREQUESTJOB_H
 
 #include <kjob.h>
 
 #include "folder.h"
+#include "object.h"
 
 namespace OXA {
 
-class FolderRequestJob : public KJob
+class ObjectsRequestJob : public KJob
 {
   Q_OBJECT
 
   public:
-    FolderRequestJob( const Folder &folder, QObject *parent = 0 );
+    ObjectsRequestJob( const Folder &folder, QObject *parent = 0 );
 
     virtual void start();
 
-    Folder folder() const;
+    Object::List objects() const;
 
   private Q_SLOTS:
     void davJobFinished( KJob* );
 
   private:
     Folder mFolder;
+    Object::List mObjects;
+    Object::Type mObjectsType;
 };
 
 }

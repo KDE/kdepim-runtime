@@ -24,13 +24,17 @@
 
 #include "object.h"
 
-#include <QtXml/QDomElement>
+class QDomDocument;
+class QDomElement;
 
 namespace OXA {
 
 namespace ObjectUtils
 {
   Object parseObject( const QDomElement &propElement, Object::Type type );
+  void addObjectElements( QDomDocument &document, QDomElement &propElement, const Object &object );
+
+  QString davPath( const Object &object );
 }
 
 }

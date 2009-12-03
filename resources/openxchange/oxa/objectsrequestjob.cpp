@@ -19,11 +19,11 @@
     02110-1301, USA.
 */
 
-#include "folderrequestjob.h"
+#include "objectsrequestjob.h"
 
 #include "davmanager.h"
 #include "davutils.h"
-#include "folderutils.h"
+#include "objectutils.h"
 #include "oxutils.h"
 
 #include <kio/davjob.h>
@@ -32,30 +32,42 @@
 
 using namespace OXA;
 
-FolderRequestJob::FolderRequestJob( const Folder &folder, QObject *parent )
+ObjectsRequestJob::ObjectsRequestJob( const Folder &folder, QObject *parent )
   : KJob( parent ), mFolder( folder )
 {
 }
 
-void FolderRequestJob::start()
+void ObjectsRequestJob::start()
 {
   QDomDocument document;
   QDomElement multistatus = DAVUtils::addDavElement( document, document, QLatin1String( "multistatus" ) );
   QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
+  DAVUtils::addOxElement( document, prop, QLatin1String( "folder_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
+  DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), QLatin1String( "0" ) );
+  DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "NEW_AND_MODIFIED" ) );
 
-  const QString path = QLatin1String( "/servlet/webdav.folders" );
+  Object object;
+  switch ( mFolder.module() ) {
+    case Folder::Contacts: object.setType( Object::Contact ); break;
+    case Folder::Calendar: object.setType( Object::Event ); break;
+    case Folder::Tasks: object.setType( Object::Task ); break;
+    default: Q_ASSERT( false ); break;
+  }
+
+  mObjectsType = object.type();
+
+  const QString path = ObjectUtils::davPath( object );
 
   KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
 }
 
-Folder FolderRequestJob::folder() const
+Object::List ObjectsRequestJob::objects() const
 {
-  return mFolder;
+  return mObjects;
 }
 
-void FolderRequestJob::davJobFinished( KJob *job )
+void ObjectsRequestJob::davJobFinished( KJob *job )
 {
   if ( job->error() ) {
     setError( job->error() );
@@ -67,17 +79,17 @@ void FolderRequestJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   const QDomDocument &document = davJob->response();
-  qDebug() << document.toString();
 
   QDomElement multistatus = document.documentElement();
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
-  const QDomNodeList props = response.elementsByTagName( "prop" );
-  const QDomElement prop = props.at( 0 ).toElement();
-  mFolder = FolderUtils::parseFolder( prop );
-
-  qDebug() << "Folder:" << mFolder.title();
+  while ( !response.isNull() ) {
+    const QDomNodeList props = response.elementsByTagName( "prop" );
+    const QDomElement prop = props.at( 0 ).toElement();
+    mObjects.append( ObjectUtils::parseObject( prop, mObjectsType ) );
+    response = response.nextSiblingElement();
+  }
 
   emitResult();
 }
 
-#include "folderrequestjob.moc"
+#include "objectsrequestjob.moc"

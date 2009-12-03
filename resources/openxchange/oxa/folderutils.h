@@ -32,9 +32,7 @@ class Folder;
 namespace FolderUtils {
 
 Folder parseFolder( const QDomElement &propElement );
-
-void createFolderPermissions( const Folder &folder, QDomDocument &document, QDomElement &permissions );
-void parseFolderPermissions( const QDomElement &permissions, Folder &folder );
+void addFolderElements( QDomDocument &document, QDomElement &propElement, const Folder &folder );
 
 }
 

@@ -29,6 +29,85 @@
 
 using namespace OXA;
 
+static void createFolderPermissions( const Folder &folder, QDomDocument &document, QDomElement &permissions )
+{
+  {
+    const Folder::UserPermissions userPermissions = folder.userPermissions();
+    Folder::UserPermissions::ConstIterator it = userPermissions.constBegin();
+    while ( it != userPermissions.constEnd() ) {
+      QDomElement user = DAVUtils::addOxElement( document, permissions, QLatin1String( "user" ),
+                                                 OXUtils::writeNumber( it.key() ) );
+      DAVUtils::setOxAttribute( user, QLatin1String( "folderpermission" ),
+                                OXUtils::writeNumber( it.value().folderPermission() ) );
+      DAVUtils::setOxAttribute( user, QLatin1String( "objectreadpermission" ),
+                                OXUtils::writeNumber( it.value().objectReadPermission() ) );
+      DAVUtils::setOxAttribute( user, QLatin1String( "objectwritepermission" ),
+                                OXUtils::writeNumber( it.value().objectWritePermission() ) );
+      DAVUtils::setOxAttribute( user, QLatin1String( "objectdeletepermission" ),
+                                OXUtils::writeNumber( it.value().objectDeletePermission() ) );
+      DAVUtils::setOxAttribute( user, QLatin1String( "admin_flag" ),
+                                OXUtils::writeBoolean( it.value().adminFlag() ) );
+
+      ++it;
+    }
+  }
+
+  {
+    const Folder::GroupPermissions groupPermissions = folder.groupPermissions();
+    Folder::GroupPermissions::ConstIterator it = groupPermissions.constBegin();
+    while ( it != groupPermissions.constEnd() ) {
+      QDomElement group = DAVUtils::addOxElement( document, permissions, QLatin1String( "group" ),
+                                                  OXUtils::writeNumber( it.key() ) );
+      DAVUtils::setOxAttribute( group, QLatin1String( "folderpermission" ),
+                                OXUtils::writeNumber( it.value().folderPermission() ) );
+      DAVUtils::setOxAttribute( group, QLatin1String( "objectreadpermission" ),
+                                OXUtils::writeNumber( it.value().objectReadPermission() ) );
+      DAVUtils::setOxAttribute( group, QLatin1String( "objectwritepermission" ),
+                                OXUtils::writeNumber( it.value().objectWritePermission() ) );
+      DAVUtils::setOxAttribute( group, QLatin1String( "objectdeletepermission" ),
+                                OXUtils::writeNumber( it.value().objectDeletePermission() ) );
+      DAVUtils::setOxAttribute( group, QLatin1String( "admin_flag" ),
+                                OXUtils::writeBoolean( it.value().adminFlag() ) );
+
+      ++it;
+    }
+  }
+}
+
+static void parseFolderPermissions( const QDomElement &permissions, Folder &folder )
+{
+  Folder::UserPermissions userPermissions;
+  Folder::GroupPermissions groupPermissions;
+
+  QDomElement element = permissions.firstChildElement();
+  while ( !element.isNull() ) {
+    if ( element.tagName() == QLatin1String( "user" ) ) {
+      Folder::Permissions permissions;
+      permissions.setFolderPermission( (Folder::Permissions::FolderPermission)OXUtils::readNumber( element.attribute( QLatin1String( "folderpermission" ), QLatin1String( "0" ) ) ) );
+      permissions.setObjectReadPermission( (Folder::Permissions::ObjectReadPermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectreadpermission" ), QLatin1String( "0" ) ) ) );
+      permissions.setObjectWritePermission( (Folder::Permissions::ObjectWritePermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectwritepermission" ), QLatin1String( "0" ) ) ) );
+      permissions.setObjectDeletePermission( (Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectdeletepermission" ), QLatin1String( "0" ) ) ) );
+      permissions.setAdminFlag( OXUtils::readBoolean( element.attribute( QLatin1String( "admin_flag" ), QLatin1String( "false" ) ) ) );
+
+      userPermissions.insert( OXUtils::readNumber( element.text() ), permissions );
+    } else if ( element.tagName() == QLatin1String( "group" ) ) {
+      Folder::Permissions permissions;
+      permissions.setFolderPermission( (Folder::Permissions::FolderPermission)OXUtils::readNumber( element.attribute( QLatin1String( "folderpermission" ), QLatin1String( "0" ) ) ) );
+      permissions.setObjectReadPermission( (Folder::Permissions::ObjectReadPermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectreadpermission" ), QLatin1String( "0" ) ) ) );
+      permissions.setObjectWritePermission( (Folder::Permissions::ObjectWritePermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectwritepermission" ), QLatin1String( "0" ) ) ) );
+      permissions.setObjectDeletePermission( (Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectdeletepermission" ), QLatin1String( "0" ) ) ) );
+      permissions.setAdminFlag( OXUtils::readBoolean( element.attribute( QLatin1String( "admin_flag" ), QLatin1String( "false" ) ) ) );
+
+      groupPermissions.insert( OXUtils::readNumber( element.text() ), permissions );
+    }
+
+    element = element.nextSiblingElement();
+  }
+
+  folder.setUserPermissions( userPermissions );
+  folder.setGroupPermissions( groupPermissions );
+}
+
 Folder OXA::FolderUtils::parseFolder( const QDomElement &propElement )
 {
   Folder folder;
@@ -83,81 +162,24 @@ Folder OXA::FolderUtils::parseFolder( const QDomElement &propElement )
   return folder;
 }
 
-void OXA::FolderUtils::createFolderPermissions( const Folder &folder, QDomDocument &document, QDomElement &permissions )
+void OXA::FolderUtils::addFolderElements( QDomDocument &document, QDomElement &propElement, const Folder &folder )
 {
-  {
-    const Folder::UserPermissions userPermissions = folder.userPermissions();
-    Folder::UserPermissions::ConstIterator it = userPermissions.constBegin();
-    while ( it != userPermissions.constEnd() ) {
-      QDomElement user = DAVUtils::addOxElement( document, permissions, QLatin1String( "user" ),
-                                                 OXUtils::writeNumber( it.key() ) );
-      DAVUtils::setOxAttribute( user, QLatin1String( "folderpermission" ),
-                                OXUtils::writeNumber( it.value().folderPermission() ) );
-      DAVUtils::setOxAttribute( user, QLatin1String( "objectreadpermission" ),
-                                OXUtils::writeNumber( it.value().objectReadPermission() ) );
-      DAVUtils::setOxAttribute( user, QLatin1String( "objectwritepermission" ),
-                                OXUtils::writeNumber( it.value().objectWritePermission() ) );
-      DAVUtils::setOxAttribute( user, QLatin1String( "objectdeletepermission" ),
-                                OXUtils::writeNumber( it.value().objectDeletePermission() ) );
-      DAVUtils::setOxAttribute( user, QLatin1String( "admin_flag" ),
-                                OXUtils::writeBoolean( it.value().adminFlag() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "title" ), OXUtils::writeString( folder.title() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "folder_id" ), OXUtils::writeNumber( folder.folderId() ) );
 
-      ++it;
-    }
+  const QString type = (folder.type() == Folder::Public ? QLatin1String( "public" ) : QLatin1String( "private" ));
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "type" ), OXUtils::writeString( type ) );
+
+  QString module;
+  switch ( folder.module() ) {
+    case Folder::Calendar: module = QLatin1String( "calendar" ); break;
+    case Folder::Contacts: module = QLatin1String( "contact" ); break;
+    case Folder::Tasks: module = QLatin1String( "task" ); break;
+    default: break;
   }
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "module" ), OXUtils::writeString( module ) );
 
-  {
-    const Folder::GroupPermissions groupPermissions = folder.groupPermissions();
-    Folder::GroupPermissions::ConstIterator it = groupPermissions.constBegin();
-    while ( it != groupPermissions.constEnd() ) {
-      QDomElement group = DAVUtils::addOxElement( document, permissions, QLatin1String( "group" ),
-                                                  OXUtils::writeNumber( it.key() ) );
-      DAVUtils::setOxAttribute( group, QLatin1String( "folderpermission" ),
-                                OXUtils::writeNumber( it.value().folderPermission() ) );
-      DAVUtils::setOxAttribute( group, QLatin1String( "objectreadpermission" ),
-                                OXUtils::writeNumber( it.value().objectReadPermission() ) );
-      DAVUtils::setOxAttribute( group, QLatin1String( "objectwritepermission" ),
-                                OXUtils::writeNumber( it.value().objectWritePermission() ) );
-      DAVUtils::setOxAttribute( group, QLatin1String( "objectdeletepermission" ),
-                                OXUtils::writeNumber( it.value().objectDeletePermission() ) );
-      DAVUtils::setOxAttribute( group, QLatin1String( "admin_flag" ),
-                                OXUtils::writeBoolean( it.value().adminFlag() ) );
-
-      ++it;
-    }
-  }
+  QDomElement permissions = DAVUtils::addOxElement( document, propElement, QLatin1String( "permissions" ) );
+  createFolderPermissions( folder, document, permissions );
 }
 
-void OXA::FolderUtils::parseFolderPermissions( const QDomElement &permissions, Folder &folder )
-{
-  Folder::UserPermissions userPermissions;
-  Folder::GroupPermissions groupPermissions;
-
-  QDomElement element = permissions.firstChildElement();
-  while ( !element.isNull() ) {
-    if ( element.tagName() == QLatin1String( "user" ) ) {
-      Folder::Permissions permissions;
-      permissions.setFolderPermission( (Folder::Permissions::FolderPermission)OXUtils::readNumber( element.attribute( QLatin1String( "folderpermission" ), QLatin1String( "0" ) ) ) );
-      permissions.setObjectReadPermission( (Folder::Permissions::ObjectReadPermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectreadpermission" ), QLatin1String( "0" ) ) ) );
-      permissions.setObjectWritePermission( (Folder::Permissions::ObjectWritePermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectwritepermission" ), QLatin1String( "0" ) ) ) );
-      permissions.setObjectDeletePermission( (Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectdeletepermission" ), QLatin1String( "0" ) ) ) );
-      permissions.setAdminFlag( OXUtils::readBoolean( element.attribute( QLatin1String( "admin_flag" ), QLatin1String( "false" ) ) ) );
-
-      userPermissions.insert( OXUtils::readNumber( element.text() ), permissions );
-    } else if ( element.tagName() == QLatin1String( "group" ) ) {
-      Folder::Permissions permissions;
-      permissions.setFolderPermission( (Folder::Permissions::FolderPermission)OXUtils::readNumber( element.attribute( QLatin1String( "folderpermission" ), QLatin1String( "0" ) ) ) );
-      permissions.setObjectReadPermission( (Folder::Permissions::ObjectReadPermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectreadpermission" ), QLatin1String( "0" ) ) ) );
-      permissions.setObjectWritePermission( (Folder::Permissions::ObjectWritePermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectwritepermission" ), QLatin1String( "0" ) ) ) );
-      permissions.setObjectDeletePermission( (Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber( element.attribute( QLatin1String( "objectdeletepermission" ), QLatin1String( "0" ) ) ) );
-      permissions.setAdminFlag( OXUtils::readBoolean( element.attribute( QLatin1String( "admin_flag" ), QLatin1String( "false" ) ) ) );
-
-      groupPermissions.insert( OXUtils::readNumber( element.text() ), permissions );
-    }
-
-    element = element.nextSiblingElement();
-  }
-
-  folder.setUserPermissions( userPermissions );
-  folder.setGroupPermissions( groupPermissions );
-}

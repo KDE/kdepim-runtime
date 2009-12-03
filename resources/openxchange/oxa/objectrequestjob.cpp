@@ -19,11 +19,11 @@
     02110-1301, USA.
 */
 
-#include "folderrequestjob.h"
+#include "objectrequestjob.h"
 
 #include "davmanager.h"
 #include "davutils.h"
-#include "folderutils.h"
+#include "objectutils.h"
 #include "oxutils.h"
 
 #include <kio/davjob.h>
@@ -32,30 +32,30 @@
 
 using namespace OXA;
 
-FolderRequestJob::FolderRequestJob( const Folder &folder, QObject *parent )
-  : KJob( parent ), mFolder( folder )
+ObjectRequestJob::ObjectRequestJob( const Object &object, QObject *parent )
+  : KJob( parent ), mObject( object )
 {
 }
 
-void FolderRequestJob::start()
+void ObjectRequestJob::start()
 {
   QDomDocument document;
   QDomElement multistatus = DAVUtils::addDavElement( document, document, QLatin1String( "multistatus" ) );
   QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
+  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mObject.objectId() ) );
 
-  const QString path = QLatin1String( "/servlet/webdav.folders" );
+  const QString path = ObjectUtils::davPath( mObject );
 
   KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
 }
 
-Folder FolderRequestJob::folder() const
+Object ObjectRequestJob::object() const
 {
-  return mFolder;
+  return mObject;
 }
 
-void FolderRequestJob::davJobFinished( KJob *job )
+void ObjectRequestJob::davJobFinished( KJob *job )
 {
   if ( job->error() ) {
     setError( job->error() );
@@ -73,11 +73,9 @@ void FolderRequestJob::davJobFinished( KJob *job )
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
   const QDomNodeList props = response.elementsByTagName( "prop" );
   const QDomElement prop = props.at( 0 ).toElement();
-  mFolder = FolderUtils::parseFolder( prop );
-
-  qDebug() << "Folder:" << mFolder.title();
+  mObject = ObjectUtils::parseObject( prop, mObject.type() );
 
   emitResult();
 }
 
-#include "folderrequestjob.moc"
+#include "objectrequestjob.moc"

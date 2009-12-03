@@ -24,6 +24,7 @@
 using namespace OXA;
 
 Object::Object()
+  : mObjectId( -1 ), mFolderId( -1 )
 {
 }
 
@@ -55,6 +56,11 @@ void Object::setLastModified( const QString &timeStamp )
 QString Object::lastModified() const
 {
   return mLastModified;
+}
+
+void Object::setType( Type type )
+{
+  mType = type;
 }
 
 Object::Type Object::type() const
