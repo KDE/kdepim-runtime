@@ -20,6 +20,7 @@
 #ifndef KOLABPROXYRESOURCE_H
 #define KOLABPROXYRESOURCE_H
 
+#include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
 #include <QStringList>
 
@@ -87,6 +88,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
   private:
     Akonadi::Collection createCollection(const Akonadi::Collection& imapCollection);
+    void applyAttributesToImap( Akonadi::Collection &imapCollection, const Akonadi::Collection &kolabCollection );
+    void applyAttributesFromImap( Akonadi::Collection &kolabCollection, const Akonadi::Collection &imapCollection );
 
   private slots:
     void imapItemCreationResult( KJob* job );
