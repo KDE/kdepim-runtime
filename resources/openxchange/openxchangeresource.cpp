@@ -28,6 +28,8 @@
 #include <akonadi/itemfetchscope.h>
 
 #include <kabc/addressee.h>
+#include <kcal/event.h>
+#include <kcal/todo.h>
 #include <klocale.h>
 
 #include <oxa/davmanager.h>
@@ -36,6 +38,12 @@
 #include <oxa/foldermodifyjob.h>
 #include <oxa/foldermovejob.h>
 #include <oxa/foldersrequestjob.h>
+#include <oxa/objectcreatejob.h>
+#include <oxa/objectdeletejob.h>
+#include <oxa/objectmodifyjob.h>
+#include <oxa/objectmovejob.h>
+#include <oxa/objectrequestjob.h>
+#include <oxa/objectsrequestjob.h>
 #include <oxa/useridrequestjob.h>
 
 using namespace Akonadi;
@@ -156,10 +164,8 @@ OpenXchangeResource::OpenXchangeResource( const QString &id )
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
-  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
-  changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
-
-  setHierarchicalRemoteIdentifiersEnabled( true );
+  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
+  changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::Parent );
 
   setName( i18n( "Open-Xchange" ) );
 
@@ -204,40 +210,121 @@ void OpenXchangeResource::retrieveCollections()
 
 void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  Item::List items;
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
 
-  itemsRetrieved( items );
+  OXA::Folder folder;
+  folder.setObjectId( remoteIdentifier.objectId() );
+  folder.setModule( remoteIdentifier.module() );
+
+  OXA::ObjectsRequestJob *job = new OXA::ObjectsRequestJob( folder, this );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectsRequestJobFinished( KJob* ) ) );
+  job->start();
 }
 
 bool OpenXchangeResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  cancelTask( i18n( "No items available" ) );
-  return false;
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
+
+  OXA::Object object;
+  object.setObjectId( remoteIdentifier.objectId() );
+  object.setModule( remoteIdentifier.module() );
+
+  OXA::ObjectRequestJob *job = new OXA::ObjectRequestJob( object, this );
+  job->setProperty( "item", QVariant::fromValue( item ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectRequestJobFinished( KJob* ) ) );
+  job->start();
+
+  return true;
 }
 
 void OpenXchangeResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  cancelTask( i18n( "Trying to write to a read-only directory" ) );
-  return;
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+
+  OXA::Object object;
+  object.setFolderId( remoteIdentifier.objectId() );
+  object.setModule( remoteIdentifier.module() );
+
+  if ( item.hasPayload<KABC::Addressee>() ) {
+    object.setContact( item.payload<KABC::Addressee>() );
+  } else if ( item.hasPayload<KCal::Event::Ptr>() ) {
+    object.setEvent( item.payload<KCal::Incidence::Ptr>() );
+  } else if ( item.hasPayload<KCal::Todo::Ptr>() ) {
+    object.setTask( item.payload<KCal::Incidence::Ptr>() );
+  } else {
+    Q_ASSERT( false );
+  }
+
+  OXA::ObjectCreateJob *job = new OXA::ObjectCreateJob( object, this );
+  job->setProperty( "item", QVariant::fromValue( item ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectCreateJobFinished( KJob* ) ) );
+  job->start();
 }
 
 void OpenXchangeResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  cancelTask( i18n( "Trying to write to a read-only directory" ) );
-  return;
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
+  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( item.parentCollection().remoteId() );
+
+  OXA::Object object;
+  object.setObjectId( remoteIdentifier.objectId() );
+  object.setModule( remoteIdentifier.module() );
+  object.setFolderId( parentRemoteIdentifier.objectId() );
+  object.setLastModified( remoteIdentifier.lastModified() );
+
+  if ( item.hasPayload<KABC::Addressee>() ) {
+    object.setContact( item.payload<KABC::Addressee>() );
+  } else if ( item.hasPayload<KCal::Event::Ptr>() ) {
+    object.setEvent( item.payload<KCal::Incidence::Ptr>() );
+  } else if ( item.hasPayload<KCal::Todo::Ptr>() ) {
+    object.setTask( item.payload<KCal::Incidence::Ptr>() );
+  } else {
+    Q_ASSERT( false );
+  }
+
+  OXA::ObjectModifyJob *job = new OXA::ObjectModifyJob( object, this );
+  job->setProperty( "item", QVariant::fromValue( item ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectModifyJobFinished( KJob* ) ) );
+  job->start();
 }
 
 void OpenXchangeResource::itemRemoved( const Akonadi::Item &item )
 {
-  cancelTask( i18n( "Trying to write to a read-only directory" ) );
-  return;
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
+  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( item.parentCollection().remoteId() );
+
+  OXA::Object object;
+  object.setObjectId( remoteIdentifier.objectId() );
+  object.setFolderId( parentRemoteIdentifier.objectId() );
+  object.setModule( remoteIdentifier.module() );
+  object.setLastModified( remoteIdentifier.lastModified() );
+
+  OXA::ObjectDeleteJob *job = new OXA::ObjectDeleteJob( object, this );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectDeleteJobFinished( KJob* ) ) );
+
+  job->start();
 }
 
 void OpenXchangeResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
                                      const Akonadi::Collection &collectionDestination )
 {
-  cancelTask( i18n( "Trying to write to a read-only directory" ) );
-  return;
+  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
+  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( collectionSource.remoteId() );
+  const RemoteIdentifier newParentRemoteIdentifier = RemoteIdentifier::fromString( collectionDestination.remoteId() );
+
+  OXA::Object object;
+  object.setObjectId( remoteIdentifier.objectId() );
+  object.setModule( remoteIdentifier.module() );
+  object.setFolderId( parentRemoteIdentifier.objectId() );
+
+  OXA::Folder destinationFolder;
+  destinationFolder.setObjectId( newParentRemoteIdentifier.objectId() );
+
+  OXA::ObjectMoveJob *job = new OXA::ObjectMoveJob( object, destinationFolder, this );
+  job->setProperty( "item", QVariant::fromValue( item ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectMoveJobFinished( KJob* ) ) );
+
+  job->start();
 }
 
 void OpenXchangeResource::collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent )
@@ -341,6 +428,154 @@ void OpenXchangeResource::onUserIdRequestJobFinished( KJob *job )
   // now we have the user id, so continue synchronization
   synchronize();
   emit configurationDialogAccepted();
+}
+
+void OpenXchangeResource::onObjectsRequestJobFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  OXA::ObjectsRequestJob *requestJob = qobject_cast<OXA::ObjectsRequestJob*>( job );
+  Q_ASSERT( requestJob );
+
+  Item::List items;
+
+  const OXA::Object::List objects = requestJob->objects();
+  foreach ( const OXA::Object &object, objects ) {
+    Item item;
+    switch ( object.module() ) {
+      case OXA::Folder::Contacts:
+        item.setMimeType( KABC::Addressee::mimeType() );
+        item.setPayload<KABC::Addressee>( object.contact() );
+        break;
+      case OXA::Folder::Calendar:
+        item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
+        item.setPayload<KCal::Incidence::Ptr>( object.event() );
+        break;
+      case OXA::Folder::Tasks:
+        item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.todo" ) );
+        item.setPayload<KCal::Incidence::Ptr>( object.task() );
+        break;
+      case OXA::Folder::Unbound:
+        Q_ASSERT( false );
+        break;
+    }
+    item.setRemoteId( RemoteIdentifier( object.objectId(), object.module(), object.lastModified() ).toString() );
+
+    items.append( item );
+  }
+
+  itemsRetrieved( items );
+}
+
+void OpenXchangeResource::onObjectRequestJobFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  OXA::ObjectRequestJob *requestJob = qobject_cast<OXA::ObjectRequestJob*>( job );
+  Q_ASSERT( requestJob );
+
+  const OXA::Object object = requestJob->object();
+
+  Item item = job->property( "item" ).value<Item>();
+  item.setRemoteId( RemoteIdentifier( object.objectId(), object.module(), object.lastModified() ).toString() );
+
+  switch ( object.module() ) {
+    case OXA::Folder::Contacts:
+      item.setMimeType( KABC::Addressee::mimeType() );
+      item.setPayload<KABC::Addressee>( object.contact() );
+      break;
+    case OXA::Folder::Calendar:
+      item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
+      item.setPayload<KCal::Incidence::Ptr>( object.event() );
+      break;
+    case OXA::Folder::Tasks:
+      item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.todo" ) );
+      item.setPayload<KCal::Incidence::Ptr>( object.task() );
+      break;
+    case OXA::Folder::Unbound:
+      Q_ASSERT( false );
+      break;
+  }
+
+  itemRetrieved( item );
+}
+
+void OpenXchangeResource::onObjectCreateJobFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  OXA::ObjectCreateJob *createJob = qobject_cast<OXA::ObjectCreateJob*>( job );
+  Q_ASSERT( createJob );
+
+  const OXA::Object object = createJob->object();
+
+  Item item = job->property( "item" ).value<Item>();
+  item.setRemoteId( RemoteIdentifier( object.objectId(), object.module(), object.lastModified() ).toString() );
+
+  changeCommitted( item );
+}
+
+void OpenXchangeResource::onObjectModifyJobFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  OXA::ObjectModifyJob *modifyJob = qobject_cast<OXA::ObjectModifyJob*>( job );
+  Q_ASSERT( modifyJob );
+
+  const OXA::Object object = modifyJob->object();
+
+  Item item = job->property( "item" ).value<Item>();
+
+  // update last_modified property
+  RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
+  remoteIdentifier.setLastModified( object.lastModified() );
+  item.setRemoteId( remoteIdentifier.toString() );
+
+  changeCommitted( item );
+}
+
+void OpenXchangeResource::onObjectMoveJobFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  OXA::ObjectMoveJob *moveJob = qobject_cast<OXA::ObjectMoveJob*>( job );
+  Q_ASSERT( moveJob );
+
+  const OXA::Object object = moveJob->object();
+
+  Item item = job->property( "item" ).value<Item>();
+
+  // update last_modified property
+  RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
+  remoteIdentifier.setLastModified( object.lastModified() );
+  item.setRemoteId( remoteIdentifier.toString() );
+
+  changeCommitted( item );
+}
+
+void OpenXchangeResource::onObjectDeleteJobFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  changeProcessed();
 }
 
 void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )

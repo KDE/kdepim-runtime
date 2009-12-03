@@ -60,6 +60,13 @@ class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentB
     void onFolderModifyJobFinished( KJob* );
     void onFolderMoveJobFinished( KJob* );
     void onFolderDeleteJobFinished( KJob* );
+
+    void onObjectsRequestJobFinished( KJob* );
+    void onObjectRequestJobFinished( KJob* );
+    void onObjectCreateJobFinished( KJob* );
+    void onObjectModifyJobFinished( KJob* );
+    void onObjectMoveJobFinished( KJob* );
+    void onObjectDeleteJobFinished( KJob* );
 };
 
 #endif
