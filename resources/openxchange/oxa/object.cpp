@@ -58,19 +58,19 @@ QString Object::lastModified() const
   return mLastModified;
 }
 
-void Object::setType( Type type )
+void Object::setModule( Folder::Module module )
 {
-  mType = type;
+  mModule = module;
 }
 
-Object::Type Object::type() const
+Folder::Module Object::module() const
 {
-  return mType;
+  return mModule;
 }
 
 void Object::setContact( const KABC::Addressee &contact )
 {
-  mType = Contact;
+  mModule = Folder::Contacts;
   mContact = contact;
 }
 
@@ -81,7 +81,7 @@ KABC::Addressee Object::contact() const
 
 void Object::setEvent( const KCal::Incidence::Ptr &event )
 {
-  mType = Event;
+  mModule = Folder::Calendar;
   mEvent = event;
 }
 
@@ -92,7 +92,7 @@ KCal::Incidence::Ptr Object::event() const
 
 void Object::setTask( const KCal::Incidence::Ptr &task )
 {
-  mType = Task;
+  mModule = Folder::Tasks;
   mTask = task;
 }
 

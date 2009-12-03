@@ -22,6 +22,8 @@
 #ifndef OXA_OBJECT_H
 #define OXA_OBJECT_H
 
+#include "folder.h"
+
 #include <boost/shared_ptr.hpp>
 #include <kabc/addressee.h>
 #include <kcal/incidence.h>
@@ -38,13 +40,6 @@ class Object
 
     Object();
 
-    enum Type
-    {
-      Contact,
-      Event,
-      Task
-    };
-
     void setObjectId( qlonglong id );
     qlonglong objectId() const;
 
@@ -54,8 +49,8 @@ class Object
     void setLastModified( const QString &timeStamp );
     QString lastModified() const;
 
-    void setType( Type type );
-    Type type() const;
+    void setModule( Folder::Module module );
+    Folder::Module module() const;
 
     void setContact( const KABC::Addressee &contact );
     KABC::Addressee contact() const;
@@ -70,7 +65,7 @@ class Object
     qlonglong mObjectId;
     qlonglong mFolderId;
     QString mLastModified;
-    Type mType;
+    Folder::Module mModule;
     KABC::Addressee mContact;
     KCal::Incidence::Ptr mEvent;
     KCal::Incidence::Ptr mTask;

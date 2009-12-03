@@ -46,17 +46,7 @@ void ObjectsRequestJob::start()
   DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), QLatin1String( "0" ) );
   DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "NEW_AND_MODIFIED" ) );
 
-  Object object;
-  switch ( mFolder.module() ) {
-    case Folder::Contacts: object.setType( Object::Contact ); break;
-    case Folder::Calendar: object.setType( Object::Event ); break;
-    case Folder::Tasks: object.setType( Object::Task ); break;
-    default: Q_ASSERT( false ); break;
-  }
-
-  mObjectsType = object.type();
-
-  const QString path = ObjectUtils::davPath( object );
+  const QString path = ObjectUtils::davPath( mFolder.module() );
 
   KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
@@ -85,7 +75,7 @@ void ObjectsRequestJob::davJobFinished( KJob *job )
   while ( !response.isNull() ) {
     const QDomNodeList props = response.elementsByTagName( "prop" );
     const QDomElement prop = props.at( 0 ).toElement();
-    mObjects.append( ObjectUtils::parseObject( prop, mObjectsType ) );
+    mObjects.append( ObjectUtils::parseObject( prop, mFolder.module() ) );
     response = response.nextSiblingElement();
   }
 

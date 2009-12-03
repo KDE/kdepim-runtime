@@ -46,7 +46,7 @@ void ObjectCreateJob::start()
 
   ObjectUtils::addObjectElements( document, prop, mObject );
 
-  const QString path = ObjectUtils::davPath( mObject );
+  const QString path = ObjectUtils::davPath( mObject.module() );
 
   KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );

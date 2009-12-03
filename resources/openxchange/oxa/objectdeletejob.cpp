@@ -46,7 +46,7 @@ void ObjectDeleteJob::start()
   DAVUtils::addOxElement( document, prop, QLatin1String( "method" ), OXUtils::writeString( QLatin1String( "DELETE" ) ) );
   DAVUtils::addOxElement( document, prop, QLatin1String( "last_modified" ), OXUtils::writeString( mObject.lastModified() ) );
 
-  const QString path = ObjectUtils::davPath( mObject );
+  const QString path = ObjectUtils::davPath( mObject.module() );
 
   KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );

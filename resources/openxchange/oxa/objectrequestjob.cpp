@@ -44,7 +44,7 @@ void ObjectRequestJob::start()
   QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
   DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mObject.objectId() ) );
 
-  const QString path = ObjectUtils::davPath( mObject );
+  const QString path = ObjectUtils::davPath( mObject.module() );
 
   KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
@@ -73,7 +73,7 @@ void ObjectRequestJob::davJobFinished( KJob *job )
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
   const QDomNodeList props = response.elementsByTagName( "prop" );
   const QDomElement prop = props.at( 0 ).toElement();
-  mObject = ObjectUtils::parseObject( prop, mObject.type() );
+  mObject = ObjectUtils::parseObject( prop, mObject.module() );
 
   emitResult();
 }

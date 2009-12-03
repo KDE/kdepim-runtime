@@ -60,6 +60,7 @@ set( openxchangeresource_SRCS
   oxa/object.cpp
   oxa/objectcreatejob.cpp
   oxa/objectdeletejob.cpp
+  oxa/objectmodifyjob.cpp
   oxa/objectmovejob.cpp
   oxa/objectrequestjob.cpp
   oxa/objectsrequestjob.cpp

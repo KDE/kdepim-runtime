@@ -213,7 +213,7 @@ static void parseTask( const QDomElement &propElement, Object &object )
   object.setTask( KCal::Incidence::Ptr( todo ) );
 }
 
-Object OXA::ObjectUtils::parseObject( const QDomElement &propElement, Object::Type type )
+Object OXA::ObjectUtils::parseObject( const QDomElement &propElement, Folder::Module module )
 {
   Object object;
 
@@ -230,10 +230,11 @@ Object OXA::ObjectUtils::parseObject( const QDomElement &propElement, Object::Ty
     element = element.nextSiblingElement();
   }
 
-  switch ( type ) {
-    case Object::Contact: parseContact( propElement, object ); break;
-    case Object::Event: parseEvent( propElement, object ); break;
-    case Object::Task: parseTask( propElement, object ); break;
+  switch ( module ) {
+    case Folder::Contacts: parseContact( propElement, object ); break;
+    case Folder::Calendar: parseEvent( propElement, object ); break;
+    case Folder::Tasks: parseTask( propElement, object ); break;
+    case Folder::Unbound: Q_ASSERT( false ); break;
   }
 
   return object;
@@ -253,26 +254,29 @@ static void addTaskElements( QDomElement &propElement, const Object &object )
 
 void OXA::ObjectUtils::addObjectElements( QDomDocument &document, QDomElement &propElement, const Object &object )
 {
+  if ( object.objectId() != -1 )
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "object_id" ), OXUtils::writeNumber( object.objectId() ) );
   if ( object.folderId() != -1 )
     DAVUtils::addOxElement( document, propElement, QLatin1String( "folder_id" ), OXUtils::writeNumber( object.folderId() ) );
   if ( !object.lastModified().isEmpty() )
     DAVUtils::addOxElement( document, propElement, QLatin1String( "last_modified" ), OXUtils::writeString( object.lastModified() ) );
 
-  switch ( object.type() ) {
-    case Object::Contact: addContactElements( propElement, object ); break;
-    case Object::Event: addEventElements( propElement, object ); break;
-    case Object::Task: addTaskElements( propElement, object ); break;
+  switch ( object.module() ) {
+    case Folder::Contacts: addContactElements( propElement, object ); break;
+    case Folder::Calendar: addEventElements( propElement, object ); break;
+    case Folder::Tasks: addTaskElements( propElement, object ); break;
+    case Folder::Unbound: Q_ASSERT( false ); break;
   }
 }
 
-QString OXA::ObjectUtils::davPath( const Object &object )
+QString OXA::ObjectUtils::davPath( Folder::Module module )
 {
-  switch ( object.type() ) {
-    case Object::Contact: return QLatin1String( "/servlet/webdav.contacts" ); break;
-    case Object::Event: return QLatin1String( "/servlet/webdav.calendar" ); break;
-    case Object::Task: return QLatin1String( "/servlet/webdav.tasks" ); break;
+  switch ( module ) {
+    case Folder::Contacts: return QLatin1String( "/servlet/webdav.contacts" ); break;
+    case Folder::Calendar: return QLatin1String( "/servlet/webdav.calendar" ); break;
+    case Folder::Tasks: return QLatin1String( "/servlet/webdav.tasks" ); break;
+    case Folder::Unbound: Q_ASSERT( false ); return QString(); break;
   }
 
-  Q_ASSERT(false);
   return QString();
 }

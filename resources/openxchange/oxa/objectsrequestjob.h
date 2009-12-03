@@ -46,7 +46,6 @@ class ObjectsRequestJob : public KJob
   private:
     Folder mFolder;
     Object::List mObjects;
-    Object::Type mObjectsType;
 };
 
 }

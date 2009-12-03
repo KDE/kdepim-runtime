@@ -19,7 +19,7 @@
     02110-1301, USA.
 */
 
-#include "objectmovejob.h"
+#include "objectmodifyjob.h"
 
 #include "davmanager.h"
 #include "davutils.h"
@@ -32,21 +32,19 @@
 
 using namespace OXA;
 
-ObjectMoveJob::ObjectMoveJob( const Object &object, const Folder &destinationFolder, QObject *parent )
-  : KJob( parent ), mObject( object ), mDestinationFolder( destinationFolder )
+ObjectModifyJob::ObjectModifyJob( const Object &object, QObject *parent )
+  : KJob( parent ), mObject( object )
 {
 }
 
-void ObjectMoveJob::start()
+void ObjectModifyJob::start()
 {
   QDomDocument document;
   QDomElement propertyupdate = DAVUtils::addDavElement( document, document, QLatin1String( "propertyupdate" ) );
   QDomElement set = DAVUtils::addDavElement( document, propertyupdate, QLatin1String( "set" ) );
   QDomElement prop = DAVUtils::addDavElement( document, set, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mObject.objectId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "folder_id" ), OXUtils::writeNumber( mObject.folderId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "last_modified" ), OXUtils::writeString( mObject.lastModified() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "folder" ), OXUtils::writeNumber( mDestinationFolder.objectId() ) );
+
+  ObjectUtils::addObjectElements( document, prop, mObject );
 
   const QString path = ObjectUtils::davPath( mObject.module() );
 
@@ -54,12 +52,12 @@ void ObjectMoveJob::start()
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
 }
 
-Object ObjectMoveJob::object() const
+Object ObjectModifyJob::object() const
 {
   return mObject;
 }
 
-void ObjectMoveJob::davJobFinished( KJob *job )
+void ObjectModifyJob::davJobFinished( KJob *job )
 {
   if ( job->error() ) {
     setError( job->error() );
@@ -91,4 +89,4 @@ void ObjectMoveJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "objectmovejob.moc"
+#include "objectmodifyjob.moc"

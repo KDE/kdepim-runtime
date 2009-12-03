@@ -19,24 +19,32 @@
     02110-1301, USA.
 */
 
-#ifndef OXA_OBJECTUTILS_H
-#define OXA_OBJECTUTILS_H
+#ifndef OXA_OBJECTMODIFYJOB_H
+#define OXA_OBJECTMODIFYJOB_H
 
-#include "folder.h"
+#include <kjob.h>
+
 #include "object.h"
-
-class QDomDocument;
-class QDomElement;
 
 namespace OXA {
 
-namespace ObjectUtils
+class ObjectModifyJob : public KJob
 {
-  Object parseObject( const QDomElement &propElement, Folder::Module module );
-  void addObjectElements( QDomDocument &document, QDomElement &propElement, const Object &object );
+  Q_OBJECT
 
-  QString davPath( Folder::Module module );
-}
+  public:
+    ObjectModifyJob( const Object &object, QObject *parent = 0 );
+
+    virtual void start();
+
+    Object object() const;
+
+  private Q_SLOTS:
+    void davJobFinished( KJob* );
+
+  private:
+    Object mObject;
+};
 
 }
 
