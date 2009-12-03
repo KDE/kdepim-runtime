@@ -42,6 +42,7 @@ POP3Resource::POP3Resource( const QString &id )
       mPopSession( 0 ),
       mAskAgain( false ),
       mIntervalTimer( new QTimer( this ) ),
+      mTestLocalInbox( false ),
       mWallet( 0 )
 {
   new SettingsAdaptor( Settings::self() );
@@ -156,7 +157,7 @@ void POP3Resource::walletOpenedForLoading( bool success )
 
 void POP3Resource::walletOpenedForSaving( bool success )
 {
-  if ( success ) {    
+  if ( success ) {
     if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
       if ( !mWallet->hasFolder( "pop3" ) ) {
         mWallet->createFolder( "pop3" );
@@ -439,6 +440,13 @@ void POP3Resource::localFolderRequestJobFinished( KJob *job )
                       "aborting mail check." ) + "\n" + job->errorString() );
     return;
   }
+  if ( mTestLocalInbox ) {
+    KMessageBox::information(0,
+                             i18n("<qt>The folder you deleted was associated with the account "
+                                  "<b>%1</b> which delivered mail into it. The folder the account "
+                                  "delivers new mail into was reset to the main Inbox folder.</qt>", name()));
+  }
+  mTestLocalInbox = false;
 
   mTargetCollection = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::Inbox );
   Q_ASSERT( mTargetCollection.isValid() );
@@ -448,10 +456,19 @@ void POP3Resource::localFolderRequestJobFinished( KJob *job )
 void POP3Resource::targetCollectionFetchJobFinished( KJob *job )
 {
   if ( job->error() ) {
-    cancelSync( i18n( "Error while trying to get the folder for incoming mail, "
-                      "aborting mail check." ) + "\n" + job->errorString() );
-    return;
+    if ( !mTestLocalInbox ) {
+      mTestLocalInbox = true;
+      Settings::self()->setTargetCollection(  -1  );
+      advanceState( FetchTargetCollection );
+      return;
+    } else {
+      cancelSync( i18n( "Error while trying to get the folder for incoming mail, "
+                        "aborting mail check." ) + "\n" + job->errorString() );
+      mTestLocalInbox = false;
+      return;
+    }
   }
+  mTestLocalInbox = false;
   Akonadi::CollectionFetchJob *fetchJob =
       dynamic_cast<Akonadi::CollectionFetchJob*>( job );
   Q_ASSERT( fetchJob );
@@ -641,7 +658,7 @@ void POP3Resource::itemCreateJobResult( KJob *job )
 }
 
 int POP3Resource::idToTime( int id ) const
-{  
+{
   const QString uid = mIdsToUidsMap.value( id );
   if ( !uid.isEmpty() ) {
     const int index = Settings::seenUidList().indexOf( uid );
@@ -915,10 +932,8 @@ void POP3Resource::resetState()
   mIntervalCheckInProgress = false;
   mSavePassword = false;
   updateIntervalTimer();
-  if ( mWallet ) {
-    delete mWallet;
-    mWallet = 0;
-  }
+  delete mWallet;
+  mWallet = 0;
 
   if ( mPopSession ) {
     // Closing the POP session means the KIO slave will get disconnected, which
