@@ -19,7 +19,7 @@
     02110-1301, USA.
 */
 
-#include "foldersjobshared.h"
+#include "folderutils.h"
 
 #include "davutils.h"
 #include "folder.h"
@@ -29,7 +29,7 @@
 
 using namespace OXA;
 
-Folder OXA::parseFolder( const QDomElement &propElement )
+Folder OXA::FolderUtils::parseFolder( const QDomElement &propElement )
 {
   Folder folder;
 
@@ -83,7 +83,7 @@ Folder OXA::parseFolder( const QDomElement &propElement )
   return folder;
 }
 
-void OXA::createFolderPermissions( const Folder &folder, QDomDocument &document, QDomElement &permissions )
+void OXA::FolderUtils::createFolderPermissions( const Folder &folder, QDomDocument &document, QDomElement &permissions )
 {
   {
     const Folder::UserPermissions userPermissions = folder.userPermissions();
@@ -128,7 +128,7 @@ void OXA::createFolderPermissions( const Folder &folder, QDomDocument &document,
   }
 }
 
-void OXA::parseFolderPermissions( const QDomElement &permissions, Folder &folder )
+void OXA::FolderUtils::parseFolderPermissions( const QDomElement &permissions, Folder &folder )
 {
   Folder::UserPermissions userPermissions;
   Folder::GroupPermissions groupPermissions;

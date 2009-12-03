@@ -23,7 +23,7 @@
 
 #include "davmanager.h"
 #include "davutils.h"
-#include "foldersjobshared.h"
+#include "folderutils.h"
 #include "oxutils.h"
 
 #include <kio/davjob.h>
@@ -59,7 +59,7 @@ void FolderCreateJob::start()
   DAVUtils::addOxElement( document, prop, QLatin1String( "module" ), OXUtils::writeString( module ) );
 
   QDomElement permissions = DAVUtils::addOxElement( document, prop, QLatin1String( "permissions" ) );
-  createFolderPermissions( mFolder, document, permissions );
+  FolderUtils::createFolderPermissions( mFolder, document, permissions );
 
   const QString path = QLatin1String( "/servlet/webdav.folders" );
 

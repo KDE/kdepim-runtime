@@ -19,8 +19,8 @@
     02110-1301, USA.
 */
 
-#ifndef OXA_FOLDERSJOBSHARED_H
-#define OXA_FOLDERSJOBSHARED_H
+#ifndef OXA_FOLDERUTILS_H
+#define OXA_FOLDERUTILS_H
 
 class QDomDocument;
 class QDomElement;
@@ -29,10 +29,14 @@ namespace OXA {
 
 class Folder;
 
+namespace FolderUtils {
+
 Folder parseFolder( const QDomElement &propElement );
 
 void createFolderPermissions( const Folder &folder, QDomDocument &document, QDomElement &permissions );
 void parseFolderPermissions( const QDomElement &permissions, Folder &folder );
+
+}
 
 }
 

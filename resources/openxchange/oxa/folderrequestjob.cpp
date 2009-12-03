@@ -23,7 +23,7 @@
 
 #include "davmanager.h"
 #include "davutils.h"
-#include "foldersjobshared.h"
+#include "folderutils.h"
 #include "oxutils.h"
 
 #include <kio/davjob.h>
@@ -73,7 +73,7 @@ void FolderRequestJob::davJobFinished( KJob *job )
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
   const QDomNodeList props = response.elementsByTagName( "prop" );
   const QDomElement prop = props.at( 0 ).toElement();
-  mFolder = parseFolder( prop );
+  mFolder = FolderUtils::parseFolder( prop );
 
   qDebug() << "Folder:" << mFolder.title();
 

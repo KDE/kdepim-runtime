@@ -23,7 +23,6 @@
 
 #include "davmanager.h"
 #include "davutils.h"
-#include "foldersjobshared.h"
 #include "oxutils.h"
 
 #include <kio/davjob.h>
