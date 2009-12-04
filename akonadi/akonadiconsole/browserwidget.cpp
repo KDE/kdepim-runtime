@@ -133,6 +133,8 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   collectionFilter->setSourceModel( mBrowserModel );
   collectionFilter->addMimeTypeInclusionFilter( Collection::mimeType() );
   collectionFilter->setHeaderGroup( EntityTreeModel::CollectionTreeHeaders );
+  collectionFilter->setDynamicSortFilter( true );
+  collectionFilter->setSortCaseSensitivity( Qt::CaseInsensitive );
 
   statisticsProxyModel = new StatisticsProxyModel( this );
   statisticsProxyModel->setToolTipEnabled( true );
@@ -142,12 +144,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   quotaProxyModel->setWarningThreshold( 50.0 );
   quotaProxyModel->setSourceModel( statisticsProxyModel );
 
-  QSortFilterProxyModel *sortModel = new QSortFilterProxyModel( this );
-  sortModel->setDynamicSortFilter( true );
-  sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
-  sortModel->setSourceModel( quotaProxyModel );
-
-  mCollectionView->setModel( sortModel );
+  mCollectionView->setModel( quotaProxyModel );
 
   Akonadi::SelectionProxyModel *selectionProxyModel = new Akonadi::SelectionProxyModel( mCollectionView->selectionModel(), this );
   selectionProxyModel->setSourceModel( mBrowserModel );

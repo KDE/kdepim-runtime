@@ -7,7 +7,6 @@ include_directories( BEFORE ${CMAKE_CURRENT_BINARY_DIR} )
 if(NEPOMUK_FOUND)
   set(AKONADICONSOLE_EXTRA_LIBS ${NEPOMUK_LIBRARIES})
   include_directories(${NEPOMUK_INCLUDES})
-endif(NEPOMUK_FOUND)
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 configure_file(config-akonadiconsole.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-akonadiconsole.h)
@@ -97,3 +96,5 @@ target_link_libraries( akonadiconsole_bin
 install( TARGETS akonadiconsole_bin ${INSTALL_TARGETS_DEFAULT_ARGS} )
 install( FILES akonadiconsole.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )
 install( FILES akonadiconsoleui.rc DESTINATION ${DATA_INSTALL_DIR}/akonadiconsole )
+
+endif(NEPOMUK_FOUND)
