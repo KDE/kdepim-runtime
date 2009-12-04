@@ -28,8 +28,6 @@
 
 #include <kio/davjob.h>
 
-#include <QtCore/QDebug>
-
 using namespace OXA;
 
 ObjectRequestJob::ObjectRequestJob( const Object &object, QObject *parent )
@@ -67,7 +65,6 @@ void ObjectRequestJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   const QDomDocument &document = davJob->response();
-  qDebug() << document.toString();
 
   QDomElement multistatus = document.documentElement();
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );

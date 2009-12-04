@@ -27,101 +27,129 @@
 #include <kcal/event.h>
 #include <kcal/todo.h>
 
+#include <QtCore/QBuffer>
 #include <QtXml/QDomElement>
 
 using namespace OXA;
 
-/*
-  {"categories", "categories"},
-  // incidence fields
-  {"title", "title"},
-  {"description", "note"},
-  {"members", "participants"},
-  {"member", "user"},
-  {"reminder", "alarm"},
-  // recurrence fields
-  {"date_sequence", "recurrence_type"},
-  {"ds_ends", "until"},
-  {"daily_value", "interval"},
-  {"weekly_value", "interval"},
-  {"monthly_value_month", "interval"},
-  {"monthly_value_day", "day_in_month"},
-  {"yearly_value_day", "day_in_month"},
-  {"yearly_month", "month"},
-  {"monthly2_value_month", "interval"},
-  {"monthly2_day", "days"},
-  {"monthly2_recurrency", "day_in_month"},
-  {"yearly2_day", "days"},
-  {"yearly2_reccurency", "day_in_month"}, // this is not a typo, this is what SLOX erally sends!
-  {"yearly2_month", "month"},
-  {"deleteexceptions", "deleteexceptions"},
-  // event fields
-  {"begins", "start_date"},
-  {"ends", "end_date"},
-  {"location", "location"},
-  {"full_time", "full_time"},
-  // task fields
-  {"startdate", "start_date"},
-  {"deadline", "end_date"},
-  {"priority", "priority"},
-  {"status", "percent_complete"},
-};
-*/
 static void parseContact( const QDomElement &propElement, Object &object )
 {
   KABC::Addressee contact;
+  KABC::Address homeAddress( KABC::Address::Home );
+  KABC::Address workAddress( KABC::Address::Work );
+  KABC::Address otherAddress( KABC::Address::Dom );
 
   QDomElement element = propElement.firstChildElement();
   while ( !element.isNull() ) {
     const QString tagName = element.tagName();
     const QString text = OXUtils::readString( element.text() );
 
-    if ( tagName == QLatin1String( "birthday" ) ) {
-      contact.setBirthday( OXUtils::readDateTime( element.text() ).dateTime() );
-    } else if ( tagName == QLatin1String( "position" ) ) {
-      contact.setRole( text );
-    } else if ( tagName == QLatin1String( "title" ) ) {
+    // name
+    if ( tagName == QLatin1String( "title" ) ) {
       contact.setTitle( text );
-    } else if ( tagName == QLatin1String( "company" ) ) {
-      contact.setOrganization( text );
-    } else if ( tagName == QLatin1String( "department" ) ) {
-      contact.setDepartment( text );
-    } else if ( tagName == QLatin1String( "last_name" ) ) {
-      contact.setFamilyName( text );
     } else if ( tagName == QLatin1String( "first_name" ) ) {
       contact.setGivenName( text );
     } else if ( tagName == QLatin1String( "second_name" ) ) {
       contact.setAdditionalName( text );
-    } else if ( tagName == QLatin1String( "display_name" ) ) {
-      contact.setFormattedName( text );
+    } else if ( tagName == QLatin1String( "last_name" ) ) {
+      contact.setFamilyName( text );
     } else if ( tagName == QLatin1String( "suffix" ) ) {
       contact.setSuffix( text );
+    } else if ( tagName == QLatin1String( "displayname" ) ) {
+      contact.setFormattedName( text );
+    } else if ( tagName == QLatin1String( "nickname" ) ) {
+      contact.setNickName( text );
+    // dates
+    } else if ( tagName == QLatin1String( "birthday" ) ) {
+      contact.setBirthday( OXUtils::readDateTime( element.text() ).dateTime() );
+    } else if ( tagName == QLatin1String( "anniversary" ) ) {
+      const QDateTime dateTime = OXUtils::readDateTime( element.text() ).dateTime();
+      contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Anniversary" ), dateTime.toString( Qt::ISODate ) );
+    } else if ( tagName == QLatin1String( "spouse_name" ) ) {
+      contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-SpousesName" ), text );
+    // addresses
+    } else if ( tagName == QLatin1String( "street" ) ) {
+      homeAddress.setStreet( text );
+    } else if ( tagName == QLatin1String( "postal_code" ) ) {
+      homeAddress.setPostalCode( text );
+    } else if ( tagName == QLatin1String( "city" ) ) {
+      homeAddress.setLocality( text );
+    } else if ( tagName == QLatin1String( "country" ) ) {
+      homeAddress.setCountry( text );
+    } else if ( tagName == QLatin1String( "state" ) ) {
+      homeAddress.setRegion( text );
+    } else if ( tagName == QLatin1String( "business_street" ) ) {
+      workAddress.setStreet( text );
+    } else if ( tagName == QLatin1String( "business_postal_code" ) ) {
+      workAddress.setPostalCode( text );
+    } else if ( tagName == QLatin1String( "business_city" ) ) {
+      workAddress.setLocality( text );
+    } else if ( tagName == QLatin1String( "business_country" ) ) {
+      workAddress.setCountry( text );
+    } else if ( tagName == QLatin1String( "business_state" ) ) {
+      workAddress.setRegion( text );
+    } else if ( tagName == QLatin1String( "second_street" ) ) {
+      otherAddress.setStreet( text );
+    } else if ( tagName == QLatin1String( "second_postal_code" ) ) {
+      otherAddress.setPostalCode( text );
+    } else if ( tagName == QLatin1String( "second_city" ) ) {
+      otherAddress.setLocality( text );
+    } else if ( tagName == QLatin1String( "second_country" ) ) {
+      otherAddress.setCountry( text );
+    } else if ( tagName == QLatin1String( "second_state" ) ) {
+      otherAddress.setRegion( text );
+    } else if ( tagName == QLatin1String( "defaultaddress" ) ) {
+      const int number = text.toInt();
+      if ( number == 1 )
+        workAddress.setType( workAddress.type() | KABC::Address::Pref );
+      else if ( number == 2 )
+        homeAddress.setType( homeAddress.type() | KABC::Address::Pref );
+      else if ( number == 3 )
+        otherAddress.setType( otherAddress.type() | KABC::Address::Pref );
+    // further information
     } else if ( tagName == QLatin1String( "note" ) ) {
       contact.setNote( text );
+    } else if ( tagName == QLatin1String( "url" ) ) {
+      contact.setUrl( text );
+    } else if ( tagName == QLatin1String( "image1" ) ) {
+      const QByteArray data = text.toUtf8();
+      contact.setPhoto( KABC::Picture( QImage::fromData( QByteArray::fromBase64( data ) ) ) );
+    // company information
+    } else if ( tagName == QLatin1String( "company" ) ) {
+      contact.setOrganization( text );
+    } else if ( tagName == QLatin1String( "department" ) ) {
+      contact.setDepartment( text );
+    } else if ( tagName == QLatin1String( "assistants_name" ) ) {
+      contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-AssistantsName" ), text );
+    } else if ( tagName == QLatin1String( "managers_name" ) ) {
+      contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-ManagersName" ), text );
+    } else if ( tagName == QLatin1String( "position" ) ) {
+      contact.setRole( text );
+    } else if ( tagName == QLatin1String( "profession" ) ) {
+      contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Profession" ), text );
+    } else if ( tagName == QLatin1String( "room_number" ) ) {
+      contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Office" ), text );
+    // communication
     } else if ( tagName == QLatin1String( "email1" ) ) {
       contact.insertEmail( text, true );
     } else if ( tagName == QLatin1String( "email2" ) ||
                 tagName == QLatin1String( "email3" ) ) {
       contact.insertEmail( text );
-    } else if ( tagName == QLatin1String( "url" ) ) {
-      contact.setUrl( text );
-    } else if ( tagName.startsWith( QLatin1String( "telephone_" ) ) ) {
+    } else if ( tagName == QLatin1String( "mobile1" ) ) {
+      contact.insertPhoneNumber( KABC::PhoneNumber( text, KABC::PhoneNumber::Cell ) );
+    } else if ( tagName == QLatin1String( "instant_messenger" ) ) {
+      contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-IMAddress" ), text );
+    } else if ( tagName.startsWith( QLatin1String( "phone_" ) ) ) {
       KABC::PhoneNumber number;
       number.setNumber( text );
-      if ( tagName.endsWith( QLatin1String( "_business1" ) ) ) {
+      if ( tagName.endsWith( QLatin1String( "_business" ) ) ) {
         number.setType( KABC::PhoneNumber::Work );
-      } else if ( tagName.endsWith( QLatin1String( "_home1" ) ) ) {
+      } else if ( tagName.endsWith( QLatin1String( "_home" ) ) ) {
         number.setType( KABC::PhoneNumber::Home );
-      } else if ( tagName.endsWith( QLatin1String( "_pager" ) ) ) {
-        number.setType( KABC::PhoneNumber::Pager );
+      } else if ( tagName.endsWith( QLatin1String( "_other" ) ) ) {
+        number.setType( KABC::PhoneNumber::Voice );
       } else if ( tagName.endsWith( QLatin1String( "_car" ) ) ) {
         number.setType( KABC::PhoneNumber::Car );
-      } else if ( tagName.endsWith( QLatin1String( "_isdn" ) ) ) {
-        number.setType( KABC::PhoneNumber::Isdn );
-      } else if ( tagName.endsWith( QLatin1String( "_primary" ) ) ) {
-        number.setType( KABC::PhoneNumber::Pref );
-      } else if ( tagName.endsWith( QLatin1String( "_telex" ) ) ) {
-        number.setType( KABC::PhoneNumber::Msg );
       }
       contact.insertPhoneNumber( number );
     } else if ( tagName.startsWith( QLatin1String( "fax_" ) ) ) {
@@ -131,58 +159,25 @@ static void parseContact( const QDomElement &propElement, Object &object )
         number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Work );
       } else if ( tagName.endsWith( QLatin1String( "_home" ) ) ) {
         number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home );
+      } else if ( tagName.endsWith( QLatin1String( "_other" ) ) ) {
+        number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Voice );
       }
       contact.insertPhoneNumber( number );
-    } else if ( tagName == QLatin1String( "image1" ) ) {
-      const QByteArray data = text.toUtf8();
-      contact.setPhoto( KABC::Picture( QImage::fromData( QByteArray::fromBase64( data ) ) ) );
-    } else if ( tagName == QLatin1String( "nickname" ) ) {
-      contact.setNickName( text );
-    } else if ( tagName == QLatin1String( "instant_messenger1" ) ) {
-      contact.insertCustom( "KADDRESSBOOK", "X-IMAddress", text );
-    } else if ( tagName == QLatin1String( "room_number" ) ) {
-      contact.insertCustom( "KADDRESSBOOK", "X-Office", text );
-    } else if ( tagName == QLatin1String( "profession" ) ) {
-      contact.insertCustom( "KADDRESSBOOK", "X-Profession", text );
-    } else if ( tagName == QLatin1String( "manager_name" ) ) {
-      contact.insertCustom( "KADDRESSBOOK", "X-ManagersName", text );
-    } else if ( tagName == QLatin1String( "assistant_name" ) ) {
-      contact.insertCustom( "KADDRESSBOOK", "X-AssistantsName", text );
-    } else if ( tagName == QLatin1String( "spouse_name" ) ) {
-      contact.insertCustom( "KADDRESSBOOK", "X-SpousesName", text );
-    } else if ( tagName == QLatin1String( "anniversary" ) ) {
-      const QDateTime dateTime = OXUtils::readDateTime( element.text() ).dateTime();
-      contact.insertCustom( "KADDRESSBOOK", "X-Anniversary", dateTime.toString( Qt::ISODate ) );
+    } else if ( tagName == QLatin1String( "pager" ) ) {
+      contact.insertPhoneNumber( KABC::PhoneNumber( text, KABC::PhoneNumber::Pager ) );
     } else if ( tagName == QLatin1String( "categories" ) ) {
-      contact.setCategories( text.split( QRegExp(",\\s*") ) );
-    } else {
-    /*
-      // read addresses
-      Address addr;
-      if ( tagName.startsWith( fieldName( BusinessPrefix ) ) ) {
-        addr = a.address( KABC::Address::Work );
-      } else if ( tagName.startsWith( fieldName( OtherPrefix ) ) ) {
-        addr = a.address( 0 );
-      } else {
-        addr = a.address( KABC::Address::Home );
-      }
-      if ( tagName.endsWith( fieldName( Street ) ) ) {
-        addr.setStreet( text );
-      } else if ( tagName.endsWith( fieldName( PostalCode ) ) ) {
-        addr.setPostalCode( text );
-      } else if ( tagName.endsWith( fieldName( City ) ) ) {
-        addr.setLocality( text );
-      } else if ( tagName.endsWith( fieldName( State ) ) ) {
-        addr.setRegion( text );
-      } else if ( tagName.endsWith( fieldName( Country ) ) ) {
-        addr.setCountry( text );
-      }
-      contact.insertAddress( addr );
-     */
+      contact.setCategories( text.split( QRegExp( QLatin1String( ",\\s*" ) ) ) );
     }
 
     element = element.nextSiblingElement();
   }
+
+  if ( !homeAddress.isEmpty() )
+    contact.insertAddress( homeAddress );
+  if ( !workAddress.isEmpty() )
+    contact.insertAddress( workAddress );
+  if ( !otherAddress.isEmpty() )
+    contact.insertAddress( otherAddress );
 
   object.setContact( contact );
 }
@@ -193,7 +188,6 @@ static void parseEvent( const QDomElement &propElement, Object &object )
 
   QDomElement element = propElement.firstChildElement();
   while ( !element.isNull() ) {
-
     element = element.nextSiblingElement();
   }
 
@@ -240,15 +234,98 @@ Object OXA::ObjectUtils::parseObject( const QDomElement &propElement, Folder::Mo
   return object;
 }
 
-static void addContactElements( QDomElement &propElement, const Object &object )
+static void addContactElements( QDomDocument &document, QDomElement &propElement, const Object &object )
+{
+  const KABC::Addressee contact = object.contact();
+
+  // name
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "title" ), OXUtils::writeString( contact.title() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "first_name" ), OXUtils::writeString( contact.givenName() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "second_name" ), OXUtils::writeString( contact.additionalName() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "last_name" ), OXUtils::writeString( contact.familyName() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "suffix" ), OXUtils::writeString( contact.suffix() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "displayname" ), OXUtils::writeString( contact.formattedName() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "nickname" ), OXUtils::writeString( contact.nickName() ) );
+
+  // dates
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ), OXUtils::writeDateTime( KDateTime( contact.birthday(), KDateTime::UTC ) ) );
+  const QDateTime anniversary = QDateTime::fromString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Anniversary" ) ), Qt::ISODate );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "anniversary" ), OXUtils::writeDateTime( KDateTime( anniversary, KDateTime::UTC ) ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "spouse_name" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-SpousesName" ) ) ) );
+
+  // addresses
+  const KABC::Address homeAddress = contact.address( KABC::Address::Home );
+  if ( !homeAddress.isEmpty() ) {
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "street" ), OXUtils::writeString( homeAddress.street() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "postal_code" ), OXUtils::writeString( homeAddress.postalCode() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "city" ), OXUtils::writeString( homeAddress.locality() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "state" ), OXUtils::writeString( homeAddress.region() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "country" ), OXUtils::writeString( homeAddress.country() ) );
+  }
+  const KABC::Address workAddress = contact.address( KABC::Address::Work );
+  if ( !workAddress.isEmpty() ) {
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "business_street" ), OXUtils::writeString( workAddress.street() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "business_postal_code" ), OXUtils::writeString( workAddress.postalCode() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "business_city" ), OXUtils::writeString( workAddress.locality() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "business_state" ), OXUtils::writeString( workAddress.region() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "business_country" ), OXUtils::writeString( workAddress.country() ) );
+  }
+  const KABC::Address otherAddress = contact.address( KABC::Address::Dom );
+  if ( !otherAddress.isEmpty() ) {
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "second_street" ), OXUtils::writeString( otherAddress.street() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "second_postal_code" ), OXUtils::writeString( otherAddress.postalCode() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "second_city" ), OXUtils::writeString( otherAddress.locality() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "second_state" ), OXUtils::writeString( otherAddress.region() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "second_country" ), OXUtils::writeString( otherAddress.country() ) );
+  }
+
+  // further information
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "note" ), OXUtils::writeString( contact.note() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "url" ), OXUtils::writeString( contact.url().url() ) );
+
+  // image
+  QByteArray imageData;
+  QBuffer buffer( &imageData );
+  buffer.open( QIODevice::WriteOnly );
+  contact.photo().data().save( &buffer, "image/png" );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "image1" ), QString::fromLatin1( imageData.toBase64() ) );
+
+  // company information
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "company" ), OXUtils::writeString( contact.organization() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "department" ), OXUtils::writeString( contact.department() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "assistants_name" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-AssistantsName" ) ) ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "managers_name" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-ManagersName" ) ) ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "position" ), OXUtils::writeString( contact.role() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "profession" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Profession" ) ) ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "room_number" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Office" ) ) ) );
+
+  // communication
+  const QStringList emails = contact.emails();
+  for ( int i = 0; i < 3 && i < emails.count(); ++i ) {
+    DAVUtils::addOxElement( document, propElement, QString::fromLatin1( "email%1" ).arg( i + 1 ), OXUtils::writeString( emails.at( i ) ) );
+  }
+
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "mobile1" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Cell ).number() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "instant_messenger" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-IMAddress" ) ) ) );
+
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_business" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Work ).number() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_home" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Home ).number() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_other" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Voice ).number() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_car" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Car ).number() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_business" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Work ).number() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_home" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home ).number() ) );
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_other" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Voice ).number() ) );
+
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "pager" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Pager ).number() ) );
+
+  DAVUtils::addOxElement( document, propElement, QLatin1String( "categories" ), OXUtils::writeString( contact.categories().join( QLatin1String( "," ) ) ) );
+}
+
+static void addEventElements( QDomDocument &document, QDomElement &propElement, const Object &object )
 {
 }
 
-static void addEventElements( QDomElement &propElement, const Object &object )
-{
-}
-
-static void addTaskElements( QDomElement &propElement, const Object &object )
+static void addTaskElements( QDomDocument &document, QDomElement &propElement, const Object &object )
 {
 }
 
@@ -262,9 +339,9 @@ void OXA::ObjectUtils::addObjectElements( QDomDocument &document, QDomElement &p
     DAVUtils::addOxElement( document, propElement, QLatin1String( "last_modified" ), OXUtils::writeString( object.lastModified() ) );
 
   switch ( object.module() ) {
-    case Folder::Contacts: addContactElements( propElement, object ); break;
-    case Folder::Calendar: addEventElements( propElement, object ); break;
-    case Folder::Tasks: addTaskElements( propElement, object ); break;
+    case Folder::Contacts: addContactElements( document, propElement, object ); break;
+    case Folder::Calendar: addEventElements( document, propElement, object ); break;
+    case Folder::Tasks: addTaskElements( document, propElement, object ); break;
     case Folder::Unbound: Q_ASSERT( false ); break;
   }
 }

@@ -424,6 +424,7 @@ void OpenXchangeResource::onUserIdRequestJobFinished( KJob *job )
   Q_ASSERT( requestJob );
 
   Settings::self()->setUserId( requestJob->userId() );
+  Settings::self()->writeConfig();
 
   // now we have the user id, so continue synchronization
   synchronize();

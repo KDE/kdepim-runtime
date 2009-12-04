@@ -28,8 +28,6 @@
 
 #include <kio/davjob.h>
 
-#include <QtCore/QDebug>
-
 using namespace OXA;
 
 FolderRequestJob::FolderRequestJob( const Folder &folder, QObject *parent )
@@ -67,15 +65,12 @@ void FolderRequestJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   const QDomDocument &document = davJob->response();
-  qDebug() << document.toString();
 
   QDomElement multistatus = document.documentElement();
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
   const QDomNodeList props = response.elementsByTagName( "prop" );
   const QDomElement prop = props.at( 0 ).toElement();
   mFolder = FolderUtils::parseFolder( prop );
-
-  qDebug() << "Folder:" << mFolder.title();
 
   emitResult();
 }

@@ -25,8 +25,6 @@
 
 #include <QtXml/QDomDocument>
 
-#include <QtCore/QDebug>
-
 using namespace OXA;
 
 DavManager* DavManager::mSelf = 0;
@@ -62,7 +60,6 @@ KIO::DavJob* DavManager::createFindJob( const QString &path, const QDomDocument 
   KUrl url( mBaseUrl );
   url.setPath( path );
 
-  qDebug() << document.toString();
   return KIO::davPropFind( url, document, "0", KIO::HideProgressInfo );
 }
 
@@ -71,6 +68,5 @@ KIO::DavJob* DavManager::createPatchJob( const QString &path, const QDomDocument
   KUrl url( mBaseUrl );
   url.setPath( path );
 
-  qDebug() << document.toString();
   return KIO::davPropPatch( url, document, KIO::HideProgressInfo );
 }

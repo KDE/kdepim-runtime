@@ -27,8 +27,6 @@
 
 #include <kio/davjob.h>
 
-#include <QtCore/QDebug>
-
 using namespace OXA;
 
 FolderMoveJob::FolderMoveJob( const Folder &folder, const Folder &destinationFolder, QObject *parent )
@@ -70,7 +68,6 @@ void FolderMoveJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   const QDomDocument &document = davJob->response();
-  qDebug() << document.toString();
 
   QDomElement multistatus = document.documentElement();
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
@@ -84,9 +81,6 @@ void FolderMoveJob::davJobFinished( KJob *job )
 
     element = element.nextSiblingElement();
   }
-
-  qDebug() << "Folder:" << mFolder.title();
-  qDebug() << "LastModified:" << mFolder.lastModified();
 
   emitResult();
 }
