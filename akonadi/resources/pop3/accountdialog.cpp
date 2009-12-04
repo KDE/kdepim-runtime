@@ -151,7 +151,7 @@ void AccountDialog::setupWidgets()
   folderRequester->setMimeTypeFilter(
       QStringList() << QLatin1String( "message/rfc822" ) );
   folderRequester->setFrameStyle( QFrame::NoFrame );
-  folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
+  folderRequester->setAccessRightsFilter( Akonadi::Collection::CanCreateItem );
 
   connect( usePipeliningCheck, SIGNAL(clicked()),
            SLOT(slotPipeliningClicked()) );
