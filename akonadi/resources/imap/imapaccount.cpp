@@ -79,28 +79,28 @@ ImapAccount::ImapAccount( Settings *settings, QObject *parent )
   }
 
   switch ( settings->authentication() ) {
-  case 1:
+  case 0:
     m_authentication = KIMAP::LoginJob::ClearText;
     break;
-  case 2:
+  case 1:
     m_authentication = KIMAP::LoginJob::Login;
     break;
-  case 3:
+  case 2:
     m_authentication = KIMAP::LoginJob::Plain;
     break;
-  case 4:
+  case 3:
     m_authentication = KIMAP::LoginJob::CramMD5;
     break;
-  case 5:
+  case 4:
     m_authentication = KIMAP::LoginJob::DigestMD5;
     break;
-  case 6:
+  case 5:
     m_authentication = KIMAP::LoginJob::NTLM;
     break;
-  case 7:
+  case 6:
     m_authentication = KIMAP::LoginJob::GSSAPI;
     break;
-  case 8:
+  case 7:
     m_authentication = KIMAP::LoginJob::Anonymous;
     break;
   default:

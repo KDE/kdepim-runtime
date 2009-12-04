@@ -68,14 +68,14 @@ SetupServer::SetupServer( WId parent )
   connect( m_ui->tlsRadio, SIGNAL( toggled(bool) ),
            this, SLOT( slotSafetyChanged() ) );
 
-  m_ui->authImapGroup->setId( m_ui->clearRadio, 1 );
-  m_ui->authImapGroup->setId( m_ui->loginRadio, 2 );
-  m_ui->authImapGroup->setId( m_ui->plainRadio, 3 );
-  m_ui->authImapGroup->setId( m_ui->cramMd5Radio, 4 );
-  m_ui->authImapGroup->setId( m_ui->digestMd5Radio, 5 );
-  m_ui->authImapGroup->setId( m_ui->ntlmRadio, 6 );
-  m_ui->authImapGroup->setId( m_ui->gssapiRadio, 7 );
-  m_ui->authImapGroup->setId( m_ui->anonymousRadio, 8 );
+  m_ui->authImapGroup->setId( m_ui->clearRadio, 0 );
+  m_ui->authImapGroup->setId( m_ui->loginRadio, 1 );
+  m_ui->authImapGroup->setId( m_ui->plainRadio, 2 );
+  m_ui->authImapGroup->setId( m_ui->cramMd5Radio, 3 );
+  m_ui->authImapGroup->setId( m_ui->digestMd5Radio, 4 );
+  m_ui->authImapGroup->setId( m_ui->ntlmRadio, 5 );
+  m_ui->authImapGroup->setId( m_ui->gssapiRadio, 6 );
+  m_ui->authImapGroup->setId( m_ui->anonymousRadio, 7 );
 
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
@@ -383,28 +383,28 @@ void SetupServer::slotManageSubscriptions()
   }
 
   switch ( m_ui->authImapGroup->checkedId() ) {
-  case 1:
+  case 0:
     account.setAuthenticationMode( KIMAP::LoginJob::ClearText );
     break;
-  case 2:
+  case 1:
     account.setAuthenticationMode( KIMAP::LoginJob::Login );
     break;
-  case 3:
+  case 2:
     account.setAuthenticationMode( KIMAP::LoginJob::Plain );
     break;
-  case 4:
+  case 3:
     account.setAuthenticationMode( KIMAP::LoginJob::CramMD5 );
     break;
-  case 5:
+  case 4:
     account.setAuthenticationMode( KIMAP::LoginJob::DigestMD5 );
     break;
-  case 6:
+  case 5:
     account.setAuthenticationMode( KIMAP::LoginJob::NTLM );
     break;
-  case 7:
+  case 6:
     account.setAuthenticationMode( KIMAP::LoginJob::GSSAPI );
     break;
-  case 8:
+  case 7:
     account.setAuthenticationMode( KIMAP::LoginJob::Anonymous );
     break;
   default:
