@@ -55,7 +55,7 @@ KCal::Journal * JournalHandler::journalFromKolab(const KMime::Message::Ptr &data
     attachmentsFromKolab( data, xmlData, journal );
     return journal;
   }
-  return 0L;
+  return 0;
 }
 
 QByteArray JournalHandler::incidenceToXml(KCal::Incidence *incidence)

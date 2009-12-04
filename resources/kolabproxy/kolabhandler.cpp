@@ -43,7 +43,7 @@ KolabHandler *KolabHandler::createHandler(const QByteArray& type)
   } else if (type ==  "note.default" || type ==  "note") {
     return new NotesHandler();
   } else {
-    return 0L;
+    return 0;
   }
 }
 
@@ -84,7 +84,7 @@ KMime::Content* KolabHandler::findContentByType(const KMime::Message::Ptr &data,
     if (c->contentType()->mimeType() ==  type)
       return c;
   }
-  return 0L;
+  return 0;
 
 }
 
@@ -98,7 +98,7 @@ KMime::Content* KolabHandler::findContentByName(const KMime::Message::Ptr &data,
       return c;
     }
   }
-  return 0L;
+  return 0;
 
 }
 
