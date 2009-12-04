@@ -393,6 +393,49 @@ void KolabProxyResource::imapFolderCreateResult(KJob* job)
   }
 }
 
+void KolabProxyResource::applyAttributesToImap( Collection &imapCollection, const Akonadi::Collection &kolabCollection )
+{
+  static const EntityDisplayAttribute eda;
+  static const EntityHiddenAttribute hidden;
+  foreach( const Akonadi::Attribute *attr, kolabCollection.attributes() )
+  {
+    if ( attr->type() == hidden.type() )
+      // Don't propagate HIDDEN because that would hide collections in korg, kab too.
+      continue;
+
+    if ( attr->type() == eda.type() )
+      // Don't propagate DISPLAYATTRIBUTE because that would cause icons from the imap resource to use kolab icons.
+      continue;
+
+    if ( attr->type() == "AccessRights" )
+      continue;
+
+    kDebug() << "cloning" << attr->type();
+    imapCollection.addAttribute( attr->clone() );
+  }
+}
+
+void KolabProxyResource::applyAttributesFromImap( Collection &kolabCollection, const Akonadi::Collection &imapCollection )
+{
+  static const EntityDisplayAttribute eda;
+  static const EntityHiddenAttribute hidden;
+  foreach( const Akonadi::Attribute *attr, imapCollection.attributes() )
+  {
+    if ( attr->type() == hidden.type() )
+      continue;
+
+    if ( attr->type() == eda.type() )
+      continue;
+
+    if ( attr->type() == "AccessRights" )
+      continue;
+
+    kDebug() << "cloning" << attr->type();
+    kolabCollection.addAttribute( attr->clone() );
+  }
+}
+
+
 void KolabProxyResource::collectionChanged(const Akonadi::Collection& collection)
 {
   Collection imapCollection;
@@ -400,6 +443,8 @@ void KolabProxyResource::collectionChanged(const Akonadi::Collection& collection
   imapCollection.setName( collection.name() );
   imapCollection.setCachePolicy( collection.cachePolicy() );
   imapCollection.setRights( collection.rights() );
+
+  applyAttributesToImap( imapCollection, collection );
 
   CollectionModifyJob *job = new CollectionModifyJob( imapCollection, this );
   // TODO wait for the result
@@ -609,6 +654,7 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     }
   }
   c.setName( imapCollection.name() );
+  applyAttributesFromImap( c, imapCollection );
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
   QStringList contentTypes;
   contentTypes.append( Collection::mimeType() );
