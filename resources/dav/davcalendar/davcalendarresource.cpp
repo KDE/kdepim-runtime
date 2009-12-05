@@ -86,6 +86,8 @@ davCalendarResource::~davCalendarResource()
 
 void davCalendarResource::cleanup()
 {
+  AgentBase::cleanup();
+  
   if( accessor )
     accessor->removeCache( name() );
 }
@@ -230,7 +232,7 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   KCal::ICalFormat formatter;
   QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
   
-  kDebug() << "Item " << item.id() << " will be put to " << url.url();
+  kDebug() << "Item " << item.id() << " will be put to " << url.prettyUrl();
   
   QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   putItems[urlStr] = item;
@@ -263,7 +265,7 @@ void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
   KCal::ICalFormat formatter;
   QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
   
-  kDebug() << "Item " << item.id() << " will be put to " << url.url();
+  kDebug() << "Item " << item.id() << " will be put to " << url.prettyUrl();
   
   QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
   putItems[urlStr] = item;
