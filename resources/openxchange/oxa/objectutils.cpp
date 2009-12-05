@@ -142,27 +142,42 @@ static void parseContact( const QDomElement &propElement, Object &object )
     } else if ( tagName.startsWith( QLatin1String( "phone_" ) ) ) {
       KABC::PhoneNumber number;
       number.setNumber( text );
+      bool supportedType = false;
+
       if ( tagName.endsWith( QLatin1String( "_business" ) ) ) {
         number.setType( KABC::PhoneNumber::Work );
+        supportedType = true;
       } else if ( tagName.endsWith( QLatin1String( "_home" ) ) ) {
         number.setType( KABC::PhoneNumber::Home );
+        supportedType = true;
       } else if ( tagName.endsWith( QLatin1String( "_other" ) ) ) {
         number.setType( KABC::PhoneNumber::Voice );
+        supportedType = true;
       } else if ( tagName.endsWith( QLatin1String( "_car" ) ) ) {
         number.setType( KABC::PhoneNumber::Car );
+        supportedType = true;
       }
-      contact.insertPhoneNumber( number );
+
+      if ( supportedType )
+        contact.insertPhoneNumber( number );
     } else if ( tagName.startsWith( QLatin1String( "fax_" ) ) ) {
       KABC::PhoneNumber number;
       number.setNumber( text );
+      bool supportedType = false;
+
       if ( tagName.endsWith( QLatin1String( "_business" ) ) ) {
         number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Work );
+        supportedType = true;
       } else if ( tagName.endsWith( QLatin1String( "_home" ) ) ) {
         number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home );
+        supportedType = true;
       } else if ( tagName.endsWith( QLatin1String( "_other" ) ) ) {
         number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Voice );
+        supportedType = true;
       }
-      contact.insertPhoneNumber( number );
+
+      if ( supportedType )
+        contact.insertPhoneNumber( number );
     } else if ( tagName == QLatin1String( "pager" ) ) {
       contact.insertPhoneNumber( KABC::PhoneNumber( text, KABC::PhoneNumber::Pager ) );
     } else if ( tagName == QLatin1String( "categories" ) ) {
@@ -284,11 +299,28 @@ static void addContactElements( QDomDocument &document, QDomElement &propElement
   DAVUtils::addOxElement( document, propElement, QLatin1String( "url" ), OXUtils::writeString( contact.url().url() ) );
 
   // image
-  QByteArray imageData;
-  QBuffer buffer( &imageData );
-  buffer.open( QIODevice::WriteOnly );
-  contact.photo().data().save( &buffer, "image/png" );
-  DAVUtils::addOxElement( document, propElement, QLatin1String( "image1" ), QString::fromLatin1( imageData.toBase64() ) );
+  const KABC::Picture photo = contact.photo();
+  if ( !photo.data().isNull() ) {
+    QByteArray imageData;
+    QBuffer buffer( &imageData );
+    buffer.open( QIODevice::WriteOnly );
+
+    QString contentType;
+    if ( !photo.data().hasAlphaChannel() ) {
+      photo.data().save( &buffer, "JPEG" );
+      contentType = QLatin1String( "image/jpg" );
+    } else {
+      photo.data().save( &buffer, "PNG" );
+      contentType = QLatin1String( "image/png" );
+    }
+
+    buffer.close();
+
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "image1" ), QString::fromLatin1( imageData.toBase64() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "image_content_type" ), contentType );
+  } else {
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "image1" ) );
+  }
 
   // company information
   DAVUtils::addOxElement( document, propElement, QLatin1String( "company" ), OXUtils::writeString( contact.organization() ) );

@@ -55,7 +55,7 @@ QString OXUtils::writeDateTime( const KDateTime &value )
 {
   const uint ticks = value.toTime_t();
 
-  return QString::number( ticks );
+  return QString::number( ticks ) + QLatin1String( "000" );
 }
 
 QString OXUtils::writeDate( const KDateTime &value )
@@ -97,7 +97,8 @@ QString OXUtils::readName( const QString &text )
 
 KDateTime OXUtils::readDateTime( const QString &text )
 {
-  const qlonglong ticks = text.toLongLong();
+  // remove the trailing '000', they exceed the unsigned integer dimension
+  const uint ticks = text.mid( 0, text.length() - 3 ).toLongLong();
 
   KDateTime value;
   value.setTime_t( ticks );
