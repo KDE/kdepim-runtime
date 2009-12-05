@@ -316,6 +316,7 @@ void OpenXchangeResource::itemMoved( const Akonadi::Item &item, const Akonadi::C
   object.setObjectId( remoteIdentifier.objectId() );
   object.setModule( remoteIdentifier.module() );
   object.setFolderId( parentRemoteIdentifier.objectId() );
+  object.setLastModified( remoteIdentifier.lastModified() );
 
   OXA::Folder destinationFolder;
   destinationFolder.setObjectId( newParentRemoteIdentifier.objectId() );
