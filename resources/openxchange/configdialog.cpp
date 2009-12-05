@@ -50,6 +50,8 @@ ConfigDialog::ConfigDialog( WId windowId )
 
   connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
   connect( this, SIGNAL( user1Clicked() ), this, SLOT( showAboutDialog() ) );
+
+  setInitialSize( QSize( 410, 200 ) );
 }
 
 void ConfigDialog::save()
