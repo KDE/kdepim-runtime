@@ -363,6 +363,13 @@ void OpenXchangeResource::collectionAdded( const Akonadi::Collection &collection
 void OpenXchangeResource::collectionChanged( const Akonadi::Collection &collection )
 {
   const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+
+  // do not try to change the standard collections
+  if ( remoteIdentifier.objectId() >= 0 && remoteIdentifier.objectId() <= 4 ) {
+    changeCommitted( collection );
+    return;
+  }
+
   const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( collection.parentCollection().remoteId() );
 
   OXA::Folder folder;
