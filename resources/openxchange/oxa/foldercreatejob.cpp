@@ -65,7 +65,15 @@ void FolderCreateJob::davJobFinished( KJob *job )
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
-  const QDomDocument &document = davJob->response();
+  const QDomDocument document = davJob->response();
+
+  QString errorText;
+  if ( DAVUtils::davErrorOccurred( document, errorText ) ) {
+    setError( UserDefinedError );
+    setErrorText( errorText );
+    emitResult();
+    return;
+  }
 
   QDomElement multistatus = document.documentElement();
   QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );

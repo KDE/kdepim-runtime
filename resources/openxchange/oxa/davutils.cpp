@@ -49,3 +49,23 @@ void DAVUtils::setOxAttribute( QDomElement &element, const QString &name, const 
 {
   element.setAttributeNS( QLatin1String( "http://www.open-xchange.org" ), QLatin1String( "ox:" ) + name, value );
 }
+
+bool DAVUtils::davErrorOccurred( const QDomDocument &document, QString &errorText )
+{
+  const QDomElement documentElement = document.documentElement();
+  const QDomNodeList propStats = documentElement.elementsByTagNameNS( QLatin1String( "DAV:" ),
+                                                                      QLatin1String( "propstat" ) );
+
+  for ( int i = 0; i < propStats.count(); ++i ) {
+    const QDomElement propStat = propStats.at( i ).toElement();
+    const QDomElement status = propStat.firstChildElement( QLatin1String( "status" ) );
+    const QDomElement description = propStat.firstChildElement( QLatin1String( "responsedescription" ) );
+
+    if ( status.text() != QLatin1String( "200" ) ) {
+      errorText = description.text();
+      return true;
+    }
+  }
+
+  return false;
+}
