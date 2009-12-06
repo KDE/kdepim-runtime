@@ -46,7 +46,7 @@ public:
 };
 
 
-bool ContactsModel::entityMatch(Item item, const QVariant& matchData, Qt::MatchFlags flags) const
+bool ContactsModel::entityMatch(const Akonadi::Item &item, const QVariant& matchData, Qt::MatchFlags flags) const
 {
   Q_UNUSED( flags );
   if (!item.hasPayload<KABC::Addressee>())
@@ -76,7 +76,7 @@ bool ContactsModel::entityMatch(Item item, const QVariant& matchData, Qt::MatchF
 }
 
 
-bool ContactsModel::entityMatch(Collection col, const QVariant& matchData, Qt::MatchFlags flags) const
+bool ContactsModel::entityMatch(const Akonadi::Collection &col, const QVariant& matchData, Qt::MatchFlags flags) const
 {
   Q_UNUSED( flags );
   if (!matchData.canConvert(QVariant::String))
