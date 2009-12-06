@@ -47,8 +47,6 @@ public:
   virtual QVariant entityData(const Item &item, int column, int role) const;
   virtual QVariant entityData(const Collection &collection, int column, int role) const;
 
-  virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
-
   virtual int entityColumnCount( HeaderGroup headerGroup ) const;
 
   class State;

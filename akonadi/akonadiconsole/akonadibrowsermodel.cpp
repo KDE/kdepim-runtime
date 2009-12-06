@@ -213,13 +213,6 @@ AkonadiBrowserModel::AkonadiBrowserModel( Session* session, ChangeRecorder* moni
   m_currentState = m_genericState;
 }
 
-
-int AkonadiBrowserModel::columnCount(const QModelIndex& parent) const
-{
-  Q_UNUSED(parent);
-  return qMax(m_currentState->m_collectionHeaders.size(), m_currentState->m_itemHeaders.size());
-}
-
 QVariant AkonadiBrowserModel::entityData( const Item &item, int column, int role ) const
 {
   QVariant var = m_currentState->entityData( item, column, role );
