@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Kolab
+Icon=kolab
+Comment=Kolab Groupware Server
+
+[Wizard]
+Type=message/rfc822,text/directory,text/calendar
+Script=kolabwizard.js
