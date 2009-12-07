@@ -31,7 +31,7 @@ function emailChanged( arg )
   var pos = arg.indexOf( "@" );
   if ( pos >= 0 && (pos + 1) < arg.length ) {
     var server = arg.slice( pos + 1, arg.length );
-    page.imapWizard.serverAddress.setText( server );
+    page.imapWizard.incommingAddress.setText( server );
   }
 
   userChangedServerAddress = false;
@@ -49,7 +49,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.imapWizard.serverAddress.text == "" || page.imapWizard.emailAddress.text == "" ) {
+  if ( page.imapWizard.incommingAddress.text == "" || page.imapWizard.emailAddress.text == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -59,17 +59,15 @@ function validateInput()
 function setup()
 {
   var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
-  imapRes.setOption( "ImapServer", page.imapWizard.serverAddress.text );
+  imapRes.setOption( "ImapServer", page.imapWizard.incommingAddress.text );
   imapRes.setOption( "UserName", page.imapWizard.emailAddress.text );
   imapRes.setOption( "Password", page.imapWizard.password.text );
 
   var smtp = SetupManager.createTransport( "smtp" );
-  smtp.setName( page.imapWizard.serverAddress.text );
-  smtp.setHost( page.imapWizard.serverAddress.text );
+  smtp.setName( page.imapWizard.outgoingAddress.text );
+  smtp.setHost( page.imapWizard.outgoingAddress.text );
   smtp.setPort( 143 );
   smtp.setEncryption( "NONE" );
-  smtp.setUsername( page.imapWizard.emailAddress.text );
-  smtp.setPassword( page.imapWizard.password.text );
 
   SetupManager.execute();
 }
