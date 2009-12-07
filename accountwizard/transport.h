@@ -23,7 +23,6 @@
 #include "setupobject.h"
 #include <mailtransport/transport.h>
 
-class KJob;
 
 class Transport : public SetupObject
 {
