@@ -102,8 +102,8 @@ class SparqlBuilder
         void setName( const QString &name ) { m_name = name; }
         void setOptional( bool optional ) { m_isOptional = optional; }
 
-      protected:
         QString toString() const;
+      protected:
         virtual QString toStringInternal() const = 0;
         friend class SparqlBuilder;
 
