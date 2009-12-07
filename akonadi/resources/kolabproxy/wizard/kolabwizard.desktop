@@ -6,3 +6,6 @@ Comment=Kolab Groupware Server
 [Wizard]
 Type=message/rfc822,text/directory,text/calendar
 Script=kolabwizard.js
+
+[Translate]
+Filename=accountwizard_kolab

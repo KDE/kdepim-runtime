@@ -6,3 +6,6 @@ Comment=Disconnected Imap account
 [Wizard]
 Type=message/rfc822
 Script=disconnectedimapwizard.js
+
+[Translate]
+Filename=accountwizard_imap

@@ -6,3 +6,6 @@ Comment=Pop3 account
 [Wizard]
 Type=message/rfc822
 Script=pop3wizard.js
+
+[Translate]
+Filename=accountwizard_pop3
