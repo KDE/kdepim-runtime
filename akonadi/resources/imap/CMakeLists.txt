@@ -41,3 +41,4 @@ target_link_libraries(akonadi_imap_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDB
 
 install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
+add_subdirectory( wizard )
