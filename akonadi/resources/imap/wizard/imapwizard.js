@@ -73,6 +73,6 @@ function setup()
 }
 
 connect( page.imapWizard.emailAddress, "textChanged(QString)", this, "emailChanged(QString)" );
-connect( page.imapWizard.serverAddress, "textChanged(QString)", this, "serverChanged(QString)" );
+connect( page.imapWizard.incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
 validateInput();
