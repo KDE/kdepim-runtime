@@ -46,13 +46,18 @@ void LoadPage::enterPageNext()
     ui.statusLabel->setText( i18n( "Unable to load assistant: File '%1' does not exist.", Global::assistantBasePath() + scriptFile ) );
     return;
   }
-
   ui.statusLabel->setText( i18n( "Loading script '%1'...", Global::assistantBasePath() + scriptFile ) );
 
   if ( !m_action->setFile( Global::assistantBasePath() + scriptFile ) ) {
     ui.statusLabel->setText( i18n( "Failed to load script: '%1'.", m_action->errorMessage() ) );
     return;
   }
+
+  KConfigGroup grpTranslate( &f, "Translate");
+  const QString poFileName = grp.readEntry( "Filename" );
+  if( poFileName.isEmpty())
+    KGlobal::locale()->insertCatalog("poFileName");
+
   m_action->trigger();
 
   m_parent->next();
