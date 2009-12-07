@@ -66,7 +66,6 @@ function setup()
   var smtp = SetupManager.createTransport( "smtp" );
   smtp.setName( page.imapWizard.outgoingAddress.text );
   smtp.setHost( page.imapWizard.outgoingAddress.text );
-  smtp.setPort( 143 );
   smtp.setEncryption( "NONE" );
 
   SetupManager.execute();
