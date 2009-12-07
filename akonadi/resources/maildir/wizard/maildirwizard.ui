@@ -34,7 +34,11 @@
       </widget>
      </item>
      <item>
-      <widget class="KUrlRequester" name="maildirPath"/>
+      <widget class="KUrlRequester" name="maildirPath">
+       <property name="mode">
+        <set>KFile::Directory|KFile::ExistingOnly</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
