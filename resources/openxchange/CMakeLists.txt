@@ -46,6 +46,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 ########### next target ###############
 
 set( openxchangeresource_SRCS
+  oxa/contactutils.cpp
   oxa/davmanager.cpp
   oxa/davutils.cpp
   oxa/folder.cpp
@@ -56,6 +57,7 @@ set( openxchangeresource_SRCS
   oxa/folderrequestjob.cpp
   oxa/foldersrequestjob.cpp
   oxa/folderutils.cpp
+  oxa/incidenceutils.cpp
   oxa/object.cpp
   oxa/objectcreatejob.cpp
   oxa/objectdeletejob.cpp
