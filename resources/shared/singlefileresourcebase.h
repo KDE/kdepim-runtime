@@ -142,7 +142,6 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
     QString mCollectionIcon;
     KIO::FileCopyJob *mDownloadJob;
     KIO::FileCopyJob *mUploadJob;
-    QByteArray mPreviousHash;
     QByteArray mCurrentHash;
 
   protected Q_SLOTS:
