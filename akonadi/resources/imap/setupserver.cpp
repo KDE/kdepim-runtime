@@ -45,6 +45,9 @@
 #include <kuser.h>
 #include <solid/networking.h>
 
+#include <kpimidentities/identitymanager.h>
+#include <kpimidentities/identitycombo.h>
+
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
 
@@ -84,6 +87,12 @@ SetupServer::SetupServer( WId parent )
   m_ui->folderRequester->setMimeTypeFilter(
     QStringList() << QLatin1String( "message/rfc822" ) );
   m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
+  m_identityManager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
+  m_identityCombobox = new KPIMIdentities::IdentityCombo( m_identityManager, this );
+  m_ui->identityLabel->setBuddy( m_identityCombobox );
+  m_ui->identityLayout->addWidget( m_identityCombobox, 1 );
+  m_ui->identityLabel->setBuddy( m_identityCombobox );
+
 
   connect( m_ui->testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
 
@@ -101,6 +110,7 @@ SetupServer::SetupServer( WId parent )
   connect( m_ui->sameConfigCheck, SIGNAL(toggled(bool)),
            SLOT(slotEnableWidgets()) );
 
+  connect( m_ui->useDefaultIdentityCheck, SIGNAL( toggled(bool) ), this, SLOT( slotIdentityCheckboxChanged() ) );
 
   readSettings();
   slotTestChanged();
@@ -121,6 +131,11 @@ SetupServer::~SetupServer()
 bool SetupServer::shouldClearCache() const
 {
   return m_shouldClearCache;
+}
+
+void SetupServer::slotIdentityCheckboxChanged()
+{
+  m_identityCombobox->setEnabled( !m_ui->useDefaultIdentityCheck->isChecked() );
 }
 
 void SetupServer::applySettings()
@@ -146,6 +161,10 @@ void SetupServer::applySettings()
   Settings::self()->setTrashCollection( m_ui->folderRequester->collection().id() );
 
   Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
+  Settings::self()->setUseDefaultIdentity( m_ui->useDefaultIdentityCheck->isChecked() );
+
+  if ( !m_ui->useDefaultIdentityCheck->isChecked() )
+    Settings::self()->setAccountIdentity( m_identityCombobox->currentIdentity() );
 
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
@@ -211,6 +230,11 @@ void SetupServer::readSettings()
     requestJob->requestDefaultCollection( Akonadi::SpecialMailCollections::Trash );
     requestJob->start();
   }
+
+  m_ui->useDefaultIdentityCheck->setChecked( Settings::self()->useDefaultIdentity() );
+  if ( m_ui->useDefaultIdentityCheck->isChecked() )
+    m_identityCombobox->setCurrentIdentity( Settings::self()->accountIdentity() );
+
 
   m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
 

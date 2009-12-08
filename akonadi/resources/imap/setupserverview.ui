@@ -344,6 +344,39 @@ p, li { white-space: pre-wrap; }
         </layout>
        </item>
        <item>
+        <widget class="QGroupBox" name="identityBox">
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QCheckBox" name="useDefaultIdentityCheck">
+            <property name="toolTip">
+             <string>Use the default identity for this account</string>
+            </property>
+            <property name="text">
+             <string>Use &amp;default identity</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="identityLayout">
+            <item>
+             <widget class="QLabel" name="identityLabel">
+              <property name="toolTip">
+               <string>Select the KMail identity used for this account</string>
+              </property>
+              <property name="text">
+               <string>Identity:</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

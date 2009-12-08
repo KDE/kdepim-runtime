@@ -41,6 +41,12 @@ namespace MailTransport
 {
 class ServerTest;
 }
+namespace KPIMIdentities
+{
+class IdentityCombo;
+class IdentityManager;
+}
+
 
 /**
  * @class SetupServer
@@ -70,6 +76,7 @@ private slots:
    * Call this if you want the settings saved from this page.
    */
   void applySettings();
+  void slotIdentityCheckboxChanged();
 
 private:
   void readSettings();
@@ -79,6 +86,8 @@ private:
   bool m_subscriptionsChanged;
   bool m_shouldClearCache;
   QString m_vacationFileName;
+  KPIMIdentities::IdentityManager *m_identityManager;
+  KPIMIdentities::IdentityCombo *m_identityCombobox;
 
 private slots:
   void slotTest();

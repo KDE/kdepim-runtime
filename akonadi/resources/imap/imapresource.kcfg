@@ -47,6 +47,13 @@
        <label>Define which folder is used for trash</label>
        <default>-1</default>
     </entry>
+    <entry name="UseDefaultIdentity" type="Bool">
+       <label>Define if account use default identity</label>
+       <default>true</default>
+    </entry>
+    <entry name="AccountIdentity" type="Int">
+       <label>Identity account</label>
+    </entry>
   </group>
   <group name="idle">
     <entry name="IdleRidPath" type="StringList">
