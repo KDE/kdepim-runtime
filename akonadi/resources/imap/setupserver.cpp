@@ -232,7 +232,7 @@ void SetupServer::readSettings()
   }
 
   m_ui->useDefaultIdentityCheck->setChecked( Settings::self()->useDefaultIdentity() );
-  if ( m_ui->useDefaultIdentityCheck->isChecked() )
+  if ( !m_ui->useDefaultIdentityCheck->isChecked() )
     m_identityCombobox->setCurrentIdentity( Settings::self()->accountIdentity() );
 
 
