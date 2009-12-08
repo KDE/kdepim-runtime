@@ -1,5 +1,6 @@
 [Misc]
 Name=Mail Serializer
+Name[ar]=مسلسل البريد
 Name[ca]=Serialitzador de correu
 Name[da]=Serieordning af post
 Name[de]=E-Mail-Serialisierung
@@ -34,6 +35,7 @@ Name[x-test]=xxMail Serializerxx
 Name[zh_CN]=邮件序列转换器
 Name[zh_TW]=信件序列器
 Comment=An Akonadi serializer plugin for mail objects
+Comment[ar]=ملحق مسلسل اكوندا لكائنات البريد
 Comment[ca]=Un connector de serialització de l'Akonadi pels objectes correu
 Comment[da]=Et Akonadi-plugin til serieordning af postobjekter
 Comment[de]=Akonadi-Modul zur Serialisierung von E-Mail-Objekten

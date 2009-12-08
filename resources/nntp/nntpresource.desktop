@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Usenet Newsgroups (NNTP)
+Name[ar]=المجموعات الإخبارية يوزنت (NNTP)
 Name[ca]=Grups de notícies d'Usenet (NNTP)
 Name[cs]=Diskuzní skupiny (NNTP)
 Name[da]=Usenet-nyhedsgrupper (NNTP)
@@ -34,6 +35,7 @@ Name[x-test]=xxUsenet Newsgroups (NNTP)xx
 Name[zh_CN]=Usenet 新闻组(NNTP)
 Name[zh_TW]=Usenet 新聞群組（NNTP）
 Comment=Makes it possible to read articles from a news server
+Comment[ar]=تمكِن قراءة المقالات من خادم الأخبار
 Comment[ca]=Facilita la lectura d'articles des d'un servidor de notícies
 Comment[cs]=Umožňuje číst příspěvky z diskuzního serveru
 Comment[da]=Muliggør løsning af artikler fra en nyhedsserver

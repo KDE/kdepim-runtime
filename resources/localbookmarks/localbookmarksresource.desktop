@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Local Bookmarks
+Name[ar]=علامات محلية
 Name[cs]=Místní záložky
 Name[da]=Lokale bogmærker
 Name[de]=Lokale Lesezeichen
@@ -31,6 +32,7 @@ Name[x-test]=xxLocal Bookmarksxx
 Name[zh_CN]=本地书签
 Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
+Comment[ar]=تحمل البيانات من ملف العلامات المحلية
 Comment[ca]=Carrega dades des d'un fitxer de punts local
 Comment[cs]=Načítá data z místních záložek
 Comment[da]=Indlæser data fra en lokal bogmærkefil
