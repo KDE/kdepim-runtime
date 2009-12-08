@@ -38,9 +38,9 @@ QString OXUtils::writeNumber( qlonglong value )
 QString OXUtils::writeString( const QString &value )
 {
   QString text( value );
+  text.replace( '\\', "\\\\" );
   text.replace( '"', "\\\"" );
   text.replace( '\n', "\\n" );
-  text.replace( '\\', "\\\\" );
 
   return text;
 }
@@ -83,9 +83,9 @@ qlonglong OXUtils::readNumber( const QString &text )
 QString OXUtils::readString( const QString &text )
 {
   QString value( text );
-  value.replace( "\\\\", "\\" );
   value.replace( "\\n", "\n" );
   value.replace( "\\\"", "\"" );
+  value.replace( "\\\\", "\\" );
 
   return value;
 }
