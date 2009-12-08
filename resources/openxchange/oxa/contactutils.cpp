@@ -208,12 +208,18 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
   DAVUtils::addOxElement( document, propElement, QLatin1String( "nickname" ), OXUtils::writeString( contact.nickName() ) );
 
   // dates
-  DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ), OXUtils::writeDateTime( KDateTime( contact.birthday() ) ) );
+  if ( contact.birthday().isValid() )
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ), OXUtils::writeDateTime( KDateTime( contact.birthday() ) ) );
+  else
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ) );
 
   // since QDateTime::to/fromString() doesn't carry timezone information, we have to fake it here
   const QDate date = QDate::fromString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Anniversary" ) ), Qt::ISODate );
   const QDateTime anniversary( date, QTime(), Qt::UTC );
-  DAVUtils::addOxElement( document, propElement, QLatin1String( "anniversary" ), OXUtils::writeDateTime( KDateTime( anniversary ) ) );
+  if ( anniversary.isValid() )
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "anniversary" ), OXUtils::writeDateTime( KDateTime( anniversary ) ) );
+  else
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "anniversary" ) );
   DAVUtils::addOxElement( document, propElement, QLatin1String( "spouse_name" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-SpousesName" ) ) ) );
 
   // addresses
