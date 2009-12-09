@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=IMAP E-Mail Server
+Name[ca]=Servidor de correu IMAP
 Name[en_GB]=IMAP E-Mail Server
 Name[es]=Servidor de correo IMAP
 Name[et]=IMAP e-posti server
@@ -19,6 +20,7 @@ Name[uk]=Сервер пошти IMAP
 Name[x-test]=xxIMAP E-Mail Serverxx
 Name[zh_TW]=IMAP 信件伺服器
 Comment=Connects to an IMAP e-mail server.
+Comment[ca]=Connecta a un servidor de correu IMAP.
 Comment[en_GB]=Connects to an IMAP e-mail server.
 Comment[es]=Conecta a un servidor de correo IMAP.
 Comment[et]=Ühendumine IMAP e-posti serveriga.

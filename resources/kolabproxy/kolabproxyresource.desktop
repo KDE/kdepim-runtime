@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Kolab Groupware Server
+Name[ca]=Servidor de Groupware Kolab
 Name[en_GB]=Kolab Groupware Server
 Name[es]=Servidor de Groupware Kolab
 Name[et]=Kolabi grupitöö server
@@ -19,6 +20,7 @@ Name[uk]=Сервер групової роботи Kolab
 Name[x-test]=xxKolab Groupware Serverxx
 Name[zh_TW]=Kolab 群組伺服器
 Comment=Provides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately).
+Comment[ca]=Proporciona accés a carpetes de groupware Kolab en un servidor IMAP (els comptes IMAP s'han de configurar separadament).
 Comment[en_GB]=Provides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately).
 Comment[es]=Proporciona acceso a carpetas groupware de Kolab en un servidor IMAP (las cuentas IMAP necesitan ser configuradas por separado).
 Comment[et]=Ligipääsu tagamine Kolabi grupitöökaustadele IMAP serveris (IMAP kontod tuleb eraldi seadistada).

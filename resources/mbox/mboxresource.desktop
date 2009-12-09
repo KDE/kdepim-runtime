@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Mbox
+Name[ca]=Mbox
 Name[da]=Mbox
 Name[de]=Mbox
 Name[el]=Mbox
@@ -27,6 +28,7 @@ Name[x-test]=xxMboxxx
 Name[zh_CN]=MBox
 Name[zh_TW]=Mbox
 Comment=Loads data from a local mbox file
+Comment[ca]=Carrega dades des d'un fitxer «mbox» local
 Comment[da]=Indlæser data fra en lokal mbox-fil
 Comment[de]=Daten werden aus einer lokalen MBox-Datei geladen
 Comment[el]=Φόρτωση δεδομένων από ένα τοπικό αρχείο mbox

@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Personal Contacts
+Name[ca]=Contactes personals
 Name[en_GB]=Personal Contacts
 Name[es]=Contactos personales
 Name[et]=Isiklikud kontaktid
@@ -16,6 +17,7 @@ Name[uk]=Особисті контакти
 Name[x-test]=xxPersonal Contactsxx
 Name[zh_TW]=個人聯絡人
 Comment=The address book with personal contacts
+Comment[ca]=La llibreta d'adreces amb contactes personals
 Comment[en_GB]=The address book with personal contacts
 Comment[es]=La libreta de direcciones con contactos personales
 Comment[et]=Isiklikke kontakte sisaldav aadressiraamat
