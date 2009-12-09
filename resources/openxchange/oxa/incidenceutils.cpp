@@ -21,6 +21,7 @@
 
 #include "incidenceutils.h"
 
+#include "davmanager.h"
 #include "davutils.h"
 #include "oxutils.h"
 
@@ -38,7 +39,7 @@ static void parseMembersAttribute( const QDomElement &element, KCal::Incidence *
   incidence->clearAttendees();
 
   for ( QDomElement child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement() ) {
-    if ( child.tagName() == QLatin1String( "Participant" ) ) {
+    if ( child.tagName() == QLatin1String( "user" ) ) {
       const QString member = child.text();
 
       KABC::Addressee account;
@@ -57,7 +58,7 @@ static void parseMembersAttribute( const QDomElement &element, KCal::Incidence *
           continue;
 
         name = member;
-//FIXME:        email = member + '@' + KUrl( Settings::self()->baseUrl() ).host();
+        email = member + '@' + KUrl( DavManager::self()->baseUrl() ).host();
       } else {
         name = account.realName();
         email = account.preferredEmail();
