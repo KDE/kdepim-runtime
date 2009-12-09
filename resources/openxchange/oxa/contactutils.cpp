@@ -208,8 +208,9 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
   DAVUtils::addOxElement( document, propElement, QLatin1String( "nickname" ), OXUtils::writeString( contact.nickName() ) );
 
   // dates
-  if ( contact.birthday().isValid() )
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ), OXUtils::writeDateTime( KDateTime( contact.birthday() ) ) );
+  const QDateTime birthday( contact.birthday().date(), QTime(), Qt::UTC );
+  if ( birthday.isValid() )
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ), OXUtils::writeDateTime( KDateTime( birthday ) ) );
   else
     DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ) );
 
