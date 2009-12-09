@@ -57,7 +57,6 @@ TypePage::TypePage(KAssistantDialog* parent) :
   }
 
   connect( ui.listView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged()) );
-  connect( ui.listView, SIGNAL(doubleClicked(QModelIndex)), SLOT(slotLeavePageNext()));
 }
 
 void TypePage::selectionChanged()
