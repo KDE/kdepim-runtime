@@ -98,11 +98,11 @@ class  InvitationsCollection : public SpecialCollections
       public:
         Settings() : KCoreConfigSkeleton() {
           setCurrentGroup("Invitations");
-          addItemLongLong("DefaultResourceId", m_id, -1);
+          addItemString("DefaultResourceId", m_id, QString());
         }
         virtual ~Settings() {}
       private:
-        qlonglong m_id;
+        QString m_id;
     };
 
     InvitationsCollection( InvitationsAgent *agent ) : Akonadi::SpecialCollections( new Settings ), m_agent( agent ), sInvitationsType( "invitations" ) {}
