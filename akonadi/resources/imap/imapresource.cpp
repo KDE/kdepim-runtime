@@ -1334,7 +1334,8 @@ void ImapResource::onConnectError( KIMAP::Session *session, int code, const QStr
     int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
                                                  i18n( "The server refused the supplied username and password. "
                                                        "Do you want to go to the settings, have another attempt "
-                                                       "at logging in, or do nothing?" ),
+                                                       "at logging in, or do nothing?\n\n"
+                                                       "%1", message ),
                                                  i18n( "Could Not Authenticate" ),
                                                  KGuiItem( i18n( "Settings" ) ),
                                                  KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );

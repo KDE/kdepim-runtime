@@ -266,8 +266,9 @@ void ImapAccount::onLoginDone( KJob *job )
     capJob->start();
     return;
   } else {
+    kWarning() << "Error during login:" << job->errorString();
     emit error( login->session(), LoginFailError,
-                i18n( "Could not connect to the IMAP-server %1.", m_server ) );
+                i18n( "Could not connect to the IMAP-server %1.\n%2", m_server, job->errorString() ) );
 
     QString id = m_extraSessions.key( login->session() );
     if ( !id.isEmpty() ) {
