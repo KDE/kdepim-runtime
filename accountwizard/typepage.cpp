@@ -57,6 +57,7 @@ TypePage::TypePage(KAssistantDialog* parent) :
   }
 
   connect( ui.listView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged()) );
+  connect( ui.listView, SIGNAL(doubleClicked(QModelIndex)), SLOT(slotLeavePageNext()));
 }
 
 void TypePage::selectionChanged()
@@ -74,6 +75,11 @@ void TypePage::leavePageNext()
     return;
   const QModelIndex index = ui.listView->selectionModel()->selectedIndexes().first();
   Global::setAssistant( index.data( Qt::UserRole ).toString() );
+}
+
+QTreeView *TypePage::treeview() const
+{
+  return ui.listView;
 }
 
 #include "typepage.moc"

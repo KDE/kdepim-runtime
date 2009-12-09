@@ -32,10 +32,9 @@ class TypePage : public Page
     explicit TypePage( KAssistantDialog* parent = 0 );
 
     virtual void leavePageNext();
-
+    QTreeView *treeview() const;
   private slots:
     void selectionChanged();
-
   private:
     Ui::TypePage ui;
     QStandardItemModel *m_model;

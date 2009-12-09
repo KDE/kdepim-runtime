@@ -37,8 +37,11 @@ Dialog::Dialog(QWidget* parent) :
   action->addQObject( this, QLatin1String( "Dialog" ) );
   action->addQObject( setupManager, QLatin1String( "SetupManager" ) );
 
-  if ( Global::assistant().isEmpty() )
-    addPage( new TypePage( this ), i18n( "Select Account Type" ) );
+  if ( Global::assistant().isEmpty() ) {
+    TypePage *page = new TypePage( this );
+    connect( page->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
+    addPage( page, i18n( "Select Account Type" ) );
+  }
 
   LoadPage *loadPage = new LoadPage( this );
   loadPage->setAction( action );
@@ -59,6 +62,11 @@ KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
   KPageWidgetItem *item = KAssistantDialog::addPage( page, title );
   page->setPageWidgetItem( item );
   return item;
+}
+
+void Dialog::slotNextPage()
+{
+  next();
 }
 
 void Dialog::next()
