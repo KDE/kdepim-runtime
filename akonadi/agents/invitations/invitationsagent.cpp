@@ -215,8 +215,6 @@ InvitationsAgent::InvitationsAgent( const QString &id )
 
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Monitor
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  changeRecorder()->setAllMonitored( true );
-  changeRecorder()->fetchCollection( true );
   //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType() );
   //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType() );
   //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType() );
