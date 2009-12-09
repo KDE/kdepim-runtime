@@ -24,6 +24,7 @@
 #include "davmanager.h"
 #include "davutils.h"
 #include "oxutils.h"
+#include "users.h"
 
 #include <kcal/event.h>
 #include <kcal/todo.h>
@@ -40,28 +41,22 @@ static void parseMembersAttribute( const QDomElement &element, KCal::Incidence *
 
   for ( QDomElement child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement() ) {
     if ( child.tagName() == QLatin1String( "user" ) ) {
-      const QString member = child.text();
+      const QString uid = child.text();
 
-      KABC::Addressee account;
-      /*FIXME:
-      if ( mAccounts )
-        account = mAccounts->lookupUser( member );
-      else
-        qDebug() << "KCalResourceSlox: no accounts set";
-      */
+      const User user = Users::self()->lookupUid( uid.toLongLong() );
 
       QString name;
       QString email;
-      KCal::Attendee *attendee = incidence->attendeeByUid( member );
-      if ( account.isEmpty() ) {
+      KCal::Attendee *attendee = incidence->attendeeByUid( uid );
+      if ( !user.isValid() ) {
         if ( attendee )
           continue;
 
-        name = member;
-        email = member + '@' + KUrl( DavManager::self()->baseUrl() ).host();
+        name = uid;
+        email = uid + '@' + KUrl( DavManager::self()->baseUrl() ).host();
       } else {
-        name = account.realName();
-        email = account.preferredEmail();
+        name = user.name();
+        email = user.email();
       }
 
       if ( attendee ) {
@@ -69,7 +64,7 @@ static void parseMembersAttribute( const QDomElement &element, KCal::Incidence *
         attendee->setEmail( email );
       } else {
         attendee = new KCal::Attendee( name, email );
-        attendee->setUid( member );
+        attendee->setUid( uid );
         incidence->addAttendee( attendee );
       }
 
@@ -83,8 +78,6 @@ static void parseMembersAttribute( const QDomElement &element, KCal::Incidence *
           attendee->setStatus( KCal::Attendee::NeedsAction );
         }
       }
-    } else {
-      qDebug() << "Unknown tag in members attribute:" << child.tagName();
     }
   }
 }
@@ -119,15 +112,8 @@ static void parseIncidenceAttribute( const QDomElement &element, KCal::Incidence
       incidence->clearAlarms();
     }
   } else if ( tagName == QLatin1String( "created_by" ) ) {
-    /*
-    KABC::Addressee contact;
-    if ( mAccounts )
-      contact = mAccounts->lookupUser( text );
-    else
-      qDebug() << "KCalResourceSlox: no accounts set";
-    incidence->setOrganizer( KCal::Person( contact.formattedName(), contact.preferredEmail() ) );
-    */
-    incidence->setOrganizer( KCal::Person( "foobar", "foobar@foobar.com" ) );
+    const User user = Users::self()->lookupUid( OXUtils::readNumber( element.text() ) );
+    incidence->setOrganizer( KCal::Person( user.name(), user.email() ) );
   } else if ( tagName == QLatin1String( "participants" ) ) {
     parseMembersAttribute( element, incidence );
   } else if ( tagName == QLatin1String( "private_flag" ) ) {
@@ -321,21 +307,20 @@ static void createIncidenceAttributes( QDomDocument &document, QDomElement &pare
     QDomElement members = DAVUtils::addOxElement( document, parent, QLatin1String( "participants" ) );
     const KCal::Attendee::List attendees = incidence->attendees();
     foreach ( const KCal::Attendee *attendee, attendees ) {
-      /*
-      if ( mAccounts ) {
-        const QString userId = mAccounts->lookupId( attendee->email() );
-        QString status;
-        switch ( attendee->status() ) {
-          case KCal::Attendee::Accepted: status = QLatin1String( "accept" ); break;
-          case KCal::Attendee::Declined: status = QLatin1String( "decline" ); break;
-          default: status = QLatin1String( "none" ); break;
-        }
-        QDomElement element = DAVUtils::addOxElement( document, members, QLatin1String( "user" ), userId );
-        element.setAttribute( "confirm", status ); //TODO: ox attr?
-      } else {
-        qDebug() << "KCalResourceSlox: No accounts set.";
+      const User user = Users::self()->lookupEmail( attendee->email() );
+
+      if ( !user.isValid() )
+        continue;
+
+      QString status;
+      switch ( attendee->status() ) {
+        case KCal::Attendee::Accepted: status = QLatin1String( "accept" ); break;
+        case KCal::Attendee::Declined: status = QLatin1String( "decline" ); break;
+        default: status = QLatin1String( "none" ); break;
       }
-      */
+
+      QDomElement element = DAVUtils::addOxElement( document, members, QLatin1String( "user" ), OXUtils::writeNumber( user.uid() ) );
+      DAVUtils::setOxAttribute( element, "confirm", status );
     }
   }
 

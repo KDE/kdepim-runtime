@@ -45,6 +45,7 @@
 #include <oxa/objectrequestjob.h>
 #include <oxa/objectsrequestjob.h>
 #include <oxa/useridrequestjob.h>
+#include <oxa/users.h>
 
 using namespace Akonadi;
 
@@ -173,6 +174,8 @@ OpenXchangeResource::OpenXchangeResource( const QString &id )
   baseUrl.setUserName( Settings::self()->username() );
   baseUrl.setPassword( Settings::self()->password() );
   OXA::DavManager::self()->setBaseUrl( baseUrl );
+
+  OXA::Users::self()->initialize( identifier() );
 }
 
 OpenXchangeResource::~OpenXchangeResource()
@@ -434,7 +437,13 @@ void OpenXchangeResource::onUserIdRequestJobFinished( KJob *job )
   Settings::self()->setUserId( requestJob->userId() );
   Settings::self()->writeConfig();
 
-  // now we have the user id, so continue synchronization
+  connect( OXA::Users::self(), SIGNAL( initialized() ), SLOT( onUsersInitializationFinished() ) );
+  OXA::Users::self()->initialize( identifier() );
+}
+
+void OpenXchangeResource::onUsersInitializationFinished()
+{
+  // now we have all user information, so continue synchronization
   synchronize();
   emit configurationDialogAccepted();
 }

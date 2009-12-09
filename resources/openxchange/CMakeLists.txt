@@ -67,7 +67,10 @@ set( openxchangeresource_SRCS
   oxa/objectsrequestjob.cpp
   oxa/objectutils.cpp
   oxa/oxutils.cpp
+  oxa/user.cpp
+  oxa/users.cpp
   oxa/useridrequestjob.cpp
+  oxa/usersrequestjob.cpp
 
   configdialog.cpp
   openxchangeresource.cpp
