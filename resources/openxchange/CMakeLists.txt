@@ -26,6 +26,8 @@ if (XSLTPROC_EXECUTABLE)
   endmacro( kcfg_generate_dbus_interface )
 endif (XSLTPROC_EXECUTABLE)
 
+set(KDE4_ICON_DIR ${KDE4_INSTALL_DIR}/share/icons)
+
 if(WIN32)
     set(LIB_INSTALL_DIR ${LIB_INSTALL_DIR}
                         RUNTIME DESTINATION ${BIN_INSTALL_DIR}
@@ -91,3 +93,5 @@ kde4_add_executable(akonadi_openxchange_resource RUN_UNINSTALLED ${openxchangere
 target_link_libraries(akonadi_openxchange_resource ${KDE4_AKONADI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCAL_LIBS})
 
 install(TARGETS akonadi_openxchange_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+add_subdirectory(icons)

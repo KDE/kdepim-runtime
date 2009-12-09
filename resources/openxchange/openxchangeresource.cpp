@@ -616,6 +616,8 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
   resourceCollection.setName( name() );
   resourceCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
   resourceCollection.setRights( Collection::ReadOnly );
+  EntityDisplayAttribute *attribute = resourceCollection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attribute->setIconName( QLatin1String( "ox" ) );
 
   Collection privateFolder;
   privateFolder.setParentCollection( resourceCollection );

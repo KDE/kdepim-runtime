@@ -62,7 +62,7 @@ void ConfigDialog::save()
 
 void ConfigDialog::showAboutDialog()
 {
-  KAboutData aboutData( "openxchange", "", ki18n( "Open-Xchange" ), "0.1",
+  KAboutData aboutData( "ox", "", ki18n( "Open-Xchange" ), "0.1",
                         ki18n( "Akonadi Open-Xchange Resource" ),
                         KAboutData::License_LGPL,
                         ki18n("(c) 2009 by Tobias Koenig (credativ GmbH)") );
