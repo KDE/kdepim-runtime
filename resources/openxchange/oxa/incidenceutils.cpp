@@ -88,26 +88,16 @@ static void parseMembersAttribute( const QDomElement &element, KCal::Incidence *
   }
 }
 
-static void parseReadRightsAttribute( const QDomElement &element, KCal::Incidence *incidence )
-{
-  for ( QDomElement child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement() ) {
-    if ( child.tagName() == QLatin1String( "group" ) ) {
-      if ( child.text() == QLatin1String( "users" ) )
-        incidence->setSecrecy( KCal::Incidence::SecrecyPublic );
-    }
-  }
-}
-
 static void parseIncidenceAttribute( const QDomElement &element, KCal::Incidence *incidence )
 {
   const QString tagName = element.tagName();
   const QString text = OXUtils::readString( element.text() );
 
-  if ( tagName == QLatin1String( "IncidenceTitle" ) ) {
+  if ( tagName == QLatin1String( "title" ) ) {
     incidence->setSummary( text );
-  } else if ( tagName == QLatin1String( "Description" ) ) {
+  } else if ( tagName == QLatin1String( "note" ) ) {
     incidence->setDescription( text );
-  } else if ( tagName == QLatin1String( "Reminder" ) ) {
+  } else if ( tagName == QLatin1String( "alarm" ) ) {
     const int minutes = OXUtils::readNumber( element.text() );
     if ( minutes != 0 ) {
       KCal::Alarm::List alarms = incidence->alarms();
@@ -127,7 +117,7 @@ static void parseIncidenceAttribute( const QDomElement &element, KCal::Incidence
       // 0 reminder -> disable alarm
       incidence->clearAlarms();
     }
-  } else if ( tagName == QLatin1String( "CreatedBy" ) ) {
+  } else if ( tagName == QLatin1String( "created_by" ) ) {
     /*
     KABC::Addressee contact;
     if ( mAccounts )
@@ -136,10 +126,14 @@ static void parseIncidenceAttribute( const QDomElement &element, KCal::Incidence
       qDebug() << "KCalResourceSlox: no accounts set";
     incidence->setOrganizer( KCal::Person( contact.formattedName(), contact.preferredEmail() ) );
     */
-  } else if ( tagName == QLatin1String( "Participants" ) ) {
+    incidence->setOrganizer( KCal::Person( "foobar", "foobar@foobar.com" ) );
+  } else if ( tagName == QLatin1String( "participants" ) ) {
     parseMembersAttribute( element, incidence );
-  } else if ( tagName == QLatin1String( "readrights" ) ) {
-    parseReadRightsAttribute( element, incidence );
+  } else if ( tagName == QLatin1String( "private_flag" ) ) {
+    if ( OXUtils::readBoolean( element.text() ) == true )
+      incidence->setSecrecy( KCal::Incidence::SecrecyPrivate );
+    else
+      incidence->setSecrecy( KCal::Incidence::SecrecyPublic );
   } else if ( tagName == QLatin1String( "categories" ) ) {
     incidence->setCategories( text.split( QRegExp( QLatin1String( ",\\s*" ) ) ) );
   }
@@ -150,21 +144,21 @@ static void parseEventAttribute( const QDomElement &element, KCal::Event *event 
   const QString tagName = element.tagName();
   const QString text = OXUtils::readString( element.text() );
 
-  if ( tagName == QLatin1String( "EventBegin" ) ) {
+  if ( tagName == QLatin1String( "start_date" ) ) {
     KDateTime dateTime = OXUtils::readDateTime( element.text() );
     if ( event->allDay() )
       dateTime.setDateOnly( true );
 
     event->setDtStart( dateTime );
 
-  } else if ( tagName == QLatin1String( "EventEnd" ) ) {
+  } else if ( tagName == QLatin1String( "end_date" ) ) {
     KDateTime dateTime = OXUtils::readDateTime( element.text() );
     if ( event->allDay() )
       dateTime = dateTime.addSecs( -1 );
 
     event->setDtEnd( dateTime );
 
-  } else if ( tagName == QLatin1String( "Location" ) ) {
+  } else if ( tagName == QLatin1String( "location" ) ) {
     event->setLocation( text );
   }
 }
@@ -174,19 +168,19 @@ static void parseTodoAttribute( const QDomElement &element, KCal::Todo *todo )
   const QString tagName = element.tagName();
   const QString text = OXUtils::readString( element.text() );
 
-  if ( tagName == QLatin1String( "TaskBegin" ) ) {
+  if ( tagName == QLatin1String( "start_date" ) ) {
     const KDateTime dateTime = OXUtils::readDateTime( element.text() );
     if ( dateTime.isValid() ) {
       todo->setDtStart( dateTime );
       todo->setHasStartDate( true );
     }
-  } else if ( tagName == QLatin1String( "TaskEnd" ) ) {
+  } else if ( tagName == QLatin1String( "end_date" ) ) {
     const KDateTime dateTime = OXUtils::readDateTime( element.text() );
     if ( dateTime.isValid() ) {
       todo->setDtDue( dateTime );
       todo->setHasDueDate( true );
     }
-  } else if ( tagName == QLatin1String( "Priority" ) ) {
+  } else if ( tagName == QLatin1String( "priority" ) ) {
     const int priorityNumber = OXUtils::readNumber( element.text() );
     if ( priorityNumber < 1 || priorityNumber > 3 ) {
       qDebug() << "Unknown priority:" << text;
@@ -206,17 +200,17 @@ static void parseTodoAttribute( const QDomElement &element, KCal::Todo *todo )
       }
       todo->setPriority( priority );
     }
-  } else if ( tagName == QLatin1String( "PercentComplete" ) ) {
+  } else if ( tagName == QLatin1String( "percent_completed" ) ) {
     todo->setPercentComplete( OXUtils::readNumber( element.text() ) );
   }
 }
 
-static void parseRecurrence( const QDomElement &element, KCal::Event *event )
+static void parseRecurrence( const QDomElement &element, KCal::Incidence *incidence )
 {
   QString type;
 
   int dailyValue = -1;
-  KDateTime end;
+  KDateTime endDate;
 
   int weeklyValue = -1;
   QBitArray days( 7 ); // days, starting with monday
@@ -229,7 +223,6 @@ static void parseRecurrence( const QDomElement &element, KCal::Event *event )
   int yearlyMonth = -1;
 
   int monthly2Recurrency = 0;
-  int monthly2Day = 0;
   int monthly2ValueMonth = -1;
 
   int yearly2Recurrency = 0;
@@ -242,41 +235,8 @@ static void parseRecurrence( const QDomElement &element, KCal::Event *event )
     const QString tagName = child.tagName();
     const QString text = OXUtils::readString( child.text() );
 
-    if ( tagName == QLatin1String( "RecurrenceType" ) ) {
+    if ( tagName == QLatin1String( "recurrence_type" ) ) {
       type = text;
-    } else if ( tagName == QLatin1String( "daily_value" ) ) {
-      dailyValue = OXUtils::readNumber( child.text() );
-    } else if ( tagName == QLatin1String( "RecurrenceEnd" ) ) {
-      end = OXUtils::readDateTime( child.text() );
-    } else if ( tagName == QLatin1String( "weekly_value" ) ) {
-      weeklyValue = OXUtils::readNumber( child.text() );
-    } else if ( tagName.startsWith( QLatin1String( "weekly_day_" ) ) ) {
-      const int day = tagName.mid( 11, 1 ).toInt();
-      if ( day == 1 )
-        days.setBit( 0 );
-      else
-        days.setBit( day - 2 );
-    } else if ( tagName == QLatin1String( "monthly_value_day" ) ) {
-      monthlyValueDay = text.toInt();
-    } else if ( tagName == QLatin1String( "monthly_value_month" ) ) {
-      monthlyValueMonth = text.toInt();
-    } else if ( tagName == QLatin1String( "yearly_value_day" ) ) {
-      yearlyValueDay = text.toInt();
-    } else if ( tagName == QLatin1String( "yearly_month" ) ) {
-      yearlyMonth = text.toInt();
-    } else if ( tagName == QLatin1String( "monthly2_recurrency" ) ) {
-      monthly2Recurrency = text.toInt();
-    } else if ( tagName == QLatin1String( "monthly2_day" ) ) {
-      monthly2Day = text.toInt();
-    } else if ( tagName == QLatin1String( "monthly2_value_month" ) ) {
-      monthly2ValueMonth = text.toInt();
-    } else if ( tagName == QLatin1String( "yearly2_reccurency" ) ) { // this is not a typo, this is what SLOX really sends!
-      yearly2Recurrency = text.toInt();
-    } else if ( tagName == QLatin1String( "yearly2_day" ) ) {
-      yearly2Day = text.toInt();
-    } else if ( tagName == QLatin1String( "yearly2_month" ) ) {
-      yearly2Month = text.toInt() + 1;
-    // OX recurrence fields
     } else if ( tagName == QLatin1String( "interval" ) ) {
       dailyValue = text.toInt();
       weeklyValue = text.toInt();
@@ -297,11 +257,14 @@ static void parseRecurrence( const QDomElement &element, KCal::Event *event )
     } else if ( tagName == QLatin1String( "month" ) ) {
       yearlyMonth = text.toInt() + 1; // starts at 0
       yearly2Month = text.toInt() + 1;
-    } else if ( tagName == QLatin1String( "RecurrenceDelEx" ) ) {
+    } else if ( tagName == QLatin1String( "deleteexceptions" ) ) {
       const QStringList exceptionDates = text.split( QLatin1String( "," ) );
       foreach ( const QString &date, exceptionDates )
         deleteExceptions.append( OXUtils::readDateTime( date ).date() );
+    } else if ( tagName == QLatin1String( "until" ) ) {
+      endDate = OXUtils::readDateTime( child.text() );
     }
+    //TODO: notification
   }
 
   if ( daysSet && type == QLatin1String( "monthly" ) )
@@ -309,7 +272,7 @@ static void parseRecurrence( const QDomElement &element, KCal::Event *event )
   if ( daysSet && type == QLatin1String( "yearly" ) )
     type = QLatin1String( "yearly2" );
 
-  KCal::Recurrence *recurrence = event->recurrence();
+  KCal::Recurrence *recurrence = incidence->recurrence();
 
   if ( type == QLatin1String( "daily" ) ) {
     recurrence->setDaily( dailyValue );
@@ -328,7 +291,7 @@ static void parseRecurrence( const QDomElement &element, KCal::Event *event )
     if ( daysSet )
       _days = days;
     else
-      _days.setBit( event->dtStart().date().dayOfWeek() );
+      _days.setBit( incidence->dtStart().date().dayOfWeek() );
     recurrence->addMonthlyPos( monthly2Recurrency, _days );
   } else if ( type == QLatin1String( "yearly2" ) ) {
     recurrence->setYearly( 1 );
@@ -341,18 +304,20 @@ static void parseRecurrence( const QDomElement &element, KCal::Event *event )
     recurrence->addYearlyPos( yearly2Recurrency, _days );
   }
 
-  recurrence->setEndDate( end.date() );
+  if ( endDate.isValid() )
+    recurrence->setEndDate( endDate.date() );
+
   recurrence->setExDates( deleteExceptions );
 }
 
 
 static void createIncidenceAttributes( QDomDocument &document, QDomElement &parent, KCal::Incidence *incidence )
 {
-  DAVUtils::addOxElement( document, parent, QLatin1String( "IncidenceTitle" ), OXUtils::writeString( incidence->summary() ) );
-  DAVUtils::addOxElement( document, parent, QLatin1String( "Description" ), OXUtils::writeString( incidence->description() ) );
+  DAVUtils::addOxElement( document, parent, QLatin1String( "title" ), OXUtils::writeString( incidence->summary() ) );
+  DAVUtils::addOxElement( document, parent, QLatin1String( "note" ), OXUtils::writeString( incidence->description() ) );
 
   if ( incidence->attendeeCount() > 0 ) {
-    QDomElement members = DAVUtils::addOxElement( document, parent, QLatin1String( "Participants" ) );
+    QDomElement members = DAVUtils::addOxElement( document, parent, QLatin1String( "participants" ) );
     const KCal::Attendee::List attendees = incidence->attendees();
     foreach ( const KCal::Attendee *attendee, attendees ) {
       /*
@@ -364,7 +329,7 @@ static void createIncidenceAttributes( QDomDocument &document, QDomElement &pare
           case KCal::Attendee::Declined: status = QLatin1String( "decline" ); break;
           default: status = QLatin1String( "none" ); break;
         }
-        QDomElement element = DAVUtils::addOxElement( document, members, QLatin1String( "Participant" ), userId );
+        QDomElement element = DAVUtils::addOxElement( document, members, QLatin1String( "user" ), userId );
         element.setAttribute( "confirm", status ); //TODO: ox attr?
       } else {
         qDebug() << "KCalResourceSlox: No accounts set.";
@@ -373,42 +338,49 @@ static void createIncidenceAttributes( QDomDocument &document, QDomElement &pare
     }
   }
 
-/*
-  // set read attributes - if SecrecyPublic, set it to users
-  // TODO OX support
-  if ( incidence->secrecy() == Incidence::SecrecyPublic && type() != "ox" )
-  {
-    QDomElement rights = WebdavHandler::addSloxElement( this, doc, parent, "readrights" );
-    WebdavHandler::addSloxElement( this, doc, rights, "group", "users" );
-  }
-*/
+  if ( incidence->secrecy() == KCal::Incidence::SecrecyPublic )
+    DAVUtils::addOxElement( document, parent, QLatin1String( "private_flag" ), OXUtils::writeBoolean( false ) );
+  else
+    DAVUtils::addOxElement( document, parent, QLatin1String( "private_flag" ), OXUtils::writeBoolean( true ) );
 
   // set reminder as the number of minutes to the start of the event
   const KCal::Alarm::List alarms = incidence->alarms();
-  if ( !alarms.isEmpty() && alarms.first()->hasStartOffset() && alarms.first()->enabled() )
-    DAVUtils::addOxElement( document, parent, QLatin1String( "Reminder" ), OXUtils::writeNumber( (-1) * alarms.first()->startOffset().asSeconds() / 60 ) );
-  else
-    DAVUtils::addOxElement( document, parent, QLatin1String( "Reminder" ), QLatin1String( "0" ) );
+  if ( !alarms.isEmpty() && alarms.first()->hasStartOffset() && alarms.first()->enabled() ) {
+    DAVUtils::addOxElement( document, parent, QLatin1String( "alarm_flag" ), OXUtils::writeBoolean( true ) );
+    DAVUtils::addOxElement( document, parent, QLatin1String( "alarm" ), OXUtils::writeNumber( (-1) * alarms.first()->startOffset().asSeconds() / 60 ) );
+  } else {
+    DAVUtils::addOxElement( document, parent, QLatin1String( "alarm_flag" ), OXUtils::writeBoolean( false ) );
+    DAVUtils::addOxElement( document, parent, QLatin1String( "alarm" ), QLatin1String( "0" ) );
+  }
 
   // categories
-  DAVUtils::addOxElement( document, parent, QLatin1String( "Categories" ), OXUtils::writeString( incidence->categories().join( QLatin1String( ", " ) ) ) );
+  DAVUtils::addOxElement( document, parent, QLatin1String( "categories" ), OXUtils::writeString( incidence->categories().join( QLatin1String( ", " ) ) ) );
 }
 
 static void createEventAttributes( QDomDocument &document, QDomElement &parent, KCal::Event *event )
 {
-  DAVUtils::addOxElement( document, parent, QLatin1String( "EventBegin" ), OXUtils::writeDateTime( event->dtStart() ) );
-  DAVUtils::addOxElement( document, parent, QLatin1String( "EventEnd" ), OXUtils::writeDateTime( event->dtEnd() ) );
-  DAVUtils::addOxElement( document, parent, QLatin1String( "Location" ), OXUtils::writeString( event->location() ) );
-  DAVUtils::addOxElement( document, parent, QLatin1String( "FullTime" ), OXUtils::writeBoolean( event->allDay() ) );
+  DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ), OXUtils::writeDateTime( event->dtStart() ) );
+
+  if ( event->hasEndDate() )
+    DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ), OXUtils::writeDateTime( event->dtEnd() ) );
+  else
+    DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ) );
+
+  DAVUtils::addOxElement( document, parent, QLatin1String( "location" ), OXUtils::writeString( event->location() ) );
+  DAVUtils::addOxElement( document, parent, QLatin1String( "full_time" ), OXUtils::writeBoolean( event->allDay() ) );
 }
 
 static void createTaskAttributes( QDomDocument &document, QDomElement &parent, KCal::Todo *todo )
 {
   if ( todo->hasStartDate() )
-    DAVUtils::addOxElement( document, parent, QLatin1String( "TaskBegin" ), OXUtils::writeDateTime( todo->dtStart() ) );
+    DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ), OXUtils::writeDateTime( todo->dtStart() ) );
+  else
+    DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ) );
 
   if ( todo->hasDueDate() )
-    DAVUtils::addOxElement( document, parent, QLatin1String( "TaskEnd" ), OXUtils::writeDateTime( todo->dtDue() ) );
+    DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ), OXUtils::writeDateTime( todo->dtDue() ) );
+  else
+    DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ) );
 
   QString priority;
   switch ( todo->priority() ) {
@@ -424,15 +396,15 @@ static void createTaskAttributes( QDomDocument &document, QDomElement &parent, K
       priority = QLatin1String( "2" );
       break;
   }
-  DAVUtils::addOxElement( document, parent, QLatin1String( "Priority" ), priority );
+  DAVUtils::addOxElement( document, parent, QLatin1String( "priority" ), priority );
 
-  DAVUtils::addOxElement( document, parent, QLatin1String( "PercentComplete" ), OXUtils::writeNumber( todo->percentComplete() ) );
+  DAVUtils::addOxElement( document, parent, QLatin1String( "percent_completed" ), OXUtils::writeNumber( todo->percentComplete() ) );
 }
 
 static void createRecurrenceAttributes( QDomDocument &document, QDomElement &parent, KCal::Incidence *incidence )
 {
   if ( !incidence->recurs() ) {
-    DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceType" ), QLatin1String( "none" ) );
+    DAVUtils::addOxElement( document, parent, QLatin1String( "recurrence_type" ), QLatin1String( "none" ) );
     return;
   }
 
@@ -440,13 +412,13 @@ static void createRecurrenceAttributes( QDomDocument &document, QDomElement &par
   int monthOffset = -1;
   switch ( recurrence->recurrenceType() ) {
     case KCal::Recurrence::rDaily:
-      DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceType" ), QLatin1String( "daily" ) );
-      DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceDailyFreq" ), OXUtils::writeNumber( recurrence->frequency() ) );
+      DAVUtils::addOxElement( document, parent, QLatin1String( "recurrence_type" ), QLatin1String( "daily" ) );
+      DAVUtils::addOxElement( document, parent, QLatin1String( "interval" ), OXUtils::writeNumber( recurrence->frequency() ) );
       break;
     case KCal::Recurrence::rWeekly:
       {
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceType" ), QLatin1String( "weekly" ) );
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceWeeklyFreq" ), OXUtils::writeNumber( recurrence->frequency() ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "recurrence_type" ), QLatin1String( "weekly" ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "interval" ), OXUtils::writeNumber( recurrence->frequency() ) );
 
         int days = 0;
         for ( int i = 0; i < 7; ++i ) {
@@ -458,43 +430,45 @@ static void createRecurrenceAttributes( QDomDocument &document, QDomElement &par
       }
       break;
     case KCal::Recurrence::rMonthlyDay:
-      DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceType" ), QLatin1String( "monthly" ) );
-      DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceMonthlyFreq" ), OXUtils::writeNumber( recurrence->frequency() ) );
-      DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceMonthlyDay" ), OXUtils::writeNumber( recurrence->monthDays().first() ) );
+      DAVUtils::addOxElement( document, parent, QLatin1String( "recurrence_type" ), QLatin1String( "monthly" ) );
+      DAVUtils::addOxElement( document, parent, QLatin1String( "interval" ), OXUtils::writeNumber( recurrence->frequency() ) );
+      DAVUtils::addOxElement( document, parent, QLatin1String( "day_in_month" ), OXUtils::writeNumber( recurrence->monthDays().first() ) );
       break;
     case KCal::Recurrence::rMonthlyPos:
       {
         const KCal::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().first();
 
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceType" ), QLatin1String( "monthly" ) );
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceMonthly2Freq" ), OXUtils::writeNumber( recurrence->frequency() ) );
-
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceMonthly2Day" ), OXUtils::writeNumber( 1 << wdp.day() ) );
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceMonthly2Pos" ), OXUtils::writeNumber( wdp.pos() ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "recurrence_type" ), QLatin1String( "monthly" ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "interval" ), OXUtils::writeNumber( recurrence->frequency() ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "days" ), OXUtils::writeNumber( 1 << wdp.day() ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "day_in_month" ), OXUtils::writeNumber( wdp.pos() ) );
       }
       break;
     case KCal::Recurrence::rYearlyMonth:
-      DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceType" ), QLatin1String( "yearly" ) );
-      DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceYearlyDay" ), OXUtils::writeNumber( recurrence->yearDates().first() ) );
-      DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceYearlyMonth" ), OXUtils::writeNumber( recurrence->yearMonths().first() + monthOffset ) );
+      DAVUtils::addOxElement( document, parent, QLatin1String( "recurrence_type" ), QLatin1String( "yearly" ) );
       DAVUtils::addOxElement( document, parent, QLatin1String( "interval" ), QLatin1String( "1" ) );
+      DAVUtils::addOxElement( document, parent, QLatin1String( "day_in_month" ), OXUtils::writeNumber( recurrence->yearDates().first() ) );
+      DAVUtils::addOxElement( document, parent, QLatin1String( "month" ), OXUtils::writeNumber( recurrence->yearMonths().first() + monthOffset ) );
       break;
     case KCal::Recurrence::rYearlyPos:
       {
         const KCal::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().first();
 
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceType" ), QLatin1String( "yearly" ) );
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceYearly2Day" ), OXUtils::writeNumber( 1 << wdp.day() ) );
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceYearly2Pos" ), OXUtils::writeNumber( wdp.pos() ) );
-        DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceYearly2Month" ), OXUtils::writeNumber( recurrence->yearMonths().first() + monthOffset ) );
-        DAVUtils::addOxElement( document, parent, "interval", "1" );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "recurrence_type" ), QLatin1String( "yearly" ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "interval" ), QLatin1String( "1" ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "days" ), OXUtils::writeNumber( 1 << wdp.day() ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "day_in_month" ), OXUtils::writeNumber( wdp.pos() ) );
+        DAVUtils::addOxElement( document, parent, QLatin1String( "month" ), OXUtils::writeNumber( recurrence->yearMonths().first() + monthOffset ) );
       }
       break;
     default:
       qDebug() << "unsupported recurrence type:" << recurrence->recurrenceType();
   }
 
-  DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceEnd" ), OXUtils::writeDateTime( recurrence->endDateTime() ) );
+  if ( recurrence->endDateTime().isValid() )
+    DAVUtils::addOxElement( document, parent, QLatin1String( "until" ), OXUtils::writeDateTime( recurrence->endDateTime() ) );
+  else
+    DAVUtils::addOxElement( document, parent, QLatin1String( "until" ) );
 
   // delete exceptions
   const KCal::DateList exceptionList = recurrence->exDates();
@@ -503,23 +477,26 @@ static void createRecurrenceAttributes( QDomDocument &document, QDomElement &par
   foreach ( const QDate &date, exceptionList )
     dates.append( OXUtils::writeDateTime( KDateTime( date ) ) );
 
-  DAVUtils::addOxElement( document, parent, QLatin1String( "RecurrenceDelEx" ), dates.join( QLatin1String( "," ) ) );
+  DAVUtils::addOxElement( document, parent, QLatin1String( "deleteexceptions" ), dates.join( QLatin1String( "," ) ) );
 }
 
 void OXA::IncidenceUtils::parseEvent( const QDomElement &propElement, Object &object )
 {
   KCal::Event *event = new KCal::Event;
 
+  const QDomElement fullTimeElement = propElement.firstChildElement( "full_time" );
+  if ( !fullTimeElement.isNull() )
+    event->setAllDay( OXUtils::readBoolean( fullTimeElement.text() ) );
+
   bool doesRecur = false;
+  const QDomElement recurrenceTypeElement = propElement.firstChildElement( "recurrence_type" );
+  if ( !recurrenceTypeElement.isNull() && recurrenceTypeElement.text() != QLatin1String( "none" ) )
+    doesRecur = true;
+
   QDomElement element = propElement.firstChildElement();
   while ( !element.isNull() ) {
     parseIncidenceAttribute( element, event );
     parseEventAttribute( element, event );
-
-    if ( element.tagName() == QLatin1String( "RecurrenceType" ) ) {
-      if ( element.text() != QLatin1String( "none" ) )
-            doesRecur = true;
-    }
 
     element = element.nextSiblingElement();
   }
@@ -537,6 +514,11 @@ void OXA::IncidenceUtils::parseTask( const QDomElement &propElement, Object &obj
   KCal::Todo *todo = new KCal::Todo;
   todo->setSecrecy( KCal::Incidence::SecrecyPrivate );
 
+  bool doesRecur = false;
+  const QDomElement recurrenceTypeElement = propElement.firstChildElement( "recurrence_type" );
+  if ( !recurrenceTypeElement.isNull() && recurrenceTypeElement.text() != QLatin1String( "none" ) )
+    doesRecur = true;
+
   QDomElement element = propElement.firstChildElement();
   while ( !element.isNull() ) {
     parseIncidenceAttribute( element, todo );
@@ -544,6 +526,11 @@ void OXA::IncidenceUtils::parseTask( const QDomElement &propElement, Object &obj
 
     element = element.nextSiblingElement();
   }
+
+  if ( doesRecur )
+    parseRecurrence( propElement, todo );
+  else
+    todo->recurrence()->unsetRecurs();
 
   object.setTask( KCal::Incidence::Ptr( todo ) );
 }
@@ -558,5 +545,6 @@ void OXA::IncidenceUtils::addEventElements( QDomDocument &document, QDomElement 
 void OXA::IncidenceUtils::addTaskElements( QDomDocument &document, QDomElement &propElement, const Object &object )
 {
   createIncidenceAttributes( document, propElement, object.task().get() );
-  createTaskAttributes( document, propElement, static_cast<KCal::Todo*>( object.event().get() ) );
+  createTaskAttributes( document, propElement, static_cast<KCal::Todo*>( object.task().get() ) );
+  createRecurrenceAttributes( document, propElement, object.task().get() );
 }
