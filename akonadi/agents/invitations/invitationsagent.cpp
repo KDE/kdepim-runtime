@@ -124,7 +124,8 @@ class  InvitationsCollection : public SpecialCollections
       return m_collection;
     }
     void registerDefaultCollection() {
-      Q_ASSERT( m_collection.isValid() );
+//      Q_ASSERT( m_collection.isValid() );
+      defaultCollection();
       registerCollection( sInvitationsType, m_collection );
     }
     SpecialCollectionsRequestJob* reguestJob() const {
@@ -214,6 +215,8 @@ InvitationsAgent::InvitationsAgent( const QString &id )
 
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Monitor
   changeRecorder()->itemFetchScope().fetchFullPayload();
+  changeRecorder()->setAllMonitored( true );
+  changeRecorder()->fetchCollection( true );
   //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType() );
   //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType() );
   //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType() );
@@ -469,13 +472,16 @@ Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calen
 
 void InvitationsAgent::itemAdded( const Item &item, const Collection &collection )
 {
+  kDebug() << item.id() << collection;
   Q_UNUSED( collection );
 
   if( ! m_InvitationsCollection->defaultCollection().isValid() ) {
+    kDebug() << "No default collection found";
     return;
   }
 
   if( ! item.hasPayload<KMime::Message::Ptr>() ) {
+    kDebug() << "Item has no payload";
     return;
   }
 
@@ -487,14 +493,18 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
 
   KCal::CalendarLocal calendar( KSystemTimeZones::local() ) ;
   if( message->contentType()->isMultipart() ) {
+    kDebug() << "message is multipart:" << message->attachments().size();
     InvitationsAgentItem *it = 0;
     foreach( KMime::Content *c, message->attachments() ) {
       KMime::Headers::ContentDisposition *ds = c->header< KMime::Headers::ContentDisposition >();
+      kDebug() << "looking at " << ds << (ds ? QFileInfo(ds->filename()).suffix().toLower() : QString());
       if( !ds || QFileInfo(ds->filename()).suffix().toLower() != "ics" ) {
+        kDebug() << "no CD header or not an ics file";
         continue;
       }
       Item newItem = handleContent( c->body(), &calendar, item );
       if( ! newItem.hasPayload() ) {
+        kDebug() << "new item has no payload";
         continue;
       }
       if( ! it) {
@@ -503,10 +513,11 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
       it->add( newItem );
     }
   } else {
-
+    kDebug() << "message is not multipart";
     //TODO check what is allowed/possible here.
     Item newItem = handleContent( message->body(), &calendar, item );
     if( ! newItem.hasPayload() ) {
+      kDebug() << "new item has no payload";
       return;
     }
     InvitationsAgentItem *it = new InvitationsAgentItem( this, item );
