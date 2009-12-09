@@ -52,9 +52,10 @@ int main( int argc, char **argv )
 
   Akonadi::Control::start( 0 );
 
-  Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
+  if( !args->getOption("type").isEmpty() )
+     Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
   Global::setAssistant( args->getOption( "assistant" ) );
-
+  args->clear();
   Dialog dlg;
   dlg.show();
 

@@ -39,10 +39,14 @@ TypePage::TypePage(KAssistantDialog* parent) :
 
   const QStringList list = KGlobal::dirs()->findAllResources( "data", QLatin1String( "akonadi/accountwizard/*.desktop" ),
                                                               KStandardDirs::Recursive | KStandardDirs::NoDuplicates );
+  const QStringList filter = Global::typeFilter();
   foreach ( const QString &entry, list ) {
-    // TODO filter by type
     KDesktopFile f( entry );
     kDebug() << entry << f.readName();
+    const KConfig configWizard( entry );
+    KConfigGroup grp( &configWizard, "Wizard" );
+    if ( !filter.isEmpty() && !filter.contains( grp.readEntry( "Type" ) ) )
+      continue;
     QStandardItem *item = new QStandardItem( f.readName() );
     item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setData( entry, Qt::UserRole );
