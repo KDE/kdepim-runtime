@@ -30,8 +30,6 @@ class KJob;
 
 namespace KMail
 {
-class AccountManager;
-class ImapAccountBase;
 
 /**
  * KMail to Akonadi account migrator
