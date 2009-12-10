@@ -46,9 +46,15 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
 
 void ConfigDialog::checkPath()
 {
+  if( ui.kcfg_Path->url().isEmpty()) {
+    ui.statusLabel->setText( i18n("The selected path is empty."));
+    enableButton( Ok, false);
+    return;
+  }
   bool ok = false;
   mToplevelIsContainer = false;
   QDir d( ui.kcfg_Path->url().toLocalFile() );
+
   if ( d.exists() ) {
     Maildir md( d.path() );
     QString error;
