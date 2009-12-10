@@ -119,7 +119,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
   if ( geo.isValid() ) {
     QString geoString;
     geoString.sprintf( "%.6f;%.6f", geo.latitude(), geo.longitude() );
-    contact.setLocations( listFromString( geoString ) ); // make it better
+//    contact.setLocation( geoString ); // make it better
   }
 
   // keys
@@ -135,7 +135,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
   contact.setContactUIDs( listFromString( addressee.uid() ) ); // never empty
 
   if ( !addressee.name().isEmpty() )
-    contact.setFullnames( listFromString( addressee.name() ) );
+    contact.setFullname( addressee.name() );
 
   if ( addressee.birthday().date().isValid() )
     contact.setBirthDate( addressee.birthday().date() );
