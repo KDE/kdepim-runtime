@@ -108,7 +108,7 @@ BrowserWidget::BrowserWidget(KXmlGuiWindow *xmlGuiWindow, QWidget * parent) :
   splitter2->addWidget( mCollectionView );
 
   EntityListView *favoritesView = new EntityListView( xmlGuiWindow, this );
-  favoritesView->setViewMode( QListView::IconMode );
+  //favoritesView->setViewMode( QListView::IconMode );
   splitter2->addWidget( favoritesView );
 
   splitter->addWidget( splitter2 );

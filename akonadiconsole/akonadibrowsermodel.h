@@ -47,18 +47,9 @@ public:
   virtual QVariant entityData(const Item &item, int column, int role) const;
   virtual QVariant entityData(const Collection &collection, int column, int role) const;
 
-  virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
-
   virtual int entityColumnCount( HeaderGroup headerGroup ) const;
 
   class State;
-
-protected:
-  // Work around QAIM api bug. These might get into Qt 4.6.
-  // http://www.qtsoftware.com/developer/task-tracker/index_html?method=entry&id=247023
-  void invalidatePersistentIndexes();
-  void beginResetModel();
-  void endResetModel();
 
 private:
   State *m_currentState;
