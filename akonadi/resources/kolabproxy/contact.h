@@ -38,7 +38,6 @@
 
 namespace KABC {
   class Addressee;
-  class ResourceKolab;
   class Picture;
   class Sound;
 }

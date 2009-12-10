@@ -43,7 +43,6 @@ namespace KCal {
   class Recurrence;
   class Alarm;
   class Attachment;
-  class ResourceKolab;
 }
 
 namespace Kolab {

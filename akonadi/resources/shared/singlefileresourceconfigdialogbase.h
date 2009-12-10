@@ -26,7 +26,6 @@
 #include <KDE/KDialog>
 
 class KConfigDialogManager;
-class KFileItem;
 class KJob;
 
 namespace KIO {

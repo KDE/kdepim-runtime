@@ -25,12 +25,6 @@
 #include <akonadi/collection.h>
 #include <KJob>
 
-class QProgressBar;
-class QButtonGroup;
-class QGroupBox;
-class QLabel;
-class QRadioButton;
-class QPushButton;
 
 namespace Ui
 {

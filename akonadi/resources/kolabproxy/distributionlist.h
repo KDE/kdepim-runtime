@@ -35,7 +35,6 @@
 #include "kolabbase.h"
 
 namespace KABC {
-  class Addressee;
   class ContactGroup;
 }
 
