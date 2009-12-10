@@ -28,15 +28,32 @@
 
 namespace OXA {
 
+/**
+ * @short A job that creates a new folder on the OX server.
+ *
+ * @author Tobias Koenig <tokoe@kde.org>
+ */
 class FolderCreateJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new folder create job.
+     *
+     * @param folder The folder to create.
+     * @param parent The parent object.
+     */
     FolderCreateJob( const Folder &folder, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the updated folder that has been created.
+     */
     Folder folder() const;
 
   private Q_SLOTS:

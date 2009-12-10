@@ -28,15 +28,34 @@
 
 namespace OXA {
 
+/**
+ * @short A job that modifies a folder on the OX server.
+ *
+ * @author Tobias Koenig <tokoe@kde.org>
+ */
 class FolderModifyJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new folder modify job.
+     *
+     * @param folder The folder to modify.
+     * @param parent The parent object.
+     *
+     * @note The folder needs at least the objectId and lastModified property set.
+     */
     FolderModifyJob( const Folder &folder, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the updated folder that has been modified.
+     */
     Folder folder() const;
 
   private Q_SLOTS:

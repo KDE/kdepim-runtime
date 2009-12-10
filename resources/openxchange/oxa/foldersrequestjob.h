@@ -22,29 +22,43 @@
 #ifndef OXA_FOLDERSREQUESTJOB_H
 #define OXA_FOLDERSREQUESTJOB_H
 
-#include <kdatetime.h>
 #include <kjob.h>
 
 #include "folder.h"
 
 namespace OXA {
 
+/**
+ * @short A job that requests all folders from the OX server.
+ *
+ * @author Tobias Koenig <tokoe@kde.org>
+ */
 class FoldersRequestJob : public KJob
 {
   Q_OBJECT
 
   public:
-    FoldersRequestJob( const KDateTime &lastSync = KDateTime(), QObject *parent = 0 );
+    /**
+     * Creates a new folders request job.
+     *
+     * @param parent The parent object.
+     */
+    FoldersRequestJob( QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the list of all requested folders.
+     */
     Folder::List folders() const;
 
   private Q_SLOTS:
     void davJobFinished( KJob* );
 
   private:
-    KDateTime mLastSync;
     Folder::List mFolders;
 };
 

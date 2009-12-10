@@ -28,64 +28,97 @@
 
 namespace OXA {
 
+/**
+ * @short A class that contains information about folders on the OX server.
+ *
+ * @author Tobias Koenig <tokoe@kde.org>
+ */
 class Folder
 {
   public:
+    /**
+     * Describes a list of folders.
+     */
     typedef QList<Folder> List;
 
+    /**
+     * Describes the status of the folder.
+     */
     enum ObjectStatus
     {
-      Created,
-      Deleted
+      Created, ///< The folder has been created.
+      Deleted  ///< The folder has been deleted.
     };
 
+    /**
+     * Describes the visibility type of the folder.
+     */
     enum Type
     {
-      Public,
-      Private
+      Public,  ///< The folder is visible for all users.
+      Private  ///< The folder is only visible for the owner.
     };
 
+    /**
+     * Describes the module the folder belongs to.
+     */
     enum Module
     {
-      Unbound,
-      Calendar,
-      Contacts,
-      Tasks
+      Unbound,  ///< The folder is only a structural folder.
+      Calendar, ///< The folder contains events.
+      Contacts, ///< The folder contains contacts.
+      Tasks     ///< The folder contains tasks.
     };
 
+    /**
+     * Describes the permissions a user or group can have on
+     * a folder.
+     */
     class Permissions
     {
       public:
+        /**
+         * Describes the permissions on folder objects.
+         */
         enum FolderPermission
         {
-          NoPermission = 0,
-          FolderIsVisible = 2,
-          CreateObjects = 4,
-          CreateSubfolders = 8,
-          AdminPermission = 128
+          NoPermission = 0,     ///< No permissions.
+          FolderIsVisible = 2,  ///< The folder can be read.
+          CreateObjects = 4,    ///< Objects can be created in the folder.
+          CreateSubfolders = 8, ///< Subfolders can be created in the folder.
+          AdminPermission = 128 ///< Permissions can be changed.
         };
 
+        /**
+         * Describes the read permissions on other objects.
+         */
         enum ObjectReadPermission
         {
-          NoReadPermission = 0,
-          ReadOwnObjects = 2,
-          ReadAllObjects = 4,
+          NoReadPermission = 0,     ///< The objects can not be read.
+          ReadOwnObjects = 2,       ///< Only own objects can be read.
+          ReadAllObjects = 4,       ///< All objects can be read.
           AdminReadPermission = 128
         };
 
+        /**
+         * Describes the write permissions on other objects.
+         */
         enum ObjectWritePermission
         {
-          NoWritePermission = 0,
-          WriteOwnObjects = 2,
-          WriteAllObjects = 4,
+          NoWritePermission = 0,     ///< The objects can not be written.
+          WriteOwnObjects = 2,       ///< Only own objects can be written.
+          WriteAllObjects = 4,       ///< All objects can be written.
           AdminWritePermission = 128
         };
 
+        /**
+         * Describes the delete permissions on other objects.
+         */
         enum ObjectDeletePermission
         {
-          NoDeletePermission = 0,
-          DeleteOwnObjects = 2,
-          DeleteAllObjects = 4,
+          NoDeletePermission = 0,     ///< The objects can not be deleted.
+          DeleteOwnObjects = 2,       ///< Only own objects can be deleted.
+          DeleteAllObjects = 4,       ///< All objects can be deleted.
           AdminDeletePermission = 128
         };
 

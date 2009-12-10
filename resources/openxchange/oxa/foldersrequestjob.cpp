@@ -32,8 +32,8 @@
 
 using namespace OXA;
 
-FoldersRequestJob::FoldersRequestJob( const KDateTime &lastSync, QObject *parent )
-  : KJob( parent ), mLastSync( lastSync )
+FoldersRequestJob::FoldersRequestJob( QObject *parent )
+  : KJob( parent )
 {
 }
 
@@ -42,12 +42,7 @@ void FoldersRequestJob::start()
   QDomDocument document;
   QDomElement multistatus = DAVUtils::addDavElement( document, document, QLatin1String( "multistatus" ) );
   QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
-  if ( mLastSync.isValid() ) {
-    DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), OXUtils::writeDateTime( mLastSync ) );
-  } else {
-    DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), QLatin1String( "0" ) );
-  }
-
+  DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), QLatin1String( "0" ) );
   DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "NEW_AND_MODIFIED" ) );
 
   const QString path = QLatin1String( "/servlet/webdav.folders" );

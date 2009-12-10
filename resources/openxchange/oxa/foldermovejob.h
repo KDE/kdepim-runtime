@@ -28,15 +28,36 @@
 
 namespace OXA {
 
+/**
+ * @short A job that moves a folder on the OX server.
+ *
+ * @author Tobias Koenig <tokoe@kde.org>
+ */
 class FolderMoveJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new folder move job.
+     *
+     * @param folder The folder to move.
+     * @param destinationFolder The new parent folder.
+     * @param parent The parent object.
+     *
+     * @note The folder needs the objectId, folderId and lastModified property set, the
+     *       destinationFolder the objectId property.
+     */
     FolderMoveJob( const Folder &folder, const Folder &destinationFolder, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the updated folder that has been moved.
+     */
     Folder folder() const;
 
   private Q_SLOTS:

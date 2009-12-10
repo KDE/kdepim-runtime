@@ -206,7 +206,7 @@ void OpenXchangeResource::configure( WId windowId )
 
 void OpenXchangeResource::retrieveCollections()
 {
-  OXA::FoldersRequestJob *job = new OXA::FoldersRequestJob;
+  OXA::FoldersRequestJob *job = new OXA::FoldersRequestJob( this );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onFoldersRequestJobFinished( KJob* ) ) );
   job->start();
 }
