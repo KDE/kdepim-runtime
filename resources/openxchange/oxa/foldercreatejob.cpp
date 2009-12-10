@@ -42,6 +42,7 @@ void FolderCreateJob::start()
   QDomElement set = DAVUtils::addDavElement( document, propertyupdate, QLatin1String( "set" ) );
   QDomElement prop = DAVUtils::addDavElement( document, set, QLatin1String( "prop" ) );
 
+  FolderUtils::addFolderElements( document, prop, mFolder );
 
   const QString path = QLatin1String( "/servlet/webdav.folders" );
 
