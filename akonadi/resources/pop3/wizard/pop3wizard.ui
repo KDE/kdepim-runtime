@@ -41,7 +41,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Incomming server:</string>
+          <string>Incoming server:</string>
          </property>
          <property name="buddy">
           <cstring>incommingAddress</cstring>
