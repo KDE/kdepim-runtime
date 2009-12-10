@@ -22,7 +22,6 @@
 
 #include "kmigratorbase.h"
 
-#include <QObject>
 #include <QStringList>
 
 class KConfig;
