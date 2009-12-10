@@ -56,7 +56,7 @@ KCal::Event * CalendarHandler::calendarFromKolab(const KMime::Message::Ptr &data
     attachmentsFromKolab( data, xmlData, calendarEvent );
     return calendarEvent;
   }
-  return 0L;
+  return 0;
 }
 
 QByteArray CalendarHandler::incidenceToXml(KCal::Incidence *incidence)

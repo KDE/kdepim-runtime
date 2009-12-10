@@ -13,6 +13,8 @@ X-KDE-ParentComponents=
 X-KDE-CfgDlgHierarchy=
 
 Name=Akonadi Configuration
+Name[ar]=ضبط اكوندا
+Name[ca]=Configuració de l'Akonadi
 Name[cs]=Nastavení Akonadi
 Name[da]=Konfiguration af Akonadi
 Name[de]=Akonadi-Einrichtung
@@ -42,6 +44,7 @@ Name[x-test]=xxAkonadi Configurationxx
 Name[zh_CN]=Akonadi 配置
 Name[zh_TW]=Akonadi 設定
 Comment=Configuration of the Akonadi Personal Information Management framework
+Comment[ar]=ضبط إطار إدارة المعلومات الشخصية اكوندا
 Comment[ca]=Configuració de l'entorn de gestió d'informació personal de l'Akonadi
 Comment[da]=Konfiguration af Akonadi - framework til håndtering af personlig information (PIM)
 Comment[de]=Einrichtung des persönlichen Informationsmanagement von Akonadi

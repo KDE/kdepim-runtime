@@ -1,5 +1,6 @@
 [Misc]
 Name=Contact Group Serializer
+Name[ar]=مسلسل مجموعة جهات الإتصال
 Name[ca]=Serialitzador de grups de contactes
 Name[da]=Serieordning af kontaktgruppe
 Name[de]=Kontaktgruppen-Serialisierung
@@ -33,6 +34,7 @@ Name[x-test]=xxContact Group Serializerxx
 Name[zh_CN]=联系人分组序列转换器
 Name[zh_TW]=聯絡人群組序列器
 Comment=An Akonadi serializer plugin for contact group objects
+Comment[ar]=ملحق مسلسل اكوندا لكائنات مجموعة الإتصال
 Comment[ca]=Un connector de serialització de l'Akonadi pels objectes de grups de contactes
 Comment[da]=Et Akonadi-plugin til serieordning af kontaktgruppeobjekter
 Comment[de]=Akonadi-Modul zur Serialisierung von Kontaktgruppen

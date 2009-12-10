@@ -224,7 +224,7 @@ void DataSink::slotGetChangesFinished( KJob * )
     osync_change_set_uid( change, uid.toLatin1() );
 
     error = 0;
-    OSyncData *data = osync_data_new( NULL, 0, format, &error );
+    OSyncData *data = osync_data_new( 0, 0, format, &error );
     if( !data ) {
       osync_change_unref( change );
       warning( error );

@@ -100,6 +100,9 @@ public:
 
   virtual bool hasChildren(const QModelIndex& parent = QModelIndex()) const;
 
+  virtual Qt::DropActions supportedDropActions() const;
+
+
 private:
   Q_DECLARE_PRIVATE(KReparentingProxyModel)
   //@cond PRIVATE

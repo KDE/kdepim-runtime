@@ -10,8 +10,8 @@ include(KDE4Defaults)
 
 find_package(KdepimLibs 4.2.87 REQUIRED)
 
-find_package(Boost 1.33.1)
-macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.33.1" "Required by Akonadi.")
+find_package(Boost 1.34.0)
+macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.34.0" "Required by Akonadi.")
 
 find_package(Akonadi)
 macro_log_feature(Akonadi_FOUND "Akonadi" "Akonadi server libraries" "http://pim.kde.org/akonadi" TRUE "" "Akonadi is required to build kdepim-runtime.")

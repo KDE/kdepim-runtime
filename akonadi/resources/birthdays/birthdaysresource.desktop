@@ -1,5 +1,7 @@
 [Desktop Entry]
 Name=Birthdays & Anniversaries
+Name[ar]=أعياد الميلاد و الذكريات
+Name[ca]=Dates de naixement i aniversaris
 Name[da]=Fødselsdag og mærkedage
 Name[de]=Geburtstage und Jahrestage
 Name[el]=Γενέθλια & επέτειοι
@@ -29,6 +31,8 @@ Name[x-test]=xxBirthdays & Anniversariesxx
 Name[zh_CN]=生日和纪念日
 Name[zh_TW]=生日與紀念日
 Comment=Provides access to birthday and anniversary dates of contacts in your address book as calendar events
+Comment[ar]=يوفر الحصول على موعد الذكرى السنوية لميلاد أو ذكرى لقائمة دفتر العناوين الخاص بك حسب الجدول الزمني للأحداث
+Comment[ca]=Proporciona l'accés a les dates de naixement i els aniversaris dels contactes de la llibreta d'adreces com a esdeveniments de calendari
 Comment[da]=Giver adgang til fødsels- og mærkedage-datoer for kontakter i din adressebog som kalenderbegivenheder
 Comment[de]=Ermöglicht den Zugriff auf Geburtstage und Jahrestage von Kontakten aus dem KDE-Adressbuch in Form von Kalendereinträgen.
 Comment[el]=Προσφέρει πρόσβαση σε γενέθλια και επετείους επαφών του βιβλίου διευθύνσεών σας ως γεγονότα ημερολογίου

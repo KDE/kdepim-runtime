@@ -55,7 +55,7 @@ KCal::Todo * TasksHandler::todoFromKolab(const KMime::Message::Ptr &data)
     attachmentsFromKolab( data, xmlData, todo );
     return todo;
   }
-  return 0L;
+  return 0;
 }
 
 

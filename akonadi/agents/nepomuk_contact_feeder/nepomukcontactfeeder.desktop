@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Nepomuk Contact Feeder
+Name[ar]=مغذي جهات إتصال نبومك
 Name[ca]=Alimentador de contactes del Nepomuk
 Name[da]=Nepomuk kontakt-feeder
 Name[de]=Kontakte-Modul für Nepomuk
@@ -35,6 +36,7 @@ Name[x-test]=xxNepomuk Contact Feederxx
 Name[zh_CN]=Nepomuk 联系人采集器
 Name[zh_TW]=Nepomuk Contact Feeder
 Comment=Extension to push contacts into Nepomuk
+Comment[ar]=امتداد لدفع جهات الإتصال داخل نبومك
 Comment[ca]=Extensió per a introduir contactes en el Nepomuk
 Comment[da]=Udvidelse til at skubbe kontakter ind i Nepomuk
 Comment[de]=Erweiterung zur Übergabe von Kontakten an Nepomuk
