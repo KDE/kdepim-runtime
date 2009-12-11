@@ -1,7 +1,0 @@
-- figure out i18n for the actual wizards (DONE)
-- GHNS support for downloading new wizards
-- add support for creating LDAP accounts
-- add support for creating identities
-- remember which set up resources/transports/ldap accounts/identities belong together so we can offer to remove them in one go again
-- add more wizards (In progress)
-- implement type filtering, for integration into applications (DONE)
