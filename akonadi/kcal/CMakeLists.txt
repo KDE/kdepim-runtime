@@ -25,7 +25,8 @@ set( kcalakonadi_LIB_SRC
      utils.cpp
      incidenceattribute.cpp
 )
-qt4_add_dbus_interface(kcalakonadi_LIB_SRC ${CMAKE_SOURCE_DIR}/akonadi/agents/calendarsearch/org.freedesktop.Akonadi.CalendarSearchAgent.xml calendarsearchinterface)
+# FIXME: cannot depend on kdepim/rutime here!
+qt4_add_dbus_interface(kcalakonadi_LIB_SRC ${CMAKE_SOURCE_DIR}/runtime/agents/calendarsearch/org.freedesktop.Akonadi.CalendarSearchAgent.xml calendarsearchinterface)
 
 kde4_add_library( akonadi-kcal SHARED ${kcalakonadi_LIB_SRC} )
 
