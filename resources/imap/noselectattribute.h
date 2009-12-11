@@ -34,7 +34,7 @@ public:
     virtual void deserialize( const QByteArray &data );
 
 private:
-    int mNoSelect;
+    bool mNoSelect;
 };
 
 #endif
