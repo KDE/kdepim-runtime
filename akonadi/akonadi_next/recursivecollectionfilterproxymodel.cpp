@@ -56,7 +56,7 @@ RecursiveCollectionFilterProxyModel::RecursiveCollectionFilterProxyModel( QObjec
 
 RecursiveCollectionFilterProxyModel::~RecursiveCollectionFilterProxyModel()
 {
-
+  delete d_ptr;
 }
 
 bool RecursiveCollectionFilterProxyModel::acceptRow(int sourceRow, const QModelIndex& sourceParent) const
