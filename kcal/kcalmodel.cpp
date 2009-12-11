@@ -18,7 +18,7 @@
 */
 
 #include "kcalmodel.h"
-#include "kcalmimetypevisitor.h"
+#include <kcal/mimetypevisitor.h>
 
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
@@ -49,10 +49,10 @@ class KCalModel::Private
     static QStringList allMimeTypes()
     {
         QStringList types;
-        types << KCalMimeTypeVisitor::eventMimeType()
-              << KCalMimeTypeVisitor::todoMimeType()
-              << KCalMimeTypeVisitor::journalMimeType()
-              << KCalMimeTypeVisitor::freeBusyMimeType();
+        types << KCal::MimeTypeVisitor::eventMimeType()
+              << KCal::MimeTypeVisitor::todoMimeType()
+              << KCal::MimeTypeVisitor::journalMimeType()
+              << KCal::MimeTypeVisitor::freeBusyMimeType();
         return types;
     }
     bool collectionMatchesMimeTypes() const

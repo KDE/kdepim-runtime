@@ -26,10 +26,7 @@
 namespace KCal {
   class IncidenceBase;
   class AssignmentVisitor;
-}
-
-namespace Akonadi {
-  class KCalMimeTypeVisitor;
+  class MimeTypeVisitor;
 }
 
 class ICalResource : public ICalResourceBase
@@ -65,7 +62,7 @@ class ICalResource : public ICalResourceBase
     virtual QStringList allMimeTypes() const;
 
   private:
-    Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
+    KCal::MimeTypeVisitor *mMimeVisitor;
     KCal::AssignmentVisitor *mIncidenceAssigner;
 };
 

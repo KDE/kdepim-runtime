@@ -18,7 +18,7 @@
 
 #include "kcalresource.h"
 #include "resources/kabc/kresourceassistant.h"
-#include "kcal/kcalmimetypevisitor.h" // the kcal at the akonadi top-level
+#include <kcal/mimetypevisitor.h>
 
 #include <kcal/assignmentvisitor.h>
 #include <kcal/calformat.h>
@@ -49,7 +49,7 @@ KCalResource::KCalResource( const QString &id )
   : ResourceBase( id ),
     mManager( new KCal::CalendarResourceManager( QLatin1String( "calendar" ) ) ),
     mResource( 0 ),
-    mMimeVisitor( new KCalMimeTypeVisitor() ),
+    mMimeVisitor( new KCal::MimeTypeVisitor() ),
     mFullItemRetrieve( false ),
     mDelayedSaveTimer( new QTimer( this ) ),
     mIncidenceAssigner( new KCal::AssignmentVisitor() )

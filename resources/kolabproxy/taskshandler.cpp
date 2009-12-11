@@ -26,7 +26,7 @@
 
 #include <QBuffer>
 #include <QDomDocument>
-#include <kcal/kcalmimetypevisitor.h>
+#include <kcal/mimetypevisitor.h>
 
 
 TasksHandler::TasksHandler() : IncidenceHandler()
@@ -67,7 +67,7 @@ QByteArray TasksHandler::incidenceToXml(KCal::Incidence *incidence)
 
 QStringList  TasksHandler::contentMimeTypes()
 {
-  return QStringList() << Akonadi::KCalMimeTypeVisitor::todoMimeType();
+  return QStringList() << KCal::MimeTypeVisitor::todoMimeType();
 }
 
 QString TasksHandler::iconName() const

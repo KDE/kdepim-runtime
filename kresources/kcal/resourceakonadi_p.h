@@ -25,8 +25,7 @@
 #include "resourceakonadi.h"
 #include "sharedresourceprivate.h"
 
-#include "kcal/kcalmimetypevisitor.h"
-
+#include <kcal/mimetypevisitor.h>
 #include <kcal/assignmentvisitor.h>
 #include <kcal/calendarlocal.h>
 
@@ -68,7 +67,7 @@ class KCal::ResourceAkonadi::Private : public SharedResourcePrivate<SubResource>
 
     AssignmentVisitor mIncidenceAssigner;
 
-    Akonadi::KCalMimeTypeVisitor mMimeVisitor;
+    KCal::MimeTypeVisitor mMimeVisitor;
 
     Akonadi::AgentInstanceModel *mAgentModel;
     Akonadi::AgentFilterProxyModel *mAgentFilterModel;

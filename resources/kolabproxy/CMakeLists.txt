@@ -45,7 +45,7 @@ qt4_add_dbus_adaptor(kolabproxyresource_SRCS
 
 kde4_add_executable(akonadi_kolabproxy_resource ${kolabproxyresource_SRCS})
 
-target_link_libraries(akonadi_kolabproxy_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy akonadi-kcal)
+target_link_libraries(akonadi_kolabproxy_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy)
 
 install(TARGETS akonadi_kolabproxy_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
