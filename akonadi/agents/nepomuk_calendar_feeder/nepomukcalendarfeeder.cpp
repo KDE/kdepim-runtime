@@ -24,7 +24,7 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
-#include <kcal/kcalmimetypevisitor.h>
+#include <kcal/mimetypevisitor.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -59,10 +59,10 @@ namespace Akonadi {
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
   : NepomukFeederAgent<NepomukFast::Calendar>( id )
 {
-  addSupportedMimeType( KCalMimeTypeVisitor::eventMimeType() );
-  addSupportedMimeType( KCalMimeTypeVisitor::todoMimeType() );
-  addSupportedMimeType( KCalMimeTypeVisitor::journalMimeType() );
-  addSupportedMimeType( KCalMimeTypeVisitor::freeBusyMimeType() );
+  addSupportedMimeType( KCal::MimeTypeVisitor::eventMimeType() );
+  addSupportedMimeType( KCal::MimeTypeVisitor::todoMimeType() );
+  addSupportedMimeType( KCal::MimeTypeVisitor::journalMimeType() );
+  addSupportedMimeType( KCal::MimeTypeVisitor::freeBusyMimeType() );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
 }

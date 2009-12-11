@@ -24,7 +24,6 @@
 #include <kcal/event.h>
 #include <kcal/todo.h>
 #include <kcal/journal.h>
-#include <kcal/kcalmimetypevisitor.h>
 #include <kcal/calendarlocal.h>
 #include <kcal/icalformat.h>
 
@@ -215,11 +214,6 @@ InvitationsAgent::InvitationsAgent( const QString &id )
 
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Monitor
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType() );
-  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType() );
-  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType() );
-  //changeRecorder()->setMimeTypeMonitored( KCalMimeTypeVisitor::freeBusyMimeType() );
-  //changeRecorder()->setMimeTypeMonitored( "text/calendar", true );
   changeRecorder()->setMimeTypeMonitored( "message/rfc822", true );
   //changeRecorder()->setCollectionMonitored( Collection::root(), true );
 

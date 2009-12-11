@@ -17,7 +17,6 @@ set( kcalakonadi_LIB_SRC
      daterangefilterproxymodel.cpp
      entitymodelstatesaver.cpp
      incidencefilterproxymodel.cpp
-     kcalmimetypevisitor.cpp
      kcalmodel.cpp
      kcalitembrowser.cpp
      modelstatesaver.cpp

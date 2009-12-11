@@ -20,7 +20,7 @@
 #include "calendarsearch.h"
 #include "calendarmodel.h"
 #include "calendarsearchinterface.h"
-#include "kcalmimetypevisitor.h"
+#include <kcal/mimetypevisitor.h>
 #include "daterangefilterproxymodel.h"
 #include "incidencefilterproxymodel.h"
 #include "utils.h"
@@ -110,9 +110,9 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
     monitor->fetchCollection( true );
     monitor->setItemFetchScope( scope );
     monitor->setMimeTypeMonitored( QLatin1String("text/calendar"), true ); // FIXME: this one should not be needed, in fact it might cause the inclusion of free/busy, notes or other unwanted stuff
-    monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType(), true );
-    monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType(), true );
-    monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType(), true );
+    monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::eventMimeType(), true );
+    monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::todoMimeType(), true );
+    monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::journalMimeType(), true );
 
     calendarModel = new CalendarModel( session, monitor, q );
     connect( calendarModel, SIGNAL(rowsInserted(QModelIndex,int,int)), q, SLOT(rowsInserted(QModelIndex,int,int)) );
@@ -290,9 +290,9 @@ void CalendarSearch::setIncidenceTypes( IncidenceTypes types )
     const bool showJournals = types.testFlag( Journals );
 
     d->incidenceTypes = types;
-    d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::eventMimeType(), showEvents );
-    d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::todoMimeType(), showTodos );
-    d->monitor->setMimeTypeMonitored( KCalMimeTypeVisitor::journalMimeType(), showJournals );
+    d->monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::eventMimeType(), showEvents );
+    d->monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::todoMimeType(), showTodos );
+    d->monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::journalMimeType(), showJournals );
     d->incidenceFilterProxyModel->setShowEvents( showEvents );
     d->incidenceFilterProxyModel->setShowTodos( showTodos );
     d->incidenceFilterProxyModel->setShowJournals( showJournals );

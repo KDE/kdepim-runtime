@@ -127,11 +127,11 @@ const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const
 
   Q_ASSERT( mStoreCollectionDialog != 0 );
 
-  if ( mimeType == Akonadi::KCalMimeTypeVisitor::eventMimeType() ) {
+  if ( mimeType == KCal::MimeTypeVisitor::eventMimeType() ) {
     mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Event", "Please select a storage folder for this Event" ) );
-  } else if ( mimeType == Akonadi::KCalMimeTypeVisitor::todoMimeType() ) {
+  } else if ( mimeType == KCal::MimeTypeVisitor::todoMimeType() ) {
     mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Todo", "Please select a storage folder for this Todo" ) );
-  } else if ( mimeType == Akonadi::KCalMimeTypeVisitor::journalMimeType() ) {
+  } else if ( mimeType == KCal::MimeTypeVisitor::journalMimeType() ) {
     mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Journal", "Please select a storage folder for this Journal" ) );
   } else if ( mimeType == QLatin1String( "text/calendar" ) ) {
     kWarning( 5800 ) << "Unexpected generic MIME type text/calendar";
@@ -196,19 +196,19 @@ StoreConfigIface::CollectionsByMimeType ResourceAkonadi::Private::storeCollectio
   CollectionsByMimeType storeCollections;
 
   // FIXME should be sub MIME type
-//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, Akonadi::KCalMimeTypeVisitor::eventMimeType() ) ) {
-//     storeCollections[ Akonadi::KCalMimeTypeVisitor::eventMimeType() ] = mDefaultStoreCollection;
+//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, KCal::MimeTypeVisitor::eventMimeType() ) ) {
+//     storeCollections[ KCal::MimeTypeVisitor::eventMimeType() ] = mDefaultStoreCollection;
 //   }
-//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, Akonadi::KCalMimeTypeVisitor::todoMimeType() ) ) {
-//     storeCollections[ Akonadi::KCalMimeTypeVisitor::todoMimeType() ] = mDefaultStoreCollection;
+//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, KCal::MimeTypeVisitor::todoMimeType() ) ) {
+//     storeCollections[ KCal::MimeTypeVisitor::todoMimeType() ] = mDefaultStoreCollection;
 //   }
-//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, Akonadi::KCalMimeTypeVisitor::journalMimeType() ) ) {
-//     storeCollections[ Akonadi::KCalMimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
+//   if ( Akonadi::MimeTypeChecker::isWantedCollection( mDefaultStoreCollection, KCal::MimeTypeVisitor::journalMimeType() ) ) {
+//     storeCollections[ KCal::MimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
 //   }
 
-  storeCollections[ Akonadi::KCalMimeTypeVisitor::eventMimeType() ] = mDefaultStoreCollection;
-  storeCollections[ Akonadi::KCalMimeTypeVisitor::todoMimeType() ] = mDefaultStoreCollection;
-  storeCollections[ Akonadi::KCalMimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
+  storeCollections[ KCal::MimeTypeVisitor::eventMimeType() ] = mDefaultStoreCollection;
+  storeCollections[ KCal::MimeTypeVisitor::todoMimeType() ] = mDefaultStoreCollection;
+  storeCollections[ KCal::MimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
 
   return storeCollections;
 }

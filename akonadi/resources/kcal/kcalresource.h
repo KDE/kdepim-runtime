@@ -27,13 +27,10 @@ namespace KRES {
 
 namespace KCal {
   class AssignmentVisitor;
+  class MimeTypeVisitor;
   class ResourceCalendar;
 
   typedef KRES::Manager<ResourceCalendar> CalendarResourceManager;
-}
-
-namespace Akonadi {
-  class KCalMimeTypeVisitor;
 }
 
 class QTimer;
@@ -73,8 +70,7 @@ class KCalResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
   private:
     KCal::CalendarResourceManager *mManager;
     KCal::ResourceCalendar *mResource;
-
-    Akonadi::KCalMimeTypeVisitor *mMimeVisitor;
+    KCal::MimeTypeVisitor *mMimeVisitor;
 
     bool mFullItemRetrieve;
 

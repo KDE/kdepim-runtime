@@ -22,7 +22,7 @@
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
-#include <kcal/kcalmimetypevisitor.h>
+#include <kcal/mimetypevisitor.h>
 
 #include <kcal/calformat.h>
 #include <KLocale>
@@ -66,7 +66,7 @@ QByteArray CalendarHandler::incidenceToXml(KCal::Incidence *incidence)
 
 QStringList  CalendarHandler::contentMimeTypes()
 {
-  return QStringList() << Akonadi::KCalMimeTypeVisitor::eventMimeType();
+  return QStringList() << KCal::MimeTypeVisitor::eventMimeType();
 }
 
 QString CalendarHandler::iconName() const
