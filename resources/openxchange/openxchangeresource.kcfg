@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:kcfg="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <group name="General">
+    <entry name="BaseUrl" type="String">
+      <label>Server URL</label>
+    </entry>
+    <entry name="Username" type="String">
+      <label>Username</label>
+    </entry>
+    <entry name="Password" type="Password">
+      <label>Password</label>
+    </entry>
+  </group>
+</kcfg>
