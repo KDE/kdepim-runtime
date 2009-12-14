@@ -163,8 +163,9 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
     fetch->setScope( scope );
     connect( fetch, SIGNAL( messagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ),
              this, SLOT( onMessagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-    connect( fetch, SIGNAL( partsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ),
-             this, SLOT( onPartsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ) );
+    //TODO: Handle parts retrieval
+    //connect( fetch, SIGNAL( partsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ),
+    //         this, SLOT( onPartsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ) );
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onContentFetchDone( KJob* ) ) );
     fetch->start();
