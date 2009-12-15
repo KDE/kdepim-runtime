@@ -185,7 +185,7 @@ bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
     QString errorMessage;
 
     if ( !KABC::ContactGroupTool::convertFromXml( &file, group, &errorMessage ) ) {
-      cancelTask( i18n( "Found invalid contact contact group in file '%1': %2", filePath, errorMessage ) );
+      cancelTask( i18n( "Found invalid contact group in file '%1': %2", filePath, errorMessage ) );
       return false;
     }
 
