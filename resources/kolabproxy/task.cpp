@@ -369,7 +369,7 @@ void Task::decideAndSetPriority()
   // If we have both Kolab and KCal values in the XML, we prefer the KCal value, but only if the
   // values are still in sync
   if  ( mKolabPriorityFromDom != -1 && mKCalPriorityFromDom != -1 ) {
-    const bool inSync = ( kolabPrioritytoKCal( mKolabPriorityFromDom ) == mKCalPriorityFromDom );
+    const bool inSync = ( kcalPriorityToKolab( mKCalPriorityFromDom ) == mKolabPriorityFromDom );
     if ( inSync ) {
       setPriority( mKCalPriorityFromDom );
     }
