@@ -28,6 +28,7 @@
 
 #include <fcntl.h>
 
+#include <QtCore/QBuffer>
 #include <QtCore/QProcess>
 
 #include <kdebug.h>
@@ -408,31 +409,55 @@ KMime::Message *MBox::readEntry(quint64 offset)
 
   Q_ASSERT( d->mFileLocked );
   Q_ASSERT( d->mMboxFile.isOpen() );
-  Q_ASSERT( d->mMboxFile.size() > 0 );
-
-  if ( offset > static_cast<quint64>( d->mMboxFile.size() ) ) {
-    if ( !wasLocked )
-      unlock();
-    return 0;
-  }
-
-  d->mMboxFile.seek(offset);
-
-  QByteArray line = d->mMboxFile.readLine();
-  QRegExp regexp( sMBoxSeperatorRegExp );
-
-  if ( regexp.indexIn( line ) < 0) {
-    kDebug() << "[MBox::readEntry] Invalid entry at:" << offset;
-    if ( !wasLocked )
-      unlock();
-    return 0; // The file is messed up or the index is incorrect.
-  }
+  Q_ASSERT( ( d->mInitialMboxFileSize + d->mAppendedEntries.size() ) > offset );
 
   QByteArray message;
-  line = d->mMboxFile.readLine();
-  while ( regexp.indexIn( line ) < 0 && !d->mMboxFile.atEnd() ) {
-    message += line;
+
+  if ( offset < d->mInitialMboxFileSize ) {
+    d->mMboxFile.seek(offset);
+
+    QByteArray line = d->mMboxFile.readLine();
+    QRegExp regexp( sMBoxSeperatorRegExp );
+
+    if ( regexp.indexIn( line ) < 0) {
+      kDebug() << "[MBox::readEntry] Invalid entry at:" << offset;
+      if ( !wasLocked )
+        unlock();
+      return 0; // The file is messed up or the index is incorrect.
+    }
+
     line = d->mMboxFile.readLine();
+    while ( regexp.indexIn( line ) < 0 && !d->mMboxFile.atEnd() ) {
+      message += line;
+      line = d->mMboxFile.readLine();
+    }
+  } else {
+    offset -= d->mInitialMboxFileSize;
+    if ( offset > static_cast<quint64>( d->mAppendedEntries.size() ) ) {
+      if ( !wasLocked )
+        unlock();
+      return 0;
+    }
+
+    QBuffer buffer( &(d->mAppendedEntries) );
+    buffer.open( QIODevice::ReadOnly );
+    buffer.seek( offset );
+
+    QByteArray line = buffer.readLine();
+    QRegExp regexp( sMBoxSeperatorRegExp );
+
+    if ( regexp.indexIn( line ) < 0) {
+      kDebug() << "[MBox::readEntry] Invalid appended entry at:" << offset;
+      if ( !wasLocked )
+        unlock();
+      return 0; // The file is messed up or the index is incorrect.
+    }
+
+    line = buffer.readLine();
+    while ( regexp.indexIn( line ) < 0 && !buffer.atEnd() ) {
+      message += line;
+      line = buffer.readLine();
+    }
   }
 
   // Remove te last '\n' added by writeEntry.
@@ -464,15 +489,27 @@ QByteArray MBox::readEntryHeaders( quint64 offset )
 
   Q_ASSERT( d->mFileLocked );
   Q_ASSERT( d->mMboxFile.isOpen() );
-  Q_ASSERT( static_cast<quint64>(d->mMboxFile.size()) > offset );
+  Q_ASSERT( ( d->mInitialMboxFileSize + d->mAppendedEntries.size() ) > offset );
 
-  d->mMboxFile.seek( offset );
   QByteArray headers;
-  QByteArray line = d->mMboxFile.readLine();
+  if ( offset < d->mInitialMboxFileSize ) {
+    d->mMboxFile.seek( offset );
+    QByteArray line = d->mMboxFile.readLine();
 
-  while ( line[0] != '\n' ) {
-    headers += line;
-    line = d->mMboxFile.readLine();
+    while ( line[0] != '\n' ) {
+        headers += line;
+        line = d->mMboxFile.readLine();
+    }
+  } else {
+    QBuffer buffer( &(d->mAppendedEntries) );
+    buffer.open( QIODevice::ReadOnly );
+    buffer.seek( offset - d->mInitialMboxFileSize );
+    QByteArray line = buffer.readLine();
+
+    while ( line[0] != '\n' ) {
+        headers += line;
+        line = buffer.readLine();
+    }
   }
 
   if ( ! wasLocked )

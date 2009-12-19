@@ -160,9 +160,44 @@ void MboxTest::testAppend()
   QCOMPARE( mbox.entryList().size(), 1 );
   QCOMPARE( mbox.entryList().first().second, static_cast<quint64>( sEntry1.size() ) );
 
-  QVERIFY( mbox.appendEntry( mMail2 ) > sEntry1.size() );
+  const qint64 offsetMail2 = mbox.appendEntry( mMail2 );
+  QVERIFY( offsetMail2 > sEntry1.size() );
   QCOMPARE( mbox.entryList().size(), 2 );
   QCOMPARE( mbox.entryList().last().second, static_cast<quint64>( sEntry2.size() ) );
+
+  // check if appended entries can be read
+  QList<MsgInfo> list = mbox.entryList();
+  foreach ( const MsgInfo &msgInfo, list ) {
+    const QByteArray header = mbox.readEntryHeaders( msgInfo.first );
+    QVERIFY( !header.isEmpty() );
+
+    KMime::Message *message = mbox.readEntry( msgInfo.first );
+    QVERIFY( message != 0 );
+
+    KMime::Message *headers = new KMime::Message();
+    headers->setHead( KMime::CRLFtoLF( header ) );
+    headers->parse();
+
+    QCOMPARE( message->messageID()->identifier(), headers->messageID()->identifier() );
+    QCOMPARE( message->subject()->as7BitString(), headers->subject()->as7BitString() );
+    QCOMPARE( message->to()->as7BitString(), headers->to()->as7BitString() );
+    QCOMPARE( message->from()->as7BitString(), headers->from()->as7BitString() );
+
+    if ( msgInfo.first == 0 ){
+      QCOMPARE( message->messageID()->identifier(), mMail1->messageID()->identifier() );
+      QCOMPARE( message->subject()->as7BitString(), mMail1->subject()->as7BitString() );
+      QCOMPARE( message->to()->as7BitString(), mMail1->to()->as7BitString() );
+      QCOMPARE( message->from()->as7BitString(), mMail1->from()->as7BitString() );
+    } else if ( msgInfo.first == static_cast<quint64>( offsetMail2 ) ) {
+      QCOMPARE( message->messageID()->identifier(), mMail2->messageID()->identifier() );
+      QCOMPARE( message->subject()->as7BitString(), mMail2->subject()->as7BitString() );
+      QCOMPARE( message->to()->as7BitString(), mMail2->to()->as7BitString() );
+      QCOMPARE( message->from()->as7BitString(), mMail2->from()->as7BitString() );
+    }
+
+    delete message;
+    delete headers;
+  }
 }
 
 void MboxTest::testSaveAndLoad()
