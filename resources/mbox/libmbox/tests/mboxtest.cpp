@@ -353,6 +353,38 @@ void MboxTest::testLockTimeout()
   QVERIFY(!mbox.locked());
 }
 
+void MboxTest::testHeaders()
+{
+  MBox mbox;
+  QVERIFY( mbox.setLockType( MBox::None ) );
+  QVERIFY( mbox.load( fileName() ) );
+  mbox.appendEntry( mMail1 );
+  mbox.appendEntry( mMail2 );
+  QVERIFY( mbox.save() );
+
+  const QList<MsgInfo> list = mbox.entryList();
+
+  foreach ( const MsgInfo &msgInfo, list ) {
+    const QByteArray header = mbox.readEntryHeaders( msgInfo.first );
+    QVERIFY( !header.isEmpty() );
+
+    KMime::Message *message = mbox.readEntry( msgInfo.first );
+    QVERIFY( message != 0 );
+
+    KMime::Message *headers = new KMime::Message();
+    headers->setHead( KMime::CRLFtoLF( header ) );
+    headers->parse();
+
+    QCOMPARE( message->messageID()->identifier(), headers->messageID()->identifier() );
+    QCOMPARE( message->subject()->as7BitString(), headers->subject()->as7BitString() );
+    QCOMPARE( message->to()->as7BitString(), headers->to()->as7BitString() );
+    QCOMPARE( message->from()->as7BitString(), headers->from()->as7BitString() );
+
+    delete message;
+    delete headers;
+  }
+}
+
 void MboxTest::cleanupTestCase()
 {
   mTempDir->unlink();

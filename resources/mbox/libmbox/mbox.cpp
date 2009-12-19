@@ -470,7 +470,7 @@ QByteArray MBox::readEntryHeaders( quint64 offset )
   QByteArray headers;
   QByteArray line = d->mMboxFile.readLine();
 
-  while ( !line[0] == '\n' ) {
+  while ( line[0] != '\n' ) {
     headers += line;
     line = d->mMboxFile.readLine();
   }
