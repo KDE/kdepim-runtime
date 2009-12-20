@@ -35,8 +35,8 @@ davItem::davItem()
 {
 }
 
-davItem::davItem( const QString &u, const QString &c, const QByteArray &d )
-  : url( u ), contentType( c ), data( d )
+davItem::davItem( const QString &u, const QString &c, const QByteArray &d, const QString &e )
+  : url( u ), contentType( c ), data( d ), etag( e )
 {
 }
 
@@ -45,6 +45,7 @@ QDataStream& operator<<( QDataStream &out, const davItem &item )
   out << item.url;
   out << item.contentType;
   out << item.data;
+  out << item.etag;
   return out;
 }
 
@@ -53,6 +54,7 @@ QDataStream& operator>>( QDataStream &in, davItem &item)
   in >> item.url;
   in >> item.contentType;
   in >> item.data;
+  in >> item.etag;
   return in;
 }
 
@@ -67,20 +69,22 @@ davAccessor::~davAccessor()
 void davAccessor::putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag )
 {
   QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
-  davItem i( urlStr, contentType, data );
-  itemsCache[urlStr] = i;
   
+  QString etag;
   QString headers = "Content-Type: ";
   headers += contentType;
   headers += "\r\n";
   
-  if( useCachedEtag && etagsCache.contains( urlStr ) ) {
-    headers += "If-Match: "+etagsCache[urlStr];
+  if( useCachedEtag && itemsCache.contains( urlStr ) && !itemsCache[urlStr].etag.isEmpty() ) {
+    etag = itemsCache[urlStr].etag;
+    headers += "If-Match: "+etag;
   }
   else {
     headers += "If-None-Match: *";
   }
   
+  davItem i( urlStr, contentType, data, etag );
+  itemsCache[urlStr] = i;
   
   KIO::StoredTransferJob *job = KIO::storedPut( data, url, -1, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
@@ -92,7 +96,9 @@ void davAccessor::putItem( const KUrl &url, const QString &contentType, const QB
 
 void davAccessor::removeItem( const KUrl &url )
 {
-  QString etag = etagsCache.value( url.prettyUrl() );
+  QString etag;
+  if( itemsCache.contains( url.prettyUrl() ) )
+    etag = itemsCache[url.prettyUrl()].etag;
   
   kDebug() << "Requesting removal of item at " << url.prettyUrl() << " with etag " << etag;
   
@@ -134,7 +140,6 @@ void davAccessor::validateCache()
   
   foreach( QString url, cache ) {
     removed << itemsCache[url];
-    etagsCache.remove( url );
     itemsCache.remove( url );
     kDebug() << url << " disappeared from backend";
   }
@@ -142,76 +147,6 @@ void davAccessor::validateCache()
   emit backendItemsRemoved( removed );
   
   kDebug() << "Finished cache validation";
-}
-
-void davAccessor::loadCache( const QString &suffix )
-{
-  kDebug() << "Loading cache from disk";
-  
-  KUrl suffixPath( suffix );
-  suffixPath.cleanPath();
-  QString tmp = KStandardDirs::locateLocal( "cache", "akonadi-dav/etags-" + suffixPath.url() );
-  if( QFile::exists( tmp ) ) {
-    QFile etagsCacheFile( tmp );
-    if( etagsCacheFile.open( QIODevice::ReadOnly ) ) {
-      QDataStream in( &etagsCacheFile );
-      in >> etagsCache;
-      etagsCacheFile.close();
-    }
-  }
-  
-  tmp = KStandardDirs::locateLocal( "cache", "akonadi-dav/items-" + suffixPath.url() );
-  if( QFile::exists( tmp ) ) {
-    QFile itemsCacheFile( tmp );
-    if( itemsCacheFile.open( QIODevice::ReadOnly ) ) {
-      QDataStream in( &itemsCacheFile );
-      in >> itemsCache;
-      itemsCacheFile.close();
-    }
-  }
-  
-  kDebug() << "Done loading cache from disk";
-}
-
-void davAccessor::saveCache( const QString &suffix )
-{
-  kDebug() << "Saving cache to disk";
-  
-  KUrl suffixPath( suffix );
-  suffixPath.cleanPath();
-  QFile etagsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/etags-" + suffixPath.url() ) );
-  QFile itemsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/items-" + suffixPath.url() ) );
-  
-  if( ! etagsCacheFile.open( QIODevice::WriteOnly ) ) {
-    emit accessorError( i18n( "Unable to open cache file for writing : %1" ).arg( etagsCacheFile.errorString() ), false );
-    return;
-  }
-  
-  if( ! itemsCacheFile.open( QIODevice::WriteOnly ) ) {
-    emit accessorError( i18n( "Unable to open cache file for writing : %1" ).arg( itemsCacheFile.errorString() ), false );
-    return;
-  }
-  
-  QDataStream out( &etagsCacheFile );
-  out.setVersion( QDataStream::Qt_4_6 );
-  out << etagsCache;
-  etagsCacheFile.close();
-  
-  out.setDevice( &itemsCacheFile );
-  out << itemsCache;
-  itemsCacheFile.close();
-  
-  kDebug() << "Done saving cache to disk";
-}
-
-void davAccessor::removeCache( const QString &suffix )
-{
-  KUrl suffixPath( suffix );
-  suffixPath.cleanPath();
-  QFile etagsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/etags-" + suffixPath.url() ) );
-  QFile itemsCacheFile( KStandardDirs::locateLocal( "cache", "akonadi-dav/items-" + suffixPath.url() ) );
-  etagsCacheFile.remove();
-  itemsCacheFile.remove();
 }
 
 KIO::DavJob* davAccessor::doPropfind( const KUrl &url, const QDomDocument &props, const QString &davDepth )
@@ -246,19 +181,14 @@ davItemCacheStatus davAccessor::itemCacheStatus( const QString &url, const QStri
 {
   davItemCacheStatus ret = NOT_CACHED;
   
-  if( etagsCache.contains( url ) ) {
-    if( etagsCache.value( url ) != etag ) {
-      if( itemsCache.contains( url ) ) {
-        itemsCache.remove( url );
-        ret = EXPIRED;
-      }
-      etagsCache[url] = etag;
+  if( itemsCache.contains( url ) ) {
+    if( itemsCache[url].etag != etag ) {
+      itemsCache.remove( url );
+      ret = EXPIRED;
       kDebug() << "Item at " << url << " changed in the backend";
     }
     else {
-      if( itemsCache.contains( url ) ) {
-        ret = CACHED;
-      }
+      ret = CACHED;
     }
   }
   
@@ -271,9 +201,8 @@ davItem davAccessor::getItemFromCache( const QString &url )
   return itemsCache.value( url );
 }
 
-void davAccessor::addItemToCache( const davItem &item, const QString &etag )
+void davAccessor::addItemToCache( const davItem &item )
 {
-  etagsCache[item.url] = etag;
   itemsCache[item.url] = item;
 }
 
@@ -292,7 +221,9 @@ void davAccessor::itemDelFinished( KJob *j )
     return;
   }
   
-  emit itemRemoved( job->urls().first() );
+  KUrl url = job->urls().first();
+  itemsCache.remove( url.prettyUrl() );
+  emit itemRemoved( url );
 }
 
 void davAccessor::itemPutFinished( KJob *j )
@@ -312,7 +243,7 @@ void davAccessor::itemPutFinished( KJob *j )
   QStringList allHeaders = job->queryMetaData( "HTTP-Headers" ).split( "\n" );
   QString location;
   KUrl oldUrl = job->url();
-  QString oldUrlStr = oldUrl.prettyUrl(); //QUrl::fromPercentEncoding( oldUrl.url().toAscii() );
+  QString oldUrlStr = oldUrl.prettyUrl();
   KUrl newUrl;
   QString newUrlStr;
   
@@ -333,25 +264,16 @@ void davAccessor::itemPutFinished( KJob *j )
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
   
   kDebug() << "Last put item at (old)" << oldUrlStr << " (new)" << newUrlStr << " (etag)" << etag;
-  kDebug() << job->queryMetaData( "HTTP-Headers" );
+  itemsCache[oldUrlStr].etag = etag;
   
-  if( !etag.isEmpty() ) {
-    etagsCache[newUrlStr] = etag;
-    
-    if( oldUrl != newUrl ) {
-      if( etagsCache.contains( oldUrlStr ) ) {
-        etagsCache.remove( oldUrlStr );
-      }
-      if( itemsCache.contains( oldUrlStr ) ) {
-        // itemsCache[oldUrl.url()] has been modified by putItem() before the job starts
-        itemsCache[newUrlStr] = itemsCache[oldUrlStr];
-        itemsCache[newUrlStr].url = newUrlStr;
-        itemsCache.remove( oldUrlStr );
-      }
-    }
+  if( oldUrl != newUrl ) {
+    // itemsCache[oldUrl.url()] has been modified by putItem() before the job starts
+    itemsCache[newUrlStr] = itemsCache[oldUrlStr];
+    itemsCache[newUrlStr].url = newUrlStr;
+    itemsCache.remove( oldUrlStr );
   }
   
-  emit itemPut( oldUrl, newUrl );
+  emit itemPut( oldUrl, itemsCache[newUrlStr] );
 }
 
 void davAccessor::clearSeenUrls( const QString &url )

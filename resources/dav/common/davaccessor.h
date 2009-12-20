@@ -35,10 +35,11 @@ class QDomDocument;
 struct davItem
 {
   davItem();
-  davItem( const QString &_url, const QString &_contentType, const QByteArray &_data);
+  davItem( const QString &_url, const QString &_contentType, const QByteArray &_data, const QString &_etag);
   QString url;
   QString contentType;
   QByteArray data;
+  QString etag;
 };
 
 QDataStream& operator<<( QDataStream &out, const davItem &item );
@@ -62,9 +63,7 @@ class davAccessor : public QObject
     virtual void retrieveItem( const KUrl &url ) = 0;
     virtual void putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag = false );
     virtual void removeItem( const KUrl &url );
-    void loadCache( const QString &suffix );
-    void saveCache( const QString &suffix );
-    void removeCache( const QString &suffix );
+    void addItemToCache( const davItem &item );
     
   public Q_SLOTS:
     void validateCache();
@@ -75,7 +74,6 @@ class davAccessor : public QObject
     
     davItemCacheStatus itemCacheStatus( const QString &url, const QString &etag );
     davItem getItemFromCache( const QString &url );
-    void addItemToCache( const davItem &item, const QString &etag );
     
     void clearSeenUrls( const QString &url );
     void seenUrl( const QString &collectionUrl, const QString &itemUrl );
@@ -88,7 +86,6 @@ class davAccessor : public QObject
     
   private:
     QMap<QString, QSet<QString> > lastSeenItems; // collection url, items url
-    QMap<QString, QString> etagsCache; // url, etag
     QMap<QString, davItem> itemsCache; // url, item
     
   Q_SIGNALS:
@@ -98,9 +95,8 @@ class davAccessor : public QObject
     void collectionsRetrieved();
     void itemRetrieved( const davItem &item );
     void itemsRetrieved();
-    void itemPut( const KUrl &oldUrl, const KUrl &newUrl );
+    void itemPut( const KUrl &oldUrl, davItem putItem );
     void itemRemoved( const KUrl &url );
-//     void backendItemChanged( const davItem &item );
     void backendItemsRemoved( const QList<davItem> &items );
 };
 

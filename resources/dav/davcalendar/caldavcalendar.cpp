@@ -91,7 +91,6 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
     QDomElement propstat, supportedCalendarComponentSet;
     QString href, status, displayname;
     KUrl url = job->url();
-    url.setUser( QString() );
     
     tmp = r.elementsByTagNameNS( "DAV:", "href" );
     if( tmp.length() == 0 )
@@ -101,10 +100,14 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
     if( !href.endsWith( "/" ) )
       href.append( "/" );
     
-    if( href.startsWith( "/" ) )
+    if( href.startsWith( "/" ) ) {
       url.setEncodedPath( href.toAscii() );
-    else
-      url = href;
+    }
+    else {
+      KUrl tmpUrl( href );
+      tmpUrl.setUser( url.user() );
+      url = tmpUrl;
+    }
     href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
     
     tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
@@ -367,14 +370,12 @@ void caldavCalendarAccessor::multigetFinished( KJob *j )
       continue;
     
     kDebug() << "Got item with url " << href;
-    davItem i( href, "text/calendar", data );
+    davItem i( href, "text/calendar", data, etag );
     
     davItemCacheStatus itemStatus = itemCacheStatus( href, etag );
     if( itemStatus != CACHED ) {
       emit itemRetrieved( i );
     }
-    
-    addItemToCache( i, etag );
   }
   
   emit itemsRetrieved();

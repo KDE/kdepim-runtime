@@ -37,7 +37,6 @@ class davCalendarResource : public Akonadi::ResourceBase,
   public:
     davCalendarResource( const QString &id );
     ~davCalendarResource();
-    void cleanup();
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
@@ -54,10 +53,9 @@ class davCalendarResource : public Akonadi::ResourceBase,
     void accessorRetrievedItem( const davItem &item );
     void accessorRetrievedItems();
     void accessorRemovedItem( const KUrl &url );
-    void accessorPutItem( const KUrl &oldUrl, const KUrl &newUrl );
+    void accessorPutItem( const KUrl &oldUrl, davItem item );
     
     void backendItemsRemoved( const QList<davItem> &items );
-//     void backendItemChanged( const davItem &item );
 
   protected:
     virtual void aboutToQuit();
@@ -68,6 +66,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     
   private:
     void doResourceInitialization();
+    void loadCacheFromAkonadi();
     bool configurationIsValid();
     Akonadi::Item createItem( const QByteArray &data );
     
@@ -75,6 +74,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     davAccessor *accessor;
     Akonadi::Collection davCollectionRoot;
     int nCollectionsRetrieval;
+    int nItemsRetrieved;
     QSet<QString> seenCollections;
     Akonadi::Item::List retrievedItems;
     QMutex retrievedItemsMtx;
