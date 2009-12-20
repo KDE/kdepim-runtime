@@ -45,6 +45,7 @@ if (Grantlee_FOUND)
 
 endif (Grantlee_FOUND)
 
+add_subdirectory(filestore)
 
 #### Clients ####
 
