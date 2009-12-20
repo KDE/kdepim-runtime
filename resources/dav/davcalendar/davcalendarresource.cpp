@@ -385,7 +385,7 @@ void davCalendarResource::accessorRetrievedItem( const davItem &item )
 {
   kDebug() << "Accessor retrieved an item at " << item.url << item.etag;
   
-  Akonadi::Item i = createItem( item.data );
+  Akonadi::Item i = createAkonadiItem( item.data );
   
   IncidencePtr ptr = i.payload<IncidencePtr>();
   if( !ptr.get() )
@@ -490,7 +490,7 @@ void davCalendarResource::backendItemsRemoved( const QList<davItem> &items )
   foreach( davItem item, items ) {
     kDebug() << "Item at " << item.url << " was removed";
     
-    Akonadi::Item i = createItem( item.data );
+    Akonadi::Item i = createAkonadiItem( item.data );
     i.setRemoteId( item.url );
   
     if( item.contentType.isEmpty() )
@@ -598,7 +598,7 @@ void davCalendarResource::loadCacheFromAkonadi()
           QString etag;
           etagAttribute *attr = item.attribute<etagAttribute>();
           etag = attr->etag();
-          
+  
           davItem i( item.remoteId(), "text/calendar", rawData, etag );
           kDebug() << "Adding item " << i.url << i.etag << " to accessor cache";
           accessor->addItemToCache( i );
@@ -648,7 +648,7 @@ bool davCalendarResource::configurationIsValid()
   return true;
 }
 
-Akonadi::Item davCalendarResource::createItem( const QByteArray &data )
+Akonadi::Item createAkonadiItem( const QByteArray &data )
 {
   Akonadi::Item ret;
   QString iCalData = QString::fromUtf8( data );

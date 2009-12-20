@@ -68,7 +68,6 @@ class davCalendarResource : public Akonadi::ResourceBase,
     void doResourceInitialization();
     void loadCacheFromAkonadi();
     bool configurationIsValid();
-    Akonadi::Item createItem( const QByteArray &data );
     
     KCal::MimeTypeVisitor *mMimeVisitor;
     davAccessor *accessor;
@@ -83,5 +82,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     QMap<QString, Akonadi::Item> delItems;
     QMutex delItemsMtx;
 };
+
+Akonadi::Item createAkonadiItem( const QByteArray &data );
 
 #endif
