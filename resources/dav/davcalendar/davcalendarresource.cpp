@@ -41,6 +41,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/attribute.h>
 #include <akonadi/attributefactory.h>
+#include <akonadi/entitydisplayattribute.h>
 
 using namespace KCal;
 using namespace Akonadi;
@@ -97,6 +98,7 @@ davCalendarResource::davCalendarResource( const QString &id )
                             Settings::self(), QDBusConnection::ExportAdaptors );
   
   AttributeFactory::registerAttribute<etagAttribute>();
+  AttributeFactory::registerAttribute<EntityDisplayAttribute>();
 
   davCollectionRoot.setParentCollection( Collection::root() );
   davCollectionRoot.setName( name() );
@@ -221,8 +223,7 @@ void davCalendarResource::configure( WId windowId )
         seenCollections.remove( declaredUrl );
         Akonadi::Collection c;
         c.setRemoteId( declaredUrl );
-        Akonadi::CollectionDeleteJob *j =
-            new Akonadi::CollectionDeleteJob( c );
+        new Akonadi::CollectionDeleteJob( c );
       }
       else {
         bool gotMatch = false;
@@ -231,8 +232,7 @@ void davCalendarResource::configure( WId windowId )
             gotMatch = true;
             Akonadi::Collection c;
             c.setRemoteId( realUrl );
-            Akonadi::CollectionDeleteJob *j =
-                new Akonadi::CollectionDeleteJob( c, this );
+            new Akonadi::CollectionDeleteJob( c, this );
           }
         }
         if( gotMatch )
@@ -501,7 +501,7 @@ void davCalendarResource::backendItemsRemoved( const QList<davItem> &items )
     removed << i;
   }
   
-  Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( removed, this );
+  new Akonadi::ItemDeleteJob( removed, this );
 }
 
 void davCalendarResource::accessorStatus( const QString &s )
@@ -584,7 +584,6 @@ void davCalendarResource::loadCacheFromAkonadi()
       if( job.exec() ) {
         Item::List items = job.items();
         foreach( const Item &item, items ) {
-          // TODO: factorize this with code in itemAdded()
           if( !item.hasPayload<IncidencePtr>() )
             continue;
           
@@ -643,6 +642,11 @@ bool davCalendarResource::configurationIsValid()
     Akonadi::CachePolicy cachePolicy = davCollectionRoot.cachePolicy();
     cachePolicy.setIntervalCheckTime( newICT );
     davCollectionRoot.setCachePolicy( cachePolicy );
+  }
+  
+  if( !Settings::self()->displayName().isEmpty() ) {
+    EntityDisplayAttribute *dName = davCollectionRoot.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+    dName->setDisplayName( Settings::self()->displayName() );
   }
   
   return true;

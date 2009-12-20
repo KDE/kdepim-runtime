@@ -66,6 +66,7 @@ void groupdavCalendarAccessor::retrieveItems( const KUrl &url )
 
 void groupdavCalendarAccessor::retrieveItem( const KUrl &url )
 {
+  Q_UNUSED( url );
   // TODO: implement this, if needed
 }
 

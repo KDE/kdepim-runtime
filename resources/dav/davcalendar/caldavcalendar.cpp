@@ -206,6 +206,7 @@ void caldavCalendarAccessor::retrieveItems( const KUrl &url )
 
 void caldavCalendarAccessor::retrieveItem( const KUrl &url )
 {
+  Q_UNUSED( url );
   // TODO: implement this, if needed
 }
 

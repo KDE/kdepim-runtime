@@ -5,6 +5,14 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <group name="General">
+    <entry name="displayName" type="String">
+      <label>Display name</label>
+      <default></default>
+    </entry>
+    <entry name="refreshInterval" type="Int">
+      <label>Refresh every</label>
+      <default>5</default>
+    </entry>
     <entry name="remoteProtocol" type="Enum">
       <label>Remote access protocol</label>
       <choices>
@@ -20,10 +28,6 @@
     <entry name="remoteUrls" type="StringList">
       <label>Remote URLs</label>
       <default></default>
-    </entry>
-    <entry name="refreshInterval" type="Int">
-      <label>Refresh every</label>
-      <default>5</default>
     </entry>
     <entry name="authenticationRequired" type="Bool">
       <label>Backend requires authentication</label>

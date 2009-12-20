@@ -6,63 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
-    <height>601</height>
+    <width>655</width>
+    <height>636</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
-    <widget class="KButtonGroup" name="kcfg_remoteProtocol">
-     <property name="locale">
-      <locale language="English" country="UnitedStates"/>
-     </property>
+    <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Remote calendar access protocol</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QRadioButton" name="caldav">
-        <property name="text">
-         <string>CalDAV</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="groupdav">
-        <property name="text">
-         <string>GroupDAV</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="locale">
-      <locale language="English" country="UnitedStates"/>
-     </property>
-     <property name="title">
-      <string>Server configuration</string>
+      <string>General configuration</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="label_6">
           <property name="locale">
            <locale language="English" country="UnitedStates"/>
           </property>
           <property name="text">
-           <string>Remote URLs</string>
+           <string>Display name</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="KEditListBox" name="kcfg_remoteUrls"/>
+         <widget class="QLineEdit" name="kcfg_displayName">
+          <property name="locale">
+           <locale language="English" country="UnitedStates"/>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -110,6 +82,64 @@
            </size>
           </property>
          </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="KButtonGroup" name="kcfg_remoteProtocol">
+     <property name="locale">
+      <locale language="English" country="UnitedStates"/>
+     </property>
+     <property name="title">
+      <string>Remote calendar access protocol</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="caldav">
+        <property name="text">
+         <string>CalDAV</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="groupdav">
+        <property name="text">
+         <string>GroupDAV</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="locale">
+      <locale language="English" country="UnitedStates"/>
+     </property>
+     <property name="title">
+      <string>Server configuration</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="locale">
+           <locale language="English" country="UnitedStates"/>
+          </property>
+          <property name="text">
+           <string>Remote URLs</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="KEditListBox" name="kcfg_remoteUrls"/>
         </item>
        </layout>
       </item>

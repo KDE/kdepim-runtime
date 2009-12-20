@@ -116,6 +116,8 @@ void davAccessor::removeItem( const KUrl &url )
 
 void davAccessor::jobWarning( KJob* j, const QString &p, const QString &r )
 {
+  Q_UNUSED( j );
+  Q_UNUSED( r );
   kDebug() << "Warning : " << p;
   emit accessorError( p, true );
 }
