@@ -98,7 +98,6 @@ davCalendarResource::davCalendarResource( const QString &id )
   
   AttributeFactory::registerAttribute<etagAttribute>();
 
-  // trying to fetch davCollectionRoot from Akonadi storage
   davCollectionRoot.setParentCollection( Collection::root() );
   davCollectionRoot.setName( name() );
   davCollectionRoot.setRemoteId( name() );
@@ -288,7 +287,7 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
   
   
-  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl();
   kDebug() << "Item " << item.id() << " will be put to " << urlStr;
   putItems[urlStr] = item;
   url.setUser( Settings::self()->username() );
@@ -322,7 +321,7 @@ void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
   
   kDebug() << "Item " << item.id() << " will be put to " << url.prettyUrl();
   
-  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl();
   putItems[urlStr] = item;
   url.setUser( Settings::self()->username() );
   url.setPass( Settings::self()->password() );
@@ -338,7 +337,7 @@ void davCalendarResource::itemRemoved( const Akonadi::Item &item )
   }
   
   KUrl url( item.remoteId() );
-  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl();
   delItems[urlStr] = item;
 
   kDebug() << "Requesting deletion of item at " << urlStr;
@@ -426,7 +425,7 @@ void davCalendarResource::accessorRetrievedItems()
 
 void davCalendarResource::accessorRemovedItem( const KUrl &url )
 {
-  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl();
   
   QMutexLocker locker( &delItemsMtx );
   

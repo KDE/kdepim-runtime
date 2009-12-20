@@ -68,7 +68,7 @@ davAccessor::~davAccessor()
 
 void davAccessor::putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag )
 {
-  QString urlStr = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString urlStr = url.prettyUrl();
   
   QString etag;
   QString headers = "Content-Type: ";
@@ -111,7 +111,7 @@ void davAccessor::removeItem( const KUrl &url )
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", "If-Match: "+etag );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemDelFinished( KJob* ) ) );
-  connect(job, SIGNAL(warning(KJob*, const QString&, const QString&)), this, SLOT(jobWarning(KJob*, const QString&, const QString&)));
+  connect( job, SIGNAL( warning( KJob*, const QString&, const QString& ) ), this, SLOT( jobWarning( KJob*, const QString&, const QString& ) ) );
 }
 
 void davAccessor::jobWarning( KJob* j, const QString &p, const QString &r )
@@ -259,7 +259,7 @@ void davAccessor::itemPutFinished( KJob *j )
   else {
     newUrl = location;
   }
-  newUrlStr = newUrl.prettyUrl(); //QUrl::fromPercentEncoding( newUrl.url().toAscii() );
+  newUrlStr = newUrl.prettyUrl();
   
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
   

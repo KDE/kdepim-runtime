@@ -32,15 +32,6 @@ caldavCalendarAccessor::caldavCalendarAccessor()
 
 void caldavCalendarAccessor::retrieveCollections( const KUrl &url )
 {
-//   QString propfind =
-//       "<D:propfind xmlns:D=\"DAV:\" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"
-//       " <D:prop>"
-//       "   <D:displayname/>"
-//       "   <D:resourcetype/>"
-//       "   <C:supported-calendar-component-set/>"
-//       " </D:prop>"
-//       "</D:propfind>";
-  
   QDomDocument props;
   QDomElement root = props.createElementNS( "DAV:", "propfind" );
   props.appendChild( root );
@@ -52,8 +43,6 @@ void caldavCalendarAccessor::retrieveCollections( const KUrl &url )
   e1.appendChild( e2 );
   e2 = props.createElementNS( "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
   e1.appendChild( e2 );
-  
-//   props.setContent( propfind );
   
   KIO::DavJob *job = doPropfind( url, props, "1" );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( collectionsPropfindFinished( KJob* ) ) );
@@ -108,7 +97,7 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
       tmpUrl.setUser( url.user() );
       url = tmpUrl;
     }
-    href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+    href = url.prettyUrl();
     
     tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
     if( tmp.length() == 0 )
@@ -163,7 +152,7 @@ void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
 
 void caldavCalendarAccessor::retrieveItems( const KUrl &url )
 {
-  QString collectionUrl = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+  QString collectionUrl = url.prettyUrl();
   clearSeenUrls( collectionUrl );
   
   QDomDocument rep;
@@ -231,7 +220,7 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     return;
   }
   
-  QString collectionUrl = job->url().prettyUrl(); //QUrl::fromPercentEncoding( job->url().url().toAscii() );
+  QString collectionUrl = job->url().prettyUrl();
   
   QDomDocument xml = job->response();
   QDomElement root = xml.documentElement();
@@ -253,12 +242,12 @@ void caldavCalendarAccessor::itemsReportFinished( KJob *j )
     if( tmp.length() == 0 )
       continue;
     href = tmp.item( 0 ).firstChild().toText().data();
-//     kDebug() << "Got href : " << href;
+    
     if( href.startsWith( "/" ) )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+    href = url.prettyUrl();
     
     // NOTE: nothing below should invalidate the item (return an error
     // and exit the function)
@@ -355,7 +344,7 @@ void caldavCalendarAccessor::multigetFinished( KJob *j )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+    href = url.prettyUrl();
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
     if( tmp.length() == 0 )

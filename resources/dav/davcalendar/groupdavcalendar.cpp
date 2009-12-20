@@ -125,7 +125,7 @@ void groupdavCalendarAccessor::collectionsPropfindFinished( KJob *j )
       tmpUrl.setUser( url.user() );
       url = tmpUrl;
     }
-    href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+    href = url.prettyUrl();
     
     tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
     if( tmp.length() == 0 )
@@ -172,7 +172,7 @@ void groupdavCalendarAccessor::itemsPropfindFinished( KJob *j )
     return;
   }
   
-  QString collectionUrl = job->url().prettyUrl(); //QUrl::fromPercentEncoding( job->url().url().toAscii() );
+  QString collectionUrl = job->url().prettyUrl();
   clearSeenUrls( collectionUrl );
   
   QDomDocument xml = job->response();
@@ -199,7 +199,7 @@ void groupdavCalendarAccessor::itemsPropfindFinished( KJob *j )
       url.setEncodedPath( href.toAscii() );
     else
       url = href;
-    href = url.prettyUrl(); //QUrl::fromPercentEncoding( url.url().toAscii() );
+    href = url.prettyUrl();
     
     tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
     if( tmp.length() == 0 )
@@ -242,7 +242,7 @@ void groupdavCalendarAccessor::itemGetFinished( KJob *j )
   }
   
   QByteArray d = job->data();
-  QString url = job->url().prettyUrl(); //QUrl::fromPercentEncoding( job->url().url().toAscii() );
+  QString url = job->url().prettyUrl();
   QString mimeType = job->queryMetaData( "content-type" );
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
   
