@@ -27,7 +27,7 @@
 #include <kstandarddirs.h>
 #include <ktempdir.h>
 
-QTEST_KDEMAIN_CORE(MboxTest)
+QTEST_KDEMAIN( MboxTest, NoGUI )
 
 #include "test-entries.h"
 
@@ -37,12 +37,12 @@ static const char * testLockFile = "test-mbox-lock-file";
 
 QString MboxTest::fileName()
 {
-  return mTempDir->name() + testFile;
+  return mTempDir->name() + QLatin1String( testFile );
 }
 
 QString MboxTest::lockFileName()
 {
-  return mTempDir->name() + testLockFile;
+  return mTempDir->name() + QLatin1String( testLockFile );
 }
 
 void MboxTest::removeTestFile()
@@ -54,7 +54,7 @@ void MboxTest::removeTestFile()
 
 void MboxTest::initTestCase()
 {
-  mTempDir = new KTempDir( KStandardDirs::locateLocal("tmp", testDir ) );
+  mTempDir = new KTempDir( KStandardDirs::locateLocal( "tmp" , QLatin1String( testDir ) ) );
 
   QDir temp(mTempDir->name());
   QVERIFY(temp.exists());
@@ -78,13 +78,13 @@ void MboxTest::testSetLockMethod()
 {
   MBox mbox1;
 
-  if ( !KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
+  if ( !KStandardDirs::findExe( QLatin1String( "lockfile" ) ).isEmpty() ) {
     QVERIFY( mbox1.setLockType(MBox::ProcmailLockfile) );
   } else {
     QVERIFY( !mbox1.setLockType( MBox::ProcmailLockfile ) );
   }
 
-  if ( !KStandardDirs::findExe("mutt_dotlock").isEmpty() ) {
+  if ( !KStandardDirs::findExe( QLatin1String( "mutt_dotlock" ) ).isEmpty() ) {
     QVERIFY( mbox1.setLockType( MBox::MuttDotlock ) );
     QVERIFY( mbox1.setLockType( MBox::MuttDotlockPrivileged ) );
   } else {
@@ -100,12 +100,12 @@ void MboxTest::testLockBeforeLoad()
   // Should fail because it's not known which file to lock.
   MBox mbox;
 
-  if ( !KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
-    QVERIFY( mbox.setLockType(MBox::ProcmailLockfile) );
+  if ( !KStandardDirs::findExe( QLatin1String( "lockfile" ) ).isEmpty() ) {
+    QVERIFY( mbox.setLockType( MBox::ProcmailLockfile ) );
     QVERIFY( !mbox.lock() );
   }
 
-  if ( !KStandardDirs::findExe("mutt_dotlock").isEmpty() ) {
+  if ( !KStandardDirs::findExe( QLatin1String( "mutt_dotlock" ) ).isEmpty() ) {
     QVERIFY( mbox.setLockType( MBox::MuttDotlock ) );
     QVERIFY( !mbox.lock() );
     QVERIFY( mbox.setLockType( MBox::MuttDotlockPrivileged ) );
@@ -130,11 +130,11 @@ void MboxTest::testProcMailLock()
   QVERIFY( mbox.load( fileName() ) );
 
   // By default the filename is used as part of the lockfile filename.
-  QVERIFY( !QFile( fileName() + ".lock" ).exists() );
+  QVERIFY( !QFile( fileName() + QLatin1String( ".lock" ) ).exists() );
   QVERIFY( mbox.lock() );
-  QVERIFY( QFile( fileName() + ".lock" ).exists() );
+  QVERIFY( QFile( fileName() + QLatin1String( ".lock" ) ).exists() );
   QVERIFY( mbox.unlock() );
-  QVERIFY( !QFile( fileName() + ".lock" ).exists() );
+  QVERIFY( !QFile( fileName() + QLatin1String( ".lock" ) ).exists() );
 
   mbox.setLockFile( lockFileName() );
   QVERIFY( !QFile( lockFileName() ).exists() );
