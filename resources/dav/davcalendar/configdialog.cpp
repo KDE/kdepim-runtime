@@ -51,7 +51,8 @@ void ConfigDialog::setRemovedUrls( const QStringList &l )
 void ConfigDialog::onOkClicked()
 {
   mManager->updateSettings();
-  Settings::self()->setPassword( ui.kcfg_password->text() );
+  if( !ui.kcfg_password->text().isEmpty() )
+    Settings::self()->setPassword( ui.kcfg_password->text() );
 }
 
 void ConfigDialog::onCancelClicked()
