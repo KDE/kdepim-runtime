@@ -48,6 +48,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 ########### next target ###############
 
 set( openxchangeresource_SRCS
+  oxa/connectiontestjob.cpp
   oxa/contactutils.cpp
   oxa/davmanager.cpp
   oxa/davutils.cpp
