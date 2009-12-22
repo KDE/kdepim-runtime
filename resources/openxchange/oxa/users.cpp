@@ -21,13 +21,9 @@
 
 #include "users.h"
 
-#include "usersrequestjob.h"
-
 #include <QtCore/QFile>
 
 #include <kstandarddirs.h>
-
-#include <QtCore/QDebug>
 
 using namespace OXA;
 
