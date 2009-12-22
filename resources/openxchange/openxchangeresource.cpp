@@ -261,6 +261,8 @@ void OpenXchangeResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
 
   if ( item.hasPayload<KABC::Addressee>() ) {
     object.setContact( item.payload<KABC::Addressee>() );
+  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+    object.setContactGroup( item.payload<KABC::ContactGroup>() );
   } else if ( item.hasPayload<KCal::Event::Ptr>() ) {
     object.setEvent( item.payload<KCal::Incidence::Ptr>() );
   } else if ( item.hasPayload<KCal::Todo::Ptr>() ) {
@@ -288,6 +290,8 @@ void OpenXchangeResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
 
   if ( item.hasPayload<KABC::Addressee>() ) {
     object.setContact( item.payload<KABC::Addressee>() );
+  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
+    object.setContactGroup( item.payload<KABC::ContactGroup>() );
   } else if ( item.hasPayload<KCal::Event::Ptr>() ) {
     object.setEvent( item.payload<KCal::Incidence::Ptr>() );
   } else if ( item.hasPayload<KCal::Todo::Ptr>() ) {
@@ -465,8 +469,13 @@ void OpenXchangeResource::onObjectsRequestJobFinished( KJob *job )
     Item item;
     switch ( object.module() ) {
       case OXA::Folder::Contacts:
-        item.setMimeType( KABC::Addressee::mimeType() );
-        item.setPayload<KABC::Addressee>( object.contact() );
+        if ( !object.contact().isEmpty() ) {
+          item.setMimeType( KABC::Addressee::mimeType() );
+          item.setPayload<KABC::Addressee>( object.contact() );
+        } else {
+          item.setMimeType( KABC::ContactGroup::mimeType() );
+          item.setPayload<KABC::ContactGroup>( object.contactGroup() );
+        }
         break;
       case OXA::Folder::Calendar:
         item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
@@ -505,8 +514,13 @@ void OpenXchangeResource::onObjectRequestJobFinished( KJob *job )
 
   switch ( object.module() ) {
     case OXA::Folder::Contacts:
-      item.setMimeType( KABC::Addressee::mimeType() );
-      item.setPayload<KABC::Addressee>( object.contact() );
+      if ( !object.contact().isEmpty() ) {
+        item.setMimeType( KABC::Addressee::mimeType() );
+        item.setPayload<KABC::Addressee>( object.contact() );
+      } else {
+        item.setMimeType( KABC::ContactGroup::mimeType() );
+        item.setPayload<KABC::ContactGroup>( object.contactGroup() );
+      }
       break;
     case OXA::Folder::Calendar:
       item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
