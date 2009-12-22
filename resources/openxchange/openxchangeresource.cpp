@@ -596,6 +596,44 @@ void OpenXchangeResource::onObjectDeleteJobFinished( KJob *job )
   changeProcessed();
 }
 
+static Collection folderToCollection( const OXA::Folder &folder, const Collection &parentCollection )
+{
+  Collection collection;
+
+  collection.setParentCollection( parentCollection );
+  collection.setRemoteId( RemoteIdentifier( folder.objectId(), folder.module(), folder.lastModified() ).toString() );
+
+  // set a unique name to make Akonadi happy
+  collection.setName( folder.title() + "_" + QUuid::createUuid().toString() );
+
+  EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attribute->setDisplayName( folder.title() );
+
+  QStringList mimeTypes;
+  mimeTypes.append( Collection::mimeType() );
+  switch ( folder.module() ) {
+    case OXA::Folder::Calendar:
+      mimeTypes.append( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
+      attribute->setIconName( QString::fromLatin1( "view-calendar" ) );
+      break;
+    case OXA::Folder::Contacts:
+      mimeTypes.append( KABC::Addressee::mimeType() );
+      attribute->setIconName( QString::fromLatin1( "view-pim-contacts" ) );
+      break;
+    case OXA::Folder::Tasks:
+      mimeTypes.append( QLatin1String( "application/x-vnd.akonadi.calendar.todo" ) );
+      attribute->setIconName( QString::fromLatin1( "view-pim-tasks" ) );
+      break;
+    case OXA::Folder::Unbound:
+      break;
+  }
+
+  collection.setContentMimeTypes( mimeTypes );
+  collection.setRights( folderPermissionsToCollectionRights( folder ) );
+
+  return collection;
+}
+
 void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
 {
   if ( job->error() ) {
@@ -660,46 +698,20 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
   remoteIdMap.insert( 4, systemFolder );
 
   // add the folders from the server
-  const OXA::Folder::List folders = requestJob->folders();
-  foreach ( const OXA::Folder &folder, folders ) {
-    Collection collection;
-    if ( !remoteIdMap.contains( folder.folderId() ) ) {
+  OXA::Folder::List folders = requestJob->folders();
+  while ( !folders.isEmpty() ) {
+    const OXA::Folder folder = folders.takeFirst();
+    qDebug("handle folder %s", qPrintable( folder.title() ));
+    if ( remoteIdMap.contains( folder.folderId() ) ) {
+      // we have the parent collection created already
+      const Collection collection = folderToCollection( folder, remoteIdMap.value( folder.folderId() ) );
+      remoteIdMap.insert( folder.objectId(), collection );
+      collections.append( collection );
+    } else {
+      // we have to wait until the parent folder has been created
+      folders.append( folder );
       qDebug() << "Error: parent folder id" << folder.folderId() << "of folder" << folder.title() << "is unkown";
     }
-
-    collection.setParentCollection( remoteIdMap.value( folder.folderId() ) );
-    collection.setRemoteId( RemoteIdentifier( folder.objectId(), folder.module(), folder.lastModified() ).toString() );
-
-    // set a unique name to make Akonadi happy
-    collection.setName( folder.title() + "_" + QUuid::createUuid().toString() );
-
-    EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-    attribute->setDisplayName( folder.title() );
-
-    QStringList mimeTypes;
-    mimeTypes.append( Collection::mimeType() );
-    switch ( folder.module() ) {
-      case OXA::Folder::Calendar:
-        mimeTypes.append( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
-        attribute->setIconName( QString::fromLatin1( "view-calendar" ) );
-        break;
-      case OXA::Folder::Contacts:
-        mimeTypes.append( KABC::Addressee::mimeType() );
-        attribute->setIconName( QString::fromLatin1( "view-pim-contacts" ) );
-        break;
-      case OXA::Folder::Tasks:
-        mimeTypes.append( QLatin1String( "application/x-vnd.akonadi.calendar.todo" ) );
-        attribute->setIconName( QString::fromLatin1( "view-pim-tasks" ) );
-        break;
-      case OXA::Folder::Unbound:
-        break;
-    }
-
-    collection.setContentMimeTypes( mimeTypes );
-    collection.setRights( folderPermissionsToCollectionRights( folder ) );
-
-    remoteIdMap.insert( folder.objectId(), collection );
-    collections.append( collection );
   }
 
   collectionsRetrieved( collections );
