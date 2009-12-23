@@ -28,6 +28,7 @@ Comment[es]=Proporciona acceso a carpetas groupware de Kolab en un servidor IMAP
 Comment[et]=Ligipääsu tagamine Kolabi grupitöökaustadele IMAP serveris (IMAP kontod tuleb eraldi seadistada).
 Comment[fr]=Fourni l'accès aux dossiers Kolab sur un serveur IMAP (il est nécessaire de configurer les comptes IMAP séparément).
 Comment[gl]=Fornece acceso aos cartafoles de traballo en grupo de Kolab dun servidor de IMAP (hai que configurar as contas IMAP por separado).
+Comment[it]=Fornisce l'accesso a cartelle di groupware Kolab su un server IMAP (gli account IMAP devono essere impostati separatamente).
 Comment[nb]=Gir tilgang til Kolab-mapper på en IMAP-tjener (IMAP-kontoer må settes opp separat).
 Comment[nds]=Stellt Togriep op Kolab-Arbeitkoppel-Ornern op en IMAP-Server praat (IMAP-Kontos mööt enkelt inricht warrn).
 Comment[nn]=Gjev tilgang til Kolab gruppevare-mapper på ein IMAP-tenar (du må i tillegg setja opp IMAP-kontoane)
