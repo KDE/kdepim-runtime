@@ -43,7 +43,7 @@ class AKONADI_FILESTORE_EXPORT AugmentedMBoxStore : public AbstractDirectAccessS
 
     virtual void setFileName( const QString &fileName );
 
-    virtual CollectionFetchJob *fetchCollections( const CollectionFetchScope *fetchScope = 0 ) const;
+    virtual CollectionFetchJob *fetchCollections( const Collection &collection, CollectionFetchJob::Type type = CollectionFetchJob::FirstLevel, const CollectionFetchScope *fetchScope = 0 ) const;
 
     virtual ItemFetchJob *fetchItems( const Collection &collection, const ItemFetchScope *fetchScope = 0 ) const;
 

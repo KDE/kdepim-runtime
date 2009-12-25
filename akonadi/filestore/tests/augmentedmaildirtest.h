@@ -46,6 +46,9 @@ class AugmentedMailDirTest : public QObject
     KTempDir *mDir;
     QString mDirName;
 
+  private:
+    void createMailsInDir( const QString &dirName  );
+
   private Q_SLOTS:
     void init();
     void testFetching();

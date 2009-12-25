@@ -81,7 +81,10 @@ class AugmentedMBoxStore::AugmentedMBoxStore::Private : public Job::Visitor
 
     bool visit( CollectionFetchJob *job ) {
       Akonadi::Collection::List collections;
-      collections << mParent->topLevelCollection();
+
+      if ( job->type() == CollectionFetchJob::Base ) {
+        collections << mParent->topLevelCollection();
+      }
 
       mJobSession->notifyCollectionsReceived( job, collections );
       mJobSession->emitResult( job );
@@ -220,15 +223,24 @@ void AugmentedMBoxStore::setFileName( const QString &fileName )
                             KConfig::SimpleConfig );
 }
 
-CollectionFetchJob *AugmentedMBoxStore::fetchCollections( const CollectionFetchScope *fetchScope ) const
+CollectionFetchJob *AugmentedMBoxStore::fetchCollections( const Collection &collection, CollectionFetchJob::Type type, const CollectionFetchScope *fetchScope ) const
 {
-  CollectionFetchJob *job = new CollectionFetchJob( d->mJobSession );
+  CollectionFetchJob *job = new CollectionFetchJob( collection, type, d->mJobSession );
 
   if ( !d->mFileReadable ) {
     // TODO logging
     // TODO better message
     const QString message = i18n( "File not readable" );
     d->mJobSession->setError( job, Job::InvalidStoreState, message );
+    return job;
+  }
+
+  if ( collection.remoteId().isEmpty() ||
+       collection.remoteId() != topLevelCollection().remoteId() ) {
+    // TODO logging
+    // TODO better message
+    const QString message = i18n( "Collection remote ID is empty or not the store's one" );
+    d->mJobSession->setError( job, Job::InvalidJobContext, message );
     return job;
   }
 

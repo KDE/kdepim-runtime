@@ -179,7 +179,7 @@ void AugmentedMBoxTest::init()
 void AugmentedMBoxTest::testFetching()
 {
   // store does not have a file yet, fetching must fail with errors
-  CollectionFetchJob *colFetch = mStore->fetchCollections();
+  CollectionFetchJob *colFetch = mStore->fetchCollections( mStore->topLevelCollection(), CollectionFetchJob::Base );
   QVERIFY( colFetch != 0 );
 
   QSignalSpy *spy = new QSignalSpy( colFetch, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
@@ -207,7 +207,7 @@ void AugmentedMBoxTest::testFetching()
   // set a file name, fetching must work now
   mStore->setFileName( mFileName );
 
-  colFetch = mStore->fetchCollections();
+  colFetch = mStore->fetchCollections( mStore->topLevelCollection(), CollectionFetchJob::Base );
   QVERIFY( colFetch != 0 );
 
   spy = new QSignalSpy( colFetch, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );

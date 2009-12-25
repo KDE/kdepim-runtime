@@ -22,6 +22,9 @@
 
 #include "akonadi-filestore_export.h"
 
+// TODO not nice, collection fetch type should probably be in its own header
+#include <akonadi/filestore/collectionfetchjob.h>
+
 namespace Akonadi
 {
 class Collection;
@@ -32,7 +35,6 @@ class ItemFetchScope;
 namespace FileStore
 {
 
-class CollectionFetchJob;
 class ItemCreateJob;
 class ItemDeleteJob;
 class ItemFetchJob;
@@ -48,7 +50,7 @@ class AKONADI_FILESTORE_EXPORT StoreInterface
 
     virtual Collection topLevelCollection() const = 0;
 
-    virtual CollectionFetchJob *fetchCollections( const CollectionFetchScope *fetchScope = 0 ) const = 0;
+    virtual CollectionFetchJob *fetchCollections( const Collection &collection, CollectionFetchJob::Type type = CollectionFetchJob::FirstLevel, const CollectionFetchScope *fetchScope = 0 ) const = 0;
 
     virtual ItemFetchJob *fetchItems( const Collection &collection, const ItemFetchScope *fetchScope = 0 ) const = 0;
 

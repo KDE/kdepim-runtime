@@ -29,11 +29,15 @@ class CollectionFetchJob::CollectionFetchJob::Private
 {
   public:
     explicit Private( CollectionFetchJob *parent )
-      : mParent( parent )
+      : mType( CollectionFetchJob::Base ),
+        mParent( parent )
     {
     }
 
   public:
+    CollectionFetchJob::Type mType;
+    Collection mCollection;
+
     CollectionFetchScope mFetchScope;
 
     Collection::List mCollections;
@@ -42,10 +46,13 @@ class CollectionFetchJob::CollectionFetchJob::Private
     CollectionFetchJob *mParent;
 };
 
-CollectionFetchJob::CollectionFetchJob( AbstractJobSession *session )
+CollectionFetchJob::CollectionFetchJob( const Collection &collection, Type type, AbstractJobSession *session )
   : Job( session ), d( new Private( this ) )
 {
   Q_ASSERT( session != 0 );
+
+  d->mType = type;
+  d->mCollection = collection;
 
   session->addJob( this );
 }
@@ -53,6 +60,16 @@ CollectionFetchJob::CollectionFetchJob( AbstractJobSession *session )
 CollectionFetchJob::~CollectionFetchJob()
 {
   delete d;
+}
+
+CollectionFetchJob::Type CollectionFetchJob::type() const
+{
+  return d->mType;
+}
+
+Akonadi::Collection CollectionFetchJob::collection() const
+{
+  return d->mCollection;
 }
 
 void CollectionFetchJob::setFetchScope( const Akonadi::CollectionFetchScope &fetchScope )

@@ -61,27 +61,14 @@ AugmentedMailDirTest::~AugmentedMailDirTest()
   delete mDir;
 }
 
-void AugmentedMailDirTest::init()
+void AugmentedMailDirTest::createMailsInDir( const QString &dirName  )
 {
-  delete mStore;
-  mStore = new AugmentedMailDirStore();
-
-  if ( !mDirName.isEmpty() ) {
-    KIO::Job *job = KIO::del( KUrl::fromPath( mDirName ), KIO::HideProgressInfo );
-    job->exec();
-  }
-  delete mDir;
-
-  mDir = new KTempDir();
-  mDirName = mDir->name();
-  QVERIFY( mDir->exists() );
-
-  KPIM::Maildir *mailDir = new KPIM::Maildir( mDirName );
-  QVERIFY( mailDir->create() );
+  KPIM::Maildir mailDir( dirName );
+  QVERIFY( mailDir.create() );
 
   const QString dirTemplate = QLatin1String( "%1/akonadi" );
-  QDir dir( mDirName );
-  QVERIFY( dir.mkpath( dirTemplate.arg( mailDir->path() ) ) );
+  QDir dir( dirName );
+  QVERIFY( dir.mkpath( dirTemplate.arg( mailDir.path() ) ) );
 
   const QString attributeFileTemplate = dirTemplate + QLatin1String( "/%2.attributes" );
   const QString flagFileTemplate = dirTemplate + QLatin1String( "/%12.flags" );
@@ -97,13 +84,13 @@ void AugmentedMailDirTest::init()
     QVERIFY( !messageId.isEmpty() );
     messagePtr->assemble();
 
-    const QString entryName = mailDir->addEntry( messagePtr->encodedContent() );
+    const QString entryName = mailDir.addEntry( messagePtr->encodedContent() );
     QVERIFY( !entryName.isEmpty() );
 
     QSet<QByteArray> flags;
     flags << "\\Seen";
 
-    QFile *file = new QFile( flagFileTemplate.arg( mailDir->path() ).arg( entryName ) );
+    QFile *file = new QFile( flagFileTemplate.arg( mailDir.path() ).arg( entryName ) );
     QVERIFY( file->open( QIODevice::WriteOnly ) );
 
     QDataStream *stream = new QDataStream( file );
@@ -115,7 +102,7 @@ void AugmentedMailDirTest::init()
     Akonadi::EntityDisplayAttribute *displayAttribute = new Akonadi::EntityDisplayAttribute();
     displayAttribute->setDisplayName( QLatin1String( "Test Message 1" ) );
 
-    file = new QFile( attributeFileTemplate.arg( mailDir->path() ).arg( entryName ) );
+    file = new QFile( attributeFileTemplate.arg( mailDir.path() ).arg( entryName ) );
     QVERIFY( file->open( QIODevice::WriteOnly ) );
 
     stream = new QDataStream( file );
@@ -129,7 +116,7 @@ void AugmentedMailDirTest::init()
   {
     KMime::Message::Ptr messagePtr( new KMime::Message() );
     messagePtr->from()->from7BitString( "test@example.com" );
-    messagePtr->to()->from7BitString( "augmentedmboxtest@localhost" );
+    messagePtr->to()->from7BitString( "augmentedmaildirtest@localhost" );
     messagePtr->subject()->from7BitString( "Subject 2" );
     messagePtr->setBody( "Body of message 2" );
     messagePtr->messageID()->generate( "localhost.local" );
@@ -137,12 +124,12 @@ void AugmentedMailDirTest::init()
     QVERIFY( !messageId.isEmpty() );
     messagePtr->assemble();
 
-    const QString entryName = mailDir->addEntry( messagePtr->encodedContent() );
+    const QString entryName = mailDir.addEntry( messagePtr->encodedContent() );
     QVERIFY( !entryName.isEmpty() );
 
     QSet<QByteArray> flags;
 
-    QFile *file = new QFile( flagFileTemplate.arg( mailDir->path() ).arg( entryName ) );
+    QFile *file = new QFile( flagFileTemplate.arg( mailDir.path() ).arg( entryName ) );
     QVERIFY( file->open( QIODevice::WriteOnly ) );
 
     QDataStream *stream = new QDataStream( file );
@@ -154,7 +141,7 @@ void AugmentedMailDirTest::init()
     Akonadi::EntityDisplayAttribute *displayAttribute = new Akonadi::EntityDisplayAttribute();
     displayAttribute->setDisplayName( QLatin1String( "Test Message 2" ) );
 
-    file = new QFile( attributeFileTemplate.arg( mailDir->path() ).arg( entryName ) );
+    file = new QFile( attributeFileTemplate.arg( mailDir.path() ).arg( entryName ) );
     QVERIFY( file->open( QIODevice::WriteOnly ) );
 
     stream = new QDataStream( file );
@@ -168,7 +155,7 @@ void AugmentedMailDirTest::init()
   {
     KMime::Message::Ptr messagePtr( new KMime::Message() );
     messagePtr->from()->from7BitString( "test@example.com" );
-    messagePtr->to()->from7BitString( "augmentedmboxtest@localhost" );
+    messagePtr->to()->from7BitString( "augmentedmaildirtest@localhost" );
     messagePtr->subject()->from7BitString( "Subject 3" );
     messagePtr->setBody( "Body of message 3" );
     messagePtr->messageID()->generate( "localhost.local" );
@@ -176,13 +163,13 @@ void AugmentedMailDirTest::init()
     QVERIFY( !messageId.isEmpty() );
     messagePtr->assemble();
 
-    const QString entryName = mailDir->addEntry( messagePtr->encodedContent() );
+    const QString entryName = mailDir.addEntry( messagePtr->encodedContent() );
     QVERIFY( !entryName.isEmpty() );
 
     QSet<QByteArray> flags;
     flags << "\\Seen" << "\\Answered";
 
-    QFile *file = new QFile( flagFileTemplate.arg( mailDir->path() ).arg( entryName ) );
+    QFile *file = new QFile( flagFileTemplate.arg( mailDir.path() ).arg( entryName ) );
     QVERIFY( file->open( QIODevice::WriteOnly ) );
 
     QDataStream *stream = new QDataStream( file );
@@ -194,7 +181,7 @@ void AugmentedMailDirTest::init()
     Akonadi::EntityDisplayAttribute *displayAttribute = new Akonadi::EntityDisplayAttribute();
     displayAttribute->setDisplayName( QLatin1String( "Test Message 3" ) );
 
-    file = new QFile( attributeFileTemplate.arg( mailDir->path() ).arg( entryName ) );
+    file = new QFile( attributeFileTemplate.arg( mailDir.path() ).arg( entryName ) );
     QVERIFY( file->open( QIODevice::WriteOnly ) );
 
     stream = new QDataStream( file );
@@ -204,14 +191,66 @@ void AugmentedMailDirTest::init()
     delete stream;
     delete file;
   }
+}
 
-  delete mailDir;
+void AugmentedMailDirTest::init()
+{
+  delete mStore;
+  mStore = new AugmentedMailDirStore();
+
+  if ( !mDirName.isEmpty() ) {
+    KIO::Job *job = KIO::del( KUrl::fromPath( mDirName ), KIO::HideProgressInfo );
+    job->exec();
+  }
+  delete mDir;
+
+  mDir = new KTempDir();
+  mDirName = mDir->name();
+  QVERIFY( mDir->exists() );
+
+  // create top level maildir
+  createMailsInDir( mDirName );
+
+  KPIM::Maildir topLevelMailDir( mDirName );
+  QVERIFY( topLevelMailDir.isValid() );
+
+  QString subFolder = topLevelMailDir.addSubFolder( QLatin1String( "Child Folder 1" ) );
+  createMailsInDir( subFolder );
+  KPIM::Maildir firstLevelMailDir( subFolder );
+  QVERIFY( firstLevelMailDir.isValid() );
+
+  subFolder = topLevelMailDir.addSubFolder( QLatin1String( "Child Folder 2" ) );
+  firstLevelMailDir = KPIM::Maildir( subFolder );
+  QVERIFY( firstLevelMailDir.isValid() );
+
+  subFolder = firstLevelMailDir.addSubFolder( QLatin1String( "Child Folder 2.1" ) );
+  KPIM::Maildir secondLevelMailDir( subFolder );
+  QVERIFY( secondLevelMailDir.isValid() );
+
+  subFolder = firstLevelMailDir.addSubFolder( QLatin1String( "Child Folder 2.2" ) );
+  createMailsInDir( subFolder );
+  secondLevelMailDir = KPIM::Maildir( subFolder );
+  QVERIFY( secondLevelMailDir.isValid() );
+
+  subFolder = topLevelMailDir.addSubFolder( QLatin1String( "Child Folder 3" ) );
+  createMailsInDir( subFolder );
+  firstLevelMailDir = KPIM::Maildir( subFolder );
+  QVERIFY( firstLevelMailDir.isValid() );
+
+  subFolder = firstLevelMailDir.addSubFolder( QLatin1String( "Child Folder 3.1" ) );
+  secondLevelMailDir = KPIM::Maildir( subFolder );
+  QVERIFY( secondLevelMailDir.isValid() );
+
+  subFolder = firstLevelMailDir.addSubFolder( QLatin1String( "Child Folder 3.2" ) );
+  createMailsInDir( subFolder );
+  secondLevelMailDir = KPIM::Maildir( subFolder );
+  QVERIFY( secondLevelMailDir.isValid() );
 }
 
 void AugmentedMailDirTest::testFetching()
 {
   // store does not have a file yet, fetching must fail with errors
-  CollectionFetchJob *colFetch = mStore->fetchCollections();
+  CollectionFetchJob *colFetch = mStore->fetchCollections( mStore->topLevelCollection(), CollectionFetchJob::Base );
   QVERIFY( colFetch != 0 );
 
   QSignalSpy *spy = new QSignalSpy( colFetch, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
@@ -239,7 +278,7 @@ void AugmentedMailDirTest::testFetching()
   // set a file name, fetching must work now
   mStore->setFileName( mDirName );
 
-  colFetch = mStore->fetchCollections();
+  colFetch = mStore->fetchCollections( mStore->topLevelCollection(), CollectionFetchJob::Base );
   QVERIFY( colFetch != 0 );
 
   spy = new QSignalSpy( colFetch, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
@@ -337,12 +376,79 @@ void AugmentedMailDirTest::testFetching()
     QVERIFY( item.attribute<Akonadi::EntityDisplayAttribute>()->displayName() ==
              item2.attribute<Akonadi::EntityDisplayAttribute>()->displayName() );
   }
+
+  colFetch = mStore->fetchCollections( mStore->topLevelCollection(), CollectionFetchJob::FirstLevel );
+  QVERIFY( colFetch != 0 );
+
+  result = colFetch->exec();
+  QVERIFY( result );
+
+  const Akonadi::Collection::List firstLevelCollections = colFetch->collections();
+  QCOMPARE( firstLevelCollections.count(), 3 );
+
+  colFetch = mStore->fetchCollections( firstLevelCollections[ 0 ], CollectionFetchJob::FirstLevel );
+  QVERIFY( colFetch != 0 );
+
+  result = colFetch->exec();
+  QVERIFY( result );
+
+  Akonadi::Collection::List secondLevelCollections = colFetch->collections();
+  QCOMPARE( secondLevelCollections.count(), 0 );
+
+  colFetch = mStore->fetchCollections( firstLevelCollections[ 1 ], CollectionFetchJob::FirstLevel );
+  QVERIFY( colFetch != 0 );
+
+  result = colFetch->exec();
+  QVERIFY( result );
+
+  secondLevelCollections = colFetch->collections();
+  QCOMPARE( secondLevelCollections.count(), 2 );
+
+  colFetch = mStore->fetchCollections( firstLevelCollections[ 2 ], CollectionFetchJob::FirstLevel );
+  QVERIFY( colFetch != 0 );
+
+  result = colFetch->exec();
+  QVERIFY( result );
+
+  secondLevelCollections = colFetch->collections();
+  QCOMPARE( secondLevelCollections.count(), 2 );
+
+  colFetch = mStore->fetchCollections( firstLevelCollections[ 2 ], CollectionFetchJob::Base );
+  QVERIFY( colFetch != 0 );
+
+  result = colFetch->exec();
+  QVERIFY( result );
+
+  QCOMPARE( colFetch->collections().count(), 1 );
+  Akonadi::Collection thirdChildCollection = colFetch->collections()[ 0 ];
+  QVERIFY( thirdChildCollection == firstLevelCollections[ 2 ] );
+
+  colFetch = mStore->fetchCollections( mStore->topLevelCollection(), CollectionFetchJob::Recursive );
+  QVERIFY( colFetch != 0 );
+
+  result = colFetch->exec();
+  QVERIFY( result );
+
+  Akonadi::Collection::List allChildCollections = colFetch->collections();
+  QCOMPARE( allChildCollections.count(), 7 );
+
+  colFetch = mStore->fetchCollections( firstLevelCollections[ 2 ], CollectionFetchJob::Recursive );
+  QVERIFY( colFetch != 0 );
+
+  result = colFetch->exec();
+  QVERIFY( result );
+
+  allChildCollections = colFetch->collections();
+  QCOMPARE( allChildCollections.count(), 2 );
+  for ( int i = 0; i < 2; ++i ) {
+    QVERIFY( allChildCollections[ i ].remoteId() == secondLevelCollections[ i ].remoteId() );
+  }
 }
 
 void AugmentedMailDirTest::testCreate()
 {
   KMime::Message::Ptr messagePtr( new KMime::Message() );
-  messagePtr->from()->from7BitString( "augmentedmboxtest@localhost" );
+  messagePtr->from()->from7BitString( "augmentedmaildirtest@localhost" );
   messagePtr->subject()->from7BitString( "Testing item create" );
   messagePtr->setBody( "Appending message by using ItemCreateJob" );
   messagePtr->messageID()->generate( "localhost.local" );

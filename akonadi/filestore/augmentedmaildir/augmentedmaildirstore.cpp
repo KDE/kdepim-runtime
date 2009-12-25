@@ -77,11 +77,7 @@ class AugmentedMailDirStore::AugmentedMailDirStore::Private : public Job::Visito
     }
 
     bool visit( CollectionFetchJob *job ) {
-      Akonadi::Collection::List collections;
-      collections << mParent->topLevelCollection();
-
-      mJobSession->notifyCollectionsReceived( job, collections );
-      mJobSession->emitResult( job );
+      processCollectionFetch( job );
       return true;
     }
 
@@ -122,6 +118,12 @@ class AugmentedMailDirStore::AugmentedMailDirStore::Private : public Job::Visito
     AugmentedMailDirStore *mParent;
 
   private:
+    void processCollectionFetch( CollectionFetchJob *job );
+
+    Akonadi::Collection::List fetchChildCollections( const KPIM::Maildir &mailDir, const Akonadi::Collection &parent );
+
+    Akonadi::Collection::List fetchChildCollectionsRecursive( const KPIM::Maildir &mailDir, const Akonadi::Collection &parent );
+
     void processItemFetch( ItemFetchJob *job );
     void processItemFetchAll( const KPIM::Maildir &mailDir, ItemFetchJob *job );
     void processItemFetchSingle( ItemFetchJob *job );
@@ -177,15 +179,24 @@ void AugmentedMailDirStore::setFileName( const QString &fileName )
   }
 }
 
-CollectionFetchJob *AugmentedMailDirStore::fetchCollections( const CollectionFetchScope *fetchScope ) const
+CollectionFetchJob *AugmentedMailDirStore::fetchCollections( const Collection &collection, CollectionFetchJob::Type type, const CollectionFetchScope *fetchScope ) const
 {
-  CollectionFetchJob *job = new CollectionFetchJob( d->mJobSession );
+  CollectionFetchJob *job = new CollectionFetchJob( collection, type, d->mJobSession );
 
   if ( d->mMailDirs.isEmpty() ) {
     // TODO logging
     // TODO better message
     const QString message = i18n( "<filename>%1</filename> is not a valid MailDir folder" ).arg( AbstractDirectAccessStore::fileName() );
     d->mJobSession->setError( job, Job::InvalidStoreState, message );
+    return job;
+  }
+
+  if ( collection.remoteId().isEmpty() ||
+       !d->mailDirForPath( collection.remoteId() ).isValid() ) {
+    // TODO logging
+    // TODO better message
+    const QString message = i18n( "Collection remote ID is empty or not the store's one" );
+    d->mJobSession->setError( job, Job::InvalidJobContext, message );
     return job;
   }
 
@@ -378,12 +389,109 @@ KPIM::Maildir AugmentedMailDirStore::Private::mailDirForPath( const QString &pat
     return findIt.value();
   }
 
-  KPIM::Maildir mailDir( path );
-  if ( mailDir.isValid() ) {
-    mMailDirs.insert( path, mailDir );
+  Q_ASSERT( path.startsWith( mParent->fileName() ) );
+  Q_ASSERT( path != mParent->fileName() );
+
+  const QString relativePath = path.mid( mParent->fileName().length() );
+  const QStringList relativeNames = relativePath.split( QLatin1Char( '/' ), QString::SkipEmptyParts );
+
+  KPIM::Maildir mailDir( mParent->fileName() );
+  foreach ( const QString &subFolder, relativeNames ) {
+    mailDir = mailDir.subFolder( subFolder );
+    if ( !mailDir.isValid() ) {
+      return KPIM::Maildir();
+    }
   }
 
+  Q_ASSERT( mailDir.isValid() );
+
+  mMailDirs.insert( path, mailDir );
+
   return mailDir;
+}
+
+void AugmentedMailDirStore::Private::processCollectionFetch( CollectionFetchJob *job )
+{
+  const Akonadi::Collection collection = job->collection();
+
+  const KPIM::Maildir mailDir = mailDirForPath( collection.remoteId() );
+  if ( !mailDir.isValid() ) {
+    // TODO logging
+    // TODO better message
+    const QString message = i18n( "<filename>%1</filename> is not a valid MailDir folder" ).arg( collection.remoteId() );
+    mJobSession->setError( job, Job::InvalidStoreState, message );
+    return;
+  }
+
+  Akonadi::Collection::List collections;
+
+  switch ( job->type() )
+  {
+    case CollectionFetchJob::Base:
+      if ( collection.remoteId() == mParent->topLevelCollection().remoteId() ) {
+        collections << mParent->topLevelCollection();
+      } else if ( mailDirForPath( collection.remoteId() ).isValid() ) {
+        Collection result( collection );
+        result.setContentMimeTypes( QStringList() << KMime::Message::mimeType() );
+        collections << result;
+      }
+      break;
+
+    case CollectionFetchJob::FirstLevel:
+      collections = fetchChildCollections( mailDir, collection );
+      break;
+
+    case CollectionFetchJob::Recursive:
+      collections = fetchChildCollectionsRecursive( mailDir, collection );
+      break;
+  }
+
+  mJobSession->notifyCollectionsReceived( job, collections );
+  mJobSession->emitResult( job );
+}
+
+Akonadi::Collection::List AugmentedMailDirStore::Private::fetchChildCollections( const KPIM::Maildir &mailDir, const Akonadi::Collection &parent )
+{
+  const QStringList subFolders = mailDir.subFolderList();
+
+  const QString remoteIdTemplate = parent.remoteId() + QLatin1String( "/%1" );
+
+  Akonadi::Collection::List collections;
+  foreach ( const QString &subFolder, subFolders ) {
+    Collection collection;
+    collection.setContentMimeTypes( QStringList() << KMime::Message::mimeType() );
+    collection.setRemoteId( remoteIdTemplate.arg( subFolder ) );
+
+    const KPIM::Maildir childMailDir = mailDirForPath( collection.remoteId() );
+    if ( !childMailDir.isValid() ) {
+      kError() << collection.remoteId() << "is not a valid maildir";
+    } else {
+      collections << collection;
+    }
+  }
+
+  return collections;
+}
+
+Akonadi::Collection::List AugmentedMailDirStore::Private::fetchChildCollectionsRecursive( const KPIM::Maildir &mailDir, const Akonadi::Collection &parent )
+{
+  Akonadi::Collection::List childCollections = fetchChildCollections( mailDir, parent );
+
+  if ( !childCollections.isEmpty() ) {
+    Akonadi::Collection::List grandChildCollections;
+    foreach ( const Akonadi::Collection &collection, childCollections ) {
+      const KPIM::Maildir childMailDir = mailDirForPath( collection.remoteId() );
+      if ( !childMailDir.isValid() ) {
+        kError() << collection.remoteId() << "is not a valid maildir";
+      } else {
+        grandChildCollections << fetchChildCollectionsRecursive( childMailDir, collection );
+      }
+    }
+
+    childCollections << grandChildCollections;
+  }
+
+  return childCollections;
 }
 
 void AugmentedMailDirStore::Private::processItemFetch( ItemFetchJob *job )
