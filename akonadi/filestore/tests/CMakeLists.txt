@@ -14,10 +14,20 @@ include_directories(
   ${QT_INCLUDES}
   ${Boost_INCLUDE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/../
+  ${CMAKE_CURRENT_SOURCE_DIR}/../augmentedmaildir/
   ${CMAKE_CURRENT_SOURCE_DIR}/../augmentedmbox/
   ${CMAKE_CURRENT_SOURCE_DIR}/../mappedvcard/
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}/../
+)
+
+kde4_add_unit_test( augmentedmaildirtest augmentedmaildirtest.cpp )
+target_link_libraries(
+  augmentedmaildirtest
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${QT_QTTEST_LIBRARY}
 )
 
 kde4_add_unit_test( augmentedmboxtest augmentedmboxtest.cpp )
@@ -25,7 +35,7 @@ target_link_libraries(
   augmentedmboxtest
   akonadi-filestore
   ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KABC_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
   ${QT_QTTEST_LIBRARY}
 )
 

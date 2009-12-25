@@ -107,6 +107,8 @@ void AugmentedMBoxTest::init()
     displayAttribute->setDisplayName( QLatin1String( "Test Message 1" ) );
 
     attributeGroup.writeEntry( QString::fromUtf8( displayAttribute->type() ), displayAttribute->serialized() );
+
+    delete displayAttribute;
   }
 
   {
@@ -134,6 +136,8 @@ void AugmentedMBoxTest::init()
     displayAttribute->setDisplayName( QLatin1String( "Test Message 2" ) );
 
     attributeGroup.writeEntry( QString::fromUtf8( displayAttribute->type() ), displayAttribute->serialized() );
+
+    delete displayAttribute;
   }
 
   {
@@ -162,6 +166,8 @@ void AugmentedMBoxTest::init()
     displayAttribute->setDisplayName( QLatin1String( "Test Message 3" ) );
 
     attributeGroup.writeEntry( QString::fromUtf8( displayAttribute->type() ), displayAttribute->serialized() );
+
+    delete displayAttribute;
   }
 
   mbox->save();
