@@ -574,8 +574,7 @@ bool AugmentedMBoxStore::Private::fetchAttributes( Item &item, ItemFetchJob *job
         Akonadi::Attribute *attribute = Akonadi::AttributeFactory::createAttribute( key.toUtf8() );
         if ( attribute != 0 ) {
           const QByteArray data = attributeGroup.readEntry( key, QByteArray() );
-          if ( !data.isEmpty() ) {
-          } else {
+          if ( data.isEmpty() ) {
             kWarning() << "Attribute" << key << "has empty data";
           }
           attribute->deserialize( data );
