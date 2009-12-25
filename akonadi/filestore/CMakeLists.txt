@@ -7,6 +7,7 @@ find_package(KdepimLibs REQUIRED)
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/../..
+  ${CMAKE_CURRENT_SOURCE_DIR}/libmaildir
   ${CMAKE_CURRENT_SOURCE_DIR}/libmbox
   ${AKONADI_INCLUDE_DIR}
   ${KDE4_INCLUDES}
@@ -15,6 +16,7 @@ include_directories(
   ${Boost_INCLUDE_DIR}
 )
 
+add_subdirectory( libmaildir )
 add_subdirectory( libmbox )
 
 include(KDE4Defaults)
@@ -32,6 +34,7 @@ set(akonadi-filestore_SRCS
   session.cpp
   sessionimpls.cpp
   storecompactjob.cpp
+  augmentedmaildir/augmentedmaildirstore.cpp
   augmentedmbox/augmentedmboxstore.cpp
   mappedvcard/mappedvcardstore.cpp
 )
@@ -39,6 +42,7 @@ set(akonadi-filestore_SRCS
 kde4_add_library(akonadi-filestore SHARED ${akonadi-filestore_SRCS} )
 
 target_link_libraries(akonadi-filestore
+                      maildir
                       mbox
                       ${AKONADI_COMMON_LIBRARIES}
                       ${QT_QTCORE_LIBRARY}

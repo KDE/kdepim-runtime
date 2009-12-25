@@ -53,6 +53,11 @@ ItemCreateJob::~ItemCreateJob()
   delete d;
 }
 
+Akonadi::Collection ItemCreateJob::collection() const
+{
+  return d->mCollection;
+}
+
 Akonadi::Item ItemCreateJob::item() const
 {
   return d->mItem;
