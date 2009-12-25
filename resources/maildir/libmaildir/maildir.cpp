@@ -204,7 +204,7 @@ bool Maildir::isValid( QString &error ) const
       }
     } else {
       foreach ( const QString &sf, subFolderList() ) {
-        const Maildir subMd = Maildir( path() + '/' + sf );
+        const Maildir subMd = Maildir( path() + QLatin1Char( '/' ) + sf );
         if ( !subMd.isValid( error ) )
           return false;
       }
@@ -253,7 +253,7 @@ QString Maildir::addSubFolder( const QString& path )
         dir.cd( d->subDirPath() );
     }
 
-    const QString fullPath = dir.path() + '/' + path;
+    const QString fullPath = dir.path() + QLatin1Char( '/' ) + path;
     Maildir subdir( fullPath );
     if ( subdir.create() )
         return fullPath;
@@ -272,7 +272,7 @@ bool Maildir::removeSubFolder( const QString& folderName )
     if ( !dir.exists( folderName ) ) return false;
 
     // remove it recursively
-    return KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + '/' + folderName );
+    return KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + QLatin1Char( '/' ) + folderName );
 }
 
 Maildir Maildir::subFolder( const QString& subFolder ) const
@@ -286,7 +286,7 @@ Maildir Maildir::subFolder( const QString& subFolder ) const
                 dir.cd( d->subDirPath() );
             }
         }
-        return Maildir( dir.path() + '/' + subFolder );
+        return Maildir( dir.path() + QLatin1Char( '/' ) + subFolder );
     }
     return Maildir();
 }
@@ -315,9 +315,9 @@ QStringList Maildir::subFolderList() const
     }
     dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot );
     QStringList entries = dir.entryList();
-    entries.removeAll( "cur" );
-    entries.removeAll( "new" );
-    entries.removeAll( "tmp" );
+    entries.removeAll( QLatin1String( "cur" ) );
+    entries.removeAll( QLatin1String( "new" ) );
+    entries.removeAll( QLatin1String( "tmp" ) );
     return entries;
 }
 
@@ -355,7 +355,7 @@ qint64 Maildir::size( const QString& key ) const
 
     return info.size();
 }
-    
+
 QByteArray Maildir::readEntryHeaders( const QString& key ) const
 {
     QByteArray result;
@@ -405,8 +405,8 @@ void Maildir::writeEntry( const QString& key, const QByteArray& data )
 QString Maildir::addEntry( const QByteArray& data )
 {
     QString uniqueKey( createUniqueFileName() );
-    QString key( d->path + "/tmp/" + uniqueKey );
-    QString finalKey( d->path + "/new/" + uniqueKey );
+    QString key( d->path + QLatin1String( "/tmp/" ) + uniqueKey );
+    QString finalKey( d->path + QLatin1String( "/new/" ) + uniqueKey );
     QFile f( key );
     f.open( QIODevice::WriteOnly );
     f.write( data );
@@ -469,7 +469,7 @@ bool Maildir::rename( const QString &newName )
   QDir dir( d->path );
   dir.cdUp();
 
-  return d->moveAndRename( dir, newName ); 
+  return d->moveAndRename( dir, newName );
 }
 
 QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
