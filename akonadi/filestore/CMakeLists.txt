@@ -18,6 +18,7 @@ include_directories(
 
 add_subdirectory( libmaildir )
 add_subdirectory( libmbox )
+add_subdirectory( resource )
 
 include(KDE4Defaults)
 

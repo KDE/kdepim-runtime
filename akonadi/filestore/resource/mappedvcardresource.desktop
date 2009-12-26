@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=MappedVCard Resource
+Comment=
+Type=AkonadiResource
+Exec=akonadi_mappedvcard_resource
+Icon=text-directory
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_mappedvcard_resource

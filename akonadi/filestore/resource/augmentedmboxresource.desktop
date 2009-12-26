@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=AugmentedMBox Resource
+Comment=
+Type=AkonadiResource
+Exec=akonadi_augmentedmbox_resource
+Icon=message-rfc822
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_augmentedmbox_resource
