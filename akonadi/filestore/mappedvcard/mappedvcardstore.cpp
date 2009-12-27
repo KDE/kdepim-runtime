@@ -491,8 +491,7 @@ void MappedVCardStore::Private::processItemFetchSingle( ItemFetchJob *job )
     return;
   }
 
-  Akonadi::Item item( KABC::Addressee::mimeType() );
-  item.setRemoteId( remoteId );
+  Akonadi::Item item( job->item() );
   item.setParentCollection( mParent->topLevelCollection() );
 
   if ( job->fetchScope().fullPayload() ) {
