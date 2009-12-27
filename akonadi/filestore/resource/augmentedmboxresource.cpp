@@ -22,6 +22,9 @@
 #include "augmentedmboxresourcesettings.h"
 #include "augmentedmboxsettingsadaptor.h"
 
+#include <KFileDialog>
+#include <KLocale>
+
 using namespace Akonadi::FileStore;
 
 AugmentedMBoxResource::AugmentedMBoxResource( const QString &id )
@@ -35,6 +38,32 @@ AugmentedMBoxResource::AugmentedMBoxResource( const QString &id )
 void AugmentedMBoxResource::configure( WId windowId )
 {
   Q_UNUSED( windowId );
+
+  const QString oldFileName = Settings::self()->fileName();
+  KUrl url;
+  if ( !oldFileName.isEmpty() )
+    url = KUrl::fromPath( oldFileName );
+  else
+    url = KUrl::fromPath( QDir::homePath() );
+
+  const QString title = i18nc( "@title:window", "Select an MBox file" );
+  QString filter;
+  const QString newFileName = KFileDialog::getOpenFileName( url, filter, 0, title );
+
+  if ( newFileName.isEmpty() )
+    return;
+
+  if ( oldFileName == newFileName )
+    return;
+
+  Settings::self()->setFileName( newFileName );
+
+  Settings::self()->writeConfig();
+
+  static_cast<AugmentedMBoxStore*>( mStore )->setFileName( newFileName );
+
+  clearCache();
+  synchronizeCollectionTree();
 }
 
 void AugmentedMBoxResource::itemModifyDone( KJob *job )

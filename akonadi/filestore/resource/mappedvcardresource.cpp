@@ -24,6 +24,9 @@
 
 #include <akonadi/filestore/storecompactjob.h>
 
+#include <KFileDialog>
+#include <KLocale>
+
 using namespace Akonadi::FileStore;
 
 MappedVCardResource::MappedVCardResource( const QString &id )
@@ -37,6 +40,32 @@ MappedVCardResource::MappedVCardResource( const QString &id )
 void MappedVCardResource::configure( WId windowId )
 {
   Q_UNUSED( windowId );
+
+  const QString oldFileName = Settings::self()->fileName();
+  KUrl url;
+  if ( !oldFileName.isEmpty() )
+    url = KUrl::fromPath( oldFileName );
+  else
+    url = KUrl::fromPath( QDir::homePath() );
+
+  const QString title = i18nc( "@title:window", "Select a vCard file" );
+  QString filter;
+  const QString newFileName = KFileDialog::getOpenFileName( url, filter, 0, title );
+
+  if ( newFileName.isEmpty() )
+    return;
+
+  if ( oldFileName == newFileName )
+    return;
+
+  Settings::self()->setFileName( newFileName );
+
+  Settings::self()->writeConfig();
+
+  static_cast<MappedVCardStore*>( mStore )->setFileName( newFileName );
+
+  clearCache();
+  synchronizeCollectionTree();
 }
 
 void MappedVCardResource::aboutToQuit()
