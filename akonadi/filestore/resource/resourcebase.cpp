@@ -27,6 +27,7 @@
 #include <akonadi/filestore/storecompactjob.h>
 #include <akonadi/filestore/storeinterface.h>
 
+#include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
 
 #include <KLocale>
@@ -39,6 +40,8 @@ ResourceBase::ResourceBase( const QString &id )
   : Akonadi::ResourceBase( id ),
     mStore( 0 )
 {
+  changeRecorder()->fetchCollection( true );
+  changeRecorder()->itemFetchScope().fetchFullPayload();
 }
 
 ResourceBase::~ResourceBase()
