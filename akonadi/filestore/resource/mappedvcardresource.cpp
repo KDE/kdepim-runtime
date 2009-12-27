@@ -24,6 +24,8 @@
 
 #include <akonadi/filestore/storecompactjob.h>
 
+#include <akonadi/kabc/contactparts.h>
+
 #include <KFileDialog>
 #include <KLocale>
 
@@ -32,6 +34,9 @@ using namespace Akonadi::FileStore;
 MappedVCardResource::MappedVCardResource( const QString &id )
   : StoreResource<MappedVCardStore>( id )
 {
+  mPayloadParts << Akonadi::ContactPart::Lookup
+                << Akonadi::ContactPart::Standard;
+
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
@@ -49,7 +54,7 @@ void MappedVCardResource::configure( WId windowId )
     url = KUrl::fromPath( QDir::homePath() );
 
   const QString title = i18nc( "@title:window", "Select a vCard file" );
-  QString filter;
+  const QString filter = QLatin1String( "text/directory" );
   const QString newFileName = KFileDialog::getOpenFileName( url, filter, 0, title );
 
   if ( newFileName.isEmpty() )

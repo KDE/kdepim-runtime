@@ -63,7 +63,7 @@ qt4_add_dbus_adaptor(augmentedmboxresource_SRCS
 
 kde4_add_executable(akonadi_augmentedmbox_resource RUN_UNINSTALLED ${augmentedmboxresource_SRCS})
 
-target_link_libraries(akonadi_augmentedmbox_resource akonadi-filestore ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS})
+target_link_libraries(akonadi_augmentedmbox_resource akonadi-filestore ${KDE4_AKONADI_KMIME_LIBS} ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS})
 
 install(TARGETS akonadi_augmentedmbox_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
@@ -84,6 +84,6 @@ qt4_add_dbus_adaptor(mappedvcardresource_SRCS
 
 kde4_add_executable(akonadi_mappedvcard_resource RUN_UNINSTALLED ${mappedvcardresource_SRCS})
 
-target_link_libraries(akonadi_mappedvcard_resource akonadi-filestore ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS})
+target_link_libraries(akonadi_mappedvcard_resource akonadi-filestore ${KDE4_AKONADI_KABC_LIBS} ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS})
 
 install(TARGETS akonadi_mappedvcard_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

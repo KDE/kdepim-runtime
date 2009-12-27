@@ -22,6 +22,10 @@
 #include "augmentedmboxresourcesettings.h"
 #include "augmentedmboxsettingsadaptor.h"
 
+#include <akonadi/filestore/itemmodifyjob.h>
+
+#include <akonadi/kmime/messageparts.h>
+
 #include <KFileDialog>
 #include <KLocale>
 
@@ -30,7 +34,11 @@ using namespace Akonadi::FileStore;
 AugmentedMBoxResource::AugmentedMBoxResource( const QString &id )
   : StoreResource<AugmentedMBoxStore>( id )
 {
-  new SettingsAdaptor( Settings::self() );
+  mPayloadParts << Akonadi::MessagePart::Envelope
+                << Akonadi::MessagePart::Body
+                << Akonadi::MessagePart::Header;
+
+  new SettingsAdaptor( Settings::self());
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 }
@@ -47,7 +55,7 @@ void AugmentedMBoxResource::configure( WId windowId )
     url = KUrl::fromPath( QDir::homePath() );
 
   const QString title = i18nc( "@title:window", "Select an MBox file" );
-  QString filter;
+  const QString filter = QLatin1String( "application/mbox" );
   const QString newFileName = KFileDialog::getOpenFileName( url, filter, 0, title );
 
   if ( newFileName.isEmpty() )
@@ -70,7 +78,12 @@ void AugmentedMBoxResource::itemModifyDone( KJob *job )
 {
   StoreResource<AugmentedMBoxStore>::itemModifyDone( job );
   if ( job->error() == 0 ) {
-    scheduleCustomTask( this, "compactStore", QVariant() );
+    ItemModifyJob *itemModify = dynamic_cast<ItemModifyJob*>( job );
+    Q_ASSERT( itemModify != 0 );
+
+    if ( !itemModify->ignorePayload() ) {
+      scheduleCustomTask( this, "compactStore", QVariant() );
+    }
   }
 }
 

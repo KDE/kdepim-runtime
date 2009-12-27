@@ -40,6 +40,8 @@ ResourceBase::ResourceBase( const QString &id )
   : Akonadi::ResourceBase( id ),
     mStore( 0 )
 {
+  mPayloadParts << Item::FullPayload;
+
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload();
 }
@@ -67,12 +69,14 @@ void ResourceBase::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 void ResourceBase::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   kDebug() << "item.id=" << item.id() << "remoteId=" << item.remoteId()
-           << "mimetype=" << item.mimeType();
+           << "mimetype=" << item.mimeType() << "parts=" << parts;
   if ( mStore == 0 ) {
     // TODO better message
     cancelTask( i18n( "Resource not configured yet" ) );
   } else {
-    ItemModifyJob *job = mStore->modifyItem( item, parts.isEmpty() );
+    QSet<QByteArray> payloadParts = mPayloadParts;
+    payloadParts.intersect( parts );
+    ItemModifyJob *job = mStore->modifyItem( item, payloadParts.isEmpty() );
     kDebug() << "ItemModifyJob" << (void*) job;
     connect( job, SIGNAL( result( KJob* ) ),
              this, SLOT( itemModifyDone( KJob* ) ) );
@@ -101,13 +105,17 @@ void ResourceBase::retrieveCollections()
     // TODO better message
     cancelTask( i18n( "Resource not configured yet" ) );
   } else {
-    setCollectionStreamingEnabled( true );
-
     Akonadi::Collection topLevelCollection = mStore->topLevelCollection();
+    if ( topLevelCollection.remoteId().isEmpty() ) {
+      cancelTask( i18n( "Resource not configured yet" ) );
+      return;
+    }
+
     topLevelCollection.setParentCollection( Akonadi::Collection::root() );
 
     kDebug() << "topLevelCollection.remoteId=" << topLevelCollection.remoteId();
 
+    setCollectionStreamingEnabled( true );
     collectionsRetrieved( Akonadi::Collection::List() << topLevelCollection );
 
     CollectionFetchJob *job = mStore->fetchCollections( topLevelCollection, CollectionFetchJob::Recursive );

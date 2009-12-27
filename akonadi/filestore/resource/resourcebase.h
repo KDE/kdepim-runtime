@@ -45,6 +45,8 @@ class AKONADI_FILESTORE_EXPORT ResourceBase : public Akonadi::ResourceBase, publ
   protected:
     StoreInterface *mStore;
 
+    QSet<QByteArray> mPayloadParts;
+
   protected:
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
