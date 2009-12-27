@@ -178,6 +178,7 @@ void MappedVCardTest::testFetching()
 
   foreach ( const Akonadi::Item &item, items ) {
     QCOMPARE( item.mimeType(), KABC::Addressee::mimeType() );
+    QCOMPARE( item.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
 
     itemFetch = mStore->fetchItem( item );
     QVERIFY( itemFetch != 0 );
@@ -197,6 +198,7 @@ void MappedVCardTest::testFetching()
     const Akonadi::Item item2 = items2[0];
     QCOMPARE( item.remoteId(), item2.remoteId() );
     QCOMPARE( item2.mimeType(), KABC::Addressee::mimeType() );
+    QCOMPARE( item2.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
   }
 
   itemFetch = mStore->fetchItems( mStore->topLevelCollection() );
@@ -212,6 +214,7 @@ void MappedVCardTest::testFetching()
 
   foreach ( const Akonadi::Item &item, items ) {
     QCOMPARE( item.mimeType(), KABC::Addressee::mimeType() );
+    QCOMPARE( item.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
     QVERIFY( item.hasPayload<KABC::Addressee>() );
 
     itemFetch = mStore->fetchItem( item );
@@ -229,6 +232,7 @@ void MappedVCardTest::testFetching()
     const Akonadi::Item item2 = items2[0];
     QCOMPARE( item.remoteId(), item2.remoteId() );
     QCOMPARE( item2.mimeType(), KABC::Addressee::mimeType() );
+    QCOMPARE( item2.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
     QVERIFY( item2.hasPayload<KABC::Addressee>() );
     QVERIFY( item.payload<KABC::Addressee>() == item2.payload<KABC::Addressee>() );
   }

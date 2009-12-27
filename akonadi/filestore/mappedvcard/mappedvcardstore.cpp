@@ -449,6 +449,7 @@ void MappedVCardStore::Private::processItemFetchAll( ItemFetchJob *job )
     foreach ( const KABC::Addressee &addressee, addressees ) {
       Item item( KABC::Addressee::mimeType() );
       item.setRemoteId( addressee.uid() );
+      item.setParentCollection( mParent->topLevelCollection() );
       item.setPayload<KABC::Addressee>( addressee );
 
       items << item;
@@ -463,6 +464,7 @@ void MappedVCardStore::Private::processItemFetchAll( ItemFetchJob *job )
     for ( ; it != endIt; ++it ) {
       Item item( KABC::Addressee::mimeType() );
       item.setRemoteId( it.key() );
+      item.setParentCollection( mParent->topLevelCollection() );
 
       items << item;
     }
@@ -491,6 +493,7 @@ void MappedVCardStore::Private::processItemFetchSingle( ItemFetchJob *job )
 
   Akonadi::Item item( KABC::Addressee::mimeType() );
   item.setRemoteId( remoteId );
+  item.setParentCollection( mParent->topLevelCollection() );
 
   if ( job->fetchScope().fullPayload() ) {
     const QByteArray vcard( reinterpret_cast<char*>( mMappedFileContent ) + findIt->begin,

@@ -313,6 +313,7 @@ void AugmentedMailDirTest::testFetching()
 
   foreach ( const Akonadi::Item &item, items ) {
     QCOMPARE( item.mimeType(), KMime::Message::mimeType() );
+    QCOMPARE( item.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
 
     itemFetch = mStore->fetchItem( item );
     QVERIFY( itemFetch != 0 );
@@ -333,6 +334,7 @@ void AugmentedMailDirTest::testFetching()
     const Akonadi::Item item2 = items2[0];
     QCOMPARE( item.remoteId(), item2.remoteId() );
     QCOMPARE( item2.mimeType(), KMime::Message::mimeType() );
+    QCOMPARE( item2.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
   }
 
   itemFetch = mStore->fetchItems( mStore->topLevelCollection() );
@@ -349,6 +351,7 @@ void AugmentedMailDirTest::testFetching()
 
   foreach ( const Akonadi::Item &item, items ) {
     QCOMPARE( item.mimeType(), KMime::Message::mimeType() );
+    QCOMPARE( item.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
     QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
     QVERIFY( item.hasAttribute<Akonadi::EntityDisplayAttribute>() );
     QVERIFY( !item.attribute<Akonadi::EntityDisplayAttribute>()->displayName().isEmpty() );
@@ -369,6 +372,7 @@ void AugmentedMailDirTest::testFetching()
     const Akonadi::Item item2 = items2[0];
     QCOMPARE( item.remoteId(), item2.remoteId() );
     QCOMPARE( item2.mimeType(), KMime::Message::mimeType() );
+    QCOMPARE( item2.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
     QVERIFY( item2.hasPayload<KMime::Message::Ptr>() );
     QVERIFY( item.payload<KMime::Message::Ptr>()->decodedContent() ==
              item2.payload<KMime::Message::Ptr>()->decodedContent() );
@@ -385,6 +389,9 @@ void AugmentedMailDirTest::testFetching()
 
   const Akonadi::Collection::List firstLevelCollections = colFetch->collections();
   QCOMPARE( firstLevelCollections.count(), 3 );
+  foreach ( const Akonadi::Collection &collection, firstLevelCollections ) {
+    QCOMPARE( collection.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
+  }
 
   colFetch = mStore->fetchCollections( firstLevelCollections[ 0 ], CollectionFetchJob::FirstLevel );
   QVERIFY( colFetch != 0 );
@@ -403,6 +410,9 @@ void AugmentedMailDirTest::testFetching()
 
   secondLevelCollections = colFetch->collections();
   QCOMPARE( secondLevelCollections.count(), 2 );
+  foreach ( const Akonadi::Collection &collection, secondLevelCollections ) {
+    QCOMPARE( collection.parentCollection().remoteId(), firstLevelCollections[ 1 ].remoteId() );
+  }
 
   colFetch = mStore->fetchCollections( firstLevelCollections[ 2 ], CollectionFetchJob::FirstLevel );
   QVERIFY( colFetch != 0 );
@@ -412,6 +422,9 @@ void AugmentedMailDirTest::testFetching()
 
   secondLevelCollections = colFetch->collections();
   QCOMPARE( secondLevelCollections.count(), 2 );
+  foreach ( const Akonadi::Collection &collection, secondLevelCollections ) {
+    QCOMPARE( collection.parentCollection().remoteId(), firstLevelCollections[ 2 ].remoteId() );
+  }
 
   colFetch = mStore->fetchCollections( firstLevelCollections[ 2 ], CollectionFetchJob::Base );
   QVERIFY( colFetch != 0 );
@@ -422,6 +435,7 @@ void AugmentedMailDirTest::testFetching()
   QCOMPARE( colFetch->collections().count(), 1 );
   Akonadi::Collection thirdChildCollection = colFetch->collections()[ 0 ];
   QVERIFY( thirdChildCollection == firstLevelCollections[ 2 ] );
+  QCOMPARE( thirdChildCollection.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
 
   colFetch = mStore->fetchCollections( mStore->topLevelCollection(), CollectionFetchJob::Recursive );
   QVERIFY( colFetch != 0 );
@@ -442,6 +456,7 @@ void AugmentedMailDirTest::testFetching()
   QCOMPARE( allChildCollections.count(), 2 );
   for ( int i = 0; i < 2; ++i ) {
     QVERIFY( allChildCollections[ i ].remoteId() == secondLevelCollections[ i ].remoteId() );
+    QCOMPARE( allChildCollections[i ].parentCollection().remoteId(), secondLevelCollections[ i ].parentCollection().remoteId() );
   }
 }
 

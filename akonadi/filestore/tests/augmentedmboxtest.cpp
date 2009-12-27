@@ -242,6 +242,7 @@ void AugmentedMBoxTest::testFetching()
 
   foreach ( const Akonadi::Item &item, items ) {
     QCOMPARE( item.mimeType(), KMime::Message::mimeType() );
+    QCOMPARE( item.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
 
     itemFetch = mStore->fetchItem( item );
     QVERIFY( itemFetch != 0 );
@@ -261,6 +262,7 @@ void AugmentedMBoxTest::testFetching()
     const Akonadi::Item item2 = items2[0];
     QCOMPARE( item.remoteId(), item2.remoteId() );
     QCOMPARE( item2.mimeType(), KMime::Message::mimeType() );
+    QCOMPARE( item2.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
   }
 
   itemFetch = mStore->fetchItems( mStore->topLevelCollection() );
@@ -277,6 +279,7 @@ void AugmentedMBoxTest::testFetching()
 
   foreach ( const Akonadi::Item &item, items ) {
     QCOMPARE( item.mimeType(), KMime::Message::mimeType() );
+    QCOMPARE( item.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
     QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
     QVERIFY( item.hasAttribute<Akonadi::EntityDisplayAttribute>() );
     QVERIFY( !item.attribute<Akonadi::EntityDisplayAttribute>()->displayName().isEmpty() );
@@ -297,6 +300,7 @@ void AugmentedMBoxTest::testFetching()
     const Akonadi::Item item2 = items2[0];
     QCOMPARE( item.remoteId(), item2.remoteId() );
     QCOMPARE( item2.mimeType(), KMime::Message::mimeType() );
+    QCOMPARE( item2.parentCollection().remoteId(), mStore->topLevelCollection().remoteId() );
     QVERIFY( item2.hasPayload<KMime::Message::Ptr>() );
     QVERIFY( item.payload<KMime::Message::Ptr>()->decodedContent() ==
              item2.payload<KMime::Message::Ptr>()->decodedContent() );

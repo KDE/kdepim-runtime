@@ -125,7 +125,7 @@ class AugmentedMailDirStore::AugmentedMailDirStore::Private : public Job::Visito
     Akonadi::Collection::List fetchChildCollectionsRecursive( const KPIM::Maildir &mailDir, const Akonadi::Collection &parent );
 
     void processItemFetch( ItemFetchJob *job );
-    void processItemFetchAll( const KPIM::Maildir &mailDir, ItemFetchJob *job );
+    void processItemFetchAll( const Akonadi::Collection &parent, const KPIM::Maildir &mailDir, ItemFetchJob *job );
     void processItemFetchSingle( ItemFetchJob *job );
 
     bool fetchPayload( const KPIM::Maildir &mailDir, const QString &entryName, Item &item, ItemFetchJob *job ) const;
@@ -461,6 +461,7 @@ Akonadi::Collection::List AugmentedMailDirStore::Private::fetchChildCollections(
     Collection collection;
     collection.setContentMimeTypes( QStringList() << KMime::Message::mimeType() );
     collection.setRemoteId( remoteIdTemplate.arg( subFolder ) );
+    collection.setParentCollection( parent );
 
     const KPIM::Maildir childMailDir = mailDirForPath( collection.remoteId() );
     if ( !childMailDir.isValid() ) {
@@ -507,13 +508,13 @@ void AugmentedMailDirStore::Private::processItemFetch( ItemFetchJob *job )
       return;
     }
 
-    processItemFetchAll( mailDir, job );
+    processItemFetchAll( collection, mailDir, job );
   } else {
     processItemFetchSingle( job );
   }
 }
 
-void AugmentedMailDirStore::Private::processItemFetchAll( const KPIM::Maildir &mailDir, ItemFetchJob *job )
+void AugmentedMailDirStore::Private::processItemFetchAll( const Akonadi::Collection &parent, const KPIM::Maildir &mailDir, ItemFetchJob *job )
 {
   const QString pathTemplate = mailDir.path() + QLatin1String( "/%1" );
 
@@ -523,6 +524,7 @@ void AugmentedMailDirStore::Private::processItemFetchAll( const KPIM::Maildir &m
   foreach ( const QString &entryName, entryList ) {
     Akonadi::Item item( KMime::Message::mimeType() );
     item.setRemoteId( pathTemplate.arg( entryName ) );
+    item.setParentCollection( parent );
 
     bool ok = true;
     ok = ok && fetchPayload( mailDir, entryName, item, job );
@@ -565,6 +567,12 @@ void AugmentedMailDirStore::Private::processItemFetchSingle( ItemFetchJob *job )
     mJobSession->emitResult( job );
     return;
   }
+
+  Akonadi::Collection parent;
+  parent.setContentMimeTypes( QStringList() << KMime::Message::mimeType() );
+  parent.setRemoteId( path );
+
+  item.setParentCollection( parent );
 
   Akonadi::Item::List items;
   items << item;
@@ -701,6 +709,7 @@ void AugmentedMailDirStore::Private::processItemCreate( ItemCreateJob *job )
   ok = ok && storeFlags( mailDir, entryName, item, job );
 
   if ( ok ) {
+    item.setParentCollection( collection );
     mJobSession->notifyItemCreated( job, item );
   }
 

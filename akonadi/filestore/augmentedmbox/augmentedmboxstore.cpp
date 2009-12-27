@@ -485,6 +485,7 @@ void AugmentedMBoxStore::Private::processItemFetchAll( ItemFetchJob *job )
   for ( ; it != endIt; ++it ) {
     Akonadi::Item item( KMime::Message::mimeType() );
     item.setRemoteId( QString::fromUtf8( it.key() ) );
+    item.setParentCollection( mParent->topLevelCollection() );
 
     bool ok = true;
     ok = ok && fetchPayload( item, job );
@@ -518,6 +519,8 @@ void AugmentedMBoxStore::Private::processItemFetchSingle( ItemFetchJob *job )
     mJobSession->emitResult( job );
     return;
   }
+
+  item.setParentCollection( mParent->topLevelCollection() );
 
   Akonadi::Item::List items;
   items << item;
