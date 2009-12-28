@@ -4,17 +4,12 @@ project(kdepim-runtime)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
 
-############### Build Options ###############
-
-option(KDEPIM_BUILD_NEPOMUK_AGENTS "Build the different Nepomuk Agents. Requires Soprano and Nepomuk." TRUE)
-
-
 ############### search packages used by KDE ###############
 
 find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
 
-find_package(KdepimLibs 4.2.87 REQUIRED)
+find_package(KdepimLibs 4.3.85 REQUIRED)
 
 find_package(Boost 1.34.0)
 macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.34.0" "Required by Akonadi.")
@@ -29,19 +24,17 @@ macro_log_feature(SHARED_MIME_INFO_FOUND "SMI" "SharedMimeInfo" "http://freedesk
 find_package(LibXml2)
 macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applications" "http://xmlsoft.org" FALSE "" "Needed for building the knut Akonadi resource.")
 
-if(KDEPIM_BUILD_NEPOMUK_AGENTS)
-  set(SDO_MIN_VERSION 0.2)
-  set(SOPRANO_MIN_VERSION 2.3.70)
+set(SDO_MIN_VERSION 0.2)
+set(SOPRANO_MIN_VERSION 2.3.70)
 
-  find_package(SharedDesktopOntologies ${SDO_MIN_VERSION})
-  macro_log_feature(SHAREDDESKTOPONTOLOGIES_FOUND "Shared desktop ontologies" "Desktop ontologies" "http://oscaf.sourceforge.net" TRUE "${SDO_MIN_VERSION}" "Ontologies necessary for the Nepomuk semantic desktop.")
+find_package(SharedDesktopOntologies ${SDO_MIN_VERSION})
+macro_log_feature(SHAREDDESKTOPONTOLOGIES_FOUND "Shared desktop ontologies" "Desktop ontologies" "http://oscaf.sourceforge.net" TRUE "${SDO_MIN_VERSION}" "Ontologies necessary for the Nepomuk semantic desktop.")
 
-  find_package(Soprano)
-  macro_log_feature(Soprano_FOUND "Soprano" "Semantic Desktop Storing" "http://soprano.sourceforge.net" TRUE "${SOPRANO_MIN_VERSION}" "Soprano is needed for Nepomuk")
+find_package(Soprano)
+macro_log_feature(Soprano_FOUND "Soprano" "Semantic Desktop Storing" "http://soprano.sourceforge.net" TRUE "${SOPRANO_MIN_VERSION}" "Soprano is needed for Nepomuk")
 
-  find_package(Nepomuk)
-  macro_log_feature(Nepomuk_FOUND "Nepomuk" "The Nepomuk libraries" "http://www.kde.org" TRUE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
-endif(KDEPIM_BUILD_NEPOMUK_AGENTS)
+find_package(Nepomuk)
+macro_log_feature(Nepomuk_FOUND "Nepomuk" "The Nepomuk libraries" "http://www.kde.org" TRUE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
 
 find_package(Strigi)
 macro_log_feature(STRIGI_FOUND "Strigi" "Index metadata of files" "http://strigi.sourceforge.net" FALSE "" "")
