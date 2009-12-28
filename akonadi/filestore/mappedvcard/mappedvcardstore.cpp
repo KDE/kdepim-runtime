@@ -164,6 +164,7 @@ MappedVCardStore::MappedVCardStore( QObject *parent )
   collection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
 
   Akonadi::CachePolicy cachePolicy;
+  cachePolicy.setInheritFromParent( false );
   cachePolicy.setSyncOnDemand( true );
   cachePolicy.setCacheTimeout( 10 );
   collection.setCachePolicy( cachePolicy );
