@@ -48,6 +48,27 @@ set( storeresourceshared_SRCS
 
 ########### next target ###############
 
+set( augmentedmaildirresource_SRCS
+  augmentedmaildirresource.cpp
+  ${storeresourceshared_SRCS}
+)
+
+install( FILES augmentedmaildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+
+kde4_add_kcfg_files(augmentedmaildirresource_SRCS augmentedmaildirresourcesettings.kcfgc)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/augmentedmaildirresource.kcfg org.kde.Akonadi.AugmentedMailDirResource.Settings)
+qt4_add_dbus_adaptor(augmentedmaildirresource_SRCS
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.AugmentedMailDirResource.Settings.xml augmentedmaildirresourcesettings.h Settings augmentedmaildirsettingsadaptor
+)
+
+kde4_add_executable(akonadi_augmentedmaildir_resource RUN_UNINSTALLED ${augmentedmaildirresource_SRCS})
+
+target_link_libraries(akonadi_augmentedmaildir_resource akonadi-filestore ${KDE4_AKONADI_KMIME_LIBS} ${KDE4_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS})
+
+install(TARGETS akonadi_augmentedmaildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+########### next target ###############
+
 set( augmentedmboxresource_SRCS
   augmentedmboxresource.cpp
   ${storeresourceshared_SRCS}
