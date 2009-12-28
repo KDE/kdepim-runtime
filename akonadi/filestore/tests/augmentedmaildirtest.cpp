@@ -566,6 +566,39 @@ void AugmentedMailDirTest::testCreate()
 
   items = itemFetch->items();
   QCOMPARE( items.count(), 4 );
+
+  // create a totally empty directory and use this one for the store
+  delete mStore;
+  mStore = new AugmentedMailDirStore();
+
+  KTempDir *dir = new KTempDir();
+  const QString dirName = dir->name();
+  QVERIFY( dir->exists() );
+
+  mStore->setFileName( dirName );
+
+  QVERIFY( !mStore->topLevelCollection().remoteId().isEmpty() );
+
+  itemCreate = mStore->createItem( item3, mStore->topLevelCollection() );
+  QVERIFY( itemCreate != 0 );
+
+  result = itemCreate->exec();
+
+  QVERIFY( result );
+
+  item2 = itemCreate->item();
+  QVERIFY( !item2.remoteId().isEmpty() );
+  QVERIFY( item2.hasPayload<KMime::Message::Ptr>() );
+  QVERIFY( item2.payload<KMime::Message::Ptr>()->encodedContent() == messagePtr->encodedContent() );
+  QVERIFY( item2.hasAttribute<Akonadi::EntityDisplayAttribute>() );
+  QVERIFY( item2.attribute<Akonadi::EntityDisplayAttribute>()->displayName() ==
+           item3.attribute<Akonadi::EntityDisplayAttribute>()->displayName() );
+
+  if ( !dirName.isEmpty() ) {
+    KIO::Job *job = KIO::del( KUrl::fromPath( dirName ), KIO::HideProgressInfo );
+    job->exec();
+  }
+  delete dir;
 }
 
 void AugmentedMailDirTest::testModify()

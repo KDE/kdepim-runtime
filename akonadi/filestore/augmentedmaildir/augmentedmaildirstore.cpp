@@ -44,6 +44,7 @@
 #include <KConfigGroup>
 #include <KLocale>
 
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QHash>
@@ -820,6 +821,16 @@ bool AugmentedMailDirStore::Private::storeAttributes( const KPIM::Maildir &mailD
 {
   Q_ASSERT( !item.remoteId().isEmpty() );
 
+  QDir baseDir( mailDir.path() );
+  if ( !baseDir.exists( QLatin1String( "akonadi" ) ) && !baseDir.mkdir( QLatin1String( "akonadi" ) ) ) {
+      // TODO logging
+      // TODO better message
+      const QString message = i18n( "Akonadi data directory %1/akonadi cannot be created", mailDir.path() );
+      // TODO better error code
+      mJobSession->setError( job, Job::InvalidJobContext, message );
+      return false;
+  }
+
   const QString fileName = mailDir.path() + QLatin1String( "/akonadi/" ) + entryName + QLatin1String( ".attributes" );
 
   QFile attributeFile( fileName );
@@ -827,6 +838,7 @@ bool AugmentedMailDirStore::Private::storeAttributes( const KPIM::Maildir &mailD
       // TODO logging
       // TODO better message
       const QString message = i18n( "Item attribute file %1 cannot be written", fileName );
+      kError() << message;
       // TODO better error code
       mJobSession->setError( job, Job::InvalidJobContext, message );
       return false;
@@ -846,6 +858,16 @@ bool AugmentedMailDirStore::Private::storeAttributes( const KPIM::Maildir &mailD
 bool AugmentedMailDirStore::Private::storeFlags( const KPIM::Maildir &mailDir, const QString &entryName, const Item &item, Job *job )
 {
   Q_ASSERT( !item.remoteId().isEmpty() );
+
+  QDir baseDir( mailDir.path() );
+  if ( !baseDir.exists( QLatin1String( "akonadi" ) ) && !baseDir.mkdir( QLatin1String( "akonadi" ) ) ) {
+      // TODO logging
+      // TODO better message
+      const QString message = i18n( "Akonadi data directory %1/akonadi cannot be created", mailDir.path() );
+      // TODO better error code
+      mJobSession->setError( job, Job::InvalidJobContext, message );
+      return false;
+  }
 
   const QString fileName = mailDir.path() + QLatin1String( "/akonadi/" ) + entryName + QLatin1String( ".flags" );
 
