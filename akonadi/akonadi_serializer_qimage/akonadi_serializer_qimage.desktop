@@ -15,7 +15,7 @@ Comment[gl]=Un engadido de Akonadi para serializar obxectos QImage
 Comment[pt]=Um 'plugin' de serialização do Akonadi para objectos QImage
 Comment[sv]=Ett insticksprogram till Akonadi för serialisering av QImage-objekt
 Comment[tr]=QImage nesneleri için bir Akonadi sıralandırıcısı
-Comment[uk]=Втулок серіалізації Akonadi для об'єктів QImage
+Comment[uk]=Додаток серіалізації Akonadi для об'єктів QImage
 Comment[x-test]=xxAn Akonadi serializer plugin for QImage objectsxx
 
 [Plugin]

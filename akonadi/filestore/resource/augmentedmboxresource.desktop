@@ -1,5 +1,7 @@
 [Desktop Entry]
 Name=AugmentedMBox Resource
+Name[pt]=Recurso AugmentedMBox
+Name[uk]=Ресурс AugmentedMBox
 Comment=
 Type=AkonadiResource
 Exec=akonadi_augmentedmbox_resource

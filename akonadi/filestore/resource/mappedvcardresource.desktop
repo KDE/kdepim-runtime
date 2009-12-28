@@ -1,5 +1,7 @@
 [Desktop Entry]
 Name=MappedVCard Resource
+Name[pt]=Recurso MappedVCard
+Name[uk]=Ресурс MappedVCard
 Comment=
 Type=AkonadiResource
 Exec=akonadi_mappedvcard_resource
