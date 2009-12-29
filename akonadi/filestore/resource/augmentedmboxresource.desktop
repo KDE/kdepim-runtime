@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=AugmentedMBox Resource
+Name[en_GB]=AugmentedMBox Resource
 Name[pt]=Recurso AugmentedMBox
+Name[sv]=Förbättrad MBox-resurs
 Name[uk]=Ресурс AugmentedMBox
 Comment=
 Type=AkonadiResource

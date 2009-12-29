@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=MappedVCard Resource
+Name[en_GB]=MappedVCard Resource
 Name[pt]=Recurso MappedVCard
+Name[sv]=Avbildad vCard-resurs
 Name[uk]=Ресурс MappedVCard
 Comment=
 Type=AkonadiResource
