@@ -27,7 +27,7 @@
 #include <kstandarddirs.h>
 #include <ktempdir.h>
 
-QTEST_KDEMAIN_CORE(MboxTest)
+QTEST_KDEMAIN( MboxTest, NoGUI )
 
 #include "test-entries.h"
 
@@ -37,12 +37,12 @@ static const char * testLockFile = "test-mbox-lock-file";
 
 QString MboxTest::fileName()
 {
-  return mTempDir->name() + testFile;
+  return mTempDir->name() + QLatin1String( testFile );
 }
 
 QString MboxTest::lockFileName()
 {
-  return mTempDir->name() + testLockFile;
+  return mTempDir->name() + QLatin1String( testLockFile );
 }
 
 void MboxTest::removeTestFile()
@@ -54,7 +54,7 @@ void MboxTest::removeTestFile()
 
 void MboxTest::initTestCase()
 {
-  mTempDir = new KTempDir( KStandardDirs::locateLocal("tmp", testDir ) );
+  mTempDir = new KTempDir( KStandardDirs::locateLocal( "tmp" , QLatin1String( testDir ) ) );
 
   QDir temp(mTempDir->name());
   QVERIFY(temp.exists());
@@ -78,13 +78,13 @@ void MboxTest::testSetLockMethod()
 {
   MBox mbox1;
 
-  if ( !KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
+  if ( !KStandardDirs::findExe( QLatin1String( "lockfile" ) ).isEmpty() ) {
     QVERIFY( mbox1.setLockType(MBox::ProcmailLockfile) );
   } else {
     QVERIFY( !mbox1.setLockType( MBox::ProcmailLockfile ) );
   }
 
-  if ( !KStandardDirs::findExe("mutt_dotlock").isEmpty() ) {
+  if ( !KStandardDirs::findExe( QLatin1String( "mutt_dotlock" ) ).isEmpty() ) {
     QVERIFY( mbox1.setLockType( MBox::MuttDotlock ) );
     QVERIFY( mbox1.setLockType( MBox::MuttDotlockPrivileged ) );
   } else {
@@ -100,12 +100,12 @@ void MboxTest::testLockBeforeLoad()
   // Should fail because it's not known which file to lock.
   MBox mbox;
 
-  if ( !KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
-    QVERIFY( mbox.setLockType(MBox::ProcmailLockfile) );
+  if ( !KStandardDirs::findExe( QLatin1String( "lockfile" ) ).isEmpty() ) {
+    QVERIFY( mbox.setLockType( MBox::ProcmailLockfile ) );
     QVERIFY( !mbox.lock() );
   }
 
-  if ( !KStandardDirs::findExe("mutt_dotlock").isEmpty() ) {
+  if ( !KStandardDirs::findExe( QLatin1String( "mutt_dotlock" ) ).isEmpty() ) {
     QVERIFY( mbox.setLockType( MBox::MuttDotlock ) );
     QVERIFY( !mbox.lock() );
     QVERIFY( mbox.setLockType( MBox::MuttDotlockPrivileged ) );
@@ -130,11 +130,11 @@ void MboxTest::testProcMailLock()
   QVERIFY( mbox.load( fileName() ) );
 
   // By default the filename is used as part of the lockfile filename.
-  QVERIFY( !QFile( fileName() + ".lock" ).exists() );
+  QVERIFY( !QFile( fileName() + QLatin1String( ".lock" ) ).exists() );
   QVERIFY( mbox.lock() );
-  QVERIFY( QFile( fileName() + ".lock" ).exists() );
+  QVERIFY( QFile( fileName() + QLatin1String( ".lock" ) ).exists() );
   QVERIFY( mbox.unlock() );
-  QVERIFY( !QFile( fileName() + ".lock" ).exists() );
+  QVERIFY( !QFile( fileName() + QLatin1String( ".lock" ) ).exists() );
 
   mbox.setLockFile( lockFileName() );
   QVERIFY( !QFile( lockFileName() ).exists() );
@@ -160,9 +160,44 @@ void MboxTest::testAppend()
   QCOMPARE( mbox.entryList().size(), 1 );
   QCOMPARE( mbox.entryList().first().second, static_cast<quint64>( sEntry1.size() ) );
 
-  QVERIFY( mbox.appendEntry( mMail2 ) > sEntry1.size() );
+  const qint64 offsetMail2 = mbox.appendEntry( mMail2 );
+  QVERIFY( offsetMail2 > sEntry1.size() );
   QCOMPARE( mbox.entryList().size(), 2 );
   QCOMPARE( mbox.entryList().last().second, static_cast<quint64>( sEntry2.size() ) );
+
+  // check if appended entries can be read
+  QList<MsgInfo> list = mbox.entryList();
+  foreach ( const MsgInfo &msgInfo, list ) {
+    const QByteArray header = mbox.readEntryHeaders( msgInfo.first );
+    QVERIFY( !header.isEmpty() );
+
+    KMime::Message *message = mbox.readEntry( msgInfo.first );
+    QVERIFY( message != 0 );
+
+    KMime::Message *headers = new KMime::Message();
+    headers->setHead( KMime::CRLFtoLF( header ) );
+    headers->parse();
+
+    QCOMPARE( message->messageID()->identifier(), headers->messageID()->identifier() );
+    QCOMPARE( message->subject()->as7BitString(), headers->subject()->as7BitString() );
+    QCOMPARE( message->to()->as7BitString(), headers->to()->as7BitString() );
+    QCOMPARE( message->from()->as7BitString(), headers->from()->as7BitString() );
+
+    if ( msgInfo.first == 0 ){
+      QCOMPARE( message->messageID()->identifier(), mMail1->messageID()->identifier() );
+      QCOMPARE( message->subject()->as7BitString(), mMail1->subject()->as7BitString() );
+      QCOMPARE( message->to()->as7BitString(), mMail1->to()->as7BitString() );
+      QCOMPARE( message->from()->as7BitString(), mMail1->from()->as7BitString() );
+    } else if ( msgInfo.first == static_cast<quint64>( offsetMail2 ) ) {
+      QCOMPARE( message->messageID()->identifier(), mMail2->messageID()->identifier() );
+      QCOMPARE( message->subject()->as7BitString(), mMail2->subject()->as7BitString() );
+      QCOMPARE( message->to()->as7BitString(), mMail2->to()->as7BitString() );
+      QCOMPARE( message->from()->as7BitString(), mMail2->from()->as7BitString() );
+    }
+
+    delete message;
+    delete headers;
+  }
 }
 
 void MboxTest::testSaveAndLoad()
@@ -351,6 +386,38 @@ void MboxTest::testLockTimeout()
 
   QTest::qWait(1010);
   QVERIFY(!mbox.locked());
+}
+
+void MboxTest::testHeaders()
+{
+  MBox mbox;
+  QVERIFY( mbox.setLockType( MBox::None ) );
+  QVERIFY( mbox.load( fileName() ) );
+  mbox.appendEntry( mMail1 );
+  mbox.appendEntry( mMail2 );
+  QVERIFY( mbox.save() );
+
+  const QList<MsgInfo> list = mbox.entryList();
+
+  foreach ( const MsgInfo &msgInfo, list ) {
+    const QByteArray header = mbox.readEntryHeaders( msgInfo.first );
+    QVERIFY( !header.isEmpty() );
+
+    KMime::Message *message = mbox.readEntry( msgInfo.first );
+    QVERIFY( message != 0 );
+
+    KMime::Message *headers = new KMime::Message();
+    headers->setHead( KMime::CRLFtoLF( header ) );
+    headers->parse();
+
+    QCOMPARE( message->messageID()->identifier(), headers->messageID()->identifier() );
+    QCOMPARE( message->subject()->as7BitString(), headers->subject()->as7BitString() );
+    QCOMPARE( message->to()->as7BitString(), headers->to()->as7BitString() );
+    QCOMPARE( message->from()->as7BitString(), headers->from()->as7BitString() );
+
+    delete message;
+    delete headers;
+  }
 }
 
 void MboxTest::cleanupTestCase()

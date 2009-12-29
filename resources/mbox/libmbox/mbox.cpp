@@ -28,6 +28,7 @@
 
 #include <fcntl.h>
 
+#include <QtCore/QBuffer>
 #include <QtCore/QProcess>
 
 #include <kdebug.h>
@@ -36,10 +37,16 @@
 #include <kstandarddirs.h>
 #include <kurl.h>
 
-static QString sMBoxSeperatorRegExp( "^From .*[0-9][0-9]:[0-9][0-9]" );
+static QString sMBoxSeperatorRegExp( QLatin1String( "^From .*[0-9][0-9]:[0-9][0-9]" ) );
 
 /// private static methods.
-
+static bool isMBoxSeparator( QRegExp &matcher, const QByteArray &line )
+{
+  if ( !line.startsWith( "From " ) ) {
+    return false;
+  }
+  return matcher.indexIn( QString::fromLatin1( line ) ) >= 0;
+}
 
 /// public methods.
 
@@ -162,7 +169,7 @@ bool MBox::load( const QString &fileName )
 
     // if atEnd, use mail only if there was a separator line at all,
     // otherwise it's not a valid mbox
-    if ( regexp.indexIn( line ) >= 0 ||
+    if ( isMBoxSeparator( regexp, line ) ||
          ( d->mMboxFile.atEnd() && ( prevSeparator.size() != 0 ) ) ) {
 
       // Found the separator or at end of file, the message starts at offs
@@ -190,7 +197,7 @@ bool MBox::load( const QString &fileName )
         d->mEntries << info;
       }
 
-      if ( regexp.indexIn( line ) >= 0 )
+      if ( isMBoxSeparator( regexp, line ) )
         prevSeparator = line;
 
       offs += msgSize; // Mark the beginning of the next message.
@@ -229,13 +236,13 @@ bool MBox::lock()
   switch(d->mLockType)
   {
     case ProcmailLockfile:
-      args << "-l20" << "-r5";
+      args << QLatin1String( "-l20" ) << QLatin1String( "-r5" );
       if ( !d->mLockFileName.isEmpty() )
-        args << QFile::encodeName( d->mLockFileName );
+        args << QString::fromLocal8Bit( QFile::encodeName( d->mLockFileName ) );
       else
-        args << QFile::encodeName( d->mMboxFile.fileName() + ".lock" );
+        args << QString::fromLocal8Bit( QFile::encodeName( d->mMboxFile.fileName() + QLatin1String( ".lock" ) ) );
 
-      rc = QProcess::execute("lockfile", args);
+      rc = QProcess::execute( QLatin1String( "lockfile" ), args);
       if( rc != 0 ) {
         kDebug() << "lockfile -l20 -r5 " << d->mMboxFile.fileName()
                  << ": Failed ("<< rc << ") switching to read only mode";
@@ -247,8 +254,8 @@ bool MBox::lock()
       break;
 
     case MuttDotlock:
-      args << QFile::encodeName( d->mMboxFile.fileName() );
-      rc = QProcess::execute( "mutt_dotlock", args );
+      args << QString::fromLocal8Bit( QFile::encodeName( d->mMboxFile.fileName() ) );
+      rc = QProcess::execute( QLatin1String( "mutt_dotlock" ), args );
 
       if( rc != 0 ) {
         kDebug() << "mutt_dotlock " << d->mMboxFile.fileName()
@@ -261,8 +268,9 @@ bool MBox::lock()
       break;
 
     case MuttDotlockPrivileged:
-      args << "-p" << QFile::encodeName( d->mMboxFile.fileName() );
-      rc = QProcess::execute( "mutt_dotlock", args );
+      args << QLatin1String( "-p" )
+           << QString::fromLocal8Bit( QFile::encodeName( d->mMboxFile.fileName() ) );
+      rc = QProcess::execute( QLatin1String( "mutt_dotlock" ), args );
 
       if( rc != 0 ) {
         kDebug() << "mutt_dotlock -p " << d->mMboxFile.fileName() << ":"
@@ -318,7 +326,7 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
     QByteArray line = d->mMboxFile.readLine();
     QRegExp regexp( sMBoxSeperatorRegExp );
 
-    if ( regexp.indexIn(line) < 0 ) {
+    if ( !isMBoxSeparator( regexp, line ) ) {
       qDebug() << "Found invalid separator at:" << offset;
       unlock();
       return false; // The file is messed up or the index is incorrect.
@@ -408,31 +416,55 @@ KMime::Message *MBox::readEntry(quint64 offset)
 
   Q_ASSERT( d->mFileLocked );
   Q_ASSERT( d->mMboxFile.isOpen() );
-  Q_ASSERT( d->mMboxFile.size() > 0 );
-
-  if ( offset > static_cast<quint64>( d->mMboxFile.size() ) ) {
-    if ( !wasLocked )
-      unlock();
-    return 0;
-  }
-
-  d->mMboxFile.seek(offset);
-
-  QByteArray line = d->mMboxFile.readLine();
-  QRegExp regexp( sMBoxSeperatorRegExp );
-
-  if ( regexp.indexIn( line ) < 0) {
-    kDebug() << "[MBox::readEntry] Invalid entry at:" << offset;
-    if ( !wasLocked )
-      unlock();
-    return 0; // The file is messed up or the index is incorrect.
-  }
+  Q_ASSERT( ( d->mInitialMboxFileSize + d->mAppendedEntries.size() ) > offset );
 
   QByteArray message;
-  line = d->mMboxFile.readLine();
-  while ( regexp.indexIn( line ) < 0 && !d->mMboxFile.atEnd() ) {
-    message += line;
+
+  if ( offset < d->mInitialMboxFileSize ) {
+    d->mMboxFile.seek(offset);
+
+    QByteArray line = d->mMboxFile.readLine();
+    QRegExp regexp( sMBoxSeperatorRegExp );
+
+    if ( !isMBoxSeparator( regexp, line ) ) {
+      kDebug() << "[MBox::readEntry] Invalid entry at:" << offset;
+      if ( !wasLocked )
+        unlock();
+      return 0; // The file is messed up or the index is incorrect.
+    }
+
     line = d->mMboxFile.readLine();
+    while ( !isMBoxSeparator( regexp, line ) && !d->mMboxFile.atEnd() ) {
+      message += line;
+      line = d->mMboxFile.readLine();
+    }
+  } else {
+    offset -= d->mInitialMboxFileSize;
+    if ( offset > static_cast<quint64>( d->mAppendedEntries.size() ) ) {
+      if ( !wasLocked )
+        unlock();
+      return 0;
+    }
+
+    QBuffer buffer( &(d->mAppendedEntries) );
+    buffer.open( QIODevice::ReadOnly );
+    buffer.seek( offset );
+
+    QByteArray line = buffer.readLine();
+    QRegExp regexp( sMBoxSeperatorRegExp );
+
+    if ( !isMBoxSeparator( regexp, line ) ) {
+      kDebug() << "[MBox::readEntry] Invalid appended entry at:" << offset;
+      if ( !wasLocked )
+        unlock();
+      return 0; // The file is messed up or the index is incorrect.
+    }
+
+    line = buffer.readLine();
+    while ( !isMBoxSeparator( regexp, line ) && !buffer.atEnd() ) {
+      message += line;
+      line = buffer.readLine();
+    }
   }
 
   // Remove te last '\n' added by writeEntry.
@@ -464,15 +496,27 @@ QByteArray MBox::readEntryHeaders( quint64 offset )
 
   Q_ASSERT( d->mFileLocked );
   Q_ASSERT( d->mMboxFile.isOpen() );
-  Q_ASSERT( static_cast<quint64>(d->mMboxFile.size()) > offset );
+  Q_ASSERT( ( d->mInitialMboxFileSize + d->mAppendedEntries.size() ) > offset );
 
-  d->mMboxFile.seek( offset );
   QByteArray headers;
-  QByteArray line = d->mMboxFile.readLine();
+  if ( offset < d->mInitialMboxFileSize ) {
+    d->mMboxFile.seek( offset );
+    QByteArray line = d->mMboxFile.readLine();
 
-  while ( !line[0] == '\n' ) {
-    headers += line;
-    line = d->mMboxFile.readLine();
+    while ( line[0] != '\n' ) {
+        headers += line;
+        line = d->mMboxFile.readLine();
+    }
+  } else {
+    QBuffer buffer( &(d->mAppendedEntries) );
+    buffer.open( QIODevice::ReadOnly );
+    buffer.seek( offset - d->mInitialMboxFileSize );
+    QByteArray line = buffer.readLine();
+
+    while ( line[0] != '\n' ) {
+        headers += line;
+        line = buffer.readLine();
+    }
   }
 
   if ( ! wasLocked )
@@ -528,14 +572,14 @@ bool MBox::setLockType(LockType ltype)
 
   switch ( ltype ) {
     case ProcmailLockfile:
-      if ( KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
+      if ( KStandardDirs::findExe( QLatin1String( "lockfile" ) ).isEmpty() ) {
         kDebug() << "Could not find the lockfile executable";
         return false;
       }
       break;
     case MuttDotlock: // fall through
     case MuttDotlockPrivileged:
-      if ( KStandardDirs::findExe("mutt_dotlock").isEmpty() ) {
+      if ( KStandardDirs::findExe( QLatin1String( "mutt_dotlock" ) ).isEmpty() ) {
         kDebug() << "Could not find the mutt_dotlock executable";
         return false;
       }
@@ -576,17 +620,19 @@ bool MBox::unlock()
       if ( !d->mLockFileName.isEmpty() )
         rc = !QFile( d->mLockFileName ).remove();
       else
-        rc = !QFile( d->mMboxFile.fileName() + ".lock" ).remove();
+        rc = !QFile( d->mMboxFile.fileName() + QLatin1String( ".lock" ) ).remove();
       break;
 
     case MuttDotlock:
-      args << "-u" << QFile::encodeName( d->mMboxFile.fileName() );
-      rc = QProcess::execute( "mutt_dotlock", args );
+      args << QLatin1String( "-u" )
+           << QString::fromLocal8Bit( QFile::encodeName( d->mMboxFile.fileName() ) );
+      rc = QProcess::execute( QLatin1String( "mutt_dotlock" ), args );
       break;
 
     case MuttDotlockPrivileged:
-      args << "-u" << "-p" << QFile::encodeName( d->mMboxFile.fileName() );
-      rc = QProcess::execute( "mutt_dotlock", args );
+      args << QLatin1String( "-u" ) << QLatin1String( "-p" )
+           << QString::fromLocal8Bit( QFile::encodeName( d->mMboxFile.fileName() ) );
+      rc = QProcess::execute( QLatin1String( "mutt_dotlock" ), args );
       break;
 
     case None: // Fall through.

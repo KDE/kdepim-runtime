@@ -26,7 +26,7 @@
 #include <kstandarddirs.h>
 #include <ktempdir.h>
 
-QTEST_KDEMAIN_CORE(MBoxBenchmark)
+QTEST_KDEMAIN( MBoxBenchmark, NoGUI )
 
 #include "test-entries.h"
 
@@ -35,12 +35,12 @@ static const char * testFile = "test-mbox-file";
 
 QString MBoxBenchmark::fileName()
 {
-  return mTempDir->name() + testFile;
+  return mTempDir->name() + QLatin1String( testFile );
 }
 
 void MBoxBenchmark::initTestCase()
 {
-  mTempDir = new KTempDir( KStandardDirs::locateLocal("tmp", testDir ) );
+  mTempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", QLatin1String( testDir ) ) );
   mMail1 = MessagePtr( new KMime::Message );
   mMail1->setContent( KMime::CRLFtoLF( sEntry1 ) );
   mMail1->parse();
