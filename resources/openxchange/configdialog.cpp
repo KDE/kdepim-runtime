@@ -105,6 +105,6 @@ void ConfigDialog::checkConnectionJobFinished( KJob *job )
   if ( job->error() ) {
     KMessageBox::error( this, i18n( "Unable to connect: %1", job->errorText() ), i18n( "Connection error" ) );
   } else {
-    KMessageBox::information( this, i18n( "Tested connection successfully!" ), i18n( "Connection success" ) );
+    KMessageBox::information( this, i18n( "Tested connection successfully." ), i18n( "Connection success" ) );
   }
 }
