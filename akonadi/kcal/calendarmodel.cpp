@@ -49,8 +49,8 @@ class CalendarModel::Private
     CalendarModel * const q;
 };
 
-CalendarModel::CalendarModel( Session *session, ChangeRecorder* monitor, QObject *parent )
-  : EntityTreeModel( session, monitor, parent ),
+CalendarModel::CalendarModel( ChangeRecorder* monitor, QObject *parent )
+  : EntityTreeModel( monitor, parent ),
     d( new Private( this ) )
 {
   monitor->itemFetchScope().fetchAllAttributes( true );

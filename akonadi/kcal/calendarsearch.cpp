@@ -114,7 +114,7 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
     monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::todoMimeType(), true );
     monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::journalMimeType(), true );
 
-    calendarModel = new CalendarModel( session, monitor, q );
+    calendarModel = new CalendarModel( monitor, q );
     connect( calendarModel, SIGNAL(rowsInserted(QModelIndex,int,int)), q, SLOT(rowsInserted(QModelIndex,int,int)) );
 
     selectionModel = new QItemSelectionModel( calendarModel );
