@@ -4,6 +4,7 @@ Name[en_GB]=MappedVCard Resource
 Name[pt]=Recurso MappedVCard
 Name[sv]=Avbildad vCard-resurs
 Name[uk]=Ресурс MappedVCard
+Name[x-test]=xxMappedVCard Resourcexx
 Comment=
 Type=AkonadiResource
 Exec=akonadi_mappedvcard_resource

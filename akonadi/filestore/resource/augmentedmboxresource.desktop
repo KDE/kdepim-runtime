@@ -4,6 +4,7 @@ Name[en_GB]=AugmentedMBox Resource
 Name[pt]=Recurso AugmentedMBox
 Name[sv]=Förbättrad MBox-resurs
 Name[uk]=Ресурс AugmentedMBox
+Name[x-test]=xxAugmentedMBox Resourcexx
 Comment=
 Type=AkonadiResource
 Exec=akonadi_augmentedmbox_resource

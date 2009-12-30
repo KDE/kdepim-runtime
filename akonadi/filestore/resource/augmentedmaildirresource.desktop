@@ -1,5 +1,9 @@
 [Desktop Entry]
 Name=AugmentedMailDir Resource
+Name[en_GB]=AugmentedMailDir Resource
+Name[sv]=Förbättrad MailDir-resurs
+Name[uk]=Ресурс AugmentedMailDir
+Name[x-test]=xxAugmentedMailDir Resourcexx
 Comment=
 Type=AkonadiResource
 Exec=akonadi_augmentedmaildir_resource
