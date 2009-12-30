@@ -20,7 +20,7 @@
 #include "akonaditemplateloader.h"
 
 #include <akonadi/collection.h>
-#include <akonadi/monitor.h>
+#include <akonadi/changerecorder.h>
 #include <akonadi/session.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/entitytreemodel.h>
@@ -40,7 +40,9 @@ AkonadiTemplateLoader::AkonadiTemplateLoader(Akonadi::ChangeRecorder *monitor,  
 
   Session *session = new Session( QByteArray( "AkonadiTemplateLoader-" ) + QByteArray::number( qrand() ), parent );
 
-  m_model = new EntityTreeModel( session, monitor, parent );
+  monitor->setSession( session );
+
+  m_model = new EntityTreeModel( monitor, parent );
 
 }
 
