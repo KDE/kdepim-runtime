@@ -91,8 +91,8 @@ bool ContactsModel::entityMatch(const Akonadi::Collection &col, const QVariant& 
 }
 
 
-ContactsModel::ContactsModel(Session *session, ChangeRecorder *monitor, QObject *parent)
-  : EntityTreeModel(session, monitor, parent), d_ptr(new ContactsModelPrivate(this))
+ContactsModel::ContactsModel(ChangeRecorder *monitor, QObject *parent)
+  : EntityTreeModel(monitor, parent), d_ptr(new ContactsModelPrivate(this))
 {
 
 }

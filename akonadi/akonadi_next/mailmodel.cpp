@@ -48,8 +48,8 @@ public:
 
 };
 
-MailModel::MailModel(Session *session, ChangeRecorder *monitor, QObject *parent)
-  : EntityTreeModel(session, monitor, parent), d_ptr(new MailModelPrivate(this))
+MailModel::MailModel( ChangeRecorder *monitor, QObject *parent)
+  : EntityTreeModel(monitor, parent), d_ptr(new MailModelPrivate(this))
 {
 
 }
