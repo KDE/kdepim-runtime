@@ -32,9 +32,9 @@
 */
 
 #include "note.h"
+#include "akonadi-version.h"
 
 #include <kcal/journal.h>
-#include <knotes/version.h>
 #include <kdebug.h>
 
 using namespace Kolab;
@@ -209,5 +209,5 @@ void Note::saveTo( KCal::Journal* journal )
 
 QString Note::productID() const
 {
-  return QString( "KNotes %1, Kolab resource" ).arg( KNOTES_VERSION );
+  return QString( "KNotes %1, Kolab resource" ).arg( AKONADI_VERSION );
 }
