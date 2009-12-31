@@ -20,7 +20,7 @@
 #include "augmentedmaildirresource.h"
 
 #include "augmentedmaildirresourcesettings.h"
-#include "augmentedmboxsettingsadaptor.h"
+#include "augmentedmaildirsettingsadaptor.h"
 
 #include <akonadi/kmime/messageparts.h>
 
