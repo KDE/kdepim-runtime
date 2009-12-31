@@ -108,9 +108,9 @@ void AbortTest::initTestCase()
 void AbortTest::testAbort()
 {
   // Get the MDA interface.
-  DispatcherInterface *iface = DispatcherInterface::self();
-  QVERIFY( iface->dispatcherInstance().isValid() );
-  QVERIFY( iface->dispatcherInstance().isOnline() );
+  DispatcherInterface iface;
+  QVERIFY( iface.dispatcherInstance().isValid() );
+  QVERIFY( iface.dispatcherInstance().isOnline() );
 
   // Create a large message.
   kDebug() << "Building message.";
@@ -133,11 +133,11 @@ void AbortTest::testAbort()
   // default sent-mail collection
   qjob->setFrom( "naiba" );
   qjob->setTo( QStringList( SPAM_ADDRESS ) );
-  QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
+  QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
   AKVERIFYEXEC( qjob );
 
   // Wait for the MDA to begin dispatching.
-  for( int ds = 0; iface->dispatcherInstance().status() == AgentInstance::Idle; ds++ ) {
+  for( int ds = 0; iface.dispatcherInstance().status() == AgentInstance::Idle; ds++ ) {
     QTest::qWait( 100 );
     if( ds % 10 == 0 ) {
       kDebug() << "Waiting for the MDA to begin dispatching." << ds / 10 << "seconds elapsed.";
@@ -148,9 +148,9 @@ void AbortTest::testAbort()
   QTest::qWait( 100 );
 
   // Tell the MDA to abort.
-  QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Running );
-  iface->dispatcherInstance().abortCurrentTask();
-  for( int ds = 0; iface->dispatcherInstance().status() != AgentInstance::Idle; ds++ ) {
+  QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Running );
+  iface.dispatcherInstance().abortCurrentTask();
+  for( int ds = 0; iface.dispatcherInstance().status() != AgentInstance::Idle; ds++ ) {
     QTest::qWait( 100 );
     if( ds % 10 == 0 ) {
       kDebug() << "Waiting for the MDA to become idle after aborting." << ds / 10 << "seconds elapsed.";
@@ -158,7 +158,7 @@ void AbortTest::testAbort()
 
     QVERIFY2( ds <= 100, "Timeout" );
   }
-  QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
+  QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
 
   // Verify that item has an ErrorAttribute.
   ItemFetchJob *fjob = new ItemFetchJob( outbox );
@@ -190,20 +190,20 @@ void AbortTest::testAbort()
     QVERIFY2( ds <= 100, "Timeout" );
   }
   QCOMPARE( addSpy->count(), 1 );
-  QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
+  QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
 }
 
 void AbortTest::testAbortWhileIdle()
 {
   // Get the MDA interface.
-  DispatcherInterface *iface = DispatcherInterface::self();
-  QVERIFY( iface->dispatcherInstance().isValid() );
-  QVERIFY( iface->dispatcherInstance().isOnline() );
+  DispatcherInterface iface;
+  QVERIFY( iface.dispatcherInstance().isValid() );
+  QVERIFY( iface.dispatcherInstance().isOnline() );
 
   // Abort thin air.
-  QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
-  iface->dispatcherInstance().abortCurrentTask();
-  QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
+  QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
+  iface.dispatcherInstance().abortCurrentTask();
+  QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
 
   // Queue a message (to check that subsequent messages are being sent).
   QVERIFY( monitor );
@@ -217,7 +217,7 @@ void AbortTest::testAbortWhileIdle()
   // default sent-mail collection
   qjob->setFrom( "naiba" );
   qjob->setTo( QStringList( "dracu" ) );
-  QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
+  QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
   AKVERIFYEXEC( qjob );
 
   // Verify that the item got sent.
@@ -226,7 +226,7 @@ void AbortTest::testAbortWhileIdle()
     QVERIFY2( s <= 10, "Timeout" );
   }
   QCOMPARE( addSpy->count(), 1 );
-  QCOMPARE( iface->dispatcherInstance().status(), AgentInstance::Idle );
+  QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
 }
 
 QTEST_AKONADIMAIN( AbortTest, NoGUI )
