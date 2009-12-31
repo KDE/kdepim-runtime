@@ -178,10 +178,10 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   */
 
   if( mA->dispatchMode() == DispatchModeAttribute::Automatic &&
-      mA->dueDate().isValid() && mA->dueDate() > QDateTime::currentDateTime() ) {
+      mA->sendAfter().isValid() && mA->sendAfter() > QDateTime::currentDateTime() ) {
     // All the above was OK, so accept it for the future.
     kDebug() << "Item" << item.id() << "is accepted to be sent in the future.";
-    futureMap.insert( mA->dueDate(), item );
+    futureMap.insert( mA->sendAfter(), item );
     Q_ASSERT( !futureItems.contains( item ) );
     futureItems.insert( item );
     checkFuture();
