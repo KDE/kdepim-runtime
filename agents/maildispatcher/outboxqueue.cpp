@@ -164,7 +164,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   const SentBehaviourAttribute *sA = item.attribute<SentBehaviourAttribute>();
   Q_ASSERT( sA );
   if( sA->sentBehaviour() == SentBehaviourAttribute::MoveToCollection &&
-      sA->moveToCollection() < 0 ) {
+      !sA->moveToCollection().isValid() ) {
     kWarning() << "Item" << item.id() << "has invalid sent-mail collection.";
     return;
   }
