@@ -42,7 +42,7 @@
 #include <QFile>
 #include <QHash>
 
-const char *sVCardSeparator = "\r\n\r\n";
+static const char *sVCardSeparator = "\r\n\r\n";
 
 using namespace Akonadi::FileStore;
 
