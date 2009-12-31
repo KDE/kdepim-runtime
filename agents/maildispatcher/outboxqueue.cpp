@@ -149,7 +149,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
 
   const DispatchModeAttribute *mA = item.attribute<DispatchModeAttribute>();
   Q_ASSERT( mA );
-  if( mA->dispatchMode() == DispatchModeAttribute::Never ) {
+  if( mA->dispatchMode() == DispatchModeAttribute::Manual ) {
     kDebug() << "Item" << item.id() << "is queued to be sent manually.";
     return;
   }
@@ -177,8 +177,8 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   }
   */
 
-  if( mA->dispatchMode() == DispatchModeAttribute::AfterDueDate &&
-      mA->dueDate() > QDateTime::currentDateTime() ) {
+  if( mA->dispatchMode() == DispatchModeAttribute::Automatic &&
+      mA->dueDate().isValid() && mA->dueDate() > QDateTime::currentDateTime() ) {
     // All the above was OK, so accept it for the future.
     kDebug() << "Item" << item.id() << "is accepted to be sent in the future.";
     futureMap.insert( mA->dueDate(), item );
