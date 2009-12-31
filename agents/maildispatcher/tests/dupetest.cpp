@@ -147,11 +147,11 @@ void DupeTest::testDupes()
 
     MessageQueueJob *job = new MessageQueueJob( this );
     job->setMessage( msg );
-    job->setTransportId( TransportManager::self()->defaultTransportId() );
+    job->transportAttribute().setTransportId( TransportManager::self()->defaultTransportId() );
     // default dispatch mode
     // default sent-mail collection
-    job->setFrom( "naiba" );
-    job->setTo( QStringList( "dracu" ) );
+    job->addressAttribute().setFrom( "naiba" );
+    job->addressAttribute().setTo( QStringList( "dracu" ) );
     //AKVERIFYEXEC( job );
     job->start();
     QTest::qWait( delay );

@@ -149,7 +149,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
 
   const DispatchModeAttribute *mA = item.attribute<DispatchModeAttribute>();
   Q_ASSERT( mA );
-  if( mA->dispatchMode() == DispatchModeAttribute::Never ) {
+  if( mA->dispatchMode() == DispatchModeAttribute::Manual ) {
     kDebug() << "Item" << item.id() << "is queued to be sent manually.";
     return;
   }
@@ -164,7 +164,7 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   const SentBehaviourAttribute *sA = item.attribute<SentBehaviourAttribute>();
   Q_ASSERT( sA );
   if( sA->sentBehaviour() == SentBehaviourAttribute::MoveToCollection &&
-      sA->moveToCollection() < 0 ) {
+      !sA->moveToCollection().isValid() ) {
     kWarning() << "Item" << item.id() << "has invalid sent-mail collection.";
     return;
   }
@@ -177,11 +177,11 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
   }
   */
 
-  if( mA->dispatchMode() == DispatchModeAttribute::AfterDueDate &&
-      mA->dueDate() > QDateTime::currentDateTime() ) {
+  if( mA->dispatchMode() == DispatchModeAttribute::Automatic &&
+      mA->sendAfter().isValid() && mA->sendAfter() > QDateTime::currentDateTime() ) {
     // All the above was OK, so accept it for the future.
     kDebug() << "Item" << item.id() << "is accepted to be sent in the future.";
-    futureMap.insert( mA->dueDate(), item );
+    futureMap.insert( mA->sendAfter(), item );
     Q_ASSERT( !futureItems.contains( item ) );
     futureItems.insert( item );
     checkFuture();
