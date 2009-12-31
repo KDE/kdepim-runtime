@@ -1314,7 +1314,7 @@ void ImapResource::onSubscribeDone( KJob *job )
   Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   if ( job->error() ) { // Just warn about the failed subscription
-    emit warning( i18n( "Failed to subcribe to the newly moved folder '%1' on the IMAP server.",
+    emit warning( i18n( "Failed to subscribe to the newly moved folder '%1' on the IMAP server.",
                       collection.name() ) );
   }
 
