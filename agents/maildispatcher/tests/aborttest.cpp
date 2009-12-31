@@ -128,11 +128,11 @@ void AbortTest::testAbort()
   kDebug() << "Queuing message.";
   MessageQueueJob *qjob = new MessageQueueJob( this );
   qjob->setMessage( msg );
-  qjob->setTransportId( smtpTid );
+  qjob->transportAttribute().setTransportId( smtpTid );
   // default dispatch mode
   // default sent-mail collection
-  qjob->setFrom( "naiba" );
-  qjob->setTo( QStringList( SPAM_ADDRESS ) );
+  qjob->addressAttribute().setFrom( "naiba" );
+  qjob->addressAttribute().setTo( QStringList( SPAM_ADDRESS ) );
   QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
   AKVERIFYEXEC( qjob );
 
@@ -212,11 +212,11 @@ void AbortTest::testAbortWhileIdle()
   msg->setContent( "\ntestAbortWhileIdle" );
   MessageQueueJob *qjob = new MessageQueueJob( this );
   qjob->setMessage( msg );
-  qjob->setTransportId( akoTid );
+  qjob->transportAttribute().setTransportId( akoTid );
   // default dispatch mode
   // default sent-mail collection
-  qjob->setFrom( "naiba" );
-  qjob->setTo( QStringList( "dracu" ) );
+  qjob->addressAttribute().setFrom( "naiba" );
+  qjob->addressAttribute().setTo( QStringList( "dracu" ) );
   QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
   AKVERIFYEXEC( qjob );
 
