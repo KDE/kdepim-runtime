@@ -54,6 +54,9 @@ void DupeTest::initTestCase()
   QVERIFY( Control::start() );
   QTest::qWait( 1000 ); // give the MDA time to start
 
+  qRegisterMetaType<Akonadi::Item>();
+  qRegisterMetaType<Akonadi::Collection>();
+
   // we need a default Akonadi transport
   int tid = TransportManager::self()->defaultTransportId();
   Transport *t = TransportManager::self()->transportById( tid );

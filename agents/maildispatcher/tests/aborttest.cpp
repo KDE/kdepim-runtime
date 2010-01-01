@@ -62,6 +62,9 @@ void AbortTest::initTestCase()
   QVERIFY( Control::start() );
   QTest::qWait( 1000 );
 
+  qRegisterMetaType<Akonadi::Item>();
+  qRegisterMetaType<Akonadi::Collection>();
+
   // Get the outbox and clear it.
   SpecialMailCollectionsRequestJob *rjob = new SpecialMailCollectionsRequestJob( this );
   rjob->requestDefaultCollection( SpecialMailCollections::Outbox );
