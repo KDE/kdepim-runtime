@@ -42,8 +42,10 @@ class Pop3Test : public QObject
     void testBigFetch();
     void testSeenUIDCleanup();
     void testTimeBasedLeaveRule();
+    void testCountBasedLeaveRule();
 
   private:
+    void lowerTimeOfSeenMail( const QString &uidOfMail, int secondsToLower );
     void cleanupMaildir( Akonadi::Item::List items );
     void checkMailsInMaildir( const QList< QByteArray >& mails );
     Akonadi::Item::List checkMailsOnAkonadiServer( const QList<QByteArray> &mails );
