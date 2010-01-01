@@ -755,3 +755,72 @@ void Pop3Test::testCountBasedLeaveRule()
   mPOP3SettingsInterface->setSeenUidTimeList( QList<int>() );
   mPOP3SettingsInterface->setSeenUidList( QStringList() );
 }
+
+void Pop3Test::testSizeBasedLeaveRule()
+{
+  mPOP3SettingsInterface->setLeaveOnServer( true );
+  mPOP3SettingsInterface->setLeaveOnServerSize( 10 ); // 10 MB
+
+  //
+  // First download 3 mails and leave them on the server.
+  //
+  QList<QByteArray> mails;
+  mails << simpleMail1 << simpleMail2 << simpleMail3;
+  QStringList uids;
+  uids << "UID1" << "UID2" << "UID3";
+  mFakeServerThread->server()->setMails( mails );
+  mFakeServerThread->server()->setAllowedRetrieves("1,2,3");
+  mFakeServerThread->server()->setNextConversation(
+    loginSequence() +
+    listSequence( mails ) +
+    uidSequence( uids ) +
+    retrieveSequence( mails ) +
+    quitSequence()
+  );
+
+  syncAndWaitForFinish();
+  checkMailsOnAkonadiServer( mails );
+  checkMailsInMaildir( mails );
+
+  // Make the 3 just downloaded mails appear older than they are
+  lowerTimeOfSeenMail( "UID1", 60 * 60 * 24 * 2 );
+  lowerTimeOfSeenMail( "UID2", 60 * 60 * 24 * 1 );
+  lowerTimeOfSeenMail( "UID3", 60 * 60 * 24 * 3 );
+
+  // Now, do another mail check, but with no new mails on the server.
+  // Instead we let the server pretend that the mails have a fake size,
+  // each 7 MB. That means the two oldest get deleted, because the total
+  // mail size is over 10 MB with them.
+  mFakeServerThread->server()->setMails( mails );
+  mFakeServerThread->server()->setAllowedRetrieves( QString() );
+  mFakeServerThread->server()->setAllowedDeletions( "1,3" );
+  mFakeServerThread->server()->setNextConversation(
+    loginSequence() +
+    "C: LIST\r\n"
+    "S: +OK You got new spam\r\n"
+       "1 7340032\r\n"
+       "2 7340032\r\n"
+       "3 7340032\r\n"
+       ".\r\n" +
+    uidSequence( uids ) +
+    deleteSequence( 2 ) +
+    quitSequence()
+  );
+
+  syncAndWaitForFinish();
+  Akonadi::Item::List items = checkMailsOnAkonadiServer( mails );
+  checkMailsInMaildir( mails );
+  cleanupMaildir( items );
+
+  QStringList uidsLeft;
+  uidsLeft << "UID2";
+
+  QVERIFY( sortedEqual( uidsLeft, mPOP3SettingsInterface->seenUidList().value() ) );
+  QVERIFY( mPOP3SettingsInterface->seenUidTimeList().value().size() ==
+           mPOP3SettingsInterface->seenUidList().value().size() );
+
+  mPOP3SettingsInterface->setLeaveOnServer( false );
+  mPOP3SettingsInterface->setLeaveOnServerCount( 0 );
+  mPOP3SettingsInterface->setSeenUidTimeList( QList<int>() );
+  mPOP3SettingsInterface->setSeenUidList( QStringList() );
+}

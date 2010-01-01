@@ -43,6 +43,7 @@ class Pop3Test : public QObject
     void testSeenUIDCleanup();
     void testTimeBasedLeaveRule();
     void testCountBasedLeaveRule();
+    void testSizeBasedLeaveRule();
 
   private:
     void lowerTimeOfSeenMail( const QString &uidOfMail, int secondsToLower );
