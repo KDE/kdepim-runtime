@@ -155,7 +155,7 @@ class POP3Resource : public Akonadi::ResourceBase,
     // that the messages corresponding to the IDs are stored in Akonadi yet
     QList<int> mDownloadedIDs;
 
-    // IDs of messages that we want to download and that have have started the
+    // IDs of messages that we want to download and that we have started the
     // FetchJob with. After the FetchJob, this should be empty, except if there
     // was some error
     QList<int> mIdsToDownload;
