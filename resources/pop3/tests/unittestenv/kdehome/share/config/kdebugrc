@@ -33,13 +33,6 @@ InfoFilename[$e]=kdebug.dbg
 WarnFilename[$e]=kdebug.dbg
 WarnOutput=4
 
-[5267]
-AbortFatal=true
-ErrorOutput=0
-FatalOutput=0
-InfoOutput=0
-WarnOutput=0
-
 [5250]
 InfoOutput=2
 
