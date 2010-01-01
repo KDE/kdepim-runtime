@@ -45,6 +45,7 @@
 
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
+#include <Akonadi/TransportResourceBase>
 #include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/kmime/specialmailcollections.h>
@@ -82,7 +83,7 @@ class SendJob::Private
     void transportPercent( KJob *job, unsigned long percent ); // slot
     void transportResult( KJob *job ); // slot
     void resourceProgress( const AgentInstance &instance ); // slot
-    void resourceResult( qlonglong itemId, bool success, const QString &message ); // slot
+    void resourceResult( qlonglong itemId, int result, const QString &message ); // slot
     void doPostJob( bool transportSuccess, const QString &transportMessage ); // result of transport
     void postJobResult( KJob *job ); // slot
     void storeResult( bool success, const QString &message = QString() );
@@ -141,8 +142,8 @@ void SendJob::Private::doAkonadiTransport()
   // Signals.
   QObject::connect( AgentManager::self(), SIGNAL(instanceProgressChanged(Akonadi::AgentInstance)),
       q, SLOT(resourceProgress(Akonadi::AgentInstance)) );
-  QObject::connect( iface, SIGNAL(transportResult(qlonglong,bool,QString)),
-      q, SLOT(resourceResult(qlonglong,bool,QString)) );
+  QObject::connect( iface, SIGNAL(transportResult(qlonglong,int,QString)),
+      q, SLOT(resourceResult(qlonglong,int,QString)) );
 
   // Start sending.
   QDBusReply<void> reply = iface->call( QLatin1String( "send" ), item.id() );
@@ -215,11 +216,15 @@ void SendJob::Private::resourceProgress( const AgentInstance &instance )
   }
 }
 
-void SendJob::Private::resourceResult( qlonglong itemId, bool success, const QString &message )
+void SendJob::Private::resourceResult( qlonglong itemId, int result,
+                                       const QString &message )
 {
   Q_ASSERT( iface );
   delete iface; // So that abort() knows the transport job is over.
   iface = 0;
+  const TransportResourceBase::TransportResult transportResult =
+      static_cast<TransportResourceBase::TransportResult>( result );
+  const bool success = ( transportResult == TransportResourceBase::TransportSucceeded );
   Q_ASSERT( itemId == item.id() );
   doPostJob( success, message );
 }
