@@ -9,6 +9,20 @@ InfoOutput=2
 WarnFilename[$e]=kdebug.dbg
 WarnOutput=2
 
+[kbuildsycoca4]
+AbortFatal=true
+ErrorOutput=0
+FatalOutput=0
+InfoOutput=0
+WarnOutput=0
+
+[kdecore (services)]
+AbortFatal=true
+ErrorOutput=0
+FatalOutput=0
+InfoOutput=0
+WarnOutput=0
+
 [264]
 AbortFatal=true
 ErrorFilename[$e]=kdebug.dbg
@@ -18,6 +32,13 @@ FatalOutput=4
 InfoFilename[$e]=kdebug.dbg
 WarnFilename[$e]=kdebug.dbg
 WarnOutput=4
+
+[5267]
+AbortFatal=true
+ErrorOutput=0
+FatalOutput=0
+InfoOutput=0
+WarnOutput=0
 
 [5250]
 InfoOutput=2
