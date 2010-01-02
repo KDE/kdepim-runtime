@@ -18,13 +18,14 @@
 
 #include "kcalresource.h"
 #include "resources/kabc/kresourceassistant.h"
-#include <kcal/mimetypevisitor.h>
 
 #include <kcal/assignmentvisitor.h>
 #include <kcal/calformat.h>
 #include <kcal/resourcecalendar.h>
 
 #include <kresources/configdialog.h>
+
+#include <akonadi/kcal/incidencemimetypevisitor.h>
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/entitydisplayattribute.h>
@@ -49,7 +50,7 @@ KCalResource::KCalResource( const QString &id )
   : ResourceBase( id ),
     mManager( new KCal::CalendarResourceManager( QLatin1String( "calendar" ) ) ),
     mResource( 0 ),
-    mMimeVisitor( new KCal::MimeTypeVisitor() ),
+    mMimeVisitor( new IncidenceMimeTypeVisitor() ),
     mFullItemRetrieve( false ),
     mDelayedSaveTimer( new QTimer( this ) ),
     mIncidenceAssigner( new KCal::AssignmentVisitor() )

@@ -26,7 +26,7 @@
 
 #include <QBuffer>
 #include <QDomDocument>
-#include <kcal/mimetypevisitor.h>
+#include <akonadi/kcal/incidencemimetypevisitor.h>
 
 
 JournalHandler::JournalHandler() : IncidenceHandler()
@@ -65,7 +65,7 @@ QByteArray JournalHandler::incidenceToXml(KCal::Incidence *incidence)
 
 QStringList  JournalHandler::contentMimeTypes()
 {
-  return QStringList() << KCal::MimeTypeVisitor::journalMimeType();
+  return QStringList() << Akonadi::IncidenceMimeTypeVisitor::journalMimeType();
 }
 
 QString JournalHandler::iconName() const

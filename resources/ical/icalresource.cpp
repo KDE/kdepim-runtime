@@ -20,7 +20,8 @@
 
 #include "icalresource.h"
 
-#include <kcal/mimetypevisitor.h>
+#include <akonadi/kcal/incidencemimetypevisitor.h>
+
 #include <kcal/assignmentvisitor.h>
 #include <kcal/calendarlocal.h>
 #include <kcal/incidence.h>
@@ -37,7 +38,7 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 ICalResource::ICalResource( const QString &id )
     : ICalResourceBase( id, i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) ),
-      mMimeVisitor( new KCal::MimeTypeVisitor ),
+      mMimeVisitor( new IncidenceMimeTypeVisitor ),
       mIncidenceAssigner( new AssignmentVisitor() )
 {
   QStringList mimeTypes;
@@ -48,7 +49,7 @@ ICalResource::ICalResource( const QString &id )
 
 ICalResource::ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon )
     : ICalResourceBase( id, i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) ),
-      mMimeVisitor( new KCal::MimeTypeVisitor ),
+      mMimeVisitor( new IncidenceMimeTypeVisitor ),
       mIncidenceAssigner( new AssignmentVisitor() )
 {
   initialise( mimeTypes, icon );
