@@ -101,9 +101,7 @@ void POP3Resource::configure( WId windowId )
     emit configurationDialogRejected();
   }
 
-  if ( accountDialog ) {
-    delete accountDialog;
-  }
+  delete accountDialog;
 }
 
 void POP3Resource::retrieveItems( const Akonadi::Collection &collection )
