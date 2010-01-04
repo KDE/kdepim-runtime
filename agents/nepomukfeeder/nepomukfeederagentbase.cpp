@@ -289,7 +289,7 @@ void NepomukFeederAgentBase::selfTest()
 
   // try to obtain a Strigi index manager with a Soprano backend
   if ( !mStrigiIndexManager && mNeedsStrigi ) {
-    mStrigiIndexManager = Strigi::IndexPluginLoader::createIndexManager( "sopranobackend", 0 );
+    mStrigiIndexManager = Strigi::IndexPluginLoader::createIndexManager( "nepomukbackend", 0 );
     if ( !mStrigiIndexManager )
       errorMessages.append( i18n( "Soprano backend for Strigi is not available." ) );
   }
