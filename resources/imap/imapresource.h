@@ -22,7 +22,6 @@
 #ifndef __IMAP_RESOURCE_H__
 #define __IMAP_RESOURCE_H__
 
-class Imaplib;
 class KJob;
 
 #include <akonadi/resourcebase.h>

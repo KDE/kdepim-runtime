@@ -25,7 +25,6 @@
 #include "ui_settings.h"
 
 
-class KConfigDialogManager;
 
 class ConfigDialog : public KDialog
 {

@@ -23,12 +23,6 @@
 #include <klineedit.h>
 #include <kdialog.h>
 
-class QProgressBar;
-class QButtonGroup;
-class QGroupBox;
-class QLabel;
-class QRadioButton;
-class QPushButton;
 
 namespace Ui
 {

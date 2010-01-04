@@ -33,7 +33,6 @@ class KJob;
 
 namespace KMime
 {
-  class Message;
 }
 
 namespace KIMAP
@@ -42,7 +41,6 @@ namespace KIMAP
   class Session;
 }
 
-class ImapResource;
 class Settings;
 
 class ImapAccount : public QObject, public KPIM::KAccount
