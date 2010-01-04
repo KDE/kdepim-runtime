@@ -70,20 +70,16 @@
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionfetchscope.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/collectionquotaattribute.h>
 #include <akonadi/collectionstatisticsjob.h>
 #include <akonadi/collectionstatistics.h>
 #include <akonadi/monitor.h>
 #include <akonadi/changerecorder.h>
-#include <akonadi/collectiondeletejob.h>
 #include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/session.h>
-#include <akonadi/transactionsequence.h>
-#include <akonadi/collectionfetchscope.h>
 
 #include <akonadi/kmime/messageparts.h>
 
@@ -1746,21 +1742,6 @@ QString ImapResource::mailBoxForCollection( const Collection& col ) const
   if ( parentMailbox.isEmpty() )
     return mailbox.mid( 1 ); // strip of the separator on top-level mailboxes
   return mailbox;
-}
-
-void ImapResource::itemsClear( const Collection &collection )
-{
-  ItemFetchJob *fetch = new ItemFetchJob( collection );
-  fetch->exec();
-
-  TransactionSequence *transaction = new TransactionSequence;
-
-  Item::List items = fetch->items();
-  foreach ( const Item &item, items ) {
-    new ItemDeleteJob( item, transaction );
-  }
-
-  transaction->exec();
 }
 
 void ImapResource::doSetOnline(bool online)

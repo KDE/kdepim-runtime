@@ -136,8 +136,6 @@ private:
   bool isSessionAvailable() const;
   void startIdle();
 
-  void itemsClear( const Akonadi::Collection &collection );
-
   friend class ImapIdleManager;
 
   ImapAccount *m_account;
