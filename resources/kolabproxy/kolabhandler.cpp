@@ -24,7 +24,7 @@
 #include "notehandler.h"
 
 #include <akonadi/collection.h>
-#include <kcal/mimetypevisitor.h>
+#include <akonadi/kcal/incidencemimetypevisitor.h>
 #include <kabc/addressee.h>
 
 KolabHandler::KolabHandler()
@@ -54,11 +54,11 @@ QByteArray KolabHandler::kolabTypeForCollection(const Akonadi::Collection& colle
   const QStringList contentMimeTypes = collection.contentMimeTypes();
   if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) ) {
     return "contact";
-  } else if ( contentMimeTypes.contains( KCal::MimeTypeVisitor::eventMimeType() ) ) {
+  } else if ( contentMimeTypes.contains( Akonadi::IncidenceMimeTypeVisitor::eventMimeType() ) ) {
     return "event";
-  } else if ( contentMimeTypes.contains( KCal::MimeTypeVisitor::todoMimeType() ) ) {
+  } else if ( contentMimeTypes.contains( Akonadi::IncidenceMimeTypeVisitor::todoMimeType() ) ) {
     return "task";
-  } else if ( contentMimeTypes.contains( KCal::MimeTypeVisitor::journalMimeType() ) ) {
+  } else if ( contentMimeTypes.contains( Akonadi::IncidenceMimeTypeVisitor::journalMimeType() ) ) {
     return "journal";
   } else if ( contentMimeTypes.contains( "application/x-vnd.akonadi.note" ) ) {
     return "note";

@@ -29,7 +29,7 @@
 #include <kmime/kmime_codecs.h>
 #include <kcal/comparisonvisitor.h>
 #include <kcal/calformat.h>
-#include <kcal/mimetypevisitor.h>
+#include <akonadi/kcal/incidencemimetypevisitor.h>
 #include <libkdepim-copy/kincidencechooser.h>
 #include <KLocale>
 
@@ -61,7 +61,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
     KCal::Incidence *inc = incidenceFromKolab(payload);
     kDebug() << "KCal::Incidence " << inc;
     if (inc) {
-      KCal::MimeTypeVisitor visitor;
+      Akonadi::IncidenceMimeTypeVisitor visitor;
       inc->accept( visitor );
       KCal::Incidence::Ptr incidencePtr(inc);
       if (m_uidMap.contains(incidencePtr->uid())) {

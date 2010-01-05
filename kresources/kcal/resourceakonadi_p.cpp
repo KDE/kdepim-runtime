@@ -127,11 +127,11 @@ const SubResourceBase *ResourceAkonadi::Private::storeSubResourceFromUser( const
 
   Q_ASSERT( mStoreCollectionDialog != 0 );
 
-  if ( mimeType == KCal::MimeTypeVisitor::eventMimeType() ) {
+  if ( mimeType == Akonadi::IncidenceMimeTypeVisitor::eventMimeType() ) {
     mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Event", "Please select a storage folder for this Event" ) );
-  } else if ( mimeType == KCal::MimeTypeVisitor::todoMimeType() ) {
+  } else if ( mimeType == Akonadi::IncidenceMimeTypeVisitor::todoMimeType() ) {
     mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Todo", "Please select a storage folder for this Todo" ) );
-  } else if ( mimeType == KCal::MimeTypeVisitor::journalMimeType() ) {
+  } else if ( mimeType == Akonadi::IncidenceMimeTypeVisitor::journalMimeType() ) {
     mStoreCollectionDialog->setLabelText( i18nc( "@label where to store a calendar entry of type Journal", "Please select a storage folder for this Journal" ) );
   } else if ( mimeType == QLatin1String( "text/calendar" ) ) {
     kWarning( 5800 ) << "Unexpected generic MIME type text/calendar";
@@ -206,9 +206,9 @@ StoreConfigIface::CollectionsByMimeType ResourceAkonadi::Private::storeCollectio
 //     storeCollections[ KCal::MimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
 //   }
 
-  storeCollections[ KCal::MimeTypeVisitor::eventMimeType() ] = mDefaultStoreCollection;
-  storeCollections[ KCal::MimeTypeVisitor::todoMimeType() ] = mDefaultStoreCollection;
-  storeCollections[ KCal::MimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
+  storeCollections[ Akonadi::IncidenceMimeTypeVisitor::eventMimeType() ] = mDefaultStoreCollection;
+  storeCollections[ Akonadi::IncidenceMimeTypeVisitor::todoMimeType() ] = mDefaultStoreCollection;
+  storeCollections[ Akonadi::IncidenceMimeTypeVisitor::journalMimeType() ] = mDefaultStoreCollection;
 
   return storeCollections;
 }

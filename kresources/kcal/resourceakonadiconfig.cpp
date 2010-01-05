@@ -23,7 +23,7 @@
 #include "resourceakonadi.h"
 #include "storecollectionmodel.h"
 
-#include <kcal/mimetypevisitor.h>
+#include <akonadi/kcal/incidencemimetypevisitor.h>
 
 #include <kdebug.h>
 #include <kdialog.h>
@@ -52,29 +52,29 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
                                   "<interface>%1</interface></note></para>",
                                   sourcesTitle ) );
 
-  mItemTypes[ KCal::MimeTypeVisitor::eventMimeType() ] =
+  mItemTypes[ Akonadi::IncidenceMimeTypeVisitor::eventMimeType() ] =
     i18nc( "@item:inlistbox, calendar entries", "Events" );
-  mItemTypes[ KCal::MimeTypeVisitor::todoMimeType() ] =
+  mItemTypes[ Akonadi::IncidenceMimeTypeVisitor::todoMimeType() ] =
     i18nc( "@item:inlistbox, calendar entries", "Todos" );
-  mItemTypes[ KCal::MimeTypeVisitor::journalMimeType() ] =
+  mItemTypes[ Akonadi::IncidenceMimeTypeVisitor::journalMimeType() ] =
     i18nc( "@item:inlistbox, calendar entries", "Journals" );
 
   QCheckBox *checkBox = new QCheckBox( mButtonBox );
   mButtonBox->addButton( checkBox, QDialogButtonBox::ApplyRole );
-  checkBox->setText( mItemTypes[ KCal::MimeTypeVisitor::eventMimeType() ] );
-  mMimeCheckBoxes.insert( KCal::MimeTypeVisitor::eventMimeType(), checkBox );
+  checkBox->setText( mItemTypes[ Akonadi::IncidenceMimeTypeVisitor::eventMimeType() ] );
+  mMimeCheckBoxes.insert( Akonadi::IncidenceMimeTypeVisitor::eventMimeType(), checkBox );
   checkBox->setEnabled( false );
 
   checkBox = new QCheckBox( mButtonBox );
   mButtonBox->addButton( checkBox, QDialogButtonBox::ApplyRole );
-  checkBox->setText( mItemTypes[ KCal::MimeTypeVisitor::todoMimeType() ] );
-  mMimeCheckBoxes.insert( KCal::MimeTypeVisitor::todoMimeType(), checkBox );
+  checkBox->setText( mItemTypes[ Akonadi::IncidenceMimeTypeVisitor::todoMimeType() ] );
+  mMimeCheckBoxes.insert( Akonadi::IncidenceMimeTypeVisitor::todoMimeType(), checkBox );
   checkBox->setEnabled( false );
 
   checkBox = new QCheckBox( mButtonBox );
   mButtonBox->addButton( checkBox, QDialogButtonBox::ApplyRole );
-  checkBox->setText( mItemTypes[ KCal::MimeTypeVisitor::journalMimeType() ] );
-  mMimeCheckBoxes.insert( KCal::MimeTypeVisitor::journalMimeType(), checkBox );
+  checkBox->setText( mItemTypes[ Akonadi::IncidenceMimeTypeVisitor::journalMimeType() ] );
+  mMimeCheckBoxes.insert( Akonadi::IncidenceMimeTypeVisitor::journalMimeType(), checkBox );
   checkBox->setEnabled( false );
 
   connectMimeCheckBoxes();
