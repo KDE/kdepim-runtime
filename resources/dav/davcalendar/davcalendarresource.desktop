@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=DAV calendar resource
 Name[en_GB]=DAV calendar resource
+Name[et]=DAV-kalendri ressurss
 Name[fr]=Ressource calendrier DAV
 Name[gl]=Recurso de calendario DAV
 Name[pt]=Recurso de calendário por DAV
@@ -9,6 +10,7 @@ Name[uk]=Ресурс календаря DAV
 Name[x-test]=xxDAV calendar resourcexx
 Comment=Resource to manage DAV calendars (CalDAV, GroupDAV)
 Comment[en_GB]=Resource to manage DAV calendars (CalDAV, GroupDAV)
+Comment[et]=DAV-kalendrite (CalDAV, GroupDAV) haldamise ressurss
 Comment[fr]=Ressource de gestion des calendriers DAV (CalDAV, GroupDAV)
 Comment[gl]=REcurso para xestionar calendarios DAV (CalDAV, GroupDAV)
 Comment[pt]=Recurso para gerir calendários por DAV (CalDAV, GroupDAV)
