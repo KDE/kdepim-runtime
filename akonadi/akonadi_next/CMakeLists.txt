@@ -1,8 +1,11 @@
 project(akonadi_next)
 
-find_package(KDE4 REQUIRED)
-find_package(Akonadi REQUIRED)
-find_package(KdepimLibs REQUIRED)
+if(CMAKE_SOURCE_DIR STREQUAL "${akonadi_next_SOURCE_DIR}")
+  find_package(KDE4 REQUIRED)
+  include(KDE4Defaults)
+  find_package(Akonadi REQUIRED)
+  find_package(KdepimLibs REQUIRED)
+endif(CMAKE_SOURCE_DIR STREQUAL "${akonadi_next_SOURCE_DIR}")
 
 include_directories(
   ${AKONADI_INCLUDE_DIR}
@@ -13,7 +16,6 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-include(KDE4Defaults)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 

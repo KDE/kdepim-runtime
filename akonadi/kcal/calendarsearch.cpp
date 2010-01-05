@@ -20,7 +20,6 @@
 #include "calendarsearch.h"
 #include "calendarmodel.h"
 #include "calendarsearchinterface.h"
-#include <kcal/mimetypevisitor.h>
 #include "daterangefilterproxymodel.h"
 #include "incidencefilterproxymodel.h"
 #include "utils.h"
@@ -32,6 +31,8 @@
 #include <akonadi/entitymimetypefiltermodel.h>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Session>
+
+#include <akonadi/kcal/incidencemimetypevisitor.h>
 
 
 #include <KDateTime>
@@ -110,9 +111,9 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
     monitor->fetchCollection( true );
     monitor->setItemFetchScope( scope );
     monitor->setMimeTypeMonitored( QLatin1String("text/calendar"), true ); // FIXME: this one should not be needed, in fact it might cause the inclusion of free/busy, notes or other unwanted stuff
-    monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::eventMimeType(), true );
-    monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::todoMimeType(), true );
-    monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::journalMimeType(), true );
+    monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::eventMimeType(), true );
+    monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::todoMimeType(), true );
+    monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::journalMimeType(), true );
 
     calendarModel = new CalendarModel( monitor, q );
     connect( calendarModel, SIGNAL(rowsInserted(QModelIndex,int,int)), q, SLOT(rowsInserted(QModelIndex,int,int)) );
@@ -290,9 +291,9 @@ void CalendarSearch::setIncidenceTypes( IncidenceTypes types )
     const bool showJournals = types.testFlag( Journals );
 
     d->incidenceTypes = types;
-    d->monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::eventMimeType(), showEvents );
-    d->monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::todoMimeType(), showTodos );
-    d->monitor->setMimeTypeMonitored( KCal::MimeTypeVisitor::journalMimeType(), showJournals );
+    d->monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::eventMimeType(), showEvents );
+    d->monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::todoMimeType(), showTodos );
+    d->monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::journalMimeType(), showJournals );
     d->incidenceFilterProxyModel->setShowEvents( showEvents );
     d->incidenceFilterProxyModel->setShowTodos( showTodos );
     d->incidenceFilterProxyModel->setShowJournals( showJournals );
