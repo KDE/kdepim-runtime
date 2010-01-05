@@ -2,6 +2,7 @@
 Name=System Users
 Name[bg]=Потребители на системата
 Name[en_GB]=System Users
+Name[et]=Süsteemi kasutajad
 Name[fr]=Utilisateurs système
 Name[gl]=Usuarios do sistema
 Name[pt]=Utilizadores do Sistema
@@ -12,6 +13,7 @@ Name[x-test]=xxSystem Usersxx
 Comment=Users on the local system
 Comment[bg]=Потребители на локалната система
 Comment[en_GB]=Users on the local system
+Comment[et]=Kohalik süsteemi kasutajad
 Comment[fr]=Utilisateurs locaux
 Comment[gl]=Usuarios no sistema local
 Comment[pt]=Utilizadores no sistema local
