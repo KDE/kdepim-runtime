@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=kaddressbookmigrator
 Name[ca]=kaddressbookmigrator
+Name[da]=kaddressbookmigrator
 Name[de]=Adressbuch-Migration
 Name[en_GB]=kaddressbookmigrator
 Name[es]=kaddressbookmigrator
@@ -23,6 +24,7 @@ Exec=kaddressbookmigrator --disable-autostart
 Type=Application
 Comment=Tool to migrate the old kresource based address book to Akonadi.
 Comment[ca]=Eina per migrar l'adreça de contactes antiga basada en kresource a l'Akonadi.
+Comment[da]=Værktøj til at migrere den gamle kresource-baserede adressebog til Akonadi.
 Comment[de]=Werkzeug zum Migrieren alter auf Ressourcen basierender Adressbücher nach Akonadi
 Comment[en_GB]=Tool to migrate the old kresource based address book to Akonadi.
 Comment[es]=Herramienta para migrar la vieja libreta de direcciones basada en kresource a Akonadi.
