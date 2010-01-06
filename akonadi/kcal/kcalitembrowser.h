@@ -20,13 +20,13 @@
 #ifndef KCALITEMBROWSER_H
 #define KCALITEMBROWSER_H
 
-#include "akonadi-kcal_export.h"
+#include "akonadi-kcal_next_export.h"
 #include "itembrowser.h"
 
 namespace Akonadi {
 class Item;
 
-class AKONADI_KCAL_EXPORT KCalItemBrowser : public ItemBrowser
+class AKONADI_KCAL_NEXT_EXPORT KCalItemBrowser : public ItemBrowser
 {
   public:
     KCalItemBrowser( QWidget *parent = 0 );

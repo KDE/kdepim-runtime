@@ -20,14 +20,14 @@
 #ifndef INCIDENCEATTRIBUTE_H
 #define INCIDENCEATTRIBUTE_H
 
-#include "akonadi-kcal_export.h"
+#include "akonadi-kcal_next_export.h"
 
 #include <akonadi/item.h>
 #include <akonadi/attribute.h>
 
 namespace Akonadi {
 
-class AKONADI_KCAL_EXPORT IncidenceAttribute : public Akonadi::Attribute
+class AKONADI_KCAL_NEXT_EXPORT IncidenceAttribute : public Akonadi::Attribute
 {
   public:
     explicit IncidenceAttribute();

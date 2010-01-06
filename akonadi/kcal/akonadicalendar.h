@@ -24,7 +24,7 @@
 #ifndef AKONADI_KCAL_AKONADICALENDAR_H
 #define AKONADI_KCAL_AKONADICALENDAR_H
 
-#include "akonadi-kcal_export.h"
+#include "akonadi-kcal_next_export.h"
 #include <kcal/customproperties.h>
 #include <kcal/incidencebase.h>
 
@@ -100,7 +100,7 @@ namespace KOrg {
 /**
  * Implements a KCal::Calendar that uses Akonadi as backend.
  */
-class AKONADI_KCAL_EXPORT AkonadiCalendar : public QObject, public KCal::CustomProperties, public KCal::IncidenceBase::IncidenceObserver {
+class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendar : public QObject, public KCal::CustomProperties, public KCal::IncidenceBase::IncidenceObserver {
   Q_OBJECT
 public:
 
@@ -564,7 +564,7 @@ public:
 
     The CalendarObserver class.
   */
-  class AKONADI_KCAL_EXPORT CalendarObserver //krazy:exclude=dpointer
+  class AKONADI_KCAL_NEXT_EXPORT CalendarObserver //krazy:exclude=dpointer
   {
     public:
       /**

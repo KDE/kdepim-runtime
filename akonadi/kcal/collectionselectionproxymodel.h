@@ -25,7 +25,7 @@
 #ifndef AKONADI_COLLECTIONSELECTIONPROXYMODEL_H
 #define AKONADI_COLLECTIONSELECTIONPROXYMODEL_H
 
-#include "akonadi-kcal_export.h"
+#include "akonadi-kcal_next_export.h"
 
 #include <QSortFilterProxyModel>
 
@@ -33,7 +33,7 @@ class QItemSelectionModel;
 
 namespace Akonadi {
 
-    class AKONADI_KCAL_EXPORT CollectionSelectionProxyModel : public QSortFilterProxyModel
+    class AKONADI_KCAL_NEXT_EXPORT CollectionSelectionProxyModel : public QSortFilterProxyModel
     {
       Q_OBJECT
     public:

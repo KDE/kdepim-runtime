@@ -20,12 +20,12 @@
 #ifndef KCALMODEL_H
 #define KCALMODEL_H
 
-#include "akonadi-kcal_export.h"
+#include "akonadi-kcal_next_export.h"
 #include <akonadi/itemmodel.h>
 
 namespace Akonadi {
 
-class AKONADI_KCAL_EXPORT KCalModel : public ItemModel
+class AKONADI_KCAL_NEXT_EXPORT KCalModel : public ItemModel
 {
   public:
     enum Column {

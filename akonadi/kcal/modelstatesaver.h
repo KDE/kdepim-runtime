@@ -21,7 +21,7 @@
 #ifndef AKONADI_MODELSTATESAVER_H
 #define AKONADI_MODELSTATESAVER_H
 
-#include <akonadi-kcal_export.h>
+#include <akonadi-kcal_next_export.h>
 
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
@@ -34,7 +34,7 @@ class QString;
 class KConfigGroup;
 
 namespace Akonadi {
-    class AKONADI_KCAL_EXPORT ModelStateSaver : public QObject {
+    class AKONADI_KCAL_NEXT_EXPORT ModelStateSaver : public QObject {
         Q_OBJECT
     public:
         explicit ModelStateSaver( QAbstractItemModel* model, QObject* parent=0 );

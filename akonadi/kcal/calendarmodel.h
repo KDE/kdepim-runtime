@@ -21,12 +21,12 @@
 #ifndef AKONADI_CALENDARMODEL_H
 #define AKONADI_CALENDARMODEL_H
 
-#include "akonadi-kcal_export.h"
+#include "akonadi-kcal_next_export.h"
 #include <akonadi/entitytreemodel.h>
 
 namespace Akonadi {
 
-class AKONADI_KCAL_EXPORT CalendarModel : public EntityTreeModel
+class AKONADI_KCAL_NEXT_EXPORT CalendarModel : public EntityTreeModel
 {
   public:
     enum ItemColumn {

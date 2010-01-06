@@ -20,7 +20,7 @@
 #ifndef AKONADI_CALENDARSEARCH_H
 #define AKONADI_CALENDARSEARCH_H
 
-#include "akonadi-kcal_export.h"
+#include "akonadi-kcal_next_export.h"
 
 #include <Akonadi/Collection>
 
@@ -36,7 +36,7 @@ namespace Akonadi {
 
     class CollectionSelectionProxyModel;
 
-    class AKONADI_KCAL_EXPORT CalendarSearch : public QObject
+    class AKONADI_KCAL_NEXT_EXPORT CalendarSearch : public QObject
     {
         Q_OBJECT
     public:

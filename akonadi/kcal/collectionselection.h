@@ -26,7 +26,7 @@
 #ifndef AKONADI_KCAL_COLLECTIONSELECTION_H
 #define AKONADI_KCAL_COLLECTIONSELECTION_H
 
-#include "akonadi-kcal_export.h"
+#include "akonadi-kcal_next_export.h"
 
 #include <QObject>
 
@@ -37,7 +37,7 @@ class QItemSelectionModel;
 
 namespace Akonadi {
   
-  class AKONADI_KCAL_EXPORT CollectionSelection : public QObject
+  class AKONADI_KCAL_NEXT_EXPORT CollectionSelection : public QObject
   {
     Q_OBJECT
   public:
