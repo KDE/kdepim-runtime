@@ -303,8 +303,8 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
   QStringList expected;
   expected << "IMAP4REV1";
 
-  // Both GMail and GMX servers seem to be lying about there capabilities
-  // The don't report UIDPLUS correctly so don't check for it explicitely
+  // Both GMail and GMX servers seem to be lying about their capabilities
+  // They don't report UIDPLUS correctly so don't check for it explicitly
   // if it's one of those servers.
   if ( !m_capabilities.contains( "X-GM-EXT-1" )
     && !capJob->session()->serverGreeting().contains( "GMX" ) ) {
@@ -351,7 +351,7 @@ void ImapAccount::onNamespacesTestDone( KJob *job )
     m_namespaces.clear();
 
   } else {
-    // ... otherwise we assume that we have to list explicitely each
+    // ... otherwise we assume that we have to list explicitly each
     // namespace
 
     m_namespaces = nsJob->personalNamespaces()

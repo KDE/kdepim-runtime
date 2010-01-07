@@ -112,7 +112,7 @@ class MBOX_EXPORT MBox
     bool lock();
 
     /**
-     * Returns wether or not the mbox currently is locked.
+     * Returns whether or not the mbox currently is locked.
      */
     bool locked() const;
 

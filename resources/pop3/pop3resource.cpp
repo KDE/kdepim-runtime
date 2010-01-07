@@ -842,7 +842,7 @@ void POP3Resource::saveSeenUIDList()
   QList<int> timeOfSeenUIDs = Settings::seenUidTimeList();
 
   //
-  // Find the messages that we have sucessfully stored, but did not actually get
+  // Find the messages that we have successfully stored, but did not actually get
   // deleted.
   // Those messages, we have to remember, so we don't download them again.
   //

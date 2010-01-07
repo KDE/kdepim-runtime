@@ -151,7 +151,7 @@ class POP3Resource : public Akonadi::ResourceBase,
     // Whether we actually received a valid UID list from the server
     bool mUidListValid;
 
-    // IDs of messages that we have sucessfully downloaded. This does _not_ mean
+    // IDs of messages that we have successfully downloaded. This does _not_ mean
     // that the messages corresponding to the IDs are stored in Akonadi yet
     QList<int> mDownloadedIDs;
 
@@ -167,10 +167,10 @@ class POP3Resource : public Akonadi::ResourceBase,
     // The Save state waits until this map becomes empty.
     QMap<Akonadi::ItemCreateJob*,int> mPendingCreateJobs;
 
-    // List of message IDs that were sucessfully stored in Akonadi
+    // List of message IDs that were successfully stored in Akonadi
     QList<int> mIDsStored;
 
-    // List of message IDs that were sucessfully deleted
+    // List of message IDs that were successfully deleted
     QList<int> mDeletedIDs;
 };
 
