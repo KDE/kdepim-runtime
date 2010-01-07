@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Dummy MailTransport Resource
 Name[ca]=Recurs de transport de correu simulat
+Name[da]=Attrap-MailTransport-ressource
 Name[de]=Dummy MailTransport-Ressource
 Name[en_GB]=Dummy MailTransport Resource
 Name[es]=Recurso de transporte de correo para pruebas
@@ -18,6 +19,7 @@ Name[x-test]=xxDummy MailTransport Resourcexx
 Name[zh_TW]=空白郵件傳輸資源
 Comment=Dummy Resource implementing mail transport interface
 Comment[ca]=Implementació de recurs simulat d'interfície de transport de correu
+Comment[da]=Attrap-ressource der implementerer mail-transport-grænseflade
 Comment[de]=Dummy-Ressource, die die Mail-Transport-Schnittstelle implementiert
 Comment[en_GB]=Dummy Resource implementing mail transport interface
 Comment[es]=Recurso de prueba que implementa una interfaz de transporte de correo
