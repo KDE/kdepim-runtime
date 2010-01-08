@@ -20,6 +20,7 @@ Name[sv]=E-postsändningsmodul
 Name[tr]=E-posta Yönetim Aracı
 Name[uk]=Агент розподілу пошти
 Name[x-test]=xxMail Dispatcher Agentxx
+Name[zh_CN]=邮件签发代理
 Name[zh_TW]=郵件配送代理程式
 Type=AkonadiAgent
 Exec=akonadi_maildispatcher_agent
