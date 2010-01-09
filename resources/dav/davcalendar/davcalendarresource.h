@@ -25,8 +25,8 @@
 
 #include "../common/davaccessor.h"
 
-namespace KCal {
-  class MimeTypeVisitor;
+namespace Akonadi {
+  class IncidenceMimeTypeVisitor;
 }
 
 class davCalendarResource : public Akonadi::ResourceBase,
@@ -69,7 +69,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     void loadCacheFromAkonadi();
     bool configurationIsValid();
     
-    KCal::MimeTypeVisitor *mMimeVisitor;
+    Akonadi::IncidenceMimeTypeVisitor *mMimeVisitor;
     davAccessor *accessor;
     Akonadi::Collection davCollectionRoot;
     int nCollectionsRetrieval;

@@ -27,7 +27,7 @@
 #include <QtDBus/QDBusConnection>
 #include <QMutexLocker>
 #include <kcal/incidence.h>
-#include <kcal/mimetypevisitor.h>
+#include <akonadi/kcal/incidencemimetypevisitor.h>
 #include <kcal/icalformat.h>
 #include <boost/shared_ptr.hpp>
 #include <KWindowSystem>
@@ -90,7 +90,7 @@ private:
 };
 
 davCalendarResource::davCalendarResource( const QString &id )
-  : ResourceBase( id ), mMimeVisitor( new KCal::MimeTypeVisitor ), accessor( NULL ),
+  : ResourceBase( id ), mMimeVisitor( new Akonadi::IncidenceMimeTypeVisitor ), accessor( NULL ),
     nCollectionsRetrieval( 0 ), nItemsRetrieved( 0 )
 {
   new SettingsAdaptor( Settings::self() );
@@ -527,11 +527,11 @@ void davCalendarResource::doResourceInitialization()
   
   switch( Settings::self()->remoteProtocol() ) {
     case Settings::groupdav:
-      accessor = new groupdavCalendarAccessor();
+      accessor = new davAccessor( new groupdavCalendar() );
       emit status( Idle, i18n( "Using GroupDAV" ) );
       break;
     case Settings::caldav:
-      accessor = new caldavCalendarAccessor();
+      accessor = new davAccessor( new caldavCalendar() );
       emit status( Idle, i18n( "Using CalDAV" ) );
       break;
     default:

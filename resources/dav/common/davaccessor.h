@@ -21,6 +21,7 @@
 
 #include <QMap>
 #include <QSet>
+#include <QMutex>
 
 #include <kurl.h>
 
@@ -31,6 +32,7 @@ namespace KIO {
 
 class KJob;
 class QDomDocument;
+class davImplementation;
 
 struct davItem
 {
@@ -56,37 +58,47 @@ class davAccessor : public QObject
   Q_OBJECT
   
   public:
-    davAccessor();
-    virtual ~davAccessor();
-    virtual void retrieveCollections( const KUrl &url ) = 0;
-    virtual void retrieveItems( const KUrl &url ) = 0;
-    virtual void retrieveItem( const KUrl &url ) = 0;
-    virtual void putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag = false );
-    virtual void removeItem( const KUrl &url );
+    davAccessor( davImplementation *implementation );
+    ~davAccessor();
+    
+    void retrieveCollections( const KUrl &url );
+    void retrieveItems( const KUrl &url );
+    void retrieveItem( const KUrl &url );
+    void putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag = false );
+    void removeItem( const KUrl &url );
+    
     void addItemToCache( const davItem &item );
     
   public Q_SLOTS:
     void validateCache();
     
-  protected:
+  private:
     KIO::DavJob* doPropfind( const KUrl &url, const QDomDocument &properties, const QString &davDepth );
     KIO::DavJob* doReport( const KUrl &url, const QDomDocument &report, const QString &davDepth );
-    
     davItemCacheStatus itemCacheStatus( const QString &url, const QString &etag );
     davItem getItemFromCache( const QString &url );
-    
     void clearSeenUrls( const QString &url );
     void seenUrl( const QString &collectionUrl, const QString &itemUrl );
     QString getEtagFromHeaders( const QString &httpHeaders );
+    void runItemsFetch( const QString &collection );
     
   private Q_SLOTS:
+    void collectionsPropfindFinished( KJob *j );
+    void itemsPropfindFinished( KJob *j );
+    void itemsReportFinished( KJob *j );
+    void itemGetFinished( KJob *j );
+    void itemsMultigetFinished( KJob *j );
     void itemPutFinished( KJob *j );
     void itemDelFinished( KJob *j );
     void jobWarning( KJob*, const QString&, const QString& );
     
   private:
+    davImplementation *davImpl;
     QMap<QString, QSet<QString> > lastSeenItems; // collection url, items url
     QMap<QString, davItem> itemsCache; // url, item
+    int nRunningItemsQueries;
+    QMap<QString, QStringList> fetchItemsQueue; // collection url, items urls
+    QMutex fetchItemsQueueMtx;
     
   Q_SIGNALS:
     void accessorStatus( const QString &s );

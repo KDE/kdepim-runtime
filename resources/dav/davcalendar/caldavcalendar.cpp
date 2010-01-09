@@ -25,136 +25,8 @@
 
 #include "caldavcalendar.h"
 
-caldavCalendarAccessor::caldavCalendarAccessor()
-  : runningQueries( 0 )
+caldavCalendar::caldavCalendar()
 {
-}
-
-void caldavCalendarAccessor::retrieveCollections( const KUrl &url )
-{
-  QDomDocument props;
-  QDomElement root = props.createElementNS( "DAV:", "propfind" );
-  props.appendChild( root );
-  QDomElement e1 = props.createElementNS( "DAV:", "prop" );
-  root.appendChild( e1 );
-  QDomElement e2 = props.createElementNS( "DAV:", "displayname" );
-  e1.appendChild( e2 );
-  e2 = props.createElementNS( "DAV:", "resourcetype" );
-  e1.appendChild( e2 );
-  e2 = props.createElementNS( "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
-  e1.appendChild( e2 );
-  
-  KIO::DavJob *job = doPropfind( url, props, "1" );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( collectionsPropfindFinished( KJob* ) ) );
-}
-
-void caldavCalendarAccessor::collectionsPropfindFinished( KJob *j )
-{
-  KIO::DavJob* job = dynamic_cast<KIO::DavJob*>( j );
-  if( !job )
-    return;
-  
-  if( job->error() ) {
-    emit accessorError( job->errorString(), true );
-    return;
-  }
-  
-  QDomDocument xml = job->response();
-  
-  QDomElement root = xml.documentElement();
-  if( !root.hasChildNodes() ) {
-    emit accessorError( i18n( "No calendars found" ), true );
-    return;
-  }
-  
-  QDomNode n = root.firstChild();
-  while( !n.isNull() ) {
-    if( !n.isElement() ) {
-      n = n.nextSibling();
-      continue;
-    }
-    
-    QDomElement r = n.toElement();
-    n = n.nextSibling();
-    QDomNodeList tmp;
-    QDomElement propstat, supportedCalendarComponentSet;
-    QString href, status, displayname;
-    KUrl url = job->url();
-    
-    tmp = r.elementsByTagNameNS( "DAV:", "href" );
-    if( tmp.length() == 0 )
-      continue;
-    href = tmp.item( 0 ).firstChild().toText().data();
-    
-    if( !href.endsWith( "/" ) )
-      href.append( "/" );
-    
-    if( href.startsWith( "/" ) ) {
-      url.setEncodedPath( href.toAscii() );
-    }
-    else {
-      KUrl tmpUrl( href );
-      tmpUrl.setUser( url.user() );
-      url = tmpUrl;
-    }
-    href = url.prettyUrl();
-    
-    tmp = r.elementsByTagNameNS( "DAV:", "propstat" );
-    if( tmp.length() == 0 )
-      continue;
-    int nPropstat = tmp.length();
-    for( int i = 0; i < nPropstat; ++i ) {
-      QDomElement node = tmp.item( i ).toElement();
-      QDomNode status = node.elementsByTagNameNS( "DAV:", "status" ).item( 0 );
-      QString statusText = status.firstChild().toText().data();
-      if( statusText.contains( "200" ) ) {
-        propstat = node.toElement();
-      }
-    }
-    if( propstat.isNull() )
-      continue;
-    
-    tmp = propstat.elementsByTagNameNS( "urn:ietf:params:xml:ns:caldav", "calendar" );
-    if( tmp.length() == 0 )
-      continue;
-    
-    tmp = propstat.elementsByTagNameNS( "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
-    if( tmp.length() == 0 )
-      continue;
-    supportedCalendarComponentSet = tmp.item( 0 ).toElement();
-    
-    tmp = supportedCalendarComponentSet.elementsByTagNameNS( "urn:ietf:params:xml:ns:caldav", "comp" );
-    if( tmp.length() == 0 )
-      continue;
-    int nComp = tmp.length();
-    bool isCaldavResource = false;
-    for( int i = 0; i < nComp; ++i ) {
-      QDomElement comp = tmp.item( i ).toElement();
-      QString compName = comp.attribute( "name" );
-      if( compName == "VEVENT" || compName == "VTODO" )
-        isCaldavResource = true;
-    }
-    if( !isCaldavResource )
-      continue;
-    
-    tmp = propstat.elementsByTagNameNS( "DAV:", "displayname" );
-    if( tmp.length() != 0 )
-      displayname = tmp.item( 0 ).firstChild().toText().data();
-    else
-      displayname = "CalDAV calendar at " + href;
-    
-    kDebug() << "Seen collection at " << href << " (url)" << url.prettyUrl();
-    emit( collectionRetrieved( href, displayname ) );
-  }
-  
-  emit collectionsRetrieved();
-}
-
-void caldavCalendarAccessor::retrieveItems( const KUrl &url )
-{
-  QString collectionUrl = url.prettyUrl();
-  clearSeenUrls( collectionUrl );
-  
   QDomDocument rep;
   QDomElement root = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
   rep.appendChild( root );
@@ -175,9 +47,7 @@ void caldavCalendarAccessor::retrieveItems( const KUrl &url )
   e3.setAttributeNode( a1 );
   e2.appendChild( e3 );
   
-  KIO::DavJob *eventJob = doReport( url, rep, "1" );
-  connect( eventJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
-  ++runningQueries;
+  itemsQueries_ << rep;
   
   rep.clear();
   root = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
@@ -199,81 +69,48 @@ void caldavCalendarAccessor::retrieveItems( const KUrl &url )
   e3.setAttributeNode( a1 );
   e2.appendChild( e3 );
   
-  KIO::DavJob *todoJob = doReport( url, rep, "1" );
-  connect( todoJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
-  ++runningQueries;
+  itemsQueries_ << rep;
 }
 
-void caldavCalendarAccessor::retrieveItem( const KUrl &url )
+bool caldavCalendar::useReport() const
 {
-  Q_UNUSED( url );
-  // TODO: implement this, if needed
+  return true;
 }
 
-void caldavCalendarAccessor::itemsReportFinished( KJob *j )
+bool caldavCalendar::useMultiget() const
 {
-  KIO::DavJob* job = dynamic_cast<KIO::DavJob*>( j );
-  if( !job )
-    return;
-  
-  if( job->error() ) {
-    emit accessorError( job->errorString(), true );
-    return;
-  }
-  
-  QString collectionUrl = job->url().prettyUrl();
-  
-  QDomDocument xml = job->response();
-  QDomElement root = xml.documentElement();
-  QDomNode n = root.firstChild();
-  while( !n.isNull() ) {
-    if( !n.isElement() ) {
-      n = n.nextSibling();
-      continue;
-    }
-    
-    QDomElement r = n.toElement();
-    n = n.nextSibling();
-    
-    QDomNodeList tmp;
-    QString href, etag;
-    KUrl url = job->url();
-    
-    tmp = r.elementsByTagNameNS( "DAV:", "href" );
-    if( tmp.length() == 0 )
-      continue;
-    href = tmp.item( 0 ).firstChild().toText().data();
-    
-    if( href.startsWith( "/" ) )
-      url.setEncodedPath( href.toAscii() );
-    else
-      url = href;
-    href = url.prettyUrl();
-    
-    // NOTE: nothing below should invalidate the item (return an error
-    // and exit the function)
-    seenUrl( collectionUrl, href );
-    
-    tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
-    if( tmp.length() != 0 ) {
-      etag = tmp.item( 0 ).firstChild().toText().data();
-      
-      davItemCacheStatus itemStatus = itemCacheStatus( href, etag );
-      if( itemStatus == CACHED ) {
-        continue;
-      }
-    }
-    
-    fetchItemsQueue[collectionUrl] << href;
-  }
-  
-  --runningQueries;
-  
-  if( runningQueries == 0 )
-    runItemsFetch( collectionUrl );
+  return true;
 }
 
-void caldavCalendarAccessor::runItemsFetch( const QString &collection )
+QDomDocument caldavCalendar::collectionsQuery() const
+{
+  QDomDocument props;
+  QDomElement root = props.createElementNS( "DAV:", "propfind" );
+  props.appendChild( root );
+  QDomElement e1 = props.createElementNS( "DAV:", "prop" );
+  root.appendChild( e1 );
+  QDomElement e2 = props.createElementNS( "DAV:", "displayname" );
+  e1.appendChild( e2 );
+  e2 = props.createElementNS( "DAV:", "resourcetype" );
+  e1.appendChild( e2 );
+  e2 = props.createElementNS( "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
+  e1.appendChild( e2 );
+  
+  return props;
+}
+
+QString caldavCalendar::collectionsXQuery() const
+{
+  QString xquery( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/*[local-name()='supported-calendar-component-set' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/*[local-name()='comp' and namespace-uri()='urn:ietf:params:xml:ns:caldav' and (@name='VTODO' or @name='VEVENT')]/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
+  return xquery;
+}
+
+const QList<QDomDocument>& caldavCalendar::itemsQueries() const
+{
+  return itemsQueries_;
+}
+
+QDomDocument caldavCalendar::itemsReportQuery( const QStringList &urls ) const
 {
   QDomDocument multiget;
   QDomElement root = multiget.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-multiget" );
@@ -285,13 +122,6 @@ void caldavCalendarAccessor::runItemsFetch( const QString &collection )
   e1 = multiget.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-data" );
   prop.appendChild( e1 );
   
-  QMutexLocker locker( &fetchItemsQueueMtx );
-  QStringList urls = fetchItemsQueue[collection];
-  fetchItemsQueue[collection].clear();
-  locker.unlock();
-  
-  kDebug() << "Got " << urls.length() << " items for collection at " << collection;
-  
   foreach( QString url, urls ) {
     e1 = multiget.createElementNS( "DAV:", "href" );
     KUrl u( url );
@@ -300,73 +130,5 @@ void caldavCalendarAccessor::runItemsFetch( const QString &collection )
     root.appendChild( e1 );
   }
   
-  if( !urls.isEmpty() ) {
-    KIO::DavJob *job = doReport( collection, multiget, "1" );
-    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( multigetFinished( KJob* ) ) );
-  }
-  else {
-    emit itemsRetrieved();
-  }
-}
-
-void caldavCalendarAccessor::multigetFinished( KJob *j )
-{
-  KIO::DavJob* job = dynamic_cast<KIO::DavJob*>( j );
-  if( !job )
-    return;
-  
-  if( job->error() ) {
-    emit accessorError( job->errorString(), true );
-    return;
-  }
-  
-  QDomDocument xml = job->response();
-  QDomElement root = xml.documentElement();
-  QDomNode n = root.firstChild();
-  while( !n.isNull() ) {
-    if( !n.isElement() ) {
-      n = n.nextSibling();
-      continue;
-    }
-    
-    QDomElement r = n.toElement();
-    n = n.nextSibling();
-    
-    QDomNodeList tmp;
-    QString href, etag;
-    QByteArray data;
-    KUrl url = job->url();
-    
-    tmp = r.elementsByTagNameNS( "DAV:", "href" );
-    if( tmp.length() == 0 )
-      continue;
-    href = tmp.item( 0 ).firstChild().toText().data();
-    if( href.startsWith( "/" ) )
-      url.setEncodedPath( href.toAscii() );
-    else
-      url = href;
-    href = url.prettyUrl();
-    
-    tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
-    if( tmp.length() == 0 )
-      continue;
-    etag = tmp.item( 0 ).firstChild().toText().data();
-    
-    tmp = r.elementsByTagNameNS( "urn:ietf:params:xml:ns:caldav", "calendar-data" );
-    if( tmp.length() == 0 )
-      continue;
-    data = tmp.item( 0 ).firstChild().toText().data().toUtf8();
-    if( data.isEmpty() )
-      continue;
-    
-    kDebug() << "Got item with url " << href;
-    davItem i( href, "text/calendar", data, etag );
-    
-    davItemCacheStatus itemStatus = itemCacheStatus( href, etag );
-    if( itemStatus != CACHED ) {
-      emit itemRetrieved( i );
-    }
-  }
-  
-  emit itemsRetrieved();
+  return multiget;
 }
