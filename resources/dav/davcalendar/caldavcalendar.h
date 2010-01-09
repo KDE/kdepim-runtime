@@ -27,10 +27,10 @@
 
 class KJob;
 
-class caldavCalendar : public davImplementation
+class caldavImplementation : public davImplementation
 {
   public:
-    caldavCalendar();
+    caldavImplementation();
     virtual bool useReport() const;
     virtual bool useMultiget() const;
     virtual QDomDocument collectionsQuery() const;

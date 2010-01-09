@@ -527,11 +527,11 @@ void davCalendarResource::doResourceInitialization()
   
   switch( Settings::self()->remoteProtocol() ) {
     case Settings::groupdav:
-      accessor = new davAccessor( new groupdavCalendar() );
+      accessor = new davAccessor( new groupdavCalendarImplementation() );
       emit status( Idle, i18n( "Using GroupDAV" ) );
       break;
     case Settings::caldav:
-      accessor = new davAccessor( new caldavCalendar() );
+      accessor = new davAccessor( new caldavImplementation() );
       emit status( Idle, i18n( "Using CalDAV" ) );
       break;
     default:

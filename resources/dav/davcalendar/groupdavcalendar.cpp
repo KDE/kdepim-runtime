@@ -26,7 +26,7 @@
 
 #include "groupdavcalendar.h"
 
-groupdavCalendar::groupdavCalendar()
+groupdavCalendarImplementation::groupdavCalendarImplementation()
 {
   QDomDocument props;
   QDomElement root = props.createElementNS( "DAV:", "propfind" );
@@ -43,17 +43,17 @@ groupdavCalendar::groupdavCalendar()
   itemsQueries_ << props;
 }
 
-bool groupdavCalendar::useReport() const
+bool groupdavCalendarImplementation::useReport() const
 {
   return false;
 }
 
-bool groupdavCalendar::useMultiget() const
+bool groupdavCalendarImplementation::useMultiget() const
 {
   return false;
 }
 
-QDomDocument groupdavCalendar::collectionsQuery() const
+QDomDocument groupdavCalendarImplementation::collectionsQuery() const
 {
   QDomDocument props;
   QDomElement root = props.createElementNS( "DAV:", "propfind" );
@@ -68,13 +68,13 @@ QDomDocument groupdavCalendar::collectionsQuery() const
   return props;
 }
 
-QString groupdavCalendar::collectionsXQuery() const
+QString groupdavCalendarImplementation::collectionsXQuery() const
 {
   QString xquery( "//*[(local-name()='vevent-collection' or local-name()='vtodo-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
   return xquery;
 }
 
-const QList<QDomDocument>& groupdavCalendar::itemsQueries() const
+const QList<QDomDocument>& groupdavCalendarImplementation::itemsQueries() const
 {
   return itemsQueries_;
 }

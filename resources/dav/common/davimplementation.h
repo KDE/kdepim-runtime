@@ -26,6 +26,8 @@
 class davImplementation
 {
   public:
+    virtual ~davImplementation()
+      {}
     virtual bool useReport() const = 0;
     virtual bool useMultiget() const = 0;
     virtual QDomDocument collectionsQuery() const = 0;

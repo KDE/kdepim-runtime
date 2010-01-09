@@ -25,7 +25,7 @@
 
 #include "caldavcalendar.h"
 
-caldavCalendar::caldavCalendar()
+caldavImplementation::caldavImplementation()
 {
   QDomDocument rep;
   QDomElement root = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
@@ -72,17 +72,17 @@ caldavCalendar::caldavCalendar()
   itemsQueries_ << rep;
 }
 
-bool caldavCalendar::useReport() const
+bool caldavImplementation::useReport() const
 {
   return true;
 }
 
-bool caldavCalendar::useMultiget() const
+bool caldavImplementation::useMultiget() const
 {
   return true;
 }
 
-QDomDocument caldavCalendar::collectionsQuery() const
+QDomDocument caldavImplementation::collectionsQuery() const
 {
   QDomDocument props;
   QDomElement root = props.createElementNS( "DAV:", "propfind" );
@@ -99,18 +99,18 @@ QDomDocument caldavCalendar::collectionsQuery() const
   return props;
 }
 
-QString caldavCalendar::collectionsXQuery() const
+QString caldavImplementation::collectionsXQuery() const
 {
   QString xquery( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/*[local-name()='supported-calendar-component-set' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/*[local-name()='comp' and namespace-uri()='urn:ietf:params:xml:ns:caldav' and (@name='VTODO' or @name='VEVENT')]/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
   return xquery;
 }
 
-const QList<QDomDocument>& caldavCalendar::itemsQueries() const
+const QList<QDomDocument>& caldavImplementation::itemsQueries() const
 {
   return itemsQueries_;
 }
 
-QDomDocument caldavCalendar::itemsReportQuery( const QStringList &urls ) const
+QDomDocument caldavImplementation::itemsReportQuery( const QStringList &urls ) const
 {
   QDomDocument multiget;
   QDomElement root = multiget.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-multiget" );
