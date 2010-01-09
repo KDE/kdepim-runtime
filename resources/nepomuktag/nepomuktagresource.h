@@ -24,9 +24,16 @@
 #include <soprano/statement.h>
 
 #include <QTimer>
+#include <QScopedPointer>
 
 namespace Nepomuk {
 class Tag;
+}
+
+namespace Soprano {
+  namespace Util {
+    class SignalCacheModel;
+  }
 }
 
 class NepomukTagResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
@@ -70,6 +77,7 @@ protected:
     Akonadi::Collection m_root;
     QList<QUrl> m_pendingTagUris;
     QTimer m_pendingTagsTimer;
+    QScopedPointer<Soprano::Util::SignalCacheModel> mModel;
 };
 
 #endif
