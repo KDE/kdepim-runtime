@@ -75,6 +75,9 @@ QString Settings::password() const
 void Settings::setPassword( const QString &p )
 {
   pwd = p;
+  
+  if( this->useKWallet() )
+    this->storePassword();
 }
 
 void Settings::storePassword()
@@ -93,6 +96,9 @@ void Settings::storePassword()
 
 void Settings::getPassword()
 {
+  if( !this->password().isEmpty() )
+    return;
+  
   if( this->useKWallet() ) {
     Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
     
@@ -103,18 +109,19 @@ void Settings::getPassword()
     }
     delete wallet;
   }
-  else {
-    pwd = this->requestPassword( this->username() );
-  }
+  
+  if( pwd.isEmpty() )
+    this->requestPassword( this->username() );
 }
 
-QString Settings::requestPassword( const QString &username )
+void Settings::requestPassword( const QString &username )
 {
   KPasswordDialog dlg;
   dlg.setPrompt( i18n( "Please enter the password for %1" ).arg( username ) );
-  if( dlg.exec() )
-    pwd = dlg.password();
-  return pwd;
+  dlg.exec();
+  
+  if( dlg.result() == QDialog::Accepted )
+    this->setPassword( dlg.password() );
 }
 
 #include "settings.moc"

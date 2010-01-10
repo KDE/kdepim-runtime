@@ -34,7 +34,7 @@ public:
   void setWinId( WId wid );
   void storePassword();
   void getPassword();
-  QString requestPassword( const QString &username );
+  void requestPassword( const QString &username );
   
 public slots:
   Q_SCRIPTABLE QString password() const;
