@@ -24,12 +24,17 @@
 
 #include "settingsbase.h"
 
+namespace KWallet {
+  class Wallet;
+}
+
 class Settings : public SettingsBase
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.davCalendar.Wallet" )
 public:
   Settings();
+  ~Settings();
   static Settings* self();
   void setWinId( WId wid );
   void storePassword();
@@ -43,6 +48,7 @@ public slots:
 private:
   WId winId;
   QString pwd;
+  KWallet::Wallet *wallet;
 };
 
 #endif

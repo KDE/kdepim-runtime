@@ -26,10 +26,6 @@
 
 class KConfigDialogManager;
 
-namespace KWallet {
-  class Wallet;
-}
-
 class ConfigDialog : public KDialog
 {
   Q_OBJECT

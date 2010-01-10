@@ -62,7 +62,7 @@ QDataStream& operator>>( QDataStream &in, davItem &item)
 }
 
 davAccessor::davAccessor( davImplementation *i )
-  : davImpl( i ), nRunningItemsQueries( 0 )
+  : davImpl( i )
 {
 }
 
@@ -173,6 +173,7 @@ void davAccessor::collectionsPropfindFinished( KJob *j )
       displayname = "DAV calendar at " + href;
     
     kDebug() << "Seen collection at " << href << " (url)" << url.prettyUrl();
+    nRunningItemsQueries[href] = 0;
     emit( collectionRetrieved( href, displayname ) );
   }
   
@@ -195,7 +196,7 @@ void davAccessor::retrieveItems( const KUrl &url )
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemsPropfindFinished( KJob* ) ) );
     }
     
-    ++nRunningItemsQueries;
+    ++nRunningItemsQueries[url.prettyUrl()];
   }
 }
 
@@ -211,7 +212,8 @@ void davAccessor::itemsPropfindFinished( KJob *j )
   }
   
   QString collectionUrl = job->url().prettyUrl();
-  clearSeenUrls( collectionUrl );
+  if( --nRunningItemsQueries[collectionUrl] == 0 )
+    clearSeenUrls( collectionUrl );
   
   QDomDocument xml = job->response();
   QDomElement root = xml.documentElement();
@@ -269,9 +271,7 @@ void davAccessor::itemsPropfindFinished( KJob *j )
     fetchItemsQueue[collectionUrl] << href;
   }
   
-  --nRunningItemsQueries;
-  
-  if( nRunningItemsQueries == 0 )
+  if( nRunningItemsQueries[collectionUrl] == 0 )
     runItemsFetch( collectionUrl );
 }
 
@@ -287,7 +287,8 @@ void davAccessor::itemsReportFinished( KJob *j )
   }
   
   QString collectionUrl = job->url().prettyUrl();
-  clearSeenUrls( collectionUrl );
+  if( nRunningItemsQueries[collectionUrl] == davImpl->itemsQueries().size() )
+    clearSeenUrls( collectionUrl );
   
   QDomDocument xml = job->response();
   QDomElement root = xml.documentElement();
@@ -318,6 +319,7 @@ void davAccessor::itemsReportFinished( KJob *j )
     
     // NOTE: nothing below should invalidate the item (return an error
     // and exit the function)
+    kDebug() << "Listed URL " << href << " in collection " << collectionUrl;
     seenUrl( collectionUrl, href );
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
@@ -333,9 +335,7 @@ void davAccessor::itemsReportFinished( KJob *j )
     fetchItemsQueue[collectionUrl] << href;
   }
   
-  --nRunningItemsQueries;
-  
-  if( nRunningItemsQueries == 0 )
+  if( --nRunningItemsQueries[collectionUrl] == 0 )
     runItemsFetch( collectionUrl );
 }
 
@@ -556,6 +556,7 @@ void davAccessor::addItemToCache( const davItem &item )
 
 void davAccessor::clearSeenUrls( const QString &url )
 {
+  kDebug() << "Clearing seen items for collection " << url;
   lastSeenItems[url].clear();
 }
 

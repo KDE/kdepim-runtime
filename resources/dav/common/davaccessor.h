@@ -96,7 +96,7 @@ class davAccessor : public QObject
     davImplementation *davImpl;
     QMap<QString, QSet<QString> > lastSeenItems; // collection url, items url
     QMap<QString, davItem> itemsCache; // url, item
-    int nRunningItemsQueries;
+    QMap<QString, int> nRunningItemsQueries;
     QMap<QString, QStringList> fetchItemsQueue; // collection url, items urls
     QMutex fetchItemsQueueMtx;
     

@@ -52,7 +52,7 @@ Settings *Settings::self()
 }
 
 Settings::Settings()
-  : SettingsBase(), winId( 0 )
+  : SettingsBase(), winId( 0 ), wallet( 0 )
 {
   Q_ASSERT( !s_globalSettings->q );
   s_globalSettings->q = this;
@@ -60,6 +60,11 @@ Settings::Settings()
   new SettingsAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+}
+
+Settings::~Settings()
+{
+  delete wallet;
 }
 
 void Settings::setWinId( WId w )
@@ -82,7 +87,8 @@ void Settings::setPassword( const QString &p )
 
 void Settings::storePassword()
 {
-  Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
+  if( !wallet )
+    wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
   
   if( wallet && wallet->isOpen() ) {
     if( !wallet->hasFolder( "dav-akonadi-resource" ) )
@@ -90,8 +96,6 @@ void Settings::storePassword()
     wallet->setFolder( "dav-akonadi-resource" );
     wallet->writePassword( this->username(), pwd );
   }
-  
-  delete wallet;
 }
 
 void Settings::getPassword()
@@ -100,14 +104,14 @@ void Settings::getPassword()
     return;
   
   if( this->useKWallet() ) {
-    Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
+    if( !wallet )
+      wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
     
     if( wallet && wallet->isOpen() &&
         wallet->hasFolder( "dav-akonadi-resource" ) &&
         wallet->setFolder( "dav-akonadi-resource" ) ) {
       wallet->readPassword( this->username(), pwd );
     }
-    delete wallet;
   }
   
   if( pwd.isEmpty() )
