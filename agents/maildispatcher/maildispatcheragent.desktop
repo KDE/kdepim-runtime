@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Mail Dispatcher Agent
 Name[ca]=Agent de fils de correu
+Name[ca@valencia]=Agent de fils de correu
 Name[da]=Mailafsendingsagent (MDA)
 Name[de]=Agent zur Nachrichten-Auslieferung
 Name[en_GB]=Mail Dispatcher Agent

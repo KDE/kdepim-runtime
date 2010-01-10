@@ -2,6 +2,7 @@
 Name=Microblog (Twitter and Identi.ca)
 Name[ar]=التدوين المصغر ( تويتر و Identi.ca )
 Name[ca]=Microbloc (Twitter i Identi.ca)
+Name[ca@valencia]=Microbloc (Twitter i Identi.ca)
 Name[da]=Microblog (Twitter og Identi.ca)
 Name[de]=Microblog (Twitter und Identi.ca)
 Name[el]=Microblog (Twitter και Identi.ca)
@@ -35,6 +36,7 @@ Name[zh_TW]=Microblog（Twitter 與 Identi.ca）
 Comment=Shows your microblog data from Twitter or Identi.ca.
 Comment[ar]=تظهر بيانات التدوين المصغر من Twitter أو Identi.ca .
 Comment[ca]=Mostra les vostres dades d'un microbloc de Twitter o Identi.ca.
+Comment[ca@valencia]=Mostra les vostres dades d'un microbloc de Twitter o Identi.ca.
 Comment[da]=Viser dine microblog-data fra Twitter eller Identi.ca.
 Comment[de]=Zeigt Microblog-Daten aus Twitter oder Identi.ca an.
 Comment[el]=Εμφάνιση των δεδομένων σας microblog από το Twitter ή Identi.ca.

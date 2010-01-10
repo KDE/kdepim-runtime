@@ -2,6 +2,7 @@
 Name=OpenChange
 Name[ar]=خادم OpenChange
 Name[ca]=OpenChange
+Name[ca@valencia]=OpenChange
 Name[cs]=OpenChange
 Name[da]=OpenChange
 Name[de]=OpenChange
@@ -39,6 +40,7 @@ Name[zh_TW]=OpenChange
 Comment=Makes it possible to work with an OpenChange / Exchange server
 Comment[ar]=تمكِن العمل مع خادم OpenChange / Exchange server
 Comment[ca]=Facilita el treball amb un servidor OpenChange / Exchange
+Comment[ca@valencia]=Facilita el treball amb un servidor OpenChange / Exchange
 Comment[da]=Muliggør at arbejde med en OpenChange-/Exchange-server
 Comment[de]=Verwendung mit Openchange- und Exchange-Servern
 Comment[el]=Καθιστά δυνατή τη συνεργασία με ένα διακομιστή OpenChange / Exchange

@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=POP3
 Name[ca]=POP3
+Name[ca@valencia]=POP3
 Name[da]=POP3
 Name[de]=POP3
 Name[en_GB]=POP3
@@ -22,6 +23,7 @@ Name[zh_CN]=POP3
 Name[zh_TW]=POP3
 Comment=Fetches mail from a POP3 server
 Comment[ca]=Recupera el correu d'un servidor POP3
+Comment[ca@valencia]=Recupera el correu d'un servidor POP3
 Comment[da]=Henter e-mail fra en POP3-server
 Comment[de]=Holt E-Mails von einem POP3-Server ab
 Comment[en_GB]=Fetches mail from a POP3 server

@@ -15,6 +15,7 @@ X-KDE-CfgDlgHierarchy=
 Name=Akonadi Server Configuration
 Name[ar]=ضبط خادم اكوندا
 Name[ca]=Configuració del servidor de l'Akonadi
+Name[ca@valencia]=Configuració del servidor de l'Akonadi
 Name[cs]=Nastavení serveru Akonadi
 Name[da]=Konfiguration af Akonadi-server
 Name[de]=Einrichtung des Akonadi-Servers
