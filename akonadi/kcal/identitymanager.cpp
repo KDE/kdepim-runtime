@@ -1,5 +1,5 @@
 /*
-  This file is part of KOrganizer.
+  This file is part of Akonadianizer.
 
   Copyright (c) 2004 David Faure <faure@kde.org>
 
@@ -22,21 +22,21 @@
   without including the source code for Qt in the source distribution.
 */
 
-#include "koidentitymanager.h"
+#include "identitymanager.h"
 #include "koprefs.h"
 
 // This is called to create a default identity in case emailidentities has none
 // (i.e. the user never used KMail before)
 // We provide the values from KOPrefs, since those are configurable in korganizer.
-void KOrg::IdentityManager::createDefaultIdentity( QString &fullName, QString &emailAddress )
+void Akonadi::IdentityManager::createDefaultIdentity( QString &fullName, QString &emailAddress )
 {
   fullName = KOPrefs::instance()->fullName();
   emailAddress = KOPrefs::instance()->email();
 }
 
-K_GLOBAL_STATIC( KOrg::IdentityManager, globalIdentityManager )
+K_GLOBAL_STATIC( Akonadi::IdentityManager, globalIdentityManager )
 
-KPIMIdentities::IdentityManager *KOrg::identityManager()
+KPIMIdentities::IdentityManager *Akonadi::identityManager()
 {
   return globalIdentityManager;
 }

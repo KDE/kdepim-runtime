@@ -21,8 +21,8 @@
     USA.
 */
 
-#ifndef AKONADI_KCAL_AKONADICALENDAR_H
-#define AKONADI_KCAL_AKONADICALENDAR_H
+#ifndef AKONADI_KCAL_CALENDAR_H
+#define AKONADI_KCAL_CALENDAR_H
 
 #include "akonadi-kcal_next_export.h"
 #include <kcal/customproperties.h>
@@ -45,17 +45,14 @@
 
 class QAbstractItemModel;
 
-namespace Akonadi {
-  class Collection;
-  class Item;
-}
-
 namespace KCal {
   class CalFormat;
   class CalFilter;
 }
 
-namespace KOrg {
+namespace Akonadi {
+  class Collection;
+  class Item;
 
 
   /**
@@ -100,7 +97,7 @@ namespace KOrg {
 /**
  * Implements a KCal::Calendar that uses Akonadi as backend.
  */
-class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendar : public QObject, public KCal::CustomProperties, public KCal::IncidenceBase::IncidenceObserver {
+class AKONADI_KCAL_NEXT_EXPORT Calendar : public QObject, public KCal::CustomProperties, public KCal::IncidenceBase::IncidenceObserver {
   Q_OBJECT
 public:
 
@@ -256,7 +253,7 @@ public:
     @param cal the calendar to return incidences from
     @return a QStringList containing all the categories.
   */
-  static QStringList categories( AkonadiCalendar* cal );
+  static QStringList categories( Calendar* cal );
 
 // KCal::Incidence Specific Methods //
 
@@ -727,8 +724,8 @@ protected:
   void appendRecurringAlarms( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
                               const KDateTime &from, const KDateTime &to );
 public:
-    explicit AkonadiCalendar( QAbstractItemModel* treeModel, QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject* parent=0 );
-    ~AkonadiCalendar();
+    explicit Calendar( QAbstractItemModel* treeModel, QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject* parent=0 );
+    ~Calendar();
 
     QAbstractItemModel* model() const;
 
@@ -770,7 +767,7 @@ public:
     void signalErrorMessage( const QString& );
 
   private:
-    Q_DISABLE_COPY( AkonadiCalendar )
+    Q_DISABLE_COPY( Calendar )
     class Private;
     Private *const d;
 };

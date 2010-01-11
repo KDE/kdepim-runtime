@@ -1,5 +1,5 @@
 /*
-  This file is part of the Groupware/KOrganizer integration.
+  This file is part of the Groupware/Akonadianizer integration.
 
   Requires the Qt and KDE widget libraries, available at no cost at
   http://www.trolltech.com and http://www.kde.org respectively
@@ -33,21 +33,12 @@
   your version.
 */
 
-#ifndef KOGROUPWARE_H
-#define KOGROUPWARE_H
+#ifndef AKONADI_KCAL_GROUPWARE_H
+#define AKONADI_KCAL_GROUPWARE_H
 
 #include "akonadi-kcal_next_export.h"
 #include <KCal/ICalFormat>
 
-class FreeBusyManager;
-
-namespace KOrg {
-  class CalendarViewBase;
-  class IncidenceChangerBase;
-  class AkonadiCalendar;
-  class AkonadiCalendar;
-}
-using namespace KOrg;
 
 namespace KCal {
   class Event;
@@ -57,7 +48,13 @@ using namespace KCal;
 
 class QString;
 
-class AKONADI_KCAL_NEXT_EXPORT KOGroupware : public QObject
+namespace Akonadi {
+  class CalendarViewBase;
+  class Calendar;
+  class Calendar;
+  class FreeBusyManager;
+
+class AKONADI_KCAL_NEXT_EXPORT Groupware : public QObject
 {
   Q_OBJECT
   public:
@@ -68,8 +65,8 @@ class AKONADI_KCAL_NEXT_EXPORT KOGroupware : public QObject
       NOCHANGE
     };
 
-    static KOGroupware *create( KOrg::AkonadiCalendar * );
-    static KOGroupware *instance();
+    static Groupware *create( Akonadi::Calendar * );
+    static Groupware *instance();
 
     FreeBusyManager *freeBusyManager();
 
@@ -101,14 +98,16 @@ class AKONADI_KCAL_NEXT_EXPORT KOGroupware : public QObject
     void initialCheckForChanges();
 
   protected:
-    KOGroupware( KOrg::AkonadiCalendar * );
+    Groupware( Akonadi::Calendar * );
 
   private:
-    static KOGroupware *mInstance;
+    static Groupware *mInstance;
     KCal::ICalFormat mFormat;
-    KOrg::AkonadiCalendar *mCalendar;
+    Akonadi::Calendar *mCalendar;
     static FreeBusyManager *mFreeBusyManager;
     bool mDoNotNotify;
 };
+
+}
 
 #endif

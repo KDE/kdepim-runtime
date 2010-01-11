@@ -37,7 +37,7 @@
 
 #include "freebusymanager.h"
 #include "koprefs.h"
-#include "akonadicalendar.h"
+#include "calendar.h"
 
 #include <akonadi/contact/contactsearchjob.h>
 
@@ -69,6 +69,7 @@
 #include <QApplication>
 
 using namespace KCal;
+using namespace Akonadi;
 
 FreeBusyDownloadJob::FreeBusyDownloadJob( const QString &email, const KUrl &url,
                                           FreeBusyManager *manager )
@@ -121,7 +122,7 @@ FreeBusyManager::FreeBusyManager( QObject *parent ) :
 {
 }
 
-void FreeBusyManager::setCalendar( KOrg::AkonadiCalendar *c )
+void FreeBusyManager::setCalendar( Calendar *c )
 {
   mCalendar = c;
   if ( mCalendar ) {

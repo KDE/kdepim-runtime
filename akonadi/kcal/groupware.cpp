@@ -1,5 +1,5 @@
 /*
-  This file is part of the Groupware/KOrganizer integration.
+  This file is part of the Groupware/Akonadianizer integration.
 
   Requires the Qt and KDE widget libraries, available at no cost at
   http://www.trolltech.com and http://www.kde.org respectively
@@ -34,12 +34,12 @@
   your version.
 */
 
-#include "kogroupware.h"
+#include "groupware.h"
 #include "freebusymanager.h"
 #include "koprefs.h"
 #include "mailscheduler.h"
-#include "akonadicalendar.h"
-#include "akonadicalendaradaptor.h"
+#include "calendar.h"
+#include "calendaradaptor.h"
 
 #include <KCal/IncidenceFormatter>
 #include <KPIMUtils/Email>
@@ -52,26 +52,28 @@
 #include <QFile>
 #include <QTimer>
 
-FreeBusyManager *KOGroupware::mFreeBusyManager = 0;
+using namespace Akonadi;
 
-KOGroupware *KOGroupware::mInstance = 0;
+FreeBusyManager *Groupware::mFreeBusyManager = 0;
 
-KOGroupware *KOGroupware::create( KOrg::AkonadiCalendar *calendar )
+Groupware *Groupware::mInstance = 0;
+
+Groupware *Groupware::create( Akonadi::Calendar *calendar )
 {
   if ( !mInstance ) {
-    mInstance = new KOGroupware( calendar );
+    mInstance = new Groupware( calendar );
   }
   return mInstance;
 }
 
-KOGroupware *KOGroupware::instance()
+Groupware *Groupware::instance()
 {
   // Doesn't create, that is the task of create()
   Q_ASSERT( mInstance );
   return mInstance;
 }
 
-KOGroupware::KOGroupware( KOrg::AkonadiCalendar *cal )
+Groupware::Groupware( Akonadi::Calendar *cal )
   : QObject( 0 ), mCalendar( cal ), mDoNotNotify( false )
 {
   setObjectName( QLatin1String( "kmgroupware_instance" ) );
@@ -89,7 +91,7 @@ KOGroupware::KOGroupware( KOrg::AkonadiCalendar *cal )
   QTimer::singleShot( 0, this, SLOT(initialCheckForChanges()) );
 }
 
-void KOGroupware::initialCheckForChanges()
+void Groupware::initialCheckForChanges()
 {
   incomingDirChanged( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.accepted/" ) ) );
   incomingDirChanged( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.tentative/" ) ) );
@@ -107,12 +109,12 @@ void KOGroupware::initialCheckForChanges()
   }
 }
 
-FreeBusyManager *KOGroupware::freeBusyManager()
+FreeBusyManager *Groupware::freeBusyManager()
 {
   return mFreeBusyManager;
 }
 
-void KOGroupware::incomingDirChanged( const QString &path )
+void Groupware::incomingDirChanged( const QString &path )
 {
   const QString incomingDirName = KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/" ) ) + QLatin1String( "income." );
   if ( !path.startsWith( incomingDirName ) ) {
@@ -145,7 +147,7 @@ void KOGroupware::incomingDirChanged( const QString &path )
 
   f.remove();
 
-  AkonadiCalendarAdaptor adaptor(mCalendar);
+  CalendarAdaptor adaptor(mCalendar);
   ScheduleMessage *message = mFormat.parseScheduleMessage( &adaptor, iCal );
   if ( !message ) {
     QString errorMessage;
@@ -210,7 +212,7 @@ void KOGroupware::incomingDirChanged( const QString &path )
     kError() << "Unknown incoming action" << action;
   }
 
-//Reenable once this part is independent from KOrganizer
+//Reenable once this part is independent from Akonadianizer
 #if AKONADI_PORT_DISABLED
   if ( action.startsWith( QLatin1String( "counter" ) ) ) {
     Akonadi::Item item;
@@ -236,7 +238,7 @@ class KOInvitationFormatterHelper : public InvitationFormatterHelper
  * Return true means accept the changes
  * Return false means revert the changes
  */
-bool KOGroupware::sendICalMessage( QWidget *parent,
+bool Groupware::sendICalMessage( QWidget *parent,
                                    KCal::iTIPMethod method,
                                    Incidence *incidence,
                                    HowChanged action,
@@ -400,7 +402,7 @@ bool KOGroupware::sendICalMessage( QWidget *parent,
   }
 }
 
-void KOGroupware::sendCounterProposal( KCal::Event *oldEvent, KCal::Event *newEvent ) const
+void Groupware::sendCounterProposal( KCal::Event *oldEvent, KCal::Event *newEvent ) const
 {
   if ( !oldEvent || !newEvent || *oldEvent == *newEvent ||
        !KOPrefs::instance()->mUseGroupwareCommunication ) {
@@ -422,4 +424,4 @@ void KOGroupware::sendCounterProposal( KCal::Event *oldEvent, KCal::Event *newEv
   }
 }
 
-#include "kogroupware.moc"
+#include "groupware.moc"

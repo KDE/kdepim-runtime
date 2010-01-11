@@ -17,8 +17,8 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include "akonadicalendaradaptor.h"
+#include "calendaradaptor.h"
 
-KOrg::AkonadiCalendarAdaptor::~AkonadiCalendarAdaptor() {}
+Akonadi::CalendarAdaptor::~CalendarAdaptor() {}
 
-#include "akonadicalendaradaptor.moc"
+#include "calendaradaptor.moc"

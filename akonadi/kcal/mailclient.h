@@ -23,8 +23,8 @@
   with any edition of Qt, and distribute the resulting executable,
   without including the source code for Qt in the source distribution.
 */
-#ifndef KOMAILCLIENT_H
-#define KOMAILCLIENT_H
+#ifndef AKONADI_KCAL_MAILCLIENT_H
+#define AKONADI_KCAL_MAILCLIENT_H
 
 #include "akonadi-kcal_next_export.h"
 #include <QString>
@@ -40,11 +40,14 @@ namespace KPIMIdentities {
 }
 using namespace KPIMIdentities;
 
-class AKONADI_KCAL_NEXT_EXPORT KOMailClient : public QObject
+namespace Akonadi
+{
+
+class AKONADI_KCAL_NEXT_EXPORT MailClient : public QObject
 {
   public:
-    KOMailClient();
-    virtual ~KOMailClient();
+    MailClient();
+    virtual ~MailClient();
 
     bool mailAttendees( IncidenceBase *, const Identity &identity, bool bccMe,
                         const QString &attachment=QString(),
@@ -80,5 +83,7 @@ class AKONADI_KCAL_NEXT_EXPORT KOMailClient : public QObject
                bool hidden=false, bool bccMe=false, const QString &attachment=QString(),
                const QString &mailTransport = QString() );
 };
+
+} // namespace Akonadi
 
 #endif

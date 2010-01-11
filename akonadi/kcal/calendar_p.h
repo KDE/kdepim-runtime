@@ -22,10 +22,10 @@
     USA.
 */
 
-#ifndef AKONADICALENDAR_P_H
-#define AKONADICALENDAR_P_H
+#ifndef AKONADI_KCAL_CALENDAR_P_H
+#define AKONADI_KCAL_CALENDAR_P_H
 
-#include "akonadicalendar.h"
+#include "calendar.h"
 #include "calfilterproxymodel.h"
 #include "utils.h"
 
@@ -60,29 +60,28 @@
 #include <KLocalizedString>
 
 using namespace boost;
-using namespace KCal;
-using namespace KOrg;
+using namespace Akonadi;
 
-class AkonadiCalendarCollection : public QObject
+class CalendarCollection : public QObject
 {
     Q_OBJECT
   public:
-    AkonadiCalendar *m_calendar;
+    Calendar *m_calendar;
     Akonadi::Collection m_collection;
 
-    AkonadiCalendarCollection(AkonadiCalendar *calendar, const Akonadi::Collection &collection)
+    CalendarCollection(Calendar *calendar, const Akonadi::Collection &collection)
       : QObject()
       , m_calendar(calendar)
       , m_collection(collection)
     {
     }
 
-    ~AkonadiCalendarCollection()
+    ~CalendarCollection()
     {
     }
 };
 
-namespace KOrg {
+namespace Akonadi {
   struct UnseenItem {
     Akonadi::Entity::Id collection;
     QString uid;
@@ -95,14 +94,14 @@ namespace KOrg {
   };
 }
 
-class KOrg::AkonadiCalendar::Private : public QObject
+class Akonadi::Calendar::Private : public QObject
 {
   Q_OBJECT
 private:
-  AkonadiCalendar* const q;
+  Calendar* const q;
 
 public:
-  explicit Private( QAbstractItemModel* treeModel, QAbstractItemModel* model, AkonadiCalendar *q );
+  explicit Private( QAbstractItemModel* treeModel, QAbstractItemModel* model, Calendar *q );
   ~Private();
 
   bool deleteIncidence( const Akonadi::Item & );
@@ -122,10 +121,10 @@ public:
 
   KDateTime::Spec timeZoneIdSpec( const QString &timeZoneId, bool view );
   QString mProductId;
-  Person mOwner;
-  ICalTimeZones *mTimeZones; // collection of time zones used in this calendar
-  ICalTimeZone mBuiltInTimeZone;   // cached time zone lookup
-  ICalTimeZone mBuiltInViewTimeZone;   // cached viewing time zone lookup
+  KCal::Person mOwner;
+  KCal::ICalTimeZones *mTimeZones; // collection of time zones used in this calendar
+  KCal::ICalTimeZone mBuiltInTimeZone;   // cached time zone lookup
+  KCal::ICalTimeZone mBuiltInViewTimeZone;   // cached viewing time zone lookup
   KDateTime::Spec mTimeSpec;
   mutable KDateTime::Spec mViewTimeSpec;
   bool mModified;
@@ -133,7 +132,7 @@ public:
   bool mObserversEnabled;
   QList<CalendarObserver*> mObservers;
 
-  CalFilter *mDefaultFilter;
+  KCal::CalFilter *mDefaultFilter;
   //CalendarBase end
 
   QAbstractItemModel *m_treeModel;

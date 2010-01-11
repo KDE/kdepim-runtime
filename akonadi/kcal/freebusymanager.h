@@ -46,19 +46,18 @@
 #include <QObject>
 #include <QString>
 
+class KJob;
+class QTimerEvent;
+
 namespace KIO {
   class Job;
 }
 namespace KCal {
   class FreeBusy;
 }
-namespace KOrg {
-  class AkonadiCalendar;
-}
-
+namespace Akonadi {
 class FreeBusyManager;
-class KJob;
-class QTimerEvent;
+class Calendar;
 
 /**
  * Class for downloading FreeBusy Lists
@@ -92,7 +91,7 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::Fr
   public:
     FreeBusyManager( QObject *parent );
 
-    void setCalendar( KOrg::AkonadiCalendar * );
+    void setCalendar( Akonadi::Calendar * );
 
     /// KOrganizer publishes the free/busy list
     void publishFreeBusy();
@@ -173,7 +172,7 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::Fr
     void slotUploadFreeBusyResult( KJob * );
 
   private:
-    KOrg::AkonadiCalendar *mCalendar;
+    Akonadi::Calendar *mCalendar;
     KCal::ICalFormat mFormat;
 
     QStringList mRetrieveQueue;
@@ -183,6 +182,8 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::Fr
     int mTimerID;
     bool mUploadingFreeBusy;
     bool mBrokenUrl;
-};\
+};
+
+}
 
 #endif

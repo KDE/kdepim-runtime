@@ -9,6 +9,8 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO
 
 set( kcalakonadi_LIB_SRC
      collectionselection.cpp
+     calendar.cpp
+     calendaradaptor.cpp
      calendarmodel.cpp
      calendarsearch.cpp
      calfilterproxymodel.cpp
@@ -20,13 +22,11 @@ set( kcalakonadi_LIB_SRC
      kcalitembrowser.cpp
      modelstatesaver.cpp
      itembrowser.cpp
-     akonadicalendar.cpp
-     akonadicalendaradaptor.cpp
      utils.cpp
      incidenceattribute.cpp
-     kogroupware.cpp
-     koidentitymanager.cpp
-     komailclient.cpp
+     groupware.cpp
+     identitymanager.cpp
+     mailclient.cpp
      koprefs.cpp
      mailscheduler.cpp
      freebusymanager.cpp

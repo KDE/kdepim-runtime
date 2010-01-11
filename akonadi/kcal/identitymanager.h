@@ -1,5 +1,5 @@
 /*
-  This file is part of KOrganizer.
+  This file is part of Akonadianizer.
 
   Copyright (c) 2004 David Faure <faure@kde.org>
 
@@ -22,12 +22,12 @@
   without including the source code for Qt in the source distribution.
 */
 
-#ifndef KOIDENTITYMANAGER_H
-#define KOIDENTITYMANAGER_H
+#ifndef AKONADI_KCAL_IDENTITYMANAGER_H
+#define AKONADI_KCAL_IDENTITYMANAGER_H
 
 #include <kpimidentities/identitymanager.h>
 
-namespace KOrg {
+namespace Akonadi {
 
 class IdentityManager : public KPIMIdentities::IdentityManager
 {
@@ -43,5 +43,5 @@ KPIMIdentities::IdentityManager *identityManager();
 
 }
 
-#endif /* KOIDENTITYMANAGER_H */
+#endif /* AKONADI_KCAL_IDENTITYMANAGER_H */
 

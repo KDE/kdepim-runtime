@@ -20,16 +20,16 @@
     USA.
 */
 
-#ifndef AKONADICALENDARADAPTOR_H
-#define AKONADICALENDARADAPTOR_H
+#ifndef AKONADI_KCAL_CALENDARADAPTOR_H
+#define AKONADI_KCAL_CALENDARADAPTOR_H
 
 #include "akonadi-kcal_next_export.h"
 
-#include "kogroupware.h"
+#include "groupware.h"
 #include "koprefs.h"
 #include "mailscheduler.h"
 
-#include <akonadi/kcal/akonadicalendar.h>
+#include <akonadi/kcal/calendar.h>
 #include <Akonadi/Item>
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemDeleteJob>
@@ -48,7 +48,7 @@
 
 #include <KDE/KMessageBox>
 
-namespace KOrg {
+namespace Akonadi {
 
 template<class T> inline T* itemToIncidence(const Akonadi::Item &item) {
   if ( !item.hasPayload< boost::shared_ptr<T> >() )
@@ -71,19 +71,19 @@ template<class T> inline Akonadi::Item incidenceToItem(T* incidence) {
 
 //FIXME: Find a way to set a QWidget parent for user interaction
 //Probably an extra member with a setter
-class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
+class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
 {
   Q_OBJECT
 
   public:
-    explicit AkonadiCalendarAdaptor(AkonadiCalendar *calendar)
+    explicit CalendarAdaptor(Akonadi::Calendar *calendar)
       : KCal::Calendar( KOPrefs::instance()->timeSpec() )
       , mCalendar( calendar )
     {
       Q_ASSERT(mCalendar);
     }
 
-    virtual ~AkonadiCalendarAdaptor();
+    virtual ~CalendarAdaptor();
 
     virtual bool save() { kDebug(); return true; } //unused
     virtual bool reload() { kDebug(); return true; } //unused
@@ -103,7 +103,7 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
 
     virtual Event::List rawEvents(KCal::EventSortField sortField = KCal::EventSortUnsorted, KCal::SortDirection sortDirection = KCal::SortDirectionAscending )
     {
-      return itemsToIncidences<Event>( mCalendar->rawEvents( (KOrg::EventSortField)sortField, (KOrg::SortDirection)sortDirection ) );
+      return itemsToIncidences<Event>( mCalendar->rawEvents( (Akonadi::EventSortField)sortField, (Akonadi::SortDirection)sortDirection ) );
     }
 
     virtual Event::List rawEventsForDate( const KDateTime &dt )
@@ -118,7 +118,7 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
 
     virtual Event::List rawEventsForDate( const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(), KCal::EventSortField sortField = KCal::EventSortUnsorted, KCal::SortDirection sortDirection = KCal::SortDirectionAscending )
     {
-      return itemsToIncidences<Event>( mCalendar->rawEventsForDate( date, timeSpec, (KOrg::EventSortField)sortField, (KOrg::SortDirection)sortDirection ) );
+      return itemsToIncidences<Event>( mCalendar->rawEventsForDate( date, timeSpec, (Akonadi::EventSortField)sortField, (Akonadi::SortDirection)sortDirection ) );
     }
 
     virtual Event *event( const QString &uid )
@@ -140,7 +140,7 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
 
     virtual Todo::List rawTodos( KCal::TodoSortField sortField = KCal::TodoSortUnsorted, KCal::SortDirection sortDirection = KCal::SortDirectionAscending )
     {
-      return itemsToIncidences<Todo>( mCalendar->rawTodos( (KOrg::TodoSortField)sortField, (KOrg::SortDirection)sortDirection ) );
+      return itemsToIncidences<Todo>( mCalendar->rawTodos( (Akonadi::TodoSortField)sortField, (Akonadi::SortDirection)sortDirection ) );
     }
 
     virtual Todo::List rawTodosForDate( const QDate &date )
@@ -167,7 +167,7 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
 
     virtual Journal::List rawJournals( KCal::JournalSortField sortField = KCal::JournalSortUnsorted, KCal::SortDirection sortDirection = KCal::SortDirectionAscending )
     {
-      return itemsToIncidences<Journal>( mCalendar->rawJournals( (KOrg::JournalSortField)sortField, (KOrg::SortDirection)sortDirection ) );
+      return itemsToIncidences<Journal>( mCalendar->rawJournals( (Akonadi::JournalSortField)sortField, (Akonadi::SortDirection)sortDirection ) );
     }
 
     virtual Journal::List rawJournalsForDate( const QDate &dt )
@@ -203,7 +203,7 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
       item.setMimeType( QString::fromLatin1("application/x-vnd.akonadi.calendar.%1").arg(QLatin1String(incidence->type().toLower())) ); //PENDING(AKONADI_PORT) shouldn't be hardcoded?
       Akonadi::ItemCreateJob *job = new Akonadi::ItemCreateJob( item, collection );
       // The connection needs to be queued to be sure addIncidenceFinished is called after the kjob finished
-      // it's eventloop. That's needed cause KOGroupware uses synchron job->exec() calls.
+      // it's eventloop. That's needed cause Groupware uses synchron job->exec() calls.
       connect( job, SIGNAL( result(KJob*)), this, SLOT( addIncidenceFinished(KJob*) ), Qt::QueuedConnection );
       return true;
     }
@@ -217,7 +217,7 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
 
       kDebug() << "\"" << incidence->summary() << "\"";
       bool doDelete = sendGroupwareMessage( aitem, KCal::iTIPCancel,
-                                            KOGroupware::INCIDENCEDELETED );
+                                            Groupware::INCIDENCEDELETED );
       if( !doDelete )
         return false;
       Akonadi::ItemDeleteJob* job = new Akonadi::ItemDeleteJob( aitem );
@@ -244,10 +244,10 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
 
       Q_ASSERT( incidence );
       if ( KOPrefs::instance()->mUseGroupwareCommunication ) {
-        if ( !KOGroupware::instance()->sendICalMessage(
+        if ( !Groupware::instance()->sendICalMessage(
                0, //PENDING(AKONADI_PORT) set parent, ideally the one passed in addIncidence...
                KCal::iTIPRequest,
-               incidence.get(), KOGroupware::INCIDENCEADDED, false ) ) {
+               incidence.get(), Groupware::INCIDENCEADDED, false ) ) {
           kError() << "sendIcalMessage failed.";
         }
       }
@@ -289,19 +289,19 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
           }
         }
 
-        if ( !KOGroupware::instance()->doNotNotify() && notifyOrganizer ) {
-          MailScheduler scheduler( static_cast<AkonadiCalendar*>(mCalendar) );
+        if ( !Groupware::instance()->doNotNotify() && notifyOrganizer ) {
+          MailScheduler scheduler( mCalendar );
           scheduler.performTransaction( tmp.get(), KCal::iTIPReply );
         }
         //reset the doNotNotify flag
-        KOGroupware::instance()->setDoNotNotify( false );
+        Groupware::instance()->setDoNotNotify( false );
       }
     }
 
   private:
     bool sendGroupwareMessage( const Akonadi::Item &aitem,
                                KCal::iTIPMethod method,
-                               KOGroupware::HowChanged action )
+                               Groupware::HowChanged action )
     {
       const Incidence::Ptr incidence = Akonadi::incidence( aitem );
       if ( !incidence )
@@ -313,7 +313,7 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
         return true;
       } else if ( KOPrefs::instance()->mUseGroupwareCommunication ) {
         return
-          KOGroupware::instance()->sendICalMessage( 0, method, incidence.get(), action,  false );
+          Groupware::instance()->sendICalMessage( 0, method, incidence.get(), action,  false );
       }
       return true;
     }
@@ -352,7 +352,7 @@ class AKONADI_KCAL_NEXT_EXPORT AkonadiCalendarAdaptor : public KCal::Calendar
       }
     }
 
-    AkonadiCalendar *mCalendar;
+    Akonadi::Calendar *mCalendar;
 
 };
 

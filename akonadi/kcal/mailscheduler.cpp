@@ -23,11 +23,11 @@
 */
 
 #include "mailscheduler.h"
-#include "komailclient.h"
-#include "koidentitymanager.h"
+#include "mailclient.h"
+#include "identitymanager.h"
 #include "koprefs.h"
-#include "akonadicalendar.h"
-#include "akonadicalendaradaptor.h"
+#include "calendar.h"
+#include "calendaradaptor.h"
 
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemModifyJob>
@@ -44,9 +44,9 @@
 
 #include <QDir>
 
-using namespace KOrg;
+using namespace Akonadi;
 
-MailScheduler::MailScheduler( KOrg::AkonadiCalendar *calendar )
+MailScheduler::MailScheduler( Calendar *calendar )
   //: Scheduler( calendar )
   : mCalendar( calendar ), mFormat( new ICalFormat() )
 {
@@ -63,10 +63,10 @@ bool MailScheduler::publish( KCal::IncidenceBase *incidence, const QString &reci
   bool bccMe = KOPrefs::instance()->mBcc;
   QString messageText = mFormat->createScheduleMessage( incidence, KCal::iTIPPublish );
 
-  KOMailClient mailer;
+  MailClient mailer;
   return mailer.mailTo(
     incidence,
-    KOrg::identityManager()->identityForAddress( from ),
+    Akonadi::identityManager()->identityForAddress( from ),
     from, bccMe, recipients, messageText, KOPrefs::instance()->mMailTransport );
 }
 
@@ -76,10 +76,10 @@ bool MailScheduler::performTransaction( KCal::IncidenceBase *incidence, KCal::iT
   bool bccMe = KOPrefs::instance()->mBcc;
   QString messageText = mFormat->createScheduleMessage( incidence, method );
 
-  KOMailClient mailer;
+  MailClient mailer;
   return mailer.mailTo(
     incidence,
-    KOrg::identityManager()->identityForAddress( from ),
+    Akonadi::identityManager()->identityForAddress( from ),
     from, bccMe, recipients, messageText, KOPrefs::instance()->mMailTransport );
 }
 
@@ -89,7 +89,7 @@ bool MailScheduler::performTransaction( KCal::IncidenceBase *incidence, KCal::iT
   bool bccMe = KOPrefs::instance()->mBcc;
   QString messageText = mFormat->createScheduleMessage( incidence, method );
 
-  KOMailClient mailer;
+  MailClient mailer;
   bool status;
   if ( method == iTIPRequest ||
        method == iTIPCancel ||
@@ -97,7 +97,7 @@ bool MailScheduler::performTransaction( KCal::IncidenceBase *incidence, KCal::iT
        method == iTIPDeclineCounter ) {
     status = mailer.mailAttendees(
       incidence,
-      KOrg::identityManager()->identityForAddress( from ),
+      Akonadi::identityManager()->identityForAddress( from ),
       bccMe, messageText, KOPrefs::instance()->mMailTransport );
   } else {
     QString subject;
@@ -107,7 +107,7 @@ bool MailScheduler::performTransaction( KCal::IncidenceBase *incidence, KCal::iT
     }
     status = mailer.mailOrganizer(
       incidence,
-      KOrg::identityManager()->identityForAddress( from ),
+      Akonadi::identityManager()->identityForAddress( from ),
       from, bccMe, messageText, subject, KOPrefs::instance()->mMailTransport );
   }
   return status;
@@ -144,7 +144,7 @@ QList<ScheduleMessage*> MailScheduler::retrieveTransactions()
         messageString.remove( QRegExp( QLatin1String( "\n[ \t]" ) ) );
         messageString = QString::fromUtf8( messageString.toLatin1() );
 
-        AkonadiCalendarAdaptor caladaptor(mCalendar);
+        CalendarAdaptor caladaptor(mCalendar);
         ScheduleMessage *mess = mFormat->parseScheduleMessage( &caladaptor, messageString );
 
         if ( mess ) {
@@ -188,7 +188,7 @@ bool MailScheduler::acceptTransaction( KCal::IncidenceBase *incidence, KCal::iTI
   class SchedulerAdaptor : public KCal::Scheduler
   {
     public:
-      SchedulerAdaptor(MailScheduler* s, AkonadiCalendarAdaptor *c) : KCal::Scheduler(c), m_scheduler(s), m_calendar(c) {}
+      SchedulerAdaptor(MailScheduler* s, CalendarAdaptor *c) : KCal::Scheduler(c), m_scheduler(s), m_calendar(c) {}
       virtual ~SchedulerAdaptor() {}
       virtual bool publish ( KCal::IncidenceBase *incidence, const QString &recipients ) {
         return m_scheduler->publish( incidence, recipients );
@@ -210,10 +210,10 @@ bool MailScheduler::acceptTransaction( KCal::IncidenceBase *incidence, KCal::iTI
       }
     private:
       MailScheduler* m_scheduler;
-      AkonadiCalendarAdaptor *m_calendar;
+      CalendarAdaptor *m_calendar;
   };
 
-  AkonadiCalendarAdaptor caladaptor(mCalendar);
+  CalendarAdaptor caladaptor(mCalendar);
   SchedulerAdaptor scheduleradaptor(this, &caladaptor);
   return scheduleradaptor.acceptTransaction(incidence, method, status, email);
 }

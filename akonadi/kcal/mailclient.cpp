@@ -24,7 +24,7 @@
   without including the source code for Qt in the source distribution.
 */
 
-#include "komailclient.h"
+#include "mailclient.h"
 #include "kdepim-version.h"
 
 #include <KCal/Attendee>
@@ -70,15 +70,15 @@
 #include <KToolInvocation>
 #include <KProtocolManager>
 
-KOMailClient::KOMailClient() : QObject()
+Akonadi::MailClient::MailClient() : QObject()
 {
 }
 
-KOMailClient::~KOMailClient()
+Akonadi::MailClient::~MailClient()
 {
 }
 
-bool KOMailClient::mailAttendees( IncidenceBase *incidence,
+bool Akonadi::MailClient::mailAttendees( IncidenceBase *incidence,
                                   const Identity &identity,
                                   bool bccMe, const QString &attachment,
                                   const QString &mailTransport )
@@ -151,7 +151,7 @@ bool KOMailClient::mailAttendees( IncidenceBase *incidence,
                bccMe, attachment, mailTransport );
 }
 
-bool KOMailClient::mailOrganizer( IncidenceBase *incidence,
+bool Akonadi::MailClient::mailOrganizer( IncidenceBase *incidence,
                                   const Identity &identity,
                                   const QString &from, bool bccMe,
                                   const QString &attachment,
@@ -175,7 +175,7 @@ bool KOMailClient::mailOrganizer( IncidenceBase *incidence,
                bccMe, attachment, mailTransport );
 }
 
-bool KOMailClient::mailTo( IncidenceBase *incidence, const Identity &identity,
+bool Akonadi::MailClient::mailTo( IncidenceBase *incidence, const Identity &identity,
                            const QString &from, bool bccMe,
                            const QString &recipients, const QString &attachment,
                            const QString &mailTransport )
@@ -194,7 +194,7 @@ bool KOMailClient::mailTo( IncidenceBase *incidence, const Identity &identity,
                bccMe, attachment, mailTransport );
 }
 
-bool KOMailClient::send( const Identity &identity,
+bool Akonadi::MailClient::send( const Identity &identity,
                          const QString &from, const QString &_to,
                          const QString &cc, const QString &subject,
                          const QString &body, bool hidden, bool bccMe,
@@ -214,7 +214,7 @@ bool KOMailClient::send( const Identity &identity,
 
   QTime timer;
   timer.start();
-           
+
   MailTransport::Transport *transport = MailTransport::TransportManager::self()->transportByName( mailTransport );
   if( ! transport ) {
     transport = MailTransport::TransportManager::self()->transportByName(

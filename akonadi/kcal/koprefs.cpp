@@ -24,7 +24,7 @@
 */
 
 #include "koprefs.h"
-#include "koidentitymanager.h"
+#include "identitymanager.h"
 
 #include <kmime/kmime_header_parsing.h>
 #include <kpimidentities/identitymanager.h>
@@ -238,7 +238,7 @@ QString KOPrefs::email()
 QStringList KOPrefs::allEmails()
 {
   // Grab emails from the email identities
-  QStringList lst = KOrg::identityManager()->allEmails();
+  QStringList lst = Akonadi::identityManager()->allEmails();
   // Add emails configured in korganizer
   lst += mAdditionalMails;
   // Add the email entered as the userEmail here
@@ -256,9 +256,9 @@ QStringList KOPrefs::fullEmails()
 
   QStringList::Iterator it;
   // Grab emails from the email identities
-  IdentityManager *idmanager = KOrg::identityManager();
+  KPIMIdentities::IdentityManager *idmanager = Akonadi::identityManager();
   QStringList lst = idmanager->identities();
-  IdentityManager::ConstIterator it1;
+  KPIMIdentities::IdentityManager::ConstIterator it1;
   for ( it1 = idmanager->begin(); it1 != idmanager->end(); ++it1 ) {
     fullEmails << (*it1).fullEmailAddr();
   }
@@ -281,7 +281,7 @@ bool KOPrefs::thatIsMe( const QString &_email )
      _email in a way which is unnecessarily complex for what we can have here,
      so we do that ourselves. This makes sense since this
 
-  if ( KOrg::identityManager()->thatIsMe( _email ) ) {
+  if ( Akonadi::identityManager()->thatIsMe( _email ) ) {
     return true;
   }
   */
@@ -300,8 +300,8 @@ bool KOPrefs::thatIsMe( const QString &_email )
     return true;
   }
 
-  for ( IdentityManager::ConstIterator it = KOrg::identityManager()->begin();
-        it != KOrg::identityManager()->end(); ++it ) {
+  for ( Akonadi::IdentityManager::ConstIterator it = Akonadi::identityManager()->begin();
+        it != Akonadi::identityManager()->end(); ++it ) {
     if ( email == (*it).emailAddr() ) {
       return true;
     }
