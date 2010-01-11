@@ -211,13 +211,6 @@ void davCalendarResource::configure( WId windowId )
     QStringList rmCollections = dialog.removedUrls();
     dialog.setRemovedUrls( QStringList() );
     
-    if( Settings::self()->authenticationRequired() &&
-        Settings::self()->useKWallet() &&
-        !Settings::self()->username().isEmpty() &&
-        !Settings::self()->password().isEmpty() )
-      Settings::self()->storePassword();
-      
-    
     foreach( QString declaredUrl, rmCollections ) {
       if( seenCollections.contains( declaredUrl ) ) {
         seenCollections.remove( declaredUrl );

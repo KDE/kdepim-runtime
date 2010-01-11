@@ -200,7 +200,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="kcfg_password">
+           <widget class="QLineEdit" name="password">
             <property name="locale">
              <locale language="English" country="UnitedStates"/>
             </property>
@@ -288,7 +288,7 @@
   <connection>
    <sender>kcfg_authenticationRequired</sender>
    <signal>clicked(bool)</signal>
-   <receiver>kcfg_password</receiver>
+   <receiver>password</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

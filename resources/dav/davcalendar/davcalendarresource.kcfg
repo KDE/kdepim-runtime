@@ -37,10 +37,6 @@
       <label>Username</label>
       <default></default>
     </entry>
-    <entry name="password" type="Password">
-      <label>Password</label>
-      <default></default>
-    </entry>
     <entry name="useKWallet" type="Bool">
       <default>true</default>
     </entry>

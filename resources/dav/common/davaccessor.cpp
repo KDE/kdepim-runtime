@@ -319,7 +319,7 @@ void davAccessor::itemsReportFinished( KJob *j )
     
     // NOTE: nothing below should invalidate the item (return an error
     // and exit the function)
-    kDebug() << "Listed URL " << href << " in collection " << collectionUrl;
+    //kDebug() << "Listed URL " << href << " in collection " << collectionUrl;
     seenUrl( collectionUrl, href );
     
     tmp = r.elementsByTagNameNS( "DAV:", "getetag" );
