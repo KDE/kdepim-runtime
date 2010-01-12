@@ -34,12 +34,19 @@
 #include <mailtransport/transport.h>
 #include <mailtransport/servertest.h>
 
+#include <akonadi/collectionfetchjob.h>
+#include <akonadi/kmime/specialmailcollections.h>
+#include <akonadi/kmime/specialmailcollectionsrequestjob.h>
+
 #include <kemailsettings.h>
 #include <klocale.h>
 #include <kpushbutton.h>
 #include <kmessagebox.h>
 #include <kuser.h>
 #include <solid/networking.h>
+
+#include <kpimidentities/identitymanager.h>
+#include <kpimidentities/identitycombo.h>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
@@ -64,18 +71,29 @@ SetupServer::SetupServer( WId parent )
   connect( m_ui->tlsRadio, SIGNAL( toggled(bool) ),
            this, SLOT( slotSafetyChanged() ) );
 
-  m_ui->authImapGroup->setId( m_ui->clearRadio, 1 );
-  m_ui->authImapGroup->setId( m_ui->loginRadio, 2 );
-  m_ui->authImapGroup->setId( m_ui->plainRadio, 3 );
-  m_ui->authImapGroup->setId( m_ui->cramMd5Radio, 4 );
-  m_ui->authImapGroup->setId( m_ui->digestMd5Radio, 5 );
-  m_ui->authImapGroup->setId( m_ui->ntlmRadio, 6 );
-  m_ui->authImapGroup->setId( m_ui->gssapiRadio, 7 );
-  m_ui->authImapGroup->setId( m_ui->anonymousRadio, 8 );
+  m_ui->authImapGroup->setId( m_ui->clearRadio, 0 );
+  m_ui->authImapGroup->setId( m_ui->loginRadio, 1 );
+  m_ui->authImapGroup->setId( m_ui->plainRadio, 2 );
+  m_ui->authImapGroup->setId( m_ui->cramMd5Radio, 3 );
+  m_ui->authImapGroup->setId( m_ui->digestMd5Radio, 4 );
+  m_ui->authImapGroup->setId( m_ui->ntlmRadio, 5 );
+  m_ui->authImapGroup->setId( m_ui->gssapiRadio, 6 );
+  m_ui->authImapGroup->setId( m_ui->anonymousRadio, 7 );
 
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
   m_ui->imapServer->setFocus();
+
+  m_ui->folderRequester->setMimeTypeFilter(
+    QStringList() << QLatin1String( "message/rfc822" ) );
+  m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
+  m_identityManager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
+  m_identityCombobox = new KPIMIdentities::IdentityCombo( m_identityManager, this );
+  m_ui->identityLabel->setBuddy( m_identityCombobox );
+  m_ui->identityLayout->addWidget( m_identityCombobox, 1 );
+  m_ui->identityLabel->setBuddy( m_identityCombobox );
+
+
   connect( m_ui->testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
 
   connect( m_ui->imapServer, SIGNAL( textChanged( const QString & ) ),
@@ -86,6 +104,13 @@ SetupServer::SetupServer( WId parent )
            SLOT( slotComplete() ) );
 
   connect( m_ui->subscriptionButton, SIGNAL( pressed() ), SLOT( slotManageSubscriptions() ) );
+
+  connect( m_ui->managesieveCheck, SIGNAL(toggled(bool)),
+           SLOT(slotEnableWidgets()) );
+  connect( m_ui->sameConfigCheck, SIGNAL(toggled(bool)),
+           SLOT(slotEnableWidgets()) );
+
+  connect( m_ui->useDefaultIdentityCheck, SIGNAL( toggled(bool) ), this, SLOT( slotIdentityCheckboxChanged() ) );
 
   readSettings();
   slotTestChanged();
@@ -108,6 +133,11 @@ bool SetupServer::shouldClearCache() const
   return m_shouldClearCache;
 }
 
+void SetupServer::slotIdentityCheckboxChanged()
+{
+  m_identityCombobox->setEnabled( !m_ui->useDefaultIdentityCheck->isChecked() );
+}
+
 void SetupServer::applySettings()
 {
   m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
@@ -121,6 +151,21 @@ void SetupServer::applySettings()
   Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
   Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
   Settings::self()->setDisconnectedModeEnabled( m_ui->disconnectedModeEnabled->isChecked() );
+
+  Settings::self()->setSieveSupport( m_ui->managesieveCheck->isChecked() );
+  Settings::self()->setSieveReuseConfig( m_ui->sameConfigCheck->isChecked() );
+  Settings::self()->setSievePort( m_ui->portSpin->value() );
+  Settings::self()->setSieveAlternateUrl( m_ui->alternateURL->text() );
+  Settings::self()->setSieveVacationFilename( m_vacationFileName );
+
+  Settings::self()->setTrashCollection( m_ui->folderRequester->collection().id() );
+
+  Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
+  Settings::self()->setUseDefaultIdentity( m_ui->useDefaultIdentityCheck->isChecked() );
+
+  if ( !m_ui->useDefaultIdentityCheck->isChecked() )
+    Settings::self()->setAccountIdentity( m_identityCombobox->currentIdentity() );
+
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 }
@@ -164,6 +209,37 @@ void SetupServer::readSettings()
 
   m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
   m_ui->disconnectedModeEnabled->setChecked( Settings::self()->disconnectedModeEnabled() );
+
+  m_ui->managesieveCheck->setChecked(Settings::self()->sieveSupport());
+  m_ui->sameConfigCheck->setChecked( Settings::self()->sieveReuseConfig() );
+  m_ui->portSpin->setValue( Settings::self()->sievePort() );
+  m_ui->alternateURL->setText( Settings::self()->sieveAlternateUrl() );
+  m_vacationFileName = Settings::self()->sieveVacationFilename();
+
+
+  Akonadi::Collection trashCollection( Settings::self()->trashCollection() );
+  if ( trashCollection.isValid() ) {
+    Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob( trashCollection,Akonadi::CollectionFetchJob::Base,this );
+    connect( fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
+             this, SLOT(targetCollectionReceived(Akonadi::Collection::List)) );
+  }
+  else {
+    Akonadi::SpecialMailCollectionsRequestJob *requestJob = new Akonadi::SpecialMailCollectionsRequestJob( this );
+    connect ( requestJob, SIGNAL(result(KJob*)),
+              this, SLOT(localFolderRequestJobFinished(KJob*)) );
+    requestJob->requestDefaultCollection( Akonadi::SpecialMailCollections::Trash );
+    requestJob->start();
+  }
+
+  m_ui->useDefaultIdentityCheck->setChecked( Settings::self()->useDefaultIdentity() );
+  if ( !m_ui->useDefaultIdentityCheck->isChecked() )
+    m_identityCombobox->setCurrentIdentity( Settings::self()->accountIdentity() );
+
+
+  m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
+
+  if ( m_vacationFileName.isEmpty() )
+    m_vacationFileName = "kmail-vacation.siv";
 
   delete currentUser;
 }
@@ -241,6 +317,16 @@ void SetupServer::slotTestChanged()
   // do not use imapConnectionPossible, as the data is not yet saved.
   m_ui->testButton->setEnabled( true /* TODO Global::connectionPossible() ||
                                         m_ui->imapServer->text() == "localhost"*/ );
+}
+
+void SetupServer::slotEnableWidgets()
+{
+  bool haveSieve = m_ui->managesieveCheck->isChecked();
+  bool reuseConfig = m_ui->sameConfigCheck->isChecked();
+
+  m_ui->sameConfigCheck->setEnabled( haveSieve );
+  m_ui->portSpin->setEnabled( haveSieve && reuseConfig );
+  m_ui->alternateURL->setEnabled( haveSieve && !reuseConfig );
 }
 
 void SetupServer::slotComplete()
@@ -321,28 +407,28 @@ void SetupServer::slotManageSubscriptions()
   }
 
   switch ( m_ui->authImapGroup->checkedId() ) {
-  case 1:
+  case 0:
     account.setAuthenticationMode( KIMAP::LoginJob::ClearText );
     break;
-  case 2:
+  case 1:
     account.setAuthenticationMode( KIMAP::LoginJob::Login );
     break;
-  case 3:
+  case 2:
     account.setAuthenticationMode( KIMAP::LoginJob::Plain );
     break;
-  case 4:
+  case 3:
     account.setAuthenticationMode( KIMAP::LoginJob::CramMD5 );
     break;
-  case 5:
+  case 4:
     account.setAuthenticationMode( KIMAP::LoginJob::DigestMD5 );
     break;
-  case 6:
+  case 5:
     account.setAuthenticationMode( KIMAP::LoginJob::NTLM );
     break;
-  case 7:
+  case 6:
     account.setAuthenticationMode( KIMAP::LoginJob::GSSAPI );
     break;
-  case 8:
+  case 7:
     account.setAuthenticationMode( KIMAP::LoginJob::Anonymous );
     break;
   default:
@@ -360,5 +446,22 @@ void SetupServer::slotManageSubscriptions()
 
   m_ui->subscriptionEnabled->setChecked( account.isSubscriptionEnabled() );
 }
+
+
+void SetupServer::targetCollectionReceived( Akonadi::Collection::List collections )
+{
+  m_ui->folderRequester->setCollection( collections.first() );
+}
+
+void SetupServer::localFolderRequestJobFinished( KJob *job )
+{
+  if ( !job->error() ) {
+    Akonadi::Collection targetCollection = Akonadi::SpecialMailCollections::self()->defaultCollection( Akonadi::SpecialMailCollections::Trash );
+    Q_ASSERT( targetCollection.isValid() );
+    m_ui->folderRequester->setCollection( targetCollection );
+  }
+}
+
+
 
 #include "setupserver.moc"

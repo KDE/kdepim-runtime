@@ -138,6 +138,7 @@ class POP3Resource : public Akonadi::ResourceBase,
     bool mIntervalCheckInProgress;
     QString mPassword;
     bool mSavePassword;
+    bool mTestLocalInbox;
     KWallet::Wallet *mWallet;
 
     // Maps IDs on the server to message sizes on the server

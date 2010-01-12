@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Imap
+Icon=network-server
+Comment=Imap account
+
+[Wizard]
+Type=message/rfc822
+Script=imapwizard.js
+
+[Translate]
+Filename=accountwizard_imap

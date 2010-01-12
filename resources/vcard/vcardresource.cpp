@@ -49,7 +49,7 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
   Q_UNUSED( parts );
   const QString rid = item.remoteId();
   if ( !mAddressees.contains( rid ) ) {
-    emit error( QString( "Contact with uid '%1' not found!" ).arg( rid ) );
+    emit error( i18n( "Contact with uid '%1' not found!" ,rid ) );
     return false;
   }
   Item i( item );

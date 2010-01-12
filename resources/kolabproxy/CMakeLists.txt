@@ -52,3 +52,4 @@ install(TARGETS akonadi_kolabproxy_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 kde4_install_icons( ${ICON_INSTALL_DIR} )
 
 add_subdirectory( tests )
+add_subdirectory( wizard )

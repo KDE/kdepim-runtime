@@ -43,10 +43,42 @@
              triggered manually through the D-Bus interface.</label>
       <default>true</default>
     </entry>
+    <entry name="TrashCollection" type="LongLong">
+       <label>Define which folder is used for trash</label>
+       <default>-1</default>
+    </entry>
+    <entry name="UseDefaultIdentity" type="Bool">
+       <label>Define if account use default identity</label>
+       <default>true</default>
+    </entry>
+    <entry name="AccountIdentity" type="Int">
+       <label>Identity account</label>
+    </entry>
   </group>
   <group name="idle">
     <entry name="IdleRidPath" type="StringList">
       <label>RID path to the mailbox to watch for changes</label>
+    </entry>
+  </group>
+  <group name="siever">
+    <entry name="SieveSupport" type="Bool">
+      <label>Define if server supports sieve</label>
+      <default>false</default>
+    </entry>
+    <entry name="SieveReuseConfig" type="Bool">
+      <label>Define if we reuse host and login configuration</label>
+      <default>true</default>
+    </entry>
+    <entry name="SievePort" type="Int">
+      <label>Define sieve port</label>
+      <default>2000</default>
+    </entry>
+    <entry name="SieveAlternateUrl" type="String">
+      <label>Define alternate url</label>
+    </entry>
+    <entry name="SieveVacationFilename" type="String">
+      <label>Define default sieve vacation filename</label>
+      <default>kmail-vacation.siv</default>
     </entry>
   </group>
 </kcfg>

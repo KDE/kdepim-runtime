@@ -113,6 +113,7 @@ add_subdirectory(tray)
 add_subdirectory(migration)
 add_subdirectory(defaultsetup)
 add_subdirectory(kresources)
+add_subdirectory(accountwizard)
 
 #if(OPENSYNC_FOUND)
 #  add_subdirectory(opensync)

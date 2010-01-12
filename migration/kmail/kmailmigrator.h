@@ -22,7 +22,6 @@
 
 #include "kmigratorbase.h"
 
-#include <QObject>
 #include <QStringList>
 
 class KConfig;
@@ -30,8 +29,6 @@ class KJob;
 
 namespace KMail
 {
-class AccountManager;
-class ImapAccountBase;
 
 /**
  * KMail to Akonadi account migrator
@@ -50,11 +47,13 @@ class KMailMigrator : public KMigratorBase
 
   private slots:
     void imapAccountCreated( KJob *job );
-    //void pop3AccountCreated( KJob *job );
+    void imapDisconnectedAccountCreated( KJob *job );
+    void pop3AccountCreated( KJob *job );
     void mboxAccountCreated( KJob *job );
     void maildirAccountCreated( KJob *job );
 
   private:
+    void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();
     void migrationCompleted( const Akonadi::AgentInstance &instance );
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance

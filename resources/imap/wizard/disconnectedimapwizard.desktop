@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Disconnected Imap
+Icon=network-server
+Comment=Disconnected Imap account
+
+[Wizard]
+Type=message/rfc822
+Script=disconnectedimapwizard.js
+
+[Translate]
+Filename=accountwizard_imap

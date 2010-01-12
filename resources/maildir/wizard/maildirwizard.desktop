@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Maildir
+Icon=message-rfc822
+Comment=Maildir account
+
+[Wizard]
+Type=message/rfc822
+Script=maildirwizard.js
+
+[Translate]
+Filename=accountwizard_maildir

@@ -20,7 +20,7 @@
 #include "kmailmigrator.h"
 
 #include "imapsettings.h"
-//#include "pop3settings.h"
+#include "pop3settings.h"
 #include "mboxsettings.h"
 #include "maildirsettings.h"
 
@@ -30,6 +30,7 @@
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
+#include "settings.h"
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -148,14 +149,18 @@ bool KMailMigrator::migrateCurrentAccount()
   emit message( Info, i18n( "Trying to migrate '%1' to resource...", group.readEntry( "Name" ) ) );
 
   const QString type = group.readEntry( "Type" ).toLower();
-  if ( type == "imap" || type == "dimap" ) {
+  if ( type == "imap" ) {
     createAgentInstance( "akonadi_imap_resource", this,
                          SLOT( imapAccountCreated( KJob * ) ) );
   }
+  else if ( type == "dimap" ) {
+    createAgentInstance( "akonadi_imap_resource", this,
+                         SLOT( imapDisconnectedAccountCreated( KJob * ) ) );
+
+  }
   else if ( type == "pop" ) {
-    /* createAgentInstance( "akonadi_pop3_resource", this,
-                         SLOT( pop3AccountCreated( KJob * ) ) ); */
-    return false;
+    createAgentInstance( "akonadi_pop3_resource", this,
+                         SLOT( pop3AccountCreated( KJob * ) ) );
   }
   else if ( type == "maildir" ) {
     createAgentInstance( "akonadi_maildir_resource", this,
@@ -172,6 +177,16 @@ bool KMailMigrator::migrateCurrentAccount()
   return true;
 }
 
+void KMailMigrator::imapDisconnectedAccountCreated( KJob * job )
+{
+  if ( job->error() ) {
+    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
+    return;
+  }
+  emit message( Info, i18n( "Created disconnected imap resource" ) );
+  migrateImapAccount( job, true );
+}
+
 void KMailMigrator::imapAccountCreated( KJob *job )
 {
   if ( job->error() ) {
@@ -179,7 +194,12 @@ void KMailMigrator::imapAccountCreated( KJob *job )
     return;
   }
   emit message( Info, i18n( "Created imap resource" ) );
+  migrateImapAccount( job, false );
+}
 
+
+void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
+{
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   const KConfigGroup config( mConfig, mCurrentAccount );
 
@@ -220,13 +240,29 @@ void KMailMigrator::imapAccountCreated( KJob *job )
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
+  if ( config.readEntry( "check-exclude" ).toLower() == "false" )
+    iface->setIntervalCheckTime( config.readEntry( "check-interval", 0 ) );
+  else
+    iface->setIntervalCheckTime( -1 ); //Exclude
+
+  iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
+  iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
+  iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
+  iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
+  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
+  iface->setDisconnectedModeEnabled( disconnected );
+  iface->setAutomaticExpungeEnabled( config.readEntry("auto-expunge", true ) );
+  const bool useDefaultIdentity = config.readEntry( "use-default-identity", true );
+  iface->setUseDefaultIdentity( useDefaultIdentity );
+  if ( !useDefaultIdentity )
+    iface->setAccountIdentity( config.readEntry( "identity-id" ).toInt() );
+
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
   //instance.reconfigure();
   migrationCompleted( instance );
 }
 
-/*
 void KMailMigrator::pop3AccountCreated( KJob *job )
 {
   if ( job->error() ) {
@@ -268,14 +304,17 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     iface->setFilterOnServer( true );
     iface->setFilterCheckSize( config.readEntry( "filter-on-server" ).toUInt() );
   }
+  iface->setIntervalCheckEnabled( config.readEntry( "check-exclude",false ) );
+  iface->setIntervalCheckInterval( config.readEntry( "check-interval", 0 ) );
   iface->setAuthenticationMethod( config.readEntry( "auth" ));
-
+  iface->setPrecommand( config.readPathEntry( "precommand" ,QString() ) );
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
+
+  //TODO port "Folder" to akonadi collection id
 
   //instance.reconfigure();
   migrationCompleted( instance );
 }
-*/
 
 void KMailMigrator::mboxAccountCreated( KJob *job )
 {
