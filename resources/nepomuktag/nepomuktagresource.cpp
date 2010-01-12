@@ -43,7 +43,8 @@
 using namespace Akonadi;
 
 NepomukTagResource::NepomukTagResource( const QString &id )
-        : ResourceBase( id )
+        : ResourceBase( id ),
+        mModel( new Soprano::Util::SignalCacheModel( Nepomuk::ResourceManager::instance()->mainModel() ) )
 {
     Nepomuk::ResourceManager::instance()->init();
     changeRecorder()->fetchCollection( true );
@@ -61,9 +62,10 @@ NepomukTagResource::NepomukTagResource( const QString &id )
     policy.setIntervalCheckTime( -1 );
     m_root.setCachePolicy( policy );
 
-    Soprano::Util::SignalCacheModel* model = new Soprano::Util::SignalCacheModel( Nepomuk::ResourceManager::instance()->mainModel() );
-    connect( model, SIGNAL(statementAdded(Soprano::Statement)), SLOT(statementAdded(Soprano::Statement)) );
-    connect( model, SIGNAL(statementRemoved(Soprano::Statement)), SLOT(statementRemoved(Soprano::Statement)) );
+    connect( mModel.data(), SIGNAL(statementAdded(Soprano::Statement)),
+             SLOT(statementAdded(Soprano::Statement)) );
+    connect( mModel.data(), SIGNAL(statementRemoved(Soprano::Statement)),
+             SLOT(statementRemoved(Soprano::Statement)) );
 
     m_pendingTagsTimer.setSingleShot( true );
     m_pendingTagsTimer.setInterval( 500 );
