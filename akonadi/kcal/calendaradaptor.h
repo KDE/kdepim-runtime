@@ -69,16 +69,14 @@ template<class T> inline Akonadi::Item incidenceToItem(T* incidence) {
   return item;
 }
 
-//FIXME: Find a way to set a QWidget parent for user interaction
-//Probably an extra member with a setter
 class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
 {
   Q_OBJECT
 
   public:
-    explicit CalendarAdaptor(Akonadi::Calendar *calendar)
+    explicit CalendarAdaptor(Akonadi::Calendar *calendar, QWidget *parent)
       : KCal::Calendar( KOPrefs::instance()->timeSpec() )
-      , mCalendar( calendar )
+      , mCalendar( calendar ), mParent( parent )
     {
       Q_ASSERT(mCalendar);
     }
@@ -192,7 +190,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
       if( !incidence )
         return false;
 
-      Akonadi::Collection collection = Akonadi::selectCollection( 0 );
+      Akonadi::Collection collection = Akonadi::selectCollection( mParent );
       if ( !collection.isValid() )
         return false;
       kDebug() << "\"" << incidence->summary() << "\"";
@@ -234,7 +232,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
 
       if  ( job->error() ) {
         KMessageBox::sorry(
-          0, //PENDING(AKONADI_PORT) set parent, ideally the one passed in addIncidence...
+          mParent,
           i18n( "Unable to save %1 \"%2\": %3",
                 i18n( incidence->type() ),
                 incidence->summary(),
@@ -245,7 +243,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
       Q_ASSERT( incidence );
       if ( KOPrefs::instance()->mUseGroupwareCommunication ) {
         if ( !Groupware::instance()->sendICalMessage(
-               0, //PENDING(AKONADI_PORT) set parent, ideally the one passed in addIncidence...
+               mParent,
                KCal::iTIPRequest,
                incidence.get(), Groupware::INCIDENCEADDED, false ) ) {
           kError() << "sendIcalMessage failed.";
@@ -263,7 +261,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
       Incidence::Ptr tmp = Akonadi::incidence( items.first() );
       Q_ASSERT( tmp );
       if ( job->error() ) {
-        KMessageBox::sorry( 0, //PENDING(AKONADI_PORT) set parent
+        KMessageBox::sorry( mParent,
                             i18n( "Unable to delete incidence %1 \"%2\": %3",
                                   i18n( tmp->type() ),
                                   tmp->summary(),
@@ -313,7 +311,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
         return true;
       } else if ( KOPrefs::instance()->mUseGroupwareCommunication ) {
         return
-          Groupware::instance()->sendICalMessage( 0, method, incidence.get(), action,  false );
+          Groupware::instance()->sendICalMessage( mParent, method, incidence.get(), action,  false );
       }
       return true;
     }
@@ -324,7 +322,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
       Incidence::Ptr incidence = Akonadi::incidence( item );
 
       if ( incidence->attendeeCount() == 0 && method != iTIPPublish ) {
-        KMessageBox::information( 0, i18n( "The item has no attendees." ), QLatin1String( "ScheduleNoIncidences" ) );
+        KMessageBox::information( mParent, i18n( "The item has no attendees." ), QLatin1String( "ScheduleNoIncidences" ) );
         return;
       }
 
@@ -335,7 +333,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
       // Send the mail
       MailScheduler scheduler( mCalendar );
       if ( scheduler.performTransaction( incidence.get(), method ) ) {
-        KMessageBox::information( 0,
+        KMessageBox::information( mParent,
                                   i18n( "The groupware message for item '%1' "
                                         "was successfully sent.\nMethod: %2",
                                         incidence->summary(),
@@ -343,7 +341,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
                                   i18n( "Sending Free/Busy" ),
                                   QLatin1String( "FreeBusyPublishSuccess" ) );
       } else {
-        KMessageBox::error( 0,
+        KMessageBox::error( mParent,
                             i18nc( "Groupware message sending failed. "
                                    "%2 is request/reply/add/cancel/counter/etc.",
                                    "Unable to send the item '%1'.\nMethod: %2",
@@ -353,7 +351,7 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
     }
 
     Akonadi::Calendar *mCalendar;
-
+    QWidget *mParent;
 };
 
 }

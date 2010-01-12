@@ -53,10 +53,11 @@ namespace Akonadi {
 
       bool performTransaction( KCal::IncidenceBase *incidence, KCal::iTIPMethod method );
       bool performTransaction( KCal::IncidenceBase *incidence, KCal::iTIPMethod method, const QString &recipients );
-
+#if 0
       QList<KCal::ScheduleMessage*> retrieveTransactions();
 
       bool deleteTransaction( KCal::IncidenceBase *incidence );
+#endif
 
       /** Returns the directory where the free-busy information is stored */
       virtual QString freeBusyDir();
@@ -81,7 +82,9 @@ namespace Akonadi {
     private:
       Calendar *mCalendar;
       KCal::ICalFormat *mFormat;
+    #if 0
       QMap<KCal::IncidenceBase *, QString> mEventMap;
+    #endif
   };
 
 }

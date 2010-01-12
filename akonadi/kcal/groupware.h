@@ -53,6 +53,15 @@ namespace Akonadi {
   class Calendar;
   class Calendar;
   class FreeBusyManager;
+  class Item;
+
+class AKONADI_KCAL_NEXT_EXPORT GroupwareUiDelegate
+{
+public:
+  virtual ~GroupwareUiDelegate();
+
+  virtual void requestIncidenceEditor( const Akonadi::Item &item ) = 0;
+};
 
 class AKONADI_KCAL_NEXT_EXPORT Groupware : public QObject
 {
@@ -65,7 +74,7 @@ class AKONADI_KCAL_NEXT_EXPORT Groupware : public QObject
       NOCHANGE
     };
 
-    static Groupware *create( Akonadi::Calendar * );
+    static Groupware *create( Akonadi::Calendar *, GroupwareUiDelegate * );
     static Groupware *instance();
 
     FreeBusyManager *freeBusyManager();
@@ -91,19 +100,20 @@ class AKONADI_KCAL_NEXT_EXPORT Groupware : public QObject
     void setDoNotNotify( bool notify ) { mDoNotNotify = notify; }
     bool doNotNotify() { return mDoNotNotify; }
 
-  private slots:
-    /** Handle iCals given by KMail. */
-    void incomingDirChanged( const QString &path );
+    bool handleInvitation( const QString& receiver, const QString& iCal,
+                           const QString& type );
 
+  private slots:
     void initialCheckForChanges();
 
   protected:
-    Groupware( Akonadi::Calendar * );
+    Groupware( Akonadi::Calendar *, GroupwareUiDelegate * );
 
   private:
     static Groupware *mInstance;
     KCal::ICalFormat mFormat;
     Akonadi::Calendar *mCalendar;
+    GroupwareUiDelegate *mDelegate;
     static FreeBusyManager *mFreeBusyManager;
     bool mDoNotNotify;
 };

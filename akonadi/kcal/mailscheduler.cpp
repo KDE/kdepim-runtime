@@ -112,7 +112,7 @@ bool MailScheduler::performTransaction( KCal::IncidenceBase *incidence, KCal::iT
   }
   return status;
 }
-
+#if 0
 QList<ScheduleMessage*> MailScheduler::retrieveTransactions()
 {
   QString incomingDirName = KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income" ) );
@@ -144,7 +144,7 @@ QList<ScheduleMessage*> MailScheduler::retrieveTransactions()
         messageString.remove( QRegExp( QLatin1String( "\n[ \t]" ) ) );
         messageString = QString::fromUtf8( messageString.toLatin1() );
 
-        CalendarAdaptor caladaptor(mCalendar);
+        CalendarAdaptor caladaptor( mCalendar, 0 );
         ScheduleMessage *mess = mFormat->parseScheduleMessage( &caladaptor, messageString );
 
         if ( mess ) {
@@ -177,7 +177,7 @@ bool MailScheduler::deleteTransaction( IncidenceBase *incidence )
   }
   return status;
 }
-
+#endif
 QString MailScheduler::freeBusyDir()
 {
   return KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/freebusy" ) );
@@ -203,7 +203,11 @@ bool MailScheduler::acceptTransaction( KCal::IncidenceBase *incidence, KCal::iTI
         return m_scheduler->acceptCounterProposal( incidence );
       }
       virtual QList<ScheduleMessage*> retrieveTransactions() {
+#if 0
         return m_scheduler->retrieveTransactions();
+#else
+        return QList<ScheduleMessage*>();
+#endif
       }
       virtual QString freeBusyDir() {
         return m_scheduler->freeBusyDir();
@@ -213,7 +217,7 @@ bool MailScheduler::acceptTransaction( KCal::IncidenceBase *incidence, KCal::iTI
       CalendarAdaptor *m_calendar;
   };
 
-  CalendarAdaptor caladaptor(mCalendar);
+  CalendarAdaptor caladaptor(mCalendar, 0);
   SchedulerAdaptor scheduleradaptor(this, &caladaptor);
   return scheduleradaptor.acceptTransaction(incidence, method, status, email);
 }

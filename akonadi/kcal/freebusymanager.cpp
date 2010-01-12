@@ -233,7 +233,7 @@ void FreeBusyManager::publishFreeBusy()
   KUrl targetURL ( KOPrefs::instance()->freeBusyPublishUrl() );
   if ( targetURL.isEmpty() )  {
     KMessageBox::sorry(
-      0,
+      QApplication::activeModalWidget(),
       i18n( "<qt><p>No URL configured for uploading your free/busy list. "
             "Please set it in KOrganizer's configuration dialog, on the "
             "\"Free/Busy\" page.</p>"
@@ -249,7 +249,7 @@ void FreeBusyManager::publishFreeBusy()
   }
   if ( !targetURL.isValid() ) {
     KMessageBox::sorry(
-      0,
+      QApplication::activeModalWidget(),
       i18n( "<qt>The target URL '%1' provided is invalid.</qt>", targetURL.prettyUrl() ),
       i18n( "Invalid URL" ) );
     mBrokenUrl = true;
@@ -341,7 +341,7 @@ void FreeBusyManager::slotUploadFreeBusyResult( KJob *_job )
     KIO::FileCopyJob *job = static_cast<KIO::FileCopyJob *>( _job );
     if ( job->error() ) {
         KMessageBox::sorry(
-          0,
+          job->ui()->window(),
           i18n( "<qt><p>The software could not upload your free/busy list to "
                 "the URL '%1'. There might be a problem with the access "
                 "rights, or you specified an incorrect URL. The system said: "

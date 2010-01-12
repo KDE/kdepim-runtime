@@ -58,10 +58,14 @@ FreeBusyManager *Groupware::mFreeBusyManager = 0;
 
 Groupware *Groupware::mInstance = 0;
 
-Groupware *Groupware::create( Akonadi::Calendar *calendar )
+GroupwareUiDelegate::~GroupwareUiDelegate()
+{
+}
+
+Groupware *Groupware::create( Akonadi::Calendar *calendar, GroupwareUiDelegate *delegate )
 {
   if ( !mInstance ) {
-    mInstance = new Groupware( calendar );
+    mInstance = new Groupware( calendar, delegate );
   }
   return mInstance;
 }
@@ -73,33 +77,16 @@ Groupware *Groupware::instance()
   return mInstance;
 }
 
-Groupware::Groupware( Akonadi::Calendar *cal )
-  : QObject( 0 ), mCalendar( cal ), mDoNotNotify( false )
+Groupware::Groupware( Akonadi::Calendar *cal, GroupwareUiDelegate *delegate )
+  : QObject( 0 ), mCalendar( cal ), mDelegate( delegate ), mDoNotNotify( false )
 {
   setObjectName( QLatin1String( "kmgroupware_instance" ) );
-  // Set up the dir watch of the three incoming dirs
-  KDirWatch *watcher = KDirWatch::self();
-  watcher->addDir( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.accepted/" ) ) );
-  watcher->addDir( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.tentative/" ) ) );
-  watcher->addDir( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.counter/" ) ) );
-  watcher->addDir( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.cancel/" ) ) );
-  watcher->addDir( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.reply/" ) ) );
-  watcher->addDir( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.delegated/" ) ) );
-  connect( watcher, SIGNAL(dirty(const QString&)),
-           this, SLOT(incomingDirChanged(const QString&)) );
   // Now set the ball rolling
   QTimer::singleShot( 0, this, SLOT(initialCheckForChanges()) );
 }
 
 void Groupware::initialCheckForChanges()
 {
-  incomingDirChanged( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.accepted/" ) ) );
-  incomingDirChanged( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.tentative/" ) ) );
-  incomingDirChanged( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.counter/" ) ) );
-  incomingDirChanged( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.cancel/" ) ) );
-  incomingDirChanged( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.reply/" ) ) );
-  incomingDirChanged( KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/income.delegated/" ) ) );
-
   if ( !mFreeBusyManager ) {
     mFreeBusyManager = new FreeBusyManager( this );
     mFreeBusyManager->setObjectName( QLatin1String( "freebusymanager" ) );
@@ -114,40 +101,12 @@ FreeBusyManager *Groupware::freeBusyManager()
   return mFreeBusyManager;
 }
 
-void Groupware::incomingDirChanged( const QString &path )
+bool Groupware::handleInvitation( const QString& receiver, const QString& iCal,
+                                  const QString& type )
 {
-  const QString incomingDirName = KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/" ) ) + QLatin1String( "income." );
-  if ( !path.startsWith( incomingDirName ) ) {
-    kDebug() << "Wrong dir" << path;
-    return;
-  }
-  QString action = path.mid( incomingDirName.length() );
-  while ( action.length() > 0 && action[ action.length()-1 ] == QLatin1Char( '/' ) ) {
-    // Strip slashes at the end
-    action.truncate( action.length() - 1 );
-  }
+  const QString action = type;
 
-  // Handle accepted invitations
-  QDir dir( path );
-  const QStringList files = dir.entryList( QDir::Files );
-  if ( files.isEmpty() ) {
-    // No more files here
-    return;
-  }
-  // Read the file and remove it
-  QFile f( path + QLatin1Char( '/' ) + files[0] );
-  if ( !f.open( QIODevice::ReadOnly ) ) {
-    kError() << "Can't open file '" << files[0] << "'";
-    return;
-  }
-  QTextStream t( &f );
-  t.setCodec( "UTF-8" );
-  QString receiver = KPIMUtils::firstEmailAddress( t.readLine() );
-  QString iCal = t.readAll();
-
-  f.remove();
-
-  CalendarAdaptor adaptor(mCalendar);
+  CalendarAdaptor adaptor(mCalendar, 0);
   ScheduleMessage *message = mFormat.parseScheduleMessage( &adaptor, iCal );
   if ( !message ) {
     QString errorMessage;
@@ -158,7 +117,7 @@ void Groupware::incomingDirChanged( const QString &path )
     KMessageBox::detailedError( 0,
                                 i18n( "Error while processing an invitation or update." ),
                                 errorMessage );
-    return;
+    return false;
   }
 
   KCal::iTIPMethod method = static_cast<KCal::iTIPMethod>( message->method() );
@@ -166,7 +125,7 @@ void Groupware::incomingDirChanged( const QString &path )
   KCal::Incidence *incidence = dynamic_cast<KCal::Incidence*>( message->event() );
   if( !incidence ) {
     delete message;
-    return;
+    return false;
   }
   MailScheduler scheduler( mCalendar );
   if ( action.startsWith( QLatin1String( "accepted" ) ) ||
@@ -212,18 +171,13 @@ void Groupware::incomingDirChanged( const QString &path )
     kError() << "Unknown incoming action" << action;
   }
 
-//Reenable once this part is independent from Akonadianizer
-#if AKONADI_PORT_DISABLED
-  if ( action.startsWith( QLatin1String( "counter" ) ) ) {
+  if ( mDelegate && action.startsWith( QLatin1String( "counter" ) ) ) {
     Akonadi::Item item;
     item.setPayload( Incidence::Ptr( incidence->clone() ) );
-    mView->editIncidence( item, true );
-    KOIncidenceEditor *tmp = mView->editorDialog( item );
-    tmp->selectInvitationCounterProposal( true );
+    mDelegate->requestIncidenceEditor( item );
   }
-  mView->updateView(); // This one can probably go away
-#endif
   delete message;
+  return true;
 }
 
 class KOInvitationFormatterHelper : public InvitationFormatterHelper
