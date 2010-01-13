@@ -63,9 +63,8 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
   delete wallet;
 }
 
-KMailMigrator::KMailMigrator( const QStringList &typesToMigrate ) :
+KMailMigrator::KMailMigrator(  ) :
   KMigratorBase(),
-  mTypes( typesToMigrate ),
   mConfig( 0 )
 {
 }
@@ -90,10 +89,6 @@ void KMailMigrator::migrateNext()
   while ( mIt != mAccounts.end() ) {
     mCurrentAccount = *mIt;
     const KConfigGroup group( mConfig, mCurrentAccount );
-    if ( !mTypes.contains( group.readEntry( "Type" ).toLower() ) ) {
-      ++mIt;
-      continue;
-    }
 
     const QString name = group.readEntry( "Name" );
     const QString idString = group.readEntry( "Id" );

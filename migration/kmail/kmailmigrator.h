@@ -38,7 +38,7 @@ class KMailMigrator : public KMigratorBase
   Q_OBJECT
 
   public:
-    KMailMigrator( const QStringList &typesToMigrate );
+    KMailMigrator();
     virtual ~KMailMigrator();
 
     void migrate();
@@ -60,7 +60,6 @@ class KMailMigrator : public KMigratorBase
                           = Akonadi::AgentInstance() );
 
   private:
-    QStringList mTypes;
     KConfig *mConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
