@@ -263,7 +263,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
-  //instance.reconfigure();
+  instance.reconfigure();
   migrationCompleted( instance );
 }
 
