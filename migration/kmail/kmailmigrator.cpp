@@ -30,10 +30,10 @@
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
-#include "settings.h"
 
 #include <KConfig>
 #include <KConfigGroup>
+#include <KDebug>
 #include <KStandardDirs>
 #include <KLocalizedString>
 #include <kwallet.h>
@@ -45,9 +45,9 @@ using namespace KMail;
    all have same class name. If resource interfaces are changed, these will need
    changing too. */
 enum ImapEncryption { Unencrypted = 1, Ssl, Tls };
-enum ImapAuthentication { ClearText = 1, Login, Plain, CramMD5, DigestMD5, NTLM,
+enum ImapAuthentication { ClearText = 0, Login, Plain, CramMD5, DigestMD5, NTLM,
                           GSSAPI, Anonymous };
-enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, KdeLockFile, MboxNone };
+enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
 static void migratePassword( const QString &idString, const AgentInstance &instance,
                              const QString &newFolder )
@@ -63,7 +63,7 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
   delete wallet;
 }
 
-KMailMigrator::KMailMigrator(  ) :
+KMailMigrator::KMailMigrator() :
   KMigratorBase(),
   mConfig( 0 )
 {
@@ -76,7 +76,7 @@ KMailMigrator::~KMailMigrator()
 
 void KMailMigrator::migrate()
 {
-  emit message( Info, i18n("Beginning KMail migration") );
+  emit message( Info, i18n("Beginning KMail migration...") );
   const QString &kmailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmailrc" ) );
   mConfig = new KConfig( kmailCfgFile );
   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
@@ -107,8 +107,17 @@ void KMailMigrator::migrateNext()
     ++mIt;
   }
   if ( mIt == mAccounts.end() )
-    deleteLater();
+    migrateLocalFolders();
 }
+
+void KMailMigrator::migrateLocalFolders()
+{
+  // TODO implement me!
+
+  emit message( Info, i18n( "Migration successfully completed." ) );
+  deleteLater();
+}
+
 
 void KMailMigrator::migrationFailed( const QString &errorMsg,
                                      const AgentInstance &instance )
@@ -269,45 +278,45 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   const KConfigGroup config( mConfig, mCurrentAccount );
 
-  OrgKdeAkonadiPop3SettingsInterface *iface = new OrgKdeAkonadiPop3SettingsInterface(
+  OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
     "/Settings", QDBusConnection::sessionBus(), this );
 
-  if (!iface->isValid() ) {
+  if ( !iface->isValid() ) {
     migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
     return;
   }
 
-  iface->setHost( config.readEntry( "host" ) );
-  iface->setPort( config.readEntry( "port" ).toUInt() );
-  iface->setLogin( config.readEntry( "login" ) );
-  if ( config.readEntry( "use-ssl" ).toLower() == "true" )
+  iface->setHost( config.readEntry( "host", QString() ) );
+  iface->setPort( config.readEntry( "port", 110u ) );
+  iface->setLogin( config.readEntry( "login", QString() ) );
+  if ( config.readEntry( "use-ssl", true ) )
     iface->setUseSSL( true );
-  if ( config.readEntry( "use-tls" ).toLower() == "true" )
+  if ( config.readEntry( "use-tls", true ) )
     iface->setUseTLS( true );
-  if ( config.readEntry( "store-passwd" ).toLower() == "true" )
+  if ( config.readEntry( "store-passwd", false ) )
     iface->setStorePassword( true );
-  if ( config.readEntry( "pipelining" ).toLower() == "true" )
+  if ( config.readEntry( "pipelining", false ) )
     iface->setPipelining( true );
-  if ( config.readEntry( "leave-on-server" ).toLower() == "true" ) {
+  if ( config.readEntry( "leave-on-server", true ) ) {
     iface->setLeaveOnServer( true );
-    iface->setLeaveOnServerDays( config.readEntry( "leave-on-server-days" ).toInt() );
-    iface->setLeaveOnServerCount( config.readEntry( "leave-on-server-count" ).toInt() );
-    iface->setLeaveOnServerSize( config.readEntry( "leave-on-server-size" ).toInt() );
+    iface->setLeaveOnServerDays( config.readEntry( "leave-on-server-days", -1 ) );
+    iface->setLeaveOnServerCount( config.readEntry( "leave-on-server-count", -1 ) );
+    iface->setLeaveOnServerSize( config.readEntry( "leave-on-server-size", -1 ) );
   }
-  if ( config.readEntry( "filter-on-server" ).toLower() == "true" ) {
+  if ( config.readEntry( "filter-on-server", false ) ) {
     iface->setFilterOnServer( true );
     iface->setFilterCheckSize( config.readEntry( "filter-on-server" ).toUInt() );
   }
-  iface->setIntervalCheckEnabled( config.readEntry( "check-exclude",false ) );
+  iface->setIntervalCheckEnabled( config.readEntry( "check-exclude", false ) );
   iface->setIntervalCheckInterval( config.readEntry( "check-interval", 0 ) );
-  iface->setAuthenticationMethod( config.readEntry( "auth" ));
-  iface->setPrecommand( config.readPathEntry( "precommand" ,QString() ) );
+  iface->setAuthenticationMethod( config.readEntry( "auth" ) );
+  iface->setPrecommand( config.readPathEntry( "precommand", QString() ) );
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 
   //TODO port "Folder" to akonadi collection id
 
-  //instance.reconfigure();
+  instance.reconfigure();
   migrationCompleted( instance );
 }
 

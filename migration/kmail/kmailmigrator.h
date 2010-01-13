@@ -44,6 +44,7 @@ class KMailMigrator : public KMigratorBase
     void migrate();
 
     void migrateNext();
+    void migrateLocalFolders();
 
   private slots:
     void imapAccountCreated( KJob *job );
