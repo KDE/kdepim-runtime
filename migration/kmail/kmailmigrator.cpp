@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Jonathan Armond <jon.armond@gmail.com>
+    Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,6 +19,7 @@
 */
 
 #include "kmailmigrator.h"
+#include "mixedtreeconverter.h"
 
 #include "imapsettings.h"
 #include "pop3settings.h"
@@ -65,7 +67,8 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
 
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
-  mConfig( 0 )
+  mConfig( 0 ),
+  mConverter( 0 )
 {
 }
 
@@ -122,10 +125,10 @@ void KMailMigrator::migrateLocalFolders()
   const QString localMaildirPath = cfgGroup.readPathEntry( "folders", QString() );
   kDebug() << localMaildirPath;
 
-  // TODO convert mbox files in a mixed-mode tree
-
   emit message( Info, i18n( "Migrating local folders in '%1'...", localMaildirPath ) );
-  createAgentInstance( "akonadi_maildir_resource", this, SLOT(localMaildirCreated(KJob*)) );
+  mConverter = new MixedTreeConverter( this );
+  connect( mConverter, SIGNAL(conversionDone(QString)), SLOT(localFoldersConverted(QString)) );
+  mConverter->convert( localMaildirPath );
 }
 
 void KMailMigrator::migrationDone()
@@ -401,10 +404,24 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   migrationCompleted( instance );
 }
 
+void KMailMigrator::localFoldersConverted(const QString& errorMsg)
+{
+  disconnect( mConverter, SIGNAL(conversionDone(QString)), this, SLOT(localFoldersConverted(QString)) );
+  if ( !errorMsg.isEmpty() ) {
+    emit message( Error, i18n( "Failed to convert local folder tree: %1", errorMsg ) );
+    deleteLater();
+    return;
+  }
+  emit message( Success, i18n( "Converted local mixed-mode folder tree." ) );
+
+  createAgentInstance( "akonadi_maildir_resource", this, SLOT(localMaildirCreated(KJob*)) );
+}
+
 void KMailMigrator::localMaildirCreated(KJob* job)
 {
   if ( job->error() ) {
-    migrationFailed( i18n( "Failed to resource for local folders: %1", job->errorText() ) );
+    emit message( Error, i18n( "Failed to resource for local folders: %1", job->errorText() ) );
+    deleteLater();
     return;
   }
   emit message( Info, i18n( "Created local maildir resource." ) );

@@ -213,6 +213,10 @@ bool Maildir::isValid( QString &error ) const
     return false;
 }
 
+bool Maildir::isRoot() const
+{
+  return d->isRoot;
+}
 
 bool Maildir::create()
 {

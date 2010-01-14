@@ -24,6 +24,7 @@
 
 #include <QStringList>
 
+class MixedTreeConverter;
 class KConfig;
 class KJob;
 
@@ -54,6 +55,7 @@ class KMailMigrator : public KMigratorBase
     void mboxAccountCreated( KJob *job );
     void maildirAccountCreated( KJob *job );
     void localMaildirCreated( KJob *job );
+    void localFoldersConverted( const QString &errorMsg );
 
   private:
     void migrateImapAccount( KJob *job, bool disconnected );
@@ -68,6 +70,7 @@ class KMailMigrator : public KMigratorBase
     QStringList mAccounts;
     typedef QStringList::iterator AccountIterator;
     AccountIterator mIt;
+    MixedTreeConverter *mConverter;
 };
 
 } // namespace KMail
