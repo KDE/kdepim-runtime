@@ -116,8 +116,6 @@ void MixedTreeConverter::convertMbox(const QString& path)
       return;
     }
   }
-
-  emit conversionDone( "bla" );
 }
 
 
