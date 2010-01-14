@@ -70,10 +70,14 @@ int main( int argc, char **argv )
     "<li>Locally cached IMAP data (will be re-downloaded), pending IMAP changes (synchronize with KMail 1 first)</li>"
     "<li>Flags and tags on local mail folders</li>"
     "<li>Folder settings</li>"
+    "<li>Filter sources and destinations</li>"
+    "<li>Local folders and messages</li>"
     "</ul></p>"
     "<p>Selecting cancel here will not alter your data in any kind but will also prevent KMail 2 from starting. Selecting continue will perform "
     "the migration procedure as far as currently implemented and then start KMail 2. "
     "Unless you are fully aware of the implications noted above choose cancel and use KMail 1 until the migration tool has been completed.</p>"
+    "<p>If you want to go ahead with the migration, be aware that it can take considerable time (depending on the amount of messages) and "
+    "cannot be interrupted safely.</p>"
   );
   int doYouReallyWantToBreakThings = KMessageBox::warningContinueCancel( 0, warningMsg, i18n( "KMail 2 Migration" ), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), QString(), KMessageBox::Dangerous );
   if ( doYouReallyWantToBreakThings != KMessageBox::Continue )

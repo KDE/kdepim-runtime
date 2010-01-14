@@ -45,6 +45,7 @@ class KMailMigrator : public KMigratorBase
 
     void migrateNext();
     void migrateLocalFolders();
+    void migrationDone();
 
   private slots:
     void imapAccountCreated( KJob *job );
@@ -52,6 +53,7 @@ class KMailMigrator : public KMigratorBase
     void pop3AccountCreated( KJob *job );
     void mboxAccountCreated( KJob *job );
     void maildirAccountCreated( KJob *job );
+    void localMaildirCreated( KJob *job );
 
   private:
     void migrateImapAccount( KJob *job, bool disconnected );

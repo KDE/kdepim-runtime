@@ -112,12 +112,27 @@ void KMailMigrator::migrateNext()
 
 void KMailMigrator::migrateLocalFolders()
 {
-  // TODO implement me!
+  if ( migrationState( "LocalFolders" ) == Complete ) {
+    emit message( Skip, i18n( "Local folders have already been migrated." ) );
+    migrationDone();
+    return;
+  }
 
+  const KConfigGroup cfgGroup( mConfig, "General" );
+  const QString localMaildirPath = cfgGroup.readPathEntry( "folders", QString() );
+  kDebug() << localMaildirPath;
+
+  // TODO convert mbox files in a mixed-mode tree
+
+  emit message( Info, i18n( "Migrating local folders in '%1'...", localMaildirPath ) );
+  createAgentInstance( "akonadi_maildir_resource", this, SLOT(localMaildirCreated(KJob*)) );
+}
+
+void KMailMigrator::migrationDone()
+{
   emit message( Info, i18n( "Migration successfully completed." ) );
   deleteLater();
 }
-
 
 void KMailMigrator::migrationFailed( const QString &errorMsg,
                                      const AgentInstance &instance )
@@ -140,7 +155,6 @@ void KMailMigrator::migrationCompleted( const AgentInstance &instance  )
                      group.readEntry( "Type" ).toLower() );
   emit message( Success, i18n( "Migration of '%1' succeeded.", group.readEntry( "Name" ) ) );
   mCurrentAccount.clear();
-  //mManager->remove( mCurrentAccount );
   migrateNext();
 }
 
@@ -263,6 +277,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
+  instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -316,6 +331,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
 
   //TODO port "Folder" to akonadi collection id
 
+  instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -353,6 +369,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   else if ( lockType == "none" )
     iface->setLockfileMethod( MboxNone );
 
+  instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -379,8 +396,36 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 
   iface->setPath( config.readEntry( "Location" ) );
 
+  instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
+}
+
+void KMailMigrator::localMaildirCreated(KJob* job)
+{
+  if ( job->error() ) {
+    migrationFailed( i18n( "Failed to resource for local folders: %1", job->errorText() ) );
+    return;
+  }
+  emit message( Info, i18n( "Created local maildir resource." ) );
+
+  AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
+  OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
+    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+    "/Settings", QDBusConnection::sessionBus(), this );
+  if (!iface->isValid() ) {
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    return;
+  }
+
+  const KConfigGroup cfgGroup( mConfig, "General" );
+  iface->setPath( cfgGroup.readPathEntry( "folders", QString() ) );
+
+  instance.setName( i18n("KMail Folders") );
+  instance.reconfigure();
+  setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
+  emit message( Success, i18n( "Local folders migrated successfully." ) );
+  migrationDone();
 }
 
 #include "kmailmigrator.moc"
