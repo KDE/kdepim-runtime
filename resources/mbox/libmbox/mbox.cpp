@@ -404,12 +404,12 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
                    // file has changed.
 }
 
-KMime::Message *MBox::readEntry(quint64 offset)
+QByteArray MBox::readRawEntry(quint64 offset)
 {
   bool wasLocked = locked();
   if ( ! wasLocked ) {
     if ( ! lock() )
-      return 0;
+      return QByteArray();
   }
 
   // TODO: Add error handling in case locking failed.
@@ -430,7 +430,7 @@ KMime::Message *MBox::readEntry(quint64 offset)
       kDebug() << "[MBox::readEntry] Invalid entry at:" << offset;
       if ( !wasLocked )
         unlock();
-      return 0; // The file is messed up or the index is incorrect.
+      return QByteArray(); // The file is messed up or the index is incorrect.
     }
 
     line = d->mMboxFile.readLine();
@@ -443,7 +443,7 @@ KMime::Message *MBox::readEntry(quint64 offset)
     if ( offset > static_cast<quint64>( d->mAppendedEntries.size() ) ) {
       if ( !wasLocked )
         unlock();
-      return 0;
+      return QByteArray();
     }
 
     QBuffer buffer( &(d->mAppendedEntries) );
@@ -457,7 +457,7 @@ KMime::Message *MBox::readEntry(quint64 offset)
       kDebug() << "[MBox::readEntry] Invalid appended entry at:" << offset;
       if ( !wasLocked )
         unlock();
-      return 0; // The file is messed up or the index is incorrect.
+      return QByteArray(); // The file is messed up or the index is incorrect.
     }
 
     line = buffer.readLine();
@@ -480,6 +480,15 @@ KMime::Message *MBox::readEntry(quint64 offset)
       Q_UNUSED( unlocked );
     }
   }
+
+  return message;
+}
+
+KMime::Message *MBox::readEntry(quint64 offset)
+{
+  const QByteArray message = readRawEntry( offset );
+  if ( message.isEmpty() )
+    return 0;
 
   KMime::Message *mail = new KMime::Message();
   mail->setContent( KMime::CRLFtoLF( message ) );

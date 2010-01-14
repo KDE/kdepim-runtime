@@ -160,6 +160,19 @@ class MBOX_EXPORT MBox
      */
     QByteArray readEntryHeaders( quint64 offset );
 
+    /**
+     * Reads the entire message from the file at given @param offset. If the
+     * mbox file is not locked this method will lock the file before reading and
+     * unlock it after reading. If the file already is locked, it will not
+     * unlock the file after reading the entry.
+     *
+     * @param offset The start position of the entry in the mbox file.
+     * @return Message at given offset or QByteArray() if the the file could not be locked
+     *         or the offset > fileSize.
+     *
+     * @see lock(), unlock()
+     */
+    QByteArray readRawEntry( quint64 offset );
 
     /**
      * Writes the mbox to disk. If the fileName is empty only appended messages

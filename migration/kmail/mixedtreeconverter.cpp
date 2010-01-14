@@ -20,6 +20,7 @@
 #include "mixedtreeconverter.h"
 
 #include <libmaildir/maildir.h>
+#include <libmbox/mbox.h>
 #include <KDebug>
 #include <KLocalizedString>
 #include <QtCore/QDir>
@@ -84,7 +85,39 @@ void MixedTreeConverter::convert(const KPIM::Maildir& md)
 void MixedTreeConverter::convertMbox(const QString& path)
 {
   kDebug() << path;
-  emit conversionDone( i18n( "Mbox conversion not yet implemented: '%1'", path ) );
+
+  // (0) check if this mbox has been converted before already
+  if ( path.endsWith( ".kmail-migrator-backup" ) )
+    return;
+
+  // (1) move mbox out of the way to make room for the maildir
+  const QString mboxBackupPath( path + ".kmail-migrator-backup" );
+  if ( !QFile::rename( path, mboxBackupPath ) ) {
+    emit conversionDone( i18n( "Unable to move mbox file '%1' to backup location.", path ) );
+    return;
+  }
+
+  // (2) create the maildir that will contain the mbox content
+  KPIM::Maildir md( path );
+  if ( !md.create() ) {
+    emit conversionDone( i18n( "Unable to create maildir folder at '%1'.", path ) );
+    return;
+  }
+
+  // (3) move messages from mbox to maildir
+  MBox mbox;
+  if ( !mbox.load( mboxBackupPath ) ) {
+    emit conversionDone( i18n( "Unable to open mbox file at '%1'.", mboxBackupPath ) );
+    return;
+  }
+  foreach ( const MsgInfo &entry, mbox.entryList() ) {
+    if ( md.addEntry( mbox.readRawEntry( entry.first ) ).isEmpty() ) {
+      emit conversionDone( i18n( "Unable to add new message to maildir '%1'.", path ) );
+      return;
+    }
+  }
+
+  emit conversionDone( "bla" );
 }
 
 
