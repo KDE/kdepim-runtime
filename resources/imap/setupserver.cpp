@@ -189,8 +189,6 @@ void SetupServer::readSettings()
   m_ui->safeImapGroup->button( i )->setChecked( true );
 
   i = Settings::self()->authentication();
-  if ( i == 0 )
-    i = 1; // it crashes when 0, shouldn't happen, but you never know.
   m_ui->authImapGroup->button( i )->setChecked( true );
 
   if ( !Settings::self()->passwordPossible() ) {

@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Jonathan Armond <jon.armond@gmail.com>
+    Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -30,6 +31,7 @@
 #include <KDebug>
 
 #include <QDBusConnection>
+#include <KMessageBox>
 
 using namespace KMail;
 
@@ -46,36 +48,41 @@ int main( int argc, char **argv )
   aboutData.setProgramIconName( "akonadi" );
   aboutData.addAuthor( ki18n( "Jonathan Armond" ),  ki18n( "Author" ), "jon.armond@gmail.com" ); 
 
-  const QStringList supportedTypes = QStringList() << "imap" << "mbox" << "maildir" << "dimap"
-                                                   << "local" << "pop";
-
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
-  options.add( "type <type>", ki18n("Only migrate the specified types (supported: imap, mbox, "
-                                    "maildir, dimap, local, pop)" ),
-               supportedTypes.join( "," ).toLatin1() );
   options.add( "interactive", ki18n( "Show reporting dialog") );
   options.add( "interactive-on-change", ki18n("Show report only if changes were made") );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-
-  QStringList typesToMigrate;
-  foreach ( const QString &type, args->getOption( "type" ).split( ',' ) ) {
-    if ( !supportedTypes.contains( type ) )
-      kWarning() << "Unknown resource type: " << type;
-    else if ( !QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.KMailMigrator." + type ) )
-      kWarning() << "Migrator instance already running for type " << type;
-    else
-      typesToMigrate << type;
-  }
-  if ( typesToMigrate.isEmpty() )
-    return 1;
 
   KApplication *app = new KApplication();
   app->setQuitOnLastWindowClosed( false );
 
   KGlobal::setAllowQuit( true );
   KGlobal::locale()->insertCatalog( "libakonadi" );
+
+  const QString warningMsg = i18n(
+    "<p>You are using a development version of KMail 2. Migration of existing settings, data and meta-data is not yet completely implemented. "
+    "The following data will currently be migrated:<ul>"
+    "<li>Account settings</li>"
+    "<li>Appearance settings</li>"
+    "</ul>The following will not happen yet and <b>cannot be done at a later point</b> anymore if you continue now:<ul>"
+    "<li>Locally cached IMAP data (will be re-downloaded), pending IMAP changes (synchronize with KMail 1 first)</li>"
+    "<li>Flags and tags on local mail folders</li>"
+    "<li>Folder settings</li>"
+    "<li>Filter sources and destinations</li>"
+    "<li>Local folders and messages</li>"
+    "</ul></p>"
+    "<p>Selecting cancel here will not alter your data in any kind but will also prevent KMail 2 from starting. Selecting continue will perform "
+    "the migration procedure as far as currently implemented and then start KMail 2. "
+    "Unless you are fully aware of the implications noted above choose cancel and use KMail 1 until the migration tool has been completed.</p>"
+    "<p>If you want to go ahead with the migration, be aware that it can take considerable time (depending on the amount of messages) and "
+    "cannot be interrupted safely.</p>"
+  );
+  int doYouReallyWantToBreakThings = KMessageBox::warningContinueCancel( 0, warningMsg, i18n( "KMail 2 Migration" ), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), QString(), KMessageBox::Dangerous );
+  if ( doYouReallyWantToBreakThings != KMessageBox::Continue )
+    return 1;
+  
   if ( !Akonadi::Control::start( 0 ) )
     return 2;
 
@@ -85,7 +92,7 @@ int main( int argc, char **argv )
     infoDialog->show();
   }
 
-  KMailMigrator *migrator = new KMailMigrator( typesToMigrate );
+  KMailMigrator *migrator = new KMailMigrator;
   if ( infoDialog && migrator ) {
     infoDialog->migratorAdded();
     QObject::connect( migrator, SIGNAL( message( KMigratorBase::MessageType, QString ) ),

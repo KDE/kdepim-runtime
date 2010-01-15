@@ -61,6 +61,11 @@ public:
     bool isValid( QString &error ) const;
 
     /**
+     * Returns wether this is a normal maildir or a container containing maildirs.
+     */
+    bool isRoot() const;
+
+    /**
      * Make a valid maildir at the path of this Maildir object. This involves
      * creating the necessary subdirs, etc. Note that an empty Maildir is
      * not valid, unless it is given  valid path, or until create( ) is

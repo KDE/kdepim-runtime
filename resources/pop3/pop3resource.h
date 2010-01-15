@@ -58,6 +58,7 @@ class POP3Resource : public Akonadi::ResourceBase,
 
     void slotAbortRequested();
     void intervalCheckTriggered();
+    void configurationChanged();
 
     // Error unrelated to a state
     void slotSessionError( int errorCode, const QString &errorMessage );

@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Jonathan Armond <jon.armond@gmail.com>
+    Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,6 +19,7 @@
 */
 
 #include "kmailmigrator.h"
+#include "mixedtreeconverter.h"
 
 #include "imapsettings.h"
 #include "pop3settings.h"
@@ -30,10 +32,10 @@
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
-#include "settings.h"
 
 #include <KConfig>
 #include <KConfigGroup>
+#include <KDebug>
 #include <KStandardDirs>
 #include <KLocalizedString>
 #include <kwallet.h>
@@ -45,9 +47,9 @@ using namespace KMail;
    all have same class name. If resource interfaces are changed, these will need
    changing too. */
 enum ImapEncryption { Unencrypted = 1, Ssl, Tls };
-enum ImapAuthentication { ClearText = 1, Login, Plain, CramMD5, DigestMD5, NTLM,
+enum ImapAuthentication { ClearText = 0, Login, Plain, CramMD5, DigestMD5, NTLM,
                           GSSAPI, Anonymous };
-enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, KdeLockFile, MboxNone };
+enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
 static void migratePassword( const QString &idString, const AgentInstance &instance,
                              const QString &newFolder )
@@ -63,10 +65,10 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
   delete wallet;
 }
 
-KMailMigrator::KMailMigrator( const QStringList &typesToMigrate ) :
+KMailMigrator::KMailMigrator() :
   KMigratorBase(),
-  mTypes( typesToMigrate ),
-  mConfig( 0 )
+  mConfig( 0 ),
+  mConverter( 0 )
 {
 }
 
@@ -77,7 +79,7 @@ KMailMigrator::~KMailMigrator()
 
 void KMailMigrator::migrate()
 {
-  emit message( Info, i18n("Beginning KMail migration") );
+  emit message( Info, i18n("Beginning KMail migration...") );
   const QString &kmailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmailrc" ) );
   mConfig = new KConfig( kmailCfgFile );
   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
@@ -90,10 +92,6 @@ void KMailMigrator::migrateNext()
   while ( mIt != mAccounts.end() ) {
     mCurrentAccount = *mIt;
     const KConfigGroup group( mConfig, mCurrentAccount );
-    if ( !mTypes.contains( group.readEntry( "Type" ).toLower() ) ) {
-      ++mIt;
-      continue;
-    }
 
     const QString name = group.readEntry( "Name" );
     const QString idString = group.readEntry( "Id" );
@@ -112,7 +110,31 @@ void KMailMigrator::migrateNext()
     ++mIt;
   }
   if ( mIt == mAccounts.end() )
-    deleteLater();
+    migrateLocalFolders();
+}
+
+void KMailMigrator::migrateLocalFolders()
+{
+  if ( migrationState( "LocalFolders" ) == Complete ) {
+    emit message( Skip, i18n( "Local folders have already been migrated." ) );
+    migrationDone();
+    return;
+  }
+
+  const KConfigGroup cfgGroup( mConfig, "General" );
+  const QString localMaildirPath = cfgGroup.readPathEntry( "folders", QString() );
+  kDebug() << localMaildirPath;
+
+  emit message( Info, i18n( "Migrating local folders in '%1'...", localMaildirPath ) );
+  mConverter = new MixedTreeConverter( this );
+  connect( mConverter, SIGNAL(conversionDone(QString)), SLOT(localFoldersConverted(QString)) );
+  mConverter->convert( localMaildirPath );
+}
+
+void KMailMigrator::migrationDone()
+{
+  emit message( Info, i18n( "Migration successfully completed." ) );
+  deleteLater();
 }
 
 void KMailMigrator::migrationFailed( const QString &errorMsg,
@@ -136,7 +158,6 @@ void KMailMigrator::migrationCompleted( const AgentInstance &instance  )
                      group.readEntry( "Type" ).toLower() );
   emit message( Success, i18n( "Migration of '%1' succeeded.", group.readEntry( "Name" ) ) );
   mCurrentAccount.clear();
-  //mManager->remove( mCurrentAccount );
   migrateNext();
 }
 
@@ -259,7 +280,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
-  //instance.reconfigure();
+  instance.setName( config.readEntry( "Name" ) );
+  instance.reconfigure();
   migrationCompleted( instance );
 }
 
@@ -274,45 +296,46 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   const KConfigGroup config( mConfig, mCurrentAccount );
 
-  OrgKdeAkonadiPop3SettingsInterface *iface = new OrgKdeAkonadiPop3SettingsInterface(
+  OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
     "/Settings", QDBusConnection::sessionBus(), this );
 
-  if (!iface->isValid() ) {
+  if ( !iface->isValid() ) {
     migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
     return;
   }
 
-  iface->setHost( config.readEntry( "host" ) );
-  iface->setPort( config.readEntry( "port" ).toUInt() );
-  iface->setLogin( config.readEntry( "login" ) );
-  if ( config.readEntry( "use-ssl" ).toLower() == "true" )
+  iface->setHost( config.readEntry( "host", QString() ) );
+  iface->setPort( config.readEntry( "port", 110u ) );
+  iface->setLogin( config.readEntry( "login", QString() ) );
+  if ( config.readEntry( "use-ssl", true ) )
     iface->setUseSSL( true );
-  if ( config.readEntry( "use-tls" ).toLower() == "true" )
+  if ( config.readEntry( "use-tls", true ) )
     iface->setUseTLS( true );
-  if ( config.readEntry( "store-passwd" ).toLower() == "true" )
+  if ( config.readEntry( "store-passwd", false ) )
     iface->setStorePassword( true );
-  if ( config.readEntry( "pipelining" ).toLower() == "true" )
+  if ( config.readEntry( "pipelining", false ) )
     iface->setPipelining( true );
-  if ( config.readEntry( "leave-on-server" ).toLower() == "true" ) {
+  if ( config.readEntry( "leave-on-server", true ) ) {
     iface->setLeaveOnServer( true );
-    iface->setLeaveOnServerDays( config.readEntry( "leave-on-server-days" ).toInt() );
-    iface->setLeaveOnServerCount( config.readEntry( "leave-on-server-count" ).toInt() );
-    iface->setLeaveOnServerSize( config.readEntry( "leave-on-server-size" ).toInt() );
+    iface->setLeaveOnServerDays( config.readEntry( "leave-on-server-days", -1 ) );
+    iface->setLeaveOnServerCount( config.readEntry( "leave-on-server-count", -1 ) );
+    iface->setLeaveOnServerSize( config.readEntry( "leave-on-server-size", -1 ) );
   }
-  if ( config.readEntry( "filter-on-server" ).toLower() == "true" ) {
+  if ( config.readEntry( "filter-on-server", false ) ) {
     iface->setFilterOnServer( true );
     iface->setFilterCheckSize( config.readEntry( "filter-on-server" ).toUInt() );
   }
-  iface->setIntervalCheckEnabled( config.readEntry( "check-exclude",false ) );
+  iface->setIntervalCheckEnabled( config.readEntry( "check-exclude", false ) );
   iface->setIntervalCheckInterval( config.readEntry( "check-interval", 0 ) );
-  iface->setAuthenticationMethod( config.readEntry( "auth" ));
-  iface->setPrecommand( config.readPathEntry( "precommand" ,QString() ) );
+  iface->setAuthenticationMethod( config.readEntry( "auth" ) );
+  iface->setPrecommand( config.readPathEntry( "precommand", QString() ) );
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 
   //TODO port "Folder" to akonadi collection id
 
-  //instance.reconfigure();
+  instance.setName( config.readEntry( "Name" ) );
+  instance.reconfigure();
   migrationCompleted( instance );
 }
 
@@ -349,6 +372,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   else if ( lockType == "none" )
     iface->setLockfileMethod( MboxNone );
 
+  instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -375,8 +399,50 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 
   iface->setPath( config.readEntry( "Location" ) );
 
+  instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
+}
+
+void KMailMigrator::localFoldersConverted(const QString& errorMsg)
+{
+  disconnect( mConverter, SIGNAL(conversionDone(QString)), this, SLOT(localFoldersConverted(QString)) );
+  if ( !errorMsg.isEmpty() ) {
+    emit message( Error, i18n( "Failed to convert local folder tree: %1", errorMsg ) );
+    deleteLater();
+    return;
+  }
+  emit message( Success, i18n( "Converted local mixed-mode folder tree." ) );
+
+  createAgentInstance( "akonadi_maildir_resource", this, SLOT(localMaildirCreated(KJob*)) );
+}
+
+void KMailMigrator::localMaildirCreated(KJob* job)
+{
+  if ( job->error() ) {
+    emit message( Error, i18n( "Failed to resource for local folders: %1", job->errorText() ) );
+    deleteLater();
+    return;
+  }
+  emit message( Info, i18n( "Created local maildir resource." ) );
+
+  AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
+  OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
+    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+    "/Settings", QDBusConnection::sessionBus(), this );
+  if (!iface->isValid() ) {
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    return;
+  }
+
+  const KConfigGroup cfgGroup( mConfig, "General" );
+  iface->setPath( cfgGroup.readPathEntry( "folders", QString() ) );
+
+  instance.setName( i18n("KMail Folders") );
+  instance.reconfigure();
+  setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
+  emit message( Success, i18n( "Local folders migrated successfully." ) );
+  migrationDone();
 }
 
 #include "kmailmigrator.moc"

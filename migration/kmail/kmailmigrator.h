@@ -24,6 +24,7 @@
 
 #include <QStringList>
 
+class MixedTreeConverter;
 class KConfig;
 class KJob;
 
@@ -38,12 +39,14 @@ class KMailMigrator : public KMigratorBase
   Q_OBJECT
 
   public:
-    KMailMigrator( const QStringList &typesToMigrate );
+    KMailMigrator();
     virtual ~KMailMigrator();
 
     void migrate();
 
     void migrateNext();
+    void migrateLocalFolders();
+    void migrationDone();
 
   private slots:
     void imapAccountCreated( KJob *job );
@@ -51,6 +54,8 @@ class KMailMigrator : public KMigratorBase
     void pop3AccountCreated( KJob *job );
     void mboxAccountCreated( KJob *job );
     void maildirAccountCreated( KJob *job );
+    void localMaildirCreated( KJob *job );
+    void localFoldersConverted( const QString &errorMsg );
 
   private:
     void migrateImapAccount( KJob *job, bool disconnected );
@@ -60,12 +65,12 @@ class KMailMigrator : public KMigratorBase
                           = Akonadi::AgentInstance() );
 
   private:
-    QStringList mTypes;
     KConfig *mConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
     typedef QStringList::iterator AccountIterator;
     AccountIterator mIt;
+    MixedTreeConverter *mConverter;
 };
 
 } // namespace KMail
