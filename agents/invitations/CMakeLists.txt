@@ -1,9 +1,6 @@
 set( invitationsagent_SRCS
   invitationsagent.cpp
-  #outboxqueue.cpp
-  #sendjob.cpp
-  #storeresultjob.cpp
-  ##configdialog.cpp
+  incidenceattribute.cpp
 )
 
 #kde4_add_ui_files(invitationsagent_SRCS settings.ui)
@@ -26,8 +23,6 @@ target_link_libraries(akonadi_invitations_agent
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
   ${KDEPIMLIBS_KCAL_LIBS}
-  akonadi-kcal
-  akonadi-kcal_next
 )
 
 install(TARGETS akonadi_invitations_agent ${INSTALL_TARGETS_DEFAULT_ARGS})
