@@ -43,7 +43,7 @@
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentInstanceCreateJob>
 #include <akonadi/resourcesynchronizationjob.h>
-#include <akonadi/kcal/incidenceattribute.h>
+#include "incidenceattribute.h"
 #include <akonadi/specialcollections.h>
 #include <akonadi/specialcollectionsrequestjob.h>
 
