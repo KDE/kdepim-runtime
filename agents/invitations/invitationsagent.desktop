@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Invitations Dispatcher Agent
+Type=AkonadiAgent
+Exec=akonadi_invitations_agent
+Icon=mail-folder-outbox
+
+X-Akonadi-Identifier=akonadi_invitations_agent
+#X-Akonadi-Capabilities=Unique,Autostart,NoConfig
+X-Akonadi-Capabilities=NoConfig
+
+#X-Akonadi-MimeTypes=message/rfc822
+#X-Akonadi-MimeTypes=text/calendar
+X-Akonadi-MimeTypes=application/x-vnd.akonadi.calendar.event
+#X-Akonadi-MimeTypes=application/x-vnd.akonadi.calendar.todo
+#X-Akonadi-MimeTypes=application/x-vnd.akonadi.calendar.journal
+#X-Akonadi-MimeTypes=application/x-vnd.akonadi.calendar.freebusy

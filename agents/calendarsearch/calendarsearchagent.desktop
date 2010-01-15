@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Calendar Search Agent
+Type=AkonadiAgent
+Exec=akonadi_calendarsearch_agent
+Icon=text-calendar
+
+X-Akonadi-MimeTypes=text/calendar
+X-Akonadi-Capabilities=Unique,Autostart,NoConfig
+X-Akonadi-Identifier=akonadi_calendarsearch_agent
