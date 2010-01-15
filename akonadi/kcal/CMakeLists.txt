@@ -23,7 +23,6 @@ set( kcalakonadi_LIB_SRC
      modelstatesaver.cpp
      itembrowser.cpp
      utils.cpp
-     incidenceattribute.cpp
      groupware.cpp
      identitymanager.cpp
      mailclient.cpp
@@ -34,8 +33,7 @@ set( kcalakonadi_LIB_SRC
 
 kde4_add_kcfg_files(kcalakonadi_LIB_SRC koprefs_base.kcfgc )
 
-# FIXME: cannot depend on kdepim/rutime here!
-qt4_add_dbus_interface(kcalakonadi_LIB_SRC ${CMAKE_SOURCE_DIR}/runtime/agents/calendarsearch/org.freedesktop.Akonadi.CalendarSearchAgent.xml calendarsearchinterface)
+qt4_add_dbus_interface(kcalakonadi_LIB_SRC ${CMAKE_CURRENT_SOURCE_DIR}/org.freedesktop.Akonadi.CalendarSearchAgent.xml calendarsearchinterface)
 
 kde4_add_library( akonadi-kcal_next SHARED ${kcalakonadi_LIB_SRC} )
 
