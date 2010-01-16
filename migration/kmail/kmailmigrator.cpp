@@ -324,7 +324,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   }
   if ( config.readEntry( "filter-on-server", false ) ) {
     iface->setFilterOnServer( true );
-    iface->setFilterCheckSize( config.readEntry( "filter-on-server" ).toUInt() );
+    iface->setFilterCheckSize( config.readEntry( "filter-os-check-size" ).toUInt() );
   }
   iface->setIntervalCheckEnabled( config.readEntry( "check-exclude", false ) );
   iface->setIntervalCheckInterval( config.readEntry( "check-interval", 0 ) );
