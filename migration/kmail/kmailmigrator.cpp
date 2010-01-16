@@ -333,7 +333,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 
   //TODO port "Folder" to akonadi collection id
-
+  //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
