@@ -294,7 +294,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   emit message( Info, i18n( "Created pop3 resource" ) );
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
-  const KConfigGroup config( mConfig, mCurrentAccount );
+  KConfigGroup config( mConfig, mCurrentAccount );
 
   OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
@@ -334,8 +334,11 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
 
   //TODO port "Folder" to akonadi collection id
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
+  config.deleteEntry("trash");
+  config.deleteEntry("use-default-identity");
   instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
+  config.sync();
   migrationCompleted( instance );
 }
 
