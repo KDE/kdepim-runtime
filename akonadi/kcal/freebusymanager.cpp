@@ -122,7 +122,7 @@ FreeBusyManager::FreeBusyManager( QObject *parent ) :
 {
 }
 
-void FreeBusyManager::setCalendar( Calendar *c )
+void FreeBusyManager::setCalendar( Akonadi::Calendar *c )
 {
   mCalendar = c;
   if ( mCalendar ) {

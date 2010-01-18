@@ -46,7 +46,7 @@
 
 using namespace Akonadi;
 
-MailScheduler::MailScheduler( Calendar *calendar )
+MailScheduler::MailScheduler( Akonadi::Calendar *calendar )
   //: Scheduler( calendar )
   : mCalendar( calendar ), mFormat( new ICalFormat() )
 {
