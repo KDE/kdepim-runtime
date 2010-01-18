@@ -632,6 +632,7 @@ static Collection folderToCollection( const OXA::Folder &folder, const Collectio
       break;
     case OXA::Folder::Contacts:
       mimeTypes.append( KABC::Addressee::mimeType() );
+      mimeTypes.append( KABC::ContactGroup::mimeType() );
       attribute->setIconName( QString::fromLatin1( "view-pim-contacts" ) );
       break;
     case OXA::Folder::Tasks:
