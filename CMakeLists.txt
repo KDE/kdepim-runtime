@@ -4,6 +4,12 @@ project(kdepim-runtime)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
 
+############### Load the CTest options ###############
+# CTestCustom.cmake has to be in the CTEST_BINARY_DIR.
+# in the KDE build system, this is the same as CMAKE_BINARY_DIR.
+configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_BINARY_DIR}/CTestCustom.cmake)
+
+
 ############### search packages used by KDE ###############
 
 find_package(KDE4 REQUIRED)
