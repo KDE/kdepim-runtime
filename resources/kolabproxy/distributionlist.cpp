@@ -199,7 +199,7 @@ void DistributionList::setFields( const KABC::ContactGroup* contactGroup )
   for ( uint index = 0; index < contactGroup->contactReferenceCount(); ++index ) {
     const KABC::ContactGroup::ContactReference& reference = contactGroup->contactReference( index );
 
-    const Akonadi::Item item( reference.uid() );
+    const Akonadi::Item item( reference.uid().toLongLong() );
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
     job->fetchScope().fetchFullPayload();
     if ( !job->exec() )
