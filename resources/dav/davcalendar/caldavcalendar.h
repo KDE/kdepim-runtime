@@ -22,7 +22,7 @@
 #include <QtCore/QMutex>
 #include <QtCore/QStringList>
 
-#include "../common/davimplementation.h"
+#include "davimplementation.h"
 
 class KJob;
 

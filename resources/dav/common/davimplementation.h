@@ -20,8 +20,9 @@
 #define DAV_IMPLEMENTATION_H
 
 #include <QtCore/QList>
-#include <QtCore/QString>
 #include <QtXml/QDomDocument>
+
+class QStringList;
 
 class davImplementation
 {

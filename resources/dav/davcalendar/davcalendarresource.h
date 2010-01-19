@@ -19,11 +19,11 @@
 #ifndef DAVCALENDARRESOURCE_H
 #define DAVCALENDARRESOURCE_H
 
-#include <QtCore/QMutex>
-
 #include <akonadi/resourcebase.h>
 
-#include "../common/davaccessor.h"
+#include <QtCore/QMutex>
+
+#include "davaccessor.h"
 
 namespace Akonadi {
   class IncidenceMimeTypeVisitor;

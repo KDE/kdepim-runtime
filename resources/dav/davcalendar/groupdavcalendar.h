@@ -19,9 +19,9 @@
 #ifndef GROUPDAVCALENDAR_H
 #define GROUPDAVCALENDAR_H
 
-#include <QtCore/QMutex>
+#include "davimplementation.h"
 
-#include "../common/davimplementation.h"
+#include <QtCore/QMutex>
 
 class KJob;
 

@@ -37,7 +37,7 @@ class ConfigDialog : public KDialog
     QStringList removedUrls() const;
     void setRemovedUrls( const QStringList &l );
     
-  private slots:
+  private Q_SLOTS:
     void onOkClicked();
     void onCancelClicked();
     void urlRemoved( const QString &url );

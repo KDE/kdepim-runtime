@@ -41,7 +41,7 @@ public:
   void getPassword();
   void requestPassword( const QString &username );
   
-public slots:
+public Q_SLOTS:
   Q_SCRIPTABLE QString password() const;
   Q_SCRIPTABLE void setPassword( const QString &password );
   
