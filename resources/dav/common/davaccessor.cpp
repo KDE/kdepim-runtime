@@ -16,23 +16,23 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include <QVariant>
-#include <QFile>
-#include <QDataStream>
-#include <QtXmlPatterns>
-#include <QBuffer>
-#include <QVariant>
-
-#include <kio/davjob.h>
-#include <kio/jobclasses.h>
-#include <kio/job.h>
-#include <kio/deletejob.h>
-#include <klocalizedstring.h>
-#include <kdebug.h>
-#include <kstandarddirs.h>
-
 #include "davaccessor.h"
+
 #include "davimplementation.h"
+
+#include <QtCore/QBuffer>
+#include <QtCore/QDataStream>
+#include <QtCore/QFile>
+#include <QtCore/QVariant>
+#include <QtXmlPatterns/QXmlQuery>
+
+#include <kdebug.h>
+#include <kio/davjob.h>
+#include <kio/deletejob.h>
+#include <kio/job.h>
+#include <kio/jobclasses.h>
+#include <klocalizedstring.h>
+#include <kstandarddirs.h>
 
 davItem::davItem()
 {

@@ -16,14 +16,14 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include <QDomDocument>
-#include <QMutexLocker>
+#include "caldavcalendar.h"
 
+#include <kdebug.h>
 #include <kio/davjob.h>
 #include <klocalizedstring.h>
-#include <kdebug.h>
 
-#include "caldavcalendar.h"
+#include <QtCore/QMutexLocker>
+#include <QtXml/QDomDocument>
 
 caldavImplementation::caldavImplementation()
 {

@@ -19,9 +19,9 @@
 #ifndef DAV_IMPLEMENTATION_H
 #define DAV_IMPLEMENTATION_H
 
-#include <QDomDocument>
-#include <QString>
-#include <QList>
+#include <QtCore/QList>
+#include <QtCore/QString>
+#include <QtXml/QDomDocument>
 
 class davImplementation
 {

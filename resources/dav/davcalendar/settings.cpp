@@ -20,16 +20,17 @@
 */
 
 #include "settings.h"
+
 #include "settingsadaptor.h"
 
-#include <klocale.h>
 #include <kglobal.h>
-#include <kwallet.h>
+#include <klocale.h>
 #include <kpassworddialog.h>
+#include <kwallet.h>
+
+#include <QtDBus/QDBusConnection>
 
 using namespace KWallet;
-
-#include <QDBusConnection>
 
 class SettingsHelper
 {

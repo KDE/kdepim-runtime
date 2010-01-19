@@ -21,8 +21,9 @@
 
 #include "ui_configdialog.h"
 
-#include <QStringList>
-#include <KDialog>
+#include <kdialog.h>
+
+#include <QtCore/QStringList>
 
 class KConfigDialogManager;
 

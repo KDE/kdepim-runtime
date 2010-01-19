@@ -19,9 +19,8 @@
 #ifndef CALDAVCALENDAR_H
 #define CALDAVCALENDAR_H
 
-#include <QMap>
-#include <QStringList>
-#include <QMutex>
+#include <QtCore/QMutex>
+#include <QtCore/QStringList>
 
 #include "../common/davimplementation.h"
 

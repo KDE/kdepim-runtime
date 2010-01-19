@@ -19,7 +19,7 @@
 #ifndef DAVCALENDARRESOURCE_H
 #define DAVCALENDARRESOURCE_H
 
-#include <QMutex>
+#include <QtCore/QMutex>
 
 #include <akonadi/resourcebase.h>
 

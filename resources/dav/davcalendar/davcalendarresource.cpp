@@ -18,30 +18,31 @@
 
 #include "davcalendarresource.h"
 
-#include "settings.h"
-#include "settingsadaptor.h"
+#include "caldavcalendar.h"
 #include "configdialog.h"
 #include "groupdavcalendar.h"
-#include "caldavcalendar.h"
+#include "settings.h"
+#include "settingsadaptor.h"
 
-#include <QtDBus/QDBusConnection>
-#include <QMutexLocker>
-#include <kcal/incidence.h>
-#include <akonadi/kcal/incidencemimetypevisitor.h>
-#include <kcal/icalformat.h>
-#include <boost/shared_ptr.hpp>
-#include <KWindowSystem>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/cachepolicy.h>
-#include <akonadi/collectiondeletejob.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemfetchjob.h>
 #include <akonadi/attribute.h>
 #include <akonadi/attributefactory.h>
+#include <akonadi/cachepolicy.h>
+#include <akonadi/changerecorder.h>
+#include <akonadi/collectiondeletejob.h>
+#include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemdeletejob.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
+#include <akonadi/kcal/incidencemimetypevisitor.h>
+#include <boost/shared_ptr.hpp>
+#include <kcal/icalformat.h>
+#include <kcal/incidence.h>
+#include <kwindowsystem.h>
+
+#include <QtCore/QMutexLocker>
+#include <QtDBus/QDBusConnection>
 
 using namespace KCal;
 using namespace Akonadi;

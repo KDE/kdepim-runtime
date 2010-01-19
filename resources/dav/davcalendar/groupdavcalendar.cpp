@@ -16,15 +16,15 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include <QDomDocument>
-
-#include <kio/davjob.h>
-#include <kio/jobclasses.h>
-#include <kio/job.h>
-#include <klocalizedstring.h>
-#include <kdebug.h>
-
 #include "groupdavcalendar.h"
+
+#include <kdebug.h>
+#include <kio/davjob.h>
+#include <kio/job.h>
+#include <kio/jobclasses.h>
+#include <klocalizedstring.h>
+
+#include <QtXml/QDomDocument>
 
 groupdavCalendarImplementation::groupdavCalendarImplementation()
 {

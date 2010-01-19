@@ -19,7 +19,7 @@
 #ifndef GROUPDAVCALENDAR_H
 #define GROUPDAVCALENDAR_H
 
-#include <QMutex>
+#include <QtCore/QMutex>
 
 #include "../common/davimplementation.h"
 
