@@ -123,12 +123,16 @@ void KMailMigrator::migrateLocalFolders()
 
   const KConfigGroup cfgGroup( mConfig, "General" );
   const QString localMaildirPath = cfgGroup.readPathEntry( "folders", QString() );
-  kDebug() << localMaildirPath;
+  if ( localMaildirPath.isEmpty() ) {
+    migrationDone();
+  } else {
+    kDebug() << localMaildirPath;
 
-  emit message( Info, i18n( "Migrating local folders in '%1'...", localMaildirPath ) );
-  mConverter = new MixedTreeConverter( this );
-  connect( mConverter, SIGNAL(conversionDone(QString)), SLOT(localFoldersConverted(QString)) );
-  mConverter->convert( localMaildirPath );
+    emit message( Info, i18n( "Migrating local folders in '%1'...", localMaildirPath ) );
+    mConverter = new MixedTreeConverter( this );
+    connect( mConverter, SIGNAL(conversionDone(QString)), SLOT(localFoldersConverted(QString)) );
+    mConverter->convert( localMaildirPath );
+  }
 }
 
 void KMailMigrator::migrationDone()
