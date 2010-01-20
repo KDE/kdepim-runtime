@@ -21,8 +21,6 @@
 
 #include "davimplementation.h"
 
-class KJob;
-
 class groupdavCalendarImplementation : public davImplementation
 {
   public:
@@ -32,6 +30,7 @@ class groupdavCalendarImplementation : public davImplementation
     virtual QDomDocument collectionsQuery() const;
     virtual QString collectionsXQuery() const;
     virtual const QList<QDomDocument>& itemsQueries() const;
+
   private:
     QList<QDomDocument> mItemsQueries;
 };

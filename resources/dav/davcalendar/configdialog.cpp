@@ -21,8 +21,8 @@
 
 #include <kconfigdialogmanager.h>
 
-ConfigDialog::ConfigDialog( QWidget* p )
-  : KDialog( p )
+ConfigDialog::ConfigDialog( QWidget *parent )
+  : KDialog( parent )
 {
   mUi.setupUi( mainWidget() );
   mManager = new KConfigDialogManager( this, Settings::self() );
@@ -35,7 +35,6 @@ ConfigDialog::ConfigDialog( QWidget* p )
 
 ConfigDialog::~ConfigDialog()
 {
-  delete mManager;
 }
 
 QStringList ConfigDialog::removedUrls() const
@@ -43,15 +42,15 @@ QStringList ConfigDialog::removedUrls() const
   return mRemovedUrls;
 }
 
-void ConfigDialog::setRemovedUrls( const QStringList &l )
+void ConfigDialog::setRemovedUrls( const QStringList &urls )
 {
-  mRemovedUrls = l;
+  mRemovedUrls = urls;
 }
 
 void ConfigDialog::onOkClicked()
 {
   mManager->updateSettings();
-  if( !mUi.password->text().isEmpty() )
+  if ( !mUi.password->text().isEmpty() )
     Settings::self()->setPassword( mUi.password->text() );
 }
 

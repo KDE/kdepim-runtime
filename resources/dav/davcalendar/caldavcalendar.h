@@ -23,8 +23,6 @@
 
 #include "davimplementation.h"
 
-class KJob;
-
 class caldavImplementation : public davImplementation
 {
   public:
@@ -35,6 +33,7 @@ class caldavImplementation : public davImplementation
     virtual QString collectionsXQuery() const;
     virtual const QList<QDomDocument>& itemsQueries() const;
     virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
+
   private:
     QList<QDomDocument> mItemsQueries;
 };

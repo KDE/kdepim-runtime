@@ -35,16 +35,24 @@ using namespace KWallet;
 class SettingsHelper
 {
   public:
-    SettingsHelper() : q( 0 ) {}
-    ~SettingsHelper() { delete q; }
+    SettingsHelper()
+      : q( 0 )
+    {
+    }
+
+    ~SettingsHelper()
+    {
+      delete q;
+    }
+
     Settings *q;
 };
 
-K_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
+K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
 Settings *Settings::self()
 {
-  if (!s_globalSettings->q) {
+  if ( !s_globalSettings->q ) {
     new Settings;
     s_globalSettings->q->readConfig();
   }
@@ -68,9 +76,9 @@ Settings::~Settings()
   delete mWallet;
 }
 
-void Settings::setWinId( WId w )
+void Settings::setWinId( WId winId )
 {
-  mWinId = w;
+  mWinId = winId;
 }
 
 QString Settings::password() const
@@ -78,45 +86,46 @@ QString Settings::password() const
   return mPassword;
 }
 
-void Settings::setPassword( const QString &p )
+void Settings::setPassword( const QString &password )
 {
-  mPassword = p;
+  mPassword = password;
 
-  if( this->useKWallet() )
-    this->storePassword();
+  if ( useKWallet() )
+    storePassword();
 }
 
 void Settings::storePassword()
 {
-  if( !mWallet )
+  if ( !mWallet )
     mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
 
-  if( mWallet && mWallet->isOpen() ) {
-    if( !mWallet->hasFolder( "dav-akonadi-resource" ) )
+  if ( mWallet && mWallet->isOpen() ) {
+    if ( !mWallet->hasFolder( "dav-akonadi-resource" ) )
       mWallet->createFolder( "dav-akonadi-resource" );
+
     mWallet->setFolder( "dav-akonadi-resource" );
-    mWallet->writePassword( this->username(), mPassword );
+    mWallet->writePassword( username(), mPassword );
   }
 }
 
-void Settings::getPassword()
+void Settings::askForPassword()
 {
-  if( !this->password().isEmpty() )
+  if ( !password().isEmpty() )
     return;
 
-  if( this->useKWallet() ) {
-    if( !mWallet )
+  if ( useKWallet() ) {
+    if ( !mWallet )
       mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
 
-    if( mWallet && mWallet->isOpen() &&
-        mWallet->hasFolder( "dav-akonadi-resource" ) &&
-        mWallet->setFolder( "dav-akonadi-resource" ) ) {
-      mWallet->readPassword( this->username(), mPassword );
+    if ( mWallet && mWallet->isOpen() &&
+         mWallet->hasFolder( "dav-akonadi-resource" ) &&
+         mWallet->setFolder( "dav-akonadi-resource" ) ) {
+      mWallet->readPassword( username(), mPassword );
     }
   }
 
-  if( mPassword.isEmpty() )
-    this->requestPassword( this->username() );
+  if ( mPassword.isEmpty() )
+    requestPassword( username() );
 }
 
 void Settings::requestPassword( const QString &username )
@@ -125,8 +134,8 @@ void Settings::requestPassword( const QString &username )
   dlg.setPrompt( i18n( "Please enter the password for %1" ).arg( username ) );
   dlg.exec();
 
-  if( dlg.result() == QDialog::Accepted )
-    this->setPassword( dlg.password() );
+  if ( dlg.result() == QDialog::Accepted )
+    setPassword( dlg.password() );
 }
 
 #include "settings.moc"

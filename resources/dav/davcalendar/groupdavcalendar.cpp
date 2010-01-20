@@ -18,29 +18,23 @@
 
 #include "groupdavcalendar.h"
 
-#include <kdebug.h>
-#include <kio/davjob.h>
-#include <kio/job.h>
-#include <kio/jobclasses.h>
-#include <klocalizedstring.h>
-
 #include <QtXml/QDomDocument>
 
 groupdavCalendarImplementation::groupdavCalendarImplementation()
 {
-  QDomDocument props;
-  QDomElement root = props.createElementNS( "DAV:", "propfind" );
-  props.appendChild( root );
-  QDomElement e1 = props.createElementNS( "DAV:", "prop" );
-  root.appendChild( e1 );
-  QDomElement e2 = props.createElementNS( "DAV:", "displayname" );
-  e1.appendChild( e2 );
-  e2 = props.createElementNS( "DAV:", "resourcetype" );
-  e1.appendChild( e2 );
-  e2 = props.createElementNS( "DAV:", "getetag" );
-  e1.appendChild( e2 );
+  QDomDocument document;
 
-  mItemsQueries << props;
+  QDomElement propfindElement = document.createElementNS( "DAV:", "propfind" );
+  document.appendChild( propfindElement );
+
+  QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+  propfindElement.appendChild( propElement );
+
+  propElement.appendChild( document.createElementNS( "DAV:", "displayname" ) );
+  propElement.appendChild( document.createElementNS( "DAV:", "resourcetype" ) );
+  propElement.appendChild( document.createElementNS( "DAV:", "getetag" ) );
+
+  mItemsQueries << document;
 }
 
 bool groupdavCalendarImplementation::useReport() const
@@ -55,23 +49,25 @@ bool groupdavCalendarImplementation::useMultiget() const
 
 QDomDocument groupdavCalendarImplementation::collectionsQuery() const
 {
-  QDomDocument props;
-  QDomElement root = props.createElementNS( "DAV:", "propfind" );
-  props.appendChild( root );
-  QDomElement e1 = props.createElementNS( "DAV:", "prop" );
-  root.appendChild( e1 );
-  QDomElement e2 = props.createElementNS( "DAV:", "displayname" );
-  e1.appendChild( e2 );
-  e2 = props.createElementNS( "DAV:", "resourcetype" );
-  e1.appendChild( e2 );
+  QDomDocument document;
 
-  return props;
+  QDomElement propfindElement = document.createElementNS( "DAV:", "propfind" );
+  document.appendChild( propfindElement );
+
+  QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+  propfindElement.appendChild( propElement );
+
+  propElement.appendChild( document.createElementNS( "DAV:", "displayname" ) );
+  propElement.appendChild( document.createElementNS( "DAV:", "resourcetype" ) );
+
+  return document;
 }
 
 QString groupdavCalendarImplementation::collectionsXQuery() const
 {
-  QString xquery( "//*[(local-name()='vevent-collection' or local-name()='vtodo-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
-  return xquery;
+  const QString query( "//*[(local-name()='vevent-collection' or local-name()='vtodo-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
+
+  return query;
 }
 
 const QList<QDomDocument>& groupdavCalendarImplementation::itemsQueries() const

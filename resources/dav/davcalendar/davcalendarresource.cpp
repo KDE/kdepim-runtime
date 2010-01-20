@@ -622,7 +622,7 @@ bool davCalendarResource::configurationIsValid()
     if( Settings::self()->username().isEmpty() )
       return false;
 
-    Settings::self()->getPassword();
+    Settings::self()->askForPassword();
 
     if( Settings::self()->password().isEmpty() )
       return false;

@@ -35,7 +35,7 @@ class ConfigDialog : public KDialog
     ~ConfigDialog();
 
     QStringList removedUrls() const;
-    void setRemovedUrls( const QStringList &l );
+    void setRemovedUrls( const QStringList &urls );
 
   private Q_SLOTS:
     void onOkClicked();

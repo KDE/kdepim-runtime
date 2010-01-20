@@ -39,14 +39,15 @@ class Settings : public SettingsBase
     static Settings* self();
     void setWinId( WId wid );
     void storePassword();
-    void getPassword();
-    void requestPassword( const QString &username );
+    void askForPassword();
 
   public Q_SLOTS:
     Q_SCRIPTABLE QString password() const;
     Q_SCRIPTABLE void setPassword( const QString &password );
 
   private:
+    void requestPassword( const QString &username );
+
     WId mWinId;
     QString mPassword;
     KWallet::Wallet *mWallet;
