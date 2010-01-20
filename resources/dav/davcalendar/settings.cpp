@@ -3,17 +3,17 @@
       Based on an original work for the IMAP resource which is :
     Copyright (c) 2008 Volker Krause <vkrause@kde.org>
     Copyright (c) 2008 Omat Holding B.V. <info@omat.nl>
-    
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -81,7 +81,7 @@ QString Settings::password() const
 void Settings::setPassword( const QString &p )
 {
   pwd = p;
-  
+
   if( this->useKWallet() )
     this->storePassword();
 }
@@ -90,7 +90,7 @@ void Settings::storePassword()
 {
   if( !wallet )
     wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
-  
+
   if( wallet && wallet->isOpen() ) {
     if( !wallet->hasFolder( "dav-akonadi-resource" ) )
       wallet->createFolder( "dav-akonadi-resource" );
@@ -103,18 +103,18 @@ void Settings::getPassword()
 {
   if( !this->password().isEmpty() )
     return;
-  
+
   if( this->useKWallet() ) {
     if( !wallet )
       wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
-    
+
     if( wallet && wallet->isOpen() &&
         wallet->hasFolder( "dav-akonadi-resource" ) &&
         wallet->setFolder( "dav-akonadi-resource" ) ) {
       wallet->readPassword( this->username(), pwd );
     }
   }
-  
+
   if( pwd.isEmpty() )
     this->requestPassword( this->username() );
 }
@@ -124,7 +124,7 @@ void Settings::requestPassword( const QString &username )
   KPasswordDialog dlg;
   dlg.setPrompt( i18n( "Please enter the password for %1" ).arg( username ) );
   dlg.exec();
-  
+
   if( dlg.result() == QDialog::Accepted )
     this->setPassword( dlg.password() );
 }

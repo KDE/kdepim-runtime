@@ -1,16 +1,16 @@
 /*
     Copyright (c) 2009 Grégory Oestreicher <greg@kamago.net>
-    
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -46,9 +46,9 @@ caldavImplementation::caldavImplementation()
   a1.setValue( "VEVENT" );
   e3.setAttributeNode( a1 );
   e2.appendChild( e3 );
-  
+
   itemsQueries_ << rep;
-  
+
   rep.clear();
   root = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
   rep.appendChild( root );
@@ -68,7 +68,7 @@ caldavImplementation::caldavImplementation()
   a1.setValue( "VTODO" );
   e3.setAttributeNode( a1 );
   e2.appendChild( e3 );
-  
+
   itemsQueries_ << rep;
 }
 
@@ -95,7 +95,7 @@ QDomDocument caldavImplementation::collectionsQuery() const
   e1.appendChild( e2 );
   e2 = props.createElementNS( "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
   e1.appendChild( e2 );
-  
+
   return props;
 }
 
@@ -121,7 +121,7 @@ QDomDocument caldavImplementation::itemsReportQuery( const QStringList &urls ) c
   prop.appendChild( e1 );
   e1 = multiget.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-data" );
   prop.appendChild( e1 );
-  
+
   foreach( QString url, urls ) {
     e1 = multiget.createElementNS( "DAV:", "href" );
     KUrl u( url );
@@ -129,6 +129,6 @@ QDomDocument caldavImplementation::itemsReportQuery( const QStringList &urls ) c
     e1.appendChild( t );
     root.appendChild( e1 );
   }
-  
+
   return multiget;
 }
