@@ -83,6 +83,4 @@ class davCalendarResource : public Akonadi::ResourceBase,
     QMutex mDelItemsMutex;
 };
 
-Akonadi::Item createAkonadiItem( const QByteArray &data );
-
 #endif

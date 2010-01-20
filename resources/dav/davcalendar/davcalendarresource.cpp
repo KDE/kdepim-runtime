@@ -90,13 +90,27 @@ private:
   QString _etag;
 };
 
+static Akonadi::Item createAkonadiItem( const QByteArray &data )
+{
+  Akonadi::Item item;
+
+  const QString iCalData = QString::fromUtf8( data );
+
+  KCal::ICalFormat formatter;
+  const IncidencePtr ptr( formatter.fromString( iCalData ) );
+
+  item.setPayload( ptr );
+
+  return item;
+}
+
 davCalendarResource::davCalendarResource( const QString &id )
   : ResourceBase( id ), mMimeVisitor( new Akonadi::IncidenceMimeTypeVisitor ), mAccessor( 0 ),
     mCollectionsRetrievalCount( 0 ), mItemsRetrievedCount( 0 )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
+                                                Settings::self(), QDBusConnection::ExportAdaptors );
 
   AttributeFactory::registerAttribute<etagAttribute>();
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
@@ -104,9 +118,10 @@ davCalendarResource::davCalendarResource( const QString &id )
   mDavCollectionRoot.setParentCollection( Collection::root() );
   mDavCollectionRoot.setName( name() );
   mDavCollectionRoot.setRemoteId( name() );
+  mDavCollectionRoot.setContentMimeTypes( QStringList() << Collection::mimeType() );
 
   int refreshInterval = Settings::self()->refreshInterval();
-  if( refreshInterval == 0 )
+  if ( refreshInterval == 0 )
     refreshInterval = -1;
 
   Akonadi::CachePolicy cachePolicy;
@@ -115,10 +130,6 @@ davCalendarResource::davCalendarResource( const QString &id )
   cachePolicy.setCacheTimeout( -1 );
   cachePolicy.setIntervalCheckTime( refreshInterval );
   mDavCollectionRoot.setCachePolicy( cachePolicy );
-
-  QStringList mimeTypes;
-  mimeTypes << Collection::mimeType();
-  mDavCollectionRoot.setContentMimeTypes( mimeTypes );
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
@@ -138,7 +149,7 @@ void davCalendarResource::retrieveCollections()
 {
   kDebug() << "Retrieving collections list";
 
-  if( !configurationIsValid() ) {
+  if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
@@ -148,14 +159,15 @@ void davCalendarResource::retrieveCollections()
 
   emit status( Running, i18n( "Fetching collections" ) );
 
-  Akonadi::Collection::List tmp;
-  tmp << mDavCollectionRoot;
-  collectionsRetrievedIncremental( tmp, Akonadi::Collection::List() );
+  Akonadi::Collection::List collections;
+  collections << mDavCollectionRoot;
+  collectionsRetrievedIncremental( collections, Akonadi::Collection::List() );
 
-  foreach( QString urlStr, Settings::self()->remoteUrls() ) {
+  foreach ( const QString &urlStr, Settings::self()->remoteUrls() ) {
     KUrl url( urlStr );
     url.setUser( Settings::self()->username() );
     url.setPass( Settings::self()->password() );
+
     ++mCollectionsRetrievalCount;
     mAccessor->retrieveCollections( url );
   }
@@ -165,32 +177,33 @@ void davCalendarResource::retrieveItems( const Akonadi::Collection &collection )
 {
   kDebug() << "Retrieving items";
 
-  if( !configurationIsValid() ) {
+  if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
   setItemStreamingEnabled( true );
+
   KUrl url = collection.remoteId();
   url.setUser( Settings::self()->username() );
   url.setPass( Settings::self()->password() );
+
   mAccessor->retrieveItems( url );
 }
 
-bool davCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool davCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  Q_UNUSED( parts );
-
   kDebug() << "Retrieving single item. Remote id = " << item.remoteId();
 
-  if( !configurationIsValid() ) {
+  if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return false;
   }
 
   itemRetrieved( item );
+
   return true;
 }
 
@@ -204,40 +217,44 @@ void davCalendarResource::configure( WId windowId )
   ConfigDialog dialog;
   Settings::self()->setWinId( windowId );
 
-  if( windowId )
+  if ( windowId )
     KWindowSystem::setMainWindow( &dialog, windowId );
+
   dialog.exec();
 
-  if( dialog.result() == QDialog::Accepted ) {
-    QStringList rmCollections = dialog.removedUrls();
+  if ( dialog.result() == QDialog::Accepted ) {
+    const QStringList rmCollections = dialog.removedUrls();
     dialog.setRemovedUrls( QStringList() );
 
-    foreach( QString declaredUrl, rmCollections ) {
-      if( mSeenCollections.contains( declaredUrl ) ) {
+    foreach ( const QString &declaredUrl, rmCollections ) {
+      if ( mSeenCollections.contains( declaredUrl ) ) {
         mSeenCollections.remove( declaredUrl );
-        Akonadi::Collection c;
-        c.setRemoteId( declaredUrl );
-        new Akonadi::CollectionDeleteJob( c );
-      }
-      else {
+
+        Akonadi::Collection collection;
+        collection.setRemoteId( declaredUrl );
+
+        new Akonadi::CollectionDeleteJob( collection );
+      } else {
         bool gotMatch = false;
-        foreach( QString realUrl, mSeenCollections ) {
-          if( realUrl.startsWith( declaredUrl ) ) {
+        foreach ( const QString &realUrl, mSeenCollections ) {
+          if ( realUrl.startsWith( declaredUrl ) ) {
             gotMatch = true;
-            Akonadi::Collection c;
-            c.setRemoteId( realUrl );
-            new Akonadi::CollectionDeleteJob( c, this );
+
+            Akonadi::Collection collection;
+            collection.setRemoteId( realUrl );
+
+            new Akonadi::CollectionDeleteJob( collection, this );
           }
         }
-        if( gotMatch )
+
+        if ( gotMatch )
           mSeenCollections.remove( declaredUrl );
       }
     }
 
     doResourceInitialization();
     emit configurationDialogAccepted();
-  }
-  else {
+  } else {
     emit configurationDialogRejected();
   }
 }
@@ -248,156 +265,155 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
       << item.id() << ". Remote id = " << item.remoteId()
       << ". Collection remote id = " << collection.remoteId();
 
-  if( !configurationIsValid() ) {
+  if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
-  if( !item.hasPayload<IncidencePtr>() ) {
+  if ( !item.hasPayload<IncidencePtr>() ) {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask( i18n( "Unable to retrieve added item %1." ).arg( item.id() ) );
     return;
   }
 
-  IncidencePtr ptr = item.payload<IncidencePtr>();
+  const IncidencePtr ptr = item.payload<IncidencePtr>();
 
-  QString basePath = collection.remoteId();
-  if( basePath.isEmpty() ) {
+  const QString basePath = collection.remoteId();
+  if ( basePath.isEmpty() ) {
     kError() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
     cancelTask( i18n( "Invalid collection for item %1." ).arg( item.id() ) );
     return;
   }
 
-  QString fileName = ptr->uid();
-  if( fileName.isEmpty() ) {
+  const QString fileName = ptr->uid();
+  if ( fileName.isEmpty() ) {
     kError() << "Invalid incidence uid";
     cancelTask( i18n( "Client did not create a UID for item %1." ).arg( item.id() ) );
     return;
   }
 
   KUrl url( basePath + fileName + ".ics" );
-  KCal::ICalFormat formatter;
-  QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
-
-
-  QString urlStr = url.prettyUrl();
-  kDebug() << "Item " << item.id() << " will be put to " << urlStr;
-  mPutItems[urlStr] = item;
   url.setUser( Settings::self()->username() );
   url.setPass( Settings::self()->password() );
+
+  const QString urlStr = url.prettyUrl();
+  kDebug() << "Item " << item.id() << " will be put to " << urlStr;
+
+  mPutItems[ urlStr ] = item;
+
+  KCal::ICalFormat formatter;
+  const QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
+
   mAccessor->putItem( url, "text/calendar", rawData );
 }
 
-void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  Q_UNUSED( parts );
-
   kDebug() << "Received notification for changed item. Local id = " << item.id()
       << ". Remote id = " << item.remoteId();
 
-  if( !configurationIsValid() ) {
+  if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
-  if( !item.hasPayload<IncidencePtr>() ) {
+  if ( !item.hasPayload<IncidencePtr>() ) {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask( i18n( "Unable to retrieve added item %1." ).arg( item.id() ) );
     return;
   }
 
-  IncidencePtr ptr = item.payload<IncidencePtr>();
+  const IncidencePtr ptr = item.payload<IncidencePtr>();
   KUrl url( item.remoteId() );
-  KCal::ICalFormat formatter;
-  QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
-
-  kDebug() << "Item " << item.id() << " will be put to " << url.prettyUrl();
-
-  QString urlStr = url.prettyUrl();
-  mPutItems[urlStr] = item;
   url.setUser( Settings::self()->username() );
   url.setPass( Settings::self()->password() );
+
+  const QString urlStr = url.prettyUrl();
+  kDebug() << "Item " << item.id() << " will be put to " << urlStr;
+
+  mPutItems[ urlStr ] = item;
+
+  KCal::ICalFormat formatter;
+  const QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
+
   mAccessor->putItem( url, "text/calendar", rawData, true );
 }
 
 void davCalendarResource::itemRemoved( const Akonadi::Item &item )
 {
-  if( !configurationIsValid() ) {
+  if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
   KUrl url( item.remoteId() );
-  QString urlStr = url.prettyUrl();
-  mDelItems[urlStr] = item;
-
-  kDebug() << "Requesting deletion of item at " << urlStr;
   url.setUser( Settings::self()->username() );
   url.setPass( Settings::self()->password() );
+
+  const QString urlStr = url.prettyUrl();
+  kDebug() << "Requesting deletion of item at " << urlStr;
+
+  mDelItems[ urlStr ] = item;
+
   mAccessor->removeItem( url );
 }
 
-void davCalendarResource::accessorRetrievedCollection( const QString &url, const QString &name )
+void davCalendarResource::accessorRetrievedCollection( const QString &url, const QString &collectionName )
 {
-  kDebug() << "Accessor retrieved a collection named " << name << " at " << url;
+  kDebug() << "Accessor retrieved a collection named " << collectionName << " at " << url;
 
-  Akonadi::Collection c;
-  c.setParentCollection( mDavCollectionRoot );
-  c.setRemoteId( url );
-  if( name.isEmpty() )
-    c.setName( this->name() + " (" + url + ")" );
+  Akonadi::Collection collection;
+  collection.setParentCollection( mDavCollectionRoot );
+  collection.setRemoteId( url );
+  if ( collectionName.isEmpty() )
+    collection.setName( name() + " (" + url + ")" );
   else
-    c.setName( name + " (" + url + ")" );
+    collection.setName( collectionName + " (" + url + ")" );
 
   QStringList mimeTypes;
   mimeTypes << "text/calendar";
   mimeTypes += mMimeVisitor->allMimeTypes();
-  c.setContentMimeTypes( mimeTypes );
+  collection.setContentMimeTypes( mimeTypes );
 
-  Akonadi::CachePolicy cachePolicy;
-  cachePolicy.setInheritFromParent( true );
-  c.setCachePolicy( cachePolicy );
+  collectionsRetrievedIncremental( Akonadi::Collection::List() << collection, Akonadi::Collection::List() );
 
-  Akonadi::Collection::List tmp;
-  tmp << c;
-  collectionsRetrievedIncremental( tmp, Akonadi::Collection::List() );
   mSeenCollections << url;
 }
 
 void davCalendarResource::accessorRetrievedCollections()
 {
-  if( --mCollectionsRetrievalCount == 0 ) {
+  if ( --mCollectionsRetrievalCount == 0 ) {
     kDebug() << "All collections retrieved";
     collectionsRetrievalDone();
   }
 }
 
-void davCalendarResource::accessorRetrievedItem( const davItem &item )
+void davCalendarResource::accessorRetrievedItem( const davItem &ditem )
 {
-  kDebug() << "Accessor retrieved an item at " << item.url << item.etag;
+  kDebug() << "Accessor retrieved an item at " << ditem.url << ditem.etag;
 
-  Akonadi::Item i = createAkonadiItem( item.data );
+  Akonadi::Item item = createAkonadiItem( ditem.data );
 
-  IncidencePtr ptr = i.payload<IncidencePtr>();
-  if( !ptr.get() )
+  IncidencePtr ptr = item.payload<IncidencePtr>();
+  if ( !ptr.get() )
     return;
 
-  i.setRemoteId( item.url );
+  item.setRemoteId( ditem.url );
 
-  if( item.contentType.isEmpty() )
-    i.setMimeType( "text/calendar" );
+  if ( ditem.contentType.isEmpty() )
+    item.setMimeType( "text/calendar" );
   else
-    i.setMimeType( item.contentType );
+    item.setMimeType( ditem.contentType );
 
-  etagAttribute *attr = i.attribute<etagAttribute>( Item::AddIfMissing );
-  attr->setEtag( item.etag );
+  etagAttribute *attr = item.attribute<etagAttribute>( Item::AddIfMissing );
+  attr->setEtag( ditem.etag );
 
-  mAccessor->addItemToCache( item );
+  mAccessor->addItemToCache( ditem );
 
-  mRetrievedItems << i;
+  mRetrievedItems << item;
 }
 
 void davCalendarResource::accessorRetrievedItems()
@@ -405,13 +421,16 @@ void davCalendarResource::accessorRetrievedItems()
   kDebug() << "Accessor finished retrieving items";
 
   QMutexLocker locker( &mRetrievedItemsMutex );
-  Akonadi::Item::List tmp = mRetrievedItems;
+
+  const Akonadi::Item::List collections = mRetrievedItems;
   mRetrievedItems.clear();
+
   locker.unlock();
-  itemsRetrievedIncremental( tmp, Akonadi::Item::List() );
+
+  itemsRetrievedIncremental( collections, Akonadi::Item::List() );
   itemsRetrievalDone();
 
-  if( ++mItemsRetrievedCount == mSeenCollections.size() ) {
+  if ( ++mItemsRetrievedCount == mSeenCollections.size() ) {
     mAccessor->validateCache();
     mItemsRetrievedCount = 0;
   }
@@ -419,38 +438,39 @@ void davCalendarResource::accessorRetrievedItems()
 
 void davCalendarResource::accessorRemovedItem( const KUrl &url )
 {
-  QString urlStr = url.prettyUrl();
+  const QString urlStr = url.prettyUrl();
 
   QMutexLocker locker( &mDelItemsMutex );
 
-  if( !mDelItems.contains( urlStr ) ) {
+  if ( !mDelItems.contains( urlStr ) ) {
     emit error( i18n( "Unable to find an upload request for URL %1." ).arg( urlStr ) );
     return;
   }
 
   changeProcessed();
 
-  Akonadi::Item i = mDelItems[urlStr];
+  const Akonadi::Item item = mDelItems[ urlStr ];
   mDelItems.remove( urlStr );
   locker.unlock();
 
   // Force a refresh of the collection containing the item
-  Akonadi::Entity::Id collId = i.storageCollectionId();
-  if( collId != -1 )
-    synchronizeCollection( collId );
+  const Akonadi::Collection::Id collectionId = item.storageCollectionId();
+  if ( collectionId != -1 )
+    synchronizeCollection( collectionId );
   else
     synchronize();
 }
 
-void davCalendarResource::accessorPutItem( const KUrl &oldUrl, davItem item )
+void davCalendarResource::accessorPutItem( const KUrl &oldUrl, davItem ditem )
 {
-  QString oldUrlStr = oldUrl.prettyUrl();
-  QString newUrlStr = item.url;
+  const QString oldUrlStr = oldUrl.prettyUrl();
+  const QString newUrlStr = ditem.url;
+
   kDebug() << "Accessor put item at (old) " << oldUrlStr;
 
   QMutexLocker locker( &mPutItemsMutex );
 
-  if( !mPutItems.contains( oldUrlStr ) ) {
+  if ( !mPutItems.contains( oldUrlStr ) ) {
     emit error( i18n( "Unable to find an upload request for URL %1." ).arg( oldUrlStr ) );
     kDebug() << "Unable to find an upload request for URL " << oldUrlStr;
     return;
@@ -458,19 +478,20 @@ void davCalendarResource::accessorPutItem( const KUrl &oldUrl, davItem item )
 
   kDebug() << "Item URL changed from " << oldUrlStr << " to " << newUrlStr;
 
-  Akonadi::Item i = mPutItems[oldUrlStr];
+  Akonadi::Item item = mPutItems[ oldUrlStr ];
   mPutItems.remove( oldUrlStr );
+
   locker.unlock();
 
-  i.setRemoteId( newUrlStr );
-  etagAttribute *attr = i.attribute<etagAttribute>( Item::AddIfMissing );
-  attr->setEtag( item.etag );
-  changeCommitted( i );
+  item.setRemoteId( newUrlStr );
+  etagAttribute *attr = item.attribute<etagAttribute>( Item::AddIfMissing );
+  attr->setEtag( ditem.etag );
+  changeCommitted( item );
 
   // Force a refresh of the collection containing the item
-  Akonadi::Entity::Id collId = i.storageCollectionId();
-  if( collId != -1 )
-    synchronizeCollection( collId );
+  const Akonadi::Collection::Id collectionId = item.storageCollectionId();
+  if ( collectionId != -1 )
+    synchronizeCollection( collectionId );
   else
     synchronize();
 }
@@ -479,40 +500,41 @@ void davCalendarResource::backendItemsRemoved( const QList<davItem> &items )
 {
   kDebug() << "Got " << items.size() << " items removed on the backend";
 
-  Akonadi::Item::List removed;
+  Akonadi::Item::List removedItems;
 
-  foreach( davItem item, items ) {
-    kDebug() << "Item at " << item.url << " was removed";
+  foreach ( const davItem &ditem, items ) {
+    kDebug() << "Item at " << ditem.url << " was removed";
 
-    Akonadi::Item i = createAkonadiItem( item.data );
-    i.setRemoteId( item.url );
+    Akonadi::Item item = createAkonadiItem( ditem.data );
+    item.setRemoteId( ditem.url );
 
-    if( item.contentType.isEmpty() )
-      i.setMimeType( "text/calendar" );
+    if ( ditem.contentType.isEmpty() )
+      item.setMimeType( "text/calendar" );
     else
-      i.setMimeType( item.contentType );
+      item.setMimeType( ditem.contentType );
 
-    removed << i;
+    removedItems << item;
   }
 
-  new Akonadi::ItemDeleteJob( removed, this );
+  new Akonadi::ItemDeleteJob( removedItems, this );
 }
 
-void davCalendarResource::accessorStatus( const QString &s )
+void davCalendarResource::accessorStatus( const QString &statusMsg )
 {
-  emit status( Running, s );
+  emit status( Running, statusMsg );
 }
 
-void davCalendarResource::accessorError( const QString &err, bool cancelRequest )
+void davCalendarResource::accessorError( const QString &errorMsg, bool cancelRequest )
 {
-  if( cancelRequest )
-    cancelTask( err );
-  emit error( err );
+  if ( cancelRequest )
+    cancelTask( errorMsg );
+
+  emit error( errorMsg );
 }
 
 void davCalendarResource::doResourceInitialization()
 {
-  if( !configurationIsValid() ) {
+  if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "Resource not configured" ) );
     return;
   }
@@ -557,44 +579,43 @@ void davCalendarResource::doResourceInitialization()
   connect( mAccessor, SIGNAL( backendItemsRemoved( const QList<davItem>& ) ),
            this, SLOT( backendItemsRemoved( const QList<davItem>& ) ) );
 
-  if( mDavCollectionRoot.id() )
+  if ( mDavCollectionRoot.id() )
     loadCacheFromAkonadi();
+
   synchronize();
 }
 
 void davCalendarResource::loadCacheFromAkonadi()
 {
-  CollectionFetchJob *cJob =
-      new CollectionFetchJob( mDavCollectionRoot, CollectionFetchJob::FirstLevel );
+  CollectionFetchJob *fetchJob = new CollectionFetchJob( mDavCollectionRoot, CollectionFetchJob::FirstLevel );
 
-  if( cJob->exec() ) {
-    Collection::List collections = cJob->collections();
+  if ( fetchJob->exec() ) {
+    const Collection::List collections = fetchJob->collections();
 
-    foreach( const Collection &coll, collections ) {
-      ItemFetchJob job( coll );
+    foreach ( const Collection &collection, collections ) {
+      ItemFetchJob job( collection );
       job.fetchScope().fetchFullPayload();
       job.fetchScope().fetchAllAttributes();
 
-      if( job.exec() ) {
-        Item::List items = job.items();
-        foreach( const Item &item, items ) {
-          if( !item.hasPayload<IncidencePtr>() )
+      if ( job.exec() ) {
+        const Item::List items = job.items();
+        foreach ( const Item &item, items ) {
+          if ( !item.hasPayload<IncidencePtr>() )
             continue;
 
-          if( !item.hasAttribute<etagAttribute>() )
+          if ( !item.hasAttribute<etagAttribute>() )
             continue;
 
-          IncidencePtr ptr = item.payload<IncidencePtr>();
+          const IncidencePtr ptr = item.payload<IncidencePtr>();
           KCal::ICalFormat formatter;
-          QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
+          const QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
 
-          QString etag;
-          etagAttribute *attr = item.attribute<etagAttribute>();
-          etag = attr->etag();
+          const etagAttribute *attr = item.attribute<etagAttribute>();
+          const QString etag = attr->etag();
 
-          davItem i( item.remoteId(), "text/calendar", rawData, etag );
-          kDebug() << "Adding item " << i.url << i.etag << " to accessor cache";
-          mAccessor->addItemToCache( i );
+          davItem ditem( item.remoteId(), "text/calendar", rawData, etag );
+          kDebug() << "Adding item " << ditem.url << ditem.etag << " to accessor cache";
+          mAccessor->addItemToCache( ditem );
         }
       }
     }
@@ -603,56 +624,50 @@ void davCalendarResource::loadCacheFromAkonadi()
 
 bool davCalendarResource::configurationIsValid()
 {
-  if( !(Settings::self()->remoteProtocol() == Settings::groupdav ||
-      Settings::self()->remoteProtocol() == Settings::caldav ) )
+  if ( !(Settings::self()->remoteProtocol() == Settings::groupdav ||
+       Settings::self()->remoteProtocol() == Settings::caldav ) )
     return false;
 
-  if( Settings::self()->remoteUrls().empty() )
+  if ( Settings::self()->remoteUrls().empty() )
     return false;
 
   QStringList urls;
-  foreach( QString url, Settings::self()->remoteUrls() ) {
-    if( !url.endsWith( "/" ) )
-      url.append( "/" );
-    urls << url;
+  foreach ( const QString &url, Settings::self()->remoteUrls() ) {
+    if ( !url.endsWith( '/' ) )
+      urls << url + QLatin1Char( '/' );
+    else
+      urls << url;
   }
+
   Settings::self()->setRemoteUrls( urls );
 
-  if( Settings::self()->authenticationRequired() ) {
-    if( Settings::self()->username().isEmpty() )
+  if ( Settings::self()->authenticationRequired() ) {
+    if ( Settings::self()->username().isEmpty() )
       return false;
 
     Settings::self()->askForPassword();
 
-    if( Settings::self()->password().isEmpty() )
+    if ( Settings::self()->password().isEmpty() )
       return false;
   }
 
   int newICT = Settings::self()->refreshInterval();
-  if( newICT == 0 )
+  if ( newICT == 0 )
     newICT = -1;
-  if( newICT != mDavCollectionRoot.cachePolicy().intervalCheckTime() ) {
+
+  if ( newICT != mDavCollectionRoot.cachePolicy().intervalCheckTime() ) {
     Akonadi::CachePolicy cachePolicy = mDavCollectionRoot.cachePolicy();
     cachePolicy.setIntervalCheckTime( newICT );
+
     mDavCollectionRoot.setCachePolicy( cachePolicy );
   }
 
-  if( !Settings::self()->displayName().isEmpty() ) {
-    EntityDisplayAttribute *dName = mDavCollectionRoot.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-    dName->setDisplayName( Settings::self()->displayName() );
+  if ( !Settings::self()->displayName().isEmpty() ) {
+    EntityDisplayAttribute *attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+    attribute->setDisplayName( Settings::self()->displayName() );
   }
 
   return true;
-}
-
-Akonadi::Item createAkonadiItem( const QByteArray &data )
-{
-  Akonadi::Item ret;
-  QString iCalData = QString::fromUtf8( data );
-  KCal::ICalFormat formatter;
-  IncidencePtr ptr( formatter.fromString( iCalData ) );
-  ret.setPayload( ptr );
-  return ret;
 }
 
 AKONADI_RESOURCE_MAIN( davCalendarResource )
