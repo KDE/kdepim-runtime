@@ -16,26 +16,13 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef CALDAVCALENDAR_H
-#define CALDAVCALENDAR_H
-
-#include <QtCore/QStringList>
-
 #include "davimplementation.h"
 
-class CaldavCalendar : public DavImplementation
+DavImplementation::~DavImplementation()
 {
-  public:
-    CaldavCalendar();
-    virtual bool useReport() const;
-    virtual bool useMultiget() const;
-    virtual QDomDocument collectionsQuery() const;
-    virtual QString collectionsXQuery() const;
-    virtual QList<QDomDocument> itemsQueries() const;
-    virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
+}
 
-  private:
-    QList<QDomDocument> mItemsQueries;
-};
-
-#endif
+QDomDocument DavImplementation::itemsReportQuery( const QStringList& ) const
+{
+  return QDomDocument();
+}

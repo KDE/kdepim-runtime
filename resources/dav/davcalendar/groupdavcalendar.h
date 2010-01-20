@@ -21,15 +21,15 @@
 
 #include "davimplementation.h"
 
-class groupdavCalendarImplementation : public davImplementation
+class GroupdavCalendar : public DavImplementation
 {
   public:
-    groupdavCalendarImplementation();
+    GroupdavCalendar();
     virtual bool useReport() const;
     virtual bool useMultiget() const;
     virtual QDomDocument collectionsQuery() const;
     virtual QString collectionsXQuery() const;
-    virtual const QList<QDomDocument>& itemsQueries() const;
+    virtual QList<QDomDocument> itemsQueries() const;
 
   private:
     QList<QDomDocument> mItemsQueries;

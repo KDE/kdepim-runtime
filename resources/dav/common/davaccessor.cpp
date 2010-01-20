@@ -34,16 +34,16 @@
 #include <klocalizedstring.h>
 #include <kstandarddirs.h>
 
-davItem::davItem()
+DavItem::DavItem()
 {
 }
 
-davItem::davItem( const QString &u, const QString &c, const QByteArray &d, const QString &e )
+DavItem::DavItem( const QString &u, const QString &c, const QByteArray &d, const QString &e )
   : url( u ), contentType( c ), data( d ), etag( e )
 {
 }
 
-QDataStream& operator<<( QDataStream &out, const davItem &item )
+QDataStream& operator<<( QDataStream &out, const DavItem &item )
 {
   out << item.url;
   out << item.contentType;
@@ -52,7 +52,7 @@ QDataStream& operator<<( QDataStream &out, const davItem &item )
   return out;
 }
 
-QDataStream& operator>>( QDataStream &in, davItem &item)
+QDataStream& operator>>( QDataStream &in, DavItem &item)
 {
   in >> item.url;
   in >> item.contentType;
@@ -61,17 +61,17 @@ QDataStream& operator>>( QDataStream &in, davItem &item)
   return in;
 }
 
-davAccessor::davAccessor( davImplementation *i )
+DavAccessor::DavAccessor( DavImplementation *i )
   : mDavImpl( i )
 {
 }
 
-davAccessor::~davAccessor()
+DavAccessor::~DavAccessor()
 {
   delete mDavImpl;
 }
 
-void davAccessor::retrieveCollections( const KUrl &url )
+void DavAccessor::retrieveCollections( const KUrl &url )
 {
   QDomDocument collectionQuery = mDavImpl->collectionsQuery();
 
@@ -79,7 +79,7 @@ void davAccessor::retrieveCollections( const KUrl &url )
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( collectionsPropfindFinished( KJob* ) ) );
 }
 
-void davAccessor::collectionsPropfindFinished( KJob *j )
+void DavAccessor::collectionsPropfindFinished( KJob *j )
 {
   KIO::DavJob* job = dynamic_cast<KIO::DavJob*>( j );
   if( !job )
@@ -180,7 +180,7 @@ void davAccessor::collectionsPropfindFinished( KJob *j )
   emit collectionsRetrieved();
 }
 
-void davAccessor::retrieveItems( const KUrl &url )
+void DavAccessor::retrieveItems( const KUrl &url )
 {
   QListIterator<QDomDocument> it( mDavImpl->itemsQueries() );
 
@@ -200,7 +200,7 @@ void davAccessor::retrieveItems( const KUrl &url )
   }
 }
 
-void davAccessor::itemsPropfindFinished( KJob *j )
+void DavAccessor::itemsPropfindFinished( KJob *j )
 {
   KIO::DavJob* job = dynamic_cast<KIO::DavJob*>( j );
   if( !job )
@@ -262,7 +262,7 @@ void davAccessor::itemsPropfindFinished( KJob *j )
     if( tmp.length() != 0 ) {
       etag = tmp.item( 0 ).firstChild().toText().data();
 
-      davItemCacheStatus itemStatus = itemCacheStatus( href, etag );
+      DavItemCacheStatus itemStatus = itemCacheStatus( href, etag );
       if( itemStatus == CACHED ) {
         continue;
       }
@@ -275,7 +275,7 @@ void davAccessor::itemsPropfindFinished( KJob *j )
     runItemsFetch( collectionUrl );
 }
 
-void davAccessor::itemsReportFinished( KJob *j )
+void DavAccessor::itemsReportFinished( KJob *j )
 {
   KIO::DavJob* job = dynamic_cast<KIO::DavJob*>( j );
   if( !job )
@@ -326,7 +326,7 @@ void davAccessor::itemsReportFinished( KJob *j )
     if( tmp.length() != 0 ) {
       etag = tmp.item( 0 ).firstChild().toText().data();
 
-      davItemCacheStatus itemStatus = itemCacheStatus( href, etag );
+      DavItemCacheStatus itemStatus = itemCacheStatus( href, etag );
       if( itemStatus == CACHED ) {
         continue;
       }
@@ -339,7 +339,7 @@ void davAccessor::itemsReportFinished( KJob *j )
     runItemsFetch( collectionUrl );
 }
 
-void davAccessor::putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag )
+void DavAccessor::putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag )
 {
   QString urlStr = url.prettyUrl();
 
@@ -356,7 +356,7 @@ void davAccessor::putItem( const KUrl &url, const QString &contentType, const QB
     headers += "If-None-Match: *";
   }
 
-  davItem i( urlStr, contentType, data, etag );
+  DavItem i( urlStr, contentType, data, etag );
   mItemsCache[urlStr] = i;
 
   KIO::StoredTransferJob *job = KIO::storedPut( data, url, -1, KIO::HideProgressInfo | KIO::DefaultFlags );
@@ -367,7 +367,7 @@ void davAccessor::putItem( const KUrl &url, const QString &contentType, const QB
            this, SLOT( itemPutFinished( KJob* ) ) );
 }
 
-void davAccessor::itemPutFinished( KJob *j )
+void DavAccessor::itemPutFinished( KJob *j )
 {
   KIO::StoredTransferJob *job = dynamic_cast<KIO::StoredTransferJob*>( j );
   if( !job ) {
@@ -417,7 +417,7 @@ void davAccessor::itemPutFinished( KJob *j )
   emit itemPut( oldUrl, mItemsCache[newUrlStr] );
 }
 
-void davAccessor::removeItem( const KUrl &url )
+void DavAccessor::removeItem( const KUrl &url )
 {
   QString etag;
   if( mItemsCache.contains( url.prettyUrl() ) )
@@ -437,7 +437,7 @@ void davAccessor::removeItem( const KUrl &url )
   connect( job, SIGNAL( warning( KJob*, const QString&, const QString& ) ), this, SLOT( jobWarning( KJob*, const QString&, const QString& ) ) );
 }
 
-void davAccessor::itemDelFinished( KJob *j )
+void DavAccessor::itemDelFinished( KJob *j )
 {
   KIO::DeleteJob *job = dynamic_cast<KIO::DeleteJob*>( j );
   if( !job ) {
@@ -457,7 +457,7 @@ void davAccessor::itemDelFinished( KJob *j )
   emit itemRemoved( url );
 }
 
-void davAccessor::jobWarning( KJob* j, const QString &p, const QString &r )
+void DavAccessor::jobWarning( KJob* j, const QString &p, const QString &r )
 {
   Q_UNUSED( j );
   Q_UNUSED( r );
@@ -465,7 +465,7 @@ void davAccessor::jobWarning( KJob* j, const QString &p, const QString &r )
   emit accessorError( p, true );
 }
 
-void davAccessor::validateCache()
+void DavAccessor::validateCache()
 {
   kDebug() << "Beginning cache validation";
   kDebug() << mItemsCache.size() << " items in cache";
@@ -484,7 +484,7 @@ void davAccessor::validateCache()
   cache.subtract( latest );
   // So now cache should only contains deleted item
 
-  QList<davItem> removed;
+  QList<DavItem> removed;
 
   foreach( QString url, cache ) {
     removed << mItemsCache[url];
@@ -497,7 +497,7 @@ void davAccessor::validateCache()
   kDebug() << "Finished cache validation";
 }
 
-KIO::DavJob* davAccessor::doPropfind( const KUrl &url, const QDomDocument &props, const QString &davDepth )
+KIO::DavJob* DavAccessor::doPropfind( const KUrl &url, const QDomDocument &props, const QString &davDepth )
 {
   KIO::DavJob *job = KIO::davPropFind( url, props, davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
@@ -511,7 +511,7 @@ KIO::DavJob* davAccessor::doPropfind( const KUrl &url, const QDomDocument &props
   return job;
 }
 
-KIO::DavJob* davAccessor::doReport( const KUrl &url, const QDomDocument &rep, const QString &davDepth )
+KIO::DavJob* DavAccessor::doReport( const KUrl &url, const QDomDocument &rep, const QString &davDepth )
 {
   KIO::DavJob *job = KIO::davReport( url, rep.toString(), davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
@@ -525,9 +525,9 @@ KIO::DavJob* davAccessor::doReport( const KUrl &url, const QDomDocument &rep, co
   return job;
 }
 
-davItemCacheStatus davAccessor::itemCacheStatus( const QString &url, const QString &etag )
+DavItemCacheStatus DavAccessor::itemCacheStatus( const QString &url, const QString &etag )
 {
-  davItemCacheStatus ret = NOT_CACHED;
+  DavItemCacheStatus ret = NOT_CACHED;
 
   if( mItemsCache.contains( url ) ) {
     if( mItemsCache[url].etag != etag ) {
@@ -543,29 +543,29 @@ davItemCacheStatus davAccessor::itemCacheStatus( const QString &url, const QStri
   return ret;
 }
 
-davItem davAccessor::getItemFromCache( const QString &url )
+DavItem DavAccessor::getItemFromCache( const QString &url )
 {
   kDebug() << "Serving " << url << " from cache";
   return mItemsCache.value( url );
 }
 
-void davAccessor::addItemToCache( const davItem &item )
+void DavAccessor::addItemToCache( const DavItem &item )
 {
   mItemsCache[item.url] = item;
 }
 
-void davAccessor::clearSeenUrls( const QString &url )
+void DavAccessor::clearSeenUrls( const QString &url )
 {
   kDebug() << "Clearing seen items for collection " << url;
   mLastSeenItems[url].clear();
 }
 
-void davAccessor::seenUrl( const QString &collectionUrl, const QString &itemUrl )
+void DavAccessor::seenUrl( const QString &collectionUrl, const QString &itemUrl )
 {
   mLastSeenItems[collectionUrl] << itemUrl;
 }
 
-QString davAccessor::getEtagFromHeaders( const QString &headers )
+QString DavAccessor::getEtagFromHeaders( const QString &headers )
 {
   QString etag;
   QStringList allHeaders = headers.split( "\n" );
@@ -579,7 +579,7 @@ QString davAccessor::getEtagFromHeaders( const QString &headers )
   return etag;
 }
 
-void davAccessor::runItemsFetch( const QString &collection )
+void DavAccessor::runItemsFetch( const QString &collection )
 {
   if( mDavImpl->useMultiget() ) {
     QMutexLocker locker( &mFetchItemsQueueMutex );
@@ -613,7 +613,7 @@ void davAccessor::runItemsFetch( const QString &collection )
   }
 }
 
-void davAccessor::itemsMultigetFinished( KJob *j )
+void DavAccessor::itemsMultigetFinished( KJob *j )
 {
   KIO::DavJob* job = dynamic_cast<KIO::DavJob*>( j );
   if( !job )
@@ -664,9 +664,9 @@ void davAccessor::itemsMultigetFinished( KJob *j )
       continue;
 
     kDebug() << "Got item with url " << href;
-    davItem i( href, "text/calendar", data, etag );
+    DavItem i( href, "text/calendar", data, etag );
 
-    davItemCacheStatus itemStatus = itemCacheStatus( href, etag );
+    DavItemCacheStatus itemStatus = itemCacheStatus( href, etag );
     if( itemStatus != CACHED ) {
       emit itemRetrieved( i );
     }
@@ -675,7 +675,7 @@ void davAccessor::itemsMultigetFinished( KJob *j )
   emit itemsRetrieved();
 }
 
-void davAccessor::itemGetFinished( KJob *j )
+void DavAccessor::itemGetFinished( KJob *j )
 {
   KIO::StoredTransferJob *job = dynamic_cast<KIO::StoredTransferJob*>( j );
   if( !job ) {
@@ -696,7 +696,7 @@ void davAccessor::itemGetFinished( KJob *j )
 
   if( itemCacheStatus( url, etag ) != CACHED ) {
     kDebug() << "Got Item at URL " << url;
-    davItem i( url, mimeType, d, etag );
+    DavItem i( url, mimeType, d, etag );
     emit itemRetrieved( i );
   }
 

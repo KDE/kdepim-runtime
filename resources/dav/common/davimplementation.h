@@ -16,26 +16,24 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAV_IMPLEMENTATION_H
-#define DAV_IMPLEMENTATION_H
+#ifndef DAVIMPLEMENTATION_H
+#define DAVIMPLEMENTATION_H
 
 #include <QtCore/QList>
 #include <QtXml/QDomDocument>
 
 class QStringList;
 
-class davImplementation
+class DavImplementation
 {
   public:
-    virtual ~davImplementation()
-      {}
+    virtual ~DavImplementation();
     virtual bool useReport() const = 0;
     virtual bool useMultiget() const = 0;
     virtual QDomDocument collectionsQuery() const = 0;
     virtual QString collectionsXQuery() const = 0;
-    virtual const QList<QDomDocument>& itemsQueries() const = 0;
-    virtual QDomDocument itemsReportQuery( const QStringList &urls ) const
-      { return QDomDocument(); }
+    virtual QList<QDomDocument> itemsQueries() const = 0;
+    virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
 };
 
 #endif

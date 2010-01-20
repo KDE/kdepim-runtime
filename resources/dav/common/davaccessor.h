@@ -30,36 +30,37 @@ namespace KIO {
   class StoredTransferJob;
 }
 
+class DavImplementation;
 class KJob;
 class QDomDocument;
-class davImplementation;
 
-struct davItem
+struct DavItem
 {
-  davItem();
-  davItem( const QString &_url, const QString &_contentType, const QByteArray &_data, const QString &_etag);
+  DavItem();
+  DavItem( const QString &_url, const QString &_contentType, const QByteArray &_data, const QString &_etag );
+
   QString url;
   QString contentType;
   QByteArray data;
   QString etag;
 };
 
-QDataStream& operator<<( QDataStream &out, const davItem &item );
-QDataStream& operator>>( QDataStream &in, davItem &item);
+QDataStream& operator<<( QDataStream &out, const DavItem &item );
+QDataStream& operator>>( QDataStream &in, DavItem &item);
 
-enum davItemCacheStatus {
+enum DavItemCacheStatus {
   NOT_CACHED,
   EXPIRED,
   CACHED
 };
 
-class davAccessor : public QObject
+class DavAccessor : public QObject
 {
   Q_OBJECT
 
   public:
-    davAccessor( davImplementation *implementation );
-    ~davAccessor();
+    DavAccessor( DavImplementation *implementation );
+    ~DavAccessor();
 
     void retrieveCollections( const KUrl &url );
     void retrieveItems( const KUrl &url );
@@ -67,20 +68,21 @@ class davAccessor : public QObject
     void putItem( const KUrl &url, const QString &contentType, const QByteArray &data, bool useCachedEtag = false );
     void removeItem( const KUrl &url );
 
-    void addItemToCache( const davItem &item );
+    void addItemToCache( const DavItem &item );
 
   public Q_SLOTS:
     void validateCache();
 
-  private:
-    KIO::DavJob* doPropfind( const KUrl &url, const QDomDocument &properties, const QString &davDepth );
-    KIO::DavJob* doReport( const KUrl &url, const QDomDocument &report, const QString &davDepth );
-    davItemCacheStatus itemCacheStatus( const QString &url, const QString &etag );
-    davItem getItemFromCache( const QString &url );
-    void clearSeenUrls( const QString &url );
-    void seenUrl( const QString &collectionUrl, const QString &itemUrl );
-    QString getEtagFromHeaders( const QString &httpHeaders );
-    void runItemsFetch( const QString &collection );
+  Q_SIGNALS:
+    void accessorStatus( const QString &s );
+    void accessorError( const QString &e, bool cancelRequest );
+    void collectionRetrieved( const QString &url, const QString &name );
+    void collectionsRetrieved();
+    void itemRetrieved( const DavItem &item );
+    void itemsRetrieved();
+    void itemPut( const KUrl &oldUrl, DavItem putItem );
+    void itemRemoved( const KUrl &url );
+    void backendItemsRemoved( const QList<DavItem> &items );
 
   private Q_SLOTS:
     void collectionsPropfindFinished( KJob *j );
@@ -93,23 +95,21 @@ class davAccessor : public QObject
     void jobWarning( KJob*, const QString&, const QString& );
 
   private:
-    davImplementation *mDavImpl;
+    KIO::DavJob* doPropfind( const KUrl &url, const QDomDocument &properties, const QString &davDepth );
+    KIO::DavJob* doReport( const KUrl &url, const QDomDocument &report, const QString &davDepth );
+    DavItemCacheStatus itemCacheStatus( const QString &url, const QString &etag );
+    DavItem getItemFromCache( const QString &url );
+    void clearSeenUrls( const QString &url );
+    void seenUrl( const QString &collectionUrl, const QString &itemUrl );
+    QString getEtagFromHeaders( const QString &httpHeaders );
+    void runItemsFetch( const QString &collection );
+
+    DavImplementation *mDavImpl;
     QMap<QString, QSet<QString> > mLastSeenItems; // collection url, items url
-    QMap<QString, davItem> mItemsCache; // url, item
+    QMap<QString, DavItem> mItemsCache; // url, item
     QMap<QString, int> mRunningItemsQueryCount;
     QMap<QString, QStringList> mFetchItemsQueue; // collection url, items urls
     QMutex mFetchItemsQueueMutex;
-
-  Q_SIGNALS:
-    void accessorStatus( const QString &s );
-    void accessorError( const QString &e, bool cancelRequest );
-    void collectionRetrieved( const QString &url, const QString &name );
-    void collectionsRetrieved();
-    void itemRetrieved( const davItem &item );
-    void itemsRetrieved();
-    void itemPut( const KUrl &oldUrl, davItem putItem );
-    void itemRemoved( const KUrl &url );
-    void backendItemsRemoved( const QList<davItem> &items );
 };
 
 #endif

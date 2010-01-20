@@ -29,14 +29,14 @@ namespace Akonadi {
   class IncidenceMimeTypeVisitor;
 }
 
-class davCalendarResource : public Akonadi::ResourceBase,
+class DavCalendarResource : public Akonadi::ResourceBase,
                             public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
   public:
-    davCalendarResource( const QString &id );
-    ~davCalendarResource();
+    DavCalendarResource( const QString &id );
+    ~DavCalendarResource();
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
@@ -50,12 +50,12 @@ class davCalendarResource : public Akonadi::ResourceBase,
     void accessorError( const QString &err, bool cancelRequest );
     void accessorRetrievedCollection( const QString &url, const QString &name );
     void accessorRetrievedCollections();
-    void accessorRetrievedItem( const davItem &item );
+    void accessorRetrievedItem( const DavItem &item );
     void accessorRetrievedItems();
     void accessorRemovedItem( const KUrl &url );
-    void accessorPutItem( const KUrl &oldUrl, davItem item );
+    void accessorPutItem( const KUrl &oldUrl, DavItem item );
 
-    void backendItemsRemoved( const QList<davItem> &items );
+    void backendItemsRemoved( const QList<DavItem> &items );
 
   protected:
     virtual void aboutToQuit();
@@ -70,7 +70,7 @@ class davCalendarResource : public Akonadi::ResourceBase,
     bool configurationIsValid();
 
     Akonadi::IncidenceMimeTypeVisitor *mMimeVisitor;
-    davAccessor *mAccessor;
+    DavAccessor *mAccessor;
     Akonadi::Collection mDavCollectionRoot;
     int mCollectionsRetrievalCount;
     int mItemsRetrievedCount;

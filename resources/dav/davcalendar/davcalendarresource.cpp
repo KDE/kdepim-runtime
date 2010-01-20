@@ -104,7 +104,7 @@ static Akonadi::Item createAkonadiItem( const QByteArray &data )
   return item;
 }
 
-davCalendarResource::davCalendarResource( const QString &id )
+DavCalendarResource::DavCalendarResource( const QString &id )
   : ResourceBase( id ), mMimeVisitor( new Akonadi::IncidenceMimeTypeVisitor ), mAccessor( 0 ),
     mCollectionsRetrievalCount( 0 ), mItemsRetrievedCount( 0 )
 {
@@ -140,12 +140,12 @@ davCalendarResource::davCalendarResource( const QString &id )
   doResourceInitialization();
 }
 
-davCalendarResource::~davCalendarResource()
+DavCalendarResource::~DavCalendarResource()
 {
   delete mAccessor;
 }
 
-void davCalendarResource::retrieveCollections()
+void DavCalendarResource::retrieveCollections()
 {
   kDebug() << "Retrieving collections list";
 
@@ -173,7 +173,7 @@ void davCalendarResource::retrieveCollections()
   }
 }
 
-void davCalendarResource::retrieveItems( const Akonadi::Collection &collection )
+void DavCalendarResource::retrieveItems( const Akonadi::Collection &collection )
 {
   kDebug() << "Retrieving items";
 
@@ -192,7 +192,7 @@ void davCalendarResource::retrieveItems( const Akonadi::Collection &collection )
   mAccessor->retrieveItems( url );
 }
 
-bool davCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
+bool DavCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
   kDebug() << "Retrieving single item. Remote id = " << item.remoteId();
 
@@ -207,12 +207,12 @@ bool davCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
   return true;
 }
 
-void davCalendarResource::aboutToQuit()
+void DavCalendarResource::aboutToQuit()
 {
   Settings::self()->writeConfig();
 }
 
-void davCalendarResource::configure( WId windowId )
+void DavCalendarResource::configure( WId windowId )
 {
   ConfigDialog dialog;
   Settings::self()->setWinId( windowId );
@@ -259,7 +259,7 @@ void davCalendarResource::configure( WId windowId )
   }
 }
 
-void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
+void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
   kDebug() << "Received notification for added item. Local id = "
       << item.id() << ". Remote id = " << item.remoteId()
@@ -308,7 +308,7 @@ void davCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   mAccessor->putItem( url, "text/calendar", rawData );
 }
 
-void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
+void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
   kDebug() << "Received notification for changed item. Local id = " << item.id()
       << ". Remote id = " << item.remoteId();
@@ -341,7 +341,7 @@ void davCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
   mAccessor->putItem( url, "text/calendar", rawData, true );
 }
 
-void davCalendarResource::itemRemoved( const Akonadi::Item &item )
+void DavCalendarResource::itemRemoved( const Akonadi::Item &item )
 {
   if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
@@ -361,7 +361,7 @@ void davCalendarResource::itemRemoved( const Akonadi::Item &item )
   mAccessor->removeItem( url );
 }
 
-void davCalendarResource::accessorRetrievedCollection( const QString &url, const QString &collectionName )
+void DavCalendarResource::accessorRetrievedCollection( const QString &url, const QString &collectionName )
 {
   kDebug() << "Accessor retrieved a collection named " << collectionName << " at " << url;
 
@@ -383,7 +383,7 @@ void davCalendarResource::accessorRetrievedCollection( const QString &url, const
   mSeenCollections << url;
 }
 
-void davCalendarResource::accessorRetrievedCollections()
+void DavCalendarResource::accessorRetrievedCollections()
 {
   if ( --mCollectionsRetrievalCount == 0 ) {
     kDebug() << "All collections retrieved";
@@ -391,32 +391,32 @@ void davCalendarResource::accessorRetrievedCollections()
   }
 }
 
-void davCalendarResource::accessorRetrievedItem( const davItem &ditem )
+void DavCalendarResource::accessorRetrievedItem( const DavItem &davItem )
 {
-  kDebug() << "Accessor retrieved an item at " << ditem.url << ditem.etag;
+  kDebug() << "Accessor retrieved an item at " << davItem.url << davItem.etag;
 
-  Akonadi::Item item = createAkonadiItem( ditem.data );
+  Akonadi::Item item = createAkonadiItem( davItem.data );
 
   IncidencePtr ptr = item.payload<IncidencePtr>();
   if ( !ptr.get() )
     return;
 
-  item.setRemoteId( ditem.url );
+  item.setRemoteId( davItem.url );
 
-  if ( ditem.contentType.isEmpty() )
+  if ( davItem.contentType.isEmpty() )
     item.setMimeType( "text/calendar" );
   else
-    item.setMimeType( ditem.contentType );
+    item.setMimeType( davItem.contentType );
 
   etagAttribute *attr = item.attribute<etagAttribute>( Item::AddIfMissing );
-  attr->setEtag( ditem.etag );
+  attr->setEtag( davItem.etag );
 
-  mAccessor->addItemToCache( ditem );
+  mAccessor->addItemToCache( davItem );
 
   mRetrievedItems << item;
 }
 
-void davCalendarResource::accessorRetrievedItems()
+void DavCalendarResource::accessorRetrievedItems()
 {
   kDebug() << "Accessor finished retrieving items";
 
@@ -436,7 +436,7 @@ void davCalendarResource::accessorRetrievedItems()
   }
 }
 
-void davCalendarResource::accessorRemovedItem( const KUrl &url )
+void DavCalendarResource::accessorRemovedItem( const KUrl &url )
 {
   const QString urlStr = url.prettyUrl();
 
@@ -461,10 +461,10 @@ void davCalendarResource::accessorRemovedItem( const KUrl &url )
     synchronize();
 }
 
-void davCalendarResource::accessorPutItem( const KUrl &oldUrl, davItem ditem )
+void DavCalendarResource::accessorPutItem( const KUrl &oldUrl, DavItem davItem )
 {
   const QString oldUrlStr = oldUrl.prettyUrl();
-  const QString newUrlStr = ditem.url;
+  const QString newUrlStr = davItem.url;
 
   kDebug() << "Accessor put item at (old) " << oldUrlStr;
 
@@ -485,7 +485,7 @@ void davCalendarResource::accessorPutItem( const KUrl &oldUrl, davItem ditem )
 
   item.setRemoteId( newUrlStr );
   etagAttribute *attr = item.attribute<etagAttribute>( Item::AddIfMissing );
-  attr->setEtag( ditem.etag );
+  attr->setEtag( davItem.etag );
   changeCommitted( item );
 
   // Force a refresh of the collection containing the item
@@ -496,22 +496,22 @@ void davCalendarResource::accessorPutItem( const KUrl &oldUrl, davItem ditem )
     synchronize();
 }
 
-void davCalendarResource::backendItemsRemoved( const QList<davItem> &items )
+void DavCalendarResource::backendItemsRemoved( const QList<DavItem> &items )
 {
   kDebug() << "Got " << items.size() << " items removed on the backend";
 
   Akonadi::Item::List removedItems;
 
-  foreach ( const davItem &ditem, items ) {
-    kDebug() << "Item at " << ditem.url << " was removed";
+  foreach ( const DavItem &davItem, items ) {
+    kDebug() << "Item at " << davItem.url << " was removed";
 
-    Akonadi::Item item = createAkonadiItem( ditem.data );
-    item.setRemoteId( ditem.url );
+    Akonadi::Item item = createAkonadiItem( davItem.data );
+    item.setRemoteId( davItem.url );
 
-    if ( ditem.contentType.isEmpty() )
+    if ( davItem.contentType.isEmpty() )
       item.setMimeType( "text/calendar" );
     else
-      item.setMimeType( ditem.contentType );
+      item.setMimeType( davItem.contentType );
 
     removedItems << item;
   }
@@ -519,12 +519,12 @@ void davCalendarResource::backendItemsRemoved( const QList<davItem> &items )
   new Akonadi::ItemDeleteJob( removedItems, this );
 }
 
-void davCalendarResource::accessorStatus( const QString &statusMsg )
+void DavCalendarResource::accessorStatus( const QString &statusMsg )
 {
   emit status( Running, statusMsg );
 }
 
-void davCalendarResource::accessorError( const QString &errorMsg, bool cancelRequest )
+void DavCalendarResource::accessorError( const QString &errorMsg, bool cancelRequest )
 {
   if ( cancelRequest )
     cancelTask( errorMsg );
@@ -532,7 +532,7 @@ void davCalendarResource::accessorError( const QString &errorMsg, bool cancelReq
   emit error( errorMsg );
 }
 
-void davCalendarResource::doResourceInitialization()
+void DavCalendarResource::doResourceInitialization()
 {
   if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "Resource not configured" ) );
@@ -543,11 +543,11 @@ void davCalendarResource::doResourceInitialization()
 
   switch( Settings::self()->remoteProtocol() ) {
     case Settings::groupdav:
-      mAccessor = new davAccessor( new groupdavCalendarImplementation() );
+      mAccessor = new DavAccessor( new GroupdavCalendar() );
       emit status( Idle, i18n( "Using GroupDAV" ) );
       break;
     case Settings::caldav:
-      mAccessor = new davAccessor( new caldavImplementation() );
+      mAccessor = new DavAccessor( new CaldavCalendar() );
       emit status( Idle, i18n( "Using CalDAV" ) );
       break;
     default:
@@ -565,19 +565,19 @@ void davCalendarResource::doResourceInitialization()
   connect( mAccessor, SIGNAL( collectionsRetrieved() ),
            this, SLOT( accessorRetrievedCollections() ) );
 
-  connect( mAccessor, SIGNAL( itemRetrieved( const davItem& ) ),
-           this, SLOT( accessorRetrievedItem( const davItem& ) ) );
+  connect( mAccessor, SIGNAL( itemRetrieved( const DavItem& ) ),
+           this, SLOT( accessorRetrievedItem( const DavItem& ) ) );
   connect( mAccessor, SIGNAL( itemsRetrieved() ),
            this, SLOT( accessorRetrievedItems() ) );
 
   connect( mAccessor, SIGNAL( itemRemoved( const KUrl& ) ),
            this, SLOT( accessorRemovedItem( const KUrl& ) ) );
 
-  connect( mAccessor, SIGNAL( itemPut( const KUrl&, davItem ) ),
-           this, SLOT( accessorPutItem( const KUrl&, davItem ) ) );
+  connect( mAccessor, SIGNAL( itemPut( const KUrl&, DavItem ) ),
+           this, SLOT( accessorPutItem( const KUrl&, DavItem ) ) );
 
-  connect( mAccessor, SIGNAL( backendItemsRemoved( const QList<davItem>& ) ),
-           this, SLOT( backendItemsRemoved( const QList<davItem>& ) ) );
+  connect( mAccessor, SIGNAL( backendItemsRemoved( const QList<DavItem>& ) ),
+           this, SLOT( backendItemsRemoved( const QList<DavItem>& ) ) );
 
   if ( mDavCollectionRoot.id() )
     loadCacheFromAkonadi();
@@ -585,7 +585,7 @@ void davCalendarResource::doResourceInitialization()
   synchronize();
 }
 
-void davCalendarResource::loadCacheFromAkonadi()
+void DavCalendarResource::loadCacheFromAkonadi()
 {
   CollectionFetchJob *fetchJob = new CollectionFetchJob( mDavCollectionRoot, CollectionFetchJob::FirstLevel );
 
@@ -613,16 +613,16 @@ void davCalendarResource::loadCacheFromAkonadi()
           const etagAttribute *attr = item.attribute<etagAttribute>();
           const QString etag = attr->etag();
 
-          davItem ditem( item.remoteId(), "text/calendar", rawData, etag );
-          kDebug() << "Adding item " << ditem.url << ditem.etag << " to accessor cache";
-          mAccessor->addItemToCache( ditem );
+          const DavItem davItem( item.remoteId(), "text/calendar", rawData, etag );
+          kDebug() << "Adding item " << davItem.url << davItem.etag << " to accessor cache";
+          mAccessor->addItemToCache( davItem );
         }
       }
     }
   }
 }
 
-bool davCalendarResource::configurationIsValid()
+bool DavCalendarResource::configurationIsValid()
 {
   if ( !(Settings::self()->remoteProtocol() == Settings::groupdav ||
        Settings::self()->remoteProtocol() == Settings::caldav ) )
@@ -670,6 +670,6 @@ bool davCalendarResource::configurationIsValid()
   return true;
 }
 
-AKONADI_RESOURCE_MAIN( davCalendarResource )
+AKONADI_RESOURCE_MAIN( DavCalendarResource )
 
 #include "davcalendarresource.moc"

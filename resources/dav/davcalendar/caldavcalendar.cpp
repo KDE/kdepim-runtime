@@ -22,7 +22,7 @@
 
 #include <QtXml/QDomDocument>
 
-caldavImplementation::caldavImplementation()
+CaldavCalendar::CaldavCalendar()
 {
   /*
    * Create a document like the following:
@@ -115,17 +115,17 @@ caldavImplementation::caldavImplementation()
   }
 }
 
-bool caldavImplementation::useReport() const
+bool CaldavCalendar::useReport() const
 {
   return true;
 }
 
-bool caldavImplementation::useMultiget() const
+bool CaldavCalendar::useMultiget() const
 {
   return true;
 }
 
-QDomDocument caldavImplementation::collectionsQuery() const
+QDomDocument CaldavCalendar::collectionsQuery() const
 {
   QDomDocument document;
 
@@ -142,19 +142,19 @@ QDomDocument caldavImplementation::collectionsQuery() const
   return document;
 }
 
-QString caldavImplementation::collectionsXQuery() const
+QString CaldavCalendar::collectionsXQuery() const
 {
   const QString query( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/*[local-name()='supported-calendar-component-set' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/*[local-name()='comp' and namespace-uri()='urn:ietf:params:xml:ns:caldav' and (@name='VTODO' or @name='VEVENT')]/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
 
   return query;
 }
 
-const QList<QDomDocument>& caldavImplementation::itemsQueries() const
+QList<QDomDocument> CaldavCalendar::itemsQueries() const
 {
   return mItemsQueries;
 }
 
-QDomDocument caldavImplementation::itemsReportQuery( const QStringList &urls ) const
+QDomDocument CaldavCalendar::itemsReportQuery( const QStringList &urls ) const
 {
   QDomDocument document;
 

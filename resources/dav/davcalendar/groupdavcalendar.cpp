@@ -20,7 +20,7 @@
 
 #include <QtXml/QDomDocument>
 
-groupdavCalendarImplementation::groupdavCalendarImplementation()
+GroupdavCalendar::GroupdavCalendar()
 {
   QDomDocument document;
 
@@ -37,17 +37,17 @@ groupdavCalendarImplementation::groupdavCalendarImplementation()
   mItemsQueries << document;
 }
 
-bool groupdavCalendarImplementation::useReport() const
+bool GroupdavCalendar::useReport() const
 {
   return false;
 }
 
-bool groupdavCalendarImplementation::useMultiget() const
+bool GroupdavCalendar::useMultiget() const
 {
   return false;
 }
 
-QDomDocument groupdavCalendarImplementation::collectionsQuery() const
+QDomDocument GroupdavCalendar::collectionsQuery() const
 {
   QDomDocument document;
 
@@ -63,14 +63,14 @@ QDomDocument groupdavCalendarImplementation::collectionsQuery() const
   return document;
 }
 
-QString groupdavCalendarImplementation::collectionsXQuery() const
+QString GroupdavCalendar::collectionsXQuery() const
 {
   const QString query( "//*[(local-name()='vevent-collection' or local-name()='vtodo-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
 
   return query;
 }
 
-const QList<QDomDocument>& groupdavCalendarImplementation::itemsQueries() const
+QList<QDomDocument> GroupdavCalendar::itemsQueries() const
 {
   return mItemsQueries;
 }
