@@ -19,7 +19,6 @@
 #ifndef CALDAVCALENDAR_H
 #define CALDAVCALENDAR_H
 
-#include <QtCore/QMutex>
 #include <QtCore/QStringList>
 
 #include "davimplementation.h"
@@ -37,7 +36,7 @@ class caldavImplementation : public davImplementation
     virtual const QList<QDomDocument>& itemsQueries() const;
     virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
   private:
-    QList<QDomDocument> itemsQueries_;
+    QList<QDomDocument> mItemsQueries;
 };
 
 #endif

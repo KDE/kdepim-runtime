@@ -24,13 +24,13 @@
 ConfigDialog::ConfigDialog( QWidget* p )
   : KDialog( p )
 {
-  ui.setupUi( mainWidget() );
+  mUi.setupUi( mainWidget() );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
   connect( this, SIGNAL( okClicked() ), this, SLOT( onOkClicked() ) );
   connect( this, SIGNAL( cancelClicked() ), this, SLOT( onCancelClicked() ) );
-  connect( ui.kcfg_remoteUrls, SIGNAL( removed( const QString& ) ), this, SLOT( urlRemoved( const QString& ) ) );
+  connect( mUi.kcfg_remoteUrls, SIGNAL( removed( const QString& ) ), this, SLOT( urlRemoved( const QString& ) ) );
 }
 
 ConfigDialog::~ConfigDialog()
@@ -40,29 +40,29 @@ ConfigDialog::~ConfigDialog()
 
 QStringList ConfigDialog::removedUrls() const
 {
-  return rmdUrls;
+  return mRemovedUrls;
 }
 
 void ConfigDialog::setRemovedUrls( const QStringList &l )
 {
-  rmdUrls = l;
+  mRemovedUrls = l;
 }
 
 void ConfigDialog::onOkClicked()
 {
   mManager->updateSettings();
-  if( !ui.password->text().isEmpty() )
-    Settings::self()->setPassword( ui.password->text() );
+  if( !mUi.password->text().isEmpty() )
+    Settings::self()->setPassword( mUi.password->text() );
 }
 
 void ConfigDialog::onCancelClicked()
 {
-  rmdUrls.clear();
+  mRemovedUrls.clear();
 }
 
 void ConfigDialog::urlRemoved( const QString &url )
 {
-  rmdUrls << url;
+  mRemovedUrls << url;
 }
 
 #include "configdialog.moc"

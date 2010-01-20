@@ -93,12 +93,12 @@ class davAccessor : public QObject
     void jobWarning( KJob*, const QString&, const QString& );
 
   private:
-    davImplementation *davImpl;
-    QMap<QString, QSet<QString> > lastSeenItems; // collection url, items url
-    QMap<QString, davItem> itemsCache; // url, item
-    QMap<QString, int> nRunningItemsQueries;
-    QMap<QString, QStringList> fetchItemsQueue; // collection url, items urls
-    QMutex fetchItemsQueueMtx;
+    davImplementation *mDavImpl;
+    QMap<QString, QSet<QString> > mLastSeenItems; // collection url, items url
+    QMap<QString, davItem> mItemsCache; // url, item
+    QMap<QString, int> mRunningItemsQueryCount;
+    QMap<QString, QStringList> mFetchItemsQueue; // collection url, items urls
+    QMutex mFetchItemsQueueMutex;
 
   Q_SIGNALS:
     void accessorStatus( const QString &s );

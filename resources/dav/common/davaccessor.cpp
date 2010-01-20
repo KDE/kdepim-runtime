@@ -62,18 +62,18 @@ QDataStream& operator>>( QDataStream &in, davItem &item)
 }
 
 davAccessor::davAccessor( davImplementation *i )
-  : davImpl( i )
+  : mDavImpl( i )
 {
 }
 
 davAccessor::~davAccessor()
 {
-  delete davImpl;
+  delete mDavImpl;
 }
 
 void davAccessor::retrieveCollections( const KUrl &url )
 {
-  QDomDocument collectionQuery = davImpl->collectionsQuery();
+  QDomDocument collectionQuery = mDavImpl->collectionsQuery();
 
   KIO::DavJob *job = doPropfind( url, collectionQuery, "1" );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( collectionsPropfindFinished( KJob* ) ) );
@@ -100,7 +100,7 @@ void davAccessor::collectionsPropfindFinished( KJob *j )
     return;
   }
 
-  xquery.setQuery( davImpl->collectionsXQuery() );
+  xquery.setQuery( mDavImpl->collectionsXQuery() );
   if( !xquery.isValid() ) {
     emit accessorError( i18n( "Invalid XQuery submitted by DAV implementation" ), true );
     return;
@@ -173,7 +173,7 @@ void davAccessor::collectionsPropfindFinished( KJob *j )
       displayname = "DAV calendar at " + href;
 
     kDebug() << "Seen collection at " << href << " (url)" << url.prettyUrl();
-    nRunningItemsQueries[href] = 0;
+    mRunningItemsQueryCount[href] = 0;
     emit( collectionRetrieved( href, displayname ) );
   }
 
@@ -182,12 +182,12 @@ void davAccessor::collectionsPropfindFinished( KJob *j )
 
 void davAccessor::retrieveItems( const KUrl &url )
 {
-  QListIterator<QDomDocument> it( davImpl->itemsQueries() );
+  QListIterator<QDomDocument> it( mDavImpl->itemsQueries() );
 
   while( it.hasNext() ) {
     QDomDocument props = it.next();
 
-    if( davImpl->useReport() ) {
+    if( mDavImpl->useReport() ) {
       KIO::DavJob *job = doReport( url, props, "1" );
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemsReportFinished( KJob* ) ) );
     }
@@ -196,7 +196,7 @@ void davAccessor::retrieveItems( const KUrl &url )
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemsPropfindFinished( KJob* ) ) );
     }
 
-    ++nRunningItemsQueries[url.prettyUrl()];
+    ++mRunningItemsQueryCount[url.prettyUrl()];
   }
 }
 
@@ -212,7 +212,7 @@ void davAccessor::itemsPropfindFinished( KJob *j )
   }
 
   QString collectionUrl = job->url().prettyUrl();
-  if( --nRunningItemsQueries[collectionUrl] == 0 )
+  if( --mRunningItemsQueryCount[collectionUrl] == 0 )
     clearSeenUrls( collectionUrl );
 
   QDomDocument xml = job->response();
@@ -268,10 +268,10 @@ void davAccessor::itemsPropfindFinished( KJob *j )
       }
     }
 
-    fetchItemsQueue[collectionUrl] << href;
+    mFetchItemsQueue[collectionUrl] << href;
   }
 
-  if( nRunningItemsQueries[collectionUrl] == 0 )
+  if( mRunningItemsQueryCount[collectionUrl] == 0 )
     runItemsFetch( collectionUrl );
 }
 
@@ -287,7 +287,7 @@ void davAccessor::itemsReportFinished( KJob *j )
   }
 
   QString collectionUrl = job->url().prettyUrl();
-  if( nRunningItemsQueries[collectionUrl] == davImpl->itemsQueries().size() )
+  if( mRunningItemsQueryCount[collectionUrl] == mDavImpl->itemsQueries().size() )
     clearSeenUrls( collectionUrl );
 
   QDomDocument xml = job->response();
@@ -332,10 +332,10 @@ void davAccessor::itemsReportFinished( KJob *j )
       }
     }
 
-    fetchItemsQueue[collectionUrl] << href;
+    mFetchItemsQueue[collectionUrl] << href;
   }
 
-  if( --nRunningItemsQueries[collectionUrl] == 0 )
+  if( --mRunningItemsQueryCount[collectionUrl] == 0 )
     runItemsFetch( collectionUrl );
 }
 
@@ -348,8 +348,8 @@ void davAccessor::putItem( const KUrl &url, const QString &contentType, const QB
   headers += contentType;
   headers += "\r\n";
 
-  if( useCachedEtag && itemsCache.contains( urlStr ) && !itemsCache[urlStr].etag.isEmpty() ) {
-    etag = itemsCache[urlStr].etag;
+  if( useCachedEtag && mItemsCache.contains( urlStr ) && !mItemsCache[urlStr].etag.isEmpty() ) {
+    etag = mItemsCache[urlStr].etag;
     headers += "If-Match: "+etag;
   }
   else {
@@ -357,7 +357,7 @@ void davAccessor::putItem( const KUrl &url, const QString &contentType, const QB
   }
 
   davItem i( urlStr, contentType, data, etag );
-  itemsCache[urlStr] = i;
+  mItemsCache[urlStr] = i;
 
   KIO::StoredTransferJob *job = KIO::storedPut( data, url, -1, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
@@ -405,23 +405,23 @@ void davAccessor::itemPutFinished( KJob *j )
   QString etag = getEtagFromHeaders( job->queryMetaData( "HTTP-Headers" ) );
 
   kDebug() << "Last put item at (old)" << oldUrlStr << " (new)" << newUrlStr << " (etag)" << etag;
-  itemsCache[oldUrlStr].etag = etag;
+  mItemsCache[oldUrlStr].etag = etag;
 
   if( oldUrl != newUrl ) {
-    // itemsCache[oldUrl.url()] has been modified by putItem() before the job starts
-    itemsCache[newUrlStr] = itemsCache[oldUrlStr];
-    itemsCache[newUrlStr].url = newUrlStr;
-    itemsCache.remove( oldUrlStr );
+    // mItemsCache[oldUrl.url()] has been modified by putItem() before the job starts
+    mItemsCache[newUrlStr] = mItemsCache[oldUrlStr];
+    mItemsCache[newUrlStr].url = newUrlStr;
+    mItemsCache.remove( oldUrlStr );
   }
 
-  emit itemPut( oldUrl, itemsCache[newUrlStr] );
+  emit itemPut( oldUrl, mItemsCache[newUrlStr] );
 }
 
 void davAccessor::removeItem( const KUrl &url )
 {
   QString etag;
-  if( itemsCache.contains( url.prettyUrl() ) )
-    etag = itemsCache[url.prettyUrl()].etag;
+  if( mItemsCache.contains( url.prettyUrl() ) )
+    etag = mItemsCache[url.prettyUrl()].etag;
 
   kDebug() << "Requesting removal of item at " << url.prettyUrl() << " with etag " << etag;
 
@@ -453,7 +453,7 @@ void davAccessor::itemDelFinished( KJob *j )
   }
 
   KUrl url = job->urls().first();
-  itemsCache.remove( url.prettyUrl() );
+  mItemsCache.remove( url.prettyUrl() );
   emit itemRemoved( url );
 }
 
@@ -468,10 +468,10 @@ void davAccessor::jobWarning( KJob* j, const QString &p, const QString &r )
 void davAccessor::validateCache()
 {
   kDebug() << "Beginning cache validation";
-  kDebug() << itemsCache.size() << " items in cache";
+  kDebug() << mItemsCache.size() << " items in cache";
 
   QSet<QString> latest;
-  QMapIterator<QString, QSet<QString> > it( lastSeenItems );
+  QMapIterator<QString, QSet<QString> > it( mLastSeenItems );
   while( it.hasNext() ) {
     it.next();
     latest += it.value();
@@ -479,7 +479,7 @@ void davAccessor::validateCache()
 
   kDebug() << "Seen " << latest.size() << " items";
 
-  QSet<QString> cache = QSet<QString>::fromList( itemsCache.keys() );
+  QSet<QString> cache = QSet<QString>::fromList( mItemsCache.keys() );
   // Theorically cache.size() >= latest.size()
   cache.subtract( latest );
   // So now cache should only contains deleted item
@@ -487,8 +487,8 @@ void davAccessor::validateCache()
   QList<davItem> removed;
 
   foreach( QString url, cache ) {
-    removed << itemsCache[url];
-    itemsCache.remove( url );
+    removed << mItemsCache[url];
+    mItemsCache.remove( url );
     kDebug() << url << " disappeared from backend";
   }
 
@@ -529,9 +529,9 @@ davItemCacheStatus davAccessor::itemCacheStatus( const QString &url, const QStri
 {
   davItemCacheStatus ret = NOT_CACHED;
 
-  if( itemsCache.contains( url ) ) {
-    if( itemsCache[url].etag != etag ) {
-      itemsCache.remove( url );
+  if( mItemsCache.contains( url ) ) {
+    if( mItemsCache[url].etag != etag ) {
+      mItemsCache.remove( url );
       ret = EXPIRED;
       kDebug() << "Item at " << url << " changed in the backend";
     }
@@ -546,23 +546,23 @@ davItemCacheStatus davAccessor::itemCacheStatus( const QString &url, const QStri
 davItem davAccessor::getItemFromCache( const QString &url )
 {
   kDebug() << "Serving " << url << " from cache";
-  return itemsCache.value( url );
+  return mItemsCache.value( url );
 }
 
 void davAccessor::addItemToCache( const davItem &item )
 {
-  itemsCache[item.url] = item;
+  mItemsCache[item.url] = item;
 }
 
 void davAccessor::clearSeenUrls( const QString &url )
 {
   kDebug() << "Clearing seen items for collection " << url;
-  lastSeenItems[url].clear();
+  mLastSeenItems[url].clear();
 }
 
 void davAccessor::seenUrl( const QString &collectionUrl, const QString &itemUrl )
 {
-  lastSeenItems[collectionUrl] << itemUrl;
+  mLastSeenItems[collectionUrl] << itemUrl;
 }
 
 QString davAccessor::getEtagFromHeaders( const QString &headers )
@@ -581,14 +581,14 @@ QString davAccessor::getEtagFromHeaders( const QString &headers )
 
 void davAccessor::runItemsFetch( const QString &collection )
 {
-  if( davImpl->useMultiget() ) {
-    QMutexLocker locker( &fetchItemsQueueMtx );
-    QStringList urls = fetchItemsQueue[collection];
-    fetchItemsQueue[collection].clear();
+  if( mDavImpl->useMultiget() ) {
+    QMutexLocker locker( &mFetchItemsQueueMutex );
+    QStringList urls = mFetchItemsQueue[collection];
+    mFetchItemsQueue[collection].clear();
     locker.unlock();
 
     if( !urls.isEmpty() ) {
-      QDomDocument multiget = davImpl->itemsReportQuery( urls );
+      QDomDocument multiget = mDavImpl->itemsReportQuery( urls );
       KIO::DavJob *job = doReport( collection, multiget, "1" );
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemsMultigetFinished( KJob* ) ) );
     }
@@ -597,14 +597,14 @@ void davAccessor::runItemsFetch( const QString &collection )
     }
   }
   else {
-    QMutexLocker locker( &fetchItemsQueueMtx );
+    QMutexLocker locker( &mFetchItemsQueueMutex );
 
-    if( fetchItemsQueue[collection].isEmpty() ) {
+    if( mFetchItemsQueue[collection].isEmpty() ) {
       emit itemsRetrieved();
       return;
     }
 
-    QString next = fetchItemsQueue[collection].takeFirst();
+    QString next = mFetchItemsQueue[collection].takeFirst();
     locker.unlock();
     KIO::StoredTransferJob *job = KIO::storedGet( next, KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags );
     job->setProperty( "collectionUrl", QVariant::fromValue( collection ) );

@@ -53,7 +53,7 @@ Settings *Settings::self()
 }
 
 Settings::Settings()
-  : SettingsBase(), winId( 0 ), wallet( 0 )
+  : SettingsBase(), mWinId( 0 ), mWallet( 0 )
 {
   Q_ASSERT( !s_globalSettings->q );
   s_globalSettings->q = this;
@@ -65,22 +65,22 @@ Settings::Settings()
 
 Settings::~Settings()
 {
-  delete wallet;
+  delete mWallet;
 }
 
 void Settings::setWinId( WId w )
 {
-  winId = w;
+  mWinId = w;
 }
 
 QString Settings::password() const
 {
-  return pwd;
+  return mPassword;
 }
 
 void Settings::setPassword( const QString &p )
 {
-  pwd = p;
+  mPassword = p;
 
   if( this->useKWallet() )
     this->storePassword();
@@ -88,14 +88,14 @@ void Settings::setPassword( const QString &p )
 
 void Settings::storePassword()
 {
-  if( !wallet )
-    wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
+  if( !mWallet )
+    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
 
-  if( wallet && wallet->isOpen() ) {
-    if( !wallet->hasFolder( "dav-akonadi-resource" ) )
-      wallet->createFolder( "dav-akonadi-resource" );
-    wallet->setFolder( "dav-akonadi-resource" );
-    wallet->writePassword( this->username(), pwd );
+  if( mWallet && mWallet->isOpen() ) {
+    if( !mWallet->hasFolder( "dav-akonadi-resource" ) )
+      mWallet->createFolder( "dav-akonadi-resource" );
+    mWallet->setFolder( "dav-akonadi-resource" );
+    mWallet->writePassword( this->username(), mPassword );
   }
 }
 
@@ -105,17 +105,17 @@ void Settings::getPassword()
     return;
 
   if( this->useKWallet() ) {
-    if( !wallet )
-      wallet = Wallet::openWallet( Wallet::NetworkWallet(), winId );
+    if( !mWallet )
+      mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
 
-    if( wallet && wallet->isOpen() &&
-        wallet->hasFolder( "dav-akonadi-resource" ) &&
-        wallet->setFolder( "dav-akonadi-resource" ) ) {
-      wallet->readPassword( this->username(), pwd );
+    if( mWallet && mWallet->isOpen() &&
+        mWallet->hasFolder( "dav-akonadi-resource" ) &&
+        mWallet->setFolder( "dav-akonadi-resource" ) ) {
+      mWallet->readPassword( this->username(), mPassword );
     }
   }
 
-  if( pwd.isEmpty() )
+  if( mPassword.isEmpty() )
     this->requestPassword( this->username() );
 }
 

@@ -43,9 +43,9 @@ class ConfigDialog : public KDialog
     void urlRemoved( const QString &url );
 
   private:
-    Ui::ConfigDialog ui;
+    Ui::ConfigDialog mUi;
     KConfigDialogManager* mManager;
-    QStringList rmdUrls;
+    QStringList mRemovedUrls;
 };
 
 #endif

@@ -47,7 +47,7 @@ caldavImplementation::caldavImplementation()
   e3.setAttributeNode( a1 );
   e2.appendChild( e3 );
 
-  itemsQueries_ << rep;
+  mItemsQueries << rep;
 
   rep.clear();
   root = rep.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
@@ -69,7 +69,7 @@ caldavImplementation::caldavImplementation()
   e3.setAttributeNode( a1 );
   e2.appendChild( e3 );
 
-  itemsQueries_ << rep;
+  mItemsQueries << rep;
 }
 
 bool caldavImplementation::useReport() const
@@ -107,7 +107,7 @@ QString caldavImplementation::collectionsXQuery() const
 
 const QList<QDomDocument>& caldavImplementation::itemsQueries() const
 {
-  return itemsQueries_;
+  return mItemsQueries;
 }
 
 QDomDocument caldavImplementation::itemsReportQuery( const QStringList &urls ) const

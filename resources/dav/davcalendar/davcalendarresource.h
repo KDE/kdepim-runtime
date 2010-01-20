@@ -70,17 +70,17 @@ class davCalendarResource : public Akonadi::ResourceBase,
     bool configurationIsValid();
 
     Akonadi::IncidenceMimeTypeVisitor *mMimeVisitor;
-    davAccessor *accessor;
-    Akonadi::Collection davCollectionRoot;
-    int nCollectionsRetrieval;
-    int nItemsRetrieved;
-    QSet<QString> seenCollections;
-    Akonadi::Item::List retrievedItems;
-    QMutex retrievedItemsMtx;
-    QMap<QString, Akonadi::Item> putItems;
-    QMutex putItemsMtx;
-    QMap<QString, Akonadi::Item> delItems;
-    QMutex delItemsMtx;
+    davAccessor *mAccessor;
+    Akonadi::Collection mDavCollectionRoot;
+    int mCollectionsRetrievalCount;
+    int mItemsRetrievedCount;
+    QSet<QString> mSeenCollections;
+    Akonadi::Item::List mRetrievedItems;
+    QMutex mRetrievedItemsMutex;
+    QMap<QString, Akonadi::Item> mPutItems;
+    QMutex mPutItemsMutex;
+    QMap<QString, Akonadi::Item> mDelItems;
+    QMutex mDelItemsMutex;
 };
 
 Akonadi::Item createAkonadiItem( const QByteArray &data );

@@ -40,7 +40,7 @@ groupdavCalendarImplementation::groupdavCalendarImplementation()
   e2 = props.createElementNS( "DAV:", "getetag" );
   e1.appendChild( e2 );
 
-  itemsQueries_ << props;
+  mItemsQueries << props;
 }
 
 bool groupdavCalendarImplementation::useReport() const
@@ -76,5 +76,5 @@ QString groupdavCalendarImplementation::collectionsXQuery() const
 
 const QList<QDomDocument>& groupdavCalendarImplementation::itemsQueries() const
 {
-  return itemsQueries_;
+  return mItemsQueries;
 }
