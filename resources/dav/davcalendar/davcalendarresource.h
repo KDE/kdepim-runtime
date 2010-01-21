@@ -48,7 +48,7 @@ class DavCalendarResource : public Akonadi::ResourceBase,
 
     void accessorStatus( const QString &status );
     void accessorError( const QString &err, bool cancelRequest );
-    void accessorRetrievedCollection( const QString &url, const QString &name );
+    void accessorRetrievedCollection( const DavCollection &collection );
     void accessorRetrievedCollections();
     void accessorRetrievedItem( const DavItem &item );
     void accessorRetrievedItems();

@@ -19,6 +19,7 @@
 #ifndef DAVACCESSOR_H
 #define DAVACCESSOR_H
 
+#include "davcollection.h"
 #include "davitem.h"
 
 #include <kurl.h>
@@ -64,7 +65,7 @@ class DavAccessor : public QObject
   Q_SIGNALS:
     void accessorStatus( const QString &s );
     void accessorError( const QString &e, bool cancelRequest );
-    void collectionRetrieved( const QString &url, const QString &name );
+    void collectionRetrieved( const DavCollection &collection );
     void collectionsRetrieved();
     void itemRetrieved( const DavItem &item );
     void itemsRetrieved();

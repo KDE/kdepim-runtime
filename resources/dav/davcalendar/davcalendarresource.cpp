@@ -361,17 +361,18 @@ void DavCalendarResource::itemRemoved( const Akonadi::Item &item )
   mAccessor->removeItem( url );
 }
 
-void DavCalendarResource::accessorRetrievedCollection( const QString &url, const QString &collectionName )
+void DavCalendarResource::accessorRetrievedCollection( const DavCollection &davCollection )
 {
-  kDebug() << "Accessor retrieved a collection named " << collectionName << " at " << url;
+  kDebug() << "Accessor retrieved a collection named " << davCollection.displayName()
+           << " at " << davCollection.url();
 
   Akonadi::Collection collection;
   collection.setParentCollection( mDavCollectionRoot );
-  collection.setRemoteId( url );
-  if ( collectionName.isEmpty() )
-    collection.setName( name() + " (" + url + ")" );
+  collection.setRemoteId( davCollection.url() );
+  if ( davCollection.displayName().isEmpty() )
+    collection.setName( name() + " (" + davCollection.url() + ")" );
   else
-    collection.setName( collectionName + " (" + url + ")" );
+    collection.setName( davCollection.displayName() + " (" + davCollection.url() + ")" );
 
   QStringList mimeTypes;
   mimeTypes << "text/calendar";
@@ -380,7 +381,7 @@ void DavCalendarResource::accessorRetrievedCollection( const QString &url, const
 
   collectionsRetrievedIncremental( Akonadi::Collection::List() << collection, Akonadi::Collection::List() );
 
-  mSeenCollections << url;
+  mSeenCollections << davCollection.url();
 }
 
 void DavCalendarResource::accessorRetrievedCollections()
@@ -560,8 +561,8 @@ void DavCalendarResource::doResourceInitialization()
   connect( mAccessor, SIGNAL( accessorError( const QString&, bool ) ),
            this, SLOT( accessorError( const QString&, bool ) ) );
 
-  connect( mAccessor, SIGNAL( collectionRetrieved( const QString&, const QString& ) ),
-           this, SLOT( accessorRetrievedCollection( const QString&, const QString& ) ) );
+  connect( mAccessor, SIGNAL( collectionRetrieved( const DavCollection& ) ),
+           this, SLOT( accessorRetrievedCollection( const DavCollection& ) ) );
   connect( mAccessor, SIGNAL( collectionsRetrieved() ),
            this, SLOT( accessorRetrievedCollections() ) );
 
