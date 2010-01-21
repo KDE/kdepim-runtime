@@ -393,23 +393,23 @@ void DavCalendarResource::accessorRetrievedCollections()
 
 void DavCalendarResource::accessorRetrievedItem( const DavItem &davItem )
 {
-  kDebug() << "Accessor retrieved an item at " << davItem.url << davItem.etag;
+  kDebug() << "Accessor retrieved an item at " << davItem.url() << davItem.etag();
 
-  Akonadi::Item item = createAkonadiItem( davItem.data );
+  Akonadi::Item item = createAkonadiItem( davItem.data() );
 
   IncidencePtr ptr = item.payload<IncidencePtr>();
   if ( !ptr.get() )
     return;
 
-  item.setRemoteId( davItem.url );
+  item.setRemoteId( davItem.url() );
 
-  if ( davItem.contentType.isEmpty() )
+  if ( davItem.contentType().isEmpty() )
     item.setMimeType( "text/calendar" );
   else
-    item.setMimeType( davItem.contentType );
+    item.setMimeType( davItem.contentType() );
 
   etagAttribute *attr = item.attribute<etagAttribute>( Item::AddIfMissing );
-  attr->setEtag( davItem.etag );
+  attr->setEtag( davItem.etag() );
 
   mAccessor->addItemToCache( davItem );
 
@@ -464,7 +464,7 @@ void DavCalendarResource::accessorRemovedItem( const KUrl &url )
 void DavCalendarResource::accessorPutItem( const KUrl &oldUrl, DavItem davItem )
 {
   const QString oldUrlStr = oldUrl.prettyUrl();
-  const QString newUrlStr = davItem.url;
+  const QString newUrlStr = davItem.url();
 
   kDebug() << "Accessor put item at (old) " << oldUrlStr;
 
@@ -485,7 +485,7 @@ void DavCalendarResource::accessorPutItem( const KUrl &oldUrl, DavItem davItem )
 
   item.setRemoteId( newUrlStr );
   etagAttribute *attr = item.attribute<etagAttribute>( Item::AddIfMissing );
-  attr->setEtag( davItem.etag );
+  attr->setEtag( davItem.etag() );
   changeCommitted( item );
 
   // Force a refresh of the collection containing the item
@@ -496,22 +496,22 @@ void DavCalendarResource::accessorPutItem( const KUrl &oldUrl, DavItem davItem )
     synchronize();
 }
 
-void DavCalendarResource::backendItemsRemoved( const QList<DavItem> &items )
+void DavCalendarResource::backendItemsRemoved( const DavItem::List &items )
 {
   kDebug() << "Got " << items.size() << " items removed on the backend";
 
   Akonadi::Item::List removedItems;
 
   foreach ( const DavItem &davItem, items ) {
-    kDebug() << "Item at " << davItem.url << " was removed";
+    kDebug() << "Item at " << davItem.url() << " was removed";
 
-    Akonadi::Item item = createAkonadiItem( davItem.data );
-    item.setRemoteId( davItem.url );
+    Akonadi::Item item = createAkonadiItem( davItem.data() );
+    item.setRemoteId( davItem.url() );
 
-    if ( davItem.contentType.isEmpty() )
+    if ( davItem.contentType().isEmpty() )
       item.setMimeType( "text/calendar" );
     else
-      item.setMimeType( davItem.contentType );
+      item.setMimeType( davItem.contentType() );
 
     removedItems << item;
   }
@@ -576,8 +576,8 @@ void DavCalendarResource::doResourceInitialization()
   connect( mAccessor, SIGNAL( itemPut( const KUrl&, DavItem ) ),
            this, SLOT( accessorPutItem( const KUrl&, DavItem ) ) );
 
-  connect( mAccessor, SIGNAL( backendItemsRemoved( const QList<DavItem>& ) ),
-           this, SLOT( backendItemsRemoved( const QList<DavItem>& ) ) );
+  connect( mAccessor, SIGNAL( backendItemsRemoved( const DavItem::List& ) ),
+           this, SLOT( backendItemsRemoved( const DavItem::List& ) ) );
 
   if ( mDavCollectionRoot.id() )
     loadCacheFromAkonadi();
@@ -614,7 +614,7 @@ void DavCalendarResource::loadCacheFromAkonadi()
           const QString etag = attr->etag();
 
           const DavItem davItem( item.remoteId(), "text/calendar", rawData, etag );
-          kDebug() << "Adding item " << davItem.url << davItem.etag << " to accessor cache";
+          kDebug() << "Adding item " << davItem.url() << davItem.etag() << " to accessor cache";
           mAccessor->addItemToCache( davItem );
         }
       }

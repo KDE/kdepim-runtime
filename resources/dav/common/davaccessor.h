@@ -19,11 +19,13 @@
 #ifndef DAVACCESSOR_H
 #define DAVACCESSOR_H
 
-#include <QMap>
-#include <QSet>
-#include <QMutex>
+#include "davitem.h"
 
 #include <kurl.h>
+
+#include <QtCore/QMap>
+#include <QtCore/QMutex>
+#include <QtCore/QSet>
 
 namespace KIO {
   class DavJob;
@@ -33,20 +35,6 @@ namespace KIO {
 class DavImplementation;
 class KJob;
 class QDomDocument;
-
-struct DavItem
-{
-  DavItem();
-  DavItem( const QString &_url, const QString &_contentType, const QByteArray &_data, const QString &_etag );
-
-  QString url;
-  QString contentType;
-  QByteArray data;
-  QString etag;
-};
-
-QDataStream& operator<<( QDataStream &out, const DavItem &item );
-QDataStream& operator>>( QDataStream &in, DavItem &item);
 
 enum DavItemCacheStatus {
   NOT_CACHED,
@@ -82,7 +70,7 @@ class DavAccessor : public QObject
     void itemsRetrieved();
     void itemPut( const KUrl &oldUrl, DavItem putItem );
     void itemRemoved( const KUrl &url );
-    void backendItemsRemoved( const QList<DavItem> &items );
+    void backendItemsRemoved( const DavItem::List &items );
 
   private Q_SLOTS:
     void collectionsPropfindFinished( KJob *j );

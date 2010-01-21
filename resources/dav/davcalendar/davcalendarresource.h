@@ -55,7 +55,7 @@ class DavCalendarResource : public Akonadi::ResourceBase,
     void accessorRemovedItem( const KUrl &url );
     void accessorPutItem( const KUrl &oldUrl, DavItem item );
 
-    void backendItemsRemoved( const QList<DavItem> &items );
+    void backendItemsRemoved( const DavItem::List &items );
 
   protected:
     virtual void aboutToQuit();

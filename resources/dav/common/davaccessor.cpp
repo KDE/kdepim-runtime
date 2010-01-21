@@ -34,33 +34,6 @@
 #include <klocalizedstring.h>
 #include <kstandarddirs.h>
 
-DavItem::DavItem()
-{
-}
-
-DavItem::DavItem( const QString &u, const QString &c, const QByteArray &d, const QString &e )
-  : url( u ), contentType( c ), data( d ), etag( e )
-{
-}
-
-QDataStream& operator<<( QDataStream &out, const DavItem &item )
-{
-  out << item.url;
-  out << item.contentType;
-  out << item.data;
-  out << item.etag;
-  return out;
-}
-
-QDataStream& operator>>( QDataStream &in, DavItem &item)
-{
-  in >> item.url;
-  in >> item.contentType;
-  in >> item.data;
-  in >> item.etag;
-  return in;
-}
-
 DavAccessor::DavAccessor( DavImplementation *implementation )
   : mDavImpl( implementation )
 {
@@ -300,6 +273,7 @@ void DavAccessor::itemsReportFinished( KJob *job )
     clearSeenUrls( collectionUrl );
 
   const QDomDocument xml = davJob->response();
+  qDebug() << xml.toString();
   const QDomElement root = xml.documentElement();
 
   QDomNode node = root.firstChild();
@@ -360,8 +334,8 @@ void DavAccessor::putItem( const KUrl &url, const QString &contentType, const QB
   headers += contentType;
   headers += "\r\n";
 
-  if ( useCachedEtag && mItemsCache.contains( urlStr ) && !mItemsCache[ urlStr ].etag.isEmpty() ) {
-    etag = mItemsCache[ urlStr ].etag;
+  if ( useCachedEtag && mItemsCache.contains( urlStr ) && !mItemsCache[ urlStr ].etag().isEmpty() ) {
+    etag = mItemsCache[ urlStr ].etag();
     headers += "If-Match: "+etag;
   } else {
     headers += "If-None-Match: *";
@@ -414,12 +388,12 @@ void DavAccessor::itemPutFinished( KJob *job )
   const QString etag = getEtagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) );
 
   kDebug() << "Last put item at (old)" << oldUrlStr << " (new)" << newUrlStr << " (etag)" << etag;
-  mItemsCache[ oldUrlStr ].etag = etag;
+  mItemsCache[ oldUrlStr ].setEtag( etag );
 
   if ( oldUrl != newUrl ) {
     // mItemsCache[oldUrl.url()] has been modified by putItem() before the job starts
     mItemsCache[ newUrlStr ] = mItemsCache[ oldUrlStr ];
-    mItemsCache[ newUrlStr ].url = newUrlStr;
+    mItemsCache[ newUrlStr ].setUrl( newUrlStr );
     mItemsCache.remove( oldUrlStr );
   }
 
@@ -430,7 +404,7 @@ void DavAccessor::removeItem( const KUrl &url )
 {
   QString etag;
   if ( mItemsCache.contains( url.prettyUrl() ) )
-    etag = mItemsCache[ url.prettyUrl() ].etag;
+    etag = mItemsCache[ url.prettyUrl() ].etag();
 
   kDebug() << "Requesting removal of item at " << url.prettyUrl() << " with etag " << etag;
 
@@ -494,7 +468,7 @@ void DavAccessor::validateCache()
   cache.subtract( latest );
   // So now cache should only contains deleted item
 
-  QList<DavItem> removedItems;
+  DavItem::List removedItems;
 
   foreach ( const QString &url, cache ) {
     removedItems << mItemsCache[ url ];
@@ -536,7 +510,7 @@ DavItemCacheStatus DavAccessor::itemCacheStatus( const QString &url, const QStri
   DavItemCacheStatus status = NOT_CACHED;
 
   if ( mItemsCache.contains( url ) ) {
-    if ( mItemsCache[ url ].etag != etag ) {
+    if ( mItemsCache[ url ].etag() != etag ) {
       mItemsCache.remove( url );
       status = EXPIRED;
       kDebug() << "Item at " << url << " changed in the backend";
@@ -557,7 +531,7 @@ DavItem DavAccessor::getItemFromCache( const QString &url )
 
 void DavAccessor::addItemToCache( const DavItem &item )
 {
-  mItemsCache[ item.url ] = item;
+  mItemsCache[ item.url() ] = item;
 }
 
 void DavAccessor::clearSeenUrls( const QString &url )
