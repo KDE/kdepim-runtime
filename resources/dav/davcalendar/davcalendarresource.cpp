@@ -20,11 +20,11 @@
 
 #include "caldavcalendar.h"
 #include "configdialog.h"
+#include "etagattribute.h"
 #include "groupdavcalendar.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <akonadi/attribute.h>
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
@@ -49,47 +49,6 @@ using namespace Akonadi;
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
-class etagAttribute : public Akonadi::Attribute
-{
-public:
-  etagAttribute( const QString &etag = QString() ) : _etag( etag )
-  {
-  }
-
-  QString etag() const
-  {
-    return _etag;
-  }
-
-  void setEtag( const QString &etag )
-  {
-    _etag = etag;
-  }
-
-  virtual Akonadi::Attribute* clone() const
-  {
-    return new etagAttribute( _etag );
-  }
-
-  virtual QByteArray type() const
-  {
-    return "etag";
-  }
-
-  virtual QByteArray serialized() const
-  {
-    return _etag.toAscii();
-  }
-
-  virtual void deserialize( const QByteArray &data )
-  {
-    _etag = data;
-  }
-
-private:
-  QString _etag;
-};
-
 static Akonadi::Item createAkonadiItem( const QByteArray &data )
 {
   Akonadi::Item item;
@@ -112,7 +71,7 @@ DavCalendarResource::DavCalendarResource( const QString &id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                                                 Settings::self(), QDBusConnection::ExportAdaptors );
 
-  AttributeFactory::registerAttribute<etagAttribute>();
+  AttributeFactory::registerAttribute<ETagAttribute>();
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
 
   mDavCollectionRoot.setParentCollection( Collection::root() );
@@ -409,7 +368,7 @@ void DavCalendarResource::accessorRetrievedItem( const DavItem &davItem )
   else
     item.setMimeType( davItem.contentType() );
 
-  etagAttribute *attr = item.attribute<etagAttribute>( Item::AddIfMissing );
+  ETagAttribute *attr = item.attribute<ETagAttribute>( Item::AddIfMissing );
   attr->setEtag( davItem.etag() );
 
   mAccessor->addItemToCache( davItem );
@@ -485,7 +444,7 @@ void DavCalendarResource::accessorPutItem( const KUrl &oldUrl, DavItem davItem )
   locker.unlock();
 
   item.setRemoteId( newUrlStr );
-  etagAttribute *attr = item.attribute<etagAttribute>( Item::AddIfMissing );
+  ETagAttribute *attr = item.attribute<ETagAttribute>( Item::AddIfMissing );
   attr->setEtag( davItem.etag() );
   changeCommitted( item );
 
@@ -604,14 +563,14 @@ void DavCalendarResource::loadCacheFromAkonadi()
           if ( !item.hasPayload<IncidencePtr>() )
             continue;
 
-          if ( !item.hasAttribute<etagAttribute>() )
+          if ( !item.hasAttribute<ETagAttribute>() )
             continue;
 
           const IncidencePtr ptr = item.payload<IncidencePtr>();
           KCal::ICalFormat formatter;
           const QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
 
-          const etagAttribute *attr = item.attribute<etagAttribute>();
+          const ETagAttribute *attr = item.attribute<ETagAttribute>();
           const QString etag = attr->etag();
 
           const DavItem davItem( item.remoteId(), "text/calendar", rawData, etag );

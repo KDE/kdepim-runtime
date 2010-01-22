@@ -51,10 +51,11 @@ set( davcalendarresource_SRCS
   ../common/davcollection.cpp
   ../common/davimplementation.cpp
   ../common/davitem.cpp
-  davcalendarresource.cpp
-  configdialog.cpp
-  groupdavcalendar.cpp
   caldavcalendar.cpp
+  configdialog.cpp
+  davcalendarresource.cpp
+  etagattribute.cpp
+  groupdavcalendar.cpp
   settings.cpp
 )
 
