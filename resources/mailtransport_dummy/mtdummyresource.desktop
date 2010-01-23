@@ -2,7 +2,7 @@
 Name=Dummy MailTransport Resource
 Name[ca]=Recurs de transport de correu simulat
 Name[ca@valencia]=Recurs de transport de correu simulat
-Name[da]=Attrap-MailTransport-ressource
+Name[da]=MailTransport-ressource (attrap)
 Name[de]=Dummy MailTransport-Ressource
 Name[en_GB]=Dummy MailTransport Resource
 Name[es]=Recurso de transporte de correo para pruebas
