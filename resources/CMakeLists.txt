@@ -37,6 +37,7 @@ add_subdirectory( maildir )
 add_subdirectory( mailtransport_dummy )
 add_subdirectory( mbox )
 add_subdirectory( microblog )
+add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
 if ( NEPOMUK_FOUND )
