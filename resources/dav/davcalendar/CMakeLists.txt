@@ -49,8 +49,16 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set( davcalendarresource_SRCS
   ../common/davaccessor.cpp
   ../common/davcollection.cpp
+  ../common/davcollectionsfetchjob.cpp
   ../common/davimplementation.cpp
   ../common/davitem.cpp
+  ../common/davitemcreatejob.cpp
+  ../common/davitemdeletejob.cpp
+  ../common/davitemfetchjob.cpp
+  ../common/davitemmodifyjob.cpp
+  ../common/davitemsfetchjob.cpp
+  ../common/davmanager.cpp
+
   caldavcalendar.cpp
   configdialog.cpp
   davcalendarresource.cpp

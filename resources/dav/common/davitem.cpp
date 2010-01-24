@@ -37,9 +37,19 @@ QString DavItem::url() const
   return mUrl;
 }
 
+void DavItem::setContentType( const QString &contentType )
+{
+  mContentType = contentType;
+}
+
 QString DavItem::contentType() const
 {
   return mContentType;
+}
+
+void DavItem::setData( const QByteArray &data )
+{
+  mData = data;
 }
 
 QByteArray DavItem::data() const

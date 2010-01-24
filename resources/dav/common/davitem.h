@@ -35,7 +35,10 @@ class DavItem
     void setUrl( const QString &url );
     QString url() const;
 
+    void setContentType( const QString &contentType );
     QString contentType() const;
+
+    void setData( const QByteArray &data );
     QByteArray data() const;
 
     void setEtag( const QString &etag );
