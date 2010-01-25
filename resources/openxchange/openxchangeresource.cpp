@@ -618,7 +618,7 @@ static Collection folderToCollection( const OXA::Folder &folder, const Collectio
   collection.setRemoteId( RemoteIdentifier( folder.objectId(), folder.module(), folder.lastModified() ).toString() );
 
   // set a unique name to make Akonadi happy
-  collection.setName( folder.title() + "_" + QUuid::createUuid().toString() );
+  collection.setName( folder.title() + '_' + QUuid::createUuid().toString() );
 
   EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
   attribute->setDisplayName( folder.title() );
@@ -725,7 +725,7 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
     } else {
       // we have to wait until the parent folder has been created
       folders.append( folder );
-      qDebug() << "Error: parent folder id" << folder.folderId() << "of folder" << folder.title() << "is unkown";
+      qDebug() << "Error: parent folder id" << folder.folderId() << "of folder" << folder.title() << "is unknown";
     }
   }
 

@@ -46,7 +46,7 @@ class FolderModifyJob : public KJob
      *
      * @note The folder needs at least the objectId and lastModified property set.
      */
-    FolderModifyJob( const Folder &folder, QObject *parent = 0 );
+    explicit FolderModifyJob( const Folder &folder, QObject *parent = 0 );
 
     /**
      * Starts the job.

@@ -33,7 +33,7 @@ class ObjectRequestJob : public KJob
   Q_OBJECT
 
   public:
-    ObjectRequestJob( const Object &object, QObject *parent = 0 );
+    explicit ObjectRequestJob( const Object &object, QObject *parent = 0 );
 
     virtual void start();
 

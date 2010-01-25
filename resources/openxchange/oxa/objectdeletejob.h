@@ -33,7 +33,7 @@ class ObjectDeleteJob : public KJob
   Q_OBJECT
 
   public:
-    ObjectDeleteJob( const Object &object, QObject *parent = 0 );
+    explicit ObjectDeleteJob( const Object &object, QObject *parent = 0 );
 
     virtual void start();
 

@@ -7,12 +7,15 @@
   <group name="General">
     <entry name="BaseUrl" type="String">
       <label>Server URL</label>
+      <tooltip>The URL of the Open-Xchange server, should be something like https://myserver.org/</tooltip>
     </entry>
     <entry name="Username" type="String">
       <label>Username</label>
+      <tooltip>The username that is used to log into the Open-Xchange server</tooltip>
     </entry>
     <entry name="Password" type="Password">
       <label>Password</label>
+      <tooltip>The password that is used to log into the Open-Xchange server</tooltip>
     </entry>
   </group>
 </kcfg>

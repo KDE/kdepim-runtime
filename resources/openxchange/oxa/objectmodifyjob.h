@@ -33,7 +33,7 @@ class ObjectModifyJob : public KJob
   Q_OBJECT
 
   public:
-    ObjectModifyJob( const Object &object, QObject *parent = 0 );
+    explicit ObjectModifyJob( const Object &object, QObject *parent = 0 );
 
     virtual void start();
 

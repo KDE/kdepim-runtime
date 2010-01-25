@@ -44,7 +44,7 @@ class FolderCreateJob : public KJob
      * @param folder The folder to create.
      * @param parent The parent object.
      */
-    FolderCreateJob( const Folder &folder, QObject *parent = 0 );
+    explicit FolderCreateJob( const Folder &folder, QObject *parent = 0 );
 
     /**
      * Starts the job.

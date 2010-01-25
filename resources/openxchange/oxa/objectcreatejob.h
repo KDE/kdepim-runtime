@@ -33,7 +33,7 @@ class ObjectCreateJob : public KJob
   Q_OBJECT
 
   public:
-    ObjectCreateJob( const Object &object, QObject *parent = 0 );
+    explicit ObjectCreateJob( const Object &object, QObject *parent = 0 );
 
     virtual void start();
 

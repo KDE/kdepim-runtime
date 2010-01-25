@@ -34,7 +34,7 @@ class ObjectsRequestJob : public KJob
   Q_OBJECT
 
   public:
-    ObjectsRequestJob( const Folder &folder, QObject *parent = 0 );
+    explicit ObjectsRequestJob( const Folder &folder, QObject *parent = 0 );
 
     virtual void start();
 
