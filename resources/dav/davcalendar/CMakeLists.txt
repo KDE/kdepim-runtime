@@ -50,6 +50,7 @@ set( davcalendarresource_SRCS
   ../common/davaccessor.cpp
   ../common/davcollection.cpp
   ../common/davcollectionsfetchjob.cpp
+  ../common/davcollectionsmultifetchjob.cpp
   ../common/davimplementation.cpp
   ../common/davitem.cpp
   ../common/davitemcreatejob.cpp
