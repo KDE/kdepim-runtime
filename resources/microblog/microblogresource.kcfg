@@ -5,6 +5,7 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <!-- Account settings -->
+  <kcfgfile/>
   <group name="Account">
     <entry name="Name" type="String">
       <label>Name</label>
