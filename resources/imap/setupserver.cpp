@@ -388,6 +388,7 @@ void SetupServer::slotManageSubscriptions()
   ImapAccount account;
   account.setServer( m_ui->imapServer->text() );
   account.setUserName( m_ui->userName->text() );
+  account.setName( m_ui->imapServer->text() + '/' + m_ui->userName->text() );
   account.setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
 
   switch ( m_ui->safeImapGroup->checkedId() ) {
