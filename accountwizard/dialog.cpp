@@ -54,6 +54,7 @@ Dialog::Dialog(QWidget* parent) :
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   page->enterPageNext();
   emit page->pageEnteredNext();
+  enableButton( KDialog::Help, false );
 }
 
 
