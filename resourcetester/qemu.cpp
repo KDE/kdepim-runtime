@@ -55,7 +55,7 @@ QEmu::~QEmu()
 void QEmu::setVMConfig(const QString& configFileName)
 {
   delete mVMConfig;
-  mVMConfig = new KConfig( Global::basePath() + "/" + configFileName );
+  mVMConfig = new KConfig( Global::basePath() + '/' + configFileName );
 }
 
 void QEmu::start()

@@ -444,7 +444,7 @@ void POP3Resource::localFolderRequestJobFinished( KJob *job )
 {
   if ( job->error() ) {
     cancelSync( i18n( "Error while trying to get the local inbox folder, "
-                      "aborting mail check." ) + "\n" + job->errorString() );
+                      "aborting mail check." ) + '\n' + job->errorString() );
     return;
   }
   if ( mTestLocalInbox ) {
@@ -470,7 +470,7 @@ void POP3Resource::targetCollectionFetchJobFinished( KJob *job )
       return;
     } else {
       cancelSync( i18n( "Error while trying to get the folder for incoming mail, "
-                        "aborting mail check." ) + "\n" + job->errorString() );
+                        "aborting mail check." ) + '\n' + job->errorString() );
       mTestLocalInbox = false;
       return;
     }

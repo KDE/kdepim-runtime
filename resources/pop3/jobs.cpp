@@ -150,7 +150,7 @@ static QString intListToString( const QList<int> &intList )
 {
   QString idList;
   foreach( int id, intList )
-    idList += QString::number( id ) + ",";
+    idList += QString::number( id ) + ',';
   idList.chop( 1 );
   return idList;
 }
