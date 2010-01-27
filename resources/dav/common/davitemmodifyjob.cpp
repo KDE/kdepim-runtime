@@ -46,12 +46,16 @@ DavItemModifyJob::DavItemModifyJob( const DavItem &item, QObject *parent )
 
 void DavItemModifyJob::start()
 {
+  KUrl url( mItem.url() );
+  url.setUser( DavManager::self()->user() );
+  url.setPassword( DavManager::self()->password() );
+
   QString headers = "Content-Type: ";
   headers += mItem.contentType();
   headers += "\r\n";
   headers += "If-Match: " + mItem.etag();
 
-  KIO::StoredTransferJob *job = KIO::storedPut( mItem.data(), mItem.url(), -1, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::StoredTransferJob *job = KIO::storedPut( mItem.data(), url, -1, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", headers );
 

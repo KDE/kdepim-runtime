@@ -47,7 +47,11 @@ DavItemFetchJob::DavItemFetchJob( const DavItem &item, QObject *parent )
 
 void DavItemFetchJob::start()
 {
-  KIO::StoredTransferJob *job = KIO::storedGet( mItem.url(), KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KUrl url( mItem.url() );
+  url.setUser( DavManager::self()->user() );
+  url.setPassword( DavManager::self()->password() );
+
+  KIO::StoredTransferJob *job = KIO::storedGet( url, KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );

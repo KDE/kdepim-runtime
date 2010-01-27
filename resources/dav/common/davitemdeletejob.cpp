@@ -30,7 +30,11 @@ DavItemDeleteJob::DavItemDeleteJob( const DavItem &item, QObject *parent )
 
 void DavItemDeleteJob::start()
 {
-  KIO::DeleteJob *job = KIO::del( mItem.url(), KIO::HideProgressInfo | KIO::DefaultFlags );
+  KUrl url( mItem.url() );
+  url.setUser( DavManager::self()->user() );
+  url.setPassword( DavManager::self()->password() );
+
+  KIO::DeleteJob *job = KIO::del( url, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", "If-Match: " + mItem.etag() );
 
