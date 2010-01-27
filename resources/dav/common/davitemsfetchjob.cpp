@@ -120,9 +120,7 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
 
     // extract path
     const QDomElement hrefElement = responseElement.firstChildElement( "href" );
-    QString href = hrefElement.text();
-    if ( !href.endsWith( '/' ) )
-      href.append( '/' );
+    const QString href = hrefElement.text();
 
     KUrl url = davJob->url();
     if ( href.startsWith( '/' ) ) {
