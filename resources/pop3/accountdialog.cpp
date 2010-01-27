@@ -19,10 +19,10 @@
  */
 
 // Local includes
-#include "settings.h"
-#include "settingsadaptor.h"
 #include "accountdialog.h"
 #include "pop3resource.h"
+#include "settings.h"
+#include "settingsadaptor.h"
 
 // KDEPIMLIBS includes
 #include <Akonadi/Collection>

@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_XMLCOMPARATOR_H
-#define AKONADI_XMLCOMPARATOR_H
+#ifndef XMLOPERATIONS_H
+#define XMLOPERATIONS_H
 
 #include <akonadi/collection.h>
 #include <akonadi/item.h>
