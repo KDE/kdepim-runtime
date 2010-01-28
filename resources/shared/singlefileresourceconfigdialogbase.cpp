@@ -36,7 +36,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   ui.kcfg_Path->setMode( KFile::File );
   ui.statusLabel->setVisible( false );
   setButtons( Ok | Cancel );
-
+  
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
@@ -47,7 +47,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
   connect( ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()) );
   connect( ui.kcfg_MonitorFile, SIGNAL(toggled(bool)), SLOT(validate()) );
-
+  ui.kcfg_Path->setFocus();
   QTimer::singleShot( 0, this, SLOT(validate()) );
 }
 
