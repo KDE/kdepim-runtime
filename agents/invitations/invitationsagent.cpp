@@ -18,66 +18,62 @@
 */
 
 #include "invitationsagent.h"
-#include "invitationsagent.moc"
 
-#include <kcal/incidence.h>
-#include <kcal/event.h>
-#include <kcal/todo.h>
-#include <kcal/journal.h>
-#include <kcal/calendarlocal.h>
-#include <kcal/icalformat.h>
+#include "incidenceattribute.h"
 
-#include <KMime/Message>
-#include <KMime/Content>
-
-//#include <kemailsettings.h>
-
+#include <Akonadi/AgentInstance>
+#include <Akonadi/AgentInstanceCreateJob>
+#include <Akonadi/AgentManager>
 #include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionCreateJob>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionFetchScope>
-#include <Akonadi/CollectionCreateJob>
-#include <Akonadi/AgentManager>
-#include <Akonadi/AgentInstance>
-#include <Akonadi/AgentInstanceCreateJob>
 #include <akonadi/resourcesynchronizationjob.h>
-#include "incidenceattribute.h"
 #include <akonadi/specialcollections.h>
 #include <akonadi/specialcollectionsrequestjob.h>
 
-#include <QDBusInterface>
-#include <QDBusReply>
-#include <QFileInfo>
-#include <QTimer>
-#include <KDebug>
-#include <KSystemTimeZones>
-#include <KJob>
-#include <KLocale>
-#include <KStandardDirs>
+#include <kcal/calendarlocal.h>
+#include <kcal/event.h>
+#include <kcal/icalformat.h>
+#include <kcal/incidence.h>
+#include <kcal/journal.h>
+#include <kcal/todo.h>
 #include <KConfig>
 #include <KConfigSkeleton>
-
+#include <KDebug>
+#include <KJob>
+#include <KLocale>
+#include <KMime/Content>
+#include <KMime/Message>
 #include <kpimidentities/identitymanager.h>
+#include <KSystemTimeZones>
+#include <KStandardDirs>
 
-AKONADI_AGENT_MAIN( InvitationsAgent )
+#include <QtCore/QFileInfo>
+#include <QtCore/QTimer>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusReply>
 
 using namespace Akonadi;
 
 class InvitationsCollectionRequestJob : public SpecialCollectionsRequestJob
 {
   public:
-    InvitationsCollectionRequestJob( SpecialCollections* collection, InvitationsAgent *agent ) : SpecialCollectionsRequestJob( collection, agent ) {
+    InvitationsCollectionRequestJob( SpecialCollections* collection, InvitationsAgent *agent )
+      : SpecialCollectionsRequestJob( collection, agent )
+    {
       setDefaultResourceType( QLatin1String( "akonadi_ical_resource" ) );
 
       QVariantMap options;
       options.insert( QLatin1String( "Path" ), KGlobal::dirs()->localxdgdatadir() + "akonadi_invitations" );
-      options.insert( QLatin1String( "Name" ), i18n("Invitations") );
+      options.insert( QLatin1String( "Name" ), i18n( "Invitations" ) );
       setDefaultResourceOptions( options );
 
       QMap<QByteArray, QString> displayNameMap;
-      displayNameMap.insert( "invitations", i18n("Invitations") );
+      displayNameMap.insert( "invitations", i18n( "Invitations" ) );
       setTypes( displayNameMap.keys() );
       setNameForTypeMap( displayNameMap );
 
@@ -85,7 +81,10 @@ class InvitationsCollectionRequestJob : public SpecialCollectionsRequestJob
       iconNameMap.insert( "invitations", QLatin1String( "folder" ) );
       setIconForTypeMap( iconNameMap );
     }
-    virtual ~InvitationsCollectionRequestJob() {}
+
+    virtual ~InvitationsCollectionRequestJob()
+    {
+    }
 };
 
 class  InvitationsCollection : public SpecialCollections
@@ -95,51 +94,70 @@ class  InvitationsCollection : public SpecialCollections
     class Settings : public KCoreConfigSkeleton
     {
       public:
-        Settings() : KCoreConfigSkeleton() {
-          setCurrentGroup("Invitations");
-          addItemString("DefaultResourceId", m_id, QString());
+        Settings()
+        {
+          setCurrentGroup( "Invitations" );
+          addItemString( "DefaultResourceId", m_id, QString() );
         }
-        virtual ~Settings() {}
+
+        virtual ~Settings()
+        {
+        }
+
       private:
         QString m_id;
     };
 
-    InvitationsCollection( InvitationsAgent *agent ) : Akonadi::SpecialCollections( new Settings ), m_agent( agent ), sInvitationsType( "invitations" ) {}
-    virtual ~InvitationsCollection() {}
-    /*
-    bool registerCollection( const Collection &collection ) {
-      return SpecialCollections::registerCollection( sInvitationsType, collection );
+    InvitationsCollection( InvitationsAgent *agent )
+      : Akonadi::SpecialCollections( new Settings ), m_agent( agent ), sInvitationsType( "invitations" )
+    {
     }
-    */
-    void clear() {
+
+    virtual ~InvitationsCollection()
+    {
+    }
+
+    void clear()
+    {
       m_collection = Collection();
     }
-    bool hasDefaultCollection() const {
+
+    bool hasDefaultCollection() const
+    {
       return SpecialCollections::hasDefaultCollection( sInvitationsType );
     }
-    Collection defaultCollection() const {
-      if( ! m_collection.isValid() )
+
+    Collection defaultCollection() const
+    {
+      if ( !m_collection.isValid() )
         m_collection = SpecialCollections::defaultCollection( sInvitationsType );
+
       return m_collection;
     }
-    void registerDefaultCollection() {
-//      Q_ASSERT( m_collection.isValid() );
+
+    void registerDefaultCollection()
+    {
       defaultCollection();
       registerCollection( sInvitationsType, m_collection );
     }
-    SpecialCollectionsRequestJob* reguestJob() const {
-      InvitationsCollectionRequestJob *j = new InvitationsCollectionRequestJob( const_cast<InvitationsCollection*>(this), m_agent );
-      j->requestDefaultCollection( sInvitationsType );
-      return j;
+
+    SpecialCollectionsRequestJob* reguestJob() const
+    {
+      InvitationsCollectionRequestJob *job = new InvitationsCollectionRequestJob( const_cast<InvitationsCollection*>( this ),
+                                                                                  m_agent );
+      job->requestDefaultCollection( sInvitationsType );
+
+      return job;
     }
+
   private:
     InvitationsAgent *m_agent;
     const QByteArray sInvitationsType;
     mutable Collection m_collection;
 };
 
-InvitationsAgentItem::InvitationsAgentItem(InvitationsAgent *a, const Item &originalItem)
-  : QObject(a), a(a), originalItem(originalItem)
+InvitationsAgentItem::InvitationsAgentItem( InvitationsAgent *agent, const Item &originalItem )
+  : QObject( agent ), m_agent( agent ), m_originalItem( originalItem )
 {
 }
 
@@ -147,67 +165,70 @@ InvitationsAgentItem::~InvitationsAgentItem()
 {
 }
 
-void InvitationsAgentItem::add(const Item &newItem)
+void InvitationsAgentItem::add( const Item &item )
 {
   kDebug();
-  Collection c = a->collection();
-  Q_ASSERT( c.isValid() );
+  const Collection collection = m_agent->collection();
+  Q_ASSERT( collection.isValid() );
 
-  ItemCreateJob *j = new ItemCreateJob( newItem, c, this );
-  jobs << j;
-  connect( j, SIGNAL( result( KJob* ) ), this, SLOT( createItemResult( KJob* ) ) );
-  j->start();
+  ItemCreateJob *job = new ItemCreateJob( item, collection, this );
+  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( createItemResult( KJob* ) ) );
+
+  m_jobs << job;
+
+  job->start();
 }
 
 void InvitationsAgentItem::createItemResult( KJob *job )
 {
-  ItemCreateJob *j = static_cast<ItemCreateJob*>( job );
-  jobs.removeAll( j );
-  if( j->error() ) {
-    kWarning() << "Failed to create new Item in invitations collection." << j->errorText();
+  ItemCreateJob *createJob = qobject_cast<ItemCreateJob*>( job );
+  m_jobs.removeAll( createJob );
+  if ( createJob->error() ) {
+    kWarning() << "Failed to create new Item in invitations collection." << createJob->errorText();
     return;
   }
 
-  if( ! jobs.isEmpty() ) {
+  if ( !m_jobs.isEmpty() )
     return;
-  }
 
-  ItemFetchJob *fj = new ItemFetchJob( originalItem, this );
-  connect( fj, SIGNAL( result( KJob* ) ), this, SLOT( fetchItemDone( KJob* ) ) );
-  fj->start();
+  ItemFetchJob *fetchJob = new ItemFetchJob( m_originalItem, this );
+  connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( fetchItemDone( KJob* ) ) );
+  fetchJob->start();
 }
 
 void InvitationsAgentItem::fetchItemDone( KJob *job )
 {
-  if( job->error() ) {
+  if ( job->error() ) {
     kWarning() << "Failed to fetch Item in invitations collection." << job->errorText();
     return;
   }
 
-  ItemFetchJob *fj = static_cast<ItemFetchJob*>( job );
-  Q_ASSERT( fj->items().count() == 1 );
-  Item modifiedItem = fj->items().first();
+  ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
+  Q_ASSERT( fetchJob->items().count() == 1 );
+
+  Item modifiedItem = fetchJob->items().first();
   Q_ASSERT( modifiedItem.isValid() );
+
   modifiedItem.setFlag( "invitation" );
-  ItemModifyJob *mj = new ItemModifyJob( modifiedItem, this );
-  connect( mj, SIGNAL( result( KJob* ) ), this, SLOT( modifyItemDone( KJob* ) ) );
-  mj->start();  
+  ItemModifyJob *modifyJob = new ItemModifyJob( modifiedItem, this );
+  connect( modifyJob, SIGNAL( result( KJob* ) ), this, SLOT( modifyItemDone( KJob* ) ) );
+  modifyJob->start();
 }
 
 void InvitationsAgentItem::modifyItemDone( KJob *job )
 {
-  if( job->error() ) {
+  if ( job->error() ) {
     kWarning() << "Failed to modify Item in invitations collection." << job->errorText();
     return;
   }
 
-  //ItemModifyJob *mj = static_cast<ItemModifyJob*>( job );
+  //ItemModifyJob *mj = qobject_cast<ItemModifyJob*>( job );
   //kDebug()<<"Job successful done.";
 }
 
 InvitationsAgent::InvitationsAgent( const QString &id )
   : AgentBase( id ), AgentBase::ObserverV2()
-  , m_InvitationsCollection( new InvitationsCollection(this) )
+  , m_invitationsCollection( new InvitationsCollection( this ) )
 {
   kDebug();
   KGlobal::locale()->insertCatalog( "akonadi_invitations_agent" );
@@ -217,26 +238,26 @@ InvitationsAgent::InvitationsAgent( const QString &id )
   changeRecorder()->setMimeTypeMonitored( "message/rfc822", true );
   //changeRecorder()->setCollectionMonitored( Collection::root(), true );
 
-  connect( this, SIGNAL(reloadConfiguration()), this, SLOT(initStart()) );
-  QTimer::singleShot( 0, this, SLOT(initStart()) );
+  connect( this, SIGNAL( reloadConfiguration() ), this, SLOT( initStart() ) );
+  QTimer::singleShot( 0, this, SLOT( initStart() ) );
 }
 
 InvitationsAgent::~InvitationsAgent()
 {
-  delete m_InvitationsCollection;
+  delete m_invitationsCollection;
 }
 
 void InvitationsAgent::initStart()
 {
   kDebug();
 
-  m_InvitationsCollection->clear();
-  if( m_InvitationsCollection->hasDefaultCollection() ) {
+  m_invitationsCollection->clear();
+  if ( m_invitationsCollection->hasDefaultCollection() ) {
     initDone();
   } else {
-    SpecialCollectionsRequestJob *j = m_InvitationsCollection->reguestJob();
-    connect( j, SIGNAL( result(KJob*) ), this, SLOT( initDone(KJob*) ) );
-    j->start();
+    SpecialCollectionsRequestJob *job = m_invitationsCollection->reguestJob();
+    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( initDone( KJob* ) ) );
+    job->start();
   }
 
   /*
@@ -246,7 +267,7 @@ void InvitationsAgent::initStart()
   newAgentCreated = false;
   m_invitations = Akonadi::Collection();
   AgentInstance resource = AgentManager::self()->instance( m_resourceId );
-  if( resource.isValid() ) {
+  if ( resource.isValid() ) {
     emit status( AgentBase::Running, i18n("Reading...") );
     QMetaObject::invokeMethod( this, "createAgentResult", Qt::QueuedConnection );
   } else {
@@ -261,27 +282,28 @@ void InvitationsAgent::initStart()
 
 void InvitationsAgent::initDone( KJob *job )
 {
-  if( job ) {
-    if( job->error() ) {
+  if ( job ) {
+    if ( job->error() ) {
       kWarning() << "Failed to request default collection:" << job->errorText();
       return;
     }
-    m_InvitationsCollection->registerDefaultCollection();
+
+    m_invitationsCollection->registerDefaultCollection();
   }
 
-  Q_ASSERT( m_InvitationsCollection->defaultCollection().isValid() );
-  emit status( AgentBase::Idle, i18n("Ready to dispatch invitations") );
+  Q_ASSERT( m_invitationsCollection->defaultCollection().isValid() );
+  emit status( AgentBase::Idle, i18n( "Ready to dispatch invitations" ) );
 }
 
 Collection InvitationsAgent::collection()
 {
-  return m_InvitationsCollection->defaultCollection();
+  return m_invitationsCollection->defaultCollection();
 }
 
 #if 0
 KPIMIdentities::IdentityManager* InvitationsAgent::identityManager()
 {
-  if( ! m_IdentityManager)
+  if ( !m_IdentityManager)
     m_IdentityManager = new KPIMIdentities::IdentityManager( true /* readonly */, this );
   return m_IdentityManager;
 }
@@ -305,8 +327,8 @@ void InvitationsAgent::createAgentResult( KJob *job )
 {
   kDebug();
   AgentInstance agent;
-  if( job ) {
-    if( job->error() ) {
+  if ( job ) {
+    if ( job->error() ) {
       kWarning() << job->errorString();
       emit status( AgentBase::Broken, i18n( "Failed to create resource: %1", job->errorString() ) );
       return;
@@ -323,7 +345,7 @@ void InvitationsAgent::createAgentResult( KJob *job )
     QDBusReply<void> reply = conf.call( QString::fromLatin1( "setPath" ),
                                         KGlobal::dirs()->localxdgdatadir() + "akonadi_ical_resource" );
 
-    if( !reply.isValid() ) {
+    if ( !reply.isValid() ) {
       kWarning() << "dbus call failed, m_resourceId=" << m_resourceId;
       emit status( AgentBase::Broken, i18n( "Failed to set the directory for invitations via D-Bus" ) );
       AgentManager::self()->removeInstance( agent );
@@ -349,10 +371,10 @@ void InvitationsAgent::createAgentResult( KJob *job )
 void InvitationsAgent::resourceSyncResult( KJob *job )
 {
   kDebug();
-  if( job->error() ) {
+  if ( job->error() ) {
     kWarning() << job->errorString();
     emit status( AgentBase::Broken, i18n( "Failed to synchronize collection: %1", job->errorString() ) );
-    if( newAgentCreated )
+    if ( newAgentCreated )
       AgentManager::self()->removeInstance( AgentManager::self()->instance( m_resourceId ) );
     return;
   }
@@ -367,17 +389,17 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
 {
   kDebug();
 
-  if( job->error() ) {
+  if ( job->error() ) {
     kWarning() << job->errorString();
     emit status( AgentBase::Broken, i18n( "Failed to fetch collection: %1", job->errorString() ) );
-    if( newAgentCreated )
+    if ( newAgentCreated )
       AgentManager::self()->removeInstance( AgentManager::self()->instance( m_resourceId ) );
     return;
   }
 
   CollectionFetchJob *fj = static_cast<CollectionFetchJob *>( job );
 
-  if( newAgentCreated ) {
+  if ( newAgentCreated ) {
     // if the agent was just created then there is exactly one collection already
     // and we just use that one.
     Q_ASSERT( fj->collections().count() == 1 );
@@ -389,13 +411,13 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
   KConfig config( "akonadi_invitations_agent" );
   KConfigGroup group = config.group( "General" );
   const QString collectionId = group.readEntry( "DefaultCalendarCollection", QString() );
-  if( ! collectionId.isEmpty() ) {
+  if ( !collectionId.isEmpty() ) {
     // look if the collection is still there. It may the case that there exists such
     // a collection with the defined collectionId but that this is not a valid one
     // and therefore not in the resultset.
     const int id = collectionId.toInt();
     foreach( const Collection &c, fj->collections() ) {
-      if( c.id() == id ) {
+      if ( c.id() == id ) {
         m_invitations = c;
         initDone();
         return;
@@ -407,7 +429,7 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
   Collection c;
   c.setName( "invitations" );
   c.setParent( Collection::root() );
-  Q_ASSERT( ! m_resourceId.isNull() );
+  Q_ASSERT( !m_resourceId.isNull() );
   c.setResource( m_resourceId );
   c.setContentMimeTypes( QStringList()
             << "text/calendar"
@@ -423,10 +445,10 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
 void InvitationsAgent::collectionCreateResult( KJob *job )
 {
   kDebug();
-  if( job->error() ) {
+  if ( job->error() ) {
     kWarning() << job->errorString();
     emit status( AgentBase::Broken, i18n( "Failed to create collection: %1", job->errorString() ) );
-    if( newAgentCreated )
+    if ( newAgentCreated )
       AgentManager::self()->removeInstance( AgentManager::self()->instance( m_resourceId ) );
     return;
   }
@@ -440,7 +462,7 @@ Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calen
 {
   KCal::ICalFormat format;
   KCal::ScheduleMessage *message = format.parseScheduleMessage( calendar, vcal );
-  if( ! message ) {
+  if ( !message ) {
     kWarning() << "Invalid invitation:" << vcal;
     return Item();
   }
@@ -456,9 +478,9 @@ Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calen
   attr->setReference( item.id() );
 
   Item newItem;
-  newItem.setMimeType( QString::fromLatin1("application/x-vnd.akonadi.calendar.%1").arg(QLatin1String(incidence->type().toLower())) );
+  newItem.setMimeType( QString::fromLatin1( "application/x-vnd.akonadi.calendar.%1" ).arg( QLatin1String( incidence->type().toLower() ) ) );
   newItem.addAttribute( attr );
-  newItem.setPayload<KCal::Incidence::Ptr>( KCal::Incidence::Ptr(incidence->clone()) );
+  newItem.setPayload<KCal::Incidence::Ptr>( KCal::Incidence::Ptr( incidence->clone() ) );
   return newItem;
 }
 
@@ -467,12 +489,12 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
   kDebug() << item.id() << collection;
   Q_UNUSED( collection );
 
-  if( ! m_InvitationsCollection->defaultCollection().isValid() ) {
+  if ( !m_invitationsCollection->defaultCollection().isValid() ) {
     kDebug() << "No default collection found";
     return;
   }
 
-  if( ! item.hasPayload<KMime::Message::Ptr>() ) {
+  if ( !item.hasPayload<KMime::Message::Ptr>() ) {
     kDebug() << "Item has no payload";
     return;
   }
@@ -484,36 +506,43 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
   //if( identityManager()->thatIsMe(sender) ) return;
 
   KCal::CalendarLocal calendar( KSystemTimeZones::local() ) ;
-  if( message->contentType()->isMultipart() ) {
+  if ( message->contentType()->isMultipart() ) {
     kDebug() << "message is multipart:" << message->attachments().size();
+
     InvitationsAgentItem *it = 0;
-    foreach( KMime::Content *c, message->attachments() ) {
-      KMime::Headers::ContentDisposition *ds = c->header< KMime::Headers::ContentDisposition >();
-      kDebug() << "looking at " << ds << (ds ? QFileInfo(ds->filename()).suffix().toLower() : QString());
-      if( !ds || QFileInfo(ds->filename()).suffix().toLower() != "ics" ) {
+    foreach ( KMime::Content *content, message->attachments() ) {
+      KMime::Headers::ContentDisposition *contentDisposition = content->header< KMime::Headers::ContentDisposition >();
+      kDebug() << "looking at " << contentDisposition << (contentDisposition ? QFileInfo( contentDisposition->filename() ).suffix().toLower() : QString());
+      if ( !contentDisposition || QFileInfo( contentDisposition->filename() ).suffix().toLower() != "ics" ) {
         kDebug() << "no CD header or not an ics file";
         continue;
       }
-      Item newItem = handleContent( c->body(), &calendar, item );
-      if( ! newItem.hasPayload() ) {
+
+      Item newItem = handleContent( content->body(), &calendar, item );
+      if ( !newItem.hasPayload() ) {
         kDebug() << "new item has no payload";
         continue;
       }
-      if( ! it) {
+
+      if ( !it)
         it = new InvitationsAgentItem( this, item );
-      }
+
       it->add( newItem );
     }
   } else {
     kDebug() << "message is not multipart";
     //TODO check what is allowed/possible here.
     Item newItem = handleContent( message->body(), &calendar, item );
-    if( ! newItem.hasPayload() ) {
+    if ( !newItem.hasPayload() ) {
       kDebug() << "new item has no payload";
       return;
     }
+
     InvitationsAgentItem *it = new InvitationsAgentItem( this, item );
     it->add( newItem );
   }
-
 }
+
+AKONADI_AGENT_MAIN( InvitationsAgent )
+
+#include "invitationsagent.moc"

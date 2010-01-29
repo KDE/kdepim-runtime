@@ -20,12 +20,12 @@
 #ifndef INVITATIONSAGENT_H
 #define INVITATIONSAGENT_H
 
-#include <QtCore/QObject>
-
 #include <Akonadi/AgentBase>
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 #include <Akonadi/ItemCreateJob>
+
+#include <QtCore/QObject>
 
 class KJob;
 
@@ -40,7 +40,8 @@ class InvitationsCollection;
 
 class InvitationsAgentItem : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
+
   public:
     InvitationsAgentItem(InvitationsAgent *a, const Akonadi::Item &originalItem);
     virtual ~InvitationsAgentItem();
@@ -52,14 +53,14 @@ class InvitationsAgentItem : public QObject
     void modifyItemDone( KJob *job );
 
   private:
-    InvitationsAgent *a;
-    const Akonadi::Item originalItem;
-    QList<Akonadi::ItemCreateJob*> jobs;
+    InvitationsAgent *m_agent;
+    const Akonadi::Item m_originalItem;
+    QList<Akonadi::ItemCreateJob*> m_jobs;
 };
 
 class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
-    Q_OBJECT
+  Q_OBJECT
 
   public:
     explicit InvitationsAgent( const QString &id );
@@ -95,7 +96,7 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
 
   private:
     QString m_resourceId;
-    InvitationsCollection *m_InvitationsCollection;
+    InvitationsCollection *m_invitationsCollection;
     Akonadi::Collection m_collection;
 };
 
