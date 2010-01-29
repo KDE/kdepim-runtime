@@ -27,17 +27,19 @@ using namespace Akonadi;
 
 class CalendarSearchAgent::Private
 {
-    CalendarSearchAgent* const q;
-public:
-    explicit Private( CalendarSearchAgent* qq ) : q( qq )
+  public:
+    explicit Private( CalendarSearchAgent* qq )
+      : q( qq )
     {
     }
 
     ~Private()
     {
     }
-};
 
+  private:
+    CalendarSearchAgent* const q;
+};
 
 
 CalendarSearchAgent::CalendarSearchAgent( const QString &id )
@@ -54,7 +56,7 @@ CalendarSearchAgent::CalendarSearchAgent( const QString &id )
 
 CalendarSearchAgent::~CalendarSearchAgent()
 {
-    delete d;
+  delete d;
 }
 
 QVariantMap CalendarSearchAgent::createSearch( const QString& startDateStr, const QString& endDateStr )
