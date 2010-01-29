@@ -95,7 +95,7 @@ KUrl POPSession::getUrl() const
   KUrl url;
 
   if ( Settings::useSSL() )
-    url.setProtocol( "pop3s ");
+    url.setProtocol( "pop3s" );
   else
     url.setProtocol( "pop3" );
 
