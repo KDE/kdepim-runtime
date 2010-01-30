@@ -16,20 +16,20 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAVITEMSFETCHJOB_H
-#define DAVITEMSFETCHJOB_H
+#ifndef DAVITEMSLISTJOB_H
+#define DAVITEMSLISTJOB_H
 
 #include "davcollection.h"
 #include "davitem.h"
 
 #include <kjob.h>
 
-class DavItemsFetchJob : public KJob
+class DavItemsListJob : public KJob
 {
   Q_OBJECT
 
   public:
-    DavItemsFetchJob( const DavCollection &collection, QObject *parent = 0 );
+    DavItemsListJob( const DavCollection &collection, QObject *parent = 0 );
 
     virtual void start();
 

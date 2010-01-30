@@ -25,7 +25,7 @@
 #include "davitemdeletejob.h"
 #include "davitemfetchjob.h"
 #include "davitemmodifyjob.h"
-#include "davitemsfetchjob.h"
+#include "davitemslistjob.h"
 #include "davmanager.h"
 #include "etagattribute.h"
 #include "settings.h"
@@ -172,7 +172,7 @@ void DavCalendarResource::retrieveItems( const Akonadi::Collection &collection )
   DavCollection davCollection;
   davCollection.setUrl( collection.remoteId() );
 
-  DavItemsFetchJob *job = new DavItemsFetchJob( davCollection );
+  DavItemsListJob *job = new DavItemsListJob( davCollection );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveItemsFinished( KJob* ) ) );
   job->start();
 }
@@ -346,11 +346,11 @@ void DavCalendarResource::onRetrieveItemsFinished( KJob *job )
     return;
   }
 
-  const DavItemsFetchJob *fetchJob = qobject_cast<DavItemsFetchJob*>( job );
+  const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
   Akonadi::Item::List items;
 
-  const DavItem::List davItems = fetchJob->items();
+  const DavItem::List davItems = listJob->items();
   foreach ( const DavItem &davItem, davItems ) {
     Akonadi::Item item;
     item.setRemoteId( davItem.url() );

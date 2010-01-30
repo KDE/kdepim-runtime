@@ -16,7 +16,7 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "davitemsfetchjob.h"
+#include "davitemslistjob.h"
 
 #include "davmanager.h"
 #include "davprotocolbase.h"
@@ -28,12 +28,12 @@
 #include <QtCore/QBuffer>
 #include <QtXmlPatterns/QXmlQuery>
 
-DavItemsFetchJob::DavItemsFetchJob( const DavCollection &collection, QObject *parent )
+DavItemsListJob::DavItemsListJob( const DavCollection &collection, QObject *parent )
   : KJob( parent ), mCollection( collection ), mSubJobCount( 0 )
 {
 }
 
-void DavItemsFetchJob::start()
+void DavItemsListJob::start()
 {
   QListIterator<QDomDocument> it( DavManager::self()->davProtocol()->itemsQueries() );
 
@@ -54,12 +54,12 @@ void DavItemsFetchJob::start()
   }
 }
 
-DavItem::List DavItemsFetchJob::items() const
+DavItem::List DavItemsListJob::items() const
 {
   return mItems;
 }
 
-void DavItemsFetchJob::davJobFinished( KJob *job )
+void DavItemsListJob::davJobFinished( KJob *job )
 {
   --mSubJobCount;
 
@@ -157,4 +157,4 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
     emitResult();
 }
 
-#include "davitemsfetchjob.moc"
+#include "davitemslistjob.moc"
