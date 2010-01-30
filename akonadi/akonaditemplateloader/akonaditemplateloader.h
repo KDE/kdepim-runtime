@@ -21,6 +21,8 @@
 #define AKONADI_TEMPLATE_LOADER_H
 
 #include <grantlee/engine.h>
+#include <grantlee/template.h>
+#include <grantlee/templateloader.h>
 #include <grantlee/grantlee_export.h>
 
 #include <akonadi/item.h>
@@ -31,15 +33,15 @@ class EntityTreeModel;
 class ChangeRecorder;
 }
 
-class GRANTLEE_EXPORT AkonadiTemplateLoader : public AbstractTemplateLoader
+class GRANTLEE_EXPORT AkonadiTemplateLoader : public Grantlee::AbstractTemplateLoader
 {
 public:
   typedef QSharedPointer<AkonadiTemplateLoader> Ptr;
 
   AkonadiTemplateLoader(Akonadi::ChangeRecorder *monitor, QObject *parent = 0 );
 
-  Template loadByName( const QString &name ) const;
-  MutableTemplate loadMutableByName( const QString &name ) const;
+  Grantlee::Template loadByName( const QString &name ) const;
+  Grantlee::MutableTemplate loadMutableByName( const QString &name ) const;
 
   virtual bool canLoadTemplate(const QString& name) const;
 

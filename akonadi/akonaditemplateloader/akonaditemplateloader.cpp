@@ -27,11 +27,14 @@
 
 #include <QAbstractItemModel>
 
+#include <grantlee/exception.h>
+
 #include <KUrl>
 
 #include <kdebug.h>
 
 using namespace Akonadi;
+using namespace Grantlee;
 
 AkonadiTemplateLoader::AkonadiTemplateLoader(Akonadi::ChangeRecorder *monitor,  QObject* parent )
   : m_themeName( QLatin1String( "default" ) )
