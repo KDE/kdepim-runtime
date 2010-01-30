@@ -21,12 +21,8 @@
 
 #include <akonadi/resourcebase.h>
 
-#include <QtCore/QMutex>
-
-#include "davaccessor.h"
-
 namespace Akonadi {
-  class IncidenceMimeTypeVisitor;
+class IncidenceMimeTypeVisitor;
 }
 
 class DavCalendarResource : public Akonadi::ResourceBase,
@@ -43,44 +39,29 @@ class DavCalendarResource : public Akonadi::ResourceBase,
 
   protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
+    void retrieveItems( const Akonadi::Collection &collection );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
-    void accessorStatus( const QString &status );
-    void accessorError( const QString &err, bool cancelRequest );
-    void accessorRetrievedCollection( const DavCollection &collection );
-    void accessorRetrievedCollections();
-    void accessorRetrievedItem( const DavItem &item );
-    void accessorRetrievedItems();
-    void accessorRemovedItem( const KUrl &url );
-    void accessorPutItem( const KUrl &oldUrl, DavItem item );
-
-    void backendItemsRemoved( const DavItem::List &items );
-
   protected:
-    virtual void aboutToQuit();
-
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
 
+  private Q_SLOTS:
+    void onRetrieveCollectionsFinished( KJob* );
+    void onRetrieveItemsFinished( KJob* );
+    void onRetrieveItemFinished( KJob* );
+
+    void onItemAddedFinished( KJob* );
+    void onItemChangedFinished( KJob* );
+    void onItemRemovedFinished( KJob* );
+
   private:
     void doResourceInitialization();
-    void loadCacheFromAkonadi();
     bool configurationIsValid();
 
     Akonadi::IncidenceMimeTypeVisitor *mMimeVisitor;
-    DavAccessor *mAccessor;
     Akonadi::Collection mDavCollectionRoot;
-    int mCollectionsRetrievalCount;
-    int mItemsRetrievedCount;
-    QSet<QString> mSeenCollections;
-    Akonadi::Item::List mRetrievedItems;
-    QMutex mRetrievedItemsMutex;
-    QMap<QString, Akonadi::Item> mPutItems;
-    QMutex mPutItemsMutex;
-    QMap<QString, Akonadi::Item> mDelItems;
-    QMutex mDelItemsMutex;
 };
 
 #endif
