@@ -108,6 +108,7 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
   while ( !responseElement.isNull() ) {
 
     const QDomElement propstatElement = responseElement.firstChildElement( "propstat" );
+    const QDomElement propElement = propstatElement.firstChildElement( "prop" );
 
     // check for error
     const QDomElement statusElement = propstatElement.firstChildElement( "status" );
@@ -116,6 +117,17 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
       continue;
     }
 
+    // check whether it is a dav collection ...
+    const QDomElement resourcetypeElement = propElement.firstChildElement( "resourcetype" );
+    if ( !responseElement.isNull() ) {
+      const QDomElement collectionElement = resourcetypeElement.firstChildElement( "collection" );
+      if ( !collectionElement.isNull() ) {
+        responseElement = responseElement.nextSiblingElement( "response" );
+        continue;
+      }
+    }
+
+    // ... if not it is an item
     DavItem item;
 
     // extract path
@@ -136,7 +148,6 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
     item.setUrl( url.prettyUrl() );
 
     // extract etag
-    const QDomElement propElement = propstatElement.firstChildElement( "prop" );
     const QDomElement getetagElement = propElement.firstChildElement( "getetag" );
 
     item.setEtag( getetagElement.text() );
