@@ -189,7 +189,7 @@ bool DavCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
-  davItem.setContentType( item.mimeType() );
+  davItem.setContentType( "text/calendar" );
   davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
 
   DavItemFetchJob *job = new DavItemFetchJob( davItem );
@@ -279,6 +279,7 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
+  davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
   davItem.setContentType( "text/calendar" );
   davItem.setData( rawData );
 
@@ -298,6 +299,7 @@ void DavCalendarResource::itemRemoved( const Akonadi::Item &item )
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
+  davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
 
   DavItemDeleteJob *job = new DavItemDeleteJob( davItem );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemRemovedFinished( KJob* ) ) );
