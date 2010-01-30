@@ -21,7 +21,7 @@
 
 #include <QtCore/QString>
 
-class DavImplementation;
+class DavProtocolBase;
 
 namespace KIO {
 class DavJob;
@@ -63,7 +63,7 @@ class DavManager
 
     KIO::DavJob* createReportJob( const KUrl &url, const QDomDocument &document ) const;
 
-    const DavImplementation* davProtocol() const;
+    const DavProtocolBase* davProtocol() const;
 
   private:
     /**
@@ -74,7 +74,7 @@ class DavManager
     Protocol mProtocol;
     QString mUser;
     QString mPassword;
-    DavImplementation *mDavProtocol;
+    DavProtocolBase *mDavProtocol;
     static DavManager* mSelf;
 };
 

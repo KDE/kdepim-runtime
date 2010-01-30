@@ -16,13 +16,24 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "davimplementation.h"
+#ifndef CALDAVPROTOCOL_H
+#define CALDAVPROTOCOL_H
 
-DavImplementation::~DavImplementation()
-{
-}
+#include "davprotocolbase.h"
 
-QDomDocument DavImplementation::itemsReportQuery( const QStringList& ) const
+class CaldavProtocol : public DavProtocolBase
 {
-  return QDomDocument();
-}
+  public:
+    CaldavProtocol();
+    virtual bool useReport() const;
+    virtual bool useMultiget() const;
+    virtual QDomDocument collectionsQuery() const;
+    virtual QString collectionsXQuery() const;
+    virtual QList<QDomDocument> itemsQueries() const;
+    virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
+
+  private:
+    QList<QDomDocument> mItemsQueries;
+};
+
+#endif

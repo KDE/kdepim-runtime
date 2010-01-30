@@ -18,9 +18,8 @@
 
 #include "davmanager.h"
 
-#include "caldavcalendar.h"
-#include "davimplementation.h"
-#include "groupdavcalendar.h"
+#include "caldavprotocol.h"
+#include "groupdavprotocol.h"
 
 #include <kio/davjob.h>
 
@@ -29,7 +28,7 @@
 DavManager* DavManager::mSelf = 0;
 
 DavManager::DavManager()
-  : mProtocol( CalDav ), mDavProtocol( new CaldavCalendar )
+  : mProtocol( CalDav ), mDavProtocol( new CaldavProtocol )
 {
 }
 
@@ -52,9 +51,9 @@ void DavManager::setProtocol( Protocol protocol )
 
   delete mDavProtocol;
   if ( mProtocol == CalDav )
-    mDavProtocol = new CaldavCalendar;
+    mDavProtocol = new CaldavProtocol;
   else
-    mDavProtocol = new GroupdavCalendar;
+    mDavProtocol = new GroupdavProtocol;
 }
 
 DavManager::Protocol DavManager::protocol() const
@@ -116,7 +115,7 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
   return job;
 }
 
-const DavImplementation* DavManager::davProtocol() const
+const DavProtocolBase* DavManager::davProtocol() const
 {
   return mDavProtocol;
 }

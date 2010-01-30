@@ -18,7 +18,7 @@
 
 #include "davaccessor.h"
 
-#include "davimplementation.h"
+#include "davprotocolbase.h"
 
 #include <QtCore/QBuffer>
 #include <QtCore/QDataStream>
@@ -34,7 +34,7 @@
 #include <klocalizedstring.h>
 #include <kstandarddirs.h>
 
-DavAccessor::DavAccessor( DavImplementation *implementation )
+DavAccessor::DavAccessor( DavProtocolBase *implementation )
   : mDavImpl( implementation )
 {
 }

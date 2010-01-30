@@ -51,7 +51,7 @@ set( davcalendarresource_SRCS
   ../common/davcollection.cpp
   ../common/davcollectionsfetchjob.cpp
   ../common/davcollectionsmultifetchjob.cpp
-  ../common/davimplementation.cpp
+  ../common/davprotocolbase.cpp
   ../common/davitem.cpp
   ../common/davitemcreatejob.cpp
   ../common/davitemdeletejob.cpp
@@ -60,11 +60,11 @@ set( davcalendarresource_SRCS
   ../common/davitemsfetchjob.cpp
   ../common/davmanager.cpp
 
-  caldavcalendar.cpp
+  caldavprotocol.cpp
   configdialog.cpp
   davcalendarresource.cpp
   etagattribute.cpp
-  groupdavcalendar.cpp
+  groupdavprotocol.cpp
   settings.cpp
 )
 

@@ -16,15 +16,15 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef GROUPDAVCALENDAR_H
-#define GROUPDAVCALENDAR_H
+#ifndef GROUPDAVPROTOCOL_H
+#define GROUPDAVPROTOCOL_H
 
-#include "davimplementation.h"
+#include "davprotocolbase.h"
 
-class GroupdavCalendar : public DavImplementation
+class GroupdavProtocol : public DavProtocolBase
 {
   public:
-    GroupdavCalendar();
+    GroupdavProtocol();
     virtual bool useReport() const;
     virtual bool useMultiget() const;
     virtual QDomDocument collectionsQuery() const;

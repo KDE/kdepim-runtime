@@ -33,7 +33,7 @@ namespace KIO {
   class StoredTransferJob;
 }
 
-class DavImplementation;
+class DavProtocolBase;
 class KJob;
 class QDomDocument;
 
@@ -48,7 +48,7 @@ class DavAccessor : public QObject
   Q_OBJECT
 
   public:
-    DavAccessor( DavImplementation *implementation );
+    DavAccessor( DavProtocolBase *implementation );
     ~DavAccessor();
 
     void retrieveCollections( const KUrl &url );
@@ -93,7 +93,7 @@ class DavAccessor : public QObject
     QString getEtagFromHeaders( const QString &httpHeaders );
     void runItemsFetch( const QString &collection );
 
-    DavImplementation *mDavImpl;
+    DavProtocolBase *mDavImpl;
     QMap<QString, QSet<QString> > mLastSeenItems; // collection url, items url
     QMap<QString, DavItem> mItemsCache; // url, item
     QMap<QString, int> mRunningItemsQueryCount;

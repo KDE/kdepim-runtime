@@ -16,11 +16,11 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "groupdavcalendar.h"
+#include "groupdavprotocol.h"
 
 #include <QtXml/QDomDocument>
 
-GroupdavCalendar::GroupdavCalendar()
+GroupdavProtocol::GroupdavProtocol()
 {
   QDomDocument document;
 
@@ -37,17 +37,17 @@ GroupdavCalendar::GroupdavCalendar()
   mItemsQueries << document;
 }
 
-bool GroupdavCalendar::useReport() const
+bool GroupdavProtocol::useReport() const
 {
   return false;
 }
 
-bool GroupdavCalendar::useMultiget() const
+bool GroupdavProtocol::useMultiget() const
 {
   return false;
 }
 
-QDomDocument GroupdavCalendar::collectionsQuery() const
+QDomDocument GroupdavProtocol::collectionsQuery() const
 {
   QDomDocument document;
 
@@ -63,14 +63,14 @@ QDomDocument GroupdavCalendar::collectionsQuery() const
   return document;
 }
 
-QString GroupdavCalendar::collectionsXQuery() const
+QString GroupdavProtocol::collectionsXQuery() const
 {
   const QString query( "//*[(local-name()='vevent-collection' or local-name()='vtodo-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
 
   return query;
 }
 
-QList<QDomDocument> GroupdavCalendar::itemsQueries() const
+QList<QDomDocument> GroupdavProtocol::itemsQueries() const
 {
   return mItemsQueries;
 }

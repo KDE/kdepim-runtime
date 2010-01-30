@@ -18,8 +18,8 @@
 
 #include "davitemsfetchjob.h"
 
-#include "davimplementation.h"
 #include "davmanager.h"
+#include "davprotocolbase.h"
 
 #include <kdebug.h>
 #include <kio/davjob.h>

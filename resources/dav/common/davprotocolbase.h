@@ -16,18 +16,18 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAVIMPLEMENTATION_H
-#define DAVIMPLEMENTATION_H
+#ifndef DAVPROTOCOLBASE_H
+#define DAVPROTOCOLBASE_H
 
 #include <QtCore/QList>
 #include <QtXml/QDomDocument>
 
 class QStringList;
 
-class DavImplementation
+class DavProtocolBase
 {
   public:
-    virtual ~DavImplementation();
+    virtual ~DavProtocolBase();
     virtual bool useReport() const = 0;
     virtual bool useMultiget() const = 0;
     virtual QDomDocument collectionsQuery() const = 0;

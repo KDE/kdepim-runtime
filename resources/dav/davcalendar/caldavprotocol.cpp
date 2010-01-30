@@ -16,13 +16,14 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "caldavcalendar.h"
+#include "caldavprotocol.h"
 
 #include <kurl.h>
 
+#include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
 
-CaldavCalendar::CaldavCalendar()
+CaldavProtocol::CaldavProtocol()
 {
   /*
    * Create a document like the following:
@@ -115,17 +116,17 @@ CaldavCalendar::CaldavCalendar()
   }
 }
 
-bool CaldavCalendar::useReport() const
+bool CaldavProtocol::useReport() const
 {
   return true;
 }
 
-bool CaldavCalendar::useMultiget() const
+bool CaldavProtocol::useMultiget() const
 {
   return true;
 }
 
-QDomDocument CaldavCalendar::collectionsQuery() const
+QDomDocument CaldavProtocol::collectionsQuery() const
 {
   QDomDocument document;
 
@@ -142,19 +143,19 @@ QDomDocument CaldavCalendar::collectionsQuery() const
   return document;
 }
 
-QString CaldavCalendar::collectionsXQuery() const
+QString CaldavProtocol::collectionsXQuery() const
 {
   const QString query( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/*[local-name()='supported-calendar-component-set' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/*[local-name()='comp' and namespace-uri()='urn:ietf:params:xml:ns:caldav' and (@name='VTODO' or @name='VEVENT')]/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
 
   return query;
 }
 
-QList<QDomDocument> CaldavCalendar::itemsQueries() const
+QList<QDomDocument> CaldavProtocol::itemsQueries() const
 {
   return mItemsQueries;
 }
 
-QDomDocument CaldavCalendar::itemsReportQuery( const QStringList &urls ) const
+QDomDocument CaldavProtocol::itemsReportQuery( const QStringList &urls ) const
 {
   QDomDocument document;
 
