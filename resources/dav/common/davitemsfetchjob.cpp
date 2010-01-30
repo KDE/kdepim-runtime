@@ -39,8 +39,6 @@ void DavItemsFetchJob::start()
 
   while ( it.hasNext() ) {
     const QDomDocument props = it.next();
-    qDebug() << "Path:" << mCollection.url();
-    qDebug() << "Query:\n" << props.toString();
 
     if ( DavManager::self()->davProtocol()->useReport() ) {
       KIO::DavJob *job = DavManager::self()->createReportJob( mCollection.url(), props );
@@ -68,7 +66,6 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
   if ( job->error() ) {
     setError( job->error() );
     setErrorText( job->errorText() );
-    qDebug() << job->errorText();
     emitResult();
     return;
   }
@@ -101,7 +98,6 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
    */
 
   const QDomDocument document = davJob->response();
-  qDebug() << document.toString();
   const QDomElement documentElement = document.documentElement();
 
   QDomElement responseElement = documentElement.firstChildElement( "response" );

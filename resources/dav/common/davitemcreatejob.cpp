@@ -96,8 +96,6 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   mItem.setUrl( url.prettyUrl() );
   mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
 
-  qDebug() << mItem.etag() << mItem.url();
-
   emitResult();
 }
 

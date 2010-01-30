@@ -76,8 +76,6 @@ void DavItemFetchJob::davJobFinished( KJob *job )
   mItem.setContentType( storedJob->queryMetaData( "content-type" ) );
   mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
 
-  qDebug() << mItem.etag() << mItem.contentType() << mItem.data();
-
   emitResult();
 }
 

@@ -20,10 +20,7 @@
 
 #include "davmanager.h"
 
-#include <kio/davjob.h>
 #include <kio/job.h>
-
-#include <QtCore/QDebug>
 
 static QString etagFromHeaders( const QString &headers )
 {
@@ -95,8 +92,6 @@ void DavItemModifyJob::davJobFinished( KJob *job )
 
   mItem.setUrl( url.prettyUrl() );
   mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
-
-  qDebug() << mItem.etag() << mItem.url();
 
   emitResult();
 }

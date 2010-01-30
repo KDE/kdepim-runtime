@@ -160,7 +160,6 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
 
     const QString displayName = displaynameElement.text();
 
-    qDebug() << "add collection" << displayName << "(" << url.prettyUrl() << ")";
     mCollections << DavCollection( url.prettyUrl(), displayName );
 
     responseElement = responseElement.nextSiblingElement( "response" );

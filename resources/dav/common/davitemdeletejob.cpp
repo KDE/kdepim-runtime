@@ -20,7 +20,6 @@
 
 #include "davmanager.h"
 
-#include <kio/davjob.h>
 #include <kio/deletejob.h>
 
 DavItemDeleteJob::DavItemDeleteJob( const DavItem &item, QObject *parent )
