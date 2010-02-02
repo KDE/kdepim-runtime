@@ -117,9 +117,6 @@ public:
   void setInternalUID( const QString& iuid );
   QString internalUID() const;
 
-  virtual void setRevision( int );
-  virtual int revision() const;
-
   // Load the attributes of this class
   virtual bool loadAttribute( QDomElement& );
 
@@ -160,7 +157,6 @@ protected:
   QList<KCal::Alarm*> mAlarms;
   QList<KCal::Attachment*> mAttachments;
   QString mInternalUID;
-  int mRevision;
 
   struct Custom {
     QByteArray key;

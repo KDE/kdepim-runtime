@@ -65,7 +65,6 @@ ate>
    <end-offset>-15</end-offset>
   </alarm>
  </advanced-alarms>
- <revision>0</revision>
  <priority>1</priority>
  <completed>50</completed>
  <status>not-started</status>
