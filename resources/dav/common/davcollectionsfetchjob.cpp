@@ -123,11 +123,21 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
   QDomElement responseElement = responsesElement.firstChildElement( "response" );
   while ( !responseElement.isNull() ) {
 
-    const QDomElement propstatElement = responseElement.firstChildElement( "propstat" );
+    const QDomElement propstatElement;
 
-    // check for error
-    const QDomElement statusElement = propstatElement.firstChildElement( "status" );
-    if ( !statusElement.text().contains( "200" ) ) {
+    // check for the valid propstat, without giving up on first error
+    {
+      const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
+      for( int i = 0; i < propstats.length(); ++i ) {
+        const QDomElement propstatCandidate = propstats.item( i ).toElement();
+        const QDomElement statusElement = propstatCandidate.firstChildElement( "status" );
+        if ( statusElement.text().contains( "200" ) ) {
+          propstatElement = propstatCandidate;
+        }
+      }
+    }
+    
+    if( propstatElement.isNull() ) {
       responseElement = responseElement.nextSiblingElement( "response" );
       continue;
     }
