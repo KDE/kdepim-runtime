@@ -103,7 +103,7 @@ void DavItemsListJob::davJobFinished( KJob *job )
   QDomElement responseElement = documentElement.firstChildElement( "response" );
   while ( !responseElement.isNull() ) {
 
-    const QDomElement propstatElement;
+    QDomElement propstatElement;
 
     // check for the valid propstat, without giving up on first error
     {
