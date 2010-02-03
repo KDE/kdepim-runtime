@@ -33,11 +33,7 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
   Q_OBJECT
 
   public:
-    /**
-     * @param fileTypeDescription filter descriptor for the calendar file type,
-     *                            to display for the '*.ics *.ical' filter.
-     */
-    ICalResourceBase( const QString &id, const QString &fileTypeDescription );
+    ICalResourceBase( const QString &id );
     ~ICalResourceBase();
 
   public Q_SLOTS:
@@ -86,7 +82,6 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
 
   private:
     KCal::CalendarLocal *mCalendar;
-    const QString mFileDescription;
 };
 
 template <typename PayloadPtr>

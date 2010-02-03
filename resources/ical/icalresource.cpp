@@ -37,7 +37,7 @@ using namespace KCal;
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 ICalResource::ICalResource( const QString &id )
-    : ICalResourceBase( id, i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) ),
+    : ICalResourceBase( id ),
       mMimeVisitor( new IncidenceMimeTypeVisitor ),
       mIncidenceAssigner( new AssignmentVisitor() )
 {
@@ -48,7 +48,7 @@ ICalResource::ICalResource( const QString &id )
 }
 
 ICalResource::ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon )
-    : ICalResourceBase( id, i18nc("Filedialog filter for *.ics *.ical", "iCal Calendar File" ) ),
+    : ICalResourceBase( id ),
       mMimeVisitor( new IncidenceMimeTypeVisitor ),
       mIncidenceAssigner( new AssignmentVisitor() )
 {

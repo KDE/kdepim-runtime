@@ -32,10 +32,9 @@
 using namespace Akonadi;
 using namespace KCal;
 
-ICalResourceBase::ICalResourceBase( const QString &id, const QString &fileTypeDescription )
+ICalResourceBase::ICalResourceBase( const QString &id )
     : SingleFileResource<Settings>( id ),
-      mCalendar( 0 ),
-      mFileDescription( fileTypeDescription )
+      mCalendar( 0 )
 {
   KGlobal::locale()->insertCatalog( "akonadi_ical_resource" );
 }
@@ -75,7 +74,7 @@ void ICalResourceBase::aboutToQuit()
 void ICalResourceBase::configure( WId windowId )
 {
   SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.setFilter( "*.ics *.ical|" + mFileDescription );
+  dlg.setFilter( "text/calendar" );
   dlg.setCaption( i18n("Select Calendar") );
   if ( dlg.exec() == QDialog::Accepted ) {
     reloadFile();
