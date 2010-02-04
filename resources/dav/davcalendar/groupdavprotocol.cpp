@@ -18,6 +18,8 @@
 
 #include "groupdavprotocol.h"
 
+#include "davutils.h"
+
 #include <QtXml/QDomDocument>
 
 GroupdavProtocol::GroupdavProtocol()
@@ -65,7 +67,7 @@ QDomDocument GroupdavProtocol::collectionsQuery() const
 
 QString GroupdavProtocol::collectionsXQuery() const
 {
-  const QString query( "//*[(local-name()='vevent-collection' or local-name()='vtodo-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
+  const QString query( "//*[(local-name()='vevent-collection' or local-name()='vtodo-collection' or local-name()='vcard-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
 
   return query;
 }
@@ -96,19 +98,19 @@ DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes( const QDom
    *  </response>
    */
 
-  const QDomElement propstatElement = response.firstChildElement( "propstat" );
-  const QDomElement propElement = propstatElement.firstChildElement( "prop" );
-  const QDomElement resourcetypeElement = propElement.firstChildElement( "resourcetype" );
+  const QDomElement propstatElement = DavUtils::firstChildElementNS( response, "DAV:", "propstat" );
+  const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
+  const QDomElement resourcetypeElement = DavUtils::firstChildElementNS( propElement, "DAV:", "resourcetype" );
 
   DavCollection::ContentTypes contentTypes;
 
-  if ( !resourcetypeElement.firstChildElement( "vevent-collection" ).isNull() )
+  if ( !DavUtils::firstChildElementNS( resourcetypeElement, "http://groupdav.org/", "vevent-collection" ).isNull() )
     contentTypes |= DavCollection::Events;
 
-  if ( !resourcetypeElement.firstChildElement( "vtodo-collection" ).isNull() )
+  if ( !DavUtils::firstChildElementNS( resourcetypeElement, "http://groupdav.org/", "vtodo-collection" ).isNull() )
     contentTypes |= DavCollection::Todos;
 
-  if ( !resourcetypeElement.firstChildElement( "vcard-collection" ).isNull() )
+  if ( !DavUtils::firstChildElementNS( resourcetypeElement, "http://groupdav.org/", "vcard-collection" ).isNull() )
     contentTypes |= DavCollection::Contacts;
 
   return contentTypes;

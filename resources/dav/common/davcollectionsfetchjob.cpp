@@ -20,6 +20,7 @@
 
 #include "davmanager.h"
 #include "davprotocolbase.h"
+#include "davutils.h"
 
 #include <kdebug.h>
 #include <kio/davjob.h>
@@ -83,7 +84,7 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
   responsesStr.append( "</responses>" );
 
   QDomDocument document;
-  if ( !document.setContent( responsesStr ) ) {
+  if ( !document.setContent( responsesStr, true ) ) {
     setError( UserDefinedError );
     setErrorText( i18n( "Invalid responses from backend" ) );
     emitResult();
@@ -120,17 +121,17 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
 
   const QDomElement responsesElement = document.documentElement();
 
-  QDomElement responseElement = responsesElement.firstChildElement( "response" );
+  QDomElement responseElement = DavUtils::firstChildElementNS( responsesElement, "DAV:", "response" );
   while ( !responseElement.isNull() ) {
 
     QDomElement propstatElement;
 
     // check for the valid propstat, without giving up on first error
     {
-      const QDomNodeList propstats = responseElement.elementsByTagName( "propstat" );
+      const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
       for ( uint i = 0; i < propstats.length(); ++i ) {
         const QDomElement propstatCandidate = propstats.item( i ).toElement();
-        const QDomElement statusElement = propstatCandidate.firstChildElement( "status" );
+        const QDomElement statusElement = DavUtils::firstChildElementNS( propstatCandidate, "DAV:", "status" );
         if ( statusElement.text().contains( "200" ) ) {
           propstatElement = propstatCandidate;
         }
@@ -138,14 +139,14 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
     }
 
     if ( propstatElement.isNull() ) {
-      responseElement = responseElement.nextSiblingElement( "response" );
+      responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
       continue;
     }
 
     // extract url
-    const QDomElement hrefElement = responseElement.firstChildElement( "href" );
+    const QDomElement hrefElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "href" );
     if ( hrefElement.isNull() ) {
-      responseElement = responseElement.nextSiblingElement( "response" );
+      responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
       continue;
     }
 
@@ -165,8 +166,8 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
     }
 
     // extract display name
-    const QDomElement propElement = propstatElement.firstChildElement( "prop" );
-    const QDomElement displaynameElement = propElement.firstChildElement( "displayname" );
+    const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
+    const QDomElement displaynameElement = DavUtils::firstChildElementNS( propElement, "DAV:", "displayname" );
 
     const QString displayName = displaynameElement.text();
 
@@ -175,7 +176,7 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
 
     mCollections << DavCollection( url.prettyUrl(), displayName, contentTypes );
 
-    responseElement = responseElement.nextSiblingElement( "response" );
+    responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
   }
 
   emitResult();

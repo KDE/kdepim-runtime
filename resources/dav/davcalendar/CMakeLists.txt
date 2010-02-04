@@ -59,6 +59,7 @@ set( davcalendarresource_SRCS
   ../common/davitemmodifyjob.cpp
   ../common/davitemslistjob.cpp
   ../common/davmanager.cpp
+  ../common/davutils.cpp
 
   caldavprotocol.cpp
   configdialog.cpp

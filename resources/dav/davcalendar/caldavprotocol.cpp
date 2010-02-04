@@ -17,6 +17,7 @@
 */
 
 #include "caldavprotocol.h"
+#include "davutils.h"
 
 #include <kurl.h>
 
@@ -208,12 +209,12 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
    *   </response>
    */
 
-  const QDomElement propstatElement = response.firstChildElement( "propstat" );
-  const QDomElement propElement = propstatElement.firstChildElement( "prop" );
-  const QDomElement supportedcomponentElement = propElement.firstChildElement( "supported-calendar-component-set" );
+  const QDomElement propstatElement = DavUtils::firstChildElementNS( response, "DAV:", "propstat" );
+  const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
+  const QDomElement supportedcomponentElement = DavUtils::firstChildElementNS( propElement, "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
 
   DavCollection::ContentTypes contentTypes;
-  QDomElement compElement = supportedcomponentElement.firstChildElement( "comp" );
+  QDomElement compElement = DavUtils::firstChildElementNS( supportedcomponentElement, "urn:ietf:params:xml:ns:caldav", "comp" );
   while ( !compElement.isNull() ) {
     const QString type = compElement.attribute( "name" ).toLower();
     if ( type == QLatin1String( "vevent" ) )
@@ -221,7 +222,7 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
     else if ( type == QLatin1String( "vtodo" ) )
       contentTypes |= DavCollection::Todos;
 
-    compElement = compElement.nextSiblingElement( "comp" );
+    compElement = DavUtils::nextSiblingElementNS( compElement, "urn:ietf:params:xml:ns:caldav", "comp" );
   }
 
   return contentTypes;
