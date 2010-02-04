@@ -153,7 +153,7 @@ void DavAccessor::collectionsPropfindFinished( KJob *j )
 
     mRunningItemsQueryCount[href] = 0;
 
-    emit( collectionRetrieved( DavCollection( href, displayname ) ) );
+    emit( collectionRetrieved( DavCollection( href, displayname, DavCollection::ContentTypes() ) ) );
   }
 
   emit collectionsRetrieved();

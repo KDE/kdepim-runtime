@@ -27,8 +27,16 @@ class DavCollection
   public:
     typedef QList<DavCollection> List;
 
+    enum ContentType
+    {
+      Events = 1,
+      Todos = 2,
+      Contacts = 4
+    };
+    Q_DECLARE_FLAGS( ContentTypes, ContentType )
+
     DavCollection();
-    DavCollection( const QString &url, const QString &displayName );
+    DavCollection( const QString &url, const QString &displayName, ContentTypes contentTypes );
 
     void setUrl( const QString &url );
     QString url() const;
@@ -36,9 +44,15 @@ class DavCollection
     void setDisplayName( const QString &displayName );
     QString displayName() const;
 
+    void setContentTypes( ContentTypes contentTypes );
+    ContentTypes contentTypes() const;
+
   private:
     QString mUrl;
     QString mDisplayName;
+    ContentTypes mContentTypes;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( DavCollection::ContentTypes )
 
 #endif

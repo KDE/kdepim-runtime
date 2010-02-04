@@ -180,3 +180,49 @@ QDomDocument CaldavProtocol::itemsReportQuery( const QStringList &urls ) const
 
   return document;
 }
+
+DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomElement &response ) const
+{
+  /*
+   * Extract the content type information from a response like the following
+   *   <response xmlns="DAV:">
+   *     <href xmlns="DAV:">/caldav.php/test1.user/home/</href>
+   *     <propstat xmlns="DAV:">
+   *       <prop xmlns="DAV:">
+   *         <C:supported-calendar-component-set xmlns:C="urn:ietf:params:xml:ns:caldav">
+   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VEVENT"/>
+   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VTODO"/>
+   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VJOURNAL"/>
+   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VTIMEZONE"/>
+   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VFREEBUSY"/>
+   *         </C:supported-calendar-component-set>
+   *         <resourcetype xmlns="DAV:">
+   *           <collection xmlns="DAV:"/>
+   *           <C:calendar xmlns:C="urn:ietf:params:xml:ns:caldav"/>
+   *           <C:schedule-calendar xmlns:C="urn:ietf:params:xml:ns:caldav"/>
+   *         </resourcetype>
+   *         <displayname xmlns="DAV:">Test1 User</displayname>
+   *       </prop>
+   *       <status xmlns="DAV:">HTTP/1.1 200 OK</status>
+   *     </propstat>
+   *   </response>
+   */
+
+  const QDomElement propstatElement = response.firstChildElement( "propstat" );
+  const QDomElement propElement = propstatElement.firstChildElement( "prop" );
+  const QDomElement supportedcomponentElement = propElement.firstChildElement( "supported-calendar-component-set" );
+
+  DavCollection::ContentTypes contentTypes;
+  QDomElement compElement = supportedcomponentElement.firstChildElement( "comp" );
+  while ( !compElement.isNull() ) {
+    const QString type = compElement.attribute( "name" ).toLower();
+    if ( type == QLatin1String( "vevent" ) )
+      contentTypes |= DavCollection::Events;
+    else if ( type == QLatin1String( "vtodo" ) )
+      contentTypes |= DavCollection::Todos;
+
+    compElement = compElement.nextSiblingElement( "comp" );
+  }
+
+  return contentTypes;
+}

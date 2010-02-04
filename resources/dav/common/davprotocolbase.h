@@ -19,6 +19,8 @@
 #ifndef DAVPROTOCOLBASE_H
 #define DAVPROTOCOLBASE_H
 
+#include "davcollection.h"
+
 #include <QtCore/QList>
 #include <QtXml/QDomDocument>
 
@@ -34,6 +36,12 @@ class DavProtocolBase
     virtual QString collectionsXQuery() const = 0;
     virtual QList<QDomDocument> itemsQueries() const = 0;
     virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
+
+    /**
+     * Returns the possible content types for the collection that
+     * is described by the passed PROPFIND @response.
+     */
+    virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &response ) const = 0;
 };
 
 #endif

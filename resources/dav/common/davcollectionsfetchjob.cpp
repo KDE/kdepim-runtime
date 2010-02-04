@@ -128,7 +128,7 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
     // check for the valid propstat, without giving up on first error
     {
       const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
-      for( int i = 0; i < propstats.length(); ++i ) {
+      for ( uint i = 0; i < propstats.length(); ++i ) {
         const QDomElement propstatCandidate = propstats.item( i ).toElement();
         const QDomElement statusElement = propstatCandidate.firstChildElement( "status" );
         if ( statusElement.text().contains( "200" ) ) {
@@ -136,8 +136,8 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
         }
       }
     }
-    
-    if( propstatElement.isNull() ) {
+
+    if ( propstatElement.isNull() ) {
       responseElement = responseElement.nextSiblingElement( "response" );
       continue;
     }
@@ -170,7 +170,10 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
 
     const QString displayName = displaynameElement.text();
 
-    mCollections << DavCollection( url.prettyUrl(), displayName );
+    // extract allowed content types
+    const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol()->collectionContentTypes( responseElement );
+
+    mCollections << DavCollection( url.prettyUrl(), displayName, contentTypes );
 
     responseElement = responseElement.nextSiblingElement( "response" );
   }

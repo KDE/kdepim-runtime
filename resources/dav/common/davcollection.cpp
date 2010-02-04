@@ -22,8 +22,8 @@ DavCollection::DavCollection()
 {
 }
 
-DavCollection::DavCollection( const QString &url, const QString &displayName )
-  : mUrl( url ), mDisplayName( displayName )
+DavCollection::DavCollection( const QString &url, const QString &displayName, ContentTypes contentTypes )
+  : mUrl( url ), mDisplayName( displayName ), mContentTypes( contentTypes )
 {
 }
 
@@ -45,4 +45,14 @@ void DavCollection::setDisplayName( const QString &displayName )
 QString DavCollection::displayName() const
 {
   return mDisplayName;
+}
+
+void DavCollection::setContentTypes( ContentTypes contentTypes )
+{
+  mContentTypes = contentTypes;
+}
+
+DavCollection::ContentTypes DavCollection::contentTypes() const
+{
+  return mContentTypes;
 }

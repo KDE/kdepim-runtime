@@ -74,3 +74,42 @@ QList<QDomDocument> GroupdavProtocol::itemsQueries() const
 {
   return mItemsQueries;
 }
+
+DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes( const QDomElement &response ) const
+{
+  /*
+   * Extract the content type information from a response like the following
+   *
+   *  <response xmlns="DAV:">
+   *    <href>http://localhost:8080/groupdav/Tasks/</href>
+   *    <propstat>
+   *      <status>HTTP/1.1 200 OK</status>
+   *      <prop>
+   *        <displayname>Tasks</displayname>
+   *        <resourcetype>
+   *          <collection/>
+   *          <G:vtodo-collection xmlns:G="http://groupdav.org/"/>
+   *        </resourcetype>
+   *        <getlastmodified>Sat, 30 Jan 2010 17:52:41 -0100</getlastmodified>
+   *      </prop>
+   *    </propstat>
+   *  </response>
+   */
+
+  const QDomElement propstatElement = response.firstChildElement( "propstat" );
+  const QDomElement propElement = propstatElement.firstChildElement( "prop" );
+  const QDomElement resourcetypeElement = propElement.firstChildElement( "resourcetype" );
+
+  DavCollection::ContentTypes contentTypes;
+
+  if ( !resourcetypeElement.firstChildElement( "vevent-collection" ).isNull() )
+    contentTypes |= DavCollection::Events;
+
+  if ( !resourcetypeElement.firstChildElement( "vtodo-collection" ).isNull() )
+    contentTypes |= DavCollection::Todos;
+
+  if ( !resourcetypeElement.firstChildElement( "vcard-collection" ).isNull() )
+    contentTypes |= DavCollection::Contacts;
+
+  return contentTypes;
+}

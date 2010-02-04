@@ -39,6 +39,8 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/kcal/incidencemimetypevisitor.h>
 #include <boost/shared_ptr.hpp>
+#include <kabc/addressee.h>
+#include <kabc/vcardconverter.h>
 #include <kcal/icalformat.h>
 #include <kcal/incidence.h>
 #include <kwindowsystem.h>
@@ -173,6 +175,7 @@ void DavCalendarResource::retrieveItems( const Akonadi::Collection &collection )
   davCollection.setUrl( collection.remoteId() );
 
   DavItemsListJob *job = new DavItemsListJob( davCollection );
+  job->setProperty( "collection", QVariant::fromValue( collection ) );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveItemsFinished( KJob* ) ) );
   job->start();
 }
@@ -212,14 +215,6 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
     return;
   }
 
-  if ( !item.hasPayload<IncidencePtr>() ) {
-    kError() << "Item " << item.id() << " doesn't has a valid payload";
-    cancelTask( i18n( "Unable to retrieve added item %1." ).arg( item.id() ) );
-    return;
-  }
-
-  const IncidencePtr ptr = item.payload<IncidencePtr>();
-
   const QString basePath = collection.remoteId();
   if ( basePath.isEmpty() ) {
     kError() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
@@ -227,25 +222,54 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
     return;
   }
 
-  const QString fileName = ptr->uid();
-  if ( fileName.isEmpty() ) {
-    kError() << "Invalid incidence uid";
-    cancelTask( i18n( "Client did not create a UID for item %1." ).arg( item.id() ) );
+  KUrl url;
+  QByteArray rawData;
+  QString mimeType;
+
+  if ( item.hasPayload<KABC::Addressee>() ) {
+    const KABC::Addressee contact = item.payload<KABC::Addressee>();
+
+    const QString fileName = contact.uid();
+    if ( fileName.isEmpty() ) {
+      kError() << "Invalid contact uid";
+      cancelTask( i18n( "Client did not create a UID for item %1." ).arg( item.id() ) );
+      return;
+    }
+
+    url = KUrl( basePath + fileName + ".vcf" );
+    mimeType = KABC::Addressee::mimeType();
+
+    KABC::VCardConverter converter;
+    rawData = converter.createVCard( contact );
+  } else if ( item.hasPayload<IncidencePtr>() ) {
+    const IncidencePtr ptr = item.payload<IncidencePtr>();
+
+    const QString fileName = ptr->uid();
+    if ( fileName.isEmpty() ) {
+      kError() << "Invalid incidence uid";
+      cancelTask( i18n( "Client did not create a UID for item %1." ).arg( item.id() ) );
+      return;
+    }
+
+    url = KUrl( basePath + fileName + ".ics" );
+    mimeType = "text/calendar";
+
+    KCal::ICalFormat formatter;
+    rawData = formatter.toICalString( ptr.get() ).toUtf8();
+  } else {
+    kError() << "Item " << item.id() << " doesn't has a valid payload";
+    cancelTask( i18n( "Unable to retrieve added item %1." ).arg( item.id() ) );
     return;
   }
 
-  KUrl url( basePath + fileName + ".ics" );
   url.setUser( Settings::self()->username() );
 
   const QString urlStr = url.prettyUrl();
   kDebug() << "Item " << item.id() << " will be put to " << urlStr;
 
-  KCal::ICalFormat formatter;
-  const QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
-
   DavItem davItem;
   davItem.setUrl( urlStr );
-  davItem.setContentType( "text/calendar" );
+  davItem.setContentType( mimeType );
   davItem.setData( rawData );
 
   DavItemCreateJob *job = new DavItemCreateJob( davItem );
@@ -265,22 +289,31 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
     return;
   }
 
-  if ( !item.hasPayload<IncidencePtr>() ) {
+  QByteArray rawData;
+  QString mimeType;
+
+  if ( item.hasPayload<KABC::Addressee>() ) {
+    const KABC::Addressee contact = item.payload<KABC::Addressee>();
+
+    KABC::VCardConverter converter;
+    rawData = converter.createVCard( contact );
+    mimeType = KABC::Addressee::mimeType();
+  } else if ( item.hasPayload<IncidencePtr>() ) {
+    const IncidencePtr ptr = item.payload<IncidencePtr>();
+
+    KCal::ICalFormat formatter;
+    rawData = formatter.toICalString( ptr.get() ).toUtf8();
+    mimeType = "text/calendar";
+  } else {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask( i18n( "Unable to retrieve added item %1." ).arg( item.id() ) );
     return;
   }
 
-  const IncidencePtr ptr = item.payload<IncidencePtr>();
-  KUrl url( item.remoteId() );
-
-  KCal::ICalFormat formatter;
-  const QByteArray rawData = formatter.toICalString( ptr.get() ).toUtf8();
-
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
   davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
-  davItem.setContentType( "text/calendar" );
+  davItem.setContentType( mimeType );
   davItem.setData( rawData );
 
   DavItemModifyJob *job = new DavItemModifyJob( davItem );
@@ -329,8 +362,25 @@ void DavCalendarResource::onRetrieveCollectionsFinished( KJob *job )
       collection.setName( davCollection.displayName() + " (" + davCollection.url() + ")" );
 
     QStringList mimeTypes;
-    mimeTypes << "text/calendar";
-    mimeTypes += mMimeVisitor->allMimeTypes();
+
+    const DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
+    if ( contentTypes & DavCollection::Events )
+      mimeTypes << IncidenceMimeTypeVisitor::eventMimeType();
+
+    if ( contentTypes & DavCollection::Todos )
+      mimeTypes << IncidenceMimeTypeVisitor::todoMimeType();
+
+    if ( contentTypes & DavCollection::Contacts )
+      mimeTypes << KABC::Addressee::mimeType();
+
+    // CalDAV collections can contain events and todos, however in onRetrieveItemsFinished() we
+    // can't figure out what type of items are provided. For this case we'll set the
+    // temporary mime type to 'text/calendar' and fix it in onRetrieveItemFinished() where we can
+    // find out the mime type from the payload. The Akonadi collections from CalDAV need content
+    // mime type 'text/calendar' to temporary store the items.
+    if ( (contentTypes & DavCollection::Events) && (contentTypes & DavCollection::Todos) ) // only valid for CalDAV
+      mimeTypes << QLatin1String( "text/calendar" );
+
     collection.setContentMimeTypes( mimeTypes );
 
     collections << collection;
@@ -346,6 +396,8 @@ void DavCalendarResource::onRetrieveItemsFinished( KJob *job )
     return;
   }
 
+  const Collection collection = job->property( "collection" ).value<Collection>();
+
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
   Akonadi::Item::List items;
@@ -355,10 +407,15 @@ void DavCalendarResource::onRetrieveItemsFinished( KJob *job )
     Akonadi::Item item;
     item.setRemoteId( davItem.url() );
 
-    if ( davItem.contentType().isEmpty() )
+    const QStringList contentMimeTypes = collection.contentMimeTypes();
+    if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) )
+      item.setMimeType( KABC::Addressee::mimeType() );
+    else if ( contentMimeTypes.contains( "text/calendar" ) )
       item.setMimeType( "text/calendar" );
-    else
-      item.setMimeType( davItem.contentType() );
+    else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::eventMimeType() ) )
+      item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
+    else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::todoMimeType() ) )
+      item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
 
     ETagAttribute *attr = item.attribute<ETagAttribute>( Item::AddIfMissing );
     attr->setEtag( davItem.etag() );
@@ -380,15 +437,28 @@ void DavCalendarResource::onRetrieveItemFinished( KJob *job )
 
   const DavItem davItem = fetchJob->item();
 
-  // convert dav data into incidence payload
-  const QString iCalData = QString::fromUtf8( davItem.data() );
-
-  KCal::ICalFormat formatter;
-  const IncidencePtr ptr( formatter.fromString( iCalData ) );
-
-  // update item by setting payload and current etag
   Akonadi::Item item = fetchJob->property( "item" ).value<Akonadi::Item>();
-  item.setPayload( ptr );
+
+  // convert dav data into payload
+  const QString data = QString::fromUtf8( davItem.data() );
+
+  if ( item.mimeType() == KABC::Addressee::mimeType() ) {
+    KABC::VCardConverter converter;
+    const KABC::Addressee contact = converter.parseVCard( davItem.data() );
+
+    item.setPayload<KABC::Addressee>( contact );
+  } else {
+    KCal::ICalFormat formatter;
+    const IncidencePtr ptr( formatter.fromString( data ) );
+
+    item.setPayload<IncidencePtr>( ptr );
+
+    // fix mime type for CalDAV collections
+    ptr->accept( *mMimeVisitor );
+    item.setMimeType( mMimeVisitor->mimeType() );
+  }
+
+  // update etag
   item.attribute<ETagAttribute>( Item::AddIfMissing )->setEtag( davItem.etag() );
 
   itemRetrieved( item );

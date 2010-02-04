@@ -108,7 +108,7 @@ void DavItemsListJob::davJobFinished( KJob *job )
     // check for the valid propstat, without giving up on first error
     {
       const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
-      for( int i = 0; i < propstats.length(); ++i ) {
+      for ( uint i = 0; i < propstats.length(); ++i ) {
         const QDomElement propstatCandidate = propstats.item( i ).toElement();
         const QDomElement statusElement = propstatCandidate.firstChildElement( "status" );
         if ( statusElement.text().contains( "200" ) ) {
@@ -116,12 +116,12 @@ void DavItemsListJob::davJobFinished( KJob *job )
         }
       }
     }
-    
-    if( propstatElement.isNull() ) {
+
+    if ( propstatElement.isNull() ) {
       responseElement = responseElement.nextSiblingElement( "response" );
       continue;
     }
-    
+
     const QDomElement propElement = propstatElement.firstChildElement( "prop" );
 
     // check whether it is a dav collection ...

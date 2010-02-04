@@ -32,6 +32,8 @@ class CaldavProtocol : public DavProtocolBase
     virtual QList<QDomDocument> itemsQueries() const;
     virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
 
+    virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &response ) const;
+
   private:
     QList<QDomDocument> mItemsQueries;
 };
