@@ -31,7 +31,7 @@ class GroupdavProtocol : public DavProtocolBase
     virtual QString collectionsXQuery() const;
     virtual QList<QDomDocument> itemsQueries() const;
 
-    virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &response ) const;
+    virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const;
 
   private:
     QList<QDomDocument> mItemsQueries;

@@ -172,7 +172,7 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
     const QString displayName = displaynameElement.text();
 
     // extract allowed content types
-    const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol()->collectionContentTypes( responseElement );
+    const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol()->collectionContentTypes( propstatElement );
 
     mCollections << DavCollection( url.prettyUrl(), displayName, contentTypes );
 

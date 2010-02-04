@@ -182,34 +182,30 @@ QDomDocument CaldavProtocol::itemsReportQuery( const QStringList &urls ) const
   return document;
 }
 
-DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomElement &response ) const
+DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomElement &propstatElement ) const
 {
   /*
-   * Extract the content type information from a response like the following
-   *   <response xmlns="DAV:">
-   *     <href xmlns="DAV:">/caldav.php/test1.user/home/</href>
-   *     <propstat xmlns="DAV:">
-   *       <prop xmlns="DAV:">
-   *         <C:supported-calendar-component-set xmlns:C="urn:ietf:params:xml:ns:caldav">
-   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VEVENT"/>
-   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VTODO"/>
-   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VJOURNAL"/>
-   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VTIMEZONE"/>
-   *           <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VFREEBUSY"/>
-   *         </C:supported-calendar-component-set>
-   *         <resourcetype xmlns="DAV:">
-   *           <collection xmlns="DAV:"/>
-   *           <C:calendar xmlns:C="urn:ietf:params:xml:ns:caldav"/>
-   *           <C:schedule-calendar xmlns:C="urn:ietf:params:xml:ns:caldav"/>
-   *         </resourcetype>
-   *         <displayname xmlns="DAV:">Test1 User</displayname>
-   *       </prop>
-   *       <status xmlns="DAV:">HTTP/1.1 200 OK</status>
-   *     </propstat>
-   *   </response>
+   * Extract the content type information from a propstat like the following
+   *   <propstat xmlns="DAV:">
+   *     <prop xmlns="DAV:">
+   *       <C:supported-calendar-component-set xmlns:C="urn:ietf:params:xml:ns:caldav">
+   *         <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VEVENT"/>
+   *         <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VTODO"/>
+   *         <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VJOURNAL"/>
+   *         <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VTIMEZONE"/>
+   *         <C:comp xmlns:C="urn:ietf:params:xml:ns:caldav" name="VFREEBUSY"/>
+   *       </C:supported-calendar-component-set>
+   *       <resourcetype xmlns="DAV:">
+   *         <collection xmlns="DAV:"/>
+   *         <C:calendar xmlns:C="urn:ietf:params:xml:ns:caldav"/>
+   *         <C:schedule-calendar xmlns:C="urn:ietf:params:xml:ns:caldav"/>
+   *       </resourcetype>
+   *       <displayname xmlns="DAV:">Test1 User</displayname>
+   *     </prop>
+   *     <status xmlns="DAV:">HTTP/1.1 200 OK</status>
+   *   </propstat>
    */
 
-  const QDomElement propstatElement = DavUtils::firstChildElementNS( response, "DAV:", "propstat" );
   const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
   const QDomElement supportedcomponentElement = DavUtils::firstChildElementNS( propElement, "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
 

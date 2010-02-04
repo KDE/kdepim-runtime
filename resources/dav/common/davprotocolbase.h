@@ -39,9 +39,9 @@ class DavProtocolBase
 
     /**
      * Returns the possible content types for the collection that
-     * is described by the passed PROPFIND @response.
+     * is described by the passed PROPFIND @propstat.
      */
-    virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &response ) const = 0;
+    virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const = 0;
 };
 
 #endif

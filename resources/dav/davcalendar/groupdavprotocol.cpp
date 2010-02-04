@@ -77,28 +77,24 @@ QList<QDomDocument> GroupdavProtocol::itemsQueries() const
   return mItemsQueries;
 }
 
-DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes( const QDomElement &response ) const
+DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes( const QDomElement &propstatElement ) const
 {
   /*
-   * Extract the content type information from a response like the following
+   * Extract the content type information from a propstat like the following
    *
-   *  <response xmlns="DAV:">
-   *    <href>http://localhost:8080/groupdav/Tasks/</href>
-   *    <propstat>
-   *      <status>HTTP/1.1 200 OK</status>
-   *      <prop>
-   *        <displayname>Tasks</displayname>
-   *        <resourcetype>
-   *          <collection/>
-   *          <G:vtodo-collection xmlns:G="http://groupdav.org/"/>
-   *        </resourcetype>
-   *        <getlastmodified>Sat, 30 Jan 2010 17:52:41 -0100</getlastmodified>
-   *      </prop>
-   *    </propstat>
-   *  </response>
+   *  <propstat>
+   *    <status>HTTP/1.1 200 OK</status>
+   *    <prop>
+   *      <displayname>Tasks</displayname>
+   *      <resourcetype>
+   *        <collection/>
+   *        <G:vtodo-collection xmlns:G="http://groupdav.org/"/>
+   *      </resourcetype>
+   *      <getlastmodified>Sat, 30 Jan 2010 17:52:41 -0100</getlastmodified>
+   *    </prop>
+   *  </propstat>
    */
 
-  const QDomElement propstatElement = DavUtils::firstChildElementNS( response, "DAV:", "propstat" );
   const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
   const QDomElement resourcetypeElement = DavUtils::firstChildElementNS( propElement, "DAV:", "resourcetype" );
 
