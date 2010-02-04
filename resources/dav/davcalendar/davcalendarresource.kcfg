@@ -20,6 +20,9 @@
         <choice name="caldav">
           <label>CalDAV</label>
         </choice>
+        <choice name="carddav">
+          <label>CardDAV</label>
+        </choice>
         <choice name="groupdav">
           <label>GroupDAV</label>
         </choice>

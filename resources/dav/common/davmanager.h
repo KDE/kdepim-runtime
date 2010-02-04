@@ -47,6 +47,7 @@ class DavManager
     enum Protocol
     {
       CalDav,
+      CardDav,
       GroupDav
     };
 

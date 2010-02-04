@@ -19,6 +19,7 @@
 #include "davmanager.h"
 
 #include "caldavprotocol.h"
+#include "carddavprotocol.h"
 #include "groupdavprotocol.h"
 
 #include <kio/davjob.h>
@@ -52,6 +53,8 @@ void DavManager::setProtocol( Protocol protocol )
   delete mDavProtocol;
   if ( mProtocol == CalDav )
     mDavProtocol = new CaldavProtocol;
+  else if ( mProtocol == CardDav )
+    mDavProtocol = new CarddavProtocol;
   else
     mDavProtocol = new GroupdavProtocol;
 }

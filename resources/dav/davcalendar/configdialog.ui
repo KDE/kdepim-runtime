@@ -108,6 +108,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QRadioButton" name="carddav">
+        <property name="text">
+         <string>CardDAV</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QRadioButton" name="groupdav">
         <property name="text">
          <string>GroupDAV</string>

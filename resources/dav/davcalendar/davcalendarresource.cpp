@@ -127,6 +127,10 @@ void DavCalendarResource::configure( WId windowId )
         DavManager::self()->setProtocol( DavManager::CalDav );
         emit status( Idle, i18n( "Using CalDAV" ) );
         break;
+      case Settings::carddav:
+        DavManager::self()->setProtocol( DavManager::CardDav );
+        emit status( Idle, i18n( "Using CardDAV" ) );
+        break;
       default:
         emit status( Broken, i18n( "No protocol configured" ) );
         break;
@@ -537,7 +541,8 @@ void DavCalendarResource::doResourceInitialization()
 bool DavCalendarResource::configurationIsValid()
 {
   if ( !(Settings::self()->remoteProtocol() == Settings::groupdav ||
-       Settings::self()->remoteProtocol() == Settings::caldav ) )
+         Settings::self()->remoteProtocol() == Settings::caldav ||
+         Settings::self()->remoteProtocol() == Settings::carddav ) )
     return false;
 
   if ( Settings::self()->remoteUrls().empty() )

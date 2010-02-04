@@ -62,6 +62,7 @@ set( davcalendarresource_SRCS
   ../common/davutils.cpp
 
   caldavprotocol.cpp
+  carddavprotocol.cpp
   configdialog.cpp
   davcalendarresource.cpp
   etagattribute.cpp
