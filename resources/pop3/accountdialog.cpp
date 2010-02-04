@@ -245,7 +245,6 @@ void AccountDialog::loadSettings()
     connect ( requestJob, SIGNAL(result(KJob*)),
               this, SLOT(localFolderRequestJobFinished(KJob*)) );
   }
-  folderRequester->setEnabled( false );
 
   if ( Settings::storePassword() ) {
     mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
@@ -673,7 +672,6 @@ void AccountDialog::slotFontChanged( void )
 void AccountDialog::targetCollectionReceived( Akonadi::Collection::List collections )
 {
   folderRequester->setCollection( collections.first() );
-  folderRequester->setEnabled( true );
 }
 
 void AccountDialog::localFolderRequestJobFinished( KJob *job )
@@ -683,7 +681,6 @@ void AccountDialog::localFolderRequestJobFinished( KJob *job )
     Q_ASSERT( targetCollection.isValid() );
     folderRequester->setCollection( targetCollection );
   }
-  folderRequester->setEnabled( true );
 }
 
 #include "accountdialog.moc"
