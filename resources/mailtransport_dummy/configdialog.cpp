@@ -36,6 +36,13 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   kDebug() << "Sink from settings" << Settings::self()->sink();
 
   connect( this, SIGNAL(okClicked()), this, SLOT(save()) );
+  connect( ui.sink, SIGNAL(collectionChanged(const Akonadi::Collection&) ), this, SLOT(slotCollectionChanged(const Akonadi::Collection&) ) );
+  enableButtonOk(false);
+}
+
+void ConfigDialog::slotCollectionChanged( const Akonadi::Collection& col )
+{
+  enableButtonOk(col.isValid());
 }
 
 void ConfigDialog::save()

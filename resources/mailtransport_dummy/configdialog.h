@@ -34,7 +34,7 @@ class ConfigDialog : public KDialog
 
   private slots:
     void save();
-
+    void slotCollectionChanged(const Akonadi::Collection& );
   private:
     Ui::ConfigDialog ui;
 
