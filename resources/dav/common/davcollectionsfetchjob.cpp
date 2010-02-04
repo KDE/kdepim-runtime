@@ -127,7 +127,7 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
 
     // check for the valid propstat, without giving up on first error
     {
-      const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
+      const QDomNodeList propstats = responseElement.elementsByTagName( "propstat" );
       for ( uint i = 0; i < propstats.length(); ++i ) {
         const QDomElement propstatCandidate = propstats.item( i ).toElement();
         const QDomElement statusElement = propstatCandidate.firstChildElement( "status" );
