@@ -188,7 +188,7 @@ void KJotsMigrator::parseBookXml( QDomElement &me, bool oldBook, const Collectio
   QDomNode n = me.firstChild();
 
   EntityDisplayAttribute *eda = new EntityDisplayAttribute();
-  eda->setIconName("kjotsbook");
+  eda->setIconName( "x-office-address-book" );
   while( !n.isNull() ) {
     QDomElement e = n.toElement(); // try to convert the node to an element.
     if ( !e.isNull() ) {
@@ -238,7 +238,7 @@ void KJotsMigrator::parsePageXml(QDomElement&me , bool oldBook, const Collection
 
   QTextDocument document;
   EntityDisplayAttribute *eda = new EntityDisplayAttribute();
-  eda->setIconName("kjotspage");
+  eda->setIconName( "text-plain" );
   if ( me.tagName() == "KJotsPage" )
   {
     QDomNode n = me.firstChild();
