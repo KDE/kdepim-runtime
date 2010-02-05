@@ -370,7 +370,7 @@ void KResourceAssistant::next()
     d->mConfigWidget->loadSettings( d->mCreationWidget->mResource );
   } else if ( item->widget() == d->mConfigWidget ) {
     d->mConfigWidget->saveSettings( d->mCreationWidget->mResource );
-
+    d->setReadOnly( d->mCreationWidget->mResource->readOnly() );
     const QString resourceName = d->mCreationWidget->mResource->resourceName();
     d->mFolderWidget->mName->setText( resourceName );
   }
