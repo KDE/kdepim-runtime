@@ -14,3 +14,5 @@ set( MIGRATION_AKONADI_SHARED_SOURCES
 add_subdirectory( kres )
 add_subdirectory( kmail )
 add_subdirectory( kaddressbook )
+add_subdirectory( kjots )
+
