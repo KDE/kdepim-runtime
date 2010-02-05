@@ -255,6 +255,7 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
   QTextDocument document;
   EntityDisplayAttribute *eda = new EntityDisplayAttribute();
   eda->setIconName( "text-plain" );
+  bool isRichText = false;
   if ( me.tagName() == "KJotsPage" ) {
     QDomNode n = me.firstChild();
     while ( !n.isNull() ) {
@@ -286,7 +287,10 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
             document.setPlainText( bodyText );
           } else {
             if ( Qt::mightBeRichText( bodyText ) )
-              document.setHtml( bodyText );
+            {
+              isRichText = true;
+              document.setHtml(bodyText);
+            }
             else
               document.setPlainText( bodyText );
           }
@@ -297,6 +301,9 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
       n = n.nextSibling();
     }
   }
+  KMime::Content* c = note->mainBodyPart();
+  c->fromUnicodeString( isRichText ? document.toHtml() : document.toPlainText() );
+
   note->assemble();
 
   Item item;
