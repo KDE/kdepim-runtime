@@ -21,15 +21,14 @@ set( akonotesresource_SRCS
 )
 
 
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/akonotesresource.kcfg org.kde.Akonadi.Notes.Settings)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../maildir/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
 
-kde4_add_ui_files(akonotesresource_SRCS settings.ui)
+kde4_add_ui_files(akonotesresource_SRCS ../maildir/settings.ui)
 
-kde4_add_kcfg_files(akonotesresource_SRCS settings.kcfgc)
-
+kde4_add_kcfg_files(akonotesresource_SRCS ../maildir/settings.kcfgc)
 
 qt4_add_dbus_adaptor(akonotesresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml ../maildir/settings.h Settings
 )
 
 install( FILES akonotesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
