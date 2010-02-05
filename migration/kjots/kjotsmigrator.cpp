@@ -183,7 +183,7 @@ void KJotsMigrator::parseBookXml( QDomElement &me, bool oldBook, const Collectio
 {
   Collection collection;
   collection.setParentCollection( parentCollection );
-  collection.setContentMimeTypes( QStringList( "text/x-akonadi.note" ) );
+  collection.setContentMimeTypes( QStringList( "text/x-vnd.akonadi.note" ) );
 
   QDomNode n = me.firstChild();
 
@@ -293,9 +293,10 @@ void KJotsMigrator::parsePageXml(QDomElement&me , bool oldBook, const Collection
     }
   }
   note->assemble();
+
   Item item;
   item.setParentCollection( parentCollection );
-  item.setMimeType("text/x-akonadi.note");
+  item.setMimeType( "text/x-vnd.akonadi.note" );
   item.setPayload<KMime::Message::Ptr>(note);
   item.addAttribute(eda);
 
