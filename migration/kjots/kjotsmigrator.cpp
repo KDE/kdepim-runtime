@@ -36,6 +36,7 @@
 #include <Akonadi/EntityDisplayAttribute>
 
 #include "entitytreecreatejob.h"
+#include <Akonadi/CollectionFetchJob>
 
 using namespace Akonadi;
 
@@ -81,9 +82,37 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
 
   instance.setName( i18nc( "Default name for resource holding notes", "Local Notes" ) );
 
-  // Get the root collection of this resource.
-  // m_resourceCollection
+  m_resourceIdentifier = instance.identifier();
 
+  CollectionFetchJob *collectionFetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel, this);
+  connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)));
+  connect( collectionFetchJob, SIGNAL(result(KJob*)), SLOT(rootFetchFinished(KJob*)));
+}
+
+void KJotsMigrator::rootFetchFinished(KJob *job)
+{
+  if ( job->error() )
+  {
+    emit message( Error, i18nc( "A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" ).arg( job->errorString() ) );
+  }
+}
+
+void KJotsMigrator::rootCollectionsRecieved(const Akonadi::Collection::List &list)
+{
+  foreach(const Collection &collection, list)
+  {
+    if ( collection.resource() == m_resourceIdentifier )
+    {
+      m_resourceCollection = collection;
+      startMigration();
+      return;
+    }
+  }
+  emit message( Error, i18n( "Couldn't find root collection for resource \"%1\"" ).arg( m_resourceIdentifier ) );
+}
+
+void KJotsMigrator::startMigration()
+{
   const QString &kjotsCfgFile = KStandardDirs::locateLocal( "config", QString( "kjotsrc" ) );
 //   mConfig = new KConfig( kmailCfgFile );
 //   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );

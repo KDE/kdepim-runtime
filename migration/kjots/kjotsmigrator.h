@@ -45,8 +45,10 @@ protected:
   /* reimp */ void migrationFailed(const QString& errorMsg, const Akonadi::AgentInstance& instance = Akonadi::AgentInstance());
 
 private slots:
-  void notesResourceCreated(KJob *job);
-  void bookMigrateJobFinished(KJob *job);
+  void notesResourceCreated( KJob *job );
+  void bookMigrateJobFinished( KJob *job );
+  void rootCollectionsRecieved( const Akonadi::Collection::List &list );
+  void rootFetchFinished( KJob *job );
 
 private:
   void migrateLegacyBook(const QString &filename);
@@ -54,12 +56,14 @@ private:
   void parseBookXml( QDomElement&, bool, const Akonadi::Collection &parentCollection, int depth );
 
   void migrationFinished();
+  void startMigration();
 
 private:
   QDir m_backupDir;
   QDir m_dataDir;
   QStringList m_bookFiles;
   bool unicode;
+  QString m_resourceIdentifier;
 
   Akonadi::Item::List m_items;
   QList<Akonadi::Collection::List> m_collectionLists;
