@@ -43,11 +43,10 @@ using namespace Akonadi;
 KJotsMigrator::KJotsMigrator()
   : KMigratorBase()
 {
-  m_dataDir = QDir( KStandardDirs::locateLocal("data","kjots" ) );
+  m_dataDir = QDir( KStandardDirs::locateLocal( "data", "kjots" ) );
   m_dataDir.setNameFilters( QStringList( "*.book" ) );
 
-  if ( !m_dataDir.exists() )
-  {
+  if ( !m_dataDir.exists() ) {
     return;
   }
 
@@ -65,8 +64,8 @@ KJotsMigrator::~KJotsMigrator()
 
 void KJotsMigrator::migrate()
 {
-  emit message( Info, i18n("Beginning KJots migration...") );
-  createAgentInstance("akonadi_notes_resource", this, SLOT(notesResourceCreated(KJob*)));
+  emit message( Info, i18n( "Beginning KJots migration..." ) );
+  createAgentInstance( "akonadi_notes_resource", this, SLOT(notesResourceCreated(KJob*)) );
 }
 
 void KJotsMigrator::notesResourceCreated( KJob *job )
@@ -84,25 +83,22 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
 
   m_resourceIdentifier = instance.identifier();
 
-  CollectionFetchJob *collectionFetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel, this);
-  connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)));
-  connect( collectionFetchJob, SIGNAL(result(KJob*)), SLOT(rootFetchFinished(KJob*)));
+  CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
+  connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
+  connect( collectionFetchJob, SIGNAL(result(KJob*)), SLOT( rootFetchFinished(KJob*)) );
 }
 
-void KJotsMigrator::rootFetchFinished(KJob *job)
+void KJotsMigrator::rootFetchFinished( KJob *job )
 {
-  if ( job->error() )
-  {
+  if ( job->error() ) {
     emit message( Error, i18nc( "A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" ).arg( job->errorString() ) );
   }
 }
 
-void KJotsMigrator::rootCollectionsRecieved(const Akonadi::Collection::List &list)
+void KJotsMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &list )
 {
-  foreach(const Collection &collection, list)
-  {
-    if ( collection.resource() == m_resourceIdentifier )
-    {
+  foreach( const Collection &collection, list ) {
+    if ( collection.resource() == m_resourceIdentifier ) {
       m_resourceCollection = collection;
       startMigration();
       return;
@@ -118,9 +114,8 @@ void KJotsMigrator::startMigration()
 //   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
 //   mIt = mAccounts.begin();
 
-  m_backupDir = QDir( KStandardDirs::locateLocal("data","kjots/.backup" ) );
-  if ( !m_backupDir.exists() )
-  {
+  m_backupDir = QDir( KStandardDirs::locateLocal( "data", "kjots/.backup" ) );
+  if ( !m_backupDir.exists() ) {
     m_backupDir.mkpath( "." );
   }
 
@@ -131,14 +126,13 @@ void KJotsMigrator::startMigration()
 
 void KJotsMigrator::migrateNext()
 {
-  if ( m_bookFiles.isEmpty() )
-  {
+  if ( m_bookFiles.isEmpty() ) {
     migrationFinished();
     return;
   }
 
   QString bookFileName = m_bookFiles.takeFirst();
-  emit message( Info, i18nc("A migration tool is migrating the file named %1", "Migrating \"%1\"...").arg( bookFileName ) );
+  emit message( Info, i18nc( "A migration tool is migrating the file named %1", "Migrating \"%1\"..." ).arg( bookFileName ) );
   migrateLegacyBook( bookFileName );
 }
 
@@ -148,15 +142,15 @@ void KJotsMigrator::migrationFinished()
 }
 
 // This method taken from KJotsBook::openBook
-void KJotsMigrator::migrateLegacyBook(const QString& fileName)
+void KJotsMigrator::migrateLegacyBook( const QString& fileName )
 {
-  QFile file(fileName);
+  QFile file( fileName );
   QDomDocument doc( "KJots" );
   bool oldBook = false;
 
-  if ( !file.exists() || !file.open(QIODevice::ReadOnly | QIODevice::Text) ) {
-      emit message( Error, i18n("Failed to open file: \"%1\"").arg( fileName ) );
-      return;
+  if ( !file.exists() || !file.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
+    emit message( Error, i18n( "Failed to open file: \"%1\"" ).arg( fileName ) );
+    return;
   }
 
   //Determine if this is a KDE3.5 era book.
@@ -164,45 +158,44 @@ void KJotsMigrator::migrateLegacyBook(const QString& fileName)
   file.reset();
 
   if ( !firstLine.startsWith( "<?xml" ) ) { // krazy:exclude=strings
-      emit message( Info, i18n("%1 is a KDE 3.5 era book").arg( fileName ) );
+    emit message( Info, i18n( "%1 is a KDE 3.5 era book" ).arg( fileName ) );
 
-      QTextStream st(&file);
-      if ( unicode ) {
-          st.setCodec( "UTF-8" );
-      } else {
-          st.setCodec( QTextCodec::codecForLocale () );
-      }
+    QTextStream st( &file );
+    if ( unicode ) {
+      st.setCodec( "UTF-8" );
+    } else {
+      st.setCodec( QTextCodec::codecForLocale() );
+    }
 
-      doc.setContent( st.readAll() );
-      oldBook = true;
+    doc.setContent( st.readAll() );
+    oldBook = true;
   } else {
-      doc.setContent(&file);
+    doc.setContent( &file );
   }
 
   QDomElement docElem = doc.documentElement();
 
   if ( docElem.tagName() ==  "KJots" ) {
     QDomNode n = docElem.firstChild();
-    while( !n.isNull() ) {
+    while ( !n.isNull() ) {
       QDomElement e = n.toElement(); // try to convert the node to an element.
-      if( !e.isNull() && e.tagName() == "KJotsBook" ) {
-        parseBookXml(e, oldBook, m_resourceCollection, 0);
+      if ( !e.isNull() && e.tagName() == "KJotsBook" ) {
+        parseBookXml( e, oldBook, m_resourceCollection, 0 );
       }
       n = n.nextSibling();
     }
   }
-  EntityTreeCreateJob *job = new EntityTreeCreateJob(m_collectionLists, m_items, this);
-  connect(job, SIGNAL(finished(KJob*)), SLOT(bookMigrateJobFinished(KJob*)));
+  EntityTreeCreateJob *job = new EntityTreeCreateJob( m_collectionLists, m_items, this );
+  connect( job, SIGNAL(finished(KJob*)), SLOT(bookMigrateJobFinished(KJob*)) );
   m_collectionLists.clear();
   m_items.clear();
 }
 
-void KJotsMigrator::bookMigrateJobFinished(KJob* job)
+void KJotsMigrator::bookMigrateJobFinished( KJob* job )
 {
-  if (job->error())
-  {
+  if ( job->error() ) {
     QString filename;
-    emit message(Error, i18n("Error migrating the book \"%1\"").arg(filename));
+    emit message( Error, i18n( "Error migrating the book \"%1\"" ).arg( filename ) );
   }
   migrateNext();
 }
@@ -218,48 +211,42 @@ void KJotsMigrator::parseBookXml( QDomElement &me, bool oldBook, const Collectio
 
   EntityDisplayAttribute *eda = new EntityDisplayAttribute();
   eda->setIconName( "x-office-address-book" );
-  while( !n.isNull() ) {
+  while ( !n.isNull() ) {
     QDomElement e = n.toElement(); // try to convert the node to an element.
     if ( !e.isNull() ) {
 
-      if ( e.tagName() == "Title" )
-      {
-          collection.setName( e.text() );
-      }
-      else
-      if ( e.tagName() == "ID" )
-      {
-        // Legacy ID attribute?
+      if ( e.tagName() == "Title" ) {
+        collection.setName( e.text() );
+      } else
+        if ( e.tagName() == "ID" ) {
+          // Legacy ID attribute?
           // setId(e.text().toULongLong());
-      }
-      else
-      if ( e.tagName() == "Color" )
-      {
-        QColor color( e.text() );
-        eda->setBackgroundColor( color );
-      }
+        } else
+          if ( e.tagName() == "Color" ) {
+            QColor color( e.text() );
+            eda->setBackgroundColor( color );
+          }
       if ( e.tagName() == "KJotsPage" ) {
-        parsePageXml(e, oldBook, collection );
-      }
-      else if ( e.tagName() == "KJotsBook" ) {
-        parseBookXml(e, oldBook, collection, depth + 1 );
+        parsePageXml( e, oldBook, collection );
+      } else if ( e.tagName() == "KJotsBook" ) {
+        parseBookXml( e, oldBook, collection, depth + 1 );
       } else {
         // Fatal error. Continue.
       }
     }
     n = n.nextSibling();
   }
-  collection.addAttribute(eda);
+  collection.addAttribute( eda );
 
-  if (m_collectionLists.size() == depth)
-    m_collectionLists.append(Collection::List());
+  if ( m_collectionLists.size() == depth )
+    m_collectionLists.append( Collection::List() );
 
-  Q_ASSERT(m_collectionLists.size() < depth);
-  m_collectionLists[depth].append(collection);
+  Q_ASSERT( m_collectionLists.size() < depth );
+  m_collectionLists[depth].append( collection );
 
 }
 
-void KJotsMigrator::parsePageXml(QDomElement&me , bool oldBook, const Collection &parentCollection )
+void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collection &parentCollection )
 {
   // serialize document to kmime message and append to items.
   KMime::Message::Ptr note = KMime::Message::Ptr( new KMime::Message() );
@@ -268,53 +255,42 @@ void KJotsMigrator::parsePageXml(QDomElement&me , bool oldBook, const Collection
   QTextDocument document;
   EntityDisplayAttribute *eda = new EntityDisplayAttribute();
   eda->setIconName( "text-plain" );
-  if ( me.tagName() == "KJotsPage" )
-  {
+  if ( me.tagName() == "KJotsPage" ) {
     QDomNode n = me.firstChild();
-    while( !n.isNull() )
-    {
+    while ( !n.isNull() ) {
       // Titles and Ids?
       QDomElement e = n.toElement();
-      if ( !e.isNull() )
-      {
-        if ( e.tagName() == "Title" )
-        {
-            note->subject()->fromUnicodeString( e.text(), encoding );
-        }
-        else
-        if ( e.tagName() == "ID" )
-        {
-          // Legacy ID attribute?
+      if ( !e.isNull() ) {
+        if ( e.tagName() == "Title" ) {
+          note->subject()->fromUnicodeString( e.text(), encoding );
+        } else
+          if ( e.tagName() == "ID" ) {
+            // Legacy ID attribute?
             // setId(e.text().toULongLong());
-        }
-        else
-        if ( e.tagName() == "Color" )
-        {
-          QColor color( e.text() );
-          eda->setBackgroundColor( color );
-        }
-        if ( e.tagName() == "Text" )
-        {
+          } else
+            if ( e.tagName() == "Color" ) {
+              QColor color( e.text() );
+              eda->setBackgroundColor( color );
+            }
+        if ( e.tagName() == "Text" ) {
           QString bodyText = e.text();
 
           //This is for 3.5 era book support. Remove when appropriate.
           if ( e.hasAttribute( "fixed" ) ) {
-              bodyText.replace("]]&gt;", "]]>");
+            bodyText.replace( "]]&gt;", "]]>" );
           }
 
           if ( oldBook ) {
-              // Ensure that whitespace is reproduced as in kjots of kde3.5.
-              // https://bugs.kde.org/show_bug.cgi?id=175100
-              document.setPlainText(bodyText);
+            // Ensure that whitespace is reproduced as in kjots of kde3.5.
+            // https://bugs.kde.org/show_bug.cgi?id=175100
+            document.setPlainText( bodyText );
           } else {
             if ( Qt::mightBeRichText( bodyText ) )
-              document.setHtml(bodyText);
+              document.setHtml( bodyText );
             else
-              document.setPlainText(bodyText);
+              document.setPlainText( bodyText );
           }
-        }
-        else
-        {
+        } else {
           // Fatal error move on.
         }
       }
@@ -326,13 +302,13 @@ void KJotsMigrator::parsePageXml(QDomElement&me , bool oldBook, const Collection
   Item item;
   item.setParentCollection( parentCollection );
   item.setMimeType( "text/x-vnd.akonadi.note" );
-  item.setPayload<KMime::Message::Ptr>(note);
-  item.addAttribute(eda);
+  item.setPayload<KMime::Message::Ptr>( note );
+  item.addAttribute( eda );
 
-  m_items.append(item);
+  m_items.append( item );
 }
 
-void KJotsMigrator::migrationFailed(const QString& errorMsg, const Akonadi::AgentInstance& instance)
+void KJotsMigrator::migrationFailed( const QString& errorMsg, const Akonadi::AgentInstance& instance )
 {
 
 }

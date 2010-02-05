@@ -42,7 +42,7 @@ public:
   /* reimp */ void migrateNext();
 
 protected:
-  /* reimp */ void migrationFailed(const QString& errorMsg, const Akonadi::AgentInstance& instance = Akonadi::AgentInstance());
+  /* reimp */ void migrationFailed( const QString& errorMsg, const Akonadi::AgentInstance& instance = Akonadi::AgentInstance() );
 
 private slots:
   void notesResourceCreated( KJob *job );
@@ -51,7 +51,7 @@ private slots:
   void rootFetchFinished( KJob *job );
 
 private:
-  void migrateLegacyBook(const QString &filename);
+  void migrateLegacyBook( const QString &filename );
   void parsePageXml( QDomElement&, bool, const Akonadi::Collection &parentCollection );
   void parseBookXml( QDomElement&, bool, const Akonadi::Collection &parentCollection, int depth );
 

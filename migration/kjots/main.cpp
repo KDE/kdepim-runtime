@@ -47,8 +47,8 @@ int main( int argc, char **argv )
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
-  options.add( "interactive", ki18n( "Show reporting dialog") );
-  options.add( "interactive-on-change", ki18n("Show report only if changes were made") );
+  options.add( "interactive", ki18n( "Show reporting dialog" ) );
+  options.add( "interactive-on-change", ki18n( "Show report only if changes were made" ) );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
