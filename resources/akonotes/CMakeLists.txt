@@ -39,6 +39,3 @@ target_link_libraries(akonadi_akonotes_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDE
 
 install(TARGETS akonadi_akonotes_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml
-        DESTINATION ${KDE4_DBUS_INTERFACES_DIR})
-
