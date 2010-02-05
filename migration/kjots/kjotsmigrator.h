@@ -49,6 +49,7 @@ private slots:
   void bookMigrateJobFinished( KJob *job );
   void rootCollectionsRecieved( const Akonadi::Collection::List &list );
   void rootFetchFinished( KJob *job );
+  void syncDone(KJob *job);
 
 private:
   void migrateLegacyBook( const QString &filename );

@@ -34,9 +34,12 @@
 #include <akonadi/item.h>
 #include <Akonadi/Collection>
 #include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/CollectionFetchJob>
+#include <akonadi/resourcesynchronizationjob.h>
+
+#include "maildirsettings.h"
 
 #include "entitytreecreatejob.h"
-#include <Akonadi/CollectionFetchJob>
 
 using namespace Akonadi;
 
@@ -81,7 +84,28 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
 
   instance.setName( i18nc( "Default name for resource holding notes", "Local Notes" ) );
 
+  OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
+    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+    "/Settings", QDBusConnection::sessionBus(), this );
+
+  if (!iface->isValid() ) {
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    return;
+  }
+
+  QDBusPendingReply<void> response = iface->setPath( KStandardDirs::locateLocal( "data", "kjots" ) );
+  kDebug() << response.error().message() << KStandardDirs::locateLocal( "data", "kjots" );
+  instance.reconfigure();
   m_resourceIdentifier = instance.identifier();
+
+  ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob(instance, this);
+  connect( syncJob, SIGNAL(result(KJob*)), SLOT(syncDone(KJob*)));
+  syncJob->start();
+}
+
+void KJotsMigrator::syncDone(KJob *job)
+{
+  emit message( Info, QString( "Instance \"%1\" syncronized" ).arg( m_resourceIdentifier ) );
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
   connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
