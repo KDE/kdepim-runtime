@@ -2,6 +2,7 @@
 Name=VCard File
 Name[ar]=ملف vCard
 Name[ca]=Fitxer VCard
+Name[ca@valencia]=Fitxer VCard
 Name[cs]=Soubor s vizitkou
 Name[da]=VCard-fil
 Name[de]=VCard-Datei
@@ -39,6 +40,7 @@ Name[zh_TW]=VCard 檔案
 Comment=Loads data from a VCard file
 Comment[ar]=تحمل البيانات من ملف VCards
 Comment[ca]=Carrega dades des d'un fitxer VCard
+Comment[ca@valencia]=Carrega dades des d'un fitxer VCard
 Comment[cs]=Načítá data ze souboru vizitek (vCard)
 Comment[da]=Indlæser data fra en VCard-fil
 Comment[de]=Daten werden aus einer Visitenkarten-Datei geladen

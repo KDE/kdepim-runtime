@@ -2,6 +2,7 @@
 Name=ICal Calendar File
 Name[ar]=ملف تقويم ICal
 Name[ca]=Fitxer de calendari ICal
+Name[ca@valencia]=Fitxer de calendari ICal
 Name[cs]=Soubor s iCal kalendářem
 Name[da]=iCal-kalenderfil
 Name[de]=ICal-Kalenderdatei
@@ -39,6 +40,7 @@ Name[zh_TW]=ICal 行事曆檔案
 Comment=Loads data from an iCal file
 Comment[ar]=تحميل البيانات من ملف ICal
 Comment[ca]=Carregar dades des d'un fitxer iCal
+Comment[ca@valencia]=Carregar dades des d'un fitxer iCal
 Comment[cs]=Načítá data z iCal souboru
 Comment[da]=Indlæser data fra en iCal-fil
 Comment[de]=Daten werden aus einer lokalen iCal-Datei geladen

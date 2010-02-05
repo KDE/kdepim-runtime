@@ -2,6 +2,7 @@
 Name=Akonadi Address Books
 Name[ar]=دفتر عناوين اكوندا
 Name[ca]=Llibreta d'adreces de l'Akonadi
+Name[ca@valencia]=Llibreta d'adreces de l'Akonadi
 Name[cs]=Kniha adres Akonadi
 Name[da]=Akonadi-adressebøger
 Name[de]=Akonadi-Adressbücher
@@ -39,6 +40,7 @@ Name[zh_TW]=Akonadi 通訊錄
 Comment=Provides access to contacts stored in Akonadi address book folders
 Comment[ar]=يوفر الدخول لجهات الإتصال المحفوظة في مجلد دفتر عناوين اكوندا
 Comment[ca]=Proporciona l'accés als contactes emmagatzemats en carpetes de llibreta d'adreces de l'Akonadi
+Comment[ca@valencia]=Proporciona l'accés als contactes emmagatzemats en carpetes de llibreta d'adreces de l'Akonadi
 Comment[da]=Giver adgang til kontakter lagret i Akonadi adressebogs-mapper
 Comment[de]=Ermöglicht den Zugriff auf Kontakte, die in Akonadi-Adressbuch-Ordnern gespeichert sind.
 Comment[el]=Προσφέρει πρόσβαση σε επαφές αποθηκευμένες σε φακέλους βιβλίων διευθύνσεων του Akonadi

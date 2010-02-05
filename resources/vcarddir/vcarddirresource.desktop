@@ -2,6 +2,7 @@
 Name=VCard Directory
 Name[ar]=دليل VCard
 Name[ca]=Directori VCard
+Name[ca@valencia]=Directori VCard
 Name[cs]=Adresář vizitek
 Name[da]=VCard-mappe
 Name[de]=VCard-Ordner
@@ -39,6 +40,7 @@ Name[zh_TW]=VCard 目錄
 Comment=Loads data from a directory with VCards
 Comment[ar]=تحمل البيانات من الدليل مع VCards
 Comment[ca]=Carrega dades des d'un directori amb VCards
+Comment[ca@valencia]=Carrega dades des d'un directori amb VCards
 Comment[cs]=Načítá data z adresáře vizitek (vCard)
 Comment[da]=Indlæser data fra en mappe med VCards
 Comment[de]=Daten werden aus einem Ordner mit Visitenkarten-Dateien geladen
