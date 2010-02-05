@@ -24,6 +24,7 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/imapquotaattribute.cpp
 )
 
+add_subdirectory( akonotes )
 add_subdirectory( birthdays )
 add_subdirectory( contacts )
 add_subdirectory( ical )

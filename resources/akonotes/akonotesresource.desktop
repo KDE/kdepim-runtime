@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=AkoNotes
+Name[x-test]=xxAkoNotesxx
+Comment=Loads a notes heirarchy from a local maildir folder
+Comment[x-test]=xxLoads a notes heirarchy from a local maildir folderxx
+Type=AkonadiResource
+Exec=akonadi_akonotes_resource
+Icon=view-pim-notes
+
+X-Akonadi-MimeTypes=text/x-vnd.akonadi.note
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_akonotes_resource
