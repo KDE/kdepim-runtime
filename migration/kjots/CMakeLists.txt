@@ -11,7 +11,6 @@ include_directories(
 )
 
 macro(add_resource_iface _kcfgFile _ifaceName _className)
-  message("CaLLED" ${_kcfgFile})
   kcfg_generate_dbus_interface(${kdepim-runtime_SOURCE_DIR}/resources/${_kcfgFile} ${_ifaceName})
   string(TOLOWER ${_className} _codeFile)
   set_source_files_properties( ${CMAKE_CURRENT_BINARY_DIR}/${_ifaceName}.xml PROPERTIES INCLUDE "metatype.h")
