@@ -1,6 +1,4 @@
 
-add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
-
 add_subdirectory( tests )
 
 #add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5300)
@@ -21,7 +19,6 @@ set(kdepim-copy_LIB_SRCS
 kde4_add_library(kdepim-copy SHARED ${kdepim-copy_LIB_SRCS})
 
 target_link_libraries(kdepim-copy
-  ${KDE4_KDE3SUPPORT_LIBS}
   ${KDE4_KPARTS_LIBS}
   ${KDEPIMLIBS_KCAL_LIBS}
 )

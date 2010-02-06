@@ -33,8 +33,9 @@ using namespace KCal;
 #include <KHBox>
 #include <KLocale>
 
-#include <Q3ButtonGroup>
+#include <QButtonGroup>
 #include <QGridLayout>
+#include <QGroupBox>
 #include <QLabel>
 #include <QPushButton>
 #include <QRadioButton>
@@ -157,17 +158,17 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
 #else
     mDiffBut = 0;
 #endif
-    mBg = new Q3ButtonGroup( 1, Qt::Horizontal,
-                             i18nc( "@title:group", "Sync Preferences" ),
-                             topFrame );
-    mBg->setToolTip( i18nc( "@info:tooltip", "Sync Preferences" ) );
-    mBg->setWhatsThis( i18nc( "@info:whatsthis", "Sync Preferences" ) );
-    topLayout->addWidget( mBg, iii, 0, 1, 3 );
+    QGroupBox *groupBox = new QGroupBox( i18nc( "@title:group", "Sync Preferences" ), topFrame );
+    QVBoxLayout *groupBoxLayout = new QVBoxLayout;
+    mBg = new QButtonGroup( topFrame );
+    groupBox->setToolTip( i18nc( "@info:tooltip", "Sync Preferences" ) );
+    groupBox->setWhatsThis( i18nc( "@info:whatsthis", "Sync Preferences" ) );
+    topLayout->addWidget( groupBox, iii, 0, 1, 3 );
     ++iii;
 
     QRadioButton *locRad = new QRadioButton(
-      i18nc( "@option:radio", "Take local copy on conflict" ), mBg );
-    mBg->insert( locRad, KIncidenceChooser::local );
+      i18nc( "@option:radio", "Take local copy on conflict" ) );
+    mBg->addButton( locRad, KIncidenceChooser::local );
     locRad->setToolTip(
       i18nc( "@info:tooltip", "Take local copy of the incidence on conflicts" ) );
     locRad->setWhatsThis(
@@ -175,10 +176,11 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
              "When a conflict is detected between a local copy of an incidence "
              "and a remote incidence on the server, this option enforces using "
              "the local copy." ) );
+    groupBoxLayout->addWidget( locRad );
 
     QRadioButton *remRad = new QRadioButton(
-      i18nc( "@option:radio", "Take remote copy on conflict" ), mBg );
-    mBg->insert( remRad, KIncidenceChooser::remote );
+      i18nc( "@option:radio", "Take remote copy on conflict" ) );
+    mBg->addButton( remRad, KIncidenceChooser::remote );
     remRad->setToolTip(
       i18nc( "@info:tooltip", "Take remote copy of the incidence on conflicts" ) );
     remRad->setWhatsThis(
@@ -186,10 +188,11 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
              "When a conflict is detected between a local copy of an incidence "
              "and a remote incidence on the server, this option enforces using "
              "the remote copy." ) );
+    groupBoxLayout->addWidget( remRad );
 
     QRadioButton *newRad = new QRadioButton(
-      i18nc( "@option:radio", "Take newest incidence on conflict" ), mBg );
-    mBg->insert( newRad, KIncidenceChooser::newest );
+      i18nc( "@option:radio", "Take newest incidence on conflict" ) );
+    mBg->addButton( newRad, KIncidenceChooser::newest );
     newRad->setToolTip(
       i18nc( "@info:tooltip", "Take newest version of the incidence on conflicts" ) );
     newRad->setWhatsThis(
@@ -197,10 +200,11 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
              "When a conflict is detected between a local copy of an incidence "
              "and a remote incidence on the server, this option enforces using "
              "the newest version available." ) );
+    groupBoxLayout->addWidget( newRad );
 
     QRadioButton *askRad = new QRadioButton(
-      i18nc( "@option:radio", "Ask for every conflict" ), mBg );
-    mBg->insert( askRad, KIncidenceChooser::ask );
+      i18nc( "@option:radio", "Ask for every conflict" ) );
+    mBg->addButton( askRad, KIncidenceChooser::ask );
     askRad->setToolTip(
       i18nc( "@info:tooltip", "Ask for every incidence conflict" ) );
     askRad->setWhatsThis(
@@ -208,10 +212,11 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
              "When a conflict is detected between a local copy of an incidence "
              "and a remote incidence on the server, this option says to ask "
              "the user which version they want to keep." ) );
+    groupBoxLayout->addWidget( askRad );
 
     QRadioButton *bothRad = new QRadioButton(
-      i18nc( "@option:radio", "Take both on conflict" ), mBg );
-    mBg->insert( bothRad, KIncidenceChooser::both );
+      i18nc( "@option:radio", "Take both on conflict" ) );
+    mBg->addButton( bothRad, KIncidenceChooser::both );
     bothRad->setToolTip(
       i18nc( "@info:tooltip", "Take both incidences on conflict" ) );
     bothRad->setWhatsThis(
@@ -219,8 +224,10 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
              "When a conflict is detected between a local copy of an incidence "
              "and a remote incidence on the server, this option says to keep "
              "both versions of the incidence." ) );
+    groupBoxLayout->addWidget( bothRad );
 
-    mBg->setButton( chooseMode );
+    mBg->button( chooseMode )->setChecked( true );
+    groupBox->setLayout( groupBoxLayout );
 
     QPushButton *applyBut = new QPushButton(
       i18nc( "@action:button", "Apply preference to all conflicts of this sync" ), topFrame );
@@ -285,7 +292,7 @@ Incidence *KIncidenceChooser::getIncidence( )
 
 void KIncidenceChooser::setSyncMode()
 {
-  chooseMode = mBg->selectedId();
+  chooseMode = mBg->checkedId();
   if ( chooseMode != KIncidenceChooser::ask ) {
     KDialog::accept();
   }

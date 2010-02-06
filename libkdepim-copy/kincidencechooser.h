@@ -35,7 +35,7 @@ namespace KCal {
 }
 using namespace KCal;
 
-class Q3ButtonGroup;
+class QButtonGroup;
 class QLabel;
 
 namespace KPIM {
@@ -84,7 +84,7 @@ class KDEPIM_COPY_EXPORT KIncidenceChooser : public KDialog
     KDialog *mTbL, *mTbN;
     Incidence *mSelIncidence;
     Incidence *mInc1, *mInc2;
-    Q3ButtonGroup *mBg;
+    QButtonGroup *mBg;
     QPushButton *mDiffBut, *mShowDetails1, *mShowDetails2;
     QLabel *mInc1lab, *mInc2lab, *mInc1Sumlab, *mInc2Sumlab, *mMod1lab, *mMod2lab;
 };
