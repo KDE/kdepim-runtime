@@ -26,6 +26,7 @@ add_resource_iface( maildir/maildirresource.kcfg
 kde4_add_executable( kjotsmigrator ${kjotsmigrator_SRCS} )
 
 target_link_libraries(kjotsmigrator
+  ${QT_QTXML_LIBRARY}
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEPIMLIBS_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
