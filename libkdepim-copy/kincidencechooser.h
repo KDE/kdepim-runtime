@@ -25,16 +25,18 @@
 #define KDEPIM_KINCIDENCECHOOSER_H
 
 #include "libkdepim-copy_export.h"
-#include "htmldiffalgodisplay.h"
 #include "calendardiffalgo.h"
+#include "htmldiffalgodisplay.h"
 
 #include <KDialog>
 
 namespace KCal {
   class Incidence;
 }
-class QLabel;
+using namespace KCal;
+
 class Q3ButtonGroup;
+class QLabel;
 
 namespace KPIM {
 
@@ -58,8 +60,8 @@ class KDEPIM_COPY_EXPORT KIncidenceChooser : public KDialog
     /** Initialize dialog and pages */
     KIncidenceChooser( QWidget *parent=0 );
     ~KIncidenceChooser();
-    void setIncidence( KCal::Incidence *, KCal::Incidence * );
-    KCal::Incidence *getIncidence();
+    void setIncidence( Incidence *, Incidence * );
+    Incidence *getIncidence();
     static int chooseMode;
 
   public Q_SLOTS:
@@ -77,14 +79,14 @@ class KDEPIM_COPY_EXPORT KIncidenceChooser : public KDialog
     void detailsDialogClosed();
 
   private:
-    KPIM::HTMLDiffAlgoDisplay *mDisplayDiff;
-    KPIM::CalendarDiffAlgo *diff;
+    HTMLDiffAlgoDisplay *mDisplayDiff;
+    CalendarDiffAlgo *diff;
     KDialog *mTbL, *mTbN;
-    KCal::Incidence *choosedIncidence;
-    KCal::Incidence *mInc1, *mInc2;
+    Incidence *mSelIncidence;
+    Incidence *mInc1, *mInc2;
     Q3ButtonGroup *mBg;
-    QPushButton *diffBut,*showDetails1,*showDetails2;
-    QLabel *mInc1lab, *mInc2lab,* mInc1Sumlab, *mInc2Sumlab,*mMod1lab,*mMod2lab;
+    QPushButton *mDiffBut, *mShowDetails1, *mShowDetails2;
+    QLabel *mInc1lab, *mInc2lab, *mInc1Sumlab, *mInc2Sumlab, *mMod1lab, *mMod2lab;
 };
 
 }

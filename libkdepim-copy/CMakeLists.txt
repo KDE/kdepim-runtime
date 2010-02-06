@@ -1,6 +1,8 @@
 
 add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
+add_subdirectory( tests )
+
 #add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5300)
 
 ########### next target ###############

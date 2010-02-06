@@ -2,6 +2,7 @@
   This file is part of libkdepim.
 
   Copyright (c) 2004 Lutz Rogowski <rogowski@kde.org>
+  Copyright (c) 2009 Allen Winter <winter@kde.org>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -23,25 +24,20 @@
 */
 
 #include "kincidencechooser.h"
+using namespace KPIM;
 
 #include <kcal/incidence.h>
 #include <kcal/incidenceformatter.h>
+using namespace KCal;
 
-#include <KGlobal>
 #include <KHBox>
 #include <KLocale>
 
-#include <QApplication>
+#include <Q3ButtonGroup>
 #include <QGridLayout>
 #include <QLabel>
-#include <QLayout>
 #include <QPushButton>
 #include <QRadioButton>
-#include <QTextBrowser>
-#include <Q3ButtonGroup>
-#include <Q3ScrollView>
-
-using namespace KPIM;
 
 int KIncidenceChooser::chooseMode = KIncidenceChooser::ask ;
 
@@ -55,89 +51,193 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
     topLayout->setSpacing( 3 );
 
     int iii = 0;
-    setWindowTitle( i18n( "Conflict Detected" ) );
+    setWindowTitle( i18nc( "@title:window", "Conflict Detected" ) );
     QLabel *lab;
     lab = new QLabel(
-      i18n( "<qt>A conflict was detected. This probably means someone edited "
-            "the same entry on the server while you changed it locally."
-            "<br/>NOTE: You have to check mail again to apply your changes "
-            "to the server.</qt>" ), topFrame );
+      i18nc( "@info",
+             "A conflict was detected. This probably means someone edited "
+             "the same incidence on the server while you changed it locally."
+             "<nl/><note>You have to check mail again to apply your changes "
+             "to the server.</note>" ), topFrame );
     lab->setWordWrap( true );
     topLayout->addWidget( lab, iii, 0, 1, 3 );
     ++iii;
     KHBox *b_box = new KHBox( topFrame );
     topLayout->addWidget( b_box, iii, 0, 1, 3 );
     ++iii;
-    QPushButton *button = new QPushButton( i18n( "Take Local" ), b_box );
-    connect ( button, SIGNAL( clicked()), this, SLOT (takeIncidence1() ) );
-    button = new QPushButton( i18n( "Take New" ), b_box );
-    connect ( button, SIGNAL( clicked()), this, SLOT (takeIncidence2() ) );
-    button = new QPushButton( i18n( "Take Both" ), b_box );
-    connect ( button, SIGNAL( clicked()), this, SLOT (takeBoth() ) );
+    QPushButton *locBut = new QPushButton( i18nc( "@action:button", "Take Local" ), b_box );
+    connect( locBut, SIGNAL(clicked()), this, SLOT(takeIncidence1()) );
+    locBut->setToolTip(
+      i18nc( "@info:tooltip", "Take your local copy of the incidence" ) );
+    locBut->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "A conflict was detected between your local copy of the incidence "
+             "and the remote incidence on the server. Press the \"Take Local\" "
+             "button to make sure your local copy is used." ) );
+
+    QPushButton *remBut = new QPushButton( i18nc( "@action:button", "Take New" ), b_box );
+    connect( remBut, SIGNAL(clicked()), this, SLOT(takeIncidence2()) );
+    remBut->setToolTip(
+      i18nc( "@info:tooltip", "Take the server copy of the incidence" ) );
+    remBut->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "A conflict was detected between your local copy of the incidence "
+             "and the remote incidence on the server. Press the \"Take New\" "
+             "button to use the server copy, thereby overwriting your local copy" ) );
+
+    QPushButton *bothBut = new QPushButton( i18nc( "@action:button", "Take Both" ), b_box );
+    connect( bothBut, SIGNAL(clicked()), this, SLOT(takeBoth()) );
+    bothBut->setToolTip(
+      i18nc( "@info:tooltip", "Take both copies of the incidence" ) );
+    bothBut->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "A conflict was detected between your local copy of the incidence "
+             "and the remote incidence on the server. Press the \"Take Both\" "
+             "button to keep both the local and the server copies." ) );
+
     topLayout->setSpacing( spacingHint() );
     topLayout->setMargin( marginHint() );
-    // text is not translated, because text has to be set later
-    mInc1lab = new QLabel ( i18n( "Local incidence" ), topFrame );
+
+    mInc1lab = new QLabel( i18nc( "@label", "Local incidence" ), topFrame );
     topLayout->addWidget( mInc1lab, iii, 0 );
-    mInc1Sumlab = new QLabel ( i18n( "Local incidence summary" ), topFrame );
+
+    mInc1Sumlab = new QLabel( i18nc( "@label", "Local incidence summary" ), topFrame );
     topLayout->addWidget( mInc1Sumlab, iii, 1, 1, 2 );
     ++iii;
-    topLayout->addWidget( new QLabel ( i18n( "Last modified:" ), topFrame ), iii, 0 );
-    mMod1lab = new QLabel ( i18n("Set Last modified"), topFrame );
+
+    topLayout->addWidget( new QLabel( i18nc( "@label", "Last modified:" ), topFrame ), iii, 0 );
+
+    mMod1lab = new QLabel( i18nc( "@label", "Set Last modified" ), topFrame );
     topLayout->addWidget( mMod1lab, iii, 1 );
-    showDetails1 = new QPushButton( i18n( "Show Details" ), topFrame );
-    connect ( showDetails1, SIGNAL( clicked()), this, SLOT (showIncidence1() ) );
-    topLayout->addWidget( showDetails1, iii, 2 );
+
+    mShowDetails1 = new QPushButton( i18nc( "@action:button", "Show Details" ), topFrame );
+    mShowDetails1->setToolTip(
+      i18nc( "@info:tooltip", "Hide/Show incidence details" ) );
+    mShowDetails1->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "Press this button to toggle the incidence details display." ) );
+    connect( mShowDetails1, SIGNAL(clicked()), this, SLOT(showIncidence1()) );
+    topLayout->addWidget( mShowDetails1, iii, 2 );
     ++iii;
 
-    mInc2lab = new QLabel ( i18n("Local incidence"), topFrame );
+    mInc2lab = new QLabel( i18nc( "@label", "Local incidence" ), topFrame );
     topLayout->addWidget( mInc2lab, iii, 0 );
-    mInc2Sumlab = new QLabel ( i18n("Local incidence summary"), topFrame );
+
+    mInc2Sumlab = new QLabel( i18nc( "@label", "Local incidence summary" ), topFrame );
     topLayout->addWidget( mInc2Sumlab, iii, 1, 1, 2 );
     ++iii;
-    topLayout->addWidget( new QLabel ( i18n( "Last modified:" ), topFrame ), iii, 0 );
-    mMod2lab = new QLabel ( i18n("Set Last modified"), topFrame );
+
+    topLayout->addWidget( new QLabel( i18nc( "@label", "Last modified:" ), topFrame ), iii, 0 );
+
+    mMod2lab = new QLabel( i18nc( "@label", "Set Last modified" ), topFrame );
     topLayout->addWidget( mMod2lab, iii, 1 );
-    showDetails2 = new QPushButton( i18n( "Show Details" ), topFrame );
-    connect ( showDetails2, SIGNAL( clicked()), this, SLOT (showIncidence2() ) );
-    topLayout->addWidget( showDetails2, iii, 2 );
+
+    mShowDetails2 = new QPushButton( i18nc( "@action:button", "Show Details" ), topFrame );
+    mShowDetails2->setToolTip(
+      i18nc( "@info:tooltip", "Hide/Show incidence details" ) );
+    mShowDetails2->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "Press this button to toggle the incidence details display." ) );
+    connect( mShowDetails2, SIGNAL(clicked()), this, SLOT(showIncidence2()) );
+    topLayout->addWidget( mShowDetails2, iii, 2 );
     ++iii;
     //
 #if 0
     // commented out for now, because the diff code has too many bugs
-    diffBut = new QPushButton( i18n( "Show Differences" ), topFrame );
-    connect ( diffBut, SIGNAL( clicked()), this, SLOT ( showDiff() ) );
-    topLayout->addWidget( cdiffBut, iii, 0, 1, 3 );
+    mDiffBut = new QPushButton( i18nc( "@action:button", "Show Differences" ), topFrame );
+    mDiffBut->setToolTip(
+      i18nc( "@info:tooltip", "Show the differences between the two incidences" ) );
+    mDiffBut->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "Press the \"Show Differences\" button to see the specific "
+             "differences between the incidences which are in conflict." ) );
+    connect( mDiffBut, SIGNAL(clicked()), this, SLOT(showDiff()) );
+    topLayout->addWidget( mDiffBut, iii, 0, 1, 3 );
     ++iii;
 #else
-    diffBut = 0;
+    mDiffBut = 0;
 #endif
-    mBg = new Q3ButtonGroup ( 1, Qt::Horizontal, i18n( "Sync Preferences" ), topFrame );
+    mBg = new Q3ButtonGroup( 1, Qt::Horizontal,
+                             i18nc( "@title:group", "Sync Preferences" ),
+                             topFrame );
+    mBg->setToolTip( i18nc( "@info:tooltip", "Sync Preferences" ) );
+    mBg->setWhatsThis( i18nc( "@info:whatsthis", "Sync Preferences" ) );
     topLayout->addWidget( mBg, iii, 0, 1, 3 );
     ++iii;
-    mBg->insert(
-      new QRadioButton ( i18n( "Take local entry on conflict" ), mBg ),
-      KIncidenceChooser::local );
-    mBg->insert(
-      new QRadioButton ( i18n( "Take new (remote) entry on conflict" ), mBg ),
-      KIncidenceChooser::remote );
-    mBg->insert(
-      new QRadioButton ( i18n( "Take newest entry on conflict" ), mBg ),
-      KIncidenceChooser::newest );
-    mBg->insert(
-      new QRadioButton ( i18n( "Ask for every entry on conflict" ), mBg ),
-      KIncidenceChooser::ask );
-    mBg->insert(
-      new QRadioButton ( i18n( "Take both on conflict" ), mBg ),
-      KIncidenceChooser::both );
-    mBg->setButton ( chooseMode );
+
+    QRadioButton *locRad = new QRadioButton(
+      i18nc( "@option:radio", "Take local copy on conflict" ), mBg );
+    mBg->insert( locRad, KIncidenceChooser::local );
+    locRad->setToolTip(
+      i18nc( "@info:tooltip", "Take local copy of the incidence on conflicts" ) );
+    locRad->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "When a conflict is detected between a local copy of an incidence "
+             "and a remote incidence on the server, this option enforces using "
+             "the local copy." ) );
+
+    QRadioButton *remRad = new QRadioButton(
+      i18nc( "@option:radio", "Take remote copy on conflict" ), mBg );
+    mBg->insert( remRad, KIncidenceChooser::remote );
+    remRad->setToolTip(
+      i18nc( "@info:tooltip", "Take remote copy of the incidence on conflicts" ) );
+    remRad->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "When a conflict is detected between a local copy of an incidence "
+             "and a remote incidence on the server, this option enforces using "
+             "the remote copy." ) );
+
+    QRadioButton *newRad = new QRadioButton(
+      i18nc( "@option:radio", "Take newest incidence on conflict" ), mBg );
+    mBg->insert( newRad, KIncidenceChooser::newest );
+    newRad->setToolTip(
+      i18nc( "@info:tooltip", "Take newest version of the incidence on conflicts" ) );
+    newRad->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "When a conflict is detected between a local copy of an incidence "
+             "and a remote incidence on the server, this option enforces using "
+             "the newest version available." ) );
+
+    QRadioButton *askRad = new QRadioButton(
+      i18nc( "@option:radio", "Ask for every conflict" ), mBg );
+    mBg->insert( askRad, KIncidenceChooser::ask );
+    askRad->setToolTip(
+      i18nc( "@info:tooltip", "Ask for every incidence conflict" ) );
+    askRad->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "When a conflict is detected between a local copy of an incidence "
+             "and a remote incidence on the server, this option says to ask "
+             "the user which version they want to keep." ) );
+
+    QRadioButton *bothRad = new QRadioButton(
+      i18nc( "@option:radio", "Take both on conflict" ), mBg );
+    mBg->insert( bothRad, KIncidenceChooser::both );
+    bothRad->setToolTip(
+      i18nc( "@info:tooltip", "Take both incidences on conflict" ) );
+    bothRad->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "When a conflict is detected between a local copy of an incidence "
+             "and a remote incidence on the server, this option says to keep "
+             "both versions of the incidence." ) );
+
+    mBg->setButton( chooseMode );
+
+    QPushButton *applyBut = new QPushButton(
+      i18nc( "@action:button", "Apply preference to all conflicts of this sync" ), topFrame );
+    connect( applyBut, SIGNAL(clicked()), this, SLOT(setSyncMode()) );
+    applyBut->setToolTip(
+      i18nc( "@info:tooltip",
+             "Apply the preference to all conflicts that may occur during the sync" ) );
+    applyBut->setWhatsThis(
+      i18nc( "@info:whatsthis",
+             "Press this button to apply the selected preference to all "
+             "future conflicts that might occur during this sync." ) );
+    topLayout->addWidget( applyBut, iii, 0, 1, 3 );
+
     mTbL = 0;
     mTbN =  0;
     mDisplayDiff = 0;
-    choosedIncidence = 0;
-    button = new QPushButton( i18n( "Apply This to All Conflicts of This Sync" ), topFrame );
-    connect ( button, SIGNAL( clicked()), this, SLOT ( setSyncMode() ) );
-    topLayout->addWidget( button, iii, 0, 1, 3 );
+    mSelIncidence = 0;
 }
 
 KIncidenceChooser::~KIncidenceChooser()
@@ -154,16 +254,16 @@ KIncidenceChooser::~KIncidenceChooser()
   }
 }
 
-void KIncidenceChooser::setIncidence( KCal::Incidence *local, KCal::Incidence *remote )
+void KIncidenceChooser::setIncidence( Incidence *local, Incidence *remote )
 {
   mInc1 = local;
   mInc2 = remote;
   setLabels();
 
 }
-KCal::Incidence *KIncidenceChooser::getIncidence( )
+Incidence *KIncidenceChooser::getIncidence( )
 {
-  KCal::Incidence *retval = choosedIncidence;
+  Incidence *retval = mSelIncidence;
   if ( chooseMode == KIncidenceChooser::local ) {
     retval = mInc1;
   } else if ( chooseMode == KIncidenceChooser::remote ) {
@@ -185,42 +285,42 @@ KCal::Incidence *KIncidenceChooser::getIncidence( )
 
 void KIncidenceChooser::setSyncMode()
 {
-  chooseMode = mBg->selectedId ();
+  chooseMode = mBg->selectedId();
   if ( chooseMode != KIncidenceChooser::ask ) {
-    QDialog::accept();
+    KDialog::accept();
   }
 }
 
 void KIncidenceChooser::useGlobalMode()
 {
   if ( chooseMode != KIncidenceChooser::ask ) {
-    QDialog::reject();
+    KDialog::reject();
   }
 }
 
 void KIncidenceChooser::setLabels()
 {
-  KCal::Incidence *inc = mInc1;
+  Incidence *inc = mInc1;
   QLabel *des = mInc1lab;
   QLabel *sum = mInc1Sumlab;
 
   if ( inc->type() == "Event" ) {
-    des->setText( i18n( "Local Event" ) );
+    des->setText( i18nc( "@label", "Local Event" ) );
     sum->setText( inc->summary().left( 30 ) );
-    if ( diffBut ) {
-      diffBut->setEnabled( true );
+    if ( mDiffBut ) {
+      mDiffBut->setEnabled( true );
     }
   } else if ( inc->type() == "Todo" ) {
-    des->setText( i18n( "Local Todo" ) );
+    des->setText( i18nc( "@label", "Local Todo" ) );
     sum->setText( inc->summary().left( 30 ) );
-    if ( diffBut ) {
-      diffBut->setEnabled( true );
+    if ( mDiffBut ) {
+      mDiffBut->setEnabled( true );
     }
   } else if ( inc->type() == "Journal" ) {
-    des->setText( i18n( "Local Journal" ) );
+    des->setText( i18nc( "@label", "Local Journal" ) );
     sum->setText( inc->description().left( 30 ) );
-    if ( diffBut ) {
-      diffBut->setEnabled( false );
+    if ( mDiffBut ) {
+      mDiffBut->setEnabled( false );
     }
   }
   mMod1lab->setText( KGlobal::locale()->formatDateTime( inc->lastModified().dateTime() ) );
@@ -228,13 +328,13 @@ void KIncidenceChooser::setLabels()
   des = mInc2lab;
   sum = mInc2Sumlab;
   if ( inc->type() == "Event" ) {
-    des->setText( i18n( "New Event" ) );
+    des->setText( i18nc( "@label", "New Event" ) );
     sum->setText( inc->summary().left( 30 ) );
   } else if ( inc->type() == "Todo" ) {
-    des->setText( i18n( "New Todo" ) );
+    des->setText( i18nc( "@label", "New Todo" ) );
     sum->setText( inc->summary().left( 30 ) );
   } else if ( inc->type() == "Journal" ) {
-    des->setText( i18n( "New Journal" ) );
+    des->setText( i18nc( "@label", "New Journal" ) );
     sum->setText( inc->description().left( 30 ) );
 
   }
@@ -245,10 +345,10 @@ void KIncidenceChooser::showIncidence1()
 {
   if ( mTbL ) {
     if ( mTbL->isVisible() ) {
-      showDetails1->setText( i18n( "Show Details" ) );
+      mShowDetails1->setText( i18nc( "@action:button", "Show Details" ) );
       mTbL->hide();
     } else {
-      showDetails1->setText( i18n( "Hide Details" ) );
+      mShowDetails1->setText( i18nc( "@action:button", "Hide Details" ) );
       mTbL->show();
       mTbL->raise();
     }
@@ -258,12 +358,15 @@ void KIncidenceChooser::showIncidence1()
   mTbL->setCaption( mInc1lab->text() );
   mTbL->setModal( false );
   mTbL->setButtons( Ok );
-  connect( mTbL, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
-  QTextBrowser *textBrowser = new QTextBrowser( mTbL );
+  connect( mTbL, SIGNAL(okClicked()), this, SLOT(detailsDialogClosed()) );
+  KTextBrowser *textBrowser = new KTextBrowser( mTbL );
   mTbL->setMainWidget( textBrowser );
-  textBrowser->setHtml( KCal::IncidenceFormatter::extensiveDisplayString( mInc1 ) );
+  textBrowser->setHtml( IncidenceFormatter::extensiveDisplayStr( 0, mInc1 ) );
+  textBrowser->setToolTip( i18nc( "@info:tooltip", "Incidence details" ) );
+  textBrowser->setWhatsThis( i18nc( "@info:whatsthis",
+                                    "This area shows the incidence details" ) );
   mTbL->setMinimumSize( 400, 400 );
-  showDetails1->setText( i18n( "Hide Details" ) );
+  mShowDetails1->setText( i18nc( "@action:button", "Hide Details" ) );
   mTbL->show();
   mTbL->raise();
 }
@@ -272,9 +375,9 @@ void KIncidenceChooser::detailsDialogClosed()
 {
   KDialog *dialog = static_cast<KDialog *>( const_cast<QObject *>( sender() ) );
   if ( dialog == mTbL ) {
-    showDetails1->setText( i18n( "Show details..." ) );
+    mShowDetails1->setText( i18nc( "@action:button", "Show details..." ) );
   } else {
-    showDetails2->setText( i18n( "Show details..." ) );
+    mShowDetails2->setText( i18nc( "@action:button", "Show details..." ) );
   }
 }
 
@@ -285,19 +388,21 @@ void KIncidenceChooser::showDiff()
     mDisplayDiff->raise();
     return;
   }
-  mDisplayDiff = new KPIM::HTMLDiffAlgoDisplay (this);
+  mDisplayDiff = new KPIM::HTMLDiffAlgoDisplay( this );
   if ( mInc1->summary().left( 20 ) != mInc2->summary().left( 20 ) ) {
     mDisplayDiff->setWindowTitle(
-      i18n( "Differences of %1 and %2", mInc1->summary().left( 20 ),
-            mInc2->summary().left( 20 ) ) );
+      i18nc( "@title:window",
+             "Differences of %1 and %2",
+             mInc1->summary().left( 20 ), mInc2->summary().left( 20 ) ) );
   } else {
     mDisplayDiff->setWindowTitle(
-      i18n( "Differences of %1", mInc1->summary().left( 20 ) ) );
+      i18nc( "@title:window",
+             "Differences of %1", mInc1->summary().left( 20 ) ) );
   }
 
   diff = new KPIM::CalendarDiffAlgo( mInc1, mInc2 );
-  diff->setLeftSourceTitle( i18n( "Local entry" ) );
-  diff->setRightSourceTitle( i18n( "New (remote) entry" ) );
+  diff->setLeftSourceTitle( i18nc( "@title:column", "Local incidence" ) );
+  diff->setRightSourceTitle( i18nc( "@title:column", "Remote incidence" ) );
   diff->addDisplay( mDisplayDiff );
   diff->run();
   mDisplayDiff->show();
@@ -308,10 +413,10 @@ void KIncidenceChooser::showIncidence2()
 {
   if ( mTbN ) {
     if ( mTbN->isVisible() ) {
-      showDetails2->setText( i18n( "Show Details" ) );
+      mShowDetails2->setText( i18nc( "@label", "Show Details" ) );
       mTbN->hide();
     } else {
-      showDetails2->setText( i18n( "Hide Details" ) );
+      mShowDetails2->setText( i18nc( "@label", "Hide Details" ) );
       mTbN->show();
       mTbN->raise();
     }
@@ -321,32 +426,35 @@ void KIncidenceChooser::showIncidence2()
   mTbN->setCaption( mInc2lab->text() );
   mTbN->setModal( false );
   mTbN->setButtons( Ok );
-  connect( mTbN, SIGNAL( okClicked() ), this, SLOT( detailsDialogClosed() ) );
-  QTextBrowser *textBrowser = new QTextBrowser( mTbN );
+  connect( mTbN, SIGNAL(okClicked()), this, SLOT(detailsDialogClosed()) );
+  KTextBrowser *textBrowser = new KTextBrowser( mTbN );
   mTbN->setMainWidget( textBrowser );
-  textBrowser->setHtml( KCal::IncidenceFormatter::extensiveDisplayString( mInc2 ) );
+  textBrowser->setHtml( IncidenceFormatter::extensiveDisplayStr( 0, mInc2 ) );
+  textBrowser->setToolTip( i18nc( "@info:tooltip", "Incidence details" ) );
+  textBrowser->setWhatsThis( i18nc( "@info:whatsthis",
+                                    "This area shows the incidence details" ) );
   mTbN->setMinimumSize( 400, 400 );
-  showDetails2->setText( i18n( "Hide Details" ) );
+  mShowDetails2->setText( i18nc( "@label", "Hide Details" ) );
   mTbN->show();
   mTbN->raise();
 }
 
 void KIncidenceChooser::takeIncidence1()
 {
-  choosedIncidence = mInc1;
-  QDialog::accept();
+  mSelIncidence = mInc1;
+  KDialog::accept();
 }
 
 void KIncidenceChooser::takeIncidence2()
 {
-  choosedIncidence = mInc2;
-  QDialog::accept();
+  mSelIncidence = mInc2;
+  KDialog::accept();
 }
 
 void KIncidenceChooser::takeBoth()
 {
-  choosedIncidence = 0;
-  QDialog::accept();
+  mSelIncidence = 0;
+  KDialog::accept();
 }
 
 #include "kincidencechooser.moc"
