@@ -61,7 +61,7 @@ public:
     bool isValid( QString &error ) const;
 
     /**
-     * Returns wether this is a normal maildir or a container containing maildirs.
+     * Returns whether this is a normal maildir or a container containing maildirs.
      */
     bool isRoot() const;
 
