@@ -1,7 +1,15 @@
 [Desktop Entry]
 Name=Imap
+Name[pt]=IMAP
+Name[sv]=Imap
+Name[uk]=IMAP
+Name[x-test]=xxImapxx
 Icon=network-server
 Comment=Imap account
+Comment[pt]=Conta de IMAP
+Comment[sv]=Imap-konto
+Comment[uk]=Обліковий запис IMAP
+Comment[x-test]=xxImap accountxx
 
 [Wizard]
 Type=message/rfc822

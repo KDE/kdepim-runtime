@@ -1,7 +1,15 @@
 [Desktop Entry]
 Name=Disconnected Imap
+Name[pt]=IMAP Desligado
+Name[sv]=Nerkopplad Imap
+Name[uk]=Від’єднаний IMAP
+Name[x-test]=xxDisconnected Imapxx
 Icon=network-server
 Comment=Disconnected Imap account
+Comment[pt]=Conta de IMAP desligado
+Comment[sv]=Nerkopplat Imap-konto
+Comment[uk]=Від’єднаний обліковий запис IMAP
+Comment[x-test]=xxDisconnected Imap accountxx
 
 [Wizard]
 Type=message/rfc822

@@ -40,6 +40,10 @@ Name[zh_CN]=邮件目录
 Name[zh_TW]=Maildir
 Icon=message-rfc822
 Comment=Maildir account
+Comment[pt]=Conta Maildir
+Comment[sv]=Maildir-konto
+Comment[uk]=Обліковий запис Maildir
+Comment[x-test]=xxMaildir accountxx
 
 [Wizard]
 Type=message/rfc822

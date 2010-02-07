@@ -1,5 +1,9 @@
 [Desktop Entry]
 Name=Invitations Dispatcher Agent
+Name[pt]=Agente de Despacho de Convites
+Name[sv]=Modul för inbjudningssändning
+Name[uk]=Агент розподілу запрошень
+Name[x-test]=xxInvitations Dispatcher Agentxx
 Type=AkonadiAgent
 Exec=akonadi_invitations_agent
 Icon=mail-folder-outbox

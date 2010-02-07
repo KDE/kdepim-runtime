@@ -1,5 +1,9 @@
 [Desktop Entry]
 Name=Calendar Search Agent
+Name[pt]=Agente de Pesquisa do Calendário
+Name[sv]=Modul för kalendersökning
+Name[uk]=Агент пошуку у календарі
+Name[x-test]=xxCalendar Search Agentxx
 Type=AkonadiAgent
 Exec=akonadi_calendarsearch_agent
 Icon=text-calendar

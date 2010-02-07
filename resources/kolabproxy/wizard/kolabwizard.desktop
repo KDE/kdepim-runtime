@@ -1,7 +1,15 @@
 [Desktop Entry]
 Name=Kolab
+Name[pt]=Kolab
+Name[sv]=Kolab
+Name[uk]=Kolab
+Name[x-test]=xxKolabxx
 Icon=kolab
 Comment=Kolab Groupware Server
+Comment[pt]=Servidor de 'Groupware' Kolab
+Comment[sv]=Kolab grupprogramserver
+Comment[uk]=Сервер групової роботи Kolab
+Comment[x-test]=xxKolab Groupware Serverxx
 
 [Wizard]
 Type=message/rfc822,text/directory,text/calendar
