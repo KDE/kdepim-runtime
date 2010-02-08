@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Imap
+Name[en_GB]=Imap
 Name[pt]=IMAP
 Name[sv]=Imap
 Name[uk]=IMAP
 Name[x-test]=xxImapxx
 Icon=network-server
 Comment=Imap account
+Comment[en_GB]=Imap account
 Comment[pt]=Conta de IMAP
 Comment[sv]=Imap-konto
 Comment[uk]=Обліковий запис IMAP

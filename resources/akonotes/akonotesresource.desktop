@@ -1,10 +1,16 @@
 [Desktop Entry]
 Name=AkoNotes
+Name[en_GB]=AkoNotes
 Name[pt]=AkoNotes
 Name[sv]=Ako-anteckningar
 Name[uk]=Нотатки
 Name[x-test]=xxAkoNotesxx
 Comment=Loads a notes hierarchy from a local maildir folder
+Comment[en_GB]=Loads a notes hierarchy from a local maildir folder
+Comment[pt]=Carrega uma hierarquia de notas de uma pasta Maildir local
+Comment[sv]=Laddar en anteckningshierarki från en lokal maildir-katalog
+Comment[uk]=Завантажує ієрархію нотаток з локальної теки maildir
+Comment[x-test]=xxLoads a notes hierarchy from a local maildir folderxx
 Type=AkonadiResource
 Exec=akonadi_akonotes_resource
 Icon=view-pim-notes
