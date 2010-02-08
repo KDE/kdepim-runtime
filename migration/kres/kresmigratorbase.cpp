@@ -109,7 +109,7 @@ void KResMigratorBase::migrationFailed(const QString & errorMsg, const Akonadi::
   }
 
   // native backend failed, try the bridge instead
-  if ( !mBridgingInProgress && mCurrentKResource ) {
+  if ( !mBridgingInProgress && mCurrentKResource && !mBridgeType.isEmpty() ) {
     migrateToBridge( mCurrentKResource, mBridgeType );
     return;
   }
