@@ -2,6 +2,7 @@ set(kres-migrator_srcs
     main.cpp
     kabcmigrator.cpp
     kcalmigrator.cpp
+    knotesmigrator.cpp
     kresmigratorbase.cpp
     ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
@@ -17,6 +18,7 @@ endmacro(add_resource_iface)
 add_resource_iface( vcard/vcardresource.kcfg org.kde.Akonadi.VCard.Settings VCardSettings )
 add_resource_iface( ical/icalresource.kcfg org.kde.Akonadi.ICal.Settings ICalSettings )
 add_resource_iface( birthdays/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.Settings BirthdaysSettings )
+add_resource_iface( maildir/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings MaildirSettings )
 
 kde4_add_app_icon(kres-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kres-migrator ${kres-migrator_srcs})

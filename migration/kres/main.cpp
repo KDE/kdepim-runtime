@@ -19,6 +19,7 @@
 
 #include "kabcmigrator.h"
 #include "kcalmigrator.h"
+#include "knotesmigrator.h"
 #include "infodialog.h"
 
 #include <akonadi/control.h>
@@ -53,7 +54,7 @@ int main( int argc, char **argv )
   aboutData.setProgramIconName( "akonadi" );
   aboutData.addAuthor( ki18n( "Volker Krause" ),  ki18n( "Author" ), "vkrause@kde.org" );
 
-  const QStringList supportedTypes = QStringList() << "contact" << "calendar";
+  const QStringList supportedTypes = QStringList() << "contact" << "calendar" << "notes";
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
@@ -61,7 +62,8 @@ int main( int argc, char **argv )
   options.add( "omit-client-bridge", ki18n("Omit setting up of the client side compatibility bridges") );
   options.add( "contacts-only", ki18n("Only migrate contact resources") );
   options.add( "calendar-only", ki18n("Only migrate calendar resources") );
-  options.add( "type <type>", ki18n("Only migrate the specified types (supported: contact, calendar)" ),
+  options.add( "notes-only", ki18n("Only migrate knotes resources") );
+  options.add( "type <type>", ki18n("Only migrate the specified types (supported: contact, calendar, notes)" ),
                supportedTypes.join( "," ).toLatin1() );
   options.add( "interactive", ki18n( "Show reporting dialog") );
   options.add( "interactive-on-change", ki18n("Show report only if changes were made") );
@@ -100,6 +102,8 @@ int main( int argc, char **argv )
       m = new KABCMigrator();
     else if ( type == "calendar" )
       m = new KCalMigrator();
+    else if ( type == "notes" )
+      m = new KNotesMigrator();
     else {
       kError() << "Unknown resource type: " << type;
       continue;
