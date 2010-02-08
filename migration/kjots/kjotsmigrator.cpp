@@ -68,7 +68,8 @@ KJotsMigrator::~KJotsMigrator()
 void KJotsMigrator::migrate()
 {
   emit message( Info, i18n( "Beginning KJots migration..." ) );
-  createAgentInstance( "akonadi_notes_resource", this, SLOT(notesResourceCreated(KJob*)) );
+
+  createAgentInstance( "akonadi_akonotes_resource", this, SLOT(notesResourceCreated(KJob*)) );
 }
 
 void KJotsMigrator::notesResourceCreated( KJob *job )
