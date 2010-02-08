@@ -2,7 +2,6 @@
 set( kjotsmigrator_SRCS
   main.cpp
   kjotsmigrator.cpp
-  entitytreecreatejob.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
 
