@@ -178,7 +178,7 @@ void KJotsMigrator::migrateLegacyBook( const QString& fileName )
     return;
   }
 
-  emit message( Info, i18n( "Opened file: %1" ).arg( file.fileName() ) );
+  emit message( Info, i18n( "Opened file: %1" , file.fileName() ) );
 
   //Determine if this is a KDE3.5 era book.
   QByteArray firstLine = file.readLine();
