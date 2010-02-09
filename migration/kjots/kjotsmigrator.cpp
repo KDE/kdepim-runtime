@@ -221,7 +221,7 @@ void KJotsMigrator::migrateLegacyBook( const QString& fileName )
 void KJotsMigrator::bookMigrateJobFinished( KJob* job )
 {
   if ( job->error() ) {
-    emit message( Error, i18n( "Error migrating book: %1" ).arg( job->errorString() ) );
+    emit message( Error, i18n( "Error migrating book: %1", job->errorString() ) );
   }
   migrateNext();
 }
