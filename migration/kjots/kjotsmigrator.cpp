@@ -219,6 +219,7 @@ void KJotsMigrator::migrateLegacyBook( const QString& fileName )
 void KJotsMigrator::bookMigrateJobFinished( KJob* job )
 {
   if ( job->error() ) {
+    //TODO fix it :) filename is empty
     QString filename;
     emit message( Error, i18n( "Error migrating the book \"%1\"" ,filename ) );
   }
