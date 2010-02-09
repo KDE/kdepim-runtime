@@ -41,7 +41,7 @@ class KNotesMigrator : public KResMigrator<KRES::Resource>
   Q_OBJECT
   public:
     KNotesMigrator();
-
+    ~KNotesMigrator();
     bool migrateResource( KRES::Resource *res );
 
   private slots:

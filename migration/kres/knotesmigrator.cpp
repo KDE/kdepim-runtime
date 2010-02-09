@@ -40,8 +40,13 @@
 using namespace Akonadi;
 
 KNotesMigrator::KNotesMigrator() :
-    KResMigrator<KRES::Resource>( "notes", QString() )
+    KResMigrator<KRES::Resource>( "notes", QString() ), m_notesResource( 0 )
 {
+}
+
+KNotesMigrator::~KNotesMigrator()
+{
+  delete m_notesResource;
 }
 
 bool KNotesMigrator::migrateResource( KRES::Resource* res)
