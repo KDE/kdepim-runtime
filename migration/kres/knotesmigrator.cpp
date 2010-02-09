@@ -137,7 +137,7 @@ void KNotesMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &l
       return;
     }
   }
-  emit message( Error, i18n( "Couldn't find root collection for resource \"%1\"" ,m_agentInstance.identifier() ) );
+  emit message( Error, i18n( "Could not find root collection for resource \"%1\"" ,m_agentInstance.identifier() ) );
 }
 
 void KNotesMigrator::startMigration()
