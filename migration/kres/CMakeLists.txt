@@ -28,6 +28,7 @@ target_link_libraries(kres-migrator
     ${KDE4_KRESOURCE_LIBS}
     ${KDEPIMLIBS_KABC_LIBS}
     ${KDEPIMLIBS_KCAL_LIBS}
+    ${KDEPIMLIBS_KMIME_LIBS}
     ${KDE4_KDECORE_LIBS}
     ${QT_QTGUI_LIBRARY}
 )
