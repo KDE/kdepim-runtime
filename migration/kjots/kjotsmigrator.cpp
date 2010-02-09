@@ -57,8 +57,6 @@ KJotsMigrator::KJotsMigrator()
   const QString &kjotsCfgFile = KStandardDirs::locateLocal( "config", QString( "kjotsrc" ) );
   // Check if migration has already been done and abort if so.
   unicode = false; // Retrieve from settings.
-
-  migrate();
 }
 
 KJotsMigrator::~KJotsMigrator()
