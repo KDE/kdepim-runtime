@@ -343,6 +343,6 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
 void KJotsMigrator::migrationFailed( const QString& errorMsg, const Akonadi::AgentInstance& instance )
 {
   Q_UNUSED( instance )
-  emit message( Error, i18n( "Migration failed: %1" ).arg( errorMsg ) );
+  emit message( Error, i18n( "Migration failed: %1" ,errorMsg ) );
 }
 
