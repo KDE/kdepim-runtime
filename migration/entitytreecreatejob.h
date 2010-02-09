@@ -24,14 +24,18 @@
 #include <Akonadi/Job>
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
+#include <Akonadi/TransactionSequence>
 
-class EntityTreeCreateJob : public Akonadi::Job
+class EntityTreeCreateJob : public Akonadi::TransactionSequence
 {
   Q_OBJECT
 public:
   EntityTreeCreateJob( QList<Akonadi::Collection::List> collections, Akonadi::Item::List items, QObject* parent = 0 );
 
   /* reimp */ void doStart();
+
+private slots:
+  void collectionCreateJobDone( KJob * );
 
 private:
   QList<Akonadi::Collection::List> m_collections;

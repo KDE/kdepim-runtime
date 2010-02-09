@@ -20,24 +20,62 @@
 
 #include "entitytreecreatejob.h"
 
+#include <QVariant>
+#include <QStringList>
+
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/ItemCreateJob>
 
 using namespace Akonadi;
 
+static const char collectionIdMappingProperty[] = "collectionIdMappingProperty";
+
 EntityTreeCreateJob::EntityTreeCreateJob( QList< Akonadi::Collection::List > collections, Akonadi::Item::List items, QObject* parent )
-  : Job( parent ), m_collections( collections ), m_items( items )
+  : Akonadi::TransactionSequence( parent ), m_collections( collections ), m_items( items )
 {
 
 }
 
 void EntityTreeCreateJob::doStart()
 {
-  foreach (const Collection::List &colList, m_collections)
-    foreach (const Collection &collection, colList)
-      (void) new CollectionCreateJob(collection, this);
-
-  foreach (const Item &item, m_items)
-    (void) new ItemCreateJob(item, item.parentCollection(), this);
+  CollectionCreateJob *job;
+  foreach ( const Collection::List &colList, m_collections )
+  {
+    foreach( const Collection &collection, colList )
+    {
+      job = new CollectionCreateJob( collection, this );
+      job->setProperty( collectionIdMappingProperty, collection.id() );
+      connect( job, SIGNAL(result(KJob*)), SLOT(collectionCreateJobDone(KJob*)) );
+    }
+  }
 }
 
+void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
+{
+  CollectionCreateJob *collectionCreateJob = qobject_cast<CollectionCreateJob *>( job );
+  Collection createdCollection = collectionCreateJob->collection();
+
+  if ( job->error() )
+  {
+    kDebug() << job->errorString();
+    return;
+  }
+
+  int creationId = job->property( collectionIdMappingProperty ).toLongLong();
+
+  Item::List::iterator it;
+  const Item::List::iterator end = m_items.end();
+  for ( it = m_items.begin(); it != end; )
+  {
+    if ( it->parentCollection().id() == creationId )
+    {
+      (void) new ItemCreateJob( *it, createdCollection, this );
+      it = m_items.erase( it );
+    }
+    else {
+      ++it;
+    }
+  }
+  if ( m_items.isEmpty() )
+    commit();
+}
