@@ -12,8 +12,8 @@ set( MIGRATION_AKONADI_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/entitytreecreatejob.cpp
 )
 
-add_subdirectory( kres )
+
 add_subdirectory( kmail )
 add_subdirectory( kaddressbook )
 add_subdirectory( kjots )
-
+add_subdirectory( kres )
