@@ -113,6 +113,7 @@ int main( int argc, char **argv )
     connectMigrator( m, infoDialog );
   }
 
+  args->clear();
   const int result = app.exec();
   if ( infoDialog && infoDialog->hasError() )
     return 3;
