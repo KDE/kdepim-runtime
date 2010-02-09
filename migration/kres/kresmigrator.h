@@ -96,7 +96,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           emit message( Skip, i18n( "'%1' has already been migrated.", (*mIt)->resourceName() ) );
         ++mIt;
       }
-      if ( mIt == mManager->end() ) {
+      if ( mIt == mManager->end() && !mBridgeType.isEmpty() ) {
         migrateBridged();
       }
     }
