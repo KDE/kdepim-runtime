@@ -40,6 +40,7 @@
 #include "maildirsettings.h"
 
 #include "entitytreecreatejob.h"
+#include <krandom.h>
 
 using namespace Akonadi;
 
@@ -243,7 +244,8 @@ void KJotsMigrator::parseBookXml( QDomElement &me, bool oldBook, const Collectio
     if ( !e.isNull() ) {
 
       if ( e.tagName() == "Title" ) {
-        collection.setName( e.text() );
+        eda->setDisplayName( e.text()  );
+        collection.setName( KRandom::randomString(10) );
       } else
         if ( e.tagName() == "ID" ) {
           // Legacy ID attribute?
