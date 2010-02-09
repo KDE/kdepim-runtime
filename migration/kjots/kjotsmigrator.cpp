@@ -116,7 +116,7 @@ void KJotsMigrator::syncDone(KJob *job)
 void KJotsMigrator::rootFetchFinished( KJob *job )
 {
   if ( job->error() ) {
-    emit message( Error, i18nc( "A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" ).arg( job->errorString() ) );
+    emit message( Error, i18nc( "A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" , job->errorString() ) );
   }
 }
 
@@ -129,7 +129,7 @@ void KJotsMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &li
       return;
     }
   }
-  emit message( Error, i18n( "Couldn't find root collection for resource \"%1\"" ).arg( m_resourceIdentifier ) );
+  emit message( Error, i18n( "Couldn't find root collection for resource \"%1\"" ,m_resourceIdentifier ) );
 }
 
 void KJotsMigrator::startMigration()
@@ -157,7 +157,7 @@ void KJotsMigrator::migrateNext()
   }
 
   QString bookFileName = m_bookFiles.takeFirst();
-  emit message( Info, i18nc( "A migration tool is migrating the file named %1", "Migrating \"%1\"..." ).arg( bookFileName ) );
+  emit message( Info, i18nc( "A migration tool is migrating the file named %1", "Migrating \"%1\"..." ,bookFileName ) );
   migrateLegacyBook( bookFileName );
 }
 
@@ -174,7 +174,7 @@ void KJotsMigrator::migrateLegacyBook( const QString& fileName )
   bool oldBook = false;
 
   if ( !file.exists() || !file.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
-    emit message( Error, i18n( "Failed to open file: \"%1\"" ).arg( fileName ) );
+    emit message( Error, i18n( "Failed to open file: \"%1\"" ,fileName ) );
     return;
   }
 
@@ -183,7 +183,7 @@ void KJotsMigrator::migrateLegacyBook( const QString& fileName )
   file.reset();
 
   if ( !firstLine.startsWith( "<?xml" ) ) { // krazy:exclude=strings
-    emit message( Info, i18n( "%1 is a KDE 3.5 era book" ).arg( fileName ) );
+    emit message( Info, i18n( "%1 is a KDE 3.5 era book" ,fileName ) );
 
     QTextStream st( &file );
     if ( unicode ) {
@@ -220,7 +220,7 @@ void KJotsMigrator::bookMigrateJobFinished( KJob* job )
 {
   if ( job->error() ) {
     QString filename;
-    emit message( Error, i18n( "Error migrating the book \"%1\"" ).arg( filename ) );
+    emit message( Error, i18n( "Error migrating the book \"%1\"" ,filename ) );
   }
   migrateNext();
 }
