@@ -48,7 +48,7 @@ bool KNotesMigrator::migrateResource( KRES::Resource* res)
 {
   kDebug() << res->identifier() << res->type();
   if ( res->type() == "file" )
-    createAgentInstance( "akonadi_notes_resource", this, SLOT(notesResourceCreated(KJob*)) );
+    createAgentInstance( "akonadi_akonotes_resource", this, SLOT(notesResourceCreated(KJob*)) );
   else if ( res->type() == "kolab" )
   {
     kDebug() << "TODO: Handle kolab notes resource";
@@ -137,7 +137,7 @@ void KNotesMigrator::startMigration()
   foreach ( KCal::Journal *journal, oldNotesList )
   {
     Item newItem;
-    newItem.setMimeType( "text/vnd-akonadi.note" );
+    newItem.setMimeType( "text/x-vnd.akonadi.note" );
     newItem.setParentCollection( m_resourceCollection );
     KMime::Message::Ptr note( new KMime::Message() );
 
