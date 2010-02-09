@@ -346,7 +346,7 @@ void MaildirResource::collectionMoved( const Collection &collection, const Colle
 {
   kDebug() << collection << source << dest;
   if ( collection.parentCollection() == Collection::root() ) {
-    emit error( i18n( "Cannot move root maildir folder '%1'." ).arg( collection.remoteId() ) );
+    emit error( i18n( "Cannot move root maildir folder '%1'." ,collection.remoteId() ) );
     changeProcessed();
     return;
   }
