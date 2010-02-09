@@ -231,7 +231,7 @@ void KJotsMigrator::parseBookXml( QDomElement &me, bool oldBook, const Collectio
 {
   Collection collection;
   collection.setParentCollection( parentCollection );
-  collection.setContentMimeTypes( QStringList( "text/x-vnd.akonadi.note" ) );
+  collection.setContentMimeTypes( QStringList() << Collection::mimeType() << "text/x-vnd.akonadi.note" );
 
   QDomNode n = me.firstChild();
 
