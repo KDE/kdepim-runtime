@@ -169,7 +169,7 @@ void KJotsMigrator::migrationFinished()
 // This method taken from KJotsBook::openBook
 void KJotsMigrator::migrateLegacyBook( const QString& fileName )
 {
-  QFile file( fileName );
+  QFile file( KStandardDirs::locateLocal( "data", "kjots/" ) + '/' + fileName );
   QDomDocument doc( "KJots" );
   bool oldBook = false;
 
@@ -177,6 +177,8 @@ void KJotsMigrator::migrateLegacyBook( const QString& fileName )
     emit message( Error, i18n( "Failed to open file: \"%1\"" ,fileName ) );
     return;
   }
+
+  emit message( Info, i18n( "Opened file: %1" ).arg( file.fileName() ) );
 
   //Determine if this is a KDE3.5 era book.
   QByteArray firstLine = file.readLine();
@@ -219,9 +221,7 @@ void KJotsMigrator::migrateLegacyBook( const QString& fileName )
 void KJotsMigrator::bookMigrateJobFinished( KJob* job )
 {
   if ( job->error() ) {
-    //TODO fix it :) filename is empty
-    QString filename;
-    emit message( Error, i18n( "Error migrating the book \"%1\"" ,filename ) );
+    emit message( Error, i18n( "Error migrating book: %1" ).arg( job->errorString() ) );
   }
   migrateNext();
 }
