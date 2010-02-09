@@ -94,7 +94,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
 
   // Use a path like local/share/notes/<randomstring>/...maildir...
 
-  QDBusPendingReply<void> response = iface->setPath( KStandardDirs::locateLocal( "data", "kjots" ) );
+  QDBusPendingReply<void> response = iface->setPath( "~/.local/share/notes" );
   kDebug() << response.error().message();
 
   m_agentInstance.reconfigure();
