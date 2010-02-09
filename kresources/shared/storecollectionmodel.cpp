@@ -67,7 +67,7 @@ QVariant StoreCollectionModel::headerData( int section, Qt::Orientation orientat
 {
   if ( orientation == Qt::Horizontal && role == Qt::DisplayRole )
     if ( section == 1 ) {
-      return i18nc( "@title:column, data types which should be stored here by default",
+      return i18nc( "@title:column data types which should be stored here by default",
                     "Defaults" );
     }
 
