@@ -125,6 +125,7 @@ void KJotsMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &li
   foreach( const Collection &collection, list ) {
     if ( collection.resource() == m_resourceIdentifier ) {
       m_resourceCollection = collection;
+      emit message( Info, i18n( "New resource is rooted at Collection(%1)", collection.id() ) );
       startMigration();
       return;
     }

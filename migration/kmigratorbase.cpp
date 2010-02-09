@@ -92,6 +92,7 @@ void KMigratorBase::createAgentInstance(const QString& typeId, QObject* receiver
     migrationFailed( i18n("Unable to obtain resource type '%1'.", typeId) );
     return;
   }
+  emit message( Info, i18n( "Creating instance of type %1", typeId ) );
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
   connect( job, SIGNAL( result( KJob* ) ), receiver, slot );
   job->start();
