@@ -167,7 +167,7 @@ void KNotesMigrator::startMigration()
     newItemsList.append( newItem );
   }
 
-  EntityTreeCreateJob *createJob = new EntityTreeCreateJob( QList<Akonadi::Collection::List>(), newItemsList );
+  EntityTreeCreateJob *createJob = new EntityTreeCreateJob( QList<Akonadi::Collection::List>(), newItemsList,this );
   connect(createJob, SIGNAL(result(KJob*)), SLOT(newResourceFilled(KJob*)));
 }
 
