@@ -70,5 +70,5 @@ Exec=akonadi_birthdays_resource
 Icon=preferences-web-browser-cookies
 
 X-Akonadi-MimeTypes=text/calendar,application/x-vnd.akonadi.calendar.event
-X-Akonadi-Capabilities=Resource
+X-Akonadi-Capabilities=Resource,Unique
 X-Akonadi-Identifier=akonadi_birthdays_resource
