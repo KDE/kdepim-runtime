@@ -71,10 +71,17 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
   m_agentInstance.setName( kresCfg.readEntry( "ResourceName", "Migrated Notes" ) );
 
   QString resourcePath = kresCfg.readEntry( "NotesURL" );
-  kDebug() << resourcePath << resourcePath;
+  KUrl url(resourcePath);
 
-  m_notesResource = new KCal::ResourceLocal(kresCfg);
-kDebug() << "m_notesResource " << m_notesResource;
+  m_notesResource = new KCal::CalendarLocal(QString());
+
+  bool success = m_notesResource->load(url.toLocalFile());
+  if (!success)
+  {
+    migrationFailed( i18n( "Failed to open file for reading: %1" ).arg( resourcePath ) );
+    return;
+  }
+
   OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
     "org.freedesktop.Akonadi.Resource." + m_agentInstance.identifier(),
     "/Settings", QDBusConnection::sessionBus(), this );

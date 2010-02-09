@@ -24,7 +24,7 @@
 #include "kresmigrator.h"
 
 #include <kcal/resourcecalendar.h>
-#include <kcal/resourcelocal.h>
+#include <kcal/calendarlocal.h>
 #include <akonadi/collection.h>
 
 #include <QHash>
@@ -58,7 +58,7 @@ class KNotesMigrator : public KResMigrator<KRES::Resource>
     Akonadi::Collection m_resourceCollection;
     AgentInstance m_agentInstance;
 
-    KCal::ResourceLocal *m_notesResource;
+    KCal::CalendarLocal *m_notesResource;
 };
 
 #endif
