@@ -83,7 +83,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
   bool success = m_notesResource->load(url.toLocalFile());
   if (!success)
   {
-    migrationFailed( i18n( "Failed to open file for reading: %1" ).arg( resourcePath ) );
+    migrationFailed( i18n( "Failed to open file for reading: %1" , resourcePath ) );
     return;
   }
 
@@ -112,7 +112,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
 void KNotesMigrator::syncDone(KJob *job)
 {
   kDebug();
-  emit message( Info, QString( "Instance \"%1\" syncronized" ).arg( m_agentInstance.identifier() ) );
+  emit message( Info, i18n( "Instance \"%1\" syncronized" , m_agentInstance.identifier() ) );
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
   connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
@@ -123,7 +123,7 @@ void KNotesMigrator::rootFetchFinished( KJob *job )
 {
   kDebug() << job->error();
   if ( job->error() ) {
-    emit message( Error, i18nc( "A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" ).arg( job->errorString() ) );
+    emit message( Error, i18nc( "A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" , job->errorString() ) );
   }
 }
 
@@ -137,7 +137,7 @@ void KNotesMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &l
       return;
     }
   }
-  emit message( Error, i18n( "Couldn't find root collection for resource \"%1\"" ).arg( m_agentInstance.identifier() ) );
+  emit message( Error, i18n( "Couldn't find root collection for resource \"%1\"" ,m_agentInstance.identifier() ) );
 }
 
 void KNotesMigrator::startMigration()
