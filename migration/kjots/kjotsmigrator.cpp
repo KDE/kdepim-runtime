@@ -350,3 +350,5 @@ void KJotsMigrator::migrationFailed( const QString& errorMsg, const Akonadi::Age
   emit message( Error, i18n( "Migration failed: %1" ,errorMsg ) );
 }
 
+#include "kjotsmigrator.moc"
+

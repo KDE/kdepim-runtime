@@ -79,3 +79,5 @@ void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
   if ( m_items.isEmpty() )
     commit();
 }
+
+#include "entitytreecreatejob.moc"
