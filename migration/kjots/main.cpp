@@ -30,7 +30,6 @@
 #include <KGlobal>
 #include <KDebug>
 
-#include <KMessageBox>
 
 int main( int argc, char **argv )
 {
