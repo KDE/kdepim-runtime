@@ -265,7 +265,7 @@ void KJotsMigrator::parseBookXml( QDomElement &me, bool oldBook, const Collectio
   }
   collection.addAttribute( eda );
 
-  if ( m_collectionLists.size() == depth )
+  while ( m_collectionLists.size() <= depth )
     m_collectionLists.append( Collection::List() );
 
   Q_ASSERT( m_collectionLists.size() > depth );
