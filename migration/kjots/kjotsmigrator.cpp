@@ -331,6 +331,8 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
   KMime::Content* c = note->mainBodyPart();
   c->fromUnicodeString( isRichText ? document.toHtml() : document.toPlainText() );
 
+  note->contentType( true )->setMimeType( isRichText ? "text/html" : "text/plain" );
+
   note->assemble();
 
   Item item;

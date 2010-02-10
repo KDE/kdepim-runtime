@@ -157,7 +157,7 @@ void KNotesMigrator::startMigration()
     // TODO: get from journal.
     note->subject( true )->fromUnicodeString( journal->summary(), encoding );
     note->mainBodyPart()->fromUnicodeString( journal->description() );
-//     note->contentType( true )-> rich text?
+    note->contentType( true )->setMimeType( journal->descriptionIsRich() ? "text/html" : "text/plain" );
 
     note->assemble();
 
