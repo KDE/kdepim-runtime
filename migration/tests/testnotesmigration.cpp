@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Stephen Kelly <steveire@gmail.com>
+    Copyright 2010 Stephen Kelly <steveire@gmail.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,7 +19,14 @@
 
 #include "testnotesmigration.h"
 
-#include <QtTest>
+#include <QtCore/QObject>
+
+#include <Akonadi/Collection>
+
+#include <akonadi/qtest_akonadi.h>
+#include <QtTest/qtestcase.h>
+
+using namespace Akonadi;
 
 void NotesMigrationTest::initTestCase()
 {
@@ -30,3 +37,10 @@ void NotesMigrationTest::testKJotsBooksMigration()
 {
   QVERIFY(false);
 }
+
+void NotesMigrationTest::testLocalKNotesMigration()
+{
+  QVERIFY(true);
+}
+
+QTEST_AKONADIMAIN( NotesMigrationTest, NoGUI )

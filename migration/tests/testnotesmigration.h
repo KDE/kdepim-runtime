@@ -23,24 +23,28 @@
 #include <QtCore/QObject>
 
 #include <Akonadi/Collection>
+#include <akonadi/qtest_akonadi.h>
+#include <QtTest/qtestcase.h>
 
-/**
-  This syncs the resource again and again, watching out for "lost"
-  synchronized() signals.
- */
+using namespace Akonadi;
+
 class NotesMigrationTest : public QObject
 {
   Q_OBJECT
 
-  private Q_SLOTS:
-    void initTestCase();
-    void testKJotsBooksMigration();
+public:
+  NotesMigrationTest(QObject* parent = 0)
+    : QObject(parent)
+  {}
 
-    void testLocalKNotesMigration();
+private Q_SLOTS:
+  void initTestCase();
+  void testKJotsBooksMigration();
 
-  private:
+  void testLocalKNotesMigration();
+
+private:
 
 };
-
 
 #endif
