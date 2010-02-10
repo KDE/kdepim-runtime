@@ -60,6 +60,8 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     connect( d->ui.resourcesList, SIGNAL( doubleClicked( const Akonadi::AgentInstance& ) ),
              SLOT( editClicked() ) );
 
+    connect( d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)) );
+
     connect( d->ui.addButton, SIGNAL( clicked () ), SLOT( addClicked() ) );
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
     connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
@@ -68,6 +70,16 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
 
     Akonadi::Control::widgetNeedsAkonadi( this );
 }
+
+void ResourcesManagementWidget::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+{
+  Q_UNUSED( selected );
+  Q_UNUSED( deselected );
+
+  const bool multiSelection = d->ui.resourcesList->view()->selectionModel()->selectedRows().size() > 1;
+  d->ui.editButton->setDisabled( multiSelection );
+}
+
 
 ResourcesManagementWidget::~ResourcesManagementWidget()
 {
@@ -115,10 +127,9 @@ void ResourcesManagementWidget::editClicked()
 
 void ResourcesManagementWidget::removeClicked()
 {
-    const Akonadi::AgentInstance instance = d->ui.resourcesList->currentAgentInstance();
-    if ( instance.isValid() )
-        Akonadi::AgentManager::self()->removeInstance( instance );
-
+    const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
+    foreach( const Akonadi::AgentInstance &agent, instanceList )
+      Akonadi::AgentManager::self()->removeInstance( agent );
     updateButtonState( d->ui.resourcesList->currentAgentInstance() );
 }
 

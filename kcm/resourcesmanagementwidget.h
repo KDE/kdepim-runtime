@@ -29,6 +29,8 @@
 
 #include <akonadi/agentinstance.h>
 
+class QItemSelection;
+
 /**
   @short A widget to manage imaplib
   @author Tom Albers <tomalbers@kde.nl>
@@ -57,6 +59,7 @@ private Q_SLOTS:
     void addClicked();
     void editClicked();
     void removeClicked();
+    void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected );
 
 private:
     class Private;
