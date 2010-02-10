@@ -33,7 +33,7 @@
 #include <KMime/Message>
 
 #include <KDebug>
-#include <kjots/maildirsettings.h>
+#include "maildirsettings.h"
 #include <KCal/CalendarLocal>
 
 
