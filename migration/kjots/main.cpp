@@ -34,7 +34,7 @@
 
 int main( int argc, char **argv )
 {
-  KAboutData aboutData( "kjots-migrator", 0,
+  KAboutData aboutData( "kjotsmigrator", 0,
                         ki18n( "KJots Migration Tool" ),
                         "0.1",
                         ki18n( "Migration of KJots notes to Akonadi" ),
