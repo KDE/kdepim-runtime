@@ -38,15 +38,19 @@ EntityTreeCreateJob::EntityTreeCreateJob( QList< Akonadi::Collection::List > col
 
 void EntityTreeCreateJob::doStart()
 {
+  createNextLevelOfCollections();
+}
+
+void EntityTreeCreateJob::createNextLevelOfCollections()
+{
   CollectionCreateJob *job;
-  foreach ( const Collection::List &colList, m_collections )
+
+  const Collection::List colList = m_collections.takeFirst();
+  foreach( const Collection &collection, colList )
   {
-    foreach( const Collection &collection, colList )
-    {
-      job = new CollectionCreateJob( collection, this );
-      job->setProperty( collectionIdMappingProperty, collection.id() );
-      connect( job, SIGNAL(result(KJob*)), SLOT(collectionCreateJobDone(KJob*)) );
-    }
+    job = new CollectionCreateJob( collection, this );
+    job->setProperty( collectionIdMappingProperty, collection.id() );
+    connect( job, SIGNAL(result(KJob*)), SLOT(collectionCreateJobDone(KJob*)) );
   }
 }
 
@@ -76,7 +80,22 @@ void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
       ++it;
     }
   }
-  if ( m_items.isEmpty() )
+
+  if ( !m_collections.isEmpty() )
+  {
+    Collection::List::iterator col_it;
+    const Collection::List::iterator col_end = m_collections[0].end();
+    for ( col_it = m_collections[0].begin(); col_it != col_end; ++col_it )
+    {
+      if ( col_it->parentCollection().id() == creationId )
+      {
+        col_it->setParentCollection( createdCollection );
+      }
+    }
+    createNextLevelOfCollections();
+  }
+
+  if ( m_items.isEmpty() && m_collections.isEmpty() )
     commit();
 }
 

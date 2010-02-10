@@ -38,6 +38,9 @@ private slots:
   void collectionCreateJobDone( KJob * );
 
 private:
+  void createNextLevelOfCollections();
+
+private:
   QList<Akonadi::Collection::List> m_collections;
   Akonadi::Item::List m_items;
 };
