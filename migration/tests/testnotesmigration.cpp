@@ -22,9 +22,16 @@
 #include <QtCore/QObject>
 
 #include <Akonadi/Collection>
+#include <Akonadi/EntityTreeModel>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/EntityDisplayAttribute>
 
 #include <akonadi/qtest_akonadi.h>
 #include <QtTest/qtestcase.h>
+
+#include "kjots/kjotsmigrator.h"
+#include <KMime/KMimeMessage>
 
 using namespace Akonadi;
 
@@ -35,7 +42,79 @@ void NotesMigrationTest::initTestCase()
 
 void NotesMigrationTest::testKJotsBooksMigration()
 {
-  QVERIFY(false);
+  KJotsMigrator *migrator = new KJotsMigrator;
+
+  ItemFetchScope scope;
+  scope.fetchFullPayload( true ); // Need to have full item when adding it to the internal data structure
+  scope.fetchAttribute< EntityDisplayAttribute >();
+
+  Akonadi::ChangeRecorder *changeRecorder = new Akonadi::ChangeRecorder( this );
+  changeRecorder->fetchCollection( true );
+  changeRecorder->setItemFetchScope( scope );
+  changeRecorder->setCollectionMonitored( Collection::root() );
+  changeRecorder->setMimeTypeMonitored( "text/x-vnd.akonadi.note" );
+
+  m_expectedStructure.insert( "Local Notes", ( QStringList() << "rich content book" << "Something" << "Book2" ) );
+  m_expectedStructure.insert( "Something", ( QStringList() << "Page 1" << "Page 2" ) );
+  m_expectedStructure.insert( "Book2", ( QStringList() << "Page 1" << "Page 2" << "Nested book" ) );
+  m_expectedStructure.insert( "Nested book", ( QStringList() << "nested page 1" << "nested page 2" ) );
+  m_expectedStructure.insert( "rich content book", ( QStringList() << "rich content page 1" << "rich content page 2" ) );
+
+  m_etm = new Akonadi::EntityTreeModel( changeRecorder, this );
+  connect( m_etm, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(checkRowsInserted(QModelIndex,int,int)));
+
+  QTest::qWait( 2000 );
+
+  QHashIterator<QString, QStringList> it( m_expectedStructure );
+  while ( it.hasNext() )
+  {
+    it.next();
+    QString key = it.key();
+    QStringList value = it.value();
+    value.sort();
+    QVERIFY( m_seenStructure.contains( key ) );
+    QStringList seenValue = m_seenStructure.value( key );
+    seenValue.sort();
+    QVERIFY( value == seenValue );
+  }
+}
+
+void NotesMigrationTest::checkRowsInserted( const QModelIndex &parent, int start, int end )
+{
+  int rowCount = m_etm->rowCount( parent );
+  static const int column = 0;
+  if ( !parent.isValid() )
+  {
+    Collection resourceRootCollection = m_etm->index(start, column, parent).data( EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
+    QVERIFY( resourceRootCollection.isValid() );
+    QVERIFY( resourceRootCollection.name() == "Local Notes" );
+    QVERIFY( resourceRootCollection.contentMimeTypes() == ( QStringList() << Akonadi::Collection::mimeType() << "text/x-vnd.akonadi.note" ) );
+    QVERIFY( resourceRootCollection.parentCollection() == Akonadi::Collection::root() );
+    m_seenStructure.insert( resourceRootCollection.name(), QStringList() );
+    return;
+  }
+  for (int row = start; row <= end; ++row )
+  {
+    QModelIndex index = m_etm->index( row, column, parent );
+
+    Collection newCollection = index.data( EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
+    QString parentName = parent.data().toString();
+    if ( newCollection.isValid() )
+    {
+      // This is a new collection in the resource.
+      QVERIFY( newCollection.contentMimeTypes() == ( QStringList() << Akonadi::Collection::mimeType() << "text/x-vnd.akonadi.note" ) );
+      QVERIFY( m_expectedStructure[ parentName ].contains( index.data().toString() ) );
+      m_seenStructure[ parentName ].append( index.data().toString() );
+    } else {
+      Item newItem = index.data( EntityTreeModel::ItemRole ).value<Akonadi::Item>();
+      QVERIFY( newItem.isValid() );
+      QVERIFY( newItem.hasPayload<KMime::Message::Ptr>() );
+      KMime::Message::Ptr note = newItem.payload<KMime::Message::Ptr>();
+
+      QVERIFY( m_expectedStructure[ parentName ].contains( note->subject()->asUnicodeString() ) );
+      m_seenStructure[ parentName ].append( note->subject()->asUnicodeString() );
+    }
+  }
 }
 
 void NotesMigrationTest::testLocalKNotesMigration()

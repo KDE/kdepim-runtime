@@ -26,6 +26,11 @@
 #include <akonadi/qtest_akonadi.h>
 #include <QtTest/qtestcase.h>
 
+namespace Akonadi
+{
+class EntityTreeModel;
+}
+
 using namespace Akonadi;
 
 class NotesMigrationTest : public QObject
@@ -37,6 +42,9 @@ public:
     : QObject(parent)
   {}
 
+protected Q_SLOTS:
+  void checkRowsInserted( const QModelIndex &parent, int start, int end );
+
 private Q_SLOTS:
   void initTestCase();
   void testKJotsBooksMigration();
@@ -44,7 +52,9 @@ private Q_SLOTS:
   void testLocalKNotesMigration();
 
 private:
-
+  Akonadi::EntityTreeModel *m_etm;
+  QHash<QString, QStringList> m_expectedStructure;
+  QHash<QString, QStringList> m_seenStructure;
 };
 
 #endif
