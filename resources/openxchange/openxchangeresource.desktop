@@ -10,6 +10,7 @@ Comment=Provides access to the appointments, tasks, and contacts of an Open-Xcha
 Comment[en_GB]=Provides access to the appointments, tasks and contacts of an Open-Xchange groupware server.
 Comment[sv]=Ger tillgång till möten, uppgifter och kontakter lagrade på en Open-Xchange grupprogramserver
 Comment[uk]=Надає доступ до записів зустрічей, завдань і контактів, які зберігаються на сервері групової роботи Open-Xchange.
+Comment[x-test]=xxProvides access to the appointments, tasks, and contacts of an Open-Xchange groupware server.xx
 Type=AkonadiResource
 Exec=akonadi_openxchange_resource
 Icon=ox
