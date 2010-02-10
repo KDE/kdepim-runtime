@@ -109,7 +109,7 @@ int main( int argc, char **argv )
     KConfigGroup group( config, "Startup" );
     group.writeEntry( "EnableAutostart", false );
   }
-
+  args->clear();
   convertAddressBook();
 
   return 0;
