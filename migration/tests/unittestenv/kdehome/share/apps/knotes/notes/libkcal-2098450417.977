@@ -1,0 +1,10 @@
+[Display]
+bgcolor=255,255,189
+
+[General]
+version=3.9
+
+[WindowDisplay]
+HideNote=true
+desktop=1
+position=484,154

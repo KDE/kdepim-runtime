@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE KJots>
+<KJots>
+ <KJotsBook>
+  <Title>rich content book</Title>
+  <ID>11</ID>
+  <Locked>false</Locked>
+  <Open>1</Open>
+  <KJotsPage>
+   <Title>rich content page 1</Title>
+   <ID>10</ID>
+   <Locked>false</Locked>
+   <Text><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+<p><span style=" font-weight:600;">rich</span> <span style=" font-style:italic;">content </span><span style=" text-decoration: underline;">1</span></p></body></html>]]></Text>
+  </KJotsPage>
+  <KJotsPage>
+   <Title>rich content page 2</Title>
+   <ID>12</ID>
+   <Locked>false</Locked>
+   <Text><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;">
+<p><span style=" color:#c0c000;">More rich</span> <span style=" background-color:#ffc0ff;">content page</span> <span style=" text-decoration: line-through;">2</span></p></body></html>]]></Text>
+  </KJotsPage>
+ </KJotsBook>
+</KJots>
