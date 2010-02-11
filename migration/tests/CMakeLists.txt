@@ -5,12 +5,15 @@ set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 set(_srcList
   testnotesmigration.cpp
   ../kjots/kjotsmigrator.cpp
+  ../kres/knotesmigrator.cpp
+  ../kres/kresmigratorbase.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
 
 include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}/../kjots
+  ${CMAKE_CURRENT_BINARY_DIR}/../kres
 )
 
 macro(add_resource_iface _kcfgFile _ifaceName _className)
@@ -34,6 +37,7 @@ target_link_libraries(testnotesmigration
   ${KDE4_KDECORE_LIBS}
   ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KCAL_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${QT_QTXML_LIBRARY}

@@ -31,6 +31,8 @@
 #include <QtTest/qtestcase.h>
 
 #include "kjots/kjotsmigrator.h"
+#include "kres/knotesmigrator.h"
+
 #include <KMime/KMimeMessage>
 
 using namespace Akonadi;
@@ -82,7 +84,7 @@ void NotesMigrationTest::checkRowsInserted( const QModelIndex &parent, int start
 {
   int rowCount = m_etm->rowCount( parent );
   static const int column = 0;
-  if ( !parent.isValid() )
+  if ( !parent.isValid() && !m_expectedStructure.isEmpty() )
   {
     Collection resourceRootCollection = m_etm->index(start, column, parent).data( EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
     QVERIFY( resourceRootCollection.isValid() );
@@ -102,23 +104,46 @@ void NotesMigrationTest::checkRowsInserted( const QModelIndex &parent, int start
     {
       // This is a new collection in the resource.
       QVERIFY( newCollection.contentMimeTypes() == ( QStringList() << Akonadi::Collection::mimeType() << "text/x-vnd.akonadi.note" ) );
-      QVERIFY( m_expectedStructure[ parentName ].contains( index.data().toString() ) );
-      m_seenStructure[ parentName ].append( index.data().toString() );
+      if ( !m_expectedStructure.isEmpty() )
+      {
+        QVERIFY( m_expectedStructure[ parentName ].contains( index.data().toString() ) );
+        m_seenStructure[ parentName ].append( index.data().toString() );
+      }
+      else
+        m_seenNotes.append( index.data().toString() );
     } else {
       Item newItem = index.data( EntityTreeModel::ItemRole ).value<Akonadi::Item>();
       QVERIFY( newItem.isValid() );
       QVERIFY( newItem.hasPayload<KMime::Message::Ptr>() );
       KMime::Message::Ptr note = newItem.payload<KMime::Message::Ptr>();
 
-      QVERIFY( m_expectedStructure[ parentName ].contains( note->subject()->asUnicodeString() ) );
-      m_seenStructure[ parentName ].append( note->subject()->asUnicodeString() );
+      if ( !m_expectedStructure.isEmpty() )
+      {
+        QVERIFY( m_expectedStructure[ parentName ].contains( note->subject()->asUnicodeString() ) );
+        m_seenStructure[ parentName ].append( note->subject()->asUnicodeString() );
+      } else {
+        m_seenNotes.append( note->subject()->asUnicodeString() );
+      }
     }
   }
 }
 
 void NotesMigrationTest::testLocalKNotesMigration()
 {
-  QVERIFY(true);
+  m_expectedStructure.clear();
+  m_seenStructure.clear();
+
+  m_expectedNotes << "2010-02-08 12:12" << "2010-02-08 12:29";
+
+  KNotesMigrator *migrator = new KNotesMigrator;
+
+  QTest::qWait( 2000 );
+
+  m_expectedNotes.sort();
+  m_seenNotes.sort();
+
+  kDebug() << m_seenNotes << m_expectedNotes;
+  QVERIFY( m_seenNotes == m_expectedNotes );
 }
 
 QTEST_AKONADIMAIN( NotesMigrationTest, NoGUI )

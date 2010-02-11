@@ -53,8 +53,16 @@ private Q_SLOTS:
 
 private:
   Akonadi::EntityTreeModel *m_etm;
+
+  // Use by kjots.
   QHash<QString, QStringList> m_expectedStructure;
   QHash<QString, QStringList> m_seenStructure;
+
+  // Used by notes.
+  QStringList m_expectedNotes;
+  QStringList m_seenNotes;
+
+
 };
 
 #endif
