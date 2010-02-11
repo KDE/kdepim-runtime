@@ -32,6 +32,7 @@
 #include <KDebug>
 #include "maildirsettings.h"
 #include <KCal/CalendarLocal>
+#include <krandom.h>
 
 
 using namespace Akonadi;
@@ -95,8 +96,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
 
   // Use a path like local/share/notes/<randomstring>/...maildir...
 
-  QDBusPendingReply<void> response = iface->setPath( "~/.local/share/notes" );
-  kDebug() << response.error().message();
+  QDBusPendingReply<void> response = iface->setPath( "~/.local/share/notes/data_" + KRandom::randomString( 10 ) );
 
   m_agentInstance.reconfigure();
 
