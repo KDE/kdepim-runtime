@@ -103,7 +103,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
 
 void KNotesMigrator::syncDone(KJob *job)
 {
-  emit message( Info, i18n( "Instance \"%1\" syncronized" , m_agentInstance.identifier() ) );
+  emit message( Info, i18n( "Instance \"%1\" synchronized" , m_agentInstance.identifier() ) );
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
   connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );

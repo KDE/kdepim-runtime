@@ -105,7 +105,7 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
 
 void KJotsMigrator::syncDone(KJob *job)
 {
-  emit message( Info, i18n( "Instance \"%1\" syncronized" , m_resourceIdentifier ) );
+  emit message( Info, i18n( "Instance \"%1\" synchronized" , m_resourceIdentifier ) );
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
   connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
@@ -129,7 +129,7 @@ void KJotsMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &li
       return;
     }
   }
-  emit message( Error, i18n( "Couldn't find root collection for resource \"%1\"" ,m_resourceIdentifier ) );
+  emit message( Error, i18n( "Could not find root collection for resource \"%1\"" ,m_resourceIdentifier ) );
 }
 
 void KJotsMigrator::startMigration()
