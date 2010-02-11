@@ -19,9 +19,6 @@
 
 #include "knotesmigrator.h"
 
-#include "icalsettings.h"
-#include "birthdayssettings.h"
-
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
 #include <akonadi/agentmanager.h>
@@ -51,7 +48,6 @@ KNotesMigrator::~KNotesMigrator()
 
 bool KNotesMigrator::migrateResource( KRES::Resource* res)
 {
-  kDebug() << res->identifier() << res->type();
   if ( res->type() == "file" )
     createAgentInstance( "akonadi_akonotes_resource", this, SLOT(notesResourceCreated(KJob*)) );
   else if ( res->type() == "kolab" )
@@ -111,7 +107,6 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
 
 void KNotesMigrator::syncDone(KJob *job)
 {
-  kDebug();
   emit message( Info, i18n( "Instance \"%1\" syncronized" , m_agentInstance.identifier() ) );
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
@@ -121,7 +116,7 @@ void KNotesMigrator::syncDone(KJob *job)
 
 void KNotesMigrator::rootFetchFinished( KJob *job )
 {
-  kDebug() << job->error();
+  emit message( Info, i18n( "Root fetch finished" ) );
   if ( job->error() ) {
     emit message( Error, i18nc( "A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" , job->errorString() ) );
   }
@@ -129,7 +124,7 @@ void KNotesMigrator::rootFetchFinished( KJob *job )
 
 void KNotesMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &list )
 {
-  kDebug();
+  emit message( Info, i18n( "Received root collections" ) );
   foreach( const Collection &collection, list ) {
     if ( collection.resource() == m_agentInstance.identifier() ) {
       m_resourceCollection = collection;
@@ -145,7 +140,8 @@ void KNotesMigrator::startMigration()
   KCal::Journal::List oldNotesList = m_notesResource->rawJournals();
   Akonadi::Item::List newItemsList;
 
-  kDebug() << oldNotesList.size();
+  emit message( Info, i18n( "Starting migration of %1 journals", oldNotesList.size() ) );
+
   foreach ( KCal::Journal *journal, oldNotesList )
   {
     Item newItem;
@@ -154,7 +150,6 @@ void KNotesMigrator::startMigration()
     KMime::Message::Ptr note( new KMime::Message() );
 
     QByteArray encoding("utf-8");
-    // TODO: get from journal.
     note->subject( true )->fromUnicodeString( journal->summary(), encoding );
     note->mainBodyPart()->fromUnicodeString( journal->description() );
     note->contentType( true )->setMimeType( journal->descriptionIsRich() ? "text/html" : "text/plain" );
@@ -175,8 +170,5 @@ void KNotesMigrator::newResourceFilled(KJob* job)
 {
   migrationCompleted( m_agentInstance );
 }
-
-
-
 
 #include "knotesmigrator.moc"
