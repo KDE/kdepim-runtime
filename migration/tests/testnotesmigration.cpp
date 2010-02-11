@@ -133,7 +133,7 @@ void NotesMigrationTest::testLocalKNotesMigration()
   m_expectedStructure.clear();
   m_seenStructure.clear();
 
-  m_expectedNotes << "2010-02-08 12:12" << "2010-02-08 12:29";
+  m_expectedNotes << "Notes" << "2010-02-08 12:12" << "2010-02-08 12:29";
 
   KNotesMigrator *migrator = new KNotesMigrator;
 
