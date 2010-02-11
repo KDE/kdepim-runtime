@@ -37,13 +37,6 @@ using namespace Akonadi;
 
 void NotesMigrationTest::initTestCase()
 {
-
-}
-
-void NotesMigrationTest::testKJotsBooksMigration()
-{
-  KJotsMigrator *migrator = new KJotsMigrator;
-
   ItemFetchScope scope;
   scope.fetchFullPayload( true ); // Need to have full item when adding it to the internal data structure
   scope.fetchAttribute< EntityDisplayAttribute >();
@@ -54,16 +47,22 @@ void NotesMigrationTest::testKJotsBooksMigration()
   changeRecorder->setCollectionMonitored( Collection::root() );
   changeRecorder->setMimeTypeMonitored( "text/x-vnd.akonadi.note" );
 
+  m_etm = new Akonadi::EntityTreeModel( changeRecorder, this );
+  connect( m_etm, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(checkRowsInserted(QModelIndex,int,int)));
+
+}
+
+void NotesMigrationTest::testKJotsBooksMigration()
+{
+  KJotsMigrator *migrator = new KJotsMigrator;
+
   m_expectedStructure.insert( "Local Notes", ( QStringList() << "rich content book" << "Something" << "Book2" ) );
   m_expectedStructure.insert( "Something", ( QStringList() << "Page 1" << "Page 2" ) );
   m_expectedStructure.insert( "Book2", ( QStringList() << "Page 1" << "Page 2" << "Nested book" ) );
   m_expectedStructure.insert( "Nested book", ( QStringList() << "nested page 1" << "nested page 2" ) );
   m_expectedStructure.insert( "rich content book", ( QStringList() << "rich content page 1" << "rich content page 2" ) );
 
-  m_etm = new Akonadi::EntityTreeModel( changeRecorder, this );
-  connect( m_etm, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(checkRowsInserted(QModelIndex,int,int)));
-
-  QTest::qWait( 2000 );
+  QTest::qWait( 5000 );
 
   QHashIterator<QString, QStringList> it( m_expectedStructure );
   while ( it.hasNext() )
