@@ -124,5 +124,15 @@ void KResMigratorBase::setOmitClientBridge(bool b)
   mOmitClientBridge = b;
 }
 
+void KResMigratorBase::kolabResourceCreated( KJob *job)
+{
+  if ( job->error() )
+  {
+    emit message( Error, i18n( "Failed to create kolab proxy resource." ) );
+  }
+  migrateNext();
+}
+
+
 
 #include "kresmigratorbase.moc"

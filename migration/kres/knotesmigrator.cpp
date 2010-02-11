@@ -51,10 +51,6 @@ bool KNotesMigrator::migrateResource( KRES::Resource* res)
 {
   if ( res->type() == "file" )
     createAgentInstance( "akonadi_akonotes_resource", this, SLOT(notesResourceCreated(KJob*)) );
-  else if ( res->type() == "kolab" )
-  {
-    kDebug() << "TODO: Handle kolab notes resource";
-  }
   else
     return false;
   return true;

@@ -82,10 +82,20 @@ template <typename T> class KResMigrator : public KResMigratorBase
           T* res = *mIt;
           mCurrentKResource = res;
           ++mIt;
-          bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
-          if ( !nativeAvailable ) {
-            emit message( Info, i18n( "No native backend for '%1' available.", res->resourceName() ) );
-            migrateToBridge( res, mBridgeType );
+
+          if ( res->type() == "kolab" )
+          {
+            // check if kolab resource exists. If not, create one.
+            Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolab_resource" );
+            if ( !kolabAgent.isValid() )
+              emit message( Info, i18n( "Attempting to create kolab resource" ) );
+              createAgentInstance( "akonadi_kolab_resource", this, SLOT(kolabResourceCreated()) );
+          } else {
+            bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
+            if ( !nativeAvailable ) {
+              emit message( Info, i18n( "No native backend for '%1' available.", res->resourceName() ) );
+              migrateToBridge( res, mBridgeType );
+            }
           }
           return;
         }
