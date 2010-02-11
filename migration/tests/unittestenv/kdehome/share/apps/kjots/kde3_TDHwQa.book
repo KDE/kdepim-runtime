@@ -1,0 +1,28 @@
+<!DOCTYPE KJots>
+<KJots>
+ <KJotsBook>
+  <Title>kde3_test1</Title>
+  <ID>2</ID>
+  <Open>1</Open>
+  <KJotsBook>
+   <Title>kde3_book2</Title>
+   <ID>6</ID>
+   <Open>1</Open>
+   <KJotsPage>
+    <Title>kde3_nested Page 1</Title>
+    <ID>7</ID>
+    <Text><![CDATA[kugtfdt]]></Text>
+   </KJotsPage>
+  </KJotsBook>
+  <KJotsPage>
+   <Title>kde3_Page 1</Title>
+   <ID>3</ID>
+   <Text><![CDATA[page one content]]></Text>
+  </KJotsPage>
+  <KJotsPage>
+   <Title>kde3_Page 2</Title>
+   <ID>4</ID>
+   <Text><![CDATA[page 2 content]]></Text>
+  </KJotsPage>
+ </KJotsBook>
+</KJots>

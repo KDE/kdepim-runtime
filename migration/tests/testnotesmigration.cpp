@@ -58,11 +58,14 @@ void NotesMigrationTest::testKJotsBooksMigration()
 {
   KJotsMigrator *migrator = new KJotsMigrator;
 
-  m_expectedStructure.insert( "Local Notes", ( QStringList() << "rich content book" << "Something" << "Book2" ) );
+  m_expectedStructure.insert( "Local Notes", ( QStringList() << "rich content book" << "Something" << "Book2" << "kde3_book3" << "kde3_test1" ) );
   m_expectedStructure.insert( "Something", ( QStringList() << "Page 1" << "Page 2" ) );
   m_expectedStructure.insert( "Book2", ( QStringList() << "Page 1" << "Page 2" << "Nested book" ) );
   m_expectedStructure.insert( "Nested book", ( QStringList() << "nested page 1" << "nested page 2" ) );
   m_expectedStructure.insert( "rich content book", ( QStringList() << "rich content page 1" << "rich content page 2" ) );
+  m_expectedStructure.insert( "kde3_book3", ( QStringList() << "kde3_book3 Page 1" ) );
+  m_expectedStructure.insert( "kde3_test1", ( QStringList() << "kde3_book2" << "kde3_Page 1" << "kde3_Page 2" ) );
+  m_expectedStructure.insert( "kde3_book2", ( QStringList() << "kde3_nested Page 1" ) );
 
   QTest::qWait( 5000 );
 
