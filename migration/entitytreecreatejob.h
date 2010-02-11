@@ -39,6 +39,7 @@ private slots:
 
 private:
   void createNextLevelOfCollections();
+  void createReadyItems();
 
 private:
   QList<Akonadi::Collection::List> m_collections;

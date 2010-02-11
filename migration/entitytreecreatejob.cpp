@@ -38,7 +38,9 @@ EntityTreeCreateJob::EntityTreeCreateJob( QList< Akonadi::Collection::List > col
 
 void EntityTreeCreateJob::doStart()
 {
-  createNextLevelOfCollections();
+  if ( !m_collections.isEmpty() )
+    createNextLevelOfCollections();
+  createReadyItems();
 }
 
 void EntityTreeCreateJob::createNextLevelOfCollections()
@@ -52,6 +54,25 @@ void EntityTreeCreateJob::createNextLevelOfCollections()
     job->setProperty( collectionIdMappingProperty, collection.id() );
     connect( job, SIGNAL(result(KJob*)), SLOT(collectionCreateJobDone(KJob*)) );
   }
+}
+
+void EntityTreeCreateJob::createReadyItems()
+{
+  Item::List::iterator it;
+  const Item::List::iterator end = m_items.end();
+  for ( it = m_items.begin(); it != end; )
+  {
+    if ( it->parentCollection().isValid() )
+    {
+      kDebug() << "creating items";
+      (void) new ItemCreateJob( *it, it->parentCollection(), this );
+      it = m_items.erase( it );
+    } else {
+      ++it;
+    }
+  }
+  if ( m_items.isEmpty() && m_collections.isEmpty() )
+    commit();
 }
 
 void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
@@ -69,17 +90,16 @@ void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
 
   Item::List::iterator it;
   const Item::List::iterator end = m_items.end();
-  for ( it = m_items.begin(); it != end; )
+  for ( it = m_items.begin(); it != end; ++it )
   {
+    kDebug() << "updating items";
     if ( it->parentCollection().id() == creationId )
     {
-      (void) new ItemCreateJob( *it, createdCollection, this );
-      it = m_items.erase( it );
-    }
-    else {
-      ++it;
+      it->setParentCollection( createdCollection );
     }
   }
+
+  createReadyItems();
 
   if ( !m_collections.isEmpty() )
   {
