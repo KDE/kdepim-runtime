@@ -36,6 +36,7 @@ target_link_libraries(testnotesmigration
   ${KDEPIMLIBS_KMIME_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
+  ${QT_QTXML_LIBRARY}
   maildir
 )
 
