@@ -59,13 +59,12 @@ void EntityTreeCreateJob::createNextLevelOfCollections()
 void EntityTreeCreateJob::createReadyItems()
 {
   Item::List::iterator it;
-  const Item::List::iterator end = m_items.end();
-  for ( it = m_items.begin(); it != end; )
+  for ( it = m_items.begin(); it != m_items.end(); )
   {
-    if ( it->parentCollection().isValid() )
+    Collection parentCollection = ( *it ).parentCollection();
+    if ( parentCollection.isValid() )
     {
-      kDebug() << "creating items";
-      (void) new ItemCreateJob( *it, it->parentCollection(), this );
+      (void) new ItemCreateJob( *it, parentCollection, this );
       it = m_items.erase( it );
     } else {
       ++it;
