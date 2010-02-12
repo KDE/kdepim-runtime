@@ -134,7 +134,7 @@ void KNotesMigrator::startMigration()
   KCal::Journal::List oldNotesList = m_notesResource->rawJournals();
   Akonadi::Item::List newItemsList;
 
-  emit message( Info, i18n( "Starting migration of %1 journals", oldNotesList.size() ) );
+  emit message( Info, i18np( "Starting migration of %1 journal", "Starting migration of %1 journals", oldNotesList.size() ) );
 
   foreach ( KCal::Journal *journal, oldNotesList )
   {
