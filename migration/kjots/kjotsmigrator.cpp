@@ -43,6 +43,7 @@
 #include "maildirsettings.h"
 
 #include "entitytreecreatejob.h"
+#include <KConfigGroup>
 
 using namespace Akonadi;
 
@@ -57,8 +58,10 @@ KJotsMigrator::KJotsMigrator()
   }
 
   const QString &kjotsCfgFile = KStandardDirs::locateLocal( "config", QString( "kjotsrc" ) );
-  // Check if migration has already been done and abort if so.
-  unicode = false; // Retrieve from settings.
+
+  KConfig config( kjotsCfgFile );
+  KConfigGroup cfgGroup = config.group("kjots");
+  unicode = cfgGroup.readEntry("Unicode", false);
 }
 
 KJotsMigrator::~KJotsMigrator()
@@ -136,10 +139,7 @@ void KJotsMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &li
 
 void KJotsMigrator::startMigration()
 {
-  const QString &kjotsCfgFile = KStandardDirs::locateLocal( "config", QString( "kjotsrc" ) );
-
   m_bookFiles = m_dataDir.entryList();
-
   migrateNext();
 }
 
