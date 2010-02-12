@@ -90,9 +90,8 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
   }
   iface->setReadOnly( res->readOnly() );
 
-  // Use a path like local/share/notes/<randomstring>/...maildir...
-
-  QDBusPendingReply<void> response = iface->setPath( "~/.local/share/notes/data_" + KRandom::randomString( 10 ) );
+  KStandardDirs standardDirs;
+  QDBusPendingReply<void> response = iface->setPath( standardDirs.localxdgdatadir() + "/notes/" + KRandom::randomString( 10 ) );
 
   m_agentInstance.reconfigure();
 

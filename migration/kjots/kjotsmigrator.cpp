@@ -95,7 +95,8 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
     return;
   }
 
-  QDBusPendingReply<void> response = iface->setPath( "~/.local/share/notes/" + KRandom::randomString( 10 ) );
+  KStandardDirs standardDirs;
+  QDBusPendingReply<void> response = iface->setPath( standardDirs.localxdgdatadir() + "/notes/" + KRandom::randomString( 10 ) );
 
   instance.reconfigure();
   m_resourceIdentifier = instance.identifier();
