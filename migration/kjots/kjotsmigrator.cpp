@@ -137,14 +137,6 @@ void KJotsMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &li
 void KJotsMigrator::startMigration()
 {
   const QString &kjotsCfgFile = KStandardDirs::locateLocal( "config", QString( "kjotsrc" ) );
-//   mConfig = new KConfig( kmailCfgFile );
-//   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
-//   mIt = mAccounts.begin();
-
-  m_backupDir = QDir( KStandardDirs::locateLocal( "data", "kjots/.backup" ) );
-  if ( !m_backupDir.exists() ) {
-    m_backupDir.mkpath( "." );
-  }
 
   m_bookFiles = m_dataDir.entryList();
 
