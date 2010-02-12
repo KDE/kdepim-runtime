@@ -32,8 +32,6 @@
 using namespace Akonadi;
 using namespace KMime;
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
 template <typename T> static void parseAddrList( const QList<QByteArray> &addrList, T *hdr )
 {
   for ( QList<QByteArray>::ConstIterator it = addrList.constBegin(); it != addrList.constEnd(); ++it ) {

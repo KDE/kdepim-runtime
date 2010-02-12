@@ -23,8 +23,6 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
 #include <qtest_kde.h>
 
 QTEST_KDEMAIN( MailSerializerPluginTest, NoGUI )

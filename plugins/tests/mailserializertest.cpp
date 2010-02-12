@@ -28,8 +28,6 @@
 
 QTEST_KDEMAIN( MailSerializerTest, NoGUI )
 
-typedef boost::shared_ptr<KMime::Message> MessagePtr;
-
 void MailSerializerTest::testEnvelopeDeserialize()
 {
   Item i;
