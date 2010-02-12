@@ -95,8 +95,7 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
     return;
   }
 
-  KStandardDirs standardDirs;
-  QDBusPendingReply<void> response = iface->setPath( standardDirs.localxdgdatadir() + "/notes/" + KRandom::randomString( 10 ) );
+  QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + "/notes/" + KRandom::randomString( 10 ) );
 
   instance.reconfigure();
   m_resourceIdentifier = instance.identifier();

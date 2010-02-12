@@ -90,8 +90,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
   }
   iface->setReadOnly( res->readOnly() );
 
-  KStandardDirs standardDirs;
-  QDBusPendingReply<void> response = iface->setPath( standardDirs.localxdgdatadir() + "/notes/" + KRandom::randomString( 10 ) );
+  QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + "/notes/" + KRandom::randomString( 10 ) );
 
   m_agentInstance.reconfigure();
 
