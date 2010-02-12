@@ -28,6 +28,7 @@ target_link_libraries(kjotsmigrator
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEPIMLIBS_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KPIMTEXTEDIT_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   maildir
 )

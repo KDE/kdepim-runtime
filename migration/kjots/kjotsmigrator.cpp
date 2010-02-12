@@ -26,6 +26,7 @@
 
 #include <KLocale>
 #include <KStandardDirs>
+#include <krandom.h>
 
 #include <KMime/Message>
 
@@ -37,10 +38,11 @@
 #include <Akonadi/CollectionFetchJob>
 #include <akonadi/resourcesynchronizationjob.h>
 
+#include <kpimtextedit/textutils.h>
+
 #include "maildirsettings.h"
 
 #include "entitytreecreatejob.h"
-#include <krandom.h>
 
 using namespace Akonadi;
 
@@ -313,10 +315,11 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
             // https://bugs.kde.org/show_bug.cgi?id=175100
             document.setPlainText( bodyText );
           } else {
+
             if ( Qt::mightBeRichText( bodyText ) )
             {
-              isRichText = true;
               document.setHtml(bodyText);
+              isRichText = KPIMTextEdit::TextUtils::isFormattingUsed(&document);
             }
             else
               document.setPlainText( bodyText );
