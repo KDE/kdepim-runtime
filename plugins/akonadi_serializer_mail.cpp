@@ -56,13 +56,13 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
     if ( label != MessagePart::Body && label != MessagePart::Envelope && label != MessagePart::Header )
       return false;
 
-    MessagePtr msg;
+    KMime::Message::Ptr msg;
     if ( !item.hasPayload() ) {
         Message *m = new  Message();
-        msg = MessagePtr( m );
+        msg = KMime::Message::Ptr( m );
         item.setPayload( msg );
     } else {
-        msg = item.payload<MessagePtr>();
+        msg = item.payload<KMime::Message::Ptr>();
     }
 
     QByteArray buffer = data.readAll();
@@ -178,9 +178,9 @@ void SerializerPluginMail::serialize( const Item& item, const QByteArray& label,
 
 QSet<QByteArray> SerializerPluginMail::parts(const Item & item) const
 {
-  if ( !item.hasPayload<MessagePtr>() )
+  if ( !item.hasPayload<KMime::Message::Ptr>() )
     return QSet<QByteArray>();
-  MessagePtr msg = item.payload<MessagePtr>();
+  KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
   QSet<QByteArray> set;
   // FIXME: we actually want "has any header" here, but the kmime api doesn't offer that yet
   if ( msg->hasContent() || msg->hasHeader( "Message-ID" ) ) {

@@ -42,9 +42,9 @@ void MailSerializerTest::testEnvelopeDeserialize()
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
   serializer->deserialize( i, MessagePart::Envelope, buffer, 0 );
-  QVERIFY( i.hasPayload<MessagePtr>() );
+  QVERIFY( i.hasPayload<KMime::Message::Ptr>() );
 
-  MessagePtr msg = i.payload<MessagePtr>();
+  KMime::Message::Ptr msg = i.payload<KMime::Message::Ptr>();
   QCOMPARE( msg->subject()->asUnicodeString(), QString::fromUtf8( "IMPORTANT: Akonadi Test" ) );
   QCOMPARE( msg->from()->asUnicodeString(), QString::fromUtf8( "Tobias Koenig <tokoe@kde.org>" ) );
   QCOMPARE( msg->to()->asUnicodeString(), QString::fromUtf8( "Ingo Kloecker <kloecker@kde.org>" ) );
@@ -63,7 +63,7 @@ void MailSerializerTest::testEnvelopeSerialize()
   msg->sender()->from7BitString( "Tobias Koenig <tokoe@kde.org>" );
   msg->to()->from7BitString( "Ingo Kloecker <kloecker@kde.org>" );
   msg->messageID()->from7BitString( "<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>" );
-  i.setPayload( MessagePtr( msg ) );
+  i.setPayload( KMime::Message::Ptr( msg ) );
 
   SerializerPluginMail *serializer = new SerializerPluginMail();
 
@@ -87,7 +87,7 @@ void MailSerializerTest::testParts()
   Item item;
   item.setMimeType( "message/rfc822" );
   KMime::Message *m = new Message;
-  MessagePtr msg( m );
+  KMime::Message::Ptr msg( m );
   item.setPayload( msg );
 
   SerializerPluginMail *serializer = new SerializerPluginMail();
@@ -134,9 +134,9 @@ void MailSerializerTest::testHeaderFetch()
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
   serializer->deserialize( i, MessagePart::Header, buffer, 0 );
-  QVERIFY( i.hasPayload<MessagePtr>() );
+  QVERIFY( i.hasPayload<KMime::Message::Ptr>() );
 
-  MessagePtr msg = i.payload<MessagePtr>();
+  KMime::Message::Ptr msg = i.payload<KMime::Message::Ptr>();
   QCOMPARE( msg->subject()->asUnicodeString(), expectedSubject );
   QCOMPARE( msg->from()->asUnicodeString(), expectedFrom );
   QCOMPARE( msg->to()->asUnicodeString(), expectedTo );
@@ -177,9 +177,9 @@ void MailSerializerTest::testMultiDeserialize()
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
   serializer->deserialize( i, MessagePart::Body, buffer, 0 );
-  QVERIFY( i.hasPayload<MessagePtr>() );
+  QVERIFY( i.hasPayload<KMime::Message::Ptr>() );
 
-  MessagePtr msg = i.payload<MessagePtr>();
+  KMime::Message::Ptr msg = i.payload<KMime::Message::Ptr>();
   QCOMPARE( msg->subject()->asUnicodeString(), expectedSubject );
   QCOMPARE( msg->from()->asUnicodeString(), expectedFrom );
   QCOMPARE( msg->to()->asUnicodeString(), expectedTo );
@@ -202,9 +202,9 @@ void MailSerializerTest::testMultiDeserialize()
   buffer.seek( 0 );
 
   serializer->deserialize( i, MessagePart::Header, buffer, 0 );
-  QVERIFY( i.hasPayload<MessagePtr>() );
+  QVERIFY( i.hasPayload<KMime::Message::Ptr>() );
 
-  msg = i.payload<MessagePtr>();
+  msg = i.payload<KMime::Message::Ptr>();
   QCOMPARE( msg->subject()->asUnicodeString(), expectedSubject );
   QCOMPARE( msg->from()->asUnicodeString(), expectedFrom );
   QCOMPARE( msg->to()->asUnicodeString(), expectedTo );
