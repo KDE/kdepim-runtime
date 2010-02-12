@@ -158,6 +158,7 @@ void KJotsMigrator::migrateNext()
 void KJotsMigrator::migrationFinished()
 {
   emit message( Info, "KJots notes migration finished");
+  deleteLater();
 }
 
 // This method taken from KJotsBook::openBook
