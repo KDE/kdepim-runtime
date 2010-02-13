@@ -1,14 +1,18 @@
 [Desktop Entry]
 Name=Disconnected Imap
 Name[en_GB]=Disconnected Imap
+Name[es]=Imap desconectado
 Name[pt]=IMAP Desligado
+Name[pt_BR]=IMAP desconectado
 Name[sv]=Nerkopplad Imap
 Name[uk]=Від’єднаний IMAP
 Name[x-test]=xxDisconnected Imapxx
 Icon=network-server
 Comment=Disconnected Imap account
 Comment[en_GB]=Disconnected Imap account
+Comment[es]=Cuenta imap desconectada
 Comment[pt]=Conta de IMAP desligado
+Comment[pt_BR]=Conta de IMAP desconectado
 Comment[sv]=Nerkopplat Imap-konto
 Comment[uk]=Від’єднаний обліковий запис IMAP
 Comment[x-test]=xxDisconnected Imap accountxx

@@ -1,14 +1,18 @@
 [Desktop Entry]
 Name=Pop3
 Name[en_GB]=Pop3
+Name[es]=Pop3
 Name[pt]=POP3
+Name[pt_BR]=POP3
 Name[sv]=Pop3
 Name[uk]=POP3
 Name[x-test]=xxPop3xx
 Icon=message-rfc822
 Comment=Pop3 account
 Comment[en_GB]=Pop3 account
+Comment[es]=Cuenta Pop3
 Comment[pt]=Conta de POP3
+Comment[pt_BR]=Conta POP3
 Comment[sv]=Pop3-konto
 Comment[uk]=Обліковий запис POP3
 Comment[x-test]=xxPop3 accountxx
