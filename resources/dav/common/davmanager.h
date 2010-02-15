@@ -19,6 +19,8 @@
 #ifndef DAVMANAGER_H
 #define DAVMANAGER_H
 
+#include "davutils.h"
+
 #include <QtCore/QString>
 
 class DavProtocolBase;
@@ -44,15 +46,8 @@ class DavManager
      */
     static DavManager* self();
 
-    enum Protocol
-    {
-      CalDav,
-      CardDav,
-      GroupDav
-    };
-
-    void setProtocol( Protocol protocol );
-    Protocol protocol() const;
+    void setProtocol( DavUtils::Protocol protocol );
+    DavUtils::Protocol protocol() const;
 
     void setUser( const QString &user );
     QString user() const;
@@ -72,7 +67,7 @@ class DavManager
      */
     DavManager();
 
-    Protocol mProtocol;
+    DavUtils::Protocol mProtocol;
     QString mUser;
     QString mPassword;
     DavProtocolBase *mDavProtocol;

@@ -29,7 +29,7 @@
 DavManager* DavManager::mSelf = 0;
 
 DavManager::DavManager()
-  : mProtocol( CalDav ), mDavProtocol( new CaldavProtocol )
+  : mProtocol( DavUtils::CalDav ), mDavProtocol( new CaldavProtocol )
 {
 }
 
@@ -46,20 +46,20 @@ DavManager* DavManager::self()
   return mSelf;
 }
 
-void DavManager::setProtocol( Protocol protocol )
+void DavManager::setProtocol( DavUtils::Protocol protocol )
 {
   mProtocol = protocol;
 
   delete mDavProtocol;
-  if ( mProtocol == CalDav )
+  if ( mProtocol == DavUtils::CalDav )
     mDavProtocol = new CaldavProtocol;
-  else if ( mProtocol == CardDav )
+  else if ( mProtocol == DavUtils::CardDav )
     mDavProtocol = new CarddavProtocol;
   else
     mDavProtocol = new GroupdavProtocol;
 }
 
-DavManager::Protocol DavManager::protocol() const
+DavUtils::Protocol DavManager::protocol() const
 {
   return mProtocol;
 }

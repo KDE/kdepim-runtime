@@ -16,11 +16,23 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#ifndef DAVUTILS_H
+#define DAVUTILS_H
+
 #include <QtXml/QDomElement>
 
 namespace DavUtils
 {
+  enum Protocol
+  {
+    CalDav,
+    CardDav,
+    GroupDav
+  };
+  
   QDomElement firstChildElementNS( const QDomElement &parent, const QString &namespaceUri, const QString &tagName );
 
   QDomElement nextSiblingElementNS( const QDomElement &element, const QString &namespaceUri, const QString &tagName );
 }
+
+#endif

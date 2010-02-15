@@ -87,10 +87,10 @@ DavCalendarResource::DavCalendarResource( const QString &id )
 
   switch( Settings::self()->remoteProtocol() ) {
     case Settings::groupdav:
-      DavManager::self()->setProtocol( DavManager::GroupDav );
+      DavManager::self()->setProtocol( DavUtils::GroupDav );
       break;
     case Settings::caldav:
-      DavManager::self()->setProtocol( DavManager::CalDav );
+      DavManager::self()->setProtocol( DavUtils::CalDav );
       break;
     default:
       break;
@@ -120,15 +120,15 @@ void DavCalendarResource::configure( WId windowId )
 
     switch( Settings::self()->remoteProtocol() ) {
       case Settings::groupdav:
-        DavManager::self()->setProtocol( DavManager::GroupDav );
+        DavManager::self()->setProtocol( DavUtils::GroupDav );
         emit status( Idle, i18n( "Using GroupDAV" ) );
         break;
       case Settings::caldav:
-        DavManager::self()->setProtocol( DavManager::CalDav );
+        DavManager::self()->setProtocol( DavUtils::CalDav );
         emit status( Idle, i18n( "Using CalDAV" ) );
         break;
       case Settings::carddav:
-        DavManager::self()->setProtocol( DavManager::CardDav );
+        DavManager::self()->setProtocol( DavUtils::CardDav );
         emit status( Idle, i18n( "Using CardDAV" ) );
         break;
       default:
@@ -522,11 +522,11 @@ void DavCalendarResource::doResourceInitialization()
 
   switch( Settings::self()->remoteProtocol() ) {
     case Settings::groupdav:
-      DavManager::self()->setProtocol( DavManager::GroupDav );
+      DavManager::self()->setProtocol( DavUtils::GroupDav );
       emit status( Idle, i18n( "Using GroupDAV" ) );
       break;
     case Settings::caldav:
-      DavManager::self()->setProtocol( DavManager::CalDav );
+      DavManager::self()->setProtocol( DavUtils::CalDav );
       emit status( Idle, i18n( "Using GroupDAV" ) );
       emit status( Idle, i18n( "Using CalDAV" ) );
       break;
