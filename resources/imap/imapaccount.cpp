@@ -294,7 +294,6 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
     emit error( capJob->session(),
                 CapabilitiesTestError,
                 i18n( "Could not test the capabilities supported by the IMAP server %1.", m_server ) );
-    disconnect();
     return;
   }
 
@@ -323,7 +322,6 @@ void ImapAccount::onCapabilitiesTestDone( KJob *job )
                 IncompatibleServerError,
                 i18n( "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
                       "Please ask your sysadmin to upgrade the server.", m_server, missing.join( ", " ) ) );
-    disconnect();
     return;
   }
 
