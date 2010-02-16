@@ -110,6 +110,10 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
 
 void KJotsMigrator::syncDone(KJob *job)
 {
+  if ( job->error() ) {
+    emit message( Error, i18n( "Syncronizing the resource failed: %1" , job->errorString() ) );
+    return;
+  }
   emit message( Info, i18n( "Instance \"%1\" synchronized" , m_resourceIdentifier ) );
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
