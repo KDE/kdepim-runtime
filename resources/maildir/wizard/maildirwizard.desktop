@@ -42,6 +42,7 @@ Icon=message-rfc822
 Comment=Maildir account
 Comment[en_GB]=Maildir account
 Comment[es]=Cuenta de directorio de correo
+Comment[nds]=Nettpostkonto
 Comment[pt]=Conta Maildir
 Comment[pt_BR]=Conta Maildir
 Comment[sv]=Maildir-konto

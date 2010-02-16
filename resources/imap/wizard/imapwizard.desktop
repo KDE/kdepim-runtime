@@ -2,6 +2,7 @@
 Name=Imap
 Name[en_GB]=Imap
 Name[es]=Imap
+Name[nds]=IMAP
 Name[pt]=IMAP
 Name[pt_BR]=IMAP
 Name[sv]=Imap
@@ -11,6 +12,7 @@ Icon=network-server
 Comment=Imap account
 Comment[en_GB]=Imap account
 Comment[es]=Cuenta Imap
+Comment[nds]=Imap-Konto
 Comment[pt]=Conta de IMAP
 Comment[pt_BR]=Conta de IMAP
 Comment[sv]=Imap-konto

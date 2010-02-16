@@ -2,6 +2,7 @@
 Name=Pop3
 Name[en_GB]=Pop3
 Name[es]=Pop3
+Name[nds]=POP3
 Name[pt]=POP3
 Name[pt_BR]=POP3
 Name[sv]=Pop3
@@ -11,6 +12,7 @@ Icon=message-rfc822
 Comment=Pop3 account
 Comment[en_GB]=Pop3 account
 Comment[es]=Cuenta Pop3
+Comment[nds]=POP3-Konto
 Comment[pt]=Conta de POP3
 Comment[pt_BR]=Conta POP3
 Comment[sv]=Pop3-konto
