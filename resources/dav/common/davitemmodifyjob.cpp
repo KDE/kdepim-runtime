@@ -80,7 +80,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
 
   QString location;
   foreach ( const QString &header, allHeaders ) {
-    if ( header.startsWith( "Location:" ) )
+    if ( header.startsWith( "Location:", Qt::CaseInsensitive  ) )
       location = header.section( ' ', 1 );
   }
 
