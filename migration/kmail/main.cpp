@@ -99,7 +99,7 @@ int main( int argc, char **argv )
                       infoDialog, SLOT( message( KMigratorBase::MessageType, QString ) ) );
     QObject::connect( migrator, SIGNAL( destroyed() ), infoDialog, SLOT( migratorDone() ) );
   }
-
+  args->clear();
   const int result = app->exec();
   if ( infoDialog && infoDialog->hasError() )
     return 3;
