@@ -65,6 +65,7 @@ int main( int argc, char **argv )
     infoDialog = new InfoDialog( args->isSet( "interactive-on-change" ) );
     infoDialog->show();
   }
+  args->clear();
 
   KJotsMigrator *migrator = new KJotsMigrator;
   if ( infoDialog && migrator ) {
