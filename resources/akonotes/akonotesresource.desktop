@@ -2,6 +2,7 @@
 Name=AkoNotes
 Name[en_GB]=AkoNotes
 Name[es]=AkoNotes
+Name[gl]=AkoNotes
 Name[pt]=AkoNotes
 Name[pt_BR]=AkoNotes
 Name[sv]=Ako-anteckningar
@@ -10,6 +11,7 @@ Name[x-test]=xxAkoNotesxx
 Comment=Loads a notes hierarchy from a local maildir folder
 Comment[en_GB]=Loads a notes hierarchy from a local maildir folder
 Comment[es]=Carga una jerarquía de notas desde una carpeta de directorio de correo local
+Comment[gl]=Carga unha xerarquía de notas desde un cartafol de correo local
 Comment[pt]=Carrega uma hierarquia de notas de uma pasta Maildir local
 Comment[pt_BR]=Carrega uma hierarquia de notas de uma pasta maildir local
 Comment[sv]=Laddar en anteckningshierarki från en lokal maildir-katalog

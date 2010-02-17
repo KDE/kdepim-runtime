@@ -2,6 +2,7 @@
 Name=Kolab
 Name[en_GB]=Kolab
 Name[es]=Kolab
+Name[gl]=Kolab
 Name[nds]=Kolab
 Name[pt]=Kolab
 Name[pt_BR]=Kolab
@@ -12,6 +13,7 @@ Icon=kolab
 Comment=Kolab Groupware Server
 Comment[en_GB]=Kolab Groupware Server
 Comment[es]=Servidor de trabajo en grupo Kolab
+Comment[gl]=Servidor de traballo en grupo Kolab
 Comment[nds]=Kolab-Arbeitkoppel-Server
 Comment[pt]=Servidor de 'Groupware' Kolab
 Comment[pt_BR]=Servidor groupware Kolab
