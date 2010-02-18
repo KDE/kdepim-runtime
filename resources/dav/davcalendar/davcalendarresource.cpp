@@ -27,6 +27,7 @@
 #include "davitemmodifyjob.h"
 #include "davitemslistjob.h"
 #include "davmanager.h"
+#include "davprotocolbase.h"
 #include "etagattribute.h"
 #include "settings.h"
 #include "settingsadaptor.h"
@@ -241,7 +242,7 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
     }
 
     url = KUrl( basePath + fileName + ".vcf" );
-    mimeType = KABC::Addressee::mimeType();
+    mimeType = DavManager::self()->davProtocol()->contactsMimeType();
 
     KABC::VCardConverter converter;
     rawData = converter.createVCard( contact );
@@ -301,7 +302,7 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
 
     KABC::VCardConverter converter;
     rawData = converter.createVCard( contact );
-    mimeType = KABC::Addressee::mimeType();
+    mimeType = DavManager::self()->davProtocol()->contactsMimeType();
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
 
