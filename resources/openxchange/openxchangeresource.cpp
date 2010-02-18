@@ -26,6 +26,7 @@
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/kcal/incidencemimetypevisitor.h>
 
 #include <kabc/addressee.h>
 #include <kcal/event.h>
@@ -478,11 +479,11 @@ void OpenXchangeResource::onObjectsRequestJobFinished( KJob *job )
         }
         break;
       case OXA::Folder::Calendar:
-        item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
+        item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
         item.setPayload<KCal::Incidence::Ptr>( object.event() );
         break;
       case OXA::Folder::Tasks:
-        item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.todo" ) );
+        item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
         item.setPayload<KCal::Incidence::Ptr>( object.task() );
         break;
       case OXA::Folder::Unbound:
@@ -523,11 +524,11 @@ void OpenXchangeResource::onObjectRequestJobFinished( KJob *job )
       }
       break;
     case OXA::Folder::Calendar:
-      item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
+      item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
       item.setPayload<KCal::Incidence::Ptr>( object.event() );
       break;
     case OXA::Folder::Tasks:
-      item.setMimeType( QLatin1String( "application/x-vnd.akonadi.calendar.todo" ) );
+      item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
       item.setPayload<KCal::Incidence::Ptr>( object.task() );
       break;
     case OXA::Folder::Unbound:
@@ -627,7 +628,7 @@ static Collection folderToCollection( const OXA::Folder &folder, const Collectio
   mimeTypes.append( Collection::mimeType() );
   switch ( folder.module() ) {
     case OXA::Folder::Calendar:
-      mimeTypes.append( QLatin1String( "application/x-vnd.akonadi.calendar.event" ) );
+      mimeTypes.append( IncidenceMimeTypeVisitor::eventMimeType() );
       attribute->setIconName( QString::fromLatin1( "view-calendar" ) );
       break;
     case OXA::Folder::Contacts:
@@ -636,7 +637,7 @@ static Collection folderToCollection( const OXA::Folder &folder, const Collectio
       attribute->setIconName( QString::fromLatin1( "view-pim-contacts" ) );
       break;
     case OXA::Folder::Tasks:
-      mimeTypes.append( QLatin1String( "application/x-vnd.akonadi.calendar.todo" ) );
+      mimeTypes.append( IncidenceMimeTypeVisitor::todoMimeType() );
       attribute->setIconName( QString::fromLatin1( "view-pim-tasks" ) );
       break;
     case OXA::Folder::Unbound:
