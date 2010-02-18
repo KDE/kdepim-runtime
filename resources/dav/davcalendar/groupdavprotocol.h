@@ -32,6 +32,7 @@ class GroupdavProtocol : public DavProtocolBase
     virtual QList<QDomDocument> itemsQueries() const;
 
     virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const;
+    virtual QString contactsMimeType() const;
 
   private:
     QList<QDomDocument> mItemsQueries;

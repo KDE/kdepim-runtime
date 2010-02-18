@@ -42,6 +42,11 @@ class DavProtocolBase
      * is described by the passed PROPFIND @propstat.
      */
     virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const = 0;
+
+    /**
+     * Returns the mimetype that shall be used for contacts
+     */
+    virtual QString contactsMimeType() const = 0;
 };
 
 #endif
