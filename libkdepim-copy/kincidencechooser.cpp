@@ -87,6 +87,7 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
              "button to use the server copy, thereby overwriting your local copy" ) );
 
     QPushButton *bothBut = new QPushButton( i18nc( "@action:button", "Take Both" ), b_box );
+    bothBut->setFocus(); //kolab/issue4147:  "Take Both" should be default
     connect( bothBut, SIGNAL(clicked()), this, SLOT(takeBoth()) );
     bothBut->setToolTip(
       i18nc( "@info:tooltip", "Take both copies of the incidence" ) );
