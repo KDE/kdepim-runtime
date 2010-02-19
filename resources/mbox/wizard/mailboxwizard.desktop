@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=MailBox
+Icon=message-rfc822
+Comment=Mailbox account
+
+[Wizard]
+Type=message/rfc822
+Script=mailboxwizard.js
+
+[Translate]
+Filename=accountwizard_mailbox

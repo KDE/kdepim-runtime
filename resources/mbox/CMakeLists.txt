@@ -9,7 +9,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 # mbox access library
 add_subdirectory(libmbox)
-
+add_subdirectory(wizard)
 
 ########### next target ###############
 
