@@ -89,7 +89,7 @@ Rectangle {
       states: State {
           name: "Details"
           PropertyChanges { target: background; color: "white" }
-          PropertyChanges { target: contactImage; width : 96; height : 96 }
+          PropertyChanges { target: contactImage; width : undefined; height : undefined }
           PropertyChanges { target: wrapper; detailsOpacity: 1; x: 0 }
           PropertyChanges { target: wrapper; height: list.height }
           PropertyChanges { target: wrapper.ListView.view; explicit: true; viewportY: wrapper.y }
