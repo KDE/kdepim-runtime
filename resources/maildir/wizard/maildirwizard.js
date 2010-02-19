@@ -37,5 +37,6 @@ function setup()
   SetupManager.execute();
 }
 
+connect( page.maildirWizard.maildirPath, "textChanged(QString)", this, "validateInput()" );
 connect( page, "pageLeftNext()", this, "setup()" );
 validateInput();
