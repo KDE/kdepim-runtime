@@ -31,7 +31,7 @@ function validateInput()
 
 function setup()
 {
-  var maidirRes = SetupManager.createResource( "akonadi_maildir_resource" );
+  var maildirRes = SetupManager.createResource( "akonadi_maildir_resource" );
   maildirRes.setOption( "Path", page.maildirWizard.maildirPath.text );
 
   SetupManager.execute();
