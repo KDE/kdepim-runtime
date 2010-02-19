@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>mailboxWizard</class>
- <widget class="QWidget" name="maildirWizard">
+ <widget class="QWidget" name="mailboxWizard">
   <property name="geometry">
    <rect>
     <x>0</x>
