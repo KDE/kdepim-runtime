@@ -62,7 +62,7 @@ function setup()
   imapRes.setOption( "ImapServer", page.imapWizard.incommingAddress.text );
   imapRes.setOption( "UserName", page.imapWizard.emailAddress.text );
   imapRes.setOption( "Password", page.imapWizard.password.text );
-  imapRes.setOption( "DisconnectedModeEnabled", "true" );
+  imapRes.setOption( "DisconnectedModeEnabled", true );
 
   var smtp = SetupManager.createTransport( "smtp" );
   smtp.setName( page.imapWizard.outgoingAddress.text );
