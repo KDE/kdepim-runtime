@@ -47,7 +47,6 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 ########### next target ###############
 
 set( davcalendarresource_SRCS
-  ../common/davaccessor.cpp
   ../common/davcollection.cpp
   ../common/davcollectionsfetchjob.cpp
   ../common/davcollectionsmultifetchjob.cpp
@@ -65,15 +64,17 @@ set( davcalendarresource_SRCS
   carddavprotocol.cpp
   configdialog.cpp
   davcalendarresource.cpp
+  davprotocolattribute.cpp
   etagattribute.cpp
   groupdavprotocol.cpp
   settings.cpp
+  urlconfigurationdialog.cpp
 )
 
 install( FILES davcalendarresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 kde4_add_kcfg_files(davcalendarresource_SRCS settingsbase.kcfgc)
-kde4_add_ui_files(davcalendarresource_SRCS configdialog.ui)
+kde4_add_ui_files(davcalendarresource_SRCS configdialog.ui urlconfigurationdialog.ui)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davcalendarresource.kcfg org.kde.Akonadi.davCalendar.Settings)
 qt4_add_dbus_adaptor(davcalendarresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davCalendar.Settings.xml settings.h Settings

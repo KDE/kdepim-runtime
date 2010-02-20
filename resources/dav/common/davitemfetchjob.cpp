@@ -40,18 +40,14 @@ static QString etagFromHeaders( const QString &headers )
 }
 
 
-DavItemFetchJob::DavItemFetchJob( const DavItem &item, QObject *parent )
-  : KJob( parent ), mItem( item )
+DavItemFetchJob::DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
+  : KJob( parent ), mUrl( url ), mItem( item )
 {
 }
 
 void DavItemFetchJob::start()
 {
-  KUrl url( mItem.url() );
-  url.setUser( DavManager::self()->user() );
-  url.setPassword( DavManager::self()->password() );
-
-  KIO::StoredTransferJob *job = KIO::storedGet( url, KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::StoredTransferJob *job = KIO::storedGet( mUrl.url(), KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );

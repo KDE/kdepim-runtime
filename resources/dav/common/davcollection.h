@@ -19,6 +19,8 @@
 #ifndef DAVCOLLECTION_H
 #define DAVCOLLECTION_H
 
+#include "davutils.h"
+
 #include <QtCore/QList>
 #include <QtCore/QString>
 
@@ -36,7 +38,10 @@ class DavCollection
     Q_DECLARE_FLAGS( ContentTypes, ContentType )
 
     DavCollection();
-    DavCollection( const QString &url, const QString &displayName, ContentTypes contentTypes );
+    DavCollection( DavUtils::Protocol protocol, const QString &url, const QString &displayName, ContentTypes contentTypes );
+    
+    void setProtocol( DavUtils::Protocol protocol );
+    DavUtils::Protocol protocol() const;
 
     void setUrl( const QString &url );
     QString url() const;
@@ -48,6 +53,7 @@ class DavCollection
     ContentTypes contentTypes() const;
 
   private:
+    DavUtils::Protocol mProtocol;
     QString mUrl;
     QString mDisplayName;
     ContentTypes mContentTypes;

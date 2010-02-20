@@ -19,8 +19,8 @@
 #ifndef DAVITEMSLISTJOB_H
 #define DAVITEMSLISTJOB_H
 
-#include "davcollection.h"
 #include "davitem.h"
+#include "davutils.h"
 
 #include <kjob.h>
 
@@ -29,7 +29,7 @@ class DavItemsListJob : public KJob
   Q_OBJECT
 
   public:
-    DavItemsListJob( const DavCollection &collection, QObject *parent = 0 );
+    DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
     virtual void start();
 
@@ -39,7 +39,7 @@ class DavItemsListJob : public KJob
     void davJobFinished( KJob* );
 
   private:
-    DavCollection mCollection;
+    DavUtils::DavUrl mUrl;
     DavItem::List mItems;
     uint mSubJobCount;
 };

@@ -43,3 +43,51 @@ QDomElement DavUtils::nextSiblingElementNS( const QDomElement &element, const QS
 
   return QDomElement();
 }
+
+DavUtils::DavUrl::DavUrl()
+{
+}
+
+DavUtils::DavUrl::DavUrl( const KUrl &url, DavUtils::Protocol protocol )
+  : mUrl( url ), mProtocol( protocol )
+{
+}
+
+void DavUtils::DavUrl::setUrl( const KUrl &url )
+{
+  mUrl = url;
+}
+
+KUrl DavUtils::DavUrl::url() const
+{
+  return mUrl;
+}
+
+void DavUtils::DavUrl::setProtocol( DavUtils::Protocol protocol )
+{
+  mProtocol = protocol;
+}
+
+DavUtils::Protocol DavUtils::DavUrl::protocol() const
+{
+  return mProtocol;
+}
+
+QString DavUtils::protocolName( DavUtils::Protocol protocol )
+{
+  QString protocolName;
+  
+  switch( protocol ) {
+    case DavUtils::CalDav:
+      protocolName = "CalDav";
+      break;
+    case DavUtils::CardDav:
+      protocolName = "CardDav";
+      break;
+    case DavUtils::GroupDav:
+      protocolName = "GroupDav";
+      break;
+  }
+  
+  return protocolName;
+}

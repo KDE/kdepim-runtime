@@ -49,6 +49,10 @@ class SettingsHelper
 };
 
 K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
+    
+Settings::UrlConfiguration::UrlConfiguration()
+{
+}
 
 Settings *Settings::self()
 {
@@ -69,11 +73,21 @@ Settings::Settings()
   new SettingsAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+  
+  foreach( KUrl url, this->remoteUrls() ) {
+    UrlConfiguration *urlConfig = this->newUrlConfiguration( url.prettyUrl() );
+  }
 }
 
 Settings::~Settings()
 {
   delete mWallet;
+  
+  QMapIterator<QString, UrlConfiguration*> it( mUrls );
+  while( it.hasNext() ) {
+    it.next();
+    delete it.value();
+  }
 }
 
 void Settings::setWinId( WId winId )
@@ -81,20 +95,247 @@ void Settings::setWinId( WId winId )
   mWinId = winId;
 }
 
-QString Settings::password() const
+DavUtils::DavUrl::List Settings::configuredDavUrls()
 {
-  return mPassword;
+  DavUtils::DavUrl::List davUrls;
+  KUrl::List urls = this->remoteUrls();
+  
+  foreach( KUrl url, urls ) {
+    QString groupName = url.prettyUrl();
+    davUrls << configuredDavUrl( groupName );
+  }
+  
+  return davUrls;
 }
 
-void Settings::setPassword( const QString &password )
+DavUtils::DavUrl Settings::configuredDavUrl( const QString &searchUrl, const QString &finalUrl )
 {
-  mPassword = password;
-
-  if ( useKWallet() )
-    storePassword();
+  KUrl fullUrl;
+  
+  if( !finalUrl.isEmpty() )
+    fullUrl = finalUrl;
+  else
+    fullUrl = searchUrl;
+  
+  if( this->authenticationRequired( searchUrl ) ) {
+    QString username = this->username( searchUrl );
+    fullUrl.setUser( username );
+    fullUrl.setPassword( this->password( searchUrl, username ) );
+  }
+  
+  DavUtils::Protocol protocol = this->protocol( searchUrl );
+  DavUtils::DavUrl davUrl( fullUrl, protocol );
+  return davUrl;
 }
 
-void Settings::storePassword()
+DavUtils::DavUrl Settings::davUrlFromUrl( const QString &url )
+{
+  DavUtils::DavUrl ret;
+  QString configuredUrl;
+  
+  foreach( const QString &tmpUrl, this->remoteUrls() ) {
+    if( url.startsWith( tmpUrl ) ) {
+      configuredUrl = tmpUrl;
+    }
+  }
+  
+  if( !configuredUrl.isEmpty() ) {
+    ret = this->configuredDavUrl( configuredUrl, url );
+  }
+  
+  return ret;
+}
+
+Settings::UrlConfiguration * Settings::newUrlConfiguration( const QString &url )
+{
+  UrlConfiguration *urlConfig;
+  
+  if( !mUrls.contains( url ) ) {
+    urlConfig = new UrlConfiguration();
+    urlConfig->mUrl = url;
+  }
+  else {
+    urlConfig = mUrls[url];
+  }
+  
+  KConfigGroup group( this->config(), urlConfig->mUrl );
+  this->setCurrentGroup( urlConfig->mUrl );
+  
+  QList<KConfigSkeleton::ItemEnum::Choice2> protocolValues;
+  {
+    KConfigSkeleton::ItemEnum::Choice2 choice;
+    choice.name = QLatin1String( "caldav" );
+    protocolValues.append( choice );
+  }
+  {
+    KConfigSkeleton::ItemEnum::Choice2 choice;
+    choice.name = QLatin1String( "carddav" );
+    protocolValues.append( choice );
+  }
+  {
+    KConfigSkeleton::ItemEnum::Choice2 choice;
+    choice.name = QLatin1String( "groupdav" );
+    protocolValues.append( choice );
+  }
+  KConfigSkeletonItem *protocolItem =
+      new KConfigSkeleton::ItemEnum( currentGroup(), QLatin1String( "protocol" ), urlConfig->mProtocol, protocolValues );
+  this->addItem( protocolItem );
+
+  KConfigSkeletonItem *authenticationRequiredItem =
+      new KConfigSkeleton::ItemBool( currentGroup(), QLatin1String( "authenticationRequired" ), urlConfig->mAuthReq );
+  this->addItem( authenticationRequiredItem );
+
+  KConfigSkeletonItem *useKWalletItem =
+      new KConfigSkeleton::ItemBool( currentGroup(), QLatin1String( "useKWallet" ), urlConfig->mUseKWallet );
+  this->addItem( useKWalletItem );
+
+  KConfigSkeletonItem *usernameItem =
+      new KConfigSkeleton::ItemString( currentGroup(), QLatin1String( "username" ), urlConfig->mUser );
+  this->addItem( usernameItem );
+  
+  QStringList rUrls = this->remoteUrls();
+  rUrls << urlConfig->mUrl;
+  this->setRemoteUrls( rUrls );
+
+  mUrls.insert( urlConfig->mUrl, urlConfig );
+  return urlConfig;
+}
+
+void Settings::removeUrlConfiguration( const QString &url )
+{
+  if( !mUrls.contains( url ) )
+    return;
+  
+  QStringList oldUrls = this->remoteUrls();
+  QStringList newUrls;
+  foreach( QString tmpUrl, oldUrls ) {
+    if( tmpUrl != url )
+      newUrls << tmpUrl;
+  }
+  this->setRemoteUrls( newUrls );
+  
+  UrlConfiguration *urlConfig = mUrls[url];
+  mUrls.remove( url );
+  KConfigGroup( this->config(), url ).deleteGroup();
+  delete urlConfig;
+}
+
+Settings::UrlConfiguration * Settings::urlConfiguration( const QString &url )
+{
+  UrlConfiguration *ret = 0;
+  if( mUrls.contains( url ) )
+    ret = mUrls[url];
+  return ret;
+}
+
+bool Settings::authenticationRequired( const QString &url ) const
+{
+  if( mUrls.contains( url ) ) {
+    return mUrls[url]->mAuthReq;
+  }
+  else {
+    return false;
+  }
+}
+
+DavUtils::Protocol Settings::protocol( const QString &url ) const
+{
+  if( mUrls.contains( url ) ) {
+    return DavUtils::Protocol( mUrls[url]->mProtocol );
+  }
+  else {
+    return DavUtils::CalDav;
+  }
+}
+
+QString Settings::username( const QString &url ) const
+{
+  if( mUrls.contains( url ) ) {
+    return mUrls[url]->mUser;
+  }
+  else {
+    return QString();
+  }
+}
+
+bool Settings::useKWallet( const QString &url ) const
+{
+  if( mUrls.contains( url ) ) {
+    return mUrls[url]->mUseKWallet;
+  }
+  else {
+    return false;
+  }
+}
+
+void Settings::setPassword( const QString &url, const QString &username, const QString &password )
+{
+  QString passwordKey( username );
+  passwordKey.append( "-" ).append( url );
+  mCachedPasswords[passwordKey] = password;
+  
+  if ( useKWallet( url ) )
+    storePassword( url, username, password );
+}
+
+QString Settings::password( const QString &url, const QString &username )
+{
+  QString ret;
+  QString passwordKey( username );
+  passwordKey.append( "-" ).append( url );
+  
+  if( mCachedPasswords.contains( passwordKey ) ) {
+    ret = mCachedPasswords[passwordKey];
+  }
+  else {
+    ret = requestPassword( url, username );
+  }
+  
+  return ret;
+}
+
+QString Settings::requestPassword( const QString &url, const QString &username )
+{
+  QString ret;
+  
+  if( authenticationRequired( url ) ) {
+    QString passwordKey( username );
+    passwordKey.append( "-" ).append( url );
+    
+    if( useKWallet( url ) ) {
+      if ( !mWallet )
+        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
+    
+      if ( mWallet && mWallet->isOpen() &&
+           mWallet->hasFolder( "dav-akonadi-resource" ) &&
+           mWallet->setFolder( "dav-akonadi-resource" ) ) {
+        mWallet->readPassword( passwordKey, ret );
+           }
+    }
+    else {
+      ret = promptForPassword( url, username );
+    }
+    
+    mCachedPasswords[passwordKey] = ret;
+  }
+  
+  return ret;
+}
+
+QString Settings::promptForPassword( const QString &url, const QString &username )
+{
+  QString ret;
+  KPasswordDialog dlg;
+  dlg.setPrompt( i18n( "Please enter the password for %1 at %2" ).arg( username ).arg( url ) );
+  dlg.exec();
+
+  if ( dlg.result() == QDialog::Accepted )
+    ret = dlg.password();
+  
+  return ret;
+}
+
+void Settings::storePassword( const QString &url, const QString &username, const QString &password )
 {
   if ( !mWallet )
     mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
@@ -104,38 +345,10 @@ void Settings::storePassword()
       mWallet->createFolder( "dav-akonadi-resource" );
 
     mWallet->setFolder( "dav-akonadi-resource" );
-    mWallet->writePassword( username(), mPassword );
+    QString passwordKey( username );
+    passwordKey.append( "-" ).append( url );
+    mWallet->writePassword( passwordKey, password );
   }
-}
-
-void Settings::askForPassword()
-{
-  if ( !password().isEmpty() )
-    return;
-
-  if ( useKWallet() ) {
-    if ( !mWallet )
-      mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
-
-    if ( mWallet && mWallet->isOpen() &&
-         mWallet->hasFolder( "dav-akonadi-resource" ) &&
-         mWallet->setFolder( "dav-akonadi-resource" ) ) {
-      mWallet->readPassword( username(), mPassword );
-    }
-  }
-
-  if ( mPassword.isEmpty() )
-    requestPassword( username() );
-}
-
-void Settings::requestPassword( const QString &username )
-{
-  KPasswordDialog dlg;
-  dlg.setPrompt( i18n( "Please enter the password for %1" ).arg( username ) );
-  dlg.exec();
-
-  if ( dlg.result() == QDialog::Accepted )
-    setPassword( dlg.password() );
 }
 
 #include "settings.moc"

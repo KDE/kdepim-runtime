@@ -22,9 +22,19 @@ DavCollection::DavCollection()
 {
 }
 
-DavCollection::DavCollection( const QString &url, const QString &displayName, ContentTypes contentTypes )
-  : mUrl( url ), mDisplayName( displayName ), mContentTypes( contentTypes )
+DavCollection::DavCollection( DavUtils::Protocol protocol, const QString &url, const QString &displayName, ContentTypes contentTypes )
+  : mProtocol( protocol ), mUrl( url ), mDisplayName( displayName ), mContentTypes( contentTypes )
 {
+}
+
+void DavCollection::setProtocol( DavUtils::Protocol protocol )
+{
+  mProtocol = protocol;
+}
+
+DavUtils::Protocol DavCollection::protocol() const
+{
+  return mProtocol;
 }
 
 void DavCollection::setUrl( const QString &url )

@@ -29,16 +29,16 @@
 #include <QtCore/QBuffer>
 #include <QtXmlPatterns/QXmlQuery>
 
-DavCollectionsFetchJob::DavCollectionsFetchJob( const KUrl &url, QObject *parent )
+DavCollectionsFetchJob::DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent )
   : KJob( parent ), mUrl( url )
 {
 }
 
 void DavCollectionsFetchJob::start()
 {
-  const QDomDocument collectionQuery = DavManager::self()->davProtocol()->collectionsQuery();
+  const QDomDocument collectionQuery = DavManager::self()->davProtocol( mUrl.protocol() )->collectionsQuery();
 
-  KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl, collectionQuery );
+  KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), collectionQuery );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
 }
 
@@ -70,7 +70,7 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
     return;
   }
 
-  xquery.setQuery( DavManager::self()->davProtocol()->collectionsXQuery() );
+  xquery.setQuery( DavManager::self()->davProtocol( mUrl.protocol() )->collectionsXQuery() );
   if ( !xquery.isValid() ) {
     setError( UserDefinedError );
     setErrorText( i18n( "Invalid XQuery submitted by DAV implementation" ) );
@@ -155,13 +155,14 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
       href.append( '/' );
 
     KUrl url = davJob->url();
+    url.setUser( QString() );
+    url.setPassword( QString() );
     if ( href.startsWith( '/' ) ) {
       // href is only a path, use request url to complete
       url.setEncodedPath( href.toAscii() );
     } else {
-      // href is a complete url, so just preserve the user information
+      // href is a complete url
       KUrl tmpUrl( href );
-      tmpUrl.setUser( url.user() );
       url = tmpUrl;
     }
 
@@ -172,9 +173,9 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
     const QString displayName = displaynameElement.text();
 
     // extract allowed content types
-    const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol()->collectionContentTypes( propstatElement );
+    const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol( mUrl.protocol() )->collectionContentTypes( propstatElement );
 
-    mCollections << DavCollection( url.prettyUrl(), displayName, contentTypes );
+    mCollections << DavCollection( mUrl.protocol(), url.prettyUrl(), displayName, contentTypes );
 
     responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
   }

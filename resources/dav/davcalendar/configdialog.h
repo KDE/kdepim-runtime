@@ -26,6 +26,7 @@
 #include <QtCore/QStringList>
 
 class KConfigDialogManager;
+class QStandardItemModel;
 
 class ConfigDialog : public KDialog
 {
@@ -38,14 +39,21 @@ class ConfigDialog : public KDialog
     void setRemovedUrls( const QStringList &urls );
 
   private Q_SLOTS:
+    void checkUserInput();
+    void onAddButtonClicked();
+    void onRemoveButtonClicked();
+    void onEditButtonClicked();
+    void checkConfiguredUrlsButtonsState();
     void onOkClicked();
     void onCancelClicked();
-    void urlRemoved( const QString &url );
 
   private:
+    void addModelRow( const QString &protocol, const QString &url );
+    
     Ui::ConfigDialog mUi;
-    KConfigDialogManager* mManager;
+    KConfigDialogManager *mManager;
     QStringList mRemovedUrls;
+    QStandardItemModel *mModel;
 };
 
 #endif

@@ -22,18 +22,14 @@
 
 #include <kio/deletejob.h>
 
-DavItemDeleteJob::DavItemDeleteJob( const DavItem &item, QObject *parent )
-  : KJob( parent ), mItem( item )
+DavItemDeleteJob::DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
+  : KJob( parent ), mUrl( url ), mItem( item )
 {
 }
 
 void DavItemDeleteJob::start()
 {
-  KUrl url( mItem.url() );
-  url.setUser( DavManager::self()->user() );
-  url.setPassword( DavManager::self()->password() );
-
-  KIO::DeleteJob *job = KIO::del( url, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::DeleteJob *job = KIO::del( mUrl.url(), KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", "If-Match: " + mItem.etag() );
 

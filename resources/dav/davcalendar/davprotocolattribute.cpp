@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2009 Grégory Oestreicher <greg@kamago.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,31 +16,39 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAVITEMCREATEJOB_H
-#define DAVITEMCREATEJOB_H
+#include "davprotocolattribute.h"
 
-#include "davitem.h"
-#include "davutils.h"
-
-#include <kjob.h>
-
-class DavItemCreateJob : public KJob
+DavProtocolAttribute::DavProtocolAttribute( int protocol )
+  : mDavProtocol( protocol )
 {
-  Q_OBJECT
+}
 
-  public:
-    DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
+int DavProtocolAttribute::davProtocol() const
+{
+  return mDavProtocol;
+}
 
-    virtual void start();
+void DavProtocolAttribute::setDavProtocol( int protocol )
+{
+  mDavProtocol = protocol;
+}
 
-    DavItem item() const;
+Akonadi::Attribute* DavProtocolAttribute::clone() const
+{
+  return new DavProtocolAttribute( mDavProtocol );
+}
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+QByteArray DavProtocolAttribute::type() const
+{
+  return "davprotocol";
+}
 
-  private:
-    DavUtils::DavUrl mUrl;
-    DavItem mItem;
-};
+QByteArray DavProtocolAttribute::serialized() const
+{
+  return QByteArray::number( mDavProtocol );
+}
 
-#endif
+void DavProtocolAttribute::deserialize( const QByteArray &data )
+{
+  mDavProtocol = data.toInt();
+}

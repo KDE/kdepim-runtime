@@ -17,20 +17,51 @@
 */
 
 #include "configdialog.h"
+#include "davutils.h"
 #include "settings.h"
+#include "urlconfigurationdialog.h"
 
 #include <kconfigdialogmanager.h>
+#include <kconfigskeleton.h>
+#include <klocale.h>
+
+#include <QtCore/QList>
+#include <QtCore/QStringList>
+#include <QtGui/QStandardItem>
+#include <QtGui/QStandardItemModel>
 
 ConfigDialog::ConfigDialog( QWidget *parent )
   : KDialog( parent )
 {
   mUi.setupUi( mainWidget() );
+  
+  mModel = new QStandardItemModel();
+  QStringList headers;
+  headers << i18n( "Protocol" ) << i18n( "URL" );
+  mModel->setHorizontalHeaderLabels( headers );
+  
+  mUi.configuredUrls->setModel( mModel );
+  
+  foreach( QString url, Settings::self()->remoteUrls() ) {
+    this->addModelRow( DavUtils::protocolName( Settings::self()->protocol( url ) ), url );
+  }
+  
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
+  connect( mUi.kcfg_displayName, SIGNAL( textChanged( const QString & ) ), this, SLOT( checkUserInput() ) );
+  connect( mUi.configuredUrls->selectionModel(),
+           SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
+           this, SLOT( checkConfiguredUrlsButtonsState() ) );
+  
+  connect( mUi.addButton, SIGNAL( clicked() ), this, SLOT( onAddButtonClicked() ) );
+  connect( mUi.removeButton, SIGNAL( clicked() ), this, SLOT( onRemoveButtonClicked() ) );
+  connect( mUi.editButton, SIGNAL( clicked() ), this, SLOT( onEditButtonClicked() ) );
+  
   connect( this, SIGNAL( okClicked() ), this, SLOT( onOkClicked() ) );
   connect( this, SIGNAL( cancelClicked() ), this, SLOT( onCancelClicked() ) );
-  connect( mUi.kcfg_remoteUrls, SIGNAL( removed( const QString& ) ), this, SLOT( urlRemoved( const QString& ) ) );
+  
+  this->checkUserInput();
 }
 
 ConfigDialog::~ConfigDialog()
@@ -47,11 +78,102 @@ void ConfigDialog::setRemovedUrls( const QStringList &urls )
   mRemovedUrls = urls;
 }
 
+void ConfigDialog::checkUserInput()
+{
+  this->checkConfiguredUrlsButtonsState();
+  
+  if( !mUi.kcfg_displayName->text().isEmpty() && !( mModel->invisibleRootItem()->rowCount() == 0 ) )
+    this->enableButtonOk( true );
+  else
+    this->enableButtonOk( false );
+}
+
+void ConfigDialog::onAddButtonClicked()
+{
+  UrlConfigurationDialog dlg( this );
+  const int result = dlg.exec();
+  
+  if( result == QDialog::Accepted ) {
+    Settings::UrlConfiguration *urlConfig =
+        Settings::self()->newUrlConfiguration( dlg.remoteUrl() );
+    urlConfig->mUser = dlg.username();
+    urlConfig->mProtocol = dlg.protocol();
+    urlConfig->mAuthReq = dlg.authenticationRequired();
+    urlConfig->mUseKWallet = dlg.useKWallet();
+    
+    if( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
+      Settings::self()->setPassword( dlg.remoteUrl(), dlg.username(), dlg.password() );
+    
+    QString protocolName = DavUtils::protocolName( dlg.protocol() );
+    this->addModelRow( protocolName, dlg.remoteUrl() );
+    this->checkUserInput();
+  }
+}
+
+void ConfigDialog::onRemoveButtonClicked()
+{
+  QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
+  if( indexes.size() == 0 )
+    return;
+  
+  // There can be only one (selected row)
+  QModelIndex index = mModel->index( indexes.at( 0 ).row(), 1 );
+  int row = index.row();
+  QString url = index.data().toString();
+  
+  Settings::self()->removeUrlConfiguration( url );
+  mModel->removeRow( row );
+  this->checkUserInput();
+}
+
+void ConfigDialog::onEditButtonClicked()
+{
+  QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
+  if( indexes.size() == 0 )
+    return;
+  
+  // There can be only one (selected row)
+  QModelIndex index = mModel->index( indexes.at( 0 ).row(), 1 );
+  QString url = index.data().toString();
+  
+  Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( url );
+  if( !urlConfig )
+    return;
+  
+  UrlConfigurationDialog dlg( this );
+  dlg.setRemoteUrl( urlConfig->mUrl );
+  dlg.setProtocol( DavUtils::Protocol( urlConfig->mProtocol ) );
+  dlg.setAuthenticationRequired( urlConfig->mAuthReq );
+  dlg.setUsername( urlConfig->mUser );
+  dlg.setPassword( Settings::self()->password( urlConfig->mUrl, urlConfig->mUser ) );
+  dlg.setUseKWallet( urlConfig->mUseKWallet );
+  
+  const int result = dlg.exec();
+  
+  if( result == QDialog::Accepted ) {
+    if( dlg.remoteUrl() != urlConfig->mUrl ) {
+      Settings::self()->removeUrlConfiguration( urlConfig->mUrl );
+      urlConfig = Settings::self()->newUrlConfiguration( dlg.remoteUrl() );
+    }
+    urlConfig->mUser = dlg.username();
+    urlConfig->mProtocol = dlg.protocol();
+    urlConfig->mAuthReq = dlg.authenticationRequired();
+    urlConfig->mUseKWallet = dlg.useKWallet();
+    
+    if( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
+      Settings::self()->setPassword( dlg.remoteUrl(), dlg.username(), dlg.password() );
+    
+    QStandardItem *item = mModel->item( index.row(), 0 ); // Protocol
+    item->setData( QVariant::fromValue( DavUtils::protocolName( dlg.protocol() ) ), Qt::DisplayRole );
+    
+    item = mModel->item( index.row(), 1 ); // URL
+    item->setData( QVariant::fromValue( dlg.remoteUrl() ), Qt::DisplayRole );
+  }
+}
+
 void ConfigDialog::onOkClicked()
 {
   mManager->updateSettings();
-  if ( !mUi.password->text().isEmpty() )
-    Settings::self()->setPassword( mUi.password->text() );
 }
 
 void ConfigDialog::onCancelClicked()
@@ -59,9 +181,25 @@ void ConfigDialog::onCancelClicked()
   mRemovedUrls.clear();
 }
 
-void ConfigDialog::urlRemoved( const QString &url )
+void ConfigDialog::checkConfiguredUrlsButtonsState()
 {
-  mRemovedUrls << url;
+  bool enabled = mUi.configuredUrls->selectionModel()->hasSelection();
+  mUi.removeButton->setEnabled( enabled );
+  mUi.editButton->setEnabled( enabled );
+}
+
+void ConfigDialog::addModelRow( const QString &protocol, const QString &url )
+{
+  QStandardItem *rootItem = mModel->invisibleRootItem();
+  QList<QStandardItem*> items;
+
+  QStandardItem *protocolStandardItem = new QStandardItem( protocol );
+  protocolStandardItem->setEditable( false );
+  items << protocolStandardItem;
+  QStandardItem *urlStandardItem = new QStandardItem( url );
+  urlStandardItem->setEditable( false );
+  items << urlStandardItem;
+  rootItem->appendRow( items );
 }
 
 #include "configdialog.moc"

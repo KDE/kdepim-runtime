@@ -29,24 +29,24 @@
 #include <QtCore/QBuffer>
 #include <QtXmlPatterns/QXmlQuery>
 
-DavItemsListJob::DavItemsListJob( const DavCollection &collection, QObject *parent )
-  : KJob( parent ), mCollection( collection ), mSubJobCount( 0 )
+DavItemsListJob::DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 )
 {
 }
 
 void DavItemsListJob::start()
 {
-  QListIterator<QDomDocument> it( DavManager::self()->davProtocol()->itemsQueries() );
+  QListIterator<QDomDocument> it( DavManager::self()->davProtocol( mUrl.protocol() )->itemsQueries() );
 
   while ( it.hasNext() ) {
     const QDomDocument props = it.next();
 
-    if ( DavManager::self()->davProtocol()->useReport() ) {
-      KIO::DavJob *job = DavManager::self()->createReportJob( mCollection.url(), props );
+    if ( DavManager::self()->davProtocol( mUrl.protocol() )->useReport() ) {
+      KIO::DavJob *job = DavManager::self()->createReportJob( mUrl.url(), props );
       job->setProperty( "davType", "report" );
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
     } else {
-      KIO::DavJob *job = DavManager::self()->createPropFindJob( mCollection.url(), props );
+      KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), props );
       job->setProperty( "davType", "propFind" );
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
     }
@@ -143,13 +143,14 @@ void DavItemsListJob::davJobFinished( KJob *job )
     const QString href = hrefElement.text();
 
     KUrl url = davJob->url();
+    url.setUser( QString() );
+    url.setPassword( QString() );
     if ( href.startsWith( '/' ) ) {
       // href is only a path, use request url to complete
       url.setEncodedPath( href.toAscii() );
     } else {
-      // href is a complete url, so just preserve the user information
+      // href is a complete url
       KUrl tmpUrl( href );
-      tmpUrl.setUser( url.user() );
       url = tmpUrl;
     }
 

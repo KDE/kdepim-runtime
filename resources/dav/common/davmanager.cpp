@@ -29,13 +29,16 @@
 DavManager* DavManager::mSelf = 0;
 
 DavManager::DavManager()
-  : mProtocol( DavUtils::CalDav ), mDavProtocol( new CaldavProtocol )
 {
 }
 
 DavManager::~DavManager()
 {
-  delete mDavProtocol;
+  QMapIterator<DavUtils::Protocol, DavProtocolBase*> it( mProtocols );
+  while( it.hasNext() ) {
+    it.next();
+    delete it.value();
+  }
 }
 
 DavManager* DavManager::self()
@@ -46,52 +49,10 @@ DavManager* DavManager::self()
   return mSelf;
 }
 
-void DavManager::setProtocol( DavUtils::Protocol protocol )
-{
-  mProtocol = protocol;
-
-  delete mDavProtocol;
-  if ( mProtocol == DavUtils::CalDav )
-    mDavProtocol = new CaldavProtocol;
-  else if ( mProtocol == DavUtils::CardDav )
-    mDavProtocol = new CarddavProtocol;
-  else
-    mDavProtocol = new GroupdavProtocol;
-}
-
-DavUtils::Protocol DavManager::protocol() const
-{
-  return mProtocol;
-}
-
-void DavManager::setUser( const QString &user )
-{
-  mUser = user;
-}
-
-QString DavManager::user() const
-{
-  return mUser;
-}
-
-void DavManager::setPassword( const QString &password )
-{
-  mPassword = password;
-}
-
-QString DavManager::password() const
-{
-  return mPassword;
-}
-
 KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument &document ) const
 {
-  KUrl fullUrl( url );
-  fullUrl.setUser( mUser );
-  fullUrl.setPassword( mPassword );
-
   const QString davDepth = "1";
-  KIO::DavJob *job = KIO::davPropFind( fullUrl, document, davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::DavJob *job = KIO::davPropFind( url, document, davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
   // workaround needed, Depth: header doesn't seem to be correctly added
   const QString header = "Content-Type: text/xml\r\nDepth: " + davDepth;
@@ -103,12 +64,8 @@ KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument 
 
 KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &document ) const
 {
-  KUrl fullUrl( url );
-  fullUrl.setUser( mUser );
-  fullUrl.setPassword( mPassword );
-
   const QString davDepth = "1";
-  KIO::DavJob *job = KIO::davReport( fullUrl, document.toString(), davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::DavJob *job = KIO::davReport( url, document.toString(), davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
   // workaround needed, Depth: header doesn't seem to be correctly added
   const QString header = "Content-Type: text/xml\r\nDepth: " + davDepth;
@@ -118,7 +75,32 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
   return job;
 }
 
-const DavProtocolBase* DavManager::davProtocol() const
+const DavProtocolBase* DavManager::davProtocol( DavUtils::Protocol protocol )
 {
-  return mDavProtocol;
+  if( createProtocol( protocol ) )
+    return mProtocols[protocol];
+  else
+    return 0;
+}
+
+bool DavManager::createProtocol( DavUtils::Protocol protocol )
+{
+  if( mProtocols.contains( protocol ) )
+    return true;
+  
+  switch( protocol ) {
+    case DavUtils::CalDav:
+      mProtocols.insert( DavUtils::CalDav, new CaldavProtocol() );
+      break;
+    case DavUtils::CardDav:
+      mProtocols.insert( DavUtils::CardDav, new CarddavProtocol() );
+      break;
+    case DavUtils::GroupDav:
+      mProtocols.insert( DavUtils::GroupDav, new GroupdavProtocol() );
+      break;
+    default:
+      return false;
+  }
+  
+  return true;
 }

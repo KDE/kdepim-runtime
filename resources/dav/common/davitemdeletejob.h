@@ -20,6 +20,7 @@
 #define DAVITEMDELETEJOB_H
 
 #include "davitem.h"
+#include "davutils.h"
 
 #include <kjob.h>
 
@@ -28,7 +29,7 @@ class DavItemDeleteJob : public KJob
   Q_OBJECT
 
   public:
-    DavItemDeleteJob( const DavItem &item, QObject *parent = 0 );
+    DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
 
     virtual void start();
 
@@ -36,6 +37,7 @@ class DavItemDeleteJob : public KJob
     void davJobFinished( KJob* );
 
   private:
+    DavUtils::DavUrl mUrl;
     DavItem mItem;
 };
 

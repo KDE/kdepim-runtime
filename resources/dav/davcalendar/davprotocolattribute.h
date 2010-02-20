@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2009 Grégory Oestreicher <greg@kamago.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,31 +16,28 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAVITEMCREATEJOB_H
-#define DAVITEMCREATEJOB_H
+#ifndef DAVPROTOCOLATTRIBUTE_H
+#define DAVPROTOCOLATTRIBUTE_H
 
-#include "davitem.h"
-#include "davutils.h"
+#include <akonadi/attribute.h>
 
-#include <kjob.h>
+#include <QtCore/QString>
 
-class DavItemCreateJob : public KJob
+class DavProtocolAttribute : public Akonadi::Attribute
 {
-  Q_OBJECT
-
   public:
-    DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
+    DavProtocolAttribute( int protocol = 0 );
 
-    virtual void start();
+    void setDavProtocol( int protocol );
+    int davProtocol() const;
 
-    DavItem item() const;
-
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+    virtual Akonadi::Attribute* clone() const;
+    virtual QByteArray type() const;
+    virtual QByteArray serialized() const;
+    virtual void deserialize( const QByteArray &data );
 
   private:
-    DavUtils::DavUrl mUrl;
-    DavItem mItem;
+	int mDavProtocol;
 };
 
 #endif

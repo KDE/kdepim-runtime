@@ -27,6 +27,7 @@
 #include "davitemmodifyjob.h"
 #include "davitemslistjob.h"
 #include "davmanager.h"
+#include "davprotocolattribute.h"
 #include "davprotocolbase.h"
 #include "etagattribute.h"
 #include "settings.h"
@@ -61,6 +62,7 @@ DavCalendarResource::DavCalendarResource( const QString &id )
 
   AttributeFactory::registerAttribute<ETagAttribute>();
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
+  AttributeFactory::registerAttribute<DavProtocolAttribute>();
 
   mDavCollectionRoot.setParentCollection( Collection::root() );
   mDavCollectionRoot.setName( name() );
@@ -85,20 +87,7 @@ DavCalendarResource::DavCalendarResource( const QString &id )
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
 
   Settings::self()->setWinId( winIdForDialogs() );
-
-  switch( Settings::self()->remoteProtocol() ) {
-    case Settings::groupdav:
-      DavManager::self()->setProtocol( DavUtils::GroupDav );
-      break;
-    case Settings::caldav:
-      DavManager::self()->setProtocol( DavUtils::CalDav );
-      break;
-    default:
-      break;
-  }
-
-  DavManager::self()->setUser( Settings::self()->username() );
-  DavManager::self()->setPassword( Settings::self()->password() );
+  synchronize();
 }
 
 DavCalendarResource::~DavCalendarResource()
@@ -118,31 +107,8 @@ void DavCalendarResource::configure( WId windowId )
 
   if ( result == QDialog::Accepted ) {
     Settings::self()->writeConfig();
-
-    switch( Settings::self()->remoteProtocol() ) {
-      case Settings::groupdav:
-        DavManager::self()->setProtocol( DavUtils::GroupDav );
-        emit status( Idle, i18n( "Using GroupDAV" ) );
-        break;
-      case Settings::caldav:
-        DavManager::self()->setProtocol( DavUtils::CalDav );
-        emit status( Idle, i18n( "Using CalDAV" ) );
-        break;
-      case Settings::carddav:
-        DavManager::self()->setProtocol( DavUtils::CardDav );
-        emit status( Idle, i18n( "Using CardDAV" ) );
-        break;
-      default:
-        emit status( Broken, i18n( "No protocol configured" ) );
-        break;
-    }
-
-    DavManager::self()->setUser( Settings::self()->username() );
-    DavManager::self()->setPassword( Settings::self()->password() );
-
     clearCache();
     synchronize();
-
     emit configurationDialogAccepted();
   } else {
     emit configurationDialogRejected();
@@ -161,7 +127,7 @@ void DavCalendarResource::retrieveCollections()
 
   emit status( Running, i18n( "Fetching collections" ) );
 
-  DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->remoteUrls() );
+  DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->configuredDavUrls() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveCollectionsFinished( KJob* ) ) );
   job->start();
 }
@@ -176,10 +142,9 @@ void DavCalendarResource::retrieveItems( const Akonadi::Collection &collection )
     return;
   }
 
-  DavCollection davCollection;
-  davCollection.setUrl( collection.remoteId() );
+  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
 
-  DavItemsListJob *job = new DavItemsListJob( davCollection );
+  DavItemsListJob *job = new DavItemsListJob( davUrl );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveItemsFinished( KJob* ) ) );
   job->start();
@@ -195,12 +160,14 @@ bool DavCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
     return false;
   }
 
+  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
   davItem.setContentType( "text/calendar" );
   davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
 
-  DavItemFetchJob *job = new DavItemFetchJob( davItem );
+  DavItemFetchJob *job = new DavItemFetchJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveItemFinished( KJob* ) ) );
   job->start();
@@ -242,7 +209,8 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
     }
 
     url = KUrl( basePath + fileName + ".vcf" );
-    mimeType = DavManager::self()->davProtocol()->contactsMimeType();
+    DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
+    mimeType = DavManager::self()->davProtocol( DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
 
     KABC::VCardConverter converter;
     rawData = converter.createVCard( contact );
@@ -267,17 +235,17 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
     return;
   }
 
-  url.setUser( Settings::self()->username() );
-
   const QString urlStr = url.prettyUrl();
   kDebug() << "Item " << item.id() << " will be put to " << urlStr;
 
+  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( urlStr );
+  
   DavItem davItem;
   davItem.setUrl( urlStr );
   davItem.setContentType( mimeType );
   davItem.setData( rawData );
 
-  DavItemCreateJob *job = new DavItemCreateJob( davItem );
+  DavItemCreateJob *job = new DavItemCreateJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemAddedFinished( KJob* ) ) );
   job->start();
@@ -302,7 +270,8 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
 
     KABC::VCardConverter converter;
     rawData = converter.createVCard( contact );
-    mimeType = DavManager::self()->davProtocol()->contactsMimeType();
+    DavProtocolAttribute *protoAttr = item.parentCollection().attribute<DavProtocolAttribute>();
+    mimeType = DavManager::self()->davProtocol( DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
 
@@ -315,13 +284,15 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
     return;
   }
 
+  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
   davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
   davItem.setContentType( mimeType );
   davItem.setData( rawData );
 
-  DavItemModifyJob *job = new DavItemModifyJob( davItem );
+  DavItemModifyJob *job = new DavItemModifyJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemChangedFinished( KJob* ) ) );
   job->start();
@@ -335,11 +306,13 @@ void DavCalendarResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
+  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
   davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
 
-  DavItemDeleteJob *job = new DavItemDeleteJob( davItem );
+  DavItemDeleteJob *job = new DavItemDeleteJob( davUrl, davItem );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemRemovedFinished( KJob* ) ) );
   job->start();
 }
@@ -387,7 +360,10 @@ void DavCalendarResource::onRetrieveCollectionsFinished( KJob *job )
       mimeTypes << QLatin1String( "text/calendar" );
 
     collection.setContentMimeTypes( mimeTypes );
-
+    
+    DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
+    protoAttr->setDavProtocol( davCollection.protocol() );
+    
     collections << collection;
   }
 
@@ -521,53 +497,13 @@ void DavCalendarResource::doResourceInitialization()
     return;
   }
 
-  switch( Settings::self()->remoteProtocol() ) {
-    case Settings::groupdav:
-      DavManager::self()->setProtocol( DavUtils::GroupDav );
-      emit status( Idle, i18n( "Using GroupDAV" ) );
-      break;
-    case Settings::caldav:
-      DavManager::self()->setProtocol( DavUtils::CalDav );
-      emit status( Idle, i18n( "Using GroupDAV" ) );
-      emit status( Idle, i18n( "Using CalDAV" ) );
-      break;
-    default:
-      emit status( Broken, i18n( "No protocol configured" ) );
-      return;
-  }
-
   synchronize();
 }
 
 bool DavCalendarResource::configurationIsValid()
 {
-  if ( !(Settings::self()->remoteProtocol() == Settings::groupdav ||
-         Settings::self()->remoteProtocol() == Settings::caldav ||
-         Settings::self()->remoteProtocol() == Settings::carddav ) )
-    return false;
-
   if ( Settings::self()->remoteUrls().empty() )
     return false;
-
-  QStringList urls;
-  foreach ( const QString &url, Settings::self()->remoteUrls() ) {
-    if ( !url.endsWith( '/' ) )
-      urls << url + QLatin1Char( '/' );
-    else
-      urls << url;
-  }
-
-  Settings::self()->setRemoteUrls( urls );
-
-  if ( Settings::self()->authenticationRequired() ) {
-    if ( Settings::self()->username().isEmpty() )
-      return false;
-
-    Settings::self()->askForPassword();
-
-    if ( Settings::self()->password().isEmpty() )
-      return false;
-  }
 
   int newICT = Settings::self()->refreshInterval();
   if ( newICT == 0 )

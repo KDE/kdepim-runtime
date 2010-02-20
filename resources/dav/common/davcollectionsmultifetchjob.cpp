@@ -20,14 +20,14 @@
 
 #include "davcollectionsfetchjob.h"
 
-DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob( const KUrl::List &urls, QObject *parent )
+DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent )
   : KJob( parent ), mUrls( urls ), mSubJobCount( 0 )
 {
 }
 
 void DavCollectionsMultiFetchJob::start()
 {
-  foreach ( const KUrl &url, mUrls ) {
+  foreach ( const DavUtils::DavUrl &url, mUrls ) {
     DavCollectionsFetchJob *job = new DavCollectionsFetchJob( url, this );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
     job->start();

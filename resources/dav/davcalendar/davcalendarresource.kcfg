@@ -14,35 +14,9 @@
       <label>Refresh every</label>
       <default>5</default>
     </entry>
-    <entry name="remoteProtocol" type="Enum">
-      <label>Remote access protocol</label>
-      <choices>
-        <choice name="caldav">
-          <label>CalDAV</label>
-        </choice>
-        <choice name="carddav">
-          <label>CardDAV</label>
-        </choice>
-        <choice name="groupdav">
-          <label>GroupDAV</label>
-        </choice>
-      </choices>
-      <default></default>
-    </entry>
     <entry name="remoteUrls" type="StringList">
       <label>Remote URLs</label>
       <default></default>
-    </entry>
-    <entry name="authenticationRequired" type="Bool">
-      <label>Backend requires authentication</label>
-      <default></default>
-    </entry>
-    <entry name="username" type="String">
-      <label>Username</label>
-      <default></default>
-    </entry>
-    <entry name="useKWallet" type="Bool">
-      <default>true</default>
     </entry>
     <entry name="readOnly" type="Bool">
       <label>Do not change the actual backend data.</label>

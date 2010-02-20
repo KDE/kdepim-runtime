@@ -36,23 +36,19 @@ static QString etagFromHeaders( const QString &headers )
 }
 
 
-DavItemModifyJob::DavItemModifyJob( const DavItem &item, QObject *parent )
-  : KJob( parent ), mItem( item )
+DavItemModifyJob::DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
+  : KJob( parent ), mUrl( url ), mItem( item )
 {
 }
 
 void DavItemModifyJob::start()
 {
-  KUrl url( mItem.url() );
-  url.setUser( DavManager::self()->user() );
-  url.setPassword( DavManager::self()->password() );
-
   QString headers = "Content-Type: ";
   headers += mItem.contentType();
   headers += "\r\n";
   headers += "If-Match: " + mItem.etag();
 
-  KIO::StoredTransferJob *job = KIO::storedPut( mItem.data(), url, -1, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::StoredTransferJob *job = KIO::storedPut( mItem.data(), mUrl.url(), -1, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", headers );
 

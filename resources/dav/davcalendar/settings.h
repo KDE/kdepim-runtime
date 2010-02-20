@@ -24,6 +24,10 @@
 
 #include "settingsbase.h"
 
+#include "davutils.h"
+
+#include <QtCore/QMap>
+
 namespace KWallet {
   class Wallet;
 }
@@ -34,22 +38,55 @@ class Settings : public SettingsBase
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.davCalendar.Wallet" )
 
   public:
+    class UrlConfiguration
+    {
+      public:
+        UrlConfiguration();
+        QString mUrl;
+        QString mUser;
+        int mProtocol;
+        bool mAuthReq;
+        bool mUseKWallet;
+    };
+    
     Settings();
     ~Settings();
     static Settings* self();
     void setWinId( WId wid );
-    void storePassword();
-    void askForPassword();
-
-  public Q_SLOTS:
-    Q_SCRIPTABLE QString password() const;
-    Q_SCRIPTABLE void setPassword( const QString &password );
+    
+    DavUtils::DavUrl::List configuredDavUrls();
+    /**
+     * Creates and returns the DavUrl that corresponds to the configuration for searchUrl.
+     * If finalUrl is supplied, then it will be used in the returned object instead of the searchUrl.
+     */
+    DavUtils::DavUrl configuredDavUrl( const QString &searchUrl, const QString &finalUrl = QString() );
+    
+    /**
+     * Creates the DavUrl from the configured URL that most closely matches the given url.
+     * Most closely means url.startsWith( configuredUrl ).
+     */
+    DavUtils::DavUrl davUrlFromUrl( const QString &url );
+    
+    UrlConfiguration * newUrlConfiguration( const QString &url );
+    void removeUrlConfiguration( const QString &url );
+    UrlConfiguration * urlConfiguration( const QString &url );
+    
+    bool authenticationRequired( const QString &url ) const;
+    DavUtils::Protocol protocol( const QString &url ) const;
+    QString username( const QString &url ) const;
+    bool useKWallet( const QString &url ) const;
+    
+    void setPassword( const QString &url, const QString &username, const QString &password );
+    QString password( const QString &url, const QString &username );
 
   private:
-    void requestPassword( const QString &username );
+    QString requestPassword( const QString &url, const QString &username );
+    QString promptForPassword( const QString &url, const QString &username );
+    void storePassword( const QString &url, const QString &username, const QString &password );
 
     WId mWinId;
-    QString mPassword;
+    QMap<QString, UrlConfiguration*> mUrls;
+    QMap<QString, QString> mCachedPasswords;
     KWallet::Wallet *mWallet;
 };
 

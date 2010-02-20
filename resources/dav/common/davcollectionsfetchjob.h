@@ -20,16 +20,16 @@
 #define DAVCOLLECTIONSFETCHJOB_H
 
 #include "davcollection.h"
+#include "davutils.h"
 
 #include <kjob.h>
-#include <kurl.h>
 
 class DavCollectionsFetchJob : public KJob
 {
   Q_OBJECT
 
   public:
-    DavCollectionsFetchJob( const KUrl &url, QObject *parent = 0 );
+    DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
     virtual void start();
 
@@ -39,7 +39,7 @@ class DavCollectionsFetchJob : public KJob
     void davJobFinished( KJob* );
 
   private:
-    KUrl mUrl;
+    DavUtils::DavUrl mUrl;
     DavCollection::List mCollections;
 };
 

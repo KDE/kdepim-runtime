@@ -20,6 +20,7 @@
 #define DAVITEMFETCHJOB_H
 
 #include "davitem.h"
+#include "davutils.h"
 
 #include <kjob.h>
 
@@ -28,7 +29,7 @@ class DavItemFetchJob : public KJob
   Q_OBJECT
 
   public:
-    DavItemFetchJob( const DavItem &item, QObject *parent = 0 );
+    DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
 
     virtual void start();
 
@@ -38,6 +39,7 @@ class DavItemFetchJob : public KJob
     void davJobFinished( KJob* );
 
   private:
+    DavUtils::DavUrl mUrl;
     DavItem mItem;
 };
 

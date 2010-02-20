@@ -20,16 +20,16 @@
 #define DAVCOLLECTIONSMULTIFETCHJOB_H
 
 #include "davcollection.h"
+#include "davutils.h"
 
 #include <kjob.h>
-#include <kurl.h>
 
 class DavCollectionsMultiFetchJob : public KJob
 {
   Q_OBJECT
 
   public:
-    DavCollectionsMultiFetchJob( const KUrl::List &urls, QObject *parent = 0 );
+    DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent = 0 );
 
     virtual void start();
 
@@ -39,7 +39,7 @@ class DavCollectionsMultiFetchJob : public KJob
     void davJobFinished( KJob* );
 
   private:
-    KUrl::List mUrls;
+    DavUtils::DavUrl::List mUrls;
     DavCollection::List mCollections;
     uint mSubJobCount;
 };

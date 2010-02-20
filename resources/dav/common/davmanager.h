@@ -21,6 +21,7 @@
 
 #include "davutils.h"
 
+#include <QtCore/QMap>
 #include <QtCore/QString>
 
 class DavProtocolBase;
@@ -46,31 +47,25 @@ class DavManager
      */
     static DavManager* self();
 
-    void setProtocol( DavUtils::Protocol protocol );
-    DavUtils::Protocol protocol() const;
-
-    void setUser( const QString &user );
-    QString user() const;
-
-    void setPassword( const QString &password );
-    QString password() const;
-
     KIO::DavJob* createPropFindJob( const KUrl &url, const QDomDocument &document ) const;
 
     KIO::DavJob* createReportJob( const KUrl &url, const QDomDocument &document ) const;
 
-    const DavProtocolBase* davProtocol() const;
+    const DavProtocolBase* davProtocol( DavUtils::Protocol protocol );
 
   private:
     /**
      * Creates a new DAV manager.
      */
     DavManager();
+    
+    /**
+     * Creates a new protocol.
+     */
+    bool createProtocol( DavUtils::Protocol protocol );
 
-    DavUtils::Protocol mProtocol;
-    QString mUser;
-    QString mPassword;
-    DavProtocolBase *mDavProtocol;
+    typedef QMap<DavUtils::Protocol, DavProtocolBase*> protocolsMap;
+    protocolsMap mProtocols;
     static DavManager* mSelf;
 };
 

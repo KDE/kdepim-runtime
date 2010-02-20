@@ -20,6 +20,7 @@
 #define DAVITEMMODIFYJOB_H
 
 #include "davitem.h"
+#include "davutils.h"
 
 #include <kjob.h>
 
@@ -28,7 +29,7 @@ class DavItemModifyJob : public KJob
   Q_OBJECT
 
   public:
-    DavItemModifyJob( const DavItem &item, QObject *parent = 0 );
+    DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
 
     virtual void start();
 
@@ -38,6 +39,7 @@ class DavItemModifyJob : public KJob
     void davJobFinished( KJob* );
 
   private:
+    DavUtils::DavUrl mUrl;
     DavItem mItem;
 };
 
