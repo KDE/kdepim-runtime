@@ -320,7 +320,7 @@ void NepomukFeederAgentBase::selfTest()
   emit status( Broken, i18n( "Nepomuk not operational" ) );
   if ( !QDBusConnection::sessionBus().registerService( QLatin1String( "org.kde.pim.nepomukfeeder.selftestreport" ) ) )
     return;
-  KMessageBox::error( 0, message, i18n( "Nepomuk Indexing Disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
+  //KMessageBox::error( 0, message, i18n( "Nepomuk Indexing Disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
   QDBusConnection::sessionBus().unregisterService( QLatin1String( "org.kde.pim.nepomukfeeder.selftestreport" ) );
 }
 
