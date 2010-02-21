@@ -1,9 +1,13 @@
 [Desktop Entry]
 Name=MailBox
+Name[sv]=Mailbox
 Name[uk]=MailBox
+Name[x-test]=xxMailBoxxx
 Icon=message-rfc822
 Comment=Mailbox account
+Comment[sv]=Mailbox-konto
 Comment[uk]=Обліковий запис Mailbox
+Comment[x-test]=xxMailbox accountxx
 
 [Wizard]
 Type=message/rfc822
