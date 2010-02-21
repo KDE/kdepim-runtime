@@ -23,8 +23,6 @@
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
 
-#include <QMessageBox>
-
 UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   : KDialog( parent )
 {
@@ -175,9 +173,6 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
   // Actually only the display name can be changed, so no stricts checks are required
   QString newName = topLeft.data().toString();
   QString url = topLeft.sibling( topLeft.row(), 1 ).data().toString();
-  QMessageBox box;
-  box.setText( newName + " / " + url );
-  box.exec();
 }
 
 bool UrlConfigurationDialog::checkUserAuthInput() {
