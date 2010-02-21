@@ -52,6 +52,7 @@ class ConfigDialog : public KDialog
     
     Ui::ConfigDialog mUi;
     KConfigDialogManager *mManager;
+    QStringList mAddedUrls;
     QStringList mRemovedUrls;
     QStandardItemModel *mModel;
 };

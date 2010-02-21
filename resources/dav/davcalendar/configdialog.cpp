@@ -106,6 +106,7 @@ void ConfigDialog::onAddButtonClicked()
     
     QString protocolName = DavUtils::protocolName( dlg.protocol() );
     this->addModelRow( protocolName, dlg.remoteUrl() );
+    mAddedUrls << dlg.remoteUrl();
     this->checkUserInput();
   }
 }
@@ -121,7 +122,7 @@ void ConfigDialog::onRemoveButtonClicked()
   int row = index.row();
   QString url = index.data().toString();
   
-  Settings::self()->removeUrlConfiguration( url );
+  mRemovedUrls << url;
   mModel->removeRow( row );
   this->checkUserInput();
 }
@@ -174,11 +175,19 @@ void ConfigDialog::onEditButtonClicked()
 void ConfigDialog::onOkClicked()
 {
   mManager->updateSettings();
+  
+  foreach( const QString &url, mRemovedUrls ) {
+    Settings::self()->removeUrlConfiguration( url );
+  }
 }
 
 void ConfigDialog::onCancelClicked()
 {
   mRemovedUrls.clear();
+  
+  foreach( const QString &url, mAddedUrls ) {
+    Settings::self()->removeUrlConfiguration( url );
+  }
 }
 
 void ConfigDialog::checkConfiguredUrlsButtonsState()

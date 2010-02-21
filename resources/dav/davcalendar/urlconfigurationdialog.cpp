@@ -23,6 +23,8 @@
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
 
+#include <QMessageBox>
+
 UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   : KDialog( parent )
 {
@@ -34,6 +36,8 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   mModel->setHorizontalHeaderLabels( headers );
   
   mUi.discoveredUrls->setModel( mModel );
+  connect( mModel, SIGNAL( dataChanged( const QModelIndex &, const QModelIndex & ) ),
+           this, SLOT( onModelDataChanged( const QModelIndex &, const QModelIndex & ) ) );
   
   connect( mUi.remoteUrl, SIGNAL( textChanged( const QString & ) ), this, SLOT( checkUserInput() ) );
   connect( mUi.authenticationRequired, SIGNAL( toggled( bool ) ), this, SLOT( checkUserInput() ) );
@@ -166,6 +170,16 @@ void UrlConfigurationDialog::onCollectionsFetchDone( KJob *job )
   this->checkUserInput();
 }
 
+void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight )
+{
+  // Actually only the display name can be changed, so no stricts checks are required
+  QString newName = topLeft.data().toString();
+  QString url = topLeft.sibling( topLeft.row(), 1 ).data().toString();
+  QMessageBox box;
+  box.setText( newName + " / " + url );
+  box.exec();
+}
+
 bool UrlConfigurationDialog::checkUserAuthInput() {
   bool ret = false;
   
@@ -186,7 +200,7 @@ void UrlConfigurationDialog::addModelRow( const QString &displayName, const QStr
   QList<QStandardItem*> items;
 
   QStandardItem *displayNameStandardItem = new QStandardItem( displayName );
-  displayNameStandardItem->setEditable( false );
+  displayNameStandardItem->setEditable( true );
   items << displayNameStandardItem;
   QStandardItem *urlStandardItem = new QStandardItem( url );
   urlStandardItem->setEditable( false );

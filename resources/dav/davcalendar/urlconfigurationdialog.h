@@ -26,6 +26,7 @@
 #include <QtCore/QString>
 
 class KJob;
+class QModelIndex;
 class QStandardItemModel;
 
 class UrlConfigurationDialog : public KDialog
@@ -58,6 +59,7 @@ class UrlConfigurationDialog : public KDialog
     void onFetchButtonClicked();
     void onOkButtonClicked();
     void onCollectionsFetchDone( KJob *job );
+    void onModelDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight );
     
   private:
     bool checkUserAuthInput();
