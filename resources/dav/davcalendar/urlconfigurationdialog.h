@@ -60,6 +60,7 @@ class UrlConfigurationDialog : public KDialog
     void onOkButtonClicked();
     void onCollectionsFetchDone( KJob *job );
     void onModelDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight );
+    void onChangeDisplayNameFinished( KJob *job );
     
   private:
     bool checkUserAuthInput();

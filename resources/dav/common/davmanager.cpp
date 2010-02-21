@@ -75,6 +75,11 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
   return job;
 }
 
+KIO::DavJob* DavManager::createPropPatchJob( const KUrl &url, const QDomDocument &document ) const
+{
+  return KIO::davPropPatch( url, document, KIO::HideProgressInfo | KIO::DefaultFlags );
+}
+
 const DavProtocolBase* DavManager::davProtocol( DavUtils::Protocol protocol )
 {
   if( createProtocol( protocol ) )

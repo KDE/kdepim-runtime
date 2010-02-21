@@ -17,9 +17,12 @@
 */
 
 #include "davcollectionsfetchjob.h"
+#include "davcollectionmodifyjob.h"
 #include "davutils.h"
+#include "settings.h"
 #include "urlconfigurationdialog.h"
 
+#include <QtGui/QErrorMessage>
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
 
@@ -127,9 +130,12 @@ void UrlConfigurationDialog::checkUserInput()
 
 void UrlConfigurationDialog::onFetchButtonClicked()
 {
-  for( int i = 0; i < mModel->rowCount(); ++i ) {
-    mModel->removeRow( i );
-  }
+  mUi.discoveredUrls->setEnabled( false );
+  
+  mModel->clear();
+  QStringList headers;
+  headers << i18n( "Display name" ) << i18n( "URL" );
+  mModel->setHorizontalHeaderLabels( headers );
   
   KUrl url( mUi.remoteUrl->text() );
   if( this->authenticationRequired() ) {
@@ -154,6 +160,8 @@ void UrlConfigurationDialog::onOkButtonClicked()
 
 void UrlConfigurationDialog::onCollectionsFetchDone( KJob *job )
 {
+  mUi.discoveredUrls->setEnabled( true );
+  
   if( job->error() )
     return;
   
@@ -173,6 +181,28 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
   // Actually only the display name can be changed, so no stricts checks are required
   QString newName = topLeft.data().toString();
   QString url = topLeft.sibling( topLeft.row(), 1 ).data().toString();
+  
+  KUrl fullUrl( url );
+  if( this->authenticationRequired() ) {
+    fullUrl.setUser( this->username() );
+    fullUrl.setPassword( this->password() );
+  }
+  
+  DavUtils::DavUrl davUrl( fullUrl, this->protocol() );
+  DavCollectionModifyJob *job = new DavCollectionModifyJob( davUrl );
+  job->setProperty( "displayname", newName );
+  connect( job, SIGNAL( result( KJob * ) ), this, SLOT( onChangeDisplayNameFinished( KJob * ) ) );
+  job->start();
+  mUi.discoveredUrls->setEnabled( false );
+}
+
+void UrlConfigurationDialog::onChangeDisplayNameFinished( KJob *job )
+{
+  if( job->error() ) {
+    QErrorMessage msg;
+    msg.showMessage( job->errorText() );
+  }
+  this->onFetchButtonClicked();
 }
 
 bool UrlConfigurationDialog::checkUserAuthInput() {
