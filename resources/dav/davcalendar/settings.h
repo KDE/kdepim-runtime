@@ -53,6 +53,7 @@ class Settings : public SettingsBase
     ~Settings();
     static Settings* self();
     void setWinId( WId wid );
+    void writeConfig();
     
     DavUtils::DavUrl::List configuredDavUrls();
     /**
@@ -86,6 +87,7 @@ class Settings : public SettingsBase
 
     WId mWinId;
     QMap<QString, UrlConfiguration*> mUrls;
+    QList<UrlConfiguration*> mToDeleteUrlConfigs;
     QMap<QString, QString> mCachedPasswords;
     KWallet::Wallet *mWallet;
 };

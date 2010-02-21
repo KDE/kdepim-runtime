@@ -95,6 +95,14 @@ void Settings::setWinId( WId winId )
   mWinId = winId;
 }
 
+void Settings::writeConfig()
+{
+  SettingsBase::writeConfig();
+  QListIterator<UrlConfiguration*> it( mToDeleteUrlConfigs );
+  while( it.hasNext() )
+    delete it.next();
+}
+
 DavUtils::DavUrl::List Settings::configuredDavUrls()
 {
   DavUtils::DavUrl::List davUrls;
@@ -205,7 +213,9 @@ void Settings::removeUrlConfiguration( const QString &url )
 {
   if( !mUrls.contains( url ) )
     return;
-  
+ 
+  kDebug() << "Deleting URL " << url;
+   
   QStringList oldUrls = this->remoteUrls();
   QStringList newUrls;
   foreach( QString tmpUrl, oldUrls ) {
@@ -213,11 +223,14 @@ void Settings::removeUrlConfiguration( const QString &url )
       newUrls << tmpUrl;
   }
   this->setRemoteUrls( newUrls );
+  kDebug() << "Remaining URLs " << newUrls;
   
   UrlConfiguration *urlConfig = mUrls[url];
   mUrls.remove( url );
-  KConfigGroup( this->config(), url ).deleteGroup();
-  delete urlConfig;
+  this->config()->deleteGroup( url );
+  // Apparently it is not possible to call delete urlConfig here,
+  // so postpone the deletion until after writeConfig()
+  mToDeleteUrlConfigs << urlConfig;
 }
 
 Settings::UrlConfiguration * Settings::urlConfiguration( const QString &url )
