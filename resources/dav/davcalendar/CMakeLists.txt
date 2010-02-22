@@ -66,7 +66,6 @@ set( davcalendarresource_SRCS
   configdialog.cpp
   davcalendarresource.cpp
   davprotocolattribute.cpp
-  etagattribute.cpp
   groupdavprotocol.cpp
   settings.cpp
   urlconfigurationdialog.cpp

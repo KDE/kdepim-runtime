@@ -29,7 +29,6 @@
 #include "davmanager.h"
 #include "davprotocolattribute.h"
 #include "davprotocolbase.h"
-#include "etagattribute.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
@@ -60,7 +59,6 @@ DavCalendarResource::DavCalendarResource( const QString &id )
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                                                 Settings::self(), QDBusConnection::ExportAdaptors );
 
-  AttributeFactory::registerAttribute<ETagAttribute>();
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
   AttributeFactory::registerAttribute<DavProtocolAttribute>();
 
@@ -83,7 +81,6 @@ DavCalendarResource::DavCalendarResource( const QString &id )
   changeRecorder()->fetchCollection( true );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
-  changeRecorder()->itemFetchScope().fetchAttribute<ETagAttribute>();
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
 
   Settings::self()->setWinId( winIdForDialogs() );
@@ -165,7 +162,7 @@ bool DavCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
   davItem.setContentType( "text/calendar" );
-  davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
+  davItem.setEtag( item.remoteRevision() );
 
   DavItemFetchJob *job = new DavItemFetchJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
@@ -288,7 +285,7 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
-  davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
+  davItem.setEtag( item.remoteRevision() );
   davItem.setContentType( mimeType );
   davItem.setData( rawData );
 
@@ -310,7 +307,7 @@ void DavCalendarResource::itemRemoved( const Akonadi::Item &item )
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
-  davItem.setEtag( item.attribute<ETagAttribute>()->etag() );
+  davItem.setEtag( item.remoteRevision() );
 
   DavItemDeleteJob *job = new DavItemDeleteJob( davUrl, davItem );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemRemovedFinished( KJob* ) ) );
@@ -398,8 +395,7 @@ void DavCalendarResource::onRetrieveItemsFinished( KJob *job )
     else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::todoMimeType() ) )
       item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
 
-    ETagAttribute *attr = item.attribute<ETagAttribute>( Item::AddIfMissing );
-    attr->setEtag( davItem.etag() );
+    item.setRemoteRevision( davItem.etag() );
 
     items << item;
   }
@@ -440,7 +436,7 @@ void DavCalendarResource::onRetrieveItemFinished( KJob *job )
   }
 
   // update etag
-  item.attribute<ETagAttribute>( Item::AddIfMissing )->setEtag( davItem.etag() );
+  item.setRemoteRevision( davItem.etag() );
 
   itemRetrieved( item );
 }
@@ -458,7 +454,7 @@ void DavCalendarResource::onItemAddedFinished( KJob *job )
 
   Akonadi::Item item = createJob->property( "item" ).value<Akonadi::Item>();
   item.setRemoteId( davItem.url() );
-  item.attribute<ETagAttribute>( Item::AddIfMissing )->setEtag( davItem.etag() );
+  item.setRemoteRevision( davItem.etag() );
 
   changeCommitted( item );
 }
@@ -475,7 +471,7 @@ void DavCalendarResource::onItemChangedFinished( KJob *job )
   const DavItem davItem = modifyJob->item();
 
   Akonadi::Item item = modifyJob->property( "item" ).value<Akonadi::Item>();
-  item.attribute<ETagAttribute>( Item::AddIfMissing )->setEtag( davItem.etag() );
+  item.setRemoteRevision( davItem.etag() );
 
   changeCommitted( item );
 }
