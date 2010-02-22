@@ -260,6 +260,8 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
     return;
   }
 
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+
   QByteArray rawData;
   QString mimeType;
 
@@ -269,8 +271,7 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
     KABC::VCardConverter converter;
     rawData = converter.createVCard( contact );
 
-    const DavProtocolAttribute *protoAttr = item.parentCollection().attribute<DavProtocolAttribute>();
-    mimeType = DavManager::self()->davProtocol( DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
+    mimeType = DavManager::self()->davProtocol( davUrl.protocol() )->contactsMimeType();
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
 
@@ -282,8 +283,6 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
     cancelTask( i18n( "Unable to retrieve added item %1." ).arg( item.id() ) );
     return;
   }
-
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
