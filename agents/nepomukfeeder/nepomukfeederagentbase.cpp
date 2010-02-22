@@ -87,7 +87,8 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   mNepomukStartupTimeout.setInterval( 60 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
   connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
-  connect( QDBusConnection::sessionBus().interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)), SLOT(serviceOwnerChanged(QString,QString,QString)) );
+  connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
+  connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
 
   setOnline( false );
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
@@ -108,7 +109,7 @@ void NepomukFeederAgentBase::itemAdded(const Akonadi::Item& item, const Akonadi:
     updateItem( item, createGraphForEntity( item ) );
 }
 
-void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >&)
+void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
   if ( entityIsHidden( item.parentCollection() ) )
     return;
@@ -255,7 +256,7 @@ void NepomukFeederAgentBase::selfTest()
   QStringList errorMessages;
 
   // if Nepomuk is not running, try to start it
-  if ( !mNepomukStartupAttempted && !QDBusConnection::sessionBus().interface()->isServiceRegistered( QLatin1String( "org.kde.NepomukStorage" ) ) ) {
+  if ( !mNepomukStartupAttempted && !Nepomuk::ResourceManager::instance()->initialized() ) {
     KProcess process;
     const QString nepomukserver = KStandardDirs::findExe( QLatin1String("nepomukserver") );
     if ( process.startDetached( nepomukserver ) == 0 ) {
@@ -271,7 +272,7 @@ void NepomukFeederAgentBase::selfTest()
   }
 
   // if it is already running, check if the backend is correct
-  if ( QDBusConnection::sessionBus().interface()->isServiceRegistered( QLatin1String( "org.kde.NepomukStorage" ) ) ) {
+  if ( Nepomuk::ResourceManager::instance()->initialized() ) {
     static const QStringList backendBlacklist = QStringList() << QLatin1String( "redland" );
     // check which backend is used
     QDBusInterface interface( QLatin1String( "org.kde.NepomukStorage" ), QLatin1String( "/nepomukstorage" ) );
@@ -283,6 +284,11 @@ void NepomukFeederAgentBase::selfTest()
     } else {
       errorMessages.append( i18n( "Calling the Nepomuk storage service failed: '%1'.", reply.error().message() ) );
     }
+  } else if ( mNepomukStartupAttempted && mNepomukStartupTimeout.isActive() ) {
+    // still waiting for Nepomuk to start
+    setOnline( false );
+    emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
+    return;
   } else {
     errorMessages.append( i18n( "Nepomuk is not running." ) );
   }
@@ -297,6 +303,7 @@ void NepomukFeederAgentBase::selfTest()
   if ( errorMessages.isEmpty() ) {
     setOnline( true );
     mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
+    mNepomukStartupTimeout.stop();
     if ( !mInitialUpdateDone ) {
       mInitialUpdateDone = true;
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
@@ -322,15 +329,6 @@ void NepomukFeederAgentBase::selfTest()
     return;
   KMessageBox::error( 0, message, i18n( "Nepomuk Indexing Disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
   QDBusConnection::sessionBus().unregisterService( QLatin1String( "org.kde.pim.nepomukfeeder.selftestreport" ) );
-}
-
-void NepomukFeederAgentBase::serviceOwnerChanged(const QString& name, const QString& oldOwner, const QString& newOwner)
-{
-  Q_UNUSED( oldOwner );
-  Q_UNUSED( newOwner );
-
-  if ( name == QLatin1String("org.kde.NepomukStorage") )
-    selfTest();
 }
 
 NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QString& emailAddress, const QString& name, const QUrl& graphUri, bool* found)

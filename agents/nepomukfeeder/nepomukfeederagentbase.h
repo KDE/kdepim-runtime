@@ -154,6 +154,7 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
 
     void collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent);
     void collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers);
+    using AgentBase::ObserverV2::collectionChanged;
     void collectionRemoved(const Akonadi::Collection& collection);
 
   private:
@@ -166,7 +167,6 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     void itemFetchResult( KJob* job );
 
     void selfTest();
-    void serviceOwnerChanged( const QString &name, const QString &oldOwner, const QString &newOwner );
 
   private:
     QStringList mSupportedMimeTypes;
