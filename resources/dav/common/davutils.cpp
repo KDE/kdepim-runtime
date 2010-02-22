@@ -18,6 +18,8 @@
 
 #include "davutils.h"
 
+#include <klocale.h>
+
 QDomElement DavUtils::firstChildElementNS( const QDomElement &parent, const QString &namespaceUri, const QString &tagName )
 {
   for ( QDomNode child = parent.firstChild(); !child.isNull(); child = child.nextSibling() ) {
@@ -79,13 +81,13 @@ QString DavUtils::protocolName( DavUtils::Protocol protocol )
 
   switch( protocol ) {
     case DavUtils::CalDav:
-      protocolName = "CalDav";
+      protocolName = i18n( "CalDav" );
       break;
     case DavUtils::CardDav:
-      protocolName = "CardDav";
+      protocolName = i18n( "CardDav" );
       break;
     case DavUtils::GroupDav:
-      protocolName = "GroupDav";
+      protocolName = i18n( "GroupDav" );
       break;
   }
 
