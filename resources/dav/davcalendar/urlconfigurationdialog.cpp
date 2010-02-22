@@ -30,24 +30,24 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   : KDialog( parent )
 {
   mUi.setupUi( mainWidget() );
-  
+
   mModel = new QStandardItemModel();
   QStringList headers;
   headers << i18n( "Display name" ) << i18n( "URL" );
   mModel->setHorizontalHeaderLabels( headers );
-  
+
   mUi.discoveredUrls->setModel( mModel );
   connect( mModel, SIGNAL( dataChanged( const QModelIndex &, const QModelIndex & ) ),
            this, SLOT( onModelDataChanged( const QModelIndex &, const QModelIndex & ) ) );
-  
+
   connect( mUi.remoteUrl, SIGNAL( textChanged( const QString & ) ), this, SLOT( checkUserInput() ) );
   connect( mUi.authenticationRequired, SIGNAL( toggled( bool ) ), this, SLOT( checkUserInput() ) );
   connect( mUi.username, SIGNAL( textChanged( const QString & ) ), this, SLOT( checkUserInput() ) );
   connect( mUi.password, SIGNAL( textChanged( const QString & ) ), this, SLOT( checkUserInput() ) );
-  
+
   connect( mUi.fetchButton, SIGNAL( clicked() ), this, SLOT( onFetchButtonClicked() ) );
   connect( this, SIGNAL( okClicked() ), this, SLOT( onOkButtonClicked() ) );
-  
+
   this->checkUserInput();
 }
 
@@ -131,18 +131,18 @@ void UrlConfigurationDialog::checkUserInput()
 void UrlConfigurationDialog::onFetchButtonClicked()
 {
   mUi.discoveredUrls->setEnabled( false );
-  
+
   mModel->clear();
   QStringList headers;
   headers << i18n( "Display name" ) << i18n( "URL" );
   mModel->setHorizontalHeaderLabels( headers );
-  
+
   KUrl url( mUi.remoteUrl->text() );
   if( this->authenticationRequired() ) {
     url.setUser( this->username() );
     url.setPassword( this->password() );
   }
-  
+
   DavUtils::DavUrl davUrl( url, this->protocol() );
   DavCollectionsFetchJob *job = new DavCollectionsFetchJob( davUrl );
   connect( job, SIGNAL( result( KJob * ) ), this, SLOT( onCollectionsFetchDone( KJob * ) ) );
@@ -161,18 +161,18 @@ void UrlConfigurationDialog::onOkButtonClicked()
 void UrlConfigurationDialog::onCollectionsFetchDone( KJob *job )
 {
   mUi.discoveredUrls->setEnabled( true );
-  
+
   if( job->error() )
     return;
-  
+
   DavCollectionsFetchJob *davJob = qobject_cast<DavCollectionsFetchJob*>( job );
-  
+
   DavCollection::List collections = davJob->collections();
-  
+
   foreach( const DavCollection &collection, collections ) {
     this->addModelRow( collection.displayName(), collection.url() );
   }
-  
+
   this->checkUserInput();
 }
 
@@ -181,13 +181,13 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
   // Actually only the display name can be changed, so no stricts checks are required
   QString newName = topLeft.data().toString();
   QString url = topLeft.sibling( topLeft.row(), 1 ).data().toString();
-  
+
   KUrl fullUrl( url );
   if( this->authenticationRequired() ) {
     fullUrl.setUser( this->username() );
     fullUrl.setPassword( this->password() );
   }
-  
+
   DavUtils::DavUrl davUrl( fullUrl, this->protocol() );
   DavCollectionModifyJob *job = new DavCollectionModifyJob( davUrl );
   job->setProperty( "displayname", newName );
@@ -207,7 +207,7 @@ void UrlConfigurationDialog::onChangeDisplayNameFinished( KJob *job )
 
 bool UrlConfigurationDialog::checkUserAuthInput() {
   bool ret = false;
-  
+
   if( !mUi.authenticationRequired->isChecked() ) {
     ret = true;
   }
@@ -215,7 +215,7 @@ bool UrlConfigurationDialog::checkUserAuthInput() {
     if( !mUi.username->text().isEmpty() && !mUi.password->text().isEmpty() )
       ret = true;
   }
-  
+
   return ret;
 }
 

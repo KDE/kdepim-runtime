@@ -32,28 +32,28 @@ namespace DavUtils
     CardDav,
     GroupDav
   };
-  
+
   QString protocolName( Protocol protocol );
-  
+
   class DavUrl
   {
     public:
       typedef QList<DavUrl> List;
-      
+
       DavUrl();
       DavUrl( const KUrl &url, Protocol protocol );
-      
+
       void setUrl( const KUrl &url );
       KUrl url() const;
-      
+
       void setProtocol( Protocol protocol );
       Protocol protocol() const;
-      
+
     private:
       KUrl mUrl;
       Protocol mProtocol;
   };
-  
+
   QDomElement firstChildElementNS( const QDomElement &parent, const QString &namespaceUri, const QString &tagName );
 
   QDomElement nextSiblingElementNS( const QDomElement &element, const QString &namespaceUri, const QString &tagName );

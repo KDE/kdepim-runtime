@@ -28,22 +28,22 @@
 class DavCollectionModifyJob : public KJob
 {
   Q_OBJECT
-  
+
   public:
     DavCollectionModifyJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
-    
+
     void setProperty( const QString &property, const QString &value, const QString &ns = QString() );
     void removeProperty( const QString &property, const QString &ns );
-    
+
     virtual void start();
-    
+
   private Q_SLOTS:
     void davJobFinished( KJob *job );
-    
+
   private:
     DavUtils::DavUrl mUrl;
     QDomDocument mQuery;
-    
+
     QList<QDomElement> mSetProperties;
     QList<QDomElement> mRemoveProperties;
 };

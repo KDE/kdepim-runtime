@@ -158,7 +158,7 @@ bool DavCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
   }
 
   DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
-  
+
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
   davItem.setContentType( "text/calendar" );
@@ -236,7 +236,7 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   kDebug() << "Item " << item.id() << " will be put to " << urlStr;
 
   DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( urlStr );
-  
+
   DavItem davItem;
   davItem.setUrl( urlStr );
   davItem.setContentType( mimeType );
@@ -357,10 +357,10 @@ void DavCalendarResource::onRetrieveCollectionsFinished( KJob *job )
       mimeTypes << QLatin1String( "text/calendar" );
 
     collection.setContentMimeTypes( mimeTypes );
-    
+
     DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
     protoAttr->setDavProtocol( davCollection.protocol() );
-    
+
     collections << collection;
   }
 

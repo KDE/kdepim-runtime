@@ -32,27 +32,27 @@ DavCollectionModifyJob::DavCollectionModifyJob( const DavUtils::DavUrl &url, QOb
 void DavCollectionModifyJob::setProperty( const QString &prop, const QString &value, const QString &ns )
 {
   QDomElement propElement;
-  
+
   if( ns.isEmpty() )
     propElement = mQuery.createElement( prop );
   else
     propElement = mQuery.createElementNS( prop, ns );
-  
+
   QDomText textElement = mQuery.createTextNode( value );
   propElement.appendChild( textElement );
-  
+
   mSetProperties << propElement;
 }
 
 void DavCollectionModifyJob::removeProperty( const QString &prop, const QString &ns )
 {
   QDomElement propElement;
-  
+
   if( ns.isEmpty() )
     propElement = mQuery.createElement( prop );
   else
     propElement = mQuery.createElementNS( prop, ns );
-  
+
   mRemoveProperties << propElement;
 }
 
@@ -64,35 +64,35 @@ void DavCollectionModifyJob::start()
     emitResult();
     return;
   }
-  
+
   QDomDocument mQuery;
   QDomElement propertyUpdateElement = mQuery.createElementNS( "DAV:", "propertyupdate" );
   mQuery.appendChild( propertyUpdateElement );
-  
+
   if( !mSetProperties.isEmpty() ) {
     QDomElement setElement = mQuery.createElementNS( "DAV:", "set" );
     propertyUpdateElement.appendChild( setElement );
-    
+
     QDomElement propElement = mQuery.createElementNS( "DAV:", "prop" );
     setElement.appendChild( propElement );
-    
+
     foreach( const QDomElement &element, mSetProperties ) {
       propElement.appendChild( element );
     }
   }
-  
+
   if( !mRemoveProperties.isEmpty() ) {
     QDomElement removeElement = mQuery.createElementNS( "DAV:", "remove" );
     propertyUpdateElement.appendChild( removeElement );
-    
+
     QDomElement propElement = mQuery.createElementNS( "DAV:", "prop" );
     removeElement.appendChild( propElement );
-    
+
     foreach( const QDomElement &element, mSetProperties ) {
       propElement.appendChild( element );
     }
   }
-  
+
   KIO::DavJob *job = DavManager::self()->createPropPatchJob( mUrl.url(), mQuery );
   job->addMetaData( "PropagateHttpHeader", "true" );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
@@ -108,20 +108,20 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   }
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-  
+
   // Consider that a 200 status means success and proceed no further
   QString status = davJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
   if( status.contains( "200" ) ) {
     emitResult();
     return;
   }
-  
+
   QDomDocument response = davJob->response();
   QDomElement responseElement = DavUtils::firstChildElementNS( response.documentElement(), "DAV:", "response" );
-  
+
   bool hasError = false;
   QString errorText;
-  
+
   // parse all propstats answers to get the eventual errors
   const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
   for ( uint i = 0; i < propstats.length(); ++i ) {
@@ -138,7 +138,7 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
       errorText = i18n( "There was an error when modifying the properties" );
     }
   }
-  
+
   if( hasError ) {
     // Trying to get more informations about the error
     QDomElement responseDescriptionElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "responsedescription" );
@@ -147,7 +147,7 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
       errorText.append( "The server returned more informations :\n" );
       errorText.append( responseDescriptionElement.text() );
     }
-    
+
     setError( 2 );
     setErrorText( errorText );
   }

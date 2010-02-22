@@ -48,35 +48,35 @@ class Settings : public SettingsBase
         bool mAuthReq;
         bool mUseKWallet;
     };
-    
+
     Settings();
     ~Settings();
     static Settings* self();
     void setWinId( WId wid );
     void writeConfig();
-    
+
     DavUtils::DavUrl::List configuredDavUrls();
     /**
      * Creates and returns the DavUrl that corresponds to the configuration for searchUrl.
      * If finalUrl is supplied, then it will be used in the returned object instead of the searchUrl.
      */
     DavUtils::DavUrl configuredDavUrl( const QString &searchUrl, const QString &finalUrl = QString() );
-    
+
     /**
      * Creates the DavUrl from the configured URL that most closely matches the given url.
      * Most closely means url.startsWith( configuredUrl ).
      */
     DavUtils::DavUrl davUrlFromUrl( const QString &url );
-    
+
     UrlConfiguration * newUrlConfiguration( const QString &url );
     void removeUrlConfiguration( const QString &url );
     UrlConfiguration * urlConfiguration( const QString &url );
-    
+
     bool authenticationRequired( const QString &url ) const;
     DavUtils::Protocol protocol( const QString &url ) const;
     QString username( const QString &url ) const;
     bool useKWallet( const QString &url ) const;
-    
+
     void setPassword( const QString &url, const QString &username, const QString &password );
     QString password( const QString &url, const QString &username );
 

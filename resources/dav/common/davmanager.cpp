@@ -92,7 +92,7 @@ bool DavManager::createProtocol( DavUtils::Protocol protocol )
 {
   if( mProtocols.contains( protocol ) )
     return true;
-  
+
   switch( protocol ) {
     case DavUtils::CalDav:
       mProtocols.insert( DavUtils::CalDav, new CaldavProtocol() );
@@ -106,6 +106,6 @@ bool DavManager::createProtocol( DavUtils::Protocol protocol )
     default:
       return false;
   }
-  
+
   return true;
 }

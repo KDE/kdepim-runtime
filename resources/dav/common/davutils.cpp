@@ -76,7 +76,7 @@ DavUtils::Protocol DavUtils::DavUrl::protocol() const
 QString DavUtils::protocolName( DavUtils::Protocol protocol )
 {
   QString protocolName;
-  
+
   switch( protocol ) {
     case DavUtils::CalDav:
       protocolName = "CalDav";
@@ -88,6 +88,6 @@ QString DavUtils::protocolName( DavUtils::Protocol protocol )
       protocolName = "GroupDav";
       break;
   }
-  
+
   return protocolName;
 }

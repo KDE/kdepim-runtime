@@ -50,7 +50,7 @@ class DavManager
     KIO::DavJob* createPropFindJob( const KUrl &url, const QDomDocument &document ) const;
 
     KIO::DavJob* createReportJob( const KUrl &url, const QDomDocument &document ) const;
-    
+
     KIO::DavJob* createPropPatchJob( const KUrl &url, const QDomDocument &document ) const;
 
     const DavProtocolBase* davProtocol( DavUtils::Protocol protocol );
@@ -60,7 +60,7 @@ class DavManager
      * Creates a new DAV manager.
      */
     DavManager();
-    
+
     /**
      * Creates a new protocol.
      */

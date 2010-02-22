@@ -35,25 +35,25 @@ class UrlConfigurationDialog : public KDialog
   public:
     UrlConfigurationDialog( QWidget *parent = 0 );
     ~UrlConfigurationDialog();
-    
+
     DavUtils::Protocol protocol() const;
     void setProtocol( DavUtils::Protocol protocol );
-    
+
     QString remoteUrl() const;
     void setRemoteUrl( const QString &url );
-    
+
     bool authenticationRequired() const;
     void setAuthenticationRequired( bool b );
-    
+
     bool useKWallet() const;
     void setUseKWallet( bool b );
-    
+
     QString username() const;
     void setUsername( const QString &name );
-    
+
     QString password() const;
     void setPassword( const QString &v );
-    
+
   private Q_SLOTS:
     void checkUserInput();
     void onFetchButtonClicked();
@@ -61,11 +61,11 @@ class UrlConfigurationDialog : public KDialog
     void onCollectionsFetchDone( KJob *job );
     void onModelDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight );
     void onChangeDisplayNameFinished( KJob *job );
-    
+
   private:
     bool checkUserAuthInput();
     void addModelRow( const QString &displayName, const QString &url );
-    
+
     Ui::UrlConfigurationDialog mUi;
     QStandardItemModel *mModel;
 };

@@ -39,7 +39,7 @@ class DavCollection
 
     DavCollection();
     DavCollection( DavUtils::Protocol protocol, const QString &url, const QString &displayName, ContentTypes contentTypes );
-    
+
     void setProtocol( DavUtils::Protocol protocol );
     DavUtils::Protocol protocol() const;
 
