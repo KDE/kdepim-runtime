@@ -33,12 +33,12 @@ void DavCollectionModifyJob::setProperty( const QString &prop, const QString &va
 {
   QDomElement propElement;
 
-  if( ns.isEmpty() )
+  if ( ns.isEmpty() )
     propElement = mQuery.createElement( prop );
   else
     propElement = mQuery.createElementNS( prop, ns );
 
-  QDomText textElement = mQuery.createTextNode( value );
+  const QDomText textElement = mQuery.createTextNode( value );
   propElement.appendChild( textElement );
 
   mSetProperties << propElement;
@@ -48,7 +48,7 @@ void DavCollectionModifyJob::removeProperty( const QString &prop, const QString 
 {
   QDomElement propElement;
 
-  if( ns.isEmpty() )
+  if ( ns.isEmpty() )
     propElement = mQuery.createElement( prop );
   else
     propElement = mQuery.createElementNS( prop, ns );
@@ -58,7 +58,7 @@ void DavCollectionModifyJob::removeProperty( const QString &prop, const QString 
 
 void DavCollectionModifyJob::start()
 {
-  if( mSetProperties.isEmpty() && mRemoveProperties.isEmpty() ) {
+  if ( mSetProperties.isEmpty() && mRemoveProperties.isEmpty() ) {
     setError( 1 ); // no special meaning, for now at least
     setErrorText( i18n( "No properties to change or remove" ) );
     emitResult();
@@ -69,28 +69,26 @@ void DavCollectionModifyJob::start()
   QDomElement propertyUpdateElement = mQuery.createElementNS( "DAV:", "propertyupdate" );
   mQuery.appendChild( propertyUpdateElement );
 
-  if( !mSetProperties.isEmpty() ) {
+  if ( !mSetProperties.isEmpty() ) {
     QDomElement setElement = mQuery.createElementNS( "DAV:", "set" );
     propertyUpdateElement.appendChild( setElement );
 
     QDomElement propElement = mQuery.createElementNS( "DAV:", "prop" );
     setElement.appendChild( propElement );
 
-    foreach( const QDomElement &element, mSetProperties ) {
+    foreach ( const QDomElement &element, mSetProperties )
       propElement.appendChild( element );
-    }
   }
 
-  if( !mRemoveProperties.isEmpty() ) {
+  if ( !mRemoveProperties.isEmpty() ) {
     QDomElement removeElement = mQuery.createElementNS( "DAV:", "remove" );
     propertyUpdateElement.appendChild( removeElement );
 
     QDomElement propElement = mQuery.createElementNS( "DAV:", "prop" );
     removeElement.appendChild( propElement );
 
-    foreach( const QDomElement &element, mSetProperties ) {
+    foreach ( const QDomElement &element, mSetProperties )
       propElement.appendChild( element );
-    }
   }
 
   KIO::DavJob *job = DavManager::self()->createPropPatchJob( mUrl.url(), mQuery );
@@ -110,13 +108,13 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   // Consider that a 200 status means success and proceed no further
-  QString status = davJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
-  if( status.contains( "200" ) ) {
+  const QString status = davJob->queryMetaData( "HTTP-Headers" ).split( '\n' ).at( 0 );
+  if ( status.contains( "200" ) ) {
     emitResult();
     return;
   }
 
-  QDomDocument response = davJob->response();
+  const QDomDocument response = davJob->response();
   QDomElement responseElement = DavUtils::firstChildElementNS( response.documentElement(), "DAV:", "response" );
 
   bool hasError = false;
@@ -127,29 +125,29 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   for ( uint i = 0; i < propstats.length(); ++i ) {
     const QDomElement propstatElement = propstats.item( i ).toElement();
     const QDomElement statusElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "status" );
-    QString statusText = statusElement.text();
+
+    const QString statusText = statusElement.text();
     if ( statusText.contains( "200" ) ) {
       // Nothing special to do here, this indicates the success of the whole request
       break;
-    }
-    else {
+    } else {
       // Generic error
       hasError = true;
       errorText = i18n( "There was an error when modifying the properties" );
     }
   }
 
-  if( hasError ) {
+  if ( hasError ) {
     // Trying to get more informations about the error
-    QDomElement responseDescriptionElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "responsedescription" );
-    if( !responseDescriptionElement.isNull() ) {
-      errorText.append( "\n" );
-      errorText.append( "The server returned more informations :\n" );
+    const QDomElement responseDescriptionElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "responsedescription" );
+    if ( !responseDescriptionElement.isNull() ) {
+      errorText.append( "\nThe server returned more information:\n" );
       errorText.append( responseDescriptionElement.text() );
     }
 
-    setError( 2 );
+    setError( UserDefinedError );
     setErrorText( errorText );
   }
+
   emitResult();
 }

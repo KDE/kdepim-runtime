@@ -82,7 +82,7 @@ void ConfigDialog::checkUserInput()
 {
   this->checkConfiguredUrlsButtonsState();
 
-  if( !mUi.kcfg_displayName->text().isEmpty() && !( mModel->invisibleRootItem()->rowCount() == 0 ) )
+  if ( !mUi.kcfg_displayName->text().isEmpty() && !( mModel->invisibleRootItem()->rowCount() == 0 ) )
     this->enableButtonOk( true );
   else
     this->enableButtonOk( false );
@@ -93,7 +93,7 @@ void ConfigDialog::onAddButtonClicked()
   UrlConfigurationDialog dlg( this );
   const int result = dlg.exec();
 
-  if( result == QDialog::Accepted ) {
+  if ( result == QDialog::Accepted ) {
     Settings::UrlConfiguration *urlConfig =
         Settings::self()->newUrlConfiguration( dlg.remoteUrl() );
     urlConfig->mUser = dlg.username();
@@ -101,7 +101,7 @@ void ConfigDialog::onAddButtonClicked()
     urlConfig->mAuthReq = dlg.authenticationRequired();
     urlConfig->mUseKWallet = dlg.useKWallet();
 
-    if( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
+    if ( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
       Settings::self()->setPassword( dlg.remoteUrl(), dlg.username(), dlg.password() );
 
     QString protocolName = DavUtils::protocolName( dlg.protocol() );
@@ -114,7 +114,7 @@ void ConfigDialog::onAddButtonClicked()
 void ConfigDialog::onRemoveButtonClicked()
 {
   QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
-  if( indexes.size() == 0 )
+  if ( indexes.size() == 0 )
     return;
 
   // There can be only one (selected row)
@@ -130,7 +130,7 @@ void ConfigDialog::onRemoveButtonClicked()
 void ConfigDialog::onEditButtonClicked()
 {
   QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
-  if( indexes.size() == 0 )
+  if ( indexes.size() == 0 )
     return;
 
   // There can be only one (selected row)
@@ -138,7 +138,7 @@ void ConfigDialog::onEditButtonClicked()
   QString url = index.data().toString();
 
   Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( url );
-  if( !urlConfig )
+  if ( !urlConfig )
     return;
 
   UrlConfigurationDialog dlg( this );
@@ -151,8 +151,8 @@ void ConfigDialog::onEditButtonClicked()
 
   const int result = dlg.exec();
 
-  if( result == QDialog::Accepted ) {
-    if( dlg.remoteUrl() != urlConfig->mUrl ) {
+  if ( result == QDialog::Accepted ) {
+    if ( dlg.remoteUrl() != urlConfig->mUrl ) {
       Settings::self()->removeUrlConfiguration( urlConfig->mUrl );
       urlConfig = Settings::self()->newUrlConfiguration( dlg.remoteUrl() );
     }
@@ -161,7 +161,7 @@ void ConfigDialog::onEditButtonClicked()
     urlConfig->mAuthReq = dlg.authenticationRequired();
     urlConfig->mUseKWallet = dlg.useKWallet();
 
-    if( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
+    if ( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
       Settings::self()->setPassword( dlg.remoteUrl(), dlg.username(), dlg.password() );
 
     QStandardItem *item = mModel->item( index.row(), 0 ); // Protocol

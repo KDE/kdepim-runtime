@@ -57,7 +57,6 @@ class DavCalendarResource : public Akonadi::ResourceBase,
     void onItemRemovedFinished( KJob* );
 
   private:
-    void doResourceInitialization();
     bool configurationIsValid();
 
     Akonadi::IncidenceMimeTypeVisitor *mMimeVisitor;

@@ -117,9 +117,9 @@ void UrlConfigurationDialog::setPassword( const QString &v )
 
 void UrlConfigurationDialog::checkUserInput()
 {
-  if( !mUi.remoteUrl->text().isEmpty() && this->checkUserAuthInput() ) {
+  if ( !mUi.remoteUrl->text().isEmpty() && this->checkUserAuthInput() ) {
     mUi.fetchButton->setEnabled( true );
-    if( mModel->rowCount() > 0 )
+    if ( mModel->rowCount() > 0 )
       this->enableButtonOk( true );
   }
   else {
@@ -138,7 +138,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
   mModel->setHorizontalHeaderLabels( headers );
 
   KUrl url( mUi.remoteUrl->text() );
-  if( this->authenticationRequired() ) {
+  if ( this->authenticationRequired() ) {
     url.setUser( this->username() );
     url.setPassword( this->password() );
   }
@@ -151,7 +151,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
 
 void UrlConfigurationDialog::onOkButtonClicked()
 {
-  if( !this->remoteUrl().endsWith( '/' ) ) {
+  if ( !this->remoteUrl().endsWith( '/' ) ) {
     QString url = this->remoteUrl();
     url.append( QLatin1Char( '/' ) );
     this->setRemoteUrl( url );
@@ -162,7 +162,7 @@ void UrlConfigurationDialog::onCollectionsFetchDone( KJob *job )
 {
   mUi.discoveredUrls->setEnabled( true );
 
-  if( job->error() )
+  if ( job->error() )
     return;
 
   DavCollectionsFetchJob *davJob = qobject_cast<DavCollectionsFetchJob*>( job );
@@ -183,7 +183,7 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
   QString url = topLeft.sibling( topLeft.row(), 1 ).data().toString();
 
   KUrl fullUrl( url );
-  if( this->authenticationRequired() ) {
+  if ( this->authenticationRequired() ) {
     fullUrl.setUser( this->username() );
     fullUrl.setPassword( this->password() );
   }
@@ -198,7 +198,7 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
 
 void UrlConfigurationDialog::onChangeDisplayNameFinished( KJob *job )
 {
-  if( job->error() ) {
+  if ( job->error() ) {
     QErrorMessage msg;
     msg.showMessage( job->errorText() );
   }
@@ -208,11 +208,11 @@ void UrlConfigurationDialog::onChangeDisplayNameFinished( KJob *job )
 bool UrlConfigurationDialog::checkUserAuthInput() {
   bool ret = false;
 
-  if( !mUi.authenticationRequired->isChecked() ) {
+  if ( !mUi.authenticationRequired->isChecked() ) {
     ret = true;
   }
   else {
-    if( !mUi.username->text().isEmpty() && !mUi.password->text().isEmpty() )
+    if ( !mUi.username->text().isEmpty() && !mUi.password->text().isEmpty() )
       ret = true;
   }
 

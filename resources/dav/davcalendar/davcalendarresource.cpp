@@ -139,7 +139,7 @@ void DavCalendarResource::retrieveItems( const Akonadi::Collection &collection )
     return;
   }
 
-  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
 
   DavItemsListJob *job = new DavItemsListJob( davUrl );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
@@ -157,7 +157,7 @@ bool DavCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
     return false;
   }
 
-  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
@@ -206,7 +206,8 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
     }
 
     url = KUrl( basePath + fileName + ".vcf" );
-    DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
+
+    const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
     mimeType = DavManager::self()->davProtocol( DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
 
     KABC::VCardConverter converter;
@@ -235,7 +236,7 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   const QString urlStr = url.prettyUrl();
   kDebug() << "Item " << item.id() << " will be put to " << urlStr;
 
-  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( urlStr );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( urlStr );
 
   DavItem davItem;
   davItem.setUrl( urlStr );
@@ -267,7 +268,8 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
 
     KABC::VCardConverter converter;
     rawData = converter.createVCard( contact );
-    DavProtocolAttribute *protoAttr = item.parentCollection().attribute<DavProtocolAttribute>();
+
+    const DavProtocolAttribute *protoAttr = item.parentCollection().attribute<DavProtocolAttribute>();
     mimeType = DavManager::self()->davProtocol( DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
@@ -281,7 +283,7 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
     return;
   }
 
-  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
@@ -303,7 +305,7 @@ void DavCalendarResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
-  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
@@ -484,16 +486,6 @@ void DavCalendarResource::onItemRemovedFinished( KJob *job )
   }
 
   changeProcessed();
-}
-
-void DavCalendarResource::doResourceInitialization()
-{
-  if ( !configurationIsValid() ) {
-    emit status( Broken, i18n( "Resource not configured" ) );
-    return;
-  }
-
-  synchronize();
 }
 
 bool DavCalendarResource::configurationIsValid()

@@ -35,7 +35,7 @@ DavManager::DavManager()
 DavManager::~DavManager()
 {
   QMapIterator<DavUtils::Protocol, DavProtocolBase*> it( mProtocols );
-  while( it.hasNext() ) {
+  while ( it.hasNext() ) {
     it.next();
     delete it.value();
   }
@@ -82,15 +82,15 @@ KIO::DavJob* DavManager::createPropPatchJob( const KUrl &url, const QDomDocument
 
 const DavProtocolBase* DavManager::davProtocol( DavUtils::Protocol protocol )
 {
-  if( createProtocol( protocol ) )
-    return mProtocols[protocol];
+  if ( createProtocol( protocol ) )
+    return mProtocols[ protocol ];
   else
     return 0;
 }
 
 bool DavManager::createProtocol( DavUtils::Protocol protocol )
 {
-  if( mProtocols.contains( protocol ) )
+  if ( mProtocols.contains( protocol ) )
     return true;
 
   switch( protocol ) {

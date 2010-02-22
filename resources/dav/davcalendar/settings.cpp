@@ -120,12 +120,12 @@ DavUtils::DavUrl Settings::configuredDavUrl( const QString &searchUrl, const QSt
 {
   KUrl fullUrl;
 
-  if( !finalUrl.isEmpty() )
+  if ( !finalUrl.isEmpty() )
     fullUrl = finalUrl;
   else
     fullUrl = searchUrl;
 
-  if( this->authenticationRequired( searchUrl ) ) {
+  if ( this->authenticationRequired( searchUrl ) ) {
     QString username = this->username( searchUrl );
     fullUrl.setUser( username );
     fullUrl.setPassword( this->password( searchUrl, username ) );
@@ -142,12 +142,12 @@ DavUtils::DavUrl Settings::davUrlFromUrl( const QString &url )
   QString configuredUrl;
 
   foreach( const QString &tmpUrl, this->remoteUrls() ) {
-    if( url.startsWith( tmpUrl ) ) {
+    if ( url.startsWith( tmpUrl ) ) {
       configuredUrl = tmpUrl;
     }
   }
 
-  if( !configuredUrl.isEmpty() ) {
+  if ( !configuredUrl.isEmpty() ) {
     ret = this->configuredDavUrl( configuredUrl, url );
   }
 
@@ -158,7 +158,7 @@ Settings::UrlConfiguration * Settings::newUrlConfiguration( const QString &url )
 {
   UrlConfiguration *urlConfig;
 
-  if( !mUrls.contains( url ) ) {
+  if ( !mUrls.contains( url ) ) {
     urlConfig = new UrlConfiguration();
     urlConfig->mUrl = url;
   }
@@ -211,7 +211,7 @@ Settings::UrlConfiguration * Settings::newUrlConfiguration( const QString &url )
 
 void Settings::removeUrlConfiguration( const QString &url )
 {
-  if( !mUrls.contains( url ) )
+  if ( !mUrls.contains( url ) )
     return;
 
   kDebug() << "Deleting URL " << url;
@@ -219,7 +219,7 @@ void Settings::removeUrlConfiguration( const QString &url )
   QStringList oldUrls = this->remoteUrls();
   QStringList newUrls;
   foreach( QString tmpUrl, oldUrls ) {
-    if( tmpUrl != url )
+    if ( tmpUrl != url )
       newUrls << tmpUrl;
   }
   this->setRemoteUrls( newUrls );
@@ -236,14 +236,14 @@ void Settings::removeUrlConfiguration( const QString &url )
 Settings::UrlConfiguration * Settings::urlConfiguration( const QString &url )
 {
   UrlConfiguration *ret = 0;
-  if( mUrls.contains( url ) )
+  if ( mUrls.contains( url ) )
     ret = mUrls[url];
   return ret;
 }
 
 bool Settings::authenticationRequired( const QString &url ) const
 {
-  if( mUrls.contains( url ) ) {
+  if ( mUrls.contains( url ) ) {
     return mUrls[url]->mAuthReq;
   }
   else {
@@ -253,7 +253,7 @@ bool Settings::authenticationRequired( const QString &url ) const
 
 DavUtils::Protocol Settings::protocol( const QString &url ) const
 {
-  if( mUrls.contains( url ) ) {
+  if ( mUrls.contains( url ) ) {
     return DavUtils::Protocol( mUrls[url]->mProtocol );
   }
   else {
@@ -263,7 +263,7 @@ DavUtils::Protocol Settings::protocol( const QString &url ) const
 
 QString Settings::username( const QString &url ) const
 {
-  if( mUrls.contains( url ) ) {
+  if ( mUrls.contains( url ) ) {
     return mUrls[url]->mUser;
   }
   else {
@@ -273,7 +273,7 @@ QString Settings::username( const QString &url ) const
 
 bool Settings::useKWallet( const QString &url ) const
 {
-  if( mUrls.contains( url ) ) {
+  if ( mUrls.contains( url ) ) {
     return mUrls[url]->mUseKWallet;
   }
   else {
@@ -297,7 +297,7 @@ QString Settings::password( const QString &url, const QString &username )
   QString passwordKey( username );
   passwordKey.append( "-" ).append( url );
 
-  if( mCachedPasswords.contains( passwordKey ) ) {
+  if ( mCachedPasswords.contains( passwordKey ) ) {
     ret = mCachedPasswords[passwordKey];
   }
   else {
@@ -311,11 +311,11 @@ QString Settings::requestPassword( const QString &url, const QString &username )
 {
   QString ret;
 
-  if( authenticationRequired( url ) ) {
+  if ( authenticationRequired( url ) ) {
     QString passwordKey( username );
     passwordKey.append( "-" ).append( url );
 
-    if( useKWallet( url ) ) {
+    if ( useKWallet( url ) ) {
       if ( !mWallet )
         mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
 

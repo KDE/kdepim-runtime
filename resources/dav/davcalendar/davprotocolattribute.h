@@ -37,7 +37,7 @@ class DavProtocolAttribute : public Akonadi::Attribute
     virtual void deserialize( const QByteArray &data );
 
   private:
-	int mDavProtocol;
+    int mDavProtocol;
 };
 
 #endif
