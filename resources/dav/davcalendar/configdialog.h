@@ -31,6 +31,7 @@ class QStandardItemModel;
 class ConfigDialog : public KDialog
 {
   Q_OBJECT
+
   public:
     ConfigDialog( QWidget *parent = 0 );
     ~ConfigDialog();

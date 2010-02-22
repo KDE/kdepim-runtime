@@ -42,16 +42,14 @@ ConfigDialog::ConfigDialog( QWidget *parent )
 
   mUi.configuredUrls->setModel( mModel );
 
-  foreach( QString url, Settings::self()->remoteUrls() ) {
-    this->addModelRow( DavUtils::protocolName( Settings::self()->protocol( url ) ), url );
-  }
+  foreach ( const QString &url, Settings::self()->remoteUrls() )
+    addModelRow( DavUtils::protocolName( Settings::self()->protocol( url ) ), url );
 
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
-  connect( mUi.kcfg_displayName, SIGNAL( textChanged( const QString & ) ), this, SLOT( checkUserInput() ) );
-  connect( mUi.configuredUrls->selectionModel(),
-           SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
+  connect( mUi.kcfg_displayName, SIGNAL( textChanged( const QString& ) ), this, SLOT( checkUserInput() ) );
+  connect( mUi.configuredUrls->selectionModel(), SIGNAL( selectionChanged( const QItemSelection&, const QItemSelection& ) ),
            this, SLOT( checkConfiguredUrlsButtonsState() ) );
 
   connect( mUi.addButton, SIGNAL( clicked() ), this, SLOT( onAddButtonClicked() ) );
@@ -61,7 +59,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   connect( this, SIGNAL( okClicked() ), this, SLOT( onOkClicked() ) );
   connect( this, SIGNAL( cancelClicked() ), this, SLOT( onCancelClicked() ) );
 
-  this->checkUserInput();
+  checkUserInput();
 }
 
 ConfigDialog::~ConfigDialog()
@@ -80,12 +78,12 @@ void ConfigDialog::setRemovedUrls( const QStringList &urls )
 
 void ConfigDialog::checkUserInput()
 {
-  this->checkConfiguredUrlsButtonsState();
+  checkConfiguredUrlsButtonsState();
 
   if ( !mUi.kcfg_displayName->text().isEmpty() && !( mModel->invisibleRootItem()->rowCount() == 0 ) )
-    this->enableButtonOk( true );
+    enableButtonOk( true );
   else
-    this->enableButtonOk( false );
+    enableButtonOk( false );
 }
 
 void ConfigDialog::onAddButtonClicked()
@@ -94,8 +92,8 @@ void ConfigDialog::onAddButtonClicked()
   const int result = dlg.exec();
 
   if ( result == QDialog::Accepted ) {
-    Settings::UrlConfiguration *urlConfig =
-        Settings::self()->newUrlConfiguration( dlg.remoteUrl() );
+    Settings::UrlConfiguration *urlConfig = Settings::self()->newUrlConfiguration( dlg.remoteUrl() );
+
     urlConfig->mUser = dlg.username();
     urlConfig->mProtocol = dlg.protocol();
     urlConfig->mAuthReq = dlg.authenticationRequired();
@@ -104,38 +102,38 @@ void ConfigDialog::onAddButtonClicked()
     if ( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
       Settings::self()->setPassword( dlg.remoteUrl(), dlg.username(), dlg.password() );
 
-    QString protocolName = DavUtils::protocolName( dlg.protocol() );
-    this->addModelRow( protocolName, dlg.remoteUrl() );
+    const QString protocolName = DavUtils::protocolName( dlg.protocol() );
+
+    addModelRow( protocolName, dlg.remoteUrl() );
     mAddedUrls << dlg.remoteUrl();
-    this->checkUserInput();
+    checkUserInput();
   }
 }
 
 void ConfigDialog::onRemoveButtonClicked()
 {
-  QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
+  const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
   if ( indexes.size() == 0 )
     return;
 
   // There can be only one (selected row)
-  QModelIndex index = mModel->index( indexes.at( 0 ).row(), 1 );
-  int row = index.row();
-  QString url = index.data().toString();
+  const QModelIndex index = mModel->index( indexes.at( 0 ).row(), 1 );
 
-  mRemovedUrls << url;
-  mModel->removeRow( row );
-  this->checkUserInput();
+  mRemovedUrls << index.data().toString();
+  mModel->removeRow( index.row() );
+
+  checkUserInput();
 }
 
 void ConfigDialog::onEditButtonClicked()
 {
-  QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
+  const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
   if ( indexes.size() == 0 )
     return;
 
   // There can be only one (selected row)
-  QModelIndex index = mModel->index( indexes.at( 0 ).row(), 1 );
-  QString url = index.data().toString();
+  const QModelIndex index = mModel->index( indexes.at( 0 ).row(), 1 );
+  const QString url = index.data().toString();
 
   Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( url );
   if ( !urlConfig )
@@ -176,23 +174,22 @@ void ConfigDialog::onOkClicked()
 {
   mManager->updateSettings();
 
-  foreach( const QString &url, mRemovedUrls ) {
+  foreach ( const QString &url, mRemovedUrls )
     Settings::self()->removeUrlConfiguration( url );
-  }
 }
 
 void ConfigDialog::onCancelClicked()
 {
   mRemovedUrls.clear();
 
-  foreach( const QString &url, mAddedUrls ) {
+  foreach ( const QString &url, mAddedUrls )
     Settings::self()->removeUrlConfiguration( url );
-  }
 }
 
 void ConfigDialog::checkConfiguredUrlsButtonsState()
 {
-  bool enabled = mUi.configuredUrls->selectionModel()->hasSelection();
+  const bool enabled = mUi.configuredUrls->selectionModel()->hasSelection();
+
   mUi.removeButton->setEnabled( enabled );
   mUi.editButton->setEnabled( enabled );
 }
@@ -205,9 +202,11 @@ void ConfigDialog::addModelRow( const QString &protocol, const QString &url )
   QStandardItem *protocolStandardItem = new QStandardItem( protocol );
   protocolStandardItem->setEditable( false );
   items << protocolStandardItem;
+
   QStandardItem *urlStandardItem = new QStandardItem( url );
   urlStandardItem->setEditable( false );
   items << urlStandardItem;
+
   rootItem->appendRow( items );
 }
 

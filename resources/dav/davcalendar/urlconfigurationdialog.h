@@ -32,6 +32,7 @@ class QStandardItemModel;
 class UrlConfigurationDialog : public KDialog
 {
   Q_OBJECT
+
   public:
     UrlConfigurationDialog( QWidget *parent = 0 );
     ~UrlConfigurationDialog();
@@ -43,16 +44,16 @@ class UrlConfigurationDialog : public KDialog
     void setRemoteUrl( const QString &url );
 
     bool authenticationRequired() const;
-    void setAuthenticationRequired( bool b );
+    void setAuthenticationRequired( bool value );
 
     bool useKWallet() const;
-    void setUseKWallet( bool b );
+    void setUseKWallet( bool value );
 
     QString username() const;
     void setUsername( const QString &name );
 
     QString password() const;
-    void setPassword( const QString &v );
+    void setPassword( const QString &password );
 
   private Q_SLOTS:
     void checkUserInput();
