@@ -36,9 +36,7 @@ target_link_libraries(qml_akonadi
     ${KDEPIMLIBS_KMIME_LIBS}
 )
 
-install(TARGETS qml_akonadi
-  DESTINATION ${BIN_INSTALL_DIR}
-)
+install(TARGETS qml_akonadi ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install(FILES
   contacts.qml
