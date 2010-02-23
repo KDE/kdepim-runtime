@@ -60,6 +60,7 @@ set( davcalendarresource_SRCS
   ../common/davitemslistjob.cpp
   ../common/davmanager.cpp
   ../common/davutils.cpp
+  ../common/etagcache.cpp
 
   caldavprotocol.cpp
   carddavprotocol.cpp

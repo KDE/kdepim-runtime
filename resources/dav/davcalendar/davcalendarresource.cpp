@@ -362,6 +362,7 @@ void DavCalendarResource::onRetrieveCollectionsFinished( KJob *job )
     DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
     protoAttr->setDavProtocol( davCollection.protocol() );
 
+    mEtagCache.sync( collection );
     collections << collection;
   }
 
@@ -395,6 +396,11 @@ void DavCalendarResource::onRetrieveItemsFinished( KJob *job )
       item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
     else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::todoMimeType() ) )
       item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
+
+    // TODO clear the payload once implemented
+    // TODO add the item URL to the fetch-ahead list (and TODO create the fetch-ahead list)
+    if ( mEtagCache.isOutOfDate( item.remoteId(), davItem.etag() ) )
+      kDebug() << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
 
     item.setRemoteRevision( davItem.etag() );
 
@@ -438,6 +444,7 @@ void DavCalendarResource::onRetrieveItemFinished( KJob *job )
 
   // update etag
   item.setRemoteRevision( davItem.etag() );
+  mEtagCache.setEtag( item.remoteId(), davItem.etag() );
 
   itemRetrieved( item );
 }
@@ -456,6 +463,7 @@ void DavCalendarResource::onItemAddedFinished( KJob *job )
   Akonadi::Item item = createJob->property( "item" ).value<Akonadi::Item>();
   item.setRemoteId( davItem.url() );
   item.setRemoteRevision( davItem.etag() );
+  mEtagCache.setEtag( davItem.url(), davItem.etag() );
 
   changeCommitted( item );
 }
@@ -473,6 +481,7 @@ void DavCalendarResource::onItemChangedFinished( KJob *job )
 
   Akonadi::Item item = modifyJob->property( "item" ).value<Akonadi::Item>();
   item.setRemoteRevision( davItem.etag() );
+  mEtagCache.setEtag( item.remoteId(), davItem.etag() );
 
   changeCommitted( item );
 }

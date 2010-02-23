@@ -19,6 +19,8 @@
 #ifndef DAVCALENDARRESOURCE_H
 #define DAVCALENDARRESOURCE_H
 
+#include "etagcache.h"
+
 #include <akonadi/resourcebase.h>
 
 namespace Akonadi {
@@ -61,6 +63,7 @@ class DavCalendarResource : public Akonadi::ResourceBase,
 
     Akonadi::IncidenceMimeTypeVisitor *mMimeVisitor;
     Akonadi::Collection mDavCollectionRoot;
+    EtagCache mEtagCache;
 };
 
 #endif
