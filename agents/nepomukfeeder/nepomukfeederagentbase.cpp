@@ -246,7 +246,7 @@ void NepomukFeederAgentBase::itemsReceived(const Akonadi::Item::List& items)
     const QUrl graph = createGraphForEntity( item );
     Nepomuk::ResourceManager::instance()->mainModel()->addStatement(
         item.url(), Akonadi::ItemSearchJob::akonadiItemIdUri(),
-        Soprano::Node( QString::number( item.id() ) ), graph );
+        QUrl( QString::number( item.id() ) ), graph );
     updateItem( item, graph );
   }
   mProcessedAmount += items.count();
