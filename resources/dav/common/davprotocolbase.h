@@ -26,25 +26,74 @@
 
 class QStringList;
 
+/**
+ * @short Base class for various DAV groupware dialects.
+ *
+ * This class provides an interface to query the DAV dialect
+ * specific features and abstract them.
+ *
+ * The functionality is implemented in:
+ *   @li CaldavProtocol
+ *   @li CarddavProtocol
+ *   @li GroupdavProtocol
+ */
 class DavProtocolBase
 {
   public:
+    /**
+     * Destroys the dav protocol base.
+     */
     virtual ~DavProtocolBase();
+
+    /**
+     * Returns whether the dav protocol dialect supports the REPORT
+     * command to query all resources of a collection.
+     * If not, PROPFIND command will be used instead.
+     */
     virtual bool useReport() const = 0;
+
+    /**
+     * Returns whether the dav protocol dialect supports the MULTIGET command.
+     *
+     * If MULTIGET is supported, the content of all dav resources
+     * can be fetched in ResourceBase::retrieveItems() already and
+     * there is no need to call ResourceBase::retrieveItem() for every single
+     * dav resource.
+     */
     virtual bool useMultiget() const = 0;
+
+    /**
+     * Returns the XML document that represents the DAV query to
+     * list all available DAV collections.
+     */
     virtual QDomDocument collectionsQuery() const = 0;
+
+    /**
+     * Returns the XQuery string that filters out the relevant XML elements
+     * from the result returned by the query that is provided by collectionQuery().
+     */
     virtual QString collectionsXQuery() const = 0;
+
+    /**
+     * Returns a list of XML documents that represent DAV queries to
+     * list all available DAV resources inside a specific DAV collection.
+     */
     virtual QList<QDomDocument> itemsQueries() const = 0;
+
+    /**
+     * Returns the XML document that represents a MULTIGET DAV query to
+     * list all DAV resources with the given @p urls.
+     */
     virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
 
     /**
      * Returns the possible content types for the collection that
-     * is described by the passed PROPFIND @propstat.
+     * is described by the passed @p propstat element of a PROPFIND result.
      */
     virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const = 0;
 
     /**
-     * Returns the mimetype that shall be used for contacts
+     * Returns the mimetype that shall be used for contact DAV resources.
      */
     virtual QString contactsMimeType() const = 0;
 };
