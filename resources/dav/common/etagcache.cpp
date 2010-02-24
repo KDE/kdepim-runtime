@@ -33,13 +33,13 @@ void EtagCache::sync( const Akonadi::Collection &collection )
 {
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( collection );
   job->fetchScope().fetchFullPayload( false ); // We only need the remote id and the revision
-  connect( job, SIGNAL( result( KJob * ) ), this, SLOT( onItemFetchJobFinished( KJob * ) ) );
+  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( onItemFetchJobFinished( KJob* ) ) );
   job->start();
 }
 
 void EtagCache::setEtag( const QString &remoteId, const QString &etag )
 {
-  mCache[remoteId] = etag;
+  mCache[ remoteId ] = etag;
 
   if ( mChangedRemoteIds.contains( remoteId ) )
     mChangedRemoteIds.remove( remoteId );
@@ -47,17 +47,17 @@ void EtagCache::setEtag( const QString &remoteId, const QString &etag )
 
 bool EtagCache::isOutOfDate( const QString &remoteId, const QString &refEtag )
 {
-  bool ret = ( mCache.value( remoteId ) != refEtag );
+  const bool outOfDate = (mCache.value( remoteId ) != refEtag);
 
-  if ( ret )
+  if ( outOfDate )
     mChangedRemoteIds.insert( remoteId );
 
-  return ret;
+  return outOfDate;
 }
 
 QStringList EtagCache::changedRemoteIds() const
 {
-  return QStringList( mChangedRemoteIds.toList() );
+  return mChangedRemoteIds.toList();
 }
 
 void EtagCache::onItemFetchJobFinished( KJob *job )
@@ -65,13 +65,11 @@ void EtagCache::onItemFetchJobFinished( KJob *job )
   if ( job->error() )
     return;
 
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
-  Akonadi::Item::List items = fetchJob->items();
+  const Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
+  const Akonadi::Item::List items = fetchJob->items();
 
-  foreach( const Akonadi::Item &item, items ) {
-    kDebug() << item.remoteId() << item.remoteRevision();
+  foreach ( const Akonadi::Item &item, items )
     setEtag( item.remoteId(), item.remoteRevision() );
-  }
 }
 
 #include "etagcache.moc"

@@ -29,20 +29,31 @@ namespace Akonadi {
 
 class KJob;
 
+/**
+ * @short A helper class to cache etags.
+ *
+ * The EtagCache caches the remote ids and etags of all items
+ * that are known to the resource. This cache is needed to find
+ * out which items have been changed in the backend and have to
+ * be refetched on the next call of ResourceBase::retrieveItems()
+ */
 class EtagCache : public QObject
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new etag cache.
+     */
     EtagCache();
 
     /**
-     * Populate the cache with the items found in @p collection.
+     * Populates the cache with the items found in @p collection.
      */
     void sync( const Akonadi::Collection &collection );
 
     /**
-     * Set the ETag for the remote ID. If the remote ID is marked as
+     * Sets the ETag for the remote ID. If the remote ID is marked as
      * changed (is contained in the return of changedRemoteIds), remove
      * it from the changed list.
      */
@@ -54,6 +65,10 @@ class EtagCache : public QObject
      */
     bool isOutOfDate( const QString &remoteId, const QString &refEtag );
 
+    /**
+     * Returns the list of remote ids of items that have been changed
+     * in the backend but not been refetched.
+     */
     QStringList changedRemoteIds() const;
 
   private Q_SLOTS:
