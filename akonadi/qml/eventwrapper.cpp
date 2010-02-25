@@ -19,27 +19,40 @@
 * 02110-1301  USA
 */
 
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
+#include "eventwrapper.h"
 
-#include "contactswidget.h"
-#include "calendarwidget.h"
+#include <QPixmap>
 
+#include <kdebug.h>
 
-int main( int argc, char **argv )
+EventWrapper::EventWrapper(KCal::Incidence::Ptr incidence, QObject* parent)
+  : QObject(parent), m_incidence(incidence)
 {
-  const QByteArray& ba = QByteArray( "akonadi_qml" );
-  const KLocalizedString name = ki18n( "Akonadi Qml example" );
-  KAboutData aboutData( ba, ba, name, ba, name );
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KApplication app;
 
-  ContactsWidget contactsWidget;
-  contactsWidget.show();
-
-  CalendarWidget calendarWidget;
-  calendarWidget.show();
-
-  return app.exec();
 }
+
+KCal::Incidence::Ptr EventWrapper::incidence() const
+{
+  return m_incidence;
+}
+
+QString EventWrapper::summary() const
+{
+  return m_incidence->summary();
+}
+
+QString EventWrapper::location() const
+{
+  return m_incidence->location();
+}
+
+QPixmap EventWrapper::image() const
+{
+  return QPixmap();
+}
+
+QString EventWrapper::description() const
+{
+  return m_incidence->description();
+}
+

@@ -19,27 +19,37 @@
 * 02110-1301  USA
 */
 
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
+#ifndef EVENT_GROUP_LIST_MODEL_H
+#define EVENT_GROUP_LIST_MODEL_H
 
-#include "contactswidget.h"
-#include "calendarwidget.h"
+#include <QAbstractListModel>
 
+class EventGroupModel;
 
-int main( int argc, char **argv )
+class EventGroupListModel : public QAbstractListModel
 {
-  const QByteArray& ba = QByteArray( "akonadi_qml" );
-  const KLocalizedString name = ki18n( "Akonadi Qml example" );
-  KAboutData aboutData( ba, ba, name, ba, name );
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KApplication app;
+  Q_OBJECT
 
-  ContactsWidget contactsWidget;
-  contactsWidget.show();
+public:
+  EventGroupListModel(QObject* parent = 0);
 
-  CalendarWidget calendarWidget;
-  calendarWidget.show();
+  virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+  virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
 
-  return app.exec();
-}
+  void setSourceModel(QAbstractItemModel* sourceModel);
+
+private:
+  void extractGroups();
+
+private slots:
+  void sourceRowsAboutToBeInserted();
+  void sourceRowsInserted();
+
+private:
+  QList<EventGroupModel *> m_eventGroups;
+  QAbstractItemModel *m_sourceModel;
+};
+
+#endif
+
+

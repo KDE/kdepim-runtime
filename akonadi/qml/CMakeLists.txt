@@ -22,8 +22,13 @@ include(FindKdepimLibs)
 set(qml_akonadi_srcs
   main.cpp
   contactswidget.cpp
+  calendarwidget.cpp
   declarativecontactmodel.cpp
   contactwrapper.cpp
+  eventgrouplistmodel.cpp
+  eventgroupmodel.cpp
+  eventsortproxymodel.cpp
+  eventwrapper.cpp
 )
 
 kde4_add_executable(qml_akonadi ${qml_akonadi_srcs} )
@@ -33,6 +38,7 @@ target_link_libraries(qml_akonadi
     ${KDEPIMLIBS_AKONADI_LIBS}
     ${KDE4_KIO_LIBS}
     ${KDEPIMLIBS_KABC_LIBS}
+    ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
     ${KDEPIMLIBS_KMIME_LIBS}
 )
 
@@ -40,11 +46,14 @@ install(TARGETS qml_akonadi ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install(FILES
   contacts.qml
+  calendar.qml
   DESTINATION ${DATA_INSTALL_DIR}/akonadi_qml
 )
 
 install(FILES
+  content/CalendarView.qml
   content/CloseButton.qml
+  content/DetailView.qml
   DESTINATION ${DATA_INSTALL_DIR}/akonadi_qml/content
 )
 

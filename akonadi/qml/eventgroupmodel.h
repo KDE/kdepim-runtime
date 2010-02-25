@@ -19,27 +19,38 @@
 * 02110-1301  USA
 */
 
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
+#ifndef EVENT_GROUP_MODEL_H
+#define EVENT_GROUP_MODEL_H
 
-#include "contactswidget.h"
-#include "calendarwidget.h"
+#include <QAbstractListModel>
+#include <KCal/Incidence>
 
+class EventWrapper;
 
-int main( int argc, char **argv )
+class EventGroupModel : public QAbstractListModel
 {
-  const QByteArray& ba = QByteArray( "akonadi_qml" );
-  const KLocalizedString name = ki18n( "Akonadi Qml example" );
-  KAboutData aboutData( ba, ba, name, ba, name );
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KApplication app;
+  Q_OBJECT
+  Q_PROPERTY(int count READ rowCount NOTIFY rowCountChanged)
 
-  ContactsWidget contactsWidget;
-  contactsWidget.show();
+public:
+  enum Roles {
+    EventWrapperRole
+  };
 
-  CalendarWidget calendarWidget;
-  calendarWidget.show();
+  EventGroupModel(QObject* parent = 0);
 
-  return app.exec();
-}
+  virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+  virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+
+  void addIncidence( KCal::Incidence::Ptr incidence );
+
+signals:
+  void rowCountChanged();
+
+private:
+  QList<EventWrapper*> m_events;
+};
+
+#endif
+
+

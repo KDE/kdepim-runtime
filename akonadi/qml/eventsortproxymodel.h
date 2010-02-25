@@ -19,27 +19,23 @@
 * 02110-1301  USA
 */
 
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
+#ifndef EVENT_SORT_PROXYMODEL_H
+#define EVENT_SORT_PROXYMODEL_H
 
-#include "contactswidget.h"
-#include "calendarwidget.h"
+#include <QSortFilterProxyModel>
 
+class EventGroup;
 
-int main( int argc, char **argv )
+class EventSortProxyModel : public QSortFilterProxyModel
 {
-  const QByteArray& ba = QByteArray( "akonadi_qml" );
-  const KLocalizedString name = ki18n( "Akonadi Qml example" );
-  KAboutData aboutData( ba, ba, name, ba, name );
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KApplication app;
+  Q_OBJECT
+public:
+  EventSortProxyModel(QObject* parent = 0);
 
-  ContactsWidget contactsWidget;
-  contactsWidget.show();
+protected:
+  virtual bool lessThan(const QModelIndex& left, const QModelIndex& right) const;
+};
 
-  CalendarWidget calendarWidget;
-  calendarWidget.show();
+#endif
 
-  return app.exec();
-}
+
