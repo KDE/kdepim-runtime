@@ -25,16 +25,45 @@
 
 #include <kjob.h>
 
+/**
+ * @short A job that modifies a DAV collection.
+ *
+ * This job is used to modify a property of a DAV collection
+ * on the DAV server.
+ */
 class DavCollectionModifyJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new dav collection modify job.
+     *
+     * @param url The DAV url that identifies the collection.
+     * @param parent The parent object.
+     */
     DavCollectionModifyJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
+    /**
+     * Sets the property that shall be modified by the job.
+     *
+     * @param property The name of the property.
+     * @param value The value of the property.
+     * @param ns The XML namespace that shall be used for the property name.
+     */
     void setProperty( const QString &property, const QString &value, const QString &ns = QString() );
+
+    /**
+     * Sets the property that shall be removed by the job.
+     *
+     * @param property The name of the property.
+     * @param ns The XML namespace that shall be used for the property name.
+     */
     void removeProperty( const QString &property, const QString &ns );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
   private Q_SLOTS:

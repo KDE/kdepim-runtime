@@ -24,15 +24,30 @@
 
 #include <kjob.h>
 
+/**
+ * @short A job that lists all DAV items inside a DAV collection.
+ */
 class DavItemsListJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new dav items list job.
+     *
+     * @param url The url of the DAV collection.
+     * @param parent The parent object.
+     */
     DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the list of items including identifier url and etag information.
+     */
     DavItem::List items() const;
 
   private Q_SLOTS:

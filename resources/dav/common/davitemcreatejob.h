@@ -24,15 +24,32 @@
 
 #include <kjob.h>
 
+/**
+ * @short A job to create a DAV item on the DAV server.
+ */
 class DavItemCreateJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new dav item create job.
+     *
+     * @param url The target url where the item shall be created.
+     * @param item The item that shall be created.
+     * @param parent The parent object.
+     */
     DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the created DAV item including the correct identifier url
+     * and current etag information.
+     */
     DavItem item() const;
 
   private Q_SLOTS:

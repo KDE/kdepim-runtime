@@ -24,13 +24,26 @@
 
 #include <kjob.h>
 
+/**
+ * @short A job to delete a DAV item on the DAV server.
+ */
 class DavItemDeleteJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new dav item delete job.
+     *
+     * @param url The url of the item that shall be deleted.
+     * @param item The item that shall be deleted.
+     * @param parent The parent object.
+     */
     DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
   private Q_SLOTS:

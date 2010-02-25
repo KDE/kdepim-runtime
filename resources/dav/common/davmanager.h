@@ -34,6 +34,13 @@ class KUrl;
 
 class QDomDocument;
 
+/**
+ * @short A factory class for handling DAV jobs.
+ *
+ * This class provides factory methods to create preconfigured
+ * low-level DAV jobs and has access to the global DAV protocol dialect
+ * objects which abstract the access to the various DAV protocol dialects.
+ */
 class DavManager
 {
   public:
@@ -47,12 +54,33 @@ class DavManager
      */
     static DavManager* self();
 
+    /**
+     * Returns a preconfigured DAV PROPFIND job.
+     *
+     * @param url The target url of the job.
+     * @param document The query XML document.
+     */
     KIO::DavJob* createPropFindJob( const KUrl &url, const QDomDocument &document ) const;
 
+    /**
+     * Returns a preconfigured DAV REPORT job.
+     *
+     * @param url The target url of the job.
+     * @param document The query XML document.
+     */
     KIO::DavJob* createReportJob( const KUrl &url, const QDomDocument &document ) const;
 
+    /**
+     * Returns a preconfigured DAV PROPPATCH job.
+     *
+     * @param url The target url of the job.
+     * @param document The query XML document.
+     */
     KIO::DavJob* createPropPatchJob( const KUrl &url, const QDomDocument &document ) const;
 
+    /**
+     * Returns the DAV protocol dialect object for the given DAV @p protocol.
+     */
     const DavProtocolBase* davProtocol( DavUtils::Protocol protocol );
 
   private:

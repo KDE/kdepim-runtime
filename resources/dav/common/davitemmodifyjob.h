@@ -24,15 +24,31 @@
 
 #include <kjob.h>
 
+/**
+ * @short A job that modifies a DAV item on the DAV server.
+ */
 class DavItemModifyJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new dav item modify job.
+     *
+     * @param url The url of the item that shall be modified.
+     * @param item The item that shall be modified.
+     * @param parent The parent object.
+     */
     DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the modified item including the updated etag information.
+     */
     DavItem item() const;
 
   private Q_SLOTS:

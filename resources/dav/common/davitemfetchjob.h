@@ -24,15 +24,31 @@
 
 #include <kjob.h>
 
+/**
+ * @short A job that fetches a DAV item from the DAV server.
+ */
 class DavItemFetchJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new dav item fetch job.
+     *
+     * @param url The DAV url of the item that shall be fetched.
+     * @param item The item that shall be fetched.
+     * @param parent The parent object.
+     */
     DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the fetched item including current etag information.
+     */
     DavItem item() const;
 
   private Q_SLOTS:

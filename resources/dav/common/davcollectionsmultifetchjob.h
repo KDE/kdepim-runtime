@@ -24,15 +24,36 @@
 
 #include <kjob.h>
 
+/**
+ * @short A job that fetches all DAV collection.
+ *
+ * This job is used to fetch all DAV collection that are available
+ * under a certain list of DAV urls.
+ *
+ * @note This class just combines multiple calls of DavCollectionsFetchJob
+ *       into one job.
+ */
 class DavCollectionsMultiFetchJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new dav collections multi fetch job.
+     *
+     * @param urls The list of DAV urls whose sub collections shall be fetched.
+     * @param parent The parent object.
+     */
     DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent = 0 );
 
+    /**
+     * Starts the job.
+     */
     virtual void start();
 
+    /**
+     * Returns the list of fetched DAV collections.
+     */
     DavCollection::List collections() const;
 
   private Q_SLOTS:
