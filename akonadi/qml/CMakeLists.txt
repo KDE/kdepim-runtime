@@ -21,7 +21,7 @@ include(FindKdepimLibs)
 
 set(qml_akonadi_srcs
   main.cpp
-  mainwidget.cpp
+  contactswidget.cpp
   declarativecontactmodel.cpp
   contactwrapper.cpp
 )

@@ -21,10 +21,10 @@
 
 #include <QWidget>
 
-class MainWidget : public QWidget
+class ContactsWidget : public QWidget
 {
   Q_OBJECT
 public:
-  MainWidget( QWidget *parent = 0 );
+  ContactsWidget( QWidget *parent = 0 );
 
 };

@@ -19,7 +19,7 @@
 * 02110-1301  USA
 */
 
-#include "mainwidget.h"
+#include "contactswidget.h"
 
 #include <QtDeclarative/QmlContext>
 #include <QtDeclarative/QmlEngine>
@@ -44,7 +44,7 @@
 #include <KStandardDirs>
 
 
-MainWidget::MainWidget(QWidget* parent)
+ContactsWidget::ContactsWidget(QWidget* parent)
   : QWidget(parent)
 {
 

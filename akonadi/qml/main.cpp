@@ -23,7 +23,8 @@
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 
-#include "mainwidget.h"
+#include "contactswidget.h"
+
 
 int main( int argc, char **argv )
 {
@@ -33,7 +34,7 @@ int main( int argc, char **argv )
   KCmdLineArgs::init( argc, argv, &aboutData );
   KApplication app;
 
-  MainWidget mw;
+  ContactsWidget mw;
   mw.show();
 
   return app.exec();
