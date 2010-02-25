@@ -81,27 +81,27 @@ Rectangle {
       }
 
       CloseButton {
-          anchors.right: background.right; anchors.rightMargin: 5
-          y: 10; opacity: wrapper.detailsOpacity
-          text: "Close"; onClicked: wrapper.state = '';
+        anchors.right: background.right; anchors.rightMargin: 5
+        y: 10; opacity: wrapper.detailsOpacity
+        text: "Close"; onClicked: wrapper.state = '';
       }
 
       states: State {
-          name: "Details"
-          PropertyChanges { target: background; color: "white" }
-          PropertyChanges { target: contactImage; width : undefined; height : undefined }
-          PropertyChanges { target: wrapper; detailsOpacity: 1; x: 0 }
-          PropertyChanges { target: wrapper; height: list.height }
-          PropertyChanges { target: wrapper.ListView.view; explicit: true; viewportY: wrapper.y }
-          PropertyChanges { target: wrapper.ListView.view; interactive: false }
+        name: "Details"
+        PropertyChanges { target: background; color: "white" }
+        PropertyChanges { target: contactImage; width : undefined; height : undefined }
+        PropertyChanges { target: wrapper; detailsOpacity: 1; x: 0 }
+        PropertyChanges { target: wrapper; height: list.height }
+        PropertyChanges { target: wrapper.ListView.view; explicit: true; viewportY: wrapper.y }
+        PropertyChanges { target: wrapper.ListView.view; interactive: false }
       }
       transitions: Transition {
-          ParallelAnimation {
-              ColorAnimation { property: "color"; duration: 500 }
-              NumberAnimation {
-                  duration: 300; matchProperties: "detailsOpacity,x,viewportY,height,width"
-              }
+        ParallelAnimation {
+          ColorAnimation { property: "color"; duration: 500 }
+          NumberAnimation {
+            duration: 300; matchProperties: "detailsOpacity,x,viewportY,height,width"
           }
+        }
       }
     }
   }
