@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -18,6 +18,6 @@ HEADERS += \
 SOURCES += \
            contactswidget.cpp \
            fakeentitytreemodel.cpp \
-           main.cpp \
+           main_contacts.cpp \
            qtselectionproxymodel.cpp \
 
