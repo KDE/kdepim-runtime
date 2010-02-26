@@ -27,7 +27,7 @@ include_directories(
 set(qml_akonadi_srcs
   main.cpp
   contactswidget.cpp
-#   calendarwidget.cpp
+  calendarwidget.cpp
 #   declarativecontactmodel.cpp
 #   contactwrapper.cpp
   fakeentitytreemodel.cpp

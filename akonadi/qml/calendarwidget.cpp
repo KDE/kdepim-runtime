@@ -28,8 +28,12 @@
 
 #include <QBoxLayout>
 #include <QSplitter>
+#include <QListView>
+#include <QApplication>
 
-#include "declarativecontactmodel.h"
+#include "fakegrouplistmodel.h"
+
+#if 0
 #include <akonadi/changerecorder.h>
 
 #include <KABC/Addressee>
@@ -39,13 +43,12 @@
 
 #include <kselectionproxymodel.h>
 #include <akonadi/entitytreeview.h>
-#include <QListView>
 #include <Akonadi/ItemFetchScope>
 #include <akonadi/entitymimetypefiltermodel.h>
 #include <KStandardDirs>
 #include "eventsortproxymodel.h"
 #include "eventgrouplistmodel.h"
-
+#endif
 
 CalendarWidget::CalendarWidget(QWidget* parent)
   : QWidget(parent)
@@ -55,6 +58,7 @@ CalendarWidget::CalendarWidget(QWidget* parent)
   QSplitter *splitter = new QSplitter(this);
   mainLayout->addWidget( splitter );
 
+#if 0
   Akonadi::ChangeRecorder *changeRecorder = new Akonadi::ChangeRecorder();
   changeRecorder->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::eventMimeType() );
   changeRecorder->setCollectionMonitored( Akonadi::Collection::root() );
@@ -80,9 +84,9 @@ CalendarWidget::CalendarWidget(QWidget* parent)
 
   EventSortProxyModel *eventSortProxy = new EventSortProxyModel(this);
   eventSortProxy->setSourceModel( itemFilter );
+#endif
 
-  EventGroupListModel *eventGroupModel = new EventGroupListModel(this);
-  eventGroupModel->setSourceModel( eventSortProxy );
+  FakeEventGroupListModel *eventGroupModel = new FakeEventGroupListModel(this);
 
   QStringList monthsList;
   monthsList << "January"
@@ -102,7 +106,7 @@ CalendarWidget::CalendarWidget(QWidget* parent)
   for (int i = 2000; i <= 2038; ++i ) // From 2000 'til the end of the world.
     yearsList << QString::number( i );
 
-  QString contactsQmlUrl = KStandardDirs::locate( "appdata", "calendar.qml" );
+  QString contactsQmlUrl =  qApp->applicationDirPath() + "/calendar.qml";
   QmlView *view = new QmlView( splitter );
   view->setUrl( contactsQmlUrl );
   QmlContext *c = view->engine()->rootContext();
