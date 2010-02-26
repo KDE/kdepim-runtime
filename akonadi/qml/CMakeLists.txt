@@ -31,8 +31,9 @@ set(qml_akonadi_srcs
 #   declarativecontactmodel.cpp
 #   contactwrapper.cpp
   fakeentitytreemodel.cpp
+  fakegrouplistmodel.cpp
 #   eventgrouplistmodel.cpp
-#   eventgroupmodel.cpp
+  eventgroupmodel.cpp
 #   eventsortproxymodel.cpp
   qtselectionproxymodel.cpp
 #   eventwrapper.cpp
