@@ -59,7 +59,7 @@ ContactsWidget::ContactsWidget(QWidget* parent)
 
   FakeEntityTreeModel *fakeModel = new FakeEntityTreeModel(FakeEntityTreeModel::ContactsData);
 
-  QTreeView *fakeView = new QTreeView( splitter );
+  QListView *fakeView = new QListView( splitter );
   fakeView->setModel(fakeModel);
 
 #if 0
