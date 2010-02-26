@@ -21,9 +21,6 @@
 
 #include "eventgroupmodel.h"
 
-#include "eventwrapper.h"
-#include <akonadi/entitytreemodel.h>
-
 EventGroupModel::EventGroupModel(QObject* parent)
   : QAbstractListModel(parent)
 {
@@ -38,11 +35,11 @@ QVariant EventGroupModel::data(const QModelIndex& index, int role) const
   {
     return QVariant::fromValue( qobject_cast<QObject *>( m_events.at( index.row() ) ) );
   }
+
   if ( role == Qt::DisplayRole )
   {
-    EventWrapper *event = m_events.at( index.row() );
-    KCal::Incidence::Ptr incidence = event->incidence();
-    return incidence->summary();
+    QObject *event = m_events.at( index.row() );
+    return event->property("summary");
   }
   return QVariant();
 }
@@ -53,9 +50,9 @@ int EventGroupModel::rowCount(const QModelIndex& parent) const
   return m_events.size();
 }
 
-void EventGroupModel::addIncidence(KCal::Incidence::Ptr incidence)
+void EventGroupModel::addIncidence(QObject *eventWrapper)
 {
-  EventWrapper *eventWrapper = new EventWrapper(incidence, this);
+  eventWrapper->setParent(this);
   m_events.append( eventWrapper );
 }
 

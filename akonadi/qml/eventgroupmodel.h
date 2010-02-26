@@ -23,9 +23,6 @@
 #define EVENT_GROUP_MODEL_H
 
 #include <QAbstractListModel>
-#include <KCal/Incidence>
-
-class EventWrapper;
 
 class EventGroupModel : public QAbstractListModel
 {
@@ -42,13 +39,13 @@ public:
   virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
   virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
 
-  void addIncidence( KCal::Incidence::Ptr incidence );
+  void addIncidence( QObject* );
 
 signals:
   void rowCountChanged();
 
 private:
-  QList<EventWrapper*> m_events;
+  QList<QObject*> m_events;
 };
 
 #endif

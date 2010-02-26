@@ -119,7 +119,7 @@ void EventGroupListModel::extractGroups()
     Q_ASSERT( item.hasPayload<KCal::Incidence::Ptr>() );
 
     KCal::Incidence::Ptr incidence = item.payload<KCal::Incidence::Ptr>();
-    m_eventGroups[ incidence->dtStart().dateTime().date().day() ]->addIncidence( incidence );
+    m_eventGroups[ incidence->dtStart().dateTime().date().day() ]->addIncidence( new EventWrapper( incidence ) );
 
  /*
     if ( m_eventGroups.last()->matches( incidence ) )
