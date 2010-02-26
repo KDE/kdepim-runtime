@@ -51,12 +51,19 @@
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
 
-#include "ui_setupserverview.h"
+#ifdef KDEPIM_MOBILE_UI
+#include "ui_setupserverview_mobile.h"
+#else
+#include "ui_setupserverview_desktop.h"
+#endif
 
 SetupServer::SetupServer( WId parent )
   : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0),
     m_subscriptionsChanged(false), m_shouldClearCache(false)
 {
+#ifdef KDEPIM_MOBILE_UI
+  setButtonsOrientation( Qt::Vertical );
+#endif
   Settings::self()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
 
