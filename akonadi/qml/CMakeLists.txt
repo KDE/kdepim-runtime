@@ -25,9 +25,11 @@ set(qml_akonadi_srcs
   calendarwidget.cpp
   declarativecontactmodel.cpp
   contactwrapper.cpp
+  fakeentitytreemodel.cpp
   eventgrouplistmodel.cpp
   eventgroupmodel.cpp
   eventsortproxymodel.cpp
+  qtselectionproxymodel.cpp
   eventwrapper.cpp
 )
 
@@ -60,4 +62,25 @@ install(FILES
 install(FILES
   content/pics/button.png content/pics/button-pressed.png
   DESTINATION ${DATA_INSTALL_DIR}/akonadi_qml/content/pics
+)
+
+
+## Put the data files in the build dir too, so that they can be found in QApplication::applicationDirPath()
+install(FILES
+  contacts.qml
+  calendar.qml
+  DESTINATION ${CMAKE_BINARY_DIR}
+)
+
+install(FILES
+  content/CalendarView.qml
+  content/CloseButton.qml
+  content/DetailView.qml
+  content/PortholeView.qml
+  DESTINATION ${CMAKE_BINARY_DIR}/content
+)
+
+install(FILES
+  content/pics/button.png content/pics/button-pressed.png
+  DESTINATION ${CMAKE_BINARY_DIR}/content/pics
 )
