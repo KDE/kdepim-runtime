@@ -59,6 +59,12 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
 )
 macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the message searchprovider")
 
+############### Desktop vs. Mobile options ##############
+
+option(KDEPIM_MOBILE_UI "Build UI for mobile devices instead of for desktops" FALSE)
+if (KDEPIM_MOBILE_UI)
+  add_definitions( -DKDEPIM_MOBILE_UI )
+endif (KDEPIM_MOBILE_UI)
 
 ############### Needed commands before building anything ###############
 

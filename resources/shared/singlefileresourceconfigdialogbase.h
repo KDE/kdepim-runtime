@@ -21,7 +21,11 @@
 #ifndef AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
 #define AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
 
-#include "ui_singlefileresourceconfigdialog.h"
+#ifdef KDEPIM_MOBILE_UI
+#include "ui_singlefileresourceconfigdialog_mobile.h"
+#else
+#include "ui_singlefileresourceconfigdialog_desktop.h"
+#endif
 
 #include <KDE/KDialog>
 

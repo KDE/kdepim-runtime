@@ -10,9 +10,15 @@ set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialogbase.cpp
 )
 
+if (KDEPIM_MOBILE_UI)
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_mobile.ui
 )
+else (KDEPIM_MOBILE_UI)
+set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_desktop.ui
+)
+endif (KDEPIM_MOBILE_UI)
 
 set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionannotationsattribute.cpp
