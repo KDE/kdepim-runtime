@@ -84,11 +84,31 @@ CalendarWidget::CalendarWidget(QWidget* parent)
   EventGroupListModel *eventGroupModel = new EventGroupListModel(this);
   eventGroupModel->setSourceModel( eventSortProxy );
 
+  QStringList monthsList;
+  monthsList << "January"
+             << "February"
+             << "March"
+             << "April"
+             << "May"
+             << "June"
+             << "July"
+             << "August"
+             << "September"
+             << "October"
+             << "November"
+             << "December";
+
+  QStringList yearsList;
+  for (int i = 2000; i <= 2038; ++i ) // From 2000 'til the end of the world.
+    yearsList << QString::number( i );
+
   QString contactsQmlUrl = KStandardDirs::locate( "appdata", "calendar.qml" );
   QmlView *view = new QmlView( splitter );
   view->setUrl( contactsQmlUrl );
-  view->engine()->rootContext()->setContextProperty( "event_group_model", QVariant::fromValue( static_cast<QObject*>( eventGroupModel ) ) );
+  QmlContext *c = view->engine()->rootContext();
+  c->setContextProperty( "months_list", monthsList );
+  c->setContextProperty( "years_list", yearsList );
+  c->setContextProperty( "event_group_model", QVariant::fromValue( static_cast<QObject*>( eventGroupModel ) ) );
   view->setFocus();
   view->execute();
-
 }
