@@ -23,9 +23,7 @@
 #include "fakeentitytreemodel.h"
 
 #include <QImageReader>
-
-#include "contactwrapper.h"
-#include "eventwrapper.h"
+#include <QDateTime>
 
 enum {
   DeclarativeItemRole = Qt::UserRole

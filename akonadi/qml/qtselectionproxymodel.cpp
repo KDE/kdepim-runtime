@@ -1684,4 +1684,4 @@ QModelIndexList QtSelectionProxyModel::match(const QModelIndex& start, int role,
 
 }
 
-#include "moc_qtselectionproxymodel.cpp"
+#include "qtselectionproxymodel.moc"
