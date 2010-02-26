@@ -19,163 +19,18 @@
 
 #include "qtselectionproxymodel.h"
 
-#include <QtCore/QStack>
-#include <QtCore/QStringList>
-#include <QtGui/QItemSelectionRange>
 
-class QtSelectionProxyModelPrivate
+QtSelectionProxyModelPrivate::QtSelectionProxyModelPrivate(QtSelectionProxyModel *model)
+  : q_ptr(model),
+    m_startWithChildTrees(false),
+    m_omitChildren(false),
+    m_omitDescendants(false),
+    m_includeAllSelected(false),
+    m_rowsRemoved(false),
+    m_resetting(false)
 {
-public:
-  QtSelectionProxyModelPrivate(QtSelectionProxyModel *model)
-    : q_ptr(model),
-      m_startWithChildTrees(false),
-      m_omitChildren(false),
-      m_omitDescendants(false),
-      m_includeAllSelected(false),
-      m_rowsRemoved(false),
-      m_resetting(false)
-  {
 
-  }
-
-  Q_DECLARE_PUBLIC(QtSelectionProxyModel)
-  QtSelectionProxyModel *q_ptr;
-
-  QItemSelectionModel *m_selectionModel;
-  QList<QPersistentModelIndex> m_rootIndexList;
-
-  QList<const QAbstractProxyModel *> m_proxyChain;
-
-  void sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-  void sourceRowsInserted(const QModelIndex &parent, int start, int end);
-  void sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-  void sourceRowsRemoved(const QModelIndex &parent, int start, int end);
-  void sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
-  void sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
-  void sourceModelAboutToBeReset();
-  void sourceModelReset();
-  void sourceLayoutAboutToBeChanged();
-  void sourceLayoutChanged();
-  void sourceDataChanged(const QModelIndex &topLeft ,const QModelIndex &bottomRight);
-
-  void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-  void sourceModelDestroyed();
-
-  QModelIndexList toNonPersistent(const QList<QPersistentModelIndex> &list) const;
-
-  void resetInternalData();
-
-  /**
-    Return true if @p idx is a descendant of one of the indexes in @p list.
-    Note that this returns false if @p list contains @p idx.
-  */
-  bool isDescendantOf(QModelIndexList &list, const QModelIndex &idx) const;
-
-  bool isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const;
-
-  QModelIndex childOfParent(const QModelIndex &ancestor, const QModelIndex &descendant) const;
-
-  /**
-    Returns the range in the proxy model corresponding to the range in the source model
-    covered by @sourceParent, @p start and @p end.
-  */
-  QPair<int, int> getRootRange(const QModelIndex &sourceParent, int start, int end) const;
-
-  /**
-  Traverses the proxy models between the selectionModel and the sourceModel. Creating a chain as it goes.
-  */
-  void createProxyChain();
-
-  /**
-  When items are inserted or removed in the m_startWithChildTrees configuration,
-  this method helps find the startRow for use emitting the signals from the proxy.
-  */
-  int getProxyInitialRow(const QModelIndex &parent) const;
-
-  /**
-  Returns a selection in which no descendants of selected indexes are also themselves selected.
-  For example,
-  @code
-    A
-    - B
-    C
-    D
-  @endcode
-  If A, B and D are selected in @p selection, the returned selection contains only A and D.
-  */
-  QItemSelection getRootRanges(const QItemSelection &selection) const;
-
-  /**
-    Returns the indexes in @p selection which are not already part of the proxy model.
-  */
-  QModelIndexList getNewIndexes(const QItemSelection &selection) const;
-
-  /**
-    Determines the correct location to insert @p index into @p list.
-  */
-  int getRootListRow(const QModelIndexList &list, const QModelIndex &index) const;
-
-  /**
-  If m_startWithChildTrees is true, this method returns the row in the proxy model to insert newIndex
-  items.
-
-  This is a special case because the items above rootListRow in the list are not in the model, but
-  their children are. Those children must be counted.
-
-  If m_startWithChildTrees is false, this method returns @p rootListRow.
-  */
-  int getTargetRow(int rootListRow);
-
-  /**
-    Regroups @p list into contiguous groups with the same parent.
-  */
-  QList<QPair<QModelIndex, QModelIndexList> > regroup(const QModelIndexList &list) const;
-
-  /**
-    Inserts the indexes in @p list into the proxy model.
-  */
-  void insertionSort(const QModelIndexList &list);
-
-  /**
-    Returns true if @p sourceIndex or one of its ascendants is already part of the proxy model.
-  */
-  bool isInModel(const QModelIndex &sourceIndex) const;
-
-  /**
-  Converts an index in the selection model to an index in the source model.
-  */
-  QModelIndex selectionIndexToSourceIndex(const QModelIndex &index) const;
-
-  /**
-    Returns the total number of children (but not descendants) of all of the indexes in @p list.
-  */
-  int childrenCount(const QModelIndexList &list) const;
-
-  // Used to map children of indexes in the source model to indexes in the proxy model.
-  // TODO: Find out if this breaks when indexes are modified because of higher siblings move/insert/remove
-  mutable QHash< void *, QPersistentModelIndex> m_map;
-
-  bool m_startWithChildTrees;
-  bool m_omitChildren;
-  bool m_omitDescendants;
-  bool m_includeAllSelected;
-  bool m_rowsRemoved;
-  bool m_resetting;
-
-  struct PendingMove
-  {
-    bool srcInModel;
-    bool destInModel;
-  };
-
-  QStack<PendingMove> m_pendingMoves;
-
-  QtSelectionProxyModel::FilterBehavior m_filterBehavior;
-
-  QList<QPersistentModelIndex> m_layoutChangePersistentIndexes;
-  QModelIndexList m_proxyIndexes;
-
-};
+}
 
 QModelIndexList QtSelectionProxyModelPrivate::toNonPersistent(const QList<QPersistentModelIndex> &list) const
 {
@@ -1305,7 +1160,7 @@ void QtSelectionProxyModel::setFilterBehavior(FilterBehavior behavior)
 QtSelectionProxyModel::FilterBehavior QtSelectionProxyModel::filterBehavior() const
 {
   Q_D(const QtSelectionProxyModel);
-  return d->m_filterBehavior;
+  return (QtSelectionProxyModel::FilterBehavior)d->m_filterBehavior;
 }
 
 void QtSelectionProxyModel::setSourceModel( QAbstractItemModel *_sourceModel )
@@ -1683,5 +1538,3 @@ QModelIndexList QtSelectionProxyModel::match(const QModelIndex& start, int role,
   return list;
 
 }
-
-#include "qtselectionproxymodel.moc"
