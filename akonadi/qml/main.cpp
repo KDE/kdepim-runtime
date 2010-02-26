@@ -18,10 +18,12 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 * 02110-1301  USA
 */
-
+#if 0
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
+#endif
+#include <QApplication>
 
 #include "contactswidget.h"
 #include "calendarwidget.h"
