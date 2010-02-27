@@ -114,7 +114,7 @@ QString CarddavProtocol::dataTagName() const
   return "address-data";
 }
 
-DavCollection::ContentTypes CarddavProtocol::collectionContentTypes( const QDomElement &propstatElement ) const
+DavCollection::ContentTypes CarddavProtocol::collectionContentTypes( const QDomElement& ) const
 {
   return DavCollection::Contacts;
 }

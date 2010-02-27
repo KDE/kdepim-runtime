@@ -176,7 +176,7 @@ void UrlConfigurationDialog::onCollectionsFetchDone( KJob *job )
   checkUserInput();
 }
 
-void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight )
+void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, const QModelIndex& )
 {
   // Actually only the display name can be changed, so no stricts checks are required
   const QString newName = topLeft.data().toString();
