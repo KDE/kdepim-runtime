@@ -397,10 +397,11 @@ void DavCalendarResource::onRetrieveItemsFinished( KJob *job )
     else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::todoMimeType() ) )
       item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
 
-    // TODO clear the payload once implemented
     // TODO add the item URL to the fetch-ahead list (and TODO create the fetch-ahead list)
-    if ( mEtagCache.isOutOfDate( item.remoteId(), davItem.etag() ) )
+    if ( mEtagCache.isOutOfDate( item.remoteId(), davItem.etag() ) ) {
       kDebug() << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
+      item.clearPayload();
+    }
 
     item.setRemoteRevision( davItem.etag() );
 
