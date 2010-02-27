@@ -133,6 +133,9 @@ void UrlConfigurationDialog::onFetchButtonClicked()
 {
   mUi.discoveredUrls->setEnabled( false );
 
+  if ( !remoteUrl().endsWith( QLatin1Char( '/' ) ) )
+    setRemoteUrl( remoteUrl() + QLatin1Char( '/' ) );
+
   mModel->clear();
   QStringList headers;
   headers << i18n( "Display name" ) << i18n( "URL" );
