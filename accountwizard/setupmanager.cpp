@@ -89,7 +89,7 @@ void SetupManager::setupNext()
   if ( m_objectToSetup.isEmpty() ) {
     m_page->setStatus( i18n( "Setup complete." ) );
     m_page->setProgress( 100 );
-    m_page->setValid( false );
+    m_page->setValid( true );
   } else {
     const int setupObjectCount = m_objectToSetup.size() + m_setupObjects.size();
     const int remainingObjectCount = setupObjectCount - m_objectToSetup.size();
