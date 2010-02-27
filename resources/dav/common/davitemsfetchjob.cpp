@@ -80,6 +80,13 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
       continue;
     }
 
+    // Check for errors
+    const QDomElement statusElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "status" );
+    if ( !statusElement.text().contains( "200" ) ) {
+      responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
+      continue;
+    }
+
     const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
 
     DavItem item;
