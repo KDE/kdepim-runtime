@@ -122,7 +122,7 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
       continue;
     }
 
-    item.setData( dataElement.firstChild().toText().data().toUtf8() );
+    item.setData( data );
 
     mItems.insert( item.url(), item );
     responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
