@@ -52,6 +52,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
   private Q_SLOTS:
     void onRetrieveCollectionsFinished( KJob* );
     void onRetrieveItemsFinished( KJob* );
+    void onMultigetFinished( KJob* );
     void onRetrieveItemFinished( KJob* );
 
     void onItemAddedFinished( KJob* );

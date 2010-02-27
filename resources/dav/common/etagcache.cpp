@@ -45,14 +45,19 @@ void EtagCache::setEtag( const QString &remoteId, const QString &etag )
     mChangedRemoteIds.remove( remoteId );
 }
 
-bool EtagCache::isOutOfDate( const QString &remoteId, const QString &refEtag )
+bool EtagCache::etagChanged( const QString &remoteId, const QString &refEtag )
 {
-  const bool outOfDate = (mCache.value( remoteId ) != refEtag);
+  const bool changed = (mCache.value( remoteId ) != refEtag);
 
-  if ( outOfDate )
+  if ( changed )
     mChangedRemoteIds.insert( remoteId );
 
-  return outOfDate;
+  return changed;
+}
+
+bool EtagCache::isOutOfDate( const QString &remoteId ) const
+{
+  return mChangedRemoteIds.contains( remoteId );
 }
 
 QStringList EtagCache::changedRemoteIds() const

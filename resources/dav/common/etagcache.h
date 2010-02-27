@@ -63,7 +63,13 @@ class EtagCache : public QObject
      * Check if the known ETag for the remote ID is equal to @p refEtag and, if not,
      * mark it as changed.
      */
-    bool isOutOfDate( const QString &remoteId, const QString &refEtag );
+    bool etagChanged( const QString &remoteId, const QString &refEtag );
+
+    /**
+     * Returns true if the remote ID is marked as changed (is contained in the
+     * return of changedRemoteIds)
+     */
+    bool isOutOfDate( const QString &remoteId ) const;
 
     /**
      * Returns the list of remote ids of items that have been changed

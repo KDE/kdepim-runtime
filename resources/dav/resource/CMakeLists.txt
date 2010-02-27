@@ -58,8 +58,10 @@ set( davgroupwareresource_SRCS
   ../common/davitemdeletejob.cpp
   ../common/davitemfetchjob.cpp
   ../common/davitemmodifyjob.cpp
+  ../common/davitemsfetchjob.cpp
   ../common/davitemslistjob.cpp
   ../common/davmanager.cpp
+  ../common/davmultigetprotocol.cpp
   ../common/davutils.cpp
   ../common/etagcache.cpp
 

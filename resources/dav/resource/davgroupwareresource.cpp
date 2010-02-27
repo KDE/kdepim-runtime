@@ -25,6 +25,7 @@
 #include "davitemdeletejob.h"
 #include "davitemfetchjob.h"
 #include "davitemmodifyjob.h"
+#include "davitemsfetchjob.h"
 #include "davitemslistjob.h"
 #include "davmanager.h"
 #include "davprotocolattribute.h"
@@ -377,6 +378,7 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   }
 
   const Collection collection = job->property( "collection" ).value<Collection>();
+  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
 
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
@@ -397,14 +399,78 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::todoMimeType() ) )
       item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
 
-    // TODO add the item URL to the fetch-ahead list (and TODO create the fetch-ahead list)
-    if ( mEtagCache.isOutOfDate( item.remoteId(), davItem.etag() ) ) {
+    if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) &&
+         !DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget() ) {
       kDebug() << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
       item.clearPayload();
     }
 
     item.setRemoteRevision( davItem.etag() );
 
+    items << item;
+  }
+
+  // If the protocol supports multiget then deviate from the expected behavior
+  // and fetch all items with payload now instead of waiting for Akonadi to
+  // request it item by item.
+  // This allows the resource to use the multiget query and let it be nice
+  // to the remote server : only one request for n items instead of n requests.
+  if ( DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget() &&
+       !mEtagCache.changedRemoteIds().isEmpty() ) {
+    DavItemsFetchJob *fetchJob = new DavItemsFetchJob( davUrl, mEtagCache.changedRemoteIds() );
+    connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( onMultigetFinished( KJob* ) ) );
+    fetchJob->setProperty( "akonadiItems", QVariant::fromValue( items ) );
+    fetchJob->start();
+  }
+  else {
+    itemsRetrieved( items );
+  }
+}
+
+void DavGroupwareResource::onMultigetFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( i18n( "Unable to retrieve items: %1", job->errorText() ) );
+    return;
+  }
+
+  Akonadi::Item::List tmpItems = job->property( "akonadiItems" ).value<Akonadi::Item::List>();
+  Akonadi::Item::List items;
+  DavItemsFetchJob *davJob = qobject_cast<DavItemsFetchJob*>( job );
+
+  foreach( Akonadi::Item item, tmpItems ) {
+    DavItem davItem = davJob->item( item.remoteId() );
+
+    // No data was retrieved for this item, maybe because it is not out of date
+    if ( davItem.data().isEmpty() ) {
+      items << item;
+      continue;
+    }
+
+    kDebug() << "Multiget'ed item at " << davItem.url() << item.remoteId();
+
+    // convert dav data into payload
+    const QString data = QString::fromUtf8( davItem.data() );
+
+    if ( item.mimeType() == KABC::Addressee::mimeType() ) {
+      KABC::VCardConverter converter;
+      const KABC::Addressee contact = converter.parseVCard( davItem.data() );
+
+      item.setPayload<KABC::Addressee>( contact );
+    } else {
+      KCal::ICalFormat formatter;
+      const IncidencePtr ptr( formatter.fromString( data ) );
+
+      item.setPayload<IncidencePtr>( ptr );
+
+      // fix mime type for CalDAV collections
+      ptr->accept( *mMimeVisitor );
+      item.setMimeType( mMimeVisitor->mimeType() );
+    }
+
+    // update etag
+    item.setRemoteRevision( davItem.etag() );
+    mEtagCache.setEtag( item.remoteId(), davItem.etag() );
     items << item;
   }
 

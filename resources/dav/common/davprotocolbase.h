@@ -59,6 +59,9 @@ class DavProtocolBase
      * can be fetched in ResourceBase::retrieveItems() already and
      * there is no need to call ResourceBase::retrieveItem() for every single
      * dav resource.
+     *
+     * Protocols that have MULTIGET capabilities must inherit from
+     * DavMultigetProtocol instead of this class.
      */
     virtual bool useMultiget() const = 0;
 
@@ -79,12 +82,6 @@ class DavProtocolBase
      * list all available DAV resources inside a specific DAV collection.
      */
     virtual QList<QDomDocument> itemsQueries() const = 0;
-
-    /**
-     * Returns the XML document that represents a MULTIGET DAV query to
-     * list all DAV resources with the given @p urls.
-     */
-    virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
 
     /**
      * Returns the possible content types for the collection that

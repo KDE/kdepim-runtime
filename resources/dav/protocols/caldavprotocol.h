@@ -19,9 +19,9 @@
 #ifndef CALDAVPROTOCOL_H
 #define CALDAVPROTOCOL_H
 
-#include "davprotocolbase.h"
+#include "davmultigetprotocol.h"
 
-class CaldavProtocol : public DavProtocolBase
+class CaldavProtocol : public DavMultigetProtocol
 {
   public:
     CaldavProtocol();
@@ -31,6 +31,8 @@ class CaldavProtocol : public DavProtocolBase
     virtual QString collectionsXQuery() const;
     virtual QList<QDomDocument> itemsQueries() const;
     virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
+    virtual QString responseNamespace() const;
+    virtual QString dataTagName() const;
 
     virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const;
     virtual QString contactsMimeType() const;

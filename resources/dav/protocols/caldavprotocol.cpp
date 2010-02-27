@@ -182,6 +182,16 @@ QDomDocument CaldavProtocol::itemsReportQuery( const QStringList &urls ) const
   return document;
 }
 
+QString CaldavProtocol::responseNamespace() const
+{
+  return "urn:ietf:params:xml:ns:caldav";
+}
+
+QString CaldavProtocol::dataTagName() const
+{
+  return "calendar-data";
+}
+
 DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomElement &propstatElement ) const
 {
   /*
