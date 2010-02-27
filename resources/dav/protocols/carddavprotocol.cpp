@@ -18,6 +18,7 @@
 
 #include "carddavprotocol.h"
 
+#include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
 
 CarddavProtocol::CarddavProtocol()
@@ -44,7 +45,7 @@ bool CarddavProtocol::useReport() const
 
 bool CarddavProtocol::useMultiget() const
 {
-  return false;
+  return true;
 }
 
 QDomDocument CarddavProtocol::collectionsQuery() const
@@ -73,6 +74,44 @@ QString CarddavProtocol::collectionsXQuery() const
 QList<QDomDocument> CarddavProtocol::itemsQueries() const
 {
   return mItemsQueries;
+}
+
+QDomDocument CarddavProtocol::itemsReportQuery( const QStringList &urls ) const
+{
+  QDomDocument document;
+
+  QDomElement multigetElement = document.createElementNS( "urn:ietf:params:xml:ns:carddav", "addressbook-multiget" );
+  document.appendChild( multigetElement );
+
+  QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+  multigetElement.appendChild( propElement );
+
+  propElement.appendChild( document.createElementNS( "DAV:", "getetag" ) );
+  QDomElement addressDataElement = document.createElementNS( "urn:ietf:params:xml:ns:carddav", "address-data" );
+  addressDataElement.appendChild( document.createElementNS( "DAV:", "allprop" ) );
+  propElement.appendChild( addressDataElement );
+
+  foreach ( const QString &url, urls ) {
+    QDomElement hrefElement = document.createElementNS( "DAV:", "href" );
+    const KUrl pathUrl( url );
+
+    const QDomText textNode = document.createTextNode( pathUrl.path() );
+    hrefElement.appendChild( textNode );
+
+    multigetElement.appendChild( hrefElement );
+  }
+
+  return document;
+}
+
+QString CarddavProtocol::responseNamespace() const
+{
+  return "urn:ietf:params:xml:ns:carddav";
+}
+
+QString CarddavProtocol::dataTagName() const
+{
+  return "address-data";
 }
 
 DavCollection::ContentTypes CarddavProtocol::collectionContentTypes( const QDomElement &propstatElement ) const

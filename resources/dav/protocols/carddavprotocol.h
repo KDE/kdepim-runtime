@@ -19,9 +19,9 @@
 #ifndef CARDDAVPROTOCOL_H
 #define CARDDAVPROTOCOL_H
 
-#include "davprotocolbase.h"
+#include "davmultigetprotocol.h"
 
-class CarddavProtocol : public DavProtocolBase
+class CarddavProtocol : public DavMultigetProtocol
 {
   public:
     CarddavProtocol();
@@ -30,6 +30,9 @@ class CarddavProtocol : public DavProtocolBase
     virtual QDomDocument collectionsQuery() const;
     virtual QString collectionsXQuery() const;
     virtual QList<QDomDocument> itemsQueries() const;
+    virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
+    virtual QString responseNamespace() const;
+    virtual QString dataTagName() const;
 
     virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const;
     virtual QString contactsMimeType() const;
