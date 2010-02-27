@@ -1,4 +1,4 @@
-project(davcalendar)
+project(davgroupware)
 
 # search packages used by KDE
 find_package (KDE4 REQUIRED)
@@ -39,6 +39,7 @@ include_directories(
     ${KDE4_INCLUDES}
     ${KDEPIMLIBS_INCLUDE_DIRS}
     ../common/
+    ../protocols/
 )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
@@ -46,7 +47,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 ########### next target ###############
 
-set( davcalendarresource_SRCS
+set( davgroupwareresource_SRCS
   ../common/davcollection.cpp
   ../common/davcollectionsfetchjob.cpp
   ../common/davcollectionmodifyjob.cpp
@@ -62,27 +63,28 @@ set( davcalendarresource_SRCS
   ../common/davutils.cpp
   ../common/etagcache.cpp
 
-  caldavprotocol.cpp
-  carddavprotocol.cpp
+  ../protocols/caldavprotocol.cpp
+  ../protocols/carddavprotocol.cpp
+  ../protocols/groupdavprotocol.cpp
+
   configdialog.cpp
-  davcalendarresource.cpp
+  davgroupwareresource.cpp
   davprotocolattribute.cpp
-  groupdavprotocol.cpp
   settings.cpp
   urlconfigurationdialog.cpp
 )
 
-install( FILES davcalendarresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES davgroupwareresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_kcfg_files(davcalendarresource_SRCS settingsbase.kcfgc)
-kde4_add_ui_files(davcalendarresource_SRCS configdialog.ui urlconfigurationdialog.ui)
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davcalendarresource.kcfg org.kde.Akonadi.davCalendar.Settings)
-qt4_add_dbus_adaptor(davcalendarresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davCalendar.Settings.xml settings.h Settings
+kde4_add_kcfg_files(davgroupwareresource_SRCS settingsbase.kcfgc)
+kde4_add_ui_files(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davgroupwareresource.kcfg org.kde.Akonadi.davGroupware.Settings)
+qt4_add_dbus_adaptor(davgroupwareresource_SRCS
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davGroupware.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_davcalendar_resource RUN_UNINSTALLED ${davcalendarresource_SRCS})
+kde4_add_executable(akonadi_davgroupware_resource RUN_UNINSTALLED ${davgroupwareresource_SRCS})
 
-target_link_libraries(akonadi_davcalendar_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS} QtXmlPatterns akonadi-kcal)
+target_link_libraries(akonadi_davgroupware_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS} QtXmlPatterns akonadi-kcal)
 
-install(TARGETS akonadi_davcalendar_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

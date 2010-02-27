@@ -16,7 +16,7 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "davcalendarresource.h"
+#include "davgroupwareresource.h"
 
 #include "configdialog.h"
 #include "davcollectionsfetchjob.h"
@@ -52,7 +52,7 @@ using namespace Akonadi;
 
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
-DavCalendarResource::DavCalendarResource( const QString &id )
+DavGroupwareResource::DavGroupwareResource( const QString &id )
   : ResourceBase( id ), mMimeVisitor( new Akonadi::IncidenceMimeTypeVisitor )
 {
   new SettingsAdaptor( Settings::self() );
@@ -87,12 +87,12 @@ DavCalendarResource::DavCalendarResource( const QString &id )
   synchronize();
 }
 
-DavCalendarResource::~DavCalendarResource()
+DavGroupwareResource::~DavGroupwareResource()
 {
   delete mMimeVisitor;
 }
 
-void DavCalendarResource::configure( WId windowId )
+void DavGroupwareResource::configure( WId windowId )
 {
   ConfigDialog dialog;
   Settings::self()->setWinId( windowId );
@@ -112,7 +112,7 @@ void DavCalendarResource::configure( WId windowId )
   }
 }
 
-void DavCalendarResource::retrieveCollections()
+void DavGroupwareResource::retrieveCollections()
 {
   kDebug() << "Retrieving collections list";
 
@@ -129,7 +129,7 @@ void DavCalendarResource::retrieveCollections()
   job->start();
 }
 
-void DavCalendarResource::retrieveItems( const Akonadi::Collection &collection )
+void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection )
 {
   kDebug() << "Retrieving items";
 
@@ -147,7 +147,7 @@ void DavCalendarResource::retrieveItems( const Akonadi::Collection &collection )
   job->start();
 }
 
-bool DavCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
+bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
   kDebug() << "Retrieving single item. Remote id = " << item.remoteId();
 
@@ -172,7 +172,7 @@ bool DavCalendarResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
   return true;
 }
 
-void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
+void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
   kDebug() << "Received notification for added item. Local id = "
       << item.id() << ". Remote id = " << item.remoteId()
@@ -249,7 +249,7 @@ void DavCalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   job->start();
 }
 
-void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
+void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
   kDebug() << "Received notification for changed item. Local id = " << item.id()
       << ". Remote id = " << item.remoteId();
@@ -296,7 +296,7 @@ void DavCalendarResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
   job->start();
 }
 
-void DavCalendarResource::itemRemoved( const Akonadi::Item &item )
+void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
 {
   if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
@@ -315,7 +315,7 @@ void DavCalendarResource::itemRemoved( const Akonadi::Item &item )
   job->start();
 }
 
-void DavCalendarResource::onRetrieveCollectionsFinished( KJob *job )
+void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( i18n( "Unable to retrieve collections: %1", job->errorText() ) );
@@ -369,7 +369,7 @@ void DavCalendarResource::onRetrieveCollectionsFinished( KJob *job )
   collectionsRetrieved( collections );
 }
 
-void DavCalendarResource::onRetrieveItemsFinished( KJob *job )
+void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( i18n( "Unable to retrieve items: %1", job->errorText() ) );
@@ -411,7 +411,7 @@ void DavCalendarResource::onRetrieveItemsFinished( KJob *job )
   itemsRetrieved( items );
 }
 
-void DavCalendarResource::onRetrieveItemFinished( KJob *job )
+void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( i18n( "Unable to retrieve item: %1", job->errorText() ) );
@@ -450,7 +450,7 @@ void DavCalendarResource::onRetrieveItemFinished( KJob *job )
   itemRetrieved( item );
 }
 
-void DavCalendarResource::onItemAddedFinished( KJob *job )
+void DavGroupwareResource::onItemAddedFinished( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( i18n( "Unable to add item: %1", job->errorText() ) );
@@ -469,7 +469,7 @@ void DavCalendarResource::onItemAddedFinished( KJob *job )
   changeCommitted( item );
 }
 
-void DavCalendarResource::onItemChangedFinished( KJob *job )
+void DavGroupwareResource::onItemChangedFinished( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( i18n( "Unable to change item: %1", job->errorText() ) );
@@ -487,7 +487,7 @@ void DavCalendarResource::onItemChangedFinished( KJob *job )
   changeCommitted( item );
 }
 
-void DavCalendarResource::onItemRemovedFinished( KJob *job )
+void DavGroupwareResource::onItemRemovedFinished( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( i18n( "Unable to remove item: %1", job->errorText() ) );
@@ -497,7 +497,7 @@ void DavCalendarResource::onItemRemovedFinished( KJob *job )
   changeProcessed();
 }
 
-bool DavCalendarResource::configurationIsValid()
+bool DavGroupwareResource::configurationIsValid()
 {
   if ( Settings::self()->remoteUrls().empty() )
     return false;
@@ -521,6 +521,6 @@ bool DavCalendarResource::configurationIsValid()
   return true;
 }
 
-AKONADI_RESOURCE_MAIN( DavCalendarResource )
+AKONADI_RESOURCE_MAIN( DavGroupwareResource )
 
-#include "davcalendarresource.moc"
+#include "davgroupwareresource.moc"

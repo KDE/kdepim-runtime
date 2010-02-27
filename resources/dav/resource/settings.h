@@ -35,7 +35,7 @@ namespace KWallet {
 class Settings : public SettingsBase
 {
   Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.davCalendar.Wallet" )
+  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.davGroupware.Wallet" )
 
   public:
     class UrlConfiguration

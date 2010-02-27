@@ -1,4 +1,4 @@
-File=davcalendarresource.kcfg
+File=davgroupwareresource.kcfg
 ClassName=SettingsBase
 Mutators=true
 ItemAccessors=true

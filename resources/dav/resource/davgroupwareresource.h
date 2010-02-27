@@ -27,14 +27,14 @@ namespace Akonadi {
 class IncidenceMimeTypeVisitor;
 }
 
-class DavCalendarResource : public Akonadi::ResourceBase,
+class DavGroupwareResource : public Akonadi::ResourceBase,
                             public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
   public:
-    DavCalendarResource( const QString &id );
-    ~DavCalendarResource();
+    DavGroupwareResource( const QString &id );
+    ~DavGroupwareResource();
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
