@@ -378,7 +378,8 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   }
 
   const Collection collection = job->property( "collection" ).value<Collection>();
-  DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const bool protocolSupportsMultiget = DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget();
 
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
@@ -399,10 +400,14 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::todoMimeType() ) )
       item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
 
-    if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) &&
-         !DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget() ) {
-      kDebug() << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
-      item.clearPayload();
+    if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) ) {
+      // Only clear the payload (and therefor trigger a refetch from the backend) if we
+      // do not use multiget, because in this case we fetch the complete payload
+      // some lines below already.
+      if ( !protocolSupportsMultiget ) {
+        kDebug() << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
+        item.clearPayload();
+      }
     }
 
     item.setRemoteRevision( davItem.etag() );
@@ -412,17 +417,17 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
 
   // If the protocol supports multiget then deviate from the expected behavior
   // and fetch all items with payload now instead of waiting for Akonadi to
-  // request it item by item.
+  // request it item by item in retrieveItem().
   // This allows the resource to use the multiget query and let it be nice
   // to the remote server : only one request for n items instead of n requests.
-  if ( DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget() &&
-       !mEtagCache.changedRemoteIds().isEmpty() ) {
+  if ( protocolSupportsMultiget && !mEtagCache.changedRemoteIds().isEmpty() ) {
     DavItemsFetchJob *fetchJob = new DavItemsFetchJob( davUrl, mEtagCache.changedRemoteIds() );
     connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( onMultigetFinished( KJob* ) ) );
-    fetchJob->setProperty( "akonadiItems", QVariant::fromValue( items ) );
+    fetchJob->setProperty( "items", QVariant::fromValue( items ) );
     fetchJob->start();
-  }
-  else {
+
+    // delay the call of itemsRetrieved() to onMultigetFinished()
+  } else {
     itemsRetrieved( items );
   }
 }
@@ -434,12 +439,12 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
     return;
   }
 
-  Akonadi::Item::List tmpItems = job->property( "akonadiItems" ).value<Akonadi::Item::List>();
-  Akonadi::Item::List items;
-  DavItemsFetchJob *davJob = qobject_cast<DavItemsFetchJob*>( job );
+  const Akonadi::Item::List origItems = job->property( "items" ).value<Akonadi::Item::List>();
+  const DavItemsFetchJob *davJob = qobject_cast<DavItemsFetchJob*>( job );
 
-  foreach( Akonadi::Item item, tmpItems ) {
-    DavItem davItem = davJob->item( item.remoteId() );
+  Akonadi::Item::List items;
+  foreach ( Akonadi::Item item, origItems ) { //krazy:exclude=foreach non-const is intended here
+    const DavItem davItem = davJob->item( item.remoteId() );
 
     // No data was retrieved for this item, maybe because it is not out of date
     if ( davItem.data().isEmpty() ) {

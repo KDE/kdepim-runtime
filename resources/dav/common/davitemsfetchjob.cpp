@@ -39,7 +39,7 @@ void DavItemsFetchJob::start()
     return;
   }
 
-  QDomDocument report = protocol->itemsReportQuery( mUrls );
+  const QDomDocument report = protocol->itemsReportQuery( mUrls );
   KIO::DavJob *job = DavManager::self()->createReportJob( mCollectionUrl.url(), report );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }
@@ -111,13 +111,13 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
                                                                    protocol->responseNamespace(),
                                                                    protocol->dataTagName() );
 
-    if( dataElement.isNull() ) {
+    if ( dataElement.isNull() ) {
       responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
       continue;
     }
 
-    QByteArray data = dataElement.firstChild().toText().data().toUtf8();
-    if( data.isEmpty() ) {
+    const QByteArray data = dataElement.firstChild().toText().data().toUtf8();
+    if ( data.isEmpty() ) {
       responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
       continue;
     }
