@@ -35,6 +35,7 @@ class SetupManager : public QObject
   public slots:
     Q_SCRIPTABLE QObject* createResource( const QString &type );
     Q_SCRIPTABLE QObject* createTransport( const QString &type );
+    Q_SCRIPTABLE QObject* createConfigFile( const QString &configName );
     Q_SCRIPTABLE void execute();
 
   private:

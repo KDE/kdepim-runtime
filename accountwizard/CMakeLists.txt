@@ -11,6 +11,7 @@ set(accountwizard_srcs
   resource.cpp
   setupobject.cpp
   transport.cpp
+  configfile.cpp
 )
 
 kde4_add_ui_files(accountwizard_srcs

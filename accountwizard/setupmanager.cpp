@@ -21,6 +21,7 @@
 #include "resource.h"
 #include "setuppage.h"
 #include "transport.h"
+#include "configfile.h"
 
 SetupManager::SetupManager( QObject* parent) :
   QObject(parent),
@@ -46,6 +47,16 @@ QObject* SetupManager::createResource(const QString& type)
 QObject* SetupManager::createTransport(const QString& type)
 {
   Transport *t = new Transport( type, this );
+  connect( t, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
+  connect( t, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
+  connect( t, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
+  m_objectToSetup.append( t );
+  return t;
+}
+
+QObject* SetupManager::createConfigFile(const QString& fileName)
+{
+  ConfigFile *t = new ConfigFile( fileName, this );
   connect( t, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
   connect( t, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
   connect( t, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
