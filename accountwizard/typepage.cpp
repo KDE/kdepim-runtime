@@ -45,8 +45,21 @@ TypePage::TypePage(KAssistantDialog* parent) :
     kDebug() << entry << f.readName();
     const KConfig configWizard( entry );
     KConfigGroup grp( &configWizard, "Wizard" );
-    if ( !filter.isEmpty() && !filter.contains( grp.readEntry( "Type" ) ) )
-      continue;
+    const QStringList lstType = grp.readEntry( "Type", QStringList() );
+    if ( lstType.isEmpty()) {
+      kDebug()<<QString( " %1 doesn't contains specific type" ).arg( f.readName() );
+    }
+    if ( !filter.isEmpty() ) {
+      bool findType = false;
+      foreach( const QString &type, lstType ) {
+        if ( filter.contains( type ) ) {
+          findType = true;
+          break;
+        }
+      }
+      if ( !findType )
+        continue;
+    }
     QStandardItem *item = new QStandardItem( f.readName() );
     item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setData( entry, Qt::UserRole );
