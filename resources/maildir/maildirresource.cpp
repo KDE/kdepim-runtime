@@ -365,6 +365,12 @@ void MaildirResource::collectionChanged(const Collection & collection)
     return;
   }
   Maildir md = maildirForCollection( collection );
+  if ( !md.isValid() ) {
+    // we don't have a maildir for this collection yet, probably due to a race
+    md = Maildir( Settings::self()->path() + QDir::separator() + collection.name() );
+    // make one, otherwise the rename below will fail
+    md.create();
+  }
   if ( !md.rename( collection.name() ) ) {
     emit error( i18n("Unable to rename maildir folder '%1'.", collection.name() ) );
     changeProcessed();
