@@ -61,6 +61,7 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
 
   private slots:
     void ensureDirExists();
+    bool ensureSaneConfiguration();
 
   private:
     Akonadi::Collection::List listRecursive( const Akonadi::Collection &root, const KPIM::Maildir &dir );

@@ -66,6 +66,7 @@ MaildirResource::MaildirResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(ensureSaneConfiguration()) );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(ensureDirExists()) );
 
   // We need to enable this here, otherwise we neither get the remote ID of the
@@ -78,10 +79,6 @@ MaildirResource::MaildirResource( const QString &id )
 
   setHierarchicalRemoteIdentifiersEnabled( true );
 
-  if ( Settings::self()->path().isEmpty() ) {
-      emit status( Broken, i18n( "No usable storage location configured.") );
-      setOnline( false );
-  }
 }
 
 MaildirResource::~ MaildirResource()
@@ -139,6 +136,10 @@ void MaildirResource::configure( WId windowId )
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
+    if ( !ensureSaneConfiguration() ) {
+      cancelTask( i18n("Unusable configuration.") );
+      return;
+    }
     Maildir dir = maildirForCollection( collection );
     QString errMsg;
     if ( Settings::readOnly() || !dir.isValid( errMsg ) ) {
@@ -160,6 +161,11 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 
 void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
+    if ( !ensureSaneConfiguration() ) {
+      cancelTask( i18n("Unusable configuration.") );
+      return;
+    }
+
     if ( Settings::self()->readOnly() || !parts.contains( MessagePart::Body ) ) {
       changeProcessed();
       return;
@@ -185,6 +191,11 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
 {
   if ( source == destination ) { // should not happen but would confuse Maildir::moveEntryTo
     changeProcessed();
+    return;
+  }
+
+  if ( !ensureSaneConfiguration() ) {
+    cancelTask( i18n("Unusable configuration.") );
     return;
   }
 
@@ -214,6 +225,11 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
 
 void MaildirResource::itemRemoved(const Akonadi::Item & item)
 {
+  if ( !ensureSaneConfiguration() ) {
+    cancelTask( i18n("Unusable configuration.") );
+    return;
+  }
+
   if ( !Settings::self()->readOnly() ) {
     Maildir dir = maildirForCollection( item.parentCollection() );
     // !dir.isValid() means that our parent folder has been deleted already,
@@ -300,6 +316,12 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
 
 void MaildirResource::collectionAdded(const Collection & collection, const Collection &parent)
 {
+  if ( !ensureSaneConfiguration() ) {
+    emit error( i18n("Unusable configuration.") );
+    changeProcessed();
+    return;
+  }
+
   Maildir md = maildirForCollection( parent );
   kDebug( 5254 ) << md.subFolderList() << md.entryList();
   if ( Settings::self()->readOnly() || !md.isValid() ) {
@@ -324,7 +346,13 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 }
 
 void MaildirResource::collectionChanged(const Collection & collection)
-{
+{    
+  if ( !ensureSaneConfiguration() ) {
+    emit error( i18n("Unusable configuration.") );
+    changeProcessed();
+    return;
+  }
+
   if ( collection.parentCollection() == Collection::root() ) {
     if ( collection.name() != name() )
       setName( collection.name() );
@@ -350,6 +378,13 @@ void MaildirResource::collectionChanged(const Collection & collection)
 void MaildirResource::collectionMoved( const Collection &collection, const Collection &source, const Collection &dest )
 {
   kDebug() << collection << source << dest;
+
+  if ( !ensureSaneConfiguration() ) {
+    emit error( i18n("Unusable configuration.") );
+    changeProcessed();
+    return;
+  }
+
   if ( collection.parentCollection() == Collection::root() ) {
     emit error( i18n( "Cannot move root maildir folder '%1'." ,collection.remoteId() ) );
     changeProcessed();
@@ -375,6 +410,12 @@ void MaildirResource::collectionMoved( const Collection &collection, const Colle
 
 void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
 {
+   if ( !ensureSaneConfiguration() ) {
+    emit error( i18n("Unusable configuration.") );
+    changeProcessed();
+    return;
+  }
+
   if ( collection.parentCollection() == Collection::root() ) {
     emit error( i18n("Cannot delete top-level maildir folder '%1'.", Settings::self()->path() ) );
     changeProcessed();
@@ -396,6 +437,16 @@ void MaildirResource::ensureDirExists()
     if ( !root.create() )
       emit status( Broken, i18n( "Unable to create maildir '%1'.", Settings::self()->path() ) );
   }
+}
+
+bool MaildirResource::ensureSaneConfiguration()
+{
+  if ( Settings::self()->path().isEmpty() ) {
+    emit status( Broken, i18n( "No usable storage location configured.") );
+    setOnline( false );
+    return false;
+  }
+  return true;
 }
 
 #include "maildirresource.moc"
