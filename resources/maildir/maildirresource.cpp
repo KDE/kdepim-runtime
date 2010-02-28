@@ -77,6 +77,10 @@ MaildirResource::MaildirResource( const QString &id )
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
+  Maildir root( Settings::self()->path() );
+  if ( !root.isValid() ) {
+      emit status( Broken, i18n( "Unusable maildir configured: '%1'", Settings::self()->path() ) );
+  }
 }
 
 MaildirResource::~ MaildirResource()
