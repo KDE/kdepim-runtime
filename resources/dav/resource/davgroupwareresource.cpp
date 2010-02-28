@@ -32,6 +32,7 @@
 #include "davprotocolbase.h"
 #include "settings.h"
 #include "settingsadaptor.h"
+#include "setupwizard.h"
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
@@ -95,8 +96,36 @@ DavGroupwareResource::~DavGroupwareResource()
 
 void DavGroupwareResource::configure( WId windowId )
 {
-  ConfigDialog dialog;
   Settings::self()->setWinId( windowId );
+
+  // On the initial configuration we start the setup wizard
+  if ( Settings::self()->configuredDavUrls().isEmpty() ) {
+    SetupWizard wizard;
+
+    if ( windowId )
+      KWindowSystem::setMainWindow( &wizard, windowId );
+
+    const int result = wizard.exec();
+    if ( result == QDialog::Accepted ) {
+      const SetupWizard::Url::List urls = wizard.urls();
+      foreach ( const SetupWizard::Url &url, urls ) {
+        Settings::UrlConfiguration *urlConfig = Settings::self()->newUrlConfiguration( url.url );
+
+        urlConfig->mProtocol = url.protocol;
+        urlConfig->mUser = url.userName;
+        urlConfig->mAuthReq = true; //FIXME: get rid of it
+        urlConfig->mUseKWallet = url.useWallet;
+
+        if ( !url.userName.isEmpty() && !url.password.isEmpty() )
+          Settings::self()->setPassword( url.url, url.userName, url.password );
+      }
+
+      Settings::self()->setDisplayName( wizard.displayName() );
+    }
+  }
+
+  // continue with the normal config dialog
+  ConfigDialog dialog;
 
   if ( windowId )
     KWindowSystem::setMainWindow( &dialog, windowId );

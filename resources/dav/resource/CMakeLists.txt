@@ -72,6 +72,7 @@ set( davgroupwareresource_SRCS
   configdialog.cpp
   davgroupwareresource.cpp
   davprotocolattribute.cpp
+  setupwizard.cpp
   settings.cpp
   urlconfigurationdialog.cpp
 )
