@@ -33,7 +33,7 @@
 
 #include "fakegrouplistmodel.h"
 
-#if 0
+#include "declarativecontactmodel.h"
 #include <akonadi/changerecorder.h>
 
 #include <KABC/Addressee>
@@ -43,12 +43,13 @@
 
 #include <kselectionproxymodel.h>
 #include <akonadi/entitytreeview.h>
+#include <QListView>
 #include <Akonadi/ItemFetchScope>
 #include <akonadi/entitymimetypefiltermodel.h>
 #include <KStandardDirs>
 #include "eventsortproxymodel.h"
 #include "eventgrouplistmodel.h"
-#endif
+
 
 CalendarWidget::CalendarWidget(QWidget* parent)
   : QWidget(parent)
@@ -58,7 +59,6 @@ CalendarWidget::CalendarWidget(QWidget* parent)
   QSplitter *splitter = new QSplitter(this);
   mainLayout->addWidget( splitter );
 
-#if 0
   Akonadi::ChangeRecorder *changeRecorder = new Akonadi::ChangeRecorder();
   changeRecorder->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::eventMimeType() );
   changeRecorder->setCollectionMonitored( Akonadi::Collection::root() );
@@ -84,34 +84,15 @@ CalendarWidget::CalendarWidget(QWidget* parent)
 
   EventSortProxyModel *eventSortProxy = new EventSortProxyModel(this);
   eventSortProxy->setSourceModel( itemFilter );
-#endif
 
-  FakeEventGroupListModel *eventGroupModel = new FakeEventGroupListModel(this);
+  EventGroupListModel *eventGroupModel = new EventGroupListModel(this);
+  eventGroupModel->setSourceModel( eventSortProxy );
 
-  QStringList monthsList;
-  monthsList << "January"
-             << "February"
-             << "March"
-             << "April"
-             << "May"
-             << "June"
-             << "July"
-             << "August"
-             << "September"
-             << "October"
-             << "November"
-             << "December";
-
-  QStringList yearsList;
-  for (int i = 2000; i <= 2038; ++i ) // From 2000 'til the end of the world.
-    yearsList << QString::number( i );
-
-  QString contactsQmlUrl =  qApp->applicationDirPath() + "/calendar.qml";
+  QString contactsQmlUrl = KStandardDirs::locate( "appdata", "calendar.qml" );
   QDeclarativeView *view = new QDeclarativeView( splitter );
-  view->setSource( contactsQmlUrl );
-  QDeclarativeContext *c = view->engine()->rootContext();
-  c->setContextProperty( "months_list", monthsList );
-  c->setContextProperty( "years_list", yearsList );
-  c->setContextProperty( "event_group_model", QVariant::fromValue( static_cast<QObject*>( eventGroupModel ) ) );
+  view->setUrl( contactsQmlUrl );
+  view->engine()->rootContext()->setContextProperty( "event_group_model", QVariant::fromValue( static_cast<QObject*>( eventGroupModel ) ) );
   view->setFocus();
+  view->execute();
+
 }

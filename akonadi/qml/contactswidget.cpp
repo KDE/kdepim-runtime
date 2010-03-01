@@ -37,16 +37,17 @@
 
 #include "declarativecontactmodel.h"
 #include <akonadi/changerecorder.h>
+
+#include <KABC/Addressee>
+
+#include "kdebug.h"
+
 #include <kselectionproxymodel.h>
 #include <akonadi/entitytreeview.h>
+#include <QListView>
 #include <Akonadi/ItemFetchScope>
 #include <akonadi/entitymimetypefiltermodel.h>
 #include <KStandardDirs>
-#endif
-
-#include "fakeentitytreemodel.h"
-
-#include "qtselectionproxymodel.h"
 
 
 ContactsWidget::ContactsWidget(QWidget* parent)
@@ -57,12 +58,6 @@ ContactsWidget::ContactsWidget(QWidget* parent)
   QSplitter *splitter = new QSplitter(this);
   mainLayout->addWidget( splitter );
 
-  FakeEntityTreeModel *fakeModel = new FakeEntityTreeModel(FakeEntityTreeModel::ContactsData);
-
-  QListView *fakeView = new QListView( splitter );
-  fakeView->setModel(fakeModel);
-
-#if 0
   Akonadi::ChangeRecorder *changeRecorder = new Akonadi::ChangeRecorder();
   changeRecorder->setMimeTypeMonitored( KABC::Addressee::mimeType() );
   changeRecorder->setCollectionMonitored( Akonadi::Collection::root() );
@@ -86,18 +81,12 @@ ContactsWidget::ContactsWidget(QWidget* parent)
   Akonadi::EntityMimeTypeFilterModel *itemFilter = new Akonadi::EntityMimeTypeFilterModel();
   itemFilter->setSourceModel( selectionProxyModel );
   itemFilter->addMimeTypeExclusionFilter( Akonadi::Collection::mimeType() );
-#endif
 
-  QtSelectionProxyModel *selectionProxyModel = new QtSelectionProxyModel( fakeView->selectionModel() );
-  selectionProxyModel->setSourceModel( fakeModel );
-  selectionProxyModel->setFilterBehavior( QtSelectionProxyModel::ChildrenOfExactSelection );
-
-  QString contactsQmlUrl = qApp->applicationDirPath() + "/contacts.qml";
+  QString contactsQmlUrl = KStandardDirs::locate( "appdata", "contacts.qml" );
   QDeclarativeView *view = new QDeclarativeView( splitter );
-  view->setSource( contactsQmlUrl );
-//   view->engine()->rootContext()->setContextProperty( "entity_tree_model", QVariant::fromValue( static_cast<QObject*>( itemFilter ) ) );
-  view->engine()->rootContext()->setContextProperty( "entity_tree_model", QVariant::fromValue( static_cast<QObject*>( selectionProxyModel ) ) );
-
+  view->setUrl( contactsQmlUrl );
+  view->engine()->rootContext()->setContextProperty( "entity_tree_model", QVariant::fromValue( static_cast<QObject*>( itemFilter ) ) );
+  view->execute();
 }
 
 

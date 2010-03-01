@@ -19,14 +19,20 @@
 * 02110-1301  USA
 */
 
-#include <QApplication>
+#include <kapplication.h>
+#include <kaboutdata.h>
+#include <kcmdlineargs.h>
 
 #include "calendarwidget.h"
 
 
 int main( int argc, char **argv )
 {
-  QApplication app(argc, argv);
+  const QByteArray& ba = QByteArray( "akonadi_qml" );
+  const KLocalizedString name = ki18n( "Akonadi Qml calendar example" );
+  KAboutData aboutData( ba, ba, name, ba, name );
+  KCmdLineArgs::init( argc, argv, &aboutData );
+  KApplication app;
 
   CalendarWidget calendarWidget;
   calendarWidget.show();
