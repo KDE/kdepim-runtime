@@ -12,6 +12,7 @@ set(accountwizard_srcs
   setupobject.cpp
   transport.cpp
   configfile.cpp
+  ldap.cpp
 )
 
 kde4_add_ui_files(accountwizard_srcs
