@@ -39,6 +39,7 @@ int main( int argc, char **argv )
                         "http://pim.kde.org/akonadi/" );
   aboutData.setProgramIconName( "akonadi" );
   aboutData.addAuthor( ki18n( "Volker Krause" ),  ki18n( "Author" ), "vkrause@kde.org" );
+  aboutData.addAuthor( ki18n( "Laurent Montel" ), KLocalizedString() , "montel@kde.org" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
