@@ -137,12 +137,22 @@ DavUtils::DavUrl Settings::davUrlFromUrl( const QString &url )
 {
   DavUtils::DavUrl davUrl;
   QString configuredUrl;
+  KUrl _url( url );
 
-  foreach ( const QString &remoteUrl, remoteUrls() ) {
-    if ( url.startsWith( remoteUrl ) ) {
-      configuredUrl = remoteUrl;
+  foreach ( const QString &tmpUrl, remoteUrls() ) {
+    bool found = false;
+    KUrl remoteUrl( tmpUrl );
+
+    do {
+      if ( remoteUrl.isParentOf( _url ) ) {
+        configuredUrl = tmpUrl;
+        found = true;
+        break;
+      }
+    } while( remoteUrl.cd( "../" ) );
+
+    if ( found )
       break;
-    }
   }
 
   if ( !configuredUrl.isEmpty() )

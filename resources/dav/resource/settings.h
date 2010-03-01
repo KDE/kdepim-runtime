@@ -65,6 +65,9 @@ class Settings : public SettingsBase
     /**
      * Creates the DavUrl from the configured URL that most closely matches the given url.
      * Most closely means url.startsWith( configuredUrl ).
+     * For principals URLs, for which the above is rarely true the configured URL is
+     * progressively stripped of its directories until a match is found with the
+     * same method. This may have inconvenients...
      */
     DavUtils::DavUrl davUrlFromUrl( const QString &url );
 

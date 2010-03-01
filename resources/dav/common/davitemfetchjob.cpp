@@ -49,6 +49,10 @@ void DavItemFetchJob::start()
 {
   KIO::StoredTransferJob *job = KIO::storedGet( mUrl.url(), KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
+  // Work around a strange bug in Zimbra (seen at least on CE 5.0.18) : if the user-agent
+  // contains "Mozilla", some strange debug data is displayed in the shared calendars.
+  // This kinda mess up the events parsing...
+  job->addMetaData( "UserAgent", "KDE DAV groupware client" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }
