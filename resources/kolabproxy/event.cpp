@@ -187,7 +187,9 @@ void Event::setFields( const KCal::Event* event )
 {
   Incidence::setFields( event );
 
-  if ( event->hasEndDate() ) {
+  // note: if hasEndDate() is false and hasDuration() is true
+  // dtEnd() returns start+duration
+  if ( event->hasEndDate() || event->hasDuration() ) {
     if ( event->allDay() ) {
       // This is an all-day event. Don't timezone move this one
       mFloatingStatus = AllDay;
@@ -196,8 +198,9 @@ void Event::setFields( const KCal::Event* event )
       mFloatingStatus = HasTime;
       setEndDate( localToUTC( event->dtEnd() ) );
     }
-  } else
+  } else {
     mHasEndDate = false;
+  }
   setTransparency( event->transparency() );
 }
 
