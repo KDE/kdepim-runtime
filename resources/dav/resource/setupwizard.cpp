@@ -52,7 +52,7 @@ static QString settingsToUrl( const QWizard *wizard )
   if ( wizard->field( "serverTypeCitadel" ).toBool() )
     pathPattern = "/groupdav/";
   else if ( wizard->field( "serverTypeDavIcal" ).toBool() )
-    pathPattern = "/caldav.php/$user$/";
+    pathPattern = "/caldav.php/principals/users/$user$/";
   else if ( wizard->field( "serverTypeEGroupware" ).toBool() )
     pathPattern = "/egroupware/groupdav.php/";
   else if ( wizard->field( "serverTypeOpenGroupware" ).toBool() )
@@ -64,7 +64,7 @@ static QString settingsToUrl( const QWizard *wizard )
   else if ( wizard->field( "serverTypeZarafa" ).toBool() )
     pathPattern = "/caldav/$user$/";
   else if ( wizard->field( "serverTypeZimbra" ).toBool() )
-    pathPattern = "/principals/users/$user$";
+    pathPattern = "/principals/users/$user$/";
 
   pathPattern.replace( "$user$", wizard->field( "credentialsUserName" ).toString() );
 
