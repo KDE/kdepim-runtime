@@ -73,6 +73,10 @@ function setup()
   smtp.setUsername( page.kolabWizard.emailAddress.text );
   smtp.setPassword( page.kolabWizard.password.text );
 
+  var ldap = SetupManager.createLdap();
+  ldap.setUser( page.kolabWizard.emailAddress.text );
+  ldap.setServer( page.kolabWizard.serverAddress.text );
+
   var korganizer = SetupManager.createConfigFile( "korganizerrc" );
   korganizer.setName( "korganizer" );
   korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyFullDomainRetrieval","true");
