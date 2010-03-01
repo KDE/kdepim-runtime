@@ -116,7 +116,8 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
 
     while ( !hrefElement.isNull() ) {
       const QString href = hrefElement.text();
-      mHomeSets << href;
+      if ( !mHomeSets.contains( href ) )
+        mHomeSets << href;
       hrefElement = DavUtils::nextSiblingElementNS( hrefElement, "DAV:", "href" );
     }
 

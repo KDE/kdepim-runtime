@@ -156,12 +156,14 @@ void DavGroupwareResource::retrieveCollections()
 
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->configuredDavUrls() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveCollectionsFinished( KJob* ) ) );
+  connect( job, SIGNAL( collectionDiscovered( const QString&, const QString& ) ),
+           SLOT( onCollectionDiscovered( const QString&, const QString& ) ) );
   job->start();
 }
 
 void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  kDebug() << "Retrieving items";
+  kDebug() << "Retrieving items for collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
@@ -595,6 +597,11 @@ void DavGroupwareResource::onItemRemovedFinished( KJob *job )
   }
 
   changeProcessed();
+}
+
+void DavGroupwareResource::onCollectionDiscovered( const QString &collection, const QString &config )
+{
+  Settings::self()->addCollectionUrlMapping( collection, config );
 }
 
 bool DavGroupwareResource::configurationIsValid()

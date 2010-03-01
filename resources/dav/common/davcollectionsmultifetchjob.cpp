@@ -30,6 +30,8 @@ void DavCollectionsMultiFetchJob::start()
   foreach ( const DavUtils::DavUrl &url, mUrls ) {
     DavCollectionsFetchJob *job = new DavCollectionsFetchJob( url, this );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+    connect( job, SIGNAL( collectionDiscovered( const QString&, const QString& ) ),
+             SIGNAL( collectionDiscovered( const QString&, const QString& ) ) );
     job->start();
 
     ++mSubJobCount;

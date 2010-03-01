@@ -137,28 +137,23 @@ DavUtils::DavUrl Settings::davUrlFromUrl( const QString &url )
 {
   DavUtils::DavUrl davUrl;
   QString configuredUrl;
-  KUrl _url( url );
 
-  foreach ( const QString &tmpUrl, remoteUrls() ) {
-    bool found = false;
-    KUrl remoteUrl( tmpUrl );
-
-    do {
-      if ( remoteUrl.isParentOf( _url ) ) {
-        configuredUrl = tmpUrl;
-        found = true;
-        break;
-      }
-    } while( remoteUrl.cd( "../" ) );
-
-    if ( found )
+  foreach( const QString &collectionUrl, mCollectionsUrlsMapping.keys() ) {
+    if ( url.startsWith( collectionUrl ) ) {
+      configuredUrl = mCollectionsUrlsMapping.value( collectionUrl );
       break;
+    }
   }
 
   if ( !configuredUrl.isEmpty() )
     davUrl = configuredDavUrl( configuredUrl, url );
 
   return davUrl;
+}
+
+void Settings::addCollectionUrlMapping( const QString &collectionUrl, const QString &configuredUrl )
+{
+  mCollectionsUrlsMapping.insert( collectionUrl, configuredUrl );
 }
 
 Settings::UrlConfiguration * Settings::newUrlConfiguration( const QString &url )

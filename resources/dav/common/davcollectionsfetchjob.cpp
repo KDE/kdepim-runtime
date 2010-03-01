@@ -113,6 +113,12 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
+  // For use in the collectionDiscovered() signal
+  KUrl _jobUrl = mUrl.url();
+  _jobUrl.setUser( QString() );
+  _jobUrl.setPassword( QString() );
+  QString jobUrl = _jobUrl.prettyUrl();
+
   QByteArray resp( davJob->response().toByteArray() );
   QBuffer buffer( &resp );
   buffer.open( QIODevice::ReadOnly );
@@ -231,6 +237,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol( mUrl.protocol() )->collectionContentTypes( propstatElement );
 
     mCollections << DavCollection( mUrl.protocol(), url.prettyUrl(), displayName, contentTypes );
+    emit collectionDiscovered( url.prettyUrl(), jobUrl );
 
     responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
   }

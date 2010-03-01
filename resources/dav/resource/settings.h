@@ -64,12 +64,17 @@ class Settings : public SettingsBase
 
     /**
      * Creates the DavUrl from the configured URL that most closely matches the given url.
-     * Most closely means url.startsWith( configuredUrl ).
-     * For principals URLs, for which the above is rarely true the configured URL is
-     * progressively stripped of its directories until a match is found with the
-     * same method. This may have inconvenients...
+     * Most closely means url.startsWith( collectionUrl ), where collectionUrl
+     * is taken from the mappings registered with addCollectionUrlMapping().
      */
     DavUtils::DavUrl davUrlFromUrl( const QString &url );
+
+    /**
+     * Add a new mapping between the collection URL, as seen on the backend, and the
+     * URL configured by the user. A mapping here means that the collectionUrl has
+     * been discovered by a DavCollectionsFetchJob on the configuredUrl.
+     */
+    void addCollectionUrlMapping( const QString &collectionUrl, const QString &configuredUrl );
 
     UrlConfiguration * newUrlConfiguration( const QString &url );
     void removeUrlConfiguration( const QString &url );
@@ -90,6 +95,7 @@ class Settings : public SettingsBase
 
     WId mWinId;
     QMap<QString, UrlConfiguration*> mUrls;
+    QMap<QString, QString> mCollectionsUrlsMapping;
     QList<UrlConfiguration*> mToDeleteUrlConfigs;
     QMap<QString, QString> mCachedPasswords;
     KWallet::Wallet *mWallet;

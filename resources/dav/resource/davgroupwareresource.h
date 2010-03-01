@@ -59,6 +59,8 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     void onItemChangedFinished( KJob* );
     void onItemRemovedFinished( KJob* );
 
+    void onCollectionDiscovered( const QString &collectionUrl, const QString &configuredUrl );
+
   private:
     bool configurationIsValid();
 
