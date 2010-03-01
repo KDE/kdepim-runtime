@@ -21,10 +21,10 @@
 
 #include "contactswidget.h"
 
-#include <QtDeclarative/QmlContext>
-#include <QtDeclarative/QmlEngine>
-#include <QtDeclarative/QmlComponent>
-#include <QtDeclarative/QmlView>
+#include <QtDeclarative/QDeclarativeContext>
+#include <QtDeclarative/QDeclarativeEngine>
+#include <QtDeclarative/QDeclarativeComponent>
+#include <QtDeclarative/QDeclarativeView>
 
 #include <QBoxLayout>
 #include <QSplitter>
@@ -93,11 +93,11 @@ ContactsWidget::ContactsWidget(QWidget* parent)
   selectionProxyModel->setFilterBehavior( QtSelectionProxyModel::ChildrenOfExactSelection );
 
   QString contactsQmlUrl = qApp->applicationDirPath() + "/contacts.qml";
-  QmlView *view = new QmlView( splitter );
-  view->setUrl( contactsQmlUrl );
+  QDeclarativeView *view = new QDeclarativeView( splitter );
+  view->setSource( contactsQmlUrl );
 //   view->engine()->rootContext()->setContextProperty( "entity_tree_model", QVariant::fromValue( static_cast<QObject*>( itemFilter ) ) );
   view->engine()->rootContext()->setContextProperty( "entity_tree_model", QVariant::fromValue( static_cast<QObject*>( selectionProxyModel ) ) );
-  view->execute();
+
 }
 
 

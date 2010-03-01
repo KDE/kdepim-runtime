@@ -21,10 +21,10 @@
 
 #include "calendarwidget.h"
 
-#include <QtDeclarative/QmlContext>
-#include <QtDeclarative/QmlEngine>
-#include <QtDeclarative/QmlComponent>
-#include <QtDeclarative/QmlView>
+#include <QtDeclarative/QDeclarativeContext>
+#include <QtDeclarative/QDeclarativeEngine>
+#include <QtDeclarative/QDeclarativeComponent>
+#include <QtDeclarative/QDeclarativeView>
 
 #include <QBoxLayout>
 #include <QSplitter>
@@ -107,12 +107,11 @@ CalendarWidget::CalendarWidget(QWidget* parent)
     yearsList << QString::number( i );
 
   QString contactsQmlUrl =  qApp->applicationDirPath() + "/calendar.qml";
-  QmlView *view = new QmlView( splitter );
-  view->setUrl( contactsQmlUrl );
-  QmlContext *c = view->engine()->rootContext();
+  QDeclarativeView *view = new QDeclarativeView( splitter );
+  view->setSource( contactsQmlUrl );
+  QDeclarativeContext *c = view->engine()->rootContext();
   c->setContextProperty( "months_list", monthsList );
   c->setContextProperty( "years_list", yearsList );
   c->setContextProperty( "event_group_model", QVariant::fromValue( static_cast<QObject*>( eventGroupModel ) ) );
   view->setFocus();
-  view->execute();
 }
