@@ -21,19 +21,22 @@
 
 #include "contactswidget.h"
 
+#if QT_VERSION > 0x040603
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/QDeclarativeEngine>
 #include <QtDeclarative/QDeclarativeComponent>
 #include <QtDeclarative/QDeclarativeView>
+#else
+#include <QtDeclarative/QmlContext>
+#include <QtDeclarative/QmlEngine>
+#include <QtDeclarative/QmlComponent>
+#include <QtDeclarative/QmlView>
+#endif
 
 #include <QBoxLayout>
 #include <QSplitter>
 #include <QListView>
 #include <QTreeView>
-#include <QApplication>
-
-#if 0
-#include <KABC/Addressee>
 
 #include "declarativecontactmodel.h"
 #include <akonadi/changerecorder.h>
@@ -44,7 +47,6 @@
 
 #include <kselectionproxymodel.h>
 #include <akonadi/entitytreeview.h>
-#include <QListView>
 #include <Akonadi/ItemFetchScope>
 #include <akonadi/entitymimetypefiltermodel.h>
 #include <KStandardDirs>
@@ -83,10 +85,18 @@ ContactsWidget::ContactsWidget(QWidget* parent)
   itemFilter->addMimeTypeExclusionFilter( Akonadi::Collection::mimeType() );
 
   QString contactsQmlUrl = KStandardDirs::locate( "appdata", "contacts.qml" );
+
+#if QT_VERSION > 0x040603
   QDeclarativeView *view = new QDeclarativeView( splitter );
-  view->setUrl( contactsQmlUrl );
+kDebug() << itemFilter;
   view->engine()->rootContext()->setContextProperty( "entity_tree_model", QVariant::fromValue( static_cast<QObject*>( itemFilter ) ) );
+  view->setSource( contactsQmlUrl );
+#else
+  QmlView *view = new QmlView( splitter );
+  view->engine()->rootContext()->setContextProperty( "entity_tree_model", QVariant::fromValue( static_cast<QObject*>( itemFilter ) ) );
+  view->setUrl( contactsQmlUrl );
   view->execute();
+#endif
 }
 
 

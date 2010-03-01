@@ -21,10 +21,17 @@
 
 #include "calendarwidget.h"
 
+#if QT_VERSION > 0x040603
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/QDeclarativeEngine>
 #include <QtDeclarative/QDeclarativeComponent>
 #include <QtDeclarative/QDeclarativeView>
+#else
+#include <QtDeclarative/QmlContext>
+#include <QtDeclarative/QmlEngine>
+#include <QtDeclarative/QmlComponent>
+#include <QtDeclarative/QmlView>
+#endif
 
 #include <QBoxLayout>
 #include <QSplitter>
@@ -89,10 +96,16 @@ CalendarWidget::CalendarWidget(QWidget* parent)
   eventGroupModel->setSourceModel( eventSortProxy );
 
   QString contactsQmlUrl = KStandardDirs::locate( "appdata", "calendar.qml" );
+
+#if QT_VERSION > 0x040603
   QDeclarativeView *view = new QDeclarativeView( splitter );
+  view->setSource( contactsQmlUrl );
+  view->engine()->rootContext()->setContextProperty( "event_group_model", QVariant::fromValue( static_cast<QObject*>( eventGroupModel ) ) );
+#else
+  QmlView *view = new QmlView( splitter );
   view->setUrl( contactsQmlUrl );
   view->engine()->rootContext()->setContextProperty( "event_group_model", QVariant::fromValue( static_cast<QObject*>( eventGroupModel ) ) );
-  view->setFocus();
   view->execute();
-
+#endif
+ view->setFocus();
 }
