@@ -72,7 +72,7 @@ Rectangle {
           anchors.left: parent.left; anchors.leftMargin: 40
           anchors.right: parent.right; anchors.rightMargin: 40
           anchors.bottom : parent.bottom
-          viewportHeight : descriptionText.height
+          @contentHeight@ : descriptionText.height
           clip : true
           Text { id: descriptionText; text: model.data.description; wrap : true; width : details.width }
         }
@@ -88,7 +88,7 @@ Rectangle {
         name: "Details"
         PropertyChanges { target: wrapper; detailsOpacity: 1; x: 0 }
         PropertyChanges { target: wrapper; height: list.height }
-        PropertyChanges { target: wrapper.ListView.view; explicit: true; viewportY: wrapper.y }
+        PropertyChanges { target: wrapper.ListView.view; explicit: true; @contentY@: wrapper.y }
         PropertyChanges { target: wrapper.ListView.view; interactive: false }
         PropertyChanges { target: detailClose; opacity : 0 }
       }

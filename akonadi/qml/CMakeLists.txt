@@ -63,16 +63,40 @@ target_link_libraries(qml_akonadi_calendar
 
 install(TARGETS qml_akonadi_calendar ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
+if(QTVERSION VERSION_GREATER 4.6.3)
+  set(contentY "contentY")
+  set(properties "properties")
+  set(contentHeight "contentHeight")
+else()
+  set(contentY "viewportY")
+  set(properties "matchProperties")
+  set(contentHeight "viewportHeight")
+endif()
+
+configure_file(
+  ${CMAKE_SOURCE_DIR}/contacts.qml.in
+  ${CMAKE_BINARY_DIR}/contacts.qml
+)
+
+configure_file(
+  ${CMAKE_SOURCE_DIR}/content/DetailView.qml.in
+  ${CMAKE_BINARY_DIR}/content/DetailView.qml
+)
+
 install(FILES
-  contacts.qml
+  ${CMAKE_BINARY_DIR}/contacts.qml
   calendar.qml
   DESTINATION ${DATA_INSTALL_DIR}/akonadi_qml
 )
 
 install(FILES
+  ${CMAKE_BINARY_DIR}/content/DetailView.qml
+  DESTINATION ${DATA_INSTALL_DIR}/akonadi_qml/content
+)
+
+install(FILES
   content/CalendarView.qml
   content/CloseButton.qml
-  content/DetailView.qml
   DESTINATION ${DATA_INSTALL_DIR}/akonadi_qml/content
 )
 

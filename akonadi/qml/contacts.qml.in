@@ -92,14 +92,14 @@ Rectangle {
         PropertyChanges { target: contactImage; width : undefined; height : undefined }
         PropertyChanges { target: wrapper; detailsOpacity: 1; x: 0 }
         PropertyChanges { target: wrapper; height: list.height }
-        PropertyChanges { target: wrapper.ListView.view; explicit: true; viewportY: wrapper.y }
+        PropertyChanges { target: wrapper.ListView.view; explicit: true; @contentY@: wrapper.y }
         PropertyChanges { target: wrapper.ListView.view; interactive: false }
       }
       transitions: Transition {
         ParallelAnimation {
           ColorAnimation { property: "color"; duration: 500 }
           NumberAnimation {
-            duration: 300; matchProperties: "detailsOpacity,x,viewportY,height,width"
+            duration: 300; @properties@: "detailsOpacity,x,@contentY@,height,width"
           }
         }
       }
