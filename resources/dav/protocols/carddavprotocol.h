@@ -25,8 +25,11 @@ class CarddavProtocol : public DavMultigetProtocol
 {
   public:
     CarddavProtocol();
+    virtual bool supportsPrincipals() const;
     virtual bool useReport() const;
     virtual bool useMultiget() const;
+    virtual QString principalHomeSet() const;
+    virtual QString principalHomeSetNS() const;
     virtual QDomDocument collectionsQuery() const;
     virtual QString collectionsXQuery() const;
     virtual QList<QDomDocument> itemsQueries() const;

@@ -39,6 +39,11 @@ GroupdavProtocol::GroupdavProtocol()
   mItemsQueries << document;
 }
 
+bool GroupdavProtocol::supportsPrincipals() const
+{
+  return false;
+}
+
 bool GroupdavProtocol::useReport() const
 {
   return false;

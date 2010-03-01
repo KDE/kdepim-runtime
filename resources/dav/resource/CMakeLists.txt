@@ -62,6 +62,7 @@ set( davgroupwareresource_SRCS
   ../common/davitemslistjob.cpp
   ../common/davmanager.cpp
   ../common/davmultigetprotocol.cpp
+  ../common/davprincipalhomesetsfetchjob.cpp
   ../common/davutils.cpp
   ../common/etagcache.cpp
 

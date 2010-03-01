@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2010 Grégory Oestreicher <greg@kamago.net>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,32 +16,31 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAVCOLLECTIONSFETCHJOB_H
-#define DAVCOLLECTIONSFETCHJOB_H
+#ifndef DAVPRINCIPALHOMESETFETCHJOB_H
+#define DAVPRINCIPALHOMESETFETCHJOB_H
 
-#include "davcollection.h"
 #include "davutils.h"
 
 #include <kjob.h>
 
+#include <QtCore/QStringList>
+
 /**
- * @short A job that fetches all DAV collection.
- *
- * This job is used to fetch all DAV collection that are available
- * under a certain DAV url.
+ * @short A job that fetches home sets for a principal.
  */
-class DavCollectionsFetchJob : public KJob
+
+class DavPrincipalHomeSetsFetchJob : public KJob
 {
   Q_OBJECT
 
   public:
     /**
-     * Creates a new dav collections fetch job.
+     * Creates a new dav principals home sets fetch job.
      *
-     * @param url The DAV url of the DAV collection whose sub collections shall be fetched.
+     * @param url The DAV url of the DAV principal.
      * @param parent The parent object.
      */
-    DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
+    DavPrincipalHomeSetsFetchJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
     /**
      * Starts the job.
@@ -49,20 +48,16 @@ class DavCollectionsFetchJob : public KJob
     virtual void start();
 
     /**
-     * Returns the list of fetched DAV collections.
+     * Returns the found home sets.
      */
-    DavCollection::List collections() const;
+    QStringList homeSets() const;
 
   private Q_SLOTS:
-    void principalFetchFinished( KJob* );
-    void collectionsFetchFinished( KJob* );
+    void davJobFinished( KJob* );
 
   private:
-    void doCollectionsFetch( const KUrl &url );
-
     DavUtils::DavUrl mUrl;
-    DavCollection::List mCollections;
-    uint mSubJobCount;
+    QStringList mHomeSets;
 };
 
 #endif

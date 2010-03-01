@@ -117,6 +117,11 @@ CaldavProtocol::CaldavProtocol()
   }
 }
 
+bool CaldavProtocol::supportsPrincipals() const
+{
+  return true;
+}
+
 bool CaldavProtocol::useReport() const
 {
   return true;
@@ -125,6 +130,16 @@ bool CaldavProtocol::useReport() const
 bool CaldavProtocol::useMultiget() const
 {
   return true;
+}
+
+QString CaldavProtocol::principalHomeSet() const
+{
+  return QString( "calendar-home-set" );
+}
+
+QString CaldavProtocol::principalHomeSetNS() const
+{
+  return QString( "urn:ietf:params:xml:ns:caldav" );
 }
 
 QDomDocument CaldavProtocol::collectionsQuery() const

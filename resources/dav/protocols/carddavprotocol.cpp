@@ -38,6 +38,11 @@ CarddavProtocol::CarddavProtocol()
   mItemsQueries << document;
 }
 
+bool CarddavProtocol::supportsPrincipals() const
+{
+  return true;
+}
+
 bool CarddavProtocol::useReport() const
 {
   return false;
@@ -46,6 +51,16 @@ bool CarddavProtocol::useReport() const
 bool CarddavProtocol::useMultiget() const
 {
   return true;
+}
+
+QString CarddavProtocol::principalHomeSet() const
+{
+  return QString( "addressbook-home-set" );
+}
+
+QString CarddavProtocol::principalHomeSetNS() const
+{
+  return QString( "urn:ietf:params:xml:ns:carddav" );
 }
 
 QDomDocument CarddavProtocol::collectionsQuery() const

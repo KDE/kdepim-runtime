@@ -21,3 +21,13 @@
 DavProtocolBase::~DavProtocolBase()
 {
 }
+
+QString DavProtocolBase::principalHomeSet() const
+{
+  return QString();
+}
+
+QString DavProtocolBase::principalHomeSetNS() const
+{
+  return QString();
+}

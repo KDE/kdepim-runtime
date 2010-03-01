@@ -46,6 +46,14 @@ class DavProtocolBase
     virtual ~DavProtocolBase();
 
     /**
+     * Returns whether the dav protocol dialect supports principal
+     * queries. If true, it must return the home set it provides
+     * access to with principalHomeSet() and the home set namespace
+     * with principalHomeSetNS();
+     */
+    virtual bool supportsPrincipals() const = 0;
+
+    /**
      * Returns whether the dav protocol dialect supports the REPORT
      * command to query all resources of a collection.
      * If not, PROPFIND command will be used instead.
@@ -64,6 +72,16 @@ class DavProtocolBase
      * DavMultigetProtocol instead of this class.
      */
     virtual bool useMultiget() const = 0;
+
+    /**
+     * Returns the home set that this protocol supports.
+     */
+    virtual QString principalHomeSet() const;
+
+    /**
+     * Returns the namespace of the home set.
+     */
+    virtual QString principalHomeSetNS() const;
 
     /**
      * Returns the XML document that represents the DAV query to

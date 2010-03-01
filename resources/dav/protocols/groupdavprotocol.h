@@ -25,6 +25,7 @@ class GroupdavProtocol : public DavProtocolBase
 {
   public:
     GroupdavProtocol();
+    virtual bool supportsPrincipals() const;
     virtual bool useReport() const;
     virtual bool useMultiget() const;
     virtual QDomDocument collectionsQuery() const;

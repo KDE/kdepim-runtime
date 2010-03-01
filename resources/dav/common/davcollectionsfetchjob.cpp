@@ -19,6 +19,7 @@
 #include "davcollectionsfetchjob.h"
 
 #include "davmanager.h"
+#include "davprincipalhomesetsfetchjob.h"
 #include "davprotocolbase.h"
 #include "davutils.h"
 
@@ -30,16 +31,20 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavCollectionsFetchJob::DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 )
 {
 }
 
 void DavCollectionsFetchJob::start()
 {
-  const QDomDocument collectionQuery = DavManager::self()->davProtocol( mUrl.protocol() )->collectionsQuery();
-
-  KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), collectionQuery );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+  if ( DavManager::self()->davProtocol( mUrl.protocol() )->supportsPrincipals() ) {
+    DavPrincipalHomeSetsFetchJob *job = new DavPrincipalHomeSetsFetchJob( mUrl );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( principalFetchFinished( KJob* ) ) );
+    job->start();
+  }
+  else {
+    doCollectionsFetch( mUrl.url() );
+  }
 }
 
 DavCollection::List DavCollectionsFetchJob::collections() const
@@ -47,8 +52,58 @@ DavCollection::List DavCollectionsFetchJob::collections() const
   return mCollections;
 }
 
-void DavCollectionsFetchJob::davJobFinished( KJob *job )
+void DavCollectionsFetchJob::doCollectionsFetch( const KUrl &url )
 {
+  ++mSubJobCount;
+  const QDomDocument collectionQuery = DavManager::self()->davProtocol( mUrl.protocol() )->collectionsQuery();
+  KIO::DavJob *job = DavManager::self()->createPropFindJob( url, collectionQuery );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionsFetchFinished( KJob* ) ) );
+}
+
+void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
+{
+  if ( job->error() ) {
+    // This may mean that the URL was not a principal URL.
+    // Retry as if it were a calendar URL.
+    kDebug() << job->errorText();
+    doCollectionsFetch( mUrl.url() );
+    return;
+  }
+
+  DavPrincipalHomeSetsFetchJob *davJob = qobject_cast<DavPrincipalHomeSetsFetchJob*>( job );
+
+  QStringList homeSets = davJob->homeSets();
+  kDebug() << "Found " << homeSets.size() << " homesets";
+  kDebug() << homeSets;
+
+  if ( homeSets.isEmpty() ) {
+    // Same as above, retry as if it were a calendar URL.
+    doCollectionsFetch( mUrl.url() );
+    return;
+  }
+
+  foreach ( const QString &homeSet, homeSets ) {
+    KUrl url = mUrl.url();
+
+    if ( homeSet.startsWith( '/' ) ) {
+      // homeSet is only a path, use request url to complete
+      url.setEncodedPath( homeSet.toAscii() );
+    } else {
+      // homeSet is a complete url
+      KUrl tmpUrl( homeSet );
+      tmpUrl.setUser( url.user() );
+      tmpUrl.setPassword( url.password() );
+      url = tmpUrl;
+    }
+
+    doCollectionsFetch( url );
+  }
+}
+
+void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
+{
+  --mSubJobCount;
+
   if ( job->error() ) {
     setError( job->error() );
     setErrorText( job->errorText() );
@@ -180,7 +235,8 @@ void DavCollectionsFetchJob::davJobFinished( KJob *job )
     responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
   }
 
-  emitResult();
+  if ( mSubJobCount == 0 )
+    emitResult();
 }
 
 #include "davcollectionsfetchjob.moc"
