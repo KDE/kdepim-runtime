@@ -19,21 +19,16 @@ include(MacroOptionalAddSubdirectory)
 include(CheckIncludeFiles)
 include(FindKdepimLibs)
 
-set(qml_akonadi_srcs
-  main.cpp
+set(qml_akonadi_contacts_srcs
+  main_contacts.cpp
   contactswidget.cpp
-  calendarwidget.cpp
   declarativecontactmodel.cpp
   contactwrapper.cpp
-  eventgrouplistmodel.cpp
-  eventgroupmodel.cpp
-  eventsortproxymodel.cpp
-  eventwrapper.cpp
 )
 
-kde4_add_executable(qml_akonadi ${qml_akonadi_srcs} )
+kde4_add_executable(qml_akonadi_contacts ${qml_akonadi_contacts_srcs} )
 
-target_link_libraries(qml_akonadi
+target_link_libraries(qml_akonadi_contacts
     QtDeclarative
     ${KDEPIMLIBS_AKONADI_LIBS}
     ${KDE4_KIO_LIBS}
@@ -42,7 +37,31 @@ target_link_libraries(qml_akonadi
     ${KDEPIMLIBS_KMIME_LIBS}
 )
 
-install(TARGETS qml_akonadi ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS qml_akonadi_contacts ${INSTALL_TARGETS_DEFAULT_ARGS} )
+
+set(qml_akonadi_calendar_srcs
+  main_calendar.cpp
+  calendarwidget.cpp
+  contactwrapper.cpp
+  declarativecontactmodel.cpp
+  eventgrouplistmodel.cpp
+  eventgroupmodel.cpp
+  eventsortproxymodel.cpp
+  eventwrapper.cpp
+)
+
+kde4_add_executable(qml_akonadi_calendar ${qml_akonadi_calendar_srcs} )
+
+target_link_libraries(qml_akonadi_calendar
+    QtDeclarative
+    ${KDEPIMLIBS_AKONADI_LIBS}
+    ${KDE4_KIO_LIBS}
+    ${KDEPIMLIBS_KABC_LIBS}
+    ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
+    ${KDEPIMLIBS_KMIME_LIBS}
+)
+
+install(TARGETS qml_akonadi_calendar ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install(FILES
   contacts.qml
