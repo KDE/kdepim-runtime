@@ -120,7 +120,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
 
   if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
     // Server-side error, unrecoverable
-    setError( 1 );
+    setError( UserDefinedError );
     setErrorText( httpStatus );
     if ( mSubJobCount == 0 )
       emitResult();

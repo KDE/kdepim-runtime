@@ -59,7 +59,7 @@ void DavCollectionModifyJob::removeProperty( const QString &prop, const QString 
 void DavCollectionModifyJob::start()
 {
   if ( mSetProperties.isEmpty() && mRemoveProperties.isEmpty() ) {
-    setError( 1 ); // no special meaning, for now at least
+    setError( UserDefinedError ); // no special meaning, for now at least
     setErrorText( i18n( "No properties to change or remove" ) );
     emitResult();
     return;
@@ -116,7 +116,7 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   }
   else if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
     // Server-side error, unrecoverable
-    setError( 1 );
+    setError( UserDefinedError );
     setErrorText( httpStatus );
     emitResult();
     return;

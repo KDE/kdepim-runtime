@@ -67,7 +67,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
 
   if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
     // Server-side error, unrecoverable
-    setError( 1 );
+    setError( UserDefinedError );
     setErrorText( httpStatus );
     emitResult();
     return;

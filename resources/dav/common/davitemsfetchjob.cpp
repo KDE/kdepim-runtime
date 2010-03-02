@@ -33,7 +33,7 @@ void DavItemsFetchJob::start()
   const DavMultigetProtocol *protocol =
       dynamic_cast<const DavMultigetProtocol*>( DavManager::self()->davProtocol( mCollectionUrl.protocol() ) );
   if ( !protocol ) {
-    setError( 1 );
+    setError( UserDefinedError );
     setErrorText( QString( "Protocol for the collection does not support MULTIGET" ) );
     emitResult();
     return;
@@ -70,7 +70,7 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
 
   if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
     // Server-side error, unrecoverable
-    setError( 1 );
+    setError( UserDefinedError );
     setErrorText( httpStatus );
     emitResult();
     return;
