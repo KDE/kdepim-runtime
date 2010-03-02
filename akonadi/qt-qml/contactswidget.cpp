@@ -31,6 +31,7 @@
 #include <QListView>
 #include <QTreeView>
 #include <QApplication>
+#include <QDebug>
 
 #if 0
 #include <KABC/Addressee>
@@ -57,7 +58,18 @@ ContactsWidget::ContactsWidget(QWidget* parent)
   QSplitter *splitter = new QSplitter(this);
   mainLayout->addWidget( splitter );
 
-  FakeEntityTreeModel *fakeModel = new FakeEntityTreeModel(FakeEntityTreeModel::ContactsData);
+  QStringList args = qApp->arguments();
+
+  int numCollections = 10;
+  int numItems = 10;
+  int argsSize = args.size();
+  if (argsSize == 4)
+  {
+    numCollections = args.value(2).toInt();
+    numItems = args.value(3).toInt();
+  }
+
+  FakeEntityTreeModel *fakeModel = new FakeEntityTreeModel(numCollections, numItems, FakeEntityTreeModel::ContactsData);
 
   QListView *fakeView = new QListView( splitter );
   fakeView->setModel(fakeModel);

@@ -76,12 +76,15 @@ public:
     CalendarData
   };
 
-  FakeEntityTreeModel( DataType dataType, QObject* parent = 0);
+  FakeEntityTreeModel( int numcollections, int numItems, DataType dataType, QObject* parent = 0);
 
 private:
   void initContactData();
   void initCalendarData();
 
+private:
+  int m_numCollections;
+  int m_numItems;
 };
 
 class FakeEntityTreeItem : public QStandardItem

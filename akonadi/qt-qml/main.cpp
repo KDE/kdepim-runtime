@@ -32,23 +32,17 @@
 int main( int argc, char **argv )
 {
   QApplication app(argc, argv);
-#if 0
-  const QByteArray& ba = QByteArray( "akonadi_qml" );
-  const KLocalizedString name = ki18n( "Akonadi Qml example" );
-  KAboutData aboutData( ba, ba, name, ba, name );
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KApplication app;
-  if ( KApplication::instance()->arguments().contains("contacts") )
+  if ( app.arguments().contains("contacts") || app.arguments().size() == 1 )
   {
     ContactsWidget contactsWidget;
     contactsWidget.show();
+    return app.exec();
   }
-
-  if ( KApplication::instance()->arguments().contains("calendar") )
+  else if ( app.arguments().contains("calendar") )
   {
-    #endif
     ContactsWidget calendarWidget;
     calendarWidget.show();
-//   }
-  return app.exec();
+    return app.exec();
+  }
 }
+

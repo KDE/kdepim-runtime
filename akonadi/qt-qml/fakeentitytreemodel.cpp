@@ -136,8 +136,8 @@ QString FakeContact::phone() const
   return m_data.at(4).toString();
 }
 
-FakeEntityTreeModel::FakeEntityTreeModel(FakeEntityTreeModel::DataType dataType, QObject* parent)
-  : QStandardItemModel(parent)
+FakeEntityTreeModel::FakeEntityTreeModel(int numCollections, int numItems, FakeEntityTreeModel::DataType dataType, QObject* parent)
+  : QStandardItemModel(parent), m_numCollections(numCollections), m_numItems(numItems)
 {
   if (dataType == ContactsData)
   {
@@ -160,11 +160,11 @@ void FakeEntityTreeModel::initCalendarData()
 
 void FakeEntityTreeModel::initContactData()
 {
-  for(int i = 1; i <= 10; ++i)
+  for(int i = 1; i <= m_numCollections; ++i)
   {
     QStandardItem *item = new FakeEntityTreeItem( new FakeCollection( QString("col %1").arg(i), this) );
     appendRow(item);
-    for ( int j = 0; j <= 10; ++j)
+    for ( int j = 0; j <= m_numItems; ++j)
     {
       QVariantList data;
       QString firstName = RANDOM_CHOICE(firstNames);
