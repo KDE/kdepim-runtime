@@ -37,6 +37,7 @@ class SetupManager : public QObject
     Q_SCRIPTABLE QObject* createTransport( const QString &type );
     Q_SCRIPTABLE QObject* createConfigFile( const QString &configName );
     Q_SCRIPTABLE QObject* createLdap();
+    Q_SCRIPTABLE QObject* createIdentity();
     Q_SCRIPTABLE void execute();
 
   private:

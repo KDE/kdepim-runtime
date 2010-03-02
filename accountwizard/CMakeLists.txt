@@ -14,6 +14,7 @@ set(accountwizard_srcs
   configfile.cpp
   ldap.cpp
   identitypage.cpp
+  identity.cpp
 )
 
 kde4_add_ui_files(accountwizard_srcs
@@ -31,6 +32,7 @@ target_link_libraries(accountwizard
   ${KDE4_KROSSCORE_LIBS}
   ${KDE4_KROSSUI_LIBS}
   ${KDE4_KDECORE_LIBS}
+  ${KDEPIMLIBS_KPIMIDENTITIES_LIBRARY}
   ${QT_QTGUI_LIBRARY}
   ${QT_QTUITOOLS_LIBRARY}
 )
