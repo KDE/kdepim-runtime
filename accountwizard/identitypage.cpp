@@ -17,36 +17,20 @@
     02110-1301, USA.
 */
 
-#ifndef CONFIGFILE_H
-#define CONFIGFILE_H
+#include "identitypage.h"
 
-#include "setupobject.h"
-#include <QMap>
-#include <QPair>
 
-class KConfig;
-
-struct Config {
-  QString group;
-  QString key;
-  QString value;
-};
-
-class ConfigFile : public SetupObject
+IdentityPage::IdentityPage( KAssistantDialog *parent )
+  : Page( parent )
 {
-  Q_OBJECT
-  public:
-    explicit ConfigFile( const QString& configName, QObject *parent = 0 );
-    ~ConfigFile();
-    void create();
-    void destroy();
-  public slots:
-    Q_SCRIPTABLE void setName( const QString & name );
-    Q_SCRIPTABLE void setConfig( const QString &group, const QString &key, const QString &value );
-  private:
-    QList<Config> m_configData;
-    QString m_name;
-    KConfig *m_config;
-};
+  ui.setupUi( this );
+}
 
-#endif
+IdentityPage::~IdentityPage()
+{
+}
+
+
+
+
+#include "identitypage.moc"
