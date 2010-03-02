@@ -81,6 +81,7 @@ function setup()
   korganizer.setName( "korganizer" );
   korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyFullDomainRetrieval","true");
   korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveAuto", "true" );
+  korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + page.kolabWizard.serverAddress.text  + "/freebusy/" );
   SetupManager.execute();
 }
 
