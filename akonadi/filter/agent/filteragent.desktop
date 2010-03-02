@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi Filtering Agent
 Name[en_GB]=Akonadi Filtering Agent
+Name[es]=Agente de filtrado de Akonadi
 Name[et]=Akonadi flitreerimisagent
 Name[fr]=Agent de filtrage pour Akonadi
 Name[gl]=Axente de filtrado de Akonadi
@@ -14,6 +15,7 @@ Name[uk]=Агент фільтрування Akonadi
 Name[x-test]=xxAkonadi Filtering Agentxx
 Comment=Filters PIM Data in Multiple Collections
 Comment[en_GB]=Filters PIM Data in Multiple Collections
+Comment[es]=Filtra datos PIM de múltiples colecciones
 Comment[et]=PIM-andmete filtreerimine mitmes kogus
 Comment[fr]=Données PIM des filtres dans des collections multiples
 Comment[gl]=Filtra os datos PIM de varias coleccións

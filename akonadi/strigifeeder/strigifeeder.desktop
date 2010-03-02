@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Strigi Feeder
 Name[en_GB]=Strigi Feeder
+Name[es]=Fuentes de Strigi
 Name[et]=Strigi söötur
 Name[fr]=Chargeur Strigi
 Name[gl]=Fornecedor de Strigi
@@ -12,6 +13,7 @@ Name[uk]=Передавач Strigi
 Name[x-test]=xxStrigi Feederxx
 Comment=Strigi-based fulltext search
 Comment[en_GB]=Strigi-based fulltext search
+Comment[es]=Búsqueda de texto completo basada en Strigi
 Comment[et]=Strigi-põhine täistekstiotsing
 Comment[fr]=Recherche textuelle basée sur Strigi
 Comment[ga]=Cuardach lántéacs bunaithe ar Strigi
