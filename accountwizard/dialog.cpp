@@ -23,6 +23,7 @@
 #include "global.h"
 #include "dynamicpage.h"
 #include "setupmanager.h"
+#include "identitypage.h"
 
 #include <klocalizedstring.h>
 #include <kross/core/action.h>
@@ -38,6 +39,9 @@ Dialog::Dialog(QWidget* parent) :
   action->addQObject( setupManager, QLatin1String( "SetupManager" ) );
 
   if ( Global::assistant().isEmpty() ) {
+    IdentityPage *idPage = new IdentityPage( this );
+    addPage( idPage, i18n( "Create new identity" ) );
+
     TypePage *page = new TypePage( this );
     connect( page->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     addPage( page, i18n( "Select Account Type" ) );

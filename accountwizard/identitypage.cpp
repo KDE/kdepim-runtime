@@ -18,18 +18,33 @@
 */
 
 #include "identitypage.h"
-
+#include "identity.h"
 
 IdentityPage::IdentityPage( KAssistantDialog *parent )
   : Page( parent )
 {
   ui.setupUi( this );
+  connect( ui.mCreateNewIdentity, SIGNAL( clicked ( bool ) ), ui.mEmail, SLOT( setEnabled( bool ) ) );
+  connect( ui.mCreateNewIdentity, SIGNAL( clicked ( bool ) ), ui.mRealName, SLOT( setEnabled( bool ) ) );
+  connect( ui.mCreateNewIdentity, SIGNAL( clicked ( bool ) ), ui.mOrganization, SLOT( setEnabled( bool ) ) );
+  ui.mCreateNewIdentity->setChecked( false );
+  setValid(true);
 }
 
 IdentityPage::~IdentityPage()
 {
 }
 
+void IdentityPage::leavePageNext()
+{
+  if ( ui.mCreateNewIdentity->isChecked() ) {
+    Identity *id = new Identity( this );
+    id->setRealName( ui.mRealName->text() );
+    id->setEmail( ui.mEmail->text() );
+    id->setOrganization( ui.mOrganization->text() );
+    id->create();
+  }
+}
 
 
 

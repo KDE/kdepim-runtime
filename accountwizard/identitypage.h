@@ -29,6 +29,9 @@ class IdentityPage : public Page
   public:
     explicit IdentityPage( KAssistantDialog* parent = 0 );
     ~IdentityPage();
+
+    void leavePageNext();
+
   private:
     Ui::IdentityPage ui;
 };
