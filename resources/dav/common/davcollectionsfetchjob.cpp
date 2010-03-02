@@ -59,6 +59,7 @@ void DavCollectionsFetchJob::doCollectionsFetch( const KUrl &url )
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( url, collectionQuery );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionsFetchFinished( KJob* ) ) );
+  job->addMetaData( "PropagateHttpHeader", "true" );
 }
 
 void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
@@ -108,11 +109,23 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   if ( job->error() ) {
     setError( job->error() );
     setErrorText( job->errorText() );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   }
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
+
+  const QString httpStatus = davJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
+
+  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+    // Server-side error, unrecoverable
+    setError( 1 );
+    setErrorText( httpStatus );
+    if ( mSubJobCount == 0 )
+      emitResult();
+    return;
+  }
 
   // For use in the collectionDiscovered() signal
   KUrl _jobUrl = mUrl.url();

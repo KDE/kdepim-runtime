@@ -70,10 +70,19 @@ void DavItemModifyJob::davJobFinished( KJob *job )
   }
 
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
-
-  // The 'Location:' HTTP header is used to indicate the new URL
   const QStringList allHeaders = storedJob->queryMetaData( "HTTP-Headers" ).split( "\n" );
 
+  const QString httpStatus = allHeaders.at( 0 );
+
+  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+    // Server-side error, unrecoverable
+    setError( 1 );
+    setErrorText( httpStatus );
+    emitResult();
+    return;
+  }
+
+  // The 'Location:' HTTP header is used to indicate the new URL
   QString location;
   foreach ( const QString &header, allHeaders ) {
     if ( header.startsWith( "Location:", Qt::CaseInsensitive  ) )

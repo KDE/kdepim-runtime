@@ -41,6 +41,7 @@ void DavItemsFetchJob::start()
 
   const QDomDocument report = protocol->itemsReportQuery( mUrls );
   KIO::DavJob *job = DavManager::self()->createReportJob( mCollectionUrl.url(), report );
+  job->addMetaData( "PropagateHttpHeader", "true" );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }
 
@@ -64,6 +65,17 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
   }
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
+
+  const QString httpStatus = davJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
+
+  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+    // Server-side error, unrecoverable
+    setError( 1 );
+    setErrorText( httpStatus );
+    emitResult();
+    return;
+  }
+
   const DavMultigetProtocol *protocol =
       dynamic_cast<const DavMultigetProtocol*>( DavManager::self()->davProtocol( mCollectionUrl.protocol() ) );
 

@@ -50,7 +50,8 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
   if ( job->error() ) {
     setError( job->error() );
     setErrorText( job->errorText() );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   }
 

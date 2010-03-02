@@ -43,6 +43,7 @@ void DavPrincipalHomeSetsFetchJob::start()
   propElement.appendChild( document.createElementNS( homeSetNS, homeSet ) );
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), document );
+  job->addMetaData( "PropagateHttpHeader", "true" );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
 }
 
@@ -61,6 +62,16 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
   }
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
+
+  const QString httpStatus = davJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
+
+  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+    // Server-side error, unrecoverable
+    setError( 1 );
+    setErrorText( httpStatus );
+    emitResult();
+    return;
+  }
 
   /*
    * Extract information from a document like the following :

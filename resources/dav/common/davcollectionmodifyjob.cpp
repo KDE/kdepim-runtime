@@ -108,8 +108,16 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   // Consider that a 200 status means success and proceed no further
-  const QString status = davJob->queryMetaData( "HTTP-Headers" ).split( '\n' ).at( 0 );
-  if ( status.contains( "200" ) ) {
+  const QString httpStatus = davJob->queryMetaData( "HTTP-Headers" ).split( '\n' ).at( 0 );
+
+  if ( httpStatus.contains( "200" ) ) {
+    emitResult();
+    return;
+  }
+  else if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+    // Server-side error, unrecoverable
+    setError( 1 );
+    setErrorText( httpStatus );
     emitResult();
     return;
   }

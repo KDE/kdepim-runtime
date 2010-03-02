@@ -43,6 +43,15 @@ void DavItemDeleteJob::davJobFinished( KJob *job )
     setErrorText( job->errorText() );
   }
 
+  KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
+  const QString httpStatus = deleteJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
+
+  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+    // Server-side error, unrecoverable
+    setError( 1 );
+    setErrorText( httpStatus );
+  }
+
   emitResult();
 }
 

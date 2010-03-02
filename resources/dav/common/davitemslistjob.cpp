@@ -22,7 +22,6 @@
 #include "davprotocolbase.h"
 #include "davutils.h"
 
-#include <kdebug.h>
 #include <kio/davjob.h>
 #include <klocale.h>
 
@@ -43,10 +42,12 @@ void DavItemsListJob::start()
 
     if ( DavManager::self()->davProtocol( mUrl.protocol() )->useReport() ) {
       KIO::DavJob *job = DavManager::self()->createReportJob( mUrl.url(), props );
+      job->addMetaData( "PropagateHttpHeader", "true" );
       job->setProperty( "davType", "report" );
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
     } else {
       KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), props );
+      job->addMetaData( "PropagateHttpHeader", "true" );
       job->setProperty( "davType", "propFind" );
       connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
     }
@@ -67,11 +68,23 @@ void DavItemsListJob::davJobFinished( KJob *job )
   if ( job->error() ) {
     setError( job->error() );
     setErrorText( job->errorText() );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   }
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
+
+  const QString httpStatus = davJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
+
+  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+    // Server-side error, unrecoverable
+    setError( 1 );
+    setErrorText( httpStatus );
+    if ( mSubJobCount == 0 )
+      emitResult();
+    return;
+  }
 
   /*
    * Extract data from a document like the following:

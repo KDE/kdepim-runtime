@@ -72,6 +72,16 @@ void DavItemFetchJob::davJobFinished( KJob *job )
   }
 
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
+  const QString httpStatus = storedJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
+
+  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+    // Server-side error, unrecoverable
+    setError( 1 );
+    setErrorText( httpStatus );
+    emitResult();
+    return;
+  }
+
   mItem.setData( storedJob->data() );
   mItem.setContentType( storedJob->queryMetaData( "content-type" ) );
   mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
