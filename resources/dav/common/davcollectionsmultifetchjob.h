@@ -60,8 +60,8 @@ class DavCollectionsMultiFetchJob : public KJob
     /**
      * This signal is emitted every time a new collection has been discovered.
      *
-     * @param collectionUrl The URL of the discovered collection
-     * @param configuredUrl The URL given to the job
+     * @param collectionUrl The URL of the discovered collection
+     * @param configuredUrl The URL given to the job
      */
     void collectionDiscovered( const QString &collectionUrl, const QString &configuredUrl );
 

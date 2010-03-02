@@ -41,8 +41,7 @@ void DavCollectionsFetchJob::start()
     DavPrincipalHomeSetsFetchJob *job = new DavPrincipalHomeSetsFetchJob( mUrl );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( principalFetchFinished( KJob* ) ) );
     job->start();
-  }
-  else {
+  } else {
     doCollectionsFetch( mUrl.url() );
   }
 }
@@ -55,7 +54,9 @@ DavCollection::List DavCollectionsFetchJob::collections() const
 void DavCollectionsFetchJob::doCollectionsFetch( const KUrl &url )
 {
   ++mSubJobCount;
+
   const QDomDocument collectionQuery = DavManager::self()->davProtocol( mUrl.protocol() )->collectionsQuery();
+
   KIO::DavJob *job = DavManager::self()->createPropFindJob( url, collectionQuery );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionsFetchFinished( KJob* ) ) );
 }
@@ -70,9 +71,9 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
     return;
   }
 
-  DavPrincipalHomeSetsFetchJob *davJob = qobject_cast<DavPrincipalHomeSetsFetchJob*>( job );
+  const DavPrincipalHomeSetsFetchJob *davJob = qobject_cast<DavPrincipalHomeSetsFetchJob*>( job );
 
-  QStringList homeSets = davJob->homeSets();
+  const QStringList homeSets = davJob->homeSets();
   kDebug() << "Found " << homeSets.size() << " homesets";
   kDebug() << homeSets;
 
@@ -117,7 +118,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   KUrl _jobUrl = mUrl.url();
   _jobUrl.setUser( QString() );
   _jobUrl.setPassword( QString() );
-  QString jobUrl = _jobUrl.prettyUrl();
+
+  const QString jobUrl = _jobUrl.prettyUrl();
 
   QByteArray resp( davJob->response().toByteArray() );
   QBuffer buffer( &resp );

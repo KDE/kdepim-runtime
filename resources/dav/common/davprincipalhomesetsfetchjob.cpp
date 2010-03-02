@@ -38,8 +38,8 @@ void DavPrincipalHomeSetsFetchJob::start()
   QDomElement propElement = document.createElementNS( "DAV:", "prop" );
   propfindElement.appendChild( propElement );
 
-  QString homeSet = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSet();
-  QString homeSetNS = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSetNS();
+  const QString homeSet = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSet();
+  const QString homeSetNS = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSetNS();
   propElement.appendChild( document.createElementNS( homeSetNS, homeSet ) );
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), document );
@@ -63,28 +63,28 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
   /*
-   Extract information from a document like the following :
+   * Extract information from a document like the following :
+   *
+   *  <?xml version="1.0" encoding="utf-8" ?>
+   *  <multistatus xmlns="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+   *    <response>
+   *      <href>/principals/users/greg%40kamago.net/</href>
+   *      <propstat>
+   *        <prop>
+   *          <C:calendar-home-set>
+   *            <href>/greg%40kamago.net/</href>
+   *          </C:calendar-home-set>
+   *        </prop>
+   *        <status>HTTP/1.1 200 OK</status>
+   *      </propstat>
+   *    </response>
+   *  </multistatus>
+   */
 
-    <?xml version="1.0" encoding="utf-8" ?>
-    <multistatus xmlns="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
-      <response>
-        <href>/principals/users/greg%40kamago.net/</href>
-        <propstat>
-          <prop>
-            <C:calendar-home-set>
-              <href>/greg%40kamago.net/</href>
-            </C:calendar-home-set>
-          </prop>
-          <status>HTTP/1.1 200 OK</status>
-        </propstat>
-      </response>
-    </multistatus>
-  */
+  const QString homeSet = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSet();
+  const QString homeSetNS = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSetNS();
 
-  QString homeSet = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSet();
-  QString homeSetNS = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSetNS();
-
-  QDomDocument document = davJob->response();
+  const QDomDocument document = davJob->response();
   const QDomElement multistatusElement = document.documentElement();
 
   QDomElement responseElement = DavUtils::firstChildElementNS( multistatusElement, "DAV:", "response" );
@@ -118,6 +118,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
       const QString href = hrefElement.text();
       if ( !mHomeSets.contains( href ) )
         mHomeSets << href;
+
       hrefElement = DavUtils::nextSiblingElementNS( hrefElement, "DAV:", "href" );
     }
 

@@ -28,7 +28,6 @@
 /**
  * @short A job that fetches home sets for a principal.
  */
-
 class DavPrincipalHomeSetsFetchJob : public KJob
 {
   Q_OBJECT
