@@ -115,6 +115,9 @@ void ICalResourceBase::retrieveItems( const Akonadi::Collection & col )
 
 bool ICalResourceBase::writeToFile( const QString &fileName )
 {
+  if ( !mCalendar ) {
+    return false;
+  }
   if ( !mCalendar->save( fileName ) ) {
     emit error( i18n("Failed to save calendar file to %1", fileName ) );
     return false;
