@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=DAV groupware resource
 Name[uk]=Ресурс групової роботи DAV
+Name[x-test]=xxDAV groupware resourcexx
 Comment=Resource to manage DAV calendars and address books (CalDAV, GroupDAV)
 Comment[uk]=Ресурс для керування календарями і адресними книгами DAV (CalDAV, GroupDAV)
+Comment[x-test]=xxResource to manage DAV calendars and address books (CalDAV, GroupDAV)xx
 Type=AkonadiResource
 Exec=akonadi_davgroupware_resource
 Icon=folder-remote
