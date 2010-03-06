@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=MailBox
+Name[nb]=Postkasse
 Name[pt]=Caixa de Correio
 Name[pt_BR]=MailBox
 Name[sv]=Mailbox
@@ -7,6 +8,7 @@ Name[uk]=MailBox
 Name[x-test]=xxMailBoxxx
 Icon=message-rfc822
 Comment=Mailbox account
+Comment[nb]=Mailbox-konto
 Comment[pt]=Conta de Caixa do Correio
 Comment[pt_BR]=Conta Mailbox
 Comment[sv]=Mailbox-konto
