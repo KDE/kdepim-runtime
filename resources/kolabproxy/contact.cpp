@@ -33,7 +33,6 @@
 #include "contact.h"
 
 #include <kabc/addressee.h>
-#include <kabc/addressbook.h>
 #include <kio/netaccess.h>
 #include <kdebug.h>
 #include <QFile>
