@@ -19,6 +19,9 @@
 * 02110-1301  USA
 */
 
+#ifndef DECLARATIVECONTACT_H
+#define DECLARATIVECONTACT_H
+
 #include <QDebug>
 
 #include <KABC/Addressee>
@@ -50,3 +53,5 @@ signals:
 private:
   KABC::Addressee m_addressee;
 };
+
+#endif

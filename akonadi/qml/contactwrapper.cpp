@@ -53,3 +53,5 @@ QString DeclarativeContact::phone() const
 {
   return m_addressee.phoneNumber(KABC::PhoneNumber::Home).number();
 }
+
+#include "contactwrapper.moc"
