@@ -35,7 +35,7 @@ Ldap::~Ldap()
 
 void Ldap::create()
 {
-  emit info( i18n( "Setting up ldap server..." ) );
+  emit info( i18n( "Setting up LDAP server..." ) );
 
   if ( m_server.isEmpty() || m_user.isEmpty() )
     return;
@@ -77,12 +77,12 @@ void Ldap::create()
     group.writeEntry( QString("SelectedBase%1").arg(selHosts), basedn);
     group.writeEntry( QString("SelectedPort%1").arg(selHosts), "389");
   }
-  emit finished( i18n( "Ldap set up." ) );
+  emit finished( i18n( "LDAP set up." ) );
 }
 
 void Ldap::destroy()
 {
-  emit info( i18n( "Ldap not configuring." ) );
+  emit info( i18n( "LDAP not configuring." ) );
 }
 
 void Ldap::setUser( const QString &user )
