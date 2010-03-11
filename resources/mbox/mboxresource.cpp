@@ -100,8 +100,10 @@ void MboxResource::configure( WId windowId )
 void MboxResource::retrieveItems( const Akonadi::Collection &col )
 {
   Q_UNUSED( col );
-  if ( !mMBox )
+  if ( !mMBox ) {
+    cancelTask();
     return;
+  }
 
   QList<MsgInfo> entryList;
   if ( col.hasAttribute<DeletedItemsAttribute>() ) {
