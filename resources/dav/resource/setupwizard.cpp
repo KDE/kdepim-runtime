@@ -58,7 +58,7 @@ static QString settingsToUrl( const QWizard *wizard )
   else if ( wizard->field( "serverTypeOpenGroupware" ).toBool() )
     pathPattern = "";
   else if ( wizard->field( "serverTypeScalableOGo" ).toBool() )
-    pathPattern = "";
+    pathPattern = "/SOGo/dav/$user$/";
   else if ( wizard->field( "serverTypeScalix" ).toBool() )
     pathPattern = "/api/dav/Principals/$user$";
   else if ( wizard->field( "serverTypeZarafa" ).toBool() )
@@ -152,14 +152,21 @@ SetupWizard::Url::List SetupWizard::urls() const
 
     urls << url;
   } else if ( field( "serverTypeScalableOGo" ).toBool() ) {
-    Url url;
-    url.protocol = DavUtils::GroupDav;
-    url.url = settingsToUrl( this );
-    url.userName = field( "credentialsUserName" ).toString();
-    url.password = field( "credentialsPassword" ).toString();
-    url.useWallet = field( "credentialsKeepInWallet" ).toBool();
+    Url contactUrl;
+    contactUrl.protocol = DavUtils::CardDav;
+    contactUrl.url = settingsToUrl( this ) + "Contacts/";
+    contactUrl.userName = field( "credentialsUserName" ).toString();
+    contactUrl.password = field( "credentialsPassword" ).toString();
+    contactUrl.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
-    urls << url;
+    Url calendarUrl;
+    calendarUrl.protocol = DavUtils::CalDav;
+    calendarUrl.url = settingsToUrl( this ) + "Calendar/";
+    calendarUrl.userName = field( "credentialsUserName" ).toString();
+    calendarUrl.password = field( "credentialsPassword" ).toString();
+    calendarUrl.useWallet = field( "credentialsKeepInWallet" ).toBool();
+
+    urls << contactUrl << calendarUrl;
   } else if ( field( "serverTypeScalix" ).toBool() ) {
     Url url;
     url.protocol = DavUtils::CalDav;
