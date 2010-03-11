@@ -113,8 +113,7 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   if ( httpStatus.contains( "200" ) ) {
     emitResult();
     return;
-  }
-  else if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+  } else if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
     // Server-side error, unrecoverable
     setError( UserDefinedError );
     setErrorText( httpStatus );

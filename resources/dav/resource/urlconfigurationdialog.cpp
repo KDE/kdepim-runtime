@@ -39,6 +39,7 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   mModel->setHorizontalHeaderLabels( headers );
 
   mUi.discoveredUrls->setModel( mModel );
+  mUi.discoveredUrls->setRootIsDecorated( false );
   connect( mModel, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
            this, SLOT( onModelDataChanged( const QModelIndex&, const QModelIndex& ) ) );
 

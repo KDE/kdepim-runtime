@@ -41,6 +41,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   mModel->setHorizontalHeaderLabels( headers );
 
   mUi.configuredUrls->setModel( mModel );
+  mUi.configuredUrls->setRootIsDecorated( false );
 
   foreach ( const QString &url, Settings::self()->remoteUrls() )
     addModelRow( DavUtils::protocolName( Settings::self()->protocol( url ) ), url );
