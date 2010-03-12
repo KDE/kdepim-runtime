@@ -1628,15 +1628,47 @@ void ImapResource::onSelectDone( KJob *job )
 
   // See how many messages are in the folder currently
   qint64 realMessageCount = collection.statistics().count();
-  if ( realMessageCount == -1 ) {
+  if ( realMessageCount != -1 ) {
+    onSelectDone( mailBox, messageCount, realMessageCount, scope.mode, nextUid, oldNextUid, firstTime );
+  } else {
     Akonadi::CollectionStatisticsJob *job = new Akonadi::CollectionStatisticsJob( collection );
-    if ( job->exec() ) {
-      Akonadi::CollectionStatistics statistics = job->statistics();
-      realMessageCount = statistics.count();
-    }
+    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( onCollectionStatisticsReceived( KJob* ) ) );
+    job->setProperty( "mailBox", mailBox );
+    job->setProperty( "messageCount", messageCount );
+    job->setProperty( "realMessageCount", realMessageCount );
+    job->setProperty( "scopeMode", static_cast<int>( scope.mode ) );
+    job->setProperty( "nextUid", nextUid );
+    job->setProperty( "oldNextUid", oldNextUid );
+    job->setProperty( "firstTime", firstTime );
+  }
+}
+
+void ImapResource::onCollectionStatisticsReceived( KJob *job )
+{
+  const QString mailBox = job->property( "mailBox" ).toString();
+  const int messageCount = job->property( "messageCount" ).toInt();
+  qint64 realMessageCount = job->property( "realMessageCount" ).toLongLong();
+  const int scopeMode = job->property( "scopeMode" ).toInt();
+  const qint64 nextUid = job->property( "nextUid" ).toLongLong();
+  const qint64 oldNextUid = job->property( "oldNextUid" ).toLongLong();
+  const bool firstTime = job->property( "firstTime" ).toBool();
+
+  if ( !job->error() ) {
+    const Akonadi::CollectionStatisticsJob *statisticsJob = qobject_cast<Akonadi::CollectionStatisticsJob*>( job );
+    realMessageCount = statisticsJob->statistics().count();
   }
 
+  onSelectDone( mailBox, messageCount, realMessageCount, scopeMode, nextUid, oldNextUid, firstTime );
+}
+
+void ImapResource::onSelectDone( const QString &mailBox, int messageCount, qint64 realMessageCount,
+                                 int scopeMode, qint64 nextUid, qint64 oldNextUid, bool firstTime )
+{
   kDebug(5327) << "integrity: " << mailBox << " should be: " << messageCount << " current: " << realMessageCount;
+
+  KIMAP::FetchJob::FetchScope scope;
+  scope.parts.clear();
+  scope.mode = static_cast<KIMAP::FetchJob::FetchScope::Mode>( scopeMode );
 
   if ( messageCount > realMessageCount ) {
     // The amount on the server is bigger than that we have in the cache

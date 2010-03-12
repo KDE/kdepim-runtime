@@ -92,6 +92,7 @@ private Q_SLOTS:
   void onQuotasReceived( KJob *job );
   void onGetMetaDataDone( KJob *job );
   void onSelectDone( KJob *job );
+  void onCollectionStatisticsReceived( KJob *job );
   void onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
                           const QMap<qint64, qint64> &sizes, const QMap<qint64, KIMAP::MessageFlags> &flags,
                           const QMap<qint64, KIMAP::MessagePtr> &messages );
@@ -124,6 +125,7 @@ private Q_SLOTS:
   void onExpungeCollectionFetchDone( KJob *job );
 
 private:
+  void onSelectDone( const QString&, int, qint64, int, qint64, qint64, bool );
   void triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
                                        const QStringList &remainingParts );
   void triggerCollectionExtraInfoJobs( const Akonadi::Collection &collection );
