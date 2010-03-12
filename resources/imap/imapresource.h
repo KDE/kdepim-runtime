@@ -57,7 +57,9 @@ public:
 
 public Q_SLOTS:
   virtual void configure( WId windowId );
+  // DBus methods
   void requestManualExpunge( qint64 collectionId );
+  void dump();
 
 protected Q_SLOTS:
   void retrieveCollections();
