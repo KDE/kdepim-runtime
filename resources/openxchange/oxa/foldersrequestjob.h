@@ -50,6 +50,9 @@ class FoldersRequestJob : public KJob
     /**
      * Creates a new folders request job.
      *
+     * @param lastSync The timestamp of the last sync. Only added, modified or deleted folders
+     *                 after this date will be requested. 0 will request all available folders.
+     * @param mode The mode of folders to request.
      * @param parent The parent object.
      */
     FoldersRequestJob( qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = 0 );

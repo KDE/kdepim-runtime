@@ -32,8 +32,8 @@
 
 using namespace OXA;
 
-ObjectsRequestJob::ObjectsRequestJob( const Folder &folder, QObject *parent )
-  : KJob( parent ), mFolder( folder )
+ObjectsRequestJob::ObjectsRequestJob( const Folder &folder, qulonglong lastSync, Mode mode, QObject *parent )
+  : KJob( parent ), mFolder( folder ), mLastSync( lastSync ), mMode( mode )
 {
 }
 
@@ -43,8 +43,11 @@ void ObjectsRequestJob::start()
   QDomElement multistatus = DAVUtils::addDavElement( document, document, QLatin1String( "multistatus" ) );
   QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
   DAVUtils::addOxElement( document, prop, QLatin1String( "folder_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), QLatin1String( "0" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "NEW_AND_MODIFIED" ) );
+  DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), OXUtils::writeNumber( mLastSync ) );
+  if ( mMode == Modified )
+    DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "MODIFIED" ) );
+  else
+    DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "DELETED" ) );
 
   const QString path = ObjectUtils::davPath( mFolder.module() );
 

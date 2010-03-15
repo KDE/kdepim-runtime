@@ -237,7 +237,7 @@ void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
   folder.setObjectId( remoteInformation.objectId() );
   folder.setModule( remoteInformation.module() );
 
-  OXA::ObjectsRequestJob *job = new OXA::ObjectsRequestJob( folder, this );
+  OXA::ObjectsRequestJob *job = new OXA::ObjectsRequestJob( folder, 0, OXA::ObjectsRequestJob::Modified, this );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectsRequestJobFinished( KJob* ) ) );
   job->start();
 }
