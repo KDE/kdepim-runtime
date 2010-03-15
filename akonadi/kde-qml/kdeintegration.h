@@ -23,11 +23,14 @@
 #include <QObject>
 #include <QStringList>
 #include <QVariant>
-#include <KIconLoader>
+
+class QIcon;
+class QPixmap;
 
 class KDEIntegration : public QObject
 {
   Q_OBJECT
+
   public:
     explicit KDEIntegration(QObject* parent = 0);
 
@@ -42,6 +45,7 @@ class KDEIntegration : public QObject
     QString i18ncpa( const QString &context, const QString &singular, const QString &plural, int amount, const QVariantList &args );
 
     QString iconPath( const QString &iconName, int size );
+    QPixmap iconToPixmap( const QIcon &icon, int size );
 };
 
 #endif
