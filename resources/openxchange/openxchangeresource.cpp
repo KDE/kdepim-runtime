@@ -22,6 +22,7 @@
 #include "configdialog.h"
 #include "settingsadaptor.h"
 
+#include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
@@ -50,10 +51,10 @@
 
 using namespace Akonadi;
 
-class RemoteIdentifier
+class RemoteInformation
 {
   public:
-    RemoteIdentifier( qlonglong objectId, OXA::Folder::Module module, const QString &lastModified )
+    RemoteInformation( qlonglong objectId, OXA::Folder::Module module, const QString &lastModified )
       : mObjectId( objectId ),
         mModule( module ),
         mLastModified( lastModified )
@@ -80,26 +81,26 @@ class RemoteIdentifier
       mLastModified = lastModified;
     }
 
-    static RemoteIdentifier fromString( const QString &data )
+    static RemoteInformation load( const Entity &entity )
     {
-      const QStringList parts = data.split( QLatin1Char( ':' ), QString::KeepEmptyParts );
-      Q_ASSERT( parts.count() == 3 );
+      const QStringList parts = entity.remoteRevision().split( QLatin1Char( ':' ), QString::KeepEmptyParts );
+      Q_ASSERT( parts.count() == 2 );
 
 
       OXA::Folder::Module module;
-      if ( parts.at( 1 ) == QLatin1String( "calendar" ) )
+      if ( parts.at( 0 ) == QLatin1String( "calendar" ) )
         module = OXA::Folder::Calendar;
-      else if ( parts.at( 1 ) == QLatin1String( "contacts" ) )
+      else if ( parts.at( 0 ) == QLatin1String( "contacts" ) )
         module = OXA::Folder::Contacts;
-      else if ( parts.at( 1 ) == QLatin1String( "tasks" ) )
+      else if ( parts.at( 0 ) == QLatin1String( "tasks" ) )
         module = OXA::Folder::Tasks;
       else
         module = OXA::Folder::Unbound;
 
-      return RemoteIdentifier( parts.at( 0 ).toLongLong(), module, parts.at( 2 ) );
+      return RemoteInformation( entity.remoteId().toLongLong(), module, parts.at( 1 ) );
     }
 
-    QString toString() const
+    void store( Entity &entity ) const
     {
       QString module;
       switch ( mModule ) {
@@ -110,11 +111,11 @@ class RemoteIdentifier
       }
 
       QStringList parts;
-      parts.append( QString::number( mObjectId ) );
       parts.append( module );
       parts.append( mLastModified );
 
-      return parts.join( QLatin1String( ":" ) );
+      entity.setRemoteId( QString::number( mObjectId ) );
+      entity.setRemoteRevision( parts.join( QLatin1String( ":" ) ) );
     }
 
   private:
@@ -225,11 +226,11 @@ void OpenXchangeResource::retrieveCollections()
 
 void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( collection );
 
   OXA::Folder folder;
-  folder.setObjectId( remoteIdentifier.objectId() );
-  folder.setModule( remoteIdentifier.module() );
+  folder.setObjectId( remoteInformation.objectId() );
+  folder.setModule( remoteInformation.module() );
 
   OXA::ObjectsRequestJob *job = new OXA::ObjectsRequestJob( folder, this );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectsRequestJobFinished( KJob* ) ) );
@@ -238,11 +239,11 @@ void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
 
 bool OpenXchangeResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( item );
 
   OXA::Object object;
-  object.setObjectId( remoteIdentifier.objectId() );
-  object.setModule( remoteIdentifier.module() );
+  object.setObjectId( remoteInformation.objectId() );
+  object.setModule( remoteInformation.module() );
 
   OXA::ObjectRequestJob *job = new OXA::ObjectRequestJob( object, this );
   job->setProperty( "item", QVariant::fromValue( item ) );
@@ -254,11 +255,11 @@ bool OpenXchangeResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
 
 void OpenXchangeResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( collection );
 
   OXA::Object object;
-  object.setFolderId( remoteIdentifier.objectId() );
-  object.setModule( remoteIdentifier.module() );
+  object.setFolderId( remoteInformation.objectId() );
+  object.setModule( remoteInformation.module() );
 
   if ( item.hasPayload<KABC::Addressee>() ) {
     object.setContact( item.payload<KABC::Addressee>() );
@@ -280,14 +281,14 @@ void OpenXchangeResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
 
 void OpenXchangeResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
-  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( item.parentCollection().remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( item );
+  const RemoteInformation parentRemoteInformation = RemoteInformation::load( item.parentCollection() );
 
   OXA::Object object;
-  object.setObjectId( remoteIdentifier.objectId() );
-  object.setModule( remoteIdentifier.module() );
-  object.setFolderId( parentRemoteIdentifier.objectId() );
-  object.setLastModified( remoteIdentifier.lastModified() );
+  object.setObjectId( remoteInformation.objectId() );
+  object.setModule( remoteInformation.module() );
+  object.setFolderId( parentRemoteInformation.objectId() );
+  object.setLastModified( remoteInformation.lastModified() );
 
   if ( item.hasPayload<KABC::Addressee>() ) {
     object.setContact( item.payload<KABC::Addressee>() );
@@ -309,14 +310,14 @@ void OpenXchangeResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
 
 void OpenXchangeResource::itemRemoved( const Akonadi::Item &item )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
-  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( item.parentCollection().remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( item );
+  const RemoteInformation parentRemoteInformation = RemoteInformation::load( item.parentCollection() );
 
   OXA::Object object;
-  object.setObjectId( remoteIdentifier.objectId() );
-  object.setFolderId( parentRemoteIdentifier.objectId() );
-  object.setModule( remoteIdentifier.module() );
-  object.setLastModified( remoteIdentifier.lastModified() );
+  object.setObjectId( remoteInformation.objectId() );
+  object.setFolderId( parentRemoteInformation.objectId() );
+  object.setModule( remoteInformation.module() );
+  object.setLastModified( remoteInformation.lastModified() );
 
   OXA::ObjectDeleteJob *job = new OXA::ObjectDeleteJob( object, this );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectDeleteJobFinished( KJob* ) ) );
@@ -327,18 +328,18 @@ void OpenXchangeResource::itemRemoved( const Akonadi::Item &item )
 void OpenXchangeResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
                                      const Akonadi::Collection &collectionDestination )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
-  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( collectionSource.remoteId() );
-  const RemoteIdentifier newParentRemoteIdentifier = RemoteIdentifier::fromString( collectionDestination.remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( item );
+  const RemoteInformation parentRemoteInformation = RemoteInformation::load( collectionSource );
+  const RemoteInformation newParentRemoteInformation = RemoteInformation::load( collectionDestination );
 
   OXA::Object object;
-  object.setObjectId( remoteIdentifier.objectId() );
-  object.setModule( remoteIdentifier.module() );
-  object.setFolderId( parentRemoteIdentifier.objectId() );
-  object.setLastModified( remoteIdentifier.lastModified() );
+  object.setObjectId( remoteInformation.objectId() );
+  object.setModule( remoteInformation.module() );
+  object.setFolderId( parentRemoteInformation.objectId() );
+  object.setLastModified( remoteInformation.lastModified() );
 
   OXA::Folder destinationFolder;
-  destinationFolder.setObjectId( newParentRemoteIdentifier.objectId() );
+  destinationFolder.setObjectId( newParentRemoteInformation.objectId() );
 
   OXA::ObjectMoveJob *job = new OXA::ObjectMoveJob( object, destinationFolder, this );
   job->setProperty( "item", QVariant::fromValue( item ) );
@@ -349,15 +350,15 @@ void OpenXchangeResource::itemMoved( const Akonadi::Item &item, const Akonadi::C
 
 void OpenXchangeResource::collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent )
 {
-  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( parent.remoteId() );
+  const RemoteInformation parentRemoteInformation = RemoteInformation::load( parent );
 
   OXA::Folder folder;
   folder.setTitle( collection.name() );
-  folder.setFolderId( parentRemoteIdentifier.objectId() );
+  folder.setFolderId( parentRemoteInformation.objectId() );
   folder.setType( OXA::Folder::Private );
 
   // the folder 'inherits' the module type of its parent collection
-  folder.setModule( parentRemoteIdentifier.module() );
+  folder.setModule( parentRemoteInformation.module() );
 
   // fill permissions
   OXA::Folder::Permissions permissions;
@@ -382,21 +383,21 @@ void OpenXchangeResource::collectionAdded( const Akonadi::Collection &collection
 
 void OpenXchangeResource::collectionChanged( const Akonadi::Collection &collection )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( collection );
 
   // do not try to change the standard collections
-  if ( remoteIdentifier.objectId() >= 0 && remoteIdentifier.objectId() <= 4 ) {
+  if ( remoteInformation.objectId() >= 0 && remoteInformation.objectId() <= 4 ) {
     changeCommitted( collection );
     return;
   }
 
-  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( collection.parentCollection().remoteId() );
+  const RemoteInformation parentRemoteInformation = RemoteInformation::load( collection.parentCollection() );
 
   OXA::Folder folder;
-  folder.setObjectId( remoteIdentifier.objectId() );
-  folder.setFolderId( parentRemoteIdentifier.objectId() );
+  folder.setObjectId( remoteInformation.objectId() );
+  folder.setFolderId( parentRemoteInformation.objectId() );
   folder.setTitle( collection.name() );
-  folder.setLastModified( remoteIdentifier.lastModified() );
+  folder.setLastModified( remoteInformation.lastModified() );
 
   OXA::FolderModifyJob *job = new OXA::FolderModifyJob( folder, this );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
@@ -405,11 +406,11 @@ void OpenXchangeResource::collectionChanged( const Akonadi::Collection &collecti
 
 void OpenXchangeResource::collectionRemoved( const Akonadi::Collection &collection )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( collection );
 
   OXA::Folder folder;
-  folder.setObjectId( remoteIdentifier.objectId() );
-  folder.setLastModified( remoteIdentifier.lastModified() );
+  folder.setObjectId( remoteInformation.objectId() );
+  folder.setLastModified( remoteInformation.lastModified() );
 
   OXA::FolderDeleteJob *job = new OXA::FolderDeleteJob( folder, this );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderDeleteJobFinished( KJob* ) ) );
@@ -420,16 +421,16 @@ void OpenXchangeResource::collectionRemoved( const Akonadi::Collection &collecti
 void OpenXchangeResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
                                            const Akonadi::Collection &collectionDestination )
 {
-  const RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
-  const RemoteIdentifier parentRemoteIdentifier = RemoteIdentifier::fromString( collectionSource.remoteId() );
-  const RemoteIdentifier newParentRemoteIdentifier = RemoteIdentifier::fromString( collectionDestination.remoteId() );
+  const RemoteInformation remoteInformation = RemoteInformation::load( collection );
+  const RemoteInformation parentRemoteInformation = RemoteInformation::load( collectionSource );
+  const RemoteInformation newParentRemoteInformation = RemoteInformation::load( collectionDestination );
 
   OXA::Folder folder;
-  folder.setObjectId( remoteIdentifier.objectId() );
-  folder.setFolderId( parentRemoteIdentifier.objectId() );
+  folder.setObjectId( remoteInformation.objectId() );
+  folder.setFolderId( parentRemoteInformation.objectId() );
 
   OXA::Folder destinationFolder;
-  destinationFolder.setObjectId( newParentRemoteIdentifier.objectId() );
+  destinationFolder.setObjectId( newParentRemoteInformation.objectId() );
 
   OXA::FolderMoveJob *job = new OXA::FolderMoveJob( folder, destinationFolder, this );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
@@ -490,7 +491,8 @@ void OpenXchangeResource::onObjectsRequestJobFinished( KJob *job )
         Q_ASSERT( false );
         break;
     }
-    item.setRemoteId( RemoteIdentifier( object.objectId(), object.module(), object.lastModified() ).toString() );
+    const RemoteInformation remoteInformation( object.objectId(), object.module(), object.lastModified() );
+    remoteInformation.store( item );
 
     items.append( item );
   }
@@ -511,7 +513,9 @@ void OpenXchangeResource::onObjectRequestJobFinished( KJob *job )
   const OXA::Object object = requestJob->object();
 
   Item item = job->property( "item" ).value<Item>();
-  item.setRemoteId( RemoteIdentifier( object.objectId(), object.module(), object.lastModified() ).toString() );
+
+  const RemoteInformation remoteInformation( object.objectId(), object.module(), object.lastModified() );
+  remoteInformation.store( item );
 
   switch ( object.module() ) {
     case OXA::Folder::Contacts:
@@ -552,7 +556,9 @@ void OpenXchangeResource::onObjectCreateJobFinished( KJob *job )
   const OXA::Object object = createJob->object();
 
   Item item = job->property( "item" ).value<Item>();
-  item.setRemoteId( RemoteIdentifier( object.objectId(), object.module(), object.lastModified() ).toString() );
+
+  const RemoteInformation remoteInformation( object.objectId(), object.module(), object.lastModified() );
+  remoteInformation.store( item );
 
   changeCommitted( item );
 }
@@ -572,9 +578,9 @@ void OpenXchangeResource::onObjectModifyJobFinished( KJob *job )
   Item item = job->property( "item" ).value<Item>();
 
   // update last_modified property
-  RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
-  remoteIdentifier.setLastModified( object.lastModified() );
-  item.setRemoteId( remoteIdentifier.toString() );
+  RemoteInformation remoteInformation = RemoteInformation::load( item );
+  remoteInformation.setLastModified( object.lastModified() );
+  remoteInformation.store( item );
 
   changeCommitted( item );
 }
@@ -594,9 +600,9 @@ void OpenXchangeResource::onObjectMoveJobFinished( KJob *job )
   Item item = job->property( "item" ).value<Item>();
 
   // update last_modified property
-  RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( item.remoteId() );
-  remoteIdentifier.setLastModified( object.lastModified() );
-  item.setRemoteId( remoteIdentifier.toString() );
+  RemoteInformation remoteInformation = RemoteInformation::load( item );
+  remoteInformation.setLastModified( object.lastModified() );
+  remoteInformation.store( item );
 
   changeCommitted( item );
 }
@@ -616,7 +622,9 @@ static Collection folderToCollection( const OXA::Folder &folder, const Collectio
   Collection collection;
 
   collection.setParentCollection( parentCollection );
-  collection.setRemoteId( RemoteIdentifier( folder.objectId(), folder.module(), folder.lastModified() ).toString() );
+
+  const RemoteInformation remoteInformation( folder.objectId(), folder.module(), folder.lastModified() );
+  remoteInformation.store( collection );
 
   // set a unique name to make Akonadi happy
   collection.setName( folder.title() + '_' + QUuid::createUuid().toString() );
@@ -666,7 +674,8 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
   // create the standard collections
   Collection resourceCollection;
   resourceCollection.setParentCollection( Collection::root() );
-  resourceCollection.setRemoteId( RemoteIdentifier( 0, OXA::Folder::Unbound, QString() ).toString() );
+  const RemoteInformation resourceInformation( 0, OXA::Folder::Unbound, QString() );
+  resourceInformation.store( resourceCollection );
   resourceCollection.setName( name() );
   resourceCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
   resourceCollection.setRights( Collection::ReadOnly );
@@ -675,31 +684,42 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
 
   Collection privateFolder;
   privateFolder.setParentCollection( resourceCollection );
-  privateFolder.setRemoteId( RemoteIdentifier( 1, OXA::Folder::Unbound, QString() ).toString() );
+  const RemoteInformation privateFolderInformation( 1, OXA::Folder::Unbound, QString() );
+  privateFolderInformation.store( privateFolder );
   privateFolder.setName( i18n( "Private Folder" ) );
   privateFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
   privateFolder.setRights( Collection::ReadOnly );
 
   Collection publicFolder;
   publicFolder.setParentCollection( resourceCollection );
-  publicFolder.setRemoteId( RemoteIdentifier( 2, OXA::Folder::Unbound, QString() ).toString() );
+  const RemoteInformation publicFolderInformation( 2, OXA::Folder::Unbound, QString() );
+  publicFolderInformation.store( publicFolder );
   publicFolder.setName( i18n( "Public Folder" ) );
   publicFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
   publicFolder.setRights( Collection::ReadOnly );
 
   Collection sharedFolder;
   sharedFolder.setParentCollection( resourceCollection );
-  sharedFolder.setRemoteId( RemoteIdentifier( 3, OXA::Folder::Unbound, QString() ).toString() );
+  const RemoteInformation sharedFolderInformation( 3, OXA::Folder::Unbound, QString() );
+  sharedFolderInformation.store( sharedFolder );
   sharedFolder.setName( i18n( "Shared Folder" ) );
   sharedFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
   sharedFolder.setRights( Collection::ReadOnly );
 
   Collection systemFolder;
   systemFolder.setParentCollection( resourceCollection );
-  systemFolder.setRemoteId( RemoteIdentifier( 4, OXA::Folder::Unbound, QString() ).toString() );
+  const RemoteInformation systemFolderInformation( 4, OXA::Folder::Unbound, QString() );
+  systemFolderInformation.store( systemFolder );
   systemFolder.setName( i18n( "System Folder" ) );
   systemFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
   systemFolder.setRights( Collection::ReadOnly );
+
+  Akonadi::CachePolicy cachePolicy;
+  cachePolicy.setInheritFromParent( false );
+  cachePolicy.setSyncOnDemand( false );
+  cachePolicy.setCacheTimeout( -1 );
+  cachePolicy.setIntervalCheckTime( 5 );
+  resourceCollection.setCachePolicy( cachePolicy );
 
   collections.append( resourceCollection );
   collections.append( privateFolder );
@@ -717,7 +737,6 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
   OXA::Folder::List folders = requestJob->folders();
   while ( !folders.isEmpty() ) {
     const OXA::Folder folder = folders.takeFirst();
-    qDebug("handle folder %s", qPrintable( folder.title() ));
     if ( remoteIdMap.contains( folder.folderId() ) ) {
       // we have the parent collection created already
       const Collection collection = folderToCollection( folder, remoteIdMap.value( folder.folderId() ) );
@@ -746,7 +765,9 @@ void OpenXchangeResource::onFolderCreateJobFinished( KJob *job )
   const OXA::Folder folder = createJob->folder();
 
   Collection collection = job->property( "collection" ).value<Collection>();
-  collection.setRemoteId( RemoteIdentifier( folder.objectId(), folder.module(), folder.lastModified() ).toString() );
+
+  const RemoteInformation remoteInformation( folder.objectId(), folder.module(), folder.lastModified() );
+  remoteInformation.store( collection );
 
   // set matching icon
   EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
@@ -782,9 +803,9 @@ void OpenXchangeResource::onFolderModifyJobFinished( KJob *job )
   Collection collection = job->property( "collection" ).value<Collection>();
 
   // update last_modified property
-  RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
-  remoteIdentifier.setLastModified( folder.lastModified() );
-  collection.setRemoteId( remoteIdentifier.toString() );
+  RemoteInformation remoteInformation = RemoteInformation::load( collection );
+  remoteInformation.setLastModified( folder.lastModified() );
+  remoteInformation.store( collection );
 
   changeCommitted( collection );
 }
@@ -804,9 +825,9 @@ void OpenXchangeResource::onFolderMoveJobFinished( KJob *job )
   Collection collection = job->property( "collection" ).value<Collection>();
 
   // update last_modified property
-  RemoteIdentifier remoteIdentifier = RemoteIdentifier::fromString( collection.remoteId() );
-  remoteIdentifier.setLastModified( folder.lastModified() );
-  collection.setRemoteId( remoteIdentifier.toString() );
+  RemoteInformation remoteInformation = RemoteInformation::load( collection );
+  remoteInformation.setLastModified( folder.lastModified() );
+  remoteInformation.store( collection );
 
   changeCommitted( collection );
 }
