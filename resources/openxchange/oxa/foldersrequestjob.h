@@ -39,11 +39,20 @@ class FoldersRequestJob : public KJob
 
   public:
     /**
+     * Describes the mode of the request job.
+     */
+    enum Mode
+    {
+      Modified,  ///< Fetches all new and modified folders
+      Deleted    ///< Fetches all deleted folders
+    };
+
+    /**
      * Creates a new folders request job.
      *
      * @param parent The parent object.
      */
-    FoldersRequestJob( QObject *parent = 0 );
+    FoldersRequestJob( qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = 0 );
 
     /**
      * Starts the job.
@@ -59,6 +68,8 @@ class FoldersRequestJob : public KJob
     void davJobFinished( KJob* );
 
   private:
+    qulonglong mLastSync;
+    Mode mMode;
     Folder::List mFolders;
 };
 

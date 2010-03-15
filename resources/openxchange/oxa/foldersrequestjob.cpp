@@ -32,8 +32,8 @@
 
 using namespace OXA;
 
-FoldersRequestJob::FoldersRequestJob( QObject *parent )
-  : KJob( parent )
+FoldersRequestJob::FoldersRequestJob( qulonglong lastSync, Mode mode, QObject *parent )
+  : KJob( parent ), mLastSync( lastSync ), mMode( mode )
 {
 }
 
@@ -42,8 +42,11 @@ void FoldersRequestJob::start()
   QDomDocument document;
   QDomElement multistatus = DAVUtils::addDavElement( document, document, QLatin1String( "multistatus" ) );
   QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), QLatin1String( "0" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "NEW_AND_MODIFIED" ) );
+  DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), OXUtils::writeNumber( mLastSync ) );
+  if ( mMode == Modified )
+    DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "MODIFIED" ) );
+  else
+    DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "DELETED" ) );
 
   const QString path = QLatin1String( "/servlet/webdav.folders" );
 
