@@ -21,6 +21,9 @@
 
 #include <KDebug>
 #include <KLocale>
+#include <KIconLoader>
+#include <QIcon>
+#include <QPixmap>
 
 static QString translate( const KLocalizedString &_string, const QVariantList &args = QVariantList() )
 {
@@ -103,6 +106,16 @@ QString KDEIntegration::i18ncpa( const QString &context, const QString &singular
   _args.append( QVariant( amount ) );
   _args.append( args );
   return translate( ki18ncp( context.toLatin1().constData(), singular.toLatin1().constData(), plural.toLatin1().constData() ), _args );
+}
+
+QString KDEIntegration::iconPath( const QString &iconName, int iconSize )
+{
+  return KIconLoader::global()->iconPath( iconName, -iconSize ); // yes, the minus there is correct...
+}
+
+QPixmap KDEIntegration::iconToPixmap(const QIcon& icon, int size )
+{
+  return icon.pixmap( size );
 }
 
 #include "kdeintegration.moc"

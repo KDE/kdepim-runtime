@@ -24,9 +24,13 @@
 #include <QStringList>
 #include <QVariant>
 
+class QIcon;
+class QPixmap;
+
 class KDEIntegration : public QObject
 {
   Q_OBJECT
+
   public:
     explicit KDEIntegration(QObject* parent = 0);
 
@@ -39,6 +43,9 @@ class KDEIntegration : public QObject
     QString i18npa( const QString &singular, const QString &plural, int amount, const QVariantList &args );
     QString i18ncp( const QString &context, const QString &singular, const QString &plural, int amount );
     QString i18ncpa( const QString &context, const QString &singular, const QString &plural, int amount, const QVariantList &args );
+
+    QString iconPath( const QString &iconName, int size );
+    QPixmap iconToPixmap( const QIcon &icon, int size );
 };
 
 #endif

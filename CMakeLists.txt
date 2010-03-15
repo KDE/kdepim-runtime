@@ -128,6 +128,7 @@ if (KDEPIMLIBS_KRESOURCES_LIBRARY)
   add_subdirectory(kresources)
 endif (KDEPIMLIBS_KRESOURCES_LIBRARY)
 add_subdirectory(accountwizard)
+add_subdirectory(qml)
 
 #if(OPENSYNC_FOUND)
 #  add_subdirectory(opensync)
