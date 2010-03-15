@@ -73,9 +73,6 @@ Settings::Settings()
   new SettingsAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
-
-  foreach ( const KUrl &url, remoteUrls() )
-    newUrlConfiguration( url.prettyUrl() );
 }
 
 Settings::~Settings()
@@ -92,6 +89,13 @@ Settings::~Settings()
 void Settings::setWinId( WId winId )
 {
   mWinId = winId;
+}
+
+void Settings::readConfig()
+{
+  SettingsBase::readConfig();
+  foreach ( const KUrl &url, remoteUrls() )
+    newUrlConfiguration( url.prettyUrl() );
 }
 
 void Settings::writeConfig()
@@ -167,7 +171,7 @@ Settings::UrlConfiguration * Settings::newUrlConfiguration( const QString &url )
     urlConfig = mUrls[ url ];
   }
 
-  KConfigGroup group( config(), urlConfig->mUrl );
+//   KConfigGroup group( config(), urlConfig->mUrl );
   setCurrentGroup( urlConfig->mUrl );
 
   QList<KConfigSkeleton::ItemEnum::Choice2> protocolValues;
@@ -202,9 +206,11 @@ Settings::UrlConfiguration * Settings::newUrlConfiguration( const QString &url )
       new KConfigSkeleton::ItemString( currentGroup(), QLatin1String( "username" ), urlConfig->mUser );
   addItem( usernameItem );
 
-  setRemoteUrls( remoteUrls() << urlConfig->mUrl );
+  if ( !mUrls.contains( urlConfig->mUrl ) )
+    mUrls.insert( urlConfig->mUrl, urlConfig );
 
-  mUrls.insert( urlConfig->mUrl, urlConfig );
+  if ( !remoteUrls().contains( urlConfig->mUrl ) )
+    setRemoteUrls( remoteUrls() << urlConfig->mUrl );
 
   return urlConfig;
 }

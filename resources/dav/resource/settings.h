@@ -53,7 +53,8 @@ class Settings : public SettingsBase
     ~Settings();
     static Settings* self();
     void setWinId( WId wid );
-    void writeConfig();
+    virtual void readConfig();
+    virtual void writeConfig();
 
     DavUtils::DavUrl::List configuredDavUrls();
     /**
