@@ -50,6 +50,12 @@
         <property name="clickMessage">
          <string notr="true">https://myserver.org</string>
         </property>
+        <property name="toolTip">
+         <string>The URL of the Open-Xchange server, should be something like https://myserver.org/</string>
+        </property>
+        <property name="whatsThis">
+         <string>The URL of the Open-Xchange server, should be something like https://myserver.org/</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
@@ -72,7 +78,14 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="KLineEdit" name="kcfg_Username"/>
+       <widget class="KLineEdit" name="kcfg_Username">
+        <property name="toolTip">
+         <string>The username that is used to log into the Open-Xchange server</string>
+        </property>
+        <property name="whatsThis">
+         <string>The username that is used to log into the Open-Xchange server</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_Password">
@@ -97,6 +110,12 @@
        <widget class="KLineEdit" name="kcfg_Password">
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="toolTip">
+         <string>The password that is used to log into the Open-Xchange server</string>
+        </property>
+        <property name="whatsThis">
+         <string>The password that is used to log into the Open-Xchange server</string>
         </property>
        </widget>
       </item>
