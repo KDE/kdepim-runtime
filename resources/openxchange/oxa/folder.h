@@ -46,7 +46,7 @@ class Folder
      */
     enum ObjectStatus
     {
-      Created, ///< The folder has been created.
+      Created, ///< The folder has been created or modified.
       Deleted  ///< The folder has been deleted.
     };
 

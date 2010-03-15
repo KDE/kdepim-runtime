@@ -24,8 +24,18 @@
 using namespace OXA;
 
 Object::Object()
-  : mObjectId( -1 ), mFolderId( -1 )
+  : mObjectStatus( Created ), mObjectId( -1 ), mFolderId( -1 )
 {
+}
+
+void Object::setObjectStatus( ObjectStatus status )
+{
+  mObjectStatus = status;
+}
+
+Object::ObjectStatus Object::objectStatus() const
+{
+  return mObjectStatus;
 }
 
 void Object::setObjectId( qlonglong id )

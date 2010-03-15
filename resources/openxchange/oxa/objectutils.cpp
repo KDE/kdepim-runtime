@@ -43,6 +43,14 @@ Object OXA::ObjectUtils::parseObject( const QDomElement &propElement, Folder::Mo
       object.setObjectId( OXUtils::readNumber( element.text() ) );
     } else if ( element.tagName() == QLatin1String( "folder_id" ) ) {
       object.setFolderId( OXUtils::readNumber( element.text() ) );
+    } else if ( element.tagName() == QLatin1String( "object_status" ) ) {
+      const QString content = OXUtils::readString( element.text() );
+      if ( content == QLatin1String( "CREATE" ) )
+        object.setObjectStatus( Object::Created );
+      else if ( content == QLatin1String( "DELETE" ) )
+        object.setObjectStatus( Object::Deleted );
+      else
+        Q_ASSERT( false );
     }
 
     element = element.nextSiblingElement();

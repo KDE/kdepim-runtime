@@ -37,9 +37,24 @@ namespace OXA {
 class Object
 {
   public:
+    /**
+     * Describes a list of objects.
+     */
     typedef QList<Object> List;
 
+    /**
+     * Describes the status of the object.
+     */
+    enum ObjectStatus
+    {
+      Created, ///< The object has been created or modified.
+      Deleted  ///< The object has been deleted.
+    };
+
     Object();
+
+    void setObjectStatus( ObjectStatus status );
+    ObjectStatus objectStatus() const;
 
     void setObjectId( qlonglong id );
     qlonglong objectId() const;
@@ -66,6 +81,7 @@ class Object
     KCal::Incidence::Ptr task() const;
 
   private:
+    ObjectStatus mObjectStatus;
     qlonglong mObjectId;
     qlonglong mFolderId;
     QString mLastModified;
