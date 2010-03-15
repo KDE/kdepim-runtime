@@ -167,7 +167,14 @@ void DavItemsListJob::davJobFinished( KJob *job )
       url = tmpUrl;
     }
 
-    item.setUrl( url.prettyUrl() );
+    QString itemUrl = url.prettyUrl();
+    if ( mSeenUrls.contains( itemUrl ) ) {
+      responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
+      continue;
+    }
+
+    mSeenUrls << itemUrl;
+    item.setUrl( itemUrl );
 
     // extract etag
     const QDomElement getetagElement = DavUtils::firstChildElementNS( propElement, "DAV:", "getetag" );

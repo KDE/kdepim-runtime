@@ -24,6 +24,8 @@
 
 #include <kjob.h>
 
+#include <QtCore/QSet>
+
 /**
  * @short A job that lists all DAV items inside a DAV collection.
  */
@@ -56,6 +58,7 @@ class DavItemsListJob : public KJob
   private:
     DavUtils::DavUrl mUrl;
     DavItem::List mItems;
+    QSet<QString> mSeenUrls; // to prevent events duplication with some servers
     uint mSubJobCount;
 };
 
