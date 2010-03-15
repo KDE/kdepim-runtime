@@ -84,20 +84,25 @@ class RemoteInformation
     static RemoteInformation load( const Entity &entity )
     {
       const QStringList parts = entity.remoteRevision().split( QLatin1Char( ':' ), QString::KeepEmptyParts );
-      Q_ASSERT( parts.count() == 2 );
 
+      OXA::Folder::Module module = OXA::Folder::Unbound;
 
-      OXA::Folder::Module module;
-      if ( parts.at( 0 ) == QLatin1String( "calendar" ) )
-        module = OXA::Folder::Calendar;
-      else if ( parts.at( 0 ) == QLatin1String( "contacts" ) )
-        module = OXA::Folder::Contacts;
-      else if ( parts.at( 0 ) == QLatin1String( "tasks" ) )
-        module = OXA::Folder::Tasks;
-      else
-        module = OXA::Folder::Unbound;
+      if ( parts.count() > 0 ) {
+        if ( parts.at( 0 ) == QLatin1String( "calendar" ) )
+          module = OXA::Folder::Calendar;
+        else if ( parts.at( 0 ) == QLatin1String( "contacts" ) )
+          module = OXA::Folder::Contacts;
+        else if ( parts.at( 0 ) == QLatin1String( "tasks" ) )
+          module = OXA::Folder::Tasks;
+        else
+          module = OXA::Folder::Unbound;
+      }
 
-      return RemoteInformation( entity.remoteId().toLongLong(), module, parts.at( 1 ) );
+      QString lastModified = QLatin1String( "0" );
+      if ( parts.count() > 1 )
+        lastModified = parts.at( 1 );
+
+      return RemoteInformation( entity.remoteId().toLongLong(), module, lastModified );
     }
 
     void store( Entity &entity ) const
