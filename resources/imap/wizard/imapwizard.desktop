@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Imap
+Name[ca]=Imap
 Name[en_GB]=Imap
 Name[es]=Imap
 Name[gl]=Imap
@@ -13,6 +14,7 @@ Name[uk]=IMAP
 Name[x-test]=xxImapxx
 Icon=network-server
 Comment=Imap account
+Comment[ca]=Compte Imap
 Comment[en_GB]=Imap account
 Comment[es]=Cuenta Imap
 Comment[gl]=Conta de Imap

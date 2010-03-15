@@ -40,6 +40,7 @@ Name[zh_CN]=邮件目录
 Name[zh_TW]=Maildir
 Icon=message-rfc822
 Comment=Maildir account
+Comment[ca]=Compte Maildir
 Comment[en_GB]=Maildir account
 Comment[es]=Cuenta de directorio de correo
 Comment[gl]=Conta de Maildir

@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Kolab
+Name[ca]=Kolab
 Name[en_GB]=Kolab
 Name[es]=Kolab
 Name[gl]=Kolab
@@ -13,6 +14,7 @@ Name[uk]=Kolab
 Name[x-test]=xxKolabxx
 Icon=kolab
 Comment=Kolab Groupware Server
+Comment[ca]=Servidor de Groupware Kolab
 Comment[en_GB]=Kolab Groupware Server
 Comment[es]=Servidor de trabajo en grupo Kolab
 Comment[gl]=Servidor de traballo en grupo Kolab
