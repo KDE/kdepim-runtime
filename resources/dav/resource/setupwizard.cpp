@@ -56,7 +56,7 @@ static QString settingsToUrl( const QWizard *wizard )
   else if ( wizard->field( "serverTypeEGroupware" ).toBool() )
     pathPattern = "/egroupware/groupdav.php/";
   else if ( wizard->field( "serverTypeOpenGroupware" ).toBool() )
-    pathPattern = "";
+    pathPattern = "/zidestore/dav/$user/";
   else if ( wizard->field( "serverTypeScalableOGo" ).toBool() )
     pathPattern = "/SOGo/dav/$user$/";
   else if ( wizard->field( "serverTypeScalix" ).toBool() )
