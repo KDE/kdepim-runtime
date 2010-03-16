@@ -130,13 +130,16 @@ void ResourcesManagementWidget::removeClicked()
     const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
 
     if ( KMessageBox::questionYesNo( this,
-                                     i18n( "Do you really want to delete these %1 agent instances?", instanceList.size() ),
+                                     i18np( "Do you really want to delete the selected agent instance?",
+                                            "Do you really want to delete these %1 agent instances?",
+                                            list.size() ),
                                      i18n( "Multiple Agent Deletion" ),
                                      KStandardGuiItem::del(),
                                      KStandardGuiItem::cancel(),
                                      QString(),
                                      KMessageBox::Dangerous )
-      == KMessageBox::Yes ) {
+         == KMessageBox::Yes ) {
+
       foreach( const Akonadi::AgentInstance &agent, instanceList )
         Akonadi::AgentManager::self()->removeInstance( agent );
         updateButtonState( d->ui.resourcesList->currentAgentInstance() );
