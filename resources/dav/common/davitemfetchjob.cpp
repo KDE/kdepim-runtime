@@ -72,12 +72,19 @@ void DavItemFetchJob::davJobFinished( KJob *job )
   }
 
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
-  const QString httpStatus = storedJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
 
-  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+  int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
+
+  if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable
     setError( UserDefinedError );
-    setErrorText( httpStatus );
+    setErrorText( i18n( "The server encountered an error that prevented it to complete your request" ) );
+    emitResult();
+    return;
+  } else if ( responseCode > 399 && responseCode < 500 ) {
+    // User-side error
+    setError( UserDefinedError );
+    setErrorText( i18n( "There was a problem with the request : error %1." ).arg( responseCode ) );
     emitResult();
     return;
   }

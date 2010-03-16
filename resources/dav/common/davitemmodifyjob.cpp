@@ -21,6 +21,7 @@
 #include "davmanager.h"
 
 #include <kio/job.h>
+#include <klocale.h>
 
 static QString etagFromHeaders( const QString &headers )
 {
@@ -70,19 +71,31 @@ void DavItemModifyJob::davJobFinished( KJob *job )
   }
 
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
-  const QStringList allHeaders = storedJob->queryMetaData( "HTTP-Headers" ).split( "\n" );
 
-  const QString httpStatus = allHeaders.at( 0 );
+  int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
 
-  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+  if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable
     setError( UserDefinedError );
-    setErrorText( httpStatus );
+    setErrorText( i18n( "The server encountered an error that prevented it to complete your request" ) );
+    emitResult();
+    return;
+  } else if ( responseCode == 423 ) {
+    // The remote resource has been locked
+    setError( UserDefinedError );
+    setErrorText( i18n( "The remote item has been locked, try again later" ) );
+    emitResult();
+    return;
+  } else if ( responseCode > 399 && responseCode < 500 ) {
+    // User-side error
+    setError( UserDefinedError );
+    setErrorText( i18n( "There was a problem with the request. The item was not modified on the server : error %1." ).arg( responseCode ) );
     emitResult();
     return;
   }
 
   // The 'Location:' HTTP header is used to indicate the new URL
+  const QStringList allHeaders = storedJob->queryMetaData( "HTTP-Headers" ).split( "\n" );
   QString location;
   foreach ( const QString &header, allHeaders ) {
     if ( header.startsWith( "Location:", Qt::CaseInsensitive  ) )

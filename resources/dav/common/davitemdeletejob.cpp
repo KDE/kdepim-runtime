@@ -21,6 +21,7 @@
 #include "davmanager.h"
 
 #include <kio/deletejob.h>
+#include <klocale.h>
 
 DavItemDeleteJob::DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
   : KJob( parent ), mUrl( url ), mItem( item )
@@ -44,12 +45,27 @@ void DavItemDeleteJob::davJobFinished( KJob *job )
   }
 
   KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
-  const QString httpStatus = deleteJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
 
-  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+  int responseCode = deleteJob->queryMetaData( "responsecode" ).toInt();
+
+  if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable
     setError( UserDefinedError );
-    setErrorText( httpStatus );
+    setErrorText( i18n( "The server encountered an error that prevented it to complete your request" ) );
+  } else if ( responseCode == 404 ) {
+    // We don't mind getting a 404 error as the that's what we want in the end.
+  } else if ( responseCode == 423 ) {
+    // The remote resource has been locked
+    setError( UserDefinedError );
+    setErrorText( i18n( "The remote item has been locked, try again later" ) );
+    emitResult();
+    return;
+  } else if ( responseCode > 399 && responseCode < 500 ) {
+    // User-side error
+    setError( UserDefinedError );
+    setErrorText( i18n( "There was a problem with the request. The item has not been deleted from the server : error %1." ).arg( responseCode ) );
+    emitResult();
+    return;
   }
 
   emitResult();

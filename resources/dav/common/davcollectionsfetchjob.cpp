@@ -116,14 +116,20 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
-  const QString httpStatus = davJob->queryMetaData( "HTTP-Headers" ).split( "\n" ).at( 0 );
+  int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
-  if ( httpStatus.contains( "HTTP/1.1 5" ) ) {
+  if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable
     setError( UserDefinedError );
-    setErrorText( httpStatus );
+    setErrorText( i18n( "The server encountered an error that prevented it to complete your request" ) );
     if ( mSubJobCount == 0 )
       emitResult();
+    return;
+  } else if ( responseCode > 399 && responseCode < 500 ) {
+    // User-side error
+    setError( UserDefinedError );
+    setErrorText( i18n( "There was a problem with the request : error %1." ).arg( responseCode ) );
+    emitResult();
     return;
   }
 
