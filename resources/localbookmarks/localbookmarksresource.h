@@ -22,7 +22,6 @@
 
 #include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
-#include <QtDBus/QDBusMessage>
 
 class KBookmarkManager;
 
@@ -43,15 +42,12 @@ class LocalBookmarksResource : public Akonadi::ResourceBase, public Akonadi::Age
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   protected:
-    virtual void aboutToQuit();
-
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
     KBookmarkManager *mBookmarkManager;
-
 };
 
 #endif

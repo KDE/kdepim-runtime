@@ -18,58 +18,48 @@
 */
 
 #include "localbookmarksresource.h"
+
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/session.h>
-
-#include <kdebug.h>
+#include <kbookmark.h>
+#include <kbookmarkmanager.h>
 #include <kfiledialog.h>
 #include <klocale.h>
-#include <kbookmarkmanager.h>
-#include <kbookmark.h>
-
-#include <QtDBus/QDBusConnection>
 
 using namespace Akonadi;
 
-
 LocalBookmarksResource::LocalBookmarksResource( const QString &id )
-    :ResourceBase( id )
+  : ResourceBase( id )
 {
   new SettingsAdaptor( Settings::self() );
 }
 
-LocalBookmarksResource::~ LocalBookmarksResource()
+LocalBookmarksResource::~LocalBookmarksResource()
 {
 }
 
-bool LocalBookmarksResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool LocalBookmarksResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  Q_UNUSED( item ); Q_UNUSED( parts );
-//TODO what is the need of the unused parameter(s)?
-  // TODO use remote id to retrieve the item in the file
+  itemRetrieved( item );
+
   return true;
-}
-
-void LocalBookmarksResource::aboutToQuit()
-{
-  // TODO save to the backend
 }
 
 void LocalBookmarksResource::configure( WId windowId )
 {
-  QString oldFile = Settings::self()->path();
+  const QString oldFile = Settings::self()->path();
+
   KUrl url;
   if ( !oldFile.isEmpty() )
     url = KUrl::fromPath( oldFile );
   else
     url = KUrl::fromPath( QDir::homePath() );
 
-  const QString newFile = KFileDialog::getOpenFileNameWId( url, "*.xml |" + i18nc("Filedialog filter for *.xml", "XML Bookmark file"), windowId, i18n("Select Bookmarks File") );
+  const QString newFile = KFileDialog::getOpenFileNameWId( url, "*.xml |" + i18nc( "Filedialog filter for *.xml",
+                                                                                   "XML Bookmark file"),
+                                                           windowId, i18n( "Select Bookmarks File" ) );
+
   if ( newFile.isEmpty() ) {
     emit configurationDialogRejected();
     return;
@@ -85,68 +75,79 @@ void LocalBookmarksResource::configure( WId windowId )
   mBookmarkManager = KBookmarkManager::managerForFile( newFile, name() );
 
   synchronize();
+
   emit configurationDialogAccepted();
 }
 
-void LocalBookmarksResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& col )
+void LocalBookmarksResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  if ( item.mimeType() != QLatin1String( "application/x-xbel" ) )
+  if ( item.mimeType() != QLatin1String( "application/x-xbel" ) ) {
+    cancelTask( i18n( "Item is not a bookmark" ) );
     return;
+  }
 
-  KBookmark bk = item.payload<KBookmark>();
-  KBookmark bkg = mBookmarkManager->findByAddress( col.remoteId() );
-  if ( !bkg.isGroup() )
+  KBookmark bookmark = item.payload<KBookmark>();
+  KBookmark bookmarkGroup = mBookmarkManager->findByAddress( collection.remoteId() );
+  if ( !bookmarkGroup.isGroup() ) {
+    cancelTask( i18n( "Bookmark group not found" ) );
     return;
+  }
 
-  KBookmarkGroup group = bkg.toGroup();
-  group.addBookmark( bk );
+  KBookmarkGroup group = bookmarkGroup.toGroup();
+  group.addBookmark( bookmark );
 
   // saves the file
   mBookmarkManager->emitChanged( group );
+
+  changeCommitted( item );
 }
 
 void LocalBookmarksResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& )
 {
-  KBookmark bk = item.payload<KBookmark>();
+  KBookmark bookmark = item.payload<KBookmark>();
 
   // saves the file
-  mBookmarkManager->emitChanged( bk.parentGroup() );
+  mBookmarkManager->emitChanged( bookmark.parentGroup() );
+
+  changeCommitted( item );
 }
 
-void LocalBookmarksResource::itemRemoved(const Akonadi::Item & item)
+void LocalBookmarksResource::itemRemoved( const Akonadi::Item &item )
 {
-  KBookmark bk = mBookmarkManager->findByAddress( item.remoteId() );
-  KBookmarkGroup bkg = bk.parentGroup();
+  const KBookmark bookmark = mBookmarkManager->findByAddress( item.remoteId() );
+  KBookmarkGroup bookmarkGroup = bookmark.parentGroup();
 
-  if ( !bk.isNull() )
-    return;
-
-  bkg.deleteBookmark( bk );
+  bookmarkGroup.deleteBookmark( bookmark );
 
   // saves the file
-  mBookmarkManager->emitChanged( bkg );
+  mBookmarkManager->emitChanged( bookmarkGroup );
+
+  changeCommitted( item );
 }
 
-Collection::List listRecursive( const KBookmarkGroup& parent, const Collection& parentCol )
+static Collection::List listRecursive( const KBookmarkGroup &parentGroup, const Collection &parentCollection )
 {
-  Collection::List list;
   const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::mimeType();
 
-  for ( KBookmark it = parent.first(); !it.isNull(); it = parent.next( it ) ) {
+  Collection::List collections;
+
+  for ( KBookmark it = parentGroup.first(); !it.isNull(); it = parentGroup.next( it ) ) {
+
     if ( !it.isGroup() )
       continue;
 
-    KBookmarkGroup bkg = it.toGroup();
-    Collection col;
-    col.setName( bkg.fullText() + '(' + bkg.address() + ')' ); // has to be unique
-    col.setRemoteId( bkg.address() );
-    col.setParentCollection( parentCol );
-    col.setContentMimeTypes( mimeTypes ); // ###
-    list << col;
-    list << listRecursive( bkg, col );
+    KBookmarkGroup bookmarkGroup = it.toGroup();
+    Collection collection;
+    collection.setName( bookmarkGroup.fullText() + '(' + bookmarkGroup.address() + ')' ); // has to be unique
+    collection.setRemoteId( bookmarkGroup.address() );
+    collection.setParentCollection( parentCollection );
+    collection.setContentMimeTypes( mimeTypes ); // ###
+
+    collections << collection;
+    collections << listRecursive( bookmarkGroup, collection );
   }
 
-  return list;
+  return collections;
 }
 
 void LocalBookmarksResource::retrieveCollections()
@@ -156,7 +157,7 @@ void LocalBookmarksResource::retrieveCollections()
   root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << "application/x-xbel" << Collection::mimeType(); // ###
+  mimeTypes << "application/x-xbel" << Collection::mimeType();
   root.setContentMimeTypes( mimeTypes );
 
   Collection::List list;
@@ -166,28 +167,29 @@ void LocalBookmarksResource::retrieveCollections()
   collectionsRetrieved( list );
 }
 
-void LocalBookmarksResource::retrieveItems( const Akonadi::Collection & col )
+void LocalBookmarksResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  if ( !col.isValid() )
-  {
-    kDebug( 5253 ) << "Collection not valid";
+  if ( !collection.isValid() ) {
+    cancelTask( i18n( "Bookmark collection is invalid" ) );
     return;
   }
 
-  KBookmarkGroup bkg;
-  if ( col.remoteId() == Settings::self()->path() ) {
-    bkg = mBookmarkManager->root();
+  KBookmarkGroup bookmarkGroup;
+  if ( collection.remoteId() == Settings::self()->path() ) {
+    bookmarkGroup = mBookmarkManager->root();
   } else {
 
-    KBookmark bk = mBookmarkManager->findByAddress( col.remoteId() );
-    if ( bk.isNull() || !bk.isGroup() )
+    const KBookmark bookmark = mBookmarkManager->findByAddress( collection.remoteId() );
+    if ( bookmark.isNull() || !bookmark.isGroup() ) {
+      cancelTask( i18n( "Bookmark collection is invalid" ) );
       return;
+    }
 
-    bkg = bk.toGroup();
+    bookmarkGroup = bookmark.toGroup();
   }
 
   Item::List itemList;
-  for ( KBookmark it = bkg.first(); !it.isNull(); it = bkg.next( it ) ) {
+  for ( KBookmark it = bookmarkGroup.first(); !it.isNull(); it = bookmarkGroup.next( it ) ) {
 
     if ( it.isGroup() || it.isSeparator() || it.isNull() )
       continue;
