@@ -6,8 +6,10 @@ import org.kde 4.5
     @param currentIndex: Index of the currently selected row.
  */
 Rectangle {
+  id: collectionListViewTopLevel
   property alias model: collectionListView.model
   property alias currentIndex: collectionListView.currentIndex
+  signal collectionSelected
 
   SystemPalette { id: palette; colorGroup: Qt.Active }
   Component {
@@ -30,6 +32,7 @@ Rectangle {
           anchors.fill: parent
           onClicked: {
             wrapper.ListView.view.currentIndex = model.index;
+            collectionListViewTopLevel.collectionSelected()
           }
       }
 
