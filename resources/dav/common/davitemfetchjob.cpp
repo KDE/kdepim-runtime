@@ -28,7 +28,7 @@
 
 static QString etagFromHeaders( const QString &headers )
 {
-  const QStringList allHeaders = headers.split( "\n" );
+  const QStringList allHeaders = headers.split( '\n' );
 
   QString etag;
   foreach ( const QString &header, allHeaders ) {
@@ -73,7 +73,7 @@ void DavItemFetchJob::davJobFinished( KJob *job )
 
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
 
-  int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
+  const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
 
   if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable

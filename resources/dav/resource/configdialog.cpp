@@ -67,16 +67,6 @@ ConfigDialog::~ConfigDialog()
 {
 }
 
-QStringList ConfigDialog::removedUrls() const
-{
-  return mRemovedUrls;
-}
-
-void ConfigDialog::setRemovedUrls( const QStringList &urls )
-{
-  mRemovedUrls = urls;
-}
-
 void ConfigDialog::checkUserInput()
 {
   checkConfiguredUrlsButtonsState();

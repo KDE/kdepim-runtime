@@ -46,7 +46,7 @@ void DavItemDeleteJob::davJobFinished( KJob *job )
 
   KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
 
-  int responseCode = deleteJob->queryMetaData( "responsecode" ).toInt();
+  const int responseCode = deleteJob->queryMetaData( "responsecode" ).toInt();
 
   if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable

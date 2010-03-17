@@ -25,7 +25,7 @@
 
 static QString etagFromHeaders( const QString &headers )
 {
-  const QStringList allHeaders = headers.split( "\n" );
+  const QStringList allHeaders = headers.split( '\n' );
 
   QString etag;
   foreach ( const QString &header, allHeaders ) {
@@ -72,7 +72,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
 
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
 
-  int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
+  const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
 
   if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable
@@ -95,7 +95,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
   }
 
   // The 'Location:' HTTP header is used to indicate the new URL
-  const QStringList allHeaders = storedJob->queryMetaData( "HTTP-Headers" ).split( "\n" );
+  const QStringList allHeaders = storedJob->queryMetaData( "HTTP-Headers" ).split( '\n' );
   QString location;
   foreach ( const QString &header, allHeaders ) {
     if ( header.startsWith( "Location:", Qt::CaseInsensitive  ) )

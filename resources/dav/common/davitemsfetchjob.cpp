@@ -67,7 +67,7 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
-  int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
+  const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
   if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable

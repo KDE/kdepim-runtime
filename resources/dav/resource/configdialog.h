@@ -36,9 +36,6 @@ class ConfigDialog : public KDialog
     ConfigDialog( QWidget *parent = 0 );
     ~ConfigDialog();
 
-    QStringList removedUrls() const;
-    void setRemovedUrls( const QStringList &urls );
-
   private Q_SLOTS:
     void checkUserInput();
     void onAddButtonClicked();
