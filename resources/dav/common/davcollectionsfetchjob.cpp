@@ -94,7 +94,6 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
       // homeSet is a complete url
       KUrl tmpUrl( homeSet );
       tmpUrl.setUser( url.user() );
-      tmpUrl.setPassword( url.password() );
       url = tmpUrl;
     }
 
@@ -136,7 +135,6 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   // For use in the collectionDiscovered() signal
   KUrl _jobUrl = mUrl.url();
   _jobUrl.setUser( QString() );
-  _jobUrl.setPassword( QString() );
 
   const QString jobUrl = _jobUrl.prettyUrl();
 
@@ -238,7 +236,6 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
 
     KUrl url = davJob->url();
     url.setUser( QString() );
-    url.setPassword( QString() );
     if ( href.startsWith( '/' ) ) {
       // href is only a path, use request url to complete
       url.setEncodedPath( href.toAscii() );

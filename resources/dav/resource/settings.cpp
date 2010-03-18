@@ -25,12 +25,8 @@
 
 #include <kglobal.h>
 #include <klocale.h>
-#include <kpassworddialog.h>
-#include <kwallet.h>
 
 #include <QtDBus/QDBusConnection>
-
-using namespace KWallet;
 
 class SettingsHelper
 {
@@ -65,7 +61,7 @@ Settings *Settings::self()
 }
 
 Settings::Settings()
-  : SettingsBase(), mWinId( 0 ), mWallet( 0 )
+  : SettingsBase(), mWinId( 0 )
 {
   Q_ASSERT( !s_globalSettings->q );
   s_globalSettings->q = this;
@@ -77,8 +73,6 @@ Settings::Settings()
 
 Settings::~Settings()
 {
-  delete mWallet;
-
   QMapIterator<QString, UrlConfiguration*> it( mUrls );
   while( it.hasNext() ) {
     it.next();
@@ -128,11 +122,8 @@ DavUtils::DavUrl Settings::configuredDavUrl( const QString &searchUrl, const QSt
   else
     fullUrl = searchUrl;
 
-  if ( authenticationRequired( searchUrl ) ) {
-    const QString user = username( searchUrl );
-    fullUrl.setUser( user );
-    fullUrl.setPassword( password( searchUrl, user ) );
-  }
+  const QString user = username( searchUrl );
+  fullUrl.setUser( user );
 
   return DavUtils::DavUrl( fullUrl, protocol( searchUrl ) );
 }
@@ -194,14 +185,6 @@ Settings::UrlConfiguration * Settings::newUrlConfiguration( const QString &url )
       new KConfigSkeleton::ItemEnum( currentGroup(), QLatin1String( "protocol" ), urlConfig->mProtocol, protocolValues );
   addItem( protocolItem );
 
-  KConfigSkeletonItem *authenticationRequiredItem =
-      new KConfigSkeleton::ItemBool( currentGroup(), QLatin1String( "authenticationRequired" ), urlConfig->mAuthReq );
-  addItem( authenticationRequiredItem );
-
-  KConfigSkeletonItem *useKWalletItem =
-      new KConfigSkeleton::ItemBool( currentGroup(), QLatin1String( "useKWallet" ), urlConfig->mUseKWallet );
-  addItem( useKWalletItem );
-
   KConfigSkeletonItem *usernameItem =
       new KConfigSkeleton::ItemString( currentGroup(), QLatin1String( "username" ), urlConfig->mUser );
   addItem( usernameItem );
@@ -251,14 +234,6 @@ Settings::UrlConfiguration * Settings::urlConfiguration( const QString &url )
   return ret;
 }
 
-bool Settings::authenticationRequired( const QString &url ) const
-{
-  if ( mUrls.contains( url ) )
-    return mUrls[ url ]->mAuthReq;
-  else
-    return false;
-}
-
 DavUtils::Protocol Settings::protocol( const QString &url ) const
 {
   if ( mUrls.contains( url ) )
@@ -273,92 +248,6 @@ QString Settings::username( const QString &url ) const
     return mUrls[ url ]->mUser;
   else
     return QString();
-}
-
-bool Settings::useKWallet( const QString &url ) const
-{
-  if ( mUrls.contains( url ) )
-    return mUrls[ url ]->mUseKWallet;
-  else
-    return false;
-}
-
-void Settings::setPassword( const QString &url, const QString &username, const QString &password )
-{
-  const QString passwordKey( username + QLatin1Char( '-' ) + url );
-
-  mCachedPasswords[ passwordKey ] = password;
-
-  if ( useKWallet( url ) )
-    storePassword( url, username, password );
-}
-
-QString Settings::password( const QString &url, const QString &username )
-{
-  const QString passwordKey( username + QLatin1Char( '-' ) + url );
-
-  QString password;
-  if ( mCachedPasswords.contains( passwordKey ) )
-    password = mCachedPasswords[ passwordKey ];
-  else
-    password = requestPassword( url, username );
-
-  return password;
-}
-
-QString Settings::requestPassword( const QString &url, const QString &username )
-{
-  QString password;
-
-  if ( authenticationRequired( url ) ) {
-    const QString passwordKey( username + QLatin1Char( '-' ) + url );
-
-    if ( useKWallet( url ) ) {
-      if ( !mWallet )
-        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
-
-      if ( mWallet && mWallet->isOpen() &&
-           mWallet->hasFolder( "dav-akonadi-resource" ) &&
-           mWallet->setFolder( "dav-akonadi-resource" ) ) {
-        mWallet->readPassword( passwordKey, password );
-      }
-    } else {
-      password = promptForPassword( url, username );
-    }
-
-    mCachedPasswords[ passwordKey ] = password;
-  }
-
-  return password;
-}
-
-QString Settings::promptForPassword( const QString &url, const QString &username )
-{
-  KPasswordDialog dlg;
-  dlg.setPrompt( i18n( "Please enter the password for %1 at %2" ).arg( username ).arg( url ) );
-  dlg.exec();
-
-  QString password;
-  if ( dlg.result() == QDialog::Accepted )
-    password = dlg.password();
-
-  return password;
-}
-
-void Settings::storePassword( const QString &url, const QString &username, const QString &password )
-{
-  if ( !mWallet )
-    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId );
-
-  if ( mWallet && mWallet->isOpen() ) {
-    if ( !mWallet->hasFolder( "dav-akonadi-resource" ) )
-      mWallet->createFolder( "dav-akonadi-resource" );
-
-    mWallet->setFolder( "dav-akonadi-resource" );
-
-    const QString passwordKey( username + QLatin1Char( '-' ) + url );
-    mWallet->writePassword( passwordKey, password );
-  }
 }
 
 #include "settings.moc"

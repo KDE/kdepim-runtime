@@ -47,8 +47,6 @@ class SetupWizard : public QWizard
         DavUtils::Protocol protocol;
         QString url;
         QString userName;
-        QString password;
-        bool useWallet;
     };
 
     Url::List urls() const;

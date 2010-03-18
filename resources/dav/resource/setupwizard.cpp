@@ -120,7 +120,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::GroupDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
   } else if ( field( "serverTypeDavIcal" ).toBool() ) {
@@ -128,7 +127,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::CalDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
   } else if ( field( "serverTypeEGroupware" ).toBool() ) {
@@ -136,7 +134,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::GroupDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
   } else if ( field( "serverTypeOpenGroupware" ).toBool() ) {
@@ -144,7 +141,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::GroupDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
   } else if ( field( "serverTypeScalableOGo" ).toBool() ) {
@@ -152,13 +148,11 @@ SetupWizard::Url::List SetupWizard::urls() const
     contactUrl.protocol = DavUtils::CardDav;
     contactUrl.url = settingsToUrl( this ) + "Contacts/";
     contactUrl.userName = field( "credentialsUserName" ).toString();
-    contactUrl.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     Url calendarUrl;
     calendarUrl.protocol = DavUtils::CalDav;
     calendarUrl.url = settingsToUrl( this ) + "Calendar/";
     calendarUrl.userName = field( "credentialsUserName" ).toString();
-    calendarUrl.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << contactUrl << calendarUrl;
   } else if ( field( "serverTypeScalix" ).toBool() ) {
@@ -166,7 +160,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::CalDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
   } else if ( field( "serverTypeZarafa" ).toBool() ) {
@@ -174,7 +167,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::CalDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
   } else if ( field( "serverTypeZimbra" ).toBool() ) {
@@ -182,7 +174,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::CalDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
   }

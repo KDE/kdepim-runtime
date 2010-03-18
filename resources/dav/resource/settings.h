@@ -28,14 +28,9 @@
 
 #include <QtCore/QMap>
 
-namespace KWallet {
-  class Wallet;
-}
-
 class Settings : public SettingsBase
 {
   Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.davGroupware.Wallet" )
 
   public:
     class UrlConfiguration
@@ -45,8 +40,6 @@ class Settings : public SettingsBase
         QString mUrl;
         QString mUser;
         int mProtocol;
-        bool mAuthReq;
-        bool mUseKWallet;
     };
 
     Settings();
@@ -81,25 +74,14 @@ class Settings : public SettingsBase
     void removeUrlConfiguration( const QString &url );
     UrlConfiguration * urlConfiguration( const QString &url );
 
-    bool authenticationRequired( const QString &url ) const;
     DavUtils::Protocol protocol( const QString &url ) const;
     QString username( const QString &url ) const;
-    bool useKWallet( const QString &url ) const;
-
-    void setPassword( const QString &url, const QString &username, const QString &password );
-    QString password( const QString &url, const QString &username );
 
   private:
-    QString requestPassword( const QString &url, const QString &username );
-    QString promptForPassword( const QString &url, const QString &username );
-    void storePassword( const QString &url, const QString &username, const QString &password );
-
     WId mWinId;
     QMap<QString, UrlConfiguration*> mUrls;
     QMap<QString, QString> mCollectionsUrlsMapping;
     QList<UrlConfiguration*> mToDeleteUrlConfigs;
-    QMap<QString, QString> mCachedPasswords;
-    KWallet::Wallet *mWallet;
 };
 
 #endif

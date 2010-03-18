@@ -162,7 +162,6 @@ void DavItemsListJob::davJobFinished( KJob *job )
 
     KUrl url = davJob->url();
     url.setUser( QString() );
-    url.setPassword( QString() );
     if ( href.startsWith( '/' ) ) {
       // href is only a path, use request url to complete
       url.setEncodedPath( href.toAscii() );
