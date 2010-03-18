@@ -40,4 +40,4 @@ target_link_libraries(akonadi_maildir_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEP
 
 install(TARGETS akonadi_maildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
-        DESTINATION ${KDE4_DBUS_INTERFACES_DIR})
+        DESTINATION ${DBUS_INTERFACES_INSTALL_DIR})
