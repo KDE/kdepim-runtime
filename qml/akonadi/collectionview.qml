@@ -47,12 +47,11 @@ Rectangle {
         radius: 5
       }
       MouseArea {
-          id: pageMouse
-          anchors.fill: parent
-          onClicked: {
-            wrapper.ListView.view.currentIndex = model.index;
-            collectionListViewTopLevel.collectionSelected()
-          }
+        anchors.fill: parent
+        onClicked: {
+          wrapper.ListView.view.currentIndex = model.index;
+          collectionListViewTopLevel.collectionSelected()
+        }
       }
 
       Row {
