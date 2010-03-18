@@ -25,12 +25,12 @@
 #include <QtGui/QWizardPage>
 
 class KJob;
+class KLineEdit;
+class KTextBrowser;
 
 class QButtonGroup;
 class QCheckBox;
-class QLineEdit;
 class QRadioButton;
-class QTextBrowser;
 
 class SetupWizard : public QWizard
 {
@@ -72,7 +72,7 @@ class ConnectionPage : public QWizardPage
     ConnectionPage( QWidget *parent = 0 );
 
   private:
-    QLineEdit *mHost;
+    KLineEdit *mHost;
     QCheckBox *mUseSecureConnection;
 };
 
@@ -82,7 +82,7 @@ class CredentialsPage : public QWizardPage
     CredentialsPage( QWidget *parent = 0 );
 
   private:
-    QLineEdit *mUserName;
+    KLineEdit *mUserName;
 };
 
 class CheckPage : public QWizardPage
@@ -97,7 +97,7 @@ class CheckPage : public QWizardPage
     void onFetchDone( KJob* );
 
   private:
-    QTextBrowser *mStatusLabel;
+    KTextBrowser *mStatusLabel;
 };
 
 #endif

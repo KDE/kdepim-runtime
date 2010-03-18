@@ -16,8 +16,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAVCALENDARRESOURCE_H
-#define DAVCALENDARRESOURCE_H
+#ifndef DAVGROUPWARERESOURCE_H
+#define DAVGROUPWARERESOURCE_H
 
 #include "etagcache.h"
 

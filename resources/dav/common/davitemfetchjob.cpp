@@ -32,7 +32,7 @@ static QString etagFromHeaders( const QString &headers )
 
   QString etag;
   foreach ( const QString &header, allHeaders ) {
-    if ( header.startsWith( "etag:", Qt::CaseInsensitive ) )
+    if ( header.startsWith( QLatin1String( "etag:" ), Qt::CaseInsensitive ) )
       etag = header.section( ' ', 1 );
   }
 
@@ -84,7 +84,7 @@ void DavItemFetchJob::davJobFinished( KJob *job )
   } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
     setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request : error %1." ).arg( responseCode ) );
+    setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
     emitResult();
     return;
   }

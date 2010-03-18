@@ -44,7 +44,7 @@ class DavCollectionsMultiFetchJob : public KJob
      * @param urls The list of DAV urls whose sub collections shall be fetched.
      * @param parent The parent object.
      */
-    DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent = 0 );
+    explicit DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent = 0 );
 
     /**
      * Starts the job.

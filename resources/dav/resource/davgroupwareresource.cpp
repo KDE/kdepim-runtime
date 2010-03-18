@@ -214,7 +214,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
   const QString basePath = collection.remoteId();
   if ( basePath.isEmpty() ) {
     kError() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
-    cancelTask( i18n( "Invalid collection for item %1." ).arg( item.id() ) );
+    cancelTask( i18n( "Invalid collection for item %1.", item.id() ) );
     return;
   }
 
@@ -228,7 +228,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
     const QString fileName = contact.uid();
     if ( fileName.isEmpty() ) {
       kError() << "Invalid contact uid";
-      cancelTask( i18n( "Client did not create a UID for item %1." ).arg( item.id() ) );
+      cancelTask( i18n( "Client did not create a UID for item %1.", item.id() ) );
       return;
     }
 
@@ -245,7 +245,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
     const QString fileName = ptr->uid();
     if ( fileName.isEmpty() ) {
       kError() << "Invalid incidence uid";
-      cancelTask( i18n( "Client did not create a UID for item %1." ).arg( item.id() ) );
+      cancelTask( i18n( "Client did not create a UID for item %1.", item.id() ) );
       return;
     }
 
@@ -256,7 +256,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
     rawData = formatter.toICalString( ptr.get() ).toUtf8();
   } else {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
-    cancelTask( i18n( "Unable to retrieve added item %1." ).arg( item.id() ) );
+    cancelTask( i18n( "Unable to retrieve added item %1.", item.id() ) );
     return;
   }
 
@@ -307,7 +307,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     mimeType = "text/calendar";
   } else {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
-    cancelTask( i18n( "Unable to retrieve added item %1." ).arg( item.id() ) );
+    cancelTask( i18n( "Unable to retrieve added item %1.", item.id() ) );
     return;
   }
 
@@ -360,9 +360,9 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     collection.setParentCollection( mDavCollectionRoot );
     collection.setRemoteId( davCollection.url() );
     if ( davCollection.displayName().isEmpty() )
-      collection.setName( name() + " (" + davCollection.url() + ")" );
+      collection.setName( name() + " (" + davCollection.url() + ')' );
     else
-      collection.setName( davCollection.displayName() + " (" + davCollection.url() + ")" );
+      collection.setName( davCollection.displayName() + " (" + davCollection.url() + ')' );
 
     QStringList mimeTypes;
 

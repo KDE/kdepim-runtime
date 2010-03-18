@@ -22,6 +22,8 @@
 
 #include <kicon.h>
 #include <klocale.h>
+#include <klineedit.h>
+#include <ktextbrowser.h>
 
 #include <QtCore/QUrl>
 #include <QtGui/QButtonGroup>
@@ -251,7 +253,7 @@ ConnectionPage::ConnectionPage( QWidget *parent )
 
   QFormLayout *layout = new QFormLayout( this );
 
-  mHost = new QLineEdit;
+  mHost = new KLineEdit;
   layout->addRow( i18n( "Host" ), mHost );
 
   mUseSecureConnection = new QCheckBox( i18n( "Use secure connection" ) );
@@ -269,7 +271,7 @@ CredentialsPage::CredentialsPage( QWidget *parent )
 
   QFormLayout *layout = new QFormLayout( this );
 
-  mUserName = new QLineEdit;
+  mUserName = new KLineEdit;
   layout->addRow( i18n( "User" ), mUserName );
 
   registerField( "credentialsUserName*", mUserName );
@@ -286,7 +288,7 @@ CheckPage::CheckPage( QWidget *parent )
   QPushButton *button = new QPushButton( i18n( "Test Connection" ) );
   layout->addWidget( button );
 
-  mStatusLabel = new QTextBrowser;
+  mStatusLabel = new KTextBrowser;
   layout->addWidget( mStatusLabel );
 
   connect( button, SIGNAL( clicked() ), SLOT( checkConnection() ) );
@@ -323,7 +325,7 @@ void CheckPage::onFetchDone( KJob *job )
   QPixmap icon;
 
   if ( job->error() ) {
-    msg = i18n( "An error occured: " ) + job->errorText();
+    msg = i18n( "An error occurred: " ) + job->errorText();
     icon = KIcon( "dialog-close" ).pixmap( 16, 16 );
   } else {
     msg = i18n( "Connected successfully" );

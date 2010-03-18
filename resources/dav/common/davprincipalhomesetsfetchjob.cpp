@@ -75,7 +75,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
   } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
     setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request : error %1." ).arg( responseCode ) );
+    setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
     emitResult();
     return;
   }

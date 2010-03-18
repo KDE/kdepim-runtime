@@ -128,7 +128,7 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
     setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request. The item has not been modified on the server : error %1." ).arg( responseCode ) );
+    setErrorText( i18n( "There was a problem with the request. The item has not been modified on the server : error %1.", responseCode ) );
     emitResult();
     return;
   }
@@ -157,7 +157,7 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   }
 
   if ( hasError ) {
-    // Trying to get more informations about the error
+    // Trying to get more information about the error
     const QDomElement responseDescriptionElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "responsedescription" );
     if ( !responseDescriptionElement.isNull() ) {
       errorText.append( "\nThe server returned more information:\n" );

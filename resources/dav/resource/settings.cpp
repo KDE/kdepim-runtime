@@ -133,9 +133,10 @@ DavUtils::DavUrl Settings::davUrlFromUrl( const QString &url )
   DavUtils::DavUrl davUrl;
   QString configuredUrl;
 
-  foreach( const QString &collectionUrl, mCollectionsUrlsMapping.keys() ) {
-    if ( url.startsWith( collectionUrl ) ) {
-      configuredUrl = mCollectionsUrlsMapping.value( collectionUrl );
+  QMapIterator<QString, QString> iter( mCollectionsUrlsMapping );
+  while( iter.hasNext() ) {
+    if( url.startsWith( iter.next().key() ) ) {
+      configuredUrl = iter.value();
       break;
     }
   }

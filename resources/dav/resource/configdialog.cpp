@@ -26,6 +26,7 @@
 #include <klocale.h>
 
 #include <QtCore/QList>
+#include <QtCore/QPointer>
 #include <QtCore/QStringList>
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
@@ -79,19 +80,19 @@ void ConfigDialog::checkUserInput()
 
 void ConfigDialog::onAddButtonClicked()
 {
-  UrlConfigurationDialog dlg( this );
-  const int result = dlg.exec();
+  QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
+  const int result = dlg->exec();
 
   if ( result == QDialog::Accepted ) {
-    Settings::UrlConfiguration *urlConfig = Settings::self()->newUrlConfiguration( dlg.remoteUrl() );
+    Settings::UrlConfiguration *urlConfig = Settings::self()->newUrlConfiguration( dlg->remoteUrl() );
 
-    urlConfig->mUser = dlg.username();
-    urlConfig->mProtocol = dlg.protocol();
+    urlConfig->mUser = dlg->username();
+    urlConfig->mProtocol = dlg->protocol();
 
-    const QString protocolName = DavUtils::protocolName( dlg.protocol() );
+    const QString protocolName = DavUtils::protocolName( dlg->protocol() );
 
-    addModelRow( protocolName, dlg.remoteUrl() );
-    mAddedUrls << dlg.remoteUrl();
+    addModelRow( protocolName, dlg->remoteUrl() );
+    mAddedUrls << dlg->remoteUrl();
     checkUserInput();
   }
 }
@@ -125,26 +126,26 @@ void ConfigDialog::onEditButtonClicked()
   if ( !urlConfig )
     return;
 
-  UrlConfigurationDialog dlg( this );
-  dlg.setRemoteUrl( urlConfig->mUrl );
-  dlg.setProtocol( DavUtils::Protocol( urlConfig->mProtocol ) );
-  dlg.setUsername( urlConfig->mUser );
+  QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
+  dlg->setRemoteUrl( urlConfig->mUrl );
+  dlg->setProtocol( DavUtils::Protocol( urlConfig->mProtocol ) );
+  dlg->setUsername( urlConfig->mUser );
 
-  const int result = dlg.exec();
+  const int result = dlg->exec();
 
   if ( result == QDialog::Accepted ) {
-    if ( dlg.remoteUrl() != urlConfig->mUrl ) {
+    if ( dlg->remoteUrl() != urlConfig->mUrl ) {
       Settings::self()->removeUrlConfiguration( urlConfig->mUrl );
-      urlConfig = Settings::self()->newUrlConfiguration( dlg.remoteUrl() );
+      urlConfig = Settings::self()->newUrlConfiguration( dlg->remoteUrl() );
     }
-    urlConfig->mUser = dlg.username();
-    urlConfig->mProtocol = dlg.protocol();
+    urlConfig->mUser = dlg->username();
+    urlConfig->mProtocol = dlg->protocol();
 
     QStandardItem *item = mModel->item( index.row(), 0 ); // Protocol
-    item->setData( QVariant::fromValue( DavUtils::protocolName( dlg.protocol() ) ), Qt::DisplayRole );
+    item->setData( QVariant::fromValue( DavUtils::protocolName( dlg->protocol() ) ), Qt::DisplayRole );
 
     item = mModel->item( index.row(), 1 ); // URL
-    item->setData( QVariant::fromValue( dlg.remoteUrl() ), Qt::DisplayRole );
+    item->setData( QVariant::fromValue( dlg->remoteUrl() ), Qt::DisplayRole );
   }
 }
 

@@ -40,7 +40,7 @@ class DavItemsListJob : public KJob
      * @param url The url of the DAV collection.
      * @param parent The parent object.
      */
-    DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
+    explicit DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
     /**
      * Starts the job.

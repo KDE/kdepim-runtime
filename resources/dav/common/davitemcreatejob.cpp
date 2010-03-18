@@ -32,7 +32,7 @@ static QString etagFromHeaders( const QString &headers )
 
   QString etag;
   foreach ( const QString &header, allHeaders ) {
-    if ( header.startsWith( "etag:", Qt::CaseInsensitive ) )
+    if ( header.startsWith( QLatin1String( "etag:" ), Qt::CaseInsensitive ) )
       etag = header.section( ' ', 1 );
   }
 
@@ -86,7 +86,7 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
     setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request. The item has not been created on the server : error %1." ).arg( responseCode ) );
+    setErrorText( i18n( "There was a problem with the request. The item has not been created on the server : error %1.", responseCode ) );
     emitResult();
     return;
   }
@@ -95,7 +95,7 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   const QStringList allHeaders = storedJob->queryMetaData( "HTTP-Headers" ).split( '\n' );
   QString location;
   foreach ( const QString &header, allHeaders ) {
-    if ( header.startsWith( "Location:", Qt::CaseInsensitive ) )
+    if ( header.startsWith( QLatin1String( "location:" ), Qt::CaseInsensitive ) )
       location = header.section( ' ', 1 );
   }
 

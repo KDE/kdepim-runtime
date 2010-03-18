@@ -41,7 +41,7 @@ class DavCollectionsFetchJob : public KJob
      * @param url The DAV url of the DAV collection whose sub collections shall be fetched.
      * @param parent The parent object.
      */
-    DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
+    explicit DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
     /**
      * Starts the job.

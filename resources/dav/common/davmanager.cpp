@@ -51,7 +51,7 @@ DavManager* DavManager::self()
 
 KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument &document ) const
 {
-  const QString davDepth = "1";
+  const QString davDepth( '1' );
   KIO::DavJob *job = KIO::davPropFind( url, document, davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
   // workaround needed, Depth: header doesn't seem to be correctly added
@@ -64,7 +64,7 @@ KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument 
 
 KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &document ) const
 {
-  const QString davDepth = "1";
+  const QString davDepth( '1' );
   KIO::DavJob *job = KIO::davReport( url, document.toString(), davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
   // workaround needed, Depth: header doesn't seem to be correctly added

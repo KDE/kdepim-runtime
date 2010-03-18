@@ -42,7 +42,7 @@ class DavCollectionModifyJob : public KJob
      * @param url The DAV url that identifies the collection.
      * @param parent The parent object.
      */
-    DavCollectionModifyJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
+    explicit DavCollectionModifyJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
     /**
      * Sets the property that shall be modified by the job.

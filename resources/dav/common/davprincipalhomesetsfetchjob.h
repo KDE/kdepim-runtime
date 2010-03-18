@@ -16,8 +16,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAVPRINCIPALHOMESETFETCHJOB_H
-#define DAVPRINCIPALHOMESETFETCHJOB_H
+#ifndef DAVPRINCIPALHOMESETSFETCHJOB_H
+#define DAVPRINCIPALHOMESETSFETCHJOB_H
 
 #include "davutils.h"
 
@@ -39,7 +39,7 @@ class DavPrincipalHomeSetsFetchJob : public KJob
      * @param url The DAV url of the DAV principal.
      * @param parent The parent object.
      */
-    DavPrincipalHomeSetsFetchJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
+    explicit DavPrincipalHomeSetsFetchJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
     /**
      * Starts the job.
