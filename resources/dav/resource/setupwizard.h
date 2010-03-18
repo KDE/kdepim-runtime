@@ -85,8 +85,6 @@ class CredentialsPage : public QWizardPage
 
   private:
     QLineEdit *mUserName;
-    QLineEdit *mPassword;
-    QCheckBox *mKeepInWallet;
 };
 
 class CheckPage : public QWizardPage

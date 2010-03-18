@@ -43,17 +43,8 @@ class UrlConfigurationDialog : public KDialog
     QString remoteUrl() const;
     void setRemoteUrl( const QString &url );
 
-    bool authenticationRequired() const;
-    void setAuthenticationRequired( bool value );
-
-    bool useKWallet() const;
-    void setUseKWallet( bool value );
-
     QString username() const;
     void setUsername( const QString &name );
-
-    QString password() const;
-    void setPassword( const QString &password );
 
   private Q_SLOTS:
     void checkUserInput();

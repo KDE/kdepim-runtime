@@ -113,11 +113,6 @@ void DavGroupwareResource::configure( WId windowId )
 
         urlConfig->mProtocol = url.protocol;
         urlConfig->mUser = url.userName;
-        urlConfig->mAuthReq = true; //FIXME: get rid of it
-        urlConfig->mUseKWallet = url.useWallet;
-
-        if ( !url.userName.isEmpty() && !url.password.isEmpty() )
-          Settings::self()->setPassword( url.url, url.userName, url.password );
       }
 
       Settings::self()->setDisplayName( wizard.displayName() );

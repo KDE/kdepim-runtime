@@ -44,9 +44,7 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
            this, SLOT( onModelDataChanged( const QModelIndex&, const QModelIndex& ) ) );
 
   connect( mUi.remoteUrl, SIGNAL( textChanged( const QString& ) ), this, SLOT( checkUserInput() ) );
-  connect( mUi.authenticationRequired, SIGNAL( toggled( bool ) ), this, SLOT( checkUserInput() ) );
   connect( mUi.username, SIGNAL( textChanged( const QString& ) ), this, SLOT( checkUserInput() ) );
-  connect( mUi.password, SIGNAL( textChanged( const QString& ) ), this, SLOT( checkUserInput() ) );
 
   connect( mUi.fetchButton, SIGNAL( clicked() ), this, SLOT( onFetchButtonClicked() ) );
   connect( this, SIGNAL( okClicked() ), this, SLOT( onOkButtonClicked() ) );
@@ -78,26 +76,6 @@ void UrlConfigurationDialog::setRemoteUrl( const QString &url )
   mUi.remoteUrl->setText( url );
 }
 
-bool UrlConfigurationDialog::authenticationRequired() const
-{
-  return mUi.authenticationRequired->isChecked();
-}
-
-void UrlConfigurationDialog::setAuthenticationRequired( bool required )
-{
-  mUi.authenticationRequired->setChecked( required );
-}
-
-bool UrlConfigurationDialog::useKWallet() const
-{
-  return mUi.useKWallet->isChecked();
-}
-
-void UrlConfigurationDialog::setUseKWallet( bool use )
-{
-  mUi.useKWallet->setChecked( use );
-}
-
 QString UrlConfigurationDialog::username() const
 {
   return mUi.username->text();
@@ -106,16 +84,6 @@ QString UrlConfigurationDialog::username() const
 void UrlConfigurationDialog::setUsername( const QString &userName )
 {
   mUi.username->setText( userName );
-}
-
-QString UrlConfigurationDialog::password() const
-{
-  return mUi.password->text();
-}
-
-void UrlConfigurationDialog::setPassword( const QString &password )
-{
-  mUi.password->setText( password );
 }
 
 void UrlConfigurationDialog::checkUserInput()
@@ -143,10 +111,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
   mModel->setHorizontalHeaderLabels( headers );
 
   KUrl url( mUi.remoteUrl->text() );
-  if ( authenticationRequired() ) {
-    url.setUser( username() );
-    url.setPassword( password() );
-  }
+  url.setUser( username() );
 
   DavUtils::DavUrl davUrl( url, protocol() );
   DavCollectionsFetchJob *job = new DavCollectionsFetchJob( davUrl );
@@ -164,8 +129,11 @@ void UrlConfigurationDialog::onCollectionsFetchDone( KJob *job )
 {
   mUi.discoveredUrls->setEnabled( true );
 
-  if ( job->error() )
+  if ( job->error() ) {
+    QErrorMessage msg;
+    msg.showMessage( job->errorText() );
     return;
+  }
 
   DavCollectionsFetchJob *davJob = qobject_cast<DavCollectionsFetchJob*>( job );
 
@@ -184,10 +152,7 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
   const QString url = topLeft.sibling( topLeft.row(), 1 ).data().toString();
 
   KUrl fullUrl( url );
-  if ( authenticationRequired() ) {
-    fullUrl.setUser( username() );
-    fullUrl.setPassword( password() );
-  }
+  fullUrl.setUser( username() );
 
   DavUtils::DavUrl davUrl( fullUrl, protocol() );
   DavCollectionModifyJob *job = new DavCollectionModifyJob( davUrl );
@@ -209,16 +174,7 @@ void UrlConfigurationDialog::onChangeDisplayNameFinished( KJob *job )
 
 bool UrlConfigurationDialog::checkUserAuthInput()
 {
-  bool ok = false;
-
-  if ( !mUi.authenticationRequired->isChecked() )
-    ok = true;
-  else {
-    if ( !mUi.username->text().isEmpty() && !mUi.password->text().isEmpty() )
-      ok = true;
-  }
-
-  return ok;
+  return !mUi.username->text().isEmpty();
 }
 
 void UrlConfigurationDialog::addModelRow( const QString &displayName, const QString &url )

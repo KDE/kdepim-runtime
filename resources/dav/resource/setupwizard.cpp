@@ -120,7 +120,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::GroupDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.password = field( "credentialsPassword" ).toString();
     url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
@@ -129,7 +128,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::CalDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.password = field( "credentialsPassword" ).toString();
     url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
@@ -138,7 +136,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::GroupDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.password = field( "credentialsPassword" ).toString();
     url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
@@ -147,7 +144,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::GroupDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.password = field( "credentialsPassword" ).toString();
     url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
@@ -156,14 +152,12 @@ SetupWizard::Url::List SetupWizard::urls() const
     contactUrl.protocol = DavUtils::CardDav;
     contactUrl.url = settingsToUrl( this ) + "Contacts/";
     contactUrl.userName = field( "credentialsUserName" ).toString();
-    contactUrl.password = field( "credentialsPassword" ).toString();
     contactUrl.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     Url calendarUrl;
     calendarUrl.protocol = DavUtils::CalDav;
     calendarUrl.url = settingsToUrl( this ) + "Calendar/";
     calendarUrl.userName = field( "credentialsUserName" ).toString();
-    calendarUrl.password = field( "credentialsPassword" ).toString();
     calendarUrl.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << contactUrl << calendarUrl;
@@ -172,7 +166,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::CalDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.password = field( "credentialsPassword" ).toString();
     url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
@@ -181,7 +174,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::CalDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.password = field( "credentialsPassword" ).toString();
     url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
@@ -190,7 +182,6 @@ SetupWizard::Url::List SetupWizard::urls() const
     url.protocol = DavUtils::CalDav;
     url.url = settingsToUrl( this );
     url.userName = field( "credentialsUserName" ).toString();
-    url.password = field( "credentialsPassword" ).toString();
     url.useWallet = field( "credentialsKeepInWallet" ).toBool();
 
     urls << url;
@@ -290,16 +281,7 @@ CredentialsPage::CredentialsPage( QWidget *parent )
   mUserName = new QLineEdit;
   layout->addRow( i18n( "User" ), mUserName );
 
-  mPassword = new QLineEdit;
-  mPassword->setEchoMode( QLineEdit::Password );
-  layout->addRow( i18n( "Password" ), mPassword );
-
-  mKeepInWallet = new QCheckBox( i18n( "Store password" ) );
-  layout->addRow( QString(), mKeepInWallet );
-
   registerField( "credentialsUserName*", mUserName );
-  registerField( "credentialsPassword", mPassword );
-  registerField( "credentialsKeepInWallet", mKeepInWallet );
 }
 
 CheckPage::CheckPage( QWidget *parent )
@@ -333,7 +315,6 @@ void CheckPage::checkConnection()
 
     KUrl serverUrl( url.url );
     serverUrl.setUser( url.userName );
-    serverUrl.setPassword( url.password );
     davUrl.setUrl( serverUrl );
 
     davUrls << davUrl;

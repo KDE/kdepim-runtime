@@ -87,11 +87,6 @@ void ConfigDialog::onAddButtonClicked()
 
     urlConfig->mUser = dlg.username();
     urlConfig->mProtocol = dlg.protocol();
-    urlConfig->mAuthReq = dlg.authenticationRequired();
-    urlConfig->mUseKWallet = dlg.useKWallet();
-
-    if ( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
-      Settings::self()->setPassword( dlg.remoteUrl(), dlg.username(), dlg.password() );
 
     const QString protocolName = DavUtils::protocolName( dlg.protocol() );
 
@@ -133,10 +128,7 @@ void ConfigDialog::onEditButtonClicked()
   UrlConfigurationDialog dlg( this );
   dlg.setRemoteUrl( urlConfig->mUrl );
   dlg.setProtocol( DavUtils::Protocol( urlConfig->mProtocol ) );
-  dlg.setAuthenticationRequired( urlConfig->mAuthReq );
   dlg.setUsername( urlConfig->mUser );
-  dlg.setPassword( Settings::self()->password( urlConfig->mUrl, urlConfig->mUser ) );
-  dlg.setUseKWallet( urlConfig->mUseKWallet );
 
   const int result = dlg.exec();
 
@@ -147,11 +139,6 @@ void ConfigDialog::onEditButtonClicked()
     }
     urlConfig->mUser = dlg.username();
     urlConfig->mProtocol = dlg.protocol();
-    urlConfig->mAuthReq = dlg.authenticationRequired();
-    urlConfig->mUseKWallet = dlg.useKWallet();
-
-    if ( !dlg.username().isEmpty() && !dlg.password().isEmpty() )
-      Settings::self()->setPassword( dlg.remoteUrl(), dlg.username(), dlg.password() );
 
     QStandardItem *item = mModel->item( index.row(), 0 ); // Protocol
     item->setData( QVariant::fromValue( DavUtils::protocolName( dlg.protocol() ) ), Qt::DisplayRole );
