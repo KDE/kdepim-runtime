@@ -83,7 +83,7 @@ void ConfigDialog::onAddButtonClicked()
   QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
   const int result = dlg->exec();
 
-  if ( result == QDialog::Accepted ) {
+  if ( result == QDialog::Accepted && !dlg.isNull() ) {
     Settings::UrlConfiguration *urlConfig = Settings::self()->newUrlConfiguration( dlg->remoteUrl() );
 
     urlConfig->mUser = dlg->username();
@@ -133,7 +133,7 @@ void ConfigDialog::onEditButtonClicked()
 
   const int result = dlg->exec();
 
-  if ( result == QDialog::Accepted ) {
+  if ( result == QDialog::Accepted && !dlg.isNull() ) {
     if ( dlg->remoteUrl() != urlConfig->mUrl ) {
       Settings::self()->removeUrlConfiguration( urlConfig->mUrl );
       urlConfig = Settings::self()->newUrlConfiguration( dlg->remoteUrl() );

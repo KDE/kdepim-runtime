@@ -89,6 +89,16 @@ qt4_add_dbus_adaptor(davgroupwareresource_SRCS
 
 kde4_add_executable(akonadi_davgroupware_resource RUN_UNINSTALLED ${davgroupwareresource_SRCS})
 
-target_link_libraries(akonadi_davgroupware_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS} QtXmlPatterns akonadi-kcal)
+target_link_libraries(akonadi_davgroupware_resource
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTDBUS_LIBRARY}
+                      ${QT_QTXML_LIBRARY}
+                      ${QT_QTXMLPATTERNS_LIBRARY}
+                      ${KDE4_KDECORE_LIBS}
+                      ${KDE4_KIO_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS}
+                      ${KDEPIMLIBS_KABC_LIBS}
+                      ${KDEPIMLIBS_KCAL_LIBS}
+                      ${KDEPIMLIBS_AKONADI_KCAL_LIBS})
 
 install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
