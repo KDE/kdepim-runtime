@@ -23,9 +23,6 @@
       <bool>false</bool>
      </property>
      <layout class="QFormLayout" name="formLayout">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::ExpandingFieldsGrow</enum>
-      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label_BaseUrl">
         <property name="sizePolicy">
@@ -47,14 +44,14 @@
       </item>
       <item row="0" column="1">
        <widget class="KLineEdit" name="kcfg_BaseUrl">
-        <property name="clickMessage">
-         <string notr="true">https://myserver.org</string>
-        </property>
         <property name="toolTip">
          <string>The URL of the Open-Xchange server, should be something like https://myserver.org/</string>
         </property>
         <property name="whatsThis">
          <string>The URL of the Open-Xchange server, should be something like https://myserver.org/</string>
+        </property>
+        <property name="clickMessage">
+         <string notr="true">https://myserver.org</string>
         </property>
        </widget>
       </item>
@@ -108,14 +105,14 @@
       </item>
       <item row="2" column="1">
        <widget class="KLineEdit" name="kcfg_Password">
-        <property name="echoMode">
-         <enum>QLineEdit::Password</enum>
-        </property>
         <property name="toolTip">
          <string>The password that is used to log into the Open-Xchange server</string>
         </property>
         <property name="whatsThis">
          <string>The password that is used to log into the Open-Xchange server</string>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
         </property>
        </widget>
       </item>

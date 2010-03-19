@@ -21,5 +21,15 @@
       <tooltip>The password that is used to log into the Open-Xchange server</tooltip>
       <whatsThis>The password that is used to log into the Open-Xchange server</whatsThis>
     </entry>
+    <entry name="UseIncrementalUpdates" type="Bool">
+      <default>true</default>
+      <label>Use incremental updates</label>
+      <tooltip>Use incremental updates instead of reloading all data from the server each time</tooltip>
+      <whatsThis>Use incremental updates instead of reloading all data from the server each time</whatsThis>
+    </entry>
+    <entry name="FoldersLastSync" type="ULongLong">
+      <default>0</default>
+    </entry>
+    <entry name="ObjectsLastSync" type="String"/>
   </group>
 </kcfg>

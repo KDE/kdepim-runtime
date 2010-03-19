@@ -24,6 +24,7 @@
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
@@ -33,18 +34,21 @@
 #include <kcal/event.h>
 #include <kcal/todo.h>
 #include <klocale.h>
+#include <kstandarddirs.h>
 
 #include <oxa/davmanager.h>
 #include <oxa/foldercreatejob.h>
 #include <oxa/folderdeletejob.h>
 #include <oxa/foldermodifyjob.h>
 #include <oxa/foldermovejob.h>
+#include <oxa/foldersrequestdeltajob.h>
 #include <oxa/foldersrequestjob.h>
 #include <oxa/objectcreatejob.h>
 #include <oxa/objectdeletejob.h>
 #include <oxa/objectmodifyjob.h>
 #include <oxa/objectmovejob.h>
 #include <oxa/objectrequestjob.h>
+#include <oxa/objectsrequestdeltajob.h>
 #include <oxa/objectsrequestjob.h>
 #include <oxa/updateusersjob.h>
 #include <oxa/users.h>
@@ -129,6 +133,51 @@ class RemoteInformation
     QString mLastModified;
 };
 
+class ObjectsLastSync
+{
+  public:
+    ObjectsLastSync()
+    {
+      if ( !Settings::self()->objectsLastSync().isEmpty() ) {
+        const QStringList pairs = Settings::self()->objectsLastSync().split( QLatin1Char( ':' ), QString::KeepEmptyParts );
+        foreach ( const QString pair, pairs ) {
+          const QStringList entry = pair.split( QLatin1Char( '=' ), QString::KeepEmptyParts );
+          mObjectsMap.insert( entry.at( 0 ).toLongLong(), entry.at( 1 ).toULongLong() );
+        }
+      }
+    }
+
+    void save()
+    {
+      QStringList pairs;
+
+      QMapIterator<qlonglong, qulonglong> it( mObjectsMap );
+      while ( it.hasNext() ) {
+        it.next();
+        pairs.append( QString::number( it.key() ) + QLatin1Char( '=' ) + QString::number( it.value() ) );
+      }
+
+      Settings::self()->setObjectsLastSync( pairs.join( QLatin1String( ":" ) ) );
+      Settings::self()->writeConfig();
+    }
+
+    qulonglong lastSync( qlonglong collectionId ) const
+    {
+      if ( !mObjectsMap.contains( collectionId ) )
+        return 0;
+
+      return mObjectsMap.value( collectionId );
+    }
+
+    void setLastSync( qlonglong collectionId, qulonglong timeStamp )
+    {
+      mObjectsMap.insert( collectionId, timeStamp );
+    }
+
+  private:
+    QMap<qlonglong, qulonglong> mObjectsMap;
+};
+
 static Collection::Rights folderPermissionsToCollectionRights( const OXA::Folder &folder )
 {
   const OXA::Folder::UserPermissions userPermissions = folder.userPermissions();
@@ -182,6 +231,72 @@ OpenXchangeResource::OpenXchangeResource( const QString &id )
   baseUrl.setUserName( Settings::self()->username() );
   baseUrl.setPassword( Settings::self()->password() );
   OXA::DavManager::self()->setBaseUrl( baseUrl );
+
+  // Create the standard collections.
+  //
+  // There exists special OX folders (e.g. private, public, shared) that are not
+  // returned by a normal webdav listing, therefor we create them manually here.
+  // This is possible because the remote ids of these folders are fixed values from 1
+  // till 4.
+  mResourceCollection.setParentCollection( Collection::root() );
+  const RemoteInformation resourceInformation( 0, OXA::Folder::Unbound, QString() );
+  resourceInformation.store( mResourceCollection );
+  mResourceCollection.setName( name() );
+  mResourceCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
+  mResourceCollection.setRights( Collection::ReadOnly );
+  EntityDisplayAttribute *attribute = mResourceCollection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attribute->setIconName( QLatin1String( "ox" ) );
+
+  Collection privateFolder;
+  privateFolder.setParentCollection( mResourceCollection );
+  const RemoteInformation privateFolderInformation( 1, OXA::Folder::Unbound, QString() );
+  privateFolderInformation.store( privateFolder );
+  privateFolder.setName( i18n( "Private Folder" ) );
+  privateFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
+  privateFolder.setRights( Collection::ReadOnly );
+
+  Collection publicFolder;
+  publicFolder.setParentCollection( mResourceCollection );
+  const RemoteInformation publicFolderInformation( 2, OXA::Folder::Unbound, QString() );
+  publicFolderInformation.store( publicFolder );
+  publicFolder.setName( i18n( "Public Folder" ) );
+  publicFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
+  publicFolder.setRights( Collection::ReadOnly );
+
+  Collection sharedFolder;
+  sharedFolder.setParentCollection( mResourceCollection );
+  const RemoteInformation sharedFolderInformation( 3, OXA::Folder::Unbound, QString() );
+  sharedFolderInformation.store( sharedFolder );
+  sharedFolder.setName( i18n( "Shared Folder" ) );
+  sharedFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
+  sharedFolder.setRights( Collection::ReadOnly );
+
+  Collection systemFolder;
+  systemFolder.setParentCollection( mResourceCollection );
+  const RemoteInformation systemFolderInformation( 4, OXA::Folder::Unbound, QString() );
+  systemFolderInformation.store( systemFolder );
+  systemFolder.setName( i18n( "System Folder" ) );
+  systemFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
+  systemFolder.setRights( Collection::ReadOnly );
+
+  // TODO: set cache policy depending on sync behaviour
+  Akonadi::CachePolicy cachePolicy;
+  cachePolicy.setInheritFromParent( false );
+  cachePolicy.setSyncOnDemand( false );
+  cachePolicy.setCacheTimeout( -1 );
+  cachePolicy.setIntervalCheckTime( 5 );
+  mResourceCollection.setCachePolicy( cachePolicy );
+
+  mStandardCollectionsMap.insert( 0, mResourceCollection );
+  mStandardCollectionsMap.insert( 1, privateFolder );
+  mStandardCollectionsMap.insert( 2, publicFolder );
+  mStandardCollectionsMap.insert( 3, sharedFolder );
+  mStandardCollectionsMap.insert( 4, systemFolder );
+
+  mCollectionsMap = mStandardCollectionsMap;
+
+  if ( Settings::self()->useIncrementalUpdates() )
+    syncCollectionsRemoteIdCache();
 }
 
 OpenXchangeResource::~OpenXchangeResource()
@@ -193,6 +308,8 @@ void OpenXchangeResource::cleanup()
   // be nice and remove cache file when resource is removed
   QFile::remove( OXA::Users::self()->cacheFilePath() );
 
+  QFile::remove( KStandardDirs::locateLocal( "config", Settings::self()->config()->name() ) );
+
   ResourceBase::cleanup();
 }
 
@@ -202,8 +319,22 @@ void OpenXchangeResource::aboutToQuit()
 
 void OpenXchangeResource::configure( WId windowId )
 {
+  const bool useIncrementalUpdates = Settings::self()->useIncrementalUpdates();
+
   ConfigDialog dlg( windowId );
   if ( dlg.exec() ) {
+
+    // if the user has changed the incremental update settings we have to do
+    // some additional initialization work
+    if ( useIncrementalUpdates != Settings::self()->useIncrementalUpdates() ) {
+      Settings::self()->setFoldersLastSync( 0 );
+      Settings::self()->setObjectsLastSync( QString() );
+    }
+
+    Settings::self()->writeConfig();
+
+    clearCache();
+
     KUrl baseUrl = Settings::self()->baseUrl();
     baseUrl.setUserName( Settings::self()->username() );
     baseUrl.setPassword( Settings::self()->password() );
@@ -224,26 +355,45 @@ void OpenXchangeResource::configure( WId windowId )
 
 void OpenXchangeResource::retrieveCollections()
 {
-  OXA::FoldersRequestJob *job = new OXA::FoldersRequestJob( 0, OXA::FoldersRequestJob::Modified, this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFoldersRequestJobFinished( KJob* ) ) );
-  job->start();
+  //qDebug("tokoe: retrieve collections called");
+  if ( Settings::self()->useIncrementalUpdates() ) {
+    //qDebug("lastSync=%llu", Settings::self()->foldersLastSync());
+    OXA::FoldersRequestDeltaJob *job = new OXA::FoldersRequestDeltaJob( Settings::self()->foldersLastSync(), this );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onFoldersRequestDeltaJobFinished( KJob* ) ) );
+    job->start();
+  } else {
+    OXA::FoldersRequestJob *job = new OXA::FoldersRequestJob( 0, OXA::FoldersRequestJob::Modified, this );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onFoldersRequestJobFinished( KJob* ) ) );
+    job->start();
+  }
 }
 
 void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
 {
+  //qDebug("tokoe: retrieveItems on %s called", qPrintable(collection.name()));
   const RemoteInformation remoteInformation = RemoteInformation::load( collection );
 
   OXA::Folder folder;
   folder.setObjectId( remoteInformation.objectId() );
   folder.setModule( remoteInformation.module() );
 
-  OXA::ObjectsRequestJob *job = new OXA::ObjectsRequestJob( folder, 0, OXA::ObjectsRequestJob::Modified, this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectsRequestJobFinished( KJob* ) ) );
-  job->start();
+  if ( Settings::self()->useIncrementalUpdates() ) {
+    ObjectsLastSync lastSyncInfo;
+    //qDebug("lastSync=%llu", lastSyncInfo.lastSync( collection.id() ));
+    OXA::ObjectsRequestDeltaJob *job = new OXA::ObjectsRequestDeltaJob( folder, lastSyncInfo.lastSync( collection.id() ), this );
+    job->setProperty( "collection", QVariant::fromValue( collection ) );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectsRequestDeltaJobFinished( KJob* ) ) );
+    job->start();
+  } else {
+    OXA::ObjectsRequestJob *job = new OXA::ObjectsRequestJob( folder, 0, OXA::ObjectsRequestJob::Modified, this );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectsRequestJobFinished( KJob* ) ) );
+    job->start();
+  }
 }
 
 bool OpenXchangeResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
+  //qDebug("tokoe: retrieveItem %lld called", item.id());
   const RemoteInformation remoteInformation = RemoteInformation::load( item );
 
   OXA::Object object;
@@ -454,6 +604,9 @@ void OpenXchangeResource::onUpdateUsersJobFinished( KJob *job )
     return;
   }
 
+  if ( Settings::self()->useIncrementalUpdates() )
+    syncCollectionsRemoteIdCache();
+
   // now we have all user information, so continue synchronization
   synchronize();
   emit configurationDialogAccepted();
@@ -503,6 +656,84 @@ void OpenXchangeResource::onObjectsRequestJobFinished( KJob *job )
   }
 
   itemsRetrieved( items );
+}
+
+void OpenXchangeResource::onObjectsRequestDeltaJobFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  OXA::ObjectsRequestDeltaJob *requestJob = qobject_cast<OXA::ObjectsRequestDeltaJob*>( job );
+  Q_ASSERT( requestJob );
+
+  const Akonadi::Collection collection = requestJob->property( "collection" ).value<Collection>();
+
+  ObjectsLastSync lastSyncInfo;
+
+  qulonglong objectsLastSync = lastSyncInfo.lastSync( collection.id() );
+
+  Item::List changedItems;
+
+  const OXA::Object::List modifiedObjects = requestJob->modifiedObjects();
+  foreach ( const OXA::Object &object, modifiedObjects ) {
+    Item item;
+    switch ( object.module() ) {
+      case OXA::Folder::Contacts:
+        if ( !object.contact().isEmpty() ) {
+          item.setMimeType( KABC::Addressee::mimeType() );
+          item.setPayload<KABC::Addressee>( object.contact() );
+        } else {
+          item.setMimeType( KABC::ContactGroup::mimeType() );
+          item.setPayload<KABC::ContactGroup>( object.contactGroup() );
+        }
+        break;
+      case OXA::Folder::Calendar:
+        item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
+        item.setPayload<KCal::Incidence::Ptr>( object.event() );
+        break;
+      case OXA::Folder::Tasks:
+        item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
+        item.setPayload<KCal::Incidence::Ptr>( object.task() );
+        break;
+      case OXA::Folder::Unbound:
+        Q_ASSERT( false );
+        break;
+    }
+    const RemoteInformation remoteInformation( object.objectId(), object.module(), object.lastModified() );
+    remoteInformation.store( item );
+
+    // the value of objectsLastSync is determined by the maximum last modified value
+    // of the added or changed objects
+    objectsLastSync = qMax( objectsLastSync, object.lastModified().toULongLong() );
+
+    changedItems.append( item );
+  }
+
+  Item::List removedItems;
+
+  const OXA::Object::List deletedObjects = requestJob->deletedObjects();
+  foreach ( const OXA::Object &object, deletedObjects ) {
+    Item item;
+
+    const RemoteInformation remoteInformation( object.objectId(), object.module(), object.lastModified() );
+    remoteInformation.store( item );
+
+    removedItems.append( item );
+  }
+
+  if ( objectsLastSync != lastSyncInfo.lastSync( collection.id() ) ) {
+    // according to the OX developers we should subtract one millisecond from the
+    // maximum last modified value to cover multiple changes that might have been
+    // done in the same millisecond to the data on the server
+    lastSyncInfo.setLastSync( collection.id(), objectsLastSync - 1 );
+    lastSyncInfo.save();
+  }
+
+  //qDebug("changedObjects=%d removedObjects=%d", modifiedObjects.count(), deletedObjects.count());
+  //qDebug("changedItems=%d removedItems=%d", changedItems.count(), removedItems.count());
+  itemsRetrievedIncremental( changedItems, removedItems );
 }
 
 void OpenXchangeResource::onObjectRequestJobFinished( KJob *job )
@@ -674,69 +905,11 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
   Q_ASSERT( requestJob );
 
   Collection::List collections;
-  QMap<qlonglong, Collection> remoteIdMap;
 
-  // create the standard collections
-  Collection resourceCollection;
-  resourceCollection.setParentCollection( Collection::root() );
-  const RemoteInformation resourceInformation( 0, OXA::Folder::Unbound, QString() );
-  resourceInformation.store( resourceCollection );
-  resourceCollection.setName( name() );
-  resourceCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
-  resourceCollection.setRights( Collection::ReadOnly );
-  EntityDisplayAttribute *attribute = resourceCollection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-  attribute->setIconName( QLatin1String( "ox" ) );
+  // add the standard collections
+  collections << mStandardCollectionsMap.values();
 
-  Collection privateFolder;
-  privateFolder.setParentCollection( resourceCollection );
-  const RemoteInformation privateFolderInformation( 1, OXA::Folder::Unbound, QString() );
-  privateFolderInformation.store( privateFolder );
-  privateFolder.setName( i18n( "Private Folder" ) );
-  privateFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
-  privateFolder.setRights( Collection::ReadOnly );
-
-  Collection publicFolder;
-  publicFolder.setParentCollection( resourceCollection );
-  const RemoteInformation publicFolderInformation( 2, OXA::Folder::Unbound, QString() );
-  publicFolderInformation.store( publicFolder );
-  publicFolder.setName( i18n( "Public Folder" ) );
-  publicFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
-  publicFolder.setRights( Collection::ReadOnly );
-
-  Collection sharedFolder;
-  sharedFolder.setParentCollection( resourceCollection );
-  const RemoteInformation sharedFolderInformation( 3, OXA::Folder::Unbound, QString() );
-  sharedFolderInformation.store( sharedFolder );
-  sharedFolder.setName( i18n( "Shared Folder" ) );
-  sharedFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
-  sharedFolder.setRights( Collection::ReadOnly );
-
-  Collection systemFolder;
-  systemFolder.setParentCollection( resourceCollection );
-  const RemoteInformation systemFolderInformation( 4, OXA::Folder::Unbound, QString() );
-  systemFolderInformation.store( systemFolder );
-  systemFolder.setName( i18n( "System Folder" ) );
-  systemFolder.setContentMimeTypes( QStringList() << Collection::mimeType() );
-  systemFolder.setRights( Collection::ReadOnly );
-
-  Akonadi::CachePolicy cachePolicy;
-  cachePolicy.setInheritFromParent( false );
-  cachePolicy.setSyncOnDemand( false );
-  cachePolicy.setCacheTimeout( -1 );
-  cachePolicy.setIntervalCheckTime( 5 );
-  resourceCollection.setCachePolicy( cachePolicy );
-
-  collections.append( resourceCollection );
-  collections.append( privateFolder );
-  collections.append( publicFolder );
-  collections.append( sharedFolder );
-  collections.append( systemFolder );
-
-  remoteIdMap.insert( 0, resourceCollection );
-  remoteIdMap.insert( 1, privateFolder );
-  remoteIdMap.insert( 2, publicFolder );
-  remoteIdMap.insert( 3, sharedFolder );
-  remoteIdMap.insert( 4, systemFolder );
+  QMap<qlonglong, Collection> remoteIdMap( mStandardCollectionsMap );
 
   // add the folders from the server
   OXA::Folder::List folders = requestJob->folders();
@@ -755,6 +928,70 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
   }
 
   collectionsRetrieved( collections );
+}
+
+void OpenXchangeResource::onFoldersRequestDeltaJobFinished( KJob *job )
+{
+  //qDebug("onFoldersRequestDeltaJobFinished mCollectionsMap.count() = %d", mCollectionsMap.count());
+
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    return;
+  }
+
+  OXA::FoldersRequestDeltaJob *requestJob = qobject_cast<OXA::FoldersRequestDeltaJob*>( job );
+  Q_ASSERT( requestJob );
+
+  Collection::List changedCollections;
+
+  // add the standard collections
+  changedCollections << mStandardCollectionsMap.values();
+
+  qulonglong foldersLastSync = Settings::self()->foldersLastSync();
+
+  // add the new or modified folders from the server
+  OXA::Folder::List modifiedFolders = requestJob->modifiedFolders();
+  while ( !modifiedFolders.isEmpty() ) {
+    const OXA::Folder folder = modifiedFolders.takeFirst();
+    if ( mCollectionsMap.contains( folder.folderId() ) ) {
+      // we have the parent collection created already
+      const Collection collection = folderToCollection( folder, mCollectionsMap.value( folder.folderId() ) );
+      mCollectionsMap.insert( folder.objectId(), collection );
+      changedCollections.append( collection );
+
+      // the value of foldersLastSync is determined by the maximum last modified value
+      // of the added or changed folders
+      foldersLastSync = qMax( foldersLastSync, folder.lastModified().toULongLong() );
+
+    } else {
+      // we have to wait until the parent folder has been created
+      modifiedFolders.append( folder );
+      qDebug() << "Error: parent folder id" << folder.folderId() << "of folder" << folder.title() << "is unknown";
+    }
+  }
+
+  Collection::List removedCollections;
+
+  // add the deleted folders from the server
+  OXA::Folder::List deletedFolders = requestJob->deletedFolders();
+  foreach ( const OXA::Folder &folder, deletedFolders ) {
+    Collection collection;
+    collection.setRemoteId( QString::number( folder.objectId() ) );
+
+    removedCollections.append( collection );
+  }
+
+  if ( foldersLastSync != Settings::self()->foldersLastSync() ) {
+    // according to the OX developers we should subtract one millisecond from the
+    // maximum last modified value to cover multiple changes that might have been
+    // done in the same millisecond to the data on the server
+    Settings::self()->setFoldersLastSync( foldersLastSync - 1 );
+    Settings::self()->writeConfig();
+  }
+
+  //qDebug("changedFolders=%d removedFolders=%d", modifiedFolders.count(), deletedFolders.count());
+  //qDebug("changedCollections=%d removedCollections=%d", changedCollections.count(), removedCollections.count());
+  collectionsRetrievedIncremental( changedCollections, removedCollections );
 }
 
 void OpenXchangeResource::onFolderCreateJobFinished( KJob *job )
@@ -845,6 +1082,41 @@ void OpenXchangeResource::onFolderDeleteJobFinished( KJob *job )
   }
 
   changeProcessed();
+}
+
+/**
+ * For incremental updates we need a mapping between the folder id
+ * and the collection object for all collections of this resource,
+ * so that we can find out the right parent collection in
+ * onFoldersRequestDeltaJob().
+ *
+ * Therefor we trigger this method when the resource is started and
+ * configured to use incremental sync.
+ */
+void OpenXchangeResource::syncCollectionsRemoteIdCache()
+{
+  mCollectionsMap.clear();
+
+  // copy the standard collections
+  mCollectionsMap = mStandardCollectionsMap;
+
+  CollectionFetchJob *job = new CollectionFetchJob( mResourceCollection, CollectionFetchJob::Recursive, this );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFetchResourceCollectionsFinished( KJob* ) ) );
+}
+
+void OpenXchangeResource::onFetchResourceCollectionsFinished( KJob *job )
+{
+  if ( job->error() ) {
+    qDebug() << "Error: Unable to fetch resource collections:" << job->errorText();
+    return;
+  }
+
+  const CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
+
+  // copy the remaining collections of the resource
+  const Collection::List collections = fetchJob->collections();
+  foreach ( const Collection &collection, collections )
+    mCollectionsMap.insert( collection.remoteId().toULongLong(), collection );
 }
 
 AKONADI_RESOURCE_MAIN( OpenXchangeResource )

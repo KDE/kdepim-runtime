@@ -9,6 +9,7 @@ set( openxchangeresource_SRCS
   oxa/foldermodifyjob.cpp
   oxa/foldermovejob.cpp
   oxa/folderrequestjob.cpp
+  oxa/foldersrequestdeltajob.cpp
   oxa/foldersrequestjob.cpp
   oxa/folderutils.cpp
   oxa/incidenceutils.cpp
@@ -18,6 +19,7 @@ set( openxchangeresource_SRCS
   oxa/objectmodifyjob.cpp
   oxa/objectmovejob.cpp
   oxa/objectrequestjob.cpp
+  oxa/objectsrequestdeltajob.cpp
   oxa/objectsrequestjob.cpp
   oxa/objectutils.cpp
   oxa/oxutils.cpp

@@ -58,17 +58,28 @@ class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentB
   private Q_SLOTS:
     void onUpdateUsersJobFinished( KJob* );
     void onFoldersRequestJobFinished( KJob* );
+    void onFoldersRequestDeltaJobFinished( KJob* );
     void onFolderCreateJobFinished( KJob* );
     void onFolderModifyJobFinished( KJob* );
     void onFolderMoveJobFinished( KJob* );
     void onFolderDeleteJobFinished( KJob* );
 
     void onObjectsRequestJobFinished( KJob* );
+    void onObjectsRequestDeltaJobFinished( KJob* );
     void onObjectRequestJobFinished( KJob* );
     void onObjectCreateJobFinished( KJob* );
     void onObjectModifyJobFinished( KJob* );
     void onObjectMoveJobFinished( KJob* );
     void onObjectDeleteJobFinished( KJob* );
+
+    void onFetchResourceCollectionsFinished( KJob* );
+
+  private:
+    void syncCollectionsRemoteIdCache();
+    QMap<qlonglong, Akonadi::Collection> mCollectionsMap;
+
+    Akonadi::Collection mResourceCollection;
+    QMap<qlonglong, Akonadi::Collection> mStandardCollectionsMap;
 };
 
 #endif
