@@ -132,7 +132,6 @@ void DavGroupwareResource::configure( WId windowId )
 
   if ( result == QDialog::Accepted ) {
     Settings::self()->writeConfig();
-    clearCache();
     synchronize();
     emit configurationDialogAccepted();
   } else {
