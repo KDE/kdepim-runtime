@@ -140,7 +140,7 @@ class ObjectsLastSync
     {
       if ( !Settings::self()->objectsLastSync().isEmpty() ) {
         const QStringList pairs = Settings::self()->objectsLastSync().split( QLatin1Char( ':' ), QString::KeepEmptyParts );
-        foreach ( const QString pair, pairs ) {
+        foreach ( const QString &pair, pairs ) {
           const QStringList entry = pair.split( QLatin1Char( '=' ), QString::KeepEmptyParts );
           mObjectsMap.insert( entry.at( 0 ).toLongLong(), entry.at( 1 ).toULongLong() );
         }
@@ -322,7 +322,7 @@ void OpenXchangeResource::configure( WId windowId )
   const bool useIncrementalUpdates = Settings::self()->useIncrementalUpdates();
 
   ConfigDialog dlg( windowId );
-  if ( dlg.exec() ) {
+  if ( dlg.exec() ) { //krazy:exclude=crashy
 
     // if the user has changed the incremental update settings we have to do
     // some additional initialization work

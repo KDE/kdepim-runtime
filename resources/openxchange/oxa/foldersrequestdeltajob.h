@@ -45,7 +45,7 @@ class FoldersRequestDeltaJob : public KJob
      *                 after this date will be requested. 0 will request all available folders.
      * @param parent The parent object.
      */
-    FoldersRequestDeltaJob( qulonglong lastSync, QObject *parent = 0 );
+    explicit FoldersRequestDeltaJob( qulonglong lastSync, QObject *parent = 0 );
 
     /**
      * Starts the job.

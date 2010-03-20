@@ -9,23 +9,23 @@
     <entry name="BaseUrl" type="String">
       <label>Server URL</label>
       <tooltip>The URL of the Open-Xchange server, should be something like https://myserver.org/</tooltip>
-      <whatsThis>The URL of the Open-Xchange server, should be something like https://myserver.org/</whatsThis>
+      <whatsthis>The URL of the Open-Xchange server, should be something like https://myserver.org/</whatsthis>
     </entry>
     <entry name="Username" type="String">
-      <label>Username</label>
+      <label context="the username to login on server">Username</label>
       <tooltip>The username that is used to log into the Open-Xchange server</tooltip>
-      <whatsThis>The username that is used to log into the Open-Xchange server</whatsThis>
+      <whatsthis>The username that is used to log into the Open-Xchange server</whatsthis>
     </entry>
     <entry name="Password" type="Password">
       <label>Password</label>
       <tooltip>The password that is used to log into the Open-Xchange server</tooltip>
-      <whatsThis>The password that is used to log into the Open-Xchange server</whatsThis>
+      <whatsthis>The password that is used to log into the Open-Xchange server</whatsthis>
     </entry>
     <entry name="UseIncrementalUpdates" type="Bool">
       <default>true</default>
       <label>Use incremental updates</label>
       <tooltip>Use incremental updates instead of reloading all data from the server each time</tooltip>
-      <whatsThis>Use incremental updates instead of reloading all data from the server each time</whatsThis>
+      <whatsthis>Use incremental updates instead of reloading all data from the server each time</whatsthis>
     </entry>
     <entry name="FoldersLastSync" type="ULongLong">
       <default>0</default>

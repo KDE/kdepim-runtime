@@ -55,7 +55,7 @@ class FoldersRequestJob : public KJob
      * @param mode The mode of folders to request.
      * @param parent The parent object.
      */
-    FoldersRequestJob( qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = 0 );
+    explicit FoldersRequestJob( qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = 0 );
 
     /**
      * Starts the job.
