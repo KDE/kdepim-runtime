@@ -89,7 +89,7 @@ Settings::Settings()
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
 
-  foreach( const QString &serializedUrl, remoteUrls() ) {
+  foreach ( const QString &serializedUrl, remoteUrls() ) {
     UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
     mUrls[ urlConfig->mUrl ] = urlConfig;
   }
@@ -144,7 +144,7 @@ DavUtils::DavUrl Settings::davUrlFromUrl( const QString &url )
 
   QMapIterator<QString, QString> iter( mCollectionsUrlsMapping );
   while ( iter.hasNext() ) {
-    if( url.startsWith( iter.next().key() ) ) {
+    if ( url.startsWith( iter.next().key() ) ) {
       configuredUrl = iter.value();
       break;
     }
