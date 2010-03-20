@@ -93,3 +93,18 @@ QString DavUtils::protocolName( DavUtils::Protocol protocol )
 
   return protocolName;
 }
+
+DavUtils::Protocol DavUtils::protocolByName( const QString &name )
+{
+  DavUtils::Protocol protocol;
+
+  if ( name == "CalDav" ) {
+    protocol = DavUtils::CalDav;
+  } else if ( name == "CardDav" ) {
+    protocol = DavUtils::CardDav;
+  } else if ( name == "GroupDav" ) {
+    protocol = DavUtils::GroupDav;
+  }
+
+  return protocol;
+}

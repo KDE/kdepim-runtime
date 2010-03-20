@@ -37,19 +37,28 @@ class Settings : public SettingsBase
     {
       public:
         UrlConfiguration();
+        explicit UrlConfiguration( const QString &serialized );
+
+        /**
+         * Serializes the object.
+         * The string is the concatenation of the fields separated by a "|" :
+         * user|protocol|url
+         * The "protocol" component is the symbolic name of the protocol,
+         * as returned by DavUtils::protocolName().
+         */
+        QString serialize();
         QString mUrl;
         QString mUser;
         int mProtocol;
     };
 
     Settings();
-    ~Settings();
+    virtual ~Settings();
     static Settings* self();
     void setWinId( WId wid );
-    virtual void readConfig();
-    virtual void writeConfig();
 
     DavUtils::DavUrl::List configuredDavUrls();
+
     /**
      * Creates and returns the DavUrl that corresponds to the configuration for searchUrl.
      * If finalUrl is supplied, then it will be used in the returned object instead of the searchUrl.
@@ -70,7 +79,7 @@ class Settings : public SettingsBase
      */
     void addCollectionUrlMapping( const QString &collectionUrl, const QString &configuredUrl );
 
-    UrlConfiguration * newUrlConfiguration( const QString &url );
+    void newUrlConfiguration( UrlConfiguration *urlConfig );
     void removeUrlConfiguration( const QString &url );
     UrlConfiguration * urlConfiguration( const QString &url );
 
@@ -78,6 +87,8 @@ class Settings : public SettingsBase
     QString username( const QString &url ) const;
 
   private:
+    void updateRemoteUrls();
+
     WId mWinId;
     QMap<QString, UrlConfiguration*> mUrls;
     QMap<QString, QString> mCollectionsUrlsMapping;

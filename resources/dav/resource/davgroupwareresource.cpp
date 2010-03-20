@@ -109,10 +109,13 @@ void DavGroupwareResource::configure( WId windowId )
     if ( result == QDialog::Accepted ) {
       const SetupWizard::Url::List urls = wizard.urls();
       foreach ( const SetupWizard::Url &url, urls ) {
-        Settings::UrlConfiguration *urlConfig = Settings::self()->newUrlConfiguration( url.url );
+        Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
+        urlConfig->mUrl = url.url;
         urlConfig->mProtocol = url.protocol;
         urlConfig->mUser = url.userName;
+
+        Settings::self()->newUrlConfiguration( urlConfig );
       }
 
       Settings::self()->setDisplayName( wizard.displayName() );

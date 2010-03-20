@@ -34,7 +34,7 @@ class ConfigDialog : public KDialog
 
   public:
     ConfigDialog( QWidget *parent = 0 );
-    ~ConfigDialog();
+    virtual ~ConfigDialog();
 
   private Q_SLOTS:
     void checkUserInput();

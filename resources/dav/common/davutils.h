@@ -45,6 +45,12 @@ namespace DavUtils
   QString protocolName( Protocol protocol );
 
   /**
+   * Returns the protocol matching the given name. This is the opposite of
+   * DavUtils::protocolName().
+   */
+  Protocol protocolByName( const QString &name );
+
+  /**
    * @short A helper class to combine url and protocol of a DAV url.
    */
   class DavUrl

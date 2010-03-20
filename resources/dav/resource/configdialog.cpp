@@ -44,8 +44,11 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   mUi.configuredUrls->setModel( mModel );
   mUi.configuredUrls->setRootIsDecorated( false );
 
-  foreach ( const QString &url, Settings::self()->remoteUrls() )
-    addModelRow( DavUtils::protocolName( Settings::self()->protocol( url ) ), url );
+  foreach ( const DavUtils::DavUrl &url, Settings::self()->configuredDavUrls() ) {
+    KUrl displayUrl = url.url();
+    displayUrl.setUser( QString() );
+    addModelRow( DavUtils::protocolName( url.protocol() ), displayUrl.prettyUrl() );
+  }
 
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
@@ -84,10 +87,13 @@ void ConfigDialog::onAddButtonClicked()
   const int result = dlg->exec();
 
   if ( result == QDialog::Accepted && !dlg.isNull() ) {
-    Settings::UrlConfiguration *urlConfig = Settings::self()->newUrlConfiguration( dlg->remoteUrl() );
+    Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
+    urlConfig->mUrl = dlg->remoteUrl();
     urlConfig->mUser = dlg->username();
     urlConfig->mProtocol = dlg->protocol();
+
+    Settings::self()->newUrlConfiguration( urlConfig );
 
     const QString protocolName = DavUtils::protocolName( dlg->protocol() );
 
@@ -95,6 +101,9 @@ void ConfigDialog::onAddButtonClicked()
     mAddedUrls << dlg->remoteUrl();
     checkUserInput();
   }
+
+  if ( !dlg.isNull() )
+    delete dlg;
 }
 
 void ConfigDialog::onRemoveButtonClicked()
@@ -136,7 +145,9 @@ void ConfigDialog::onEditButtonClicked()
   if ( result == QDialog::Accepted && !dlg.isNull() ) {
     if ( dlg->remoteUrl() != urlConfig->mUrl ) {
       Settings::self()->removeUrlConfiguration( urlConfig->mUrl );
-      urlConfig = Settings::self()->newUrlConfiguration( dlg->remoteUrl() );
+      urlConfig = new Settings::UrlConfiguration();
+      urlConfig->mUrl = dlg->remoteUrl();
+      Settings::self()->newUrlConfiguration( urlConfig );
     }
     urlConfig->mUser = dlg->username();
     urlConfig->mProtocol = dlg->protocol();
@@ -151,10 +162,10 @@ void ConfigDialog::onEditButtonClicked()
 
 void ConfigDialog::onOkClicked()
 {
-  mManager->updateSettings();
-
   foreach ( const QString &url, mRemovedUrls )
     Settings::self()->removeUrlConfiguration( url );
+
+  mManager->updateSettings();
 }
 
 void ConfigDialog::onCancelClicked()

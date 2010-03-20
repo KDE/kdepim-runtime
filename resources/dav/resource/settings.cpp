@@ -50,6 +50,25 @@ Settings::UrlConfiguration::UrlConfiguration()
 {
 }
 
+Settings::UrlConfiguration::UrlConfiguration( const QString &serialized )
+{
+  const QStringList splitString = serialized.split( '|' );
+
+  if ( splitString.size() == 3 ) {
+    mUrl = splitString.at( 2 );
+    mProtocol = DavUtils::protocolByName( splitString.at( 1 ) );
+    mUser = splitString.at( 0 );
+  }
+}
+
+QString Settings::UrlConfiguration::serialize()
+{
+  QString serialized = mUser;
+  serialized.append( '|' ).append( DavUtils::protocolName( DavUtils::Protocol( mProtocol ) ) );
+  serialized.append( '|' ).append( mUrl );
+  return serialized;
+}
+
 Settings *Settings::self()
 {
   if ( !s_globalSettings->q ) {
@@ -69,12 +88,17 @@ Settings::Settings()
   new SettingsAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+
+  foreach( const QString &serializedUrl, remoteUrls() ) {
+    UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
+    mUrls[ urlConfig->mUrl ] = urlConfig;
+  }
 }
 
 Settings::~Settings()
 {
   QMapIterator<QString, UrlConfiguration*> it( mUrls );
-  while( it.hasNext() ) {
+  while ( it.hasNext() ) {
     it.next();
     delete it.value();
   }
@@ -85,29 +109,14 @@ void Settings::setWinId( WId winId )
   mWinId = winId;
 }
 
-void Settings::readConfig()
-{
-  SettingsBase::readConfig();
-  foreach ( const KUrl &url, remoteUrls() )
-    newUrlConfiguration( url.prettyUrl() );
-}
-
-void Settings::writeConfig()
-{
-  SettingsBase::writeConfig();
-  QListIterator<UrlConfiguration*> it( mToDeleteUrlConfigs );
-  while( it.hasNext() )
-    delete it.next();
-}
-
 DavUtils::DavUrl::List Settings::configuredDavUrls()
 {
   DavUtils::DavUrl::List davUrls;
-  const KUrl::List urls = remoteUrls();
+  QMapIterator<QString, UrlConfiguration*> it( mUrls );
 
-  foreach( const KUrl &url, urls ) {
-    const QString groupName = url.prettyUrl();
-    davUrls << configuredDavUrl( groupName );
+  while ( it.hasNext() ) {
+    it.next();
+    davUrls << configuredDavUrl( it.key() );
   }
 
   return davUrls;
@@ -134,7 +143,7 @@ DavUtils::DavUrl Settings::davUrlFromUrl( const QString &url )
   QString configuredUrl;
 
   QMapIterator<QString, QString> iter( mCollectionsUrlsMapping );
-  while( iter.hasNext() ) {
+  while ( iter.hasNext() ) {
     if( url.startsWith( iter.next().key() ) ) {
       configuredUrl = iter.value();
       break;
@@ -152,51 +161,15 @@ void Settings::addCollectionUrlMapping( const QString &collectionUrl, const QStr
   mCollectionsUrlsMapping.insert( collectionUrl, configuredUrl );
 }
 
-Settings::UrlConfiguration * Settings::newUrlConfiguration( const QString &url )
+void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
 {
-  UrlConfiguration *urlConfig;
-
-  if ( !mUrls.contains( url ) ) {
-    urlConfig = new UrlConfiguration();
-    urlConfig->mUrl = url;
-  } else {
-    urlConfig = mUrls[ url ];
+  if ( mUrls.contains( urlConfig->mUrl ) ) {
+    removeUrlConfiguration( urlConfig->mUrl );
+    updateRemoteUrls();
   }
 
-//   KConfigGroup group( config(), urlConfig->mUrl );
-  setCurrentGroup( urlConfig->mUrl );
-
-  QList<KConfigSkeleton::ItemEnum::Choice2> protocolValues;
-  {
-    KConfigSkeleton::ItemEnum::Choice2 choice;
-    choice.name = QLatin1String( "caldav" );
-    protocolValues.append( choice );
-  }
-  {
-    KConfigSkeleton::ItemEnum::Choice2 choice;
-    choice.name = QLatin1String( "carddav" );
-    protocolValues.append( choice );
-  }
-  {
-    KConfigSkeleton::ItemEnum::Choice2 choice;
-    choice.name = QLatin1String( "groupdav" );
-    protocolValues.append( choice );
-  }
-  KConfigSkeletonItem *protocolItem =
-      new KConfigSkeleton::ItemEnum( currentGroup(), QLatin1String( "protocol" ), urlConfig->mProtocol, protocolValues );
-  addItem( protocolItem );
-
-  KConfigSkeletonItem *usernameItem =
-      new KConfigSkeleton::ItemString( currentGroup(), QLatin1String( "username" ), urlConfig->mUser );
-  addItem( usernameItem );
-
-  if ( !mUrls.contains( urlConfig->mUrl ) )
-    mUrls.insert( urlConfig->mUrl, urlConfig );
-
-  if ( !remoteUrls().contains( urlConfig->mUrl ) )
-    setRemoteUrls( remoteUrls() << urlConfig->mUrl );
-
-  return urlConfig;
+  mUrls[ urlConfig->mUrl ] = urlConfig;
+  updateRemoteUrls();
 }
 
 void Settings::removeUrlConfiguration( const QString &url )
@@ -204,26 +177,9 @@ void Settings::removeUrlConfiguration( const QString &url )
   if ( !mUrls.contains( url ) )
     return;
 
-  kDebug() << "Deleting URL " << url;
-
-  QStringList newUrls;
-
-  const QStringList oldUrls = remoteUrls();
-  foreach ( const QString &tmpUrl, oldUrls ) {
-    if ( tmpUrl != url )
-      newUrls << tmpUrl;
-  }
-
-  setRemoteUrls( newUrls );
-  kDebug() << "Remaining URLs " << newUrls;
-
-  UrlConfiguration *urlConfig = mUrls[ url ];
+  delete mUrls[ url ];
   mUrls.remove( url );
-  config()->deleteGroup( url );
-
-  // Apparently it is not possible to call delete urlConfig here,
-  // so postpone the deletion until after writeConfig()
-  mToDeleteUrlConfigs << urlConfig;
+  updateRemoteUrls();
 }
 
 Settings::UrlConfiguration * Settings::urlConfiguration( const QString &url )
@@ -249,6 +205,19 @@ QString Settings::username( const QString &url ) const
     return mUrls[ url ]->mUser;
   else
     return QString();
+}
+
+void Settings::updateRemoteUrls()
+{
+  QStringList newUrls;
+
+  QMapIterator<QString, UrlConfiguration*> it( mUrls );
+  while ( it.hasNext() ) {
+    it.next();
+    newUrls << it.value()->serialize();
+  }
+
+  setRemoteUrls( newUrls );
 }
 
 #include "settings.moc"
