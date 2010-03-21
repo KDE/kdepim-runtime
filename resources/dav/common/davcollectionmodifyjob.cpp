@@ -160,7 +160,7 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
     // Trying to get more information about the error
     const QDomElement responseDescriptionElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "responsedescription" );
     if ( !responseDescriptionElement.isNull() ) {
-      errorText.append( "\nThe server returned more information:\n" );
+      errorText.append( i18n("\nThe server returned more information:\n") );
       errorText.append( responseDescriptionElement.text() );
     }
 
