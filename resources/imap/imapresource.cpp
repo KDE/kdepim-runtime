@@ -1415,7 +1415,8 @@ void ImapResource::onRightsReceived( KJob *job )
     newRights|= Collection::CanDeleteCollection;
   }
 
-  kDebug(5327) << "imapRights:" << imapRights
+  kDebug(5327) << collection.remoteId()
+               << "imapRights:" << imapRights
                << "newRights:" << newRights
                << "oldRights:" << collection.rights();
 
