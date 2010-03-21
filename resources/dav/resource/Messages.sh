@@ -1,2 +1,2 @@
 #! /usr/bin/env bash
-$XGETTEXT *.cpp -o $podir/akonadi_davcalendar_resource.pot
+$XGETTEXT *.cpp ../common/*.cpp -o $podir/akonadi_davgroupware_resource.pot
