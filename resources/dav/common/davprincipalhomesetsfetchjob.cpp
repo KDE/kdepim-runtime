@@ -69,7 +69,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
   if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable
     setError( UserDefinedError );
-    setErrorText( i18n( "The server encountered an error that prevented it to complete your request" ) );
+    setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
     emitResult();
     return;
   } else if ( responseCode > 399 && responseCode < 500 ) {

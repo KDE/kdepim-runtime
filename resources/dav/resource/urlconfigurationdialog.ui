@@ -141,7 +141,7 @@
         <item>
          <widget class="KPushButton" name="fetchButton">
           <property name="text">
-           <string>Fetch !</string>
+           <string>Fetch</string>
           </property>
          </widget>
         </item>

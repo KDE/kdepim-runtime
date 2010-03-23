@@ -267,7 +267,7 @@ CredentialsPage::CredentialsPage( QWidget *parent )
   : QWizardPage( parent )
 {
   setTitle( i18n( "Login Credentials" ) );
-  setSubTitle( i18n( "Enter your credentials to login at the groupware server" ) );
+  setSubTitle( i18n( "Enter your credentials to login to the groupware server" ) );
 
   QFormLayout *layout = new QFormLayout( this );
 

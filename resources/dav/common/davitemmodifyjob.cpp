@@ -77,7 +77,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
   if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable
     setError( UserDefinedError );
-    setErrorText( i18n( "The server encountered an error that prevented it to complete your request" ) );
+    setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
     emitResult();
     return;
   } else if ( responseCode == 423 ) {
@@ -89,7 +89,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
   } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
     setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request. The item was not modified on the server : error %1.", responseCode ) );
+    setErrorText( i18n( "There was a problem with the request - the item was not modified on the server. Error %1.", responseCode ) );
     emitResult();
     return;
   }
