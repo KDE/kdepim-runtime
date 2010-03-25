@@ -46,6 +46,7 @@ POP3Resource::POP3Resource( const QString &id )
       mWallet( 0 )
 {
   new SettingsAdaptor( Settings::self() );
+  setNeedsNetwork( true );
 
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
