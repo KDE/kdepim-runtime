@@ -3,7 +3,7 @@ add_subdirectory( invitations )
 add_subdirectory( calendarsearch )
 
 if( Nepomuk_FOUND AND STRIGI_FOUND )
-    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder ${CMAKE_CURRENT_BINARY_DIR}/ontologies ${STRIGI_INCLUDE_DIR})
+    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder ${CMAKE_CURRENT_BINARY_DIR}/ontologies ${SOPRANO_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR})
     set( NEPOMUKFEEDER_SHARED_SRCS
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederagentbase.cpp
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/sparqlbuilder.cpp
