@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2010 Tom Albers <toma@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,6 +19,7 @@
 */
 
 #include "dialog.h"
+#include "providerpage.h"
 #include "typepage.h"
 #include "loadpage.h"
 #include "global.h"
@@ -42,9 +44,15 @@ Dialog::Dialog(QWidget* parent) :
     IdentityPage *idPage = new IdentityPage( this );
     addPage( idPage, i18n( "Create new identity" ) );
 
-    TypePage *page = new TypePage( this );
-    connect( page->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
-    addPage( page, i18n( "Select Account Type" ) );
+    ProviderPage *ppage = new ProviderPage( this );
+    connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
+    connect( ppage->advancedButton(), SIGNAL( clicked() ), SLOT( slotAdvancedWanted() ) );
+    addPage( ppage, i18n( "Select Provider" ) );
+
+    TypePage* typePage = new TypePage( this );
+    connect( typePage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
+    mTypePage = addPage( typePage, i18n( "Select Account Type" ) );
+    setAppropriate( mTypePage, false );
   }
 
   LoadPage *loadPage = new LoadPage( this );
@@ -68,6 +76,7 @@ KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
   page->setPageWidgetItem( item );
   return item;
 }
+
 
 void Dialog::slotNextPage()
 {
@@ -104,6 +113,13 @@ QObject* Dialog::addPage(const QString& uiFile, const QString &title )
   KPageWidgetItem* item = insertPage( mLastPage, page, title );
   page->setPageWidgetItem( item );
   return page;
+}
+
+void Dialog::slotAdvancedWanted() 
+{
+  Q_ASSERT( mTypePage );
+  setAppropriate( mTypePage, true );
+  slotNextPage();
 }
 
 #include "dialog.moc"

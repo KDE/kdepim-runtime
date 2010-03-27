@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2010 Tom Albers <toma@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,36 +18,36 @@
     02110-1301, USA.
 */
 
-#ifndef DIALOG_H
-#define DIALOG_H
+#ifndef PROVIDERPAGE_H
+#define PROVIDERPAGE_H
 
-#include <kassistantdialog.h>
+#include "page.h"
+#include <QStandardItemModel>
 
-class Page;
-class TypePage;
+#include "ui_providerpage.h"
 
-class Dialog : public KAssistantDialog
+namespace KNS3 {
+  class Entry;
+}
+
+class ProviderPage : public Page
 {
   Q_OBJECT
   public:
-    explicit Dialog( QWidget *parent = 0 );
+    explicit ProviderPage( KAssistantDialog* parent = 0 );
 
-    /* reimpl */ void next();
-    /* reimpl */ void back();
-
-  public slots:
-    Q_SCRIPTABLE QObject* addPage( const QString &uiFile, const QString &title );
+    virtual void leavePageNext();
+    QTreeView *treeview() const;
+    QPushButton *advancedButton() const;
 
   private slots:
-    void slotNextPage();
-    void slotAdvancedWanted();
+    void selectionChanged();
+    void ghnsClicked();
 
   private:
-    KPageWidgetItem* addPage( Page* page, const QString &title );
-
-  private:
-    KPageWidgetItem* mLastPage;
-    KPageWidgetItem* mTypePage;
+    Ui::ProviderPage ui;
+    QStandardItemModel *m_model;
+    QHash<QStandardItem*,KNS3::Entry> m_providerEntries;
 };
 
 #endif

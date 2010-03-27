@@ -1,6 +1,7 @@
 set(accountwizard_srcs
   main.cpp
   dialog.cpp
+  providerpage.cpp
   typepage.cpp
   loadpage.cpp
   global.cpp
@@ -18,6 +19,7 @@ set(accountwizard_srcs
 )
 
 kde4_add_ui_files(accountwizard_srcs
+  providerpage.ui
   typepage.ui
   loadpage.ui
   setuppage.ui
@@ -32,10 +34,11 @@ target_link_libraries(accountwizard
   ${KDE4_KROSSCORE_LIBS}
   ${KDE4_KROSSUI_LIBS}
   ${KDE4_KDECORE_LIBS}
+  ${KDE4_KNEWSTUFF3_LIBS}
   ${KDEPIMLIBS_KPIMIDENTITIES_LIBRARY}
   ${QT_QTGUI_LIBRARY}
   ${QT_QTUITOOLS_LIBRARY}
 )
 
 install(TARGETS accountwizard ${INSTALL_TARGETS_DEFAULT_ARGS})
-
+install(FILES accountwizard.knsrc DESTINATION ${CONFIG_INSTALL_DIR})

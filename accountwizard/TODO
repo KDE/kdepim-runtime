@@ -1,5 +1,6 @@
 - figure out i18n for the actual wizards (DONE) - still marked as todo mentioned in the imapwizard
 - GHNS support for downloading new wizards -> toma!
-- imapwizard has no encryption as default i.c.w. plain auth method. Not a good default!
+- imap+pop3wizard has no encryption as default i.c.w. plain auth method. Not a good default!
 - remember which set up resources/transports/ldap accounts/identities belong together so we can offer to remove them in one go again
 - add more wizards (In progress)
+- sort out password fields at least for pop3.
