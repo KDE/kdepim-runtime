@@ -59,13 +59,13 @@ function validateInput()
 function setup()
 {
   var pop3Res = SetupManager.createResource( "akonadi_pop3_resource" );
-  pop3Res.setOption( "ImapServer", page.pop3Wizard.incommingAddress.text );
-  pop3Res.setOption( "UserName", page.pop3Wizard.emailAddress.text );
-  pop3Res.setOption( "Password", page.pop3Wizard.password.text );
+  pop3Res.setOption( "Host", page.pop3Wizard.incommingAddress.text );
+  pop3Res.setOption( "Login", page.pop3Wizard.emailAddress.text );
+  //pop3Res.setOption( "Password", page.pop3Wizard.password.text );
 
   var smtp = SetupManager.createTransport( "smtp" );
-  smtp.setName( page.imapWizard.outgoingAddress.text );
-  smtp.setHost( page.imapWizard.outgoingAddress.text );
+  smtp.setName( page.pop3Wizard.outgoingAddress.text );
+  smtp.setHost( page.pop3Wizard.outgoingAddress.text );
   smtp.setEncryption( "NONE" );
 
   SetupManager.execute();
