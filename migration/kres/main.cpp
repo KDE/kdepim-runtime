@@ -22,8 +22,6 @@
 #include "knotesmigrator.h"
 #include "infodialog.h"
 
-#include <akonadi/control.h>
-
 #include <kaboutdata.h>
 #include <kapplication.h>
 #include <kcmdlineargs.h>
@@ -87,8 +85,6 @@ int main( int argc, char **argv )
 
   KGlobal::setAllowQuit( true );
   KGlobal::locale()->insertCatalog( "libakonadi" );
-  if ( !Akonadi::Control::start( 0 ) )
-    return 2;
 
   InfoDialog *infoDialog = 0;
   if ( args->isSet( "interactive" ) || args->isSet( "interactive-on-change" ) ) {
