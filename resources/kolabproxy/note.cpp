@@ -184,11 +184,28 @@ void Note::setFields( const KCal::Journal* journal )
 {
   KolabBase::setFields( journal );
 
-  // TODO: background and foreground
   setSummary( journal->summary() );
-  setBackgroundColor( journal->customProperty( "KNotes", "BgColor" ) );
-  setForegroundColor( journal->customProperty( "KNotes", "FgColor" ) );
-  setRichText( journal->customProperty( "KNotes", "RichText" ) == "true" );
+
+  QString property = journal->customProperty( "KNotes", "BgColor" );
+  if ( !property.isEmpty() ) {
+    setBackgroundColor( property );
+  } else {
+    setBackgroundColor( "yellow" );
+  }
+
+  property = journal->customProperty( "KNotes", "FgColor" );
+  if ( !property.isEmpty() ) {
+    setForegroundColor( property );
+  } else {
+    setForegroundColor( "black" );
+  }
+
+  property = journal->customProperty( "KNotes", "RichText" );
+  if ( !property.isEmpty() ) {
+    setRichText( property == "true" ? true : false );
+  } else {
+    setRichText( "false" );
+  }
 }
 
 void Note::saveTo( KCal::Journal* journal )
