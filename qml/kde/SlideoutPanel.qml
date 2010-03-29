@@ -23,11 +23,17 @@ Item {
   property string title
   property int handlePosition
   property alias contentData: contentArea.data
+  property int handleWidth: 52
+  property int dragThreshold: 16
+  property int handleRadius: 12
+  z:100
 
   Rectangle {
     id: background
-    x: -12
+    x: - handleWidth
     y: handlePosition
+    width: 2*handleWidth
+
     gradient: Gradient {
       GradientStop { position: 0.0; color: "lightgrey" }
       GradientStop { position: 0.5; color: "grey" }
@@ -37,11 +43,9 @@ Item {
       offset.x: 4
       offset.y: 4
     }
-    radius: 12
+    radius: handleRadius
 
 //     height: titleLabel.width
-//   //   width: titleLabel.height
-    width: 64
      height: 160
 
     Text {
@@ -62,8 +66,8 @@ Item {
       anchors.fill: parent
       drag.target: parent
       drag.axis: "XAxis"
-      drag.minimumX: -12
-      drag.maximumX: 12
+      drag.minimumX: - parent.parent.handleWidth
+      drag.maximumX: - parent.parent.handleWidth + parent.parent.dragThreshold + 1
     }
 
     Item {
@@ -75,7 +79,7 @@ Item {
     states: [
       State {
         name: "expandedState"
-        when: background.x > 0
+        when: background.x >= (-background.parent.handleWidth + background.parent.dragThreshold)
         PropertyChanges {
           target: background
           height: parent.parent.height - 40
@@ -84,6 +88,7 @@ Item {
         }
         PropertyChanges { target: titleLabel; visible: false }
         PropertyChanges { target: contentArea; visible: true }
+        PropertyChanges { target: background.parent; z: 50 }
       }
     ]
 
