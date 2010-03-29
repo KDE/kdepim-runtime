@@ -28,13 +28,11 @@ Rectangle {
     anchors.fill: parent
     title: "Folders"
     handlePosition: 40
-    contentData: [
+    content: [
       Rectangle {
         color: "blue"
-        x: 10
-        y: 20
-        height: 100
-        width: 100
+        anchors.margins: 12
+        anchors.fill: parent
       }
     ]
   }
@@ -43,5 +41,13 @@ Rectangle {
     anchors.fill:parent
     title: "Actions"
     handlePosition: 200
+    contentWidth: 200
+    content: [
+      Rectangle {
+        color: "red"
+        anchors.margins: 12
+        anchors.fill: parent
+      }
+    ]
   }
 }

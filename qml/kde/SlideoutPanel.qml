@@ -22,10 +22,11 @@ import Qt 4.6
 Item {
   property string title
   property int handlePosition
-  property alias contentData: contentArea.data
+  property alias content: contentArea.data
   property int handleWidth: 52
   property int dragThreshold: 16
   property int handleRadius: 12
+  property int contentWidth: width - 2*handleWidth
   z:100
 
   Rectangle {
@@ -73,7 +74,10 @@ Item {
     Item {
       id: contentArea
       visible: false
-      anchors.fill: parent // TODO border, only visible space, etc
+      anchors.right: parent.right
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      width: background.parent.contentWidth
     }
 
     states: [
@@ -82,8 +86,8 @@ Item {
         when: background.x >= (-background.parent.handleWidth + background.parent.dragThreshold)
         PropertyChanges {
           target: background
-          height: parent.parent.height - 40
-          width: parent.parent.width - 40
+          height: background.parent.height - 40
+          width: background.parent.contentWidth + 2 * background.parent.handleWidth
           y: 20
         }
         PropertyChanges { target: titleLabel; visible: false }
