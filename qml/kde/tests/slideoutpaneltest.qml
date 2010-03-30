@@ -51,7 +51,7 @@ Rectangle {
     titleText: "Actions"
     titleIcon: KDE.iconPath( "akonadi", 48 );
     handlePosition: folderPanel.handleHeight
-    handleHeight: 190
+    handleHeight: 150
     contentWidth: 200
     content: [
       Rectangle {
@@ -70,7 +70,7 @@ Rectangle {
     anchors.bottomMargin: 20
     titleIcon: KDE.iconPath( "mail-attachment", 48 );
     handlePosition: folderPanel.handleHeight + actionPanel.handleHeight
-    handleHeight: 52
+    handleHeight: parent.height - actionPanel.handleHeight - folderPanel.handleHeight - anchors.topMargin - anchors.bottomMargin
     contentWidth: 400
     content: [
       Rectangle {

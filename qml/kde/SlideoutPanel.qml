@@ -24,7 +24,7 @@ Item {
   property string titleIcon
   property alias content: contentArea.data
   property int handlePosition: 0
-  property int handleWidth: 52
+  property int handleWidth: 36
   property int handleHeight: 160
   property int dragThreshold: 16
   property int handleRadius: 12
@@ -54,7 +54,8 @@ Item {
       width: handleWidth - 4
       height: (titleIcon == '' ? 0 : handleWidth - 4)
       source: titleIcon
-      anchors.bottom: parent.bottom
+      anchors.bottom: (titleText == '' ? 0 : parent.bottom)
+      anchors.verticalCenter: (titleText == '' ? parent.verticalCenter : 0)
       anchors.right: parent.right
       anchors.margins: 2
     }
@@ -69,8 +70,6 @@ Item {
       rotation: -90
       horizontalAlignment: "AlignHCenter"
       verticalAlignment: "AlignTop"
-      font.bold: true
-      font.pixelSize: 32
     }
 
     MouseArea {
