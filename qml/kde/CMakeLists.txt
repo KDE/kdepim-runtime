@@ -1,12 +1,20 @@
 if (QT_QTDECLARATIVE_FOUND)
 
-kde4_add_plugin( kdeqmlplugin WITH_PREFIX 
+kde4_add_plugin( kdeqmlplugin WITH_PREFIX
   kdeintegration.cpp
-  kdeintegrationplugin.cpp 
+  kdeintegrationplugin.cpp
 )
 target_link_libraries(kdeqmlplugin ${KDE4_KDEUI_LIBS} ${QT_QTDECLARATIVE_LIBRARY})
 
-install( FILES qmldir DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
+install( FILES qmldir
+  BreadcrumbNavigationView.qml
+  CollectionDelegate.qml
+  CollectionDelegate2.qml
+  CollectionDelegate3.qml
+  DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
+
 install( TARGETS kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
+
+add_subdirectory(tests)
 
 endif (QT_QTDECLARATIVE_FOUND)

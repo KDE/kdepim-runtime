@@ -1,1 +1,5 @@
 plugin kdeqmlplugin
+BreadcrumbNavigationView 4.5 BreadcrumbNavigationView.qml
+CollectionDelegate 4.5 CollectionDelegate.qml
+CollectionDelegate2 4.5 CollectionDelegate2.qml
+CollectionDelegate3 4.5 CollectionDelegate3.qml
