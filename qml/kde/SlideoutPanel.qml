@@ -36,18 +36,27 @@ Item {
     x: - handleWidth
     y: handlePosition
     width: 2*handleWidth
-   height: handleHeight
+    height: handleHeight
 
     gradient: Gradient {
       GradientStop { position: 0.0; color: "lightgrey" }
       GradientStop { position: 0.5; color: "grey" }
     }
-    effect: DropShadow {
-      blurRadius: 8
-      offset.x: 4
-      offset.y: 4
-    }
     radius: handleRadius
+
+    // don't use DropShadow effect, way to slow as it seems to affect everything in the content area as well
+    Rectangle {
+      color: "darkgrey"
+      opacity: 0.75
+      width: parent.width
+      height: parent.height
+      radius: handleRadius
+      x: 4
+      y: 4
+      z: -1
+      // WTF: Blur disables resizing!?!?
+      effect: Blur { blurRadius: 4 }
+    }
 
     Image {
       id: titleImage
