@@ -22,13 +22,13 @@ import Qt 4.6
 Item {
   property string titleText
   property string titleIcon
-  property int handlePosition
   property alias content: contentArea.data
+  property int handlePosition: 0
   property int handleWidth: 52
   property int handleHeight: 160
   property int dragThreshold: 16
   property int handleRadius: 12
-  property int contentWidth: width - 2*handleWidth
+  property int contentWidth: width - handleWidth
   z:100
 
   Rectangle {
@@ -96,9 +96,9 @@ Item {
         when: background.x >= (-handleWidth + dragThreshold)
         PropertyChanges {
           target: background
-          height: background.parent.height - 40
-          width: contentWidth + 2 * handleWidth
-          y: 20
+          height: background.parent.height
+          width: contentWidth + 2 * handleWidth - dragThreshold
+          y: 0
         }
         PropertyChanges { target: titleLabel; visible: false }
         PropertyChanges { target: titleImage; visible: false }

@@ -26,9 +26,12 @@ Rectangle {
   height: 480
 
   SlideoutPanel {
+    id: folderPanel
     anchors.fill: parent
+    anchors.topMargin: 20
+    anchors.rightMargin: 20
+    anchors.bottomMargin: 20
     titleText: "Folders"
-    handlePosition: 40
     handleHeight: 150
     content: [
       Rectangle {
@@ -40,10 +43,14 @@ Rectangle {
   }
 
   SlideoutPanel {
+    id: actionPanel
     anchors.fill: parent
+    anchors.topMargin: 20
+    anchors.rightMargin: 20
+    anchors.bottomMargin: 20
     titleText: "Actions"
     titleIcon: KDE.iconPath( "akonadi", 48 );
-    handlePosition: 190
+    handlePosition: folderPanel.handleHeight
     handleHeight: 190
     contentWidth: 200
     content: [
@@ -56,9 +63,13 @@ Rectangle {
   }
 
   SlideoutPanel {
+    id: attachmentPanel
     anchors.fill: parent
+    anchors.topMargin: 20
+    anchors.rightMargin: 20
+    anchors.bottomMargin: 20
     titleIcon: KDE.iconPath( "mail-attachment", 48 );
-    handlePosition: 380
+    handlePosition: folderPanel.handleHeight + actionPanel.handleHeight
     handleHeight: 52
     contentWidth: 400
     content: [
