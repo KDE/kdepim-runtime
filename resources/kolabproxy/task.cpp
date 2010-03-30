@@ -277,14 +277,21 @@ bool Task::saveAttributes( QDomElement& element ) const
     break;
   }
 
-  if ( hasDueDate() )
-    writeString( element, "due-date", dateTimeToString( dueDate() ) );
+  if ( hasDueDate() ) {
+    if ( mFloatingStatus == HasTime ) {
+      writeString( element, "due-date", dateTimeToString( dueDate() ) );
+    } else {
+      writeString( element, "due-date", dateToString( dueDate().date() ) );
+    }
+  }
 
-  if ( !parent().isNull() )
+  if ( !parent().isNull() ) {
     writeString( element, "parent", parent() );
+  }
 
-  if ( hasCompletedDate() && percentCompleted() == 100)
+  if ( hasCompletedDate() && percentCompleted() == 100 ) {
     writeString( element, "x-completed-date", dateTimeToString( completedDate() ) );
+  }
 
   return true;
 }
@@ -347,21 +354,32 @@ void Task::setFields( const KCal::Todo* task )
   setStatus( task->status() );
   setHasStartDate( task->hasStartDate() );
 
-  if ( task->hasDueDate() )
-    setDueDate( localToUTC( task->dtDue() ) );
-  else
+  if ( task->hasDueDate() ) {
+    if ( task->allDay() ) {
+      // This is a floating task. Don't timezone move this one
+      mFloatingStatus = AllDay;
+      setDueDate( KDateTime( task->dtDue().date() ) );
+    } else {
+      mFloatingStatus = HasTime;
+      setDueDate( localToUTC( task->dtDue() ) );
+    }
+  } else {
     mHasDueDate = false;
-  if ( task->relatedTo() )
-    setParent( task->relatedTo()->uid() );
-  else if ( !task->relatedToUid().isEmpty() )
-    setParent( task->relatedToUid( ) );
-  else
-    setParent( QString() );
+  }
 
-  if ( task->hasCompletedDate() && task->percentComplete() == 100 )
+  if ( task->relatedTo() ) {
+    setParent( task->relatedTo()->uid() );
+  } else if ( !task->relatedToUid().isEmpty() ) {
+    setParent( task->relatedToUid( ) );
+  } else{
+    setParent( QString() );
+  }
+
+  if ( task->hasCompletedDate() && task->percentComplete() == 100 ) {
     setCompletedDate( localToUTC( task->completed() ) );
-  else
+  } else {
     mHasCompletedDate = false;
+  }
 }
 
 void Task::decideAndSetPriority()
