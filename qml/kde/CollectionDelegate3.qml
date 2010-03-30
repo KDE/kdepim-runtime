@@ -47,6 +47,7 @@ Component {
         console.log( "first" + model.index );
         application.setSelectedBreadcrumbCollectionRow(model.index);
         //delegateTopLevel.indexSelected(); //(model.index);
+        breadcrumbTopLevel.collectionSelected()
       }
     }
     Row {

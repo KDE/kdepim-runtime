@@ -23,6 +23,7 @@ import Qt 4.7
 import org.kde 4.5
 
 Item {
+  id: breadcrumbTopLevel
 
   property alias breadcrumbItemsModel : breadcrumbsView.model
   property alias selectedItemModel : selectedItemView.model
@@ -33,6 +34,8 @@ Item {
 
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
+
+  signal collectionSelected
 
   SystemPalette { id: palette; colorGroup: "Active" }
 
