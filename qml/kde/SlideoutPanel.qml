@@ -101,6 +101,7 @@ Item {
           y: 20
         }
         PropertyChanges { target: titleLabel; visible: false }
+        PropertyChanges { target: titleImage; visible: false }
         PropertyChanges { target: contentArea; visible: true }
         PropertyChanges { target: background.parent; z: 50 }
       }
