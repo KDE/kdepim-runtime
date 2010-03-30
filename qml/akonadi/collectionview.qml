@@ -30,7 +30,7 @@ Rectangle {
   property alias currentIndex: collectionListView.currentIndex
   signal collectionSelected
 
-  SystemPalette { id: palette; colorGroup: Qt.Active }
+  SystemPalette { id: palette; colorGroup: "Active" }
   Component {
     id: collectionViewDelegate
 
