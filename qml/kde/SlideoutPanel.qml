@@ -31,6 +31,8 @@ Item {
   property int contentWidth: width - handleWidth
   z:100
 
+  function collapse() { background.x = -handleWidth }
+
   Rectangle {
     id: background
     x: - handleWidth
