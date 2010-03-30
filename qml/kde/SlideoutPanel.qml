@@ -20,10 +20,12 @@
 import Qt 4.6
 
 Item {
-  property string title
+  property string titleText
+  property string titleIcon
   property int handlePosition
   property alias content: contentArea.data
   property int handleWidth: 52
+  property int handleHeight: 160
   property int dragThreshold: 16
   property int handleRadius: 12
   property int contentWidth: width - 2*handleWidth
@@ -34,6 +36,7 @@ Item {
     x: - handleWidth
     y: handlePosition
     width: 2*handleWidth
+   height: handleHeight
 
     gradient: Gradient {
       GradientStop { position: 0.0; color: "lightgrey" }
@@ -46,29 +49,36 @@ Item {
     }
     radius: handleRadius
 
-//     height: titleLabel.width
-     height: 160
+    Image {
+      id: titleImage
+      width: handleWidth - 4
+      height: (titleIcon == '' ? 0 : handleWidth - 4)
+      source: titleIcon
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      anchors.margins: 2
+    }
 
     Text {
       id: titleLabel
       anchors.left: parent.right
-      anchors.top: parent.top
-      width: parent.height
-      text: parent.parent.title
-      transformOrigin: "TopLeft"
-      rotation: 90
+      anchors.bottom: titleImage.top
+      width: parent.height - titleImage.height
+      text: titleText
+      transformOrigin: "BottomLeft"
+      rotation: -90
       horizontalAlignment: "AlignHCenter"
       verticalAlignment: "AlignTop"
       font.bold: true
-      font.pixelSize: 36
+      font.pixelSize: 32
     }
 
     MouseArea {
       anchors.fill: parent
       drag.target: parent
       drag.axis: "XAxis"
-      drag.minimumX: - parent.parent.handleWidth
-      drag.maximumX: - parent.parent.handleWidth + parent.parent.dragThreshold + 1
+      drag.minimumX: - handleWidth
+      drag.maximumX: - handleWidth + dragThreshold + 1
     }
 
     Item {
@@ -77,17 +87,17 @@ Item {
       anchors.right: parent.right
       anchors.top: parent.top
       anchors.bottom: parent.bottom
-      width: background.parent.contentWidth
+      width: contentWidth
     }
 
     states: [
       State {
         name: "expandedState"
-        when: background.x >= (-background.parent.handleWidth + background.parent.dragThreshold)
+        when: background.x >= (-handleWidth + dragThreshold)
         PropertyChanges {
           target: background
           height: background.parent.height - 40
-          width: background.parent.contentWidth + 2 * background.parent.handleWidth
+          width: contentWidth + 2 * handleWidth
           y: 20
         }
         PropertyChanges { target: titleLabel; visible: false }

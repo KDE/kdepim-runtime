@@ -18,6 +18,7 @@
 */
 
 import Qt 4.6
+import org.kde 4.5
 import ".."
 
 Rectangle {
@@ -26,8 +27,9 @@ Rectangle {
 
   SlideoutPanel {
     anchors.fill: parent
-    title: "Folders"
+    titleText: "Folders"
     handlePosition: 40
+    handleHeight: 150
     content: [
       Rectangle {
         color: "blue"
@@ -38,9 +40,11 @@ Rectangle {
   }
 
   SlideoutPanel {
-    anchors.fill:parent
-    title: "Actions"
-    handlePosition: 200
+    anchors.fill: parent
+    titleText: "Actions"
+    titleIcon: KDE.iconPath( "akonadi", 48 );
+    handlePosition: 190
+    handleHeight: 190
     contentWidth: 200
     content: [
       Rectangle {
@@ -50,4 +54,20 @@ Rectangle {
       }
     ]
   }
+
+  SlideoutPanel {
+    anchors.fill: parent
+    titleIcon: KDE.iconPath( "mail-attachment", 48 );
+    handlePosition: 380
+    handleHeight: 52
+    contentWidth: 400
+    content: [
+      Rectangle {
+        color: "green"
+        anchors.margins: 12
+        anchors.fill: parent
+      }
+    ]
+  }
+
 }
