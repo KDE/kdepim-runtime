@@ -24,7 +24,7 @@ import org.kde 4.5
     @param model: The collection model to display, ETM-based, filtered to only contain a flat collection list.
     @param currentIndex: Index of the currently selected row.
  */
-Rectangle {
+Item {
   id: collectionListViewTopLevel
   property alias model: collectionListView.model
   property alias currentIndex: collectionListView.currentIndex
@@ -96,5 +96,6 @@ Rectangle {
     highlight: highlight
     highlightFollowsCurrentItem: true
     focus: true
+    clip: true
   }
 }
