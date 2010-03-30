@@ -63,6 +63,7 @@ macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built wit
 
 option(KDEPIM_MOBILE_UI "Build UI for mobile devices instead of for desktops" FALSE)
 if (KDEPIM_MOBILE_UI)
+  macro_log_feature(QT_QTDECLARATIVE_FOUND "QtDeclarative" "Qt Declarative (QML) module" "http://qt.nokia.com" TRUE "4.7" "Required for building mobile UI")
   add_definitions( -DKDEPIM_MOBILE_UI )
 endif (KDEPIM_MOBILE_UI)
 
