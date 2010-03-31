@@ -183,6 +183,26 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Port:</string>
+           </property>
+           <property name="buddy">
+            <cstring>portSpin</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="portSpin">
+           <property name="maximum">
+            <number>65536</number>
+           </property>
+           <property name="value">
+            <number>143</number>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -193,46 +213,47 @@ p, li { white-space: pre-wrap; }
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QComboBox" name="authenticationCombo">
-              <item>
-               <property name="text">
-                <string>Clear text</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>LOGIN</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>PLAIN</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>CRAM-MD5</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>DIGEST-MD5</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>NTLM</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>GSSAPI</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Anonymous</string>
-               </property>
-              </item></widget>
+            <item>
+             <property name="text">
+              <string>Clear text</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>LOGIN</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>PLAIN</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>CRAM-MD5</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>DIGEST-MD5</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>NTLM</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>GSSAPI</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Anonymous</string>
+             </property>
+            </item>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -482,7 +503,6 @@ p, li { white-space: pre-wrap; }
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="authImapGroup"/>
   <buttongroup name="safeImapGroup"/>
  </buttongroups>
 </ui>
