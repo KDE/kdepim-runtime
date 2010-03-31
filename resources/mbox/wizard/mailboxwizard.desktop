@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=MailBox
 Name[ca]=Bústia
+Name[ca@valencia]=Bústia
 Name[en_GB]=MailBox
 Name[es]=MailBox
 Name[gl]=Caixa de correo
@@ -13,6 +14,7 @@ Name[x-test]=xxMailBoxxx
 Icon=message-rfc822
 Comment=Mailbox account
 Comment[ca]=Compte de bústia
+Comment[ca@valencia]=Compte de bústia
 Comment[en_GB]=Mailbox account
 Comment[es]=Cuenta de Mailbox
 Comment[gl]=Conta da caixa de correo

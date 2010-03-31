@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Open-Xchange Groupware Server
 Name[ca]=Servidor de treball en grup Open-Xchange
+Name[ca@valencia]=Servidor de treball en grup Open-Xchange
 Name[en_GB]=Open-Xchange Groupware Server
 Name[es]=Servidor de trabajo en grupo  Open-Xchange
 Name[gl]=Servidor de Traballo en Grupo OpenXchange
@@ -14,6 +15,7 @@ Name[uk]=Сервер групової роботи Open-Xchange
 Name[x-test]=xxOpen-Xchange Groupware Serverxx
 Comment=Provides access to the appointments, tasks, and contacts of an Open-Xchange groupware server.
 Comment[ca]=Proporciona l'accés a les cites, tasques i contactes emmagatzemats en un servidor de treball en grup Open-Xchange
+Comment[ca@valencia]=Proporciona l'accés a les cites, tasques i contactes emmagatzemats en un servidor de treball en grup Open-Xchange
 Comment[en_GB]=Provides access to the appointments, tasks and contacts of an Open-Xchange groupware server.
 Comment[es]=Proporciona acceso a las citas, tareas y contactos almacenados en un servidor de trabajo en grupo Open-Xchange.
 Comment[gl]=Fornece acceso ás citas, tarefas e contactos almacenados nun servidor de traballo en grupo Open-Xchange

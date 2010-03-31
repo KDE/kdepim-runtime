@@ -41,6 +41,7 @@ Name[zh_TW]=Maildir
 Icon=message-rfc822
 Comment=Maildir account
 Comment[ca]=Compte Maildir
+Comment[ca@valencia]=Compte Maildir
 Comment[en_GB]=Maildir account
 Comment[es]=Cuenta de directorio de correo
 Comment[gl]=Conta de Maildir

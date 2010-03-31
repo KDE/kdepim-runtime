@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Disconnected Imap
 Name[ca]=Imap desconnectat
+Name[ca@valencia]=Imap desconnectat
 Name[en_GB]=Disconnected Imap
 Name[es]=Imap desconectado
 Name[gl]=Imap Desconectado
@@ -14,6 +15,7 @@ Name[x-test]=xxDisconnected Imapxx
 Icon=network-server
 Comment=Disconnected Imap account
 Comment[ca]=Compte Imap desconnectat
+Comment[ca@valencia]=Compte Imap desconnectat
 Comment[en_GB]=Disconnected Imap account
 Comment[es]=Cuenta Imap desconectada
 Comment[gl]=Conta de Imap desconectada
