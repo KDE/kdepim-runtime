@@ -40,6 +40,8 @@ Component {
       opacity: 0.25
       x: 1; y: 2; width: parent.width - 2; height: parent.height - 4
       border.color: "blue"
+
+      color : palette.dark
       radius: 10
     }
     MouseArea {
