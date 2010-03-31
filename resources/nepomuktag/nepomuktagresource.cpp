@@ -70,7 +70,7 @@ NepomukTagResource::NepomukTagResource( const QString &id )
     m_pendingTagsTimer.setSingleShot( true );
     m_pendingTagsTimer.setInterval( 500 );
     connect( &m_pendingTagsTimer, SIGNAL(timeout()), SLOT(createPendingTagCollections()) );
- 
+
     synchronize();
 }
 
@@ -146,6 +146,18 @@ void NepomukTagResource::slotLocalListResult( KJob *job )
     }
 }
 
+void NepomukTagResource::linkDone( KJob* job )
+{
+  if ( job->error() )
+    qDebug("error on linking: %s", qPrintable( job->errorText() ) );
+}
+
+void NepomukTagResource::unlinkDone( KJob* job )
+{
+  if ( job->error() )
+    qDebug("error on unlinking: %s", qPrintable( job->errorText() ) );
+}
+
 void NepomukTagResource::slotLinkResult( KJob* job )
 {
     kDebug();
@@ -164,7 +176,6 @@ void NepomukTagResource::configure( WId )
 
 void NepomukTagResource::itemLinked(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-    kDebug() << "Tagging" << item.id() << " with " << collection.remoteId();
     Nepomuk::Resource res( item.url() );
     const Nepomuk::Tag tag( collection.remoteId() );
     res.addTag( tag );
@@ -173,7 +184,6 @@ void NepomukTagResource::itemLinked(const Akonadi::Item& item, const Akonadi::Co
 
 void NepomukTagResource::itemUnlinked(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-    kDebug() << "Untagging" << item.id() << " with " << collection.remoteId();
     Nepomuk::Resource res( item.url() );
     QList<Nepomuk::Tag> allTags = res.tags();
     const Nepomuk::Tag tag( collection.remoteId() );
@@ -187,7 +197,6 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
     Q_UNUSED( parent );
     QString s = collection.name();
     Collection newCollection = collection;
-    kDebug() << "Adding tag:" << s;
 
     // taken from kdelibs/nepomuk/core/ui/kmetadatatagwidget.cpp
     // Copyright (C) 2006-2007 Sebastian Trueg <trueg@kde.org>
@@ -245,9 +254,12 @@ void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
     const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
     if ( !item.isValid() )
       return;
+
     Collection tagCollection;
     tagCollection.setRemoteId( statement.object().uri().toString() );
-    new LinkJob( tagCollection, Item::List() << item, this );
+
+    LinkJob *job = new LinkJob( tagCollection, Item::List() << item, this );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( linkDone( KJob* ) ) );
   } else if ( statement.predicate() == Soprano::Vocabulary::RDF::type() && statement.object() == Soprano::Vocabulary::NAO::Tag() ) {
     // we need to delay the actual folder creation a bit, otherwise we will not see the fully created tag yet
     m_pendingTagUris.append( statement.subject().uri() );
@@ -259,12 +271,16 @@ void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
 void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
 {
   if ( statement.predicate() == Soprano::Vocabulary::NAO::hasTag() ) {
+
     const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
     if ( !item.isValid() )
       return;
+
     Collection tagCollection;
     tagCollection.setRemoteId( statement.object().uri().toString() );
-    new UnlinkJob( tagCollection, Item::List() << item, this );
+
+    UnlinkJob *job = new UnlinkJob( tagCollection, Item::List() << item, this );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( unlinkDone( KJob* ) ) );
   }
 }
 
@@ -275,6 +291,7 @@ Collection NepomukTagResource::collectionFromTag(const Nepomuk::Tag& tag)
   c.setRemoteId( tag.resourceUri().toString() );
   c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
   c.setParentCollection( m_root );
+  c.setContentMimeTypes( QStringList() << "message/rfc822" );
   if ( !tag.symbols().isEmpty() ) {
     const QString icon = tag.symbols().first();
     EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );

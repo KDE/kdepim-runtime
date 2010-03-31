@@ -73,6 +73,9 @@ protected:
 
     void createPendingTagCollections();
 
+    void linkDone( KJob* );
+    void unlinkDone( KJob* );
+
   private:
     Akonadi::Collection m_root;
     QList<QUrl> m_pendingTagUris;
