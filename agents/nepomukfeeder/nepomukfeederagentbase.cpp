@@ -253,8 +253,8 @@ void NepomukFeederAgentBase::itemsReceived(const Akonadi::Item::List& items)
     // we only get here if the item is not anywhere in Nepomuk yet, so no need to delete it
     item.setParentCollection( mCurrentCollection );
     const QUrl graph = createGraphForEntity( item );
-    mNrlModel()->addStatement( item.url(), Akonadi::ItemSearchJob::akonadiItemIdUri(),
-                               QUrl( QString::number( item.id() ) ), graph );
+    mNrlModel->addStatement( item.url(), Akonadi::ItemSearchJob::akonadiItemIdUri(),
+                             QUrl( QString::number( item.id() ) ), graph );
     updateItem( item, graph );
   }
   mProcessedAmount += items.count();
