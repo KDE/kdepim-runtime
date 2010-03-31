@@ -36,7 +36,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>451</width>
+        <width>519</width>
         <height>863</height>
        </rect>
       </property>
@@ -192,87 +192,47 @@ p, li { white-space: pre-wrap; }
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QRadioButton" name="clearRadio">
-            <property name="text">
-             <string>Clear text</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <attribute name="buttonGroup">
-             <string>authImapGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="loginRadio">
-            <property name="text">
-             <string>LOGIN</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string>authImapGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="plainRadio">
-            <property name="text">
-             <string>PLAIN</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string>authImapGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="cramMd5Radio">
-            <property name="text">
-             <string>CRAM-MD5</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string>authImapGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="digestMd5Radio">
-            <property name="text">
-             <string>DIGEST-MD5</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string>authImapGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="ntlmRadio">
-            <property name="text">
-             <string>NTLM</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string>authImapGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="gssapiRadio">
-            <property name="text">
-             <string>GSSAPI</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string>authImapGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="anonymousRadio">
-            <property name="text">
-             <string>Anonymous</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string>authImapGroup</string>
-            </attribute>
-           </widget>
+           <widget class="QComboBox" name="authenticationCombo">
+              <item>
+               <property name="text">
+                <string>Clear text</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>LOGIN</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>PLAIN</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>CRAM-MD5</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>DIGEST-MD5</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>NTLM</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>GSSAPI</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Anonymous</string>
+               </property>
+              </item></widget>
           </item>
          </layout>
         </widget>
@@ -282,21 +242,21 @@ p, li { white-space: pre-wrap; }
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
-         <item row="1" column="0">
+         <item row="2" column="0">
           <widget class="QLabel" name="label_4">
            <property name="text">
             <string>Check interval:</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="5" column="0">
           <widget class="QCheckBox" name="subscriptionEnabled">
            <property name="text">
             <string>Enable Server-Side Subscriptions</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="5" column="1">
           <widget class="KPushButton" name="subscriptionButton">
            <property name="enabled">
             <bool>false</bool>
@@ -306,14 +266,14 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="4" column="0">
           <widget class="QCheckBox" name="disconnectedModeEnabled">
            <property name="text">
             <string>Enable Disconnected Mode</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="KIntNumInput" name="checkInterval">
            <property name="value">
             <number>1</number>
@@ -329,6 +289,20 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="specialValueText">
             <string extracomment="no interval mail check">Never</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="enableMailCheckBox">
+           <property name="text">
+            <string>Enable interval mail checking</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="includeInCheck">
+           <property name="text">
+            <string>Include in man&amp;ual mail check</string>
            </property>
           </widget>
          </item>
@@ -427,12 +401,12 @@ p, li { white-space: pre-wrap; }
             <string>Managesieve port:</string>
            </property>
            <property name="buddy">
-            <cstring>portSpin</cstring>
+            <cstring>sievePortSpin</cstring>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="KIntSpinBox" name="portSpin">
+          <widget class="KIntSpinBox" name="sievePortSpin">
            <property name="maximum">
             <number>2000</number>
            </property>
@@ -458,8 +432,6 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
   </layout>
-  <zorder>scrollArea</zorder>
-  <zorder>verticalSpacer_2</zorder>
  </widget>
  <customwidgets>
   <customwidget>
@@ -476,6 +448,7 @@ p, li { white-space: pre-wrap; }
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>KIntNumInput</class>
