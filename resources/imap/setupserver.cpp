@@ -66,7 +66,6 @@ SetupServer::SetupServer( WId parent )
 #endif
   Settings::self()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
-
   m_ui->safeImapGroup->setId( m_ui->noRadio, 1 );
   m_ui->safeImapGroup->setId( m_ui->sslRadio, 2 );
   m_ui->safeImapGroup->setId( m_ui->tlsRadio, 3 );
@@ -78,14 +77,7 @@ SetupServer::SetupServer( WId parent )
   connect( m_ui->tlsRadio, SIGNAL( toggled(bool) ),
            this, SLOT( slotSafetyChanged() ) );
 
-  m_ui->authImapGroup->setId( m_ui->clearRadio, 0 );
-  m_ui->authImapGroup->setId( m_ui->loginRadio, 1 );
-  m_ui->authImapGroup->setId( m_ui->plainRadio, 2 );
-  m_ui->authImapGroup->setId( m_ui->cramMd5Radio, 3 );
-  m_ui->authImapGroup->setId( m_ui->digestMd5Radio, 4 );
-  m_ui->authImapGroup->setId( m_ui->ntlmRadio, 5 );
-  m_ui->authImapGroup->setId( m_ui->gssapiRadio, 6 );
-  m_ui->authImapGroup->setId( m_ui->anonymousRadio, 7 );
+  populateDefaultAuthenticationOptions();
 
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
@@ -118,6 +110,8 @@ SetupServer::SetupServer( WId parent )
            SLOT(slotEnableWidgets()) );
 
   connect( m_ui->useDefaultIdentityCheck, SIGNAL( toggled(bool) ), this, SLOT( slotIdentityCheckboxChanged() ) );
+  connect( m_ui->enableMailCheckBox, SIGNAL( toggled(bool) ), this, SLOT( slotMailCheckboxChanged() ) );
+  connect( m_ui->safeImapGroup, SIGNAL( buttonClicked( int ) ), this, SLOT( slotEncryptionRadioChanged() ) );
 
   readSettings();
   slotTestChanged();
@@ -145,6 +139,29 @@ void SetupServer::slotIdentityCheckboxChanged()
   m_identityCombobox->setEnabled( !m_ui->useDefaultIdentityCheck->isChecked() );
 }
 
+void SetupServer::slotMailCheckboxChanged()
+{
+  m_ui->checkInterval->setEnabled( m_ui->enableMailCheckBox->isChecked() );
+}
+
+void SetupServer::slotEncryptionRadioChanged()
+{
+  // TODO these really should be defined somewhere else
+  switch ( m_ui->safeImapGroup->checkedId() ) {
+  case 1:
+  case 3:
+    m_ui->portSpin->setValue( 143 );
+    break;
+  case 2:
+    m_ui->portSpin->setValue( 993 );
+    break;
+  default:
+    kFatal() << "Shouldn't happen";
+  }
+
+}
+
+
 void SetupServer::applySettings()
 {
   m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
@@ -153,7 +170,7 @@ void SetupServer::applySettings()
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setUserName( m_ui->userName->text() );
   Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
-  Settings::self()->setAuthentication( m_ui->authImapGroup->checkedId() );
+  Settings::self()->setAuthentication( m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt() );
   Settings::self()->setPassword( m_ui->password->text() );
   Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
   Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
@@ -161,7 +178,7 @@ void SetupServer::applySettings()
 
   Settings::self()->setSieveSupport( m_ui->managesieveCheck->isChecked() );
   Settings::self()->setSieveReuseConfig( m_ui->sameConfigCheck->isChecked() );
-  Settings::self()->setSievePort( m_ui->portSpin->value() );
+  Settings::self()->setSievePort( m_ui->sievePortSpin->value() );
   Settings::self()->setSieveAlternateUrl( m_ui->alternateURL->text() );
   Settings::self()->setSieveVacationFilename( m_vacationFileName );
 
@@ -172,6 +189,12 @@ void SetupServer::applySettings()
 
   if ( !m_ui->useDefaultIdentityCheck->isChecked() )
     Settings::self()->setAccountIdentity( m_identityCombobox->currentIdentity() );
+
+  Settings::self()->setIntervalCheckEnabled( m_ui->enableMailCheckBox->isChecked() );
+  if( m_ui->enableMailCheckBox->isChecked() )
+    Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
+
+  Settings::self()->setIncludeInManualCheck( m_ui->includeInCheck->isChecked() );
 
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
@@ -196,7 +219,7 @@ void SetupServer::readSettings()
   m_ui->safeImapGroup->button( i )->setChecked( true );
 
   i = Settings::self()->authentication();
-  m_ui->authImapGroup->button( i )->setChecked( true );
+  m_ui->authenticationCombo->setCurrentIndex( m_ui->authenticationCombo->findData( i ) );
 
   if ( !Settings::self()->passwordPossible() ) {
     m_ui->password->setEnabled( false );
@@ -217,7 +240,7 @@ void SetupServer::readSettings()
 
   m_ui->managesieveCheck->setChecked(Settings::self()->sieveSupport());
   m_ui->sameConfigCheck->setChecked( Settings::self()->sieveReuseConfig() );
-  m_ui->portSpin->setValue( Settings::self()->sievePort() );
+  m_ui->sievePortSpin->setValue( Settings::self()->sievePort() );
   m_ui->alternateURL->setText( Settings::self()->sieveAlternateUrl() );
   m_vacationFileName = Settings::self()->sieveVacationFilename();
 
@@ -240,6 +263,11 @@ void SetupServer::readSettings()
   if ( !m_ui->useDefaultIdentityCheck->isChecked() )
     m_identityCombobox->setCurrentIdentity( Settings::self()->accountIdentity() );
 
+  m_ui->enableMailCheckBox->setChecked( Settings::self()->intervalCheckEnabled() );
+  if( m_ui->enableMailCheckBox->isChecked() )
+    m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
+
+  m_ui->includeInCheck->setChecked( Settings::self()->includeInManualCheck() );
 
   m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
 
@@ -255,7 +283,7 @@ void SetupServer::slotTest()
 
   m_ui->testButton->setEnabled( false );
   m_ui->safeImap->setEnabled( false );
-  m_ui->authImap->setEnabled( false );
+  m_ui->authenticationCombo->setEnabled( false );
 
   m_ui->testInfo->clear();
   m_ui->testInfo->hide();
@@ -310,7 +338,7 @@ void SetupServer::slotFinished( QList<int> testResult )
 
   m_ui->testButton->setEnabled( true );
   m_ui->safeImap->setEnabled( true );
-  m_ui->authImap->setEnabled( true );
+  m_ui->authenticationCombo->setEnabled( true );
 }
 
 void SetupServer::slotTestChanged()
@@ -330,7 +358,7 @@ void SetupServer::slotEnableWidgets()
   bool reuseConfig = m_ui->sameConfigCheck->isChecked();
 
   m_ui->sameConfigCheck->setEnabled( haveSieve );
-  m_ui->portSpin->setEnabled( haveSieve && reuseConfig );
+  m_ui->sievePortSpin->setEnabled( haveSieve && reuseConfig );
   m_ui->alternateURL->setEnabled( haveSieve && !reuseConfig );
 }
 
@@ -347,14 +375,8 @@ void SetupServer::slotSafetyChanged()
     m_ui->sslRadio->setEnabled( true );
     m_ui->tlsRadio->setEnabled( true );
 
-    m_ui->clearRadio->setEnabled( true );
-    m_ui->loginRadio->setEnabled( true );
-    m_ui->plainRadio->setEnabled( true );
-    m_ui->cramMd5Radio->setEnabled( true );
-    m_ui->digestMd5Radio->setEnabled( true );
-    m_ui->ntlmRadio->setEnabled( true );
-    m_ui->gssapiRadio->setEnabled( true );
-    m_ui->anonymousRadio->setEnabled( true );
+    populateDefaultAuthenticationOptions();
+    m_ui->authenticationCombo->setEnabled( true );
     return;
   }
 
@@ -376,17 +398,10 @@ void SetupServer::slotSafetyChanged()
 
   using namespace MailTransport;
 
-  m_ui->clearRadio->setEnabled( true );
-  m_ui->loginRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::LOGIN ) );
-  m_ui->plainRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::PLAIN ) );
-  m_ui->cramMd5Radio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::CRAM_MD5 ) );
-  m_ui->digestMd5Radio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::DIGEST_MD5 ) );
-  m_ui->ntlmRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::NTLM ) );
-  m_ui->gssapiRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::GSSAPI ) );
-  m_ui->anonymousRadio->setEnabled( protocols.contains( Transport::EnumAuthenticationType::ANONYMOUS ) );
-
-  if ( !m_ui->authImapGroup->checkedButton()->isEnabled() ) {
-    m_ui->clearRadio->setChecked( true );
+  m_ui->authenticationCombo->clear();
+  foreach( int prot, protocols ) {
+    KIMAP::LoginJob::AuthenticationMode t = ( KIMAP::LoginJob::AuthenticationMode ) prot;
+    m_ui->authenticationCombo->addItem( authenticationToString( t ) , prot );
   }
 }
 
@@ -412,34 +427,8 @@ void SetupServer::slotManageSubscriptions()
     kFatal("Shouldn't happen...");
   }
 
-  switch ( m_ui->authImapGroup->checkedId() ) {
-  case 0:
-    account.setAuthenticationMode( KIMAP::LoginJob::ClearText );
-    break;
-  case 1:
-    account.setAuthenticationMode( KIMAP::LoginJob::Login );
-    break;
-  case 2:
-    account.setAuthenticationMode( KIMAP::LoginJob::Plain );
-    break;
-  case 3:
-    account.setAuthenticationMode( KIMAP::LoginJob::CramMD5 );
-    break;
-  case 4:
-    account.setAuthenticationMode( KIMAP::LoginJob::DigestMD5 );
-    break;
-  case 5:
-    account.setAuthenticationMode( KIMAP::LoginJob::NTLM );
-    break;
-  case 6:
-    account.setAuthenticationMode( KIMAP::LoginJob::GSSAPI );
-    break;
-  case 7:
-    account.setAuthenticationMode( KIMAP::LoginJob::Anonymous );
-    break;
-  default:
-    kFatal("Shouldn't happen...");
-  }
+  int type = m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt();
+  account.setAuthenticationMode( ( KIMAP::LoginJob::AuthenticationMode ) type );
 
   m_subscriptionsChanged = false;
   SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."), &account, m_subscriptionsChanged );
@@ -467,6 +456,48 @@ void SetupServer::localFolderRequestJobFinished( KJob *job )
     m_ui->folderRequester->setCollection( targetCollection );
   }
 }
+
+QString SetupServer::authenticationToString(int type)
+{
+  switch ( type ) {
+  case KIMAP::LoginJob::Login:
+    return "LOGIN";
+  case KIMAP::LoginJob::Plain:
+    return "PLAIN";
+  case KIMAP::LoginJob::CramMD5:
+    return "CRAM-MD5";
+  case KIMAP::LoginJob::DigestMD5:
+    return "DIGEST-MD5";
+  case KIMAP::LoginJob::GSSAPI:
+    return "GSSAPI";
+  case KIMAP::LoginJob::NTLM:
+    return "NTLM";
+  case  KIMAP::LoginJob::ClearText:
+    return "Clear text";
+  case KIMAP::LoginJob::Anonymous:
+    return "Anonymous";
+  default:
+      break;
+  }
+  return "";
+}
+
+#define addAuthenticationItem( type ) \
+    m_ui->authenticationCombo->addItem( authenticationToString( type ), QVariant( type ) );
+
+void SetupServer::populateDefaultAuthenticationOptions()
+{
+  m_ui->authenticationCombo->clear();
+  addAuthenticationItem( KIMAP::LoginJob::ClearText );
+  addAuthenticationItem( KIMAP::LoginJob::Login );
+  addAuthenticationItem( KIMAP::LoginJob::Plain );
+  addAuthenticationItem( KIMAP::LoginJob::CramMD5 );
+  addAuthenticationItem( KIMAP::LoginJob::DigestMD5 );
+  addAuthenticationItem( KIMAP::LoginJob::NTLM );
+  addAuthenticationItem( KIMAP::LoginJob::GSSAPI );
+  addAuthenticationItem( KIMAP::LoginJob::Anonymous );
+}
+
 
 
 

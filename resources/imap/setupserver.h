@@ -71,9 +71,12 @@ private slots:
    */
   void applySettings();
   void slotIdentityCheckboxChanged();
-
+  void slotMailCheckboxChanged();
+  void slotEncryptionRadioChanged();
 private:
   void readSettings();
+  QString authenticationToString( int type );
+  void populateDefaultAuthenticationOptions();
 
   Ui::SetupServerView *m_ui;
   MailTransport::ServerTest *m_serverTest;
