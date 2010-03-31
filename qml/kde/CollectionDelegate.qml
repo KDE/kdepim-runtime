@@ -31,6 +31,7 @@ Component {
     id: wrapper
     height : 68
     width : breadcrumbsView.width
+    clip: true
 
     //(int row)
 
