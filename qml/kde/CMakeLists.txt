@@ -15,6 +15,6 @@ install( FILES qmldir
 
 install( TARGETS kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
 
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
 endif (QT_QTDECLARATIVE_FOUND)
