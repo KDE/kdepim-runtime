@@ -34,6 +34,7 @@
 // KDELIBS includes
 #include <KMessageBox>
 #include <KProtocolInfo>
+#include <KUser>
 #include <KWindowSystem>
 #include <kwallet.h>
 
@@ -158,7 +159,8 @@ void AccountDialog::loadSettings()
 
   nameEdit->setText( mParentResource->name() );
   nameEdit->setFocus();
-  loginEdit->setText( Settings::self()->login() );
+  loginEdit->setText( !Settings::self()->login().isEmpty() ? Settings::self()->login() :
+                      KUser().loginName() );
   hostEdit->setText( Settings::self()->host() );
   portEdit->setValue( Settings::self()->port() );
   precommand->setText( Settings::self()->precommand() );
