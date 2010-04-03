@@ -41,6 +41,8 @@ class IdentityCombo;
 class IdentityManager;
 }
 
+class ImapResource;
+
 
 /**
  * @class SetupServer
@@ -54,9 +56,10 @@ class SetupServer : public KDialog
 public:
   /**
    * Constructor
+   * @param parentResource The resource this dialog belongs to
    * @param parent Parent WId
    */
-  SetupServer( WId parent );
+  SetupServer( ImapResource *parentResource, WId parent );
 
   /**
    * Destructor
@@ -78,6 +81,7 @@ private:
   void readSettings();
   void populateDefaultAuthenticationOptions();
 
+  ImapResource *m_parentResource;
   Ui::SetupServerView *m_ui;
   MailTransport::ServerTest *m_serverTest;
   bool m_subscriptionsChanged;

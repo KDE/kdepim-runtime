@@ -23,6 +23,7 @@
 
 #include "setupserver.h"
 #include "settings.h"
+#include "imapresource.h"
 
 #include <QButtonGroup>
 #include <QGridLayout>
@@ -57,8 +58,8 @@
 #include "ui_setupserverview_desktop.h"
 #endif
 
-SetupServer::SetupServer( WId parent )
-  : KDialog(), m_ui(new Ui::SetupServerView), m_serverTest(0),
+SetupServer::SetupServer( ImapResource *parentResource, WId parent )
+  : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
     m_subscriptionsChanged(false), m_shouldClearCache(false)
 {
 #ifdef KDEPIM_MOBILE_UI
@@ -176,6 +177,8 @@ void SetupServer::applySettings()
   m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
                     || ( Settings::self()->userName() != m_ui->userName->text() );
 
+  m_parentResource->setName( m_ui->accountName->text() );
+
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setUserName( m_ui->userName->text() );
   Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
@@ -211,6 +214,10 @@ void SetupServer::applySettings()
 
 void SetupServer::readSettings()
 {
+  if ( m_parentResource->name() == m_parentResource->identifier() )
+    m_parentResource->setName( i18n( "IMAP Account" ) );
+  m_ui->accountName->setText( m_parentResource->name() );
+
   KUser* currentUser = new KUser();
   KEMailSettings esetting;
 

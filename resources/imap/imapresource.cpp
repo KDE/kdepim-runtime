@@ -208,18 +208,12 @@ void ImapResource::onContentFetchDone( KJob *job )
 
 void ImapResource::configure( WId windowId )
 {
-  SetupServer dlg( windowId );
+  SetupServer dlg( this, windowId );
   KWindowSystem::setMainWindow( &dlg, windowId );
 
   dlg.exec();
   if ( dlg.shouldClearCache() ) {
     clearCache();
-  }
-
-  if ( !Settings::self()->imapServer().isEmpty() && !Settings::self()->userName().isEmpty() ) {
-    setName( Settings::self()->imapServer() + '/' + Settings::self()->userName() );
-  } else {
-    setName( KGlobal::mainComponent().aboutData()->appName() );
   }
 
   if ( dlg.result() == QDialog::Accepted ) {
@@ -601,7 +595,6 @@ void ImapResource::retrieveCollections()
   }
 
   Collection root;
-  root.setName( m_account->server() + '/' + m_account->userName() );
   root.setRemoteId( rootRemoteId() );
   root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
   root.setRights( Collection::ReadOnly );
