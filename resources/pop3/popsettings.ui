@@ -106,7 +106,7 @@
                <number>10000000</number>
               </property>
               <property name="suffix">
-               <string> min</string>
+               <string> </string>
               </property>
              </widget>
             </item>

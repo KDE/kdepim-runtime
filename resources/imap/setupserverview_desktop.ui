@@ -133,7 +133,7 @@
                <number>0</number>
               </property>
               <property name="suffix">
-               <string> minutes</string>
+               <string> </string>
               </property>
               <property name="prefix">
                <string/>

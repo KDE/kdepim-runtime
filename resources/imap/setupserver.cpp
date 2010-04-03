@@ -82,6 +82,7 @@ SetupServer::SetupServer( WId parent )
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
   m_ui->accountName->setFocus();
+  m_ui->checkInterval->setSuffix( ki18np( " minute", " minutes" ) );
 
   // FIXME: This option has no effect yet, therefore hide it for now.
   m_ui->includeInCheck->hide();

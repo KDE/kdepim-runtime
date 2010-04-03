@@ -94,6 +94,7 @@ void AccountDialog::setupWidgets()
   // only letters, digits, '-', '.', ':' (IPv6) and '_' (for Windows
   // compatibility) are allowed
   hostEdit->setValidator( &mValidator );
+  intervalSpin->setSuffix( ki18np( " minute", " minutes" ) );
 
   connect( leaveOnServerCheck, SIGNAL( clicked() ),
            this, SLOT( slotLeaveOnServerClicked() ) );
