@@ -486,20 +486,24 @@ void AccountDialog::enablePopFeatures()
   }
 }
 
-#define addAuthenticationItem( type ) \
-    authCombo->addItem( Transport::authenticationTypeString( type ), QVariant( type ) );
+static void addAuthenticationItem( QComboBox *combo,
+                                   int authenticationType )
+{
+  combo->addItem( Transport::authenticationTypeString( authenticationType ),
+                  QVariant( authenticationType ) );
+}
 
 void AccountDialog::populateDefaultAuthenticationOptions()
 {
   authCombo->clear();
-  addAuthenticationItem( Transport::EnumAuthenticationType::CLEAR );
-  addAuthenticationItem( Transport::EnumAuthenticationType::LOGIN );
-  addAuthenticationItem( Transport::EnumAuthenticationType::PLAIN );
-  addAuthenticationItem( Transport::EnumAuthenticationType::CRAM_MD5 );
-  addAuthenticationItem( Transport::EnumAuthenticationType::DIGEST_MD5 );
-  addAuthenticationItem( Transport::EnumAuthenticationType::NTLM );
-  addAuthenticationItem( Transport::EnumAuthenticationType::GSSAPI );
-  addAuthenticationItem( Transport::EnumAuthenticationType::APOP );
+  addAuthenticationItem( authCombo, Transport::EnumAuthenticationType::CLEAR );
+  addAuthenticationItem( authCombo, Transport::EnumAuthenticationType::LOGIN );
+  addAuthenticationItem( authCombo, Transport::EnumAuthenticationType::PLAIN );
+  addAuthenticationItem( authCombo, Transport::EnumAuthenticationType::CRAM_MD5 );
+  addAuthenticationItem( authCombo, Transport::EnumAuthenticationType::DIGEST_MD5 );
+  addAuthenticationItem( authCombo, Transport::EnumAuthenticationType::NTLM );
+  addAuthenticationItem( authCombo, Transport::EnumAuthenticationType::GSSAPI );
+  addAuthenticationItem( authCombo, Transport::EnumAuthenticationType::APOP );
 }
 
 
