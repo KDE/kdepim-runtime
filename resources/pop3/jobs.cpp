@@ -20,6 +20,8 @@
 #include "jobs.h"
 #include "settings.h"
 
+#include <Mailtransport/Transport>
+
 #include <KIO/Scheduler>
 #include <KIO/Slave>
 #include <KDebug>
@@ -77,17 +79,50 @@ KIO::MetaData POPSession::slaveConfig() const
   m.insert( "progress", "off" );
   m.insert( "tls", Settings::useTLS() ? "on" : "off" );
   m.insert( "pipelining", ( Settings::pipelining() ) ? "on" : "off" );
-  const QString &auth = Settings::authenticationMethod();
-  if ( auth == "PLAIN" || auth == "LOGIN" || auth == "CRAM-MD5" ||
-       auth == "DIGEST-MD5" || auth == "NTLM" || auth == "GSSAPI" ) {
-    m.insert( "auth", "SASL" );
-    m.insert( "sasl", auth );
-  } else if ( auth == "*" )
-    m.insert( "auth", "USER" );
-  else
-    m.insert( "auth", auth );
-
+  int type = Settings::authenticationMethod();
+  switch( type ) {
+    case MailTransport::Transport::EnumAuthenticationType::PLAIN:
+    case MailTransport::Transport::EnumAuthenticationType::LOGIN:
+    case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
+    case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
+    case MailTransport::Transport::EnumAuthenticationType::NTLM:
+    case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
+      m.insert( "auth", "SASL" );
+      m.insert( "sasl", authenticationToString( type ) );
+      break;
+    case MailTransport::Transport::EnumAuthenticationType::CLEAR:
+      m.insert( "auth", "USER" );
+      break;
+    default:
+      m.insert( "auth", authenticationToString( type ) );
+      break;
+  }
   return m;
+}
+
+QString POPSession::authenticationToString( int type ) const
+{
+  switch ( type ) {
+    case MailTransport::Transport::EnumAuthenticationType::LOGIN:
+    return "LOGIN";
+  case MailTransport::Transport::EnumAuthenticationType::PLAIN:
+    return "PLAIN";
+  case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
+    return "CRAM-MD5";
+  case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
+    return "DIGEST-MD5";
+  case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
+    return "GSSAPI";
+  case MailTransport::Transport::EnumAuthenticationType::NTLM:
+    return "NTLM";
+  case  MailTransport::Transport::EnumAuthenticationType::CLEAR:
+    return "USER";
+  case MailTransport::Transport::EnumAuthenticationType::APOP:
+    return "APOP";
+  default:
+      break;
+  }
+  return "";
 }
 
 KUrl POPSession::getUrl() const

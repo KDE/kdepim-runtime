@@ -27,6 +27,7 @@
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <Mailtransport/PrecommandJob>
+#include <Mailtransport/Transport>
 
 #include <KIO/PasswordDialog>
 #include <KMessageBox>
@@ -276,7 +277,7 @@ void POP3Resource::doStateStep()
         break;
       }
 
-      const bool passwordNeeded = Settings::authenticationMethod() != "GSSAPI";
+      const bool passwordNeeded = Settings::authenticationMethod() != MailTransport::Transport::EnumAuthenticationType::GSSAPI;
       const bool loadPasswordFromWallet = Settings::storePassword() && !mAskAgain &&
                                 passwordNeeded && !Settings::login().isEmpty();
       if ( loadPasswordFromWallet ) {

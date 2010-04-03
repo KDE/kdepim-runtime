@@ -26,6 +26,8 @@
 #include "mboxsettings.h"
 #include "maildirsettings.h"
 
+#include <Mailtransport/Transport>
+
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
@@ -332,7 +334,25 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   }
   iface->setIntervalCheckEnabled( config.readEntry( "check-exclude", false ) );
   iface->setIntervalCheckInterval( config.readEntry( "check-interval", 0 ) );
-  iface->setAuthenticationMethod( config.readEntry( "auth" ) );
+
+  // Akonadi kmail uses enums for storing auth options
+  // so we have to convert from the old string representations
+  typedef MailTransport::Transport::EnumAuthenticationType AuthType;
+  QString authOpt = config.readEntry( "auth" );
+  if( authOpt.contains( "PLAIN", Qt::CaseInsensitive ) )
+    iface->setAuthenticationMethod( AuthType::PLAIN );
+  else if( authOpt.contains( "CRAM", Qt::CaseInsensitive ) )
+    iface->setAuthenticationMethod( AuthType::CRAM_MD5 );
+  else if( authOpt.contains( "DIGEST", Qt::CaseInsensitive ) )
+    iface->setAuthenticationMethod( AuthType::DIGEST_MD5);
+  else if( authOpt.contains( "GSSAPI", Qt::CaseInsensitive ) )
+    iface->setAuthenticationMethod( AuthType::GSSAPI );
+  else if( authOpt.contains( "NTLM", Qt::CaseInsensitive ) )
+    iface->setAuthenticationMethod( AuthType::NTLM);
+  else if( authOpt.contains( "APOP", Qt::CaseInsensitive ) )
+    iface->setAuthenticationMethod( AuthType::APOP );
+  else
+    iface->setAuthenticationMethod( AuthType::CLEAR );
   iface->setPrecommand( config.readPathEntry( "precommand", QString() ) );
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 

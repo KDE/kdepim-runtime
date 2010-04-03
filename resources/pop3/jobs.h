@@ -68,6 +68,7 @@ signals:
 
 private:
   KIO::MetaData slaveConfig() const;
+  QString authenticationToString( int type ) const;
 
   QPointer<KIO::Slave> mSlave;
   SlaveBaseJob *mCurrentJob;

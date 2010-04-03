@@ -132,21 +132,7 @@ void AccountDialog::setupWidgets()
   connect( intervalCheck, SIGNAL(toggled(bool)),
            this, SLOT(slotEnablePopInterval(bool)) );
 
-  // FIXME: Does this still work for non-ioslave POP3?
-  if ( KProtocolInfo::capabilities("pop3").contains("SASL") == 0 )
-  {
-    authNTLM->hide();
-    authGSSAPI->hide();
-  }
-  authButtonGroup = new QButtonGroup();
-  authButtonGroup->addButton( authUser );
-  authButtonGroup->addButton( authLogin );
-  authButtonGroup->addButton( authPlain );
-  authButtonGroup->addButton( authCRAM_MD5 );
-  authButtonGroup->addButton( authDigestMd5 );
-  authButtonGroup->addButton( authNTLM );
-  authButtonGroup->addButton( authGSSAPI );
-  authButtonGroup->addButton( authAPOP );
+  populateDefaultAuthenticationOptions();
 
   folderRequester->setMimeTypeFilter(
       QStringList() << QLatin1String( "message/rfc822" ) );
@@ -197,26 +183,9 @@ void AccountDialog::loadSettings()
   intervalCheck->setChecked( Settings::self()->intervalCheckEnabled() );
   intervalSpin->setValue( Settings::self()->intervalCheckInterval() );
   intervalSpin->setEnabled( Settings::self()->intervalCheckEnabled() );
-  if (Settings::self()->useSSL())
-    encryptionSSL->setChecked( true );
-  else if (Settings::self()->useTLS())
-    encryptionTLS->setChecked( true );
-  else encryptionNone->setChecked( true );
-  if (Settings::self()->authenticationMethod() == "LOGIN")
-    authLogin->setChecked( true );
-  else if (Settings::self()->authenticationMethod() == "PLAIN")
-    authPlain->setChecked( true );
-  else if (Settings::self()->authenticationMethod() == "CRAM-MD5")
-    authCRAM_MD5->setChecked( true );
-  else if (Settings::self()->authenticationMethod() == "DIGEST-MD5")
-    authDigestMd5->setChecked( true );
-  else if (Settings::self()->authenticationMethod() == "NTLM")
-    authNTLM->setChecked( true );
-  else if (Settings::self()->authenticationMethod() == "GSSAPI")
-    authGSSAPI->setChecked( true );
-  else if (Settings::self()->authenticationMethod() == "APOP")
-    authAPOP->setChecked( true );
-  else authUser->setChecked( true );
+
+  int authopt = Settings::self()->authenticationMethod();
+  authCombo->setCurrentIndex( authCombo->findData( authopt ) );
 
   slotEnableLeaveOnServerDays( leaveOnServerDaysCheck->isEnabled() ?
                                Settings::self()->leaveOnServerDays() >= 1 : 0);
@@ -383,14 +352,13 @@ void AccountDialog::slotPipeliningClicked()
 
 void AccountDialog::slotPopEncryptionChanged( int id )
 {
+  kDebug() << "setting port";
   // adjust port
   if ( id == Transport::EnumEncryption::SSL || portEdit->value() == 995 )
     portEdit->setValue( ( id == Transport::EnumEncryption::SSL ) ? 995 : 110 );
 
-  enablePopFeatures();
-  const QAbstractButton *old = authButtonGroup->checkedButton();
-  if ( old && !old->isEnabled() )
-    checkHighest( authButtonGroup );
+  kDebug() << "port set ";
+  enablePopFeatures(); // removes invalid auth options from the combobox
 }
 
 void AccountDialog::slotPopPasswordChanged( const QString& text )
@@ -461,13 +429,10 @@ void AccountDialog::enablePopFeatures()
   if ( encryptionButtonGroup->checkedId() == Transport::EnumEncryption::TLS )
     supportedAuths = mServerTest->tlsProtocols();
 
-  authPlain->setEnabled( supportedAuths.contains( Transport::EnumAuthenticationType::PLAIN ) );
-  authLogin->setEnabled( supportedAuths.contains( Transport::EnumAuthenticationType::LOGIN ) );
-  authCRAM_MD5->setEnabled( supportedAuths.contains( Transport::EnumAuthenticationType::CRAM_MD5 ) );
-  authDigestMd5->setEnabled( supportedAuths.contains( Transport::EnumAuthenticationType::DIGEST_MD5 ) );
-  authNTLM->setEnabled( supportedAuths.contains( Transport::EnumAuthenticationType::NTLM ) );
-  authGSSAPI->setEnabled( supportedAuths.contains( Transport::EnumAuthenticationType::GSSAPI ) );
-  authAPOP->setEnabled( supportedAuths.contains( Transport::EnumAuthenticationType::APOP ) );
+  authCombo->clear();
+  foreach( int prot, supportedAuths ) {
+    authCombo->addItem( authenticationToString( prot ) , prot );
+  }
 
   if ( mServerTest && !mServerTest->capabilities().contains( ServerTest::Pipelining ) &&
        usePipeliningCheck->isChecked() ) {
@@ -520,6 +485,54 @@ void AccountDialog::enablePopFeatures()
                                    "messages on the server on.") );
   }
 }
+
+QString AccountDialog::authenticationToString(int type)
+{
+  switch ( type ) {
+    case MailTransport::Transport::EnumAuthenticationType::LOGIN:
+    return "LOGIN";
+  case MailTransport::Transport::EnumAuthenticationType::PLAIN:
+    return "PLAIN";
+  case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
+    return "CRAM-MD5";
+  case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
+    return "DIGEST-MD5";
+  case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
+    return "GSSAPI";
+  case MailTransport::Transport::EnumAuthenticationType::NTLM:
+    return "NTLM";
+  case  MailTransport::Transport::EnumAuthenticationType::CLEAR:
+    return "Clear text";
+  case MailTransport::Transport::EnumAuthenticationType::APOP:
+    return "APOP";
+  default:
+      break;
+  }
+  return "";
+}
+
+#define addAuthenticationItem( type ) \
+    authCombo->addItem( authenticationToString( type ), QVariant( type ) );
+
+void AccountDialog::populateDefaultAuthenticationOptions()
+{
+    // TODO find out f if this is valid FIXME: Does this still work for non-ioslave POP3?
+  /*if ( KProtocolInfo::capabilities("pop3").contains("SASL") == 0 )
+  {
+    authNTLM->hide();
+    authGSSAPI->hide();
+  }*/
+  authCombo->clear();
+  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::CLEAR );
+  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::LOGIN );
+  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::PLAIN );
+  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
+  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
+  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::NTLM );
+  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::GSSAPI );
+  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::APOP );
+}
+
 
 void AccountDialog::slotLeaveOnServerDaysChanged ( int value )
 {
@@ -579,25 +592,7 @@ void AccountDialog::saveSettings()
   Settings::self()->setPrecommand( precommand->text() );
   Settings::self()->setUseSSL( encryptionSSL->isChecked() );
   Settings::self()->setUseTLS( encryptionTLS->isChecked() );
-  if (authUser->isChecked())
-    Settings::self()->setAuthenticationMethod("USER");
-  else if (authLogin->isChecked())
-    Settings::self()->setAuthenticationMethod("LOGIN");
-  else if (authPlain->isChecked())
-    Settings::self()->setAuthenticationMethod("PLAIN");
-  else if (authCRAM_MD5->isChecked())
-    Settings::self()->setAuthenticationMethod("CRAM-MD5");
-  else if (authDigestMd5->isChecked())
-    Settings::self()->setAuthenticationMethod("DIGEST-MD5");
-  else if (authNTLM->isChecked())
-    Settings::self()->setAuthenticationMethod("NTLM");
-  else if (authGSSAPI->isChecked())
-    Settings::self()->setAuthenticationMethod("GSSAPI");
-  else if (authAPOP->isChecked())
-    Settings::self()->setAuthenticationMethod("APOP");
-  else
-    Settings::self()->setAuthenticationMethod("AUTO");
-
+  Settings::self()->setAuthenticationMethod( authCombo->itemData( authCombo->currentIndex() ).toInt() );
   Settings::self()->setPipelining( usePipeliningCheck->isChecked() );
   Settings::self()->setLeaveOnServer( leaveOnServerCheck->isChecked() );
   Settings::self()->setLeaveOnServerDays( leaveOnServerCheck->isChecked() ?

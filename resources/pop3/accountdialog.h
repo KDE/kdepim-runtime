@@ -70,11 +70,12 @@ class AccountDialog : public KDialog, private Ui::PopPage
     void saveSettings();
     void checkHighest( QButtonGroup * );
     void enablePopFeatures();
+    QString authenticationToString( int type );
+    void populateDefaultAuthenticationOptions();
 
   private:
     POP3Resource *mParentResource;
     QButtonGroup *encryptionButtonGroup;
-    QButtonGroup *authButtonGroup;
     MailTransport::ServerTest *mServerTest;
     QRegExpValidator mValidator;
     bool mServerTestFailed;

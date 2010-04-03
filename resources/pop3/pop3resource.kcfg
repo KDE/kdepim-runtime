@@ -26,9 +26,9 @@
       <label></label>
       <default>110</default>
     </entry>
-    <entry name="authenticationMethod" type="String">
-      <label></label>
-      <default>*</default>
+    <entry name="authenticationMethod" type="Int">
+      <label>Defines the authentication type to use</label>
+      <default>1</default>
     </entry>
     <entry name="useSSL" type="Bool">
       <label></label>
