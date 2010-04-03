@@ -83,6 +83,9 @@ SetupServer::SetupServer( WId parent )
   m_ui->testProgress->hide();
   m_ui->accountName->setFocus();
 
+  // FIXME: This option has no effect yet, therefore hide it for now.
+  m_ui->includeInCheck->hide();
+
   m_ui->folderRequester->setMimeTypeFilter(
     QStringList() << QLatin1String( "message/rfc822" ) );
   m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
