@@ -81,7 +81,7 @@ SetupServer::SetupServer( WId parent )
 
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
-  m_ui->imapServer->setFocus();
+  m_ui->accountName->setFocus();
 
   m_ui->folderRequester->setMimeTypeFilter(
     QStringList() << QLatin1String( "message/rfc822" ) );
@@ -101,7 +101,7 @@ SetupServer::SetupServer( WId parent )
            SLOT( slotComplete() ) );
   connect( m_ui->userName, SIGNAL( textChanged( const QString & ) ),
            SLOT( slotComplete() ) );
-
+  connect( m_ui->subscriptionEnabled, SIGNAL( toggled(bool) ), this, SLOT( slotSubcriptionCheckboxChanged() ) );
   connect( m_ui->subscriptionButton, SIGNAL( pressed() ), SLOT( slotManageSubscriptions() ) );
 
   connect( m_ui->managesieveCheck, SIGNAL(toggled(bool)),
@@ -132,6 +132,11 @@ SetupServer::~SetupServer()
 bool SetupServer::shouldClearCache() const
 {
   return m_shouldClearCache;
+}
+
+void SetupServer::slotSubcriptionCheckboxChanged()
+{
+  m_ui->subscriptionButton->setEnabled( m_ui->subscriptionEnabled->isChecked() );
 }
 
 void SetupServer::slotIdentityCheckboxChanged()

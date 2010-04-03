@@ -73,6 +73,7 @@ private slots:
   void slotIdentityCheckboxChanged();
   void slotMailCheckboxChanged();
   void slotEncryptionRadioChanged();
+  void slotSubcriptionCheckboxChanged();
 private:
   void readSettings();
   QString authenticationToString( int type );
