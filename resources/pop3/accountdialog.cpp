@@ -431,7 +431,7 @@ void AccountDialog::enablePopFeatures()
 
   authCombo->clear();
   foreach( int prot, supportedAuths ) {
-    authCombo->addItem( authenticationToString( prot ) , prot );
+    authCombo->addItem( Transport::authenticationTypeString( prot ) , prot );
   }
 
   if ( mServerTest && !mServerTest->capabilities().contains( ServerTest::Pipelining ) &&
@@ -486,33 +486,8 @@ void AccountDialog::enablePopFeatures()
   }
 }
 
-QString AccountDialog::authenticationToString(int type)
-{
-  switch ( type ) {
-    case MailTransport::Transport::EnumAuthenticationType::LOGIN:
-    return "LOGIN";
-  case MailTransport::Transport::EnumAuthenticationType::PLAIN:
-    return "PLAIN";
-  case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
-    return "CRAM-MD5";
-  case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
-    return "DIGEST-MD5";
-  case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-    return "GSSAPI";
-  case MailTransport::Transport::EnumAuthenticationType::NTLM:
-    return "NTLM";
-  case  MailTransport::Transport::EnumAuthenticationType::CLEAR:
-    return "Clear text";
-  case MailTransport::Transport::EnumAuthenticationType::APOP:
-    return "APOP";
-  default:
-      break;
-  }
-  return "";
-}
-
 #define addAuthenticationItem( type ) \
-    authCombo->addItem( authenticationToString( type ), QVariant( type ) );
+    authCombo->addItem( Transport::authenticationTypeString( type ), QVariant( type ) );
 
 void AccountDialog::populateDefaultAuthenticationOptions()
 {
@@ -523,14 +498,14 @@ void AccountDialog::populateDefaultAuthenticationOptions()
     authGSSAPI->hide();
   }*/
   authCombo->clear();
-  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::CLEAR );
-  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::LOGIN );
-  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::PLAIN );
-  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
-  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
-  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::NTLM );
-  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::GSSAPI );
-  addAuthenticationItem( MailTransport::Transport::EnumAuthenticationType::APOP );
+  addAuthenticationItem( Transport::EnumAuthenticationType::CLEAR );
+  addAuthenticationItem( Transport::EnumAuthenticationType::LOGIN );
+  addAuthenticationItem( Transport::EnumAuthenticationType::PLAIN );
+  addAuthenticationItem( Transport::EnumAuthenticationType::CRAM_MD5 );
+  addAuthenticationItem( Transport::EnumAuthenticationType::DIGEST_MD5 );
+  addAuthenticationItem( Transport::EnumAuthenticationType::NTLM );
+  addAuthenticationItem( Transport::EnumAuthenticationType::GSSAPI );
+  addAuthenticationItem( Transport::EnumAuthenticationType::APOP );
 }
 
 
