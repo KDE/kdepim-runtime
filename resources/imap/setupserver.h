@@ -76,7 +76,6 @@ private slots:
   void slotSubcriptionCheckboxChanged();
 private:
   void readSettings();
-  QString authenticationToString( int type );
   void populateDefaultAuthenticationOptions();
 
   Ui::SetupServerView *m_ui;

@@ -404,7 +404,7 @@ void SetupServer::slotSafetyChanged()
   m_ui->authenticationCombo->clear();
   foreach( int prot, protocols ) {
     KIMAP::LoginJob::AuthenticationMode t = ( KIMAP::LoginJob::AuthenticationMode ) prot;
-    m_ui->authenticationCombo->addItem( authenticationToString( t ) , prot );
+    m_ui->authenticationCombo->addItem( KIMAP::LoginJob::authenticationModeString( t ) , prot );
   }
 }
 
@@ -460,33 +460,8 @@ void SetupServer::localFolderRequestJobFinished( KJob *job )
   }
 }
 
-QString SetupServer::authenticationToString(int type)
-{
-  switch ( type ) {
-  case KIMAP::LoginJob::Login:
-    return "LOGIN";
-  case KIMAP::LoginJob::Plain:
-    return "PLAIN";
-  case KIMAP::LoginJob::CramMD5:
-    return "CRAM-MD5";
-  case KIMAP::LoginJob::DigestMD5:
-    return "DIGEST-MD5";
-  case KIMAP::LoginJob::GSSAPI:
-    return "GSSAPI";
-  case KIMAP::LoginJob::NTLM:
-    return "NTLM";
-  case  KIMAP::LoginJob::ClearText:
-    return "Clear text";
-  case KIMAP::LoginJob::Anonymous:
-    return "Anonymous";
-  default:
-      break;
-  }
-  return "";
-}
-
 #define addAuthenticationItem( type ) \
-    m_ui->authenticationCombo->addItem( authenticationToString( type ), QVariant( type ) );
+    m_ui->authenticationCombo->addItem( KIMAP::LoginJob::authenticationModeString( type ), QVariant( type ) );
 
 void SetupServer::populateDefaultAuthenticationOptions()
 {
