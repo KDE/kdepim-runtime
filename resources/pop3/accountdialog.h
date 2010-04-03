@@ -52,7 +52,6 @@ class AccountDialog : public KDialog, private Ui::PopPage
     void slotFilterOnServerClicked();
     void slotPipeliningClicked();
     void slotPopEncryptionChanged(int);
-    void slotPopPasswordChanged( const QString& text );
     void slotCheckPopCapabilities();
     void slotPopCapabilities( QList<int> );
     void slotLeaveOnServerDaysChanged( int value );
@@ -79,7 +78,6 @@ class AccountDialog : public KDialog, private Ui::PopPage
     QRegExpValidator mValidator;
     bool mServerTestFailed;
     KWallet::Wallet *mWallet;
-    bool mInitallyStorePassword;
     QString mInitalPassword;
 };
 

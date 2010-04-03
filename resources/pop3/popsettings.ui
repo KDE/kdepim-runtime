@@ -210,19 +210,6 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
-           <widget class="QCheckBox" name="storePasswordCheck">
-            <property name="toolTip">
-             <string>Whether to store the password or ask for it when checking for new mail</string>
-            </property>
-            <property name="whatsThis">
-             <string>Check this option to store the password in KWallet. If this option is disabled, you will be asked for the password on every mail check.</string>
-            </property>
-            <property name="text">
-             <string>Sto&amp;re POP password</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>

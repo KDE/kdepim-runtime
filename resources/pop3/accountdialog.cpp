@@ -91,9 +91,6 @@ void AccountDialog::setupWidgets()
   setupUi( page );
   setMainWidget( page );
 
-  connect( passwordEdit, SIGNAL( textEdited( const QString& ) ),
-           this, SLOT( slotPopPasswordChanged( const QString& ) ) );
-
   // only letters, digits, '-', '.', ':' (IPv6) and '_' (for Windows
   // compatibility) are allowed
   hostEdit->setValidator( &mValidator );
@@ -165,8 +162,6 @@ void AccountDialog::loadSettings()
   portEdit->setValue( Settings::self()->port() );
   precommand->setText( Settings::self()->precommand() );
   usePipeliningCheck->setChecked( Settings::self()->pipelining() );
-  storePasswordCheck->setChecked( Settings::self()->storePassword() );
-  mInitallyStorePassword = Settings::self()->storePassword();
   leaveOnServerCheck->setChecked( Settings::self()->leaveOnServer() );
   leaveOnServerDaysCheck->setEnabled( Settings::self()->leaveOnServer() );
   leaveOnServerDaysCheck->setChecked( Settings::self()->leaveOnServerDays() >= 1 );
@@ -217,13 +212,11 @@ void AccountDialog::loadSettings()
               this, SLOT(localFolderRequestJobFinished(KJob*)) );
   }
 
-  if ( Settings::storePassword() ) {
-    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
-                                  Wallet::Asynchronous );
-    connect( mWallet, SIGNAL(walletOpened(bool)),
-             this, SLOT(walletOpenedForLoading(bool)) );
-    passwordEdit->setEnabled( false );
-  }
+  mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
+                                Wallet::Asynchronous );
+  connect( mWallet, SIGNAL(walletOpened(bool)),
+           this, SLOT(walletOpenedForLoading(bool)) );
+  passwordEdit->setEnabled( false );
 }
 
 void AccountDialog::walletOpenedForLoading( bool success )
@@ -241,7 +234,6 @@ void AccountDialog::walletOpenedForLoading( bool success )
     }
   }
   else {
-    storePasswordCheck->setChecked( false );
     kWarning() << "Failed to open wallet for loading the password.";
   }
 
@@ -256,19 +248,21 @@ void AccountDialog::walletOpenedForSaving( bool success )
     if ( mWallet && mWallet->isOpen() ) {
 
       // Remove the password from the wallet if the user doesn't want to store it
-      if ( !Settings::self()->storePassword() && mWallet->hasFolder( "pop3" ) ) {
+      if ( passwordEdit->text().isEmpty() && mWallet->hasFolder( "pop3" ) ) {
         mWallet->setFolder( "pop3" );
         mWallet->removeEntry( mParentResource->identifier() );
       }
 
       // Store the password in the wallet if the user wants that
-      else if ( Settings::self()->storePassword() ) {
+      else if ( !passwordEdit->text().isEmpty() ) {
         if ( !mWallet->hasFolder( "pop3" ) ) {
           mWallet->createFolder( "pop3" );
         }
         mWallet->setFolder( "pop3" );
         mWallet->writePassword( mParentResource->identifier(), passwordEdit->text() );
       }
+
+      Settings::self()->setStorePassword( !passwordEdit->text().isEmpty() );
     }
     else {
       kWarning() << "Wallet not open.";
@@ -361,14 +355,6 @@ void AccountDialog::slotPopEncryptionChanged( int id )
 
   kDebug() << "port set ";
   enablePopFeatures(); // removes invalid auth options from the combobox
-}
-
-void AccountDialog::slotPopPasswordChanged( const QString& text )
-{
-  if ( text.isEmpty() )
-    storePasswordCheck->setCheckState( Qt::Unchecked );
-  else
-    storePasswordCheck->setCheckState( Qt::Checked );
 }
 
 void AccountDialog::slotCheckPopCapabilities()
@@ -563,7 +549,6 @@ void AccountDialog::saveSettings()
   Settings::self()->setHost( hostEdit->text().trimmed() );
   Settings::self()->setPort( portEdit->value() );
   Settings::self()->setLogin( loginEdit->text().trimmed() );
-  Settings::self()->setStorePassword( storePasswordCheck->isChecked() );
   Settings::self()->setPrecommand( precommand->text() );
   Settings::self()->setUseSSL( encryptionSSL->isChecked() );
   Settings::self()->setUseTLS( encryptionTLS->isChecked() );
@@ -588,9 +573,9 @@ void AccountDialog::saveSettings()
   // to open it.
   const bool userChangedPassword = mInitalPassword != passwordEdit->text();
   const bool userWantsToDeletePassword =
-      !Settings::self()->storePassword() && mInitallyStorePassword;
+      passwordEdit->text().isEmpty() && userChangedPassword;
 
-  if ( ( Settings::self()->storePassword() && userChangedPassword ) ||
+  if ( ( !passwordEdit->text().isEmpty() && userChangedPassword ) ||
        userWantsToDeletePassword ) {
     mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
                                   Wallet::Asynchronous );
