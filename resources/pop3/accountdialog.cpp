@@ -32,6 +32,7 @@
 #include <Mailtransport/ServerTest>
 
 // KDELIBS includes
+#include <KEMailSettings>
 #include <KMessageBox>
 #include <KProtocolInfo>
 #include <KUser>
@@ -159,6 +160,10 @@ void AccountDialog::loadSettings()
   nameEdit->setFocus();
   loginEdit->setText( !Settings::self()->login().isEmpty() ? Settings::self()->login() :
                       KUser().loginName() );
+
+  hostEdit->setText(
+    !Settings::self()->host().isEmpty() ? Settings::self()->host() :
+    KEMailSettings().getSetting( KEMailSettings::InServer ) );
   hostEdit->setText( Settings::self()->host() );
   portEdit->setValue( Settings::self()->port() );
   precommand->setText( Settings::self()->precommand() );
