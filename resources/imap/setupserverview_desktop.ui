@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>438</width>
-    <height>514</height>
+    <height>518</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_6">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -99,9 +99,19 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
+           <widget class="QCheckBox" name="includeInCheck">
+            <property name="toolTip">
+             <string>Include this account when clicking on the toolbar button</string>
+            </property>
+            <property name="text">
+             <string>Include in man&amp;ual mail check</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="enableMailCheckBox">
             <property name="text">
-             <string>Enable interval mail checking</string>
+             <string>Enable &amp;interval mail checking</string>
             </property>
            </widget>
           </item>
@@ -134,16 +144,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="includeInCheck">
-            <property name="toolTip">
-             <string>Include this account when clicking on the toolbar button</string>
-            </property>
-            <property name="text">
-             <string>Include in man&amp;ual mail check</string>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>
