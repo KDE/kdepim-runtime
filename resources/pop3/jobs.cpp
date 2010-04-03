@@ -104,25 +104,25 @@ QString POPSession::authenticationToString( int type ) const
 {
   switch ( type ) {
     case MailTransport::Transport::EnumAuthenticationType::LOGIN:
-    return "LOGIN";
-  case MailTransport::Transport::EnumAuthenticationType::PLAIN:
-    return "PLAIN";
-  case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
-    return "CRAM-MD5";
-  case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
-    return "DIGEST-MD5";
-  case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-    return "GSSAPI";
-  case MailTransport::Transport::EnumAuthenticationType::NTLM:
-    return "NTLM";
-  case  MailTransport::Transport::EnumAuthenticationType::CLEAR:
-    return "USER";
-  case MailTransport::Transport::EnumAuthenticationType::APOP:
-    return "APOP";
-  default:
+      return "LOGIN";
+    case MailTransport::Transport::EnumAuthenticationType::PLAIN:
+      return "PLAIN";
+    case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
+      return "CRAM-MD5";
+    case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
+      return "DIGEST-MD5";
+    case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
+      return "GSSAPI";
+    case MailTransport::Transport::EnumAuthenticationType::NTLM:
+      return "NTLM";
+    case  MailTransport::Transport::EnumAuthenticationType::CLEAR:
+      return "USER";
+    case MailTransport::Transport::EnumAuthenticationType::APOP:
+      return "APOP";
+    default:
       break;
   }
-  return "";
+  return QString();
 }
 
 KUrl POPSession::getUrl() const

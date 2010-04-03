@@ -491,7 +491,8 @@ void AccountDialog::enablePopFeatures()
 
 void AccountDialog::populateDefaultAuthenticationOptions()
 {
-    // TODO find out f if this is valid FIXME: Does this still work for non-ioslave POP3?
+    // TODO find out f if this is valid
+  // FIXME: Does this still work for non-ioslave POP3?
   /*if ( KProtocolInfo::capabilities("pop3").contains("SASL") == 0 )
   {
     authNTLM->hide();
