@@ -401,8 +401,6 @@ void SetupServer::slotSafetyChanged()
     kFatal() << "Shouldn't happen";
   }
 
-  using namespace MailTransport;
-
   m_ui->authenticationCombo->clear();
   foreach( int prot, protocols ) {
     KIMAP::LoginJob::AuthenticationMode t = ( KIMAP::LoginJob::AuthenticationMode ) prot;
