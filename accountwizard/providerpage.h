@@ -25,9 +25,10 @@
 #include <QStandardItemModel>
 
 #include "ui_providerpage.h"
+#include <knewstuff3/entry.h>
 
 namespace KNS3 {
-  class Entry;
+  class DownloadManager;
 }
 
 class ProviderPage : public Page
@@ -41,13 +42,15 @@ class ProviderPage : public Page
     QPushButton *advancedButton() const;
 
   private slots:
+    void fillModel( const KNS3::Entry::List& );
     void selectionChanged();
-    void ghnsClicked();
 
   private:
     Ui::ProviderPage ui;
     QStandardItemModel *m_model;
-    QHash<QStandardItem*,KNS3::Entry> m_providerEntries;
+    QStandardItem *m_fetchItem;
+    KNS3::DownloadManager *m_downloadManager;
+    KNS3::Entry::List m_providerEntries;
 };
 
 #endif

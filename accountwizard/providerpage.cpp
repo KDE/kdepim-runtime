@@ -23,11 +23,12 @@
 
 #include <KDebug>
 #include <QSortFilterProxyModel>
-#include <knewstuff3/downloaddialog.h>
+#include <knewstuff3/downloadmanager.h>
 
 ProviderPage::ProviderPage(KAssistantDialog* parent) :
   Page( parent ),
-  m_model( new QStandardItemModel( this ) )
+  m_model( new QStandardItemModel( this ) ),
+  m_downloadManager( new KNS3::DownloadManager( this ) )
 {
   ui.setupUi( this );
 
@@ -36,27 +37,38 @@ ProviderPage::ProviderPage(KAssistantDialog* parent) :
   ui.listView->setModel( proxy );
   ui.searchLine->setProxy( proxy );
 
+  m_fetchItem = new QStandardItem( i18n( "Fetching provider list..." ) );
+  m_model->appendRow( m_fetchItem );
+
+  // we can start the search, whenever the user reaches this page, chances
+  // are we have the full list.
+  connect( m_downloadManager, SIGNAL( searchResult( const KNS3::Entry::List& ) ),
+           SLOT( fillModel( const KNS3::Entry::List& ) ) );
+  m_downloadManager->search( 0, 100000 );
+
   connect( ui.listView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged()) );
 
-  connect( ui.ghnsButton, SIGNAL( clicked() ), SLOT( ghnsClicked() ) );
   kDebug();
 }
 
-void ProviderPage::ghnsClicked()
+void ProviderPage::fillModel(  const KNS3::Entry::List& list )
 {
   kDebug();
-  KNS3::DownloadDialog dialog( this );
-  dialog.exec();
-  foreach (const KNS3::Entry e, dialog.installedEntries()) {
-    kDebug() << "Changed Entry: " << e.name();
+  m_model->removeRows( m_model->indexFromItem( m_fetchItem ).row(),1 );
+
+  // KNS3::Entry::Entry() is private, so we need to save the whole list. 
+  // we can not use a QHash or whatever, as that needs that constructor...
+  m_providerEntries = list;
+
+  foreach (const KNS3::Entry e, list) {
+    kDebug() << "Found Entry: " << e.name();
     
     QStandardItem *item = new QStandardItem( e.name() );
     item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setData( e.name(), Qt::ToolTipRole );
+    item->setData( e.id(), Qt::UserRole );
+    item->setData( e.providerId(), Qt::UserRole+1);
     m_model->appendRow( item );
-
-    //KNS3::Entry::Entry() is private :(
-    //m_providerEntries[ item ] = e;
   }
 }
 
@@ -74,12 +86,24 @@ void ProviderPage::leavePageNext()
   if ( !ui.listView->selectionModel()->hasSelection() )
     return;
   const QModelIndex index = ui.listView->selectionModel()->selectedIndexes().first();
-  const QStandardItem* item =  m_model->itemFromIndex(index);
+  if ( !index.isValid() )
+    return;
+
+  const QSortFilterProxyModel *proxy = static_cast<const QSortFilterProxyModel*>( ui.listView->model() );
+  const QStandardItem* item =  m_model->itemFromIndex( proxy->mapToSource( index ) );
+  kDebug() << "Item selected:"<< item->text();
 
   // download and execute it...
-  //KNS3::Entry::Entry() is private though :(
-  //const KNS3::Entry entry( m_providerEntries[item] );
-  //Global::setAssistant( entry.name() );
+  foreach (const KNS3::Entry e, m_providerEntries) {
+    if (e.id() == item->data( Qt::UserRole ) &&
+        e.providerId() == item->data( Qt::UserRole+1 ) ) {
+      kDebug() << "Starting download for" << e.name();
+      m_downloadManager->installEntry( e );
+  
+      Global::setAssistant( e.name() );
+      break;
+    }
+  }
 }
 
 QTreeView *ProviderPage::treeview() const
