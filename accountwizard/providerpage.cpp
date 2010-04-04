@@ -44,6 +44,9 @@ ProviderPage::ProviderPage(KAssistantDialog* parent) :
   // are we have the full list.
   connect( m_downloadManager, SIGNAL( searchResult( const KNS3::Entry::List& ) ),
            SLOT( fillModel( const KNS3::Entry::List& ) ) );
+  connect( m_downloadManager, SIGNAL( entryStatusChanged( const KNS3::Entry& ) ),
+           SLOT( providerStatusChanged( const KNS3::Entry& ) ) );
+  m_downloadManager->setSearchOrder( KNS3::DownloadManager::Alphabetical );
   m_downloadManager->search( 0, 100000 );
 
   connect( ui.listView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged()) );
@@ -60,7 +63,7 @@ void ProviderPage::fillModel(  const KNS3::Entry::List& list )
   // we can not use a QHash or whatever, as that needs that constructor...
   m_providerEntries = list;
 
-  foreach (const KNS3::Entry e, list) {
+  foreach (const KNS3::Entry& e, list) {
     kDebug() << "Found Entry: " << e.name();
     
     QStandardItem *item = new QStandardItem( e.name() );
@@ -94,16 +97,37 @@ void ProviderPage::leavePageNext()
   kDebug() << "Item selected:"<< item->text();
 
   // download and execute it...
-  foreach (const KNS3::Entry e, m_providerEntries) {
+  foreach (const KNS3::Entry& e, m_providerEntries) {
     if (e.id() == item->data( Qt::UserRole ) &&
         e.providerId() == item->data( Qt::UserRole+1 ) ) {
       kDebug() << "Starting download for" << e.name();
-      m_downloadManager->installEntry( e );
-  
-      Global::setAssistant( e.name() );
+
+      m_wantedProvider.entryId = e.id();
+      m_wantedProvider.entryProviderId = e.providerId();
+      
+      if ( e.status() == KNS3::Entry::Installed )
+        setAssistant( e.name() );
+      else
+        m_downloadManager->installEntry( e );
+
       break;
     }
   }
+}
+
+void ProviderPage::providerStatusChanged( const KNS3::Entry& e )
+{
+  kDebug() << e.name();
+  if ( e.id() == m_wantedProvider.entryId &&
+       e.providerId() == m_wantedProvider.entryProviderId && 
+       e.status() == KNS3::Entry::Installed )
+    setAssistant( e.name() );
+}
+
+void ProviderPage::setAssistant( const QString& name )
+{
+  kDebug() << name;
+  Global::setAssistant( name );
 }
 
 QTreeView *ProviderPage::treeview() const

@@ -27,6 +27,11 @@
 #include "ui_providerpage.h"
 #include <knewstuff3/entry.h>
 
+struct Provider {
+  QString entryId;
+  QString entryProviderId;
+};
+
 namespace KNS3 {
   class DownloadManager;
 }
@@ -44,13 +49,17 @@ class ProviderPage : public Page
   private slots:
     void fillModel( const KNS3::Entry::List& );
     void selectionChanged();
+    void providerStatusChanged( const KNS3::Entry& );
 
   private:
+    void setAssistant( const QString& );
+
     Ui::ProviderPage ui;
     QStandardItemModel *m_model;
     QStandardItem *m_fetchItem;
     KNS3::DownloadManager *m_downloadManager;
     KNS3::Entry::List m_providerEntries;
+    Provider m_wantedProvider;
 };
 
 #endif
