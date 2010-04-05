@@ -78,8 +78,6 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   connect( m_ui->tlsRadio, SIGNAL( toggled(bool) ),
            this, SLOT( slotSafetyChanged() ) );
 
-  populateDefaultAuthenticationOptions();
-
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
   m_ui->accountName->setFocus();
@@ -183,6 +181,8 @@ void SetupServer::applySettings()
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setUserName( m_ui->userName->text() );
   Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
+  int authtype = m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt();
+  kDebug() << "saving IMAP auth mode: " << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) authtype );
   Settings::self()->setAuthentication( m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt() );
   Settings::self()->setPassword( m_ui->password->text() );
   Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
@@ -240,7 +240,9 @@ void SetupServer::readSettings()
     i = 1; // it crashes when 0, shouldn't happen, but you never know.
   m_ui->safeImapGroup->button( i )->setChecked( true );
 
+  populateDefaultAuthenticationOptions();
   i = Settings::self()->authentication();
+  kDebug() << "reading IMAP auth mode: " << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) i );
   m_ui->authenticationCombo->setCurrentIndex( m_ui->authenticationCombo->findData( i ) );
 
   if ( !Settings::self()->passwordPossible() ) {
@@ -456,8 +458,13 @@ void SetupServer::slotSafetyChanged()
   m_ui->authenticationCombo->clear();
   foreach( int prot, protocols ) {
     KIMAP::LoginJob::AuthenticationMode t = mapTransportAuthToKimap( (MailTransport::Transport::EnumAuthenticationType::type) prot );
-    m_ui->authenticationCombo->addItem( KIMAP::LoginJob::authenticationModeString( t ) , prot );
+    kDebug() << "adding auth mode:" << KIMAP::LoginJob::authenticationModeString( t );
+    m_ui->authenticationCombo->addItem( KIMAP::LoginJob::authenticationModeString( t ) , t );
   }
+  if( m_ui->authenticationCombo->count() > 0 )
+    m_ui->authenticationCombo->setCurrentIndex( 0 ); // default to the first item in the list, all are supported
+  KIMAP::LoginJob::AuthenticationMode t = (KIMAP::LoginJob::AuthenticationMode) m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt();
+  kDebug() << "selected auth mode:" << KIMAP::LoginJob::authenticationModeString( t );
 }
 
 void SetupServer::slotManageSubscriptions()
