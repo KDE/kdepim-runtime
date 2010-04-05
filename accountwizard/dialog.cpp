@@ -25,6 +25,7 @@
 #include "global.h"
 #include "dynamicpage.h"
 #include "setupmanager.h"
+#include "servertest.h"
 #include "identitypage.h"
 
 #include <klocalizedstring.h>
@@ -36,9 +37,11 @@ Dialog::Dialog(QWidget* parent) :
   KAssistantDialog( parent )
 {
   SetupManager *setupManager = new SetupManager( this );
+  ServerTest *serverTest = new ServerTest( this );
   Kross::Action* action = new Kross::Action( this, "AccountWizard" );
   action->addQObject( this, QLatin1String( "Dialog" ) );
   action->addQObject( setupManager, QLatin1String( "SetupManager" ) );
+  action->addQObject( serverTest, QLatin1String( "ServerTest" ) );
 
   if ( Global::assistant().isEmpty() ) {
     IdentityPage *idPage = new IdentityPage( this );

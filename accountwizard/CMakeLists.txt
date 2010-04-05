@@ -16,6 +16,7 @@ set(accountwizard_srcs
   ldap.cpp
   identitypage.cpp
   identity.cpp
+  servertest.cpp
 )
 
 kde4_add_ui_files(accountwizard_srcs
