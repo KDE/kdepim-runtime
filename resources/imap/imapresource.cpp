@@ -1772,7 +1772,7 @@ void ImapResource::onSelectDone( const QString &mailBox, int messageCount, qint6
 
 QString ImapResource::rootRemoteId() const
 {
-  return "imap://"+m_account->userName()+'@'+m_account->server()+'/';
+  return "imap://" + Settings::self()->userName() + '@' + Settings::self()->imapServer() + '/';
 }
 
 QString ImapResource::mailBoxForCollection( const Collection& col ) const
