@@ -53,13 +53,13 @@ void ServerTest::testFinished( QList< int > list )
     emit testResult( "tls" );
   } else if ( list.contains( MailTransport::Transport::EnumEncryption::SSL ) ) {
     emit testResult( "ssl" );
-  } 
-
-  KMessageBox::information( 0, i18n( "There seems to be a problem in reaching this server "
+  } else {
+    KMessageBox::information( 0, i18n( "There seems to be a problem in reaching this server "
           "or chosing a safe way to sent the credentials to server. We advise you to "
           "check the settings of the account and adjust it manually if needed."), 
           i18n("Autodetecting settings failed") );
-  emit testFail();
+    emit testFail();
+  }
 }
 
 #include "servertest.moc"
