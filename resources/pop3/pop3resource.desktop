@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=POP3 E-Mail Server
+Name[en_GB]=POP3 E-Mail Server
+Name[pt]=Servidor de E-Mail POP3
+Name[pt_BR]=Servidor de e-mails POP3
+Name[uk]=Сервер пошти POP3
 Comment=Connects to a POP3 e-mail server
+Comment[en_GB]=Connects to a POP3 e-mail server
+Comment[pt]=Liga-se a um servidor de e-mail em POP3
+Comment[pt_BR]=Conecta a um servidor de e-mails POP3
+Comment[uk]=Встановлює з’єднання з поштовим сервером POP3.
 Type=AkonadiResource
 Exec=akonadi_pop3_resource
 Icon=message-rfc822
