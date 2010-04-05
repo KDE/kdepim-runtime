@@ -89,6 +89,7 @@ private:
   QString m_vacationFileName;
   KPIMIdentities::IdentityManager *m_identityManager;
   KPIMIdentities::IdentityCombo *m_identityCombobox;
+  QString m_oldResourceName;
 
 private slots:
   void slotTest();

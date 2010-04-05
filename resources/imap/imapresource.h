@@ -54,6 +54,7 @@ class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
 public:
   ImapResource( const QString &id );
   ~ImapResource();
+  void renameRootCollection( const QString &newName );
 
 public Q_SLOTS:
   virtual void configure( WId windowId );
@@ -125,6 +126,7 @@ private Q_SLOTS:
 
   void expungeRequested( const QVariant &collectionArgument );
   void onExpungeCollectionFetchDone( KJob *job );
+  void onRootCollectionFetched( KJob *job );
 
 private:
   void onSelectDone( const QString&, int, qint64, int, qint64, qint64, bool );

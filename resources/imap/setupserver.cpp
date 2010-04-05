@@ -171,6 +171,7 @@ void SetupServer::slotEncryptionRadioChanged()
 
 }
 
+#include <Akonadi/CollectionModifyJob>
 
 void SetupServer::applySettings()
 {
@@ -210,6 +211,10 @@ void SetupServer::applySettings()
 
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
+
+  if ( m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty() ) {
+    m_parentResource->renameRootCollection( m_ui->accountName->text() );
+  }
 }
 
 void SetupServer::readSettings()
@@ -217,6 +222,7 @@ void SetupServer::readSettings()
   if ( m_parentResource->name() == m_parentResource->identifier() )
     m_parentResource->setName( i18n( "IMAP Account" ) );
   m_ui->accountName->setText( m_parentResource->name() );
+  m_oldResourceName = m_ui->accountName->text();
 
   KUser* currentUser = new KUser();
   KEMailSettings esetting;

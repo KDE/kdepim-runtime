@@ -133,6 +133,30 @@ ImapResource::~ImapResource()
 {
 }
 
+void ImapResource::renameRootCollection( const QString &newName )
+{
+  Akonadi::Collection rootCollection;
+  rootCollection.setRemoteId( rootRemoteId() );
+  Akonadi::CollectionFetchJob *fetchJob =
+      new Akonadi::CollectionFetchJob( rootCollection, Akonadi::CollectionFetchJob::Base );
+  fetchJob->setProperty( "collectionName", newName );
+  connect( fetchJob, SIGNAL( result( KJob* ) ),
+           this, SLOT( onRootCollectionFetched( KJob* ) ) );
+}
+
+void ImapResource::onRootCollectionFetched( KJob *job )
+{
+  const QString newName = job->property( "collectionName" ).toString();
+  Q_ASSERT( !newName.isEmpty() );
+  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>( job );
+  if ( fetchJob->collections().size() == 1 ) {
+    Akonadi::Collection rootCollection = fetchJob->collections().first();
+    rootCollection.setName( newName );
+    new Akonadi::CollectionModifyJob( rootCollection );
+    // We don't care about the result here, nothing we can/should do if the renaming fails
+  }
+}
+
 bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
     Q_UNUSED( parts );
