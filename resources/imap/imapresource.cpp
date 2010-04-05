@@ -595,7 +595,7 @@ void ImapResource::retrieveCollections()
   }
 
   Collection root;
-  root.setName( m_account->server() + '/' + m_account->userName() );
+  root.setName( name() );
   root.setRemoteId( rootRemoteId() );
   root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
   root.setRights( Collection::ReadOnly );
