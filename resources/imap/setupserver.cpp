@@ -67,9 +67,9 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
 #endif
   Settings::self()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
-  m_ui->safeImapGroup->setId( m_ui->noRadio, 1 );
-  m_ui->safeImapGroup->setId( m_ui->sslRadio, 2 );
-  m_ui->safeImapGroup->setId( m_ui->tlsRadio, 3 );
+  m_ui->safeImapGroup->setId( m_ui->noRadio, KIMAP::LoginJob::Unencrypted );
+  m_ui->safeImapGroup->setId( m_ui->sslRadio, KIMAP::LoginJob::AnySslVersion );
+  m_ui->safeImapGroup->setId( m_ui->tlsRadio, KIMAP::LoginJob::TlsV1 );
 
   connect( m_ui->noRadio, SIGNAL( toggled(bool) ),
            this, SLOT( slotSafetyChanged() ) );
@@ -156,13 +156,13 @@ void SetupServer::slotEncryptionRadioChanged()
 {
   // TODO these really should be defined somewhere else
   switch ( m_ui->safeImapGroup->checkedId() ) {
-  case 1:
-  case 3:
-    m_ui->portSpin->setValue( 143 );
-    break;
-  case 2:
-    m_ui->portSpin->setValue( 993 );
-    break;
+    case KIMAP::LoginJob::Unencrypted:
+    case KIMAP::LoginJob::TlsV1: 
+      m_ui->portSpin->setValue( 143 );
+      break;
+    case KIMAP::LoginJob::AnySslVersion:
+      m_ui->portSpin->setValue( 993 );
+      break;
   default:
     kFatal() << "Shouldn't happen";
   }
@@ -442,13 +442,13 @@ void SetupServer::slotSafetyChanged()
   QList<int> protocols;
 
   switch ( m_ui->safeImapGroup->checkedId() ) {
-  case 1:
+  case KIMAP::LoginJob::Unencrypted :
     protocols = m_serverTest->normalProtocols();
     break;
-  case 2:
+  case KIMAP::LoginJob::AnySslVersion:
     protocols = m_serverTest->secureProtocols();
     break;
-  case 3:
+  case KIMAP::LoginJob::TlsV1:
     protocols = m_serverTest->tlsProtocols();
     break;
   default:
