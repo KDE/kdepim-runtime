@@ -232,7 +232,7 @@ void ImapResource::onContentFetchDone( KJob *job )
 
 void ImapResource::configure( WId windowId )
 {
-  SetupServer dlg( windowId );
+  SetupServer dlg( this, windowId );
   KWindowSystem::setMainWindow( &dlg, windowId );
 
   dlg.exec();
