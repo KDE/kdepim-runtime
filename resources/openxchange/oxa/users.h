@@ -27,7 +27,6 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
-class KJob;
 
 namespace OXA {
 
