@@ -19,6 +19,19 @@
 
 import Qt 4.6
 
+/**
+ * A container for arbitrary content that can be expanded via dragging from a screen edge.
+ * @param titleText Tab label in collapsed state
+ * @param tilteIcon Tab icon path in collapsed state
+ * @param handlePosition offset from the top for the tab handle in collapsed state
+ * @param handleWidth Tab height in collapsed state
+ * @param handleHeight Tab width in collapsed state
+ * @param dragThreshold Drag distance needed before expanding
+ * @param handleRadius tab and panel corner radius
+ * @param contentWidth width of the content area in expanded state
+ * @signal expanded emitted when the panel is expanded
+ * @slot collapse collapses the panel
+ */
 Item {
   property string titleText
   property string titleIcon
@@ -29,7 +42,8 @@ Item {
   property int dragThreshold: 16
   property int handleRadius: 12
   property int contentWidth: width - handleWidth
-  z:100
+  signal expanded
+  z: 100
 
   function collapse() { background.x = -handleWidth }
 
@@ -104,6 +118,7 @@ Item {
       State {
         name: "expandedState"
         when: background.x >= (-handleWidth + dragThreshold)
+        StateChangeScript { script: expanded(); }
         PropertyChanges {
           target: background
           height: background.parent.height
