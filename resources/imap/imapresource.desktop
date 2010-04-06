@@ -35,6 +35,7 @@ Comment=Connects to an IMAP e-mail server
 Comment[en_GB]=Connects to an IMAP e-mail server
 Comment[pt]=Liga-se a um servidor de e-mail em IMAP
 Comment[pt_BR]=Conecta a um servidor de e-mails IMAP
+Comment[sv]=Ansluter till en IMAP e-postserver
 Comment[uk]=Встановлює з’єднання з поштовим сервером IMAP
 Type=AkonadiResource
 Exec=akonadi_imap_resource
