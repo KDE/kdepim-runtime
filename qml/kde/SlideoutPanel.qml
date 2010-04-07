@@ -27,7 +27,7 @@ import Qt 4.6
  * @param handleWidth Tab height in collapsed state
  * @param handleHeight Tab width in collapsed state
  * @param dragThreshold Drag distance needed before expanding
- * @param handleRadius tab and panel corner radius
+ * @param radius tab and panel corner radius
  * @param contentWidth width of the content area in expanded state
  * @signal expanded emitted when the panel is expanded
  * @slot collapse collapses the panel
@@ -40,8 +40,8 @@ Item {
   property int handleWidth: 36
   property int handleHeight: 160
   property int dragThreshold: 16
-  property int handleRadius: 12
-  property int contentWidth: width - handleWidth
+  property int radius: 12
+  property int contentWidth: width - handleWidth - 2*radius
   signal expanded
   z: 100
 
@@ -58,7 +58,7 @@ Item {
       GradientStop { position: 0.0; color: "lightgrey" }
       GradientStop { position: 0.5; color: "grey" }
     }
-    radius: handleRadius
+    radius: parent.radius
 
     // don't use DropShadow effect, way to slow as it seems to affect everything in the content area as well
     Rectangle {
@@ -66,7 +66,7 @@ Item {
       opacity: 0.75
       width: parent.width
       height: parent.height
-      radius: handleRadius
+      radius: parent.radius
       x: 4
       y: 4
       z: -1
@@ -111,6 +111,7 @@ Item {
       anchors.right: parent.right
       anchors.top: parent.top
       anchors.bottom: parent.bottom
+      anchors.margins: radius
       width: contentWidth
     }
 
@@ -122,7 +123,7 @@ Item {
         PropertyChanges {
           target: background
           height: background.parent.height
-          width: contentWidth + 2 * handleWidth - dragThreshold
+          width: contentWidth + 2 * handleWidth + 2 * radius - dragThreshold
           y: 0
         }
         PropertyChanges { target: titleLabel; visible: false }

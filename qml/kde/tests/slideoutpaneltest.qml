@@ -31,16 +31,11 @@ Rectangle {
 
     SlideoutPanel {
       id: folderPanel
-      anchors.fill: parent
-      anchors.topMargin: 20
-      anchors.rightMargin: 20
-      anchors.bottomMargin: 20
       titleText: "Folders"
       handleHeight: 150
       content: [
         Rectangle {
           color: "blue"
-          anchors.margins: 12
           anchors.fill: parent
         }
       ]
@@ -48,19 +43,13 @@ Rectangle {
 
     SlideoutPanel {
       id: actionPanel
-      anchors.fill: parent
-      anchors.topMargin: 20
-      anchors.rightMargin: 20
-      anchors.bottomMargin: 20
       titleText: "Actions"
       titleIcon: KDE.iconPath( "akonadi", 48 );
-      handlePosition: folderPanel.handleHeight
       handleHeight: 150
       contentWidth: 200
       content: [
         Rectangle {
           color: "red"
-          anchors.margins: 12
           anchors.fill: parent
         }
       ]
@@ -68,18 +57,12 @@ Rectangle {
 
     SlideoutPanel {
       id: attachmentPanel
-      anchors.fill: parent
-      anchors.topMargin: 20
-      anchors.rightMargin: 20
-      anchors.bottomMargin: 20
       titleIcon: KDE.iconPath( "mail-attachment", 48 );
-      handlePosition: folderPanel.handleHeight + actionPanel.handleHeight
-      handleHeight: parent.height - actionPanel.handleHeight - folderPanel.handleHeight - anchors.topMargin - anchors.bottomMargin
+      handleHeight: parent.height - actionPanel.handleHeight - folderPanel.handleHeight
       contentWidth: 400
       content: [
         Rectangle {
           color: "green"
-          anchors.margins: 12
           anchors.fill: parent
         }
       ]

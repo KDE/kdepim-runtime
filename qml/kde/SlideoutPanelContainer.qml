@@ -24,6 +24,12 @@ import Qt 4.6
  * It ensures that only one of them is expanded at any given time.
  */
 Item {
+  id: _slideoutPanelContainer
+
+  /** Margin of the panels regarding the container on the three sides where it is not docked to the edge. */
+  property int margin: 20
+
+  /** Collapse all panels. */
   function collapseAll()
   {
     for ( var i = 0; i < children.length; ++i ) {
@@ -35,6 +41,20 @@ Item {
   {
     for ( var i = 0; i < children.length; ++i ) {
       children[i].expanded.connect( this, collapseAll );
+    }
+  }
+
+  onChildrenChanged:
+  {
+    var panel = children[children.length - 1];
+    panel.anchors.fill = _slideoutPanelContainer;
+    panel.anchors.rightMargin = margin;
+    panel.anchors.topMargin = margin;
+    panel.anchors.bottomMargin = margin;
+
+    if ( children.length >= 2 ) {
+      var prevPanel = children[children.length - 2];
+      panel.handlePosition = prevPanel.handlePosition + prevPanel.handleHeight
     }
   }
 }
