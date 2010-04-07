@@ -24,11 +24,24 @@ import org.kde 4.5
 
 Item {
   id: wrapper
-  height : 68
-  width : breadcrumbsView.width
-  clip: true
+//   clip: true
+
+  property bool fullClickArea : false
+  property bool showChildIndicator : false
+  property bool steppedIndent : false
+  property bool indentOnly : false
+  property bool indentAll : false
+  property alias itemBackground : background.color
 
   signal indexSelected(int row)
+
+  height : 68
+  width : breadcrumbsView.width - x
+  x : {
+    if ( steppedIndent ) { model.index * 10 }
+    else if ( indentOnly ) { 10 }
+    else if ( indentAll ) { 20 }
+  }
 
   Rectangle {
     id: background
@@ -40,7 +53,8 @@ Item {
   MouseArea {
     anchors.fill: parent
     onClicked: {
-      delegateTopLevel.indexSelected(model.index);
+      if ( fullClickArea )
+        indexSelected(model.index);
     }
   }
   Row {
@@ -78,13 +92,13 @@ Item {
     anchors.bottomMargin : 20
     color : "red"
     radius : 10
-    opacity : ( model.childCount > 0 ) ? 1 : 0
-    MouseArea {
+    opacity : ( showChildIndicator && model.childCount > 0 ) ? 1 : 0
+   /* MouseArea {
       anchors.fill: parent
       onClicked: {
         indexSelected( model.index );
       }
-    }
+    } */
   }
 }
 

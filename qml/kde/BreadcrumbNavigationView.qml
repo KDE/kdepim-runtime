@@ -24,13 +24,13 @@ import org.kde 4.5
 
 Item {
   id: breadcrumbTopLevel
+  clip : true
 
   property alias breadcrumbItemsModel : breadcrumbsView.model
   property alias selectedItemModel : selectedItemView.model
   property alias childItemsModel : childItemsView.model
 
-  property alias breadcrumbIndex : breadcrumbsView.selectedIndex
-  property alias childItemsIndex : childItemsView.selectedIndex
+  property int itemHeight : 68
 
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
@@ -42,6 +42,8 @@ Item {
   Component {
     id : breadcrumbDelegate
     CollectionDelegate {
+      fullClickArea : true
+      steppedIndent : true
       onIndexSelected : {
         breadcrumbCollectionSelected(row);
       }
@@ -51,12 +53,17 @@ Item {
   Component {
     id : selectedItemDelegate
     CollectionDelegate {
+      itemBackground : palette.dark
+      indentOnly : true
     }
   }
 
   Component {
     id : childItemsDelegate
     CollectionDelegate {
+      fullClickArea : true
+      showChildIndicator : true
+      indentAll : true
       onIndexSelected : {
         childCollectionSelected(row);
       }
@@ -65,16 +72,17 @@ Item {
 
   Rectangle {
     id : topButton
-    height : 68
+    height : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) itemHeight; else 0; }
+    opacity : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) 1; else 0; }
     anchors.top : parent.top
     anchors.left : parent.left
     anchors.right : parent.right
+
     Text { text : "Top" }
 
     MouseArea {
       anchors.fill : parent
       onClicked : {
-        console.log( "funny!")
         breadcrumbCollectionSelected(-1);
       }
     }
@@ -82,8 +90,9 @@ Item {
 
   ListView {
     id : breadcrumbsView
+    interactive : false
     property int selectedIndex : -1
-    height : 68 * breadcrumbsView.count
+    height : { count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * count }
     anchors.top : topButton.bottom
     anchors.left : parent.left
     anchors.right : parent.right
@@ -92,16 +101,19 @@ Item {
 
   ListView {
     id : selectedItemView
-    property int selectedIndex : -1
-    height : 68 * selectedItemView.count
+    height : itemHeight * selectedItemView.count
     anchors.top : breadcrumbsView.bottom
+    anchors.left : parent.left
+    anchors.right : parent.right
     delegate : selectedItemDelegate
   }
   ListView {
     id : childItemsView
-    property int selectedIndex : -1
+    clip : true
     anchors.top : selectedItemView.bottom
-    height : 68 * 4
+    anchors.bottom : breadcrumbTopLevel.bottom
+    anchors.left : parent.left
+    anchors.right : parent.right
     delegate : childItemsDelegate
   }
 }
