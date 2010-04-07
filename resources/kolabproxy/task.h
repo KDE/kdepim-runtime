@@ -87,6 +87,8 @@ public:
   virtual bool hasStartDate() const;
 
   virtual void setDueDate( const KDateTime& date );
+  virtual void setDueDate( const QString &date );
+  virtual void setDueDate( const QDate &date );
   virtual KDateTime dueDate() const;
   virtual bool hasDueDate() const;
 
