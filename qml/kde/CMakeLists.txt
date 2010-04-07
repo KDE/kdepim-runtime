@@ -9,8 +9,6 @@ target_link_libraries(kdeqmlplugin ${KDE4_KDEUI_LIBS} ${QT_QTDECLARATIVE_LIBRARY
 install( FILES qmldir
   BreadcrumbNavigationView.qml
   CollectionDelegate.qml
-  CollectionDelegate2.qml
-  CollectionDelegate3.qml
   DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
 
 install( TARGETS kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )

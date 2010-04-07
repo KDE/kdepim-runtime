@@ -22,55 +22,47 @@
 import Qt 4.7
 import org.kde 4.5
 
-Component {
-  id : delegateTopLevel
-  signal indexSelected
+Item {
+  id: wrapper
+  height : 68
+  width : breadcrumbsView.width
+  clip: true
 
+  signal indexSelected(int row)
 
-  Item {
-    id: wrapper
-    height : 68
-    width : breadcrumbsView.width
-    clip: true
-
-    //(int row)
-
-    Rectangle {
-      id: background
-      opacity: 0.25
-      x: 1; y: 2; width: parent.width - 2; height: parent.height - 4
-      border.color: "yellow"
-      radius: 10
+  Rectangle {
+    id: background
+    opacity: 0.25
+    x: 1; y: 2; width: parent.width - 2; height: parent.height - 4
+    border.color: "yellow"
+    radius: 10
+  }
+  MouseArea {
+    anchors.fill: parent
+    onClicked: {
+      delegateTopLevel.indexSelected(model.index);
     }
-    MouseArea {
-      anchors.fill: parent
-      onClicked: {
-        console.log( "first" + model.index );
-        application.setSelectedBreadcrumbCollectionRow(model.index);
-        //delegateTopLevel.indexSelected(); //(model.index);
-      }
+  }
+  Row {
+    id: topLayout
+    x: 10; y: 10;
+    height: collectionIcon.height;
+    width: parent.width
+    spacing: 10
+
+    Image {
+        id: collectionIcon
+        pixmap: KDE.iconToPixmap( model.decoration, height );
+        width: 48; height: 48
     }
-    Row {
-      id: topLayout
-      x: 10; y: 10;
-      height: collectionIcon.height;
-      width: parent.width
-      spacing: 10
 
-      Image {
-          id: collectionIcon
-          pixmap: KDE.iconToPixmap( model.decoration, height );
-          width: 48; height: 48
-      }
-
-      Column {
-        height: collectionIcon.height
-        width: background.width - collectionIcon.width - 20
-        spacing: 5
-        Text {
-          text : model.display
-          font.bold: true
-        }
+    Column {
+      height: collectionIcon.height
+      width: background.width - collectionIcon.width - 20
+      spacing: 5
+      Text {
+        text : model.display
+        font.bold: true
       }
     }
   }

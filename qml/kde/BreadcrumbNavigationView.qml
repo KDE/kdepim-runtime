@@ -39,33 +39,28 @@ Item {
 
   SystemPalette { id: palette; colorGroup: "Active" }
 
-  CollectionDelegate {
+  Component {
     id : breadcrumbDelegate
-
-//     onIndexSelected : {
-//       console.log( "second" );
-      //breadcrumbCollectionSelected(row);
-//     }
-  }
-/*
-  Connections {
-    target : breadcrumbDelegate
-    onIndexSelected : {
-      console.log( "second" );
-      //breadcrumbCollectionSelected(row);
+    CollectionDelegate {
+      onIndexSelected : {
+        breadcrumbCollectionSelected(row);
+      }
     }
   }
-*/
-  CollectionDelegate3 {
+
+  Component {
     id : selectedItemDelegate
+    CollectionDelegate {
+    }
   }
 
-  CollectionDelegate2 {
+  Component {
     id : childItemsDelegate
-//     onIndexSelected : {
-//         console.log( "second" + row );
-//        childCollectionSelected(row);
-//     }
+    CollectionDelegate {
+      onIndexSelected : {
+        childCollectionSelected(row);
+      }
+    }
   }
 
   ListView {
