@@ -79,19 +79,26 @@ Item {
         font.bold: true
       }
     }
+    Text {
+      anchors.bottom : parent.bottom
+      anchors.right : parent.right
+      anchors.rightMargin : 15 + parent.spacing
+      text : model.unreadCount
+      color : "blue"
+    }
   }
 
   Rectangle {
     id : expandTarget
     width : height
     anchors.right : parent.right
-    anchors.rightMargin : 20
+    anchors.rightMargin : 30
     anchors.top : parent.top
-    anchors.topMargin : 20
+    anchors.topMargin : 25
     anchors.bottom : parent.bottom
-    anchors.bottomMargin : 20
+    anchors.bottomMargin : 25
     color : "red"
-    radius : 10
+    radius : 5
     opacity : ( showChildIndicator && model.childCount > 0 ) ? 1 : 0
    /* MouseArea {
       anchors.fill: parent
