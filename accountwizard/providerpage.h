@@ -43,6 +43,8 @@ class ProviderPage : public Page
     explicit ProviderPage( KAssistantDialog* parent = 0 );
 
     virtual void leavePageNext();
+    virtual void leavePageNextRequested();
+
     QTreeView *treeview() const;
     QPushButton *advancedButton() const;
 
@@ -52,7 +54,7 @@ class ProviderPage : public Page
     void providerStatusChanged( const KNS3::Entry& );
 
   private:
-    void setAssistant( const QString& );
+    void findDesktopAndSetAssistant( const QStringList& list );
 
     Ui::ProviderPage ui;
     QStandardItemModel *m_model;
@@ -60,6 +62,8 @@ class ProviderPage : public Page
     KNS3::DownloadManager *m_downloadManager;
     KNS3::Entry::List m_providerEntries;
     Provider m_wantedProvider;
+    bool m_newPageWanted;
+    bool m_newPageReady;
 };
 
 #endif

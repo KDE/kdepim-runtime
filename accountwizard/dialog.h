@@ -40,6 +40,8 @@ class Dialog : public KAssistantDialog
   private slots:
     void slotNextPage();
     void slotAdvancedWanted();
+    void slotNextOk();
+    void slotBackOk();
 
   private:
     KPageWidgetItem* addPage( Page* page, const QString &title );

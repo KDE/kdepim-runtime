@@ -28,7 +28,9 @@
 ProviderPage::ProviderPage(KAssistantDialog* parent) :
   Page( parent ),
   m_model( new QStandardItemModel( this ) ),
-  m_downloadManager( new KNS3::DownloadManager( this ) )
+  m_downloadManager( new KNS3::DownloadManager( this ) ),
+  m_newPageWanted( false ),
+  m_newPageReady( false )
 {
   ui.setupUi( this );
 
@@ -86,6 +88,7 @@ void ProviderPage::selectionChanged()
 
 void ProviderPage::leavePageNext()
 {
+  m_newPageReady = false;
   if ( !ui.listView->selectionModel()->hasSelection() )
     return;
   const QModelIndex index = ui.listView->selectionModel()->selectedIndexes().first();
@@ -100,15 +103,17 @@ void ProviderPage::leavePageNext()
   foreach (const KNS3::Entry& e, m_providerEntries) {
     if (e.id() == item->data( Qt::UserRole ) &&
         e.providerId() == item->data( Qt::UserRole+1 ) ) {
-      kDebug() << "Starting download for" << e.name();
 
       m_wantedProvider.entryId = e.id();
       m_wantedProvider.entryProviderId = e.providerId();
       
-      if ( e.status() == KNS3::Entry::Installed )
-        setAssistant( e.name() );
-      else
+      if ( e.status() == KNS3::Entry::Installed ) {
+        kDebug() << "already installed" << e.installedFiles();
+        findDesktopAndSetAssistant(  e.installedFiles() );
+      } else {
+        kDebug() << "Starting download for " << e.name();
         m_downloadManager->installEntry( e );
+      }
 
       break;
     }
@@ -120,14 +125,26 @@ void ProviderPage::providerStatusChanged( const KNS3::Entry& e )
   kDebug() << e.name();
   if ( e.id() == m_wantedProvider.entryId &&
        e.providerId() == m_wantedProvider.entryProviderId && 
-       e.status() == KNS3::Entry::Installed )
-    setAssistant( e.name() );
+       e.status() == KNS3::Entry::Installed ) {
+    findDesktopAndSetAssistant(  e.installedFiles() );
+  }
 }
 
-void ProviderPage::setAssistant( const QString& name )
+void ProviderPage::findDesktopAndSetAssistant( const QStringList& list )
 {
-  kDebug() << name;
-  Global::setAssistant( name );
+  foreach (const QString& file, list ) {
+    kDebug() << file;
+    if ( file.endsWith( ".desktop" ) ) {
+      kDebug() << "Yay, a desktop file!" << file;
+      Global::setAssistant( file );
+      m_newPageReady = true;
+      if ( m_newPageWanted ) {
+        kDebug() << "New page was already requested, now we are done, approve it";
+        emit leavePageNextOk();
+      }
+      break;
+    }
+  }
 }
 
 QTreeView *ProviderPage::treeview() const
@@ -138,6 +155,18 @@ QTreeView *ProviderPage::treeview() const
 QPushButton *ProviderPage::advancedButton() const
 {
   return ui.advancedButton;
+}
+
+
+void ProviderPage::leavePageNextRequested()
+{
+  m_newPageWanted = true;
+  if ( m_newPageReady ) {
+    kDebug() << "New page requested and we are done, so ok...";
+    emit leavePageNextOk();
+  } else {
+    kDebug() << "New page requested, but we are not done yet...";
+  }
 }
 
 #include "providerpage.moc"

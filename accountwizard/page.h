@@ -37,12 +37,16 @@ class Page : public QWidget
     virtual void enterPageBack();
     virtual void leavePageNext();
     virtual void leavePageBack();
+    virtual void leavePageNextRequested();
+    virtual void leavePageBackRequested();
 
   signals:
     Q_SCRIPTABLE void pageEnteredNext();
     Q_SCRIPTABLE void pageEnteredBack();
     Q_SCRIPTABLE void pageLeftNext();
     Q_SCRIPTABLE void pageLeftBack();
+    Q_SCRIPTABLE void leavePageNextOk();
+    Q_SCRIPTABLE void leavePageBackOk();
 
   public slots:
     Q_SCRIPTABLE void setValid( bool valid );

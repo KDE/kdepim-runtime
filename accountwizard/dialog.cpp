@@ -72,10 +72,11 @@ Dialog::Dialog(QWidget* parent) :
   enableButton( KDialog::Help, false );
 }
 
-
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
 {
   KPageWidgetItem *item = KAssistantDialog::addPage( page, title );
+  connect( page, SIGNAL( leavePageNextOk() ), SLOT( slotNextOk() ) );
+  connect( page, SIGNAL( leavePageBackOk() ), SLOT( slotBackOk() ) );
   page->setPageWidgetItem( item );
   return item;
 }
@@ -90,6 +91,12 @@ void Dialog::next()
 {
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   page->leavePageNext();
+  page->leavePageNextRequested();
+}
+
+void Dialog::slotNextOk() 
+{
+  Page *page = qobject_cast<Page*>( currentPage()->widget() );
   emit page->pageLeftNext();
   KAssistantDialog::next();
   page = qobject_cast<Page*>( currentPage()->widget() );
@@ -102,6 +109,12 @@ void Dialog::back()
 {
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   page->leavePageBack();
+  page->leavePageBackRequested();
+}
+
+void Dialog::slotBackOk()
+{
+  Page *page = qobject_cast<Page*>( currentPage()->widget() );
   emit page->pageLeftBack();
   KAssistantDialog::back();
   page = qobject_cast<Page*>( currentPage()->widget() );
@@ -113,6 +126,8 @@ QObject* Dialog::addPage(const QString& uiFile, const QString &title )
 {
   kDebug() << uiFile;
   DynamicPage *page = new DynamicPage( Global::assistantBasePath() + uiFile, this );
+  connect( page, SIGNAL( leavePageNextOk() ), SLOT( slotNextOk() ) );
+  connect( page, SIGNAL( leavePageBackOk() ), SLOT( slotBackOk() ) );
   KPageWidgetItem* item = insertPage( mLastPage, page, title );
   page->setPageWidgetItem( item );
   return page;
