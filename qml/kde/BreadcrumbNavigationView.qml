@@ -63,11 +63,28 @@ Item {
     }
   }
 
+  Rectangle {
+    id : topButton
+    height : 68
+    anchors.top : parent.top
+    anchors.left : parent.left
+    anchors.right : parent.right
+    Text { text : "Top" }
+
+    MouseArea {
+      anchors.fill : parent
+      onClicked : {
+        console.log( "funny!")
+        breadcrumbCollectionSelected(-1);
+      }
+    }
+  }
+
   ListView {
     id : breadcrumbsView
     property int selectedIndex : -1
     height : 68 * breadcrumbsView.count
-    anchors.top : parent.top
+    anchors.top : topButton.bottom
     anchors.left : parent.left
     anchors.right : parent.right
     delegate : breadcrumbDelegate

@@ -66,4 +66,25 @@ Item {
       }
     }
   }
+
+  Rectangle {
+    id : expandTarget
+    width : height
+    anchors.right : parent.right
+    anchors.rightMargin : 20
+    anchors.top : parent.top
+    anchors.topMargin : 20
+    anchors.bottom : parent.bottom
+    anchors.bottomMargin : 20
+    color : "red"
+    radius : 10
+    opacity : ( model.childCount > 0 ) ? 1 : 0
+    MouseArea {
+      anchors.fill: parent
+      onClicked: {
+        indexSelected( model.index );
+      }
+    }
+  }
 }
+
