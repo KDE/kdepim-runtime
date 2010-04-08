@@ -58,6 +58,36 @@
 #include "ui_setupserverview_desktop.h"
 #endif
 
+
+/** static helper functions **/
+static void setCurrentAuthMode( QComboBox* authCombo, KIMAP::LoginJob::AuthenticationMode authtype )
+{
+  kDebug() << "setting authcombo: " << KIMAP::LoginJob::authenticationModeString( authtype );
+  int index = authCombo->findData( authtype );
+  if( index == -1 )
+    kWarning("desired authmode not in the combo");
+  kDebug() << "found corresponding index: " << index << "with data" << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( index ).toInt() );
+  authCombo->setCurrentIndex( index );
+  KIMAP::LoginJob::AuthenticationMode t = (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( authCombo->currentIndex() ).toInt();
+  kDebug() << "selected auth mode:" << KIMAP::LoginJob::authenticationModeString( t );
+  Q_ASSERT( t == authtype );
+}
+
+
+
+static KIMAP::LoginJob::AuthenticationMode  getCurrentAuthMode( QComboBox* authCombo )
+{
+  KIMAP::LoginJob::AuthenticationMode authtype = (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( authCombo->currentIndex() ).toInt();
+  kDebug() << "current auth mode: " << KIMAP::LoginJob::authenticationModeString( authtype );
+  return authtype;
+}
+
+static void addAuthenticationItem( QComboBox* authCombo, KIMAP::LoginJob::AuthenticationMode authtype )
+{
+    kDebug() << "adding auth item " << KIMAP::LoginJob::authenticationModeString( authtype );
+    authCombo->addItem( KIMAP::LoginJob::authenticationModeString( authtype ), QVariant( authtype ) );
+}
+
 SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
     m_subscriptionsChanged(false), m_shouldClearCache(false)
@@ -181,9 +211,9 @@ void SetupServer::applySettings()
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setUserName( m_ui->userName->text() );
   Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
-  int authtype = m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt();
-  kDebug() << "saving IMAP auth mode: " << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) authtype );
-  Settings::self()->setAuthentication( m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt() );
+  KIMAP::LoginJob::AuthenticationMode authtype = getCurrentAuthMode( m_ui->authenticationCombo );
+  kDebug() << "saving IMAP auth mode: " << KIMAP::LoginJob::authenticationModeString( authtype );
+  Settings::self()->setAuthentication( authtype );
   Settings::self()->setPassword( m_ui->password->text() );
   Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
   Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
@@ -242,8 +272,7 @@ void SetupServer::readSettings()
 
   populateDefaultAuthenticationOptions();
   i = Settings::self()->authentication();
-  kDebug() << "reading IMAP auth mode: " << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) i );
-  m_ui->authenticationCombo->setCurrentIndex( m_ui->authenticationCombo->findData( i ) );
+  setCurrentAuthMode( m_ui->authenticationCombo, (KIMAP::LoginJob::AuthenticationMode) i );
 
   if ( !Settings::self()->passwordPossible() ) {
     m_ui->password->setEnabled( false );
@@ -363,6 +392,7 @@ void SetupServer::slotFinished( QList<int> testResult )
   m_ui->testButton->setEnabled( true );
   m_ui->safeImap->setEnabled( true );
   m_ui->authenticationCombo->setEnabled( true );
+  slotSafetyChanged();
 }
 
 void SetupServer::slotTestChanged()
@@ -429,7 +459,8 @@ static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTranspor
 
 void SetupServer::slotSafetyChanged()
 {
-  if ( m_serverTest==0 ) {
+  if ( m_serverTest == 0 ) {
+    kDebug() << "serverTest null";
     m_ui->noRadio->setEnabled( true );
     m_ui->sslRadio->setEnabled( true );
     m_ui->tlsRadio->setEnabled( true );
@@ -443,13 +474,16 @@ void SetupServer::slotSafetyChanged()
 
   switch ( m_ui->safeImapGroup->checkedId() ) {
   case KIMAP::LoginJob::Unencrypted :
+    kDebug() << "safeImapGroup: unencrpted";
     protocols = m_serverTest->normalProtocols();
     break;
   case KIMAP::LoginJob::AnySslVersion:
     protocols = m_serverTest->secureProtocols();
+    kDebug() << "safeImapGroup: SSL";
     break;
   case KIMAP::LoginJob::TlsV1:
     protocols = m_serverTest->tlsProtocols();
+    kDebug() << "safeImapGroup: starttls";
     break;
   default:
     kFatal() << "Shouldn't happen";
@@ -457,18 +491,18 @@ void SetupServer::slotSafetyChanged()
 
   m_ui->authenticationCombo->clear();
   foreach( int prot, protocols ) {
-    KIMAP::LoginJob::AuthenticationMode t = mapTransportAuthToKimap( (MailTransport::Transport::EnumAuthenticationType::type) prot );
-    kDebug() << "adding auth mode:" << KIMAP::LoginJob::authenticationModeString( t );
-    m_ui->authenticationCombo->addItem( KIMAP::LoginJob::authenticationModeString( t ) , t );
+    KIMAP::LoginJob::AuthenticationMode t = mapTransportAuthToKimap( ( MailTransport::Transport::EnumAuthenticationType::type ) prot );
+    addAuthenticationItem( m_ui->authenticationCombo, t );
   }
-  if( m_ui->authenticationCombo->count() > 0 )
-    m_ui->authenticationCombo->setCurrentIndex( 0 ); // default to the first item in the list, all are supported
-  KIMAP::LoginJob::AuthenticationMode t = (KIMAP::LoginJob::AuthenticationMode) m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt();
-  kDebug() << "selected auth mode:" << KIMAP::LoginJob::authenticationModeString( t );
+  if( protocols.size() > 0 )
+    setCurrentAuthMode( m_ui->authenticationCombo, mapTransportAuthToKimap( ( MailTransport::Transport::EnumAuthenticationType::type ) protocols.first() ) );
+  else
+    kDebug() << "no authmodes found";
 }
 
 void SetupServer::slotManageSubscriptions()
 {
+  kDebug() << "manage subscripts";
   ImapAccount account;
   account.setServer( m_ui->imapServer->text() );
   account.setUserName( m_ui->userName->text() );
@@ -489,8 +523,7 @@ void SetupServer::slotManageSubscriptions()
     kFatal("Shouldn't happen...");
   }
 
-  int type = m_ui->authenticationCombo->itemData( m_ui->authenticationCombo->currentIndex() ).toInt();
-  account.setAuthenticationMode( ( KIMAP::LoginJob::AuthenticationMode ) type );
+  account.setAuthenticationMode( getCurrentAuthMode( m_ui->authenticationCombo ) );
 
   m_subscriptionsChanged = false;
   SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."), &account, m_subscriptionsChanged );
@@ -519,20 +552,17 @@ void SetupServer::localFolderRequestJobFinished( KJob *job )
   }
 }
 
-#define addAuthenticationItem( type ) \
-    m_ui->authenticationCombo->addItem( KIMAP::LoginJob::authenticationModeString( type ), QVariant( type ) );
-
 void SetupServer::populateDefaultAuthenticationOptions()
 {
   m_ui->authenticationCombo->clear();
-  addAuthenticationItem( KIMAP::LoginJob::ClearText );
-  addAuthenticationItem( KIMAP::LoginJob::Login );
-  addAuthenticationItem( KIMAP::LoginJob::Plain );
-  addAuthenticationItem( KIMAP::LoginJob::CramMD5 );
-  addAuthenticationItem( KIMAP::LoginJob::DigestMD5 );
-  addAuthenticationItem( KIMAP::LoginJob::NTLM );
-  addAuthenticationItem( KIMAP::LoginJob::GSSAPI );
-  addAuthenticationItem( KIMAP::LoginJob::Anonymous );
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::ClearText );
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::Login );
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::Plain );
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::CramMD5 );
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::DigestMD5 );
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::NTLM );
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::GSSAPI );
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::Anonymous );
 }
 
 
