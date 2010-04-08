@@ -9,6 +9,10 @@
     <entry name="ImapServer" type="String">
       <label>IMAP server</label>
     </entry>
+    <entry name="ImapPort"  type="Int">
+      <label>Defines the port the IMAP service is running on</label>
+      <default>143</default>
+    </entry>
     <entry name="UserName" type="String">
       <label>Username</label>
     </entry>

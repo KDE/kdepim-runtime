@@ -209,6 +209,7 @@ void SetupServer::applySettings()
   m_parentResource->setName( m_ui->accountName->text() );
 
   Settings::self()->setImapServer( m_ui->imapServer->text() );
+  Settings::self()->setImapPort( m_ui->portSpin->value() );
   Settings::self()->setUserName( m_ui->userName->text() );
   Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
   KIMAP::LoginJob::AuthenticationMode authtype = getCurrentAuthMode( m_ui->authenticationCombo );
@@ -260,6 +261,8 @@ void SetupServer::readSettings()
   m_ui->imapServer->setText(
     !Settings::self()->imapServer().isEmpty() ? Settings::self()->imapServer() :
     esetting.getSetting( KEMailSettings::InServer ) );
+
+  m_ui->portSpin->setValue( Settings::self()->imapPort() );
 
   m_ui->userName->setText(
     !Settings::self()->userName().isEmpty() ? Settings::self()->userName() :
@@ -344,12 +347,13 @@ void SetupServer::slotTest()
   delete m_serverTest;
   m_serverTest = new MailTransport::ServerTest( this );
 
-  QString server = m_ui->imapServer->text().section( ':', 0, 0 );
-  int port = m_ui->imapServer->text().section( ':', 1, 1 ).toInt();
+  QString server = m_ui->imapServer->text();
+  int port = m_ui->portSpin->value();
+  kDebug() << "server: " << server << "port: " << port;
 
   m_serverTest->setServer( server );
 
-  if ( port>0 ) {
+  if ( port != 143 && port != 993 ) {
     m_serverTest->setPort( MailTransport::Transport::EnumEncryption::None, port );
     m_serverTest->setPort( MailTransport::Transport::EnumEncryption::SSL, port );
   }
@@ -505,7 +509,13 @@ void SetupServer::slotManageSubscriptions()
 {
   kDebug() << "manage subscripts";
   ImapAccount account;
-  account.setServer( m_ui->imapServer->text() );
+
+  // craft the host:port string
+  QString serverPort( m_ui->imapServer->text() );
+  serverPort.append( ':' );
+  serverPort.append( m_ui->portSpin->value() );
+  account.setServer( serverPort );
+
   account.setUserName( m_ui->userName->text() );
   account.setName( m_ui->imapServer->text() + '/' + m_ui->userName->text() );
   account.setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
