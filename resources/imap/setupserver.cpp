@@ -65,7 +65,7 @@ static void setCurrentAuthMode( QComboBox* authCombo, KIMAP::LoginJob::Authentic
   kDebug() << "setting authcombo: " << KIMAP::LoginJob::authenticationModeString( authtype );
   int index = authCombo->findData( authtype );
   if( index == -1 )
-    kWarning("desired authmode not in the combo");
+    kWarning() << "desired authmode not in the combo";
   kDebug() << "found corresponding index: " << index << "with data" << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( index ).toInt() );
   authCombo->setCurrentIndex( index );
   KIMAP::LoginJob::AuthenticationMode t = (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( authCombo->currentIndex() ).toInt();
