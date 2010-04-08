@@ -479,7 +479,7 @@ void SetupServer::slotSafetyChanged()
 
   switch ( m_ui->safeImapGroup->checkedId() ) {
   case KIMAP::LoginJob::Unencrypted :
-    kDebug() << "safeImapGroup: unencrpted";
+    kDebug() << "safeImapGroup: unencrypted";
     protocols = m_serverTest->normalProtocols();
     break;
   case KIMAP::LoginJob::AnySslVersion:
