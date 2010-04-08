@@ -392,6 +392,7 @@ void SetupServer::slotFinished( QList<int> testResult )
   m_ui->testButton->setEnabled( true );
   m_ui->safeImap->setEnabled( true );
   m_ui->authenticationCombo->setEnabled( true );
+  slotEncryptionRadioChanged();
   slotSafetyChanged();
 }
 
