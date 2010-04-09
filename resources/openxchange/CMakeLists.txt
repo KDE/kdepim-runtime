@@ -45,7 +45,7 @@ qt4_add_dbus_adaptor(openxchangeresource_SRCS
 
 kde4_add_executable(akonadi_openxchange_resource RUN_UNINSTALLED ${openxchangeresource_SRCS})
 
-target_link_libraries(akonadi_openxchange_resource ${KDE4_AKONADI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_AKONADI_CONTACT_LIBS} ${KDE4_AKONADI_KCAL_LIBS} )
+target_link_libraries(akonadi_openxchange_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_AKONADI_CONTACT_LIBS} ${KDE4_AKONADI_KCAL_LIBS} )
 
 install(TARGETS akonadi_openxchange_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
