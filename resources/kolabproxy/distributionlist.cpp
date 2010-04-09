@@ -191,6 +191,8 @@ void DistributionList::setFields( const KABC::ContactGroup* contactGroup )
     Member m;
     m.displayName = data.name();
     m.email = data.email();
+
+    mDistrListMembers.append( m );
   }
 
   // Hopefully all resources are available during saving, so we can look up
@@ -217,6 +219,7 @@ void DistributionList::setFields( const KABC::ContactGroup* contactGroup )
       m.email = reference.preferredEmail();
       if ( m.email.isEmpty() )
         m.email = addressee.preferredEmail();
+
       mDistrListMembers.append( m );
     }
   }
