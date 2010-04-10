@@ -77,6 +77,7 @@ function testOk( arg )
     imapRes.setOption( "ImapServer", page.imapWizard.incommingAddress.text );
     imapRes.setOption( "UserName", page.imapWizard.emailAddress.text );
     imapRes.setOption( "Password", page.imapWizard.password.text );
+    imapRes.setOption( "DisconnectedModeEnabled", page.imapWizard.disconnectedMode.checked );
     if ( arg == "ssl" ) { 
       imapRes.setOption( "Safety", 0);
       imapRes.setOption( "Authentication", 0);
