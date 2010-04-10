@@ -26,11 +26,31 @@
 #include <KDebug>
 #include <KLocale>
 
+#include <QMetaMethod>
 #include <QVariant>
 #include <QtDBus/qdbusinterface.h>
 #include <QtDBus/qdbusreply.h>
 
 using namespace Akonadi;
+
+static QVariant::Type argumentType( const QMetaObject *mo, const QString &method )
+{
+  QMetaMethod m;
+  for ( int i = 0; i < mo->methodCount(); ++i ) {
+    const QString signature = QString::fromLatin1( mo->method( i ).signature() );
+    if ( signature.startsWith( method ) )
+      m = mo->method( i );
+  }
+
+  if ( !m.signature() )
+    return QVariant::Invalid;
+
+  const QList<QByteArray> argTypes = m.parameterTypes();
+  if ( argTypes.count() != 1 )
+    return QVariant::Invalid;
+
+  return QVariant::nameToType( argTypes.first() );
+}
 
 Resource::Resource(const QString& type, QObject* parent) :
   SetupObject( parent ),
@@ -91,7 +111,13 @@ void Resource::instanceCreateResult(KJob* job)
     for ( QMap<QString, QVariant>::const_iterator it = m_settings.constBegin(); it != m_settings.constEnd(); ++it ) {
       kDebug() << "Setting up " << it.key() << " for agent " << m_instance.identifier();
       const QString methodName = QString::fromLatin1("set%1").arg( it.key() );
-      const QVariant arg = it.value();
+      QVariant arg = it.value();
+      const QVariant::Type targetType = argumentType( iface.metaObject(), methodName );
+      if ( !arg.canConvert( targetType ) ) {
+        emit error( i18n( "Could not convert value of setting '%1' to required type %2.", it.key(), QVariant::typeToName( targetType ) ) );
+        return;
+      }
+      arg.convert( targetType );
       QDBusReply<void> reply = iface.call( methodName, arg );
       if ( !reply.isValid() ) {
         emit error( i18n( "Could not set setting '%1': %2", it.key(), reply.error().message() ) );
