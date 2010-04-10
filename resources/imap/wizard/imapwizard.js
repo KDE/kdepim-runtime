@@ -79,10 +79,10 @@ function testOk( arg )
     imapRes.setOption( "Password", page.imapWizard.password.text );
     if ( arg == "ssl" ) { 
       imapRes.setOption( "Safety", 0);
-      // imapRes.setOption( "Authentication", 0);
+      imapRes.setOption( "Authentication", 0);
     } else if ( arg == "tls" ) {
       imapRes.setOption( "Safety", 1);
-      // imapRes.setOption( "Authentication", 0);
+      imapRes.setOption( "Authentication", 0);
     }
     stage = 2;
     setup();
