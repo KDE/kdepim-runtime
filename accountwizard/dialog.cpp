@@ -141,7 +141,7 @@ void Dialog::slotAdvancedWanted()
 {
   Q_ASSERT( mTypePage );
   setAppropriate( mTypePage, true );
-  slotNextPage();
+  setCurrentPage( mTypePage ); // avoid the leavePage magic in the provider page
 }
 
 #include "dialog.moc"
