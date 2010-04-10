@@ -56,21 +56,53 @@ function validateInput()
   }
 }
 
+var stage = 1;
 function setup()
 {
-  var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
-  imapRes.setOption( "ImapServer", page.imapWizard.incommingAddress.text );
-  imapRes.setOption( "UserName", page.imapWizard.emailAddress.text );
-  imapRes.setOption( "Password", page.imapWizard.password.text );
-
-  var smtp = SetupManager.createTransport( "smtp" );
-  smtp.setName( page.imapWizard.outgoingAddress.text );
-  smtp.setHost( page.imapWizard.outgoingAddress.text );
-  smtp.setEncryption( "NONE" );
-
-  SetupManager.execute();
+  if ( stage == 1 )
+    ServerTest.test( page.imapWizard.incommingAddress.text, "imap" );
+  else
+    ServerTest.test( page.imapWizard.outgoingAddress.text, "smtp" );
 }
 
+function testResultFail()
+{
+  testOk( -1 );
+}
+
+function testOk( arg )
+{
+  if (stage == 1) {
+    var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
+    imapRes.setOption( "ImapServer", page.imapWizard.incommingAddress.text );
+    imapRes.setOption( "UserName", page.imapWizard.emailAddress.text );
+    imapRes.setOption( "Password", page.imapWizard.password.text );
+    if ( arg == "ssl" ) { 
+      imapRes.setOption( "Safety", 0);
+      // imapRes.setOption( "Authentication", 0);
+    } else if ( arg == "tls" ) {
+      imapRes.setOption( "Safety", 1);
+      // imapRes.setOption( "Authentication", 0);
+    }
+    stage = 2;
+    setup();
+  } else {
+    var smtp = SetupManager.createTransport( "smtp" );
+    smtp.setName( page.imapWizard.outgoingAddress.text );
+    smtp.setHost( page.imapWizard.outgoingAddress.text );
+    if ( arg == "ssl" ) { 
+      smtp.setEncryption( "SSL" );
+    } else if ( arg == "tls" ) {
+      smtp.setEncryption( "TLS" );
+    } else {
+      smtp.setEncryption( "None" );
+    }
+    SetupManager.execute();
+  }
+}
+
+connect( ServerTest, "testFail()", this, "testResultFail()" );
+connect( ServerTest, "testResult(QString)", this, "testOk(QString)" );
 connect( page.imapWizard.emailAddress, "textChanged(QString)", this, "emailChanged(QString)" );
 connect( page.imapWizard.incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
