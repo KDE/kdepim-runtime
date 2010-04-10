@@ -21,6 +21,9 @@
 #ifndef PROVIDERPAGE_H
 #define PROVIDERPAGE_H
 
+#include <kdeversion.h>
+#if KDE_IS_VERSION( 4, 4, 50 )
+
 #include "page.h"
 #include <QStandardItemModel>
 
@@ -65,5 +68,7 @@ class ProviderPage : public Page
     bool m_newPageWanted;
     bool m_newPageReady;
 };
+
+#endif
 
 #endif

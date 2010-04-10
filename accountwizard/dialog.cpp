@@ -47,15 +47,19 @@ Dialog::Dialog(QWidget* parent) :
     IdentityPage *idPage = new IdentityPage( this );
     addPage( idPage, i18n( "Create new identity" ) );
 
+#if KDE_IS_VERSION( 4, 4, 50 )
     ProviderPage *ppage = new ProviderPage( this );
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     connect( ppage->advancedButton(), SIGNAL( clicked() ), SLOT( slotAdvancedWanted() ) );
     addPage( ppage, i18n( "Select Provider" ) );
+#endif
 
     TypePage* typePage = new TypePage( this );
     connect( typePage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     mTypePage = addPage( typePage, i18n( "Select Account Type" ) );
+#if KDE_IS_VERSION( 4, 4, 50 )
     setAppropriate( mTypePage, false );
+#endif
   }
 
   LoadPage *loadPage = new LoadPage( this );
