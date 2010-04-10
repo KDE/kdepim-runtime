@@ -22,7 +22,7 @@
 #define PROVIDERPAGE_H
 
 #include <kdeversion.h>
-#if KDE_IS_VERSION( 4, 4, 50 )
+#if defined(Q_MOC_RUN) || KDE_IS_VERSION( 4, 4, 50 )
 
 #include "page.h"
 #include <QStandardItemModel>
