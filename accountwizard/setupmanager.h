@@ -43,6 +43,7 @@ class SetupManager : public QObject
   private:
     void setupNext();
     void rollback();
+    SetupObject* connectObject( SetupObject* obj );
 
   private slots:
     void setupSucceeded( const QString &msg );

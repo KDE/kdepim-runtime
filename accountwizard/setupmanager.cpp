@@ -38,53 +38,28 @@ void SetupManager::setSetupPage(SetupPage* page)
 
 QObject* SetupManager::createResource(const QString& type)
 {
-  Resource *res = new Resource( type, this );
-  connect( res, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
-  connect( res, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
-  connect( res, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
-  m_objectToSetup.append( res );
-  return res;
+  return connectObject( new Resource( type, this ) );
 }
 
 QObject* SetupManager::createTransport(const QString& type)
 {
-  Transport *t = new Transport( type, this );
-  connect( t, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
-  connect( t, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
-  connect( t, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
-  m_objectToSetup.append( t );
-  return t;
+  return connectObject( new Transport( type, this ) );
 }
 
 QObject* SetupManager::createConfigFile(const QString& fileName)
 {
-  ConfigFile *t = new ConfigFile( fileName, this );
-  connect( t, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
-  connect( t, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
-  connect( t, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
-  m_objectToSetup.append( t );
-  return t;
+  return connectObject( new ConfigFile( fileName, this ) );
 }
 
 QObject* SetupManager::createLdap()
 {
-  Ldap *t = new Ldap( this );
-  connect( t, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
-  connect( t, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
-  connect( t, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
-  m_objectToSetup.append( t );
-  return t;
+  return connectObject( new Ldap( this ) );
 }
 
 
 QObject* SetupManager::createIdentity()
 {
-  Identity *t = new Identity( this );
-  connect( t, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
-  connect( t, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
-  connect( t, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
-  m_objectToSetup.append( t );
-  return t;
+  return connectObject( new Identity( this ) );
 }
 
 void SetupManager::execute()
@@ -147,6 +122,15 @@ void SetupManager::rollback()
   m_page->setProgress( 0 );
   m_page->setStatus( i18n( "Failed to set up account." ) );
   m_page->setValid( true );
+}
+
+SetupObject* SetupManager::connectObject(SetupObject* obj)
+{
+  connect( obj, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
+  connect( obj, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
+  connect( obj, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
+  m_objectToSetup.append( obj );
+  return obj;
 }
 
 #include "setupmanager.moc"
