@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=KDE Accounts
+Comment=Loads contacts from the KDE accounts file
+Type=AkonadiResource
+Exec=akonadi_kdeaccounts_resource
+Icon=kde
+
+X-Akonadi-MimeTypes=text/directory
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_kdeaccounts_resource
