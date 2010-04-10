@@ -169,6 +169,7 @@ void ProviderPage::leavePageNextRequested()
     kDebug() << "New page requested, but we are not done yet...";
   }
 }
-#endif
 
 #include "providerpage.moc"
+
+#endif
