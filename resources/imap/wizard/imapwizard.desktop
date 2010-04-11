@@ -1,18 +1,5 @@
 [Desktop Entry]
 Name=Generic IMAP Email Server
-Name[ca]=Imap
-Name[ca@valencia]=Imap
-Name[en_GB]=Imap
-Name[es]=Imap
-Name[gl]=Imap
-Name[nb]=Imap
-Name[nds]=IMAP
-Name[nn]=IMAP
-Name[pt]=IMAP
-Name[pt_BR]=IMAP
-Name[sv]=Imap
-Name[uk]=IMAP
-Name[x-test]=xxImapxx
 Icon=network-server
 Comment=Imap account
 Comment[ca]=Compte Imap
