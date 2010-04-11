@@ -14,7 +14,6 @@ set(accountwizard_srcs
   transport.cpp
   configfile.cpp
   ldap.cpp
-  identitypage.cpp
   identity.cpp
   servertest.cpp
 )
@@ -24,7 +23,6 @@ kde4_add_ui_files(accountwizard_srcs
   typepage.ui
   loadpage.ui
   setuppage.ui
-  identitypage.ui
 )
 
 kde4_add_executable(accountwizard ${accountwizard_srcs})

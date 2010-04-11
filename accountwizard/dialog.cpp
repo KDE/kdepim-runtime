@@ -26,7 +26,6 @@
 #include "dynamicpage.h"
 #include "setupmanager.h"
 #include "servertest.h"
-#include "identitypage.h"
 
 #include <klocalizedstring.h>
 #include <kross/core/action.h>
@@ -44,9 +43,6 @@ Dialog::Dialog(QWidget* parent) :
   action->addQObject( serverTest, QLatin1String( "ServerTest" ) );
 
   if ( Global::assistant().isEmpty() ) {
-//     IdentityPage *idPage = new IdentityPage( this );
-//     addPage( idPage, i18n( "Create new identity" ) );
-
 #if KDE_IS_VERSION( 4, 4, 50 )
     ProviderPage *ppage = new ProviderPage( this );
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );

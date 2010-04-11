@@ -60,10 +60,17 @@ function setup()
 {
   SetupManager.createResource( "akonadi_kolabproxy_resource" );
 
+  var identity = SetupManager.createIdentity();
+  identity.setEmail( page.kolabWizard.emailAddress.text );
+  identity.setRealName( page.kolabWizard.fullName.text );
+
   var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
   imapRes.setOption( "ImapServer", page.kolabWizard.serverAddress.text );
   imapRes.setOption( "UserName", page.kolabWizard.emailAddress.text );
   imapRes.setOption( "Password", page.kolabWizard.password.text );
+  imapRes.setOption( "UseDefaultIdentity", false );
+  imapRes.setOption( "AccountIdentity", identity.uoid() );
+  imapRes.setOption( "SubscriptionEnabled", true );
 
   var smtp = SetupManager.createTransport( "smtp" );
   smtp.setName( page.kolabWizard.serverAddress.text );
