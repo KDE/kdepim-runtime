@@ -23,6 +23,7 @@
 #include "setupobject.h"
 
 namespace KPIMIdentities {
+  class Identity;
   class IdentityManager;
 };
 
@@ -39,6 +40,7 @@ class Identity : public SetupObject
     Q_SCRIPTABLE void setRealName( const QString & name );
     Q_SCRIPTABLE void setEmail( const QString &email );
     Q_SCRIPTABLE void setOrganization( const QString &org );
+    Q_SCRIPTABLE uint uoid() const;
 
   protected:
     QString identityName() const;
@@ -48,6 +50,7 @@ class Identity : public SetupObject
     QString m_email;
     QString m_organization;
     KPIMIdentities::IdentityManager *m_manager;
+    KPIMIdentities::Identity *m_identity;
 };
 
 #endif

@@ -24,15 +24,17 @@
 
 #include <KLocale>
 
-
 Identity::Identity( QObject *parent )
   : SetupObject( parent )
 {
   m_manager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
+  m_identity = &m_manager->newFromScratch( QString() );
+  Q_ASSERT( m_identity != 0 );
 }
 
 Identity::~Identity()
 {
+  delete m_manager;
 }
 
 void Identity::create()
@@ -40,12 +42,11 @@ void Identity::create()
   emit info( i18n( "Setting up identity..." ) );
 
   // store identity information
-  KPIMIdentities::Identity *identity = 0;
-  identity = &m_manager->newFromScratch( identityName() );
-  Q_ASSERT( identity != 0 );
-  identity->setFullName( m_realName );
-  identity->setEmailAddr( m_email );
-  identity->setOrganization( m_organization );
+  // TODO now that we have the identity object around anyway we can probably get rid of most of the other members
+  m_identity->setIdentityName( identityName() );
+  m_identity->setFullName( m_realName );
+  m_identity->setEmailAddr( m_email );
+  m_identity->setOrganization( m_organization );
   m_manager->commit();
 
   emit finished( i18n( "Identity set up." ) );
@@ -79,7 +80,9 @@ QString Identity::identityName() const
 
 void Identity::destroy()
 {
-  emit info( i18n( "Identity not configuring." ) );
+  m_identity = 0;
+  m_manager->rollback();
+  emit info( i18n( "Identity removed." ) );
 }
 
 void Identity::setRealName( const QString &name )
@@ -96,5 +99,11 @@ void Identity::setEmail( const QString &email )
 {
   m_email = email;
 }
+
+uint Identity::uoid() const
+{
+  return m_identity->uoid();
+}
+
 
 #include "identity.moc"

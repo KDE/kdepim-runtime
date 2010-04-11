@@ -57,12 +57,19 @@ function validateInput()
 }
 
 var stage = 1;
+var identity;
+
 function setup()
 {
-  if ( stage == 1 )
+  if ( stage == 1 ) {
+    identity = SetupManager.createIdentity();
+    identity.setEmail( page.imapWizard.emailAddress.text );
+    identity.setRealName( page.imapWizard.fullName.text );
+
     ServerTest.test( page.imapWizard.incommingAddress.text, "imap" );
-  else
+  } else {
     ServerTest.test( page.imapWizard.outgoingAddress.text, "smtp" );
+  }
 }
 
 function testResultFail()
@@ -78,6 +85,8 @@ function testOk( arg )
     imapRes.setOption( "UserName", page.imapWizard.emailAddress.text );
     imapRes.setOption( "Password", page.imapWizard.password.text );
     imapRes.setOption( "DisconnectedModeEnabled", page.imapWizard.disconnectedMode.checked );
+    imapRes.setOption( "UseDefaultIdentity", false );
+    imapRes.setOption( "AccountIdentity", identity.uoid() );
     if ( arg == "ssl" ) { 
       imapRes.setOption( "Safety", 0);
       imapRes.setOption( "Authentication", 0);
