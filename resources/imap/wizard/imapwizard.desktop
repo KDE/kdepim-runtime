@@ -1,5 +1,9 @@
 [Desktop Entry]
 Name=Generic IMAP Email Server
+Name[pt]=Servidor Genérico de E-Mail IMAP
+Name[pt_BR]=Servidor de e-mails IMAP genérico
+Name[sv]=Generell IMAP e-postserver
+Name[uk]=Типовий сервер пошти IMAP
 Icon=network-server
 Comment=Imap account
 Comment[ca]=Compte Imap

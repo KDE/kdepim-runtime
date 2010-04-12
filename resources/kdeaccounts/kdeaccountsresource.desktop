@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=KDE Accounts
+Name[pt]=Contas do KDE
+Name[pt_BR]=Contas do KDE
+Name[sv]=KDE-konton
+Name[uk]=Облікові записи KDE
 Comment=Loads contacts from the KDE accounts file
+Comment[pt]=Carrega os dados do ficheiro de contas do KDE
+Comment[pt_BR]=Carregue contatos do arquivo de contas do KDE
+Comment[sv]=Laddar kontakter från KDE:s kontofil
+Comment[uk]=Завантаження контактів з файла облікових записів KDE
 Type=AkonadiResource
 Exec=akonadi_kdeaccounts_resource
 Icon=kde
