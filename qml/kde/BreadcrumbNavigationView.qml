@@ -46,7 +46,8 @@ Item {
       fullClickArea : true
       steppedIndent : true
       onIndexSelected : {
-        breadcrumbCollectionSelected(row);
+        breadcrumbTopLevel._transitionSelect = row;
+        breadcrumbTopLevel.state = "before_select_breadcrumb";
       }
     }
   }
@@ -140,6 +141,13 @@ Item {
     breadcrumbTopLevel.state = "";
   }
 
+  function completeBreadcrumbSelection() {
+    breadcrumbCollectionSelected(breadcrumbTopLevel._transitionSelect);
+    breadcrumbTopLevel._transitionSelect = -1;
+    breadcrumbTopLevel.state = "after_select_breadcrumb";
+    breadcrumbTopLevel.state = "";
+  }
+
   states : [
     State {
       name : "before_select_child"
@@ -154,7 +162,6 @@ Item {
       }
       PropertyChanges {
         target : childItemsView
-        anchors.bottom : undefined
         _children_padding : childItemsView.height - itemHeight
         _y_scroll : itemHeight * breadcrumbTopLevel._transitionSelect
       }
@@ -177,7 +184,19 @@ Item {
     State {
       name : "before_select_breadcrumb"
       PropertyChanges {
-        target : selectedItemView
+        target : breadcrumbsView
+        _breadcrumb_y_offset : itemHeight
+      }
+      PropertyChanges {
+        target : childItemsView
+        _children_left_padding : { breadcrumbTopLevel.width }
+      }
+    },
+    State {
+      name : "after_select_breadcrumb"
+      PropertyChanges {
+        target : childItemsView
+        _children_left_padding : { -1 * breadcrumbTopLevel.width }
       }
     }
   ]
@@ -215,11 +234,44 @@ Item {
         }
         ScriptAction {
          script: { completeChildSelection(); }
-       }
+        }
       }
     },
     Transition {
       from : "after_select_child"
+      to : ""
+      NumberAnimation {
+        duration: 500
+        easing.type: "OutBounce"
+        target: childItemsView
+        properties: "_children_left_padding"
+      }
+    },
+    Transition {
+      from : ""
+      to : "before_select_breadcrumb"
+      SequentialAnimation {
+        ParallelAnimation {
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutBounce"
+            target: breadcrumbsView
+            properties: "height,_breadcrumb_y_offset"
+          }
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutBounce"
+            target: childItemsView
+            properties: "_children_left_padding"
+          }
+        }
+        ScriptAction {
+         script: { completeBreadcrumbSelection(); }
+        }
+      }
+    },
+    Transition {
+      from : "after_select_breadcrumb"
       to : ""
       NumberAnimation {
         duration: 500
