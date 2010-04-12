@@ -83,7 +83,7 @@ Item {
       anchors.bottom : parent.bottom
       anchors.right : parent.right
       anchors.rightMargin : 15 + parent.spacing
-      text : model.unreadCount
+      text : model.unreadCount > 0 ? model.unreadCount : ""
       color : "blue"
     }
   }
