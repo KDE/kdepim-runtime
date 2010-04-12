@@ -61,7 +61,10 @@ Item {
 
   Component {
     id : childItemsDelegate
+    property alias showChildIndicator : childDelegateWrapper.showChildIndicator
+    property alias itemBackground : childDelegateWrapper.itemBackground
     CollectionDelegate {
+      id : childDelegateWrapper
       fullClickArea : true
       showChildIndicator : true
       indentAll : true
@@ -117,19 +120,23 @@ Item {
   ListView {
     id : childItemsView
     property int _children_padding : 0
+    property int _children_left_padding : 0
+    property int _y_scroll : 0
     clip : true
     anchors.top : selectedItemView.bottom
     anchors.bottom : breadcrumbTopLevel.bottom
-    anchors.leftMargin : -1 * _children_padding
-    anchors.rightMargin : _children_padding
+    anchors.bottomMargin : _children_padding
     anchors.left : parent.left
+    anchors.leftMargin : _children_left_padding
     anchors.right : parent.right
     delegate : childItemsDelegate
+    contentY : _y_scroll
   }
 
   function completeSelection() {
     childCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
+    breadcrumbTopLevel.state = "after_select_child";
     breadcrumbTopLevel.state = "";
   }
 
@@ -147,14 +154,30 @@ Item {
       }
       PropertyChanges {
         target : childItemsView
-        _children_padding : parent.width
+        anchors.bottom : undefined
+        _children_padding : childItemsView.height - itemHeight
+        _y_scroll : itemHeight * breadcrumbTopLevel._transitionSelect
+      }
+      PropertyChanges {
+        target : childItemsDelegate
+        itemBackground : palette.dark
+        indentAll : false
+        indentOnly : true
+        fullClickArea : false
+        showChildIndicator : true
+      }
+    },
+    State {
+      name : "after_select_child"
+      PropertyChanges {
+        target : childItemsView
+        _children_left_padding : breadcrumbTopLevel.width
       }
     },
     State {
       name : "before_select_breadcrumb"
       PropertyChanges {
         target : selectedItemView
-        _children_padding : parent.width
       }
     }
   ]
@@ -166,22 +189,28 @@ Item {
       SequentialAnimation {
         ParallelAnimation {
           PropertyAnimation {
-            duration: 1000
+            duration: 500
             easing.type: "OutBounce"
             target: breadcrumbsView
             properties: "height,_breadcrumb_y_offset"
           }
           PropertyAnimation {
-            duration: 1000
+            duration: 500
             easing.type: "OutBounce"
             target: selectedItemView
             properties: "_selected_padding"
           }
           PropertyAnimation {
-            duration: 1000
+            duration: 500
             easing.type: "OutBounce"
             target: childItemsView
-            properties: "_children_padding"
+            properties: "_children_padding,_y_scroll,opacity"
+          }
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutBounce"
+            target: childItemsDelegate
+            properties: "itemBackground"
           }
         }
         ScriptAction {
@@ -190,13 +219,13 @@ Item {
       }
     },
     Transition {
-      from : "before_select_child"
-      to : "after_select_child"
+      from : "after_select_child"
+      to : ""
       NumberAnimation {
-        duration: 1000
+        duration: 500
         easing.type: "OutBounce"
-        target: breadcrumbsView
-        properties: "height"
+        target: childItemsView
+        properties: "_children_left_padding"
       }
     }
   ]
