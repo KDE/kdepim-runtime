@@ -31,6 +31,7 @@ Item {
   property alias childItemsModel : childItemsView.model
 
   property int itemHeight : 68
+  property int _transitionSelect : -1
 
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
@@ -65,7 +66,8 @@ Item {
       showChildIndicator : true
       indentAll : true
       onIndexSelected : {
-        childCollectionSelected(row);
+        breadcrumbTopLevel._transitionSelect = row;
+        breadcrumbTopLevel.state = "before_select_child";
       }
     }
   }
@@ -92,8 +94,10 @@ Item {
     id : breadcrumbsView
     interactive : false
     property int selectedIndex : -1
+    property int _breadcrumb_y_offset : 0
     height : { count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * count }
     anchors.top : topButton.bottom
+    anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
     anchors.right : parent.right
     delegate : breadcrumbDelegate
@@ -101,19 +105,100 @@ Item {
 
   ListView {
     id : selectedItemView
+    property int _selected_padding : 0
+
     height : itemHeight * selectedItemView.count
     anchors.top : breadcrumbsView.bottom
+    anchors.topMargin : _selected_padding
     anchors.left : parent.left
     anchors.right : parent.right
     delegate : selectedItemDelegate
   }
   ListView {
     id : childItemsView
+    property int _children_padding : 0
     clip : true
     anchors.top : selectedItemView.bottom
     anchors.bottom : breadcrumbTopLevel.bottom
+    anchors.leftMargin : -1 * _children_padding
+    anchors.rightMargin : _children_padding
     anchors.left : parent.left
     anchors.right : parent.right
     delegate : childItemsDelegate
   }
+
+  function completeSelection() {
+    childCollectionSelected(breadcrumbTopLevel._transitionSelect);
+    breadcrumbTopLevel._transitionSelect = -1;
+    breadcrumbTopLevel.state = "";
+  }
+
+  states : [
+    State {
+      name : "before_select_child"
+      PropertyChanges {
+        target : breadcrumbsView
+        height : { count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * ( count + 1) }
+        _breadcrumb_y_offset : -1 * itemHeight
+      }
+      PropertyChanges {
+        target : selectedItemView
+        _selected_padding : -1 * itemHeight
+      }
+      PropertyChanges {
+        target : childItemsView
+        _children_padding : parent.width
+      }
+    },
+    State {
+      name : "before_select_breadcrumb"
+      PropertyChanges {
+        target : selectedItemView
+        _children_padding : parent.width
+      }
+    }
+  ]
+
+  transitions : [
+    Transition {
+      from : ""
+      to : "before_select_child"
+      SequentialAnimation {
+        ParallelAnimation {
+          PropertyAnimation {
+            duration: 1000
+            easing.type: "OutBounce"
+            target: breadcrumbsView
+            properties: "height,_breadcrumb_y_offset"
+          }
+          PropertyAnimation {
+            duration: 1000
+            easing.type: "OutBounce"
+            target: selectedItemView
+            properties: "_selected_padding"
+          }
+          PropertyAnimation {
+            duration: 1000
+            easing.type: "OutBounce"
+            target: childItemsView
+            properties: "_children_padding"
+          }
+        }
+        ScriptAction {
+         script: { completeSelection(); }
+       }
+      }
+    },
+    Transition {
+      from : "before_select_child"
+      to : "after_select_child"
+      NumberAnimation {
+        duration: 1000
+        easing.type: "OutBounce"
+        target: breadcrumbsView
+        properties: "height"
+      }
+    }
+  ]
+
 }
