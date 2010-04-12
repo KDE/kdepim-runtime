@@ -99,7 +99,7 @@ Item {
     anchors.bottomMargin : 25
     color : "red"
     radius : 5
-    opacity : ( showChildIndicator && model.childCount > 0 ) ? 1 : 0
+    opacity : ( showChildIndicator && application.hasChildCollectionHasChildren( model.index ) ) ? 1 : 0
    /* MouseArea {
       anchors.fill: parent
       onClicked: {
