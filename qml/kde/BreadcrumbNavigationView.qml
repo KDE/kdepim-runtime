@@ -133,7 +133,7 @@ Item {
     contentY : _y_scroll
   }
 
-  function completeSelection() {
+  function completeChildSelection() {
     childCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
     breadcrumbTopLevel.state = "after_select_child";
@@ -214,7 +214,7 @@ Item {
           }
         }
         ScriptAction {
-         script: { completeSelection(); }
+         script: { completeChildSelection(); }
        }
       }
     },
