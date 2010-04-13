@@ -33,6 +33,7 @@ Name[zh_CN]=IMAP 邮件服务器
 Name[zh_TW]=IMAP 信件伺服器
 Comment=Connects to an IMAP e-mail server
 Comment[en_GB]=Connects to an IMAP e-mail server
+Comment[es]=Conecta a un servidor de correo IMAP
 Comment[nb]=Kobler til en IMAP e-posttjener
 Comment[pt]=Liga-se a um servidor de e-mail em IMAP
 Comment[pt_BR]=Conecta a um servidor de e-mails IMAP

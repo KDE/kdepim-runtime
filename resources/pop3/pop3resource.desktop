@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=POP3 E-Mail Server
 Name[en_GB]=POP3 E-Mail Server
+Name[es]=Servidor de correo POP-3
 Name[nb]=POP3 E-post-tjener
 Name[pt]=Servidor de E-Mail POP3
 Name[pt_BR]=Servidor de e-mails POP3
@@ -9,6 +10,7 @@ Name[uk]=Сервер пошти POP3
 Name[x-test]=xxPOP3 E-Mail Serverxx
 Comment=Connects to a POP3 e-mail server
 Comment[en_GB]=Connects to a POP3 e-mail server
+Comment[es]=Conecta a un servidor de correo POP-3
 Comment[nb]=Kobler til en POP3 e-posttjener.
 Comment[pt]=Liga-se a um servidor de e-mail em POP3
 Comment[pt_BR]=Conecta a um servidor de e-mails POP3

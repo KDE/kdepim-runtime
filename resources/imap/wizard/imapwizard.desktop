@@ -4,6 +4,7 @@ Name[pt]=Servidor Genérico de E-Mail IMAP
 Name[pt_BR]=Servidor de e-mails IMAP genérico
 Name[sv]=Generell IMAP e-postserver
 Name[uk]=Типовий сервер пошти IMAP
+Name[x-test]=xxGeneric IMAP Email Serverxx
 Icon=network-server
 Comment=Imap account
 Comment[ca]=Compte Imap
