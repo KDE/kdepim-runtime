@@ -76,20 +76,26 @@ Item {
     }
   }
 
-  Rectangle {
+  ListModel {
+    id : topModel
+    ListElement { display : "Top" }
+  }
+
+  ListView {
     id : topButton
+    interactive : false
     height : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) itemHeight; else 0; }
     opacity : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) 1; else 0; }
     anchors.top : parent.top
     anchors.left : parent.left
     anchors.right : parent.right
-
-    Text { text : "Top" }
-
-    MouseArea {
-      anchors.fill : parent
-      onClicked : {
-        breadcrumbCollectionSelected(-1);
+    model : topModel
+    delegate : CollectionDelegate {
+      itemBackground : palette.light
+      fullClickArea : true
+      onIndexSelected : {
+        breadcrumbTopLevel._transitionSelect = -1;
+        breadcrumbTopLevel.state = "before_select_breadcrumb";
       }
     }
   }
@@ -184,8 +190,15 @@ Item {
     State {
       name : "before_select_breadcrumb"
       PropertyChanges {
+        target : topModel
+        _breadcrumb_y_offset : { itemHeight * (2 - breadcrumbTopLevel._transitionSelect ) }
+        opacity : 0.5
+      }
+      PropertyChanges {
         target : breadcrumbsView
-        _breadcrumb_y_offset : itemHeight
+        _breadcrumb_y_offset : { itemHeight * (2 - breadcrumbTopLevel._transitionSelect ) }
+        height : { itemHeight * ( breadcrumbTopLevel._transitionSelect + 1 ) }
+        opacity : 0.5
       }
       PropertyChanges {
         target : childItemsView
@@ -255,8 +268,14 @@ Item {
           PropertyAnimation {
             duration: 500
             easing.type: "OutBounce"
+            target: topModel
+            properties: "height,_breadcrumb_y_offset,opacity"
+          }
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutBounce"
             target: breadcrumbsView
-            properties: "height,_breadcrumb_y_offset"
+            properties: "height,_breadcrumb_y_offset,opacity"
           }
           PropertyAnimation {
             duration: 500
