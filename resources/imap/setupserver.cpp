@@ -275,6 +275,7 @@ void SetupServer::readSettings()
 
   populateDefaultAuthenticationOptions();
   i = Settings::self()->authentication();
+  kDebug() << "read IMAP auth mode: " << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) i );
   setCurrentAuthMode( m_ui->authenticationCombo, (KIMAP::LoginJob::AuthenticationMode) i );
 
   if ( !Settings::self()->passwordPossible() ) {
@@ -470,7 +471,6 @@ void SetupServer::slotSafetyChanged()
     m_ui->sslRadio->setEnabled( true );
     m_ui->tlsRadio->setEnabled( true );
 
-    populateDefaultAuthenticationOptions();
     m_ui->authenticationCombo->setEnabled( true );
     return;
   }
