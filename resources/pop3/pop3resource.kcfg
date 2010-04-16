@@ -28,7 +28,7 @@
     </entry>
     <entry name="authenticationMethod" type="Int">
       <label>Defines the authentication type to use</label>
-      <default>1</default>
+      <default>7</default>
     </entry>
     <entry name="useSSL" type="Bool">
       <label></label>
