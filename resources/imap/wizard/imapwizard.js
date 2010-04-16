@@ -90,9 +90,11 @@ function testOk( arg )
     if ( arg == "ssl" ) { 
       imapRes.setOption( "Safety", 0);
       imapRes.setOption( "Authentication", 0);
+      imapRes.setOption( "ImapPort", 993 );
     } else if ( arg == "tls" ) {
       imapRes.setOption( "Safety", 1);
       imapRes.setOption( "Authentication", 0);
+      imapRes.setOption( "ImapPort", 143 );
     }
     stage = 2;
     setup();
