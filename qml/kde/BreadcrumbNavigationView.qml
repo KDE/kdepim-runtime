@@ -190,7 +190,7 @@ Item {
     State {
       name : "before_select_breadcrumb"
       PropertyChanges {
-        target : topModel
+        target : topButton
         _breadcrumb_y_offset : { itemHeight * (2 - breadcrumbTopLevel._transitionSelect ) }
         opacity : 0.5
       }
@@ -268,7 +268,7 @@ Item {
           PropertyAnimation {
             duration: 500
             easing.type: "OutBounce"
-            target: topModel
+            target: topButton
             properties: "height,_breadcrumb_y_offset,opacity"
           }
           PropertyAnimation {
