@@ -269,8 +269,6 @@ void SetupServer::readSettings()
     currentUser->loginName() );
 
   int i = Settings::self()->safety();
-  if ( i == 0 )
-    i = 1; // it crashes when 0, shouldn't happen, but you never know.
   m_ui->safeImapGroup->button( i )->setChecked( true );
 
   populateDefaultAuthenticationOptions();
