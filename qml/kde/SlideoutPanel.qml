@@ -41,7 +41,8 @@ Item {
   property int handleHeight: 160
   property int dragThreshold: 16
   property int radius: 12
-  property int contentWidth: width - handleWidth - 2*radius
+  property int contentWidth: maximumContentWidth
+  property int maximumContentWidth: width - handleWidth - 2*radius
   signal expanded
   z: 100
 
@@ -112,7 +113,7 @@ Item {
       anchors.top: parent.top
       anchors.bottom: parent.bottom
       anchors.margins: radius
-      width: contentWidth
+      width: Math.min( contentWidth, maximumContentWidth )
     }
 
     states: [
@@ -123,7 +124,7 @@ Item {
         PropertyChanges {
           target: background
           height: background.parent.height
-          width: contentWidth + 2 * handleWidth + 2 * radius - dragThreshold
+          width: Math.min( contentWidth, maximumContentWidth ) + 2 * handleWidth + 2 * radius - dragThreshold
           y: 0
         }
         PropertyChanges { target: titleLabel; visible: false }
