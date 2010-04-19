@@ -75,6 +75,6 @@ Type=AkonadiAgent
 Exec=akonadi_nepomuk_contact_feeder
 Icon=nepomuk
 
-X-Akonadi-MimeTypes=text/directory
+X-Akonadi-MimeTypes=text/directory,application/x-vnd.kde.contactgroup
 X-Akonadi-Capabilities=Unique,Autostart,NoConfig
 X-Akonadi-Identifier=akonadi_nepomuk_contact_feeder
