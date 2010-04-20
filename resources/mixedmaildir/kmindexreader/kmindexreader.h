@@ -24,9 +24,13 @@
 
 #include <QString>
 #include <QFile>
+#include <QList>
 
+#include <ctype.h>
+#include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
+
+class KMIndexMsgPrivate;
 
 /**
  * @short A class to read legacy kmail (< 4.5) index files
@@ -43,8 +47,55 @@ public:
   
   bool error() const;
   
-//   bool readIndex();
+  /******* PRIVATE ************************
+   * public so test class can see them    *
+   ****************************************/
+  
+  /**
+   * begins the index reading process
+   */
+  bool readIndex();
+  /**
+   * Reads the header of an index
+   */
   bool readHeader( int *version );
+  /**
+   * creates a message object from an old index files
+   */
+  bool fromOldIndexString(const QByteArray& str, bool toUtf8);
+  
+  bool fillStringPartCache( KMIndexMsgPrivate* msg, off_t off, short int len );
+  
+  enum MsgPartType
+  {
+    MsgNoPart = 0,
+    //unicode strings
+    MsgFromPart = 1,
+    MsgSubjectPart = 2,
+    MsgToPart = 3,
+    MsgReplyToIdMD5Part = 4,
+    MsgIdMD5Part = 5,
+    MsgXMarkPart = 6,
+    //unsigned long
+    MsgOffsetPart = 7,
+    MsgLegacyStatusPart = 8,
+    MsgSizePart = 9,
+    MsgDatePart = 10,
+    // unicode string
+    MsgFilePart = 11,
+    // unsigned long
+    MsgCryptoStatePart = 12,
+    MsgMDNSentPart = 13,
+    //another two unicode strings
+    MsgReplyToAuxIdMD5Part = 14,
+    MsgStrippedSubjectMD5Part = 15,
+    // and another unsigned long
+    MsgStatusPart = 16,
+    MsgSizeServerPart = 17,
+    MsgUIDPart = 18,
+    // unicode string
+    MsgTagPart = 19
+  };
   
 private:
   void clearIndex(bool autoDelete=true, bool syncDict = false);
@@ -63,6 +114,8 @@ private:
     /** list of index entries or messages */
 //   KMMsgList mMsgList;
   int mTotalMsgs;
+//   QList<KMIndexMsgPrivate> mMsgList;
+  
+  
 };
-
 #endif // KMINDEXREADER_H

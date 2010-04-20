@@ -20,8 +20,10 @@
 
 #include "testidxreader.h"
 
-#include "TestIdxReader_data.h"
 #include "../kmindexreader.h"
+
+#include "TestIdxReader_data.h"
+
 
 #include <QTemporaryFile>
 
@@ -50,9 +52,10 @@ void TestIdxReader::testReadHeader()
     qDebug() << "Could not open temp file.";
     return;
   }
-  tmp.write( QByteArray::fromBase64(mailDirOneEmail) );
-  tmp.close();
-  KMIndexReader reader( tmp.fileName() );
+//   tmp.write( QByteArray::fromBase64(mailDirOneEmail) );
+//   tmp.close();
+//   KMIndexReader reader( tmp.fileName() );
+  KMIndexReader reader( "/home/kde-devel/src/komo/src/kdepim/runtime/resources/mixedmaildir/kmindexreader/tests/data/test2.index");
   
   QVERIFY( reader.error() == false );
   
@@ -64,3 +67,21 @@ void TestIdxReader::testReadHeader()
   
   QVERIFY( reader.error() == false );
 }
+
+void TestIdxReader::testRead()
+{
+  QTemporaryFile tmp;
+  if( !tmp.open() ) {
+    qDebug() << "Could not open temp file.";
+    return;
+  }
+  tmp.write( QByteArray::fromBase64(mailDirOneEmailOneTag) );
+  tmp.close();
+  KMIndexReader reader( tmp.fileName() );
+  
+  QVERIFY( reader.error() == false );
+  
+  bool success = reader.readIndex();
+  QVERIFY( success == true );
+}
+

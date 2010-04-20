@@ -18,23 +18,26 @@
  *
  */
 
-#ifndef TESTIDXREADER_H
-#define TESTIDXREADER_H
+#ifndef KMINDEXREADER_SUPPORT
+#define KMINDEXREADER_SUPPORT
 
-#include <QtCore/QObject>
+#include <KShortcut>
 
-class TestIdxReader : public QObject
+#include <QColor>
+#include <QFont>
+#include <QObject>
+
+class KMIndexTag
 {
-Q_OBJECT
-public:
-    TestIdxReader();
-    
-private slots:
-    void testError();
-    void testReadHeader();
-    void testRead();
-private:
-  
+  public:
+    int priority;
+    QString tagName;
+    QColor backgroundColor;
+    QColor textColor;
+    QFont textFont;
+    bool inToolbar;
+    QString iconName;
+    KShortcut shortcut;
+    bool mEmpty;
 };
-
-#endif // TESTIDXREADER_H
+#endif

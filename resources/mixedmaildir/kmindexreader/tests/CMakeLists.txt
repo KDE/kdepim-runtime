@@ -12,4 +12,4 @@ set( testidxreader_SRCS
 
 kde4_add_unit_test( testidxreader  ${testidxreader_SRCS} )
 
-target_link_libraries( testidxreader ${KDE4_KDECORE_LIBS} ${QT_QTTEST_LIBRARY} )
+target_link_libraries( testidxreader messagecore ${KDE4_KDECORE_LIBS} ${QT_QTTEST_LIBRARY} )
