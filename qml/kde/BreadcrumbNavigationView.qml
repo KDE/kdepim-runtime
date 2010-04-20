@@ -44,7 +44,6 @@ Item {
     id : breadcrumbDelegate
     CollectionDelegate {
       fullClickArea : true
-      steppedIndent : true
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = row;
         breadcrumbTopLevel.state = "before_select_breadcrumb";
@@ -56,7 +55,6 @@ Item {
     id : selectedItemDelegate
     CollectionDelegate {
       itemBackground : palette.dark
-      indentOnly : true
     }
   }
 
@@ -68,7 +66,6 @@ Item {
       id : childDelegateWrapper
       fullClickArea : true
       showChildIndicator : true
-      indentAll : true
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = row;
         breadcrumbTopLevel.state = "before_select_child";
