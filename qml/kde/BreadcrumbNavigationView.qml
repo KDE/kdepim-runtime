@@ -83,10 +83,12 @@ Item {
 
   ListView {
     id : topButton
+    property int _breadcrumb_y_offset : 0
     interactive : false
     height : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) itemHeight; else 0; }
     opacity : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) 1; else 0; }
     anchors.top : parent.top
+    anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
     anchors.right : parent.right
     model : topModel
