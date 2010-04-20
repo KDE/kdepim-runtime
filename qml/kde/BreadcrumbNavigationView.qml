@@ -105,7 +105,7 @@ Item {
     interactive : false
     property int selectedIndex : -1
     property int _breadcrumb_y_offset : 0
-    height : { count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * count }
+    height : { var _count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * _count }
     anchors.top : topButton.bottom
     anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
@@ -159,7 +159,7 @@ Item {
       name : "before_select_child"
       PropertyChanges {
         target : breadcrumbsView
-        height : { count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * ( count + 1) }
+        height : { var _count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * ( _count + 1) }
         _breadcrumb_y_offset : -1 * itemHeight
       }
       PropertyChanges {
