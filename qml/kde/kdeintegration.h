@@ -46,6 +46,8 @@ class KDEIntegration : public QObject
 
     QString iconPath( const QString &iconName, int size );
     QPixmap iconToPixmap( const QIcon &icon, int size );
+
+    QString locate( const QString &type, const QString &filename );
 };
 
 #endif

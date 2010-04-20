@@ -22,6 +22,7 @@
 #include <KDebug>
 #include <KLocale>
 #include <KIconLoader>
+#include <KStandardDirs>
 #include <QIcon>
 #include <QPixmap>
 
@@ -116,6 +117,11 @@ QString KDEIntegration::iconPath( const QString &iconName, int iconSize )
 QPixmap KDEIntegration::iconToPixmap(const QIcon& icon, int size )
 {
   return icon.pixmap( size );
+}
+
+QString KDEIntegration::locate(const QString& type, const QString& filename)
+{
+  return KStandardDirs::locate( type.toLatin1(), filename );
 }
 
 #include "kdeintegration.moc"
