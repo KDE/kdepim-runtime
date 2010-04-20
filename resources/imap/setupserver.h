@@ -1,7 +1,8 @@
 /* This file is part of the KDE project
+   Copyright (C) 2010 Casey Link <unnamedrambler@gmail.com>
+   Copyright (c) 2009-2010 Klaralvdalens Datakonsult AB, a KDAB Group company <info@kdab.net>  
    Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
    Copyright (C) 2006-2008 Omat Holding B.V. <info@omat.nl>
-
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
    License as published by the Free Software Foundation; either

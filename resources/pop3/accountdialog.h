@@ -1,6 +1,8 @@
-/*4
+/*
  *   Copyright (C) 2000 Espen Sand, espen@kde.org
  *   Copyright 2009 Thomas McGuire <mcguire@kde.org>
+ *   Copyright (c) 2009-2010 Klaralvdalens Datakonsult AB, a KDAB Group company <info@kdab.net>
+ *   Copyright (C) 2010 Casey Link <unnamedrambler@gmail.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
