@@ -31,6 +31,10 @@ TypePage::TypePage(KAssistantDialog* parent) :
   m_model( new QStandardItemModel( this ) )
 {
   ui.setupUi( this );
+#ifdef KDEPIM_MOBILE_UI
+  ui.label->setHidden( true );
+  ui.searchLine->setHidden( true );
+#endif
 
   QSortFilterProxyModel *proxy = new QSortFilterProxyModel( this );
   proxy->setSourceModel( m_model );

@@ -24,19 +24,35 @@
 #include <QUiLoader>
 #include <QFile>
 #include <qboxlayout.h>
+#include <qscrollarea.h>
 
 DynamicPage::DynamicPage(const QString& uiFile, KAssistantDialog* parent) : Page( parent )
 {
+  QVBoxLayout *layout = new QVBoxLayout;
+  layout->setMargin( 0 );
+  setLayout( layout );
+
+#ifdef KDEPIM_MOBILE_UI
+  // for mobile ui we put the page into a scroll area in case it's too big
+  QScrollArea *pageParent = new QScrollArea( this );
+  pageParent->setFrameShape( QFrame::NoFrame );
+  layout->addWidget( pageParent );
+#else
+  QWidget *pageParent = this;
+#endif
+
   QUiLoader loader;
   QFile file( uiFile );
   file.open( QFile::ReadOnly );
   kDebug() << uiFile;
-  QWidget *dynamicWidget = loader.load( &file, this );
+  QWidget *dynamicWidget = loader.load( &file, pageParent );
   file.close();
 
-  QVBoxLayout *layout = new QVBoxLayout;
+#ifdef KDEPIM_MOBILE_UI
+  pageParent->setViewport( dynamicWidget );
+#else
   layout->addWidget( dynamicWidget );
-  setLayout( layout );
+#endif
 
   setValid( true );
 }
