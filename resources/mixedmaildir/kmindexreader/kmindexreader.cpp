@@ -81,29 +81,6 @@ using KPIM::MessageStatus;
 
 // END: Magic definitions from old kmail code 
 
-class KMIndexMsgPrivate
-{
-  public:
-    KMIndexMsgPrivate(){}
-//   /** Status object of the message. */
-//   MessageStatus& status() const;
-// 
-//   /** Const reference to a status object of a message. */
-//   const MessageStatus& status() const;
-//   
-//   
-//   QList<KMIndexTag*>  tagList() const ;
-// 
-//   private:
-  QString mCachedStringParts[20];
-  bool mStringPartCacheBuilt;
-// 
-//   QList<KMIndexTag*> mTagList;
-//   MessageStatus mStatus;
-//   friend KMIndexReader;
-};
-
-
 KMIndexReader::KMIndexReader(const QString& indexFile) 
 : mIndexFileName( indexFile )
 , mIndexFile( indexFile )
@@ -231,6 +208,7 @@ bool KMIndexReader::readIndex()
   // loop through the entire index
   while (!feof(mFp))
   {
+    kDebug() << "NEW MSG!";
 //     mi = 0;
     // check version (parsed by readHeader)
     // because different versions must be
@@ -249,7 +227,9 @@ bool KMIndexReader::readIndex()
       if(KDE_fseek(mFp, len, SEEK_CUR))
         break;
       msg = new KMIndexMsgPrivate();
-      return fillStringPartCache( msg, offs, len );
+      fillPartsCache(msg, offs, len);
+//       fillLongPartCache(msg, offs, len);
+      mMsgList.append( msg );
       //at this point parsing of the index is handed off to kmmsgbase
 //       mi = new KMMsgInfo(folder(), offs, len);
     }
@@ -329,7 +309,7 @@ namespace {
   template < typename T > void copy_from_stream( T & x ) {
     if( g_chunk_offset + int(sizeof(T)) > g_chunk_length ) {
       g_chunk_offset = g_chunk_length;
-      kDebug() << "This should never happen..";
+      kWarning() << "This should never happen..";
       x = 0;
     } else {
       // the memcpy is optimized out by the compiler for the values
@@ -340,7 +320,7 @@ namespace {
   }
 }
 
-bool KMIndexReader::fillStringPartCache( KMIndexMsgPrivate* msg, off_t indexOff, short int indexLen )
+bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, short int indexLen )
 {
   if( !msg )
     return false;
@@ -355,6 +335,7 @@ bool KMIndexReader::fillStringPartCache( KMIndexMsgPrivate* msg, off_t indexOff,
   
   MsgPartType type;
   quint16 len;
+  off_t ret = 0;
   for ( g_chunk_offset = 0; g_chunk_offset < indexLen; g_chunk_offset += len ) {
     quint32 tmp;
     copy_from_stream(tmp);
@@ -365,10 +346,9 @@ bool KMIndexReader::fillStringPartCache( KMIndexMsgPrivate* msg, off_t indexOff,
        len = kmail_swap_16(len);
     }
     type = (MsgPartType) tmp;
-//     kDebug() << "found MsgPartType" << type;
     if( g_chunk_offset + len > indexLen ) {
       kWarning() << "g_chunk_offset + len > indexLen" << "This should never happen..";
-        return false;
+      return false;
     }
         // Only try to create strings if the part is really a string part, see declaration of
     // MsgPartType
@@ -392,25 +372,81 @@ bool KMIndexReader::fillStringPartCache( KMIndexMsgPrivate* msg, off_t indexOff,
 //       kDebug() << "Byte order is big endian ";
       // Byte order is big endian (swap is false)
 #     endif
-//       if( type == MsgTagPart )
-// 	kDebug() << msg->mCachedStringParts[MsgTagPart];
+    } else  if( ( type >= 7 && type <= 10 ) || type == 12 || type == 13 || (type >= 16 && type <= 18) )
+    {
+      Q_ASSERT(mIndexSizeOfLong == len);
+      if (mIndexSizeOfLong == sizeof(ret))
+      {
+        kDebug() << "mIndexSizeOfLong == sizeof(ret)";
+        memcpy( &ret, g_chunk + g_chunk_offset, sizeof(ret) );
+        if (mIndexSwapByteOrder)
+        {
+          if (sizeof(ret) == 4)
+            ret = kmail_swap_32(ret);
+          else
+            ret = kmail_swap_64(ret);
+        }
+      }
+//       else if (mIndexSizeOfLong == 4)
+//       {
+//          // Long is stored as 4 bytes in index file, sizeof(long) = 8
+//          quint32 ret_32;
+//          copy_from_stream(ret_32);
+//          if (mIndexSwapByteOrder)
+//             ret_32 = kmail_swap_32(ret_32);
+//          ret = ret_32;
+//       }
+//       else if (mIndexSizeOfLong == 8)
+//       {
+//          // Long is stored as 8 bytes in index file, sizeof(long) = 4
+//          quint32 ret_1;
+//          quint32 ret_2;
+//          copy_from_stream(ret_1);
+//          copy_from_stream(ret_2);
+//          if (!mIndexSwapByteOrder)
+//          {
+//             // Index file order is the same as the order of this CPU.
+// #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+//             // Index file order is little endian
+//             ret = ret_1; // We drop the 4 most significant bytes
+// #else
+//             // Index file order is big endian
+//             ret = ret_2; // We drop the 4 most significant bytes
+// #endif
+//          }
+//          else
+//          {
+//             // Index file order is different from this CPU.
+// #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+//             // Index file order is big endian
+//             ret = ret_2; // We drop the 4 most significant bytes
+// #else
+//             // Index file order is little endian
+//             ret = ret_1; // We drop the 4 most significant bytes
+// #endif
+//             // We swap the result to host order.
+//             ret = kmail_swap_32(ret);
+//          }
+// 
+//       }
+      msg->mCachedLongParts[type] = ret;
     }
+//OMGGGGGGGGGGGGG2
   } // for loop
-    msg->mStringPartCacheBuilt = true;
-    kDebug() << msg->mCachedStringParts[MsgTagPart].toUtf8();
-    kDebug() << msg->mCachedStringParts[MsgTagPart].toLocal8Bit();
-    kDebug() << msg->mCachedStringParts[MsgToPart];
+    msg->mPartsCacheBuilt = true;
     return true;
 }
 
 //-----------------------------------------------------------------------------
-
-
 
 void KMIndexReader::clearIndex(bool autoDelete, bool syncDict)
 {
 //   mMsgList.clear(autoDelete, syncDict);
 }
 
+QList< KMIndexMsgPrivate* > KMIndexReader::messages()
+{
+  return mMsgList;
+}
 
 

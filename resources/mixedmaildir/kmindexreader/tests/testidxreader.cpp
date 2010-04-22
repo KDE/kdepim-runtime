@@ -24,7 +24,8 @@
 
 #include "TestIdxReader_data.h"
 
-
+#include <messagecore/messagestatus.h>
+using KPIM::MessageStatus;
 #include <QTemporaryFile>
 
 #include <qtest_kde.h>
@@ -75,13 +76,27 @@ void TestIdxReader::testRead()
     qDebug() << "Could not open temp file.";
     return;
   }
-  tmp.write( QByteArray::fromBase64(mailDirOneEmailOneTag) );
+  tmp.write( QByteArray::fromBase64( mailDirOneEmailOneTagFlags ) );
   tmp.close();
   KMIndexReader reader( tmp.fileName() );
-  
   QVERIFY( reader.error() == false );
-  
   bool success = reader.readIndex();
   QVERIFY( success == true );
+
+  QVERIFY( reader.messages().size() == 2 );
+
+  KMIndexMsgPrivate* msg = reader.messages().front();
+  
+  QString subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
+  MessageStatus status;
+  status.fromQInt32( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );
+  QCOMPARE(subject, QString("hello from kmail"));
+  QVERIFY( !status.isImportant() );
+
+  msg = reader.messages().back();
+  status.fromQInt32( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );
+  subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
+  QCOMPARE(subject, QString("foo bar"));
+  QVERIFY( status.isImportant() );
 }
 
