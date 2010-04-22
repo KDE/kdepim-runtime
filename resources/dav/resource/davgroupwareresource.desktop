@@ -1,21 +1,7 @@
 [Desktop Entry]
 Name=DAV groupware resource
-Name[en_GB]=DAV groupware resource
-Name[es]=Recurso de groupware DAV
-Name[nb]=Overfør bare kalenderressurser
-Name[nn]=Flytt berre kalenderressursar
-Name[pt]=Recurso de 'groupware' por DAV
-Name[pt_BR]=Recurso de groupware por DAV
-Name[sv]=DAV-grupprogramresurs
-Name[uk]=Ресурс групової роботи DAV
 Name[x-test]=xxDAV groupware resourcexx
 Comment=Resource to manage DAV calendars and address books (CalDAV, GroupDAV)
-Comment[en_GB]=Resource to manage DAV calendars and address books (CalDAV, GroupDAV)
-Comment[es]=Recurso para gestionar calendarios y libretas de direcciones de DAV (CalDVA, GroupDAV)
-Comment[pt]=Um recurso para gerir calendários e livros de endereços por DAV (CalDAV, GroupDAV)
-Comment[pt_BR]=Recurso para gerenciar calendários e livros de endereços por DAV (CalDAV, GroupDAV)
-Comment[sv]=Resurs för att hantera DAV-kalendrar och adressböcker (CalDAV, GroupDAV)
-Comment[uk]=Ресурс для керування календарями і адресними книгами DAV (CalDAV, GroupDAV)
 Comment[x-test]=xxResource to manage DAV calendars and address books (CalDAV, GroupDAV)xx
 Type=AkonadiResource
 Exec=akonadi_davgroupware_resource

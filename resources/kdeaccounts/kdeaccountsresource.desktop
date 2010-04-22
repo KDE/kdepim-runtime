@@ -1,11 +1,15 @@
 [Desktop Entry]
 Name=KDE Accounts
+Name[nb]=KDE-kontoer
+Name[nn]=KDE-kontoar
 Name[pt]=Contas do KDE
 Name[pt_BR]=Contas do KDE
 Name[sv]=KDE-konton
 Name[uk]=Облікові записи KDE
 Name[x-test]=xxKDE Accountsxx
 Comment=Loads contacts from the KDE accounts file
+Comment[nb]=Laster kontakter fra KDE-kontofila
+Comment[nn]=Lastar inn kontaktar frå ei KDE-kontofil
 Comment[pt]=Carrega os dados do ficheiro de contas do KDE
 Comment[pt_BR]=Carregue contatos do arquivo de contas do KDE
 Comment[sv]=Laddar kontakter från KDE:s kontofil
