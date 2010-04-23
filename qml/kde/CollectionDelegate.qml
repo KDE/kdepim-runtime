@@ -85,8 +85,7 @@ Item {
     }
   }
 
-  Rectangle {
-    id : expandTarget
+  Image {
     width : height
     anchors.right : parent.right
     anchors.rightMargin : 30
@@ -94,15 +93,8 @@ Item {
     anchors.topMargin : 25
     anchors.bottom : parent.bottom
     anchors.bottomMargin : 25
-    color : "red"
-    radius : 5
     opacity : ( showChildIndicator && application.childCollectionHasChildren( model.index ) ) ? 1 : 0
-   /* MouseArea {
-      anchors.fill: parent
-      onClicked: {
-        indexSelected( model.index );
-      }
-    } */
+    source: "transparentplus.png"
   }
 }
 
