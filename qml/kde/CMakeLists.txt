@@ -8,7 +8,6 @@ target_link_libraries(kdeqmlplugin ${KDE4_KDEUI_LIBS} ${QT_QTDECLARATIVE_LIBRARY
 
 install( FILES qmldir
   BreadcrumbNavigationView.qml
-  CollectionDelegate.qml
   SlideoutPanel.qml
   SlideoutPanelContainer.qml
   transparentplus.png

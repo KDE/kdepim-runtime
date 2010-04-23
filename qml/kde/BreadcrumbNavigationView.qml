@@ -30,6 +30,11 @@ Item {
   property alias selectedItemModel : selectedItemView.model
   property alias childItemsModel : childItemsView.model
 
+  property alias topDelegate :  topButton.delegate
+  property alias breadcrumbDelegate :  breadcrumbsView.delegate
+  property alias selectedItemDelegate :  selectedItemView.delegate
+  property alias childItemsDelegate :  childItemsView.delegate
+
   property int itemHeight : height / 6
   property int _transitionSelect : -1
 
@@ -39,42 +44,6 @@ Item {
   signal collectionSelected
 
   SystemPalette { id: palette; colorGroup: "Active" }
-
-  Component {
-    id : breadcrumbDelegate
-    CollectionDelegate {
-      fullClickArea : true
-      height : itemHeight
-      onIndexSelected : {
-        breadcrumbTopLevel._transitionSelect = row;
-        breadcrumbTopLevel.state = "before_select_breadcrumb";
-      }
-    }
-  }
-
-  Component {
-    id : selectedItemDelegate
-    CollectionDelegate {
-      height : itemHeight
-      selectedDelegate : true
-    }
-  }
-
-  Component {
-    id : childItemsDelegate
-    property alias showChildIndicator : childDelegateWrapper.showChildIndicator
-    property alias itemBackground : childDelegateWrapper.itemBackground
-    CollectionDelegate {
-      id : childDelegateWrapper
-      height : itemHeight
-      fullClickArea : true
-      showChildIndicator : true
-      onIndexSelected : {
-        breadcrumbTopLevel._transitionSelect = row;
-        breadcrumbTopLevel.state = "before_select_child";
-      }
-    }
-  }
 
   ListModel {
     id : topModel
@@ -92,14 +61,7 @@ Item {
     anchors.left : parent.left
     anchors.right : parent.right
     model : topModel
-    delegate : CollectionDelegate {
-      fullClickArea : true
-      height : itemHeight
-      onIndexSelected : {
-        breadcrumbTopLevel._transitionSelect = -1;
-        breadcrumbTopLevel.state = "before_select_breadcrumb";
-      }
-    }
+
   }
 
   ListView {
@@ -112,7 +74,6 @@ Item {
     anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
     anchors.right : parent.right
-    delegate : breadcrumbDelegate
   }
 
   ListView {
@@ -124,7 +85,6 @@ Item {
     anchors.topMargin : _selected_padding
     anchors.left : parent.left
     anchors.right : parent.right
-    delegate : selectedItemDelegate
   }
   ListView {
     id : childItemsView
@@ -136,7 +96,6 @@ Item {
     anchors.bottomMargin : _children_padding
     anchors.left : parent.left
     anchors.right : parent.right
-    delegate : childItemsDelegate
     contentY : _y_scroll
   }
 
