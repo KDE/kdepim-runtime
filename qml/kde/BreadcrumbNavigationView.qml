@@ -54,7 +54,7 @@ Item {
   Component {
     id : selectedItemDelegate
     CollectionDelegate {
-      itemBackground : palette.dark
+      selectedDelegate : true
     }
   }
 
@@ -90,7 +90,6 @@ Item {
     anchors.right : parent.right
     model : topModel
     delegate : CollectionDelegate {
-      itemBackground : palette.light
       fullClickArea : true
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = -1;
@@ -169,7 +168,6 @@ Item {
       }
       PropertyChanges {
         target : childItemsDelegate
-//         itemBackground : palette.dark
         indentAll : false
         indentOnly : true
         fullClickArea : false

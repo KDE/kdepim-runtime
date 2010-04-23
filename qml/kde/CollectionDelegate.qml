@@ -28,7 +28,7 @@ Item {
 
   property bool fullClickArea : false
   property bool showChildIndicator : false
-  property alias itemBackground : background.color
+  property bool selectedDelegate : false
 
   signal indexSelected(int row)
 
@@ -36,12 +36,18 @@ Item {
   width : breadcrumbsView.width
 
   Rectangle {
-    id: background
-    opacity: 0.25
-    x: 1; y: 2; width: parent.width - 2; height: parent.height - 4
-    border.color: "yellow"
-    radius: 10
+    id: topLine
+    visible : selectedDelegate
+    x: 1; y: 2; width: parent.width - 2; height: 2
+    color: "grey"
   }
+  Rectangle {
+    id: bottomLine
+    visible : selectedDelegate
+    x: 1; y: parent.height - 4; width: parent.width - 2; height: 2
+    color: "darkgrey"
+  }
+
   MouseArea {
     anchors.fill: parent
     onClicked: {
