@@ -10,7 +10,6 @@ install( FILES qmldir
   BreadcrumbNavigationView.qml
   SlideoutPanel.qml
   SlideoutPanelContainer.qml
-  transparentplus.png
   DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
 
 install( TARGETS kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )

@@ -4,6 +4,7 @@ install(FILES
   collectionview.qml
   AkonadiBreadcrumbNavigationView.qml
   CollectionDelegate.qml
+  transparentplus.png
   DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde/akonadi
 )
 

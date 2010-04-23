@@ -69,7 +69,7 @@ Item {
 
     Column {
       height: collectionIcon.height
-      width: background.width - collectionIcon.width - 20
+      width: wrapper.width - collectionIcon.width - 20
       spacing: 5
       Text {
         text : model.display
