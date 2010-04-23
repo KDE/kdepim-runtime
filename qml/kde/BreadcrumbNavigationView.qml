@@ -30,7 +30,7 @@ Item {
   property alias selectedItemModel : selectedItemView.model
   property alias childItemsModel : childItemsView.model
 
-  property int itemHeight : 68
+  property int itemHeight : height / 6
   property int _transitionSelect : -1
 
   signal childCollectionSelected(int row)
@@ -44,6 +44,7 @@ Item {
     id : breadcrumbDelegate
     CollectionDelegate {
       fullClickArea : true
+      height : itemHeight
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = row;
         breadcrumbTopLevel.state = "before_select_breadcrumb";
@@ -54,6 +55,7 @@ Item {
   Component {
     id : selectedItemDelegate
     CollectionDelegate {
+      height : itemHeight
       selectedDelegate : true
     }
   }
@@ -64,6 +66,7 @@ Item {
     property alias itemBackground : childDelegateWrapper.itemBackground
     CollectionDelegate {
       id : childDelegateWrapper
+      height : itemHeight
       fullClickArea : true
       showChildIndicator : true
       onIndexSelected : {
@@ -91,6 +94,7 @@ Item {
     model : topModel
     delegate : CollectionDelegate {
       fullClickArea : true
+      height : itemHeight
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = -1;
         breadcrumbTopLevel.state = "before_select_breadcrumb";

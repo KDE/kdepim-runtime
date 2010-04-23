@@ -32,7 +32,6 @@ Item {
 
   signal indexSelected(int row)
 
-  height : 68
   width : breadcrumbsView.width
 
   Rectangle {
