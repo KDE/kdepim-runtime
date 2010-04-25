@@ -68,7 +68,7 @@ using KPIM::MessageStatus;
 #define kmail_swap_64(x) bswap_64(x)
 #else
 #define kmail_swap_64(x) \
-     ((((x) & 0xff00000000000000ull) >> 56)				      \
+     ((((x) & 0xff00000000000000ull) >> 56)		      \
       | (((x) & 0x00ff000000000000ull) >> 40)				      \
       | (((x) & 0x0000ff0000000000ull) >> 24)				      \
       | (((x) & 0x000000ff00000000ull) >> 8)				      \
