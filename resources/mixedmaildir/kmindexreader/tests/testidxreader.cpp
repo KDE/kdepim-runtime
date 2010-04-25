@@ -53,10 +53,9 @@ void TestIdxReader::testReadHeader()
     qDebug() << "Could not open temp file.";
     return;
   }
-//   tmp.write( QByteArray::fromBase64(mailDirOneEmail) );
-//   tmp.close();
-//   KMIndexReader reader( tmp.fileName() );
-  KMIndexReader reader( "/home/kde-devel/src/komo/src/kdepim/runtime/resources/mixedmaildir/kmindexreader/tests/data/test2.index");
+  tmp.write( QByteArray::fromBase64(mailDirOneEmail) );
+  tmp.close();
+  KMIndexReader reader( tmp.fileName() );
   
   QVERIFY( reader.error() == false );
   
