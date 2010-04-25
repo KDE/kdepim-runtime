@@ -71,7 +71,7 @@ void TestIdxReader::testRead() {
         qDebug() << "Could not open temp file.";
         return;
     }
-    tmp.write ( QByteArray::fromBase64 ( mailDirOneEmailOneTagFlags ) );
+    tmp.write ( QByteArray::fromBase64 ( mailDirTwoEmailOneTagFlags ) );
     tmp.close();
     KMIndexReader reader ( tmp.fileName() );
     QVERIFY ( reader.error() == false );
@@ -89,6 +89,7 @@ void TestIdxReader::testRead() {
     QVERIFY ( !status.isImportant() );
     QVERIFY ( !msg->status().isImportant() );
     QVERIFY ( msg->status().isRead() );
+    qDebug() << "tag" << msg->mCachedStringParts[KMIndexReader::MsgTagPart];
 
     msg = reader.messages().back();
     status.fromQInt32 ( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );
