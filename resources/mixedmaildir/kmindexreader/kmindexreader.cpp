@@ -378,6 +378,8 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
       if (mIndexSizeOfLong == sizeof(ret))
       {
         kDebug() << "mIndexSizeOfLong == sizeof(ret)";
+        // this memcpy replaces the original call to copy_from_stream
+        // so that g_chunk_offset is not changed
         memcpy( &ret, g_chunk + g_chunk_offset, sizeof(ret) );
         if (mIndexSwapByteOrder)
         {
@@ -387,48 +389,58 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
             ret = kmail_swap_64(ret);
         }
       }
-//       else if (mIndexSizeOfLong == 4)
-//       {
-//          // Long is stored as 4 bytes in index file, sizeof(long) = 8
-//          quint32 ret_32;
-//          copy_from_stream(ret_32);
-//          if (mIndexSwapByteOrder)
-//             ret_32 = kmail_swap_32(ret_32);
-//          ret = ret_32;
-//       }
-//       else if (mIndexSizeOfLong == 8)
-//       {
-//          // Long is stored as 8 bytes in index file, sizeof(long) = 4
-//          quint32 ret_1;
-//          quint32 ret_2;
-//          copy_from_stream(ret_1);
-//          copy_from_stream(ret_2);
-//          if (!mIndexSwapByteOrder)
-//          {
-//             // Index file order is the same as the order of this CPU.
-// #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-//             // Index file order is little endian
-//             ret = ret_1; // We drop the 4 most significant bytes
-// #else
-//             // Index file order is big endian
-//             ret = ret_2; // We drop the 4 most significant bytes
-// #endif
-//          }
-//          else
-//          {
-//             // Index file order is different from this CPU.
-// #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-//             // Index file order is big endian
-//             ret = ret_2; // We drop the 4 most significant bytes
-// #else
-//             // Index file order is little endian
-//             ret = ret_1; // We drop the 4 most significant bytes
-// #endif
-//             // We swap the result to host order.
-//             ret = kmail_swap_32(ret);
-//          }
-// 
-//       }
+      //////////////////////
+      // BEGIN UNTESTED CODE
+      //////////////////////
+      else if (mIndexSizeOfLong == 4)
+      {
+         // Long is stored as 4 bytes in index file, sizeof(long) = 8
+         quint32 ret_32;
+         // this memcpy replaces the original call to copy_from_stream
+         // so that g_chunk_offset is not changed
+         memcpy( &ret_32, g_chunk + g_chunk_offset, sizeof( quint32 ) );
+         if (mIndexSwapByteOrder)
+            ret_32 = kmail_swap_32(ret_32);
+         ret = ret_32;
+      }
+      else if (mIndexSizeOfLong == 8)
+      {
+         // Long is stored as 8 bytes in index file, sizeof(long) = 4
+         quint32 ret_1;
+         quint32 ret_2;
+         // these memcpys replace the original calls to copy_from_stream
+         // so that g_chunk_offset is not changed
+         memcpy( &ret_1, g_chunk + g_chunk_offset, sizeof( quint32 ) );
+         memcpy( &ret_2, g_chunk + g_chunk_offset, sizeof( quint32 ) );
+         if (!mIndexSwapByteOrder)
+         {
+            // Index file order is the same as the order of this CPU.
+#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+            // Index file order is little endian
+            ret = ret_1; // We drop the 4 most significant bytes
+#else
+            // Index file order is big endian
+            ret = ret_2; // We drop the 4 most significant bytes
+#endif
+         }
+         else
+         {
+            // Index file order is different from this CPU.
+#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+            // Index file order is big endian
+            ret = ret_2; // We drop the 4 most significant bytes
+#else
+            // Index file order is little endian
+            ret = ret_1; // We drop the 4 most significant bytes
+#endif
+            // We swap the result to host order.
+            ret = kmail_swap_32(ret);
+         }
+
+      }
+      //////////////////////
+      // END UNTESTED CODE
+      //////////////////////
       msg->mCachedLongParts[type] = ret;
     }
 //OMGGGGGGGGGGGGG2
