@@ -286,9 +286,11 @@ bool KMIndexReader::readIndex()
 
 bool KMIndexReader::fromOldIndexString(const QByteArray& str, bool toUtf8)
 {
-  const char *start, *offset;
+  Q_UNUSED(toUtf8)
+//   const char *start, *offset;
   MessageStatus status;
   status.setStatusFromStr( str );
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -453,6 +455,8 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
 
 void KMIndexReader::clearIndex(bool autoDelete, bool syncDict)
 {
+  Q_UNUSED(autoDelete)
+  Q_UNUSED(syncDict)
 //   mMsgList.clear(autoDelete, syncDict);
 }
 

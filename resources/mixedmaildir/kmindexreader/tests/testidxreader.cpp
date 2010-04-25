@@ -42,7 +42,7 @@ TestIdxReader::TestIdxReader()
 void TestIdxReader::testError()
 {
   KMIndexReader reader( "IDoNotExist" );
-  
+
   QVERIFY( reader.error() == true );
 }
 
@@ -56,15 +56,15 @@ void TestIdxReader::testReadHeader()
   tmp.write( QByteArray::fromBase64(mailDirOneEmail) );
   tmp.close();
   KMIndexReader reader( tmp.fileName() );
-  
+
   QVERIFY( reader.error() == false );
-  
+
   int version = 0;
   bool success = reader.readHeader( &version );
-  
+
   QVERIFY( success == true );
   QCOMPARE( version, 1506 );
-  
+
   QVERIFY( reader.error() == false );
 }
 
