@@ -332,12 +332,10 @@ bool KMIndexReader::readIndex()
       break;
 
     if (msg->status().isDeleted())
-//     {
-//       delete mi;  // skip messages that are marked as deleted
-// //       setDirty( true );
-//       needsCompact = true;  //We have deleted messages - needs to be compacted
-//       continue;
-//     }
+    {
+      delete msg;  // skip messages that are marked as deleted
+      continue;
+    }
 #ifdef OBSOLETE
 //     else if (mi->isNew())
 //     {
