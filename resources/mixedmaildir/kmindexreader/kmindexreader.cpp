@@ -153,6 +153,12 @@ MessageStatus& KMIndexMsgPrivate::status()
   return mStatus;
 }
 
+QStringList KMIndexMsgPrivate::tagList() const
+{
+  return mCachedStringParts[KMIndexReader::MsgTagPart].split( ',', QString::SkipEmptyParts );
+}
+
+
 
 //END: KMIndexMsg methods
 

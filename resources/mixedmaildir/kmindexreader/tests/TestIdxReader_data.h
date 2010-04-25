@@ -34,7 +34,7 @@ static const char mailDirOneEmail[] =
 /*
  Folder: "Test1" type:Maildir
  Message1: "foo bar"  Important, Unread
- Message2: "hello from kmail" Read, tagged "Test Tag"
+ Message2: "hello from kmail" Read, tagged "N5tUHPOZFf"
  */
 static const char mailDirTwoEmailOneTagFlags[] =
 "IyBLTWFpbC1JbmRleCBWMTUwNgoACAAAAHhWNBIIAAAAlAEAAAUAAAAAAAgAAAAIAAAAAAAAAAAA"

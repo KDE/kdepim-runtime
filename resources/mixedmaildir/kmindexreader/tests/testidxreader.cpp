@@ -89,7 +89,7 @@ void TestIdxReader::testRead() {
     QVERIFY ( !status.isImportant() );
     QVERIFY ( !msg->status().isImportant() );
     QVERIFY ( msg->status().isRead() );
-    qDebug() << "tag" << msg->mCachedStringParts[KMIndexReader::MsgTagPart];
+    QVERIFY ( msg->tagList().contains("N5tUHPOZFf") );
 
     msg = reader.messages().back();
     status.fromQInt32 ( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );
@@ -98,5 +98,6 @@ void TestIdxReader::testRead() {
     QVERIFY ( status.isImportant() );
     QVERIFY ( msg->status().isImportant() );
     QVERIFY ( msg->status().isUnread() );
+    QVERIFY ( msg->tagList().size() == 0 );
 }
 

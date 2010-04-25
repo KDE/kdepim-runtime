@@ -25,6 +25,7 @@
 using KPIM::MessageStatus;
 
 #include <QString>
+#include <QStringList>
 #include <QFile>
 #include <QList>
 
@@ -122,13 +123,12 @@ public:
     KMIndexMsgPrivate() {}
     /** Status object of the message. */
     MessageStatus& status();
-//   QList<KMIndexTag*>  tagList() const ;
+    QStringList  tagList() const ;
 private:
     QString mCachedStringParts[20];
     unsigned long mCachedLongParts[20];
     bool mPartsCacheBuilt;
 
-//   QList<KMIndexTag*> mTagList;
     MessageStatus mStatus;
     friend class KMIndexReader;
     friend class TestIdxReader;
