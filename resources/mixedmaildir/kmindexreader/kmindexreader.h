@@ -46,29 +46,13 @@ class KMIndexReader
 public:
   KMIndexReader( const QString &indexFile );
 //   ~KMIndexReader() {}
-  
+
   bool error() const;
-  
-  /******* PRIVATE ************************
-   * public so test class can see them    *
-   ****************************************/
-  
+
   /**
    * begins the index reading process
    */
   bool readIndex();
-  /**
-   * Reads the header of an index
-   */
-  bool readHeader( int *version );
-  /**
-   * creates a message object from an old index files
-   */
-  bool fromOldIndexString( KMIndexMsgPrivate* msg, const QByteArray& str, bool toUtf8 );
-  
-  bool fillPartsCache( KMIndexMsgPrivate* msg, off_t off, short int len );
-
-  QList<KMIndexMsgPrivate*> messages();
 
   enum MsgPartType
   {
@@ -101,12 +85,27 @@ public:
     MsgTagPart = 19
   };
 
-private:
+  private:
+
+
+  /**
+   * Reads the header of an index
+   */
+  bool readHeader( int *version );
+
+  /**
+   * creates a message object from an old index files
+   */
+  bool fromOldIndexString( KMIndexMsgPrivate* msg, const QByteArray& str, bool toUtf8 );
+
+  bool fillPartsCache( KMIndexMsgPrivate* msg, off_t off, short int len );
+
+  QList<KMIndexMsgPrivate*> messages();
 
   QString mIndexFileName;
   QFile mIndexFile;
   FILE* mFp;
-  
+
   bool mConvertToUtf8;
   bool mIndexSwapByteOrder; // Index file was written with swapped byte order
   int mIndexSizeOfLong; // Index file was written with longs of this size
@@ -116,6 +115,7 @@ private:
 
     /** list of index entries or messages */
   QList<KMIndexMsgPrivate*> mMsgList;
+  friend class TestIdxReader;
 };
 
 
@@ -125,20 +125,16 @@ class KMIndexMsgPrivate
     KMIndexMsgPrivate(){}
   /** Status object of the message. */
   MessageStatus& status();
-//
-//
 //   QList<KMIndexTag*>  tagList() const ;
-//
   private:
   QString mCachedStringParts[20];
   unsigned long mCachedLongParts[20];
   bool mPartsCacheBuilt;
-//
+
 //   QList<KMIndexTag*> mTagList;
   MessageStatus mStatus;
   friend class KMIndexReader;
   friend class TestIdxReader;
 };
-
 
 #endif // KMINDEXREADER_H

@@ -28,13 +28,12 @@ class TestIdxReader : public QObject
 Q_OBJECT
 public:
     TestIdxReader();
-    
 private slots:
     void testError();
     void testReadHeader();
     void testRead();
 private:
-  
+
 };
 
 #endif // TESTIDXREADER_H
