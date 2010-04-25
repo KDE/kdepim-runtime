@@ -85,17 +85,21 @@ void TestIdxReader::testRead()
   QVERIFY( reader.messages().size() == 2 );
 
   KMIndexMsgPrivate* msg = reader.messages().front();
-  
+
   QString subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
   MessageStatus status;
   status.fromQInt32( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );
   QCOMPARE(subject, QString("hello from kmail"));
   QVERIFY( !status.isImportant() );
+  QVERIFY( !msg->status().isImportant() );
+  QVERIFY( msg->status().isRead() );
 
   msg = reader.messages().back();
   status.fromQInt32( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );
   subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
   QCOMPARE(subject, QString("foo bar"));
   QVERIFY( status.isImportant() );
+  QVERIFY( msg->status().isImportant() );
+  QVERIFY( msg->status().isUnread() );
 }
 
