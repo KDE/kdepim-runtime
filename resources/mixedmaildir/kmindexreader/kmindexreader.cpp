@@ -197,17 +197,17 @@ bool KMIndexReader::readHeader( int *version )
       *version = indexVersion;
   if (indexVersion < 1505 ) {
       if(indexVersion == 1503) {
-        kDebug() << "Converting old index file" << mIndexFileName << "to utf-8";
+        kWarning() << "Need to convert old index file" << mIndexFileName << "to utf-8";
         mConvertToUtf8 = true;
       }
       return true;
   } else if (indexVersion == 1505) {
   } else if (indexVersion < INDEX_VERSION) {
-      kDebug() << "Index file" << mIndexFileName << "is out of date. Re-creating it.";
+      kFatal() << "Index file" << mIndexFileName << "is out of date. What to do?";
 //       createIndexFromContents();
       return false;
   } else if(indexVersion > INDEX_VERSION) {
-      kDebug() << "index file of newer version";
+      kFatal() << "index file of newer version";
       return false;
   }
   else {
@@ -243,7 +243,7 @@ bool KMIndexReader::readHeader( int *version )
       }
       if (needs_update || mIndexSwapByteOrder || (mIndexSizeOfLong != sizeof(long)))
       {
-	kDebug() << "DIRTY!";
+      kDebug() << "DIRTY!";
 //         setDirty( true );
       }
       // Seek to end of header
@@ -343,24 +343,12 @@ bool KMIndexReader::readIndex()
 //       mi->setDirty(false);
 //     }
 #endif
-//     if ((mi->status().isNew()) || (mi->status().isUnread()) ||
-//         (folder() == kmkernel->outboxFolder()))
-//     {
-//       ++mUnreadMsgs;
-//       if (mUnreadMsgs == 0) ++mUnreadMsgs;
-//     }
     mMsgList.append(msg);
-  } // while
-//   if( version < 1505)
-//   {
-//     mConvertToUtf8 = false;
-//     setDirty( true );
-//     writeIndex();
-//   }
-//   mTotalMsgs = mMsgList.count();
+  } // end while
   return true;
 }
 
+//--- For compatibility with old index files
 bool KMIndexReader::fromOldIndexString( KMIndexMsgPrivate* msg, const QByteArray& str, bool toUtf8)
 {
   Q_UNUSED(toUtf8)
@@ -469,11 +457,9 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
       // On e.g. Intel host ordering is LSB, on e.g. Sparc it is MSB.
 
 #     if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-//       kDebug() << "Byte order is little endian";
       // Byte order is little endian (swap is true)
       swapEndian( msg->mCachedStringParts[type] );
 #     else
-//       kDebug() << "Byte order is big endian ";
       // Byte order is big endian (swap is false)
 #     endif
     } else  if( ( type >= 7 && type <= 10 ) || type == 12 || type == 13 || (type >= 16 && type <= 18) )
@@ -547,7 +533,6 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
       //////////////////////
       msg->mCachedLongParts[type] = ret;
     }
-//OMGGGGGGGGGGGGG2
   } // for loop
     msg->mPartsCacheBuilt = true;
     return true;
