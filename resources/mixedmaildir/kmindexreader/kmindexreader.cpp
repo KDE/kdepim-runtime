@@ -301,6 +301,9 @@ bool KMIndexReader::readIndex()
     }
     else
     {
+      //////////////////////
+      //BEGIN UNTESTED CODE
+      //////////////////////
       //parse verions < 1505
       QByteArray line( MAX_LINE, '\0' );
       fgets(line.data(), MAX_LINE, mFp);
@@ -321,6 +324,9 @@ bool KMIndexReader::readIndex()
       if(KDE_fseek(mFp, len, SEEK_CUR))
         break;
       fillPartsCache(msg, offs, len);
+      //////////////////////
+      //END UNTESTED CODE
+      //////////////////////
     }
     if(!msg)
       break;
