@@ -21,6 +21,8 @@
 #ifndef KMINDEXREADER_H
 #define KMINDEXREADER_H
 
+#include <messagecore/messagestatus.h>
+using KPIM::MessageStatus;
 
 #include <QString>
 #include <QFile>
@@ -62,7 +64,7 @@ public:
   /**
    * creates a message object from an old index files
    */
-  bool fromOldIndexString(const QByteArray& str, bool toUtf8);
+  bool fromOldIndexString( KMIndexMsgPrivate* msg, const QByteArray& str, bool toUtf8 );
   
   bool fillPartsCache( KMIndexMsgPrivate* msg, off_t off, short int len );
 
@@ -98,9 +100,8 @@ public:
     // unicode string
     MsgTagPart = 19
   };
-  
+
 private:
-  void clearIndex(bool autoDelete=true, bool syncDict = false);
 
   QString mIndexFileName;
   QFile mIndexFile;
@@ -112,10 +113,8 @@ private:
   off_t mHeaderOffset;
 
   bool mError;
-  
+
     /** list of index entries or messages */
-//   KMMsgList mMsgList;
-  int mTotalMsgs;
   QList<KMIndexMsgPrivate*> mMsgList;
 };
 
@@ -124,23 +123,21 @@ class KMIndexMsgPrivate
 {
   public:
     KMIndexMsgPrivate(){}
-//   /** Status object of the message. */
-//   MessageStatus& status() const;
-//
-//   /** Const reference to a status object of a message. */
-//   const MessageStatus& status() const;
+  /** Status object of the message. */
+  MessageStatus& status();
 //
 //
 //   QList<KMIndexTag*>  tagList() const ;
 //
-//   private:
+  private:
   QString mCachedStringParts[20];
   unsigned long mCachedLongParts[20];
   bool mPartsCacheBuilt;
 //
 //   QList<KMIndexTag*> mTagList;
-//   MessageStatus mStatus;
-//   friend KMIndexReader;
+  MessageStatus mStatus;
+  friend class KMIndexReader;
+  friend class TestIdxReader;
 };
 
 

@@ -30,11 +30,10 @@
 #include <kde_file.h>
 #include <messagecore/messagestatus.h>
 using KPIM::MessageStatus;
-
 #include <QFile>
 
 
-// BEGIN: Magic definitions from old kmail code 
+//BEGIN: Magic definitions from old kmail code
 #ifdef HAVE_BYTESWAP_H
 #include <byteswap.h>
 #endif
@@ -79,7 +78,83 @@ using KPIM::MessageStatus;
       | (((x) & 0x00000000000000ffull) << 56))
 #endif
 
-// END: Magic definitions from old kmail code 
+/** The old status format, only one at a time possible. Needed
+    for upgrade path purposes. */
+typedef enum
+{
+    KMLegacyMsgStatusUnknown=' ',
+    KMLegacyMsgStatusNew='N',
+    KMLegacyMsgStatusUnread='U',
+    KMLegacyMsgStatusRead='R',
+    KMLegacyMsgStatusOld='O',
+    KMLegacyMsgStatusDeleted='D',
+    KMLegacyMsgStatusReplied='A',
+    KMLegacyMsgStatusForwarded='F',
+    KMLegacyMsgStatusQueued='Q',
+    KMLegacyMsgStatusSent='S',
+    KMLegacyMsgStatusFlag='G'
+} KMLegacyMsgStatus;
+
+//END: Magic definitions from old kmail code
+
+//BEGIN: KMIndexMsg methods
+
+MessageStatus& KMIndexMsgPrivate::status()
+{
+  if ( mStatus.isOfUnknownStatus() ) {
+      mStatus.fromQInt32( mCachedLongParts[KMIndexReader::MsgStatusPart] );
+      if ( mStatus.isOfUnknownStatus() ) {
+          // We are opening an old index for the first time, get the legacy
+          // status and merge it in.
+          // This is kept to provide an upgrade path from the old single
+          // status to the new multiple status scheme.
+          KMLegacyMsgStatus legacyMsgStatus = (KMLegacyMsgStatus) mCachedLongParts[KMIndexReader::MsgLegacyStatusPart];
+          mStatus.setRead();
+          switch (legacyMsgStatus) {
+              case KMLegacyMsgStatusUnknown:
+                  mStatus.clear();
+                  break;
+              case KMLegacyMsgStatusNew:
+                  mStatus.setNew();
+                  break;
+              case KMLegacyMsgStatusUnread:
+                  mStatus.setUnread();
+                  break;
+              case KMLegacyMsgStatusRead:
+                  mStatus.setRead();
+                  break;
+              case KMLegacyMsgStatusOld:
+                  mStatus.setOld();
+                  break;
+              case KMLegacyMsgStatusDeleted:
+                  mStatus.setDeleted();
+                  break;
+              case KMLegacyMsgStatusReplied:
+                  mStatus.setReplied();
+                  break;
+              case KMLegacyMsgStatusForwarded:
+                  mStatus.setForwarded();
+                  break;
+              case KMLegacyMsgStatusQueued:
+                  mStatus.setQueued();
+                  break;
+              case KMLegacyMsgStatusSent:
+                  mStatus.setSent();
+                  break;
+              case KMLegacyMsgStatusFlag:
+                  mStatus.setImportant();
+                  break;
+              default:
+                  break;
+          }
+
+      }
+  }
+  return mStatus;
+}
+
+
+//END: KMIndexMsg methods
 
 KMIndexReader::KMIndexReader(const QString& indexFile) 
 : mIndexFileName( indexFile )
@@ -193,23 +268,18 @@ bool KMIndexReader::readIndex()
   Q_ASSERT( mFp != 0 );
   rewind(mFp);
 
-  clearIndex();
+  mMsgList.clear();
   int version;
-
-//   setDirty( false );
 
   if (!readHeader(&version)) return false;
 
-//   mUnreadMsgs = 0;
-  mTotalMsgs = 0;
   mHeaderOffset = KDE_ftell(mFp);
 
-  clearIndex();
   // loop through the entire index
   while (!feof(mFp))
   {
     kDebug() << "NEW MSG!";
-//     mi = 0;
+    msg = 0;
     // check version (parsed by readHeader)
     // because different versions must be
     // parsed differently
@@ -228,10 +298,6 @@ bool KMIndexReader::readIndex()
         break;
       msg = new KMIndexMsgPrivate();
       fillPartsCache(msg, offs, len);
-//       fillLongPartCache(msg, offs, len);
-      mMsgList.append( msg );
-      //at this point parsing of the index is handed off to kmmsgbase
-//       mi = new KMMsgInfo(folder(), offs, len);
     }
     else
     {
@@ -240,19 +306,26 @@ bool KMIndexReader::readIndex()
       fgets(line.data(), MAX_LINE, mFp);
       if (feof(mFp)) break;
       if (*line.data() == '\0') {
+        // really, i have no idea when or how this would occur
+        // but we probably want to know if it does - Casey
+        kWarning() << "Unknowable bad occured"; 
         fclose(mFp);
         kDebug() << "fclose(mFp = " << mFp << ")";
         mFp = 0;
-        clearIndex();
+        mMsgList.clear();
         return false;
       }
-//       mi = new KMMsgInfo(folder());
-//       mi->compat_fromOldIndexString(line, mConvertToUtf8);
+      msg = new KMIndexMsgPrivate;
+      fromOldIndexString( msg, line, mConvertToUtf8);
+      off_t offs = KDE_ftell(mFp);
+      if(KDE_fseek(mFp, len, SEEK_CUR))
+        break;
+      fillPartsCache(msg, offs, len);
     }
-//     if(!mi)
-//       break;
+    if(!msg)
+      break;
 
-//     if (mi->status().isDeleted())
+    if (msg->status().isDeleted())
 //     {
 //       delete mi;  // skip messages that are marked as deleted
 // //       setDirty( true );
@@ -272,8 +345,8 @@ bool KMIndexReader::readIndex()
 //       ++mUnreadMsgs;
 //       if (mUnreadMsgs == 0) ++mUnreadMsgs;
 //     }
-//     mMsgList.append(mi, false);
-  }
+    mMsgList.append(msg);
+  } // while
 //   if( version < 1505)
 //   {
 //     mConvertToUtf8 = false;
@@ -284,13 +357,38 @@ bool KMIndexReader::readIndex()
   return true;
 }
 
-bool KMIndexReader::fromOldIndexString(const QByteArray& str, bool toUtf8)
+bool KMIndexReader::fromOldIndexString( KMIndexMsgPrivate* msg, const QByteArray& str, bool toUtf8)
 {
   Q_UNUSED(toUtf8)
-//   const char *start, *offset;
-  MessageStatus status;
-  status.setStatusFromStr( str );
-  return false;
+//     const char *start, *offset;
+//   msg->modifiers = KMMsgInfoPrivate::ALL_SET;
+//   msg->xmark   = str.mid(33, 3).trimmed();
+//   msg->folderOffset = str.mid(2,9).toULong();
+//   msg->msgSize = str.mid(12,9).toULong();
+//   msg->date = (time_t)str.mid(22,10).toULong();
+//   mStatus.setStatusFromStr( str );
+//   if (toUtf8) {
+//       msg->subject = str.mid(37, 100).trimmed();
+//       msg->from = str.mid(138, 50).trimmed();
+//       msg->to = str.mid(189, 50).trimmed();
+//   } else {
+//       start = offset = str.data() + 37;
+//       while (*start == ' ' && start - offset < 100) start++;
+//       msg->subject = QString::fromUtf8(str.mid(start - str.data(),
+//           100 - (start - offset)), 100 - (start - offset));
+//       start = offset = str.data() + 138;
+//       while (*start == ' ' && start - offset < 50) start++;
+//       msg->from = QString::fromUtf8(str.mid(start - str.data(),
+//           50 - (start - offset)), 50 - (start - offset));
+//       start = offset = str.data() + 189;
+//       while (*start == ' ' && start - offset < 50) start++;
+//       msg->to = QString::fromUtf8(str.mid(start - str.data(),
+//           50 - (start - offset)), 50 - (start - offset));
+//   }
+//   msg->replyToIdMD5 = str.mid(240, 22).trimmed();
+//   msg->msgIdMD5 = str.mid(263, 22).trimmed();
+  msg->mStatus.setStatusFromStr( str );
+  return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -392,7 +490,7 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
         }
       }
       //////////////////////
-      // BEGIN UNTESTED CODE
+      //BEGIN UNTESTED CODE
       //////////////////////
       else if (mIndexSizeOfLong == 4)
       {
@@ -441,7 +539,7 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
 
       }
       //////////////////////
-      // END UNTESTED CODE
+      //END UNTESTED CODE
       //////////////////////
       msg->mCachedLongParts[type] = ret;
     }
@@ -452,13 +550,6 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
 }
 
 //-----------------------------------------------------------------------------
-
-void KMIndexReader::clearIndex(bool autoDelete, bool syncDict)
-{
-  Q_UNUSED(autoDelete)
-  Q_UNUSED(syncDict)
-//   mMsgList.clear(autoDelete, syncDict);
-}
 
 QList< KMIndexMsgPrivate* > KMIndexReader::messages()
 {
