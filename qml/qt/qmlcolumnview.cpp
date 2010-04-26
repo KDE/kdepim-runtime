@@ -1,5 +1,7 @@
 /*
-    Copyright (c) 2010 Bertjan Broeksema <b.broeksema@home.nl>
+    Copyright (C) 2010 Klarälvdalens Datakonsult AB,
+        a KDAB Group company, info@kdab.net,
+        author Stephen Kelly <stephen@kdab.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,30 +19,30 @@
     02110-1301, USA.
 */
 
-#include "plugin.h"
 #include "qmlcolumnview.h"
-#include "qmldateedit.h"
 
-#include <kcomponentdata.h>
-#include <kdebug.h>
-//#include <QtDeclarative/qdeclarative.h>
+#include <QtGui/QColumnView>
 
 using namespace Qt;
 
-Plugin::Plugin(QObject* parent): QDeclarativeExtensionPlugin(parent)
+QmlColumnView::QmlColumnView(QGraphicsItem* parent, Qt::WindowFlags wFlags)
+  : QGraphicsProxyWidget(parent, wFlags),
+    m_nestedView(new QColumnView)
 {
-//  kDebug();
-//  if ( !KGlobal::hasMainComponent() )
-//    new KComponentData( "MessageViewerQmlPlugin", "libmessageviewer", KComponentData::RegisterAsMainComponent );
+  setWidget( m_nestedView );
 }
 
-void Plugin::registerTypes(const char* uri)
+QObject* QmlColumnView::model() const
 {
-  kDebug() << uri;
-  qmlRegisterType<Qt::QmlDateEdit>( uri, 4, 7, "QmlDateEdit" );
-  qmlRegisterType<Qt::QmlColumnView>( uri, 4, 7, "QmlColumnView" );
+  return m_nestedView->model();
 }
 
-#include "plugin.moc"
+void QmlColumnView::setModel(QObject* model)
+{
+  QAbstractItemModel *_model = qobject_cast<QAbstractItemModel *>(model);
+  if (!_model)
+    return;
+  m_nestedView->setModel(_model);
+}
 
-Q_EXPORT_PLUGIN2( qtwidgetwrappersplugin, Qt::Plugin )
+#include "qmlcolumnview.moc"

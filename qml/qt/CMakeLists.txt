@@ -1,6 +1,7 @@
 kde4_add_plugin(qtwidgetwrappersplugin WITH_PREFIX
   plugin.cpp
   qmldateedit.cpp
+  qmlcolumnview.cpp
 )
 target_link_libraries( qtwidgetwrappersplugin messageviewer
   ${QT_QTCORE_LIBRARY}
