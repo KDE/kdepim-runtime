@@ -129,13 +129,6 @@ Item {
         target : childItemsView
         opacity : 0
       }
-      PropertyChanges {
-        target : childItemsDelegate
-        indentAll : false
-        indentOnly : true
-        fullClickArea : false
-        showChildIndicator : true
-      }
     },
     State {
       name : "after_select_child"
