@@ -19,16 +19,14 @@
 #include "qmldateedit.h"
 
 #include <QtGui/QDateEdit>
-#include <QtGui/QGraphicsProxyWidget>
 
 namespace Qt {
 
-QmlDateEdit::QmlDateEdit( QDeclarativeItem *parent )
-  : QDeclarativeItem(parent)
+QmlDateEdit::QmlDateEdit( QGraphicsItem *parent, Qt::WindowFlags wFlags )
+  : QGraphicsProxyWidget( parent, wFlags )
   , mDateEdit( new QDateEdit )
-  , mProxy( new QGraphicsProxyWidget( this ) )
 {
-  mProxy->setWidget( mDateEdit );
+  setWidget( mDateEdit );
 }
 
 QDate QmlDateEdit::date() const

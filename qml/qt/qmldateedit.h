@@ -20,26 +20,24 @@
 #define QMLDATEEDIT_H
 
 #include <QtCore/QDate>
-#include <QtDeclarative/QDeclarativeItem>
+#include <QtGui/QGraphicsProxyWidget>
 
 class QDateEdit;
-class QGraphicsProxyWidget;
 
 namespace Qt {
 
-class QmlDateEdit : public QDeclarativeItem
+class QmlDateEdit : public QGraphicsProxyWidget
 {
   Q_OBJECT
   Q_PROPERTY( QDate date READ date )
 
 public:
-  explicit QmlDateEdit( QDeclarativeItem *parent = 0 );
+  explicit QmlDateEdit( QGraphicsItem *parent = 0, Qt::WindowFlags wFlags = 0 );
 
   QDate date() const;
 
 private:
   QDateEdit *mDateEdit;
-  QGraphicsProxyWidget *mProxy;
 };
 
 }
