@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-import Qt 4.6
+import Qt 4.7
 
 /**
  * A container for arbitrary content that can be expanded via dragging from a screen edge.
@@ -72,7 +72,7 @@ Item {
       y: 4
       z: -1
       // WTF: Blur disables resizing!?!?
-      effect: Blur { blurRadius: 4 }
+      //effect: Blur { blurRadius: 4 }
     }
 
     Image {

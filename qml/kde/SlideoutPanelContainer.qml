@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-import Qt 4.6
+import Qt 4.7
 
 /**
  * Container for a set of SlideoutPanels.

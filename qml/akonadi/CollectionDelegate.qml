@@ -21,6 +21,7 @@
 
 import Qt 4.7
 import org.kde 4.5
+import org.kde.akonadi 4.5
 
 Item {
   id: wrapper
