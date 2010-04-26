@@ -11,6 +11,9 @@ find_package (KdepimLibs REQUIRED)
 find_program(XSLTPROC_EXECUTABLE xsltproc)
 macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" FALSE "" "Needed for building Akonadi resources. Recommended.")
 
+
+if (QT_QTXMLPATTERNS_LIBRARY)
+
 if (XSLTPROC_EXECUTABLE)
   # generates a D-Bus interface description from a KConfigXT file
   macro( kcfg_generate_dbus_interface _kcfg _name )
@@ -102,3 +105,8 @@ target_link_libraries(akonadi_davgroupware_resource
                       ${KDEPIMLIBS_AKONADI_KCAL_LIBS})
 
 install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+else()
+  macro_log_feature(QT_QTXMLPATTERNS_LIBRARY "QtXmlPatterns" "The Qt module QtXmlPatterns" "Part of Qt" FALSE "" "Needed for building Akonadi resources. Recommended. Remove -no-exceptions from the Qt configure line if you are missing this library.")
+endif()
+
