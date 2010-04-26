@@ -47,6 +47,7 @@ Item {
   z: 100
 
   function collapse() { background.x = -handleWidth }
+  function expand() { background.x = -handleWidth + dragThreshold }
 
   Rectangle {
     id: background
