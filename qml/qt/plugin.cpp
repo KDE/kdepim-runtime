@@ -24,8 +24,6 @@
 #include <kdebug.h>
 //#include <QtDeclarative/qdeclarative.h>
 
-#include <QtDeclarative/QtDeclarative>
-
 using namespace Qt;
 
 Plugin::Plugin(QObject* parent): QDeclarativeExtensionPlugin(parent)
