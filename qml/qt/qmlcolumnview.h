@@ -22,7 +22,7 @@
 #ifndef QMLCOLUMNVIEW_H
 #define QMLCOLUMNVIEW_H
 
-#include <QtGui/QGraphicsProxyWidget>
+#include <QtDeclarative/QDeclarativeItem>
 
 class QAbstractItemModel;
 class QColumnView;
@@ -31,13 +31,13 @@ Q_DECLARE_METATYPE(QAbstractItemModel*)
 
 namespace Qt {
 
-class QmlColumnView : public QGraphicsProxyWidget
+class QmlColumnView : public QDeclarativeItem
 {
   Q_OBJECT
   Q_PROPERTY(QObject* model READ model WRITE setModel)
 
 public:
-  explicit QmlColumnView( QGraphicsItem *parent = 0, Qt::WindowFlags wFlags = 0 );
+  explicit QmlColumnView( QDeclarativeItem* parent = 0 );
 
   QObject* model() const;
   void setModel(QObject* model );

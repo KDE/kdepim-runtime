@@ -22,14 +22,16 @@
 #include "qmlcolumnview.h"
 
 #include <QtGui/QColumnView>
+#include <QtGui/QGraphicsProxyWidget>
 
 using namespace Qt;
 
-QmlColumnView::QmlColumnView(QGraphicsItem* parent, Qt::WindowFlags wFlags)
-  : QGraphicsProxyWidget(parent, wFlags),
+QmlColumnView::QmlColumnView(QDeclarativeItem* parent)
+  : QDeclarativeItem(parent),
     m_nestedView(new QColumnView)
 {
-  setWidget( m_nestedView );
+  QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget( this );
+  proxy->setWidget( m_nestedView );
 }
 
 QObject* QmlColumnView::model() const
