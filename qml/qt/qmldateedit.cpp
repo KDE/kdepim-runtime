@@ -37,4 +37,10 @@ QDate QmlDateEdit::date() const
   return mDateEdit->date();
 }
 
+void QmlDateEdit::geometryChanged( const QRectF& newGeometry, const QRectF& oldGeometry )
+{
+  QDeclarativeItem::geometryChanged( newGeometry, oldGeometry );
+  mProxy->resize( newGeometry.size() );
+}
+
 }

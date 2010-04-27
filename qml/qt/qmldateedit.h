@@ -37,6 +37,8 @@ public:
 
   QDate date() const;
 
+  virtual void geometryChanged( const QRectF &newGeometry, const QRectF &oldGeometry );
+
 private:
   QDateEdit *mDateEdit;
   QGraphicsProxyWidget *mProxy;
