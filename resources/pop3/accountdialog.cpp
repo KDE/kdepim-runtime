@@ -390,8 +390,16 @@ void AccountDialog::slotCheckPopCapabilities()
            this, SLOT( slotPopCapabilities(QList<int>) ) );
   connect( mServerTest, SIGNAL( finished(QList<int>) ),
            busyCursorHelper, SLOT( deleteLater() ) );
+  connect( mServerTest, SIGNAL( failedToConnectToServer() ),
+           this, SLOT( slotCanNotConnectToServer() ) );
+
   mServerTest->start();
   mServerTestFailed = false;
+}
+
+void AccountDialog::slotCanNotConnectToServer()
+{
+  KMessageBox::sorry( this, i18n( "Please verify server address, we can not connect to it." ) );
 }
 
 void AccountDialog::slotPopCapabilities( QList<int> encryptionTypes )

@@ -189,7 +189,7 @@ void SetupServer::slotEncryptionRadioChanged()
   // TODO these really should be defined somewhere else
   switch ( m_ui->safeImapGroup->checkedId() ) {
     case KIMAP::LoginJob::Unencrypted:
-    case KIMAP::LoginJob::TlsV1: 
+    case KIMAP::LoginJob::TlsV1:
       m_ui->portSpin->setValue( 143 );
       break;
     case KIMAP::LoginJob::AnySslVersion:
@@ -363,7 +363,14 @@ void SetupServer::slotTest()
   m_serverTest->setProgressBar( m_ui->testProgress );
   connect( m_serverTest, SIGNAL( finished( QList<int> ) ),
            SLOT( slotFinished( QList<int> ) ) );
+  connect( m_serverTest, SIGNAL( failedToConnectToServer() ),
+           this, SLOT( slotCanNotConnectToServer() ) );
   m_serverTest->start();
+}
+
+void SetupServer::slotCanNotConnectToServer()
+{
+  KMessageBox::sorry( this, i18n( "Please verify server address, we can not connect to it." ) );
 }
 
 void SetupServer::slotFinished( QList<int> testResult )
