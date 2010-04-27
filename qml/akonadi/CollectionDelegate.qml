@@ -73,7 +73,9 @@ Item {
       width: wrapper.width - collectionIcon.width - 20
       spacing: 5
       Text {
+        anchors.fill: parent
         text : model.display
+        wrapMode: "WrapAnywhere" // Needs the anchors.fill to work properly
         font.bold: true
       }
     }
