@@ -17,5 +17,5 @@ Exec=akonadi_calendarsearch_agent
 Icon=text-calendar
 
 X-Akonadi-MimeTypes=text/calendar
-X-Akonadi-Capabilities=Unique,Autostart,NoConfig
+X-Akonadi-Capabilities=Unique,NoConfig
 X-Akonadi-Identifier=akonadi_calendarsearch_agent
