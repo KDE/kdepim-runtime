@@ -31,7 +31,7 @@ Item {
 
   QmlColumnView {
     id : columnView
-    model : checkableSelectionModel
+    model : favoriteSelectionModel
     anchors.top : parent.top
     anchors.left : parent.left
     anchors.right : parent.right
