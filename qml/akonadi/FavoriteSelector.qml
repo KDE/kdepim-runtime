@@ -27,6 +27,7 @@ Item {
   id : _topContext
   property alias favoriteName : nameInput.text
 
+  signal canceled()
   signal finished()
 
   QmlColumnView {
@@ -42,9 +43,21 @@ Item {
   Row {
     anchors.top : columnView.bottom
     anchors.bottom : parent.bottom
-    anchors.right : parent.right
+//    anchors.right : parent.right
+    width: parent.width
+
+    KPIM.Button {
+      anchors.left : parent.parent.left
+      y : 10
+      height : parent.height
+      width : 50
+
+      buttonText : "Cancel"
+      onClicked : { canceled(); }
+    }
 
     Text {
+      anchors.right : doneButton.left
       height : 30
       y : 13
       width : 50
@@ -52,6 +65,9 @@ Item {
     }
 
     Rectangle {
+      id: nameRect
+      anchors.right : doneButton.left
+
       height : 20
       y : 10
       width : 200
@@ -62,8 +78,10 @@ Item {
       }
     }
     KPIM.Button {
+      id: doneButton
+      anchors.right : parent.right
       y : 10
-      height : 20
+      height : parent.height
       width : 50
 
       buttonText : "Done"
