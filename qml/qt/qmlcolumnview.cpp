@@ -28,10 +28,10 @@ using namespace Qt;
 
 QmlColumnView::QmlColumnView(QDeclarativeItem* parent)
   : QDeclarativeItem(parent),
-    m_nestedView(new QColumnView)
+    m_nestedView(new QColumnView),
+    m_proxy(new QGraphicsProxyWidget( this ))
 {
-  QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget( this );
-  proxy->setWidget( m_nestedView );
+  m_proxy->setWidget( m_nestedView );
 }
 
 QObject* QmlColumnView::model() const
@@ -46,5 +46,12 @@ void QmlColumnView::setModel(QObject* model)
     return;
   m_nestedView->setModel(_model);
 }
+
+void QmlColumnView::geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry)
+{
+  QDeclarativeItem::geometryChanged( newGeometry, oldGeometry );
+  m_proxy->resize( newGeometry.size() );
+}
+
 
 #include "qmlcolumnview.moc"

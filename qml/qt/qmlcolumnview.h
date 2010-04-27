@@ -42,8 +42,11 @@ public:
   QObject* model() const;
   void setModel(QObject* model );
 
+  virtual void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry);
+
 private:
   QColumnView *m_nestedView;
+  QGraphicsProxyWidget *m_proxy;
 };
 
 }
