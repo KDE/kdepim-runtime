@@ -29,6 +29,7 @@ QmlDateEdit::QmlDateEdit( QDeclarativeItem *parent )
   , mProxy( new QGraphicsProxyWidget( this ) )
 {
   mProxy->setWidget( mDateEdit );
+  mDateEdit->setDate( QDate::currentDate() );
 }
 
 QDate QmlDateEdit::date() const
