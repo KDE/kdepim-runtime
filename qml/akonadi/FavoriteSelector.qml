@@ -25,6 +25,8 @@ import org.kde.pim.mobileui 4.5 as KPIM
 
 Item {
   id : _topContext
+  property alias favoriteName : nameInput.text
+
   signal finished()
 
   QmlColumnView {
@@ -34,17 +36,38 @@ Item {
     anchors.left : parent.left
     anchors.right : parent.right
     anchors.topMargin : 30
-    height : parent.height * .8
+    height : parent.height * .85
 
   }
-  KPIM.Button {
+  Row {
     anchors.top : columnView.bottom
     anchors.bottom : parent.bottom
     anchors.right : parent.right
-    height : 30
-    width : 200
 
-    buttonText : "Done"
-    onClicked : finished();
+    Text {
+      height : 30
+      y : 13
+      width : 50
+      text : "Name"
+    }
+
+    Rectangle {
+      height : 20
+      y : 10
+      width : 200
+      radius : 5
+      TextInput {
+        id : nameInput
+        anchors.fill : parent
+      }
+    }
+    KPIM.Button {
+      y : 10
+      height : 20
+      width : 50
+
+      buttonText : "Done"
+      onClicked : { finished(); }
+    }
   }
 }
