@@ -33,6 +33,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/mimetypechecker.h>
+#include <akonadi/itemsearchjob.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/tag.h>
@@ -104,8 +105,13 @@ void NepomukFeederAgentBase::itemAdded(const Akonadi::Item& item, const Akonadi:
 {
   if ( entityIsHidden( collection ) )
     return;
-  if ( item.hasPayload() )
-    updateItem( item, createGraphForEntity( item ) );
+
+  if ( item.hasPayload() ) {
+    const QUrl graph = createGraphForEntity( item );
+    mNrlModel->addStatement( item.url(), Akonadi::ItemSearchJob::akonadiItemIdUri(),
+                             QUrl( QString::number( item.id() ) ), graph );
+    updateItem( item, graph );
+  }
 }
 
 void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >&)
@@ -115,7 +121,11 @@ void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< 
   // TODO: check part identfiers if anything interesting changed at all
   if ( item.hasPayload() ) {
     removeEntityFromNepomuk( item );
-    updateItem( item, createGraphForEntity( item ) );
+
+    const QUrl graph = createGraphForEntity( item );
+    mNrlModel->addStatement( item.url(), Akonadi::ItemSearchJob::akonadiItemIdUri(),
+                             QUrl( QString::number( item.id() ) ), graph );
+    updateItem( item, graph );
   }
 }
 
@@ -200,6 +210,15 @@ void NepomukFeederAgentBase::itemHeadersReceived(const Akonadi::Item::List& item
     // update item if it does not exist
     if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(), Soprano::Node(), Soprano::Node() ) )
       itemsToUpdate.append( item );
+
+    // the item exists. Check if it has an item ID property, otherwise re-index it.
+    else {
+      if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(),
+                                   Akonadi::ItemSearchJob::akonadiItemIdUri(), Soprano::Node() ) ) {
+        removeEntityFromNepomuk( item );
+        itemsToUpdate.append( item );
+      }
+    }
   }
 
   if ( !itemsToUpdate.isEmpty() ) {
@@ -232,7 +251,10 @@ void NepomukFeederAgentBase::itemsReceived(const Akonadi::Item::List& items)
   foreach ( Item item, items ) {
     // we only get here if the item is not anywhere in Nepomuk yet, so no need to delete it
     item.setParentCollection( mCurrentCollection );
-    updateItem( item, createGraphForEntity( item ) );
+    const QUrl graph = createGraphForEntity( item );
+    mNrlModel->addStatement( item.url(), Akonadi::ItemSearchJob::akonadiItemIdUri(),
+                             QUrl( QString::number( item.id() ) ), graph );
+    updateItem( item, graph );
   }
   mProcessedAmount += items.count();
   emit percent( (mProcessedAmount * 100) / (mTotalAmount * 100) );
