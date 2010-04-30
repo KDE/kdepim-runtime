@@ -271,7 +271,9 @@ void SetupServer::readSettings()
     currentUser->loginName() );
 
   int i = Settings::self()->safety();
-  m_ui->safeImapGroup->button( i )->setChecked( true );
+  QAbstractButton* safetyButton = m_ui->safeImapGroup->button( i );
+  if ( safetyButton )
+      safetyButton->setChecked( true );
 
   populateDefaultAuthenticationOptions();
   i = Settings::self()->authentication();
