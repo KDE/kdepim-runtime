@@ -7,8 +7,6 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 # Not depending on KDE here for easier portability.
 find_package(Qt4 REQUIRED)
 
-message("found" ${QT_QTDECLARATIVE_FOUND})
-
 include_directories(
   ${QT_INCLUDES}
   ${QT_QTGUI_INCLUDE_DIR}
@@ -26,6 +24,7 @@ set(app_SRCS
   main.cpp
   qtselectionproxymodel.cpp
   kbreadcrumbselectionmodel.cpp
+  kmodelindexproxymapper.cpp
   kproxyitemselectionmodel.cpp
 )
 

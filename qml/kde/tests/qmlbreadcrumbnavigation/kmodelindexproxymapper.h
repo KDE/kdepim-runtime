@@ -22,18 +22,27 @@
 #ifndef KMODELINDEXPROXYMAPPER_H
 #define KMODELINDEXPROXYMAPPER_H
 
-#include <QAbstractItemModel>
 #include <QObject>
 
+class QAbstractItemModel;
+class QModelIndex;
+class QItemSelection;
 class KModelIndexProxyMapperPrivate;
 
 class KModelIndexProxyMapper : public QObject
 {
   Q_OBJECT
 public:
-  KModelIndexProxyMapper(QObject* parent = 0);
+  KModelIndexProxyMapper(QAbstractItemModel *leftModel, QAbstractItemModel *rightModel, QObject* parent = 0);
 
-  QModelIndex mapToModel(QAbstractItemModel *model, const QModelIndex &index);
+  QModelIndex mapLeftToRight(const QModelIndex &index);
+  QModelIndex mapRightToLeft(const QModelIndex &index);
+  QItemSelection mapSelectionLeftToRight(const QItemSelection &selection);
+  QItemSelection mapSelectionRightToLeft(const QItemSelection &selection);
+
+private:
+  Q_DECLARE_PRIVATE(KModelIndexProxyMapper)
+  KModelIndexProxyMapperPrivate * const d_ptr;
 };
 
 #endif
