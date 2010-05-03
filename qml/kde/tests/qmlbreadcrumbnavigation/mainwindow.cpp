@@ -9,6 +9,7 @@
 #include <QDeclarativeContext>
 
 #include "dynamictreemodel.h"
+#include "dynamictreewidget.h"
 
 #include "breadcrumbnavigationcontext.h"
 #include <qcolumnview.h>
@@ -20,45 +21,75 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   QSplitter *splitter = new QSplitter;
   layout->addWidget(splitter);
 
-  m_treeView = new QTreeView(splitter);
+//   m_treeView = new QTreeView(splitter);
+  m_treeModel = new DynamicTreeModel(this);
+
+  DynamicTreeWidget *widget = new DynamicTreeWidget(m_treeModel, splitter);
+  widget->setInitialTree(
+    "- 1"
+    "- - 1"
+    "- - 1"
+    "- - - 1"
+    "- - - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - - 1"
+    "- - - - 1"
+    "- - - - - 1"
+    "- - - - - - 1"
+    "- - - - - 1"
+    "- - - - - -1"
+    "- - - - - - 1"
+    "- - - - - - - 1"
+    "- - - - - - - 1"
+    "- - - - - - 1"
+    "- - - - - 1"
+    "- - - - - 1"
+    "- - - - 1"
+    "- - - - 1"
+    "- 1"
+    "- 1"
+    "- 1"
+    );
+
   m_declarativeView = new QDeclarativeView(splitter);
 
   QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
 
-  m_treeModel = new DynamicTreeModel(this);
-  ModelInsertCommand *ins = new ModelInsertCommand( m_treeModel, this );
+//   m_treeModel = new DynamicTreeModel(this);
+//   ModelInsertCommand *ins = new ModelInsertCommand( m_treeModel, this );
 
-  ins->setStartRow(0);
-  ins->interpret(
-    "- 1"
-    "- - 1"
-    "- - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - - - 1"
-    "- - - - - 1"
-    "- - - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- 1"
-    "- 1"
-    "- 1"
-  );
-  ins->doCommand();
+//   ins->setStartRow(0);
+//   ins->interpret(
+//     "- 1"
+//     "- - 1"
+//     "- - 1"
+//     "- - - 1"
+//     "- - - - 1"
+//     "- - - 1"
+//     "- - - 1"
+//     "- - - - 1"
+//     "- - - - 1"
+//     "- - - - - 1"
+//     "- - - - - 1"
+//     "- - - - 1"
+//     "- - - 1"
+//     "- - - 1"
+//     "- - - - 1"
+//     "- - - - 1"
+//     "- 1"
+//     "- 1"
+//     "- 1"
+//   );
+//   ins->doCommand();
 
-  m_treeView->setModel(m_treeModel);
-  m_treeView->expandAll();
+//   m_treeView->setModel(m_treeModel);
+//   m_treeView->expandAll();
 
   m_bnf = new KBreadcrumbNavigationFactory(this);
   m_bnf->createBreadcrumbContext( m_treeModel, this );
 
-  m_treeView->setSelectionModel( m_bnf->selectionModel() );
+  widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
 
   QTreeView *view1 = new QTreeView;
   view1->setModel( m_bnf->selectedItemModel() );

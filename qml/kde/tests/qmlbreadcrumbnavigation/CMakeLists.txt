@@ -21,6 +21,7 @@ set(app_SRCS
   breadcrumbnavigation.cpp
   breadcrumbnavigationcontext.cpp
   dynamictreemodel.cpp
+  dynamictreewidget.cpp
   mainwindow.cpp
   main.cpp
   qtselectionproxymodel.cpp
@@ -46,6 +47,7 @@ add_executable(qml_nav
 
 target_link_libraries(
   qml_nav
+  ${QT_QTCORE_LIBRARIES}
   ${QT_QTGUI_LIBRARIES}
   ${QT_QTDECLARATIVE_LIBRARIES}
 )
