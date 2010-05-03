@@ -50,13 +50,13 @@ Item {
     id : topButton
     property int _breadcrumb_y_offset : 0
     interactive : false
-    height : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) itemHeight; else 0; }
+    height : itemHeight
     opacity : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) 1; else 0; }
     anchors.top : parent.top
-    anchors.topMargin : _breadcrumb_y_offset
+    anchors.topMargin : { if ( breadcrumbsView.count == 1 || ( breadcrumbsView.count == 0 && selectedItemView.count == 1) ) _breadcrumb_y_offset; else (-1 * itemHeight); }
     anchors.left : parent.left
     anchors.right : parent.right
-   model : topModel
+    model : topModel
   }
 
   ListView {
@@ -112,9 +112,14 @@ Item {
     State {
       name : "before_select_child"
       PropertyChanges {
+        target : topButton
+        height : { var _count = ( breadcrumbsView.count == 1 ) ? 2 : breadcrumbsView.count; itemHeight * ( _count + 1) }
+        _breadcrumb_y_offset : { if ( breadcrumbsView.count == 1 ) -1 * itemHeight; }
+      }
+      PropertyChanges {
         target : breadcrumbsView
         height : { var _count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * ( _count + 1) }
-        _breadcrumb_y_offset : -1 * itemHeight
+        _breadcrumb_y_offset : { if (breadcrumbsView.count > 1) -1 * itemHeight }
       }
       PropertyChanges {
         target : selectedItemView
@@ -145,11 +150,16 @@ Item {
         height : { itemHeight * ( breadcrumbTopLevel._transitionSelect + 1 ) }
         opacity : 0.5
       }
+      PropertyChanges {
+        target : childItemsView
+        opacity : 0
+      }
     },
     State {
       name : "after_select_breadcrumb"
       PropertyChanges {
         target : childItemsView
+        opacity : 0
       }
     }
   ]
@@ -160,6 +170,12 @@ Item {
       to : "before_select_child"
       SequentialAnimation {
         ParallelAnimation {
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutQuad"
+            target: topButton
+            properties: "_breadcrumb_y_offset"
+          }
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
@@ -194,8 +210,6 @@ Item {
       from : "after_select_child"
       to : ""
       NumberAnimation {
-        duration: 1000
-        easing.type: "OutQuad"
         target: childItemsView
         properties: "opacity"
       }
