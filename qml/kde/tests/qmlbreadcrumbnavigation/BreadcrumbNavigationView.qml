@@ -56,7 +56,7 @@ Item {
     anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
     anchors.right : parent.right
-    model : topModel
+//    model : topModel
   }
 
   ListView {

@@ -21,60 +21,105 @@
 
 import Qt 4.7
 
-BreadcrumbNavigationView {
-  anchors.fill : parent;
+Rectangle {
+  gradient: Gradient {
+    GradientStop { position: 0.0; color: "lightgrey" }
+    GradientStop { position: 0.5; color: "grey" }
+  }
+  anchors.fill : parent
 
-  topDelegate : Rectangle
-  {
-    height: itemHeight;
-    width : ListView.view.width
-    Text { text : model.display }
-    MouseArea {
-      anchors.fill : parent
-      onClicked : { breadcrumbTopLevel._transitionSelect = -1; breadcrumbTopLevel.state = "before_select_breadcrumb"; }
+  BreadcrumbNavigationView {
+
+    SystemPalette { id: palette; colorGroup: "Active" }
+
+    anchors.fill : parent;
+
+    topDelegate : Rectangle
+    {
+      color : "#00000000"
+      height: itemHeight;
+      width : ListView.view.width
+      Text {
+        anchors.verticalCenter : parent.verticalCenter;
+        anchors.horizontalCenter : parent.horizontalCenter;
+        text : model.display
+      }
+      MouseArea {
+        anchors.fill : parent
+        onClicked : { breadcrumbTopLevel._transitionSelect = -1; breadcrumbTopLevel.state = "before_select_breadcrumb"; }
+      }
     }
-  }
 
-  breadcrumbDelegate : Rectangle
-  {
-    height: itemHeight;
-    width : ListView.view.width
-    Text { text : model.display }
-    MouseArea {
-      anchors.fill : parent
-      onClicked : { breadcrumbTopLevel._transitionSelect = model.index; breadcrumbTopLevel.state = "before_select_breadcrumb"; }
+    breadcrumbDelegate : Rectangle
+    {
+      color : "#00000000"
+      height: itemHeight;
+      width : ListView.view.width
+      Text {
+        anchors.verticalCenter : parent.verticalCenter;
+        anchors.horizontalCenter : parent.horizontalCenter;
+        text : model.display
+      }
+      MouseArea {
+        anchors.fill : parent
+        onClicked : { breadcrumbTopLevel._transitionSelect = model.index; breadcrumbTopLevel.state = "before_select_breadcrumb"; }
+      }
     }
-  }
 
-  selectedItemDelegate : Rectangle
-  {
-    height: itemHeight;
-    width : ListView.view.width
-    Text { text : model.display }
-  }
+    selectedItemDelegate : Rectangle
+    {
+      color : "#00000000"
+      height: itemHeight;
+      width : ListView.view.width
+      Text {
+        anchors.verticalCenter : parent.verticalCenter;
+        anchors.horizontalCenter : parent.horizontalCenter;
+        text : model.display
+      }
 
-  childItemsDelegate : Rectangle
-  {
-    height: itemHeight;
-    width : ListView.view.width
-    Text { text : model.display }
-    MouseArea {
-      anchors.fill : parent
-      onClicked : { breadcrumbTopLevel._transitionSelect = model.index; breadcrumbTopLevel.state = "before_select_child"; }
+      Rectangle {
+        id: topLine
+        visible : selectedDelegate
+        x: 1; y: 2; width: parent.width - 2; height: 2
+        color: "grey"
+      }
+      Rectangle {
+        id: bottomLine
+        visible : selectedDelegate
+        x: 1; y: parent.height - 4; width: parent.width - 2; height: 2
+        color: "darkgrey"
+      }
     }
-  }
 
-  breadcrumbItemsModel : _breadcrumbItemsModel
-  selectedItemModel : _selectedItemModel
-  childItemsModel : _childItemsModel
+    childItemsDelegate : Rectangle
+    {
+      color : "#00000000"
+      height: itemHeight;
+      width : ListView.view.width
 
-  onChildCollectionSelected :
-  {
-    application.setSelectedChildCollectionRow( row );
-  }
+      Text {
+        anchors.verticalCenter : parent.verticalCenter;
+        anchors.horizontalCenter : parent.horizontalCenter;
+        text : model.display
+      }
+      MouseArea {
+        anchors.fill : parent
+        onClicked : { breadcrumbTopLevel._transitionSelect = model.index; breadcrumbTopLevel.state = "before_select_child"; }
+      }
+    }
 
-  onBreadcrumbCollectionSelected :
-  {
-    application.setSelectedBreadcrumbCollectionRow( row );
+    breadcrumbItemsModel : _breadcrumbItemsModel
+    selectedItemModel : _selectedItemModel
+    childItemsModel : _childItemsModel
+
+    onChildCollectionSelected :
+    {
+      application.setSelectedChildCollectionRow( row );
+    }
+
+    onBreadcrumbCollectionSelected :
+    {
+      application.setSelectedBreadcrumbCollectionRow( row );
+    }
   }
 }
