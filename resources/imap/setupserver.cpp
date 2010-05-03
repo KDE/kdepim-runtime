@@ -271,7 +271,9 @@ void SetupServer::readSettings()
     currentUser->loginName() );
 
   int i = Settings::self()->safety();
-  m_ui->safeImapGroup->button( i )->setChecked( true );
+  QAbstractButton* safetyButton = m_ui->safeImapGroup->button( i );
+  if ( safetyButton )
+      safetyButton->setChecked( true );
 
   populateDefaultAuthenticationOptions();
   i = Settings::self()->authentication();
@@ -370,7 +372,7 @@ void SetupServer::slotTest()
 
 void SetupServer::slotCanNotConnectToServer()
 {
-  KMessageBox::sorry( this, i18n( "Please verify server address, we can not connect to it." ) );
+  KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
 }
 
 void SetupServer::slotFinished( QList<int> testResult )

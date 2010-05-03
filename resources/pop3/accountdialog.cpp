@@ -399,7 +399,7 @@ void AccountDialog::slotCheckPopCapabilities()
 
 void AccountDialog::slotCanNotConnectToServer()
 {
-  KMessageBox::sorry( this, i18n( "Please verify server address, we can not connect to it." ) );
+  KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
 }
 
 void AccountDialog::slotPopCapabilities( QList<int> encryptionTypes )
