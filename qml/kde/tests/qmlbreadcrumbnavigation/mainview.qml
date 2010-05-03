@@ -79,13 +79,11 @@ Rectangle {
 
       Rectangle {
         id: topLine
-        visible : selectedDelegate
         x: 1; y: 2; width: parent.width - 2; height: 2
         color: "grey"
       }
       Rectangle {
         id: bottomLine
-        visible : selectedDelegate
         x: 1; y: parent.height - 4; width: parent.width - 2; height: 2
         color: "darkgrey"
       }
