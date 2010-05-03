@@ -27,6 +27,7 @@
 #include "kselectionproxymodel.h"
 #include "kbreadcrumbselectionmodel.h"
 #include "kproxyitemselectionmodel.h"
+#include "kmodelindexproxymapper.h"
 
 #include "breadcrumbnavigation.h"
 
@@ -34,14 +35,15 @@ class KBreadcrumbNavigationFactoryPrivate
 {
   KBreadcrumbNavigationFactoryPrivate(KBreadcrumbNavigationFactory *qq)
     : q_ptr(qq),
-    m_breadcrumbSelectionModel(0),
-    m_selectionModel(0),
-    m_childItemsSelectionModel(0),
-    m_breadcrumbModel(0),
-    m_selectedItemModel(0),
-    m_unfilteredChildItemsModel(0),
-    m_childItemsModel(0),
-    m_breadcrumbDepth(-1)
+      m_breadcrumbSelectionModel(0),
+      m_selectionModel(0),
+      m_childItemsSelectionModel(0),
+      m_breadcrumbModel(0),
+      m_selectedItemModel(0),
+      m_unfilteredChildItemsModel(0),
+      m_childItemsModel(0),
+      m_breadcrumbDepth(-1),
+      m_modelIndexProxyMapper(0)
   {
 
   }
@@ -57,6 +59,7 @@ class KBreadcrumbNavigationFactoryPrivate
   QAbstractItemModel *m_unfilteredChildItemsModel;
   QAbstractItemModel *m_childItemsModel;
   int m_breadcrumbDepth;
+  KModelIndexProxyMapper *m_modelIndexProxyMapper;
 };
 
 KBreadcrumbNavigationFactory::KBreadcrumbNavigationFactory(QObject* parent)
@@ -106,6 +109,9 @@ void KBreadcrumbNavigationFactory::createBreadcrumbContext(QAbstractItemModel *m
   d->m_childItemsModel = getChildItemsModel(d->m_unfilteredChildItemsModel);
 
   d->m_childItemsSelectionModel = new KProxyItemSelectionModel( d->m_childItemsModel, d->m_selectionModel, parent );
+
+  d->m_modelIndexProxyMapper = new KModelIndexProxyMapper(model, d->m_childItemsModel, this);
+
 }
 
 QItemSelectionModel* KBreadcrumbNavigationFactory::selectionModel() const
@@ -196,5 +202,19 @@ void KBreadcrumbNavigationFactory::selectChild(int row)
   d->m_childItemsSelectionModel->select( QItemSelection(index, index), QItemSelectionModel::Rows | QItemSelectionModel::ClearAndSelect );
 }
 
+bool KBreadcrumbNavigationFactory::childCollectionHasChildren(int row)
+{
+  if ( row < 0 )
+    return false;
+
+  Q_D(KBreadcrumbNavigationFactory);
+
+  static const int column = 0;
+  const QModelIndex idx = d->m_modelIndexProxyMapper->mapRightToLeft(d->m_childItemsModel->index(row, column));
+  if (!idx.isValid())
+    return false;
+
+  return idx.model()->rowCount( idx ) > 0;
+}
 
 #include "breadcrumbnavigationcontext.moc"

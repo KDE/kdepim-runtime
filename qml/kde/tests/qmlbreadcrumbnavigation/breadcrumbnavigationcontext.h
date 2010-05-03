@@ -55,6 +55,8 @@ public slots:
   void selectBreadcrumb( int row );
   void selectChild( int row );
 
+  bool childCollectionHasChildren( int row );
+
 protected:
   virtual QAbstractItemModel* getBreadcrumbNavigationModel(QAbstractItemModel *model);
   virtual QAbstractItemModel* getChildItemsModel(QAbstractItemModel *model);

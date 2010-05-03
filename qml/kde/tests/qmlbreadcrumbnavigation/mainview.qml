@@ -104,6 +104,17 @@ Rectangle {
         anchors.fill : parent
         onClicked : { breadcrumbTopLevel._transitionSelect = model.index; breadcrumbTopLevel.state = "before_select_child"; }
       }
+      Image {
+        width : height
+        anchors.right : parent.right
+        anchors.rightMargin : 30
+        anchors.top : parent.top
+        anchors.topMargin : 25
+        anchors.bottom : parent.bottom
+        anchors.bottomMargin : 25
+        opacity : ( application.childCollectionHasChildren( model.index ) ) ? 1 : 0
+        source: "transparentplus.png"
+      }
     }
 
     breadcrumbItemsModel : _breadcrumbItemsModel

@@ -118,26 +118,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
 
 bool MainWindow::childCollectionHasChildren( int row )
 {
-  if ( row < 0 )
-    return false;
-
-  //TODO Port to KProxyItemSelectionModel Or KModelIndexProxyMapper?
-
-//    QModelIndex idx = d->mChildCollectionFilter->index( row, 0 );
-#if 0
-  QModelIndex idx = d->mChildCollectionFilter->index( row, 0 );
-  QModelIndex idx2 = d->mChildCollectionFilter->mapToSource( idx );
-  QModelIndex idx3 = d->mChildEntitiesModel->mapToSource( idx2 );
-  QModelIndex idx4 = d->mSelectedSubTree->mapFromSource( idx3 );
-  QModelIndex idx5 = d->mCollectionFilter->mapFromSource( idx4 );
-
-  if ( !idx5.isValid() )
-    return false;
-
-  return idx5.model()->rowCount( idx5 ) > 0;
-
-#endif
-  return false;
+  return m_bnf->childCollectionHasChildren(row);
 }
 
 void MainWindow::setSelectedChildCollectionRow( int row )

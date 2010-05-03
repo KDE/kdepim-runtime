@@ -31,11 +31,11 @@ set(app_SRCS
 set(app_qml_SRCS
   mainview.qml
   BreadcrumbNavigationView.qml
-
+  transparentplus.png
 )
 
 foreach( qml_src ${app_qml_SRCS})
-  configure_file( "${CMAKE_SOURCE_DIR}/${qml_src}" "${CMAKE_BINARY_DIR}/${qml_src}")
+  execute_process(COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/${qml_src}" "${CMAKE_BINARY_DIR}/${qml_src}")
 endforeach()
 
 qt4_automoc( app_MOC_SRCS ${app_SRCS} )
