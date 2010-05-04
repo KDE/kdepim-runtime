@@ -124,7 +124,6 @@ Item {
       PropertyChanges {
         target : selectedItemView
         _selected_padding : -1 * itemHeight
-        opacity : 0
       }
       PropertyChanges {
         target : childItemsView
@@ -135,10 +134,6 @@ Item {
       name : "after_select_child"
       PropertyChanges {
         target : childItemsView
-        opacity : 0
-      }
-      PropertyChanges {
-        target : selectedItemView
         opacity : 0
       }
     },
