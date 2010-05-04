@@ -124,6 +124,7 @@ Item {
       PropertyChanges {
         target : selectedItemView
         _selected_padding : -1 * itemHeight
+        opacity : 0
       }
       PropertyChanges {
         target : childItemsView
@@ -136,19 +137,35 @@ Item {
         target : childItemsView
         opacity : 0
       }
+      PropertyChanges {
+        target : selectedItemView
+        opacity : 0
+      }
     },
     State {
       name : "before_select_breadcrumb"
       PropertyChanges {
         target : topButton
-        _breadcrumb_y_offset : { itemHeight * (2 - breadcrumbTopLevel._transitionSelect ) }
+        _breadcrumb_y_offset : {
+          if (breadcrumbTopLevel._transitionSelect >= 0)
+            /* return */ itemHeight * (2 - breadcrumbTopLevel._transitionSelect );
+        }
         opacity : 0.5
       }
       PropertyChanges {
         target : breadcrumbsView
-        _breadcrumb_y_offset : { itemHeight * (2 - breadcrumbTopLevel._transitionSelect ) }
-        height : { itemHeight * ( breadcrumbTopLevel._transitionSelect + 1 ) }
+        _breadcrumb_y_offset : {
+          if (breadcrumbTopLevel._transitionSelect >= 0)
+            /* return */ itemHeight * (2 - breadcrumbTopLevel._transitionSelect )
+
+        }
+
+        height : { if (breadcrumbTopLevel._transitionSelect >= 0) itemHeight * ( breadcrumbTopLevel._transitionSelect + 1 ) }
         opacity : 0.5
+      }
+      PropertyChanges {
+        target : selectedItemView
+        opacity : 0
       }
       PropertyChanges {
         target : childItemsView
@@ -159,6 +176,10 @@ Item {
       name : "after_select_breadcrumb"
       PropertyChanges {
         target : childItemsView
+        opacity : 0
+      }
+      PropertyChanges {
+        target : selectedItemView
         opacity : 0
       }
     }
@@ -186,7 +207,7 @@ Item {
             duration: 500
             easing.type: "OutQuad"
             target: selectedItemView
-            properties: "_selected_padding"
+            properties: "_selected_padding,opacity"
           }
           PropertyAnimation {
             duration: 500
@@ -213,6 +234,10 @@ Item {
         target: childItemsView
         properties: "opacity"
       }
+      NumberAnimation {
+        target: selectedItemView
+        properties: "opacity"
+      }
     },
     Transition {
       from : ""
@@ -234,6 +259,12 @@ Item {
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
+            target: selectedItemView
+            properties: "opacity"
+          }
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutQuad"
             target: childItemsView
             properties: "opacity"
           }
@@ -250,6 +281,12 @@ Item {
         duration: 500
         easing.type: "OutQuad"
         target: childItemsView
+        properties: "opacity"
+      }
+      NumberAnimation {
+        duration: 500
+        easing.type: "OutQuad"
+        target: selectedItemView
         properties: "opacity"
       }
     }
