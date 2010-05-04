@@ -21,11 +21,11 @@
 #include "maildispatcheragent.h"
 
 //#include "configdialog.h"
-//#include "maildispatcheradaptor.h"
 #include "outboxqueue.h"
 #include "sendjob.h"
 #include "settings.h"
 #include "settingsadaptor.h"
+#include "maildispatcheragentadaptor.h"
 
 #include <QtDBus/QDBusConnection>
 #include <QTimer>
@@ -153,10 +153,14 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   kDebug() << "maildispatcheragent: At your service, sir!";
 
   new SettingsAdaptor( Settings::self() );
-  //new MailDispatcherAdaptor( this );
+  new MailDispatcherAgentAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
 
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/MailDispatcherAgent" ),
+                             this, QDBusConnection::ExportAdaptors );
+  QDBusConnection::sessionBus().registerService( QLatin1String( "org.freedesktop.Akonadi.MailDispatcherAgent" ) );
+  
   d->queue = new OutboxQueue( this );
   connect( d->queue, SIGNAL( newItems() ), this, SLOT( dispatch() ) );
   connect( d->queue, SIGNAL( itemReady( Akonadi::Item& ) ),
@@ -204,6 +208,8 @@ void MailDispatcherAgent::Private::itemFetched( Item &item )
   Q_ASSERT( !currentItem.isValid() );
   currentItem = item;
   Q_ASSERT( currentJob == 0 );
+  emit q->itemDispatchStarted();
+  
   currentJob = new SendJob( item, q );
   if( aborting ) {
     currentJob->setMarkAborted();
