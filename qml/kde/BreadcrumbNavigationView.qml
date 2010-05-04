@@ -20,7 +20,6 @@
 */
 
 import Qt 4.7
-import org.kde 4.5
 
 Item {
   id: breadcrumbTopLevel
@@ -41,10 +40,7 @@ Item {
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
 
-  signal collectionSelected
-
   SystemPalette { id: palette; colorGroup: "Active" }
-
   ListModel {
     id : topModel
     ListElement { display : "Top" }
@@ -54,14 +50,13 @@ Item {
     id : topButton
     property int _breadcrumb_y_offset : 0
     interactive : false
-    height : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) itemHeight; else 0; }
+    height : itemHeight
     opacity : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) 1; else 0; }
     anchors.top : parent.top
-    anchors.topMargin : _breadcrumb_y_offset
+    anchors.topMargin : { if ( breadcrumbsView.count == 1 || ( breadcrumbsView.count == 0 && selectedItemView.count == 1) ) _breadcrumb_y_offset; else (-1 * itemHeight); }
     anchors.left : parent.left
     anchors.right : parent.right
     model : topModel
-
   }
 
   ListView {
@@ -69,7 +64,7 @@ Item {
     interactive : false
     property int selectedIndex : -1
     property int _breadcrumb_y_offset : 0
-    height : { var _count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * _count }
+    height : { ( ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count ) * itemHeight }
     anchors.top : topButton.bottom
     anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
@@ -117,9 +112,14 @@ Item {
     State {
       name : "before_select_child"
       PropertyChanges {
+        target : topButton
+        height : { var _count = ( breadcrumbsView.count == 1 ) ? 2 : breadcrumbsView.count; itemHeight * ( _count + 1) }
+        _breadcrumb_y_offset : { if ( breadcrumbsView.count == 1 ) -1 * itemHeight; }
+      }
+      PropertyChanges {
         target : breadcrumbsView
         height : { var _count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * ( _count + 1) }
-        _breadcrumb_y_offset : -1 * itemHeight
+        _breadcrumb_y_offset : { if (breadcrumbsView.count > 1) -1 * itemHeight }
       }
       PropertyChanges {
         target : selectedItemView
@@ -141,20 +141,41 @@ Item {
       name : "before_select_breadcrumb"
       PropertyChanges {
         target : topButton
-        _breadcrumb_y_offset : { itemHeight * (2 - breadcrumbTopLevel._transitionSelect ) }
+        _breadcrumb_y_offset : {
+          if (breadcrumbTopLevel._transitionSelect >= 0)
+            /* return */ itemHeight * (2 - breadcrumbTopLevel._transitionSelect );
+        }
         opacity : 0.5
       }
       PropertyChanges {
         target : breadcrumbsView
-        _breadcrumb_y_offset : { itemHeight * (2 - breadcrumbTopLevel._transitionSelect ) }
-        height : { itemHeight * ( breadcrumbTopLevel._transitionSelect + 1 ) }
+        _breadcrumb_y_offset : {
+          if (breadcrumbTopLevel._transitionSelect >= 0)
+            /* return */ itemHeight * (2 - breadcrumbTopLevel._transitionSelect )
+
+        }
+
+        height : { if (breadcrumbTopLevel._transitionSelect >= 0) itemHeight * ( breadcrumbTopLevel._transitionSelect + 1 ) }
         opacity : 0.5
+      }
+      PropertyChanges {
+        target : selectedItemView
+        opacity : 0
+      }
+      PropertyChanges {
+        target : childItemsView
+        opacity : 0
       }
     },
     State {
       name : "after_select_breadcrumb"
       PropertyChanges {
         target : childItemsView
+        opacity : 0
+      }
+      PropertyChanges {
+        target : selectedItemView
+        opacity : 0
       }
     }
   ]
@@ -168,6 +189,12 @@ Item {
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
+            target: topButton
+            properties: "_breadcrumb_y_offset"
+          }
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutQuad"
             target: breadcrumbsView
             properties: "height,_breadcrumb_y_offset"
           }
@@ -175,7 +202,7 @@ Item {
             duration: 500
             easing.type: "OutQuad"
             target: selectedItemView
-            properties: "_selected_padding"
+            properties: "_selected_padding,opacity"
           }
           PropertyAnimation {
             duration: 500
@@ -199,9 +226,11 @@ Item {
       from : "after_select_child"
       to : ""
       NumberAnimation {
-        duration: 1000
-        easing.type: "OutQuad"
         target: childItemsView
+        properties: "opacity"
+      }
+      NumberAnimation {
+        target: selectedItemView
         properties: "opacity"
       }
     },
@@ -225,6 +254,12 @@ Item {
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
+            target: selectedItemView
+            properties: "opacity"
+          }
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutQuad"
             target: childItemsView
             properties: "opacity"
           }
@@ -243,7 +278,12 @@ Item {
         target: childItemsView
         properties: "opacity"
       }
+      NumberAnimation {
+        duration: 500
+        easing.type: "OutQuad"
+        target: selectedItemView
+        properties: "opacity"
+      }
     }
   ]
-
 }
