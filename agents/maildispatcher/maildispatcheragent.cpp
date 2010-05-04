@@ -35,6 +35,7 @@
 #include <KWindowSystem>
 
 #include <Akonadi/ItemFetchScope>
+#include <KMime/Message>
 
 using namespace Akonadi;
 
@@ -214,6 +215,7 @@ void MailDispatcherAgent::Private::itemFetched( Item &item )
   if( aborting ) {
     currentJob->setMarkAborted();
   }
+  q->status( AgentBase::Running, i18nc( "Message with given subject is being sent.", "Sending: ") + item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString() );
   connect( currentJob, SIGNAL( result( KJob* ) ),
       q, SLOT( sendResult( KJob* ) ) );
   connect( currentJob, SIGNAL(percent(KJob*,unsigned long)),
