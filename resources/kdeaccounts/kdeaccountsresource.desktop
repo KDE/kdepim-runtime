@@ -2,6 +2,7 @@
 Name=KDE Accounts
 Name[ca]=Comptes del KDE
 Name[en_GB]=KDE Accounts
+Name[es]=Cuentas de KDE
 Name[nb]=KDE-kontoer
 Name[nn]=KDE-kontoar
 Name[pt]=Contas do KDE
@@ -12,6 +13,7 @@ Name[x-test]=xxKDE Accountsxx
 Comment=Loads contacts from the KDE accounts file
 Comment[ca]=Carrega contactes des d'un fitxer de comptes del KDE
 Comment[en_GB]=Loads contacts from the KDE accounts file
+Comment[es]=Cargar contactos desde el archivo de cuentas de KDE
 Comment[nb]=Laster kontakter fra KDE-kontofila
 Comment[nn]=Lastar inn kontaktar frå ei KDE-kontofil
 Comment[pt]=Carrega os dados do ficheiro de contas do KDE
