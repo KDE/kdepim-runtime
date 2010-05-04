@@ -116,7 +116,6 @@ void MailDispatcherAgent::Private::dispatch()
       sentItemsSize = 0;
       emit q->percent( 0 );
     }
-    // TODO Sending message X of Y: <subject>
     emit q->status( AgentBase::Running,
         i18np( "Sending messages (1 item in queue)...",
                "Sending messages (%1 items in queue)...", queue->count() ) );
