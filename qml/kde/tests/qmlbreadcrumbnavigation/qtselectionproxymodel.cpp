@@ -160,12 +160,7 @@ void QtSelectionProxyModelPrivate::sourceModelAboutToBeReset()
   // Deselecting an index in the selectionModel will cause it to
   // be removed from m_rootIndexList, so we don't need to clear
   // the list here manually.
-  while (m_rootIndexList.size() > 0)
-  {
-    QPersistentModelIndex idx = m_rootIndexList.first();
-    emit q->rootIndexAboutToBeRemoved(idx);
-    m_selectionModel->select(idx, QItemSelectionModel::Deselect);
-  }
+  m_selectionModel->clearSelection();
 
   q->beginResetModel();
   m_resetting = true;
@@ -671,10 +666,11 @@ void QtSelectionProxyModelPrivate::selectionChanged(const QItemSelection &select
     }
   }
 
-  QItemSelection newRanges = getRootRanges(selected);
+  QItemSelection newRanges;
 
   if (!m_includeAllSelected)
   {
+    newRanges = getRootRanges(selected);
     QMutableListIterator<QItemSelectionRange> i(newRanges);
     while (i.hasNext())
     {
@@ -686,6 +682,8 @@ void QtSelectionProxyModelPrivate::selectionChanged(const QItemSelection &select
         i.remove();
       }
     }
+  } else {
+    newRanges = selected;
   }
 
   QModelIndexList newIndexes;
@@ -1093,10 +1091,6 @@ QtSelectionProxyModel::QtSelectionProxyModel(QItemSelectionModel *selectionModel
   Q_D(QtSelectionProxyModel);
 
   d->m_selectionModel = selectionModel;
-
-  connect( d->m_selectionModel, SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
-      SLOT( selectionChanged( const QItemSelection &, const QItemSelection & ) ) );
-
 }
 
 QtSelectionProxyModel::~QtSelectionProxyModel()
@@ -1168,6 +1162,10 @@ void QtSelectionProxyModel::setSourceModel( QAbstractItemModel *_sourceModel )
   Q_D(QtSelectionProxyModel);
   if (_sourceModel == sourceModel())
     return;
+
+  connect( d->m_selectionModel, SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
+      SLOT( selectionChanged( const QItemSelection &, const QItemSelection & ) ) );
+
 
   beginResetModel();
   d->m_resetting = true;
