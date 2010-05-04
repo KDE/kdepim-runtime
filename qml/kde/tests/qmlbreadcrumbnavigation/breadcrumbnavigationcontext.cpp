@@ -82,7 +82,7 @@ void KBreadcrumbNavigationFactory::createBreadcrumbContext(QAbstractItemModel *m
   KBreadcrumbSelectionModel *breadcrumbCollectionSelection
       = new KBreadcrumbSelectionModel( d->m_selectionModel, KBreadcrumbSelectionModel::Forward, parent );
   breadcrumbCollectionSelection->setIncludeActualSelection(false);
-  breadcrumbCollectionSelection->setSelectionDepth( 2 );
+  breadcrumbCollectionSelection->setSelectionDepth( d->m_breadcrumbDepth );
 
   KBreadcrumbNavigationProxyModel *breadcrumbNavigationModel
       = new KBreadcrumbNavigationProxyModel( breadcrumbCollectionSelection, parent );

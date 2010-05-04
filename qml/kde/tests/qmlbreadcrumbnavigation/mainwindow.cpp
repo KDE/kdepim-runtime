@@ -116,6 +116,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
 //   m_treeView->expandAll();
 
   m_bnf = new KBreadcrumbNavigationFactory(this);
+  m_bnf->setBreadcrumbDepth(2);
   m_bnf->createBreadcrumbContext( m_treeModel, this );
 
   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
