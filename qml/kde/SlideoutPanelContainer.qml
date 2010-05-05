@@ -40,21 +40,16 @@ Item {
   Component.onCompleted:
   {
     for ( var i = 0; i < children.length; ++i ) {
-      children[i].expanded.connect( this, collapseAll );
-    }
-  }
-
-  onChildrenChanged:
-  {
-    var panel = children[children.length - 1];
-    panel.anchors.fill = _slideoutPanelContainer;
-    panel.anchors.rightMargin = margin;
-    panel.anchors.topMargin = margin;
-    panel.anchors.bottomMargin = margin;
-
-    if ( children.length >= 2 ) {
-      var prevPanel = children[children.length - 2];
-      panel.handlePosition = prevPanel.handlePosition + prevPanel.handleHeight
+      var panel = children[i];
+      panel.expanded.connect( this, collapseAll );
+      panel.anchors.fill = _slideoutPanelContainer;
+      panel.anchors.rightMargin = margin;
+      panel.anchors.topMargin = margin;
+      panel.anchors.bottomMargin = margin;
+      if ( i >= 1 ) {
+        var prevPanel = children[i - 1];
+        panel.handlePosition = prevPanel.handlePosition + prevPanel.handleHeight
+      }
     }
   }
 }
