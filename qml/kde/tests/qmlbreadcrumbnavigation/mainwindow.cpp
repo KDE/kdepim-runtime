@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
     {
       initialTree = f.readAll();
     }
+    f.close();
   }
   if (initialTree.isEmpty()){
     initialTree =
