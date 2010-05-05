@@ -22,6 +22,7 @@
 #include "mainwindow.h"
 
 #include <QHBoxLayout>
+#include <QApplication>
 #include <QTreeView>
 #include <QSplitter>
 #include <QDeclarativeView>
@@ -33,6 +34,7 @@
 
 #include "breadcrumbnavigationcontext.h"
 #include <qcolumnview.h>
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   : QWidget(parent, f)
@@ -41,99 +43,93 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   QSplitter *splitter = new QSplitter;
   layout->addWidget(splitter);
 
-//   m_treeView = new QTreeView(splitter);
   m_treeModel = new DynamicTreeModel(this);
 
   DynamicTreeWidget *widget = new DynamicTreeWidget(m_treeModel, splitter);
-  widget->setInitialTree(
-    "- 1"
-    "- - 1"
-    "- - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - - - 1"
-    "- - - - - - 1"
-    "- - - - - 1"
-    "- - - - - -1"
-    "- - - - - - 1"
-    "- - - - - - - 1"
-    "- - - - - - - 1"
-    "- - - - - - 1"
-    "- - - - - 1"
-    "- - - - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - - - 1"
-    "- - - - - - 1"
-    "- - - - - 1"
-    "- - - - - -1"
-    "- - - - - - 1"
-    "- - - - - - - 1"
-    "- - - - - - - 1"
-    "- - - - - - 1"
-    "- - - - - 1"
-    "- - - - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- 1"
-    "- 1"
-    "- 1"
-    );
 
+  QString initialTree;
+  if (qApp->arguments().size() == 2)
+  {
+    QString filename = qApp->arguments().at(1);
+    QFile f(filename);
+    if (f.open(QFile::ReadOnly))
+    {
+      initialTree = f.readAll();
+    }
+  }
+  if (initialTree.isEmpty()){
+    initialTree =
+    "- 1"
+    "- - 1"
+    "- - 1"
+    "- - - 1"
+    "- - - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - - 1"
+    "- - - - 1"
+    "- - - - - 1"
+    "- - - - - - 1"
+    "- - - - - 1"
+    "- - - - - -1"
+    "- - - - - - 1"
+    "- - - - - - - 1"
+    "- - - - - - - 1"
+    "- - - - - - 1"
+    "- - - - - 1"
+    "- - - - - 1"
+    "- - - - 1"
+    "- - - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - - 1"
+    "- - - - 1"
+    "- - - - - 1"
+    "- - - - - - 1"
+    "- - - - - 1"
+    "- - - - - -1"
+    "- - - - - - 1"
+    "- - - - - - - 1"
+    "- - - - - - - 1"
+    "- - - - - - 1"
+    "- - - - - 1"
+    "- - - - - 1"
+    "- - - - 1"
+    "- - - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- 1"
+    "- - 1"
+    "- - 1"
+    "- - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - 1"
+    "- 1"
+    "- - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - 1"
+    "- - 1"
+    "- - 1"
+    "- 1";
+  }
+
+  widget->setInitialTree(initialTree);
   m_declarativeView = new QDeclarativeView(splitter);
 
   QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
-
-//   m_treeModel = new DynamicTreeModel(this);
-//   ModelInsertCommand *ins = new ModelInsertCommand( m_treeModel, this );
-
-//   ins->setStartRow(0);
-//   ins->interpret(
-//     "- 1"
-//     "- - 1"
-//     "- - 1"
-//     "- - - 1"
-//     "- - - - 1"
-//     "- - - 1"
-//     "- - - 1"
-//     "- - - - 1"
-//     "- - - - 1"
-//     "- - - - - 1"
-//     "- - - - - 1"
-//     "- - - - 1"
-//     "- - - 1"
-//     "- - - 1"
-//     "- - - - 1"
-//     "- - - - 1"
-//     "- 1"
-//     "- 1"
-//     "- 1"
-//   );
-//   ins->doCommand();
-
-//   m_treeView->setModel(m_treeModel);
-//   m_treeView->expandAll();
 
   m_bnf = new KBreadcrumbNavigationFactory(this);
   m_bnf->setBreadcrumbDepth(2);
