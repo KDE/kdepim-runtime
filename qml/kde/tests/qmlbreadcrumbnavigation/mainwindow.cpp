@@ -121,6 +121,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
 
   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
 
+#if 0
   QTreeView *view1 = new QTreeView;
   view1->setModel( m_bnf->selectedItemModel() );
   view1->show();
@@ -133,6 +134,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   view3->setModel( m_bnf->childItemModel() );
   view3->show();
   view3->setWindowTitle( "Child items model");
+#endif
 
   context->setContextProperty( "_selectedItemModel", QVariant::fromValue( static_cast<QObject*>( m_bnf->selectedItemModel() ) ) );
   context->setContextProperty( "_breadcrumbItemsModel", QVariant::fromValue( static_cast<QObject*>( m_bnf->breadcrumbItemModel() ) ) );
