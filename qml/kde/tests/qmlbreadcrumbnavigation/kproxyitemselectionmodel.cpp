@@ -22,6 +22,8 @@
 
 #include "kproxyitemselectionmodel.h"
 
+#include <QDebug>
+
 class KProxyItemSelectionModelPrivate
 {
 public:

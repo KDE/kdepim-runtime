@@ -27,7 +27,6 @@
 
 #include <QDebug>
 
-#include <kdebug.h>
 #include "indexfinder.h"
 
 template<typename T> class QList;
