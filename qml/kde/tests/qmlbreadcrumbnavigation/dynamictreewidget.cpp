@@ -196,6 +196,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget* paren
   m_treeView->setDragEnabled(true);
   m_treeView->setAcceptDrops(true);
   m_treeView->setDropIndicatorShown(true);
+  m_treeView->viewport()->installEventFilter(this);
 
 //   QPushButton *m_removeButton = new QPushButton("Remove", tabWidget);
 
@@ -384,6 +385,14 @@ void DynamicTreeWidget::setTreePredefine(int index)
 void DynamicTreeWidget::setInsertSubTreePredefine(int index)
 {
   m_insertPatternTextEdit->setPlainText(m_insertSubTreePredefines->itemData(index).toString());
+}
+
+bool DynamicTreeWidget::eventFilter(QObject* o, QEvent* e)
+{
+
+  if (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonDblClick || e->type() == QEvent::MouseButtonRelease)
+    return true;
+  return QObject::eventFilter( o, e);
 }
 
 

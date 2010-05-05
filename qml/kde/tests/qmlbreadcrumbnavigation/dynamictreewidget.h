@@ -52,6 +52,9 @@ private slots:
   void insertSelected();
   void resetModel();
 
+protected:
+  virtual bool eventFilter(QObject* , QEvent* );
+
 private:
   void stringToModel(const QString &treeString);
   QString modelTreeToString(int depth, const QModelIndex &parent);
