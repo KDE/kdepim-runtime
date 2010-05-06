@@ -65,8 +65,8 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   AttributeFactory::registerAttribute<DavProtocolAttribute>();
 
   mDavCollectionRoot.setParentCollection( Collection::root() );
-  mDavCollectionRoot.setName( name() );
-  mDavCollectionRoot.setRemoteId( name() );
+  mDavCollectionRoot.setName( identifier() );
+  mDavCollectionRoot.setRemoteId( identifier() );
   mDavCollectionRoot.setContentMimeTypes( QStringList() << Collection::mimeType() );
 
   int refreshInterval = Settings::self()->refreshInterval();
@@ -620,6 +620,7 @@ bool DavGroupwareResource::configurationIsValid()
   if ( !Settings::self()->displayName().isEmpty() ) {
     EntityDisplayAttribute *attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
     attribute->setDisplayName( Settings::self()->displayName() );
+    setName( Settings::self()->displayName() );
   }
 
   return true;
