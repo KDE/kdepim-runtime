@@ -2,6 +2,7 @@
 Name=Pop3
 Name[ca]=Pop3
 Name[ca@valencia]=Pop3
+Name[cs]=Pop3
 Name[en_GB]=Pop3
 Name[es]=Pop3
 Name[gl]=Pop3
@@ -17,6 +18,7 @@ Icon=message-rfc822
 Comment=Pop3 account
 Comment[ca]=Compte Pop3
 Comment[ca@valencia]=Compte Pop3
+Comment[cs]=Pop3 účet
 Comment[en_GB]=Pop3 account
 Comment[es]=Cuenta Pop3
 Comment[gl]=Conta Pop3
