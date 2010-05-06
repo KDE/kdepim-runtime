@@ -51,5 +51,15 @@ Item {
         panel.handlePosition = prevPanel.handlePosition + prevPanel.handleHeight
       }
     }
+    // limit the height of the last panel to the available space
+    if ( children.length > 0 ) {
+      var lastPanel = children[ children.length - 1 ];
+      if ( children.length > 1 ) {
+        var prevPanel = children[ children.length - 2 ];
+        lastPanel.handleHeight = Math.min( lastPanel.handleHeight, height - prevPanel.handlePosition - prevPanel.handleHeight - lastPanel.anchors.topMargin - lastPanel.anchors.bottomMargin );
+      } else {
+        lastPanel.handleHeight = Math.min( lastPanel.handleHeight, height - lastPanel.anchors.topMargin - lastPanel.anchors.bottomMargin );
+      }
+    }
   }
 }
