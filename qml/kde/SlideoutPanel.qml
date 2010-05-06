@@ -89,14 +89,16 @@ Item {
 
     Text {
       id: titleLabel
-      anchors.left: parent.right
-      anchors.bottom: titleImage.top
-      width: parent.height - titleImage.height
-      text: titleText
-      transformOrigin: "BottomLeft"
+      width: (titleIcon == '' ? parent.height : parent.height - titleImage.height)
+      height: handleWidth
+      x: -width/2 + 1.5*handleWidth
+      y: width/2 - handleWidth/2
+      transformOrigin: "Center"
       rotation: -90
+
+      text: titleText
       horizontalAlignment: "AlignHCenter"
-      verticalAlignment: "AlignTop"
+      verticalAlignment: "AlignVCenter"
     }
 
     MouseArea {
