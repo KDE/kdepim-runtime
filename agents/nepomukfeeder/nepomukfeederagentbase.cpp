@@ -415,4 +415,9 @@ void NepomukFeederAgentBase::indexData(const KUrl& url, const QByteArray& data, 
   idx.index( &sr );
 }
 
+ItemFetchScope NepomukFeederAgentBase::fetchScopeForcollection(const Akonadi::Collection& collection)
+{
+  return changeRecorder()->itemFetchScope();
+}
+
 #include "nepomukfeederagentbase.moc"
