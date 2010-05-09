@@ -239,7 +239,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     return;
   }
 
-  iface->setImapServer( config.readEntry( "host" ) + ':' + config.readEntry( "port" ) );
+  iface->setImapServer( config.readEntry( "host" ) );
+  iface->setImapPort( config.readEntry( "port", 143 ) );
   iface->setUserName( config.readEntry( "login" ) );
   if ( config.readEntry( "use-ssl" ).toLower() == "true" )
     iface->setSafety( Ssl );
