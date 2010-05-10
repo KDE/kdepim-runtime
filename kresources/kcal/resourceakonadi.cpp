@@ -252,14 +252,14 @@ bool ResourceAkonadi::canHaveSubresources() const
   return true;
 }
 
-QString ResourceAkonadi::labelForSubresource( const QString &resource ) const
+QString ResourceAkonadi::labelForSubresource( const QString &subResource ) const
 {
-  kDebug(5800) << "resource=" << resource;
+  kDebug(5800) << "subresource=" << subResource;
 
   QString label;
-  SubResource *subResource = d->subResource( resource );
-  if ( subResource != 0 ) {
-    label = subResource->label();
+  SubResource *resource = d->subResource( subResource );
+  if ( resource != 0 ) {
+    label = resource->label();
   }
 
   return label;
@@ -285,15 +285,26 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
   }
 }
 
-bool ResourceAkonadi::subresourceActive( const QString &resource ) const
+bool ResourceAkonadi::subresourceActive( const QString &subResource ) const
 {
   bool active = false;
-  SubResource *subResource = d->subResource( resource );
-  if ( subResource != 0 ) {
-    active = subResource->isActive();
+  SubResource *resource = d->subResource( subResource );
+  if ( resource != 0 ) {
+    active = resource->isActive();
   }
 
   return active;
+}
+
+bool ResourceAkonadi::subresourceWritable( const QString &subResource ) const
+{
+  bool writable = false;
+  SubResource *resource = d->subResource( subResource );
+  if ( resource != 0 ) {
+    writable = resource->isWritable();
+  }
+
+  return writable;
 }
 
 bool ResourceAkonadi::addSubresource( const QString &resource, const QString &parent )

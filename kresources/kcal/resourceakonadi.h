@@ -122,11 +122,13 @@ class ResourceAkonadi : public ResourceCalendar, public SharedResourceIface
 
     virtual bool canHaveSubresources() const;
 
-    virtual QString labelForSubresource( const QString &resource ) const;
+    virtual QString labelForSubresource( const QString &subResource ) const;
 
     virtual void setSubresourceActive( const QString &subResource, bool active );
 
-    virtual bool subresourceActive( const QString &resource ) const;
+    virtual bool subresourceActive( const QString &subResource ) const;
+
+    virtual  bool subresourceWritable( const QString &subResource ) const;
 
     virtual QString subresourceIdentifier( Incidence *incidence );
 
