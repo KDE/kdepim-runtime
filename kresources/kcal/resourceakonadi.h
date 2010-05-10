@@ -51,7 +51,8 @@ class ResourceAkonadi : public ResourceCalendar, public SharedResourceIface
 
     virtual KABC::Lock *lock();
 
-    virtual bool addEvent( Event *event );
+    virtual KDE_DEPRECATED bool addEvent( Event *event );
+    virtual bool addEvent( Event *event, const QString &subResource );
 
     virtual bool deleteEvent( Event *event );
 
@@ -76,7 +77,8 @@ class ResourceAkonadi : public ResourceCalendar, public SharedResourceIface
       const KDateTime::Spec &timespec = KDateTime::Spec(),
       bool inclusive = false );
 
-    virtual bool addTodo( Todo *todo );
+    virtual KDE_DEPRECATED bool addTodo( Todo *todo );
+    virtual bool addTodo( Todo *todo, const QString &subResource );
 
     virtual bool deleteTodo( Todo *todo );
 
@@ -90,7 +92,8 @@ class ResourceAkonadi : public ResourceCalendar, public SharedResourceIface
 
     virtual Todo::List rawTodosForDate( const QDate &date );
 
-    virtual bool addJournal( Journal *journal );
+    virtual KDE_DEPRECATED bool addJournal( Journal *journal );
+    virtual bool addJournal( Journal *journal, const QString &subResource );
 
     virtual bool deleteJournal( Journal *journal );
 

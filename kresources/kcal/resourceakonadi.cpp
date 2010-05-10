@@ -72,6 +72,12 @@ KABC::Lock *ResourceAkonadi::lock()
 
 bool ResourceAkonadi::addEvent( Event *event )
 {
+  return addEvent( event, QString() );
+}
+
+bool ResourceAkonadi::addEvent( Event *event, const QString &subResource )
+{
+  Q_UNUSED( subResource );
   const QString uid = event->uid();
   const QString mimeType = d->mMimeVisitor.mimeType( event );
 
@@ -129,6 +135,13 @@ Event::List ResourceAkonadi::rawEvents( const QDate &start, const QDate &end,
 
 bool ResourceAkonadi::addTodo( Todo *todo )
 {
+  return addTodo( todo, QString() );
+}
+
+bool ResourceAkonadi::addTodo( Todo *todo, const QString &subResource )
+{
+  Q_UNUSED( subResource );
+
   const QString uid = todo->uid();
   const QString mimeType = d->mMimeVisitor.mimeType( todo );
 
@@ -171,6 +184,13 @@ Todo::List ResourceAkonadi::rawTodosForDate( const QDate &date )
 
 bool ResourceAkonadi::addJournal( Journal *journal )
 {
+  return addJournal( journal, QString() );
+}
+
+bool ResourceAkonadi::addJournal( Journal *journal, const QString &subResource )
+{
+  Q_UNUSED( subResource );
+
   const QString uid = journal->uid();
   const QString mimeType = d->mMimeVisitor.mimeType( journal );
 
@@ -368,8 +388,8 @@ QStringList ResourceAkonadi::subresources() const
 
 QString ResourceAkonadi::infoText() const
 {
-  const QString online  = i18nc( "access to the source's backend possible", "Online" );
-  const QString offline = i18nc( "currently no access to the source's backend possible",
+  const QString online  = i18nc( "@info access to the source's backend possible", "Online" );
+  const QString offline = i18nc( "@info currently no access to the source's backend possible",
                                  "Offline" );
   const QLatin1String br( "<br>" );
 
@@ -390,7 +410,7 @@ QString ResourceAkonadi::infoText() const
 
           text += br;
           text += i18nc( "@info:tooltip name of a calendar data source",
-                         "<b>%1</b>", instance.name() ) + br;
+                         "<resource>%1</resource>", instance.name() ) + br;
           text += i18nc( "@info:tooltip status of a calendar data source and its "
                          "online/offline state",
                          "Status: %1 (%2)", status,
