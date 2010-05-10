@@ -329,9 +329,14 @@ void Incidence::loadRecurrence( const QDomElement& element )
     if ( n.isElement() ) {
       QDomElement e = n.toElement();
       QString tagName = e.tagName();
-
-      if ( tagName == "interval" )
-        mRecurrence.interval = e.text().toInt();
+      if ( tagName == "interval" ) {
+        //kolab/issue4229, sometimes  the interval value can be empty
+        if ( e.text().isEmpty() || e.text().toInt() <= 0 ) {
+          mRecurrence.interval = 1;
+        } else {
+          mRecurrence.interval = e.text().toInt();
+        }
+      }
       else if ( tagName == "day" ) // can be present multiple times
         mRecurrence.days.append( e.text() );
       else if ( tagName == "daynumber" )
