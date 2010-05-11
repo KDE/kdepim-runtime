@@ -1,2 +1,2 @@
-
+add_subdirectory(filestore)
 add_subdirectory(tests)
