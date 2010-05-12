@@ -1,5 +1,6 @@
 /*  This file is part of the KDE project
-    Copyright (C) 2009,2010 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
+    Author: Kevin Krammer, krake@kdab.com
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -17,14 +18,14 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef AKONADI_FILESTORE_ITEMDELETEJOB_H
-#define AKONADI_FILESTORE_ITEMDELETEJOB_H
+#ifndef AKONADI_FILESTORE_COLLECTIONMOVEJOB_H
+#define AKONADI_FILESTORE_COLLECTIONMOVEJOB_H
 
 #include "job.h"
 
 namespace Akonadi
 {
-  class Item;
+  class Collection;
 
 namespace FileStore
 {
@@ -32,23 +33,25 @@ namespace FileStore
 
 /**
  */
-class AKONADI_FILESTORE_EXPORT ItemDeleteJob : public Job
+class AKONADI_FILESTORE_EXPORT CollectionMoveJob : public Job
 {
   friend class AbstractJobSession;
 
   Q_OBJECT
 
   public:
-    explicit ItemDeleteJob( const Item &item, AbstractJobSession *session = 0 );
+    explicit CollectionMoveJob( const Collection &collection, const Collection &targetParent, AbstractJobSession *session = 0 );
 
-    virtual ~ItemDeleteJob();
+    virtual ~CollectionMoveJob();
 
-    Item item() const;
+    Collection collection() const;
+
+    Collection targetParent() const;
 
     virtual bool accept( Visitor *visitor );
 
   private:
-    void handleItemDeleted( const Akonadi::Item &item );
+    void handleCollectionMoved( const Collection &collection );
 
   private:
     class Private;

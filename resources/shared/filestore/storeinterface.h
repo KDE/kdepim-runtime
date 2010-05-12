@@ -27,19 +27,24 @@
 
 namespace Akonadi
 {
-class Collection;
-class CollectionFetchScope;
-class Item;
-class ItemFetchScope;
+  class Collection;
+  class CollectionFetchScope;
+  class Item;
+  class ItemFetchScope;
 
 namespace FileStore
 {
-
-class ItemCreateJob;
-class ItemDeleteJob;
-class ItemFetchJob;
-class ItemModifyJob;
-class StoreCompactJob;
+  class CollectionCreateJob;
+  class CollectionDeleteJob;
+  class CollectionFetchJob;
+  class CollectionModifyJob;
+  class CollectionMoveJob;
+  class ItemCreateJob;
+  class ItemDeleteJob;
+  class ItemFetchJob;
+  class ItemModifyJob;
+  class ItemMoveJob;
+  class StoreCompactJob;
 
 /**
  */
@@ -50,7 +55,15 @@ class AKONADI_FILESTORE_EXPORT StoreInterface
 
     virtual Collection topLevelCollection() const = 0;
 
+    virtual CollectionCreateJob *createCollection( const Collection &collection, const Collection &targetParent ) = 0;
+
     virtual CollectionFetchJob *fetchCollections( const Collection &collection, CollectionFetchJob::Type type = CollectionFetchJob::FirstLevel ) const = 0;
+
+    virtual CollectionDeleteJob *deleteCollection( const Collection &collection ) = 0;
+
+    virtual CollectionModifyJob *modifyCollection( const Collection &collection ) = 0;
+
+    virtual CollectionMoveJob *moveCollection( const Collection &collection, const Collection &targetParent ) = 0;
 
     virtual ItemFetchJob *fetchItems( const Collection &collection ) const = 0;
 
@@ -61,6 +74,8 @@ class AKONADI_FILESTORE_EXPORT StoreInterface
     virtual ItemModifyJob *modifyItem( const Item &item ) = 0;
 
     virtual ItemDeleteJob *deleteItem( const Item &item ) = 0;
+
+    virtual ItemMoveJob *moveItem( const Item &item, const Collection &targetParent ) = 0;
 
     virtual StoreCompactJob *compactStore() = 0;
 

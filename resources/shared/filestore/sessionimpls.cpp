@@ -19,11 +19,16 @@
 
 #include "sessionimpls_p.h"
 
+#include "collectioncreatejob.h"
+#include "collectiondeletejob.h"
 #include "collectionfetchjob.h"
+#include "collectionmodifyjob.h"
+#include "collectionmovejob.h"
 #include "itemcreatejob.h"
 #include "itemdeletejob.h"
 #include "itemfetchjob.h"
 #include "itemmodifyjob.h"
+#include "itemmovejob.h"
 #include "storecompactjob.h"
 
 #include <KDebug>
@@ -41,8 +46,28 @@ class AbstractEnqueueVisitor : public Job::Visitor
       return true;
     }
 
+    bool visit( CollectionCreateJob *job ) {
+      enqueue( job, "CollectionCreateJob" );
+      return true;
+    }
+
+    bool visit( CollectionDeleteJob *job ) {
+      enqueue( job, "CollectionDeleteJob" );
+      return true;
+    }
+
     bool visit( CollectionFetchJob *job ) {
       enqueue( job, "CollectionFetchJob" );
+      return true;
+    }
+
+    bool visit( CollectionModifyJob *job ) {
+      enqueue( job, "CollectionModifyJob" );
+      return true;
+    }
+
+    bool visit( CollectionMoveJob *job ) {
+      enqueue( job, "CollectionMoveJob" );
       return true;
     }
 
@@ -63,6 +88,11 @@ class AbstractEnqueueVisitor : public Job::Visitor
 
     bool visit( ItemModifyJob *job ) {
       enqueue( job, "ItemModifyJob" );
+      return true;
+    }
+
+    bool visit( ItemMoveJob *job ) {
+      enqueue( job, "ItemMoveJob" );
       return true;
     }
 

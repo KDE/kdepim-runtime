@@ -15,11 +15,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 set(akonadi-filestore_SRCS
   abstractlocalstore.cpp
+  collectioncreatejob.cpp
+  collectiondeletejob.cpp
   collectionfetchjob.cpp
+  collectionmodifyjob.cpp
+  collectionmovejob.cpp
   itemcreatejob.cpp
   itemdeletejob.cpp
   itemfetchjob.cpp
   itemmodifyjob.cpp
+  itemmovejob.cpp
   job.cpp
   session.cpp
   sessionimpls.cpp

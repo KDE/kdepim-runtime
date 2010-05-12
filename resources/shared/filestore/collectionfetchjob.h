@@ -68,7 +68,7 @@ class AKONADI_FILESTORE_EXPORT CollectionFetchJob : public Job
     void collectionsReceived( const Akonadi::Collection::List &items );
 
   private:
-    void handleCollectionsReceived( const Akonadi::Collection::List &items );
+    void handleCollectionsReceived( const Akonadi::Collection::List &collections );
 
   private:
     class Private;

@@ -20,11 +20,16 @@
 
 #include "abstractlocalstore.h"
 
+#include "collectioncreatejob.h"
+#include "collectiondeletejob.h"
 #include "collectionfetchjob.h"
+#include "collectionmodifyjob.h"
+#include "collectionmovejob.h"
 #include "itemcreatejob.h"
 #include "itemdeletejob.h"
 #include "itemfetchjob.h"
 #include "itemmodifyjob.h"
+#include "itemmovejob.h"
 #include "sessionimpls_p.h"
 #include "storecompactjob.h"
 
@@ -49,7 +54,15 @@ class JobProcessingAdaptor : public Job::Visitor
   public: // Job::Visitor interface implementation
     bool visit( Job *job ) { Q_UNUSED( job ); return false ; }
 
+    bool visit( CollectionCreateJob *job ) { Q_UNUSED( job ); return false ; }
+
+    bool visit( CollectionDeleteJob *job ) { Q_UNUSED( job ); return false ; }
+
     bool visit( CollectionFetchJob *job ) { Q_UNUSED( job ); return false ; }
+
+    bool visit( CollectionModifyJob *job ) { Q_UNUSED( job ); return false ; }
+
+    bool visit( CollectionMoveJob *job ) { Q_UNUSED( job ); return false ; }
 
     bool visit( ItemCreateJob *job ) { Q_UNUSED( job ); return false ; }
 
@@ -58,6 +71,8 @@ class JobProcessingAdaptor : public Job::Visitor
     bool visit( ItemFetchJob *job ) { Q_UNUSED( job ); return false ; }
 
     bool visit( ItemModifyJob *job ) { Q_UNUSED( job ); return false ; }
+
+    bool visit( ItemMoveJob *job ) { Q_UNUSED( job ); return false ; }
 
     bool visit( StoreCompactJob *job ) { Q_UNUSED( job ); return false ; }
 
@@ -258,6 +273,69 @@ Collection AbstractLocalStore::topLevelCollection() const
   return d->mTopLevelCollection;
 }
 
+CollectionCreateJob *AbstractLocalStore::createCollection( const Collection &collection, const Collection &targetParent )
+{
+  CollectionCreateJob *job = new CollectionCreateJob( collection, targetParent, d->mSession );
+
+  if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Configured storage location is empty" );
+    kError() << message;
+    kError() << collection << targetParent;
+    d->mSession->setError( job, Job::InvalidStoreState, message );
+  } else if ( targetParent.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Given folder name is empty" );
+    kError() << message;
+    kError() << collection << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  } else if ( ( targetParent.rights() & Collection::CanCreateCollection ) == 0 ) {
+    const QString message = i18nc( "@info:status", "Access control prohibits folder creation in folder %1", targetParent.name() );
+    kError() << message;
+    kError() << collection << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  }
+
+  int errorCode = 0;
+  QString errorText;
+  checkCollectionCreate( job, errorCode, errorText );
+  if ( errorCode != 0 ) {
+    d->mSession->setError( job, errorCode, errorText );
+  }
+
+  return job;
+}
+
+CollectionDeleteJob *AbstractLocalStore::deleteCollection( const Collection &collection )
+{
+  CollectionDeleteJob *job = new CollectionDeleteJob( collection, d->mSession );
+
+  if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Configured storage location is empty" );
+    kError() << message;
+    kError() << collection;
+    d->mSession->setError( job, Job::InvalidStoreState, message );
+  } else if ( collection.remoteId().isEmpty() ||
+              collection.parentCollection().remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Given folder name is empty" );
+    kError() << message;
+    kError() << collection;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  } else if ( ( collection.parentCollection().rights() & Collection::CanDeleteCollection ) == 0 ) {
+    const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.parentCollection().name() );
+    kError() << message;
+    kError() << collection;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  }
+
+  int errorCode = 0;
+  QString errorText;
+  checkCollectionDelete( job, errorCode, errorText );
+  if ( errorCode != 0 ) {
+    d->mSession->setError( job, errorCode, errorText );
+  }
+
+  return job;
+}
+
 CollectionFetchJob *AbstractLocalStore::fetchCollections( const Collection &collection,
                                                           CollectionFetchJob::Type type ) const
 {
@@ -278,6 +356,76 @@ CollectionFetchJob *AbstractLocalStore::fetchCollections( const Collection &coll
   int errorCode = 0;
   QString errorText;
   checkCollectionFetch( job, errorCode, errorText );
+  if ( errorCode != 0 ) {
+    d->mSession->setError( job, errorCode, errorText );
+  }
+
+  return job;
+}
+
+CollectionModifyJob *AbstractLocalStore::modifyCollection( const Collection &collection )
+{
+  CollectionModifyJob *job = new CollectionModifyJob( collection, d->mSession );
+
+  if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Configured storage location is empty" );
+    kError() << message;
+    kError() << collection;
+    d->mSession->setError( job, Job::InvalidStoreState, message );
+  } else if ( collection.remoteId().isEmpty() ||
+              collection.parentCollection().remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Given folder name is empty" );
+    kError() << message;
+    kError() << collection;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  } else if ( ( collection.parentCollection().rights() & Collection::CanChangeCollection ) == 0 ) {
+    const QString message = i18nc( "@info:status", "Access control prohibits folder modification in folder %1", collection.parentCollection().name() );
+    kError() << message;
+    kError() << collection;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  }
+
+  int errorCode = 0;
+  QString errorText;
+  checkCollectionModify( job, errorCode, errorText );
+  if ( errorCode != 0 ) {
+    d->mSession->setError( job, errorCode, errorText );
+  }
+
+  return job;
+}
+
+CollectionMoveJob *AbstractLocalStore::moveCollection( const Collection &collection, const Collection &targetParent )
+{
+  CollectionMoveJob *job = new CollectionMoveJob( collection, targetParent, d->mSession );
+
+  if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Configured storage location is empty" );
+    kError() << message;
+    kError() << collection << targetParent;
+    d->mSession->setError( job, Job::InvalidStoreState, message );
+  } else if ( collection.remoteId().isEmpty() ||
+              collection.parentCollection().remoteId().isEmpty() ||
+              targetParent.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Given folder name is empty" );
+    kError() << message;
+    kError() << collection << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  } else if ( ( targetParent.rights() & Collection::CanCreateCollection ) == 0 ) {
+    const QString message = i18nc( "@info:status", "Access control prohibits folder creation in folder %1", targetParent.name() );
+    kError() << message;
+    kError() << collection << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  } else if ( ( collection.parentCollection().rights() & Collection::CanDeleteCollection ) == 0 ) {
+    const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.parentCollection().name() );
+    kError() << message;
+    kError() << collection << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  }
+
+  int errorCode = 0;
+  QString errorText;
+  checkCollectionMove( job, errorCode, errorText );
   if ( errorCode != 0 ) {
     d->mSession->setError( job, errorCode, errorText );
   }
@@ -444,6 +592,58 @@ ItemDeleteJob *AbstractLocalStore::deleteItem( const Item &item )
   return job;
 }
 
+ItemMoveJob *AbstractLocalStore::moveItem( const Item &item, const Collection &targetParent )
+{
+  ItemMoveJob *job = new ItemMoveJob( item, targetParent, d->mSession );
+
+  if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Configured storage location is empty" );
+    kError() << message;
+    kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+             << ", parentCollection=" << item.parentCollection().remoteId() << ")"
+             << targetParent;
+    d->mSession->setError( job, Job::InvalidStoreState, message );
+  } else if ( item.parentCollection().remoteId().isEmpty() ||
+              targetParent.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Given folder name is empty" );
+    kError() << message;
+    kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+             << ", parentCollection=" << item.parentCollection().remoteId() << ")"
+             << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  } else if ( ( targetParent.rights() & Collection::CanCreateItem ) == 0 ) {
+    const QString message = i18nc( "@info:status", "Access control prohibits item creation in folder %1", targetParent.name() );
+    kError() << message;
+    kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+             << ", parentCollection=" << item.parentCollection().remoteId() << ")"
+             << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  } else if ( ( item.parentCollection().rights() & Collection::CanDeleteItem ) == 0 ) {
+    const QString message = i18nc( "@info:status", "Access control prohibits item deletion in folder %1", item.parentCollection().name() );
+    kError() << message;
+    kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+             << ", parentCollection=" << item.parentCollection().remoteId() << ")"
+             << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  } else if ( item.remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Given item identifier is empty" );
+    kError() << message;
+    kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+             << ", parentCollection=" << item.parentCollection().remoteId() << ")"
+             << targetParent;
+    d->mSession->setError( job, Job::InvalidJobContext, message );
+  }
+
+  int errorCode = 0;
+  QString errorText;
+  checkItemMove( job, errorCode, errorText );
+  if ( errorCode != 0 ) {
+    d->mSession->setError( job, errorCode, errorText );
+  }
+
+  return job;
+}
+
 StoreCompactJob *AbstractLocalStore::compactStore()
 {
   StoreCompactJob *job = new StoreCompactJob( d->mSession );
@@ -498,7 +698,35 @@ void AbstractLocalStore::setTopLevelCollection( const Collection &collection )
   d->mTopLevelCollectionFetcher.setTopLevelCollection( collection );
 }
 
+void AbstractLocalStore::checkCollectionCreate( CollectionCreateJob *job, int &errorCode, QString &errorText ) const
+{
+  Q_UNUSED( job );
+  Q_UNUSED( errorCode );
+  Q_UNUSED( errorText );
+}
+
+void AbstractLocalStore::checkCollectionDelete( CollectionDeleteJob *job, int &errorCode, QString &errorText ) const
+{
+  Q_UNUSED( job );
+  Q_UNUSED( errorCode );
+  Q_UNUSED( errorText );
+}
+
 void AbstractLocalStore::checkCollectionFetch( CollectionFetchJob *job, int &errorCode, QString &errorText ) const
+{
+  Q_UNUSED( job );
+  Q_UNUSED( errorCode );
+  Q_UNUSED( errorText );
+}
+
+void AbstractLocalStore::checkCollectionModify( CollectionModifyJob *job, int &errorCode, QString &errorText ) const
+{
+  Q_UNUSED( job );
+  Q_UNUSED( errorCode );
+  Q_UNUSED( errorText );
+}
+
+void AbstractLocalStore::checkCollectionMove( CollectionMoveJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
@@ -527,6 +755,13 @@ void AbstractLocalStore::checkItemFetch( ItemFetchJob *job, int &errorCode, QStr
 }
 
 void AbstractLocalStore::checkItemModify( ItemModifyJob *job, int &errorCode, QString &errorText ) const
+{
+  Q_UNUSED( job );
+  Q_UNUSED( errorCode );
+  Q_UNUSED( errorText );
+}
+
+void AbstractLocalStore::checkItemMove( ItemMoveJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );

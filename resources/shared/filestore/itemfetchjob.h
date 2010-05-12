@@ -26,6 +26,7 @@
 
 namespace Akonadi
 {
+  class Collection;
   class ItemFetchScope;
 
 namespace FileStore

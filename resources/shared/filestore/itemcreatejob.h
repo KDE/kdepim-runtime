@@ -22,10 +22,10 @@
 
 #include "job.h"
 
-#include <akonadi/item.h>
-
 namespace Akonadi
 {
+  class Collection;
+  class Item;
 
 namespace FileStore
 {

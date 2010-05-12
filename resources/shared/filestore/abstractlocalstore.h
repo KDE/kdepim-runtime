@@ -51,7 +51,15 @@ class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public Store
 
     Collection topLevelCollection() const;
 
+    CollectionCreateJob *createCollection( const Collection &collection, const Collection &targetParent );
+
     CollectionFetchJob *fetchCollections( const Collection &collection, CollectionFetchJob::Type type = CollectionFetchJob::FirstLevel ) const;
+
+    CollectionDeleteJob *deleteCollection( const Collection &collection );
+
+    CollectionModifyJob *modifyCollection( const Collection &collection );
+
+    CollectionMoveJob *moveCollection( const Collection &collection, const Collection &targetParent );
 
     ItemFetchJob *fetchItems( const Collection &collection ) const;
 
@@ -62,6 +70,8 @@ class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public Store
     ItemModifyJob *modifyItem( const Item &item );
 
     ItemDeleteJob *deleteItem( const Item &item );
+
+    ItemMoveJob *moveItem( const Item &item, const Collection &targetParent );
 
     StoreCompactJob *compactStore();
 
@@ -79,7 +89,15 @@ class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public Store
   protected: // template methods
     void setTopLevelCollection( const Collection &collection );
 
+    virtual void checkCollectionCreate( CollectionCreateJob *job, int &errorCode, QString &errorText ) const;
+
+    virtual void checkCollectionDelete( CollectionDeleteJob *job, int &errorCode, QString &errorText ) const;
+
     virtual void checkCollectionFetch( CollectionFetchJob *job, int &errorCode, QString &errorText ) const;
+
+    virtual void checkCollectionModify( CollectionModifyJob *job, int &errorCode, QString &errorText ) const;
+
+    virtual void checkCollectionMove( CollectionMoveJob *job, int &errorCode, QString &errorText ) const;
 
     virtual void checkItemCreate( ItemCreateJob *job, int &errorCode, QString &errorText ) const;
 
@@ -88,6 +106,8 @@ class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public Store
     virtual void checkItemFetch( ItemFetchJob *job, int &errorCode, QString &errorText ) const;
 
     virtual void checkItemModify( ItemModifyJob *job, int &errorCode, QString &errorText ) const;
+
+    virtual void checkItemMove( ItemMoveJob *job, int &errorCode, QString &errorText ) const;
 
     virtual void checkStoreCompact( StoreCompactJob *job, int &errorCode, QString &errorText ) const;
 
