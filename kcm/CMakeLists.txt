@@ -17,7 +17,7 @@ target_link_libraries(kcm_akonadi_server  ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_
 
 set(akonadi_kcm_srcs akonadiconfigmodule.cpp)
 kde4_add_plugin(kcm_akonadi ${akonadi_kcm_srcs})
-target_link_libraries(kcm_akonadi  ${KDE4_KUTILS_LIBS})
+target_link_libraries(kcm_akonadi  ${KDE4_KCMUTILS_LIBS})
 
 
 install(TARGETS
