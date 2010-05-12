@@ -26,11 +26,16 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include "filestore/collectioncreatejob.h"
+#include "filestore/collectiondeletejob.h"
 #include "filestore/collectionfetchjob.h"
+#include "filestore/collectionmodifyjob.h"
+#include "filestore/collectionmovejob.h"
 #include "filestore/itemcreatejob.h"
 #include "filestore/itemdeletejob.h"
 #include "filestore/itemfetchjob.h"
 #include "filestore/itemmodifyjob.h"
+#include "filestore/itemmovejob.h"
 
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/changerecorder.h>
@@ -140,7 +145,10 @@ void MixedMaildirResource::itemMoved( const Item &item, const Collection &source
     return;
   }
 
-  // TODO
+  Q_ASSERT( item.parentCollection() == source );
+
+  FileStore::ItemMoveJob *job = mStore->moveItem( item, destination );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( itemMovedResult( KJob* ) ) );
 }
 
 void MixedMaildirResource::itemRemoved(const Akonadi::Item & item)
@@ -201,7 +209,8 @@ void MixedMaildirResource::collectionAdded(const Collection & collection, const 
     return;
   }
 
-  // TODO
+  FileStore::CollectionCreateJob *job = mStore->createCollection( collection, parent );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionAddedResult( KJob* ) ) );
 }
 
 void MixedMaildirResource::collectionChanged(const Collection & collection)
@@ -213,7 +222,23 @@ void MixedMaildirResource::collectionChanged(const Collection & collection)
     return;
   }
 
-  // TODO
+  FileStore::CollectionModifyJob *job = mStore->modifyCollection( collection );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionChangedResult( KJob* ) ) );
+}
+
+void MixedMaildirResource::collectionChanged(const Collection & collection, const QSet<QByteArray> &changedAttributes )
+{
+  if ( !ensureSaneConfiguration() ) {
+    const QString message = i18nc( "@info:status", "Unusable configuration." );
+    kError() << message;
+    cancelTask( message );
+    return;
+  }
+
+  Q_UNUSED( changedAttributes );
+
+  FileStore::CollectionModifyJob *job = mStore->modifyCollection( collection );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionChangedResult( KJob* ) ) );
 }
 
 void MixedMaildirResource::collectionMoved( const Collection &collection, const Collection &source, const Collection &dest )
@@ -239,7 +264,10 @@ void MixedMaildirResource::collectionMoved( const Collection &collection, const 
     return;
   }
 
-  // TODO
+  Q_ASSERT( collection.parentCollection() == source );
+
+  FileStore::CollectionMoveJob *job = mStore->moveCollection( collection, dest );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionMovedResult( KJob* ) ) );
 }
 
 void MixedMaildirResource::collectionRemoved( const Akonadi::Collection &collection )
@@ -257,7 +285,8 @@ void MixedMaildirResource::collectionRemoved( const Akonadi::Collection &collect
     return;
   }
 
-  // TODO
+  FileStore::CollectionDeleteJob *job = mStore->deleteCollection( collection );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionRemovedResult( KJob* ) ) );
 }
 
 void MixedMaildirResource::ensureDirExists()
@@ -359,6 +388,21 @@ void MixedMaildirResource::itemChangedResult( KJob *job )
   changeCommitted( itemJob->item() );
 }
 
+void MixedMaildirResource::itemMovedResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    kError() << job->errorString();
+    status( Broken, job->errorString() );
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  FileStore::ItemMoveJob *itemJob = qobject_cast<FileStore::ItemMoveJob*>( job );
+  Q_ASSERT( itemJob != 0 );
+
+  changeCommitted( itemJob->item() );
+}
+
 void MixedMaildirResource::itemRemovedResult( KJob *job )
 {
   if ( job->error() != 0 ) {
@@ -372,6 +416,66 @@ void MixedMaildirResource::itemRemovedResult( KJob *job )
   Q_ASSERT( itemJob != 0 );
 
   changeCommitted( itemJob->item() );
+}
+
+void MixedMaildirResource::collectionAddedResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    kError() << job->errorString();
+    status( Broken, job->errorString() );
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  FileStore::CollectionCreateJob *colJob = qobject_cast<FileStore::CollectionCreateJob*>( job );
+  Q_ASSERT( colJob != 0 );
+
+  changeCommitted( colJob->collection() );
+}
+
+void MixedMaildirResource::collectionChangedResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    kError() << job->errorString();
+    status( Broken, job->errorString() );
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  FileStore::CollectionModifyJob *colJob = qobject_cast<FileStore::CollectionModifyJob*>( job );
+  Q_ASSERT( colJob != 0 );
+
+  changeCommitted( colJob->collection() );
+}
+
+void MixedMaildirResource::collectionMovedResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    kError() << job->errorString();
+    status( Broken, job->errorString() );
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  FileStore::CollectionMoveJob *colJob = qobject_cast<FileStore::CollectionMoveJob*>( job );
+  Q_ASSERT( colJob != 0 );
+
+  changeCommitted( colJob->collection() );
+}
+
+void MixedMaildirResource::collectionRemovedResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    kError() << job->errorString();
+    status( Broken, job->errorString() );
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  FileStore::CollectionDeleteJob *colJob = qobject_cast<FileStore::CollectionDeleteJob*>( job );
+  Q_ASSERT( colJob != 0 );
+
+  changeCommitted( colJob->collection() );
 }
 
 #include "mixedmaildirresource.moc"

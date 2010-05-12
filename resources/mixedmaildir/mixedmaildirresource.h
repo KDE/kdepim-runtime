@@ -52,6 +52,7 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
 
     void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     void collectionChanged( const Akonadi::Collection &collection );
+    void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes );
     void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &dest );
     void collectionRemoved( const Akonadi::Collection &collection );
 
@@ -65,7 +66,13 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
 
     void itemAddedResult( KJob *job );
     void itemChangedResult( KJob *job );
+    void itemMovedResult( KJob *job );
     void itemRemovedResult( KJob *job );
+
+    void collectionAddedResult( KJob *job );
+    void collectionChangedResult( KJob *job );
+    void collectionMovedResult( KJob *job );
+    void collectionRemovedResult( KJob *job );
 
   private:
     MixedMaildirStore *mStore;
