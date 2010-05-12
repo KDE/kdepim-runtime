@@ -27,6 +27,8 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 
+#include <QtCore/QTimer>
+
 #include "imapresource.h"
 
 ImapIdleManager::ImapIdleManager( Akonadi::Collection &col, const QString &mailBox,
@@ -70,9 +72,8 @@ void ImapIdleManager::onIdleStopped()
 {
   kDebug(5327) << "IDLE dropped maybe we should reconnect?";
   if ( m_resource->isOnline() ) {
-    kDebug(5327) << "Reconnecting!";
-    m_resource->setOnline( false );
-    m_resource->setOnline( true );
+    kDebug(5327) << "Restarting the IDLE session!";
+    QTimer::singleShot( 0, m_resource, SLOT( startIdle() ) );
   }
 }
 
