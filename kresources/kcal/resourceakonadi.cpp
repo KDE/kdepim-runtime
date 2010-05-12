@@ -72,12 +72,6 @@ KABC::Lock *ResourceAkonadi::lock()
 
 bool ResourceAkonadi::addEvent( Event *event )
 {
-  return addEvent( event, QString() );
-}
-
-bool ResourceAkonadi::addEvent( Event *event, const QString &subResource )
-{
-  Q_UNUSED( subResource );
   const QString uid = event->uid();
   const QString mimeType = d->mMimeVisitor.mimeType( event );
 
@@ -135,13 +129,6 @@ Event::List ResourceAkonadi::rawEvents( const QDate &start, const QDate &end,
 
 bool ResourceAkonadi::addTodo( Todo *todo )
 {
-  return addTodo( todo, QString() );
-}
-
-bool ResourceAkonadi::addTodo( Todo *todo, const QString &subResource )
-{
-  Q_UNUSED( subResource );
-
   const QString uid = todo->uid();
   const QString mimeType = d->mMimeVisitor.mimeType( todo );
 
@@ -184,13 +171,6 @@ Todo::List ResourceAkonadi::rawTodosForDate( const QDate &date )
 
 bool ResourceAkonadi::addJournal( Journal *journal )
 {
-  return addJournal( journal, QString() );
-}
-
-bool ResourceAkonadi::addJournal( Journal *journal, const QString &subResource )
-{
-  Q_UNUSED( subResource );
-
   const QString uid = journal->uid();
   const QString mimeType = d->mMimeVisitor.mimeType( journal );
 
