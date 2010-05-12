@@ -2,7 +2,8 @@ include_directories(
     ${kdepim-runtime_SOURCE_DIR}
     ${kdepim-runtime_SOURCE_DIR}/resources/shared
     ${kdepim-runtime_SOURCE_DIR}/resources/shared/filestore
-    ${kdepim-runtime_SOURCE_DIR}/resources/maildir/libmaildir
+    ${kdepim-runtime_SOURCE_DIR}/resources/maildir
+    ${kdepim-runtime_SOURCE_DIR}/resources/mbox
     ${CMAKE_CURRENT_SOURCE_DIR}/kmindexreader
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
@@ -38,6 +39,7 @@ target_link_libraries(akonadi_mixedmaildir_resource
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   maildir
+  mbox
   akonadi-filestore
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KIO_LIBS}

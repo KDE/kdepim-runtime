@@ -90,6 +90,7 @@ void MixedMaildirResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   }
   if ( dlg.exec() ) {
+    mStore->setPath( Settings::self()->path() );
     emit configurationDialogAccepted();
   } else {
     emit configurationDialogRejected();
@@ -174,7 +175,7 @@ void MixedMaildirResource::retrieveCollections()
   }
 
   FileStore::CollectionFetchJob *job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::Recursive );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( retreiveCollectionsResult( KJob* ) ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( retrieveCollectionsResult( KJob* ) ) );
 }
 
 void MixedMaildirResource::retrieveItems( const Akonadi::Collection & col )
@@ -187,7 +188,7 @@ void MixedMaildirResource::retrieveItems( const Akonadi::Collection & col )
   }
 
   FileStore::ItemFetchJob *job = mStore->fetchItems( col );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( retreiveItemsResult( KJob* ) ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( retrieveItemsResult( KJob* ) ) );
 }
 
 bool MixedMaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
@@ -195,7 +196,7 @@ bool MixedMaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
   Q_UNUSED( parts );
 
   FileStore::ItemFetchJob *job = mStore->fetchItem( item );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( retreiveItemResult( KJob* ) ) );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( retrieveItemResult( KJob* ) ) );
 
   return true;
 }
@@ -324,7 +325,10 @@ void MixedMaildirResource::retrieveCollectionsResult( KJob *job )
   FileStore::CollectionFetchJob *fetchJob = qobject_cast<FileStore::CollectionFetchJob*>( job );
   Q_ASSERT( fetchJob != 0 );
 
-  collectionsRetrieved( fetchJob->collections() );
+  Collection::List collections;
+  collections << mStore->topLevelCollection();
+  collections << fetchJob->collections();
+  collectionsRetrieved( collections );
 }
 
 void MixedMaildirResource::retrieveItemsResult( KJob *job )

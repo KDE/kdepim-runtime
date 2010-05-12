@@ -20,7 +20,7 @@
 #include "configdialog.h"
 #include "settings.h"
 
-#include <maildir.h>
+#include "libmaildir/maildir.h"
 
 #include <kconfigdialogmanager.h>
 #include <kurlrequester.h>
