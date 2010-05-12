@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=KMail Maildir
+Name[x-test]=xxKMail Maildirxx
 Comment=Loads data from a local KMail maildir folder
+Comment[x-test]=xxLoads data from a local KMail maildir folderxx
 Type=AkonadiResource
 Exec=akonadi_mixedmaildir_resource
 Icon=message-rfc822
