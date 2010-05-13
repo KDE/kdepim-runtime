@@ -44,6 +44,9 @@ add_subdirectory( kdeaccounts )
 add_subdirectory( knut )
 add_subdirectory( kolabproxy )
 add_subdirectory( localbookmarks )
+
+# The mixedmaildir resource include some headers from the kdepim module
+# and cannot currently be built by distributions.
 if  ( CMAKE_SOURCE_DIR STREQUAL "${kdepim_SOURCE_DIR}" )
   add_subdirectory( mixedmaildir )
 endif ( CMAKE_SOURCE_DIR STREQUAL "${kdepim_SOURCE_DIR}" )
