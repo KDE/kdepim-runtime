@@ -50,6 +50,14 @@ class AbstractJobSession : public QObject
 
     void notifyCollectionsReceived( Job *job, const Collection::List &collections );
 
+    void notifyCollectionCreated( Job *job, const Collection &collection );
+
+    void notifyCollectionDeleted( Job *job, const Collection &collection );
+
+    void notifyCollectionModified( Job *job, const Collection &collection );
+
+    void notifyCollectionMoved( Job *job, const Collection &collection );
+
     void notifyItemsReceived( Job *job, const Item::List &items );
 
     void notifyItemCreated( Job *job, const Item &item );

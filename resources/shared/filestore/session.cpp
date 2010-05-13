@@ -19,7 +19,11 @@
 
 #include "session_p.h"
 
+#include "collectioncreatejob.h"
+#include "collectiondeletejob.h"
 #include "collectionfetchjob.h"
+#include "collectionmodifyjob.h"
+#include "collectionmovejob.h"
 #include "itemcreatejob.h"
 #include "itemfetchjob.h"
 #include "itemmodifyjob.h"
@@ -40,6 +44,38 @@ void AbstractJobSession::notifyCollectionsReceived( Job* job, const Collection::
   CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
   if ( fetchJob != 0 ){
     fetchJob->handleCollectionsReceived( collections );
+  }
+}
+
+void AbstractJobSession::notifyCollectionCreated( Job *job, const Collection &collection )
+{
+  CollectionCreateJob *createJob = dynamic_cast<CollectionCreateJob*>( job );
+  if ( createJob != 0 ) {
+    createJob->handleCollectionCreated( collection );
+  }
+}
+
+void AbstractJobSession::notifyCollectionDeleted( Job *job, const Collection &collection )
+{
+  CollectionDeleteJob *deleteJob = dynamic_cast<CollectionDeleteJob*>( job );
+  if ( deleteJob != 0 ) {
+    deleteJob->handleCollectionDeleted( collection );
+  }
+}
+
+void AbstractJobSession::notifyCollectionModified( Job *job, const Collection &collection )
+{
+  CollectionModifyJob *modifyJob = dynamic_cast<CollectionModifyJob*>( job );
+  if ( modifyJob != 0 ) {
+    modifyJob->handleCollectionModified( collection );
+  }
+}
+
+void AbstractJobSession::notifyCollectionMoved( Job *job, const Collection &collection )
+{
+  CollectionMoveJob *moveJob = dynamic_cast<CollectionMoveJob*>( job );
+  if ( moveJob != 0 ) {
+    moveJob->handleCollectionMoved( collection );
   }
 }
 

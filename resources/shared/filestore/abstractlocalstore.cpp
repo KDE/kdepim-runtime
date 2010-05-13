@@ -127,9 +127,57 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
   public:
     using JobProcessingAdaptor::visit;
 
+    bool visit( CollectionCreateJob* job )
+    {
+      Q_ASSERT( !mCollections.isEmpty() );
+      if ( mCollections.count() > 1 ) {
+        kError() << "Processing collections for CollectionCreateJob "
+                    "encountered more than one collection. Just processing the first one.";
+      }
+
+      mSession->notifyCollectionCreated( job, mCollections[ 0 ] );
+      return true;
+    }
+
+    bool visit( CollectionDeleteJob* job )
+    {
+      Q_ASSERT( !mCollections.isEmpty() );
+      if ( mCollections.count() > 1 ) {
+        kError() << "Processing collections for CollectionDeleteJob "
+                    "encountered more than one collection. Just processing the first one.";
+      }
+
+      mSession->notifyCollectionDeleted( job, mCollections[ 0 ] );
+      return true;
+    }
+
     bool visit( CollectionFetchJob* job )
     {
       mSession->notifyCollectionsReceived( job, mCollections );
+      return true;
+    }
+
+    bool visit( CollectionModifyJob* job )
+    {
+      Q_ASSERT( !mCollections.isEmpty() );
+      if ( mCollections.count() > 1 ) {
+        kError() << "Processing collections for CollectionModifyJob "
+                    "encountered more than one collection. Just processing the first one.";
+      }
+
+      mSession->notifyCollectionModified( job, mCollections[ 0 ] );
+      return true;
+    }
+
+    bool visit( CollectionMoveJob* job )
+    {
+      Q_ASSERT( !mCollections.isEmpty() );
+      if ( mCollections.count() > 1 ) {
+        kError() << "Processing collections for CollectionMoveJob "
+                    "encountered more than one collection. Just processing the first one.";
+      }
+
+      mSession->notifyCollectionMoved( job, mCollections[ 0 ] );
       return true;
     }
 
