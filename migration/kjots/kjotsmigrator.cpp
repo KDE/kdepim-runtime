@@ -316,7 +316,7 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
             if ( Qt::mightBeRichText( bodyText ) )
             {
               document.setHtml(bodyText);
-              isRichText = KPIMTextEdit::TextUtils::isFormattingUsed(&document);
+              isRichText = KPIMTextEdit::TextUtils::containsFormatting( &document );
             }
             else
               document.setPlainText( bodyText );
