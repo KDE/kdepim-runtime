@@ -1,7 +1,13 @@
 [Desktop Entry]
 Name=KMail Maildir
+Name[pt]=MailDir do KMail
+Name[sv]=Kmail maildir
+Name[uk]=Maildir KMail
 Name[x-test]=xxKMail Maildirxx
 Comment=Loads data from a local KMail maildir folder
+Comment[pt]=Carrega os dados de uma pasta Maildir local do KMail
+Comment[sv]=Laddar data från en lokal Kmail maildir-katalog
+Comment[uk]=Завантажує дані з локальної теки maildir KMail
 Comment[x-test]=xxLoads data from a local KMail maildir folderxx
 Type=AkonadiResource
 Exec=akonadi_mixedmaildir_resource
