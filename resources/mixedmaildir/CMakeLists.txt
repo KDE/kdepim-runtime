@@ -44,6 +44,7 @@ target_link_libraries(akonadi_mixedmaildir_resource
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KIO_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
 )
 
 install(TARGETS akonadi_mixedmaildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
