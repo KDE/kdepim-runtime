@@ -56,13 +56,17 @@ static void fillIndexCollectionDetails( const QString &path, Collection &collect
 
 static void fillMBoxCollectionDetails( const MBox &mbox, Collection &collection )
 {
-  collection.setContentMimeTypes( QStringList() << KMime::Message::mimeType() );
+  collection.setContentMimeTypes( QStringList() << Collection::mimeType()
+                                                << KMime::Message::mimeType() );
 
   const QFileInfo fileInfo( mbox.fileName() );
   if ( fileInfo.isWritable() ) {
     collection.setRights( Collection::CanCreateItem |
                           Collection::CanChangeItem |
-                          Collection::CanDeleteItem );
+                          Collection::CanDeleteItem |
+                          Collection::CanChangeCollection |
+                          Collection::CanChangeCollection |
+                          Collection::CanDeleteCollection );
   } else {
     collection.setRights( Collection::ReadOnly );
   }
@@ -92,6 +96,12 @@ static void fillMaildirCollectionDetails( const Maildir &md, Collection &collect
 
 static void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse )
 {
+  if ( md.path().isEmpty() ) {
+    return;
+  }
+
+  kDebug() << "md.path()=" << md.path() << "collection=" << collection.remoteId()
+           << "," << collections.count() << "collections right now";
   const QStringList maildirSubFolders = md.subFolderList();
   Q_FOREACH( const QString &subFolder, maildirSubFolders ) {
     const Maildir subMd = md.subFolder( subFolder );
@@ -100,7 +110,7 @@ static void fillMaildirTreeDetails( const Maildir &md, const Collection &collect
     col.setRemoteId( subFolder );
     col.setName( subFolder );
     col.setParentCollection( collection );
-    fillMaildirCollectionDetails( md, col );
+    fillMaildirCollectionDetails( subMd, col );
     collections << col;
 
     if ( recurse ) {
@@ -108,27 +118,34 @@ static void fillMaildirTreeDetails( const Maildir &md, const Collection &collect
     }
   }
 
-  // FIXME better modify Maildir to get the sub folder directory from md itself
-  const Maildir dummyMd = md.subFolder( QLatin1String( "dummy" ) );
-  QDir dir( dummyMd.path() );
-  dir.cdUp();
+  const QDir dir( Maildir::subDirPathForFolderPath( md.path() ) );
+  kDebug() << "subDirPath=" << dir.path();
   const QFileInfoList fileInfos = dir.entryInfoList( QDir::Files );
+  kDebug() << "fileInfoList count=" << fileInfos.count();
   Q_FOREACH( const QFileInfo &fileInfo, fileInfos ) {
+    kDebug() << "fileInfo=" << fileInfo.absoluteFilePath();
     if ( fileInfo.isHidden() || !fileInfo.isReadable() ) {
       continue;
     }
-
     MBox mbox;
     if ( mbox.load( fileInfo.absoluteFilePath() ) ) {
+      const QString subFolder = fileInfo.fileName();
       Collection col;
-      col.setRemoteId( fileInfo.fileName() );
-      col.setName( fileInfo.fileName() );
+      col.setRemoteId( subFolder );
+      col.setName( subFolder );
       col.setParentCollection( collection );
 
       fillMBoxCollectionDetails( mbox, col );
       collections << col;
+
+      if ( recurse ) {
+        const Maildir subMd = md.subFolder( subFolder );
+        fillMaildirTreeDetails( subMd, col, collections, true );
+      }
     }
   }
+
+  kDebug() << "returning with" << collections.count() << "collections";
 }
 
 class MixedMaildirStore::Private : public Job::Visitor
@@ -168,8 +185,10 @@ class MixedMaildirStore::Private : public Job::Visitor
       switch ( type ) {
         case InvalidFolder: return InvalidFolder;
 
-        case TopLevelFolder: {
-          const Maildir parentMd( path, true );
+        case TopLevelFolder: // fall through
+        case MaildirFolder:
+        case MBoxFolder: {
+          const Maildir parentMd( path, type == TopLevelFolder );
           const Maildir subFolder = parentMd.subFolder( col.remoteId() );
           if ( subFolder.isValid() ) {
             path = subFolder.path();
@@ -185,26 +204,6 @@ class MixedMaildirStore::Private : public Job::Visitor
           errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder" );
           return InvalidFolder;
         }
-
-        case MaildirFolder: {
-          const Maildir parentMd( path, false );
-          const Maildir subFolder = parentMd.subFolder( col.remoteId() );
-          if ( subFolder.isValid() ) {
-            path = subFolder.path();
-            return MaildirFolder;
-          }
-
-          QFileInfo fileInfo( QDir( path ), col.remoteId() );
-          if ( fileInfo.isFile() ) {
-            path = fileInfo.absoluteFilePath();
-            return MBoxFolder;
-          }
-
-          errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder" );
-          return InvalidFolder;
-        }
-
-        case MBoxFolder: return InvalidFolder; // TODO check if we can have folders "in" MBoxes
       }
     }
 
@@ -237,7 +236,7 @@ bool MixedMaildirStore::Private::visit( CollectionCreateJob *job )
   QString errorText;
 
   const FolderType folderType = folderForCollection( job->targetParent(), path, errorText );
-  if ( folderType == InvalidFolder || folderType == MBoxFolder ) {
+  if ( folderType == InvalidFolder ) {
     errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
                         job->collection().name(), job->targetParent().name() );
     kError() << errorText << "FolderType=" << folderType;
@@ -279,10 +278,10 @@ bool MixedMaildirStore::Private::visit( CollectionFetchJob *job )
   }
 
   Collection::List collections;
-
-  if ( folderType == MBoxFolder ) {
-    if ( job->type() == CollectionFetchJob::Base ) {
-      Collection collection = job->collection();
+  Collection collection = job->collection();
+  if ( job->type() == CollectionFetchJob::Base ) {
+    collection.setName( collection.remoteId() );
+    if ( folderType == MBoxFolder ) {
       MBox mbox;
       if ( !mbox.load( path ) ) {
         errorText = i18nc( "@info:status", "Failed to load MBox folder %1", path );
@@ -292,21 +291,16 @@ bool MixedMaildirStore::Private::visit( CollectionFetchJob *job )
       }
 
       // TODO maybe we should cache the loaded MBox object for better performance
-      collection.setName( collection.remoteId() );
       fillMBoxCollectionDetails( mbox, collection );
-      collections << collection;
+    } else {
+      const Maildir md( path, folderType == TopLevelFolder );
+      fillMaildirCollectionDetails( md, collection );
     }
+    collections << collection;
   } else {
     const Maildir md( path, folderType == TopLevelFolder );
-    Collection collection = job->collection();
-    if ( job->type() == CollectionFetchJob::Base ) {
-      collection.setName( collection.remoteId() );
-      fillMaildirCollectionDetails( md, collection );
-      collections << collection;
-    } else {
-      fillMaildirTreeDetails( md, collection, collections,
-                              job->type() == CollectionFetchJob::Recursive );
-    }
+    fillMaildirTreeDetails( md, collection, collections,
+                            job->type() == CollectionFetchJob::Recursive );
   }
 
   q->notifyCollectionsProcessed( collections );
