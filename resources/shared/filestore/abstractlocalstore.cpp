@@ -243,6 +243,9 @@ AbstractLocalStore::~AbstractLocalStore()
 void AbstractLocalStore::setPath( const QString &path )
 {
   QFileInfo pathFileInfo( path );
+  if ( pathFileInfo.fileName().isEmpty() ) {
+    pathFileInfo = QFileInfo( pathFileInfo.path() );
+  }
   pathFileInfo.makeAbsolute();
 
   if ( pathFileInfo.absoluteFilePath() == d->mPathFileInfo.absoluteFilePath() ) {
