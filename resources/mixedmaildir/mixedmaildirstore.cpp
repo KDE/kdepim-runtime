@@ -122,7 +122,7 @@ static void fillMaildirTreeDetails( const Maildir &md, const Collection &collect
     }
   }
 
-  const QDir dir( Maildir::subDirPathForFolderPath( md.path() ) );
+  const QDir dir( md.isRoot() ? md.path() : Maildir::subDirPathForFolderPath( md.path() ) );
   const QFileInfoList fileInfos = dir.entryInfoList( QDir::Files );
   Q_FOREACH( const QFileInfo &fileInfo, fileInfos ) {
     if ( fileInfo.isHidden() || !fileInfo.isReadable() ) {
