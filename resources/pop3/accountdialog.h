@@ -64,7 +64,6 @@ class AccountDialog : public KDialog, private Ui::PopPage
     void localFolderRequestJobFinished( KJob *job );
     void walletOpenedForLoading( bool success );
     void walletOpenedForSaving( bool success );
-    void slotCanNotConnectToServer();
   private:
     void setupWidgets();
     void loadSettings();

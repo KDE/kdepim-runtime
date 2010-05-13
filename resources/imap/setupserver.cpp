@@ -388,14 +388,7 @@ void SetupServer::slotTest()
   m_serverTest->setProgressBar( m_ui->testProgress );
   connect( m_serverTest, SIGNAL( finished( QList<int> ) ),
            SLOT( slotFinished( QList<int> ) ) );
-  connect( m_serverTest, SIGNAL( failedToConnectToServer() ),
-           this, SLOT( slotCanNotConnectToServer() ) );
   m_serverTest->start();
-}
-
-void SetupServer::slotCanNotConnectToServer()
-{
-  KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
 }
 
 void SetupServer::slotFinished( QList<int> testResult )
@@ -404,6 +397,9 @@ void SetupServer::slotFinished( QList<int> testResult )
 
   using namespace MailTransport;
 
+  if ( !m_serverTest->isNormalPossible() && !m_serverTest->isSecurePossible() )
+    KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
+  
   m_ui->testInfo->show();
 
   m_ui->sslRadio->setEnabled( testResult.contains( Transport::EnumEncryption::SSL ) );
@@ -591,7 +587,7 @@ void SetupServer::localFolderRequestJobFinished( KJob *job )
   if ( !job->error() ) {
     Akonadi::Collection targetCollection = Akonadi::SpecialMailCollections::self()->defaultCollection( Akonadi::SpecialMailCollections::Trash );
     Q_ASSERT( targetCollection.isValid() );
-    m_ui->folderRequester->setCollection( targetCollection );
+     m_ui->folderRequester->setCollection( targetCollection );
   }
 }
 

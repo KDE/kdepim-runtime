@@ -390,21 +390,18 @@ void AccountDialog::slotCheckPopCapabilities()
            this, SLOT( slotPopCapabilities(QList<int>) ) );
   connect( mServerTest, SIGNAL( finished(QList<int>) ),
            busyCursorHelper, SLOT( deleteLater() ) );
-  connect( mServerTest, SIGNAL( failedToConnectToServer() ),
-           this, SLOT( slotCanNotConnectToServer() ) );
 
   mServerTest->start();
   mServerTestFailed = false;
 }
 
-void AccountDialog::slotCanNotConnectToServer()
-{
-  KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
-}
-
 void AccountDialog::slotPopCapabilities( QList<int> encryptionTypes )
 {
   checkCapabilitiesStack->setCurrentIndex( 0 );
+
+  // if both fail, popup a dialog
+  if ( !mServerTest->isNormalPossible() && !mServerTest->isSecurePossible() ) 
+    KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
 
   // If the servertest did not find any useable authentication modes, assume the
   // connection failed and don't disable any of the radioboxes.
