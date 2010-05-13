@@ -67,7 +67,7 @@ static void fillMBoxCollectionDetails( const MBox &mbox, Collection &collection 
     collection.setRights( Collection::CanCreateItem |
                           Collection::CanChangeItem |
                           Collection::CanDeleteItem |
-                          Collection::CanChangeCollection |
+                          Collection::CanCreateCollection |
                           Collection::CanChangeCollection |
                           Collection::CanDeleteCollection );
   } else {
@@ -87,7 +87,7 @@ static void fillMaildirCollectionDetails( const Maildir &md, Collection &collect
     collection.setRights( Collection::CanCreateItem |
                           Collection::CanChangeItem |
                           Collection::CanDeleteItem |
-                          Collection::CanChangeCollection |
+                          Collection::CanCreateCollection |
                           Collection::CanChangeCollection |
                           Collection::CanDeleteCollection );
   } else {
@@ -137,7 +137,8 @@ static void fillMaildirTreeDetails( const Maildir &md, const Collection &collect
       collections << col;
 
       if ( recurse ) {
-        const Maildir subMd = md.subFolder( subFolder );
+        const QString subDirPath = Maildir::subDirPathForFolderPath( fileInfo.absoluteFilePath() );
+        const Maildir subMd( subDirPath, true );
         fillMaildirTreeDetails( subMd, col, collections, true );
       }
     }
@@ -329,17 +330,48 @@ bool MixedMaildirStore::Private::visit( CollectionCreateJob *job )
     return false;
   }
 
-  Maildir parentMd( path, folderType == TopLevelFolder );
-  if ( parentMd.addSubFolder( job->collection().name() ).isEmpty() ) {
-    errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
-                        job->collection().name(), job->targetParent().name() );
-    kError() << errorText << "FolderType=" << folderType;
-    q->notifyError( Job::InvalidJobContext, errorText );
-    return false;
+  if ( folderType == MBoxFolder ) {
+    const QString subDirPath = Maildir::subDirPathForFolderPath( path );
+    const QDir dir( subDirPath );
+    const QFileInfo dirInfo( dir, job->collection().name() );
+    if ( dirInfo.exists() && !dirInfo.isDir() ) {
+      errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
+                          job->collection().name(), job->targetParent().name() );
+      kError() << errorText << "FolderType=" << folderType << ", dirInfo exists and it not a dir";
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+
+    if ( !dir.mkpath( job->collection().name() ) ) {
+      errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
+                          job->collection().name(), job->targetParent().name() );
+      kError() << errorText << "FolderType=" << folderType << ", mkpath failed";
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+
+    Maildir md( dirInfo.absoluteFilePath(), false );
+    if ( !md.create() ) {
+      errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
+                          job->collection().name(), job->targetParent().name() );
+      kError() << errorText << "FolderType=" << folderType << ", maildir create failed";
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+  } else {
+    Maildir parentMd( path, folderType == TopLevelFolder );
+    if ( parentMd.addSubFolder( job->collection().name() ).isEmpty() ) {
+      errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
+                          job->collection().name(), job->targetParent().name() );
+      kError() << errorText << "FolderType=" << folderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
   }
 
   Collection collection = job->collection();
   collection.setRemoteId( collection.name() );
+  collection.setParentCollection( job->targetParent() );
   q->notifyCollectionsProcessed( Collection::List() << collection );
   return true;
 }
