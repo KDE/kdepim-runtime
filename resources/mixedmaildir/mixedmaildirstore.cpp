@@ -21,6 +21,7 @@
 #include "mixedmaildirstore.h"
 
 #include "filestore/collectioncreatejob.h"
+#include "filestore/collectiondeletejob.h"
 #include "filestore/collectionfetchjob.h"
 #include "filestore/itemfetchjob.h"
 
@@ -33,6 +34,8 @@
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/itemfetchscope.h>
+
+#include <kpimutils/kfileio.h>
 
 #include <KLocale>
 
@@ -378,6 +381,41 @@ bool MixedMaildirStore::Private::visit( CollectionCreateJob *job )
 
 bool MixedMaildirStore::Private::visit( CollectionDeleteJob *job )
 {
+  QString path;
+  QString errorText;
+
+  const FolderType folderType = folderForCollection( job->collection(), path, errorText );
+  if ( folderType == InvalidFolder ) {
+    errorText = i18nc( "@info:status", "Cannot remove folder %1 from folder %2",
+                        job->collection().name(), job->collection().parentCollection().name() );
+    kError() << errorText << "FolderType=" << folderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+  if ( folderType == MBoxFolder ) {
+    if ( !QFile::remove( path ) ) {
+      errorText = i18nc( "@info:status", "Cannot remove folder %1 from folder %2",
+                          job->collection().name(), job->collection().parentCollection().name() );
+      kError() << errorText << "FolderType=" << folderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+  } else {
+    if ( !KPIMUtils::removeDirAndContentsRecursively( path ) ) {
+      errorText = i18nc( "@info:status", "Cannot remove folder %1 from folder %2",
+                          job->collection().name(), job->collection().parentCollection().name() );
+      kError() << errorText << "FolderType=" << folderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+  }
+
+  const QString subDirPath = Maildir::subDirPathForFolderPath( path );
+  KPIMUtils::removeDirAndContentsRecursively( subDirPath );
+
+  q->notifyCollectionsProcessed( Collection::List() << job->collection() );
+  return true;
 }
 
 bool MixedMaildirStore::Private::visit( CollectionFetchJob *job )
