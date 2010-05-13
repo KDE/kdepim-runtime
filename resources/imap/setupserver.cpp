@@ -62,32 +62,55 @@
 
 
 /** static helper functions **/
+static QString authenticationModeString( KIMAP::LoginJob::AuthenticationMode mode )
+{
+  switch ( mode ) {
+    case KIMAP::LoginJob::Login:
+      return "LOGIN";
+    case KIMAP::LoginJob::Plain:
+      return "PLAIN";
+    case KIMAP::LoginJob::CramMD5:
+      return "CRAM-MD5";
+    case KIMAP::LoginJob::DigestMD5:
+      return "DIGEST-MD5";
+    case KIMAP::LoginJob::GSSAPI:
+      return "GSSAPI";
+    case KIMAP::LoginJob::NTLM:
+      return "NTLM";
+    case KIMAP::LoginJob::ClearText:
+      return i18nc( "Authentication method", "Clear text" );
+    case KIMAP::LoginJob::Anonymous:
+      return i18nc( "Authentication method", "Anonymous" );
+    default:
+      break;
+  }
+  return QString();
+}
+
 static void setCurrentAuthMode( QComboBox* authCombo, KIMAP::LoginJob::AuthenticationMode authtype )
 {
-  kDebug() << "setting authcombo: " << KIMAP::LoginJob::authenticationModeString( authtype );
+  kDebug() << "setting authcombo: " << authenticationModeString( authtype );
   int index = authCombo->findData( authtype );
   if( index == -1 )
     kWarning() << "desired authmode not in the combo";
-  kDebug() << "found corresponding index: " << index << "with data" << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( index ).toInt() );
+  kDebug() << "found corresponding index: " << index << "with data" << authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( index ).toInt() );
   authCombo->setCurrentIndex( index );
   KIMAP::LoginJob::AuthenticationMode t = (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( authCombo->currentIndex() ).toInt();
-  kDebug() << "selected auth mode:" << KIMAP::LoginJob::authenticationModeString( t );
+  kDebug() << "selected auth mode:" << authenticationModeString( t );
   Q_ASSERT( t == authtype );
 }
 
-
-
-static KIMAP::LoginJob::AuthenticationMode  getCurrentAuthMode( QComboBox* authCombo )
+static KIMAP::LoginJob::AuthenticationMode getCurrentAuthMode( QComboBox* authCombo )
 {
   KIMAP::LoginJob::AuthenticationMode authtype = (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( authCombo->currentIndex() ).toInt();
-  kDebug() << "current auth mode: " << KIMAP::LoginJob::authenticationModeString( authtype );
+  kDebug() << "current auth mode: " << authenticationModeString( authtype );
   return authtype;
 }
 
 static void addAuthenticationItem( QComboBox* authCombo, KIMAP::LoginJob::AuthenticationMode authtype )
 {
-    kDebug() << "adding auth item " << KIMAP::LoginJob::authenticationModeString( authtype );
-    authCombo->addItem( KIMAP::LoginJob::authenticationModeString( authtype ), QVariant( authtype ) );
+    kDebug() << "adding auth item " << authenticationModeString( authtype );
+    authCombo->addItem( authenticationModeString( authtype ), QVariant( authtype ) );
 }
 
 SetupServer::SetupServer( ImapResource *parentResource, WId parent )
@@ -215,7 +238,7 @@ void SetupServer::applySettings()
   Settings::self()->setUserName( m_ui->userName->text() );
   Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
   KIMAP::LoginJob::AuthenticationMode authtype = getCurrentAuthMode( m_ui->authenticationCombo );
-  kDebug() << "saving IMAP auth mode: " << KIMAP::LoginJob::authenticationModeString( authtype );
+  kDebug() << "saving IMAP auth mode: " << authenticationModeString( authtype );
   Settings::self()->setAuthentication( authtype );
   Settings::self()->setPassword( m_ui->password->text() );
   Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
@@ -277,7 +300,7 @@ void SetupServer::readSettings()
 
   populateDefaultAuthenticationOptions();
   i = Settings::self()->authentication();
-  kDebug() << "read IMAP auth mode: " << KIMAP::LoginJob::authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) i );
+  kDebug() << "read IMAP auth mode: " << authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) i );
   setCurrentAuthMode( m_ui->authenticationCombo, (KIMAP::LoginJob::AuthenticationMode) i );
 
   if ( !Settings::self()->passwordPossible() ) {
