@@ -163,6 +163,14 @@ public:
      */
     QString moveEntryTo( const QString &key, const Maildir &destination );
 
+    /**
+     * Creates the maildir tree structure specific directory path that the
+     * given @p folderPath folder would have for its sub folders
+     * @param folderOath a maildir folder path
+     * @return the relative subDirPath for the given @p folderPath
+     */
+    static QString subDirPathForFolderPath( const QString &folderPath );
+
 private:
     void swap( const Maildir& );
     class Private;

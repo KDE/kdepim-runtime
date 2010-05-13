@@ -87,10 +87,15 @@ public:
         return realKey;
     }
 
+    static QString subDirNameForFolderName( const QString &folderName )
+    {
+        return QString::fromLatin1(".%1.directory").arg( folderName );
+    }
+
     QString subDirPath() const
     {
         QDir dir( path );
-        return QString::fromLatin1(".%1.directory").arg( dir.dirName() );
+        return subDirNameForFolderName( dir.dirName() );
     }
 
     bool moveAndRename( QDir &dest, const QString &newName )
@@ -492,4 +497,12 @@ QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
   }
 
   return key;
+}
+
+QString Maildir::subDirPathForFolderPath( const QString &folderPath )
+{
+  QDir dir( folderPath );
+  const QString dirName = dir.dirName();
+  dir.cdUp();
+  return QFileInfo( dir, Private::subDirNameForFolderName( dirName ) ).filePath();
 }
