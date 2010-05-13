@@ -182,7 +182,7 @@ class MixedMaildirStore::Private : public Job::Visitor
             return MBoxFolder;
           }
 
-          errorText = i18nc( "@info:status", "Folder %1 does not see to be a valid email folder" );
+          errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder" );
           return InvalidFolder;
         }
 
@@ -200,7 +200,7 @@ class MixedMaildirStore::Private : public Job::Visitor
             return MBoxFolder;
           }
 
-          errorText = i18nc( "@info:status", "Folder %1 does not see to be a valid email folder" );
+          errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder" );
           return InvalidFolder;
         }
 
