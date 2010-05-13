@@ -196,6 +196,13 @@ bool MixedMaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
   Q_UNUSED( parts );
 
   FileStore::ItemFetchJob *job = mStore->fetchItem( item );
+  if ( parts.contains( Item::FullPayload ) ) {
+    job->fetchScope().fetchFullPayload( true );
+  } else {
+    Q_FOREACH( const QByteArray &part, parts ) {
+      job->fetchScope().fetchPayloadPart( part, true );
+    }
+  }
   connect( job, SIGNAL( result( KJob* ) ), SLOT( retrieveItemResult( KJob* ) ) );
 
   return true;

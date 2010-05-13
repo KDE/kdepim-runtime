@@ -21,6 +21,8 @@
 #include "mixedmaildirstore.h"
 
 #include "filestore/collectioncreatejob.h"
+#include "filestore/collectionfetchjob.h"
+#include "filestore/itemfetchjob.h"
 
 #include "libmaildir/maildir.h"
 #include "libmbox/mbox.h"
@@ -30,6 +32,7 @@
 #include <akonadi/kmime/messageparts.h>
 
 #include <akonadi/cachepolicy.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <KLocale>
 
@@ -100,8 +103,6 @@ static void fillMaildirTreeDetails( const Maildir &md, const Collection &collect
     return;
   }
 
-  kDebug() << "md.path()=" << md.path() << "collection=" << collection.remoteId()
-           << "," << collections.count() << "collections right now";
   const QStringList maildirSubFolders = md.subFolderList();
   Q_FOREACH( const QString &subFolder, maildirSubFolders ) {
     const Maildir subMd = md.subFolder( subFolder );
@@ -119,11 +120,8 @@ static void fillMaildirTreeDetails( const Maildir &md, const Collection &collect
   }
 
   const QDir dir( Maildir::subDirPathForFolderPath( md.path() ) );
-  kDebug() << "subDirPath=" << dir.path();
   const QFileInfoList fileInfos = dir.entryInfoList( QDir::Files );
-  kDebug() << "fileInfoList count=" << fileInfos.count();
   Q_FOREACH( const QFileInfo &fileInfo, fileInfos ) {
-    kDebug() << "fileInfo=" << fileInfo.absoluteFilePath();
     if ( fileInfo.isHidden() || !fileInfo.isReadable() ) {
       continue;
     }
@@ -144,8 +142,76 @@ static void fillMaildirTreeDetails( const Maildir &md, const Collection &collect
       }
     }
   }
+}
 
-  kDebug() << "returning with" << collections.count() << "collections";
+static void listCollection( const MBox &mbox, const Collection &collection, Item::List &items )
+{
+  const QList<MsgInfo> entryList = mbox.entryList();
+  Q_FOREACH( const MsgInfo &entry, entryList ) {
+    Item item;
+    item.setMimeType( KMime::Message::mimeType() );
+    item.setRemoteId( QString::number( entry.first ) );
+    item.setParentCollection( collection );
+
+    items << item;
+  }
+}
+
+static void listCollection( const Maildir &md, const Collection &collection, Item::List &items )
+{
+  const QStringList entryList = md.entryList();
+  Q_FOREACH( const QString &entry, entryList ) {
+    Item item;
+    item.setMimeType( KMime::Message::mimeType() );
+    item.setRemoteId( entry );
+    item.setParentCollection( collection );
+
+    items << item;
+  }
+}
+
+static bool fillItem( MBox &mbox, bool includeBody, Item &item )
+{
+//  kDebug() << "Filling item" << item.remoteId() << "from MBox: includeBody=" << includeBody;
+  KMime::Message *message = 0;
+  if ( includeBody ) {
+    message = mbox.readEntry( item.remoteId().toLongLong() );
+    if ( message == 0 ) {
+      return false;
+    }
+  } else {
+    message = new KMime::Message();
+    message->setHead( KMime::CRLFtoLF( mbox.readEntryHeaders( item.remoteId().toLongLong() ) ) );
+  }
+
+  KMime::Message::Ptr messagePtr( message );
+  item.setPayload<KMime::Message::Ptr>( messagePtr );
+  return true;
+}
+
+static bool fillItem( const Maildir &md, bool includeBody, Item &item )
+{
+//  kDebug() << "Filling item" << item.remoteId() << "from Maildir: includeBody=" << includeBody;
+  KMime::Message::Ptr messagePtr( new KMime::Message() );
+
+  if ( includeBody ) {
+    const QByteArray data = md.readEntry( item.remoteId() );
+    if ( data.isEmpty() ) {
+      return false;
+    }
+
+    messagePtr->setContent( KMime::CRLFtoLF( data ) );
+  } else {
+    const QByteArray data = md.readEntryHeaders( item.remoteId() );
+    if ( data.isEmpty() ) {
+      return false;
+    }
+
+    messagePtr->setHead( KMime::CRLFtoLF( data ) );
+  }
+
+  item.setPayload<KMime::Message::Ptr>( messagePtr );
+  return true;
 }
 
 class MixedMaildirStore::Private : public Job::Visitor
@@ -186,8 +252,7 @@ class MixedMaildirStore::Private : public Job::Visitor
         case InvalidFolder: return InvalidFolder;
 
         case TopLevelFolder: // fall through
-        case MaildirFolder:
-        case MBoxFolder: {
+        case MaildirFolder: {
           const Maildir parentMd( path, type == TopLevelFolder );
           const Maildir subFolder = parentMd.subFolder( col.remoteId() );
           if ( subFolder.isValid() ) {
@@ -195,13 +260,33 @@ class MixedMaildirStore::Private : public Job::Visitor
             return MaildirFolder;
           }
 
-          QFileInfo fileInfo( QDir( path ), col.remoteId() );
+          const QString subDirPath = Maildir::subDirPathForFolderPath( path );
+          QFileInfo fileInfo( QDir( subDirPath ), col.remoteId() );
           if ( fileInfo.isFile() ) {
             path = fileInfo.absoluteFilePath();
             return MBoxFolder;
           }
 
-          errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder" );
+          errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder", fileInfo.absoluteFilePath() );
+          return InvalidFolder;
+        }
+
+        case MBoxFolder: {
+          const QString subDirPath = Maildir::subDirPathForFolderPath( path );
+          QFileInfo fileInfo( QDir( subDirPath ), col.remoteId() );
+
+          if ( fileInfo.isFile() ) {
+            path = fileInfo.absoluteFilePath();
+            return MBoxFolder;
+          }
+
+          const Maildir subFolder( fileInfo.absoluteFilePath(), false );
+          if ( subFolder.isValid() ) {
+            path = subFolder.path();
+            return MaildirFolder;
+          }
+
+          errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder", fileInfo.absoluteFilePath() );
           return InvalidFolder;
         }
       }
@@ -271,7 +356,7 @@ bool MixedMaildirStore::Private::visit( CollectionFetchJob *job )
 
   if ( folderType == InvalidFolder ) {
     errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder",
-                       job->collection().name() );
+                       path );
     kError() << errorText << "collection:" << job->collection();
     q->notifyError( Job::InvalidJobContext, errorText );
     return false;
@@ -325,6 +410,80 @@ bool MixedMaildirStore::Private::visit( ItemDeleteJob *job )
 
 bool MixedMaildirStore::Private::visit( ItemFetchJob *job )
 {
+  ItemFetchScope scope = job->fetchScope();
+  const bool includeBody = scope.fullPayload() ||
+                           scope.payloadParts().contains( MessagePart::Body );
+
+  Collection collection = job->collection();
+  if ( collection.remoteId().isEmpty() ) {
+    collection = job->item().parentCollection();
+  }
+
+  QString path;
+  QString errorText;
+  const FolderType folderType = folderForCollection( collection, path, errorText );
+
+  if ( folderType == InvalidFolder ) {
+    errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder",
+                       path );
+    kError() << errorText << "collection:" << job->collection();
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+  if ( folderType == MBoxFolder ) {
+    MBox mbox;
+    if ( !mbox.load( path ) ) {
+      errorText = i18nc( "@info:status", "Failed to load MBox folder %1", path );
+      kError() << errorText << "collection=" << collection;
+      q->notifyError( Job::InvalidJobContext, errorText ); // TODO should be a different error code
+      return false;
+    }
+
+    Item::List items;
+    if ( job->collection().remoteId().isEmpty() ) {
+      items << job->item();
+    } else {
+      listCollection( mbox, collection, items );
+    }
+
+    Item::List::iterator it    = items.begin();
+    Item::List::iterator endIt = items.end();
+    for ( ; it != endIt; ++it ) {
+      if ( !fillItem( mbox, includeBody, *it ) ) {
+        kWarning() << "Failed to read item" << (*it).remoteId() << "in MBox file" << path;
+      }
+    }
+
+    q->notifyItemsProcessed( items );
+  } else {
+    Maildir md( path, folderType == TopLevelFolder );
+    if ( !md.isValid( errorText ) ) {
+      errorText = i18nc( "@info:status", "Failed to load Maildirs folder %1", path );
+      kError() << errorText << "collection=" << collection;
+      q->notifyError( Job::InvalidJobContext, errorText ); // TODO should be a different error code
+      return false;
+    }
+
+    Item::List items;
+    if ( job->collection().remoteId().isEmpty() ) {
+      items << job->item();
+    } else {
+      listCollection( md, collection, items );
+    }
+
+    Item::List::iterator it    = items.begin();
+    Item::List::iterator endIt = items.end();
+    for ( ; it != endIt; ++it ) {
+      if ( !fillItem( md, includeBody, *it ) ) {
+        kWarning() << "Failed to read item" << (*it).remoteId() << "in Maildir" << path;
+      }
+    }
+
+    q->notifyItemsProcessed( items );
+  }
+
+  return true;
 }
 
 bool MixedMaildirStore::Private::visit( ItemModifyJob *job )
