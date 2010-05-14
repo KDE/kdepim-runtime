@@ -27,6 +27,7 @@
 #include "itemcreatejob.h"
 #include "itemfetchjob.h"
 #include "itemmodifyjob.h"
+#include "storecompactjob.h"
 
 using namespace Akonadi::FileStore;
 
@@ -42,7 +43,7 @@ AbstractJobSession::~AbstractJobSession()
 void AbstractJobSession::notifyCollectionsReceived( Job* job, const Collection::List &collections )
 {
   CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
-  if ( fetchJob != 0 ){
+  if ( fetchJob != 0 ) {
     fetchJob->handleCollectionsReceived( collections );
   }
 }
@@ -82,7 +83,7 @@ void AbstractJobSession::notifyCollectionMoved( Job *job, const Collection &coll
 void AbstractJobSession::notifyItemsReceived( Job* job, const Item::List &items )
 {
   ItemFetchJob *fetchJob = dynamic_cast<ItemFetchJob*>( job );
-  if ( fetchJob != 0 ){
+  if ( fetchJob != 0 ) {
     fetchJob->handleItemsReceived( items );
   }
 }
@@ -90,7 +91,7 @@ void AbstractJobSession::notifyItemsReceived( Job* job, const Item::List &items 
 void AbstractJobSession::notifyItemCreated( Job *job, const Item &item )
 {
   ItemCreateJob *createJob = dynamic_cast<ItemCreateJob*>( job );
-  if ( createJob != 0 ){
+  if ( createJob != 0 ) {
     createJob->handleItemCreated( item );
   }
 }
@@ -98,8 +99,24 @@ void AbstractJobSession::notifyItemCreated( Job *job, const Item &item )
 void AbstractJobSession::notifyItemModified( Job *job, const Item &item )
 {
   ItemModifyJob *modifyJob = dynamic_cast<ItemModifyJob*>( job );
-  if ( modifyJob != 0 ){
+  if ( modifyJob != 0 ) {
     modifyJob->handleItemModified( item );
+  }
+}
+
+void AbstractJobSession::notifyCollectionsChanged( Job *job, const Collection::List &collections )
+{
+  StoreCompactJob *compactJob = dynamic_cast<StoreCompactJob*>( job );
+  if ( compactJob != 0 ) {
+    compactJob->handleCollectionsChanged( collections );
+  }
+}
+
+void AbstractJobSession::notifyItemsChanged( Job *job, const Item::List &items )
+{
+  StoreCompactJob *compactJob = dynamic_cast<StoreCompactJob*>( job );
+  if ( compactJob != 0 ) {
+    compactJob->handleItemsChanged( items );
   }
 }
 

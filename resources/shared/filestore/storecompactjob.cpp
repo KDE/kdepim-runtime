@@ -31,8 +31,11 @@ class StoreCompactJob::Private
     {
     }
 
-  private:
+  public:
     StoreCompactJob *mParent;
+
+    Collection::List mCollections;
+    Item::List mItems;
 };
 
 StoreCompactJob::StoreCompactJob( AbstractJobSession *session )
@@ -49,6 +52,28 @@ StoreCompactJob::~StoreCompactJob()
 bool StoreCompactJob::accept( Visitor *visitor )
 {
   return visitor->visit( this );
+}
+
+Akonadi::Item::List StoreCompactJob::changedItems() const
+{
+  return d->mItems;
+}
+
+Akonadi::Collection::List StoreCompactJob::changedCollections() const
+{
+  return d->mCollections;
+}
+
+void StoreCompactJob::handleCollectionsChanged( const Collection::List &collections )
+{
+  d->mCollections << collections;
+  emit collectionsChanged( collections );
+}
+
+void StoreCompactJob::handleItemsChanged( const Item::List &items )
+{
+  d->mItems << items;
+  emit itemsChanged( items );
 }
 
 #include "storecompactjob.moc"

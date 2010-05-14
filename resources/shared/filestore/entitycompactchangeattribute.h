@@ -1,5 +1,6 @@
 /*  This file is part of the KDE project
-    Copyright (C) 2009,2010 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
+    Author: Kevin Krammer, krake@kdab.com
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -17,13 +18,12 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef AKONADI_FILESTORE_STORECOMPACTJOB_H
-#define AKONADI_FILESTORE_STORECOMPACTJOB_H
+#ifndef AKONADI_FILESTORE_ENTITYCOMPACTCHANGEEATTRIBUTE_H
+#define AKONADI_FILESTORE_ENTITYCOMPACTCHANGEATTRIBUTE_H
 
-#include "job.h"
+#include "akonadi-filestore_export.h"
 
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
+#include <Akonadi/Attribute>
 
 namespace Akonadi
 {
@@ -31,39 +31,35 @@ namespace Akonadi
 namespace FileStore
 {
 
-/**
- */
-class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
+class AKONADI_FILESTORE_EXPORT EntityCompactChangeAttribute : public Attribute
 {
-  friend class AbstractJobSession;
-
-  Q_OBJECT
-
   public:
-    explicit StoreCompactJob( AbstractJobSession *session = 0 );
+    EntityCompactChangeAttribute();
 
-    virtual ~StoreCompactJob();
+    ~EntityCompactChangeAttribute();
 
-    virtual bool accept( Visitor *visitor );
+    void setRemoteId( const QString &remoteId );
 
-    Item::List changedItems() const;
+    QString remoteId() const;
 
-    Collection::List changedCollections() const;
+  public: /* reimpl */
+    QByteArray type() const;
 
-  Q_SIGNALS:
-    void collectionsChanged( const Collection::List &collections );
-    void itemsChanged( const Item::List &items );
+    EntityCompactChangeAttribute* clone() const;
+
+    QByteArray serialized() const;
+
+    void deserialize( const QByteArray &data );
 
   private:
-    void handleCollectionsChanged( const Collection::List &collections );
-    void handleItemsChanged( const Item::List &items );
-
-  private:
+    //@cond PRIVATE
     class Private;
-    Private *d;
+    Private *const d;
+    //@endcond
 };
 
 }
+
 }
 
 #endif

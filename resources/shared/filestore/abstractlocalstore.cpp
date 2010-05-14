@@ -181,6 +181,11 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
+    bool visit( StoreCompactJob* job )
+    {
+      mSession->notifyCollectionsChanged( job, mCollections );
+    }
+
   private:
     Collection::List mCollections;
 };
@@ -229,6 +234,11 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
 
       mSession->notifyItemModified( job, mItems[ 0 ] );
       return true;
+    }
+
+    bool visit( StoreCompactJob* job )
+    {
+      mSession->notifyItemsChanged( job, mItems );
     }
 
   private:

@@ -20,6 +20,7 @@ set(akonadi-filestore_SRCS
   collectionfetchjob.cpp
   collectionmodifyjob.cpp
   collectionmovejob.cpp
+  entitycompactchangeattribute.cpp
   itemcreatejob.cpp
   itemdeletejob.cpp
   itemfetchjob.cpp
