@@ -126,12 +126,16 @@ class MBOX_EXPORT MBox
      *
      * @param deletedItems Offsets of the messages that should be removed from
      *                     the file.
+     * @param movedItems Optional list for storing offset pairs into which describe
+     *                   entries that got moved within the file due to the deletions.
+     *                   The @c first member of the pair is the original offsets the
+     *                   @c second member is the new (current) offset
      *
      * @return true if all offsets refer to a mbox separator line and a file was
      *         loaded, false otherewhise. In the latter the physical file has
      *         not changed.
      */
-    bool purge( const QSet<quint64> &deletedItems );
+    bool purge( const QSet<quint64> &deletedItems, QList<MsgInfo> *movedItems = 0 );
 
     /**
      * Reads the entire message from the file at given @param offset. If the

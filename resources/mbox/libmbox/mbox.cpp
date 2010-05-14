@@ -310,7 +310,7 @@ static bool lessThanByOffset( const MsgInfo &left, const MsgInfo &right )
   return left.first < right.first;
 }
 
-bool MBox::purge( const QSet<quint64> &deletedItems )
+bool MBox::purge( const QSet<quint64> &deletedItems, QList<MsgInfo> *movedItems )
 {
   if ( d->mMboxFile.fileName().isEmpty() )
     return false; // No file loaded yet.
@@ -345,6 +345,7 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
   quint64 writeOffset = 0;
   bool writeOffSetInitialized = false;
   QList<MsgInfo> resultingEntryList;
+  QList<MsgInfo> movedEntries;
 
   quint64 origFileSize = d->mMboxFile.size();
 
@@ -386,6 +387,7 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
       d->mMboxFile.unmap( memArea );
 
       resultingEntryList << MsgInfo( writeOffset, entry.second );
+      movedEntries << MsgInfo( entry.first, writeOffset );
       writeOffset += entrySize;
     } else if ( !deletedItems.contains( entry.first ) ) {
       // Unmoved and not deleted entry, can only ocure before the first deleted
@@ -400,6 +402,9 @@ bool MBox::purge( const QSet<quint64> &deletedItems )
   d->mEntries = resultingEntryList;
 
   kDebug() << "Purge comleted successfully, unlocking the file.";
+  if ( movedItems ) {
+    *movedItems = movedEntries;
+  }
   return unlock(); // FIXME: What if this fails? It will return false but the
                    // file has changed.
 }
