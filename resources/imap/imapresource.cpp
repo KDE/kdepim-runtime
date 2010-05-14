@@ -1155,9 +1155,28 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
   } else if ( currentPart == "imapacl" ) {
     ImapAclAttribute *aclAttribute = collection.attribute<ImapAclAttribute>();
     const QMap<QByteArray, KIMAP::Acl::Rights> rights = aclAttribute->rights();
+    const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->oldRights();
+    const QList<QByteArray> oldIds = oldRights.keys();
     const QList<QByteArray> ids = rights.keys();
 
-    for ( int i = 0; i<ids.size(); i++ ) {
+    // remove all ACL entries that have been deleted
+    foreach ( const QByteArray &oldId, oldIds ) {
+      if ( !ids.contains( oldId ) ) {
+        KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
+        job->setMailBox( mailBoxForCollection( collection ) );
+        job->setIdentifier( oldId );
+        job->setRights( KIMAP::SetAclJob::Remove, oldRights[oldId] );
+
+        // Only the last set acl job will trigger the next collection change job
+        job->setProperty( "dontTriggerNextJob", true );
+
+        job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+        connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetAclDone( KJob* ) ) );
+        job->start();
+      }
+    }
+
+    for ( int i = 0; i < ids.size(); i++ ) {
       const QByteArray id = ids[i];
 
       KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
