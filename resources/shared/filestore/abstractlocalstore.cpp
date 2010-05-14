@@ -236,6 +236,18 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
+    bool visit( ItemMoveJob* job )
+    {
+      Q_ASSERT( !mItems.isEmpty() );
+      if ( mItems.count() > 1 ) {
+        kError() << "Processing items for ItemMoveJob encountered more than one item. "
+                    "Just processing the first one.";
+      }
+
+      mSession->notifyItemMoved( job, mItems[ 0 ] );
+      return true;
+    }
+
     bool visit( StoreCompactJob* job )
     {
       mSession->notifyItemsChanged( job, mItems );

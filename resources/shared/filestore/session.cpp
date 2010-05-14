@@ -27,6 +27,7 @@
 #include "itemcreatejob.h"
 #include "itemfetchjob.h"
 #include "itemmodifyjob.h"
+#include "itemmovejob.h"
 #include "storecompactjob.h"
 
 using namespace Akonadi::FileStore;
@@ -101,6 +102,14 @@ void AbstractJobSession::notifyItemModified( Job *job, const Item &item )
   ItemModifyJob *modifyJob = dynamic_cast<ItemModifyJob*>( job );
   if ( modifyJob != 0 ) {
     modifyJob->handleItemModified( item );
+  }
+}
+
+void AbstractJobSession::notifyItemMoved( Job *job, const Item &item )
+{
+  ItemMoveJob *moveJob = dynamic_cast<ItemMoveJob*>( job );
+  if ( moveJob != 0 ) {
+    moveJob->handleItemMoved( item );
   }
 }
 
