@@ -540,6 +540,8 @@ bool MixedMaildirStore::Private::visit( ItemCreateJob *job )
       }
 
       mMBoxes.insert( path, mbox );
+    } else {
+      mbox = findIt.value();
     }
 
     qint64 result = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
@@ -550,7 +552,7 @@ bool MixedMaildirStore::Private::visit( ItemCreateJob *job )
       q->notifyError( Job::InvalidJobContext, errorText );
       return false;
     }
-
+    mbox->save();
     item.setRemoteId( QString::number( result ) );
   } else {
     Maildir md( path, false );
