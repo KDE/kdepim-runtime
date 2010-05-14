@@ -1170,6 +1170,7 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
         job->setProperty( "dontTriggerNextJob", true );
       }
 
+      job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
       connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetAclDone( KJob* ) ) );
       job->start();
     }
