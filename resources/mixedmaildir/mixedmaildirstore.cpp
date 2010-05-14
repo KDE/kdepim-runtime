@@ -47,7 +47,111 @@ using namespace Akonadi;
 using namespace Akonadi::FileStore;
 using KPIM::Maildir;
 
-static void fillIndexCollectionDetails( const QString &path, Collection &collection )
+class MixedMaildirStore::Private : public Job::Visitor
+{
+  MixedMaildirStore *const q;
+
+  public:
+    enum FolderType
+    {
+      InvalidFolder,
+      TopLevelFolder,
+      MaildirFolder,
+      MBoxFolder
+    };
+
+    Private( MixedMaildirStore *parent ) : q( parent )
+    {
+    }
+
+    FolderType folderForCollection( const Collection &col, QString &path, QString &errorText ) const;
+
+    void fillIndexCollectionDetails( const QString &path, Collection &collection );
+    void fillMBoxCollectionDetails( const MBox &mbox, Collection &collection );
+    void fillMaildirCollectionDetails( const Maildir &md, Collection &collection );
+    void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse );
+    void listCollection( const MBox &mbox, const Collection &collection, Item::List &items ) const;
+    void listCollection( const Maildir &md, const Collection &collection, Item::List &items ) const;
+    bool fillItem( MBox &mbox, bool includeBody, Item &item ) const;
+    bool fillItem( const Maildir &md, bool includeBody, Item &item ) const;
+
+  public: // visitor interface implementation
+    bool visit( Job *job );
+    bool visit( CollectionCreateJob *job );
+    bool visit( CollectionDeleteJob *job );
+    bool visit( CollectionFetchJob *job );
+    bool visit( CollectionModifyJob *job );
+    bool visit( CollectionMoveJob *job );
+    bool visit( ItemCreateJob *job );
+    bool visit( ItemDeleteJob *job );
+    bool visit( ItemFetchJob *job );
+    bool visit( ItemModifyJob *job );
+    bool visit( ItemMoveJob *job );
+    bool visit( StoreCompactJob *job );
+};
+
+MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForCollection( const Collection &col, QString &path, QString &errorText ) const
+{
+  path = QString();
+  errorText = QString();
+
+  if ( col.remoteId().isEmpty() ) {
+    errorText = i18nc( "@info:status", "Given folder name is empty" );
+    return InvalidFolder;
+  }
+
+  if ( col.parentCollection() == Collection::root() ) {
+    kWarning( col.remoteId() != q->path() ) << "RID mismatch, is " << col.remoteId() << " expected " << q->path();
+    path = q->path();
+    return TopLevelFolder;
+  }
+
+  FolderType type = folderForCollection( col.parentCollection(), path, errorText );
+  switch ( type ) {
+    case InvalidFolder: return InvalidFolder;
+
+    case TopLevelFolder: // fall through
+    case MaildirFolder: {
+      const Maildir parentMd( path, type == TopLevelFolder );
+      const Maildir subFolder = parentMd.subFolder( col.remoteId() );
+      if ( subFolder.isValid() ) {
+        path = subFolder.path();
+        return MaildirFolder;
+      }
+
+      const QString subDirPath = Maildir::subDirPathForFolderPath( path );
+      QFileInfo fileInfo( QDir( subDirPath ), col.remoteId() );
+      if ( fileInfo.isFile() ) {
+        path = fileInfo.absoluteFilePath();
+        return MBoxFolder;
+      }
+
+      errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder", fileInfo.absoluteFilePath() );
+      return InvalidFolder;
+    }
+
+    case MBoxFolder: {
+      const QString subDirPath = Maildir::subDirPathForFolderPath( path );
+      QFileInfo fileInfo( QDir( subDirPath ), col.remoteId() );
+
+      if ( fileInfo.isFile() ) {
+        path = fileInfo.absoluteFilePath();
+        return MBoxFolder;
+      }
+
+      const Maildir subFolder( fileInfo.absoluteFilePath(), false );
+      if ( subFolder.isValid() ) {
+        path = subFolder.path();
+        return MaildirFolder;
+      }
+
+      errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder", fileInfo.absoluteFilePath() );
+      return InvalidFolder;
+    }
+  }
+}
+
+void MixedMaildirStore::Private::fillIndexCollectionDetails( const QString &path, Collection &collection )
 {
   const QFileInfo dirInfo( path );
   const QFileInfo fileInfo( dirInfo.dir(), QString::fromUtf8( ".%1.index" ).arg( dirInfo.fileName() ) );
@@ -60,7 +164,7 @@ static void fillIndexCollectionDetails( const QString &path, Collection &collect
   // TODO
 }
 
-static void fillMBoxCollectionDetails( const MBox &mbox, Collection &collection )
+void MixedMaildirStore::Private::fillMBoxCollectionDetails( const MBox &mbox, Collection &collection )
 {
   collection.setContentMimeTypes( QStringList() << Collection::mimeType()
                                                 << KMime::Message::mimeType() );
@@ -80,7 +184,7 @@ static void fillMBoxCollectionDetails( const MBox &mbox, Collection &collection 
   fillIndexCollectionDetails( fileInfo.absoluteFilePath(), collection );
 }
 
-static void fillMaildirCollectionDetails( const Maildir &md, Collection &collection )
+void MixedMaildirStore::Private::fillMaildirCollectionDetails( const Maildir &md, Collection &collection )
 {
   collection.setContentMimeTypes( QStringList() << Collection::mimeType()
                                                 << KMime::Message::mimeType() );
@@ -100,7 +204,7 @@ static void fillMaildirCollectionDetails( const Maildir &md, Collection &collect
   fillIndexCollectionDetails( fileInfo.absoluteFilePath(), collection );
 }
 
-static void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse )
+void MixedMaildirStore::Private::fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse )
 {
   if ( md.path().isEmpty() ) {
     return;
@@ -148,7 +252,7 @@ static void fillMaildirTreeDetails( const Maildir &md, const Collection &collect
   }
 }
 
-static void listCollection( const MBox &mbox, const Collection &collection, Item::List &items )
+void MixedMaildirStore::Private::listCollection( const MBox &mbox, const Collection &collection, Item::List &items ) const
 {
   const QList<MsgInfo> entryList = mbox.entryList();
   Q_FOREACH( const MsgInfo &entry, entryList ) {
@@ -161,7 +265,7 @@ static void listCollection( const MBox &mbox, const Collection &collection, Item
   }
 }
 
-static void listCollection( const Maildir &md, const Collection &collection, Item::List &items )
+void MixedMaildirStore::Private::listCollection( const Maildir &md, const Collection &collection, Item::List &items ) const
 {
   const QStringList entryList = md.entryList();
   Q_FOREACH( const QString &entry, entryList ) {
@@ -174,7 +278,7 @@ static void listCollection( const Maildir &md, const Collection &collection, Ite
   }
 }
 
-static bool fillItem( MBox &mbox, bool includeBody, Item &item )
+bool MixedMaildirStore::Private::fillItem( MBox &mbox, bool includeBody, Item &item ) const
 {
 //  kDebug() << "Filling item" << item.remoteId() << "from MBox: includeBody=" << includeBody;
   KMime::Message *message = 0;
@@ -193,7 +297,7 @@ static bool fillItem( MBox &mbox, bool includeBody, Item &item )
   return true;
 }
 
-static bool fillItem( const Maildir &md, bool includeBody, Item &item )
+bool MixedMaildirStore::Private::fillItem( const Maildir &md, bool includeBody, Item &item ) const
 {
 //  kDebug() << "Filling item" << item.remoteId() << "from Maildir: includeBody=" << includeBody;
   KMime::Message::Ptr messagePtr( new KMime::Message() );
@@ -217,99 +321,6 @@ static bool fillItem( const Maildir &md, bool includeBody, Item &item )
   item.setPayload<KMime::Message::Ptr>( messagePtr );
   return true;
 }
-
-class MixedMaildirStore::Private : public Job::Visitor
-{
-  MixedMaildirStore *const q;
-
-  public:
-    enum FolderType
-    {
-      InvalidFolder,
-      TopLevelFolder,
-      MaildirFolder,
-      MBoxFolder
-    };
-
-    Private( MixedMaildirStore *parent ) : q( parent )
-    {
-    }
-
-    FolderType folderForCollection( const Collection &col, QString &path, QString &errorText ) const
-    {
-      path = QString();
-      errorText = QString();
-
-      if ( col.remoteId().isEmpty() ) {
-        errorText = i18nc( "@info:status", "Given folder name is empty" );
-        return InvalidFolder;
-      }
-
-      if ( col.parentCollection() == Collection::root() ) {
-        kWarning( col.remoteId() != q->path() ) << "RID mismatch, is " << col.remoteId() << " expected " << q->path();
-        path = q->path();
-        return TopLevelFolder;
-      }
-
-      FolderType type = folderForCollection( col.parentCollection(), path, errorText );
-      switch ( type ) {
-        case InvalidFolder: return InvalidFolder;
-
-        case TopLevelFolder: // fall through
-        case MaildirFolder: {
-          const Maildir parentMd( path, type == TopLevelFolder );
-          const Maildir subFolder = parentMd.subFolder( col.remoteId() );
-          if ( subFolder.isValid() ) {
-            path = subFolder.path();
-            return MaildirFolder;
-          }
-
-          const QString subDirPath = Maildir::subDirPathForFolderPath( path );
-          QFileInfo fileInfo( QDir( subDirPath ), col.remoteId() );
-          if ( fileInfo.isFile() ) {
-            path = fileInfo.absoluteFilePath();
-            return MBoxFolder;
-          }
-
-          errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder", fileInfo.absoluteFilePath() );
-          return InvalidFolder;
-        }
-
-        case MBoxFolder: {
-          const QString subDirPath = Maildir::subDirPathForFolderPath( path );
-          QFileInfo fileInfo( QDir( subDirPath ), col.remoteId() );
-
-          if ( fileInfo.isFile() ) {
-            path = fileInfo.absoluteFilePath();
-            return MBoxFolder;
-          }
-
-          const Maildir subFolder( fileInfo.absoluteFilePath(), false );
-          if ( subFolder.isValid() ) {
-            path = subFolder.path();
-            return MaildirFolder;
-          }
-
-          errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder", fileInfo.absoluteFilePath() );
-          return InvalidFolder;
-        }
-      }
-    }
-
-  public: // visitor interface implementation
-    bool visit( Job *job );
-    bool visit( CollectionCreateJob *job );
-    bool visit( CollectionDeleteJob *job );
-    bool visit( CollectionFetchJob *job );
-    bool visit( CollectionModifyJob *job );
-    bool visit( CollectionMoveJob *job );
-    bool visit( ItemCreateJob *job );
-    bool visit( ItemDeleteJob *job );
-    bool visit( ItemFetchJob *job );
-    bool visit( ItemModifyJob *job );
-    bool visit( ItemMoveJob *job );
-    bool visit( StoreCompactJob *job );
-};
 
 bool MixedMaildirStore::Private::visit( Job *job )
 {
