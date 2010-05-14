@@ -380,7 +380,6 @@ NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QSt
   }
   if ( found ) *found = false;
   // create a new contact
-  kDebug() << "Did not find " << name << emailAddress << ", creating a new PersonContact";
   NepomukFast::PersonContact contact( QUrl(), graphUri );
   contact.setLabel( name.isEmpty() ? emailAddress : name );
   if ( !emailAddress.isEmpty() ) {
