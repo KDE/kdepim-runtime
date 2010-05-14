@@ -46,6 +46,8 @@
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionfetchscope.h>
 
+#include <kmime/kmime_message.h>
+
 #include <KDebug>
 #include <KLocale>
 #include <KWindowSystem>
@@ -130,13 +132,17 @@ void MixedMaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QB
     return;
   }
 
-  if ( Settings::self()->readOnly() || !parts.contains( MessagePart::Body ) ) {
+  if ( Settings::self()->readOnly() ) {
     changeProcessed();
     return;
   }
 
   Q_UNUSED( parts );
+//   const bool hasPayload = parts.contains( Item::FullPayload ) || parts.contains( MessagePart::Body );
+//   Q_ASSERT( !hasPayload || item.hasPayload<KMime::Message::Ptr>() );
+
   FileStore::ItemModifyJob *job = mStore->modifyItem( item );
+  job->setIgnorePayload( !item.hasPayload<KMime::Message::Ptr>() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemChangedResult( KJob* ) ) );
 }
 

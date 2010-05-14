@@ -29,6 +29,7 @@
 #include "filestore/itemcreatejob.h"
 #include "filestore/itemdeletejob.h"
 #include "filestore/itemfetchjob.h"
+#include "filestore/itemmodifyjob.h"
 
 #include "libmaildir/maildir.h"
 #include "libmbox/mbox.h"
@@ -660,7 +661,7 @@ bool MixedMaildirStore::Private::visit( ItemDeleteJob *job )
 
   const FolderType folderType = folderForCollection( collection, path, errorText );
   if ( folderType == InvalidFolder || folderType == TopLevelFolder ) {
-    errorText = i18nc( "@info:status", "Cannot delete emails from folder %1",
+    errorText = i18nc( "@info:status", "Cannot remove emails from folder %1",
                         collection.name() );
     kError() << errorText << "FolderType=" << folderType;
     q->notifyError( Job::InvalidJobContext, errorText );
@@ -800,6 +801,76 @@ bool MixedMaildirStore::Private::visit( ItemFetchJob *job )
 
 bool MixedMaildirStore::Private::visit( ItemModifyJob *job )
 {
+  // if we can ignore payload, we have nothing to do
+  if ( job->ignorePayload() ) {
+    return true;
+  }
+
+  Item item = job->item();
+  const Collection collection = item.parentCollection();
+  QString path;
+  QString errorText;
+
+  const FolderType folderType = folderForCollection( collection, path, errorText );
+  if ( folderType == InvalidFolder || folderType == TopLevelFolder ) {
+    errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
+                        collection.name() );
+    kError() << errorText << "FolderType=" << folderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+  if ( folderType == MBoxFolder ) {
+    MBoxPtr mbox;
+    MBoxHash::const_iterator findIt = mMBoxes.constFind( path );
+    if ( findIt == mMBoxes.constEnd() ) {
+      mbox = MBoxPtr( new MBoxContext );
+      if ( !mbox->load( path ) ) {
+        errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
+                            collection.name() );
+        kError() << errorText << "FolderType=" << folderType;
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+
+      mMBoxes.insert( path, mbox );
+    } else {
+      mbox = findIt.value();
+    }
+
+    bool ok = false;
+    qint64 offset = item.remoteId().toLongLong( &ok );
+    if ( !ok || offset < 0 ) {
+      errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
+                          collection.name() );
+      kError() << errorText << "FolderType=" << folderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+
+    mbox->mCollection = collection;
+
+    qint64 newOffset = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
+    if ( offset < 0 ) {
+      errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
+                          collection.name() );
+      kError() << errorText << "FolderType=" << folderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+
+    if ( newOffset > 0 ) {
+      mbox->deleteEntry( offset );
+    }
+    mbox->save();
+    item.setRemoteId( QString::number( newOffset ) );
+  } else {
+    Maildir md( path, false );
+    md.writeEntry( item.remoteId(), item.payload<KMime::Message::Ptr>()->encodedContent() );
+  }
+
+  q->notifyItemsProcessed( Item::List() << item );
+  return true;
 }
 
 bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
@@ -893,7 +964,15 @@ void MixedMaildirStore::checkItemCreate( ItemCreateJob *job, int &errorCode, QSt
 {
   if ( !job->item().hasPayload<KMime::Message::Ptr>() ) {
     errorCode = Job::InvalidJobContext;
-    errorText = i18nc( "@info:status", "Cannot add email to folder %1 because there is no email content" );
+    errorText = i18nc( "@info:status", "Cannot add email to folder %1 because there is no email content", job->collection().name() );
+  }
+}
+
+void MixedMaildirStore::checkItemModify( ItemModifyJob *job, int &errorCode, QString &errorText ) const
+{
+  if ( !job->ignorePayload() && !job->item().hasPayload<KMime::Message::Ptr>() ) {
+    errorCode = Job::InvalidJobContext;
+    errorText = i18nc( "@info:status", "Cannot modify email in folder %1 because there is no email content", job->item().parentCollection().name() );
   }
 }
 
