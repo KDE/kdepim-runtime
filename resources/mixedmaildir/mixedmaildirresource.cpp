@@ -31,15 +31,19 @@
 #include "filestore/collectionfetchjob.h"
 #include "filestore/collectionmodifyjob.h"
 #include "filestore/collectionmovejob.h"
+#include "filestore/entitycompactchangeattribute.h"
 #include "filestore/itemcreatejob.h"
 #include "filestore/itemdeletejob.h"
 #include "filestore/itemfetchjob.h"
 #include "filestore/itemmodifyjob.h"
 #include "filestore/itemmovejob.h"
+#include "filestore/storecompactjob.h"
 
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/changerecorder.h>
+#include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionfetchscope.h>
 
 #include <KDebug>
@@ -69,6 +73,10 @@ MixedMaildirResource::MixedMaildirResource( const QString &id )
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
+
+  if ( ensureSaneConfiguration() ) {
+    mStore->setPath( Settings::self()->path() );
+  }
 }
 
 MixedMaildirResource::~MixedMaildirResource()
@@ -427,6 +435,8 @@ void MixedMaildirResource::itemRemovedResult( KJob *job )
   Q_ASSERT( itemJob != 0 );
 
   changeCommitted( itemJob->item() );
+
+  scheduleCustomTask( this, "compactStore", QVariant() );
 }
 
 void MixedMaildirResource::collectionAddedResult( KJob *job )
@@ -487,6 +497,54 @@ void MixedMaildirResource::collectionRemovedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
+}
+
+void MixedMaildirResource::compactStore( const QVariant &arg )
+{
+  FileStore::StoreCompactJob *job = mStore->compactStore();
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( compactStoreResult( KJob* ) ) );
+}
+
+void MixedMaildirResource::compactStoreResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    kError() << job->errorString();
+    status( Broken, job->errorString() );
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  FileStore::StoreCompactJob *compactJob = qobject_cast<FileStore::StoreCompactJob*>( job );
+  Q_ASSERT( compactJob != 0 );
+
+  const Item::List items = compactJob->changedItems();
+  kDebug() << "Compacting store resulted in" << items.count() << "changed items";
+
+  // TODO this has to be done asynchronous
+  Q_FOREACH( const Item &item, items ) {
+    ItemFetchJob *fetchJob = new ItemFetchJob( item );
+    if ( !fetchJob->exec() ) {
+      kError() << "Fetch for item" << item.remoteId() << "parentCollection" << item.parentCollection() << "failed:" << fetchJob->errorString();
+      continue;
+    }
+
+    if ( fetchJob->items().isEmpty() ) {
+      kError() << "Fetch for item" << item.remoteId() << "parentCollection" << item.parentCollection() << "failed:" << fetchJob->errorString();
+      continue;
+    }
+
+    Item changedItem = fetchJob->items()[ 0 ];
+    changedItem.setRemoteId( item.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId() );
+    changedItem.removeAttribute<FileStore::EntityCompactChangeAttribute>();
+
+    ItemModifyJob *modifyJob = new ItemModifyJob( changedItem );
+    if ( !modifyJob->exec() ) {
+      kError() << "Modify for item" << changedItem.remoteId() << "parentCollection" << item.parentCollection() << "failed:" << fetchJob->errorString();
+      continue;
+    }
+  }
+
+  taskDone();
 }
 
 #include "mixedmaildirresource.moc"

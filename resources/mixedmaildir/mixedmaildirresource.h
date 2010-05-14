@@ -74,6 +74,9 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
     void collectionMovedResult( KJob *job );
     void collectionRemovedResult( KJob *job );
 
+    void compactStore( const QVariant &arg );
+    void compactStoreResult( KJob *job );
+
   private:
     MixedMaildirStore *mStore;
 };
