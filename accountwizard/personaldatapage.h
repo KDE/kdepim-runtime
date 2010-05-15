@@ -38,6 +38,7 @@ class PersonalDataPage : public Page
 
   private slots:
     void ispdbSearchFinished( bool ok );
+    void slotTextChanged();
 
   signals:
     void manualWanted( bool );

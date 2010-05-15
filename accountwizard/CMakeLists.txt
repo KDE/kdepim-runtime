@@ -33,6 +33,7 @@ kde4_add_executable(accountwizard ${accountwizard_srcs})
 target_link_libraries(accountwizard
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${KDE4_KROSSCORE_LIBS}
   ${KDE4_KROSSUI_LIBS}
   ${KDE4_KDECORE_LIBS}

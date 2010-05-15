@@ -22,13 +22,24 @@
 #include "global.h"
 #include "ispdb/ispdb.h"
 
+#include <kpimutils/email.h>
+
 #include <KDebug>
 
 PersonalDataPage::PersonalDataPage(KAssistantDialog* parent) :
   Page( parent )
 {
   ui.setupUi( this );
-  setValid( true );
+  connect( ui.emailEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
+  connect( ui.nameEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
+}
+
+void PersonalDataPage::slotTextChanged() 
+{
+  // Ignore the password field, as that can be empty when auth is based on ip-address.
+  setValid( !ui.emailEdit->text().isEmpty() &&
+            !ui.nameEdit->text().isEmpty()  && 
+            KPIMUtils::isValidAddress( ui.emailEdit->text() ) == KPIMUtils::AddressOk);
 }
 
 void PersonalDataPage::leavePageNext()
