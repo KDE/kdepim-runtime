@@ -54,20 +54,6 @@ class SessionUiProxy : public KIMAP::SessionUiProxy {
     }
 };
 
-ImapAccount::ImapAccount( Settings *settings, QObject *parent )
-  : QObject( parent ), m_mainSession( 0 ),
-    m_encryption( KIMAP::LoginJob::Unencrypted ),
-    m_authentication( KIMAP::LoginJob::ClearText ),
-    m_subscriptionEnabled( false )
-{
-  m_server = settings->imapServer();
-  m_userName = settings->userName();
-  m_subscriptionEnabled = settings->subscriptionEnabled();
-
-  m_encryption = (KIMAP::LoginJob::EncryptionMode) settings->safety();
-  m_authentication = (KIMAP::LoginJob::AuthenticationMode) settings->authentication();
-}
-
 ImapAccount::ImapAccount( QObject *parent )
   : QObject( parent ), m_mainSession( 0 ),
     m_encryption( KIMAP::LoginJob::Unencrypted ),

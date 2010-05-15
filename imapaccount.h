@@ -56,8 +56,7 @@ public:
     IncompatibleServerError
   };
 
-  explicit ImapAccount( Settings *settings, QObject *parent = 0 );
-  ImapAccount( QObject *parent = 0 );
+  explicit ImapAccount( QObject *parent = 0 );
   ~ImapAccount();
 
   bool connect( const QString &password = QString() );
