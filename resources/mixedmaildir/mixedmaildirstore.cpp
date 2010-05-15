@@ -26,6 +26,7 @@
 #include "filestore/collectiondeletejob.h"
 #include "filestore/collectionfetchjob.h"
 #include "filestore/collectionmovejob.h"
+#include "filestore/collectionmodifyjob.h"
 #include "filestore/entitycompactchangeattribute.h"
 #include "filestore/itemcreatejob.h"
 #include "filestore/itemdeletejob.h"
@@ -662,10 +663,6 @@ bool MixedMaildirStore::Private::visit( CollectionFetchJob *job )
   return true;
 }
 
-bool MixedMaildirStore::Private::visit( CollectionModifyJob *job )
-{
-}
-
 static Collection updateMBoxCollectionTree( const Collection &collection, const Collection &oldParent, const Collection &newParent )
 {
   if ( collection == oldParent ) {
@@ -680,6 +677,86 @@ static Collection updateMBoxCollectionTree( const Collection &collection, const 
   updatedCollection.setParentCollection( updateMBoxCollectionTree( collection.parentCollection(), oldParent, newParent ) );
 
   return updatedCollection;
+}
+
+bool MixedMaildirStore::Private::visit( CollectionModifyJob *job )
+{
+  const Collection collection = job->collection();
+
+  // we don't change our top level collection
+  if ( job->collection().remoteId() == q->topLevelCollection().remoteId() ) {
+    kWarning() << "CollectionModifyJob for TopLevelCollection. Ignoring";
+    return true;
+  }
+
+  // we also only do renames
+  if ( collection.remoteId() == collection.name() ) {
+    kWarning() << "CollectionModifyJob with name still identical to remoteId. Ignoring";
+    return true;
+  }
+
+  QString path;
+  QString errorText;
+  const FolderType folderType = folderForCollection( collection, path, errorText );
+  if ( folderType == InvalidFolder || folderType == TopLevelFolder ) {
+    errorText = i18nc( "@info:status", "Cannot rename folder %1",
+                        collection.name() );
+    kError() << errorText << "FolderType=" << folderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+  const QFileInfo fileInfo( path );
+  const QFileInfo subDirInfo = Maildir::subDirPathForFolderPath( path );
+
+  QDir parentDir( path );
+  parentDir.cdUp();
+
+  const QFileInfo targetFileInfo( parentDir, collection.name() );
+  const QFileInfo targetSubDirInfo = Maildir::subDirPathForFolderPath( targetFileInfo.absoluteFilePath() );
+
+  if ( targetFileInfo.exists() || ( subDirInfo.exists() && targetSubDirInfo.exists() ) ) {
+    errorText = i18nc( "@info:status", "Cannot rename folder %1",
+                        collection.name() );
+    kError() << errorText << "FolderType=" << folderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+  if ( !parentDir.rename( fileInfo.absoluteFilePath(), targetFileInfo.fileName() ) ) {
+    errorText = i18nc( "@info:status", "Cannot rename folder %1",
+                        collection.name() );
+    kError() << errorText << "FolderType=" << folderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+  if ( subDirInfo.exists() ) {
+    if ( !parentDir.rename( subDirInfo.absoluteFilePath(), targetSubDirInfo.fileName() ) ) {
+      errorText = i18nc( "@info:status", "Cannot rename folder %1",
+                          collection.name() );
+      kError() << errorText << "FolderType=" << folderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+
+      // try to recover the previous rename
+      parentDir.rename( targetFileInfo.absoluteFilePath(), fileInfo.fileName() );
+      return false;
+    }
+  }
+
+  Collection renamedCollection = collection;
+  renamedCollection.setRemoteId( collection.name() );
+
+  // update collections in MBox contexts so they stay usable for purge
+  Q_FOREACH( const MBoxPtr &mbox, mMBoxes ) {
+    if ( mbox->mCollection.isValid() ) {
+      MBoxPtr updatedMBox = mbox;
+      updatedMBox->mCollection = updateMBoxCollectionTree( mbox->mCollection, collection, renamedCollection );
+    }
+  }
+
+  q->notifyCollectionsProcessed( Collection::List() << renamedCollection );
+  return true;
 }
 
 bool MixedMaildirStore::Private::visit( CollectionMoveJob *job )
