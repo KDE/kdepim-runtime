@@ -1,3 +1,5 @@
+project( mixedmaildirresource )
+
 include_directories(
     ${kdepim-runtime_SOURCE_DIR}
     ${kdepim-runtime_SOURCE_DIR}/resources/shared
@@ -37,11 +39,12 @@ qt4_add_dbus_adaptor(mixedmaildirresource_SRCS
 kde4_add_executable(akonadi_mixedmaildir_resource ${mixedmaildirresource_SRCS})
 
 target_link_libraries(akonadi_mixedmaildir_resource
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  kmindexreader
   maildir
   mbox
   akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KIO_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}

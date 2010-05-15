@@ -155,7 +155,7 @@ class MixedMaildirStore::Private : public Job::Visitor
 
     FolderType folderForCollection( const Collection &col, QString &path, QString &errorText ) const;
 
-    void fillIndexCollectionDetails( const QString &path, Collection &collection );
+    void fillIndexCollectionDetails( const QFileInfo &folderDirInfo, Collection &collection );
     void fillMBoxCollectionDetails( const MBoxPtr &mbox, Collection &collection );
     void fillMaildirCollectionDetails( const Maildir &md, Collection &collection );
     void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse );
@@ -247,17 +247,34 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
   }
 }
 
-void MixedMaildirStore::Private::fillIndexCollectionDetails( const QString &path, Collection &collection )
+void MixedMaildirStore::Private::fillIndexCollectionDetails( const QFileInfo &folderDirInfo, Collection &collection )
 {
-  const QFileInfo dirInfo( path );
-  const QFileInfo fileInfo( dirInfo.dir(), QString::fromUtf8( ".%1.index" ).arg( dirInfo.fileName() ) );
+  const QFileInfo fileInfo( folderDirInfo.dir(), QString::fromUtf8( ".%1.index" ).arg( folderDirInfo.fileName() ) );
 
   if ( !fileInfo.exists() || !fileInfo.isReadable() ) {
     kDebug( KDE_DEFAULT_DEBUG_AREA ) << "No index file" << fileInfo.absoluteFilePath() << "or not readable";
     return;
   }
 
-  // TODO
+  // TODO should check modification date
+
+  const QString indexPath = fileInfo.absoluteFilePath();
+
+  IndexReaderPtr indexReaderPtr;
+  IndexReaderHash::const_iterator findIt = mIndexReaders.constFind( indexPath );
+  if ( findIt == mIndexReaders.constEnd() ) {
+    indexReaderPtr = IndexReaderPtr( new KMIndexReader( indexPath ) );
+    if ( indexReaderPtr->error() || !indexReaderPtr->readIndex() ) {
+      kError() << "Index file" << indexPath << "could not be read";
+      return;
+    }
+
+    mIndexReaders.insert( indexPath, indexReaderPtr );
+  } else {
+    indexReaderPtr = findIt.value();
+  }
+
+  // TODO use reader data
 }
 
 void MixedMaildirStore::Private::fillMBoxCollectionDetails( const MBoxPtr &mbox, Collection &collection )
@@ -277,7 +294,7 @@ void MixedMaildirStore::Private::fillMBoxCollectionDetails( const MBoxPtr &mbox,
     collection.setRights( Collection::ReadOnly );
   }
 
-  fillIndexCollectionDetails( fileInfo.absoluteFilePath(), collection );
+  fillIndexCollectionDetails( fileInfo, collection );
 }
 
 void MixedMaildirStore::Private::fillMaildirCollectionDetails( const Maildir &md, Collection &collection )
@@ -297,7 +314,7 @@ void MixedMaildirStore::Private::fillMaildirCollectionDetails( const Maildir &md
     collection.setRights( Collection::ReadOnly );
   }
 
-  fillIndexCollectionDetails( fileInfo.absoluteFilePath(), collection );
+  fillIndexCollectionDetails( fileInfo, collection );
 }
 
 void MixedMaildirStore::Private::fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse )
