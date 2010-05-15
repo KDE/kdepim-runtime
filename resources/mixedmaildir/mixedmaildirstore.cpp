@@ -30,6 +30,7 @@
 #include "filestore/itemdeletejob.h"
 #include "filestore/itemfetchjob.h"
 #include "filestore/itemmodifyjob.h"
+#include "filestore/itemmovejob.h"
 
 #include "libmaildir/maildir.h"
 #include "libmbox/mbox.h"
@@ -70,6 +71,11 @@ class MBoxContext
     QList<MsgInfo> entryList() const
     {
       return mMBox.entryList();
+    }
+
+    QByteArray readRawEntry( quint64 offset )
+    {
+      return mMBox.readRawEntry( offset );
     }
 
     QByteArray readEntryHeaders( quint64 offset )
@@ -875,6 +881,188 @@ bool MixedMaildirStore::Private::visit( ItemModifyJob *job )
 
 bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
 {
+  QString errorText;
+
+  QString sourcePath;
+  const Collection sourceCollection = job->item().parentCollection();
+  const FolderType sourceFolderType = folderForCollection( sourceCollection, sourcePath, errorText );
+  if ( sourceFolderType == InvalidFolder || sourceFolderType == TopLevelFolder ) {
+    errorText = i18nc( "@info:status", "Cannot move emails from folder %1",
+                        sourceCollection.name() );
+    kError() << errorText << "FolderType=" << sourceFolderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+//   kDebug() << "sourceCollection" << sourceCollection.remoteId()
+//            << "sourcePath=" << sourcePath << "sourceType=" << sourceFolderType;
+
+  QString targetPath;
+  const Collection targetCollection = job->targetParent();
+  const FolderType targetFolderType = folderForCollection( targetCollection, targetPath, errorText );
+  if ( targetFolderType == InvalidFolder || targetFolderType == TopLevelFolder ) {
+    errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
+                        targetCollection.name() );
+    kError() << errorText << "FolderType=" << targetFolderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+//   kDebug() << "targetCollection" << targetCollection.remoteId()
+//            << "targetPath=" << targetPath << "targetType=" << targetFolderType;
+
+  Item item = job->item();
+
+  if ( sourceFolderType == MBoxFolder ) {
+/*    kDebug() << "source is MBox";*/
+    bool ok= false;
+    quint64 offset = item.remoteId().toULongLong( &ok );
+    if ( !ok ) {
+      errorText = i18nc( "@info:status", "Cannot move emails from folder %1",
+                          sourceCollection.name() );
+      kError() << errorText << "FolderType=" << sourceFolderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+
+    MBoxPtr mbox;
+    MBoxHash::const_iterator findIt = mMBoxes.constFind( sourcePath );
+    if ( findIt == mMBoxes.constEnd() ) {
+      mbox = MBoxPtr( new MBoxContext );
+      if ( !mbox->load( sourcePath ) ) {
+        errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
+                            sourceCollection.name() );
+        kError() << errorText << "FolderType=" << sourceFolderType;
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+
+      mbox->mCollection = sourceCollection;
+      mMBoxes.insert( sourcePath, mbox );
+    } else {
+      mbox = findIt.value();
+    }
+
+    if ( !item.payload<KMime::Message::Ptr>() ) {
+      if ( !fillItem( mbox, true, item ) ) {
+        errorText = i18nc( "@info:status", "Cannot move email from folder %1",
+                            sourceCollection.name() );
+        kError() << errorText << "FolderType=" << sourceFolderType;
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+    }
+
+    if ( targetFolderType == MBoxFolder ) {
+/*      kDebug() << "target is MBox";*/
+      MBoxPtr targetMBox;
+      MBoxHash::const_iterator findIt = mMBoxes.constFind( targetPath );
+      if ( findIt == mMBoxes.constEnd() ) {
+        targetMBox = MBoxPtr( new MBoxContext );
+        if ( !targetMBox->load( targetPath ) ) {
+          errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
+                              targetCollection.name() );
+          kError() << errorText << "FolderType=" << targetFolderType;
+          q->notifyError( Job::InvalidJobContext, errorText );
+          return false;
+        }
+
+        targetMBox->mCollection = targetCollection;
+        mMBoxes.insert( targetPath, targetMBox );
+      } else {
+        targetMBox = findIt.value();
+      }
+
+      qint64 remoteId = targetMBox->appendEntry( item.payload<KMime::Message::Ptr>() );
+      if ( remoteId < 0 ) {
+        errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
+                            targetCollection.name() );
+        kError() << errorText << "FolderType=" << targetFolderType;
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+      targetMBox->save();
+      mbox->deleteEntry( offset );
+      item.setRemoteId( QString::number( remoteId ) );
+    } else {
+/*      kDebug() << "target is Maildir";*/
+      Maildir targetMd( targetPath, false );
+
+      const QString remoteId = targetMd.addEntry( mbox->readRawEntry( offset ) );
+      if ( remoteId.isEmpty() ) {
+        errorText = i18nc( "@info:status", "Cannot move email from folder %1 to folder %2",
+                            sourceCollection.name(), targetCollection.name() );
+        kError() << errorText << "SourceFolderType=" << sourceFolderType << "TargetFolderType=" << targetFolderType;
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+
+      item.setRemoteId( remoteId );
+    }
+  } else {
+/*    kDebug() << "source is Maildir";*/
+    Maildir sourceMd( sourcePath, false );
+
+    if ( targetFolderType == MBoxFolder ) {
+      kDebug() << "target is MBox";
+      if ( !item.payload<KMime::Message::Ptr>() ) {
+        if ( !fillItem( sourceMd, true, item ) ) {
+          errorText = i18nc( "@info:status", "Cannot move email from folder %1",
+                              sourceCollection.name() );
+          kError() << errorText << "FolderType=" << sourceFolderType;
+          q->notifyError( Job::InvalidJobContext, errorText );
+          return false;
+        }
+      }
+
+      MBoxPtr mbox;
+      MBoxHash::const_iterator findIt = mMBoxes.constFind( targetPath );
+      if ( findIt == mMBoxes.constEnd() ) {
+        mbox = MBoxPtr( new MBoxContext );
+        if ( !mbox->load( targetPath ) ) {
+          errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
+                              targetCollection.name() );
+          kError() << errorText << "FolderType=" << targetFolderType;
+          q->notifyError( Job::InvalidJobContext, errorText );
+          return false;
+        }
+
+        mbox->mCollection = targetCollection;
+        mMBoxes.insert( targetPath, mbox );
+      } else {
+        mbox = findIt.value();
+      }
+
+      qint64 remoteId = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
+      if ( remoteId < 0 ) {
+        errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
+                            targetCollection.name() );
+        kError() << errorText << "FolderType=" << targetFolderType;
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+      mbox->save();
+      item.setRemoteId( QString::number( remoteId ) );
+    } else {
+/*      kDebug() << "target is Maildir";*/
+      Maildir targetMd( targetPath, false );
+
+      const QString remoteId = sourceMd.moveEntryTo( item.remoteId(), targetMd );
+      if ( remoteId.isEmpty() ) {
+        errorText = i18nc( "@info:status", "Cannot move email from folder %1 to folder %2",
+                            sourceCollection.name(), targetCollection.name() );
+        kError() << errorText << "SourceFolderType=" << sourceFolderType << "TargetFolderType=" << targetFolderType;
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+
+      item.setRemoteId( remoteId );
+    }
+  }
+
+  item.setParentCollection( targetCollection );
+  q->notifyItemsProcessed( Item::List() << item );
+  return true;
 }
 
 bool MixedMaildirStore::Private::visit( StoreCompactJob *job )

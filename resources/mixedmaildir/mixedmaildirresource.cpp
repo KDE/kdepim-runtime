@@ -148,7 +148,7 @@ void MixedMaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QB
 
 void MixedMaildirResource::itemMoved( const Item &item, const Collection &source, const Collection &destination )
 {
-  if ( source == destination ) { // should not happen but would confuse Maildir::moveEntryTo
+  if ( source == destination ) {
     changeProcessed();
     return;
   }
@@ -160,9 +160,10 @@ void MixedMaildirResource::itemMoved( const Item &item, const Collection &source
     return;
   }
 
-  Q_ASSERT( item.parentCollection() == source );
+  Item moveItem = item;
+  moveItem.setParentCollection( source );
 
-  FileStore::ItemMoveJob *job = mStore->moveItem( item, destination );
+  FileStore::ItemMoveJob *job = mStore->moveItem( moveItem, destination );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemMovedResult( KJob* ) ) );
 }
 
