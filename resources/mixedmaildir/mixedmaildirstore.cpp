@@ -854,8 +854,6 @@ bool MixedMaildirStore::Private::visit( ItemModifyJob *job )
       return false;
     }
 
-    mbox->mCollection = collection;
-
     qint64 newOffset = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
     if ( offset < 0 ) {
       errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
@@ -866,6 +864,7 @@ bool MixedMaildirStore::Private::visit( ItemModifyJob *job )
     }
 
     if ( newOffset > 0 ) {
+      mbox->mCollection = collection;
       mbox->deleteEntry( offset );
     }
     mbox->save();
@@ -981,8 +980,15 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
         q->notifyError( Job::InvalidJobContext, errorText );
         return false;
       }
-      targetMBox->save();
-      mbox->deleteEntry( offset );
+
+      if ( !targetMBox->save() ) {
+        errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
+                            targetCollection.name() );
+        kError() << errorText << "FolderType=" << targetFolderType;
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+
       item.setRemoteId( QString::number( remoteId ) );
     } else {
 /*      kDebug() << "target is Maildir";*/
@@ -999,6 +1005,9 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
 
       item.setRemoteId( remoteId );
     }
+
+    mbox->mCollection = sourceCollection;
+    mbox->deleteEntry( offset );
   } else {
 /*    kDebug() << "source is Maildir";*/
     Maildir sourceMd( sourcePath, false );
