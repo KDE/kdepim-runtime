@@ -32,11 +32,6 @@ using namespace KPIM;
 class Maildir::Private
 {
 public:
-    Private( const QString& p )
-    :path(p)
-    {
-    }
-
     Private( const QString& p, bool isRoot )
         :path(p), isRoot(isRoot)
     {
@@ -45,6 +40,7 @@ public:
     Private( const Private& rhs )
     {
         path = rhs.path;
+        isRoot = rhs.isRoot;
     }
 
     bool operator==( const Private& rhs ) const

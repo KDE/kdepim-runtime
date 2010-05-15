@@ -114,6 +114,13 @@ void MaildirTest::testMaildirInstantiation()
   QVERIFY(!good.isValid( error ));
   QVERIFY(!error.isEmpty());
 
+  Maildir root1( QLatin1String( "/foo/bar/Mail" ), true );
+  QVERIFY( root1.isRoot() );
+
+  Maildir root1Copy = root1;
+  QCOMPARE( root1Copy.path(), root1.path() );
+  QCOMPARE( root1Copy.isRoot(), root1.isRoot() );
+
   // FIXME test insufficient permissions?
   cleanupTestCase();
 }
