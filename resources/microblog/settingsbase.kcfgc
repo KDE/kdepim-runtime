@@ -1,8 +1,0 @@
-File=microblogresource.kcfg
-ClassName=SettingsBase
-Mutators=true
-ItemAccessors=true
-SetUserTexts=true
-Singleton=false
-#IncludeFiles=
-GlobalEnums=true
