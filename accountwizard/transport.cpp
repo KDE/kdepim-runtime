@@ -91,8 +91,10 @@ void Transport::create()
   mt->setHost( m_host );
   if ( m_port > 0 )
     mt->setPort( m_port );
-  if ( !m_user.isEmpty() )
+  if ( !m_user.isEmpty() ) {
     mt->setUserName( m_user );
+    mt->setRequiresAuthentication( true );
+  }
   if ( !m_password.isEmpty() )
     mt->setPassword( m_password );
   mt->setEncryption( m_encr );
