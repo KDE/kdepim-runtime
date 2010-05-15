@@ -133,14 +133,14 @@ class MBoxContext
     MBox mMBox;
 };
 
+typedef boost::shared_ptr<MBoxContext> MBoxPtr;
+typedef boost::shared_ptr<KMIndexReader> IndexReaderPtr;
+
 class MixedMaildirStore::Private : public Job::Visitor
 {
   MixedMaildirStore *const q;
 
   public:
-    typedef boost::shared_ptr<MBoxContext> MBoxPtr;
-    typedef boost::shared_ptr<KMIndexReader> IndexReaderPtr;
-
     enum FolderType
     {
       InvalidFolder,
@@ -155,12 +155,13 @@ class MixedMaildirStore::Private : public Job::Visitor
 
     FolderType folderForCollection( const Collection &col, QString &path, QString &errorText ) const;
 
-    void fillIndexCollectionDetails( const QFileInfo &folderDirInfo, Collection &collection );
+    IndexReaderPtr readMBoxIndex( const MBoxPtr &mbox ) const;
+    IndexReaderPtr readMaildirIndex( const Maildir &md ) const;
     void fillMBoxCollectionDetails( const MBoxPtr &mbox, Collection &collection );
     void fillMaildirCollectionDetails( const Maildir &md, Collection &collection );
     void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse );
-    void listCollection( const MBoxPtr &mbox, const Collection &collection, Item::List &items ) const;
-    void listCollection( const Maildir &md, const Collection &collection, Item::List &items ) const;
+    void listCollection( const MBoxPtr &mbox, const Collection &collection, Item::List &items );
+    void listCollection( const Maildir &md, const Collection &collection, Item::List &items );
     bool fillItem( MBoxPtr &mbox, bool includeBody, Item &item ) const;
     bool fillItem( const Maildir &md, bool includeBody, Item &item ) const;
 
@@ -181,9 +182,6 @@ class MixedMaildirStore::Private : public Job::Visitor
   public:
     typedef QHash<QString, MBoxPtr> MBoxHash;
     MBoxHash mMBoxes;
-
-    typedef QHash<QString, IndexReaderPtr> IndexReaderHash;
-    IndexReaderHash mIndexReaders;
 };
 
 MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForCollection( const Collection &col, QString &path, QString &errorText ) const
@@ -247,34 +245,75 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
   }
 }
 
-void MixedMaildirStore::Private::fillIndexCollectionDetails( const QFileInfo &folderDirInfo, Collection &collection )
+static bool indexFileForFolder( const QFileInfo &folderDirInfo, QFileInfo &indexFileInfo )
 {
-  const QFileInfo fileInfo( folderDirInfo.dir(), QString::fromUtf8( ".%1.index" ).arg( folderDirInfo.fileName() ) );
+  indexFileInfo = QFileInfo( folderDirInfo.dir(), QString::fromUtf8( ".%1.index" ).arg( folderDirInfo.fileName() ) );
 
-  if ( !fileInfo.exists() || !fileInfo.isReadable() ) {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "No index file" << fileInfo.absoluteFilePath() << "or not readable";
-    return;
+  if ( !indexFileInfo.exists() || !indexFileInfo.isReadable() ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "No index file" << indexFileInfo.absoluteFilePath() << "or not readable";
+    return false;
   }
 
-  // TODO should check modification date
+  return true;
+}
 
-  const QString indexPath = fileInfo.absoluteFilePath();
-
-  IndexReaderPtr indexReaderPtr;
-  IndexReaderHash::const_iterator findIt = mIndexReaders.constFind( indexPath );
-  if ( findIt == mIndexReaders.constEnd() ) {
-    indexReaderPtr = IndexReaderPtr( new KMIndexReader( indexPath ) );
-    if ( indexReaderPtr->error() || !indexReaderPtr->readIndex() ) {
-      kError() << "Index file" << indexPath << "could not be read";
-      return;
-    }
-
-    mIndexReaders.insert( indexPath, indexReaderPtr );
-  } else {
-    indexReaderPtr = findIt.value();
+IndexReaderPtr MixedMaildirStore::Private::readMBoxIndex( const MBoxPtr &mbox ) const
+{
+  const QFileInfo mboxFileInfo( mbox->mbox().fileName() );
+  QFileInfo indexFileInfo;
+  if ( !indexFileForFolder( mboxFileInfo, indexFileInfo ) ) {
+    return IndexReaderPtr();
   }
 
-  // TODO use reader data
+  if ( mboxFileInfo.lastModified() > indexFileInfo.lastModified() ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "MBox file newer than the index: mbox modified at"
+                                     << mboxFileInfo.lastModified() << ", index modified at"
+                                     << indexFileInfo.lastModified();
+    return IndexReaderPtr();
+  }
+
+  IndexReaderPtr indexReaderPtr( new KMIndexReader( indexFileInfo.absoluteFilePath() ) );
+  if ( indexReaderPtr->error() || !indexReaderPtr->readIndex() ) {
+    kError() << "Index file" << indexFileInfo.path() << "could not be read";
+    return IndexReaderPtr();
+  }
+
+  return indexReaderPtr;
+}
+
+IndexReaderPtr MixedMaildirStore::Private::readMaildirIndex( const Maildir &md ) const
+{
+  const QFileInfo maildirFileInfo( md.path() );
+  QFileInfo indexFileInfo;
+  if ( !indexFileForFolder( maildirFileInfo, indexFileInfo ) ) {
+    return IndexReaderPtr();
+  }
+
+  const QDir maildirBaseDir( maildirFileInfo.absoluteFilePath() );
+  const QFileInfo curDirFileInfo( maildirBaseDir, QLatin1String( "cur" ) );
+  const QFileInfo newDirFileInfo( maildirBaseDir, QLatin1String( "new" ) );
+
+  if ( curDirFileInfo.lastModified() > indexFileInfo.lastModified() ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Maildir \"cur\" directory newer than the index: cur modified at"
+                                     << curDirFileInfo.lastModified() << ", index modified at"
+                                     << indexFileInfo.lastModified();
+    return IndexReaderPtr();
+  }
+  if ( newDirFileInfo.lastModified() > indexFileInfo.lastModified() ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Maildir \"new\" directory newer than the index: cur modified at"
+                                     << newDirFileInfo.lastModified() << ", index modified at"
+                                     << indexFileInfo.lastModified();
+    return IndexReaderPtr();
+  }
+
+
+  IndexReaderPtr indexReaderPtr( new KMIndexReader( indexFileInfo.absoluteFilePath() ) );
+  if ( indexReaderPtr->error() || !indexReaderPtr->readIndex() ) {
+    kError() << "Index file" << indexFileInfo.path() << "could not be read";
+    return IndexReaderPtr();
+  }
+
+  return indexReaderPtr;
 }
 
 void MixedMaildirStore::Private::fillMBoxCollectionDetails( const MBoxPtr &mbox, Collection &collection )
@@ -293,8 +332,6 @@ void MixedMaildirStore::Private::fillMBoxCollectionDetails( const MBoxPtr &mbox,
   } else {
     collection.setRights( Collection::ReadOnly );
   }
-
-  fillIndexCollectionDetails( fileInfo, collection );
 }
 
 void MixedMaildirStore::Private::fillMaildirCollectionDetails( const Maildir &md, Collection &collection )
@@ -313,8 +350,6 @@ void MixedMaildirStore::Private::fillMaildirCollectionDetails( const Maildir &md
   } else {
     collection.setRights( Collection::ReadOnly );
   }
-
-  fillIndexCollectionDetails( fileInfo, collection );
 }
 
 void MixedMaildirStore::Private::fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse )
@@ -371,8 +406,10 @@ void MixedMaildirStore::Private::fillMaildirTreeDetails( const Maildir &md, cons
   }
 }
 
-void MixedMaildirStore::Private::listCollection( const MBoxPtr &mbox, const Collection &collection, Item::List &items ) const
+void MixedMaildirStore::Private::listCollection( const MBoxPtr &mbox, const Collection &collection, Item::List &items )
 {
+  const IndexReaderPtr indexReaderPtr = readMBoxIndex( mbox );
+
   const QList<MsgInfo> entryList = mbox->entryList();
   Q_FOREACH( const MsgInfo &entry, entryList ) {
     Item item;
@@ -380,18 +417,36 @@ void MixedMaildirStore::Private::listCollection( const MBoxPtr &mbox, const Coll
     item.setRemoteId( QString::number( entry.first ) );
     item.setParentCollection( collection );
 
+    if ( indexReaderPtr != 0 ) {
+      // TODO get tags
+      MessageStatus status;
+      if ( indexReaderPtr->statusByOffset( entry.first, status ) ) {
+        item.setFlags( status.getStatusFlags() );
+      }
+    }
+
     items << item;
   }
 }
 
-void MixedMaildirStore::Private::listCollection( const Maildir &md, const Collection &collection, Item::List &items ) const
+void MixedMaildirStore::Private::listCollection( const Maildir &md, const Collection &collection, Item::List &items )
 {
+  const IndexReaderPtr indexReaderPtr = readMaildirIndex( md );
+
   const QStringList entryList = md.entryList();
   Q_FOREACH( const QString &entry, entryList ) {
     Item item;
     item.setMimeType( KMime::Message::mimeType() );
     item.setRemoteId( entry );
     item.setParentCollection( collection );
+
+    if ( indexReaderPtr != 0 ) {
+      // TODO get tags
+      MessageStatus status;
+      if ( indexReaderPtr->statusByFileName( entry, status ) ) {
+        item.setFlags( status.getStatusFlags() );
+      }
+    }
 
     items << item;
   }
@@ -1159,7 +1214,6 @@ void MixedMaildirStore::setTopLevelCollection( const Akonadi::Collection &collec
 
   // clear caches
   d->mMBoxes.clear();
-  d->mIndexReaders.clear();
 
   AbstractLocalStore::setTopLevelCollection( modifiedCollection );
 }
