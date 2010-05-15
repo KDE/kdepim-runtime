@@ -113,8 +113,8 @@ public:
         kDebug() << "Failed to rename maildir";
         return false;
       }
-      const QDir subDirs( subDirPath() );
-      if ( subDirs.exists() && !dest.rename( subDirPath(), QString::fromLatin1( ".%1.directory" ).arg( newName ) ) ) {
+      const QDir subDirs( Maildir::subDirPathForFolderPath( path ) );
+      if ( subDirs.exists() && !dest.rename( subDirs.path(), QString::fromLatin1( ".%1.directory" ).arg( newName ) ) ) {
         kDebug() << "Failed to rename subfolders";
         return false;
       }
