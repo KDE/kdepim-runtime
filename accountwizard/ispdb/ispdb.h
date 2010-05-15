@@ -41,8 +41,8 @@ class Ispdb : public QObject
 {
     Q_OBJECT
 public:
-    enum socketType { Plain = 0, SSL, StartTLS };
-    enum authType { Cleartext = 0, Secure, NTLM, GSSAPI, ClientIP, None };
+    enum socketType { None = 0, SSL, StartTLS };
+    enum authType { Plain = 0, CramMD5, NTLM, GSSAPI, ClientIP, NoAuth };
     enum length { Long = 0, Short };
 
     /** Constructor */

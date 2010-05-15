@@ -22,6 +22,7 @@
 #include "global.h"
 #include "dialog.h"
 #include "transport.h"
+#include "resource.h"
 #include "ispdb/ispdb.h"
 
 #include <kpimutils/email.h>
@@ -81,24 +82,84 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setUsername( s.username );
       t->setPassword( ui.passwordEdit->text() );
       switch (s.authentication) {
-        case Ispdb::Cleartext: t->setEncryption( "clear" ); break;
-        case Ispdb::Secure: t->setEncryption( "plain" ); break;
-        case Ispdb::NTLM: t->setEncryption( "ntlm" ); break;
-        case Ispdb::GSSAPI: t->setEncryption( "gssapi" ); break;
+        case Ispdb::Plain: t->setAuthenticationType( "plain" ); break;
+        case Ispdb::CramMD5: t->setAuthenticationType( "cram-md5" ); break;
+        case Ispdb::NTLM: t->setAuthenticationType( "ntlm" ); break;
+        case Ispdb::GSSAPI: t->setAuthenticationType( "gssapi" ); break;
         case Ispdb::ClientIP: break;
-        case Ispdb::None: break;
+        case Ispdb::NoAuth: break;
         default: break;
       }
       switch (s.socketType) {
-        case Ispdb::Plain: t->setAuthenticationType( "none" );break;
-        case Ispdb::SSL: t->setAuthenticationType( "ssl" );break;
-        case Ispdb::StartTLS: t->setAuthenticationType( "tls" );break;
+        case Ispdb::Plain: t->setEncryption( "none" );break;
+        case Ispdb::SSL: t->setEncryption( "ssl" );break;
+        case Ispdb::StartTLS: t->setEncryption( "tls" );break;
         default: break;
       }
     } else
       kDebug() << "No transport to be created....";
 
+
+    // configure incoming
+
+
+    if ( mIspdb->imapServers().count() > 0 ) {
+      server s = mIspdb->imapServers().first(); // should be ok.
+      kDebug() << "Configuring imap for" << s.hostname;
+
+      QObject* object = mSetupManager->createResource("akonadi_imap_resource");
+      Resource* t = qobject_cast<Resource*>( object ); 
+      // not possible? t->setOption( mIspdb->name( Ispdb::Long ) );
+      t->setOption( "ImapServer", s.hostname );
+      t->setOption( "ImapPort", s.port );
+      t->setOption( "UserName", s.username );
+      // not possible? t->setPassword( ui.passwordEdit->text() );
+      switch (s.authentication) {
+        case Ispdb::Plain: t->setOption("Authentication", 7 ); break;
+        case Ispdb::CramMD5: t->setOption("Authentication", 3 ); break;
+        case Ispdb::NTLM: t->setOption("Authentication", 5 ); break;
+        case Ispdb::GSSAPI: t->setOption("Authentication", 6 ); break;
+        case Ispdb::ClientIP: break;
+        case Ispdb::NoAuth: break;
+        default: break;
+      }
+      switch (s.socketType) {
+        case Ispdb::None: t->setOption( "Safety", 0);break;
+        case Ispdb::SSL: t->setOption( "Safety", 5 );break;
+        case Ispdb::StartTLS: t->setOption( "Safety", 1 );break;
+        default: break;
+      }
+    } else if ( mIspdb->pop3Servers().count() > 0 ) {
+      server s = mIspdb->pop3Servers().first(); // should be ok.
+      kDebug() << "No Imap to be created, configuring pop3 for" << s.hostname;
+
+      QObject* object = mSetupManager->createResource("akonadi_pop3_resource");
+      Resource* t = qobject_cast<Resource*>( object ); 
+      // not possible? t->setOption( mIspdb->name( Ispdb::Long ) );
+      t->setOption( "Host", s.hostname );
+      t->setOption( "Port", s.port );
+      t->setOption( "Login", s.username );
+      // not possible? t->setPassword( ui.passwordEdit->text() );
+      switch (s.authentication) {
+        case Ispdb::Plain: t->setOption("AuthenticationMethod", 1 ); break;
+        case Ispdb::CramMD5: t->setOption("AuthenticationMethod", 2 ); break;
+        case Ispdb::NTLM: t->setOption("AuthenticationMethod", 5 ); break;
+        case Ispdb::GSSAPI: t->setOption("AuthenticationMethod", 3 ); break;
+        case Ispdb::ClientIP:
+        case Ispdb::NoAuth:
+        default: t->setOption("AuthenticationMethod",7); break;
+      }
+      switch (s.socketType) {
+        case Ispdb::SSL: t->setOption( "UseSSL", 1 );break;
+        case Ispdb::StartTLS: t->setOption( "UseTLS", 1 );break;
+        case Ispdb::None:
+        default: t->setOption( "UseTLS", 1 ); break;
+      }
+    } else
+      kDebug() << "No Imap or pop3 to be created....";
+
     emit leavePageNextOk();  // go to the next page
+    mSetupManager->execute();
   } else {
     emit manualWanted( true );     // enable the manual page
     emit leavePageNextOk();

@@ -138,7 +138,7 @@ server Ispdb::createServer( const QDomElement& n )
                 s.port = f.text().toInt();
             else if ( f.tagName() == "socketType" ) {
                 if ( f.text() == "plain" )
-                    s.socketType = Plain;
+                    s.socketType = None;
                 else if ( f.text() == "SSL" )
                     s.socketType = SSL;
                 if ( f.text() == "STARTTLS" )
@@ -147,9 +147,9 @@ server Ispdb::createServer( const QDomElement& n )
                 s.username = replacePlaceholders( f.text() );
             } else if ( f.tagName() == "authentication" ) {
                 if ( f.text() == "password-cleartext" || f.text() == "plain" )
-                    s.authentication = Cleartext;
+                    s.authentication = Plain;
                 else if ( f.text() == "password-encrypted" || f.text() == "secure" )
-                    s.authentication = Secure;
+                    s.authentication = CramMD5;
                 else if ( f.text() == "NTLM" )
                     s.authentication = NTLM;
                 else if ( f.text() == "GSSAPI" )
@@ -157,7 +157,7 @@ server Ispdb::createServer( const QDomElement& n )
                 else if ( f.text() == "client-ip-based" )
                     s.authentication = ClientIP;
                 else if ( f.text() == "none" )
-                    s.authentication = None;
+                    s.authentication = NoAuth;
             }
         }
         o = o.nextSibling();
