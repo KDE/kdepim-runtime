@@ -143,6 +143,7 @@ void MixedMaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QB
 
   FileStore::ItemModifyJob *job = mStore->modifyItem( item );
   job->setIgnorePayload( !item.hasPayload<KMime::Message::Ptr>() );
+  job->setProperty( "originalRemoteId", item.remoteId() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemChangedResult( KJob* ) ) );
 }
 
@@ -164,6 +165,7 @@ void MixedMaildirResource::itemMoved( const Item &item, const Collection &source
   moveItem.setParentCollection( source );
 
   FileStore::ItemMoveJob *job = mStore->moveItem( moveItem, destination );
+  job->setProperty( "originalRemoteId", moveItem.remoteId() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemMovedResult( KJob* ) ) );
 }
 
@@ -412,6 +414,16 @@ void MixedMaildirResource::itemChangedResult( KJob *job )
   Q_ASSERT( itemJob != 0 );
 
   changeCommitted( itemJob->item() );
+
+  const QString remoteId = itemJob->property( "originalRemoteId" ).value<QString>();
+
+  // only schedule compact if the modifed item is from an MBox, i.e. has a numerical
+  // remoteId (Maildir items have strings with non-numeral characters)
+  // the store can modify Maildir items but MBox requires append new + delete old
+  bool ok = false;
+  if ( remoteId.toULongLong( &ok ) >= 0 && ok ) {
+    scheduleCustomTask( this, "compactStore", QVariant() );
+  }
 }
 
 void MixedMaildirResource::itemMovedResult( KJob *job )
@@ -427,6 +439,15 @@ void MixedMaildirResource::itemMovedResult( KJob *job )
   Q_ASSERT( itemJob != 0 );
 
   changeCommitted( itemJob->item() );
+
+  const QString remoteId = itemJob->property( "originalRemoteId" ).value<QString>();
+
+  // only schedule compact if the delete item is from an MBox, i.e. has a numerical
+  // remoteId (Maildir items have strings with non-numeral characters)
+  bool ok = false;
+  if ( remoteId.toULongLong( &ok ) >= 0 && ok ) {
+    scheduleCustomTask( this, "compactStore", QVariant() );
+  }
 }
 
 void MixedMaildirResource::itemRemovedResult( KJob *job )
@@ -443,7 +464,14 @@ void MixedMaildirResource::itemRemovedResult( KJob *job )
 
   changeCommitted( itemJob->item() );
 
-  scheduleCustomTask( this, "compactStore", QVariant() );
+  const QString remoteId = itemJob->item().remoteId();
+
+  // only schedule compact if the delete item is from an MBox, i.e. has a numerical
+  // remoteId (Maildir items have strings with non-numeral characters)
+  bool ok = false;
+  if ( remoteId.toULongLong( &ok ) >= 0 && ok ) {
+    scheduleCustomTask( this, "compactStore", QVariant() );
+  }
 }
 
 void MixedMaildirResource::collectionAddedResult( KJob *job )
