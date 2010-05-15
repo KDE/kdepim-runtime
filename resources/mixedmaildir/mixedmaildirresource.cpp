@@ -268,7 +268,7 @@ void MixedMaildirResource::collectionChanged(const Collection & collection, cons
 
 void MixedMaildirResource::collectionMoved( const Collection &collection, const Collection &source, const Collection &dest )
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << collection << source << dest;
+  //kDebug( KDE_DEFAULT_DEBUG_AREA ) << collection << source << dest;
 
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
@@ -289,9 +289,10 @@ void MixedMaildirResource::collectionMoved( const Collection &collection, const 
     return;
   }
 
-  Q_ASSERT( collection.parentCollection() == source );
+  Collection moveCollection = collection;
+  moveCollection.setParentCollection( source );
 
-  FileStore::CollectionMoveJob *job = mStore->moveCollection( collection, dest );
+  FileStore::CollectionMoveJob *job = mStore->moveCollection( moveCollection, dest );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionMovedResult( KJob* ) ) );
 }
 

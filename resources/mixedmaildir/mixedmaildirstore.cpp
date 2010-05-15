@@ -25,6 +25,7 @@
 #include "filestore/collectioncreatejob.h"
 #include "filestore/collectiondeletejob.h"
 #include "filestore/collectionfetchjob.h"
+#include "filestore/collectionmovejob.h"
 #include "filestore/entitycompactchangeattribute.h"
 #include "filestore/itemcreatejob.h"
 #include "filestore/itemdeletejob.h"
@@ -665,8 +666,122 @@ bool MixedMaildirStore::Private::visit( CollectionModifyJob *job )
 {
 }
 
+static Collection updateMBoxCollectionTree( const Collection &collection, const Collection &oldParent, const Collection &newParent )
+{
+  if ( collection == oldParent ) {
+    return newParent;
+  }
+
+  if ( collection == Collection::root() ) {
+    return collection;
+  }
+
+  Collection updatedCollection = collection;
+  updatedCollection.setParentCollection( updateMBoxCollectionTree( collection.parentCollection(), oldParent, newParent ) );
+
+  return updatedCollection;
+}
+
 bool MixedMaildirStore::Private::visit( CollectionMoveJob *job )
 {
+  QString errorText;
+
+  Collection moveCollection = job->collection();
+  const Collection targetCollection = job->targetParent();
+
+  QString movePath;
+  const FolderType moveFolderType = folderForCollection( moveCollection, movePath, errorText );
+  if ( moveFolderType == InvalidFolder || moveFolderType == TopLevelFolder ) {
+    errorText = i18nc( "@info:status", "Cannot move folder %1 from folder %2 to folder %3",
+                        moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name() );
+    kError() << errorText << "FolderType=" << moveFolderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "moveCollection" << moveCollection.remoteId()
+//                                    << "movePath=" << movePath
+//                                    << "moveType=" << moveFolderType;
+
+  QString targetPath;
+  const FolderType targetFolderType = folderForCollection( targetCollection, targetPath, errorText );
+  if ( targetFolderType == InvalidFolder || targetFolderType == TopLevelFolder ) {
+    errorText = i18nc( "@info:status", "Cannot move folder %1 from folder %2 to folder %3",
+                        moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name() );
+    kError() << errorText << "FolderType=" << targetFolderType;
+    q->notifyError( Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "targetCollection" << targetCollection.remoteId()
+//                                    << "targetPath=" << targetPath
+//                                    << "targetType=" << targetFolderType;
+
+  if ( moveFolderType == MBoxFolder ) {
+    const QFileInfo moveFileInfo( movePath );
+    const QFileInfo moveSubDirInfo( Maildir::subDirPathForFolderPath( movePath ) );
+    const QFileInfo targetFileInfo( targetPath );
+    const QFileInfo targetSubDirInfo( Maildir::subDirPathForFolderPath( targetPath ) );
+
+    QDir targetDir( Maildir::subDirPathForFolderPath( targetPath ) );
+    if ( targetDir.exists( moveFileInfo.fileName() ) ||
+         !targetDir.rename( moveFileInfo.absoluteFilePath(), moveFileInfo.fileName() ) ) {
+      errorText = i18nc( "@info:status", "Cannot move folder %1 from folder %2 to folder %3",
+                          moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name() );
+      kError() << errorText << "MoveFolderType=" << moveFolderType
+               << "TargetFolderType=" << targetFolderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+
+    if ( moveSubDirInfo.exists() ) {
+      if ( targetDir.exists( moveSubDirInfo.fileName() ) ||
+          !targetDir.rename( moveSubDirInfo.absoluteFilePath(), moveSubDirInfo.fileName() ) ) {
+        errorText = i18nc( "@info:status", "Cannot move folder %1 from folder %2 to folder %3",
+                            moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name() );
+        kError() << errorText << "MoveFolderType=" << moveFolderType
+                << "TargetFolderType=" << targetFolderType;
+
+        // try to revert the other rename
+        QDir sourceDir( moveFileInfo.absolutePath() );
+        sourceDir.cdUp();
+        sourceDir.rename( targetFileInfo.absoluteFilePath(), moveFileInfo.fileName() );
+        q->notifyError( Job::InvalidJobContext, errorText );
+        return false;
+      }
+    }
+  } else {
+    Maildir moveMd( movePath, false );
+
+    // for moving purpose we can treat the MBox target's subDirPath like a top level maildir
+    Maildir targetMd;
+    if ( targetFolderType == MBoxFolder ) {
+      targetMd = Maildir( Maildir::subDirPathForFolderPath( targetPath ), true );
+    } else {
+      targetMd = Maildir( targetPath, false );
+    }
+
+    if ( !moveMd.moveTo( targetMd ) ) {
+      errorText = i18nc( "@info:status", "Cannot move folder %1 from folder %2 to folder %3",
+                          moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name() );
+      kError() << errorText << "MoveFolderType=" << moveFolderType
+               << "TargetFolderType=" << targetFolderType;
+      q->notifyError( Job::InvalidJobContext, errorText );
+      return false;
+    }
+  }
+
+  // update collections in MBox contexts so they stay usable for purge
+  Q_FOREACH( const MBoxPtr &mbox, mMBoxes ) {
+    if ( mbox->mCollection.isValid() ) {
+      MBoxPtr updatedMBox = mbox;
+      updatedMBox->mCollection = updateMBoxCollectionTree( mbox->mCollection, moveCollection.parentCollection(), targetCollection );
+    }
+  }
+
+  moveCollection.setParentCollection( targetCollection );
+  q->notifyCollectionsProcessed( Collection::List() << moveCollection );
+  return true;
 }
 
 bool MixedMaildirStore::Private::visit( ItemCreateJob *job )
@@ -1232,6 +1347,21 @@ void MixedMaildirStore::processJob( Job *job )
       kError() << "visitor did set either error code or error string when returning true";
       Q_ASSERT( job->error() != 0 || !job->errorString().isEmpty() );
     }
+  }
+}
+
+void MixedMaildirStore::checkCollectionMove( Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText ) const
+{
+  // check if the target is not the collection itself or one if its children
+  Collection targetCollection = job->targetParent();
+  while ( targetCollection.isValid() ) {
+    if ( targetCollection == job->collection() ) {
+      errorCode = Job::InvalidJobContext;
+      errorText = i18nc( "@info:status", "Cannot move folder %1 into one of its own subfolder tree", job->collection().name() );
+      return;
+    }
+
+    targetCollection = targetCollection.parentCollection();
   }
 }
 

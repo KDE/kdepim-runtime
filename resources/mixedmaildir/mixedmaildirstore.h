@@ -36,6 +36,8 @@ class MixedMaildirStore : public Akonadi::FileStore::AbstractLocalStore
     void setTopLevelCollection( const Akonadi::Collection &collection );
     void processJob( Akonadi::FileStore::Job *job );
 
+    void checkCollectionMove( Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText ) const;
+
     void checkItemCreate( Akonadi::FileStore::ItemCreateJob *job, int &errorCode, QString &errorText ) const;
 
     void checkItemModify( Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText ) const;
