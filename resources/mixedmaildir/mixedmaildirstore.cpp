@@ -1397,6 +1397,7 @@ void MixedMaildirStore::setTopLevelCollection( const Akonadi::Collection &collec
   CachePolicy cachePolicy;
   cachePolicy.setInheritFromParent( false );
   cachePolicy.setLocalParts( QStringList() << MessagePart::Header );
+  cachePolicy.setSyncOnDemand( true );
 
   Collection modifiedCollection = collection;
   modifiedCollection.setContentMimeTypes( contentMimeTypes );
