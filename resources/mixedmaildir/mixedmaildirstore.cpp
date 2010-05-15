@@ -556,9 +556,10 @@ bool MixedMaildirStore::Private::visit( CollectionFetchJob *job )
   if ( job->type() == CollectionFetchJob::Base ) {
     collection.setName( collection.remoteId() );
     if ( folderType == MBoxFolder ) {
+      MBoxPtr mbox;
       MBoxHash::const_iterator findIt = mMBoxes.constFind( path );
       if ( findIt == mMBoxes.constEnd() ) {
-        MBoxPtr mbox( new MBoxContext );
+        mbox = MBoxPtr( new MBoxContext );
         if ( !mbox->load( path ) ) {
           errorText = i18nc( "@info:status", "Failed to load MBox folder %1", path );
           kError() << errorText << "collection=" << collection;
@@ -567,10 +568,12 @@ bool MixedMaildirStore::Private::visit( CollectionFetchJob *job )
         }
 
         mbox->mCollection = collection;
-        findIt = mMBoxes.insert( path, mbox );
+        mMBoxes.insert( path, mbox );
+      } else {
+        mbox = findIt.value();
       }
 
-      fillMBoxCollectionDetails( findIt.value(), collection );
+      fillMBoxCollectionDetails( mbox, collection );
     } else {
       const Maildir md( path, folderType == TopLevelFolder );
       fillMaildirCollectionDetails( md, collection );
@@ -1076,6 +1079,8 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
 
 bool MixedMaildirStore::Private::visit( StoreCompactJob *job )
 {
+  Q_UNUSED( job );
+
   MBoxHash::const_iterator it    = mMBoxes.constBegin();
   MBoxHash::const_iterator endIt = mMBoxes.constEnd();
   for ( ; it != endIt; ++it ) {
