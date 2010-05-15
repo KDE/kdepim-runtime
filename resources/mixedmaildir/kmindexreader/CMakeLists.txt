@@ -7,12 +7,14 @@ add_subdirectory(tests)
 
 ########### next target ###############
 
-set(kmindexreader_LIB_SRCS kmindexreader.cpp)
+set(kmindexreader_LIB_SRCS
+ kmindexreader.cpp
+ messagestatus.cpp
+)
 
 kde4_add_library(kmindexreader SHARED ${kmindexreader_LIB_SRCS})
 
 target_link_libraries(kmindexreader
-    messagecore
     ${KDE4_KDECORE_LIBS}
 )
 
