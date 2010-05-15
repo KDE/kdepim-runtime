@@ -86,6 +86,10 @@ public:
         MsgTagPart = 19
     };
 
+    bool statusByOffset( quint64 offset, MessageStatus &status ) const;
+
+    bool statusByFileName( const QString &fileName, MessageStatus &status ) const;
+
 private:
 
 
@@ -116,6 +120,8 @@ private:
 
     /** list of index entries or messages */
     QList<KMIndexMsgPrivate*> mMsgList;
+    QHash<QString, KMIndexMsgPrivate*> mMsgByFileName;
+    QHash<quint64, KMIndexMsgPrivate*> mMsgByOffset;
     friend class TestIdxReader;
 };
 
