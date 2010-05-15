@@ -21,6 +21,8 @@
 #ifndef KMINDEXREADER_H
 #define KMINDEXREADER_H
 
+#include "kmindexreader_export.h"
+
 #include <messagecore/messagestatus.h>
 using KPIM::MessageStatus;
 
@@ -42,10 +44,10 @@ class KMIndexMsgPrivate;
  * It uses old kmfolderindex code, authors attributed as appropriate.
  * @author Casey Link <unnamedrambler@gmail.com>
  */
-class KMIndexReader {
+class KMINDEXREADER_EXPORT KMIndexReader {
 public:
     KMIndexReader ( const QString &indexFile );
-//   ~KMIndexReader() {}
+   ~KMIndexReader();
 
     bool error() const;
 

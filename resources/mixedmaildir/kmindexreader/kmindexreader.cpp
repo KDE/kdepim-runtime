@@ -184,6 +184,10 @@ KMIndexReader::KMIndexReader(const QString& indexFile)
   mFp = fdopen(mIndexFile.handle(), "r");
 }
 
+KMIndexReader::~KMIndexReader()
+{
+}
+
 bool KMIndexReader::error() const
 {
   return mError;
