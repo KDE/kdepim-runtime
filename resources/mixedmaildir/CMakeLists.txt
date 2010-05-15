@@ -12,6 +12,7 @@ include_directories(
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 add_subdirectory(kmindexreader)
+add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5254) # TODO get our own debug area
 
 ########### next target ###############
 

@@ -253,7 +253,7 @@ void MixedMaildirStore::Private::fillIndexCollectionDetails( const QString &path
   const QFileInfo fileInfo( dirInfo.dir(), QString::fromUtf8( ".%1.index" ).arg( dirInfo.fileName() ) );
 
   if ( !fileInfo.exists() || !fileInfo.isReadable() ) {
-    kDebug() << "No index file" << fileInfo.absoluteFilePath() << "or not readable";
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "No index file" << fileInfo.absoluteFilePath() << "or not readable";
     return;
   }
 
@@ -382,7 +382,7 @@ void MixedMaildirStore::Private::listCollection( const Maildir &md, const Collec
 
 bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeBody, Item &item ) const
 {
-//  kDebug() << "Filling item" << item.remoteId() << "from MBox: includeBody=" << includeBody;
+//  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Filling item" << item.remoteId() << "from MBox: includeBody=" << includeBody;
   KMime::Message *message = 0;
   if ( includeBody ) {
     bool ok = false;
@@ -407,7 +407,7 @@ bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeBody, Item
 
 bool MixedMaildirStore::Private::fillItem( const Maildir &md, bool includeBody, Item &item ) const
 {
-//  kDebug() << "Filling item" << item.remoteId() << "from Maildir: includeBody=" << includeBody;
+//  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Filling item" << item.remoteId() << "from Maildir: includeBody=" << includeBody;
   KMime::Message::Ptr messagePtr( new KMime::Message() );
 
   if ( includeBody ) {
@@ -896,8 +896,9 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
     return false;
   }
 
-//   kDebug() << "sourceCollection" << sourceCollection.remoteId()
-//            << "sourcePath=" << sourcePath << "sourceType=" << sourceFolderType;
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "sourceCollection" << sourceCollection.remoteId()
+//                                    << "sourcePath=" << sourcePath
+//                                    << "sourceType=" << sourceFolderType;
 
   QString targetPath;
   const Collection targetCollection = job->targetParent();
@@ -910,13 +911,14 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
     return false;
   }
 
-//   kDebug() << "targetCollection" << targetCollection.remoteId()
-//            << "targetPath=" << targetPath << "targetType=" << targetFolderType;
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "targetCollection" << targetCollection.remoteId()
+//                                    << "targetPath=" << targetPath
+//                                    << "targetType=" << targetFolderType;
 
   Item item = job->item();
 
   if ( sourceFolderType == MBoxFolder ) {
-/*    kDebug() << "source is MBox";*/
+/*    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "source is MBox";*/
     bool ok= false;
     quint64 offset = item.remoteId().toULongLong( &ok );
     if ( !ok ) {
@@ -956,7 +958,7 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
     }
 
     if ( targetFolderType == MBoxFolder ) {
-/*      kDebug() << "target is MBox";*/
+/*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is MBox";*/
       MBoxPtr targetMBox;
       MBoxHash::const_iterator findIt = mMBoxes.constFind( targetPath );
       if ( findIt == mMBoxes.constEnd() ) {
@@ -994,7 +996,7 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
 
       item.setRemoteId( QString::number( remoteId ) );
     } else {
-/*      kDebug() << "target is Maildir";*/
+/*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is Maildir";*/
       Maildir targetMd( targetPath, false );
 
       const QString remoteId = targetMd.addEntry( mbox->readRawEntry( offset ) );
@@ -1012,11 +1014,11 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
     mbox->mCollection = sourceCollection;
     mbox->deleteEntry( offset );
   } else {
-/*    kDebug() << "source is Maildir";*/
+/*    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "source is Maildir";*/
     Maildir sourceMd( sourcePath, false );
 
     if ( targetFolderType == MBoxFolder ) {
-      kDebug() << "target is MBox";
+/*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is MBox";*/
       if ( !item.payload<KMime::Message::Ptr>() ) {
         if ( !fillItem( sourceMd, true, item ) ) {
           errorText = i18nc( "@info:status", "Cannot move email from folder %1",
@@ -1056,7 +1058,7 @@ bool MixedMaildirStore::Private::visit( ItemMoveJob *job )
       mbox->save();
       item.setRemoteId( QString::number( remoteId ) );
     } else {
-/*      kDebug() << "target is Maildir";*/
+/*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is Maildir";*/
       Maildir targetMd( targetPath, false );
 
       const QString remoteId = sourceMd.moveEntryTo( item.remoteId(), targetMd );

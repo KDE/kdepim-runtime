@@ -268,7 +268,7 @@ void MixedMaildirResource::collectionChanged(const Collection & collection, cons
 
 void MixedMaildirResource::collectionMoved( const Collection &collection, const Collection &source, const Collection &dest )
 {
-  kDebug() << collection << source << dest;
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << collection << source << dest;
 
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
@@ -421,7 +421,8 @@ void MixedMaildirResource::itemChangedResult( KJob *job )
   // remoteId (Maildir items have strings with non-numeral characters)
   // the store can modify Maildir items but MBox requires append new + delete old
   bool ok = false;
-  if ( remoteId.toULongLong( &ok ) >= 0 && ok ) {
+  remoteId.toULongLong( &ok );
+  if ( ok ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
 }
@@ -445,7 +446,8 @@ void MixedMaildirResource::itemMovedResult( KJob *job )
   // only schedule compact if the delete item is from an MBox, i.e. has a numerical
   // remoteId (Maildir items have strings with non-numeral characters)
   bool ok = false;
-  if ( remoteId.toULongLong( &ok ) >= 0 && ok ) {
+  remoteId.toULongLong( &ok );
+  if ( ok ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
 }
@@ -469,7 +471,8 @@ void MixedMaildirResource::itemRemovedResult( KJob *job )
   // only schedule compact if the delete item is from an MBox, i.e. has a numerical
   // remoteId (Maildir items have strings with non-numeral characters)
   bool ok = false;
-  if ( remoteId.toULongLong( &ok ) >= 0 && ok ) {
+  remoteId.toULongLong( &ok );
+  if ( ok ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
 }
@@ -536,6 +539,8 @@ void MixedMaildirResource::collectionRemovedResult( KJob *job )
 
 void MixedMaildirResource::compactStore( const QVariant &arg )
 {
+  Q_UNUSED( arg );
+
   FileStore::StoreCompactJob *job = mStore->compactStore();
   connect( job, SIGNAL( result( KJob* ) ), SLOT( compactStoreResult( KJob* ) ) );
 }
@@ -553,7 +558,7 @@ void MixedMaildirResource::compactStoreResult( KJob *job )
   Q_ASSERT( compactJob != 0 );
 
   const Item::List items = compactJob->changedItems();
-  kDebug() << "Compacting store resulted in" << items.count() << "changed items";
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Compacting store resulted in" << items.count() << "changed items";
 
   // TODO this has to be done asynchronous
   Q_FOREACH( const Item &item, items ) {
