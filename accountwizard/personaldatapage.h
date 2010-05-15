@@ -22,6 +22,8 @@
 #define PERSONALDATA_H
 
 #include "page.h"
+#include "setupmanager.h"
+#include "dialog.h"
 
 #include "ui_personaldatapage.h"
 
@@ -31,7 +33,7 @@ class PersonalDataPage : public Page
 {
   Q_OBJECT
   public:
-    explicit PersonalDataPage( KAssistantDialog* parent = 0 );
+    explicit PersonalDataPage( Dialog* parent = 0 );
 
     virtual void leavePageNext();
     virtual void leavePageNextRequested();
@@ -46,6 +48,7 @@ class PersonalDataPage : public Page
   private:
     Ui::PersonalDataPage ui;
     Ispdb* mIspdb;
+    SetupManager *mSetupManager;
 };
 
 #endif

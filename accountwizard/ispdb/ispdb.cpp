@@ -135,7 +135,7 @@ server Ispdb::createServer( const QDomElement& n )
             if ( f.tagName() == "hostname" )
                 s.hostname = replacePlaceholders( f.text() );
             else if ( f.tagName() == "port" )
-                s.port = f.text();
+                s.port = f.text().toInt();
             else if ( f.tagName() == "socketType" ) {
                 if ( f.text() == "plain" )
                     s.socketType = Plain;

@@ -31,16 +31,17 @@
 #include <klocalizedstring.h>
 #include <kross/core/action.h>
 #include <kdebug.h>
+#include <kmessagebox.h>
 #include "setuppage.h"
 
 Dialog::Dialog(QWidget* parent) :
   KAssistantDialog( parent )
 {
-  SetupManager *setupManager = new SetupManager( this );
+  mSetupManager = new SetupManager( this );
   ServerTest *serverTest = new ServerTest( this );
   Kross::Action* action = new Kross::Action( this, "AccountWizard" );
   action->addQObject( this, QLatin1String( "Dialog" ) );
-  action->addQObject( setupManager, QLatin1String( "SetupManager" ) );
+  action->addQObject( mSetupManager, QLatin1String( "SetupManager" ) );
   action->addQObject( serverTest, QLatin1String( "ServerTest" ) );
 
   if ( Global::assistant().isEmpty() ) {
@@ -69,7 +70,7 @@ Dialog::Dialog(QWidget* parent) :
 
   SetupPage *setupPage = new SetupPage( this );
   mLastPage = addPage( setupPage, i18n( "Setting up Account" )  );
-  setupManager->setSetupPage( setupPage );
+  mSetupManager->setSetupPage( setupPage );
 
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   page->enterPageNext();
@@ -151,7 +152,14 @@ void Dialog::slotGhnsWanted()
   Q_ASSERT( mProviderPage );
   setAppropriate( mProviderPage, true );
   setCurrentPage( mProviderPage );
+#else 
+  KMessageBox::error( this, i18n("Sorry, you need KDE 4.5 for this....") );
 #endif
+}
+
+SetupManager* Dialog::setupManager()
+{
+  return mSetupManager;
 }
 
 #include "dialog.moc"

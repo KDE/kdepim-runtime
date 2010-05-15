@@ -104,7 +104,7 @@ private:
 
 struct server {
     QString hostname;
-    QString port;
+    int port;
     Ispdb::socketType socketType;
     QString username;
     Ispdb::authType authentication;

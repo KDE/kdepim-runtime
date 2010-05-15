@@ -20,14 +20,16 @@
 
 #include "personaldatapage.h"
 #include "global.h"
+#include "dialog.h"
+#include "transport.h"
 #include "ispdb/ispdb.h"
 
 #include <kpimutils/email.h>
 
 #include <KDebug>
 
-PersonalDataPage::PersonalDataPage(KAssistantDialog* parent) :
-  Page( parent )
+PersonalDataPage::PersonalDataPage(Dialog* parent) :
+  Page( parent ), mSetupManager( parent->setupManager() )
 {
   ui.setupUi( this );
   connect( ui.emailEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
@@ -67,6 +69,35 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
 
   if ( ok ) {
     // configure the stuff 
+    if ( mIspdb->smtpServers().count() > 0 ) {
+      server s = mIspdb->smtpServers().first(); // should be ok.
+      kDebug() << "Configuring transport for" << s.hostname;
+
+      QObject* object = mSetupManager->createTransport("smtp");
+      Transport* t = qobject_cast<Transport*>( object ); 
+      t->setName( mIspdb->name( Ispdb::Long ) );
+      t->setHost( s.hostname );
+      t->setPort( s.port );
+      t->setUsername( s.username );
+      t->setPassword( ui.passwordEdit->text() );
+      switch (s.authentication) {
+        case Ispdb::Cleartext: t->setEncryption( "clear" ); break;
+        case Ispdb::Secure: t->setEncryption( "plain" ); break;
+        case Ispdb::NTLM: t->setEncryption( "ntlm" ); break;
+        case Ispdb::GSSAPI: t->setEncryption( "gssapi" ); break;
+        case Ispdb::ClientIP: break;
+        case Ispdb::None: break;
+        default: break;
+      }
+      switch (s.socketType) {
+        case Ispdb::Plain: t->setAuthenticationType( "none" );break;
+        case Ispdb::SSL: t->setAuthenticationType( "ssl" );break;
+        case Ispdb::StartTLS: t->setAuthenticationType( "tls" );break;
+        default: break;
+      }
+    } else
+      kDebug() << "No transport to be created....";
+
     emit leavePageNextOk();  // go to the next page
   } else {
     emit manualWanted( true );     // enable the manual page
