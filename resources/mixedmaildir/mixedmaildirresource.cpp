@@ -78,6 +78,7 @@ MixedMaildirResource::MixedMaildirResource( const QString &id )
 
   if ( ensureSaneConfiguration() ) {
     mStore->setPath( Settings::self()->path() );
+    setName( mStore->topLevelCollection().name() );
   }
 }
 
@@ -101,6 +102,7 @@ void MixedMaildirResource::configure( WId windowId )
   }
   if ( dlg.exec() ) {
     mStore->setPath( Settings::self()->path() );
+    setName( mStore->topLevelCollection().name() );
     emit configurationDialogAccepted();
   } else {
     emit configurationDialogRejected();
@@ -193,6 +195,8 @@ void MixedMaildirResource::retrieveCollections()
 
   FileStore::CollectionFetchJob *job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::Recursive );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( retrieveCollectionsResult( KJob* ) ) );
+
+  status( Running, i18nc( "@info:status", "Synchronizing email folders" ) );
 }
 
 void MixedMaildirResource::retrieveItems( const Akonadi::Collection & col )
@@ -206,6 +210,8 @@ void MixedMaildirResource::retrieveItems( const Akonadi::Collection & col )
 
   FileStore::ItemFetchJob *job = mStore->fetchItems( col );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( retrieveItemsResult( KJob* ) ) );
+
+  status( Running, i18nc( "@info:status", "Synchronizing email folder %1", col.name() ) );
 }
 
 bool MixedMaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
