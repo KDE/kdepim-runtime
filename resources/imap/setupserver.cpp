@@ -548,19 +548,9 @@ void SetupServer::slotManageSubscriptions()
   account.setName( m_ui->imapServer->text() + '/' + m_ui->userName->text() );
   account.setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
 
-  switch ( m_ui->safeImapGroup->checkedId() ) {
-  case 1:
-    account.setEncryptionMode( KIMAP::LoginJob::Unencrypted );
-    break;
-  case 2:
-    account.setEncryptionMode( KIMAP::LoginJob::AnySslVersion );
-    break;
-  case 3:
-    account.setEncryptionMode( KIMAP::LoginJob::TlsV1 );
-    break;
-  default:
-    kFatal("Shouldn't happen...");
-  }
+  account.setEncryptionMode(
+    static_cast<KIMAP::LoginJob::EncryptionMode>( m_ui->safeImapGroup->checkedId() )
+  );
 
   account.setAuthenticationMode( getCurrentAuthMode( m_ui->authenticationCombo ) );
 
