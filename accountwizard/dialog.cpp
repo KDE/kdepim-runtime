@@ -19,6 +19,7 @@
 */
 
 #include "dialog.h"
+#include "personaldatapage.h"
 #include "providerpage.h"
 #include "typepage.h"
 #include "loadpage.h"
@@ -43,24 +44,28 @@ Dialog::Dialog(QWidget* parent) :
   action->addQObject( serverTest, QLatin1String( "ServerTest" ) );
 
   if ( Global::assistant().isEmpty() ) {
-#if KDE_IS_VERSION( 4, 4, 50 )
-    ProviderPage *ppage = new ProviderPage( this );
-    connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
-    connect( ppage->advancedButton(), SIGNAL( clicked() ), SLOT( slotAdvancedWanted() ) );
-    addPage( ppage, i18n( "Select Provider" ) );
-#endif
+    PersonalDataPage *pdpage = new PersonalDataPage( this );
+    addPage( pdpage, i18n( "Provide personal data" ) );
+    connect( pdpage, SIGNAL( manualWanted( bool ) ), SLOT( slotManualConfigWanted( bool ) ) );
 
     TypePage* typePage = new TypePage( this );
     connect( typePage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     mTypePage = addPage( typePage, i18n( "Select Account Type" ) );
-#if KDE_IS_VERSION( 4, 4, 50 )
     setAppropriate( mTypePage, false );
+
+#if KDE_IS_VERSION( 4, 4, 50 )
+    ProviderPage *ppage = new ProviderPage( this );
+    connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
+    connect( ppage->advancedButton(), SIGNAL( clicked() ), SLOT( slotAdvancedWanted() ) );
+    mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
+    setAppropriate( mProviderPage, false );
 #endif
   }
 
   LoadPage *loadPage = new LoadPage( this );
   loadPage->setAction( action );
-  addPage( loadPage, i18n( "Loading Assistant" ) );
+  mLoadPage = addPage( loadPage, i18n( "Loading Assistant" ) );
+  setAppropriate( mLoadPage, false );
 
   SetupPage *setupPage = new SetupPage( this );
   mLastPage = addPage( setupPage, i18n( "Setting up Account" )  );
@@ -133,11 +138,18 @@ QObject* Dialog::addPage(const QString& uiFile, const QString &title )
   return page;
 }
 
+void Dialog::slotManualConfigWanted( bool show )
+{
+  Q_ASSERT( mTypePage );
+  setAppropriate( mTypePage, show );
+  setAppropriate( mLoadPage, show );
+}
+
 void Dialog::slotAdvancedWanted() 
 {
   Q_ASSERT( mTypePage );
   setAppropriate( mTypePage, true );
-  setCurrentPage( mTypePage ); // avoid the leavePage magic in the provider page
+  //setCurrentPage( mTypePage ); // avoid the leavePage magic in the provider page
 }
 
 #include "dialog.moc"

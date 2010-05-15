@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2010 Tom Albers <toma@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,41 +18,33 @@
     02110-1301, USA.
 */
 
-#ifndef DIALOG_H
-#define DIALOG_H
+#ifndef PERSONALDATA_H
+#define PERSONALDATA_H
 
-#include <kassistantdialog.h>
+#include "page.h"
 
-class Page;
-class TypePage;
+#include "ui_personaldatapage.h"
 
-class Dialog : public KAssistantDialog
+class Ispdb;
+
+class PersonalDataPage : public Page
 {
   Q_OBJECT
   public:
-    explicit Dialog( QWidget *parent = 0 );
+    explicit PersonalDataPage( KAssistantDialog* parent = 0 );
 
-    /* reimpl */ void next();
-    /* reimpl */ void back();
-
-  public slots:
-    Q_SCRIPTABLE QObject* addPage( const QString &uiFile, const QString &title );
+    virtual void leavePageNext();
+    virtual void leavePageNextRequested();
 
   private slots:
-    void slotNextPage();
-    void slotAdvancedWanted();
-    void slotManualConfigWanted( bool );
-    void slotNextOk();
-    void slotBackOk();
+    void ispdbSearchFinished( bool ok );
+
+  signals:
+    void manualWanted( bool );
 
   private:
-    KPageWidgetItem* addPage( Page* page, const QString &title );
-
-  private:
-    KPageWidgetItem* mLastPage;
-    KPageWidgetItem* mProviderPage;
-    KPageWidgetItem* mTypePage;
-    KPageWidgetItem* mLoadPage;
+    Ui::PersonalDataPage ui;
+    Ispdb* mIspdb;
 };
 
 #endif

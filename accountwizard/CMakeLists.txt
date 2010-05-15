@@ -16,6 +16,8 @@ set(accountwizard_srcs
   ldap.cpp
   identity.cpp
   servertest.cpp
+  personaldatapage.cpp
+  ispdb/ispdb.cpp
 )
 
 kde4_add_ui_files(accountwizard_srcs
@@ -23,6 +25,7 @@ kde4_add_ui_files(accountwizard_srcs
   typepage.ui
   loadpage.ui
   setuppage.ui
+  personaldatapage.ui
 )
 
 kde4_add_executable(accountwizard ${accountwizard_srcs})
@@ -34,6 +37,8 @@ target_link_libraries(accountwizard
   ${KDE4_KROSSUI_LIBS}
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KNEWSTUFF3_LIBS}
+  ${KDE4_KIO_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBRARY}
   ${KDEPIMLIBS_KPIMIDENTITIES_LIBRARY}
   ${QT_QTGUI_LIBRARY}
   ${QT_QTUITOOLS_LIBRARY}

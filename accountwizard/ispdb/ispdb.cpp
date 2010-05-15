@@ -68,6 +68,7 @@ void Ispdb::slotResult( KJob* job )
     if ( job->error() ) {
         kDebug() << "Fetching failed" << job->errorString();
         emit finished( false );
+        return;
     }
 
     //kDebug() << mData;
