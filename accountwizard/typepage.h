@@ -33,6 +33,10 @@ class TypePage : public Page
 
     virtual void leavePageNext();
     QTreeView *treeview() const;
+
+  signals:
+    void ghnsWanted();
+
   private slots:
     void selectionChanged();
   private:

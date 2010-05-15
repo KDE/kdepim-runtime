@@ -50,13 +50,13 @@ Dialog::Dialog(QWidget* parent) :
 
     TypePage* typePage = new TypePage( this );
     connect( typePage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
+    connect( typePage, SIGNAL( ghnsWanted() ), SLOT( slotGhnsWanted() ) );
     mTypePage = addPage( typePage, i18n( "Select Account Type" ) );
     setAppropriate( mTypePage, false );
 
 #if KDE_IS_VERSION( 4, 4, 50 )
     ProviderPage *ppage = new ProviderPage( this );
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
-    connect( ppage->advancedButton(), SIGNAL( clicked() ), SLOT( slotAdvancedWanted() ) );
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
     setAppropriate( mProviderPage, false );
 #endif
@@ -145,11 +145,13 @@ void Dialog::slotManualConfigWanted( bool show )
   setAppropriate( mLoadPage, show );
 }
 
-void Dialog::slotAdvancedWanted() 
+void Dialog::slotGhnsWanted() 
 {
-  Q_ASSERT( mTypePage );
-  setAppropriate( mTypePage, true );
-  //setCurrentPage( mTypePage ); // avoid the leavePage magic in the provider page
+#if KDE_IS_VERSION( 4, 4, 50 )
+  Q_ASSERT( mProviderPage );
+  setAppropriate( mProviderPage, true );
+  setCurrentPage( mProviderPage );
+#endif
 }
 
 #include "dialog.moc"

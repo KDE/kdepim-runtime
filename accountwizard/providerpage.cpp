@@ -153,12 +153,6 @@ QTreeView *ProviderPage::treeview() const
   return ui.listView;
 }
 
-QPushButton *ProviderPage::advancedButton() const
-{
-  return ui.advancedButton;
-}
-
-
 void ProviderPage::leavePageNextRequested()
 {
   m_newPageWanted = true;
