@@ -74,4 +74,6 @@ function setup()
 connect( page.pop3Wizard.emailAddress, "textChanged(QString)", this, "emailChanged(QString)" );
 connect( page.pop3Wizard.incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
+page.pop3Wizard.emailAddress.text = SetupManager.email();
+page.pop3Wizard.password.text = SetupManager.password();
 validateInput();

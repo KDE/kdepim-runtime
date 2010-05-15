@@ -95,4 +95,9 @@ function setup()
 connect( page.kolabWizard.emailAddress, "textChanged(QString)", this, "emailChanged(QString)" );
 connect( page.kolabWizard.serverAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
+
+page.kolabWizard.emailAddress.text = SetupManager.email();
+page.kolabWizard.password.text = SetupManager.password();
+page.kolabWizard.fullName.text = SetupManager.name();
+
 validateInput();

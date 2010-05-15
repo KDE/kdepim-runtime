@@ -118,4 +118,7 @@ connect( ServerTest, "testResult(QString)", this, "testOk(QString)" );
 connect( page.imapWizard.emailAddress, "textChanged(QString)", this, "emailChanged(QString)" );
 connect( page.imapWizard.incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
+page.imapWizard.emailAddress.text = SetupManager.email();
+page.imapWizard.password.text = SetupManager.password();
+page.imapWizard.fullName.text = SetupManager.name();
 validateInput();
