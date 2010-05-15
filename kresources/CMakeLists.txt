@@ -1,6 +1,10 @@
 add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 include_directories (${kdepim-runtime_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${KDE4_INCLUDES} ${QT_QTDBUS_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/shared)
 
+add_definitions(-DWANT_DEPRECATED_KCAL_API)
+add_definitions(-DWANT_DEPRECATED_KABC_API)
+add_definitions(-DWANT_DEPRECATED_KRESOURCE_API)
+
 # include (ConfigureChecks.cmake)
 # configure_file (config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 

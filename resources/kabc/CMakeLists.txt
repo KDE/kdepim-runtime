@@ -1,3 +1,7 @@
+add_definitions(-DWANT_DEPRECATED_KCAL_API)
+add_definitions(-DWANT_DEPRECATED_KABC_API)
+add_definitions(-DWANT_DEPRECATED_KRESOURCE_API)
+
 include_directories(
   ${kdepim-runtime_SOURCE_DIR}
   ${QT_QTDBUS_INCLUDE_DIR}
