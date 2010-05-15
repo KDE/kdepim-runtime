@@ -153,6 +153,12 @@ QTreeView *ProviderPage::treeview() const
   return ui.listView;
 }
 
+void ProviderPage::leavePageBackRequested()
+{
+  emit leavePageBackOk();
+  emit ghnsNotWanted();  
+}
+
 void ProviderPage::leavePageNextRequested()
 {
   m_newPageWanted = true;

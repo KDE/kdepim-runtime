@@ -58,6 +58,7 @@ Dialog::Dialog(QWidget* parent) :
 #if KDE_IS_VERSION( 4, 4, 50 )
     ProviderPage *ppage = new ProviderPage( this );
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
+    connect( ppage, SIGNAL( ghnsNotWanted() ), SLOT( slotGhnsNotWanted() ) );
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
     setAppropriate( mProviderPage, false );
 #endif
@@ -154,6 +155,14 @@ void Dialog::slotGhnsWanted()
   setCurrentPage( mProviderPage );
 #else 
   KMessageBox::error( this, i18n("Sorry, you need KDE 4.5 for this....") );
+#endif
+}
+
+void Dialog::slotGhnsNotWanted() 
+{
+#if KDE_IS_VERSION( 4, 4, 50 )
+  Q_ASSERT( mProviderPage );
+  setAppropriate( mProviderPage, false );
 #endif
 }
 

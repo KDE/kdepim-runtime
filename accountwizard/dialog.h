@@ -44,6 +44,7 @@ class Dialog : public KAssistantDialog
   private slots:
     void slotNextPage();
     void slotGhnsWanted();
+    void slotGhnsNotWanted();
     void slotManualConfigWanted( bool );
     void slotNextOk();
     void slotBackOk();

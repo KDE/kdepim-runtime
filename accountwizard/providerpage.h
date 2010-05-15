@@ -47,8 +47,12 @@ class ProviderPage : public Page
 
     virtual void leavePageNext();
     virtual void leavePageNextRequested();
+    virtual void leavePageBackRequested();
 
     QTreeView *treeview() const;
+
+  signals:
+    void ghnsNotWanted();
 
   private slots:
     void fillModel( const KNS3::Entry::List& );
