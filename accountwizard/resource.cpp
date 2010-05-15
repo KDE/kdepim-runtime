@@ -63,6 +63,11 @@ void Resource::setOption( const QString &key, const QVariant &value )
   m_settings.insert( key, value );
 }
 
+void Resource::setName( const QString &name )
+{
+  m_name = name;
+}
+
 void Resource::create()
 {
   const AgentType type = AgentManager::self()->type( m_typeIdentifier );
@@ -108,6 +113,8 @@ void Resource::instanceCreateResult(KJob* job)
     }
 
     // configure resource
+    if ( !m_name.isEmpty() )
+      m_instance.setName( m_name );
     for ( QMap<QString, QVariant>::const_iterator it = m_settings.constBegin(); it != m_settings.constEnd(); ++it ) {
       kDebug() << "Setting up " << it.key() << " for agent " << m_instance.identifier();
       const QString methodName = QString::fromLatin1("set%1").arg( it.key() );

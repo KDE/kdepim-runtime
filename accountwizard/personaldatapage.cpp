@@ -113,7 +113,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
 
       QObject* object = mSetupManager->createResource("akonadi_imap_resource");
       Resource* t = qobject_cast<Resource*>( object ); 
-      // not possible? t->setOption( mIspdb->name( Ispdb::Long ) );
+      t->setName( mIspdb->name( Ispdb::Long ) );
       t->setOption( "ImapServer", s.hostname );
       t->setOption( "ImapPort", s.port );
       t->setOption( "UserName", s.username );
@@ -139,7 +139,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
 
       QObject* object = mSetupManager->createResource("akonadi_pop3_resource");
       Resource* t = qobject_cast<Resource*>( object ); 
-      // not possible? t->setOption( mIspdb->name( Ispdb::Long ) );
+      t->setName( mIspdb->name( Ispdb::Long ) );
       t->setOption( "Host", s.hostname );
       t->setOption( "Port", s.port );
       t->setOption( "Login", s.username );
