@@ -47,6 +47,10 @@ void PersonalDataPage::slotTextChanged()
 
 void PersonalDataPage::leavePageNext()
 {
+  mSetupManager->setName( ui.nameEdit->text() );
+  mSetupManager->setPassword( ui.passwordEdit->text() );
+  mSetupManager->setEmail( ui.emailEdit->text() );
+
   if ( ui.checkOnlineGroupBox->isChecked() ) {
     // since the user can go back and forth, explicitly disable the man page
     emit manualWanted( false );
