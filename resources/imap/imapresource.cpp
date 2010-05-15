@@ -1973,12 +1973,6 @@ void ImapResource::onExpungeCollectionFetchDone( KJob *job )
   changeProcessed();
 }
 
-// Make the method available to DBus
-void ImapResource::dump()
-{
-  ResourceBase::dump();
-}
-
 AKONADI_RESOURCE_MAIN( ImapResource )
 
 #include "imapresource.moc"

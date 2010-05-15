@@ -60,7 +60,6 @@ public Q_SLOTS:
   virtual void configure( WId windowId );
   // DBus methods
   void requestManualExpunge( qint64 collectionId );
-  void dump();
   void startIdle();
 
 protected Q_SLOTS:
