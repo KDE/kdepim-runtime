@@ -57,6 +57,7 @@ Dialog::Dialog(QWidget* parent) :
 
 #if KDE_IS_VERSION( 4, 4, 50 )
     ProviderPage *ppage = new ProviderPage( this );
+    connect( typePage, SIGNAL( ghnsWanted() ), ppage, SLOT(startFetchingData() ) );
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     connect( ppage, SIGNAL( ghnsNotWanted() ), SLOT( slotGhnsNotWanted() ) );
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );

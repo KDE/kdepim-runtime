@@ -54,6 +54,9 @@ class ProviderPage : public Page
   signals:
     void ghnsNotWanted();
 
+  public slots:
+    void startFetchingData();
+
   private slots:
     void fillModel( const KNS3::Entry::List& );
     void selectionChanged();

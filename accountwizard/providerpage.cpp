@@ -50,11 +50,15 @@ ProviderPage::ProviderPage(KAssistantDialog* parent) :
   connect( m_downloadManager, SIGNAL( entryStatusChanged( const KNS3::Entry& ) ),
            SLOT( providerStatusChanged( const KNS3::Entry& ) ) );
   m_downloadManager->setSearchOrder( KNS3::DownloadManager::Alphabetical );
-  m_downloadManager->search( 0, 100000 );
 
   connect( ui.listView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged()) );
 
   kDebug();
+}
+
+void ProviderPage::startFetchingData()
+{
+  m_downloadManager->search( 0, 100000 );
 }
 
 void ProviderPage::fillModel(  const KNS3::Entry::List& list )
