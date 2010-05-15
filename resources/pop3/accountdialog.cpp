@@ -189,8 +189,11 @@ void AccountDialog::loadSettings()
   intervalSpin->setValue( Settings::self()->intervalCheckInterval() );
   intervalSpin->setEnabled( Settings::self()->intervalCheckEnabled() );
 
-  int authopt = Settings::self()->authenticationMethod();
-  authCombo->setCurrentIndex( authCombo->findData( authopt ) );
+  const int authenticationMethod = Settings::self()->authenticationMethod();
+  authCombo->setCurrentIndex( authCombo->findData( authenticationMethod ) );
+  encryptionNone->setChecked( !Settings::self()->useSSL() && !Settings::self()->useTLS() );
+  encryptionSSL->setChecked( Settings::self()->useSSL() );
+  encryptionTLS->setChecked( Settings::self()->useTLS() );
 
   slotEnableLeaveOnServerDays( leaveOnServerDaysCheck->isEnabled() ?
                                Settings::self()->leaveOnServerDays() >= 1 : 0);
