@@ -21,21 +21,6 @@
 var page = Dialog.addPage( "pop3wizard.ui", "Personal Settings" );
 
 var userChangedServerAddress = false;
-function emailChanged( arg )
-{
-  validateInput();
-  if ( userChangedServerAddress == true ) {
-    return;
-  }
-
-  var pos = arg.indexOf( "@" );
-  if ( pos >= 0 && (pos + 1) < arg.length ) {
-    var server = arg.slice( pos + 1, arg.length );
-    page.pop3Wizard.incommingAddress.setText( server );
-  }
-
-  userChangedServerAddress = false;
-}
 
 function serverChanged( arg )
 {
@@ -49,7 +34,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.pop3Wizard.incommingAddress.text == "" || page.pop3Wizard.emailAddress.text == "" ) {
+  if ( page.pop3Wizard.incommingAddress.text == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -60,20 +45,17 @@ function setup()
 {
   var pop3Res = SetupManager.createResource( "akonadi_pop3_resource" );
   pop3Res.setOption( "Host", page.pop3Wizard.incommingAddress.text );
-  pop3Res.setOption( "Login", page.pop3Wizard.emailAddress.text );
-  //pop3Res.setOption( "Password", page.pop3Wizard.password.text );
+  pop3Res.setOption( "Login", page.pop3Wizard.userName.text );
+  //pop3Res.setOption( "Password", SetupManager.password() );
 
   var smtp = SetupManager.createTransport( "smtp" );
-  smtp.setName( page.pop3Wizard.outgoingAddress.text );
+  smtp.setName( SetupManager.name() );
   smtp.setHost( page.pop3Wizard.outgoingAddress.text );
   smtp.setEncryption( "NONE" );
 
   SetupManager.execute();
 }
 
-connect( page.pop3Wizard.emailAddress, "textChanged(QString)", this, "emailChanged(QString)" );
 connect( page.pop3Wizard.incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
-page.pop3Wizard.emailAddress.text = SetupManager.email();
-page.pop3Wizard.password.text = SetupManager.password();
 validateInput();

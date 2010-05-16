@@ -7,23 +7,10 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>131</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -31,10 +18,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>&amp;Email Address:</string>
-         </property>
-         <property name="buddy">
-          <cstring>emailAddress</cstring>
+          <string>Username</string>
          </property>
         </widget>
        </item>
@@ -58,22 +42,12 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>&amp;Password:</string>
-         </property>
-         <property name="buddy">
-          <cstring>password</cstring>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="KLineEdit" name="emailAddress"/>
+        <widget class="KLineEdit" name="userName"/>
        </item>
        <item>
         <widget class="KLineEdit" name="incommingAddress"/>
@@ -82,13 +56,6 @@
         <widget class="KLineEdit" name="outgoingAddress">
          <property name="text">
           <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="KLineEdit" name="password">
-         <property name="passwordMode">
-          <bool>true</bool>
          </property>
         </widget>
        </item>
