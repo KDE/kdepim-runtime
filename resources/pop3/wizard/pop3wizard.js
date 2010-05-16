@@ -46,7 +46,7 @@ function setup()
   var pop3Res = SetupManager.createResource( "akonadi_pop3_resource" );
   pop3Res.setOption( "Host", page.pop3Wizard.incommingAddress.text );
   pop3Res.setOption( "Login", page.pop3Wizard.userName.text );
-  //pop3Res.setOption( "Password", SetupManager.password() );
+  pop3Res.setOption( "Password", SetupManager.password() );
 
   var smtp = SetupManager.createTransport( "smtp" );
   smtp.setName( SetupManager.name() );

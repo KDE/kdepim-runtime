@@ -21,7 +21,7 @@ endmacro(add_resource_iface)
 
 add_resource_iface( imap/imapresource.kcfg
                     org.kde.Akonadi.Imap.Settings ImapSettings )
-add_resource_iface( pop3/pop3resource.kcfg
+add_resource_iface( pop3/settings.kcfg
                     org.kde.Akonadi.POP3.Settings Pop3Settings )
 add_resource_iface( mbox/mboxresource.kcfg
                     org.kde.Akonadi.Mbox.Settings MboxSettings )

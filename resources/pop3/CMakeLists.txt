@@ -29,6 +29,7 @@ set( pop3resource_SRCS
   pop3resource.cpp
   accountdialog.cpp
   jobs.cpp
+  settings.cpp
 )
 
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
@@ -36,8 +37,8 @@ add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
 install( FILES pop3resource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 kde4_add_ui_files( pop3resource_SRCS popsettings.ui)
-kde4_add_kcfg_files(pop3resource_SRCS settings.kcfgc)
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/pop3resource.kcfg org.kde.Akonadi.POP3.Settings)
+kde4_add_kcfg_files(pop3resource_SRCS settingsbase.kcfgc)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfg org.kde.Akonadi.POP3.Settings)
 qt4_add_dbus_adaptor(pop3resource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml settings.h Settings
 )
@@ -56,7 +57,7 @@ target_link_libraries( akonadi_pop3_resource
   ${KDE4_MAILTRANSPORT_LIBRARY}
 )
 
-add_subdirectory(tests)
+add_subdirectory( tests )
 add_subdirectory( wizard )
 
 install(TARGETS akonadi_pop3_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
