@@ -29,7 +29,7 @@
 
 class QDir;
 
-class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
   Q_OBJECT
 
@@ -54,6 +54,11 @@ class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
+
+    virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                            const Akonadi::Collection &collectionDestination );
+    virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
+                                  const Akonadi::Collection &collectionDestination );
 
   private:
     Akonadi::Collection::List createCollectionsForDirectory( const QDir &parentDirectory,
