@@ -117,9 +117,9 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setOption( "ImapServer", s.hostname );
       t->setOption( "ImapPort", s.port );
       t->setOption( "UserName", s.username );
-      // not possible? t->setPassword( ui.passwordEdit->text() );
+      t->setOption( "Password", ui.passwordEdit->text() );
       switch (s.authentication) {
-        case Ispdb::Plain: t->setOption("Authentication", 7 ); break;
+        case Ispdb::Plain: t->setOption("Authentication", 0 ); break;
         case Ispdb::CramMD5: t->setOption("Authentication", 3 ); break;
         case Ispdb::NTLM: t->setOption("Authentication", 5 ); break;
         case Ispdb::GSSAPI: t->setOption("Authentication", 6 ); break;
@@ -143,7 +143,8 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setOption( "Host", s.hostname );
       t->setOption( "Port", s.port );
       t->setOption( "Login", s.username );
-      // not possible? t->setPassword( ui.passwordEdit->text() );
+      // not possible in pop3 yet. ping tmcguire if you read this.
+      // t->setOption( "Password", ui.passwordEdit->text() );
       switch (s.authentication) {
         case Ispdb::Plain: t->setOption("AuthenticationMethod", 1 ); break;
         case Ispdb::CramMD5: t->setOption("AuthenticationMethod", 2 ); break;
