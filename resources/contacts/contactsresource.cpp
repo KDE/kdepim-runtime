@@ -414,11 +414,35 @@ void ContactsResource::collectionRemoved( const Akonadi::Collection &collection 
   }
 
   if ( !removeDirectory( directoryForCollection( collection ) ) ) {
-    cancelTask( i18n("Unable to delete folder '%1'.", collection.name() ) );
+    cancelTask( i18n( "Unable to delete folder '%1'.", collection.name() ) );
     return;
   }
 
   changeProcessed();
+}
+
+void ContactsResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                                  const Akonadi::Collection &collectionDestination )
+{
+  const QString sourceFileName = directoryForCollection( collectionSource ) + QDir::separator() + item.remoteId();
+  const QString targetFileName = directoryForCollection( collectionDestination ) + QDir::separator() + item.remoteId();
+
+  if ( QFile::rename( sourceFileName, targetFileName ) )
+    changeProcessed();
+  else
+    cancelTask( i18n( "Unable to move file '%1' to '%2', '%2' already exists.", sourceFileName, targetFileName ) );
+}
+
+void ContactsResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
+                                        const Akonadi::Collection &collectionDestination )
+{
+  const QString sourceDirectoryName = directoryForCollection( collectionSource ) + QDir::separator() + collection.remoteId();
+  const QString targetDirectoryName = directoryForCollection( collectionDestination ) + QDir::separator() + collection.remoteId();
+
+  if ( QFile::rename( sourceDirectoryName, targetDirectoryName ) )
+    changeProcessed();
+  else
+    cancelTask( i18n( "Unable to move directory '%1' to '%2', '%2' already exists.", sourceDirectoryName, targetDirectoryName ) );
 }
 
 QString ContactsResource::baseDirectoryPath() const
