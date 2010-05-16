@@ -37,6 +37,12 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
   connect( ui.nameEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
 }
 
+void PersonalDataPage::setHideOptionInternetSearch( bool hide )
+{
+  ui.checkOnlineGroupBox->setChecked( !hide );
+  ui.checkOnlineGroupBox->setVisible( !hide );
+}
+
 void PersonalDataPage::slotTextChanged() 
 {
   // Ignore the password field, as that can be empty when auth is based on ip-address.

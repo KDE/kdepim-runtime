@@ -44,11 +44,15 @@ Dialog::Dialog(QWidget* parent) :
   action->addQObject( mSetupManager, QLatin1String( "SetupManager" ) );
   action->addQObject( serverTest, QLatin1String( "ServerTest" ) );
 
-  if ( Global::assistant().isEmpty() ) {
-    PersonalDataPage *pdpage = new PersonalDataPage( this );
-    addPage( pdpage, i18n( "Provide personal data" ) );
-    connect( pdpage, SIGNAL( manualWanted( bool ) ), SLOT( slotManualConfigWanted( bool ) ) );
+  // todo: dont ask these details based on a setting of the desktop file.
+  PersonalDataPage *pdpage = new PersonalDataPage( this );
+  addPage( pdpage, i18n( "Provide personal data" ) );
+  connect( pdpage, SIGNAL( manualWanted( bool ) ), SLOT( slotManualConfigWanted( bool ) ) );
+  if ( !Global::assistant().isEmpty() ) {
+    pdpage->setHideOptionInternetSearch( true );
+  }
 
+  if ( Global::assistant().isEmpty() ) {
     TypePage* typePage = new TypePage( this );
     connect( typePage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     connect( typePage, SIGNAL( ghnsWanted() ), SLOT( slotGhnsWanted() ) );
@@ -63,7 +67,7 @@ Dialog::Dialog(QWidget* parent) :
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
     setAppropriate( mProviderPage, false );
 #endif
-  }
+  } 
 
   LoadPage *loadPage = new LoadPage( this );
   loadPage->setAction( action );

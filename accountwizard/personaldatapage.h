@@ -34,6 +34,7 @@ class PersonalDataPage : public Page
   Q_OBJECT
   public:
     explicit PersonalDataPage( Dialog* parent = 0 );
+    void setHideOptionInternetSearch( bool );
 
     virtual void leavePageNext();
     virtual void leavePageNextRequested();
