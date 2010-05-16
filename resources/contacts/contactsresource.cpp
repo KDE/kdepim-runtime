@@ -51,6 +51,9 @@ ContactsResource::ContactsResource( const QString &id )
   mSupportedMimeTypes << KABC::Addressee::mimeType() << KABC::ContactGroup::mimeType() << Collection::mimeType();
 
   setName( i18n( "Personal Contacts" ) );
+
+  if ( Settings::self()->isConfigured() )
+    synchronize();
 }
 
 ContactsResource::~ContactsResource()
@@ -65,6 +68,7 @@ void ContactsResource::configure( WId windowId )
 {
   SettingsDialog dlg( windowId );
   if ( dlg.exec() ) {
+    Settings::self()->setIsConfigured( true );
     Settings::self()->writeConfig();
 
     clearCache();
