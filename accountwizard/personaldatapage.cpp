@@ -149,8 +149,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setOption( "Host", s.hostname );
       t->setOption( "Port", s.port );
       t->setOption( "Login", s.username );
-      // not possible in pop3 yet. ping tmcguire if you read this.
-      // t->setOption( "Password", ui.passwordEdit->text() );
+      t->setOption( "Password", ui.passwordEdit->text() );
       switch (s.authentication) {
         case Ispdb::Plain: t->setOption("AuthenticationMethod", 1 ); break;
         case Ispdb::CramMD5: t->setOption("AuthenticationMethod", 2 ); break;
