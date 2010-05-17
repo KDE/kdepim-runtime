@@ -329,8 +329,10 @@ bool MixedMaildirResource::ensureDirExists()
       const QString message = i18nc( "@info:status", "Unable to create maildir '%1'.", Settings::self()->path() );
       kError() << message;
       status( Broken, message );
+      return false;
     }
   }
+  return true;
 }
 
 bool MixedMaildirResource::ensureSaneConfiguration()
