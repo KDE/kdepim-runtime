@@ -19,12 +19,12 @@
 */
 
 #include "kmailmigrator.h"
-#include "mixedtreeconverter.h"
 
 #include "imapsettings.h"
 #include "pop3settings.h"
 #include "mboxsettings.h"
 #include "maildirsettings.h"
+#include "mixedmaildirsettings.h"
 
 #include <Mailtransport/Transport>
 
@@ -124,16 +124,18 @@ void KMailMigrator::migrateLocalFolders()
   }
 
   const KConfigGroup cfgGroup( mConfig, "General" );
-  const QString localMaildirPath = cfgGroup.readPathEntry( "folders", QString() );
-  if ( localMaildirPath.isEmpty() ) {
+  const QString localMaildirDefaultPath = KStandardDirs::locateLocal( "data", QLatin1String( "kmail/mail" ) );
+  mLocalMaildirPath = cfgGroup.readPathEntry( "folders", localMaildirDefaultPath );
+  const QFileInfo fileInfo( mLocalMaildirPath );
+  if ( !fileInfo.exists() || !fileInfo.isDir() ) {
     migrationDone();
   } else {
-    kDebug() << localMaildirPath;
+    kDebug() << mLocalMaildirPath;
 
-    emit message( Info, i18n( "Migrating local folders in '%1'...", localMaildirPath ) );
-    mConverter = new MixedTreeConverter( this );
-    connect( mConverter, SIGNAL(conversionDone(QString)), SLOT(localFoldersConverted(QString)) );
-    mConverter->convert( localMaildirPath );
+    emit message( Info, i18nc( "@info:status", "Migrating local folders in '%1'...", mLocalMaildirPath ) );
+
+    createAgentInstance( "akonadi_mixedmaildir_resource", this,
+                         SLOT( localMaildirCreated( KJob * ) ) );
   }
 }
 
@@ -432,20 +434,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   migrationCompleted( instance );
 }
 
-void KMailMigrator::localFoldersConverted(const QString& errorMsg)
-{
-  disconnect( mConverter, SIGNAL(conversionDone(QString)), this, SLOT(localFoldersConverted(QString)) );
-  if ( !errorMsg.isEmpty() ) {
-    emit message( Error, i18n( "Failed to convert local folder tree: %1", errorMsg ) );
-    deleteLater();
-    return;
-  }
-  emit message( Success, i18n( "Converted local mixed-mode folder tree." ) );
-
-  createAgentInstance( "akonadi_maildir_resource", this, SLOT(localMaildirCreated(KJob*)) );
-}
-
-void KMailMigrator::localMaildirCreated(KJob* job)
+void KMailMigrator::localMaildirCreated( KJob *job )
 {
   if ( job->error() ) {
     emit message( Error, i18n( "Failed to resource for local folders: %1", job->errorText() ) );
@@ -455,16 +444,17 @@ void KMailMigrator::localMaildirCreated(KJob* job)
   emit message( Info, i18n( "Created local maildir resource." ) );
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
-  OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
+
+  OrgKdeAkonadiMixedMaildirSettingsInterface *iface = new OrgKdeAkonadiMixedMaildirSettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
     "/Settings", QDBusConnection::sessionBus(), this );
+
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
     return;
   }
 
-  const KConfigGroup cfgGroup( mConfig, "General" );
-  iface->setPath( cfgGroup.readPathEntry( "folders", QString() ) );
+  iface->setPath( mLocalMaildirPath );
 
   instance.setName( i18n("KMail Folders") );
   instance.reconfigure();

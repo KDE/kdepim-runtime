@@ -55,7 +55,6 @@ class KMailMigrator : public KMigratorBase
     void mboxAccountCreated( KJob *job );
     void maildirAccountCreated( KJob *job );
     void localMaildirCreated( KJob *job );
-    void localFoldersConverted( const QString &errorMsg );
 
   private:
     void migrateImapAccount( KJob *job, bool disconnected );
@@ -68,6 +67,7 @@ class KMailMigrator : public KMigratorBase
     KConfig *mConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
+    QString mLocalMaildirPath;
     typedef QStringList::iterator AccountIterator;
     AccountIterator mIt;
     MixedTreeConverter *mConverter;
