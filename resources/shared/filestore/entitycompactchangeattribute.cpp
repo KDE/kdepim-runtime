@@ -41,6 +41,7 @@ class EntityCompactChangeAttribute::Private
       }
 
       mRemoteId = other.mRemoteId;
+      return *this;
     }
 
   public:
