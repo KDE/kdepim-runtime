@@ -56,9 +56,12 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
     void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &dest );
     void collectionRemoved( const Akonadi::Collection &collection );
 
-  private Q_SLOTS:
-    void ensureDirExists();
+  private:
+    bool ensureDirExists();
     bool ensureSaneConfiguration();
+
+  private Q_SLOTS:
+    void reapplyConfiguration();
 
     void retrieveCollectionsResult( KJob *job );
     void retrieveItemsResult( KJob *job );

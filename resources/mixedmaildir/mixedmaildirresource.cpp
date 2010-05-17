@@ -63,8 +63,7 @@ MixedMaildirResource::MixedMaildirResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
-  connect( this, SIGNAL( reloadConfiguration() ), SLOT( ensureSaneConfiguration() ) );
-  connect( this, SIGNAL( reloadConfiguration() ), SLOT( ensureDirExists() ) );
+  connect( this, SIGNAL( reloadConfiguration() ), SLOT( reapplyConfiguration() ) );
 
   // We need to enable this here, otherwise we neither get the remote ID of the
   // parent collection when a collection changes, nor the full item when an item
@@ -108,8 +107,9 @@ void MixedMaildirResource::configure( WId windowId )
     emit configurationDialogRejected();
   }
 
-  ensureDirExists();
-  synchronizeCollectionTree();
+  if ( ensureDirExists() ) {
+    synchronizeCollectionTree();
+  }
 }
 
 void MixedMaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
@@ -321,7 +321,7 @@ void MixedMaildirResource::collectionRemoved( const Akonadi::Collection &collect
   connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionRemovedResult( KJob* ) ) );
 }
 
-void MixedMaildirResource::ensureDirExists()
+bool MixedMaildirResource::ensureDirExists()
 {
   QDir dir( Settings::self()->path() );
   if ( !dir.exists() ) {
@@ -342,6 +342,14 @@ bool MixedMaildirResource::ensureSaneConfiguration()
     return false;
   }
   return true;
+}
+
+void MixedMaildirResource::reapplyConfiguration()
+{
+  if ( ensureSaneConfiguration() && ensureDirExists() ) {
+    mStore->setPath( Settings::self()->path() );
+    synchronizeCollectionTree();
+  }
 }
 
 void MixedMaildirResource::retrieveCollectionsResult( KJob *job )
