@@ -23,7 +23,7 @@
 
 #include "kmindexreader_export.h"
 
-#include <messagecore/messagestatus.h>
+#include "messagestatus.h"
 using KPIM::MessageStatus;
 
 #include <QString>

@@ -28,7 +28,7 @@
 
 #include <KDebug>
 #include <kde_file.h>
-#include <messagecore/messagestatus.h>
+#include "messagestatus.h"
 using KPIM::MessageStatus;
 #include <QFile>
 
