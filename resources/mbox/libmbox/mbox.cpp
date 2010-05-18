@@ -182,7 +182,7 @@ bool MBox::load( const QString &fileName )
         // than we matched the separator of the first mail in the file.
         MsgEntryInfo info;
         info.offset = offs;
-        info.separatorSize = line.size();
+        info.separatorSize = prevSeparator.size();
 
         // There is always a blank line and a separator line between two emails.
         // Sometimes there are two '\n' characters added to the email (i.e. when
