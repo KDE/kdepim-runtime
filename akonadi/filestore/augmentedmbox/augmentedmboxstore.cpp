@@ -434,10 +434,10 @@ StoreCompactJob *AugmentedMBoxStore::compactStore()
 
 void AugmentedMBoxStore::Private::buildMailInfoMap()
 {
-  const QList<MsgInfo> msgInfoList = mMailBox->entryList( mDeleteOffsets );
-  foreach ( const MsgInfo &msgInfo, msgInfoList ) {
+  const QList<MsgEntryInfo> msgInfoList = mMailBox->entryList( mDeleteOffsets );
+  foreach ( const MsgEntryInfo &msgInfo, msgInfoList ) {
     MailInfo mailInfo;
-    mailInfo.offset = msgInfo.first;
+    mailInfo.offset = msgInfo.offset;
 
     mailInfo.headers = KMime::Message::Ptr( new KMime::Message() );
     mailInfo.headers->setHead( KMime::CRLFtoLF( mMailBox->readEntryHeaders( mailInfo.offset ) ) );
