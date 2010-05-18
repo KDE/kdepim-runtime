@@ -70,7 +70,7 @@ class MBoxContext
       return mMBox.load( fileName );
     }
 
-    QList<MsgInfo> entryList() const
+    QList<MsgEntryInfo> entryList() const
     {
       return mMBox.entryList();
     }
@@ -412,17 +412,17 @@ void MixedMaildirStore::Private::listCollection( const MBoxPtr &mbox, const Coll
 {
   const IndexReaderPtr indexReaderPtr = readMBoxIndex( mbox );
 
-  const QList<MsgInfo> entryList = mbox->entryList();
-  Q_FOREACH( const MsgInfo &entry, entryList ) {
+  const QList<MsgEntryInfo> entryList = mbox->entryList();
+  Q_FOREACH( const MsgEntryInfo &entry, entryList ) {
     Item item;
     item.setMimeType( KMime::Message::mimeType() );
-    item.setRemoteId( QString::number( entry.first ) );
+    item.setRemoteId( QString::number( entry.offset ) );
     item.setParentCollection( collection );
 
     if ( indexReaderPtr != 0 ) {
       // TODO get tags
       MessageStatus status;
-      if ( indexReaderPtr->statusByOffset( entry.first, status ) ) {
+      if ( indexReaderPtr->statusByOffset( entry.offset + entry.separatorSize, status ) ) {
         item.setFlags( status.getStatusFlags() );
       }
     }
