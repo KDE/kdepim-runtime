@@ -110,8 +110,8 @@ void MixedTreeConverter::convertMbox(const QString& path)
     emit conversionDone( i18n( "Unable to open mbox file at '%1'.", mboxBackupPath ) );
     return;
   }
-  foreach ( const MsgInfo &entry, mbox.entryList() ) {
-    if ( md.addEntry( mbox.readRawEntry( entry.first ) ).isEmpty() ) {
+  foreach ( const MsgEntryInfo &entry, mbox.entryList() ) {
+    if ( md.addEntry( mbox.readRawEntry( entry.offset ) ).isEmpty() ) {
       emit conversionDone( i18n( "Unable to add new message to maildir '%1'.", path ) );
       return;
     }
