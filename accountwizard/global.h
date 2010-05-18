@@ -31,6 +31,8 @@ namespace Global
   void setAssistant( const QString &assistant );
 
   QString assistantBasePath();
+
+  QString unpackAssistant( const QString&, const QString& );
 }
 
 #endif

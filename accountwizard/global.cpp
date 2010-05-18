@@ -24,6 +24,8 @@
 #include <KStandardDirs>
 #include <QtCore/qfileinfo.h>
 #include <QtCore/QDir>
+#include <kio/copyjob.h>
+#include <kio/netaccess.h>
 
 class GlobalPrivate
 {
@@ -46,7 +48,7 @@ void Global::setAssistant(const QString& assistant)
   if ( info.isAbsolute() ) {
     sInstance->assistant = assistant;
     return;
-  } 
+  }
 
   const QStringList list = KGlobal::dirs()->findAllResources(
     "data", QLatin1String( "akonadi/accountwizard/*.desktop" ),
@@ -81,4 +83,19 @@ QString Global::assistantBasePath()
   if ( info.isAbsolute() )
     return info.absolutePath() + QDir::separator();
   return QString();
+}
+
+QString Global::unpackAssistant( const QString& path, const QString& assistant )
+{
+  const KUrl file( "tar://" + path );
+  const QString dest = KStandardDirs::locateLocal("appdata", "/" );
+  KStandardDirs::makeDir( dest + file.fileName() );
+  KIO::Job* getJob = KIO::copy(file, dest, KIO::Overwrite | KIO::HideProgressInfo);
+  if (KIO::NetAccess::synchronousRun(getJob, 0)) {
+    kDebug() << "worked, unpacked in " << dest;
+    return dest + file.fileName() + '/' + assistant + '/' + assistant + ".desktop";
+  } else {
+    kDebug() << "failed" << getJob->errorString();
+    return QString();
+  }
 }
