@@ -1,7 +1,7 @@
 add_definitions(-DTEST_PATH=${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ../${CMAKE_CURRENT_SOURCE_DIR}
+    ${mixedmaildirresource_SOURCE_DIR}/kmindexreader
     ${KDE4_INCLUDES}
 )
 
