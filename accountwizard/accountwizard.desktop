@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=AccountWizard
+Exec=accountwizard --package %f
+Type=Application
+NoDisplay=true;
+Comment=Launch the accountwizard to configure pim-accounts.
+MimeType=application/x-accountwizard-package
+Terminal=false

@@ -47,3 +47,6 @@ target_link_libraries(accountwizard
 
 install(TARGETS accountwizard ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES accountwizard.knsrc DESTINATION ${CONFIG_INSTALL_DIR})
+install(FILES accountwizard.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
+update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})

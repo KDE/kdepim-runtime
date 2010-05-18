@@ -32,7 +32,7 @@ namespace Global
 
   QString assistantBasePath();
 
-  QString unpackAssistant( const QString&, const QString& );
+  QString unpackAssistant( const QString& );
 }
 
 #endif

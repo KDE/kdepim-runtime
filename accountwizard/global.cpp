@@ -85,9 +85,11 @@ QString Global::assistantBasePath()
   return QString();
 }
 
-QString Global::unpackAssistant( const QString& path, const QString& assistant )
+QString Global::unpackAssistant( const QString& path )
 {
   const KUrl file( "tar://" + path );
+  const QFileInfo fi( path );
+  const QString assistant = fi.baseName();
   const QString dest = KStandardDirs::locateLocal("appdata", "/" );
   KStandardDirs::makeDir( dest + file.fileName() );
   KIO::Job* getJob = KIO::copy(file, dest, KIO::Overwrite | KIO::HideProgressInfo);
