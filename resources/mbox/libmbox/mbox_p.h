@@ -49,7 +49,7 @@ class MBoxPrivate : public QObject
 
   public:
     QByteArray     mAppendedEntries;
-    QList<MsgInfo> mEntries;
+    QList<MsgEntryInfo> mEntries;
     bool           mFileLocked;
     quint64        mInitialMboxFileSize;
     QString        mLockFileName;
