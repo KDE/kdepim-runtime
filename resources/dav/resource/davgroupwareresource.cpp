@@ -517,10 +517,16 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
       KABC::VCardConverter converter;
       const KABC::Addressee contact = converter.parseVCard( davItem.data() );
 
+      if ( contact.isEmpty() )
+        continue;
+
       item.setPayload<KABC::Addressee>( contact );
     } else {
       KCal::ICalFormat formatter;
       const IncidencePtr ptr( formatter.fromString( data ) );
+
+      if ( ptr.get() == 0 )
+        continue;
 
       item.setPayload<IncidencePtr>( ptr );
 
@@ -558,10 +564,20 @@ void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
     KABC::VCardConverter converter;
     const KABC::Addressee contact = converter.parseVCard( davItem.data() );
 
+    if ( contact.isEmpty() ) {
+      cancelTask( i18n( "The server returned invalid data" ) );
+      return;
+    }
+
     item.setPayload<KABC::Addressee>( contact );
   } else {
     KCal::ICalFormat formatter;
     const IncidencePtr ptr( formatter.fromString( data ) );
+
+    if ( ptr.get() == 0 ) {
+      cancelTask( i18n( "The server returned invalid data" ) );
+      return;
+    }
 
     item.setPayload<IncidencePtr>( ptr );
 
