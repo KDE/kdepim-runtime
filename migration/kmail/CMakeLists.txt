@@ -1,14 +1,19 @@
 set(kmail-migrator_srcs
   abstractcollectionmigrator.cpp
+  dimapcachecollectionmigrator.cpp
   kmailmigrator.cpp
   localfolderscollectionmigrator.cpp
   main.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildirstore.cpp
 )
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/maildir
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mbox
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/filestore
 )
 
 macro(add_resource_iface _kcfgFile _ifaceName _className)
@@ -37,8 +42,10 @@ target_link_libraries(kmail-migrator
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDE4_KDEUI_LIBS}
+  akonadi-filestore
   maildir
   mbox
+  kmindexreader
 )
 
 install(TARGETS kmail-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})

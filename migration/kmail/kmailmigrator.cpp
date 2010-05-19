@@ -25,6 +25,7 @@
 #include "mboxsettings.h"
 #include "maildirsettings.h"
 #include "mixedmaildirsettings.h"
+#include "dimapcachecollectionmigrator.h"
 #include "localfolderscollectionmigrator.h"
 
 #include <Mailtransport/Transport>
@@ -292,7 +293,19 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
-  migrationCompleted( instance );
+
+  if ( disconnected ) {
+#if 0
+    DImapCacheCollectionMigrator *collectionMigrator = new DImapCacheCollectionMigrator( instance, this );
+    collectionMigrator->setCacheFolder( config.readEntry( "Folder" ) );
+    connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+            SLOT( dimapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+#else
+    migrationCompleted( instance );
+#endif
+  } else {
+    migrationCompleted( instance );
+  }
 }
 
 void KMailMigrator::pop3AccountCreated( KJob *job )
@@ -501,17 +514,25 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
   collectionMigrator->setKMailConfig( mConfig );
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
-           SLOT( collectionMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+           SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
 }
 
-void KMailMigrator::collectionMigrationFinished( const AgentInstance &instance, const QString &error )
+void KMailMigrator::localFolderMigrationFinished( const AgentInstance &instance, const QString &error )
 {
   if ( error.isEmpty() ) {
     setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
     emit message( Success, i18n( "Local folders migrated successfully." ) );
     migrationDone();
   } else {
-    emit message( Error, error );
+    migrationFailed( error, instance );
+  }
+}
+
+void KMailMigrator::dimapFolderMigrationFinished( const AgentInstance &instance, const QString &error )
+{
+  if ( error.isEmpty() ) {
+    migrationCompleted( instance );
+  } else {
     migrationFailed( error, instance );
   }
 }
