@@ -162,8 +162,8 @@ class MixedMaildirStore::Private : public Job::Visitor
     void fillMBoxCollectionDetails( const MBoxPtr &mbox, Collection &collection );
     void fillMaildirCollectionDetails( const Maildir &md, Collection &collection );
     void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse );
-    void listCollection( const MBoxPtr &mbox, const Collection &collection, Item::List &items );
-    void listCollection( const Maildir &md, const Collection &collection, Item::List &items );
+    void listCollection( Job *job, const MBoxPtr &mbox, const Collection &collection, Item::List &items );
+    void listCollection( Job *job, const Maildir &md, const Collection &collection, Item::List &items );
     bool fillItem( MBoxPtr &mbox, bool includeBody, Item &item ) const;
     bool fillItem( const Maildir &md, bool includeBody, Item &item ) const;
 
@@ -408,7 +408,7 @@ void MixedMaildirStore::Private::fillMaildirTreeDetails( const Maildir &md, cons
   }
 }
 
-void MixedMaildirStore::Private::listCollection( const MBoxPtr &mbox, const Collection &collection, Item::List &items )
+void MixedMaildirStore::Private::listCollection( Job *job, const MBoxPtr &mbox, const Collection &collection, Item::List &items )
 {
   const IndexReaderPtr indexReaderPtr = readMBoxIndex( mbox );
 
@@ -431,9 +431,11 @@ void MixedMaildirStore::Private::listCollection( const MBoxPtr &mbox, const Coll
   }
 }
 
-void MixedMaildirStore::Private::listCollection( const Maildir &md, const Collection &collection, Item::List &items )
+void MixedMaildirStore::Private::listCollection( Job *job, const Maildir &md, const Collection &collection, Item::List &items )
 {
   const IndexReaderPtr indexReaderPtr = readMaildirIndex( md );
+
+  QHash<QString, QVariant> uidHash;
 
   const QStringList entryList = md.entryList();
   Q_FOREACH( const QString &entry, entryList ) {
@@ -448,9 +450,20 @@ void MixedMaildirStore::Private::listCollection( const Maildir &md, const Collec
       if ( indexReaderPtr->statusByFileName( entry, status ) ) {
         item.setFlags( status.getStatusFlags() );
       }
+
+      quint64 uid = 0;
+      if ( indexReaderPtr->imapUidByFileName( entry, uid ) ) {
+        kDebug() << "entry" << entry << "has UID" << uid;
+        uidHash.insert( entry, QString::number( uid ) );
+      }
     }
 
     items << item;
+  }
+
+  if ( indexReaderPtr != 0 ) {
+    const QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
+    job->setProperty( "remoteIdToIndexUid", var );
   }
 }
 
@@ -1030,7 +1043,7 @@ bool MixedMaildirStore::Private::visit( ItemFetchJob *job )
     if ( fetchSingleItem ) {
       items << job->item();
     } else {
-      listCollection( findIt.value(), collection, items );
+      listCollection( job, findIt.value(), collection, items );
     }
 
     Item::List::iterator it    = items.begin();
@@ -1055,7 +1068,7 @@ bool MixedMaildirStore::Private::visit( ItemFetchJob *job )
     if ( fetchSingleItem ) {
       items << job->item();
     } else {
-      listCollection( md, collection, items );
+      listCollection( job, md, collection, items );
     }
 
     Item::List::iterator it    = items.begin();
