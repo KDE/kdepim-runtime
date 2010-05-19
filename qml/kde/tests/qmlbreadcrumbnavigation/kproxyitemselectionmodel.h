@@ -25,7 +25,7 @@
 #include <QtGui/QItemSelectionModel>
 #include <QtGui/QAbstractProxyModel>
 
-class KProxyItemSelectionModelPrivate;
+class KLinkItemSelectionModelPrivate;
 
 /**
   @brief Makes it possible to share a selection in multiple views which do not have the same source model
@@ -43,14 +43,14 @@ class KProxyItemSelectionModelPrivate;
   @since 4.5
 
 */
-class KProxyItemSelectionModel : public QItemSelectionModel
+class KLinkItemSelectionModel : public QItemSelectionModel
 {
   Q_OBJECT
 public:
   /**
     Constructor.
   */
-  KProxyItemSelectionModel( QAbstractItemModel *targetModel, QItemSelectionModel *proxySelector, QObject *parent = 0);
+  KLinkItemSelectionModel( QAbstractItemModel *targetModel, QItemSelectionModel *proxySelector, QObject *parent = 0);
 
   /* reimp */ void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
   /* reimp */ void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
@@ -68,10 +68,10 @@ private slots:
   void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 protected:
-  KProxyItemSelectionModelPrivate * const d_ptr;
+  KLinkItemSelectionModelPrivate * const d_ptr;
 
 private:
-  Q_DECLARE_PRIVATE(KProxyItemSelectionModel)
+  Q_DECLARE_PRIVATE(KLinkItemSelectionModel)
 };
 
 #endif

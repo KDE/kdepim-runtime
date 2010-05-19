@@ -90,8 +90,8 @@ void KBreadcrumbNavigationFactory::createBreadcrumbContext(QAbstractItemModel *m
   breadcrumbNavigationModel->setFilterBehavior( KSelectionProxyModel::ExactSelection );
   d->m_breadcrumbModel = getBreadcrumbNavigationModel(breadcrumbNavigationModel);
 
-  KProxyItemSelectionModel *proxyBreadcrumbCollectionSelection
-      = new KProxyItemSelectionModel( d->m_breadcrumbModel, d->m_selectionModel, parent );
+  KLinkItemSelectionModel *proxyBreadcrumbCollectionSelection
+      = new KLinkItemSelectionModel( d->m_breadcrumbModel, d->m_selectionModel, parent );
 
   d->m_breadcrumbSelectionModel = new KForwardingItemSelectionModel( d->m_breadcrumbModel,
                                                                      proxyBreadcrumbCollectionSelection,
@@ -108,7 +108,7 @@ void KBreadcrumbNavigationFactory::createBreadcrumbContext(QAbstractItemModel *m
 
   d->m_childItemsModel = getChildItemsModel(d->m_unfilteredChildItemsModel);
 
-  d->m_childItemsSelectionModel = new KProxyItemSelectionModel( d->m_childItemsModel, d->m_selectionModel, parent );
+  d->m_childItemsSelectionModel = new KLinkItemSelectionModel( d->m_childItemsModel, d->m_selectionModel, parent );
 
   d->m_modelIndexProxyMapper = new KModelIndexProxyMapper(model, d->m_childItemsModel, this);
 
