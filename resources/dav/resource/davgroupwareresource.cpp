@@ -49,6 +49,7 @@
 #include <kcal/incidence.h>
 #include <kwindowsystem.h>
 
+#include <QtCore/QSet>
 #include <QtDBus/QDBusConnection>
 
 using namespace Akonadi;
@@ -385,14 +386,21 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   collections << mDavCollectionRoot;
 
   const DavCollection::List davCollections = fetchJob->collections();
+  QSet<QString> seenCollectionsNames;
+
   foreach ( const DavCollection &davCollection, davCollections ) {
     Akonadi::Collection collection;
     collection.setParentCollection( mDavCollectionRoot );
     collection.setRemoteId( davCollection.url() );
-    if ( davCollection.displayName().isEmpty() )
+    if ( davCollection.displayName().isEmpty() ) {
       collection.setName( name() + " (" + davCollection.url() + ')' );
-    else
-      collection.setName( davCollection.displayName() + " (" + davCollection.url() + ')' );
+    } else {
+      if ( seenCollectionsNames.contains( davCollection.displayName() ) ) {
+        collection.setName( davCollection.displayName() + " (" + davCollection.url() + ')' );
+      } else {
+        collection.setName( davCollection.displayName() );
+      }
+    }
 
     QStringList mimeTypes;
 
