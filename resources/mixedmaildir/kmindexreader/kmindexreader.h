@@ -90,6 +90,8 @@ public:
 
     bool statusByFileName( const QString &fileName, MessageStatus &status ) const;
 
+    bool imapUidByFileName( const QString &fileName, quint64 &uid ) const;
+
 private:
 
 
@@ -132,6 +134,8 @@ public:
     /** Status object of the message. */
     MessageStatus& status();
     QStringList  tagList() const ;
+    quint64 uid() const;
+
 private:
     QString mCachedStringParts[20];
     unsigned long mCachedLongParts[20];

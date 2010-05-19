@@ -158,7 +158,10 @@ QStringList KMIndexMsgPrivate::tagList() const
   return mCachedStringParts[KMIndexReader::MsgTagPart].split( ',', QString::SkipEmptyParts );
 }
 
-
+quint64 KMIndexMsgPrivate::uid() const
+{
+  return mCachedLongParts[KMIndexReader::MsgUIDPart];
+}
 
 //END: KMIndexMsg methods
 
@@ -212,6 +215,17 @@ bool KMIndexReader::statusByFileName( const QString &fileName, MessageStatus &st
     }
 
     status = it.value()->status();
+    return true;
+}
+
+bool KMIndexReader::imapUidByFileName( const QString &fileName, quint64 &uid ) const
+{
+    QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
+    if ( it == mMsgByFileName.constEnd() ) {
+        return false;
+    }
+
+    uid = it.value()->uid();
     return true;
 }
 
@@ -384,13 +398,11 @@ bool KMIndexReader::readIndex()
 #endif
     mMsgList.append(msg);
     const QString fileName = msg->mCachedStringParts[ MsgFilePart ];
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "fileNamePart=" << fileName;
     if ( !fileName.isEmpty() ) {
         mMsgByFileName.insert( fileName, msg );
     }
 
     const quint64 offset = msg->mCachedLongParts[ MsgOffsetPart ];
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "offsetPart=" << offset;
     mMsgByOffset.insert( offset, msg );
   } // end while
   return true;
@@ -464,7 +476,7 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
 {
   if( !msg )
     return false;
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "fillStringPartCache";
+  kDebug( KDE_DEFAULT_DEBUG_AREA );
   if (g_chunk_length < indexLen)
       g_chunk = (uchar *)realloc(g_chunk, g_chunk_length = indexLen);
 
