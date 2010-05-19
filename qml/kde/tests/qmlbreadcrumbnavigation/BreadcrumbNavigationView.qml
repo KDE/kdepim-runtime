@@ -34,8 +34,10 @@ Item {
   property alias selectedItemDelegate :  selectedItemView.delegate
   property alias childItemsDelegate :  childItemsView.delegate
 
-  property int itemHeight : height / 6
+  property int itemHeight : height / 7
   property int _transitionSelect : -1
+
+  property bool hasChildren :  childItemsView.count > 0
 
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
@@ -73,6 +75,7 @@ Item {
 
   ListView {
     id : selectedItemView
+    interactive : false
     property int _selected_padding : 0
 
     height : itemHeight * selectedItemView.count
