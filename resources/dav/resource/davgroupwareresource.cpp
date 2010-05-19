@@ -19,6 +19,7 @@
 #include "davgroupwareresource.h"
 
 #include "configdialog.h"
+#include "davcollectiondeletejob.h"
 #include "davcollectionsfetchjob.h"
 #include "davcollectionsmultifetchjob.h"
 #include "davitemcreatejob.h"
@@ -92,6 +93,23 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
 DavGroupwareResource::~DavGroupwareResource()
 {
   delete mMimeVisitor;
+}
+
+void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collection )
+{
+  kDebug() << "Removing collection " << collection.remoteId();
+
+  if ( !configurationIsValid() ) {
+    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    cancelTask( i18n( "The resource is not configured yet" ) );
+    return;
+  }
+
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+
+  DavCollectionDeleteJob *job = new DavCollectionDeleteJob( davUrl );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onCollectionRemovedFinished( KJob* ) ) );
+  job->start();
 }
 
 void DavGroupwareResource::configure( WId windowId )
@@ -342,6 +360,16 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
   DavItemDeleteJob *job = new DavItemDeleteJob( davUrl, davItem );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemRemovedFinished( KJob* ) ) );
   job->start();
+}
+
+void DavGroupwareResource::onCollectionRemovedFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( i18n( "Unable to remove collection: %1", job->errorText() ) );
+    return;
+  }
+
+  changeProcessed();
 }
 
 void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
