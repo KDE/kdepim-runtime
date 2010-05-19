@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=AccountWizard
+Name[x-test]=xxAccountWizardxx
 Exec=accountwizard --package %f
 Type=Application
 NoDisplay=true;
 Comment=Launch the accountwizard to configure pim-accounts.
+Comment[x-test]=xxLaunch the accountwizard to configure pim-accounts.xx
 MimeType=application/x-accountwizard-package
 Terminal=false
