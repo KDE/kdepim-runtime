@@ -33,6 +33,12 @@ set(app_qml_SRCS
   BreadcrumbNavigationView.qml
   transparentplus.png
   tree_example
+  backgroundtile.png
+  border_dot.png
+  currentindicator.png
+  fuzz.png
+  selected_bottom.png
+  selected_top.png
 )
 
 foreach( qml_src ${app_qml_SRCS})
