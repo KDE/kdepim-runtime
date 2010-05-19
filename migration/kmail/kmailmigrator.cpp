@@ -25,6 +25,7 @@
 #include "mboxsettings.h"
 #include "maildirsettings.h"
 #include "mixedmaildirsettings.h"
+#include "localfolderscollectionmigrator.h"
 
 #include <Mailtransport/Transport>
 
@@ -456,11 +457,63 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
   iface->setPath( mLocalMaildirPath );
 
-  instance.setName( i18n("KMail Folders") );
+  KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
+  KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
+
+  QString defaultInstanceName;
+  QString defaultResourceId = specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
+  if ( defaultResourceId.isEmpty() ) {
+    kDebug() << "No resource configured for special mail collections, using the migrated"
+             << instance.identifier();
+    defaultResourceId = instance.identifier();
+  } else {
+    const AgentInstance defaultInstance = AgentManager::self()->instance( defaultResourceId );
+    if ( !defaultInstance.isValid() ) {
+      kDebug() << "Resource" << defaultResourceId
+               << " configured for special mail collections does not exist, using the migrated"
+               << instance.identifier();
+      defaultResourceId = instance.identifier();
+    } else {
+      defaultInstanceName = defaultInstance.name();
+    }
+  }
+
+  const QString instanceName = i18n("KMail Folders");
+
+  if ( defaultInstanceName.isEmpty() ) {
+    specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), defaultResourceId );
+    specialMailCollectionsGroup.sync();
+
+    emit message( Info,
+                  i18nc( "@info:status resource that will provide folder such as outbox, sent",
+                         "Using '%1' for default outbox, sent mail, trash, etc.",
+                         instanceName ) );
+  } else {
+    emit message( Info,
+                  i18nc( "@info:status resource that will provide folder such as outbox, sent",
+                         "Keeping '%1' for default outbox, sent mail, trash, etc.",
+                         defaultInstanceName ) );
+  }
+
+  instance.setName( instanceName );
   instance.reconfigure();
-  setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
-  emit message( Success, i18n( "Local folders migrated successfully." ) );
-  migrationDone();
+
+  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
+  collectionMigrator->setKMailConfig( mConfig );
+  connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+           SLOT( collectionMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+}
+
+void KMailMigrator::collectionMigrationFinished( const AgentInstance &instance, const QString &error )
+{
+  if ( error.isEmpty() ) {
+    setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
+    emit message( Success, i18n( "Local folders migrated successfully." ) );
+    migrationDone();
+  } else {
+    emit message( Error, error );
+    migrationFailed( error, instance );
+  }
 }
 
 #include "kmailmigrator.moc"

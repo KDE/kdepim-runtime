@@ -1,7 +1,8 @@
 set(kmail-migrator_srcs
-  main.cpp
+  abstractcollectionmigrator.cpp
   kmailmigrator.cpp
-  mixedtreeconverter.cpp
+  localfolderscollectionmigrator.cpp
+  main.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
 
@@ -33,6 +34,7 @@ add_resource_iface( mixedmaildir/mixedmaildirresource.kcfg
 kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kmail-migrator ${kmail-migrator_srcs} )
 target_link_libraries(kmail-migrator
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDE4_KDEUI_LIBS}
   maildir
