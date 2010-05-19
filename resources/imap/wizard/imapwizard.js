@@ -33,7 +33,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.imapWizard.incommingAddress.text == "" ) {
+  if ( page.widget().incommingAddress.text == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -50,9 +50,9 @@ function setup()
     identity.setEmail( SetupManager.email() );
     identity.setRealName( SetupManager.name() );
 
-    ServerTest.test( page.imapWizard.incommingAddress.text, "imap" );
+    ServerTest.test( page.widget().incommingAddress.text, "imap" );
   } else {
-    ServerTest.test( page.imapWizard.outgoingAddress.text, "smtp" );
+    ServerTest.test( page.widget().outgoingAddress.text, "smtp" );
   }
 }
 
@@ -65,10 +65,10 @@ function testOk( arg )
 {
   if (stage == 1) {
     var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
-    imapRes.setOption( "ImapServer", page.imapWizard.incommingAddress.text );
-    imapRes.setOption( "UserName", page.imapWizard.userName.text );
+    imapRes.setOption( "ImapServer", page.widget().incommingAddress.text );
+    imapRes.setOption( "UserName", page.widget().userName.text );
     imapRes.setOption( "Password", SetupManager.password() );
-    imapRes.setOption( "DisconnectedModeEnabled", page.imapWizard.disconnectedMode.checked );
+    imapRes.setOption( "DisconnectedModeEnabled", page.widget().disconnectedMode.checked );
     imapRes.setOption( "UseDefaultIdentity", false );
     imapRes.setOption( "AccountIdentity", identity.uoid() );
     if ( arg == "ssl" ) { 
@@ -84,8 +84,8 @@ function testOk( arg )
     setup();
   } else {
     var smtp = SetupManager.createTransport( "smtp" );
-    smtp.setName( page.imapWizard.outgoingAddress.text );
-    smtp.setHost( page.imapWizard.outgoingAddress.text );
+    smtp.setName( page.widget().outgoingAddress.text );
+    smtp.setHost( page.widget().outgoingAddress.text );
     if ( arg == "ssl" ) { 
       smtp.setEncryption( "SSL" );
     } else if ( arg == "tls" ) {
@@ -99,7 +99,7 @@ function testOk( arg )
 
 connect( ServerTest, "testFail()", this, "testResultFail()" );
 connect( ServerTest, "testResult(QString)", this, "testOk(QString)" );
-connect( page.imapWizard.incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
+connect( page.widget().incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
 
 validateInput();

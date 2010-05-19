@@ -34,7 +34,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.kolabWizard.serverAddress.text == "" ) {
+  if ( page.widget().serverAddress.text == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -50,7 +50,7 @@ function setup()
   identity.setRealName( SetupManager.name() );
 
   var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
-  imapRes.setOption( "ImapServer", page.kolabWizard.serverAddress.text );
+  imapRes.setOption( "ImapServer", page.widget().serverAddress.text );
   imapRes.setOption( "UserName", SetupManager.email() );
   imapRes.setOption( "Password", SetupManager.password() );
   imapRes.setOption( "UseDefaultIdentity", false );
@@ -58,8 +58,8 @@ function setup()
   imapRes.setOption( "SubscriptionEnabled", true );
 
   var smtp = SetupManager.createTransport( "smtp" );
-  smtp.setName( page.kolabWizard.serverAddress.text );
-  smtp.setHost( page.kolabWizard.serverAddress.text );
+  smtp.setName( page.widget().serverAddress.text );
+  smtp.setHost( page.widget().serverAddress.text );
   smtp.setPort( 465 );
   smtp.setEncryption( "SSL" );
   smtp.setUsername( SetupManager.email() );
@@ -67,17 +67,17 @@ function setup()
 
   var ldap = SetupManager.createLdap();
   ldap.setUser( SetupManager.email() );
-  ldap.setServer( page.kolabWizard.serverAddress.text );
+  ldap.setServer( page.widget().serverAddress.text );
 
   var korganizer = SetupManager.createConfigFile( "korganizerrc" );
   korganizer.setName( "korganizer" );
   korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyFullDomainRetrieval","true");
   korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveAuto", "true" );
-  korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + page.kolabWizard.serverAddress.text  + "/freebusy/" );
+  korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + page.widget().serverAddress.text  + "/freebusy/" );
   SetupManager.execute();
 }
 
-connect( page.kolabWizard.serverAddress, "textChanged(QString)", this, "serverChanged(QString)" );
+connect( page.widget().serverAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
 
 validateInput();
