@@ -5,6 +5,12 @@ install(FILES
   AkonadiBreadcrumbNavigationView.qml
   CollectionDelegate.qml
   FavoriteSelector.qml
+  backgroundtile.png
+  border_dot.png
+  currentindicator.png
+  fuzz.png
+  selected_bottom.png
+  selected_top.png
   transparentplus.png
   DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde/akonadi
 )
