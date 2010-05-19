@@ -59,6 +59,8 @@ class KMailMigrator : public KMigratorBase
     void localFolderMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
     void dimapFolderMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
 
+    void collectionMigratorMessage( int type, const QString &msg );
+
   private:
     void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();

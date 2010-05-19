@@ -41,6 +41,8 @@ class AbstractCollectionMigrator : public QObject
   Q_SIGNALS:
     void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
 
+    void message( int type, const QString &msg );
+
   protected:
     virtual void migrateCollection( const Akonadi::Collection &collection ) = 0;
 

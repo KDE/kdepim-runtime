@@ -298,6 +298,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 #if 0
     DImapCacheCollectionMigrator *collectionMigrator = new DImapCacheCollectionMigrator( instance, this );
     collectionMigrator->setCacheFolder( config.readEntry( "Folder" ) );
+    connect( collectionMigrator, SIGNAL( message( int, QString ) ),
+             SLOT ( collectionMigratorMessage( int, QString ) ) );
     connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
             SLOT( dimapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
 #else
@@ -513,6 +515,8 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
   LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
   collectionMigrator->setKMailConfig( mConfig );
+  connect( collectionMigrator, SIGNAL( message( int, QString ) ),
+           SLOT ( collectionMigratorMessage( int, QString ) ) );
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
 }
@@ -534,6 +538,35 @@ void KMailMigrator::dimapFolderMigrationFinished( const AgentInstance &instance,
     migrationCompleted( instance );
   } else {
     migrationFailed( error, instance );
+  }
+}
+
+void KMailMigrator::collectionMigratorMessage( int type, const QString &msg )
+{
+  switch ( type ) {
+    case Success:
+      emit message( Success, msg );
+      break;
+
+    case Skip:
+      emit message( Skip, msg );
+      break;
+
+    case Warning:
+      emit message( Warning, msg );
+      break;
+
+    case Info:
+      emit message( Info, msg );
+      break;
+
+    case Error:
+      emit message( Error, msg );
+      break;
+
+    default:
+      kError() << "Unknown message type" << type << "msg=" << msg;
+      break;
   }
 }
 

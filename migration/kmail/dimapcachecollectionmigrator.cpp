@@ -20,6 +20,8 @@
 
 #include "dimapcachecollectionmigrator.h"
 
+#include "kmigratorbase.h"
+
 #include "mixedmaildirstore.h"
 
 #include "filestore/itemfetchjob.h"
@@ -35,6 +37,7 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
+#include <KLocale>
 #include <KStandardDirs>
 
 #include <QFileInfo>
@@ -244,6 +247,9 @@ void DImapCacheCollectionMigrator::migrateCollection( const Akonadi::Collection 
   Q_ASSERT( !d->mCurrentCollection.isValid() );
 
   if ( d->mStore == 0 ) {
+    emit message( KMigratorBase::Skip,
+                  i18nc( "@info:status", "No cache for account %1 available",
+                         resource().name() ) );
     migrationDone();
     return;
   }
@@ -259,6 +265,8 @@ void DImapCacheCollectionMigrator::migrateCollection( const Akonadi::Collection 
   kDebug() << "remoteId=" << cache.remoteId() << ", parent=" << cache.parentCollection().remoteId();
 
   d->mCurrentCollection = collection;
+
+  emit message( KMigratorBase::Info, i18nc( "@info:status", "Starting cache migration for folder %1 of account %2", collection.name(), resource().name() ) );
 
   FileStore::ItemFetchJob *job = d->mStore->fetchItems( cache );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchItemsResult( KJob * ) ) );
