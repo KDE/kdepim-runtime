@@ -35,17 +35,26 @@ Item {
 
   width : breadcrumbsView.width
 
-  Rectangle {
-    id: topLine
-    visible : selectedDelegate
-    x: 1; y: 2; width: parent.width - 2; height: 2
-    color: "grey"
+  Image {
+    id : fuzz
+    source : "fuzz.png"
+    anchors.horizontalCenter : parent.horizontalCenter
+    y : parent.height / 2
+    opacity : (selectedDelegate && hasChildren) ? 1 : 0
   }
-  Rectangle {
-    id: bottomLine
-    visible : selectedDelegate
-    x: 1; y: parent.height - 4; width: parent.width - 2; height: 2
-    color: "darkgrey"
+  Image {
+    anchors.right : parent.right
+    anchors.rightMargin : 5
+    anchors.verticalCenter : parent.verticalCenter
+    opacity : (selectedDelegate && hasChildren) ? 1 : 0
+    source: "currentindicator.png"
+  }
+  Image {
+    id : lastItemImage
+    opacity : (selectedDelegate && !hasChildren) ? 1 : 0;
+    source : "selected_bottom.png"
+    anchors.horizontalCenter : parent.horizontalCenter
+    y : parent.height / 2
   }
 
   MouseArea {
@@ -92,11 +101,9 @@ Item {
   Image {
     width : height
     anchors.right : parent.right
-    anchors.rightMargin : 30
+    anchors.rightMargin : 5
     anchors.top : parent.top
-    anchors.topMargin : 25
-    anchors.bottom : parent.bottom
-    anchors.bottomMargin : 25
+    anchors.topMargin : 5
     opacity : ( showChildIndicator && application.childCollectionHasChildren( model.index ) ) ? 1 : 0
     source: "transparentplus.png"
   }
