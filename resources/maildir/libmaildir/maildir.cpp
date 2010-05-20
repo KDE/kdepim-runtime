@@ -502,3 +502,8 @@ QString Maildir::subDirPathForFolderPath( const QString &folderPath )
   dir.cdUp();
   return QFileInfo( dir, Private::subDirNameForFolderName( dirName ) ).filePath();
 }
+
+QString Maildir::subDirNameForFolderName( const QString &folderName )
+{
+  return Private::subDirNameForFolderName( folderName );
+}
