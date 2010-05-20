@@ -226,7 +226,7 @@ bool KMIndexReader::imapUidByFileName( const QString &fileName, quint64 &uid ) c
     }
 
     uid = it.value()->uid();
-    return true;
+    return uid != 0;
 }
 
 bool KMIndexReader::readHeader( int *version )
@@ -403,8 +403,11 @@ bool KMIndexReader::readIndex()
     }
 
     const quint64 offset = msg->mCachedLongParts[ MsgOffsetPart ];
-    mMsgByOffset.insert( offset, msg );
+    if ( offset > 0 ) {
+        mMsgByOffset.insert( offset, msg );
+    }
   } // end while
+
   return true;
 }
 
