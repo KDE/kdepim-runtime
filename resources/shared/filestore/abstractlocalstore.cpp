@@ -184,6 +184,7 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
     bool visit( StoreCompactJob* job )
     {
       mSession->notifyCollectionsChanged( job, mCollections );
+      return true;
     }
 
   private:
@@ -251,6 +252,7 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
     bool visit( StoreCompactJob* job )
     {
       mSession->notifyItemsChanged( job, mItems );
+      return true;
     }
 
   private:
