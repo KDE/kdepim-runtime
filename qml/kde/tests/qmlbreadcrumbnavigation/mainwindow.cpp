@@ -1,7 +1,28 @@
+/*
+    Copyright (C) 2010 Klarälvdalens Datakonsult AB,
+        a KDAB Group company, info@kdab.net,
+        author Stephen Kelly <stephen@kdab.com>
+
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    This library is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to the
+    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.
+*/
 
 #include "mainwindow.h"
 
 #include <QHBoxLayout>
+#include <QApplication>
 #include <QTreeView>
 #include <QSplitter>
 #include <QDeclarativeView>
@@ -13,6 +34,7 @@
 
 #include "breadcrumbnavigationcontext.h"
 #include <qcolumnview.h>
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   : QWidget(parent, f)
@@ -21,11 +43,23 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   QSplitter *splitter = new QSplitter;
   layout->addWidget(splitter);
 
-//   m_treeView = new QTreeView(splitter);
   m_treeModel = new DynamicTreeModel(this);
 
   DynamicTreeWidget *widget = new DynamicTreeWidget(m_treeModel, splitter);
-  widget->setInitialTree(
+
+  QString initialTree;
+  if (qApp->arguments().size() == 2)
+  {
+    QString filename = qApp->arguments().at(1);
+    QFile f(filename);
+    if (f.open(QFile::ReadOnly))
+    {
+      initialTree = f.readAll();
+    }
+    f.close();
+  }
+  if (initialTree.isEmpty()){
+    initialTree =
     "- 1"
     "- - 1"
     "- - 1"
@@ -47,50 +81,64 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
     "- - - - - 1"
     "- - - - 1"
     "- - - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - - 1"
+    "- - - - 1"
+    "- - - - - 1"
+    "- - - - - - 1"
+    "- - - - - 1"
+    "- - - - - -1"
+    "- - - - - - 1"
+    "- - - - - - - 1"
+    "- - - - - - - 1"
+    "- - - - - - 1"
+    "- - - - - 1"
+    "- - - - - 1"
+    "- - - - 1"
+    "- - - - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - - 1"
     "- 1"
+    "- - 1"
+    "- - 1"
+    "- - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - 1"
     "- 1"
-    "- 1"
-    );
+    "- - 1"
+    "- - - 1"
+    "- - - 1"
+    "- - 1"
+    "- - 1"
+    "- - 1"
+    "- 1";
+  }
 
+  widget->setInitialTree(initialTree);
   m_declarativeView = new QDeclarativeView(splitter);
 
   QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
 
-//   m_treeModel = new DynamicTreeModel(this);
-//   ModelInsertCommand *ins = new ModelInsertCommand( m_treeModel, this );
-
-//   ins->setStartRow(0);
-//   ins->interpret(
-//     "- 1"
-//     "- - 1"
-//     "- - 1"
-//     "- - - 1"
-//     "- - - - 1"
-//     "- - - 1"
-//     "- - - 1"
-//     "- - - - 1"
-//     "- - - - 1"
-//     "- - - - - 1"
-//     "- - - - - 1"
-//     "- - - - 1"
-//     "- - - 1"
-//     "- - - 1"
-//     "- - - - 1"
-//     "- - - - 1"
-//     "- 1"
-//     "- 1"
-//     "- 1"
-//   );
-//   ins->doCommand();
-
-//   m_treeView->setModel(m_treeModel);
-//   m_treeView->expandAll();
-
   m_bnf = new KBreadcrumbNavigationFactory(this);
+  m_bnf->setBreadcrumbDepth(2);
   m_bnf->createBreadcrumbContext( m_treeModel, this );
 
   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
 
+#if 0
   QTreeView *view1 = new QTreeView;
   view1->setModel( m_bnf->selectedItemModel() );
   view1->show();
@@ -103,6 +151,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   view3->setModel( m_bnf->childItemModel() );
   view3->show();
   view3->setWindowTitle( "Child items model");
+#endif
 
   context->setContextProperty( "_selectedItemModel", QVariant::fromValue( static_cast<QObject*>( m_bnf->selectedItemModel() ) ) );
   context->setContextProperty( "_breadcrumbItemsModel", QVariant::fromValue( static_cast<QObject*>( m_bnf->breadcrumbItemModel() ) ) );

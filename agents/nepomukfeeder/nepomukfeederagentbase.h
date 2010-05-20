@@ -53,6 +53,7 @@ namespace NepomukFast
 namespace Akonadi
 {
   class Item;
+  class ItemFetchScope;
 }
 
 namespace Soprano
@@ -104,6 +105,9 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     /** Reimplement to do the actual work. */
     virtual void updateItem( const Akonadi::Item &item, const QUrl &graphUri ) = 0;
     virtual void updateCollection( const Akonadi::Collection &collection, const QUrl &graphUri ) = 0;
+
+    /** Reimplement to allow more aggressive initial indexing. */
+    virtual Akonadi::ItemFetchScope fetchScopeForcollection( const Akonadi::Collection &collection );
 
     /** Create a graph for the given item with we use to mark all information created by the feeder agent. */
     template <typename T>

@@ -22,11 +22,15 @@
 import Qt 4.7
 
 Rectangle {
-  gradient: Gradient {
-    GradientStop { position: 0.0; color: "lightgrey" }
-    GradientStop { position: 0.5; color: "grey" }
-  }
+  color : "#f6f6f5"
   anchors.fill : parent
+
+  Image {
+    id : backgroundImage
+    width : parent.width
+    fillMode : Image.TileHorizontally
+    source : "backgroundtile.png"
+  }
 
   BreadcrumbNavigationView {
 
@@ -77,16 +81,29 @@ Rectangle {
         text : model.display
       }
 
-      Rectangle {
-        id: topLine
-        x: 1; y: 2; width: parent.width - 2; height: 2
-        color: "grey"
+      Image {
+        id : fuzz
+        source : "fuzz.png"
+        anchors.horizontalCenter : parent.horizontalCenter
+        y : parent.height / 2
+        opacity : hasChildren ? 1 : 0
       }
-      Rectangle {
-        id: bottomLine
-        x: 1; y: parent.height - 4; width: parent.width - 2; height: 2
-        color: "darkgrey"
+      Image {
+        anchors.right : parent.right
+        anchors.rightMargin : 5
+        anchors.verticalCenter : parent.verticalCenter
+        opacity : hasChildren ? 1 : 0
+        source: "currentindicator.png"
+onHeightChanged : { console.log("height" + height ); }
       }
+      Image {
+        id : lastItemImage
+        opacity : hasChildren ? 0 : 1;
+        source : "selected_bottom.png"
+        anchors.horizontalCenter : parent.horizontalCenter
+        y : parent.height / 2
+      }
+
     }
 
     childItemsDelegate : Rectangle
@@ -105,13 +122,9 @@ Rectangle {
         onClicked : { breadcrumbTopLevel._transitionSelect = model.index; breadcrumbTopLevel.state = "before_select_child"; }
       }
       Image {
-        width : height
         anchors.right : parent.right
-        anchors.rightMargin : 30
-        anchors.top : parent.top
-        anchors.topMargin : 25
-        anchors.bottom : parent.bottom
-        anchors.bottomMargin : 25
+        anchors.rightMargin : 5
+        anchors.verticalCenter : parent.verticalCenter
         opacity : ( application.childCollectionHasChildren( model.index ) ) ? 1 : 0
         source: "transparentplus.png"
       }

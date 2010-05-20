@@ -24,7 +24,7 @@
 
 #include "TestIdxReader_data.h"
 
-#include <messagecore/messagestatus.h>
+#include "../messagestatus.h"
 using KPIM::MessageStatus;
 #include <QTemporaryFile>
 

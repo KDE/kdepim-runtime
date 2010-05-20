@@ -50,6 +50,7 @@ class Page : public QWidget
 
   public slots:
     Q_SCRIPTABLE void setValid( bool valid );
+    Q_SCRIPTABLE void nextPage();
 
   protected:
     KPageWidgetItem *m_item;

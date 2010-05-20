@@ -19,13 +19,16 @@
 */
 
 #include "kmailmigrator.h"
-#include "mixedtreeconverter.h"
 
 #include "imapsettings.h"
 #include "pop3settings.h"
 #include "mboxsettings.h"
 #include "maildirsettings.h"
+#include "mixedmaildirsettings.h"
+#include "dimapcachecollectionmigrator.h"
+#include "localfolderscollectionmigrator.h"
 
+#include <KIMAP/LoginJob>
 #include <Mailtransport/Transport>
 
 #include <akonadi/agentmanager.h>
@@ -48,9 +51,6 @@ using namespace KMail;
 /* Enums for use over DBus. Can't include settings.h for each resource because
    all have same class name. If resource interfaces are changed, these will need
    changing too. */
-enum ImapEncryption { Unencrypted = 1, Ssl, Tls };
-enum ImapAuthentication { ClearText = 0, Login, Plain, CramMD5, DigestMD5, NTLM,
-                          GSSAPI, Anonymous };
 enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
 static void migratePassword( const QString &idString, const AgentInstance &instance,
@@ -124,16 +124,18 @@ void KMailMigrator::migrateLocalFolders()
   }
 
   const KConfigGroup cfgGroup( mConfig, "General" );
-  const QString localMaildirPath = cfgGroup.readPathEntry( "folders", QString() );
-  if ( localMaildirPath.isEmpty() ) {
+  const QString localMaildirDefaultPath = KStandardDirs::locateLocal( "data", QLatin1String( "kmail/mail" ) );
+  mLocalMaildirPath = cfgGroup.readPathEntry( "folders", localMaildirDefaultPath );
+  const QFileInfo fileInfo( mLocalMaildirPath );
+  if ( !fileInfo.exists() || !fileInfo.isDir() ) {
     migrationDone();
   } else {
-    kDebug() << localMaildirPath;
+    kDebug() << mLocalMaildirPath;
 
-    emit message( Info, i18n( "Migrating local folders in '%1'...", localMaildirPath ) );
-    mConverter = new MixedTreeConverter( this );
-    connect( mConverter, SIGNAL(conversionDone(QString)), SLOT(localFoldersConverted(QString)) );
-    mConverter->convert( localMaildirPath );
+    emit message( Info, i18nc( "@info:status", "Migrating local folders in '%1'...", mLocalMaildirPath ) );
+
+    createAgentInstance( "akonadi_mixedmaildir_resource", this,
+                         SLOT( localMaildirCreated( KJob * ) ) );
   }
 }
 
@@ -239,31 +241,32 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     return;
   }
 
-  iface->setImapServer( config.readEntry( "host" ) + ':' + config.readEntry( "port" ) );
+  iface->setImapServer( config.readEntry( "host" ) );
+  iface->setImapPort( config.readEntry( "port", 143 ) );
   iface->setUserName( config.readEntry( "login" ) );
   if ( config.readEntry( "use-ssl" ).toLower() == "true" )
-    iface->setSafety( Ssl );
+    iface->setSafety( KIMAP::LoginJob::AnySslVersion );
   else if ( config.readEntry( "use-tls" ).toLower() == "true" )
-    iface->setSafety( Tls );
+    iface->setSafety( KIMAP::LoginJob::TlsV1 );
   else
-    iface->setSafety( Unencrypted );
+    iface->setSafety( KIMAP::LoginJob::Unencrypted );
   const QString &authentication = config.readEntry( "auth" ).toUpper();
   if ( authentication == "LOGIN" )
-    iface->setAuthentication( Login );
+    iface->setAuthentication( KIMAP::LoginJob::Login );
   else if ( authentication == "PLAIN" )
-    iface->setAuthentication( Plain );
+    iface->setAuthentication( KIMAP::LoginJob::Plain );
   else if ( authentication == "CRAM-MD5" )
-    iface->setAuthentication( CramMD5 );
+    iface->setAuthentication( KIMAP::LoginJob::CramMD5 );
   else if ( authentication == "DIGEST-MD5" )
-    iface->setAuthentication( DigestMD5 );
+    iface->setAuthentication( KIMAP::LoginJob::DigestMD5 );
   else if ( authentication == "NTLM" )
-    iface->setAuthentication( NTLM );
+    iface->setAuthentication( KIMAP::LoginJob::NTLM );
   else if ( authentication == "GSSAPI" )
-    iface->setAuthentication( GSSAPI );
+    iface->setAuthentication( KIMAP::LoginJob::GSSAPI );
   else if ( authentication == "ANONYMOUS" )
-    iface->setAuthentication( Anonymous );
+    iface->setAuthentication( KIMAP::LoginJob::Anonymous );
   else
-    iface->setAuthentication( ClearText );
+    iface->setAuthentication( KIMAP::LoginJob::ClearText );
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
@@ -288,7 +291,25 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
-  migrationCompleted( instance );
+
+  if ( disconnected ) {
+    DImapCacheCollectionMigrator *collectionMigrator = new DImapCacheCollectionMigrator( instance, this );
+    if ( collectionMigrator->migrationOptionsEnabled() ) {
+      kDebug() << "Some DIMAP collection migration option enabled. Starting collection migrator";
+      collectionMigrator->setCacheFolder( config.readEntry( "Folder" ) );
+      collectionMigrator->setKMailConfig( mConfig );
+      connect( collectionMigrator, SIGNAL( message( int, QString ) ),
+               SLOT ( collectionMigratorMessage( int, QString ) ) );
+      connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+               SLOT( dimapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+    } else {
+      kDebug() << "No DIMAP collection migration option enabled. Done";
+      delete collectionMigrator;
+      migrationCompleted( instance );
+    }
+  } else {
+    migrationCompleted( instance );
+  }
 }
 
 void KMailMigrator::pop3AccountCreated( KJob *job )
@@ -431,20 +452,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   migrationCompleted( instance );
 }
 
-void KMailMigrator::localFoldersConverted(const QString& errorMsg)
-{
-  disconnect( mConverter, SIGNAL(conversionDone(QString)), this, SLOT(localFoldersConverted(QString)) );
-  if ( !errorMsg.isEmpty() ) {
-    emit message( Error, i18n( "Failed to convert local folder tree: %1", errorMsg ) );
-    deleteLater();
-    return;
-  }
-  emit message( Success, i18n( "Converted local mixed-mode folder tree." ) );
-
-  createAgentInstance( "akonadi_maildir_resource", this, SLOT(localMaildirCreated(KJob*)) );
-}
-
-void KMailMigrator::localMaildirCreated(KJob* job)
+void KMailMigrator::localMaildirCreated( KJob *job )
 {
   if ( job->error() ) {
     emit message( Error, i18n( "Failed to resource for local folders: %1", job->errorText() ) );
@@ -454,22 +462,114 @@ void KMailMigrator::localMaildirCreated(KJob* job)
   emit message( Info, i18n( "Created local maildir resource." ) );
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
-  OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
+
+  OrgKdeAkonadiMixedMaildirSettingsInterface *iface = new OrgKdeAkonadiMixedMaildirSettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
     "/Settings", QDBusConnection::sessionBus(), this );
+
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
     return;
   }
 
-  const KConfigGroup cfgGroup( mConfig, "General" );
-  iface->setPath( cfgGroup.readPathEntry( "folders", QString() ) );
+  iface->setPath( mLocalMaildirPath );
 
-  instance.setName( i18n("KMail Folders") );
+  KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
+  KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
+
+  QString defaultInstanceName;
+  QString defaultResourceId = specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
+  if ( defaultResourceId.isEmpty() ) {
+    kDebug() << "No resource configured for special mail collections, using the migrated"
+             << instance.identifier();
+    defaultResourceId = instance.identifier();
+  } else {
+    const AgentInstance defaultInstance = AgentManager::self()->instance( defaultResourceId );
+    if ( !defaultInstance.isValid() ) {
+      kDebug() << "Resource" << defaultResourceId
+               << " configured for special mail collections does not exist, using the migrated"
+               << instance.identifier();
+      defaultResourceId = instance.identifier();
+    } else {
+      defaultInstanceName = defaultInstance.name();
+    }
+  }
+
+  const QString instanceName = i18n("KMail Folders");
+
+  if ( defaultInstanceName.isEmpty() ) {
+    specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), defaultResourceId );
+    specialMailCollectionsGroup.sync();
+
+    emit message( Info,
+                  i18nc( "@info:status resource that will provide folder such as outbox, sent",
+                         "Using '%1' for default outbox, sent mail, trash, etc.",
+                         instanceName ) );
+  } else {
+    emit message( Info,
+                  i18nc( "@info:status resource that will provide folder such as outbox, sent",
+                         "Keeping '%1' for default outbox, sent mail, trash, etc.",
+                         defaultInstanceName ) );
+  }
+
+  instance.setName( instanceName );
   instance.reconfigure();
-  setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
-  emit message( Success, i18n( "Local folders migrated successfully." ) );
-  migrationDone();
+
+  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
+  collectionMigrator->setKMailConfig( mConfig );
+  connect( collectionMigrator, SIGNAL( message( int, QString ) ),
+           SLOT ( collectionMigratorMessage( int, QString ) ) );
+  connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+           SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+}
+
+void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
+{
+  if ( error.isEmpty() ) {
+    setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
+    emit message( Success, i18n( "Local folders migrated successfully." ) );
+    migrationDone();
+  } else {
+    migrationFailed( error, instance );
+  }
+}
+
+void KMailMigrator::dimapFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
+{
+  if ( error.isEmpty() ) {
+    migrationCompleted( instance );
+  } else {
+    migrationFailed( error, instance );
+  }
+}
+
+void KMailMigrator::collectionMigratorMessage( int type, const QString &msg )
+{
+  switch ( type ) {
+    case Success:
+      emit message( Success, msg );
+      break;
+
+    case Skip:
+      emit message( Skip, msg );
+      break;
+
+    case Warning:
+      emit message( Warning, msg );
+      break;
+
+    case Info:
+      emit message( Info, msg );
+      break;
+
+    case Error:
+      emit message( Error, msg );
+      break;
+
+    default:
+      kError() << "Unknown message type" << type << "msg=" << msg;
+      break;
+  }
 }
 
 #include "kmailmigrator.moc"

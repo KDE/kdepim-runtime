@@ -1,13 +1,19 @@
 set(kmail-migrator_srcs
-  main.cpp
+  abstractcollectionmigrator.cpp
+  dimapcachecollectionmigrator.cpp
   kmailmigrator.cpp
-  mixedtreeconverter.cpp
+  localfolderscollectionmigrator.cpp
+  main.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildirstore.cpp
 )
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/maildir
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mbox
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/filestore
 )
 
 macro(add_resource_iface _kcfgFile _ifaceName _className)
@@ -21,20 +27,25 @@ endmacro(add_resource_iface)
 
 add_resource_iface( imap/imapresource.kcfg
                     org.kde.Akonadi.Imap.Settings ImapSettings )
-add_resource_iface( pop3/pop3resource.kcfg
+add_resource_iface( pop3/settings.kcfg
                     org.kde.Akonadi.POP3.Settings Pop3Settings )
 add_resource_iface( mbox/mboxresource.kcfg
                     org.kde.Akonadi.Mbox.Settings MboxSettings )
 add_resource_iface( maildir/maildirresource.kcfg
                     org.kde.Akonadi.Maildir.Settings MaildirSettings )
+add_resource_iface( mixedmaildir/mixedmaildirresource.kcfg
+                    org.kde.Akonadi.MixedMaildir.Settings MixedMaildirSettings )
 
 kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kmail-migrator ${kmail-migrator_srcs} )
 target_link_libraries(kmail-migrator
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDE4_KDEUI_LIBS}
+  akonadi-filestore
   maildir
   mbox
+  kmindexreader
 )
 
 install(TARGETS kmail-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})

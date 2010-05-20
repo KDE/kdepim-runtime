@@ -105,7 +105,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     return;
   }
 
-  QList<MsgInfo> entryList;
+  QList<MsgEntryInfo> entryList;
   if ( col.hasAttribute<DeletedItemsAttribute>() ) {
     DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
     entryList = mMBox->entryList( attr->deletedItemOffsets() );
@@ -120,18 +120,18 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   QString colId = QString::number( col.id() );
   QString colRid = col.remoteId();
   double count = 1;
-  foreach ( const MsgInfo &entry, entryList ) {
+  foreach ( const MsgEntryInfo &entry, entryList ) {
     // TODO: Use cache policy to see what actually has to been set as payload.
     //       Currently most views need a minimal amount of information so the
     //       Items get Envelopes as payload.
     KMime::Message *mail = new KMime::Message();
-    mail->setHead( KMime::CRLFtoLF( mMBox->readEntryHeaders( entry.first ) ) );
+    mail->setHead( KMime::CRLFtoLF( mMBox->readEntryHeaders( entry.offset ) ) );
     mail->parse();
 
     Item item;
-    item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.first ) );
+    item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.offset ) );
     item.setMimeType( "message/rfc822" );
-    item.setSize( entry.second );
+    item.setSize( entry.entrySize );
     item.setPayload( MessagePtr( mail ) );
 
     emit percent(count++ / entryList.size());

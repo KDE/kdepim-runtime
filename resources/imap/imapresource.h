@@ -60,7 +60,7 @@ public Q_SLOTS:
   virtual void configure( WId windowId );
   // DBus methods
   void requestManualExpunge( qint64 collectionId );
-  void dump();
+  void startIdle();
 
 protected Q_SLOTS:
   void retrieveCollections();
@@ -139,7 +139,7 @@ private:
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
   bool needsNetwork() const;
   bool isSessionAvailable() const;
-  void startIdle();
+  bool ensureSessionAvailableOrDefer();
 
   friend class ImapIdleManager;
 

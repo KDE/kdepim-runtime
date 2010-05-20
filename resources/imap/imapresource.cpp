@@ -164,32 +164,33 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   if ( !isSessionAvailable() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
+    setOnline( false );
     return false;
   }
 
-    const QString mailBox = mailBoxForCollection( item.parentCollection() );
-    const qint64 uid = item.remoteId().toLongLong();
+  const QString mailBox = mailBoxForCollection( item.parentCollection() );
+  const qint64 uid = item.remoteId().toLongLong();
 
-    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->mainSession() );
-    select->setMailBox( mailBox );
-    select->start();
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->mainSession() );
-    fetch->setProperty( "akonadiItem", QVariant::fromValue( item ) );
-    KIMAP::FetchJob::FetchScope scope;
-    fetch->setUidBased( true );
-    fetch->setSequenceSet( KIMAP::ImapSet( uid ) );
-    scope.parts.clear();// = parts.toList();
-    scope.mode = KIMAP::FetchJob::FetchScope::Content;
-    fetch->setScope( scope );
-    connect( fetch, SIGNAL( messagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ),
-             this, SLOT( onMessagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-    //TODO: Handle parts retrieval
-    //connect( fetch, SIGNAL( partsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ),
-    //         this, SLOT( onPartsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ) );
-    connect( fetch, SIGNAL( result( KJob* ) ),
-             this, SLOT( onContentFetchDone( KJob* ) ) );
-    fetch->start();
-    return true;
+  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->mainSession() );
+  select->setMailBox( mailBox );
+  select->start();
+  KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->mainSession() );
+  fetch->setProperty( "akonadiItem", QVariant::fromValue( item ) );
+  KIMAP::FetchJob::FetchScope scope;
+  fetch->setUidBased( true );
+  fetch->setSequenceSet( KIMAP::ImapSet( uid ) );
+  scope.parts.clear();// = parts.toList();
+  scope.mode = KIMAP::FetchJob::FetchScope::Content;
+  fetch->setScope( scope );
+  connect( fetch, SIGNAL( messagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ),
+           this, SLOT( onMessagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+  //TODO: Handle parts retrieval
+  //connect( fetch, SIGNAL( partsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ),
+  //         this, SLOT( onPartsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ) );
+  connect( fetch, SIGNAL( result( KJob* ) ),
+           this, SLOT( onContentFetchDone( KJob* ) ) );
+  fetch->start();
+  return true;
 }
 
 void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
@@ -298,11 +299,8 @@ void ImapResource::onPasswordRequestCompleted( const QString &password, bool use
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
-  if ( !isSessionAvailable() ) {
-    kDebug() << "Defering this request. Probably there is no connection.";
-    deferTask();
+  if ( !ensureSessionAvailableOrDefer() )
     return;
-  }
 
   if ( !item.hasPayload<KMime::Message::Ptr>() ) {
     changeProcessed();
@@ -389,11 +387,8 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
 {
   kDebug(5327) << item.remoteId() << parts;
 
-  if ( !isSessionAvailable() ) {
-    kDebug() << "Defering this request. Probably there is no connection.";
-    deferTask();
+  if ( !ensureSessionAvailableOrDefer() )
     return;
-  }
 
   const QString mailBox = mailBoxForCollection( item.parentCollection() );
   const qint64 uid = item.remoteId().toLongLong();
@@ -455,11 +450,8 @@ void ImapResource::onStoreFlagsDone( KJob *job )
 
 void ImapResource::itemRemoved( const Akonadi::Item &item )
 {
-  if ( !isSessionAvailable() ) {
-    kDebug() << "Defering this request. Probably there is no connection.";
-    deferTask();
+  if ( !ensureSessionAvailableOrDefer() )
     return;
-  }
 
   // The imap specs do not allow for a single message to be deleted. We can only
   // set the \Deleted flag. The message will actually be deleted when EXPUNGE will
@@ -485,11 +477,10 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
 void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
                               const Akonadi::Collection &destination )
 {
-  if ( !isSessionAvailable() ) {
-    kDebug() << "Defering this request. Probably there is no connection.";
-    deferTask();
+  Q_ASSERT( item.parentCollection() == destination ); // should have been set by the server
+
+  if ( !ensureSessionAvailableOrDefer() )
     return;
-  }
 
   if ( item.remoteId().isEmpty() ) {
     emit error( i18n( "Cannot move message, it does not exist on the server." ) );
@@ -557,18 +548,17 @@ void ImapResource::onPreItemMoveSelectDone( KJob *job )
 
 void ImapResource::onCopyMessageDone( KJob *job )
 {
-  if ( !job->error() ) {
+  KIMAP::CopyJob *copy = static_cast<KIMAP::CopyJob*>( job );
+  if ( !job->error() && !copy->resultingUids().isEmpty() ) {
     Item item = job->property( AKONADI_ITEM ).value<Item>();
     Collection destination = job->property( DESTINATION_COLLECTION ).value<Collection>();
     const qint64 oldUid = item.remoteId().toLongLong();
 
     // Go ahead, UIDPLUS is supposed to be supported and we copied a single message
-    KIMAP::CopyJob *copy = static_cast<KIMAP::CopyJob*>( job );
     const qint64 newUid = copy->resultingUids().intervals().first().begin();
 
     // Update the item content with the new UID from the copy
     item.setRemoteId( QString::number( newUid ) );
-    item.setParentCollection( destination );
 
     // Mark the old one ready for deletion
     KIMAP::StoreJob *store = new KIMAP::StoreJob( m_account->mainSession() );
@@ -813,6 +803,7 @@ void ImapResource::retrieveItems( const Collection &col )
   if ( !isSessionAvailable() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
+    setOnline( false );
     return;
   }
 
@@ -945,11 +936,8 @@ void ImapResource::onFlagsFetchDone( KJob * /*job*/ )
 
 void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
-  if ( !isSessionAvailable() ) {
-    kDebug() << "Defering this request. Probably there is no connection.";
-    deferTask();
+  if ( !ensureSessionAvailableOrDefer() )
     return;
-  }
 
   if ( parent.remoteId().isEmpty() ) {
     emit error( i18n("Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.", collection.name(), parent.name() ) );
@@ -994,11 +982,8 @@ void ImapResource::onCreateMailBoxDone( KJob *job )
 
 void ImapResource::collectionChanged( const Collection &collection, const QSet<QByteArray> &parts )
 {
-  if ( !isSessionAvailable() ) {
-    kDebug() << "Defering this request. Probably there is no connection.";
-    deferTask();
+  if ( !ensureSessionAvailableOrDefer() )
     return;
-  }
 
   if ( collection.remoteId().isEmpty() ) {
     emit error( i18n("Cannot modify IMAP folder '%1', it does not exist on the server.", collection.name() ) );
@@ -1155,9 +1140,28 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
   } else if ( currentPart == "imapacl" ) {
     ImapAclAttribute *aclAttribute = collection.attribute<ImapAclAttribute>();
     const QMap<QByteArray, KIMAP::Acl::Rights> rights = aclAttribute->rights();
+    const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->oldRights();
+    const QList<QByteArray> oldIds = oldRights.keys();
     const QList<QByteArray> ids = rights.keys();
 
-    for ( int i = 0; i<ids.size(); i++ ) {
+    // remove all ACL entries that have been deleted
+    foreach ( const QByteArray &oldId, oldIds ) {
+      if ( !ids.contains( oldId ) ) {
+        KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
+        job->setMailBox( mailBoxForCollection( collection ) );
+        job->setIdentifier( oldId );
+        job->setRights( KIMAP::SetAclJob::Remove, oldRights[oldId] );
+
+        // Only the last set acl job will trigger the next collection change job
+        job->setProperty( "dontTriggerNextJob", true );
+
+        job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+        connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetAclDone( KJob* ) ) );
+        job->start();
+      }
+    }
+
+    for ( int i = 0; i < ids.size(); i++ ) {
       const QByteArray id = ids[i];
 
       KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
@@ -1170,6 +1174,7 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
         job->setProperty( "dontTriggerNextJob", true );
       }
 
+      job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
       connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetAclDone( KJob* ) ) );
       job->start();
     }
@@ -1229,11 +1234,8 @@ void ImapResource::onSetMetaDataDone( KJob *job )
 
 void ImapResource::collectionRemoved( const Collection &collection )
 {
-  if ( !isSessionAvailable() ) {
-    kDebug() << "Defering this request. Probably there is no connection.";
-    deferTask();
+  if ( !ensureSessionAvailableOrDefer() )
     return;
-  }
 
   const QString mailBox = mailBoxForCollection( collection );
 
@@ -1260,11 +1262,8 @@ void ImapResource::onDeleteMailBoxDone( KJob *job )
 void ImapResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                     const Akonadi::Collection &destination )
 {
-  if ( !isSessionAvailable() ) {
-    kDebug() << "Defering this request. Probably there is no connection.";
-    deferTask();
+  if ( !ensureSessionAvailableOrDefer() )
     return;
-  }
 
   if ( collection.remoteId().isEmpty() ) {
     emit error( i18n( "Cannot move IMAP folder '%1', it does not exist on the server.",
@@ -1376,7 +1375,6 @@ void ImapResource::onConnectSuccess( KIMAP::Session *session )
   if ( m_account->mainSession()!=session ) {
     return;
   }
-
   startIdle();
   emit status( Idle, i18n( "Connection established." ) );
   synchronizeCollectionTree();
@@ -1433,10 +1431,10 @@ void ImapResource::onRightsReceived( KJob *job )
     newRights|= Collection::CanDeleteCollection;
   }
 
-  kDebug(5327) << collection.remoteId()
-               << "imapRights:" << imapRights
-               << "newRights:" << newRights
-               << "oldRights:" << collection.rights();
+//  kDebug(5327) << collection.remoteId()
+//               << "imapRights:" << imapRights
+//               << "newRights:" << newRights
+//               << "oldRights:" << collection.rights();
 
   if ( newRights != collection.rights() ) {
     collection.setRights( newRights );
@@ -1824,13 +1822,32 @@ bool ImapResource::isSessionAvailable() const
       && m_account->mainSession()->state() != KIMAP::Session::Disconnected;
 }
 
+bool ImapResource::ensureSessionAvailableOrDefer()
+{
+  if (!isSessionAvailable() ) {
+    kDebug() << "Defering this request. Probably there is no connection.";
+    deferTask();
+    setOnline( false );
+    return false;
+  } else {
+    return true;
+  }
+}
+
 void ImapResource::reconnect()
 {
   setNeedsNetwork( needsNetwork() );
   setOnline( false ); // we are not connected initially
+
+  /*
   setOnline( !needsNetwork() ||
              Solid::Networking::status() == Solid::Networking::Unknown ||
              Solid::Networking::status() == Solid::Networking::Connected );
+  */
+  // We can't trust the above code, because there are a lot of broken NetworkManager
+  // installations around, which would cause the resource to be offline, even if there
+  // is an actual network connection available.
+  setOnline( true );
 }
 
 void ImapResource::startIdle()
@@ -1944,12 +1961,6 @@ void ImapResource::onExpungeCollectionFetchDone( KJob *job )
   }
 
   changeProcessed();
-}
-
-// Make the method available to DBus
-void ImapResource::dump()
-{
-  ResourceBase::dump();
 }
 
 AKONADI_RESOURCE_MAIN( ImapResource )

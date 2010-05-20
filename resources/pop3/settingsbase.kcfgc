@@ -1,8 +1,8 @@
-File=pop3resource.kcfg
-ClassName=Settings
+File=settings.kcfg
+ClassName=SettingsBase
 Mutators=true
 ItemAccessors=true
 SetUserTexts=true
-Singleton=true
+Singleton=false
 IncludeFiles=metatype.h
 GlobalEnums=true

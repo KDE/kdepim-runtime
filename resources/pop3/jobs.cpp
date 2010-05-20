@@ -77,9 +77,9 @@ KIO::MetaData POPSession::slaveConfig() const
   KIO::MetaData m;
 
   m.insert( "progress", "off" );
-  m.insert( "tls", Settings::useTLS() ? "on" : "off" );
-  m.insert( "pipelining", ( Settings::pipelining() ) ? "on" : "off" );
-  int type = Settings::authenticationMethod();
+  m.insert( "tls", Settings::self()->useTLS() ? "on" : "off" );
+  m.insert( "pipelining", ( Settings::self()->pipelining() ) ? "on" : "off" );
+  int type = Settings::self()->authenticationMethod();
   switch( type ) {
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
     case MailTransport::Transport::EnumAuthenticationType::LOGIN:
@@ -129,15 +129,15 @@ KUrl POPSession::getUrl() const
 {
   KUrl url;
 
-  if ( Settings::useSSL() )
+  if ( Settings::self()->useSSL() )
     url.setProtocol( "pop3s" );
   else
     url.setProtocol( "pop3" );
 
-  url.setUser( Settings::login() );
+  url.setUser( Settings::self()->login() );
   url.setPass( mPassword );
-  url.setHost( Settings::host() );
-  url.setPort( Settings::port() );
+  url.setHost( Settings::self()->host() );
+  url.setPort( Settings::self()->port() );
   return url;
 }
 

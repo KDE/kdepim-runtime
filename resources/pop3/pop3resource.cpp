@@ -19,7 +19,6 @@
 #include "pop3resource.h"
 #include "accountdialog.h"
 #include "settings.h"
-#include "settingsadaptor.h"
 #include "jobs.h"
 
 #include <Akonadi/CollectionFetchJob>
@@ -32,6 +31,8 @@
 #include <KIO/PasswordDialog>
 #include <KMessageBox>
 #include <kwallet.h>
+
+#include <QTimer>
 
 using namespace Akonadi;
 using namespace MailTransport;
@@ -46,11 +47,9 @@ POP3Resource::POP3Resource( const QString &id )
       mTestLocalInbox( false ),
       mWallet( 0 )
 {
-  new SettingsAdaptor( Settings::self() );
   setNeedsNetwork( true );
+  Settings::self()->setResourceId( identifier() );
 
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
   connect( this, SIGNAL(abortRequested()),
            this, SLOT(slotAbortRequested()) );
   connect( mIntervalTimer, SIGNAL(timeout()),
@@ -71,8 +70,8 @@ void POP3Resource::configurationChanged()
 
 void POP3Resource::updateIntervalTimer()
 {
-  if ( Settings::intervalCheckEnabled() && mState == Idle ) {
-    mIntervalTimer->start( Settings::intervalCheckInterval() * 1000 * 60 );
+  if ( Settings::self()->intervalCheckEnabled() && mState == Idle ) {
+    mIntervalTimer->start( Settings::self()->intervalCheckInterval() * 1000 * 60 );
   }
   else {
     mIntervalTimer->stop();
@@ -173,7 +172,7 @@ void POP3Resource::walletOpenedForSaving( bool success )
       }
       mWallet->setFolder( "pop3" );
       mWallet->writePassword( identifier(), mPassword );
-      Settings::setStorePassword( true );
+      Settings::self()->setStorePassword( true );
     }
   }
   else
@@ -187,8 +186,8 @@ void POP3Resource::walletOpenedForSaving( bool success )
 
 void POP3Resource::showPasswordDialog( const QString &queryText )
 {
-  QString login = Settings::login();
-  bool rememberPassword = Settings::storePassword();
+  QString login = Settings::self()->login();
+  bool rememberPassword = Settings::self()->storePassword();
 
   // FIXME: give this a proper parent widget
   if ( KIO::PasswordDialog::getNameAndPassword(
@@ -198,9 +197,9 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
     cancelSync( i18n( "No username and password supplied." ) );
     return;
   } else {
-    Settings::setLogin( login );
+    Settings::self()->setLogin( login );
     Settings::self()->writeConfig();
-    Settings::setStorePassword( false );
+    Settings::self()->setStorePassword( false );
     if ( rememberPassword ) {
       // setStorePassword( true ) is called only after the password is written into
       // the wallet, as otherwise, the resource thinks the password is in the wallet
@@ -233,7 +232,7 @@ void POP3Resource::doStateStep()
     {
       kDebug() << "================ Starting state FetchTargetCollection ==========";
       emit status( Running, i18n( "Preparing transmission from \"%1\".", name() ) );
-      Collection targetCollection( Settings::targetCollection() );
+      Collection targetCollection( Settings::self()->targetCollection() );
       if ( !targetCollection.isValid() ) {
         // No target collection set in the config? Try requesting a default inbox
         SpecialMailCollectionsRequestJob *requestJob = new SpecialMailCollectionsRequestJob( this );
@@ -254,8 +253,8 @@ void POP3Resource::doStateStep()
   case Precommand:
     {
       kDebug() << "================ Starting state Precommand =====================";
-      if ( !Settings::precommand().isEmpty() ) {
-        PrecommandJob *precommandJob = new PrecommandJob( Settings::precommand(), this );
+      if ( !Settings::self()->precommand().isEmpty() ) {
+        PrecommandJob *precommandJob = new PrecommandJob( Settings::self()->precommand(), this );
         connect( precommandJob, SIGNAL(result(KJob*)),
                  this, SLOT(precommandResult(KJob*)) );
         precommandJob->start();
@@ -271,15 +270,15 @@ void POP3Resource::doStateStep()
       kDebug() << "================ Starting state RequestPassword ================";
 
       // Don't show any wallet or password prompts when we are unit-testing
-      if ( !Settings::unitTestPassword().isEmpty() ) {
-        mPassword = Settings::unitTestPassword();
+      if ( !Settings::self()->unitTestPassword().isEmpty() ) {
+        mPassword = Settings::self()->unitTestPassword();
         advanceState( Connect );
         break;
       }
 
-      const bool passwordNeeded = Settings::authenticationMethod() != MailTransport::Transport::EnumAuthenticationType::GSSAPI;
-      const bool loadPasswordFromWallet = Settings::storePassword() && !mAskAgain &&
-                                passwordNeeded && !Settings::login().isEmpty();
+      const bool passwordNeeded = Settings::self()->authenticationMethod() != MailTransport::Transport::EnumAuthenticationType::GSSAPI;
+      const bool loadPasswordFromWallet = Settings::self()->storePassword() && !mAskAgain &&
+                                passwordNeeded && !Settings::self()->login().isEmpty();
       if ( loadPasswordFromWallet ) {
         // FIXME: use a proper parent widget
         mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0,
@@ -291,9 +290,9 @@ void POP3Resource::doStateStep()
         QString detail;
         if ( mAskAgain )
           detail = i18n( "You are asked here because the previous login was not successful." );
-        else if ( Settings::login().isEmpty() )
+        else if ( Settings::self()->login().isEmpty() )
           detail = i18n( "You are asked here because the username you supplied is empty." );
-        else if ( !Settings::storePassword() )
+        else if ( !Settings::self()->storePassword() )
           detail = i18n( "You are asked here because you choose to not store the password in the wallet." );
 
         showPasswordDialog( buildLabelForPasswordDialog( detail ) );
@@ -354,7 +353,7 @@ void POP3Resource::doStateStep()
       // remember which UIDs we have downloaded in the settings)
       QList<int> idsToDownload = mIdsToSizeMap.keys();
       const QList<QString> UIDsOnServer = mIdsToUidsMap.values();
-      const QList<QString> alreadyDownloadedUIDs = Settings::seenUidList();
+      const QList<QString> alreadyDownloadedUIDs = Settings::self()->seenUidList();
       foreach( const QString &uidOnServer, UIDsOnServer ) {
         if ( alreadyDownloadedUIDs.contains( uidOnServer ) ) {
           const int idOfUIDOnServer = mIdsToUidsMap.key( uidOnServer, -1 );
@@ -508,9 +507,9 @@ void POP3Resource::precommandResult( KJob *job )
 void POP3Resource::loginJobResult( KJob *job )
 {
   if ( job->error() ) {
-    if ( job->error() == KIO::ERR_COULD_NOT_LOGIN && !Settings::storePassword() )
+    if ( job->error() == KIO::ERR_COULD_NOT_LOGIN && !Settings::self()->storePassword() )
       mAskAgain = true;
-    cancelSync( i18n( "Unable to login to the server %1.", Settings::host() ) +
+    cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
                 '\n' + job->errorString() );
   }
   else {
@@ -546,7 +545,7 @@ void POP3Resource::uidListJobResult( KJob *job )
     kDebug() << "IdToUidMap:" << mIdsToUidsMap;
 
     mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
-    if ( Settings::leaveOnServer() && !mUidListValid ) {
+    if ( Settings::self()->leaveOnServer() && !mUidListValid ) {
       // FIXME: this needs a proper parent window
       KMessageBox::sorry( 0,
             i18n( "Your POP3 server (Account: %1) does not support "
@@ -611,13 +610,13 @@ void POP3Resource::messageDownloadProgress( KJob *job, KJob::Unit unit, qulonglo
   QString statusMessage;
   const int totalMessages = mIdsToDownload.size() + mDownloadedIDs.size();
   int bytesRemainingOnServer = 0;
-  foreach( const QString &alreadyDownloadedUID, Settings::seenUidList() ) {
+  foreach( const QString &alreadyDownloadedUID, Settings::self()->seenUidList() ) {
     const int alreadyDownloadedID = mIdsToUidsMap.key( alreadyDownloadedUID, -1 );
     if ( alreadyDownloadedID != -1 )
       bytesRemainingOnServer += mIdsToSizeMap.value( alreadyDownloadedID );
   }
 
-  if ( Settings::leaveOnServer() && bytesRemainingOnServer > 0 ) {
+  if ( Settings::self()->leaveOnServer() && bytesRemainingOnServer > 0 ) {
 
     statusMessage = i18n( "Fetching message %1 of %2 (%3 of %4 KB) for %5 "
                           "(%6 KB remain on the server).",
@@ -670,9 +669,9 @@ int POP3Resource::idToTime( int id ) const
 {
   const QString uid = mIdsToUidsMap.value( id );
   if ( !uid.isEmpty() ) {
-    const int index = Settings::seenUidList().indexOf( uid );
+    const int index = Settings::self()->seenUidList().indexOf( uid );
     if ( index != -1 )
-      return Settings::seenUidTimeList().at( index );
+      return Settings::self()->seenUidTimeList().at( index );
   }
 
   // If we don't find any mail, either we have no UID, or it is not in the seen UID
@@ -706,13 +705,13 @@ QList<int> POP3Resource::idsToDelete() const
 
   // By default, we delete all messages. But if we have "leave on server"
   // rules, we can save some messages.
-  if ( Settings::leaveOnServer() && !idsToDeleteFromServer.isEmpty() ) {
+  if ( Settings::self()->leaveOnServer() && !idsToDeleteFromServer.isEmpty() ) {
 
     // If the time-limited leave rule is checked, add the newer messages to
     // the list of messages to keep
-    if ( Settings::leaveOnServerDays() > 0 ) {
+    if ( Settings::self()->leaveOnServerDays() > 0 ) {
       const int secondsPerDay = 86400;
-      time_t timeLimit = time( 0 ) - ( secondsPerDay * Settings::leaveOnServerDays() );
+      time_t timeLimit = time( 0 ) - ( secondsPerDay * Settings::self()->leaveOnServerDays() );
       foreach( int idToDelete, idsToDeleteFromServer ) {
         const int msgTime = idToTime( idToDelete );
         if ( msgTime >= timeLimit ) {
@@ -736,8 +735,8 @@ QList<int> POP3Resource::idsToDelete() const
     //
     // Delete more old messages if there are more than mLeaveOnServerCount
     //
-    if ( Settings::leaveOnServerCount() > 0 ) {
-      const int numToDelete = idsToSave.count() - Settings::leaveOnServerCount();
+    if ( Settings::self()->leaveOnServerCount() > 0 ) {
+      const int numToDelete = idsToSave.count() - Settings::self()->leaveOnServerCount();
       if ( numToDelete > 0 && numToDelete < idsToSave.count() ) {
         // Get rid of the first numToDelete messages
         for ( int i = 0; i < numToDelete; i++ ) {
@@ -751,8 +750,8 @@ QList<int> POP3Resource::idsToDelete() const
     //
     // Delete more old messages until we're under mLeaveOnServerSize MBs
     //
-    if ( Settings::leaveOnServerSize() > 0 ) {
-      const qint64 limitInBytes = Settings::leaveOnServerSize() * ( 1024 * 1024 );
+    if ( Settings::self()->leaveOnServerSize() > 0 ) {
+      const qint64 limitInBytes = Settings::self()->leaveOnServerSize() * ( 1024 * 1024 );
       qint64 sizeOnServerAfterDeletion = 0;
       foreach( int id, idsToSave ) {
         sizeOnServerAfterDeletion += mIdsToSizeMap.value( id );
@@ -790,8 +789,8 @@ void POP3Resource::deleteJobResult( KJob *job )
 
   // Remove all deleted messages from the list of already downloaded messages,
   // as it is no longer necessary to store them (they just waste space)
-  QList<QString> seenUIDs = Settings::seenUidList();
-  QList<int> timeOfSeenUids = Settings::seenUidTimeList();
+  QList<QString> seenUIDs = Settings::self()->seenUidList();
+  QList<int> timeOfSeenUids = Settings::self()->seenUidTimeList();
   Q_ASSERT( seenUIDs.size() == timeOfSeenUids.size() );
   foreach( int deletedId, mDeletedIDs ) {
     QString deletedUID = mIdsToUidsMap.value( deletedId );
@@ -805,8 +804,8 @@ void POP3Resource::deleteJobResult( KJob *job )
       }
     }
   }
-  Settings::setSeenUidList( seenUIDs );
-  Settings::setSeenUidTimeList( timeOfSeenUids );
+  Settings::self()->setSeenUidList( seenUIDs );
+  Settings::self()->setSeenUidTimeList( timeOfSeenUids );
   Settings::self()->writeConfig(),
 
   advanceState( Quit );
@@ -847,8 +846,8 @@ void POP3Resource::slotSessionError( int errorCode, const QString &errorMessage 
 
 void POP3Resource::saveSeenUIDList()
 {
-  QList<QString> seenUIDs = Settings::seenUidList();
-  QList<int> timeOfSeenUIDs = Settings::seenUidTimeList();
+  QList<QString> seenUIDs = Settings::self()->seenUidList();
+  QList<int> timeOfSeenUIDs = Settings::self()->seenUidTimeList();
 
   //
   // Find the messages that we have successfully stored, but did not actually get
@@ -905,8 +904,8 @@ void POP3Resource::saveSeenUIDList()
   // Now save it in the settings
   //
   kDebug() << "The seen UID list has" << seenUIDs.size() << "entries";
-  Settings::setSeenUidList( seenUIDs );
-  Settings::setSeenUidTimeList( timeOfSeenUIDs );
+  Settings::self()->setSeenUidList( seenUIDs );
+  Settings::self()->setSeenUidTimeList( timeOfSeenUIDs );
   Settings::self()->writeConfig();
 }
 

@@ -17,7 +17,7 @@ macro(add_akonadi_isolated_test _source)
   get_filename_component(_targetName ${_source} NAME_WE)
   set(_srcList ${_source} fakeserver/fakeserver.cpp)
 
-  kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../pop3resource.kcfg org.kde.Akonadi.POP3.Settings)
+  kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../settings.kcfg org.kde.Akonadi.POP3.Settings)
   set(pop3settingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml)
   kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../../maildir/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
   set(maildirsettingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml)

@@ -114,6 +114,13 @@ void MaildirTest::testMaildirInstantiation()
   QVERIFY(!good.isValid( error ));
   QVERIFY(!error.isEmpty());
 
+  Maildir root1( QLatin1String( "/foo/bar/Mail" ), true );
+  QVERIFY( root1.isRoot() );
+
+  Maildir root1Copy = root1;
+  QCOMPARE( root1Copy.path(), root1.path() );
+  QCOMPARE( root1Copy.isRoot(), root1.isRoot() );
+
   // FIXME test insufficient permissions?
   cleanupTestCase();
 }
@@ -273,6 +280,61 @@ void MaildirTest::testMaildirRename()
   // already existing name
   QVERIFY( !d.addSubFolder( QLatin1String( "this name is already taken" ) ).isEmpty() );
   QVERIFY( !d2.rename( QLatin1String( "this name is already taken" ) ) );
+
+  cleanupTestCase();
+}
+
+void MaildirTest::testMaildirMoveTo()
+{
+  initTestCase();
+  Maildir d( m_temp->name() );
+  QVERIFY( d.isValid() );
+
+  QString folderPath1 = d.addSubFolder( QLatin1String( "child1" ) );
+  QVERIFY( !folderPath1.isEmpty() );
+
+  Maildir d2( folderPath1 );
+  QVERIFY( d2.isValid() );
+
+  QDir d2Dir( d2.path() );
+  QVERIFY( d2Dir.exists() );
+
+  QString folderPath11 = d2.addSubFolder( QLatin1String( "grandchild1" ) );
+
+  Maildir d21( folderPath11 );
+  QVERIFY( d21.isValid() );
+
+  QDir d2SubDir( Maildir::subDirPathForFolderPath( d2.path() ) );
+  QVERIFY( d2SubDir.exists() );
+
+  QString folderPath2 = d.addSubFolder( QLatin1String( "child2" ) );
+  QVERIFY( !folderPath2.isEmpty() );
+
+  Maildir d3( folderPath2 );
+  QVERIFY( d3.isValid() );
+
+  // move child1 to child2
+  QVERIFY( d2.moveTo( d3 ) );
+
+  Maildir d31 = d3.subFolder( QLatin1String( "child1" ) );
+  QVERIFY( d31.isValid() );
+
+  QVERIFY( !d2Dir.exists() );
+  QVERIFY( !d2SubDir.exists() );
+
+  QDir d31Dir( d31.path() );
+  QVERIFY( d31Dir.exists() );
+
+  QDir d31SubDir( Maildir::subDirPathForFolderPath( d31.path() ) );
+  QVERIFY( d31SubDir.exists() );
+
+  Maildir d311 = d31.subFolder( QLatin1String( "grandchild1" ) );
+  QVERIFY( d311.isValid() );
+
+  // try moving again
+  d2 = Maildir( folderPath1 );
+  QVERIFY( !d2.isValid() );
+  QVERIFY( !d2.moveTo( d3 ) );
 
   cleanupTestCase();
 }

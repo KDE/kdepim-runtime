@@ -45,6 +45,10 @@ void Page::setValid(bool valid)
     m_parent->setValid( m_item, valid );
 }
 
+void Page::nextPage()
+{
+  m_parent->next();
+}
 
 void Page::enterPageBack() {}
 void Page::enterPageNext() {}

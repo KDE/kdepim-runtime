@@ -36,6 +36,8 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     DavGroupwareResource( const QString &id );
     ~DavGroupwareResource();
 
+    virtual void collectionRemoved( const Akonadi::Collection &collection );
+
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
@@ -50,6 +52,8 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private Q_SLOTS:
+    void onCollectionRemovedFinished( KJob* );
+
     void onRetrieveCollectionsFinished( KJob* );
     void onRetrieveItemsFinished( KJob* );
     void onMultigetFinished( KJob* );

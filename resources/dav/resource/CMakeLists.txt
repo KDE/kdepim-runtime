@@ -1,13 +1,5 @@
 project(davgroupware)
 
-# search packages used by KDE
-find_package (KDE4 REQUIRED)
-include(KDE4Defaults)
-include(MacroLibrary)
-include(MacroOptionalAddSubdirectory)
-include(CheckIncludeFiles)
-find_package (KdepimLibs REQUIRED)
-
 find_program(XSLTPROC_EXECUTABLE xsltproc)
 macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" FALSE "" "Needed for building Akonadi resources. Recommended.")
 
@@ -36,8 +28,6 @@ if(WIN32)
                         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} )
 endif(WIN32)
 
-set(KDE4_ICON_DIR ${KDE4_INSTALL_DIR}/share/icons)
-
 include_directories(
     ${KDE4_INCLUDES}
     ${KDEPIMLIBS_INCLUDE_DIRS}
@@ -52,6 +42,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 set( davgroupwareresource_SRCS
   ../common/davcollection.cpp
+  ../common/davcollectiondeletejob.cpp
   ../common/davcollectionsfetchjob.cpp
   ../common/davcollectionmodifyjob.cpp
   ../common/davcollectionsmultifetchjob.cpp

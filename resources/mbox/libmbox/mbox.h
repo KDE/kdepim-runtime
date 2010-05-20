@@ -29,6 +29,13 @@
 
 #include "mbox_export.h"
 
+struct MsgEntryInfo
+{
+  quint64 offset;
+  quint64 separatorSize;
+  quint64 entrySize;
+};
+
 typedef QPair<quint64, quint64> MsgInfo; // QPair<offset, size>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
@@ -71,12 +78,12 @@ class MBOX_EXPORT MBox
      * @param deleteItems. The @param deletedItems should be a list of file
      * offsets of messages which are deleted.
      *
-     * Each MsgInfo object contains the offset and the size of the messages in
-     * the file which are not marked as deleted.
+     * Each MsgEntryInfo object contains the entry offset, the offset of the actual mail
+     * content and the size of the entry in the file which are not marked as deleted.
      *
-     * Note: One <em>must</em> call open() before calling this method.
+     * Note: One <em>must</em> call load() before calling this method.
      */
-    QList<MsgInfo> entryList( const QSet<quint64> &deletedItems = QSet<quint64>() ) const;
+    QList<MsgEntryInfo> entryList( const QSet<quint64> &deletedItems = QSet<quint64>() ) const;
 
     /**
      * Returns the file name that was passed to the last call to load.
@@ -126,12 +133,16 @@ class MBOX_EXPORT MBox
      *
      * @param deletedItems Offsets of the messages that should be removed from
      *                     the file.
+     * @param movedItems Optional list for storing offset pairs into which describe
+     *                   entries that got moved within the file due to the deletions.
+     *                   The @c first member of the pair is the original offsets the
+     *                   @c second member is the new (current) offset
      *
      * @return true if all offsets refer to a mbox separator line and a file was
      *         loaded, false otherewhise. In the latter the physical file has
      *         not changed.
      */
-    bool purge( const QSet<quint64> &deletedItems );
+    bool purge( const QSet<quint64> &deletedItems, QList<MsgInfo> *movedItems = 0 );
 
     /**
      * Reads the entire message from the file at given @param offset. If the

@@ -24,7 +24,6 @@
 #include <QtCore/QList>
 #include <QtXml/QDomDocument>
 
-class QStringList;
 
 /**
  * @short Base class for various DAV groupware dialects.

@@ -17,9 +17,8 @@
     02110-1301, USA.
 */
 
-import Qt 4.6
+import Qt 4.7
 import org.kde 4.5
-import ".."
 
 Rectangle {
   width: 800
@@ -58,7 +57,6 @@ Rectangle {
     SlideoutPanel {
       id: attachmentPanel
       titleIcon: KDE.iconPath( "mail-attachment", 48 );
-      handleHeight: parent.height - actionPanel.handleHeight - folderPanel.handleHeight - 2*panelContainer.margin
       contentWidth: 400
       content: [
         Rectangle {

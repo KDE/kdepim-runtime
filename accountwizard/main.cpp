@@ -45,6 +45,7 @@ int main( int argc, char **argv )
   KCmdLineOptions options;
   options.add( "type <type>", ki18n("Only offer accounts that support the given type.") );
   options.add( "assistant <assistant>", ki18n("Run the specified assistant.") );
+  options.add( "package <fullpath>", ki18n("unpack fullpath on startup and launch that assistant") );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
@@ -53,12 +54,17 @@ int main( int argc, char **argv )
 
   Akonadi::Control::start( 0 );
 
+  if ( !args->getOption( "package" ).isEmpty() ) {
+    Global::setAssistant( Global::unpackAssistant( args->getOption( "package" ) ) );
+  } else
+    Global::setAssistant( args->getOption( "assistant" ) );
+
   if( !args->getOption("type").isEmpty() )
      Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
-  Global::setAssistant( args->getOption( "assistant" ) );
   args->clear();
   Dialog dlg;
   dlg.show();
+  dlg.resize(300,350);
 
   return app.exec();
 }

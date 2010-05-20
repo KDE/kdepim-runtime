@@ -102,6 +102,7 @@ private:
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
   QString m_server;
+  quint16 m_port;
   QString m_userName;
   KIMAP::LoginJob::EncryptionMode m_encryption;
   KIMAP::LoginJob::AuthenticationMode m_authentication;

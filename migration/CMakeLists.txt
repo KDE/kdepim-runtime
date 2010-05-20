@@ -1,3 +1,6 @@
+add_definitions(-DWANT_DEPRECATED_KCAL_API)
+add_definitions(-DWANT_DEPRECATED_KABC_API)
+add_definitions(-DWANT_DEPRECATED_KRESOURCE_API)
 add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}

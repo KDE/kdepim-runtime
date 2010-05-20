@@ -95,7 +95,6 @@ private:
 private slots:
   void slotTest();
   void slotFinished( QList<int> testResult );
-  void slotCanNotConnectToServer();
 
   void slotTestChanged();
   void slotComplete();

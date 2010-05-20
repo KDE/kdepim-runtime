@@ -1,7 +1,7 @@
 /*
  *   Copyright (C) 2010 Casey Link <unnamedrambler@gmail.com>
  *   Copyright (c) 2009-2010 Klaralvdalens Datakonsult AB, a KDAB Group company <info@kdab.net>
- 
+
  *   This file includes code from old files from previous KDE versions:
  *   Copyright (c) 2003 Andreas Gungl <a.gungl@gmx.de>
  *   Copyright (c) 1996-1998 Stefan Taferner <taferner@kde.org>
@@ -28,7 +28,7 @@
 
 #include <KDebug>
 #include <kde_file.h>
-#include <messagecore/messagestatus.h>
+#include "messagestatus.h"
 using KPIM::MessageStatus;
 #include <QFile>
 
@@ -158,11 +158,14 @@ QStringList KMIndexMsgPrivate::tagList() const
   return mCachedStringParts[KMIndexReader::MsgTagPart].split( ',', QString::SkipEmptyParts );
 }
 
-
+quint64 KMIndexMsgPrivate::uid() const
+{
+  return mCachedLongParts[KMIndexReader::MsgUIDPart];
+}
 
 //END: KMIndexMsg methods
 
-KMIndexReader::KMIndexReader(const QString& indexFile) 
+KMIndexReader::KMIndexReader(const QString& indexFile)
 : mIndexFileName( indexFile )
 , mIndexFile( indexFile )
 , mIndexSwapByteOrder( false )
@@ -171,22 +174,59 @@ KMIndexReader::KMIndexReader(const QString& indexFile)
 {
   if( !mIndexFile.exists() )
   {
-    kDebug() << "file doesn't exist";
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "file doesn't exist";
     mError = true;
   }
 
   if( !mIndexFile.open( QIODevice::ReadOnly ) )
   {
-    kDebug() << "file cant be open";
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "file cant be open";
     mError = true;
   }
-  
+
   mFp = fdopen(mIndexFile.handle(), "r");
+}
+
+KMIndexReader::~KMIndexReader()
+{
 }
 
 bool KMIndexReader::error() const
 {
   return mError;
+}
+
+bool KMIndexReader::statusByOffset( quint64 offset, MessageStatus &status ) const
+{
+    QHash<quint64, KMIndexMsgPrivate*>::const_iterator it = mMsgByOffset.constFind( offset );
+    if ( it == mMsgByOffset.constEnd() ) {
+        return false;
+    }
+
+    status = it.value()->status();
+    return true;
+}
+
+bool KMIndexReader::statusByFileName( const QString &fileName, MessageStatus &status ) const
+{
+    QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
+    if ( it == mMsgByFileName.constEnd() ) {
+        return false;
+    }
+
+    status = it.value()->status();
+    return true;
+}
+
+bool KMIndexReader::imapUidByFileName( const QString &fileName, quint64 &uid ) const
+{
+    QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
+    if ( it == mMsgByFileName.constEnd() ) {
+        return false;
+    }
+
+    uid = it.value()->uid();
+    return uid != 0;
 }
 
 bool KMIndexReader::readHeader( int *version )
@@ -249,17 +289,17 @@ bool KMIndexReader::readHeader( int *version )
       }
       if (needs_update || mIndexSwapByteOrder || (mIndexSizeOfLong != sizeof(long)))
       {
-      kDebug() << "DIRTY!";
+      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "DIRTY!";
 //         setDirty( true );
       }
       // Seek to end of header
       KDE_fseek(mFp, endOfHeader, SEEK_SET );
 
       if ( mIndexSwapByteOrder ) {
-         kDebug() << "Index File has byte order swapped!";
+         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Index File has byte order swapped!";
       }
       if ( mIndexSizeOfLong != sizeof( long ) ) {
-         kDebug() << "Index File sizeOfLong is" << mIndexSizeOfLong << "while sizeof(long) is" << sizeof(long) << "!";
+         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Index File sizeOfLong is" << mIndexSizeOfLong << "while sizeof(long) is" << sizeof(long) << "!";
       }
 
   }
@@ -274,7 +314,11 @@ bool KMIndexReader::readIndex()
   Q_ASSERT( mFp != 0 );
   rewind(mFp);
 
+  qDeleteAll( mMsgList );
   mMsgList.clear();
+  mMsgByFileName.clear();
+  mMsgByOffset.clear();
+
   int version;
 
   if (!readHeader(&version)) return false;
@@ -284,12 +328,12 @@ bool KMIndexReader::readIndex()
   // loop through the entire index
   while (!feof(mFp))
   {
-    kDebug() << "NEW MSG!";
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "NEW MSG!";
     msg = 0;
     // check version (parsed by readHeader)
     // because different versions must be
     // parsed differently
-    kDebug() << "parsing version" << version;
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "parsing version" << version;
     if(version >= 1505) {
       // parse versions >= 1505
       if(!fread(&len, sizeof(len), 1, mFp))
@@ -317,11 +361,14 @@ bool KMIndexReader::readIndex()
       if (*line.data() == '\0') {
         // really, i have no idea when or how this would occur
         // but we probably want to know if it does - Casey
-        kWarning() << "Unknowable bad occured"; 
+        kWarning() << "Unknowable bad occured";
         fclose(mFp);
-        kDebug() << "fclose(mFp = " << mFp << ")";
+        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "fclose(mFp = " << mFp << ")";
         mFp = 0;
+        qDeleteAll( mMsgList );
         mMsgList.clear();
+        mMsgByFileName.clear();
+        mMsgByOffset.clear();
         return false;
       }
       msg = new KMIndexMsgPrivate;
@@ -350,7 +397,17 @@ bool KMIndexReader::readIndex()
 //     }
 #endif
     mMsgList.append(msg);
+    const QString fileName = msg->mCachedStringParts[ MsgFilePart ];
+    if ( !fileName.isEmpty() ) {
+        mMsgByFileName.insert( fileName, msg );
+    }
+
+    const quint64 offset = msg->mCachedLongParts[ MsgOffsetPart ];
+    if ( offset > 0 ) {
+        mMsgByOffset.insert( offset, msg );
+    }
   } // end while
+
   return true;
 }
 
@@ -422,15 +479,15 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
 {
   if( !msg )
     return false;
-  kDebug() << "fillStringPartCache";
+  kDebug( KDE_DEFAULT_DEBUG_AREA );
   if (g_chunk_length < indexLen)
       g_chunk = (uchar *)realloc(g_chunk, g_chunk_length = indexLen);
-  
+
   off_t first_off = KDE_ftell(mFp);
   KDE_fseek(mFp, indexOff, SEEK_SET);
   fread( g_chunk, indexLen, 1, mFp);
   KDE_fseek(mFp, first_off, SEEK_SET);
-  
+
   MsgPartType type;
   quint16 len;
   off_t ret = 0;
@@ -473,7 +530,7 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
       Q_ASSERT(mIndexSizeOfLong == len);
       if (mIndexSizeOfLong == sizeof(ret))
       {
-        kDebug() << "mIndexSizeOfLong == sizeof(ret)";
+        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mIndexSizeOfLong == sizeof(ret)";
         // this memcpy replaces the original call to copy_from_stream
         // so that g_chunk_offset is not changed
         memcpy( &ret, g_chunk + g_chunk_offset, sizeof(ret) );

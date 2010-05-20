@@ -21,21 +21,6 @@
 var page = Dialog.addPage( "kolabwizard.ui", "Personal Settings" );
 
 var userChangedServerAddress = false;
-function emailChanged( arg )
-{
-  validateInput();
-  if ( userChangedServerAddress == true ) {
-    return;
-  }
-
-  var pos = arg.indexOf( "@" );
-  if ( pos >= 0 && (pos + 1) < arg.length ) {
-    var server = arg.slice( pos + 1, arg.length );
-    page.kolabWizard.serverAddress.setText( server );
-  }
-
-  userChangedServerAddress = false;
-}
 
 function serverChanged( arg )
 {
@@ -49,7 +34,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.kolabWizard.serverAddress.text == "" || page.kolabWizard.emailAddress.text == "" ) {
+  if ( page.widget().serverAddress.text == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -61,38 +46,38 @@ function setup()
   SetupManager.createResource( "akonadi_kolabproxy_resource" );
 
   var identity = SetupManager.createIdentity();
-  identity.setEmail( page.kolabWizard.emailAddress.text );
-  identity.setRealName( page.kolabWizard.fullName.text );
+  identity.setEmail( SetupManager.email() );
+  identity.setRealName( SetupManager.name() );
 
   var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
-  imapRes.setOption( "ImapServer", page.kolabWizard.serverAddress.text );
-  imapRes.setOption( "UserName", page.kolabWizard.emailAddress.text );
-  imapRes.setOption( "Password", page.kolabWizard.password.text );
+  imapRes.setOption( "ImapServer", page.widget().serverAddress.text );
+  imapRes.setOption( "UserName", SetupManager.email() );
+  imapRes.setOption( "Password", SetupManager.password() );
   imapRes.setOption( "UseDefaultIdentity", false );
   imapRes.setOption( "AccountIdentity", identity.uoid() );
   imapRes.setOption( "SubscriptionEnabled", true );
 
   var smtp = SetupManager.createTransport( "smtp" );
-  smtp.setName( page.kolabWizard.serverAddress.text );
-  smtp.setHost( page.kolabWizard.serverAddress.text );
+  smtp.setName( page.widget().serverAddress.text );
+  smtp.setHost( page.widget().serverAddress.text );
   smtp.setPort( 465 );
   smtp.setEncryption( "SSL" );
-  smtp.setUsername( page.kolabWizard.emailAddress.text );
-  smtp.setPassword( page.kolabWizard.password.text );
+  smtp.setUsername( SetupManager.email() );
+  smtp.setPassword( SetupManager.password() );
 
   var ldap = SetupManager.createLdap();
-  ldap.setUser( page.kolabWizard.emailAddress.text );
-  ldap.setServer( page.kolabWizard.serverAddress.text );
+  ldap.setUser( SetupManager.email() );
+  ldap.setServer( page.widget().serverAddress.text );
 
   var korganizer = SetupManager.createConfigFile( "korganizerrc" );
   korganizer.setName( "korganizer" );
   korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyFullDomainRetrieval","true");
   korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveAuto", "true" );
-  korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + page.kolabWizard.serverAddress.text  + "/freebusy/" );
+  korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + page.widget().serverAddress.text  + "/freebusy/" );
   SetupManager.execute();
 }
 
-connect( page.kolabWizard.emailAddress, "textChanged(QString)", this, "emailChanged(QString)" );
-connect( page.kolabWizard.serverAddress, "textChanged(QString)", this, "serverChanged(QString)" );
+connect( page.widget().serverAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
+
 validateInput();

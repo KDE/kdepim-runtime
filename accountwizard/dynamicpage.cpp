@@ -46,14 +46,20 @@ DynamicPage::DynamicPage(const QString& uiFile, KAssistantDialog* parent) : Page
   QFile file( uiFile );
   file.open( QFile::ReadOnly );
   kDebug() << uiFile;
-  QWidget *dynamicWidget = loader.load( &file, pageParent );
+  m_dynamicWidget = loader.load( &file, pageParent );
   file.close();
 
 #ifdef KDEPIM_MOBILE_UI
-  pageParent->setWidget( dynamicWidget );
+  pageParent->setWidget( m_dynamicWidget );
 #else
-  layout->addWidget( dynamicWidget );
+  layout->addWidget( m_dynamicWidget );
 #endif
 
   setValid( true );
 }
+
+QObject* DynamicPage::widget() const
+{
+  return m_dynamicWidget;
+}
+

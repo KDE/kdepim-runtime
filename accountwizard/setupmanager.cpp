@@ -133,4 +133,34 @@ SetupObject* SetupManager::connectObject(SetupObject* obj)
   return obj;
 }
 
+void SetupManager::setName( const QString& name )
+{
+  m_name = name;
+}
+
+QString SetupManager::name()
+{
+  return m_name;
+}
+
+void SetupManager::setEmail( const QString& email)
+{
+  m_email = email;
+}
+
+QString SetupManager::email()
+{
+  return m_email;
+}
+
+void SetupManager::setPassword( const QString& password)
+{
+  m_password = password;
+}
+
+QString SetupManager::password()
+{
+  return m_password;
+}
+
 #include "setupmanager.moc"

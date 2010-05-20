@@ -24,6 +24,7 @@
 
 class Page;
 class TypePage;
+#include "setupmanager.h"
 
 class Dialog : public KAssistantDialog
 {
@@ -34,12 +35,17 @@ class Dialog : public KAssistantDialog
     /* reimpl */ void next();
     /* reimpl */ void back();
 
+    // give room for certain pages to create objects too.
+    SetupManager* setupManager();
+
   public slots:
     Q_SCRIPTABLE QObject* addPage( const QString &uiFile, const QString &title );
 
   private slots:
     void slotNextPage();
-    void slotAdvancedWanted();
+    void slotGhnsWanted();
+    void slotGhnsNotWanted();
+    void slotManualConfigWanted( bool );
     void slotNextOk();
     void slotBackOk();
 
@@ -47,8 +53,11 @@ class Dialog : public KAssistantDialog
     KPageWidgetItem* addPage( Page* page, const QString &title );
 
   private:
+    SetupManager* mSetupManager;
     KPageWidgetItem* mLastPage;
+    KPageWidgetItem* mProviderPage;
     KPageWidgetItem* mTypePage;
+    KPageWidgetItem* mLoadPage;
 };
 
 #endif

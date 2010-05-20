@@ -33,6 +33,12 @@ class SetupManager : public QObject
     void setSetupPage( SetupPage* page );
 
   public slots:
+    Q_SCRIPTABLE void setName( const QString& );
+    Q_SCRIPTABLE QString name();
+    Q_SCRIPTABLE void setEmail( const QString& );
+    Q_SCRIPTABLE QString email();
+    Q_SCRIPTABLE void setPassword( const QString& );
+    Q_SCRIPTABLE QString password();
     Q_SCRIPTABLE QObject* createResource( const QString &type );
     Q_SCRIPTABLE QObject* createTransport( const QString &type );
     Q_SCRIPTABLE QObject* createConfigFile( const QString &configName );
@@ -51,6 +57,7 @@ class SetupManager : public QObject
     void setupInfo( const QString &msg );
 
   private:
+    QString m_name, m_email, m_password;
     QList<SetupObject*> m_objectToSetup;
     QList<SetupObject*> m_setupObjects;
     SetupObject* m_currentSetupObject;

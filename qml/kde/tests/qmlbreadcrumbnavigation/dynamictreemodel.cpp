@@ -134,6 +134,17 @@ int DynamicTreeModel::columnCount(const QModelIndex &index ) const
   return m_childItems.value(index.internalId()).size();
 }
 
+static const char * const accounts[] = {
+  "GMail",
+  "Hotmail",
+  "KDE",
+  "Work",
+  "Squash",
+  "Cycling",
+  "Climbing",
+  "Mailing Lists"
+};
+
 QVariant DynamicTreeModel::data(const QModelIndex &index, int role) const
 {
   if (!index.isValid())
@@ -144,7 +155,16 @@ QVariant DynamicTreeModel::data(const QModelIndex &index, int role) const
 
   if (Qt::DisplayRole == role || Qt::EditRole == role)
   {
-    return m_items.value(index.internalId());
+    if (!index.parent().isValid())
+    {
+      if ( index.row() > ( sizeof accounts / sizeof *accounts ))
+        return "Account" + m_items.value(index.internalId());
+      return QString(accounts[index.row()]);
+    }
+    if (index.row() == 1 && !index.parent().parent().isValid())
+      return "Inbox";
+
+    return "Subfolder" + m_items.value(index.internalId());
   }
   return QVariant();
 }

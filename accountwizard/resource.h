@@ -35,13 +35,14 @@ class Resource : public SetupObject
     void destroy();
 
   public slots:
+    Q_SCRIPTABLE void setName( const QString &name );
     Q_SCRIPTABLE void setOption( const QString &key, const QVariant &value );
 
   private slots:
     void instanceCreateResult( KJob* job );
 
   private:
-    QString m_typeIdentifier;
+    QString m_typeIdentifier, m_name;
     QMap<QString, QVariant> m_settings;
     Akonadi::AgentInstance m_instance;
 };

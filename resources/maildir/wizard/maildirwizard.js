@@ -22,7 +22,7 @@ var page = Dialog.addPage( "maildirwizard.ui", "Personal Settings" );
 
 function validateInput()
 {
-  if ( page.maildirWizard.maildirPath.text == "" ) {
+  if ( page.widget().maildirPath.text == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -32,11 +32,11 @@ function validateInput()
 function setup()
 {
   var maildirRes = SetupManager.createResource( "akonadi_maildir_resource" );
-  maildirRes.setOption( "Path", page.maildirWizard.maildirPath.text );
+  maildirRes.setOption( "Path", page.widget().maildirPath.text );
 
   SetupManager.execute();
 }
 
-connect( page.maildirWizard.maildirPath, "textChanged(QString)", this, "validateInput()" );
+connect( page.widget().maildirPath, "textChanged(QString)", this, "validateInput()" );
 connect( page, "pageLeftNext()", this, "setup()" );
 validateInput();

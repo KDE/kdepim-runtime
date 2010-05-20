@@ -158,20 +158,22 @@ void MboxTest::testAppend()
   QCOMPARE( mbox.entryList().size(), 0 );
   QCOMPARE( mbox.appendEntry( mMail1 ), static_cast<qint64>( 0 ) );
   QCOMPARE( mbox.entryList().size(), 1 );
-  QCOMPARE( mbox.entryList().first().second, static_cast<quint64>( sEntry1.size() ) );
+  QVERIFY( mbox.entryList().first().separatorSize > 0 );
+  QCOMPARE( mbox.entryList().first().entrySize, static_cast<quint64>( sEntry1.size() ) );
 
   const qint64 offsetMail2 = mbox.appendEntry( mMail2 );
   QVERIFY( offsetMail2 > sEntry1.size() );
   QCOMPARE( mbox.entryList().size(), 2 );
-  QCOMPARE( mbox.entryList().last().second, static_cast<quint64>( sEntry2.size() ) );
+  QVERIFY( mbox.entryList().last().separatorSize > 0 );
+  QCOMPARE( mbox.entryList().last().entrySize, static_cast<quint64>( sEntry2.size() ) );
 
   // check if appended entries can be read
-  QList<MsgInfo> list = mbox.entryList();
-  foreach ( const MsgInfo &msgInfo, list ) {
-    const QByteArray header = mbox.readEntryHeaders( msgInfo.first );
+  QList<MsgEntryInfo> list = mbox.entryList();
+  foreach ( const MsgEntryInfo &msgInfo, list ) {
+    const QByteArray header = mbox.readEntryHeaders( msgInfo.offset );
     QVERIFY( !header.isEmpty() );
 
-    KMime::Message *message = mbox.readEntry( msgInfo.first );
+    KMime::Message *message = mbox.readEntry( msgInfo.offset );
     QVERIFY( message != 0 );
 
     KMime::Message *headers = new KMime::Message();
@@ -183,12 +185,12 @@ void MboxTest::testAppend()
     QCOMPARE( message->to()->as7BitString(), headers->to()->as7BitString() );
     QCOMPARE( message->from()->as7BitString(), headers->from()->as7BitString() );
 
-    if ( msgInfo.first == 0 ){
+    if ( msgInfo.offset == 0 ){
       QCOMPARE( message->messageID()->identifier(), mMail1->messageID()->identifier() );
       QCOMPARE( message->subject()->as7BitString(), mMail1->subject()->as7BitString() );
       QCOMPARE( message->to()->as7BitString(), mMail1->to()->as7BitString() );
       QCOMPARE( message->from()->as7BitString(), mMail1->from()->as7BitString() );
-    } else if ( msgInfo.first == static_cast<quint64>( offsetMail2 ) ) {
+    } else if ( msgInfo.offset == static_cast<quint64>( offsetMail2 ) ) {
       QCOMPARE( message->messageID()->identifier(), mMail2->messageID()->identifier() );
       QCOMPARE( message->subject()->as7BitString(), mMail2->subject()->as7BitString() );
       QCOMPARE( message->to()->as7BitString(), mMail2->to()->as7BitString() );
@@ -211,34 +213,35 @@ void MboxTest::testSaveAndLoad()
   mbox.appendEntry( mMail1 );
   mbox.appendEntry( mMail2 );
 
-  QList<MsgInfo> infos1 = mbox.entryList();
+  QList<MsgEntryInfo> infos1 = mbox.entryList();
   QCOMPARE( infos1.size(), 2 );
 
   QVERIFY( mbox.save() );
   QVERIFY( QFileInfo( fileName() ).exists() );
 
-  QList<MsgInfo> infos2 = mbox.entryList();
+  QList<MsgEntryInfo> infos2 = mbox.entryList();
   QCOMPARE( infos2.size(), 2 );
 
   for ( int i = 0; i < 2; ++i ) {
-    QCOMPARE( infos1.at(i).first, infos2.at(i).first );
-    QCOMPARE( infos1.at(i).second, infos2.at(i).second );
+    QCOMPARE( infos1.at(i).offset, infos2.at(i).offset );
+    QCOMPARE( infos1.at(i).separatorSize, infos2.at(i).separatorSize );
+    QCOMPARE( infos1.at(i).entrySize, infos2.at(i).entrySize );
   }
 
   MBox mbox2;
   QVERIFY( mbox2.setLockType( MBox::None ) );
   QVERIFY( mbox2.load( fileName() ) );
 
-  QList<MsgInfo> infos3 = mbox2.entryList();
+  QList<MsgEntryInfo> infos3 = mbox2.entryList();
   QCOMPARE( infos3.size(), 2 );
 
   for ( int i = 0; i < 2; ++i ) {
-    QCOMPARE( infos3.at(i).first, infos2.at(i).first );
+    QCOMPARE( infos3.at(i).offset, infos2.at(i).offset );
 
-    quint64 minSize = infos2.at(i).second;
-    quint64 maxSize = infos2.at(i).second + 1;
-    QVERIFY( infos3.at(i).second >= minSize  );
-    QVERIFY( infos3.at(i).second <= maxSize  );
+    quint64 minSize = infos2.at(i).entrySize;
+    quint64 maxSize = infos2.at(i).entrySize + 1;
+    QVERIFY( infos3.at(i).entrySize >= minSize  );
+    QVERIFY( infos3.at(i).entrySize <= maxSize  );
   }
 }
 
@@ -267,8 +270,8 @@ void MboxTest::testBlankLines()
     quint64 minSize = sEntry1.size() + i - 1; // Possibly on '\n' falls off.
     quint64 maxSize = sEntry1.size() + i;
     for ( int i = 0; i < 3; ++i ) {
-      QVERIFY( mbox1.entryList().at( i ).second >= minSize  );
-      QVERIFY( mbox1.entryList().at( i ).second <= maxSize  );
+      QVERIFY( mbox1.entryList().at( i ).entrySize >= minSize  );
+      QVERIFY( mbox1.entryList().at( i ).entrySize <= maxSize  );
     }
   }
 }
@@ -284,34 +287,34 @@ void MboxTest::testEntries()
   mbox1.appendEntry( mMail2 );
   mbox1.appendEntry( mMail1 );
 
-  QList<MsgInfo> infos = mbox1.entryList();
+  QList<MsgEntryInfo> infos = mbox1.entryList();
   QCOMPARE( infos.size() , 3 );
 
   QSet<quint64> deletedEntries;
-  deletedEntries << infos.at( 0 ).first;
+  deletedEntries << infos.at( 0 ).offset;
 
-  QList<MsgInfo> infos2 = mbox1.entryList( deletedEntries );
+  QList<MsgEntryInfo> infos2 = mbox1.entryList( deletedEntries );
   QCOMPARE( infos2.size() , 2 );
-  QVERIFY( infos2.first().first != infos.first().first );
-  QVERIFY( infos2.last().first != infos.first().first );
+  QVERIFY( infos2.first().offset != infos.first().offset );
+  QVERIFY( infos2.last().offset != infos.first().offset );
 
-  deletedEntries << infos.at( 1 ).first;
+  deletedEntries << infos.at( 1 ).offset;
   infos2 = mbox1.entryList( deletedEntries );
 
   QCOMPARE( infos2.size() , 1 );
-  QVERIFY( infos2.first().first != infos.at( 0 ).first );
-  QVERIFY( infos2.first().first != infos.at( 1 ).first );
+  QVERIFY( infos2.first().offset != infos.at( 0 ).offset );
+  QVERIFY( infos2.first().offset != infos.at( 1 ).offset );
 
-  deletedEntries << infos.at( 2 ).first;
+  deletedEntries << infos.at( 2 ).offset;
   infos2 = mbox1.entryList( deletedEntries );
   QCOMPARE( infos2.size() , 0 );
 
   QVERIFY( !deletedEntries.contains( 10 ) ); // some random offset
   infos2 = mbox1.entryList( QSet<quint64>() << 10 );
   QCOMPARE( infos2.size() , 3 );
-  QCOMPARE( infos2.at( 0 ).first, infos.at( 0 ).first );
-  QCOMPARE( infos2.at( 1 ).first, infos.at( 1 ).first );
-  QCOMPARE( infos2.at( 2 ).first, infos.at( 2 ).first );
+  QCOMPARE( infos2.at( 0 ).offset, infos.at( 0 ).offset );
+  QCOMPARE( infos2.at( 1 ).offset, infos.at( 1 ).offset );
+  QCOMPARE( infos2.at( 2 ).offset, infos.at( 2 ).offset );
 }
 
 void MboxTest::testPurge()
@@ -324,20 +327,20 @@ void MboxTest::testPurge()
   mbox1.appendEntry( mMail1 );
   QVERIFY( mbox1.save() );
 
-  QList<MsgInfo> list = mbox1.entryList();
+  QList<MsgEntryInfo> list = mbox1.entryList();
 
   // First test: Delete only the first (all messages afterwards have to be moved).
-  mbox1.purge( QSet<quint64>() << list.first().first );
+  mbox1.purge( QSet<quint64>() << list.first().offset );
 
   MBox mbox2;
   QVERIFY( mbox2.load( fileName() ) );
-  QList<MsgInfo> list2 = mbox2.entryList();
+  QList<MsgEntryInfo> list2 = mbox2.entryList();
   QCOMPARE( list2.size(), 2 ); // Is a message actually gone?
 
-  quint64 newOffsetSecondMessage = list.last().first - list.at( 1 ).first;
+  quint64 newOffsetSecondMessage = list.last().offset - list.at( 1 ).offset;
 
-  QCOMPARE( list2.first().first, static_cast<quint64>( 0 ) );
-  QCOMPARE( list2.last().first, newOffsetSecondMessage );
+  QCOMPARE( list2.first().offset, static_cast<quint64>( 0 ) );
+  QCOMPARE( list2.last().offset, newOffsetSecondMessage );
 
   // Second test: Delete the first two (the last message have to be moved).
   removeTestFile();
@@ -350,11 +353,11 @@ void MboxTest::testPurge()
 
   list = mbox1.entryList();
 
-  mbox1.purge( QSet<quint64>() << list.at( 0 ).first << list.at( 1 ).first );
+  mbox1.purge( QSet<quint64>() << list.at( 0 ).offset << list.at( 1 ).offset );
   QVERIFY( mbox2.load( fileName() ) );
   list2 = mbox2.entryList();
   QCOMPARE( list2.size(), 1 ); // Are the messages actually gone?
-  QCOMPARE( list2.first().first, static_cast<quint64>( 0 ) );
+  QCOMPARE( list2.first().offset, static_cast<quint64>( 0 ) );
 
   // Third test: Delete all messages.
   removeTestFile();
@@ -367,7 +370,7 @@ void MboxTest::testPurge()
 
   list = mbox1.entryList();
 
-  mbox1.purge( QSet<quint64>() << list.at( 0 ).first << list.at( 1 ).first << list.at( 2 ).first );
+  mbox1.purge( QSet<quint64>() << list.at( 0 ).offset << list.at( 1 ).offset << list.at( 2 ).offset );
   QVERIFY( mbox2.load( fileName() ) );
   list2 = mbox2.entryList();
   QCOMPARE( list2.size(), 0 ); // Are the messages actually gone?
@@ -397,13 +400,13 @@ void MboxTest::testHeaders()
   mbox.appendEntry( mMail2 );
   QVERIFY( mbox.save() );
 
-  const QList<MsgInfo> list = mbox.entryList();
+  const QList<MsgEntryInfo> list = mbox.entryList();
 
-  foreach ( const MsgInfo &msgInfo, list ) {
-    const QByteArray header = mbox.readEntryHeaders( msgInfo.first );
+  foreach ( const MsgEntryInfo &msgInfo, list ) {
+    const QByteArray header = mbox.readEntryHeaders( msgInfo.offset );
     QVERIFY( !header.isEmpty() );
 
-    KMime::Message *message = mbox.readEntry( msgInfo.first );
+    KMime::Message *message = mbox.readEntry( msgInfo.offset );
     QVERIFY( message != 0 );
 
     KMime::Message *headers = new KMime::Message();

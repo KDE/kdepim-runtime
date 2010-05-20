@@ -172,6 +172,10 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     void migrationCompleted( const Akonadi::AgentInstance &instance )
     {
+      // do an intial sync so the resource shows up in the folder tree at least
+      AgentInstance nonConstInstance = instance;
+      nonConstInstance.synchronize();
+
       // check if this one was previously bridged and remove the bridge
       KConfigGroup cfg( KGlobal::config(), "Resource " + mCurrentKResource->identifier() );
       const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );

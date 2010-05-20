@@ -32,6 +32,7 @@
 class MailDispatcherAgent : public Akonadi::AgentBase
 {
   Q_OBJECT
+  Q_CLASSINFO("D-Bus Interface", "org.freedesktop.Akonadi.MailDispatcherAgent")
 
   public:
     MailDispatcherAgent( const QString &id );
@@ -45,6 +46,11 @@ class MailDispatcherAgent : public Akonadi::AgentBase
       Emitted when the MDA has attempted to send an item.
      */
     void itemProcessed( const Akonadi::Item &item, bool result );
+
+    /**
+     * Emitted when the MDA has begun processing an item
+     */
+    Q_SCRIPTABLE void itemDispatchStarted();
 
   protected:
     virtual void doSetOnline( bool online );

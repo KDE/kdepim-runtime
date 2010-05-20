@@ -32,11 +32,6 @@ using namespace KPIM;
 class Maildir::Private
 {
 public:
-    Private( const QString& p )
-    :path(p)
-    {
-    }
-
     Private( const QString& p, bool isRoot )
         :path(p), isRoot(isRoot)
     {
@@ -45,6 +40,7 @@ public:
     Private( const Private& rhs )
     {
         path = rhs.path;
+        isRoot = rhs.isRoot;
     }
 
     bool operator==( const Private& rhs ) const
@@ -87,10 +83,15 @@ public:
         return realKey;
     }
 
+    static QString subDirNameForFolderName( const QString &folderName )
+    {
+        return QString::fromLatin1(".%1.directory").arg( folderName );
+    }
+
     QString subDirPath() const
     {
         QDir dir( path );
-        return QString::fromLatin1(".%1.directory").arg( dir.dirName() );
+        return subDirNameForFolderName( dir.dirName() );
     }
 
     bool moveAndRename( QDir &dest, const QString &newName )
@@ -108,8 +109,8 @@ public:
         kDebug() << "Failed to rename maildir";
         return false;
       }
-      const QDir subDirs( subDirPath() );
-      if ( subDirs.exists() && !dest.rename( subDirPath(), QString::fromLatin1( ".%1.directory" ).arg( newName ) ) ) {
+      const QDir subDirs( Maildir::subDirPathForFolderPath( path ) );
+      if ( subDirs.exists() && !dest.rename( subDirs.path(), QString::fromLatin1( ".%1.directory" ).arg( newName ) ) ) {
         kDebug() << "Failed to rename subfolders";
         return false;
       }
@@ -492,4 +493,17 @@ QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
   }
 
   return key;
+}
+
+QString Maildir::subDirPathForFolderPath( const QString &folderPath )
+{
+  QDir dir( folderPath );
+  const QString dirName = dir.dirName();
+  dir.cdUp();
+  return QFileInfo( dir, Private::subDirNameForFolderName( dirName ) ).filePath();
+}
+
+QString Maildir::subDirNameForFolderName( const QString &folderName )
+{
+  return Private::subDirNameForFolderName( folderName );
 }

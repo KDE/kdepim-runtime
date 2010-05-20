@@ -380,7 +380,6 @@ NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QSt
   }
   if ( found ) *found = false;
   // create a new contact
-  kDebug() << "Did not find " << name << emailAddress << ", creating a new PersonContact";
   NepomukFast::PersonContact contact( QUrl(), graphUri );
   contact.setLabel( name.isEmpty() ? emailAddress : name );
   if ( !emailAddress.isEmpty() ) {
@@ -413,6 +412,11 @@ void NepomukFeederAgentBase::indexData(const KUrl& url, const QByteArray& data, 
   Strigi::StringInputStream sr( data.constData(), data.size(), false );
   Strigi::AnalysisResult idx( url.url().toLatin1().constData(), mtime.toTime_t(), *writer, streamindexer );
   idx.index( &sr );
+}
+
+ItemFetchScope NepomukFeederAgentBase::fetchScopeForcollection(const Akonadi::Collection& collection)
+{
+  return changeRecorder()->itemFetchScope();
 }
 
 #include "nepomukfeederagentbase.moc"

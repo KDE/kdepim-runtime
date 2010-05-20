@@ -22,7 +22,7 @@ var page = Dialog.addPage( "mailboxwizard.ui", "Personal Settings" );
 
 function validateInput()
 {
-  if ( page.mailboxWizard.mailboxPath.text == "" ) {
+  if ( page.widget().mailboxPath.text == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -32,10 +32,10 @@ function validateInput()
 function setup()
 {
   var mboxRes = SetupManager.createResource( "akonadi_mbox_resource" );
-  mboxRes.setOption( "Path", page.mailboxWizard.mailboxPath.text );
+  mboxRes.setOption( "Path", page.widget().mailboxPath.text );
 
   SetupManager.execute();
 }
-connect( page.mailboxWizard.mailboxPath, "textChanged(QString)", this, "validateInput()" );
+connect( page.widget().mailboxPath, "textChanged(QString)", this, "validateInput()" );
 connect( page, "pageLeftNext()", this, "setup()" );
 validateInput();

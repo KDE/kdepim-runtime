@@ -19,6 +19,7 @@
 #include "davgroupwareresource.h"
 
 #include "configdialog.h"
+#include "davcollectiondeletejob.h"
 #include "davcollectionsfetchjob.h"
 #include "davcollectionsmultifetchjob.h"
 #include "davitemcreatejob.h"
@@ -48,6 +49,7 @@
 #include <kcal/incidence.h>
 #include <kwindowsystem.h>
 
+#include <QtCore/QSet>
 #include <QtDBus/QDBusConnection>
 
 using namespace Akonadi;
@@ -65,8 +67,8 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   AttributeFactory::registerAttribute<DavProtocolAttribute>();
 
   mDavCollectionRoot.setParentCollection( Collection::root() );
-  mDavCollectionRoot.setName( name() );
-  mDavCollectionRoot.setRemoteId( name() );
+  mDavCollectionRoot.setName( identifier() );
+  mDavCollectionRoot.setRemoteId( identifier() );
   mDavCollectionRoot.setContentMimeTypes( QStringList() << Collection::mimeType() );
 
   int refreshInterval = Settings::self()->refreshInterval();
@@ -92,6 +94,23 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
 DavGroupwareResource::~DavGroupwareResource()
 {
   delete mMimeVisitor;
+}
+
+void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collection )
+{
+  kDebug() << "Removing collection " << collection.remoteId();
+
+  if ( !configurationIsValid() ) {
+    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    cancelTask( i18n( "The resource is not configured yet" ) );
+    return;
+  }
+
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+
+  DavCollectionDeleteJob *job = new DavCollectionDeleteJob( davUrl );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( onCollectionRemovedFinished( KJob* ) ) );
+  job->start();
 }
 
 void DavGroupwareResource::configure( WId windowId )
@@ -344,6 +363,16 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
   job->start();
 }
 
+void DavGroupwareResource::onCollectionRemovedFinished( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( i18n( "Unable to remove collection: %1", job->errorText() ) );
+    return;
+  }
+
+  changeProcessed();
+}
+
 void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
 {
   if ( job->error() ) {
@@ -357,14 +386,21 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   collections << mDavCollectionRoot;
 
   const DavCollection::List davCollections = fetchJob->collections();
+  QSet<QString> seenCollectionsNames;
+
   foreach ( const DavCollection &davCollection, davCollections ) {
     Akonadi::Collection collection;
     collection.setParentCollection( mDavCollectionRoot );
     collection.setRemoteId( davCollection.url() );
-    if ( davCollection.displayName().isEmpty() )
+    if ( davCollection.displayName().isEmpty() ) {
       collection.setName( name() + " (" + davCollection.url() + ')' );
-    else
-      collection.setName( davCollection.displayName() + " (" + davCollection.url() + ')' );
+    } else {
+      if ( seenCollectionsNames.contains( davCollection.displayName() ) ) {
+        collection.setName( davCollection.displayName() + " (" + davCollection.url() + ')' );
+      } else {
+        collection.setName( davCollection.displayName() );
+      }
+    }
 
     QStringList mimeTypes;
 
@@ -489,10 +525,16 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
       KABC::VCardConverter converter;
       const KABC::Addressee contact = converter.parseVCard( davItem.data() );
 
+      if ( contact.isEmpty() )
+        continue;
+
       item.setPayload<KABC::Addressee>( contact );
     } else {
       KCal::ICalFormat formatter;
       const IncidencePtr ptr( formatter.fromString( data ) );
+
+      if ( ptr.get() == 0 )
+        continue;
 
       item.setPayload<IncidencePtr>( ptr );
 
@@ -530,10 +572,20 @@ void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
     KABC::VCardConverter converter;
     const KABC::Addressee contact = converter.parseVCard( davItem.data() );
 
+    if ( contact.isEmpty() ) {
+      cancelTask( i18n( "The server returned invalid data" ) );
+      return;
+    }
+
     item.setPayload<KABC::Addressee>( contact );
   } else {
     KCal::ICalFormat formatter;
     const IncidencePtr ptr( formatter.fromString( data ) );
+
+    if ( ptr.get() == 0 ) {
+      cancelTask( i18n( "The server returned invalid data" ) );
+      return;
+    }
 
     item.setPayload<IncidencePtr>( ptr );
 
@@ -620,6 +672,7 @@ bool DavGroupwareResource::configurationIsValid()
   if ( !Settings::self()->displayName().isEmpty() ) {
     EntityDisplayAttribute *attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
     attribute->setDisplayName( Settings::self()->displayName() );
+    setName( Settings::self()->displayName() );
   }
 
   return true;

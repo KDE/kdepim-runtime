@@ -22,12 +22,14 @@
 
 #include "kproxyitemselectionmodel.h"
 
-class KProxyItemSelectionModelPrivate
+#include <QDebug>
+
+class KLinkItemSelectionModelPrivate
 {
 public:
-  KProxyItemSelectionModelPrivate(KProxyItemSelectionModel *proxySelectionModel, QAbstractItemModel *model,
+  KLinkItemSelectionModelPrivate(KLinkItemSelectionModel *proxySelectionModel, QAbstractItemModel *model,
                                           QItemSelectionModel *selectionModel)
-    : q_ptr( proxySelectionModel ), m_model(model), m_proxySelector(selectionModel)
+    : q_ptr( proxySelectionModel ), m_model(model), m_linkedItemSelectionModel(selectionModel)
   {
     createProxyChain();
   }
@@ -36,14 +38,14 @@ public:
 
   bool assertValid();
 
-  Q_DECLARE_PUBLIC(KProxyItemSelectionModel)
-  KProxyItemSelectionModel * const q_ptr;
+  Q_DECLARE_PUBLIC(KLinkItemSelectionModel)
+  KLinkItemSelectionModel * const q_ptr;
 
   QList<const QAbstractProxyModel *> m_proxyChainUp;
   QList<const QAbstractProxyModel *> m_proxyChainDown;
 
   QAbstractItemModel *m_model;
-  QItemSelectionModel *m_proxySelector;
+  QItemSelectionModel *m_linkedItemSelectionModel;
   bool m_ignoreCurrentChanged;
 };
 
@@ -83,9 +85,9 @@ public:
   Stephen Kelly, 30 March 2010.
 */
 
-void KProxyItemSelectionModelPrivate::createProxyChain()
+void KLinkItemSelectionModelPrivate::createProxyChain()
 {
-  const QAbstractItemModel *selectionTargetModel = m_proxySelector->model();
+  const QAbstractItemModel *selectionTargetModel = m_linkedItemSelectionModel->model();
 
   if (m_model == selectionTargetModel)
     return;
@@ -128,13 +130,13 @@ void KProxyItemSelectionModelPrivate::createProxyChain()
   Q_ASSERT(assertValid());
 }
 
-bool KProxyItemSelectionModelPrivate::assertValid()
+bool KLinkItemSelectionModelPrivate::assertValid()
 {
   qDebug() << m_proxyChainDown << m_proxyChainUp;
   if ( m_proxyChainDown.isEmpty())
   {
     Q_ASSERT( !m_proxyChainUp.isEmpty() );
-    Q_ASSERT( m_proxyChainUp.last()->sourceModel() == m_proxySelector->model() );
+    Q_ASSERT( m_proxyChainUp.last()->sourceModel() == m_linkedItemSelectionModel->model() );
   }
   else if ( m_proxyChainUp.isEmpty())
   {
@@ -146,21 +148,21 @@ bool KProxyItemSelectionModelPrivate::assertValid()
   return true;
 }
 
-KProxyItemSelectionModel::KProxyItemSelectionModel( QAbstractItemModel *model, QItemSelectionModel *proxySelector, QObject *parent)
+KLinkItemSelectionModel::KLinkItemSelectionModel( QAbstractItemModel *model, QItemSelectionModel *proxySelector, QObject *parent)
   : QItemSelectionModel(model, parent),
-    d_ptr(new KProxyItemSelectionModelPrivate(this, model, proxySelector))
+    d_ptr(new KLinkItemSelectionModelPrivate(this, model, proxySelector))
 {
   connect(proxySelector, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(sourceSelectionChanged(QItemSelection,QItemSelection)));
 }
 
-QItemSelection KProxyItemSelectionModel::mapSelectionFromSource(const QModelIndex& sourceIndex) const
+QItemSelection KLinkItemSelectionModel::mapSelectionFromSource(const QModelIndex& sourceIndex) const
 {
   return mapSelectionFromSource(QItemSelection(sourceIndex, sourceIndex));
 }
 
-QItemSelection KProxyItemSelectionModel::mapSelectionFromSource(const QItemSelection& sourceSelection) const
+QItemSelection KLinkItemSelectionModel::mapSelectionFromSource(const QItemSelection& sourceSelection) const
 {
-  Q_D(const KProxyItemSelectionModel);
+  Q_D(const KLinkItemSelectionModel);
 
   QItemSelection seekSelection = sourceSelection;
   QListIterator<const QAbstractProxyModel*> iUp(d->m_proxyChainUp);
@@ -179,18 +181,18 @@ QItemSelection KProxyItemSelectionModel::mapSelectionFromSource(const QItemSelec
     seekSelection = proxy->mapSelectionFromSource(seekSelection);
   }
 
-  Q_ASSERT( ( !seekSelection.isEmpty() && seekSelection.first().model() == d->m_proxySelector->model() ) || true );
+  Q_ASSERT( ( !seekSelection.isEmpty() && seekSelection.first().model() == d->m_linkedItemSelectionModel->model() ) || true );
   return seekSelection;
 }
 
-QItemSelection KProxyItemSelectionModel::mapSelectionToSource(const QModelIndex& sourceIndex) const
+QItemSelection KLinkItemSelectionModel::mapSelectionToSource(const QModelIndex& sourceIndex) const
 {
   return mapSelectionToSource(QItemSelection(sourceIndex, sourceIndex));
 }
 
-QItemSelection KProxyItemSelectionModel::mapSelectionToSource(const QItemSelection& proxySelection) const
+QItemSelection KLinkItemSelectionModel::mapSelectionToSource(const QItemSelection& proxySelection) const
 {
-  Q_D(const KProxyItemSelectionModel);
+  Q_D(const KLinkItemSelectionModel);
 
   QItemSelection seekSelection = proxySelection;
   QListIterator<const QAbstractProxyModel*> iDown(d->m_proxyChainDown);
@@ -215,9 +217,9 @@ QItemSelection KProxyItemSelectionModel::mapSelectionToSource(const QItemSelecti
   return seekSelection;
 }
 
-void KProxyItemSelectionModel::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command)
+void KLinkItemSelectionModel::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command)
 {
-  Q_D(KProxyItemSelectionModel);
+  Q_D(KLinkItemSelectionModel);
   // When an item is removed, the current index is set to the top index in the model.
   // That causes a selectionChanged signal with a selection which we do not want.
   if ( d->m_ignoreCurrentChanged )
@@ -226,23 +228,23 @@ void KProxyItemSelectionModel::select(const QModelIndex &index, QItemSelectionMo
   }
   QItemSelectionModel::select(index, command);
   if (index.isValid())
-    d->m_proxySelector->select(mapSelectionFromSource(index), command);
+    d->m_linkedItemSelectionModel->select(mapSelectionFromSource(index), command);
   else
   {
-    d->m_proxySelector->clearSelection();
+    d->m_linkedItemSelectionModel->clearSelection();
   }
 }
 
-void KProxyItemSelectionModel::select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command)
+void KLinkItemSelectionModel::select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command)
 {
-  Q_D(KProxyItemSelectionModel);
+  Q_D(KLinkItemSelectionModel);
   d->m_ignoreCurrentChanged = true;
   QItemSelectionModel::select(selection, command);
-  d->m_proxySelector->select(mapSelectionFromSource(selection), command);
+  d->m_linkedItemSelectionModel->select(mapSelectionFromSource(selection), command);
   d->m_ignoreCurrentChanged = false;
 }
 
-void KProxyItemSelectionModel::sourceSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void KLinkItemSelectionModel::sourceSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
   QItemSelection mappedDeselection = mapSelectionToSource(deselected);
   QItemSelection mappedSelection = mapSelectionToSource(selected);

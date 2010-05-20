@@ -21,7 +21,9 @@
 #ifndef KMINDEXREADER_H
 #define KMINDEXREADER_H
 
-#include <messagecore/messagestatus.h>
+#include "kmindexreader_export.h"
+
+#include "messagestatus.h"
 using KPIM::MessageStatus;
 
 #include <QString>
@@ -42,10 +44,10 @@ class KMIndexMsgPrivate;
  * It uses old kmfolderindex code, authors attributed as appropriate.
  * @author Casey Link <unnamedrambler@gmail.com>
  */
-class KMIndexReader {
+class KMINDEXREADER_EXPORT KMIndexReader {
 public:
     KMIndexReader ( const QString &indexFile );
-//   ~KMIndexReader() {}
+   ~KMIndexReader();
 
     bool error() const;
 
@@ -84,6 +86,12 @@ public:
         MsgTagPart = 19
     };
 
+    bool statusByOffset( quint64 offset, MessageStatus &status ) const;
+
+    bool statusByFileName( const QString &fileName, MessageStatus &status ) const;
+
+    bool imapUidByFileName( const QString &fileName, quint64 &uid ) const;
+
 private:
 
 
@@ -114,6 +122,8 @@ private:
 
     /** list of index entries or messages */
     QList<KMIndexMsgPrivate*> mMsgList;
+    QHash<QString, KMIndexMsgPrivate*> mMsgByFileName;
+    QHash<quint64, KMIndexMsgPrivate*> mMsgByOffset;
     friend class TestIdxReader;
 };
 
@@ -124,6 +134,8 @@ public:
     /** Status object of the message. */
     MessageStatus& status();
     QStringList  tagList() const ;
+    quint64 uid() const;
+
 private:
     QString mCachedStringParts[20];
     unsigned long mCachedLongParts[20];
