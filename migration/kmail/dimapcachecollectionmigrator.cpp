@@ -200,7 +200,7 @@ void DImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
              << "flags=" << item.flags();
   }
 
-  connect( createJob, SIGNAL( result( KJob* job ) ), q, SLOT( itemCreateResult( KJob* ) ) );
+  connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
 }
 
 void DImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
