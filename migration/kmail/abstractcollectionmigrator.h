@@ -60,6 +60,7 @@ class AbstractCollectionMigrator : public QObject
     Q_PRIVATE_SLOT( d, void fetchResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void processNextCollection() )
     Q_PRIVATE_SLOT( d, void recheckBrokenResource() )
+    Q_PRIVATE_SLOT( d, void recheckIdleResource() )
     Q_PRIVATE_SLOT( d, void resourceStatusChanged( Akonadi::AgentInstance ) )
 };
 

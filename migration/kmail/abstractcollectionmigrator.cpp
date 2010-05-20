@@ -76,6 +76,7 @@ class AbstractCollectionMigrator::Private
     void fetchResult( KJob *job );
     void processNextCollection();
     void recheckBrokenResource();
+    void recheckIdleResource();
     void resourceStatusChanged( const AgentInstance &instance );
 };
 
@@ -83,6 +84,11 @@ void AbstractCollectionMigrator::Private::collectionAdded( const Collection &col
 {
   if ( mStatus == Waiting ) {
     mStatus = Idle;
+  }
+
+  // don't wait any longer, start explicit fetch right away
+  if ( mExplicitFetchStatus == Waiting ) {
+    QMetaObject::invokeMethod( q, "recheckIdleResource", Qt::QueuedConnection );
   }
 
   if ( !mCollectionsById.contains( collection.id() ) ) {
@@ -140,22 +146,18 @@ void AbstractCollectionMigrator::Private::processNextCollection()
 
 void AbstractCollectionMigrator::Private::recheckBrokenResource()
 {
+  kDebug() << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
   if ( mStatus == Waiting ) {
     q->migrationCancelled( i18nc( "@info:status", "Resource '%1' it not working correctly",
                                   mResource.name() ) );
   }
 }
 
-void AbstractCollectionMigrator::Private::resourceStatusChanged( const Akonadi::AgentInstance &instance )
+void AbstractCollectionMigrator::Private::recheckIdleResource()
 {
-  if ( instance.identifier() != mResource.identifier() ) {
-    return;
-  }
+  kDebug() << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
 
-  const AgentInstance::Status oldStatus = mResource.status();
-  mResource = instance;
-
-  if ( oldStatus != AgentInstance::Idle && mResource.status() == AgentInstance::Idle && mExplicitFetchStatus == Idle ) {
+  if ( mExplicitFetchStatus == Waiting ) {
     mExplicitFetchStatus = Running;
 
     CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
@@ -166,6 +168,29 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const Akonadi::
     job->setFetchScope( colScope );
 
     connect( job, SIGNAL( result( KJob* ) ), q, SLOT( fetchResult( KJob* ) ) );
+  }
+}
+
+void AbstractCollectionMigrator::Private::resourceStatusChanged( const Akonadi::AgentInstance &instance )
+{
+  if ( instance.identifier() != mResource.identifier() ) {
+    return;
+  }
+
+  const AgentInstance::Status oldStatus = mResource.status();
+  const QString oldMessage = mResource.statusMessage();
+  mResource = instance;
+
+  kDebug() << "oldStatus=" << oldStatus << "message=" << oldMessage
+           << "newStatus" << mResource.status() << "message=" << mResource.statusMessage();
+
+  if ( oldStatus != AgentInstance::Idle && mResource.status() == AgentInstance::Idle && mExplicitFetchStatus == Idle ) {
+    mExplicitFetchStatus = Waiting;
+
+    // if resource is now "Idle" it might still need time to process until it becomes ready
+    // unfortunately this is not a separate state so lets delay the explicit fetch
+    // wait for at most one minute
+    QTimer::singleShot( 60000, q, SLOT( recheckIdleResource() ) );
   }
 
   if ( mStatus == Waiting ) {
