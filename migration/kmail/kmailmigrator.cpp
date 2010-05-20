@@ -297,6 +297,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     if ( collectionMigrator->migrationOptionsEnabled() ) {
       kDebug() << "Some DIMAP collection migration option enabled. Starting collection migrator";
       collectionMigrator->setCacheFolder( config.readEntry( "Folder" ) );
+      collectionMigrator->setKMailConfig( mConfig );
       connect( collectionMigrator, SIGNAL( message( int, QString ) ),
                SLOT ( collectionMigratorMessage( int, QString ) ) );
       connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),

@@ -23,6 +23,8 @@
 
 #include "abstractcollectionmigrator.h"
 
+class KConfig;
+
 class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
 {
   Q_OBJECT
@@ -31,6 +33,7 @@ class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
     explicit DImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
 
     void setCacheFolder( const QString &cacheFolder );
+    void setKMailConfig( KConfig *config );
 
     ~DImapCacheCollectionMigrator();
 
@@ -45,8 +48,11 @@ class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     Q_PRIVATE_SLOT( d, void fetchItemsResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void processNextItem() )
+    Q_PRIVATE_SLOT( d, void processNextDeletedUid() )
     Q_PRIVATE_SLOT( d, void fetchItemResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemCreateResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void itemDeletePhase1Result( KJob* ) )
+    Q_PRIVATE_SLOT( d, void itemDeletePhase2Result( KJob* ) )
 };
 
 #endif
