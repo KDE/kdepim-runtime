@@ -28,6 +28,7 @@
 #include "dimapcachecollectionmigrator.h"
 #include "localfolderscollectionmigrator.h"
 
+#include <KIMAP/LoginJob>
 #include <Mailtransport/Transport>
 
 #include <akonadi/agentmanager.h>
@@ -50,9 +51,6 @@ using namespace KMail;
 /* Enums for use over DBus. Can't include settings.h for each resource because
    all have same class name. If resource interfaces are changed, these will need
    changing too. */
-enum ImapEncryption { Unencrypted = 1, Ssl, Tls };
-enum ImapAuthentication { ClearText = 0, Login, Plain, CramMD5, DigestMD5, NTLM,
-                          GSSAPI, Anonymous };
 enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
 static void migratePassword( const QString &idString, const AgentInstance &instance,
@@ -247,28 +245,28 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   iface->setImapPort( config.readEntry( "port", 143 ) );
   iface->setUserName( config.readEntry( "login" ) );
   if ( config.readEntry( "use-ssl" ).toLower() == "true" )
-    iface->setSafety( Ssl );
+    iface->setSafety( KIMAP::LoginJob::AnySslVersion );
   else if ( config.readEntry( "use-tls" ).toLower() == "true" )
-    iface->setSafety( Tls );
+    iface->setSafety( KIMAP::LoginJob::TlsV1 );
   else
-    iface->setSafety( Unencrypted );
+    iface->setSafety( KIMAP::LoginJob::Unencrypted );
   const QString &authentication = config.readEntry( "auth" ).toUpper();
   if ( authentication == "LOGIN" )
-    iface->setAuthentication( Login );
+    iface->setAuthentication( KIMAP::LoginJob::Login );
   else if ( authentication == "PLAIN" )
-    iface->setAuthentication( Plain );
+    iface->setAuthentication( KIMAP::LoginJob::Plain );
   else if ( authentication == "CRAM-MD5" )
-    iface->setAuthentication( CramMD5 );
+    iface->setAuthentication( KIMAP::LoginJob::CramMD5 );
   else if ( authentication == "DIGEST-MD5" )
-    iface->setAuthentication( DigestMD5 );
+    iface->setAuthentication( KIMAP::LoginJob::DigestMD5 );
   else if ( authentication == "NTLM" )
-    iface->setAuthentication( NTLM );
+    iface->setAuthentication( KIMAP::LoginJob::NTLM );
   else if ( authentication == "GSSAPI" )
-    iface->setAuthentication( GSSAPI );
+    iface->setAuthentication( KIMAP::LoginJob::GSSAPI );
   else if ( authentication == "ANONYMOUS" )
-    iface->setAuthentication( Anonymous );
+    iface->setAuthentication( KIMAP::LoginJob::Anonymous );
   else
-    iface->setAuthentication( ClearText );
+    iface->setAuthentication( KIMAP::LoginJob::ClearText );
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
