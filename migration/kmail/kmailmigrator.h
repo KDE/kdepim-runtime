@@ -56,8 +56,8 @@ class KMailMigrator : public KMigratorBase
     void maildirAccountCreated( KJob *job );
     void localMaildirCreated( KJob *job );
 
-    void localFolderMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
-    void dimapFolderMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
+    void localFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
+    void dimapFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
 
     void collectionMigratorMessage( int type, const QString &msg );
 

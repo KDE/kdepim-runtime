@@ -521,7 +521,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
            SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
 }
 
-void KMailMigrator::localFolderMigrationFinished( const AgentInstance &instance, const QString &error )
+void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
 {
   if ( error.isEmpty() ) {
     setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
@@ -532,7 +532,7 @@ void KMailMigrator::localFolderMigrationFinished( const AgentInstance &instance,
   }
 }
 
-void KMailMigrator::dimapFolderMigrationFinished( const AgentInstance &instance, const QString &error )
+void KMailMigrator::dimapFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
 {
   if ( error.isEmpty() ) {
     migrationCompleted( instance );
