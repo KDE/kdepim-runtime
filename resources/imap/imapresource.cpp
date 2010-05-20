@@ -485,6 +485,8 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
 void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
                               const Akonadi::Collection &destination )
 {
+  Q_ASSERT( item.parentCollection() == destination ); // should have been set by the server
+
   if ( !isSessionAvailable() ) {
     kDebug() << "Defering this request. Probably there is no connection.";
     deferTask();
@@ -557,18 +559,17 @@ void ImapResource::onPreItemMoveSelectDone( KJob *job )
 
 void ImapResource::onCopyMessageDone( KJob *job )
 {
-  if ( !job->error() ) {
+  KIMAP::CopyJob *copy = static_cast<KIMAP::CopyJob*>( job );
+  if ( !job->error() && !copy->resultingUids().isEmpty() ) {
     Item item = job->property( AKONADI_ITEM ).value<Item>();
     Collection destination = job->property( DESTINATION_COLLECTION ).value<Collection>();
     const qint64 oldUid = item.remoteId().toLongLong();
 
     // Go ahead, UIDPLUS is supposed to be supported and we copied a single message
-    KIMAP::CopyJob *copy = static_cast<KIMAP::CopyJob*>( job );
     const qint64 newUid = copy->resultingUids().intervals().first().begin();
 
     // Update the item content with the new UID from the copy
     item.setRemoteId( QString::number( newUid ) );
-    item.setParentCollection( destination );
 
     // Mark the old one ready for deletion
     KIMAP::StoreJob *store = new KIMAP::StoreJob( m_account->mainSession() );
