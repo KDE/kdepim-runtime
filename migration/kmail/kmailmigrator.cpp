@@ -293,16 +293,19 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   instance.reconfigure();
 
   if ( disconnected ) {
-#if 0
     DImapCacheCollectionMigrator *collectionMigrator = new DImapCacheCollectionMigrator( instance, this );
-    collectionMigrator->setCacheFolder( config.readEntry( "Folder" ) );
-    connect( collectionMigrator, SIGNAL( message( int, QString ) ),
-             SLOT ( collectionMigratorMessage( int, QString ) ) );
-    connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
-            SLOT( dimapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
-#else
-    migrationCompleted( instance );
-#endif
+    if ( collectionMigrator->migrationOptionsEnabled() ) {
+      kDebug() << "Some DIMAP collection migration option enabled. Starting collection migrator";
+      collectionMigrator->setCacheFolder( config.readEntry( "Folder" ) );
+      connect( collectionMigrator, SIGNAL( message( int, QString ) ),
+               SLOT ( collectionMigratorMessage( int, QString ) ) );
+      connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+               SLOT( dimapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+    } else {
+      kDebug() << "No DIMAP collection migration option enabled. Done";
+      delete collectionMigrator;
+      migrationCompleted( instance );
+    }
   } else {
     migrationCompleted( instance );
   }

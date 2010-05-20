@@ -37,6 +37,8 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
+#include <KConfigGroup>
+#include <KGlobal>
 #include <KLocale>
 #include <KStandardDirs>
 
@@ -53,7 +55,8 @@ class DImapCacheCollectionMigrator::Private
 
   public:
     explicit Private( DImapCacheCollectionMigrator *parent )
-      : q( parent ), mStore( 0 ), mHiddenSession( 0 )
+      : q( parent ), mStore( 0 ), mHiddenSession( 0 ),
+        mImportNewMessages( false ), mImportCachedMessages( false ), mRemoveDeletedMessages( false )
     {
     }
 
@@ -75,6 +78,10 @@ class DImapCacheCollectionMigrator::Private
     Collection mCurrentCollection;
     Item::List mItems;
     UidHash mUidHash;
+
+    bool mImportNewMessages;
+    bool mImportCachedMessages;
+    bool mRemoveDeletedMessages;
 
   public: // slots
     void fetchItemsResult( KJob *job );
@@ -184,14 +191,14 @@ void DImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
   ItemCreateJob *createJob = 0;
 
   const QString uid = mUidHash[ item.remoteId() ];
-  if ( uid.isEmpty() ) {
+  if ( uid.isEmpty() && mImportNewMessages ) {
     item.setRemoteId( QString() );
     createJob = new ItemCreateJob( item, mCurrentCollection );
 
     kDebug() << "unsynchronized cacheItem: remoteId=" << item.remoteId()
              << "mimeType=" << item.mimeType()
              << "flags=" << item.flags();
-  } else {
+  } else if ( mImportCachedMessages ) {
     item.setRemoteId( uid );
     createJob = new ItemCreateJob( item, mCurrentCollection, mHiddenSession );
 
@@ -200,7 +207,14 @@ void DImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
              << "flags=" << item.flags();
   }
 
-  connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
+  if ( createJob != 0 ) {
+    connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
+  } else {
+    kDebug() << "Skipping cacheItem: remoteId=" << item.remoteId()
+             << "mimeType=" << item.mimeType()
+             << "flags=" << item.flags();
+    processNextItem();
+  }
 }
 
 void DImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
@@ -221,11 +235,26 @@ void DImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
 DImapCacheCollectionMigrator::DImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent )
   : AbstractCollectionMigrator( resource, parent ), d( new Private( this ) )
 {
+  const KConfigGroup config( KGlobal::config(), QLatin1String( "Disconnected IMAP" ) );
+  if ( config.isValid() ) {
+    d->mImportNewMessages = config.readEntry( QLatin1String( "ImportNewMessages" ), false );
+    d->mImportCachedMessages = config.readEntry( QLatin1String( "ImportCachedMessages" ), false );
+    d->mRemoveDeletedMessages = config.readEntry( QLatin1String( "RemoveDeletedMessages" ), false );
+  }
+
+  kDebug() << "Migration options: new messages=" << d->mImportNewMessages
+           << ", cachedMessages=" << d->mImportCachedMessages
+           << ", removeDeleted=" << d->mRemoveDeletedMessages;
 }
 
 DImapCacheCollectionMigrator::~DImapCacheCollectionMigrator()
 {
   delete d;
+}
+
+bool DImapCacheCollectionMigrator::migrationOptionsEnabled() const
+{
+  return d->mImportNewMessages || d->mImportCachedMessages || d->mRemoveDeletedMessages;
 }
 
 void DImapCacheCollectionMigrator::setCacheFolder( const QString &cacheFolder )
@@ -243,6 +272,10 @@ void DImapCacheCollectionMigrator::setCacheFolder( const QString &cacheFolder )
 
 void DImapCacheCollectionMigrator::migrateCollection( const Akonadi::Collection &collection )
 {
+  if ( !migrationOptionsEnabled() ) {
+    return;
+  }
+
   // check that we don't get entered while we are still processing
   Q_ASSERT( !d->mCurrentCollection.isValid() );
 
@@ -268,8 +301,13 @@ void DImapCacheCollectionMigrator::migrateCollection( const Akonadi::Collection 
 
   emit message( KMigratorBase::Info, i18nc( "@info:status", "Starting cache migration for folder %1 of account %2", collection.name(), resource().name() ) );
 
-  FileStore::ItemFetchJob *job = d->mStore->fetchItems( cache );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchItemsResult( KJob * ) ) );
+  if ( d->mImportNewMessages || d->mImportCachedMessages ) {
+    FileStore::ItemFetchJob *job = d->mStore->fetchItems( cache );
+    connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchItemsResult( KJob * ) ) );
+  } else {
+    // TODO when just "RemoveDeleted" is activated
+    collectionProcessed();
+  }
 }
 
 #include "dimapcachecollectionmigrator.moc"

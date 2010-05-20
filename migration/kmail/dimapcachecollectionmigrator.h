@@ -34,6 +34,8 @@ class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     ~DImapCacheCollectionMigrator();
 
+    bool migrationOptionsEnabled() const;
+
   protected:
     void migrateCollection( const Akonadi::Collection &collection );
 
