@@ -139,6 +139,7 @@ private:
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
   bool needsNetwork() const;
   bool isSessionAvailable() const;
+  bool ensureSessionAvailableOrDefer();
 
   friend class ImapIdleManager;
 
