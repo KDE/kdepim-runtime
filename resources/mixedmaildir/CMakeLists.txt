@@ -9,6 +9,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/kmindexreader
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
+    ${NEPOMUK_INCLUDES}
 )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
@@ -49,6 +50,7 @@ target_link_libraries(akonadi_mixedmaildir_resource
   ${KDE4_KIO_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${NEPOMUK_LIBRARIES}
 )
 
 install(TARGETS akonadi_mixedmaildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
