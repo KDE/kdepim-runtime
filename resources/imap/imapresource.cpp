@@ -1375,6 +1375,7 @@ void ImapResource::onConnectSuccess( KIMAP::Session *session )
   if ( m_account->mainSession()!=session ) {
     return;
   }
+  ResourceBase::doSetOnline( true );
   startIdle();
   emit status( Idle, i18n( "Connection established." ) );
   synchronizeCollectionTree();
