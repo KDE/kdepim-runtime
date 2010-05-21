@@ -104,10 +104,19 @@ void KMailMigrator::migrate()
 
 void KMailMigrator::migrateTags()
 {
-  const QStringList tagGroups = mConfig->groupList().filter( QRegExp( "MessageTag #\\d+" ) );
-  kDebug() << "Tag Groups:" << tagGroups;
+  KConfigGroup tagMigrationConfig( KGlobal::config(), QLatin1String( "MessageTags" ) );
+  const QStringList migratedTags = tagMigrationConfig.readEntry( "MigratedTags", QStringList() );
 
-  Q_FOREACH( const QString &groupName, tagGroups ) {
+  const QStringList tagGroups = mConfig->groupList().filter( QRegExp( "MessageTag #\\d+" ) );
+
+  QSet<QString> groupNames = tagGroups.toSet();
+  groupNames.subtract( migratedTags.toSet() );
+
+  kDebug() << "Tag Groups:" << tagGroups << "MigratedTags:" << migratedTags
+           << "Unmigrated Tags:" << groupNames;
+
+  QStringList newlyMigratedTags;
+  Q_FOREACH( const QString &groupName, groupNames ) {
     const KConfigGroup group( mConfig, groupName );
 
     const QString label = group.readEntry( QLatin1String( "Label" ), QString() );
@@ -155,6 +164,13 @@ void KMailMigrator::migrateTags()
              << "hasFont=" << hasFont << "font=" << textFont
              << "icon=" << iconName << "inToolbar=" << inToolbar
              << "shortcut=" << shortcut;
+
+    newlyMigratedTags << groupName;
+  }
+
+  if ( !newlyMigratedTags.isEmpty() ) {
+    tagMigrationConfig.writeEntry( "MigratedTags", migratedTags + newlyMigratedTags );
+    tagMigrationConfig.sync();
   }
 }
 
