@@ -4,5 +4,5 @@ TargetVersion=1
 
 [Disconnected IMAP]
 ImportNewMessages=true
-ImportCachedMessages=false
+ImportCachedMessages=true
 RemoveDeletedMessages=false
