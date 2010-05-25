@@ -384,7 +384,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   kDebug() << "Starting IMAP collection migration: options="
            << collectionMigrator->migrationOptions();
-  collectionMigrator->setTopLevelFolder( config.readEntry( "Folder" ) );
+  collectionMigrator->setTopLevelFolder( config.readEntry( "Folder", config.readEntry( "Id" ) ) );
   collectionMigrator->setKMailConfig( mConfig );
   connect( collectionMigrator, SIGNAL( message( int, QString ) ),
            SLOT ( collectionMigratorMessage( int, QString ) ) );
