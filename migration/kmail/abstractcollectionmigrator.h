@@ -28,6 +28,7 @@ namespace Akonadi {
   class Collection;
 }
 
+class KConfig;
 class KJob;
 
 class AbstractCollectionMigrator : public QObject
@@ -38,19 +39,26 @@ class AbstractCollectionMigrator : public QObject
     explicit AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
     ~AbstractCollectionMigrator();
 
+    virtual void setTopLevelFolder( const QString &topLevelFolder );
+
+    QString topLevelFolder() const;
+
+    virtual void setKMailConfig( KConfig *config );
+
   Q_SIGNALS:
     void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
 
     void message( int type, const QString &msg );
 
   protected:
-    virtual void migrateCollection( const Akonadi::Collection &collection ) = 0;
+    virtual void migrateCollection( const Akonadi::Collection &collection, const QString &folderId ) = 0;
 
     void collectionProcessed();
     void migrationDone();
     void migrationCancelled( const QString &error );
 
     const Akonadi::AgentInstance resource() const;
+    KConfig *kmailConfig() const;
 
   private:
     class Private;

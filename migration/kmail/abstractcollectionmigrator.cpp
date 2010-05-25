@@ -20,6 +20,8 @@
 
 #include "abstractcollectionmigrator.h"
 
+#include "libmaildir/maildir.h"
+
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/collection.h>
@@ -27,6 +29,8 @@
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/monitor.h>
 
+#include <KConfig>
+#include <KConfigGroup>
 #include <KLocale>
 
 #include <QHash>
@@ -34,6 +38,7 @@
 #include <QTimer>
 
 using namespace Akonadi;
+using KPIM::Maildir;
 
 typedef QHash<Collection::Id, Collection> CollectionHash;
 typedef QQueue<Collection> CollectionQueue;
@@ -54,14 +59,18 @@ class AbstractCollectionMigrator::Private
     };
 
     Private( AbstractCollectionMigrator *parent, const AgentInstance &resource )
-      : q( parent ), mResource( resource ), mStatus( Idle ), mMonitor( 0 ),
+      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mMonitor( 0 ),
         mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle )
     {
     }
 
+    void migrateConfig();
+
   public:
     AgentInstance mResource;
     Status mStatus;
+    QString mTopLevelFolder;
+    KConfig *mKMailConfig;
 
     Monitor *mMonitor;
 
@@ -71,6 +80,9 @@ class AbstractCollectionMigrator::Private
 
     Status mExplicitFetchStatus;
 
+    Collection mCurrentCollection;
+    QString mCurrentFolderId;
+
   public: // slots
     void collectionAdded( const Collection &collection );
     void fetchResult( KJob *job );
@@ -78,7 +90,49 @@ class AbstractCollectionMigrator::Private
     void recheckBrokenResource();
     void recheckIdleResource();
     void resourceStatusChanged( const AgentInstance &instance );
+
+  private:
+    QStringList folderPathComponentsForCollection( const Collection &collection ) const;
+    QString folderIdentifierForCollection( const Collection &collection ) const;
 };
+
+void AbstractCollectionMigrator::Private::migrateConfig()
+{
+  // TODO should we have the new settings in a new KMail config?
+
+  if ( mCurrentFolderId.isEmpty() || !mCurrentCollection.isValid() ) {
+    return;
+  }
+
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "migrating config for folderId" << mCurrentFolderId
+//                                    << "to collectionId" << mCurrentCollection.id();
+
+  const QString folderGroupPattern = QLatin1String( "Folder-%1" );
+
+  KConfigGroup oldGroup( mKMailConfig, folderGroupPattern.arg( mCurrentFolderId ) );
+  KConfigGroup newGroup( mKMailConfig, folderGroupPattern.arg( mCurrentCollection.id() ) );
+
+  oldGroup.copyTo( &newGroup );
+  oldGroup.deleteGroup();
+
+  // check all filters
+  const QStringList filterGroups = mKMailConfig->groupList().filter( QRegExp( "Filter #\\d+" ) );
+  //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "filterGroups=" << filterGroups;
+  Q_FOREACH( const QString &groupName, filterGroups ) {
+    KConfigGroup filterGroup( mKMailConfig, groupName );
+
+    const QStringList actionKeys = filterGroup.keyList().filter( QRegExp( "action-args-\\d+" ) );
+    //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "actionKeys=" << actionKeys;
+
+    Q_FOREACH( const QString &actionKey, actionKeys ) {
+      if ( filterGroup.readEntry( actionKey, QString() ) == mCurrentFolderId ) {
+        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "replacing folder id for action" << actionKey
+                                         << "in group" << groupName;
+        filterGroup.writeEntry( actionKey, mCurrentCollection.id() );
+      }
+    }
+  }
+}
 
 void AbstractCollectionMigrator::Private::collectionAdded( const Collection &collection )
 {
@@ -140,13 +194,19 @@ void AbstractCollectionMigrator::Private::processNextCollection()
   } else {
     mStatus = Running;
     ++mProcessedCollectionsCount;
-    q->migrateCollection( mCollectionQueue.dequeue() );
+
+    const Collection collection = mCollectionQueue.dequeue();
+
+    mCurrentFolderId = folderIdentifierForCollection( collection );
+    mCurrentCollection = collection;
+
+    q->migrateCollection( collection, mCurrentFolderId );
   }
 }
 
 void AbstractCollectionMigrator::Private::recheckBrokenResource()
 {
-  kDebug() << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
   if ( mStatus == Waiting ) {
     q->migrationCancelled( i18nc( "@info:status", "Resource '%1' it not working correctly",
                                   mResource.name() ) );
@@ -155,7 +215,7 @@ void AbstractCollectionMigrator::Private::recheckBrokenResource()
 
 void AbstractCollectionMigrator::Private::recheckIdleResource()
 {
-  kDebug() << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
 
   if ( mExplicitFetchStatus == Waiting ) {
     mExplicitFetchStatus = Running;
@@ -181,7 +241,7 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const Akonadi::
   const QString oldMessage = mResource.statusMessage();
   mResource = instance;
 
-  kDebug() << "oldStatus=" << oldStatus << "message=" << oldMessage
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "oldStatus=" << oldStatus << "message=" << oldMessage
            << "newStatus" << mResource.status() << "message=" << mResource.statusMessage();
 
   if ( oldStatus != AgentInstance::Idle && mResource.status() == AgentInstance::Idle && mExplicitFetchStatus == Idle ) {
@@ -196,6 +256,42 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const Akonadi::
   if ( mStatus == Waiting ) {
     mStatus = Idle;
   }
+}
+
+QStringList AbstractCollectionMigrator::Private::folderPathComponentsForCollection( const Collection &collection ) const
+{
+  QStringList result;
+
+  if ( collection.parentCollection() == Collection::root() ) {
+    if ( !mTopLevelFolder.isEmpty() ) {
+      result << mTopLevelFolder;
+    }
+  } else {
+    result = folderPathComponentsForCollection( collection.parentCollection() );
+    result << collection.remoteId();
+  }
+
+  return result;
+}
+
+QString AbstractCollectionMigrator::Private::folderIdentifierForCollection( const Collection &collection ) const
+{
+  QStringList components = folderPathComponentsForCollection( collection );
+
+  QString result;
+  while ( !components.isEmpty() ) {
+    QString component = components.front();
+    component.remove( QLatin1Char( '/' ) );
+
+    components.pop_front();
+    if ( !components.isEmpty() ) {
+      result += Maildir::subDirNameForFolderName( component ) + QLatin1Char( '/' );
+    } else {
+      result += component;
+    }
+  }
+
+  return result;
 }
 
 AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, QObject *parent )
@@ -233,24 +329,44 @@ AbstractCollectionMigrator::~AbstractCollectionMigrator()
   delete d;
 }
 
+void AbstractCollectionMigrator::setTopLevelFolder( const QString &topLevelFolder )
+{
+  d->mTopLevelFolder = topLevelFolder;
+}
+
+QString AbstractCollectionMigrator::topLevelFolder() const
+{
+  return d->mTopLevelFolder;
+}
+
+void AbstractCollectionMigrator::setKMailConfig( KConfig *config )
+{
+  d->mKMailConfig = config;
+}
+
 void AbstractCollectionMigrator::collectionProcessed()
 {
+  d->migrateConfig();
+
+  d->mCurrentFolderId = QString();
+  d->mCurrentCollection = Collection();
+
   d->mStatus = Private::Scheduling;
   QMetaObject::invokeMethod( this, "processNextCollection", Qt::QueuedConnection );
 }
 
 void AbstractCollectionMigrator::migrationDone()
 {
-  kDebug() << "processed" << d->mProcessedCollectionsCount << "collection"
-           << "seen" << d->mCollectionsById.count();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "processed" << d->mProcessedCollectionsCount << "collection"
+                                   << "seen" << d->mCollectionsById.count();
   d->mStatus = Private::Finished;
   emit migrationFinished( d->mResource, QString() );
 }
 
 void AbstractCollectionMigrator::migrationCancelled( const QString &error )
 {
-  kDebug() << "processed" << d->mProcessedCollectionsCount << "collection"
-           << "seen" << d->mCollectionsById.count();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "processed" << d->mProcessedCollectionsCount << "collection"
+                                   << "seen" << d->mCollectionsById.count();
   d->mStatus = Private::Failed;
   emit migrationFinished( d->mResource, error );
 }
@@ -258,6 +374,11 @@ void AbstractCollectionMigrator::migrationCancelled( const QString &error )
 const AgentInstance AbstractCollectionMigrator::resource() const
 {
   return d->mResource;
+}
+
+KConfig *AbstractCollectionMigrator::kmailConfig() const
+{
+  return d->mKMailConfig;
 }
 
 #include "abstractcollectionmigrator.moc"

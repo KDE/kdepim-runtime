@@ -23,8 +23,6 @@
 
 #include "abstractcollectionmigrator.h"
 
-class KConfig;
-
 class LocalFoldersCollectionMigrator : public AbstractCollectionMigrator
 {
   Q_OBJECT
@@ -37,7 +35,7 @@ class LocalFoldersCollectionMigrator : public AbstractCollectionMigrator
     ~LocalFoldersCollectionMigrator();
 
   protected:
-    void migrateCollection( const Akonadi::Collection &collection );
+    void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
 
   private:
     class Private;

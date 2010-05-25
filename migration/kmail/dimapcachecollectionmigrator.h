@@ -23,8 +23,6 @@
 
 #include "abstractcollectionmigrator.h"
 
-class KConfig;
-
 class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
 {
   Q_OBJECT
@@ -32,15 +30,12 @@ class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
   public:
     explicit DImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
 
-    void setCacheFolder( const QString &cacheFolder );
-    void setKMailConfig( KConfig *config );
-
     ~DImapCacheCollectionMigrator();
 
     bool migrationOptionsEnabled() const;
 
   protected:
-    void migrateCollection( const Akonadi::Collection &collection );
+    void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
 
   private:
     class Private;
