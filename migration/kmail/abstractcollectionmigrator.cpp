@@ -130,8 +130,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
   Q_FOREACH( const QString &groupName, accountGroups ) {
     KConfigGroup filterGroup( mKMailConfig, groupName );
+
     if ( filterGroup.readEntry( "Folder" ) == mCurrentFolderId )
       filterGroup.writeEntry( "Folder", mCurrentCollection.id() );
+
+    if ( filterGroup.readEntry( "trash" ) == mCurrentFolderId )
+      filterGroup.writeEntry( "trash" , mCurrentCollection.id() );
   }
 
 
