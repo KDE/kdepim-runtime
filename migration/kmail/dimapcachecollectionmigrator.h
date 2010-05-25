@@ -28,11 +28,23 @@ class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
   Q_OBJECT
 
   public:
+    enum MigrationOption
+    {
+      ConfigOnly = 0x0,
+      ImportNewMessages = 0x01,
+      ImportCachedMessages = 0x02,
+      RemoveDeletedMessages = 0x04
+    };
+
+    Q_DECLARE_FLAGS( MigrationOptions, MigrationOption )
+
     explicit DImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
 
     ~DImapCacheCollectionMigrator();
 
-    bool migrationOptionsEnabled() const;
+    void setMigrationOptions( const MigrationOptions &options );
+
+    MigrationOptions migrationOptions() const;
 
   protected:
     void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
@@ -49,6 +61,8 @@ class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
     Q_PRIVATE_SLOT( d, void itemDeletePhase1Result( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemDeletePhase2Result( KJob* ) )
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( DImapCacheCollectionMigrator::MigrationOptions )
 
 #endif
 
