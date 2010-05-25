@@ -302,7 +302,7 @@ void KolabProxyResource::imapItemUpdateFetchResult(KJob* job)
     // HACK FIXME how can that happen at all?
     CollectionFetchJob *fetch = new CollectionFetchJob( Collection( kolabItem.storageCollectionId() ), CollectionFetchJob::Base, this );
     fetch->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-    connect( fetch, SIGNAL(result(KJob*)), SLOT(imapUpdateCollectionFetchResult(KJob*)) );
+    connect( fetch, SIGNAL(result(KJob*)), SLOT(imapItemUpdateCollectionFetchResult(KJob*)) );
   }
 }
 
