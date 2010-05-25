@@ -39,12 +39,11 @@ class LocalFoldersCollectionMigrator::Private
 
   public:
     explicit Private( LocalFoldersCollectionMigrator *parent )
-      : q( parent ), mConfig( 0 )
+      : q( parent )
     {
     }
 
   public:
-    KConfig *mConfig;
     TypeHash mSystemFolders;
 };
 
@@ -60,9 +59,9 @@ LocalFoldersCollectionMigrator::~LocalFoldersCollectionMigrator()
 
 void LocalFoldersCollectionMigrator::setKMailConfig( KConfig *config )
 {
-  d->mConfig = config;
+  AbstractCollectionMigrator::setKMailConfig( config );
 
-  const KConfigGroup group( d->mConfig, QLatin1String( "General" ) );
+  const KConfigGroup group( config, QLatin1String( "General" ) );
 
   QString name = group.readEntry( QLatin1String( "inboxFolder" ), i18nc( "mail folder name for role inbox",  "inbox" ) );
   d->mSystemFolders.insert( name, SpecialMailCollections::Inbox );
@@ -83,13 +82,14 @@ void LocalFoldersCollectionMigrator::setKMailConfig( KConfig *config )
   d->mSystemFolders.insert( name, SpecialMailCollections::Templates );
 }
 
-void LocalFoldersCollectionMigrator::migrateCollection( const Akonadi::Collection &collection )
+void LocalFoldersCollectionMigrator::migrateCollection( const Akonadi::Collection &collection, const QString &folderId )
 {
-  Q_ASSERT( d->mConfig != 0 );
+  Q_UNUSED( folderId );
+  Q_ASSERT( kmailConfig() != 0 );
 
   const TypeHash::const_iterator typeIt = d->mSystemFolders.constFind( collection.name() );
   if ( typeIt != d->mSystemFolders.constEnd() ) {
-    kDebug() << "Registering collection" << collection.name() << "for type" << *typeIt;
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Registering collection" << collection.name() << "for type" << *typeIt;
     SpecialMailCollections::self()->registerCollection( *typeIt, collection );
   }
 
