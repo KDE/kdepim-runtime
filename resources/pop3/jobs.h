@@ -34,7 +34,7 @@ namespace KIO
 {
   class Slave;
   class Job;
-  class SimpleJob;
+  class TransferJob;
 }
 
 class SlaveBaseJob;
@@ -95,7 +95,7 @@ protected:
   void startJob( const QString &path );
   virtual void connectJob();
 
-  KIO::SimpleJob *mJob;
+  KIO::TransferJob *mJob;
   POPSession *mPOPSession;
 };
 
