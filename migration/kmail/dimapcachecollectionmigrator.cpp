@@ -375,14 +375,32 @@ DImapCacheCollectionMigrator::~DImapCacheCollectionMigrator()
   delete d;
 }
 
-bool DImapCacheCollectionMigrator::migrationOptionsEnabled() const
+void DImapCacheCollectionMigrator::setMigrationOptions( const MigrationOptions &options )
 {
-  return d->mImportNewMessages || d->mImportCachedMessages || d->mRemoveDeletedMessages;
+  d->mImportNewMessages = options.testFlag( ImportNewMessages );
+  d->mImportCachedMessages = options.testFlag( ImportCachedMessages );
+  d->mRemoveDeletedMessages = options.testFlag( RemoveDeletedMessages );
+}
+
+DImapCacheCollectionMigrator::MigrationOptions DImapCacheCollectionMigrator::migrationOptions() const
+{
+  MigrationOptions options;
+  if ( d->mImportNewMessages ) {
+    options |= ImportNewMessages;
+  }
+  if ( d->mImportCachedMessages ) {
+    options |= ImportCachedMessages;
+  }
+  if ( d->mImportNewMessages ) {
+    options |= RemoveDeletedMessages;
+  }
+  return options;
 }
 
 void DImapCacheCollectionMigrator::migrateCollection( const Akonadi::Collection &collection, const QString &folderId )
 {
-  if ( !migrationOptionsEnabled() ) {
+  if ( migrationOptions() == ConfigOnly ) {
+    collectionProcessed();
     return;
   }
 

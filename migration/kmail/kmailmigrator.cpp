@@ -377,24 +377,19 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
 
-  if ( disconnected ) {
-    DImapCacheCollectionMigrator *collectionMigrator = new DImapCacheCollectionMigrator( instance, this );
-    if ( collectionMigrator->migrationOptionsEnabled() ) {
-      kDebug() << "Some DIMAP collection migration option enabled. Starting collection migrator";
-      collectionMigrator->setTopLevelFolder( config.readEntry( "Folder" ) );
-      collectionMigrator->setKMailConfig( mConfig );
-      connect( collectionMigrator, SIGNAL( message( int, QString ) ),
-               SLOT ( collectionMigratorMessage( int, QString ) ) );
-      connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
-               SLOT( dimapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
-    } else {
-      kDebug() << "No DIMAP collection migration option enabled. Done";
-      delete collectionMigrator;
-      migrationCompleted( instance );
-    }
-  } else {
-    migrationCompleted( instance );
+  DImapCacheCollectionMigrator *collectionMigrator = new DImapCacheCollectionMigrator( instance, this );
+  if ( !disconnected ) {
+    collectionMigrator->setMigrationOptions( DImapCacheCollectionMigrator::ConfigOnly );
   }
+
+  kDebug() << "Starting IMAP collection migration: options="
+           << collectionMigrator->migrationOptions();
+  collectionMigrator->setTopLevelFolder( config.readEntry( "Folder", config.readEntry( "Id" ) ) );
+  collectionMigrator->setKMailConfig( mConfig );
+  connect( collectionMigrator, SIGNAL( message( int, QString ) ),
+           SLOT ( collectionMigratorMessage( int, QString ) ) );
+  connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+           SLOT( dimapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
 }
 
 void KMailMigrator::pop3AccountCreated( KJob *job )
@@ -462,7 +457,6 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   iface->setPrecommand( config.readPathEntry( "precommand", QString() ) );
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 
-  //TODO port "Folder" to akonadi collection id
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
   config.deleteEntry("use-default-identity");

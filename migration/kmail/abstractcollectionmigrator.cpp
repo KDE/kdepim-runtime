@@ -115,6 +115,31 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   oldGroup.copyTo( &newGroup );
   oldGroup.deleteGroup();
 
+
+  // check all expire folder
+  const QStringList folderGroups = mKMailConfig->groupList().filter( "Folder-" );
+  //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "folderGroups=" << folderGroups;
+  Q_FOREACH( const QString &groupName, folderGroups ) {
+    KConfigGroup filterGroup( mKMailConfig, groupName );
+    if ( filterGroup.readEntry( "ExpireToFolder" ) == mCurrentFolderId )
+      filterGroup.writeEntry( "ExpireToFolder", mCurrentCollection.id() );
+  }
+
+  // check all account folder
+  const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( "Account \\d+" ) );
+  //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
+  Q_FOREACH( const QString &groupName, accountGroups ) {
+    KConfigGroup filterGroup( mKMailConfig, groupName );
+
+    if ( filterGroup.readEntry( "Folder" ) == mCurrentFolderId )
+      filterGroup.writeEntry( "Folder", mCurrentCollection.id() );
+
+    if ( filterGroup.readEntry( "trash" ) == mCurrentFolderId )
+      filterGroup.writeEntry( "trash" , mCurrentCollection.id() );
+  }
+
+
+
   // check all filters
   const QStringList filterGroups = mKMailConfig->groupList().filter( QRegExp( "Filter #\\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "filterGroups=" << filterGroups;
