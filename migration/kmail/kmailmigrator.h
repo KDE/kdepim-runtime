@@ -1,5 +1,7 @@
 /*
     Copyright (c) 2009 Jonathan Armond <jon.armond@gmail.com>
+    Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
+    Author: Kevin Krammer, krake@kdab.com
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -44,6 +46,7 @@ class KMailMigrator : public KMigratorBase
 
     void migrate();
 
+    void migrateTags();
     void migrateNext();
     void migrateLocalFolders();
     void migrationDone();

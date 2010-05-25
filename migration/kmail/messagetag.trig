@@ -1,0 +1,102 @@
+#
+# Copyright (c) 2009 Sebastian Trueg <trueg@kde.org>
+# All rights reserved, licensed under either CC-BY or BSD.
+#
+# You are free:
+#  * to Share - to copy, distribute and transmit the work
+#  * to Remix - to adapt the work
+# Under the following conditions:
+#  * Attribution - You must attribute the work in the manner specified by the author
+#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    of the work).
+#
+# Redistribution and use in source and binary forms, with or without modification, 
+# are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice, this 
+#    list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice, this 
+#    list of conditions and the following disclaimer in the documentation and/or 
+#    other materials provided with the distribution.
+#  * Neither the names of the authors nor the names of contributors may
+#    be used to endorse or promote products derived from this ontology without 
+#    specific prior written permission.
+#
+# THIS ONTOLOGY IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS ONTOLOGY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+@prefix nao:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
+@prefix nfo:     <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#> .
+@prefix nie:     <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nrl:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix kmail:   <http://www.kde.org/kmail-ext#> .
+
+kmail: {
+   kmail:priority
+      a rdf:Property ;
+      rdfs:label "priority" ;
+      rdfs:comment "A priority used by KMail to prioritize tags - mainly to sort the tags in the GUI." ;
+      rdfs:domain nao:Tag ;
+      rdfs:range xsd:integer .
+
+   kmail:font
+      a rdf:Property ;
+      rdfs:label "font" ;
+      rdfs:comment "The font including point size and so on KMail uses to format email headers." ;
+      rdfs:domain nao:Tag ;
+      rdfs:range xsd:string .
+
+   kmail:textColor
+      a rdf:Property ;
+      rdfs:label "text color" ;
+      rdfs:comment "String value (#RRGGBB) of the text color used by KMail to display email headers." ;
+      rdfs:domain nao:Tag ;
+      rdfs:range xsd:string .
+
+   kmail:backgroundColor
+      a rdf:Property ;
+      rdfs:label "background color" ;
+      rdfs:comment "String value (#RRGGBB) of the background color used by KMail to display email headers." ;
+      rdfs:domain nao:Tag ;
+      rdfs:range xsd:string .
+
+   kmail:shortcut
+      a rdf:Property ;
+      rdfs:label "shortcut" ;
+      rdfs:comment "The keyboard shortcut that triggers tagging with this tag." ;
+      rdfs:domain nao:Tag ;
+      rdfs:range xsd:string .
+
+   kmail:inToolbar
+      a rdf:Property ;
+      rdfs:label "in toolbar" ;
+      rdfs:comment "Whether to show this tag in the toolbar of KMail." ;
+      rdfs:domain nao:Tag ;
+      rdfs:range xsd:boolean .
+}
+
+<http://www.kde.org/kmail-ext-metadata#> {
+   kmail:
+      a nrl:Ontology ;
+      nao:hasDefaultNamespace "http://www.kde.org/kmail-ext#" ;
+      nao:hasDefaultNamespaceAbbreviation "kmail" ;
+      nao:lastModified "2010-01-08T14:59:09.500Z" ;
+      nao:status "Unstable" ;
+      nao:updatable "0 " ;
+      nao:version "0.1" .
+
+    <http://www.kde.org/kmail-ext-metadata#>
+      a nrl:GraphMetadata ;
+      nrl:coreGraphMetadataFor kmail: .
+}

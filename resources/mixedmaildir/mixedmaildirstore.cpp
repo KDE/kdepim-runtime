@@ -412,6 +412,8 @@ void MixedMaildirStore::Private::listCollection( Job *job, const MBoxPtr &mbox, 
 {
   const IndexReaderPtr indexReaderPtr = readMBoxIndex( mbox );
 
+  QHash<QString, QVariant> tagListHash;
+
   const QList<MsgEntryInfo> entryList = mbox->entryList();
   Q_FOREACH( const MsgEntryInfo &entry, entryList ) {
     Item item;
@@ -420,14 +422,27 @@ void MixedMaildirStore::Private::listCollection( Job *job, const MBoxPtr &mbox, 
     item.setParentCollection( collection );
 
     if ( indexReaderPtr != 0 ) {
-      // TODO get tags
       MessageStatus status;
       if ( indexReaderPtr->statusByOffset( entry.offset + entry.separatorSize, status ) ) {
         item.setFlags( status.getStatusFlags() );
       }
+
+      QStringList tagList;
+      if ( indexReaderPtr->tagListByOffset( entry.offset + entry.separatorSize, tagList ) ) {
+        if ( !tagList.isEmpty() ) {
+          kDebug() << "item" << item.remoteId() << "has"
+                   << tagList.count() << "tags:" << tagList;
+          tagListHash.insert( item.remoteId(), tagList );
+        }
+      }
     }
 
     items << item;
+  }
+
+  if ( indexReaderPtr != 0 ) {
+    QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
+    job->setProperty( "remoteIdToTagList", var );
   }
 }
 
@@ -436,6 +451,7 @@ void MixedMaildirStore::Private::listCollection( Job *job, const Maildir &md, co
   const IndexReaderPtr indexReaderPtr = readMaildirIndex( md );
 
   QHash<QString, QVariant> uidHash;
+  QHash<QString, QVariant> tagListHash;
 
   const QStringList entryList = md.entryList();
   Q_FOREACH( const QString &entry, entryList ) {
@@ -445,7 +461,6 @@ void MixedMaildirStore::Private::listCollection( Job *job, const Maildir &md, co
     item.setParentCollection( collection );
 
     if ( indexReaderPtr != 0 ) {
-      // TODO get tags
       MessageStatus status;
       if ( indexReaderPtr->statusByFileName( entry, status ) ) {
         item.setFlags( status.getStatusFlags() );
@@ -453,8 +468,17 @@ void MixedMaildirStore::Private::listCollection( Job *job, const Maildir &md, co
 
       quint64 uid = 0;
       if ( indexReaderPtr->imapUidByFileName( entry, uid ) ) {
-        kDebug() << "entry" << entry << "has UID" << uid;
-        uidHash.insert( entry, QString::number( uid ) );
+        kDebug() << "item" << item.remoteId() << "has UID" << uid;
+        uidHash.insert( item.remoteId(), QString::number( uid ) );
+      }
+
+      QStringList tagList;
+      if ( indexReaderPtr->tagListByFileName( entry, tagList ) ) {
+        if ( !tagList.isEmpty() ) {
+          kDebug() << "item" << item.remoteId() << "has"
+                   << tagList.count() << "tags:" << tagList;
+          tagListHash.insert( item.remoteId(), tagList );
+        }
       }
     }
 
@@ -462,8 +486,11 @@ void MixedMaildirStore::Private::listCollection( Job *job, const Maildir &md, co
   }
 
   if ( indexReaderPtr != 0 ) {
-    const QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
+    QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
     job->setProperty( "remoteIdToIndexUid", var );
+
+    var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
+    job->setProperty( "remoteIdToTagList", var );
   }
 }
 

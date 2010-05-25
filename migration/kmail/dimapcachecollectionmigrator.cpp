@@ -39,6 +39,8 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
+#include <Nepomuk/Tag>
+
 #include <KConfigGroup>
 #include <KGlobal>
 #include <KLocale>
@@ -90,6 +92,8 @@ class DImapCacheCollectionMigrator::Private
 
     KConfig *mKMailConfig;
     KConfigGroup mCurrentFolderGroup;
+
+    QHash<QString, QVariant> mTagListHash;
 
   public: // slots
     void fetchItemsResult( KJob *job );
@@ -165,6 +169,14 @@ void DImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
 
   mItems = fetchJob->items();
   kDebug() << mItems.count() << "items for target collection" << mCurrentCollection.remoteId();
+
+  const QVariant tagListHashVar = fetchJob->property( "remoteIdToTagList" );
+  if ( !tagListHashVar.isValid() ) {
+    kDebug() << "No tags from index for collection" << mCurrentCollection.name();
+  } else {
+    mTagListHash = tagListHashVar.value< QHash<QString, QVariant> >();
+    kDebug() << mTagListHash.count() << "items have tags";
+  }
 
   processNextItem();
 }
@@ -252,6 +264,7 @@ void DImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
 
   ItemCreateJob *createJob = 0;
 
+  const QString storeRemoteId = item.remoteId();
   const QString uid = mUidHash[ item.remoteId() ];
   if ( uid.isEmpty() && mImportNewMessages ) {
     item.setRemoteId( QString() );
@@ -270,6 +283,7 @@ void DImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
   }
 
   if ( createJob != 0 ) {
+    createJob->setProperty( "storeRemoteId", storeRemoteId );
     connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
   } else {
     kDebug() << "Skipping cacheItem: remoteId=" << item.remoteId()
@@ -285,10 +299,28 @@ void DImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
   Q_ASSERT( createJob != 0 );
 
   const Item item = createJob->item();
+  const QString storeRemoteId = job->property( "storeRemoteId" ).value<QString>();
 
   if ( job->error() != 0 ) {
     kWarning() << "Akonadi Create for single item" << item.remoteId() << "returned error: code="
                << job->error() << "text=" << job->errorString();
+  } else if ( !storeRemoteId.isEmpty() ) {
+    const QStringList tagList = mTagListHash[ storeRemoteId ].value<QStringList>();
+    if ( !tagList.isEmpty() ) {
+      kDebug() << "Tagging item" << item.url() << "with" << tagList;
+
+      QList<Nepomuk::Tag> nepomukTags;
+      Q_FOREACH( const QString &tag, tagList ) {
+        if ( tag.isEmpty() ) {
+          kWarning() << "TagList for item" << item.url() << "contains an empty tag";
+        } else {
+          nepomukTags << Nepomuk::Tag( tag );
+        }
+      }
+
+      Nepomuk::Resource nepomukResource( item.url() );
+      nepomukResource.setTags( nepomukTags );
+    }
   }
 
   processNextItem();
@@ -411,6 +443,7 @@ void DImapCacheCollectionMigrator::migrateCollection( const Akonadi::Collection 
   }
 
   d->mCurrentCollection = collection;
+  d->mTagListHash.clear();
 
   emit message( KMigratorBase::Info, i18nc( "@info:status", "Starting cache migration for folder %1 of account %2", collection.name(), resource().name() ) );
 

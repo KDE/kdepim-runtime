@@ -24,6 +24,8 @@
 
 #include <akonadi/resourcebase.h>
 
+#include <QStringList>
+
 class MixedMaildirStore;
 
 class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
@@ -80,8 +82,22 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
     void compactStore( const QVariant &arg );
     void compactStoreResult( KJob *job );
 
+    void restoreTags( const QVariant &arg );
+    void processNextTagContext();
+    void tagFetchJobResult( KJob *job );
+
   private:
     MixedMaildirStore *mStore;
+
+    struct TagContext
+    {
+      Akonadi::Item mItem;
+      QStringList mTagList;
+    };
+
+    typedef QList<TagContext> TagContextList;
+    QHash<Akonadi::Collection::Id, TagContextList> mTagContextByColId;
+    TagContextList mPendingTagContexts;
 };
 
 #endif

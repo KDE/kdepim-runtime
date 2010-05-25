@@ -1,6 +1,8 @@
 /*
     Copyright (c) 2009 Jonathan Armond <jon.armond@gmail.com>
     Copyright (c) 2010 Volker Krause <vkrause@kde.org>
+    Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
+    Author: Kevin Krammer, krake@kdab.com
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -20,6 +22,12 @@
 
 #include "kmailmigrator.h"
 
+#include "messagetag.h"
+
+// avoid metatype.h from interfering
+#include <Nepomuk/Variant>
+#define POP3_METATYPE_H
+
 #include "imapsettings.h"
 #include "pop3settings.h"
 #include "mboxsettings.h"
@@ -37,6 +45,8 @@
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
+
+#include <Nepomuk/Tag>
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -84,9 +94,84 @@ void KMailMigrator::migrate()
   emit message( Info, i18n("Beginning KMail migration...") );
   const QString &kmailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmailrc" ) );
   mConfig = new KConfig( kmailCfgFile );
+
+  migrateTags();
+
   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
   mIt = mAccounts.begin();
   migrateNext();
+}
+
+void KMailMigrator::migrateTags()
+{
+  KConfigGroup tagMigrationConfig( KGlobal::config(), QLatin1String( "MessageTags" ) );
+  const QStringList migratedTags = tagMigrationConfig.readEntry( "MigratedTags", QStringList() );
+
+  const QStringList tagGroups = mConfig->groupList().filter( QRegExp( "MessageTag #\\d+" ) );
+
+  QSet<QString> groupNames = tagGroups.toSet();
+  groupNames.subtract( migratedTags.toSet() );
+
+  kDebug() << "Tag Groups:" << tagGroups << "MigratedTags:" << migratedTags
+           << "Unmigrated Tags:" << groupNames;
+
+  QStringList newlyMigratedTags;
+  Q_FOREACH( const QString &groupName, groupNames ) {
+    const KConfigGroup group( mConfig, groupName );
+
+    const QString label = group.readEntry( QLatin1String( "Label" ), QString() );
+    if ( label.isEmpty() ) {
+      continue;
+    }
+    const QString name = group.readEntry( QLatin1String( "Name" ), QString() );
+    if ( name.isEmpty() ) {
+      continue;
+    }
+
+    const QColor textColor = group.readEntry( QLatin1String( "text-color" ), QColor() );
+    const QColor backgroundColor = group.readEntry( QLatin1String( "background-color" ), QColor() );
+    const bool hasFont = group.hasKey( QLatin1String( "text-font" ) );
+    const QFont textFont = group.readEntry( QLatin1String( "text-font" ), QFont() );
+
+    const bool inToolbar = group.readEntry( QLatin1String( "toolbar" ), false );
+    const QString iconName = group.readEntry( QLatin1String( "icon" ), QString::fromLatin1( "mail-tagged" ) );
+
+    const QString shortcut = group.readEntry( QLatin1String( "shortcut" ), QString() );
+
+    Nepomuk::Tag nepomukTag( label );
+    nepomukTag.setLabel( name );
+    nepomukTag.setSymbols( QStringList( iconName ) );
+    nepomukTag.setProperty( Vocabulary::MessageTag::inToolbar(), inToolbar );
+
+    if ( textColor.isValid() ) {
+      nepomukTag.setProperty( Vocabulary::MessageTag::textColor(), textColor.name() );
+    }
+
+    if ( backgroundColor.isValid() ) {
+      nepomukTag.setProperty( Vocabulary::MessageTag::backgroundColor(), backgroundColor.name() );
+    }
+
+    if ( hasFont ) {
+      nepomukTag.setProperty( Vocabulary::MessageTag::font(), textFont.toString() );
+    }
+
+    if ( !shortcut.isEmpty() ) {
+      nepomukTag.setProperty( Vocabulary::MessageTag::shortcut(), shortcut );
+    }
+
+    kDebug() << "Nepomuk::Tag: label=" << label << "name=" << name
+             << "textColor=" << textColor << "backgroundColor=" << backgroundColor
+             << "hasFont=" << hasFont << "font=" << textFont
+             << "icon=" << iconName << "inToolbar=" << inToolbar
+             << "shortcut=" << shortcut;
+
+    newlyMigratedTags << groupName;
+  }
+
+  if ( !newlyMigratedTags.isEmpty() ) {
+    tagMigrationConfig.writeEntry( "MigratedTags", migratedTags + newlyMigratedTags );
+    tagMigrationConfig.sync();
+  }
 }
 
 void KMailMigrator::migrateNext()
