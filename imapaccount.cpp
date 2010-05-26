@@ -55,7 +55,7 @@ class SessionUiProxy : public KIMAP::SessionUiProxy {
 };
 
 ImapAccount::ImapAccount( QObject *parent )
-  : QObject( parent ), m_mainSession( 0 ),
+  : QObject( parent ), m_mainSession( 0 ), m_port( 0 ),
     m_encryption( KIMAP::LoginJob::Unencrypted ),
     m_authentication( KIMAP::LoginJob::ClearText ),
     m_subscriptionEnabled( false )
@@ -74,6 +74,16 @@ void ImapAccount::setServer( const QString &server )
 QString ImapAccount::server() const
 {
   return m_server;
+}
+
+void ImapAccount::setPort( quint16 port )
+{
+  m_port = port;
+}
+
+quint16 ImapAccount::port() const
+{
+  return m_port;
 }
 
 void ImapAccount::setUserName( const QString &userName )
@@ -165,6 +175,9 @@ KIMAP::Session *ImapAccount::createSessionInternal( const QString &password )
 
   QString server = m_server.section( ':', 0, 0 );
   int port = m_server.section( ':', 1, 1 ).toInt();
+  if ( port <= 0 ) {
+    port = m_port;
+  }
 
   if ( m_encryption != KIMAP::LoginJob::Unencrypted && !QSslSocket::supportsSsl() ) {
     kWarning() << "Crypto not supported!";

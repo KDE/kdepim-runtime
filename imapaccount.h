@@ -67,6 +67,9 @@ public:
   void setServer( const QString &server );
   QString server() const;
 
+  void setPort( quint16 port );
+  quint16 port() const;
+
   void setUserName( const QString &userName );
   QString userName() const;
 
@@ -101,6 +104,7 @@ private:
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
   QString m_server;
+  quint16 m_port;
   QString m_userName;
   KIMAP::LoginJob::EncryptionMode m_encryption;
   KIMAP::LoginJob::AuthenticationMode m_authentication;
