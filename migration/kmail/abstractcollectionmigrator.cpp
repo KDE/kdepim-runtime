@@ -131,6 +131,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
   }
 
+
+  // Check General/startupFolder
+  KConfigGroup general( mKMailConfig, "General" );
+  if ( general.readEntry( "startupFolder" ) == mCurrentFolderId )
+    general.writeEntry( "startupFolder", mCurrentCollection.id() );
+
   // check all expire folder
   const QStringList folderGroups = mKMailConfig->groupList().filter( "Folder-" );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "folderGroups=" << folderGroups;
