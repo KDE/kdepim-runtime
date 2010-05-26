@@ -930,7 +930,7 @@ void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, q
     i.setMimeType( "message/rfc822" );
     i.setFlags( Akonadi::Item::Flags::fromList( flags[number] ) );
 
-    kDebug(5327) << "Flags: " << i.flags();
+    //kDebug(5327) << "Flags: " << i.flags();
     changedItems << i;
   }
 
