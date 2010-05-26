@@ -1,2 +1,2 @@
 #!/bin/sh
-$XGETTEXT *.cpp -o $podir/kaddressbookmigrator.pot
+$XGETTEXT ../*.cpp *.cpp -o $podir/kaddressbookmigrator.pot
