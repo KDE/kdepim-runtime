@@ -80,6 +80,7 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
   mConfig( 0 ),
+  mEmailIdentityConfig( 0 ),
   mConverter( 0 )
 {
 }
@@ -87,6 +88,7 @@ KMailMigrator::KMailMigrator() :
 KMailMigrator::~KMailMigrator()
 {
   delete mConfig;
+  delete mEmailIdentityConfig;
 }
 
 void KMailMigrator::migrate()
@@ -94,6 +96,10 @@ void KMailMigrator::migrate()
   emit message( Info, i18n("Beginning KMail migration...") );
   const QString &kmailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmailrc" ) );
   mConfig = new KConfig( kmailCfgFile );
+
+  const QString &emailIdentityCfgFile = KStandardDirs::locateLocal( "config", QString( "emailidentities" ) );
+  mEmailIdentityConfig = new KConfig( emailIdentityCfgFile );
+
 
   migrateTags();
 
@@ -386,6 +392,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
            << collectionMigrator->migrationOptions();
   collectionMigrator->setTopLevelFolder( config.readEntry( "Folder", config.readEntry( "Id" ) ) );
   collectionMigrator->setKMailConfig( mConfig );
+  collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
+
   connect( collectionMigrator, SIGNAL( message( int, QString ) ),
            SLOT ( collectionMigratorMessage( int, QString ) ) );
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
@@ -596,6 +604,8 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
   LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
   collectionMigrator->setKMailConfig( mConfig );
+  collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
+
   connect( collectionMigrator, SIGNAL( message( int, QString ) ),
            SLOT ( collectionMigratorMessage( int, QString ) ) );
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),

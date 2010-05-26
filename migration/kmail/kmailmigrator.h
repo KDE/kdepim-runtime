@@ -73,6 +73,7 @@ class KMailMigrator : public KMigratorBase
 
   private:
     KConfig *mConfig;
+    KConfig *mEmailIdentityConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
     QString mLocalMaildirPath;
