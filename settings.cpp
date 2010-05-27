@@ -21,6 +21,8 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include "imapaccount.h"
+
 #include <kwallet.h>
 using KWallet::Wallet;
 
@@ -155,6 +157,21 @@ void Settings::setPassword( const QString & password )
         wallet->writePassword( config()->name(), password );
         kDebug() << "Wallet save: " << wallet->sync() << endl;
     }
+}
+
+void Settings::loadAccount( ImapAccount *account ) const
+{
+  account->setServer( imapServer() );
+  if ( imapPort()>=0 ) {
+    account->setPort( imapPort() );
+  }
+
+  account->setUserName( userName() );
+  account->setSubscriptionEnabled( subscriptionEnabled() );
+
+  account->setEncryptionMode( (KIMAP::LoginJob::EncryptionMode) safety() );
+  account->setAuthenticationMode( (KIMAP::LoginJob::AuthenticationMode) authentication() );
+
 }
 
 #include "settings.moc"

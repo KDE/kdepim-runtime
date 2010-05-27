@@ -23,6 +23,8 @@
 
 #include "settingsbase.h"
 
+class ImapAccount;
+
 class Settings : public SettingsBase
 {
   Q_OBJECT
@@ -35,6 +37,8 @@ public:
 
     void requestPassword();
     void requestManualAuth();
+
+    void loadAccount( ImapAccount *account ) const;
 
 signals:
     void passwordRequestCompleted( const QString &password, bool userRejected );

@@ -294,17 +294,8 @@ void ImapResource::onPasswordRequestCompleted( int resultType, const QString &pa
     disconnect( m_account, 0, this, 0 );
   }
 
-  Settings *settings = Settings::self();
   m_account = new ImapAccount( this );
-  m_account->setServer( settings->imapServer() );
-  if ( settings->imapPort()>=0 ) {
-    m_account->setPort( settings->imapPort() );
-  }
-  m_account->setUserName( settings->userName() );
-  m_account->setSubscriptionEnabled( settings->subscriptionEnabled() );
-
-  m_account->setEncryptionMode( (KIMAP::LoginJob::EncryptionMode) settings->safety() );
-  m_account->setAuthenticationMode( (KIMAP::LoginJob::AuthenticationMode) settings->authentication() );
+  Settings::self()->loadAccount( m_account );
 
   connect( m_account, SIGNAL( success( KIMAP::Session* ) ),
            this, SLOT( onConnectSuccess( KIMAP::Session* ) ) );
