@@ -33,7 +33,7 @@
 #include "mboxsettings.h"
 #include "maildirsettings.h"
 #include "mixedmaildirsettings.h"
-#include "dimapcachecollectionmigrator.h"
+#include "imapcachecollectionmigrator.h"
 #include "localfolderscollectionmigrator.h"
 
 #include <KIMAP/LoginJob>
@@ -383,9 +383,30 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   instance.setName( config.readEntry( "Name" ) );
   instance.reconfigure();
 
-  DImapCacheCollectionMigrator *collectionMigrator = new DImapCacheCollectionMigrator( instance, this );
-  if ( !disconnected ) {
-    collectionMigrator->setMigrationOptions( DImapCacheCollectionMigrator::ConfigOnly );
+  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, this );
+  if ( disconnected ) {
+    const KConfigGroup dimapConfig( KGlobal::config(), QLatin1String( "Disconnected IMAP" ) );
+    ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ConfigOnly;
+    if ( dimapConfig.isValid() ) {
+        QString logText;
+        if ( dimapConfig.readEntry( QLatin1String( "ImportNewMessages" ), false ) ) {
+            options |= ImapCacheCollectionMigrator::ImportNewMessages;
+        }
+
+        if ( dimapConfig.readEntry( QLatin1String( "ImportCachedMessages" ), false ) ) {
+            options |= ImapCacheCollectionMigrator::ImportCachedMessages;
+        }
+
+        if ( dimapConfig.readEntry( QLatin1String( "RemoveDeletedMessages" ), false ) ) {
+            options |= ImapCacheCollectionMigrator::RemoveDeletedMessages;
+        }
+
+        collectionMigrator->setMigrationOptions( options );
+        collectionMigrator->setCacheBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/dimap" ) ) );
+    }
+  } else {
+    collectionMigrator->setMigrationOptions( ImapCacheCollectionMigrator::ImportCachedMessages );
+    collectionMigrator->setCacheBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/imap" ) ) );
   }
 
   kDebug() << "Starting IMAP collection migration: options="
