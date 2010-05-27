@@ -90,6 +90,8 @@ public:
 
     bool statusByFileName( const QString &fileName, MessageStatus &status ) const;
 
+    bool imapUidByOffset( quint64 offset, quint64 &uid ) const;
+
     bool imapUidByFileName( const QString &fileName, quint64 &uid ) const;
 
     bool tagListByOffset( quint64 offset, QStringList &tagList ) const;

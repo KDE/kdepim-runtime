@@ -218,6 +218,17 @@ bool KMIndexReader::statusByFileName( const QString &fileName, MessageStatus &st
     return true;
 }
 
+bool KMIndexReader::imapUidByOffset( quint64 offset, quint64 &uid ) const
+{
+    QHash<quint64, KMIndexMsgPrivate*>::const_iterator it = mMsgByOffset.constFind( offset );
+    if ( it == mMsgByOffset.constEnd() ) {
+        return false;
+    }
+
+    uid = it.value()->uid();
+    return uid != 0;
+}
+
 bool KMIndexReader::imapUidByFileName( const QString &fileName, quint64 &uid ) const
 {
     QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
