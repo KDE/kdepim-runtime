@@ -215,7 +215,8 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
         return MaildirFolder;
       }
 
-      const QString subDirPath = Maildir::subDirPathForFolderPath( path );
+      const QString subDirPath =
+        (type == TopLevelFolder ? path : Maildir::subDirPathForFolderPath( path ) );
       QFileInfo fileInfo( QDir( subDirPath ), col.remoteId() );
       if ( fileInfo.isFile() ) {
         path = fileInfo.absoluteFilePath();
