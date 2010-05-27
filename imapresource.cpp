@@ -92,6 +92,8 @@
 #include "imapaccount.h"
 #include "imapidlemanager.h"
 
+#include "settingspasswordrequester.h"
+
 #include "resourceadaptor.h"
 
 using namespace Akonadi;
@@ -105,7 +107,8 @@ static const char SOURCE_COLLECTION[] = "sourceCollection";
 static const char DESTINATION_COLLECTION[] = "destinationCollection";
 
 ImapResource::ImapResource( const QString &id )
-        :ResourceBase( id ), m_account( 0 ), m_idle( 0 )
+        :ResourceBase( id ), m_account( 0 ), m_idle( 0 ),
+         m_passwordRequester( new SettingsPasswordRequester( this, this ) )
 {
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
@@ -251,35 +254,39 @@ void ImapResource::configure( WId windowId )
   }
 }
 
-void ImapResource::startConnect( bool forceManualAuth )
+void ImapResource::startConnect()
 {
   if ( Settings::self()->imapServer().isEmpty() ) {
     emit status( Broken, i18n( "No server configured yet." ) );
     return;
   }
 
-  connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
-           this, SLOT(onPasswordRequestCompleted(QString, bool)) );
-  if ( forceManualAuth ) {
-    Settings::self()->requestManualAuth();
-  } else {
-    Settings::self()->requestPassword();
-  }
+  connect( m_passwordRequester, SIGNAL(done(int, QString)),
+           this, SLOT(onPasswordRequestCompleted(int, QString)) );
+  m_passwordRequester->requestPassword();
 }
 
-void ImapResource::onPasswordRequestCompleted( const QString &password, bool userRejected )
+void ImapResource::onPasswordRequestCompleted( int resultType, const QString &password )
 {
-  disconnect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
-              this, SLOT(onPasswordRequestCompleted(QString, bool)) );
+  disconnect( m_passwordRequester, SIGNAL(done(int, QString)),
+              this, SLOT(onPasswordRequestCompleted(int, QString)) );
 
-  if ( userRejected ) {
+  switch( resultType )
+  {
+  case PasswordRequesterInterface::PasswordRetrieved:
+    Settings::self()->setPassword( password );
+    break;
+
+  case PasswordRequesterInterface::UserRejected:
     emit status( Broken, i18n( "Could not read the password: user rejected wallet access." ) );
     return;
-  } else if ( password.isEmpty() ) {
+  case PasswordRequesterInterface::EmptyPasswordEntered:
     emit status( Broken, i18n( "Authentication failed." ) );
     return;
-  } else {
-    Settings::self()->setPassword( password );
+
+  case PasswordRequesterInterface::ReconnectNeeded:
+    Q_ASSERT("Shouldn't happen at that stage");
+    return;
   }
 
   if ( m_account!=0 ) {
@@ -1354,30 +1361,13 @@ void ImapResource::onConnectError( KIMAP::Session *session, int code, const QStr
   }
 
   if ( code==ImapAccount::LoginFailError ) {
-    // the credentials where not ok....
-    int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
-                                                 i18n( "The server refused the supplied username and password. "
-                                                       "Do you want to go to the settings, have another attempt "
-                                                       "at logging in, or do nothing?\n\n"
-                                                       "%1", message ),
-                                                 i18n( "Could Not Authenticate" ),
-                                                 KGuiItem( i18n( "Settings" ) ),
-                                                 KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
-    if ( i == KMessageBox::Yes ) {
-      configure( winIdForDialogs() );
-      return;
-    } else if ( i == KMessageBox::No ) {
-      startConnect( true );
-      return;
-    } else {
-      KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( m_account->mainSession() );
-      logout->start();
-      emit status( Broken, i18n( "Could not connect to the IMAP-server %1.", m_account->server() ) );
-    }
+    connect( m_passwordRequester, SIGNAL(done(int, QString)),
+             this, SLOT(onPasswordRequestCompleted(int, QString)) );
+    m_passwordRequester->requestPassword( PasswordRequesterInterface::WrongPasswordRequest, message );
+  } else {
+    m_account->disconnect();
+    emit error( message );
   }
-
-  m_account->disconnect();
-  emit error( message );
 }
 
 void ImapResource::onConnectSuccess( KIMAP::Session *session )

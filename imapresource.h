@@ -43,6 +43,7 @@ namespace KIMAP
 
 class ImapAccount;
 class ImapIdleManager;
+class PasswordRequesterInterface;
 
 class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
@@ -83,7 +84,7 @@ protected:
   virtual void doSetOnline(bool online);
 
 private Q_SLOTS:
-  void onPasswordRequestCompleted( const QString &password, bool userRejected );
+  void onPasswordRequestCompleted( int resultType, const QString &password );
 
   void onConnectSuccess( KIMAP::Session *session );
   void onConnectError( KIMAP::Session *session, int code, const QString &message );
@@ -121,7 +122,7 @@ private Q_SLOTS:
   void onPostItemMoveStoreFlagsDone( KJob *job );
   void onIdleCollectionFetchDone( KJob *job );
 
-  void startConnect( bool forceManualAuth = false );
+  void startConnect();
   void reconnect();
 
   void expungeRequested( const QVariant &collectionArgument );
@@ -145,6 +146,7 @@ private:
 
   ImapAccount *m_account;
   ImapIdleManager *m_idle;
+  PasswordRequesterInterface *m_passwordRequester;
 };
 
 #endif
