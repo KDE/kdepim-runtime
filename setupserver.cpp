@@ -523,6 +523,7 @@ void SetupServer::slotSafetyChanged()
   }
 
   m_ui->authenticationCombo->clear();
+  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::ClearText );
   foreach( int prot, protocols ) {
     KIMAP::LoginJob::AuthenticationMode t = mapTransportAuthToKimap( ( MailTransport::Transport::EnumAuthenticationType::type ) prot );
     addAuthenticationItem( m_ui->authenticationCombo, t );
