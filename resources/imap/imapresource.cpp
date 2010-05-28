@@ -635,7 +635,10 @@ void ImapResource::retrieveCollections()
   policy.setLocalParts( localParts );
   policy.setCacheTimeout( cacheTimeout );
 
-  policy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+  if ( Settings::self()->intervalCheckEnabled() )
+    policy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+  else
+    policy.setIntervalCheckTime( -1 ); // -1 for never
 
   root.setCachePolicy( policy );
 
