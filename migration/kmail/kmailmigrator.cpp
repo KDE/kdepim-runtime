@@ -80,8 +80,7 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
   mConfig( 0 ),
-  mEmailIdentityConfig( 0 ),
-  mConverter( 0 )
+  mEmailIdentityConfig( 0 )
 {
 }
 

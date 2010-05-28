@@ -79,7 +79,6 @@ class KMailMigrator : public KMigratorBase
     QString mLocalMaildirPath;
     typedef QStringList::iterator AccountIterator;
     AccountIterator mIt;
-    MixedTreeConverter *mConverter;
 };
 
 } // namespace KMail
