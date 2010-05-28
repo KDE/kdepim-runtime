@@ -46,7 +46,7 @@ int main( int argc, char **argv )
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );
   aboutData.setProgramIconName( "akonadi" );
-  aboutData.addAuthor( ki18n( "Jonathan Armond" ),  ki18n( "Author" ), "jon.armond@gmail.com" ); 
+  aboutData.addAuthor( ki18n( "Jonathan Armond" ),  ki18n( "Author" ), "jon.armond@gmail.com" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
@@ -82,7 +82,7 @@ int main( int argc, char **argv )
   int doYouReallyWantToBreakThings = KMessageBox::warningContinueCancel( 0, warningMsg, i18n( "KMail 2 Migration" ), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), QString(), KMessageBox::Dangerous );
   if ( doYouReallyWantToBreakThings != KMessageBox::Continue )
     return 1;
-  
+
   if ( !Akonadi::Control::start( 0 ) )
     return 2;
 
@@ -98,6 +98,10 @@ int main( int argc, char **argv )
     QObject::connect( migrator, SIGNAL( message( KMigratorBase::MessageType, QString ) ),
                       infoDialog, SLOT( message( KMigratorBase::MessageType, QString ) ) );
     QObject::connect( migrator, SIGNAL( destroyed() ), infoDialog, SLOT( migratorDone() ) );
+    QObject::connect( migrator, SIGNAL( status( QString ) ), infoDialog, SLOT( status( QString ) ) );
+    QObject::connect( migrator, SIGNAL( progress( int ) ), infoDialog, SLOT( progress( int ) ) );
+    QObject::connect( migrator, SIGNAL( progress( int, int, int ) ),
+                      infoDialog, SLOT( progress( int, int, int ) ) );
   }
   args->clear();
   const int result = app->exec();

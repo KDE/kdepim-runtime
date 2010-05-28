@@ -61,7 +61,8 @@ class ImapCacheCollectionMigrator::Private
   public:
     explicit Private( ImapCacheCollectionMigrator *parent )
       : q( parent ), mStore( 0 ), mHiddenSession( 0 ),
-        mImportNewMessages( false ), mImportCachedMessages( false ), mRemoveDeletedMessages( false )
+        mImportNewMessages( false ), mImportCachedMessages( false ), mRemoveDeletedMessages( false ),
+        mItemProgress( -1 )
     {
     }
 
@@ -90,6 +91,8 @@ class ImapCacheCollectionMigrator::Private
     KConfigGroup mCurrentFolderGroup;
 
     QHash<QString, QVariant> mTagListHash;
+
+    int mItemProgress;
 
   public: // slots
     void fetchItemsResult( KJob *job );
@@ -126,6 +129,7 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
     if ( mRemoveDeletedMessages ) {
       processNextDeletedUid();
     } else {
+      emit q->status( QString() );
       mCurrentCollection = Collection();
       q->collectionProcessed();
     }
@@ -141,6 +145,7 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
     if ( mRemoveDeletedMessages ) {
       processNextDeletedUid();
     } else {
+      emit q->status( QString() );
       mCurrentCollection = Collection();
       q->collectionProcessed();
     }
@@ -167,6 +172,8 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
     kDebug() << mTagListHash.count() << "items have tags";
   }
 
+  mItemProgress = -1;
+  emit q->progress( 0, mItems.count(), 0 );
   processNextItem();
 }
 
@@ -174,8 +181,12 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
 {
   kDebug() << "mCurrentCollection=" << mCurrentCollection.name()
            << mItems.count() << "items to go";
+
+  emit q->progress( ++mItemProgress );
+
   if ( mItems.isEmpty() ) {
     if ( mDeletedUids.isEmpty() ) {
+      emit q->status( QString() );
       mCurrentCollection = Collection();
       q->collectionProcessed();
     } else if ( mRemoveDeletedMessages ) {
@@ -186,8 +197,6 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
 
   const Item item = mItems.front();
   mItems.pop_front();
-
-  // TODO should we check for Deleted flags here?
 
   FileStore::ItemFetchJob *job = mStore->fetchItem( item );
   job->fetchScope().fetchFullPayload( true );
@@ -208,6 +217,7 @@ void ImapCacheCollectionMigrator::Private::processNextDeletedUid()
     }
     mCurrentFolderGroup = KConfigGroup();
     mCurrentCollection = Collection();
+    emit q->status( QString() );
     q->collectionProcessed();
     return;
   }
@@ -404,6 +414,7 @@ void ImapCacheCollectionMigrator::setCacheBasePath( const QString &basePath )
 void ImapCacheCollectionMigrator::migrateCollection( const Collection &collection, const QString &folderId )
 {
   if ( migrationOptions() == ConfigOnly ) {
+    emit status( QString() );
     collectionProcessed();
     return;
   }
@@ -420,6 +431,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   }
 
   if ( collection.parentCollection() == Collection::root() ) {
+    emit status( QString() );
     collectionProcessed();
     return;
   }
@@ -446,12 +458,16 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
 
   emit message( KMigratorBase::Info, i18nc( "@info:status", "Starting cache migration for folder %1 of account %2", collection.name(), resource().name() ) );
 
+  emit status( collection.name() );
+
   if ( d->mImportNewMessages || d->mImportCachedMessages ) {
     FileStore::ItemFetchJob *job = d->mStore->fetchItems( cache );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchItemsResult( KJob * ) ) );
   } else if ( d->mRemoveDeletedMessages ) {
+    emit status( collection.name() );
     d->processNextDeletedUid();
   } else {
+    emit status( QString() );
     collectionProcessed();
   }
 }

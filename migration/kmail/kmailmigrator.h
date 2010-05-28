@@ -26,7 +26,7 @@
 
 #include <QStringList>
 
-class MixedTreeConverter;
+class AbstractCollectionMigrator;
 class KConfig;
 class KJob;
 
@@ -51,6 +51,11 @@ class KMailMigrator : public KMigratorBase
     void migrateLocalFolders();
     void migrationDone();
 
+  Q_SIGNALS:
+    void status( const QString &msg );
+    void progress( int value );
+    void progress( int min, int max, int value );
+
   private slots:
     void imapAccountCreated( KJob *job );
     void imapDisconnectedAccountCreated( KJob *job );
@@ -63,13 +68,19 @@ class KMailMigrator : public KMigratorBase
     void dimapFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
 
     void collectionMigratorMessage( int type, const QString &msg );
+    void collectionMigratorFinished();
+
+    void instanceStatusChanged( const Akonadi::AgentInstance &instance );
+    void instanceProgressChanged( const Akonadi::AgentInstance &instance );
 
   private:
     void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();
-    void migrationCompleted( const Akonadi::AgentInstance &instance );
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance
                           = Akonadi::AgentInstance() );
+    void migrationCompleted( const Akonadi::AgentInstance &instance );
+
+    void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
 
   private:
     KConfig *mConfig;
@@ -79,6 +90,7 @@ class KMailMigrator : public KMigratorBase
     QString mLocalMaildirPath;
     typedef QStringList::iterator AccountIterator;
     AccountIterator mIt;
+    Akonadi::AgentInstance mCurrentInstance;
 };
 
 } // namespace KMail

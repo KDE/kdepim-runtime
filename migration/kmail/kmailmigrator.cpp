@@ -82,6 +82,10 @@ KMailMigrator::KMailMigrator() :
   mConfig( 0 ),
   mEmailIdentityConfig( 0 )
 {
+  connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
+           this, SLOT( instanceStatusChanged( Akonadi::AgentInstance ) ) );
+  connect( AgentManager::self(), SIGNAL( instanceProgressChanged( Akonadi::AgentInstance ) ),
+           this, SLOT( instanceProgressChanged( Akonadi::AgentInstance ) ) );
 }
 
 KMailMigrator::~KMailMigrator()
@@ -246,6 +250,7 @@ void KMailMigrator::migrationFailed( const QString &errorMsg,
     AgentManager::self()->removeInstance( instance );
 
   mCurrentAccount.clear();
+  mCurrentInstance = AgentInstance();
   migrateNext();
 }
 
@@ -256,7 +261,19 @@ void KMailMigrator::migrationCompleted( const AgentInstance &instance  )
                      group.readEntry( "Type" ).toLower() );
   emit message( Success, i18n( "Migration of '%1' succeeded.", group.readEntry( "Name" ) ) );
   mCurrentAccount.clear();
+  mCurrentInstance = AgentInstance();
   migrateNext();
+}
+
+void KMailMigrator::connectCollectionMigrator( AbstractCollectionMigrator *migrator )
+{
+  connect( migrator, SIGNAL( message( int, QString ) ),
+           SLOT ( collectionMigratorMessage( int, QString ) ) );
+  connect( migrator, SIGNAL( status( QString ) ), SIGNAL ( status( QString ) ) );
+  connect( migrator, SIGNAL( progress( int ) ), SIGNAL ( progress( int ) ) );
+  connect( migrator, SIGNAL( progress( int, int, int ) ), SIGNAL ( progress( int, int, int ) ) );
+  connect( migrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+           this, SLOT( collectionMigratorFinished() ) );
 }
 
 bool KMailMigrator::migrateCurrentAccount()
@@ -320,6 +337,7 @@ void KMailMigrator::imapAccountCreated( KJob *job )
 void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 {
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
+  mCurrentInstance = instance;
   const KConfigGroup config( mConfig, mCurrentAccount );
 
   OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
@@ -380,6 +398,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
   instance.setName( config.readEntry( "Name" ) );
+  emit status( config.readEntry( "Name" ) );
   instance.reconfigure();
 
   ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, this );
@@ -414,10 +433,9 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
 
-  connect( collectionMigrator, SIGNAL( message( int, QString ) ),
-           SLOT ( collectionMigratorMessage( int, QString ) ) );
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( dimapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+  connectCollectionMigrator( collectionMigrator );
 }
 
 void KMailMigrator::pop3AccountCreated( KJob *job )
@@ -429,6 +447,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   emit message( Info, i18n( "Created pop3 resource" ) );
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
+  mCurrentInstance = instance;
   KConfigGroup config( mConfig, mCurrentAccount );
 
   OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
@@ -489,6 +508,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   config.deleteEntry("trash");
   config.deleteEntry("use-default-identity");
   instance.setName( config.readEntry( "Name" ) );
+  emit status( config.readEntry( "Name" ) );
   instance.reconfigure();
   config.sync();
   migrationCompleted( instance );
@@ -503,6 +523,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   emit message( Info, i18n( "Created mbox resource" ) );
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
+  mCurrentInstance = instance;
   const KConfigGroup config( mConfig, mCurrentAccount );
 
   OrgKdeAkonadiMboxSettingsInterface *iface = new OrgKdeAkonadiMboxSettingsInterface(
@@ -528,6 +549,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
     iface->setLockfileMethod( MboxNone );
 
   instance.setName( config.readEntry( "Name" ) );
+  emit status( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -541,6 +563,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   emit message( Info, i18n( "Created maildir resource" ) );
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
+  mCurrentInstance = instance;
   const KConfigGroup config( mConfig, mCurrentAccount );
 
   OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
@@ -555,6 +578,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   iface->setPath( config.readEntry( "Location" ) );
 
   instance.setName( config.readEntry( "Name" ) );
+  emit status( config.readEntry( "Name" ) );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -569,6 +593,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   emit message( Info, i18n( "Created local maildir resource." ) );
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
+  mCurrentInstance = instance;
 
   OrgKdeAkonadiMixedMaildirSettingsInterface *iface = new OrgKdeAkonadiMixedMaildirSettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
@@ -620,16 +645,16 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   }
 
   instance.setName( instanceName );
+  emit status( instanceName );
   instance.reconfigure();
 
   LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
 
-  connect( collectionMigrator, SIGNAL( message( int, QString ) ),
-           SLOT ( collectionMigratorMessage( int, QString ) ) );
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+  connectCollectionMigrator( collectionMigrator );
 }
 
 void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
@@ -680,6 +705,25 @@ void KMailMigrator::collectionMigratorMessage( int type, const QString &msg )
       kError() << "Unknown message type" << type << "msg=" << msg;
       break;
   }
+}
+
+void KMailMigrator::collectionMigratorFinished()
+{
+  emit status( QString() );
+}
+
+void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
+{
+    if ( instance.status() == AgentInstance::Idle ) {
+        emit status( QString() );
+    } else {
+        emit status( instance.statusMessage() );
+    }
+}
+
+void KMailMigrator::instanceProgressChanged( const AgentInstance &instance )
+{
+    emit progress( 0, 100, instance.progress() );
 }
 
 #include "kmailmigrator.moc"
