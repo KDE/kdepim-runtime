@@ -23,12 +23,12 @@
 
 #include <akonadi/itemfetchscope.h>
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class ItemFetchJob::Private
+class FileStore::ItemFetchJob::Private
 {
   public:
-    explicit Private( ItemFetchJob *parent )
+    explicit Private( FileStore::ItemFetchJob *parent )
       : mParent( parent )
     {
     }
@@ -36,67 +36,67 @@ class ItemFetchJob::Private
   public:
     ItemFetchScope mFetchScope;
 
-    Akonadi::Item::List mItems;
+    Item::List mItems;
 
-    Akonadi::Collection mCollection;
-    Akonadi::Item mItem;
+    Collection mCollection;
+    Item mItem;
 
   private:
-    ItemFetchJob *mParent;
+    FileStore::ItemFetchJob *mParent;
 };
 
-ItemFetchJob::ItemFetchJob( const Akonadi::Collection &collection, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::ItemFetchJob::ItemFetchJob( const Collection &collection, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   d->mCollection = collection;
 
   session->addJob( this );
 }
 
-ItemFetchJob::ItemFetchJob( const Akonadi::Item &item, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::ItemFetchJob::ItemFetchJob( const Item &item, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   d->mItem = item;
 
   session->addJob( this );
 }
 
-ItemFetchJob::~ItemFetchJob()
+FileStore::ItemFetchJob::~ItemFetchJob()
 {
   delete d;
 }
 
-Akonadi::Collection ItemFetchJob::collection() const
+Collection FileStore::ItemFetchJob::collection() const
 {
   return d->mCollection;
 }
 
-Akonadi::Item ItemFetchJob::item() const
+Item FileStore::ItemFetchJob::item() const
 {
   return d->mItem;
 }
 
-void ItemFetchJob::setFetchScope( const Akonadi::ItemFetchScope &fetchScope )
+void FileStore::ItemFetchJob::setFetchScope( const ItemFetchScope &fetchScope )
 {
   d->mFetchScope = fetchScope;
 }
 
-Akonadi::ItemFetchScope &ItemFetchJob::fetchScope()
+ItemFetchScope &FileStore::ItemFetchJob::fetchScope()
 {
   return d->mFetchScope;
 }
 
-Akonadi::Item::List ItemFetchJob::items() const
+Item::List FileStore::ItemFetchJob::items() const
 {
   return d->mItems;
 }
 
-bool ItemFetchJob::accept( Visitor *visitor )
+bool FileStore::ItemFetchJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void ItemFetchJob::handleItemsReceived( const Akonadi::Item::List &items )
+void FileStore::ItemFetchJob::handleItemsReceived( const Item::List &items )
 {
   d->mItems << items;
 

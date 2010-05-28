@@ -60,26 +60,13 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     connect( d->ui.resourcesList, SIGNAL( doubleClicked( const Akonadi::AgentInstance& ) ),
              SLOT( editClicked() ) );
 
-    connect( d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)) );
-
     connect( d->ui.addButton, SIGNAL( clicked () ), SLOT( addClicked() ) );
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
     connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
 
     updateButtonState( d->ui.resourcesList->currentAgentInstance() );
-
     Akonadi::Control::widgetNeedsAkonadi( this );
 }
-
-void ResourcesManagementWidget::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
-{
-  Q_UNUSED( selected );
-  Q_UNUSED( deselected );
-
-  const bool multiSelection = d->ui.resourcesList->view()->selectionModel()->selectedRows().size() > 1;
-  d->ui.editButton->setDisabled( multiSelection );
-}
-
 
 ResourcesManagementWidget::~ResourcesManagementWidget()
 {
@@ -92,7 +79,7 @@ void ResourcesManagementWidget::updateButtonState( const Akonadi::AgentInstance&
         d->ui.editButton->setEnabled( false );
         d->ui.removeButton->setEnabled( false );
     } else {
-        d->ui.editButton->setEnabled( !current.type().capabilities().contains( QLatin1String( "NoConfig" ) ) );
+        d->ui.editButton->setEnabled( (d->ui.resourcesList->view()->selectionModel()->selectedRows().size() == 1 ) && !current.type().capabilities().contains( QLatin1String( "NoConfig" ) ) );
         d->ui.removeButton->setEnabled( true );
     }
 }

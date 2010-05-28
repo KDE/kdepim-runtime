@@ -22,26 +22,26 @@
 
 #include "session_p.h"
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class ItemMoveJob::Private
+class FileStore::ItemMoveJob::Private
 {
   public:
-    explicit Private( ItemMoveJob *parent )
+    explicit Private( FileStore::ItemMoveJob *parent )
       : mParent( parent )
     {
     }
 
   public:
-    Akonadi::Item mItem;
-    Akonadi::Collection mTargetParent;
+    Item mItem;
+    Collection mTargetParent;
 
   private:
-    ItemMoveJob *mParent;
+    FileStore::ItemMoveJob *mParent;
 };
 
-ItemMoveJob::ItemMoveJob( const Akonadi::Item &item, const Akonadi::Collection &targetParent, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::ItemMoveJob::ItemMoveJob( const Item &item, const Collection &targetParent, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   d->mItem = item;
   d->mTargetParent = targetParent;
@@ -49,27 +49,27 @@ ItemMoveJob::ItemMoveJob( const Akonadi::Item &item, const Akonadi::Collection &
   session->addJob( this );
 }
 
-ItemMoveJob::~ItemMoveJob()
+FileStore::ItemMoveJob::~ItemMoveJob()
 {
   delete d;
 }
 
-Akonadi::Collection ItemMoveJob::targetParent() const
+Collection FileStore::ItemMoveJob::targetParent() const
 {
   return d->mTargetParent;
 }
 
-Akonadi::Item ItemMoveJob::item() const
+Item FileStore::ItemMoveJob::item() const
 {
   return d->mItem;
 }
 
-bool ItemMoveJob::accept( Visitor *visitor )
+bool FileStore::ItemMoveJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void ItemMoveJob::handleItemMoved( const Akonadi::Item &item )
+void FileStore::ItemMoveJob::handleItemMoved( const Item &item )
 {
   d->mItem = item;
 }

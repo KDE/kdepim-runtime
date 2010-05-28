@@ -59,7 +59,6 @@ private Q_SLOTS:
     void addClicked();
     void editClicked();
     void removeClicked();
-    void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected );
 
 private:
     class Private;

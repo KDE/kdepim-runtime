@@ -182,11 +182,13 @@ StoreConfigIface::CollectionsByMimeType ResourceAkonadi::Private::storeCollectio
   return storeCollections;
 }
 
-void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResource )
+void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResourceBase )
 {
-  kDebug( 5700 ) << "id=" << subResource->subResourceIdentifier();
+  kDebug( 5700 ) << "id=" << subResourceBase->subResourceIdentifier();
 
-  SharedResourcePrivate<SubResource>::subResourceAdded( subResource );
+  SharedResourcePrivate<SubResource>::subResourceAdded( subResourceBase );
+
+  SubResource *subResource = qobject_cast<SubResource*>( subResourceBase );
 
   connect( subResource, SIGNAL( addresseeAdded( KABC::Addressee, QString ) ),
            this, SLOT( addresseeAdded( KABC::Addressee, QString ) ) );
@@ -202,14 +204,16 @@ void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResource )
   connect( subResource, SIGNAL( contactGroupRemoved( QString, QString ) ),
            this, SLOT( contactGroupRemoved( QString, QString ) ) );
 
-  emit mParent->signalSubresourceAdded( mParent, QLatin1String( "contact" ), subResource->subResourceIdentifier() );
+  emit mParent->signalSubresourceAdded( mParent, QLatin1String( "contact" ), subResourceBase->subResourceIdentifier() );
 }
 
-void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource )
+void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResourceBase )
 {
-  kDebug( 5700 ) << "id=" << subResource->subResourceIdentifier();
+  kDebug( 5700 ) << "id=" << subResourceBase->subResourceIdentifier();
 
-  SharedResourcePrivate<SubResource>::subResourceRemoved( subResource );
+  SharedResourcePrivate<SubResource>::subResourceRemoved( subResourceBase );
+
+  SubResource *subResource = qobject_cast<SubResource*>( subResourceBase );
 
   disconnect( subResource, SIGNAL( addresseeAdded( KABC::Addressee, QString ) ),
               this, SLOT( addresseeAdded( KABC::Addressee, QString ) ) );
@@ -231,7 +235,7 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource 
 
     QMap<QString, QString>::iterator it = mUidToResourceMap.begin();
     while ( it != mUidToResourceMap.end() ) {
-      if ( it.value() == subResource->subResourceIdentifier() ) {
+      if ( it.value() == subResourceBase->subResourceIdentifier() ) {
         const QString uid = it.key();
 
         mChanges.remove( uid );
@@ -249,7 +253,7 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource 
     }
   }
 
-  emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "contact" ), subResource->subResourceIdentifier() );
+  emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "contact" ), subResourceBase->subResourceIdentifier() );
 
   emit mParent->addressBook()->emitAddressBookChanged();
 }

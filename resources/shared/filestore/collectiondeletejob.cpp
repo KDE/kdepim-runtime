@@ -24,12 +24,10 @@
 
 using namespace Akonadi;
 
-using namespace Akonadi::FileStore;
-
-class CollectionDeleteJob::Private
+class FileStore::CollectionDeleteJob::Private
 {
   public:
-    explicit Private( CollectionDeleteJob *parent )
+    explicit Private( FileStore::CollectionDeleteJob *parent )
       : mParent( parent )
     {
     }
@@ -38,11 +36,11 @@ class CollectionDeleteJob::Private
     Collection mCollection;
 
   private:
-    CollectionDeleteJob *mParent;
+    FileStore::CollectionDeleteJob *mParent;
 };
 
-CollectionDeleteJob::CollectionDeleteJob( const Collection &collection, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::CollectionDeleteJob::CollectionDeleteJob( const Collection &collection, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   Q_ASSERT( session != 0 );
 
@@ -51,22 +49,22 @@ CollectionDeleteJob::CollectionDeleteJob( const Collection &collection, Abstract
   session->addJob( this );
 }
 
-CollectionDeleteJob::~CollectionDeleteJob()
+FileStore::CollectionDeleteJob::~CollectionDeleteJob()
 {
   delete d;
 }
 
-Akonadi::Collection CollectionDeleteJob::collection() const
+Collection FileStore::CollectionDeleteJob::collection() const
 {
   return d->mCollection;
 }
 
-bool CollectionDeleteJob::accept( Visitor *visitor )
+bool FileStore::CollectionDeleteJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void CollectionDeleteJob::handleCollectionDeleted( const Collection &collection )
+void FileStore::CollectionDeleteJob::handleCollectionDeleted( const Collection &collection )
 {
   d->mCollection = collection;
 }

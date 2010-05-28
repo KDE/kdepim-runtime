@@ -22,12 +22,12 @@
 
 #include "session_p.h"
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class CollectionModifyJob::Private
+class FileStore::CollectionModifyJob::Private
 {
   public:
-    explicit Private( CollectionModifyJob *parent )
+    explicit Private( FileStore::CollectionModifyJob *parent )
       : mParent( parent )
     {
     }
@@ -36,11 +36,11 @@ class CollectionModifyJob::Private
     Collection mCollection;
 
   private:
-    CollectionModifyJob *mParent;
+    FileStore::CollectionModifyJob *mParent;
 };
 
-CollectionModifyJob::CollectionModifyJob( const Akonadi::Collection &collection, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::CollectionModifyJob::CollectionModifyJob( const Collection &collection, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   Q_ASSERT( session != 0 );
 
@@ -49,22 +49,22 @@ CollectionModifyJob::CollectionModifyJob( const Akonadi::Collection &collection,
   session->addJob( this );
 }
 
-CollectionModifyJob::~CollectionModifyJob()
+FileStore::CollectionModifyJob::~CollectionModifyJob()
 {
   delete d;
 }
 
-Akonadi::Collection CollectionModifyJob::collection() const
+Collection FileStore::CollectionModifyJob::collection() const
 {
   return d->mCollection;
 }
 
-bool CollectionModifyJob::accept( Visitor *visitor )
+bool FileStore::CollectionModifyJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void CollectionModifyJob::handleCollectionModified( const Akonadi::Collection &collection )
+void FileStore::CollectionModifyJob::handleCollectionModified( const Collection &collection )
 {
   d->mCollection = collection;
 }

@@ -21,26 +21,26 @@
 
 #include "session_p.h"
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class ItemCreateJob::Private
+class FileStore::ItemCreateJob::Private
 {
   public:
-    explicit Private( ItemCreateJob *parent )
+    explicit Private( FileStore::ItemCreateJob *parent )
       : mParent( parent )
     {
     }
 
   public:
-    Akonadi::Item mItem;
-    Akonadi::Collection mCollection;
+    Item mItem;
+    Collection mCollection;
 
   private:
-    ItemCreateJob *mParent;
+    FileStore::ItemCreateJob *mParent;
 };
 
-ItemCreateJob::ItemCreateJob( const Akonadi::Item &item, const Akonadi::Collection &collection, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::ItemCreateJob::ItemCreateJob( const Item &item, const Collection &collection, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   d->mItem = item;
   d->mCollection = collection;
@@ -48,27 +48,27 @@ ItemCreateJob::ItemCreateJob( const Akonadi::Item &item, const Akonadi::Collecti
   session->addJob( this );
 }
 
-ItemCreateJob::~ItemCreateJob()
+FileStore::ItemCreateJob::~ItemCreateJob()
 {
   delete d;
 }
 
-Akonadi::Collection ItemCreateJob::collection() const
+Collection FileStore::ItemCreateJob::collection() const
 {
   return d->mCollection;
 }
 
-Akonadi::Item ItemCreateJob::item() const
+Item FileStore::ItemCreateJob::item() const
 {
   return d->mItem;
 }
 
-bool ItemCreateJob::accept( Visitor *visitor )
+bool FileStore::ItemCreateJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void ItemCreateJob::handleItemCreated( const Akonadi::Item &item )
+void FileStore::ItemCreateJob::handleItemCreated( const Item &item )
 {
   d->mItem = item;
 }

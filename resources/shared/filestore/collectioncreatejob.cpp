@@ -24,12 +24,10 @@
 
 using namespace Akonadi;
 
-using namespace Akonadi::FileStore;
-
-class CollectionCreateJob::Private
+class FileStore::CollectionCreateJob::Private
 {
   public:
-    explicit Private( CollectionCreateJob *parent )
+    explicit Private( FileStore::CollectionCreateJob *parent )
       : mParent( parent )
     {
     }
@@ -39,11 +37,11 @@ class CollectionCreateJob::Private
     Collection mTargetParent;
 
   private:
-    CollectionCreateJob *mParent;
+    FileStore::CollectionCreateJob *mParent;
 };
 
-CollectionCreateJob::CollectionCreateJob( const Collection &collection, const Collection &targetParent, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::CollectionCreateJob::CollectionCreateJob( const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   Q_ASSERT( session != 0 );
 
@@ -53,27 +51,27 @@ CollectionCreateJob::CollectionCreateJob( const Collection &collection, const Co
   session->addJob( this );
 }
 
-CollectionCreateJob::~CollectionCreateJob()
+FileStore::CollectionCreateJob::~CollectionCreateJob()
 {
   delete d;
 }
 
-Akonadi::Collection CollectionCreateJob::collection() const
+Collection FileStore::CollectionCreateJob::collection() const
 {
   return d->mCollection;
 }
 
-Akonadi::Collection CollectionCreateJob::targetParent() const
+Collection FileStore::CollectionCreateJob::targetParent() const
 {
   return d->mTargetParent;
 }
 
-bool CollectionCreateJob::accept( Visitor *visitor )
+bool FileStore::CollectionCreateJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void CollectionCreateJob::handleCollectionCreated( const Collection &collection )
+void FileStore::CollectionCreateJob::handleCollectionCreated( const Collection &collection )
 {
   d->mCollection = collection;
 }

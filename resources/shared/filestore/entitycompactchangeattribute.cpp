@@ -23,14 +23,13 @@
 #include <QDataStream>
 
 using namespace Akonadi;
-using namespace Akonadi::FileStore;
 
-class EntityCompactChangeAttribute::Private
+class FileStore::EntityCompactChangeAttribute::Private
 {
-  EntityCompactChangeAttribute *const q;
+  FileStore::EntityCompactChangeAttribute *const q;
 
   public:
-    explicit Private( EntityCompactChangeAttribute *parent ) : q( parent )
+    explicit Private( FileStore::EntityCompactChangeAttribute *parent ) : q( parent )
     {
     }
 
@@ -48,39 +47,39 @@ class EntityCompactChangeAttribute::Private
     QString mRemoteId;
 };
 
-EntityCompactChangeAttribute::EntityCompactChangeAttribute()
+FileStore::EntityCompactChangeAttribute::EntityCompactChangeAttribute()
   : Attribute(), d( new Private( this ) )
 {
 }
 
-EntityCompactChangeAttribute::~EntityCompactChangeAttribute()
+FileStore::EntityCompactChangeAttribute::~EntityCompactChangeAttribute()
 {
   delete d;
 }
 
-void EntityCompactChangeAttribute::setRemoteId( const QString &remoteId )
+void FileStore::EntityCompactChangeAttribute::setRemoteId( const QString &remoteId )
 {
   d->mRemoteId = remoteId;
 }
 
-QString EntityCompactChangeAttribute::remoteId() const
+QString FileStore::EntityCompactChangeAttribute::remoteId() const
 {
   return d->mRemoteId;
 }
 
-QByteArray EntityCompactChangeAttribute::type() const
+QByteArray FileStore::EntityCompactChangeAttribute::type() const
 {
   return "ENTITYCOMPACTCHANGE";
 }
 
-EntityCompactChangeAttribute* EntityCompactChangeAttribute::clone() const
+FileStore::EntityCompactChangeAttribute* FileStore::EntityCompactChangeAttribute::clone() const
 {
-  EntityCompactChangeAttribute *copy = new EntityCompactChangeAttribute();
+  FileStore::EntityCompactChangeAttribute *copy = new FileStore::EntityCompactChangeAttribute();
   *(copy->d) = *d;
   return copy;
 }
 
-QByteArray EntityCompactChangeAttribute::serialized() const
+QByteArray FileStore::EntityCompactChangeAttribute::serialized() const
 {
   QByteArray data;
   QDataStream stream( &data, QIODevice::WriteOnly );
@@ -90,7 +89,7 @@ QByteArray EntityCompactChangeAttribute::serialized() const
   return data;
 }
 
-void EntityCompactChangeAttribute::deserialize( const QByteArray &data )
+void FileStore::EntityCompactChangeAttribute::deserialize( const QByteArray &data )
 {
   QDataStream stream( data );
   stream >> d->mRemoteId;

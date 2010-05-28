@@ -21,36 +21,36 @@
 
 #include "session_p.h"
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class Job::Private
+class FileStore::Job::Private
 {
   public:
-    explicit Private( Job *parent )
+    explicit Private( FileStore::Job *parent )
       : mParent( parent )
     {
     }
 
   private:
-    Job *mParent;
+    FileStore::Job *mParent;
 };
 
-Job::Job( AbstractJobSession *session )
+FileStore::Job::Job( FileStore::AbstractJobSession *session )
   : KJob( session ), d( new Private( this ) )
 {
   setAutoDelete( true );
 }
 
-Job::~Job()
+FileStore::Job::~Job()
 {
   delete d;
 }
 
-void Job::start()
+void FileStore::Job::start()
 {
 }
 
-bool Job::accept( Visitor *visitor )
+bool FileStore::Job::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }

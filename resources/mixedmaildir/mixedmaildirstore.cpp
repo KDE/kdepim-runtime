@@ -1427,7 +1427,7 @@ bool MixedMaildirStore::Private::visit( FileStore::StoreCompactJob *job )
   return true;
 }
 
-MixedMaildirStore::MixedMaildirStore() : AbstractLocalStore(), d( new Private( this ) )
+MixedMaildirStore::MixedMaildirStore() : FileStore::AbstractLocalStore(), d( new Private( this ) )
 {
 }
 
@@ -1436,7 +1436,7 @@ MixedMaildirStore::~MixedMaildirStore()
   delete d;
 }
 
-void MixedMaildirStore::setTopLevelCollection( const Akonadi::Collection &collection )
+void MixedMaildirStore::setTopLevelCollection( const Collection &collection )
 {
   QStringList contentMimeTypes;
   contentMimeTypes << Collection::mimeType();
@@ -1459,7 +1459,7 @@ void MixedMaildirStore::setTopLevelCollection( const Akonadi::Collection &collec
   // clear caches
   d->mMBoxes.clear();
 
-  AbstractLocalStore::setTopLevelCollection( modifiedCollection );
+  FileStore::AbstractLocalStore::setTopLevelCollection( modifiedCollection );
 }
 
 void MixedMaildirStore::processJob( FileStore::Job *job )
@@ -1479,7 +1479,7 @@ void MixedMaildirStore::processJob( FileStore::Job *job )
   }
 }
 
-void MixedMaildirStore::checkCollectionMove( Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText ) const
+void MixedMaildirStore::checkCollectionMove( FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText ) const
 {
   // check if the target is not the collection itself or one if its children
   Collection targetCollection = job->targetParent();

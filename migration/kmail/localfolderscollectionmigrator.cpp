@@ -47,7 +47,7 @@ class LocalFoldersCollectionMigrator::Private
     TypeHash mSystemFolders;
 };
 
-LocalFoldersCollectionMigrator::LocalFoldersCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent )
+LocalFoldersCollectionMigrator::LocalFoldersCollectionMigrator( const AgentInstance &resource, QObject *parent )
   : AbstractCollectionMigrator( resource, parent ), d( new Private( this ) )
 {
 }
@@ -82,7 +82,7 @@ void LocalFoldersCollectionMigrator::setKMailConfig( KConfig *config )
   d->mSystemFolders.insert( name, SpecialMailCollections::Templates );
 }
 
-void LocalFoldersCollectionMigrator::migrateCollection( const Akonadi::Collection &collection, const QString &folderId )
+void LocalFoldersCollectionMigrator::migrateCollection( const Collection &collection, const QString &folderId )
 {
   Q_UNUSED( folderId );
   Q_ASSERT( kmailConfig() != 0 );

@@ -23,19 +23,19 @@
 
 #include <akonadi/collectionfetchscope.h>
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class CollectionFetchJob::Private
+class FileStore::CollectionFetchJob::Private
 {
   public:
-    explicit Private( CollectionFetchJob *parent )
-      : mType( CollectionFetchJob::Base ),
+    explicit Private( FileStore::CollectionFetchJob *parent )
+      : mType( FileStore::CollectionFetchJob::Base ),
         mParent( parent )
     {
     }
 
   public:
-    CollectionFetchJob::Type mType;
+    FileStore::CollectionFetchJob::Type mType;
     Collection mCollection;
 
     CollectionFetchScope mFetchScope;
@@ -43,11 +43,11 @@ class CollectionFetchJob::Private
     Collection::List mCollections;
 
   private:
-    CollectionFetchJob *mParent;
+    FileStore::CollectionFetchJob *mParent;
 };
 
-CollectionFetchJob::CollectionFetchJob( const Akonadi::Collection &collection, Type type, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::CollectionFetchJob::CollectionFetchJob( const Collection &collection, Type type, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   Q_ASSERT( session != 0 );
 
@@ -57,42 +57,42 @@ CollectionFetchJob::CollectionFetchJob( const Akonadi::Collection &collection, T
   session->addJob( this );
 }
 
-CollectionFetchJob::~CollectionFetchJob()
+FileStore::CollectionFetchJob::~CollectionFetchJob()
 {
   delete d;
 }
 
-CollectionFetchJob::Type CollectionFetchJob::type() const
+FileStore::CollectionFetchJob::Type FileStore::CollectionFetchJob::type() const
 {
   return d->mType;
 }
 
-Akonadi::Collection CollectionFetchJob::collection() const
+Collection FileStore::CollectionFetchJob::collection() const
 {
   return d->mCollection;
 }
 
-void CollectionFetchJob::setFetchScope( const Akonadi::CollectionFetchScope &fetchScope )
+void FileStore::CollectionFetchJob::setFetchScope( const CollectionFetchScope &fetchScope )
 {
   d->mFetchScope = fetchScope;
 }
 
-Akonadi::CollectionFetchScope &CollectionFetchJob::fetchScope()
+CollectionFetchScope &FileStore::CollectionFetchJob::fetchScope()
 {
   return d->mFetchScope;
 }
 
-Akonadi::Collection::List CollectionFetchJob::collections() const
+Collection::List FileStore::CollectionFetchJob::collections() const
 {
   return d->mCollections;
 }
 
-bool CollectionFetchJob::accept( Visitor *visitor )
+bool FileStore::CollectionFetchJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void CollectionFetchJob::handleCollectionsReceived( const Akonadi::Collection::List &collections )
+void FileStore::CollectionFetchJob::handleCollectionsReceived( const Collection::List &collections )
 {
   d->mCollections << collections;
 

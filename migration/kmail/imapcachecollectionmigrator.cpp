@@ -347,7 +347,7 @@ void ImapCacheCollectionMigrator::Private::itemDeletePhase2Result( KJob *job )
   processNextDeletedUid();
 }
 
-ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent )
+ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, QObject *parent )
   : AbstractCollectionMigrator( resource, parent ), d( new Private( this ) )
 {
   d->mHiddenSession = new Session( resource.identifier().toAscii() );
@@ -401,7 +401,7 @@ void ImapCacheCollectionMigrator::setCacheBasePath( const QString &basePath )
   d->mStore = 0;
 }
 
-void ImapCacheCollectionMigrator::migrateCollection( const Akonadi::Collection &collection, const QString &folderId )
+void ImapCacheCollectionMigrator::migrateCollection( const Collection &collection, const QString &folderId )
 {
   if ( migrationOptions() == ConfigOnly ) {
     collectionProcessed();

@@ -21,47 +21,47 @@
 
 #include "session_p.h"
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class ItemDeleteJob::Private
+class FileStore::ItemDeleteJob::Private
 {
   public:
-    explicit Private( ItemDeleteJob *parent )
+    explicit Private( FileStore::ItemDeleteJob *parent )
       : mParent( parent )
     {
     }
 
   public:
-    Akonadi::Item mItem;
+    Item mItem;
 
   private:
-    ItemDeleteJob *mParent;
+    FileStore::ItemDeleteJob *mParent;
 };
 
-ItemDeleteJob::ItemDeleteJob( const Akonadi::Item &item, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::ItemDeleteJob::ItemDeleteJob( const Item &item, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   d->mItem = item;
 
   session->addJob( this );
 }
 
-ItemDeleteJob::~ItemDeleteJob()
+FileStore::ItemDeleteJob::~ItemDeleteJob()
 {
   delete d;
 }
 
-Akonadi::Item ItemDeleteJob::item() const
+Item FileStore::ItemDeleteJob::item() const
 {
   return d->mItem;
 }
 
-bool ItemDeleteJob::accept( Visitor *visitor )
+bool FileStore::ItemDeleteJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void ItemDeleteJob::handleItemDeleted( const Akonadi::Item &item )
+void FileStore::ItemDeleteJob::handleItemDeleted( const Item &item )
 {
   d->mItem = item;
 }
