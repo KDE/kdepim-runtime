@@ -41,49 +41,48 @@
 #include <QFileInfo>
 
 using namespace Akonadi;
-using namespace Akonadi::FileStore;
 
-class JobProcessingAdaptor : public Job::Visitor
+class JobProcessingAdaptor : public FileStore::Job::Visitor
 {
   public:
-    explicit JobProcessingAdaptor( AbstractJobSession *session )
+    explicit JobProcessingAdaptor( FileStore::AbstractJobSession *session )
       : mSession( session )
     {
     }
 
   public: // Job::Visitor interface implementation
-    bool visit( Job *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::Job *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( CollectionCreateJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::CollectionCreateJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( CollectionDeleteJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::CollectionDeleteJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( CollectionFetchJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::CollectionFetchJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( CollectionModifyJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::CollectionModifyJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( CollectionMoveJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::CollectionMoveJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( ItemCreateJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::ItemCreateJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( ItemDeleteJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::ItemDeleteJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( ItemFetchJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::ItemFetchJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( ItemModifyJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::ItemModifyJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( ItemMoveJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::ItemMoveJob *job ) { Q_UNUSED( job ); return false ; }
 
-    bool visit( StoreCompactJob *job ) { Q_UNUSED( job ); return false ; }
+    bool visit( FileStore::StoreCompactJob *job ) { Q_UNUSED( job ); return false ; }
 
   protected:
-    AbstractJobSession *mSession;
+    FileStore::AbstractJobSession *mSession;
 };
 
 class TopLevelCollectionFetcher : public JobProcessingAdaptor
 {
   public:
-    explicit TopLevelCollectionFetcher( AbstractJobSession *session )
+    explicit TopLevelCollectionFetcher( FileStore::AbstractJobSession *session )
       : JobProcessingAdaptor( session )
     {
     }
@@ -96,9 +95,9 @@ class TopLevelCollectionFetcher : public JobProcessingAdaptor
   public:
     using JobProcessingAdaptor::visit;
 
-    bool visit( CollectionFetchJob *job )
+    bool visit( FileStore::CollectionFetchJob *job )
     {
-      if ( job->type() == CollectionFetchJob::Base &&
+      if ( job->type() == FileStore::CollectionFetchJob::Base &&
           job->collection().remoteId() == mTopLevelCollection.remoteId() ) {
         mSession->notifyCollectionsReceived( job, Collection::List() << mTopLevelCollection );
         return true;
@@ -114,7 +113,7 @@ class TopLevelCollectionFetcher : public JobProcessingAdaptor
 class CollectionsProcessedNotifier : public JobProcessingAdaptor
 {
   public:
-    explicit CollectionsProcessedNotifier( AbstractJobSession *session )
+    explicit CollectionsProcessedNotifier( FileStore::AbstractJobSession *session )
       : JobProcessingAdaptor( session )
     {
     }
@@ -127,7 +126,7 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
   public:
     using JobProcessingAdaptor::visit;
 
-    bool visit( CollectionCreateJob* job )
+    bool visit( FileStore::CollectionCreateJob* job )
     {
       Q_ASSERT( !mCollections.isEmpty() );
       if ( mCollections.count() > 1 ) {
@@ -139,7 +138,7 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
-    bool visit( CollectionDeleteJob* job )
+    bool visit( FileStore::CollectionDeleteJob* job )
     {
       Q_ASSERT( !mCollections.isEmpty() );
       if ( mCollections.count() > 1 ) {
@@ -151,13 +150,13 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
-    bool visit( CollectionFetchJob* job )
+    bool visit( FileStore::CollectionFetchJob* job )
     {
       mSession->notifyCollectionsReceived( job, mCollections );
       return true;
     }
 
-    bool visit( CollectionModifyJob* job )
+    bool visit( FileStore::CollectionModifyJob* job )
     {
       Q_ASSERT( !mCollections.isEmpty() );
       if ( mCollections.count() > 1 ) {
@@ -169,7 +168,7 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
-    bool visit( CollectionMoveJob* job )
+    bool visit( FileStore::CollectionMoveJob* job )
     {
       Q_ASSERT( !mCollections.isEmpty() );
       if ( mCollections.count() > 1 ) {
@@ -181,7 +180,7 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
-    bool visit( StoreCompactJob* job )
+    bool visit( FileStore::StoreCompactJob* job )
     {
       mSession->notifyCollectionsChanged( job, mCollections );
       return true;
@@ -194,7 +193,7 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
 class ItemsProcessedNotifier : public JobProcessingAdaptor
 {
   public:
-    explicit ItemsProcessedNotifier( AbstractJobSession *session )
+    explicit ItemsProcessedNotifier( FileStore::AbstractJobSession *session )
       : JobProcessingAdaptor( session )
     {
     }
@@ -207,7 +206,7 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
   public:
     using JobProcessingAdaptor::visit;
 
-    bool visit( ItemCreateJob* job )
+    bool visit( FileStore::ItemCreateJob* job )
     {
       Q_ASSERT( !mItems.isEmpty() );
       if ( mItems.count() > 1 ) {
@@ -219,13 +218,13 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
-    bool visit( ItemFetchJob* job )
+    bool visit( FileStore::ItemFetchJob* job )
     {
       mSession->notifyItemsReceived( job, mItems );
       return true;
     }
 
-    bool visit( ItemModifyJob* job )
+    bool visit( FileStore::ItemModifyJob* job )
     {
       Q_ASSERT( !mItems.isEmpty() );
       if ( mItems.count() > 1 ) {
@@ -237,7 +236,7 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
-    bool visit( ItemMoveJob* job )
+    bool visit( FileStore::ItemMoveJob* job )
     {
       Q_ASSERT( !mItems.isEmpty() );
       if ( mItems.count() > 1 ) {
@@ -249,7 +248,7 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
       return true;
     }
 
-    bool visit( StoreCompactJob* job )
+    bool visit( FileStore::StoreCompactJob* job )
     {
       mSession->notifyItemsChanged( job, mItems );
       return true;
@@ -259,13 +258,13 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
     Item::List mItems;
 };
 
-class AbstractLocalStore::Private
+class FileStore::AbstractLocalStore::Private
 {
   AbstractLocalStore *const q;
 
   public:
-    explicit Private( AbstractLocalStore *parent )
-      : q( parent ), mSession( new FiFoQueueJobSession( q ) ), mCurrentJob( 0 ),
+    explicit Private( FileStore::AbstractLocalStore *parent )
+      : q( parent ), mSession( new FileStore::FiFoQueueJobSession( q ) ), mCurrentJob( 0 ),
         mTopLevelCollectionFetcher( mSession ), mCollectionsProcessedNotifier( mSession ),
         mItemsProcessedNotifier( mSession )
     {
@@ -275,20 +274,20 @@ class AbstractLocalStore::Private
     QFileInfo mPathFileInfo;
     Collection mTopLevelCollection;
 
-    AbstractJobSession *mSession;
-    Job *mCurrentJob;
+    FileStore::AbstractJobSession *mSession;
+    FileStore::Job *mCurrentJob;
 
     TopLevelCollectionFetcher mTopLevelCollectionFetcher;
     CollectionsProcessedNotifier mCollectionsProcessedNotifier;
     ItemsProcessedNotifier mItemsProcessedNotifier;
 
   public:
-    void processJobs( const QList<Job*> &jobs );
+    void processJobs( const QList<FileStore::Job*> &jobs );
 };
 
-void AbstractLocalStore::Private::processJobs( const QList<Job*> &jobs )
+void FileStore::AbstractLocalStore::Private::processJobs( const QList<FileStore::Job*> &jobs )
 {
-  Q_FOREACH( Job *job, jobs ) {
+  Q_FOREACH( FileStore::Job *job, jobs ) {
     mCurrentJob = job;
 
     if ( job->error() == 0 ) {
@@ -301,18 +300,18 @@ void AbstractLocalStore::Private::processJobs( const QList<Job*> &jobs )
   }
 }
 
-AbstractLocalStore::AbstractLocalStore()
+FileStore::AbstractLocalStore::AbstractLocalStore()
   : QObject(), d( new Private( this ) )
 {
-  connect( d->mSession, SIGNAL( jobsReady( QList<Job*> ) ), this, SLOT( processJobs( QList<Job*> ) ) );
+  connect( d->mSession, SIGNAL( jobsReady( QList<FileStore::Job*> ) ), this, SLOT( processJobs( QList<FileStore::Job*> ) ) );
 }
 
-AbstractLocalStore::~AbstractLocalStore()
+FileStore::AbstractLocalStore::~AbstractLocalStore()
 {
   delete d;
 }
 
-void AbstractLocalStore::setPath( const QString &path )
+void FileStore::AbstractLocalStore::setPath( const QString &path )
 {
   QFileInfo pathFileInfo( path );
   if ( pathFileInfo.fileName().isEmpty() ) {
@@ -338,35 +337,35 @@ void AbstractLocalStore::setPath( const QString &path )
   setTopLevelCollection( collection );
 }
 
-QString AbstractLocalStore::path() const
+QString FileStore::AbstractLocalStore::path() const
 {
   return d->mPathFileInfo.absoluteFilePath();
 }
 
-Collection AbstractLocalStore::topLevelCollection() const
+Collection FileStore::AbstractLocalStore::topLevelCollection() const
 {
   return d->mTopLevelCollection;
 }
 
-CollectionCreateJob *AbstractLocalStore::createCollection( const Collection &collection, const Collection &targetParent )
+FileStore::CollectionCreateJob *FileStore::AbstractLocalStore::createCollection( const Collection &collection, const Collection &targetParent )
 {
-  CollectionCreateJob *job = new CollectionCreateJob( collection, targetParent, d->mSession );
+  FileStore::CollectionCreateJob *job = new FileStore::CollectionCreateJob( collection, targetParent, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << collection << targetParent;
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( targetParent.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
     kError() << message;
     kError() << collection << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( targetParent.rights() & Collection::CanCreateCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder creation in folder %1", targetParent.name() );
     kError() << message;
     kError() << collection << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -379,26 +378,26 @@ CollectionCreateJob *AbstractLocalStore::createCollection( const Collection &col
   return job;
 }
 
-CollectionDeleteJob *AbstractLocalStore::deleteCollection( const Collection &collection )
+FileStore::CollectionDeleteJob *FileStore::AbstractLocalStore::deleteCollection( const Collection &collection )
 {
-  CollectionDeleteJob *job = new CollectionDeleteJob( collection, d->mSession );
+  FileStore::CollectionDeleteJob *job = new FileStore::CollectionDeleteJob( collection, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << collection;
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( collection.remoteId().isEmpty() ||
               collection.parentCollection().remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
     kError() << message;
     kError() << collection;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( collection.parentCollection().rights() & Collection::CanDeleteCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.parentCollection().name() );
     kError() << message;
     kError() << collection;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -411,21 +410,20 @@ CollectionDeleteJob *AbstractLocalStore::deleteCollection( const Collection &col
   return job;
 }
 
-CollectionFetchJob *AbstractLocalStore::fetchCollections( const Collection &collection,
-                                                          CollectionFetchJob::Type type ) const
+FileStore::CollectionFetchJob *FileStore::AbstractLocalStore::fetchCollections( const Collection &collection, FileStore::CollectionFetchJob::Type type ) const
 {
-  CollectionFetchJob *job = new CollectionFetchJob( collection, type, d->mSession );
+  FileStore::CollectionFetchJob *job = new FileStore::CollectionFetchJob( collection, type, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << collection << "FetchType=" << type;
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( collection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
     kError() << message;
     kError() << collection << "FetchType=" << type;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -438,26 +436,26 @@ CollectionFetchJob *AbstractLocalStore::fetchCollections( const Collection &coll
   return job;
 }
 
-CollectionModifyJob *AbstractLocalStore::modifyCollection( const Collection &collection )
+FileStore::CollectionModifyJob *FileStore::AbstractLocalStore::modifyCollection( const Collection &collection )
 {
-  CollectionModifyJob *job = new CollectionModifyJob( collection, d->mSession );
+  FileStore::CollectionModifyJob *job = new FileStore::CollectionModifyJob( collection, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << collection;
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( collection.remoteId().isEmpty() ||
               collection.parentCollection().remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
     kError() << message;
     kError() << collection;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( collection.parentCollection().rights() & Collection::CanChangeCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder modification in folder %1", collection.parentCollection().name() );
     kError() << message;
     kError() << collection;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -470,32 +468,32 @@ CollectionModifyJob *AbstractLocalStore::modifyCollection( const Collection &col
   return job;
 }
 
-CollectionMoveJob *AbstractLocalStore::moveCollection( const Collection &collection, const Collection &targetParent )
+FileStore::CollectionMoveJob *FileStore::AbstractLocalStore::moveCollection( const Collection &collection, const Collection &targetParent )
 {
-  CollectionMoveJob *job = new CollectionMoveJob( collection, targetParent, d->mSession );
+  FileStore::CollectionMoveJob *job = new FileStore::CollectionMoveJob( collection, targetParent, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << collection << targetParent;
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( collection.remoteId().isEmpty() ||
               collection.parentCollection().remoteId().isEmpty() ||
               targetParent.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
     kError() << message;
     kError() << collection << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( targetParent.rights() & Collection::CanCreateCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder creation in folder %1", targetParent.name() );
     kError() << message;
     kError() << collection << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( collection.parentCollection().rights() & Collection::CanDeleteCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.parentCollection().name() );
     kError() << message;
     kError() << collection << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -508,20 +506,20 @@ CollectionMoveJob *AbstractLocalStore::moveCollection( const Collection &collect
   return job;
 }
 
-ItemFetchJob *AbstractLocalStore::fetchItems( const Collection &collection ) const
+FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItems( const Collection &collection ) const
 {
-  ItemFetchJob *job = new ItemFetchJob( collection, d->mSession );
+  FileStore::ItemFetchJob *job = new FileStore::ItemFetchJob( collection, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << collection;
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( collection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
     kError() << message;
     kError() << collection;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -534,22 +532,22 @@ ItemFetchJob *AbstractLocalStore::fetchItems( const Collection &collection ) con
   return job;
 }
 
-ItemFetchJob *AbstractLocalStore::fetchItem( const Item &item ) const
+FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItem( const Item &item ) const
 {
-  ItemFetchJob *job = new ItemFetchJob( item, d->mSession );
+  FileStore::ItemFetchJob *job = new FileStore::ItemFetchJob( item, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( item.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given item identifier is empty" );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -562,9 +560,9 @@ ItemFetchJob *AbstractLocalStore::fetchItem( const Item &item ) const
   return job;
 }
 
-ItemCreateJob *AbstractLocalStore::createItem( const Item &item, const Collection &collection )
+FileStore::ItemCreateJob *FileStore::AbstractLocalStore::createItem( const Item &item, const Collection &collection )
 {
-  ItemCreateJob *job = new ItemCreateJob( item, collection, d->mSession );
+  FileStore::ItemCreateJob *job = new FileStore::ItemCreateJob( item, collection, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
@@ -572,21 +570,21 @@ ItemCreateJob *AbstractLocalStore::createItem( const Item &item, const Collectio
     kError() << collection
              << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ")";
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( collection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
     kError() << message;
     kError() << collection
              << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ")";
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( collection.rights() & Collection::CanCreateItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item creation in folder %1", collection.name() );
     kError() << message;
     kError() << collection
              << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ")";
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -599,28 +597,28 @@ ItemCreateJob *AbstractLocalStore::createItem( const Item &item, const Collectio
   return job;
 }
 
-ItemModifyJob *AbstractLocalStore::modifyItem( const Item &item )
+FileStore::ItemModifyJob *FileStore::AbstractLocalStore::modifyItem( const Item &item )
 {
-  ItemModifyJob *job = new ItemModifyJob( item, d->mSession );
+  FileStore::ItemModifyJob *job = new FileStore::ItemModifyJob( item, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( item.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given item identifier is empty" );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( item.parentCollection().rights() & Collection::CanChangeItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item modification in folder %1", item.parentCollection().name() );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -633,28 +631,28 @@ ItemModifyJob *AbstractLocalStore::modifyItem( const Item &item )
   return job;
 }
 
-ItemDeleteJob *AbstractLocalStore::deleteItem( const Item &item )
+FileStore::ItemDeleteJob *FileStore::AbstractLocalStore::deleteItem( const Item &item )
 {
-  ItemDeleteJob *job = new ItemDeleteJob( item, d->mSession );
+  FileStore::ItemDeleteJob *job = new FileStore::ItemDeleteJob( item, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( item.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given item identifier is empty" );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( item.parentCollection().rights() & Collection::CanDeleteItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item deletion in folder %1", item.parentCollection().name() );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -667,9 +665,9 @@ ItemDeleteJob *AbstractLocalStore::deleteItem( const Item &item )
   return job;
 }
 
-ItemMoveJob *AbstractLocalStore::moveItem( const Item &item, const Collection &targetParent )
+FileStore::ItemMoveJob *FileStore::AbstractLocalStore::moveItem( const Item &item, const Collection &targetParent )
 {
-  ItemMoveJob *job = new ItemMoveJob( item, targetParent, d->mSession );
+  FileStore::ItemMoveJob *job = new FileStore::ItemMoveJob( item, targetParent, d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
@@ -677,7 +675,7 @@ ItemMoveJob *AbstractLocalStore::moveItem( const Item &item, const Collection &t
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")"
              << targetParent;
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   } else if ( item.parentCollection().remoteId().isEmpty() ||
               targetParent.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
@@ -685,28 +683,28 @@ ItemMoveJob *AbstractLocalStore::moveItem( const Item &item, const Collection &t
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")"
              << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( targetParent.rights() & Collection::CanCreateItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item creation in folder %1", targetParent.name() );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")"
              << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( item.parentCollection().rights() & Collection::CanDeleteItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item deletion in folder %1", item.parentCollection().name() );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")"
              << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( item.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given item identifier is empty" );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")"
              << targetParent;
-    d->mSession->setError( job, Job::InvalidJobContext, message );
+    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -719,14 +717,14 @@ ItemMoveJob *AbstractLocalStore::moveItem( const Item &item, const Collection &t
   return job;
 }
 
-StoreCompactJob *AbstractLocalStore::compactStore()
+FileStore::StoreCompactJob *FileStore::AbstractLocalStore::compactStore()
 {
-  StoreCompactJob *job = new StoreCompactJob( d->mSession );
+  FileStore::StoreCompactJob *job = new FileStore::StoreCompactJob( d->mSession );
 
   if ( d->mTopLevelCollection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Configured storage location is empty" );
     kError() << message;
-    d->mSession->setError( job, Job::InvalidStoreState, message );
+    d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
   }
 
   int errorCode = 0;
@@ -739,19 +737,19 @@ StoreCompactJob *AbstractLocalStore::compactStore()
   return job;
 }
 
-Job *AbstractLocalStore::currentJob() const
+FileStore::Job *FileStore::AbstractLocalStore::currentJob() const
 {
   return d->mCurrentJob;
 }
 
-void AbstractLocalStore::notifyError( int errorCode, const QString &errorText ) const
+void FileStore::AbstractLocalStore::notifyError( int errorCode, const QString &errorText ) const
 {
   Q_ASSERT( d->mCurrentJob != 0);
 
   d->mSession->setError( d->mCurrentJob, errorCode, errorText );
 }
 
-void AbstractLocalStore::notifyCollectionsProcessed( const Collection::List &collections ) const
+void FileStore::AbstractLocalStore::notifyCollectionsProcessed( const Collection::List &collections ) const
 {
   Q_ASSERT( d->mCurrentJob != 0);
 
@@ -759,7 +757,7 @@ void AbstractLocalStore::notifyCollectionsProcessed( const Collection::List &col
   d->mCurrentJob->accept( &( d->mCollectionsProcessedNotifier ) );
 }
 
-void AbstractLocalStore::notifyItemsProcessed( const Item::List &items ) const
+void FileStore::AbstractLocalStore::notifyItemsProcessed( const Item::List &items ) const
 {
   Q_ASSERT( d->mCurrentJob != 0);
 
@@ -767,83 +765,83 @@ void AbstractLocalStore::notifyItemsProcessed( const Item::List &items ) const
   d->mCurrentJob->accept( &( d->mItemsProcessedNotifier ) );
 }
 
-void AbstractLocalStore::setTopLevelCollection( const Collection &collection )
+void FileStore::AbstractLocalStore::setTopLevelCollection( const Collection &collection )
 {
   d->mTopLevelCollection = collection;
   d->mTopLevelCollectionFetcher.setTopLevelCollection( collection );
 }
 
-void AbstractLocalStore::checkCollectionCreate( CollectionCreateJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkCollectionCreate( FileStore::CollectionCreateJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkCollectionDelete( CollectionDeleteJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkCollectionDelete( FileStore::CollectionDeleteJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkCollectionFetch( CollectionFetchJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkCollectionFetch( FileStore::CollectionFetchJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkCollectionModify( CollectionModifyJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkCollectionModify( FileStore::CollectionModifyJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkCollectionMove( CollectionMoveJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkCollectionMove( FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkItemCreate( ItemCreateJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkItemCreate( FileStore::ItemCreateJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkItemDelete( ItemDeleteJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkItemDelete( FileStore::ItemDeleteJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkItemFetch( ItemFetchJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkItemFetch( FileStore::ItemFetchJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkItemModify( ItemModifyJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkItemModify( FileStore::ItemModifyJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkItemMove( ItemMoveJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkItemMove( FileStore::ItemMoveJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
 }
 
-void AbstractLocalStore::checkStoreCompact( StoreCompactJob *job, int &errorCode, QString &errorText ) const
+void FileStore::AbstractLocalStore::checkStoreCompact( FileStore::StoreCompactJob *job, int &errorCode, QString &errorText ) const
 {
   Q_UNUSED( job );
   Q_UNUSED( errorCode );

@@ -277,7 +277,7 @@ void AbstractCollectionMigrator::Private::recheckIdleResource()
   }
 }
 
-void AbstractCollectionMigrator::Private::resourceStatusChanged( const Akonadi::AgentInstance &instance )
+void AbstractCollectionMigrator::Private::resourceStatusChanged( const AgentInstance &instance )
 {
   if ( instance.identifier() != mResource.identifier() ) {
     return;
