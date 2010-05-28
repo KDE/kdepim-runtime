@@ -79,8 +79,12 @@ MixedMaildirResource::MixedMaildirResource( const QString &id )
   setHierarchicalRemoteIdentifiersEnabled( true );
 
   if ( ensureSaneConfiguration() ) {
+    const bool changeName = name().isEmpty() || name() == identifier() ||
+                            name() == mStore->topLevelCollection().name();
     mStore->setPath( Settings::self()->path() );
-    setName( mStore->topLevelCollection().name() );
+    if ( changeName ) {
+      setName( mStore->topLevelCollection().name() );
+    }
   }
 }
 
@@ -102,9 +106,14 @@ void MixedMaildirResource::configure( WId windowId )
   if ( windowId ) {
     KWindowSystem::setMainWindow( &dlg, windowId );
   }
+
   if ( dlg.exec() ) {
+    const bool changeName = name().isEmpty() || name() == identifier() ||
+                            name() == mStore->topLevelCollection().name();
     mStore->setPath( Settings::self()->path() );
-    setName( mStore->topLevelCollection().name() );
+    if ( changeName ) {
+      setName( mStore->topLevelCollection().name() );
+    }
     emit configurationDialogAccepted();
   } else {
     emit configurationDialogRejected();
@@ -369,8 +378,13 @@ void MixedMaildirResource::retrieveCollectionsResult( KJob *job )
   FileStore::CollectionFetchJob *fetchJob = qobject_cast<FileStore::CollectionFetchJob*>( job );
   Q_ASSERT( fetchJob != 0 );
 
+  Collection topLevelCollection = mStore->topLevelCollection();
+  if ( !name().isEmpty() && name() != identifier() ) {
+    topLevelCollection.setName( name() );
+  }
+
   Collection::List collections;
-  collections << mStore->topLevelCollection();
+  collections << topLevelCollection;
   collections << fetchJob->collections();
   collectionsRetrieved( collections );
 }

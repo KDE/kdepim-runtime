@@ -1,2 +1,2 @@
 #!/bin/sh
-$XGETTEXT *.cpp -o $podir/kjotsmigrator.pot
+$XGETTEXT ../*.cpp *.cpp -o $podir/kjotsmigrator.pot

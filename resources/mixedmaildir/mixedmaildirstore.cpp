@@ -215,7 +215,8 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
         return MaildirFolder;
       }
 
-      const QString subDirPath = Maildir::subDirPathForFolderPath( path );
+      const QString subDirPath =
+        (type == TopLevelFolder ? path : Maildir::subDirPathForFolderPath( path ) );
       QFileInfo fileInfo( QDir( subDirPath ), col.remoteId() );
       if ( fileInfo.isFile() ) {
         path = fileInfo.absoluteFilePath();
@@ -412,6 +413,7 @@ void MixedMaildirStore::Private::listCollection( Job *job, const MBoxPtr &mbox, 
 {
   const IndexReaderPtr indexReaderPtr = readMBoxIndex( mbox );
 
+  QHash<QString, QVariant> uidHash;
   QHash<QString, QVariant> tagListHash;
 
   const QList<MsgEntryInfo> entryList = mbox->entryList();
@@ -422,13 +424,20 @@ void MixedMaildirStore::Private::listCollection( Job *job, const MBoxPtr &mbox, 
     item.setParentCollection( collection );
 
     if ( indexReaderPtr != 0 ) {
+      const quint64 indexOffset = entry.offset + entry.separatorSize;
       MessageStatus status;
-      if ( indexReaderPtr->statusByOffset( entry.offset + entry.separatorSize, status ) ) {
+      if ( indexReaderPtr->statusByOffset( indexOffset, status ) ) {
         item.setFlags( status.getStatusFlags() );
       }
 
+      quint64 uid = 0;
+      if ( indexReaderPtr->imapUidByOffset( indexOffset, uid ) ) {
+        kDebug() << "item" << item.remoteId() << "has UID" << uid;
+        uidHash.insert( item.remoteId(), QString::number( uid ) );
+      }
+
       QStringList tagList;
-      if ( indexReaderPtr->tagListByOffset( entry.offset + entry.separatorSize, tagList ) ) {
+      if ( indexReaderPtr->tagListByOffset( indexOffset, tagList ) ) {
         if ( !tagList.isEmpty() ) {
           kDebug() << "item" << item.remoteId() << "has"
                    << tagList.count() << "tags:" << tagList;
@@ -441,7 +450,10 @@ void MixedMaildirStore::Private::listCollection( Job *job, const MBoxPtr &mbox, 
   }
 
   if ( indexReaderPtr != 0 ) {
-    QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
+    QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
+    job->setProperty( "remoteIdToIndexUid", var );
+
+    var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
     job->setProperty( "remoteIdToTagList", var );
   }
 }

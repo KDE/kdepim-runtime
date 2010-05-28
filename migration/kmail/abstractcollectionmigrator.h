@@ -44,7 +44,7 @@ class AbstractCollectionMigrator : public QObject
     QString topLevelFolder() const;
 
     virtual void setKMailConfig( KConfig *config );
-
+    virtual void setEmailIdentityConfig( KConfig *config );
   Q_SIGNALS:
     void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
 
@@ -59,6 +59,7 @@ class AbstractCollectionMigrator : public QObject
 
     const Akonadi::AgentInstance resource() const;
     KConfig *kmailConfig() const;
+    KConfig *emailIdentityConfig() const;
 
   private:
     class Private;

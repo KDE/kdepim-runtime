@@ -59,7 +59,7 @@ class AbstractCollectionMigrator::Private
     };
 
     Private( AbstractCollectionMigrator *parent, const AgentInstance &resource )
-      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mMonitor( 0 ),
+      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mMonitor( 0 ),
         mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle )
     {
     }
@@ -71,6 +71,7 @@ class AbstractCollectionMigrator::Private
     Status mStatus;
     QString mTopLevelFolder;
     KConfig *mKMailConfig;
+    KConfig *mEmailIdentityConfig;
 
     Monitor *mMonitor;
 
@@ -115,6 +116,26 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   oldGroup.copyTo( &newGroup );
   oldGroup.deleteGroup();
 
+
+  // check emailidentify
+  const QStringList identityGroups = mEmailIdentityConfig->groupList().filter( QRegExp( "Identity #\\d+" ) );
+  //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "identityGroups=" << identityGroups;
+  Q_FOREACH( const QString &groupName, identityGroups ) {
+    KConfigGroup identityGroup( mEmailIdentityConfig, groupName );
+    if ( identityGroup.readEntry( "Drafts" ) == mCurrentFolderId )
+      identityGroup.writeEntry( "Drafts", mCurrentCollection.id() );
+    if ( identityGroup.readEntry( "Templates" ) == mCurrentFolderId )
+      identityGroup.writeEntry( "Templates", mCurrentCollection.id() );
+    if ( identityGroup.readEntry( "Fcc" ) == mCurrentFolderId )
+      identityGroup.writeEntry( "Fcc", mCurrentCollection.id() );
+
+  }
+
+
+  // Check General/startupFolder
+  KConfigGroup general( mKMailConfig, "General" );
+  if ( general.readEntry( "startupFolder" ) == mCurrentFolderId )
+    general.writeEntry( "startupFolder", mCurrentCollection.id() );
 
   // check all expire folder
   const QStringList folderGroups = mKMailConfig->groupList().filter( "Folder-" );
@@ -369,6 +390,11 @@ void AbstractCollectionMigrator::setKMailConfig( KConfig *config )
   d->mKMailConfig = config;
 }
 
+void AbstractCollectionMigrator::setEmailIdentityConfig( KConfig *config )
+{
+  d->mEmailIdentityConfig = config;
+}
+
 void AbstractCollectionMigrator::collectionProcessed()
 {
   d->migrateConfig();
@@ -404,6 +430,11 @@ const AgentInstance AbstractCollectionMigrator::resource() const
 KConfig *AbstractCollectionMigrator::kmailConfig() const
 {
   return d->mKMailConfig;
+}
+
+KConfig *AbstractCollectionMigrator::emailIdentityConfig() const
+{
+  return d->mEmailIdentityConfig;
 }
 
 #include "abstractcollectionmigrator.moc"

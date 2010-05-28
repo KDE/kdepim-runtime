@@ -18,12 +18,12 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef DIMAPCACHECOLLECTIONMIGRATOR_H
-#define DIMAPCACHECOLLECTIONMIGRATOR_H
+#ifndef IMAPCACHECOLLECTIONMIGRATOR_H
+#define IMAPCACHECOLLECTIONMIGRATOR_H
 
 #include "abstractcollectionmigrator.h"
 
-class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
+class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 {
   Q_OBJECT
 
@@ -38,13 +38,15 @@ class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     Q_DECLARE_FLAGS( MigrationOptions, MigrationOption )
 
-    explicit DImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    explicit ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
 
-    ~DImapCacheCollectionMigrator();
+    ~ImapCacheCollectionMigrator();
 
     void setMigrationOptions( const MigrationOptions &options );
 
     MigrationOptions migrationOptions() const;
+
+    void setCacheBasePath( const QString &basePath );
 
   protected:
     void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
@@ -62,7 +64,7 @@ class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
     Q_PRIVATE_SLOT( d, void itemDeletePhase2Result( KJob* ) )
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( DImapCacheCollectionMigrator::MigrationOptions )
+Q_DECLARE_OPERATORS_FOR_FLAGS( ImapCacheCollectionMigrator::MigrationOptions )
 
 #endif
 
