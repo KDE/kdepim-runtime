@@ -30,6 +30,7 @@
 #include <nepomuk/resourcemanager.h>
 #include <nepomuk/variant.h>
 #include <kurl.h>
+#include <KLocale>
 
 #include <Soprano/Model>
 #include <Soprano/NodeIterator>
@@ -59,6 +60,7 @@ namespace Akonadi {
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
   : NepomukFeederAgent<NepomukFast::Calendar>( id )
 {
+  KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" );
   addSupportedMimeType( Akonadi::IncidenceMimeTypeVisitor::eventMimeType() );
   addSupportedMimeType( Akonadi::IncidenceMimeTypeVisitor::todoMimeType() );
   addSupportedMimeType( Akonadi::IncidenceMimeTypeVisitor::journalMimeType() );
