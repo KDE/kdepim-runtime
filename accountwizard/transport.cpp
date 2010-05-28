@@ -95,8 +95,10 @@ void Transport::create()
     mt->setUserName( m_user );
     mt->setRequiresAuthentication( true );
   }
-  if ( !m_password.isEmpty() )
+  if ( !m_password.isEmpty() ) {
+    mt->setStorePassword( true );
     mt->setPassword( m_password );
+  }
   mt->setEncryption( m_encr );
   mt->setAuthenticationType( m_auth );
   m_transportId = mt->id();
