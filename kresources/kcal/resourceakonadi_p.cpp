@@ -250,11 +250,13 @@ void ResourceAkonadi::Private::calendarIncidenceDeleted( Incidence *incidence )
   removeLocalItem( incidence->uid() );
 }
 
-void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResource )
+void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResourceBase )
 {
-  kDebug( 5800 ) << "id=" << subResource->subResourceIdentifier();
+  kDebug( 5800 ) << "id=" << subResourceBase->subResourceIdentifier();
 
-  SharedResourcePrivate<SubResource>::subResourceAdded( subResource );
+  SharedResourcePrivate<SubResource>::subResourceAdded( subResourceBase );
+
+  SubResource *subResource = qobject_cast<SubResource*>( subResourceBase );
 
   connect( subResource, SIGNAL( incidenceAdded( IncidencePtr, QString ) ),
            this, SLOT( incidenceAdded( IncidencePtr, QString ) ) );
@@ -263,14 +265,16 @@ void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResource )
   connect( subResource, SIGNAL( incidenceRemoved( QString, QString ) ),
            this, SLOT( incidenceRemoved( QString, QString ) ) );
 
-  emit mParent->signalSubresourceAdded( mParent, QLatin1String( "calendar" ), subResource->subResourceIdentifier(), subResource->label() );
+  emit mParent->signalSubresourceAdded( mParent, QLatin1String( "calendar" ), subResourceBase->subResourceIdentifier(), subResourceBase->label() );
 }
 
-void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource )
+void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResourceBase )
 {
-  kDebug( 5800 ) << "id=" << subResource->subResourceIdentifier();
+  kDebug( 5800 ) << "id=" << subResourceBase->subResourceIdentifier();
 
-  SharedResourcePrivate<SubResource>::subResourceRemoved( subResource );
+  SharedResourcePrivate<SubResource>::subResourceRemoved( subResourceBase );
+
+  SubResource *subResource = qobject_cast<SubResource*>( subResourceBase );
 
   disconnect( subResource, SIGNAL( incidenceAdded( IncidencePtr, QString ) ),
               this, SLOT( incidenceAdded( IncidencePtr, QString ) ) );
@@ -284,7 +288,7 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource 
     BoolGuard internalModification( mInternalCalendarModification, true );
     QMap<QString, QString>::iterator it = mUidToResourceMap.begin();
     while ( it != mUidToResourceMap.end() ) {
-      if ( it.value() == subResource->subResourceIdentifier() ) {
+      if ( it.value() == subResourceBase->subResourceIdentifier() ) {
         const QString uid = it.key();
 
         mChanges.remove( uid );
@@ -302,7 +306,7 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResource 
     }
   }
 
-  emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "calendar" ), subResource->subResourceIdentifier() );
+  emit mParent->signalSubresourceRemoved( mParent, QLatin1String( "calendar" ), subResourceBase->subResourceIdentifier() );
 
   emit mParent->resourceChanged( mParent );
 }
