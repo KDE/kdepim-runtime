@@ -22,9 +22,11 @@
 
 #include "session_p.h"
 
+using namespace Akonadi;
+
 using namespace Akonadi::FileStore;
 
-class CollectionCreateJob::CollectionCreateJob::Private
+class CollectionCreateJob::Private
 {
   public:
     explicit Private( CollectionCreateJob *parent )

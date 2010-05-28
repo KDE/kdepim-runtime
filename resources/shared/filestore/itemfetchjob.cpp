@@ -25,7 +25,7 @@
 
 using namespace Akonadi::FileStore;
 
-class ItemFetchJob::ItemFetchJob::Private
+class ItemFetchJob::Private
 {
   public:
     explicit Private( ItemFetchJob *parent )
@@ -36,7 +36,7 @@ class ItemFetchJob::ItemFetchJob::Private
   public:
     ItemFetchScope mFetchScope;
 
-    Item::List mItems;
+    Akonadi::Item::List mItems;
 
     Akonadi::Collection mCollection;
     Akonadi::Item mItem;

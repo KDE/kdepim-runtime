@@ -105,7 +105,7 @@ class AbstractEnqueueVisitor : public Job::Visitor
     virtual void enqueue( Job *job, const char* className ) = 0;
 };
 
-class FiFoQueueJobSession::FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
+class FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
 {
   public:
     explicit Private( FiFoQueueJobSession *parent )

@@ -24,7 +24,7 @@
 
 using namespace Akonadi::FileStore;
 
-class CollectionModifyJob::CollectionModifyJob::Private
+class CollectionModifyJob::Private
 {
   public:
     explicit Private( CollectionModifyJob *parent )
@@ -39,7 +39,7 @@ class CollectionModifyJob::CollectionModifyJob::Private
     CollectionModifyJob *mParent;
 };
 
-CollectionModifyJob::CollectionModifyJob( const Collection &collection, AbstractJobSession *session )
+CollectionModifyJob::CollectionModifyJob( const Akonadi::Collection &collection, AbstractJobSession *session )
   : Job( session ), d( new Private( this ) )
 {
   Q_ASSERT( session != 0 );
@@ -64,7 +64,7 @@ bool CollectionModifyJob::accept( Visitor *visitor )
   return visitor->visit( this );
 }
 
-void CollectionModifyJob::handleCollectionModified( const Collection &collection )
+void CollectionModifyJob::handleCollectionModified( const Akonadi::Collection &collection )
 {
   d->mCollection = collection;
 }

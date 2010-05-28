@@ -23,7 +23,7 @@
 
 using namespace Akonadi::FileStore;
 
-class ItemModifyJob::ItemModifyJob::Private
+class ItemModifyJob::Private
 {
   public:
     explicit Private( ItemModifyJob *parent )

@@ -24,7 +24,7 @@
 
 using namespace Akonadi::FileStore;
 
-class ItemMoveJob::ItemMoveJob::Private
+class ItemMoveJob::Private
 {
   public:
     explicit Private( ItemMoveJob *parent )
@@ -40,7 +40,7 @@ class ItemMoveJob::ItemMoveJob::Private
     ItemMoveJob *mParent;
 };
 
-ItemMoveJob::ItemMoveJob( const Item &item, const Akonadi::Collection &targetParent, AbstractJobSession *session )
+ItemMoveJob::ItemMoveJob( const Akonadi::Item &item, const Akonadi::Collection &targetParent, AbstractJobSession *session )
   : Job( session ), d( new Private( this ) )
 {
   d->mItem = item;
@@ -69,7 +69,7 @@ bool ItemMoveJob::accept( Visitor *visitor )
   return visitor->visit( this );
 }
 
-void ItemMoveJob::handleItemMoved( const Item &item )
+void ItemMoveJob::handleItemMoved( const Akonadi::Item &item )
 {
   d->mItem = item;
 }

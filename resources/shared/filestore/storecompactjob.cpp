@@ -34,8 +34,8 @@ class StoreCompactJob::Private
   public:
     StoreCompactJob *mParent;
 
-    Collection::List mCollections;
-    Item::List mItems;
+    Akonadi::Collection::List mCollections;
+    Akonadi::Item::List mItems;
 };
 
 StoreCompactJob::StoreCompactJob( AbstractJobSession *session )
@@ -64,13 +64,13 @@ Akonadi::Collection::List StoreCompactJob::changedCollections() const
   return d->mCollections;
 }
 
-void StoreCompactJob::handleCollectionsChanged( const Collection::List &collections )
+void StoreCompactJob::handleCollectionsChanged( const Akonadi::Collection::List &collections )
 {
   d->mCollections << collections;
   emit collectionsChanged( collections );
 }
 
-void StoreCompactJob::handleItemsChanged( const Item::List &items )
+void StoreCompactJob::handleItemsChanged( const Akonadi::Item::List &items )
 {
   d->mItems << items;
   emit itemsChanged( items );

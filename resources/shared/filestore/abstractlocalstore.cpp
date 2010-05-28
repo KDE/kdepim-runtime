@@ -40,7 +40,6 @@
 
 #include <QFileInfo>
 
-using namespace Akonadi;
 using namespace Akonadi::FileStore;
 
 class JobProcessingAdaptor : public Job::Visitor
@@ -88,7 +87,7 @@ class TopLevelCollectionFetcher : public JobProcessingAdaptor
     {
     }
 
-    void setTopLevelCollection( const Collection &collection )
+    void setTopLevelCollection( const Akonadi::Collection &collection )
     {
       mTopLevelCollection = collection;
     }
@@ -100,7 +99,7 @@ class TopLevelCollectionFetcher : public JobProcessingAdaptor
     {
       if ( job->type() == CollectionFetchJob::Base &&
           job->collection().remoteId() == mTopLevelCollection.remoteId() ) {
-        mSession->notifyCollectionsReceived( job, Collection::List() << mTopLevelCollection );
+        mSession->notifyCollectionsReceived( job, Akonadi::Collection::List() << mTopLevelCollection );
         return true;
       }
 
@@ -108,7 +107,7 @@ class TopLevelCollectionFetcher : public JobProcessingAdaptor
     }
 
   private:
-    Collection mTopLevelCollection;
+    Akonadi::Collection mTopLevelCollection;
 };
 
 class CollectionsProcessedNotifier : public JobProcessingAdaptor
@@ -119,7 +118,7 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
     {
     }
 
-    void setCollections( const Collection::List &collections )
+    void setCollections( const Akonadi::Collection::List &collections )
     {
       mCollections = collections;
     }
@@ -188,7 +187,7 @@ class CollectionsProcessedNotifier : public JobProcessingAdaptor
     }
 
   private:
-    Collection::List mCollections;
+    Akonadi::Collection::List mCollections;
 };
 
 class ItemsProcessedNotifier : public JobProcessingAdaptor
@@ -199,7 +198,7 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
     {
     }
 
-    void setItems( const Item::List &items )
+    void setItems( const Akonadi::Item::List &items )
     {
       mItems = items;
     }
@@ -256,7 +255,7 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
     }
 
   private:
-    Item::List mItems;
+    Akonadi::Item::List mItems;
 };
 
 class AbstractLocalStore::Private
@@ -273,7 +272,7 @@ class AbstractLocalStore::Private
 
   public:
     QFileInfo mPathFileInfo;
-    Collection mTopLevelCollection;
+    Akonadi::Collection mTopLevelCollection;
 
     AbstractJobSession *mSession;
     Job *mCurrentJob;
@@ -326,7 +325,7 @@ void AbstractLocalStore::setPath( const QString &path )
 
   d->mPathFileInfo = pathFileInfo;
 
-  Collection collection;
+  Akonadi::Collection collection;
   collection.setRemoteId( d->mPathFileInfo.absoluteFilePath() );
   collection.setName( d->mPathFileInfo.fileName() );
 
@@ -343,12 +342,12 @@ QString AbstractLocalStore::path() const
   return d->mPathFileInfo.absoluteFilePath();
 }
 
-Collection AbstractLocalStore::topLevelCollection() const
+Akonadi::Collection AbstractLocalStore::topLevelCollection() const
 {
   return d->mTopLevelCollection;
 }
 
-CollectionCreateJob *AbstractLocalStore::createCollection( const Collection &collection, const Collection &targetParent )
+CollectionCreateJob *AbstractLocalStore::createCollection( const Akonadi::Collection &collection, const Akonadi::Collection &targetParent )
 {
   CollectionCreateJob *job = new CollectionCreateJob( collection, targetParent, d->mSession );
 
@@ -379,7 +378,7 @@ CollectionCreateJob *AbstractLocalStore::createCollection( const Collection &col
   return job;
 }
 
-CollectionDeleteJob *AbstractLocalStore::deleteCollection( const Collection &collection )
+CollectionDeleteJob *AbstractLocalStore::deleteCollection( const Akonadi::Collection &collection )
 {
   CollectionDeleteJob *job = new CollectionDeleteJob( collection, d->mSession );
 
@@ -394,7 +393,7 @@ CollectionDeleteJob *AbstractLocalStore::deleteCollection( const Collection &col
     kError() << message;
     kError() << collection;
     d->mSession->setError( job, Job::InvalidJobContext, message );
-  } else if ( ( collection.parentCollection().rights() & Collection::CanDeleteCollection ) == 0 ) {
+  } else if ( ( collection.parentCollection().rights() & Akonadi::Collection::CanDeleteCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.parentCollection().name() );
     kError() << message;
     kError() << collection;
@@ -411,7 +410,7 @@ CollectionDeleteJob *AbstractLocalStore::deleteCollection( const Collection &col
   return job;
 }
 
-CollectionFetchJob *AbstractLocalStore::fetchCollections( const Collection &collection,
+CollectionFetchJob *AbstractLocalStore::fetchCollections( const Akonadi::Collection &collection,
                                                           CollectionFetchJob::Type type ) const
 {
   CollectionFetchJob *job = new CollectionFetchJob( collection, type, d->mSession );
@@ -438,7 +437,7 @@ CollectionFetchJob *AbstractLocalStore::fetchCollections( const Collection &coll
   return job;
 }
 
-CollectionModifyJob *AbstractLocalStore::modifyCollection( const Collection &collection )
+CollectionModifyJob *AbstractLocalStore::modifyCollection( const Akonadi::Collection &collection )
 {
   CollectionModifyJob *job = new CollectionModifyJob( collection, d->mSession );
 
@@ -470,7 +469,7 @@ CollectionModifyJob *AbstractLocalStore::modifyCollection( const Collection &col
   return job;
 }
 
-CollectionMoveJob *AbstractLocalStore::moveCollection( const Collection &collection, const Collection &targetParent )
+CollectionMoveJob *AbstractLocalStore::moveCollection( const Akonadi::Collection &collection, const Akonadi::Collection &targetParent )
 {
   CollectionMoveJob *job = new CollectionMoveJob( collection, targetParent, d->mSession );
 
@@ -486,12 +485,12 @@ CollectionMoveJob *AbstractLocalStore::moveCollection( const Collection &collect
     kError() << message;
     kError() << collection << targetParent;
     d->mSession->setError( job, Job::InvalidJobContext, message );
-  } else if ( ( targetParent.rights() & Collection::CanCreateCollection ) == 0 ) {
+  } else if ( ( targetParent.rights() & Akonadi::Collection::CanCreateCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder creation in folder %1", targetParent.name() );
     kError() << message;
     kError() << collection << targetParent;
     d->mSession->setError( job, Job::InvalidJobContext, message );
-  } else if ( ( collection.parentCollection().rights() & Collection::CanDeleteCollection ) == 0 ) {
+  } else if ( ( collection.parentCollection().rights() & Akonadi::Collection::CanDeleteCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.parentCollection().name() );
     kError() << message;
     kError() << collection << targetParent;
@@ -508,7 +507,7 @@ CollectionMoveJob *AbstractLocalStore::moveCollection( const Collection &collect
   return job;
 }
 
-ItemFetchJob *AbstractLocalStore::fetchItems( const Collection &collection ) const
+ItemFetchJob *AbstractLocalStore::fetchItems( const Akonadi::Collection &collection ) const
 {
   ItemFetchJob *job = new ItemFetchJob( collection, d->mSession );
 
@@ -534,7 +533,7 @@ ItemFetchJob *AbstractLocalStore::fetchItems( const Collection &collection ) con
   return job;
 }
 
-ItemFetchJob *AbstractLocalStore::fetchItem( const Item &item ) const
+ItemFetchJob *AbstractLocalStore::fetchItem( const Akonadi::Item &item ) const
 {
   ItemFetchJob *job = new ItemFetchJob( item, d->mSession );
 
@@ -562,7 +561,7 @@ ItemFetchJob *AbstractLocalStore::fetchItem( const Item &item ) const
   return job;
 }
 
-ItemCreateJob *AbstractLocalStore::createItem( const Item &item, const Collection &collection )
+ItemCreateJob *AbstractLocalStore::createItem( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
   ItemCreateJob *job = new ItemCreateJob( item, collection, d->mSession );
 
@@ -599,7 +598,7 @@ ItemCreateJob *AbstractLocalStore::createItem( const Item &item, const Collectio
   return job;
 }
 
-ItemModifyJob *AbstractLocalStore::modifyItem( const Item &item )
+ItemModifyJob *AbstractLocalStore::modifyItem( const Akonadi::Item &item )
 {
   ItemModifyJob *job = new ItemModifyJob( item, d->mSession );
 
@@ -615,7 +614,7 @@ ItemModifyJob *AbstractLocalStore::modifyItem( const Item &item )
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
     d->mSession->setError( job, Job::InvalidJobContext, message );
-  } else if ( ( item.parentCollection().rights() & Collection::CanChangeItem ) == 0 ) {
+  } else if ( ( item.parentCollection().rights() & Akonadi::Collection::CanChangeItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item modification in folder %1", item.parentCollection().name() );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
@@ -633,7 +632,7 @@ ItemModifyJob *AbstractLocalStore::modifyItem( const Item &item )
   return job;
 }
 
-ItemDeleteJob *AbstractLocalStore::deleteItem( const Item &item )
+ItemDeleteJob *AbstractLocalStore::deleteItem( const Akonadi::Item &item )
 {
   ItemDeleteJob *job = new ItemDeleteJob( item, d->mSession );
 
@@ -649,7 +648,7 @@ ItemDeleteJob *AbstractLocalStore::deleteItem( const Item &item )
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")";
     d->mSession->setError( job, Job::InvalidJobContext, message );
-  } else if ( ( item.parentCollection().rights() & Collection::CanDeleteItem ) == 0 ) {
+  } else if ( ( item.parentCollection().rights() & Akonadi::Collection::CanDeleteItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item deletion in folder %1", item.parentCollection().name() );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
@@ -667,7 +666,7 @@ ItemDeleteJob *AbstractLocalStore::deleteItem( const Item &item )
   return job;
 }
 
-ItemMoveJob *AbstractLocalStore::moveItem( const Item &item, const Collection &targetParent )
+ItemMoveJob *AbstractLocalStore::moveItem( const Akonadi::Item &item, const Akonadi::Collection &targetParent )
 {
   ItemMoveJob *job = new ItemMoveJob( item, targetParent, d->mSession );
 
@@ -686,14 +685,14 @@ ItemMoveJob *AbstractLocalStore::moveItem( const Item &item, const Collection &t
              << ", parentCollection=" << item.parentCollection().remoteId() << ")"
              << targetParent;
     d->mSession->setError( job, Job::InvalidJobContext, message );
-  } else if ( ( targetParent.rights() & Collection::CanCreateItem ) == 0 ) {
+  } else if ( ( targetParent.rights() & Akonadi::Collection::CanCreateItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item creation in folder %1", targetParent.name() );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
              << ", parentCollection=" << item.parentCollection().remoteId() << ")"
              << targetParent;
     d->mSession->setError( job, Job::InvalidJobContext, message );
-  } else if ( ( item.parentCollection().rights() & Collection::CanDeleteItem ) == 0 ) {
+  } else if ( ( item.parentCollection().rights() & Akonadi::Collection::CanDeleteItem ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits item deletion in folder %1", item.parentCollection().name() );
     kError() << message;
     kError() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
@@ -751,7 +750,7 @@ void AbstractLocalStore::notifyError( int errorCode, const QString &errorText ) 
   d->mSession->setError( d->mCurrentJob, errorCode, errorText );
 }
 
-void AbstractLocalStore::notifyCollectionsProcessed( const Collection::List &collections ) const
+void AbstractLocalStore::notifyCollectionsProcessed( const Akonadi::Collection::List &collections ) const
 {
   Q_ASSERT( d->mCurrentJob != 0);
 
@@ -759,7 +758,7 @@ void AbstractLocalStore::notifyCollectionsProcessed( const Collection::List &col
   d->mCurrentJob->accept( &( d->mCollectionsProcessedNotifier ) );
 }
 
-void AbstractLocalStore::notifyItemsProcessed( const Item::List &items ) const
+void AbstractLocalStore::notifyItemsProcessed( const Akonadi::Item::List &items ) const
 {
   Q_ASSERT( d->mCurrentJob != 0);
 
@@ -767,7 +766,7 @@ void AbstractLocalStore::notifyItemsProcessed( const Item::List &items ) const
   d->mCurrentJob->accept( &( d->mItemsProcessedNotifier ) );
 }
 
-void AbstractLocalStore::setTopLevelCollection( const Collection &collection )
+void AbstractLocalStore::setTopLevelCollection( const Akonadi::Collection &collection )
 {
   d->mTopLevelCollection = collection;
   d->mTopLevelCollectionFetcher.setTopLevelCollection( collection );

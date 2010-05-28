@@ -25,7 +25,7 @@
 
 using namespace Akonadi::FileStore;
 
-class CollectionFetchJob::CollectionFetchJob::Private
+class CollectionFetchJob::Private
 {
   public:
     explicit Private( CollectionFetchJob *parent )
@@ -46,7 +46,7 @@ class CollectionFetchJob::CollectionFetchJob::Private
     CollectionFetchJob *mParent;
 };
 
-CollectionFetchJob::CollectionFetchJob( const Collection &collection, Type type, AbstractJobSession *session )
+CollectionFetchJob::CollectionFetchJob( const Akonadi::Collection &collection, Type type, AbstractJobSession *session )
   : Job( session ), d( new Private( this ) )
 {
   Q_ASSERT( session != 0 );

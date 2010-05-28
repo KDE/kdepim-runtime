@@ -41,7 +41,7 @@ AbstractJobSession::~AbstractJobSession()
 {
 }
 
-void AbstractJobSession::notifyCollectionsReceived( Job* job, const Collection::List &collections )
+void AbstractJobSession::notifyCollectionsReceived( Job* job, const Akonadi::Collection::List &collections )
 {
   CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
   if ( fetchJob != 0 ) {
@@ -49,7 +49,7 @@ void AbstractJobSession::notifyCollectionsReceived( Job* job, const Collection::
   }
 }
 
-void AbstractJobSession::notifyCollectionCreated( Job *job, const Collection &collection )
+void AbstractJobSession::notifyCollectionCreated( Job *job, const Akonadi::Collection &collection )
 {
   CollectionCreateJob *createJob = dynamic_cast<CollectionCreateJob*>( job );
   if ( createJob != 0 ) {
@@ -57,7 +57,7 @@ void AbstractJobSession::notifyCollectionCreated( Job *job, const Collection &co
   }
 }
 
-void AbstractJobSession::notifyCollectionDeleted( Job *job, const Collection &collection )
+void AbstractJobSession::notifyCollectionDeleted( Job *job, const Akonadi::Collection &collection )
 {
   CollectionDeleteJob *deleteJob = dynamic_cast<CollectionDeleteJob*>( job );
   if ( deleteJob != 0 ) {
@@ -65,7 +65,7 @@ void AbstractJobSession::notifyCollectionDeleted( Job *job, const Collection &co
   }
 }
 
-void AbstractJobSession::notifyCollectionModified( Job *job, const Collection &collection )
+void AbstractJobSession::notifyCollectionModified( Job *job, const Akonadi::Collection &collection )
 {
   CollectionModifyJob *modifyJob = dynamic_cast<CollectionModifyJob*>( job );
   if ( modifyJob != 0 ) {
@@ -73,7 +73,7 @@ void AbstractJobSession::notifyCollectionModified( Job *job, const Collection &c
   }
 }
 
-void AbstractJobSession::notifyCollectionMoved( Job *job, const Collection &collection )
+void AbstractJobSession::notifyCollectionMoved( Job *job, const Akonadi::Collection &collection )
 {
   CollectionMoveJob *moveJob = dynamic_cast<CollectionMoveJob*>( job );
   if ( moveJob != 0 ) {
@@ -81,7 +81,7 @@ void AbstractJobSession::notifyCollectionMoved( Job *job, const Collection &coll
   }
 }
 
-void AbstractJobSession::notifyItemsReceived( Job* job, const Item::List &items )
+void AbstractJobSession::notifyItemsReceived( Job* job, const Akonadi::Item::List &items )
 {
   ItemFetchJob *fetchJob = dynamic_cast<ItemFetchJob*>( job );
   if ( fetchJob != 0 ) {
@@ -89,7 +89,7 @@ void AbstractJobSession::notifyItemsReceived( Job* job, const Item::List &items 
   }
 }
 
-void AbstractJobSession::notifyItemCreated( Job *job, const Item &item )
+void AbstractJobSession::notifyItemCreated( Job *job, const Akonadi::Item &item )
 {
   ItemCreateJob *createJob = dynamic_cast<ItemCreateJob*>( job );
   if ( createJob != 0 ) {
@@ -97,7 +97,7 @@ void AbstractJobSession::notifyItemCreated( Job *job, const Item &item )
   }
 }
 
-void AbstractJobSession::notifyItemModified( Job *job, const Item &item )
+void AbstractJobSession::notifyItemModified( Job *job, const Akonadi::Item &item )
 {
   ItemModifyJob *modifyJob = dynamic_cast<ItemModifyJob*>( job );
   if ( modifyJob != 0 ) {
@@ -105,7 +105,7 @@ void AbstractJobSession::notifyItemModified( Job *job, const Item &item )
   }
 }
 
-void AbstractJobSession::notifyItemMoved( Job *job, const Item &item )
+void AbstractJobSession::notifyItemMoved( Job *job, const Akonadi::Item &item )
 {
   ItemMoveJob *moveJob = dynamic_cast<ItemMoveJob*>( job );
   if ( moveJob != 0 ) {
@@ -113,7 +113,7 @@ void AbstractJobSession::notifyItemMoved( Job *job, const Item &item )
   }
 }
 
-void AbstractJobSession::notifyCollectionsChanged( Job *job, const Collection::List &collections )
+void AbstractJobSession::notifyCollectionsChanged( Job *job, const Akonadi::Collection::List &collections )
 {
   StoreCompactJob *compactJob = dynamic_cast<StoreCompactJob*>( job );
   if ( compactJob != 0 ) {
@@ -121,7 +121,7 @@ void AbstractJobSession::notifyCollectionsChanged( Job *job, const Collection::L
   }
 }
 
-void AbstractJobSession::notifyItemsChanged( Job *job, const Item::List &items )
+void AbstractJobSession::notifyItemsChanged( Job *job, const Akonadi::Item::List &items )
 {
   StoreCompactJob *compactJob = dynamic_cast<StoreCompactJob*>( job );
   if ( compactJob != 0 ) {
