@@ -210,7 +210,7 @@ void AbstractCollectionMigrator::Private::fetchResult( KJob *job )
   Q_ASSERT( fetchJob != 0 );
 
   if ( fetchJob->error() != 0 ) {
-    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' didn't create any folders",
+    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' did not create any folders",
                                   mResource.name() ) );
   } else {
     const Collection::List collections = fetchJob->collections();
@@ -254,7 +254,7 @@ void AbstractCollectionMigrator::Private::recheckBrokenResource()
 {
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
   if ( mStatus == Waiting ) {
-    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' it not working correctly",
+    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' is not working correctly",
                                   mResource.name() ) );
   }
 }
