@@ -11,7 +11,7 @@
     </entry>
     <entry name="ImapPort"  type="Int">
       <label>Defines the port the IMAP service is running on</label>
-      <default>143</default>
+      <default>993</default>
     </entry>
     <entry name="UserName" type="String">
       <label>Username</label>
