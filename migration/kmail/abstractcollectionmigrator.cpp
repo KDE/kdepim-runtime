@@ -95,6 +95,7 @@ class AbstractCollectionMigrator::Private
   private:
     QStringList folderPathComponentsForCollection( const Collection &collection ) const;
     QString folderIdentifierForCollection( const Collection &collection ) const;
+    void processingDone();
 };
 
 void AbstractCollectionMigrator::Private::migrateConfig()
@@ -241,7 +242,7 @@ void AbstractCollectionMigrator::Private::fetchResult( KJob *job )
 
     if ( mStatus == Idle ) {
       Q_ASSERT( mCollectionQueue.isEmpty() );
-      q->migrationDone();
+      processingDone();
     }
   }
 }
@@ -254,7 +255,7 @@ void AbstractCollectionMigrator::Private::processNextCollection()
 
   if ( mCollectionQueue.isEmpty() ) {
     if ( mResource.status() == AgentInstance::Idle && mExplicitFetchStatus != Running ) {
-      q->migrationDone();
+      processingDone();
     } else {
       mStatus = Idle;
     }
@@ -359,6 +360,16 @@ QString AbstractCollectionMigrator::Private::folderIdentifierForCollection( cons
   }
 
   return result;
+}
+
+void AbstractCollectionMigrator::Private::processingDone()
+{
+  if ( mCollectionsById.count() == 0 ) {
+    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' did not create any folders",
+                                  mResource.name() ) );
+  } else {
+    q->migrationDone();
+  }
 }
 
 AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, QObject *parent )
