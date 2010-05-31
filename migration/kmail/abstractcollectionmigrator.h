@@ -57,6 +57,9 @@ class AbstractCollectionMigrator : public QObject
   protected:
     virtual void migrateCollection( const Akonadi::Collection &collection, const QString &folderId ) = 0;
 
+    // override if subclass wants to do its own reporting
+    virtual void migrationProgress( int processedCollections, int seenCollections );
+
     void collectionProcessed();
     void migrationDone();
     void migrationCancelled( const QString &error );

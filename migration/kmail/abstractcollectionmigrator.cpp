@@ -427,6 +427,11 @@ void AbstractCollectionMigrator::setEmailIdentityConfig( KConfig *config )
   d->mEmailIdentityConfig = config;
 }
 
+void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
+{
+  emit progress( 0, seenCollections, processedCollections );
+}
+
 void AbstractCollectionMigrator::collectionProcessed()
 {
   d->migrateConfig();
@@ -436,6 +441,8 @@ void AbstractCollectionMigrator::collectionProcessed()
 
   d->mStatus = Private::Scheduling;
   QMetaObject::invokeMethod( this, "processNextCollection", Qt::QueuedConnection );
+
+  migrationProgress( d->mProcessedCollectionsCount, d->mCollectionsById.count() );
 }
 
 void AbstractCollectionMigrator::migrationDone()
