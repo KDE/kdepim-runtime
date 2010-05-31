@@ -108,14 +108,15 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 //   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "migrating config for folderId" << mCurrentFolderId
 //                                    << "to collectionId" << mCurrentCollection.id();
 
+  // general folder specific settings
   const QString folderGroupPattern = QLatin1String( "Folder-%1" );
+  if ( mKMailConfig->hasGroup( folderGroupPattern.arg( mCurrentFolderId ) ) ) {
+    KConfigGroup oldGroup( mKMailConfig, folderGroupPattern.arg( mCurrentFolderId ) );
+    KConfigGroup newGroup( mKMailConfig, folderGroupPattern.arg( mCurrentCollection.id() ) );
 
-  KConfigGroup oldGroup( mKMailConfig, folderGroupPattern.arg( mCurrentFolderId ) );
-  KConfigGroup newGroup( mKMailConfig, folderGroupPattern.arg( mCurrentCollection.id() ) );
-
-  oldGroup.copyTo( &newGroup );
-  oldGroup.deleteGroup();
-
+    oldGroup.copyTo( &newGroup );
+    oldGroup.deleteGroup();
+  }
 
   // check emailidentity
   const QStringList identityGroups = mEmailIdentityConfig->groupList().filter( QRegExp( "Identity #\\d+" ) );
@@ -187,6 +188,16 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     const qulonglong value = selectedMessagesGroup.readEntry( storageModelPattern.arg( mCurrentFolderId ), defValue );
     selectedMessagesGroup.writeEntry( storageModelPattern.arg( mCurrentCollection.id() ), value );
     selectedMessagesGroup.deleteEntry( storageModelPattern.arg( mCurrentFolderId ) );
+  }
+
+  // folder specific templates
+  const QString templatesGroupPattern = QLatin1String( "Templates #%1" );
+  if ( mKMailConfig->hasGroup( templatesGroupPattern.arg( mCurrentFolderId ) ) ) {
+    KConfigGroup oldGroup( mKMailConfig, templatesGroupPattern.arg( mCurrentFolderId ) );
+    KConfigGroup newGroup( mKMailConfig, templatesGroupPattern.arg( mCurrentCollection.id() ) );
+
+    oldGroup.copyTo( &newGroup );
+    oldGroup.deleteGroup();
   }
 }
 
