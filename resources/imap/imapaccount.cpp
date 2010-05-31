@@ -67,7 +67,13 @@ ImapAccount::ImapAccount( Settings *settings, QObject *parent )
   m_userName = settings->userName();
   m_subscriptionEnabled = settings->subscriptionEnabled();
 
-  m_encryption = (KIMAP::LoginJob::EncryptionMode) settings->safety();
+  QString safety = settings->safety();
+  if( safety == "SSL" )
+    m_encryption = KIMAP::LoginJob::AnySslVersion;
+  else if ( safety == "STARTTLS" )
+    m_encryption = KIMAP::LoginJob::TlsV1;
+  else
+    m_encryption = KIMAP::LoginJob::Unencrypted;
   m_authentication = (KIMAP::LoginJob::AuthenticationMode) settings->authentication();
 }
 
