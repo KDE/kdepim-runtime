@@ -39,12 +39,13 @@ class LocalFoldersCollectionMigrator::Private
 
   public:
     explicit Private( LocalFoldersCollectionMigrator *parent )
-      : q( parent )
+      : q( parent ), mProgress( -1 )
     {
     }
 
   public:
     TypeHash mSystemFolders;
+    int mProgress;
 };
 
 LocalFoldersCollectionMigrator::LocalFoldersCollectionMigrator( const AgentInstance &resource, QObject *parent )
@@ -87,8 +88,15 @@ void LocalFoldersCollectionMigrator::migrateCollection( const Collection &collec
   Q_UNUSED( folderId );
   Q_ASSERT( kmailConfig() != 0 );
 
+  if ( d->mProgress == -1 ) {
+    emit progress( 0, d->mSystemFolders.count(), 0 );
+  }
+
+  emit status( collection.name() );
+
   const TypeHash::const_iterator typeIt = d->mSystemFolders.constFind( collection.name() );
   if ( typeIt != d->mSystemFolders.constEnd() ) {
+    emit progress( ++d->mProgress );
     kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Registering collection" << collection.name() << "for type" << *typeIt;
     SpecialMailCollections::self()->registerCollection( *typeIt, collection );
   }

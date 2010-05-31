@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=AccountWizard
+Name=Account Wizard
 Name[pt]=Assistente de Contas
 Name[pt_BR]=Assistente de Contas
 Name[sv]=Kontoguide
@@ -8,7 +8,7 @@ Name[x-test]=xxAccountWizardxx
 Exec=accountwizard --package %f
 Type=Application
 NoDisplay=true;
-Comment=Launch the accountwizard to configure pim-accounts.
+Comment=Launch the account wizard to configure PIM accounts.
 Comment[pt]=Lançar o assistente de contas para configurar as contas PIM.
 Comment[pt_BR]=Executa o assistente para configuração das contas PIM.
 Comment[sv]=Starta kontoguiden för att anpassa konton för personlig informationshantering.

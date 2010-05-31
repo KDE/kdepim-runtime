@@ -50,6 +50,10 @@ class AbstractCollectionMigrator : public QObject
 
     void message( int type, const QString &msg );
 
+    void status( const QString &msg );
+    void progress( int value );
+    void progress( int min, int max, int value );
+
   protected:
     virtual void migrateCollection( const Akonadi::Collection &collection, const QString &folderId ) = 0;
 
