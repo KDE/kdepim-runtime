@@ -117,7 +117,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   oldGroup.deleteGroup();
 
 
-  // check emailidentify
+  // check emailidentity
   const QStringList identityGroups = mEmailIdentityConfig->groupList().filter( QRegExp( "Identity #\\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "identityGroups=" << identityGroups;
   Q_FOREACH( const QString &groupName, identityGroups ) {
@@ -159,8 +159,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       filterGroup.writeEntry( "trash" , mCurrentCollection.id() );
   }
 
-
-
   // check all filters
   const QStringList filterGroups = mKMailConfig->groupList().filter( QRegExp( "Filter #\\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "filterGroups=" << filterGroups;
@@ -177,6 +175,18 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         filterGroup.writeEntry( actionKey, mCurrentCollection.id() );
       }
     }
+  }
+
+  // check MessageListView::StorageModelSelectedMessages
+  KConfigGroup selectedMessagesGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelSelectedMessages" ) );
+  const QString storageModelPattern = QLatin1String( "MessageUniqueIdForStorageModel%1" );
+  if ( selectedMessagesGroup.hasKey( storageModelPattern.arg( mCurrentFolderId ) ) ) {
+    //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "replacing selected message entry for"
+    //                                 << mCurrentFolderId;
+    const qulonglong defValue = 0;
+    const qulonglong value = selectedMessagesGroup.readEntry( storageModelPattern.arg( mCurrentFolderId ), defValue );
+    selectedMessagesGroup.writeEntry( storageModelPattern.arg( mCurrentCollection.id() ), value );
+    selectedMessagesGroup.deleteEntry( storageModelPattern.arg( mCurrentFolderId ) );
   }
 }
 
