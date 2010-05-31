@@ -375,18 +375,18 @@ AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &res
 
   connect( d->mMonitor, SIGNAL( collectionAdded( Akonadi::Collection, Akonadi::Collection ) ), SLOT( collectionAdded( Akonadi::Collection ) ) );
 
-  if ( d->mResource.status() != AgentInstance::Broken ) {
-    d->mExplicitFetchStatus = Private::Running;
-    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-    job->setFetchScope( colScope );
-
-    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( fetchResult( KJob* ) ) );
-  } else {
+  if ( d->mResource.status() == AgentInstance::Idle ) {
+    // if resource is "Idle" it might still need time to process until it becomes ready
+    // unfortunately this is not a separate state so lets delay the explicit fetch
+    // wait for at most one minute
+    QTimer::singleShot( 60000, this, SLOT( recheckIdleResource() ) );
+  } else if ( d->mResource.status() == AgentInstance::Broken ) {
     // if resource is "Broken", it could still become idle after fully processing its new config
     // wait for at most one minute
     QTimer::singleShot( 60000, this, SLOT( recheckBrokenResource() ) );
   }
 
+  // monitor resource status so we know when to quit waiting
   connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
            this, SLOT( resourceStatusChanged( Akonadi::AgentInstance  ) ) );
 }
