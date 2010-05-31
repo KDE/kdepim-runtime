@@ -173,7 +173,7 @@ class SubscriptionDialog : public SubscriptionDialogBase
     /** reimpl */
     virtual QString subscriptionOptionQuestion( const QString &accountName ) const;
 
-  private:
+  private slots:
     /**
      * Create or update the listitems, depending on whether we are listing
      * all available folders, or only subscribed ones.
