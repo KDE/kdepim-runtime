@@ -285,6 +285,7 @@ void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
 
   if ( createJob != 0 ) {
     createJob->setProperty( "storeRemoteId", storeRemoteId );
+    createJob->setProperty( "storeParentCollection", QVariant::fromValue<Collection>( item.parentCollection() ) );
     connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
   } else {
     kDebug() << "Skipping cacheItem: remoteId=" << item.remoteId()
@@ -325,10 +326,16 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
       nepomukResource.setTags( nepomukTags );
     }
 
-    Item cacheItem = item;
-    cacheItem.setRemoteId( storeRemoteId );
-    FileStore::ItemDeleteJob *deleteJob = new FileStore::ItemDeleteJob( cacheItem );
-    connect( deleteJob, SIGNAL( result( KJob* ) ), q, SLOT( cacheItemDeleteResult( KJob* ) ) );
+    const Collection storeCollection = job->property( "storeParentCollection" ).value<Collection>();
+    if ( !storeCollection.remoteId().isEmpty() ) {
+      Item cacheItem = item;
+      cacheItem.setRemoteId( storeRemoteId );
+      cacheItem.setParentCollection( storeCollection );
+      FileStore::ItemDeleteJob *deleteJob = new FileStore::ItemDeleteJob( cacheItem );
+      connect( deleteJob, SIGNAL( result( KJob* ) ), q, SLOT( cacheItemDeleteResult( KJob* ) ) );
+    } else {
+      processNextItem();
+    }
   } else {
     processNextItem();
   }
