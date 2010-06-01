@@ -127,6 +127,41 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "UseCustomIcons" );
     newGroup.deleteEntry( "UnreadIconPath" );
     newGroup.deleteEntry( "NormalIconPath" );
+
+    //Migrate favorite folder
+    if ( newGroup.hasKey( "Id" ) ) {
+      uint value = newGroup.readEntry( "Id", 0 );
+
+      KConfigGroup newFavoriteGroup( mKMailConfig, "FavoriteCollections" );
+      if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) ) {
+        KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
+        const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
+        const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+        oldFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+        oldFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
+
+        oldFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
+        oldFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
+
+#if 0
+        if ( oldFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
+          KConfigGroup favoriteFolderViewGroup( mKMailConfig, "FavoriteFolderView" );
+        }
+#endif
+        oldFavoriteGroup.copyTo( &newFavoriteGroup );
+        oldFavoriteGroup.deleteGroup();
+      }
+
+      if ( newFavoriteGroup.hasKey( "FavoriteCollectionIds" ) ) {
+          QList<qint64> lIds = newFavoriteGroup.readEntry( "FavoriteCollectionIds", QList<qint64>() );
+          if ( lIds.contains( value ) ) {
+            const int pos = lIds.indexOf( value );
+            lIds.replace( pos, mCurrentCollection.id() );
+            newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+          }
+      }
+      newGroup.deleteEntry( "Id" );
+    }
   }
 
   // check emailidentity
