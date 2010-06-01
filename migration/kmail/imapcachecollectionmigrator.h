@@ -51,6 +51,9 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
   protected:
     void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
 
+    // overridden because of own reporting
+    void migrationProgress( int processedCollections, int seenCollections );
+
   private:
     class Private;
     Private *const d;

@@ -472,6 +472,15 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   }
 }
 
+void ImapCacheCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
+{
+  // if we potentially migrate items, use item progress instead
+  // use base implementation if only collections are processed
+  if ( migrationOptions() == ConfigOnly ) {
+    AbstractCollectionMigrator::migrationProgress( processedCollections, seenCollections );
+  }
+}
+
 #include "imapcachecollectionmigrator.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
