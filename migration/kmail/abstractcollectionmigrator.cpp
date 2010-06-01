@@ -349,6 +349,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   //Not necessary in kmail2
   deleteGroup( "GroupwareFolderInfo" );
   deleteGroup( "Groupware" );
+  deleteGroup( "IMAP Resource" );
 }
 
 void AbstractCollectionMigrator::Private::deleteGroup( const QString &name )
