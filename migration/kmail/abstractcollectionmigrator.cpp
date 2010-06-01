@@ -150,6 +150,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "UIDStatusChangedLocally" );
     newGroup.deleteEntry( "UIDSDeletedSinceLastSync" );
 
+    newGroup.deleteEntry( "MainFolderViewItemDnDSortingKey" );
+    newGroup.deleteEntry( "MainFolderViewItemIsExpanded" );
+    newGroup.deleteEntry( "MainFolderViewItemIsHidden" );
+    newGroup.deleteEntry( "MainFolderViewItemIsSelected" );
+
+
 
     //Migrate favorite folder
     if ( newGroup.hasKey( "Id" ) ) {
