@@ -66,13 +66,15 @@ class KMailMigrator : public KMigratorBase
     void localMaildirCreated( KJob *job );
 
     void localFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
-    void dimapFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
+    void imapFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
 
     void collectionMigratorMessage( int type, const QString &msg );
     void collectionMigratorFinished();
 
     void instanceStatusChanged( const Akonadi::AgentInstance &instance );
     void instanceProgressChanged( const Akonadi::AgentInstance &instance );
+
+    void imapCacheImportFinished( const QString &error );
 
   private:
     void migrateImapAccount( KJob *job, bool disconnected );
@@ -97,6 +99,8 @@ class KMailMigrator : public KMigratorBase
     bool mDeleteCacheAfterImport;
     MixedMaildirStore *mDImapCache;
     MixedMaildirStore *mImapCache;
+    int mRunningCacheImporterCount;
+    bool mLocalFoldersDone;
 };
 
 } // namespace KMail
