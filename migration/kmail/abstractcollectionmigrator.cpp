@@ -135,6 +135,21 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "UnreadMsgs" );
     newGroup.deleteEntry( "Compactable" );
     newGroup.deleteEntry( "ContentsType" );
+    newGroup.deleteEntry( "NoContent" );
+    newGroup.deleteEntry( "ReadOnly" );
+    newGroup.deleteEntry( "UploadAllFlags" );
+    newGroup.deleteEntry( "PermanentFlags" );
+    newGroup.deleteEntry( "StorageQuotaUsage" );
+    newGroup.deleteEntry( "StorageQuotaLimit" );
+    newGroup.deleteEntry( "StorageQuotaRoot" );
+    newGroup.deleteEntry( "FolderAttributes" );
+    newGroup.deleteEntry( "AlarmsBlocked" );
+    newGroup.deleteEntry( "IncidencesFor" );
+    newGroup.deleteEntry( "UserRights" );
+    newGroup.deleteEntry( "StatusChangedLocally" );
+    newGroup.deleteEntry( "UIDStatusChangedLocally" );
+    newGroup.deleteEntry( "UIDSDeletedSinceLastSync" );
+
 
     //Migrate favorite folder
     if ( newGroup.hasKey( "Id" ) ) {
