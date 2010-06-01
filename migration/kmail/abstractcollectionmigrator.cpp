@@ -143,11 +143,17 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         oldFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
         oldFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
 
-#if 0
+        KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
         if ( oldFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
-          KConfigGroup favoriteFolderViewGroup( mKMailConfig, "FavoriteFolderView" );
+          int value = oldFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
+          favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
         }
-#endif
+
+        if ( oldFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
+          bool value = oldFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
+          favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
+        }
+
         oldFavoriteGroup.copyTo( &newFavoriteGroup );
         oldFavoriteGroup.deleteGroup();
       }
