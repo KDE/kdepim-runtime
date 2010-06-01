@@ -327,11 +327,11 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
     }
 
     const Collection storeCollection = job->property( "storeParentCollection" ).value<Collection>();
-    if ( !storeCollection.remoteId().isEmpty() ) {
+    if ( mDeleteImportedMessages && !storeCollection.remoteId().isEmpty() ) {
       Item cacheItem = item;
       cacheItem.setRemoteId( storeRemoteId );
       cacheItem.setParentCollection( storeCollection );
-      FileStore::ItemDeleteJob *deleteJob = new FileStore::ItemDeleteJob( cacheItem );
+      FileStore::ItemDeleteJob *deleteJob = mStore->deleteItem( cacheItem );
       connect( deleteJob, SIGNAL( result( KJob* ) ), q, SLOT( cacheItemDeleteResult( KJob* ) ) );
     } else {
       processNextItem();
