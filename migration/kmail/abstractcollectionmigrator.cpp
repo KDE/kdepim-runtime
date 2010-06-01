@@ -179,6 +179,22 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     }
   }
 
+  // check MessageListView::StorageModelSortOrder
+  KConfigGroup sortOrderGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelSortOrder" ) );
+  const QString groupSortDirectionPattern = QLatin1String( "%1GroupSortDirection" );
+  const QString groupSortingPattern = QLatin1String( "%1GroupSorting" );
+  if ( sortOrderGroup.hasKey( groupSortingPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = sortOrderGroup.readEntry( groupSortingPattern.arg( mCurrentFolderId ) );
+    sortOrderGroup.writeEntry( groupSortingPattern.arg( mCurrentCollection.id()), value );
+    sortOrderGroup.deleteEntry( groupSortingPattern.arg( mCurrentFolderId ) );
+  }
+  if ( sortOrderGroup.hasKey( groupSortDirectionPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = sortOrderGroup.readEntry( groupSortDirectionPattern.arg( mCurrentFolderId ) );
+    sortOrderGroup.writeEntry( groupSortDirectionPattern.arg( mCurrentCollection.id() ), value );
+    sortOrderGroup.deleteEntry( groupSortDirectionPattern.arg( mCurrentFolderId ) );
+  }
+
+
   // check MessageListView::StorageModelSelectedMessages
   KConfigGroup selectedMessagesGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelSelectedMessages" ) );
   const QString storageModelPattern = QLatin1String( "MessageUniqueIdForStorageModel%1" );
