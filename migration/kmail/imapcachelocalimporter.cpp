@@ -26,8 +26,6 @@
 #include "filestore/collectionfetchjob.h"
 #include "filestore/itemfetchjob.h"
 
-#include <kmime/kmime_message.h>
-
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
 #include <akonadi/collection.h>
@@ -174,7 +172,10 @@ void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
   Collection topLevelCollection;
   topLevelCollection.setRemoteId( mTopLevelFolder );
   topLevelCollection.setParentCollection( mStore->topLevelCollection() );
-  topLevelCollection.setContentMimeTypes( QStringList() << Collection::mimeType() << KMime::Message::mimeType() );
+  topLevelCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
+  topLevelCollection.setRights( Collection::CanChangeCollection |
+                                Collection::CanCreateCollection |
+                                Collection::CanDeleteCollection );
 
   mPendingCollections << topLevelCollection;
 
