@@ -47,7 +47,7 @@ Item {
   SystemPalette { id: palette; colorGroup: "Active" }
   ListModel {
     id : topModel
-    ListElement { display : "Top" }
+    ListElement { display : "Home" }
   }
 
   ListView {
