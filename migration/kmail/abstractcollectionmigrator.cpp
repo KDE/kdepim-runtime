@@ -128,6 +128,14 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "UnreadIconPath" );
     newGroup.deleteEntry( "NormalIconPath" );
 
+
+    //Delete old entry
+    newGroup.deleteEntry( "TotalMsgs" );
+    newGroup.deleteEntry( "FolderSize" );
+    newGroup.deleteEntry( "UnreadMsgs" );
+    newGroup.deleteEntry( "Compactable" );
+    newGroup.deleteEntry( "ContentsType" );
+
     //Migrate favorite folder
     if ( newGroup.hasKey( "Id" ) ) {
       uint value = newGroup.readEntry( "Id", 0 );
