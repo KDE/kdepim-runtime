@@ -612,6 +612,18 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   iface->setPrecommand( config.readPathEntry( "precommand", QString() ) );
   migratePassword( config.readEntry( "Id" ), instance, "pop3" );
 
+  // POP3 filter from files in kmail appdata
+  const QString popFilterFileName = QString::fromLatin1( "kmail/%1:@%2:%3" )
+                                      .arg( config.readEntry( "login", QString() ) )
+                                      .arg( config.readEntry( "host", QString() ) )
+                                      .arg( config.readEntry( "port", 110u ) );
+
+  const KConfig popFilterConfig( popFilterFileName, KConfig::SimpleConfig, "data" );
+  const KConfigGroup popFilterGroup( &popFilterConfig, QString() );
+  iface->setDownloadLater( popFilterGroup.readEntry( "downloadLater", QStringList() ) );
+  iface->setSeenUidList( popFilterGroup.readEntry( "seenUidList", QStringList() ) );
+  iface->setSeenUidTimeList( popFilterGroup.readEntry( "seenUidTimeList", QList<int>() ) );
+
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
   config.deleteEntry("use-default-identity");
