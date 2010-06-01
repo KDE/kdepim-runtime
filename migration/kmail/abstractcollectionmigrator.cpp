@@ -219,6 +219,11 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
 
+  // Check Composer/previous-fcc
+  KConfigGroup composer( mKMailConfig, "Composer" );
+  if ( composer.readEntry( "previous-fcc" ) == mCurrentFolderId )
+    composer.writeEntry( "previous-fcc", mCurrentCollection.id() );
+
   // Check General/startupFolder
   KConfigGroup general( mKMailConfig, "General" );
   if ( general.readEntry( "startupFolder" ) == mCurrentFolderId )
