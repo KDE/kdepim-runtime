@@ -228,7 +228,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   KConfigGroup folderSelection( mKMailConfig, "FolderSelectionDialog" );
   if ( folderSelection.readEntry( "LastSelectedFolder", mCurrentFolderId ) == mCurrentFolderId )
     folderSelection.writeEntry( "LastSelectedFolder", mCurrentCollection.id() );
-
+  folderSelection.deleteEntry( "TreeWidgetLayout" );
 
 
   // Check General/startupFolder
