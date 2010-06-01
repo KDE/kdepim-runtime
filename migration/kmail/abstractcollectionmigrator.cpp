@@ -179,6 +179,34 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     }
   }
 
+  // check MessageListView::StorageModelSortOrder
+  KConfigGroup sortOrderGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelSortOrder" ) );
+  const QString groupSortDirectionPattern = QLatin1String( "%1GroupSortDirection" );
+  const QString groupSortingPattern = QLatin1String( "%1GroupSorting" );
+  const QString messageSortDirectionPattern = QLatin1String( "%1MessageSortDirection" );
+  const QString messageSortingPattern = QLatin1String( "%1MessageSorting" );
+
+  if ( sortOrderGroup.hasKey( groupSortingPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = sortOrderGroup.readEntry( groupSortingPattern.arg( mCurrentFolderId ) );
+    sortOrderGroup.writeEntry( groupSortingPattern.arg( mCurrentCollection.id()), value );
+    sortOrderGroup.deleteEntry( groupSortingPattern.arg( mCurrentFolderId ) );
+  }
+
+  if ( sortOrderGroup.hasKey( messageSortingPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = sortOrderGroup.readEntry( messageSortingPattern.arg( mCurrentFolderId ) );
+    sortOrderGroup.writeEntry( messageSortingPattern.arg( mCurrentCollection.id() ), value );
+    sortOrderGroup.deleteEntry( messageSortingPattern.arg( mCurrentFolderId ) );
+  }
+
+  if ( sortOrderGroup.hasKey( messageSortDirectionPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = sortOrderGroup.readEntry( messageSortDirectionPattern.arg( mCurrentFolderId ) );
+    sortOrderGroup.writeEntry( messageSortDirectionPattern.arg( mCurrentCollection.id() ), value );
+    sortOrderGroup.deleteEntry( messageSortDirectionPattern.arg( mCurrentFolderId ) );
+  }
+
+
+
+
   // check MessageListView::StorageModelSelectedMessages
   KConfigGroup selectedMessagesGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelSelectedMessages" ) );
   const QString storageModelPattern = QLatin1String( "MessageUniqueIdForStorageModel%1" );

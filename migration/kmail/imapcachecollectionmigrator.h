@@ -23,6 +23,8 @@
 
 #include "abstractcollectionmigrator.h"
 
+class MixedMaildirStore;
+
 class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 {
   Q_OBJECT
@@ -33,12 +35,13 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
       ConfigOnly = 0x0,
       ImportNewMessages = 0x01,
       ImportCachedMessages = 0x02,
-      RemoveDeletedMessages = 0x04
+      RemoveDeletedMessages = 0x04,
+      DeleteImportedMessages = 0x08
     };
 
     Q_DECLARE_FLAGS( MigrationOptions, MigrationOption )
 
-    explicit ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    explicit ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, MixedMaildirStore *store, QObject *parent = 0 );
 
     ~ImapCacheCollectionMigrator();
 
@@ -46,10 +49,11 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     MigrationOptions migrationOptions() const;
 
-    void setCacheBasePath( const QString &basePath );
-
   protected:
     void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
+
+    // overridden because of own reporting
+    void migrationProgress( int processedCollections, int seenCollections );
 
   private:
     class Private;
@@ -62,6 +66,7 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
     Q_PRIVATE_SLOT( d, void itemCreateResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemDeletePhase1Result( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemDeletePhase2Result( KJob* ) )
+    Q_PRIVATE_SLOT( d, void cacheItemDeleteResult( KJob* ) )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( ImapCacheCollectionMigrator::MigrationOptions )

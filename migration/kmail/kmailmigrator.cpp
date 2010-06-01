@@ -33,6 +33,7 @@
 #include "mboxsettings.h"
 #include "maildirsettings.h"
 #include "mixedmaildirsettings.h"
+#include "mixedmaildirstore.h"
 #include "imapcachecollectionmigrator.h"
 #include "localfolderscollectionmigrator.h"
 
@@ -53,6 +54,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KDebug>
 #include <KStandardDirs>
 #include <KLocalizedString>
+#include <KMessageBox>
 #include <kwallet.h>
 using KWallet::Wallet;
 
@@ -77,10 +79,26 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
   delete wallet;
 }
 
+static MixedMaildirStore *createCacheStore( const QString &basePath )
+{
+  MixedMaildirStore *store = 0;
+  const QFileInfo baseDir( basePath );
+  if ( baseDir.exists() && baseDir.isDir() ) {
+    store = new MixedMaildirStore;
+    store->setPath( baseDir.absoluteFilePath() );
+    return store;
+  }
+
+  return 0;
+}
+
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
   mConfig( 0 ),
-  mEmailIdentityConfig( 0 )
+  mEmailIdentityConfig( 0 ),
+  mDeleteCacheAfterImport( false ),
+  mDImapCache( 0 ),
+  mImapCache( 0 )
 {
   connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
            this, SLOT( instanceStatusChanged( Akonadi::AgentInstance ) ) );
@@ -92,6 +110,8 @@ KMailMigrator::~KMailMigrator()
 {
   delete mConfig;
   delete mEmailIdentityConfig;
+  delete mDImapCache;
+  delete mImapCache;
 }
 
 void KMailMigrator::migrate()
@@ -276,6 +296,36 @@ void KMailMigrator::connectCollectionMigrator( AbstractCollectionMigrator *migra
            this, SLOT( collectionMigratorFinished() ) );
 }
 
+void KMailMigrator::evaluateCacheHandlingOptions()
+{
+  bool needsAction = false;
+  Q_FOREACH( const QString &account, mAccounts ) {
+    if ( migrationState( account ) != Complete ) {
+      const KConfigGroup accountGroup( mConfig, account );
+      const QString type = accountGroup.readEntry( QLatin1String( "Type" ) ).toLower();
+      if ( type == QLatin1String( "dimap" ) ) {
+        needsAction = true;
+        break;
+      }
+    }
+  }
+
+  if ( needsAction ) {
+    const QString message =
+      i18nc( "@info", "<para>Cached IMAP accounts have a local copy of the server's data.</para>"
+                      "<para>These copies can be kept in local folders or be deleted"
+                      "after import.</para>"
+                      "<note>Mail that did not get imported will always be kept in local folders"
+                      "</note>" );
+
+    int result = KMessageBox::questionYesNo( 0, message, i18n( "KMail 2 Migration" ),
+                                             KGuiItem( i18nc( "@action", "Delete Copies" ) ),
+                                             KGuiItem( i18nc( "@action", "Keep Copies" ) ) );
+    mDeleteCacheAfterImport = ( result == KMessageBox::Yes );
+  }
+}
+
+
 bool KMailMigrator::migrateCurrentAccount()
 {
   if ( mCurrentAccount.isEmpty() )
@@ -401,31 +451,45 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   emit status( config.readEntry( "Name" ) );
   instance.reconfigure();
 
-  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, this );
+  ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportCachedMessages;
   if ( disconnected ) {
     const KConfigGroup dimapConfig( KGlobal::config(), QLatin1String( "Disconnected IMAP" ) );
-    ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ConfigOnly;
     if ( dimapConfig.isValid() ) {
-        QString logText;
-        if ( dimapConfig.readEntry( QLatin1String( "ImportNewMessages" ), false ) ) {
-            options |= ImapCacheCollectionMigrator::ImportNewMessages;
-        }
+      options = ImapCacheCollectionMigrator::ConfigOnly;
 
-        if ( dimapConfig.readEntry( QLatin1String( "ImportCachedMessages" ), false ) ) {
-            options |= ImapCacheCollectionMigrator::ImportCachedMessages;
-        }
+      if ( dimapConfig.readEntry( QLatin1String( "ImportNewMessages" ), false ) ) {
+        options |= ImapCacheCollectionMigrator::ImportNewMessages;
+      }
 
-        if ( dimapConfig.readEntry( QLatin1String( "RemoveDeletedMessages" ), false ) ) {
-            options |= ImapCacheCollectionMigrator::RemoveDeletedMessages;
-        }
+      if ( dimapConfig.readEntry( QLatin1String( "ImportCachedMessages" ), false ) ) {
+        options |= ImapCacheCollectionMigrator::ImportCachedMessages;
+      }
 
-        collectionMigrator->setMigrationOptions( options );
-        collectionMigrator->setCacheBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/dimap" ) ) );
+      if ( dimapConfig.readEntry( QLatin1String( "RemoveDeletedMessages" ), false ) ) {
+        options |= ImapCacheCollectionMigrator::RemoveDeletedMessages;
+      }
     }
-  } else {
-    collectionMigrator->setMigrationOptions( ImapCacheCollectionMigrator::ImportCachedMessages );
-    collectionMigrator->setCacheBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/imap" ) ) );
   }
+
+  ImapCacheCollectionMigrator *collectionMigrator = 0;
+  MixedMaildirStore *store = 0;
+  if ( disconnected ) {
+    if ( mDeleteCacheAfterImport ) {
+      options |= ImapCacheCollectionMigrator::DeleteImportedMessages;
+    }
+    if ( mDImapCache == 0 ){
+      mDImapCache = createCacheStore( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/dimap" ) ) );
+    }
+    store = mDImapCache;
+  } else {
+    if ( mImapCache == 0 ){
+      mImapCache = createCacheStore( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/imap" ) ) );
+    }
+    store = mImapCache;
+  }
+
+  collectionMigrator = new ImapCacheCollectionMigrator( instance, store, this );
+  collectionMigrator->setMigrationOptions( options );
 
   kDebug() << "Starting IMAP collection migration: options="
            << collectionMigrator->migrationOptions();

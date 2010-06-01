@@ -26,6 +26,7 @@
 #include "mixedmaildirstore.h"
 
 #include "filestore/itemfetchjob.h"
+#include "filestore/itemdeletejob.h"
 
 #include <kmime/kmime_message.h>
 
@@ -59,16 +60,16 @@ class ImapCacheCollectionMigrator::Private
   ImapCacheCollectionMigrator *const q;
 
   public:
-    explicit Private( ImapCacheCollectionMigrator *parent )
-      : q( parent ), mStore( 0 ), mHiddenSession( 0 ),
-        mImportNewMessages( false ), mImportCachedMessages( false ), mRemoveDeletedMessages( false ),
+    Private( ImapCacheCollectionMigrator *parent, MixedMaildirStore *store )
+      : q( parent ), mStore( store ), mHiddenSession( 0 ),
+        mImportNewMessages( false ), mImportCachedMessages( false ),
+        mRemoveDeletedMessages( false ), mDeleteImportedMessages( false ),
         mItemProgress( -1 )
     {
     }
 
     ~Private()
     {
-      delete mStore;
       delete mHiddenSession;
     }
 
@@ -87,6 +88,7 @@ class ImapCacheCollectionMigrator::Private
     bool mImportNewMessages;
     bool mImportCachedMessages;
     bool mRemoveDeletedMessages;
+    bool mDeleteImportedMessages;
 
     KConfigGroup mCurrentFolderGroup;
 
@@ -102,6 +104,7 @@ class ImapCacheCollectionMigrator::Private
     void itemCreateResult( KJob *job );
     void itemDeletePhase1Result( KJob *job );
     void itemDeletePhase2Result( KJob *job );
+    void cacheItemDeleteResult( KJob *job );
 };
 
 Collection ImapCacheCollectionMigrator::Private::cacheCollection( const Collection &collection ) const
@@ -282,6 +285,7 @@ void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
 
   if ( createJob != 0 ) {
     createJob->setProperty( "storeRemoteId", storeRemoteId );
+    createJob->setProperty( "storeParentCollection", QVariant::fromValue<Collection>( item.parentCollection() ) );
     connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
   } else {
     kDebug() << "Skipping cacheItem: remoteId=" << item.remoteId()
@@ -302,6 +306,8 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
   if ( job->error() != 0 ) {
     kWarning() << "Akonadi Create for single item" << item.remoteId() << "returned error: code="
                << job->error() << "text=" << job->errorString();
+
+    processNextItem();
   } else if ( !storeRemoteId.isEmpty() ) {
     const QStringList tagList = mTagListHash[ storeRemoteId ].value<QStringList>();
     if ( !tagList.isEmpty() ) {
@@ -319,9 +325,20 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
       Nepomuk::Resource nepomukResource( item.url() );
       nepomukResource.setTags( nepomukTags );
     }
-  }
 
-  processNextItem();
+    const Collection storeCollection = job->property( "storeParentCollection" ).value<Collection>();
+    if ( !storeCollection.remoteId().isEmpty() ) {
+      Item cacheItem = item;
+      cacheItem.setRemoteId( storeRemoteId );
+      cacheItem.setParentCollection( storeCollection );
+      FileStore::ItemDeleteJob *deleteJob = new FileStore::ItemDeleteJob( cacheItem );
+      connect( deleteJob, SIGNAL( result( KJob* ) ), q, SLOT( cacheItemDeleteResult( KJob* ) ) );
+    } else {
+      processNextItem();
+    }
+  } else {
+    processNextItem();
+  }
 }
 
 void ImapCacheCollectionMigrator::Private::itemDeletePhase1Result( KJob *job )
@@ -357,8 +374,23 @@ void ImapCacheCollectionMigrator::Private::itemDeletePhase2Result( KJob *job )
   processNextDeletedUid();
 }
 
-ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, QObject *parent )
-  : AbstractCollectionMigrator( resource, parent ), d( new Private( this ) )
+void ImapCacheCollectionMigrator::Private::cacheItemDeleteResult( KJob *job )
+{
+  FileStore::ItemDeleteJob *deleteJob = qobject_cast<FileStore::ItemDeleteJob*>( job );
+  Q_ASSERT( deleteJob != 0 );
+
+  const Item item = deleteJob->item();
+
+  if ( job->error() != 0 ) {
+    kWarning() << "Store Delete for single item" << item.remoteId() << "returned error: code="
+               << job->error() << "text=" << job->errorString();
+  }
+
+  processNextItem();
+}
+
+ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
+  : AbstractCollectionMigrator( resource, parent ), d( new Private( this, store ) )
 {
   d->mHiddenSession = new Session( resource.identifier().toAscii() );
 }
@@ -373,6 +405,7 @@ void ImapCacheCollectionMigrator::setMigrationOptions( const MigrationOptions &o
   d->mImportNewMessages = options.testFlag( ImportNewMessages );
   d->mImportCachedMessages = options.testFlag( ImportCachedMessages );
   d->mRemoveDeletedMessages = options.testFlag( RemoveDeletedMessages );
+  d->mDeleteImportedMessages = options.testFlag( DeleteImportedMessages );
 }
 
 ImapCacheCollectionMigrator::MigrationOptions ImapCacheCollectionMigrator::migrationOptions() const
@@ -387,28 +420,10 @@ ImapCacheCollectionMigrator::MigrationOptions ImapCacheCollectionMigrator::migra
   if ( d->mRemoveDeletedMessages ) {
     options |= RemoveDeletedMessages;
   }
-  return options;
-}
-
-void ImapCacheCollectionMigrator::setCacheBasePath( const QString &basePath )
-{
-  const QFileInfo baseDir( basePath );
-  if ( baseDir.exists() && baseDir.isDir() ) {
-    if ( d->mStore != 0 ) {
-      if ( d->mStore->path() == baseDir.absoluteFilePath() ) {
-        return;
-      }
-
-      delete d->mStore;
-    }
-
-    d->mStore = new MixedMaildirStore;
-    d->mStore->setPath( baseDir.absoluteFilePath() );
-    return;
+  if ( d->mDeleteImportedMessages ) {
+    options |= DeleteImportedMessages;
   }
-
-  delete d->mStore;
-  d->mStore = 0;
+  return options;
 }
 
 void ImapCacheCollectionMigrator::migrateCollection( const Collection &collection, const QString &folderId )
@@ -469,6 +484,15 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   } else {
     emit status( QString() );
     collectionProcessed();
+  }
+}
+
+void ImapCacheCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
+{
+  // if we potentially migrate items, use item progress instead
+  // use base implementation if only collections are processed
+  if ( migrationOptions() == ConfigOnly ) {
+    AbstractCollectionMigrator::migrationProgress( processedCollections, seenCollections );
   }
 }
 

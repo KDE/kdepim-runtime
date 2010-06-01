@@ -29,6 +29,7 @@
 class AbstractCollectionMigrator;
 class KConfig;
 class KJob;
+class MixedMaildirStore;
 
 namespace KMail
 {
@@ -56,7 +57,7 @@ class KMailMigrator : public KMigratorBase
     void progress( int value );
     void progress( int min, int max, int value );
 
-  private slots:
+  private Q_SLOTS:
     void imapAccountCreated( KJob *job );
     void imapDisconnectedAccountCreated( KJob *job );
     void pop3AccountCreated( KJob *job );
@@ -82,6 +83,8 @@ class KMailMigrator : public KMigratorBase
 
     void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
 
+    void evaluateCacheHandlingOptions();
+
   private:
     KConfig *mConfig;
     KConfig *mEmailIdentityConfig;
@@ -91,6 +94,9 @@ class KMailMigrator : public KMigratorBase
     typedef QStringList::iterator AccountIterator;
     AccountIterator mIt;
     Akonadi::AgentInstance mCurrentInstance;
+    bool mDeleteCacheAfterImport;
+    MixedMaildirStore *mDImapCache;
+    MixedMaildirStore *mImapCache;
 };
 
 } // namespace KMail
