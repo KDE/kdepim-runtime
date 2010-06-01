@@ -85,6 +85,8 @@ class AbstractCollectionMigrator::Private
     Collection mCurrentCollection;
     QString mCurrentFolderId;
 
+    QTimer mRecheckTimer;
+
   public: // slots
     void collectionAdded( const Collection &collection );
     void fetchResult( KJob *job );
@@ -353,11 +355,15 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 void AbstractCollectionMigrator::Private::collectionAdded( const Collection &collection )
 {
   if ( mStatus == Waiting ) {
+    mRecheckTimer.stop();
+    mRecheckTimer.disconnect();
     mStatus = Idle;
   }
 
   // don't wait any longer, start explicit fetch right away
   if ( mExplicitFetchStatus == Waiting ) {
+    mRecheckTimer.stop();
+    mRecheckTimer.disconnect();
     QMetaObject::invokeMethod( q, "recheckIdleResource", Qt::QueuedConnection );
   }
 
@@ -457,8 +463,15 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const AgentInst
   const QString oldMessage = mResource.statusMessage();
   mResource = instance;
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "oldStatus=" << oldStatus << "message=" << oldMessage
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "resource=" << mResource.identifier()
+           << "oldStatus=" << oldStatus << "message=" << oldMessage
            << "newStatus" << mResource.status() << "message=" << mResource.statusMessage();
+
+  if ( mStatus == Waiting && mResource.status() != AgentInstance::Broken ) {
+    mRecheckTimer.stop();
+    mRecheckTimer.disconnect();
+    mStatus = Idle;
+  }
 
   if ( oldStatus != AgentInstance::Idle && mResource.status() == AgentInstance::Idle && mExplicitFetchStatus == Idle ) {
     mExplicitFetchStatus = Waiting;
@@ -466,11 +479,10 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const AgentInst
     // if resource is now "Idle" it might still need time to process until it becomes ready
     // unfortunately this is not a separate state so lets delay the explicit fetch
     // wait for at most one minute
-    QTimer::singleShot( 60000, q, SLOT( recheckIdleResource() ) );
-  }
-
-  if ( mStatus == Waiting ) {
-    mStatus = Idle;
+    mRecheckTimer.stop();
+    mRecheckTimer.disconnect();
+    QObject::connect( &mRecheckTimer, SIGNAL( timeout() ), q, SLOT( recheckIdleResource() ) );
+    mRecheckTimer.start( 60000 );
   }
 }
 
@@ -538,11 +550,14 @@ AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &res
     // if resource is "Idle" it might still need time to process until it becomes ready
     // unfortunately this is not a separate state so lets delay the explicit fetch
     // wait for at most one minute
-    QTimer::singleShot( 60000, this, SLOT( recheckIdleResource() ) );
+    connect( &(d->mRecheckTimer), SIGNAL( timeout() ), SLOT( recheckIdleResource() ) );
+    d->mRecheckTimer.start( 60000 );
   } else if ( d->mResource.status() == AgentInstance::Broken ) {
     // if resource is "Broken", it could still become idle after fully processing its new config
     // wait for at most one minute
-    QTimer::singleShot( 60000, this, SLOT( recheckBrokenResource() ) );
+    d->mStatus = Private::Waiting;
+    connect( &(d->mRecheckTimer), SIGNAL( timeout() ), SLOT( recheckBrokenResource() ) );
+    d->mRecheckTimer.start( 60000 );
   }
 
   // monitor resource status so we know when to quit waiting
