@@ -236,7 +236,21 @@ void SetupServer::applySettings()
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setImapPort( m_ui->portSpin->value() );
   Settings::self()->setUserName( m_ui->userName->text() );
-  Settings::self()->setSafety( m_ui->safeImapGroup->checkedId() );
+  QString encryption = "";
+  switch ( m_ui->safeImapGroup->checkedId() ) {
+  case KIMAP::LoginJob::Unencrypted :
+    encryption = "None";
+    break;
+  case KIMAP::LoginJob::AnySslVersion:
+    encryption = "SSL";
+    break;
+  case KIMAP::LoginJob::TlsV1:
+    encryption = "STARTTLS";
+    break;
+  default:
+    kFatal() << "Shouldn't happen";
+  }
+  Settings::self()->setSafety( encryption );
   KIMAP::LoginJob::AuthenticationMode authtype = getCurrentAuthMode( m_ui->authenticationCombo );
   kDebug() << "saving IMAP auth mode: " << authenticationModeString( authtype );
   Settings::self()->setAuthentication( authtype );
@@ -293,7 +307,15 @@ void SetupServer::readSettings()
     !Settings::self()->userName().isEmpty() ? Settings::self()->userName() :
     currentUser->loginName() );
 
-  int i = Settings::self()->safety();
+  QString safety = Settings::self()->safety();
+  int i = 0;
+  if( safety == "SSL" )
+    i = KIMAP::LoginJob::AnySslVersion;
+  else if ( safety == "STARTTLS" )
+    i = KIMAP::LoginJob::TlsV1;
+  else
+    i = KIMAP::LoginJob::Unencrypted;
+
   QAbstractButton* safetyButton = m_ui->safeImapGroup->button( i );
   if ( safetyButton )
       safetyButton->setChecked( true );

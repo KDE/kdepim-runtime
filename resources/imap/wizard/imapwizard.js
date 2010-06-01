@@ -72,12 +72,14 @@ function testOk( arg )
     imapRes.setOption( "UseDefaultIdentity", false );
     imapRes.setOption( "AccountIdentity", identity.uoid() );
     if ( arg == "ssl" ) { 
-      imapRes.setOption( "Safety", 0);
-      imapRes.setOption( "Authentication", 0);
+      // The ENUM used for authentication (in the imap resource only)
+      // is KIMAP::LoginJob::AuthenticationMode
+      imapRes.setOption( "Safety", "SSL"); // SSL/TLS
+      imapRes.setOption( "Authentication", 0); // ClearText
       imapRes.setOption( "ImapPort", 993 );
-    } else if ( arg == "tls" ) {
-      imapRes.setOption( "Safety", 1);
-      imapRes.setOption( "Authentication", 0);
+    } else if ( arg == "tls" ) { // tls is really STARTTLS
+      imapRes.setOption( "Safety", "STARTTLS");  // STARTTLS
+      imapRes.setOption( "Authentication", 0); // ClearText
       imapRes.setOption( "ImapPort", 143 );
     }
     stage = 2;

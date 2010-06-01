@@ -36,6 +36,7 @@ namespace Akonadi {
 class AbstractSubResourceModel;
 class IdArbiterBase;
 class ItemSaveContext;
+class KJob;
 class StoreCollectionDialog;
 class SubResourceBase;
 
@@ -159,6 +160,9 @@ class ResourcePrivateBase : public QObject, public StoreConfigIface
     virtual void loadingResult( bool ok, const QString &errorString );
 
     virtual void savingResult( bool ok, const QString &errorString );
+
+  private Q_SLOTS:
+    void savingResult( KJob *job );
 
   private:
     State mState;

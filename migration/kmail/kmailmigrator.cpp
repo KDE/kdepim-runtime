@@ -353,11 +353,11 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   iface->setImapPort( config.readEntry( "port", 143 ) );
   iface->setUserName( config.readEntry( "login" ) );
   if ( config.readEntry( "use-ssl" ).toLower() == "true" )
-    iface->setSafety( KIMAP::LoginJob::AnySslVersion );
+    iface->setSafety( "SSL" );
   else if ( config.readEntry( "use-tls" ).toLower() == "true" )
-    iface->setSafety( KIMAP::LoginJob::TlsV1 );
+    iface->setSafety( "STARTTLS" );
   else
-    iface->setSafety( KIMAP::LoginJob::Unencrypted );
+    iface->setSafety( "NONE" );
   const QString &authentication = config.readEntry( "auth" ).toUpper();
   if ( authentication == "LOGIN" )
     iface->setAuthentication( KIMAP::LoginJob::Login );

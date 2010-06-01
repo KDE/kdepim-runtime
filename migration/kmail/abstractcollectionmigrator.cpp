@@ -95,6 +95,7 @@ class AbstractCollectionMigrator::Private
   private:
     QStringList folderPathComponentsForCollection( const Collection &collection ) const;
     QString folderIdentifierForCollection( const Collection &collection ) const;
+    void processingDone();
 };
 
 void AbstractCollectionMigrator::Private::migrateConfig()
@@ -108,16 +109,17 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 //   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "migrating config for folderId" << mCurrentFolderId
 //                                    << "to collectionId" << mCurrentCollection.id();
 
+  // general folder specific settings
   const QString folderGroupPattern = QLatin1String( "Folder-%1" );
+  if ( mKMailConfig->hasGroup( folderGroupPattern.arg( mCurrentFolderId ) ) ) {
+    KConfigGroup oldGroup( mKMailConfig, folderGroupPattern.arg( mCurrentFolderId ) );
+    KConfigGroup newGroup( mKMailConfig, folderGroupPattern.arg( mCurrentCollection.id() ) );
 
-  KConfigGroup oldGroup( mKMailConfig, folderGroupPattern.arg( mCurrentFolderId ) );
-  KConfigGroup newGroup( mKMailConfig, folderGroupPattern.arg( mCurrentCollection.id() ) );
+    oldGroup.copyTo( &newGroup );
+    oldGroup.deleteGroup();
+  }
 
-  oldGroup.copyTo( &newGroup );
-  oldGroup.deleteGroup();
-
-
-  // check emailidentify
+  // check emailidentity
   const QStringList identityGroups = mEmailIdentityConfig->groupList().filter( QRegExp( "Identity #\\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "identityGroups=" << identityGroups;
   Q_FOREACH( const QString &groupName, identityGroups ) {
@@ -159,8 +161,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       filterGroup.writeEntry( "trash" , mCurrentCollection.id() );
   }
 
-
-
   // check all filters
   const QStringList filterGroups = mKMailConfig->groupList().filter( QRegExp( "Filter #\\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "filterGroups=" << filterGroups;
@@ -177,6 +177,28 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         filterGroup.writeEntry( actionKey, mCurrentCollection.id() );
       }
     }
+  }
+
+  // check MessageListView::StorageModelSelectedMessages
+  KConfigGroup selectedMessagesGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelSelectedMessages" ) );
+  const QString storageModelPattern = QLatin1String( "MessageUniqueIdForStorageModel%1" );
+  if ( selectedMessagesGroup.hasKey( storageModelPattern.arg( mCurrentFolderId ) ) ) {
+    //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "replacing selected message entry for"
+    //                                 << mCurrentFolderId;
+    const qulonglong defValue = 0;
+    const qulonglong value = selectedMessagesGroup.readEntry( storageModelPattern.arg( mCurrentFolderId ), defValue );
+    selectedMessagesGroup.writeEntry( storageModelPattern.arg( mCurrentCollection.id() ), value );
+    selectedMessagesGroup.deleteEntry( storageModelPattern.arg( mCurrentFolderId ) );
+  }
+
+  // folder specific templates
+  const QString templatesGroupPattern = QLatin1String( "Templates #%1" );
+  if ( mKMailConfig->hasGroup( templatesGroupPattern.arg( mCurrentFolderId ) ) ) {
+    KConfigGroup oldGroup( mKMailConfig, templatesGroupPattern.arg( mCurrentFolderId ) );
+    KConfigGroup newGroup( mKMailConfig, templatesGroupPattern.arg( mCurrentCollection.id() ) );
+
+    oldGroup.copyTo( &newGroup );
+    oldGroup.deleteGroup();
   }
 }
 
@@ -220,7 +242,7 @@ void AbstractCollectionMigrator::Private::fetchResult( KJob *job )
 
     if ( mStatus == Idle ) {
       Q_ASSERT( mCollectionQueue.isEmpty() );
-      q->migrationDone();
+      processingDone();
     }
   }
 }
@@ -233,7 +255,7 @@ void AbstractCollectionMigrator::Private::processNextCollection()
 
   if ( mCollectionQueue.isEmpty() ) {
     if ( mResource.status() == AgentInstance::Idle && mExplicitFetchStatus != Running ) {
-      q->migrationDone();
+      processingDone();
     } else {
       mStatus = Idle;
     }
@@ -340,6 +362,16 @@ QString AbstractCollectionMigrator::Private::folderIdentifierForCollection( cons
   return result;
 }
 
+void AbstractCollectionMigrator::Private::processingDone()
+{
+  if ( mCollectionsById.count() == 0 ) {
+    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' did not create any folders",
+                                  mResource.name() ) );
+  } else {
+    q->migrationDone();
+  }
+}
+
 AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, QObject *parent )
   : QObject( parent ), d( new Private( this, resource ) )
 {
@@ -354,18 +386,18 @@ AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &res
 
   connect( d->mMonitor, SIGNAL( collectionAdded( Akonadi::Collection, Akonadi::Collection ) ), SLOT( collectionAdded( Akonadi::Collection ) ) );
 
-  if ( d->mResource.status() != AgentInstance::Broken ) {
-    d->mExplicitFetchStatus = Private::Running;
-    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-    job->setFetchScope( colScope );
-
-    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( fetchResult( KJob* ) ) );
-  } else {
+  if ( d->mResource.status() == AgentInstance::Idle ) {
+    // if resource is "Idle" it might still need time to process until it becomes ready
+    // unfortunately this is not a separate state so lets delay the explicit fetch
+    // wait for at most one minute
+    QTimer::singleShot( 60000, this, SLOT( recheckIdleResource() ) );
+  } else if ( d->mResource.status() == AgentInstance::Broken ) {
     // if resource is "Broken", it could still become idle after fully processing its new config
     // wait for at most one minute
     QTimer::singleShot( 60000, this, SLOT( recheckBrokenResource() ) );
   }
 
+  // monitor resource status so we know when to quit waiting
   connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
            this, SLOT( resourceStatusChanged( Akonadi::AgentInstance  ) ) );
 }
@@ -395,6 +427,11 @@ void AbstractCollectionMigrator::setEmailIdentityConfig( KConfig *config )
   d->mEmailIdentityConfig = config;
 }
 
+void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
+{
+  emit progress( 0, seenCollections, processedCollections );
+}
+
 void AbstractCollectionMigrator::collectionProcessed()
 {
   d->migrateConfig();
@@ -404,6 +441,8 @@ void AbstractCollectionMigrator::collectionProcessed()
 
   d->mStatus = Private::Scheduling;
   QMetaObject::invokeMethod( this, "processNextCollection", Qt::QueuedConnection );
+
+  migrationProgress( d->mProcessedCollectionsCount, d->mCollectionsById.count() );
 }
 
 void AbstractCollectionMigrator::migrationDone()
