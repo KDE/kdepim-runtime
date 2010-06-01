@@ -189,6 +189,15 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     }
   }
 
+  // check MessageListView::StorageModelAggregations
+  KConfigGroup storageModelAggregationGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelAggregations" ) );
+  const QString setForStorageAggregationModelPattern = QLatin1String( "SetForStorageModel%1" );
+  if ( storageModelAggregationGroup.hasKey(setForStorageAggregationModelPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = storageModelAggregationGroup.readEntry( setForStorageAggregationModelPattern.arg( mCurrentFolderId ) );
+    storageModelAggregationGroup.writeEntry( setForStorageAggregationModelPattern.arg( mCurrentCollection.id() ),value );
+    storageModelAggregationGroup.deleteEntry( setForStorageAggregationModelPattern.arg( mCurrentFolderId ) );
+  }
+
   // check MessageListView::StorageModelThemes
   KConfigGroup storageModelThemesGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelThemes" ) );
   const QString setForStorageModelPattern = QLatin1String( "SetForStorageModel%1" );
