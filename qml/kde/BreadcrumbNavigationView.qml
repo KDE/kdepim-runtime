@@ -38,6 +38,8 @@ Item {
   property int _transitionSelect : -1
 
   property bool hasChildren :  childItemsView.count > 0
+  property bool hasSelection :  selectedItemView.count > 0
+  property bool hasBreadcrumbs :  breadcrumbsView.count > 0
 
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
