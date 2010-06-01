@@ -347,8 +347,8 @@ void KMailMigrator::evaluateCacheHandlingOptions()
 {
   bool needsAction = false;
   Q_FOREACH( const QString &account, mAccounts ) {
-    if ( migrationState( account ) != Complete ) {
-      const KConfigGroup accountGroup( mConfig, account );
+    const KConfigGroup accountGroup( mConfig, account );
+    if ( migrationState( accountGroup.readEntry( "Id" ) ) != Complete ) {
       const QString type = accountGroup.readEntry( QLatin1String( "Type" ) ).toLower();
       if ( type == QLatin1String( "dimap" ) ) {
         needsAction = true;
