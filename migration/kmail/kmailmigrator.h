@@ -48,6 +48,7 @@ class KMailMigrator : public KMigratorBase
     void migrate();
 
     void migrateTags();
+    void migrateRCFiles();
     void migrateNext();
     void migrateLocalFolders();
     void migrationDone();

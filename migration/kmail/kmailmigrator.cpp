@@ -133,6 +133,7 @@ void KMailMigrator::migrate()
 
 
   migrateTags();
+  migrateRCFiles();
 
   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
 
@@ -211,6 +212,20 @@ void KMailMigrator::migrateTags()
   if ( !newlyMigratedTags.isEmpty() ) {
     tagMigrationConfig.writeEntry( "MigratedTags", migratedTags + newlyMigratedTags );
     tagMigrationConfig.sync();
+  }
+}
+
+void KMailMigrator::migrateRCFiles()
+{
+  const QDir sourceDir( KStandardDirs::locateLocal( "data", "kmail" ) );
+  const QDir targetDir( KStandardDirs::locateLocal( "data", "kmail2" ) );
+  KStandardDirs::makeDir( targetDir.absolutePath() );
+
+  const QFileInfoList files = sourceDir.entryInfoList( QStringList() << QLatin1String( "*.rc" ),
+                                                       QDir::Files | QDir::Readable );
+  Q_FOREACH( const QFileInfo &fileInfo, files ) {
+    QFile file( fileInfo.absoluteFilePath() );
+    file.copy( QFileInfo( targetDir, fileInfo.fileName() ).absoluteFilePath() );
   }
 }
 
