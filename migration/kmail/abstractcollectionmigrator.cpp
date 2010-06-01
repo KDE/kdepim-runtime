@@ -224,6 +224,13 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   if ( composer.readEntry( "previous-fcc" ) == mCurrentFolderId )
     composer.writeEntry( "previous-fcc", mCurrentCollection.id() );
 
+  // Check FolderSelectionDialog/LastSelectedFolder
+  KConfigGroup folderSelection( mKMailConfig, "FolderSelectionDialog" );
+  if ( folderSelection.readEntry( "LastSelectedFolder", mCurrentFolderId ) == mCurrentFolderId )
+    folderSelection.writeEntry( "LastSelectedFolder", mCurrentCollection.id() );
+
+
+
   // Check General/startupFolder
   KConfigGroup general( mKMailConfig, "General" );
   if ( general.readEntry( "startupFolder" ) == mCurrentFolderId )
