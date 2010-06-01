@@ -97,6 +97,7 @@ class AbstractCollectionMigrator::Private
     QStringList folderPathComponentsForCollection( const Collection &collection ) const;
     QString folderIdentifierForCollection( const Collection &collection ) const;
     void processingDone();
+    void deleteGroup( const QString& );
 };
 
 void AbstractCollectionMigrator::Private::migrateConfig()
@@ -235,6 +236,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   KConfigGroup general( mKMailConfig, "General" );
   if ( general.readEntry( "startupFolder" ) == mCurrentFolderId )
     general.writeEntry( "startupFolder", mCurrentCollection.id() );
+  general.deleteEntry( "default-mailbox-format" );
 
   // check all expire folder
   const QStringList folderGroups = mKMailConfig->groupList().filter( "Folder-" );
@@ -342,6 +344,18 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
+  }
+
+  //Not necessary in kmail2
+  deleteGroup( "GroupwareFolderInfo" );
+  deleteGroup( "Groupware" );
+}
+
+void AbstractCollectionMigrator::Private::deleteGroup( const QString &name )
+{
+  if ( mKMailConfig->hasGroup( name ) ) {
+    KConfigGroup groupName( mKMailConfig, name );
+    groupName.deleteGroup();
   }
 }
 
