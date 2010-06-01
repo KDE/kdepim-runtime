@@ -28,6 +28,7 @@
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/monitor.h>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -117,6 +118,15 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
+    if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
+      if ( mCurrentCollection.hasAttribute<Akonadi::EntityDisplayAttribute>() ) {
+        mCurrentCollection.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing )->setIconName( newGroup.readEntry( "NormalIconPath" ) );
+        mCurrentCollection.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing )->setActiveIconName( newGroup.readEntry( "UnreadIconPath" ) );
+      }
+    }
+    newGroup.deleteEntry( "UseCustomIcons" );
+    newGroup.deleteEntry( "UnreadIconPath" );
+    newGroup.deleteEntry( "NormalIconPath" );
   }
 
   // check emailidentity
