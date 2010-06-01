@@ -31,11 +31,15 @@ class QmlDateEdit : public QDeclarativeItem
 {
   Q_OBJECT
   Q_PROPERTY( QDate date READ date )
+  Q_PROPERTY( QString displayFormat READ displayFormat WRITE setDisplayFormat )
 
 public:
   explicit QmlDateEdit( QDeclarativeItem *parent = 0 );
 
   QDate date() const;
+
+  QString displayFormat() const;
+  void setDisplayFormat( const QString &format );
 
   virtual void geometryChanged( const QRectF &newGeometry, const QRectF &oldGeometry );
 

@@ -37,6 +37,16 @@ QDate QmlDateEdit::date() const
   return mDateEdit->date();
 }
 
+QString QmlDateEdit::displayFormat() const
+{
+  return mDateEdit->displayFormat();
+}
+
+void QmlDateEdit::setDisplayFormat( const QString &format )
+{
+  mDateEdit->setDisplayFormat( format );
+}
+
 void QmlDateEdit::geometryChanged( const QRectF& newGeometry, const QRectF& oldGeometry )
 {
   QDeclarativeItem::geometryChanged( newGeometry, oldGeometry );
