@@ -156,8 +156,8 @@ class MixedMaildirStore::Private : public FileStore::Job::Visitor
 
     FolderType folderForCollection( const Collection &col, QString &path, QString &errorText ) const;
 
-    IndexReaderPtr readMBoxIndex( const MBoxPtr &mbox ) const;
-    IndexReaderPtr readMaildirIndex( const Maildir &md ) const;
+    IndexReaderPtr readMBoxIndex( const MBoxPtr &mbox );
+    IndexReaderPtr readMaildirIndex( const Maildir &md );
     void fillMBoxCollectionDetails( const MBoxPtr &mbox, Collection &collection );
     void fillMaildirCollectionDetails( const Maildir &md, Collection &collection );
     void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse );
@@ -183,6 +183,9 @@ class MixedMaildirStore::Private : public FileStore::Job::Visitor
   public:
     typedef QHash<QString, MBoxPtr> MBoxHash;
     MBoxHash mMBoxes;
+
+    typedef QHash<QString, IndexReaderPtr> IndexReaderHash;
+    IndexReaderHash mIndexReaders;
 };
 
 MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForCollection( const Collection &col, QString &path, QString &errorText ) const
@@ -259,7 +262,7 @@ static bool indexFileForFolder( const QFileInfo &folderDirInfo, QFileInfo &index
   return true;
 }
 
-IndexReaderPtr MixedMaildirStore::Private::readMBoxIndex( const MBoxPtr &mbox ) const
+IndexReaderPtr MixedMaildirStore::Private::readMBoxIndex( const MBoxPtr &mbox )
 {
   const QFileInfo mboxFileInfo( mbox->mbox().fileName() );
   QFileInfo indexFileInfo;
@@ -283,12 +286,17 @@ IndexReaderPtr MixedMaildirStore::Private::readMBoxIndex( const MBoxPtr &mbox ) 
   return indexReaderPtr;
 }
 
-IndexReaderPtr MixedMaildirStore::Private::readMaildirIndex( const Maildir &md ) const
+IndexReaderPtr MixedMaildirStore::Private::readMaildirIndex( const Maildir &md )
 {
   const QFileInfo maildirFileInfo( md.path() );
   QFileInfo indexFileInfo;
   if ( !indexFileForFolder( maildirFileInfo, indexFileInfo ) ) {
     return IndexReaderPtr();
+  }
+
+  IndexReaderHash::const_iterator findIt = mIndexReaders.constFind( indexFileInfo.absoluteFilePath() );
+  if ( findIt != mIndexReaders.constEnd() ) {
+    return findIt.value();
   }
 
   const QDir maildirBaseDir( maildirFileInfo.absoluteFilePath() );
@@ -314,6 +322,8 @@ IndexReaderPtr MixedMaildirStore::Private::readMaildirIndex( const Maildir &md )
     kError() << "Index file" << indexFileInfo.path() << "could not be read";
     return IndexReaderPtr();
   }
+
+  mIndexReaders.insert( indexFileInfo.absoluteFilePath(), indexReaderPtr );
 
   return indexReaderPtr;
 }
