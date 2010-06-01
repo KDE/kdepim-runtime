@@ -155,6 +155,9 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "MainFolderViewItemIsHidden" );
     newGroup.deleteEntry( "MainFolderViewItemIsSelected" );
 
+    newGroup.deleteEntry( "Annotation-FolderType" );
+    newGroup.deleteEntry( "AnnotationFolderTypeChanged" );
+    newGroup.deleteEntry( "AlarmsBlocked" );
 
 
     //Migrate favorite folder
