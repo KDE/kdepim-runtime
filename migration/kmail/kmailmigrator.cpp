@@ -310,8 +310,8 @@ void KMailMigrator::migrationFailed( const QString &errorMsg,
                                      const AgentInstance &instance )
 {
   const KConfigGroup group( mConfig, mCurrentAccount );
-  emit message( Error, i18n( "Migration of '%1' to akonadi resource failed: %2",
-                             group.readEntry( "Name " ), errorMsg ) );
+  emit message( Error, i18n( "Migration of '%1' to Akonadi resource failed: %2",
+                             group.readEntry( "Name" ), errorMsg ) );
 
   if ( instance.isValid() )
     AgentManager::self()->removeInstance( instance );
@@ -810,6 +810,8 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
 
 void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
 {
+  kDebug() << "imapMigrationFinished: instance=" << instance.identifier()
+           << "error=" << error;
   if ( error.isEmpty() ) {
     migrationCompleted( instance );
   } else {
