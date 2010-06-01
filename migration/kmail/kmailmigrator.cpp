@@ -131,7 +131,7 @@ void KMailMigrator::migrate()
   const QString &emailIdentityCfgFile = KStandardDirs::locateLocal( "config", QString( "emailidentities" ) );
   mEmailIdentityConfig = new KConfig( emailIdentityCfgFile );
 
-
+  deleteOldGroup();
   migrateTags();
   migrateRCFiles();
 
@@ -141,6 +141,21 @@ void KMailMigrator::migrate()
 
   mIt = mAccounts.begin();
   migrateNext();
+}
+
+void KMailMigrator::deleteOldGroup()
+{
+  deleteOldGroup( "GroupwareFolderInfo" );
+  deleteOldGroup( "Groupware" );
+  deleteOldGroup( "IMAP Resource" );
+
+}
+
+void KMailMigrator::deleteOldGroup( const QString& name ) {
+  if ( mConfig->hasGroup( name ) ) {
+    KConfigGroup groupName( mConfig, name );
+    groupName.deleteGroup();
+  }
 }
 
 void KMailMigrator::migrateTags()

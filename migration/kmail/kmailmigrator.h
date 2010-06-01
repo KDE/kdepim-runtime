@@ -52,6 +52,7 @@ class KMailMigrator : public KMigratorBase
     void migrateNext();
     void migrateLocalFolders();
     void migrationDone();
+    void deleteOldGroup();
 
   Q_SIGNALS:
     void status( const QString &msg );
@@ -78,6 +79,7 @@ class KMailMigrator : public KMigratorBase
     void imapCacheImportFinished( const QString &error );
 
   private:
+    void deleteOldGroup( const QString& );
     void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance

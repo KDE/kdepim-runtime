@@ -97,7 +97,6 @@ class AbstractCollectionMigrator::Private
     QStringList folderPathComponentsForCollection( const Collection &collection ) const;
     QString folderIdentifierForCollection( const Collection &collection ) const;
     void processingDone();
-    void deleteGroup( const QString& );
 };
 
 void AbstractCollectionMigrator::Private::migrateConfig()
@@ -346,18 +345,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     oldGroup.deleteGroup();
   }
 
-  //Not necessary in kmail2
-  deleteGroup( "GroupwareFolderInfo" );
-  deleteGroup( "Groupware" );
-  deleteGroup( "IMAP Resource" );
-}
-
-void AbstractCollectionMigrator::Private::deleteGroup( const QString &name )
-{
-  if ( mKMailConfig->hasGroup( name ) ) {
-    KConfigGroup groupName( mKMailConfig, name );
-    groupName.deleteGroup();
-  }
 }
 
 void AbstractCollectionMigrator::Private::collectionAdded( const Collection &collection )
