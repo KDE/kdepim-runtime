@@ -89,10 +89,13 @@ void LocalFoldersCollectionMigrator::migrateCollection( const Collection &collec
 
   emit status( collection.name() );
 
-  const TypeHash::const_iterator typeIt = d->mSystemFolders.constFind( collection.name() );
-  if ( typeIt != d->mSystemFolders.constEnd() ) {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Registering collection" << collection.name() << "for type" << *typeIt;
-    SpecialMailCollections::self()->registerCollection( *typeIt, collection );
+  if ( collection.parentCollection() == Collection::root() ) {
+    registerAsSpecialCollection( SpecialMailCollections::Root );
+  } else {
+    const TypeHash::const_iterator typeIt = d->mSystemFolders.constFind( collection.name() );
+    if ( typeIt != d->mSystemFolders.constEnd() ) {
+      registerAsSpecialCollection( *typeIt );
+    }
   }
 
   collectionProcessed();

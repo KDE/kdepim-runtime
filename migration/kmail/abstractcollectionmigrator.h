@@ -68,12 +68,17 @@ class AbstractCollectionMigrator : public QObject
     KConfig *kmailConfig() const;
     KConfig *emailIdentityConfig() const;
 
+    // TODO SpecialMailCollections doesn't export its enum to bytearray mapping
+    // so we use an int for the enum value
+    void registerAsSpecialCollection( int type );
+
   private:
     class Private;
     Private *const d;
 
     Q_PRIVATE_SLOT( d, void collectionAdded( Akonadi::Collection ) )
     Q_PRIVATE_SLOT( d, void fetchResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void modifyResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void processNextCollection() )
     Q_PRIVATE_SLOT( d, void recheckBrokenResource() )
     Q_PRIVATE_SLOT( d, void recheckIdleResource() )
