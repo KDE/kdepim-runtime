@@ -36,25 +36,11 @@ Item {
   width : breadcrumbsView.width
 
   Image {
-    id : fuzz
-    source : "fuzz.png"
-    anchors.horizontalCenter : parent.horizontalCenter
-    y : parent.height / 2
-    opacity : (selectedDelegate && hasChildren) ? 1 : 0
-  }
-  Image {
     anchors.right : parent.right
     anchors.rightMargin : 5
     anchors.verticalCenter : parent.verticalCenter
     opacity : (selectedDelegate && hasChildren) ? 1 : 0
     source: "currentindicator.png"
-  }
-  Image {
-    id : lastItemImage
-    opacity : (selectedDelegate && !hasChildren) ? 1 : 0;
-    source : "selected_bottom.png"
-    anchors.horizontalCenter : parent.horizontalCenter
-    y : parent.height / 2
   }
 
   MouseArea {

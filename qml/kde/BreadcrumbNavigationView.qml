@@ -55,12 +55,22 @@ Item {
     property int _breadcrumb_y_offset : 0
     interactive : false
     height : itemHeight
-    opacity : { if ( breadcrumbsView.count <= 1 && selectedItemView.count == 1 ) 1; else 0; }
+
     anchors.top : parent.top
-    anchors.topMargin : { if ( breadcrumbsView.count == 1 || ( breadcrumbsView.count == 0 && selectedItemView.count == 1) ) _breadcrumb_y_offset; else (-1 * itemHeight); }
+
     anchors.left : parent.left
     anchors.right : parent.right
     model : topModel
+
+    Image {
+      source : "dividing-line.png"
+      anchors.top : parent.top
+      anchors.right : parent.right
+      anchors.bottom : parent.bottom
+      anchors.bottomMargin : breadcrumbTopLevel.hasBreadcrumbs ? 0 : 8
+      fillMode : Image.TileVertically
+      opacity : breadcrumbTopLevel.hasSelection ? 1 : 0
+    }
   }
 
   ListView {
@@ -73,6 +83,16 @@ Item {
     anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
     anchors.right : parent.right
+
+    Image {
+      source : "dividing-line.png"
+      anchors.top : parent.top
+      anchors.right : parent.right
+      anchors.bottom : parent.bottom
+      anchors.bottomMargin : 8
+      fillMode : Image.TileVertically
+    }
+
   }
 
   ListView {
@@ -85,6 +105,30 @@ Item {
     anchors.topMargin : _selected_padding
     anchors.left : parent.left
     anchors.right : parent.right
+    Image {
+      source : "dividing-line-horizontal.png"
+      fillMode : Image.TileHorizontally
+      anchors.top : parent.top
+      anchors.topMargin : -3
+      anchors.right : topLine.left
+      anchors.left : parent.left
+      opacity : (selectedItemView.count > 0) ? 1 : 0
+    }
+    Image {
+      id : topLine
+      source : "list-line-top.png"
+      anchors.right : parent.right
+      anchors.top : parent.top
+      anchors.topMargin : -8
+      opacity : (selectedItemView.count > 0) ? 1 : 0
+    }
+    Image {
+      source : "dividing-line-horizontal.png"
+      fillMode : Image.TileHorizontally
+      anchors.right : parent.right
+      anchors.left : parent.left
+      anchors.bottom : parent.bottom
+    }
   }
   ListView {
     id : childItemsView
@@ -97,6 +141,28 @@ Item {
     anchors.left : parent.left
     anchors.right : parent.right
     contentY : _y_scroll
+
+    Image {
+      source : "dividing-line.png"
+      anchors.top : parent.top
+      anchors.right : parent.right
+      anchors.bottom : parent.bottom
+      fillMode : Image.TileVertically
+    }
+    Image {
+      source : "scrollable-top.png"
+      anchors.top : parent.top
+      anchors.right : parent.right
+      anchors.left : parent.left
+      fillMode : Image.TileHorizontally
+    }
+    Image {
+      source : "scrollable-bottom.png"
+      anchors.bottom : parent.bottom
+      anchors.right : parent.right
+      anchors.left : parent.left
+      fillMode : Image.TileHorizontally
+    }
   }
 
   function completeChildSelection() {
