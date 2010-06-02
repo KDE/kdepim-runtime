@@ -190,6 +190,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
         const QList<int> lIds = newFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
         const QStringList lNames = newFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+	//kDebug( KDE_DEFAULT_DEBUG_AREA ) << "lIds=" << lIds<<" lNames="<<lNames;
         newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
         newFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
 
