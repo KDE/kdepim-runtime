@@ -7,13 +7,9 @@ install(FILES
   FavoriteSelector.qml
   backgroundtile.png
   border_dot.png
-  dividing-line.png
   currentindicator.png
   flapbackground.png
   fuzz.png
-  list-line-top.png
-  scrollable-bottom.png
-  scrollable-top.png
   selected_bottom.png
   selected_top.png
   sliderbackground.png
