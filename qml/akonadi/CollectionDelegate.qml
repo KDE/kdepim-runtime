@@ -30,10 +30,13 @@ Item {
   property bool fullClickArea : false
   property bool showChildIndicator : false
   property bool selectedDelegate : false
+  property int indentation : 0
 
   signal indexSelected(int row)
 
-  width : breadcrumbsView.width
+  x : indentation
+  width : breadcrumbsView.width - indentation
+
 
   Image {
     anchors.right : parent.right
