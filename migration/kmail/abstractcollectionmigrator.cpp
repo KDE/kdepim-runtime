@@ -169,32 +169,32 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       KConfigGroup newFavoriteGroup( mKMailConfig, "FavoriteCollections" );
       if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) ) {
         KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
-        const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
-        const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
-        oldFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
-        oldFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
+	oldFavoriteGroup.copyTo( &newFavoriteGroup );
+        oldFavoriteGroup.deleteGroup();
 
-        oldFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
-        oldFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
+	const QList<int> lIds = newFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
+        const QStringList lNames = newFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+        newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+        newFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
 
-        oldFavoriteGroup.deleteEntry( "IconSize" );
-        oldFavoriteGroup.deleteEntry( "SortingPolicy" );
-        oldFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
-        oldFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
+
+        newFavoriteGroup.deleteEntry( "IconSize" );
+        newFavoriteGroup.deleteEntry( "SortingPolicy" );
+        newFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
 
         KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
-        if ( oldFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
-          int value = oldFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
+        if ( newFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
+          int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
           favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
         }
 
-        if ( oldFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
-          bool value = oldFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
+        if ( newFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
+          bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
           favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
         }
-
-        oldFavoriteGroup.copyTo( &newFavoriteGroup );
-        oldFavoriteGroup.deleteGroup();
       }
 
       if ( newFavoriteGroup.hasKey( "FavoriteCollectionIds" ) ) {
