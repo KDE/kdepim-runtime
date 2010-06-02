@@ -169,7 +169,15 @@ void Settings::loadAccount( ImapAccount *account ) const
   account->setUserName( userName() );
   account->setSubscriptionEnabled( subscriptionEnabled() );
 
-  account->setEncryptionMode( (KIMAP::LoginJob::EncryptionMode) safety() );
+  QString encryption = safety();
+  if ( encryption == "SSL" ) {
+    account->setEncryptionMode( KIMAP::LoginJob::AnySslVersion );
+  } else if (  encryption == "STARTTLS" ) {
+    account->setEncryptionMode( KIMAP::LoginJob::TlsV1 );
+  } else {
+    account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
+  }
+
   account->setAuthenticationMode( (KIMAP::LoginJob::AuthenticationMode) authentication() );
 
 }
