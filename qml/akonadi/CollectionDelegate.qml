@@ -37,15 +37,6 @@ Item {
   x : indentation
   width : breadcrumbsView.width - indentation
 
-
-  Image {
-    anchors.right : parent.right
-    anchors.rightMargin : 5
-    anchors.verticalCenter : parent.verticalCenter
-    opacity : (selectedDelegate && hasChildren) ? 1 : 0
-    source: "currentindicator.png"
-  }
-
   MouseArea {
     anchors.fill: parent
     onClicked: {
