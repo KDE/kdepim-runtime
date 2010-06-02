@@ -274,13 +274,22 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( "Account \\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
   Q_FOREACH( const QString &groupName, accountGroups ) {
-    KConfigGroup filterGroup( mKMailConfig, groupName );
+    KConfigGroup accountGroup( mKMailConfig, groupName );
 
-    if ( filterGroup.readEntry( "Folder" ) == mCurrentFolderId )
-      filterGroup.writeEntry( "Folder", mCurrentCollection.id() );
+    if ( accountGroup.readEntry( "Folder" ) == mCurrentFolderId ){
+      accountGroup.writeEntry( "Folder", mCurrentCollection.id() );
+    }
 
-    if ( filterGroup.readEntry( "trash" ) == mCurrentFolderId )
-      filterGroup.writeEntry( "trash" , mCurrentCollection.id() );
+    if ( accountGroup.readEntry( "trash" ) == mCurrentFolderId ) {
+      accountGroup.writeEntry( "trash" , mCurrentCollection.id() );
+
+      // this is configured as a trash collection, so make sure it gets the appropriate attribute
+      // unless there is already a trash collection for this resource
+      // (unfortunately special collections enforce uniqueness per resource)
+      if ( !SpecialMailCollections::self()->hasCollection( SpecialMailCollections::Trash, mResource ) ) {
+        q->registerAsSpecialCollection( SpecialMailCollections::Trash );
+      }
+    }
   }
 
   // check all filters
