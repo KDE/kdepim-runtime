@@ -48,9 +48,11 @@ class KMailMigrator : public KMigratorBase
     void migrate();
 
     void migrateTags();
+    void migrateRCFiles();
     void migrateNext();
     void migrateLocalFolders();
     void migrationDone();
+    void deleteOldGroup();
 
   Q_SIGNALS:
     void status( const QString &msg );
@@ -66,7 +68,7 @@ class KMailMigrator : public KMigratorBase
     void localMaildirCreated( KJob *job );
 
     void localFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
-    void dimapFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
+    void imapFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
 
     void collectionMigratorMessage( int type, const QString &msg );
     void collectionMigratorFinished();
@@ -74,7 +76,10 @@ class KMailMigrator : public KMigratorBase
     void instanceStatusChanged( const Akonadi::AgentInstance &instance );
     void instanceProgressChanged( const Akonadi::AgentInstance &instance );
 
+    void imapCacheImportFinished( const QString &error );
+
   private:
+    void deleteOldGroup( const QString& );
     void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance
@@ -97,6 +102,8 @@ class KMailMigrator : public KMigratorBase
     bool mDeleteCacheAfterImport;
     MixedMaildirStore *mDImapCache;
     MixedMaildirStore *mImapCache;
+    int mRunningCacheImporterCount;
+    bool mLocalFoldersDone;
 };
 
 } // namespace KMail

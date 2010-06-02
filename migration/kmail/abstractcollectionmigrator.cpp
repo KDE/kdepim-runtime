@@ -28,6 +28,7 @@
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/monitor.h>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -84,6 +85,8 @@ class AbstractCollectionMigrator::Private
     Collection mCurrentCollection;
     QString mCurrentFolderId;
 
+    QTimer mRecheckTimer;
+
   public: // slots
     void collectionAdded( const Collection &collection );
     void fetchResult( KJob *job );
@@ -117,6 +120,93 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
+    if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
+      if ( mCurrentCollection.hasAttribute<Akonadi::EntityDisplayAttribute>() ) {
+        mCurrentCollection.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing )->setIconName( newGroup.readEntry( "NormalIconPath" ) );
+        mCurrentCollection.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing )->setActiveIconName( newGroup.readEntry( "UnreadIconPath" ) );
+      }
+    }
+    newGroup.deleteEntry( "UseCustomIcons" );
+    newGroup.deleteEntry( "UnreadIconPath" );
+    newGroup.deleteEntry( "NormalIconPath" );
+
+
+    //Delete old entry
+    newGroup.deleteEntry( "TotalMsgs" );
+    newGroup.deleteEntry( "FolderSize" );
+    newGroup.deleteEntry( "UnreadMsgs" );
+    newGroup.deleteEntry( "Compactable" );
+    newGroup.deleteEntry( "ContentsType" );
+    newGroup.deleteEntry( "NoContent" );
+    newGroup.deleteEntry( "ReadOnly" );
+    newGroup.deleteEntry( "UploadAllFlags" );
+    newGroup.deleteEntry( "PermanentFlags" );
+    newGroup.deleteEntry( "StorageQuotaUsage" );
+    newGroup.deleteEntry( "StorageQuotaLimit" );
+    newGroup.deleteEntry( "StorageQuotaRoot" );
+    newGroup.deleteEntry( "FolderAttributes" );
+    newGroup.deleteEntry( "AlarmsBlocked" );
+    newGroup.deleteEntry( "IncidencesFor" );
+    newGroup.deleteEntry( "UserRights" );
+    newGroup.deleteEntry( "StatusChangedLocally" );
+    newGroup.deleteEntry( "UIDStatusChangedLocally" );
+    newGroup.deleteEntry( "UIDSDeletedSinceLastSync" );
+
+    newGroup.deleteEntry( "MainFolderViewItemDnDSortingKey" );
+    newGroup.deleteEntry( "MainFolderViewItemIsExpanded" );
+    newGroup.deleteEntry( "MainFolderViewItemIsHidden" );
+    newGroup.deleteEntry( "MainFolderViewItemIsSelected" );
+
+    newGroup.deleteEntry( "Annotation-FolderType" );
+    newGroup.deleteEntry( "AnnotationFolderTypeChanged" );
+    newGroup.deleteEntry( "AlarmsBlocked" );
+    newGroup.deleteEntry( "SystemLabel" );
+
+    //Migrate favorite folder
+    if ( newGroup.hasKey( "Id" ) ) {
+      uint value = newGroup.readEntry( "Id", 0 );
+
+      KConfigGroup newFavoriteGroup( mKMailConfig, "FavoriteCollections" );
+      if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) ) {
+        KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
+        const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
+        const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+        oldFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+        oldFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
+
+        oldFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
+        oldFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
+
+        oldFavoriteGroup.deleteEntry( "IconSize" );
+        oldFavoriteGroup.deleteEntry( "SortingPolicy" );
+        oldFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
+        oldFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
+
+        KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
+        if ( oldFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
+          int value = oldFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
+          favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
+        }
+
+        if ( oldFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
+          bool value = oldFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
+          favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
+        }
+
+        oldFavoriteGroup.copyTo( &newFavoriteGroup );
+        oldFavoriteGroup.deleteGroup();
+      }
+
+      if ( newFavoriteGroup.hasKey( "FavoriteCollectionIds" ) ) {
+          QList<qint64> lIds = newFavoriteGroup.readEntry( "FavoriteCollectionIds", QList<qint64>() );
+          if ( lIds.contains( value ) ) {
+            const int pos = lIds.indexOf( value );
+            lIds.replace( pos, mCurrentCollection.id() );
+            newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+          }
+      }
+      newGroup.deleteEntry( "Id" );
+    }
   }
 
   // check emailidentity
@@ -134,10 +224,23 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
 
+  // Check Composer/previous-fcc
+  KConfigGroup composer( mKMailConfig, "Composer" );
+  if ( composer.readEntry( "previous-fcc" ) == mCurrentFolderId )
+    composer.writeEntry( "previous-fcc", mCurrentCollection.id() );
+
+  // Check FolderSelectionDialog/LastSelectedFolder
+  KConfigGroup folderSelection( mKMailConfig, "FolderSelectionDialog" );
+  if ( folderSelection.readEntry( "LastSelectedFolder", mCurrentFolderId ) == mCurrentFolderId )
+    folderSelection.writeEntry( "LastSelectedFolder", mCurrentCollection.id() );
+  folderSelection.deleteEntry( "TreeWidgetLayout" );
+
+
   // Check General/startupFolder
   KConfigGroup general( mKMailConfig, "General" );
   if ( general.readEntry( "startupFolder" ) == mCurrentFolderId )
     general.writeEntry( "startupFolder", mCurrentCollection.id() );
+  general.deleteEntry( "default-mailbox-format" );
 
   // check all expire folder
   const QStringList folderGroups = mKMailConfig->groupList().filter( "Folder-" );
@@ -177,6 +280,24 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         filterGroup.writeEntry( actionKey, mCurrentCollection.id() );
       }
     }
+  }
+
+  // check MessageListView::StorageModelAggregations
+  KConfigGroup storageModelAggregationGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelAggregations" ) );
+  const QString setForStorageAggregationModelPattern = QLatin1String( "SetForStorageModel%1" );
+  if ( storageModelAggregationGroup.hasKey(setForStorageAggregationModelPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = storageModelAggregationGroup.readEntry( setForStorageAggregationModelPattern.arg( mCurrentFolderId ) );
+    storageModelAggregationGroup.writeEntry( setForStorageAggregationModelPattern.arg( mCurrentCollection.id() ),value );
+    storageModelAggregationGroup.deleteEntry( setForStorageAggregationModelPattern.arg( mCurrentFolderId ) );
+  }
+
+  // check MessageListView::StorageModelThemes
+  KConfigGroup storageModelThemesGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelThemes" ) );
+  const QString setForStorageModelPattern = QLatin1String( "SetForStorageModel%1" );
+  if ( storageModelThemesGroup.hasKey(setForStorageModelPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = storageModelThemesGroup.readEntry( setForStorageModelPattern.arg( mCurrentFolderId ) );
+    storageModelThemesGroup.writeEntry( setForStorageModelPattern.arg( mCurrentCollection.id() ),value );
+    storageModelThemesGroup.deleteEntry( setForStorageModelPattern.arg( mCurrentFolderId ) );
   }
 
   // check MessageListView::StorageModelSortOrder
@@ -228,16 +349,21 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
   }
+
 }
 
 void AbstractCollectionMigrator::Private::collectionAdded( const Collection &collection )
 {
   if ( mStatus == Waiting ) {
+    mRecheckTimer.stop();
+    mRecheckTimer.disconnect();
     mStatus = Idle;
   }
 
   // don't wait any longer, start explicit fetch right away
   if ( mExplicitFetchStatus == Waiting ) {
+    mRecheckTimer.stop();
+    mRecheckTimer.disconnect();
     QMetaObject::invokeMethod( q, "recheckIdleResource", Qt::QueuedConnection );
   }
 
@@ -337,8 +463,15 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const AgentInst
   const QString oldMessage = mResource.statusMessage();
   mResource = instance;
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "oldStatus=" << oldStatus << "message=" << oldMessage
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "resource=" << mResource.identifier()
+           << "oldStatus=" << oldStatus << "message=" << oldMessage
            << "newStatus" << mResource.status() << "message=" << mResource.statusMessage();
+
+  if ( mStatus == Waiting && mResource.status() != AgentInstance::Broken ) {
+    mRecheckTimer.stop();
+    mRecheckTimer.disconnect();
+    mStatus = Idle;
+  }
 
   if ( oldStatus != AgentInstance::Idle && mResource.status() == AgentInstance::Idle && mExplicitFetchStatus == Idle ) {
     mExplicitFetchStatus = Waiting;
@@ -346,11 +479,10 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const AgentInst
     // if resource is now "Idle" it might still need time to process until it becomes ready
     // unfortunately this is not a separate state so lets delay the explicit fetch
     // wait for at most one minute
-    QTimer::singleShot( 60000, q, SLOT( recheckIdleResource() ) );
-  }
-
-  if ( mStatus == Waiting ) {
-    mStatus = Idle;
+    mRecheckTimer.stop();
+    mRecheckTimer.disconnect();
+    QObject::connect( &mRecheckTimer, SIGNAL( timeout() ), q, SLOT( recheckIdleResource() ) );
+    mRecheckTimer.start( 60000 );
   }
 }
 
@@ -418,11 +550,14 @@ AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &res
     // if resource is "Idle" it might still need time to process until it becomes ready
     // unfortunately this is not a separate state so lets delay the explicit fetch
     // wait for at most one minute
-    QTimer::singleShot( 60000, this, SLOT( recheckIdleResource() ) );
+    connect( &(d->mRecheckTimer), SIGNAL( timeout() ), SLOT( recheckIdleResource() ) );
+    d->mRecheckTimer.start( 60000 );
   } else if ( d->mResource.status() == AgentInstance::Broken ) {
     // if resource is "Broken", it could still become idle after fully processing its new config
     // wait for at most one minute
-    QTimer::singleShot( 60000, this, SLOT( recheckBrokenResource() ) );
+    d->mStatus = Private::Waiting;
+    connect( &(d->mRecheckTimer), SIGNAL( timeout() ), SLOT( recheckBrokenResource() ) );
+    d->mRecheckTimer.start( 60000 );
   }
 
   // monitor resource status so we know when to quit waiting

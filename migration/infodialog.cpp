@@ -49,7 +49,7 @@ InfoDialog::InfoDialog( bool closeWhenDone ) :
   mList->setMinimumWidth( 640 );
   widgetLayout->addWidget( mList );
 
-  QHBoxLayout *statusLayout = new QHBoxLayout( widget );
+  QHBoxLayout *statusLayout = new QHBoxLayout;
   widgetLayout->addLayout( statusLayout );
 
   mStatusLabel = new QLabel( widget );

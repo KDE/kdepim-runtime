@@ -42,7 +42,7 @@ int main( int argc, char **argv )
                         "0.1",
                         ki18n( "Migration of KMail accounts to Akonadi" ),
                         KAboutData::License_LGPL,
-                        ki18n( "(c) 2009 the Akonadi developers" ),
+                        ki18n( "(c) 2009-2010 the Akonadi developers" ),
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );
   aboutData.setProgramIconName( "akonadi" );
