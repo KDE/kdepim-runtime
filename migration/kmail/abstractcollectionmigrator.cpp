@@ -269,6 +269,8 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
   // check all account folder
+  // TODO we mustn't modify kmailrc but we must modify akonadi_*_resource_*
+  // Need to fix it
   const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( "Account \\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
   Q_FOREACH( const QString &groupName, accountGroups ) {
