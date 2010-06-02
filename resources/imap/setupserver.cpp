@@ -228,12 +228,12 @@ void SetupServer::slotEncryptionRadioChanged()
 
 void SetupServer::applySettings()
 {
-  m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
+  m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text().trimmed() )
                     || ( Settings::self()->userName() != m_ui->userName->text() );
 
   m_parentResource->setName( m_ui->accountName->text() );
 
-  Settings::self()->setImapServer( m_ui->imapServer->text() );
+  Settings::self()->setImapServer( m_ui->imapServer->text().trimmed() );
   Settings::self()->setImapPort( m_ui->portSpin->value() );
   Settings::self()->setUserName( m_ui->userName->text() );
   QString encryption = "";
@@ -280,7 +280,7 @@ void SetupServer::applySettings()
   Settings::self()->setIncludeInManualCheck( m_ui->includeInCheck->isChecked() );
 
   Settings::self()->writeConfig();
-  kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
+  kDebug() << "wrote" << m_ui->imapServer->text().trimmed() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
   if ( m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty() ) {
     m_parentResource->renameRootCollection( m_ui->accountName->text() );
@@ -383,7 +383,7 @@ void SetupServer::readSettings()
 
 void SetupServer::slotTest()
 {
-  kDebug() << m_ui->imapServer->text();
+  kDebug() << m_ui->imapServer->text().trimmed();
 
   m_ui->testButton->setEnabled( false );
   m_ui->safeImap->setEnabled( false );
@@ -395,7 +395,7 @@ void SetupServer::slotTest()
   delete m_serverTest;
   m_serverTest = new MailTransport::ServerTest( this );
 
-  QString server = m_ui->imapServer->text();
+  QString server = m_ui->imapServer->text().trimmed();
   int port = m_ui->portSpin->value();
   kDebug() << "server: " << server << "port: " << port;
 
@@ -459,7 +459,7 @@ void SetupServer::slotTestChanged()
 
   // do not use imapConnectionPossible, as the data is not yet saved.
   m_ui->testButton->setEnabled( true /* TODO Global::connectionPossible() ||
-                                        m_ui->imapServer->text() == "localhost"*/ );
+                                        m_ui->imapServer->text().trimmed() == "localhost"*/ );
 }
 
 void SetupServer::slotEnableWidgets()
@@ -474,7 +474,7 @@ void SetupServer::slotEnableWidgets()
 
 void SetupServer::slotComplete()
 {
-  bool ok =  !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
+  bool ok =  !m_ui->imapServer->text().trimmed().isEmpty() && !m_ui->userName->text().isEmpty();
   button( KDialog::Ok )->setEnabled( ok );
 }
 
@@ -562,13 +562,13 @@ void SetupServer::slotManageSubscriptions()
   ImapAccount account;
 
   // craft the host:port string
-  QString serverPort( m_ui->imapServer->text() );
+  QString serverPort( m_ui->imapServer->text().trimmed() );
   serverPort.append( ':' );
   serverPort.append( m_ui->portSpin->value() );
   account.setServer( serverPort );
 
   account.setUserName( m_ui->userName->text() );
-  account.setName( m_ui->imapServer->text() + '/' + m_ui->userName->text() );
+  account.setName( m_ui->imapServer->text().trimmed() + '/' + m_ui->userName->text() );
   account.setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
 
   account.setEncryptionMode(
