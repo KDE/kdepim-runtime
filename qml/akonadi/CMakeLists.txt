@@ -12,8 +12,8 @@ install(FILES
   flapbackground.png
   fuzz.png
   list-line-top.png
-  scollable-bottom.png
-  scollable-top.png
+  scrollable-bottom.png
+  scrollable-top.png
   selected_bottom.png
   selected_top.png
   sliderbackground.png
