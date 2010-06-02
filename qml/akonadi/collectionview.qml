@@ -73,7 +73,6 @@ Item {
           spacing: 5
           Text {
             text : model.display
-            font.bold: true
           }
         }
       }

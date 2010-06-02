@@ -72,7 +72,6 @@ Item {
         text : model.display
         //### requires a newer QML version
         //wrapMode: "WrapAnywhere" // Needs the anchors.fill to work properly
-        font.bold: true
       }
     }
     Text {
