@@ -17,6 +17,9 @@
     02110-1301, USA.
 */
 
+// add this function to trim user input of whitespace when needed
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
+
 // TODO: i18n??
 var page = Dialog.addPage( "pop3wizard.ui", "Personal Settings" );
 
@@ -34,7 +37,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.pop3Wizard.incommingAddress.text == "" ) {
+  if ( page.pop3Wizard.incommingAddress.text.trim() == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -44,13 +47,13 @@ function validateInput()
 function setup()
 {
   var pop3Res = SetupManager.createResource( "akonadi_pop3_resource" );
-  pop3Res.setOption( "Host", page.pop3Wizard.incommingAddress.text );
-  pop3Res.setOption( "Login", page.pop3Wizard.userName.text );
+  pop3Res.setOption( "Host", page.pop3Wizard.incommingAddress.text.trim() );
+  pop3Res.setOption( "Login", page.pop3Wizard.userName.text.trim() );
   pop3Res.setOption( "Password", SetupManager.password() );
 
   var smtp = SetupManager.createTransport( "smtp" );
   smtp.setName( SetupManager.name() );
-  smtp.setHost( page.pop3Wizard.outgoingAddress.text );
+  smtp.setHost( page.pop3Wizard.outgoingAddress.text.trim() );
   smtp.setEncryption( "NONE" );
 
   SetupManager.execute();
