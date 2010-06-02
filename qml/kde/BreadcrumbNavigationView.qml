@@ -183,11 +183,6 @@ Item {
     State {
       name : "before_select_child"
       PropertyChanges {
-        target : topButton
-        height : { var _count = ( breadcrumbsView.count == 1 ) ? 2 : breadcrumbsView.count; itemHeight * ( _count + 1) }
-        _breadcrumb_y_offset : { if ( breadcrumbsView.count == 1 ) -1 * itemHeight; }
-      }
-      PropertyChanges {
         target : breadcrumbsView
         height : { var _count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * ( _count + 1) }
         _breadcrumb_y_offset : { if (breadcrumbsView.count > 1) -1 * itemHeight }
@@ -210,14 +205,6 @@ Item {
     },
     State {
       name : "before_select_breadcrumb"
-      PropertyChanges {
-        target : topButton
-        _breadcrumb_y_offset : {
-          if (breadcrumbTopLevel._transitionSelect >= 0)
-            /* return */ itemHeight * (2 - breadcrumbTopLevel._transitionSelect );
-        }
-        opacity : 0.5
-      }
       PropertyChanges {
         target : breadcrumbsView
         _breadcrumb_y_offset : {
@@ -257,12 +244,6 @@ Item {
       to : "before_select_child"
       SequentialAnimation {
         ParallelAnimation {
-          PropertyAnimation {
-            duration: 500
-            easing.type: "OutQuad"
-            target: topButton
-            properties: "_breadcrumb_y_offset"
-          }
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
@@ -310,12 +291,6 @@ Item {
       to : "before_select_breadcrumb"
       SequentialAnimation {
         ParallelAnimation {
-          PropertyAnimation {
-            duration: 500
-            easing.type: "OutQuad"
-            target: topButton
-            properties: "height,_breadcrumb_y_offset,opacity"
-          }
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
