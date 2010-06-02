@@ -25,6 +25,7 @@ import org.kde.akonadi 4.5
 
 BreadcrumbNavigationView {
   topDelegate : CollectionDelegate {
+    indentation : 35
     fullClickArea : true
     height : itemHeight
     onIndexSelected : {
@@ -34,6 +35,7 @@ BreadcrumbNavigationView {
   }
 
   breadcrumbDelegate : CollectionDelegate {
+    indentation : 35
     fullClickArea : true
     height : itemHeight
     onIndexSelected : {
@@ -43,11 +45,13 @@ BreadcrumbNavigationView {
   }
 
   selectedItemDelegate : CollectionDelegate {
+    indentation : 35
     height : itemHeight
     selectedDelegate : true
   }
 
   childItemsDelegate : CollectionDelegate {
+    indentation : 35
     id : childDelegateWrapper
     height : itemHeight
     fullClickArea : true
