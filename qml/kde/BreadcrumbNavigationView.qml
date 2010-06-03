@@ -41,6 +41,8 @@ Item {
   property bool hasSelection :  selectedItemView.count > 0
   property bool hasBreadcrumbs :  breadcrumbsView.count > 0
 
+  property alias numSelected : selectedItemView.count
+
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
 
