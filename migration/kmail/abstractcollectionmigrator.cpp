@@ -136,6 +136,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     oldGroup.deleteGroup();
     if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
       EntityDisplayAttribute *attribute = mCurrentCollection.attribute<EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
+      //kDebug( KDE_DEFAULT_DEBUG_AREA )<<" NormalIconPath :"<<newGroup.readEntry( "NormalIconPath" )<<" UnreadIconPath :"<<newGroup.readEntry( "UnreadIconPath" );
       attribute->setIconName( newGroup.readEntry( "NormalIconPath" ) );
       attribute->setActiveIconName( newGroup.readEntry( "UnreadIconPath" ) );
 
