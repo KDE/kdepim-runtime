@@ -25,7 +25,6 @@ import org.kde.pim.mobileui 4.5 as KPIM
 
 Item {
   id : _topContext
-  property alias favoriteName : nameInput.text
 
   signal canceled()
   signal finished()
@@ -56,27 +55,6 @@ Item {
       onClicked : { canceled(); }
     }
 
-    Text {
-      anchors.right : doneButton.left
-      height : 30
-      y : 13
-      width : 50
-      text : "Name"
-    }
-
-    Rectangle {
-      id: nameRect
-      anchors.right : doneButton.left
-
-      height : 20
-      y : 10
-      width : 200
-      radius : 5
-      TextInput {
-        id : nameInput
-        anchors.fill : parent
-      }
-    }
     KPIM.Button {
       id: doneButton
       anchors.right : parent.right
