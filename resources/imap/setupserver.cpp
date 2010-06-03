@@ -354,7 +354,9 @@ void SetupServer::readSettings()
   kDebug() << "read IMAP auth mode: " << authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) i );
   setCurrentAuthMode( m_ui->authenticationCombo, (KIMAP::LoginJob::AuthenticationMode) i );
 
-  if ( !Settings::self()->passwordPossible() ) {
+  bool rejected = false;
+  QString password = Settings::self()->password( &rejected );
+  if ( rejected ) {
     m_ui->password->setEnabled( false );
     KMessageBox::information( 0, i18n( "Could not access KWallet. "
                                        "If you want to store the password permanently then you have to "
@@ -363,7 +365,7 @@ void SetupServer::readSettings()
                                        "prompted for your password when needed." ),
                               i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
   } else {
-    m_ui->password->insert( Settings::self()->password() );
+    m_ui->password->insert( password );
   }
 
   m_ui->subscriptionEnabled->setChecked( Settings::self()->subscriptionEnabled() );
