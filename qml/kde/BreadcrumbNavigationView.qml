@@ -83,6 +83,14 @@ Item {
     anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
     anchors.right : parent.right
+  }
+
+  Item {
+    id : breadcrumbPlaceHolder
+    height : itemHeight
+    anchors.top : topButton.bottom
+    anchors.left : parent.left
+    anchors.right : parent.right
 
     Image {
       source : "dividing-line.png"
@@ -92,7 +100,6 @@ Item {
       anchors.bottomMargin : 8
       fillMode : Image.TileVertically
     }
-
   }
 
   ListView {
@@ -103,6 +110,14 @@ Item {
     height : itemHeight * selectedItemView.count
     anchors.top : breadcrumbsView.bottom
     anchors.topMargin : _selected_padding
+    anchors.left : parent.left
+    anchors.right : parent.right
+  }
+
+  Item {
+    id : selectedItemPlaceHolder
+    height : itemHeight
+    anchors.top : breadcrumbPlaceHolder.bottom
     anchors.left : parent.left
     anchors.right : parent.right
     Image {
@@ -130,6 +145,7 @@ Item {
       anchors.bottom : parent.bottom
     }
   }
+
   ListView {
     id : childItemsView
     property int _children_padding : 0
@@ -163,6 +179,39 @@ Item {
       anchors.left : parent.left
       fillMode : Image.TileHorizontally
     }
+  }
+
+  Item {
+    id : favinfoOverlay
+    anchors.top : topButton.bottom
+    anchors.bottom : parent.bottom
+    anchors.left : parent.left
+    anchors.right : parent.right
+    visible : false
+
+    Text {
+      text : KDE.i18na("You have selected \n%1 folders. %2 emails", [selectedItemView.count, headerList.count])
+      height : 30
+      x : 20
+      y : 50
+    }
+
+    Image {
+      source : "dividing-line-horizontal.png"
+      fillMode : Image.TileHorizontally
+      anchors.top : parent.top
+      anchors.right : parent.right
+      anchors.left : parent.left
+    }
+
+    Image {
+      source : "dividing-line.png"
+      fillMode : Image.TileVertically
+      anchors.top : parent.top
+      anchors.right : parent.right
+      anchors.bottom : parent.bottom
+    }
+
   }
 
   function completeChildSelection() {
