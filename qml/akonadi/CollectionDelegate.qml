@@ -37,54 +37,59 @@ Item {
   x : indentation
   width : breadcrumbsView.width - indentation
 
-  MouseArea {
-    anchors.fill: parent
-    onClicked: {
-      if ( fullClickArea )
-        indexSelected(model.index);
-    }
-  }
-  Row {
-    id: topLayout
-    x: 10; y: 10;
-    height: collectionIcon.height;
-    width: parent.width
-    spacing: 10
+  Item {
+    anchors.fill : parent
+    id : nestedItem
 
-    Image {
-        id: collectionIcon
-        pixmap: KDE.iconToPixmap( model.decoration, height );
-        width: 48; height: 48
-    }
-
-    Column {
-      height: collectionIcon.height
-      width: wrapper.width - collectionIcon.width - 20
-      spacing: 5
-      Text {
-        anchors.fill: parent
-        text : model.display
-        //### requires a newer QML version
-        //wrapMode: "WrapAnywhere" // Needs the anchors.fill to work properly
+    MouseArea {
+      anchors.fill: parent
+      onClicked: {
+        if ( fullClickArea )
+          indexSelected(model.index);
       }
     }
-    Text {
-      anchors.bottom : parent.bottom
-      anchors.right : parent.right
-      anchors.rightMargin : 15 + parent.spacing
-      text : model.unreadCount > 0 ? model.unreadCount : ""
-      color : "blue"
-    }
-  }
+    Row {
+      id: topLayout
+      x: 10; y: 10;
+      height: collectionIcon.height;
+      width: parent.width
+      spacing: 10
 
-  Image {
-    width : height
-    anchors.right : parent.right
-    anchors.rightMargin : 5
-    anchors.top : parent.top
-    anchors.topMargin : 5
-    opacity : ( showChildIndicator && application.childCollectionHasChildren( model.index ) ) ? 1 : 0
-    source: "transparentplus.png"
+      Image {
+          id: collectionIcon
+          pixmap: KDE.iconToPixmap( model.decoration, height );
+          width: 48; height: 48
+      }
+
+      Column {
+        height: collectionIcon.height
+        width: wrapper.width - collectionIcon.width - 20
+        spacing: 5
+        Text {
+          anchors.fill: parent
+          text : model.display
+          //### requires a newer QML version
+          //wrapMode: "WrapAnywhere" // Needs the anchors.fill to work properly
+        }
+      }
+      Text {
+        anchors.bottom : parent.bottom
+        anchors.right : parent.right
+        anchors.rightMargin : 15 + parent.spacing
+        text : model.unreadCount > 0 ? model.unreadCount : ""
+        color : "blue"
+      }
+    }
+
+    Image {
+      width : height
+      anchors.right : parent.right
+      anchors.rightMargin : 5
+      anchors.top : parent.top
+      anchors.topMargin : 5
+      opacity : ( showChildIndicator && application.childCollectionHasChildren( model.index ) ) ? 1 : 0
+      source: "transparentplus.png"
+    }
   }
 }
 
