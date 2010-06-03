@@ -180,10 +180,6 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   connect( Solid::Networking::notifier(),
            SIGNAL( statusChanged( Solid::Networking::Status ) ),
            SLOT( slotTestChanged() ) );
-  connect( this, SIGNAL( applyClicked() ),
-           SLOT( beginApplySettings() ) );
-  connect( this, SIGNAL( okClicked() ),
-           SLOT( beginApplySettings() ) );
 }
 
 SetupServer::~SetupServer()
