@@ -30,7 +30,8 @@ Item {
 
   QmlColumnView {
     id : columnView
-    model : favoriteSelectionModel
+    model : allFoldersModel
+    selectionModel : folderSelectionModel
     anchors.top : parent.top
     anchors.left : parent.left
     anchors.right : parent.right
