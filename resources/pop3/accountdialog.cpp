@@ -281,7 +281,7 @@ void AccountDialog::walletOpenedForSaving( bool success )
   }
   else {
     // Should we alert the user here?
-    kWarning() << "Failed to open wallet for loading the password.";
+    kWarning() << "Failed to open wallet for saving the password.";
   }
 
   delete mWallet;
