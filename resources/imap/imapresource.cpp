@@ -914,6 +914,8 @@ void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, q
                                     const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
   Q_UNUSED( mailBox );
+  Q_UNUSED( sizes );
+  Q_UNUSED( messages );
 
   Item::List changedItems;
 
