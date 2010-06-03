@@ -115,7 +115,7 @@ static void addAuthenticationItem( QComboBox* authCombo, KIMAP::LoginJob::Authen
 
 SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
-    m_subscriptionsChanged(false), m_shouldClearCache(false), m_applyClicked( false ), m_connectionSettingsEdited( false )
+    m_subscriptionsChanged(false), m_shouldClearCache(false), m_applyClicked( false ), m_connectionSettingsEdited( false ), mValidator( this )
 {
 #ifdef KDEPIM_MOBILE_UI
   setButtonsOrientation( Qt::Vertical );
@@ -137,6 +137,10 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   m_ui->testProgress->hide();
   m_ui->accountName->setFocus();
   m_ui->checkInterval->setSuffix( ki18np( " minute", " minutes" ) );
+
+  // regex for evaluating a valid server name/ip
+  mValidator.setRegExp( QRegExp( "[A-Za-z0-9-_:.]*" ) );
+  m_ui->imapServer->setValidator( &mValidator );
 
   // FIXME: This option has no effect yet, therefore hide it for now.
   m_ui->includeInCheck->hide();

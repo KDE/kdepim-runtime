@@ -26,6 +26,7 @@
 #include <akonadi/collection.h>
 #include <KJob>
 
+#include <QRegExpValidator>
 
 namespace Ui
 {
@@ -43,7 +44,6 @@ class IdentityManager;
 }
 
 class ImapResource;
-
 
 /**
  * @class SetupServer
@@ -97,6 +97,7 @@ private:
   QString m_oldResourceName;
   bool m_applyClicked;
   bool m_connectionSettingsEdited; //set to true when the connection settings are *manually* edited (by the user)
+  QRegExpValidator mValidator;
 
 private slots:
   void slotTest();
