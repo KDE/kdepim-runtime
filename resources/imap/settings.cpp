@@ -131,17 +131,6 @@ QString Settings::password(bool *userRejected) const
     return m_password;
 }
 
-bool Settings::passwordPossible() const
-{
-    bool possible = true;
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
-    if ( !wallet ) {
-        possible = false;
-    }
-    delete wallet;
-    return possible;
-}
-
 void Settings::setPassword( const QString & password )
 {
     if ( password == m_password )

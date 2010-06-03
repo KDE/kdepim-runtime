@@ -17,6 +17,8 @@
     Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301, USA.
 */
+// add this function to trim user input of whitespace when needed
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
 
 // TODO: i18n??
 var page = Dialog.addPage( "kolabwizard.ui", "Personal Settings" );
@@ -35,7 +37,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.widget().serverAddress.text == "" ) {
+  if ( page.widget().serverAddress.text.trim() == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -49,6 +51,7 @@ var identity; // global so it can be accesed in setup and testOk
 
 function setup()
 {
+  var serverAddress = page.widget().serverAddress.text.trim();
   if ( stage == 1 ) {
     SetupManager.createResource( "akonadi_kolabproxy_resource" );
 
@@ -56,11 +59,11 @@ function setup()
     identity.setEmail( SetupManager.email() );
     identity.setRealName( SetupManager.name() );
     
-    ServerTest.test( page.widget().serverAddress.text, "imap" );
+    ServerTest.test( serverAddress, "imap" );
   } else { // stage 2
     var smtp = SetupManager.createTransport( "smtp" );
-    smtp.setName( page.widget().serverAddress.text );
-    smtp.setHost( page.widget().serverAddress.text );
+    smtp.setName( serverAddress );
+    smtp.setHost( serverAddress );
     smtp.setPort( 465 );
     smtp.setEncryption( "SSL" );
     smtp.setUsername( SetupManager.email() );
@@ -68,13 +71,13 @@ function setup()
 
     var ldap = SetupManager.createLdap();
     ldap.setUser( SetupManager.email() );
-    ldap.setServer( page.widget().serverAddress.text );
+    ldap.setServer( serverAddress );
 
     var korganizer = SetupManager.createConfigFile( "korganizerrc" );
     korganizer.setName( "korganizer" );
     korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyFullDomainRetrieval","true");
     korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveAuto", "true" );
-    korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + page.widget().serverAddress.text  + "/freebusy/" );
+    korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + serverAddress  + "/freebusy/" );
     SetupManager.execute();
   }
 }
@@ -88,7 +91,7 @@ function testOk( arg )
 {
     print("testOk arg =", arg);
     var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
-    imapRes.setOption( "ImapServer", page.widget().serverAddress.text );
+    imapRes.setOption( "ImapServer", page.widget().serverAddress.text.trim() );
     imapRes.setOption( "UserName", SetupManager.email() );
     imapRes.setOption( "Password", SetupManager.password() );
     imapRes.setOption( "UseDefaultIdentity", false );

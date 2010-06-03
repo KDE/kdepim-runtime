@@ -78,4 +78,6 @@ void Settings::setPassword( const QString& password )
   } else {
     kWarning() << "Unable to open wallet!";
   }
+  if( wallet )
+    delete wallet;
 }

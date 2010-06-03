@@ -144,7 +144,7 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
 
   const QVariant uidHashVar = fetchJob->property( "remoteIdToIndexUid" );
   if ( !uidHashVar.isValid() ) {
-    kDebug() << "No UIDs from index for collection" << mCurrentCollection.name();
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "No UIDs from index for collection" << mCurrentCollection.name();
     if ( mRemoveDeletedMessages ) {
       processNextDeletedUid();
     } else {
@@ -165,14 +165,14 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
   }
 
   mItems = fetchJob->items();
-  kDebug() << mItems.count() << "items for target collection" << mCurrentCollection.remoteId();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << mItems.count() << "items for target collection" << mCurrentCollection.remoteId();
 
   const QVariant tagListHashVar = fetchJob->property( "remoteIdToTagList" );
   if ( !tagListHashVar.isValid() ) {
-    kDebug() << "No tags from index for collection" << mCurrentCollection.name();
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "No tags from index for collection" << mCurrentCollection.name();
   } else {
     mTagListHash = tagListHashVar.value< QHash<QString, QVariant> >();
-    kDebug() << mTagListHash.count() << "items have tags";
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << mTagListHash.count() << "items have tags";
   }
 
   mItemProgress = -1;
@@ -182,8 +182,8 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
 
 void ImapCacheCollectionMigrator::Private::processNextItem()
 {
-  kDebug() << "mCurrentCollection=" << mCurrentCollection.name()
-           << mItems.count() << "items to go";
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
+                                   << mItems.count() << "items to go";
 
   emit q->progress( ++mItemProgress );
 
@@ -208,8 +208,8 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
 
 void ImapCacheCollectionMigrator::Private::processNextDeletedUid()
 {
-  kDebug() << "mCurrentCollection=" << mCurrentCollection.name()
-           << mDeletedUids.count() << "items to go";
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
+                                   << mDeletedUids.count() << "items to go";
 
   if ( mDeletedUids.isEmpty() ) {
     if ( mCurrentFolderGroup.isValid() ) {
@@ -271,16 +271,16 @@ void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
     item.setRemoteId( QString() );
     createJob = new ItemCreateJob( item, mCurrentCollection );
 
-    kDebug() << "unsynchronized cacheItem: remoteId=" << item.remoteId()
-             << "mimeType=" << item.mimeType()
-             << "flags=" << item.flags();
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "unsynchronized cacheItem: remoteId=" << item.remoteId()
+                                     << "mimeType=" << item.mimeType()
+                                     << "flags=" << item.flags();
   } else if ( mImportCachedMessages ) {
     item.setRemoteId( uid );
     createJob = new ItemCreateJob( item, mCurrentCollection, mHiddenSession );
 
-    kDebug() << "synchronized cacheItem: remoteId=" << item.remoteId()
-             << "mimeType=" << item.mimeType()
-             << "flags=" << item.flags();
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "synchronized cacheItem: remoteId=" << item.remoteId()
+                                     << "mimeType=" << item.mimeType()
+                                     << "flags=" << item.flags();
   }
 
   if ( createJob != 0 ) {
@@ -288,9 +288,9 @@ void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
     createJob->setProperty( "storeParentCollection", QVariant::fromValue<Collection>( item.parentCollection() ) );
     connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
   } else {
-    kDebug() << "Skipping cacheItem: remoteId=" << item.remoteId()
-             << "mimeType=" << item.mimeType()
-             << "flags=" << item.flags();
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Skipping cacheItem: remoteId=" << item.remoteId()
+                                     << "mimeType=" << item.mimeType()
+                                     << "flags=" << item.flags();
     processNextItem();
   }
 }
@@ -311,7 +311,7 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
   } else if ( !storeRemoteId.isEmpty() ) {
     const QStringList tagList = mTagListHash[ storeRemoteId ].value<QStringList>();
     if ( !tagList.isEmpty() ) {
-      kDebug() << "Tagging item" << item.url() << "with" << tagList;
+      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Tagging item" << item.url() << "with" << tagList;
 
       QList<Nepomuk::Tag> nepomukTags;
       Q_FOREACH( const QString &tag, tagList ) {
@@ -451,10 +451,10 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
     return;
   }
 
-  kDebug() << "Akonadi collection remoteId=" << collection.remoteId() << ", parent=" << collection.parentCollection().remoteId();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Akonadi collection remoteId=" << collection.remoteId() << ", parent=" << collection.parentCollection().remoteId();
 
   Collection cache = d->cacheCollection( collection );
-  kDebug() << "Cache collection remoteId=" << cache.remoteId() << ", parent=" << cache.parentCollection().remoteId();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Cache collection remoteId=" << cache.remoteId() << ", parent=" << cache.parentCollection().remoteId();
 
   d->mDeletedUids.clear();
   if ( d->mRemoveDeletedMessages ) {
@@ -465,7 +465,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
       d->mCurrentFolderGroup = KConfigGroup( kmailConfig(), groupName );
       d->mDeletedUids = d->mCurrentFolderGroup.readEntry( QLatin1String( "UIDSDeletedSinceLastSync" ), QStringList() );
     }
-    kDebug() << "DeleteUids=" << d->mDeletedUids;
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "DeleteUids=" << d->mDeletedUids;
   }
 
   d->mCurrentCollection = collection;

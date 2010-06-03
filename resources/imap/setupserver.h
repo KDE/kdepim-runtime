@@ -26,6 +26,7 @@
 #include <akonadi/collection.h>
 #include <KJob>
 
+#include <QRegExpValidator>
 
 namespace Ui
 {
@@ -43,7 +44,6 @@ class IdentityManager;
 }
 
 class ImapResource;
-
 
 /**
  * @class SetupServer
@@ -68,8 +68,11 @@ public:
   ~SetupServer();
 
   bool shouldClearCache() const;
+protected slots:
+  virtual void slotButtonClicked( int button );
 
 private slots:
+  void testThenAccept(); // if a server test hasnt been done, does one, then accept()s, else accept()s
   /**
    * Call this if you want the settings saved from this page.
    */
@@ -78,6 +81,7 @@ private slots:
   void slotMailCheckboxChanged();
   void slotEncryptionRadioChanged();
   void slotSubcriptionCheckboxChanged();
+  void slotConnectionSettingsChanged();
 private:
   void readSettings();
   void populateDefaultAuthenticationOptions();
@@ -91,6 +95,9 @@ private:
   KPIMIdentities::IdentityManager *m_identityManager;
   KPIMIdentities::IdentityCombo *m_identityCombobox;
   QString m_oldResourceName;
+  bool m_applyClicked;
+  bool m_connectionSettingsEdited; //set to true when the connection settings are *manually* edited (by the user)
+  QRegExpValidator mValidator;
 
 private slots:
   void slotTest();

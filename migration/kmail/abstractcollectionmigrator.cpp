@@ -22,13 +22,16 @@
 
 #include "libmaildir/maildir.h"
 
+#include <akonadi/kmime/specialmailcollections.h>
+
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/collection.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
-#include <akonadi/monitor.h>
+#include <akonadi/collectionmodifyjob.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/monitor.h>
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -43,6 +46,8 @@ using KPIM::Maildir;
 
 typedef QHash<Collection::Id, Collection> CollectionHash;
 typedef QQueue<Collection> CollectionQueue;
+
+typedef QHash<int, QString> IconNameHash;
 
 class AbstractCollectionMigrator::Private
 {
@@ -61,11 +66,13 @@ class AbstractCollectionMigrator::Private
 
     Private( AbstractCollectionMigrator *parent, const AgentInstance &resource )
       : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mMonitor( 0 ),
-        mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle )
+        mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle ),
+        mNeedModifyJob( false )
     {
     }
 
     void migrateConfig();
+    void collectionDone();
 
   public:
     AgentInstance mResource;
@@ -87,9 +94,14 @@ class AbstractCollectionMigrator::Private
 
     QTimer mRecheckTimer;
 
+    bool mNeedModifyJob;
+
+    static IconNameHash mIconNamesBySpecialType;
+
   public: // slots
     void collectionAdded( const Collection &collection );
     void fetchResult( KJob *job );
+    void modifyResult( KJob *job );
     void processNextCollection();
     void recheckBrokenResource();
     void recheckIdleResource();
@@ -100,6 +112,8 @@ class AbstractCollectionMigrator::Private
     QString folderIdentifierForCollection( const Collection &collection ) const;
     void processingDone();
 };
+
+IconNameHash AbstractCollectionMigrator::Private::mIconNamesBySpecialType;
 
 void AbstractCollectionMigrator::Private::migrateConfig()
 {
@@ -121,10 +135,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
     if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
-      if ( mCurrentCollection.hasAttribute<Akonadi::EntityDisplayAttribute>() ) {
-        mCurrentCollection.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing )->setIconName( newGroup.readEntry( "NormalIconPath" ) );
-        mCurrentCollection.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing )->setActiveIconName( newGroup.readEntry( "UnreadIconPath" ) );
-      }
+      EntityDisplayAttribute *attribute = mCurrentCollection.attribute<EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
+      attribute->setIconName( newGroup.readEntry( "NormalIconPath" ) );
+      attribute->setActiveIconName( newGroup.readEntry( "UnreadIconPath" ) );
+
+      // collection modification needs to be sent to Akonadi
+      mNeedModifyJob = true;
     }
     newGroup.deleteEntry( "UseCustomIcons" );
     newGroup.deleteEntry( "UnreadIconPath" );
@@ -169,32 +185,33 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       KConfigGroup newFavoriteGroup( mKMailConfig, "FavoriteCollections" );
       if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) ) {
         KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
-        const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
-        const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
-        oldFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
-        oldFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
+        oldFavoriteGroup.copyTo( &newFavoriteGroup );
+        oldFavoriteGroup.deleteGroup();
 
-        oldFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
-        oldFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
+        const QList<int> lIds = newFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
+        const QStringList lNames = newFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+	//kDebug( KDE_DEFAULT_DEBUG_AREA ) << "lIds=" << lIds<<" lNames="<<lNames;
+        newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+        newFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
 
-        oldFavoriteGroup.deleteEntry( "IconSize" );
-        oldFavoriteGroup.deleteEntry( "SortingPolicy" );
-        oldFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
-        oldFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
+
+        newFavoriteGroup.deleteEntry( "IconSize" );
+        newFavoriteGroup.deleteEntry( "SortingPolicy" );
+        newFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
 
         KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
-        if ( oldFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
-          int value = oldFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
+        if ( newFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
+          int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
           favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
         }
 
-        if ( oldFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
-          bool value = oldFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
+        if ( newFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
+          bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
           favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
         }
-
-        oldFavoriteGroup.copyTo( &newFavoriteGroup );
-        oldFavoriteGroup.deleteGroup();
       }
 
       if ( newFavoriteGroup.hasKey( "FavoriteCollectionIds" ) ) {
@@ -252,16 +269,27 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
   // check all account folder
+  // TODO we mustn't modify kmailrc but we must modify akonadi_*_resource_*
+  // Need to fix it
   const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( "Account \\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
   Q_FOREACH( const QString &groupName, accountGroups ) {
-    KConfigGroup filterGroup( mKMailConfig, groupName );
+    KConfigGroup accountGroup( mKMailConfig, groupName );
 
-    if ( filterGroup.readEntry( "Folder" ) == mCurrentFolderId )
-      filterGroup.writeEntry( "Folder", mCurrentCollection.id() );
+    if ( accountGroup.readEntry( "Folder" ) == mCurrentFolderId ){
+      accountGroup.writeEntry( "Folder", mCurrentCollection.id() );
+    }
 
-    if ( filterGroup.readEntry( "trash" ) == mCurrentFolderId )
-      filterGroup.writeEntry( "trash" , mCurrentCollection.id() );
+    if ( accountGroup.readEntry( "trash" ) == mCurrentFolderId ) {
+      accountGroup.writeEntry( "trash" , mCurrentCollection.id() );
+
+      // this is configured as a trash collection, so make sure it gets the appropriate attribute
+      // unless there is already a trash collection for this resource
+      // (unfortunately special collections enforce uniqueness per resource)
+      if ( !SpecialMailCollections::self()->hasCollection( SpecialMailCollections::Trash, mResource ) ) {
+        q->registerAsSpecialCollection( SpecialMailCollections::Trash );
+      }
+    }
   }
 
   // check all filters
@@ -352,6 +380,17 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
 }
 
+void AbstractCollectionMigrator::Private::collectionDone()
+{
+  mCurrentFolderId = QString();
+  mCurrentCollection = Collection();
+
+  mStatus = Private::Scheduling;
+  QMetaObject::invokeMethod( q, "processNextCollection", Qt::QueuedConnection );
+
+  q->migrationProgress( mProcessedCollectionsCount, mCollectionsById.count() );
+}
+
 void AbstractCollectionMigrator::Private::collectionAdded( const Collection &collection )
 {
   if ( mStatus == Waiting ) {
@@ -401,6 +440,15 @@ void AbstractCollectionMigrator::Private::fetchResult( KJob *job )
   }
 }
 
+void AbstractCollectionMigrator::Private::modifyResult( KJob *job )
+{
+  if ( job->error() ) {
+    kError() << job->error();
+  }
+
+  collectionDone();
+}
+
 void AbstractCollectionMigrator::Private::processNextCollection()
 {
   if ( mStatus == Failed || mStatus == Finished ) {
@@ -421,6 +469,7 @@ void AbstractCollectionMigrator::Private::processNextCollection()
 
     mCurrentFolderId = folderIdentifierForCollection( collection );
     mCurrentCollection = collection;
+    mNeedModifyJob = false;
 
     q->migrateCollection( collection, mCurrentFolderId );
   }
@@ -599,13 +648,12 @@ void AbstractCollectionMigrator::collectionProcessed()
 {
   d->migrateConfig();
 
-  d->mCurrentFolderId = QString();
-  d->mCurrentCollection = Collection();
-
-  d->mStatus = Private::Scheduling;
-  QMetaObject::invokeMethod( this, "processNextCollection", Qt::QueuedConnection );
-
-  migrationProgress( d->mProcessedCollectionsCount, d->mCollectionsById.count() );
+  if ( d->mNeedModifyJob ) {
+    CollectionModifyJob *job = new CollectionModifyJob( d->mCurrentCollection );
+    connect( job, SIGNAL( result( KJob*) ), SLOT( modifyResult( KJob* ) ) );
+  } else {
+    d->collectionDone();
+  }
 }
 
 void AbstractCollectionMigrator::migrationDone()
@@ -637,6 +685,43 @@ KConfig *AbstractCollectionMigrator::kmailConfig() const
 KConfig *AbstractCollectionMigrator::emailIdentityConfig() const
 {
   return d->mEmailIdentityConfig;
+}
+
+void AbstractCollectionMigrator::registerAsSpecialCollection( int type )
+{
+  Q_ASSERT( type > SpecialMailCollections::Invalid  && type < SpecialMailCollections::LastType );
+
+  SpecialMailCollections::Type colType = (SpecialMailCollections::Type)type;
+
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Registering collection" << d->mCurrentCollection.name() << "for type" << type;
+  SpecialMailCollections::self()->registerCollection( colType, d->mCurrentCollection );
+
+  if ( Private::mIconNamesBySpecialType.isEmpty() )
+  {
+    Private::mIconNamesBySpecialType.insert( SpecialMailCollections::Root,
+                                             QLatin1String( "folder" ) );
+    Private::mIconNamesBySpecialType.insert( SpecialMailCollections::Inbox,
+                                             QLatin1String( "mail-folder-inbox" ) );
+    Private::mIconNamesBySpecialType.insert( SpecialMailCollections::Outbox,
+                                             QLatin1String( "mail-folder-outbox" ) );
+    Private::mIconNamesBySpecialType.insert( SpecialMailCollections::SentMail,
+                                             QLatin1String( "mail-folder-sent" ) );
+    Private::mIconNamesBySpecialType.insert( SpecialMailCollections::Trash,
+                                             QLatin1String( "user-trash" ) );
+    Private::mIconNamesBySpecialType.insert( SpecialMailCollections::Drafts,
+                                             QLatin1String( "document-properties" ) );
+    Private::mIconNamesBySpecialType.insert( SpecialMailCollections::Templates,
+                                             QLatin1String( "document-new" ) );
+  }
+
+  IconNameHash::const_iterator findIt = Private::mIconNamesBySpecialType.constFind( colType );
+  if ( findIt != Private::mIconNamesBySpecialType.constEnd() ) {
+    EntityDisplayAttribute *attribute = d->mCurrentCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
+    Q_ASSERT( attribute != 0 );
+
+    attribute->setIconName( findIt.value() );
+    d->mNeedModifyJob = true;
+  }
 }
 
 #include "abstractcollectionmigrator.moc"

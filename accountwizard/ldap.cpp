@@ -55,7 +55,7 @@ void Ldap::create()
       basedn = h;
   }
   { // while we're here, write default domain
-    KConfig c( "kmailrc" );
+    KConfig c( "kmail2rc" );
     KConfigGroup group = c.group( "General" );
     group.writeEntry( "Default domain", basedn );
   }
