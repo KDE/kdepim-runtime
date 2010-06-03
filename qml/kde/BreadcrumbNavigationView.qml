@@ -230,6 +230,16 @@ Item {
 
   states : [
     State {
+      name : "favOverlay"
+
+      PropertyChanges { target : breadcrumbsView; visible : false; }
+      PropertyChanges { target : breadcrumbPlaceHolder; visible : false; }
+      PropertyChanges { target : selectedItemView; visible : false; }
+      PropertyChanges { target : selectedItemPlaceHolder; visible : false; }
+      PropertyChanges { target : childItemsView; visible : false; }
+      PropertyChanges { target : favinfoOverlay; visible : true; }
+    },
+    State {
       name : "before_select_child"
       PropertyChanges {
         target : breadcrumbsView
@@ -289,7 +299,7 @@ Item {
 
   transitions : [
     Transition {
-      from : ""
+      from : "*"
       to : "before_select_child"
       SequentialAnimation {
         ParallelAnimation {
@@ -336,7 +346,7 @@ Item {
       }
     },
     Transition {
-      from : ""
+      from : "*"
       to : "before_select_breadcrumb"
       SequentialAnimation {
         ParallelAnimation {
