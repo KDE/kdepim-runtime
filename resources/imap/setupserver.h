@@ -81,6 +81,7 @@ private slots:
   void slotMailCheckboxChanged();
   void slotEncryptionRadioChanged();
   void slotSubcriptionCheckboxChanged();
+  void slotConnectionSettingsChanged();
 private:
   void readSettings();
   void populateDefaultAuthenticationOptions();
@@ -95,6 +96,7 @@ private:
   KPIMIdentities::IdentityCombo *m_identityCombobox;
   QString m_oldResourceName;
   bool m_applyClicked;
+  bool m_connectionSettingsEdited; //set to true when the connection settings are *manually* edited (by the user)
 
 private slots:
   void slotTest();

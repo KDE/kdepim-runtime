@@ -115,7 +115,7 @@ static void addAuthenticationItem( QComboBox* authCombo, KIMAP::LoginJob::Authen
 
 SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
-    m_subscriptionsChanged(false), m_shouldClearCache(false), m_applyClicked( false )
+    m_subscriptionsChanged(false), m_shouldClearCache(false), m_applyClicked( false ), m_connectionSettingsEdited( false )
 {
 #ifdef KDEPIM_MOBILE_UI
   setButtonsOrientation( Qt::Vertical );
@@ -171,6 +171,9 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   connect( m_ui->enableMailCheckBox, SIGNAL( toggled(bool) ), this, SLOT( slotMailCheckboxChanged() ) );
   connect( m_ui->safeImapGroup, SIGNAL( buttonClicked( int ) ), this, SLOT( slotEncryptionRadioChanged() ) );
 
+  connect( m_ui->safeImapGroup, SIGNAL( buttonClicked( int ) ), this, SLOT( slotConnectionSettingsChanged() ) );
+  connect( m_ui->authenticationCombo, SIGNAL( activated( int ) ), this, SLOT( slotConnectionSettingsChanged() ) );
+
   readSettings();
   slotTestChanged();
   slotComplete();
@@ -224,6 +227,12 @@ void SetupServer::slotEncryptionRadioChanged()
 
 }
 
+void SetupServer::slotConnectionSettingsChanged()
+{
+  m_connectionSettingsEdited = true;
+}
+
+
 void SetupServer::slotButtonClicked( int button )
 {
   if ( button == KDialog::Ok || button == KDialog::Apply ) {
@@ -235,7 +244,7 @@ void SetupServer::slotButtonClicked( int button )
 
 void SetupServer::testThenAccept()
 {
-  if( m_serverTest != 0 ) {
+  if( m_connectionSettingsEdited || m_serverTest != 0 ) {
     // server test has been run, we're done here
     kDebug() << "server test has been run, we're done here";
     applySettings();
