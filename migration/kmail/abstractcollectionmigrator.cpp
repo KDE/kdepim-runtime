@@ -185,42 +185,44 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       KConfigGroup newFavoriteGroup( mKMailConfig, "FavoriteCollections" );
       if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) ) {
         KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
-        oldFavoriteGroup.copyTo( &newFavoriteGroup );
+        const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
+	const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+	oldFavoriteGroup.copyTo( &newFavoriteGroup );
         oldFavoriteGroup.deleteGroup();
 
-        const QList<int> lIds = newFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
-        const QStringList lNames = newFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
-	//kDebug( KDE_DEFAULT_DEBUG_AREA ) << "lIds=" << lIds<<" lNames="<<lNames;
-        newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
-        newFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
+	if( !lIds.isEmpty() && !lNames.isEmpty() ) {
+          kDebug( KDE_DEFAULT_DEBUG_AREA ) << "FAVORITE COLLECTION lIds=" << lIds<<" lNames="<<lNames;
+          newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+          newFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
 
-        newFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
-        newFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
+          newFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
+          newFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
 
-        newFavoriteGroup.deleteEntry( "IconSize" );
-        newFavoriteGroup.deleteEntry( "SortingPolicy" );
-        newFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
-        newFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
+          newFavoriteGroup.deleteEntry( "IconSize" );
+          newFavoriteGroup.deleteEntry( "SortingPolicy" );
+          newFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
+          newFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
 
-        KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
-        if ( newFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
-          int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
-          favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
-        }
+          KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
+          if ( newFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
+            int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
+            favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
+          }
 
-        if ( newFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
-          bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
-          favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
-        }
+          if ( newFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
+            bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
+            favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
+          }
+	}
       }
 
       if ( newFavoriteGroup.hasKey( "FavoriteCollectionIds" ) ) {
-          QList<qint64> lIds = newFavoriteGroup.readEntry( "FavoriteCollectionIds", QList<qint64>() );
-          if ( lIds.contains( value ) ) {
-            const int pos = lIds.indexOf( value );
-            lIds.replace( pos, mCurrentCollection.id() );
-            newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
-          }
+        QList<qint64> lIds = newFavoriteGroup.readEntry( "FavoriteCollectionIds", QList<qint64>() );
+        if ( lIds.contains( value ) ) {
+          const int pos = lIds.indexOf( value );
+          lIds.replace( pos, mCurrentCollection.id() );
+          newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+        }
       }
       newGroup.deleteEntry( "Id" );
     }
