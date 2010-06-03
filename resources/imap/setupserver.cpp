@@ -115,7 +115,7 @@ static void addAuthenticationItem( QComboBox* authCombo, KIMAP::LoginJob::Authen
 
 SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
-    m_subscriptionsChanged(false), m_shouldClearCache(false), m_applyClicked( false ), m_connectionSettingsEdited( false ), mValidator( this )
+    m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator( this )
 {
 #ifdef KDEPIM_MOBILE_UI
   setButtonsOrientation( Qt::Vertical );
@@ -175,15 +175,16 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   connect( m_ui->enableMailCheckBox, SIGNAL( toggled(bool) ), this, SLOT( slotMailCheckboxChanged() ) );
   connect( m_ui->safeImapGroup, SIGNAL( buttonClicked( int ) ), this, SLOT( slotEncryptionRadioChanged() ) );
 
-  connect( m_ui->safeImapGroup, SIGNAL( buttonClicked( int ) ), this, SLOT( slotConnectionSettingsChanged() ) );
-  connect( m_ui->authenticationCombo, SIGNAL( activated( int ) ), this, SLOT( slotConnectionSettingsChanged() ) );
-
   readSettings();
   slotTestChanged();
   slotComplete();
   connect( Solid::Networking::notifier(),
            SIGNAL( statusChanged( Solid::Networking::Status ) ),
            SLOT( slotTestChanged() ) );
+  connect( this, SIGNAL( applyClicked() ),
+           SLOT( applySettings() ) );
+  connect( this, SIGNAL( okClicked() ),
+           SLOT( applySettings() ) );
 }
 
 SetupServer::~SetupServer()
@@ -227,46 +228,16 @@ void SetupServer::slotEncryptionRadioChanged()
 
 }
 
-void SetupServer::slotConnectionSettingsChanged()
-{
-  m_connectionSettingsEdited = true;
-}
-
-
-void SetupServer::slotButtonClicked( int button )
-{
-  if ( button == KDialog::Ok || button == KDialog::Apply ) {
-    testThenAccept();
-  } else {
-    KDialog::slotButtonClicked( button );
-  }
-}
-
-void SetupServer::testThenAccept()
-{
-  if( m_connectionSettingsEdited || m_serverTest != 0 ) {
-    // server test has been run, we're done here
-    kDebug() << "server test has been run, we're done here";
-    applySettings();
-    accept();
-  } else {
-    // server settings haven't been verified, lets run the server test
-    kDebug() << "server settings haven't been verified, lets run the server test";
-    m_applyClicked = true;
-    slotTest();
-  }
-}
-
 #include <Akonadi/CollectionModifyJob>
 
 void SetupServer::applySettings()
 {
-  m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text().trimmed() )
+  m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
                     || ( Settings::self()->userName() != m_ui->userName->text() );
 
   m_parentResource->setName( m_ui->accountName->text() );
 
-  Settings::self()->setImapServer( m_ui->imapServer->text().trimmed() );
+  Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setImapPort( m_ui->portSpin->value() );
   Settings::self()->setUserName( m_ui->userName->text() );
   QString encryption = "";
@@ -313,7 +284,7 @@ void SetupServer::applySettings()
   Settings::self()->setIncludeInManualCheck( m_ui->includeInCheck->isChecked() );
 
   Settings::self()->writeConfig();
-  kDebug() << "wrote" << m_ui->imapServer->text().trimmed() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
+  kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
   if ( m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty() ) {
     m_parentResource->renameRootCollection( m_ui->accountName->text() );
@@ -418,7 +389,7 @@ void SetupServer::readSettings()
 
 void SetupServer::slotTest()
 {
-  kDebug() << m_ui->imapServer->text().trimmed();
+  kDebug() << m_ui->imapServer->text();
 
   m_ui->testButton->setEnabled( false );
   m_ui->safeImap->setEnabled( false );
@@ -430,7 +401,7 @@ void SetupServer::slotTest()
   delete m_serverTest;
   m_serverTest = new MailTransport::ServerTest( this );
 
-  QString server = m_ui->imapServer->text().trimmed();
+  QString server = m_ui->imapServer->text();
   int port = m_ui->portSpin->value();
   kDebug() << "server: " << server << "port: " << port;
 
@@ -451,14 +422,11 @@ void SetupServer::slotTest()
 void SetupServer::slotFinished( QList<int> testResult )
 {
   kDebug() << testResult;
-  bool success = true;
 
   using namespace MailTransport;
 
-  if ( !m_serverTest->isNormalPossible() && !m_serverTest->isSecurePossible() ) {
+  if ( !m_serverTest->isNormalPossible() && !m_serverTest->isSecurePossible() )
     KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
-    success = false;
-  }
   
   m_ui->testInfo->show();
 
@@ -487,12 +455,6 @@ void SetupServer::slotFinished( QList<int> testResult )
   m_ui->authenticationCombo->setEnabled( true );
   slotEncryptionRadioChanged();
   slotSafetyChanged();
-
-  if( m_applyClicked && success ) {
-    kDebug() << "saving settings and exiting.";
-    applySettings();
-    accept();
-  }
 }
 
 void SetupServer::slotTestChanged()
@@ -503,7 +465,7 @@ void SetupServer::slotTestChanged()
 
   // do not use imapConnectionPossible, as the data is not yet saved.
   m_ui->testButton->setEnabled( true /* TODO Global::connectionPossible() ||
-                                        m_ui->imapServer->text().trimmed() == "localhost"*/ );
+                                        m_ui->imapServer->text() == "localhost"*/ );
 }
 
 void SetupServer::slotEnableWidgets()
@@ -518,7 +480,7 @@ void SetupServer::slotEnableWidgets()
 
 void SetupServer::slotComplete()
 {
-  bool ok =  !m_ui->imapServer->text().trimmed().isEmpty() && !m_ui->userName->text().isEmpty();
+  bool ok =  !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
   button( KDialog::Ok )->setEnabled( ok );
 }
 
@@ -606,13 +568,13 @@ void SetupServer::slotManageSubscriptions()
   ImapAccount account;
 
   // craft the host:port string
-  QString serverPort( m_ui->imapServer->text().trimmed() );
+  QString serverPort( m_ui->imapServer->text() );
   serverPort.append( ':' );
   serverPort.append( m_ui->portSpin->value() );
   account.setServer( serverPort );
 
   account.setUserName( m_ui->userName->text() );
-  account.setName( m_ui->imapServer->text().trimmed() + '/' + m_ui->userName->text() );
+  account.setName( m_ui->imapServer->text() + '/' + m_ui->userName->text() );
   account.setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
 
   account.setEncryptionMode(
