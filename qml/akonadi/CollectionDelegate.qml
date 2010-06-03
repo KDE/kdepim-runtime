@@ -85,8 +85,7 @@ Item {
       width : height
       anchors.right : parent.right
       anchors.rightMargin : 5
-      anchors.top : parent.top
-      anchors.topMargin : 5
+      anchors.verticalCenter : parent.verticalCenter
       opacity : ( showChildIndicator && application.childCollectionHasChildren( model.index ) ) ? 1 : 0
       source: "transparentplus.png"
     }
