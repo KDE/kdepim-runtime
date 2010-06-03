@@ -29,6 +29,12 @@ qt4_add_dbus_adaptor(icalresource_SRCS
 
 kde4_add_executable(akonadi_ical_resource ${icalresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.ICal")
+  set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi ICal Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_ical_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KCAL_LIBS} ${QT_QTDBUS_LIBRARY} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
 
 install(TARGETS akonadi_ical_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

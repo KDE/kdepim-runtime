@@ -39,6 +39,12 @@ qt4_add_dbus_adaptor(mixedmaildirresource_SRCS
 
 kde4_add_executable(akonadi_mixedmaildir_resource ${mixedmaildirresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_mixedmaildir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_mixedmaildir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.MixedMaildir")
+  set_target_properties(akonadi_mixedmaildir_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi MixedMaildir Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_mixedmaildir_resource
   kmindexreader
   maildir

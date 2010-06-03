@@ -22,6 +22,12 @@ install( FILES kabcresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/a
 
 kde4_add_executable(akonadi_kabc_resource ${kabcresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_kabc_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_kabc_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.KABC")
+  set_target_properties(akonadi_kabc_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi KABC Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_kabc_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDE4_KIO_LIBS})
 
 install(TARGETS akonadi_kabc_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

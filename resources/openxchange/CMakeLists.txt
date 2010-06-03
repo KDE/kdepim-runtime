@@ -45,6 +45,13 @@ qt4_add_dbus_adaptor(openxchangeresource_SRCS
 
 kde4_add_executable(akonadi_openxchange_resource RUN_UNINSTALLED ${openxchangeresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.OpenXchange")
+  set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi OpenXchange Resource")
+endif (Q_WS_MAC)
+
+
 target_link_libraries(akonadi_openxchange_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_AKONADI_CONTACT_LIBS} ${KDE4_AKONADI_KCAL_LIBS} )
 
 install(TARGETS akonadi_openxchange_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
