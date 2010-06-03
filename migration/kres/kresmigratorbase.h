@@ -52,9 +52,6 @@ class KResMigratorBase : public KMigratorBase
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance = Akonadi::AgentInstance() );
 
   protected:
-    void createKolabResource();
-
-  protected:
     QString mType;
     QString mBridgeType;
     QStringList mPendingBridgedResources;

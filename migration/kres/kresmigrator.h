@@ -83,13 +83,13 @@ template <typename T> class KResMigrator : public KResMigratorBase
           mCurrentKResource = res;
           ++mIt;
 
-          if ( res->type() == "kolab" )
+          if ( res->type() == "imap" )
           {
             // check if kolab resource exists. If not, create one.
             Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolab_resource" );
             if ( !kolabAgent.isValid() )
               emit message( Info, i18n( "Attempting to create kolab resource" ) );
-              createAgentInstance( "akonadi_kolab_resource", this, SLOT(kolabResourceCreated()) );
+              createAgentInstance( "akonadi_kolab_resource", this, SLOT(kolabResourceCreated(KJob*)) );
           } else {
             bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
             if ( !nativeAvailable ) {
