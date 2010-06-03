@@ -68,8 +68,11 @@ public:
   ~SetupServer();
 
   bool shouldClearCache() const;
+protected slots:
+  virtual void slotButtonClicked( int button );
 
 private slots:
+  void testThenAccept(); // if a server test hasnt been done, does one, then accept()s, else accept()s
   /**
    * Call this if you want the settings saved from this page.
    */
@@ -91,6 +94,7 @@ private:
   KPIMIdentities::IdentityManager *m_identityManager;
   KPIMIdentities::IdentityCombo *m_identityCombobox;
   QString m_oldResourceName;
+  bool m_applyClicked;
 
 private slots:
   void slotTest();
