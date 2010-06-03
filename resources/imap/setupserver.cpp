@@ -115,7 +115,7 @@ static void addAuthenticationItem( QComboBox* authCombo, KIMAP::LoginJob::Authen
 
 SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
-    m_subscriptionsChanged(false), m_shouldClearCache(false), m_applyClicked( false ), m_connectionSettingsEdited( false ), mValidator( this )
+    m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator( this )
 {
 #ifdef KDEPIM_MOBILE_UI
   setButtonsOrientation( Qt::Vertical );
@@ -175,15 +175,16 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   connect( m_ui->enableMailCheckBox, SIGNAL( toggled(bool) ), this, SLOT( slotMailCheckboxChanged() ) );
   connect( m_ui->safeImapGroup, SIGNAL( buttonClicked( int ) ), this, SLOT( slotEncryptionRadioChanged() ) );
 
-  connect( m_ui->safeImapGroup, SIGNAL( buttonClicked( int ) ), this, SLOT( slotConnectionSettingsChanged() ) );
-  connect( m_ui->authenticationCombo, SIGNAL( activated( int ) ), this, SLOT( slotConnectionSettingsChanged() ) );
-
   readSettings();
   slotTestChanged();
   slotComplete();
   connect( Solid::Networking::notifier(),
            SIGNAL( statusChanged( Solid::Networking::Status ) ),
            SLOT( slotTestChanged() ) );
+  connect( this, SIGNAL( applyClicked() ),
+           SLOT( applySettings() ) );
+  connect( this, SIGNAL( okClicked() ),
+           SLOT( applySettings() ) );
 }
 
 SetupServer::~SetupServer()
@@ -225,36 +226,6 @@ void SetupServer::slotEncryptionRadioChanged()
     kFatal() << "Shouldn't happen";
   }
 
-}
-
-void SetupServer::slotConnectionSettingsChanged()
-{
-  m_connectionSettingsEdited = true;
-}
-
-
-void SetupServer::slotButtonClicked( int button )
-{
-  if ( button == KDialog::Ok || button == KDialog::Apply ) {
-    testThenAccept();
-  } else {
-    KDialog::slotButtonClicked( button );
-  }
-}
-
-void SetupServer::testThenAccept()
-{
-  if( m_connectionSettingsEdited || m_serverTest != 0 ) {
-    // server test has been run, we're done here
-    kDebug() << "server test has been run, we're done here";
-    applySettings();
-    accept();
-  } else {
-    // server settings haven't been verified, lets run the server test
-    kDebug() << "server settings haven't been verified, lets run the server test";
-    m_applyClicked = true;
-    slotTest();
-  }
 }
 
 #include <Akonadi/CollectionModifyJob>
@@ -451,14 +422,11 @@ void SetupServer::slotTest()
 void SetupServer::slotFinished( QList<int> testResult )
 {
   kDebug() << testResult;
-  bool success = true;
 
   using namespace MailTransport;
 
-  if ( !m_serverTest->isNormalPossible() && !m_serverTest->isSecurePossible() ) {
+  if ( !m_serverTest->isNormalPossible() && !m_serverTest->isSecurePossible() )
     KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
-    success = false;
-  }
   
   m_ui->testInfo->show();
 
@@ -487,12 +455,6 @@ void SetupServer::slotFinished( QList<int> testResult )
   m_ui->authenticationCombo->setEnabled( true );
   slotEncryptionRadioChanged();
   slotSafetyChanged();
-
-  if( m_applyClicked && success ) {
-    kDebug() << "saving settings and exiting.";
-    applySettings();
-    accept();
-  }
 }
 
 void SetupServer::slotTestChanged()
