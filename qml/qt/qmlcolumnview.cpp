@@ -24,6 +24,9 @@
 #include <QtGui/QColumnView>
 #include <QtGui/QGraphicsProxyWidget>
 
+#include "akonadi/akonadi_next/checkableitemproxymodel.h"
+#include <akonadi/akonadi_next/kproxyitemselectionmodel.h>
+
 using namespace Qt;
 
 QmlColumnView::QmlColumnView(QDeclarativeItem* parent)
@@ -31,12 +34,14 @@ QmlColumnView::QmlColumnView(QDeclarativeItem* parent)
     m_nestedView(new QColumnView),
     m_proxy(new QGraphicsProxyWidget( this ))
 {
+  m_checkableProxyModel = new CheckableItemProxyModel( this );
+  m_nestedView->setModel(m_checkableProxyModel);
   m_proxy->setWidget( m_nestedView );
 }
 
 QObject* QmlColumnView::model() const
 {
-  return m_nestedView->model();
+  return m_checkableProxyModel->sourceModel();
 }
 
 void QmlColumnView::setModel(QObject* model)
@@ -44,7 +49,24 @@ void QmlColumnView::setModel(QObject* model)
   QAbstractItemModel *_model = qobject_cast<QAbstractItemModel *>(model);
   if (!_model)
     return;
-  m_nestedView->setModel(_model);
+  m_checkableProxyModel->setSourceModel(_model);
+}
+
+QObject* QmlColumnView::selectionModel() const
+{
+  return m_nestedView->selectionModel();
+}
+
+void QmlColumnView::setSelectionModel(QObject* model)
+{
+  QItemSelectionModel *_model = qobject_cast<QItemSelectionModel*>(model);
+  if (!_model)
+    return;
+
+  Future::KProxyItemSelectionModel *proxySelectionModel = new Future::KProxyItemSelectionModel(m_checkableProxyModel->sourceModel(), _model);
+
+  Q_ASSERT(proxySelectionModel->model() == m_checkableProxyModel->sourceModel());
+  m_checkableProxyModel->setSelectionModel(proxySelectionModel);
 }
 
 void QmlColumnView::geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry)

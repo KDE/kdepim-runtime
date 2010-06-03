@@ -24,6 +24,7 @@
 
 #include <QtDeclarative/QDeclarativeItem>
 
+class CheckableItemProxyModel;
 class QAbstractItemModel;
 class QColumnView;
 
@@ -35,6 +36,7 @@ class QmlColumnView : public QDeclarativeItem
 {
   Q_OBJECT
   Q_PROPERTY(QObject* model READ model WRITE setModel)
+  Q_PROPERTY(QObject* selectionModel READ selectionModel WRITE setSelectionModel)
 
 public:
   explicit QmlColumnView( QDeclarativeItem* parent = 0 );
@@ -42,10 +44,14 @@ public:
   QObject* model() const;
   void setModel(QObject* model );
 
+  QObject* selectionModel() const;
+  void setSelectionModel(QObject* model );
+
   virtual void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry);
 
 private:
   QColumnView *m_nestedView;
+  CheckableItemProxyModel *m_checkableProxyModel;
   QGraphicsProxyWidget *m_proxy;
 };
 
