@@ -66,6 +66,7 @@ function setup()
     smtp.setHost( serverAddress );
     smtp.setPort( 465 );
     smtp.setEncryption( "SSL" );
+    smtp.setAuthenticationType( "plain" ); // using plain is ok, because we are using SSL.
     smtp.setUsername( SetupManager.email() );
     smtp.setPassword( SetupManager.password() );
 
