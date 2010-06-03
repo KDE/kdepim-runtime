@@ -21,6 +21,12 @@ kde4_add_ui_files(microblogresource_SRCS microblogconfig.ui)
 kde4_add_kcfg_files(microblogresource_SRCS settingsbase.kcfgc)
 kde4_add_executable(akonadi_microblog_resource ${microblogresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_microblog_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_microblog_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Microblog")
+  set_target_properties(akonadi_microblog_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Microblog Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_microblog_resource ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTXML_LIBRARY} ${KDEPIMLIBS_KPIMUTILS_LIBS} ${KDEPIMLIBS_MICROBLOG_LIBS})
 
 install(TARGETS akonadi_microblog_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

@@ -15,6 +15,12 @@ qt4_add_dbus_adaptor(birthdayresource_srcs
 )
 kde4_add_executable(akonadi_birthdays_resource ${birthdayresource_srcs})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Birthdays")
+  set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Birthdays Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_birthdays_resource
   ${KDE4_KIO_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}

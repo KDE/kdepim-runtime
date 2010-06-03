@@ -35,6 +35,12 @@ install( FILES akonotesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/sha
 
 kde4_add_executable(akonadi_akonotes_resource ${akonotesresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_akonotes_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_akonotes_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Akonotes")
+  set_target_properties(akonadi_akonotes_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Akonotes Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_akonotes_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
 
 install(TARGETS akonadi_akonotes_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
