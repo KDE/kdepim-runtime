@@ -167,8 +167,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "IncidencesForChanged" );
     newGroup.deleteEntry( "UserRights" );
     newGroup.deleteEntry( "StatusChangedLocally" );
-    newGroup.deleteEntry( "UIDStatusChangedLocally" );
-    newGroup.deleteEntry( "UIDSDeletedSinceLastSync" );
 
     newGroup.deleteEntry( "MainFolderViewItemDnDSortingKey" );
     newGroup.deleteEntry( "MainFolderViewItemIsExpanded" );
