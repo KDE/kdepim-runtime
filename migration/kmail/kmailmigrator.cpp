@@ -579,7 +579,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     "/Settings", QDBusConnection::sessionBus(), this );
 
   if ( !iface->isValid() ) {
-    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     return;
   }
 
