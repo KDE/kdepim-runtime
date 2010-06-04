@@ -114,6 +114,27 @@ Item {
     anchors.topMargin : _selected_padding
     anchors.left : parent.left
     anchors.right : parent.right
+
+    onCountChanged : {
+      if (selectedItemView.count > 1)
+      {
+        breadcrumbsView.visible = false;
+        breadcrumbPlaceHolder.visible = false;
+        selectedItemView.visible = false;
+        selectedItemPlaceHolder.visible = false;
+        childItemsView.visible = false;
+        favinfoOverlay.visible = true;
+      }
+      else
+      {
+        breadcrumbsView.visible = true;
+        breadcrumbPlaceHolder.visible = true;
+        selectedItemView.visible = true;
+        selectedItemPlaceHolder.visible = true;
+        childItemsView.visible = true;
+        favinfoOverlay.visible = false;
+      }
+    }
   }
 
   Item {
@@ -235,16 +256,6 @@ Item {
   }
 
   states : [
-    State {
-      name : "favOverlay"
-
-      PropertyChanges { target : breadcrumbsView; visible : false; }
-      PropertyChanges { target : breadcrumbPlaceHolder; visible : false; }
-      PropertyChanges { target : selectedItemView; visible : false; }
-      PropertyChanges { target : selectedItemPlaceHolder; visible : false; }
-      PropertyChanges { target : childItemsView; visible : false; }
-      PropertyChanges { target : favinfoOverlay; visible : true; }
-    },
     State {
       name : "before_select_child"
       PropertyChanges {
