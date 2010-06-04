@@ -800,9 +800,30 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
 void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
 {
-  mLocalFoldersDone = true;
-  mCurrentInstance = AgentInstance();
   if ( error.isEmpty() ) {
+    KConfigGroup config( KGlobal::config(), QLatin1String( "SpecialMailCollections" ) );
+    if ( config.readEntry( QLatin1String( "TakeOverIfDefaultIsTotallyEmpty" ), false ) ) {
+      KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
+      KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
+
+      QString defaultResourceId = specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
+
+      AgentInstance defaultResource = AgentManager::self()->instance( defaultResourceId );
+      if ( defaultResource.isValid() && defaultResourceId != instance.identifier() ) {
+        kDebug() << "Attempting take over of special mail collections role from"
+                 << defaultResourceId;
+
+        EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( defaultResource, this );
+        cleaner->setCleaningOptions( EmptyResourceCleaner::CheckOnly );
+        connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
+                 SLOT( specialColDefaultResourceCheckFinished( Akonadi::AgentInstance ) ) );
+        return;
+      }
+    }
+
+    mLocalFoldersDone = true;
+    mCurrentInstance = AgentInstance();
+
     setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
     emit message( Success, i18n( "Local folders migrated successfully." ) );
     mConfig->sync();
@@ -810,6 +831,9 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
       migrationDone();
     }
   } else {
+    mLocalFoldersDone = true;
+    mCurrentInstance = AgentInstance();
+
     migrationFailed( error, instance );
   }
 }
@@ -912,6 +936,37 @@ void KMailMigrator::imapCacheCleanupFinished( const Akonadi::AgentInstance &inst
            << mRunningCacheImporterCount << "still running";
 
   if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
+    migrationDone();
+  }
+}
+
+void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance &instance )
+{
+  KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
+  KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
+
+  const EmptyResourceCleaner *cleaner = qobject_cast<const EmptyResourceCleaner*>( QObject::sender() );
+
+  const QString localFoldersIdentifier = mCurrentInstance.identifier();
+  if ( cleaner->isResourceDeletable() ) {
+    specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), localFoldersIdentifier );
+    specialMailCollectionsGroup.sync();
+    AgentManager::self()->removeInstance( instance );
+
+    kDebug() << "Former special mail collection resource" << instance.identifier()
+             << "successfully delete, now using" << specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
+  } else {
+    kDebug() << "Former special mail collection resource" << instance.identifier()
+             << "still valid";
+  }
+
+  mLocalFoldersDone = true;
+  mCurrentInstance = AgentInstance();
+
+  setMigrationState( "LocalFolders", Complete, localFoldersIdentifier, "LocalFolders" );
+  emit message( Success, i18n( "Local folders migrated successfully." ) );
+  mConfig->sync();
+  if ( mRunningCacheImporterCount == 0 ) {
     migrationDone();
   }
 }
