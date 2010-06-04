@@ -97,7 +97,8 @@ function testOk( arg )
     imapRes.setOption( "Password", SetupManager.password() );
     imapRes.setOption( "UseDefaultIdentity", false );
     imapRes.setOption( "AccountIdentity", identity.uoid() );
-    imapRes.setOption( "SubscriptionEnabled", true );
+// FIXME: reenable once subscription and reverse-order listing is fixed in the IMAP resource
+//    imapRes.setOption( "SubscriptionEnabled", true );
     if ( arg == "ssl" ) { 
       // The ENUM used for authentication (in the imap resource only)
       // is KIMAP::LoginJob::AuthenticationMode
