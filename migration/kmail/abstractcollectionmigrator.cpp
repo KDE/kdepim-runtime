@@ -136,6 +136,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     oldGroup.deleteGroup();
     if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
       EntityDisplayAttribute *attribute = mCurrentCollection.attribute<EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
+      //kDebug( KDE_DEFAULT_DEBUG_AREA )<<" NormalIconPath :"<<newGroup.readEntry( "NormalIconPath" )<<" UnreadIconPath :"<<newGroup.readEntry( "UnreadIconPath" );
       attribute->setIconName( newGroup.readEntry( "NormalIconPath" ) );
       attribute->setActiveIconName( newGroup.readEntry( "UnreadIconPath" ) );
 
@@ -181,39 +182,38 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     //Migrate favorite folder
     if ( newGroup.hasKey( "Id" ) ) {
       uint value = newGroup.readEntry( "Id", 0 );
+      bool favoriteCollectionsMigrated = mKMailConfig->hasGroup( "FavoriteCollections" );
 
       KConfigGroup newFavoriteGroup( mKMailConfig, "FavoriteCollections" );
-      if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) ) {
+      if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) && !favoriteCollectionsMigrated ) {
         KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
         const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
 	const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
 	oldFavoriteGroup.copyTo( &newFavoriteGroup );
         oldFavoriteGroup.deleteGroup();
 
-	if( !lIds.isEmpty() && !lNames.isEmpty() ) {
-          kDebug( KDE_DEFAULT_DEBUG_AREA ) << "FAVORITE COLLECTION lIds=" << lIds<<" lNames="<<lNames;
-          newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
-          newFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
+        //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "FAVORITE COLLECTION lIds=" << lIds<<" lNames="<<lNames;
+        newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
+        newFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
 
-          newFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
-          newFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderNames" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderIds" );
 
-          newFavoriteGroup.deleteEntry( "IconSize" );
-          newFavoriteGroup.deleteEntry( "SortingPolicy" );
-          newFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
-          newFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
+        newFavoriteGroup.deleteEntry( "IconSize" );
+        newFavoriteGroup.deleteEntry( "SortingPolicy" );
+        newFavoriteGroup.deleteEntry( "ToolTipDisplayPolicy" );
+        newFavoriteGroup.deleteEntry( "FavoriteFolderViewSeenInboxes" );
 
-          KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
-          if ( newFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
-            int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
-            favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
-          }
+        KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
+        if ( newFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
+          int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
+          favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
+        }
 
-          if ( newFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
-            bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
-            favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
-          }
-	}
+        if ( newFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
+          bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
+          favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
+        }
       }
 
       if ( newFavoriteGroup.hasKey( "FavoriteCollectionIds" ) ) {

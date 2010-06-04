@@ -148,7 +148,8 @@ void KMailMigrator::deleteOldGroup()
   deleteOldGroup( "GroupwareFolderInfo" );
   deleteOldGroup( "Groupware" );
   deleteOldGroup( "IMAP Resource" );
-
+  deleteOldGroup( "Folder_local_root" );
+  deleteOldGroup( "Folder_search" );
 }
 
 void KMailMigrator::deleteOldGroup( const QString& name ) {
