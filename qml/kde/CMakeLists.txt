@@ -15,6 +15,8 @@ install( FILES qmldir
   list-line-top.png
   scrollable-bottom.png
   scrollable-top.png
+  slideout-panel-background.png
+  slideout-panel-handle.png
   DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
 
 install( TARGETS kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )

@@ -49,31 +49,20 @@ Item {
   function collapse() { background.x = -handleWidth }
   function expand() { background.x = -handleWidth + dragThreshold }
 
-  Rectangle {
+  Item {
     id: background
     x: - handleWidth
     y: handlePosition
     width: 2*handleWidth
     height: handleHeight
 
-    gradient: Gradient {
-      GradientStop { position: 0.0; color: "lightgrey" }
-      GradientStop { position: 0.5; color: "grey" }
-    }
-    radius: parent.radius
-
-    // don't use DropShadow effect, way to slow as it seems to affect everything in the content area as well
-    Rectangle {
-      color: "darkgrey"
-      opacity: 0.75
-      width: parent.width
-      height: parent.height
-      radius: parent.radius
-      x: 4
-      y: 4
-      z: -1
-      // WTF: Blur disables resizing!?!?
-      //effect: Blur { blurRadius: 4 }
+    Image {
+      id: backgroundImage
+      source: "slideout-panel-handle.png"
+      // slightly bigger than the panel due to shadows
+      height: parent.height + 15
+      x: parent.width - (backgroundImage.width - 5)
+      y: -10
     }
 
     Image {
@@ -134,6 +123,7 @@ Item {
         PropertyChanges { target: titleImage; visible: false }
         PropertyChanges { target: contentArea; visible: true }
         PropertyChanges { target: background.parent; z: 50 }
+        PropertyChanges { target: backgroundImage; source: "slideout-panel-background.png"; }
       }
     ]
 
