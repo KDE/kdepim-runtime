@@ -26,6 +26,7 @@ import org.kde.pim.mobileui 4.5 as KPIM
 Item {
   id : _topContext
 
+  signal canceled()
   signal finished()
 
   QmlColumnView {
@@ -44,6 +45,16 @@ Item {
     anchors.bottom : parent.bottom
 //    anchors.right : parent.right
     width: parent.width
+
+    KPIM.Button {
+      anchors.left : parent.parent.left
+      y : 10
+      height : parent.height
+      width : 50
+
+      buttonText : "Cancel"
+      onClicked : { canceled(); }
+    }
 
     KPIM.Button {
       id: doneButton
