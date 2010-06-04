@@ -26,6 +26,7 @@ import org.kde.pim.mobileui 4.5 as KPIM
 Item {
   id : _topContext
 
+  property alias styleSheet: columnView.styleSheet
   signal canceled()
   signal finished()
 
