@@ -75,6 +75,8 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
   if ( wallet && wallet->isOpen() && wallet->hasFolder( "kmail" ) ) {
     wallet->setFolder( "kmail" );
     wallet->readPassword( "account-" + idString, password );
+    if ( !wallet->hasFolder( newFolder ) )
+      wallet->createFolder( newFolder );
     wallet->setFolder( newFolder );
     wallet->writePassword( instance.identifier() + "rc" , password );
   }
