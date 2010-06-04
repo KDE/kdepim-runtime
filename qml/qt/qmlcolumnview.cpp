@@ -21,22 +21,16 @@
 
 #include "qmlcolumnview.h"
 
-#include <QtGui/QColumnView>
-#include <QtGui/QGraphicsProxyWidget>
-
 #include "akonadi/akonadi_next/checkableitemproxymodel.h"
 #include <akonadi/akonadi_next/kproxyitemselectionmodel.h>
 
 using namespace Qt;
 
 QmlColumnView::QmlColumnView(QDeclarativeItem* parent)
-  : QDeclarativeItem(parent),
-    m_nestedView(new QColumnView),
-    m_proxy(new QGraphicsProxyWidget( this ))
+  : DeclarativeWidgetWrapper< QColumnView >(parent)
 {
   m_checkableProxyModel = new CheckableItemProxyModel( this );
-  m_nestedView->setModel(m_checkableProxyModel);
-  m_proxy->setWidget( m_nestedView );
+  m_widget->setModel(m_checkableProxyModel);
 }
 
 QObject* QmlColumnView::model() const
@@ -54,7 +48,7 @@ void QmlColumnView::setModel(QObject* model)
 
 QObject* QmlColumnView::selectionModel() const
 {
-  return m_nestedView->selectionModel();
+  return m_widget->selectionModel();
 }
 
 void QmlColumnView::setSelectionModel(QObject* model)
@@ -68,12 +62,5 @@ void QmlColumnView::setSelectionModel(QObject* model)
   Q_ASSERT(proxySelectionModel->model() == m_checkableProxyModel->sourceModel());
   m_checkableProxyModel->setSelectionModel(proxySelectionModel);
 }
-
-void QmlColumnView::geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry)
-{
-  QDeclarativeItem::geometryChanged( newGeometry, oldGeometry );
-  m_proxy->resize( newGeometry.size() );
-}
-
 
 #include "qmlcolumnview.moc"

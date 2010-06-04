@@ -1,5 +1,6 @@
 kde4_add_plugin(qtwidgetwrappersplugin WITH_PREFIX
   plugin.cpp
+  declarativewidgetwrapper.cpp
   qmldateedit.cpp
   qmlcolumnview.cpp
 )

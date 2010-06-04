@@ -20,14 +20,13 @@
 #define QMLDATEEDIT_H
 
 #include <QtCore/QDate>
-#include <QtDeclarative/QDeclarativeItem>
+#include <QtGui/QDateEdit>
+#include "declarativewidgetwrapper.h"
 
-class QDateEdit;
-class QGraphicsProxyWidget;
 
 namespace Qt {
 
-class QmlDateEdit : public QDeclarativeItem
+class QmlDateEdit : public DeclarativeWidgetWrapper<QDateEdit>
 {
   Q_OBJECT
   Q_PROPERTY( QDate date READ date )
@@ -40,12 +39,6 @@ public:
 
   QString displayFormat() const;
   void setDisplayFormat( const QString &format );
-
-  virtual void geometryChanged( const QRectF &newGeometry, const QRectF &oldGeometry );
-
-private:
-  QDateEdit *mDateEdit;
-  QGraphicsProxyWidget *mProxy;
 };
 
 }

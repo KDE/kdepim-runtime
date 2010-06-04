@@ -22,17 +22,18 @@
 #ifndef QMLCOLUMNVIEW_H
 #define QMLCOLUMNVIEW_H
 
+#include "declarativewidgetwrapper.h"
 #include <QtDeclarative/QDeclarativeItem>
+#include <QtGui/QColumnView>
 
 class CheckableItemProxyModel;
 class QAbstractItemModel;
-class QColumnView;
 
 Q_DECLARE_METATYPE(QAbstractItemModel*)
 
 namespace Qt {
 
-class QmlColumnView : public QDeclarativeItem
+class QmlColumnView : public DeclarativeWidgetWrapper<QColumnView>
 {
   Q_OBJECT
   Q_PROPERTY(QObject* model READ model WRITE setModel)
@@ -47,12 +48,8 @@ public:
   QObject* selectionModel() const;
   void setSelectionModel(QObject* model );
 
-  virtual void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry);
-
 private:
-  QColumnView *m_nestedView;
   CheckableItemProxyModel *m_checkableProxyModel;
-  QGraphicsProxyWidget *m_proxy;
 };
 
 }

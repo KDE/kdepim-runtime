@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Bertjan Broeksema <b.broeksema@home.nl>
+    Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -16,31 +16,24 @@
     Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301, USA.
 */
-#include "qmldateedit.h"
 
-namespace Qt {
+#include "declarativewidgetwrapper.h"
 
-QmlDateEdit::QmlDateEdit( QDeclarativeItem *parent )
-  : DeclarativeWidgetWrapper< QDateEdit >( parent )
+#include <QtGui/QGraphicsProxyWidget>
+
+using namespace Qt;
+
+DeclarativeWidgetWrapperBase::DeclarativeWidgetWrapperBase(QWidget* widget, QDeclarativeItem* parent) :
+  QDeclarativeItem(parent),
+  m_proxy( new QGraphicsProxyWidget( this ) )
 {
-  m_widget->setDate( QDate::currentDate() );
+  m_proxy->setWidget( widget );
 }
 
-QDate QmlDateEdit::date() const
+void DeclarativeWidgetWrapperBase::geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry)
 {
-  return m_widget->date();
+  QDeclarativeItem::geometryChanged( newGeometry, oldGeometry );
+  m_proxy->resize( newGeometry.size() );
 }
 
-QString QmlDateEdit::displayFormat() const
-{
-  return m_widget->displayFormat();
-}
-
-void QmlDateEdit::setDisplayFormat( const QString &format )
-{
-  m_widget->setDisplayFormat( format );
-}
-
-}
-
-#include "qmldateedit.moc"
+#include "declarativewidgetwrapper.moc"
