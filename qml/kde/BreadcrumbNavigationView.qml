@@ -89,7 +89,7 @@ Item {
 
   Item {
     id : breadcrumbPlaceHolder
-    height : itemHeight
+    height : breadcrumbTopLevel.hasBreadcrumbs ? itemHeight : 0
     anchors.top : topButton.bottom
     anchors.left : parent.left
     anchors.right : parent.right
@@ -101,6 +101,7 @@ Item {
       anchors.bottom : parent.bottom
       anchors.bottomMargin : 8
       fillMode : Image.TileVertically
+      opacity : breadcrumbTopLevel.hasBreadcrumbs ? 1 : 0
     }
   }
 
@@ -166,6 +167,7 @@ Item {
       anchors.right : parent.right
       anchors.left : parent.left
       anchors.bottom : parent.bottom
+      opacity : (selectedItemView.count > 0) ? 1 : 0
     }
   }
 
