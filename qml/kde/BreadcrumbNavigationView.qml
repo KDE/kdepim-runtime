@@ -213,7 +213,7 @@ Item {
     visible : false
 
     Text {
-      text : KDE.i18na("You have selected \n%1 folders\nfrom N accounts\n%2 emails", [selectedItemView.count, headerList.count])
+      text : KDE.i18na("You have selected \n%1 folders\nfrom %2 accounts\n%3 emails", [selectedItemView.count, application.numSelectedAccounts(), headerList.count])
       font.italic : true
       horizontalAlignment : Text.AlignHCenter
       anchors.horizontalCenter : parent.horizontalCenter
