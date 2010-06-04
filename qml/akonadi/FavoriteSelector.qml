@@ -52,7 +52,7 @@ Item {
       height : parent.height
       width : 50
 
-      buttonText : "Cancel"
+      buttonText : KDE.i18n("Cancel")
       onClicked : { canceled(); }
     }
 
@@ -63,7 +63,7 @@ Item {
       height : parent.height
       width : 50
 
-      buttonText : "Done"
+      buttonText : KDE.i18n("Done")
       onClicked : { finished(); }
     }
   }
