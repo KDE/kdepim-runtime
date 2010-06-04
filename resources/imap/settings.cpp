@@ -148,6 +148,7 @@ void Settings::setPassword( const QString & password )
         wallet->writePassword( config()->name(), password );
         kDebug() << "Wallet save: " << wallet->sync() << endl;
     }
+    delete wallet;
 }
 
 #include "settings.moc"
