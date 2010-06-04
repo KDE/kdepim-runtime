@@ -548,7 +548,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( disconnected ) {
     ImapCacheLocalImporter *cacheImporter = new ImapCacheLocalImporter( store, this );
     cacheImporter->setTopLevelFolder( collectionMigrator->topLevelFolder() );
-    cacheImporter->setAccountName( config.readEntry( "Name" ) );
+    cacheImporter->setAccountName( nameAccount );
 
     connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
              cacheImporter, SLOT( startImport() ) );
@@ -685,8 +685,9 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   else if ( lockType == "none" )
     iface->setLockfileMethod( MboxNone );
 
-  instance.setName( config.readEntry( "Name" ) );
-  emit status( config.readEntry( "Name" ) );
+  const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
+  emit status( nameAccount );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -714,8 +715,9 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 
   iface->setPath( config.readEntry( "Location" ) );
 
-  instance.setName( config.readEntry( "Name" ) );
-  emit status( config.readEntry( "Name" ) );
+  const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
+  emit status( nameAccount );
   instance.reconfigure();
   migrationCompleted( instance );
 }
