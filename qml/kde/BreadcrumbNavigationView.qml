@@ -33,6 +33,7 @@ Item {
   property alias breadcrumbDelegate :  breadcrumbsView.delegate
   property alias selectedItemDelegate :  selectedItemView.delegate
   property alias childItemsDelegate :  childItemsView.delegate
+  property alias multipleSelectionText : multipleSelectionMessage.text
 
   property int itemHeight : height / 7
   property int _transitionSelect : -1
@@ -216,7 +217,7 @@ Item {
     visible : false
 
     Text {
-      text : KDE.i18na("You have selected \n%1 folders\nfrom %2 accounts\n%3 emails", [selectedItemView.count, application.numSelectedAccounts(), headerList.count])
+      id : multipleSelectionMessage
       font.italic : true
       horizontalAlignment : Text.AlignHCenter
       anchors.horizontalCenter : parent.horizontalCenter
