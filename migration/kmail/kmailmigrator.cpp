@@ -34,6 +34,7 @@
 #include "maildirsettings.h"
 #include "mixedmaildirsettings.h"
 #include "mixedmaildirstore.h"
+#include "emptyresourcecleaner.h"
 #include "imapcachecollectionmigrator.h"
 #include "imapcachelocalimporter.h"
 #include "localfolderscollectionmigrator.h"
@@ -552,7 +553,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
     connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
              cacheImporter, SLOT( startImport() ) );
-    connect( cacheImporter, SIGNAL( importFinished( QString ) ), SLOT( imapCacheImportFinished( QString ) ) );
+    connect( cacheImporter, SIGNAL( importFinished( Akonadi::AgentInstance, QString ) ),
+              SLOT( imapCacheImportFinished( Akonadi::AgentInstance, QString ) ) );
     ++mRunningCacheImporterCount;
   }
 
@@ -859,6 +861,10 @@ void KMailMigrator::collectionMigratorFinished()
 
 void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
 {
+  if ( instance.identifier() != mCurrentInstance.identifier() ) {
+    return;
+  }
+
   if ( instance.status() == AgentInstance::Idle ) {
     emit status( QString() );
   } else {
@@ -868,18 +874,42 @@ void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
 
 void KMailMigrator::instanceProgressChanged( const AgentInstance &instance )
 {
+  if ( instance.identifier() != mCurrentInstance.identifier() ) {
+    return;
+  }
+
   emit progress( 0, 100, instance.progress() );
 }
 
-void KMailMigrator::imapCacheImportFinished( const QString &error )
+void KMailMigrator::imapCacheImportFinished( const Akonadi::AgentInstance &instance, const QString &error )
+{
+  kDebug() << "CacheImport into" << instance.identifier()
+           << "finished (error=" << error << "), "
+           << ( mRunningCacheImporterCount - 1 ) << "still running";
+
+  if ( !error.isEmpty() ) {
+    --mRunningCacheImporterCount;
+
+    emit message( Error, error );
+  } else if ( mDeleteCacheAfterImport ) {
+      EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( instance, this );
+      cleaner->setCleaningOptions( EmptyResourceCleaner::DeleteEmptyCollections |
+                                   EmptyResourceCleaner::DeleteEmptyResource );
+     connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
+              SLOT( imapCacheCleanupFinished( Akonadi::AgentInstance ) ) );
+  }
+
+  if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
+    migrationDone();
+  }
+}
+
+void KMailMigrator::imapCacheCleanupFinished( const Akonadi::AgentInstance &instance )
 {
   --mRunningCacheImporterCount;
 
-  kDebug() << "CacheImport finished (error=" << error << "), "
+  kDebug() << "CacheCleanup of" << instance.identifier() << "finished, "
            << mRunningCacheImporterCount << "still running";
-  if ( !error.isEmpty() ) {
-    emit message( Error, error );
-  }
 
   if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
     migrationDone();
