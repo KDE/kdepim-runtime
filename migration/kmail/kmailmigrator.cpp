@@ -495,8 +495,9 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
-  instance.setName( config.readEntry( "Name" ) );
-  emit status( config.readEntry( "Name" ) );
+  const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
+  emit status( nameAccount );
   instance.reconfigure();
 
   ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportCachedMessages;
@@ -519,7 +520,6 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     }
   }
 
-  ImapCacheCollectionMigrator *collectionMigrator = 0;
   MixedMaildirStore *store = 0;
   if ( disconnected ) {
     if ( mDeleteCacheAfterImport ) {
@@ -536,7 +536,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     store = mImapCache;
   }
 
-  collectionMigrator = new ImapCacheCollectionMigrator( instance, store, this );
+  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, store, this );
   collectionMigrator->setMigrationOptions( options );
 
   kDebug() << "Starting IMAP collection migration: options="
@@ -643,8 +643,9 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
   config.deleteEntry("use-default-identity");
-  instance.setName( config.readEntry( "Name" ) );
-  emit status( config.readEntry( "Name" ) );
+  const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
+  emit status( nameAccount );
   instance.reconfigure();
   config.sync();
   migrationCompleted( instance );
