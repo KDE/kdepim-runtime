@@ -161,6 +161,7 @@ Item {
       anchors.topMargin : -8
       opacity : (selectedItemView.count > 0) ? 1 : 0
     }
+    /*
     Image {
       source : "dividing-line-horizontal.png"
       fillMode : Image.TileHorizontally
@@ -168,7 +169,7 @@ Item {
       anchors.left : parent.left
       anchors.bottom : parent.bottom
       opacity : (selectedItemView.count > 0) ? 1 : 0
-    }
+    } */
   }
 
   ListView {
