@@ -121,9 +121,13 @@ QString Settings::password(bool *userRejected) const
     if ( !m_password.isEmpty() )
       return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
-    if ( wallet && wallet->isOpen() && wallet->hasFolder( "imap" ) ) {
+    if ( wallet && wallet->isOpen() ) {
+      if ( wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), m_password );
+      } else {
+        wallet->createFolder( "imap" );
+      }
     } else if ( userRejected != 0 ) {
         *userRejected = true;
     }
