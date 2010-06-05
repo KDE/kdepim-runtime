@@ -24,6 +24,8 @@
 
 class KJob;
 
+#include <mailtransport/transport.h>
+
 #include <akonadi/resourcebase.h>
 #include <boost/shared_ptr.hpp>
 #include <QtCore/QStringList>
@@ -83,6 +85,8 @@ public:
   KIMAP::Session *mainSession() const;
   QStringList capabilities() const;
   QList<KIMAP::MailBoxDescriptor> namespaces() const;
+
+  static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType );
 
 Q_SIGNALS:
   void success( KIMAP::Session *session );

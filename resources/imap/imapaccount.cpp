@@ -43,6 +43,41 @@
 
 #include "settings.h"
 
+/**
+ * Maps the enum used to represent authentication in MailTransport (kdepimlibs)
+ * to the one used by the imap resource.
+ * @param authType the MailTransport auth enum value
+ * @return the corresponding KIMAP auth value.
+ * @note will cause fatal error if there is no mapping, so be careful not to pass invalid auth options (e.g., APOP) to this function.
+ */
+KIMAP::LoginJob::AuthenticationMode ImapAccount::mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType )
+{
+  // typedef these for readability
+  typedef MailTransport::Transport::EnumAuthenticationType MTAuth;
+  typedef KIMAP::LoginJob KIAuth;
+  switch ( authType ) {
+    case MTAuth::ANONYMOUS:
+      return KIAuth::Anonymous;
+    case MTAuth::PLAIN:
+      return KIAuth::Plain;
+    case MTAuth::NTLM:
+      return KIAuth::NTLM;
+    case MTAuth::LOGIN:
+      return KIAuth::Login;
+    case MTAuth::GSSAPI:
+      return KIAuth::GSSAPI;
+    case MTAuth::DIGEST_MD5:
+      return KIAuth::DigestMD5;
+    case MTAuth::CRAM_MD5:
+      return KIAuth::CramMD5;
+    case MTAuth::CLEAR:
+      return KIAuth::ClearText;
+    default:
+      kFatal() << "mapping from Transport::EnumAuthenticationType ->  KIMAP::LoginJob::AuthenticationMode not possible";
+  }
+  return KIAuth::ClearText; // dummy value, shouldn't get here.
+}
+
 class SessionUiProxy : public KIMAP::SessionUiProxy {
   public:
     bool ignoreSslError(const KSslErrorUiData& errorData) {
@@ -74,7 +109,7 @@ ImapAccount::ImapAccount( Settings *settings, QObject *parent )
     m_encryption = KIMAP::LoginJob::TlsV1;
   else
     m_encryption = KIMAP::LoginJob::Unencrypted;
-  m_authentication = (KIMAP::LoginJob::AuthenticationMode) settings->authentication();
+  m_authentication = mapTransportAuthToKimap( (MailTransport::TransportBase::EnumAuthenticationType::type) settings->authentication() );
 }
 
 ImapAccount::ImapAccount( QObject *parent )
