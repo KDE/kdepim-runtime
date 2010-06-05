@@ -153,9 +153,9 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
         default: break;
       }
       switch (s.socketType) {
-        case Ispdb::None: t->setOption( "Safety", 0);break;
-        case Ispdb::SSL: t->setOption( "Safety", 5 );break;
-        case Ispdb::StartTLS: t->setOption( "Safety", 1 );break;
+        case Ispdb::None: t->setOption( "Safety", "None" );break;
+        case Ispdb::SSL: t->setOption( "Safety", "SSL" );break;
+        case Ispdb::StartTLS: t->setOption( "Safety", "STARTTLS" );break;
         default: break;
       }
     } else if ( mIspdb->pop3Servers().count() > 0 ) {
