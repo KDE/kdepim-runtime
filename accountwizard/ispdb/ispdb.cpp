@@ -146,7 +146,7 @@ server Ispdb::createServer( const QDomElement& n )
             } else if ( f.tagName() == "username" ) {
                 s.username = replacePlaceholders( f.text() );
             } else if ( f.tagName() == "authentication" ) {
-                if ( f.text() == "password-cleartext" || f.text() == "plain" )
+                if ( f.text() == "plain" )
                     s.authentication = Plain;
                 else if ( f.text() == "password-encrypted" || f.text() == "secure" )
                     s.authentication = CramMD5;
@@ -156,7 +156,7 @@ server Ispdb::createServer( const QDomElement& n )
                     s.authentication = GSSAPI;
                 else if ( f.text() == "client-ip-based" )
                     s.authentication = ClientIP;
-                else if ( f.text() == "none" )
+                else if ( f.text() == "none" || "password-cleartext" )
                     s.authentication = NoAuth;
             }
         }
