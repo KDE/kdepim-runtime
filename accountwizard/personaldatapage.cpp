@@ -26,6 +26,7 @@
 #include "ispdb/ispdb.h"
 
 #include <kpimutils/email.h>
+#include <kemailsettings.h>
 
 #include <mailtransport/transport.h>
 
@@ -76,6 +77,10 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
   EmailValidator* emailValidator = new EmailValidator( this );
   ui.emailEdit->setValidator( emailValidator );
 
+  KEMailSettings e;
+  ui.nameEdit->setText( e.getSetting( KEMailSettings::RealName ) );
+  ui.emailEdit->setText( e.getSetting( KEMailSettings::EmailAddress ) );
+  slotTextChanged();
   connect( ui.emailEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
   connect( ui.nameEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
 }
