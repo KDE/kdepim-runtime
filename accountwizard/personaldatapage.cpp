@@ -32,6 +32,24 @@
 #include <KDebug>
 
 #include <QScrollArea>
+#include <QValidator>
+
+class EmailValidator : public QValidator {
+  public:
+    EmailValidator( QObject* parent ) : QValidator( parent ) {}
+    virtual State validate( QString& str, int& pos ) const
+    {
+      Q_UNUSED( pos );
+      if ( KPIMUtils::isValidSimpleAddress( str ) )
+        return QValidator::Acceptable;
+
+      // we'll say any string that doesn't have whitespace
+      // is an intermediate email string
+      if( QRegExp("\\s").indexIn(str) > -1 )
+        return QValidator::Invalid;
+      return QValidator::Intermediate;
+    }
+};
 
 PersonalDataPage::PersonalDataPage(Dialog* parent) :
   Page( parent ), mSetupManager( parent->setupManager() )
@@ -54,6 +72,10 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
 #endif
 
   ui.setupUi( pageParent );
+
+  EmailValidator* emailValidator = new EmailValidator( this );
+  ui.emailEdit->setValidator( emailValidator );
+
   connect( ui.emailEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
   connect( ui.nameEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
 }
@@ -69,7 +91,7 @@ void PersonalDataPage::slotTextChanged()
   // Ignore the password field, as that can be empty when auth is based on ip-address.
   setValid( !ui.emailEdit->text().isEmpty() &&
             !ui.nameEdit->text().isEmpty()  && 
-            KPIMUtils::isValidAddress( ui.emailEdit->text() ) == KPIMUtils::AddressOk);
+            KPIMUtils::isValidSimpleAddress( ui.emailEdit->text() ) );
 }
 
 void PersonalDataPage::leavePageNext()
