@@ -378,6 +378,7 @@ void AccountDialog::slotCheckPopCapabilities()
   mServerTest = new ServerTest( this );
   BusyCursorHelper *busyCursorHelper = new BusyCursorHelper( mServerTest );
   mServerTest->setProgressBar( checkCapabilitiesProgress );
+  enableButtonOk( false );
   checkCapabilitiesStack->setCurrentIndex( 1 );
   Transport::EnumEncryption::type encryptionType;
   if ( encryptionSSL->isChecked() )
@@ -399,6 +400,7 @@ void AccountDialog::slotCheckPopCapabilities()
 void AccountDialog::slotPopCapabilities( QList<int> encryptionTypes )
 {
   checkCapabilitiesStack->setCurrentIndex( 0 );
+  enableButtonOk( true );
 
   // if both fail, popup a dialog
   if ( !mServerTest->isNormalPossible() && !mServerTest->isSecurePossible() ) 
