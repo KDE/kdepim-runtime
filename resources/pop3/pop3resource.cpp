@@ -280,8 +280,7 @@ void POP3Resource::doStateStep()
       const bool loadPasswordFromWallet = Settings::self()->storePassword() && !mAskAgain &&
                                 passwordNeeded && !Settings::self()->login().isEmpty();
       if ( loadPasswordFromWallet ) {
-        // FIXME: use a proper parent widget
-        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0,
+        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs(),
                                       Wallet::Asynchronous );
         connect( mWallet, SIGNAL(walletOpened(bool)),
                  this, SLOT(walletOpenedForLoading(bool)) );
@@ -430,8 +429,7 @@ void POP3Resource::doStateStep()
       else {
         kDebug() << "Writing password back to the wallet.";
         emit status( Running, i18n( "Saving password to the wallet." ) );
-        // FIXME: use a proper parent widget
-        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0,
+        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs(),
                                       Wallet::Asynchronous );
         connect( mWallet, SIGNAL(walletOpened(bool)),
                  this, SLOT(walletOpenedForSaving(bool)) );
