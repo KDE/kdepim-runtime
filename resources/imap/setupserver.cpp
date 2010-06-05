@@ -399,6 +399,7 @@ void SetupServer::slotTest()
 
   delete m_serverTest;
   m_serverTest = new MailTransport::ServerTest( this );
+  qApp->setOverrideCursor( Qt::BusyCursor );
 
   QString server = m_ui->imapServer->text();
   int port = m_ui->portSpin->value();
@@ -415,12 +416,16 @@ void SetupServer::slotTest()
   m_serverTest->setProgressBar( m_ui->testProgress );
   connect( m_serverTest, SIGNAL( finished( QList<int> ) ),
            SLOT( slotFinished( QList<int> ) ) );
+  enableButtonOk( false );
   m_serverTest->start();
 }
 
 void SetupServer::slotFinished( QList<int> testResult )
 {
   kDebug() << testResult;
+
+  qApp->restoreOverrideCursor();
+  enableButtonOk( true );
 
   using namespace MailTransport;
 
