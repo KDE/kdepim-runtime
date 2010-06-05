@@ -27,6 +27,8 @@
 
 #include <kpimutils/email.h>
 
+#include <mailtransport/transport.h>
+
 #include <KDebug>
 
 #include <QScrollArea>
@@ -144,10 +146,10 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setOption( "UserName", s.username );
       t->setOption( "Password", ui.passwordEdit->text() );
       switch (s.authentication) {
-        case Ispdb::Plain: t->setOption("Authentication", 0 ); break;
-        case Ispdb::CramMD5: t->setOption("Authentication", 3 ); break;
-        case Ispdb::NTLM: t->setOption("Authentication", 5 ); break;
-        case Ispdb::GSSAPI: t->setOption("Authentication", 6 ); break;
+        case Ispdb::Plain: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::PLAIN ); break;
+        case Ispdb::CramMD5: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
+        case Ispdb::NTLM: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
+        case Ispdb::GSSAPI: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
         case Ispdb::ClientIP: break;
         case Ispdb::NoAuth: break;
         default: break;
@@ -170,13 +172,13 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setOption( "Login", s.username );
       t->setOption( "Password", ui.passwordEdit->text() );
       switch (s.authentication) {
-        case Ispdb::Plain: t->setOption("AuthenticationMethod", 1 ); break;
-        case Ispdb::CramMD5: t->setOption("AuthenticationMethod", 2 ); break;
-        case Ispdb::NTLM: t->setOption("AuthenticationMethod", 5 ); break;
-        case Ispdb::GSSAPI: t->setOption("AuthenticationMethod", 3 ); break;
+        case Ispdb::Plain: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::PLAIN ); break;
+        case Ispdb::CramMD5: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
+        case Ispdb::NTLM: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
+        case Ispdb::GSSAPI: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
         case Ispdb::ClientIP:
         case Ispdb::NoAuth:
-        default: t->setOption("AuthenticationMethod",7); break;
+        default: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::CLEAR ); break;
       }
       switch (s.socketType) {
         case Ispdb::SSL: t->setOption( "UseSSL", 1 );break;
