@@ -150,9 +150,10 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
         case Ispdb::CramMD5: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
         case Ispdb::NTLM: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
         case Ispdb::GSSAPI: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
-        case Ispdb::ClientIP: break;
-        case Ispdb::NoAuth: break;
-        default: break;
+        case Ispdb::ClientIP:
+        case Ispdb::NoAuth:
+        default:
+          t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CLEAR );
       }
       switch (s.socketType) {
         case Ispdb::None: t->setOption( "Safety", "None" );break;
