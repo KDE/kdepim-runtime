@@ -511,6 +511,18 @@ void POP3Resource::loginJobResult( KJob *job )
       mAskAgain = true;
     cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
                 '\n' + job->errorString() );
+    int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
+                                  i18n( "The server refused the supplied username and password. "
+                                        "Do you want to go to the settings, have another attempt "
+                                        "at logging in, or do nothing?\n\n"
+                                        "%1", job->errorString() ),
+                                  i18n( "Could Not Authenticate" ),
+                                  KGuiItem( i18n( "Settings" ) ),
+                                  KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
+    if ( i == KMessageBox::Yes ) {
+      configure( winIdForDialogs() );
+      return;
+    }
   }
   else {
     advanceState( List );
