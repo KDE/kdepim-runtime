@@ -173,7 +173,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setOption( "UserName", s.username );
       t->setOption( "Password", ui.passwordEdit->text() );
       switch (s.authentication) {
-        case Ispdb::Plain: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::PLAIN ); break;
+        case Ispdb::Plain: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CLEAR ); break;
         case Ispdb::CramMD5: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
         case Ispdb::NTLM: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
         case Ispdb::GSSAPI: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
