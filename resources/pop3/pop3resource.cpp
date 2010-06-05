@@ -103,7 +103,7 @@ void POP3Resource::configure( WId windowId )
   QPointer<AccountDialog> accountDialog( new AccountDialog( this, windowId ) );
   if ( accountDialog->exec() == QDialog::Accepted ) {
     updateIntervalTimer();
-    mAskAgain = false; // the user might have changed the password
+    mAskAgain = true; // the user might have changed the password
     emit configurationDialogAccepted();
   }
   else {
@@ -278,14 +278,14 @@ void POP3Resource::doStateStep()
 
       const bool passwordNeeded = Settings::self()->authenticationMethod() != MailTransport::Transport::EnumAuthenticationType::GSSAPI;
       const bool loadPasswordFromWallet = Settings::self()->storePassword() && !mAskAgain &&
-                                passwordNeeded && !Settings::self()->login().isEmpty();
+                                passwordNeeded && !Settings::self()->login().isEmpty() && mPassword.isEmpty();
       if ( loadPasswordFromWallet ) {
         mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs(),
                                       Wallet::Asynchronous );
         connect( mWallet, SIGNAL(walletOpened(bool)),
                  this, SLOT(walletOpenedForLoading(bool)) );
       }
-      else if ( passwordNeeded ) {
+      else if ( passwordNeeded && ( mPassword.isEmpty() || mAskAgain ) ) {
         QString detail;
         if ( mAskAgain )
           detail = i18n( "You are asked here because the previous login was not successful." );
@@ -297,7 +297,7 @@ void POP3Resource::doStateStep()
         showPasswordDialog( buildLabelForPasswordDialog( detail ) );
       }
       else {
-        // No password needed, go on with Connect
+        // No password needed or using previous password, go on with Connect
         advanceState( Connect );
       }
 
@@ -505,6 +505,7 @@ void POP3Resource::precommandResult( KJob *job )
 void POP3Resource::loginJobResult( KJob *job )
 {
   if ( job->error() ) {
+    kDebug() << job->error() << job->errorText();
     if ( job->error() == KIO::ERR_COULD_NOT_LOGIN && !Settings::self()->storePassword() )
       mAskAgain = true;
     cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
@@ -938,7 +939,6 @@ void POP3Resource::resetState()
 {
   mState = Idle;
   mTargetCollection = Collection( -1 );
-  mPassword.clear();
   mIdsToSizeMap.clear();
   mIdsToUidsMap.clear();
   mDownloadedIDs.clear();
