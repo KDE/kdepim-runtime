@@ -83,11 +83,17 @@ void Settings::onWalletOpened( bool success )
     emit passwordRequestCompleted( QString(), true );
   } else {
     Wallet *wallet = qobject_cast<Wallet*>( sender() );
+    bool passwordNotStoredInWallet = true;
     if ( wallet && wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), m_password );
+	passwordNotStoredInWallet = false;
     }
-    emit passwordRequestCompleted( m_password, false );
+    if ( passwordNotStoredInWallet || m_password.isEmpty() )
+      requestManualAuth();
+    else
+      emit passwordRequestCompleted( m_password, passwordNotStoredInWallet );
+
     wallet->deleteLater();
   }
 }
