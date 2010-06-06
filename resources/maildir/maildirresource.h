@@ -60,10 +60,11 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     virtual void collectionRemoved( const Akonadi::Collection &collection );
 
   private slots:
-    void ensureDirExists();
-    bool ensureSaneConfiguration();
+    void configurationChanged();
 
   private:
+    void ensureDirExists();
+    bool ensureSaneConfiguration();
     Akonadi::Collection::List listRecursive( const Akonadi::Collection &root, const KPIM::Maildir &dir );
 
 };

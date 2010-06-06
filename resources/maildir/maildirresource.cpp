@@ -66,8 +66,7 @@ MaildirResource::MaildirResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(ensureSaneConfiguration()) );
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(ensureDirExists()) );
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(configurationChanged()) );
 
   // We need to enable this here, otherwise we neither get the remote ID of the
   // parent collection when a collection changes, nor the full item when an item
@@ -111,6 +110,14 @@ QString MaildirResource::itemMimeType()
 {
   return KMime::Message::mimeType();
 }
+
+void MaildirResource::configurationChanged()
+{
+  Settings::self()->writeConfig();
+  ensureSaneConfiguration();
+  ensureDirExists();
+}
+
 
 void MaildirResource::aboutToQuit()
 {
@@ -346,7 +353,7 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 }
 
 void MaildirResource::collectionChanged(const Collection & collection)
-{    
+{
   if ( !ensureSaneConfiguration() ) {
     emit error( i18n("Unusable configuration.") );
     changeProcessed();
