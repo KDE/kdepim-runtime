@@ -692,6 +692,12 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
 
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
+  config.deleteEntry( "identity-id" );
+  config.deleteEntry( "use-default-identity" );
+  //We can't specify folder in akonadi
+  config.deleteEntry( "Folder" );
+
+  //TODO check-interval for the moment mbox doesn't support it
 
   const QString nameAccount = config.readEntry( "Name" );
   instance.setName( nameAccount );
@@ -724,7 +730,13 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 
   iface->setPath( config.readEntry( "Location" ) );
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
-  config.deleteEntry("trash");
+  config.deleteEntry( "trash" );
+  config.deleteEntry( "identity-id" );
+  config.deleteEntry( "use-default-identity" );
+  //Now in akonadi we can't specify a folder where we put email, it's a specific top root
+  config.deleteEntry( "Folder" );
+
+  //TODO: check-interval for the moment maildir doesn't support check-interval.
 
   const QString nameAccount = config.readEntry( "Name" );
   instance.setName( nameAccount );
