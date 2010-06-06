@@ -14,5 +14,5 @@ Comment[pt_BR]=Executa o assistente para configuração das contas PIM.
 Comment[sv]=Starta kontoguiden för att anpassa konton för personlig informationshantering.
 Comment[uk]=Запустити майстер облікових записів для налаштування.
 Comment[x-test]=xxLaunch the accountwizard to configure pim-accounts.xx
-MimeType=application/x-accountwizard-package
+MimeType=application/x-accountwizard-package;
 Terminal=false
