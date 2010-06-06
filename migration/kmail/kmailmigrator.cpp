@@ -474,8 +474,9 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     iface->setAuthentication( KIMAP::LoginJob::GSSAPI );
   else if ( authentication == "ANONYMOUS" )
     iface->setAuthentication( KIMAP::LoginJob::Anonymous );
-  else
+  else {
     iface->setAuthentication( KIMAP::LoginJob::ClearText );
+  }
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
@@ -665,7 +666,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   mCurrentInstance = instance;
-  const KConfigGroup config( mConfig, mCurrentAccount );
+  KConfigGroup config( mConfig, mCurrentAccount );
 
   OrgKdeAkonadiMboxSettingsInterface *iface = new OrgKdeAkonadiMboxSettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
@@ -689,10 +690,14 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   else if ( lockType == "none" )
     iface->setLockfileMethod( MboxNone );
 
+  //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
+  config.deleteEntry("trash");
+
   const QString nameAccount = config.readEntry( "Name" );
   instance.setName( nameAccount );
   emit status( nameAccount );
   instance.reconfigure();
+  config.sync();
   migrationCompleted( instance );
 }
 
@@ -706,7 +711,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   mCurrentInstance = instance;
-  const KConfigGroup config( mConfig, mCurrentAccount );
+  KConfigGroup config( mConfig, mCurrentAccount );
 
   OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
@@ -718,11 +723,14 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   }
 
   iface->setPath( config.readEntry( "Location" ) );
+  //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
+  config.deleteEntry("trash");
 
   const QString nameAccount = config.readEntry( "Name" );
   instance.setName( nameAccount );
   emit status( nameAccount );
   instance.reconfigure();
+  config.sync();
   migrationCompleted( instance );
 }
 
