@@ -21,56 +21,56 @@
 
 #include "session_p.h"
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class StoreCompactJob::Private
+class FileStore::StoreCompactJob::Private
 {
   public:
-    explicit Private( StoreCompactJob *parent )
+    explicit Private( FileStore::StoreCompactJob *parent )
       : mParent( parent )
     {
     }
 
   public:
-    StoreCompactJob *mParent;
+    FileStore::StoreCompactJob *mParent;
 
     Collection::List mCollections;
     Item::List mItems;
 };
 
-StoreCompactJob::StoreCompactJob( AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::StoreCompactJob::StoreCompactJob( FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   session->addJob( this );
 }
 
-StoreCompactJob::~StoreCompactJob()
+FileStore::StoreCompactJob::~StoreCompactJob()
 {
   delete d;
 }
 
-bool StoreCompactJob::accept( Visitor *visitor )
+bool FileStore::StoreCompactJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-Akonadi::Item::List StoreCompactJob::changedItems() const
+Item::List FileStore::StoreCompactJob::changedItems() const
 {
   return d->mItems;
 }
 
-Akonadi::Collection::List StoreCompactJob::changedCollections() const
+Collection::List FileStore::StoreCompactJob::changedCollections() const
 {
   return d->mCollections;
 }
 
-void StoreCompactJob::handleCollectionsChanged( const Collection::List &collections )
+void FileStore::StoreCompactJob::handleCollectionsChanged( const Collection::List &collections )
 {
   d->mCollections << collections;
   emit collectionsChanged( collections );
 }
 
-void StoreCompactJob::handleItemsChanged( const Item::List &items )
+void FileStore::StoreCompactJob::handleItemsChanged( const Item::List &items )
 {
   d->mItems << items;
   emit itemsChanged( items );

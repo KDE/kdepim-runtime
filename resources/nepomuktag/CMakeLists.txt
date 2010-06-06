@@ -15,6 +15,12 @@ qt4_add_dbus_adaptor( nepomuktagresource_SRCS
      )
 kde4_add_executable(akonadi_nepomuktag_resource ${nepomuktagresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_nepomuktag_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_nepomuktag_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.NepomukTag")
+  set_target_properties(akonadi_nepomuktag_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi NepomukTag Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_nepomuktag_resource
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEUI_LIBS}

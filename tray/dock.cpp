@@ -64,7 +64,6 @@ Dock::Dock( QWidget *parent )
     setIconByName("akonadi");
     setCategory(SystemServices);
     setStatus(Passive);
-
     KMenu *menu = new KMenu();
     m_title = menu->addTitle( i18n( "Akonadi" ) );
 
@@ -77,6 +76,7 @@ Dock::Dock( QWidget *parent )
     m_backupAction = menu->addAction( i18n( "Make &Backup..." ), this, SLOT( slotStartBackup() ) );
     m_restoreAction = menu->addAction( i18n( "&Restore Backup..." ), this, SLOT( slotStartRestore() ) );
     menu->addAction( KIcon( "configure" ), i18n( "&Configure..." ), this, SLOT( slotConfigure() ) );
+    menu->addAction( i18n("&Quit"), this, SLOT( slotQuit()));
 
     setContextMenu( menu );
     connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );

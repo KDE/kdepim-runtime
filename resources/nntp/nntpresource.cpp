@@ -100,7 +100,7 @@ void NntpResource::retrieveCollections()
     mIncremental = false;
   }
 
-  KIO::Job* job = KIO::listDir( url, KIO::HideProgressInfo, true );
+  KIO::ListJob* job = KIO::listDir( url, KIO::HideProgressInfo, true );
   setupKioJob( job );
   connect( job, SIGNAL(entries(KIO::Job*, const KIO::UDSEntryList&)),
            SLOT(listGroups(KIO::Job*, const KIO::UDSEntryList&)) );
@@ -124,7 +124,7 @@ void NntpResource::retrieveItems( const Akonadi::Collection & col )
   else
     url.addQueryItem( "max", QString::number( Settings::self()->maxDownload() ) );
 
-  KIO::Job* job = KIO::listDir( url, KIO::HideProgressInfo, true );
+  KIO::ListJob* job = KIO::listDir( url, KIO::HideProgressInfo, true );
   setupKioJob( job );
   connect( job, SIGNAL(entries(KIO::Job*, const KIO::UDSEntryList&)),
            SLOT(listGroup(KIO::Job*, const KIO::UDSEntryList&)) );

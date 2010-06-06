@@ -83,6 +83,12 @@ qt4_add_dbus_adaptor(davgroupwareresource_SRCS
 
 kde4_add_executable(akonadi_davgroupware_resource RUN_UNINSTALLED ${davgroupwareresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template)
+  set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.davGroupware")
+  set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi davGroupware Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_davgroupware_resource
                       ${QT_QTCORE_LIBRARY}
                       ${QT_QTDBUS_LIBRARY}

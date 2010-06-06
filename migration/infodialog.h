@@ -24,7 +24,9 @@
 
 #include <KDialog>
 
+class QLabel;
 class QListWidget;
+class QProgressBar;
 
 class InfoDialog : public KDialog
 {
@@ -42,12 +44,23 @@ class InfoDialog : public KDialog
     bool hasError() const { return mError; }
     bool hasChange() const { return mChange; }
 
+    void status( const QString &msg );
+
+    void progress( int value );
+    void progress( int min, int max, int value );
+
+  private slots:
+    void scrollBarMoved( int value );
+
   private:
     QListWidget *mList;
+    QLabel *mStatusLabel;
+    QProgressBar *mProgressBar;
     int mMigratorCount;
     bool mError;
     bool mChange;
     bool mCloseWhenDone;
+    bool mAutoScrollList;
 };
 
 #endif

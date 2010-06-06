@@ -26,6 +26,7 @@
 #include <akonadi/collection.h>
 #include <KJob>
 
+#include <QRegExpValidator>
 
 namespace Ui
 {
@@ -43,7 +44,6 @@ class IdentityManager;
 }
 
 class ImapResource;
-
 
 /**
  * @class SetupServer
@@ -91,6 +91,7 @@ private:
   KPIMIdentities::IdentityManager *m_identityManager;
   KPIMIdentities::IdentityCombo *m_identityCombobox;
   QString m_oldResourceName;
+  QRegExpValidator mValidator;
 
 private slots:
   void slotTest();

@@ -28,6 +28,7 @@ namespace Akonadi {
   class Collection;
 }
 
+class KConfig;
 class KJob;
 
 class AbstractCollectionMigrator : public QObject
@@ -38,19 +39,38 @@ class AbstractCollectionMigrator : public QObject
     explicit AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
     ~AbstractCollectionMigrator();
 
+    virtual void setTopLevelFolder( const QString &topLevelFolder );
+
+    QString topLevelFolder() const;
+
+    virtual void setKMailConfig( KConfig *config );
+    virtual void setEmailIdentityConfig( KConfig *config );
   Q_SIGNALS:
     void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
 
     void message( int type, const QString &msg );
 
+    void status( const QString &msg );
+    void progress( int value );
+    void progress( int min, int max, int value );
+
   protected:
-    virtual void migrateCollection( const Akonadi::Collection &collection ) = 0;
+    virtual void migrateCollection( const Akonadi::Collection &collection, const QString &folderId ) = 0;
+
+    // override if subclass wants to do its own reporting
+    virtual void migrationProgress( int processedCollections, int seenCollections );
 
     void collectionProcessed();
     void migrationDone();
     void migrationCancelled( const QString &error );
 
     const Akonadi::AgentInstance resource() const;
+    KConfig *kmailConfig() const;
+    KConfig *emailIdentityConfig() const;
+
+    // TODO SpecialMailCollections doesn't export its enum to bytearray mapping
+    // so we use an int for the enum value
+    void registerAsSpecialCollection( int type );
 
   private:
     class Private;
@@ -58,6 +78,7 @@ class AbstractCollectionMigrator : public QObject
 
     Q_PRIVATE_SLOT( d, void collectionAdded( Akonadi::Collection ) )
     Q_PRIVATE_SLOT( d, void fetchResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void modifyResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void processNextCollection() )
     Q_PRIVATE_SLOT( d, void recheckBrokenResource() )
     Q_PRIVATE_SLOT( d, void recheckIdleResource() )

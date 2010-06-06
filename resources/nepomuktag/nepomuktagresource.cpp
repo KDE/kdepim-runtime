@@ -149,13 +149,13 @@ void NepomukTagResource::slotLocalListResult( KJob *job )
 void NepomukTagResource::linkDone( KJob* job )
 {
   if ( job->error() )
-    qDebug("error on linking: %s", qPrintable( job->errorText() ) );
+    kDebug()<<QString("error on linking: %1").arg( job->errorText() );
 }
 
 void NepomukTagResource::unlinkDone( KJob* job )
 {
   if ( job->error() )
-    qDebug("error on unlinking: %s", qPrintable( job->errorText() ) );
+    kDebug()<<QString("error on unlinking: %1").arg( job->errorText() );
 }
 
 void NepomukTagResource::slotLinkResult( KJob* job )

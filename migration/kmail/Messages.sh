@@ -1,2 +1,2 @@
 #!/bin/sh
-$XGETTEXT *.cpp *.h -o $podir/kmail-migrator.pot
+$XGETTEXT ../*.cpp *.cpp *.h -o $podir/kmail-migrator.pot

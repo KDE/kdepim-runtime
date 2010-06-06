@@ -1,6 +1,8 @@
 set(kmail-migrator_srcs
   abstractcollectionmigrator.cpp
-  dimapcachecollectionmigrator.cpp
+  emptyresourcecleaner.cpp
+  imapcachecollectionmigrator.cpp
+  imapcachelocalimporter.cpp
   kmailmigrator.cpp
   localfolderscollectionmigrator.cpp
   main.cpp
@@ -14,6 +16,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/filestore
+  ${NEPOMUK_INCLUDES}
 )
 
 macro(add_resource_iface _kcfgFile _ifaceName _className)
@@ -36,9 +39,18 @@ add_resource_iface( maildir/maildirresource.kcfg
 add_resource_iface( mixedmaildir/mixedmaildirresource.kcfg
                     org.kde.Akonadi.MixedMaildir.Settings MixedMaildirSettings )
 
+soprano_add_ontology(kmail-migrator_srcs
+  ${CMAKE_CURRENT_SOURCE_DIR}/messagetag.trig
+  "MessageTag"
+  "Vocabulary"
+  "trig"
+)
+
 kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kmail-migrator ${kmail-migrator_srcs} )
 target_link_libraries(kmail-migrator
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDE4_KDEUI_LIBS}
@@ -46,6 +58,7 @@ target_link_libraries(kmail-migrator
   maildir
   mbox
   kmindexreader
+  ${NEPOMUK_LIBRARIES}
 )
 
 install(TARGETS kmail-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})

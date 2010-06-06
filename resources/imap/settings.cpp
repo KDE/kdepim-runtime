@@ -121,25 +121,18 @@ QString Settings::password(bool *userRejected) const
     if ( !m_password.isEmpty() )
       return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
-    if ( wallet && wallet->isOpen() && wallet->hasFolder( "imap" ) ) {
+    if ( wallet && wallet->isOpen() ) {
+      if ( wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), m_password );
+      } else {
+        wallet->createFolder( "imap" );
+      }
     } else if ( userRejected != 0 ) {
         *userRejected = true;
     }
     delete wallet;
     return m_password;
-}
-
-bool Settings::passwordPossible() const
-{
-    bool possible = true;
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
-    if ( !wallet ) {
-        possible = false;
-    }
-    delete wallet;
-    return possible;
 }
 
 void Settings::setPassword( const QString & password )
@@ -155,6 +148,7 @@ void Settings::setPassword( const QString & password )
         wallet->writePassword( config()->name(), password );
         kDebug() << "Wallet save: " << wallet->sync() << endl;
     }
+    delete wallet;
 }
 
 #include "settings.moc"

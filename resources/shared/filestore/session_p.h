@@ -75,7 +75,7 @@ class AbstractJobSession : public QObject
     void emitResult( Job *job );
 
   Q_SIGNALS:
-    void jobsReady( const QList<Job*> &jobs );
+    void jobsReady( const QList<FileStore::Job*> &jobs );
 
   protected:
     virtual void removeJob( Job *job ) = 0;

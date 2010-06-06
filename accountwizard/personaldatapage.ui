@@ -71,7 +71,7 @@
    <item>
     <widget class="QGroupBox" name="checkOnlineGroupBox">
      <property name="title">
-      <string>Find provider settings on the internet</string>
+      <string>Find provider settings on the Internet</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -80,7 +80,7 @@
       <item>
        <widget class="QLabel" name="checkOnlineExplanation">
         <property name="text">
-         <string>Check online for the settings of my provider. Only the domain name part of your e-maiiladdress will be sent over the internet at this point.If you uncheck this option you can setup your account manually.</string>
+         <string>Check online for the settings needed for this email provider. Only the domain name part of the e-mail address will be sent over the Internet at this point. If this option is unchecked, the account can be set up manually.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

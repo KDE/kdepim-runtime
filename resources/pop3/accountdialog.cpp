@@ -249,8 +249,6 @@ void AccountDialog::walletOpenedForLoading( bool success )
   }
 
   passwordEdit->setEnabled( true );
-  delete mWallet;
-  mWallet = 0;
 }
 
 void AccountDialog::walletOpenedForSaving( bool success )
@@ -281,7 +279,7 @@ void AccountDialog::walletOpenedForSaving( bool success )
   }
   else {
     // Should we alert the user here?
-    kWarning() << "Failed to open wallet for loading the password.";
+    kWarning() << "Failed to open wallet for saving the password.";
   }
 
   delete mWallet;
@@ -380,6 +378,7 @@ void AccountDialog::slotCheckPopCapabilities()
   mServerTest = new ServerTest( this );
   BusyCursorHelper *busyCursorHelper = new BusyCursorHelper( mServerTest );
   mServerTest->setProgressBar( checkCapabilitiesProgress );
+  enableButtonOk( false );
   checkCapabilitiesStack->setCurrentIndex( 1 );
   Transport::EnumEncryption::type encryptionType;
   if ( encryptionSSL->isChecked() )
@@ -401,6 +400,7 @@ void AccountDialog::slotCheckPopCapabilities()
 void AccountDialog::slotPopCapabilities( QList<int> encryptionTypes )
 {
   checkCapabilitiesStack->setCurrentIndex( 0 );
+  enableButtonOk( true );
 
   // if both fail, popup a dialog
   if ( !mServerTest->isNormalPossible() && !mServerTest->isSecurePossible() ) 
@@ -593,10 +593,18 @@ void AccountDialog::saveSettings()
 
   if ( ( !passwordEdit->text().isEmpty() && userChangedPassword ) ||
        userWantsToDeletePassword ) {
-    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
-                                  Wallet::Asynchronous );
-    connect( mWallet, SIGNAL(walletOpened(bool)),
-             this, SLOT(walletOpenedForSaving(bool)) );
+    kDebug() << mWallet <<  mWallet->isOpen();
+    if( mWallet && mWallet->isOpen() ) {
+      // wallet is already open
+      walletOpenedForSaving( true );
+    } else {
+      // we need to open the wallet
+      kDebug() << "we need to open the wallet";
+      mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
+                                    Wallet::Asynchronous );
+      connect( mWallet, SIGNAL(walletOpened(bool)),
+              this, SLOT(walletOpenedForSaving(bool)) );
+    }
   }
   else {
     // Neither save nor delete the password, we're done!

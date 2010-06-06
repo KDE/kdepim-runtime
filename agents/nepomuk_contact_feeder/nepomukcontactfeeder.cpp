@@ -30,6 +30,7 @@
 #include <nepomuk/resourcemanager.h>
 #include <nepomuk/variant.h>
 #include <kurl.h>
+#include <KLocale>
 
 // ontology includes
 #include "bbsnumber.h"
@@ -56,6 +57,7 @@ namespace Akonadi {
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   : NepomukFeederAgent<NepomukFast::ContactList>( id )
 {
+  KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" );
   addSupportedMimeType( KABC::Addressee::mimeType() );
   addSupportedMimeType( KABC::ContactGroup::mimeType() );
 

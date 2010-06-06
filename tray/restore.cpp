@@ -47,10 +47,10 @@ Restore::Restore( QWidget *parent ) : QWidget( parent )
 bool Restore::possible()
 {
     const QString mysql = KStandardDirs::findExe( "mysql" );
-    const QString bzip2 = KStandardDirs::findExe( "bzip2" );
+    /*const QString bzip2 = KStandardDirs::findExe( "bzip2" );*/
     const QString tar = KStandardDirs::findExe( "tar" );
-    kDebug() << "mysql:" << mysql << "bzip2:" << bzip2 << "tar:" << tar;
-    return !mysql.isEmpty() && !bzip2.isEmpty() && !tar.isEmpty();
+    kDebug() << "mysql:" << mysql /*<< "bzip2:" << bzip2*/ << "tar:" << tar;
+    return !mysql.isEmpty() /*&& !bzip2.isEmpty()*/ && !tar.isEmpty();
 }
 
 void Restore::restore( const KUrl& filename )

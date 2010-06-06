@@ -21,58 +21,58 @@
 
 #include "session_p.h"
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-class ItemModifyJob::ItemModifyJob::Private
+class FileStore::ItemModifyJob::Private
 {
   public:
-    explicit Private( ItemModifyJob *parent )
+    explicit Private( FileStore::ItemModifyJob *parent )
       : mIgnorePayload( false ), mParent( parent )
     {
     }
 
   public:
     bool mIgnorePayload;
-    Akonadi::Item mItem;
+    Item mItem;
 
   private:
-    ItemModifyJob *mParent;
+    FileStore::ItemModifyJob *mParent;
 };
 
-ItemModifyJob::ItemModifyJob( const Akonadi::Item &item, AbstractJobSession *session )
-  : Job( session ), d( new Private( this ) )
+FileStore::ItemModifyJob::ItemModifyJob( const Item &item, FileStore::AbstractJobSession *session )
+  : FileStore::Job( session ), d( new Private( this ) )
 {
   d->mItem = item;
 
   session->addJob( this );
 }
 
-ItemModifyJob::~ItemModifyJob()
+FileStore::ItemModifyJob::~ItemModifyJob()
 {
   delete d;
 }
 
-void ItemModifyJob::setIgnorePayload( bool ignorePayload )
+void FileStore::ItemModifyJob::setIgnorePayload( bool ignorePayload )
 {
   d->mIgnorePayload = ignorePayload;
 }
 
-bool ItemModifyJob::ignorePayload() const
+bool FileStore::ItemModifyJob::ignorePayload() const
 {
   return d->mIgnorePayload;
 }
 
-Akonadi::Item ItemModifyJob::item() const
+Item FileStore::ItemModifyJob::item() const
 {
   return d->mItem;
 }
 
-bool ItemModifyJob::accept( Visitor *visitor )
+bool FileStore::ItemModifyJob::accept( FileStore::Job::Visitor *visitor )
 {
   return visitor->visit( this );
 }
 
-void ItemModifyJob::handleItemModified( const Akonadi::Item &item )
+void FileStore::ItemModifyJob::handleItemModified( const Item &item )
 {
   d->mItem = item;
 }

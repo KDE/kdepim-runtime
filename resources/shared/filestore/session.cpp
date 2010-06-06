@@ -30,112 +30,112 @@
 #include "itemmovejob.h"
 #include "storecompactjob.h"
 
-using namespace Akonadi::FileStore;
+using namespace Akonadi;
 
-AbstractJobSession::AbstractJobSession( QObject *parent )
+FileStore::AbstractJobSession::AbstractJobSession( QObject *parent )
   : QObject( parent )
 {
 }
 
-AbstractJobSession::~AbstractJobSession()
+FileStore::AbstractJobSession::~AbstractJobSession()
 {
 }
 
-void AbstractJobSession::notifyCollectionsReceived( Job* job, const Collection::List &collections )
+void FileStore::AbstractJobSession::notifyCollectionsReceived( FileStore::Job* job, const Collection::List &collections )
 {
-  CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
+  FileStore::CollectionFetchJob *fetchJob = dynamic_cast<FileStore::CollectionFetchJob*>( job );
   if ( fetchJob != 0 ) {
     fetchJob->handleCollectionsReceived( collections );
   }
 }
 
-void AbstractJobSession::notifyCollectionCreated( Job *job, const Collection &collection )
+void FileStore::AbstractJobSession::notifyCollectionCreated( FileStore::Job *job, const Collection &collection )
 {
-  CollectionCreateJob *createJob = dynamic_cast<CollectionCreateJob*>( job );
+  FileStore::CollectionCreateJob *createJob = dynamic_cast<FileStore::CollectionCreateJob*>( job );
   if ( createJob != 0 ) {
     createJob->handleCollectionCreated( collection );
   }
 }
 
-void AbstractJobSession::notifyCollectionDeleted( Job *job, const Collection &collection )
+void FileStore::AbstractJobSession::notifyCollectionDeleted( FileStore::Job *job, const Collection &collection )
 {
-  CollectionDeleteJob *deleteJob = dynamic_cast<CollectionDeleteJob*>( job );
+  FileStore::CollectionDeleteJob *deleteJob = dynamic_cast<FileStore::CollectionDeleteJob*>( job );
   if ( deleteJob != 0 ) {
     deleteJob->handleCollectionDeleted( collection );
   }
 }
 
-void AbstractJobSession::notifyCollectionModified( Job *job, const Collection &collection )
+void FileStore::AbstractJobSession::notifyCollectionModified( FileStore::Job *job, const Collection &collection )
 {
-  CollectionModifyJob *modifyJob = dynamic_cast<CollectionModifyJob*>( job );
+  FileStore::CollectionModifyJob *modifyJob = dynamic_cast<FileStore::CollectionModifyJob*>( job );
   if ( modifyJob != 0 ) {
     modifyJob->handleCollectionModified( collection );
   }
 }
 
-void AbstractJobSession::notifyCollectionMoved( Job *job, const Collection &collection )
+void FileStore::AbstractJobSession::notifyCollectionMoved( FileStore::Job *job, const Collection &collection )
 {
-  CollectionMoveJob *moveJob = dynamic_cast<CollectionMoveJob*>( job );
+  FileStore::CollectionMoveJob *moveJob = dynamic_cast<FileStore::CollectionMoveJob*>( job );
   if ( moveJob != 0 ) {
     moveJob->handleCollectionMoved( collection );
   }
 }
 
-void AbstractJobSession::notifyItemsReceived( Job* job, const Item::List &items )
+void FileStore::AbstractJobSession::notifyItemsReceived( FileStore::Job* job, const Item::List &items )
 {
-  ItemFetchJob *fetchJob = dynamic_cast<ItemFetchJob*>( job );
+  FileStore::ItemFetchJob *fetchJob = dynamic_cast<FileStore::ItemFetchJob*>( job );
   if ( fetchJob != 0 ) {
     fetchJob->handleItemsReceived( items );
   }
 }
 
-void AbstractJobSession::notifyItemCreated( Job *job, const Item &item )
+void FileStore::AbstractJobSession::notifyItemCreated( FileStore::Job *job, const Item &item )
 {
-  ItemCreateJob *createJob = dynamic_cast<ItemCreateJob*>( job );
+  FileStore::ItemCreateJob *createJob = dynamic_cast<FileStore::ItemCreateJob*>( job );
   if ( createJob != 0 ) {
     createJob->handleItemCreated( item );
   }
 }
 
-void AbstractJobSession::notifyItemModified( Job *job, const Item &item )
+void FileStore::AbstractJobSession::notifyItemModified( FileStore::Job *job, const Item &item )
 {
-  ItemModifyJob *modifyJob = dynamic_cast<ItemModifyJob*>( job );
+  FileStore::ItemModifyJob *modifyJob = dynamic_cast<FileStore::ItemModifyJob*>( job );
   if ( modifyJob != 0 ) {
     modifyJob->handleItemModified( item );
   }
 }
 
-void AbstractJobSession::notifyItemMoved( Job *job, const Item &item )
+void FileStore::AbstractJobSession::notifyItemMoved( FileStore::Job *job, const Item &item )
 {
-  ItemMoveJob *moveJob = dynamic_cast<ItemMoveJob*>( job );
+  FileStore::ItemMoveJob *moveJob = dynamic_cast<FileStore::ItemMoveJob*>( job );
   if ( moveJob != 0 ) {
     moveJob->handleItemMoved( item );
   }
 }
 
-void AbstractJobSession::notifyCollectionsChanged( Job *job, const Collection::List &collections )
+void FileStore::AbstractJobSession::notifyCollectionsChanged( FileStore::Job *job, const Collection::List &collections )
 {
-  StoreCompactJob *compactJob = dynamic_cast<StoreCompactJob*>( job );
+  FileStore::StoreCompactJob *compactJob = dynamic_cast<FileStore::StoreCompactJob*>( job );
   if ( compactJob != 0 ) {
     compactJob->handleCollectionsChanged( collections );
   }
 }
 
-void AbstractJobSession::notifyItemsChanged( Job *job, const Item::List &items )
+void FileStore::AbstractJobSession::notifyItemsChanged( FileStore::Job *job, const Item::List &items )
 {
-  StoreCompactJob *compactJob = dynamic_cast<StoreCompactJob*>( job );
+  FileStore::StoreCompactJob *compactJob = dynamic_cast<FileStore::StoreCompactJob*>( job );
   if ( compactJob != 0 ) {
     compactJob->handleItemsChanged( items );
   }
 }
 
-void AbstractJobSession::setError( Job *job, int errorCode, const QString& errorText )
+void FileStore::AbstractJobSession::setError( FileStore::Job *job, int errorCode, const QString& errorText )
 {
   job->setError( errorCode );
   job->setErrorText( errorText );
 }
 
-void AbstractJobSession::emitResult( Job *job )
+void FileStore::AbstractJobSession::emitResult( FileStore::Job *job )
 {
   removeJob( job );
 

@@ -18,29 +18,58 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef LOCALFOLDERSCOLLECTIONMIGRATOR_H
-#define LOCALFOLDERSCOLLECTIONMIGRATOR_H
+#ifndef EMPTYRESOURCECLEANER_H
+#define EMPTYRESOURCECLEANER_H
 
-#include "abstractcollectionmigrator.h"
+#include <QObject>
 
-class LocalFoldersCollectionMigrator : public AbstractCollectionMigrator
+namespace Akonadi
+{
+  class AgentInstance;
+  class Collection;
+}
+
+class KJob;
+
+template <typename T> class QList;
+
+class EmptyResourceCleaner : public QObject
 {
   Q_OBJECT
 
   public:
-    explicit LocalFoldersCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    enum CleaningOption
+    {
+      CheckOnly = 0x00,
+      DeleteEmptyCollections = 0x01,
+      DeleteEmptyResource = 0x02
+    };
 
-    void setKMailConfig( KConfig *config );
+    Q_DECLARE_FLAGS( CleaningOptions, CleaningOption )
 
-    ~LocalFoldersCollectionMigrator();
+    explicit EmptyResourceCleaner( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    ~EmptyResourceCleaner();
 
-  protected:
-    void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
+    void setCleaningOptions( CleaningOptions options );
+
+    CleaningOptions cleaningOptions() const;
+
+    QList<Akonadi::Collection> deletableCollections() const;
+
+    bool isResourceDeletable() const;
+
+  Q_SIGNALS:
+    void cleanupFinished( const Akonadi::AgentInstance &resource );
 
   private:
     class Private;
     Private *const d;
+
+  Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
+  Q_PRIVATE_SLOT( d, void collectionDeleteResult( KJob* ) )
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( EmptyResourceCleaner::CleaningOptions )
 
 #endif
 

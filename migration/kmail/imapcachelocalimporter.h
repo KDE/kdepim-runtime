@@ -18,41 +18,48 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef DIMAPCACHECOLLECTIONMIGRATOR_H
-#define DIMAPCACHECOLLECTIONMIGRATOR_H
+#ifndef IMAPCACHELOCALIMPORTER_H
+#define IMAPCACHELOCALIMPORTER_H
 
-#include "abstractcollectionmigrator.h"
+#include <QObject>
 
-class KConfig;
+namespace Akonadi
+{
+  class AgentInstance;
+  class Item;
+}
 
-class DImapCacheCollectionMigrator : public AbstractCollectionMigrator
+class MixedMaildirStore;
+
+class ImapCacheLocalImporter : public QObject
 {
   Q_OBJECT
 
   public:
-    explicit DImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    explicit ImapCacheLocalImporter( MixedMaildirStore *store, QObject *parent = 0 );
 
-    void setCacheFolder( const QString &cacheFolder );
-    void setKMailConfig( KConfig *config );
+    ~ImapCacheLocalImporter();
 
-    ~DImapCacheCollectionMigrator();
+    void setTopLevelFolder( const QString &topLevelFolder );
 
-    bool migrationOptionsEnabled() const;
+    void setAccountName( const QString &accountName );
 
-  protected:
-    void migrateCollection( const Akonadi::Collection &collection );
+  Q_SIGNALS:
+    void importFinished( const Akonadi::AgentInstance &resource, const QString &error );
+
+  public Q_SLOTS:
+    void startImport();
 
   private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void fetchItemsResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void processNextItem() )
-    Q_PRIVATE_SLOT( d, void processNextDeletedUid() )
-    Q_PRIVATE_SLOT( d, void fetchItemResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void createResourceResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void configureResource() )
+    Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void itemFetchResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemCreateResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemDeletePhase1Result( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemDeletePhase2Result( KJob* ) )
 };
 
 #endif

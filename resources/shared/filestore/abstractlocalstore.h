@@ -115,7 +115,7 @@ class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public Store
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void processJobs( const QList<Job*> &jobs ) )
+    Q_PRIVATE_SLOT( d, void processJobs( const QList<FileStore::Job*> &jobs ) )
 };
 
 }

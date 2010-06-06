@@ -19,23 +19,49 @@
 
 #include "infodialog.h"
 
+#include <KCursor>
 #include <KDebug>
 #include <KGlobal>
 
+#include <QApplication>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QListWidget>
+#include <QProgressBar>
+#include <QScrollBar>
+#include <QVBoxLayout>
 
 InfoDialog::InfoDialog( bool closeWhenDone ) :
     mMigratorCount( 0 ),
     mError( false ),
     mChange( false ),
-    mCloseWhenDone( closeWhenDone )
+    mCloseWhenDone( closeWhenDone ),
+    mAutoScrollList( true )
 {
   KGlobal::ref();
   setButtons( Close );
   enableButton( Close, false );
-  mList = new QListWidget( this );
+
+  QWidget *widget = new QWidget( this );
+  QVBoxLayout *widgetLayout = new QVBoxLayout( widget );
+
+  mList = new QListWidget( widget );
   mList->setMinimumWidth( 640 );
-  setMainWidget( mList );
+  widgetLayout->addWidget( mList );
+
+  QHBoxLayout *statusLayout = new QHBoxLayout;
+  widgetLayout->addLayout( statusLayout );
+
+  mStatusLabel = new QLabel( widget );
+  mStatusLabel->setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::Preferred );
+  statusLayout->addWidget( mStatusLabel );
+
+  mProgressBar = new QProgressBar( widget );
+  mProgressBar->setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Preferred );
+  mProgressBar->setMinimumWidth( 200 );
+  statusLayout->addWidget( mProgressBar );
+
+  setMainWidget( widget );
 
   connect( this, SIGNAL(closeClicked()), SLOT(deleteLater()) );
 }
@@ -47,6 +73,8 @@ InfoDialog::~InfoDialog()
 
 void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
 {
+  bool autoScroll = mAutoScrollList;
+
   QListWidgetItem *item = new QListWidgetItem( msg, mList );
   switch ( type ) {
     case KMigratorBase::Success:
@@ -74,21 +102,57 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
     default:
       kError() << "WTF?";
   }
+
+  mAutoScrollList = autoScroll;
+
+  if ( autoScroll ) {
+    mList->scrollToItem( item );
+  }
 }
 
 void InfoDialog::migratorAdded()
 {
   ++mMigratorCount;
+  QApplication::setOverrideCursor( KCursor( QLatin1String( "wait" ), Qt::WaitCursor ) );
 }
 
 void InfoDialog::migratorDone()
 {
+  QApplication::restoreOverrideCursor();
+
   --mMigratorCount;
   if ( mMigratorCount == 0 ) {
     enableButton( Close, true );
     if ( mCloseWhenDone && !hasError() && !hasChange() )
       emit closeClicked();
   }
+}
+
+void InfoDialog::status( const QString &msg )
+{
+  mStatusLabel->setText( msg );
+  if ( msg.isEmpty() ) {
+    progress( 0, 100, 100 );
+    mProgressBar->setFormat( QString() );
+  }
+}
+
+void InfoDialog::progress( int value )
+{
+  mProgressBar->setFormat( QLatin1String( "%p%" ) );
+  mProgressBar->setValue( value );
+}
+
+void InfoDialog::progress( int min, int max, int value )
+{
+  mProgressBar->setFormat( QLatin1String( "%p%" ) );
+  mProgressBar->setRange( min, max );
+  mProgressBar->setValue( value );
+}
+
+void InfoDialog::scrollBarMoved( int value )
+{
+  mAutoScrollList = ( value == mList->verticalScrollBar()->maximum() );
 }
 
 #include "infodialog.moc"

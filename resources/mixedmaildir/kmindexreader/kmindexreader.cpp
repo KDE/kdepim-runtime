@@ -218,6 +218,17 @@ bool KMIndexReader::statusByFileName( const QString &fileName, MessageStatus &st
     return true;
 }
 
+bool KMIndexReader::imapUidByOffset( quint64 offset, quint64 &uid ) const
+{
+    QHash<quint64, KMIndexMsgPrivate*>::const_iterator it = mMsgByOffset.constFind( offset );
+    if ( it == mMsgByOffset.constEnd() ) {
+        return false;
+    }
+
+    uid = it.value()->uid();
+    return uid != 0;
+}
+
 bool KMIndexReader::imapUidByFileName( const QString &fileName, quint64 &uid ) const
 {
     QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
@@ -227,6 +238,28 @@ bool KMIndexReader::imapUidByFileName( const QString &fileName, quint64 &uid ) c
 
     uid = it.value()->uid();
     return uid != 0;
+}
+
+bool KMIndexReader::tagListByOffset( quint64 offset, QStringList &tagList ) const
+{
+    QHash<quint64, KMIndexMsgPrivate*>::const_iterator it = mMsgByOffset.constFind( offset );
+    if ( it == mMsgByOffset.constEnd() ) {
+        return false;
+    }
+
+    tagList = it.value()->tagList();
+    return true;
+}
+
+bool KMIndexReader::tagListByFileName( const QString &fileName, QStringList &tagList ) const
+{
+    QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
+    if ( it == mMsgByFileName.constEnd() ) {
+        return false;
+    }
+
+    tagList = it.value()->tagList();
+    return true;
 }
 
 bool KMIndexReader::readHeader( int *version )

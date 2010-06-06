@@ -635,7 +635,10 @@ void ImapResource::retrieveCollections()
   policy.setLocalParts( localParts );
   policy.setCacheTimeout( cacheTimeout );
 
-  policy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+  if ( Settings::self()->intervalCheckEnabled() )
+    policy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+  else
+    policy.setIntervalCheckTime( -1 ); // -1 for never
 
   root.setCachePolicy( policy );
 
@@ -868,7 +871,7 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
     foreach( const QByteArray &flag, flags[number] ) {
       i.setFlag( flag );
     }
-    kDebug(5327) << "Flags: " << i.flags();
+    //kDebug(5327) << "Flags: " << i.flags();
     addedItems << i;
   }
 
@@ -911,6 +914,8 @@ void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, q
                                     const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
   Q_UNUSED( mailBox );
+  Q_UNUSED( sizes );
+  Q_UNUSED( messages );
 
   Item::List changedItems;
 
@@ -920,7 +925,7 @@ void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, q
     i.setMimeType( "message/rfc822" );
     i.setFlags( Akonadi::Item::Flags::fromList( flags[number] ) );
 
-    kDebug(5327) << "Flags: " << i.flags();
+    //kDebug(5327) << "Flags: " << i.flags();
     changedItems << i;
   }
 
@@ -1375,6 +1380,7 @@ void ImapResource::onConnectSuccess( KIMAP::Session *session )
   if ( m_account->mainSession()!=session ) {
     return;
   }
+  ResourceBase::doSetOnline( true );
   startIdle();
   emit status( Idle, i18n( "Connection established." ) );
   synchronizeCollectionTree();

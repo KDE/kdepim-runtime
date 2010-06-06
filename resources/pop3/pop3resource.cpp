@@ -103,7 +103,7 @@ void POP3Resource::configure( WId windowId )
   QPointer<AccountDialog> accountDialog( new AccountDialog( this, windowId ) );
   if ( accountDialog->exec() == QDialog::Accepted ) {
     updateIntervalTimer();
-    mAskAgain = false; // the user might have changed the password
+    mAskAgain = true; // the user might have changed the password
     emit configurationDialogAccepted();
   }
   else {
@@ -278,15 +278,14 @@ void POP3Resource::doStateStep()
 
       const bool passwordNeeded = Settings::self()->authenticationMethod() != MailTransport::Transport::EnumAuthenticationType::GSSAPI;
       const bool loadPasswordFromWallet = Settings::self()->storePassword() && !mAskAgain &&
-                                passwordNeeded && !Settings::self()->login().isEmpty();
+                                passwordNeeded && !Settings::self()->login().isEmpty() && mPassword.isEmpty();
       if ( loadPasswordFromWallet ) {
-        // FIXME: use a proper parent widget
-        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0,
+        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs(),
                                       Wallet::Asynchronous );
         connect( mWallet, SIGNAL(walletOpened(bool)),
                  this, SLOT(walletOpenedForLoading(bool)) );
       }
-      else if ( passwordNeeded ) {
+      else if ( passwordNeeded && ( mPassword.isEmpty() || mAskAgain ) ) {
         QString detail;
         if ( mAskAgain )
           detail = i18n( "You are asked here because the previous login was not successful." );
@@ -298,7 +297,7 @@ void POP3Resource::doStateStep()
         showPasswordDialog( buildLabelForPasswordDialog( detail ) );
       }
       else {
-        // No password needed, go on with Connect
+        // No password needed or using previous password, go on with Connect
         advanceState( Connect );
       }
 
@@ -430,8 +429,7 @@ void POP3Resource::doStateStep()
       else {
         kDebug() << "Writing password back to the wallet.";
         emit status( Running, i18n( "Saving password to the wallet." ) );
-        // FIXME: use a proper parent widget
-        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0,
+        mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs(),
                                       Wallet::Asynchronous );
         connect( mWallet, SIGNAL(walletOpened(bool)),
                  this, SLOT(walletOpenedForSaving(bool)) );
@@ -507,10 +505,23 @@ void POP3Resource::precommandResult( KJob *job )
 void POP3Resource::loginJobResult( KJob *job )
 {
   if ( job->error() ) {
+    kDebug() << job->error() << job->errorText();
     if ( job->error() == KIO::ERR_COULD_NOT_LOGIN && !Settings::self()->storePassword() )
       mAskAgain = true;
     cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
                 '\n' + job->errorString() );
+    int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
+                                  i18n( "The server refused the supplied username and password. "
+                                        "Do you want to go to the settings, have another attempt "
+                                        "at logging in, or do nothing?\n\n"
+                                        "%1", job->errorString() ),
+                                  i18n( "Could Not Authenticate" ),
+                                  KGuiItem( i18n( "Settings" ) ),
+                                  KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
+    if ( i == KMessageBox::Yes ) {
+      configure( winIdForDialogs() );
+      return;
+    }
   }
   else {
     advanceState( List );
@@ -928,7 +939,6 @@ void POP3Resource::resetState()
 {
   mState = Idle;
   mTargetCollection = Collection( -1 );
-  mPassword.clear();
   mIdsToSizeMap.clear();
   mIdsToUidsMap.clear();
   mDownloadedIDs.clear();

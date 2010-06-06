@@ -42,11 +42,11 @@ int main( int argc, char **argv )
                         "0.1",
                         ki18n( "Migration of KMail accounts to Akonadi" ),
                         KAboutData::License_LGPL,
-                        ki18n( "(c) 2009 the Akonadi developers" ),
+                        ki18n( "(c) 2009-2010 the Akonadi developers" ),
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );
   aboutData.setProgramIconName( "akonadi" );
-  aboutData.addAuthor( ki18n( "Jonathan Armond" ),  ki18n( "Author" ), "jon.armond@gmail.com" ); 
+  aboutData.addAuthor( ki18n( "Jonathan Armond" ),  ki18n( "Author" ), "jon.armond@gmail.com" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
@@ -66,11 +66,11 @@ int main( int argc, char **argv )
     "The following data will currently be migrated:<ul>"
     "<li>Account settings</li>"
     "<li>Appearance settings</li>"
+    "<li>Folder settings</li>"
+    "<li>Filter sources and destinations</li>"
     "</ul>The following will not happen yet and <b>cannot be done at a later point</b> anymore if you continue now:<ul>"
     "<li>Locally cached IMAP data (will be re-downloaded), pending IMAP changes (synchronize with KMail 1 first)</li>"
     "<li>Flags and tags on local mail folders</li>"
-    "<li>Folder settings</li>"
-    "<li>Filter sources and destinations</li>"
     "<li>Local folders and messages</li>"
     "</ul></p>"
     "<p>Selecting cancel here will not alter your data in any kind but will also prevent KMail 2 from starting. Selecting continue will perform "
@@ -82,7 +82,7 @@ int main( int argc, char **argv )
   int doYouReallyWantToBreakThings = KMessageBox::warningContinueCancel( 0, warningMsg, i18n( "KMail 2 Migration" ), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), QString(), KMessageBox::Dangerous );
   if ( doYouReallyWantToBreakThings != KMessageBox::Continue )
     return 1;
-  
+
   if ( !Akonadi::Control::start( 0 ) )
     return 2;
 
@@ -98,6 +98,10 @@ int main( int argc, char **argv )
     QObject::connect( migrator, SIGNAL( message( KMigratorBase::MessageType, QString ) ),
                       infoDialog, SLOT( message( KMigratorBase::MessageType, QString ) ) );
     QObject::connect( migrator, SIGNAL( destroyed() ), infoDialog, SLOT( migratorDone() ) );
+    QObject::connect( migrator, SIGNAL( status( QString ) ), infoDialog, SLOT( status( QString ) ) );
+    QObject::connect( migrator, SIGNAL( progress( int ) ), infoDialog, SLOT( progress( int ) ) );
+    QObject::connect( migrator, SIGNAL( progress( int, int, int ) ),
+                      infoDialog, SLOT( progress( int, int, int ) ) );
   }
   args->clear();
   const int result = app->exec();

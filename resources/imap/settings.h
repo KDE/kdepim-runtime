@@ -30,7 +30,6 @@ class Settings : public SettingsBase
 public:
     Settings( WId = 0 );
     static Settings *self();
-    bool passwordPossible() const;
     void setWinId( WId );
 
     void requestPassword();

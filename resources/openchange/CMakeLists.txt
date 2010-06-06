@@ -21,6 +21,12 @@ install( FILES ocresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ako
 
 kde4_add_executable(akonadi_oc_resource ${ocresource_SRCS})
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_oc_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_oc_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.OpenChange")
+  set_target_properties(akonadi_oc_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi OpenChange Resource")
+endif (Q_WS_MAC)
+
 target_link_libraries(akonadi_oc_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS})
 
 install(TARGETS akonadi_oc_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
