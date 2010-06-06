@@ -1,6 +1,6 @@
 [Desktop Entry]
 Exec=kcmshell4 kcm_akonadi_resources
-Icon=network
+Icon=akonadi
 Type=Service
 ServiceTypes=KCModule
 
@@ -8,9 +8,10 @@ X-KDE-ModuleType=Library
 X-KDE-Library=kcm_akonadi_resources
 X-KDE-FactoryName=kcm_akonadi_resources
 X-KDE-HasReadOnlyMode=false
-X-KDE-ParentApp=
+X-KDE-ParentApp=kcontrol
 X-KDE-ParentComponents=
 X-KDE-CfgDlgHierarchy=
+X-KDE-System-Settings-Parent-Category=personal-information
 
 Name=Akonadi Resources Configuration
 Name[ar]=ضبط موارد اكوندا
