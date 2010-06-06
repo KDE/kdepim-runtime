@@ -27,10 +27,11 @@ BreadcrumbNavigationView {
   topDelegate : CollectionDelegate {
     indentation : 35
     fullClickArea : true
+    topItem : true
     height : itemHeight
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = -1;
-      breadcrumbTopLevel.state = "before_select_breadcrumb";
+      breadcrumbTopLevel.state = "before_select_home";
     }
   }
 

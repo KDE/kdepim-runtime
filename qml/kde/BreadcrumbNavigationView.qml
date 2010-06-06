@@ -55,7 +55,6 @@ Item {
 
   ListView {
     id : topButton
-    property int _breadcrumb_y_offset : 0
     interactive : false
     height : itemHeight
 
@@ -66,6 +65,7 @@ Item {
     model : topModel
 
     Image {
+      id : topRightDivider
       source : "dividing-line.png"
       anchors.top : parent.top
       anchors.right : parent.right
@@ -79,13 +79,25 @@ Item {
   ListView {
     id : breadcrumbsView
     interactive : false
+    height : breadcrumbsView.count > 0 ? itemHeight : 0
+
+    clip : true;
     property int selectedIndex : -1
-    property int _breadcrumb_y_offset : 0
-    height : { ( ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count ) * itemHeight }
     anchors.top : topButton.bottom
-    anchors.topMargin : _breadcrumb_y_offset
     anchors.left : parent.left
     anchors.right : parent.right
+    highlightFollowsCurrentItem : true
+    highlightRangeMode : ListView.StrictlyEnforceRange
+    preferredHighlightBegin : 0
+    preferredHighlightEnd : height
+    onCountChanged : {
+//       console.log("count ###" + count);
+//       console.log(indexAt(0, 0) + " " + currentIndex);
+//       positionViewAtIndex(count - 1, ListView.Beginning)
+//       console.log("DONE" + indexAt(0, 0));
+      //if (count > 0 )
+//         contentY = itemHeight
+    }
   }
 
   Item {
@@ -94,26 +106,23 @@ Item {
     anchors.top : topButton.bottom
     anchors.left : parent.left
     anchors.right : parent.right
-
-    Image {
-      source : "dividing-line.png"
-      anchors.top : parent.top
-      anchors.right : parent.right
-      anchors.bottom : parent.bottom
-      anchors.bottomMargin : 8
-      fillMode : Image.TileVertically
-      opacity : breadcrumbTopLevel.hasBreadcrumbs ? 1 : 0
-    }
+  }
+  Image {
+    id : breadcrumbRightDivider
+    source : "dividing-line.png"
+    anchors.top : breadcrumbPlaceHolder.top
+    anchors.right : breadcrumbPlaceHolder.right
+    height : breadcrumbTopLevel.hasBreadcrumbs ? (itemHeight -8) : 0
+    fillMode : Image.TileVertically
+    opacity : breadcrumbTopLevel.hasBreadcrumbs ? 1 : 0
   }
 
   ListView {
     id : selectedItemView
     interactive : false
-    property int _selected_padding : 0
 
     height : itemHeight * selectedItemView.count
     anchors.top : breadcrumbsView.bottom
-    anchors.topMargin : _selected_padding
     anchors.left : parent.left
     anchors.right : parent.right
 
@@ -141,49 +150,55 @@ Item {
 
   Item {
     id : selectedItemPlaceHolder
-    height : itemHeight
+    height : selectedItemView.count > 0 ? itemHeight : 0
     anchors.top : breadcrumbPlaceHolder.bottom
     anchors.left : parent.left
     anchors.right : parent.right
-    Image {
-      source : "dividing-line-horizontal.png"
-      fillMode : Image.TileHorizontally
-      anchors.top : parent.top
-      anchors.topMargin : -3
-      anchors.right : topLine.left
-      anchors.left : parent.left
+    Item {
+      id : selectedPlaceHolderImages
+      anchors.fill : parent
       opacity : (selectedItemView.count > 0) ? 1 : 0
-    }
-    Image {
-      id : topLine
-      source : "list-line-top.png"
-      anchors.right : parent.right
-      anchors.top : parent.top
-      anchors.topMargin : -8
-      opacity : (selectedItemView.count > 0) ? 1 : 0
-    }
+      Image {
+        source : "dividing-line-horizontal.png"
+        fillMode : Image.TileHorizontally
+        anchors.top : parent.top
+        anchors.topMargin : -3
+        anchors.right : topLine.left
+        anchors.left : parent.left
+      }
+      Image {
+        id : topLine
+        source : "list-line-top.png"
+        anchors.right : parent.right
+        anchors.top : parent.top
+        anchors.topMargin : -8
+      }
 
-    Image {
-      source : "dividing-line-horizontal.png"
-      fillMode : Image.TileHorizontally
-      anchors.right : parent.right
-      anchors.left : parent.left
-      anchors.bottom : parent.bottom
-      opacity : (selectedItemView.count > 0) ? 1 : 0
+      Image {
+        source : "dividing-line-horizontal.png"
+        fillMode : Image.TileHorizontally
+        anchors.right : parent.right
+        anchors.left : parent.left
+        anchors.bottom : parent.bottom
+      }
     }
   }
 
   ListView {
     id : childItemsView
-    property int _children_padding : 0
-    property int _y_scroll : 0
     clip : true
-    anchors.top : selectedItemView.bottom
+    anchors.top : selectedItemPlaceHolder.bottom
     anchors.bottom : breadcrumbTopLevel.bottom
-    anchors.bottomMargin : _children_padding
     anchors.left : parent.left
     anchors.right : parent.right
-    contentY : _y_scroll
+  }
+
+  Item {
+    id : childItemsViewPlaceHolder
+    anchors.top : selectedItemPlaceHolder.bottom
+    anchors.bottom : breadcrumbTopLevel.bottom
+    anchors.left : parent.left
+    anchors.right : parent.right
 
     Image {
       source : "dividing-line.png"
@@ -245,6 +260,13 @@ Item {
 
   }
 
+  function completeHomeSelection() {
+    breadcrumbCollectionSelected(breadcrumbTopLevel._transitionSelect);
+    breadcrumbTopLevel._transitionSelect = -1;
+    breadcrumbTopLevel.state = "after_select_breadcrumb";
+    breadcrumbTopLevel.state = "";
+  }
+
   function completeChildSelection() {
     childCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
@@ -261,15 +283,61 @@ Item {
 
   states : [
     State {
-      name : "before_select_child"
+      name : "before_select_home"
       PropertyChanges {
         target : breadcrumbsView
-        height : { var _count = ( breadcrumbsView.count > 2 ) ? 2 : breadcrumbsView.count; itemHeight * ( _count + 1) }
-        _breadcrumb_y_offset : { if (breadcrumbsView.count > 1) -1 * itemHeight }
+        opacity : 0
+        height : 0
+      }
+      PropertyChanges {
+        target : breadcrumbPlaceHolder
+        opacity : 0
+        height : 0
       }
       PropertyChanges {
         target : selectedItemView
-        _selected_padding : -1 * itemHeight
+        opacity : 0
+        height : 0
+      }
+      PropertyChanges {
+        target : selectedItemPlaceHolder
+        opacity : 0
+        height : 0
+      }
+      PropertyChanges {
+        target : childItemsView
+        opacity : 0
+      }
+    },
+    State {
+      name : "before_select_child"
+      PropertyChanges {
+        target : topRightDivider
+        anchors.bottomMargin : 0
+        opacity : 1
+      }
+      PropertyChanges {
+        target : breadcrumbsView
+        height : itemHeight
+        anchors.topMargin : -itemHeight
+        opacity : 0
+      }
+      PropertyChanges {
+        target : breadcrumbRightDivider
+        anchors.topMargin : -8
+        height : {console.log(itemHeight); 67}
+        opacity : 0 // { 1 } // selectedItemView.count > 0 ? 1 : 0
+      }
+      PropertyChanges {
+        target : selectedItemPlaceHolder
+        anchors.topMargin : (breadcrumbsView.count == 0 && selectedItemView.count > 0) ? (itemHeight) : (breadcrumbsView.count == 0) ? 8 : 0
+        height : itemHeight
+        opacity : 1
+      }
+
+      PropertyChanges {
+        target : selectedPlaceHolderImages
+        opacity : 1
       }
       PropertyChanges {
         target : childItemsView
@@ -287,17 +355,13 @@ Item {
       name : "before_select_breadcrumb"
       PropertyChanges {
         target : breadcrumbsView
-        _breadcrumb_y_offset : {
-          if (breadcrumbTopLevel._transitionSelect >= 0)
-            /* return */ itemHeight * (2 - breadcrumbTopLevel._transitionSelect )
-
-        }
-
         height : { if (breadcrumbTopLevel._transitionSelect >= 0) itemHeight * ( breadcrumbTopLevel._transitionSelect + 1 ) }
+        anchors.bottomMargin : -itemHeight
         opacity : 0.5
       }
       PropertyChanges {
         target : selectedItemView
+        anchors.topMargin : (application.selectedCollectionRow() + breadcrumbsView.count) * itemHeight;
         opacity : 0
       }
       PropertyChanges {
@@ -308,11 +372,11 @@ Item {
     State {
       name : "after_select_breadcrumb"
       PropertyChanges {
-        target : childItemsView
-        opacity : 0
+        target : breadcrumbsView
+        contentY : breadcrumbsView.count > 1 ? itemHeight : 0
       }
       PropertyChanges {
-        target : selectedItemView
+        target : childItemsView
         opacity : 0
       }
     }
@@ -321,20 +385,79 @@ Item {
   transitions : [
     Transition {
       from : "*"
+      to : "before_select_home"
+      SequentialAnimation {
+        ParallelAnimation {
+          PropertyAnimation {
+            target : breadcrumbPlaceHolder
+            duration: 500
+            easing.type: "OutQuad"
+            properties : "opacity,height"
+          }
+          PropertyAnimation {
+            target : breadcrumbsView
+            duration: 500
+            easing.type: "OutQuad"
+            properties : "opacity,height"
+          }
+          PropertyAnimation {
+            target : selectedItemView
+            duration: 500
+            easing.type: "OutQuad"
+            properties : "opacity,height"
+          }
+          PropertyAnimation {
+            target : selectedItemPlaceHolder
+            duration: 500
+            easing.type: "OutQuad"
+            properties : "opacity,height"
+          }
+          PropertyAnimation {
+            target : childItemsView
+            duration: 500
+            easing.type: "OutQuad"
+            properties : "height"
+          }
+        }
+        ScriptAction {
+          script: { completeHomeSelection(); }
+        }
+      }
+    },
+    Transition {
+      from : "*"
       to : "before_select_child"
       SequentialAnimation {
         ParallelAnimation {
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
-            target: breadcrumbsView
-            properties: "height,_breadcrumb_y_offset"
+            target: topRightDivider
+            properties: "opacity,anchors.bottomMargin"
           }
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
-            target: selectedItemView
-            properties: "_selected_padding,opacity"
+            target: breadcrumbsView
+            properties: "height,anchors.topMargin,opacity"
+          }
+          PropertyAnimation {
+            duration: 500
+            easing.type: "OutQuad"
+            target: breadcrumbRightDivider
+            properties: "height"
+          }
+          PropertyAnimation {
+            target : selectedItemPlaceHolder
+            duration: 500
+            easing.type: "OutQuad"
+            properties : "anchors.topMargin,height,opacity"
+          }
+          PropertyAnimation {
+            target : selectedPlaceHolderImages
+            duration: 500
+            easing.type: "OutQuad"
+            properties : "opacity"
           }
           PropertyAnimation {
             duration: 500
@@ -365,6 +488,9 @@ Item {
         target: selectedItemView
         properties: "opacity"
       }
+      ScriptAction {
+        script : {console.log("### " + selectedItemView.count + " " + selectedItemView.currentIndex); }
+      }
     },
     Transition {
       from : "*"
@@ -375,13 +501,13 @@ Item {
             duration: 500
             easing.type: "OutQuad"
             target: breadcrumbsView
-            properties: "height,_breadcrumb_y_offset,opacity"
+            properties: "height,opacity"
           }
           PropertyAnimation {
             duration: 500
             easing.type: "OutQuad"
             target: selectedItemView
-            properties: "opacity"
+            properties: "opacity,anchors.topMargin"
           }
           PropertyAnimation {
             duration: 500
@@ -402,12 +528,6 @@ Item {
         duration: 500
         easing.type: "OutQuad"
         target: childItemsView
-        properties: "opacity"
-      }
-      NumberAnimation {
-        duration: 500
-        easing.type: "OutQuad"
-        target: selectedItemView
         properties: "opacity"
       }
     }
