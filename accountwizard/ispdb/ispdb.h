@@ -42,6 +42,13 @@ class Ispdb : public QObject
     Q_OBJECT
 public:
     enum socketType { None = 0, SSL, StartTLS };
+
+    /**
+     Ispdb uses custom authtyps, hence the enum here.
+     @see https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat
+     In particular, note that Ispdb's Plain represents both Cleartext and AUTH Plain
+     We will always treat it as Cleartext
+     */
     enum authType { Plain = 0, CramMD5, NTLM, GSSAPI, ClientIP, NoAuth };
     enum length { Long = 0, Short };
 

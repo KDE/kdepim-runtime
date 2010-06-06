@@ -76,9 +76,12 @@ class KMailMigrator : public KMigratorBase
     void instanceStatusChanged( const Akonadi::AgentInstance &instance );
     void instanceProgressChanged( const Akonadi::AgentInstance &instance );
 
-    void imapCacheImportFinished( const QString &error );
+    void imapCacheImportFinished( const Akonadi::AgentInstance &instance, const QString &error );
+    void imapCacheCleanupFinished( const Akonadi::AgentInstance &instance );
 
-  private:
+    void specialColDefaultResourceCheckFinished( const Akonadi::AgentInstance &instance );
+
+    private:
     void deleteOldGroup( const QString& );
     void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();

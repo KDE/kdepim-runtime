@@ -18,49 +18,58 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef IMAPCACHELOCALIMPORTER_H
-#define IMAPCACHELOCALIMPORTER_H
+#ifndef EMPTYRESOURCECLEANER_H
+#define EMPTYRESOURCECLEANER_H
 
 #include <QObject>
 
 namespace Akonadi
 {
   class AgentInstance;
-  class Item;
+  class Collection;
 }
 
-class MixedMaildirStore;
+class KJob;
 
-class ImapCacheLocalImporter : public QObject
+template <typename T> class QList;
+
+class EmptyResourceCleaner : public QObject
 {
   Q_OBJECT
 
   public:
-    explicit ImapCacheLocalImporter( MixedMaildirStore *store, QObject *parent = 0 );
+    enum CleaningOption
+    {
+      CheckOnly = 0x00,
+      DeleteEmptyCollections = 0x01,
+      DeleteEmptyResource = 0x02
+    };
 
-    ~ImapCacheLocalImporter();
+    Q_DECLARE_FLAGS( CleaningOptions, CleaningOption )
 
-    void setTopLevelFolder( const QString &topLevelFolder );
+    explicit EmptyResourceCleaner( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    ~EmptyResourceCleaner();
 
-    void setAccountName( const QString &accountName );
+    void setCleaningOptions( CleaningOptions options );
+
+    CleaningOptions cleaningOptions() const;
+
+    QList<Akonadi::Collection> deletableCollections() const;
+
+    bool isResourceDeletable() const;
 
   Q_SIGNALS:
-    void importFinished( const Akonadi::AgentInstance &resource, const QString &error );
-
-  public Q_SLOTS:
-    void startImport();
+    void cleanupFinished( const Akonadi::AgentInstance &resource );
 
   private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void createResourceResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void configureResource() )
-    Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemFetchResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemCreateResult( KJob* ) )
+  Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
+  Q_PRIVATE_SLOT( d, void collectionDeleteResult( KJob* ) )
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( EmptyResourceCleaner::CleaningOptions )
 
 #endif
 

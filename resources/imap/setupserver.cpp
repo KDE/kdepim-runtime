@@ -60,26 +60,25 @@
 #include "ui_setupserverview_desktop.h"
 #endif
 
-
 /** static helper functions **/
-static QString authenticationModeString( KIMAP::LoginJob::AuthenticationMode mode )
+static QString authenticationModeString( MailTransport::Transport::EnumAuthenticationType::type mode )
 {
   switch ( mode ) {
-    case KIMAP::LoginJob::Login:
+    case  MailTransport::Transport::EnumAuthenticationType::LOGIN:
       return "LOGIN";
-    case KIMAP::LoginJob::Plain:
+    case MailTransport::Transport::EnumAuthenticationType::PLAIN:
       return "PLAIN";
-    case KIMAP::LoginJob::CramMD5:
+    case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
       return "CRAM-MD5";
-    case KIMAP::LoginJob::DigestMD5:
+    case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
       return "DIGEST-MD5";
-    case KIMAP::LoginJob::GSSAPI:
+    case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
       return "GSSAPI";
-    case KIMAP::LoginJob::NTLM:
+    case MailTransport::Transport::EnumAuthenticationType::NTLM:
       return "NTLM";
-    case KIMAP::LoginJob::ClearText:
+    case MailTransport::Transport::EnumAuthenticationType::CLEAR:
       return i18nc( "Authentication method", "Clear text" );
-    case KIMAP::LoginJob::Anonymous:
+    case MailTransport::Transport::EnumAuthenticationType::ANONYMOUS:
       return i18nc( "Authentication method", "Anonymous" );
     default:
       break;
@@ -87,27 +86,27 @@ static QString authenticationModeString( KIMAP::LoginJob::AuthenticationMode mod
   return QString();
 }
 
-static void setCurrentAuthMode( QComboBox* authCombo, KIMAP::LoginJob::AuthenticationMode authtype )
+static void setCurrentAuthMode( QComboBox* authCombo, MailTransport::Transport::EnumAuthenticationType::type authtype )
 {
   kDebug() << "setting authcombo: " << authenticationModeString( authtype );
   int index = authCombo->findData( authtype );
   if( index == -1 )
     kWarning() << "desired authmode not in the combo";
-  kDebug() << "found corresponding index: " << index << "with data" << authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( index ).toInt() );
+  kDebug() << "found corresponding index: " << index << "with data" << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData( index ).toInt() );
   authCombo->setCurrentIndex( index );
-  KIMAP::LoginJob::AuthenticationMode t = (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( authCombo->currentIndex() ).toInt();
+  MailTransport::Transport::EnumAuthenticationType::type t = (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData( authCombo->currentIndex() ).toInt();
   kDebug() << "selected auth mode:" << authenticationModeString( t );
   Q_ASSERT( t == authtype );
 }
 
-static KIMAP::LoginJob::AuthenticationMode getCurrentAuthMode( QComboBox* authCombo )
+static MailTransport::Transport::EnumAuthenticationType::type getCurrentAuthMode( QComboBox* authCombo )
 {
-  KIMAP::LoginJob::AuthenticationMode authtype = (KIMAP::LoginJob::AuthenticationMode) authCombo->itemData( authCombo->currentIndex() ).toInt();
+  MailTransport::Transport::EnumAuthenticationType::type authtype = (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData( authCombo->currentIndex() ).toInt();
   kDebug() << "current auth mode: " << authenticationModeString( authtype );
   return authtype;
 }
 
-static void addAuthenticationItem( QComboBox* authCombo, KIMAP::LoginJob::AuthenticationMode authtype )
+static void addAuthenticationItem( QComboBox* authCombo, MailTransport::Transport::EnumAuthenticationType::type authtype )
 {
     kDebug() << "adding auth item " << authenticationModeString( authtype );
     authCombo->addItem( authenticationModeString( authtype ), QVariant( authtype ) );
@@ -255,7 +254,7 @@ void SetupServer::applySettings()
     kFatal() << "Shouldn't happen";
   }
   Settings::self()->setSafety( encryption );
-  KIMAP::LoginJob::AuthenticationMode authtype = getCurrentAuthMode( m_ui->authenticationCombo );
+  MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode( m_ui->authenticationCombo );
   kDebug() << "saving IMAP auth mode: " << authenticationModeString( authtype );
   Settings::self()->setAuthentication( authtype );
   Settings::self()->setPassword( m_ui->password->text() );
@@ -326,8 +325,8 @@ void SetupServer::readSettings()
 
   populateDefaultAuthenticationOptions();
   i = Settings::self()->authentication();
-  kDebug() << "read IMAP auth mode: " << authenticationModeString( (KIMAP::LoginJob::AuthenticationMode) i );
-  setCurrentAuthMode( m_ui->authenticationCombo, (KIMAP::LoginJob::AuthenticationMode) i );
+  kDebug() << "read IMAP auth mode: " << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) i );
+  setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) i );
 
   bool rejected = false;
   QString password = Settings::self()->password( &rejected );
@@ -400,6 +399,7 @@ void SetupServer::slotTest()
 
   delete m_serverTest;
   m_serverTest = new MailTransport::ServerTest( this );
+  qApp->setOverrideCursor( Qt::BusyCursor );
 
   QString server = m_ui->imapServer->text();
   int port = m_ui->portSpin->value();
@@ -416,12 +416,16 @@ void SetupServer::slotTest()
   m_serverTest->setProgressBar( m_ui->testProgress );
   connect( m_serverTest, SIGNAL( finished( QList<int> ) ),
            SLOT( slotFinished( QList<int> ) ) );
+  enableButtonOk( false );
   m_serverTest->start();
 }
 
 void SetupServer::slotFinished( QList<int> testResult )
 {
   kDebug() << testResult;
+
+  qApp->restoreOverrideCursor();
+  enableButtonOk( true );
 
   using namespace MailTransport;
 
@@ -484,41 +488,6 @@ void SetupServer::slotComplete()
   button( KDialog::Ok )->setEnabled( ok );
 }
 
-/**
- * Maps the enum used to represent authentication in MailTransport (kdepimlibs)
- * to the one used by the imap resource.
- * @param authType the MailTransport auth enum value
- * @return the corresponding KIMAP auth value.
- * @note will cause fatal error if there is no mapping, so be careful not to pass invalid auth options (e.g., APOP) to this function.
- */
-static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType )
-{
-  // setup some nice shortcuts
-  typedef MailTransport::Transport::EnumAuthenticationType MTAuth;
-  typedef KIMAP::LoginJob KIAuth;
-  switch ( authType ) {
-    case MTAuth::ANONYMOUS:
-      return KIAuth::Anonymous;
-    case MTAuth::PLAIN:
-      return KIAuth::Plain;
-    case MTAuth::NTLM:
-      return KIAuth::NTLM;
-    case MTAuth::LOGIN:
-      return KIAuth::Login;
-    case MTAuth::GSSAPI:
-      return KIAuth::GSSAPI;
-    case MTAuth::DIGEST_MD5:
-      return KIAuth::DigestMD5;
-    case MTAuth::CRAM_MD5:
-      return KIAuth::CramMD5;
-    case MTAuth::CLEAR:
-      return KIAuth::ClearText;
-    default:
-      kFatal() << "mapping from Transport::EnumAuthenticationType -> KIMAP::LoginJob::AuthenticationMode not possible";
-  }
-  return KIAuth::ClearText; // dummy value, shouldn't get here.
-}
-
 void SetupServer::slotSafetyChanged()
 {
   if ( m_serverTest == 0 ) {
@@ -551,13 +520,12 @@ void SetupServer::slotSafetyChanged()
   }
 
   m_ui->authenticationCombo->clear();
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::ClearText );
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CLEAR );
   foreach( int prot, protocols ) {
-    KIMAP::LoginJob::AuthenticationMode t = mapTransportAuthToKimap( ( MailTransport::Transport::EnumAuthenticationType::type ) prot );
-    addAuthenticationItem( m_ui->authenticationCombo, t );
+    addAuthenticationItem( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) prot );
   }
   if( protocols.size() > 0 )
-    setCurrentAuthMode( m_ui->authenticationCombo, mapTransportAuthToKimap( ( MailTransport::Transport::EnumAuthenticationType::type ) protocols.first() ) );
+    setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) protocols.first() );
   else
     kDebug() << "no authmodes found";
 }
@@ -581,7 +549,7 @@ void SetupServer::slotManageSubscriptions()
     static_cast<KIMAP::LoginJob::EncryptionMode>( m_ui->safeImapGroup->checkedId() )
   );
 
-  account.setAuthenticationMode( getCurrentAuthMode( m_ui->authenticationCombo ) );
+  account.setAuthenticationMode( ImapAccount::mapTransportAuthToKimap( getCurrentAuthMode( m_ui->authenticationCombo ) ) );
 
   m_subscriptionsChanged = false;
   SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."), &account, m_subscriptionsChanged );
@@ -613,14 +581,14 @@ void SetupServer::localFolderRequestJobFinished( KJob *job )
 void SetupServer::populateDefaultAuthenticationOptions()
 {
   m_ui->authenticationCombo->clear();
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::ClearText );
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::Login );
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::Plain );
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::CramMD5 );
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::DigestMD5 );
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::NTLM );
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::GSSAPI );
-  addAuthenticationItem( m_ui->authenticationCombo, KIMAP::LoginJob::Anonymous );
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CLEAR);
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::LOGIN );
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::PLAIN );
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::NTLM );
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::GSSAPI );
+  addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::ANONYMOUS );
 }
 
 

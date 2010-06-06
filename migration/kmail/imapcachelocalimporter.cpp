@@ -158,7 +158,8 @@ void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
   if ( job->error() != 0 ) {
     kError() << "Creation of Maildir resource for local cache copy of account"
              << mAccountName << "failed:" << job->errorString();
-    emit q->importFinished( i18nc( "@info", "Cannot provide access to local copies of "
+    emit q->importFinished( mResource,
+                            i18nc( "@info", "Cannot provide access to local copies of "
                                             "disconnected IMAP account %1",
                                             mAccountName ) );
     return;
@@ -190,7 +191,7 @@ void ImapCacheLocalImporter::Private::configureResource()
     "/Settings", QDBusConnection::sessionBus(), q );
 
   if (!iface->isValid() ) {
-    q->importFinished( i18n("Failed to obtain D-Bus interface for remote configuration.") );
+    q->importFinished( mResource, i18n("Failed to obtain D-Bus interface for remote configuration.") );
     return;
   }
 
@@ -201,7 +202,7 @@ void ImapCacheLocalImporter::Private::configureResource()
   mResource.setName( i18nc( "@title account name", "Local Copies of %1", mAccountName ) );
   mResource.reconfigure();
 
-  emit q->importFinished( QString() );
+  emit q->importFinished( mResource, QString() );
 }
 
 void ImapCacheLocalImporter::Private::collectionFetchResult( KJob *job )

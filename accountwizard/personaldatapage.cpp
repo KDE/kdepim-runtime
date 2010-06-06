@@ -26,10 +26,31 @@
 #include "ispdb/ispdb.h"
 
 #include <kpimutils/email.h>
+#include <kemailsettings.h>
+
+#include <mailtransport/transport.h>
 
 #include <KDebug>
 
 #include <QScrollArea>
+#include <QValidator>
+
+class EmailValidator : public QValidator {
+  public:
+    EmailValidator( QObject* parent ) : QValidator( parent ) {}
+    virtual State validate( QString& str, int& pos ) const
+    {
+      Q_UNUSED( pos );
+      if ( KPIMUtils::isValidSimpleAddress( str ) )
+        return QValidator::Acceptable;
+
+      // we'll say any string that doesn't have whitespace
+      // is an intermediate email string
+      if( QRegExp("\\s").indexIn(str) > -1 )
+        return QValidator::Invalid;
+      return QValidator::Intermediate;
+    }
+};
 
 PersonalDataPage::PersonalDataPage(Dialog* parent) :
   Page( parent ), mSetupManager( parent->setupManager() )
@@ -52,6 +73,14 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
 #endif
 
   ui.setupUi( pageParent );
+
+  EmailValidator* emailValidator = new EmailValidator( this );
+  ui.emailEdit->setValidator( emailValidator );
+
+  KEMailSettings e;
+  ui.nameEdit->setText( e.getSetting( KEMailSettings::RealName ) );
+  ui.emailEdit->setText( e.getSetting( KEMailSettings::EmailAddress ) );
+  slotTextChanged();
   connect( ui.emailEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
   connect( ui.nameEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
 }
@@ -67,7 +96,7 @@ void PersonalDataPage::slotTextChanged()
   // Ignore the password field, as that can be empty when auth is based on ip-address.
   setValid( !ui.emailEdit->text().isEmpty() &&
             !ui.nameEdit->text().isEmpty()  && 
-            KPIMUtils::isValidAddress( ui.emailEdit->text() ) == KPIMUtils::AddressOk);
+            KPIMUtils::isValidSimpleAddress( ui.emailEdit->text() ) );
 }
 
 void PersonalDataPage::leavePageNext()
@@ -144,18 +173,18 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setOption( "UserName", s.username );
       t->setOption( "Password", ui.passwordEdit->text() );
       switch (s.authentication) {
-        case Ispdb::Plain: t->setOption("Authentication", 0 ); break;
-        case Ispdb::CramMD5: t->setOption("Authentication", 3 ); break;
-        case Ispdb::NTLM: t->setOption("Authentication", 5 ); break;
-        case Ispdb::GSSAPI: t->setOption("Authentication", 6 ); break;
+        case Ispdb::Plain: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CLEAR ); break;
+        case Ispdb::CramMD5: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
+        case Ispdb::NTLM: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
+        case Ispdb::GSSAPI: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
         case Ispdb::ClientIP: break;
         case Ispdb::NoAuth: break;
         default: break;
       }
       switch (s.socketType) {
-        case Ispdb::None: t->setOption( "Safety", 0);break;
-        case Ispdb::SSL: t->setOption( "Safety", 5 );break;
-        case Ispdb::StartTLS: t->setOption( "Safety", 1 );break;
+        case Ispdb::None: t->setOption( "Safety", "None" );break;
+        case Ispdb::SSL: t->setOption( "Safety", "SSL" );break;
+        case Ispdb::StartTLS: t->setOption( "Safety", "STARTTLS" );break;
         default: break;
       }
     } else if ( mIspdb->pop3Servers().count() > 0 ) {
@@ -170,13 +199,13 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
       t->setOption( "Login", s.username );
       t->setOption( "Password", ui.passwordEdit->text() );
       switch (s.authentication) {
-        case Ispdb::Plain: t->setOption("AuthenticationMethod", 1 ); break;
-        case Ispdb::CramMD5: t->setOption("AuthenticationMethod", 2 ); break;
-        case Ispdb::NTLM: t->setOption("AuthenticationMethod", 5 ); break;
-        case Ispdb::GSSAPI: t->setOption("AuthenticationMethod", 3 ); break;
+        case Ispdb::Plain: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::PLAIN ); break;
+        case Ispdb::CramMD5: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
+        case Ispdb::NTLM: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
+        case Ispdb::GSSAPI: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
         case Ispdb::ClientIP:
         case Ispdb::NoAuth:
-        default: t->setOption("AuthenticationMethod",7); break;
+        default: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::CLEAR ); break;
       }
       switch (s.socketType) {
         case Ispdb::SSL: t->setOption( "UseSSL", 1 );break;

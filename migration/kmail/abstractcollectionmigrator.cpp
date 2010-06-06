@@ -164,10 +164,9 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "FolderAttributes" );
     newGroup.deleteEntry( "AlarmsBlocked" );
     newGroup.deleteEntry( "IncidencesFor" );
+    newGroup.deleteEntry( "IncidencesForChanged" );
     newGroup.deleteEntry( "UserRights" );
     newGroup.deleteEntry( "StatusChangedLocally" );
-    newGroup.deleteEntry( "UIDStatusChangedLocally" );
-    newGroup.deleteEntry( "UIDSDeletedSinceLastSync" );
 
     newGroup.deleteEntry( "MainFolderViewItemDnDSortingKey" );
     newGroup.deleteEntry( "MainFolderViewItemIsExpanded" );
@@ -178,6 +177,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "AnnotationFolderTypeChanged" );
     newGroup.deleteEntry( "AlarmsBlocked" );
     newGroup.deleteEntry( "SystemLabel" );
+    newGroup.deleteEntry( "ImapPath" );
 
     //Migrate favorite folder
     if ( newGroup.hasKey( "Id" ) ) {

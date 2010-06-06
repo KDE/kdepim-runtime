@@ -34,6 +34,7 @@
 #include "maildirsettings.h"
 #include "mixedmaildirsettings.h"
 #include "mixedmaildirstore.h"
+#include "emptyresourcecleaner.h"
 #include "imapcachecollectionmigrator.h"
 #include "imapcachelocalimporter.h"
 #include "localfolderscollectionmigrator.h"
@@ -74,6 +75,8 @@ static void migratePassword( const QString &idString, const AgentInstance &insta
   if ( wallet && wallet->isOpen() && wallet->hasFolder( "kmail" ) ) {
     wallet->setFolder( "kmail" );
     wallet->readPassword( "account-" + idString, password );
+    if ( !wallet->hasFolder( newFolder ) )
+      wallet->createFolder( newFolder );
     wallet->setFolder( newFolder );
     wallet->writePassword( instance.identifier() + "rc" , password );
   }
@@ -495,8 +498,9 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   migratePassword( config.readEntry( "Id" ), instance, "imap" );
 
-  instance.setName( config.readEntry( "Name" ) );
-  emit status( config.readEntry( "Name" ) );
+  const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
+  emit status( nameAccount );
   instance.reconfigure();
 
   ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportCachedMessages;
@@ -519,7 +523,6 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     }
   }
 
-  ImapCacheCollectionMigrator *collectionMigrator = 0;
   MixedMaildirStore *store = 0;
   if ( disconnected ) {
     if ( mDeleteCacheAfterImport ) {
@@ -536,7 +539,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     store = mImapCache;
   }
 
-  collectionMigrator = new ImapCacheCollectionMigrator( instance, store, this );
+  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, store, this );
   collectionMigrator->setMigrationOptions( options );
 
   kDebug() << "Starting IMAP collection migration: options="
@@ -548,11 +551,12 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( disconnected ) {
     ImapCacheLocalImporter *cacheImporter = new ImapCacheLocalImporter( store, this );
     cacheImporter->setTopLevelFolder( collectionMigrator->topLevelFolder() );
-    cacheImporter->setAccountName( config.readEntry( "Name" ) );
+    cacheImporter->setAccountName( nameAccount );
 
     connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
              cacheImporter, SLOT( startImport() ) );
-    connect( cacheImporter, SIGNAL( importFinished( QString ) ), SLOT( imapCacheImportFinished( QString ) ) );
+    connect( cacheImporter, SIGNAL( importFinished( Akonadi::AgentInstance, QString ) ),
+              SLOT( imapCacheImportFinished( Akonadi::AgentInstance, QString ) ) );
     ++mRunningCacheImporterCount;
   }
 
@@ -579,7 +583,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     "/Settings", QDBusConnection::sessionBus(), this );
 
   if ( !iface->isValid() ) {
-    migrationFailed( "Failed to obtain D-Bus interface for remote configuration.", instance );
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     return;
   }
 
@@ -643,8 +647,9 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
   config.deleteEntry("use-default-identity");
-  instance.setName( config.readEntry( "Name" ) );
-  emit status( config.readEntry( "Name" ) );
+  const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
+  emit status( nameAccount );
   instance.reconfigure();
   config.sync();
   migrationCompleted( instance );
@@ -684,8 +689,9 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   else if ( lockType == "none" )
     iface->setLockfileMethod( MboxNone );
 
-  instance.setName( config.readEntry( "Name" ) );
-  emit status( config.readEntry( "Name" ) );
+  const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
+  emit status( nameAccount );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -713,8 +719,9 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 
   iface->setPath( config.readEntry( "Location" ) );
 
-  instance.setName( config.readEntry( "Name" ) );
-  emit status( config.readEntry( "Name" ) );
+  const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
+  emit status( nameAccount );
   instance.reconfigure();
   migrationCompleted( instance );
 }
@@ -795,9 +802,30 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
 void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
 {
-  mLocalFoldersDone = true;
-  mCurrentInstance = AgentInstance();
   if ( error.isEmpty() ) {
+    KConfigGroup config( KGlobal::config(), QLatin1String( "SpecialMailCollections" ) );
+    if ( config.readEntry( QLatin1String( "TakeOverIfDefaultIsTotallyEmpty" ), false ) ) {
+      KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
+      KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
+
+      QString defaultResourceId = specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
+
+      AgentInstance defaultResource = AgentManager::self()->instance( defaultResourceId );
+      if ( defaultResource.isValid() && defaultResourceId != instance.identifier() ) {
+        kDebug() << "Attempting take over of special mail collections role from"
+                 << defaultResourceId;
+
+        EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( defaultResource, this );
+        cleaner->setCleaningOptions( EmptyResourceCleaner::CheckOnly );
+        connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
+                 SLOT( specialColDefaultResourceCheckFinished( Akonadi::AgentInstance ) ) );
+        return;
+      }
+    }
+
+    mLocalFoldersDone = true;
+    mCurrentInstance = AgentInstance();
+
     setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
     emit message( Success, i18n( "Local folders migrated successfully." ) );
     mConfig->sync();
@@ -805,6 +833,9 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
       migrationDone();
     }
   } else {
+    mLocalFoldersDone = true;
+    mCurrentInstance = AgentInstance();
+
     migrationFailed( error, instance );
   }
 }
@@ -856,6 +887,10 @@ void KMailMigrator::collectionMigratorFinished()
 
 void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
 {
+  if ( instance.identifier() != mCurrentInstance.identifier() ) {
+    return;
+  }
+
   if ( instance.status() == AgentInstance::Idle ) {
     emit status( QString() );
   } else {
@@ -865,20 +900,75 @@ void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
 
 void KMailMigrator::instanceProgressChanged( const AgentInstance &instance )
 {
+  if ( instance.identifier() != mCurrentInstance.identifier() ) {
+    return;
+  }
+
   emit progress( 0, 100, instance.progress() );
 }
 
-void KMailMigrator::imapCacheImportFinished( const QString &error )
+void KMailMigrator::imapCacheImportFinished( const Akonadi::AgentInstance &instance, const QString &error )
 {
-  --mRunningCacheImporterCount;
+  kDebug() << "CacheImport into" << instance.identifier()
+           << "finished (error=" << error << "), "
+           << ( mRunningCacheImporterCount - 1 ) << "still running";
 
-  kDebug() << "CacheImport finished (error=" << error << "), "
-           << mRunningCacheImporterCount << "still running";
   if ( !error.isEmpty() ) {
+    --mRunningCacheImporterCount;
+
     emit message( Error, error );
+  } else if ( mDeleteCacheAfterImport ) {
+      EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( instance, this );
+      cleaner->setCleaningOptions( EmptyResourceCleaner::DeleteEmptyCollections |
+                                   EmptyResourceCleaner::DeleteEmptyResource );
+     connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
+              SLOT( imapCacheCleanupFinished( Akonadi::AgentInstance ) ) );
   }
 
   if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
+    migrationDone();
+  }
+}
+
+void KMailMigrator::imapCacheCleanupFinished( const Akonadi::AgentInstance &instance )
+{
+  --mRunningCacheImporterCount;
+
+  kDebug() << "CacheCleanup of" << instance.identifier() << "finished, "
+           << mRunningCacheImporterCount << "still running";
+
+  if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
+    migrationDone();
+  }
+}
+
+void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance &instance )
+{
+  KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
+  KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
+
+  const EmptyResourceCleaner *cleaner = qobject_cast<const EmptyResourceCleaner*>( QObject::sender() );
+
+  const QString localFoldersIdentifier = mCurrentInstance.identifier();
+  if ( cleaner->isResourceDeletable() ) {
+    specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), localFoldersIdentifier );
+    specialMailCollectionsGroup.sync();
+    AgentManager::self()->removeInstance( instance );
+
+    kDebug() << "Former special mail collection resource" << instance.identifier()
+             << "successfully delete, now using" << specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
+  } else {
+    kDebug() << "Former special mail collection resource" << instance.identifier()
+             << "still valid";
+  }
+
+  mLocalFoldersDone = true;
+  mCurrentInstance = AgentInstance();
+
+  setMigrationState( "LocalFolders", Complete, localFoldersIdentifier, "LocalFolders" );
+  emit message( Success, i18n( "Local folders migrated successfully." ) );
+  mConfig->sync();
+  if ( mRunningCacheImporterCount == 0 ) {
     migrationDone();
   }
 }

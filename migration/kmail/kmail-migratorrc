@@ -2,6 +2,9 @@
 Enabled=true
 TargetVersion=1
 
+[SpecialMailCollections]
+TakeOverIfDefaultIsTotallyEmpty=true
+
 [Disconnected IMAP]
 ImportNewMessages=true
 ImportCachedMessages=true

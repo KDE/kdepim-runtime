@@ -101,17 +101,16 @@ function testOk( arg )
 //    imapRes.setOption( "SubscriptionEnabled", true );
     if ( arg == "ssl" ) { 
       // The ENUM used for authentication (in the imap resource only)
-      // is KIMAP::LoginJob::AuthenticationMode
       imapRes.setOption( "Safety", "SSL" ); // SSL/TLS
-      imapRes.setOption( "Authentication", 0 ); // ClearText
+      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 993 );
     } else if ( arg == "tls" ) { // tls is really STARTTLS
       imapRes.setOption( "Safety", "STARTTLS" );  // STARTTLS
-      imapRes.setOption( "Authentication", 0 ); // ClearText
+      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 143 );
     } else {
       imapRes.setOption( "Safety", "NONE" );  // No encryption
-      imapRes.setOption( "Authentication", 0 ); // ClearText
+      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 143 );
     }
     stage = 2;

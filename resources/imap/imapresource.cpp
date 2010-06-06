@@ -871,7 +871,7 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
     foreach( const QByteArray &flag, flags[number] ) {
       i.setFlag( flag );
     }
-    kDebug(5327) << "Flags: " << i.flags();
+    //kDebug(5327) << "Flags: " << i.flags();
     addedItems << i;
   }
 
@@ -925,7 +925,7 @@ void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, q
     i.setMimeType( "message/rfc822" );
     i.setFlags( Akonadi::Item::Flags::fromList( flags[number] ) );
 
-    kDebug(5327) << "Flags: " << i.flags();
+    //kDebug(5327) << "Flags: " << i.flags();
     changedItems << i;
   }
 
