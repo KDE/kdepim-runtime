@@ -459,7 +459,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     iface->setSafety( "STARTTLS" );
   else
     iface->setSafety( "NONE" );
-  const QString &authentication = config.readEntry( "auth" ).toUpper();
+  const QString authentication = config.readEntry( "auth" ).toUpper();
   if ( authentication == "LOGIN" )
     iface->setAuthentication( KIMAP::LoginJob::Login );
   else if ( authentication == "PLAIN" )
