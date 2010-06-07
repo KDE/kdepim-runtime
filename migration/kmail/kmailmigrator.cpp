@@ -568,7 +568,11 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   kDebug() << "Starting IMAP collection migration: options="
            << collectionMigrator->migrationOptions();
-  collectionMigrator->setTopLevelFolder( config.readEntry( "Folder", config.readEntry( "Id" ) ) );
+  QString topLevelFolder = config.readEntry( "Folder" );
+  if ( topLevelFolder.isEmpty() ) {
+    topLevelFolder = config.readEntry( "Id" );
+  }
+  collectionMigrator->setTopLevelFolder( topLevelFolder );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
 
