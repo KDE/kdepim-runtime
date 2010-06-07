@@ -161,7 +161,7 @@ void KJotsMigrator::migrateNext()
 
 void KJotsMigrator::migrationFinished()
 {
-  emit message( Info, "KJots notes migration finished");
+  emit message( Info, i18n( "KJots notes migration finished" ) );
   deleteLater();
 }
 

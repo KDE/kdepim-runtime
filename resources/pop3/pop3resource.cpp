@@ -166,7 +166,7 @@ void POP3Resource::walletOpenedForLoading( bool success )
 void POP3Resource::walletOpenedForSaving( bool success )
 {
   if ( success ) {
-    if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
+    if ( mWallet && mWallet->isOpen() ) {
       if ( !mWallet->hasFolder( "pop3" ) ) {
         mWallet->createFolder( "pop3" );
       }
