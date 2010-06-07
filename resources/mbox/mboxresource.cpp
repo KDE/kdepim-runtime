@@ -272,8 +272,6 @@ void MboxResource::handleHashChange()
 bool MboxResource::readFromFile( const QString &fileName )
 {
   delete mMBox;
-  mMBox = 0;
-
   mMBox = new MBox();
 
   switch ( Settings::self()->lockfileMethod() ) {
