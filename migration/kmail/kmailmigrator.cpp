@@ -57,6 +57,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KStandardDirs>
 #include <KLocalizedString>
 #include <KMessageBox>
+#include <KSharedConfig>
 #include <kwallet.h>
 using KWallet::Wallet;
 
@@ -98,8 +99,6 @@ static MixedMaildirStore *createCacheStore( const QString &basePath )
 
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
-  mConfig( 0 ),
-  mEmailIdentityConfig( 0 ),
   mDeleteCacheAfterImport( false ),
   mDImapCache( 0 ),
   mImapCache( 0 ),
@@ -114,8 +113,6 @@ KMailMigrator::KMailMigrator() :
 
 KMailMigrator::~KMailMigrator()
 {
-  delete mConfig;
-  delete mEmailIdentityConfig;
   delete mDImapCache;
   delete mImapCache;
 }
@@ -124,15 +121,12 @@ void KMailMigrator::migrate()
 {
   emit message( Info, i18n("Beginning KMail migration...") );
 
-  const QString &oldKMailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmailrc" ) );
-  KConfig *oldConfig = new KConfig( oldKMailCfgFile );
+  KSharedConfigPtr oldConfig = KSharedConfig::openConfig( QLatin1String( "kmailrc" ) );
+  mConfig = KSharedConfig::openConfig( QLatin1String( "kmail2rc" ) );
   const QString &newKMailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmail2rc" ) );
-  mConfig = oldConfig->copyTo( newKMailCfgFile, 0 );
-  delete oldConfig;
-  Q_ASSERT( mConfig != 0 );
+  oldConfig->copyTo( newKMailCfgFile, mConfig.data() );
 
-  const QString &emailIdentityCfgFile = KStandardDirs::locateLocal( "config", QString( "emailidentities" ) );
-  mEmailIdentityConfig = new KConfig( emailIdentityCfgFile );
+  mEmailIdentityConfig = KSharedConfig::openConfig( QLatin1String( "emailidentities" ) );
 
   deleteOldGroup();
   migrateTags();

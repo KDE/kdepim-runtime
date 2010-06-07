@@ -57,7 +57,7 @@ LocalFoldersCollectionMigrator::~LocalFoldersCollectionMigrator()
   delete d;
 }
 
-void LocalFoldersCollectionMigrator::setKMailConfig( KConfig *config )
+void LocalFoldersCollectionMigrator::setKMailConfig( const KSharedConfigPtr &config )
 {
   AbstractCollectionMigrator::setKMailConfig( config );
 
@@ -85,7 +85,6 @@ void LocalFoldersCollectionMigrator::setKMailConfig( KConfig *config )
 void LocalFoldersCollectionMigrator::migrateCollection( const Collection &collection, const QString &folderId )
 {
   Q_UNUSED( folderId );
-  Q_ASSERT( kmailConfig() != 0 );
 
   emit status( collection.name() );
 

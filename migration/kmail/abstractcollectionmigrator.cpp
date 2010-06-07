@@ -78,8 +78,8 @@ class AbstractCollectionMigrator::Private
     AgentInstance mResource;
     Status mStatus;
     QString mTopLevelFolder;
-    KConfig *mKMailConfig;
-    KConfig *mEmailIdentityConfig;
+    KSharedConfigPtr mKMailConfig;
+    KSharedConfigPtr mEmailIdentityConfig;
 
     Monitor *mMonitor;
 
@@ -631,12 +631,12 @@ QString AbstractCollectionMigrator::topLevelFolder() const
   return d->mTopLevelFolder;
 }
 
-void AbstractCollectionMigrator::setKMailConfig( KConfig *config )
+void AbstractCollectionMigrator::setKMailConfig( const KSharedConfigPtr &config )
 {
   d->mKMailConfig = config;
 }
 
-void AbstractCollectionMigrator::setEmailIdentityConfig( KConfig *config )
+void AbstractCollectionMigrator::setEmailIdentityConfig( const KSharedConfigPtr &config )
 {
   d->mEmailIdentityConfig = config;
 }
@@ -679,12 +679,12 @@ const AgentInstance AbstractCollectionMigrator::resource() const
   return d->mResource;
 }
 
-KConfig *AbstractCollectionMigrator::kmailConfig() const
+KSharedConfigPtr AbstractCollectionMigrator::kmailConfig() const
 {
   return d->mKMailConfig;
 }
 
-KConfig *AbstractCollectionMigrator::emailIdentityConfig() const
+KSharedConfigPtr AbstractCollectionMigrator::emailIdentityConfig() const
 {
   return d->mEmailIdentityConfig;
 }

@@ -30,6 +30,10 @@ namespace Akonadi {
 
 class KConfig;
 class KJob;
+class KSharedConfig;
+
+template <typename T> class KSharedPtr;
+typedef KSharedPtr<KSharedConfig> KSharedConfigPtr;
 
 class AbstractCollectionMigrator : public QObject
 {
@@ -43,8 +47,9 @@ class AbstractCollectionMigrator : public QObject
 
     QString topLevelFolder() const;
 
-    virtual void setKMailConfig( KConfig *config );
-    virtual void setEmailIdentityConfig( KConfig *config );
+    virtual void setKMailConfig( const KSharedConfigPtr &config );
+    virtual void setEmailIdentityConfig( const KSharedConfigPtr &config );
+
   Q_SIGNALS:
     void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
 
@@ -65,8 +70,8 @@ class AbstractCollectionMigrator : public QObject
     void migrationCancelled( const QString &error );
 
     const Akonadi::AgentInstance resource() const;
-    KConfig *kmailConfig() const;
-    KConfig *emailIdentityConfig() const;
+    KSharedConfigPtr kmailConfig() const;
+    KSharedConfigPtr emailIdentityConfig() const;
 
     // TODO SpecialMailCollections doesn't export its enum to bytearray mapping
     // so we use an int for the enum value
