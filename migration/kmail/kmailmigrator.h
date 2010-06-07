@@ -108,6 +108,8 @@ class KMailMigrator : public KMigratorBase
     MixedMaildirStore *mImapCache;
     int mRunningCacheImporterCount;
     bool mLocalFoldersDone;
+
+    QList<Akonadi::AgentInstance> mFailedInstances;
 };
 
 } // namespace KMail

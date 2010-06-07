@@ -301,6 +301,14 @@ void KMailMigrator::migrateLocalFolders()
 void KMailMigrator::migrationDone()
 {
   emit message( Info, i18n( "Migration successfully completed." ) );
+
+  mConfig->sync();
+  kDebug() << "Deleting" << mFailedInstances.count() << "failed resource instances";
+  Q_FOREACH( const AgentInstance &instance, mFailedInstances ) {
+    if ( instance.isValid() ) {
+      AgentManager::self()->removeInstance( instance );
+    }
+  }
   deleteLater();
 }
 
@@ -311,8 +319,9 @@ void KMailMigrator::migrationFailed( const QString &errorMsg,
   emit message( Error, i18n( "Migration of '%1' to Akonadi resource failed: %2",
                              group.readEntry( "Name" ), errorMsg ) );
 
-  if ( instance.isValid() )
-    AgentManager::self()->removeInstance( instance );
+  if ( instance.isValid() ) {
+    mFailedInstances << instance;
+  }
 
   mCurrentAccount.clear();
   mCurrentInstance = AgentInstance();
@@ -842,7 +851,6 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
 
     setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
     emit message( Success, i18n( "Local folders migrated successfully." ) );
-    mConfig->sync();
     if ( mRunningCacheImporterCount == 0 ) {
       migrationDone();
     }
@@ -981,7 +989,6 @@ void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance 
 
   setMigrationState( "LocalFolders", Complete, localFoldersIdentifier, "LocalFolders" );
   emit message( Success, i18n( "Local folders migrated successfully." ) );
-  mConfig->sync();
   if ( mRunningCacheImporterCount == 0 ) {
     migrationDone();
   }
