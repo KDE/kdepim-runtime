@@ -123,8 +123,28 @@ void KMailMigrator::migrate()
 
   KSharedConfigPtr oldConfig = KSharedConfig::openConfig( QLatin1String( "kmailrc" ) );
   mConfig = KSharedConfig::openConfig( QLatin1String( "kmail2rc" ) );
+
+  const QFileInfo migratorConfigInfo( KStandardDirs::locateLocal( "config", KGlobal::config()->name() ) );
+
   const QString &newKMailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmail2rc" ) );
-  oldConfig->copyTo( newKMailCfgFile, mConfig.data() );
+
+  // copy old config into new config, if
+  bool copy = false;
+  // there is no migrator config (no migration happened yet or full rerun)
+  copy = copy || !migratorConfigInfo.exists();
+  // new config does not exist yet
+  copy = copy || !QFileInfo( newKMailCfgFile ).exists();
+  // new config is empty
+  copy = copy || mConfig->groupList().isEmpty();
+  // new config does not contain any account groups
+  copy = copy || mConfig->groupList().filter( QRegExp( "Account \\d+" ) ).isEmpty();
+
+  if ( copy ) {
+    kDebug() << "Copying content from kmailrc";
+    oldConfig->copyTo( newKMailCfgFile, mConfig.data() );
+  } else {
+    kDebug() << "Ignoring kmailrc, just using contents from kmail2rc";
+  }
 
   mEmailIdentityConfig = KSharedConfig::openConfig( QLatin1String( "emailidentities" ) );
 
