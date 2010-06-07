@@ -484,21 +484,21 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     iface->setSafety( "NONE" );
   const QString authentication = config.readEntry( "auth" ).toUpper();
   if ( authentication == "LOGIN" )
-    iface->setAuthentication( KIMAP::LoginJob::Login );
+    iface->setAuthentication(  MailTransport::Transport::EnumAuthenticationType::LOGIN );
   else if ( authentication == "PLAIN" )
-    iface->setAuthentication( KIMAP::LoginJob::Plain );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::PLAIN );
   else if ( authentication == "CRAM-MD5" )
-    iface->setAuthentication( KIMAP::LoginJob::CramMD5 );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
   else if ( authentication == "DIGEST-MD5" )
-    iface->setAuthentication( KIMAP::LoginJob::DigestMD5 );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
   else if ( authentication == "NTLM" )
-    iface->setAuthentication( KIMAP::LoginJob::NTLM );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::NTLM );
   else if ( authentication == "GSSAPI" )
-    iface->setAuthentication( KIMAP::LoginJob::GSSAPI );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::GSSAPI );
   else if ( authentication == "ANONYMOUS" )
-    iface->setAuthentication( KIMAP::LoginJob::Anonymous );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::ANONYMOUS );
   else {
-    iface->setAuthentication( KIMAP::LoginJob::ClearText );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CLEAR );
   }
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
