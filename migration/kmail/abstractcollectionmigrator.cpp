@@ -69,6 +69,7 @@ class AbstractCollectionMigrator::Private
         mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle ),
         mNeedModifyJob( false )
     {
+      mRecheckTimer.setSingleShot( true );
     }
 
     void migrateConfig();
