@@ -37,32 +37,29 @@ Item {
     anchors.top : parent.top
     anchors.left : parent.left
     anchors.right : parent.right
+    anchors.bottom: buttonBox.top
     anchors.topMargin : 30
-    height : parent.height * .85
-
   }
-  Row {
-    anchors.top : columnView.bottom
-    anchors.bottom : parent.bottom
-//    anchors.right : parent.right
-    width: parent.width
 
-    KPIM.Button {
-      anchors.left : parent.parent.left
-      y : 10
-      height : parent.height
-      width : 50
+  Item {
+    id: buttonBox
+    anchors.bottom : parent.bottom
+    anchors.right : parent.right
+    anchors.left: parent.left
+    height: 52 // 48  + 4 for margins
+
+    KPIM.Button2 {
+      anchors { left: parent.left; top: parent.top; bottom: parent.bottom; margins: 2 }
+      width : 100
 
       buttonText : KDE.i18n("Cancel")
       onClicked : { canceled(); }
     }
 
-    KPIM.Button {
+    KPIM.Button2 {
       id: doneButton
-      anchors.right : parent.right
-      y : 10
-      height : parent.height
-      width : 50
+      anchors { right: parent.right; top: parent.top; bottom: parent.bottom; margins: 2 }
+      width : 100
 
       buttonText : KDE.i18n("Done")
       onClicked : { finished(); }
