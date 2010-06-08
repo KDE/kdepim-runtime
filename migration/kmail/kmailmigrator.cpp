@@ -503,10 +503,12 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
-  if ( config.readEntry( "check-exclude" ).toLower() == "false" )
-    iface->setIntervalCheckTime( config.readEntry( "check-interval", 0 ) );
+  const int checkInterval = config.readEntry( "check-interval", 0 );
+  if ( checkInterval == 0 )
+    iface->setIntervalCheckTime( -1 ); //exclude
   else
-    iface->setIntervalCheckTime( -1 ); //Exclude
+    iface->setIntervalCheckTime( checkInterval );
+  //TODO check-exclude: this element exclude manual check not implemented in akonadi yet
 
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
@@ -636,8 +638,15 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     iface->setFilterOnServer( true );
     iface->setFilterCheckSize( config.readEntry( "filter-os-check-size" ).toUInt() );
   }
-  iface->setIntervalCheckEnabled( config.readEntry( "check-exclude", false ) );
-  iface->setIntervalCheckInterval( config.readEntry( "check-interval", 0 ) );
+  const int checkInterval = config.readEntry( "check-interval", 0 );
+  if ( checkInterval == 0 )
+    iface->setIntervalCheckEnabled( false );
+  else {
+    iface->setIntervalCheckEnabled( true );
+    iface->setIntervalCheckInterval( checkInterval );
+  }
+  //TODO check-exclude: not implemented in akonadi yet
+
 
   // Akonadi kmail uses enums for storing auth options
   // so we have to convert from the old string representations
