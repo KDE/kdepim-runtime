@@ -57,6 +57,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KStandardDirs>
 #include <KLocalizedString>
 #include <KMessageBox>
+#include <KSharedConfig>
 #include <kwallet.h>
 using KWallet::Wallet;
 
@@ -98,8 +99,6 @@ static MixedMaildirStore *createCacheStore( const QString &basePath )
 
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
-  mConfig( 0 ),
-  mEmailIdentityConfig( 0 ),
   mDeleteCacheAfterImport( false ),
   mDImapCache( 0 ),
   mImapCache( 0 ),
@@ -114,8 +113,6 @@ KMailMigrator::KMailMigrator() :
 
 KMailMigrator::~KMailMigrator()
 {
-  delete mConfig;
-  delete mEmailIdentityConfig;
   delete mDImapCache;
   delete mImapCache;
 }
@@ -124,15 +121,32 @@ void KMailMigrator::migrate()
 {
   emit message( Info, i18n("Beginning KMail migration...") );
 
-  const QString &oldKMailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmailrc" ) );
-  KConfig *oldConfig = new KConfig( oldKMailCfgFile );
-  const QString &newKMailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmail2rc" ) );
-  mConfig = oldConfig->copyTo( newKMailCfgFile, 0 );
-  delete oldConfig;
-  Q_ASSERT( mConfig != 0 );
+  KSharedConfigPtr oldConfig = KSharedConfig::openConfig( QLatin1String( "kmailrc" ) );
+  mConfig = KSharedConfig::openConfig( QLatin1String( "kmail2rc" ) );
 
-  const QString &emailIdentityCfgFile = KStandardDirs::locateLocal( "config", QString( "emailidentities" ) );
-  mEmailIdentityConfig = new KConfig( emailIdentityCfgFile );
+  const QFileInfo migratorConfigInfo( KStandardDirs::locateLocal( "config", KGlobal::config()->name() ) );
+
+  const QString &newKMailCfgFile = KStandardDirs::locateLocal( "config", QString( "kmail2rc" ) );
+
+  // copy old config into new config, if
+  bool copy = false;
+  // there is no migrator config (no migration happened yet or full rerun)
+  copy = copy || !migratorConfigInfo.exists();
+  // new config does not exist yet
+  copy = copy || !QFileInfo( newKMailCfgFile ).exists();
+  // new config is empty
+  copy = copy || mConfig->groupList().isEmpty();
+  // new config does not contain any account groups
+  copy = copy || mConfig->groupList().filter( QRegExp( "Account \\d+" ) ).isEmpty();
+
+  if ( copy ) {
+    kDebug() << "Copying content from kmailrc";
+    oldConfig->copyTo( newKMailCfgFile, mConfig.data() );
+  } else {
+    kDebug() << "Ignoring kmailrc, just using contents from kmail2rc";
+  }
+
+  mEmailIdentityConfig = KSharedConfig::openConfig( QLatin1String( "emailidentities" ) );
 
   deleteOldGroup();
   migrateTags();
@@ -307,6 +321,14 @@ void KMailMigrator::migrateLocalFolders()
 void KMailMigrator::migrationDone()
 {
   emit message( Info, i18n( "Migration successfully completed." ) );
+
+  mConfig->sync();
+  kDebug() << "Deleting" << mFailedInstances.count() << "failed resource instances";
+  Q_FOREACH( const AgentInstance &instance, mFailedInstances ) {
+    if ( instance.isValid() ) {
+      AgentManager::self()->removeInstance( instance );
+    }
+  }
   deleteLater();
 }
 
@@ -317,8 +339,9 @@ void KMailMigrator::migrationFailed( const QString &errorMsg,
   emit message( Error, i18n( "Migration of '%1' to Akonadi resource failed: %2",
                              group.readEntry( "Name" ), errorMsg ) );
 
-  if ( instance.isValid() )
-    AgentManager::self()->removeInstance( instance );
+  if ( instance.isValid() ) {
+    mFailedInstances << instance;
+  }
 
   mCurrentAccount.clear();
   mCurrentInstance = AgentInstance();
@@ -461,21 +484,21 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     iface->setSafety( "NONE" );
   const QString authentication = config.readEntry( "auth" ).toUpper();
   if ( authentication == "LOGIN" )
-    iface->setAuthentication( KIMAP::LoginJob::Login );
+    iface->setAuthentication(  MailTransport::Transport::EnumAuthenticationType::LOGIN );
   else if ( authentication == "PLAIN" )
-    iface->setAuthentication( KIMAP::LoginJob::Plain );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::PLAIN );
   else if ( authentication == "CRAM-MD5" )
-    iface->setAuthentication( KIMAP::LoginJob::CramMD5 );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
   else if ( authentication == "DIGEST-MD5" )
-    iface->setAuthentication( KIMAP::LoginJob::DigestMD5 );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
   else if ( authentication == "NTLM" )
-    iface->setAuthentication( KIMAP::LoginJob::NTLM );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::NTLM );
   else if ( authentication == "GSSAPI" )
-    iface->setAuthentication( KIMAP::LoginJob::GSSAPI );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::GSSAPI );
   else if ( authentication == "ANONYMOUS" )
-    iface->setAuthentication( KIMAP::LoginJob::Anonymous );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::ANONYMOUS );
   else {
-    iface->setAuthentication( KIMAP::LoginJob::ClearText );
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CLEAR );
   }
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
@@ -545,7 +568,11 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   kDebug() << "Starting IMAP collection migration: options="
            << collectionMigrator->migrationOptions();
-  collectionMigrator->setTopLevelFolder( config.readEntry( "Folder", config.readEntry( "Id" ) ) );
+  QString topLevelFolder = config.readEntry( "Folder" );
+  if ( topLevelFolder.isEmpty() ) {
+    topLevelFolder = config.readEntry( "Id" );
+  }
+  collectionMigrator->setTopLevelFolder( topLevelFolder );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
 
@@ -848,7 +875,6 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
 
     setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
     emit message( Success, i18n( "Local folders migrated successfully." ) );
-    mConfig->sync();
     if ( mRunningCacheImporterCount == 0 ) {
       migrationDone();
     }
@@ -987,7 +1013,6 @@ void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance 
 
   setMigrationState( "LocalFolders", Complete, localFoldersIdentifier, "LocalFolders" );
   emit message( Success, i18n( "Local folders migrated successfully." ) );
-  mConfig->sync();
   if ( mRunningCacheImporterCount == 0 ) {
     migrationDone();
   }

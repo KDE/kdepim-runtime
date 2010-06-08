@@ -50,6 +50,11 @@ class EmailValidator : public QValidator {
         return QValidator::Invalid;
       return QValidator::Intermediate;
     }
+
+    virtual void fixup( QString& str ) const
+    {
+      str = str.trimmed();
+    }
 };
 
 PersonalDataPage::PersonalDataPage(Dialog* parent) :

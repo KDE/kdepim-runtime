@@ -69,6 +69,7 @@ class AbstractCollectionMigrator::Private
         mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle ),
         mNeedModifyJob( false )
     {
+      mRecheckTimer.setSingleShot( true );
     }
 
     void migrateConfig();
@@ -78,8 +79,8 @@ class AbstractCollectionMigrator::Private
     AgentInstance mResource;
     Status mStatus;
     QString mTopLevelFolder;
-    KConfig *mKMailConfig;
-    KConfig *mEmailIdentityConfig;
+    KSharedConfigPtr mKMailConfig;
+    KSharedConfigPtr mEmailIdentityConfig;
 
     Monitor *mMonitor;
 
@@ -518,6 +519,17 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const AgentInst
            << "oldStatus=" << oldStatus << "message=" << oldMessage
            << "newStatus" << mResource.status() << "message=" << mResource.statusMessage();
 
+  if ( oldStatus == AgentInstance::Broken && mResource.status() == AgentInstance::Broken ) {
+    if ( oldMessage != mResource.statusMessage() ) {
+      // changing to a new broken state. if still waiting, wait for at most 10 seconds before
+      // giving up
+      if ( mStatus == Waiting ) {
+        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Restaring recheck timer for last 10 seconds";
+        mRecheckTimer.start( 10000 );
+      }
+    }
+  }
+
   if ( mStatus == Waiting && mResource.status() != AgentInstance::Broken ) {
     mRecheckTimer.stop();
     mRecheckTimer.disconnect();
@@ -631,12 +643,12 @@ QString AbstractCollectionMigrator::topLevelFolder() const
   return d->mTopLevelFolder;
 }
 
-void AbstractCollectionMigrator::setKMailConfig( KConfig *config )
+void AbstractCollectionMigrator::setKMailConfig( const KSharedConfigPtr &config )
 {
   d->mKMailConfig = config;
 }
 
-void AbstractCollectionMigrator::setEmailIdentityConfig( KConfig *config )
+void AbstractCollectionMigrator::setEmailIdentityConfig( const KSharedConfigPtr &config )
 {
   d->mEmailIdentityConfig = config;
 }
@@ -679,12 +691,12 @@ const AgentInstance AbstractCollectionMigrator::resource() const
   return d->mResource;
 }
 
-KConfig *AbstractCollectionMigrator::kmailConfig() const
+KSharedConfigPtr AbstractCollectionMigrator::kmailConfig() const
 {
   return d->mKMailConfig;
 }
 
-KConfig *AbstractCollectionMigrator::emailIdentityConfig() const
+KSharedConfigPtr AbstractCollectionMigrator::emailIdentityConfig() const
 {
   return d->mEmailIdentityConfig;
 }

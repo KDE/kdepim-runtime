@@ -24,10 +24,11 @@
 
 #include "kmigratorbase.h"
 
+#include <KSharedConfig>
+
 #include <QStringList>
 
 class AbstractCollectionMigrator;
-class KConfig;
 class KJob;
 class MixedMaildirStore;
 
@@ -94,8 +95,8 @@ class KMailMigrator : public KMigratorBase
     void evaluateCacheHandlingOptions();
 
   private:
-    KConfig *mConfig;
-    KConfig *mEmailIdentityConfig;
+    KSharedConfigPtr mConfig;
+    KSharedConfigPtr mEmailIdentityConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
     QString mLocalMaildirPath;
@@ -107,6 +108,8 @@ class KMailMigrator : public KMigratorBase
     MixedMaildirStore *mImapCache;
     int mRunningCacheImporterCount;
     bool mLocalFoldersDone;
+
+    QList<Akonadi::AgentInstance> mFailedInstances;
 };
 
 } // namespace KMail

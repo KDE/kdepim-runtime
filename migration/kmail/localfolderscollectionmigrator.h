@@ -30,7 +30,7 @@ class LocalFoldersCollectionMigrator : public AbstractCollectionMigrator
   public:
     explicit LocalFoldersCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
 
-    void setKMailConfig( KConfig *config );
+    void setKMailConfig( const KSharedConfigPtr &config );
 
     ~LocalFoldersCollectionMigrator();
 
