@@ -138,7 +138,7 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
       return false;
     }
   } else {
-    cancelTask( "Unknown type of message" );
+    cancelTask( i18n( "Unknown type of message" ) );
     return false;
   }
   
@@ -1592,7 +1592,7 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
     if ( folderProperties.size() ) {
       contentType = (const char*) *folderProperties.begin();
     } else {
-      cancelTask( "Error: Did not get folder type for folder id " + QString::number( folderPtr->get_id() )  );
+      cancelTask( i18n( "Error: Did not get folder type for folder id %1", folderPtr->get_id() )  );
       return;
     }
   }
