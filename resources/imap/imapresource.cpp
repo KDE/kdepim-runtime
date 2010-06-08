@@ -1166,6 +1166,9 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
       }
     }
 
+    if ( ids.isEmpty() )
+      triggerNextCollectionChangeJob( collection, parts );
+
     for ( int i = 0; i < ids.size(); i++ ) {
       const QByteArray id = ids[i];
 
