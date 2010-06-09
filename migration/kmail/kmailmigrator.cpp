@@ -506,12 +506,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
-  const int checkInterval = config.readEntry( "check-interval", 0 );
-  if ( checkInterval == 0 )
-    iface->setIntervalCheckTime( -1 ); //exclude
-  else
-    iface->setIntervalCheckTime( checkInterval );
-  //TODO check-exclude: this element exclude manual check not implemented in akonadi yet
+  // skip interval checking so it doesn't interfere with cache importing
+  iface->setIntervalCheckTime( -1 ); //exclude
 
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
@@ -648,8 +644,6 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     iface->setIntervalCheckEnabled( true );
     iface->setIntervalCheckInterval( checkInterval );
   }
-  //TODO check-exclude: not implemented in akonadi yet
-
 
   // Akonadi kmail uses enums for storing auth options
   // so we have to convert from the old string representations
@@ -903,6 +897,23 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   kDebug() << "imapMigrationFinished: instance=" << instance.identifier()
            << "error=" << error;
   if ( error.isEmpty() ) {
+    OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
+      "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+      "/Settings", QDBusConnection::sessionBus(), this );
+
+    if (!iface->isValid() ) {
+      migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+      return;
+    }
+
+    // enable interval checking in case this had been configured
+    const KConfigGroup config( mConfig, mCurrentAccount );
+    const int checkInterval = config.readEntry( "check-interval", 0 );
+    if ( checkInterval != 0 ) {
+      iface->setIntervalCheckTime( checkInterval );
+      instance.reconfigure();
+    }
+
     migrationCompleted( instance );
   } else {
     migrationFailed( error, instance );
