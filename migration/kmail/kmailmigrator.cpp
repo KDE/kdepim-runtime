@@ -916,6 +916,7 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
     const KConfigGroup config( mConfig, mCurrentAccount );
     const int checkInterval = config.readEntry( "check-interval", 0 );
     if ( checkInterval != 0 ) {
+      iface->setIntervalCheckEnabled( true );
       iface->setIntervalCheckTime( checkInterval );
       instance.reconfigure();
     }
