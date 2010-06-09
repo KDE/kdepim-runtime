@@ -27,6 +27,7 @@
 #include <KSharedConfig>
 
 #include <QStringList>
+#include <QHash>
 
 class AbstractCollectionMigrator;
 class KJob;
@@ -98,6 +99,7 @@ class KMailMigrator : public KMigratorBase
     void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
 
     void evaluateCacheHandlingOptions();
+    void migrateInstanceTrashFolder();
 
     void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,
                           const QString &newFolder );
@@ -118,6 +120,12 @@ class KMailMigrator : public KMigratorBase
     int mRunningCacheImporterCount;
     bool mLocalFoldersDone;
 
+    struct AccountConfig {
+      AccountConfig() : imapAccount( false ){ }
+      Akonadi::AgentInstance instance;
+      bool imapAccount;
+    };
+    QHash<QString, AccountConfig> mAccountInstance;
     QList<Akonadi::AgentInstance> mFailedInstances;
 };
 
