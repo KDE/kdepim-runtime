@@ -1575,18 +1575,21 @@ void ImapResource::onSelectDone( KJob *job )
   }
 
   Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+  bool modifyNeeded = false;
 
   // Get the current uid validity value and store it
   int oldUidValidity = 0;
   if ( !collection.hasAttribute( "uidvalidity" ) ) {
     UidValidityAttribute* currentUidValidity  = new UidValidityAttribute( uidValidity );
     collection.addAttribute( currentUidValidity );
+    modifyNeeded = true;
   } else {
     UidValidityAttribute* currentUidValidity =
       static_cast<UidValidityAttribute*>( collection.attribute( "uidvalidity" ) );
     oldUidValidity = currentUidValidity->uidValidity();
     if ( oldUidValidity != uidValidity ) {
       currentUidValidity->setUidValidity( uidValidity );
+      modifyNeeded = true;
     }
   }
 
@@ -1595,12 +1598,14 @@ void ImapResource::onSelectDone( KJob *job )
   if ( !collection.hasAttribute( "uidnext" ) ) {
     UidNextAttribute* currentNextUid  = new UidNextAttribute( nextUid );
     collection.addAttribute( currentNextUid );
+    modifyNeeded = true;
   } else {
     UidNextAttribute* currentNextUid =
       static_cast<UidNextAttribute*>( collection.attribute( "uidnext" ) );
     oldNextUid = currentNextUid->uidNext();
     if ( oldNextUid != nextUid ) {
       currentNextUid->setUidNext( nextUid );
+      modifyNeeded = true;
     }
   }
 
@@ -1608,16 +1613,19 @@ void ImapResource::onSelectDone( KJob *job )
   if ( !collection.hasAttribute( "collectionflags" ) ) {
     CollectionFlagsAttribute *flagsAttribute  = new CollectionFlagsAttribute( flags );
     collection.addAttribute( flagsAttribute );
+    modifyNeeded = true;
   } else {
     CollectionFlagsAttribute *flagsAttribute =
       static_cast<CollectionFlagsAttribute*>( collection.attribute( "collectionflags" ) );
     const QList<QByteArray> oldFlags = flagsAttribute->flags();
     if ( oldFlags != flags ) {
       flagsAttribute->setFlags( flags );
+      modifyNeeded = true;
     }
   }
 
-  new CollectionModifyJob( collection );
+  if ( modifyNeeded )
+    new CollectionModifyJob( collection );
 
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();
