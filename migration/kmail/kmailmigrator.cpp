@@ -580,8 +580,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( config.readEntry( "locally-subscribed-folders", false ) ) {
     collectionMigrator->setUnsubscribedImapFolders( config.readEntry( "locallyUnsubscribedFolders", QStringList() ) );
   }
-  mConfig.removeEntry( "locally-subscribed-folders" );
-  mConfig.removeEntry( "locallyUnsubscribedFolders" );
+  config.deleteEntry( "locally-subscribed-folders" );
+  config.deleteEntry( "locallyUnsubscribedFolders" );
 
   if ( disconnected ) {
     ImapCacheLocalImporter *cacheImporter = new ImapCacheLocalImporter( store, this );
