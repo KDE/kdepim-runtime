@@ -679,8 +679,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionFetchJob *job )
   const FolderType folderType = folderForCollection( job->collection(), path, errorText );
 
   if ( folderType == InvalidFolder ) {
-    errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder",
-                       path );
     kError() << errorText << "collection:" << job->collection();
     q->notifyError( FileStore::Job::InvalidJobContext, errorText );
     return false;
@@ -1061,8 +1059,6 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
   const FolderType folderType = folderForCollection( collection, path, errorText );
 
   if ( folderType == InvalidFolder ) {
-    errorText = i18nc( "@info:status", "Folder %1 does not seem to be a valid email folder",
-                       path );
     kError() << errorText << "collection:" << job->collection();
     q->notifyError( FileStore::Job::InvalidJobContext, errorText );
     return false;
