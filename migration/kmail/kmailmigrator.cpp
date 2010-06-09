@@ -986,12 +986,16 @@ void KMailMigrator::imapCacheImportFinished( const Akonadi::AgentInstance &insta
     --mRunningCacheImporterCount;
 
     emit message( Error, error );
-  } else if ( mDeleteCacheAfterImport ) {
+  } else {
+    if ( mDeleteCacheAfterImport ) {
       EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( instance, this );
       cleaner->setCleaningOptions( EmptyResourceCleaner::DeleteEmptyCollections |
                                    EmptyResourceCleaner::DeleteEmptyResource );
      connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
               SLOT( imapCacheCleanupFinished( Akonadi::AgentInstance ) ) );
+    } else {
+      --mRunningCacheImporterCount;
+    }
   }
 
   if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
