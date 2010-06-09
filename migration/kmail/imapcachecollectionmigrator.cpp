@@ -48,6 +48,7 @@
 #include <KStandardDirs>
 
 #include <QFileInfo>
+#include <QSet>
 #include <QVariant>
 
 using namespace Akonadi;
@@ -75,6 +76,8 @@ class ImapCacheCollectionMigrator::Private
 
     Collection cacheCollection( const Collection &collection ) const;
 
+    bool isUnsubscribedImapFolder( const Collection &collection, QString &idPath ) const;
+
   public:
     MixedMaildirStore *mStore;
 
@@ -95,6 +98,8 @@ class ImapCacheCollectionMigrator::Private
     QHash<QString, QVariant> mTagListHash;
 
     int mItemProgress;
+
+    QSet<QString> mUnsubscribedImapFolders;
 
   public: // slots
     void fetchItemsResult( KJob *job );
@@ -122,6 +127,20 @@ Collection ImapCacheCollectionMigrator::Private::cacheCollection( const Collecti
   cache.setRemoteId( remoteId );
   cache.setParentCollection( cacheCollection( collection.parentCollection() ) );
   return cache;
+}
+
+bool ImapCacheCollectionMigrator::Private::isUnsubscribedImapFolder( const Collection &collection, QString &idPath ) const
+{
+  if ( collection.parentCollection() == Collection::root() ) {
+    idPath = QString();
+    return false;
+  }
+
+  bool parentResult = isUnsubscribedImapFolder( collection.parentCollection(), idPath );
+
+  idPath = idPath + collection.remoteId();
+
+  return parentResult || mUnsubscribedImapFolders.contains( idPath );
 }
 
 void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
@@ -426,8 +445,33 @@ ImapCacheCollectionMigrator::MigrationOptions ImapCacheCollectionMigrator::migra
   return options;
 }
 
+void ImapCacheCollectionMigrator::setUnsubscribedImapFolders( const QStringList &imapFolders )
+{
+  d->mUnsubscribedImapFolders.clear();
+  Q_FOREACH( const QString imapFolder, imapFolders ) {
+    if ( imapFolder.endsWith( QLatin1Char( '/' ) ) ) {
+      d->mUnsubscribedImapFolders << imapFolder.left( imapFolder.size() - 1 );
+    } else {
+      d->mUnsubscribedImapFolders << imapFolder;
+    }
+  }
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "unsubscribed imap folders:" << d->mUnsubscribedImapFolders;
+}
+
 void ImapCacheCollectionMigrator::migrateCollection( const Collection &collection, const QString &folderId )
 {
+  QString imapIdPath;
+  if ( d->isUnsubscribedImapFolder( collection, imapIdPath ) ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Collection id=" << collection.id()
+      << ", remoteId=" << collection.remoteId() << ", imapIdPath=" << imapIdPath
+      << "is locally unsubscribed";
+
+    // TODO unsubscribe
+    emit status( QString() );
+    collectionProcessed();
+    return;
+  }
+
   if ( migrationOptions() == ConfigOnly ) {
     emit status( QString() );
     collectionProcessed();

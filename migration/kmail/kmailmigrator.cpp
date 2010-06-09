@@ -465,7 +465,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 {
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   mCurrentInstance = instance;
-  const KConfigGroup config( mConfig, mCurrentAccount );
+  KConfigGroup config( mConfig, mCurrentAccount );
 
   OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
@@ -576,6 +576,12 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   collectionMigrator->setTopLevelFolder( topLevelFolder );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
+
+  if ( config.readEntry( "locally-subscribed-folders", false ) ) {
+    collectionMigrator->setUnsubscribedImapFolders( config.readEntry( "locallyUnsubscribedFolders", QStringList() ) );
+  }
+  mConfig.removeEntry( "locally-subscribed-folders" );
+  mConfig.removeEntry( "locallyUnsubscribedFolders" );
 
   if ( disconnected ) {
     ImapCacheLocalImporter *cacheImporter = new ImapCacheLocalImporter( store, this );

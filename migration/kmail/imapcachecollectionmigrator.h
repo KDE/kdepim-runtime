@@ -49,6 +49,8 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     MigrationOptions migrationOptions() const;
 
+    void setUnsubscribedImapFolders( const QStringList &imapFolders );
+
   protected:
     void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
 
