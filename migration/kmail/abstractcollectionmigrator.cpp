@@ -123,7 +123,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   if ( mCurrentFolderId.isEmpty() || !mCurrentCollection.isValid() ) {
     return;
   }
-
 //   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "migrating config for folderId" << mCurrentFolderId
 //                                    << "to collectionId" << mCurrentCollection.id();
 
@@ -132,7 +131,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   if ( mKMailConfig->hasGroup( folderGroupPattern.arg( mCurrentFolderId ) ) ) {
     KConfigGroup oldGroup( mKMailConfig, folderGroupPattern.arg( mCurrentFolderId ) );
     KConfigGroup newGroup( mKMailConfig, folderGroupPattern.arg( mCurrentCollection.id() ) );
-
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
     if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
@@ -337,6 +335,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   const QString groupSortingPattern = QLatin1String( "%1GroupSorting" );
   const QString messageSortDirectionPattern = QLatin1String( "%1MessageSortDirection" );
   const QString messageSortingPattern = QLatin1String( "%1MessageSorting" );
+
+  if ( sortOrderGroup.hasKey( groupSortDirectionPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = sortOrderGroup.readEntry( groupSortDirectionPattern.arg( mCurrentFolderId ) );
+    sortOrderGroup.writeEntry( groupSortDirectionPattern.arg( mCurrentCollection.id()), value );
+    sortOrderGroup.deleteEntry( groupSortDirectionPattern.arg( mCurrentFolderId ) );
+  }
 
   if ( sortOrderGroup.hasKey( groupSortingPattern.arg( mCurrentFolderId ) ) ) {
     const QString value = sortOrderGroup.readEntry( groupSortingPattern.arg( mCurrentFolderId ) );
