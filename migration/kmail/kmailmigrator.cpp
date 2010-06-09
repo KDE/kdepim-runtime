@@ -301,6 +301,7 @@ void KMailMigrator::migrateLocalFolders()
 
   KConfigGroup cfgGroup( mConfig, "General" );
   cfgGroup.deleteEntry( "QuotaUnit" );
+  cfgGroup.deleteEntry( "default-mailbox-format" );
   mConfig->sync();
   const QString localMaildirDefaultPath = KStandardDirs::locateLocal( "data", QLatin1String( "kmail/mail" ) );
   mLocalMaildirPath = cfgGroup.readPathEntry( "folders", localMaildirDefaultPath );
