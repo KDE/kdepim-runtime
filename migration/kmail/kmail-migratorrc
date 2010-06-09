@@ -6,6 +6,6 @@ TargetVersion=1
 TakeOverIfDefaultIsTotallyEmpty=true
 
 [Disconnected IMAP]
-ImportNewMessages=true
+ImportNewMessages=false
 ImportCachedMessages=true
 RemoveDeletedMessages=false

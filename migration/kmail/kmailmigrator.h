@@ -32,6 +32,11 @@ class AbstractCollectionMigrator;
 class KJob;
 class MixedMaildirStore;
 
+namespace KWallet
+{
+  class Wallet;
+}
+
 namespace KMail
 {
 
@@ -94,7 +99,11 @@ class KMailMigrator : public KMigratorBase
 
     void evaluateCacheHandlingOptions();
 
+    void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,
+                          const QString &newFolder );
+
   private:
+    KWallet::Wallet *mWallet;
     KSharedConfigPtr mConfig;
     KSharedConfigPtr mEmailIdentityConfig;
     QString mCurrentAccount;

@@ -68,22 +68,6 @@ using namespace KMail;
    changing too. */
 enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
-static void migratePassword( const QString &idString, const AgentInstance &instance,
-                             const QString &newFolder )
-{
-  QString password;
-  Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
-  if ( wallet && wallet->isOpen() && wallet->hasFolder( "kmail" ) ) {
-    wallet->setFolder( "kmail" );
-    wallet->readPassword( "account-" + idString, password );
-    if ( !wallet->hasFolder( newFolder ) )
-      wallet->createFolder( newFolder );
-    wallet->setFolder( newFolder );
-    wallet->writePassword( instance.identifier() + "rc" , password );
-  }
-  delete wallet;
-}
-
 static MixedMaildirStore *createCacheStore( const QString &basePath )
 {
   MixedMaildirStore *store = 0;
@@ -99,6 +83,7 @@ static MixedMaildirStore *createCacheStore( const QString &basePath )
 
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
+  mWallet( 0 ),
   mDeleteCacheAfterImport( false ),
   mDImapCache( 0 ),
   mImapCache( 0 ),
@@ -113,6 +98,7 @@ KMailMigrator::KMailMigrator() :
 
 KMailMigrator::~KMailMigrator()
 {
+  delete mWallet;
   delete mDImapCache;
   delete mImapCache;
 }
@@ -402,6 +388,23 @@ void KMailMigrator::evaluateCacheHandlingOptions()
   }
 }
 
+
+void KMailMigrator::migratePassword( const QString &idString, const AgentInstance &instance,
+                                     const QString &newFolder )
+{
+  QString password;
+  if ( mWallet == 0 ) {
+    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
+  }
+  if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "kmail" ) ) {
+    mWallet->setFolder( "kmail" );
+    mWallet->readPassword( "account-" + idString, password );
+    if ( !mWallet->hasFolder( newFolder ) )
+      mWallet->createFolder( newFolder );
+    mWallet->setFolder( newFolder );
+    mWallet->writePassword( instance.identifier() + "rc" , password );
+  }
+}
 
 bool KMailMigrator::migrateCurrentAccount()
 {
