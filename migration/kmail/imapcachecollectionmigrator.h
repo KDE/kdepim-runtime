@@ -69,6 +69,8 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
     Q_PRIVATE_SLOT( d, void itemDeletePhase1Result( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemDeletePhase2Result( KJob* ) )
     Q_PRIVATE_SLOT( d, void cacheItemDeleteResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void unsubscribeCollections() )
+    Q_PRIVATE_SLOT( d, void unsubscribeCollectionsResult( KJob* ) )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( ImapCacheCollectionMigrator::MigrationOptions )

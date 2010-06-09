@@ -24,6 +24,7 @@
 
 #include "libmaildir/maildir.h"
 #include "mixedmaildirstore.h"
+#include "subscriptionjob_p.h"
 
 #include "filestore/itemfetchjob.h"
 #include "filestore/itemdeletejob.h"
@@ -100,6 +101,7 @@ class ImapCacheCollectionMigrator::Private
     int mItemProgress;
 
     QSet<QString> mUnsubscribedImapFolders;
+    Collection::List mUnsubscribedCollections;
 
   public: // slots
     void fetchItemsResult( KJob *job );
@@ -110,6 +112,8 @@ class ImapCacheCollectionMigrator::Private
     void itemDeletePhase1Result( KJob *job );
     void itemDeletePhase2Result( KJob *job );
     void cacheItemDeleteResult( KJob *job );
+    void unsubscribeCollections();
+    void unsubscribeCollectionsResult( KJob *job );
 };
 
 Collection ImapCacheCollectionMigrator::Private::cacheCollection( const Collection &collection ) const
@@ -408,10 +412,34 @@ void ImapCacheCollectionMigrator::Private::cacheItemDeleteResult( KJob *job )
   processNextItem();
 }
 
+void ImapCacheCollectionMigrator::Private::unsubscribeCollections()
+{
+  if ( !mUnsubscribedCollections.isEmpty() ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Locally Unsubscribe" << mUnsubscribedCollections.count() << "collections";
+
+    SubscriptionJob *job = new SubscriptionJob( q );
+    job->unsubscribe( mUnsubscribedCollections );
+    QObject::connect( job, SIGNAL( result( KJob* ) ), q, SLOT( unsubscribeCollectionsResult( KJob * ) ) );
+  }
+}
+
+void ImapCacheCollectionMigrator::Private::unsubscribeCollectionsResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    kError() << "Unsubscribing of " << mUnsubscribedCollections.count() << "collections failed:"
+             << job->error();
+  } else {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Unsubscribing of " << mUnsubscribedCollections.count() << "collections succeeded";
+  }
+}
+
 ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
   : AbstractCollectionMigrator( resource, parent ), d( new Private( this, store ) )
 {
   d->mHiddenSession = new Session( resource.identifier().toAscii() );
+
+  connect( this, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+           SLOT( unsubscribeCollections() ) );
 }
 
 ImapCacheCollectionMigrator::~ImapCacheCollectionMigrator()
@@ -466,7 +494,11 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
       << ", remoteId=" << collection.remoteId() << ", imapIdPath=" << imapIdPath
       << "is locally unsubscribed";
 
-    // TODO unsubscribe
+    // could check if this very collection is one of the unsubscribed using imapIdPath.
+    // however, KMail treats subfolders of unsubscribed folders as unsubscribed as well
+    // so unsubscribe the too. otherwise their contents get downloaded on first interval check
+    d->mUnsubscribedCollections << collection;
+
     emit status( QString() );
     collectionProcessed();
     return;
