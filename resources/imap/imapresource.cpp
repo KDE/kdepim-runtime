@@ -330,8 +330,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
   Item item = job->property( "akonadiItem" ).value<Item>();
 
   if ( append->error() ) {
-    emit error( append->errorString() );
-    deferTask();
+    cancelTask( append->errorString() );
     return;
   }
 
@@ -433,7 +432,8 @@ void ImapResource::onStoreFlagsDone( KJob *job )
   KIMAP::StoreJob *store = qobject_cast<KIMAP::StoreJob*>( job );
 
   if ( store->error() ) {
-    deferTask();
+    cancelTask( store->errorString() );
+    return;
   }
 
   Item item = job->property( "akonadiItem" ).value<Item>();
@@ -1165,6 +1165,9 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
         job->start();
       }
     }
+
+    if ( ids.isEmpty() )
+      triggerNextCollectionChangeJob( collection, parts );
 
     for ( int i = 0; i < ids.size(); i++ ) {
       const QByteArray id = ids[i];
