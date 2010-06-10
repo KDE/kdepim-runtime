@@ -647,6 +647,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   config.deleteEntry( "locally-subscribed-folders" );
   config.deleteEntry( "locallyUnsubscribedFolders" );
 
+  config.deleteEntry( "capabilities" );
+
   if ( disconnected ) {
     ImapCacheLocalImporter *cacheImporter = new ImapCacheLocalImporter( store, this );
     cacheImporter->setTopLevelFolder( collectionMigrator->topLevelFolder() );
