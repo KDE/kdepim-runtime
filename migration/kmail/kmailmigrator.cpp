@@ -68,22 +68,6 @@ using namespace KMail;
    changing too. */
 enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
-static void migratePassword( const QString &idString, const AgentInstance &instance,
-                             const QString &newFolder )
-{
-  QString password;
-  Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
-  if ( wallet && wallet->isOpen() && wallet->hasFolder( "kmail" ) ) {
-    wallet->setFolder( "kmail" );
-    wallet->readPassword( "account-" + idString, password );
-    if ( !wallet->hasFolder( newFolder ) )
-      wallet->createFolder( newFolder );
-    wallet->setFolder( newFolder );
-    wallet->writePassword( instance.identifier() + "rc" , password );
-  }
-  delete wallet;
-}
-
 static MixedMaildirStore *createCacheStore( const QString &basePath )
 {
   MixedMaildirStore *store = 0;
@@ -99,6 +83,7 @@ static MixedMaildirStore *createCacheStore( const QString &basePath )
 
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
+  mWallet( 0 ),
   mDeleteCacheAfterImport( false ),
   mDImapCache( 0 ),
   mImapCache( 0 ),
@@ -113,6 +98,7 @@ KMailMigrator::KMailMigrator() :
 
 KMailMigrator::~KMailMigrator()
 {
+  delete mWallet;
   delete mDImapCache;
   delete mImapCache;
 }
@@ -299,7 +285,10 @@ void KMailMigrator::migrateLocalFolders()
     return;
   }
 
-  const KConfigGroup cfgGroup( mConfig, "General" );
+  KConfigGroup cfgGroup( mConfig, "General" );
+  cfgGroup.deleteEntry( "QuotaUnit" );
+  cfgGroup.deleteEntry( "default-mailbox-format" );
+  mConfig->sync();
   const QString localMaildirDefaultPath = KStandardDirs::locateLocal( "data", QLatin1String( "kmail/mail" ) );
   mLocalMaildirPath = cfgGroup.readPathEntry( "folders", localMaildirDefaultPath );
   const QFileInfo fileInfo( mLocalMaildirPath );
@@ -322,6 +311,8 @@ void KMailMigrator::migrationDone()
 {
   emit message( Info, i18n( "Migration successfully completed." ) );
 
+  migrateInstanceTrashFolder();
+
   mConfig->sync();
   kDebug() << "Deleting" << mFailedInstances.count() << "failed resource instances";
   Q_FOREACH( const AgentInstance &instance, mFailedInstances ) {
@@ -330,6 +321,64 @@ void KMailMigrator::migrationDone()
     }
   }
   deleteLater();
+}
+
+OrgKdeAkonadiImapSettingsInterface* KMailMigrator::createImapSettingsInterface( const Akonadi::AgentInstance& instance )
+{
+  OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
+    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+    "/Settings", QDBusConnection::sessionBus(), this );
+  if (!iface->isValid() ) {
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    return 0;
+  }
+  return iface;
+}
+
+OrgKdeAkonadiPOP3SettingsInterface* KMailMigrator::createPop3SettingsInterface( const Akonadi::AgentInstance& instance )
+{
+  OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
+    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+    "/Settings", QDBusConnection::sessionBus(), this );
+  if ( !iface->isValid() ) {
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
+    return 0;
+  }
+  return iface;
+}
+
+
+void KMailMigrator::migrateInstanceTrashFolder()
+{
+  mIt = mAccounts.begin();
+  while ( mIt != mAccounts.end() ) {
+    const QString accountName = *mIt;
+    const KConfigGroup group( mConfig, accountName );
+    if ( mAccountInstance.contains( accountName ) ) {
+      AccountConfig accountConf = mAccountInstance.value( accountName );
+      Akonadi::AgentInstance instance = accountConf.instance;
+      if ( accountConf.imapAccount ) { //Imap
+        OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
+        if ( iface ) {
+          qint64 value = group.readEntry( "trash", -1 );
+          if ( value != -1 ) {
+            iface->setTrashCollection( value );
+            instance.reconfigure();
+          }
+        }
+      } else { //Pop3
+        OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface( instance );
+        if ( iface ) {
+          qint64 value = group.readEntry( "Folder", -1 );
+          if ( value != -1 ) {
+            iface->setTargetCollection( value );
+            instance.reconfigure();
+          }
+        }
+      }
+    }
+    ++mIt;
+  }
 }
 
 void KMailMigrator::migrationFailed( const QString &errorMsg,
@@ -400,6 +449,23 @@ void KMailMigrator::evaluateCacheHandlingOptions()
 }
 
 
+void KMailMigrator::migratePassword( const QString &idString, const AgentInstance &instance,
+                                     const QString &newFolder )
+{
+  QString password;
+  if ( mWallet == 0 ) {
+    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
+  }
+  if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "kmail" ) ) {
+    mWallet->setFolder( "kmail" );
+    mWallet->readPassword( "account-" + idString, password );
+    if ( !mWallet->hasFolder( newFolder ) )
+      mWallet->createFolder( newFolder );
+    mWallet->setFolder( newFolder );
+    mWallet->writePassword( instance.identifier() + "rc" , password );
+  }
+}
+
 bool KMailMigrator::migrateCurrentAccount()
 {
   if ( mCurrentAccount.isEmpty() )
@@ -462,16 +528,17 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 {
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   mCurrentInstance = instance;
-  const KConfigGroup config( mConfig, mCurrentAccount );
+  KConfigGroup config( mConfig, mCurrentAccount );
 
-  OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), this );
-
-  if (!iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+  OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
+  if (!iface ) {
     return;
   }
+
+  AccountConfig conf;
+  conf.instance = instance;
+  conf.imapAccount = true;
+  mAccountInstance.insert( mCurrentAccount, conf );
 
   iface->setImapServer( config.readEntry( "host" ) );
   iface->setImapPort( config.readEntry( "port", 143 ) );
@@ -503,12 +570,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
     iface->setSubscriptionEnabled( true );
 
-  const int checkInterval = config.readEntry( "check-interval", 0 );
-  if ( checkInterval == 0 )
-    iface->setIntervalCheckTime( -1 ); //exclude
-  else
-    iface->setIntervalCheckTime( checkInterval );
-  //TODO check-exclude: this element exclude manual check not implemented in akonadi yet
+  // skip interval checking so it doesn't interfere with cache importing
+  iface->setIntervalCheckTime( -1 ); //exclude
 
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
@@ -578,6 +641,14 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
 
+  if ( config.readEntry( "locally-subscribed-folders", false ) ) {
+    collectionMigrator->setUnsubscribedImapFolders( config.readEntry( "locallyUnsubscribedFolders", QStringList() ) );
+  }
+  config.deleteEntry( "locally-subscribed-folders" );
+  config.deleteEntry( "locallyUnsubscribedFolders" );
+
+  config.deleteEntry( "capabilities" );
+
   if ( disconnected ) {
     ImapCacheLocalImporter *cacheImporter = new ImapCacheLocalImporter( store, this );
     cacheImporter->setTopLevelFolder( collectionMigrator->topLevelFolder() );
@@ -608,14 +679,15 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   mCurrentInstance = instance;
   KConfigGroup config( mConfig, mCurrentAccount );
 
-  OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), this );
-
-  if ( !iface->isValid() ) {
-    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
+  OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface( instance );
+  if ( !iface ) {
     return;
   }
+
+  AccountConfig conf;
+  conf.instance = instance;
+  conf.imapAccount = false;
+  mAccountInstance.insert( mCurrentAccount, conf );
 
   iface->setHost( config.readEntry( "host", QString() ) );
   iface->setPort( config.readEntry( "port", 110u ) );
@@ -645,8 +717,6 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     iface->setIntervalCheckEnabled( true );
     iface->setIntervalCheckInterval( checkInterval );
   }
-  //TODO check-exclude: not implemented in akonadi yet
-
 
   // Akonadi kmail uses enums for storing auth options
   // so we have to convert from the old string representations
@@ -900,6 +970,20 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   kDebug() << "imapMigrationFinished: instance=" << instance.identifier()
            << "error=" << error;
   if ( error.isEmpty() ) {
+    OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
+    if (!iface) {
+      return;
+    }
+
+    // enable interval checking in case this had been configured
+    const KConfigGroup config( mConfig, mCurrentAccount );
+    const int checkInterval = config.readEntry( "check-interval", 0 );
+    if ( checkInterval != 0 ) {
+      iface->setIntervalCheckEnabled( true );
+      iface->setIntervalCheckTime( checkInterval );
+      instance.reconfigure();
+    }
+
     migrationCompleted( instance );
   } else {
     migrationFailed( error, instance );
@@ -972,12 +1056,16 @@ void KMailMigrator::imapCacheImportFinished( const Akonadi::AgentInstance &insta
     --mRunningCacheImporterCount;
 
     emit message( Error, error );
-  } else if ( mDeleteCacheAfterImport ) {
+  } else {
+    if ( mDeleteCacheAfterImport ) {
       EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( instance, this );
       cleaner->setCleaningOptions( EmptyResourceCleaner::DeleteEmptyCollections |
                                    EmptyResourceCleaner::DeleteEmptyResource );
      connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
               SLOT( imapCacheCleanupFinished( Akonadi::AgentInstance ) ) );
+    } else {
+      --mRunningCacheImporterCount;
+    }
   }
 
   if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {

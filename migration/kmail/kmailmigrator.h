@@ -27,10 +27,18 @@
 #include <KSharedConfig>
 
 #include <QStringList>
+#include <QHash>
 
 class AbstractCollectionMigrator;
 class KJob;
 class MixedMaildirStore;
+class OrgKdeAkonadiImapSettingsInterface;
+class OrgKdeAkonadiPOP3SettingsInterface;
+
+namespace KWallet
+{
+  class Wallet;
+}
 
 namespace KMail
 {
@@ -93,8 +101,15 @@ class KMailMigrator : public KMigratorBase
     void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
 
     void evaluateCacheHandlingOptions();
+    void migrateInstanceTrashFolder();
+
+    void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,
+                          const QString &newFolder );
+    OrgKdeAkonadiImapSettingsInterface* createImapSettingsInterface( const Akonadi::AgentInstance& instance );
+    OrgKdeAkonadiPOP3SettingsInterface* createPop3SettingsInterface( const Akonadi::AgentInstance& instance );
 
   private:
+    KWallet::Wallet *mWallet;
     KSharedConfigPtr mConfig;
     KSharedConfigPtr mEmailIdentityConfig;
     QString mCurrentAccount;
@@ -109,6 +124,12 @@ class KMailMigrator : public KMigratorBase
     int mRunningCacheImporterCount;
     bool mLocalFoldersDone;
 
+    struct AccountConfig {
+      AccountConfig() : imapAccount( false ){ }
+      Akonadi::AgentInstance instance;
+      bool imapAccount;
+    };
+    QHash<QString, AccountConfig> mAccountInstance;
     QList<Akonadi::AgentInstance> mFailedInstances;
 };
 
