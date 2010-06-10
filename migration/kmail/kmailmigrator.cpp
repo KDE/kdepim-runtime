@@ -591,6 +591,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
   const KConfigGroup generalGroup( mConfig, "General" );
   resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+  resourceGroup.writeEntry( "OfflineOnShutdown", true );
 
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
@@ -744,7 +745,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
   const KConfigGroup generalGroup( mConfig, "General" );
   resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
-
+  resourceGroup.writeEntry( "OfflineOnShutdown", true );
 
   // Akonadi kmail uses enums for storing auth options
   // so we have to convert from the old string representations
@@ -830,6 +831,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
   const KConfigGroup generalGroup( mConfig, "General" );
   resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+  resourceGroup.writeEntry( "OfflineOnShutdown", false );
 
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
@@ -877,6 +879,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
   const KConfigGroup generalGroup( mConfig, "General" );
   resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+  resourceGroup.writeEntry( "OfflineOnShutdown", false );
 
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry( "trash" );
@@ -923,6 +926,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   resourceGroup.writeEntry( "IncludeInManualChecks", false );
   // do not synchronize on startup
   resourceGroup.writeEntry( "CheckOnStartup", false );
+  resourceGroup.writeEntry( "OfflineOnShutdown", false );
 
   KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
   KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
