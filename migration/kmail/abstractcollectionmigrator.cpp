@@ -205,12 +205,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
         KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
         if ( newFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
-          int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
+          const int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
           favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
         }
 
         if ( newFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
-          bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
+          const bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
           favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
         }
       }
