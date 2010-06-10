@@ -492,10 +492,24 @@ void AbstractCollectionMigrator::Private::processNextCollection()
   }
 
   if ( mCollectionQueue.isEmpty() ) {
+    mStatus = Idle;
+
+    if ( mExplicitFetchStatus == Finished ) {
+      processingDone();
+      return;
+    }
+
+    if ( mExplicitFetchStatus == Idle ) {
+      // TODO should explicitly create fetch job instead of tricking recheckIdleResource()
+      // into doing it
+      mExplicitFetchStatus = Waiting;
+      recheckIdleResource();
+      return;
+    }
+
     if ( mResource.status() == AgentInstance::Idle && mExplicitFetchStatus != Running ) {
       processingDone();
-    } else {
-      mStatus = Idle;
+      return;
     }
   } else {
     mStatus = Running;
