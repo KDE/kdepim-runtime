@@ -88,7 +88,8 @@ KMailMigrator::KMailMigrator() :
   mDImapCache( 0 ),
   mImapCache( 0 ),
   mRunningCacheImporterCount( 0 ),
-  mLocalFoldersDone( false )
+  mLocalFoldersDone( false ),
+  mForwardResourceNotifications( false )
 {
   connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
            this, SLOT( instanceStatusChanged( Akonadi::AgentInstance ) ) );
@@ -419,6 +420,12 @@ void KMailMigrator::connectCollectionMigrator( AbstractCollectionMigrator *migra
   connect( migrator, SIGNAL( progress( int, int, int ) ), SIGNAL ( progress( int, int, int ) ) );
   connect( migrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            this, SLOT( collectionMigratorFinished() ) );
+  connect( migrator, SIGNAL( status( QString ) ),
+           SLOT ( collectionMigratorEmittedNotification() ) );
+  connect( migrator, SIGNAL( progress( int ) ),
+           SLOT ( collectionMigratorEmittedNotification() ) );
+  connect( migrator, SIGNAL( progress( int, int, int ) ),
+           SLOT ( collectionMigratorEmittedNotification() ) );
 }
 
 void KMailMigrator::evaluateCacheHandlingOptions()
@@ -475,6 +482,9 @@ bool KMailMigrator::migrateCurrentAccount()
   const KConfigGroup group( mConfig, mCurrentAccount );
 
   emit message( Info, i18n( "Trying to migrate '%1' to resource...", group.readEntry( "Name" ) ) );
+
+  // show status/progress info of resources in our dialog
+  mForwardResourceNotifications = true;
 
   const QString type = group.readEntry( "Type" ).toLower();
   if ( type == "imap" ) {
@@ -1039,8 +1049,17 @@ void KMailMigrator::collectionMigratorFinished()
   emit status( QString() );
 }
 
+void KMailMigrator::collectionMigratorEmittedNotification()
+{
+  mForwardResourceNotifications = false;
+}
+
 void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
 {
+  if ( !mForwardResourceNotifications ) {
+    return;
+  }
+
   if ( instance.identifier() != mCurrentInstance.identifier() ) {
     return;
   }
@@ -1054,6 +1073,10 @@ void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
 
 void KMailMigrator::instanceProgressChanged( const AgentInstance &instance )
 {
+  if ( !mForwardResourceNotifications ) {
+    return;
+  }
+
   if ( instance.identifier() != mCurrentInstance.identifier() ) {
     return;
   }
