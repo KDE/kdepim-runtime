@@ -589,6 +589,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   // in manual checks. In KMail UI this is called "Include in manual checks"
   KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
   resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
 
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
@@ -740,6 +742,8 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   // in manual checks. In KMail UI this is called "Include in manual checks"
   KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
   resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
 
 
   // Akonadi kmail uses enums for storing auth options
@@ -820,6 +824,13 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   else if ( lockType == "none" )
     iface->setLockfileMethod( MboxNone );
 
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
   config.deleteEntry( "identity-id" );
@@ -859,6 +870,14 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   }
 
   iface->setPath( config.readEntry( "Location" ) );
+
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry( "trash" );
   config.deleteEntry( "identity-id" );
@@ -898,6 +917,12 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   }
 
   iface->setPath( mLocalMaildirPath );
+
+  // do not include KMail folders in manual checks by default
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", false );
+  // do not synchronize on startup
+  resourceGroup.writeEntry( "CheckOnStartup", false );
 
   KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
   KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
