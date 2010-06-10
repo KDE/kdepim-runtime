@@ -32,6 +32,8 @@
 class AbstractCollectionMigrator;
 class KJob;
 class MixedMaildirStore;
+class OrgKdeAkonadiImapSettingsInterface;
+class OrgKdeAkonadiPOP3SettingsInterface;
 
 namespace KWallet
 {
@@ -103,6 +105,8 @@ class KMailMigrator : public KMigratorBase
 
     void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,
                           const QString &newFolder );
+    OrgKdeAkonadiImapSettingsInterface* createImapSettingsInterface( const Akonadi::AgentInstance& instance );
+    OrgKdeAkonadiPOP3SettingsInterface* createPop3SettingsInterface( const Akonadi::AgentInstance& instance );
 
   private:
     KWallet::Wallet *mWallet;

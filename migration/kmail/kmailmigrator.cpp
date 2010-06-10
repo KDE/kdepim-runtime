@@ -323,6 +323,31 @@ void KMailMigrator::migrationDone()
   deleteLater();
 }
 
+OrgKdeAkonadiImapSettingsInterface* KMailMigrator::createImapSettingsInterface( const Akonadi::AgentInstance& instance )
+{
+  OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
+    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+    "/Settings", QDBusConnection::sessionBus(), this );
+  if (!iface->isValid() ) {
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    return 0;
+  }
+  return iface;
+}
+
+OrgKdeAkonadiPOP3SettingsInterface* KMailMigrator::createPop3SettingsInterface( const Akonadi::AgentInstance& instance )
+{
+  OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
+    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+    "/Settings", QDBusConnection::sessionBus(), this );
+  if ( !iface->isValid() ) {
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
+    return 0;
+  }
+  return iface;
+}
+
+
 void KMailMigrator::migrateInstanceTrashFolder()
 {
   mIt = mAccounts.begin();
@@ -333,12 +358,8 @@ void KMailMigrator::migrateInstanceTrashFolder()
       AccountConfig accountConf = mAccountInstance.value( accountName );
       Akonadi::AgentInstance instance = accountConf.instance;
       if ( accountConf.imapAccount ) { //Imap
-        OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
-          "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-          "/Settings", QDBusConnection::sessionBus(), this );
-        if (!iface->isValid() ) {
-          migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
-        } else {
+        OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
+        if ( iface ) {
           qint64 value = group.readEntry( "trash", -1 );
           if ( value != -1 ) {
             iface->setTrashCollection( value );
@@ -346,12 +367,8 @@ void KMailMigrator::migrateInstanceTrashFolder()
           }
         }
       } else { //Pop3
-        OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
-          "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-          "/Settings", QDBusConnection::sessionBus(), this );
-        if ( !iface->isValid() ) {
-          migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
-        } else {
+        OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface( instance );
+        if ( iface ) {
           qint64 value = group.readEntry( "Folder", -1 );
           if ( value != -1 ) {
             iface->setTargetCollection( value );
@@ -513,12 +530,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   mCurrentInstance = instance;
   KConfigGroup config( mConfig, mCurrentAccount );
 
-  OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), this );
-
-  if (!iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+  OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
+  if (!iface ) {
     return;
   }
 
@@ -664,12 +677,8 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   mCurrentInstance = instance;
   KConfigGroup config( mConfig, mCurrentAccount );
 
-  OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), this );
-
-  if ( !iface->isValid() ) {
-    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
+  OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface( instance );
+  if ( !iface ) {
     return;
   }
 
@@ -959,12 +968,8 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   kDebug() << "imapMigrationFinished: instance=" << instance.identifier()
            << "error=" << error;
   if ( error.isEmpty() ) {
-    OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
-      "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-      "/Settings", QDBusConnection::sessionBus(), this );
-
-    if (!iface->isValid() ) {
-      migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
+    if (!iface) {
       return;
     }
 
