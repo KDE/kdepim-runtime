@@ -65,7 +65,7 @@ class AbstractCollectionMigrator::Private
     };
 
     Private( AbstractCollectionMigrator *parent, const AgentInstance &resource )
-      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mMonitor( 0 ),
+      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mMonitor( 0 ),
         mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle ),
         mNeedModifyJob( false )
     {
@@ -81,7 +81,7 @@ class AbstractCollectionMigrator::Private
     QString mTopLevelFolder;
     KSharedConfigPtr mKMailConfig;
     KSharedConfigPtr mEmailIdentityConfig;
-
+    KSharedConfigPtr mKcmKmailSummaryConfig;
     Monitor *mMonitor;
 
     CollectionHash mCollectionsById;
@@ -241,6 +241,37 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
   }
 
+  // Check kcmkmailsummaryrc General/ActiveFolders
+  KConfigGroup kcmkmailsummary( mKcmKmailSummaryConfig, "General" );
+  if ( kcmkmailsummary.hasKey( "ActiveFolders" ) ) {
+    if ( !kcmkmailsummary.hasKey( "Role_CheckState" ) ) {
+      kcmkmailsummary.writeEntry( "Role_CheckState", kcmkmailsummary.readEntry( "ActiveFolders", QStringList() ) );
+      kcmkmailsummary.sync();
+    }
+
+    QStringList lstCollection = kcmkmailsummary.readEntry( "Role_CheckState", QStringList() );
+    QString visualPath( mCurrentFolderId );
+    visualPath.replace( ".directory", "" );
+    visualPath.replace( "/.", "/" );
+    if ( !visualPath.isEmpty() && ( visualPath.at( 0 ) == '.' ) )
+      visualPath.remove( 0, 1 ); //remove first "."
+
+    const QString localFolderPattern = QLatin1String( "/Local/%1" );
+    const QString imapFolderPattern = QLatin1String( "/%1" );
+    const QString newCollectionPattern = QLatin1String( "c%1" );
+    if ( lstCollection.contains( localFolderPattern.arg( visualPath ) ) ) {
+      const int pos = lstCollection.indexOf( localFolderPattern.arg( visualPath ) );
+      lstCollection.replace( pos, newCollectionPattern.arg( mCurrentCollection.id() ) );
+      lstCollection.insert( pos+1, "2" );
+      kcmkmailsummary.writeEntry( "Role_CheckState", lstCollection );
+    } else if ( lstCollection.contains( imapFolderPattern.arg( visualPath ) ) ) {
+      const int pos = lstCollection.indexOf( imapFolderPattern.arg( visualPath ) );
+      lstCollection.replace( pos, newCollectionPattern.arg( mCurrentCollection.id() ) );
+      lstCollection.insert( pos+1, "2" );
+
+      kcmkmailsummary.writeEntry( "Role_CheckState", lstCollection );
+    }
+  }
 
   // Check Composer/previous-fcc
   KConfigGroup composer( mKMailConfig, "Composer" );
@@ -270,8 +301,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
   // check all account folder
-  // TODO we mustn't modify kmailrc but we must modify akonadi_*_resource_*
-  // Need to fix it
   const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( "Account \\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
   Q_FOREACH( const QString &groupName, accountGroups ) {
@@ -655,6 +684,11 @@ void AbstractCollectionMigrator::setKMailConfig( const KSharedConfigPtr &config 
 void AbstractCollectionMigrator::setEmailIdentityConfig( const KSharedConfigPtr &config )
 {
   d->mEmailIdentityConfig = config;
+}
+
+void AbstractCollectionMigrator::setKcmKmailSummaryConfig( const KSharedConfigPtr& config )
+{
+  d->mKcmKmailSummaryConfig = config;
 }
 
 void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )

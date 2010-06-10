@@ -112,6 +112,7 @@ class KMailMigrator : public KMigratorBase
     KWallet::Wallet *mWallet;
     KSharedConfigPtr mConfig;
     KSharedConfigPtr mEmailIdentityConfig;
+    KSharedConfigPtr mKcmKmailSummaryConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
     QString mLocalMaildirPath;
