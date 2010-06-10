@@ -107,10 +107,17 @@ void MixedMaildirResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   }
 
+  bool fullSync = false;
+
   if ( dlg.exec() ) {
     const bool changeName = name().isEmpty() || name() == identifier() ||
                             name() == mStore->topLevelCollection().name();
+
+    const QString oldPath = mStore->path();
     mStore->setPath( Settings::self()->path() );
+
+    fullSync = oldPath != mStore->path();
+
     if ( changeName ) {
       setName( mStore->topLevelCollection().name() );
     }
@@ -120,7 +127,11 @@ void MixedMaildirResource::configure( WId windowId )
   }
 
   if ( ensureDirExists() ) {
-    synchronizeCollectionTree();
+    if ( fullSync ) {
+      synchronize();
+    } else {
+      synchronizeCollectionTree();
+    }
   }
 }
 
@@ -361,8 +372,14 @@ bool MixedMaildirResource::ensureSaneConfiguration()
 void MixedMaildirResource::reapplyConfiguration()
 {
   if ( ensureSaneConfiguration() && ensureDirExists() ) {
+    const QString oldPath = mStore->path();
     mStore->setPath( Settings::self()->path() );
-    synchronizeCollectionTree();
+
+    if ( oldPath != mStore->path() ) {
+      synchronize();
+    } else {
+      synchronizeCollectionTree();
+    }
   }
 }
 
