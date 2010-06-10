@@ -575,6 +575,11 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   // skip interval checking so it doesn't interfere with cache importing
   iface->setIntervalCheckTime( -1 ); //exclude
 
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
   iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
@@ -720,6 +725,12 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     iface->setIntervalCheckEnabled( true );
     iface->setIntervalCheckInterval( checkInterval );
   }
+
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+
 
   // Akonadi kmail uses enums for storing auth options
   // so we have to convert from the old string representations
