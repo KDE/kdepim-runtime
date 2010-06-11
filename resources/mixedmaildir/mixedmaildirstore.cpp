@@ -229,6 +229,11 @@ class MaildirContext
     {
     }
 
+    MaildirContext( const Maildir &md )
+      : mMaildir( md ), mIndexDataLoaded( false )
+    {
+    }
+
     QStringList entryList() const {
       return mMaildir.entryList();
     }
@@ -466,6 +471,11 @@ void MixedMaildirStore::Private::fillMaildirTreeDetails( const Maildir &md, cons
   Q_FOREACH( const QString &subFolder, maildirSubFolders ) {
     const Maildir subMd = md.subFolder( subFolder );
 
+    if ( !mMaildirs.contains( subMd.path() ) ) {
+      const MaildirPtr mdPtr = MaildirPtr( new MaildirContext( subMd ) );
+      mMaildirs.insert( subMd.path(), mdPtr );
+    }
+
     Collection col;
     col.setRemoteId( subFolder );
     col.setName( subFolder );
@@ -485,10 +495,18 @@ void MixedMaildirStore::Private::fillMaildirTreeDetails( const Maildir &md, cons
       continue;
     }
 
-    MBoxPtr mbox( new MBoxContext );
-    if ( mbox->load( fileInfo.absoluteFilePath() ) ) {
-      mMBoxes[ fileInfo.absoluteFilePath() ] = mbox; // insert or replace old one
+    const QString mboxPath = fileInfo.absoluteFilePath();
 
+    MBoxPtr mbox;
+    MBoxHash::const_iterator mboxIt = mMBoxes.constFind( mboxPath );
+    if ( mboxIt == mMBoxes.constEnd() ) {
+      mbox = MBoxPtr( new MBoxContext );
+      mMBoxes.insert( mboxPath, mbox );
+    } else {
+      mbox = mboxIt.value();
+    }
+
+    if ( mbox->load( mboxPath ) ) {
       const QString subFolder = fileInfo.fileName();
       Collection col;
       col.setRemoteId( subFolder );
@@ -702,6 +720,9 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
       q->notifyError( FileStore::Job::InvalidJobContext, errorText );
       return false;
     }
+
+    const MaildirPtr mdPtr( new MaildirContext( md ) );
+    mMaildirs.insert( md.path(), mdPtr );
   } else {
     Maildir parentMd( path, folderType == TopLevelFolder );
     if ( parentMd.addSubFolder( job->collection().name() ).isEmpty() ) {
@@ -711,6 +732,10 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
       q->notifyError( FileStore::Job::InvalidJobContext, errorText );
       return false;
     }
+
+    const Maildir md = parentMd.subFolder( job->collection().name() );
+    const MaildirPtr mdPtr( new MaildirContext( md ) );
+    mMaildirs.insert( md.path(), mdPtr );
   }
 
   Collection collection = job->collection();
@@ -734,6 +759,49 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
     return false;
   }
 
+  QString parentPath;
+  const FolderType parentFolderType = folderForCollection( job->collection().parentCollection(), parentPath, errorText );
+  if ( parentFolderType == InvalidFolder ) {
+    errorText = i18nc( "@info:status", "Cannot remove folder %1 from folder %2",
+                        job->collection().name(), job->collection().parentCollection().name() );
+    kError() << errorText << "Parent FolderType=" << parentFolderType;
+    q->notifyError( FileStore::Job::InvalidJobContext, errorText );
+    return false;
+  }
+
+  bool parentIndexInvalidated = false;
+  if ( parentFolderType == MBoxFolder ) {
+    MBoxPtr mboxPtr;
+    MBoxHash::const_iterator mboxIt = mMBoxes.constFind( parentPath );
+    if ( mboxIt == mMBoxes.constEnd() ) {
+      kError() << "Deleting folder" << path << "from parent MBox" << parentPath
+               << "but there is no context for that MBox yet";
+
+      mboxPtr = MBoxPtr( new MBoxContext );
+      if ( !mboxPtr->load( parentPath ) ) {
+        kError() << "Loading or parent MBox" << parentPath << "failed";
+      }
+
+      mMBoxes.insert( parentPath, mboxPtr );
+    }
+
+    mboxPtr->readIndexData();
+    parentIndexInvalidated = mboxPtr->hasIndexData();
+  } else if ( parentFolderType == MaildirFolder ) {
+    MaildirPtr mdPtr;
+    MaildirHash::const_iterator mdIt = mMaildirs.constFind( parentPath );
+    if ( mdIt == mMaildirs.constEnd() ) {
+      kError() << "Deleting folder" << path << "from parent Maildir" << parentPath
+               << "but there is no context for that Maildir yet";
+
+      mdPtr = MaildirPtr( new MaildirContext( parentPath, false ) );
+      mMaildirs.insert( parentPath, mdPtr );
+    }
+
+    mdPtr->readIndexData();
+    parentIndexInvalidated = mdPtr->hasIndexData();
+  }
+
   if ( folderType == MBoxFolder ) {
     if ( !QFile::remove( path ) ) {
       errorText = i18nc( "@info:status", "Cannot remove folder %1 from folder %2",
@@ -754,6 +822,11 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
 
   const QString subDirPath = Maildir::subDirPathForFolderPath( path );
   KPIMUtils::removeDirAndContentsRecursively( subDirPath );
+
+  if ( parentIndexInvalidated ) {
+    const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << job->collection().parentCollection() );
+    job->setProperty( "onDiskIndexInvalidated", var );
+  }
 
   q->notifyCollectionsProcessed( Collection::List() << job->collection() );
   return true;
@@ -1064,8 +1137,27 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemCreateJob *job )
     mbox->save();
     item.setRemoteId( QString::number( result ) );
   } else {
-    Maildir md( path, false );
-    QString result = md.addEntry( item.payload<KMime::Message::Ptr>()->encodedContent() );
+    MaildirPtr mdPtr;
+    MaildirHash::const_iterator findIt = mMaildirs.constFind( path );
+    if ( findIt == mMaildirs.constEnd() ) {
+      mdPtr = MaildirPtr( new MaildirContext( path, false ) );
+      mMaildirs.insert( path, mdPtr );
+    } else {
+      mdPtr = findIt.value();
+    }
+
+    // make sure to read the index (if available) before modifying the data, which would
+    // make the index invalid
+    mdPtr->readIndexData();
+
+    // if there is index data now, we let the job creator know that the on-disk index
+    // became invalid
+    if ( mdPtr->hasIndexData() ) {
+      const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << job->collection() );
+      job->setProperty( "onDiskIndexInvalidated", var );
+    }
+
+    QString result = mdPtr->mailDir().addEntry( item.payload<KMime::Message::Ptr>()->encodedContent() );
     if ( result.isEmpty() ) {
       errorText = i18nc( "@info:status", "Cannot add emails to folder %1",
                           job->collection().name() );
@@ -1129,8 +1221,28 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemDeleteJob *job )
     mbox->mCollection = collection;
     mbox->deleteEntry( offset );
   } else {
-    Maildir md( path, false );
-    if ( !md.removeEntry( item.remoteId() ) ) {
+    MaildirPtr mdPtr;
+    MaildirHash::const_iterator findIt = mMaildirs.constFind( path );
+    if ( findIt == mMaildirs.constEnd() ) {
+      mdPtr = MaildirPtr( new MaildirContext( path, false ) );
+
+      mMaildirs.insert( path, mdPtr );
+    } else {
+      mdPtr = findIt.value();
+    }
+
+    // make sure to read the index (if available) before modifying the data, which would
+    // make the index invalid
+    mdPtr->readIndexData();
+
+    // if there is index data now, we let the job creator know that the on-disk index
+    // became invalid
+    if ( mdPtr->hasIndexData() ) {
+      const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << collection );
+      job->setProperty( "onDiskIndexInvalidated", var );
+    }
+
+    if ( !mdPtr->mailDir().removeEntry( item.remoteId() ) ) {
       errorText = i18nc( "@info:status", "Cannot remove emails from folder %1",
                           collection.name() );
       kError() << errorText << "FolderType=" << folderType;
@@ -1311,8 +1423,27 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
     mbox->save();
     item.setRemoteId( QString::number( newOffset ) );
   } else {
-    Maildir md( path, false );
-    md.writeEntry( item.remoteId(), item.payload<KMime::Message::Ptr>()->encodedContent() );
+    MaildirPtr mdPtr;
+    MaildirHash::const_iterator findIt = mMaildirs.constFind( path );
+    if ( findIt == mMaildirs.constEnd() ) {
+      mdPtr = MaildirPtr( new MaildirContext( path, false ) );
+      mMaildirs.insert( path, mdPtr );
+    } else {
+      mdPtr = findIt.value();
+    }
+
+    // make sure to read the index (if available) before modifying the data, which would
+    // make the index invalid
+    mdPtr->readIndexData();
+
+    // if there is index data now, we let the job creator know that the on-disk index
+    // became invalid
+    if ( mdPtr->hasIndexData() ) {
+      const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << collection );
+      job->setProperty( "onDiskIndexInvalidated", var );
+    }
+
+    mdPtr->mailDir().writeEntry( item.remoteId(), item.payload<KMime::Message::Ptr>()->encodedContent() );
   }
 
   q->notifyItemsProcessed( Item::List() << item );
@@ -1446,9 +1577,27 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       item.setRemoteId( QString::number( remoteId ) );
     } else {
 /*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is Maildir";*/
-      Maildir targetMd( targetPath, false );
+      MaildirPtr targetMdPtr;
+      MaildirHash::const_iterator findIt = mMaildirs.constFind( targetPath );
+      if ( findIt == mMaildirs.constEnd() ) {
+        targetMdPtr = MaildirPtr( new MaildirContext( targetPath, false ) );
+        mMaildirs.insert( targetPath, targetMdPtr );
+      } else {
+        targetMdPtr = findIt.value();
+      }
 
-      const QString remoteId = targetMd.addEntry( mbox->readRawEntry( offset ) );
+      // make sure to read the index (if available) before modifying the data, which would
+      // make the index invalid
+      targetMdPtr->readIndexData();
+
+      // if there is index data now, we let the job creator know that the on-disk index
+      // became invalid
+      if ( targetMdPtr->hasIndexData() ) {
+        const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << targetCollection );
+        job->setProperty( "onDiskIndexInvalidated", var );
+      }
+
+      const QString remoteId = targetMdPtr->mailDir().addEntry( mbox->readRawEntry( offset ) );
       if ( remoteId.isEmpty() ) {
         errorText = i18nc( "@info:status", "Cannot move email from folder %1 to folder %2",
                             sourceCollection.name(), targetCollection.name() );
@@ -1464,12 +1613,31 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
     mbox->deleteEntry( offset );
   } else {
 /*    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "source is Maildir";*/
-    Maildir sourceMd( sourcePath, false );
+    MaildirPtr sourceMdPtr;
+    MaildirHash::const_iterator mdIt = mMaildirs.constFind( sourcePath );
+    if ( mdIt != mMaildirs.end() ) {
+      sourceMdPtr = MaildirPtr( new MaildirContext( sourcePath, false ) );
+      mMaildirs.insert( sourcePath, sourceMdPtr );
+    } else {
+      sourceMdPtr = mdIt.value();
+    }
+
+    Collection::List collections;
+
+    // make sure to read the index (if available) before modifying the data, which would
+    // make the index invalid
+    sourceMdPtr->readIndexData();
+
+    // if there is index data now, we let the job creator know that the on-disk index
+    // became invalid
+    if ( sourceMdPtr->hasIndexData() ) {
+      collections << sourceCollection;
+    }
 
     if ( targetFolderType == MBoxFolder ) {
 /*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is MBox";*/
       if ( !item.payload<KMime::Message::Ptr>() ) {
-        if ( !fillItem( sourceMd, true, item ) ) {
+        if ( !fillItem( sourceMdPtr->mailDir(), true, item ) ) {
           errorText = i18nc( "@info:status", "Cannot move email from folder %1",
                               sourceCollection.name() );
           kError() << errorText << "FolderType=" << sourceFolderType;
@@ -1503,9 +1671,10 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       // if there is index data now, we let the job creator know that the on-disk index
       // became invalid
       if ( mbox->hasIndexData() ) {
-        const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << targetCollection );
-        job->setProperty( "onDiskIndexInvalidated", var );
+        collections << targetCollection;
       }
+
+      sourceMdPtr->mailDir().removeEntry( item.remoteId() );
 
       qint64 remoteId = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
       if ( remoteId < 0 ) {
@@ -1519,9 +1688,26 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       item.setRemoteId( QString::number( remoteId ) );
     } else {
 /*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is Maildir";*/
-      Maildir targetMd( targetPath, false );
+      MaildirPtr targetMdPtr;
+      MaildirHash::const_iterator findIt = mMaildirs.constFind( targetPath );
+      if ( findIt == mMaildirs.constEnd() ) {
+        targetMdPtr = MaildirPtr( new MaildirContext( targetPath, false ) );
+        mMaildirs.insert( targetPath, targetMdPtr );
+      } else {
+        targetMdPtr = findIt.value();
+      }
 
-      const QString remoteId = sourceMd.moveEntryTo( item.remoteId(), targetMd );
+      // make sure to read the index (if available) before modifying the data, which would
+      // make the index invalid
+      targetMdPtr->readIndexData();
+
+      // if there is index data now, we let the job creator know that the on-disk index
+      // became invalid
+      if ( targetMdPtr->hasIndexData() ) {
+        collections << targetCollection;
+      }
+
+      const QString remoteId = sourceMdPtr->mailDir().moveEntryTo( item.remoteId(), targetMdPtr->mailDir() );
       if ( remoteId.isEmpty() ) {
         errorText = i18nc( "@info:status", "Cannot move email from folder %1 to folder %2",
                             sourceCollection.name(), targetCollection.name() );
@@ -1531,6 +1717,11 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       }
 
       item.setRemoteId( remoteId );
+    }
+
+    if ( !collections.isEmpty() ) {
+      const QVariant var = QVariant::fromValue<Collection::List>( collections );
+      job->setProperty( "onDiskIndexInvalidated", var );
     }
   }
 
