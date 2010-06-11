@@ -346,6 +346,9 @@ class MixedMaildirStore::Private : public FileStore::Job::Visitor
 
     FolderType folderForCollection( const Collection &col, QString &path, QString &errorText ) const;
 
+    MBoxPtr getOrCreateMBoxPtr( const QString &path );
+    MaildirPtr getOrCreateMaildirPtr( const QString &path, bool isTopLevel );
+
     void fillMBoxCollectionDetails( const MBoxPtr &mbox, Collection &collection );
     void fillMaildirCollectionDetails( const Maildir &md, Collection &collection );
     void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse );
@@ -438,6 +441,34 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
   }
 }
 
+MBoxPtr MixedMaildirStore::Private::getOrCreateMBoxPtr( const QString &path )
+{
+  MBoxPtr mbox;
+  const MBoxHash::const_iterator it = mMBoxes.constFind( path );
+  if ( it == mMBoxes.constEnd() ) {
+    mbox = MBoxPtr( new MBoxContext );
+    mMBoxes.insert( path, mbox );
+  } else {
+    mbox = it.value();
+  }
+
+  return mbox;
+}
+
+MaildirPtr MixedMaildirStore::Private::getOrCreateMaildirPtr( const QString &path, bool isTopLevel )
+{
+  MaildirPtr md;
+  const MaildirHash::const_iterator it = mMaildirs.constFind( path );
+  if ( it == mMaildirs.constEnd() ) {
+    md = MaildirPtr( new MaildirContext( path, isTopLevel ) );
+    mMaildirs.insert( path, md );
+  } else {
+    md = it.value();
+  }
+
+  return md;
+}
+
 void MixedMaildirStore::Private::fillMBoxCollectionDetails( const MBoxPtr &mbox, Collection &collection )
 {
   collection.setContentMimeTypes( QStringList() << Collection::mimeType()
@@ -510,15 +541,7 @@ void MixedMaildirStore::Private::fillMaildirTreeDetails( const Maildir &md, cons
 
     const QString mboxPath = fileInfo.absoluteFilePath();
 
-    MBoxPtr mbox;
-    MBoxHash::const_iterator mboxIt = mMBoxes.constFind( mboxPath );
-    if ( mboxIt == mMBoxes.constEnd() ) {
-      mbox = MBoxPtr( new MBoxContext );
-      mMBoxes.insert( mboxPath, mbox );
-    } else {
-      mbox = mboxIt.value();
-    }
-
+    MBoxPtr mbox = getOrCreateMBoxPtr( mboxPath );
     if ( mbox->load( mboxPath ) ) {
       const QString subFolder = fileInfo.fileName();
       Collection col;
@@ -1590,14 +1613,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       item.setRemoteId( QString::number( remoteId ) );
     } else {
 /*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is Maildir";*/
-      MaildirPtr targetMdPtr;
-      MaildirHash::const_iterator findIt = mMaildirs.constFind( targetPath );
-      if ( findIt == mMaildirs.constEnd() ) {
-        targetMdPtr = MaildirPtr( new MaildirContext( targetPath, false ) );
-        mMaildirs.insert( targetPath, targetMdPtr );
-      } else {
-        targetMdPtr = findIt.value();
-      }
+      MaildirPtr targetMdPtr = getOrCreateMaildirPtr( targetPath, false );
 
       // make sure to read the index (if available) before modifying the data, which would
       // make the index invalid
@@ -1626,14 +1642,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
     mbox->deleteEntry( offset );
   } else {
 /*    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "source is Maildir";*/
-    MaildirPtr sourceMdPtr;
-    MaildirHash::const_iterator mdIt = mMaildirs.constFind( sourcePath );
-    if ( mdIt != mMaildirs.end() ) {
-      sourceMdPtr = MaildirPtr( new MaildirContext( sourcePath, false ) );
-      mMaildirs.insert( sourcePath, sourceMdPtr );
-    } else {
-      sourceMdPtr = mdIt.value();
-    }
+    MaildirPtr sourceMdPtr = getOrCreateMaildirPtr( sourcePath, false );
 
     Collection::List collections;
 
@@ -1701,14 +1710,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       item.setRemoteId( QString::number( remoteId ) );
     } else {
 /*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is Maildir";*/
-      MaildirPtr targetMdPtr;
-      MaildirHash::const_iterator findIt = mMaildirs.constFind( targetPath );
-      if ( findIt == mMaildirs.constEnd() ) {
-        targetMdPtr = MaildirPtr( new MaildirContext( targetPath, false ) );
-        mMaildirs.insert( targetPath, targetMdPtr );
-      } else {
-        targetMdPtr = findIt.value();
-      }
+      MaildirPtr targetMdPtr = getOrCreateMaildirPtr( targetPath, false );
 
       // make sure to read the index (if available) before modifying the data, which would
       // make the index invalid
