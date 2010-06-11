@@ -35,7 +35,31 @@ using KPIM::MessageStatus;
 #include <stdlib.h>
 #include <unistd.h>
 
-class KMIndexMsgPrivate;
+namespace boost
+{
+  template <typename T> class shared_ptr;
+}
+
+class KMIndexData {
+    Q_DISABLE_COPY( KMIndexData )
+public:
+    KMIndexData() {}
+    /** Status object of the message. */
+    MessageStatus& status();
+    QStringList  tagList() const ;
+    quint64 uid() const;
+
+private:
+    QString mCachedStringParts[20];
+    unsigned long mCachedLongParts[20];
+    bool mPartsCacheBuilt;
+
+    MessageStatus mStatus;
+    friend class KMIndexReader;
+    friend class TestIdxReader;
+};
+
+typedef boost::shared_ptr<KMIndexData> KMIndexDataPtr;
 
 /**
  * @short A class to read legacy kmail (< 4.5) index files
@@ -98,6 +122,10 @@ public:
 
     bool tagListByFileName( const QString &fileName, QStringList &tagList ) const;
 
+    KMIndexDataPtr dataByOffset( quint64 offset ) const;
+
+    KMIndexDataPtr dataByFileName( const QString &fileName ) const;
+
 private:
 
 
@@ -109,11 +137,11 @@ private:
     /**
      * creates a message object from an old index files
      */
-    bool fromOldIndexString ( KMIndexMsgPrivate* msg, const QByteArray& str, bool toUtf8 );
+    bool fromOldIndexString ( KMIndexData* msg, const QByteArray& str, bool toUtf8 );
 
-    bool fillPartsCache ( KMIndexMsgPrivate* msg, off_t off, short int len );
+    bool fillPartsCache ( KMIndexData* msg, off_t off, short int len );
 
-    QList<KMIndexMsgPrivate*> messages();
+    QList<KMIndexDataPtr> messages();
 
     QString mIndexFileName;
     QFile mIndexFile;
@@ -127,28 +155,9 @@ private:
     bool mError;
 
     /** list of index entries or messages */
-    QList<KMIndexMsgPrivate*> mMsgList;
-    QHash<QString, KMIndexMsgPrivate*> mMsgByFileName;
-    QHash<quint64, KMIndexMsgPrivate*> mMsgByOffset;
-    friend class TestIdxReader;
-};
-
-
-class KMIndexMsgPrivate {
-public:
-    KMIndexMsgPrivate() {}
-    /** Status object of the message. */
-    MessageStatus& status();
-    QStringList  tagList() const ;
-    quint64 uid() const;
-
-private:
-    QString mCachedStringParts[20];
-    unsigned long mCachedLongParts[20];
-    bool mPartsCacheBuilt;
-
-    MessageStatus mStatus;
-    friend class KMIndexReader;
+    QList<KMIndexDataPtr> mMsgList;
+    QHash<QString, KMIndexDataPtr> mMsgByFileName;
+    QHash<quint64, KMIndexDataPtr> mMsgByOffset;
     friend class TestIdxReader;
 };
 
