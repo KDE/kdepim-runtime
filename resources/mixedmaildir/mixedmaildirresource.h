@@ -62,6 +62,8 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
     bool ensureDirExists();
     bool ensureSaneConfiguration();
 
+    void checkForInvalidatedIndexCollections( KJob * job );
+
   private Q_SLOTS:
     void reapplyConfiguration();
 
@@ -98,6 +100,9 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
     typedef QList<TagContext> TagContextList;
     QHash<Akonadi::Collection::Id, TagContextList> mTagContextByColId;
     TagContextList mPendingTagContexts;
+
+    QSet<Akonadi::Collection::Id> mSynchronizedCollections;
+    QSet<Akonadi::Collection::Id> mPendingSynchronizeCollections;
 };
 
 #endif
