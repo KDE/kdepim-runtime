@@ -40,7 +40,7 @@ namespace boost
   template <typename T> class shared_ptr;
 }
 
-class KMIndexData {
+class KMINDEXREADER_EXPORT KMIndexData {
     Q_DISABLE_COPY( KMIndexData )
 public:
     KMIndexData() {}
