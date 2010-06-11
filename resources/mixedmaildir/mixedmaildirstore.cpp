@@ -153,6 +153,11 @@ class MBoxContext
       mDeletedOffsets << offset;
     }
 
+    bool hasDeletedOffsets() const
+    {
+      return !mDeletedOffsets.isEmpty();
+    }
+
     void readIndexData();
 
     KMIndexDataPtr indexData( quint64 offset ) const {
@@ -199,7 +204,8 @@ void MBoxContext::readIndexData()
   }
 
   if ( mboxFileInfo.lastModified() > indexFileInfo.lastModified() ) {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "MBox file newer than the index: mbox modified at"
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "MBox file " << mboxFileInfo.absoluteFilePath()
+                                     << "newer than the index: mbox modified at"
                                      << mboxFileInfo.lastModified() << ", index modified at"
                                      << indexFileInfo.lastModified();
     return;
@@ -219,6 +225,9 @@ void MBoxContext::readIndexData()
       mIndexData.insert( entry.offset, data );
     }
   }
+
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Read" << mIndexData.count() << "index entries from"
+                                   << indexFileInfo.absoluteFilePath();
 }
 
 class MaildirContext
@@ -284,7 +293,8 @@ void MaildirContext::readIndexData()
   const QFileInfo newDirFileInfo( maildirBaseDir, QLatin1String( "new" ) );
 
   if ( curDirFileInfo.lastModified() > indexFileInfo.lastModified() ) {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Maildir \"cur\" directory newer than the index: cur modified at"
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Maildir " << maildirFileInfo.absoluteFilePath()
+                                     << "\"cur\" directory newer than the index: cur modified at"
                                      << curDirFileInfo.lastModified() << ", index modified at"
                                      << indexFileInfo.lastModified();
     return;
@@ -310,6 +320,9 @@ void MaildirContext::readIndexData()
       mIndexData.insert( entry, data );
     }
   }
+
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Read" << mIndexData.count() << "index entries from"
+                                   << indexFileInfo.absoluteFilePath();
 }
 
 typedef boost::shared_ptr<MaildirContext> MaildirPtr;
@@ -1740,6 +1753,10 @@ bool MixedMaildirStore::Private::visit( FileStore::StoreCompactJob *job )
   MBoxHash::const_iterator endIt = mMBoxes.constEnd();
   for ( ; it != endIt; ++it ) {
     MBoxPtr mbox = it.value();
+
+    if ( !mbox->hasDeletedOffsets() ) {
+      continue;
+    }
 
     // make sure to read the index (if available) before modifying the data, which would
     // make the index invalid
