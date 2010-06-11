@@ -1829,6 +1829,7 @@ void MixedMaildirStore::setTopLevelCollection( const Collection &collection )
 
   // clear caches
   d->mMBoxes.clear();
+  d->mMaildirs.clear();
 
   FileStore::AbstractLocalStore::setTopLevelCollection( modifiedCollection );
 }
