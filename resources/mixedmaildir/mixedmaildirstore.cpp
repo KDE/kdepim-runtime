@@ -33,6 +33,7 @@
 #include "filestore/itemfetchjob.h"
 #include "filestore/itemmodifyjob.h"
 #include "filestore/itemmovejob.h"
+#include "filestore/storecompactjob.h"
 
 #include "libmaildir/maildir.h"
 #include "libmbox/mbox.h"
@@ -118,8 +119,9 @@ class MBoxContext
       return mMBox.save();
     }
 
-    bool purge( QList<MsgInfo> &movedEntries )
+    int purge( QList<MsgInfo> &movedEntries )
     {
+      const int deleteCount = mDeletedOffsets.count();
       const bool result = mMBox.purge( mDeletedOffsets, &movedEntries );
 
       IndexDataHash indexData = mIndexData;
@@ -133,7 +135,7 @@ class MBoxContext
         indexData.insert( entry.second, data );
       }
 
-      return result;
+      return ( result ? deleteCount : -1 );
     }
 
     MBox &mbox()
@@ -1040,6 +1042,17 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemCreateJob *job )
       mbox = findIt.value();
     }
 
+    // make sure to read the index (if available) before modifying the data, which would
+    // make the index invalid
+    mbox->readIndexData();
+
+    // if there is index data now, we let the job creator know that the on-disk index
+    // became invalid
+    if ( mbox->hasIndexData() ) {
+      const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << job->collection() );
+      job->setProperty( "onDiskIndexInvalidated", var );
+    }
+
     qint64 result = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
     if ( result < 0 ) {
       errorText = i18nc( "@info:status", "Cannot add emails to folder %1",
@@ -1271,6 +1284,17 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
       return false;
     }
 
+    // make sure to read the index (if available) before modifying the data, which would
+    // make the index invalid
+    mbox->readIndexData();
+
+    // if there is index data now, we let the job creator know that the on-disk index
+    // became invalid
+    if ( mbox->hasIndexData() ) {
+      const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << collection );
+      job->setProperty( "onDiskIndexInvalidated", var );
+    }
+
     qint64 newOffset = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
     if ( offset < 0 ) {
       errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
@@ -1391,6 +1415,17 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
         targetMBox = findIt.value();
       }
 
+      // make sure to read the index (if available) before modifying the data, which would
+      // make the index invalid
+      targetMBox->readIndexData();
+
+      // if there is index data now, we let the job creator know that the on-disk index
+      // became invalid
+      if ( targetMBox->hasIndexData() ) {
+        const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << targetCollection );
+        job->setProperty( "onDiskIndexInvalidated", var );
+      }
+
       qint64 remoteId = targetMBox->appendEntry( item.payload<KMime::Message::Ptr>() );
       if ( remoteId < 0 ) {
         errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
@@ -1461,6 +1496,17 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
         mbox = findIt.value();
       }
 
+      // make sure to read the index (if available) before modifying the data, which would
+      // make the index invalid
+      mbox->readIndexData();
+
+      // if there is index data now, we let the job creator know that the on-disk index
+      // became invalid
+      if ( mbox->hasIndexData() ) {
+        const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << targetCollection );
+        job->setProperty( "onDiskIndexInvalidated", var );
+      }
+
       qint64 remoteId = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
       if ( remoteId < 0 ) {
         errorText = i18nc( "@info:status", "Cannot move emails to folder %1",
@@ -1497,13 +1543,20 @@ bool MixedMaildirStore::Private::visit( FileStore::StoreCompactJob *job )
 {
   Q_UNUSED( job );
 
+  Collection::List collections;
+
   MBoxHash::const_iterator it    = mMBoxes.constBegin();
   MBoxHash::const_iterator endIt = mMBoxes.constEnd();
   for ( ; it != endIt; ++it ) {
     MBoxPtr mbox = it.value();
 
+    // make sure to read the index (if available) before modifying the data, which would
+    // make the index invalid
+    mbox->readIndexData();
+
     QList<MsgInfo> movedEntries;
-    if ( mbox->purge( movedEntries ) ) {
+    const int result = mbox->purge( movedEntries );
+    if ( result > 0 ) {
       Item::List items;
       Q_FOREACH( const MsgInfo &offsetPair, movedEntries ) {
         const QString oldRemoteId( QString::number( offsetPair.first ) );
@@ -1517,10 +1570,21 @@ bool MixedMaildirStore::Private::visit( FileStore::StoreCompactJob *job )
         items << item;
       }
 
+      // if there is index data, we let the job creator know that the on-disk index
+      // became invalid
+      if ( mbox->hasIndexData() ) {
+        collections << mbox->mCollection;
+      }
+
       if ( !items.isEmpty() ) {
         q->notifyItemsProcessed( items );
       }
     }
+  }
+
+  if ( !collections.isEmpty() ) {
+    const QVariant var = QVariant::fromValue<Collection::List>( collections );
+    job->setProperty( "onDiskIndexInvalidated", var );
   }
 
   return true;
