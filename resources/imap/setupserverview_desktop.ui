@@ -276,9 +276,6 @@
             </item>
             <item>
              <widget class="Akonadi::CollectionRequester" name="folderRequester">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
              </widget>
             </item>
            </layout>
