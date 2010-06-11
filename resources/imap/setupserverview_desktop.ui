@@ -99,16 +99,6 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
-           <widget class="QCheckBox" name="includeInCheck">
-            <property name="toolTip">
-             <string>Include this account when clicking on the toolbar button</string>
-            </property>
-            <property name="text">
-             <string>Include in man&amp;ual mail check</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QCheckBox" name="enableMailCheckBox">
             <property name="text">
              <string>Enable &amp;interval mail checking</string>

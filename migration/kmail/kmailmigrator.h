@@ -81,6 +81,7 @@ class KMailMigrator : public KMigratorBase
 
     void collectionMigratorMessage( int type, const QString &msg );
     void collectionMigratorFinished();
+    void collectionMigratorEmittedNotification();
 
     void instanceStatusChanged( const Akonadi::AgentInstance &instance );
     void instanceProgressChanged( const Akonadi::AgentInstance &instance );
@@ -112,6 +113,7 @@ class KMailMigrator : public KMigratorBase
     KWallet::Wallet *mWallet;
     KSharedConfigPtr mConfig;
     KSharedConfigPtr mEmailIdentityConfig;
+    KSharedConfigPtr mKcmKmailSummaryConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
     QString mLocalMaildirPath;
@@ -131,6 +133,8 @@ class KMailMigrator : public KMigratorBase
     };
     QHash<QString, AccountConfig> mAccountInstance;
     QList<Akonadi::AgentInstance> mFailedInstances;
+
+    bool mForwardResourceNotifications;
 };
 
 } // namespace KMail

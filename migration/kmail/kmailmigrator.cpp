@@ -88,7 +88,8 @@ KMailMigrator::KMailMigrator() :
   mDImapCache( 0 ),
   mImapCache( 0 ),
   mRunningCacheImporterCount( 0 ),
-  mLocalFoldersDone( false )
+  mLocalFoldersDone( false ),
+  mForwardResourceNotifications( false )
 {
   connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
            this, SLOT( instanceStatusChanged( Akonadi::AgentInstance ) ) );
@@ -133,6 +134,8 @@ void KMailMigrator::migrate()
   }
 
   mEmailIdentityConfig = KSharedConfig::openConfig( QLatin1String( "emailidentities" ) );
+
+  mKcmKmailSummaryConfig = KSharedConfig::openConfig( QLatin1String( "kcmkmailsummaryrc" ) );
 
   deleteOldGroup();
   migrateTags();
@@ -417,6 +420,12 @@ void KMailMigrator::connectCollectionMigrator( AbstractCollectionMigrator *migra
   connect( migrator, SIGNAL( progress( int, int, int ) ), SIGNAL ( progress( int, int, int ) ) );
   connect( migrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            this, SLOT( collectionMigratorFinished() ) );
+  connect( migrator, SIGNAL( status( QString ) ),
+           SLOT ( collectionMigratorEmittedNotification() ) );
+  connect( migrator, SIGNAL( progress( int ) ),
+           SLOT ( collectionMigratorEmittedNotification() ) );
+  connect( migrator, SIGNAL( progress( int, int, int ) ),
+           SLOT ( collectionMigratorEmittedNotification() ) );
 }
 
 void KMailMigrator::evaluateCacheHandlingOptions()
@@ -473,6 +482,9 @@ bool KMailMigrator::migrateCurrentAccount()
   const KConfigGroup group( mConfig, mCurrentAccount );
 
   emit message( Info, i18n( "Trying to migrate '%1' to resource...", group.readEntry( "Name" ) ) );
+
+  // show status/progress info of resources in our dialog
+  mForwardResourceNotifications = true;
 
   const QString type = group.readEntry( "Type" ).toLower();
   if ( type == "imap" ) {
@@ -573,6 +585,14 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   // skip interval checking so it doesn't interfere with cache importing
   iface->setIntervalCheckTime( -1 ); //exclude
 
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+  resourceGroup.writeEntry( "OfflineOnShutdown", true );
+
   iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
   iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
@@ -640,6 +660,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   collectionMigrator->setTopLevelFolder( topLevelFolder );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
+  collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
 
   if ( config.readEntry( "locally-subscribed-folders", false ) ) {
     collectionMigrator->setUnsubscribedImapFolders( config.readEntry( "locallyUnsubscribedFolders", QStringList() ) );
@@ -717,6 +738,14 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     iface->setIntervalCheckEnabled( true );
     iface->setIntervalCheckInterval( checkInterval );
   }
+
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+  resourceGroup.writeEntry( "OfflineOnShutdown", true );
 
   // Akonadi kmail uses enums for storing auth options
   // so we have to convert from the old string representations
@@ -796,6 +825,14 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
   else if ( lockType == "none" )
     iface->setLockfileMethod( MboxNone );
 
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+  resourceGroup.writeEntry( "OfflineOnShutdown", false );
+
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
   config.deleteEntry( "identity-id" );
@@ -835,6 +872,15 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   }
 
   iface->setPath( config.readEntry( "Location" ) );
+
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+  resourceGroup.writeEntry( "OfflineOnShutdown", false );
+
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry( "trash" );
   config.deleteEntry( "identity-id" );
@@ -874,6 +920,13 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   }
 
   iface->setPath( mLocalMaildirPath );
+
+  // do not include KMail folders in manual checks by default
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", false );
+  // do not synchronize on startup
+  resourceGroup.writeEntry( "CheckOnStartup", false );
+  resourceGroup.writeEntry( "OfflineOnShutdown", false );
 
   KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
   KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
@@ -920,6 +973,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
+  collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
 
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
@@ -1024,8 +1078,17 @@ void KMailMigrator::collectionMigratorFinished()
   emit status( QString() );
 }
 
+void KMailMigrator::collectionMigratorEmittedNotification()
+{
+  mForwardResourceNotifications = false;
+}
+
 void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
 {
+  if ( !mForwardResourceNotifications ) {
+    return;
+  }
+
   if ( instance.identifier() != mCurrentInstance.identifier() ) {
     return;
   }
@@ -1039,6 +1102,10 @@ void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
 
 void KMailMigrator::instanceProgressChanged( const AgentInstance &instance )
 {
+  if ( !mForwardResourceNotifications ) {
+    return;
+  }
+
   if ( instance.identifier() != mCurrentInstance.identifier() ) {
     return;
   }

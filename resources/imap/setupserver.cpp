@@ -141,9 +141,6 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   mValidator.setRegExp( QRegExp( "[A-Za-z0-9-_:.]*" ) );
   m_ui->imapServer->setValidator( &mValidator );
 
-  // FIXME: This option has no effect yet, therefore hide it for now.
-  m_ui->includeInCheck->hide();
-
   m_ui->folderRequester->setMimeTypeFilter(
     QStringList() << QLatin1String( "message/rfc822" ) );
   m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
@@ -280,8 +277,6 @@ void SetupServer::applySettings()
   if( m_ui->enableMailCheckBox->isChecked() )
     Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
 
-  Settings::self()->setIncludeInManualCheck( m_ui->includeInCheck->isChecked() );
-
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
@@ -375,8 +370,6 @@ void SetupServer::readSettings()
   m_ui->enableMailCheckBox->setChecked( Settings::self()->intervalCheckEnabled() );
   if( m_ui->enableMailCheckBox->isChecked() )
     m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
-
-  m_ui->includeInCheck->setChecked( Settings::self()->includeInManualCheck() );
 
   m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
 

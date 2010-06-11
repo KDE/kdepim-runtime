@@ -311,13 +311,6 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QCheckBox" name="includeInCheck">
-           <property name="text">
-            <string>Include in man&amp;ual mail check</string>
-           </property>
-          </widget>
-         </item>
          <item row="5" column="0">
           <widget class="QCheckBox" name="disconnectedModeEnabled">
            <property name="text">
