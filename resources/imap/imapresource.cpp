@@ -748,9 +748,11 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
 void ImapResource::onMailBoxesReceiveDone(KJob* job)
 {
-  // TODO error handling
-  Q_UNUSED( job );
-  collectionsRetrievalDone();
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+  } else {
+    collectionsRetrievalDone();
+  }
 }
 
 // ----------------------------------------------------------------------------------
@@ -885,7 +887,10 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
 void ImapResource::onHeadersFetchDone( KJob *job )
 {
   if ( job->property( "nonIncremental" ).toBool() ) {
-    itemsRetrievalDone();
+    if ( job->error() )
+      cancelTask( job->errorString() );
+    else
+      itemsRetrievalDone();
   } else {
 
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( job );
