@@ -305,6 +305,9 @@ void KMailMigrator::migrateLocalFolders()
 
     emit message( Info, i18nc( "@info:status", "Migrating local folders in '%1'...", mLocalMaildirPath ) );
 
+    // show status/progress info of resources in our dialog
+    mForwardResourceNotifications = true;
+
     createAgentInstance( "akonadi_mixedmaildir_resource", this,
                          SLOT( localMaildirCreated( KJob * ) ) );
   }
