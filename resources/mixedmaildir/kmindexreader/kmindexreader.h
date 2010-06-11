@@ -110,18 +110,6 @@ public:
         MsgTagPart = 19
     };
 
-    bool statusByOffset( quint64 offset, MessageStatus &status ) const;
-
-    bool statusByFileName( const QString &fileName, MessageStatus &status ) const;
-
-    bool imapUidByOffset( quint64 offset, quint64 &uid ) const;
-
-    bool imapUidByFileName( const QString &fileName, quint64 &uid ) const;
-
-    bool tagListByOffset( quint64 offset, QStringList &tagList ) const;
-
-    bool tagListByFileName( const QString &fileName, QStringList &tagList ) const;
-
     KMIndexDataPtr dataByOffset( quint64 offset ) const;
 
     KMIndexDataPtr dataByFileName( const QString &fileName ) const;
