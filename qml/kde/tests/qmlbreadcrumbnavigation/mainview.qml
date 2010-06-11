@@ -38,95 +38,37 @@ Rectangle {
 
     anchors.fill : parent;
 
-    topDelegate : Rectangle
+    topDelegate : ListDelegate
     {
-      color : "#00000000"
-      height: itemHeight;
-      width : ListView.view.width
-      Text {
-        anchors.verticalCenter : parent.verticalCenter;
-        anchors.horizontalCenter : parent.horizontalCenter;
-        text : model.display
-      }
-      MouseArea {
-        anchors.fill : parent
-        onClicked : { breadcrumbTopLevel._transitionSelect = -1; breadcrumbTopLevel.state = "before_select_breadcrumb"; }
+      clickable : true
+      topItem : true
+      onIndexSelected : {
+        breadcrumbTopLevel._transitionSelect = -1;
+        breadcrumbTopLevel.state = "before_select_home";
       }
     }
 
-    breadcrumbDelegate : Rectangle
+    breadcrumbDelegate : ListDelegate
     {
-      color : "#00000000"
-      height: itemHeight;
-      width : ListView.view.width
-      Text {
-        anchors.verticalCenter : parent.verticalCenter;
-        anchors.horizontalCenter : parent.horizontalCenter;
-        text : model.display
-      }
-      MouseArea {
-        anchors.fill : parent
-        onClicked : { breadcrumbTopLevel._transitionSelect = model.index; breadcrumbTopLevel.state = "before_select_breadcrumb"; }
+      clickable : true
+      onIndexSelected : {
+        breadcrumbTopLevel._transitionSelect = row;
+        breadcrumbTopLevel.state = "before_select_breadcrumb";
       }
     }
 
-    selectedItemDelegate : Rectangle
+    selectedItemDelegate : ListDelegate
     {
-      color : "#00000000"
-      height: itemHeight;
-      width : ListView.view.width
-      Text {
-        anchors.verticalCenter : parent.verticalCenter;
-        anchors.horizontalCenter : parent.horizontalCenter;
-        text : model.display
-      }
-
-      Image {
-        id : fuzz
-        source : "fuzz.png"
-        anchors.horizontalCenter : parent.horizontalCenter
-        y : parent.height / 2
-        opacity : hasChildren ? 1 : 0
-      }
-      Image {
-        anchors.right : parent.right
-        anchors.rightMargin : 5
-        anchors.verticalCenter : parent.verticalCenter
-        opacity : hasChildren ? 1 : 0
-        source: "currentindicator.png"
-onHeightChanged : { console.log("height" + height ); }
-      }
-      Image {
-        id : lastItemImage
-        opacity : hasChildren ? 0 : 1;
-        source : "selected_bottom.png"
-        anchors.horizontalCenter : parent.horizontalCenter
-        y : parent.height / 2
-      }
-
+      isSelected : true
     }
 
-    childItemsDelegate : Rectangle
+    childItemsDelegate : ListDelegate
     {
-      color : "#00000000"
-      height: itemHeight;
-      width : ListView.view.width
-
-      Text {
-        anchors.verticalCenter : parent.verticalCenter;
-        anchors.horizontalCenter : parent.horizontalCenter;
-        text : model.display
-      }
-      MouseArea {
-        anchors.fill : parent
-        onClicked : { breadcrumbTopLevel._transitionSelect = model.index; breadcrumbTopLevel.state = "before_select_child"; }
-      }
-      Image {
-        anchors.right : parent.right
-        anchors.rightMargin : 5
-        anchors.verticalCenter : parent.verticalCenter
-        opacity : ( application.childCollectionHasChildren( model.index ) ) ? 1 : 0
-        source: "transparentplus.png"
+      clickable : true
+      isChild : true
+      onIndexSelected : {
+        breadcrumbTopLevel._transitionSelect = row;
+        breadcrumbTopLevel.state = "before_select_child";
       }
     }
 

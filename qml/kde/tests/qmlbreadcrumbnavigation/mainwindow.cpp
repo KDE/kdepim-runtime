@@ -133,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
 
   m_bnf = new KBreadcrumbNavigationFactory(this);
-  m_bnf->setBreadcrumbDepth(2);
+  m_bnf->setBreadcrumbDepth(1);
   m_bnf->createBreadcrumbContext( m_treeModel, this );
 
   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
@@ -179,6 +179,15 @@ void MainWindow::setSelectedBreadcrumbCollectionRow( int row )
 {
   m_bnf->selectBreadcrumb( row );
 }
+
+int MainWindow::selectedCollectionRow()
+{
+  const QModelIndexList list = m_bnf->selectionModel()->selectedRows();
+  if (list.size() != 1)
+    return -1;
+  return list.first().row();
+}
+
 
 
 #include "mainwindow.moc"
