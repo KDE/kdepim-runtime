@@ -1,0 +1,20 @@
+diff --git a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
+index 1978b72..6012802 100644
+--- a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
++++ b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
+@@ -92,6 +92,15 @@ Item {
+     highlightRangeMode : ListView.StrictlyEnforceRange
+     preferredHighlightBegin : 0
+     preferredHighlightEnd : height
++    onCountChanged : {
++        console.log("count ###" + count);
++        console.log("BEFORE" + indexAt(0, 0) + " CurrentIndex:" + currentIndex);
++        positionViewAtIndex(count - 1, ListView.Beginning)
++        console.log("AFTER" + indexAt(0, 0) + " CurrentIndex:" + currentIndex);
++        // Select down to GMail > Inbox > Subfolder 4, flick inbox into view (it's below Gmail). Select inbox. Get:
++        // ASSERT: "!isEmpty()" in file ../../include/QtCore/../../../../src/qt/src/corelib/tools/qlist.h, line 269
++        // Also note that the view does not reposition
++    }
+   }
+ 
+   Item {

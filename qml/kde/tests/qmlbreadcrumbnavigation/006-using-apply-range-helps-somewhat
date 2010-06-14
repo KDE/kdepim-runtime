@@ -1,0 +1,26 @@
+diff --git a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
+index 1978b72..cf3382d 100644
+--- a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
++++ b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
+@@ -89,9 +89,20 @@ Item {
+     anchors.left : parent.left
+     anchors.right : parent.right
+     highlightFollowsCurrentItem : true
+-    highlightRangeMode : ListView.StrictlyEnforceRange
++    // If ApplyRange is used, it works when navigating down the tree, but when navigating up the
++    // breadcrumbs, the first item in the list is shown instead of the second.
++    highlightRangeMode : ListView.ApplyRange
+     preferredHighlightBegin : 0
+     preferredHighlightEnd : height
++    onCountChanged : {
++        console.log("count ###" + count);
++        console.log("BEFORE" + indexAt(0, 0) + " CurrentIndex:" + currentIndex);
++        positionViewAtIndex(count - 1, ListView.Beginning)
++        console.log("AFTER" + indexAt(0, 0) + " CurrentIndex:" + currentIndex);
++        // Select down to GMail > Inbox > Subfolder 4, flick inbox into view (it's below Gmail). Select inbox. Get:
++        // ASSERT: "!isEmpty()" in file ../../include/QtCore/../../../../src/qt/src/corelib/tools/qlist.h, line 269
++        // Also note that the view does not reposition
++    }
+   }
+ 
+   Item {

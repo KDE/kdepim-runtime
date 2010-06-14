@@ -1,0 +1,26 @@
+diff --git a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
+index 78b8bf1..ab27d9d 100644
+--- a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
++++ b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
+@@ -80,7 +80,7 @@ Item {
+ 
+   ListView {
+     id : breadcrumbsView
+-    interactive : false
++    //interactive : false
+     height : breadcrumbsView.count > 0 ? itemHeight : 0
+ 
+     clip : true;
+diff --git a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/mainwindow.cpp b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/mainwindow.cpp
+index ae44e36..0f363a9 100644
+--- a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/mainwindow.cpp
++++ b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/mainwindow.cpp
+@@ -133,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
+   QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
+ 
+   m_bnf = new KBreadcrumbNavigationFactory(this);
+-  m_bnf->setBreadcrumbDepth(1);
++  m_bnf->setBreadcrumbDepth(2);
+   m_bnf->createBreadcrumbContext( m_treeModel, this );
+ 
+   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
