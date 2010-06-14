@@ -37,6 +37,7 @@ Rectangle {
     SystemPalette { id: palette; colorGroup: "Active" }
 
     anchors.fill : parent;
+    anchors.rightMargin : 20
 
     topDelegate : ListDelegate
     {
