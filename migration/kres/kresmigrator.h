@@ -83,8 +83,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           mCurrentKResource = res;
           ++mIt;
 
-          if ( res->type() == "imap" )
-          {
+          if ( res->type() == "imap" ) {
             createKolabResource();
           } else {
             bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
@@ -137,6 +136,21 @@ template <typename T> class KResMigrator : public KResMigratorBase
       mBridgeManager = new KRES::Manager<T>( mType );
       mBridgeManager->readConfig( mConfig );
       if ( !mBridgeManager->standardResource() ) {
+        // the plugin for this type might no longer be available
+        const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1").arg( resId ) );
+        const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
+        if ( !resourceType.isEmpty() ) {
+          if ( resourceType == QLatin1String( "imap" ) ) {
+            createKolabResource();
+            migrateNext();
+            return;
+          }
+
+          if ( migrateUnknownResource( resourceType, kresCfgGroup ) ) {
+            migrateNext();
+            return;
+          }
+        }
         emit message( Error, i18n("Bridged resource '%1' has no standard resource.", resId) );
         migrateNext();
         return;
@@ -154,6 +168,14 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     virtual bool migrateResource( T *res ) = 0;
 
+    virtual bool migrateUnknownResource( const QString &resourceType, const KConfigGroup &resourceConfig )
+    {
+      Q_UNUSED( resourceType );
+      Q_UNUSED( resourceConfig );
+
+      return false;
+    }
+
     KConfigGroup kresConfig( KRES::Resource* res ) const
     {
       return KConfigGroup( mConfig, "Resource_" + res->identifier() );
@@ -168,12 +190,17 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     void migrationCompleted( const Akonadi::AgentInstance &instance )
     {
+      migrationCompleted( instance, mCurrentKResource->identifier(), mCurrentKResource->resourceName() );
+    }
+
+    void migrationCompleted( const Akonadi::AgentInstance &instance, const QString &kresId, const QString &kresName )
+    {
       // do an intial sync so the resource shows up in the folder tree at least
       AgentInstance nonConstInstance = instance;
       nonConstInstance.synchronize();
 
       // check if this one was previously bridged and remove the bridge
-      KConfigGroup cfg( KGlobal::config(), "Resource " + mCurrentKResource->identifier() );
+      KConfigGroup cfg( KGlobal::config(), "Resource " + kresId );
       const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );
       if ( bridgeId != instance.identifier() ) {
         const AgentInstance bridge = AgentManager::self()->instance( bridgeId );
@@ -181,7 +208,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       }
 
       setMigrationState( mCurrentKResource->identifier(), Complete, instance.identifier(), mType );
-      emit message( Success, i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
+      emit message( Success, i18n( "Migration of '%1' succeeded.", kresName ) );
       migrationCompletedHelper( instance );
     }
 
