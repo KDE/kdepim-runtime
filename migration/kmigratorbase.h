@@ -24,6 +24,8 @@
 
 #include <QObject>
 
+class KJob;
+
 /**
  * Base class for akonadi migrators.
  */
@@ -59,7 +61,7 @@ class KMigratorBase : public QObject
     virtual void migrateNext() = 0;
 
   protected:
-    void createAgentInstance( const QString &typeId, QObject *receiver, const char* slot );
+    KJob *createAgentInstance( const QString &typeId, QObject *receiver, const char* slot );
     virtual void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance
                                   = Akonadi::AgentInstance() ) = 0;
 
