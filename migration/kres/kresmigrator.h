@@ -189,25 +189,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     void migrationCompleted( const Akonadi::AgentInstance &instance )
     {
-      migrationCompleted( instance, mCurrentKResource->identifier(), mCurrentKResource->resourceName() );
-    }
-
-    void migrationCompleted( const Akonadi::AgentInstance &instance, const QString &kresId, const QString &kresName )
-    {
-      // do an intial sync so the resource shows up in the folder tree at least
-      AgentInstance nonConstInstance = instance;
-      nonConstInstance.synchronize();
-
-      // check if this one was previously bridged and remove the bridge
-      KConfigGroup cfg( KGlobal::config(), "Resource " + kresId );
-      const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );
-      if ( bridgeId != instance.identifier() ) {
-        const AgentInstance bridge = AgentManager::self()->instance( bridgeId );
-        AgentManager::self()->removeInstance( bridge );
-      }
-
-      setMigrationState( mCurrentKResource->identifier(), Complete, instance.identifier(), mType );
-      emit message( Success, i18n( "Migration of '%1' succeeded.", kresName ) );
+      KResMigratorBase::migrationCompleted( instance, mCurrentKResource->identifier(), mCurrentKResource->resourceName() );
       migrationCompletedHelper( instance );
     }
 
