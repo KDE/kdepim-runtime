@@ -47,11 +47,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     */
     bool registerHandlerForCollection( const Akonadi::Collection& imapCollection );
 
-    /**
-      Returns the root collection.
-    */
-    inline Akonadi::Collection root() const { return m_root; }
-
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
@@ -106,7 +101,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;
-    Akonadi::Collection m_root;
 
     enum RetrieveState {
       RetrieveItems,
