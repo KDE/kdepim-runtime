@@ -124,21 +124,29 @@ void KResMigratorBase::setOmitClientBridge(bool b)
   mOmitClientBridge = b;
 }
 
-void KResMigratorBase::createKolabResource()
+void KResMigratorBase::createKolabResource( const QString &kresId, const QString &kresName )
 {
   // check if kolab resource exists. If not, create one.
   Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolab_resource" );
   if ( !kolabAgent.isValid() ) {
     emit message( Info, i18n( "Attempting to create kolab resource" ) );
-    createAgentInstance( "akonadi_kolab_resource", this, SLOT( kolabResourceCreated( KJob* ) ) );
+    KJob * job = createAgentInstance( "akonadi_kolab_resource", this, SLOT( kolabResourceCreated( KJob* ) ) );
+    job->setProperty( "kresId", kresId );
+    job->setProperty( "kresName", kresName );
+  } else {
+    migrationCompleted( kolabAgent, kresId, kresName );
+    migrateNext();
   }
 }
 
-void KResMigratorBase::kolabResourceCreated( KJob *job)
+void KResMigratorBase::kolabResourceCreated( KJob *job )
 {
-  if ( job->error() )
-  {
+  if ( job->error() ) {
     emit message( Error, i18n( "Failed to create kolab proxy resource." ) );
+  } else {
+    AgentInstanceCreateJob *createJob = qobject_cast<AgentInstanceCreateJob*>( job );
+    Q_ASSERT( createJob != 0 );
+    migrationCompleted( createJob->instance(), createJob->property( "kresId" ).value<QString>(), createJob->property( "kresName" ).value<QString>() );
   }
   migrateNext();
 }

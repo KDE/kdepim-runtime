@@ -84,7 +84,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           ++mIt;
 
           if ( res->type() == "imap" ) {
-            createKolabResource();
+            createKolabResource( res->identifier(), res->resourceName() );
           } else {
             bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
             if ( !nativeAvailable ) {
@@ -141,8 +141,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
         if ( !resourceType.isEmpty() ) {
           if ( resourceType == QLatin1String( "imap" ) ) {
-            createKolabResource();
-            migrateNext();
+            createKolabResource( resId, kresCfgGroup.readEntry( QLatin1String( "ResourceName" ), QString() ) );
             return;
           }
 
