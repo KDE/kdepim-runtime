@@ -57,10 +57,13 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     void migrate()
     {
-      mManager = new KRES::Manager<T>( mType );
-      mManager->readConfig();
       const QString kresCfgFile = KStandardDirs::locateLocal( "config", QString( "kresources/%1/stdrc" ).arg( mType ) );
       mConfig = new KConfig( kresCfgFile );
+      const KConfigGroup generalGroup( mConfig, QLatin1String( "General" ) );
+      mUnknownTypeResources = QSet<QString>::fromList( generalGroup.readEntry( QLatin1String( "ResourceKeys" ), QStringList() ) );
+      
+      mManager = new KRES::Manager<T>( mType );
+      mManager->readConfig();
       mIt = mManager->begin();
       migrateNext();
     }
@@ -68,6 +71,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
     void migrateNext()
     {
       while ( mIt != mManager->end() ) {
+        mUnknownTypeResources.remove( (*mIt)->identifier() );
         if ( (*mIt)->type() == "akonadi" ) {
           mClientBridgeIdentifier = (*mIt)->identifier();
           mClientBridgeFound = true;
@@ -105,9 +109,18 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
         if ( mIt == mManager->end() ) {
           migrateBridged();
+          if ( mPendingBridgedResources.isEmpty() ) {
+            migrateUnknown();
+            if ( mUnknownTypeResources.isEmpty() ) {
+              deleteLater();
+            }
+          }
         }
       } else {
-        deleteLater();
+        migrateUnknown();
+        if ( mUnknownTypeResources.isEmpty() ) {
+          deleteLater();
+        }
       }
     }
 
@@ -121,6 +134,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         return;
       }
       const QString resId = mPendingBridgedResources.takeFirst();
+      mUnknownTypeResources.remove( resId );
       KConfigGroup resMigrationCfg( KGlobal::config(), "Resource " + resId );
       const QString akoResId = resMigrationCfg.readEntry( "ResourceIdentifier", "" );
       if ( akoResId.isEmpty() ) {
@@ -145,7 +159,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
             return;
           }
 
-          if ( migrateUnknownResource( resourceType, kresCfgGroup ) ) {
+          if ( migrateUnknownResource( resId, resourceType, kresCfgGroup ) ) {
             migrateNext();
             return;
           }
@@ -167,11 +181,13 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     virtual bool migrateResource( T *res ) = 0;
 
-    virtual bool migrateUnknownResource( const QString &resourceType, const KConfigGroup &resourceConfig )
+    virtual bool migrateUnknownResource( const QString &kresId, const QString &kresType, const KConfigGroup &kresConfig )
     {
-      Q_UNUSED( resourceType );
-      Q_UNUSED( resourceConfig );
+      Q_UNUSED( kresId );
+      Q_UNUSED( kresType );
+      Q_UNUSED( kresConfig );
 
+      migrateNext();
       return false;
     }
 
@@ -240,7 +256,29 @@ template <typename T> class KResMigrator : public KResMigratorBase
           clientBridgeConfig.writeEntry( keyName, mAgentForOldDefaultResource );
         }
       }
-      deleteLater();
+    }
+    
+    void migrateUnknown()
+    {
+      if ( mUnknownTypeResources.isEmpty() ) {
+        return;
+      }
+      
+      QSet<QString>::iterator setIt = mUnknownTypeResources.begin();
+      const QString kresId = *setIt;
+      mUnknownTypeResources.erase( setIt );
+      
+      const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1").arg( kresId ) );
+      const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
+      const QString resourceName = kresCfgGroup.readEntry( QLatin1String( "ResourceName" ), QString() );
+
+      kDebug() << "migrating Unknown" << resourceName << ", type=" << resourceType << ",id=" << kresId;
+      
+      if ( resourceType == QLatin1String( "imap" ) ) {
+        createKolabResource( kresId, resourceName );
+      } else {
+        migrateUnknownResource( kresId, resourceType, kresCfgGroup );
+      } 
     }
 
   private:
@@ -251,6 +289,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
     bool mClientBridgeFound;
     QString mClientBridgeIdentifier;
     QString mAgentForOldDefaultResource;
+    QSet<QString> mUnknownTypeResources;
 };
 
 #endif
