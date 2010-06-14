@@ -124,6 +124,16 @@ void KResMigratorBase::setOmitClientBridge(bool b)
   mOmitClientBridge = b;
 }
 
+void KResMigratorBase::createKolabResource()
+{
+  // check if kolab resource exists. If not, create one.
+  Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolab_resource" );
+  if ( !kolabAgent.isValid() ) {
+    emit message( Info, i18n( "Attempting to create kolab resource" ) );
+    createAgentInstance( "akonadi_kolab_resource", this, SLOT( kolabResourceCreated( KJob* ) ) );
+  }
+}
+
 void KResMigratorBase::kolabResourceCreated( KJob *job)
 {
   if ( job->error() )

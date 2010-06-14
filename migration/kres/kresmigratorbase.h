@@ -60,6 +60,9 @@ class KResMigratorBase : public KMigratorBase
     KRES::Resource *mCurrentKResource;
     bool mBridgingInProgress;
 
+  protected:
+    void createKolabResource();
+    
   private slots:
     void resourceBridgeCreated( KJob *job );
     void kolabResourceCreated( KJob *job );
