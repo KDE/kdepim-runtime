@@ -48,6 +48,8 @@ Item {
   signal breadcrumbCollectionSelected(int row)
 
   SystemPalette { id: palette; colorGroup: "Active" }
+  // This top button is a view for historical reasons only.
+  // Too lazy to change it.
   ListModel {
     id : topModel
     ListElement { display : "Home" }
@@ -78,7 +80,7 @@ Item {
 
   ListView {
     id : breadcrumbsView
-    interactive : false
+    //interactive : false
     height : breadcrumbsView.count > 0 ? itemHeight : 0
 
     clip : true;
@@ -90,14 +92,6 @@ Item {
     highlightRangeMode : ListView.StrictlyEnforceRange
     preferredHighlightBegin : 0
     preferredHighlightEnd : height
-    onCountChanged : {
-//       console.log("count ###" + count);
-//       console.log(indexAt(0, 0) + " " + currentIndex);
-//       positionViewAtIndex(count - 1, ListView.Beginning)
-//       console.log("DONE" + indexAt(0, 0));
-      //if (count > 0 )
-//         contentY = itemHeight
-    }
   }
 
   Item {
@@ -325,8 +319,8 @@ Item {
       PropertyChanges {
         target : breadcrumbRightDivider
         anchors.topMargin : -8
-        height : {console.log(itemHeight); 67}
-        opacity : 0 // { 1 } // selectedItemView.count > 0 ? 1 : 0
+        height : 67
+        opacity : 0
       }
       PropertyChanges {
         target : selectedItemPlaceHolder
@@ -487,9 +481,6 @@ Item {
       NumberAnimation {
         target: selectedItemView
         properties: "opacity"
-      }
-      ScriptAction {
-        script : {console.log("### " + selectedItemView.count + " " + selectedItemView.currentIndex); }
       }
     },
     Transition {
