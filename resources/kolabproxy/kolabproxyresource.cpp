@@ -266,6 +266,7 @@ void KolabProxyResource::imapItemCreationResult(KJob* job)
 
 void KolabProxyResource::itemChanged( const Item &kolabItem, const QSet<QByteArray> &parts )
 {
+  Q_UNUSED( parts );
   kDebug() << "ITEMCHANGED" << kolabItem.id() << kolabItem.remoteId();
 
   ItemFetchJob* job = new ItemFetchJob( kolabToImap( kolabItem ), this );
@@ -553,6 +554,7 @@ void KolabProxyResource::imapItemMoved(const Akonadi::Item& item, const Akonadi:
 
 void KolabProxyResource::imapCollectionAdded(const Collection &collection, const Collection &parent)
 {
+  Q_UNUSED( parent );
   if ( collection.resource() == identifier() ) // just to be sure...
     return;
 
