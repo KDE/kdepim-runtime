@@ -24,16 +24,13 @@
 
 class KJob;
 
-#include <akonadi/resourcebase.h>
 #include <boost/shared_ptr.hpp>
+
+#include <QtCore/QMap>
 #include <QtCore/QStringList>
 
 #include <kaccount.h>
 #include <kimap/loginjob.h>
-
-namespace KMime
-{
-}
 
 namespace KIMAP
 {
