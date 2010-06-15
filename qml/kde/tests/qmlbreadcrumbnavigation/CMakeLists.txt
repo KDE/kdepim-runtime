@@ -31,15 +31,14 @@ set(app_SRCS
 set(app_qml_SRCS
   mainview.qml
   BreadcrumbNavigationView.qml
-  transparentplus.png
-  tree_example
-  backgroundtile.png
-  border_dot.png
-  currentindicator.png
-  fuzz.png
-  selected_bottom.png
-  selected_top.png
+  ListDelegate.qml
 )
+
+FILE(GLOB _images "*png")
+foreach( _image ${_images})
+  execute_process(COMMAND ${CMAKE_COMMAND} -E copy "${_image}" "${CMAKE_BINARY_DIR}")
+endforeach()
+
 
 foreach( qml_src ${app_qml_SRCS})
   execute_process(COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/${qml_src}" "${CMAKE_BINARY_DIR}/${qml_src}")

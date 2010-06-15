@@ -305,6 +305,9 @@ void KMailMigrator::migrateLocalFolders()
 
     emit message( Info, i18nc( "@info:status", "Migrating local folders in '%1'...", mLocalMaildirPath ) );
 
+    // show status/progress info of resources in our dialog
+    mForwardResourceNotifications = true;
+
     createAgentInstance( "akonadi_mixedmaildir_resource", this,
                          SLOT( localMaildirCreated( KJob * ) ) );
   }
@@ -333,6 +336,7 @@ OrgKdeAkonadiImapSettingsInterface* KMailMigrator::createImapSettingsInterface( 
     "/Settings", QDBusConnection::sessionBus(), this );
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
     return 0;
   }
   return iface;
@@ -345,6 +349,7 @@ OrgKdeAkonadiPOP3SettingsInterface* KMailMigrator::createPop3SettingsInterface( 
     "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
+    delete iface;
     return 0;
   }
   return iface;
@@ -809,6 +814,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
 
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
     return;
   }
 
@@ -868,6 +874,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
     return;
   }
 
@@ -916,6 +923,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
     return;
   }
 

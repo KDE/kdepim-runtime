@@ -32,6 +32,8 @@ using KPIM::MessageStatus;
 #include <QtTest/QTest>
 #include <QDebug>
 
+#include <boost/shared_ptr.hpp>
+
 QTEST_MAIN ( TestIdxReader )
 
 
@@ -80,7 +82,7 @@ void TestIdxReader::testRead() {
 
     QVERIFY ( reader.messages().size() == 2 );
 
-    KMIndexMsgPrivate* msg = reader.messages().front();
+    KMIndexDataPtr msg = reader.messages().front();
 
     QString subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
     MessageStatus status;

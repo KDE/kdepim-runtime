@@ -40,6 +40,7 @@
 #include "libmaildir/maildir.h"
 
 #include <kmime/kmime_message.h>
+#include <akonadi/cachepolicy.h>
 
 using namespace Akonadi;
 using KPIM::Maildir;
@@ -121,6 +122,7 @@ void MaildirResource::configurationChanged()
 
 void MaildirResource::aboutToQuit()
 {
+  clearCache();
   // The settings may not have been saved if e.g. they have been modified via
   // DBus instead of the config dialog.
   Settings::self()->writeConfig();
@@ -278,6 +280,11 @@ void MaildirResource::retrieveCollections()
     collectionsRetrieved( Collection::List() );
     return;
   }
+  CachePolicy cachePolicy;
+  cachePolicy.setInheritFromParent( false );
+  cachePolicy.setLocalParts( QStringList() << MessagePart::Header );
+  cachePolicy.setSyncOnDemand( true );
+  cachePolicy.setCacheTimeout( 1 );
 
   Collection root;
   root.setParentCollection( Collection::root() );
@@ -285,6 +292,7 @@ void MaildirResource::retrieveCollections()
   root.setName( name() );
   root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
                 | Collection::CanCreateCollection );
+  root.setCachePolicy( cachePolicy );
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
   if ( !Settings::self()->topLevelIsContainer() )

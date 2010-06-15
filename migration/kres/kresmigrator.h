@@ -57,10 +57,13 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     void migrate()
     {
-      mManager = new KRES::Manager<T>( mType );
-      mManager->readConfig();
       const QString kresCfgFile = KStandardDirs::locateLocal( "config", QString( "kresources/%1/stdrc" ).arg( mType ) );
       mConfig = new KConfig( kresCfgFile );
+      const KConfigGroup generalGroup( mConfig, QLatin1String( "General" ) );
+      mUnknownTypeResources = QSet<QString>::fromList( generalGroup.readEntry( QLatin1String( "ResourceKeys" ), QStringList() ) );
+      
+      mManager = new KRES::Manager<T>( mType );
+      mManager->readConfig();
       mIt = mManager->begin();
       migrateNext();
     }
@@ -68,6 +71,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
     void migrateNext()
     {
       while ( mIt != mManager->end() ) {
+        mUnknownTypeResources.remove( (*mIt)->identifier() );
         if ( (*mIt)->type() == "akonadi" ) {
           mClientBridgeIdentifier = (*mIt)->identifier();
           mClientBridgeFound = true;
@@ -83,13 +87,8 @@ template <typename T> class KResMigrator : public KResMigratorBase
           mCurrentKResource = res;
           ++mIt;
 
-          if ( res->type() == "imap" )
-          {
-            // check if kolab resource exists. If not, create one.
-            Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolab_resource" );
-            if ( !kolabAgent.isValid() )
-              emit message( Info, i18n( "Attempting to create kolab resource" ) );
-              createAgentInstance( "akonadi_kolab_resource", this, SLOT(kolabResourceCreated(KJob*)) );
+          if ( res->type() == "imap" ) {
+            createKolabResource( res->identifier(), res->resourceName() );
           } else {
             bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
             if ( !nativeAvailable ) {
@@ -110,9 +109,18 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
         if ( mIt == mManager->end() ) {
           migrateBridged();
+          if ( mPendingBridgedResources.isEmpty() ) {
+            migrateUnknown();
+            if ( mUnknownTypeResources.isEmpty() ) {
+              deleteLater();
+            }
+          }
         }
       } else {
-        deleteLater();
+        migrateUnknown();
+        if ( mUnknownTypeResources.isEmpty() ) {
+          deleteLater();
+        }
       }
     }
 
@@ -126,6 +134,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         return;
       }
       const QString resId = mPendingBridgedResources.takeFirst();
+      mUnknownTypeResources.remove( resId );
       KConfigGroup resMigrationCfg( KGlobal::config(), "Resource " + resId );
       const QString akoResId = resMigrationCfg.readEntry( "ResourceIdentifier", "" );
       if ( akoResId.isEmpty() ) {
@@ -141,6 +150,20 @@ template <typename T> class KResMigrator : public KResMigratorBase
       mBridgeManager = new KRES::Manager<T>( mType );
       mBridgeManager->readConfig( mConfig );
       if ( !mBridgeManager->standardResource() ) {
+        // the plugin for this type might no longer be available
+        const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1").arg( resId ) );
+        const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
+        if ( !resourceType.isEmpty() ) {
+          if ( resourceType == QLatin1String( "imap" ) ) {
+            createKolabResource( resId, kresCfgGroup.readEntry( QLatin1String( "ResourceName" ), QString() ) );
+            return;
+          }
+
+          if ( migrateUnknownResource( resId, resourceType, kresCfgGroup ) ) {
+            migrateNext();
+            return;
+          }
+        }
         emit message( Error, i18n("Bridged resource '%1' has no standard resource.", resId) );
         migrateNext();
         return;
@@ -158,6 +181,16 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     virtual bool migrateResource( T *res ) = 0;
 
+    virtual bool migrateUnknownResource( const QString &kresId, const QString &kresType, const KConfigGroup &kresConfig )
+    {
+      Q_UNUSED( kresId );
+      Q_UNUSED( kresType );
+      Q_UNUSED( kresConfig );
+
+      migrateNext();
+      return false;
+    }
+
     KConfigGroup kresConfig( KRES::Resource* res ) const
     {
       return KConfigGroup( mConfig, "Resource_" + res->identifier() );
@@ -172,20 +205,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     void migrationCompleted( const Akonadi::AgentInstance &instance )
     {
-      // do an intial sync so the resource shows up in the folder tree at least
-      AgentInstance nonConstInstance = instance;
-      nonConstInstance.synchronize();
-
-      // check if this one was previously bridged and remove the bridge
-      KConfigGroup cfg( KGlobal::config(), "Resource " + mCurrentKResource->identifier() );
-      const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );
-      if ( bridgeId != instance.identifier() ) {
-        const AgentInstance bridge = AgentManager::self()->instance( bridgeId );
-        AgentManager::self()->removeInstance( bridge );
-      }
-
-      setMigrationState( mCurrentKResource->identifier(), Complete, instance.identifier(), mType );
-      emit message( Success, i18n( "Migration of '%1' succeeded.", mCurrentKResource->resourceName() ) );
+      KResMigratorBase::migrationCompleted( instance, mCurrentKResource->identifier(), mCurrentKResource->resourceName() );
       migrationCompletedHelper( instance );
     }
 
@@ -236,7 +256,29 @@ template <typename T> class KResMigrator : public KResMigratorBase
           clientBridgeConfig.writeEntry( keyName, mAgentForOldDefaultResource );
         }
       }
-      deleteLater();
+    }
+    
+    void migrateUnknown()
+    {
+      if ( mUnknownTypeResources.isEmpty() ) {
+        return;
+      }
+      
+      QSet<QString>::iterator setIt = mUnknownTypeResources.begin();
+      const QString kresId = *setIt;
+      mUnknownTypeResources.erase( setIt );
+      
+      const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1").arg( kresId ) );
+      const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
+      const QString resourceName = kresCfgGroup.readEntry( QLatin1String( "ResourceName" ), QString() );
+
+      kDebug() << "migrating Unknown" << resourceName << ", type=" << resourceType << ",id=" << kresId;
+      
+      if ( resourceType == QLatin1String( "imap" ) ) {
+        createKolabResource( kresId, resourceName );
+      } else {
+        migrateUnknownResource( kresId, resourceType, kresCfgGroup );
+      } 
     }
 
   private:
@@ -247,6 +289,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
     bool mClientBridgeFound;
     QString mClientBridgeIdentifier;
     QString mAgentForOldDefaultResource;
+    QSet<QString> mUnknownTypeResources;
 };
 
 #endif

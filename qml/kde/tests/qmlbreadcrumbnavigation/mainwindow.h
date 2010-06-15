@@ -26,6 +26,7 @@ public slots:
 
   /** Returns wheter or not the child collection at row @param row has children. */
   bool childCollectionHasChildren( int row );
+  int selectedCollectionRow();
 
 private:
   QTreeView *m_treeView;
