@@ -17,6 +17,9 @@
     02110-1301, USA.
 */
 
+// add this function to trim user input of whitespace when needed
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
+
 // TODO: i18n??
 var page = Dialog.addPage( "imapwizard.ui", "Personal Settings" );
 
@@ -33,7 +36,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.widget().incommingAddress.text == "" ) {
+  if ( page.widget().incommingAddress.text.trim() == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -50,9 +53,9 @@ function setup()
     identity.setEmail( SetupManager.email() );
     identity.setRealName( SetupManager.name() );
 
-    ServerTest.test( page.widget().incommingAddress.text, "imap" );
+    ServerTest.test( page.widget().incommingAddress.text.trim(), "imap" );
   } else {
-    ServerTest.test( page.widget().outgoingAddress.text, "smtp" );
+    ServerTest.test( page.widget().outgoingAddress.text.trim(), "smtp" );
   }
 }
 
@@ -65,7 +68,7 @@ function testOk( arg )
 {
   if (stage == 1) {
     var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
-    imapRes.setOption( "ImapServer", page.widget().incommingAddress.text );
+    imapRes.setOption( "ImapServer", page.widget().incommingAddress.text.trim() );
     imapRes.setOption( "UserName", page.widget().userName.text );
     imapRes.setOption( "Password", SetupManager.password() );
     imapRes.setOption( "DisconnectedModeEnabled", page.widget().disconnectedMode.checked );
@@ -73,21 +76,25 @@ function testOk( arg )
     imapRes.setOption( "AccountIdentity", identity.uoid() );
     if ( arg == "ssl" ) { 
       // The ENUM used for authentication (in the imap resource only)
-      // is KIMAP::LoginJob::AuthenticationMode
       imapRes.setOption( "Safety", "SSL"); // SSL/TLS
-      imapRes.setOption( "Authentication", 0); // ClearText
+      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 993 );
     } else if ( arg == "tls" ) { // tls is really STARTTLS
       imapRes.setOption( "Safety", "STARTTLS");  // STARTTLS
-      imapRes.setOption( "Authentication", 0); // ClearText
+      imapRes.setOption( "Authentication", 7 ); // ClearText
+      imapRes.setOption( "ImapPort", 143 );
+    } else {
+      imapRes.setOption( "Safety", "NONE" );  // No encryption
+      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 143 );
     }
+    
     stage = 2;
     setup();
   } else {
     var smtp = SetupManager.createTransport( "smtp" );
-    smtp.setName( page.widget().outgoingAddress.text );
-    smtp.setHost( page.widget().outgoingAddress.text );
+    smtp.setName( page.widget().outgoingAddress.text.trim() );
+    smtp.setHost( page.widget().outgoingAddress.text.trim() );
     if ( arg == "ssl" ) { 
       smtp.setEncryption( "SSL" );
     } else if ( arg == "tls" ) {

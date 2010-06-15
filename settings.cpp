@@ -54,6 +54,41 @@ Settings *Settings::self()
     return s_globalSettings->q;
 }
 
+/**
+ * Maps the enum used to represent authentication in MailTransport (kdepimlibs)
+ * to the one used by the imap resource.
+ * @param authType the MailTransport auth enum value
+ * @return the corresponding KIMAP auth value.
+ * @note will cause fatal error if there is no mapping, so be careful not to pass invalid auth options (e.g., APOP) to this function.
+ */
+KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType )
+{
+  // typedef these for readability
+  typedef MailTransport::Transport::EnumAuthenticationType MTAuth;
+  typedef KIMAP::LoginJob KIAuth;
+  switch ( authType ) {
+    case MTAuth::ANONYMOUS:
+      return KIAuth::Anonymous;
+    case MTAuth::PLAIN:
+      return KIAuth::Plain;
+    case MTAuth::NTLM:
+      return KIAuth::NTLM;
+    case MTAuth::LOGIN:
+      return KIAuth::Login;
+    case MTAuth::GSSAPI:
+      return KIAuth::GSSAPI;
+    case MTAuth::DIGEST_MD5:
+      return KIAuth::DigestMD5;
+    case MTAuth::CRAM_MD5:
+      return KIAuth::CramMD5;
+    case MTAuth::CLEAR:
+      return KIAuth::ClearText;
+    default:
+      kFatal() << "mapping from Transport::EnumAuthenticationType ->  KIMAP::LoginJob::AuthenticationMode not possible";
+  }
+  return KIAuth::ClearText; // dummy value, shouldn't get here.
+}
+
 Settings::Settings( WId winId ) : SettingsBase(), m_winId( winId )
 {
     Q_ASSERT( !s_globalSettings->q );
@@ -85,11 +120,17 @@ void Settings::onWalletOpened( bool success )
     emit passwordRequestCompleted( QString(), true );
   } else {
     Wallet *wallet = qobject_cast<Wallet*>( sender() );
+    bool passwordNotStoredInWallet = true;
     if ( wallet && wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), m_password );
+	passwordNotStoredInWallet = false;
     }
-    emit passwordRequestCompleted( m_password, false );
+    if ( passwordNotStoredInWallet || m_password.isEmpty() )
+      requestManualAuth();
+    else
+      emit passwordRequestCompleted( m_password, passwordNotStoredInWallet );
+
     wallet->deleteLater();
   }
 }
@@ -123,25 +164,18 @@ QString Settings::password(bool *userRejected) const
     if ( !m_password.isEmpty() )
       return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
-    if ( wallet && wallet->isOpen() && wallet->hasFolder( "imap" ) ) {
+    if ( wallet && wallet->isOpen() ) {
+      if ( wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), m_password );
+      } else {
+        wallet->createFolder( "imap" );
+      }
     } else if ( userRejected != 0 ) {
         *userRejected = true;
     }
     delete wallet;
     return m_password;
-}
-
-bool Settings::passwordPossible() const
-{
-    bool possible = true;
-    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
-    if ( !wallet ) {
-        possible = false;
-    }
-    delete wallet;
-    return possible;
 }
 
 void Settings::setPassword( const QString & password )
@@ -157,6 +191,7 @@ void Settings::setPassword( const QString & password )
         wallet->writePassword( config()->name(), password );
         kDebug() << "Wallet save: " << wallet->sync() << endl;
     }
+    delete wallet;
 }
 
 void Settings::loadAccount( ImapAccount *account ) const
@@ -178,7 +213,11 @@ void Settings::loadAccount( ImapAccount *account ) const
     account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
   }
 
-  account->setAuthenticationMode( (KIMAP::LoginJob::AuthenticationMode) authentication() );
+  account->setAuthenticationMode(
+      mapTransportAuthToKimap(
+          (MailTransport::TransportBase::EnumAuthenticationType::type) authentication()
+      )
+  );
 
 }
 

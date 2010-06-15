@@ -23,6 +23,10 @@
 
 #include "settingsbase.h"
 
+#include <kimap/loginjob.h>
+
+#include <mailtransport/transport.h>
+
 class ImapAccount;
 
 class Settings : public SettingsBase
@@ -30,9 +34,10 @@ class Settings : public SettingsBase
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Wallet" )
 public:
+    static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType );
+
     Settings( WId = 0 );
     static Settings *self();
-    bool passwordPossible() const;
     void setWinId( WId );
 
     void requestPassword();
