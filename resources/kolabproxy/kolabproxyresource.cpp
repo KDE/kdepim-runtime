@@ -250,6 +250,7 @@ void KolabProxyResource::imapItemCreationResult(KJob* job)
 
 void KolabProxyResource::itemChanged( const Item &kolabItem, const QSet<QByteArray> &parts )
 {
+  Q_UNUSED( parts );
   kDebug() << "ITEMCHANGED" << kolabItem.id() << kolabItem.remoteId();
 
   ItemFetchJob* job = new ItemFetchJob( kolabToImap( kolabItem ), this );
@@ -537,6 +538,7 @@ void KolabProxyResource::imapItemMoved(const Akonadi::Item& item, const Akonadi:
 
 void KolabProxyResource::imapCollectionAdded(const Collection &collection, const Collection &parent)
 {
+  Q_UNUSED( parent );
   if ( collection.resource() == identifier() ) // just to be sure...
     return;
 
@@ -579,6 +581,7 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
     // if that fails it's not in our tree -> we don't care
     Collection kolabCollection = createCollection( collection );
     CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
+    connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
   } else {
     // Kolab folder we already have in our tree, if the update fails, reload our tree
     Collection kolabCollection = createCollection( collection );
