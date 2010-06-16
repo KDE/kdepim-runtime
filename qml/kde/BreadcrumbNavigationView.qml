@@ -87,13 +87,13 @@ Item {
     anchors.left : parent.left
     anchors.right : parent.right
     highlightFollowsCurrentItem : true
-    highlightRangeMode : ListView.ApplyRange
+    highlightRangeMode : ListView.StrictlyEnforceRange
     preferredHighlightBegin : 0
     preferredHighlightEnd : height
     onCountChanged : {
 //       console.log("count ###" + count);
 //       console.log(indexAt(0, 0) + " " + currentIndex);
-      positionViewAtIndex(count - 1, ListView.Beginning)
+//       positionViewAtIndex(count - 1, ListView.Beginning)
 //       console.log("DONE" + indexAt(0, 0));
       //if (count > 0 )
 //         contentY = itemHeight
