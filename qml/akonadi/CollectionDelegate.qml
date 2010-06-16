@@ -81,22 +81,20 @@ Item {
       }
 
       Column {
-        height: collectionIcon.height
-        width: wrapper.width - collectionIcon.width - 20
-        spacing: 5
+        height : collectionIcon.height
         Text {
-          anchors.fill: parent
+          width: wrapper.width - collectionIcon.width - 50
           text : model.display
           //### requires a newer QML version
           //wrapMode: "WrapAnywhere" // Needs the anchors.fill to work properly
         }
-      }
-      Text {
-        anchors.bottom : parent.bottom
-        anchors.right : parent.right
-        anchors.rightMargin : 15 + parent.spacing
-        text : model.unreadCount > 0 ? model.unreadCount : ""
-        color : "blue"
+
+        Text {
+          x : parent.width - 15
+          width : 50
+          text : model.unreadCount > 0 ? model.unreadCount : ""
+          color : "blue"
+        }
       }
     }
 
