@@ -3,6 +3,10 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
+
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
     the Free Software Foundation; either version 2 of the License, or (at your
@@ -56,11 +60,6 @@ public:
   explicit ImapAccount( QObject *parent = 0 );
   ~ImapAccount();
 
-  bool connect( const QString &password = QString() );
-  void disconnect();
-
-  KIMAP::Session *extraSession( const QString &id, const QString &password = QString() );
-
   void setServer( const QString &server );
   QString server() const;
 
@@ -79,27 +78,7 @@ public:
   void setSubscriptionEnabled( bool enabled );
   bool isSubscriptionEnabled() const;
 
-  KIMAP::Session *mainSession() const;
-  QStringList capabilities() const;
-  QList<KIMAP::MailBoxDescriptor> namespaces() const;
-
-Q_SIGNALS:
-  void success( KIMAP::Session *session );
-  void error( KIMAP::Session *session, int code, const QString &message );
-
-private Q_SLOTS:
-  void onLoginDone( KJob *job );
-  void onCapabilitiesTestDone( KJob *job );
-  void onNamespacesTestDone( KJob *job );
-
 private:
-  KIMAP::Session *createSessionInternal( const QString &password );
-  void doConnect( const QString &password );
-
-  KIMAP::Session *m_mainSession;
-  QMap<QString, KIMAP::Session*> m_extraSessions;
-  QStringList m_capabilities;
-  QList<KIMAP::MailBoxDescriptor> m_namespaces;
   QString m_server;
   quint16 m_port;
   QString m_userName;
