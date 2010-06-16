@@ -25,28 +25,8 @@
 
 #include "imapaccount.h"
 
-#include <QtNetwork/QSslSocket>
-
-#include <kdebug.h>
-#include <klocale.h>
-#include <kpassworddialog.h>
-#include <kmessagebox.h>
-#include <KWindowSystem>
-#include <KAboutData>
-
-#include <kimap/session.h>
-#include <kimap/sessionuiproxy.h>
-
-#include <kimap/capabilitiesjob.h>
-#include <kimap/namespacejob.h>
-#include <kimap/listjob.h>
-#include <kimap/loginjob.h>
-#include <kimap/logoutjob.h>
-
-#include "settings.h"
-
-ImapAccount::ImapAccount( QObject *parent )
-  : QObject( parent ), m_port( 0 ),
+ImapAccount::ImapAccount()
+  : KAccount(), m_port( 0 ),
     m_encryption( KIMAP::LoginJob::Unencrypted ),
     m_authentication( KIMAP::LoginJob::ClearText ),
     m_subscriptionEnabled( false )
@@ -116,7 +96,4 @@ bool ImapAccount::isSubscriptionEnabled() const
 {
   return m_subscriptionEnabled;
 }
-
-#include "imapaccount.moc"
-
 

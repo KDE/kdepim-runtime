@@ -23,41 +23,16 @@
     02110-1301, USA.
 */
 
-#ifndef __IMAP_ACCOUNT_H__
-#define __IMAP_ACCOUNT_H__
-
-class KJob;
-
-#include <boost/shared_ptr.hpp>
-
-#include <QtCore/QMap>
-#include <QtCore/QStringList>
+#ifndef IMAPACCOUNT_H
+#define IMAPACCOUNT_H
 
 #include <kaccount.h>
 #include <kimap/loginjob.h>
 
-namespace KIMAP
+class ImapAccount : public KPIM::KAccount
 {
-  struct MailBoxDescriptor;
-  class Session;
-}
-
-class Settings;
-
-class ImapAccount : public QObject, public KPIM::KAccount
-{
-  Q_OBJECT
-  Q_ENUMS( ConnectError )
-
 public:
-  enum ConnectError {
-    EncryptionError,
-    LoginFailError,
-    CapabilitiesTestError,
-    IncompatibleServerError
-  };
-
-  explicit ImapAccount( QObject *parent = 0 );
+  explicit ImapAccount();
   ~ImapAccount();
 
   void setServer( const QString &server );
