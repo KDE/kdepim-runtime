@@ -92,12 +92,17 @@ bool SessionPool::connect( ImapAccount *account )
 
 void SessionPool::disconnect()
 {
+  if ( !m_account ) {
+    return;
+  }
+
   foreach ( KIMAP::Session *s, m_idlePool+m_reservedPool ) {
     killSession( s );
   }
   m_idlePool.clear();
   m_reservedPool.clear();
 
+  delete m_account;
   m_account = 0;
   m_namespaces.clear();
   m_capabilities.clear();

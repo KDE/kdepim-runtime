@@ -276,7 +276,7 @@ void ImapResource::startConnect()
     return;
   }
 
-  ImapAccount *account = new ImapAccount( this );
+  ImapAccount *account = new ImapAccount;
   Settings::self()->loadAccount( account );
 
   m_pool->connect( account );
