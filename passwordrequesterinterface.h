@@ -27,7 +27,7 @@
 class PasswordRequesterInterface : public QObject
 {
   Q_OBJECT
-  Q_ENUMS( ErrorCode RequestType )
+  Q_ENUMS( ResultType RequestType )
 
 public:
   enum ResultType {
