@@ -37,7 +37,7 @@ class TestSessionPool : public QObject
 private:
   ImapAccount *createDefaultAccount()
   {
-    ImapAccount *account = new ImapAccount( this );
+    ImapAccount *account = new ImapAccount;
 
     account->setServer( "127.0.0.1" );
     account->setPort( 5989 );
