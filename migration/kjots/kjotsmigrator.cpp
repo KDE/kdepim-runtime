@@ -241,7 +241,7 @@ void KJotsMigrator::parseBookXml( QDomElement &me, bool oldBook, const Collectio
     if ( !e.isNull() ) {
 
       if ( e.tagName() == "Title" ) {
-        eda->setDisplayName( e.text()  );
+        eda->setDisplayName( e.text() );
         collection.setName( KRandom::randomString(10) );
       } else
         if ( e.tagName() == "ID" ) {
