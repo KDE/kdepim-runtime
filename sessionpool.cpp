@@ -50,7 +50,7 @@ SessionPool::SessionPool( int maxPoolSize, QObject *parent)
 
 SessionPool::~SessionPool()
 {
-  delete m_account;
+  disconnect();
 }
 
 PasswordRequesterInterface *SessionPool::passwordRequester() const
