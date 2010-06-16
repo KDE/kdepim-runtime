@@ -3,6 +3,10 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
+
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
     the Free Software Foundation; either version 2 of the License, or (at your
@@ -43,7 +47,7 @@ namespace KIMAP
 
 class ImapAccount;
 class ImapIdleManager;
-class PasswordRequesterInterface;
+class SessionPool;
 
 class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
@@ -84,10 +88,9 @@ protected:
   virtual void doSetOnline(bool online);
 
 private Q_SLOTS:
-  void onPasswordRequestCompleted( int resultType, const QString &password );
+  void onConnectDone( int errorCode, const QString &errorMessage );
+  void onMainSessionRequested( qint64 requestId, KIMAP::Session *session, int errorCode, const QString &errorMessage );
 
-  void onConnectSuccess( KIMAP::Session *session );
-  void onConnectError( KIMAP::Session *session, int code, const QString &message );
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
                             const QList< QList<QByteArray> > &flags );
   void onMailBoxesReceiveDone( KJob *job );
@@ -144,9 +147,10 @@ private:
 
   friend class ImapIdleManager;
 
-  ImapAccount *m_account;
+  SessionPool *m_pool;
+  qint64 m_mainSessionRequestId;
+  KIMAP::Session *m_mainSession;
   ImapIdleManager *m_idle;
-  PasswordRequesterInterface *m_passwordRequester;
 };
 
 #endif
