@@ -896,6 +896,15 @@ void ImapResource::onHeadersFetchDone( KJob *job )
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( job );
     KIMAP::ImapSet alreadyFetched = fetch->sequenceSet();
 
+    // If this is the first fetch of a folder, skip getting flags, we
+    // already have them all from the previous full fetch. This is not
+    // just an optimization, as incremental retrieval assumes nothing
+    // will be listed twice.
+    if ( alreadyFetched.intervals().first().begin() <= 1 ) {
+      itemsRetrievalDone();
+      return;
+    }
+
     KIMAP::FetchJob::FetchScope scope;
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Flags;
