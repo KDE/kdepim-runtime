@@ -31,6 +31,7 @@ Item {
   property bool showChildIndicator : false
   property bool selectedDelegate : false
   property bool topItem : false
+  property bool showUnread : false
   property int indentation : 0
 
   signal indexSelected(int row)
@@ -92,7 +93,7 @@ Item {
         Text {
           x : parent.width - 15
           width : 50
-          text : model.unreadCount > 0 ? model.unreadCount : ""
+          text : wrapper.showUnread && model.unreadCount > 0 ? model.unreadCount : ""
           color : "blue"
         }
       }

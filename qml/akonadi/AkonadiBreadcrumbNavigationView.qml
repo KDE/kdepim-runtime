@@ -24,6 +24,10 @@ import org.kde 4.5
 import org.kde.akonadi 4.5
 
 BreadcrumbNavigationView {
+  id : breadcrumbView
+
+  property bool showUnread : false
+
   topDelegate : CollectionDelegate {
     indentation : 35
     fullClickArea : true
@@ -57,6 +61,7 @@ BreadcrumbNavigationView {
     height : itemHeight
     fullClickArea : true
     showChildIndicator : true
+    showUnread : breadcrumbView.showUnread
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = row;
       breadcrumbTopLevel.state = "before_select_child";
