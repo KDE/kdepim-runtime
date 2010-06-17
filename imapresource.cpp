@@ -1852,11 +1852,8 @@ void ImapResource::reconnect()
 
 void ImapResource::startIdle()
 {
-  if ( m_idle ) {
-    m_pool->releaseSession( m_idle->session() );
-    delete m_idle;
-    m_idle = 0;
-  }
+  delete m_idle;
+  m_idle = 0;
 
   if ( !m_pool->serverCapabilities().contains( "IDLE" ) )
     return;
