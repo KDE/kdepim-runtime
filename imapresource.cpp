@@ -261,9 +261,9 @@ void ImapResource::configure( WId windowId )
 
   if ( dlg.result() == QDialog::Accepted ) {
     Settings::self()->writeConfig();
-    reconnect();
-
     emit configurationDialogAccepted();
+
+    reconnect();
   } else {
     emit configurationDialogRejected();
   }
