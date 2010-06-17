@@ -370,6 +370,8 @@ void SetupServer::readSettings()
   m_ui->enableMailCheckBox->setChecked( Settings::self()->intervalCheckEnabled() );
   if( m_ui->enableMailCheckBox->isChecked() )
     m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
+  else
+    m_ui->checkInterval->setEnabled( false );
 
   m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
 

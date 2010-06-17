@@ -31,6 +31,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   ui.setupUi( mainWidget() );
 
   ui.sink->setMimeTypeFilter( QStringList() << QLatin1String( "message/rfc822" ) );
+  ui.sink->setAccessRightsFilter( Akonadi::Collection::CanCreateItem );
   // Don't bother fetching the collection. Will have an empty name :-/
   ui.sink->setCollection( Collection( Settings::self()->sink() ) );
   kDebug() << "Sink from settings" << Settings::self()->sink();

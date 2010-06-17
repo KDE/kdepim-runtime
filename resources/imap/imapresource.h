@@ -134,6 +134,7 @@ private:
                                        const QStringList &remainingParts );
   void triggerCollectionExtraInfoJobs( const Akonadi::Collection &collection );
   void triggerExpunge( const QString &mailBox );
+  void listFlagsForImapSet( const KIMAP::ImapSet& set );
 
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
