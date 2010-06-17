@@ -43,7 +43,6 @@ SessionPool::SessionPool( int maxPoolSize, QObject *parent)
     m_maxPoolSize( maxPoolSize ),
     m_account( 0 ),
     m_passwordRequester( 0 ),
-    m_sessionUiProxy( 0 ),
     m_initialConnectDone( false )
 {
 }
@@ -68,14 +67,13 @@ void SessionPool::setPasswordRequester( PasswordRequesterInterface *requester )
                     this, SLOT(onPasswordRequestDone(int, QString)) );
 }
 
-KIMAP::SessionUiProxy *SessionPool::sessionUiProxy() const
+KIMAP::SessionUiProxyPtr SessionPool::sessionUiProxy() const
 {
   return m_sessionUiProxy;
 }
 
-void SessionPool::setSessionUiProxy( KIMAP::SessionUiProxy *proxy )
+void SessionPool::setSessionUiProxy( KIMAP::SessionUiProxyPtr proxy )
 {
-  delete m_sessionUiProxy;
   m_sessionUiProxy = proxy;
 }
 
@@ -250,7 +248,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
   }
 
   KIMAP::Session *session = new KIMAP::Session( m_account->server(), m_account->port(), this );
-  session->setUiProxy( m_sessionUiProxy );
+  session->setUiProxy( m_sessionUiProxy.get() );
 
   KIMAP::LoginJob *loginJob = new KIMAP::LoginJob( session );
   loginJob->setUserName( m_account->userName() );

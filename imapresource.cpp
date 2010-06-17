@@ -118,7 +118,7 @@ ImapResource::ImapResource( const QString &id )
          m_mainSessionRequestId( 0 ), m_mainSession( 0 ), m_idle( 0 )
 {
   m_pool->setPasswordRequester( new SettingsPasswordRequester( this, m_pool ) );
-  m_pool->setSessionUiProxy( new SessionUiProxy );
+  m_pool->setSessionUiProxy( KIMAP::SessionUiProxyPtr( new SessionUiProxy ) );
 
   connect( m_pool, SIGNAL(connectDone(int, QString)),
            this, SLOT(onConnectDone(int, QString)) );

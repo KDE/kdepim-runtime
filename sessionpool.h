@@ -26,12 +26,12 @@
 #include <QtCore/QStringList>
 
 #include <kimap/listjob.h>
+#include <kimap/sessionuiproxy.h>
 
 namespace KIMAP
 {
   class MailBoxDescriptor;
   class Session;
-  class SessionUiProxy;
 }
 
 class ImapAccount;
@@ -59,8 +59,8 @@ public:
   PasswordRequesterInterface *passwordRequester() const;
   void setPasswordRequester( PasswordRequesterInterface *requester );
 
-  KIMAP::SessionUiProxy *sessionUiProxy() const;
-  void setSessionUiProxy( KIMAP::SessionUiProxy *proxy );
+  KIMAP::SessionUiProxyPtr sessionUiProxy() const;
+  void setSessionUiProxy( KIMAP::SessionUiProxyPtr proxy );
 
   bool connect( ImapAccount *account );
   void disconnect();
@@ -96,7 +96,7 @@ private:
   int m_maxPoolSize;
   ImapAccount *m_account;
   PasswordRequesterInterface *m_passwordRequester;
-  KIMAP::SessionUiProxy *m_sessionUiProxy;
+  KIMAP::SessionUiProxyPtr m_sessionUiProxy;
   bool m_initialConnectDone;
 
   QList<qint64> m_pendingRequests;
