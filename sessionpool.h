@@ -59,8 +59,8 @@ public:
   PasswordRequesterInterface *passwordRequester() const;
   void setPasswordRequester( PasswordRequesterInterface *requester );
 
-  KIMAP::SessionUiProxyPtr sessionUiProxy() const;
-  void setSessionUiProxy( KIMAP::SessionUiProxyPtr proxy );
+  KIMAP::SessionUiProxy::Ptr sessionUiProxy() const;
+  void setSessionUiProxy( KIMAP::SessionUiProxy::Ptr proxy );
 
   bool connect( ImapAccount *account );
   void disconnect();
@@ -96,7 +96,7 @@ private:
   int m_maxPoolSize;
   ImapAccount *m_account;
   PasswordRequesterInterface *m_passwordRequester;
-  KIMAP::SessionUiProxyPtr m_sessionUiProxy;
+  KIMAP::SessionUiProxy::Ptr m_sessionUiProxy;
   bool m_initialConnectDone;
 
   QList<qint64> m_pendingRequests;

@@ -64,7 +64,7 @@ SubscriptionDialogBase::SubscriptionDialogBase( QWidget *parent, const QString &
 
   ImapAccount *account = static_cast<ImapAccount*>(acct);
   m_session = new KIMAP::Session( account->server(), account->port(), this );
-  m_session->setUiProxy( new SessionUiProxy );
+  m_session->setUiProxy( SessionUiProxy::Ptr( new SessionUiProxy ) );
 
   KIMAP::LoginJob *login = new KIMAP::LoginJob( m_session );
   login->setUserName( account->userName() );
