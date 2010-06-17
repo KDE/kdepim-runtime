@@ -36,8 +36,8 @@ void DummyPasswordRequester::setPassword( const QString &password )
   m_password = password;
 }
 
-void DummyPasswordRequester::requestPassword( RequestType request,
-                                              const QString &serverError )
+void DummyPasswordRequester::requestPassword( RequestType /*request*/,
+                                              const QString &/*serverError*/ )
 {
   QTimer::singleShot( 20, this, SLOT(emitPassword()) );
 }
