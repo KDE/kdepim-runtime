@@ -741,7 +741,7 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
   if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
     foreach ( const Collection &c, collections ) {
-      triggerCollectionExtraInfoJobs( c );
+      scheduleCustomTask( this, "triggerCollectionExtraInfoJobs", QVariant::fromValue( c ), ResourceBase::Append );
     }
   }
 }
@@ -757,10 +757,14 @@ void ImapResource::onMailBoxesReceiveDone(KJob* job)
 
 // ----------------------------------------------------------------------------------
 
-void ImapResource::triggerCollectionExtraInfoJobs( const Collection &collection )
+void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
 {
+  const Collection collection( collectionVariant.value<Collection>() );
   const QString mailBox = mailBoxForCollection( collection );
   const QStringList capabilities = m_account->capabilities();
+
+  // HACK: will go away when ThreadWeaver is in place
+  m_finishedMetaDataJobs = 0;
 
   // First get the annotations from the mailbox if it's supported
   if ( capabilities.contains( "METADATA" ) || capabilities.contains( "ANNOTATEMORE" ) ) {
@@ -776,6 +780,7 @@ void ImapResource::triggerCollectionExtraInfoJobs( const Collection &collection 
     }
     connect( meta, SIGNAL( result( KJob* ) ), SLOT( onGetMetaDataDone( KJob* ) ) );
     meta->start();
+    m_finishedMetaDataJobs++;
   }
 
   // Get the ACLs from the mailbox if it's supported
@@ -785,12 +790,14 @@ void ImapResource::triggerCollectionExtraInfoJobs( const Collection &collection 
     acl->setMailBox( mailBox );
     connect( acl, SIGNAL( result( KJob* ) ), SLOT( onGetAclDone( KJob* ) ) );
     acl->start();
+    m_finishedMetaDataJobs++;
 
     KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( m_account->mainSession() );
     rights->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
     rights->setMailBox( mailBox );
     connect( rights, SIGNAL( result( KJob* ) ), SLOT( onRightsReceived( KJob* ) ) );
     rights->start();
+    m_finishedMetaDataJobs++;
   }
 
   // Get the QUOTA info from the mailbox if it's supported
@@ -800,6 +807,7 @@ void ImapResource::triggerCollectionExtraInfoJobs( const Collection &collection 
     quota->setMailBox( mailBox );
     connect( quota, SIGNAL( result( KJob* ) ), SLOT( onQuotasReceived( KJob* ) ) );
     quota->start();
+    m_finishedMetaDataJobs++;
   }
 }
 
@@ -824,7 +832,7 @@ void ImapResource::retrieveItems( const Collection &col )
     }
   }
 
-  triggerCollectionExtraInfoJobs( col );
+  scheduleCustomTask( this, "triggerCollectionExtraInfoJobs", QVariant::fromValue( col ), ResourceBase::Append );
 
   const QString mailBox = mailBoxForCollection( col );
 
@@ -1408,6 +1416,11 @@ void ImapResource::onConnectSuccess( KIMAP::Session *session )
 
 void ImapResource::onGetAclDone( KJob *job )
 {
+  if ( --m_finishedMetaDataJobs == 0 ) {
+    // the others have ended, we're done, the next one can go
+    taskDone();
+  }
+
   if ( job->error() ) {
     return; // Well, no metadata for us then...
   }
@@ -1426,6 +1439,11 @@ void ImapResource::onGetAclDone( KJob *job )
 
 void ImapResource::onRightsReceived( KJob *job )
 {
+  if ( --m_finishedMetaDataJobs == 0 ) {
+    // the others have ended, we're done, the next one can go
+    taskDone();
+  }
+
   if ( job->error() ) {
     return; // Well, no metadata for us then...
   }
@@ -1471,6 +1489,11 @@ void ImapResource::onRightsReceived( KJob *job )
 
 void ImapResource::onQuotasReceived( KJob *job )
 {
+  if ( --m_finishedMetaDataJobs == 0 ) {
+    // the others have ended, we're done, the next one can go
+    taskDone();
+  }
+
   if ( job->error() ) {
     return; // Well, no metadata for us then...
   }
@@ -1533,6 +1556,11 @@ void ImapResource::onQuotasReceived( KJob *job )
 
 void ImapResource::onGetMetaDataDone( KJob *job )
 {
+  if ( --m_finishedMetaDataJobs == 0 ) {
+    // the others have ended, we're done, the next one can go
+    taskDone();
+  }
+
   if ( job->error() ) {
     return; // Well, no metadata for us then...
   }
