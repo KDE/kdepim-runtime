@@ -281,9 +281,16 @@ void KMailMigrator::migrateLocalFolders()
 {
   if ( migrationState( "LocalFolders" ) == Complete ) {
     emit message( Skip, i18n( "Local folders have already been migrated." ) );
+    emit status( QString() );
     mLocalFoldersDone = true;
     if ( mRunningCacheImporterCount == 0 ) {
       migrationDone();
+    } else {
+      kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+      emit status( i18ncp( "@info:status still running background jobs",
+                           "Waiting for one background task to finish",
+                           "Waiting for %1 background tasks to finish",
+                           mRunningCacheImporterCount ) );
     }
     return;
   }
@@ -296,9 +303,16 @@ void KMailMigrator::migrateLocalFolders()
   mLocalMaildirPath = cfgGroup.readPathEntry( "folders", localMaildirDefaultPath );
   const QFileInfo fileInfo( mLocalMaildirPath );
   if ( !fileInfo.exists() || !fileInfo.isDir() ) {
+    emit status( QString() );
     mLocalFoldersDone = true;
     if ( mRunningCacheImporterCount == 0 ) {
       migrationDone();
+    } else {
+      kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+      emit status( i18ncp( "@info:status still running background jobs",
+                           "Waiting for one background task to finish",
+                           "Waiting for %1 background tasks to finish",
+                           mRunningCacheImporterCount ) );
     }
   } else {
     kDebug() << mLocalMaildirPath;
@@ -685,6 +699,12 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     connect( cacheImporter, SIGNAL( importFinished( Akonadi::AgentInstance, QString ) ),
               SLOT( imapCacheImportFinished( Akonadi::AgentInstance, QString ) ) );
     ++mRunningCacheImporterCount;
+
+    emit message( Info, i18ncp( "@info:status",
+                                "Scheduling background task for recovering unimported messages.",
+                                "Scheduling background task for recovering unimported messages. "
+                                "Now at a total of %1 such tasks",
+                                mRunningCacheImporterCount ) );
   }
 
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
@@ -1016,8 +1036,15 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
 
     setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
     emit message( Success, i18n( "Local folders migrated successfully." ) );
+    emit status( QString() );
     if ( mRunningCacheImporterCount == 0 ) {
       migrationDone();
+    } else {
+      kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+      emit status( i18ncp( "@info:status still running background jobs",
+                           "Waiting for one background task to finish",
+                           "Waiting for %1 background tasks to finish",
+                           mRunningCacheImporterCount ) );
     }
   } else {
     mLocalFoldersDone = true;
@@ -1083,7 +1110,15 @@ void KMailMigrator::collectionMigratorMessage( int type, const QString &msg )
 
 void KMailMigrator::collectionMigratorFinished()
 {
-  emit status( QString() );
+  if ( mLocalFoldersDone && mRunningCacheImporterCount > 0 ) {
+    kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+    emit status( i18ncp( "@info:status still running background jobs",
+                         "Waiting for one background task to finish",
+                         "Waiting for %1 background tasks to finish",
+                         mRunningCacheImporterCount ) );
+  } else {
+    emit status( QString() );
+  }
 }
 
 void KMailMigrator::collectionMigratorEmittedNotification()
@@ -1129,22 +1164,37 @@ void KMailMigrator::imapCacheImportFinished( const Akonadi::AgentInstance &insta
 
   if ( !error.isEmpty() ) {
     --mRunningCacheImporterCount;
+    kDebug() << "running cache importers down to" << mRunningCacheImporterCount;
 
     emit message( Error, error );
+    if ( mLocalFoldersDone ) {
+      kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+      emit status( i18ncp( "@info:status still running background jobs",
+                           "Waiting for one background task to finish",
+                           "Waiting for %1 background tasks to finish",
+                           mRunningCacheImporterCount ) );
+    }
   } else {
     if ( mDeleteCacheAfterImport ) {
       EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( instance, this );
       cleaner->setCleaningOptions( EmptyResourceCleaner::DeleteEmptyCollections |
                                    EmptyResourceCleaner::DeleteEmptyResource );
-     connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
-              SLOT( imapCacheCleanupFinished( Akonadi::AgentInstance ) ) );
+      connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
+               SLOT( imapCacheCleanupFinished( Akonadi::AgentInstance ) ) );
     } else {
       --mRunningCacheImporterCount;
+      kDebug() << "running cache importers down to" << mRunningCacheImporterCount;
     }
   }
 
   if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
     migrationDone();
+  } else if ( mLocalFoldersDone ) {
+    kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+    emit status( i18ncp( "@info:status still running background jobs",
+                         "Waiting for one background task to finish",
+                         "Waiting for %1 background tasks to finish",
+                         mRunningCacheImporterCount ) );
   }
 }
 
@@ -1157,6 +1207,12 @@ void KMailMigrator::imapCacheCleanupFinished( const Akonadi::AgentInstance &inst
 
   if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
     migrationDone();
+  } else if ( mLocalFoldersDone ) {
+    kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+    emit status( i18ncp( "@info:status still running background jobs",
+                         "Waiting for one background task to finish",
+                         "Waiting for %1 background tasks to finish",
+                         mRunningCacheImporterCount ) );
   }
 }
 
@@ -1185,8 +1241,15 @@ void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance 
 
   setMigrationState( "LocalFolders", Complete, localFoldersIdentifier, "LocalFolders" );
   emit message( Success, i18n( "Local folders migrated successfully." ) );
+  emit status( QString() );
   if ( mRunningCacheImporterCount == 0 ) {
     migrationDone();
+  } else {
+    kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+    emit status( i18ncp( "@info:status still running background jobs",
+                         "Waiting for one background task to finish",
+                         "Waiting for %1 background tasks to finish",
+                         mRunningCacheImporterCount ) );
   }
 }
 
