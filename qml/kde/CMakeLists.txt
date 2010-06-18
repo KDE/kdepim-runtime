@@ -4,7 +4,7 @@ kde4_add_plugin( kdeqmlplugin WITH_PREFIX
   kdeintegration.cpp
   kdeintegrationplugin.cpp
 )
-target_link_libraries(kdeqmlplugin ${KDE4_KDEUI_LIBS} ${QT_QTDECLARATIVE_LIBRARY})
+target_link_libraries(kdeqmlplugin ${KDE4_KDEUI_LIBS} ${QT_QTDECLARATIVE_LIBRARY} ${QT_QTSCRIPT_LIBRARY})
 
 install( FILES qmldir
   BreadcrumbNavigationView.qml
