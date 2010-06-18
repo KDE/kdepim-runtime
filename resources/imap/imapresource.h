@@ -136,6 +136,7 @@ private:
 
   void triggerExpunge( const QString &mailBox );
   void listFlagsForImapSet( const KIMAP::ImapSet& set );
+  void selectIfNeeded( const QString &mailBox );
 
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
