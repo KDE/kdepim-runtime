@@ -735,7 +735,9 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
   if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
     foreach ( const Collection &c, collections ) {
-      scheduleCustomTask( this, "triggerCollectionExtraInfoJobs", QVariant::fromValue( c ), ResourceBase::Append );
+      if ( !c.hasAttribute<NoSelectAttribute>() ) {
+        scheduleCustomTask( this, "triggerCollectionExtraInfoJobs", QVariant::fromValue( c ), ResourceBase::Append );
+      }
     }
   }
 }
