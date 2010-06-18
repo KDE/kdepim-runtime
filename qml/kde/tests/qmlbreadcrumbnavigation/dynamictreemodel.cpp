@@ -157,7 +157,7 @@ QVariant DynamicTreeModel::data(const QModelIndex &index, int role) const
   {
     if (!index.parent().isValid())
     {
-      if ( index.row() > ( sizeof accounts / sizeof *accounts ))
+      if ( index.row() > ( sizeof accounts / sizeof *accounts ) - 1)
         return "Account" + m_items.value(index.internalId());
       return QString(accounts[index.row()]);
     }

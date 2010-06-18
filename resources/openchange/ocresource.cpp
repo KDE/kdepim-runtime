@@ -911,64 +911,11 @@ struct MyRecurrencePattern
   uint32_t* endDate;
 };
 
-struct ExceptionInfo
-{
-  uint32_t* startDateTime;
-  uint32_t* endDateTime;
-  uint32_t* originalStartDate;
-  uint16_t* overrideFlags;
-  uint16_t* subjectLength;
-  uint16_t* subjectLength2;
-  uint8_t*  subject;
-  uint32_t* meetingType;
-  uint32_t* reminderDelta;
-  uint32_t* reminderSet;
-  uint16_t* locationLength;
-  uint16_t* locationLength2;
-  uint8_t*  location;
-  uint32_t* busyStatus;
-  uint32_t* attachment;
-  uint32_t* subType;
-  uint32_t* appointmentColor; // reserved, don't read from or write to this.
-};
-
 struct ChangeHighLight
 {
   uint32_t* changeHighlightSize;
   uint32_t* changeHighlightValue;
   uint32_t* reserved;
-};
-
-struct ExtendedException
-{
-  ChangeHighLight* changeHighligth;
-  uint32_t* reservedBlockEE1Size;    // This MUST be 0.
-  uint32_t* reservedBlockEE1;        // reserved
-  uint32_t* startDateTime;
-  uint32_t* endDateTime;
-  uint32_t* originalStartDate;
-  uint16_t* wideCharSubjectLength;
-  uint16_t* wideCharSubject;         // In windows wchar_t is 2 bytes long
-  uint16_t* wideCharLocationLength;
-  uint16_t* wideCharLocation;
-  uint32_t* reservedBlockEE2Size;    // This MUST be 0.
-  uint32_t* reservedBlockEE2;        // reserved
-};
-
-struct AppointmentRecurrencePattern
-{
-  MyRecurrencePattern recurrencePattern;
-  uint32_t* readerVersion2;
-  uint32_t* writerVersion2;
-  uint32_t* startTimeOffset;
-  uint32_t* endTimeOffset;
-  uint16_t* exceptionCount;
-  ExceptionInfo* exceptionInfo; // Array of ExceptionInfo of size (exceptionCount)
-  uint32_t* reservedBlock1Size; // MUST be 0
-  uint32_t* reservedBlock1; // reserved
-  ExtendedException* extendedException; // Array of ExtendedException of size (exceptionCount)  
-  uint32_t* reservedBlock2Size; // MUST be 0
-  uint32_t* reservedBlock2; // reserved
 };
 
 MyRecurrencePattern readRecurrencePattern( const uint8_t* dataBlob )
@@ -1048,8 +995,8 @@ MyRecurrencePattern readRecurrencePattern( const uint8_t* dataBlob )
 AppointmentRecurrencePattern readAppointmentRecurrencePattern( uint8_t* dataBlob )
 {
   AppointmentRecurrencePattern appointmentRecurrencePattern;
-  appointmentRecurrencePattern.recurrencePattern = readRecurrencePattern( dataBlob );
-  dataBlob = (uint8_t*) appointmentRecurrencePattern.recurrencePattern.endDate + sizeof(uint32_t); // start at end of RecurrencePatter.  
+  //  appointmentRecurrencePattern.recurrencePattern = readRecurrencePattern( dataBlob );
+  //  dataBlob = (uint8_t*) appointmentRecurrencePattern.recurrencePattern.endDate + sizeof(uint32_t); // start at end of RecurrencePatter.  
 
   // TODO: Finish this...
   return appointmentRecurrencePattern;
