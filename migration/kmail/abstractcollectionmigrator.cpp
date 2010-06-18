@@ -23,7 +23,7 @@
 #include "libmaildir/maildir.h"
 
 #include <akonadi/kmime/specialmailcollections.h>
-
+#include <akonadi/kmime/messagefolderattribute.h>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/collection.h>
@@ -142,10 +142,22 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       // collection modification needs to be sent to Akonadi
       mNeedModifyJob = true;
     }
+
     newGroup.deleteEntry( "UseCustomIcons" );
     newGroup.deleteEntry( "UnreadIconPath" );
     newGroup.deleteEntry( "NormalIconPath" );
 
+    const QString whofield = newGroup.readEntry( "WhoField" );
+    if ( !whofield.isEmpty() ) {
+      Akonadi::MessageFolderAttribute *messageFolder  = mCurrentCollection.attribute<Akonadi::MessageFolderAttribute>( Akonadi::Entity::AddIfMissing );
+
+      if ( whofield ==  QLatin1String( "To" ) )
+        messageFolder->setOutboundFolder( true );
+      else if( whofield == QLatin1String( "From" ) )
+        messageFolder->setOutboundFolder( false );
+      mNeedModifyJob = true;
+    }
+    newGroup.deleteEntry( "WhoField" );
 
     //Delete old entry
     newGroup.deleteEntry( "TotalMsgs" );
