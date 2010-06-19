@@ -209,6 +209,9 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
                                    << mItems.count() << "items to go";
 
   emit q->progress( ++mItemProgress );
+  emit q->status( i18ncp( "@info:status folder name and number of messages to import before finished",
+                          "%1: one message left to import", "%1: %2 messages left to import",
+                          mCurrentCollection.name(), mItems.count() ) );
 
   if ( mItems.isEmpty() ) {
     if ( mDeletedUids.isEmpty() ) {
@@ -554,6 +557,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   if ( d->mImportNewMessages || d->mImportCachedMessages ) {
     FileStore::ItemFetchJob *job = d->mStore->fetchItems( cache );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchItemsResult( KJob * ) ) );
+    emit status( i18nc( "@info:status foldername", "%1: listing messages...", collection.name() ) );
   } else if ( d->mRemoveDeletedMessages ) {
     emit status( collection.name() );
     d->processNextDeletedUid();
