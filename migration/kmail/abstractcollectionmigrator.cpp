@@ -165,6 +165,8 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
       QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
       const QString incidenceFor = newGroup.readEntry( "IncidencesFor" );
+      //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "IncidencesFor=" << incidenceFor;
+
       if ( incidenceFor == "nobody" ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "nobody";
         mNeedModifyJob = true;
