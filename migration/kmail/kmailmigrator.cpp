@@ -39,12 +39,15 @@
 #include "imapcachelocalimporter.h"
 #include "localfolderscollectionmigrator.h"
 
+#include "collectionannotationsattribute.h"
+
 #include <KIMAP/LoginJob>
 #include <Mailtransport/Transport>
 
 #include <akonadi/agentmanager.h>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
+#include <akonadi/attributefactory.h>
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
@@ -91,6 +94,7 @@ KMailMigrator::KMailMigrator() :
   mLocalFoldersDone( false ),
   mForwardResourceNotifications( false )
 {
+  Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionAnnotationsAttribute>();
   connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
            this, SLOT( instanceStatusChanged( Akonadi::AgentInstance ) ) );
   connect( AgentManager::self(), SIGNAL( instanceProgressChanged( Akonadi::AgentInstance ) ),
