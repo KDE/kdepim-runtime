@@ -44,7 +44,13 @@ class ImapCacheLocalImporter : public QObject
 
     void setAccountName( const QString &accountName );
 
+    QString accountName() const;
+
   Q_SIGNALS:
+    void status( const QString &msg );
+    void progress( int value );
+    void progress( int min, int max, int value );
+
     void importFinished( const Akonadi::AgentInstance &resource, const QString &error );
 
   public Q_SLOTS:

@@ -92,7 +92,8 @@ KMailMigrator::KMailMigrator() :
   mImapCache( 0 ),
   mRunningCacheImporterCount( 0 ),
   mLocalFoldersDone( false ),
-  mForwardResourceNotifications( false )
+  mForwardResourceNotifications( false ),
+  mLocalCacheImporter( 0 )
 {
   Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionAnnotationsAttribute>();
   connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
@@ -333,7 +334,7 @@ void KMailMigrator::migrateLocalFolders()
 
 void KMailMigrator::migrationDone()
 {
-  emit message( Info, i18n( "Migration successfully completed." ) );
+  emit message( Success, i18n( "Migration successfully completed." ) );
 
   migrateInstanceTrashFolder();
 
@@ -408,6 +409,7 @@ void KMailMigrator::migrateInstanceTrashFolder()
 }
 
 void KMailMigrator::migrationFailed( const QString &errorMsg,
+                                     bool doMigrateNext,
                                      const AgentInstance &instance )
 {
   const KConfigGroup group( mConfig, mCurrentAccount );
@@ -420,10 +422,13 @@ void KMailMigrator::migrationFailed( const QString &errorMsg,
 
   mCurrentAccount.clear();
   mCurrentInstance = AgentInstance();
-  migrateNext();
+
+  if ( doMigrateNext ) {
+    migrateNext();
+  }
 }
 
-void KMailMigrator::migrationCompleted( const AgentInstance &instance  )
+void KMailMigrator::migrationCompleted( const AgentInstance &instance, bool doMigrateNext )
 {
   const KConfigGroup group( mConfig, mCurrentAccount );
   setMigrationState( group.readEntry( "Id" ), Complete, instance.identifier(),
@@ -431,7 +436,10 @@ void KMailMigrator::migrationCompleted( const AgentInstance &instance  )
   emit message( Success, i18n( "Migration of '%1' succeeded.", group.readEntry( "Name" ) ) );
   mCurrentAccount.clear();
   mCurrentInstance = AgentInstance();
-  migrateNext();
+
+  if ( doMigrateNext ) {
+    migrateNext();
+  }
 }
 
 void KMailMigrator::connectCollectionMigrator( AbstractCollectionMigrator *migrator )
@@ -694,21 +702,14 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   config.deleteEntry( "capabilities" );
 
   if ( disconnected ) {
-    ImapCacheLocalImporter *cacheImporter = new ImapCacheLocalImporter( store, this );
-    cacheImporter->setTopLevelFolder( collectionMigrator->topLevelFolder() );
-    cacheImporter->setAccountName( nameAccount );
+    mLocalCacheImporter = new ImapCacheLocalImporter( store, this );
+    mLocalCacheImporter->setTopLevelFolder( collectionMigrator->topLevelFolder() );
+    mLocalCacheImporter->setAccountName( nameAccount );
 
-    connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
-             cacheImporter, SLOT( startImport() ) );
-    connect( cacheImporter, SIGNAL( importFinished( Akonadi::AgentInstance, QString ) ),
-              SLOT( imapCacheImportFinished( Akonadi::AgentInstance, QString ) ) );
-    ++mRunningCacheImporterCount;
-
-    emit message( Info, i18ncp( "@info:status",
-                                "Scheduling background task for recovering unimported messages.",
-                                "Scheduling background task for recovering unimported messages. "
-                                "Now at a total of %1 such tasks",
-                                mRunningCacheImporterCount ) );
+    connect( mLocalCacheImporter, SIGNAL( importFinished( Akonadi::AgentInstance, QString ) ),
+             SLOT( imapCacheImportFinished( Akonadi::AgentInstance, QString ) ) );
+  } else {
+    mLocalCacheImporter = 0;
   }
 
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
@@ -1077,9 +1078,56 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
       instance.reconfigure();
     }
 
-    migrationCompleted( instance );
+    // if we don't keep the whole cache, run this as a background job
+    // the migration has not failed, so there are at worst only a few messages left to
+    // to import
+    if ( mDeleteCacheAfterImport && mLocalCacheImporter != 0 ) {
+      ++mRunningCacheImporterCount;
+
+      emit message( Info,
+                    i18ncp( "@info:status",
+                            "Scheduling background task for recovering unimported messages.",
+                            "Scheduling background task for recovering unimported messages. "
+                            "Now at a total of %1 such tasks",
+                             mRunningCacheImporterCount ) );
+
+      migrationCompleted( instance );
+      mLocalCacheImporter->startImport();
+      mLocalCacheImporter = 0;
+    } else if ( mLocalCacheImporter != 0 ) {
+      migrationCompleted( instance, false );
+
+      // we are running the cache importer as a normal migration task, connect progress signals
+      connect( mLocalCacheImporter, SIGNAL( status( QString ) ), SIGNAL ( status( QString ) ) );
+      connect( mLocalCacheImporter, SIGNAL( progress( int ) ), SIGNAL ( progress( int ) ) );
+      connect( mLocalCacheImporter, SIGNAL( progress( int, int, int ) ),
+               SIGNAL ( progress( int, int, int ) ) );
+
+      emit message( Info, i18nc( "@info:status importing cached messages of a DIMAP account",
+                                 "Starting local cache import for %1",
+                                 mLocalCacheImporter->accountName() ) );
+    } else {
+      migrationCompleted( instance );
+    }
   } else {
-    migrationFailed( error, instance );
+    migrationFailed( error, mLocalCacheImporter == 0, instance );
+
+    if ( mLocalCacheImporter != 0 ) {
+      mLocalCacheImporter->setProperty( "imapImportFailed", QVariant::fromValue<bool>( true ) );
+
+      // we are running the cache importer as a normal migration task, connect progress signals
+      connect( mLocalCacheImporter, SIGNAL( status( QString ) ), SIGNAL ( status( QString ) ) );
+      connect( mLocalCacheImporter, SIGNAL( progress( int ) ), SIGNAL ( progress( int ) ) );
+      connect( mLocalCacheImporter, SIGNAL( progress( int, int, int ) ),
+               SIGNAL ( progress( int, int, int ) ) );
+      emit message( Info, i18nc( "@info:status importing cached messages of a DIMAP account",
+                                  "Starting local cache import for %1",
+                                  mLocalCacheImporter->accountName() ) );
+    }
+  }
+
+  if ( mLocalCacheImporter != 0 ) {
+    mLocalCacheImporter->startImport();
   }
 }
 
@@ -1166,9 +1214,13 @@ void KMailMigrator::imapCacheImportFinished( const Akonadi::AgentInstance &insta
            << "finished (error=" << error << "), "
            << ( mRunningCacheImporterCount - 1 ) << "still running";
 
+  const bool isBackgroundTask = ( sender() != mLocalCacheImporter );
+
   if ( !error.isEmpty() ) {
-    --mRunningCacheImporterCount;
-    kDebug() << "running cache importers down to" << mRunningCacheImporterCount;
+    if ( isBackgroundTask ) {
+        --mRunningCacheImporterCount;
+        kDebug() << "running cache importers down to" << mRunningCacheImporterCount;
+    }
 
     emit message( Error, error );
     if ( mLocalFoldersDone ) {
@@ -1179,26 +1231,52 @@ void KMailMigrator::imapCacheImportFinished( const Akonadi::AgentInstance &insta
                            mRunningCacheImporterCount ) );
     }
   } else {
-    if ( mDeleteCacheAfterImport ) {
+    // delete empty folders unless we explicitly keep the local cache or
+    // the actual IMAP import has failed
+    bool doCleanup = mDeleteCacheAfterImport;
+    if ( !isBackgroundTask ) {
+      const QVariant importFailedVar = mLocalCacheImporter->property( "imapImportFailed" );
+      if ( importFailedVar.isValid() || importFailedVar.value<bool>() ) {
+        doCleanup = false;
+      }
+    }
+    if ( doCleanup ) {
       EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( instance, this );
       cleaner->setCleaningOptions( EmptyResourceCleaner::DeleteEmptyCollections |
                                    EmptyResourceCleaner::DeleteEmptyResource );
       connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
                SLOT( imapCacheCleanupFinished( Akonadi::AgentInstance ) ) );
+
+      // if the cache importer ran as a foreground task, the cleaner always runs as
+      // a background task
+      if ( !isBackgroundTask ) {
+        ++mRunningCacheImporterCount;
+      }
     } else {
-      --mRunningCacheImporterCount;
-      kDebug() << "running cache importers down to" << mRunningCacheImporterCount;
+      if ( isBackgroundTask ) {
+        --mRunningCacheImporterCount;
+        kDebug() << "running cache importers down to" << mRunningCacheImporterCount;
+      } else {
+        emit message( Success, i18nc( "@info:status", "Local cache import for %1 completed",
+                                      mLocalCacheImporter->accountName() ) );
+      }
     }
   }
 
   if ( mRunningCacheImporterCount == 0 && mLocalFoldersDone ) {
     migrationDone();
-  } else if ( mLocalFoldersDone ) {
-    kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
-    emit status( i18ncp( "@info:status still running background jobs",
-                         "Waiting for one background task to finish",
-                         "Waiting for %1 background tasks to finish",
-                         mRunningCacheImporterCount ) );
+  } else {
+    if ( mLocalFoldersDone ) {
+      kDebug() << "Waiting for" << mRunningCacheImporterCount << "background tasks";
+      emit status( i18ncp( "@info:status still running background jobs",
+                           "Waiting for one background task to finish",
+                           "Waiting for %1 background tasks to finish",
+                           mRunningCacheImporterCount ) );
+    }
+
+    if ( !isBackgroundTask ) {
+      migrateNext();
+    }
   }
 }
 
