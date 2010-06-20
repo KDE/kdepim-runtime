@@ -205,8 +205,8 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
 
 void ImapCacheCollectionMigrator::Private::processNextItem()
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
-                                   << mItems.count() << "items to go";
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
+//                                    << mItems.count() << "items to go";
 
   emit q->progress( ++mItemProgress );
   emit q->status( i18ncp( "@info:status folder name and number of messages to import before finished",
@@ -234,8 +234,8 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
 
 void ImapCacheCollectionMigrator::Private::processNextDeletedUid()
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
-                                   << mDeletedUids.count() << "items to go";
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
+//                                    << mDeletedUids.count() << "items to go";
 
   if ( mDeletedUids.isEmpty() ) {
     if ( mCurrentFolderGroup.isValid() ) {
@@ -297,16 +297,16 @@ void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
     item.setRemoteId( QString() );
     createJob = new ItemCreateJob( item, mCurrentCollection );
 
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "unsynchronized cacheItem: remoteId=" << item.remoteId()
-                                     << "mimeType=" << item.mimeType()
-                                     << "flags=" << item.flags();
+//    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "unsynchronized cacheItem: remoteId=" << item.remoteId()
+//                                     << "mimeType=" << item.mimeType()
+//                                     << "flags=" << item.flags();
   } else if ( mImportCachedMessages ) {
     item.setRemoteId( uid );
     createJob = new ItemCreateJob( item, mCurrentCollection, mHiddenSession );
 
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "synchronized cacheItem: remoteId=" << item.remoteId()
-                                     << "mimeType=" << item.mimeType()
-                                     << "flags=" << item.flags();
+//    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "synchronized cacheItem: remoteId=" << item.remoteId()
+//                                     << "mimeType=" << item.mimeType()
+//                                     << "flags=" << item.flags();
   }
 
   if ( createJob != 0 ) {
