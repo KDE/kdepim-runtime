@@ -247,8 +247,8 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) && !favoriteCollectionsMigrated ) {
         KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
         const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
-	const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
-	oldFavoriteGroup.copyTo( &newFavoriteGroup );
+        const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+        oldFavoriteGroup.copyTo( &newFavoriteGroup );
         oldFavoriteGroup.deleteGroup();
 
         //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "FAVORITE COLLECTION lIds=" << lIds<<" lNames="<<lNames;
