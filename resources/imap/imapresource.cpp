@@ -810,6 +810,12 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
     quota->start();
     m_finishedMetaDataJobs++;
   }
+
+  // the server does not have any of the capabilities needed to get extra info, so this
+  // step is done here
+  if ( m_finishedMetaDataJobs == 0 ) {
+    taskDone();
+  }
 }
 
 void ImapResource::retrieveItems( const Collection &col )
