@@ -164,7 +164,7 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   if ( !isSessionAvailable() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
-    setOnline( false );
+    scheduleConnectionAttempt();
     return false;
   }
 
@@ -247,6 +247,11 @@ void ImapResource::configure( WId windowId )
   } else {
     emit configurationDialogRejected();
   }
+}
+
+void ImapResource::startConnect( const QVariant& forceManualAuth )
+{
+  startConnect( forceManualAuth.toBool() );
 }
 
 void ImapResource::startConnect( bool forceManualAuth )
@@ -812,7 +817,7 @@ void ImapResource::retrieveItems( const Collection &col )
   if ( !isSessionAvailable() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
-    setOnline( false );
+    scheduleConnectionAttempt();
     return;
   }
 
@@ -1363,6 +1368,12 @@ void ImapResource::onSubscribeDone( KJob *job )
 
 /******************* Slots  ***********************************************/
 
+void ImapResource::scheduleConnectionAttempt()
+{
+  // block all other tasks, until we are connected
+  scheduleCustomTask( this, "startConnect", QVariant(false), ResourceBase::Prepend );
+}
+
 void ImapResource::onConnectError( KIMAP::Session *session, int code, const QString &message )
 {
   if ( m_account->mainSession()!=session ) {
@@ -1380,6 +1391,8 @@ void ImapResource::onConnectError( KIMAP::Session *session, int code, const QStr
                                                  KGuiItem( i18n( "Settings" ) ),
                                                  KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
     if ( i == KMessageBox::Yes ) {
+      setOnline( false );
+      taskDone();
       configure( winIdForDialogs() );
       return;
     } else if ( i == KMessageBox::No ) {
@@ -1393,6 +1406,9 @@ void ImapResource::onConnectError( KIMAP::Session *session, int code, const QStr
   }
 
   m_account->disconnect();
+  setOnline( false );
+  scheduleConnectionAttempt();
+  taskDone(); // end the previous attempt
   emit error( message );
 }
 
@@ -1401,7 +1417,8 @@ void ImapResource::onConnectSuccess( KIMAP::Session *session )
   if ( m_account->mainSession()!=session ) {
     return;
   }
-  ResourceBase::doSetOnline( true );
+  setOnline( true );
+  taskDone();
   startIdle();
   emit status( Idle, i18n( "Connection established." ) );
   synchronizeCollectionTree();
@@ -1815,8 +1832,8 @@ void ImapResource::doSetOnline(bool online)
 {
   if ( !online && isSessionAvailable() ) {
     m_account->disconnect();
-  } else if ( online ) {
-    startConnect();
+  } else if ( online && !isSessionAvailable() ) {
+    scheduleConnectionAttempt();
   }
   ResourceBase::doSetOnline( online );
 }
@@ -1844,7 +1861,7 @@ bool ImapResource::ensureSessionAvailableOrDefer()
   if (!isSessionAvailable() ) {
     kDebug() << "Defering this request. Probably there is no connection.";
     deferTask();
-    setOnline( false );
+    scheduleConnectionAttempt();
     return false;
   } else {
     return true;

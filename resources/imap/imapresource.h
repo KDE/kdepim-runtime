@@ -83,6 +83,7 @@ protected:
   virtual void doSetOnline(bool online);
 
 private Q_SLOTS:
+  void scheduleConnectionAttempt();
   void onPasswordRequestCompleted( const QString &password, bool userRejected );
 
   void onConnectSuccess( KIMAP::Session *session );
@@ -121,6 +122,7 @@ private Q_SLOTS:
   void onPostItemMoveStoreFlagsDone( KJob *job );
   void onIdleCollectionFetchDone( KJob *job );
 
+  void startConnect( const QVariant& forcedManualAuth );
   void startConnect( bool forceManualAuth = false );
   void reconnect();
 
