@@ -154,16 +154,14 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "UnreadIconPath" );
     newGroup.deleteEntry( "NormalIconPath" );
 
+    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
+    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
     if ( newGroup.readEntry( "SharedSeenFlags", false ) ) {
-      Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
-      QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
       annotations[ KOLAB_SHAREDSEEN ] = "true";
       mNeedModifyJob = true;
     }
     newGroup.deleteEntry( "SharedSeenFlags" );
     if ( newGroup.hasKey( "IncidencesFor" ) ) {
-      Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
-      QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
       const QString incidenceFor = newGroup.readEntry( "IncidencesFor" );
       //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "IncidencesFor=" << incidenceFor;
       if ( incidenceFor == "nobody" ) {
@@ -179,8 +177,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       newGroup.deleteEntry( "IncidencesFor" );
     }
     if ( newGroup.hasKey( "Annotation-FolderType" ) ) {
-      Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
-      QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
       const QString annotationFolderType = newGroup.readEntry( "Annotation-FolderType" );
       if ( annotationFolderType == "mail" ) {
         //????
