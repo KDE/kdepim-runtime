@@ -223,7 +223,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "StorageQuotaRoot" );
     newGroup.deleteEntry( "FolderAttributes" );
     newGroup.deleteEntry( "AlarmsBlocked" );
-    newGroup.deleteEntry( "IncidencesFor" );
     newGroup.deleteEntry( "IncidencesForChanged" );
     newGroup.deleteEntry( "UserRights" );
     newGroup.deleteEntry( "StatusChangedLocally" );
