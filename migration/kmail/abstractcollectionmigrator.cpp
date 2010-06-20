@@ -45,6 +45,7 @@
 
 #define KOLAB_SHAREDSEEN "/vendor/cmu/cyrus-imapd/sharedseen"
 #define KOLAB_INCIDENCESFOR "/vendor/kolab/incidences-for"
+#define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
 
 
 using namespace Akonadi;
@@ -169,19 +170,40 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
       if ( incidenceFor == "nobody" ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "nobody";
-        mNeedModifyJob = true;
       } else if ( incidenceFor == "admins" ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "admins";
-        mNeedModifyJob = true;
       } else if ( incidenceFor == "readers" ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "readers";
-        mNeedModifyJob = true;
       } else {
         annotations[ KOLAB_INCIDENCESFOR ] = "admins"; //Default
-        mNeedModifyJob = true;
       }
+      mNeedModifyJob = true;
       newGroup.deleteEntry( "IncidencesFor" );
     }
+    if ( newGroup.hasGroup( "Annotation-FolderType" ) ) {
+      Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
+      QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+
+      const QString annotationFolderType = newGroup.readEntry( "Annotation-FolderType" );
+      if ( annotationFolderType == "mail" ) {
+        //????
+      } else if ( annotationFolderType == "event" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "event";
+      } else if ( annotationFolderType == "task" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "task";
+      } else if ( annotationFolderType == "contact" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "contact";
+      } else if ( annotationFolderType == "note" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "note";
+      } else if ( annotationFolderType == "journal" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "journal";
+      } else {
+        //????
+      }
+      mNeedModifyJob = true;
+      newGroup.deleteEntry( "Annotation-FolderType" );
+    }
+
     const QString whofield = newGroup.readEntry( "WhoField" );
     if ( !whofield.isEmpty() ) {
       Akonadi::MessageFolderAttribute *messageFolder  = mCurrentCollection.attribute<Akonadi::MessageFolderAttribute>( Akonadi::Entity::AddIfMissing );
