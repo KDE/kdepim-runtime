@@ -1173,6 +1173,8 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
       job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
       job->setProperty( AKONADI_PARTS, parts );
       connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetMetaDataDone( KJob* ) ) );
+    } else {
+      triggerNextCollectionChangeJob( collection, parts );
     }
 
   } else if ( currentPart == "imapacl" ) {
