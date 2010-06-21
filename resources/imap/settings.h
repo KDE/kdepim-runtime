@@ -23,17 +23,27 @@
 
 #include "settingsbase.h"
 
+#include <kimap/loginjob.h>
+
+#include <mailtransport/transport.h>
+
+class ImapAccount;
+
 class Settings : public SettingsBase
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Wallet" )
 public:
+    static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType );
+
     Settings( WId = 0 );
     static Settings *self();
     void setWinId( WId );
 
     void requestPassword();
     void requestManualAuth();
+
+    void loadAccount( ImapAccount *account ) const;
 
 signals:
     void passwordRequestCompleted( const QString &password, bool userRejected );
