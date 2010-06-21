@@ -45,6 +45,7 @@
 
 #define KOLAB_SHAREDSEEN "/vendor/cmu/cyrus-imapd/sharedseen"
 #define KOLAB_INCIDENCESFOR "/vendor/kolab/incidences-for"
+#define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
 
 
 using namespace Akonadi;
@@ -153,34 +154,47 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "UnreadIconPath" );
     newGroup.deleteEntry( "NormalIconPath" );
 
+    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
+    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
     if ( newGroup.readEntry( "SharedSeenFlags", false ) ) {
-      Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
-      QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
       annotations[ KOLAB_SHAREDSEEN ] = "true";
       mNeedModifyJob = true;
     }
     newGroup.deleteEntry( "SharedSeenFlags" );
-
-    if ( newGroup.hasGroup( "IncidencesFor" ) ) {
-      Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
-      QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+    if ( newGroup.hasKey( "IncidencesFor" ) ) {
       const QString incidenceFor = newGroup.readEntry( "IncidencesFor" );
       //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "IncidencesFor=" << incidenceFor;
-
       if ( incidenceFor == "nobody" ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "nobody";
-        mNeedModifyJob = true;
       } else if ( incidenceFor == "admins" ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "admins";
-        mNeedModifyJob = true;
       } else if ( incidenceFor == "readers" ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "readers";
-        mNeedModifyJob = true;
       } else {
         annotations[ KOLAB_INCIDENCESFOR ] = "admins"; //Default
-        mNeedModifyJob = true;
       }
+      mNeedModifyJob = true;
       newGroup.deleteEntry( "IncidencesFor" );
+    }
+    if ( newGroup.hasKey( "Annotation-FolderType" ) ) {
+      const QString annotationFolderType = newGroup.readEntry( "Annotation-FolderType" );
+      if ( annotationFolderType == "mail" ) {
+        //????
+      } else if ( annotationFolderType == "event" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "event";
+      } else if ( annotationFolderType == "task" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "task";
+      } else if ( annotationFolderType == "contact" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "contact";
+      } else if ( annotationFolderType == "note" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "note";
+      } else if ( annotationFolderType == "journal" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "journal";
+      } else {
+        //????
+      }
+      mNeedModifyJob = true;
+      newGroup.deleteEntry( "Annotation-FolderType" );
     }
     const QString whofield = newGroup.readEntry( "WhoField" );
     if ( !whofield.isEmpty() ) {
@@ -209,7 +223,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "StorageQuotaRoot" );
     newGroup.deleteEntry( "FolderAttributes" );
     newGroup.deleteEntry( "AlarmsBlocked" );
-    newGroup.deleteEntry( "IncidencesFor" );
     newGroup.deleteEntry( "IncidencesForChanged" );
     newGroup.deleteEntry( "UserRights" );
     newGroup.deleteEntry( "StatusChangedLocally" );
@@ -234,8 +247,8 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) && !favoriteCollectionsMigrated ) {
         KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
         const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
-	const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
-	oldFavoriteGroup.copyTo( &newFavoriteGroup );
+        const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+        oldFavoriteGroup.copyTo( &newFavoriteGroup );
         oldFavoriteGroup.deleteGroup();
 
         //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "FAVORITE COLLECTION lIds=" << lIds<<" lNames="<<lNames;

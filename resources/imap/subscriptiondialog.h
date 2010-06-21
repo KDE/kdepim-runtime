@@ -5,6 +5,10 @@
     Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
+
     KMail is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
@@ -39,6 +43,11 @@
 
 #include <QMap>
 
+namespace KIMAP
+{
+class Session;
+}
+
 using KPIM::KAccount;
 using KPIM::KSubscription;
 using KPIM::GroupItem;
@@ -55,6 +64,7 @@ class SubscriptionDialogBase : public KSubscription
     SubscriptionDialogBase( QWidget *parent,
                             const QString &caption,
                             KAccount* acct,
+                            const QString &password,
                             bool &selectionChanged,
                             const QString &startPath = QString() );
     virtual ~SubscriptionDialogBase() {
@@ -84,7 +94,7 @@ class SubscriptionDialogBase : public KSubscription
     /**
      * Called from the account when a connection was established
      */
-    void slotConnectionSuccess();
+    void slotLoginDone( KJob *job );
 
   protected slots:
     /**
@@ -135,6 +145,8 @@ class SubscriptionDialogBase : public KSubscription
     virtual bool subscriptionOptionEnabled( const ImapAccount *account ) const = 0;
     virtual QString subscriptionOptionQuestion( const QString &accountName ) const = 0;
 
+    KIMAP::Session *m_session;
+
     QStringList mDelimiters;
     QStringList mFolderNames;
     QStringList mFolderPaths;
@@ -158,6 +170,7 @@ class SubscriptionDialog : public SubscriptionDialogBase
     SubscriptionDialog( QWidget *parent,
                         const QString &caption,
                         KAccount* acct,
+                        const QString &password,
                         bool &selectionChanged,
                         const QString & startPath = QString() );
     virtual ~SubscriptionDialog();

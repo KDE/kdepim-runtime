@@ -21,6 +21,8 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include "imapaccount.h"
+
 #include <kwallet.h>
 using KWallet::Wallet;
 
@@ -50,6 +52,41 @@ Settings *Settings::self()
     }
 
     return s_globalSettings->q;
+}
+
+/**
+ * Maps the enum used to represent authentication in MailTransport (kdepimlibs)
+ * to the one used by the imap resource.
+ * @param authType the MailTransport auth enum value
+ * @return the corresponding KIMAP auth value.
+ * @note will cause fatal error if there is no mapping, so be careful not to pass invalid auth options (e.g., APOP) to this function.
+ */
+KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType )
+{
+  // typedef these for readability
+  typedef MailTransport::Transport::EnumAuthenticationType MTAuth;
+  typedef KIMAP::LoginJob KIAuth;
+  switch ( authType ) {
+    case MTAuth::ANONYMOUS:
+      return KIAuth::Anonymous;
+    case MTAuth::PLAIN:
+      return KIAuth::Plain;
+    case MTAuth::NTLM:
+      return KIAuth::NTLM;
+    case MTAuth::LOGIN:
+      return KIAuth::Login;
+    case MTAuth::GSSAPI:
+      return KIAuth::GSSAPI;
+    case MTAuth::DIGEST_MD5:
+      return KIAuth::DigestMD5;
+    case MTAuth::CRAM_MD5:
+      return KIAuth::CramMD5;
+    case MTAuth::CLEAR:
+      return KIAuth::ClearText;
+    default:
+      kFatal() << "mapping from Transport::EnumAuthenticationType ->  KIMAP::LoginJob::AuthenticationMode not possible";
+  }
+  return KIAuth::ClearText; // dummy value, shouldn't get here.
 }
 
 Settings::Settings( WId winId ) : SettingsBase(), m_winId( winId )
@@ -155,6 +192,33 @@ void Settings::setPassword( const QString & password )
         kDebug() << "Wallet save: " << wallet->sync() << endl;
     }
     delete wallet;
+}
+
+void Settings::loadAccount( ImapAccount *account ) const
+{
+  account->setServer( imapServer() );
+  if ( imapPort()>=0 ) {
+    account->setPort( imapPort() );
+  }
+
+  account->setUserName( userName() );
+  account->setSubscriptionEnabled( subscriptionEnabled() );
+
+  QString encryption = safety();
+  if ( encryption == "SSL" ) {
+    account->setEncryptionMode( KIMAP::LoginJob::AnySslVersion );
+  } else if (  encryption == "STARTTLS" ) {
+    account->setEncryptionMode( KIMAP::LoginJob::TlsV1 );
+  } else {
+    account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
+  }
+
+  account->setAuthenticationMode(
+      mapTransportAuthToKimap(
+          (MailTransport::TransportBase::EnumAuthenticationType::type) authentication()
+      )
+  );
+
 }
 
 #include "settings.moc"

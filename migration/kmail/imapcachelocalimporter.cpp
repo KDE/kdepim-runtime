@@ -54,7 +54,8 @@ class ImapCacheLocalImporter::Private
 
   public:
     Private( ImapCacheLocalImporter *parent, MixedMaildirStore *store )
-      : q( parent ), mStore( store ), mHiddenSession( 0 )
+      : q( parent ), mStore( store ), mHiddenSession( 0 ),
+        mItemProgress( -1 )
     {
     }
 
@@ -81,6 +82,9 @@ class ImapCacheLocalImporter::Private
     typedef QHash<QString, Collection> CollectionHash;
     CollectionHash mStoreCollectionsByPath;
     CollectionHash mAkonadiCollectionsByPath;
+
+    Collection mCurrentCollection;
+    int mItemProgress;
 
   public: // slots
     void createResourceResult( KJob *job );
@@ -136,6 +140,11 @@ void ImapCacheLocalImporter::Private::processNextCollection()
 
 void ImapCacheLocalImporter::Private::processNextItem()
 {
+  emit q->progress( ++mItemProgress );
+  emit q->status( i18ncp( "@info:status folder name and number of messages to import before finished",
+                          "%1: one message left to import", "%1: %2 messages left to import",
+                          mCurrentCollection.name(), mPendingItems.count() ) );
+
   if ( mPendingItems.isEmpty() ) {
     processNextCollection();
     return;
@@ -202,6 +211,7 @@ void ImapCacheLocalImporter::Private::configureResource()
   mResource.setName( i18nc( "@title account name", "Local Copies of %1", mAccountName ) );
   mResource.reconfigure();
 
+  emit q->status( QString() );
   emit q->importFinished( mResource, QString() );
 }
 
@@ -232,6 +242,7 @@ void ImapCacheLocalImporter::Private::collectionCreateResult( KJob *job )
   Q_ASSERT( createJob != 0 );
 
   const Collection collection = createJob->collection();
+  mCurrentCollection = collection;
 /*  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "inserting collection" << collection.id()
                                    << collection.remoteId()
                                    << "at idPath" << idPath;*/
@@ -244,6 +255,8 @@ void ImapCacheLocalImporter::Private::collectionCreateResult( KJob *job )
   FileStore::ItemFetchJob *fetchJob = mStore->fetchItems( storeCollection );
   fetchJob->setProperty( "remoteIdPath", idPath );
   QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), q, SLOT( itemFetchResult( KJob* ) ) );
+
+  emit q->status( i18nc( "@info:status foldername", "%1: listing messages...", collection.name() ) );
 }
 
 void ImapCacheLocalImporter::Private::itemFetchResult( KJob *job )
@@ -270,6 +283,8 @@ void ImapCacheLocalImporter::Private::itemFetchResult( KJob *job )
 
   mPendingItems << items;
 
+  mItemProgress = -1;
+  emit q->progress( 0, mPendingItems.count(), 0 );
   processNextItem();
 }
 
@@ -306,6 +321,11 @@ void ImapCacheLocalImporter::setTopLevelFolder( const QString &topLevelFolder )
 void ImapCacheLocalImporter::setAccountName( const QString &accountName )
 {
   d->mAccountName = accountName;
+}
+
+QString ImapCacheLocalImporter::accountName() const
+{
+  return d->mAccountName;
 }
 
 void ImapCacheLocalImporter::startImport()

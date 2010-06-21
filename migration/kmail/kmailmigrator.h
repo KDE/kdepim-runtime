@@ -30,6 +30,7 @@
 #include <QHash>
 
 class AbstractCollectionMigrator;
+class ImapCacheLocalImporter;
 class KJob;
 class MixedMaildirStore;
 class OrgKdeAkonadiImapSettingsInterface;
@@ -96,8 +97,14 @@ class KMailMigrator : public KMigratorBase
     void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance
-                          = Akonadi::AgentInstance() );
-    void migrationCompleted( const Akonadi::AgentInstance &instance );
+                          = Akonadi::AgentInstance() )
+    {
+      migrationFailed( errorMsg, true, instance);
+    }
+
+    void migrationFailed( const QString &errorMsg, bool doMigrateNext,
+                          const Akonadi::AgentInstance &instance = Akonadi::AgentInstance() );
+    void migrationCompleted( const Akonadi::AgentInstance &instance, bool doMigrateNext = true );
 
     void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
 
@@ -135,6 +142,8 @@ class KMailMigrator : public KMigratorBase
     QList<Akonadi::AgentInstance> mFailedInstances;
 
     bool mForwardResourceNotifications;
+
+    ImapCacheLocalImporter *mLocalCacheImporter;
 };
 
 } // namespace KMail

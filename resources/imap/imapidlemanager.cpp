@@ -3,6 +3,10 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
+
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
     the Free Software Foundation; either version 2 of the License, or (at your
@@ -30,15 +34,40 @@
 #include <QtCore/QTimer>
 
 #include "imapresource.h"
+#include "sessionpool.h"
 
 ImapIdleManager::ImapIdleManager( Akonadi::Collection &col, const QString &mailBox,
-                                  KIMAP::Session *session, ImapResource *parent )
-  : QObject( parent ), m_session( session ),
-    m_idle( 0 ), m_resource( parent ),  m_collection( col ),
+                                  SessionPool *pool, ImapResource *parent )
+  : QObject( parent ), m_sessionRequestId( 0 ), m_session( 0 ),
+    m_idle( 0 ), m_resource( parent ),  m_mailBox( mailBox ), m_collection( col ),
     m_lastMessageCount( -1 ), m_lastRecentCount( -1 )
 {
+  connect( pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)),
+           this, SLOT(onSessionRequestDone(qint64, KIMAP::Session*, int, QString)) );
+  m_sessionRequestId = pool->requestSession();
+}
+
+ImapIdleManager::~ImapIdleManager()
+{
+}
+
+KIMAP::Session *ImapIdleManager::session() const
+{
+  return m_session;
+}
+
+void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *session,
+                                            int /*errorCode*/, const QString &/*errorString*/ )
+{
+  if ( requestId!=m_sessionRequestId || session==0 ) {
+    return;
+  }
+
+  m_session = session;
+  m_sessionRequestId = 0;
+
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-  select->setMailBox( mailBox );
+  select->setMailBox( m_mailBox );
   connect( select, SIGNAL(result(KJob*)),
            this, SLOT(onSelectDone(KJob*)) );
   select->start();
@@ -49,15 +78,6 @@ ImapIdleManager::ImapIdleManager( Akonadi::Collection &col, const QString &mailB
   connect( m_idle, SIGNAL(result(KJob*)),
            this, SLOT(onIdleStopped()) );
   m_idle->start();
-}
-
-ImapIdleManager::~ImapIdleManager()
-{
-}
-
-KIMAP::Session *ImapIdleManager::session() const
-{
-  return m_session;
 }
 
 void ImapIdleManager::onSelectDone( KJob *job )

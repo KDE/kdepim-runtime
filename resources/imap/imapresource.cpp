@@ -3,6 +3,10 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
+
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
     the Free Software Foundation; either version 2 of the License, or (at your
@@ -60,6 +64,7 @@
 #include <kimap/renamejob.h>
 #include <kimap/rfccodecs.h>
 #include <kimap/selectjob.h>
+#include <kimap/sessionuiproxy.h>
 #include <kimap/setacljob.h>
 #include <kimap/setmetadatajob.h>
 #include <kimap/storejob.h>
@@ -92,6 +97,10 @@
 #include "imapaccount.h"
 #include "imapidlemanager.h"
 
+#include "settingspasswordrequester.h"
+#include "sessionpool.h"
+#include "sessionuiproxy.h"
+
 #include "resourceadaptor.h"
 
 using namespace Akonadi;
@@ -105,8 +114,17 @@ static const char SOURCE_COLLECTION[] = "sourceCollection";
 static const char DESTINATION_COLLECTION[] = "destinationCollection";
 
 ImapResource::ImapResource( const QString &id )
-        :ResourceBase( id ), m_account( 0 ), m_idle( 0 )
+        :ResourceBase( id ), m_pool( new SessionPool( 2, this ) ),
+         m_mainSessionRequestId( 0 ), m_mainSession( 0 ), m_idle( 0 )
 {
+  m_pool->setPasswordRequester( new SettingsPasswordRequester( this, m_pool ) );
+  m_pool->setSessionUiProxy( SessionUiProxy::Ptr( new SessionUiProxy ) );
+
+  connect( m_pool, SIGNAL(connectDone(int, QString)),
+           this, SLOT(onConnectDone(int, QString)) );
+  connect( m_pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)),
+           this, SLOT(onMainSessionRequested(qint64, KIMAP::Session*, int, QString)) );
+
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
@@ -164,7 +182,7 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   if ( !isSessionAvailable() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
-    setOnline( false );
+    scheduleConnectionAttempt();
     return false;
   }
 
@@ -172,7 +190,7 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   const qint64 uid = item.remoteId().toLongLong();
 
   selectIfNeeded( mailBox );
-  KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->mainSession() );
+  KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_mainSession );
   fetch->setProperty( "akonadiItem", QVariant::fromValue( item ) );
   KIMAP::FetchJob::FetchScope scope;
   fetch->setUidBased( true );
@@ -241,59 +259,64 @@ void ImapResource::configure( WId windowId )
 
   if ( dlg.result() == QDialog::Accepted ) {
     Settings::self()->writeConfig();
-    reconnect();
-
     emit configurationDialogAccepted();
+
+    reconnect();
   } else {
     emit configurationDialogRejected();
   }
 }
 
-void ImapResource::startConnect( bool forceManualAuth )
+void ImapResource::startConnect()
 {
   if ( Settings::self()->imapServer().isEmpty() ) {
     emit status( Broken, i18n( "No server configured yet." ) );
     return;
   }
 
-  connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
-           this, SLOT(onPasswordRequestCompleted(QString, bool)) );
-  if ( forceManualAuth ) {
-    Settings::self()->requestManualAuth();
-  } else {
-    Settings::self()->requestPassword();
-  }
+  ImapAccount *account = new ImapAccount;
+  Settings::self()->loadAccount( account );
+
+  m_pool->connect( account );
 }
 
-void ImapResource::onPasswordRequestCompleted( const QString &password, bool userRejected )
+void ImapResource::onConnectDone( int errorCode, const QString &errorString )
 {
-  disconnect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
-              this, SLOT(onPasswordRequestCompleted(QString, bool)) );
-
-  if ( userRejected ) {
-    emit status( Broken, i18n( "Could not read the password: user rejected wallet access." ) );
+  if ( errorCode!=SessionPool::NoError ) {
+    emit status( Broken, errorString );
+    taskDone();
     return;
-  } else if ( password.isEmpty() ) {
-    emit status( Broken, i18n( "Authentication failed." ) );
-    return;
-  } else {
-    Settings::self()->setPassword( password );
   }
 
-  if ( m_account!=0 ) {
-    m_account->deleteLater();
-    disconnect( m_account, 0, this, 0 );
-  }
-
-  m_account = new ImapAccount( Settings::self(), this );
-
-  connect( m_account, SIGNAL( success( KIMAP::Session* ) ),
-           this, SLOT( onConnectSuccess( KIMAP::Session* ) ) );
-  connect( m_account, SIGNAL( error( KIMAP::Session*, int, const QString& ) ),
-           this, SLOT( onConnectError( KIMAP::Session*, int, const QString& ) ) );
-
-  m_account->connect( password );
+  m_mainSessionRequestId = m_pool->requestSession();
 }
+
+void ImapResource::onMainSessionRequested( qint64 requestId, KIMAP::Session *session,
+                                           int errorCode, const QString &errorString )
+{
+  if ( requestId!=m_mainSessionRequestId ) {
+    // Not for us, ignore
+    return;
+  }
+
+  m_mainSessionRequestId = 0;
+
+  if ( errorCode!=SessionPool::NoError ) {
+    emit status( Broken, errorString );
+    taskDone();
+    return;
+  }
+
+  m_mainSession = session;
+  startIdle();
+
+  setOnline( true );
+  taskDone();
+  emit status( Idle, i18n( "Connection established." ) );
+
+  synchronizeCollectionTree();
+}
+
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
@@ -312,7 +335,7 @@ void ImapResource::itemAdded( const Item &item, const Collection &collection )
   // save message to the server.
   KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
-  KIMAP::AppendJob *job = new KIMAP::AppendJob( m_account->mainSession() );
+  KIMAP::AppendJob *job = new KIMAP::AppendJob( m_mainSession );
   job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
   job->setProperty( "akonadiItem", QVariant::fromValue( item ) );
   job->setMailBox( mailBox );
@@ -346,7 +369,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
   qint64 oldUid = job->property( "oldUid" ).toLongLong();
   if ( oldUid ) {
     // OK it's indeed a content change, so we've to mark the old version as deleted
-    KIMAP::StoreJob *store = new KIMAP::StoreJob( m_account->mainSession() );
+    KIMAP::StoreJob *store = new KIMAP::StoreJob( m_mainSession );
     store->setUidBased( true );
     store->setSequenceSet( KIMAP::ImapSet( oldUid ) );
     store->setFlags( QList<QByteArray>() << "\\Deleted" );
@@ -398,7 +421,7 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
     // save message to the server.
     KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
 
-    KIMAP::AppendJob *job = new KIMAP::AppendJob( m_account->mainSession() );
+    KIMAP::AppendJob *job = new KIMAP::AppendJob( m_mainSession );
     job->setProperty( "akonadiItem", QVariant::fromValue( item ) );
     job->setProperty( "oldUid", uid ); // Will be used in onAppendMessageDone
     job->setMailBox( mailBox );
@@ -409,7 +432,7 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
 
   } else if ( parts.contains( "FLAGS" ) ) {
     selectIfNeeded( mailBox );
-    KIMAP::StoreJob *store = new KIMAP::StoreJob( m_account->mainSession() );
+    KIMAP::StoreJob *store = new KIMAP::StoreJob( m_mainSession );
     store->setProperty( "akonadiItem", QVariant::fromValue( item ) );
     store->setProperty( "itemUid", uid );
     store->setUidBased( true );
@@ -457,7 +480,7 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   const qint64 uid = item.remoteId().toLongLong();
 
   selectIfNeeded( mailBox );
-  KIMAP::StoreJob *store = new KIMAP::StoreJob( m_account->mainSession() );
+  KIMAP::StoreJob *store = new KIMAP::StoreJob( m_mainSession );
   store->setProperty( "akonadiItem", QVariant::fromValue( item ) );
   store->setProperty( "itemRemoval", true );
   store->setUidBased( true );
@@ -500,7 +523,7 @@ void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collecti
   const QString newMailBox = mailBoxForCollection( destination );
 
   if ( oldMailBox != newMailBox ) {
-    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->mainSession() );
+    KIMAP::SelectJob *select = new KIMAP::SelectJob( m_mainSession );
     select->setMailBox( oldMailBox );
     select->setProperty( AKONADI_ITEM, QVariant::fromValue( item ) );
     select->setProperty( SOURCE_COLLECTION, QVariant::fromValue( source ) );
@@ -521,7 +544,7 @@ void ImapResource::onPreItemMoveSelectDone( KJob *job )
     Collection destination = job->property( DESTINATION_COLLECTION ).value<Collection>();
     const QString newMailBox = mailBoxForCollection( destination );
 
-    KIMAP::CopyJob *copy = new KIMAP::CopyJob( m_account->mainSession() );
+    KIMAP::CopyJob *copy = new KIMAP::CopyJob( m_mainSession );
     copy->setProperty( AKONADI_ITEM, job->property( AKONADI_ITEM ) );
     copy->setProperty( SOURCE_COLLECTION, job->property( SOURCE_COLLECTION ) );
     copy->setProperty( DESTINATION_COLLECTION, job->property( DESTINATION_COLLECTION ) );
@@ -555,7 +578,7 @@ void ImapResource::onCopyMessageDone( KJob *job )
     item.setRemoteId( QString::number( newUid ) );
 
     // Mark the old one ready for deletion
-    KIMAP::StoreJob *store = new KIMAP::StoreJob( m_account->mainSession() );
+    KIMAP::StoreJob *store = new KIMAP::StoreJob( m_mainSession );
     store->setProperty( AKONADI_ITEM, QVariant::fromValue( item ) );
     store->setProperty( SOURCE_COLLECTION, job->property( SOURCE_COLLECTION ) );
     store->setProperty( DESTINATION_COLLECTION, job->property( DESTINATION_COLLECTION ) );
@@ -642,9 +665,9 @@ void ImapResource::retrieveCollections()
   QHash<QString, Collection> reportedCollections;
   reportedCollections.insert( QString(), root );
 
-  KIMAP::ListJob *listJob = new KIMAP::ListJob( m_account->mainSession() );
-  listJob->setIncludeUnsubscribed( !m_account->isSubscriptionEnabled() );
-  listJob->setQueriedNamespaces( m_account->namespaces() );
+  KIMAP::ListJob *listJob = new KIMAP::ListJob( m_mainSession );
+  listJob->setIncludeUnsubscribed( !m_pool->account()->isSubscriptionEnabled() );
+  listJob->setQueriedNamespaces( m_pool->serverNamespaces() );
   connect( listJob, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
            this, SLOT( onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
   connect( listJob, SIGNAL(result(KJob*)), SLOT(onMailBoxesReceiveDone(KJob*)) );
@@ -757,14 +780,14 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
 {
   const Collection collection( collectionVariant.value<Collection>() );
   const QString mailBox = mailBoxForCollection( collection );
-  const QStringList capabilities = m_account->capabilities();
+  const QStringList capabilities = m_pool->serverCapabilities();
 
   // HACK: will go away when ThreadWeaver is in place
   m_finishedMetaDataJobs = 0;
 
   // First get the annotations from the mailbox if it's supported
   if ( capabilities.contains( "METADATA" ) || capabilities.contains( "ANNOTATEMORE" ) ) {
-    KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob( m_account->mainSession() );
+    KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob( m_mainSession );
     meta->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
     meta->setMailBox( mailBox );
     if ( capabilities.contains( "METADATA" ) ) {
@@ -781,14 +804,14 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
 
   // Get the ACLs from the mailbox if it's supported
   if ( capabilities.contains( "ACL" ) ) {
-    KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( m_account->mainSession() );
+    KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( m_mainSession );
     acl->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
     acl->setMailBox( mailBox );
     connect( acl, SIGNAL( result( KJob* ) ), SLOT( onGetAclDone( KJob* ) ) );
     acl->start();
     m_finishedMetaDataJobs++;
 
-    KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( m_account->mainSession() );
+    KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( m_mainSession );
     rights->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
     rights->setMailBox( mailBox );
     connect( rights, SIGNAL( result( KJob* ) ), SLOT( onRightsReceived( KJob* ) ) );
@@ -798,12 +821,18 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
 
   // Get the QUOTA info from the mailbox if it's supported
   if ( capabilities.contains( "QUOTA" ) ) {
-    KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( m_account->mainSession() );
+    KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( m_mainSession );
     quota->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
     quota->setMailBox( mailBox );
     connect( quota, SIGNAL( result( KJob* ) ), SLOT( onQuotasReceived( KJob* ) ) );
     quota->start();
     m_finishedMetaDataJobs++;
+  }
+
+  // the server does not have any of the capabilities needed to get extra info, so this
+  // step is done here
+  if ( m_finishedMetaDataJobs == 0 ) {
+    taskDone();
   }
 }
 
@@ -812,7 +841,7 @@ void ImapResource::retrieveItems( const Collection &col )
   if ( !isSessionAvailable() ) {
     kDebug() << "Ignoring this request. Probably there is no connection.";
     cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
-    setOnline( false );
+    scheduleConnectionAttempt();
     return;
   }
 
@@ -838,7 +867,7 @@ void ImapResource::retrieveItems( const Collection &col )
   }
 
   // Issue another select to get the updated info from the mailbox
-  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->mainSession() );
+  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_mainSession );
   select->setProperty( AKONADI_COLLECTION, QVariant::fromValue( col ) );
   select->setMailBox( mailBox );
   connect( select, SIGNAL( result( KJob* ) ),
@@ -851,7 +880,7 @@ void ImapResource::triggerExpunge( const QString &mailBox )
   kDebug(5327) << mailBox;
 
   selectIfNeeded( mailBox );
-  KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_account->mainSession() );
+  KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_mainSession );
   expunge->start();
 }
 
@@ -887,7 +916,7 @@ void ImapResource::listFlagsForImapSet( const KIMAP::ImapSet& set )
   scope.parts.clear();
   scope.mode = KIMAP::FetchJob::FetchScope::Flags;
 
-  KIMAP::FetchJob* fetch = new KIMAP::FetchJob( m_account->mainSession() );
+  KIMAP::FetchJob* fetch = new KIMAP::FetchJob( m_mainSession );
   fetch->setSequenceSet( set );
   fetch->setScope( scope );
   connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
@@ -978,7 +1007,7 @@ void ImapResource::collectionAdded( const Collection & collection, const Collect
   Collection c = collection;
   c.setRemoteId( parent.remoteId().at( 0 ) + collection.name() );
 
-  KIMAP::CreateJob *job = new KIMAP::CreateJob( m_account->mainSession() );
+  KIMAP::CreateJob *job = new KIMAP::CreateJob( m_mainSession );
   job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( c ) );
   job->setMailBox( newMailBox );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onCreateMailBoxDone( KJob* ) ) );
@@ -991,7 +1020,7 @@ void ImapResource::onCreateMailBoxDone( KJob *job )
 
   // Automatically subscribe to newly created mailbox
   KIMAP::CreateJob *create = static_cast<KIMAP::CreateJob*>( job );
-  KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_account->mainSession() );
+  KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_mainSession );
   subscribe->setMailBox( create->mailBox() );
   subscribe->start();
 
@@ -1043,7 +1072,7 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
     const QString newMailBox = mailBoxForCollection( c );
 
     if ( oldMailBox != newMailBox ) {
-      KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->mainSession() );
+      KIMAP::RenameJob *job = new KIMAP::RenameJob( m_mainSession );
       job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( c ) );
       job->setProperty( AKONADI_PARTS, parts );
       job->setProperty( PREVIOUS_REMOTEID, collection.remoteId() );
@@ -1066,7 +1095,7 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
       return;
     }
 
-    KIMAP::Acl::Rights imapRights = aclAttribute->rights()[m_account->userName().toUtf8()];
+    KIMAP::Acl::Rights imapRights = aclAttribute->rights()[m_pool->account()->userName().toUtf8()];
     Collection::Rights newRights = collection.rights();
 
     if ( newRights & Collection::CanChangeItem ) {
@@ -1111,12 +1140,12 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
     kDebug(5327) << "imapRights:" << imapRights
                  << "newRights:" << newRights;
 
-    KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
+    KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_mainSession );
     job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
     job->setProperty( AKONADI_PARTS, parts );
     job->setMailBox( mailBoxForCollection( collection ) );
     job->setRights( KIMAP::SetAclJob::Change, imapRights );
-    job->setIdentifier( m_account->userName().toUtf8() );
+    job->setIdentifier( m_pool->account()->userName().toUtf8() );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetAclDone( KJob* ) ) );
     job->start();
 
@@ -1133,8 +1162,8 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
     QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
     kDebug(5327) << "All annotations: " << annotations;
     foreach ( const QByteArray &entry, annotations.keys() ) {
-      job = new KIMAP::SetMetaDataJob( m_account->mainSession() );
-      if ( m_account->capabilities().contains( "METADATA" ) ) {
+      job = new KIMAP::SetMetaDataJob( m_mainSession );
+      if ( m_pool->serverCapabilities().contains( "METADATA" ) ) {
         job->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
       } else {
         job->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
@@ -1153,12 +1182,18 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
       job->start();
     }
 
-    // We'll get info out of the last job only to trigger the next phase
-    // of the collection change. The other ones we fire and forget.
-    // Obviously we assume here that they will all succeed or all fail.
-    job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
-    job->setProperty( AKONADI_PARTS, parts );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetMetaDataDone( KJob* ) ) );
+    // Careful, maybe we created no job if there was no annotations stored
+    // in the attribute
+    if ( job ) {
+      // We'll get info out of the last job only to trigger the next phase
+      // of the collection change. The other ones we fire and forget.
+      // Obviously we assume here that they will all succeed or all fail.
+      job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+      job->setProperty( AKONADI_PARTS, parts );
+      connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetMetaDataDone( KJob* ) ) );
+    } else {
+      triggerNextCollectionChangeJob( collection, parts );
+    }
 
   } else if ( currentPart == "imapacl" ) {
     ImapAclAttribute *aclAttribute = collection.attribute<ImapAclAttribute>();
@@ -1170,7 +1205,7 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
     // remove all ACL entries that have been deleted
     foreach ( const QByteArray &oldId, oldIds ) {
       if ( !ids.contains( oldId ) ) {
-        KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
+        KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_mainSession );
         job->setMailBox( mailBoxForCollection( collection ) );
         job->setIdentifier( oldId );
         job->setRights( KIMAP::SetAclJob::Remove, oldRights[oldId] );
@@ -1190,7 +1225,7 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
     for ( int i = 0; i < ids.size(); i++ ) {
       const QByteArray id = ids[i];
 
-      KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_account->mainSession() );
+      KIMAP::SetAclJob *job = new KIMAP::SetAclJob( m_mainSession );
       job->setMailBox( mailBoxForCollection( collection ) );
       job->setIdentifier( id );
       job->setRights( KIMAP::SetAclJob::Change, rights[id] );
@@ -1265,7 +1300,7 @@ void ImapResource::collectionRemoved( const Collection &collection )
 
   const QString mailBox = mailBoxForCollection( collection );
 
-  KIMAP::DeleteJob *job = new KIMAP::DeleteJob( m_account->mainSession() );
+  KIMAP::DeleteJob *job = new KIMAP::DeleteJob( m_mainSession );
   job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
   job->setMailBox( mailBox );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onDeleteMailBoxDone( KJob* ) ) );
@@ -1319,7 +1354,7 @@ void ImapResource::collectionMoved( const Akonadi::Collection &collection, const
   const QString newMailBox = mailBoxForCollection( destination )+collection.remoteId();
 
   if ( oldMailBox != newMailBox ) {
-    KIMAP::RenameJob *job = new KIMAP::RenameJob( m_account->mainSession() );
+    KIMAP::RenameJob *job = new KIMAP::RenameJob( m_mainSession );
     job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
     job->setProperty( SOURCE_COLLECTION, QVariant::fromValue( source ) );
     job->setSourceMailBox( oldMailBox );
@@ -1336,7 +1371,7 @@ void ImapResource::onMailBoxMoveDone( KJob *job )
   Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
 
   if ( !job->error() ) {
-    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_account->mainSession() );
+    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_mainSession );
     subscribe->setMailBox( static_cast<KIMAP::RenameJob*>( job )->destinationMailBox() );
     subscribe->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( onSubscribeDone( KJob* ) ) );
@@ -1363,48 +1398,10 @@ void ImapResource::onSubscribeDone( KJob *job )
 
 /******************* Slots  ***********************************************/
 
-void ImapResource::onConnectError( KIMAP::Session *session, int code, const QString &message )
+void ImapResource::scheduleConnectionAttempt()
 {
-  if ( m_account->mainSession()!=session ) {
-    return;
-  }
-
-  if ( code==ImapAccount::LoginFailError ) {
-    // the credentials where not ok....
-    int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
-                                                 i18n( "The server refused the supplied username and password. "
-                                                       "Do you want to go to the settings, have another attempt "
-                                                       "at logging in, or do nothing?\n\n"
-                                                       "%1", message ),
-                                                 i18n( "Could Not Authenticate" ),
-                                                 KGuiItem( i18n( "Settings" ) ),
-                                                 KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
-    if ( i == KMessageBox::Yes ) {
-      configure( winIdForDialogs() );
-      return;
-    } else if ( i == KMessageBox::No ) {
-      startConnect( true );
-      return;
-    } else {
-      KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( m_account->mainSession() );
-      logout->start();
-      emit status( Broken, i18n( "Could not connect to the IMAP-server %1.", m_account->server() ) );
-    }
-  }
-
-  m_account->disconnect();
-  emit error( message );
-}
-
-void ImapResource::onConnectSuccess( KIMAP::Session *session )
-{
-  if ( m_account->mainSession()!=session ) {
-    return;
-  }
-  ResourceBase::doSetOnline( true );
-  startIdle();
-  emit status( Idle, i18n( "Connection established." ) );
-  synchronizeCollectionTree();
+  // block all other tasks, until we are connected
+  scheduleCustomTask( this, "startConnect", ResourceBase::Prepend );
 }
 
 void ImapResource::onGetAclDone( KJob *job )
@@ -1684,7 +1681,7 @@ void ImapResource::onSelectDone( KJob *job )
 
     setItemStreamingEnabled( true );
 
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->mainSession() );
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_mainSession );
     fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
     fetch->setScope( scope );
     connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
@@ -1748,7 +1745,7 @@ void ImapResource::onSelectDone( const QString &mailBox, int messageCount, qint6
     // that probably means that there is new mail. Fetch missing.
     kDebug(5327) << "Fetch missing: " << messageCount << " But: " << realMessageCount;
 
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->mainSession() );
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_mainSession );
     fetch->setSequenceSet( KIMAP::ImapSet( realMessageCount+1, messageCount ) );
     fetch->setScope( scope );
     connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
@@ -1765,7 +1762,7 @@ void ImapResource::onSelectDone( const QString &mailBox, int messageCount, qint6
     // behind our back...
     kDebug(5327) << "UIDNEXT check failed, refetching mailbox";
 
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_account->mainSession() );
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_mainSession );
     fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
     fetch->setScope( scope );
     connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
@@ -1814,9 +1811,11 @@ QString ImapResource::mailBoxForCollection( const Collection& col ) const
 void ImapResource::doSetOnline(bool online)
 {
   if ( !online && isSessionAvailable() ) {
-    m_account->disconnect();
-  } else if ( online ) {
-    startConnect();
+    m_pool->releaseSession( m_mainSession );
+    m_mainSession = 0;
+    m_pool->disconnect();
+  } else if ( online && !isSessionAvailable() ) {
+    scheduleConnectionAttempt();
   }
   ResourceBase::doSetOnline( online );
 }
@@ -1835,8 +1834,8 @@ bool ImapResource::needsNetwork() const
 
 bool ImapResource::isSessionAvailable() const
 {
-  return m_account && m_account->mainSession()
-      && m_account->mainSession()->state() != KIMAP::Session::Disconnected;
+  return m_mainSession
+      && m_mainSession->state() != KIMAP::Session::Disconnected;
 }
 
 bool ImapResource::ensureSessionAvailableOrDefer()
@@ -1844,7 +1843,7 @@ bool ImapResource::ensureSessionAvailableOrDefer()
   if (!isSessionAvailable() ) {
     kDebug() << "Defering this request. Probably there is no connection.";
     deferTask();
-    setOnline( false );
+    scheduleConnectionAttempt();
     return false;
   } else {
     return true;
@@ -1872,7 +1871,7 @@ void ImapResource::startIdle()
   delete m_idle;
   m_idle = 0;
 
-  if ( !m_account || !m_account->capabilities().contains( "IDLE" ) )
+  if ( !m_pool->serverCapabilities().contains( "IDLE" ) )
     return;
 
   const QStringList ridPath = Settings::self()->idleRidPath();
@@ -1913,7 +1912,7 @@ void ImapResource::onIdleCollectionFetchDone( KJob *job )
       return;
 
     m_idle = new ImapIdleManager( c, mailBox,
-                                  m_account->extraSession( "idle", password ),
+                                  m_pool,
                                   this );
 
   } else {
@@ -1982,9 +1981,9 @@ void ImapResource::onExpungeCollectionFetchDone( KJob *job )
 
 void ImapResource::selectIfNeeded(const QString& mailBox)
 {
-  if ( m_account->mainSession()->selectedMailBox() == mailBox )
+  if ( m_mainSession->selectedMailBox() == mailBox )
     return;
-  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_account->mainSession() );
+  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_mainSession );
   select->setMailBox( mailBox );
   select->start();
 }
