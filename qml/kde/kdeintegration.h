@@ -21,11 +21,13 @@
 #define KDEINTEGRATION_H
 
 #include <QObject>
-#include <QStringList>
 #include <QVariant>
+#include <QStringList>
 
 class QIcon;
 class QPixmap;
+class QScriptValue;
+class QScriptContext;
 
 class KDEIntegration : public QObject
 {
@@ -35,19 +37,18 @@ class KDEIntegration : public QObject
     explicit KDEIntegration(QObject* parent = 0);
 
   public slots:
-    QString i18n( const QString &message );
-    QString i18na( const QString &message, const QVariantList &args );
-    QString i18nc( const QString &context, const QString &message );
-    QString i18nca( const QString &context, const QString &message, const QVariantList &args );
-    QString i18np( const QString &singular, const QString &plural, int amount );
-    QString i18npa( const QString &singular, const QString &plural, int amount, const QVariantList &args );
-    QString i18ncp( const QString &context, const QString &singular, const QString &plural, int amount );
-    QString i18ncpa( const QString &context, const QString &singular, const QString &plural, int amount, const QVariantList &args );
+    QString i18n( const QScriptValue &array );
+    QString i18nc( const QScriptValue &array );
+    QString i18np( const QScriptValue &array );
+    QString i18ncp( const QScriptValue &array );
 
     QString iconPath( const QString &iconName, int size );
     QPixmap iconToPixmap( const QIcon &icon, int size );
 
     QString locate( const QString &type, const QString &filename );
+
+  private:
+    QScriptContext *getContext( const QScriptValue &v );
 };
 
 #endif

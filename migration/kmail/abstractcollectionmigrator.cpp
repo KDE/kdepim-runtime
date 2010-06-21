@@ -23,7 +23,7 @@
 #include "libmaildir/maildir.h"
 
 #include <akonadi/kmime/specialmailcollections.h>
-
+#include <akonadi/kmime/messagefolderattribute.h>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/collection.h>
@@ -33,6 +33,8 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/monitor.h>
 
+#include "collectionannotationsattribute.h"
+
 #include <KConfig>
 #include <KConfigGroup>
 #include <KLocale>
@@ -40,6 +42,10 @@
 #include <QHash>
 #include <QQueue>
 #include <QTimer>
+
+#define KOLAB_SHAREDSEEN "/vendor/cmu/cyrus-imapd/sharedseen"
+#define KOLAB_INCIDENCESFOR "/vendor/kolab/incidences-for"
+
 
 using namespace Akonadi;
 using KPIM::Maildir;
@@ -142,10 +148,51 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       // collection modification needs to be sent to Akonadi
       mNeedModifyJob = true;
     }
+
     newGroup.deleteEntry( "UseCustomIcons" );
     newGroup.deleteEntry( "UnreadIconPath" );
     newGroup.deleteEntry( "NormalIconPath" );
 
+    if ( newGroup.readEntry( "SharedSeenFlags", false ) ) {
+      Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
+      QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+      annotations[ KOLAB_SHAREDSEEN ] = "true";
+      mNeedModifyJob = true;
+    }
+    newGroup.deleteEntry( "SharedSeenFlags" );
+
+    if ( newGroup.hasGroup( "IncidencesFor" ) ) {
+      Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
+      QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+      const QString incidenceFor = newGroup.readEntry( "IncidencesFor" );
+      //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "IncidencesFor=" << incidenceFor;
+
+      if ( incidenceFor == "nobody" ) {
+        annotations[ KOLAB_INCIDENCESFOR ] = "nobody";
+        mNeedModifyJob = true;
+      } else if ( incidenceFor == "admins" ) {
+        annotations[ KOLAB_INCIDENCESFOR ] = "admins";
+        mNeedModifyJob = true;
+      } else if ( incidenceFor == "readers" ) {
+        annotations[ KOLAB_INCIDENCESFOR ] = "readers";
+        mNeedModifyJob = true;
+      } else {
+        annotations[ KOLAB_INCIDENCESFOR ] = "admins"; //Default
+        mNeedModifyJob = true;
+      }
+      newGroup.deleteEntry( "IncidencesFor" );
+    }
+    const QString whofield = newGroup.readEntry( "WhoField" );
+    if ( !whofield.isEmpty() ) {
+      Akonadi::MessageFolderAttribute *messageFolder  = mCurrentCollection.attribute<Akonadi::MessageFolderAttribute>( Akonadi::Entity::AddIfMissing );
+
+      if ( whofield ==  QLatin1String( "To" ) )
+        messageFolder->setOutboundFolder( true );
+      else if( whofield == QLatin1String( "From" ) )
+        messageFolder->setOutboundFolder( false );
+      mNeedModifyJob = true;
+    }
+    newGroup.deleteEntry( "WhoField" );
 
     //Delete old entry
     newGroup.deleteEntry( "TotalMsgs" );

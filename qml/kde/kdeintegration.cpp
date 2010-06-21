@@ -26,10 +26,19 @@
 #include <QIcon>
 #include <QPixmap>
 
-static QString translate( const KLocalizedString &_string, const QVariantList &args = QVariantList() )
+#include <QScriptValue>
+#include <QScriptContext>
+#include <QScriptEngine>
+
+static QString translate( const KLocalizedString &msg,
+                          const QScriptContext *context, const int start )
 {
-  KLocalizedString string( _string );
-  foreach ( const QVariant &arg, args ) {
+  KLocalizedString string( msg );
+  const int numArgs = context->argumentCount();
+
+  for (int i = start; i < numArgs; ++i) {
+    QVariant arg = context->argument(i).toVariant();
+
     switch ( arg.type() ) {
       case QVariant::Char:
         string = string.subs( arg.toChar() );
@@ -55,7 +64,9 @@ static QString translate( const KLocalizedString &_string, const QVariantList &a
       default:
         kWarning() << "Unknown i18n argument type:" << arg;
     }
+
   }
+
   return string.toString();
 }
 
@@ -63,50 +74,103 @@ KDEIntegration::KDEIntegration( QObject *parent ) : QObject( parent )
 {
 }
 
-QString KDEIntegration::i18n( const QString &message )
+QScriptContext *KDEIntegration::getContext( const QScriptValue &v )
 {
-  return translate( ki18n( message.toLatin1().constData() ) );
+  QScriptEngine *engine = v.engine();
+
+  if (!engine) {
+      return 0;
+  }
+
+  QScriptContext *context = engine->currentContext();
+  if (!context) {
+      return 0;
+  }
+
+  return context;
 }
 
-QString KDEIntegration::i18na( const QString &message, const QVariantList &args )
+QString KDEIntegration::i18n( const QScriptValue &array )
 {
-  return translate( ki18n( message.toLatin1().constData() ), args );
+  QScriptContext *context = getContext(array);
+
+  if (!context) {
+      kWarning() << "No context !";
+      return "";
+  }
+
+  if (context->argumentCount() < 1) {
+      // ## TODO: (new str): context->throwError(i18n("i18n() takes at least one argument"));
+      return "";
+  }
+
+  KLocalizedString message = ki18n(context->argument(0).toString().toUtf8());
+  return translate(message, context, 1);
 }
 
-QString KDEIntegration::i18nc( const QString &context, const QString &message )
+
+QString KDEIntegration::i18nc( const QScriptValue &array )
 {
-  return translate( ki18nc( context.toLatin1().constData(), message.toLatin1().constData() ) );
+  QScriptContext *context = getContext(array);
+
+  if (!context) {
+      kWarning() << "No context !";
+      return "";
+  }
+
+  if (context->argumentCount() < 2) {
+      kWarning() << "i18nc() takes at least two arguments";
+      //### TODO (new str): context->throwError(i18n("i18nc() takes at least two arguments"));
+      return "";
+  }
+
+  KLocalizedString message = ki18nc(context->argument(0).toString().toUtf8(),
+                                    context->argument(1).toString().toUtf8());
+
+  return translate(message, context, 2);
 }
 
-QString KDEIntegration::i18nca( const QString &context, const QString &message, const QVariantList &args )
+QString KDEIntegration::i18np( const QScriptValue &array )
 {
-  return translate( ki18nc( context.toLatin1().constData(), message.toLatin1().constData() ), args );
+  QScriptContext *context = getContext(array);
+
+  if (!context) {
+      kWarning() << "No context !";
+      return "";
+  }
+
+  if (context->argumentCount() < 2) {
+      kWarning() << "i18np() takes at least two arguments";
+      //### TODO (new str): context->throwError(i18n("i18np() takes at least two arguments"));
+      return "";
+  }
+
+  KLocalizedString message = ki18np(context->argument(0).toString().toUtf8(),
+                                    context->argument(1).toString().toUtf8());
+
+  return translate(message, context, 2);
 }
 
-QString KDEIntegration::i18np( const QString &singular, const QString &plural, int amount )
+QString KDEIntegration::i18ncp( const QScriptValue &array )
 {
-  return translate( ki18np( singular.toLatin1().constData(), plural.toLatin1().constData() ), QVariantList() << QVariant( amount ) );
-}
+  QScriptContext *context = getContext(array);
 
-QString KDEIntegration::i18npa( const QString &singular, const QString &plural, int amount, const QVariantList &args )
-{
-  QVariantList _args;
-  _args.append( QVariant( amount ) );
-  _args.append( args );
-  return translate( ki18np( singular.toLatin1().constData(), plural.toLatin1().constData() ), _args );
-}
+  if (!context) {
+      kWarning() << "No context !";
+      return "";
+  }
 
-QString KDEIntegration::i18ncp( const QString &context, const QString &singular, const QString &plural, int amount )
-{
-  return translate( ki18ncp( context.toLatin1().constData(), singular.toLatin1().constData(), plural.toLatin1().constData() ), QVariantList() << QVariant( amount ) );
-}
+  if (context->argumentCount() < 3) {
+      kWarning() << "i18ncp() takes at least three arguments";
+      //### TODO (new str): context->throwError(i18n("i18ncp() takes at least three arguments"));
+      return "";
+  }
 
-QString KDEIntegration::i18ncpa( const QString &context, const QString &singular, const QString &plural, int amount, const QVariantList &args )
-{
-  QVariantList _args;
-  _args.append( QVariant( amount ) );
-  _args.append( args );
-  return translate( ki18ncp( context.toLatin1().constData(), singular.toLatin1().constData(), plural.toLatin1().constData() ), _args );
+  KLocalizedString message = ki18ncp(context->argument(0).toString().toUtf8(),
+                                     context->argument(1).toString().toUtf8(),
+                                     context->argument(2).toString().toUtf8());
+
+  return translate(message, context, 3);
 }
 
 QString KDEIntegration::iconPath( const QString &iconName, int iconSize )

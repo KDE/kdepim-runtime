@@ -127,14 +127,16 @@ private Q_SLOTS:
   void expungeRequested( const QVariant &collectionArgument );
   void onExpungeCollectionFetchDone( KJob *job );
   void onRootCollectionFetched( KJob *job );
+  void triggerCollectionExtraInfoJobs( const QVariant &collection );
 
 private:
   void onSelectDone( const QString&, int, qint64, int, qint64, qint64, bool );
   void triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
                                        const QStringList &remainingParts );
-  void triggerCollectionExtraInfoJobs( const Akonadi::Collection &collection );
+
   void triggerExpunge( const QString &mailBox );
   void listFlagsForImapSet( const KIMAP::ImapSet& set );
+  void selectIfNeeded( const QString &mailBox );
 
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
@@ -143,6 +145,8 @@ private:
   bool ensureSessionAvailableOrDefer();
 
   friend class ImapIdleManager;
+
+  int m_finishedMetaDataJobs;
 
   ImapAccount *m_account;
   ImapIdleManager *m_idle;
