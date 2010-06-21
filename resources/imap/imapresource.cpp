@@ -1164,12 +1164,16 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
       job->start();
     }
 
-    // We'll get info out of the last job only to trigger the next phase
-    // of the collection change. The other ones we fire and forget.
-    // Obviously we assume here that they will all succeed or all fail.
-    job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
-    job->setProperty( AKONADI_PARTS, parts );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetMetaDataDone( KJob* ) ) );
+    // Careful, maybe we created no job if there was no annotations stored
+    // in the attribute
+    if ( job ) {
+      // We'll get info out of the last job only to trigger the next phase
+      // of the collection change. The other ones we fire and forget.
+      // Obviously we assume here that they will all succeed or all fail.
+      job->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+      job->setProperty( AKONADI_PARTS, parts );
+      connect( job, SIGNAL( result( KJob* ) ), SLOT( onSetMetaDataDone( KJob* ) ) );
+    }
 
   } else if ( currentPart == "imapacl" ) {
     ImapAclAttribute *aclAttribute = collection.attribute<ImapAclAttribute>();
