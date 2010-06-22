@@ -34,6 +34,7 @@ using namespace KMime;
 
 template <typename T> static void parseAddrList( const QList<QByteArray> &addrList, T *hdr )
 {
+  hdr->clear();
   for ( QList<QByteArray>::ConstIterator it = addrList.constBegin(); it != addrList.constEnd(); ++it ) {
     QList<QByteArray> addr;
     ImapParser::parseParenthesizedList( *it, addr );

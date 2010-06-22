@@ -7,6 +7,7 @@ set(kmail-migrator_srcs
   localfolderscollectionmigrator.cpp
   main.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/collectionannotationsattribute.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildirstore.cpp
 )
 

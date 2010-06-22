@@ -83,7 +83,12 @@ function testOk( arg )
       imapRes.setOption( "Safety", "STARTTLS");  // STARTTLS
       imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 143 );
+    } else {
+      imapRes.setOption( "Safety", "NONE" );  // No encryption
+      imapRes.setOption( "Authentication", 7 ); // ClearText
+      imapRes.setOption( "ImapPort", 143 );
     }
+    
     stage = 2;
     setup();
   } else {

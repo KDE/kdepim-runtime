@@ -27,10 +27,19 @@
 #include <KSharedConfig>
 
 #include <QStringList>
+#include <QHash>
 
 class AbstractCollectionMigrator;
+class ImapCacheLocalImporter;
 class KJob;
 class MixedMaildirStore;
+class OrgKdeAkonadiImapSettingsInterface;
+class OrgKdeAkonadiPOP3SettingsInterface;
+
+namespace KWallet
+{
+  class Wallet;
+}
 
 namespace KMail
 {
@@ -73,6 +82,7 @@ class KMailMigrator : public KMigratorBase
 
     void collectionMigratorMessage( int type, const QString &msg );
     void collectionMigratorFinished();
+    void collectionMigratorEmittedNotification();
 
     void instanceStatusChanged( const Akonadi::AgentInstance &instance );
     void instanceProgressChanged( const Akonadi::AgentInstance &instance );
@@ -87,16 +97,30 @@ class KMailMigrator : public KMigratorBase
     void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance
-                          = Akonadi::AgentInstance() );
-    void migrationCompleted( const Akonadi::AgentInstance &instance );
+                          = Akonadi::AgentInstance() )
+    {
+      migrationFailed( errorMsg, true, instance);
+    }
+
+    void migrationFailed( const QString &errorMsg, bool doMigrateNext,
+                          const Akonadi::AgentInstance &instance = Akonadi::AgentInstance() );
+    void migrationCompleted( const Akonadi::AgentInstance &instance, bool doMigrateNext = true );
 
     void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
 
     void evaluateCacheHandlingOptions();
+    void migrateInstanceTrashFolder();
+
+    void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,
+                          const QString &newFolder );
+    OrgKdeAkonadiImapSettingsInterface* createImapSettingsInterface( const Akonadi::AgentInstance& instance );
+    OrgKdeAkonadiPOP3SettingsInterface* createPop3SettingsInterface( const Akonadi::AgentInstance& instance );
 
   private:
+    KWallet::Wallet *mWallet;
     KSharedConfigPtr mConfig;
     KSharedConfigPtr mEmailIdentityConfig;
+    KSharedConfigPtr mKcmKmailSummaryConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
     QString mLocalMaildirPath;
@@ -108,6 +132,18 @@ class KMailMigrator : public KMigratorBase
     MixedMaildirStore *mImapCache;
     int mRunningCacheImporterCount;
     bool mLocalFoldersDone;
+
+    struct AccountConfig {
+      AccountConfig() : imapAccount( false ){ }
+      Akonadi::AgentInstance instance;
+      bool imapAccount;
+    };
+    QHash<QString, AccountConfig> mAccountInstance;
+    QList<Akonadi::AgentInstance> mFailedInstances;
+
+    bool mForwardResourceNotifications;
+
+    ImapCacheLocalImporter *mLocalCacheImporter;
 };
 
 } // namespace KMail

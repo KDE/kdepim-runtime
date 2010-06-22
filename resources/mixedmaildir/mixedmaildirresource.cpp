@@ -107,10 +107,17 @@ void MixedMaildirResource::configure( WId windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   }
 
+  bool fullSync = false;
+
   if ( dlg.exec() ) {
     const bool changeName = name().isEmpty() || name() == identifier() ||
                             name() == mStore->topLevelCollection().name();
+
+    const QString oldPath = mStore->path();
     mStore->setPath( Settings::self()->path() );
+
+    fullSync = oldPath != mStore->path();
+
     if ( changeName ) {
       setName( mStore->topLevelCollection().name() );
     }
@@ -120,6 +127,10 @@ void MixedMaildirResource::configure( WId windowId )
   }
 
   if ( ensureDirExists() ) {
+    if ( fullSync ) {
+      mSynchronizedCollections.clear();
+      mPendingSynchronizeCollections.clear();
+    }
     synchronizeCollectionTree();
   }
 }
@@ -358,10 +369,38 @@ bool MixedMaildirResource::ensureSaneConfiguration()
   return true;
 }
 
+void MixedMaildirResource::checkForInvalidatedIndexCollections( KJob * job )
+{
+  // when operations invalidate the on-disk index, we need to make sure all index
+  // data has been transferred into Akonadi by synchronizing the collections
+  const QVariant var = job->property( "onDiskIndexInvalidated" );
+  if ( var.isValid() ) {
+    const Collection::List collections = var.value<Collection::List>();
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "On disk index of" << collections.count()
+      << "collections invalidated after" << job->metaObject()->className();
+
+    Q_FOREACH( const Collection &collection, collections ) {
+      const Collection::Id id = collection.id();
+      if ( !mSynchronizedCollections.contains( id ) && !mPendingSynchronizeCollections.contains( id ) ) {
+        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Requesting sync of collection" << collection.name()
+          << ", id=" << collection.id();
+        mPendingSynchronizeCollections << id;
+        synchronizeCollection( id );
+      }
+    }
+  }
+}
+
 void MixedMaildirResource::reapplyConfiguration()
 {
   if ( ensureSaneConfiguration() && ensureDirExists() ) {
+    const QString oldPath = mStore->path();
     mStore->setPath( Settings::self()->path() );
+
+    if ( oldPath != mStore->path() ) {
+      mSynchronizedCollections.clear();
+      mPendingSynchronizeCollections.clear();
+    }
     synchronizeCollectionTree();
   }
 }
@@ -435,6 +474,9 @@ void MixedMaildirResource::retrieveItemsResult( KJob *job )
     }
   }
 
+  mSynchronizedCollections << fetchJob->collection().id();
+  mPendingSynchronizeCollections.remove( fetchJob->collection().id() );
+
   itemsRetrieved( items );
 }
 
@@ -467,6 +509,8 @@ void MixedMaildirResource::itemAddedResult( KJob *job )
   Q_ASSERT( itemJob != 0 );
 
   changeCommitted( itemJob->item() );
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::itemChangedResult( KJob *job )
@@ -493,6 +537,8 @@ void MixedMaildirResource::itemChangedResult( KJob *job )
   if ( ok ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::itemMovedResult( KJob *job )
@@ -518,6 +564,8 @@ void MixedMaildirResource::itemMovedResult( KJob *job )
   if ( ok ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::itemRemovedResult( KJob *job )
@@ -543,6 +591,8 @@ void MixedMaildirResource::itemRemovedResult( KJob *job )
   if ( ok ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::collectionAddedResult( KJob *job )
@@ -558,6 +608,8 @@ void MixedMaildirResource::collectionAddedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::collectionChangedResult( KJob *job )
@@ -573,6 +625,8 @@ void MixedMaildirResource::collectionChangedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::collectionMovedResult( KJob *job )
@@ -588,6 +642,8 @@ void MixedMaildirResource::collectionMovedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::collectionRemovedResult( KJob *job )
@@ -603,6 +659,8 @@ void MixedMaildirResource::collectionRemovedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::compactStore( const QVariant &arg )
@@ -653,6 +711,8 @@ void MixedMaildirResource::compactStoreResult( KJob *job )
   }
 
   taskDone();
+
+  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::restoreTags( const QVariant &arg )

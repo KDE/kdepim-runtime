@@ -148,7 +148,6 @@ void AccountDialog::setupWidgets()
           SLOT(slotFontChanged()));
 
   // FIXME: Hide widgets which are not supported yet
-  includeInCheck->hide();
   filterOnServerCheck->hide();
   filterOnServerSizeSpin->hide();
 }

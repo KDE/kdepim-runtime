@@ -60,6 +60,11 @@ class KResMigratorBase : public KMigratorBase
     KRES::Resource *mCurrentKResource;
     bool mBridgingInProgress;
 
+  protected:
+    void migrationCompleted( const Akonadi::AgentInstance &instance, const QString &kresId, const QString &kresName );
+
+    void createKolabResource( const QString &kresId, const QString &kresName );
+
   private slots:
     void resourceBridgeCreated( KJob *job );
     void kolabResourceCreated( KJob *job );

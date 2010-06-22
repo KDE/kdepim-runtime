@@ -117,6 +117,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
   Q_ASSERT( fetchJob != 0 );
 
   mAllCollections = fetchJob->collections();
+  CollectionHash nonEmptyCollections;
   Q_FOREACH( const Collection &collection, mAllCollections ) {
     qint64 itemCount = collection.statistics().count();
     // TODO should be async as well
@@ -133,11 +134,19 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
     if ( itemCount == 0 ) {
       mDeletableCollections.insert( collection.id(), collection );
     } else {
-      Collection parent = collection.parentCollection();
-      while ( parent.isValid() && parent != Collection::root() ) {
-        mDeletableCollections.remove( parent.id() );
-        parent = parent.parentCollection();
-      }
+      nonEmptyCollections.insert( collection.id(), collection );
+    }
+  }
+
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << mDeletableCollections.count()
+                                   << "potenially deletable collections"
+                                   << nonEmptyCollections.count() << "not empty";
+
+  Q_FOREACH( const Collection &collection, nonEmptyCollections ) {
+    Collection parent = collection.parentCollection();
+    while ( parent.isValid() && parent != Collection::root() ) {
+      mDeletableCollections.remove( parent.id() );
+      parent = parent.parentCollection();
     }
   }
 

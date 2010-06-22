@@ -32,6 +32,7 @@
 using KPIM::MessageStatus;
 #include <QFile>
 
+#include <boost/shared_ptr.hpp>
 
 //BEGIN: Magic definitions from old kmail code
 #ifdef HAVE_BYTESWAP_H
@@ -99,7 +100,7 @@ typedef enum
 
 //BEGIN: KMIndexMsg methods
 
-MessageStatus& KMIndexMsgPrivate::status()
+MessageStatus& KMIndexData::status()
 {
   if ( mStatus.isOfUnknownStatus() ) {
       mStatus.fromQInt32( mCachedLongParts[KMIndexReader::MsgStatusPart] );
@@ -153,12 +154,12 @@ MessageStatus& KMIndexMsgPrivate::status()
   return mStatus;
 }
 
-QStringList KMIndexMsgPrivate::tagList() const
+QStringList KMIndexData::tagList() const
 {
   return mCachedStringParts[KMIndexReader::MsgTagPart].split( ',', QString::SkipEmptyParts );
 }
 
-quint64 KMIndexMsgPrivate::uid() const
+quint64 KMIndexData::uid() const
 {
   return mCachedLongParts[KMIndexReader::MsgUIDPart];
 }
@@ -196,70 +197,24 @@ bool KMIndexReader::error() const
   return mError;
 }
 
-bool KMIndexReader::statusByOffset( quint64 offset, MessageStatus &status ) const
+KMIndexDataPtr KMIndexReader::dataByOffset( quint64 offset ) const
 {
-    QHash<quint64, KMIndexMsgPrivate*>::const_iterator it = mMsgByOffset.constFind( offset );
+    QHash<quint64, KMIndexDataPtr>::const_iterator it = mMsgByOffset.constFind( offset );
     if ( it == mMsgByOffset.constEnd() ) {
-        return false;
+        return KMIndexDataPtr();
     }
 
-    status = it.value()->status();
-    return true;
+    return it.value();
 }
 
-bool KMIndexReader::statusByFileName( const QString &fileName, MessageStatus &status ) const
+KMIndexDataPtr KMIndexReader::dataByFileName( const QString &fileName ) const
 {
-    QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
+    QHash<QString, KMIndexDataPtr>::const_iterator it = mMsgByFileName.constFind( fileName );
     if ( it == mMsgByFileName.constEnd() ) {
-        return false;
+        return KMIndexDataPtr();
     }
 
-    status = it.value()->status();
-    return true;
-}
-
-bool KMIndexReader::imapUidByOffset( quint64 offset, quint64 &uid ) const
-{
-    QHash<quint64, KMIndexMsgPrivate*>::const_iterator it = mMsgByOffset.constFind( offset );
-    if ( it == mMsgByOffset.constEnd() ) {
-        return false;
-    }
-
-    uid = it.value()->uid();
-    return uid != 0;
-}
-
-bool KMIndexReader::imapUidByFileName( const QString &fileName, quint64 &uid ) const
-{
-    QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
-    if ( it == mMsgByFileName.constEnd() ) {
-        return false;
-    }
-
-    uid = it.value()->uid();
-    return uid != 0;
-}
-
-bool KMIndexReader::tagListByOffset( quint64 offset, QStringList &tagList ) const
-{
-    QHash<quint64, KMIndexMsgPrivate*>::const_iterator it = mMsgByOffset.constFind( offset );
-    if ( it == mMsgByOffset.constEnd() ) {
-        return false;
-    }
-
-    tagList = it.value()->tagList();
-    return true;
-}
-
-bool KMIndexReader::tagListByFileName( const QString &fileName, QStringList &tagList ) const
-{
-    QHash<QString, KMIndexMsgPrivate*>::const_iterator it = mMsgByFileName.constFind( fileName );
-    if ( it == mMsgByFileName.constEnd() ) {
-        return false;
-    }
-
-    tagList = it.value()->tagList();
-    return true;
+    return it.value();
 }
 
 bool KMIndexReader::readHeader( int *version )
@@ -342,12 +297,11 @@ bool KMIndexReader::readHeader( int *version )
 bool KMIndexReader::readIndex()
 {
   qint32 len;
-  KMIndexMsgPrivate* msg;
+  KMIndexData* msg;
 
   Q_ASSERT( mFp != 0 );
   rewind(mFp);
 
-  qDeleteAll( mMsgList );
   mMsgList.clear();
   mMsgByFileName.clear();
   mMsgByOffset.clear();
@@ -379,7 +333,7 @@ bool KMIndexReader::readIndex()
       off_t offs = KDE_ftell(mFp);
       if(KDE_fseek(mFp, len, SEEK_CUR))
         break;
-      msg = new KMIndexMsgPrivate();
+      msg = new KMIndexData();
       fillPartsCache(msg, offs, len);
     }
     else
@@ -398,13 +352,12 @@ bool KMIndexReader::readIndex()
         fclose(mFp);
         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "fclose(mFp = " << mFp << ")";
         mFp = 0;
-        qDeleteAll( mMsgList );
         mMsgList.clear();
         mMsgByFileName.clear();
         mMsgByOffset.clear();
         return false;
       }
-      msg = new KMIndexMsgPrivate;
+      msg = new KMIndexData;
       fromOldIndexString( msg, line, mConvertToUtf8);
       off_t offs = KDE_ftell(mFp);
       if(KDE_fseek(mFp, len, SEEK_CUR))
@@ -429,15 +382,16 @@ bool KMIndexReader::readIndex()
 //       mi->setDirty(false);
 //     }
 #endif
-    mMsgList.append(msg);
+    KMIndexDataPtr msgPtr( msg );
+    mMsgList.append( msgPtr );
     const QString fileName = msg->mCachedStringParts[ MsgFilePart ];
     if ( !fileName.isEmpty() ) {
-        mMsgByFileName.insert( fileName, msg );
+        mMsgByFileName.insert( fileName, msgPtr );
     }
 
     const quint64 offset = msg->mCachedLongParts[ MsgOffsetPart ];
     if ( offset > 0 ) {
-        mMsgByOffset.insert( offset, msg );
+        mMsgByOffset.insert( offset, msgPtr );
     }
   } // end while
 
@@ -445,7 +399,7 @@ bool KMIndexReader::readIndex()
 }
 
 //--- For compatibility with old index files
-bool KMIndexReader::fromOldIndexString( KMIndexMsgPrivate* msg, const QByteArray& str, bool toUtf8)
+bool KMIndexReader::fromOldIndexString( KMIndexData* msg, const QByteArray& str, bool toUtf8)
 {
   Q_UNUSED(toUtf8)
 //     const char *start, *offset;
@@ -508,7 +462,7 @@ namespace {
   }
 }
 
-bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, short int indexLen )
+bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int indexLen )
 {
   if( !msg )
     return false;
@@ -636,7 +590,7 @@ bool KMIndexReader::fillPartsCache( KMIndexMsgPrivate* msg, off_t indexOff, shor
 
 //-----------------------------------------------------------------------------
 
-QList< KMIndexMsgPrivate* > KMIndexReader::messages()
+QList< KMIndexDataPtr > KMIndexReader::messages()
 {
   return mMsgList;
 }

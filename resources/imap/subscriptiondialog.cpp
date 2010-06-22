@@ -5,6 +5,10 @@
     Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
+
     KMail is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
@@ -40,12 +44,15 @@
 
 #include <kimap/session.h>
 #include <kimap/listjob.h>
+#include <kimap/loginjob.h>
 #include <kimap/unsubscribejob.h>
 #include <kimap/subscribejob.h>
 
+#include "sessionuiproxy.h"
+
 SubscriptionDialogBase::SubscriptionDialogBase( QWidget *parent, const QString &caption,
-    KAccount *acct, bool &selectionChanged, const QString &startPath )
-  : KSubscription( parent, caption, acct, User1, QString(), false ),
+    KAccount *acct, const QString &password, bool &selectionChanged, const QString &startPath )
+  : KSubscription( parent, caption, acct, User1, QString(), false ), m_session( 0 ),
     mStartPath( startPath ), mSubscribed( false ), mForceSubscriptionEnable( false ), mSelectionChanged( selectionChanged )
 {
   // hide unneeded checkboxes
@@ -55,9 +62,19 @@ SubscriptionDialogBase::SubscriptionDialogBase( QWidget *parent, const QString &
   // reload-list button
   connect(this, SIGNAL(user1Clicked()), SLOT(slotLoadFolders()));
 
-  // get the folders, delayed execution style, otherwise there's bother
-  // with virtuals from ctors and whatnot
-  QTimer::singleShot(0, this, SLOT(slotLoadFolders()));
+  ImapAccount *account = static_cast<ImapAccount*>(acct);
+  m_session = new KIMAP::Session( account->server(), account->port(), this );
+  m_session->setUiProxy( SessionUiProxy::Ptr( new SessionUiProxy ) );
+
+  KIMAP::LoginJob *login = new KIMAP::LoginJob( m_session );
+  login->setUserName( account->userName() );
+  login->setPassword( password );
+  login->setEncryptionMode( account->encryptionMode() );
+  login->setAuthenticationMode( account->authenticationMode() );
+
+  QObject::connect( login, SIGNAL( result( KJob* ) ),
+                    this, SLOT( slotLoginDone( KJob* ) ) );
+  login->start();
 }
 
 //------------------------------------------------------------------------------
@@ -224,9 +241,8 @@ void SubscriptionDialogBase::findParentItem( QString &name, QString &path, QStri
 //------------------------------------------------------------------------------
 void SubscriptionDialogBase::slotLoadFolders()
 {
-  ImapAccount* ai = static_cast<ImapAccount*>(account());
   // we need a connection
-  if ( !ai->mainSession() || ai->mainSession()->state() != KIMAP::Session::Authenticated )
+  if ( !m_session || m_session->state() != KIMAP::Session::Authenticated )
   {
     kWarning() <<"SubscriptionDialog - got no connection";
     return;
@@ -251,9 +267,7 @@ void SubscriptionDialogBase::processNext()
   mFolderPaths.clear();
   mFolderSelectable.clear();
 
-  ImapAccount* ai = static_cast<ImapAccount*>(account());
-
-  KIMAP::ListJob *list = new KIMAP::ListJob( ai->mainSession() );
+  KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
   list->setIncludeUnsubscribed( !mSubscribed );
   connect( list, SIGNAL( result(KJob*) ), this, SLOT( slotListDirectory(KJob*) ) );
   list->start();
@@ -270,8 +284,8 @@ void SubscriptionDialogBase::loadingComplete()
 //------------------------------------------------------------------------------
 
 SubscriptionDialog::SubscriptionDialog( QWidget *parent, const QString &caption,
-    KAccount *acct, bool &selectionChanged, const QString & startPath )
-  : SubscriptionDialogBase( parent, caption, acct, selectionChanged, startPath )
+    KAccount *acct, const QString &password, bool &selectionChanged, const QString & startPath )
+  : SubscriptionDialogBase( parent, caption, acct, password, selectionChanged, startPath )
 {
 }
 
@@ -287,9 +301,11 @@ void SubscriptionDialog::listAllAvailableAndCreateItems()
 }
 
 //------------------------------------------------------------------------------
-void SubscriptionDialogBase::slotConnectionSuccess()
+void SubscriptionDialogBase::slotLoginDone( KJob *job )
 {
-  slotLoadFolders();
+  if ( !job->error() ) {
+    slotLoadFolders();
+  }
 }
 
 bool SubscriptionDialogBase::checkIfSubscriptionsEnabled()
@@ -337,7 +353,7 @@ bool SubscriptionDialog::doSave()
   QTreeWidgetItemIterator it(subView);
   for ( ; *it; ++it)
   {
-    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( ai->mainSession() );
+    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_session );
     subscribe->setMailBox(
       static_cast<GroupItem*>(*it)->info().path
     );
@@ -349,7 +365,7 @@ bool SubscriptionDialog::doSave()
   QTreeWidgetItemIterator it2(unsubView);
   for ( ; *it2; ++it2)
   {
-    KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( ai->mainSession() );
+    KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( m_session );
     unsubscribe->setMailBox(
       static_cast<GroupItem*>(*it2)->info().path
     );

@@ -23,7 +23,7 @@
 #include "libmaildir/maildir.h"
 
 #include <akonadi/kmime/specialmailcollections.h>
-
+#include <akonadi/kmime/messagefolderattribute.h>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/collection.h>
@@ -33,6 +33,8 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/monitor.h>
 
+#include "collectionannotationsattribute.h"
+
 #include <KConfig>
 #include <KConfigGroup>
 #include <KLocale>
@@ -40,6 +42,11 @@
 #include <QHash>
 #include <QQueue>
 #include <QTimer>
+
+#define KOLAB_SHAREDSEEN "/vendor/cmu/cyrus-imapd/sharedseen"
+#define KOLAB_INCIDENCESFOR "/vendor/kolab/incidences-for"
+#define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
+
 
 using namespace Akonadi;
 using KPIM::Maildir;
@@ -65,10 +72,11 @@ class AbstractCollectionMigrator::Private
     };
 
     Private( AbstractCollectionMigrator *parent, const AgentInstance &resource )
-      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mMonitor( 0 ),
+      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mMonitor( 0 ),
         mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle ),
         mNeedModifyJob( false )
     {
+      mRecheckTimer.setSingleShot( true );
     }
 
     void migrateConfig();
@@ -80,7 +88,7 @@ class AbstractCollectionMigrator::Private
     QString mTopLevelFolder;
     KSharedConfigPtr mKMailConfig;
     KSharedConfigPtr mEmailIdentityConfig;
-
+    KSharedConfigPtr mKcmKmailSummaryConfig;
     Monitor *mMonitor;
 
     CollectionHash mCollectionsById;
@@ -122,7 +130,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   if ( mCurrentFolderId.isEmpty() || !mCurrentCollection.isValid() ) {
     return;
   }
-
 //   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "migrating config for folderId" << mCurrentFolderId
 //                                    << "to collectionId" << mCurrentCollection.id();
 
@@ -131,7 +138,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   if ( mKMailConfig->hasGroup( folderGroupPattern.arg( mCurrentFolderId ) ) ) {
     KConfigGroup oldGroup( mKMailConfig, folderGroupPattern.arg( mCurrentFolderId ) );
     KConfigGroup newGroup( mKMailConfig, folderGroupPattern.arg( mCurrentCollection.id() ) );
-
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
     if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
@@ -143,10 +149,64 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       // collection modification needs to be sent to Akonadi
       mNeedModifyJob = true;
     }
+
     newGroup.deleteEntry( "UseCustomIcons" );
     newGroup.deleteEntry( "UnreadIconPath" );
     newGroup.deleteEntry( "NormalIconPath" );
 
+    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = mCurrentCollection.attribute<Akonadi::CollectionAnnotationsAttribute>( Entity::AddIfMissing );
+    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+    if ( newGroup.readEntry( "SharedSeenFlags", false ) ) {
+      annotations[ KOLAB_SHAREDSEEN ] = "true";
+      mNeedModifyJob = true;
+    }
+    newGroup.deleteEntry( "SharedSeenFlags" );
+    if ( newGroup.hasKey( "IncidencesFor" ) ) {
+      const QString incidenceFor = newGroup.readEntry( "IncidencesFor" );
+      //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "IncidencesFor=" << incidenceFor;
+      if ( incidenceFor == "nobody" ) {
+        annotations[ KOLAB_INCIDENCESFOR ] = "nobody";
+      } else if ( incidenceFor == "admins" ) {
+        annotations[ KOLAB_INCIDENCESFOR ] = "admins";
+      } else if ( incidenceFor == "readers" ) {
+        annotations[ KOLAB_INCIDENCESFOR ] = "readers";
+      } else {
+        annotations[ KOLAB_INCIDENCESFOR ] = "admins"; //Default
+      }
+      mNeedModifyJob = true;
+      newGroup.deleteEntry( "IncidencesFor" );
+    }
+    if ( newGroup.hasKey( "Annotation-FolderType" ) ) {
+      const QString annotationFolderType = newGroup.readEntry( "Annotation-FolderType" );
+      if ( annotationFolderType == "mail" ) {
+        //????
+      } else if ( annotationFolderType == "event" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "event";
+      } else if ( annotationFolderType == "task" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "task";
+      } else if ( annotationFolderType == "contact" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "contact";
+      } else if ( annotationFolderType == "note" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "note";
+      } else if ( annotationFolderType == "journal" ) {
+        annotations[ KOLAB_FOLDERTYPE ] = "journal";
+      } else {
+        //????
+      }
+      mNeedModifyJob = true;
+      newGroup.deleteEntry( "Annotation-FolderType" );
+    }
+    const QString whofield = newGroup.readEntry( "WhoField" );
+    if ( !whofield.isEmpty() ) {
+      Akonadi::MessageFolderAttribute *messageFolder  = mCurrentCollection.attribute<Akonadi::MessageFolderAttribute>( Akonadi::Entity::AddIfMissing );
+
+      if ( whofield ==  QLatin1String( "To" ) )
+        messageFolder->setOutboundFolder( true );
+      else if( whofield == QLatin1String( "From" ) )
+        messageFolder->setOutboundFolder( false );
+      mNeedModifyJob = true;
+    }
+    newGroup.deleteEntry( "WhoField" );
 
     //Delete old entry
     newGroup.deleteEntry( "TotalMsgs" );
@@ -163,7 +223,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "StorageQuotaRoot" );
     newGroup.deleteEntry( "FolderAttributes" );
     newGroup.deleteEntry( "AlarmsBlocked" );
-    newGroup.deleteEntry( "IncidencesFor" );
     newGroup.deleteEntry( "IncidencesForChanged" );
     newGroup.deleteEntry( "UserRights" );
     newGroup.deleteEntry( "StatusChangedLocally" );
@@ -188,8 +247,8 @@ void AbstractCollectionMigrator::Private::migrateConfig()
       if ( mKMailConfig->hasGroup( "FavoriteFolderView" ) && !favoriteCollectionsMigrated ) {
         KConfigGroup oldFavoriteGroup( mKMailConfig, "FavoriteFolderView" );
         const QList<int> lIds = oldFavoriteGroup.readEntry( "FavoriteFolderIds", QList<int>() );
-	const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
-	oldFavoriteGroup.copyTo( &newFavoriteGroup );
+        const QStringList lNames = oldFavoriteGroup.readEntry( "FavoriteFolderNames", QStringList() );
+        oldFavoriteGroup.copyTo( &newFavoriteGroup );
         oldFavoriteGroup.deleteGroup();
 
         //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "FAVORITE COLLECTION lIds=" << lIds<<" lNames="<<lNames;
@@ -206,12 +265,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
         KConfigGroup favoriteCollectionViewGroup( mKMailConfig, "FavoriteCollectionView" );
         if ( newFavoriteGroup.hasKey( "FavoriteFolderViewHeight" ) ) {
-          int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
+          const int value = newFavoriteGroup.readEntry( "FavoriteFolderViewHeight", 100 );
           favoriteCollectionViewGroup.writeEntry( "FavoriteCollectionViewHeight", value );
         }
 
         if ( newFavoriteGroup.hasKey( "EnableFavoriteFolderView" ) ) {
-          bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
+          const bool value = newFavoriteGroup.readEntry( "EnableFavoriteFolderView", true );
           favoriteCollectionViewGroup.writeEntry( "EnableFavoriteCollectionView", value );
         }
       }
@@ -242,6 +301,37 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
   }
 
+  // Check kcmkmailsummaryrc General/ActiveFolders
+  KConfigGroup kcmkmailsummary( mKcmKmailSummaryConfig, "General" );
+  if ( kcmkmailsummary.hasKey( "ActiveFolders" ) ) {
+    if ( !kcmkmailsummary.hasKey( "Role_CheckState" ) ) {
+      kcmkmailsummary.writeEntry( "Role_CheckState", kcmkmailsummary.readEntry( "ActiveFolders", QStringList() ) );
+      kcmkmailsummary.sync();
+    }
+
+    QStringList lstCollection = kcmkmailsummary.readEntry( "Role_CheckState", QStringList() );
+    QString visualPath( mCurrentFolderId );
+    visualPath.replace( ".directory", "" );
+    visualPath.replace( "/.", "/" );
+    if ( !visualPath.isEmpty() && ( visualPath.at( 0 ) == '.' ) )
+      visualPath.remove( 0, 1 ); //remove first "."
+
+    const QString localFolderPattern = QLatin1String( "/Local/%1" );
+    const QString imapFolderPattern = QLatin1String( "/%1" );
+    const QString newCollectionPattern = QLatin1String( "c%1" );
+    if ( lstCollection.contains( localFolderPattern.arg( visualPath ) ) ) {
+      const int pos = lstCollection.indexOf( localFolderPattern.arg( visualPath ) );
+      lstCollection.replace( pos, newCollectionPattern.arg( mCurrentCollection.id() ) );
+      lstCollection.insert( pos+1, "2" );
+      kcmkmailsummary.writeEntry( "Role_CheckState", lstCollection );
+    } else if ( lstCollection.contains( imapFolderPattern.arg( visualPath ) ) ) {
+      const int pos = lstCollection.indexOf( imapFolderPattern.arg( visualPath ) );
+      lstCollection.replace( pos, newCollectionPattern.arg( mCurrentCollection.id() ) );
+      lstCollection.insert( pos+1, "2" );
+
+      kcmkmailsummary.writeEntry( "Role_CheckState", lstCollection );
+    }
+  }
 
   // Check Composer/previous-fcc
   KConfigGroup composer( mKMailConfig, "Composer" );
@@ -271,8 +361,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
   // check all account folder
-  // TODO we mustn't modify kmailrc but we must modify akonadi_*_resource_*
-  // Need to fix it
   const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( "Account \\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
   Q_FOREACH( const QString &groupName, accountGroups ) {
@@ -336,6 +424,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   const QString groupSortingPattern = QLatin1String( "%1GroupSorting" );
   const QString messageSortDirectionPattern = QLatin1String( "%1MessageSortDirection" );
   const QString messageSortingPattern = QLatin1String( "%1MessageSorting" );
+
+  if ( sortOrderGroup.hasKey( groupSortDirectionPattern.arg( mCurrentFolderId ) ) ) {
+    const QString value = sortOrderGroup.readEntry( groupSortDirectionPattern.arg( mCurrentFolderId ) );
+    sortOrderGroup.writeEntry( groupSortDirectionPattern.arg( mCurrentCollection.id()), value );
+    sortOrderGroup.deleteEntry( groupSortDirectionPattern.arg( mCurrentFolderId ) );
+  }
 
   if ( sortOrderGroup.hasKey( groupSortingPattern.arg( mCurrentFolderId ) ) ) {
     const QString value = sortOrderGroup.readEntry( groupSortingPattern.arg( mCurrentFolderId ) );
@@ -458,10 +552,24 @@ void AbstractCollectionMigrator::Private::processNextCollection()
   }
 
   if ( mCollectionQueue.isEmpty() ) {
+    mStatus = Idle;
+
+    if ( mExplicitFetchStatus == Finished ) {
+      processingDone();
+      return;
+    }
+
+    if ( mExplicitFetchStatus == Idle ) {
+      // TODO should explicitly create fetch job instead of tricking recheckIdleResource()
+      // into doing it
+      mExplicitFetchStatus = Waiting;
+      recheckIdleResource();
+      return;
+    }
+
     if ( mResource.status() == AgentInstance::Idle && mExplicitFetchStatus != Running ) {
       processingDone();
-    } else {
-      mStatus = Idle;
+      return;
     }
   } else {
     mStatus = Running;
@@ -517,6 +625,17 @@ void AbstractCollectionMigrator::Private::resourceStatusChanged( const AgentInst
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "resource=" << mResource.identifier()
            << "oldStatus=" << oldStatus << "message=" << oldMessage
            << "newStatus" << mResource.status() << "message=" << mResource.statusMessage();
+
+  if ( oldStatus == AgentInstance::Broken && mResource.status() == AgentInstance::Broken ) {
+    if ( oldMessage != mResource.statusMessage() ) {
+      // changing to a new broken state. if still waiting, wait for at most 10 seconds before
+      // giving up
+      if ( mStatus == Waiting ) {
+        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Restaring recheck timer for last 10 seconds";
+        mRecheckTimer.start( 10000 );
+      }
+    }
+  }
 
   if ( mStatus == Waiting && mResource.status() != AgentInstance::Broken ) {
     mRecheckTimer.stop();
@@ -639,6 +758,11 @@ void AbstractCollectionMigrator::setKMailConfig( const KSharedConfigPtr &config 
 void AbstractCollectionMigrator::setEmailIdentityConfig( const KSharedConfigPtr &config )
 {
   d->mEmailIdentityConfig = config;
+}
+
+void AbstractCollectionMigrator::setKcmKmailSummaryConfig( const KSharedConfigPtr& config )
+{
+  d->mKcmKmailSummaryConfig = config;
 }
 
 void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )

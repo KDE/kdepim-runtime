@@ -124,11 +124,51 @@ void KResMigratorBase::setOmitClientBridge(bool b)
   mOmitClientBridge = b;
 }
 
-void KResMigratorBase::kolabResourceCreated( KJob *job)
+void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instance, const QString &kresId, const QString &kresName )
 {
-  if ( job->error() )
-  {
+  // do an intial sync so the resource shows up in the folder tree at least
+  AgentInstance nonConstInstance = instance;
+  nonConstInstance.synchronize();
+
+  // check if this one was previously bridged and remove the bridge
+  KConfigGroup cfg( KGlobal::config(), "Resource " + kresId );
+  const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );
+  if ( bridgeId != instance.identifier() ) {
+    const AgentInstance bridge = AgentManager::self()->instance( bridgeId );
+    AgentManager::self()->removeInstance( bridge );
+  }
+
+  setMigrationState( kresId, Complete, instance.identifier(), mType );
+  emit message( Success, i18n( "Migration of '%1' succeeded.", kresName ) );
+}
+
+void KResMigratorBase::createKolabResource( const QString &kresId, const QString &kresName )
+{
+  // check if kolab resource exists. If not, create one.
+  Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolab_resource" );
+  if ( !kolabAgent.isValid() ) {
+    emit message( Info, i18n( "Attempting to create kolab resource" ) );
+    KJob * job = createAgentInstance( "akonadi_kolabproxy_resource", this, SLOT( kolabResourceCreated( KJob* ) ) );
+    job->setProperty( "kresId", kresId );
+    job->setProperty( "kresName", kresName );
+  } else {
+    migrationCompleted( kolabAgent, kresId, kresName );
+    migrateNext();
+  }
+}
+
+void KResMigratorBase::kolabResourceCreated( KJob *job )
+{
+  const QString kresId = job->property( "kresId" ).value<QString>();
+  const QString kresName = job->property( "kresName" ).value<QString>();
+ 
+  if ( job->error() != 0 ) {
+    kError() << "Failed to create Kolab resource for" << kresName << "(id=" << kresId << "):" << job->errorString();
     emit message( Error, i18n( "Failed to create kolab proxy resource." ) );
+  } else {
+    AgentInstanceCreateJob *createJob = qobject_cast<AgentInstanceCreateJob*>( job );
+    Q_ASSERT( createJob != 0 );
+    migrationCompleted( createJob->instance(), kresId, kresName );
   }
   migrateNext();
 }

@@ -1,4 +1,9 @@
 /* This file is part of the KDE project
+
+   Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                      a KDAB Group company <info@kdab.com>
+   Author: Kevin Ottens <kevin@kdab.com>
+
    Copyright (C) 2010 Casey Link <unnamedrambler@gmail.com>
    Copyright (c) 2009-2010 Klaralvdalens Datakonsult AB, a KDAB Group company <info@kdab.net>
    Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
@@ -141,9 +146,6 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   mValidator.setRegExp( QRegExp( "[A-Za-z0-9-_:.]*" ) );
   m_ui->imapServer->setValidator( &mValidator );
 
-  // FIXME: This option has no effect yet, therefore hide it for now.
-  m_ui->includeInCheck->hide();
-
   m_ui->folderRequester->setMimeTypeFilter(
     QStringList() << QLatin1String( "message/rfc822" ) );
   m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
@@ -280,8 +282,6 @@ void SetupServer::applySettings()
   if( m_ui->enableMailCheckBox->isChecked() )
     Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
 
-  Settings::self()->setIncludeInManualCheck( m_ui->includeInCheck->isChecked() );
-
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
@@ -375,8 +375,8 @@ void SetupServer::readSettings()
   m_ui->enableMailCheckBox->setChecked( Settings::self()->intervalCheckEnabled() );
   if( m_ui->enableMailCheckBox->isChecked() )
     m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
-
-  m_ui->includeInCheck->setChecked( Settings::self()->includeInManualCheck() );
+  else
+    m_ui->checkInterval->setEnabled( false );
 
   m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
 
@@ -431,7 +431,7 @@ void SetupServer::slotFinished( QList<int> testResult )
 
   if ( !m_serverTest->isNormalPossible() && !m_serverTest->isSecurePossible() )
     KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
-  
+
   m_ui->testInfo->show();
 
   m_ui->sslRadio->setEnabled( testResult.contains( Transport::EnumEncryption::SSL ) );
@@ -535,11 +535,8 @@ void SetupServer::slotManageSubscriptions()
   kDebug() << "manage subscripts";
   ImapAccount account;
 
-  // craft the host:port string
-  QString serverPort( m_ui->imapServer->text() );
-  serverPort.append( ':' );
-  serverPort.append( m_ui->portSpin->value() );
-  account.setServer( serverPort );
+  account.setServer( m_ui->imapServer->text() );
+  account.setPort( m_ui->portSpin->value() );
 
   account.setUserName( m_ui->userName->text() );
   account.setName( m_ui->imapServer->text() + '/' + m_ui->userName->text() );
@@ -549,15 +546,13 @@ void SetupServer::slotManageSubscriptions()
     static_cast<KIMAP::LoginJob::EncryptionMode>( m_ui->safeImapGroup->checkedId() )
   );
 
-  account.setAuthenticationMode( ImapAccount::mapTransportAuthToKimap( getCurrentAuthMode( m_ui->authenticationCombo ) ) );
+  account.setAuthenticationMode( Settings::mapTransportAuthToKimap( getCurrentAuthMode( m_ui->authenticationCombo ) ) );
 
   m_subscriptionsChanged = false;
-  SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."), &account, m_subscriptionsChanged );
+  SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."),
+                                                              &account, m_ui->password->text(),
+                                                              m_subscriptionsChanged );
 
-  connect( &account, SIGNAL( success( KIMAP::Session* ) ),
-           subscriptions, SLOT( slotConnectionSuccess() ) );
-
-  account.connect( m_ui->password->text() );
   subscriptions->exec();
 
   m_ui->subscriptionEnabled->setChecked( account.isSubscriptionEnabled() );

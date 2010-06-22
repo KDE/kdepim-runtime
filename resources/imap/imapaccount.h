@@ -3,6 +3,10 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
+
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
     the Free Software Foundation; either version 2 of the License, or (at your
@@ -19,56 +23,23 @@
     02110-1301, USA.
 */
 
-#ifndef __IMAP_ACCOUNT_H__
-#define __IMAP_ACCOUNT_H__
-
-class KJob;
-
-#include <mailtransport/transport.h>
-
-#include <akonadi/resourcebase.h>
-#include <boost/shared_ptr.hpp>
-#include <QtCore/QStringList>
+#ifndef IMAPACCOUNT_H
+#define IMAPACCOUNT_H
 
 #include <kaccount.h>
 #include <kimap/loginjob.h>
 
-namespace KMime
+class ImapAccount : public KPIM::KAccount
 {
-}
-
-namespace KIMAP
-{
-  struct MailBoxDescriptor;
-  class Session;
-}
-
-class Settings;
-
-class ImapAccount : public QObject, public KPIM::KAccount
-{
-  Q_OBJECT
-  Q_ENUMS( ConnectError )
-
 public:
-  enum ConnectError {
-    EncryptionError,
-    LoginFailError,
-    CapabilitiesTestError,
-    IncompatibleServerError
-  };
-
-  explicit ImapAccount( Settings *settings, QObject *parent = 0 );
-  ImapAccount( QObject *parent = 0 );
+  explicit ImapAccount();
   ~ImapAccount();
-
-  bool connect( const QString &password = QString() );
-  void disconnect();
-
-  KIMAP::Session *extraSession( const QString &id, const QString &password = QString() );
 
   void setServer( const QString &server );
   QString server() const;
+
+  void setPort( quint16 port );
+  quint16 port() const;
 
   void setUserName( const QString &userName );
   QString userName() const;
@@ -82,29 +53,7 @@ public:
   void setSubscriptionEnabled( bool enabled );
   bool isSubscriptionEnabled() const;
 
-  KIMAP::Session *mainSession() const;
-  QStringList capabilities() const;
-  QList<KIMAP::MailBoxDescriptor> namespaces() const;
-
-  static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType );
-
-Q_SIGNALS:
-  void success( KIMAP::Session *session );
-  void error( KIMAP::Session *session, int code, const QString &message );
-
-private Q_SLOTS:
-  void onLoginDone( KJob *job );
-  void onCapabilitiesTestDone( KJob *job );
-  void onNamespacesTestDone( KJob *job );
-
 private:
-  KIMAP::Session *createSessionInternal( const QString &password );
-  void doConnect( const QString &password );
-
-  KIMAP::Session *m_mainSession;
-  QMap<QString, KIMAP::Session*> m_extraSessions;
-  QStringList m_capabilities;
-  QList<KIMAP::MailBoxDescriptor> m_namespaces;
   QString m_server;
   quint16 m_port;
   QString m_userName;

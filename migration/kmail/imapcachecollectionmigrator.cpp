@@ -24,6 +24,7 @@
 
 #include "libmaildir/maildir.h"
 #include "mixedmaildirstore.h"
+#include "subscriptionjob_p.h"
 
 #include "filestore/itemfetchjob.h"
 #include "filestore/itemdeletejob.h"
@@ -48,6 +49,7 @@
 #include <KStandardDirs>
 
 #include <QFileInfo>
+#include <QSet>
 #include <QVariant>
 
 using namespace Akonadi;
@@ -75,6 +77,8 @@ class ImapCacheCollectionMigrator::Private
 
     Collection cacheCollection( const Collection &collection ) const;
 
+    bool isUnsubscribedImapFolder( const Collection &collection, QString &idPath ) const;
+
   public:
     MixedMaildirStore *mStore;
 
@@ -96,6 +100,9 @@ class ImapCacheCollectionMigrator::Private
 
     int mItemProgress;
 
+    QSet<QString> mUnsubscribedImapFolders;
+    Collection::List mUnsubscribedCollections;
+
   public: // slots
     void fetchItemsResult( KJob *job );
     void processNextItem();
@@ -105,6 +112,8 @@ class ImapCacheCollectionMigrator::Private
     void itemDeletePhase1Result( KJob *job );
     void itemDeletePhase2Result( KJob *job );
     void cacheItemDeleteResult( KJob *job );
+    void unsubscribeCollections();
+    void unsubscribeCollectionsResult( KJob *job );
 };
 
 Collection ImapCacheCollectionMigrator::Private::cacheCollection( const Collection &collection ) const
@@ -122,6 +131,20 @@ Collection ImapCacheCollectionMigrator::Private::cacheCollection( const Collecti
   cache.setRemoteId( remoteId );
   cache.setParentCollection( cacheCollection( collection.parentCollection() ) );
   return cache;
+}
+
+bool ImapCacheCollectionMigrator::Private::isUnsubscribedImapFolder( const Collection &collection, QString &idPath ) const
+{
+  if ( collection.parentCollection() == Collection::root() ) {
+    idPath = QString();
+    return false;
+  }
+
+  bool parentResult = isUnsubscribedImapFolder( collection.parentCollection(), idPath );
+
+  idPath = idPath + collection.remoteId();
+
+  return parentResult || mUnsubscribedImapFolders.contains( idPath );
 }
 
 void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
@@ -182,10 +205,13 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
 
 void ImapCacheCollectionMigrator::Private::processNextItem()
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
-                                   << mItems.count() << "items to go";
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
+//                                    << mItems.count() << "items to go";
 
   emit q->progress( ++mItemProgress );
+  emit q->status( i18ncp( "@info:status folder name and number of messages to import before finished",
+                          "%1: one message left to import", "%1: %2 messages left to import",
+                          mCurrentCollection.name(), mItems.count() ) );
 
   if ( mItems.isEmpty() ) {
     if ( mDeletedUids.isEmpty() ) {
@@ -208,8 +234,8 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
 
 void ImapCacheCollectionMigrator::Private::processNextDeletedUid()
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
-                                   << mDeletedUids.count() << "items to go";
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mCurrentCollection=" << mCurrentCollection.name()
+//                                    << mDeletedUids.count() << "items to go";
 
   if ( mDeletedUids.isEmpty() ) {
     if ( mCurrentFolderGroup.isValid() ) {
@@ -271,16 +297,16 @@ void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
     item.setRemoteId( QString() );
     createJob = new ItemCreateJob( item, mCurrentCollection );
 
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "unsynchronized cacheItem: remoteId=" << item.remoteId()
-                                     << "mimeType=" << item.mimeType()
-                                     << "flags=" << item.flags();
+//    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "unsynchronized cacheItem: remoteId=" << item.remoteId()
+//                                     << "mimeType=" << item.mimeType()
+//                                     << "flags=" << item.flags();
   } else if ( mImportCachedMessages ) {
     item.setRemoteId( uid );
     createJob = new ItemCreateJob( item, mCurrentCollection, mHiddenSession );
 
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "synchronized cacheItem: remoteId=" << item.remoteId()
-                                     << "mimeType=" << item.mimeType()
-                                     << "flags=" << item.flags();
+//    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "synchronized cacheItem: remoteId=" << item.remoteId()
+//                                     << "mimeType=" << item.mimeType()
+//                                     << "flags=" << item.flags();
   }
 
   if ( createJob != 0 ) {
@@ -389,10 +415,34 @@ void ImapCacheCollectionMigrator::Private::cacheItemDeleteResult( KJob *job )
   processNextItem();
 }
 
+void ImapCacheCollectionMigrator::Private::unsubscribeCollections()
+{
+  if ( !mUnsubscribedCollections.isEmpty() ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Locally Unsubscribe" << mUnsubscribedCollections.count() << "collections";
+
+    SubscriptionJob *job = new SubscriptionJob( q );
+    job->unsubscribe( mUnsubscribedCollections );
+    QObject::connect( job, SIGNAL( result( KJob* ) ), q, SLOT( unsubscribeCollectionsResult( KJob * ) ) );
+  }
+}
+
+void ImapCacheCollectionMigrator::Private::unsubscribeCollectionsResult( KJob *job )
+{
+  if ( job->error() != 0 ) {
+    kError() << "Unsubscribing of " << mUnsubscribedCollections.count() << "collections failed:"
+             << job->error();
+  } else {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Unsubscribing of " << mUnsubscribedCollections.count() << "collections succeeded";
+  }
+}
+
 ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
   : AbstractCollectionMigrator( resource, parent ), d( new Private( this, store ) )
 {
   d->mHiddenSession = new Session( resource.identifier().toAscii() );
+
+  connect( this, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
+           SLOT( unsubscribeCollections() ) );
 }
 
 ImapCacheCollectionMigrator::~ImapCacheCollectionMigrator()
@@ -426,8 +476,37 @@ ImapCacheCollectionMigrator::MigrationOptions ImapCacheCollectionMigrator::migra
   return options;
 }
 
+void ImapCacheCollectionMigrator::setUnsubscribedImapFolders( const QStringList &imapFolders )
+{
+  d->mUnsubscribedImapFolders.clear();
+  Q_FOREACH( const QString imapFolder, imapFolders ) {
+    if ( imapFolder.endsWith( QLatin1Char( '/' ) ) ) {
+      d->mUnsubscribedImapFolders << imapFolder.left( imapFolder.size() - 1 );
+    } else {
+      d->mUnsubscribedImapFolders << imapFolder;
+    }
+  }
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "unsubscribed imap folders:" << d->mUnsubscribedImapFolders;
+}
+
 void ImapCacheCollectionMigrator::migrateCollection( const Collection &collection, const QString &folderId )
 {
+  QString imapIdPath;
+  if ( d->isUnsubscribedImapFolder( collection, imapIdPath ) ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Collection id=" << collection.id()
+      << ", remoteId=" << collection.remoteId() << ", imapIdPath=" << imapIdPath
+      << "is locally unsubscribed";
+
+    // could check if this very collection is one of the unsubscribed using imapIdPath.
+    // however, KMail treats subfolders of unsubscribed folders as unsubscribed as well
+    // so unsubscribe the too. otherwise their contents get downloaded on first interval check
+    d->mUnsubscribedCollections << collection;
+
+    emit status( QString() );
+    collectionProcessed();
+    return;
+  }
+
   if ( migrationOptions() == ConfigOnly ) {
     emit status( QString() );
     collectionProcessed();
@@ -478,6 +557,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   if ( d->mImportNewMessages || d->mImportCachedMessages ) {
     FileStore::ItemFetchJob *job = d->mStore->fetchItems( cache );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchItemsResult( KJob * ) ) );
+    emit status( i18nc( "@info:status foldername", "%1: listing messages...", collection.name() ) );
   } else if ( d->mRemoveDeletedMessages ) {
     emit status( collection.name() );
     d->processNextDeletedUid();

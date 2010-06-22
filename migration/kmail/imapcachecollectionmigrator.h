@@ -49,6 +49,8 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     MigrationOptions migrationOptions() const;
 
+    void setUnsubscribedImapFolders( const QStringList &imapFolders );
+
   protected:
     void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
 
@@ -67,6 +69,8 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
     Q_PRIVATE_SLOT( d, void itemDeletePhase1Result( KJob* ) )
     Q_PRIVATE_SLOT( d, void itemDeletePhase2Result( KJob* ) )
     Q_PRIVATE_SLOT( d, void cacheItemDeleteResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void unsubscribeCollections() )
+    Q_PRIVATE_SLOT( d, void unsubscribeCollectionsResult( KJob* ) )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( ImapCacheCollectionMigrator::MigrationOptions )

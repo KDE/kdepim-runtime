@@ -85,12 +85,13 @@ void KMigratorBase::setMigrationState( const QString &identifier, MigrationState
   cfg.sync();
 }
 
-void KMigratorBase::createAgentInstance(const QString& typeId, QObject* receiver, const char* slot)
+KJob *KMigratorBase::createAgentInstance(const QString& typeId, QObject* receiver, const char* slot)
 {
   emit message( Info, i18n( "Creating instance of type %1", typeId ) );
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( typeId, this );
   connect( job, SIGNAL( result( KJob* ) ), receiver, slot );
   job->start();
+  return job;
 }
 
 #include "kmigratorbase.moc"

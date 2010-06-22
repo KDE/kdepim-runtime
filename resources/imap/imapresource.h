@@ -3,6 +3,10 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
+
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
     the Free Software Foundation; either version 2 of the License, or (at your
@@ -43,6 +47,7 @@ namespace KIMAP
 
 class ImapAccount;
 class ImapIdleManager;
+class SessionPool;
 
 class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
@@ -83,10 +88,10 @@ protected:
   virtual void doSetOnline(bool online);
 
 private Q_SLOTS:
-  void onPasswordRequestCompleted( const QString &password, bool userRejected );
+  void onConnectDone( int errorCode, const QString &errorMessage );
+  void onMainSessionRequested( qint64 requestId, KIMAP::Session *session, int errorCode, const QString &errorMessage );
+  void scheduleConnectionAttempt();
 
-  void onConnectSuccess( KIMAP::Session *session );
-  void onConnectError( KIMAP::Session *session, int code, const QString &message );
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
                             const QList< QList<QByteArray> > &flags );
   void onMailBoxesReceiveDone( KJob *job );
@@ -121,19 +126,22 @@ private Q_SLOTS:
   void onPostItemMoveStoreFlagsDone( KJob *job );
   void onIdleCollectionFetchDone( KJob *job );
 
-  void startConnect( bool forceManualAuth = false );
+  void startConnect();
   void reconnect();
 
   void expungeRequested( const QVariant &collectionArgument );
   void onExpungeCollectionFetchDone( KJob *job );
   void onRootCollectionFetched( KJob *job );
+  void triggerCollectionExtraInfoJobs( const QVariant &collection );
 
 private:
   void onSelectDone( const QString&, int, qint64, int, qint64, qint64, bool );
   void triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
                                        const QStringList &remainingParts );
-  void triggerCollectionExtraInfoJobs( const Akonadi::Collection &collection );
+
   void triggerExpunge( const QString &mailBox );
+  void listFlagsForImapSet( const KIMAP::ImapSet& set );
+  void selectIfNeeded( const QString &mailBox );
 
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &col ) const;
@@ -143,7 +151,12 @@ private:
 
   friend class ImapIdleManager;
 
-  ImapAccount *m_account;
+  SessionPool *m_pool;
+  qint64 m_mainSessionRequestId;
+  KIMAP::Session *m_mainSession;
+
+  int m_finishedMetaDataJobs;
+
   ImapIdleManager *m_idle;
 };
 
