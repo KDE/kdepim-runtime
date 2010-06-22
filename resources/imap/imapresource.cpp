@@ -1401,7 +1401,7 @@ void ImapResource::onSubscribeDone( KJob *job )
 void ImapResource::scheduleConnectionAttempt()
 {
   // block all other tasks, until we are connected
-  scheduleCustomTask( this, "startConnect", ResourceBase::Prepend );
+  scheduleCustomTask( this, "startConnect", QVariant(), ResourceBase::Prepend );
 }
 
 void ImapResource::onGetAclDone( KJob *job )
