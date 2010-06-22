@@ -635,6 +635,7 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
   } else {
     c.parentCollection().setRemoteId( QString::number( imapCollection.parentCollection().id() ) );
   }
+  c.setName( imapCollection.name() );
   EntityDisplayAttribute *imapAttr = imapCollection.attribute<EntityDisplayAttribute>();
   EntityDisplayAttribute *kolabAttr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
   if ( imapAttr ) {
@@ -642,7 +643,7 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
       kolabAttr->setDisplayName( i18n( "My Data" ) );
       kolabAttr->setIconName( QLatin1String( "view-pim-summary" ) );
     } else if ( imapCollection.parentCollection() == Collection::root() ) {
-      kolabAttr->setDisplayName( i18n( "Kolab (%1)", imapAttr->displayName() ) );
+      c.setName( i18n( "Kolab (%1)", imapAttr->displayName() ) );
       kolabAttr->setIconName( QLatin1String( "kolab" ) );
     } else {
       kolabAttr->setDisplayName( imapAttr->displayName() );
@@ -650,11 +651,10 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     }
   } else {
     if ( imapCollection.parentCollection() == Collection::root() ) {
-      kolabAttr->setDisplayName( i18n( "Kolab (%1)", imapCollection.name() ) );
+      c.setName( i18n( "Kolab (%1)", imapCollection.name() ) );
       kolabAttr->setIconName( QLatin1String( "kolab" ) );
     }
   }
-  c.setName( imapCollection.name() );
   applyAttributesFromImap( c, imapCollection );
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
   QStringList contentTypes;
