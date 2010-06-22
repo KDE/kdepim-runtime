@@ -274,10 +274,11 @@ void ImapResource::startConnect( QVariant )
     return;
   }
 
+  m_pool->disconnect(); // reset all state, delete any old account
   ImapAccount *account = new ImapAccount;
   Settings::self()->loadAccount( account );
 
-  m_pool->connect( account );
+  Q_ASSERT( m_pool->connect( account ) );
 }
 
 void ImapResource::onConnectDone( int errorCode, const QString &errorString )
