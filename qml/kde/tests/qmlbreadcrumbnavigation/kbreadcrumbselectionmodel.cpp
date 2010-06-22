@@ -22,12 +22,14 @@
 
 #include "kbreadcrumbselectionmodel.h"
 
+#include "kdebug.h"
+
 class KBreadcrumbSelectionModelPrivate
 {
   Q_DECLARE_PUBLIC(KBreadcrumbSelectionModel)
   KBreadcrumbSelectionModel * const q_ptr;
 public:
-  KBreadcrumbSelectionModelPrivate(KBreadcrumbSelectionModel *breadcrumbSelector, QItemSelectionModel *selectionModel, KBreadcrumbSelectionModel::Direction direction)
+  KBreadcrumbSelectionModelPrivate(KBreadcrumbSelectionModel *breadcrumbSelector, QItemSelectionModel *selectionModel, KBreadcrumbSelectionModel::BreadcrumbTarget direction)
     : q_ptr(breadcrumbSelector),
       m_includeActualSelection(true),
       m_selectionDepth(-1),
@@ -39,84 +41,92 @@ public:
 
   }
 
-  void sourceSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
+  /**
+    Returns a selection containing the breadcrumbs for @p index
+  */
+  QItemSelection getBreadcrumbSelection(const QModelIndex &index);
+
+  /**
+    Returns a selection containing the breadcrumbs for @p selection
+  */
+  QItemSelection getBreadcrumbSelection(const QItemSelection &selection);
+
+  void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
   bool m_includeActualSelection;
   int m_selectionDepth;
   bool m_showHiddenAscendantData;
   QItemSelectionModel *m_selectionModel;
-  KBreadcrumbSelectionModel::Direction m_direction;
+  KBreadcrumbSelectionModel::BreadcrumbTarget m_direction;
   bool m_ignoreCurrentChanged;
 };
 
 KBreadcrumbSelectionModel::KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject* parent)
   : QItemSelectionModel(const_cast<QAbstractItemModel *>(selectionModel->model()), parent),
-    d_ptr(new KBreadcrumbSelectionModelPrivate(this, selectionModel, Reverse))
+    d_ptr(new KBreadcrumbSelectionModelPrivate(this, selectionModel, MakeBreadcrumbSelectionInSelf))
 {
 }
 
-KBreadcrumbSelectionModel::KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, Direction direction, QObject* parent)
+KBreadcrumbSelectionModel::KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, BreadcrumbTarget direction, QObject* parent)
   : QItemSelectionModel(const_cast<QAbstractItemModel *>(selectionModel->model()), parent),
     d_ptr(new KBreadcrumbSelectionModelPrivate(this, selectionModel, direction))
 {
-  if ( direction != Reverse)
+  if ( direction != MakeBreadcrumbSelectionInSelf)
     connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
             this, SLOT(sourceSelectionChanged(const QItemSelection&,const QItemSelection&)));
 }
 
 KBreadcrumbSelectionModel::~KBreadcrumbSelectionModel()
 {
-
+  delete d_ptr;
 }
 
-bool KBreadcrumbSelectionModel::includeActualSelection() const
+bool KBreadcrumbSelectionModel::isActualSelectionIncluded() const
 {
   Q_D(const KBreadcrumbSelectionModel);
   return d->m_includeActualSelection;
 }
 
-void KBreadcrumbSelectionModel::setIncludeActualSelection(bool includeActualSelection)
+void KBreadcrumbSelectionModel::setActualSelectionIncluded(bool includeActualSelection)
 {
   Q_D(KBreadcrumbSelectionModel);
   d->m_includeActualSelection = includeActualSelection;
 }
 
-int KBreadcrumbSelectionModel::selectionDepth() const
+int KBreadcrumbSelectionModel::breadcrumbLength() const
 {
   Q_D(const KBreadcrumbSelectionModel);
   return d->m_selectionDepth;
 }
 
-void KBreadcrumbSelectionModel::setSelectionDepth(int selectionDepth)
+void KBreadcrumbSelectionModel::setBreadcrumbLength(int breadcrumbLength)
 {
   Q_D(KBreadcrumbSelectionModel);
-  d->m_selectionDepth = selectionDepth;
+  d->m_selectionDepth = breadcrumbLength;
 }
 
-QItemSelection KBreadcrumbSelectionModel::getBreadcrumbSelection(const QModelIndex& index)
+QItemSelection KBreadcrumbSelectionModelPrivate::getBreadcrumbSelection(const QModelIndex& index)
 {
-  Q_D(KBreadcrumbSelectionModel);
   QItemSelection breadcrumbSelection;
 
-  if (d->m_includeActualSelection)
+  if (m_includeActualSelection)
     breadcrumbSelection.append(QItemSelectionRange(index));
 
   QModelIndex parent = index.parent();
   int sumBreadcrumbs = 0;
-  bool includeAll = d->m_selectionDepth < 0;
-  while (parent.isValid() && (includeAll || sumBreadcrumbs < d->m_selectionDepth)) {
+  bool includeAll = m_selectionDepth < 0;
+  while (parent.isValid() && (includeAll || sumBreadcrumbs < m_selectionDepth)) {
     breadcrumbSelection.append(QItemSelectionRange(parent));
     parent = parent.parent();
   }
   return breadcrumbSelection;
 }
 
-QItemSelection KBreadcrumbSelectionModel::getBreadcrumbSelection(const QItemSelection& selection)
+QItemSelection KBreadcrumbSelectionModelPrivate::getBreadcrumbSelection(const QItemSelection& selection)
 {
-  Q_D(KBreadcrumbSelectionModel);
   QItemSelection breadcrumbSelection;
 
-  if (d->m_includeActualSelection)
+  if (m_includeActualSelection)
     breadcrumbSelection = selection;
 
   QItemSelection::const_iterator it = selection.constBegin();
@@ -126,8 +136,8 @@ QItemSelection KBreadcrumbSelectionModel::getBreadcrumbSelection(const QItemSele
   {
     QModelIndex parent = it->parent();
     int sumBreadcrumbs = 0;
-    bool includeAll = d->m_selectionDepth < 0;
-    while (parent.isValid() && (includeAll || sumBreadcrumbs < d->m_selectionDepth))
+    bool includeAll = m_selectionDepth < 0;
+    while (parent.isValid() && (includeAll || sumBreadcrumbs < m_selectionDepth))
     {
       breadcrumbSelection.append(QItemSelectionRange(parent));
       parent = parent.parent();
@@ -137,8 +147,9 @@ QItemSelection KBreadcrumbSelectionModel::getBreadcrumbSelection(const QItemSele
   return breadcrumbSelection;
 }
 
-void KBreadcrumbSelectionModel::sourceSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void KBreadcrumbSelectionModelPrivate::sourceSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
+  Q_Q(KBreadcrumbSelectionModel);
   QItemSelection deselectedCrumbs = getBreadcrumbSelection(deselected);
   QItemSelection selectedCrumbs = getBreadcrumbSelection(selected);
 
@@ -156,11 +167,11 @@ void KBreadcrumbSelectionModel::sourceSelectionChanged(const QItemSelection& sel
 
   if (!removed.isEmpty())
   {
-    QItemSelectionModel::select(removed, QItemSelectionModel::Deselect);
+    q->QItemSelectionModel::select(removed, QItemSelectionModel::Deselect);
   }
   if (!added.isEmpty())
   {
-    QItemSelectionModel::select(added, QItemSelectionModel::Select);
+    q->QItemSelectionModel::select(added, QItemSelectionModel::Select);
   }
 }
 
@@ -174,21 +185,21 @@ void KBreadcrumbSelectionModel::select(const QModelIndex &index, QItemSelectionM
     d->m_ignoreCurrentChanged = false;
     return;
   }
-  if ( d->m_direction == Forward )
+  if ( d->m_direction == MakeBreadcrumbSelectionInOther )
   {
-    d->m_selectionModel->select(getBreadcrumbSelection(index), command);
+    d->m_selectionModel->select(d->getBreadcrumbSelection(index), command);
     QItemSelectionModel::select(index, command);
   } else {
     d->m_selectionModel->select(index, command);
-    QItemSelectionModel::select(getBreadcrumbSelection(index), command);
+    QItemSelectionModel::select(d->getBreadcrumbSelection(index), command);
   }
 }
 
 void KBreadcrumbSelectionModel::select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command)
 {
   Q_D(KBreadcrumbSelectionModel);
-  QItemSelection bcc = getBreadcrumbSelection(selection);
-  if ( d->m_direction == Forward )
+  QItemSelection bcc = d->getBreadcrumbSelection(selection);
+  if ( d->m_direction == MakeBreadcrumbSelectionInOther )
   {
     d->m_selectionModel->select(selection, command);
     QItemSelectionModel::select(bcc, command);

@@ -24,7 +24,7 @@
 
 #include <QItemSelectionModel>
 
-#include "kselectionproxymodel.h"
+#include <kselectionproxymodel.h>
 
 // Copied from kdeui/tests/proxymodeltestapp/breadcrumbnavigationwidget
 // A version of these might be somewhere stable in the future.
@@ -65,7 +65,7 @@ private:
   void silentSelect(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
 
 private:
-  using QtSelectionProxyModel::setFilterBehavior;
+  using KSelectionProxyModel::setFilterBehavior;
 
   KForwardingItemSelectionModel *m_selectionModel;
 
