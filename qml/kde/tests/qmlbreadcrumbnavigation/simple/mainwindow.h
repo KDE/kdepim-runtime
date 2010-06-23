@@ -39,6 +39,7 @@ public:
 
 public slots:
   void appendRow();
+  void removeTopRow();
   void removeBottomRow();
   void prependNewRow();
 

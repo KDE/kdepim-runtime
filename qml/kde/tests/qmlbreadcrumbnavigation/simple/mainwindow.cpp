@@ -77,6 +77,11 @@ void MainWindow::prependNewRow()
   m_model->insertRow(0, item);
 }
 
+void MainWindow::removeTopRow()
+{
+  m_model->removeRow(0);
+}
+
 void MainWindow::removeBottomRow()
 {
   m_model->removeRow(1);
