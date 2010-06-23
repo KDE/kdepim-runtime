@@ -77,6 +77,7 @@ void StoreResultJob::Private::fetchDone( KJob *job )
   item.clearFlag( "queued" );
   if( success ) {
     item.setFlag( "sent" );
+    item.setFlag( "\\Seen" );
   } else {
     item.setFlag( "error" );
     ErrorAttribute *eA = new ErrorAttribute( message );
