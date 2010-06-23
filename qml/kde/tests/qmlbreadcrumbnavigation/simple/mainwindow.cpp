@@ -44,11 +44,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   m_model = new QStandardItemModel(this);
   treeView->setModel(m_model);
 
-  QStandardItem *item1 = new QStandardItem("Item 1");
-  QStandardItem *item2 = new QStandardItem("Item 2");
-
-  m_model->appendRow(item1);
-  m_model->appendRow(item2);
+  appendRow();
+  appendRow();
 
   m_declarativeView = new QDeclarativeView(splitter);
 
@@ -66,9 +63,17 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
 
 }
 
+static int sCount = 1;
+
+void MainWindow::appendRow()
+{
+  QStandardItem *item = new QStandardItem(QString::fromLatin1("Item %1").arg(sCount++));
+  m_model->appendRow(item);
+}
+
 void MainWindow::prependNewRow()
 {
-  QStandardItem *item = new QStandardItem("New Item");
+  QStandardItem *item = new QStandardItem(QString::fromLatin1("Item %1").arg(sCount++));
   m_model->insertRow(0, item);
 }
 

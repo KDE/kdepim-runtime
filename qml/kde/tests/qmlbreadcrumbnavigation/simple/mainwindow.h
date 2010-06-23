@@ -38,6 +38,7 @@ public:
   MainWindow(QWidget* parent = 0, Qt::WindowFlags f = 0);
 
 public slots:
+  void appendRow();
   void removeBottomRow();
   void prependNewRow();
 
