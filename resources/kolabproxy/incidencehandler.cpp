@@ -85,6 +85,9 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
           if (job->exec()) {
             emit addItemToImap(copiedItem, job->items()[0].storageCollectionId());
           }
+          // we can't do newItem.setRemoteId(..) yet because we don't have copiedItem.id()
+          // it's being added to imap, so we continue.
+          continue;
         }
       }
       m_uidMap[incidencePtr->uid()] = StoredItem(item.id(), incidencePtr);
