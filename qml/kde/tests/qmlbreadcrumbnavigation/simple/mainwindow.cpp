@@ -61,8 +61,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
 
   splitter->setSizes(QList<int>() << 1 << 1);
 
-//   QTimer::singleShot(1000, this, SLOT(removeBottomRow()));
-  QTimer::singleShot(2000, this, SLOT(prependNewRow()));
+//   QTimer::singleShot(4000, this, SLOT(removeBottomRow()));
+  QTimer::singleShot(8000, this, SLOT(prependNewRow()));
 
 }
 
