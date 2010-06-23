@@ -126,7 +126,7 @@ private Q_SLOTS:
   void onPostItemMoveStoreFlagsDone( KJob *job );
   void onIdleCollectionFetchDone( KJob *job );
 
-  void startConnect();
+  void startConnect( QVariant v ); // the parameter is necessary, since this method is used by the task scheduler
   void reconnect();
 
   void expungeRequested( const QVariant &collectionArgument );

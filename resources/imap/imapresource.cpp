@@ -267,17 +267,18 @@ void ImapResource::configure( WId windowId )
   }
 }
 
-void ImapResource::startConnect()
+void ImapResource::startConnect( QVariant )
 {
   if ( Settings::self()->imapServer().isEmpty() ) {
     emit status( Broken, i18n( "No server configured yet." ) );
     return;
   }
 
+  m_pool->disconnect(); // reset all state, delete any old account
   ImapAccount *account = new ImapAccount;
   Settings::self()->loadAccount( account );
 
-  m_pool->connect( account );
+  Q_ASSERT( m_pool->connect( account ) );
 }
 
 void ImapResource::onConnectDone( int errorCode, const QString &errorString )
@@ -1401,7 +1402,7 @@ void ImapResource::onSubscribeDone( KJob *job )
 void ImapResource::scheduleConnectionAttempt()
 {
   // block all other tasks, until we are connected
-  scheduleCustomTask( this, "startConnect", ResourceBase::Prepend );
+  scheduleCustomTask( this, "startConnect", QVariant(), ResourceBase::Prepend );
 }
 
 void ImapResource::onGetAclDone( KJob *job )
