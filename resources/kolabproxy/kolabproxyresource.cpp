@@ -597,7 +597,6 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
     // if that fails it's not in our tree -> we don't care
     Collection kolabCollection = createCollection( collection );
     CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
-    connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
   } else {
     // Kolab folder we already have in our tree, if the update fails, reload our tree
     Collection kolabCollection = createCollection( collection );
