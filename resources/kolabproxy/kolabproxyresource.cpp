@@ -411,7 +411,7 @@ void KolabProxyResource::applyAttributesToImap( Collection &imapCollection, cons
     if ( attr->type() == "AccessRights" )
       continue;
 
-    kDebug() << "cloning" << attr->type();
+    //kDebug() << "cloning" << attr->type();
     imapCollection.addAttribute( attr->clone() );
   }
 }
@@ -431,7 +431,7 @@ void KolabProxyResource::applyAttributesFromImap( Collection &kolabCollection, c
     if ( attr->type() == "AccessRights" )
       continue;
 
-    kDebug() << "cloning" << attr->type();
+    //kDebug() << "cloning" << attr->type();
     kolabCollection.addAttribute( attr->clone() );
   }
 }
