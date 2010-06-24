@@ -39,6 +39,17 @@ Rectangle {
       }
     }
     onCountChanged : {
+      if (!Component.completed)
+      {
+        console.log("Not ready");
+        return;
+      }
+      console.log("%%" + count)
+      positionViewAtIndex(count - 1, ListView.Beginning)
+    }
+    Component.onCompleted : {
+      console.log("Completed");
+      console.log("COUNT" + count)
       positionViewAtIndex(count - 1, ListView.Beginning)
     }
   }
