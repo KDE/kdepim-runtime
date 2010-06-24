@@ -61,6 +61,8 @@ public:
   ~ImapResource();
   void renameRootCollection( const QString &newName );
 
+  int configureDialog( WId windowId );
+
 public Q_SLOTS:
   virtual void configure( WId windowId );
   // DBus methods
