@@ -62,7 +62,10 @@ static bool compareMimeMessage( const KMime::Message::Ptr &msg, const KMime::Mes
 {
   // headers
   KCOMPARE( msg->subject()->asUnicodeString(), expectedMsg->subject()->asUnicodeString() );
-  KCOMPARE( msg->from()->asUnicodeString(), expectedMsg->from()->asUnicodeString() );
+  if ( msg->from()->isEmpty() || expectedMsg->from()->isEmpty() )
+    KCOMPARE( msg->from()->asUnicodeString(), expectedMsg->from()->asUnicodeString() );
+  else
+    KCOMPARE( msg->from()->mailboxes().first().address(), expectedMsg->from()->mailboxes().first().address() ); // matching address is enough, we don't need a display name
   KCOMPARE( msg->contentType()->mimeType(), expectedMsg->contentType()->mimeType() );
   KCOMPARE( msg->headerByType( "X-Kolab-Type" )->as7BitString(), expectedMsg->headerByType( "X-Kolab-Type" )->as7BitString() );
   // date contains conversion time...
