@@ -19,11 +19,17 @@
 
 #include "dummypasswordrequester.h"
 
+#include <qtest_kde.h>
+
 #include <QtCore/QTimer>
 
 DummyPasswordRequester::DummyPasswordRequester( QObject *parent)
-  : PasswordRequesterInterface(parent), m_result(PasswordRetrieved)
+  : PasswordRequesterInterface(parent)
 {
+  for ( int i=0; i<10; ++i ) {
+    m_calls << StandardRequest;
+    m_results << PasswordRetrieved;
+  }
 }
 
 QString DummyPasswordRequester::password() const
@@ -36,15 +42,33 @@ void DummyPasswordRequester::setPassword( const QString &password )
   m_password = password;
 }
 
-void DummyPasswordRequester::requestPassword( RequestType /*request*/,
-                                              const QString &/*serverError*/ )
+void DummyPasswordRequester::setScenario( const QList<RequestType> &expectedCalls,
+                                          const QList<ResultType> &results )
 {
-  QTimer::singleShot( 20, this, SLOT(emitPassword()) );
+  Q_ASSERT( expectedCalls.size() == results.size() );
+
+  m_calls = expectedCalls;
+  m_results = results;
 }
 
-void DummyPasswordRequester::emitPassword()
+void DummyPasswordRequester::requestPassword( RequestType request,
+                                              const QString &/*serverError*/ )
 {
-  emit done( m_result, m_password );
+  QVERIFY2( !m_calls.isEmpty(), QString("Got unexpected call: %1").arg( request ).toUtf8().constData() );
+  QCOMPARE( m_calls.takeFirst(), request );
+
+  QTimer::singleShot( 20, this, SLOT(emitResult()) );
+}
+
+void DummyPasswordRequester::emitResult()
+{
+  ResultType result = m_results.takeFirst();
+
+  if ( result == PasswordRetrieved ) {
+    emit done( result, m_password );
+  } else {
+    emit done( result );
+  }
 }
 
 #include "dummypasswordrequester.moc"

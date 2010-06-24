@@ -46,6 +46,7 @@ public:
   enum ErrorCodes {
     NoError,
     PasswordRequestError,
+    ReconnectNeededError,
     EncryptionError,
     LoginFailError,
     CapabilitiesTestError,
@@ -97,7 +98,9 @@ private:
   ImapAccount *m_account;
   PasswordRequesterInterface *m_passwordRequester;
   KIMAP::SessionUiProxy::Ptr m_sessionUiProxy;
+
   bool m_initialConnectDone;
+  KIMAP::Session *m_pendingInitialSession;
 
   QList<qint64> m_pendingRequests;
   QList<KIMAP::Session*> m_idlePool;

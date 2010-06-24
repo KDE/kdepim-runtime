@@ -17,13 +17,52 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "imaptestbase.h"
+#include <qtest_kde.h>
 
-class TestSessionPool : public ImapTestBase
+#include <kimaptest/fakeserver.h>
+
+#include "dummypasswordrequester.h"
+#include "imapaccount.h"
+#include "sessionpool.h"
+
+Q_DECLARE_METATYPE(ImapAccount*)
+Q_DECLARE_METATYPE(DummyPasswordRequester*)
+Q_DECLARE_METATYPE(KIMAP::Session*)
+
+
+class TestSessionPool : public QObject
 {
   Q_OBJECT
 
+private:
+  ImapAccount *createDefaultAccount()
+  {
+    ImapAccount *account = new ImapAccount;
+
+    account->setServer( "127.0.0.1" );
+    account->setPort( 5989 );
+    account->setUserName( "test@kdab.com" );
+    account->setSubscriptionEnabled( true );
+    account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
+    account->setAuthenticationMode( KIMAP::LoginJob::ClearText );
+
+    return account;
+  }
+
+  DummyPasswordRequester *createDefaultRequester()
+  {
+    DummyPasswordRequester *requester = new DummyPasswordRequester( this );
+    requester->setPassword( "foobar" );
+    return requester;
+  }
+
+
 private slots:
+  void setupTestCase()
+  {
+    qRegisterMetaType<KIMAP::Session*>();
+  }
+
   void shouldPrepareFirstSessionOnConnect_data()
   {
     QTest::addColumn<ImapAccount*>("account");
@@ -93,8 +132,17 @@ private slots:
     QTest::newRow("incompatible server") << account << requester << scenario
                                          << password << errorCode << capabilities;
 
+
+    QList<DummyPasswordRequester::RequestType> requests;
+    QList<DummyPasswordRequester::ResultType> results;
+
     account = createDefaultAccount();
     requester = createDefaultRequester();
+    requests.clear();
+    results.clear();
+    requests << DummyPasswordRequester::StandardRequest << DummyPasswordRequester::WrongPasswordRequest;
+    results << DummyPasswordRequester::PasswordRetrieved << DummyPasswordRequester::UserRejected;
+    requester->setScenario( requests, results );
     scenario.clear();
     scenario << FakeServer::greeting()
              << "C: A000001 LOGIN test@kdab.com foobar"
@@ -103,8 +151,67 @@ private slots:
     password = "foobar";
     errorCode = SessionPool::LoginFailError;
     capabilities.clear();
-    QTest::newRow("login fail") << account << requester << scenario
-                                << password << errorCode << capabilities;
+    QTest::newRow("login fail, user reject password entry") << account << requester << scenario
+                                                            << password << errorCode << capabilities;
+
+    account = createDefaultAccount();
+    requester = createDefaultRequester();
+    requests.clear();
+    results.clear();
+    requests << DummyPasswordRequester::StandardRequest << DummyPasswordRequester::WrongPasswordRequest;
+    results << DummyPasswordRequester::PasswordRetrieved << DummyPasswordRequester::PasswordRetrieved;
+    requester->setScenario( requests, results );
+    scenario.clear();
+    scenario << FakeServer::greeting()
+             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "S: A000001 NO Login failed"
+             << "C: A000002 LOGIN test@kdab.com foobar"
+             << "S: A000002 OK Login succeeded"
+             << "C: A000003 CAPABILITY"
+             << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+             << "S: A000003 OK Completed";
+    password = "foobar";
+    errorCode = SessionPool::NoError;
+    capabilities.clear();
+    capabilities << "IMAP4" << "IMAP4REV1" << "UIDPLUS" << "IDLE";
+    QTest::newRow("login fail, user provide new password") << account << requester << scenario
+                                                           << password << errorCode << capabilities;
+
+    account = createDefaultAccount();
+    requester = createDefaultRequester();
+    requests.clear();
+    results.clear();
+    requests << DummyPasswordRequester::StandardRequest << DummyPasswordRequester::WrongPasswordRequest;
+    results << DummyPasswordRequester::PasswordRetrieved << DummyPasswordRequester::EmptyPasswordEntered;
+    requester->setScenario( requests, results );
+    scenario.clear();
+    scenario << FakeServer::greeting()
+             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "S: A000001 NO Login failed"
+             << "C: A000002 LOGOUT";
+    password = "foobar";
+    errorCode = SessionPool::LoginFailError;
+    capabilities.clear();
+    QTest::newRow("login fail, user provided empty password") << account << requester << scenario
+                                                              << password << errorCode << capabilities;
+
+    account = createDefaultAccount();
+    requester = createDefaultRequester();
+    requests.clear();
+    results.clear();
+    requests << DummyPasswordRequester::StandardRequest << DummyPasswordRequester::WrongPasswordRequest;
+    results << DummyPasswordRequester::PasswordRetrieved << DummyPasswordRequester::ReconnectNeeded;
+    requester->setScenario( requests, results );
+    scenario.clear();
+    scenario << FakeServer::greeting()
+             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "S: A000001 NO Login failed"
+             << "C: A000002 LOGOUT";
+    password = "foobar";
+    errorCode = SessionPool::ReconnectNeededError;
+    capabilities.clear();
+    QTest::newRow("login fail, user change the settings") << account << requester << scenario
+                                                          << password << errorCode << capabilities;
   }
 
 
@@ -125,25 +232,20 @@ private slots:
 
     SessionPool pool( 2 );
 
-    QVERIFY( !pool.isConnected() );
-
     QSignalSpy poolSpy( &pool, SIGNAL(connectDone(int, QString)) );
 
     pool.setPasswordRequester( requester );
     QVERIFY( pool.connect( account ) );
 
     QTest::qWait( 100 );
-    QCOMPARE( requesterSpy.count(),  1 );
-    QCOMPARE( requesterSpy.at(0).at(0).toInt(), 0 );
-    QCOMPARE( requesterSpy.at(0).at(1).toString(), password );
+    QVERIFY( requesterSpy.count()>0 );
+    if ( requesterSpy.count()==1 ) {
+      QCOMPARE( requesterSpy.at(0).at(0).toInt(), 0 );
+      QCOMPARE( requesterSpy.at(0).at(1).toString(), password );
+    }
 
     QCOMPARE( poolSpy.count(), 1 );
     QCOMPARE( poolSpy.at(0).at(0).toInt(), errorCode );
-    if ( errorCode == SessionPool::NoError ) {
-      QVERIFY( pool.isConnected() );
-    } else {
-      QVERIFY( !pool.isConnected() );
-    }
 
     QCOMPARE( pool.serverCapabilities(), capabilities );
     QVERIFY( pool.serverNamespaces().isEmpty() );
