@@ -39,7 +39,7 @@ Rectangle {
       }
     }
     onCountChanged : {
-      if (!Component.completed)
+      if (Component.status != Component.Ready)
       {
         console.log("Not ready");
         return;
