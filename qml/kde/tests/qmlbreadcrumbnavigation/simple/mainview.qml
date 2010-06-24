@@ -39,11 +39,6 @@ Rectangle {
       }
     }
     onCountChanged : {
-      if (Component.status != Component.Ready)
-      {
-        console.log("Not ready: " + Component.status + " progress: " + Component.progress);
-        return;
-      }
       console.log("%%" + count)
       positionViewAtIndex(count - 1, ListView.Beginning)
     }
