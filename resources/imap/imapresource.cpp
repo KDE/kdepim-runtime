@@ -289,7 +289,8 @@ void ImapResource::startConnect( QVariant )
   ImapAccount *account = new ImapAccount;
   Settings::self()->loadAccount( account );
 
-  Q_ASSERT( m_pool->connect( account ) );
+  const bool result = m_pool->connect( account );
+  Q_ASSERT( result );
 }
 
 void ImapResource::onConnectDone( int errorCode, const QString &errorString )
