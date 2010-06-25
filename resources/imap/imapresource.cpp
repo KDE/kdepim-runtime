@@ -247,7 +247,7 @@ void ImapResource::onContentFetchDone( KJob *job )
   }
 }
 
-void ImapResource::configure( WId windowId )
+int ImapResource::configureDialog( WId windowId )
 {
   SetupServer dlg( this, windowId );
   KWindowSystem::setMainWindow( &dlg, windowId );
@@ -257,10 +257,19 @@ void ImapResource::configure( WId windowId )
     clearCache();
   }
 
-  if ( dlg.result() == QDialog::Accepted ) {
-    Settings::self()->writeConfig();
-    emit configurationDialogAccepted();
+  int result = dlg.result();
 
+  if ( result==QDialog::Accepted ) {
+    Settings::self()->writeConfig();
+  }
+
+  return dlg.result();
+}
+
+void ImapResource::configure( WId windowId )
+{
+  if ( configureDialog( windowId ) == QDialog::Accepted ) {
+    emit configurationDialogAccepted();
     reconnect();
   } else {
     emit configurationDialogRejected();
@@ -283,13 +292,29 @@ void ImapResource::startConnect( QVariant )
 
 void ImapResource::onConnectDone( int errorCode, const QString &errorString )
 {
-  if ( errorCode!=SessionPool::NoError ) {
+  switch ( errorCode ) {
+  case SessionPool::NoError:
+    m_mainSessionRequestId = m_pool->requestSession();
+    break;
+
+  case SessionPool::PasswordRequestError:
+  case SessionPool::EncryptionError:
+  case SessionPool::LoginFailError:
+  case SessionPool::CapabilitiesTestError:
+  case SessionPool::IncompatibleServerError:
+    setOnline( false );
     emit status( Broken, errorString );
     taskDone();
     return;
-  }
 
-  m_mainSessionRequestId = m_pool->requestSession();
+  case SessionPool::ReconnectNeededError:
+    reconnect();
+    return;
+
+  case SessionPool::NoAvailableSessionError:
+    kFatal() << "Shouldn't happen";
+    return;
+  }
 }
 
 void ImapResource::onMainSessionRequested( qint64 requestId, KIMAP::Session *session,
