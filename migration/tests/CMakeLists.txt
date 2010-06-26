@@ -28,8 +28,8 @@ add_resource_iface( maildir/maildirresource.kcfg
                     org.kde.Akonadi.Maildir.Settings MaildirSettings )
 
 
-kde4_add_executable(testnotesmigration1 TEST ${_srcList})
-target_link_libraries(testnotesmigration1
+kde4_add_executable(testnotesmigration TEST ${_srcList})
+target_link_libraries(testnotesmigration
   ${QT_QTTEST_LIBRARY}
   ${QT_QTGUI_LIBRARY}
   ${KDEPIMLIBS_AKONADI_LIBS}
@@ -48,10 +48,10 @@ target_link_libraries(testnotesmigration1
 
 # based on kde4_add_unit_test
 if (WIN32)
-  get_target_property( _loc testnotesmigration1 LOCATION )
+  get_target_property( _loc testnotesmigration LOCATION )
   set(_executable ${_loc}.bat)
 else (WIN32)
-  set(_executable ${EXECUTABLE_OUTPUT_PATH}/testnotesmigration1)
+  set(_executable ${EXECUTABLE_OUTPUT_PATH}/testnotesmigration)
 endif (WIN32)
 if (UNIX)
   set(_executable ${_executable}.shell)
@@ -59,7 +59,7 @@ endif (UNIX)
 
 find_program(_testrunner akonaditest)
 
-add_test( testnotesmigration1 ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
+add_test( testnotesmigration ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
 
 
 
