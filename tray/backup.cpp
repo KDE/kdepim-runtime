@@ -47,10 +47,10 @@ Backup::Backup( QWidget *parent ) : QWidget( parent )
 bool Backup::possible()
 {
     const QString mysqldump = KStandardDirs::findExe( "mysqldump" );
-    /*const QString bzip2 = KStandardDirs::findExe( "bzip2" );*/
+    const QString bzip2 = KStandardDirs::findExe( "bzip2" );
     const QString tar = KStandardDirs::findExe( "tar" );
-    kDebug() << "mysqldump:" << mysqldump << /*"bzip2:" << bzip2 <<*/ "tar:" << tar;
-    return !mysqldump.isEmpty() /*&& !bzip2.isEmpty()*/ && !tar.isEmpty();
+    kDebug() << "mysqldump:" << mysqldump << "bzip2:" << bzip2 << "tar:" << tar;
+    return !mysqldump.isEmpty() && !bzip2.isEmpty() && !tar.isEmpty();
 }
 
 void Backup::create( const KUrl& filename )
