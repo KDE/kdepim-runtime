@@ -40,10 +40,10 @@ void Global::init()
         m_dbname = settings.value( "Name", "akonadi" ).toString();
         m_dboptions.append( "--host=" + settings.value( "Host", "" ).toString() );
         // If the server is started by the user, we don't need to know the username/password.
-        bool startServer = settings.value( "StartServer", "" ).toBool();
+        bool startServer = settings.value( "StartServer", "true" ).toBool();
         if( !startServer ) {
+            // TODO: postgres will always ask for the user password ! implement .pgpass
             m_dboptions.append( "--username=" + settings.value( "User", "" ).toString() );
-            m_dboptions.append( "--password" ); // TODO: postgres will always ask for the user password ! implement .pgpass
         }
         settings.endGroup();
         m_parsed = true;
