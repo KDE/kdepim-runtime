@@ -72,7 +72,6 @@ private Q_SLOTS:
     void slotStartBackup();
     void slotStartRestore();
     void slotConfigure();
-    void slotQuit();
 
 private:
     void updateMenu( bool );

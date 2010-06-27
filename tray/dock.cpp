@@ -60,7 +60,7 @@ Dock::Dock( QWidget *parent )
         : KStatusNotifierItem( 0 ), m_explicitStart( false )
 {
     m_parentWidget = parent;
-  
+
     setIconByName("akonadi");
     setCategory(SystemServices);
     setStatus(Passive);
@@ -202,11 +202,6 @@ void Dock::slotConfigure()
 {
     QProcess *proc = new QProcess( this );
     proc->start( "kcmshell4", QStringList() << "kcm_akonadi" );
-}
-
-void Dock::slotQuit()
-{
-    exit( 0 );
 }
 
 #include "dock.moc"
