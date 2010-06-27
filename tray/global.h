@@ -43,10 +43,16 @@ public:
      */
     const QString dbname();
 
+    /**
+     * Returns the database driver to use.
+     */
+    const QString dbdriver();
+
 private:
     void init();
 
     bool m_parsed;
+    QString m_dbdriver;
     QStringList m_dboptions;
     QString m_dbname;
 };

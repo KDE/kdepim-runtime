@@ -46,11 +46,21 @@ Restore::Restore( QWidget *parent ) : QWidget( parent )
 
 bool Restore::possible()
 {
-    const QString mysql = KStandardDirs::findExe( "mysql" );
-    /*const QString bzip2 = KStandardDirs::findExe( "bzip2" );*/
+    Tray::Global global;
+    QString dbRestoreAppName;
+    if( global.dbdriver() == "QPSQL" )
+      dbRestoreAppName = "pg_restore";
+    else if( global.dbdriver() == "QMYSQL" )
+      dbRestoreAppName = "mysql";
+    else {
+      kError() << "Could not find an application to restore the database.";
+    }
+
+    m_dbRestoreApp = KStandardDirs::findExe( dbRestoreAppName );
+    const QString bzip2 = KStandardDirs::findExe( "bzip2" );
     const QString tar = KStandardDirs::findExe( "tar" );
-    kDebug() << "mysql:" << mysql /*<< "bzip2:" << bzip2*/ << "tar:" << tar;
-    return !mysql.isEmpty() /*&& !bzip2.isEmpty()*/ && !tar.isEmpty();
+    kDebug() << "m_dbRestoreApp:" << m_dbRestoreApp << "bzip2:" << bzip2 << "tar:" << tar;
+    return !m_dbRestoreApp.isEmpty() && !bzip2.isEmpty() && !tar.isEmpty();
 }
 
 void Restore::restore( const KUrl& filename )
@@ -116,14 +126,27 @@ void Restore::restore( const KUrl& filename )
     Tray::Global global;
     proc = new KProcess( this );
     params.clear();
-    params << global.dboptions() << global.dbname();
-    kDebug() << "Executing:" << KStandardDirs::findExe( "mysql" ) << params;
-    proc->setStandardInputFile( tempDir->name() + "db" + sep + "database.sql" );
-    proc->setProgram( KStandardDirs::findExe( "mysql" ), params );
+
+    if( global.dbdriver() == "QPSQL" ) {
+      params << global.dboptions()
+             << "--dbname=" + global.dbname()
+             << "--format=c"
+             << "--clean"
+             << tempDir->name() + "db" + sep + "database.sql";
+    }
+    else if (global.dbdriver() == "QMYSQL" ) {
+      params << global.dboptions()
+             << "--database=" + global.dbname()
+             << "<" + tempDir->name() + "db" + sep + "database.sql";
+    }
+
+    kDebug() << "Executing:" << m_dbRestoreApp << params;
+    ;
+    proc->setProgram( KStandardDirs::findExe( m_dbRestoreApp ), params );
     result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-        kWarning() << "Executed:" << KStandardDirs::findExe( "mysql" ) << params << " Result: " << result;
+        kWarning() << "Executed:" << m_dbRestoreApp << params << " Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
