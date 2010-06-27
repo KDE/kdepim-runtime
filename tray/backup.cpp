@@ -99,7 +99,7 @@ void Backup::create( const KUrl& filename )
     Tray::Global global;
     KProcess *proc = new KProcess( this );
     QStringList params;
-    params << "--single-transaction" << "--master-data=2";
+    params << "--single-transaction";
     params << "--flush-logs" << "--triggers";
     params << "--result-file=" + tempDir->name() + "db/database.sql";
     params << global.dboptions() << global.dbname();
