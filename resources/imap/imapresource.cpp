@@ -124,6 +124,8 @@ ImapResource::ImapResource( const QString &id )
            this, SLOT(onConnectDone(int, QString)) );
   connect( m_pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)),
            this, SLOT(onMainSessionRequested(qint64, KIMAP::Session*, int, QString)) );
+  connect( m_pool, SIGNAL(connectionLost(KIMAP::Session*)),
+           this, SLOT(onConnectionLost(KIMAP::Session*)) );
 
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
@@ -344,6 +346,13 @@ void ImapResource::onMainSessionRequested( qint64 requestId, KIMAP::Session *ses
   emit status( Idle, i18n( "Connection established." ) );
 
   synchronizeCollectionTree();
+}
+
+void ImapResource::onConnectionLost( KIMAP::Session *session )
+{
+  if ( session == m_mainSession ) {
+    reconnect();
+  }
 }
 
 

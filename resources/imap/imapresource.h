@@ -92,6 +92,8 @@ protected:
 private Q_SLOTS:
   void onConnectDone( int errorCode, const QString &errorMessage );
   void onMainSessionRequested( qint64 requestId, KIMAP::Session *session, int errorCode, const QString &errorMessage );
+  void onConnectionLost( KIMAP::Session *session );
+
   void scheduleConnectionAttempt();
 
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
