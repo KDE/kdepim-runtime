@@ -74,6 +74,8 @@ public:
   QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
 
 signals:
+  void connectionLost( KIMAP::Session *session );
+
   void sessionRequestDone( qint64 requestNumber, KIMAP::Session *session,
                            int errorCode = NoError, const QString &errorString = QString() );
   void connectDone( int errorCode = NoError, const QString &errorString = QString() );
@@ -86,6 +88,8 @@ private slots:
   void onLoginDone( KJob *job );
   void onCapabilitiesTestDone( KJob *job );
   void onNamespacesTestDone( KJob *job );
+
+  void onConnectionLost();
 
 private:
   void killSession( KIMAP::Session *session );

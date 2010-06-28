@@ -153,6 +153,9 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces() const
 
 void SessionPool::killSession( KIMAP::Session *session )
 {
+  QObject::disconnect( session, SIGNAL(connectionLost()),
+                       this, SLOT(onConnectionLost()) );
+
   KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( session );
   QObject::connect( logout, SIGNAL( result( KJob* ) ),
                     session, SLOT( deleteLater() ) );
@@ -162,6 +165,9 @@ void SessionPool::killSession( KIMAP::Session *session )
 void SessionPool::declareSessionReady( KIMAP::Session *session )
 {
   m_pendingInitialSession = 0;
+
+  QObject::connect( session, SIGNAL(connectionLost()),
+                    this, SLOT(onConnectionLost()) );
 
   if ( !m_initialConnectDone ) {
     m_idlePool << session;
@@ -386,6 +392,18 @@ void SessionPool::onNamespacesTestDone( KJob *job )
   }
 
   declareSessionReady( nsJob->session() );
+}
+
+void SessionPool::onConnectionLost()
+{
+  KIMAP::Session *session = static_cast<KIMAP::Session*>( sender() );
+
+  m_idlePool.removeAll( session );
+  m_reservedPool.removeAll( session );
+
+  emit connectionLost( session );
+
+  session->deleteLater();
 }
 
 #include "sessionpool.moc"
