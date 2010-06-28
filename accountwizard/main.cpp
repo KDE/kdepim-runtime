@@ -27,6 +27,8 @@
 #include <kcmdlineargs.h>
 #include <kglobal.h>
 
+#include <QtDBus/QDBusConnection>
+
 int main( int argc, char **argv )
 {
   KAboutData aboutData( "accountwizard", 0,
@@ -59,9 +61,22 @@ int main( int argc, char **argv )
   } else
     Global::setAssistant( args->getOption( "assistant" ) );
 
-  if( !args->getOption("type").isEmpty() )
-     Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
+  QString typesIdentifier = QLatin1String( "defaulttype" );
+  if ( !args->getOption("type").isEmpty() ) {
+    typesIdentifier = args->getOption( "type" );
+    Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
+  }
+  typesIdentifier.remove( QLatin1Char( ' ' ) );
+  typesIdentifier.replace( QLatin1Char( ',' ), QLatin1Char( '_' ) );
+  typesIdentifier.replace( QLatin1Char( '/' ), QLatin1Char( '_' ) );
+
   args->clear();
+
+  if ( !QDBusConnection::sessionBus().registerService( QString::fromLatin1( "org.kde.pim.AccountWizard.lock.%1" ).arg( typesIdentifier ) ) ) {
+    // another acccount wizard instance is holding this lock -> quit this instance
+    return 0;
+  }
+
   Dialog dlg;
   dlg.show();
   dlg.resize(300,350);
