@@ -3,7 +3,7 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
-    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
+    Copyright (c) 2010 Klar√§lvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
@@ -406,6 +406,8 @@ void ImapResource::onAppendMessageDone( KJob *job )
   // (since in IMAP you're forced to append+remove in this case)
   qint64 oldUid = job->property( "oldUid" ).toLongLong();
   if ( oldUid ) {
+    // APPEND does not require a SELECT, so we could be anywhere right now
+    selectIfNeeded( append->mailBox() );
     // OK it's indeed a content change, so we've to mark the old version as deleted
     KIMAP::StoreJob *store = new KIMAP::StoreJob( m_mainSession );
     store->setUidBased( true );
