@@ -45,6 +45,9 @@ public:
      */
     void restore( const KUrl &filename );
 
+private:
+    QString m_dbRestoreApp;
+
 Q_SIGNALS:
     void completed( bool );
 };

@@ -45,6 +45,9 @@ public:
      */
     void create( const KUrl &filename );
 
+private:
+    QString m_dbDumpApp;
+
 Q_SIGNALS:
     void completed( bool );
 };
