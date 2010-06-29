@@ -351,6 +351,7 @@ void ImapResource::onMainSessionRequested( qint64 requestId, KIMAP::Session *ses
 void ImapResource::onConnectionLost( KIMAP::Session *session )
 {
   if ( session == m_mainSession ) {
+    m_mainSession = 0;
     reconnect();
   }
 }
