@@ -18,7 +18,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BIN
 find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
 
-find_package(KdepimLibs 4.3.85 REQUIRED)
+find_package(KdepimLibs 4.5.60 REQUIRED)
 
 ### remove the following when requiring kdelibs 4.5 ###
 if ( NOT KDE4_KCMUTILS_LIBS )
