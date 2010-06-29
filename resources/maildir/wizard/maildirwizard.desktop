@@ -44,16 +44,20 @@ Comment[ca]=Compte Maildir
 Comment[ca@valencia]=Compte Maildir
 Comment[en_GB]=Maildir account
 Comment[es]=Cuenta de directorio de correo
+Comment[fr]=Compte Maildir
 Comment[gl]=Conta de Maildir
 Comment[km]=គណនី Maildir
 Comment[nb]=Maildir-konto
 Comment[nds]=Nettpostkonto
+Comment[nl]=Maildir-account
 Comment[nn]=Maildir-konto
 Comment[pt]=Conta Maildir
 Comment[pt_BR]=Conta Maildir
 Comment[sv]=Maildir-konto
 Comment[uk]=Обліковий запис Maildir
 Comment[x-test]=xxMaildir accountxx
+Comment[zh_CN]=Maildir 账户
+Comment[zh_TW]=Maildir 帳號
 
 [Wizard]
 Type=message/rfc822
