@@ -35,6 +35,9 @@ public:
   explicit DummyResourceState();
   ~DummyResourceState();
 
+  void setAutomaticExpungeEnagled( bool enabled );
+  virtual bool isAutomaticExpungeEnabled() const;
+
   void setCollection( const Akonadi::Collection &collection );
   virtual Akonadi::Collection collection() const;
   void setItem( const Akonadi::Item &item );
@@ -54,13 +57,23 @@ public:
   virtual QString rootRemoteId() const;
   virtual QString mailBoxForCollection( const Akonadi::Collection &collection ) const;
 
+  virtual void applyCollectionChanges( const Akonadi::Collection &collection );
+
   virtual void itemRetrieved( const Akonadi::Item &item );
+
+  virtual void itemsRetrieved( const Akonadi::Item::List &items );
+  virtual void itemsRetrievalDone();
+
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
 
   QList< QPair<QByteArray, QVariant> > calls() const;
 
 private:
+  void recordCall( const QByteArray callName, const QVariant &parameter = QVariant() );
+
+  bool m_automaticExpunge;
+
   Akonadi::Collection m_collection;
   Akonadi::Item m_item;
 

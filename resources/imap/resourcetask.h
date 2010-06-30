@@ -50,6 +50,8 @@ protected:
   virtual void doStart( KIMAP::Session *session ) = 0;
 
 protected:
+  bool isAutomaticExpungeEnabled() const;
+
   Akonadi::Collection collection() const;
   Akonadi::Item item() const;
 
@@ -63,7 +65,13 @@ protected:
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &collection ) const;
 
+  void applyCollectionChanges( const Akonadi::Collection &collection );
+
   void itemRetrieved( const Akonadi::Item &item );
+
+  void itemsRetrieved( const Akonadi::Item::List &items );
+  void itemsRetrievalDone();
+
   void cancelTask( const QString &errorString );
   void deferTask();
 

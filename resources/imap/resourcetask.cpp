@@ -77,6 +77,11 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
   doStart( m_session );
 }
 
+bool ResourceTask::isAutomaticExpungeEnabled() const
+{
+  return m_resource->isAutomaticExpungeEnabled();
+}
+
 Akonadi::Collection ResourceTask::collection() const
 {
   return m_resource->collection();
@@ -117,9 +122,25 @@ QString ResourceTask::mailBoxForCollection( const Akonadi::Collection &collectio
   return m_resource->mailBoxForCollection( collection );
 }
 
+void ResourceTask::applyCollectionChanges( const Akonadi::Collection &collection )
+{
+  m_resource->applyCollectionChanges( collection );
+}
+
 void ResourceTask::itemRetrieved( const Akonadi::Item &item )
 {
   m_resource->itemRetrieved( item );
+  deleteLater();
+}
+
+void ResourceTask::itemsRetrieved( const Akonadi::Item::List &items )
+{
+  m_resource->itemsRetrieved( items );
+}
+
+void ResourceTask::itemsRetrievalDone()
+{
+  m_resource->itemsRetrievalDone();
   deleteLater();
 }
 

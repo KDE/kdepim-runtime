@@ -22,6 +22,7 @@
 #include "dummyresourcestate.h"
 
 DummyResourceState::DummyResourceState()
+  : m_automaticExpunge( true )
 {
 
 }
@@ -29,6 +30,16 @@ DummyResourceState::DummyResourceState()
 DummyResourceState::~DummyResourceState()
 {
 
+}
+
+void DummyResourceState::setAutomaticExpungeEnagled( bool enabled )
+{
+  m_automaticExpunge = enabled;
+}
+
+bool DummyResourceState::isAutomaticExpungeEnabled() const
+{
+  return m_automaticExpunge;
 }
 
 void DummyResourceState::setCollection( const Akonadi::Collection &collection )
@@ -101,24 +112,44 @@ QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &col
   return collection.remoteId();
 }
 
+void DummyResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
+{
+  recordCall( "applyCollectionChanges",  QVariant::fromValue( collection ) );
+}
+
 void DummyResourceState::itemRetrieved( const Akonadi::Item &item )
 {
-  m_calls << QPair<QByteArray, QVariant>( "itemRetrieved", QVariant::fromValue(item) );
+  recordCall( "itemRetrieved", QVariant::fromValue(item) );
+}
+
+void DummyResourceState::itemsRetrieved( const Akonadi::Item::List &items )
+{
+  recordCall( "itemsRetrieved",  QVariant::fromValue( items ) );
+}
+
+void DummyResourceState::itemsRetrievalDone()
+{
+  recordCall( "itemsRetrievalDone" );
 }
 
 void DummyResourceState::cancelTask( const QString &errorString )
 {
-  m_calls << QPair<QByteArray, QVariant>( "cancelTask", QVariant::fromValue(errorString) );
+  recordCall( "cancelTask", QVariant::fromValue(errorString) );
 }
 
 void DummyResourceState::deferTask()
 {
-  m_calls << QPair<QByteArray, QVariant>( "deferTask", QVariant() );
+  recordCall( "deferTask" );
 }
 
 QList< QPair<QByteArray, QVariant> > DummyResourceState::calls() const
 {
   return m_calls;
+}
+
+void DummyResourceState::recordCall( const QByteArray callName, const QVariant &parameter )
+{
+  m_calls << QPair<QByteArray, QVariant>( callName, parameter );
 }
 
 

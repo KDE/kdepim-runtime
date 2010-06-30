@@ -24,6 +24,8 @@
 #include "imapresource.h"
 #include "settings.h"
 
+#include <akonadi/collectionmodifyjob.h>
+
 ResourceStateInterface::Ptr ResourceState::createRetrieveItemState( ImapResource *resource,
                                                                     const Akonadi::Item &item,
                                                                     const QSet<QByteArray> &parts )
@@ -32,6 +34,16 @@ ResourceStateInterface::Ptr ResourceState::createRetrieveItemState( ImapResource
 
   state->m_item = item;
   state->m_parts = parts;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
+ResourceStateInterface::Ptr ResourceState::createRetrieveItemsState( ImapResource *resource,
+                                                                     const Akonadi::Collection &collection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
 
   return ResourceStateInterface::Ptr( state );
 }
@@ -45,6 +57,11 @@ ResourceState::ResourceState( ImapResource *resource )
 ResourceState::~ResourceState()
 {
 
+}
+
+bool ResourceState::isAutomaticExpungeEnabled() const
+{
+  return Settings::self()->automaticExpungeEnabled();
 }
 
 Akonadi::Collection ResourceState::collection() const
@@ -103,9 +120,24 @@ QString ResourceState::mailBoxForCollection( const Akonadi::Collection &collecti
   return mailbox;
 }
 
+void ResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
+{
+  new Akonadi::CollectionModifyJob( collection );
+}
+
 void ResourceState::itemRetrieved( const Akonadi::Item &item )
 {
   m_resource->itemRetrieved( item );
+}
+
+void ResourceState::itemsRetrieved( const Akonadi::Item::List &items )
+{
+  m_resource->itemsRetrieved( items );
+}
+
+void ResourceState::itemsRetrievalDone()
+{
+  m_resource->itemsRetrievalDone();
 }
 
 void ResourceState::cancelTask( const QString &errorString )

@@ -18,6 +18,7 @@ ENDMACRO(IMAP_RESOURCE_UNIT_TESTS)
 IMAP_RESOURCE_UNIT_TESTS(
   testresourcetask
   testretrieveitemtask
+  testretrieveitemstask
   testsessionpool
 )
 

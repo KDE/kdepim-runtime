@@ -33,10 +33,15 @@ public:
                                                               const Akonadi::Item &item,
                                                               const QSet<QByteArray> &parts );
 
+  static ResourceStateInterface::Ptr createRetrieveItemsState( ImapResource *resource,
+                                                               const Akonadi::Collection &collection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
   ~ResourceState();
+
+  virtual bool isAutomaticExpungeEnabled() const;
 
   virtual Akonadi::Collection collection() const;
   virtual Akonadi::Item item() const;
@@ -51,7 +56,14 @@ public:
   virtual QString rootRemoteId() const;
   virtual QString mailBoxForCollection( const Akonadi::Collection &collection ) const;
 
+
+  virtual void applyCollectionChanges( const Akonadi::Collection &collection );
+
   virtual void itemRetrieved( const Akonadi::Item &item );
+
+  virtual void itemsRetrieved( const Akonadi::Item::List &items );
+  virtual void itemsRetrievalDone();
+
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
 
