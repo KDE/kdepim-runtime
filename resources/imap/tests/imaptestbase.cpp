@@ -53,6 +53,29 @@ void ImapTestBase::setupTestCase()
   qRegisterMetaType<KIMAP::Session*>();
 }
 
+QList<QByteArray> ImapTestBase::defaultAuthScenario()
+{
+  QList<QByteArray> scenario;
+
+  scenario << FakeServer::greeting()
+           << "C: A000001 LOGIN test@kdab.com foobar"
+           << "S: A000001 OK User Logged in";
+
+  return scenario;
+}
+
+QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario()
+{
+  QList<QByteArray> scenario;
+
+  scenario << defaultAuthScenario()
+           << "C: A000002 CAPABILITY"
+           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+           << "S: A000002 OK Completed";
+
+  return scenario;
+}
+
 bool ImapTestBase::waitForSignal( QObject *obj, const char *member, int timeout )
 {
   QEventLoop loop;

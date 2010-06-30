@@ -44,6 +44,8 @@ protected:
   QString defaultPassword();
   ImapAccount *createDefaultAccount();
   DummyPasswordRequester *createDefaultRequester();
+  QList<QByteArray> defaultAuthScenario();
+  QList<QByteArray> defaultPoolConnectionScenario();
 
   bool waitForSignal( QObject *obj, const char *member, int timeout = 500 );
 

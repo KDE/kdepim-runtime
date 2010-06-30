@@ -47,12 +47,7 @@ private slots:
     message = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
 
     scenario.clear();
-    scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
-             << "S: A000001 OK User Logged in"
-             << "C: A000002 CAPABILITY"
-             << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-             << "S: A000002 OK Completed"
+    scenario << defaultPoolConnectionScenario()
              << "C: A000003 SELECT \"INBOX/Foo\""
              << "S: A000003 OK select done"
              << "C: A000004 UID FETCH 42 (BODY.PEEK[] UID)"
@@ -61,23 +56,13 @@ private slots:
     QTest::newRow( "normal case" ) << item << message << scenario << "itemRetrieved";
 
     scenario.clear();
-    scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
-             << "S: A000001 OK User Logged in"
-             << "C: A000002 CAPABILITY"
-             << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-             << "S: A000002 OK Completed"
+    scenario << defaultPoolConnectionScenario()
              << "C: A000003 SELECT \"INBOX/Foo\""
              << "S: A000003 NO select fail";
     QTest::newRow( "select fail" ) << item << message << scenario << "cancelTask";
 
     scenario.clear();
-    scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
-             << "S: A000001 OK User Logged in"
-             << "C: A000002 CAPABILITY"
-             << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-             << "S: A000002 OK Completed"
+    scenario << defaultPoolConnectionScenario()
              << "C: A000003 SELECT \"INBOX/Foo\""
              << "S: A000003 OK select done"
              << "C: A000004 UID FETCH 42 (BODY.PEEK[] UID)"
