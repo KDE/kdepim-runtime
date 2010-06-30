@@ -47,7 +47,6 @@ private:
   void triggerFetchJob();
 
   KIMAP::Session *m_session;
-  QString m_mailBox;
   qint64 m_uid;
 };
 
