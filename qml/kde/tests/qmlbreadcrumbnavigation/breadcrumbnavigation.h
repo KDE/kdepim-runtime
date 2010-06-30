@@ -24,7 +24,7 @@
 
 #include <QItemSelectionModel>
 
-#include <kselectionproxymodel.h>
+#include "kselectionproxymodel.h"
 
 // Copied from kdeui/tests/proxymodeltestapp/breadcrumbnavigationwidget
 // A version of these might be somewhere stable in the future.
