@@ -17,53 +17,15 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include <qtest_kde.h>
+#include "imaptestbase.h"
 
 #include <kimap/capabilitiesjob.h>
-#include <kimaptest/fakeserver.h>
 
-#include "dummypasswordrequester.h"
-#include "imapaccount.h"
-#include "sessionpool.h"
-
-Q_DECLARE_METATYPE(ImapAccount*)
-Q_DECLARE_METATYPE(DummyPasswordRequester*)
-Q_DECLARE_METATYPE(KIMAP::Session*)
-
-
-class TestSessionPool : public QObject
+class TestSessionPool : public ImapTestBase
 {
   Q_OBJECT
 
-private:
-  ImapAccount *createDefaultAccount()
-  {
-    ImapAccount *account = new ImapAccount;
-
-    account->setServer( "127.0.0.1" );
-    account->setPort( 5989 );
-    account->setUserName( "test@kdab.com" );
-    account->setSubscriptionEnabled( true );
-    account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
-    account->setAuthenticationMode( KIMAP::LoginJob::ClearText );
-
-    return account;
-  }
-
-  DummyPasswordRequester *createDefaultRequester()
-  {
-    DummyPasswordRequester *requester = new DummyPasswordRequester( this );
-    requester->setPassword( "foobar" );
-    return requester;
-  }
-
-
 private slots:
-  void setupTestCase()
-  {
-    qRegisterMetaType<KIMAP::Session*>();
-  }
-
   void shouldPrepareFirstSessionOnConnect_data()
   {
     QTest::addColumn<ImapAccount*>("account");
@@ -233,6 +195,8 @@ private slots:
 
     SessionPool pool( 2 );
 
+    QVERIFY( !pool.isConnected() );
+
     QSignalSpy poolSpy( &pool, SIGNAL(connectDone(int, QString)) );
 
     pool.setPasswordRequester( requester );
@@ -247,6 +211,11 @@ private slots:
 
     QCOMPARE( poolSpy.count(), 1 );
     QCOMPARE( poolSpy.at(0).at(0).toInt(), errorCode );
+    if ( errorCode == SessionPool::NoError ) {
+      QVERIFY( pool.isConnected() );
+    } else {
+      QVERIFY( !pool.isConnected() );
+    }
 
     QCOMPARE( pool.serverCapabilities(), capabilities );
     QVERIFY( pool.serverNamespaces().isEmpty() );
