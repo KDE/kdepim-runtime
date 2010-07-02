@@ -108,7 +108,7 @@ class KMailMigrator : public KMigratorBase
 
     void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
 
-    void evaluateCacheHandlingOptions();
+    bool evaluateCacheHandlingOptions();
     void migrateInstanceTrashFolder();
 
     void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,

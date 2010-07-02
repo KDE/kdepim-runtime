@@ -61,7 +61,9 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <KSharedConfig>
+#include <KCursor>
 #include <kwallet.h>
+#include <QApplication>
 using KWallet::Wallet;
 
 using namespace KMail;
@@ -148,10 +150,14 @@ void KMailMigrator::migrate()
 
   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
 
-  evaluateCacheHandlingOptions();
+  if ( evaluateCacheHandlingOptions() ) {
+    mIt = mAccounts.begin();
+    migrateNext();
+  } else { // abort migration
+    deleteLater();
+    qApp->exit( 5 );
+  }
 
-  mIt = mAccounts.begin();
-  migrateNext();
 }
 
 void KMailMigrator::deleteOldGroup()
@@ -459,7 +465,7 @@ void KMailMigrator::connectCollectionMigrator( AbstractCollectionMigrator *migra
            SLOT ( collectionMigratorEmittedNotification() ) );
 }
 
-void KMailMigrator::evaluateCacheHandlingOptions()
+bool KMailMigrator::evaluateCacheHandlingOptions()
 {
   bool needsAction = false;
   Q_FOREACH( const QString &account, mAccounts ) {
@@ -474,6 +480,8 @@ void KMailMigrator::evaluateCacheHandlingOptions()
   }
 
   if ( needsAction ) {
+    QApplication::restoreOverrideCursor();
+
     const QString message =
       i18nc( "@info", "<para>Cached IMAP accounts have a local copy of the server's data.</para>"
                       "<para>These copies can be kept in local folders or be deleted"
@@ -481,11 +489,17 @@ void KMailMigrator::evaluateCacheHandlingOptions()
                       "<note>Mail that did not get imported will always be kept in local folders"
                       "</note>" );
 
-    int result = KMessageBox::questionYesNo( 0, message, i18n( "KMail 2 Migration" ),
+    int result = KMessageBox::questionYesNoCancel( 0, message, i18n( "KMail 2 Migration" ),
                                              KGuiItem( i18nc( "@action", "Delete Copies" ) ),
                                              KGuiItem( i18nc( "@action", "Keep Copies" ) ) );
     mDeleteCacheAfterImport = ( result == KMessageBox::Yes );
+
+    QApplication::setOverrideCursor( KCursor( QLatin1String( "wait" ), Qt::WaitCursor ) );
+    if ( result == KMessageBox::Cancel ) {
+        return false;
+    }
   }
+  return true;
 }
 
 
