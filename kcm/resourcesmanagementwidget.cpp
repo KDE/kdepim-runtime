@@ -55,8 +55,8 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter( "Resource" );
     foreach( const QString& type, d->wantedMimeTypes )
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
-    connect( d->ui.resourcesList, SIGNAL( currentChanged( const Akonadi::AgentInstance&, const Akonadi::AgentInstance& ) ),
-             SLOT( updateButtonState( const Akonadi::AgentInstance& ) ) );
+    connect( d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+             SLOT( updateButtonState() ) );
     connect( d->ui.resourcesList, SIGNAL( doubleClicked( const Akonadi::AgentInstance& ) ),
              SLOT( editClicked() ) );
 
@@ -64,7 +64,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
     connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
 
-    updateButtonState( d->ui.resourcesList->currentAgentInstance() );
+    updateButtonState();
     Akonadi::Control::widgetNeedsAkonadi( this );
 }
 
@@ -73,8 +73,9 @@ ResourcesManagementWidget::~ResourcesManagementWidget()
     delete d;
 }
 
-void ResourcesManagementWidget::updateButtonState( const Akonadi::AgentInstance& current)
+void ResourcesManagementWidget::updateButtonState()
 {
+    const Akonadi::AgentInstance current = d->ui.resourcesList->currentAgentInstance();
     if ( !current.isValid() ) {
         d->ui.editButton->setEnabled( false );
         d->ui.removeButton->setEnabled( false );
@@ -129,7 +130,7 @@ void ResourcesManagementWidget::removeClicked()
 
       foreach( const Akonadi::AgentInstance &agent, instanceList )
         Akonadi::AgentManager::self()->removeInstance( agent );
-        updateButtonState( d->ui.resourcesList->currentAgentInstance() );
+      updateButtonState();
     }
 }
 
