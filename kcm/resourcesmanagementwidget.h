@@ -55,7 +55,7 @@ public:
     virtual ~ResourcesManagementWidget();
 
 private Q_SLOTS:
-    void updateButtonState( const Akonadi::AgentInstance& = Akonadi::AgentInstance() );
+    void updateButtonState();
     void addClicked();
     void editClicked();
     void removeClicked();
