@@ -49,6 +49,7 @@ POP3Resource::POP3Resource( const QString &id )
 {
   setNeedsNetwork( true );
   Settings::self()->setResourceId( identifier() );
+  resetState();
 
   connect( this, SIGNAL(abortRequested()),
            this, SLOT(slotAbortRequested()) );
