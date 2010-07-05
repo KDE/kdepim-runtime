@@ -393,7 +393,7 @@ void KMailMigrator::migrateInstanceTrashFolder()
       if ( accountConf.imapAccount ) { //Imap
         OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
         if ( iface ) {
-          qint64 value = group.readEntry( "trash", -1 );
+          const qint64 value = group.readEntry( "trash", -1 );
           if ( value != -1 ) {
             iface->setTrashCollection( value );
             instance.reconfigure();
@@ -402,7 +402,7 @@ void KMailMigrator::migrateInstanceTrashFolder()
       } else { //Pop3
         OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface( instance );
         if ( iface ) {
-          qint64 value = group.readEntry( "Folder", -1 );
+          const qint64 value = group.readEntry( "Folder", -1 );
           if ( value != -1 ) {
             iface->setTargetCollection( value );
             instance.reconfigure();
@@ -671,6 +671,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     if ( !encpasswd.isEmpty() ) {
       encpasswd = KStringHandler::obscure( encpasswd );
     }
+    config.deleteEntry( "store-passwd" );
+    config.deleteEntry( "passwd" );
   }
   migratePassword( config.readEntry( "Id" ), instance, "imap", encpasswd );
 
@@ -846,6 +848,8 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     if ( !encpasswd.isEmpty() ) {
       encpasswd = KStringHandler::obscure( encpasswd );
     }
+    config.deleteEntry( "store-passwd" );
+    config.deleteEntry( "passwd" );
   }
   migratePassword( config.readEntry( "Id" ), instance, "pop3", encpasswd );
 
