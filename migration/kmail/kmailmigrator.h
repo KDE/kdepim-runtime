@@ -112,7 +112,7 @@ class KMailMigrator : public KMigratorBase
     void migrateInstanceTrashFolder();
 
     void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,
-                          const QString &newFolder, const QString &passwordFromFilePassword = QString() );
+                          const QString &newFolder, const QString &passwordFromFilePassword );
 
     OrgKdeAkonadiImapSettingsInterface* createImapSettingsInterface( const Akonadi::AgentInstance& instance );
     OrgKdeAkonadiPOP3SettingsInterface* createPop3SettingsInterface( const Akonadi::AgentInstance& instance );
