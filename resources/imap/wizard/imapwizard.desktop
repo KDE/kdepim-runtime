@@ -2,6 +2,7 @@
 Name=Generic IMAP Email Server
 Name[ca]=Servidor de correu IMAP genèric
 Name[ca@valencia]=Servidor de correu IMAP genèric
+Name[de]=Generischer IMAP E-Mail-Server
 Name[en_GB]=Generic IMAP Email Server
 Name[es]=Servidor de correo IMAP genérico
 Name[fr]=Serveur de courriels IMAP générique
@@ -22,6 +23,7 @@ Comment=Imap account
 Comment[ca]=Compte Imap
 Comment[ca@valencia]=Compte Imap
 Comment[cs]=Imap účet
+Comment[de]=IMAP-Zugang
 Comment[en_GB]=Imap account
 Comment[es]=Cuenta Imap
 Comment[fr]=Compte Imap
