@@ -64,6 +64,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KCursor>
 #include <kwallet.h>
 #include <QApplication>
+#include <kstringhandler.h>
 using KWallet::Wallet;
 
 using namespace KMail;
@@ -504,19 +505,28 @@ bool KMailMigrator::evaluateCacheHandlingOptions()
 
 
 void KMailMigrator::migratePassword( const QString &idString, const AgentInstance &instance,
-                                     const QString &newFolder )
+                                     const QString &newFolder, const QString& passwordFromFilePassword )
 {
   QString password;
   if ( mWallet == 0 ) {
     mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
   }
-  if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "kmail" ) ) {
-    mWallet->setFolder( "kmail" );
-    mWallet->readPassword( "account-" + idString, password );
-    if ( !mWallet->hasFolder( newFolder ) )
-      mWallet->createFolder( newFolder );
-    mWallet->setFolder( newFolder );
-    mWallet->writePassword( instance.identifier() + "rc" , password );
+  if ( mWallet && mWallet->isOpen() ) {
+    if ( !passwordFromFilePassword.isEmpty() )
+      password = passwordFromFilePassword;
+
+    if ( password.isEmpty() &&  mWallet->hasFolder( "kmail" ) ) {
+      mWallet->setFolder( "kmail" );
+      mWallet->readPassword( "account-" + idString, password );
+    }
+
+    if ( !password.isEmpty() ) {
+      if ( !mWallet->hasFolder( newFolder ) )
+        mWallet->createFolder( newFolder );
+      mWallet->setFolder( newFolder );
+
+      mWallet->writePassword( instance.identifier() + "rc" , password );
+    }
   }
 }
 
@@ -650,7 +660,20 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( !useDefaultIdentity )
     iface->setAccountIdentity( config.readEntry( "identity-id" ).toInt() );
 
-  migratePassword( config.readEntry( "Id" ), instance, "imap" );
+  QString encpasswd ;
+  if ( config.readEntry( "store-passwd", false ) ) {
+    encpasswd = config.readEntry( "pass" );
+    if ( encpasswd.isEmpty() ) {
+      encpasswd = config.readEntry( "passwd" );
+      if ( !encpasswd.isEmpty() )
+        encpasswd = importPassword( encpasswd );
+    }
+
+    if ( !encpasswd.isEmpty() ) {
+      encpasswd = KStringHandler::obscure( encpasswd );
+    }
+  }
+  migratePassword( config.readEntry( "Id" ), instance, "imap", encpasswd );
 
   const QString nameAccount = config.readEntry( "Name" );
   instance.setName( nameAccount );
@@ -810,7 +833,22 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   else
     iface->setAuthenticationMethod( AuthType::CLEAR );
   iface->setPrecommand( config.readPathEntry( "precommand", QString() ) );
-  migratePassword( config.readEntry( "Id" ), instance, "pop3" );
+
+  QString encpasswd;
+
+  if ( config.readEntry( "store-passwd", false ) ) {
+    encpasswd = config.readEntry( "pass" );
+    if ( encpasswd.isEmpty() ) {
+      encpasswd = config.readEntry( "passwd" );
+      if ( !encpasswd.isEmpty() )
+        encpasswd = importPassword( encpasswd );
+    }
+
+    if ( !encpasswd.isEmpty() ) {
+      encpasswd = KStringHandler::obscure( encpasswd );
+    }
+  }
+  migratePassword( config.readEntry( "Id" ), instance, "pop3", encpasswd );
 
   // POP3 filter from files in kmail appdata
   const QString popFilterFileName = QString::fromLatin1( "kmail/%1:@%2:%3" )
@@ -1348,5 +1386,24 @@ void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance 
                          mRunningCacheImporterCount ) );
   }
 }
+
+QString KMailMigrator::importPassword(const QString &aStr)
+{
+  unsigned int i, val;
+  unsigned int len = aStr.length();
+  QByteArray result;
+  result.resize(len);
+
+  for (i=0; i<len; i++)
+  {
+    val = aStr[i].toLatin1() - ' ';
+    val = (255-' ') - val;
+    result[i] = (char)(val + ' ');
+  }
+  result[i] = '\0';
+
+  return KStringHandler::obscure(result);
+}
+
 
 #include "kmailmigrator.moc"
