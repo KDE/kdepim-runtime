@@ -81,10 +81,9 @@ static MixedMaildirStore *createCacheStore( const QString &basePath )
   if ( baseDir.exists() && baseDir.isDir() ) {
     store = new MixedMaildirStore;
     store->setPath( baseDir.absoluteFilePath() );
-    return store;
   }
 
-  return 0;
+  return store;
 }
 
 KMailMigrator::KMailMigrator() :
