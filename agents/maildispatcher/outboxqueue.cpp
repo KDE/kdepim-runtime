@@ -301,6 +301,14 @@ void OutboxQueue::Private::localFoldersChanged()
     kDebug() << "Requesting outbox folder.";
     rjob->start();
   }
+
+  // make sure we have a place to dump the sent mails as well
+  if ( !SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
+    SpecialMailCollectionsRequestJob *rjob = new SpecialMailCollectionsRequestJob( q );
+    rjob->requestDefaultCollection( SpecialMailCollections::SentMail );
+    kDebug() << "Requesting sent-mail folder";
+    rjob->start();
+  }
 }
 
 void OutboxQueue::Private::localFoldersRequestResult( KJob *job )
