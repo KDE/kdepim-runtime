@@ -351,7 +351,7 @@ void KMailMigrator::migrationDone()
       AgentManager::self()->removeInstance( instance );
     }
   }
-  cleanupAccount();
+  cleanupConfigFile();
   deleteLater();
 }
 
@@ -381,7 +381,7 @@ OrgKdeAkonadiPOP3SettingsInterface* KMailMigrator::createPop3SettingsInterface( 
   return iface;
 }
 
-void KMailMigrator::cleanupAccount()
+void KMailMigrator::cleanupConfigFile()
 {
   mIt = mAccounts.begin();
   while ( mIt != mAccounts.end() ) {
@@ -389,6 +389,8 @@ void KMailMigrator::cleanupAccount()
     deleteOldGroup( accountName );
     ++mIt;
   }
+
+  deleteOldGroup( "FavoriteFolderView" );
 }
 
 void KMailMigrator::migrateInstanceTrashFolder()

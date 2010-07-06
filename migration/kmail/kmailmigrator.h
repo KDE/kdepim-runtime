@@ -119,7 +119,7 @@ class KMailMigrator : public KMigratorBase
 
     //code from kmaccount
     QString importPassword(const QString &aStr);
-    void cleanupAccount();
+    void cleanupConfigFile();
 
   private:
     KWallet::Wallet *mWallet;
