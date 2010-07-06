@@ -71,7 +71,7 @@ static bool indexFileForFolder( const QFileInfo &folderDirInfo, QFileInfo &index
 class MBoxContext
 {
   public:
-    MBoxContext() : mIndexDataLoaded( false ) {}
+    MBoxContext() : mIndexDataLoaded( false ), mHasIndexData( false ) {}
 
     QString fileName() const
     {
@@ -172,7 +172,7 @@ class MBoxContext
     }
 
     bool hasIndexData() const {
-      return !mIndexData.isEmpty();
+      return mHasIndexData;
     }
 
   public:
@@ -185,6 +185,7 @@ class MBoxContext
     typedef QHash<quint64, KMIndexDataPtr> IndexDataHash;
     IndexDataHash mIndexData;
     bool mIndexDataLoaded;
+    bool mHasIndexData;
 };
 
 typedef boost::shared_ptr<MBoxContext> MBoxPtr;
@@ -216,6 +217,8 @@ void MBoxContext::readIndexData()
     kError() << "Index file" << indexFileInfo.path() << "could not be read";
     return;
   }
+
+  mHasIndexData = true;
 
   const QList<MsgEntryInfo> entries = mMBox.entryList();
   Q_FOREACH( const MsgEntryInfo &entry, entries ) {
@@ -595,6 +598,13 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
                    << tagList.count() << "tags:" << tagList;
           tagListHash.insert( item.remoteId(), tagList );
         }
+      } else {
+        KPIM::MessageStatus status;
+        status.setDeleted( true ),
+        item.setFlags( status.getStatusFlags() );
+        kDebug() << "no index for item" << item.remoteId() << "in MBox" << mbox->fileName()
+                 << "so it has been deleted but not purged. Marking it as"
+                 << item.flags();
       }
     }
 
