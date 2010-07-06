@@ -47,6 +47,7 @@ void Identity::create()
   m_identity->setFullName( m_realName );
   m_identity->setPrimaryEmailAddress( m_email );
   m_identity->setOrganization( m_organization );
+  m_manager->setAsDefault( m_identity->uoid() );
   m_manager->commit();
 
   emit finished( i18n( "Identity set up." ) );
