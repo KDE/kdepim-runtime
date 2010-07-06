@@ -31,7 +31,7 @@ using namespace Akonadi;
 static const char collectionIdMappingProperty[] = "collectionIdMappingProperty";
 
 EntityTreeCreateJob::EntityTreeCreateJob( QList< Akonadi::Collection::List > collections, Akonadi::Item::List items, QObject* parent )
-  : Akonadi::TransactionSequence( parent ), m_collections( collections ), m_items( items )
+  : Akonadi::TransactionSequence( parent ), m_collections( collections ), m_items( items ), m_pendingJobs( 0 )
 {
 
 }
@@ -50,6 +50,7 @@ void EntityTreeCreateJob::createNextLevelOfCollections()
   const Collection::List colList = m_collections.takeFirst();
   foreach( const Collection &collection, colList )
   {
+    ++m_pendingJobs;
     job = new CollectionCreateJob( collection, this );
     job->setProperty( collectionIdMappingProperty, collection.id() );
     connect( job, SIGNAL(result(KJob*)), SLOT(collectionCreateJobDone(KJob*)) );
@@ -76,6 +77,8 @@ void EntityTreeCreateJob::createReadyItems()
 
 void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
 {
+  Q_ASSERT( m_pendingJobs > 0 );
+  --m_pendingJobs;
   CollectionCreateJob *collectionCreateJob = qobject_cast<CollectionCreateJob *>( job );
   Collection createdCollection = collectionCreateJob->collection();
 
@@ -85,7 +88,7 @@ void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
     return;
   }
 
-  int creationId = job->property( collectionIdMappingProperty ).toLongLong();
+  const Collection::Id creationId = job->property( collectionIdMappingProperty ).toLongLong();
 
   Item::List::iterator it;
   const Item::List::iterator end = m_items.end();
@@ -111,7 +114,8 @@ void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
         col_it->setParentCollection( createdCollection );
       }
     }
-    createNextLevelOfCollections();
+    if ( m_pendingJobs == 0 )
+        createNextLevelOfCollections();
   }
 
   if ( m_items.isEmpty() && m_collections.isEmpty() )

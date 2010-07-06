@@ -44,6 +44,7 @@ private:
 private:
   QList<Akonadi::Collection::List> m_collections;
   Akonadi::Item::List m_items;
+  int m_pendingJobs;
 };
 
 #endif
