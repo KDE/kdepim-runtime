@@ -832,6 +832,8 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
 
       mdPtr = MaildirPtr( new MaildirContext( parentPath, false ) );
       mMaildirs.insert( parentPath, mdPtr );
+    } else {
+      mdPtr = mdIt.value();
     }
 
     mdPtr->readIndexData();
