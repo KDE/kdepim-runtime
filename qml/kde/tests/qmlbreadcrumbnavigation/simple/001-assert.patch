@@ -1,0 +1,29 @@
+diff --git a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/simple/mainwindow.cpp b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/simple/mainwindow.cpp
+index 168c2ca..33a4e6b 100644
+--- a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/simple/mainwindow.cpp
++++ b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/simple/mainwindow.cpp
+@@ -44,8 +44,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
+   m_model = new QStandardItemModel(this);
+   treeView->setModel(m_model);
+ 
+-  appendRow();
+-  appendRow();
++//   appendRow();
++//   appendRow();
+ 
+   m_declarativeView = new QDeclarativeView(splitter);
+ 
+@@ -58,8 +58,12 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
+ 
+   splitter->setSizes(QList<int>() << 1 << 1);
+ 
++  QTimer::singleShot(0, this, SLOT(appendRow()));
++  QTimer::singleShot(1, this, SLOT(appendRow()));
++  QTimer::singleShot(2, this, SLOT(removeTopRow()));
++
+ //   QTimer::singleShot(4000, this, SLOT(removeBottomRow()));
+-  QTimer::singleShot(8000, this, SLOT(prependNewRow()));
++//   QTimer::singleShot(8000, this, SLOT(prependNewRow()));
+ 
+ }
+ 

@@ -1,0 +1,42 @@
+diff --git a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
+index 1978b72..f4f23ae 100644
+--- a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
++++ b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/BreadcrumbNavigationView.qml
+@@ -57,7 +57,7 @@ Item {
+ 
+   ListView {
+     id : topButton
+-    interactive : false
++//     interactive : false
+     height : itemHeight
+ 
+     anchors.top : parent.top
+@@ -92,6 +92,15 @@ Item {
+     highlightRangeMode : ListView.StrictlyEnforceRange
+     preferredHighlightBegin : 0
+     preferredHighlightEnd : height
++    onCountChanged : {
++        console.log("count ###" + count);
++        console.log("BEFORE" + indexAt(0, 0) + " CurrentIndex:" + currentIndex);
++        positionViewAtIndex(count - 1, ListView.Beginning)
++        console.log("AFTER" + indexAt(0, 0) + " CurrentIndex:" + currentIndex);
++        // Select down to GMail > Inbox > Subfolder 4, flick inbox into view (it's below Gmail). Select inbox. Get:
++        // ASSERT: "!isEmpty()" in file ../../include/QtCore/../../../../src/qt/src/corelib/tools/qlist.h, line 269
++        // Also note that the view does not reposition
++    }
+   }
+ 
+   Item {
+diff --git a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/mainwindow.cpp b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/mainwindow.cpp
+index ae44e36..0f363a9 100644
+--- a/runtime/qml/kde/tests/qmlbreadcrumbnavigation/mainwindow.cpp
++++ b/runtime/qml/kde/tests/qmlbreadcrumbnavigation/mainwindow.cpp
+@@ -133,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
+   QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
+ 
+   m_bnf = new KBreadcrumbNavigationFactory(this);
+-  m_bnf->setBreadcrumbDepth(1);
++  m_bnf->setBreadcrumbDepth(2);
+   m_bnf->createBreadcrumbContext( m_treeModel, this );
+ 
+   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
