@@ -21,7 +21,11 @@
 #ifndef AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
 #define AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
 
-#include "ui_singlefileresourceconfigdialog.h"
+#ifdef KDEPIM_MOBILE_UI
+#include "ui_singlefileresourceconfigwidget_mobile.h"
+#else
+#include "ui_singlefileresourceconfigwidget_desktop.h"
+#endif
 
 #include <KDE/KDialog>
 #include <KDE/KUrl>
@@ -75,7 +79,7 @@ class SingleFileResourceConfigDialogBase : public KDialog
     virtual void save() = 0;
 
   protected:
-    Ui::SingleFileResourceConfigDialog ui;
+    Ui::SingleFileResourceConfigWidget ui;
     KConfigDialogManager* mManager;
 
   private Q_SLOTS:
