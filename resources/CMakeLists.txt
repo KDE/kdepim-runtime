@@ -12,11 +12,11 @@ set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
 
 if (KDEPIM_MOBILE_UI)
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_mobile.ui
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigwidget_mobile.ui
 )
 else (KDEPIM_MOBILE_UI)
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_desktop.ui
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigwidget_desktop.ui
 )
 endif (KDEPIM_MOBILE_UI)
 
