@@ -37,7 +37,7 @@ class SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
     explicit SingleFileResourceConfigDialog( WId windowId ) :
       SingleFileResourceConfigDialogBase( windowId )
     {
-      ui.kcfg_Path->setUrl( KUrl( Settings::self()->path() ) );
+      SingleFileResourceConfigDialogBase::setUrl( KUrl( Settings::self()->path() ) );
       mManager = new KConfigDialogManager( this, Settings::self() );
       mManager->updateWidgets();
     }
@@ -46,7 +46,7 @@ class SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
     void save()
     {
       mManager->updateSettings();
-      Settings::self()->setPath( ui.kcfg_Path->url().url() );
+      Settings::self()->setPath( SingleFileResourceConfigDialogBase::url().url() );
       Settings::self()->writeConfig();
     }
 };
