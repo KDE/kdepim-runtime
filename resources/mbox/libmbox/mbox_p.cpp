@@ -80,7 +80,10 @@ void MBoxPrivate::unlockMBox()
 QByteArray MBoxPrivate::mboxMessageSeparator( const QByteArray &msg )
 {
   KMime::Message mail;
-  mail.setHead( KMime::CRLFtoLF( msg ) );
+  QByteArray body, header;
+  KMime::HeaderParsing::extractHeaderAndBody( KMime::CRLFtoLF( msg ), header, body );
+  body.clear();
+  mail.setHead( header );
   mail.parse();
 
   QByteArray separator = "From ";
