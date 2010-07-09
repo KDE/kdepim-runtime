@@ -71,17 +71,10 @@ void ICalResourceBase::aboutToQuit()
   Settings::self()->writeConfig();
 }
 
-void ICalResourceBase::configure( WId windowId )
+void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.setFilter( "text/calendar" );
-  dlg.setCaption( i18n("Select Calendar") );
-  if ( dlg.exec() == QDialog::Accepted ) {
-    reloadFile();
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
+  dlg->setFilter( "text/calendar" );
+  dlg->setCaption( i18n("Select Calendar") );
 }
 
 bool ICalResourceBase::readFromFile( const QString &fileName )

@@ -36,9 +36,6 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     ICalResourceBase( const QString &id );
     ~ICalResourceBase();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
-
   protected Q_SLOTS:
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void retrieveItems( const Akonadi::Collection &col );
@@ -49,6 +46,12 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     void initialise( const QStringList &mimeTypes, const QString &icon );
     bool readFromFile( const QString &fileName );
     bool writeToFile( const QString &fileName );
+
+    /**
+     * Customize the configuration dialog before it is displayed.
+     */
+    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+
     virtual void aboutToQuit();
 
     /**

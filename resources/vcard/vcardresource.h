@@ -34,14 +34,16 @@ class VCardResource : public Akonadi::SingleFileResource<Settings>
     VCardResource( const QString &id );
     ~VCardResource();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
-
   protected Q_SLOTS:
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void retrieveItems( const Akonadi::Collection &col );
 
   protected:
+    /**
+     * Customize the configuration dialog before it is displayed.
+     */
+    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+
     bool readFromFile( const QString &fileName );
     bool writeToFile( const QString &fileName );
     virtual void aboutToQuit();

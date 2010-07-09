@@ -62,25 +62,17 @@ bool KDEAccountsResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
   return true;
 }
 
-void KDEAccountsResource::configure( WId windowId )
+void KDEAccountsResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  QPointer<SingleFileResourceConfigDialog<Settings> > dlg = new SingleFileResourceConfigDialog<Settings>( windowId );
   dlg->setCaption( i18n( "Select KDE Accounts File" ) );
+}
 
-  if ( dlg->exec() == QDialog::Accepted ) {
+void KDEAccountsResource::configDialogAcceptedActions( SingleFileResourceConfigDialog<Settings>* )
+{
     // We can't hide the GUI element but we can enforce that the
     // resource is read-only
     Settings::self()->setReadOnly( true );
-
     Settings::self()->writeConfig();
-    reloadFile();
-
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
-
-  delete dlg;
 }
 
 void KDEAccountsResource::itemAdded( const Akonadi::Item&, const Akonadi::Collection& )

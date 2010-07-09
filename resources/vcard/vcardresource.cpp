@@ -65,18 +65,10 @@ void VCardResource::aboutToQuit()
   Settings::self()->writeConfig();
 }
 
-void VCardResource::configure( WId windowId )
+void VCardResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  SingleFileResourceConfigDialog<Settings> dlg( windowId );
-  dlg.setFilter( "*.vcf|" + i18nc("Filedialog filter for *.vcf", "vCard Address Book File" ) );
-  dlg.setCaption( i18n("Select Address Book") );
-  if ( dlg.exec() == QDialog::Accepted ) {
-    reloadFile();
-
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
+  dlg->setFilter( "*.vcf|" + i18nc("Filedialog filter for *.vcf", "vCard Address Book File" ) );
+  dlg->setCaption( i18n("Select Address Book") );
 }
 
 void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )

@@ -22,6 +22,7 @@
 #define AKONADI_SINGLEFILERESOURCE_H
 
 #include "singlefileresourcebase.h"
+#include "singlefileresourceconfigdialog.h"
 
 #include <akonadi/entitydisplayattribute.h>
 
@@ -32,6 +33,7 @@
 
 #include <QFile>
 #include <QDir>
+#include <QPointer>
 
 namespace Akonadi
 {
@@ -73,7 +75,8 @@ class SingleFileResource : public SingleFileResourceBase
 
       if ( mCurrentUrl.isLocalFile() )
       {
-        if ( ( name().isEmpty() || name() == identifier() ) && !mCurrentUrl.isEmpty() )
+        if ( Settings::self()->displayName().isEmpty()
+        && ( name().isEmpty() || name() == identifier() ) && !mCurrentUrl.isEmpty() )
           setName( mCurrentUrl.fileName() );
 
         // check if the file does not exist yet, if so, create it
@@ -135,6 +138,11 @@ class SingleFileResource : public SingleFileResourceBase
                  SLOT( handleProgress( KJob *, unsigned long ) ) );
 
         emit status( Running, i18n( "Downloading remote file." ) );
+      }
+
+      const QString display =  Settings::self()->displayName();
+      if ( !display.isEmpty() ) {
+        setName( display );
       }
     }
 
@@ -211,13 +219,53 @@ class SingleFileResource : public SingleFileResourceBase
       taskDone();
     }
 
+  public Q_SLOTS:
+    /**
+     * Display the configuration dialog for the resource.
+     */
+    void configure( WId windowId )
+    {
+      QPointer<SingleFileResourceConfigDialog<Settings> > dlg
+          = new SingleFileResourceConfigDialog<Settings>( windowId );
+      customizeConfigDialog( dlg );
+      if ( dlg->exec() == QDialog::Accepted ) {
+        if ( dlg ) {   // in case is got destroyed
+          configDialogAcceptedActions( dlg );
+	}
+        reloadFile();
+	synchronizeCollectionTree();
+        emit configurationDialogAccepted();
+      } else {
+        emit configurationDialogRejected();
+      }
+    }
+
   protected:
+    /**
+     * Implement in derived classes to customize the configuration dialog
+     * before it is displayed.
+     */
+    virtual void customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
+    {
+      Q_UNUSED(dlg);
+    }
+
+    /**
+     * Implement in derived classes to do things when the configuration dialog
+     * has been accepted, before reloadFile() is called.
+     */
+    virtual void configDialogAcceptedActions( SingleFileResourceConfigDialog<Settings>* dlg )
+    {
+      Q_UNUSED(dlg);
+    }
+
     void retrieveCollections()
     {
       Collection c;
       c.setParentCollection( Collection::root() );
       c.setRemoteId( Settings::self()->path() );
-      c.setName( identifier() );
+      const QString display = Settings::self()->displayName();
+      c.setName( display.isEmpty() ? identifier() : display );
       QStringList mimeTypes;
       c.setContentMimeTypes( mSupportedMimetypes );
       if ( Settings::self()->readOnly() ) {

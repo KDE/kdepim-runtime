@@ -2,19 +2,17 @@
 <ui version="4.0">
  <class>SingleFileResourceConfigWidget</class>
  <widget class="QWidget" name="SingleFileResourceConfigWidget">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>467</width>
-    <height>429</height>
-   </rect>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>10</height>
+   </size>
   </property>
   <attribute name="title">
    <string>File</string>
   </attribute>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Access Rights</string>
@@ -40,7 +38,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_MonitorFile">
      <property name="title">
       <string>Monitoring</string>
@@ -109,9 +107,50 @@
      </layout>
     </widget>
    </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Display Name</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_1">
+          <property name="text">
+           <string>&amp;Name:</string>
+          </property>
+          <property name="buddy">
+           <cstring>kcfg_DisplayName</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="KLineEdit" name="kcfg_DisplayName"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Enter the name used to identify this resource in displays. If not specified, the filename will be used.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
   <customwidget>
    <class>KUrlRequester</class>
    <extends>QFrame</extends>

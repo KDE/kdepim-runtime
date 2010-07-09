@@ -33,14 +33,22 @@ class KDEAccountsResource : public Akonadi::SingleFileResource<Settings>
     KDEAccountsResource( const QString &id );
     ~KDEAccountsResource();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
-
   protected Q_SLOTS:
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void retrieveItems( const Akonadi::Collection &collection );
 
   protected:
+    /**
+     * Customize the configuration dialog before it is displayed.
+     */
+    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+
+    /*
+     * Do stuff when the configuration dialog has been accepted, before
+     * reloadFile() is called.
+     */
+    virtual void configDialogAcceptedActions( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+
     bool readFromFile( const QString &fileName );
     bool writeToFile( const QString &fileName );
 
