@@ -730,15 +730,15 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   }
 
   ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, store, this );
-  collectionMigrator->setMigrationOptions( options );
-
-  kDebug() << "Starting IMAP collection migration: options="
-           << collectionMigrator->migrationOptions();
   QString topLevelFolder = config.readEntry( "Folder" );
   if ( topLevelFolder.isEmpty() ) {
     topLevelFolder = config.readEntry( "Id" );
   }
   collectionMigrator->setTopLevelFolder( topLevelFolder );
+  collectionMigrator->setMigrationOptions( options );
+
+  kDebug() << "Starting IMAP collection migration: options="
+           << collectionMigrator->migrationOptions();
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );

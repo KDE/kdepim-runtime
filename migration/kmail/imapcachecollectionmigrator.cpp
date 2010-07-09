@@ -452,10 +452,22 @@ ImapCacheCollectionMigrator::~ImapCacheCollectionMigrator()
 
 void ImapCacheCollectionMigrator::setMigrationOptions( const MigrationOptions &options )
 {
-  d->mImportNewMessages = options.testFlag( ImportNewMessages );
-  d->mImportCachedMessages = options.testFlag( ImportCachedMessages );
-  d->mRemoveDeletedMessages = options.testFlag( RemoveDeletedMessages );
-  d->mDeleteImportedMessages = options.testFlag( DeleteImportedMessages );
+  MigrationOptions actualOptions = options;
+
+  if ( d->mStore == 0 ) {
+    emit message( KMigratorBase::Skip,
+                  i18nc( "@info:status", "No cache for account %1 available",
+                         resource().name() ) );
+    kWarning() << "No store for folder" << topLevelFolder()
+               << "so only config migration (instead of" << options << ") for"
+               << resource().identifier() << resource().name();
+    actualOptions = ConfigOnly;
+  }
+
+  d->mImportNewMessages = actualOptions.testFlag( ImportNewMessages );
+  d->mImportCachedMessages = actualOptions.testFlag( ImportCachedMessages );
+  d->mRemoveDeletedMessages = actualOptions.testFlag( RemoveDeletedMessages );
+  d->mDeleteImportedMessages = actualOptions.testFlag( DeleteImportedMessages );
 }
 
 ImapCacheCollectionMigrator::MigrationOptions ImapCacheCollectionMigrator::migrationOptions() const
@@ -516,13 +528,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   // check that we don't get entered while we are still processing
   Q_ASSERT( !d->mCurrentCollection.isValid() );
 
-  if ( d->mStore == 0 ) {
-    emit message( KMigratorBase::Skip,
-                  i18nc( "@info:status", "No cache for account %1 available",
-                         resource().name() ) );
-    migrationDone();
-    return;
-  }
+  Q_ASSERT( d->mStore != 0 );
 
   if ( collection.parentCollection() == Collection::root() ) {
     emit status( QString() );
