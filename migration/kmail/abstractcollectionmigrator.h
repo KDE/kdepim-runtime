@@ -28,7 +28,6 @@ namespace Akonadi {
   class Collection;
 }
 
-class KConfig;
 class KJob;
 class KSharedConfig;
 

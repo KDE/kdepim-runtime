@@ -26,7 +26,6 @@
 namespace Akonadi
 {
   class AgentInstance;
-  class Item;
 }
 
 class MixedMaildirStore;
