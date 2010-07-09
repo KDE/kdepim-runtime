@@ -612,20 +612,20 @@ QSet<QByteArray> MessageStatus::getStatusFlags() const
     flags+= "\\DELETED";
   } else {
     if ( mStatus & ( KMMsgStatusOld | KMMsgStatusRead ) )
-      flags+= "\\SEEN ";
+      flags+= "\\SEEN";
     if ( mStatus & KMMsgStatusReplied )
-      flags+= "\\ANSWERED ";
+      flags+= "\\ANSWERED";
     if ( mStatus & KMMsgStatusFlag )
-      flags+= "\\FLAGGED ";
+      flags+= "\\FLAGGED";
     // non standard flags
     if ( mStatus & KMMsgStatusForwarded )
-      flags+= "$FORWARDED ";
+      flags+= "$FORWARDED";
     if ( mStatus & KMMsgStatusToAct )
       flags+= "$TODO ";
     if ( mStatus & KMMsgStatusWatched )
-      flags+= "$WATCHED ";
+      flags+= "$WATCHED";
     if ( mStatus & KMMsgStatusIgnored )
-      flags+= "$IGNORED ";
+      flags+= "$IGNORED";
   }
 
   return flags;
@@ -644,23 +644,24 @@ void MessageStatus::setStatusFromFlags( const QSet<QByteArray> &flags )
   // * KMMsgStatusHasAttach
 
   foreach ( const QByteArray &flag, flags ) {
-    if ( flag.toUpper() == QByteArray( "\\DELETED" ) ) {
+    const QByteArray flagUpper = flag.toUpper();
+    if ( flagUpper == QByteArray( "\\DELETED" ) ) {
       setDeleted();
-    } else if ( flag.toUpper() == QByteArray( "\\SEEN" ) ) {
+    } else if ( flagUpper == QByteArray( "\\SEEN" ) ) {
       setRead();
-    } else if ( flag.toUpper() == QByteArray( "\\ANSWERED" ) ) {
+    } else if ( flagUpper == QByteArray( "\\ANSWERED" ) ) {
       setReplied();
-    } else if ( flag.toUpper() == QByteArray( "\\FLAGGED" ) ) {
+    } else if ( flagUpper == QByteArray( "\\FLAGGED" ) ) {
       setImportant();
 
     // non standard flags
-    } else if ( flag.toUpper() == QByteArray( "$FORWARDED" ) ) {
+    } else if ( flagUpper == QByteArray( "$FORWARDED" ) ) {
       setForwarded();
-    } else if ( flag.toUpper() == QByteArray( "$TODO" ) ) {
+    } else if ( flagUpper == QByteArray( "$TODO" ) ) {
       setToAct();
-    } else if ( flag.toUpper() == QByteArray( "$WATCHED" ) ) {
+    } else if ( flagUpper == QByteArray( "$WATCHED" ) ) {
       setWatched();
-    } else if ( flag.toUpper() == QByteArray( "$IGNORED" ) ) {
+    } else if ( flagUpper == QByteArray( "$IGNORED" ) ) {
       setIgnored();
     } else {
       kWarning() << "Unknown flag:" << flag;
