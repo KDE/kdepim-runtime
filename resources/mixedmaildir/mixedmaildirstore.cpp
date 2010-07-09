@@ -442,6 +442,7 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
       return InvalidFolder;
     }
   }
+  return InvalidFolder;
 }
 
 MBoxPtr MixedMaildirStore::Private::getOrCreateMBoxPtr( const QString &path )
