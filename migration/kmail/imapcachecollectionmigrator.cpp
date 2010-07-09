@@ -22,6 +22,7 @@
 
 #include "kmigratorbase.h"
 
+#include "kmindexreader/messagestatus.h"
 #include "libmaildir/maildir.h"
 #include "mixedmaildirstore.h"
 #include "subscriptionjob_p.h"
@@ -223,6 +224,16 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
 
   const Item item = mItems.front();
   mItems.pop_front();
+
+  // don't import items that are marked deleted. These come from normal/online IMAP caches
+  // which didn't get their mbox cache files compacted
+  KPIM::MessageStatus status;
+  status.setStatusFromFlags( item.flags() );
+  if ( status.isDeleted() ) {
+    //kDebug() << "Cache item" << item.remoteId() << "is marked as Deleted. Skip it";
+    QMetaObject::invokeMethod( q, "processNextItem", Qt::QueuedConnection );
+    return;
+  }
 
   FileStore::ItemFetchJob *job = mStore->fetchItem( item );
   job->fetchScope().fetchFullPayload( true );
