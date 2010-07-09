@@ -53,7 +53,11 @@ void SingleFileResourceConfigWidget::setFilter(const QString & filter)
 void SingleFileResourceConfigWidget::setMonitorEnabled( bool enable )
 {
   mMonitorEnabled = enable;
+#ifdef KDEPIM_MOBILE_UI
   ui.kcfg_MonitorFile->setVisible( mMonitorEnabled );
+#else
+  ui.groupBox_MonitorFile->setVisible( mMonitorEnabled );
+#endif
 }
 
 void SingleFileResourceConfigWidget::setUrl(const KUrl &url )

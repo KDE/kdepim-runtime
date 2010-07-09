@@ -41,7 +41,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="groupBox_MonitorFile">
      <property name="title">
       <string>Monitoring</string>
      </property>
