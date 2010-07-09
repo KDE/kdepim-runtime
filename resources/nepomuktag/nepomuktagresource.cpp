@@ -39,6 +39,7 @@
 
 #include <boost/bind.hpp>
 #include <algorithm>
+#include <iterator>
 
 using namespace Akonadi;
 
