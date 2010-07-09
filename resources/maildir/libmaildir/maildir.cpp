@@ -409,9 +409,20 @@ void Maildir::writeEntry( const QString& key, const QByteArray& data )
 
 QString Maildir::addEntry( const QByteArray& data )
 {
-    QString uniqueKey( createUniqueFileName() );
-    QString key( d->path + QLatin1String( "/tmp/" ) + uniqueKey );
-    QString finalKey( d->path + QLatin1String( "/new/" ) + uniqueKey );
+    QString uniqueKey;
+    QString key;
+    QString finalKey;
+    QString curKey;
+
+    // QUuid doesn't return globally unique identifiers, therefor we query until we
+    // get one that doesn't exists yet
+    do {
+      uniqueKey = createUniqueFileName();
+      key = d->path + QLatin1String( "/tmp/" ) + uniqueKey;
+      finalKey = d->path + QLatin1String( "/new/" ) + uniqueKey;
+      curKey = d->path + QLatin1String( "/cur/" ) + uniqueKey;
+    } while ( QFile::exists( key ) || QFile::exists( finalKey ) || QFile::exists( curKey ) );
+
     QFile f( key );
     f.open( QIODevice::WriteOnly );
     f.write( data );
