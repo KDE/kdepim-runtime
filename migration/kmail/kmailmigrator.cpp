@@ -751,7 +751,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   config.deleteEntry( "capabilities" );
 
-  if ( disconnected ) {
+  if ( disconnected && store ) {
     mLocalCacheImporter = new ImapCacheLocalImporter( store, this );
     mLocalCacheImporter->setTopLevelFolder( collectionMigrator->topLevelFolder() );
     mLocalCacheImporter->setAccountName( nameAccount );
