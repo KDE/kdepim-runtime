@@ -63,6 +63,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <kwallet.h>
 #include <QApplication>
 #include <kstringhandler.h>
+#include <KLocalizedString>
 using KWallet::Wallet;
 
 using namespace KMail;
