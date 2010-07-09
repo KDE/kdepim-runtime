@@ -44,11 +44,8 @@
 #include <Nepomuk/Tag>
 
 #include <KConfigGroup>
-#include <KGlobal>
 #include <KLocale>
-#include <KStandardDirs>
 
-#include <QFileInfo>
 #include <QSet>
 #include <QVariant>
 

@@ -30,8 +30,6 @@
 #include <KGlobal>
 #include <KDebug>
 
-#include <QDBusConnection>
-#include <KMessageBox>
 
 using namespace KMail;
 

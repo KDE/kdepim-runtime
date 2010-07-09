@@ -41,7 +41,6 @@
 
 #include "collectionannotationsattribute.h"
 
-#include <KIMAP/LoginJob>
 #include <Mailtransport/Transport>
 
 #include <akonadi/agentmanager.h>
@@ -58,7 +57,6 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KConfigGroup>
 #include <KDebug>
 #include <KStandardDirs>
-#include <KLocalizedString>
 #include <KMessageBox>
 #include <KSharedConfig>
 #include <KCursor>
