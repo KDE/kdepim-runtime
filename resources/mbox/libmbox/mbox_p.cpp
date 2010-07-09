@@ -77,10 +77,21 @@ void MBoxPrivate::unlockMBox()
   mMBox->unlock();
 }
 
+static QByteArray extractHeaderFromMail( const QByteArray &mail )
+{
+  // Code copied from kmime_content.cpp!
+  const int pos = mail.indexOf( "\n\n", 0 );
+  if ( pos > -1 ) {
+    return mail.left( pos + 1 );  //header *must* end with "\n" !!
+  } else {
+    return mail;
+  }
+}
+
 QByteArray MBoxPrivate::mboxMessageSeparator( const QByteArray &msg )
 {
   KMime::Message mail;
-  mail.setHead( KMime::CRLFtoLF( msg ) );
+  mail.setHead( extractHeaderFromMail( KMime::CRLFtoLF( msg ) ) );
   mail.parse();
 
   QByteArray separator = "From ";
