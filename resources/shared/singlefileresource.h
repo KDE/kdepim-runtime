@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2008 Bertjan Broeksema <b.broeksema@kdemail.net>
     Copyright (c) 2008 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2010 David Jarvie <djarvie@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -220,6 +221,20 @@ class SingleFileResource : public SingleFileResourceBase
     }
 
   public Q_SLOTS:
+    virtual void collectionChanged( const Collection &collection )
+    {
+      QString newName;
+      if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
+        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+        newName = attr->displayName();
+      }
+      const QString oldName = Settings::self()->displayName();
+      if ( newName != oldName ) {
+        Settings::self()->setDisplayName( newName );
+      }
+      SingleFileResourceBase::collectionChanged( collection );
+    }
+
     /**
      * Display the configuration dialog for the resource.
      */

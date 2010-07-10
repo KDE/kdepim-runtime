@@ -49,9 +49,8 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
      */
     void setSupportedMimetypes( const QStringList &mimeTypes, const QString &icon = QString() );
 
-    void collectionChanged( const Akonadi::Collection &collection );
-
   public Q_SLOTS:
+    virtual void collectionChanged( const Akonadi::Collection &collection );
     void reloadFile();
     virtual void readFile() = 0;
     virtual void writeFile() = 0;
