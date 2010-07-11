@@ -104,7 +104,6 @@ void POP3Resource::configure( WId windowId )
   QPointer<AccountDialog> accountDialog( new AccountDialog( this, windowId ) );
   if ( accountDialog->exec() == QDialog::Accepted ) {
     updateIntervalTimer();
-    mAskAgain = true; // the user might have changed the password
     emit configurationDialogAccepted();
   }
   else {
