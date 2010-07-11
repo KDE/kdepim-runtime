@@ -46,9 +46,6 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   changeRecorder()->fetchCollection( true );
 
   connect( changeRecorder(), SIGNAL( changesAdded() ), SLOT( scheduleWrite() ) );
-  //TODO: The following is only necessary because inheriting from AgentBase::Observer doesn't work
-  connect( changeRecorder(), SIGNAL( collectionChanged(const Akonadi::Collection&)), SLOT(collectionChanged(const Akonadi::Collection&)));
-
 
   connect( KDirWatch::self(), SIGNAL( dirty( QString ) ), SLOT( fileChanged( QString ) ) );
   connect( KDirWatch::self(), SIGNAL( created( QString ) ), SLOT( fileChanged( QString ) ) );

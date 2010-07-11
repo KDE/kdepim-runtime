@@ -220,7 +220,6 @@ class SingleFileResource : public SingleFileResourceBase
       taskDone();
     }
 
-  public Q_SLOTS:
     virtual void collectionChanged( const Collection &collection )
     {
       QString newName;
@@ -231,10 +230,12 @@ class SingleFileResource : public SingleFileResourceBase
       const QString oldName = Settings::self()->displayName();
       if ( newName != oldName ) {
         Settings::self()->setDisplayName( newName );
+        Settings::self()->writeConfig();
       }
       SingleFileResourceBase::collectionChanged( collection );
     }
 
+  public Q_SLOTS:
     /**
      * Display the configuration dialog for the resource.
      */

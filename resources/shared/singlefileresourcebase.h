@@ -38,7 +38,7 @@ namespace Akonadi
  * Base class for single file based resources.
  * @see SingleFileResource
  */
-class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::Observer
+class SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
 {
   Q_OBJECT
   public:
@@ -49,8 +49,9 @@ class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::O
      */
     void setSupportedMimetypes( const QStringList &mimeTypes, const QString &icon = QString() );
 
+    void collectionChanged( const Akonadi::Collection &collection );
+
   public Q_SLOTS:
-    virtual void collectionChanged( const Akonadi::Collection &collection );
     void reloadFile();
     virtual void readFile() = 0;
     virtual void writeFile() = 0;
