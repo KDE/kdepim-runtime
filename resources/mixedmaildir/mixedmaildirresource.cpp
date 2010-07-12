@@ -26,6 +26,8 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include "kmindexreader/messagestatus.h"
+
 #include "filestore/collectioncreatejob.h"
 #include "filestore/collectiondeletejob.h"
 #include "filestore/collectionfetchjob.h"
@@ -440,7 +442,26 @@ void MixedMaildirResource::retrieveItemsResult( KJob *job )
   FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob*>( job );
   Q_ASSERT( fetchJob != 0 );
 
-  const Item::List items = fetchJob->items();
+  // messages marked as deleted have been deleted from mbox files but never got purged
+  // TODO FileStore could provide deleteItems() to deleted all filtered items in one go
+  KJob* deleteJob = 0;
+  Item::List items;
+  Q_FOREACH( const Item &item, fetchJob->items() ) {
+    KPIM::MessageStatus status;
+    status.setStatusFromFlags( item.flags() );
+    if ( status.isDeleted() ) {
+      deleteJob = mStore->deleteItem( item );
+    } else {
+      items << item;
+    }
+  }
+
+  if ( deleteJob != 0 ) {
+    kDebug() << items.count() << "of" << fetchJob->items().count()
+             << "items remain after checking for items marked as Deleted";
+    // last item delete triggers mbox purge, i.e. store compact
+    Q_ASSERT( connect( deleteJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsDeleted( KJob* ) ) ) );
+  }
 
   // if some items have tags, we need to complete the retrieval and schedule tagging
   // to a later time so we can then fetch the items to get their Akonadi URLs
@@ -593,6 +614,12 @@ void MixedMaildirResource::itemRemovedResult( KJob *job )
   }
 
   checkForInvalidatedIndexCollections( job );
+}
+
+void MixedMaildirResource::itemsDeleted( KJob *job )
+{
+  Q_UNUSED( job );
+  scheduleCustomTask( this, "compactStore", QVariant() );
 }
 
 void MixedMaildirResource::collectionAddedResult( KJob *job )
