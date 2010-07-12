@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM
+    "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <include>klocale.h</include>
+  <kcfgfile name="korganizerrc"/>
+
+<!-- PREFERENCES DIALOG -->
+
+<!-- General Page: Personal Tab -->
+  <group name="Personal Settings">
+    <entry type="Bool" key="Use Control Center Email" name="EmailControlCenter">
+      <label>Use email settings from System Settings</label>
+      <whatsthis>Check this box to use the KDE-wide e-mail settings, which are defined using the System Settings &quot;About Me&quot; Module. Uncheck this box to be able to specify your full name and e-mail.</whatsthis>
+      <default>true</default>
+    </entry>
+  </group>
+
+<!-- Time&Date Page: Default Values Tab -->
+  <group name="Default Datetimes">
+    <entry type="DateTime" name="StartTime">
+      <label>Default appointment time</label>
+      <whatsthis>Enter the default time for events here. The default is used if you do not supply a start time.</whatsthis>
+      <default>QDateTime(QDate(1752,1,1), QTime(10,0))</default>
+    </entry>
+
+    <entry type="DateTime" name="DefaultDuration">
+      <label>Default duration of new appointment (HH:MM)</label>
+      <whatsthis>Enter default duration for events here. The default is used if you do not supply an end time.</whatsthis>
+      <default>QDateTime(QDate(1752,1,1), QTime(2,0))</default>
+    </entry>
+
+    <entry type="Bool" key="Enable Default Audio File" name="defaultAudioFileReminders">
+      <label>Enable a default sound file for audio reminders</label>
+      <whatsthis>Check this box if you want to enable the specified file to be used as the default sound file for new reminders. You can always specify another file in the Advanced Reminder accessible from the Event or To-do editors.</whatsthis>
+      <default>false</default>
+    </entry>
+
+    <entry type="Path" key="Reminder Audio File"  name="audioFilePath">
+      <label>Default audio file</label>
+      <whatsthis>Set a file to be used as the default sound file for new reminders. You can always specify another file in the Advanced Reminder accessible from the Event or To-do editors.</whatsthis>
+    </entry>
+
+    <entry type="Bool" key="Enable Event Reminders" name="defaultEventReminders">
+      <label>Enable reminders for new Events</label>
+      <whatsthis>Check this box if you want to enable reminders for all newly created Events. You can always turn-off the reminders in the Event editor dialog.</whatsthis>
+      <tooltip>By default, enable reminders for new events</tooltip>
+      <default>false</default>
+    </entry>
+
+    <entry type="Bool" key="Enable To-do Reminders" name="defaultTodoReminders">
+      <label>Enable reminders for new To-dos</label>
+      <whatsthis>Check this box if you want to enable reminders for all newly created To-dos. You can always turn-off the reminders in the To-do editor dialog.</whatsthis>
+      <tooltip>By default, enable reminders for new to-dos</tooltip>
+      <default>false</default>
+    </entry>
+
+
+    <entry type="Int" key="Default Reminder Time" name="ReminderTime">
+      <label>Default reminder time</label>
+      <whatsthis>Enter the default reminder time for all newly created items. The time unit is specified in the adjacent combobox.</whatsthis>
+      <tooltip>Default time for reminders</tooltip>
+      <default>15</default>
+    </entry>
+
+    <entry type="Int" key="Default Reminder Time Units" name="ReminderTimeUnits">
+      <whatsthis>Enter the default reminder time units for all newly created items. The time is specified in the adjacent spinbox.</whatsthis>
+      <tooltip>Default time unit for reminders</tooltip>
+      <default>0</default>
+    </entry>
+  </group>
+
+<!-- Group Scheduling Page -->
+  <group name="Group Scheduling">
+    <entry type="Bool" key="Use Groupware Communication">
+      <label>Use Groupware communication</label>
+      <whatsthis>Check this box to enable automatic generation of mails when creating, updating or deleting events (or to-dos) involving other attendees. You should check this box if you want to use the groupware functionality (e.g. Configuring Kontact as a KDE Kolab client).</whatsthis>
+      <default>true</default>
+    </entry>
+
+    <entry type="Bool" key="Bcc">
+      <label>Send copy to owner when mailing events</label>
+      <whatsthis>Check this box to get a copy of all e-mail messages that KOrganizer sends at your request to event attendees.</whatsthis>
+      <default>false</default>
+    </entry>
+
+    <entry type="StringList" name="AdditionalMails">
+    </entry>
+  </group>
+
+<!-- Free/Busy Page: Publish Tab -->
+  <group name="FreeBusy Publish">
+    <entry type="Bool" name="FreeBusyPublishAuto">
+      <default>false</default>
+    </entry>
+
+    <entry type="Int" name="FreeBusyPublishDelay">
+      <default>5</default>
+    </entry>
+
+    <entry type="Int" key="FreeBusyPublishDays">
+      <default>60</default>
+    </entry>
+
+    <entry type="String" name="FreeBusyPublishUrl">
+      <label>Free/Busy Publish URL</label>
+      <whatsthis>URL for publishing free/busy information</whatsthis>
+    </entry>
+
+    <entry type="String" name="FreeBusyPublishUser">
+      <label>Free/Busy Publish Username</label>
+      <whatsthis>Username for publishing free/busy information</whatsthis>
+    </entry>
+
+    <entry type="Password" name="FreeBusyPublishPassword">
+      <label>Free/Busy Publish Password</label>
+      <whatsthis>Password for publishing free/busy information</whatsthis>
+    </entry>
+
+    <entry type="Bool" name="FreeBusyPublishSavePassword">
+      <default>false</default>
+    </entry>
+  </group>
+
+<!-- Free/Busy Page: Retrieve Tab -->
+  <group name="FreeBusy Retrieve">
+    <entry type="Bool" name="FreeBusyRetrieveAuto">
+      <label>Enable Automatic Free/Busy Retrieval</label>
+      <default>false</default>
+    </entry>
+
+    <entry type="Bool" name="FreeBusyFullDomainRetrieval">
+      <label>Use full email address for retrieval</label>
+      <whatsthis>With this setting, you can change the filename that will be fetched from the server. With this checked, it will download a free/busy file called user@domain.ifb, for example nn@kde.org.ifb. Without this set, it will download user.ifb, for example nn.ifb.</whatsthis>
+      <default>false</default>
+    </entry>
+
+    <entry type="String" name="FreeBusyRetrieveUrl">
+      <label>Free/Busy Retrieval URL</label>
+    </entry>
+
+    <entry type="String" name="FreeBusyRetrieveUser">
+      <label>Free/Busy Retrieval Username</label>
+    </entry>
+
+    <entry type="Password" name="FreeBusyRetrievePassword">
+      <label>Free/Busy Retrieval Password</label>
+      <whatsthis>Password for retrieving free/busy information</whatsthis>
+    </entry>
+
+    <entry type="Bool" name="FreeBusyRetrieveSavePassword">
+      <default>false</default>
+    </entry>
+  </group>
+
+<!-- Options currently not visible in the GUI -->
+  <group name="Hidden Options">
+    <entry name="OutlookCompatCounterProposals" type="Bool">
+      <label>Send Outlook-like pseudo counter proposals</label>
+      <default>false</default>
+    </entry>
+
+    <entry type="Bool" name="FreeBusyCheckHostname">
+      <label>Check whether hostname and retrieval email address match</label>
+      <whatsthis>With this setting you can configure whether the domain part of the free/busy URL has to match the domain part of the user ID you are looking for. For example, if this option is set, then looking for the free/busy data of joe@mydomain.com on the server www.yourdomain.com will fail.</whatsthis>
+      <default>false</default>
+    </entry>
+
+    <entry type="Bool" name="ShowTimeZoneSelectorInIncidenceEditor">
+      <label>Show timezone selectors in the event and todo editor dialog.</label>
+      <default>true</default>
+    </entry>
+
+  </group>
+
+<!-- INTERNAL SETTINGS: Not for users to change -->
+  <group name="Internal Settings">
+    <entry type="String" key="user_name" name="UserName">
+      <label>Full &amp;name</label>
+      <whatsthis>Enter your full name here. This name will be displayed as "Organizer" in to-dos and events you create.</whatsthis>
+      <default code="true">i18n(&quot;Anonymous&quot;)</default>
+    </entry>
+
+    <entry type="String" key="user_email" name="UserEmail">
+      <label>E&amp;mail address</label>
+      <whatsthis>Enter here your e-mail address. This e-mail address will be used to identify the owner of the calendar, and displayed in events and to-dos you create.</whatsthis>
+      <default code="true">i18n(&quot;nobody@nowhere&quot;)</default>
+    </entry>
+
+    <entry type="StringList" name="EventTemplates">
+    </entry>
+
+    <entry type="StringList" name="TodoTemplates">
+    </entry>
+
+    <entry type="StringList" name="JournalTemplates">
+    </entry>
+
+    <entry type="StringList" name="ActiveDesignerFields">
+    </entry>
+  </group>
+
+</kcfg>
