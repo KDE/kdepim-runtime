@@ -76,6 +76,8 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
     void itemMovedResult( KJob *job );
     void itemRemovedResult( KJob *job );
 
+    void itemsDeleted( KJob *job );
+
     void collectionAddedResult( KJob *job );
     void collectionChangedResult( KJob *job );
     void collectionMovedResult( KJob *job );
