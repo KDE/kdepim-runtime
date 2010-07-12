@@ -29,8 +29,8 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi_next/incidenceattachmentmodel.h>
-#include <kcal/incidence.h>
-#include <kcal/incidenceformatter.h>
+#include <kcalcore/incidence.h>
+#include <kcalutils/incidenceformatter.h>
 #include <klocale.h>
 #include <ktextbrowser.h>
 #include <ksystemtimezone.h>
@@ -79,9 +79,9 @@ class IncidenceViewer::Private
       QString text;
 
       if ( mCurrentItem.isValid() ) {
-        text = KCal::IncidenceFormatter::extensiveDisplayStr( Akonadi::displayName( mParentCollection ),
-                                                              Akonadi::incidence( mCurrentItem ).get(),
-                                                              mDate, KSystemTimeZones::local() );
+        text = KCalUtils::IncidenceFormatter::extensiveDisplayStr( Akonadi::displayName( mParentCollection ),
+                                                                   Akonadi::incidence( mCurrentItem ),
+                                                                   mDate, KSystemTimeZones::local() );
         text.prepend( mHeaderText );
         mBrowser->setHtml( text );
       } else {
@@ -185,7 +185,7 @@ void IncidenceViewer::setIncidence( const Akonadi::Item &incidence, const QDate 
 
 void IncidenceViewer::itemChanged( const Item &item )
 {
-  if ( !item.hasPayload<KCal::Incidence::Ptr>() )
+  if ( !item.hasPayload<KCalCore::Incidence::Ptr>() )
     return;
 
   d->mCurrentItem = item;

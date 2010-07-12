@@ -27,10 +27,10 @@
 #include "mailclient.h"
 #include "kdepim-version.h"
 
-#include <KCal/Attendee>
-#include <KCal/Incidence>
-#include <KCal/IncidenceBase>
-#include <KCal/IncidenceFormatter>
+#include <kcalcore/attendee.h>
+#include <kcalcore/incidence.h>
+#include <kcalcore/incidencebase.h>
+#include <kcalutils/incidenceformatter.h>
 
 #include <KPIMUtils/Email>
 
@@ -70,7 +70,7 @@
 #include <KToolInvocation>
 #include <KProtocolManager>
 
-using namespace KCal;
+using namespace KCalCore;
 using namespace KPIMIdentities;
 
 
@@ -82,7 +82,7 @@ Akonadi::MailClient::~MailClient()
 {
 }
 
-bool Akonadi::MailClient::mailAttendees( IncidenceBase *incidence,
+bool Akonadi::MailClient::mailAttendees( const IncidenceBase::Ptr &incidence,
                                          const Identity &identity,
                                          bool bccMe, const QString &attachment,
                                          const QString &mailTransport )
@@ -92,13 +92,13 @@ bool Akonadi::MailClient::mailAttendees( IncidenceBase *incidence,
     return false;
   }
 
-  const QString from = incidence->organizer().fullName();
-  const QString organizerEmail = incidence->organizer().email();
+  const QString from = incidence->organizer()->fullName();
+  const QString organizerEmail = incidence->organizer()->email();
 
   QStringList toList;
   QStringList ccList;
   for ( int i=0; i<attendees.count(); ++i ) {
-    Attendee *a = attendees.at(i);
+    Attendee::Ptr a = attendees.at(i);
 
     const QString email = a->email();
     if ( email.isEmpty() ) {
@@ -142,30 +142,31 @@ bool Akonadi::MailClient::mailAttendees( IncidenceBase *incidence,
   }
 
   QString subject;
-  if ( incidence->type() != "FreeBusy" ) {
-    Incidence *inc = static_cast<Incidence *>( incidence );
+  if ( incidence->type() != Incidence::TypeFreeBusy ) {
+    Incidence::Ptr inc = incidence.staticCast<Incidence>();
     subject = inc->summary();
   } else {
     subject = i18n( "Free Busy Object" );
   }
 
-  QString body = IncidenceFormatter::mailBodyStr( incidence, KSystemTimeZones::local() );
+  QString body = KCalUtils::IncidenceFormatter::mailBodyStr( incidence, KSystemTimeZones::local() );
 
   return send( identity, from, to, cc, subject, body, false,
                bccMe, attachment, mailTransport );
 }
 
-bool Akonadi::MailClient::mailOrganizer( IncidenceBase *incidence,
+bool Akonadi::MailClient::mailOrganizer( const IncidenceBase::Ptr &incidence,
                                   const Identity &identity,
                                   const QString &from, bool bccMe,
                                   const QString &attachment,
                                   const QString &sub, const QString &mailTransport )
 {
-  QString to = incidence->organizer().fullName();
+  QString to = incidence->organizer()->fullName();
 
   QString subject = sub;
-  if ( incidence->type() != "FreeBusy" ) {
-    Incidence *inc = static_cast<Incidence *>( incidence );
+
+  if ( incidence->type() != Incidence::TypeFreeBusy ) {
+    Incidence::Ptr inc = incidence.staticCast<Incidence>();
     if ( subject.isEmpty() ) {
       subject = inc->summary();
     }
@@ -173,26 +174,26 @@ bool Akonadi::MailClient::mailOrganizer( IncidenceBase *incidence,
     subject = i18n( "Free Busy Message" );
   }
 
-  QString body = IncidenceFormatter::mailBodyStr( incidence, KSystemTimeZones::local() );
+  QString body = KCalUtils::IncidenceFormatter::mailBodyStr( incidence, KSystemTimeZones::local() );
 
   return send( identity, from, to, QString(), subject, body, false,
                bccMe, attachment, mailTransport );
 }
 
-bool Akonadi::MailClient::mailTo( IncidenceBase *incidence, const Identity &identity,
+bool Akonadi::MailClient::mailTo( const IncidenceBase::Ptr &incidence, const Identity &identity,
                            const QString &from, bool bccMe,
                            const QString &recipients, const QString &attachment,
                            const QString &mailTransport )
 {
   QString subject;
 
-  if ( incidence->type() != "FreeBusy" ) {
-    Incidence *inc = static_cast<Incidence *>( incidence );
+  if ( incidence->type() != Incidence::TypeFreeBusy ) {
+    Incidence::Ptr inc = incidence.staticCast<Incidence>() ;
     subject = inc->summary();
   } else {
     subject = i18n( "Free Busy Message" );
   }
-  QString body = IncidenceFormatter::mailBodyStr( incidence, KSystemTimeZones::local() );
+  QString body = KCalUtils::IncidenceFormatter::mailBodyStr( incidence, KSystemTimeZones::local() );
 
   return send( identity, from, recipients, QString(), subject, body, false,
                bccMe, attachment, mailTransport );

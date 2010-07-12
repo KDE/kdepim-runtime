@@ -24,7 +24,7 @@
 
 #include <QtGui/QSortFilterProxyModel>
 
-namespace KCal {
+namespace KCalCore {
   class CalFilter;
 }
 
@@ -35,8 +35,8 @@ namespace Akonadi {
     explicit CalFilterProxyModel( QObject* parent=0 );
     ~CalFilterProxyModel();
 
-    KCal::CalFilter* filter() const;
-    void setFilter( KCal::CalFilter* filter );
+    KCalCore::CalFilter* filter() const;
+    void setFilter( KCalCore::CalFilter* filter );
 
   protected:
     /* reimp */ bool filterAcceptsRow( int source_row, const QModelIndex& source_parent ) const;

@@ -15,13 +15,11 @@ endif (QT_QTDECLARATIVE_FOUND AND KDEPIM_MOBILE_UI)
 set( kcalakonadi_LIB_SRC
      collectionselection.cpp
      calendar.cpp
-     calendaradaptor.cpp
      calendarmodel.cpp
      calendarsearch.cpp
      calfilterproxymodel.cpp
      daterangefilterproxymodel.cpp
      incidencefilterproxymodel.cpp
-     kcalmodel.cpp
      incidenceviewer.cpp
      utils.cpp
      groupware.cpp
@@ -41,7 +39,8 @@ qt4_add_dbus_interface(kcalakonadi_LIB_SRC ${CMAKE_CURRENT_SOURCE_DIR}/org.freed
 kde4_add_library( akonadi-kcal_next SHARED ${kcalakonadi_LIB_SRC} )
 
 target_link_libraries( akonadi-kcal_next  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
+  kcalcore
+  kcalutils
   ${KDEPIMLIBS_AKONADI_CONTACT_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
@@ -50,6 +49,7 @@ target_link_libraries( akonadi-kcal_next  ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
   ${KDE4_KDEUI_LIBS}
   ${KDE4_KIO_LIBS}
+
   akonadi_next kdepimdbusinterfaces
 )
 

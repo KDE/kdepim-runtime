@@ -29,7 +29,7 @@
 
 #include "incidencechanger.h"
 
-#include <KCal/Incidence>
+#include <kcalcore/incidence.h>
 
 #include <Akonadi/Item>
 
@@ -42,7 +42,7 @@ class IncidenceChanger::Private : public QObject {
 public:
 
   struct Change {
-    KCal::Incidence::Ptr oldInc;
+    KCalCore::Incidence::Ptr oldInc;
     Akonadi::Item newItem;
     IncidenceChanger::WhatChanged action;
     QWidget *parent;
@@ -64,8 +64,8 @@ public:
    * */
   void cancelChanges( Item::Id id );
 
-  bool myAttendeeStatusChanged( const KCal::Incidence *newInc,
-                                const KCal::Incidence *oldInc );
+  bool myAttendeeStatusChanged( const KCalCore::Incidence::Ptr newInc,
+                                const KCalCore::Incidence::Ptr oldInc );
 
   Entity::Id mDefaultCollectionId;
 

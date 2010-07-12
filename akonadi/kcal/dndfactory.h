@@ -40,7 +40,7 @@
 
 #include "akonadi-kcal_next_export.h"
 
-#include <kcal/calendar.h>
+#include <kcalcore/calendar.h>
 
 #include <Akonadi/Item>
 
@@ -53,7 +53,7 @@ class QWidget;
 class QDropEvent;
 class QMimeData;
 
-namespace KCal {
+namespace KCalCore {
 
 class Event;
 class Todo;
@@ -62,7 +62,7 @@ class Calendar;
 }
 
 namespace Akonadi {
-class CalendarAdaptor;
+class KCalCore::MemoryCalendar;
 
 /**
   @brief
@@ -74,24 +74,24 @@ class CalendarAdaptor;
 class AKONADI_KCAL_NEXT_EXPORT DndFactory
 {
   public:
-    explicit DndFactory( Akonadi::CalendarAdaptor *, bool deleteCalendar = false );
+    explicit DndFactory( KCalCore::MemoryCalendar *, bool deleteCalendar = false );
 
     ~DndFactory();
 
     /**
       Create the calendar that is contained in the drop event's data.
      */
-  KCal::Calendar *createDropCalendar( QDropEvent *de );
+  KCalCore::Calendar *createDropCalendar( QDropEvent *de );
 
     /**
       Create the calendar that is contained in the mime data.
      */
-  KCal::Calendar *createDropCalendar( const QMimeData *md );
+  KCalCore::Calendar *createDropCalendar( const QMimeData *md );
 
      /**
       Create the calendar that is contained in the mime data.
      */
-  static KCal::Calendar *createDropCalendar( const QMimeData *md, const KDateTime::Spec &timeSpec );
+  static KCalCore::Calendar *createDropCalendar( const QMimeData *md, const KDateTime::Spec &timeSpec );
 
     /**
       Create the mime data for the whole calendar.
@@ -106,32 +106,32 @@ class AKONADI_KCAL_NEXT_EXPORT DndFactory
     /**
       Create the mime data for a single incidence.
     */
-  QMimeData *createMimeData( KCal::Incidence *incidence );
+  QMimeData *createMimeData( KCalCore::Incidence::Ptr incidence );
 
     /**
       Create a drag object for a single incidence.
     */
-  QDrag *createDrag( KCal::Incidence *incidence, QWidget *owner );
+  QDrag *createDrag( KCalCore::Incidence::Ptr incidence, QWidget *owner );
 
     /**
       Create Todo object from mime data.
     */
-  KCal::Todo *createDropTodo( const QMimeData *md );
+  KCalCore::Todo::Ptr createDropTodo( const QMimeData *md );
 
     /**
       Create Todo object from drop event.
     */
-  KCal::Todo *createDropTodo( QDropEvent *de );
+  KCalCore::Todo::Ptr createDropTodo( QDropEvent *de );
 
     /**
       Create Event object from mime data.
     */
-  KCal::Event *createDropEvent( const QMimeData *md );
+  KCalCore::Event::Ptr createDropEvent( const QMimeData *md );
 
     /**
       Create Event object from drop event.
     */
-  KCal::Event *createDropEvent( QDropEvent *de );
+  KCalCore::Event::Ptr createDropEvent( QDropEvent *de );
 
     /**
       Cut the incidence to the clipboard.
@@ -146,12 +146,12 @@ class AKONADI_KCAL_NEXT_EXPORT DndFactory
     /**
       Paste the event or todo and return a pointer to the new incidence pasted.
     */
-  KCal::Incidence *pasteIncidence( const QDate &, const QTime *newTime = 0 );
+  KCalCore::Incidence::Ptr pasteIncidence( const QDate &, const QTime *newTime = 0 );
 
   /** pastes and returns the incidences from the clipboard
       If no date and time are given, the incidences will be pasted at
       their original date/time */
-  KCal::Incidence::List pasteIncidences( const QDate &newDate = QDate(),
+  KCalCore::Incidence::List pasteIncidences( const QDate &newDate = QDate(),
                                          const QTime *newTime = 0 );
 
 

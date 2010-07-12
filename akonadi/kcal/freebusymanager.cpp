@@ -41,12 +41,12 @@
 
 #include <akonadi/contact/contactsearchjob.h>
 
-#include <kcal/calendar.h>
-#include <kcal/incidencebase.h>
-#include <kcal/attendee.h>
-#include <kcal/freebusy.h>
-#include <kcal/journal.h>
-#include <kcal/icalformat.h>
+#include <kcalcore/calendar.h>
+#include <kcalcore/incidencebase.h>
+#include <kcalcore/attendee.h>
+#include <kcalcore/freebusy.h>
+#include <kcalcore/journal.h>
+#include <kcalcore/icalformat.h>
 
 #include <kio/job.h>
 #include <kio/jobuidelegate.h>
@@ -68,7 +68,7 @@
 #include <QByteArray>
 #include <QApplication>
 
-using namespace KCal;
+using namespace KCalCore;
 using namespace Akonadi;
 
 FreeBusyDownloadJob::FreeBusyDownloadJob( const QString &email, const KUrl &url,
@@ -129,7 +129,7 @@ void FreeBusyManager::setCalendar( Akonadi::Calendar *c )
   }
 }
 
-KCal::FreeBusy *FreeBusyManager::ownerFreeBusy()
+KCalCore::FreeBusy::Ptr FreeBusyManager::ownerFreeBusy()
 {
   KDateTime start = KDateTime::currentUtcDateTime();
   KDateTime end = start.addDays( KCalPrefs::instance()->mFreeBusyPublishDays );
@@ -155,7 +155,7 @@ QString FreeBusyManager::ownerFreeBusyAsString()
   return result;
 }
 
-QString FreeBusyManager::freeBusyToIcal( KCal::FreeBusy *freebusy )
+QString FreeBusyManager::freeBusyToIcal( KCalCore::FreeBusy::Ptr freebusy )
 {
   return mFormat.createScheduleMessage( freebusy, iTIPPublish );
 }
@@ -374,7 +374,7 @@ bool FreeBusyManager::retrieveFreeBusy( const QString &email, bool forceDownload
   }
 
   // Check for cached copy of free/busy list
-  KCal::FreeBusy *fb = loadFreeBusy( email );
+  KCalCore::FreeBusy::Ptr fb = loadFreeBusy( email );
   if ( fb ) {
     emit freeBusyRetrieved( fb, email );
   }
@@ -414,9 +414,9 @@ bool FreeBusyManager::processRetrieveQueue()
   FreeBusyDownloadJob *job = new FreeBusyDownloadJob( email, sourceURL, this,
                                                       mParentWidgetForRetrieval );
   job->setObjectName( QLatin1String( "freebusy_download_job" ) );
-  connect( job, SIGNAL(freeBusyDownloaded(KCal::FreeBusy *,const QString &)),
-           SIGNAL(freeBusyRetrieved(KCal::FreeBusy *,const QString &)) );
-  connect( job, SIGNAL(freeBusyDownloaded(KCal::FreeBusy *,const QString &)),
+  connect( job, SIGNAL(freeBusyDownloaded(KCalCore::FreeBusy::Ptr ,const QString &)),
+           SIGNAL(freeBusyRetrieved(KCalCore::FreeBusy::Ptr ,const QString &)) );
+  connect( job, SIGNAL(freeBusyDownloaded(KCalCore::FreeBusy::Ptr ,const QString &)),
            SLOT(processRetrieveQueue()) );
 
   return true;
@@ -506,12 +506,12 @@ KUrl FreeBusyManager::freeBusyUrl( const QString &email ) const
   return sourceURL;
 }
 
-KCal::FreeBusy *FreeBusyManager::iCalToFreeBusy( const QByteArray &data )
+KCalCore::FreeBusy::Ptr FreeBusyManager::iCalToFreeBusy( const QByteArray &data )
 {
   kDebug() << data;
 
   QString freeBusyVCal = QString::fromUtf8( data );
-  KCal::FreeBusy *fb = mFormat.parseFreeBusy( freeBusyVCal );
+  KCalCore::FreeBusy::Ptr fb = mFormat.parseFreeBusy( freeBusyVCal );
   if ( !fb ) {
     kDebug() << "Error parsing free/busy";
     kDebug() << freeBusyVCal;

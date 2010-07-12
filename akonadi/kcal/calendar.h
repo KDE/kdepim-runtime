@@ -25,8 +25,8 @@
 #define AKONADI_KCAL_CALENDAR_H
 
 #include "akonadi-kcal_next_export.h"
-#include <kcal/customproperties.h>
-#include <kcal/incidencebase.h>
+#include <kcalcore/customproperties.h>
+#include <kcalcore/incidencebase.h>
 
 
 #include <QtCore/QObject>
@@ -36,19 +36,20 @@
 
 #include <kdatetime.h>
 
-#include <kcal/customproperties.h>
-#include <kcal/event.h>
-#include <kcal/todo.h>
-#include <kcal/journal.h>
+#include <kcalcore/customproperties.h>
+#include <kcalcore/event.h>
+#include <kcalcore/todo.h>
+#include <kcalcore/journal.h>
 
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 
 class QAbstractItemModel;
 
-namespace KCal {
+namespace KCalCore {
   class CalFormat;
   class CalFilter;
+  class MemoryCalendar;
 }
 
 namespace Akonadi {
@@ -57,7 +58,7 @@ namespace Akonadi {
 
 
   /**
-    Calendar KCal::Incidence sort directions.
+    Calendar KCalCore::Incidence sort directions.
   */
   enum SortDirection {
     SortDirectionAscending,  /**< Sort in ascending order (first to last) */
@@ -96,9 +97,9 @@ namespace Akonadi {
   };
 
 /**
- * Implements a KCal::Calendar that uses Akonadi as backend.
+ * Implements a KCalCore::Calendar that uses Akonadi as backend.
  */
-class AKONADI_KCAL_NEXT_EXPORT Calendar : public QObject, public KCal::CustomProperties, public KCal::IncidenceBase::IncidenceObserver {
+class AKONADI_KCAL_NEXT_EXPORT Calendar : public QObject, public KCalCore::CustomProperties, public KCalCore::IncidenceBase::IncidenceObserver {
   Q_OBJECT
 public:
 
@@ -125,7 +126,7 @@ public:
 
     @see owner()
   */
-  void setOwner( const KCal::Person &owner );
+  void setOwner( const KCalCore::Person &owner );
 
   /**
     Returns the owner of the calendar.
@@ -134,7 +135,7 @@ public:
 
     @see setOwner()
   */
-  KCal::Person owner() const;
+  KCalCore::Person owner() const;
 
   /**
     Sets the default time specification (time zone, etc.) used for creating
@@ -162,7 +163,7 @@ public:
 
     @param timeZoneId is a string containing a time zone ID, which is
     assumed to be valid. The time zone ID is used to set the time zone
-    for viewing KCal::Incidence date/times. If no time zone is found, the
+    for viewing KCalCore::Incidence date/times. If no time zone is found, the
     viewing time specification is set to local clock time.
     @e Example: "Europe/Berlin"
     @see setTimeSpec()
@@ -206,7 +207,7 @@ public:
 
     @param timeZoneId is a string containing a time zone ID, which is
     assumed to be valid. The time zone ID is used to set the time zone
-    for viewing KCal::Incidence date/times. If no time zone is found, the
+    for viewing KCalCore::Incidence date/times. If no time zone is found, the
     viewing time specification is set to local clock time.
     @e Example: "Europe/Berlin"
 
@@ -249,63 +250,63 @@ public:
   void shiftTimes( const KDateTime::Spec &oldSpec, const KDateTime::Spec &newSpec );
 
   /**
-    Returns a list of all categories used by KCal::Incidences in the calendar @p cal.
+    Returns a list of all categories used by KCalCore::Incidences in the calendar @p cal.
 
     @param cal the calendar to return incidences from
     @return a QStringList containing all the categories.
   */
   static QStringList categories( Calendar* cal );
 
-// KCal::Incidence Specific Methods //
+// KCalCore::Incidence Specific Methods //
 
   /**
-    Returns a filtered list of all KCal::Incidences for this Calendar.
+    Returns a filtered list of all KCalCore::Incidences for this Calendar.
     @deprecated:
 
-    @return the list of all filtered KCal::Incidences.
+    @return the list of all filtered KCalCore::Incidences.
   */
   Akonadi::Item::List incidences();
 
   /**
-    Returns a filtered list of all KCal::Incidences which occur on the given date.
+    Returns a filtered list of all KCalCore::Incidences which occur on the given date.
 
-    @param date request filtered KCal::Incidence list for this QDate only.
+    @param date request filtered KCalCore::Incidence list for this QDate only.
     @deprecated:
 
-    @return the list of filtered KCal::Incidences occurring on the specified date.
+    @return the list of filtered KCalCore::Incidences occurring on the specified date.
   */
 
   Akonadi::Item::List incidences( const QDate& date );
 
   /**
-    Returns an unfiltered list of all KCal::Incidences for this Calendar.
+    Returns an unfiltered list of all KCalCore::Incidences for this Calendar.
     @deprecated:
 
-    @return the list of all unfiltered KCal::Incidences.
+    @return the list of all unfiltered KCalCore::Incidences.
   */
   Akonadi::Item::List rawIncidences();
 
   /**
-    Returns the KCal::Incidence associated with the given unique identifier.
+    Returns the KCalCore::Incidence associated with the given unique identifier.
 
     @param uid is a unique identifier string.
     @deprecated:
 
-    @return a pointer to the KCal::Incidence.
-    A null pointer is returned if no such KCal::Incidence exists.
+    @return a pointer to the KCalCore::Incidence.
+    A null pointer is returned if no such KCalCore::Incidence exists.
   */
   Akonadi::Item incidence( const Akonadi::Item::Id &id ) const;
 
   Akonadi::Collection collection( const Akonadi::Entity::Id &id );
 
   /**
-    Returns the KCal::Incidence associated with the given scheduling identifier.
+    Returns the KCalCore::Incidence associated with the given scheduling identifier.
 
     @param sid is a unique scheduling identifier string.
     @deprecated:
 
-    @return a pointer to the KCal::Incidence.
-    A null pointer is returned if no such KCal::Incidence exists.
+    @return a pointer to the KCalCore::Incidence.
+    A null pointer is returned if no such KCalCore::Incidence exists.
   */
   Akonadi::Item incidenceFromSchedulingID( const QString &sid );
 
@@ -319,14 +320,14 @@ public:
   Akonadi::Item::List incidencesFromSchedulingID( const QString &sid );
 
   /**
-    Create a merged list of KCal::Events, KCal::Todos, and KCal::Journals.
+    Create a merged list of KCalCore::Events, KCalCore::Todos, and KCalCore::Journals.
 
-    @param events is an KCal::Event list to merge.
-    @param todos is a KCal::Todo list to merge.
-    @param journals is a KCal::Journal list to merge.
+    @param events is an KCalCore::Event list to merge.
+    @param todos is a KCalCore::Todo list to merge.
+    @param journals is a KCalCore::Journal list to merge.
     @deprecated:
 
-    @return a list of merged KCal::Incidences.
+    @return a list of merged KCalCore::Incidences.
   */
   static Akonadi::Item::List mergeIncidenceList( const Akonadi::Item::List &events,
                                              const Akonadi::Item::List &todos,
@@ -334,78 +335,78 @@ public:
 
 
   /**
-    Dissociate an KCal::Incidence from a recurring KCal::Incidence.
-    By default, only one single KCal::Incidence for the specified @a date
+    Dissociate an KCalCore::Incidence from a recurring KCalCore::Incidence.
+    By default, only one single KCalCore::Incidence for the specified @a date
     will be dissociated and returned.  If @a single is false, then
-    the recurrence will be split at @a date, the old KCal::Incidence will
-    have its recurrence ending at @a date and the new KCal::Incidence
+    the recurrence will be split at @a date, the old KCalCore::Incidence will
+    have its recurrence ending at @a date and the new KCalCore::Incidence
     will have all recurrences past the @a date.
 
-    @param incidence is a pointer to a recurring KCal::Incidence.
-    @param date is the QDate within the recurring KCal::Incidence on which
+    @param incidence is a pointer to a recurring KCalCore::Incidence.
+    @param date is the QDate within the recurring KCalCore::Incidence on which
     the dissociation will be performed.
     @param spec is the spec in which the @a date is formulated.
-    @param single is a flag meaning that a new KCal::Incidence should be created
-    from the recurring KCal::Incidences after @a date.
+    @param single is a flag meaning that a new KCalCore::Incidence should be created
+    from the recurring KCalCore::Incidences after @a date.
     @deprecated:
 
-    @return a pointer to a new recurring KCal::Incidence if @a single is false.
+    @return a pointer to a new recurring KCalCore::Incidence if @a single is false.
   */
-  KCal::Incidence::Ptr dissociateOccurrence( const Akonadi::Item &incidence, const QDate &date,
+  KCalCore::Incidence::Ptr dissociateOccurrence( const Akonadi::Item &incidence, const QDate &date,
                                                        const KDateTime::Spec &spec,
                                                        bool single = true );
 
-// KCal::Event Specific Methods //
+// KCalCore::Event Specific Methods //
 
   /**
-    Sort a list of KCal::Events.
+    Sort a list of KCalCore::Events.
 
-    @param eventList is a pointer to a list of KCal::Events.
+    @param eventList is a pointer to a list of KCalCore::Events.
     @param sortField specifies the EventSortField.
     @param sortDirection specifies the SortDirection.
     @deprecated:
 
-    @return a list of KCal::Events sorted as specified.
+    @return a list of KCalCore::Events sorted as specified.
   */
   static Akonadi::Item::List sortEvents( const Akonadi::Item::List &eventList,
                                  EventSortField sortField,
                                  SortDirection sortDirection );
 
   /**
-    Returns a sorted, filtered list of all KCal::Events for this Calendar.
+    Returns a sorted, filtered list of all KCalCore::Events for this Calendar.
 
     @param sortField specifies the EventSortField.
     @param sortDirection specifies the SortDirection.
     @deprecated:
 
-    @return the list of all filtered KCal::Events sorted as specified.
+    @return the list of all filtered KCalCore::Events sorted as specified.
   */
   virtual Akonadi::Item::List events(
     EventSortField sortField = EventSortUnsorted,
     SortDirection sortDirection = SortDirectionAscending );
 
   /**
-    Returns a filtered list of all KCal::Events which occur on the given timestamp.
+    Returns a filtered list of all KCalCore::Events which occur on the given timestamp.
 
-    @param dt request filtered KCal::Event list for this KDateTime only.
+    @param dt request filtered KCalCore::Event list for this KDateTime only.
     @deprecated:
 
-    @return the list of filtered KCal::Events occurring on the specified timestamp.
+    @return the list of filtered KCalCore::Events occurring on the specified timestamp.
   */
   Akonadi::Item::List events( const KDateTime &dt );
 
   /**
-    Returns a filtered list of all KCal::Events occurring within a date range.
+    Returns a filtered list of all KCalCore::Events occurring within a date range.
 
     @param start is the starting date.
     @param end is the ending date.
     @param timeSpec time zone etc. to interpret @p start and @p end,
                     or the calendar's default time spec if none is specified
-    @param inclusive if true only KCal::Events which are completely included
+    @param inclusive if true only KCalCore::Events which are completely included
     within the date range are returned.
     @deprecated:
 
-    @return the list of filtered KCal::Events occurring within the specified
+    @return the list of filtered KCalCore::Events occurring within the specified
     date range.
   */
   Akonadi::Item::List events( const QDate &start, const QDate &end,
@@ -413,18 +414,18 @@ public:
                       bool inclusive = false );
 
   /**
-    Returns a sorted, filtered list of all KCal::Events which occur on the given
-    date.  The KCal::Events are sorted according to @a sortField and
+    Returns a sorted, filtered list of all KCalCore::Events which occur on the given
+    date.  The KCalCore::Events are sorted according to @a sortField and
     @a sortDirection.
 
-    @param date request filtered KCal::Event list for this QDate only.
+    @param date request filtered KCalCore::Event list for this QDate only.
     @param timeSpec time zone etc. to interpret @p start and @p end,
                     or the calendar's default time spec if none is specified
     @param sortField specifies the EventSortField.
     @param sortDirection specifies the SortDirection.
     @deprecated:
 
-    @return the list of sorted, filtered KCal::Events occurring on @a date.
+    @return the list of sorted, filtered KCalCore::Events occurring on @a date.
   */
   Akonadi::Item::List events(
     const QDate &date,
@@ -432,80 +433,80 @@ public:
     EventSortField sortField = EventSortUnsorted,
     SortDirection sortDirection = SortDirectionAscending );
 
-// KCal::Todo Specific Methods //
+// KCalCore::Todo Specific Methods //
 
   /**
-    Sort a list of KCal::Todos.
+    Sort a list of KCalCore::Todos.
 
-    @param todoList is a pointer to a list of KCal::Todos.
+    @param todoList is a pointer to a list of KCalCore::Todos.
     @param sortField specifies the TodoSortField.
     @param sortDirection specifies the SortDirection.
     @deprecated:
 
-    @return a list of KCal::Todos sorted as specified.
+    @return a list of KCalCore::Todos sorted as specified.
   */
   static Akonadi::Item::List sortTodos( const Akonadi::Item::List &todoList,
                                TodoSortField sortField,
                                SortDirection sortDirection );
 
   /**
-    Returns a sorted, filtered list of all KCal::Todos for this Calendar.
+    Returns a sorted, filtered list of all KCalCore::Todos for this Calendar.
 
     @param sortField specifies the TodoSortField.
     @param sortDirection specifies the SortDirection.
     @deprecated:
 
-    @return the list of all filtered KCal::Todos sorted as specified.
+    @return the list of all filtered KCalCore::Todos sorted as specified.
   */
   virtual Akonadi::Item::List todos(
     TodoSortField sortField = TodoSortUnsorted,
     SortDirection sortDirection = SortDirectionAscending );
 
   /**
-    Returns a filtered list of all KCal::Todos which are due on the specified date.
+    Returns a filtered list of all KCalCore::Todos which are due on the specified date.
 
-    @param date request filtered KCal::Todos due on this QDate.
+    @param date request filtered KCalCore::Todos due on this QDate.
     @deprecated:
 
-    @return the list of filtered KCal::Todos due on the specified date.
+    @return the list of filtered KCalCore::Todos due on the specified date.
   */
   virtual Akonadi::Item::List todos( const QDate &date );
-// KCal::Journal Specific Methods //
+// KCalCore::Journal Specific Methods //
 
   /**
-    Sort a list of KCal::Journals.
+    Sort a list of KCalCore::Journals.
 
-    @param journalList is a pointer to a list of KCal::Journals.
+    @param journalList is a pointer to a list of KCalCore::Journals.
     @param sortField specifies the JournalSortField.
     @param sortDirection specifies the SortDirection.
     @deprecated:
 
-    @return a list of KCal::Journals sorted as specified.
+    @return a list of KCalCore::Journals sorted as specified.
   */
   static Akonadi::Item::List sortJournals( const Akonadi::Item::List &journalList,
                                      JournalSortField sortField,
                                      SortDirection sortDirection );
 
   /**
-    Returns a sorted, filtered list of all KCal::Journals for this Calendar.
+    Returns a sorted, filtered list of all KCalCore::Journals for this Calendar.
 
     @param sortField specifies the JournalSortField.
     @param sortDirection specifies the SortDirection.
     @deprecated:
 
-    @return the list of all filtered KCal::Journals sorted as specified.
+    @return the list of all filtered KCalCore::Journals sorted as specified.
   */
   virtual Akonadi::Item::List journals(
     JournalSortField sortField = JournalSortUnsorted,
     SortDirection sortDirection = SortDirectionAscending );
 
   /**
-    Returns a filtered list of all KCal::Journals for on the specified date.
+    Returns a filtered list of all KCalCore::Journals for on the specified date.
 
-    @param date request filtered KCal::Journals for this QDate only.
+    @param date request filtered KCalCore::Journals for this QDate only.
     @deprecated:
 
-    @return the list of filtered KCal::Journals for the specified date.
+    @return the list of filtered KCalCore::Journals for the specified date.
   */
   virtual Akonadi::Item::List journals( const QDate &date );
 
@@ -513,8 +514,8 @@ public:
     Emits the beginBatchAdding() signal.
 
     This should be called before adding a batch of incidences with
-    addIncidence( KCal::Incidence *), addTodo( KCal::Todo *), addEvent( KCal::Event *)
-    or addJournal( KCal::Journal *). Some Calendars are connected to this
+    addIncidence( KCalCore::Incidence::Ptr ), addTodo( KCalCore::Todo::Ptr ), addEvent( KCalCore::Event::Ptr )
+    or addJournal( KCalCore::Journal::Ptr ). Some Calendars are connected to this
     signal, e.g: CalendarResources uses it to know a series of
     incidenceAdds are related so the user isn't prompted multiple
     times which resource to save the incidence to
@@ -539,12 +540,12 @@ public:
     Sets the calendar filter.
 
     @param filter a pointer to a CalFilter object which will be
-    used to filter Calendar KCal::Incidences.
+    used to filter Calendar KCalCore::Incidences.
     @deprecated:
 
     @see filter()
   */
-  void setFilter( KCal::CalFilter *filter );
+  void setFilter( KCalCore::CalFilter *filter );
 
   /**
     Returns the calendar filter.
@@ -555,7 +556,7 @@ public:
 
     @see setFilter()
   */
-  KCal::CalFilter *filter();
+  KCalCore::CalFilter *filter();
 
 // Observer Specific Methods //
 
@@ -573,26 +574,26 @@ public:
       virtual ~CalendarObserver() {}
 
       /**
-        Notify the Observer that an KCal::Incidence has been inserted.
+        Notify the Observer that an KCalCore::Incidence has been inserted.
         @deprecated:
 
-        @param incidence is a pointer to the KCal::Incidence that was inserted.
+        @param incidence is a pointer to the KCalCore::Incidence that was inserted.
       */
       virtual void calendarIncidenceAdded( const Akonadi::Item &incidence );
 
       /**
-        Notify the Observer that an KCal::Incidence has been modified.
+        Notify the Observer that an KCalCore::Incidence has been modified.
         @deprecated:
 
-        @param incidence is a pointer to the KCal::Incidence that was modified.
+        @param incidence is a pointer to the KCalCore::Incidence that was modified.
       */
       virtual void calendarIncidenceChanged( const Akonadi::Item  &incidence );
 
       /**
-        Notify the Observer that an KCal::Incidence has been removed.
+        Notify the Observer that an KCalCore::Incidence has been removed.
         @deprecated:
 
-        @param incidence is a pointer to the KCal::Incidence that was removed.
+        @param incidence is a pointer to the KCalCore::Incidence that was removed.
       */
       virtual void calendarIncidenceDeleted( const Akonadi::Item &incidence );
 
@@ -640,38 +641,38 @@ protected:
   /**
     The Observer interface. So far not implemented.
 
-    @param incidenceBase is a pointer an KCal::IncidenceBase object.
+    @param incidenceBase is a pointer an KCalCore::IncidenceBase object.
   */
 
   /**
     Let Calendar subclasses set the time specification.
 
     @param timeSpec is the time specification (time zone, etc.) for
-                    viewing KCal::Incidence dates.\n
+                    viewing KCalCore::Incidence dates.\n
   */
   virtual void doSetTimeSpec( const KDateTime::Spec &timeSpec );
 
   /**
-    Let Calendar subclasses notify that they inserted an KCal::Incidence.
+    Let Calendar subclasses notify that they inserted an KCalCore::Incidence.
     @deprecated:
 
-    @param incidence is a pointer to the KCal::Incidence object that was inserted.
+    @param incidence is a pointer to the KCalCore::Incidence object that was inserted.
   */
   void notifyIncidenceAdded( const Akonadi::Item &incidence );
 
   /**
-    Let Calendar subclasses notify that they modified an KCal::Incidence.
+    Let Calendar subclasses notify that they modified an KCalCore::Incidence.
     @deprecated:
 
-    @param incidence is a pointer to the KCal::Incidence object that was modified.
+    @param incidence is a pointer to the KCalCore::Incidence object that was modified.
   */
   void notifyIncidenceChanged( const Akonadi::Item &incidence );
 
   /**
-    Let Calendar subclasses notify that they removed an KCal::Incidence.
+    Let Calendar subclasses notify that they removed an KCalCore::Incidence.
     @deprecated:
 
-    @param incidence is a pointer to the KCal::Incidence object that was removed.
+    @param incidence is a pointer to the KCalCore::Incidence object that was removed.
   */
   void notifyIncidenceDeleted( const Akonadi::Item &incidence );
 
@@ -692,33 +693,35 @@ protected:
   /**
     Appends alarms of incidence in interval to list of alarms.
 
-    @param alarms is a List of KCal::Alarms to be appended onto.
-    @param incidence is a pointer to an KCal::Incidence containing the KCal::Alarm
+    @param alarms is a List of KCalCore::Alarms to be appended onto.
+    @param incidence is a pointer to an KCalCore::Incidence containing the KCalCore::Alarm
     to be appended.
-    @param from is the lower range of the next KCal::Alarm repitition.
-    @param to is the upper range of the next KCal::Alarm repitition.
+    @param from is the lower range of the next KCalCore::Alarm repitition.
+    @param to is the upper range of the next KCalCore::Alarm repitition.
     @deprecated:
 
   */
-  void appendAlarms( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
+  void appendAlarms( KCalCore::Alarm::List &alarms, const Akonadi::Item &incidence,
                      const KDateTime &from, const KDateTime &to );
 
   /**
     Appends alarms of recurring events in interval to list of alarms.
 
-    @param alarms is a List of KCal::Alarms to be appended onto.
-    @param incidence is a pointer to an KCal::Incidence containing the KCal::Alarm
+    @param alarms is a List of KCalCore::Alarms to be appended onto.
+    @param incidence is a pointer to an KCalCore::Incidence containing the KCalCore::Alarm
     to be appended.
-    @param from is the lower range of the next KCal::Alarm repitition.
-    @param to is the upper range of the next KCal::Alarm repitition.
+    @param from is the lower range of the next KCalCore::Alarm repitition.
+    @param to is the upper range of the next KCalCore::Alarm repitition.
     @deprecated:
 
   */
-  void appendRecurringAlarms( KCal::Alarm::List &alarms, const Akonadi::Item &incidence,
+  void appendRecurringAlarms( KCalCore::Alarm::List &alarms, const Akonadi::Item &incidence,
                               const KDateTime &from, const KDateTime &to );
 public:
     explicit Calendar( QAbstractItemModel* treeModel, QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject* parent=0 );
     ~Calendar();
+
+    KCalCore::MemoryCalendar *memoryCalendar() const;
 
     QAbstractItemModel* model() const;
 
@@ -727,7 +730,7 @@ public:
 
     QAbstractItemModel* treeModel() const;
 
-    void incidenceUpdated( KCal::IncidenceBase *incidenceBase );
+    void incidenceUpdated( KCalCore::IncidenceBase::Ptr incidenceBase );
 
     Akonadi::Item ::List rawEvents( EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item ::List rawEvents( const QDate &start, const QDate &end, const KDateTime::Spec &timeSpec = KDateTime::Spec(), bool inclusive = false );
@@ -746,8 +749,8 @@ public:
 
     Akonadi::Item journal( const Akonadi::Item::Id &id ) const;
 
-    KCal::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
-    KCal::Alarm::List alarmsTo( const KDateTime &to );
+    KCalCore::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
+    KCalCore::Alarm::List alarmsTo( const KDateTime &to );
 
     /* reimp */ Akonadi::Item findParent( const Akonadi::Item& item ) const;
     /* reimp */ Akonadi::Item::List findChildren( const Akonadi::Item &item ) const;
@@ -755,7 +758,7 @@ public:
 
     Akonadi::Item::Id itemIdForIncidenceUid( const QString &uid ) const;
     Akonadi::Item itemForIncidenceUid( const QString &uid ) const;
- 
+
     using QObject::event;   // prevent warning about hidden virtual method
 
   Q_SIGNALS:

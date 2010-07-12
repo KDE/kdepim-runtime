@@ -27,13 +27,11 @@
 #define AKONADI_KCAL_MAILCLIENT_H
 
 #include "akonadi-kcal_next_export.h"
+
+#include <kcalcore/incidencebase.h>
+
 #include <QString>
 #include <QObject>
-
-namespace KCal {
-  class IncidenceBase;
-}
-
 
 namespace KPIMIdentities {
   class Identity;
@@ -48,15 +46,15 @@ class AKONADI_KCAL_NEXT_EXPORT MailClient : public QObject
     MailClient();
     virtual ~MailClient();
 
-    bool mailAttendees( KCal::IncidenceBase *, const KPIMIdentities::Identity &identity,
+    bool mailAttendees( const KCalCore::IncidenceBase::Ptr &, const KPIMIdentities::Identity &identity,
                         bool bccMe, const QString &attachment=QString(),
                         const QString &mailTransport = QString() );
-    bool mailOrganizer( KCal::IncidenceBase *, const KPIMIdentities::Identity &identity,
+    bool mailOrganizer( const KCalCore::IncidenceBase::Ptr & , const KPIMIdentities::Identity &identity,
                         const QString &from, bool bccMe,
                         const QString &attachment=QString(),
                         const QString &sub=QString(),
                         const QString &mailTransport = QString() );
-    bool mailTo( KCal::IncidenceBase *, const KPIMIdentities::Identity &identity,
+    bool mailTo( const KCalCore::IncidenceBase::Ptr & , const KPIMIdentities::Identity &identity,
                  const QString &from, bool bccMe, const QString &recipients,
                  const QString &attachment=QString(), const QString &mailTransport = QString() );
 

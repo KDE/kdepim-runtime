@@ -53,9 +53,9 @@
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
 
-#include <KCal/Incidence>
-#include <kcal/calfilter.h>
-#include <kcal/icaltimezones.h>
+#include <kcalcore/incidence.h>
+#include <kcalcore/calfilter.h>
+#include <kcalcore/icaltimezones.h>
 
 #include <KLocalizedString>
 
@@ -120,10 +120,10 @@ public:
 
   KDateTime::Spec timeZoneIdSpec( const QString &timeZoneId, bool view );
   QString mProductId;
-  KCal::Person mOwner;
-  KCal::ICalTimeZones *mTimeZones; // collection of time zones used in this calendar
-  KCal::ICalTimeZone mBuiltInTimeZone;   // cached time zone lookup
-  KCal::ICalTimeZone mBuiltInViewTimeZone;   // cached viewing time zone lookup
+  KCalCore::Person mOwner;
+  KCalCore::ICalTimeZones *mTimeZones; // collection of time zones used in this calendar
+  KCalCore::ICalTimeZone mBuiltInTimeZone;   // cached time zone lookup
+  KCalCore::ICalTimeZone mBuiltInViewTimeZone;   // cached viewing time zone lookup
   KDateTime::Spec mTimeSpec;
   mutable KDateTime::Spec mViewTimeSpec;
   bool mModified;
@@ -131,7 +131,7 @@ public:
   bool mObserversEnabled;
   QList<CalendarObserver*> mObservers;
 
-  KCal::CalFilter *mDefaultFilter;
+  KCalCore::CalFilter *mDefaultFilter;
   //CalendarBase end
 
   QAbstractItemModel *m_treeModel;

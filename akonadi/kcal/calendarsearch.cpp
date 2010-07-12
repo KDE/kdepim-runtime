@@ -340,7 +340,7 @@ void CalendarSearch::Private::rowsInserted( const QModelIndex &parent, int start
 
     if ( item.isValid() ) {
       const Collection::Rights rights = item.parentCollection().rights();
-      KCal::Incidence::Ptr incidence = Akonadi::incidence( item );
+      KCalCore::Incidence::Ptr incidence = Akonadi::incidence( item );
       if ( incidence && 
            !( rights & Collection::CanDeleteItem ) &&
            !( rights & Collection::CanChangeItem ) &&
@@ -379,7 +379,7 @@ void CalendarSearch::setSelectionModel( QItemSelectionModel *selectionModel )
   }
 }
 
-void CalendarSearch::setFilter( KCal::CalFilter *filter )
+void CalendarSearch::setFilter( KCalCore::CalFilter *filter )
 {
   d->kcalFilterProxyModel->setFilter( filter );
 }

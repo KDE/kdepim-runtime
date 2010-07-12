@@ -23,10 +23,15 @@
 #include <akonadi/entitytreemodel.h>
 #include <Akonadi/Item>
 
-#include <KCal/Incidence>
+#include <kcalcore/incidence.h>
+#include <kcalcore/journal.h>
+#include <kcalcore/event.h>
+#include <kcalcore/todo.h>
+#include <kcalcore/freebusy.h>
+#include <kcalcore/visitor.h>
 
 using namespace Akonadi;
-using namespace KCal;
+using namespace KCalCore;
 
 
 class IncidenceFilterProxyModel::Private {
@@ -37,35 +42,35 @@ class IncidenceFilterProxyModel::Private {
     bool showTodos : 1;
 };
 
-class IncidenceFilterProxyModel::Visitor : public IncidenceBase::Visitor {
+class IncidenceFilterProxyModel::Visitor : public KCalCore::Visitor {
   IncidenceFilterProxyModel::Private* const d;
 public:
   explicit Visitor( IncidenceFilterProxyModel::Private* dd ) : d( dd ), acceptLastIncidence( false ) {}
 
-  /* reimp */ bool visit( Journal* );
-  /* reimp */ bool visit( Todo* );
-  /* reimp */ bool visit( Event* );
-  /* reimp */ bool visit( FreeBusy* );
+  /* reimp */ bool visit( Journal::Ptr );
+  /* reimp */ bool visit( Todo::Ptr );
+  /* reimp */ bool visit( Event::Ptr );
+  /* reimp */ bool visit( FreeBusy::Ptr );
 
   bool acceptLastIncidence : 1;
 };
 
-bool IncidenceFilterProxyModel::Visitor::visit( Journal* ) {
+bool IncidenceFilterProxyModel::Visitor::visit( Journal::Ptr ) {
   acceptLastIncidence = d->showJournals;
   return true;
 }
 
-bool IncidenceFilterProxyModel::Visitor::visit( Todo* ) {
+bool IncidenceFilterProxyModel::Visitor::visit( Todo::Ptr ) {
   acceptLastIncidence = d->showTodos;
   return true;
 }
 
-bool IncidenceFilterProxyModel::Visitor::visit( Event* ) {
+bool IncidenceFilterProxyModel::Visitor::visit( Event::Ptr ) {
   acceptLastIncidence = d->showEvents;
   return true;
 }
 
-bool IncidenceFilterProxyModel::Visitor::visit( FreeBusy* ) {
+bool IncidenceFilterProxyModel::Visitor::visit( FreeBusy::Ptr ) {
   acceptLastIncidence = false;
   return true;
 }
@@ -146,6 +151,6 @@ bool IncidenceFilterProxyModel::filterAcceptsRow( int source_row, const QModelIn
     return false;
 
   Visitor v( d );
-  inc->accept( v );
+  inc->accept( v, inc.staticCast<IncidenceBase>() );
   return v.acceptLastIncidence;
 }

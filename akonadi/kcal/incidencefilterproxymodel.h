@@ -22,7 +22,7 @@
 
 #include <QtGui/QSortFilterProxyModel>
 
-namespace KCal {
+namespace KCalCore {
   class CalFilter;
 }
 

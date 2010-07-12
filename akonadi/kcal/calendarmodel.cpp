@@ -26,8 +26,8 @@
 #include <Akonadi/Collection>
 #include <Akonadi/ChangeRecorder>
 
-#include <KCal/Incidence>
-#include <KCal/Event>
+#include <kcalcore/incidence.h>
+#include <kcalcore/event.h>
 
 #include <KIconLoader>
 #include <KLocale>
@@ -35,7 +35,7 @@
 #include <QtGui/QPixmap>
 
 using namespace Akonadi;
-using namespace KCal;
+using namespace KCalCore;
 
 class CalendarModel::Private
 {
@@ -87,11 +87,11 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
   case Qt::DecorationRole:
     if ( column != Summary )
       return QVariant();
-    if ( incidence->type() == "Todo" )
+    if ( incidence->type() == IncidenceBase::TypeTodo )
       return SmallIcon( QLatin1String( "view-pim-tasks" ) );
-    if ( incidence->type() == "Journal" )
+    if ( incidence->type() == IncidenceBase::TypeJournal )
       return SmallIcon( QLatin1String( "view-pim-journal" ) );
-    if ( incidence->type() == "Event" )
+    if ( incidence->type() == IncidenceBase::TypeEvent )
       return SmallIcon( QLatin1String( "view-calendar" ) );
     return SmallIcon( QLatin1String( "network-wired" ) );
   case Qt::DisplayRole:
@@ -101,7 +101,7 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
     case DateTimeStart:
       return incidence->dtStart().toString();
     case DateTimeEnd:
-      return incidence->dtEnd().toString();
+      return incidence->dateTime( Incidence::RoleEndTimeZone ).toString();
     case DateTimeDue:
       if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
         return todo->dtDue().toString();
@@ -131,13 +131,13 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
     case DateTimeStart:
       return incidence->dtStart().toUtc().dateTime();
     case DateTimeEnd:
-      return incidence->dtEnd().toUtc().dateTime();
+      return incidence->dateTime( Incidence::RoleEndTimeZone ).toUtc().dateTime();
     case DateTimeDue:
       if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
         return todo->dtDue().toUtc().dateTime();
       else
         return QVariant();
-    case PrimaryDate:      
+    case PrimaryDate:
       return primaryDateForIncidence( item ).toUtc().dateTime();
     case Priority:
       if ( Todo::ConstPtr todo = Akonadi::todo( item ) )

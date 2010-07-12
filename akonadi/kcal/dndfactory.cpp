@@ -40,12 +40,12 @@
 */
 
 #include "dndfactory.h"
-#include "calendaradaptor.h"
+#include <kcalcore/memorycalendar.h>
 
-#include <kcal/calendarlocal.h>
-#include <kcal/dndfactory.h>
-#include <kcal/vcaldrag.h>
-#include <kcal/icaldrag.h>
+#include <kcalcore/memorycalendar.h>
+#include <kcalutils/dndfactory.h>
+#include <kcalutils/vcaldrag.h>
+#include <kcalutils/icaldrag.h>
 
 #include <kiconloader.h>
 #include <kdebug.h>
@@ -57,7 +57,7 @@
 #include <QtGui/QDropEvent>
 #include <QtGui/QPixmap>
 
-using namespace KCal;
+using namespace KCalCore;
 using namespace Akonadi;
 
 /**
@@ -68,9 +68,9 @@ using namespace Akonadi;
 class Akonadi::DndFactory::Private
 {
   public:
-  Private( CalendarAdaptor *cal, bool deleteCalendar )
+  Private( KCalCore::MemoryCalendar *cal, bool deleteCalendar )
     : mDeleteCalendar( deleteCalendar ), mCalendar( cal ),
-      mDndFactory( new KCal::DndFactory( cal ) )
+      mDndFactory( new KCalUtils::DndFactory( cal ) )
     {}
 
   ~Private() {
@@ -78,13 +78,13 @@ class Akonadi::DndFactory::Private
   }
 
   bool mDeleteCalendar;
-  CalendarAdaptor *mCalendar;
-  KCal::DndFactory *mDndFactory;
+  KCalCore::MemoryCalendar *mCalendar;
+  KCalUtils::DndFactory *mDndFactory;
 
 };
 //@endcond
 namespace Akonadi {
-DndFactory::DndFactory( CalendarAdaptor *cal, bool deleteCalendarHere )
+DndFactory::DndFactory( KCalCore::MemoryCalendar *cal, bool deleteCalendarHere )
   : d( new Akonadi::DndFactory::Private ( cal, deleteCalendarHere ) )
 {
 }
@@ -114,15 +114,15 @@ QDrag *DndFactory::createDrag( Incidence *incidence, QWidget *owner )
   return d->mDndFactory->createDrag( incidence, owner );
 }
 
-KCal::Calendar *DndFactory::createDropCalendar( const QMimeData *md )
+KCalCore::Calendar *DndFactory::createDropCalendar( const QMimeData *md )
 {
   return d->mDndFactory->createDropCalendar( md );
 }
 
 /* static */
-KCal::Calendar *DndFactory::createDropCalendar( const QMimeData *md, const KDateTime::Spec &timeSpec )
+KCalCore::Calendar *DndFactory::createDropCalendar( const QMimeData *md, const KDateTime::Spec &timeSpec )
 {
- KCal::Calendar *cal = new KCal::CalendarLocal( timeSpec );
+ KCalCore::Calendar *cal = new KCalCore::MemoryCalendar( timeSpec );
 
  if ( ICalDrag::fromMimeData( md, cal ) ||
       VCalDrag::fromMimeData( md, cal ) ) {
@@ -132,27 +132,27 @@ KCal::Calendar *DndFactory::createDropCalendar( const QMimeData *md, const KDate
  return 0;
 }
 
-KCal::Calendar *DndFactory::createDropCalendar( QDropEvent *de )
+KCalCore::Calendar *DndFactory::createDropCalendar( QDropEvent *de )
 {
   return d->mDndFactory->createDropCalendar( de );
 }
 
-KCal::Event *DndFactory::createDropEvent( const QMimeData *md )
+KCalCore::Event::Ptr DndFactory::createDropEvent( const QMimeData *md )
 {
   return d->mDndFactory->createDropEvent( md );
 }
 
-KCal::Event *DndFactory::createDropEvent( QDropEvent *de )
+KCalCore::Event::Ptr DndFactory::createDropEvent( QDropEvent *de )
 {
   return d->mDndFactory->createDropEvent( de );
 }
 
-KCal::Todo *DndFactory::createDropTodo( const QMimeData *md )
+KCalCore::Todo::Ptr DndFactory::createDropTodo( const QMimeData *md )
 {
   return d->mDndFactory->createDropTodo( md );
 }
 
-KCal::Todo *DndFactory::createDropTodo( QDropEvent *de )
+KCalCore::Todo::Ptr DndFactory::createDropTodo( QDropEvent *de )
 {
   return d->mDndFactory->createDropTodo( de );
 }
@@ -207,7 +207,7 @@ bool DndFactory::cutIncidences( const Item::List &items )
   }
 }
 
-KCal::Incidence::List DndFactory::pasteIncidences( const QDate &newDate,
+KCalCore::Incidence::List DndFactory::pasteIncidences( const QDate &newDate,
                                                    const QTime *newTime )
 {
   return d->mDndFactory->pasteIncidences( newDate, newTime );

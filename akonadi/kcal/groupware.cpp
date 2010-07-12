@@ -39,9 +39,11 @@
 #include "kcalprefs.h"
 #include "mailscheduler.h"
 #include "calendar.h"
-#include "calendaradaptor.h"
+#include <kcalcore/memorycalendar.h>
 
-#include <KCal/IncidenceFormatter>
+#include <kcalutils/incidenceformatter.h>
+#include <kcalutils/stringify.h>
+
 #include <KPIMUtils/Email>
 
 #include <KDirWatch>
@@ -52,7 +54,7 @@
 #include <QFile>
 #include <QTimer>
 
-using namespace KCal;
+using namespace KCalCore;
 using namespace Akonadi;
 
 FreeBusyManager *Groupware::mFreeBusyManager = 0;
@@ -107,12 +109,11 @@ bool Groupware::handleInvitation( const QString& receiver, const QString& iCal,
 {
   const QString action = type;
 
-  CalendarAdaptor adaptor(mCalendar, 0);
-  ScheduleMessage *message = mFormat.parseScheduleMessage( &adaptor, iCal );
+  ScheduleMessage *message = mFormat.parseScheduleMessage( mCalendar->memoryCalendar(), iCal );
   if ( !message ) {
     QString errorMessage;
     if ( mFormat.exception() ) {
-      errorMessage = i18n( "Error message: %1", mFormat.exception()->message() );
+      errorMessage = i18n( "Error message: %1", KCalUtils::Stringify::errorMessage( *mFormat.exception() ) );
     }
     kDebug() << "Error parsing" << errorMessage;
     KMessageBox::detailedError( 0,
@@ -121,9 +122,9 @@ bool Groupware::handleInvitation( const QString& receiver, const QString& iCal,
     return false;
   }
 
-  KCal::iTIPMethod method = static_cast<KCal::iTIPMethod>( message->method() );
-  KCal::ScheduleMessage::Status status = message->status();
-  KCal::Incidence *incidence = dynamic_cast<KCal::Incidence*>( message->event() );
+  KCalCore::iTIPMethod method = static_cast<KCalCore::iTIPMethod>( message->method() );
+  KCalCore::ScheduleMessage::Status status = message->status();
+  KCalCore::Incidence::Ptr incidence = message->event().staticCast<KCalCore::Incidence>();
   if( !incidence ) {
     delete message;
     return false;
@@ -135,19 +136,19 @@ bool Groupware::handleInvitation( const QString& receiver, const QString& iCal,
        action.startsWith( QLatin1String( "counter" ) ) ) {
     // Find myself and set my status. This can't be done in the scheduler,
     // since this does not know the choice I made in the KMail bpf
-    KCal::Attendee::List attendees = incidence->attendees();
-    KCal::Attendee::List::ConstIterator it;
+    KCalCore::Attendee::List attendees = incidence->attendees();
+    KCalCore::Attendee::List::ConstIterator it;
     for ( it = attendees.constBegin(); it != attendees.constEnd(); ++it ) {
       if ( (*it)->email() == receiver ) {
         if ( action.startsWith( QLatin1String( "accepted" ) ) ) {
-          (*it)->setStatus( KCal::Attendee::Accepted );
+          (*it)->setStatus( KCalCore::Attendee::Accepted );
         } else if ( action.startsWith( QLatin1String( "tentative" ) ) ) {
-          (*it)->setStatus( KCal::Attendee::Tentative );
+          (*it)->setStatus( KCalCore::Attendee::Tentative );
         } else if ( KCalPrefs::instance()->outlookCompatCounterProposals() &&
                     action.startsWith( QLatin1String( "counter" ) ) ) {
-          (*it)->setStatus( KCal::Attendee::Tentative );
+          (*it)->setStatus( KCalCore::Attendee::Tentative );
         } else if ( action.startsWith( QLatin1String( "delegated" ) ) ) {
-          (*it)->setStatus( KCal::Attendee::Delegated );
+          (*it)->setStatus( KCalCore::Attendee::Delegated );
         }
         break;
       }
@@ -158,7 +159,7 @@ bool Groupware::handleInvitation( const QString& receiver, const QString& iCal,
     }
   } else if ( action.startsWith( QLatin1String( "cancel" ) ) ) {
     // Delete the old incidence, if one is present
-    scheduler.acceptTransaction( incidence, KCal::iTIPCancel, status, receiver );
+    scheduler.acceptTransaction( incidence, KCalCore::iTIPCancel, status, receiver );
   } else if ( action.startsWith( QLatin1String( "reply" ) ) ) {
     if ( method != iTIPCounter ) {
       scheduler.acceptTransaction( incidence, method, status, QString() );
@@ -182,7 +183,7 @@ bool Groupware::handleInvitation( const QString& receiver, const QString& iCal,
   return true;
 }
 
-class KOInvitationFormatterHelper : public InvitationFormatterHelper
+class KOInvitationFormatterHelper : public KCalUtils::InvitationFormatterHelper
 {
   public:
     virtual QString generateLinkURL( const QString &id )
@@ -198,8 +199,8 @@ class KOInvitationFormatterHelper : public InvitationFormatterHelper
  * Return false means revert the changes
  */
 bool Groupware::sendICalMessage( QWidget *parent,
-                                 KCal::iTIPMethod method,
-                                 Incidence *incidence,
+                                 KCalCore::iTIPMethod method,
+                                 const Incidence::Ptr &incidence,
                                  IncidenceChanger::HowChanged action,
                                  bool attendeeStatusChanged )
 {
@@ -208,7 +209,7 @@ bool Groupware::sendICalMessage( QWidget *parent,
     return true;
   }
 
-  bool isOrganizer = KCalPrefs::instance()->thatIsMe( incidence->organizer().email() );
+  bool isOrganizer = KCalPrefs::instance()->thatIsMe( incidence->organizer()->email() );
   int rc = 0;
   /*
    * There are two scenarios:
@@ -229,7 +230,7 @@ bool Groupware::sendICalMessage( QWidget *parent,
      * only one, and it's not the same as the organizer, ask the user to send
      * mail. */
     if ( incidence->attendees().count() > 1 ||
-         incidence->attendees().first()->email() != incidence->organizer().email() ) {
+         incidence->attendees().first()->email() != incidence->organizer()->email() ) {
 
       QString txt;
       switch( action ) {
@@ -239,23 +240,23 @@ bool Groupware::sendICalMessage( QWidget *parent,
                     incidence->summary() );
         break;
       case IncidenceChanger::INCIDENCEDELETED:
-        Q_ASSERT( incidence->type() == "Event" || incidence->type() == "Todo" );
-        if ( incidence->type() == "Event" ) {
+        Q_ASSERT( incidence->type() == IncidenceBase::TypeEvent || incidence->type() == IncidenceBase::TypeTodo );
+        if ( incidence->type() == IncidenceBase::TypeEvent ) {
           txt = i18n( "You removed the invitation \"%1\".\n"
                       "Do you want to email the attendees that the event is canceled?",
                       incidence->summary() );
-        } else if ( incidence->type() == "Todo" ) {
+        } else if ( incidence->type() == IncidenceBase::TypeTodo ) {
           txt = i18n( "You removed the invitation \"%1\".\n"
                       "Do you want to email the attendees that the todo is canceled?",
                       incidence->summary() );
         }
         break;
       case IncidenceChanger::INCIDENCEADDED:
-        if ( incidence->type() == "Event" ) {
+        if ( incidence->type() == IncidenceBase::TypeEvent ) {
           txt = i18n( "The event \"%1\" includes other people.\n"
                       "Do you want to email the invitation to the attendees?",
                       incidence->summary() );
-        } else if ( incidence->type() == "Todo" ) {
+        } else if ( incidence->type() == IncidenceBase::TypeTodo ) {
           txt = i18n( "The todo \"%1\" includes other people.\n"
                       "Do you want to email the invitation to the attendees?",
                       incidence->summary() );
@@ -275,7 +276,7 @@ bool Groupware::sendICalMessage( QWidget *parent,
     } else {
       return true;
     }
-  } else if ( incidence->type() == "Todo" ) {
+  } else if ( incidence->type() == IncidenceBase::TypeTodo ) {
     if ( method == iTIPRequest ) {
       // This is an update to be sent to the organizer
       method = iTIPReply;
@@ -286,7 +287,7 @@ bool Groupware::sendICalMessage( QWidget *parent,
     rc = KMessageBox::questionYesNo(
            parent, txt, QString(),
            KGuiItem( i18n( "Send Update" ) ), KGuiItem( i18n( "Do Not Send" ) ) );
-  } else if ( incidence->type() == "Event" ) {
+  } else if ( incidence->type() == IncidenceBase::TypeEvent ) {
     QString txt;
     if ( attendeeStatusChanged && method == iTIPRequest ) {
       txt = i18n( "Your status as an attendee of this event changed. "
@@ -301,10 +302,10 @@ bool Groupware::sendICalMessage( QWidget *parent,
         bool askConfirmation = false;
         for ( QStringList::ConstIterator it = myEmails.begin(); it != myEmails.end(); ++it ) {
           QString email = *it;
-          Attendee *me = incidence->attendeeByMail(email);
+          Attendee::Ptr me = incidence->attendeeByMail(email);
           if ( me &&
-               ( me->status() == KCal::Attendee::Accepted ||
-                 me->status() == KCal::Attendee::Delegated ) ) {
+               ( me->status() == KCalCore::Attendee::Accepted ||
+                 me->status() == KCalCore::Attendee::Delegated ) ) {
             askConfirmation = true;
             break;
           }
@@ -359,22 +360,21 @@ bool Groupware::sendICalMessage( QWidget *parent,
   }
 }
 
-void Groupware::sendCounterProposal( KCal::Event *oldEvent, KCal::Event *newEvent ) const
+void Groupware::sendCounterProposal( KCalCore::Event::Ptr oldEvent, KCalCore::Event::Ptr newEvent ) const
 {
   if ( !oldEvent || !newEvent || *oldEvent == *newEvent ||
        !KCalPrefs::instance()->mUseGroupwareCommunication ) {
     return;
   }
   if ( KCalPrefs::instance()->outlookCompatCounterProposals() ) {
-    Incidence *tmp = oldEvent->clone();
+    Incidence::Ptr tmp = Incidence::Ptr( oldEvent->clone() );
     tmp->setSummary( i18n( "Counter proposal: %1", newEvent->summary() ) );
     tmp->setDescription( newEvent->description() );
     tmp->addComment( i18n( "Proposed new meeting time: %1 - %2",
-                           IncidenceFormatter::dateToString( newEvent->dtStart() ),
-                           IncidenceFormatter::dateToString( newEvent->dtEnd() ) ) );
+                           KCalUtils::IncidenceFormatter::dateToString( newEvent->dtStart() ),
+                           KCalUtils::IncidenceFormatter::dateToString( newEvent->dtEnd() ) ) );
     MailScheduler scheduler( mCalendar );
-    scheduler.performTransaction( tmp, KCal::iTIPReply );
-    delete tmp;
+    scheduler.performTransaction( tmp, KCalCore::iTIPReply );
   } else {
     MailScheduler scheduler( mCalendar );
     scheduler.performTransaction( newEvent, iTIPCounter );

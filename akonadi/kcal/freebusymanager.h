@@ -37,8 +37,8 @@
 
 #include "akonadi-kcal_next_export.h"
 
-#include <kcal/icalformat.h>
-#include <kcal/freebusycache.h>
+#include <kcalcore/icalformat.h>
+#include <kcalcore/freebusycache.h>
 
 #include <KUrl>
 
@@ -53,7 +53,7 @@ class QTimerEvent;
 namespace KIO {
   class Job;
 }
-namespace KCal {
+namespace KCalCore {
   class FreeBusy;
 }
 namespace Akonadi {
@@ -77,7 +77,7 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyDownloadJob : public QObject
     void slotData( KIO::Job *, const QByteArray &data );
 
   signals:
-    void freeBusyDownloaded( KCal::FreeBusy *, const QString & );
+    void freeBusyDownloaded( KCalCore::FreeBusy::Ptr , const QString & );
 
   private:
     FreeBusyManager *mManager;
@@ -86,7 +86,7 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyDownloadJob : public QObject
     QByteArray mFreeBusyData;
 };
 
-class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::FreeBusyCache
+class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCalCore::FreeBusyCache
 {
   Q_OBJECT
   public:
@@ -101,7 +101,7 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::Fr
       KOrganizer downloads somebody else's free/busy list
       The call is asynchronous, and upon download, the
       receivers slot specified by member will be called.
-      The slot should be of type "member(const QString&, KCal::FreeBusy*)"
+      The slot should be of type "member(const QString&, KCalCore::FreeBusy::Ptr*)"
         @param email Address of the person for which the F/B list should be
                      retrieved.
         @return true if a download is initiated, and false otherwise
@@ -111,17 +111,17 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::Fr
 
     void cancelRetrieval();
 
-    KCal::FreeBusy *iCalToFreeBusy( const QByteArray &data );
+    KCalCore::FreeBusy::Ptr iCalToFreeBusy( const QByteArray &data );
 
     /**
       Load freebusy information belonging to email.
     */
-    KCal::FreeBusy *loadFreeBusy( const QString &email );
+    KCalCore::FreeBusy::Ptr loadFreeBusy( const QString &email );
     /**
       Store freebusy information belonging to email.
     */
-    bool saveFreeBusy( KCal::FreeBusy *freebusy, const KCal::Person &person );
-//    bool saveFreeBusy( KCal::FreeBusy *, const QString &email );
+    bool saveFreeBusy( KCalCore::FreeBusy::Ptr freebusy, const KCalCore::Person &person );
+//    bool saveFreeBusy( KCalCore::FreeBusy::Ptr , const QString &email );
 
     /**
       Return URL of freeBusy information for given email address.
@@ -147,7 +147,7 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::Fr
     /**
       This signal is emitted to return results of free/busy requests.
     */
-    void freeBusyRetrieved( KCal::FreeBusy *, const QString &email );
+    void freeBusyRetrieved( KCalCore::FreeBusy::Ptr , const QString &email );
 
   protected:
     void timerEvent( QTimerEvent * );
@@ -160,12 +160,12 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::Fr
     /**
       Return free/busy list of calendar owner.
     */
-    KCal::FreeBusy *ownerFreeBusy();
+    KCalCore::FreeBusy::Ptr ownerFreeBusy();
 
     /**
       Convert free/busy object to iCalendar string.
     */
-    QString freeBusyToIcal( KCal::FreeBusy * );
+    QString freeBusyToIcal( KCalCore::FreeBusy::Ptr  );
 
   protected slots:
     bool processRetrieveQueue();
@@ -175,7 +175,7 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCal::Fr
 
   private:
     Akonadi::Calendar *mCalendar;
-    KCal::ICalFormat mFormat;
+    KCalCore::ICalFormat mFormat;
 
     QStringList mRetrieveQueue;
 

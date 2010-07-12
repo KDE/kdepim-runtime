@@ -24,11 +24,11 @@
 #include <akonadi/entitytreemodel.h>
 #include <Akonadi/Item>
 
-#include <KCal/CalFilter>
-#include <KCal/Incidence>
+#include <kcalcore/calfilter.h>
+#include <kcalcore/incidence.h>
 
 using namespace Akonadi;
-using namespace KCal;
+using namespace KCalCore;
 
 class CalFilterProxyModel::Private {
   public:
@@ -69,5 +69,5 @@ bool CalFilterProxyModel::filterAcceptsRow( int source_row, const QModelIndex& s
   const Incidence::Ptr inc = item.payload<Incidence::Ptr>();
   if ( !inc )
     return false;
-  return d->filter->filterIncidence( inc.get() );
+  return d->filter->filterIncidence( inc );
 }

@@ -24,18 +24,18 @@
 
 #include "utils.h"
 
-#include <KCal/CalendarLocal>
-#include <KCal/CalFilter>
-#include <KCal/DndFactory>
-#include <KCal/ICalDrag>
-#include <KCal/VCalDrag>
+#include <kcalcore/memorycalendar.h>
+#include <kcalcore/calfilter.h>
+#include <kcalutils/dndfactory.h>
+#include <kcalutils/icaldrag.h>
+#include <kcalutils/vcaldrag.h>
 
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionDialog>
 #include <Akonadi/EntityDisplayAttribute>
 #include <akonadi/entitytreemodel.h>
-#include <Akonadi/KCal/IncidenceMimeTypeVisitor>
+//#include <Akonadi/KCal/IncidenceMimeTypeVisitor>
 
 #include <KIconLoader>
 #include <KUrl>
@@ -55,7 +55,7 @@
 #include <cassert>
 
 using namespace boost;
-using namespace KCal;
+using namespace KCalCore;
 using namespace Akonadi;
 
 Incidence::Ptr Akonadi::incidence( const Item &item )
@@ -122,17 +122,17 @@ QMimeData* Akonadi::createMimeData( const Item::List &items, const KDateTime::Sp
   if ( items.isEmpty() )
     return 0;
 
-  KCal::CalendarLocal cal( timeSpec );
+  KCalCore::MemoryCalendar cal( timeSpec );
 
   QList<QUrl> urls;
   int incidencesFound = 0;
   Q_FOREACH ( const Item &item, items ) {
-    const KCal::Incidence::Ptr incidence( Akonadi::incidence( item ) );
+    const KCalCore::Incidence::Ptr incidence( Akonadi::incidence( item ) );
     if ( !incidence )
       continue;
     ++incidencesFound;
     urls.push_back( item.url() );
-    Incidence *i = incidence->clone();
+    Incidence::Ptr i = Incidence::Ptr( incidence->clone() );
     cal.addIncidence( i );
   }
 
@@ -143,8 +143,8 @@ QMimeData* Akonadi::createMimeData( const Item::List &items, const KDateTime::Sp
 
   mimeData->setUrls( urls );
 
-  ICalDrag::populateMimeData( mimeData.get(), &cal );
-  VCalDrag::populateMimeData( mimeData.get(), &cal );
+  KCalUtils::ICalDrag::populateMimeData( mimeData.get(), &cal );
+  KCalUtils::VCalDrag::populateMimeData( mimeData.get(), &cal );
 
   return mimeData.release();
 }
@@ -159,6 +159,8 @@ QDrag* Akonadi::createDrag( const Item &item, const KDateTime::Spec &timeSpec, Q
   return createDrag( Item::List() << item, timeSpec, parent );
 }
 
+/*
+  KDAB_TODO: REVIEW
 static QByteArray findMostCommonType( const Item::List &items ) {
   QByteArray prev;
   if ( items.isEmpty() )
@@ -166,20 +168,21 @@ static QByteArray findMostCommonType( const Item::List &items ) {
   Q_FOREACH( const Item &item, items ) {
     if ( !Akonadi::hasIncidence( item ) )
       continue;
-    const QByteArray type = Akonadi::incidence( item )->type();
+    const Incidence::IncidenceType = Akonadi::incidence( item )->type();
     if ( !prev.isEmpty() && type != prev )
       return "Incidence";
     prev = type;
   }
   return prev;
-}
+  }*/
 
 QDrag* Akonadi::createDrag( const Item::List &items, const KDateTime::Spec &timeSpec, QWidget* parent )
 {
   std::auto_ptr<QDrag> drag( new QDrag( parent ) );
   drag->setMimeData( Akonadi::createMimeData( items, timeSpec ) );
 
-  const QByteArray common = findMostCommonType( items );
+  //KDAB_TODO: review
+  const QByteArray common;// = findMostCommonType( items );
   if ( common == "Event" ) {
     drag->setPixmap( BarIcon( QLatin1String("view-calendar-day") ) );
   } else if ( common == "Todo" ) {
@@ -195,7 +198,7 @@ static bool itemMatches( const Item& item, const CalFilter* filter )
   Incidence::Ptr inc = Akonadi::incidence( item );
   if ( !inc )
     return false;
-  return filter->filterIncidence( inc.get() );
+  return filter->filterIncidence( inc );
 }
 
 Item::List Akonadi::applyCalFilter( const Item::List &items_, const CalFilter* filter ) {
@@ -216,9 +219,12 @@ bool Akonadi::isValidIncidenceItemUrl( const KUrl &url, const QStringList &suppo
 
 bool Akonadi::isValidIncidenceItemUrl( const KUrl &url )
 {
+  /*KDAB_TODO
   IncidenceMimeTypeVisitor visitor;
-  
+
   return isValidIncidenceItemUrl( url, visitor.allMimeTypes() );
+  */
+  return true;
 }
 
 static bool containsValidIncidenceItemUrl( const QList<QUrl>& urls )
@@ -232,13 +238,15 @@ bool Akonadi::isValidTodoItemUrl( const KUrl &url )
     return false;
   if ( url.scheme() != QLatin1String("akonadi") )
     return false;
-  return url.queryItem( QLatin1String("type") ) == IncidenceMimeTypeVisitor::todoMimeType();
+  return true;//KDAB_TODO  return url.queryItem( QLatin1String("type") ) == IncidenceMimeTypeVisitor::todoMimeType();
 }
 
 bool Akonadi::canDecode( const QMimeData* md )
 {
   Q_ASSERT( md );
-  return containsValidIncidenceItemUrl( md->urls() ) || ICalDrag::canDecode( md ) || VCalDrag::canDecode( md );
+  return containsValidIncidenceItemUrl( md->urls() ) ||
+         KCalUtils::ICalDrag::canDecode( md ) ||
+         KCalUtils::VCalDrag::canDecode( md );
 }
 
 QList<KUrl> Akonadi::incidenceItemUrls( const QMimeData* mimeData )
@@ -252,10 +260,13 @@ QList<KUrl> Akonadi::incidenceItemUrls( const QMimeData* mimeData )
 
 QList<KUrl> Akonadi::todoItemUrls( const QMimeData* mimeData )
 {
+  // KDBA_TODO
+
   QList<KUrl> urls;
+  /*
   Q_FOREACH( const KUrl& i, mimeData->urls() )
     if ( isValidIncidenceItemUrl( i , QStringList() << IncidenceMimeTypeVisitor::todoMimeType() ) )
-      urls.push_back( i );
+    urls.push_back( i );*/
   return urls;
 }
 
@@ -266,12 +277,14 @@ bool Akonadi::mimeDataHasTodo( const QMimeData* mimeData )
 
 QList<Todo::Ptr> Akonadi::todos( const QMimeData* mimeData, const KDateTime::Spec &spec )
 {
-  std::auto_ptr<KCal::Calendar> cal( KCal::DndFactory::createDropCalendar( mimeData, spec ) );
+  std::auto_ptr<KCalCore::Calendar> cal( KCalUtils::DndFactory::createDropCalendar( mimeData, spec ) );
   if ( !cal.get() )
     return QList<Todo::Ptr>();
   QList<Todo::Ptr> todos;
-  Q_FOREACH( Todo* const i, cal->todos() )
+  Q_FOREACH( const Todo::Ptr &i, cal->todos() ) {
       todos.push_back( Todo::Ptr( i->clone() ) );
+  }
+
   return todos;
 }
 
@@ -376,9 +389,10 @@ QString Akonadi::displayName( const Collection &c )
   return ( attr && !attr->displayName().isEmpty() ) ? attr->displayName() : c.name();
 }
 
-QString Akonadi::subMimeTypeForIncidence( KCal::Incidence *incidence )
+QString Akonadi::subMimeTypeForIncidence( KCalCore::Incidence::Ptr incidence )
 {
-  IncidenceMimeTypeVisitor visitor;
-  incidence->accept( visitor );
-  return visitor.mimeType();  
+//  IncidenceMimeTypeVisitor visitor;
+//  incidence->accept( visitor, incidence );
+//  return visitor.mimeType();
+  // KDAB_TODO
 }
