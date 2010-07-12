@@ -165,7 +165,7 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCalCore
     /**
       Convert free/busy object to iCalendar string.
     */
-    QString freeBusyToIcal( KCalCore::FreeBusy::Ptr  );
+    QString freeBusyToIcal( const KCalCore::FreeBusy::Ptr & );
 
   protected slots:
     bool processRetrieveQueue();

@@ -105,7 +105,7 @@ void FreeBusyDownloadJob::slotResult( KJob *job )
   FreeBusy::Ptr fb = mManager->iCalToFreeBusy( mFreeBusyData );
   if ( fb ) {
     Person::Ptr p = fb->organizer();
-    p.setEmail( mEmail );
+    p->setEmail( mEmail );
     mManager->saveFreeBusy( fb, p );
   }
   emit freeBusyDownloaded( fb, mEmail );
@@ -137,25 +137,23 @@ KCalCore::FreeBusy::Ptr FreeBusyManager::ownerFreeBusy()
   Event::List events;
   Akonadi::Item::List items = mCalendar ? mCalendar->rawEvents( start.date(), end.date() ) : Akonadi::Item::List();
   foreach(const Akonadi::Item &item, items) {
-    events << item.payload<Event::Ptr>().get();
+    events << item.payload<Event::Ptr>();
   }
-  FreeBusy *freebusy = new FreeBusy( events, start, end );
-  freebusy->setOrganizer( Person( KCalPrefs::instance()->fullName(), KCalPrefs::instance()->email() ) );
+  FreeBusy::Ptr freebusy( new FreeBusy( events, start, end ) );
+  freebusy->setOrganizer( Person::Ptr( new Person( KCalPrefs::instance()->fullName(), KCalPrefs::instance()->email() ) ) );
   return freebusy;
 }
 
 QString FreeBusyManager::ownerFreeBusyAsString()
 {
-  FreeBusy *freebusy = ownerFreeBusy();
+  FreeBusy::Ptr freebusy = ownerFreeBusy();
 
   QString result = freeBusyToIcal( freebusy );
-
-  delete freebusy;
 
   return result;
 }
 
-QString FreeBusyManager::freeBusyToIcal( KCalCore::FreeBusy::Ptr freebusy )
+QString FreeBusyManager::freeBusyToIcal( const KCalCore::FreeBusy::Ptr &freebusy )
 {
   return mFormat.createScheduleMessage( freebusy, iTIPPublish );
 }
@@ -524,7 +522,7 @@ QString FreeBusyManager::freeBusyDir()
   return KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/freebusy" ) );
 }
 
-FreeBusy *FreeBusyManager::loadFreeBusy( const QString &email )
+FreeBusy::Ptr FreeBusyManager::loadFreeBusy( const QString &email )
 {
   kDebug() << email;
 
@@ -533,12 +531,12 @@ FreeBusy *FreeBusyManager::loadFreeBusy( const QString &email )
   QFile f( fbd + QLatin1Char( '/' ) + email + QLatin1String( ".ifb" ) );
   if ( !f.exists() ) {
     kDebug() << f.fileName() << "doesn't exist.";
-    return 0;
+    return FreeBusy::Ptr();
   }
 
   if ( !f.open( QIODevice::ReadOnly ) ) {
     kDebug() << "Unable to open file" << f.fileName();
-    return 0;
+    return FreeBusy::Ptr();
   }
 
   QTextStream ts( &f );
@@ -550,7 +548,7 @@ FreeBusy *FreeBusyManager::loadFreeBusy( const QString &email )
 bool FreeBusyManager::saveFreeBusy( const FreeBusy::Ptr &freebusy,
                                     const Person::Ptr &person )
 {
-  kDebug() << person.fullName();
+  kDebug() << person->fullName();
 
   QString fbd = freeBusyDir();
 
@@ -567,7 +565,7 @@ bool FreeBusyManager::saveFreeBusy( const FreeBusy::Ptr &freebusy,
 
   QString filename( fbd );
   filename += QLatin1Char( '/' );
-  filename += person.email();
+  filename += person->email();
   filename += QLatin1String( ".ifb" );
   QFile f( filename );
 

@@ -124,11 +124,11 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCalCore::Calendar
 
     KCalCore::Event::List deletedEvents(KCalCore::EventSortField, KCalCore::SortDirection) const{}
     KCalCore::Todo::List deletedTodos(KCalCore::TodoSortField, KCalCore::SortDirection) const{}
-    KCalCore::Todo::List deletedJournals(KCalCore::JournalSortField, KCalCore::SortDirection) const{}
+    KCalCore::Journal::List deletedJournals(KCalCore::JournalSortField, KCalCore::SortDirection) const{}
 
     KCalCore::Event::List childEvents(const KCalCore::Incidence::Ptr&, KCalCore::EventSortField, KCalCore::SortDirection) const{}
-    KCalCore::Event::List childTodos(const KCalCore::Incidence::Ptr&, KCalCore::TodoSortField, KCalCore::SortDirection) const{}
-    KCalCore::Event::List childJournals(const KCalCore::Incidence::Ptr&, KCalCore::JournalSortField, KCalCore::SortDirection) const{}
+    KCalCore::Todo::List childTodos(const KCalCore::Incidence::Ptr&, KCalCore::TodoSortField, KCalCore::SortDirection) const{}
+    KCalCore::Journal::List childJournals(const KCalCore::Incidence::Ptr&, KCalCore::JournalSortField, KCalCore::SortDirection) const{}
 
     // KDAB_TODO, implement
     KCalCore::Todo::List rawTodos(const QDate&, const QDate&, const KDateTime::Spec&, bool) const{}
