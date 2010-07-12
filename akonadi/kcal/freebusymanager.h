@@ -120,8 +120,8 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCalCore
     /**
       Store freebusy information belonging to email.
     */
-    bool saveFreeBusy( KCalCore::FreeBusy::Ptr freebusy, const KCalCore::Person &person );
-//    bool saveFreeBusy( KCalCore::FreeBusy::Ptr , const QString &email );
+    bool saveFreeBusy( const KCalCore::FreeBusy::Ptr &freebusy,
+                       const KCalCore::Person::Ptr &person );
 
     /**
       Return URL of freeBusy information for given email address.

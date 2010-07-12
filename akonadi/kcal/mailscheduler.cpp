@@ -27,7 +27,9 @@
 #include "identitymanager.h"
 #include "kcalprefs.h"
 #include "calendar.h"
-#include <kcalcore/memorycalendar.h>
+#include "calendaradaptor.h"
+
+#include <kcalutils/scheduler.h>
 
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemModifyJob>
@@ -143,7 +145,7 @@ QList<ScheduleMessage*> MailScheduler::retrieveTransactions()
         messageString.remove( QRegExp( QLatin1String( "\n[ \t]" ) ) );
         messageString = QString::fromUtf8( messageString.toLatin1() );
 
-        KCalCore::MemoryCalendar caladaptor( mCalendar, 0 );
+        CalendarAdaptor caladaptor( mCalendar, 0 );
         ScheduleMessage *mess = mFormat->parseScheduleMessage( &caladaptor, messageString );
 
         if ( mess ) {
@@ -184,21 +186,21 @@ QString MailScheduler::freeBusyDir()
 
 bool MailScheduler::acceptTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method, KCalCore::ScheduleMessage::Status status, const QString &email )
 {
-  class SchedulerAdaptor : public KCalCore::Scheduler
+  class SchedulerAdaptor : public KCalUtils::Scheduler
   {
     public:
-      SchedulerAdaptor(MailScheduler* s, KCalCore::MemoryCalendar *c) : KCalCore::Scheduler(c), m_scheduler(s), m_calendar(c) {}
+      SchedulerAdaptor(MailScheduler* s, CalendarAdaptor *c) : KCalUtils::Scheduler(c), m_scheduler(s), m_calendar(c) {}
       virtual ~SchedulerAdaptor() {}
-      virtual bool publish ( KCalCore::IncidenceBase::Ptr incidence, const QString &recipients ) {
+      virtual bool publish ( const KCalCore::IncidenceBase::Ptr &incidence, const QString &recipients ) {
         return m_scheduler->publish( incidence, recipients );
       }
-      virtual bool performTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method ) {
+      virtual bool performTransaction( const KCalCore::IncidenceBase::Ptr &incidence, KCalCore::iTIPMethod method ) {
         return m_scheduler->performTransaction( incidence, method );
       }
-      virtual bool performTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method, const QString &recipients ) {
+      virtual bool performTransaction( const KCalCore::IncidenceBase::Ptr &incidence, KCalCore::iTIPMethod method, const QString &recipients ) {
         return m_scheduler->performTransaction( incidence, method, recipients );
       }
-      virtual bool acceptCounterProposal( KCalCore::Incidence::Ptr incidence ) {
+      virtual bool acceptCounterProposal( const KCalCore::Incidence::Ptr &incidence ) {
         return m_scheduler->acceptCounterProposal( incidence );
       }
       virtual QList<ScheduleMessage*> retrieveTransactions() {
@@ -213,10 +215,10 @@ bool MailScheduler::acceptTransaction( KCalCore::IncidenceBase::Ptr incidence, K
       }
     private:
       MailScheduler* m_scheduler;
-      KCalCore::MemoryCalendar *m_calendar;
+      CalendarAdaptor *m_calendar;
   };
 
-  KCalCore::MemoryCalendar caladaptor(mCalendar, 0);
+  CalendarAdaptor caladaptor(mCalendar, 0);
   SchedulerAdaptor scheduleradaptor(this, &caladaptor);
   return scheduleradaptor.acceptTransaction(incidence, method, status, email);
 }
@@ -245,7 +247,12 @@ bool MailScheduler::acceptCounterProposal( KCalCore::Incidence::Ptr incidence )
 
     Q_ASSERT( exIncPtr && incidence );
 
-    *exIncPtr.data() =  incidence*;
+    IncidenceBase *i1 = exIncPtr.data();
+    IncidenceBase *i2 = incidence.data();
+
+    if ( i1->type() == i2->type() ) {
+      *i1 = *i2;
+    }
 
     exIncPtr->updated();
     new Akonadi::ItemModifyJob( exInc );

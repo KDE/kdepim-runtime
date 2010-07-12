@@ -36,27 +36,27 @@
 #include <Akonadi/Collection>
 #include <akonadi/kcal/utils.h>
 
-#include <KCal/Calendar>
-#include <KCal/CalFilter>
-#include <KCal/DndFactory>
-#include <KCal/FileStorage>
-#include <KCal/FreeBusy>
-#include <KCal/ICalDrag>
-#include <KCal/ICalFormat>
-#include <KCal/VCalFormat>
+#include <kcalcore/calendar.h>
+#include <kcalcore/calfilter.h>
+#include <kcalcore/freebusy.h>
+#include <kcalcore/icalformat.h>
+#include <kcalcore/vcalformat.h>
 #include <kcal/listbase.h>
+
+#include <kcalutils/dndfactory.h>
+#include <kcalutils/icaldrag.h>
 
 #include <KDE/KMessageBox>
 
 namespace Akonadi {
 
-class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
+class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCalCore::Calendar
 {
   Q_OBJECT
     // prevent warning about hidden virtual method
     using QObject::event;
-    using KCal::Calendar::addIncidence;
-    using KCal::Calendar::deleteIncidence;
+    using KCalCore::Calendar::addIncidence;
+    using KCalCore::Calendar::deleteIncidence;
 
   public:
     CalendarAdaptor( Akonadi::Calendar *calendar, QWidget *parent,
@@ -68,56 +68,83 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
     virtual bool reload();
     virtual void close();
 
-    virtual bool addEvent( KCal::Event *event );
-    virtual bool deleteEvent( KCal::Event *event );
+    virtual void incidenceUpdate( const QString &uid );
+    virtual void incidenceUpdated( const QString &uid );
+
+    virtual bool addEvent( const KCalCore::Event::Ptr &event );
+    virtual bool deleteEvent( const KCalCore::Event::Ptr &event );
     virtual void deleteAllEvents();  //unused
 
-    virtual KCal::Event::List rawEvents( KCal::EventSortField sortField = KCal::EventSortUnsorted,
-                                         KCal::SortDirection sortDirection = KCal::SortDirectionAscending );
+    virtual KCalCore::Event::List rawEvents( KCalCore::EventSortField sortField = KCalCore::EventSortUnsorted,
+                                         KCalCore::SortDirection sortDirection = KCalCore::SortDirectionAscending ) const;
 
-    virtual KCal::Event::List rawEventsForDate( const KDateTime &dt );
+    virtual KCalCore::Event::List rawEventsForDate( const KDateTime &dt ) const;
 
-    virtual KCal::Event::List rawEvents( const QDate &start, const QDate &end,
+    virtual KCalCore::Event::List rawEvents( const QDate &start, const QDate &end,
                                          const KDateTime::Spec &timeSpec = KDateTime::Spec(),
-                                         bool inclusive = false );
+                                         bool inclusive = false ) const;
 
-    virtual KCal::Event::List rawEventsForDate( const QDate &date,
+    virtual KCalCore::Event::List rawEventsForDate( const QDate &date,
                                                 const KDateTime::Spec &timeSpec = KDateTime::Spec(),
-                                                KCal::EventSortField sortField = KCal::EventSortUnsorted,
-                                                KCal::SortDirection sortDirection = KCal::SortDirectionAscending );
+                                                KCalCore::EventSortField sortField = KCalCore::EventSortUnsorted,
+                                                KCalCore::SortDirection sortDirection = KCalCore::SortDirectionAscending ) const;
 
-    virtual KCal::Event *event( const QString &uid );
+    virtual KCalCore::Event::Ptr event( const QString &uid,
+                                        const KDateTime &recurrenceId = KDateTime() ) const;
 
-    virtual bool addTodo( KCal::Todo *todo );
+    virtual bool addTodo( const KCalCore::Todo::Ptr &todo );
 
-    virtual bool deleteTodo( KCal::Todo *todo );
+    virtual bool deleteTodo( const KCalCore::Todo::Ptr &todo );
 
     virtual void deleteAllTodos(); //unused
 
-    virtual KCal::Todo::List rawTodos( KCal::TodoSortField sortField = KCal::TodoSortUnsorted,
-                                 KCal::SortDirection sortDirection = KCal::SortDirectionAscending );
+    virtual KCalCore::Todo::List rawTodos( KCalCore::TodoSortField sortField = KCalCore::TodoSortUnsorted,
+                                 KCalCore::SortDirection sortDirection = KCalCore::SortDirectionAscending ) const;
 
-    virtual KCal::Todo::List rawTodosForDate( const QDate &date );
+    virtual KCalCore::Todo::List rawTodosForDate( const QDate &date ) const;
 
-    virtual KCal::Todo *todo( const QString &uid );
+    virtual KCalCore::Todo::Ptr todo( const QString &uid,
+                                      const KDateTime &recurrenceId = KDateTime() ) const;
 
-    virtual bool addJournal( KCal::Journal *journal );
+    virtual bool addJournal( const KCalCore::Journal::Ptr &journal );
 
-    virtual bool deleteJournal( KCal::Journal *journal );
+    virtual bool deleteJournal( const KCalCore::Journal::Ptr &journal );
 
     virtual void deleteAllJournals(); //unused
 
-    virtual KCal::Journal::List rawJournals( KCal::JournalSortField sortField = KCal::JournalSortUnsorted,
-                                       KCal::SortDirection sortDirection = KCal::SortDirectionAscending );
+    virtual bool deleteChildIncidences( const KCalCore::Incidence::Ptr &incidence ) { return true; }
+    virtual bool deleteChildEvents( const KCalCore::Event::Ptr &incidence ) { return true; }
+    virtual bool deleteChildTodos( const KCalCore::Todo::Ptr &incidence ) { return true; }
+    virtual bool deleteChildJournals( const KCalCore::Journal::Ptr &incidence ) { return true; }
 
-    virtual KCal::Journal::List rawJournalsForDate( const QDate &dt );
 
-    virtual KCal::Journal *journal( const QString &uid );
+    KCalCore::Event::Ptr deletedEvent(const QString&, const KDateTime& = KDateTime() ) const{}
+    KCalCore::Todo::Ptr deletedTodo(const QString&, const KDateTime& = KDateTime()) const{}
+    KCalCore::Journal::Ptr deletedJournal(const QString&, const KDateTime& = KDateTime()) const{}
 
-    virtual KCal::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
+    KCalCore::Event::List deletedEvents(KCalCore::EventSortField, KCalCore::SortDirection) const{}
+    KCalCore::Todo::List deletedTodos(KCalCore::TodoSortField, KCalCore::SortDirection) const{}
+    KCalCore::Todo::List deletedJournals(KCalCore::JournalSortField, KCalCore::SortDirection) const{}
+
+    KCalCore::Event::List childEvents(const KCalCore::Incidence::Ptr&, KCalCore::EventSortField, KCalCore::SortDirection) const{}
+    KCalCore::Event::List childTodos(const KCalCore::Incidence::Ptr&, KCalCore::TodoSortField, KCalCore::SortDirection) const{}
+    KCalCore::Event::List childJournals(const KCalCore::Incidence::Ptr&, KCalCore::JournalSortField, KCalCore::SortDirection) const{}
+
+    // KDAB_TODO, implement
+    KCalCore::Todo::List rawTodos(const QDate&, const QDate&, const KDateTime::Spec&, bool) const{}
+
+    virtual KCalCore::Journal::List rawJournals( KCalCore::JournalSortField sortField = KCalCore::JournalSortUnsorted,
+                                       KCalCore::SortDirection sortDirection = KCalCore::SortDirectionAscending ) const;
+
+    virtual KCalCore::Journal::List rawJournalsForDate( const QDate &dt ) const;
+
+    virtual KCalCore::Journal::Ptr journal( const QString &uid,
+                                            const KDateTime &recurrenceId = KDateTime() ) const;
+
+    virtual KCalCore::Alarm::List alarms( const KDateTime &from, const KDateTime &to ) const;
 
     // From IncidenceChanger
-    bool addIncidence( const KCal::Incidence::Ptr &incidence );
+    bool addIncidence( const KCalCore::Incidence::Ptr &incidence );
 
     bool deleteIncidence( const Akonadi::Item &aitem, bool deleteCalendar = false );
 
@@ -128,11 +155,11 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCal::Calendar
 
   private:
     bool sendGroupwareMessage( const Akonadi::Item &aitem,
-                               KCal::iTIPMethod method,
+                               KCalCore::iTIPMethod method,
                                IncidenceChanger::HowChanged action );
 
     //Coming from CalendarView
-    void schedule( KCal::iTIPMethod method, const Akonadi::Item &item );
+    void schedule( KCalCore::iTIPMethod method, const Akonadi::Item &item );
 
     Akonadi::Collection mDefaultCollection;
     Akonadi::Calendar *mCalendar;

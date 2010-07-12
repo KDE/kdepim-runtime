@@ -384,3 +384,12 @@ void CalendarAdaptor::schedule( iTIPMethod method, const Akonadi::Item &item )
   }
 }
 
+void CalendarAdaptor::incidenceUpdate( const QString & )
+{
+
+}
+
+void CalendarAdaptor::incidenceUpdated( const QString & )
+{
+}
+

@@ -102,9 +102,9 @@ void FreeBusyDownloadJob::slotResult( KJob *job )
     kDebug() << "job error :-(";
   }
 
-  FreeBusy *fb = mManager->iCalToFreeBusy( mFreeBusyData );
+  FreeBusy::Ptr fb = mManager->iCalToFreeBusy( mFreeBusyData );
   if ( fb ) {
-    Person p = fb->organizer();
+    Person::Ptr p = fb->organizer();
     p.setEmail( mEmail );
     mManager->saveFreeBusy( fb, p );
   }
@@ -547,7 +547,8 @@ FreeBusy *FreeBusyManager::loadFreeBusy( const QString &email )
   return iCalToFreeBusy( str.toUtf8() );
 }
 
-bool FreeBusyManager::saveFreeBusy( FreeBusy *freebusy, const Person &person )
+bool FreeBusyManager::saveFreeBusy( const FreeBusy::Ptr &freebusy,
+                                    const Person::Ptr &person )
 {
   kDebug() << person.fullName();
 
