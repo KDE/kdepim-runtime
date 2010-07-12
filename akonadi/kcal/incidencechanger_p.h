@@ -64,8 +64,8 @@ public:
    * */
   void cancelChanges( Item::Id id );
 
-  bool myAttendeeStatusChanged( const KCalCore::Incidence::Ptr newInc,
-                                const KCalCore::Incidence::Ptr oldInc );
+  bool myAttendeeStatusChanged( const KCalCore::Incidence::Ptr &newInc,
+                                const KCalCore::Incidence::Ptr &oldInc );
 
   Entity::Id mDefaultCollectionId;
 
@@ -84,7 +84,7 @@ public:
   QList<Akonadi::Item::Id> mDeletedItemIds;
 
   Calendar *mCalendar;
-  
+
 public slots:
   void performNextChange( Akonadi::Item::Id );
 
