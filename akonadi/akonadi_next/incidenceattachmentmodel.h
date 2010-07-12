@@ -26,7 +26,7 @@
 
 #include "akonadi_next_export.h"
 #include <akonadi/attribute.h>
-#include <KCal/Incidence>
+#include <kcalcore/incidence.h>
 #include <akonadi/item.h>
 
 class QAbstractItemModel;
@@ -56,7 +56,7 @@ public:
   IncidenceAttachmentModel( const Akonadi::Item &item, QObject* parent = 0);
   IncidenceAttachmentModel( QObject* parent = 0);
 
-  ::KCal::Incidence::Ptr incidence() const;
+  KCalCore::Incidence::Ptr incidence() const;
 
   void setItem( const Akonadi::Item &item );
   void setIndex( const QPersistentModelIndex &modelIndex );

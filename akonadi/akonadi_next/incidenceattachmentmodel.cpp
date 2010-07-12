@@ -85,12 +85,13 @@ class IncidenceAttachmentModelPrivate
     if ( m_modelIndex.isValid() )
       item = m_modelIndex.data( EntityTreeModel::ItemRole ).value<Akonadi::Item>();
 
-    if ( !item.isValid() || !item.hasPayload<KCal::Incidence::Ptr>() )
+    if ( !item.isValid() || !item.hasPayload<KCalCore::Incidence::Ptr>() )
     {
-      m_incidence.reset();
+      //KDAB_TODO
+//      m_incidence.reset();
       return;
     }
-    m_incidence = item.payload<KCal::Incidence::Ptr>();
+    m_incidence = item.payload<KCalCore::Incidence::Ptr>();
   }
 
   Q_DECLARE_PUBLIC( IncidenceAttachmentModel )
@@ -98,7 +99,7 @@ class IncidenceAttachmentModelPrivate
 
   QModelIndex m_modelIndex;
   Akonadi::Item m_item;
-  KCal::Incidence::Ptr m_incidence;
+  KCalCore::Incidence::Ptr m_incidence;
   Akonadi::Monitor *m_monitor;
 };
 
@@ -122,7 +123,7 @@ IncidenceAttachmentModel::IncidenceAttachmentModel( QObject* parent )
 
 }
 
-KCal::Incidence::Ptr IncidenceAttachmentModel::incidence() const
+KCalCore::Incidence::Ptr IncidenceAttachmentModel::incidence() const
 {
   Q_D( const IncidenceAttachmentModel );
   return d->m_incidence;
@@ -142,7 +143,7 @@ void IncidenceAttachmentModel::setIndex( const QPersistentModelIndex &modelIndex
 void IncidenceAttachmentModel::setItem( const Akonadi::Item& item )
 {
   Q_D( IncidenceAttachmentModel );
-  if ( !item.hasPayload<KCal::Incidence::Ptr>() )
+  if ( !item.hasPayload<KCalCore::Incidence::Ptr>() )
   {
     ItemFetchJob *job = new ItemFetchJob( item );
     job->fetchScope().fetchFullPayload( true );
@@ -178,7 +179,7 @@ QVariant IncidenceAttachmentModel::data(const QModelIndex& index, int role) cons
   if ( !d->m_incidence )
     return QVariant();
 
-  KCal::Attachment *attachment = d->m_incidence->attachments().at( index.row() );
+  KCalCore::Attachment::Ptr attachment = d->m_incidence->attachments().at( index.row() );
   switch ( role )
   {
     case Qt::DisplayRole:
