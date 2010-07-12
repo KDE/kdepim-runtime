@@ -36,7 +36,7 @@
 #include <Akonadi/Collection>
 #include <akonadi/kcal/utils.h>
 
-#include <kcalcore/calendar.h>
+#include <kcalcore/memorycalendar.h>
 #include <kcalcore/calfilter.h>
 #include <kcalcore/freebusy.h>
 #include <kcalcore/icalformat.h>
@@ -50,7 +50,7 @@
 
 namespace Akonadi {
 
-class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCalCore::Calendar
+class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCalCore::MemoryCalendar
 {
   Q_OBJECT
     // prevent warning about hidden virtual method
