@@ -36,7 +36,9 @@ SingleFileResourceConfigWidget::SingleFileResourceConfigWidget( QWidget *parent 
 {
   ui.setupUi( this );
   ui.kcfg_Path->setMode( KFile::File );
+#ifndef KDEPIM_MOBILE_UI
   ui.statusLabel->setText( QString() );
+#endif
 
   connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
   connect( ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()) );
@@ -82,7 +84,9 @@ void SingleFileResourceConfigWidget::validate()
     if ( mMonitorEnabled ) {
       ui.kcfg_MonitorFile->setEnabled( true );
     }
+#ifndef KDEPIM_MOBILE_UI
     ui.statusLabel->setText( QString() );
+#endif
 
     const QFileInfo file( currentUrl.toLocalFile() );
     if ( file.exists() && !file.isWritable() ) {
@@ -96,7 +100,9 @@ void SingleFileResourceConfigWidget::validate()
     if ( mMonitorEnabled ) {
       ui.kcfg_MonitorFile->setEnabled( false );
     }
+#ifndef KDEPIM_MOBILE_UI
     ui.statusLabel->setText( i18nc( "@info:status", "Checking file information..." ) );
+#endif
 
     if ( mStatJob )
       mStatJob->kill();
@@ -133,7 +139,9 @@ void SingleFileResourceConfigWidget::slotStatJobResult( KJob* job )
   } else if ( job->error() ) {
     // It doesn't seem possible to read nor write from the location so leave the
     // ok button disabled
+#ifndef KDEPIM_MOBILE_UI
     ui.statusLabel->setText( QString() );
+#endif
     emit validated( false );
     mDirUrlChecked = false;
     mStatJob = 0;
@@ -150,7 +158,9 @@ void SingleFileResourceConfigWidget::slotStatJobResult( KJob* job )
     ui.kcfg_ReadOnly->setChecked( true );
   }
 
+#ifndef KDEPIM_MOBILE_UI
   ui.statusLabel->setText( QString() );
+#endif
   emit validated( true );
 
   mDirUrlChecked = false;
