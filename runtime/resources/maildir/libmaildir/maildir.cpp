@@ -27,6 +27,30 @@
 #include <klocale.h>
 #include <kpimutils/kfileio.h>
 
+#include <kde_file.h>
+#include <time.h>
+#include <unistd.h>
+
+static void initRandomSeed()
+{
+  static bool init = false;
+  if ( !init ) {
+    unsigned int seed;
+    init = true;
+    int fd = KDE_open( "/dev/urandom", O_RDONLY );
+    if ( fd < 0 || ::read( fd, &seed, sizeof( seed ) ) != sizeof( seed ) ) {
+      // No /dev/urandom... try something else.
+      srand( getpid() );
+      seed = rand() + time( 0 );
+    }
+
+    if ( fd >= 0 )
+      close( fd );
+
+    qsrand( seed );
+  }
+}
+
 using namespace KPIM;
 
 class Maildir::Private
@@ -35,6 +59,10 @@ public:
     Private( const QString& p, bool isRoot )
         :path(p), isRoot(isRoot)
     {
+      // The default implementation of QUuid::createUuid() doesn't use
+      // a seed that is random enough. Therefor we use our own initialization
+      // until this issue will be fixed in Qt 4.7.
+      initRandomSeed();
     }
 
     Private( const Private& rhs )
