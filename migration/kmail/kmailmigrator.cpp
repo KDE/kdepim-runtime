@@ -74,6 +74,8 @@ using namespace KMail;
    changing too. */
 enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
+#define SPECIALCOLLECTIONS_LOCK_SERVICE QLatin1String( "org.kde.pim.SpecialCollections" )
+
 static MixedMaildirStore *createCacheStore( const QString &basePath )
 {
   MixedMaildirStore *store = 0;
@@ -1028,6 +1030,9 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   resourceGroup.writeEntry( "CheckOnStartup", false );
   resourceGroup.writeEntry( "OfflineOnShutdown", false );
 
+  const bool specialCollectionsLock =
+    QDBusConnection::sessionBus().registerService( SPECIALCOLLECTIONS_LOCK_SERVICE );
+
   KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
   KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
 
@@ -1051,7 +1056,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
   const QString instanceName = i18n("KMail Folders");
 
-  if ( defaultInstanceName.isEmpty() ) {
+  if ( defaultInstanceName.isEmpty() && specialCollectionsLock ) {
     specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), defaultResourceId );
     specialMailCollectionsGroup.sync();
 
@@ -1064,6 +1069,10 @@ void KMailMigrator::localMaildirCreated( KJob *job )
                   i18nc( "@info:status resource that will provide folder such as outbox, sent",
                          "Keeping '%1' for default outbox, sent mail, trash, etc.",
                          defaultInstanceName ) );
+  }
+
+  if ( specialCollectionsLock ){
+    QDBusConnection::sessionBus().unregisterService( SPECIALCOLLECTIONS_LOCK_SERVICE );
   }
 
   instance.setName( instanceName );
@@ -1372,8 +1381,11 @@ void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance 
 
   const EmptyResourceCleaner *cleaner = qobject_cast<const EmptyResourceCleaner*>( QObject::sender() );
 
+  const bool specialCollectionsLock =
+    QDBusConnection::sessionBus().registerService( SPECIALCOLLECTIONS_LOCK_SERVICE );
+
   const QString localFoldersIdentifier = mCurrentInstance.identifier();
-  if ( cleaner->isResourceDeletable() ) {
+  if ( cleaner->isResourceDeletable() && specialCollectionsLock ) {
     specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), localFoldersIdentifier );
     specialMailCollectionsGroup.sync();
     AgentManager::self()->removeInstance( instance );
@@ -1383,6 +1395,10 @@ void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance 
   } else {
     kDebug() << "Former special mail collection resource" << instance.identifier()
              << "still valid";
+  }
+
+  if ( specialCollectionsLock ){
+    QDBusConnection::sessionBus().unregisterService( SPECIALCOLLECTIONS_LOCK_SERVICE );
   }
 
   mLocalFoldersDone = true;
