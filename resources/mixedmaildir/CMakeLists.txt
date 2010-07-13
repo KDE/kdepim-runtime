@@ -20,6 +20,7 @@ add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5254) # TODO get our own debug area
 ########### next target ###############
 
 set( mixedmaildirresource_SRCS
+  compactchangehelper.cpp
   configdialog.cpp
   mixedmaildirresource.cpp
   mixedmaildirstore.cpp

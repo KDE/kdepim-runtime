@@ -71,7 +71,7 @@ static bool indexFileForFolder( const QFileInfo &folderDirInfo, QFileInfo &index
 class MBoxContext
 {
   public:
-    MBoxContext() : mIndexDataLoaded( false ), mHasIndexData( false ) {}
+    MBoxContext() : mRevision( 0 ), mIndexDataLoaded( false ), mHasIndexData( false ) {}
 
     QString fileName() const
     {
@@ -177,6 +177,7 @@ class MBoxContext
 
   public:
     Collection mCollection;
+    qint64 mRevision;
 
   private:
     QSet<quint64> mDeletedOffsets;
@@ -1779,6 +1780,15 @@ bool MixedMaildirStore::Private::visit( FileStore::StoreCompactJob *job )
     QList<MsgInfo> movedEntries;
     const int result = mbox->purge( movedEntries );
     if ( result > 0 ) {
+      if ( movedEntries.count() > 0 ) {
+        qint64 revision = mbox->mCollection.remoteRevision().toLongLong();
+        kDebug() << "purge of" << mbox->mCollection.name() << "caused item move: oldRevision="
+                << revision << "(stored)," << mbox->mRevision << "(local)";
+        revision = qMax( revision, mbox->mRevision ) + 1;
+        mbox->mCollection.setRemoteRevision( QString::number( revision ) );
+        mbox->mRevision = revision;
+      }
+
       Item::List items;
       Q_FOREACH( const MsgInfo &offsetPair, movedEntries ) {
         const QString oldRemoteId( QString::number( offsetPair.first ) );
