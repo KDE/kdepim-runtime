@@ -544,8 +544,20 @@ void Calendar::setUnfilteredModel( QAbstractItemModel *model )
 }
 
 // This method will be called probably multiple times if a series of changes where done. One finished the endChange() method got called.
-void Calendar::incidenceUpdated( KCalCore::IncidenceBase::Ptr incidence )
+
+void Calendar::incidenceUpdate( const QString &uid )
 {
+}
+
+void Calendar::incidenceUpdated( const QString &uid )
+{
+  //KDAB_TODO. we don't have the collection !?
+  Incidence::Ptr incidence;// = this->incidence( d->m_uidToItemId[uid] );
+
+  if ( !incidence ) {
+    return;
+  }
+
   incidence->setLastModified( KDateTime::currentUtcDateTime() );
   // we should probably update the revision number here,
   // or internally in the Event itself when certain things change.

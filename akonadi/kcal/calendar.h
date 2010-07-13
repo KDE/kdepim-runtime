@@ -730,7 +730,8 @@ public:
 
     QAbstractItemModel* treeModel() const;
 
-    void incidenceUpdated( KCalCore::IncidenceBase::Ptr incidenceBase );
+    void incidenceUpdated( const QString &uid );
+    void incidenceUpdate( const QString &uid );
 
     Akonadi::Item ::List rawEvents( EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item ::List rawEvents( const QDate &start, const QDate &end, const KDateTime::Spec &timeSpec = KDateTime::Spec(), bool inclusive = false );
