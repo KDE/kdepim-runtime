@@ -115,9 +115,9 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
     monitor->setCollectionMonitored( Collection::root() );
     monitor->fetchCollection( true );
     monitor->setItemFetchScope( scope );
-    monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::eventMimeType(), true );
-    monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::todoMimeType(), true );
-    monitor->setMimeTypeMonitored( Akonadi::IncidenceMimeTypeVisitor::journalMimeType(), true );
+    monitor->setMimeTypeMonitored( KCalCore::sEventMimeType, true );
+    monitor->setMimeTypeMonitored( KCalCore::sTodoMimeType, true );
+    monitor->setMimeTypeMonitored( KCalCore::sJournalMimeType, true );
 
     calendarModel = new CalendarModel( monitor, q );
     connect( calendarModel, SIGNAL(rowsInserted(QModelIndex,int,int)), q, SLOT(rowsInserted(QModelIndex,int,int)) );
@@ -341,7 +341,7 @@ void CalendarSearch::Private::rowsInserted( const QModelIndex &parent, int start
     if ( item.isValid() ) {
       const Collection::Rights rights = item.parentCollection().rights();
       KCalCore::Incidence::Ptr incidence = Akonadi::incidence( item );
-      if ( incidence && 
+      if ( incidence &&
            !( rights & Collection::CanDeleteItem ) &&
            !( rights & Collection::CanChangeItem ) &&
            !incidence->isReadOnly() ) {
