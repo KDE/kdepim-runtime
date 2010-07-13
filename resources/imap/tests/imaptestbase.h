@@ -40,6 +40,9 @@ class ImapTestBase : public QObject
 {
   Q_OBJECT
 
+public:
+  ImapTestBase( QObject *parent = 0 );
+
 protected:
   QString defaultPassword();
   ImapAccount *createDefaultAccount();

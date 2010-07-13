@@ -36,12 +36,20 @@ public:
   static ResourceStateInterface::Ptr createRetrieveItemsState( ImapResource *resource,
                                                                const Akonadi::Collection &collection );
 
+  static ResourceStateInterface::Ptr createRetrieveCollectionsState( ImapResource *resource );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
   ~ResourceState();
 
+  virtual QString resourceName() const;
+  virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+
   virtual bool isAutomaticExpungeEnabled() const;
+  virtual bool isSubscriptionEnabled() const;
+  virtual bool isDisconnectedModeEnabled() const;
+  virtual int intervalCheckTime() const;
 
   virtual Akonadi::Collection collection() const;
   virtual Akonadi::Item item() const;
@@ -56,13 +64,16 @@ public:
   virtual QString rootRemoteId() const;
   virtual QString mailBoxForCollection( const Akonadi::Collection &collection ) const;
 
-
+  virtual void setIdleCollection( const Akonadi::Collection &collection );
   virtual void applyCollectionChanges( const Akonadi::Collection &collection );
 
   virtual void itemRetrieved( const Akonadi::Item &item );
 
   virtual void itemsRetrieved( const Akonadi::Item::List &items );
   virtual void itemsRetrievalDone();
+
+  virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
+  virtual void collectionsRetrievalDone();
 
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();

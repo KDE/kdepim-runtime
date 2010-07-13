@@ -22,7 +22,8 @@
 #include "dummyresourcestate.h"
 
 DummyResourceState::DummyResourceState()
-  : m_automaticExpunge( true )
+  : m_automaticExpunge( true ), m_subscriptionEnabled( true ),
+    m_disconnectedMode( true ), m_intervalCheckTime( -1 )
 {
 
 }
@@ -30,6 +31,26 @@ DummyResourceState::DummyResourceState()
 DummyResourceState::~DummyResourceState()
 {
 
+}
+
+void DummyResourceState::setResourceName( const QString &name )
+{
+  m_name = name;
+}
+
+QString DummyResourceState::resourceName() const
+{
+  return m_name;
+}
+
+void DummyResourceState::setServerNamespaces( const QList<KIMAP::MailBoxDescriptor> &namespaces )
+{
+  m_namespaces = namespaces;
+}
+
+QList<KIMAP::MailBoxDescriptor> DummyResourceState::serverNamespaces() const
+{
+  return m_namespaces;
 }
 
 void DummyResourceState::setAutomaticExpungeEnagled( bool enabled )
@@ -40,6 +61,36 @@ void DummyResourceState::setAutomaticExpungeEnagled( bool enabled )
 bool DummyResourceState::isAutomaticExpungeEnabled() const
 {
   return m_automaticExpunge;
+}
+
+void DummyResourceState::setSubscriptionEnabled( bool enabled )
+{
+  m_subscriptionEnabled = enabled;
+}
+
+bool DummyResourceState::isSubscriptionEnabled() const
+{
+  return m_subscriptionEnabled;
+}
+
+void DummyResourceState::setDisconnectedModeEnabled( bool enabled )
+{
+  m_disconnectedMode = enabled;
+}
+
+bool DummyResourceState::isDisconnectedModeEnabled() const
+{
+  return m_disconnectedMode;
+}
+
+void DummyResourceState::setIntervalCheckTime( int interval )
+{
+  m_intervalCheckTime = interval;
+}
+
+int DummyResourceState::intervalCheckTime() const
+{
+  return m_intervalCheckTime;
 }
 
 void DummyResourceState::setCollection( const Akonadi::Collection &collection )
@@ -104,12 +155,17 @@ QSet<QByteArray> DummyResourceState::parts() const
 
 QString DummyResourceState::rootRemoteId() const
 {
-  return QString();
+  return "root-id";
 }
 
 QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection ) const
 {
   return collection.remoteId();
+}
+
+void DummyResourceState::setIdleCollection( const Akonadi::Collection &collection )
+{
+  recordCall( "setIdleCollection",  QVariant::fromValue( collection ) );
 }
 
 void DummyResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
@@ -132,6 +188,16 @@ void DummyResourceState::itemsRetrievalDone()
   recordCall( "itemsRetrievalDone" );
 }
 
+void DummyResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
+{
+  recordCall( "collectionsRetrieved",  QVariant::fromValue( collections ) );
+}
+
+void DummyResourceState::collectionsRetrievalDone()
+{
+  recordCall( "collectionsRetrievalDone" );
+}
+
 void DummyResourceState::cancelTask( const QString &errorString )
 {
   recordCall( "cancelTask", QVariant::fromValue(errorString) );
@@ -151,5 +217,3 @@ void DummyResourceState::recordCall( const QByteArray callName, const QVariant &
 {
   m_calls << QPair<QByteArray, QVariant>( callName, parameter );
 }
-
-

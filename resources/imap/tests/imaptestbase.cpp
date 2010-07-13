@@ -19,6 +19,12 @@
 
 #include "imaptestbase.h"
 
+ImapTestBase::ImapTestBase( QObject *parent )
+  : QObject( parent )
+{
+
+}
+
 QString ImapTestBase::defaultPassword()
 {
   return "foobar";

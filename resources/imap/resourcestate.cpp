@@ -22,7 +22,9 @@
 #include "resourcestate.h"
 
 #include "imapresource.h"
+#include "sessionpool.h"
 #include "settings.h"
+#include "noselectattribute.h"
 
 #include <akonadi/collectionmodifyjob.h>
 
@@ -48,6 +50,11 @@ ResourceStateInterface::Ptr ResourceState::createRetrieveItemsState( ImapResourc
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createRetrieveCollectionsState( ImapResource *resource )
+{
+  return ResourceStateInterface::Ptr( new ResourceState( resource ) );
+}
+
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )
 {
@@ -59,9 +66,37 @@ ResourceState::~ResourceState()
 
 }
 
+QString ResourceState::resourceName() const
+{
+  return m_resource->name();
+}
+
+QList<KIMAP::MailBoxDescriptor> ResourceState::serverNamespaces() const
+{
+  return m_resource->m_pool->serverNamespaces();
+}
+
 bool ResourceState::isAutomaticExpungeEnabled() const
 {
   return Settings::self()->automaticExpungeEnabled();
+}
+
+bool ResourceState::isSubscriptionEnabled() const
+{
+  return Settings::self()->subscriptionEnabled();
+}
+
+bool ResourceState::isDisconnectedModeEnabled() const
+{
+  return Settings::self()->disconnectedModeEnabled();
+}
+
+int ResourceState::intervalCheckTime() const
+{
+  if ( Settings::self()->intervalCheckEnabled() )
+    return Settings::self()->intervalCheckTime();
+  else
+    return -1; // -1 for never
 }
 
 Akonadi::Collection ResourceState::collection() const
@@ -120,6 +155,22 @@ QString ResourceState::mailBoxForCollection( const Akonadi::Collection &collecti
   return mailbox;
 }
 
+void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
+{
+  QStringList ridPath;
+
+  Akonadi::Collection curCol = collection;
+  while ( curCol != Akonadi::Collection::root() && !curCol.remoteId().isEmpty() ) {
+    ridPath.append( curCol.remoteId() );
+    curCol = curCol.parentCollection();
+  }
+
+  Settings::self()->setIdleRidPath( ridPath );
+  Settings::self()->writeConfig();
+
+  m_resource->startIdleIfNeeded();
+}
+
 void ResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
 {
   new Akonadi::CollectionModifyJob( collection );
@@ -140,6 +191,24 @@ void ResourceState::itemsRetrievalDone()
   m_resource->itemsRetrievalDone();
 }
 
+void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
+{
+  m_resource->collectionsRetrieved( collections );
+
+  if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
+    foreach ( const Akonadi::Collection &c, collections ) {
+      if ( !c.hasAttribute<NoSelectAttribute>() ) {
+        m_resource->triggerCollectionExtraInfoJobs( QVariant::fromValue( c ) );
+      }
+    }
+  }
+}
+
+void ResourceState::collectionsRetrievalDone()
+{
+  m_resource->collectionsRetrievalDone();
+}
+
 void ResourceState::cancelTask( const QString &errorString )
 {
   m_resource->cancelTask( errorString );
@@ -149,7 +218,3 @@ void ResourceState::deferTask()
 {
   m_resource->deferTask();
 }
-
-#include "resourcestate.moc"
-
-

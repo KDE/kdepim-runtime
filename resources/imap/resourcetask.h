@@ -27,6 +27,8 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
+#include <kimap/listjob.h>
+
 #include "resourcestateinterface.h"
 
 namespace KIMAP
@@ -50,7 +52,13 @@ protected:
   virtual void doStart( KIMAP::Session *session ) = 0;
 
 protected:
+  QString resourceName() const;
+  QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+
   bool isAutomaticExpungeEnabled() const;
+  bool isSubscriptionEnabled() const;
+  bool isDisconnectedModeEnabled() const;
+  int intervalCheckTime() const;
 
   Akonadi::Collection collection() const;
   Akonadi::Item item() const;
@@ -65,12 +73,16 @@ protected:
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &collection ) const;
 
+  void setIdleCollection( const Akonadi::Collection &collection );
   void applyCollectionChanges( const Akonadi::Collection &collection );
 
   void itemRetrieved( const Akonadi::Item &item );
 
   void itemsRetrieved( const Akonadi::Item::List &items );
   void itemsRetrievalDone();
+
+  void collectionsRetrieved( const Akonadi::Collection::List &collections );
+  void collectionsRetrievalDone();
 
   void cancelTask( const QString &errorString );
   void deferTask();

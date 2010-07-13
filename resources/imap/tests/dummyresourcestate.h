@@ -35,8 +35,22 @@ public:
   explicit DummyResourceState();
   ~DummyResourceState();
 
+  void setResourceName( const QString &name );
+  virtual QString resourceName() const;
+
+  void setServerNamespaces( const QList<KIMAP::MailBoxDescriptor> &namespaces );
+  virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+
   void setAutomaticExpungeEnagled( bool enabled );
   virtual bool isAutomaticExpungeEnabled() const;
+
+  void setSubscriptionEnabled( bool enabled );
+  virtual bool isSubscriptionEnabled() const;
+  void setDisconnectedModeEnabled( bool enabled );
+  virtual bool isDisconnectedModeEnabled() const;
+  void setIntervalCheckTime( int interval );
+  virtual int intervalCheckTime() const;
+
 
   void setCollection( const Akonadi::Collection &collection );
   virtual Akonadi::Collection collection() const;
@@ -57,12 +71,16 @@ public:
   virtual QString rootRemoteId() const;
   virtual QString mailBoxForCollection( const Akonadi::Collection &collection ) const;
 
+  virtual void setIdleCollection( const Akonadi::Collection &collection );
   virtual void applyCollectionChanges( const Akonadi::Collection &collection );
 
   virtual void itemRetrieved( const Akonadi::Item &item );
 
   virtual void itemsRetrieved( const Akonadi::Item::List &items );
   virtual void itemsRetrievalDone();
+
+  virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
+  virtual void collectionsRetrievalDone();
 
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
@@ -72,7 +90,13 @@ public:
 private:
   void recordCall( const QByteArray callName, const QVariant &parameter = QVariant() );
 
+  QString m_name;
+  QList<KIMAP::MailBoxDescriptor> m_namespaces;
+
   bool m_automaticExpunge;
+  bool m_subscriptionEnabled;
+  bool m_disconnectedMode;
+  int m_intervalCheckTime;
 
   Akonadi::Collection m_collection;
   Akonadi::Item m_item;

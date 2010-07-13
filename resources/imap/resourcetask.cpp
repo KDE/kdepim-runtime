@@ -77,9 +77,34 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
   doStart( m_session );
 }
 
+QString ResourceTask::resourceName() const
+{
+  return m_resource->resourceName();
+}
+
+QList<KIMAP::MailBoxDescriptor> ResourceTask::serverNamespaces() const
+{
+  return m_resource->serverNamespaces();
+}
+
 bool ResourceTask::isAutomaticExpungeEnabled() const
 {
   return m_resource->isAutomaticExpungeEnabled();
+}
+
+bool ResourceTask::isSubscriptionEnabled() const
+{
+  return m_resource->isSubscriptionEnabled();
+}
+
+bool ResourceTask::isDisconnectedModeEnabled() const
+{
+  return m_resource->isDisconnectedModeEnabled();
+}
+
+int ResourceTask::intervalCheckTime() const
+{
+  return m_resource->intervalCheckTime();
 }
 
 Akonadi::Collection ResourceTask::collection() const
@@ -122,6 +147,11 @@ QString ResourceTask::mailBoxForCollection( const Akonadi::Collection &collectio
   return m_resource->mailBoxForCollection( collection );
 }
 
+void ResourceTask::setIdleCollection( const Akonadi::Collection &collection )
+{
+  m_resource->setIdleCollection( collection );
+}
+
 void ResourceTask::applyCollectionChanges( const Akonadi::Collection &collection )
 {
   m_resource->applyCollectionChanges( collection );
@@ -141,6 +171,17 @@ void ResourceTask::itemsRetrieved( const Akonadi::Item::List &items )
 void ResourceTask::itemsRetrievalDone()
 {
   m_resource->itemsRetrievalDone();
+  deleteLater();
+}
+
+void ResourceTask::collectionsRetrieved( const Akonadi::Collection::List &collections )
+{
+  m_resource->collectionsRetrieved( collections );
+}
+
+void ResourceTask::collectionsRetrievalDone()
+{
+  m_resource->collectionsRetrievalDone();
   deleteLater();
 }
 
