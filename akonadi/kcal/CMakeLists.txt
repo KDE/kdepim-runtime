@@ -15,6 +15,7 @@ endif (QT_QTDECLARATIVE_FOUND AND KDEPIM_MOBILE_UI)
 set( kcalakonadi_LIB_SRC
      collectionselection.cpp
      calendar.cpp
+     calendaradaptor.cpp
      calendarmodel.cpp
      calendarsearch.cpp
      calfilterproxymodel.cpp

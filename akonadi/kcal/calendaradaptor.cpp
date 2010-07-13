@@ -20,32 +20,44 @@
 #include "kcalprefs.h"
 #include "calendaradaptor.h"
 
-using namespace Akonadi;
-using namespace KCal;
+#include <kcalcore/todo.h>
+#include <kcalcore/event.h>
+#include <kcalcore/journal.h>
 
-template<class T> inline T* itemToIncidence(const Akonadi::Item &item) {
-  if ( !item.hasPayload< boost::shared_ptr<T> >() )
-    return 0;
-  return item.payload< boost::shared_ptr<T> >().get();
+#include <kcalutils/scheduler.h>
+
+using namespace Akonadi;
+using namespace KCalCore;
+using namespace KCalUtils;
+
+template<class T>
+inline QSharedPointer<T> itemToIncidence(const Akonadi::Item &item) {
+  if ( !item.hasPayload< QSharedPointer<T> >() )
+    return QSharedPointer<T>();
+  return item.payload< QSharedPointer<T> >();
 }
 
-template<class T> inline KCal::ListBase<T> itemsToIncidences(QList<Akonadi::Item> items) {
-  KCal::ListBase<T> list;
-  foreach( const Akonadi::Item &item, items )
+template<class T>
+inline QList<QSharedPointer<T> > itemsToIncidences(QList<Akonadi::Item> items) {
+  QList<QSharedPointer<T> > list;
+  foreach( const Akonadi::Item &item, items ) {
     list.append( itemToIncidence<T>( item ) );
+  }
+
   return list;
 }
 
-template<class T> inline Akonadi::Item incidenceToItem(T* incidence) {
+template<class T>
+inline Akonadi::Item incidenceToItem(T* incidence) {
   Akonadi::Item item;
-  item.setPayload< boost::shared_ptr<T> >( boost::shared_ptr<T>( incidence->clone() ) );
+  item.setPayload<QSharedPointer<T> > ( QSharedPointer<T>( incidence->clone() ) );
   return item;
 }
 
 
 CalendarAdaptor::CalendarAdaptor( Akonadi::Calendar *calendar, QWidget *parent,
                                   bool storeDefaultCollection )
-  : KCal::Calendar( KCalPrefs::instance()->timeSpec() )
+  : KCalCore::MemoryCalendar( KCalPrefs::instance()->timeSpec() )
   , mCalendar( calendar ), mParent( parent ), mDeleteCalendar( false ),
     mStoreDefaultCollection( storeDefaultCollection )
 {
@@ -68,14 +80,14 @@ void CalendarAdaptor::close()
 
 }
 
-bool CalendarAdaptor::addEvent( KCal::Event *event )
+bool CalendarAdaptor::addEvent( const KCalCore::Event::Ptr &event )
 {
   return addIncidence( Incidence::Ptr( event->clone() ) );
 }
 
-bool CalendarAdaptor::deleteEvent( KCal::Event *event )
+bool CalendarAdaptor::deleteEvent( const KCalCore::Event::Ptr &event )
 {
-  return deleteIncidence( incidenceToItem( event ) );
+  return deleteIncidence( incidenceToItem( event.data() ) );
 }
 
 void CalendarAdaptor::deleteAllEvents()
@@ -83,48 +95,49 @@ void CalendarAdaptor::deleteAllEvents()
   Q_ASSERT( false );
 } //unused
 
-Event::List CalendarAdaptor::rawEvents( KCal::EventSortField sortField,
-                                        KCal::SortDirection sortDirection)
+Event::List CalendarAdaptor::rawEvents( KCalCore::EventSortField sortField,
+                                        KCalCore::SortDirection sortDirection) const
 {
   return itemsToIncidences<Event>( mCalendar->rawEvents( ( Akonadi::EventSortField ) sortField,
                                                          ( Akonadi::SortDirection ) sortDirection ) );
 }
 
-KCal::Event::List CalendarAdaptor::rawEventsForDate( const KDateTime &dt )
+KCalCore::Event::List CalendarAdaptor::rawEventsForDate( const KDateTime &dt ) const
 {
   return itemsToIncidences<Event>( mCalendar->rawEventsForDate( dt ) );
 }
 
-KCal::Event::List CalendarAdaptor::rawEvents( const QDate &start, const QDate &end,
+KCalCore::Event::List CalendarAdaptor::rawEvents( const QDate &start, const QDate &end,
                                               const KDateTime::Spec &timeSpec,
-                                              bool inclusive )
+                                              bool inclusive ) const
 {
-  return itemsToIncidences<KCal::Event>( mCalendar->rawEvents( start, end, timeSpec, inclusive ) );
+  return itemsToIncidences<KCalCore::Event>( mCalendar->rawEvents( start, end, timeSpec, inclusive ) );
 }
 
-KCal::Event::List CalendarAdaptor::rawEventsForDate( const QDate &date,
+KCalCore::Event::List CalendarAdaptor::rawEventsForDate( const QDate &date,
                                                      const KDateTime::Spec &timeSpec,
-                                                     KCal::EventSortField sortField,
-                                                     KCal::SortDirection sortDirection )
+                                                     KCalCore::EventSortField sortField,
+                                                     KCalCore::SortDirection sortDirection ) const
 {
   return itemsToIncidences<Event>( mCalendar->rawEventsForDate( date, timeSpec,
                                                                 ( Akonadi::EventSortField ) sortField,
                                                                 ( Akonadi::SortDirection ) sortDirection ) );
 }
 
-KCal::Event *CalendarAdaptor::event( const QString &uid )
+KCalCore::Event::Ptr CalendarAdaptor::event( const QString &uid,
+                                             const KDateTime &recurrenceId ) const
 {
   return itemToIncidence<Event>( mCalendar->event( mCalendar->itemIdForIncidenceUid(uid) ) );
 }
 
-bool CalendarAdaptor::addTodo( KCal::Todo *todo )
+bool CalendarAdaptor::addTodo( const KCalCore::Todo::Ptr &todo )
 {
   return addIncidence( Incidence::Ptr( todo->clone() ) );
 }
 
-bool CalendarAdaptor::deleteTodo( KCal::Todo *todo )
+bool CalendarAdaptor::deleteTodo( const KCalCore::Todo::Ptr &todo )
 {
-  return deleteIncidence( incidenceToItem( todo ) );
+  return deleteIncidence( incidenceToItem( todo.data() ) );
 }
 
 void CalendarAdaptor::deleteAllTodos()
@@ -132,31 +145,32 @@ void CalendarAdaptor::deleteAllTodos()
   Q_ASSERT( false );
 } //unused
 
-Todo::List CalendarAdaptor::rawTodos( KCal::TodoSortField sortField,
-                                      KCal::SortDirection sortDirection )
+Todo::List CalendarAdaptor::rawTodos( KCalCore::TodoSortField sortField,
+                                      KCalCore::SortDirection sortDirection ) const
 {
   return itemsToIncidences<Todo>( mCalendar->rawTodos( ( Akonadi::TodoSortField ) sortField,
                                                        ( Akonadi::SortDirection ) sortDirection ) );
 }
 
-Todo::List CalendarAdaptor::rawTodosForDate( const QDate &date )
+Todo::List CalendarAdaptor::rawTodosForDate( const QDate &date ) const
 {
   return itemsToIncidences<Todo>( mCalendar->rawTodosForDate( date ) );
 }
 
-Todo *CalendarAdaptor::todo( const QString &uid )
+Todo::Ptr CalendarAdaptor::todo( const QString &uid,
+                                 const KDateTime &recurrenceId ) const
 {
   return itemToIncidence<Todo>( mCalendar->todo( mCalendar->itemIdForIncidenceUid( uid ) ) );
 }
 
-bool CalendarAdaptor::addJournal( KCal::Journal *journal )
+bool CalendarAdaptor::addJournal( const KCalCore::Journal::Ptr &journal )
 {
   return addIncidence( Incidence::Ptr( journal->clone() ) );
 }
 
-bool CalendarAdaptor::deleteJournal( KCal::Journal *journal )
+bool CalendarAdaptor::deleteJournal( const KCalCore::Journal::Ptr &journal )
 {
-  return deleteIncidence( incidenceToItem( journal ) );
+  return deleteIncidence( incidenceToItem( journal.data() ) );
 }
 
 void CalendarAdaptor::deleteAllJournals()
@@ -164,24 +178,25 @@ void CalendarAdaptor::deleteAllJournals()
   Q_ASSERT( false );
 } //unused
 
-Journal::List CalendarAdaptor::rawJournals( KCal::JournalSortField sortField,
-                                            KCal::SortDirection sortDirection )
+Journal::List CalendarAdaptor::rawJournals( KCalCore::JournalSortField sortField,
+                                            KCalCore::SortDirection sortDirection ) const
 {
   return itemsToIncidences<Journal>( mCalendar->rawJournals( ( Akonadi::JournalSortField ) sortField,
                                                              ( Akonadi::SortDirection ) sortDirection ) );
 }
 
-KCal::Journal::List CalendarAdaptor::rawJournalsForDate( const QDate &dt )
+KCalCore::Journal::List CalendarAdaptor::rawJournalsForDate( const QDate &dt ) const
 {
   return itemsToIncidences<Journal>( mCalendar->rawJournalsForDate( dt ) );
 }
 
-KCal::Journal *CalendarAdaptor::journal( const QString &uid )
+KCalCore::Journal::Ptr CalendarAdaptor::journal( const QString &uid,
+                                                 const KDateTime &recurrenceId ) const
 {
   return itemToIncidence<Journal>( mCalendar->journal( mCalendar->itemIdForIncidenceUid( uid ) ) );
 }
 
-Alarm::List CalendarAdaptor::alarms( const KDateTime &from, const KDateTime &to )
+Alarm::List CalendarAdaptor::alarms( const KDateTime &from, const KDateTime &to ) const
 {
   return mCalendar->alarms( from, to );
 }
@@ -195,7 +210,7 @@ bool CalendarAdaptor::addIncidence( const Incidence::Ptr &incidence )
   }
   Akonadi::Collection collection;
 
-  const QString incidenceMimeType = Akonadi::subMimeTypeForIncidence( incidence.get() );
+  const QString incidenceMimeType = incidence->mimeType();
 
   if ( mStoreDefaultCollection && mDefaultCollection.isValid() ) {
     collection = mDefaultCollection;
@@ -235,7 +250,7 @@ bool CalendarAdaptor::deleteIncidence( const Akonadi::Item &aitem, bool deleteCa
   }
 
   kDebug() << "\"" << incidence->summary() << "\"";
-  bool doDelete = sendGroupwareMessage( aitem, KCal::iTIPCancel,
+  bool doDelete = sendGroupwareMessage( aitem, KCalCore::iTIPCancel,
                                         IncidenceChanger::INCIDENCEDELETED );
   if( !doDelete ) {
     if ( mDeleteCalendar )
@@ -259,7 +274,7 @@ void CalendarAdaptor::addIncidenceFinished( KJob* j )
     KMessageBox::sorry(
       mParent,
       i18n( "Unable to save %1 \"%2\": %3",
-            i18n( incidence->type() ),
+            i18n( incidence->typeStr() ),
             incidence->summary(),
             job->errorString() ) );
     if ( mDeleteCalendar ) {
@@ -272,8 +287,8 @@ void CalendarAdaptor::addIncidenceFinished( KJob* j )
   if ( KCalPrefs::instance()->mUseGroupwareCommunication ) {
     if ( !Groupware::instance()->sendICalMessage(
            mParent,
-           KCal::iTIPRequest,
-           incidence.get(), IncidenceChanger::INCIDENCEADDED, false ) ) {
+           KCalCore::iTIPRequest,
+           incidence, IncidenceChanger::INCIDENCEADDED, false ) ) {
       kError() << "sendIcalMessage failed.";
     }
   }
@@ -294,25 +309,25 @@ void CalendarAdaptor::deleteIncidenceFinished( KJob* j )
   if ( job->error() ) {
     KMessageBox::sorry( mParent,
                         i18n( "Unable to delete incidence %1 \"%2\": %3",
-                              i18n( tmp->type() ),
+                              i18n( tmp->typeStr() ),
                               tmp->summary(),
                               job->errorString( )) );
     return;
   }
 
-  if ( !KCalPrefs::instance()->thatIsMe( tmp->organizer().email() ) ) {
+  if ( !KCalPrefs::instance()->thatIsMe( tmp->organizer()->email() ) ) {
     const QStringList myEmails = KCalPrefs::instance()->allEmails();
     bool notifyOrganizer = false;
     for ( QStringList::ConstIterator it = myEmails.begin(); it != myEmails.end(); ++it ) {
       QString email = *it;
-      Attendee *me = tmp->attendeeByMail( email );
+      Attendee::Ptr me = tmp->attendeeByMail( email );
       if ( me ) {
-        if ( me->status() == KCal::Attendee::Accepted ||
-             me->status() == KCal::Attendee::Delegated ) {
+        if ( me->status() == KCalCore::Attendee::Accepted ||
+             me->status() == KCalCore::Attendee::Delegated ) {
           notifyOrganizer = true;
         }
-        Attendee *newMe = new Attendee( *me );
-        newMe->setStatus( KCal::Attendee::Declined );
+        Attendee::Ptr newMe(  new Attendee( *me ) );
+        newMe->setStatus( KCalCore::Attendee::Declined );
         tmp->clearAttendees();
         tmp->addAttendee( newMe );
         break;
@@ -321,7 +336,7 @@ void CalendarAdaptor::deleteIncidenceFinished( KJob* j )
 
     if ( !Groupware::instance()->doNotNotify() && notifyOrganizer ) {
       MailScheduler scheduler( mCalendar );
-      scheduler.performTransaction( tmp.get(), KCal::iTIPReply );
+      scheduler.performTransaction( tmp, KCalCore::iTIPReply );
     }
     //reset the doNotNotify flag
     Groupware::instance()->setDoNotNotify( false );
@@ -329,7 +344,7 @@ void CalendarAdaptor::deleteIncidenceFinished( KJob* j )
 }
 
 bool CalendarAdaptor::sendGroupwareMessage( const Akonadi::Item &aitem,
-                                            KCal::iTIPMethod method,
+                                            KCalCore::iTIPMethod method,
                                             IncidenceChanger::HowChanged action )
 {
   const Incidence::Ptr incidence = Akonadi::incidence( aitem );
@@ -337,14 +352,14 @@ bool CalendarAdaptor::sendGroupwareMessage( const Akonadi::Item &aitem,
     return false;
   }
 
-  if ( KCalPrefs::instance()->thatIsMe( incidence->organizer().email() ) &&
+  if ( KCalPrefs::instance()->thatIsMe( incidence->organizer()->email() ) &&
        incidence->attendeeCount() > 0 &&
        !KCalPrefs::instance()->mUseGroupwareCommunication ) {
     schedule( method, aitem );
     return true;
   } else if ( KCalPrefs::instance()->mUseGroupwareCommunication ) {
     return Groupware::instance()->sendICalMessage( mParent, method,
-                                                   incidence.get(), action,  false );
+                                                   incidence, action,  false );
   }
   return true;
 }
@@ -360,18 +375,18 @@ void CalendarAdaptor::schedule( iTIPMethod method, const Akonadi::Item &item )
     return;
   }
 
-  Incidence *inc = incidence->clone();
+  Incidence::Ptr inc(  incidence->clone() );
   inc->registerObserver( 0 );
   inc->clearAttendees();
 
   // Send the mail
   MailScheduler scheduler( mCalendar );
-  if ( scheduler.performTransaction( incidence.get(), method ) ) {
+  if ( scheduler.performTransaction( incidence, method ) ) {
     KMessageBox::information( mParent,
                               i18n( "The groupware message for item '%1' "
                                     "was successfully sent.\nMethod: %2",
                                     incidence->summary(),
-                                    Scheduler::methodName( method ) ),
+                                    ScheduleMessage::methodName( method ) ),
                               i18n( "Sending Free/Busy" ),
                               QLatin1String( "FreeBusyPublishSuccess" ) );
   } else {
@@ -380,7 +395,7 @@ void CalendarAdaptor::schedule( iTIPMethod method, const Akonadi::Item &item )
                                "%2 is request/reply/add/cancel/counter/etc.",
                                "Unable to send the item '%1'.\nMethod: %2",
                                incidence->summary(),
-                               Scheduler::methodName( method ) ) );
+                               ScheduleMessage::methodName( method ) ) );
   }
 }
 
