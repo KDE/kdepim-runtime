@@ -30,19 +30,15 @@
 #include <akonadi/monitor.h>
 
 #include <kabc/addressee.h>
-#include <kcal/event.h>
 
 #include <KDebug>
 #include <KLocale>
 #include <KWindowSystem>
 
-#include <boost/shared_ptr.hpp>
-
 using namespace Akonadi;
 using namespace KABC;
-using namespace KCal;
+using namespace KCalCore;
 
-typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 BirthdaysResource::BirthdaysResource(const QString& id) :
   ResourceBase( id )
@@ -123,7 +119,7 @@ void BirthdaysResource::contactRetrieved(KJob* job)
   } else if ( fj->items().count() != 1 ) {
     cancelTask();
   } else {
-    KCal::Event *ev = 0;
+    KCalCore::Event::Ptr ev;
     if ( currentItem().remoteId().startsWith( 'b' ) )
       ev = createBirthday( fj->items().first() );
     else if ( currentItem().remoteId().startsWith( 'a' ) )
@@ -132,7 +128,7 @@ void BirthdaysResource::contactRetrieved(KJob* job)
       cancelTask();
     } else {
       Item i( currentItem() );
-      i.setPayload<IncidencePtr>( IncidencePtr( ev ) );
+      i.setPayload<Incidence::Ptr>( ev );
       itemRetrieved( i );
     }
   }
@@ -159,7 +155,7 @@ void BirthdaysResource::contactChanged( const Akonadi::Item& item )
       return;
   }
 
-  Event *event = createBirthday( item );
+  Event::Ptr event = createBirthday( item );
   if ( event )
     addPendingEvent( event, QString::fromLatin1( "b%1" ).arg( item.id() ) );
 
@@ -168,9 +164,9 @@ void BirthdaysResource::contactChanged( const Akonadi::Item& item )
     addPendingEvent( event, QString::fromLatin1( "a%1" ).arg( item.id() ) );
 }
 
-void BirthdaysResource::addPendingEvent( KCal::Event* event, const QString &remoteId )
+void BirthdaysResource::addPendingEvent( const KCalCore::Event::Ptr &event, const QString &remoteId )
 {
-  boost::shared_ptr<KCal::Incidence> evptr( event );
+  KCalCore::Incidence::Ptr evptr( event );
   Item i( "application/x-vnd.akonadi.calendar.event" );
   i.setRemoteId( remoteId );
   i.setPayload( evptr );
@@ -215,23 +211,23 @@ void BirthdaysResource::createEvents(const Akonadi::Item::List &items)
     contactChanged( item );
 }
 
-KCal::Event* BirthdaysResource::createBirthday(const Akonadi::Item& contactItem)
+KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item& contactItem)
 {
   if ( !contactItem.hasPayload<KABC::Addressee>() )
-    return 0;
+    return KCalCore::Event::Ptr();
   KABC::Addressee contact = contactItem.payload<KABC::Addressee>();
 
   const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
   if ( name.isEmpty() ) {
     kDebug() << "contact " << contact.uid() << contactItem.id() << " has no name, skipping.";
-    return 0;
+    return KCalCore::Event::Ptr();
   }
 
   const QDate birthdate = contact.birthday().date();
   if ( birthdate.isValid() ) {
     const QString summary = i18n( "%1's birthday", name );
 
-    Event *ev = createEvent( birthdate );
+    Event::Ptr ev = createEvent( birthdate );
     ev->setUid( contact.uid() + "_KABC_Birthday" );
 
     ev->setCustomProperty( "KABC", "BIRTHDAY", "YES" );
@@ -243,24 +239,24 @@ KCal::Event* BirthdaysResource::createBirthday(const Akonadi::Item& contactItem)
     ev->setCategories( i18n( "Birthday" ) );
     return ev;
   }
-  return 0;
+  return KCalCore::Event::Ptr();
 }
 
-KCal::Event* BirthdaysResource::createAnniversary(const Akonadi::Item& contactItem)
+KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& contactItem)
 {
   if ( !contactItem.hasPayload<KABC::Addressee>() )
-    return 0;
+    return KCalCore::Event::Ptr();
   KABC::Addressee contact = contactItem.payload<KABC::Addressee>();
 
   const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
   if ( name.isEmpty() ) {
     kDebug() << "contact " << contact.uid() << contactItem.id() << " has no name, skipping.";
-    return 0;
+    return KCalCore::Event::Ptr();
   }
 
   const QString anniversary_string = contact.custom( "KADDRESSBOOK", "X-Anniversary" );
   if ( anniversary_string.isEmpty() )
-    return 0;
+    return KCalCore::Event::Ptr();
   const QDate anniversary = QDate::fromString( anniversary_string, Qt::ISODate );
   if ( anniversary.isValid() ) {
     const QString spouseName = contact.custom( "KADDRESSBOOK", "X-SpousesName" );
@@ -274,7 +270,7 @@ KCal::Event* BirthdaysResource::createAnniversary(const Akonadi::Item& contactIt
                        "%1's anniversary", name );
     }
 
-    Event *event = createEvent( anniversary );
+    Event::Ptr event = createEvent( anniversary );
     event->setUid( contact.uid() + "_KABC_Anniversary" );
     event->setSummary( summary );
 
@@ -286,12 +282,12 @@ KCal::Event* BirthdaysResource::createAnniversary(const Akonadi::Item& contactIt
     event->setCategories( i18n( "Anniversary" ) );
     return event;
   }
-  return 0;
+  return KCalCore::Event::Ptr();
 }
 
-KCal::Event* BirthdaysResource::createEvent(const QDate& date)
+KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate& date)
 {
-  Event *event = new Event();
+  Event::Ptr event( new Event() );
   event->setDtStart( KDateTime( date, KDateTime::ClockTime ) );
   event->setDtEnd( KDateTime( date, KDateTime::ClockTime ) );
   event->setHasEndDate( true );
@@ -308,7 +304,7 @@ KCal::Event* BirthdaysResource::createEvent(const QDate& date)
   // Set the alarm
   event->clearAlarms();
   if ( Settings::self()->enableAlarm() ) {
-    Alarm *alarm = event->newAlarm();
+    Alarm::Ptr alarm = event->newAlarm();
     alarm->setType( Alarm::Display );
     alarm->setText( event->summary() );
     alarm->setTime( KDateTime( date, KDateTime::ClockTime ) );
