@@ -23,7 +23,7 @@
 #include <QtCore/QObject>
 
 #include <akonadi/itemserializerplugin.h>
-#include <kcal/icalformat.h>
+#include <kcalcore/icalformat.h>
 
 namespace Akonadi {
 
@@ -36,7 +36,7 @@ class SerializerPluginKCal : public QObject, public ItemSerializerPlugin
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
     void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
   private:
-    KCal::ICalFormat mFormat;
+    KCalCore::ICalFormat mFormat;
 
 };
 

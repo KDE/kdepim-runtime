@@ -23,9 +23,9 @@
 
 #include <akonadi/item.h>
 #include <kdebug.h>
-#include <boost/shared_ptr.hpp>
 
-typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
+
+typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 
 using namespace Akonadi;
 
@@ -36,7 +36,7 @@ bool SerializerPluginKCal::deserialize(Item & item, const QByteArray & label, QI
   if ( label != Item::FullPayload )
     return false;
 
-  KCal::Incidence* i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
+  KCalCore::Incidence::Ptr i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
   if ( !i ) {
     kWarning( 5263 ) << "Failed to parse incidence!";
     data.seek( 0 );
@@ -56,7 +56,7 @@ void SerializerPluginKCal::serialize(const Item & item, const QByteArray & label
   IncidencePtr i = item.payload<IncidencePtr>();
   // ### I guess this can be done without hardcoding stuff
   data.write( "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN\nVERSION:2.0\n" );
-  data.write( mFormat.toString( i.get() ).toUtf8() );
+  data.write( mFormat.toString( i ).toUtf8() );
   data.write( "\nEND:VCALENDAR" );
 }
 
