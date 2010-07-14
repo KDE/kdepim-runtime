@@ -409,6 +409,8 @@ void KMailMigrator::migrateInstanceTrashFolder()
           const qint64 value = group.readEntry( "trash", -1 );
           if ( value != -1 ) {
             iface->setTrashCollection( value );
+            // make sure the config is saved
+            iface->writeConfig();
             instance.reconfigure();
           }
         }
@@ -418,6 +420,8 @@ void KMailMigrator::migrateInstanceTrashFolder()
           const qint64 value = group.readEntry( "Folder", -1 );
           if ( value != -1 ) {
             iface->setTargetCollection( value );
+            // make sure the config is saved
+            iface->writeConfig();
             instance.reconfigure();
           }
         }
@@ -672,6 +676,9 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( !useDefaultIdentity )
     iface->setAccountIdentity( config.readEntry( "identity-id" ).toInt() );
 
+  // make sure the config is saved
+  iface->writeConfig();
+
   QString encpasswd ;
   if ( config.readEntry( "store-passwd", false ) ) {
     encpasswd = config.readEntry( "pass" );
@@ -878,6 +885,9 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   iface->setSeenUidList( popFilterGroup.readEntry( "seenUidList", QStringList() ) );
   iface->setSeenUidTimeList( popFilterGroup.readEntry( "seenUidTimeList", QList<int>() ) );
 
+  // make sure the config is saved
+  iface->writeConfig();
+
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry("trash");
   config.deleteEntry("use-default-identity");
@@ -923,6 +933,9 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
     iface->setLockfileMethod( MuttDotLockPrivileged );
   else if ( lockType == "none" )
     iface->setLockfileMethod( MboxNone );
+
+  // make sure the config is saved
+  iface->writeConfig();
 
   // check-exclude in Account section means that this account should not be included
   // in manual checks. In KMail UI this is called "Include in manual checks"
@@ -973,6 +986,9 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 
   iface->setPath( config.readEntry( "Location" ) );
 
+  // make sure the config is saved
+  iface->writeConfig();
+
   // check-exclude in Account section means that this account should not be included
   // in manual checks. In KMail UI this is called "Include in manual checks"
   KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
@@ -1021,6 +1037,9 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   }
 
   iface->setPath( mLocalMaildirPath );
+
+  // make sure the config is saved
+  iface->writeConfig();
 
   // do not include KMail folders in manual checks by default
   KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
@@ -1150,6 +1169,8 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
     if ( checkInterval != 0 ) {
       iface->setIntervalCheckEnabled( true );
       iface->setIntervalCheckTime( checkInterval );
+      // make sure the config is saved
+      iface->writeConfig();
       instance.reconfigure();
     }
 
