@@ -208,6 +208,9 @@ void ImapCacheLocalImporter::Private::configureResource()
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "resource working path=" << pathInfo.absoluteFilePath();
   iface->setPath( pathInfo.absoluteFilePath()  );
 
+  // make sure the config is saved
+  iface->writeConfig();
+
   mResource.setName( i18nc( "@title account name", "Local Copies of %1", mAccountName ) );
   mResource.reconfigure();
 

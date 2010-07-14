@@ -100,6 +100,9 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
 
   QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + "/notes/" + KRandom::randomString( 10 ) );
 
+  // make sure the config is saved
+  iface->writeConfig();
+
   instance.reconfigure();
   m_resourceIdentifier = instance.identifier();
 
