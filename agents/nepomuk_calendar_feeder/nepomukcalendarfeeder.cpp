@@ -75,19 +75,19 @@ NepomukCalendarFeeder::~NepomukCalendarFeeder()
 
 void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item, const QUrl &graphUri )
 {
-  if ( item.hasPayload<KCal::Event::Ptr>() ) {
-    updateEventItem( item, item.payload<KCal::Event::Ptr>(), graphUri );
-  } else if ( item.hasPayload<KCal::Journal::Ptr>() ) {
-    updateJournalItem( item, item.payload<KCal::Journal::Ptr>(), graphUri );
-  } else if ( item.hasPayload<KCal::Todo::Ptr>() ) {
-    updateTodoItem( item, item.payload<KCal::Todo::Ptr>(), graphUri );
+  if ( item.hasPayload<KCalCore::Event::Ptr>() ) {
+    updateEventItem( item, item.payload<KCalCore::Event::Ptr>(), graphUri );
+  } else if ( item.hasPayload<KCalCore::Journal::Ptr>() ) {
+    updateJournalItem( item, item.payload<KCalCore::Journal::Ptr>(), graphUri );
+  } else if ( item.hasPayload<KCalCore::Todo::Ptr>() ) {
+    updateTodoItem( item, item.payload<KCalCore::Todo::Ptr>(), graphUri );
   } else {
     kDebug() << "Got item without known payload. Mimetype:" << item.mimeType()
              << "Id:" << item.id();
   }
 }
 
-void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCal::Event::Ptr &calEvent, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCalCore::Event::Ptr &calEvent, const QUrl &graphUri )
 {
   // create event with the graph reference
   NepomukFast::Event event( item.url(), graphUri );
@@ -97,13 +97,13 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
 
   QUrl uri;
   switch ( calEvent->status() ) {
-    case KCal::Incidence::StatusCanceled:
+    case KCalCore::Incidence::StatusCanceled:
       uri = Vocabulary::NCAL::cancelledEventStatus();
       break;
-    case KCal::Incidence::StatusConfirmed:
+    case KCalCore::Incidence::StatusConfirmed:
       uri = Vocabulary::NCAL::confirmedStatus();
       break;
-    case KCal::Incidence::StatusTentative:
+    case KCalCore::Incidence::StatusTentative:
       uri = Vocabulary::NCAL::tentativeStatus();
       break;
     default: // other states are not available in the ontology
@@ -115,26 +115,26 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
     event.addEventStatus( status );
   }
 
-  foreach ( const KCal::Attendee *calAttendee, calEvent->attendees() ) {
+  foreach ( const KCalCore::Attendee::Ptr &calAttendee, calEvent->attendees() ) {
     NepomukFast::Contact contact = findOrCreateContact( calAttendee->email(), calAttendee->name(), graphUri );
     NepomukFast::Attendee attendee( QUrl(), graphUri );
     attendee.addInvolvedContact( contact );
 
     uri.clear();
     switch( calAttendee->status() ) {
-      case KCal::Attendee::NeedsAction:
+      case KCalCore::Attendee::NeedsAction:
         uri = Vocabulary::NCAL::needsActionParticipationStatus();
         break;
-      case KCal::Attendee::Accepted:
+      case KCalCore::Attendee::Accepted:
         uri = Vocabulary::NCAL::acceptedParticipationStatus();
         break;
-      case KCal::Attendee::Declined:
+      case KCalCore::Attendee::Declined:
         uri = Vocabulary::NCAL::declinedParticipationStatus();
         break;
-      case KCal::Attendee::Tentative:
+      case KCalCore::Attendee::Tentative:
         uri = Vocabulary::NCAL::tentativeParticipationStatus();
         break;
-      case KCal::Attendee::Delegated:
+      case KCalCore::Attendee::Delegated:
         uri = Vocabulary::NCAL::delegatedParticipationStatus();
         break;
       default: // other states are not available in the ontology
@@ -150,7 +150,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
   }
 }
 
-void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCal::Journal::Ptr &calJournal, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCalCore::Journal::Ptr &calJournal, const QUrl &graphUri )
 {
     // create journal entry with the graph reference
     NepomukFast::Journal journal( item.url(), graphUri );
@@ -159,7 +159,7 @@ void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const 
     updateIncidenceItem( calJournal, journal, graphUri );
 }
 
-void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCal::Todo::Ptr &calTodo, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCalCore::Todo::Ptr &calTodo, const QUrl &graphUri )
 {
   NepomukFast::Todo todo( item.url(), graphUri );
   setParent( todo, item );

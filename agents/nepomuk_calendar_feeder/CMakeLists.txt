@@ -16,7 +16,7 @@ kde4_add_executable(akonadi_nepomuk_calendar_feeder nepomukcalendarfeeder.cpp ${
 target_link_libraries(akonadi_nepomuk_calendar_feeder
   ${NEPOMUKFEEDER_SHARED_LIBS}
   ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
-  ${KDEPIMLIBS_KCAL_LIBS}
+  kcalcore
 )
 
 install(TARGETS akonadi_nepomuk_calendar_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
