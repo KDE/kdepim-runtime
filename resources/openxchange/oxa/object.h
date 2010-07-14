@@ -24,10 +24,9 @@
 
 #include "folder.h"
 
-#include <boost/shared_ptr.hpp>
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
-#include <kcal/incidence.h>
+#include <kcalcore/incidence.h>
 
 #include <QtCore/QList>
 #include <QtCore/QString>
@@ -74,11 +73,11 @@ class Object
     void setContactGroup( const KABC::ContactGroup &group );
     KABC::ContactGroup contactGroup() const;
 
-    void setEvent( const KCal::Incidence::Ptr &event );
-    KCal::Incidence::Ptr event() const;
+    void setEvent( const KCalCore::Incidence::Ptr &event );
+    KCalCore::Incidence::Ptr event() const;
 
-    void setTask( const KCal::Incidence::Ptr &task );
-    KCal::Incidence::Ptr task() const;
+    void setTask( const KCalCore::Incidence::Ptr &task );
+    KCalCore::Incidence::Ptr task() const;
 
   private:
     ObjectStatus mObjectStatus;
@@ -88,8 +87,8 @@ class Object
     Folder::Module mModule;
     KABC::Addressee mContact;
     KABC::ContactGroup mContactGroup;
-    KCal::Incidence::Ptr mEvent;
-    KCal::Incidence::Ptr mTask;
+    KCalCore::Incidence::Ptr mEvent;
+    KCalCore::Incidence::Ptr mTask;
 };
 
 }
