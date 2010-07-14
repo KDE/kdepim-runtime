@@ -26,9 +26,8 @@
 #include "kincidencechooser.h"
 using namespace KPIM;
 
-#include <kcal/incidence.h>
-#include <kcal/incidenceformatter.h>
-using namespace KCal;
+
+#include <kcalutils/incidenceformatter.h>
 
 #include <KHBox>
 #include <KLocale>
@@ -40,7 +39,10 @@ using namespace KCal;
 #include <QPushButton>
 #include <QRadioButton>
 
-int KIncidenceChooser::chooseMode = KIncidenceChooser::ask ;
+using namespace KCalCore;
+using namespace KCalUtils;
+
+int KIncidenceChooser::chooseMode = KIncidenceChooser::ask;
 
 KIncidenceChooser::KIncidenceChooser( QWidget *parent )
   : KDialog( parent )
@@ -245,7 +247,7 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
     mTbL = 0;
     mTbN =  0;
     mDisplayDiff = 0;
-    mSelIncidence = 0;
+    mSelIncidence = Incidence::Ptr();
 }
 
 KIncidenceChooser::~KIncidenceChooser()
@@ -262,25 +264,26 @@ KIncidenceChooser::~KIncidenceChooser()
   }
 }
 
-void KIncidenceChooser::setIncidence( Incidence *local, Incidence *remote )
+void KIncidenceChooser::setIncidence( const Incidence::Ptr &local,
+                                      const Incidence::Ptr &remote )
 {
   mInc1 = local;
   mInc2 = remote;
   setLabels();
 
 }
-Incidence *KIncidenceChooser::getIncidence( )
+Incidence::Ptr KIncidenceChooser::getIncidence( )
 {
-  Incidence *retval = mSelIncidence;
+  Incidence::Ptr retval = mSelIncidence;
   if ( chooseMode == KIncidenceChooser::local ) {
     retval = mInc1;
   } else if ( chooseMode == KIncidenceChooser::remote ) {
     retval = mInc2;
   } else if ( chooseMode == KIncidenceChooser::both ) {
-    retval = 0;
+    retval = Incidence::Ptr();
   } else if ( chooseMode == KIncidenceChooser::newest ) {
     if ( mInc1->lastModified() == mInc2->lastModified() ) {
-      retval = 0;
+      retval = Incidence::Ptr();
     }
     if ( mInc1->lastModified() >  mInc2->lastModified() ) {
       retval =  mInc1;
@@ -308,23 +311,23 @@ void KIncidenceChooser::useGlobalMode()
 
 void KIncidenceChooser::setLabels()
 {
-  Incidence *inc = mInc1;
+  Incidence::Ptr inc = mInc1;
   QLabel *des = mInc1lab;
   QLabel *sum = mInc1Sumlab;
 
-  if ( inc->type() == "Event" ) {
+  if ( inc->type() == Incidence::TypeEvent ) {
     des->setText( i18nc( "@label", "Local Event" ) );
     sum->setText( inc->summary().left( 30 ) );
     if ( mDiffBut ) {
       mDiffBut->setEnabled( true );
     }
-  } else if ( inc->type() == "Todo" ) {
+  } else if ( inc->type() == Incidence::TypeTodo ) {
     des->setText( i18nc( "@label", "Local Todo" ) );
     sum->setText( inc->summary().left( 30 ) );
     if ( mDiffBut ) {
       mDiffBut->setEnabled( true );
     }
-  } else if ( inc->type() == "Journal" ) {
+  } else if ( inc->type() == Incidence::TypeJournal ) {
     des->setText( i18nc( "@label", "Local Journal" ) );
     sum->setText( inc->description().left( 30 ) );
     if ( mDiffBut ) {
@@ -335,13 +338,13 @@ void KIncidenceChooser::setLabels()
   inc = mInc2;
   des = mInc2lab;
   sum = mInc2Sumlab;
-  if ( inc->type() == "Event" ) {
+  if ( inc->type() == Incidence::TypeEvent ) {
     des->setText( i18nc( "@label", "New Event" ) );
     sum->setText( inc->summary().left( 30 ) );
-  } else if ( inc->type() == "Todo" ) {
+  } else if ( inc->type() == Incidence::TypeJournal ) {
     des->setText( i18nc( "@label", "New Todo" ) );
     sum->setText( inc->summary().left( 30 ) );
-  } else if ( inc->type() == "Journal" ) {
+  } else if ( inc->type() == Incidence::TypeJournal ) {
     des->setText( i18nc( "@label", "New Journal" ) );
     sum->setText( inc->description().left( 30 ) );
 
@@ -461,7 +464,7 @@ void KIncidenceChooser::takeIncidence2()
 
 void KIncidenceChooser::takeBoth()
 {
-  mSelIncidence = 0;
+  mSelIncidence = Incidence::Ptr();
   KDialog::accept();
 }
 
