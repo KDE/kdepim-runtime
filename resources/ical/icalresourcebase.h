@@ -24,9 +24,11 @@
 #include "singlefileresource.h"
 #include "settings.h"
 
-namespace KCal {
-  class CalendarLocal;
-}
+
+namespace KCalCore {
+  class MemoryCalendar;
+  class FileStorage;
+};
 
 class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
 {
@@ -84,7 +86,8 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     KCalCore::CalendarLocal *calendar() const;
 
   private:
-    KCalCore::CalendarLocal *mCalendar;
+    KCalCore::MemoryCalendar *mCalendar;
+    KCalCore::FileStorage *mFileStorage;
 };
 
 template <typename PayloadPtr>

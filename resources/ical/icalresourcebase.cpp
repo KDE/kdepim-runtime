@@ -22,6 +22,7 @@
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
+#include <kcalcore/filestorage.h>
 #include <kcalcore/memorycalendar.h>
 #include <kcalcore/incidence.h>
 
@@ -34,7 +35,7 @@ using namespace KCalCore;
 
 ICalResourceBase::ICalResourceBase( const QString &id )
     : SingleFileResource<Settings>( id ),
-      mCalendar( 0 )
+      mCalendar( 0 ), mFileStorage( 0 )
 {
   KGlobal::locale()->insertCatalog( "akonadi_ical_resource" );
 }
@@ -52,7 +53,8 @@ ICalResourceBase::~ICalResourceBase()
   delete mCalendar;
 }
 
-bool ICalResourceBase::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool ICalResourceBase::retrieveItem( const Akonadi::Item &item,
+                                     const QSet<QByteArray> &parts )
 {
   kDebug( 5251 ) << "Item:" << item.url();
 
@@ -66,12 +68,13 @@ bool ICalResourceBase::retrieveItem( const Akonadi::Item &item, const QSet<QByte
 
 void ICalResourceBase::aboutToQuit()
 {
-  if ( !Settings::self()->readOnly() )
+  if ( !Settings::self()->readOnly() ) {
     writeFile();
+  }
   Settings::self()->writeConfig();
 }
 
-void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
+void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Settings> *dlg )
 {
   dlg->setFilter( "text/calendar" );
   dlg->setCaption( i18n("Select Calendar") );
@@ -80,30 +83,33 @@ void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Set
 bool ICalResourceBase::readFromFile( const QString &fileName )
 {
   delete mCalendar;
-  mCalendar = new KCalCore::CalendarLocal( QLatin1String( "UTC" ) );
-  mCalendar->load( fileName );
-  return true;
+  delete mFileStorage;
+  mCalendar = new KCalCore::MemoryCalendar( QLatin1String( "UTC" ) );
+  mFileStorage = new KCalCore::FileStorage( mCalendar, fileName, new ICalFormat() );
+
+  return mFileStorage->load( fileName );
 }
 
-void ICalResourceBase::itemRemoved(const Akonadi::Item & item)
+void ICalResourceBase::itemRemoved( const Akonadi::Item &item )
 {
   if ( !mCalendar ) {
     cancelTask( i18n("Calendar not loaded.") );
     return;
   }
 
-  Incidence *i = mCalendar->incidence( item.remoteId() );
-  if ( i )
+  Incidence::Ptr i = mCalendar->incidence( item.remoteId() );
+  if ( i ) {
     mCalendar->deleteIncidence( i );
+  }
   scheduleWrite();
   changeProcessed();
 }
 
-void ICalResourceBase::retrieveItems( const Akonadi::Collection & col )
+void ICalResourceBase::retrieveItems( const Akonadi::Collection &col )
 {
-  if ( !mCalendar )
-    return;
-  doRetrieveItems( col );
+  if ( mCalendar ) {
+    doRetrieveItems( col );
+  }
 }
 
 bool ICalResourceBase::writeToFile( const QString &fileName )
@@ -111,11 +117,25 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
   if ( !mCalendar ) {
     return false;
   }
-  if ( !mCalendar->save( fileName ) ) {
-    emit error( i18n("Failed to save calendar file to %1", fileName ) );
-    return false;
+
+  KCalCore::FileStorage *fileStorage = mFileStorage;
+  if ( fileName != mFileStorage->fileName() ) {
+    fileStorage = new KCalCore::FileStorage( mCalendar,
+                                             fileName,
+                                             new KCalCore::ICalFormat() );
   }
-  return true;
+
+  bool success = true;
+  if ( !fileStorage->save() ) {
+    emit error( i18n("Failed to save calendar file to %1", fileName ) );
+    success = false;
+  }
+
+  if ( fileStorage != mFileStorage ) {
+    delete fileStorage;
+  }
+
+  return success;
 }
 
 KCalCore::MemoryCalendar *ICalResourceBase::calendar() const
