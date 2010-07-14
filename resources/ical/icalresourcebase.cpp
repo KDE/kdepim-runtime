@@ -25,6 +25,7 @@
 #include <kcalcore/filestorage.h>
 #include <kcalcore/memorycalendar.h>
 #include <kcalcore/incidence.h>
+#include <kcalcore/icalformat.h>
 
 #include <kglobal.h>
 #include <klocale.h>
@@ -85,9 +86,11 @@ bool ICalResourceBase::readFromFile( const QString &fileName )
   delete mCalendar;
   delete mFileStorage;
   mCalendar = new KCalCore::MemoryCalendar( QLatin1String( "UTC" ) );
-  mFileStorage = new KCalCore::FileStorage( mCalendar, fileName, new ICalFormat() );
 
-  return mFileStorage->load( fileName );
+  mFileStorage = new KCalCore::FileStorage( mCalendar, fileName,
+                                            new KCalCore::ICalFormat() );
+
+  return mFileStorage->load();
 }
 
 void ICalResourceBase::itemRemoved( const Akonadi::Item &item )

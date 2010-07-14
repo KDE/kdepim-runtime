@@ -83,7 +83,7 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     virtual void itemRemoved( const Akonadi::Item &item );
 
     /** Return the local calendar. */
-    KCalCore::CalendarLocal *calendar() const;
+    KCalCore::MemoryCalendar *calendar() const;
 
   private:
     KCalCore::MemoryCalendar *mCalendar;

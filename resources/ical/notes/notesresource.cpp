@@ -28,7 +28,7 @@
 #include <kdebug.h>
 
 using namespace Akonadi;
-using namespace KCal;
+using namespace KCalCore;
 
 static QLatin1String sNotesType( "application/x-vnd.kde.notes" );
 
@@ -50,7 +50,7 @@ QStringList NotesResource::allMimeTypes() const
     return QStringList() << sNotesType;
 }
 
-QString NotesResource::mimeType( KCalCore::IncidenceBase * )
+QString NotesResource::mimeType( const KCalCore::IncidenceBase::Ptr &  ) const
 {
   return sNotesType;
 }

@@ -46,8 +46,6 @@ ICalResource::ICalResource( const QString &id, const QStringList &mimeTypes, con
 
 ICalResource::~ICalResource()
 {
-  delete mMimeVisitor;
-  delete mIncidenceAssigner;
 }
 
 bool ICalResource::doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
@@ -100,17 +98,18 @@ void ICalResource::itemChanged( const Akonadi::Item &item,
   Incidence::Ptr incidence = calendar()->incidence( item.remoteId() );
   if ( !incidence ) {
     // not in the calendar yet, should not happen -> add it
-    calendar()->addIncidence( payload.get()->clone() );
+    calendar()->addIncidence( Incidence::Ptr( payload->clone() ) );
   } else {
     // make sure any observer the resource might have installed gets properly notified
     incidence->startUpdates();
-    const bool assignResult = mIncidenceAssigner->assign( incidence, payload.get() );
-    if ( assignResult ) {
-      incidence->updated();
-    }
-    incidence->endUpdates();
 
-    if ( !assignResult ) {
+    if ( incidence->type() == payload->type() ) {
+      // IncidenceBase::operator= calls virtual method assign, so it's safe.
+      *incidence.staticCast<IncidenceBase>().data() = *payload.data();
+      incidence->updated();
+      incidence->endUpdates();
+    } else {
+      incidence->endUpdates();
       kWarning() << "Item changed incidence type. Replacing it.";
 
       calendar()->deleteIncidence( incidence );
@@ -137,10 +136,10 @@ void ICalResource::doRetrieveItems( const Akonadi::Collection & col )
 
 QStringList ICalResource::allMimeTypes() const
 {
-  return QStringList() << IncidenceBase::sEventMimeType
-                       << IncidenceBase::sTodoMimeType
-                       << IncidenceBase::sJournalMimeType
-                       << IncidenceBase::sFreeBusyMimeType;
+  return QStringList() << KCalCore::sEventMimeType
+                       << KCalCore::sTodoMimeType
+                       << KCalCore::sJournalMimeType
+                       << KCalCore::sFreeBusyMimeType;
 }
 
 QString ICalResource::mimeType( const IncidenceBase::Ptr &incidence ) const
