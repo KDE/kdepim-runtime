@@ -81,10 +81,10 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     virtual void itemRemoved( const Akonadi::Item &item );
 
     /** Return the local calendar. */
-    KCal::CalendarLocal *calendar() const;
+    KCalCore::CalendarLocal *calendar() const;
 
   private:
-    KCal::CalendarLocal *mCalendar;
+    KCalCore::CalendarLocal *mCalendar;
 };
 
 template <typename PayloadPtr>

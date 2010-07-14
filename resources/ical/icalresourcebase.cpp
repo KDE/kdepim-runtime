@@ -22,15 +22,15 @@
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
-#include <kcal/calendarlocal.h>
-#include <kcal/incidence.h>
+#include <kcalcore/memorycalendar.h>
+#include <kcalcore/incidence.h>
 
 #include <kglobal.h>
 #include <klocale.h>
 #include <kdebug.h>
 
 using namespace Akonadi;
-using namespace KCal;
+using namespace KCalCore;
 
 ICalResourceBase::ICalResourceBase( const QString &id )
     : SingleFileResource<Settings>( id ),
@@ -80,7 +80,7 @@ void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Set
 bool ICalResourceBase::readFromFile( const QString &fileName )
 {
   delete mCalendar;
-  mCalendar = new KCal::CalendarLocal( QLatin1String( "UTC" ) );
+  mCalendar = new KCalCore::CalendarLocal( QLatin1String( "UTC" ) );
   mCalendar->load( fileName );
   return true;
 }
@@ -118,7 +118,7 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
   return true;
 }
 
-KCal::CalendarLocal *ICalResourceBase::calendar() const
+KCalCore::MemoryCalendar *ICalResourceBase::calendar() const
 {
   return mCalendar;
 }

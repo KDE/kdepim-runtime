@@ -20,7 +20,7 @@
 #include "notesresource.h"
 #include "settingsadaptor.h"
 
-#include <kcal/incidence.h>
+#include <kcalcore/incidence.h>
 
 #include <kglobal.h>
 #include <klocale.h>
@@ -50,7 +50,7 @@ QStringList NotesResource::allMimeTypes() const
     return QStringList() << sNotesType;
 }
 
-QString NotesResource::mimeType( KCal::IncidenceBase * )
+QString NotesResource::mimeType( KCalCore::IncidenceBase * )
 {
   return sNotesType;
 }

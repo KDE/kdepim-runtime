@@ -34,7 +34,7 @@ class NotesResource : public ICalResource
     /**
       Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
     */
-    virtual QString mimeType( KCal::IncidenceBase *incidence );
+    virtual QString mimeType( KCalCore::IncidenceBase *incidence );
 
     /**
       Returns a list of all calendar component sub MIME types.
