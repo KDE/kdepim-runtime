@@ -60,7 +60,7 @@ KCalCore::Todo::Ptr TasksHandler::todoFromKolab( const KMime::Message::Ptr &data
 
 QByteArray TasksHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence )
 {
-  return Kolab::Task::taskToXML( incidence.dynamicCast<Todo>(), m_calendar.timeZoneId() ).toUtf8();
+  return Kolab::Task::taskToXML( incidence.dynamicCast<KCalCore::Todo>(), m_calendar.timeZoneId() ).toUtf8();
 }
 
 QStringList TasksHandler::contentMimeTypes()

@@ -52,7 +52,7 @@ KCalCore::Event::Ptr CalendarHandler::calendarFromKolab(const KMime::Message::Pt
   if (xmlContent) {
     const QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
-    KCalCore::Event *calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
+    KCalCore::Event::Ptr calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
     attachmentsFromKolab( data, xmlData, calendarEvent );
     return calendarEvent;
   }
@@ -61,7 +61,7 @@ KCalCore::Event::Ptr CalendarHandler::calendarFromKolab(const KMime::Message::Pt
 
 QByteArray CalendarHandler::incidenceToXml(const KCalCore::Incidence::Ptr &incidence)
 {
-  return Kolab::Event::eventToXML( incidence.dynamicCast<Event>(), m_calendar.timeZoneId() ).toUtf8();
+  return Kolab::Event::eventToXML( incidence.dynamicCast<KCalCore::Event>(), m_calendar.timeZoneId() ).toUtf8();
 }
 
 QStringList CalendarHandler::contentMimeTypes()

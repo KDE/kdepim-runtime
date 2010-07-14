@@ -27,7 +27,6 @@
 #include <algorithm>
 #include <kcalcore/incidence.h>
 #include <kcalcore/icalformat.h>
-#include <kcalcore/comparisonvisitor.h>
 #include <kcalcore/todo.h>
 
 using namespace Akonadi;
@@ -261,8 +260,7 @@ class KolabConverterTest : public QObject
 
 //       qDebug() << format.toString( realIncidence.get() );
 //       qDebug() << format.toString( convertedIncidence.get() );
-      KCalCore::ComparisonVisitor visitor;
-      QVERIFY( visitor.compare( realIncidence.get(), convertedIncidence.get() ) );
+      QVERIFY( realIncidence == convertedIncidence );
 
 
       // and now the other way around
