@@ -35,12 +35,12 @@
 #include <akonadi/specialcollections.h>
 #include <akonadi/specialcollectionsrequestjob.h>
 
-#include <kcal/calendarlocal.h>
-#include <kcal/event.h>
-#include <kcal/icalformat.h>
-#include <kcal/incidence.h>
-#include <kcal/journal.h>
-#include <kcal/todo.h>
+#include <kcalcore/memorycalendar.h>
+#include <kcalcore/event.h>
+#include <kcalcore/icalformat.h>
+#include <kcalcore/incidence.h>
+#include <kcalcore/journal.h>
+#include <kcalcore/todo.h>
 #include <KConfig>
 #include <KConfigSkeleton>
 #include <KDebug>
@@ -458,10 +458,10 @@ void InvitationsAgent::collectionCreateResult( KJob *job )
 }
 #endif
 
-Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calendar, const Item &item )
+Item InvitationsAgent::handleContent( const QString &vcal, KCalCore::MemoryCalendar* calendar, const Item &item )
 {
-  KCal::ICalFormat format;
-  KCal::ScheduleMessage *message = format.parseScheduleMessage( calendar, vcal );
+  KCalCore::ICalFormat format;
+  KCalCore::ScheduleMessage *message = format.parseScheduleMessage( calendar, vcal );
   if ( !message ) {
     kWarning() << "Invalid invitation:" << vcal;
     return Item();
@@ -469,7 +469,7 @@ Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calen
 
   kDebug() << "id=" << item.id() << "remoteId=" << item.remoteId() << "vcal=" << vcal;
 
-  KCal::Incidence* incidence = static_cast<KCal::Incidence*>( message->event() );
+  KCalCore::Incidence::Ptr incidence = message->event().staticCast<KCalCore::Incidence>();
   Q_ASSERT( incidence );
 
   IncidenceAttribute *attr = new IncidenceAttribute;
@@ -478,9 +478,9 @@ Item InvitationsAgent::handleContent( const QString &vcal, KCal::Calendar* calen
   attr->setReference( item.id() );
 
   Item newItem;
-  newItem.setMimeType( QString::fromLatin1( "application/x-vnd.akonadi.calendar.%1" ).arg( QLatin1String( incidence->type().toLower() ) ) );
+  newItem.setMimeType( incidence->mimeType() );
   newItem.addAttribute( attr );
-  newItem.setPayload<KCal::Incidence::Ptr>( KCal::Incidence::Ptr( incidence->clone() ) );
+  newItem.setPayload<KCalCore::Incidence::Ptr>( KCalCore::Incidence::Ptr( incidence->clone() ) );
   return newItem;
 }
 
@@ -505,7 +505,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
   //const QString sender = message->sender()->asUnicodeString();
   //if( identityManager()->thatIsMe(sender) ) return;
 
-  KCal::CalendarLocal calendar( KSystemTimeZones::local() ) ;
+  KCalCore::MemoryCalendar calendar( KSystemTimeZones::local() ) ;
   if ( message->contentType()->isMultipart() ) {
     kDebug() << "message is multipart:" << message->attachments().size();
 
