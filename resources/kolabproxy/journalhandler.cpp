@@ -39,28 +39,28 @@ JournalHandler::~JournalHandler()
 {
 }
 
-KCal::Incidence* JournalHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
+KCalCore::Incidence* JournalHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
 {
   return journalFromKolab(data);
 }
 
 
-KCal::Journal * JournalHandler::journalFromKolab(const KMime::Message::Ptr &data)
+KCalCore::Journal * JournalHandler::journalFromKolab(const KMime::Message::Ptr &data)
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {
     const QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
-    KCal::Journal *journal = Kolab::Journal::xmlToJournal(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
+    KCalCore::Journal *journal = Kolab::Journal::xmlToJournal(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
     attachmentsFromKolab( data, xmlData, journal );
     return journal;
   }
   return 0;
 }
 
-QByteArray JournalHandler::incidenceToXml(KCal::Incidence *incidence)
+QByteArray JournalHandler::incidenceToXml(KCalCore::Incidence *incidence)
 {
-  return Kolab::Journal::journalToXML(dynamic_cast<KCal::Journal*>(incidence), m_calendar.timeZoneId()).toUtf8();
+  return Kolab::Journal::journalToXML(dynamic_cast<KCalCore::Journal*>(incidence), m_calendar.timeZoneId()).toUtf8();
 }
 
 QStringList  JournalHandler::contentMimeTypes()

@@ -34,23 +34,18 @@
 #ifndef KOLAB_INCIDENCE_H
 #define KOLAB_INCIDENCE_H
 
+#include <kcalcore/incidence.h>
+
 #include "kolabbase.h"
 
 class QDomElement;
-
-namespace KCal {
-  class Incidence;
-  class Recurrence;
-  class Alarm;
-  class Attachment;
-}
 
 namespace Kolab {
 
 /**
  * This abstract class represents an incidence which has the shared
  * fields, of events and tasks and knows how to load/save these
- * from/to XML, and from/to a KCal::Incidence.
+ * from/to XML, and from/to a KCalCore::Incidence.
  */
 class Incidence : public KolabBase {
 public:
@@ -76,12 +71,12 @@ public:
     QString delegator;
   };
 
-  explicit Incidence( const QString& tz, KCal::Incidence* incidence = 0 );
+  explicit Incidence( const QString& tz, const KCalCore::Incidence::Ptr &incidence = KCalCore::Incidence::Ptr() );
 
 public:
   virtual ~Incidence();
 
-  void saveTo( KCal::Incidence* incidence );
+  void saveTo( const KCalCore::Incidence::Ptr &incidence );
 
   virtual void setSummary( const QString& summary );
   virtual QString summary() const;
@@ -100,7 +95,7 @@ public:
   virtual void setAlarm( float alarm );
   virtual float alarm() const;
 
-  virtual void setRecurrence( KCal::Recurrence* recur );
+  virtual void setRecurrence( KCalCore::Recurrence* recur );
   virtual Recurrence recurrence() const;
 
   virtual void addAttendee( const Attendee& attendee );
@@ -127,7 +122,7 @@ protected:
   enum FloatingStatus { Unset, AllDay, HasTime };
 
   // Read all known fields from this ical incidence
-  void setFields( const KCal::Incidence* );
+  void setFields( const KCalCore::Incidence::Ptr & );
 
   bool loadAttendeeAttribute( QDomElement&, Attendee& );
   void saveAttendeeAttribute( QDomElement& element,
@@ -154,8 +149,8 @@ protected:
   bool mHasAlarm;
   Recurrence mRecurrence;
   QList<Attendee> mAttendees;
-  QList<KCal::Alarm*> mAlarms;
-  QList<KCal::Attachment*> mAttachments;
+  QList<KCalCore::Alarm::Ptr> mAlarms;
+  QList<KCalCore::Attachment::Ptr> mAttachments;
   QString mInternalUID;
 
   struct Custom {

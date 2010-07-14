@@ -33,7 +33,7 @@
 #include "contact.h"
 
 #include <kabc/addressee.h>
-#include <kcal/freebusyurlstore.h>
+#include <kcalcore/freebusyurlstore.h>
 #include <kio/netaccess.h>
 #include <kdebug.h>
 #include <QFile>
@@ -1064,7 +1064,7 @@ void Contact::setFields( const KABC::Addressee* addressee )
     }
   }
 
-  QString url = KCal::FreeBusyUrlStore::self()->readUrl( addressee->preferredEmail() );
+  QString url = KCalCore::FreeBusyUrlStore::self()->readUrl( addressee->preferredEmail() );
   if ( !url.isEmpty() ) {
     setFreeBusyUrl( url );
   }

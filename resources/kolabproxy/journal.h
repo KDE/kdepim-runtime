@@ -34,19 +34,17 @@
 #ifndef KOLAB_JOURNAL_H
 #define KOLAB_JOURNAL_H
 
+#include <kcalcore/journal.h>
+
 #include <kolabbase.h>
 
 class QDomElement;
-
-namespace KCal {
-  class Journal;
-}
 
 namespace Kolab {
 
 /**
  * This class represents a journal entry, and knows how to load/save it
- * from/to XML, and from/to a KCal::Journal.
+ * from/to XML, and from/to a KCalCore::Journal.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
@@ -54,17 +52,17 @@ class Journal : public KolabBase {
 public:
   /// Use this to parse an xml string to a journal entry
   /// The caller is responsible for deleting the returned journal
-  static KCal::Journal* xmlToJournal( const QString& xml, const QString& tz );
+  static KCalCore::Journal::Ptr xmlToJournal( const QString& xml, const QString& tz );
 
   /// Use this to get an xml string describing this journal entry
-  static QString journalToXML( KCal::Journal*, const QString& tz );
+  static QString journalToXML( const KCalCore::Journal::Ptr &, const QString& tz );
 
-  explicit Journal( const QString& tz, KCal::Journal* journal = 0 );
+  explicit Journal( const QString& tz, const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr() );
   virtual ~Journal();
 
   virtual QString type() const { return "Journal"; }
 
-  void saveTo( KCal::Journal* journal );
+  void saveTo( const KCalCore::Journal::Ptr &journal );
 
   virtual void setSummary( const QString& summary );
   virtual QString summary() const;
@@ -89,7 +87,7 @@ public:
 
 protected:
   // Read all known fields from this ical journal
-  void setFields( const KCal::Journal* );
+  void setFields( const KCalCore::Journal::Ptr & );
 
   QString productID() const;
 

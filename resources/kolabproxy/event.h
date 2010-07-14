@@ -36,7 +36,7 @@
 
 #include "incidence.h"
 
-#include <kcal/event.h>
+#include <kcalcore/event.h>
 
 class QDomElement;
 
@@ -45,7 +45,7 @@ namespace Kolab {
 
 /**
  * This class represents an event, and knows how to load/save it
- * from/to XML, and from/to a KCal::Event.
+ * from/to XML, and from/to a KCalCore::Event.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
@@ -53,21 +53,22 @@ class Event : public Incidence {
 public:
   /// Use this to parse an xml string to a event entry
   /// The caller is responsible for deleting the returned event
-  static KCal::Event* xmlToEvent( const QString& xml, const QString& tz);
+  static KCalCore::Event::Ptr xmlToEvent( const QString& xml, const QString& tz);
 
   /// Use this to get an xml string describing this event entry
-  static QString eventToXML( KCal::Event*, const QString& tz );
+  static QString eventToXML( const KCalCore::Event::Ptr &, const QString& tz );
 
   /// Create a event object and
-  explicit Event( const QString& tz, KCal::Event* event = 0 );
+  explicit Event( const QString& tz,
+                  const KCalCore::Event::Ptr &event = KCalCore::Event::Ptr() );
   virtual ~Event();
 
-  void saveTo( KCal::Event* event );
+  void saveTo( const KCalCore::Event::Ptr &event );
 
   virtual QString type() const { return "Event"; }
 
-  virtual void setTransparency( KCal::Event::Transparency transparency );
-  virtual KCal::Event::Transparency transparency() const;
+  virtual void setTransparency( KCalCore::Event::Transparency transparency );
+  virtual KCalCore::Event::Transparency transparency() const;
 
   virtual void setEndDate( const KDateTime& date );
   virtual void setEndDate( const QDate& date );
@@ -88,9 +89,9 @@ public:
 
 protected:
   // Read all known fields from this ical incidence
-  void setFields( const KCal::Event* );
+  void setFields( const KCalCore::Event::Ptr & );
 
-  KCal::Event::Transparency mShowTimeAs;
+  KCalCore::Event::Transparency mShowTimeAs;
   KDateTime mEndDate;
   bool mHasEndDate;
 };

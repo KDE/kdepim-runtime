@@ -34,16 +34,16 @@
 #ifndef KOLABBASE_H
 #define KOLABBASE_H
 
-#include <qdom.h>
+
+#include <kcalcore/incidence.h>
+
 #include <KDateTime>
 #include <KTimeZone>
+
 #include <QColor>
+#include <qdom.h>
 
 class QFile;
-
-namespace KCal {
-  class Incidence;
-}
 
 namespace KABC {
   class Addressee;
@@ -126,10 +126,10 @@ public:
 
 protected:
   /// Read all known fields from this ical incidence
-  void setFields( const KCal::Incidence* );
+  void setFields( const KCalCore::Incidence::Ptr & );
 
   /// Save all known fields into this ical incidence
-  void saveTo( KCal::Incidence* ) const;
+  void saveTo( const KCalCore::Incidence::Ptr & ) const;
 
   /// Read all known fields from this contact
   void setFields( const KABC::Addressee* );

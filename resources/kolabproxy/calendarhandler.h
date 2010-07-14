@@ -21,7 +21,7 @@
 #define CALENDARHANDLER_H
 
 #include "incidencehandler.h"
-#include <kcal/event.h>
+#include <kcalcore/event.h>
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -35,9 +35,9 @@ public:
   virtual QString iconName() const;
 
 private:
-  virtual QByteArray incidenceToXml(KCal::Incidence *incidence);
-  virtual KCal::Incidence* incidenceFromKolab(const KMime::Message::Ptr &data);
-  KCal::Event * calendarFromKolab(const KMime::Message::Ptr &data);
+  virtual QByteArray incidenceToXml( const KCalCore::Incidence::Ptr &incidence );
+  virtual KCalCore::Incidence::Ptr incidenceFromKolab( const KMime::Message::Ptr &data );
+  KCalCore::Event::Ptr  calendarFromKolab( const KMime::Message::Ptr &data );
 };
 
 #endif

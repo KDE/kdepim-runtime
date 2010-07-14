@@ -37,15 +37,17 @@
 #include <QFile>
 #include <QList>
 
-#include <kcal/journal.h>
+#include <kcalcore/journal.h>
 #include <kdebug.h>
 #include <kurl.h>
 #include <kio/netaccess.h>
 
+#include <QBitArray>
+
 using namespace Kolab;
 
 
-Incidence::Incidence( const QString& tz, KCal::Incidence* incidence )
+Incidence::Incidence( const QString& tz, const KCalCore::Incidence::Ptr &incidence )
   : KolabBase( tz ), mFloatingStatus( Unset ), mHasAlarm( false )
 {
 }
@@ -220,7 +222,7 @@ void Incidence::saveAttendees( QDomElement& element ) const
 
 void Incidence::saveAttachments( QDomElement& element ) const
 {
-  foreach ( KCal::Attachment *a, mAttachments ) {
+  foreach ( KCalCore::Attachment::Ptr a, mAttachments ) {
     if ( a->isUri() ) {
       writeString( element, "link-attachment", a->uri() );
     } else if ( a->isBinary() ) {
@@ -235,7 +237,7 @@ void Incidence::saveAlarms( QDomElement& element ) const
 
   QDomElement list = element.ownerDocument().createElement( "advanced-alarms" );
   element.appendChild( list );
-  foreach ( KCal::Alarm *a, mAlarms ) {
+  foreach ( KCalCore::Alarm::Ptr a, mAlarms ) {
     QDomElement e = list.ownerDocument().createElement( "alarm" );
     list.appendChild( e );
 
@@ -252,24 +254,24 @@ void Incidence::saveAlarms( QDomElement& element ) const
     }
 
     switch ( a->type() ) {
-    case KCal::Alarm::Invalid:
+    case KCalCore::Alarm::Invalid:
       break;
-    case KCal::Alarm::Display:
+    case KCalCore::Alarm::Display:
       e.setAttribute( "type", "display" );
       writeString( e, "text", a->text() );
       break;
-    case KCal::Alarm::Procedure:
+    case KCalCore::Alarm::Procedure:
       e.setAttribute( "type", "procedure" );
       writeString( e, "program", a->programFile() );
       writeString( e, "arguments", a->programArguments() );
       break;
-    case KCal::Alarm::Email:
+    case KCalCore::Alarm::Email:
     {
       e.setAttribute( "type", "email" );
       QDomElement addresses = e.ownerDocument().createElement( "addresses" );
       e.appendChild( addresses );
-      foreach ( const KCal::Person &person, a->mailAddresses() ) {
-        writeString( addresses, "address", person.fullName() );
+      foreach ( const KCalCore::Person::Ptr &person, a->mailAddresses() ) {
+        writeString( addresses, "address", person->fullName() );
       }
       writeString( e, "subject", a->mailSubject() );
       writeString( e, "mail-text", a->mailText() );
@@ -280,7 +282,7 @@ void Incidence::saveAlarms( QDomElement& element ) const
       }
       break;
     }
-    case KCal::Alarm::Audio:
+    case KCalCore::Alarm::Audio:
       e.setAttribute( "type", "audio" );
       writeString( e, "file", a->audioFile() );
       break;
@@ -355,7 +357,7 @@ void Incidence::loadRecurrence( const QDomElement& element )
   }
 }
 
-static void loadAddressesHelper( const QDomElement& element, KCal::Alarm* a )
+static void loadAddressesHelper( const QDomElement& element, const KCalCore::Alarm::Ptr &a )
 {
   for ( QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     if ( n.isComment() )
@@ -365,7 +367,7 @@ static void loadAddressesHelper( const QDomElement& element, KCal::Alarm* a )
       QString tagName = e.tagName();
 
       if ( tagName == "address" ) {
-        a->addMailAddress( KCal::Person( e.text() ) );
+        a->addMailAddress( KCalCore::Person::fromFullName( e.text() ) );
       } else {
         kWarning() << "Unhandled tag" << tagName;
       }
@@ -373,7 +375,7 @@ static void loadAddressesHelper( const QDomElement& element, KCal::Alarm* a )
   }
 }
 
-static void loadAttachmentsHelper( const QDomElement& element, KCal::Alarm* a )
+static void loadAttachmentsHelper( const QDomElement& element, const KCalCore::Alarm::Ptr &a )
 {
   for ( QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     if ( n.isComment() )
@@ -391,7 +393,7 @@ static void loadAttachmentsHelper( const QDomElement& element, KCal::Alarm* a )
   }
 }
 
-static void loadAlarmHelper( const QDomElement& element, KCal::Alarm* a )
+static void loadAlarmHelper( const QDomElement& element, const KCalCore::Alarm::Ptr &a )
 {
   for ( QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     if ( n.isComment() )
@@ -443,17 +445,17 @@ void Incidence::loadAlarms( const QDomElement& element )
       QString tagName = e.tagName();
 
       if ( tagName == "alarm" ) {
-        KCal::Alarm *a = new KCal::Alarm( 0 );
+        KCalCore::Alarm::Ptr a = KCalCore::Alarm::Ptr( new KCalCore::Alarm( 0 ) );
         a->setEnabled( true ); // default to enabled, unless some XML attribute says otherwise.
         QString type = e.attribute( "type" );
         if ( type == "display" ) {
-          a->setType( KCal::Alarm::Display );
+          a->setType( KCalCore::Alarm::Display );
         } else if ( type == "procedure" ) {
-          a->setType( KCal::Alarm::Procedure );
+          a->setType( KCalCore::Alarm::Procedure );
         } else if ( type == "email" ) {
-          a->setType( KCal::Alarm::Email );
+          a->setType( KCalCore::Alarm::Email );
         } else if ( type == "audio" ) {
-          a->setType( KCal::Alarm::Audio );
+          a->setType( KCalCore::Alarm::Audio );
         } else {
           kWarning() << "Unhandled alarm type:" << type;
         }
@@ -494,7 +496,7 @@ bool Incidence::loadAttribute( QDomElement& element )
     } else
       return false;
   } else if ( tagName == "link-attachment" ) {
-    mAttachments.push_back( new KCal::Attachment( element.text() ) );
+    mAttachments.push_back( KCalCore::Attachment::Ptr( new KCalCore::Attachment( element.text() ) ) );
   } else if ( tagName == "alarm" )
     // Alarms should be minutes before. Libkcal uses event time + alarm time
     setAlarm( - element.text().toInt() );
@@ -574,36 +576,36 @@ void Incidence::loadCustomAttributes( QDomElement& element )
   mCustomList.append( custom );
 }
 
-static KCal::Attendee::PartStat attendeeStringToStatus( const QString& s )
+static KCalCore::Attendee::PartStat attendeeStringToStatus( const QString& s )
 {
   if ( s == "none" )
-    return KCal::Attendee::NeedsAction;
+    return KCalCore::Attendee::NeedsAction;
   if ( s == "tentative" )
-    return KCal::Attendee::Tentative;
+    return KCalCore::Attendee::Tentative;
   if ( s == "declined" )
-    return KCal::Attendee::Declined;
+    return KCalCore::Attendee::Declined;
   if ( s == "delegated" )
-    return KCal::Attendee::Delegated;
+    return KCalCore::Attendee::Delegated;
 
   // Default:
-  return KCal::Attendee::Accepted;
+  return KCalCore::Attendee::Accepted;
 }
 
-static QString attendeeStatusToString( KCal::Attendee::PartStat status )
+static QString attendeeStatusToString( KCalCore::Attendee::PartStat status )
 {
   switch( status ) {
-  case KCal::Attendee::NeedsAction:
+  case KCalCore::Attendee::NeedsAction:
     return "none";
-  case KCal::Attendee::Accepted:
+  case KCalCore::Attendee::Accepted:
     return "accepted";
-  case KCal::Attendee::Declined:
+  case KCalCore::Attendee::Declined:
     return "declined";
-  case KCal::Attendee::Tentative:
+  case KCalCore::Attendee::Tentative:
     return "tentative";
-  case KCal::Attendee::Delegated:
+  case KCalCore::Attendee::Delegated:
     return "delegated";
-  case KCal::Attendee::Completed:
-  case KCal::Attendee::InProcess:
+  case KCalCore::Attendee::Completed:
+  case KCalCore::Attendee::InProcess:
     // These don't have any meaning in the Kolab format, so just use:
     return "accepted";
   }
@@ -612,26 +614,26 @@ static QString attendeeStatusToString( KCal::Attendee::PartStat status )
   return "accepted";
 }
 
-static KCal::Attendee::Role attendeeStringToRole( const QString& s )
+static KCalCore::Attendee::Role attendeeStringToRole( const QString& s )
 {
   if ( s == "optional" )
-    return KCal::Attendee::OptParticipant;
+    return KCalCore::Attendee::OptParticipant;
   if ( s == "resource" )
-    return KCal::Attendee::NonParticipant;
-  return KCal::Attendee::ReqParticipant;
+    return KCalCore::Attendee::NonParticipant;
+  return KCalCore::Attendee::ReqParticipant;
 }
 
-static QString attendeeRoleToString( KCal::Attendee::Role role )
+static QString attendeeRoleToString( KCalCore::Attendee::Role role )
 {
   switch( role ) {
-  case KCal::Attendee::ReqParticipant:
+  case KCalCore::Attendee::ReqParticipant:
     return "required";
-  case KCal::Attendee::OptParticipant:
+  case KCalCore::Attendee::OptParticipant:
     return "optional";
-  case KCal::Attendee::Chair:
+  case KCalCore::Attendee::Chair:
     // We don't have the notion of chair, so use
     return "required";
-  case KCal::Attendee::NonParticipant:
+  case KCalCore::Attendee::NonParticipant:
     // In Kolab, a non-participant is a resource
     return "resource";
   }
@@ -651,20 +653,20 @@ static const char *s_monthName[] =
   "august", "september", "october", "november", "december"
 };
 
-void Incidence::setRecurrence( KCal::Recurrence* recur )
+void Incidence::setRecurrence( KCalCore::Recurrence* recur )
 {
   mRecurrence.interval = recur->frequency();
   switch ( recur->recurrenceType() ) {
-  case KCal::Recurrence::rMinutely: // Not handled by the kolab XML
+  case KCalCore::Recurrence::rMinutely: // Not handled by the kolab XML
     mRecurrence.cycle = "minutely";
     break;
-  case KCal::Recurrence::rHourly:  // Not handled by the kolab XML
+  case KCalCore::Recurrence::rHourly:  // Not handled by the kolab XML
     mRecurrence.cycle = "hourly";
     break;
-  case KCal::Recurrence::rDaily:
+  case KCalCore::Recurrence::rDaily:
     mRecurrence.cycle = "daily";
     break;
-  case KCal::Recurrence::rWeekly: // every X weeks
+  case KCalCore::Recurrence::rWeekly: // every X weeks
     mRecurrence.cycle = "weekly";
     {
       QBitArray arr = recur->days();
@@ -673,12 +675,12 @@ void Incidence::setRecurrence( KCal::Recurrence* recur )
           mRecurrence.days.append( s_weekDayName[idx] );
     }
     break;
-  case KCal::Recurrence::rMonthlyPos: {
+  case KCalCore::Recurrence::rMonthlyPos: {
     mRecurrence.cycle = "monthly";
     mRecurrence.type = "weekday";
-    QList<KCal::RecurrenceRule::WDayPos> monthPositions = recur->monthPositions();
+    QList<KCalCore::RecurrenceRule::WDayPos> monthPositions = recur->monthPositions();
     if ( !monthPositions.isEmpty() ) {
-      KCal::RecurrenceRule::WDayPos monthPos = monthPositions.first();
+      KCalCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
       // TODO: Handle multiple days in the same week
       mRecurrence.dayNumber = QString::number( monthPos.pos() );
       mRecurrence.days.append( s_weekDayName[ monthPos.day()-1 ] );
@@ -686,7 +688,7 @@ void Incidence::setRecurrence( KCal::Recurrence* recur )
     }
     break;
   }
-  case KCal::Recurrence::rMonthlyDay: {
+  case KCalCore::Recurrence::rMonthlyDay: {
     mRecurrence.cycle = "monthly";
     mRecurrence.type = "daynumber";
     QList<int> monthDays = recur->monthDays();
@@ -695,7 +697,7 @@ void Incidence::setRecurrence( KCal::Recurrence* recur )
       mRecurrence.dayNumber = QString::number( monthDays.first() );
     break;
   }
-  case KCal::Recurrence::rYearlyMonth: // (day n of Month Y)
+  case KCalCore::Recurrence::rYearlyMonth: // (day n of Month Y)
   {
     mRecurrence.cycle = "yearly";
     mRecurrence.type = "monthday";
@@ -707,20 +709,20 @@ void Incidence::setRecurrence( KCal::Recurrence* recur )
       mRecurrence.month = s_monthName[ months.first() - 1 ]; // #### Kolab XML limitation: only one month specified
     break;
   }
-  case KCal::Recurrence::rYearlyDay: // YearlyDay (day N of the year). Not supported by Outlook
+  case KCalCore::Recurrence::rYearlyDay: // YearlyDay (day N of the year). Not supported by Outlook
     mRecurrence.cycle = "yearly";
     mRecurrence.type = "yearday";
     mRecurrence.dayNumber = QString::number( recur->yearDays().first() );
     break;
-  case KCal::Recurrence::rYearlyPos: // (weekday X of week N of month Y)
+  case KCalCore::Recurrence::rYearlyPos: // (weekday X of week N of month Y)
     mRecurrence.cycle = "yearly";
     mRecurrence.type = "weekday";
     QList<int> months = recur->yearMonths();
     if ( !months.isEmpty() )
       mRecurrence.month = s_monthName[ months.first() - 1 ]; // #### Kolab XML limitation: only one month specified
-    QList<KCal::RecurrenceRule::WDayPos> monthPositions = recur->yearPositions();
+    QList<KCalCore::RecurrenceRule::WDayPos> monthPositions = recur->yearPositions();
     if ( !monthPositions.isEmpty() ) {
-      KCal::RecurrenceRule::WDayPos monthPos = monthPositions.first();
+      KCalCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
       // TODO: Handle multiple days in the same week
       mRecurrence.dayNumber = QString::number( monthPos.pos() );
       mRecurrence.days.append( s_weekDayName[ monthPos.day()-1 ] );
@@ -742,7 +744,7 @@ void Incidence::setRecurrence( KCal::Recurrence* recur )
   }
 }
 
-void Incidence::setFields( const KCal::Incidence* incidence )
+void Incidence::setFields( const KCalCore::Incidence::Ptr &incidence )
 {
   KolabBase::setFields( incidence );
 
@@ -761,9 +763,9 @@ void Incidence::setFields( const KCal::Incidence* incidence )
   // Alarm
   mHasAlarm = false; // Will be set to true, if we actually have one
   if ( incidence->isAlarmEnabled() ) {
-    const KCal::Alarm::List& alarms = incidence->alarms();
+    const KCalCore::Alarm::List& alarms = incidence->alarms();
     if ( !alarms.isEmpty() ) {
-      const KCal::Alarm* alarm = alarms.first();
+      const KCalCore::Alarm::Ptr alarm = alarms.first();
       if ( alarm->hasStartOffset() ) {
         int dur = alarm->startOffset().asSeconds();
         setAlarm( (float)dur / 60.0 );
@@ -771,19 +773,19 @@ void Incidence::setFields( const KCal::Incidence* incidence )
     }
   }
 
-  Email org( incidence->organizer().name(), incidence->organizer().email() );
+  Email org( incidence->organizer()->name(), incidence->organizer()->email() );
   setOrganizer( org );
 
   // Attendees:
-  KCal::Attendee::List attendees = incidence->attendees();
-  foreach ( KCal::Attendee *kcalAttendee, attendees ) {
+  KCalCore::Attendee::List attendees = incidence->attendees();
+  foreach ( KCalCore::Attendee::Ptr kcalAttendee, attendees ) {
     Attendee attendee;
 
     attendee.displayName = kcalAttendee->name();
     attendee.smtpAddress = kcalAttendee->email();
     attendee.status = attendeeStatusToString( kcalAttendee->status() );
     attendee.requestResponse = kcalAttendee->RSVP();
-    // TODO: KCal::Attendee::mFlag is not accessible
+    // TODO: KCalCore::Attendee::mFlag is not accessible
     // attendee.invitationSent = kcalAttendee->mFlag;
     // DF: Hmm? mFlag is set to true and never used at all.... Did you mean another field?
     attendee.role = attendeeRoleToString( kcalAttendee->role() );
@@ -796,16 +798,16 @@ void Incidence::setFields( const KCal::Incidence* incidence )
   mAttachments.clear();
 
   // Attachments
-  KCal::Attachment::List attachments = incidence->attachments();
-  foreach ( KCal::Attachment* a, attachments ) {
+  KCalCore::Attachment::List attachments = incidence->attachments();
+  foreach ( KCalCore::Attachment::Ptr a, attachments ) {
     mAttachments.push_back( a );
   }
 
   mAlarms.clear();
 
   // Alarms
-  KCal::Alarm::List alarms = incidence->alarms();
-  foreach ( KCal::Alarm* a, alarms ) {
+  KCalCore::Alarm::List alarms = incidence->alarms();
+  foreach ( KCalCore::Alarm::Ptr a, alarms ) {
     mAlarms.push_back( a );
   }
 
@@ -850,7 +852,7 @@ static QBitArray daysListToBitArray( const QStringList& days )
 }
 
 
-void Incidence::saveTo( KCal::Incidence* incidence )
+void Incidence::saveTo( const KCalCore::Incidence::Ptr &incidence )
 {
   KolabBase::saveTo( incidence );
 
@@ -867,13 +869,13 @@ void Incidence::saveTo( KCal::Incidence* incidence )
   incidence->setLocation( location() );
 
   if ( mHasAlarm && mAlarms.isEmpty() ) {
-    KCal::Alarm* alarm = incidence->newAlarm();
+    KCalCore::Alarm::Ptr alarm = incidence->newAlarm();
     alarm->setStartOffset( qRound( mAlarm * 60.0 ) );
     alarm->setEnabled( true );
-    alarm->setType( KCal::Alarm::Display );
+    alarm->setType( KCalCore::Alarm::Display );
   } else if ( !mAlarms.isEmpty() ) {
-    foreach ( KCal::Alarm* a, mAlarms ) {
-      a->setParent( incidence );
+    foreach ( KCalCore::Alarm::Ptr a, mAlarms ) {
+      a->setParent( incidence.data() );
       incidence->addAlarm( a );
     }
   }
@@ -886,25 +888,25 @@ void Incidence::saveTo( KCal::Incidence* incidence )
 
   incidence->clearAttendees();
   foreach ( const Attendee& attendee, mAttendees ) {
-    KCal::Attendee::PartStat status = attendeeStringToStatus( attendee.status );
-    KCal::Attendee::Role role = attendeeStringToRole( attendee.role );
-    KCal::Attendee *a = new KCal::Attendee( attendee.displayName,
+    KCalCore::Attendee::PartStat status = attendeeStringToStatus( attendee.status );
+    KCalCore::Attendee::Role role = attendeeStringToRole( attendee.role );
+    KCalCore::Attendee::Ptr a( new KCalCore::Attendee( attendee.displayName,
                                             attendee.smtpAddress,
                                             attendee.requestResponse,
-                                            status, role );
+                                            status, role ) );
     a->setDelegate( attendee.delegate );
     a->setDelegator( attendee.delegator );
     incidence->addAttendee( a );
   }
 
   incidence->clearAttachments();
-  foreach ( KCal::Attachment *a, mAttachments ) {
+  foreach ( KCalCore::Attachment::Ptr a, mAttachments ) {
     // TODO should we copy?
     incidence->addAttachment( a );
   }
 
   if ( !mRecurrence.cycle.isEmpty() ) {
-    KCal::Recurrence* recur = incidence->recurrence(); // yeah, this creates it
+    KCalCore::Recurrence* recur = incidence->recurrence(); // yeah, this creates it
     // done below recur->setFrequency( mRecurrence.interval );
     if ( mRecurrence.cycle == "minutely" ) {
       recur->setMinutely( mRecurrence.interval );
@@ -968,7 +970,7 @@ QString Incidence::productID() const
   return QString( "Akonadi %1, Kolab resource" ).arg( AKONADI_VERSION );
 }
 
-// Unhandled KCal::Incidence fields:
+// Unhandled KCalCore::Incidence fields:
 // revision, status (unused), priority (done in tasks), attendee.uid,
 // mComments, mReadOnly
 

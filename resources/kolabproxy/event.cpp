@@ -33,45 +33,46 @@
 
 #include "event.h"
 
-#include <kcal/event.h>
+#include <kcalcore/event.h>
 #include <kdebug.h>
 
 using namespace Kolab;
 
 
-KCal::Event* Event::xmlToEvent( const QString& xml, const QString& tz)
+KCalCore::Event::Ptr Event::xmlToEvent( const QString& xml, const QString& tz)
 {
   Event event( tz );
   event.load( xml );
-  KCal::Event* kcalEvent = new KCal::Event();
+  KCalCore::Event::Ptr kcalEvent( new KCalCore::Event() );
   event.saveTo( kcalEvent );
   return kcalEvent;
 }
 
-QString Event::eventToXML( KCal::Event* kcalEvent, const QString& tz  )
+QString Event::eventToXML( const KCalCore::Event::Ptr &kcalEvent, const QString& tz  )
 {
   Event event( tz, kcalEvent );
   return event.saveXML();
 }
 
-Event::Event( const QString& tz, KCal::Event* event )
+Event::Event( const QString& tz, const KCalCore::Event::Ptr &event )
   : Incidence( tz, event ),
-  mShowTimeAs( KCal::Event::Opaque ), mHasEndDate( false )
+  mShowTimeAs( KCalCore::Event::Opaque ), mHasEndDate( false )
 {
-  if ( event )
+  if ( event ) {
     setFields( event );
+  }
 }
 
 Event::~Event()
 {
 }
 
-void Event::setTransparency( KCal::Event::Transparency transparency )
+void Event::setTransparency( KCalCore::Event::Transparency transparency )
 {
   mShowTimeAs = transparency;
 }
 
-KCal::Event::Transparency Event::transparency() const
+KCalCore::Event::Transparency Event::transparency() const
 {
   return mShowTimeAs;
 }
@@ -117,9 +118,9 @@ bool Event::loadAttribute( QDomElement& element )
   if ( tagName == "show-time-as" ) {
     // TODO: Support tentative and outofoffice
     if ( element.text() == "free" )
-      setTransparency( KCal::Event::Transparent );
+      setTransparency( KCalCore::Event::Transparent );
     else
-      setTransparency( KCal::Event::Opaque );
+      setTransparency( KCalCore::Event::Opaque );
   } else if ( tagName == "end-date" )
     setEndDate( element.text() );
   else
@@ -135,7 +136,7 @@ bool Event::saveAttributes( QDomElement& element ) const
   Incidence::saveAttributes( element );
 
   // TODO: Support tentative and outofoffice
-  if ( transparency() == KCal::Event::Transparent )
+  if ( transparency() == KCalCore::Event::Transparent )
     writeString( element, "show-time-as", "free" );
   else
     writeString( element, "show-time-as", "busy" );
@@ -183,7 +184,7 @@ QString Event::saveXML() const
   return document.toString();
 }
 
-void Event::setFields( const KCal::Event* event )
+void Event::setFields( const KCalCore::Event::Ptr &event )
 {
   Incidence::setFields( event );
 
@@ -204,7 +205,7 @@ void Event::setFields( const KCal::Event* event )
   setTransparency( event->transparency() );
 }
 
-void Event::saveTo( KCal::Event* event )
+void Event::saveTo( const KCalCore::Event::Ptr &event )
 {
   Incidence::saveTo( event );
 
