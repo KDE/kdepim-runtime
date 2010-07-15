@@ -1850,6 +1850,8 @@ QString ImapResource::mailBoxForCollection( const Collection& col ) const
 
 void ImapResource::doSetOnline(bool online)
 {
+  kDebug() << "online=" << online
+           << "network.status=" << Solid::Networking::status();
   if ( !online && isSessionAvailable() ) {
     m_pool->releaseSession( m_mainSession );
     m_mainSession = 0;
@@ -1895,15 +1897,9 @@ void ImapResource::reconnect()
   setNeedsNetwork( needsNetwork() );
   setOnline( false ); // we are not connected initially
 
-  /*
   setOnline( !needsNetwork() ||
              Solid::Networking::status() == Solid::Networking::Unknown ||
              Solid::Networking::status() == Solid::Networking::Connected );
-  */
-  // We can't trust the above code, because there are a lot of broken NetworkManager
-  // installations around, which would cause the resource to be offline, even if there
-  // is an actual network connection available.
-  setOnline( true );
 }
 
 void ImapResource::startIdle()
