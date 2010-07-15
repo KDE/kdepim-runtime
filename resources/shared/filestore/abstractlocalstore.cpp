@@ -393,8 +393,8 @@ FileStore::CollectionDeleteJob *FileStore::AbstractLocalStore::deleteCollection(
     kError() << message;
     kError() << collection;
     d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
-  } else if ( ( collection.parentCollection().rights() & Collection::CanDeleteCollection ) == 0 ) {
-    const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.parentCollection().name() );
+  } else if ( ( collection.rights() & Collection::CanDeleteCollection ) == 0 ) {
+    const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.name() );
     kError() << message;
     kError() << collection;
     d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
@@ -445,17 +445,16 @@ FileStore::CollectionModifyJob *FileStore::AbstractLocalStore::modifyCollection(
     kError() << message;
     kError() << collection;
     d->mSession->setError( job, FileStore::Job::InvalidStoreState, message );
-  } else if ( collection.remoteId().isEmpty() ||
-              collection.parentCollection().remoteId().isEmpty() ) {
+  } else if ( collection.remoteId().isEmpty() ) {
     const QString message = i18nc( "@info:status", "Given folder name is empty" );
     kError() << message;
     kError() << collection;
     d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
-  } else if ( ( collection.parentCollection().rights() & Collection::CanChangeCollection ) == 0 ) {
-    const QString message = i18nc( "@info:status", "Access control prohibits folder modification in folder %1", collection.parentCollection().name() );
-    kError() << message;
-    kError() << collection;
-    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
+  } else if ( ( collection.rights() & Collection::CanChangeCollection ) == 0 ) {
+      const QString message = i18nc( "@info:status", "Access control prohibits folder modification in folder %1", collection.name() );
+      kError() << message;
+      kError() << collection;
+      d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   }
 
   int errorCode = 0;
@@ -486,11 +485,6 @@ FileStore::CollectionMoveJob *FileStore::AbstractLocalStore::moveCollection( con
     d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
   } else if ( ( targetParent.rights() & Collection::CanCreateCollection ) == 0 ) {
     const QString message = i18nc( "@info:status", "Access control prohibits folder creation in folder %1", targetParent.name() );
-    kError() << message;
-    kError() << collection << targetParent;
-    d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
-  } else if ( ( collection.parentCollection().rights() & Collection::CanDeleteCollection ) == 0 ) {
-    const QString message = i18nc( "@info:status", "Access control prohibits folder deletion in folder %1", collection.parentCollection().name() );
     kError() << message;
     kError() << collection << targetParent;
     d->mSession->setError( job, FileStore::Job::InvalidJobContext, message );
