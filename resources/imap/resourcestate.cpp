@@ -198,7 +198,10 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
   if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
     foreach ( const Akonadi::Collection &c, collections ) {
       if ( !c.hasAttribute<NoSelectAttribute>() ) {
-        m_resource->triggerCollectionExtraInfoJobs( QVariant::fromValue( c ) );
+        m_resource->scheduleCustomTask( m_resource,
+                                        "triggerCollectionExtraInfoJobs",
+                                        QVariant::fromValue( c ),
+                                        Akonadi::ResourceBase::Append );
       }
     }
   }
