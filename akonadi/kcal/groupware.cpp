@@ -39,7 +39,7 @@
 #include "kcalprefs.h"
 #include "mailscheduler.h"
 #include "calendar.h"
-#include <kcalcore/memorycalendar.h>
+#include "calendaradaptor.h"
 
 #include <kcalutils/incidenceformatter.h>
 #include <kcalutils/stringify.h>
@@ -109,7 +109,8 @@ bool Groupware::handleInvitation( const QString& receiver, const QString& iCal,
 {
   const QString action = type;
 
-  ScheduleMessage *message = mFormat.parseScheduleMessage( mCalendar->memoryCalendar(), iCal );
+  CalendarAdaptor adaptor( mCalendar, 0 );
+  ScheduleMessage *message = mFormat.parseScheduleMessage( &adaptor, iCal );
   if ( !message ) {
     QString errorMessage;
     if ( mFormat.exception() ) {

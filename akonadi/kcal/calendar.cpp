@@ -1867,9 +1867,3 @@ Collection Calendar::collection( const Akonadi::Collection::Id &id )
     return Collection();
   }
 }
-
-MemoryCalendar * Akonadi::Calendar::memoryCalendar() const
-{
-  //KDAB_TODO
-  return 0;
-}

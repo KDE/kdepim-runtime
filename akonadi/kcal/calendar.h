@@ -721,8 +721,6 @@ public:
     explicit Calendar( QAbstractItemModel* treeModel, QAbstractItemModel *model, const KDateTime::Spec &timeSpec, QObject* parent=0 );
     ~Calendar();
 
-    KCalCore::MemoryCalendar *memoryCalendar() const;
-
     QAbstractItemModel* model() const;
 
     QAbstractItemModel* unfilteredModel() const;
