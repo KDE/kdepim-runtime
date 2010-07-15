@@ -48,6 +48,7 @@ private:
 
   KIMAP::Session *m_session;
   qint64 m_uid;
+  bool m_messageReceived;
 };
 
 #endif

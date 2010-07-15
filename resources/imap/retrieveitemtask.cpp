@@ -28,7 +28,7 @@
 #include <kimap/session.h>
 
 RetrieveItemTask::RetrieveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent ), m_session( 0 ), m_uid( 0 )
+  : ResourceTask( resource, parent ), m_session( 0 ), m_uid( 0 ), m_messageReceived( false )
 {
 
 }
@@ -106,6 +106,7 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
   kDebug(5327) << "Has Payload: " << i.hasPayload();
   kDebug(5327) << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
+  m_messageReceived = true;
   itemRetrieved( i );
 }
 
@@ -113,11 +114,8 @@ void RetrieveItemTask::onContentFetchDone( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( job->errorString() );
-  } else {
-    KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( job );
-    if ( fetch->messages().isEmpty() && fetch->parts().isEmpty() ) {
-      cancelTask( i18n("No message retrieved, server reply was empty.") );
-    }
+  } else if ( !m_messageReceived ) {
+    cancelTask( i18n("No message retrieved, server reply was empty.") );
   }
 }
 
