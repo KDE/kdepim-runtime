@@ -200,7 +200,7 @@ namespace Akonadi
 
   AKONADI_KCAL_NEXT_EXPORT QString displayName( const Akonadi::Collection &coll );
 
-  AKONADI_KCAL_NEXT_EXPORT QString subMimeTypeForIncidence( KCalCore::Incidence::Ptr incidence );
+  AKONADI_KCAL_NEXT_EXPORT QString subMimeTypeForIncidence( const KCalCore::Incidence::Ptr &incidence );
 
 }
 

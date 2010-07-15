@@ -545,7 +545,7 @@ void Calendar::setUnfilteredModel( QAbstractItemModel *model )
 
 // This method will be called probably multiple times if a series of changes where done. One finished the endChange() method got called.
 
-void Calendar::incidenceUpdate( const QString &uid )
+void Calendar::incidenceUpdate( const QString & /*uid*/ )
 {
 }
 

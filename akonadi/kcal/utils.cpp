@@ -219,12 +219,11 @@ bool Akonadi::isValidIncidenceItemUrl( const KUrl &url, const QStringList &suppo
 
 bool Akonadi::isValidIncidenceItemUrl( const KUrl &url )
 {
-  /*KDAB_TODO
-  IncidenceMimeTypeVisitor visitor;
-
-  return isValidIncidenceItemUrl( url, visitor.allMimeTypes() );
-  */
-  return true;
+  return isValidIncidenceItemUrl( url,
+                                  QStringList() << KCalCore::sEventMimeType
+                                                << KCalCore::sTodoMimeType
+                                                << KCalCore::sJournalMimeType
+                                                << KCalCore::sFreeBusyMimeType );
 }
 
 static bool containsValidIncidenceItemUrl( const QList<QUrl>& urls )
@@ -260,13 +259,13 @@ QList<KUrl> Akonadi::incidenceItemUrls( const QMimeData* mimeData )
 
 QList<KUrl> Akonadi::todoItemUrls( const QMimeData* mimeData )
 {
-  // KDBA_TODO
-
   QList<KUrl> urls;
-  /*
-  Q_FOREACH( const KUrl& i, mimeData->urls() )
-    if ( isValidIncidenceItemUrl( i , QStringList() << IncidenceMimeTypeVisitor::todoMimeType() ) )
-    urls.push_back( i );*/
+
+  Q_FOREACH( const KUrl& i, mimeData->urls() ) {
+    if ( isValidIncidenceItemUrl( i , QStringList() << KCalCore::sTodoMimeType ) ) {
+      urls.push_back( i );
+    }
+  }
   return urls;
 }
 
@@ -389,10 +388,7 @@ QString Akonadi::displayName( const Collection &c )
   return ( attr && !attr->displayName().isEmpty() ) ? attr->displayName() : c.name();
 }
 
-QString Akonadi::subMimeTypeForIncidence( KCalCore::Incidence::Ptr incidence )
+QString Akonadi::subMimeTypeForIncidence( const KCalCore::Incidence::Ptr &incidence )
 {
-//  IncidenceMimeTypeVisitor visitor;
-//  incidence->accept( visitor, incidence );
-//  return visitor.mimeType();
-  // KDAB_TODO
+  return incidence->mimeType();
 }
