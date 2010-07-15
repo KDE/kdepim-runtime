@@ -621,7 +621,7 @@ QSet<QByteArray> MessageStatus::getStatusFlags() const
     if ( mStatus & KMMsgStatusForwarded )
       flags+= "$FORWARDED";
     if ( mStatus & KMMsgStatusToAct )
-      flags+= "$TODO ";
+      flags+= "$TODO";
     if ( mStatus & KMMsgStatusWatched )
       flags+= "$WATCHED";
     if ( mStatus & KMMsgStatusIgnored )
