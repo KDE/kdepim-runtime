@@ -1522,23 +1522,16 @@ void Calendar::setupRelations( const Item &forincidence )
   QList<KCalCore::Incidence*> l = d->mOrphans.values( uid );
   d->mOrphans.remove( uid );
   for ( int i = 0, end = l.count();  i < end;  ++i ) {
-    //KDAB_TODO
-//    l[i]->setRelatedTo( forincidence );
     forincidence->addRelation( l[i] );
     d->mOrphanUids.remove( l[i]->uid() );
   }
 
   // Now see about this incidences parent
-/*  if ( !forincidence->relatedTo() && !forincidence->relatedToUid().isEmpty() ) {
+  if ( !forincidence->relatedTo() && !forincidence->relatedToUid().isEmpty() ) {
     // Incidence has a uid it is related to but is not registered to it yet.
     // Try to find it
     KCalCore::Incidence::Ptr parent = incidence( forincidence->relatedToUid() );
-    if ( parent ) {
-      // Found it
-      //KDAB_TODO
-//      forincidence->setRelatedTo( parent );
-      parent->addRelation( forincidence );
-    } else {
+    if ( !parent ) {
       // Not found, put this in the mOrphans list
       // Note that the mOrphans dict might contain multiple entries with the
       // same key! which are multiple children that wait for the parent
@@ -1547,7 +1540,7 @@ void Calendar::setupRelations( const Item &forincidence )
       d->mOrphanUids.insert( forincidence->uid(), forincidence );
     }
   }
-  }*/
+  }
 #endif // AKONADI_PORT_DISABLED
 
 #ifdef AKONADI_PORT_DISABLED
@@ -1564,8 +1557,6 @@ void Calendar::removeRelations( const Item &incidence )
     if ( !d->mOrphanUids.contains( i->uid() ) ) {
       d->mOrphans.insert( uid, i );
       d->mOrphanUids.insert( i->uid(), i );
-      //KDAB_TODO
-//      i->setRelatedTo( 0 );
       i->setRelatedTo( uid );
     }
   }
@@ -1628,8 +1619,6 @@ void Calendar::removeRelations( const Item &incidence )
   // via the relation.
   //
   // This crash is tested in CalendarLocalTest::testRelationsCrash().
-  //KDAB_TODO
-//  incidence->setRelatedTo( 0 );
 }
 #endif // AKONADI_PORT_DISABLED
 
