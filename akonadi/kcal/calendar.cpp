@@ -246,7 +246,17 @@ void Calendar::Private::updateItem( const Item &item, UpdateMode mode )
   } else if ( const KCalCore::Journal::Ptr j = Akonadi::journal( item ) ) {
     date = j->dtStart().date().toString();
   }  else {
-    kDebug() << "Item id is " << item.id();
+    kDebug() << "Item id is " << item.id()
+             << item.hasPayload<KCalCore::Incidence::Ptr>()
+             << item.hasPayload<KCalCore::Event::Ptr>()
+             << item.hasPayload<KCalCore::Todo::Ptr>()
+             << item.hasPayload<KCalCore::Journal::Ptr>();
+    Incidence::Ptr p = Akonadi::incidence( item );
+    if ( p ) {
+      kDebug() << "incidence uid is " << p->uid()
+               << " and type is " << p->typeStr();
+    }
+
     Q_ASSERT( false );
     return;
   }
