@@ -159,30 +159,31 @@ QDrag* Akonadi::createDrag( const Item &item, const KDateTime::Spec &timeSpec, Q
   return createDrag( Item::List() << item, timeSpec, parent );
 }
 
-/*
-  KDAB_TODO: REVIEW
 static QByteArray findMostCommonType( const Item::List &items ) {
   QByteArray prev;
-  if ( items.isEmpty() )
+  if ( items.isEmpty() ) {
     return "Incidence";
+  }
+
   Q_FOREACH( const Item &item, items ) {
-    if ( !Akonadi::hasIncidence( item ) )
+    if ( !Akonadi::hasIncidence( item ) ) {
       continue;
-    const Incidence::IncidenceType = Akonadi::incidence( item )->type();
-    if ( !prev.isEmpty() && type != prev )
+    }
+    const QByteArray type = Akonadi::incidence( item )->typeStr();
+    if ( !prev.isEmpty() && type != prev ) {
       return "Incidence";
+    }
     prev = type;
   }
   return prev;
-  }*/
+}
 
 QDrag* Akonadi::createDrag( const Item::List &items, const KDateTime::Spec &timeSpec, QWidget* parent )
 {
   std::auto_ptr<QDrag> drag( new QDrag( parent ) );
   drag->setMimeData( Akonadi::createMimeData( items, timeSpec ) );
 
-  //KDAB_TODO: review
-  const QByteArray common;// = findMostCommonType( items );
+  const QByteArray common = findMostCommonType( items );
   if ( common == "Event" ) {
     drag->setPixmap( BarIcon( QLatin1String("view-calendar-day") ) );
   } else if ( common == "Todo" ) {
@@ -233,11 +234,11 @@ static bool containsValidIncidenceItemUrl( const QList<QUrl>& urls )
 
 bool Akonadi::isValidTodoItemUrl( const KUrl &url )
 {
-  if ( !url.isValid() )
+  if ( !url.isValid() || url.scheme() != QLatin1String("akonadi") ) {
     return false;
-  if ( url.scheme() != QLatin1String("akonadi") )
-    return false;
-  return true;//KDAB_TODO  return url.queryItem( QLatin1String("type") ) == IncidenceMimeTypeVisitor::todoMimeType();
+  }
+
+  return url.queryItem( QLatin1String( "type" ) ) == KCalCore::sTodoMimeType;
 }
 
 bool Akonadi::canDecode( const QMimeData* md )
