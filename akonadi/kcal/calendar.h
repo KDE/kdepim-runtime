@@ -753,9 +753,11 @@ public:
     KCalCore::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
     KCalCore::Alarm::List alarmsTo( const KDateTime &to );
 
-    /* reimp */ Akonadi::Item findParent( const Akonadi::Item& item ) const;
-    /* reimp */ Akonadi::Item::List findChildren( const Akonadi::Item &item ) const;
-    /* reimp */ bool isChild( const Akonadi::Item& parent, const Akonadi::Item &child ) const;
+    Akonadi::Item findParent( const Akonadi::Item& item ) const;
+
+    Akonadi::Item::List findChildren( const KCalCore::Incidence::Ptr &incidence ) const;
+    Akonadi::Item::List findChildren( const Akonadi::Item &item ) const;
+    bool isChild( const Akonadi::Item& parent, const Akonadi::Item &child ) const;
 
     Akonadi::Item::Id itemIdForIncidenceUid( const QString &uid ) const;
     Akonadi::Item itemForIncidenceUid( const QString &uid ) const;

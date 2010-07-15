@@ -349,8 +349,6 @@ void Calendar::Private::updateItem( const Item &item, UpdateMode mode )
       Q_ASSERT( !m_parentToChildren.value( parentIt.value() ).contains( id ) );
       const KCalCore::Incidence::Ptr parentInc = Akonadi::incidence( m_itemMap.value( parentIt.value() ) );
       Q_ASSERT( parentInc );
-      // KDAB_TODO
-//      Akonadi::incidence( item )->setRelatedTo( parentInc.get() );
       m_parentToChildren[parentIt.value()].append( id );
       m_childToParent.insert( id, parentIt.value() );
     } else {
@@ -363,13 +361,6 @@ void Calendar::Private::updateItem( const Item &item, UpdateMode mode )
     incidence->registerObserver( q );
     q->notifyIncidenceAdded( item );
   } else {
-
-    // The raw incidence's address changed, so we have to update all children
-    Q_FOREACH ( const Item::Id &child_id, m_parentToChildren[item.id()] ) {
-      //KDAB_TODO
-//      Akonadi::incidence( m_itemMap[child_id] )->setRelatedTo( incidence.data() );
-    }
-
     q->notifyIncidenceChanged( item );
   }
   assertInvariants();
@@ -551,8 +542,7 @@ void Calendar::incidenceUpdate( const QString & /*uid*/ )
 
 void Calendar::incidenceUpdated( const QString &uid )
 {
-  //KDAB_TODO. we don't have the collection !?
-  Incidence::Ptr incidence;// = this->incidence( d->m_uidToItemId[uid] );
+  Incidence::Ptr incidence = Akonadi::incidence( itemForIncidenceUid( uid ) );
 
   if ( !incidence ) {
     return;
@@ -806,6 +796,13 @@ Item Calendar::findParent( const Item &child ) const
   return d->m_itemMap.value( d->m_childToParent.value( child.id() ) );
 }
 
+Item::List Calendar::findChildren( const Incidence::Ptr &incidence ) const
+{
+  Item item = itemForIncidenceUid( incidence->uid() );
+
+  return findChildren( item );
+}
+
 Item::List Calendar::findChildren( const Item &parent ) const
 {
   Item::List l;
@@ -827,10 +824,11 @@ Item::Id Calendar::itemIdForIncidenceUid( const QString &uid ) const
     i.next();
     const Item item = i.value();
     Q_ASSERT( item.isValid());
-    Q_ASSERT( item.hasPayload<KCalCore::Incidence::Ptr>());
+    Q_ASSERT( item.hasPayload<KCalCore::Incidence::Ptr>() );
     KCalCore::Incidence::Ptr inc = item.payload<KCalCore::Incidence::Ptr>();
-    if ( inc->uid() == uid )
+    if ( inc->uid() == uid ) {
         return item.id();
+    }
   }
   kWarning() << "Failed to find Akonadi::Item for KCal uid " << uid;
   return -1;
