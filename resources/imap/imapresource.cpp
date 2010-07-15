@@ -234,6 +234,7 @@ void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64
   kDebug(5327) << "Has Payload: " << i.hasPayload();
   kDebug(5327) << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
+  fetch->setProperty( "messageRetrieved", true );
   itemRetrieved( i );
 }
 
@@ -242,8 +243,8 @@ void ImapResource::onContentFetchDone( KJob *job )
   if ( job->error() ) {
     cancelTask( job->errorString() );
   } else {
-    KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( job );
-    if ( fetch->messages().isEmpty() && fetch->parts().isEmpty() ) {
+    bool messageRetrieved = job->property( "messageRetrieved" ).toBool();
+    if ( !messageRetrieved ) {
       cancelTask( i18n("No message retrieved, server reply was empty.") );
     }
   }
