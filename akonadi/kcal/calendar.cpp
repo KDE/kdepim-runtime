@@ -296,20 +296,11 @@ void Calendar::Private::updateItem( const Item &item, UpdateMode mode )
       Q_ASSERT( parentInc );
       if ( parentInc->uid() != parentUID ) {
         //parent changed, remove old entries
-        // KDAB_TOOD
-//        Akonadi::incidence( item )->setRelatedTo( 0 );
         QList<Item::Id>& l = m_parentToChildren[oldParentIt.value()];
         l.removeAll( id );
         m_childToParent.remove( id );
       } else {
         parentNotChanged = true;
-
-        // incidences come from akonadi without the relatedTo() pointer set
-        // so we have to re-set it after an update
-        //KDAB_TODO
-//        if ( !incidence->relatedTo() ) {
-//          incidence->setRelatedTo( parentInc.get() );
-//        }
       }
     } else { //old parent not seen, maybe unseen?
       QHash<Item::Id,UnseenItem>::Iterator oldUnseenParentIt = m_childToUnseenParent.find( id );
@@ -336,8 +327,6 @@ void Calendar::Private::updateItem( const Item &item, UpdateMode mode )
 
     Q_FOREACH ( const Item::Id &cid, orphanedChildren ) {
       m_childToParent.insert( cid, id );
-      //KDAB_TODO
-//      Akonadi::incidence( m_itemMap[cid] )->setRelatedTo( incidence.data() );
     }
 
     m_unseenParentToChildren.remove( ui );
