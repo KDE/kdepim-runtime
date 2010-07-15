@@ -87,8 +87,7 @@ class IncidenceAttachmentModelPrivate
 
     if ( !item.isValid() || !item.hasPayload<KCalCore::Incidence::Ptr>() )
     {
-      //KDAB_TODO
-//      m_incidence.reset();
+      m_incidence = KCalCore::Incidence::Ptr();
       return;
     }
     m_incidence = item.payload<KCalCore::Incidence::Ptr>();
