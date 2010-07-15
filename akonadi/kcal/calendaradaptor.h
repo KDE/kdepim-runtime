@@ -112,26 +112,23 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCalCore::MemoryCalendar
 
     virtual void deleteAllJournals(); //unused
 
-    virtual bool deleteChildIncidences( const KCalCore::Incidence::Ptr &incidence ) { return true; }
-    virtual bool deleteChildEvents( const KCalCore::Event::Ptr &incidence ) { return true; }
-    virtual bool deleteChildTodos( const KCalCore::Todo::Ptr &incidence ) { return true; }
-    virtual bool deleteChildJournals( const KCalCore::Journal::Ptr &incidence ) { return true; }
-
-
-    KCalCore::Event::Ptr deletedEvent(const QString&, const KDateTime& = KDateTime() ) const{}
-    KCalCore::Todo::Ptr deletedTodo(const QString&, const KDateTime& = KDateTime()) const{}
-    KCalCore::Journal::Ptr deletedJournal(const QString&, const KDateTime& = KDateTime()) const{}
-
-    KCalCore::Event::List deletedEvents(KCalCore::EventSortField, KCalCore::SortDirection) const{}
-    KCalCore::Todo::List deletedTodos(KCalCore::TodoSortField, KCalCore::SortDirection) const{}
-    KCalCore::Journal::List deletedJournals(KCalCore::JournalSortField, KCalCore::SortDirection) const{}
-
-    KCalCore::Event::List childEvents(const KCalCore::Incidence::Ptr&, KCalCore::EventSortField, KCalCore::SortDirection) const{}
-    KCalCore::Todo::List childTodos(const KCalCore::Incidence::Ptr&, KCalCore::TodoSortField, KCalCore::SortDirection) const{}
-    KCalCore::Journal::List childJournals(const KCalCore::Incidence::Ptr&, KCalCore::JournalSortField, KCalCore::SortDirection) const{}
-
-    // KDAB_TODO, implement
-    KCalCore::Todo::List rawTodos(const QDate&, const QDate&, const KDateTime::Spec&, bool) const{}
+    // The following functions aren't used by korganizer, but must be implemented because they are pure virtual
+    // in kcalcore, don't bother on cleaning this up, or doing a proper implementation because
+    // CalendarAdaptor has it's days numbered.
+    bool deleteChildIncidences( const KCalCore::Incidence::Ptr & ) { return true; }
+    bool deleteChildEvents( const KCalCore::Event::Ptr & ) { return true; }
+    bool deleteChildTodos( const KCalCore::Todo::Ptr & ) { return true; }
+    bool deleteChildJournals( const KCalCore::Journal::Ptr & ) { return true; }
+    KCalCore::Event::Ptr deletedEvent(const QString&, const KDateTime& = KDateTime() ) const { return KCalCore::Event::Ptr(); }
+    KCalCore::Todo::Ptr deletedTodo(const QString&, const KDateTime& = KDateTime() ) const { return KCalCore::Todo::Ptr(); }
+    KCalCore::Journal::Ptr deletedJournal(const QString&, const KDateTime& = KDateTime() ) const { return KCalCore::Journal::Ptr(); }
+    KCalCore::Event::List deletedEvents(KCalCore::EventSortField, KCalCore::SortDirection) const { return KCalCore::Event::List(); }
+    KCalCore::Todo::List deletedTodos(KCalCore::TodoSortField, KCalCore::SortDirection) const { return KCalCore::Todo::List(); }
+    KCalCore::Journal::List deletedJournals(KCalCore::JournalSortField, KCalCore::SortDirection) const { return KCalCore::Journal::List();}
+    KCalCore::Event::List childEvents(const KCalCore::Incidence::Ptr&, KCalCore::EventSortField, KCalCore::SortDirection) const { return KCalCore::Event::List(); }
+    KCalCore::Todo::List childTodos(const KCalCore::Incidence::Ptr&, KCalCore::TodoSortField, KCalCore::SortDirection) const { return KCalCore::Todo::List(); }
+    KCalCore::Journal::List childJournals(const KCalCore::Incidence::Ptr&, KCalCore::JournalSortField, KCalCore::SortDirection) const { return KCalCore::Journal::List(); }
+    KCalCore::Todo::List rawTodos(const QDate&, const QDate&, const KDateTime::Spec&, bool) const { return KCalCore::Todo::List(); }
 
     virtual KCalCore::Journal::List rawJournals( KCalCore::JournalSortField sortField = KCalCore::JournalSortUnsorted,
                                        KCalCore::SortDirection sortDirection = KCalCore::SortDirectionAscending ) const;

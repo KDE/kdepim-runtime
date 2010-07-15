@@ -125,7 +125,7 @@ KCalCore::Event::List CalendarAdaptor::rawEventsForDate( const QDate &date,
 }
 
 KCalCore::Event::Ptr CalendarAdaptor::event( const QString &uid,
-                                             const KDateTime &recurrenceId ) const
+                                             const KDateTime & /*recurrenceId */ ) const
 {
   return itemToIncidence<Event>( mCalendar->event( mCalendar->itemIdForIncidenceUid(uid) ) );
 }
@@ -158,7 +158,7 @@ Todo::List CalendarAdaptor::rawTodosForDate( const QDate &date ) const
 }
 
 Todo::Ptr CalendarAdaptor::todo( const QString &uid,
-                                 const KDateTime &recurrenceId ) const
+                                 const KDateTime & /* recurrenceId */ ) const
 {
   return itemToIncidence<Todo>( mCalendar->todo( mCalendar->itemIdForIncidenceUid( uid ) ) );
 }
@@ -191,7 +191,7 @@ KCalCore::Journal::List CalendarAdaptor::rawJournalsForDate( const QDate &dt ) c
 }
 
 KCalCore::Journal::Ptr CalendarAdaptor::journal( const QString &uid,
-                                                 const KDateTime &recurrenceId ) const
+                                                 const KDateTime & /* recurrenceId */ ) const
 {
   return itemToIncidence<Journal>( mCalendar->journal( mCalendar->itemIdForIncidenceUid( uid ) ) );
 }
