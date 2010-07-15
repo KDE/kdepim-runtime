@@ -246,6 +246,7 @@ void Calendar::Private::updateItem( const Item &item, UpdateMode mode )
   } else if ( const KCalCore::Journal::Ptr j = Akonadi::journal( item ) ) {
     date = j->dtStart().date().toString();
   }  else {
+    kDebug() << "Item id is " << item.id();
     Q_ASSERT( false );
     return;
   }
