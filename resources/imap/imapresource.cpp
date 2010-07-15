@@ -232,7 +232,6 @@ void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64
   i.setPayload( KMime::Message::Ptr( message ) );
 
   kDebug(5327) << "Has Payload: " << i.hasPayload();
-  kDebug(5327) << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
   itemRetrieved( i );
 }
