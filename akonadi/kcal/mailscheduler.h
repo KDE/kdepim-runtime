@@ -27,9 +27,9 @@
 #include "akonadi-kcal_next_export.h"
 
 #include <kcalcore/incidence.h>
+#include <kcalcore/schedulemessage.h>
 
 #include <QMap>
-#include <kcalcore/schedulemessage.h>
 
 namespace KCalCore {
   class ICalFormat;
@@ -49,18 +49,23 @@ namespace Akonadi {
       explicit MailScheduler( Calendar *calendar );
       virtual ~MailScheduler();
 
-      bool publish ( KCalCore::IncidenceBase::Ptr incidence, const QString &recipients );
+      bool publish ( const KCalCore::IncidenceBase::Ptr &incidence,
+                     const QString &recipients );
 
-      bool performTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method );
-      bool performTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method, const QString &recipients );
+      bool performTransaction( const KCalCore::IncidenceBase::Ptr &incidence,
+                               KCalCore::iTIPMethod method );
+
+      bool performTransaction( const KCalCore::IncidenceBase::Ptr &incidence,
+                               KCalCore::iTIPMethod method,
+                               const QString &recipients );
 #if 0
       QList<KCalCore::ScheduleMessage*> retrieveTransactions();
 
-      bool deleteTransaction( KCalCore::IncidenceBase::Ptr incidence );
+      bool deleteTransaction( const KCalCore::IncidenceBase::Ptr &incidence );
 #endif
 
       /** Returns the directory where the free-busy information is stored */
-      virtual QString freeBusyDir();
+      virtual QString freeBusyDir() const;
 
       /**
         Accepts the transaction. The incidence argument specifies the iCal
@@ -74,10 +79,13 @@ namespace Akonadi {
         @param email the email address of the person for whom this
         transaction is to be performed.
       */
-      bool acceptTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method, KCalCore::ScheduleMessage::Status status, const QString &email );
+      bool acceptTransaction( const KCalCore::IncidenceBase::Ptr &incidence,
+                              KCalCore::iTIPMethod method,
+                              KCalCore::ScheduleMessage::Status status,
+                              const QString &email );
 
       /** Accepts a counter proposal */
-      bool acceptCounterProposal( KCalCore::Incidence::Ptr incidence );
+      bool acceptCounterProposal( const KCalCore::Incidence::Ptr &incidence );
 
     private:
       Calendar *mCalendar;

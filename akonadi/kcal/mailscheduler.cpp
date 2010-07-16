@@ -58,7 +58,8 @@ MailScheduler::~MailScheduler()
 {
 }
 
-bool MailScheduler::publish( KCalCore::IncidenceBase::Ptr incidence, const QString &recipients )
+bool MailScheduler::publish( const KCalCore::IncidenceBase::Ptr &incidence,
+                             const QString &recipients )
 {
   QString from = KCalPrefs::instance()->email();
   bool bccMe = KCalPrefs::instance()->mBcc;
@@ -71,7 +72,9 @@ bool MailScheduler::publish( KCalCore::IncidenceBase::Ptr incidence, const QStri
     from, bccMe, recipients, messageText, KCalPrefs::instance()->mMailTransport );
 }
 
-bool MailScheduler::performTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method, const QString &recipients )
+bool MailScheduler::performTransaction( const KCalCore::IncidenceBase::Ptr &incidence,
+                                        KCalCore::iTIPMethod method,
+                                        const QString &recipients )
 {
   QString from = KCalPrefs::instance()->email();
   bool bccMe = KCalPrefs::instance()->mBcc;
@@ -84,7 +87,8 @@ bool MailScheduler::performTransaction( KCalCore::IncidenceBase::Ptr incidence, 
     from, bccMe, recipients, messageText, KCalPrefs::instance()->mMailTransport );
 }
 
-bool MailScheduler::performTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method )
+bool MailScheduler::performTransaction( const KCalCore::IncidenceBase::Ptr &incidence,
+                                        KCalCore::iTIPMethod method )
 {
   QString from = KCalPrefs::instance()->email();
   bool bccMe = KCalPrefs::instance()->mBcc;
@@ -166,7 +170,7 @@ QList<ScheduleMessage*> MailScheduler::retrieveTransactions()
   return messageList;
 }
 
-bool MailScheduler::deleteTransaction( IncidenceBase *incidence )
+bool MailScheduler::deleteTransaction( const IncidenceBase::Ptr &incidence )
 {
   bool status;
   QFile f( mEventMap[incidence] );
@@ -179,12 +183,15 @@ bool MailScheduler::deleteTransaction( IncidenceBase *incidence )
   return status;
 }
 #endif
-QString MailScheduler::freeBusyDir()
+QString MailScheduler::freeBusyDir() const
 {
   return KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/freebusy" ) );
 }
 
-bool MailScheduler::acceptTransaction( KCalCore::IncidenceBase::Ptr incidence, KCalCore::iTIPMethod method, KCalCore::ScheduleMessage::Status status, const QString &email )
+bool MailScheduler::acceptTransaction( const KCalCore::IncidenceBase::Ptr &incidence,
+                                       KCalCore::iTIPMethod method,
+                                       KCalCore::ScheduleMessage::Status status,
+                                       const QString &email )
 {
   class SchedulerAdaptor : public KCalUtils::Scheduler
   {
@@ -224,7 +231,7 @@ bool MailScheduler::acceptTransaction( KCalCore::IncidenceBase::Ptr incidence, K
 }
 
 //AKONADI_PORT review following code
-bool MailScheduler::acceptCounterProposal( KCalCore::Incidence::Ptr incidence )
+bool MailScheduler::acceptCounterProposal( const KCalCore::Incidence::Ptr &incidence )
 {
   if ( !incidence ) {
     return false;
@@ -247,8 +254,8 @@ bool MailScheduler::acceptCounterProposal( KCalCore::Incidence::Ptr incidence )
 
     Q_ASSERT( exIncPtr && incidence );
 
-    IncidenceBase *i1 = exIncPtr.data();
-    IncidenceBase *i2 = incidence.data();
+    IncidenceBase::Ptr i1 = exIncPtr;
+    IncidenceBase::Ptr i2 = incidence;
 
     if ( i1->type() == i2->type() ) {
       *i1 = *i2;
