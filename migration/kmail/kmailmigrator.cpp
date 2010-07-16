@@ -146,6 +146,8 @@ void KMailMigrator::migrate()
 
   mKcmKmailSummaryConfig = KSharedConfig::openConfig( QLatin1String( "kcmkmailsummaryrc" ) );
 
+  mTemplatesConfig = KSharedConfig::openConfig( QLatin1String( "templatesconfigurationrc" ) );
+
   deleteOldGroup();
   migrateTags();
   migrateRCFiles();
@@ -751,6 +753,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
+  collectionMigrator->setTemplatesConfig( mTemplatesConfig );
 
   if ( config.readEntry( "locally-subscribed-folders", false ) ) {
     collectionMigrator->setUnsubscribedImapFolders( config.readEntry( "locallyUnsubscribedFolders", QStringList() ) );
@@ -1102,6 +1105,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
+  collectionMigrator->setTemplatesConfig( mTemplatesConfig );
 
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
