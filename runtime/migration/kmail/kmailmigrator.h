@@ -126,6 +126,7 @@ class KMailMigrator : public KMigratorBase
     KSharedConfigPtr mConfig;
     KSharedConfigPtr mEmailIdentityConfig;
     KSharedConfigPtr mKcmKmailSummaryConfig;
+    KSharedConfigPtr mTemplatesConfig;
     QString mCurrentAccount;
     QStringList mAccounts;
     QString mLocalMaildirPath;

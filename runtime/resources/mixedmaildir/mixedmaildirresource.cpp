@@ -168,15 +168,17 @@ void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>
     return;
   }
 
-  Q_UNUSED( parts );
-//   const bool hasPayload = parts.contains( Item::FullPayload ) || parts.contains( MessagePart::Body );
-//   Q_ASSERT( !hasPayload || item.hasPayload<KMime::Message::Ptr>() );
+  // TODO this is probably something the store should decide
+  const bool payloadChanged = parts.contains( Item::FullPayload ) ||
+                              parts.contains( MessagePart::Header ) ||
+                              parts.contains( MessagePart::Envelope ) ||
+                              parts.contains( MessagePart::Body );
 
   Item storeItem( item );
   storeItem.setRemoteId( mCompactHelper->currentRemoteId( item ) );
 
   FileStore::ItemModifyJob *job = mStore->modifyItem( storeItem );
-  job->setIgnorePayload( !item.hasPayload<KMime::Message::Ptr>() );
+  job->setIgnorePayload( !payloadChanged || !item.hasPayload<KMime::Message::Ptr>() );
   job->setProperty( "originalRemoteId", storeItem.remoteId() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemChangedResult( KJob* ) ) );
 }

@@ -72,7 +72,7 @@ class AbstractCollectionMigrator::Private
     };
 
     Private( AbstractCollectionMigrator *parent, const AgentInstance &resource )
-      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mMonitor( 0 ),
+      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mTemplatesConfig( 0 ), mMonitor( 0 ),
         mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle ),
         mNeedModifyJob( false )
     {
@@ -89,6 +89,7 @@ class AbstractCollectionMigrator::Private
     KSharedConfigPtr mKMailConfig;
     KSharedConfigPtr mEmailIdentityConfig;
     KSharedConfigPtr mKcmKmailSummaryConfig;
+    KSharedConfigPtr mTemplatesConfig;
     Monitor *mMonitor;
 
     CollectionHash mCollectionsById;
@@ -468,7 +469,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   const QString templatesGroupPattern = QLatin1String( "Templates #%1" );
   if ( mKMailConfig->hasGroup( templatesGroupPattern.arg( mCurrentFolderId ) ) ) {
     KConfigGroup oldGroup( mKMailConfig, templatesGroupPattern.arg( mCurrentFolderId ) );
-    KConfigGroup newGroup( mKMailConfig, templatesGroupPattern.arg( mCurrentCollection.id() ) );
+    KConfigGroup newGroup( mTemplatesConfig, templatesGroupPattern.arg( mCurrentCollection.id() ) );
 
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
@@ -763,6 +764,11 @@ void AbstractCollectionMigrator::setEmailIdentityConfig( const KSharedConfigPtr 
 void AbstractCollectionMigrator::setKcmKmailSummaryConfig( const KSharedConfigPtr& config )
 {
   d->mKcmKmailSummaryConfig = config;
+}
+
+void AbstractCollectionMigrator::setTemplatesConfig( const KSharedConfigPtr& config )
+{
+  d->mTemplatesConfig = config;
 }
 
 void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
