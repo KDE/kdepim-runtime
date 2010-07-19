@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author>Bertjan Broeksema &lt;b.broeksema@kdemail.net&gt;</author>
+ <author>Bertjan Broeksema &lt;broeksema@kde.org&gt;</author>
  <class>LockFilePage</class>
  <widget class="QWidget" name="LockFilePage">
   <property name="geometry">
