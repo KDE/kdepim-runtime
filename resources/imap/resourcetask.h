@@ -53,6 +53,7 @@ protected:
 
 protected:
   QString resourceName() const;
+  QStringList serverCapabilities() const;
   QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
 
   bool isAutomaticExpungeEnabled() const;
@@ -86,6 +87,7 @@ protected:
 
   void cancelTask( const QString &errorString );
   void deferTask();
+  void taskDone();
 
 private slots:
   void onSessionRequested( qint64 requestId, KIMAP::Session *session,

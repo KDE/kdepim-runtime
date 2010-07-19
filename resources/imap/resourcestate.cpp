@@ -55,6 +55,17 @@ ResourceStateInterface::Ptr ResourceState::createRetrieveCollectionsState( ImapR
   return ResourceStateInterface::Ptr( new ResourceState( resource ) );
 }
 
+ResourceStateInterface::Ptr ResourceState::createRetrieveCollectionMetadata( ImapResource *resource,
+                                                                             const Akonadi::Collection &collection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
+
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )
 {
@@ -69,6 +80,11 @@ ResourceState::~ResourceState()
 QString ResourceState::resourceName() const
 {
   return m_resource->name();
+}
+
+QStringList ResourceState::serverCapabilities() const
+{
+  return m_resource->m_pool->serverCapabilities();
 }
 
 QList<KIMAP::MailBoxDescriptor> ResourceState::serverNamespaces() const
@@ -220,4 +236,9 @@ void ResourceState::cancelTask( const QString &errorString )
 void ResourceState::deferTask()
 {
   m_resource->deferTask();
+}
+
+void ResourceState::taskDone()
+{
+  m_resource->taskDone();
 }

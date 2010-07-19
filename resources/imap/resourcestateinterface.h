@@ -22,6 +22,8 @@
 #ifndef RESOURCESTATEINTERFACE_H
 #define RESOURCESTATEINTERFACE_H
 
+#include <QtCore/QStringList>
+
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
@@ -37,6 +39,7 @@ public:
   virtual ~ResourceStateInterface();
 
   virtual QString resourceName() const = 0;
+  virtual QStringList serverCapabilities() const = 0;
   virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const = 0;
 
   virtual bool isAutomaticExpungeEnabled() const = 0;
@@ -70,6 +73,7 @@ public:
 
   virtual void cancelTask( const QString &errorString ) = 0;
   virtual void deferTask() = 0;
+  virtual void taskDone() = 0;
 };
 
 #endif

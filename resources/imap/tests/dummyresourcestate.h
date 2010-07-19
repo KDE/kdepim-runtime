@@ -38,6 +38,9 @@ public:
   void setResourceName( const QString &name );
   virtual QString resourceName() const;
 
+  void setServerCapabilities( const QStringList &capabilities );
+  virtual QStringList serverCapabilities() const;
+
   void setServerNamespaces( const QList<KIMAP::MailBoxDescriptor> &namespaces );
   virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
 
@@ -84,6 +87,7 @@ public:
 
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
+  virtual void taskDone();
 
   QList< QPair<QByteArray, QVariant> > calls() const;
 
@@ -91,6 +95,7 @@ private:
   void recordCall( const QByteArray callName, const QVariant &parameter = QVariant() );
 
   QString m_name;
+  QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
 
   bool m_automaticExpunge;

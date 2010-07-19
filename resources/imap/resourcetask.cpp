@@ -82,6 +82,11 @@ QString ResourceTask::resourceName() const
   return m_resource->resourceName();
 }
 
+QStringList ResourceTask::serverCapabilities() const
+{
+  return m_resource->serverCapabilities();
+}
+
 QList<KIMAP::MailBoxDescriptor> ResourceTask::serverNamespaces() const
 {
   return m_resource->serverNamespaces();
@@ -194,6 +199,12 @@ void ResourceTask::cancelTask( const QString &errorString )
 void ResourceTask::deferTask()
 {
   m_resource->deferTask();
+  deleteLater();
+}
+
+void ResourceTask::taskDone()
+{
+  m_resource->taskDone();
   deleteLater();
 }
 

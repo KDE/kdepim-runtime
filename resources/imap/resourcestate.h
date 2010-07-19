@@ -38,12 +38,16 @@ public:
 
   static ResourceStateInterface::Ptr createRetrieveCollectionsState( ImapResource *resource );
 
+  static ResourceStateInterface::Ptr createRetrieveCollectionMetadata( ImapResource *resource,
+                                                                       const Akonadi::Collection &collection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
   ~ResourceState();
 
   virtual QString resourceName() const;
+  virtual QStringList serverCapabilities() const;
   virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
 
   virtual bool isAutomaticExpungeEnabled() const;
@@ -77,6 +81,7 @@ public:
 
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
+  virtual void taskDone();
 
 private:
   ImapResource *m_resource;

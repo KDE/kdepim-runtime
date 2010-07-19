@@ -43,6 +43,16 @@ QString DummyResourceState::resourceName() const
   return m_name;
 }
 
+void DummyResourceState::setServerCapabilities( const QStringList &capabilities )
+{
+  m_capabilities = capabilities;
+}
+
+QStringList DummyResourceState::serverCapabilities() const
+{
+  return m_capabilities;
+}
+
 void DummyResourceState::setServerNamespaces( const QList<KIMAP::MailBoxDescriptor> &namespaces )
 {
   m_namespaces = namespaces;
@@ -206,6 +216,11 @@ void DummyResourceState::cancelTask( const QString &errorString )
 void DummyResourceState::deferTask()
 {
   recordCall( "deferTask" );
+}
+
+void DummyResourceState::taskDone()
+{
+  recordCall( "taskDone" );
 }
 
 QList< QPair<QByteArray, QVariant> > DummyResourceState::calls() const
