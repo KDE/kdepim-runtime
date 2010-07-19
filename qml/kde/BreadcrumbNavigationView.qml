@@ -173,24 +173,21 @@ Item {
         anchors.top : parent.top
         anchors.topMargin : -8
       }
-
-      Image {
-        source : "dividing-line-horizontal.png"
-        fillMode : Image.TileHorizontally
-        anchors.right : parent.right
-        anchors.left : parent.left
-        anchors.bottom : parent.bottom
-      }
     }
   }
 
   ListView {
     id : childItemsView
+    property bool shouldBeFlickable
+
     clip : true
     anchors.top : selectedItemPlaceHolder.bottom
     anchors.bottom : breadcrumbTopLevel.bottom
     anchors.left : parent.left
     anchors.right : parent.right
+
+    shouldBeFlickable : {console.log("£SDFSDFSDF " + childItemsView.height + " " + count + " " + ( itemHeight * childItemsView.count)); childItemsView.height < (itemHeight * childItemsView.count) }
+    interactive : shouldBeFlickable
   }
 
   Item {
@@ -199,6 +196,15 @@ Item {
     anchors.bottom : breadcrumbTopLevel.bottom
     anchors.left : parent.left
     anchors.right : parent.right
+
+
+    Image {
+      source : "dividing-line-horizontal.png"
+      fillMode : Image.TileHorizontally
+      anchors.right : parent.right
+      anchors.left : parent.left
+      anchors.top : parent.top
+    }
 
     Image {
       source : "dividing-line.png"
@@ -213,6 +219,7 @@ Item {
       anchors.right : parent.right
       anchors.left : parent.left
       fillMode : Image.TileHorizontally
+      opacity : {console.log("HEER" + childItemsView.shouldBeFlickable ); childItemsView.shouldBeFlickable ? 1 : 0 }
     }
     Image {
       source : "scrollable-bottom.png"
@@ -220,6 +227,7 @@ Item {
       anchors.right : parent.right
       anchors.left : parent.left
       fillMode : Image.TileHorizontally
+      opacity : childItemsView.shouldBeFlickable ? 1 : 0
     }
   }
 
