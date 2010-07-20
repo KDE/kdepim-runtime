@@ -99,11 +99,6 @@ class MBoxContext
       return mMBox.readEntryHeaders( offset );
     }
 
-    KMime::Message *readEntry( quint64 offset )
-    {
-      return mMBox.readEntry( offset );
-    }
-
     qint64 appendEntry( const MessagePtr &entry )
     {
       const qint64 result = mMBox.appendEntry( entry );
@@ -741,24 +736,24 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
 bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeBody, Item &item ) const
 {
 //  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Filling item" << item.remoteId() << "from MBox: includeBody=" << includeBody;
-  KMime::Message *message = 0;
+  KMime::Message::Ptr messagePtr( new KMime::Message() );
+
   if ( includeBody ) {
     bool ok = false;
-    message = mbox->readEntry( item.remoteId().toLongLong( &ok ) );
-    if ( !ok || message == 0 ) {
+    const QByteArray data = mbox->readRawEntry( item.remoteId().toLongLong( &ok ) );
+    if ( !ok ) {
       return false;
     }
+    messagePtr->setContent( KMime::CRLFtoLF( data ) );
   } else {
     bool ok = false;
     const QByteArray data = mbox->readEntryHeaders( item.remoteId().toLongLong( &ok ) );
     if ( !ok ) {
       return false;
     }
-    message = new KMime::Message();
-    message->setHead( KMime::CRLFtoLF( data ) );
+    messagePtr->setHead( KMime::CRLFtoLF( data ) );
   }
 
-  KMime::Message::Ptr messagePtr( message );
   item.setPayload<KMime::Message::Ptr>( messagePtr );
   return true;
 }
