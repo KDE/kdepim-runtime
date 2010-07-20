@@ -43,7 +43,6 @@
 #include <kmessagebox.h>
 
 #include <kimap/session.h>
-#include <kimap/listjob.h>
 #include <kimap/loginjob.h>
 #include <kimap/unsubscribejob.h>
 #include <kimap/subscribejob.h>
@@ -78,18 +77,22 @@ SubscriptionDialogBase::SubscriptionDialogBase( QWidget *parent, const QString &
 }
 
 //------------------------------------------------------------------------------
-void SubscriptionDialogBase::slotListDirectory( KJob *job )
+void SubscriptionDialogBase::slotMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+                                                    const QList< QList<QByteArray> > &flags )
 {
-  KIMAP::ListJob *list = static_cast<KIMAP::ListJob*>( job );
+  for ( int i = 0; i<mailBoxes.size(); i++ ) {
+    KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
 
-  QList<KIMAP::MailBoxDescriptor> mailBoxes = list->mailBoxes();
-
-  foreach ( const KIMAP::MailBoxDescriptor &mailBox, mailBoxes ) {
     mDelimiters << mailBox.separator;
     mFolderPaths << mailBox.name;
     mFolderNames << mailBox.name.split(mailBox.separator).last();
-    mFolderSelectable << !list->flags()[mailBox].contains("\\NoSelect");
+    mFolderSelectable << !flags[i].contains("\\NoSelect");
   }
+}
+
+void SubscriptionDialogBase::slotListDirectory( KJob *job )
+{
+  KIMAP::ListJob *list = static_cast<KIMAP::ListJob*>( job );
 
   mOnlySubscribed = !list->isIncludeUnsubscribed();
   mCount = 0;
@@ -269,6 +272,8 @@ void SubscriptionDialogBase::processNext()
 
   KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
   list->setIncludeUnsubscribed( !mSubscribed );
+  connect( list, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
+           this, SLOT( slotMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
   connect( list, SIGNAL( result(KJob*) ), this, SLOT( slotListDirectory(KJob*) ) );
   list->start();
 }
