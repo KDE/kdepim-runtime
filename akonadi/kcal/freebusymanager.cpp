@@ -106,8 +106,7 @@ public: /// Functions
   FreeBusy::Ptr iCalToFreeBusy( const QByteArray &freeBusyData );
   FreeBusy::Ptr ownerFreeBusy();
   QString ownerFreeBusyAsString();
-  void processFailedDownload( const KUrl url, const QString &errorMessage );
-  void processFinishedDownload( const KUrl url, const QByteArray &freeBusyData );
+  void processFreeBusyDownloadResult( KJob *_job );
   void processFreeBusyUploadResult( KJob *_job );
   bool processRetrieveQueue();
   void uploadFreeBusy();
@@ -251,45 +250,42 @@ QString FreeBusyManagerPrivate::ownerFreeBusyAsString()
   return freeBusyToIcal( ownerFreeBusy() );
 }
 
-void FreeBusyManagerPrivate::processFailedDownload( const KUrl url, const QString &errorMessage )
+void FreeBusyManagerPrivate::processFreeBusyDownloadResult( KJob *_job )
 {
-  KMessageBox::sorry( mParentWidgetForRetrieval,
-                      i18n( "Failed to download free/busy data from: %1\nReason: %2", url.prettyUrl(), errorMessage ),
-                      i18n( "Free/busy retrieval error") );
-
-  // TODO: Ask for a retry? (i.e. queue  the email again when the user wants it).
-
-  // Make sure we don't fill up the map with unneeded data on failures.
-  mFreeBusyUrlEmailMap.take( url );
-
-  // When downloading failed, start a job for the next one in the queue if
-  // needed.
-  processRetrieveQueue();
-}
-
-void FreeBusyManagerPrivate::processFinishedDownload( const KUrl url, const QByteArray &freeBusyData )
-{
+  Q_ASSERT( dynamic_cast<FreeBusyDownloadJob *>( _job ) );
   Q_Q( FreeBusyManager );
 
-  KCalCore::FreeBusy::Ptr fb = iCalToFreeBusy( freeBusyData );
-
-  Q_ASSERT( mFreeBusyUrlEmailMap.contains( url ) );
-  const QString email = mFreeBusyUrlEmailMap.take( url );
-
-  if ( fb ) {
-    Person::Ptr p = fb->organizer();
-    p->setEmail( email );
-    q->saveFreeBusy( fb, p );
-
-    emit q->freeBusyRetrieved( fb, email );
-  } else {
+  FreeBusyDownloadJob *job = static_cast<FreeBusyDownloadJob *>( _job );
+  if ( job->error() ) {
     KMessageBox::sorry( mParentWidgetForRetrieval,
-                        i18n( "Failed to parse free/busy information that was retrieved from: %1", url.prettyUrl() ),
-                        i18n( "Free/busy retrieval error" ) );
+                        i18n( "Failed to download free/busy data from: %1\nReason: %2", job->url().prettyUrl(), job->errorText() ),
+                        i18n( "Free/busy retrieval error") );
+
+    // TODO: Ask for a retry? (i.e. queue  the email again when the user wants it).
+
+    // Make sure we don't fill up the map with unneeded data on failures.
+    mFreeBusyUrlEmailMap.take( job->url() );
+  } else {
+    KCal::FreeBusy *fb = iCalToFreeBusy( job->rawFreeBusyData() );
+
+    Q_ASSERT( mFreeBusyUrlEmailMap.contains( job->url() ) );
+    const QString email = mFreeBusyUrlEmailMap.take( job->url() );
+
+    if ( fb ) {
+      Person::Ptr p = fb->organizer();
+      p.setEmail( email );
+      q->saveFreeBusy( fb, p );
+
+      emit q->freeBusyRetrieved( fb, email );
+    } else {
+      KMessageBox::sorry( mParentWidgetForRetrieval,
+                          i18n( "Failed to parse free/busy information that was retrieved from: %1", job->url().prettyUrl() ),
+                          i18n( "Free/busy retrieval error" ) );
+    }
   }
 
-  // When downloading is finished, start a job for the next one in the queue if
-  // needed.
+  // When downloading failed or finished, start a job for the next one in the
+  // queue if needed.
   processRetrieveQueue();
 }
 
@@ -335,11 +331,8 @@ bool FreeBusyManagerPrivate::processRetrieveQueue()
   mFreeBusyUrlEmailMap.insert( freeBusyUrlForEmail, email );
 
   FreeBusyDownloadJob *job = new FreeBusyDownloadJob( freeBusyUrlForEmail, mParentWidgetForRetrieval );
-  job->setObjectName( QLatin1String( "freebusy_download_job" ) );
-  q->connect( job, SIGNAL(downloadFailed(KUrl, QString)),
-              SLOT(processFailedDownload(KUrl, QString)) );
-  q->connect( job, SIGNAL(downloadFinished(KUrl,QByteArray)),
-              SLOT(processFinishedDownload(KUrl, QString)) );
+  q->connect( job, SIGNAL(result(KJob*)), SLOT(processFreeBusyDownloadResult(KJob*)) );
+  job->start();
 
   return true;
 }

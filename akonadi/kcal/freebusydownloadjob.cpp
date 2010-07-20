@@ -33,18 +33,34 @@ using namespace KCal;
 
 FreeBusyDownloadJob::FreeBusyDownloadJob( const KUrl &url, QWidget *parentWidget )
   : mUrl( url )
+  , mParent( parentWidget )
 {
-  KIO::TransferJob *job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
+  setObjectName( QLatin1String( "FreeBusyDownloadJob" ) );
+}
 
-  job->ui()->setWindow( parentWidget );
+FreeBusyDownloadJob::~FreeBusyDownloadJob()
+{ }
+
+void FreeBusyDownloadJob::start()
+{
+  KIO::TransferJob *job = KIO::get( mUrl, KIO::NoReload, KIO::HideProgressInfo );
+
+  job->ui()->setWindow( mParent );
 
   connect( job, SIGNAL(result(KJob *)), SLOT(slotResult(KJob *)) );
   connect( job, SIGNAL(data(KIO::Job *,const QByteArray &)),
            SLOT(slotData(KIO::Job *,const QByteArray &)) );
 }
 
-FreeBusyDownloadJob::~FreeBusyDownloadJob()
-{ }
+QByteArray FreeBusyDownloadJob::rawFreeBusyData() const
+{
+  return mFreeBusyData;
+}
+
+KUrl FreeBusyDownloadJob::url() const
+{
+  return mUrl;
+}
 
 void FreeBusyDownloadJob::slotData( KIO::Job *, const QByteArray &data )
 {
@@ -54,10 +70,9 @@ void FreeBusyDownloadJob::slotData( KIO::Job *, const QByteArray &data )
 void FreeBusyDownloadJob::slotResult( KJob *job )
 {
   if ( job->error() )
-    emit downloadFailed( mUrl, job->errorString() );
+    setErrorText( job->errorText() );
 
-  emit downloadFinished( mUrl, mFreeBusyData );
-  deleteLater();
+  emitResult();
 }
 
 #include "freebusydownloadjob.moc"

@@ -24,9 +24,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include <KJob>
 #include <KUrl>
-
-class KJob;
 
 namespace KCal {
 class FreeBusy;
@@ -40,24 +39,27 @@ namespace Akonadi {
 
 class FreeBusyManager;
 
-class FreeBusyDownloadJob : public QObject
+class FreeBusyDownloadJob : public KJob
 {
   Q_OBJECT
   public:
     FreeBusyDownloadJob( const KUrl &url, QWidget *parentWidget = 0 );
     virtual ~FreeBusyDownloadJob();
 
-  protected slots:
-    void slotResult( KJob * );
-    void slotData( KIO::Job *, const QByteArray &data );
+    /// Implement KJob::start()
+    virtual void start();
 
-  signals:
-    void downloadFailed( const KUrl &url, const QString &errorString );
-    void downloadFinished( const KUrl &url, const QByteArray &freebusyICalData );
+    KUrl url() const;
+    QByteArray rawFreeBusyData() const;
+
+  private slots:
+    void slotData( KIO::Job *, const QByteArray &data );
+    void slotResult( KJob * );
 
   private:
     KUrl mUrl;
     QByteArray mFreeBusyData;
+    QWidget *mParent;
 };
 
 }
