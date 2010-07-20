@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2008 Bertjan Broeksema <b.broeksema@kdemail.net>
+    Copyright (c) 2008 Bertjan Broeksema <broeksema@kde.org>
     Copyright (c) 2008 Volker Krause <vkrause@kde.org>
     Copyright (c) 2010 David Jarvie <djarvie@kde.org>
 

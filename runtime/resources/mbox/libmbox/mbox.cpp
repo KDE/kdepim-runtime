@@ -1,6 +1,6 @@
 /*
     Copyright (c) 1996-1998 Stefan Taferner <taferner@kde.org>
-    Copyright (c) 2009 Bertjan Broeksema <b.broeksema@kdemail.net>
+    Copyright (c) 2009 Bertjan Broeksema <broeksema@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by

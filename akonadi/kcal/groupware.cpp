@@ -94,8 +94,6 @@ void Groupware::initialCheckForChanges()
     mFreeBusyManager = new FreeBusyManager( this );
     mFreeBusyManager->setObjectName( QLatin1String( "freebusymanager" ) );
     mFreeBusyManager->setCalendar( mCalendar );
-    connect( mCalendar, SIGNAL(calendarChanged()),
-             mFreeBusyManager, SLOT(slotPerhapsUploadFB()) );
   }
 }
 
