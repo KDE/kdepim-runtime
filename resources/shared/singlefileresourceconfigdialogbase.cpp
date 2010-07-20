@@ -36,7 +36,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   ui.kcfg_Path->setMode( KFile::File );
   ui.statusLabel->setVisible( false );
   setButtons( Ok | Cancel );
-  
+
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
@@ -77,7 +77,7 @@ void SingleFileResourceConfigDialogBase::validate()
     ui.statusLabel->setVisible( false );
 
     const QFileInfo file( currentUrl.toLocalFile() );
-    if ( file.exists() && !file.isWritable() ) {
+    if ( file.exists() && file.isFile() && !file.isWritable() ) {
       ui.kcfg_ReadOnly->setEnabled( false );
       ui.kcfg_ReadOnly->setChecked( true );
     } else {
