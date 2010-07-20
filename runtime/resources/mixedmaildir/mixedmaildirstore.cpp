@@ -1335,6 +1335,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemDeleteJob *job )
 
     mbox->mCollection = collection;
     mbox->deleteEntry( offset );
+    job->setProperty( "compactStore", true );
   } else {
     MaildirPtr mdPtr;
     MaildirHash::const_iterator findIt = mMaildirs.constFind( path );
@@ -1534,6 +1535,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
     if ( newOffset > 0 ) {
       mbox->mCollection = collection;
       mbox->deleteEntry( offset );
+      job->setProperty( "compactStore", true );
     }
     mbox->save();
     item.setRemoteId( QString::number( newOffset ) );
@@ -1719,6 +1721,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
 
     mbox->mCollection = sourceCollection;
     mbox->deleteEntry( offset );
+    job->setProperty( "compactStore", true );
   } else {
 /*    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "source is Maildir";*/
     MaildirPtr sourceMdPtr = getOrCreateMaildirPtr( sourcePath, false );
