@@ -40,6 +40,7 @@
 #include "imapaccount.h"
 
 #include <ksubscription.h>
+#include <kimap/listjob.h>
 
 #include <QMap>
 
@@ -86,6 +87,9 @@ class SubscriptionDialogBase : public KSubscription
     virtual void loadingComplete();
 
   public slots:
+    void slotMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
+                                const QList< QList<QByteArray> > &flags );
+
     /**
      * get the listing from the imap-server
      */

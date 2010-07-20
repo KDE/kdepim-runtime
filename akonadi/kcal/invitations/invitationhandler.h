@@ -25,7 +25,7 @@ class QWidget;
 
 #include <kcalcore/icalformat.h>
 
-/// TODO Come up with a slightly nicer api?!
+#include "akonadi-kcal_next_export.h"
 
 namespace Akonadi {
 
@@ -50,7 +50,7 @@ class Calendar;
   NOTE: Currently only events and todos are support, meaning Incidence::type()
         should either return "Event" or "Todo"
  */
-class InvitationHandler : public QObject
+class AKONADI_KCAL_NEXT_EXPORT InvitationHandler : public QObject
 {
     Q_OBJECT
 public:
