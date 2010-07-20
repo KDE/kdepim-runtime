@@ -59,13 +59,16 @@ namespace Akonadi {
 
 class Calendar;
 class FreeBusyManagerPrivate;
+class FreeBusyManagerStatic;
 
 class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCalCore::FreeBusyCache
 {
   Q_OBJECT
   public:
-    FreeBusyManager( QObject *parent );
-    virtual ~FreeBusyManager();
+    /**
+     * Returns the FreeBusyManager
+     */
+    static FreeBusyManager *self();
 
     void setCalendar( Akonadi::Calendar * );
 
@@ -145,6 +148,16 @@ class AKONADI_KCAL_NEXT_EXPORT FreeBusyManager : public QObject, public KCalCore
     virtual void timerEvent( QTimerEvent * );
 
   private:
+    /**
+      Creates a new FreeBusyManager, private because FreeBusyManager is a
+      Singleton
+     */
+    FreeBusyManager();
+    virtual ~FreeBusyManager();
+
+  private:
+    friend class FreeBusyManagerStatic;
+
     FreeBusyManagerPrivate * const d_ptr;
     Q_DECLARE_PRIVATE( FreeBusyManager )
     Q_DISABLE_COPY( FreeBusyManager )

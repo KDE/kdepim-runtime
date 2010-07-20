@@ -41,11 +41,11 @@ namespace Akonadi {
 struct InvitationHandler::Private
 {
 /// Members
-  Calendar *mCalendar;
+  Akonadi::Calendar *mCalendar;
   QWidget *mParent;
 
 /// Methods
-  Private( Calendar *cal );
+  Private( Akonadi::Calendar *cal );
 
   InvitationHandler::SendStatus sentInvitation( int messageBoxReturnCode,
                                                 const Incidence::Ptr &incidence,
@@ -72,7 +72,7 @@ struct InvitationHandler::Private
 
 }
 
-InvitationHandler::Private::Private( Calendar *cal )
+InvitationHandler::Private::Private( Akonadi::Calendar *cal )
   : mCalendar( cal )
   , mParent( 0 )
 {
@@ -141,7 +141,7 @@ bool InvitationHandler::Private::weNeedToSendMailFor( const Incidence::Ptr &inci
 
 /// InvitationSender
 
-InvitationHandler::InvitationHandler( Calendar *cal )
+InvitationHandler::InvitationHandler( Akonadi::Calendar *cal )
   : d ( new InvitationHandler::Private( cal) )
 { }
 

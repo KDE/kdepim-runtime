@@ -72,8 +72,6 @@ class AKONADI_KCAL_NEXT_EXPORT Groupware : public QObject
     static Groupware *create( Akonadi::Calendar *, GroupwareUiDelegate * );
     static Groupware *instance();
 
-    FreeBusyManager *freeBusyManager();
-
     /** Send iCal messages after asking the user
          Returns false if the user cancels the dialog, and true if the
          user presses Yes or No.
@@ -98,9 +96,6 @@ class AKONADI_KCAL_NEXT_EXPORT Groupware : public QObject
     bool handleInvitation( const QString& receiver, const QString& iCal,
                            const QString& type );
 
-  private slots:
-    void initialCheckForChanges();
-
   protected:
     Groupware( Akonadi::Calendar *, GroupwareUiDelegate * );
 
@@ -109,7 +104,6 @@ class AKONADI_KCAL_NEXT_EXPORT Groupware : public QObject
     KCalCore::ICalFormat mFormat;
     Akonadi::Calendar *mCalendar;
     GroupwareUiDelegate *mDelegate;
-    static FreeBusyManager *mFreeBusyManager;
     bool mDoNotNotify;
 };
 
