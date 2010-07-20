@@ -38,8 +38,8 @@ public:
 
   static ResourceStateInterface::Ptr createRetrieveCollectionsState( ImapResource *resource );
 
-  static ResourceStateInterface::Ptr createRetrieveCollectionMetadata( ImapResource *resource,
-                                                                       const Akonadi::Collection &collection );
+  static ResourceStateInterface::Ptr createRetrieveCollectionMetadataState( ImapResource *resource,
+                                                                            const Akonadi::Collection &collection );
 
 private:
   explicit ResourceState( ImapResource *resource );

@@ -55,8 +55,8 @@ ResourceStateInterface::Ptr ResourceState::createRetrieveCollectionsState( ImapR
   return ResourceStateInterface::Ptr( new ResourceState( resource ) );
 }
 
-ResourceStateInterface::Ptr ResourceState::createRetrieveCollectionMetadata( ImapResource *resource,
-                                                                             const Akonadi::Collection &collection )
+ResourceStateInterface::Ptr ResourceState::createRetrieveCollectionMetadataState( ImapResource *resource,
+                                                                                  const Akonadi::Collection &collection )
 {
   ResourceState *state = new ResourceState( resource );
 
