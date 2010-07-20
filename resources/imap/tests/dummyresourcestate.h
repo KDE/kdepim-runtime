@@ -82,6 +82,8 @@ public:
   virtual void itemsRetrieved( const Akonadi::Item::List &items );
   virtual void itemsRetrievalDone();
 
+  virtual void changeCommitted( const Akonadi::Item &item );
+
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
   virtual void collectionsRetrievalDone();
 

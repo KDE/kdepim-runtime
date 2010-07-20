@@ -41,6 +41,10 @@ public:
   static ResourceStateInterface::Ptr createRetrieveCollectionMetadataState( ImapResource *resource,
                                                                             const Akonadi::Collection &collection );
 
+  static ResourceStateInterface::Ptr createAddItemState( ImapResource *resource,
+                                                         const Akonadi::Item &item,
+                                                         const Akonadi::Collection &collection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
@@ -75,6 +79,8 @@ public:
 
   virtual void itemsRetrieved( const Akonadi::Item::List &items );
   virtual void itemsRetrievalDone();
+
+  virtual void changeCommitted( const Akonadi::Item &item );
 
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
   virtual void collectionsRetrievalDone();

@@ -82,6 +82,8 @@ protected:
   void itemsRetrieved( const Akonadi::Item::List &items );
   void itemsRetrievalDone();
 
+  void changeCommitted( const Akonadi::Item &item );
+
   void collectionsRetrieved( const Akonadi::Collection::List &collections );
   void collectionsRetrievalDone();
 

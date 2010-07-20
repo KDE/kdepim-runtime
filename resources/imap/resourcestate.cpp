@@ -65,6 +65,18 @@ ResourceStateInterface::Ptr ResourceState::createRetrieveCollectionMetadataState
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createAddItemState( ImapResource *resource,
+                                                               const Akonadi::Item &item,
+                                                               const Akonadi::Collection &collection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_item = item;
+  state->m_collection = collection;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
 
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )
@@ -205,6 +217,11 @@ void ResourceState::itemsRetrieved( const Akonadi::Item::List &items )
 void ResourceState::itemsRetrievalDone()
 {
   m_resource->itemsRetrievalDone();
+}
+
+void ResourceState::changeCommitted( const Akonadi::Item &item )
+{
+  m_resource->changeCommitted( item );
 }
 
 void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )

@@ -198,6 +198,11 @@ void DummyResourceState::itemsRetrievalDone()
   recordCall( "itemsRetrievalDone" );
 }
 
+void DummyResourceState::changeCommitted( const Akonadi::Item &item )
+{
+  recordCall( "changeCommitted",  QVariant::fromValue( item ) );
+}
+
 void DummyResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
 {
   recordCall( "collectionsRetrieved",  QVariant::fromValue( collections ) );
