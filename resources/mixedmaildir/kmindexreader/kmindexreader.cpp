@@ -100,6 +100,14 @@ typedef enum
 
 //BEGIN: KMIndexMsg methods
 
+KMIndexData::KMIndexData() : mPartsCacheBuilt( false )
+{
+  const uint count = sizeof( mCachedLongParts ) / sizeof( unsigned long );
+  for ( uint i = 0; i < count; ++i ) {
+    mCachedLongParts[ i ] = 0;
+  }
+}
+
 MessageStatus& KMIndexData::status()
 {
   if ( mStatus.isOfUnknownStatus() ) {
@@ -162,6 +170,11 @@ QStringList KMIndexData::tagList() const
 quint64 KMIndexData::uid() const
 {
   return mCachedLongParts[KMIndexReader::MsgUIDPart];
+}
+
+bool KMIndexData::isEmpty() const
+{
+  return !mPartsCacheBuilt;
 }
 
 //END: KMIndexMsg methods
