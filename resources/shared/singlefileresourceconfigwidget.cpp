@@ -89,7 +89,7 @@ void SingleFileResourceConfigWidget::validate()
 #endif
 
     const QFileInfo file( currentUrl.toLocalFile() );
-    if ( file.exists() && !file.isWritable() ) {
+    if ( file.exists() && file.isFile() && !file.isWritable() ) {
       ui.kcfg_ReadOnly->setEnabled( false );
       ui.kcfg_ReadOnly->setChecked( true );
     } else {
