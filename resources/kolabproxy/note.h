@@ -34,17 +34,19 @@
 #ifndef KOLAB_NOTE_H
 #define KOLAB_NOTE_H
 
-#include <kcalcore/journal.h>
-
 #include <kolabbase.h>
 
 class QDomElement;
+
+namespace KCal {
+  class Journal;
+}
 
 namespace Kolab {
 
 /**
  * This class represents a note, and knows how to load/save it
- * from/to XML, and from/to a KCalCore::Journal.
+ * from/to XML, and from/to a KCal::Journal.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
@@ -52,16 +54,16 @@ class Note : public KolabBase {
 public:
   /// Use this to parse an xml string to a journal entry
   /// The caller is responsible for deleting the returned journal
-    static KCalCore::Journal::Ptr xmlToJournal( const QString& xml );
+  static KCal::Journal* xmlToJournal( const QString& xml );
 
   /// Use this to get an xml string describing this journal entry
-    static QString journalToXML( const KCalCore::Journal::Ptr & );
+  static QString journalToXML( KCal::Journal* );
 
   /// Create a note object and
-  explicit Note( const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr() );
+  explicit Note( KCal::Journal* journal = 0 );
   virtual ~Note();
 
-  void saveTo( const KCalCore::Journal::Ptr &journal );
+  void saveTo( KCal::Journal* journal );
 
   virtual QString type() const { return "Note"; }
 
@@ -91,10 +93,10 @@ public:
 
 protected:
   // Read all known fields from this ical incidence
-  void setFields( const KCalCore::Journal::Ptr & );
+  void setFields( const KCal::Journal* );
 
   // Save all known fields into this ical incidence
-  void saveTo( const KCalCore::Incidence::Ptr & ) const;
+  void saveTo( KCal::Incidence* ) const;
 
   QString productID() const;
 
