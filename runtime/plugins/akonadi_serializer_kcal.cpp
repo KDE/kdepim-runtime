@@ -37,12 +37,7 @@ bool SerializerPluginKCal::deserialize(Item & item, const QByteArray & label, QI
     return false;
   }
 
-
-  QString datas = QString::fromUtf8( data.readAll() );
-
-  qDebug()<<"DEBUG version = " << version << " label = " << label << datas.length();
-
-  KCalCore::Incidence::Ptr i = mFormat.fromString( datas );
+  KCalCore::Incidence::Ptr i = mFormat.fromString( data.readAll() );
   if ( !i ) {
     kWarning( 5263 ) << "Failed to parse incidence!";
     data.seek( 0 );
