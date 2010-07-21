@@ -65,7 +65,7 @@ QByteArray TasksHandler::incidenceToXml( const KCalCore::Incidence::Ptr &inciden
 
 QStringList TasksHandler::contentMimeTypes()
 {
-  return QStringList() << KCalCore::sTodoMimeType;
+  return QStringList() << KCalCore::Todo::todoMimeType();
 }
 
 QString TasksHandler::iconName() const

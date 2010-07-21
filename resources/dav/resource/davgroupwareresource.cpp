@@ -37,6 +37,7 @@
 
 #include <kcalcore/incidence.h>
 #include <kcalcore/icalformat.h>
+#include <kcalcore/todo.h>
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
@@ -405,10 +406,10 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
 
     const DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
     if ( contentTypes & DavCollection::Events )
-      mimeTypes << KCalCore::sEventMimeType;
+      mimeTypes << KCalCore::Event::eventMimeType();
 
     if ( contentTypes & DavCollection::Todos )
-      mimeTypes << KCalCore::sTodoMimeType;
+      mimeTypes << KCalCore::Todo::todoMimeType();
 
     if ( contentTypes & DavCollection::Contacts )
       mimeTypes << KABC::Addressee::mimeType();
@@ -458,10 +459,10 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
       item.setMimeType( KABC::Addressee::mimeType() );
     else if ( contentMimeTypes.contains( "text/calendar" ) )
       item.setMimeType( "text/calendar" );
-    else if ( contentMimeTypes.contains( KCalCore::sEventMimeType ) )
-      item.setMimeType( KCalCore::sEventMimeType );
-    else if ( contentMimeTypes.contains( KCalCore::sTodoMimeType ) )
-      item.setMimeType( KCalCore::sTodoMimeType );
+    else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) )
+      item.setMimeType( KCalCore::Event::eventMimeType() );
+    else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) )
+      item.setMimeType( KCalCore::Todo::todoMimeType() );
 
     if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) ) {
       // Only clear the payload (and therefor trigger a refetch from the backend) if we

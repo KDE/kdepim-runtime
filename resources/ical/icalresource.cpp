@@ -21,6 +21,7 @@
 #include "icalresource.h"
 
 #include <kcalcore/memorycalendar.h>
+#include <kcalcore/freebusy.h>
 
 #include <kdebug.h>
 #include <klocale.h>
@@ -136,10 +137,10 @@ void ICalResource::doRetrieveItems( const Akonadi::Collection & col )
 
 QStringList ICalResource::allMimeTypes() const
 {
-  return QStringList() << KCalCore::sEventMimeType
-                       << KCalCore::sTodoMimeType
-                       << KCalCore::sJournalMimeType
-                       << KCalCore::sFreeBusyMimeType;
+  return QStringList() << KCalCore::Event::eventMimeType()
+                       << KCalCore::Todo::todoMimeType()
+                       << KCalCore::Journal::journalMimeType()
+                       << KCalCore::FreeBusy::freeBusyMimeType();
 }
 
 QString ICalResource::mimeType( const IncidenceBase::Ptr &incidence ) const
