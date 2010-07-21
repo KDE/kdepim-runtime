@@ -140,6 +140,7 @@ void AccountDialog::setupWidgets()
       QStringList() << QLatin1String( "message/rfc822" ) );
   folderRequester->setFrameStyle( QFrame::NoFrame );
   folderRequester->setAccessRightsFilter( Akonadi::Collection::CanCreateItem );
+  folderRequester->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
 
   connect( usePipeliningCheck, SIGNAL(clicked()),
            SLOT(slotPipeliningClicked()) );

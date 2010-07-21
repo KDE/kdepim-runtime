@@ -149,6 +149,7 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   m_ui->folderRequester->setMimeTypeFilter(
     QStringList() << QLatin1String( "message/rfc822" ) );
   m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
+  m_ui->folderRequester->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
   m_identityManager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
   m_identityCombobox = new KPIMIdentities::IdentityCombo( m_identityManager, this );
   m_ui->identityLabel->setBuddy( m_identityCombobox );
