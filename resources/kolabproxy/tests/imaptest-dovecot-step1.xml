@@ -6,19 +6,19 @@
           <collection content="message/rfc822,inode/directory" rid="/grandchild1" name="grandchild1" >
             <attribute type="uidnext" >1</attribute>
             <attribute type="AccessRights" ></attribute>
-            <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+            <attribute type="collectionflags" >\ANSWERED \FLAGGED \DELETED \SEEN \DRAFT</attribute>
             <attribute type="uidvalidity" >1249661411</attribute>
           </collection>
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
-          <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+          <attribute type="collectionflags" >\ANSWERED \FLAGGED \DELETED \SEEN \DRAFT</attribute>
           <attribute type="uidvalidity" >1249661412</attribute>
         </collection>
         <collection content="message/rfc822,inode/directory" rid="/child1" name="child1" >
           <collection content="message/rfc822,inode/directory" rid="/grandchild1" name="grandchild1" >
             <attribute type="uidnext" >2</attribute>
             <attribute type="AccessRights" ></attribute>
-            <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+            <attribute type="collectionflags" >\ANSWERED \FLAGGED \DELETED \SEEN \DRAFT</attribute>
             <attribute type="uidvalidity" >1249661409</attribute>
             <item mimetype="message/rfc822" rid="1" >
               <payload>From: Volker Krause &lt;vkrause@kde.org>
@@ -45,7 +45,7 @@ if syncing is extremely fast.
           </collection>
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
-          <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+          <attribute type="collectionflags" >\ANSWERED \FLAGGED \DELETED \SEEN \DRAFT</attribute>
           <attribute type="uidvalidity" >1249661410</attribute>
         </collection>
       </collection>
@@ -56,13 +56,13 @@ if syncing is extremely fast.
     <collection content="message/rfc822,inode/directory" rid="/INBOX" name="INBOX" >
       <collection content="message/rfc822,inode/directory" rid="/Calendar" name="Calendar" >
         <attribute type="uidnext" >1</attribute>
-        <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+        <attribute type="collectionflags" >\ANSWERED \FLAGGED \DELETED \SEEN \DRAFT</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
         <attribute type="uidvalidity" >1249661407</attribute>
       </collection>
       <attribute type="ENTITYDISPLAY" >("Inbox" "mail-folder-inbox" false)</attribute>
       <attribute type="uidnext" >2</attribute>
-      <attribute type="collectionflags" >\Answered \Flagged \Deleted \Seen \Draft</attribute>
+      <attribute type="collectionflags" >\ANSWERED \FLAGGED \DELETED \SEEN \DRAFT</attribute>
       <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
       <attribute type="uidvalidity" >1249661406</attribute>
       <item mimetype="message/rfc822" rid="1" >

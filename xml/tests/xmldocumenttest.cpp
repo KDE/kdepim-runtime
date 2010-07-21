@@ -52,7 +52,7 @@ class XmlDocumentTest : public QObject
       item = items.first();
       QVERIFY( item.hasPayload() );
       QCOMPARE( item.flags().count(), 1 );
-      QVERIFY( item.hasFlag( "\\Seen" ) );
+      QVERIFY( item.hasFlag( "\\SEEN" ) );
     }
 };
 
