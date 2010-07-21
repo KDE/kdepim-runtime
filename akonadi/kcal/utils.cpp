@@ -26,6 +26,8 @@
 
 #include <kcalcore/memorycalendar.h>
 #include <kcalcore/calfilter.h>
+#include <kcalcore/freebusy.h>
+
 #include <kcalutils/dndfactory.h>
 #include <kcalutils/icaldrag.h>
 #include <kcalutils/vcaldrag.h>
@@ -221,10 +223,10 @@ bool Akonadi::isValidIncidenceItemUrl( const KUrl &url, const QStringList &suppo
 bool Akonadi::isValidIncidenceItemUrl( const KUrl &url )
 {
   return isValidIncidenceItemUrl( url,
-                                  QStringList() << KCalCore::sEventMimeType
-                                                << KCalCore::sTodoMimeType
-                                                << KCalCore::sJournalMimeType
-                                                << KCalCore::sFreeBusyMimeType );
+                                  QStringList() << KCalCore::Event::eventMimeType()
+                                                << KCalCore::Todo::todoMimeType()
+                                                << KCalCore::Journal::journalMimeType()
+                                                << KCalCore::FreeBusy::freeBusyMimeType() );
 }
 
 static bool containsValidIncidenceItemUrl( const QList<QUrl>& urls )
@@ -238,7 +240,7 @@ bool Akonadi::isValidTodoItemUrl( const KUrl &url )
     return false;
   }
 
-  return url.queryItem( QLatin1String( "type" ) ) == KCalCore::sTodoMimeType;
+  return url.queryItem( QLatin1String( "type" ) ) == KCalCore::Todo::todoMimeType();
 }
 
 bool Akonadi::canDecode( const QMimeData* md )
@@ -263,7 +265,7 @@ QList<KUrl> Akonadi::todoItemUrls( const QMimeData* mimeData )
   QList<KUrl> urls;
 
   Q_FOREACH( const KUrl& i, mimeData->urls() ) {
-    if ( isValidIncidenceItemUrl( i , QStringList() << KCalCore::sTodoMimeType ) ) {
+    if ( isValidIncidenceItemUrl( i , QStringList() << KCalCore::Todo::todoMimeType() ) ) {
       urls.push_back( i );
     }
   }

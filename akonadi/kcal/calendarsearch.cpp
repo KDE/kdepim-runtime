@@ -115,9 +115,9 @@ CalendarSearch::Private::Private( CalendarSearch* qq )
     monitor->setCollectionMonitored( Collection::root() );
     monitor->fetchCollection( true );
     monitor->setItemFetchScope( scope );
-    monitor->setMimeTypeMonitored( KCalCore::sEventMimeType, true );
-    monitor->setMimeTypeMonitored( KCalCore::sTodoMimeType, true );
-    monitor->setMimeTypeMonitored( KCalCore::sJournalMimeType, true );
+    monitor->setMimeTypeMonitored( KCalCore::Event::eventMimeType(), true );
+    monitor->setMimeTypeMonitored( KCalCore::Todo::todoMimeType(), true );
+    monitor->setMimeTypeMonitored( KCalCore::Journal::journalMimeType(), true );
 
     calendarModel = new CalendarModel( monitor, q );
     connect( calendarModel, SIGNAL(rowsInserted(QModelIndex,int,int)), q, SLOT(rowsInserted(QModelIndex,int,int)) );
