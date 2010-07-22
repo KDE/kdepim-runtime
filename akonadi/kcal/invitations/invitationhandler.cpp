@@ -48,7 +48,7 @@ struct InvitationHandler::Private
   Private( Akonadi::Calendar *cal );
 
   InvitationHandler::SendStatus sentInvitation( int messageBoxReturnCode,
-                                                const Incidence::Ptr &incidence,
+                                                const Incidence::ConstPtr &incidence,
                                                 iTIPMethod method );
 
   int askUser( const QString &question,
@@ -60,16 +60,33 @@ struct InvitationHandler::Private
     only one, and it's not the same as the organizer, ask the user to send
     mail.
   */
-  bool weAreOrganizerOf( const Incidence::Ptr &incidence );
+  bool weAreOrganizerOf( const Incidence::ConstPtr &incidence );
 
   /**
     Assumes that we are the organizer. If there is more than one attendee, or if
     there is only one, and it's not the same as the organizer, ask the user to send
     mail.
    */
-  bool weNeedToSendMailFor( const Incidence::Ptr &incidence );
+  bool weNeedToSendMailFor( const Incidence::ConstPtr &incidence );
 };
 
+}
+
+QString proposalComment( const Incidence::ConstPtr &incidence )
+{
+  switch ( incidence->type() ) {
+  case IncidenceBase::TypeEvent:
+    {
+      const KDateTime dtEnd = incidence.dynamicCast<const Event>()->dtEnd();
+      i18n( "Proposed new meeting time: %1 - %2",
+            IncidenceFormatter::dateToString( incidence->dtStart() ),
+            IncidenceFormatter::dateToString( dtEnd ) );
+    }
+  case IncidenceBase::TypeTodo:
+    {
+
+    }
+  }
 }
 
 InvitationHandler::Private::Private( Akonadi::Calendar *cal )
@@ -87,7 +104,7 @@ int InvitationHandler::Private::askUser( const QString &question,
 }
 
 InvitationHandler::SendStatus InvitationHandler::Private::sentInvitation( int messageBoxReturnCode,
-                                                                          const Incidence::Ptr &incidence,
+                                                                          const Incidence::ConstPtr &incidence,
                                                                           iTIPMethod method )
 {
   // The value represented by messageBoxReturnCode is the answer on a question
@@ -99,12 +116,16 @@ InvitationHandler::SendStatus InvitationHandler::Private::sentInvitation( int me
   if ( messageBoxReturnCode == KMessageBox::Yes ) {
 
     // We will be sending out a message here. Now make sure there is some summary
-    if ( incidence->summary().isEmpty() )
-      incidence->setSummary( i18n( "<placeholder>No summary given</placeholder>" ) );
+    // Yes, we do modify the incidence here, but we still keep the ConstPtr
+    // semantics, because this change is only for sending and not stored int the
+    // local calendar.
+    Incidence::Ptr _incidence( incidence->clone() );
+    if ( _incidence->summary().isEmpty() )
+      _incidence->setSummary( i18n( "<placeholder>No summary given</placeholder>" ) );
 
     // Send the mail
     MailScheduler scheduler( mCalendar );
-    if( scheduler.performTransaction( incidence, method ) )
+    if( scheduler.performTransaction( _incidence, method ) )
       return InvitationHandler::Success;
 
     const QString question( i18n( "Sending group scheduling email failed." ) );
@@ -122,12 +143,12 @@ InvitationHandler::SendStatus InvitationHandler::Private::sentInvitation( int me
   }
 }
 
-bool InvitationHandler::Private::weAreOrganizerOf( const Incidence::Ptr &incidence )
+bool InvitationHandler::Private::weAreOrganizerOf( const Incidence::ConstPtr &incidence )
 {
   return KCalPrefs::instance()->thatIsMe( incidence->organizer()->email() );
 }
 
-bool InvitationHandler::Private::weNeedToSendMailFor( const Incidence::Ptr &incidence )
+bool InvitationHandler::Private::weNeedToSendMailFor( const Incidence::ConstPtr &incidence )
 {
   Q_ASSERT( weAreOrganizerOf( incidence ) );
 
@@ -227,7 +248,7 @@ bool InvitationHandler::receiveInvitation( const QString& receiver,
 }
 
 InvitationHandler::SendStatus InvitationHandler::sendIncidenceCreatedMessage( KCalCore::iTIPMethod method,
-                                                                              const Incidence::Ptr &incidence )
+                                                                              const Incidence::ConstPtr &incidence )
 {
   /// When we created the incidence, we *must* be the organizer.
   Q_ASSERT( d->weAreOrganizerOf( incidence ) );
@@ -256,7 +277,7 @@ InvitationHandler::SendStatus InvitationHandler::sendIncidenceCreatedMessage( KC
 }
 
 InvitationHandler::SendStatus InvitationHandler::sendIncidenceModifiedMessage( KCalCore::iTIPMethod method,
-                                                                               const Incidence::Ptr &incidence,
+                                                                               const Incidence::ConstPtr &incidence,
                                                                                bool attendeeStatusChanged )
 {
   // For a modified incidence, either we are the organizer or someone else.
@@ -312,7 +333,7 @@ InvitationHandler::SendStatus InvitationHandler::sendIncidenceModifiedMessage( K
 }
 
 InvitationHandler::SendStatus InvitationHandler::sendIncidenceDeletedMessage( KCalCore::iTIPMethod method,
-                                                                              const Incidence::Ptr &incidence )
+                                                                              const Incidence::ConstPtr &incidence )
 {
   Q_ASSERT( incidence->type() == Incidence::TypeEvent || incidence->type() == Incidence::TypeTodo );
 
@@ -377,8 +398,8 @@ InvitationHandler::SendStatus InvitationHandler::sendIncidenceDeletedMessage( KC
   return NoSendingNeeded;
 }
 
-InvitationHandler::SendStatus InvitationHandler::sendCounterProposal( const Event::Ptr &oldEvent,
-                                                                      const Event::Ptr &newEvent ) const
+InvitationHandler::SendStatus InvitationHandler::sendCounterProposal( const Incidence::ConstPtr &oldEvent,
+                                                                      const Incidence::ConstPtr &newEvent ) const
 {
   if ( !oldEvent || !newEvent || *oldEvent == *newEvent ||
        !KCalPrefs::instance()->mUseGroupwareCommunication )
@@ -388,9 +409,7 @@ InvitationHandler::SendStatus InvitationHandler::sendCounterProposal( const Even
     Incidence::Ptr tmp( oldEvent->clone() );
     tmp->setSummary( i18n( "Counter proposal: %1", newEvent->summary() ) );
     tmp->setDescription( newEvent->description() );
-    tmp->addComment( i18n( "Proposed new meeting time: %1 - %2",
-                           IncidenceFormatter::dateToString( newEvent->dtStart() ),
-                           IncidenceFormatter::dateToString( newEvent->dtEnd() ) ) );
+    tmp->addComment( proposalComment( newEvent ) );
 
     // TODO: Shouldn't we ask here?
     return d->sentInvitation( KMessageBox::Yes, tmp, iTIPReply );
