@@ -22,7 +22,7 @@ target_link_libraries(akonadi_invitations_agent
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
-  kcalcore
+  ${KDEPIMLIBS_KCALCORE_LIBS}
 )
 
 install(TARGETS akonadi_invitations_agent ${INSTALL_TARGETS_DEFAULT_ARGS})

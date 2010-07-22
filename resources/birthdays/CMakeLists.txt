@@ -25,7 +25,7 @@ target_link_libraries(akonadi_birthdays_resource
   ${KDE4_KIO_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_KABC_LIBS}
-  kcalcore
+  ${KDEPIMLIBS_KCALCORE_LIBS}
 )
 
 install( TARGETS akonadi_birthdays_resource ${INSTALL_TARGETS_DEFAULT_ARGS} )

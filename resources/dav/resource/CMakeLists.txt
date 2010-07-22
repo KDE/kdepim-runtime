@@ -98,7 +98,7 @@ target_link_libraries(akonadi_davgroupware_resource
                       ${KDE4_KIO_LIBS}
                       ${KDEPIMLIBS_AKONADI_LIBS}
                       ${KDEPIMLIBS_KABC_LIBS}
-                      kcalcore
+                      ${KDEPIMLIBS_KCALCORE_LIBS}
                       ${KDEPIMLIBS_AKONADI_KCAL_LIBS})
 
 install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
