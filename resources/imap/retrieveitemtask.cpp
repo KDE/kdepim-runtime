@@ -104,7 +104,6 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
   i.setPayload( KMime::Message::Ptr( message ) );
 
   kDebug(5327) << "Has Payload: " << i.hasPayload();
-  kDebug(5327) << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
   m_messageReceived = true;
   itemRetrieved( i );
