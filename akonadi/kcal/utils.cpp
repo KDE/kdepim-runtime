@@ -56,7 +56,6 @@
 #include <memory>
 #include <cassert>
 
-using namespace boost;
 using namespace KCalCore;
 using namespace Akonadi;
 
@@ -205,7 +204,7 @@ static bool itemMatches( const Item& item, const CalFilter* filter )
 }
 
 Item::List Akonadi::applyCalFilter( const Item::List &items_, const CalFilter* filter ) {
-  assert( filter );
+  Q_ASSERT( filter );
   Item::List items( items_ );
   items.erase( std::remove_if( items.begin(), items.end(), !bind( itemMatches, _1, filter ) ), items.end() );
   return items;

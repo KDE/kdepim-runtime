@@ -59,7 +59,6 @@
 
 #include <KLocalizedString>
 
-using namespace boost;
 using namespace Akonadi;
 
 class CalendarCollection : public QObject
