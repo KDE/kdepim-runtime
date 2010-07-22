@@ -100,7 +100,8 @@ QVariant MailModel::entityData(const Collection &collection, int column, int rol
     case 1:
     {
       QModelIndexList indexList = match( QModelIndex(), collection.id(), EntityTreeModel::CollectionIdRole );
-      Q_ASSERT( indexList.size() == 1 );
+      if (indexList.isEmpty())
+        return QVariant();
       return rowCount(indexList.at( 0 ) );
     }
     default:

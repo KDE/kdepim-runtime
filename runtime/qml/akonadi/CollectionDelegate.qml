@@ -77,7 +77,8 @@ Item {
 
       Image {
           id: collectionIcon
-          pixmap: KDE.iconToPixmap( model.decoration, height );
+          // http://lists.trolltech.com/pipermail/qt-qml/2010-July/000668.html
+  //        pixmap: KDE.iconToPixmap( model.decoration, height );
           width: 48; height: 48
       }
 
