@@ -20,6 +20,7 @@ IMAP_RESOURCE_UNIT_TESTS(
   testsessionpool
 
   testadditemtask
+  testchangeitemtask
   testretrievecollectionmetadatatask
   testretrievecollectionstask
   testretrieveitemtask

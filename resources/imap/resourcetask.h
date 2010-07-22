@@ -87,6 +87,8 @@ protected:
   void collectionsRetrieved( const Akonadi::Collection::List &collections );
   void collectionsRetrievalDone();
 
+  void changeProcessed();
+
   void cancelTask( const QString &errorString );
   void deferTask();
   void taskDone();

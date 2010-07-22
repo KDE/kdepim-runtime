@@ -73,6 +73,8 @@ public:
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections ) = 0;
   virtual void collectionsRetrievalDone() = 0;
 
+  virtual void changeProcessed() = 0;
+
   virtual void cancelTask( const QString &errorString ) = 0;
   virtual void deferTask() = 0;
   virtual void taskDone() = 0;

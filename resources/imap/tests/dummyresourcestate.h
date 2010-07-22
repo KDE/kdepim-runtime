@@ -87,6 +87,8 @@ public:
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
   virtual void collectionsRetrievalDone();
 
+  virtual void changeProcessed();
+
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
   virtual void taskDone();

@@ -196,6 +196,12 @@ void ResourceTask::collectionsRetrievalDone()
   deleteLater();
 }
 
+void ResourceTask::changeProcessed()
+{
+  m_resource->changeProcessed();
+  deleteLater();
+}
+
 void ResourceTask::cancelTask( const QString &errorString )
 {
   m_resource->cancelTask( errorString );

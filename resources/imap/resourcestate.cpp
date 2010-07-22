@@ -77,6 +77,18 @@ ResourceStateInterface::Ptr ResourceState::createAddItemState( ImapResource *res
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createChangeItemState( ImapResource *resource,
+                                                                  const Akonadi::Item &item,
+                                                                  const QSet<QByteArray> &parts )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_item = item;
+  state->m_parts = parts;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
 
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )
@@ -243,6 +255,11 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
 void ResourceState::collectionsRetrievalDone()
 {
   m_resource->collectionsRetrievalDone();
+}
+
+void ResourceState::changeProcessed()
+{
+  m_resource->changeProcessed();
 }
 
 void ResourceState::cancelTask( const QString &errorString )

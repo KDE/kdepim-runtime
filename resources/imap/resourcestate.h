@@ -45,6 +45,10 @@ public:
                                                          const Akonadi::Item &item,
                                                          const Akonadi::Collection &collection );
 
+  static ResourceStateInterface::Ptr createChangeItemState( ImapResource *resource,
+                                                            const Akonadi::Item &item,
+                                                            const QSet<QByteArray> &parts );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
@@ -84,6 +88,8 @@ public:
 
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
   virtual void collectionsRetrievalDone();
+
+  virtual void changeProcessed();
 
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();

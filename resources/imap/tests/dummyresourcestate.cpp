@@ -213,6 +213,11 @@ void DummyResourceState::collectionsRetrievalDone()
   recordCall( "collectionsRetrievalDone" );
 }
 
+void DummyResourceState::changeProcessed()
+{
+  recordCall( "changeProcessed" );
+}
+
 void DummyResourceState::cancelTask( const QString &errorString )
 {
   recordCall( "cancelTask", QVariant::fromValue(errorString) );
