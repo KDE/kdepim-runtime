@@ -960,7 +960,9 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionFetchJob *job )
                             job->type() == FileStore::CollectionFetchJob::Recursive );
   }
 
-  q->notifyCollectionsProcessed( collections );
+  if ( !collections.isEmpty() ) {
+    q->notifyCollectionsProcessed( collections );
+  }
   return true;
 }
 
