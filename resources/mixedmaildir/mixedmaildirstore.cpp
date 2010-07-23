@@ -950,7 +950,11 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionFetchJob *job )
     }
     collections << collection;
   } else {
-    const Maildir md( path, folderType == TopLevelFolder );
+    // if the base is an mbox, use its sub folder dir like a top level maildir
+    if ( folderType == MBoxFolder ) {
+      path = Maildir::subDirPathForFolderPath( path );
+    }
+    const Maildir md( path, folderType != MaildirFolder );
     fillMaildirTreeDetails( md, collection, collections,
                             job->type() == FileStore::CollectionFetchJob::Recursive );
   }
