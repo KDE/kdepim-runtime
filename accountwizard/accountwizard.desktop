@@ -2,6 +2,7 @@
 Name=Account Wizard
 Name[ca]=Assistent de comptes
 Name[ca@valencia]=Assistent de comptes
+Name[da]=Kontoguide
 Name[de]=Postfach-Assistent 
 Name[en_GB]=Account Wizard
 Name[es]=Asistente de cuentas
@@ -27,6 +28,7 @@ NoDisplay=true
 Comment=Launch the account wizard to configure PIM accounts.
 Comment[ca]=Llança l'assistent de comptes per configurar comptes de PIM.
 Comment[ca@valencia]=Llança l'assistent de comptes per configurar comptes de PIM.
+Comment[da]=Start kontoguiden for at konfigurere PIM-konti.
 Comment[de]=Den Postfach-Assistenten zum Einrichten von PIM-Zugängen starten.
 Comment[en_GB]=Launch the account wizard to configure PIM accounts.
 Comment[es]=Lanzar el asistente de cuentas para configurar las cuentas PIM.

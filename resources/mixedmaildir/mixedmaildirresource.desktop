@@ -2,6 +2,7 @@
 Name=KMail Maildir
 Name[ca]=Directori de correu del KMail
 Name[ca@valencia]=Directori de correu del KMail
+Name[da]=KMail Maildir
 Name[de]=KMail Maildir
 Name[en_GB]=KMail Maildir
 Name[es]=KMail Maildir
@@ -24,6 +25,7 @@ Name[zh_TW]=KMail Maildir
 Comment=Loads data from a local KMail maildir folder
 Comment[ca]=Carrega dades des d'una carpeta local de directori de correu del KMail
 Comment[ca@valencia]=Carrega dades des d'una carpeta local de directori de correu del KMail
+Comment[da]=Indlæser data fra en lokal KMail maildir-mappe
 Comment[de]=Lädt Daten aus einem lokalen Maildir-Ordner
 Comment[en_GB]=Loads data from a local KMail maildir folder
 Comment[es]=Carga datos de una carpeta de maildir local de KMail

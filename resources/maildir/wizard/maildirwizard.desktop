@@ -42,6 +42,7 @@ Icon=message-rfc822
 Comment=Maildir account
 Comment[ca]=Compte Maildir
 Comment[ca@valencia]=Compte Maildir
+Comment[da]=Maildir-konto
 Comment[de]=Maildir-Zugang
 Comment[en_GB]=Maildir account
 Comment[es]=Cuenta de directorio de correo
