@@ -24,6 +24,8 @@
 
 #include "libmaildir/maildir.h"
 
+#include <kmime/kmime_message.h>
+
 #include <KTempDir>
 
 #include <qtest_kde.h>
@@ -48,6 +50,7 @@ class CollectionCreateTest : public QObject
   private Q_SLOTS:
     void init();
     void cleanup();
+    void testCollectionProperties();
     void testEmptyDir();
     void testMaildirTree();
     void testMixedTree();
@@ -67,6 +70,33 @@ void CollectionCreateTest::cleanup()
   mStore = 0;
   delete mDir;
   mDir = 0;
+}
+
+void CollectionCreateTest::testCollectionProperties()
+{
+  mStore->setPath( mDir->name() );
+
+  FileStore::CollectionCreateJob *job = 0;
+
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  job = mStore->createCollection( collection1, mStore->topLevelCollection() );
+  QVERIFY( job != 0 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  collection1 = job->collection();
+  QCOMPARE( collection1.remoteId(), collection1.name() );
+
+  QCOMPARE( collection1.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType() );
+
+  QCOMPARE( collection1.rights(), Collection::CanCreateItem |
+                                  Collection::CanChangeItem |
+                                  Collection::CanDeleteItem |
+                                  Collection::CanCreateCollection |
+                                  Collection::CanChangeCollection |
+                                  Collection::CanDeleteCollection );
 }
 
 void CollectionCreateTest::testEmptyDir()
