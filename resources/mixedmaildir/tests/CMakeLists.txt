@@ -68,3 +68,20 @@ target_link_libraries(
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTTEST_LIBRARY}
 )
+
+# test for collection fetching handling
+kde4_add_unit_test( collectionfetchtest
+ ../mixedmaildirstore.cpp
+ collectionfetchtest.cpp
+)
+
+target_link_libraries(
+  collectionfetchtest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
