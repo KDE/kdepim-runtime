@@ -804,6 +804,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
     return false;
   }
 
+  Maildir md;
   if ( folderType == MBoxFolder ) {
     const QString subDirPath = Maildir::subDirPathForFolderPath( path );
     const QDir dir( subDirPath );
@@ -824,7 +825,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
       return false;
     }
 
-    Maildir md( dirInfo.absoluteFilePath(), false );
+    md = Maildir( dirInfo.absoluteFilePath(), false );
     if ( !md.create() ) {
       errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
                           job->collection().name(), job->targetParent().name() );
@@ -845,7 +846,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
       return false;
     }
 
-    const Maildir md = parentMd.subFolder( job->collection().name() );
+    md = Maildir( parentMd.subFolder( job->collection().name() ) );
     const MaildirPtr mdPtr( new MaildirContext( md ) );
     mMaildirs.insert( md.path(), mdPtr );
   }
@@ -853,6 +854,8 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
   Collection collection = job->collection();
   collection.setRemoteId( collection.name() );
   collection.setParentCollection( job->targetParent() );
+  fillMaildirCollectionDetails( md, collection );
+
   q->notifyCollectionsProcessed( Collection::List() << collection );
   return true;
 }
