@@ -2,6 +2,7 @@
 Name=Open-Xchange Groupware Server
 Name[ca]=Servidor de treball en grup Open-Xchange
 Name[ca@valencia]=Servidor de treball en grup Open-Xchange
+Name[da]=Open-Xchange groupware-server
 Name[en_GB]=Open-Xchange Groupware Server
 Name[es]=Servidor de trabajo en grupo Open-Xchange
 Name[fr]=Serveur de travail collaboratif OpenXchange
@@ -21,6 +22,7 @@ Name[zh_TW]=Open-Xchange 群組伺服器
 Comment=Provides access to the appointments, tasks, and contacts of an Open-Xchange groupware server.
 Comment[ca]=Proporciona l'accés a les cites, tasques i contactes emmagatzemats en un servidor de treball en grup Open-Xchange
 Comment[ca@valencia]=Proporciona l'accés a les cites, tasques i contactes emmagatzemats en un servidor de treball en grup Open-Xchange
+Comment[da]=Giver adgang til aftaler, opgaver og kontakter på en Open-Xchange groupware-server.
 Comment[en_GB]=Provides access to the appointments, tasks and contacts of an Open-Xchange groupware server.
 Comment[es]=Proporciona acceso a las citas, tareas y contactos almacenados en un servidor de trabajo en grupo Open-Xchange.
 Comment[fr]=Fourni l'accès aux contacts, rendez-vous et tâches stockés dans un serveur Open-Xchange

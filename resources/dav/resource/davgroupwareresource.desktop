@@ -2,6 +2,7 @@
 Name=DAV groupware resource
 Name[ca]=Recurs de treball en grup DAV 
 Name[ca@valencia]=Recurs de treball en grup DAV 
+Name[da]=Ressource til DAV-groupware
 Name[en_GB]=DAV groupware resource
 Name[es]=Recurso de trabajo en grupo DAV
 Name[fr]=Ressource de travail collaboratif DAV
@@ -18,6 +19,7 @@ Name[zh_TW]=DAV 群組資源
 Comment=Resource to manage DAV calendars and address books (CalDAV, GroupDAV)
 Comment[ca]=Recurs per gestionar calendaris i llibretes d'adreces DAV (CalDAV, GroupDAV)
 Comment[ca@valencia]=Recurs per gestionar calendaris i llibretes d'adreces DAV (CalDAV, GroupDAV)
+Comment[da]=Ressource til håndtering af DAV-kalendere og -adressebøger (CalDAV, GroupDAV)
 Comment[en_GB]=Resource to manage DAV calendars and address books (CalDAV, GroupDAV)
 Comment[es]=Recurso para manejar calendarios DAV y libretas de direcciones (CalDAV, GroupDAV)
 Comment[fr]=Ressource pour gérer les agendas et carnets d'adresses DAV (CalDAV, GroupDAV)
