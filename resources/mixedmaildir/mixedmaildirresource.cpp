@@ -651,8 +651,6 @@ void MixedMaildirResource::collectionAddedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
-
-  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::collectionChangedResult( KJob *job )
