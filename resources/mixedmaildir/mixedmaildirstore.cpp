@@ -891,10 +891,12 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
 
       mboxPtr = MBoxPtr( new MBoxContext );
       if ( !mboxPtr->load( parentPath ) ) {
-        kError() << "Loading or parent MBox" << parentPath << "failed";
+        kError() << "Loading of parent MBox" << parentPath << "failed";
       }
 
       mMBoxes.insert( parentPath, mboxPtr );
+    } else {
+      mboxPtr = mboxIt.value();
     }
 
     mboxPtr->readIndexData();
