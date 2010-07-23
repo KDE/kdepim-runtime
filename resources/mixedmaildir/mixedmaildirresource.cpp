@@ -702,8 +702,6 @@ void MixedMaildirResource::collectionRemovedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
-
-  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::compactStore( const QVariant &arg )

@@ -881,43 +881,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
     return false;
   }
 
-  bool parentIndexInvalidated = false;
-  if ( parentFolderType == MBoxFolder ) {
-    MBoxPtr mboxPtr;
-    MBoxHash::const_iterator mboxIt = mMBoxes.constFind( parentPath );
-    if ( mboxIt == mMBoxes.constEnd() ) {
-      kError() << "Deleting folder" << path << "from parent MBox" << parentPath
-               << "but there is no context for that MBox yet";
-
-      mboxPtr = MBoxPtr( new MBoxContext );
-      if ( !mboxPtr->load( parentPath ) ) {
-        kError() << "Loading of parent MBox" << parentPath << "failed";
-      }
-
-      mMBoxes.insert( parentPath, mboxPtr );
-    } else {
-      mboxPtr = mboxIt.value();
-    }
-
-    mboxPtr->readIndexData();
-    parentIndexInvalidated = mboxPtr->hasIndexData();
-  } else if ( parentFolderType == MaildirFolder ) {
-    MaildirPtr mdPtr;
-    MaildirHash::const_iterator mdIt = mMaildirs.constFind( parentPath );
-    if ( mdIt == mMaildirs.constEnd() ) {
-      kError() << "Deleting folder" << path << "from parent Maildir" << parentPath
-               << "but there is no context for that Maildir yet";
-
-      mdPtr = MaildirPtr( new MaildirContext( parentPath, false ) );
-      mMaildirs.insert( parentPath, mdPtr );
-    } else {
-      mdPtr = mdIt.value();
-    }
-
-    mdPtr->readIndexData();
-    parentIndexInvalidated = mdPtr->hasIndexData();
-  }
-
   if ( folderType == MBoxFolder ) {
     if ( !QFile::remove( path ) ) {
       errorText = i18nc( "@info:status", "Cannot remove folder %1 from folder %2",
@@ -938,11 +901,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
 
   const QString subDirPath = Maildir::subDirPathForFolderPath( path );
   KPIMUtils::removeDirAndContentsRecursively( subDirPath );
-
-  if ( parentIndexInvalidated ) {
-    const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << job->collection().parentCollection() );
-    job->setProperty( "onDiskIndexInvalidated", var );
-  }
 
   q->notifyCollectionsProcessed( Collection::List() << job->collection() );
   return true;
