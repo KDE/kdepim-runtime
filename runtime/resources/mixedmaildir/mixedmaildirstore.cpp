@@ -805,6 +805,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
     return false;
   }
 
+  Maildir md;
   if ( folderType == MBoxFolder ) {
     const QString subDirPath = Maildir::subDirPathForFolderPath( path );
     const QDir dir( subDirPath );
@@ -825,7 +826,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
       return false;
     }
 
-    Maildir md( dirInfo.absoluteFilePath(), false );
+    md = Maildir( dirInfo.absoluteFilePath(), false );
     if ( !md.create() ) {
       errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
                           job->collection().name(), job->targetParent().name() );
@@ -846,7 +847,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
       return false;
     }
 
-    const Maildir md = parentMd.subFolder( job->collection().name() );
+    md = Maildir( parentMd.subFolder( job->collection().name() ) );
     const MaildirPtr mdPtr( new MaildirContext( md ) );
     mMaildirs.insert( md.path(), mdPtr );
   }
@@ -854,6 +855,8 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
   Collection collection = job->collection();
   collection.setRemoteId( collection.name() );
   collection.setParentCollection( job->targetParent() );
+  fillMaildirCollectionDetails( md, collection );
+
   q->notifyCollectionsProcessed( Collection::List() << collection );
   return true;
 }
@@ -882,41 +885,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
     return false;
   }
 
-  bool parentIndexInvalidated = false;
-  if ( parentFolderType == MBoxFolder ) {
-    MBoxPtr mboxPtr;
-    MBoxHash::const_iterator mboxIt = mMBoxes.constFind( parentPath );
-    if ( mboxIt == mMBoxes.constEnd() ) {
-      kError() << "Deleting folder" << path << "from parent MBox" << parentPath
-               << "but there is no context for that MBox yet";
-
-      mboxPtr = MBoxPtr( new MBoxContext );
-      if ( !mboxPtr->load( parentPath ) ) {
-        kError() << "Loading or parent MBox" << parentPath << "failed";
-      }
-
-      mMBoxes.insert( parentPath, mboxPtr );
-    }
-
-    mboxPtr->readIndexData();
-    parentIndexInvalidated = mboxPtr->hasIndexData();
-  } else if ( parentFolderType == MaildirFolder ) {
-    MaildirPtr mdPtr;
-    MaildirHash::const_iterator mdIt = mMaildirs.constFind( parentPath );
-    if ( mdIt == mMaildirs.constEnd() ) {
-      kError() << "Deleting folder" << path << "from parent Maildir" << parentPath
-               << "but there is no context for that Maildir yet";
-
-      mdPtr = MaildirPtr( new MaildirContext( parentPath, false ) );
-      mMaildirs.insert( parentPath, mdPtr );
-    } else {
-      mdPtr = mdIt.value();
-    }
-
-    mdPtr->readIndexData();
-    parentIndexInvalidated = mdPtr->hasIndexData();
-  }
-
   if ( folderType == MBoxFolder ) {
     if ( !QFile::remove( path ) ) {
       errorText = i18nc( "@info:status", "Cannot remove folder %1 from folder %2",
@@ -937,11 +905,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
 
   const QString subDirPath = Maildir::subDirPathForFolderPath( path );
   KPIMUtils::removeDirAndContentsRecursively( subDirPath );
-
-  if ( parentIndexInvalidated ) {
-    const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << job->collection().parentCollection() );
-    job->setProperty( "onDiskIndexInvalidated", var );
-  }
 
   q->notifyCollectionsProcessed( Collection::List() << job->collection() );
   return true;
@@ -988,12 +951,18 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionFetchJob *job )
     }
     collections << collection;
   } else {
-    const Maildir md( path, folderType == TopLevelFolder );
+    // if the base is an mbox, use its sub folder dir like a top level maildir
+    if ( folderType == MBoxFolder ) {
+      path = Maildir::subDirPathForFolderPath( path );
+    }
+    const Maildir md( path, folderType != MaildirFolder );
     fillMaildirTreeDetails( md, collection, collections,
                             job->type() == FileStore::CollectionFetchJob::Recursive );
   }
 
-  q->notifyCollectionsProcessed( collections );
+  if ( !collections.isEmpty() ) {
+    q->notifyCollectionsProcessed( collections );
+  }
   return true;
 }
 
