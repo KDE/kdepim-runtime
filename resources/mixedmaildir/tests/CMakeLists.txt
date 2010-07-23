@@ -51,3 +51,20 @@ target_link_libraries(
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTTEST_LIBRARY}
 )
+
+# test for collection deletion handling
+kde4_add_unit_test( collectiondeletetest
+ ../mixedmaildirstore.cpp
+ collectiondeletetest.cpp
+)
+
+target_link_libraries(
+  collectiondeletetest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
