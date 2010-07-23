@@ -202,6 +202,18 @@ void CollectionFetchTest::testMixedTree()
   file1_1.close();
   QVERIFY( fileInfo1_1.exists() );
 
+  QFileInfo subDirInfo1_1( KPIM::Maildir::subDirPathForFolderPath( fileInfo1_1.absoluteFilePath() ) );
+  QVERIFY( topDir.mkpath( subDirInfo1_1.absoluteFilePath() ) );
+  KPIM::Maildir md1_1( subDirInfo1_1.absoluteFilePath(), true );
+  KPIM::Maildir md1_1_1( md1_1.addSubFolder( "collection1_1_1" ), false );
+
+  // simulate third level mbox in mbox parent
+  QFileInfo fileInfo1_1_2( md1_1.path(), QLatin1String( "collection1_1_2" ));
+  QFile file1_1_2( fileInfo1_1_2.absoluteFilePath() );
+  file1_1_2.open( QIODevice::WriteOnly );
+  file1_1_2.close();
+  QVERIFY( fileInfo1_1_2.exists() );
+
   KPIM::Maildir md2( topLevelMd.addSubFolder( "collection2" ), false );
 
   // simulate first level mbox
@@ -239,7 +251,11 @@ void CollectionFetchTest::testMixedTree()
   secondLevelNames << md1_2.name() << md4_1.name()
                    << fileInfo1_1.fileName() << fileInfo4_2.fileName();
 
+  QSet<QString> thirdLevelNames;
+  thirdLevelNames << md1_1_1.name() << fileInfo1_1_2.fileName() << md1_2_1.name();
+
   mStore->setPath( mDir->name() );
+  //mDir = 0;
 
   FileStore::CollectionFetchJob *job = 0;
   QSignalSpy *spy = 0;
@@ -298,7 +314,8 @@ void CollectionFetchTest::testMixedTree()
   QVERIFY( spy->count() > 0 );
 
   collections = collectionsFromSpy( spy );
-  QCOMPARE( collections.count(), firstLevelNames.count() + secondLevelNames.count() + 1 );
+  QCOMPARE( collections.count(),
+            firstLevelNames.count() + secondLevelNames.count() + thirdLevelNames.count() );
   QCOMPARE( job->collections(), collections );
 
   Q_FOREACH( const Collection &collection, collections ) {
@@ -318,11 +335,131 @@ void CollectionFetchTest::testMixedTree()
     } else if ( secondLevelNames.contains( collection.name() ) ) {
       QVERIFY( firstLevelNames.contains( collection.parentCollection().name() ) );
       QCOMPARE( collection.parentCollection().parentCollection(), mStore->topLevelCollection() );
-    } else {
-      QCOMPARE( collection.name(), md1_2_1.name() );
-      QCOMPARE( collection.parentCollection().name(), md1_2.name() );
+    } else if ( thirdLevelNames.contains( collection.name() ) ) {
+      QVERIFY( secondLevelNames.contains( collection.parentCollection().name() ) );
       QCOMPARE( collection.parentCollection().parentCollection().parentCollection(),
                 mStore->topLevelCollection() );
+    }
+  }
+
+  // test base fetching all collections
+  Q_FOREACH( const Collection &collection, collections ) {
+    job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::Base );
+
+    spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+    QCOMPARE( spy->count(), 1 );
+
+    const Collection::List list = collectionsFromSpy( spy );
+    QCOMPARE( list.count(), 1 );
+    QCOMPARE( list.first(), collection );
+    QCOMPARE( job->collections(), list );
+
+    const Collection col = list.first();
+    QVERIFY( !col.remoteId().isEmpty() );
+    QCOMPARE( col.remoteId(), col.name() );
+    QCOMPARE( col.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType() );
+
+    QCOMPARE( col.rights(), Collection::CanCreateItem |
+                            Collection::CanChangeItem |
+                            Collection::CanDeleteItem |
+                            Collection::CanCreateCollection |
+                            Collection::CanChangeCollection |
+                            Collection::CanDeleteCollection );
+  }
+
+  // test first level fetching all collections
+  Q_FOREACH( const Collection &collection, collections ) {
+    job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::FirstLevel );
+
+    spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+
+    const Collection::List list = collectionsFromSpy( spy );
+    QCOMPARE( job->collections(), list );
+
+    Q_FOREACH( const Collection &childCollection, list ) {
+      QCOMPARE( childCollection.parentCollection(), collection );
+
+      QVERIFY( !childCollection.remoteId().isEmpty() );
+      QCOMPARE( childCollection.remoteId(), childCollection.name() );
+      QCOMPARE( childCollection.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType() );
+
+      QCOMPARE( childCollection.rights(), Collection::CanCreateItem |
+                                          Collection::CanChangeItem |
+                                          Collection::CanDeleteItem |
+                                          Collection::CanCreateCollection |
+                                          Collection::CanChangeCollection |
+                                          Collection::CanDeleteCollection );
+    }
+
+    if ( firstLevelNames.contains( collection.name() ) ) {
+      Q_FOREACH( const Collection &childCollection, list ) {
+        QVERIFY( secondLevelNames.contains( childCollection.name() ) );
+      }
+    } else if ( secondLevelNames.contains( collection.name() ) ) {
+      Q_FOREACH( const Collection &childCollection, list ) {
+        QVERIFY( thirdLevelNames.contains( childCollection.name() ) );
+      }
+      if ( collection.name() == md1_2.name() ) {
+        QCOMPARE( list.count(), 1 );
+        QCOMPARE( list.first().name(), md1_2_1.name() );
+      } else if ( collection.name() == fileInfo1_1.fileName() ) {
+        QCOMPARE( list.count(), 2 );
+      }
+    } else {
+      QCOMPARE( list.count(), 0 );
+    }
+  }
+
+  // test recursive fetching all collections
+  Q_FOREACH( const Collection &collection, collections ) {
+    job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::Recursive );
+
+    spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+
+    const Collection::List list = collectionsFromSpy( spy );
+    QCOMPARE( job->collections(), list );
+
+    Q_FOREACH( const Collection &childCollection, list ) {
+      QVERIFY( childCollection.parentCollection() == collection ||
+               childCollection.parentCollection().parentCollection() == collection );
+      QVERIFY( !childCollection.remoteId().isEmpty() );
+      QCOMPARE( childCollection.remoteId(), childCollection.name() );
+      QCOMPARE( childCollection.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType() );
+
+      QCOMPARE( childCollection.rights(), Collection::CanCreateItem |
+                                          Collection::CanChangeItem |
+                                          Collection::CanDeleteItem |
+                                          Collection::CanCreateCollection |
+                                          Collection::CanChangeCollection |
+                                          Collection::CanDeleteCollection );
+    }
+
+    if ( firstLevelNames.contains( collection.name() ) ) {
+      Q_FOREACH( const Collection &childCollection, list ) {
+        QVERIFY( secondLevelNames.contains( childCollection.name() ) ||
+                 thirdLevelNames.contains( childCollection.name() ) );
+      }
+    } else if ( secondLevelNames.contains( collection.name() ) ) {
+      Q_FOREACH( const Collection &childCollection, list ) {
+        QVERIFY( thirdLevelNames.contains( childCollection.name() ) );
+      }
+      if ( collection.name() == md1_2.name() ) {
+        QCOMPARE( list.count(), 1 );
+        QCOMPARE( list.first().name(), md1_2_1.name() );
+      } else if ( collection.name() == fileInfo1_1.fileName() ) {
+        QCOMPARE( list.count(), 2 );
+      }
+    } else {
+      QCOMPARE( list.count(), 0 );
     }
   }
 }
