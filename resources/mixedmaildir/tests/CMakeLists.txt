@@ -18,6 +18,9 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# test data
+qt4_add_resources( testdata_SRCS testdata.qrc )
+
 # test for overwritten methods
 kde4_add_unit_test( templatemethodstest
  ../mixedmaildirstore.cpp
