@@ -110,6 +110,7 @@ target_link_libraries(
 kde4_add_unit_test( collectionmodifytest
  ../mixedmaildirstore.cpp
  collectionmodifytest.cpp
+ ${testdata_SRCS}
 )
 
 target_link_libraries(
