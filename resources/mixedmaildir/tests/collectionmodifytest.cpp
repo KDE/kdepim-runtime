@@ -20,7 +20,10 @@
 
 #include "mixedmaildirstore.h"
 
+#include "testdatautil.h"
+
 #include "filestore/collectionmodifyjob.h"
+#include "filestore/itemfetchjob.h"
 
 #include "libmaildir/maildir.h"
 
@@ -50,7 +53,7 @@ class CollectionModifyTest : public QObject
     void init();
     void cleanup();
     void testRename();
-    void testIndexRecovery();
+    void testIndexPreservation();
 };
 
 void CollectionModifyTest::init()
@@ -358,9 +361,99 @@ void CollectionModifyTest::testRename()
   QVERIFY( fileInfo4.exists() );
 }
 
-void CollectionModifyTest::testIndexRecovery()
+void CollectionModifyTest::testIndexPreservation()
 {
-  QFAIL( "TODO: check that jobs which invalidate index have read the index and set expected property" );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), mDir->name(), QLatin1String( "collection1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), mDir->name(), QLatin1String( "collection2" ) ) );
+
+  mStore->setPath( mDir->name() );
+
+  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
+  FileStore::CollectionModifyJob *job = 0;
+  FileStore::ItemFetchJob *itemFetch = 0;
+  QVariant var;
+  Collection::List collections;
+  Item::List items;
+
+  QMap<QByteArray, int> flagCounts;
+
+  // test renaming mbox
+  Collection collection1;
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+  collection1.setName( QLatin1String( "collection1_renamed" ) );
+
+  job = mStore->modifyCollection( collection1 );
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
+
+  const QFileInfo indexFileInfo1( mDir->name(), QLatin1String( ".collection1_renamed.index" ) );
+  QVERIFY( !indexFileInfo1.exists() );
+
+  // get the items and check the flags (see data/README)
+  itemFetch = mStore->fetchItems( collections.first() );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+
+  // test renaming maildir
+  Collection collection2;
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+  collection2.setName( QLatin1String( "collection2_renamed" ) );
+
+  job = mStore->modifyCollection( collection2 );
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection2 );
+
+  const QFileInfo indexFileInfo2( mDir->name(), QLatin1String( ".collection2_renamed.index" ) );
+  QVERIFY( !indexFileInfo2.exists() );
+
+  // get the items and check the flags (see data/README)
+  itemFetch = mStore->fetchItems( collections.first() );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+
+  flagCounts.clear();
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
 }
 
 QTEST_KDEMAIN( CollectionModifyTest, NoGUI )
