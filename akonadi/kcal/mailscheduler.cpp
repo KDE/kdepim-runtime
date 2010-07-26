@@ -149,8 +149,8 @@ QList<ScheduleMessage*> MailScheduler::retrieveTransactions()
         messageString.remove( QRegExp( QLatin1String( "\n[ \t]" ) ) );
         messageString = QString::fromUtf8( messageString.toLatin1() );
 
-        CalendarAdaptor caladaptor( mCalendar, 0 );
-        ScheduleMessage *mess = mFormat->parseScheduleMessage( &caladaptor, messageString );
+        CalendarAdaptor::Ptr caladaptor( new CalendarAdaptor( mCalendar, 0 ) );
+        ScheduleMessage *mess = mFormat->parseScheduleMessage( caladaptor, messageString );
 
         if ( mess ) {
           kDebug() << "got message '" << (*it) << "'";
@@ -197,8 +197,8 @@ bool MailScheduler::acceptTransaction( const KCalCore::IncidenceBase::Ptr &incid
   class SchedulerAdaptor : public KCalUtils::Scheduler
   {
     public:
-      SchedulerAdaptor( MailScheduler* s, CalendarAdaptor *c )
-        : KCalUtils::Scheduler(c), m_scheduler(s)
+      SchedulerAdaptor( MailScheduler* s, const CalendarAdaptor::Ptr &c )
+        : KCalUtils::Scheduler( c ), m_scheduler( s )
       {
       }
 
@@ -243,8 +243,8 @@ bool MailScheduler::acceptTransaction( const KCalCore::IncidenceBase::Ptr &incid
       MailScheduler* m_scheduler;
   };
 
-  CalendarAdaptor caladaptor(mCalendar, 0);
-  SchedulerAdaptor scheduleradaptor(this, &caladaptor);
+  CalendarAdaptor::Ptr caladaptor( new CalendarAdaptor( mCalendar, 0 ) );
+  SchedulerAdaptor scheduleradaptor( this, caladaptor );
   return scheduleradaptor.acceptTransaction(incidence, method, status, email);
 }
 

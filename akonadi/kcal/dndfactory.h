@@ -40,7 +40,10 @@
 
 #include "akonadi-kcal_next_export.h"
 
+#include "calendaradaptor.h"
+
 #include <kcalcore/calendar.h>
+#include <kcalcore/memorycalendar.h>
 
 #include <Akonadi/Item>
 
@@ -58,7 +61,6 @@ namespace KCalCore {
 class Event;
 class Todo;
 class Incidence;
-class MemoryCalendar;
 }
 
 namespace Akonadi {
@@ -75,7 +77,7 @@ namespace Akonadi {
 class AKONADI_KCAL_NEXT_EXPORT DndFactory
 {
   public:
-    explicit DndFactory( Akonadi::CalendarAdaptor *,
+    explicit DndFactory( const Akonadi::CalendarAdaptor::Ptr & ,
                          bool deleteCalendarHere = false );
 
     ~DndFactory();
@@ -83,17 +85,17 @@ class AKONADI_KCAL_NEXT_EXPORT DndFactory
     /**
       Create the calendar that is contained in the drop event's data.
      */
-  KCalCore::MemoryCalendar *createDropCalendar( QDropEvent *de );
+    KCalCore::MemoryCalendar::Ptr createDropCalendar( QDropEvent *de );
 
     /**
       Create the calendar that is contained in the mime data.
      */
-  KCalCore::MemoryCalendar *createDropCalendar( const QMimeData *md );
+    KCalCore::MemoryCalendar::Ptr createDropCalendar( const QMimeData *md );
 
      /**
       Create the calendar that is contained in the mime data.
      */
-  static KCalCore::MemoryCalendar *createDropCalendar( const QMimeData *md, const KDateTime::Spec &timeSpec );
+    static KCalCore::MemoryCalendar::Ptr createDropCalendar( const QMimeData *md, const KDateTime::Spec &timeSpec );
 
     /**
       Create the mime data for the whole calendar.

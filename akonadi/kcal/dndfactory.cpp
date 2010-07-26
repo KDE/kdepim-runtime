@@ -40,9 +40,7 @@
 */
 
 #include "dndfactory.h"
-#include "calendaradaptor.h"
 
-#include <kcalcore/memorycalendar.h>
 #include <kcalutils/dndfactory.h>
 #include <kcalutils/vcaldrag.h>
 #include <kcalutils/icaldrag.h>
@@ -68,7 +66,7 @@ using namespace Akonadi;
 class Akonadi::DndFactory::Private
 {
   public:
-  Private( Akonadi::CalendarAdaptor *cal, bool deleteCalendar )
+  Private( const Akonadi::CalendarAdaptor::Ptr &cal, bool deleteCalendar )
     : mDeleteCalendar( deleteCalendar ), mCalendar( cal ),
       mDndFactory( new KCalUtils::DndFactory( cal ) )
     {}
@@ -78,13 +76,13 @@ class Akonadi::DndFactory::Private
   }
 
   bool mDeleteCalendar;
-  CalendarAdaptor *mCalendar;
+  CalendarAdaptor::Ptr mCalendar;
   KCalUtils::DndFactory *mDndFactory;
 
 };
 //@endcond
 namespace Akonadi {
-DndFactory::DndFactory( Akonadi::CalendarAdaptor *cal, bool deleteCalendarHere )
+DndFactory::DndFactory( const Akonadi::CalendarAdaptor::Ptr &cal, bool deleteCalendarHere )
   : d( new Akonadi::DndFactory::Private ( cal, deleteCalendarHere ) )
 {
 }
@@ -114,25 +112,25 @@ QDrag *DndFactory::createDrag( const Incidence::Ptr &incidence, QWidget *owner )
   return d->mDndFactory->createDrag( incidence, owner );
 }
 
-KCalCore::MemoryCalendar *DndFactory::createDropCalendar( const QMimeData *md )
+KCalCore::MemoryCalendar::Ptr DndFactory::createDropCalendar( const QMimeData *md )
 {
   return d->mDndFactory->createDropCalendar( md );
 }
 
 /* static */
-KCalCore::MemoryCalendar *DndFactory::createDropCalendar( const QMimeData *md, const KDateTime::Spec &timeSpec )
+KCalCore::MemoryCalendar::Ptr DndFactory::createDropCalendar( const QMimeData *md, const KDateTime::Spec &timeSpec )
 {
- KCalCore::MemoryCalendar *cal = new KCalCore::MemoryCalendar( timeSpec );
+ KCalCore::MemoryCalendar::Ptr cal( new KCalCore::MemoryCalendar( timeSpec ) );
 
  if ( KCalUtils::ICalDrag::fromMimeData( md, cal ) ||
       KCalUtils::VCalDrag::fromMimeData( md, cal ) ) {
    return cal;
  }
- delete cal;
- return 0;
+
+ return MemoryCalendar::Ptr();
 }
 
-KCalCore::MemoryCalendar *DndFactory::createDropCalendar( QDropEvent *de )
+KCalCore::MemoryCalendar::Ptr DndFactory::createDropCalendar( QDropEvent *de )
 {
   return d->mDndFactory->createDropCalendar( de );
 }

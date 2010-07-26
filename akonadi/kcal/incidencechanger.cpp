@@ -400,7 +400,7 @@ bool IncidenceChanger::cutIncidences( const Item::List &list, QWidget *parent )
       }
     }
    }
-  CalendarAdaptor *cal = new CalendarAdaptor( d->mCalendar, parent );
+  CalendarAdaptor::Ptr cal( new CalendarAdaptor( d->mCalendar, parent ) );
   Akonadi::DndFactory factory( cal, true /*delete calendarAdaptor*/ );
 
   if ( factory.cutIncidences( itemsToCut ) ) {

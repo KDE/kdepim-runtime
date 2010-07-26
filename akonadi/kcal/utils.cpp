@@ -123,29 +123,31 @@ QMimeData* Akonadi::createMimeData( const Item::List &items, const KDateTime::Sp
   if ( items.isEmpty() )
     return 0;
 
-  KCalCore::MemoryCalendar cal( timeSpec );
+  KCalCore::MemoryCalendar::Ptr cal( new MemoryCalendar( timeSpec ) );
 
   QList<QUrl> urls;
   int incidencesFound = 0;
   Q_FOREACH ( const Item &item, items ) {
     const KCalCore::Incidence::Ptr incidence( Akonadi::incidence( item ) );
-    if ( !incidence )
+    if ( !incidence ) {
       continue;
+    }
     ++incidencesFound;
     urls.push_back( item.url() );
-    Incidence::Ptr i = Incidence::Ptr( incidence->clone() );
-    cal.addIncidence( i );
+    Incidence::Ptr i( incidence->clone() );
+    cal->addIncidence( i );
   }
 
-  if ( incidencesFound == 0 )
+  if ( incidencesFound == 0 ) {
     return 0;
+  }
 
   std::auto_ptr<QMimeData> mimeData( new QMimeData );
 
   mimeData->setUrls( urls );
 
-  KCalUtils::ICalDrag::populateMimeData( mimeData.get(), &cal );
-  KCalUtils::VCalDrag::populateMimeData( mimeData.get(), &cal );
+  KCalUtils::ICalDrag::populateMimeData( mimeData.get(), cal );
+  KCalUtils::VCalDrag::populateMimeData( mimeData.get(), cal );
 
   return mimeData.release();
 }
@@ -278,9 +280,10 @@ bool Akonadi::mimeDataHasTodo( const QMimeData* mimeData )
 
 QList<Todo::Ptr> Akonadi::todos( const QMimeData* mimeData, const KDateTime::Spec &spec )
 {
-  std::auto_ptr<KCalCore::Calendar> cal( KCalUtils::DndFactory::createDropCalendar( mimeData, spec ) );
-  if ( !cal.get() )
+  KCalCore::Calendar::Ptr cal( KCalUtils::DndFactory::createDropCalendar( mimeData, spec ) );
+  if ( !cal ) {
     return QList<Todo::Ptr>();
+  }
   QList<Todo::Ptr> todos;
   Q_FOREACH( const Todo::Ptr &i, cal->todos() ) {
       todos.push_back( Todo::Ptr( i->clone() ) );

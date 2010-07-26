@@ -88,8 +88,8 @@ bool Groupware::handleInvitation( const QString& receiver, const QString& iCal,
 {
   const QString action = type;
 
-  CalendarAdaptor adaptor( mCalendar, 0 );
-  ScheduleMessage *message = mFormat.parseScheduleMessage( &adaptor, iCal );
+  CalendarAdaptor::Ptr adaptor( new CalendarAdaptor( mCalendar, 0 ) );
+  ScheduleMessage *message = mFormat.parseScheduleMessage( adaptor, iCal );
   if ( !message ) {
     QString errorMessage;
     if ( mFormat.exception() ) {

@@ -59,6 +59,8 @@ class AKONADI_KCAL_NEXT_EXPORT CalendarAdaptor : public KCalCore::MemoryCalendar
     using KCalCore::Calendar::deleteIncidence;
 
   public:
+    typedef QSharedPointer<CalendarAdaptor> Ptr;
+
     CalendarAdaptor( Akonadi::Calendar *calendar, QWidget *parent,
                      bool storeDefaultCollection = false );
 
