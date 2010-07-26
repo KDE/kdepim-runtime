@@ -297,6 +297,18 @@ void MixedMaildirResource::collectionChanged(const Collection &collection)
     return;
   }
 
+  // when the top level collection gets renamed, we do not rename the directory
+  // but rename the resource.
+  if ( collection.remoteId() == mStore->topLevelCollection().remoteId() ) {
+    if ( collection.name() != name() ) {
+      kDebug() << "TopLevel collection name differs from resource name: collection="
+               << collection.name() << "resource=" << name() << ". Renaming resource";
+      setName( collection.name() );
+    }
+    changeCommitted( collection );
+    return;
+  }
+
   mCompactHelper->checkCollectionChanged( collection );
 
   FileStore::CollectionModifyJob *job = mStore->modifyCollection( collection );
@@ -309,6 +321,18 @@ void MixedMaildirResource::collectionChanged(const Collection &collection, const
     const QString message = i18nc( "@info:status", "Unusable configuration." );
     kError() << message;
     cancelTask( message );
+    return;
+  }
+
+  // when the top level collection gets renamed, we do not rename the directory
+  // but rename the resource.
+  if ( collection.remoteId() == mStore->topLevelCollection().remoteId() ) {
+    if ( collection.name() != name() ) {
+      kDebug() << "TopLevel collection name differs from resource name: collection="
+               << collection.name() << "resource=" << name() << ". Renaming resource";
+      setName( collection.name() );
+    }
+    changeCommitted( collection );
     return;
   }
 
