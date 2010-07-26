@@ -54,6 +54,7 @@ class CollectionModifyTest : public QObject
     void cleanup();
     void testRename();
     void testIndexPreservation();
+    void testIndexCacheUpdate();
 };
 
 void CollectionModifyTest::init()
@@ -454,6 +455,170 @@ void CollectionModifyTest::testIndexPreservation()
   QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
   QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
   QCOMPARE( flagCounts[ "$TODO" ], 1 );
+}
+
+void CollectionModifyTest::testIndexCacheUpdate()
+{
+  KPIM::Maildir topLevelMd( mDir->name(), true );
+  QVERIFY( topLevelMd.isValid() );
+
+  KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
+
+  // simulate first level mbox
+  QFileInfo fileInfo2( mDir->name(), QLatin1String( "collection2" ));
+  QFile file2( fileInfo2.absoluteFilePath() );
+  file2.open( QIODevice::WriteOnly );
+  file2.close();
+  QVERIFY( fileInfo2.exists() );
+
+  const QString colSubDir1 = KPIM::Maildir::subDirPathForFolderPath( md1.path() );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), colSubDir1, QLatin1String( "collection1_1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), colSubDir1, QLatin1String( "collection1_2" ) ) );
+
+  const QString colSubDir2 = KPIM::Maildir::subDirPathForFolderPath( fileInfo2.absoluteFilePath() );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), colSubDir2, QLatin1String( "collection2_1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), colSubDir2, QLatin1String( "collection2_2" ) ) );
+
+  mStore->setPath( mDir->name() );
+
+  FileStore::CollectionModifyJob *job = 0;
+  FileStore::ItemFetchJob *itemFetch = 0;
+  Collection collection;
+  Item::List items;
+  QMap<QByteArray, int> flagCounts;
+
+  // preparation: load all second level items to make sure respective index data is cached
+  Collection collection1;
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+  collection1.setName( QLatin1String( "collection1" ) );
+
+  Collection collection1_1;
+  collection1_1.setRemoteId( QLatin1String( "collection1_1" ) );
+  collection1_1.setParentCollection( collection1 );
+  collection1_1.setName( QLatin1String( "collection1_1" ) );
+
+  itemFetch = mStore->fetchItems( collection1_1 );
+  QVERIFY( itemFetch->exec() );
+
+  Collection collection1_2;
+  collection1_2.setRemoteId( QLatin1String( "collection1_2" ) );
+  collection1_2.setParentCollection( collection1 );
+  collection1_2.setName( QLatin1String( "collection1_2" ) );
+
+  itemFetch = mStore->fetchItems( collection1_2 );
+  QVERIFY( itemFetch->exec() );
+  Collection collection2;
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+  collection2.setName( QLatin1String( "collection2" ) );
+
+  Collection collection2_1;
+  collection2_1.setRemoteId( QLatin1String( "collection2_1" ) );
+  collection2_1.setParentCollection( collection2 );
+  collection2_1.setName( QLatin1String( "collection2_1" ) );
+
+  itemFetch = mStore->fetchItems( collection2_1 );
+  QVERIFY( itemFetch->exec() );
+  Collection collection2_2;
+  collection2_2.setRemoteId( QLatin1String( "collection2_2" ) );
+  collection2_2.setParentCollection( collection2 );
+  collection2_2.setName( QLatin1String( "collection2_2" ) );
+
+  itemFetch = mStore->fetchItems( collection2_2 );
+  QVERIFY( itemFetch->exec() );
+
+  // test renaming the maildir parent
+  collection1.setName( QLatin1String( "collection1_renamed" ) );
+
+  job = mStore->modifyCollection( collection1 );
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  collection = job->collection();
+
+  // get the items of the children and check the flags (see data/README)
+  collection1_1.setParentCollection( collection );
+  itemFetch = mStore->fetchItems( collection1_1 );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  collection1_2.setParentCollection( collection );
+  itemFetch = mStore->fetchItems( collection1_2 );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  // test renaming the mbox parent
+  collection2.setName( QLatin1String( "collection2_renamed" ) );
+
+  job = mStore->modifyCollection( collection2 );
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  collection = job->collection();
+
+  // get the items of the children and check the flags (see data/README)
+  collection2_1.setParentCollection( collection );
+  itemFetch = mStore->fetchItems( collection2_1 );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  collection2_2.setParentCollection( collection );
+  itemFetch = mStore->fetchItems( collection2_2 );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
 }
 
 QTEST_KDEMAIN( CollectionModifyTest, NoGUI )
