@@ -795,20 +795,30 @@ bool MixedMaildirStore::Private::fillItem( const MaildirPtr &md, bool includeBod
 
 void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, const QString &newPath )
 {
+  const QString oldSubDirPath = Maildir::subDirPathForFolderPath( oldPath );
+  const QString newSubDirPath = Maildir::subDirPathForFolderPath( newPath );
+
   MBoxHash mboxes;
   MBoxHash::const_iterator mboxIt    = mMBoxes.constBegin();
   MBoxHash::const_iterator mboxEndIt = mMBoxes.constEnd();
   for ( ; mboxIt != mboxEndIt; ++mboxIt ) {
-    if ( mboxIt.key().startsWith( oldPath ) ) {
-      QString newKey = mboxIt.key();
-      newKey.replace( oldPath, newPath );
+    QString key = mboxIt.key();
+    MBoxPtr mboxPtr = mboxIt.value();
 
-      MBoxPtr mboxPtr = mboxIt.value();
-      mboxPtr->updatePath( newPath );
+    if ( key == oldPath ) {
+      key = newPath;
+    } else if ( key.startsWith( oldSubDirPath ) ) {
+      if ( mboxPtr->hasIndexData() ) {
+        key.replace( oldSubDirPath, newSubDirPath );
+      } else {
+        // if there is no index data yet, just discard this context
+        key = QString();
+      }
+    }
 
-      mboxes.insert( newKey, mboxPtr );
-    } else {
-      mboxes.insert( mboxIt.key(), mboxIt.value() );
+    if ( !key.isEmpty() ){
+      mboxPtr->updatePath( key );
+      mboxes.insert( key, mboxPtr );
     }
   }
   mMBoxes = mboxes;
@@ -817,16 +827,23 @@ void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, co
   MaildirHash::const_iterator mdIt    = mMaildirs.constBegin();
   MaildirHash::const_iterator mdEndIt = mMaildirs.constEnd();
   for ( ; mdIt != mdEndIt; ++mdIt ) {
-    if ( mdIt.key().startsWith( oldPath ) ) {
-      QString newKey = mdIt.key();
-      newKey.replace( oldPath, newPath );
+    QString key = mdIt.key();
+    MaildirPtr mdPtr = mdIt.value();
 
-      MaildirPtr mdPtr = mdIt.value();
-      mdPtr->updatePath( newPath );
+    if ( key == oldPath ) {
+      key = newPath;
+    } else if ( key.startsWith( oldSubDirPath ) ) {
+      if ( mdPtr->hasIndexData() ) {
+        key.replace( oldSubDirPath, newSubDirPath );
+      } else {
+        // if there is no index data yet, just discard this context
+        key = QString();
+      }
+    }
 
-      maildirs.insert( newKey, mdPtr );
-    } else {
-      maildirs.insert( mdIt.key(), mdIt.value() );
+    if ( !key.isEmpty() ){
+      mdPtr->updatePath( key );
+      maildirs.insert( key, mdPtr );
     }
   }
   mMaildirs = maildirs;
@@ -1084,7 +1101,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
 
       mbox->mCollection = collection;
       mMBoxes.insert( path, mbox );
-      kDebug() << "inserted mbox context at path" << path;
     } else {
       mbox = findIt.value();
     }
