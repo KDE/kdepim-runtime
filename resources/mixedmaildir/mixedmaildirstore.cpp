@@ -985,12 +985,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
 {
   const Collection collection = job->collection();
 
-  // we don't change our top level collection
-  if ( job->collection().remoteId() == q->topLevelCollection().remoteId() ) {
-    kWarning() << "CollectionModifyJob for TopLevelCollection. Ignoring";
-    return true;
-  }
-
   // we also only do renames
   if ( collection.remoteId() == collection.name() ) {
     kWarning() << "CollectionModifyJob with name still identical to remoteId. Ignoring";
@@ -1000,7 +994,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
   QString path;
   QString errorText;
   const FolderType folderType = folderForCollection( collection, path, errorText );
-  if ( folderType == InvalidFolder || folderType == TopLevelFolder ) {
+  if ( folderType == InvalidFolder ) {
     errorText = i18nc( "@info:status", "Cannot rename folder %1",
                         collection.name() );
     kError() << errorText << "FolderType=" << folderType;
@@ -1047,7 +1041,23 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
   }
 
   Collection renamedCollection = collection;
-  renamedCollection.setRemoteId( collection.name() );
+
+  // when renaming top level folder, change path of store
+  if ( folderType == TopLevelFolder ) {
+    // backup caches, setTopLevelCollection() clears them
+    const MBoxHash mboxes = mMBoxes;
+    const MaildirHash maildirs = mMaildirs;
+
+    q->setPath( targetFileInfo.absoluteFilePath() );
+
+    // restore caches
+    mMBoxes = mboxes;
+    mMaildirs = maildirs;
+
+    renamedCollection = q->topLevelCollection();
+  } else {
+    renamedCollection.setRemoteId( collection.name() );
+  }
 
   // update collections in MBox contexts so they stay usable for purge
   Q_FOREACH( const MBoxPtr &mbox, mMBoxes ) {
