@@ -35,7 +35,6 @@
 #include <akonadi/specialcollections.h>
 #include <akonadi/specialcollectionsrequestjob.h>
 
-#include <kcalcore/memorycalendar.h>
 #include <kcalcore/event.h>
 #include <kcalcore/icalformat.h>
 #include <kcalcore/incidence.h>
@@ -458,7 +457,9 @@ void InvitationsAgent::collectionCreateResult( KJob *job )
 }
 #endif
 
-Item InvitationsAgent::handleContent( const QString &vcal, KCalCore::MemoryCalendar* calendar, const Item &item )
+Item InvitationsAgent::handleContent( const QString &vcal,
+                                      const KCalCore::MemoryCalendar::Ptr &calendar,
+                                      const Item &item )
 {
   KCalCore::ICalFormat format;
   KCalCore::ScheduleMessage *message = format.parseScheduleMessage( calendar, vcal );
@@ -505,7 +506,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
   //const QString sender = message->sender()->asUnicodeString();
   //if( identityManager()->thatIsMe(sender) ) return;
 
-  KCalCore::MemoryCalendar calendar( KSystemTimeZones::local() ) ;
+  KCalCore::MemoryCalendar::Ptr calendar( new KCalCore::MemoryCalendar( KSystemTimeZones::local() ) );
   if ( message->contentType()->isMultipart() ) {
     kDebug() << "message is multipart:" << message->attachments().size();
 
@@ -518,7 +519,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
         continue;
       }
 
-      Item newItem = handleContent( content->body(), &calendar, item );
+      Item newItem = handleContent( content->body(), calendar, item );
       if ( !newItem.hasPayload() ) {
         kDebug() << "new item has no payload";
         continue;
@@ -532,7 +533,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
   } else {
     kDebug() << "message is not multipart";
     //TODO check what is allowed/possible here.
-    Item newItem = handleContent( message->body(), &calendar, item );
+    Item newItem = handleContent( message->body(), calendar, item );
     if ( !newItem.hasPayload() ) {
       kDebug() << "new item has no payload";
       return;

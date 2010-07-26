@@ -51,7 +51,6 @@ void ICalResourceBase::initialise( const QStringList &mimeTypes, const QString &
 
 ICalResourceBase::~ICalResourceBase()
 {
-  delete mCalendar;
 }
 
 bool ICalResourceBase::retrieveItem( const Akonadi::Item &item,
@@ -83,9 +82,8 @@ void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Set
 
 bool ICalResourceBase::readFromFile( const QString &fileName )
 {
-  delete mCalendar;
   delete mFileStorage;
-  mCalendar = new KCalCore::MemoryCalendar( QLatin1String( "UTC" ) );
+  mCalendar = KCalCore::MemoryCalendar::Ptr( new KCalCore::MemoryCalendar( QLatin1String( "UTC" ) ) );
 
   mFileStorage = new KCalCore::FileStorage( mCalendar, fileName,
                                             new KCalCore::ICalFormat() );
@@ -141,7 +139,7 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
   return success;
 }
 
-KCalCore::MemoryCalendar *ICalResourceBase::calendar() const
+KCalCore::MemoryCalendar::Ptr ICalResourceBase::calendar() const
 {
   return mCalendar;
 }

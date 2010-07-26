@@ -20,6 +20,8 @@
 #ifndef INVITATIONSAGENT_H
 #define INVITATIONSAGENT_H
 
+#include <KCalCore/MemoryCalendar>
+
 #include <Akonadi/AgentBase>
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
@@ -30,7 +32,6 @@
 class KJob;
 
 namespace KCalCore {
-  class MemoryCalendar;
   class ScheduleMessage;
 }
 
@@ -75,7 +76,9 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     void initDone( KJob *job = 0 );
 
   private:
-    Akonadi::Item handleContent( const QString &vcal, KCalCore::MemoryCalendar* calendar, const Akonadi::Item &item );
+    Akonadi::Item handleContent( const QString &vcal,
+                                 const KCalCore::MemoryCalendar::Ptr &calendar,
+                                 const Akonadi::Item &item );
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
 
