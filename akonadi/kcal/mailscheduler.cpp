@@ -196,20 +196,38 @@ bool MailScheduler::acceptTransaction( const KCalCore::IncidenceBase::Ptr &incid
   class SchedulerAdaptor : public KCalUtils::Scheduler
   {
     public:
-      SchedulerAdaptor(MailScheduler* s, CalendarAdaptor *c) : KCalUtils::Scheduler(c), m_scheduler(s), m_calendar(c) {}
-      virtual ~SchedulerAdaptor() {}
-      virtual bool publish ( const KCalCore::IncidenceBase::Ptr &incidence, const QString &recipients ) {
+      SchedulerAdaptor( MailScheduler* s, CalendarAdaptor *c )
+        : KCalUtils::Scheduler(c), m_scheduler(s)
+      {
+      }
+
+      virtual ~SchedulerAdaptor()
+      {
+      }
+
+      virtual bool publish ( const KCalCore::IncidenceBase::Ptr &incidence, const QString &recipients )
+      {
         return m_scheduler->publish( incidence, recipients );
       }
-      virtual bool performTransaction( const KCalCore::IncidenceBase::Ptr &incidence, KCalCore::iTIPMethod method ) {
+
+      virtual bool performTransaction( const KCalCore::IncidenceBase::Ptr &incidence,
+                                       KCalCore::iTIPMethod method )
+      {
         return m_scheduler->performTransaction( incidence, method );
       }
-      virtual bool performTransaction( const KCalCore::IncidenceBase::Ptr &incidence, KCalCore::iTIPMethod method, const QString &recipients ) {
+
+      virtual bool performTransaction( const KCalCore::IncidenceBase::Ptr &incidence,
+                                       KCalCore::iTIPMethod method,
+                                       const QString &recipients )
+      {
         return m_scheduler->performTransaction( incidence, method, recipients );
       }
-      virtual bool acceptCounterProposal( const KCalCore::Incidence::Ptr &incidence ) {
+
+      virtual bool acceptCounterProposal( const KCalCore::Incidence::Ptr &incidence )
+      {
         return m_scheduler->acceptCounterProposal( incidence );
       }
+
       virtual QList<ScheduleMessage*> retrieveTransactions() {
 #if 0
         return m_scheduler->retrieveTransactions();
@@ -222,7 +240,6 @@ bool MailScheduler::acceptTransaction( const KCalCore::IncidenceBase::Ptr &incid
       }
     private:
       MailScheduler* m_scheduler;
-      CalendarAdaptor *m_calendar;
   };
 
   CalendarAdaptor caladaptor(mCalendar, 0);
