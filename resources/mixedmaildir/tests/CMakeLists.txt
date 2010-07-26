@@ -19,7 +19,24 @@ include_directories(
 )
 
 # test data
-qt4_add_resources( testdata_SRCS testdata.qrc )
+qt4_add_resources( testdata_generated_SRCS testdata.qrc )
+
+set( testdata_SRCS
+  ${testdata_generated_SRCS}
+  testdatautil.cpp
+)
+
+kde4_add_unit_test( testdatatest
+ testdatatest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  testdatatest
+  ${KDE4_KDECORE_LIBS}
+  ${QT_QTTEST_LIBRARY}
+  ${QT_QTGUI_LIBRARY}
+)
 
 # test for overwritten methods
 kde4_add_unit_test( templatemethodstest
