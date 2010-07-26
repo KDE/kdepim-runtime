@@ -89,6 +89,17 @@ ResourceStateInterface::Ptr ResourceState::createChangeItemState( ImapResource *
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createRemoveItemState( ImapResource *resource,
+                                                                  const Akonadi::Item &item )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_item = item;
+
+  return ResourceStateInterface::Ptr( state );
+
+}
+
 
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )

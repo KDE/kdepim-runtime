@@ -49,6 +49,9 @@ public:
                                                             const Akonadi::Item &item,
                                                             const QSet<QByteArray> &parts );
 
+  static ResourceStateInterface::Ptr createRemoveItemState( ImapResource *resource,
+                                                            const Akonadi::Item &item );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:

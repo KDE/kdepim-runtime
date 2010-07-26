@@ -21,6 +21,7 @@ IMAP_RESOURCE_UNIT_TESTS(
 
   testadditemtask
   testchangeitemtask
+  testremoveitemtask
   testretrievecollectionmetadatatask
   testretrievecollectionstask
   testretrieveitemtask
