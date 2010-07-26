@@ -34,28 +34,28 @@
 #include "note.h"
 #include "akonadi-version.h"
 
-#include <kcal/journal.h>
+#include <kcalcore/journal.h>
 #include <kdebug.h>
 
 using namespace Kolab;
 
 
-KCal::Journal* Note::xmlToJournal( const QString& xml )
+KCalCore::Journal::Ptr Note::xmlToJournal( const QString& xml )
 {
   Note note;
   note.load( xml );
-  KCal::Journal* journal = new KCal::Journal();
+  KCalCore::Journal::Ptr journal( new KCalCore::Journal() );
   note.saveTo( journal );
   return journal;
 }
 
-QString Note::journalToXML( KCal::Journal* journal )
+QString Note::journalToXML( const KCalCore::Journal::Ptr &journal )
 {
   Note note( journal );
   return note.saveXML();
 }
 
-Note::Note( KCal::Journal* journal ) : mRichText( false )
+Note::Note( const KCalCore::Journal::Ptr &journal ) : mRichText( false )
 {
   if ( journal )
     setFields( journal );
@@ -180,7 +180,7 @@ QString Note::saveXML() const
   return document.toString();
 }
 
-void Note::setFields( const KCal::Journal* journal )
+void Note::setFields( const KCalCore::Journal::Ptr &journal )
 {
   KolabBase::setFields( journal );
 
@@ -208,7 +208,7 @@ void Note::setFields( const KCal::Journal* journal )
   }
 }
 
-void Note::saveTo( KCal::Journal* journal )
+void Note::saveTo( const KCalCore::Journal::Ptr &journal )
 {
   KolabBase::saveTo( journal );
 
