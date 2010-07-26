@@ -183,6 +183,7 @@ bool MailScheduler::deleteTransaction( const IncidenceBase::Ptr &incidence )
   return status;
 }
 #endif
+
 QString MailScheduler::freeBusyDir() const
 {
   return KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/freebusy" ) );
@@ -254,8 +255,7 @@ bool MailScheduler::acceptCounterProposal( const KCalCore::Incidence::Ptr &incid
     return false;
   }
 
-  Akonadi::Item::Id akonadiId = mCalendar->itemIdForIncidenceUid( incidence->uid() );
-  Akonadi::Item exInc = mCalendar->incidence( akonadiId );
+  Akonadi::Item exInc = mCalendar->itemForIncidenceUid( incidence->uid() );
   if ( ! exInc.isValid() ) {
     exInc = mCalendar->incidenceFromSchedulingID( incidence->uid() );
     //exInc = exIncItem.isValid() && exIncItem.hasPayload<Incidence::Ptr>() ? exIncItem.payload<Incidence::Ptr>() : Incidence::Ptr();
