@@ -49,7 +49,7 @@ public:
 }
 
 RecursiveCollectionFilterProxyModel::RecursiveCollectionFilterProxyModel( QObject* parent )
-    : Future::KRecursiveFilterProxyModel(parent), d_ptr(new RecursiveCollectionFilterProxyModelPrivate( this ) )
+    : KRecursiveFilterProxyModel(parent), d_ptr(new RecursiveCollectionFilterProxyModelPrivate( this ) )
 {
 
 }

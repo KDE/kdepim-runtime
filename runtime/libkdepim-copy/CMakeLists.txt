@@ -16,7 +16,7 @@ set(kdepim-copy_LIB_SRCS
     ksubscription.cpp
 )
 
-kde4_add_library(kdepim-copy SHARED ${kdepim-copy_LIB_SRCS})
+kde4_add_library(kdepim-copy ${LIBRARY_TYPE} ${kdepim-copy_LIB_SRCS})
 
 target_link_libraries(kdepim-copy
   ${KDE4_KPARTS_LIBS}

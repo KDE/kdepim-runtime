@@ -32,7 +32,7 @@ set(akonadi-filestore_SRCS
   storecompactjob.cpp
 )
 
-kde4_add_library(akonadi-filestore SHARED ${akonadi-filestore_SRCS} )
+kde4_add_library(akonadi-filestore ${LIBRARY_TYPE} ${akonadi-filestore_SRCS} )
 
 target_link_libraries(akonadi-filestore
                       ${AKONADI_COMMON_LIBRARIES}

@@ -24,7 +24,7 @@
 
 #include <akonadi/collection.h>
 
-#include "krecursivefilterproxymodel.h"
+#include <krecursivefilterproxymodel.h>
 
 namespace Akonadi {
 
@@ -57,7 +57,7 @@ class EntityRightsFilterModelPrivate;
  * @author Tobias Koenig <tokoe@kde.org>
  * @since 4.4
  */
-class AKONADI_NEXT_EXPORT EntityRightsFilterModel : public Future::KRecursiveFilterProxyModel
+class AKONADI_NEXT_EXPORT EntityRightsFilterModel : public KRecursiveFilterProxyModel
 {
   Q_OBJECT
 

@@ -24,7 +24,10 @@
 #include <kdemacros.h>
 
 #ifndef MAILDIR_EXPORT
-# if defined(MAKE_MAILDIR_LIB)
+# if defined(KDEPIM_STATIC_LIBS)
+   /* No export/import for static libraries */
+#  define MAILDIR_EXPORT
+# elif defined(MAKE_MAILDIR_LIB)
    /* We are building this library */ 
 #  define MAILDIR_EXPORT KDE_EXPORT
 # else

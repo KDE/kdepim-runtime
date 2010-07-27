@@ -3,7 +3,7 @@ add_subdirectory( tests )
 
 set(maildir_LIB_SRCS maildir.cpp)
 
-kde4_add_library(maildir SHARED ${maildir_LIB_SRCS})
+kde4_add_library(maildir ${LIBRARY_TYPE} ${maildir_LIB_SRCS})
 
 target_link_libraries(maildir ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KPIMUTILS_LIBS} )
 

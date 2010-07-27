@@ -24,12 +24,6 @@ set( akonadi_next_SRCS
   notecreatorandselector.cpp
   entityorderproxymodel.cpp
   entityrightsfiltermodel.cpp
-  kbreadcrumbselectionmodel.cpp
-  krecursivefilterproxymodel.cpp
-  kmodelindexproxymapper.cpp
-  kviewstatesaver.cpp
-  kproxyitemselectionmodel.cpp
-  etmstatesaver.cpp
   collectionchildorderattribute.cpp
   collectionselectionproxymodel.cpp
   modeltest.cpp
@@ -47,7 +41,7 @@ set( akonadi_next_SRCS
   recursivecollectionfilterproxymodel.cpp
 )
 
-kde4_add_library(akonadi_next SHARED ${akonadi_next_SRCS} )
+kde4_add_library(akonadi_next ${LIBRARY_TYPE} ${akonadi_next_SRCS} )
 
 target_link_libraries(akonadi_next
                       ${AKONADI_COMMON_LIBRARIES}

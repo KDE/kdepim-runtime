@@ -24,7 +24,10 @@
 #include <kdemacros.h>
 
 #ifndef KDEPIM_COPY_EXPORT
-# if defined(MAKE_KDEPIM_COPY_LIB)
+# if defined(KDEPIM_STATIC_LIBS)
+   /* No export/import for static libraries */
+#  define KDEPIM_COPY_EXPORT
+# elif defined(MAKE_KDEPIM_COPY_LIB)
    /* We are building this library */
 #  define KDEPIM_COPY_EXPORT KDE_EXPORT
 # else

@@ -24,7 +24,10 @@
 #include <kdemacros.h>
 
 #ifndef MBOX_EXPORT
-# if defined(MAKE_MBOX_LIB)
+# if defined(KDEPIM_STATIC_LIBS)
+   /* No export/import for static libraries */
+#  define MBOX_EXPORT
+# elif defined(MAKE_MBOX_LIB)
    /* We are building this library */
 #  define MBOX_EXPORT KDE_EXPORT
 # else

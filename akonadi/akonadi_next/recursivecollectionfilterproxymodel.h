@@ -21,7 +21,7 @@
 #ifndef RECURSIVECOLLECTIONFILTERPROXYMODEL_H
 #define RECURSIVECOLLECTIONFILTERPROXYMODEL_H
 
-#include "krecursivefilterproxymodel.h"
+#include <krecursivefilterproxymodel.h>
 
 #include "akonadi_next_export.h"
 
@@ -29,7 +29,7 @@ namespace Akonadi
 {
 class RecursiveCollectionFilterProxyModelPrivate;
 
-class AKONADI_NEXT_EXPORT RecursiveCollectionFilterProxyModel : public Future::KRecursiveFilterProxyModel
+class AKONADI_NEXT_EXPORT RecursiveCollectionFilterProxyModel : public KRecursiveFilterProxyModel
 {
   Q_OBJECT
 public:

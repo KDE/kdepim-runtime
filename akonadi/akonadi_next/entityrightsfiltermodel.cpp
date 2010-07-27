@@ -68,7 +68,7 @@ class EntityRightsFilterModelPrivate
 }
 
 EntityRightsFilterModel::EntityRightsFilterModel( QObject *parent )
-  : Future::KRecursiveFilterProxyModel( parent ),
+  : KRecursiveFilterProxyModel( parent ),
     d_ptr( new EntityRightsFilterModelPrivate( this ) )
 {
 }
@@ -107,7 +107,7 @@ Qt::ItemFlags EntityRightsFilterModel::flags( const QModelIndex &index ) const
   if ( d->rightsMatches( index ) )
     return KRecursiveFilterProxyModel::flags( index );
   else
-    return Future::KRecursiveFilterProxyModel::flags( index ) & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    return KRecursiveFilterProxyModel::flags( index ) & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 }
 
 QModelIndexList EntityRightsFilterModel::match( const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags ) const

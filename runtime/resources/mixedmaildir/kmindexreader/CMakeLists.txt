@@ -12,7 +12,7 @@ set(kmindexreader_LIB_SRCS
  messagestatus.cpp
 )
 
-kde4_add_library(kmindexreader SHARED ${kmindexreader_LIB_SRCS})
+kde4_add_library(kmindexreader ${LIBRARY_TYPE} ${kmindexreader_LIB_SRCS})
 
 target_link_libraries(kmindexreader
     ${KDE4_KDECORE_LIBS}

@@ -9,6 +9,7 @@ target_link_libraries( qtwidgetwrappersplugin messageviewer
   ${QT_QTGUI_LIBRARY}
   ${QT_QTDECLARATIVE_LIBRARY}
   ${KDE4_KDECORE_LIBRARY}
+  ${KDE4_KDEUI_LIBRARY}
   akonadi_next
 )
 
