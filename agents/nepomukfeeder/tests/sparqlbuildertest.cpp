@@ -74,6 +74,13 @@ class SparqlBuilderTest : public QObject
       groupGraph.addGraphPattern( SparqlBuilder::GroupGraphPattern() );
       qb.setGraphPattern( groupGraph );
       QTest::newRow( "empty graph patterns" ) << qb << QString( "SELECT DISTINCT $a WHERE { { ?a <is> \"10\"^^<http://www.w3.org/2001/XMLSchema#string> } UNION { ?b <is> \"20\"^^<http://www.w3.org/2001/XMLSchema#int> } }" );
+
+      graph = SparqlBuilder::BasicGraphPattern();
+      graph.addTriple( SparqlBuilder::TriplePattern( "$foo", QUrl("is"), "\"foo bar\"@test.com" ) );
+      qb = SelectSparqlBuilder();
+      qb.addQueryVariable( "$foo" );
+      qb.setGraphPattern( graph );
+      QTest::newRow( "quotes in values" ) << qb << QString( "SELECT $foo WHERE { $foo <is> \"\\\"foo bar\\\"@test.com\"^^<http://www.w3.org/2001/XMLSchema#string> }" );
     }
 
     void testSelectBuilder()
