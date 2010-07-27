@@ -153,6 +153,9 @@ private:
   bool isSessionAvailable() const;
   bool ensureSessionAvailableOrDefer();
 
+  static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
+  static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
+
   friend class ImapIdleManager;
 
   SessionPool *m_pool;

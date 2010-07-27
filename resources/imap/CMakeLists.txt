@@ -26,6 +26,7 @@ set( imapresource_SRCS
   imapresource.cpp
   noselectattribute.cpp
   settings.cpp
+  imapflags.cpp
   settingspasswordrequester.cpp
   setupserver.cpp
   subscriptiondialog.cpp

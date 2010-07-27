@@ -85,6 +85,7 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/session.h>
+#include <akonadi/kmime/messageflags.h>
 
 #include <akonadi/kmime/messageparts.h>
 
@@ -93,7 +94,7 @@
 
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
-
+#include "imapflags.h"
 #include "imapaccount.h"
 #include "imapidlemanager.h"
 
@@ -413,7 +414,7 @@ void ImapResource::onAppendMessageDone( KJob *job )
     KIMAP::StoreJob *store = new KIMAP::StoreJob( m_mainSession );
     store->setUidBased( true );
     store->setSequenceSet( KIMAP::ImapSet( oldUid ) );
-    store->setFlags( QList<QByteArray>() << "\\Deleted" );
+    store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
     store->setMode( KIMAP::StoreJob::AppendFlags );
     store->start();
   }
@@ -467,7 +468,7 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
     job->setProperty( "oldUid", uid ); // Will be used in onAppendMessageDone
     job->setMailBox( mailBox );
     job->setContent( msg->encodedContent( true ) );
-    job->setFlags( item.flags().toList() );
+    job->setFlags( fromAkonadiFlags( item.flags().toList() ) );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( onAppendMessageDone( KJob* ) ) );
     job->start();
 
@@ -478,7 +479,7 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
     store->setProperty( "itemUid", uid );
     store->setUidBased( true );
     store->setSequenceSet( KIMAP::ImapSet( uid ) );
-    store->setFlags( item.flags().toList() );
+    store->setFlags( fromAkonadiFlags( item.flags().toList() ) );
     store->setMode( KIMAP::StoreJob::SetFlags );
     connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
     store->start();
@@ -501,7 +502,7 @@ void ImapResource::onStoreFlagsDone( KJob *job )
   bool itemRemoval = job->property( "itemRemoval" ).toBool();
 
   if ( !itemRemoval ) {
-    item.setFlags( store->resultingFlags()[uid].toSet() );
+    item.setFlags( toAkonadiFlags( store->resultingFlags()[uid] ).toSet() );
     changeCommitted( item );
   } else {
     changeProcessed();
@@ -526,7 +527,7 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   store->setProperty( "itemRemoval", true );
   store->setUidBased( true );
   store->setSequenceSet( KIMAP::ImapSet( uid ) );
-  store->setFlags( QList<QByteArray>() << "\\Deleted" );
+  store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
   store->setMode( KIMAP::StoreJob::AppendFlags );
   connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
   store->start();
@@ -625,7 +626,7 @@ void ImapResource::onCopyMessageDone( KJob *job )
     store->setProperty( DESTINATION_COLLECTION, job->property( DESTINATION_COLLECTION ) );
     store->setUidBased( true );
     store->setSequenceSet( KIMAP::ImapSet( oldUid ) );
-    store->setFlags( QList<QByteArray>() << "\\Deleted" );
+    store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
     store->setMode( KIMAP::StoreJob::AppendFlags );
     connect( store, SIGNAL( result( KJob* ) ), SLOT( onPostItemMoveStoreFlagsDone( KJob* ) ) );
     store->start();
@@ -940,10 +941,8 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
     i.setMimeType( "message/rfc822" );
     i.setPayload( KMime::Message::Ptr( messages[number] ) );
     i.setSize( sizes[number] );
+    i.setFlags( toAkonadiFlags( flags[ number] ).toSet() );
 
-    foreach( const QByteArray &flag, flags[number] ) {
-      i.setFlag( flag );
-    }
     //kDebug(5327) << "Flags: " << i.flags();
     addedItems << i;
   }
@@ -1007,7 +1006,7 @@ void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, q
     Akonadi::Item i;
     i.setRemoteId( QString::number( uids[number] ) );
     i.setMimeType( "message/rfc822" );
-    i.setFlags( Akonadi::Item::Flags::fromList( flags[number] ) );
+    i.setFlags( Akonadi::Item::Flags::fromList( toAkonadiFlags( flags[number] ) ) );
 
     //kDebug(5327) << "Flags: " << i.flags();
     changedItems << i;
@@ -2024,6 +2023,47 @@ void ImapResource::selectIfNeeded(const QString& mailBox)
   select->setMailBox( mailBox );
   select->start();
 }
+
+QList< QByteArray > ImapResource::fromAkonadiFlags(const QList< QByteArray >& flags)
+{
+  QList< QByteArray > newFlags;
+  Q_FOREACH ( const QByteArray &oldFlag, flags ) {
+    if( oldFlag == Akonadi::MessageFlags::Seen ) {
+      newFlags.append( ImapFlags::Seen );
+    } else if( oldFlag == Akonadi::MessageFlags::Deleted ) {
+      newFlags.append( ImapFlags::Deleted );
+    } else if( oldFlag == Akonadi::MessageFlags::Answered ) {
+      newFlags.append( ImapFlags::Answered );
+    } else if( oldFlag == Akonadi::MessageFlags::Flagged ) {
+      newFlags.append( ImapFlags::Flagged );
+    } else {
+      newFlags.append( oldFlag );
+    }
+  }
+
+  return newFlags;
+}
+
+QList< QByteArray > ImapResource::toAkonadiFlags(const QList< QByteArray >& flags)
+{
+  QList< QByteArray > newFlags;
+  Q_FOREACH ( const QByteArray &oldFlag, flags ) {
+    if( oldFlag == ImapFlags::Seen ) {
+      newFlags.append( Akonadi::MessageFlags::Seen );
+    } else if( oldFlag == ImapFlags::Deleted ) {
+      newFlags.append( Akonadi::MessageFlags::Deleted );
+    } else if( oldFlag == ImapFlags::Answered ) {
+      newFlags.append( Akonadi::MessageFlags::Answered );
+    } else if( oldFlag == ImapFlags::Flagged ) {
+      newFlags.append( Akonadi::MessageFlags::Flagged );
+    } else {
+      newFlags.append( oldFlag );
+    }
+  }
+
+  return newFlags;
+}
+
 
 AKONADI_RESOURCE_MAIN( ImapResource )
 
