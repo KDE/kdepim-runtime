@@ -1199,7 +1199,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
 
   QString targetPath;
   const FolderType targetFolderType = folderForCollection( targetCollection, targetPath, errorText );
-  if ( targetFolderType == InvalidFolder || targetFolderType == TopLevelFolder ) {
+  if ( targetFolderType == InvalidFolder ) {
     errorText = i18nc( "@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                         moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name() );
     kError() << errorText << "FolderType=" << targetFolderType;
@@ -1254,7 +1254,8 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
     const QFileInfo moveSubDirInfo( Maildir::subDirPathForFolderPath( movePath ) );
     const QFileInfo targetFileInfo( targetPath );
 
-    QDir targetDir( Maildir::subDirPathForFolderPath( targetPath ) );
+    QDir targetDir( targetFolderType == TopLevelFolder ?
+                      targetPath : Maildir::subDirPathForFolderPath( targetPath ) );
     if ( targetDir.exists( moveFileInfo.fileName() ) ||
          !targetDir.rename( moveFileInfo.absoluteFilePath(), moveFileInfo.fileName() ) ) {
       errorText = i18nc( "@info:status", "Cannot move folder %1 from folder %2 to folder %3",
@@ -1296,7 +1297,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
     if ( targetFolderType == MBoxFolder ) {
       targetMd = Maildir( targetSubDirInfo.absoluteFilePath(), true );
     } else {
-      targetMd = Maildir( targetPath, false );
+      targetMd = Maildir( targetPath, targetFolderType == TopLevelFolder );
     }
 
     if ( !moveMd.moveTo( targetMd ) ) {
