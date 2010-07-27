@@ -295,9 +295,9 @@ public:
     @return a pointer to the KCalCore::Incidence.
     A null pointer is returned if no such KCalCore::Incidence exists.
   */
-  Akonadi::Item incidence( const Akonadi::Item::Id &id ) const;
+  Akonadi::Item incidence( Akonadi::Item::Id id ) const;
 
-  Akonadi::Collection collection( const Akonadi::Entity::Id &id );
+  Akonadi::Collection collection( const Akonadi::Entity::Id &id ) const;
 
   /**
     Returns the KCalCore::Incidence associated with the given scheduling identifier.
@@ -619,6 +619,19 @@ public:
    */
   void unregisterObserver( CalendarObserver *observer );
 
+  /**
+     Returns if the parent collection's rights allow deleting this item.
+     Isn't merged with hasChangeRights() for convinience.
+   */
+  bool hasDeleteRights( const Akonadi::Item &item ) const;
+
+  /**
+     Returns if the parent collection's rights allow changing this item.
+     Isn't merged with hasDeleteRights() for convinience.
+   */
+  bool hasChangeRights( const Akonadi::Item &item ) const;
+
+
 Q_SIGNALS:
   /**
     Signals that the calendar has been modified.
@@ -736,17 +749,17 @@ public:
     Akonadi::Item ::List rawEventsForDate( const QDate &date, const KDateTime::Spec &timeSpec = KDateTime::Spec(), EventSortField sortField = EventSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item::List rawEventsForDate( const KDateTime &dt );
 
-    Akonadi::Item event( const Akonadi::Item::Id &id ) const;
+    Akonadi::Item event( Akonadi::Item::Id id ) const;
 
     Akonadi::Item::List rawTodos( TodoSortField sortField = TodoSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item::List rawTodosForDate( const QDate &date );
 
-    Akonadi::Item todo( const Akonadi::Item::Id &uid ) const;
+    Akonadi::Item todo( Akonadi::Item::Id uid ) const;
 
     Akonadi::Item::List rawJournals( JournalSortField sortField = JournalSortUnsorted, SortDirection sortDirection = SortDirectionAscending );
     Akonadi::Item::List rawJournalsForDate( const QDate &date );
 
-    Akonadi::Item journal( const Akonadi::Item::Id &id ) const;
+    Akonadi::Item journal( Akonadi::Item::Id id ) const;
 
     KCalCore::Alarm::List alarms( const KDateTime &from, const KDateTime &to );
     KCalCore::Alarm::List alarmsTo( const KDateTime &to );

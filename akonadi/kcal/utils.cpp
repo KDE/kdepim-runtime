@@ -108,16 +108,6 @@ bool Akonadi::hasJournal( const Item& item )
   return item.hasPayload<Journal::Ptr>();
 }
 
-bool Akonadi::hasChangeRights( const Akonadi::Item &item )
-{
-  return item.parentCollection().rights() & Collection::CanChangeItem;
-}
-
-bool Akonadi::hasDeleteRights( const Akonadi::Item &item )
-{
-  return item.parentCollection().rights() & Collection::CanDeleteItem;
-}
-
 QMimeData* Akonadi::createMimeData( const Item::List &items, const KDateTime::Spec &timeSpec )
 {
   if ( items.isEmpty() )
