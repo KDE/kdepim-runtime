@@ -43,6 +43,7 @@ BreadcrumbNavigationView {
     indentation : 35
     fullClickArea : true
     height : itemHeight
+    showUnread : breadcrumbView.showUnread
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = row;
       breadcrumbTopLevel.state = "before_select_breadcrumb";
@@ -53,6 +54,7 @@ BreadcrumbNavigationView {
     indentation : 35
     height : itemHeight
     selectedDelegate : true
+    showUnread : breadcrumbView.showUnread
   }
 
   childItemsDelegate : CollectionDelegate {

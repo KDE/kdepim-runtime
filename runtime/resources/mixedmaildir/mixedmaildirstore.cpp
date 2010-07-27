@@ -186,6 +186,11 @@ class MBoxContext
       return mHasIndexData;
     }
 
+    void updatePath( const QString &newPath ) {
+      // TODO FIXME there has to be a better of doing that
+      mMBox.load( newPath );
+    }
+
   public:
     Collection mCollection;
     qint64 mRevision;
@@ -332,6 +337,10 @@ class MaildirContext
       return mHasIndexData;
     }
 
+    void updatePath( const QString &newPath ) {
+      mMaildir = Maildir( newPath, mMaildir.isRoot() );
+    }
+
   private:
     Maildir mMaildir;
 
@@ -425,6 +434,7 @@ class MixedMaildirStore::Private : public FileStore::Job::Visitor
     void listCollection( FileStore::Job *job, MaildirPtr &md, const Collection &collection, Item::List &items );
     bool fillItem( MBoxPtr &mbox, bool includeBody, Item &item ) const;
     bool fillItem( const MaildirPtr &md, bool includeBody, Item &item ) const;
+    void updateContextHashes( const QString &oldPath, const QString &newPath );
 
   public: // visitor interface implementation
     bool visit( FileStore::Job *job );
@@ -783,6 +793,65 @@ bool MixedMaildirStore::Private::fillItem( const MaildirPtr &md, bool includeBod
   return true;
 }
 
+void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, const QString &newPath )
+{
+  //kDebug() << "oldPath=" << oldPath << "newPath=" << newPath;
+  const QString oldSubDirPath = Maildir::subDirPathForFolderPath( oldPath );
+  const QString newSubDirPath = Maildir::subDirPathForFolderPath( newPath );
+
+  MBoxHash mboxes;
+  MBoxHash::const_iterator mboxIt    = mMBoxes.constBegin();
+  MBoxHash::const_iterator mboxEndIt = mMBoxes.constEnd();
+  for ( ; mboxIt != mboxEndIt; ++mboxIt ) {
+    QString key = mboxIt.key();
+    MBoxPtr mboxPtr = mboxIt.value();
+
+    if ( key == oldPath ) {
+      key = newPath;
+    } else if ( key.startsWith( oldSubDirPath ) ) {
+      if ( mboxPtr->hasIndexData() ) {
+        key.replace( oldSubDirPath, newSubDirPath );
+      } else {
+        // if there is no index data yet, just discard this context
+        key = QString();
+      }
+    }
+
+    if ( !key.isEmpty() ){
+      mboxPtr->updatePath( key );
+      mboxes.insert( key, mboxPtr );
+    }
+  }
+  //kDebug() << "mbox: old keys=" << mMBoxes.keys() << "new keys" << mboxes.keys();
+  mMBoxes = mboxes;
+
+  MaildirHash maildirs;
+  MaildirHash::const_iterator mdIt    = mMaildirs.constBegin();
+  MaildirHash::const_iterator mdEndIt = mMaildirs.constEnd();
+  for ( ; mdIt != mdEndIt; ++mdIt ) {
+    QString key = mdIt.key();
+    MaildirPtr mdPtr = mdIt.value();
+
+    if ( key == oldPath ) {
+      key = newPath;
+    } else if ( key.startsWith( oldSubDirPath ) ) {
+      if ( mdPtr->hasIndexData() ) {
+        key.replace( oldSubDirPath, newSubDirPath );
+      } else {
+        // if there is no index data yet, just discard this context
+        key = QString();
+      }
+    }
+
+    if ( !key.isEmpty() ){
+      mdPtr->updatePath( key );
+      maildirs.insert( key, mdPtr );
+    }
+  }
+  //kDebug() << "maildir: old keys=" << mMaildirs.keys() << "new keys" << maildirs.keys();
+  mMaildirs = maildirs;
+}
+
 bool MixedMaildirStore::Private::visit( FileStore::Job *job )
 {
   const QString message = i18nc( "@info:status", "Unhandled operation %1", job->metaObject()->className() );
@@ -986,12 +1055,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
 {
   const Collection collection = job->collection();
 
-  // we don't change our top level collection
-  if ( job->collection().remoteId() == q->topLevelCollection().remoteId() ) {
-    kWarning() << "CollectionModifyJob for TopLevelCollection. Ignoring";
-    return true;
-  }
-
   // we also only do renames
   if ( collection.remoteId() == collection.name() ) {
     kWarning() << "CollectionModifyJob with name still identical to remoteId. Ignoring";
@@ -1001,7 +1064,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
   QString path;
   QString errorText;
   const FolderType folderType = folderForCollection( collection, path, errorText );
-  if ( folderType == InvalidFolder || folderType == TopLevelFolder ) {
+  if ( folderType == InvalidFolder ) {
     errorText = i18nc( "@info:status", "Cannot rename folder %1",
                         collection.name() );
     kError() << errorText << "FolderType=" << folderType;
@@ -1026,6 +1089,34 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
     return false;
   }
 
+  // if there is an index, make sure it is read before renaming
+  // do not rename index as it could already be out of date
+  bool indexInvalidated = false;
+  if ( folderType == MBoxFolder ) {
+    // TODO would be nice if getOrCreateMBoxPtr() could be used instead, like below for Maildir
+    MBoxPtr mbox;
+    MBoxHash::const_iterator findIt = mMBoxes.constFind( path );
+    if ( findIt == mMBoxes.constEnd() ) {
+      mbox = MBoxPtr( new MBoxContext );
+      if ( !mbox->load( path ) ) {
+        kWarning() << "Failed to load mbox" << path;
+      }
+
+      mbox->mCollection = collection;
+      mMBoxes.insert( path, mbox );
+    } else {
+      mbox = findIt.value();
+    }
+
+    mbox->readIndexData();
+    indexInvalidated = mbox->hasIndexData();
+  } else if ( folderType == MaildirFolder ) {
+    MaildirPtr md = getOrCreateMaildirPtr( path, false );
+
+    md->readIndexData();
+    indexInvalidated = md->hasIndexData();
+  }
+
   if ( !parentDir.rename( fileInfo.absoluteFilePath(), targetFileInfo.fileName() ) ) {
     errorText = i18nc( "@info:status", "Cannot rename folder %1",
                         collection.name() );
@@ -1047,8 +1138,27 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
     }
   }
 
+  // update context hashes
+  updateContextHashes( fileInfo.absoluteFilePath(), targetFileInfo.absoluteFilePath() );
+
   Collection renamedCollection = collection;
-  renamedCollection.setRemoteId( collection.name() );
+
+  // when renaming top level folder, change path of store
+  if ( folderType == TopLevelFolder ) {
+    // backup caches, setTopLevelCollection() clears them
+    const MBoxHash mboxes = mMBoxes;
+    const MaildirHash maildirs = mMaildirs;
+
+    q->setPath( targetFileInfo.absoluteFilePath() );
+
+    // restore caches
+    mMBoxes = mboxes;
+    mMaildirs = maildirs;
+
+    renamedCollection = q->topLevelCollection();
+  } else {
+    renamedCollection.setRemoteId( collection.name() );
+  }
 
   // update collections in MBox contexts so they stay usable for purge
   Q_FOREACH( const MBoxPtr &mbox, mMBoxes ) {
@@ -1056,6 +1166,11 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
       MBoxPtr updatedMBox = mbox;
       updatedMBox->mCollection = updateMBoxCollectionTree( mbox->mCollection, collection, renamedCollection );
     }
+  }
+
+  if ( indexInvalidated ) {
+    const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << renamedCollection );
+    job->setProperty( "onDiskIndexInvalidated", var );
   }
 
   q->notifyCollectionsProcessed( Collection::List() << renamedCollection );
@@ -1066,7 +1181,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
 {
   QString errorText;
 
-  Collection moveCollection = job->collection();
+  const Collection moveCollection = job->collection();
   const Collection targetCollection = job->targetParent();
 
   QString movePath;
@@ -1097,7 +1212,28 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
 //                                    << "targetPath=" << targetPath
 //                                    << "targetType=" << targetFolderType;
 
+  bool indexInvalidated = false;
+  QString movedPath;
+
   if ( moveFolderType == MBoxFolder ) {
+    // TODO would be nice if getOrCreateMBoxPtr() could be used instead, like below for Maildir
+    MBoxPtr mbox;
+    MBoxHash::const_iterator findIt = mMBoxes.constFind( movePath );
+    if ( findIt == mMBoxes.constEnd() ) {
+      mbox = MBoxPtr( new MBoxContext );
+      if ( !mbox->load( movePath ) ) {
+        kWarning() << "Failed to load mbox" << movePath;
+      }
+
+      mbox->mCollection = moveCollection;
+      mMBoxes.insert( movePath, mbox );
+    } else {
+      mbox = findIt.value();
+    }
+
+    mbox->readIndexData();
+    indexInvalidated = mbox->hasIndexData();
+
     const QFileInfo moveFileInfo( movePath );
     const QFileInfo moveSubDirInfo( Maildir::subDirPathForFolderPath( movePath ) );
     const QFileInfo targetFileInfo( targetPath );
@@ -1130,7 +1266,14 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
         return false;
       }
     }
+
+    movedPath = QFileInfo( targetDir, moveFileInfo.fileName() ).absoluteFilePath();
   } else {
+    MaildirPtr md = getOrCreateMaildirPtr( movePath, false );
+
+    md->readIndexData();
+    indexInvalidated = md->hasIndexData();
+
     Maildir moveMd( movePath, false );
 
     // for moving purpose we can treat the MBox target's subDirPath like a top level maildir
@@ -1149,18 +1292,30 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
       q->notifyError( FileStore::Job::InvalidJobContext, errorText );
       return false;
     }
+
+    movedPath = targetMd.subFolder( moveCollection.remoteId() ).path();
   }
+
+  // update context hashes
+  updateContextHashes( movePath, movedPath );
+
+  Collection movedCollection = moveCollection;
+  movedCollection.setParentCollection( targetCollection );
 
   // update collections in MBox contexts so they stay usable for purge
   Q_FOREACH( const MBoxPtr &mbox, mMBoxes ) {
     if ( mbox->mCollection.isValid() ) {
       MBoxPtr updatedMBox = mbox;
-      updatedMBox->mCollection = updateMBoxCollectionTree( mbox->mCollection, moveCollection.parentCollection(), targetCollection );
+      updatedMBox->mCollection = updateMBoxCollectionTree( mbox->mCollection, moveCollection, movedCollection );
     }
   }
 
-  moveCollection.setParentCollection( targetCollection );
-  q->notifyCollectionsProcessed( Collection::List() << moveCollection );
+  if ( indexInvalidated ) {
+    const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << movedCollection );
+    job->setProperty( "onDiskIndexInvalidated", var );
+  }
+
+  q->notifyCollectionsProcessed( Collection::List() << movedCollection );
   return true;
 }
 

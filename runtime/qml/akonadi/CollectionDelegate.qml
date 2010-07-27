@@ -79,7 +79,7 @@ Item {
           id: collectionIcon
           // http://lists.trolltech.com/pipermail/qt-qml/2010-July/000668.html
   //        pixmap: KDE.iconToPixmap( model.decoration, height );
-          width: 48; height: 48
+  //        width: 48; height: 48
       }
 
       Column {
@@ -92,10 +92,9 @@ Item {
         }
 
         Text {
-          x : parent.width - 15
-          width : 50
-          text : wrapper.showUnread && model.unreadCount > 0 ? model.unreadCount : ""
-          color : "blue"
+          text : wrapper.showUnread && model.unreadCount > 0 ? KDE.i18n( "Unread: %1", model.unreadCount ) : ""
+          color: "#0C55BB"
+          font.pixelSize: 16
         }
       }
     }
