@@ -22,7 +22,8 @@
 #include "qmlcolumnview.h"
 
 #include "akonadi/akonadi_next/checkableitemproxymodel.h"
-#include <akonadi/akonadi_next/kproxyitemselectionmodel.h>
+
+#include <klinkitemselectionmodel.h>
 
 using namespace Qt;
 
@@ -57,7 +58,7 @@ void QmlColumnView::setSelectionModel(QObject* model)
   if (!_model)
     return;
 
-  Future::KProxyItemSelectionModel *proxySelectionModel = new Future::KProxyItemSelectionModel(m_checkableProxyModel->sourceModel(), _model);
+  KLinkItemSelectionModel *proxySelectionModel = new KLinkItemSelectionModel(m_checkableProxyModel->sourceModel(), _model);
 
   Q_ASSERT(proxySelectionModel->model() == m_checkableProxyModel->sourceModel());
   m_checkableProxyModel->setSelectionModel(proxySelectionModel);
