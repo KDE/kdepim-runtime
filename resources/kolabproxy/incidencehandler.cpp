@@ -221,7 +221,7 @@ void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, con
     QByteArray type;
     KMime::Content *content = findContentByName(data, name, type);
     const QByteArray c = content->decodedContent().toBase64();
-    KCalCore::Attachment::Ptr attachment( new KCalCore::Attachment( c.data(), QString::fromLatin1( type ) ) );
+    KCalCore::Attachment::Ptr attachment( new KCalCore::Attachment( c, QString::fromLatin1( type ) ) );
     attachment->setLabel( name );
     incidence->addAttachment(attachment);
     kDebug() << "ATTACHEMENT NAME" << name << type;
