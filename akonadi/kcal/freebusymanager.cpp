@@ -328,6 +328,9 @@ bool FreeBusyManagerPrivate::processRetrieveQueue()
     return false;
   }
 
+  if ( mFreeBusyUrlEmailMap.contains( freeBusyUrlForEmail ) )
+    return true; // Already in progress.
+
   mFreeBusyUrlEmailMap.insert( freeBusyUrlForEmail, email );
 
   FreeBusyDownloadJob *job = new FreeBusyDownloadJob( freeBusyUrlForEmail, mParentWidgetForRetrieval );
