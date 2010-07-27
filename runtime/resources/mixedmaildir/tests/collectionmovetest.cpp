@@ -75,6 +75,245 @@ void CollectionMoveTest::cleanup()
 
 void CollectionMoveTest::testMoveToTopLevel()
 {
+  QDir topDir( mDir->name() );
+
+  // top level dir
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+  QFileInfo fileInfo1( topDir, QLatin1String( "collection1" ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
+  QFileInfo fileInfo2( topDir, QLatin1String( "collection2" ) );
+
+  // first level maildir parent
+  QDir subDir1 = topDir;
+  QVERIFY( subDir1.mkdir( QLatin1String( ".collection1.directory" ) ) );
+  QVERIFY( subDir1.cd( QLatin1String( ".collection1.directory" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), subDir1.path(), QLatin1String( "collection1_1" ) ) );
+  QFileInfo fileInfo1_1( subDir1.path(), QLatin1String( "collection1_1" ) );
+  QVERIFY( fileInfo1_1.exists() );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), subDir1.path(), QLatin1String( "collection1_2" ) ) );
+  QFileInfo fileInfo1_2( subDir1.path(), QLatin1String( "collection1_2" ) );
+  QVERIFY( fileInfo1_2.exists() );
+
+  // first level mbox parent
+  QDir subDir2 = topDir;
+  QVERIFY( subDir2.mkdir( QLatin1String( ".collection2.directory" ) ) );
+  QVERIFY( subDir2.cd( QLatin1String( ".collection2.directory" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), subDir2.path(), QLatin1String( "collection2_1" ) ) );
+  QFileInfo fileInfo2_1( subDir2.path(), QLatin1String( "collection2_1" ) );
+  QVERIFY( fileInfo2_1.exists() );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), subDir2.path(), QLatin1String( "collection2_2" ) ) );
+  QFileInfo fileInfo2_2( subDir2.path(), QLatin1String( "collection2_2" ) );
+  QVERIFY( fileInfo2_2.exists() );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::CollectionMoveJob *job = 0;
+  FileStore::ItemFetchJob *itemFetch = 0;
+  Collection collection;
+  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
+  QVariant var;
+  Collection::List collections;
+  Item::List items;
+  QMap<QByteArray, int> flagCounts;
+
+  // test moving maildir from maildir parent
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  Collection collection1_1;
+  collection1_1.setName( QLatin1String( "collection1_1" ) );
+  collection1_1.setRemoteId( QLatin1String( "collection1_1" ) );
+  collection1_1.setParentCollection( collection1 );
+
+  job = mStore->moveCollection( collection1_1, mStore->topLevelCollection() );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  collection = job->collection();
+  QCOMPARE( collection.remoteId(), collection1_1.remoteId() );
+  QCOMPARE( collection.parentCollection(), mStore->topLevelCollection() );
+
+  fileInfo1_1.refresh();
+  QVERIFY( !fileInfo1_1.exists() );
+  fileInfo1_1 = QFileInfo( topDir.path(), collection.remoteId() );
+  QVERIFY( fileInfo1_1.exists() );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection );
+
+  // get the items and check the flags (see data/README)
+  itemFetch = mStore->fetchItems( collection );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  // test moving mbox from maildir parent
+  Collection collection1_2;
+  collection1_2.setName( QLatin1String( "collection1_2" ) );
+  collection1_2.setRemoteId( QLatin1String( "collection1_2" ) );
+  collection1_2.setParentCollection( collection1 );
+
+  job = mStore->moveCollection( collection1_2, mStore->topLevelCollection() );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  collection = job->collection();
+  QCOMPARE( collection.remoteId(), collection1_2.remoteId() );
+  QCOMPARE( collection.parentCollection(), mStore->topLevelCollection() );
+
+  fileInfo1_2.refresh();
+  QVERIFY( !fileInfo1_2.exists() );
+  fileInfo1_2 = QFileInfo( topDir.path(), collection.remoteId() );
+  QVERIFY( fileInfo1_2.exists() );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection );
+
+  // get the items and check the flags (see data/README)
+  itemFetch = mStore->fetchItems( collection );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  // test moving mbox from mbox parent
+  Collection collection2;
+  collection2.setName( QLatin1String( "collection2" ) );
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+
+  Collection collection2_1;
+  collection2_1.setName( QLatin1String( "collection2_1" ) );
+  collection2_1.setRemoteId( QLatin1String( "collection2_1" ) );
+  collection2_1.setParentCollection( collection2 );
+
+  job = mStore->moveCollection( collection2_1, mStore->topLevelCollection() );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  collection = job->collection();
+  QCOMPARE( collection.remoteId(), collection2_1.remoteId() );
+  QCOMPARE( collection.parentCollection(), mStore->topLevelCollection() );
+
+  fileInfo2_1.refresh();
+  QVERIFY( !fileInfo2_1.exists() );
+  fileInfo2_1 = QFileInfo( topDir.path(), collection.remoteId() );
+  QVERIFY( fileInfo2_1.exists() );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection );
+
+  // get the items and check the flags (see data/README)
+  itemFetch = mStore->fetchItems( collection );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  // test moving maildir from mbox parent
+  Collection collection2_2;
+  collection2_2.setName( QLatin1String( "collection2_2" ) );
+  collection2_2.setRemoteId( QLatin1String( "collection2_2" ) );
+  collection2_2.setParentCollection( collection2 );
+
+  job = mStore->moveCollection( collection2_2, mStore->topLevelCollection() );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  collection = job->collection();
+  QCOMPARE( collection.remoteId(), collection2_2.remoteId() );
+  QCOMPARE( collection.parentCollection(), mStore->topLevelCollection() );
+
+  fileInfo2_2.refresh();
+  QVERIFY( !fileInfo2_2.exists() );
+  fileInfo2_2 = QFileInfo( topDir.path(), collection.remoteId() );
+  QVERIFY( fileInfo2_2.exists() );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection );
+
+  // get the items and check the flags (see data/README)
+  itemFetch = mStore->fetchItems( collection );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 4 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
 }
 
 void CollectionMoveTest::testMoveToMaildir()
