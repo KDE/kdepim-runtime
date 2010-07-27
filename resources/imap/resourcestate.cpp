@@ -113,6 +113,17 @@ ResourceStateInterface::Ptr ResourceState::createMoveItemState( ImapResource *re
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createAddCollectionState( ImapResource *resource,
+                                                                     const Akonadi::Collection &collection,
+                                                                     const Akonadi::Collection &parentCollection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
+  state->m_parentCollection = parentCollection;
+
+  return ResourceStateInterface::Ptr( state );
+}
 
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )
@@ -255,7 +266,7 @@ void ResourceState::itemsRetrievalDone()
   m_resource->itemsRetrievalDone();
 }
 
-void ResourceState::changeCommitted( const Akonadi::Item &item )
+void ResourceState::itemChangeCommitted( const Akonadi::Item &item )
 {
   m_resource->changeCommitted( item );
 }
@@ -279,6 +290,11 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
 void ResourceState::collectionsRetrievalDone()
 {
   m_resource->collectionsRetrievalDone();
+}
+
+void ResourceState::collectionChangeCommitted( const Akonadi::Collection &collection )
+{
+  m_resource->changeCommitted( collection );
 }
 
 void ResourceState::changeProcessed()

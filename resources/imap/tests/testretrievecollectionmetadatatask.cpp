@@ -44,7 +44,7 @@ private slots:
     QStringList callNames;
 
     collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "INBOX/Foo" );
+    collection.setRemoteId( "/INBOX/Foo" );
 
     capabilities.clear();
     capabilities << "ANNOTATEMORE" << "ACL" << "QUOTA";

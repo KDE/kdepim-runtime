@@ -181,7 +181,7 @@ void ResourceTask::itemsRetrievalDone()
 
 void ResourceTask::changeCommitted( const Akonadi::Item &item )
 {
-  m_resource->changeCommitted( item );
+  m_resource->itemChangeCommitted( item );
   deleteLater();
 }
 
@@ -193,6 +193,12 @@ void ResourceTask::collectionsRetrieved( const Akonadi::Collection::List &collec
 void ResourceTask::collectionsRetrievalDone()
 {
   m_resource->collectionsRetrievalDone();
+  deleteLater();
+}
+
+void ResourceTask::changeCommitted( const Akonadi::Collection &collection )
+{
+  m_resource->collectionChangeCommitted( collection );
   deleteLater();
 }
 

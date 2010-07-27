@@ -40,7 +40,7 @@ private slots:
     QStringList callNames;
 
     collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "INBOX/Foo" );
+    collection.setRemoteId( "/INBOX/Foo" );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -80,7 +80,7 @@ private slots:
                           << Akonadi::MessagePart::Body );
 
     collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "INBOX/Foo" );
+    collection.setRemoteId( "/INBOX/Foo" );
     collection.setCachePolicy( policy );
 
     scenario.clear();

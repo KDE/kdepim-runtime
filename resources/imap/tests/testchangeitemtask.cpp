@@ -46,7 +46,7 @@ private slots:
     QStringList callNames;
 
     collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "INBOX/Foo" );
+    collection.setRemoteId( "/INBOX/Foo" );
     collection.addAttribute(new UidNextAttribute( 65 ));
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
@@ -73,7 +73,7 @@ private slots:
              << "S: A000005 OK store done";
 
     callNames.clear();
-    callNames << "applyCollectionChanges" << "changeCommitted";
+    callNames << "applyCollectionChanges" << "itemChangeCommitted";
 
     QTest::newRow( "modifying mail content" ) << item << parts << scenario << callNames;
 

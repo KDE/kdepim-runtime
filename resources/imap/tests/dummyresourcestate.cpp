@@ -170,7 +170,7 @@ QString DummyResourceState::rootRemoteId() const
 
 QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection ) const
 {
-  return collection.remoteId();
+  return collection.remoteId().mid(1);
 }
 
 void DummyResourceState::setIdleCollection( const Akonadi::Collection &collection )
@@ -198,9 +198,9 @@ void DummyResourceState::itemsRetrievalDone()
   recordCall( "itemsRetrievalDone" );
 }
 
-void DummyResourceState::changeCommitted( const Akonadi::Item &item )
+void DummyResourceState::itemChangeCommitted( const Akonadi::Item &item )
 {
-  recordCall( "changeCommitted",  QVariant::fromValue( item ) );
+  recordCall( "itemChangeCommitted",  QVariant::fromValue( item ) );
 }
 
 void DummyResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
@@ -211,6 +211,11 @@ void DummyResourceState::collectionsRetrieved( const Akonadi::Collection::List &
 void DummyResourceState::collectionsRetrievalDone()
 {
   recordCall( "collectionsRetrievalDone" );
+}
+
+void DummyResourceState::collectionChangeCommitted( const Akonadi::Collection &collection )
+{
+  recordCall( "collectionChangeCommitted", QVariant::fromValue( collection ) );
 }
 
 void DummyResourceState::changeProcessed()

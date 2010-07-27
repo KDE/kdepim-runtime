@@ -42,7 +42,7 @@ private slots:
     QStringList callNames;
 
     collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "INBOX/Foo" );
+    collection.setRemoteId( "/INBOX/Foo" );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
 
@@ -60,7 +60,7 @@ private slots:
              << "S: A000003 OK append done [ APPENDUID 1239890035 66 ]";
 
     callNames.clear();
-    callNames << "changeCommitted";
+    callNames << "itemChangeCommitted";
 
     QTest::newRow( "trivial case" ) << item << collection << scenario << callNames;
   }

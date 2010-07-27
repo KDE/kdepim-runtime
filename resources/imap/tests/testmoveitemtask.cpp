@@ -48,9 +48,9 @@ private slots:
     item = Akonadi::Item( 1 );
     item.setRemoteId( "5" );
     source = Akonadi::Collection( 2 );
-    source.setRemoteId( "INBOX/Foo" );
+    source.setRemoteId( "/INBOX/Foo" );
     target = Akonadi::Collection( 3 );
-    target.setRemoteId( "INBOX/Bar" );
+    target.setRemoteId( "/INBOX/Bar" );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -62,7 +62,7 @@ private slots:
              << "S: A000005 OK store done";
 
     callNames.clear();
-    callNames << "changeCommitted";
+    callNames << "itemChangeCommitted";
 
     QTest::newRow( "moving mail" ) << item << source << target << scenario << callNames;
 
@@ -82,7 +82,7 @@ private slots:
              << "S: A000005 NO store failed";
 
     callNames.clear();
-    callNames << "emitWarning" << "changeCommitted";
+    callNames << "emitWarning" << "itemChangeCommitted";
 
     QTest::newRow( "moving mail, store fails" ) << item << source << target << scenario << callNames;
   }
