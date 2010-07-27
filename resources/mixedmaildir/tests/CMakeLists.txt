@@ -133,3 +133,23 @@ target_link_libraries(
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${QT_QTTEST_LIBRARY}
 )
+
+# test for collection move handling
+kde4_add_unit_test( collectionmovetest
+ ../mixedmaildirstore.cpp
+ collectionmovetest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  collectionmovetest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
