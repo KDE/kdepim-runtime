@@ -1211,6 +1211,23 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
 //                                    << "targetPath=" << targetPath
 //                                    << "targetType=" << targetFolderType;
 
+  const QFileInfo targetSubDirInfo( Maildir::subDirPathForFolderPath( targetPath ) );
+
+  // if target is not the top level folder, make sure the sub folder directory exists
+  if ( targetFolderType != TopLevelFolder ) {
+    if ( !targetSubDirInfo.exists() ) {
+      QDir topDir( q->path() );
+      if ( !topDir.mkpath( targetSubDirInfo.absoluteFilePath() ) ) {
+        errorText = i18nc( "@info:status", "Cannot move folder %1 from folder %2 to folder %3",
+                            moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name() );
+        kError() << errorText << "MoveFolderType=" << moveFolderType
+                 << "TargetFolderType=" << targetFolderType;
+        q->notifyError( FileStore::Job::InvalidJobContext, errorText );
+        return false;
+      }
+    }
+  }
+
   bool indexInvalidated = false;
   QString movedPath;
 
@@ -1236,7 +1253,6 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
     const QFileInfo moveFileInfo( movePath );
     const QFileInfo moveSubDirInfo( Maildir::subDirPathForFolderPath( movePath ) );
     const QFileInfo targetFileInfo( targetPath );
-    const QFileInfo targetSubDirInfo( Maildir::subDirPathForFolderPath( targetPath ) );
 
     QDir targetDir( Maildir::subDirPathForFolderPath( targetPath ) );
     if ( targetDir.exists( moveFileInfo.fileName() ) ||
@@ -1278,7 +1294,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
     // for moving purpose we can treat the MBox target's subDirPath like a top level maildir
     Maildir targetMd;
     if ( targetFolderType == MBoxFolder ) {
-      targetMd = Maildir( Maildir::subDirPathForFolderPath( targetPath ), true );
+      targetMd = Maildir( targetSubDirInfo.absoluteFilePath(), true );
     } else {
       targetMd = Maildir( targetPath, false );
     }
