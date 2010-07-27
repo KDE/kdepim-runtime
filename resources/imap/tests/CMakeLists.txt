@@ -19,6 +19,7 @@ IMAP_RESOURCE_UNIT_TESTS(
   testresourcetask
   testsessionpool
 
+  testaddcollectiontask
   testadditemtask
   testchangeitemtask
   testmoveitemtask
