@@ -93,6 +93,8 @@ public:
   virtual void deferTask();
   virtual void taskDone();
 
+  virtual void emitWarning( const QString &message );
+
   QList< QPair<QByteArray, QVariant> > calls() const;
 
 private:

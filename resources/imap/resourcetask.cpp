@@ -220,6 +220,11 @@ void ResourceTask::taskDone()
   deleteLater();
 }
 
+void ResourceTask::emitWarning( const QString &message )
+{
+  m_resource->emitWarning( message );
+}
+
 #include "resourcetask.moc"
 
 

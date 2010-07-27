@@ -97,7 +97,20 @@ ResourceStateInterface::Ptr ResourceState::createRemoveItemState( ImapResource *
   state->m_item = item;
 
   return ResourceStateInterface::Ptr( state );
+}
 
+ResourceStateInterface::Ptr ResourceState::createMoveItemState( ImapResource *resource,
+                                                                const Akonadi::Item &item,
+                                                                const Akonadi::Collection &sourceCollection,
+                                                                const Akonadi::Collection &targetCollection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_item = item;
+  state->m_sourceCollection = sourceCollection;
+  state->m_targetCollection = targetCollection;
+
+  return ResourceStateInterface::Ptr( state );
 }
 
 
@@ -286,4 +299,9 @@ void ResourceState::deferTask()
 void ResourceState::taskDone()
 {
   m_resource->taskDone();
+}
+
+void ResourceState::emitWarning( const QString &message )
+{
+  emit m_resource->warning( message );
 }

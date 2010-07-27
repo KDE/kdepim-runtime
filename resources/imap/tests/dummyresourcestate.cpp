@@ -233,6 +233,11 @@ void DummyResourceState::taskDone()
   recordCall( "taskDone" );
 }
 
+void DummyResourceState::emitWarning( const QString &message )
+{
+  recordCall( "emitWarning", QVariant::fromValue(message) );
+}
+
 QList< QPair<QByteArray, QVariant> > DummyResourceState::calls() const
 {
   return m_calls;

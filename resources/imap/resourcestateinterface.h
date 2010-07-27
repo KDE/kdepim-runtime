@@ -78,6 +78,8 @@ public:
   virtual void cancelTask( const QString &errorString ) = 0;
   virtual void deferTask() = 0;
   virtual void taskDone() = 0;
+
+  virtual void emitWarning( const QString &message ) = 0;
 };
 
 #endif

@@ -52,6 +52,11 @@ public:
   static ResourceStateInterface::Ptr createRemoveItemState( ImapResource *resource,
                                                             const Akonadi::Item &item );
 
+  static ResourceStateInterface::Ptr createMoveItemState( ImapResource *resource,
+                                                          const Akonadi::Item &item,
+                                                          const Akonadi::Collection &sourceCollection,
+                                                          const Akonadi::Collection &targetCollection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
@@ -97,6 +102,8 @@ public:
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
   virtual void taskDone();
+
+  virtual void emitWarning( const QString &message );
 
 private:
   ImapResource *m_resource;

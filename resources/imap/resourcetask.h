@@ -93,6 +93,8 @@ protected:
   void deferTask();
   void taskDone();
 
+  void emitWarning( const QString &message );
+
 private slots:
   void onSessionRequested( qint64 requestId, KIMAP::Session *session,
                            int errorCode, const QString &errorString );
