@@ -64,6 +64,11 @@ public:
   static ResourceStateInterface::Ptr createRemoveCollectionState( ImapResource *resource,
                                                                   const Akonadi::Collection &collection );
 
+  static ResourceStateInterface::Ptr createMoveCollectionState( ImapResource *resource,
+                                                                const Akonadi::Collection &collection,
+                                                                const Akonadi::Collection &sourceCollection,
+                                                                const Akonadi::Collection &targetCollection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:

@@ -135,6 +135,19 @@ ResourceStateInterface::Ptr ResourceState::createRemoveCollectionState( ImapReso
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createMoveCollectionState( ImapResource *resource,
+                                                                      const Akonadi::Collection &collection,
+                                                                      const Akonadi::Collection &sourceCollection,
+                                                                      const Akonadi::Collection &targetCollection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
+  state->m_sourceCollection = sourceCollection;
+  state->m_targetCollection = targetCollection;
+
+  return ResourceStateInterface::Ptr( state );
+}
 
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )
