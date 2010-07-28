@@ -21,6 +21,7 @@ set( kcalakonadi_LIB_SRC
      calfilterproxymodel.cpp
      daterangefilterproxymodel.cpp
      incidencefilterproxymodel.cpp
+     kcalmodel.cpp
      incidenceviewer.cpp
      utils.cpp
      groupware.cpp
