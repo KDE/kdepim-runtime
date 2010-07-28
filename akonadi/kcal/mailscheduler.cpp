@@ -41,6 +41,7 @@
 #include <KPIMIdentities/IdentityManager>
 
 #include <KStandardDirs>
+#include <KSystemTimeZones>
 
 #include <QDir>
 
@@ -51,7 +52,11 @@ MailScheduler::MailScheduler( Akonadi::Calendar *calendar )
   //: Scheduler( calendar )
   : mCalendar( calendar ), mFormat( new ICalFormat() )
 {
-  mFormat->setTimeSpec( calendar->timeSpec() );
+  if ( mCalendar )
+    mFormat->setTimeSpec( calendar->timeSpec() );
+  else
+    mFormat->setTimeSpec( KSystemTimeZones::local() );
+
 }
 
 MailScheduler::~MailScheduler()
