@@ -44,13 +44,14 @@ public:
   ImapTestBase( QObject *parent = 0 );
 
 protected:
-  QString defaultPassword();
-  ImapAccount *createDefaultAccount();
+  QString defaultUserName() const;
+  QString defaultPassword() const;
+  ImapAccount *createDefaultAccount() const;
   DummyPasswordRequester *createDefaultRequester();
-  QList<QByteArray> defaultAuthScenario();
-  QList<QByteArray> defaultPoolConnectionScenario();
+  QList<QByteArray> defaultAuthScenario() const;
+  QList<QByteArray> defaultPoolConnectionScenario() const;
 
-  bool waitForSignal( QObject *obj, const char *member, int timeout = 500 );
+  bool waitForSignal( QObject *obj, const char *member, int timeout = 500 ) const;
 
 private slots:
   void setupTestCase();

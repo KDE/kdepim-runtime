@@ -25,18 +25,23 @@ ImapTestBase::ImapTestBase( QObject *parent )
 
 }
 
-QString ImapTestBase::defaultPassword()
+QString ImapTestBase::defaultUserName() const
+{
+  return "test@kdab.com";
+}
+
+QString ImapTestBase::defaultPassword() const
 {
   return "foobar";
 }
 
-ImapAccount *ImapTestBase::createDefaultAccount()
+ImapAccount *ImapTestBase::createDefaultAccount() const
 {
   ImapAccount *account = new ImapAccount;
 
   account->setServer( "127.0.0.1" );
   account->setPort( 5989 );
-  account->setUserName( "test@kdab.com" );
+  account->setUserName( defaultUserName() );
   account->setSubscriptionEnabled( true );
   account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
   account->setAuthenticationMode( KIMAP::LoginJob::ClearText );
@@ -59,7 +64,7 @@ void ImapTestBase::setupTestCase()
   qRegisterMetaType<KIMAP::Session*>();
 }
 
-QList<QByteArray> ImapTestBase::defaultAuthScenario()
+QList<QByteArray> ImapTestBase::defaultAuthScenario() const
 {
   QList<QByteArray> scenario;
 
@@ -70,7 +75,7 @@ QList<QByteArray> ImapTestBase::defaultAuthScenario()
   return scenario;
 }
 
-QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario()
+QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario() const
 {
   QList<QByteArray> scenario;
 
@@ -82,7 +87,7 @@ QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario()
   return scenario;
 }
 
-bool ImapTestBase::waitForSignal( QObject *obj, const char *member, int timeout )
+bool ImapTestBase::waitForSignal( QObject *obj, const char *member, int timeout ) const
 {
   QEventLoop loop;
   QTimer timer;
