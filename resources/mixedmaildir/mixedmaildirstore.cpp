@@ -56,6 +56,13 @@
 using namespace Akonadi;
 using KPIM::Maildir;
 
+static bool operator==( const MsgEntryInfo &a, const MsgEntryInfo &b )
+{
+  return a.offset == b.offset &&
+         a.separatorSize == b.separatorSize &&
+         a.entrySize == b.entrySize;
+}
+
 static bool indexFileForFolder( const QFileInfo &folderDirInfo, QFileInfo &indexFileInfo )
 {
   indexFileInfo = QFileInfo( folderDirInfo.dir(), QString::fromUtf8( ".%1.index" ).arg( folderDirInfo.fileName() ) );
@@ -80,13 +87,32 @@ class MBoxContext
 
     bool load( const QString &fileName )
     {
+      // in case of reload, check if anything changed, otherwise keep deleted entries
+      if ( !mDeletedOffsets.isEmpty() && fileName == mMBox.fileName() ) {
+        const QList<MsgEntryInfo> currentEntryList = mMBox.entryList();
+        if ( mMBox.load( fileName ) ) {
+          if ( currentEntryList != mMBox.entryList() ) {
+            mDeletedOffsets.clear();
+          }
+          return true;
+        }
+
+        return false;
+      }
+
       mDeletedOffsets.clear();
       return mMBox.load( fileName );
     }
 
     QList<MsgEntryInfo> entryList() const
     {
-      return mMBox.entryList();
+      QList<MsgEntryInfo> result;
+      Q_FOREACH( const MsgEntryInfo &entry, mMBox.entryList() ) {
+        if ( !mDeletedOffsets.contains( entry.offset ) ) {
+          result << entry;
+        }
+      }
+      return result;
     }
 
     QByteArray readRawEntry( quint64 offset )
