@@ -97,6 +97,8 @@ public:
 
   virtual void emitWarning( const QString &message );
 
+  virtual void synchronizeCollectionTree();
+
   QList< QPair<QByteArray, QVariant> > calls() const;
 
 private:

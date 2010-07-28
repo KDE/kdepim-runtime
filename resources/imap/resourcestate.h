@@ -61,6 +61,9 @@ public:
                                                                const Akonadi::Collection &collection,
                                                                const Akonadi::Collection &parentCollection );
 
+  static ResourceStateInterface::Ptr createRemoveCollectionState( ImapResource *resource,
+                                                                  const Akonadi::Collection &collection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
@@ -110,6 +113,8 @@ public:
   virtual void taskDone();
 
   virtual void emitWarning( const QString &message );
+
+  virtual void synchronizeCollectionTree();
 
 private:
   ImapResource *m_resource;

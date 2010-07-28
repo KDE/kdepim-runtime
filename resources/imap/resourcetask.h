@@ -97,6 +97,8 @@ protected:
 
   void emitWarning( const QString &message );
 
+  void synchronizeCollectionTree();
+
 private slots:
   void onSessionRequested( qint64 requestId, KIMAP::Session *session,
                            int errorCode, const QString &errorString );

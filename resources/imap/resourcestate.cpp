@@ -125,6 +125,17 @@ ResourceStateInterface::Ptr ResourceState::createAddCollectionState( ImapResourc
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createRemoveCollectionState( ImapResource *resource,
+                                                                        const Akonadi::Collection &collection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
+
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )
 {
@@ -320,4 +331,9 @@ void ResourceState::taskDone()
 void ResourceState::emitWarning( const QString &message )
 {
   emit m_resource->warning( message );
+}
+
+void ResourceState::synchronizeCollectionTree()
+{
+  m_resource->synchronizeCollectionTree();
 }

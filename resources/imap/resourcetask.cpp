@@ -231,6 +231,11 @@ void ResourceTask::emitWarning( const QString &message )
   m_resource->emitWarning( message );
 }
 
+void ResourceTask::synchronizeCollectionTree()
+{
+  m_resource->synchronizeCollectionTree();
+}
+
 #include "resourcetask.moc"
 
 

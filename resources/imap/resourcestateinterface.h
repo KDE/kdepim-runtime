@@ -82,6 +82,8 @@ public:
   virtual void taskDone() = 0;
 
   virtual void emitWarning( const QString &message ) = 0;
+
+  virtual void synchronizeCollectionTree() = 0;
 };
 
 #endif
