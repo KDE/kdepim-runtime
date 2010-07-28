@@ -33,6 +33,7 @@ set( kcalakonadi_LIB_SRC
      freebusymanager.cpp
      dndfactory.cpp
      incidencechanger.cpp
+     kcalmodel.cpp
      invitations/invitationhandler.cpp
 )
 
