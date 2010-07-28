@@ -105,7 +105,8 @@ void Settings::setWinId( WId winId )
 
 void Settings::requestPassword()
 {
-  if ( !m_password.isEmpty() ) {
+  if ( !m_password.isEmpty() ||
+       ( mapTransportAuthToKimap( (MailTransport::TransportBase::EnumAuthenticationType::type)authentication() ) == KIMAP::LoginJob::GSSAPI ) ) {
     emit passwordRequestCompleted( m_password, false );
   } else {
     Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous );
@@ -161,7 +162,8 @@ QString Settings::password(bool *userRejected) const
       *userRejected = false;
     }
 
-    if ( !m_password.isEmpty() )
+    if ( !m_password.isEmpty() ||
+         ( mapTransportAuthToKimap( (MailTransport::TransportBase::EnumAuthenticationType::type)authentication() ) == KIMAP::LoginJob::GSSAPI ) )
       return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
