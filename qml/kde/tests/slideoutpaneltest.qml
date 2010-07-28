@@ -24,6 +24,8 @@ Rectangle {
   width: 800
   height: 480
 
+  color : "#00000000"
+
   SlideoutPanelContainer {
     id: panelContainer
     anchors.fill: parent
@@ -36,6 +38,20 @@ Rectangle {
         Rectangle {
           color: "blue"
           anchors.fill: parent
+
+          Rectangle {
+            color : "yellow"
+            x : 300
+            y : 100
+            width : 100
+            height : 100
+            MouseArea {
+              anchors.fill : parent
+              onClicked : {
+                console.log("Clicked!");
+              }
+            }
+          }
         }
       ]
     }
