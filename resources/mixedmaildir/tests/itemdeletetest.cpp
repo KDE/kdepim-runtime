@@ -22,6 +22,7 @@
 
 #include "testdatautil.h"
 
+#include "filestore/entitycompactchangeattribute.h"
 #include "filestore/itemdeletejob.h"
 #include "filestore/itemfetchjob.h"
 #include "filestore/storecompactjob.h"
@@ -34,16 +35,57 @@
 #include <KRandom>
 #include <KTempDir>
 
+#include <QSignalSpy>
+
 #include <qtest_kde.h>
 
 using namespace Akonadi;
+
+static Collection::List collectionsFromSpy( QSignalSpy *spy ) {
+  Collection::List collections;
+
+  QListIterator<QList<QVariant> > it( *spy );
+  while( it.hasNext() ) {
+    const QList<QVariant> invocation = it.next();
+    Q_ASSERT( invocation.count() == 1 );
+
+    collections << invocation.first().value<Collection::List>();
+  }
+
+  return collections;
+}
+
+static Item::List itemsFromSpy( QSignalSpy *spy ) {
+  Item::List items;
+
+  QListIterator<QList<QVariant> > it( *spy );
+  while( it.hasNext() ) {
+    const QList<QVariant> invocation = it.next();
+    Q_ASSERT( invocation.count() == 1 );
+
+    items << invocation.first().value<Item::List>();
+  }
+
+  return items;
+}
+
+static bool operator==( const MsgEntryInfo &a, const MsgEntryInfo &b )
+{
+  return a.offset == b.offset &&
+         a.separatorSize == b.separatorSize &&
+         a.entrySize == b.entrySize;
+}
 
 class ItemDeleteTest : public QObject
 {
   Q_OBJECT
 
   public:
-    ItemDeleteTest() : QObject(), mStore( 0 ), mDir( 0 ) {}
+    ItemDeleteTest() : QObject(), mStore( 0 ), mDir( 0 ) {
+      // for monitoring signals
+      qRegisterMetaType<Akonadi::Collection::List>();
+      qRegisterMetaType<Akonadi::Item::List>();
+    }
 
     ~ItemDeleteTest() {
       delete mStore;
@@ -58,6 +100,7 @@ class ItemDeleteTest : public QObject
     void init();
     void cleanup();
     void testMaildir();
+    void testMBox();
     void testCachePreservation();
 };
 
@@ -133,6 +176,174 @@ void ItemDeleteTest::testMaildir()
 
   QVERIFY( !job->exec() );
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+}
+
+void ItemDeleteTest::testMBox()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
+
+  QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
+  MBox mbox1;
+  QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
+  QList<MsgEntryInfo> entryList1 = mbox1.entryList();
+  QCOMPARE( (int)entryList1.count(), 4 );
+  int size1 = fileInfo1.size();
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemDeleteJob *job = 0;
+  FileStore::ItemFetchJob *itemFetch = 0;
+  FileStore::StoreCompactJob *storeCompact = 0;
+
+  Item::List items;
+  Collection::List collections;
+  QList<MsgEntryInfo> entryList;
+
+  QSignalSpy *collectionsSpy = 0;
+  QSignalSpy *itemsSpy = 0;
+
+  // test deleting last item in mbox
+  // file stays untouched, message still accessible through MBox, but item gone
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  Item item4;
+  item4.setMimeType( KMime::Message::mimeType() );
+  item4.setId( KRandom::random() );
+  item4.setRemoteId( QString::number( entryList1.value( 3 ).offset ) );
+  item4.setParentCollection( collection1 );
+
+  job = mStore->deleteItem( item4 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  Item item = job->item();
+  QCOMPARE( item.id(), item4.id() );
+
+  fileInfo1.refresh();
+  QCOMPARE( (int) fileInfo1.size(), size1 );
+  QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
+  entryList = mbox1.entryList();
+  QCOMPARE( entryList.count(), entryList1.count() );
+  QCOMPARE( entryList.value( 3 ).offset, entryList1.value( 3 ).offset );
+
+  itemFetch = mStore->fetchItems( collection1 );
+
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 3 );
+  QCOMPARE( items.value( 0 ).remoteId(), QString::number( entryList1.value( 0 ).offset ) );
+  QCOMPARE( items.value( 1 ).remoteId(), QString::number( entryList1.value( 1 ).offset ) );
+  QCOMPARE( items.value( 2 ).remoteId(), QString::number( entryList1.value( 2 ).offset ) );
+
+  // test that the item is purged from the file on store compaction
+  // last item purging does not change any others
+  storeCompact = mStore->compactStore();
+
+  collectionsSpy = new QSignalSpy( storeCompact, SIGNAL( collectionsChanged( Akonadi::Collection::List ) ) );
+  itemsSpy = new QSignalSpy( storeCompact, SIGNAL( itemsChanged( Akonadi::Item::List ) ) );
+
+  QVERIFY( storeCompact->exec() );
+  QCOMPARE( storeCompact->error(), 0 );
+
+  collections = storeCompact->changedCollections();
+  QCOMPARE( collections.count(), 0 );
+  items = storeCompact->changedItems();
+  QCOMPARE( items.count(), 0 );
+
+  QCOMPARE( collectionsFromSpy( collectionsSpy ), collections );
+  QCOMPARE( itemsFromSpy( itemsSpy ), items );
+
+  fileInfo1.refresh();
+  QVERIFY( fileInfo1.size() < size1 );
+  size1 = fileInfo1.size();
+  QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
+  entryList = mbox1.entryList();
+  entryList1.pop_back();
+  QCOMPARE( entryList1, entryList );
+
+  // test deleting item somewhere between first and last
+  // again, file stays untouched, message still accessible through MBox, but item gone
+  Item item2;
+  item2.setMimeType( KMime::Message::mimeType() );
+  item2.setId( KRandom::random() );
+  item2.setRemoteId( QString::number( entryList1.value( 1 ).offset ) );
+  item2.setParentCollection( collection1 );
+
+  job = mStore->deleteItem( item2 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  item = job->item();
+  QCOMPARE( item.id(), item2.id() );
+
+  fileInfo1.refresh();
+  QCOMPARE( (int) fileInfo1.size(), size1 );
+  QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
+  entryList = mbox1.entryList();
+  QCOMPARE( entryList.count(), entryList1.count() );
+  QCOMPARE( entryList.value( 1 ).offset, entryList1.value( 1 ).offset );
+
+  itemFetch = mStore->fetchItems( collection1 );
+
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 2 );
+  QCOMPARE( items.value( 0 ).remoteId(), QString::number( entryList1.value( 0 ).offset ) );
+  QCOMPARE( items.value( 1 ).remoteId(), QString::number( entryList1.value( 2 ).offset ) );
+
+  // test that the item is purged from the file on store compaction
+  // non-last item purging changes all items after it
+  storeCompact = mStore->compactStore();
+
+  collectionsSpy = new QSignalSpy( storeCompact, SIGNAL( collectionsChanged( Akonadi::Collection::List ) ) );
+  itemsSpy = new QSignalSpy( storeCompact, SIGNAL( itemsChanged( Akonadi::Item::List ) ) );
+
+  QVERIFY( storeCompact->exec() );
+  QCOMPARE( storeCompact->error(), 0 );
+
+  collections = storeCompact->changedCollections();
+  QCOMPARE( collections.count(), 0 );
+  items = storeCompact->changedItems();
+  QCOMPARE( items.count(), 1 );
+
+  QCOMPARE( collectionsFromSpy( collectionsSpy ), collections );
+  QCOMPARE( itemsFromSpy( itemsSpy ), items );
+
+  Item item3;
+  item3.setRemoteId( QString::number( entryList1.value( 2 ).offset ) );
+
+  item = items.first();
+  QCOMPARE( item3.remoteId(), item.remoteId() );
+
+  QVERIFY( item.hasAttribute<FileStore::EntityCompactChangeAttribute>() );
+  FileStore::EntityCompactChangeAttribute *attribute =
+    item.attribute<FileStore::EntityCompactChangeAttribute>();
+
+  QString newRemoteId = attribute->remoteId();
+  QVERIFY( !newRemoteId.isEmpty() );
+
+  fileInfo1.refresh();
+  QVERIFY( fileInfo1.size() < size1 );
+  size1 = fileInfo1.size();
+  QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
+  entryList = mbox1.entryList();
+  QCOMPARE( QString::number( entryList.value( 1 ).offset ), newRemoteId );
+
+  entryList1.removeAt( 1 );
+  QCOMPARE( entryList1.count(), entryList.count() );
+  QCOMPARE( QString::number( entryList1.value( 1 ).offset ), item3.remoteId() );
 }
 
 void ItemDeleteTest::testCachePreservation()
