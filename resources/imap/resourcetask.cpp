@@ -77,6 +77,11 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
   doStart( m_session );
 }
 
+QString ResourceTask::userName() const
+{
+  return m_resource->userName();
+}
+
 QString ResourceTask::resourceName() const
 {
   return m_resource->resourceName();

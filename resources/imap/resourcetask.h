@@ -52,6 +52,7 @@ protected:
   virtual void doStart( KIMAP::Session *session ) = 0;
 
 protected:
+  QString userName() const;
   QString resourceName() const;
   QStringList serverCapabilities() const;
   QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;

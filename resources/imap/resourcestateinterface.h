@@ -38,6 +38,7 @@ public:
 
   virtual ~ResourceStateInterface();
 
+  virtual QString userName() const = 0;
   virtual QString resourceName() const = 0;
   virtual QStringList serverCapabilities() const = 0;
   virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const = 0;

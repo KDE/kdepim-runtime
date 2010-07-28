@@ -21,6 +21,7 @@
 
 #include "resourcestate.h"
 
+#include "imapaccount.h"
 #include "imapresource.h"
 #include "sessionpool.h"
 #include "settings.h"
@@ -158,6 +159,11 @@ ResourceState::ResourceState( ImapResource *resource )
 ResourceState::~ResourceState()
 {
 
+}
+
+QString ResourceState::userName() const
+{
+  return m_resource->m_pool->account()->userName();
 }
 
 QString ResourceState::resourceName() const

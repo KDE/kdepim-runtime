@@ -35,6 +35,9 @@ public:
   explicit DummyResourceState();
   ~DummyResourceState();
 
+  void setUserName( const QString &name );
+  virtual QString userName() const;
+
   void setResourceName( const QString &name );
   virtual QString resourceName() const;
 
@@ -104,7 +107,8 @@ public:
 private:
   void recordCall( const QByteArray callName, const QVariant &parameter = QVariant() );
 
-  QString m_name;
+  QString m_userName;
+  QString m_resourceName;
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
 

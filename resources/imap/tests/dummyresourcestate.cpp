@@ -33,14 +33,24 @@ DummyResourceState::~DummyResourceState()
 
 }
 
+void DummyResourceState::setUserName( const QString &name )
+{
+  m_userName = name;
+}
+
+QString DummyResourceState::userName() const
+{
+  return m_userName;
+}
+
 void DummyResourceState::setResourceName( const QString &name )
 {
-  m_name = name;
+  m_resourceName = name;
 }
 
 QString DummyResourceState::resourceName() const
 {
-  return m_name;
+  return m_resourceName;
 }
 
 void DummyResourceState::setServerCapabilities( const QStringList &capabilities )
