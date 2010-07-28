@@ -51,8 +51,8 @@ class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
     Collection::List changedCollections() const;
 
   Q_SIGNALS:
-    void collectionsChanged( const Collection::List &collections );
-    void itemsChanged( const Item::List &items );
+    void collectionsChanged( const Akonadi::Collection::List &collections );
+    void itemsChanged( const Akonadi::Item::List &items );
 
   private:
     void handleCollectionsChanged( const Collection::List &collections );
