@@ -28,7 +28,7 @@ SetupKolab::SetupKolab( WId parent )
 
 SetupKolab::~SetupKolab()
 {
-
+  delete m_ui;
 }
 
 #include "setupkolab.moc"
