@@ -126,6 +126,18 @@ ResourceStateInterface::Ptr ResourceState::createAddCollectionState( ImapResourc
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createChangeCollectionState( ImapResource *resource,
+                                                                        const Akonadi::Collection &collection,
+                                                                        const QSet<QByteArray> &parts )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
+  state->m_parts = parts;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
 ResourceStateInterface::Ptr ResourceState::createRemoveCollectionState( ImapResource *resource,
                                                                         const Akonadi::Collection &collection )
 {

@@ -61,6 +61,10 @@ public:
                                                                const Akonadi::Collection &collection,
                                                                const Akonadi::Collection &parentCollection );
 
+  static ResourceStateInterface::Ptr createChangeCollectionState( ImapResource *resource,
+                                                                  const Akonadi::Collection &collection,
+                                                                  const QSet<QByteArray> &parts );
+
   static ResourceStateInterface::Ptr createRemoveCollectionState( ImapResource *resource,
                                                                   const Akonadi::Collection &collection );
 
