@@ -23,13 +23,11 @@ blocks section below.
 
 \section akonadi_building_blocks Building Blocks
 
-- <a href="../clients/html/index.html">Clients</a>
 - Domain-specific libraries:
-  - <a href="../kabc/html/index.html">Contacts (KABC)</a>
-  - <a href="../kmime/html/index.html">MIME Messages (KMime)</a>
-  - <a href="../kcal/html/index.html">Events, todo items and journal entries (KCal)</a>
-- <a href="../libakonadi/html/index.html">Core library (libakonadi)</a>
-- <a href="../server/html/index.html">Server</a>
+  - <a href="../../kdepimlibs/kabc/index.html">Contacts (KABC)</a>
+  - <a href="../../kdepimlibs/kmime/index.html">MIME Messages (KMime)</a>
+  - <a href="../../kdepimlibs/kcal/index.html">Events, todo items and journal entries (KCal)</a>
+- <a href="../../kdepimlibs/akonadi/index.html">Core library (libakonadi)</a>
 
 \authors Tobias König <tokoe@kde.org>, Volker Krause <vkrause@kde.org>
 
