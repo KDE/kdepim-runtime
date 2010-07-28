@@ -33,100 +33,115 @@ import Qt 4.7
  * @slot collapse collapses the panel
  */
 Item {
-  property string titleText
-  property string titleIcon
-  property alias content: contentArea.data
-  property int handlePosition: 0
-  property int handleWidth: 36
-  property int handleHeight: 160
-  property int dragThreshold: 16
-  property int radius: 12
-  property int contentWidth: maximumContentWidth
-  property int maximumContentWidth: width - handleWidth - 2*radius
-  signal expanded
-  z: 100
 
-  function collapse() { background.x = -handleWidth }
-  function expand() { background.x = -handleWidth + dragThreshold }
+  id : _topLevel
+  property alias titleText : collapseFlap.titleText
+  property alias titleIcon : collapseFlap.titleIcon
 
-  Item {
-    id: background
-    x: - handleWidth
-    y: handlePosition
-    width: 2*handleWidth
-    height: handleHeight
+  property alias collapsedContent : collapseFlap.contentArea
+  property alias expandedContent : expandFlap.contentArea
 
-    Image {
-      id: backgroundImage
-      source: "slideout-panel-handle.png"
-      // slightly bigger than the panel due to shadows
-      height: parent.height + 15
-      x: parent.width - (backgroundImage.width - 5)
-      y: -10
-    }
 
-    Image {
-      id: titleImage
-      width: handleWidth - 4
-      height: (titleIcon == '' ? 0 : handleWidth - 4)
-      source: titleIcon
-      anchors.bottom: (titleText == '' ? 0 : parent.bottom)
-      anchors.verticalCenter: (titleText == '' ? parent.verticalCenter : 0)
-      anchors.right: parent.right
-      anchors.margins: 2
-    }
+  // Compat. Remove these.
+  property alias content : expandFlap.contentArea
+  property int handlePosition : 0
+  property int handleHeight : 160
+  property int contentWidth : expandFlap.width - 40 - collapsedWidth //: expandFlap.contentWidth
 
-    Text {
-      id: titleLabel
-      width: (titleIcon == '' ? parent.height : parent.height - titleImage.height)
-      height: handleWidth
-      x: -width/2 + 1.5*handleWidth
-      y: width/2 - handleWidth/2
-      transformOrigin: "Center"
-      rotation: -90
+  property int collapsedPosition : handlePosition
+  property int expandedPosition : 0
 
-      text: titleText
-      horizontalAlignment: "AlignHCenter"
-      verticalAlignment: "AlignVCenter"
-    }
+  property int collapsedWidth : 36
 
-    MouseArea {
-      anchors.fill: parent
-      drag.target: parent
-      drag.axis: "XAxis"
-      drag.minimumX: - handleWidth
-      drag.maximumX: - handleWidth + dragThreshold + 1
-    }
+  property int collapsedHeight : handleHeight
+  property int expandedHeight : 360
 
-    Item {
-      id: contentArea
-      visible: false
-      anchors.right: parent.right
-      anchors.top: parent.top
-      anchors.bottom: parent.bottom
-      anchors.margins: radius
-      width: Math.min( contentWidth, maximumContentWidth )
-    }
+  property real collapseThreshold : 1/4
+  property real expandThreshold : 3/4
 
-    states: [
-      State {
-        name: "expandedState"
-        when: background.x >= (-handleWidth + dragThreshold)
-        StateChangeScript { script: expanded(); }
-        PropertyChanges {
-          target: background
-          height: background.parent.height
-          width: Math.min( contentWidth, maximumContentWidth ) + 2 * handleWidth + 2 * radius - dragThreshold
-          y: 0
-        }
-        PropertyChanges { target: titleLabel; visible: false }
-        PropertyChanges { target: titleImage; visible: false }
-        PropertyChanges { target: contentArea; visible: true }
-        PropertyChanges { target: background.parent; z: 50 }
-        PropertyChanges { target: backgroundImage; source: "slideout-panel-background.png"; }
-      }
-    ]
+  property bool noCollapse : false
+
+  onHandlePositionChanged : {
+    parent.relayout();
+  }
+  onHandleHeightChanged : {
+    parent.relayout();
+  }
+  onCollapsedHeightChanged : {
+    parent.relayout();
+  }
+  onCollapsedPositionChanged : {
+    parent.relayout();
+  }
+
+  signal extensionChanged(real extension)
+
+  function changeExtension(extension)
+  {
 
   }
 
+  signal expanded(variant obj)
+  signal collapsed(variant obj)
+
+  z: 100
+  x : 0
+  y : 0
+
+  function collapse() {
+    collapseFlap.changeExtension(0.0)
+  }
+
+  function expand() {
+    collapseFlap.changeExtension(1.0)
+  }
+
+  Flap {
+    id : collapseFlap
+    x : collapsedWidth - width
+    y : collapsedPosition
+    threshold : collapseThreshold
+
+    leftBound : 0
+    rightBound : width - collapsedWidth
+
+    height : collapsedHeight
+    topBackgroundImage : "flap-collapsed-top.png"
+    midBackgroundImage : "flap-collapsed-mid.png"
+    bottomBackgroundImage : "flap-collapsed-bottom.png"
+    expander : true
+
+    onExtensionChanged : {
+      if (extension == 1.0)
+      {
+        _topLevel.noCollapse = true;
+        expanded(parent);
+        _topLevel.noCollapse = false;
+      }
+      else if (extension == 0.0)
+        collapsed(parent);
+
+      expandFlap.changeExtension(extension)
+    }
+  }
+
+  Flap {
+    id : expandFlap
+    x : -width
+    y : expandedPosition
+    leftBound : 0
+    rightBound : 40 + contentWidth
+    height : expandedHeight
+    threshold : expandThreshold
+
+    contentWidth : _topLevel.contentWidth // width - 40 - collapsedWidth
+
+    topBackgroundImage : "flap-expanded-top.png"
+    midBackgroundImage : "flap-expanded-mid.png"
+    bottomBackgroundImage : "flap-expanded-bottom.png"
+
+    onExtensionChanged : {
+      collapseFlap.changeExtension(extension)
+    }
+  }
 }

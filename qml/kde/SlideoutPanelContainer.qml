@@ -30,10 +30,13 @@ Item {
   property int margin: 20
 
   /** Collapse all panels. */
-  function collapseAll()
+  function collapseOthers(obj)
   {
     for ( var i = 0; i < children.length; ++i ) {
-      children[i].collapse();
+      // Does not work:
+      // if (children[i] != obj)
+      if (!children[i].noCollapse)
+        children[i].collapse();
     }
   }
 
@@ -41,25 +44,27 @@ Item {
   {
     for ( var i = 0; i < children.length; ++i ) {
       var panel = children[i];
-      panel.expanded.connect( this, collapseAll );
+      panel.expanded.connect( this, collapseOthers );
       panel.anchors.fill = _slideoutPanelContainer;
       panel.anchors.rightMargin = margin;
       panel.anchors.topMargin = margin;
       panel.anchors.bottomMargin = margin;
+      /*
       if ( i >= 1 ) {
         var prevPanel = children[i - 1];
-        panel.handlePosition = prevPanel.handlePosition + prevPanel.handleHeight
-      }
+        panel.collapsedPosition = prevPanel.collapsedPosition + prevPanel.collapsedHeight
+      } */
     }
+    /*
     // limit the height of the last panel to the available space
     if ( children.length > 0 ) {
       var lastPanel = children[ children.length - 1 ];
       if ( children.length > 1 ) {
         var prevPanel = children[ children.length - 2 ];
-        lastPanel.handleHeight = Math.min( lastPanel.handleHeight, height - prevPanel.handlePosition - prevPanel.handleHeight - lastPanel.anchors.topMargin - lastPanel.anchors.bottomMargin );
+        lastPanel.collapsedHeight = Math.min( lastPanel.collapsedHeight, height - prevPanel.collapsedPosition - prevPanel.collapsedHeight - lastPanel.anchors.topMargin - lastPanel.anchors.bottomMargin );
       } else {
-        lastPanel.handleHeight = Math.min( lastPanel.handleHeight, height - lastPanel.anchors.topMargin - lastPanel.anchors.bottomMargin );
+        lastPanel.collapsedHeight = Math.min( lastPanel.collapsedHeight, height - lastPanel.anchors.topMargin - lastPanel.anchors.bottomMargin );
       }
-    }
+    } */
   }
 }

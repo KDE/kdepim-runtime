@@ -10,6 +10,7 @@ install( FILES qmldir
   BreadcrumbNavigationView.qml
   SlideoutPanel.qml
   SlideoutPanelContainer.qml
+  Flap.qml
   dividing-line.png
   dividing-line-horizontal.png
   list-line-top.png
@@ -17,6 +18,12 @@ install( FILES qmldir
   scrollable-top.png
   slideout-panel-background.png
   slideout-panel-handle.png
+  flap-collapsed-top.png
+  flap-collapsed-mid.png
+  flap-collapsed-bottom.png
+  flap-expanded-top.png
+  flap-expanded-mid.png
+  flap-expanded-bottom.png
   DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
 
 install( TARGETS kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
