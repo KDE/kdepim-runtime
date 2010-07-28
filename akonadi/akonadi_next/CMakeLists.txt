@@ -30,6 +30,7 @@ set( akonadi_next_SRCS
   quotacolorproxymodel.cpp
   checkableitemproxymodel.cpp
   incidenceattachmentmodel.cpp
+  kviewstatemaintainer.cpp
   # TODO Move this to akonadi-kabc
   contactsmodel.cpp
   # TODO Move this to akonadi-mail?
@@ -38,7 +39,6 @@ set( akonadi_next_SRCS
   amazingdelegate.cpp
   modelstatesaver.cpp
   entitymodelstatesaver.cpp
-  recursivecollectionfilterproxymodel.cpp
 )
 
 kde4_add_library(akonadi_next ${LIBRARY_TYPE} ${akonadi_next_SRCS} )

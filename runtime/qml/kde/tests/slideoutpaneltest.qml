@@ -24,6 +24,8 @@ Rectangle {
   width: 800
   height: 480
 
+  color : "#00000000"
+
   SlideoutPanelContainer {
     id: panelContainer
     anchors.fill: parent
@@ -36,6 +38,20 @@ Rectangle {
         Rectangle {
           color: "blue"
           anchors.fill: parent
+
+          Rectangle {
+            color : "yellow"
+            x : 300
+            y : 100
+            width : 100
+            height : 100
+            MouseArea {
+              anchors.fill : parent
+              onClicked : {
+                console.log("Clicked!");
+              }
+            }
+          }
         }
       ]
     }
@@ -45,6 +61,8 @@ Rectangle {
       titleText: "Actions"
       titleIcon: KDE.iconPath( "akonadi", 48 );
       handleHeight: 150
+      collapsedPosition : 75
+      expandedPosition : 25
       contentWidth: 200
       content: [
         Rectangle {
@@ -57,7 +75,9 @@ Rectangle {
     SlideoutPanel {
       id: attachmentPanel
       titleIcon: KDE.iconPath( "mail-attachment", 48 );
-      contentWidth: 400
+      collapsedPosition : 150
+      expandedPosition : 50
+      contentWidth: 100
       content: [
         Rectangle {
           color: "green"

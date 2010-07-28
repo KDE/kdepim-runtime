@@ -58,6 +58,7 @@ class ItemCreateTest : public QObject
     void cleanup();
     void testExpectedFail();
     void testMBox();
+    void testMaildir();
 };
 
 void ItemCreateTest::init()
@@ -285,6 +286,219 @@ void ItemCreateTest::testMBox()
 
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
   QCOMPARE( (int)mbox1.entryList().count(), 6 );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
+
+  // get the items and check the flags (see data/README)
+  itemFetch = mStore->fetchItems( collection1 );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 6 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+}
+
+void ItemCreateTest::testMaildir()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "data" ) ) );
+  QDir dataDir = topDir;
+  QVERIFY( dataDir.cd( QLatin1String( "data" ) ) );
+  KPIM::Maildir dataMd( dataDir.path(), false );
+  QVERIFY( dataMd.isValid() );
+
+  const QStringList dataEntryList = dataMd.entryList();
+  QCOMPARE( dataEntryList.count(), 4 );
+  KMime::Message::Ptr msgPtr1( new KMime::Message );
+  msgPtr1->setContent( KMime::CRLFtoLF( dataMd.readEntry( dataEntryList.first() ) ) );
+  KMime::Message::Ptr msgPtr2( new KMime::Message );
+  msgPtr2->setContent( KMime::CRLFtoLF( dataMd.readEntry( dataEntryList.last() ) ) );
+
+  QVERIFY( topDir.mkdir( QLatin1String( "store" ) ) );
+  QVERIFY( topDir.cd( QLatin1String( "store" ) ) );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QVERIFY( md1.isValid() );
+
+  QSet<QString> entrySet1 = QSet<QString>::fromList( md1.entryList() );
+  QCOMPARE( (int)entrySet1.count(), 4 );
+
+  // simulate empty maildir
+  KPIM::Maildir md2( topLevelMd.addSubFolder( QLatin1String( "collection2" ) ), false );
+  QVERIFY( md2.isValid() );
+
+  QSet<QString> entrySet2 = QSet<QString>::fromList( md2.entryList() );
+  QCOMPARE( (int)entrySet2.count(), 0 );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
+  QVariant var;
+  Collection::List collections;
+  Item::List items;
+  QMap<QByteArray, int> flagCounts;
+
+  QSet<QString> entrySet;
+  QSet<QString> newIdSet;
+  QString newId;
+
+  FileStore::ItemCreateJob *job = 0;
+  FileStore::ItemFetchJob *itemFetch = 0;
+
+  // test adding to empty maildir
+  Collection collection2;
+  collection2.setName( QLatin1String( "collection2" ) );
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+
+  Item item1;
+  item1.setId( KRandom::random() );
+  item1.setMimeType( KMime::Message::mimeType() );
+  item1.setPayload<KMime::Message::Ptr>( msgPtr1 );
+
+  job = mStore->createItem( item1, collection2 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  Item item = job->item();
+  QCOMPARE( item.id(), item1.id() );
+  QVERIFY( !item.remoteId().isEmpty() );
+  QCOMPARE( item.parentCollection(), collection2 );
+
+  entrySet = QSet<QString>::fromList( md2.entryList() );
+  QCOMPARE( (int)entrySet.count(), 1 );
+
+  newIdSet = entrySet.subtract( entrySet2 );
+  QCOMPARE( (int)newIdSet.count(), 1 );
+
+  newId = newIdSet.values().first();
+  QCOMPARE( item.remoteId(), newId );
+  entrySet2 << newId;
+  QCOMPARE( (int)entrySet2.count(), 1 );
+
+  Item item2;
+  item2.setId( KRandom::random() );
+  item2.setMimeType( KMime::Message::mimeType() );
+  item2.setPayload<KMime::Message::Ptr>( msgPtr2 );
+
+  job = mStore->createItem( item2, collection2 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  item = job->item();
+  QCOMPARE( item.id(), item2.id() );
+  QVERIFY( !item.remoteId().isEmpty() );
+  QCOMPARE( item.parentCollection(), collection2 );
+
+  entrySet = QSet<QString>::fromList( md2.entryList() );
+  QCOMPARE( (int)entrySet.count(), 2 );
+
+  newIdSet = entrySet.subtract( entrySet2 );
+  QCOMPARE( (int)newIdSet.count(), 1 );
+
+  newId = newIdSet.values().first();
+  QCOMPARE( item.remoteId(), newId );
+  entrySet2 << newId;
+  QCOMPARE( (int)entrySet2.count(), 2 );
+
+  // test adding to non-empty maildir
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  job = mStore->createItem( item1, collection1 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  item = job->item();
+  QCOMPARE( item.id(), item1.id() );
+  QVERIFY( !item.remoteId().isEmpty() );
+  QCOMPARE( item.parentCollection(), collection1 );
+
+  entrySet = QSet<QString>::fromList( md1.entryList() );
+  QCOMPARE( (int)entrySet.count(), 5 );
+
+  newIdSet = entrySet.subtract( entrySet1 );
+  QCOMPARE( (int)newIdSet.count(), 1 );
+
+  newId = newIdSet.values().first();
+  QCOMPARE( item.remoteId(), newId );
+  entrySet1 << newId;
+  QCOMPARE( (int)entrySet1.count(), 5 );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
+
+  // get the items and check the flags (see data/README)
+  itemFetch = mStore->fetchItems( collection1 );
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+
+  items = itemFetch->items();
+  QCOMPARE( (int)items.count(), 5 );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  job = mStore->createItem( item2, collection1 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  item = job->item();
+  QCOMPARE( item.id(), item2.id() );
+  QVERIFY( !item.remoteId().isEmpty() );
+  QCOMPARE( item.parentCollection(), collection1 );
+
+  entrySet = QSet<QString>::fromList( md1.entryList() );
+  QCOMPARE( (int)entrySet.count(), 6 );
+
+  newIdSet = entrySet.subtract( entrySet1 );
+  QCOMPARE( (int)newIdSet.count(), 1 );
+
+  newId = newIdSet.values().first();
+  QCOMPARE( item.remoteId(), newId );
+  entrySet1 << newId;
+  QCOMPARE( (int)entrySet1.count(), 6 );
 
   // check for index preservation
   var = job->property( "onDiskIndexInvalidated" );

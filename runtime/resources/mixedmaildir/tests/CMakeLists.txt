@@ -18,6 +18,26 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# test data
+qt4_add_resources( testdata_generated_SRCS testdata.qrc )
+
+set( testdata_SRCS
+  ${testdata_generated_SRCS}
+  testdatautil.cpp
+)
+
+kde4_add_unit_test( testdatatest
+ testdatatest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  testdatatest
+  ${KDE4_KDECORE_LIBS}
+  ${QT_QTTEST_LIBRARY}
+  ${QT_QTGUI_LIBRARY}
+)
+
 # test for overwritten methods
 kde4_add_unit_test( templatemethodstest
  ../mixedmaildirstore.cpp
@@ -32,5 +52,144 @@ target_link_libraries(
   akonadi-filestore
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
+
+# test for collection creation handling
+kde4_add_unit_test( collectioncreatetest
+ ../mixedmaildirstore.cpp
+ collectioncreatetest.cpp
+)
+
+target_link_libraries(
+  collectioncreatetest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
+
+# test for collection deletion handling
+kde4_add_unit_test( collectiondeletetest
+ ../mixedmaildirstore.cpp
+ collectiondeletetest.cpp
+)
+
+target_link_libraries(
+  collectiondeletetest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
+
+# test for collection fetching handling
+kde4_add_unit_test( collectionfetchtest
+ ../mixedmaildirstore.cpp
+ collectionfetchtest.cpp
+)
+
+target_link_libraries(
+  collectionfetchtest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
+
+# test for collection modification handling
+kde4_add_unit_test( collectionmodifytest
+ ../mixedmaildirstore.cpp
+ collectionmodifytest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  collectionmodifytest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
+
+# test for collection move handling
+kde4_add_unit_test( collectionmovetest
+ ../mixedmaildirstore.cpp
+ collectionmovetest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  collectionmovetest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
+
+# test for item creation handling
+kde4_add_unit_test( itemcreatetest
+ ../mixedmaildirstore.cpp
+ itemcreatetest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  itemcreatetest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
+
+# test for item creation handling
+kde4_add_unit_test( itemdeletetest
+ ../mixedmaildirstore.cpp
+ itemdeletetest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  itemdeletetest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${QT_QTTEST_LIBRARY}
 )

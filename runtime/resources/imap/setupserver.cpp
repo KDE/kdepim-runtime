@@ -191,6 +191,7 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
 
 SetupServer::~SetupServer()
 {
+  delete m_ui;
 }
 
 bool SetupServer::shouldClearCache() const

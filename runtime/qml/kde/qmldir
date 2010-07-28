@@ -3,3 +3,4 @@ BreadcrumbNavigationView 4.5 BreadcrumbNavigationView.qml
 CollectionDelegate 4.5 CollectionDelegate.qml
 SlideoutPanel 4.5 SlideoutPanel.qml
 SlideoutPanelContainer 4.5 SlideoutPanelContainer.qml
+Flap 4.5 Flap.qml
