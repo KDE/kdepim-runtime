@@ -92,9 +92,7 @@ QString proposalComment( const Incidence::ConstPtr &incidence )
 InvitationHandler::Private::Private( Akonadi::Calendar *cal )
   : mCalendar( cal )
   , mParent( 0 )
-{
-  Q_ASSERT( mCalendar);
-}
+{ }
 
 int InvitationHandler::Private::askUser( const QString &question,
                                          const KGuiItem &buttonYes,
