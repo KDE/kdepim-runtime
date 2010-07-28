@@ -61,6 +61,8 @@ Rectangle {
       titleText: "Actions"
       titleIcon: KDE.iconPath( "akonadi", 48 );
       handleHeight: 150
+      collapsedPosition : 75
+      expandedPosition : 25
       contentWidth: 200
       content: [
         Rectangle {
@@ -73,7 +75,9 @@ Rectangle {
     SlideoutPanel {
       id: attachmentPanel
       titleIcon: KDE.iconPath( "mail-attachment", 48 );
-      contentWidth: 400
+      collapsedPosition : 150
+      expandedPosition : 50
+      contentWidth: 100
       content: [
         Rectangle {
           color: "green"
