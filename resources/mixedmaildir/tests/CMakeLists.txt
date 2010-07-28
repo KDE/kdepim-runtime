@@ -173,3 +173,23 @@ target_link_libraries(
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${QT_QTTEST_LIBRARY}
 )
+
+# test for item creation handling
+kde4_add_unit_test( itemdeletetest
+ ../mixedmaildirstore.cpp
+ itemdeletetest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  itemdeletetest
+  kmindexreader
+  maildir
+  mbox
+  akonadi-filestore
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${QT_QTTEST_LIBRARY}
+)
