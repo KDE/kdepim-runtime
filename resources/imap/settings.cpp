@@ -42,6 +42,8 @@ public:
 
 K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
+static const int s_ModeGSSAPI = 7;
+
 Settings *Settings::self()
 {
     if ( !s_globalSettings->q ) {
@@ -68,7 +70,7 @@ void Settings::setWinId( WId winId )
 
 void Settings::requestPassword()
 {
-  if ( !m_password.isEmpty() ) {
+  if ( !m_password.isEmpty() || ( authentication() == s_ModeGSSAPI ) ) {
     emit passwordRequestCompleted( m_password, false );
   } else {
     Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous );
@@ -118,7 +120,7 @@ QString Settings::password(bool *userRejected) const
       *userRejected = false;
     }
 
-    if ( !m_password.isEmpty() )
+    if ( !m_password.isEmpty() || ( authentication() == s_ModeGSSAPI ) )
       return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() && wallet->hasFolder( "imap" ) ) {
