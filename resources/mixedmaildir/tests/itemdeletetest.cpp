@@ -206,6 +206,8 @@ void ItemDeleteTest::testMBox()
   QSignalSpy *collectionsSpy = 0;
   QSignalSpy *itemsSpy = 0;
 
+  QVariant var;
+
   // test deleting last item in mbox
   // file stays untouched, message still accessible through MBox, but item gone
   Collection collection1;
@@ -233,6 +235,11 @@ void ItemDeleteTest::testMBox()
   entryList = mbox1.entryList();
   QCOMPARE( entryList.count(), entryList1.count() );
   QCOMPARE( entryList.value( 3 ).offset, entryList1.value( 3 ).offset );
+
+  var = job->property( "compactStore" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.type(), QVariant::Bool );
+  QCOMPARE( var.toBool(), true );
 
   itemFetch = mStore->fetchItems( collection1 );
 
@@ -293,6 +300,11 @@ void ItemDeleteTest::testMBox()
   entryList = mbox1.entryList();
   QCOMPARE( entryList.count(), entryList1.count() );
   QCOMPARE( entryList.value( 1 ).offset, entryList1.value( 1 ).offset );
+
+  var = job->property( "compactStore" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.type(), QVariant::Bool );
+  QCOMPARE( var.toBool(), true );
 
   itemFetch = mStore->fetchItems( collection1 );
 
