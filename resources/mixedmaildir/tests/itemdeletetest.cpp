@@ -102,6 +102,7 @@ class ItemDeleteTest : public QObject
     void testMaildir();
     void testMBox();
     void testCachePreservation();
+    void testExpectedFailure();
 };
 
 void ItemDeleteTest::init()
@@ -484,6 +485,103 @@ void ItemDeleteTest::testCachePreservation()
   QCOMPARE( flagCounts[ "\\SEEN" ], 1 );
   QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
   flagCounts.clear();
+}
+
+void ItemDeleteTest::testExpectedFailure()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QVERIFY( md1.isValid() );
+
+  QSet<QString> entrySet1 = QSet<QString>::fromList( md1.entryList() );
+  QCOMPARE( (int)entrySet1.count(), 4 );
+
+  QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
+  MBox mbox2;
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
+  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  QCOMPARE( (int)entryList2.count(), 4 );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemDeleteJob *job = 0;
+  FileStore::ItemFetchJob *itemFetch = 0;
+  FileStore::StoreCompactJob *storeCompact = 0;
+
+  // test failure of fetching an item previously deleted from maildir
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  Item item1_1;
+  item1_1.setRemoteId( entrySet1.values().first() );
+  item1_1.setParentCollection( collection1 );
+
+  job = mStore->deleteItem( item1_1 );
+
+  QVERIFY( job->exec() );
+
+  itemFetch = mStore->fetchItem( item1_1 );
+
+  QVERIFY( !itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), (int)FileStore::Job::InvalidJobContext );
+
+  // test failure of deleting an item from maildir again
+  job = mStore->deleteItem( item1_1 );
+
+  QVERIFY( !job->exec() );
+  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+
+  // test failure of fetching an item previously deleted from mbox
+  Collection collection2;
+  collection2.setName( QLatin1String( "collection2" ) );
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+
+  Item item2_1;
+  item2_1.setRemoteId( QString::number( entryList2.value( 0 ).offset ) );
+  item2_1.setParentCollection( collection2 );
+
+  job = mStore->deleteItem( item2_1 );
+
+  QVERIFY( job->exec() );
+
+  itemFetch = mStore->fetchItem( item2_1 );
+
+  QVERIFY( !itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), (int)FileStore::Job::InvalidJobContext );
+
+  // test failure of deleting an item from mbox again
+  job = mStore->deleteItem( item2_1 );
+
+  QVERIFY( !job->exec() );
+  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+
+  // compact store and check that offset 0 is a valid remoteId again, but
+  // offset of other items (e.f. item 4) are no longer valid (moved to the front of the file)
+  storeCompact = mStore->compactStore();
+
+  QVERIFY( storeCompact->exec() );
+
+  itemFetch = mStore->fetchItem( item2_1 );
+
+  QVERIFY( itemFetch->exec() );
+
+  Item item4_1;
+  item4_1.setRemoteId( QString::number( entryList2.value( 3 ).offset ) );
+  item4_1.setParentCollection( collection2 );
+
+  itemFetch = mStore->fetchItem( item4_1 );
+
+  QVERIFY( !itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), (int)FileStore::Job::InvalidJobContext );
 }
 
 QTEST_KDEMAIN( ItemDeleteTest, NoGUI )
