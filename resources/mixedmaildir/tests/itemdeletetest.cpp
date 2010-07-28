@@ -57,6 +57,7 @@ class ItemDeleteTest : public QObject
   private Q_SLOTS:
     void init();
     void cleanup();
+    void testMaildir();
     void testCachePreservation();
 };
 
@@ -74,6 +75,64 @@ void ItemDeleteTest::cleanup()
   mStore = 0;
   delete mDir;
   mDir = 0;
+}
+
+void ItemDeleteTest::testMaildir()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QVERIFY( md1.isValid() );
+
+  QSet<QString> entrySet1 = QSet<QString>::fromList( md1.entryList() );
+  QCOMPARE( (int)entrySet1.count(), 4 );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemDeleteJob *job = 0;
+  QSet<QString> entrySet;
+  QSet<QString> delIdSet;
+  QString delId;
+
+  // test deleting one message
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  Item item1;
+  item1.setMimeType( KMime::Message::mimeType() );
+  item1.setId( KRandom::random() );
+  item1.setRemoteId( entrySet1.values().first() );
+  item1.setParentCollection( collection1 );
+
+  job = mStore->deleteItem( item1 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  Item item = job->item();
+  QCOMPARE( item.id(), item1.id() );
+
+  entrySet = QSet<QString>::fromList( md1.entryList() );
+  QCOMPARE( (int)entrySet.count(), 3 );
+
+  delIdSet = entrySet1.subtract( entrySet );
+  QCOMPARE( (int)delIdSet.count(), 1 );
+
+  delId = delIdSet.values().first();
+  QCOMPARE( delId, entrySet1.values().first() );
+  QCOMPARE( delId, item.remoteId() );
+
+  // test failure of deleting again
+  job = mStore->deleteItem( item1 );
+
+  QVERIFY( !job->exec() );
+  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
 }
 
 void ItemDeleteTest::testCachePreservation()
