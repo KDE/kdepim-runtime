@@ -423,7 +423,6 @@ void MaildirContext::readIndexData()
     return;
   }
 
-
   KMIndexReader indexReader( indexFileInfo.absoluteFilePath() );
   if ( indexReader.error() || !indexReader.readIndex() ) {
     kError() << "Index file" << indexFileInfo.path() << "could not be read";
@@ -781,11 +780,17 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
   }
 
   if ( md->hasIndexData() ) {
-    QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
-    job->setProperty( "remoteIdToIndexUid", var );
+    QVariant var;
 
-    var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
-    job->setProperty( "remoteIdToTagList", var );
+    if ( !uidHash.isEmpty() ) {
+      var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
+      job->setProperty( "remoteIdToIndexUid", var );
+    }
+
+    if ( !tagListHash.isEmpty() ) {
+      var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
+      job->setProperty( "remoteIdToTagList", var );
+    }
   }
 }
 
