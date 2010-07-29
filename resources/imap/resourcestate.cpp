@@ -259,7 +259,7 @@ QSet<QByteArray> ResourceState::parts() const
 
 QString ResourceState::rootRemoteId() const
 {
-  return "imap://" + Settings::self()->userName() + '@' + Settings::self()->imapServer() + '/';
+  return Settings::self()->rootRemoteId();
 }
 
 QString ResourceState::mailBoxForCollection( const Akonadi::Collection &collection ) const
