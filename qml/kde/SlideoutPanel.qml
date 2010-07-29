@@ -54,7 +54,7 @@ Item {
   property int collapsedWidth : 36
 
   property int collapsedHeight : handleHeight
-  property int expandedHeight : 360
+  property int expandedHeight : height
 
   property real collapseThreshold : 1/4
   property real expandThreshold : 3/4
