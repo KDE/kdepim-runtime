@@ -31,6 +31,7 @@
 
 #include <kmime/kmime_message.h>
 
+#include "imapflags.h"
 #include "uidnextattribute.h"
 
 ChangeItemTask::ChangeItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
@@ -63,7 +64,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
 
     job->setMailBox( mailBox );
     job->setContent( msg->encodedContent( true ) );
-    job->setFlags( item().flags().toList() );
+    job->setFlags( fromAkonadiFlags( item().flags().toList() ) );
 
     connect( job, SIGNAL( result( KJob* ) ),
              this, SLOT( onAppendMessageDone( KJob* ) ) );
@@ -105,7 +106,7 @@ void ChangeItemTask::triggerStoreJob()
 
   store->setUidBased( true );
   store->setSequenceSet( KIMAP::ImapSet( m_oldUid ) );
-  store->setFlags( item().flags().toList() );
+  store->setFlags( fromAkonadiFlags( item().flags().toList() ) );
   store->setMode( KIMAP::StoreJob::SetFlags );
 
   connect( store, SIGNAL( result( KJob* ) ),
@@ -169,7 +170,7 @@ void ChangeItemTask::triggerDeleteJob()
 
   store->setUidBased( true );
   store->setSequenceSet( KIMAP::ImapSet( m_oldUid ) );
-  store->setFlags( QList<QByteArray>() << "\\Deleted" );
+  store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
   store->setMode( KIMAP::StoreJob::AppendFlags );
 
   connect( store, SIGNAL( result( KJob* ) ),

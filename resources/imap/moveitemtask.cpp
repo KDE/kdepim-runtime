@@ -29,6 +29,8 @@
 #include <kimap/session.h>
 #include <kimap/storejob.h>
 
+#include "imapflags.h"
+
 MoveItemTask::MoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( resource, parent )
 {
@@ -116,7 +118,7 @@ void MoveItemTask::onCopyDone( KJob *job )
 
     store->setUidBased( true );
     store->setSequenceSet( KIMAP::ImapSet( oldUid ) );
-    store->setFlags( QList<QByteArray>() << "\\Deleted" );
+    store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
     store->setMode( KIMAP::StoreJob::AppendFlags );
 
     connect( store, SIGNAL( result( KJob* ) ),

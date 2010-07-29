@@ -338,7 +338,7 @@ void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint
     Akonadi::Item i;
     i.setRemoteId( QString::number( uids[number] ) );
     i.setMimeType( "message/rfc822" );
-    i.setFlags( Akonadi::Item::Flags::fromList( flags[number] ) );
+    i.setFlags( Akonadi::Item::Flags::fromList( toAkonadiFlags( flags[number] ) ) );
 
     //kDebug(5327) << "Flags: " << i.flags();
     changedItems << i;

@@ -28,6 +28,8 @@
 #include <kimap/session.h>
 #include <kimap/storejob.h>
 
+#include "imapflags.h"
+
 RemoveItemTask::RemoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( resource, parent )
 {
@@ -75,7 +77,7 @@ void RemoveItemTask::triggerStoreJob( KIMAP::Session *session )
   KIMAP::StoreJob *store = new KIMAP::StoreJob( session );
   store->setUidBased( true );
   store->setSequenceSet( KIMAP::ImapSet( item().remoteId().toLongLong() ) );
-  store->setFlags( QList<QByteArray>() << "\\Deleted" );
+  store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
   store->setMode( KIMAP::StoreJob::AppendFlags );
   connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
   store->start();

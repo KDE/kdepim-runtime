@@ -100,6 +100,9 @@ protected:
 
   void synchronizeCollectionTree();
 
+  static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
+  static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
+
 private slots:
   void onSessionRequested( qint64 requestId, KIMAP::Session *session,
                            int errorCode, const QString &errorString );

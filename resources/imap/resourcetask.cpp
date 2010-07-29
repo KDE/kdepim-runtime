@@ -21,6 +21,9 @@
 
 #include "resourcetask.h"
 
+#include <akonadi/kmime/messageflags.h>
+
+#include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
 
@@ -239,6 +242,48 @@ void ResourceTask::emitWarning( const QString &message )
 void ResourceTask::synchronizeCollectionTree()
 {
   m_resource->synchronizeCollectionTree();
+}
+
+QList<QByteArray> ResourceTask::fromAkonadiFlags( const QList<QByteArray> &flags )
+{
+  QList<QByteArray> newFlags;
+
+  foreach ( const QByteArray &oldFlag, flags ) {
+    if( oldFlag == Akonadi::MessageFlags::Seen ) {
+      newFlags.append( ImapFlags::Seen );
+    } else if( oldFlag == Akonadi::MessageFlags::Deleted ) {
+      newFlags.append( ImapFlags::Deleted );
+    } else if( oldFlag == Akonadi::MessageFlags::Answered ) {
+      newFlags.append( ImapFlags::Answered );
+    } else if( oldFlag == Akonadi::MessageFlags::Flagged ) {
+      newFlags.append( ImapFlags::Flagged );
+    } else {
+      newFlags.append( oldFlag );
+    }
+  }
+
+  return newFlags;
+}
+
+QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
+{
+  QList<QByteArray> newFlags;
+
+  foreach ( const QByteArray &oldFlag, flags ) {
+    if( oldFlag == ImapFlags::Seen ) {
+      newFlags.append( Akonadi::MessageFlags::Seen );
+    } else if( oldFlag == ImapFlags::Deleted ) {
+      newFlags.append( Akonadi::MessageFlags::Deleted );
+    } else if( oldFlag == ImapFlags::Answered ) {
+      newFlags.append( Akonadi::MessageFlags::Answered );
+    } else if( oldFlag == ImapFlags::Flagged ) {
+      newFlags.append( Akonadi::MessageFlags::Flagged );
+    } else {
+      newFlags.append( oldFlag );
+    }
+  }
+
+  return newFlags;
 }
 
 #include "resourcetask.moc"
