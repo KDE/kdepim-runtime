@@ -30,6 +30,15 @@ class SetupKolab : public KDialog
 public:
   SetupKolab( WId parent );
   ~SetupKolab();
+
+protected:
+  void initConnection();
+  void updateCombobox();
+
+protected slots:
+  void slotLaunchWizard();
+  void slotInstanceAddedRemoved();
+
 private:
   Ui::SetupKolabView *m_ui;
 };

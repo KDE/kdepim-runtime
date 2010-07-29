@@ -20,6 +20,7 @@
 #include "kolabproxyresource.h"
 
 #include "settings.h"
+#include "setupkolab.h"
 #include "settingsadaptor.h"
 #include "collectionannotationsattribute.h"
 #include "addressbookhandler.h"
@@ -199,7 +200,15 @@ void KolabProxyResource::configure( WId windowId )
   // "on top of parent" behavior if the running window manager applies any kind
   // of focus stealing prevention technique
 
-  emit configurationDialogAccepted();
+  QPointer<SetupKolab> kolabConfigDialog( new SetupKolab( windowId ) );
+  if ( kolabConfigDialog->exec() == QDialog::Accepted ) {
+    emit configurationDialogAccepted();
+  }
+  else {
+    emit configurationDialogRejected();
+  }
+
+  delete kolabConfigDialog;
 }
 
 void KolabProxyResource::itemAdded( const Item &item, const Collection &collection )
