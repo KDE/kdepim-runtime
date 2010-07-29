@@ -19,13 +19,20 @@
 
 #include "setupkolab.h"
 #include "kolabproxyresource.h"
+#include <KJob>
 #include <kstandarddirs.h>
 #include <kmessagebox.h>
 #include <QProcess>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
+#include <akonadi/collectioncreatejob.h>
+#include <akonadi/entitydisplayattribute.h>
+#include "collectionannotationsattribute.h"
 
 #define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
+
+#define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
+
 
 SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
   :KDialog(),
@@ -96,7 +103,43 @@ void SetupKolab::slotInstanceAddedRemoved()
 
 void SetupKolab::slotCreateDefaultKolabCollections()
 {
-  //TODO
+  const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
+  if ( instanceSelected.isValid() ) {
+#if 0
+    Akonadi::Collection collection;
+    collection.setName( "Calendar" );
+    collection.setParentCollection( Akonadi::Collection::root() );
+    qDebug()<<" instanceSelected.identifier() :"<<instanceSelected.identifier();
+    collection.setResource( instanceSelected.identifier() );
+    collection.setContentMimeTypes( QStringList() << Akonadi::Collection::mimeType() << QLatin1String( "message/rfc822" ) );
+    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = collection.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Entity::AddIfMissing );
+    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+
+    annotations[ KOLAB_FOLDERTYPE ] = "task";
+    createKolabCollection( collection );
+#endif
+  }
+}
+
+void SetupKolab::createKolabCollection( Akonadi::Collection & collection )
+{
+  Akonadi::CollectionCreateJob *job = new Akonadi::CollectionCreateJob( collection );
+  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( createResult( KJob* ) ) );
+
+}
+
+void SetupKolab::createResult( KJob *job )
+{
+  if ( job->error() ) {
+    kWarning()<<" Error during kolab collection created : "<<job->errorString();
+    return;
+  }
+  Akonadi::CollectionCreateJob *createJob = static_cast<Akonadi::CollectionCreateJob*>( job );
+  Akonadi::Collection collection = createJob->collection();
+  bool collectionRegistered = m_parentResource->registerHandlerForCollection( collection );
+  if ( !collectionRegistered ) {
+    kWarning()<<" Can not register Collection "<<collection.id();
+  }
 }
 
 #include "setupkolab.moc"

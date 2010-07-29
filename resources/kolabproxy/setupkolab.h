@@ -22,10 +22,11 @@
 
 #include <KDialog>
 #include <akonadi/agentinstance.h>
+#include <akonadi/collection.h>
 #include "ui_kolabsettings.h"
 
 class KolabProxyResource;
-
+class KJob;
 class SetupKolab : public KDialog
 {
   Q_OBJECT
@@ -37,11 +38,13 @@ public:
 protected:
   void initConnection();
   void updateCombobox();
+  void createKolabCollection( Akonadi::Collection & collection );
 
 protected slots:
   void slotLaunchWizard();
   void slotInstanceAddedRemoved();
   void slotCreateDefaultKolabCollections();
+  void createResult( KJob * );
 
 private:
   QMap<QString, Akonadi::AgentInstance> m_agentList;
