@@ -125,7 +125,7 @@ void Settings::onWalletOpened( bool success )
     if ( wallet && wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), m_password );
-	passwordNotStoredInWallet = false;
+      passwordNotStoredInWallet = false;
     }
     if ( passwordNotStoredInWallet || m_password.isEmpty() )
       requestManualAuth();
@@ -184,6 +184,10 @@ void Settings::setPassword( const QString & password )
 {
     if ( password == m_password )
         return;
+
+    if ( mapTransportAuthToKimap( (MailTransport::TransportBase::EnumAuthenticationType::type)authentication() ) == KIMAP::LoginJob::GSSAPI )
+        return;
+
     m_password = password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
