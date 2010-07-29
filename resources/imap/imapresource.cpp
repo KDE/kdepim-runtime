@@ -256,7 +256,7 @@ void ImapResource::onPasswordRequestCompleted( const QString &password, bool use
   if ( userRejected ) {
     emit status( Broken, i18n( "Could not read the password: user rejected wallet access." ) );
     return;
-  } else if ( password.isEmpty() ) {
+  } else if ( password.isEmpty() && (Settings::self()->authentication() != 7 /* Not GSSAPI */) ) { 
     emit status( Broken, i18n( "Authentication failed." ) );
     return;
   } else {
