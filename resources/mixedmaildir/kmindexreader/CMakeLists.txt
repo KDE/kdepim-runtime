@@ -9,13 +9,13 @@ add_subdirectory(tests)
 
 set(kmindexreader_LIB_SRCS
  kmindexreader.cpp
- messagestatus.cpp
 )
 
 kde4_add_library(kmindexreader ${LIBRARY_TYPE} ${kmindexreader_LIB_SRCS})
 
 target_link_libraries(kmindexreader
     ${KDE4_KDECORE_LIBS}
+    ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
 )
 
 set_target_properties(kmindexreader PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
