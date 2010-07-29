@@ -116,6 +116,12 @@ class AKONADI_KCAL_NEXT_EXPORT IncidenceChanger : public QObject
     void setDestinationPolicy( DestinationPolicy destinationPolicy );
     DestinationPolicy destinationPolicy() const;
 
+    /**
+       Sets the akonadi calendar.
+       @param calendar the calendar.
+    */
+    void setCalendar( Akonadi::Calendar *calendar );
+
     /*
      * Returns false if the item is being deleted by a job
      * or was deleted already.

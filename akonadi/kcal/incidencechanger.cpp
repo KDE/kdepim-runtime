@@ -571,3 +571,8 @@ bool IncidenceChanger::isNotDeleted( Akonadi::Item::Id id ) const
     return false;
   }
 }
+
+void IncidenceChanger::setCalendar( Akonadi::Calendar *calendar )
+{
+  d->mCalendar = calendar;
+}
