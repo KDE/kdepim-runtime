@@ -143,3 +143,15 @@ target_link_libraries(
   itemdeletetest
   ${common_link_libraries}
 )
+
+# test for item retrieval handling
+kde4_add_unit_test( itemfetchtest
+ ../mixedmaildirstore.cpp
+ itemfetchtest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  itemfetchtest
+  ${common_link_libraries}
+)
