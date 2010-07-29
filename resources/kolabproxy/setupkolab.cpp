@@ -18,6 +18,7 @@
 */
 
 #include "setupkolab.h"
+#include "kolabproxyresource.h"
 #include <kstandarddirs.h>
 #include <kmessagebox.h>
 #include <QProcess>
@@ -26,8 +27,10 @@
 
 #define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
 
-SetupKolab::SetupKolab( WId parent )
-  :KDialog(), m_ui(new Ui::SetupKolabView)
+SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
+  :KDialog(),
+   m_ui(new Ui::SetupKolabView),
+   m_parentResource( parentResource )
 {
   m_ui->setupUi( mainWidget() );
   initConnection();

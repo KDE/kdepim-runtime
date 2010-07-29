@@ -23,12 +23,14 @@
 #include <KDialog>
 #include "ui_kolabsettings.h"
 
+class KolabProxyResource;
+
 class SetupKolab : public KDialog
 {
   Q_OBJECT
 
 public:
-  SetupKolab( WId parent );
+  SetupKolab( KolabProxyResource* parentResource, WId parent );
   ~SetupKolab();
 
 protected:
@@ -41,6 +43,7 @@ protected slots:
 
 private:
   Ui::SetupKolabView *m_ui;
+  KolabProxyResource *m_parentResource;
 };
 
 
