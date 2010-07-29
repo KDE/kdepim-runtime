@@ -53,7 +53,7 @@
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="createKolabFolderButton">
          <property name="text">
           <string>Create Kolab Folder</string>
          </property>

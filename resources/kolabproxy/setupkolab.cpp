@@ -46,6 +46,7 @@ void SetupKolab::initConnection()
 {
 
   connect( m_ui->launchWizard, SIGNAL( clicked() ), this, SLOT( slotLaunchWizard() ) );
+  connect( m_ui->createKolabFolderButton, SIGNAL( clicked() ), this, SLOT( slotCreateDefaultKolabCollections() ) );
   connect( Akonadi::AgentManager::self(), SIGNAL( instanceAdded( const Akonadi::AgentInstance & ) ), this, SLOT( slotInstanceAddedRemoved() ) );
   connect( Akonadi::AgentManager::self(), SIGNAL( instanceRemoved( const Akonadi::AgentInstance & ) ), this, SLOT( slotInstanceAddedRemoved() ) );
 
@@ -55,11 +56,14 @@ void SetupKolab::updateCombobox()
 {
   bool imapAccountFound = false;
   m_ui->imapAccountComboBox->clear();
+  m_agentList.clear();
 
   Akonadi::AgentInstance::List relevantInstances;
   foreach ( const Akonadi::AgentInstance &instance, Akonadi::AgentManager::self()->instances() ) {
     if ( instance.identifier().contains( IMAP_RESOURCE_IDENTIFIER ) ) {
-      m_ui->imapAccountComboBox->addItem( instance.name() );
+      const QString instanceName = instance.name();
+      m_agentList.insert( instanceName, instance );
+      m_ui->imapAccountComboBox->addItem( instanceName );
       imapAccountFound = true;
     }
   }
@@ -88,6 +92,11 @@ void SetupKolab::slotLaunchWizard()
 void SetupKolab::slotInstanceAddedRemoved()
 {
   updateCombobox();
+}
+
+void SetupKolab::slotCreateDefaultKolabCollections()
+{
+  //TODO
 }
 
 #include "setupkolab.moc"

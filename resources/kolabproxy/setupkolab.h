@@ -21,6 +21,7 @@
 #define SETUPKOLAB_H
 
 #include <KDialog>
+#include <akonadi/agentinstance.h>
 #include "ui_kolabsettings.h"
 
 class KolabProxyResource;
@@ -40,8 +41,10 @@ protected:
 protected slots:
   void slotLaunchWizard();
   void slotInstanceAddedRemoved();
+  void slotCreateDefaultKolabCollections();
 
 private:
+  QMap<QString, Akonadi::AgentInstance> m_agentList;
   Ui::SetupKolabView *m_ui;
   KolabProxyResource *m_parentResource;
 };
