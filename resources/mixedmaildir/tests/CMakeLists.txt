@@ -38,14 +38,9 @@ target_link_libraries(
   ${QT_QTGUI_LIBRARY}
 )
 
-# test for overwritten methods
-kde4_add_unit_test( templatemethodstest
- ../mixedmaildirstore.cpp
- templatemethodstest.cpp
-)
-
-target_link_libraries(
-  templatemethodstest
+# put the libraries all tests link against into a variable and use it
+# in target_link_libraries instead
+set( common_link_libraries
   kmindexreader
   maildir
   mbox
@@ -55,6 +50,17 @@ target_link_libraries(
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${QT_QTTEST_LIBRARY}
+)
+
+# test for overwritten methods
+kde4_add_unit_test( templatemethodstest
+ ../mixedmaildirstore.cpp
+ templatemethodstest.cpp
+)
+
+target_link_libraries(
+  templatemethodstest
+  ${common_link_libraries}
 )
 
 # test for collection creation handling
@@ -65,15 +71,7 @@ kde4_add_unit_test( collectioncreatetest
 
 target_link_libraries(
   collectioncreatetest
-  kmindexreader
-  maildir
-  mbox
-  akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${QT_QTTEST_LIBRARY}
+  ${common_link_libraries}
 )
 
 # test for collection deletion handling
@@ -84,15 +82,7 @@ kde4_add_unit_test( collectiondeletetest
 
 target_link_libraries(
   collectiondeletetest
-  kmindexreader
-  maildir
-  mbox
-  akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${QT_QTTEST_LIBRARY}
+  ${common_link_libraries}
 )
 
 # test for collection fetching handling
@@ -103,15 +93,7 @@ kde4_add_unit_test( collectionfetchtest
 
 target_link_libraries(
   collectionfetchtest
-  kmindexreader
-  maildir
-  mbox
-  akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${QT_QTTEST_LIBRARY}
+  ${common_link_libraries}
 )
 
 # test for collection modification handling
@@ -123,15 +105,7 @@ kde4_add_unit_test( collectionmodifytest
 
 target_link_libraries(
   collectionmodifytest
-  kmindexreader
-  maildir
-  mbox
-  akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${QT_QTTEST_LIBRARY}
+  ${common_link_libraries}
 )
 
 # test for collection move handling
@@ -143,15 +117,7 @@ kde4_add_unit_test( collectionmovetest
 
 target_link_libraries(
   collectionmovetest
-  kmindexreader
-  maildir
-  mbox
-  akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${QT_QTTEST_LIBRARY}
+  ${common_link_libraries}
 )
 
 # test for item creation handling
@@ -163,15 +129,7 @@ kde4_add_unit_test( itemcreatetest
 
 target_link_libraries(
   itemcreatetest
-  kmindexreader
-  maildir
-  mbox
-  akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${QT_QTTEST_LIBRARY}
+  ${common_link_libraries}
 )
 
 # test for item creation handling
@@ -183,13 +141,5 @@ kde4_add_unit_test( itemdeletetest
 
 target_link_libraries(
   itemdeletetest
-  kmindexreader
-  maildir
-  mbox
-  akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${QT_QTTEST_LIBRARY}
+  ${common_link_libraries}
 )
