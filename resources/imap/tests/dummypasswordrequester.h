@@ -31,16 +31,20 @@ public:
   QString password() const;
   void setPassword( const QString &password );
 
+  void setScenario( const QList<RequestType> &expectedCalls,
+                    const QList<ResultType> &results );
+
 public:
   virtual void requestPassword( RequestType request = StandardRequest,
                                 const QString &serverError = QString() );
 
 private slots:
-  void emitPassword();
+  void emitResult();
 
 private:
   QString m_password;
-  ResultType m_result;
+  QList<RequestType> m_calls;
+  QList<ResultType> m_results;
 };
 
 #endif

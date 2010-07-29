@@ -46,7 +46,10 @@ void SparqlBuilder::TriplePattern::setObject(const QUrl& object)
 
 static inline QString valueToString( const QString &value, const QUrl &type )
 {
-  return QLatin1Char( '"' ) + value + QLatin1String( "\"^^" ) + urlToString( type );
+  QString escapedValue( value );
+  escapedValue.replace( QLatin1Char( '"' ), QLatin1String( "\\\"" ) );
+
+  return QLatin1Char( '"' ) + escapedValue + QLatin1String( "\"^^" ) + urlToString( type );
 }
 
 void SparqlBuilder::TriplePattern::setObject(const QString& object)

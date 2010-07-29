@@ -28,7 +28,6 @@ namespace Akonadi {
   class Collection;
 }
 
-class KConfig;
 class KJob;
 class KSharedConfig;
 
@@ -50,6 +49,7 @@ class AbstractCollectionMigrator : public QObject
     virtual void setKMailConfig( const KSharedConfigPtr &config );
     virtual void setEmailIdentityConfig( const KSharedConfigPtr &config );
     virtual void setKcmKmailSummaryConfig( const KSharedConfigPtr &config );
+    virtual void setTemplatesConfig( const KSharedConfigPtr &config );
   Q_SIGNALS:
     void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
 

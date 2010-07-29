@@ -34,6 +34,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   ui.sink->setAccessRightsFilter( Akonadi::Collection::CanCreateItem );
   // Don't bother fetching the collection. Will have an empty name :-/
   ui.sink->setCollection( Collection( Settings::self()->sink() ) );
+  ui.sink->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
   kDebug() << "Sink from settings" << Settings::self()->sink();
 
   connect( this, SIGNAL(okClicked()), this, SLOT(save()) );

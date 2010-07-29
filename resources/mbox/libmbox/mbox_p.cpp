@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009 Bertjan Broeksema <b.broeksema@kdemail.net>
+  Copyright (c) 2009 Bertjan Broeksema <broeksema@kde.org>
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Library General Public
@@ -80,7 +80,10 @@ void MBoxPrivate::unlockMBox()
 QByteArray MBoxPrivate::mboxMessageSeparator( const QByteArray &msg )
 {
   KMime::Message mail;
-  mail.setHead( KMime::CRLFtoLF( msg ) );
+  QByteArray body, header;
+  KMime::HeaderParsing::extractHeaderAndBody( KMime::CRLFtoLF( msg ), header, body );
+  body.clear();
+  mail.setHead( header );
   mail.parse();
 
   QByteArray separator = "From ";

@@ -20,9 +20,10 @@ set(app_SRCS
   breadcrumbnavigationcontext.cpp
   dynamictreemodel.cpp
   dynamictreewidget.cpp
+  kresettingproxymodel.cpp
   mainwindow.cpp
   main.cpp
-  qtselectionproxymodel.cpp
+  kselectionproxymodel.cpp
   kbreadcrumbselectionmodel.cpp
   kmodelindexproxymapper.cpp
   kproxyitemselectionmodel.cpp

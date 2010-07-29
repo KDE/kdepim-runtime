@@ -69,7 +69,6 @@ Collection::List CollectionTreeBuilder::treeToList( const QHash< Entity::Id, Col
 void CollectionTreeBuilder::collectionFetchResult(KJob* job)
 {
   Q_UNUSED( job );
-//TODO what is the need of the unused parameter(s)?
   m_resultCollections.clear();
 
   // step 1: build the minimal sub-tree that contains all Kolab collections
@@ -89,7 +88,7 @@ void CollectionTreeBuilder::collectionFetchResult(KJob* job)
 
   // step 3: flatten the tree and adjust root node
   foreach ( Collection topLevel, remainingTree.value( Collection::root().id() ) ) { //krazy:exclude=foreach
-    topLevel.setParentCollection( resource()->root() );
+    topLevel.setParentCollection( Collection::root() );
     m_resultCollections.append( topLevel );
     m_resultCollections += treeToList( remainingTree, topLevel );
   }

@@ -23,14 +23,15 @@
 
 #include <QtCore/QTimer>
 
-#include <KDE/Akonadi/ResourceBase>
-
 #include <KDE/KMessageBox>
 #include <KDE/KLocale>
 
+#include <mailtransport/transportbase.h>
+
+#include "imapresource.h"
 #include "settings.h"
 
-SettingsPasswordRequester::SettingsPasswordRequester( Akonadi::ResourceBase *resource, QObject *parent )
+SettingsPasswordRequester::SettingsPasswordRequester( ImapResource *resource, QObject *parent )
   : PasswordRequesterInterface( parent ), m_resource( resource )
 {
 
@@ -60,8 +61,12 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
                                                KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
 
   if ( i == KMessageBox::Yes ) {
-    m_resource->configure( m_resource->winIdForDialogs() );
-    emit done( ReconnectNeeded );
+    int result = m_resource->configureDialog( m_resource->winIdForDialogs() );
+    if ( result==QDialog::Accepted ) {
+      emit done( ReconnectNeeded );
+    } else {
+      emit done( UserRejected );
+    }
   } else if ( i == KMessageBox::No ) {
     connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
              this, SLOT(onPasswordRequestCompleted(QString, bool)) );
@@ -78,7 +83,7 @@ void SettingsPasswordRequester::onPasswordRequestCompleted( const QString &passw
 
   if ( userRejected ) {
     emit done( UserRejected );
-  } else if ( password.isEmpty() ) {
+  } else if ( password.isEmpty() && (Settings::self()->authentication() != MailTransport::Transport::EnumAuthenticationType::GSSAPI) ) {
     emit done( EmptyPasswordEntered );
   } else {
     emit done( PasswordRetrieved, password );

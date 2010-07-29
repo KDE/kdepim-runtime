@@ -22,7 +22,6 @@
 #include <libmaildir/maildir.h>
 #include <libmbox/mbox.h>
 #include <KDebug>
-#include <KLocalizedString>
 #include <QtCore/QDir>
 
 MixedTreeConverter::MixedTreeConverter(QObject* parent): QObject(parent)

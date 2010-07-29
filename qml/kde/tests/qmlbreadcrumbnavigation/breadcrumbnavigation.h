@@ -65,7 +65,7 @@ private:
   void silentSelect(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
 
 private:
-  using QtSelectionProxyModel::setFilterBehavior;
+  using KSelectionProxyModel::setFilterBehavior;
 
   KForwardingItemSelectionModel *m_selectionModel;
 

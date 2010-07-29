@@ -264,6 +264,8 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         } else {
           moveTo = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail );
         }
+      } else {
+        kDebug() << "sentBehaviour=" << sA->sentBehaviour() << "using collection from attribute";
       }
       kDebug() << "Moving to sent-mail collection with id" << moveTo.id();
       if( !moveTo.isValid() ) {

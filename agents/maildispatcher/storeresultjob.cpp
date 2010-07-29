@@ -27,6 +27,7 @@
 #include <Akonadi/ItemModifyJob>
 
 #include <mailtransport/errorattribute.h>
+#include <mailtransport/dispatchmodeattribute.h>
 
 using namespace Akonadi;
 using namespace MailTransport;
@@ -74,13 +75,22 @@ void StoreResultJob::Private::fetchDone( KJob *job )
   
   // Store result in item.
   Item item = fjob->items().first();
-  item.clearFlag( "queued" );
   if( success ) {
+    item.clearFlag( "queued" );
     item.setFlag( "sent" );
+    item.setFlag( "\\SEEN" );
   } else {
     item.setFlag( "error" );
     ErrorAttribute *eA = new ErrorAttribute( message );
     item.addAttribute( eA );
+    // If dispatch failed, set the DispatchModeAttribute to Manual.
+    //  Otherwise, the user will *never* be able to try sending the mail again,
+    //  as Send Queued Messages will ignore it.
+    if( item.hasAttribute< DispatchModeAttribute >() ) {
+      item.attribute< DispatchModeAttribute >()->setDispatchMode( MailTransport::DispatchModeAttribute::Manual );
+    } else {
+      item.addAttribute( new DispatchModeAttribute( MailTransport::DispatchModeAttribute::Manual ) );
+    }
   }
 
   ItemModifyJob *mjob = new ItemModifyJob( item, q );

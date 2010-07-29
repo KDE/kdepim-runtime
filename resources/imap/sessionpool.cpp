@@ -43,7 +43,8 @@ SessionPool::SessionPool( int maxPoolSize, QObject *parent)
     m_maxPoolSize( maxPoolSize ),
     m_account( 0 ),
     m_passwordRequester( 0 ),
-    m_initialConnectDone( false )
+    m_initialConnectDone( false ),
+    m_pendingInitialSession( 0 )
 {
 }
 
@@ -84,7 +85,15 @@ bool SessionPool::connect( ImapAccount *account )
   }
 
   m_account = account;
-  m_passwordRequester->requestPassword();
+  if ( m_account->authenticationMode() == KIMAP::LoginJob::GSSAPI ) {
+    // for GSSAPI we don't have to ask for username/password, because it uses session wide tickets
+    QMetaObject::invokeMethod( this, "onPasswordRequestDone", Qt::QueuedConnection,
+                               Q_ARG( int, PasswordRequesterInterface::PasswordRetrieved ),
+                               Q_ARG( QString, QString() ) );
+  } else {
+    m_passwordRequester->requestPassword();
+  }
+
   return true;
 }
 
@@ -152,6 +161,9 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces() const
 
 void SessionPool::killSession( KIMAP::Session *session )
 {
+  QObject::disconnect( session, SIGNAL(connectionLost()),
+                       this, SLOT(onConnectionLost()) );
+
   KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( session );
   QObject::connect( logout, SIGNAL( result( KJob* ) ),
                     session, SLOT( deleteLater() ) );
@@ -160,6 +172,11 @@ void SessionPool::killSession( KIMAP::Session *session )
 
 void SessionPool::declareSessionReady( KIMAP::Session *session )
 {
+  m_pendingInitialSession = 0;
+
+  QObject::connect( session, SIGNAL(connectionLost()),
+                    this, SLOT(onConnectionLost()) );
+
   if ( !m_initialConnectDone ) {
     m_idlePool << session;
     m_initialConnectDone = true;
@@ -175,6 +192,8 @@ void SessionPool::declareSessionReady( KIMAP::Session *session )
 
 void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode, const QString &errorMessage )
 {
+  m_pendingInitialSession = 0;
+
   if ( !m_initialConnectDone ) {
     emit connectDone( errorCode,
                       i18n( "Could not connect to the IMAP-server %1.\n%2",
@@ -221,19 +240,32 @@ void SessionPool::processPendingRequests()
 
 void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
 {
+  QString errorMessage;
+
   switch ( resultType )
   {
   case PasswordRequesterInterface::PasswordRetrieved:
     // All is fine
     break;
   case PasswordRequesterInterface::ReconnectNeeded:
-    kFatal() << "Shouldn't happen at that stage";
+    Q_ASSERT( m_pendingInitialSession!=0 );
+    cancelSessionCreation( m_pendingInitialSession, ReconnectNeededError, errorMessage );
     return;
   case PasswordRequesterInterface::UserRejected:
-    emit connectDone( PasswordRequestError, i18n( "Could not read the password: user rejected wallet access" ) );
+    errorMessage = i18n( "Could not read the password: user rejected wallet access" );
+    if ( m_pendingInitialSession ) {
+      cancelSessionCreation( m_pendingInitialSession, LoginFailError, errorMessage );
+    } else {
+      emit connectDone( PasswordRequestError, errorMessage );
+    }
     return;
   case PasswordRequesterInterface::EmptyPasswordEntered:
-    emit connectDone( LoginFailError, i18n( "Empty password" ) );
+    errorMessage = i18n( "Empty password" );
+    if ( m_pendingInitialSession ) {
+      cancelSessionCreation( m_pendingInitialSession, LoginFailError, errorMessage );
+    } else {
+      emit connectDone( PasswordRequestError, errorMessage );
+    }
     return;
   }
 
@@ -247,8 +279,13 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     return;
   }
 
-  KIMAP::Session *session = new KIMAP::Session( m_account->server(), m_account->port(), this );
-  session->setUiProxy( m_sessionUiProxy );
+  KIMAP::Session *session = 0;
+  if ( m_pendingInitialSession ) {
+    session = m_pendingInitialSession;
+  } else {
+    session = new KIMAP::Session( m_account->server(), m_account->port(), this );
+    session->setUiProxy( m_sessionUiProxy );
+  }
 
   KIMAP::LoginJob *loginJob = new KIMAP::LoginJob( session );
   loginJob->setUserName( m_account->userName() );
@@ -275,12 +312,17 @@ void SessionPool::onLoginDone( KJob *job )
       capJob->start();
     }
   } else {
-    kWarning() << "Error during login:" << job->errorString();
-    cancelSessionCreation( login->session(),
-                           LoginFailError,
-                           i18n( "Could not connect to the IMAP-server %1.\n%2",
-                                 m_account->server(),
-                                 job->errorString() ) );
+    //kWarning() << "Error during login:" << job->errorString();
+    if ( m_initialConnectDone ) {
+      cancelSessionCreation( login->session(),
+                             LoginFailError,
+                             i18n( "Could not connect to the IMAP-server %1.\n%2",
+                                   m_account->server(),
+                                   job->errorString() ) );
+    } else {
+      m_pendingInitialSession = login->session();
+      m_passwordRequester->requestPassword( PasswordRequesterInterface::WrongPasswordRequest, job->errorString() );
+    }
   }
 }
 
@@ -304,7 +346,8 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   // They don't report UIDPLUS correctly so don't check for it explicitly
   // if it's one of those servers.
   if ( !m_capabilities.contains( "X-GM-EXT-1" )
-    && !capJob->session()->serverGreeting().contains( "GMX" ) ) {
+    && !capJob->session()->serverGreeting().contains( "GMX" ) 
+    && !capJob->session()->serverGreeting().contains( "migmx" ) ) {
     expected << "UIDPLUS";
   }
 
@@ -358,6 +401,18 @@ void SessionPool::onNamespacesTestDone( KJob *job )
   }
 
   declareSessionReady( nsJob->session() );
+}
+
+void SessionPool::onConnectionLost()
+{
+  KIMAP::Session *session = static_cast<KIMAP::Session*>( sender() );
+
+  m_idlePool.removeAll( session );
+  m_reservedPool.removeAll( session );
+
+  emit connectionLost( session );
+
+  session->deleteLater();
 }
 
 #include "sessionpool.moc"

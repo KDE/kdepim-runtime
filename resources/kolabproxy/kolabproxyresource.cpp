@@ -20,6 +20,7 @@
 #include "kolabproxyresource.h"
 
 #include "settings.h"
+#include "setupkolab.h"
 #include "settingsadaptor.h"
 #include "collectionannotationsattribute.h"
 #include "addressbookhandler.h"
@@ -98,20 +99,6 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   connect(m_collectionMonitor, SIGNAL(collectionChanged(const Akonadi::Collection &)), this, SLOT(imapCollectionChanged(const Akonadi::Collection &)));
   connect(m_collectionMonitor, SIGNAL(collectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)), this, SLOT(imapCollectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)) );
 
-  m_root.setName( identifier() );
-  m_root.setParentCollection( Collection::root() );
-  EntityDisplayAttribute *attr = m_root.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-  attr->setDisplayName( i18n("Kolab") );
-  attr->setIconName( "kolab" );
-  m_root.setContentMimeTypes( QStringList() << Collection::mimeType() );
-  m_root.setRemoteId( identifier() );
-  m_root.setRights( Collection::ReadOnly );
-  CachePolicy policy;
-  policy.setInheritFromParent( false );
-  policy.setCacheTimeout( -1 );
-  policy.setLocalParts( QStringList() << QLatin1String( "ALL" ) );
-  m_root.setCachePolicy( policy );
-
   setName( i18n("Kolab") );
 
   // among other things, this ensures that m_root actually exists when a new imap folder is added
@@ -138,8 +125,6 @@ void KolabProxyResource::retrieveCollectionsTreeDone(KJob* job)
     Collection::List imapCollections = qobject_cast<CollectionTreeBuilder*>( job )->allCollections();
 
     Collection::List kolabCollections;
-    kolabCollections.append( m_root );
-
     Q_FOREACH(const Collection &collection, imapCollections)
       kolabCollections.append( createCollection(collection) );
     collectionsRetrieved( kolabCollections );
@@ -215,7 +200,15 @@ void KolabProxyResource::configure( WId windowId )
   // "on top of parent" behavior if the running window manager applies any kind
   // of focus stealing prevention technique
 
-  emit configurationDialogAccepted();
+  QPointer<SetupKolab> kolabConfigDialog( new SetupKolab( this, windowId ) );
+  if ( kolabConfigDialog->exec() == QDialog::Accepted ) {
+    emit configurationDialogAccepted();
+  }
+  else {
+    emit configurationDialogRejected();
+  }
+
+  delete kolabConfigDialog;
 }
 
 void KolabProxyResource::itemAdded( const Item &item, const Collection &collection )
@@ -411,7 +404,7 @@ void KolabProxyResource::applyAttributesToImap( Collection &imapCollection, cons
     if ( attr->type() == "AccessRights" )
       continue;
 
-    kDebug() << "cloning" << attr->type();
+    //kDebug() << "cloning" << attr->type();
     imapCollection.addAttribute( attr->clone() );
   }
 }
@@ -431,7 +424,7 @@ void KolabProxyResource::applyAttributesFromImap( Collection &kolabCollection, c
     if ( attr->type() == "AccessRights" )
       continue;
 
-    kDebug() << "cloning" << attr->type();
+    //kDebug() << "cloning" << attr->type();
     kolabCollection.addAttribute( attr->clone() );
   }
 }
@@ -597,7 +590,6 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
     // if that fails it's not in our tree -> we don't care
     Collection kolabCollection = createCollection( collection );
     CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
-    connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
   } else {
     // Kolab folder we already have in our tree, if the update fails, reload our tree
     Collection kolabCollection = createCollection( collection );
@@ -641,22 +633,36 @@ void KolabProxyResource::imapCollectionRemoved(const Collection &imapCollection)
 Collection KolabProxyResource::createCollection(const Collection& imapCollection)
 {
   Collection c;
-  if ( imapCollection.parentCollection().remoteId() == m_root.remoteId() )
-    c.setParentCollection( m_root );
-  else
+  if ( imapCollection.parentCollection() == Collection::root() ) {
+    c.setParentCollection( Collection::root() );
+    CachePolicy policy;
+    policy.setInheritFromParent( false );
+    policy.setCacheTimeout( -1 );
+    policy.setLocalParts( QStringList() << QLatin1String( "ALL" ) );
+    c.setCachePolicy( policy );
+  } else {
     c.parentCollection().setRemoteId( QString::number( imapCollection.parentCollection().id() ) );
+  }
+  c.setName( imapCollection.name() );
   EntityDisplayAttribute *imapAttr = imapCollection.attribute<EntityDisplayAttribute>();
   EntityDisplayAttribute *kolabAttr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
   if ( imapAttr ) {
     if ( imapAttr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
       kolabAttr->setDisplayName( i18n( "My Data" ) );
       kolabAttr->setIconName( QLatin1String( "view-pim-summary" ) );
+    } else if ( imapCollection.parentCollection() == Collection::root() ) {
+      c.setName( i18n( "Kolab (%1)", imapAttr->displayName() ) );
+      kolabAttr->setIconName( QLatin1String( "kolab" ) );
     } else {
       kolabAttr->setDisplayName( imapAttr->displayName() );
       kolabAttr->setIconName( imapAttr->iconName() );
     }
+  } else {
+    if ( imapCollection.parentCollection() == Collection::root() ) {
+      c.setName( i18n( "Kolab (%1)", imapCollection.name() ) );
+      kolabAttr->setIconName( QLatin1String( "kolab" ) );
+    }
   }
-  c.setName( imapCollection.name() );
   applyAttributesFromImap( c, imapCollection );
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
   QStringList contentTypes;

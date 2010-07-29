@@ -24,17 +24,14 @@
 
 #include <passwordrequesterinterface.h>
 
-namespace Akonadi
-{
-class ResourceBase;
-}
+class ImapResource;
 
 class SettingsPasswordRequester : public PasswordRequesterInterface
 {
   Q_OBJECT
 
 public:
-  SettingsPasswordRequester( Akonadi::ResourceBase *resource, QObject *parent = 0 );
+  SettingsPasswordRequester( ImapResource *resource, QObject *parent = 0 );
 
   virtual void requestPassword( RequestType request = StandardRequest,
                                 const QString &serverError = QString() );
@@ -44,7 +41,7 @@ private slots:
   void onPasswordRequestCompleted( const QString &password, bool userRejected );
 
 private:
-  Akonadi::ResourceBase *m_resource;
+  ImapResource *m_resource;
 };
 
 #endif

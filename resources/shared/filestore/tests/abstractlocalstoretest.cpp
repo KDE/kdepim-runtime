@@ -84,35 +84,35 @@ class TestStore : public AbstractLocalStore
       errorText = mErrorText;
     }
 
-    void checkCollectionFetch( CollectionFetchJob *job, int &errorCode, QString &errorText ) const
+    void checkCollectionFetch( Akonadi::FileStore::CollectionFetchJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
       errorText = mErrorText;
     }
 
-    void checkCollectionModify( CollectionModifyJob *job, int &errorCode, QString &errorText ) const
+    void checkCollectionModify( Akonadi::FileStore::CollectionModifyJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
       errorText = mErrorText;
     }
 
-    void checkCollectionMove( CollectionMoveJob *job, int &errorCode, QString &errorText ) const
+    void checkCollectionMove( Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
       errorText = mErrorText;
     }
 
-    void checkItemCreate( ItemCreateJob *job, int &errorCode, QString &errorText ) const
+    void checkItemCreate( Akonadi::FileStore::ItemCreateJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
       errorText = mErrorText;
     }
 
-    void checkItemDelete( ItemDeleteJob *job, int &errorCode, QString &errorText ) const
+    void checkItemDelete( Akonadi::FileStore::ItemDeleteJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
@@ -126,7 +126,7 @@ class TestStore : public AbstractLocalStore
       errorText = mErrorText;
     }
 
-    void checkItemModify( ItemModifyJob *job, int &errorCode, QString &errorText ) const
+    void checkItemModify( Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
@@ -363,7 +363,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
 
 void AbstractLocalStoreTest::testFetchCollection()
 {
-  CollectionFetchJob *job = 0;
+  Akonadi::FileStore::CollectionFetchJob *job = 0;
 
   // test without setPath()
   job = mStore->fetchCollections( Collection() );
@@ -416,7 +416,7 @@ void AbstractLocalStoreTest::testFetchCollection()
 
   // test fetch of top level collection only
   collection.setRemoteId( mStore->topLevelCollection().remoteId() );
-  job = mStore->fetchCollections( collection, CollectionFetchJob::Base );
+  job = mStore->fetchCollections( collection, Akonadi::FileStore::CollectionFetchJob::Base );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
   QCOMPARE( job->error(), 0 );
@@ -430,7 +430,7 @@ void AbstractLocalStoreTest::testFetchCollection()
 
 void AbstractLocalStoreTest::testModifyCollection()
 {
-  CollectionModifyJob *job = 0;
+  Akonadi::FileStore::CollectionModifyJob *job = 0;
 
   // test without setPath()
   job = mStore->modifyCollection( Collection() );
@@ -682,7 +682,7 @@ void AbstractLocalStoreTest::testFetchItem()
 
 void AbstractLocalStoreTest::testCreateItem()
 {
-  ItemCreateJob *job = 0;
+  Akonadi::FileStore::ItemCreateJob *job = 0;
 
   // test without setPath()
   job = mStore->createItem( Item(), Collection() );
@@ -790,7 +790,7 @@ void AbstractLocalStoreTest::testDeleteItem()
 
 void AbstractLocalStoreTest::testModifyItem()
 {
-  ItemModifyJob *job = 0;
+  Akonadi::FileStore::ItemModifyJob *job = 0;
 
   // test without setPath()
   job = mStore->modifyItem( Item() );

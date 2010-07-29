@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2008 Bertjan Broeksema <b.broeksema@kdemail.net>
+    Copyright (c) 2008 Bertjan Broeksema <broeksema@kde.org>
     Copyright (c) 2008 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -186,6 +186,9 @@ void SingleFileResourceBase::reloadFile()
     writeFile();
 
   readFile();
+
+  // name or rights could have changed
+  synchronizeCollectionTree();
 }
 
 void SingleFileResourceBase::handleProgress( KJob *, unsigned long pct )
@@ -206,7 +209,7 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
   if ( newHash == mCurrentHash )
     return;
 
-  if ( !mCurrentUrl.isEmpty() ) {  
+  if ( !mCurrentUrl.isEmpty() ) {
     QString lostFoundFileName;
     const KUrl prevUrl = mCurrentUrl;
     int i = 0;
@@ -214,7 +217,7 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
       lostFoundFileName = KStandardDirs::locateLocal( "data", identifier() + QDir::separator()
           + prevUrl.fileName() + '-' + QString::number( ++i ) );
     } while ( KStandardDirs::exists( lostFoundFileName ) );
-    
+
     // create the directory if it doesn't exist yet
     QDir dir = QFileInfo(lostFoundFileName).dir();
     if ( !dir.exists() )

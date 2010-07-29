@@ -27,6 +27,30 @@
 #include <klocale.h>
 #include <kpimutils/kfileio.h>
 
+#include <kde_file.h>
+#include <time.h>
+#include <unistd.h>
+
+static void initRandomSeed()
+{
+  static bool init = false;
+  if ( !init ) {
+    unsigned int seed;
+    init = true;
+    int fd = KDE_open( "/dev/urandom", O_RDONLY );
+    if ( fd < 0 || ::read( fd, &seed, sizeof( seed ) ) != sizeof( seed ) ) {
+      // No /dev/urandom... try something else.
+      srand( getpid() );
+      seed = rand() + time( 0 );
+    }
+
+    if ( fd >= 0 )
+      close( fd );
+
+    qsrand( seed );
+  }
+}
+
 using namespace KPIM;
 
 class Maildir::Private
@@ -35,6 +59,10 @@ public:
     Private( const QString& p, bool isRoot )
         :path(p), isRoot(isRoot)
     {
+      // The default implementation of QUuid::createUuid() doesn't use
+      // a seed that is random enough. Therefor we use our own initialization
+      // until this issue will be fixed in Qt 4.7.
+      initRandomSeed();
     }
 
     Private( const Private& rhs )
@@ -409,9 +437,20 @@ void Maildir::writeEntry( const QString& key, const QByteArray& data )
 
 QString Maildir::addEntry( const QByteArray& data )
 {
-    QString uniqueKey( createUniqueFileName() );
-    QString key( d->path + QLatin1String( "/tmp/" ) + uniqueKey );
-    QString finalKey( d->path + QLatin1String( "/new/" ) + uniqueKey );
+    QString uniqueKey;
+    QString key;
+    QString finalKey;
+    QString curKey;
+
+    // QUuid doesn't return globally unique identifiers, therefor we query until we
+    // get one that doesn't exists yet
+    do {
+      uniqueKey = createUniqueFileName();
+      key = d->path + QLatin1String( "/tmp/" ) + uniqueKey;
+      finalKey = d->path + QLatin1String( "/new/" ) + uniqueKey;
+      curKey = d->path + QLatin1String( "/cur/" ) + uniqueKey;
+    } while ( QFile::exists( key ) || QFile::exists( finalKey ) || QFile::exists( curKey ) );
+
     QFile f( key );
     f.open( QIODevice::WriteOnly );
     f.write( data );

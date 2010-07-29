@@ -10,6 +10,10 @@
       <label>Path to KDE accounts file.</label>
       <default></default>
     </entry>
+    <entry name="DisplayName" type="String">
+      <label>Display name.</label>
+      <default></default>
+    </entry>
     <entry name="ReadOnly" type="Bool">
       <label>Do not change the actual backend data.</label>
       <default>true</default>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author>Bertjan Broeksema &lt;b.broeksema@kdemail.net&gt;</author>
+ <author>Bertjan Broeksema &lt;broeksema@kde.org&gt;</author>
  <class>LockFilePage</class>
  <widget class="QWidget" name="LockFilePage">
   <property name="geometry">
@@ -24,7 +24,7 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Select a method to lock the mbox file when data is read from or written to the file.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note&lt;/span&gt;: For some of them it might be needed that you have to install additional software before the method can be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note&lt;/span&gt;: For some methods you might need to install additional software before they can be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -89,7 +89,7 @@ p, li { white-space: pre-wrap; }
       <item row="4" column="0" colspan="2">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>None, the default configuration, should be safe in most cases.  However, if programs that do not make use of akonadi are also accessing the configured mbox file, you will need to set an appropriate locking method. Note that if this is the case, the resource and the other programs must all use the same locking method.</string>
+         <string>None, the default configuration, should be safe in most cases.  However, if programs that do not make use of Akonadi are also accessing the configured mbox file, you will need to set an appropriate locking method. Note that if this is the case, the resource and the other programs must all use the same locking method.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

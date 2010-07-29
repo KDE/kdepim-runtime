@@ -24,18 +24,26 @@ import org.kde 4.5
 import org.kde.akonadi 4.5
 
 BreadcrumbNavigationView {
+  id : breadcrumbView
+
+  property bool showUnread : false
+
   topDelegate : CollectionDelegate {
+    indentation : 35
     fullClickArea : true
+    topItem : true
     height : itemHeight
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = -1;
-      breadcrumbTopLevel.state = "before_select_breadcrumb";
+      breadcrumbTopLevel.state = "before_select_home";
     }
   }
 
   breadcrumbDelegate : CollectionDelegate {
+    indentation : 35
     fullClickArea : true
     height : itemHeight
+    showUnread : breadcrumbView.showUnread
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = row;
       breadcrumbTopLevel.state = "before_select_breadcrumb";
@@ -43,15 +51,19 @@ BreadcrumbNavigationView {
   }
 
   selectedItemDelegate : CollectionDelegate {
+    indentation : 35
     height : itemHeight
     selectedDelegate : true
+    showUnread : breadcrumbView.showUnread
   }
 
   childItemsDelegate : CollectionDelegate {
+    indentation : 35
     id : childDelegateWrapper
     height : itemHeight
     fullClickArea : true
     showChildIndicator : true
+    showUnread : breadcrumbView.showUnread
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = row;
       breadcrumbTopLevel.state = "before_select_child";

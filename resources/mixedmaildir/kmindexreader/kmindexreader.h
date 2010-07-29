@@ -23,8 +23,8 @@
 
 #include "kmindexreader_export.h"
 
-#include "messagestatus.h"
-using KPIM::MessageStatus;
+#include <akonadi/kmime/messagestatus.h>
+using Akonadi::MessageStatus;
 
 #include <QString>
 #include <QStringList>
@@ -43,11 +43,12 @@ namespace boost
 class KMINDEXREADER_EXPORT KMIndexData {
     Q_DISABLE_COPY( KMIndexData )
 public:
-    KMIndexData() {}
+    KMIndexData();
     /** Status object of the message. */
     MessageStatus& status();
     QStringList  tagList() const ;
     quint64 uid() const;
+    bool isEmpty() const;
 
 private:
     QString mCachedStringParts[20];

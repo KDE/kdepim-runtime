@@ -21,10 +21,12 @@
 
 #include "mixedmaildirresource.h"
 
+#include "compactchangehelper.h"
 #include "configdialog.h"
 #include "mixedmaildirstore.h"
 #include "settings.h"
 #include "settingsadaptor.h"
+
 
 #include "filestore/collectioncreatejob.h"
 #include "filestore/collectiondeletejob.h"
@@ -43,6 +45,7 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/kmime/messagestatus.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionfetchscope.h>
 
@@ -61,7 +64,7 @@
 using namespace Akonadi;
 
 MixedMaildirResource::MixedMaildirResource( const QString &id )
-    : ResourceBase( id ), mStore( new MixedMaildirStore() )
+    : ResourceBase( id ), mStore( new MixedMaildirStore() ), mCompactHelper( 0 )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -86,6 +89,9 @@ MixedMaildirResource::MixedMaildirResource( const QString &id )
       setName( mStore->topLevelCollection().name() );
     }
   }
+
+  const QByteArray compactHelperSessionId = id.toUtf8() + "-compacthelper";
+  mCompactHelper = new CompactChangeHelper( compactHelperSessionId, this );
 }
 
 MixedMaildirResource::~MixedMaildirResource()
@@ -135,8 +141,9 @@ void MixedMaildirResource::configure( WId windowId )
   }
 }
 
-void MixedMaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
+void MixedMaildirResource::itemAdded( const Item &item, const Collection& collection )
 {
+/*  kDebug() << "item.id=" << item.id() << "col=" << collection.remoteId();*/
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
     kError() << message;
@@ -148,8 +155,10 @@ void MixedMaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi:
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemAddedResult( KJob* ) ) );
 }
 
-void MixedMaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
+void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>& parts )
 {
+/*  kDebug() << "item.id=" << item.id() << "col=" << item.parentCollection().remoteId()
+           << "parts=" << parts;*/
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
     kError() << message;
@@ -162,18 +171,25 @@ void MixedMaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QB
     return;
   }
 
-  Q_UNUSED( parts );
-//   const bool hasPayload = parts.contains( Item::FullPayload ) || parts.contains( MessagePart::Body );
-//   Q_ASSERT( !hasPayload || item.hasPayload<KMime::Message::Ptr>() );
+  // TODO this is probably something the store should decide
+  const bool payloadChanged = parts.contains( Item::FullPayload ) ||
+                              parts.contains( MessagePart::Header ) ||
+                              parts.contains( MessagePart::Envelope ) ||
+                              parts.contains( MessagePart::Body );
 
-  FileStore::ItemModifyJob *job = mStore->modifyItem( item );
-  job->setIgnorePayload( !item.hasPayload<KMime::Message::Ptr>() );
-  job->setProperty( "originalRemoteId", item.remoteId() );
+  Item storeItem( item );
+  storeItem.setRemoteId( mCompactHelper->currentRemoteId( item ) );
+
+  FileStore::ItemModifyJob *job = mStore->modifyItem( storeItem );
+  job->setIgnorePayload( !payloadChanged || !item.hasPayload<KMime::Message::Ptr>() );
+  job->setProperty( "originalRemoteId", storeItem.remoteId() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemChangedResult( KJob* ) ) );
 }
 
 void MixedMaildirResource::itemMoved( const Item &item, const Collection &source, const Collection &destination )
 {
+/*  kDebug() << "item.id=" << item.id() << "remoteId=" << item.remoteId()
+           << "source=" << source.remoteId() << "dest=" << destination.remoteId();*/
   if ( source == destination ) {
     changeProcessed();
     return;
@@ -187,6 +203,7 @@ void MixedMaildirResource::itemMoved( const Item &item, const Collection &source
   }
 
   Item moveItem = item;
+  moveItem.setRemoteId( mCompactHelper->currentRemoteId( item ) );
   moveItem.setParentCollection( source );
 
   FileStore::ItemMoveJob *job = mStore->moveItem( moveItem, destination );
@@ -194,8 +211,10 @@ void MixedMaildirResource::itemMoved( const Item &item, const Collection &source
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemMovedResult( KJob* ) ) );
 }
 
-void MixedMaildirResource::itemRemoved(const Akonadi::Item & item)
+void MixedMaildirResource::itemRemoved(const Item &item)
 {
+/*  kDebug() << "item.id=" << item.id() << "col=" << collection.remoteId()
+           << "collection.remoteRevision=" << item.parentCollection().remoteRevision();*/
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
     kError() << message;
@@ -203,7 +222,9 @@ void MixedMaildirResource::itemRemoved(const Akonadi::Item & item)
     return;
   }
 
-  FileStore::ItemDeleteJob *job = mStore->deleteItem( item );
+  Item storeItem( item );
+  storeItem.setRemoteId( mCompactHelper->currentRemoteId( item ) );
+  FileStore::ItemDeleteJob *job = mStore->deleteItem( storeItem );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( itemRemovedResult( KJob* ) ) );
 }
 
@@ -222,7 +243,7 @@ void MixedMaildirResource::retrieveCollections()
   status( Running, i18nc( "@info:status", "Synchronizing email folders" ) );
 }
 
-void MixedMaildirResource::retrieveItems( const Akonadi::Collection & col )
+void MixedMaildirResource::retrieveItems( const Collection & col )
 {
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
@@ -237,7 +258,7 @@ void MixedMaildirResource::retrieveItems( const Akonadi::Collection & col )
   status( Running, i18nc( "@info:status", "Synchronizing email folder %1", col.name() ) );
 }
 
-bool MixedMaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool MixedMaildirResource::retrieveItem( const Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
 
@@ -254,7 +275,7 @@ bool MixedMaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
   return true;
 }
 
-void MixedMaildirResource::collectionAdded(const Collection & collection, const Collection &parent)
+void MixedMaildirResource::collectionAdded(const Collection &collection, const Collection &parent)
 {
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
@@ -267,7 +288,7 @@ void MixedMaildirResource::collectionAdded(const Collection & collection, const 
   connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionAddedResult( KJob* ) ) );
 }
 
-void MixedMaildirResource::collectionChanged(const Collection & collection)
+void MixedMaildirResource::collectionChanged(const Collection &collection)
 {
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
@@ -275,12 +296,26 @@ void MixedMaildirResource::collectionChanged(const Collection & collection)
     cancelTask( message );
     return;
   }
+
+  // when the top level collection gets renamed, we do not rename the directory
+  // but rename the resource.
+  if ( collection.remoteId() == mStore->topLevelCollection().remoteId() ) {
+    if ( collection.name() != name() ) {
+      kDebug() << "TopLevel collection name differs from resource name: collection="
+               << collection.name() << "resource=" << name() << ". Renaming resource";
+      setName( collection.name() );
+    }
+    changeCommitted( collection );
+    return;
+  }
+
+  mCompactHelper->checkCollectionChanged( collection );
 
   FileStore::CollectionModifyJob *job = mStore->modifyCollection( collection );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionChangedResult( KJob* ) ) );
 }
 
-void MixedMaildirResource::collectionChanged(const Collection & collection, const QSet<QByteArray> &changedAttributes )
+void MixedMaildirResource::collectionChanged(const Collection &collection, const QSet<QByteArray> &changedAttributes )
 {
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
@@ -288,6 +323,20 @@ void MixedMaildirResource::collectionChanged(const Collection & collection, cons
     cancelTask( message );
     return;
   }
+
+  // when the top level collection gets renamed, we do not rename the directory
+  // but rename the resource.
+  if ( collection.remoteId() == mStore->topLevelCollection().remoteId() ) {
+    if ( collection.name() != name() ) {
+      kDebug() << "TopLevel collection name differs from resource name: collection="
+               << collection.name() << "resource=" << name() << ". Renaming resource";
+      setName( collection.name() );
+    }
+    changeCommitted( collection );
+    return;
+  }
+
+  mCompactHelper->checkCollectionChanged( collection );
 
   Q_UNUSED( changedAttributes );
 
@@ -325,7 +374,7 @@ void MixedMaildirResource::collectionMoved( const Collection &collection, const 
   connect( job, SIGNAL( result( KJob* ) ), SLOT( collectionMovedResult( KJob* ) ) );
 }
 
-void MixedMaildirResource::collectionRemoved( const Akonadi::Collection &collection )
+void MixedMaildirResource::collectionRemoved( const Collection &collection )
 {
    if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
@@ -440,7 +489,26 @@ void MixedMaildirResource::retrieveItemsResult( KJob *job )
   FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob*>( job );
   Q_ASSERT( fetchJob != 0 );
 
-  const Item::List items = fetchJob->items();
+  // messages marked as deleted have been deleted from mbox files but never got purged
+  // TODO FileStore could provide deleteItems() to deleted all filtered items in one go
+  KJob* deleteJob = 0;
+  Item::List items;
+  Q_FOREACH( const Item &item, fetchJob->items() ) {
+    Akonadi::MessageStatus status;
+    status.setStatusFromFlags( item.flags() );
+    if ( status.isDeleted() ) {
+      deleteJob = mStore->deleteItem( item );
+    } else {
+      items << item;
+    }
+  }
+
+  if ( deleteJob != 0 ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << items.count() << "of" << fetchJob->items().count()
+      << "items remain after checking for items marked as Deleted";
+    // last item delete triggers mbox purge, i.e. store compact
+    Q_ASSERT( connect( deleteJob, SIGNAL( result( KJob* ) ), this, SLOT( itemsDeleted( KJob* ) ) ) );
+  }
 
   // if some items have tags, we need to complete the retrieval and schedule tagging
   // to a later time so we can then fetch the items to get their Akonadi URLs
@@ -508,6 +576,7 @@ void MixedMaildirResource::itemAddedResult( KJob *job )
   FileStore::ItemCreateJob *itemJob = qobject_cast<FileStore::ItemCreateJob*>( job );
   Q_ASSERT( itemJob != 0 );
 
+/*  kDebug() << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId();*/
   changeCommitted( itemJob->item() );
 
   checkForInvalidatedIndexCollections( job );
@@ -529,12 +598,8 @@ void MixedMaildirResource::itemChangedResult( KJob *job )
 
   const QString remoteId = itemJob->property( "originalRemoteId" ).value<QString>();
 
-  // only schedule compact if the modifed item is from an MBox, i.e. has a numerical
-  // remoteId (Maildir items have strings with non-numeral characters)
-  // the store can modify Maildir items but MBox requires append new + delete old
-  bool ok = false;
-  remoteId.toULongLong( &ok );
-  if ( ok ) {
+  const QVariant compactStoreVar = itemJob->property( "compactStore" );
+  if ( compactStoreVar.isValid() && compactStoreVar.toBool() ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
 
@@ -556,12 +621,11 @@ void MixedMaildirResource::itemMovedResult( KJob *job )
   changeCommitted( itemJob->item() );
 
   const QString remoteId = itemJob->property( "originalRemoteId" ).value<QString>();
+//   kDebug() << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId()
+//            << "old remoteId=" << remoteId;
 
-  // only schedule compact if the delete item is from an MBox, i.e. has a numerical
-  // remoteId (Maildir items have strings with non-numeral characters)
-  bool ok = false;
-  remoteId.toULongLong( &ok );
-  if ( ok ) {
+  const QVariant compactStoreVar = itemJob->property( "compactStore" );
+  if ( compactStoreVar.isValid() && compactStoreVar.toBool() ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
 
@@ -584,15 +648,18 @@ void MixedMaildirResource::itemRemovedResult( KJob *job )
 
   const QString remoteId = itemJob->item().remoteId();
 
-  // only schedule compact if the delete item is from an MBox, i.e. has a numerical
-  // remoteId (Maildir items have strings with non-numeral characters)
-  bool ok = false;
-  remoteId.toULongLong( &ok );
-  if ( ok ) {
+  const QVariant compactStoreVar = itemJob->property( "compactStore" );
+  if ( compactStoreVar.isValid() && compactStoreVar.toBool() ) {
     scheduleCustomTask( this, "compactStore", QVariant() );
   }
 
   checkForInvalidatedIndexCollections( job );
+}
+
+void MixedMaildirResource::itemsDeleted( KJob *job )
+{
+  Q_UNUSED( job );
+  scheduleCustomTask( this, "compactStore", QVariant() );
 }
 
 void MixedMaildirResource::collectionAddedResult( KJob *job )
@@ -608,8 +675,6 @@ void MixedMaildirResource::collectionAddedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
-
-  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::collectionChangedResult( KJob *job )
@@ -659,8 +724,6 @@ void MixedMaildirResource::collectionRemovedResult( KJob *job )
   Q_ASSERT( colJob != 0 );
 
   changeCommitted( colJob->collection() );
-
-  checkForInvalidatedIndexCollections( job );
 }
 
 void MixedMaildirResource::compactStore( const QVariant &arg )
@@ -686,29 +749,7 @@ void MixedMaildirResource::compactStoreResult( KJob *job )
   const Item::List items = compactJob->changedItems();
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Compacting store resulted in" << items.count() << "changed items";
 
-  // TODO this has to be done asynchronous
-  Q_FOREACH( const Item &item, items ) {
-    ItemFetchJob *fetchJob = new ItemFetchJob( item );
-    if ( !fetchJob->exec() ) {
-      kError() << "Fetch for item" << item.remoteId() << "parentCollection" << item.parentCollection() << "failed:" << fetchJob->errorString();
-      continue;
-    }
-
-    if ( fetchJob->items().isEmpty() ) {
-      kError() << "Fetch for item" << item.remoteId() << "parentCollection" << item.parentCollection() << "failed:" << fetchJob->errorString();
-      continue;
-    }
-
-    Item changedItem = fetchJob->items()[ 0 ];
-    changedItem.setRemoteId( item.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId() );
-    changedItem.removeAttribute<FileStore::EntityCompactChangeAttribute>();
-
-    ItemModifyJob *modifyJob = new ItemModifyJob( changedItem );
-    if ( !modifyJob->exec() ) {
-      kError() << "Modify for item" << changedItem.remoteId() << "parentCollection" << item.parentCollection() << "failed:" << fetchJob->errorString();
-      continue;
-    }
-  }
+  mCompactHelper->addChangedItems( items );
 
   taskDone();
 

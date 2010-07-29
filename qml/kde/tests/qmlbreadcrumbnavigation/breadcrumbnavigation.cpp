@@ -22,6 +22,7 @@
 #include "breadcrumbnavigation.h"
 
 #include <QStringList>
+#include "kdebug.h"
 
 KBreadcrumbNavigationProxyModel::KBreadcrumbNavigationProxyModel(QItemSelectionModel* selectionModel, QObject* parent)
   : KSelectionProxyModel(selectionModel, parent)
@@ -79,7 +80,7 @@ void KNavigatingProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
   disconnect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(_sourceRowsInserted(QModelIndex,int,int)));
   disconnect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(_sourceRowsRemoved(QModelIndex,int,int)));
 
-  QtSelectionProxyModel::setSourceModel(sourceModel);
+  KSelectionProxyModel::setSourceModel(sourceModel);
   updateNavigation();
 
   connect(sourceModel, SIGNAL(modelReset()), SLOT(updateNavigation()));
@@ -171,7 +172,14 @@ void KForwardingItemSelectionModel::select(const QItemSelection& selection, QIte
 
 void KForwardingItemSelectionModel::navigationSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-  select(selected, ClearAndSelect);
+  // ### The KNavigatingProxyModel selects all top level items if there is 'no selection'.
+  // This slot is called when we newly get a selection, so we can unselect all.
+  if (selectedRows().size() == model()->rowCount())
+    select(selected, ClearAndSelect);
+  else
+    select(selected, Select);
+
+  select(deselected, Deselect);
   if (selected == selection())
     resetNavigation();
 }

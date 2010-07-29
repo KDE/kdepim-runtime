@@ -27,33 +27,58 @@ using namespace Akonadi;
 
 namespace Tray
 {
+
 void Global::init()
 {
     const QString serverConfigFile = XdgBaseDirs::akonadiServerConfigFile( XdgBaseDirs::ReadWrite );
     QSettings settings( serverConfigFile, QSettings::IniFormat );
 
-    const QString defaultDriver = QLatin1String( "QMYSQL" );
-    const QString driver = settings.value( QLatin1String( "General/Driver" ), defaultDriver ).toString();
-    if ( driver != QLatin1String( "QMYSQL" ) ) {
+    m_dbdriver = settings.value( "General/Driver", "QMYSQL" ).toString();
+    settings.beginGroup( m_dbdriver );
+
+    if( m_dbdriver == "QPSQL" ) {
+        m_dbname = settings.value( "Name", "akonadi" ).toString();
+        m_dboptions.append( "--host=" + settings.value( "Host", "" ).toString() );
+        // If the server is started by the user, we don't need to know the username/password.
+        bool startServer = settings.value( "StartServer", "true" ).toBool();
+        if( !startServer ) {
+            // TODO: postgres will always ask for the user password ! implement .pgpass
+            m_dboptions.append( "--username=" + settings.value( "User", "" ).toString() );
+        }
+        settings.endGroup();
         m_parsed = true;
-        return;
     }
 
-    settings.beginGroup( "QMYSQL" );
-    const QString host = settings.value( "Host", "" ).toString();
-    if ( host.isEmpty() ) {
-        const QString options = settings.value( "Options", "" ).toString();
-        const QStringList list = options.split( '=' );
-        m_dboptions.append( "--socket=" + list.at( 1 ) );
-    } else {
-        m_dboptions.append( "--host=" + host );
-        m_dboptions.append( "--user=" + settings.value( "User", "" ).toString() );
-        m_dboptions.append( "--password=" + settings.value( "Password", "" ).toString() );
-    }
-    m_dbname = settings.value( "Name", "akonadi" ).toString();
-    settings.endGroup();
+    else if( m_dbdriver == "QMYSQL" ) {
+        m_dbname = settings.value( "Name", "akonadi" ).toString();
+        // If the server is started by the user, we don't need to know the username/password.
+        bool startServer = settings.value( "StartServer", "" ).toBool();
+        if( !startServer ) {
+            m_dboptions.append( "--host=" + settings.value( "Host", "" ).toString() );
+            m_dboptions.append( "--user=" + settings.value( "User", "" ).toString() );
+            m_dboptions.append( "--password=" + settings.value( "Password", "" ).toString() );
+        }
+        else {
+            const QString options = settings.value( "Options", "" ).toString();
+            const QStringList list = options.split( '=' );
+            m_dboptions.append( "--socket=" + list.at( 1 ) );
+        }
 
-    m_parsed = true;
+        settings.endGroup();
+        m_parsed = true;
+    }
+
+    else {
+      m_parsed = false; }
+}
+
+const QString Global::dbdriver()
+{
+    if ( !m_parsed )
+        init();
+
+    return m_dbdriver;
+
 }
 
 const QStringList Global::dboptions()

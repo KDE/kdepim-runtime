@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2009 Bertjan Broeksem <b.broeksema@kdemail.net>
+    Copyright (c) 2009 Bertjan Broeksem <broeksema@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -33,9 +33,6 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
     MboxResource( const QString &id );
     ~MboxResource();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
-
   protected Q_SLOTS:
     virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void retrieveItems( const Akonadi::Collection &col );
@@ -51,6 +48,11 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
     virtual void handleHashChange();
     virtual bool readFromFile( const QString &fileName );
     virtual bool writeToFile( const QString &fileName );
+    /**
+     * Customize the configuration dialog before it is displayed.
+     */
+    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+
 
   private Q_SLOTS:
     void onCollectionFetch( KJob *job );

@@ -6,13 +6,13 @@
           <collection content="message/rfc822,inode/directory" rid="/grandchild1" name="grandchild1" >
             <attribute type="uidnext" >1</attribute>
             <attribute type="AccessRights" ></attribute>
-            <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
+            <attribute type="collectionflags" >\ANSWERED \FLAGGED \DRAFT \DELETED \SEEN</attribute>
             <attribute type="uidvalidity" >1251191271</attribute>
             <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
           </collection>
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
-          <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
+          <attribute type="collectionflags" >\ANSWERED \FLAGGED \DRAFT \DELETED \SEEN</attribute>
           <attribute type="uidvalidity" >1251191271</attribute>
           <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
         </collection>
@@ -20,7 +20,7 @@
           <collection content="message/rfc822,inode/directory" rid="/grandchild1" name="grandchild1" >
             <attribute type="uidnext" >2</attribute>
             <attribute type="AccessRights" ></attribute>
-            <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
+            <attribute type="collectionflags" >\ANSWERED \FLAGGED \DRAFT \DELETED \SEEN</attribute>
             <attribute type="uidvalidity" >1251191271</attribute>
             <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 627</attribute>
             <item mimetype="message/rfc822" rid="1" >
@@ -48,7 +48,7 @@ if syncing is extremely fast.
           </collection>
           <attribute type="uidnext" >1</attribute>
           <attribute type="AccessRights" ></attribute>
-          <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
+          <attribute type="collectionflags" >\ANSWERED \FLAGGED \DRAFT \DELETED \SEEN</attribute>
           <attribute type="uidvalidity" >1251191271</attribute>
           <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
         </collection>
@@ -61,7 +61,7 @@ if syncing is extremely fast.
     <collection content="message/rfc822,inode/directory" rid="/INBOX" name="INBOX" >
       <collection content="message/rfc822,inode/directory" rid="/test folder" name="test folder" >
         <attribute type="uidnext" >2</attribute>
-        <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
+        <attribute type="collectionflags" >\ANSWERED \FLAGGED \DRAFT \DELETED \SEEN</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
         <attribute type="uidvalidity" >1251191279</attribute>
         <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 627</attribute>
@@ -90,13 +90,13 @@ if syncing is extremely fast.
       </collection>
       <collection content="message/rfc822,inode/directory" rid="/Calendar" name="Calendar" >
         <attribute type="uidnext" >1</attribute>
-        <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
+        <attribute type="collectionflags" >\ANSWERED \FLAGGED \DRAFT \DELETED \SEEN</attribute>
         <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
         <attribute type="uidvalidity" >1251191270</attribute>
         <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 0</attribute>
       </collection>
       <attribute type="uidnext" >2</attribute>
-      <attribute type="collectionflags" >\Answered \Flagged \Draft \Deleted \Seen</attribute>
+      <attribute type="collectionflags" >\ANSWERED \FLAGGED \DRAFT \DELETED \SEEN</attribute>
       <attribute type="imapacl" >autotest0@example.com lrswipckxtdae</attribute>
       <attribute type="uidvalidity" >1251191270</attribute>
       <attribute type="collectionannotations" >/vendor/cmu/cyrus-imapd/condstore false % /vendor/cmu/cyrus-imapd/duplicatedeliver false % /vendor/cmu/cyrus-imapd/lastpop   % /vendor/cmu/cyrus-imapd/partition default % /vendor/cmu/cyrus-imapd/sharedseen false % /vendor/cmu/cyrus-imapd/size 627</attribute>

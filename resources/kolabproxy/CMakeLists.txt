@@ -31,6 +31,7 @@ set( kolabproxyresource_shared_SRCS
 set( kolabproxyresource_SRCS
   kolabproxyresource.cpp
   collectiontreebuilder.cpp
+  setupkolab.cpp
   ${kolabproxyresource_shared_SRCS}
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
 )
@@ -39,7 +40,7 @@ install( FILES kolabproxyresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/s
 
 kde4_add_kcfg_files(kolabproxyresource_SRCS settings.kcfgc)
 
-#kde4_add_ui_files(imapresource_SRCS setupserverview.ui)
+kde4_add_ui_files(kolabproxyresource_SRCS kolabsettings.ui)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kolabproxyresource.kcfg org.kde.Akonadi.kolabproxy.Settings)
 qt4_add_dbus_adaptor(kolabproxyresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.kolabproxy.Settings.xml settings.h Settings

@@ -67,6 +67,10 @@ void KCalMigrator::fileResourceCreated(KJob * job)
   }
   iface->setPath( kresCfg.readPathEntry( "CalendarURL", "" ) );
   iface->setReadOnly( res->readOnly() );
+
+  // make sure the config is saved
+  iface->writeConfig();
+
   instance.reconfigure();
   migrationCompleted( instance );
 }

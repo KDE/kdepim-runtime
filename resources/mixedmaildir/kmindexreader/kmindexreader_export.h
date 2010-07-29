@@ -25,7 +25,10 @@
 #include <kdemacros.h>
 
 #ifndef KMINDEXREADER_EXPORT
-# if defined(MAKE_KMINDEXREADER_LIB)
+# if defined(KDEPIM_STATIC_LIBS)
+   /* No export/import for static libraries */
+#  define KMINDEXREADER_EXPORT
+# elif defined(MAKE_KMINDEXREADER_LIB)
    /* We are building this library */
 #  define KMINDEXREADER_EXPORT KDE_EXPORT
 # else

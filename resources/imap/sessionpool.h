@@ -46,6 +46,7 @@ public:
   enum ErrorCodes {
     NoError,
     PasswordRequestError,
+    ReconnectNeededError,
     EncryptionError,
     LoginFailError,
     CapabilitiesTestError,
@@ -73,6 +74,8 @@ public:
   QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
 
 signals:
+  void connectionLost( KIMAP::Session *session );
+
   void sessionRequestDone( qint64 requestNumber, KIMAP::Session *session,
                            int errorCode = NoError, const QString &errorString = QString() );
   void connectDone( int errorCode = NoError, const QString &errorString = QString() );
@@ -86,6 +89,8 @@ private slots:
   void onCapabilitiesTestDone( KJob *job );
   void onNamespacesTestDone( KJob *job );
 
+  void onConnectionLost();
+
 private:
   void killSession( KIMAP::Session *session );
   void declareSessionReady( KIMAP::Session *session );
@@ -97,7 +102,9 @@ private:
   ImapAccount *m_account;
   PasswordRequesterInterface *m_passwordRequester;
   KIMAP::SessionUiProxy::Ptr m_sessionUiProxy;
+
   bool m_initialConnectDone;
+  KIMAP::Session *m_pendingInitialSession;
 
   QList<qint64> m_pendingRequests;
   QList<KIMAP::Session*> m_idlePool;

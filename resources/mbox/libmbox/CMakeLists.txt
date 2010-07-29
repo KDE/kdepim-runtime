@@ -5,7 +5,7 @@ set(mbox_LIB_SRCS
 
 add_subdirectory(tests)
 
-kde4_add_library(mbox SHARED ${mbox_LIB_SRCS})
+kde4_add_library(mbox ${LIBRARY_TYPE} ${mbox_LIB_SRCS})
 
 target_link_libraries(mbox
   ${KDE4_KDECORE_LIBS}

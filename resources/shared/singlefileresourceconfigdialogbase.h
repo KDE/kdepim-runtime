@@ -21,22 +21,17 @@
 #ifndef AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
 #define AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
 
-#ifdef KDEPIM_MOBILE_UI
-#include "ui_singlefileresourceconfigdialog_mobile.h"
-#else
-#include "ui_singlefileresourceconfigdialog_desktop.h"
-#endif
+#include "ui_singlefileresourceconfigdialog.h"
 
 #include <KDE/KDialog>
+#include <KDE/KUrl>
 
+class KTabWidget;
 class KConfigDialogManager;
-class KJob;
-
-namespace KIO {
-class StatJob;
-}
 
 namespace Akonadi {
+
+class SingleFileResourceConfigWidget;
 
 /**
  * Base class for the configuration dialog for single file based resources.
@@ -44,7 +39,7 @@ namespace Akonadi {
  */
 class SingleFileResourceConfigDialogBase : public KDialog
 {
-  Q_OBJECT
+    Q_OBJECT
   public:
     explicit SingleFileResourceConfigDialogBase( WId windowId );
 
@@ -59,6 +54,23 @@ class SingleFileResourceConfigDialogBase : public KDialog
      */
     void setFilter( const QString &filter );
 
+    /**
+     * Enable and show, or disable and hide, the monitor option.
+     * If the option is disabled, its value will not be saved.
+     * By default, the monitor option is enabled.
+     */
+    void setMonitorEnabled( bool enable );
+
+    /**
+     * Return the file URL.
+     */
+    KUrl url() const;
+
+    /**
+     * Set the file URL.
+     */
+    void setUrl( const KUrl& url );
+
   protected Q_SLOTS:
     virtual void save() = 0;
 
@@ -66,13 +78,11 @@ class SingleFileResourceConfigDialogBase : public KDialog
     Ui::SingleFileResourceConfigDialog ui;
     KConfigDialogManager* mManager;
 
-  private:
-    KIO::StatJob* mStatJob;
-    bool mDirUrlChecked;
-
   private Q_SLOTS:
-    void validate();
-    void slotStatJobResult( KJob * );
+    void validated( bool ok );
+
+  private:
+    SingleFileResourceConfigWidget* mConfigWidget;
 };
 
 }

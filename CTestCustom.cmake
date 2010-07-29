@@ -7,12 +7,12 @@ set(CTEST_CUSTOM_MAXIMUM_NUMBER_OF_WARNINGS 2000)
 
 # Warnings that will be ignored
 #set(CTEST_CUSTOM_WARNING_EXCEPTION
-#  ${CTEST_CUSTOM_WARNING_EXCEPTION}
+#  
 #  )
 
 # Errors that will be ignored
 set(CTEST_CUSTOM_ERROR_EXCEPTION
-  ${CTEST_CUSTOM_ERROR_EXCEPTION}
+  
   "ICECC"
   "Segmentation fault"
   "Error 1 (ignored)"

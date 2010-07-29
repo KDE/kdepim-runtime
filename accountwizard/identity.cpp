@@ -45,8 +45,9 @@ void Identity::create()
   // TODO now that we have the identity object around anyway we can probably get rid of most of the other members
   m_identity->setIdentityName( identityName() );
   m_identity->setFullName( m_realName );
-  m_identity->setEmailAddr( m_email );
+  m_identity->setPrimaryEmailAddress( m_email );
   m_identity->setOrganization( m_organization );
+  m_manager->setAsDefault( m_identity->uoid() );
   m_manager->commit();
 
   emit finished( i18n( "Identity set up." ) );

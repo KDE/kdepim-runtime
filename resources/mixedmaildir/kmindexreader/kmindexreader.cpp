@@ -28,8 +28,8 @@
 
 #include <KDebug>
 #include <kde_file.h>
-#include "messagestatus.h"
-using KPIM::MessageStatus;
+#include <akonadi/kmime/messagestatus.h>
+using Akonadi::MessageStatus;
 #include <QFile>
 
 #include <boost/shared_ptr.hpp>
@@ -100,6 +100,14 @@ typedef enum
 
 //BEGIN: KMIndexMsg methods
 
+KMIndexData::KMIndexData() : mPartsCacheBuilt( false )
+{
+  const uint count = sizeof( mCachedLongParts ) / sizeof( unsigned long );
+  for ( uint i = 0; i < count; ++i ) {
+    mCachedLongParts[ i ] = 0;
+  }
+}
+
 MessageStatus& KMIndexData::status()
 {
   if ( mStatus.isOfUnknownStatus() ) {
@@ -115,17 +123,11 @@ MessageStatus& KMIndexData::status()
               case KMLegacyMsgStatusUnknown:
                   mStatus.clear();
                   break;
-              case KMLegacyMsgStatusNew:
-                  mStatus.setNew();
-                  break;
               case KMLegacyMsgStatusUnread:
                   mStatus.setUnread();
                   break;
               case KMLegacyMsgStatusRead:
                   mStatus.setRead();
-                  break;
-              case KMLegacyMsgStatusOld:
-                  mStatus.setOld();
                   break;
               case KMLegacyMsgStatusDeleted:
                   mStatus.setDeleted();
@@ -162,6 +164,11 @@ QStringList KMIndexData::tagList() const
 quint64 KMIndexData::uid() const
 {
   return mCachedLongParts[KMIndexReader::MsgUIDPart];
+}
+
+bool KMIndexData::isEmpty() const
+{
+  return !mPartsCacheBuilt;
 }
 
 //END: KMIndexMsg methods

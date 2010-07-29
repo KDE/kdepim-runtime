@@ -26,6 +26,7 @@
 
 #include <QStringList>
 
+class CompactChangeHelper;
 class MixedMaildirStore;
 
 class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
@@ -76,6 +77,8 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
     void itemMovedResult( KJob *job );
     void itemRemovedResult( KJob *job );
 
+    void itemsDeleted( KJob *job );
+
     void collectionAddedResult( KJob *job );
     void collectionChangedResult( KJob *job );
     void collectionMovedResult( KJob *job );
@@ -103,6 +106,8 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
 
     QSet<Akonadi::Collection::Id> mSynchronizedCollections;
     QSet<Akonadi::Collection::Id> mPendingSynchronizeCollections;
+
+    CompactChangeHelper *mCompactHelper;
 };
 
 #endif

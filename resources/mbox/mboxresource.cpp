@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2009 Bertjan Broeksem <b.broeksema@kdemail.net>
+    Copyright (c) 2009 Bertjan Broeksem <broeksema@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -78,23 +78,11 @@ MboxResource::~MboxResource()
 {
 }
 
-void MboxResource::configure( WId windowId )
+void MboxResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  QPointer<SingleFileResourceConfigDialog<Settings> > dlg
-    = new SingleFileResourceConfigDialog<Settings>( windowId );
-
   dlg->addPage( i18n("Compact frequency"), new CompactPage( Settings::self()->path() ) );
   dlg->addPage( i18n("Lock method"), new LockMethodPage() );
   dlg->setCaption( i18n( "Select MBox file" ) );
-  if ( dlg->exec() == QDialog::Accepted ) {
-    reloadFile();
-
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
-
-  delete dlg;
 }
 
 void MboxResource::retrieveItems( const Akonadi::Collection &col )

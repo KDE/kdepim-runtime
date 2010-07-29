@@ -60,7 +60,7 @@ Dock::Dock( QWidget *parent )
         : KStatusNotifierItem( 0 ), m_explicitStart( false )
 {
     m_parentWidget = parent;
-  
+
     setIconByName("akonadi");
     setCategory(SystemServices);
     setStatus(Passive);
@@ -76,7 +76,6 @@ Dock::Dock( QWidget *parent )
     m_backupAction = menu->addAction( i18n( "Make &Backup..." ), this, SLOT( slotStartBackup() ) );
     m_restoreAction = menu->addAction( i18n( "&Restore Backup..." ), this, SLOT( slotStartRestore() ) );
     menu->addAction( KIcon( "configure" ), i18n( "&Configure..." ), this, SLOT( slotConfigure() ) );
-    menu->addAction( i18n("&Quit"), this, SLOT( slotQuit()));
 
     setContextMenu( menu );
     connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
@@ -203,11 +202,6 @@ void Dock::slotConfigure()
 {
     QProcess *proc = new QProcess( this );
     proc->start( "kcmshell4", QStringList() << "kcm_akonadi" );
-}
-
-void Dock::slotQuit()
-{
-    exit( 0 );
 }
 
 #include "dock.moc"

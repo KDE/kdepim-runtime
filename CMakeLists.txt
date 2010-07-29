@@ -18,7 +18,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BIN
 find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
 
-find_package(KdepimLibs 4.3.85 REQUIRED)
+find_package(KdepimLibs 4.5.60 REQUIRED)
 
 ### remove the following when requiring kdelibs 4.5 ###
 if ( NOT KDE4_KCMUTILS_LIBS )
@@ -84,6 +84,12 @@ endif (KDEPIM_MOBILE_UI)
 include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR} ${AKONADI_INCLUDE_DIR} ${Boost_INCLUDE_DIR} ${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
+if(WINCE)
+  set(LIBRARY_TYPE STATIC)
+  add_definitions(-DKDEPIM_STATIC_LIBS)
+else(WINCE)
+  set(LIBRARY_TYPE SHARED)
+endif(WINCE)
 
 ############### Generate akonadi-config.h ###############
 
@@ -134,7 +140,9 @@ add_subdirectory(agents)
 add_subdirectory(kioslave)
 add_subdirectory(plugins)
 add_subdirectory(kcm)
+if (NOT WINCE)
 add_subdirectory(tray)
+endif(NOT WINCE)
 add_subdirectory(migration)
 add_subdirectory(defaultsetup)
 if (KDEPIMLIBS_KRESOURCES_LIBRARY)

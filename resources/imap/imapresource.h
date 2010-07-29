@@ -61,6 +61,8 @@ public:
   ~ImapResource();
   void renameRootCollection( const QString &newName );
 
+  int configureDialog( WId windowId );
+
 public Q_SLOTS:
   virtual void configure( WId windowId );
   // DBus methods
@@ -90,6 +92,8 @@ protected:
 private Q_SLOTS:
   void onConnectDone( int errorCode, const QString &errorMessage );
   void onMainSessionRequested( qint64 requestId, KIMAP::Session *session, int errorCode, const QString &errorMessage );
+  void onConnectionLost( KIMAP::Session *session );
+
   void scheduleConnectionAttempt();
 
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
@@ -126,7 +130,7 @@ private Q_SLOTS:
   void onPostItemMoveStoreFlagsDone( KJob *job );
   void onIdleCollectionFetchDone( KJob *job );
 
-  void startConnect();
+  void startConnect( QVariant v ); // the parameter is necessary, since this method is used by the task scheduler
   void reconnect();
 
   void expungeRequested( const QVariant &collectionArgument );
@@ -148,6 +152,9 @@ private:
   bool needsNetwork() const;
   bool isSessionAvailable() const;
   bool ensureSessionAvailableOrDefer();
+
+  static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
+  static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
 
   friend class ImapIdleManager;
 

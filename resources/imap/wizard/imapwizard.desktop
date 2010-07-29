@@ -1,31 +1,45 @@
 [Desktop Entry]
 Name=Generic IMAP Email Server
 Name[ca]=Servidor de correu IMAP genèric
+Name[ca@valencia]=Servidor de correu IMAP genèric
+Name[da]=Generisk IMAP e-mail-server
 Name[en_GB]=Generic IMAP Email Server
 Name[es]=Servidor de correo IMAP genérico
+Name[fr]=Serveur de courriels IMAP générique
 Name[km]=ម៉ាស៊ីន​បម្រើ​អ៊ីមែល IMAP ទូទៅ
 Name[nb]=Generisk IMAP E-post-tjener
+Name[nds]=Allgemeen IMAP-Nettpostserver
+Name[nl]=Generieke IMAP e-mailserver
 Name[pt]=Servidor Genérico de E-Mail IMAP
 Name[pt_BR]=Servidor de e-mails IMAP genérico
 Name[sv]=Generell IMAP e-postserver
 Name[uk]=Типовий сервер пошти IMAP
 Name[x-test]=xxGeneric IMAP Email Serverxx
+Name[zh_CN]=普通 IMAP 电子邮件服务器
+Name[zh_TW]=一般 IMAP 信件伺服器
 Icon=network-server
 Comment=Imap account
 Comment[ca]=Compte Imap
 Comment[ca@valencia]=Compte Imap
+Comment[cs]=Imap účet
+Comment[da]=IMAP-konto
 Comment[en_GB]=Imap account
 Comment[es]=Cuenta Imap
+Comment[fr]=Compte Imap
 Comment[gl]=Conta de Imap
+Comment[ja]=Imap アカウント
 Comment[km]=គណនី Imap
 Comment[nb]=Imap-konto
 Comment[nds]=Imap-Konto
+Comment[nl]=Imap-account
 Comment[nn]=IMAP-konto
 Comment[pt]=Conta de IMAP
 Comment[pt_BR]=Conta de IMAP
 Comment[sv]=Imap-konto
 Comment[uk]=Обліковий запис IMAP
 Comment[x-test]=xxImap accountxx
+Comment[zh_CN]=IMAP 账户
+Comment[zh_TW]=Imap 帳號
 
 [Wizard]
 Type=message/rfc822

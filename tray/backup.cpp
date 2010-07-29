@@ -20,13 +20,14 @@
 #include "global.h"
 
 #include <KDebug>
+#include <KIO/NetAccess>
 #include <KProcess>
 #include <KStandardDirs>
 #include <KTempDir>
 #include <KUrl>
 
 #include <QDir>
-#include <kio/netaccess.h>
+#include <QSettings>
 
 #include <akonadi/private/xdgbasedirs_p.h>
 #include <akonadi/agentmanager.h>
@@ -46,11 +47,21 @@ Backup::Backup( QWidget *parent ) : QWidget( parent )
 
 bool Backup::possible()
 {
-    const QString mysqldump = KStandardDirs::findExe( "mysqldump" );
-    /*const QString bzip2 = KStandardDirs::findExe( "bzip2" );*/
+    Tray::Global global;
+    QString dbDumpAppName;
+    if( global.dbdriver() == "QPSQL" )
+      dbDumpAppName = "pg_dump";
+    else if( global.dbdriver() == "QMYSQL" )
+      dbDumpAppName = "mysqldump";
+    else {
+      kError() << "Could not find an application to dump the database.";
+    }
+
+    m_dbDumpApp = KStandardDirs::findExe( dbDumpAppName );
+    const QString bzip2 = KStandardDirs::findExe( "bzip2" );
     const QString tar = KStandardDirs::findExe( "tar" );
-    kDebug() << "mysqldump:" << mysqldump << /*"bzip2:" << bzip2 <<*/ "tar:" << tar;
-    return !mysqldump.isEmpty() /*&& !bzip2.isEmpty()*/ && !tar.isEmpty();
+    kDebug() << "m_dbDumpApp:" << m_dbDumpApp << "bzip2:" << bzip2 << "tar:" << tar;
+    return !m_dbDumpApp.isEmpty() && !bzip2.isEmpty() && !tar.isEmpty();
 }
 
 void Backup::create( const KUrl& filename )
@@ -94,21 +105,36 @@ void Backup::create( const KUrl& filename )
         filesToBackup << "akonadiconfig/" + item;
     }
 
-
     /* Dump the database */
     Tray::Global global;
     KProcess *proc = new KProcess( this );
     QStringList params;
-    params << "--single-transaction" << "--master-data=2";
-    params << "--flush-logs" << "--triggers";
-    params << "--result-file=" + tempDir->name() + "db/database.sql";
-    params << global.dboptions() << global.dbname();
-    kDebug() << "Executing: " << KStandardDirs::findExe( "mysqldump" ) << params;
-    proc->setProgram( KStandardDirs::findExe( "mysqldump" ), params );
+
+    if( global.dbdriver() == "QMYSQL" ) {
+        params << "--single-transaction"
+               << "--flush-logs"
+               << "--triggers"
+               << "--result-file=" + tempDir->name() + "db" + sep + "database.sql"
+               << global.dboptions()
+               << global.dbname();
+    }
+    else if ( global.dbdriver() == "QPSQL" ) {
+        params << "--column-inserts"
+               << "--blobs"
+               << "--clean"
+               << "--inserts"
+               << "--format=c"
+               << "--file=" + tempDir->name() + "db" + sep + "database.sql"
+               << global.dboptions()
+               << global.dbname();
+    }
+
+    kDebug() << "Executing: " << m_dbDumpApp << params;
+    proc->setProgram( m_dbDumpApp, params );
     int result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-        kWarning() << "Executed: " << KStandardDirs::findExe( "mysqldump" ) << params << "Result: " << result;
+        kWarning() << "Executed: " << m_dbDumpApp << params << "Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );

@@ -30,7 +30,7 @@
 
 class KModelIndexProxyMapperPrivate
 {
-  KModelIndexProxyMapperPrivate(QAbstractItemModel *leftModel, QAbstractItemModel *rightModel, KModelIndexProxyMapper *qq)
+  KModelIndexProxyMapperPrivate(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, KModelIndexProxyMapper *qq)
     : q_ptr(qq), m_leftModel(leftModel), m_rightModel(rightModel)
   {
     createProxyChain();
@@ -149,13 +149,13 @@ bool KModelIndexProxyMapperPrivate::assertValid()
   return true;
 }
 
-KModelIndexProxyMapper::KModelIndexProxyMapper(QAbstractItemModel* leftModel, QAbstractItemModel* rightModel, QObject* parent)
+KModelIndexProxyMapper::KModelIndexProxyMapper(const QAbstractItemModel* leftModel, const QAbstractItemModel* rightModel, QObject* parent)
   : QObject(parent), d_ptr( new KModelIndexProxyMapperPrivate(leftModel, rightModel, this) )
 {
 
 }
 
-QModelIndex KModelIndexProxyMapper::mapLeftToRight(const QModelIndex& index)
+QModelIndex KModelIndexProxyMapper::mapLeftToRight(const QModelIndex& index) const
 {
   const QItemSelection selection = mapSelectionLeftToRight(QItemSelection(index, index));
   if (selection.isEmpty())
@@ -164,7 +164,7 @@ QModelIndex KModelIndexProxyMapper::mapLeftToRight(const QModelIndex& index)
   return selection.indexes().first();
 }
 
-QModelIndex KModelIndexProxyMapper::mapRightToLeft(const QModelIndex& index)
+QModelIndex KModelIndexProxyMapper::mapRightToLeft(const QModelIndex& index) const
 {
   const QItemSelection selection = mapSelectionRightToLeft(QItemSelection(index, index));
   if (selection.isEmpty())
@@ -173,7 +173,7 @@ QModelIndex KModelIndexProxyMapper::mapRightToLeft(const QModelIndex& index)
   return selection.indexes().first();
 }
 
-QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelection& selection)
+QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelection& selection) const
 {
   Q_D(const KModelIndexProxyMapper);
 
@@ -207,13 +207,15 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
   return seekSelection;
 }
 
-QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelection& selection)
+QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelection& selection) const
 {
   Q_D(const KModelIndexProxyMapper);
 
   if (selection.isEmpty())
     return QItemSelection();
 
+  if (selection.first().model() != d->m_rightModel.data())
+    qDebug() << selection.first().model() << d->m_rightModel.data();
   Q_ASSERT(selection.first().model() == d->m_rightModel.data());
 
   QItemSelection seekSelection = selection;

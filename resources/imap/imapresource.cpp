@@ -3,7 +3,7 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
-    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
+    Copyright (c) 2010 Klar√§lvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
@@ -85,6 +85,7 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/session.h>
+#include <akonadi/kmime/messageflags.h>
 
 #include <akonadi/kmime/messageparts.h>
 
@@ -93,7 +94,7 @@
 
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
-
+#include "imapflags.h"
 #include "imapaccount.h"
 #include "imapidlemanager.h"
 
@@ -124,6 +125,8 @@ ImapResource::ImapResource( const QString &id )
            this, SLOT(onConnectDone(int, QString)) );
   connect( m_pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)),
            this, SLOT(onMainSessionRequested(qint64, KIMAP::Session*, int, QString)) );
+  connect( m_pool, SIGNAL(connectionLost(KIMAP::Session*)),
+           this, SLOT(onConnectionLost(KIMAP::Session*)) );
 
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
@@ -230,8 +233,8 @@ void ImapResource::onMessagesReceived( const QString &mailBox, const QMap<qint64
   i.setPayload( KMime::Message::Ptr( message ) );
 
   kDebug(5327) << "Has Payload: " << i.hasPayload();
-  kDebug(5327) << message->head().isEmpty() << message->body().isEmpty() << message->contents().isEmpty() << message->hasContent() << message->hasHeader("Message-ID");
 
+  fetch->setProperty( "messageRetrieved", true );
   itemRetrieved( i );
 }
 
@@ -240,14 +243,14 @@ void ImapResource::onContentFetchDone( KJob *job )
   if ( job->error() ) {
     cancelTask( job->errorString() );
   } else {
-    KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( job );
-    if ( fetch->messages().isEmpty() && fetch->parts().isEmpty() ) {
+    bool messageRetrieved = job->property( "messageRetrieved" ).toBool();
+    if ( !messageRetrieved ) {
       cancelTask( i18n("No message retrieved, server reply was empty.") );
     }
   }
 }
 
-void ImapResource::configure( WId windowId )
+int ImapResource::configureDialog( WId windowId )
 {
   SetupServer dlg( this, windowId );
   KWindowSystem::setMainWindow( &dlg, windowId );
@@ -257,38 +260,67 @@ void ImapResource::configure( WId windowId )
     clearCache();
   }
 
-  if ( dlg.result() == QDialog::Accepted ) {
-    Settings::self()->writeConfig();
-    emit configurationDialogAccepted();
+  int result = dlg.result();
 
+  if ( result==QDialog::Accepted ) {
+    Settings::self()->writeConfig();
+  }
+
+  return dlg.result();
+}
+
+void ImapResource::configure( WId windowId )
+{
+  if ( configureDialog( windowId ) == QDialog::Accepted ) {
+    emit configurationDialogAccepted();
     reconnect();
   } else {
     emit configurationDialogRejected();
   }
 }
 
-void ImapResource::startConnect()
+void ImapResource::startConnect( QVariant )
 {
   if ( Settings::self()->imapServer().isEmpty() ) {
+    setOnline( false );
     emit status( Broken, i18n( "No server configured yet." ) );
-    return;
-  }
-
-  ImapAccount *account = new ImapAccount;
-  Settings::self()->loadAccount( account );
-
-  m_pool->connect( account );
-}
-
-void ImapResource::onConnectDone( int errorCode, const QString &errorString )
-{
-  if ( errorCode!=SessionPool::NoError ) {
-    emit status( Broken, errorString );
     taskDone();
     return;
   }
 
-  m_mainSessionRequestId = m_pool->requestSession();
+  m_pool->disconnect(); // reset all state, delete any old account
+  ImapAccount *account = new ImapAccount;
+  Settings::self()->loadAccount( account );
+
+  const bool result = m_pool->connect( account );
+  Q_ASSERT( result );
+}
+
+void ImapResource::onConnectDone( int errorCode, const QString &errorString )
+{
+  switch ( errorCode ) {
+  case SessionPool::NoError:
+    m_mainSessionRequestId = m_pool->requestSession();
+    break;
+
+  case SessionPool::PasswordRequestError:
+  case SessionPool::EncryptionError:
+  case SessionPool::LoginFailError:
+  case SessionPool::CapabilitiesTestError:
+  case SessionPool::IncompatibleServerError:
+    setOnline( false );
+    emit status( Broken, errorString );
+    taskDone();
+    return;
+
+  case SessionPool::ReconnectNeededError:
+    reconnect();
+    return;
+
+  case SessionPool::NoAvailableSessionError:
+    kFatal() << "Shouldn't happen";
+    return;
+  }
 }
 
 void ImapResource::onMainSessionRequested( qint64 requestId, KIMAP::Session *session,
@@ -315,6 +347,14 @@ void ImapResource::onMainSessionRequested( qint64 requestId, KIMAP::Session *ses
   emit status( Idle, i18n( "Connection established." ) );
 
   synchronizeCollectionTree();
+}
+
+void ImapResource::onConnectionLost( KIMAP::Session *session )
+{
+  if ( session == m_mainSession ) {
+    m_mainSession = 0;
+    reconnect();
+  }
 }
 
 
@@ -368,11 +408,13 @@ void ImapResource::onAppendMessageDone( KJob *job )
   // (since in IMAP you're forced to append+remove in this case)
   qint64 oldUid = job->property( "oldUid" ).toLongLong();
   if ( oldUid ) {
+    // APPEND does not require a SELECT, so we could be anywhere right now
+    selectIfNeeded( append->mailBox() );
     // OK it's indeed a content change, so we've to mark the old version as deleted
     KIMAP::StoreJob *store = new KIMAP::StoreJob( m_mainSession );
     store->setUidBased( true );
     store->setSequenceSet( KIMAP::ImapSet( oldUid ) );
-    store->setFlags( QList<QByteArray>() << "\\Deleted" );
+    store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
     store->setMode( KIMAP::StoreJob::AppendFlags );
     store->start();
   }
@@ -426,7 +468,7 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
     job->setProperty( "oldUid", uid ); // Will be used in onAppendMessageDone
     job->setMailBox( mailBox );
     job->setContent( msg->encodedContent( true ) );
-    job->setFlags( item.flags().toList() );
+    job->setFlags( fromAkonadiFlags( item.flags().toList() ) );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( onAppendMessageDone( KJob* ) ) );
     job->start();
 
@@ -437,7 +479,7 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
     store->setProperty( "itemUid", uid );
     store->setUidBased( true );
     store->setSequenceSet( KIMAP::ImapSet( uid ) );
-    store->setFlags( item.flags().toList() );
+    store->setFlags( fromAkonadiFlags( item.flags().toList() ) );
     store->setMode( KIMAP::StoreJob::SetFlags );
     connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
     store->start();
@@ -460,7 +502,7 @@ void ImapResource::onStoreFlagsDone( KJob *job )
   bool itemRemoval = job->property( "itemRemoval" ).toBool();
 
   if ( !itemRemoval ) {
-    item.setFlags( store->resultingFlags()[uid].toSet() );
+    item.setFlags( toAkonadiFlags( store->resultingFlags()[uid] ).toSet() );
     changeCommitted( item );
   } else {
     changeProcessed();
@@ -485,7 +527,7 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   store->setProperty( "itemRemoval", true );
   store->setUidBased( true );
   store->setSequenceSet( KIMAP::ImapSet( uid ) );
-  store->setFlags( QList<QByteArray>() << "\\Deleted" );
+  store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
   store->setMode( KIMAP::StoreJob::AppendFlags );
   connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
   store->start();
@@ -584,7 +626,7 @@ void ImapResource::onCopyMessageDone( KJob *job )
     store->setProperty( DESTINATION_COLLECTION, job->property( DESTINATION_COLLECTION ) );
     store->setUidBased( true );
     store->setSequenceSet( KIMAP::ImapSet( oldUid ) );
-    store->setFlags( QList<QByteArray>() << "\\Deleted" );
+    store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
     store->setMode( KIMAP::StoreJob::AppendFlags );
     connect( store, SIGNAL( result( KJob* ) ), SLOT( onPostItemMoveStoreFlagsDone( KJob* ) ) );
     store->start();
@@ -899,10 +941,8 @@ void ImapResource::onHeadersReceived( const QString &mailBox, const QMap<qint64,
     i.setMimeType( "message/rfc822" );
     i.setPayload( KMime::Message::Ptr( messages[number] ) );
     i.setSize( sizes[number] );
+    i.setFlags( toAkonadiFlags( flags[ number] ).toSet() );
 
-    foreach( const QByteArray &flag, flags[number] ) {
-      i.setFlag( flag );
-    }
     //kDebug(5327) << "Flags: " << i.flags();
     addedItems << i;
   }
@@ -966,7 +1006,7 @@ void ImapResource::onFlagsReceived( const QString &mailBox, const QMap<qint64, q
     Akonadi::Item i;
     i.setRemoteId( QString::number( uids[number] ) );
     i.setMimeType( "message/rfc822" );
-    i.setFlags( Akonadi::Item::Flags::fromList( flags[number] ) );
+    i.setFlags( Akonadi::Item::Flags::fromList( toAkonadiFlags( flags[number] ) ) );
 
     //kDebug(5327) << "Flags: " << i.flags();
     changedItems << i;
@@ -1401,7 +1441,7 @@ void ImapResource::onSubscribeDone( KJob *job )
 void ImapResource::scheduleConnectionAttempt()
 {
   // block all other tasks, until we are connected
-  scheduleCustomTask( this, "startConnect", ResourceBase::Prepend );
+  scheduleCustomTask( this, "startConnect", QVariant(), ResourceBase::Prepend );
 }
 
 void ImapResource::onGetAclDone( KJob *job )
@@ -1810,6 +1850,8 @@ QString ImapResource::mailBoxForCollection( const Collection& col ) const
 
 void ImapResource::doSetOnline(bool online)
 {
+  kDebug() << "online=" << online
+           << "network.status=" << Solid::Networking::status();
   if ( !online && isSessionAvailable() ) {
     m_pool->releaseSession( m_mainSession );
     m_mainSession = 0;
@@ -1855,15 +1897,9 @@ void ImapResource::reconnect()
   setNeedsNetwork( needsNetwork() );
   setOnline( false ); // we are not connected initially
 
-  /*
   setOnline( !needsNetwork() ||
              Solid::Networking::status() == Solid::Networking::Unknown ||
              Solid::Networking::status() == Solid::Networking::Connected );
-  */
-  // We can't trust the above code, because there are a lot of broken NetworkManager
-  // installations around, which would cause the resource to be offline, even if there
-  // is an actual network connection available.
-  setOnline( true );
 }
 
 void ImapResource::startIdle()
@@ -1987,6 +2023,47 @@ void ImapResource::selectIfNeeded(const QString& mailBox)
   select->setMailBox( mailBox );
   select->start();
 }
+
+QList< QByteArray > ImapResource::fromAkonadiFlags(const QList< QByteArray >& flags)
+{
+  QList< QByteArray > newFlags;
+  Q_FOREACH ( const QByteArray &oldFlag, flags ) {
+    if( oldFlag == Akonadi::MessageFlags::Seen ) {
+      newFlags.append( ImapFlags::Seen );
+    } else if( oldFlag == Akonadi::MessageFlags::Deleted ) {
+      newFlags.append( ImapFlags::Deleted );
+    } else if( oldFlag == Akonadi::MessageFlags::Answered ) {
+      newFlags.append( ImapFlags::Answered );
+    } else if( oldFlag == Akonadi::MessageFlags::Flagged ) {
+      newFlags.append( ImapFlags::Flagged );
+    } else {
+      newFlags.append( oldFlag );
+    }
+  }
+
+  return newFlags;
+}
+
+QList< QByteArray > ImapResource::toAkonadiFlags(const QList< QByteArray >& flags)
+{
+  QList< QByteArray > newFlags;
+  Q_FOREACH ( const QByteArray &oldFlag, flags ) {
+    if( oldFlag == ImapFlags::Seen ) {
+      newFlags.append( Akonadi::MessageFlags::Seen );
+    } else if( oldFlag == ImapFlags::Deleted ) {
+      newFlags.append( Akonadi::MessageFlags::Deleted );
+    } else if( oldFlag == ImapFlags::Answered ) {
+      newFlags.append( Akonadi::MessageFlags::Answered );
+    } else if( oldFlag == ImapFlags::Flagged ) {
+      newFlags.append( Akonadi::MessageFlags::Flagged );
+    } else {
+      newFlags.append( oldFlag );
+    }
+  }
+
+  return newFlags;
+}
+
 
 AKONADI_RESOURCE_MAIN( ImapResource )
 
