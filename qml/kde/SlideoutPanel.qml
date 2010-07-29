@@ -115,11 +115,14 @@ Item {
       if (extension == 1.0)
       {
         _topLevel.noCollapse = true;
+        _topLevel.z = 99;
         expanded(parent);
         _topLevel.noCollapse = false;
       }
-      else if (extension == 0.0)
+      else if (extension == 0.0) {
+        _topLevel.z = 100;
         collapsed(parent);
+      }
 
       expandFlap.changeExtension(extension)
     }
@@ -130,7 +133,7 @@ Item {
     x : -width
     y : expandedPosition
     leftBound : 0
-    rightBound : 40 + contentWidth
+    rightBound : 40 + contentWidth + collapsedWidth
     height : expandedHeight
     threshold : expandThreshold
 
