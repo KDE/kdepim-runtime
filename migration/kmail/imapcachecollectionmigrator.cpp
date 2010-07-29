@@ -22,6 +22,7 @@
 
 #include "kmigratorbase.h"
 
+#include "kmindexreader/messagestatus.h"
 #include "libmaildir/maildir.h"
 #include "mixedmaildirstore.h"
 #include "subscriptionjob_p.h"
@@ -40,7 +41,6 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/monitor.h>
 #include <akonadi/session.h>
-#include <akonadi/kmime/messagestatus.h>
 
 #include <Nepomuk/Tag>
 
@@ -230,7 +230,7 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
 
   // don't import items that are marked deleted. These come from normal/online IMAP caches
   // which didn't get their mbox cache files compacted
-  Akonadi::MessageStatus status;
+  KPIM::MessageStatus status;
   status.setStatusFromFlags( item.flags() );
   if ( status.isDeleted() ) {
     //kDebug() << "Cache item" << item.remoteId() << "is marked as Deleted. Skip it";

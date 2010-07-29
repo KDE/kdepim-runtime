@@ -23,8 +23,8 @@
 
 #include "kmindexreader_export.h"
 
-#include <akonadi/kmime/messagestatus.h>
-using Akonadi::MessageStatus;
+#include "messagestatus.h"
+using KPIM::MessageStatus;
 
 #include <QString>
 #include <QStringList>

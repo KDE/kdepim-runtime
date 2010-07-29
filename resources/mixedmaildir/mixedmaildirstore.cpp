@@ -700,7 +700,7 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
     if ( mbox->hasIndexData() ) {
       const KMIndexDataPtr indexData = mbox->indexData( entry.offset );
       if ( indexData != 0 && !indexData->isEmpty() ) {
-        item.setFlags( indexData->status().statusFlags() );
+        item.setFlags( indexData->status().getStatusFlags() );
 
         quint64 uid = indexData->uid();
         if ( uid != 0 ) {
@@ -715,9 +715,9 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
           tagListHash.insert( item.remoteId(), tagList );
         }
       } else if ( indexData == 0 ) {
-        Akonadi::MessageStatus status;
+        KPIM::MessageStatus status;
         status.setDeleted( true ),
-        item.setFlags( status.statusFlags() );
+        item.setFlags( status.getStatusFlags() );
         kDebug() << "no index for item" << item.remoteId() << "in MBox" << mbox->fileName()
                  << "so it has been deleted but not purged. Marking it as"
                  << item.flags();
@@ -759,7 +759,7 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
     if ( md->hasIndexData() ) {
       const KMIndexDataPtr indexData = md->indexData( entry );
       if ( indexData != 0 && !indexData->isEmpty() ) {
-        item.setFlags( indexData->status().statusFlags() );
+        item.setFlags( indexData->status().getStatusFlags() );
 
         const quint64 uid = indexData->uid();
         if ( uid != 0 ) {

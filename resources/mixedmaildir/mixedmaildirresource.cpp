@@ -27,6 +27,7 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include "kmindexreader/messagestatus.h"
 
 #include "filestore/collectioncreatejob.h"
 #include "filestore/collectiondeletejob.h"
@@ -45,7 +46,6 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/kmime/messagestatus.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionfetchscope.h>
 
@@ -494,7 +494,7 @@ void MixedMaildirResource::retrieveItemsResult( KJob *job )
   KJob* deleteJob = 0;
   Item::List items;
   Q_FOREACH( const Item &item, fetchJob->items() ) {
-    Akonadi::MessageStatus status;
+    KPIM::MessageStatus status;
     status.setStatusFromFlags( item.flags() );
     if ( status.isDeleted() ) {
       deleteJob = mStore->deleteItem( item );

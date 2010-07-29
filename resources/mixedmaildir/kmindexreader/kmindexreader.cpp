@@ -28,8 +28,8 @@
 
 #include <KDebug>
 #include <kde_file.h>
-#include <akonadi/kmime/messagestatus.h>
-using Akonadi::MessageStatus;
+#include "messagestatus.h"
+using KPIM::MessageStatus;
 #include <QFile>
 
 #include <boost/shared_ptr.hpp>
@@ -123,11 +123,17 @@ MessageStatus& KMIndexData::status()
               case KMLegacyMsgStatusUnknown:
                   mStatus.clear();
                   break;
+              case KMLegacyMsgStatusNew:
+                  mStatus.setNew();
+                  break;
               case KMLegacyMsgStatusUnread:
                   mStatus.setUnread();
                   break;
               case KMLegacyMsgStatusRead:
                   mStatus.setRead();
+                  break;
+              case KMLegacyMsgStatusOld:
+                  mStatus.setOld();
                   break;
               case KMLegacyMsgStatusDeleted:
                   mStatus.setDeleted();
