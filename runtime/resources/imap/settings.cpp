@@ -105,7 +105,8 @@ void Settings::setWinId( WId winId )
 
 void Settings::requestPassword()
 {
-  if ( !m_password.isEmpty() ) {
+  if ( !m_password.isEmpty() ||
+       ( mapTransportAuthToKimap( (MailTransport::TransportBase::EnumAuthenticationType::type)authentication() ) == KIMAP::LoginJob::GSSAPI ) ) {
     emit passwordRequestCompleted( m_password, false );
   } else {
     Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous );
@@ -124,7 +125,7 @@ void Settings::onWalletOpened( bool success )
     if ( wallet && wallet->hasFolder( "imap" ) ) {
         wallet->setFolder( "imap" );
         wallet->readPassword( config()->name(), m_password );
-	passwordNotStoredInWallet = false;
+      passwordNotStoredInWallet = false;
     }
     if ( passwordNotStoredInWallet || m_password.isEmpty() )
       requestManualAuth();
@@ -161,7 +162,8 @@ QString Settings::password(bool *userRejected) const
       *userRejected = false;
     }
 
-    if ( !m_password.isEmpty() )
+    if ( !m_password.isEmpty() ||
+         ( mapTransportAuthToKimap( (MailTransport::TransportBase::EnumAuthenticationType::type)authentication() ) == KIMAP::LoginJob::GSSAPI ) )
       return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
@@ -182,6 +184,10 @@ void Settings::setPassword( const QString & password )
 {
     if ( password == m_password )
         return;
+
+    if ( mapTransportAuthToKimap( (MailTransport::TransportBase::EnumAuthenticationType::type)authentication() ) == KIMAP::LoginJob::GSSAPI )
+        return;
+
     m_password = password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {

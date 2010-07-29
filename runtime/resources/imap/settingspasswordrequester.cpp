@@ -26,6 +26,8 @@
 #include <KDE/KMessageBox>
 #include <KDE/KLocale>
 
+#include <mailtransport/transportbase.h>
+
 #include "imapresource.h"
 #include "settings.h"
 
@@ -81,7 +83,7 @@ void SettingsPasswordRequester::onPasswordRequestCompleted( const QString &passw
 
   if ( userRejected ) {
     emit done( UserRejected );
-  } else if ( password.isEmpty() ) {
+  } else if ( password.isEmpty() && (Settings::self()->authentication() != MailTransport::Transport::EnumAuthenticationType::GSSAPI) ) {
     emit done( EmptyPasswordEntered );
   } else {
     emit done( PasswordRetrieved, password );

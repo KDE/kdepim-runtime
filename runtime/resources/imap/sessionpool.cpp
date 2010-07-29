@@ -85,7 +85,15 @@ bool SessionPool::connect( ImapAccount *account )
   }
 
   m_account = account;
-  m_passwordRequester->requestPassword();
+  if ( m_account->authenticationMode() == KIMAP::LoginJob::GSSAPI ) {
+    // for GSSAPI we don't have to ask for username/password, because it uses session wide tickets
+    QMetaObject::invokeMethod( this, "onPasswordRequestDone", Qt::QueuedConnection,
+                               Q_ARG( int, PasswordRequesterInterface::PasswordRetrieved ),
+                               Q_ARG( QString, QString() ) );
+  } else {
+    m_passwordRequester->requestPassword();
+  }
+
   return true;
 }
 

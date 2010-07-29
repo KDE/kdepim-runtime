@@ -423,7 +423,6 @@ void MaildirContext::readIndexData()
     return;
   }
 
-
   KMIndexReader indexReader( indexFileInfo.absoluteFilePath() );
   if ( indexReader.error() || !indexReader.readIndex() ) {
     kError() << "Index file" << indexFileInfo.path() << "could not be read";
@@ -702,7 +701,7 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
     if ( mbox->hasIndexData() ) {
       const KMIndexDataPtr indexData = mbox->indexData( entry.offset );
       if ( indexData != 0 && !indexData->isEmpty() ) {
-        item.setFlags( indexData->status().getStatusFlags() );
+        item.setFlags( indexData->status().statusFlags() );
 
         quint64 uid = indexData->uid();
         if ( uid != 0 ) {
@@ -717,9 +716,9 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
           tagListHash.insert( item.remoteId(), tagList );
         }
       } else if ( indexData == 0 ) {
-        KPIM::MessageStatus status;
+        Akonadi::MessageStatus status;
         status.setDeleted( true ),
-        item.setFlags( status.getStatusFlags() );
+        item.setFlags( status.statusFlags() );
         kDebug() << "no index for item" << item.remoteId() << "in MBox" << mbox->fileName()
                  << "so it has been deleted but not purged. Marking it as"
                  << item.flags();
@@ -761,7 +760,7 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
     if ( md->hasIndexData() ) {
       const KMIndexDataPtr indexData = md->indexData( entry );
       if ( indexData != 0 && !indexData->isEmpty() ) {
-        item.setFlags( indexData->status().getStatusFlags() );
+        item.setFlags( indexData->status().statusFlags() );
 
         const quint64 uid = indexData->uid();
         if ( uid != 0 ) {
@@ -782,11 +781,17 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
   }
 
   if ( md->hasIndexData() ) {
-    QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
-    job->setProperty( "remoteIdToIndexUid", var );
+    QVariant var;
 
-    var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
-    job->setProperty( "remoteIdToTagList", var );
+    if ( !uidHash.isEmpty() ) {
+      var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
+      job->setProperty( "remoteIdToIndexUid", var );
+    }
+
+    if ( !tagListHash.isEmpty() ) {
+      var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
+      job->setProperty( "remoteIdToTagList", var );
+    }
   }
 }
 
