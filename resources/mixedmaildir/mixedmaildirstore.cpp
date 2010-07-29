@@ -730,11 +730,17 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
   }
 
   if ( mbox->hasIndexData() ) {
-    QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
-    job->setProperty( "remoteIdToIndexUid", var );
+    QVariant var;
 
-    var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
-    job->setProperty( "remoteIdToTagList", var );
+    if ( !uidHash.isEmpty() ) {
+      var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
+      job->setProperty( "remoteIdToIndexUid", var );
+    }
+
+    if ( !tagListHash.isEmpty() ) {
+      var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
+      job->setProperty( "remoteIdToTagList", var );
+    }
   }
 }
 
@@ -1607,7 +1613,9 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
       }
     }
 
-    q->notifyItemsProcessed( items );
+    if ( !items.isEmpty() ) {
+      q->notifyItemsProcessed( items );
+    }
   } else {
     MaildirPtr mdPtr;
     MaildirHash::const_iterator mdIt = mMaildirs.constFind( path );
@@ -1644,7 +1652,9 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
       }
     }
 
-    q->notifyItemsProcessed( items );
+    if ( !items.isEmpty() ) {
+      q->notifyItemsProcessed( items );
+    }
   }
 
   return true;
