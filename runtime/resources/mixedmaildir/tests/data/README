@@ -34,5 +34,5 @@ maildir/dimap message filenames that contained ':' had it replaced with '_'
   - message 4 flagged important, tag1
 
 6) mbox-unpurged: 4 messages + index with entries for the first two
-  - simulating an unpurged mbox which only had the last two index entries
-    removed
+  - simulating an unpurged mbox: all messages in mbox, no index entries for
+    the two messages in the middle

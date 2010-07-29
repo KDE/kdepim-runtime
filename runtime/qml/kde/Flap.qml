@@ -56,7 +56,7 @@ Rectangle {
   Item {
     id : draggedItem
     x : leftBound
-    y : flap_toplevel.y
+    y : 0
 
     width : collapsed_top.width
     height : flap_toplevel.height

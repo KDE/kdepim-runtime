@@ -184,7 +184,7 @@ Item {
     anchors.left : parent.left
     anchors.right : parent.right
 
-    shouldBeFlickable : {console.log("£SDFSDFSDF " + childItemsView.height + " " + count + " " + ( itemHeight * childItemsView.count)); childItemsView.height < (itemHeight * childItemsView.count) }
+    shouldBeFlickable : childItemsView.height < (itemHeight * childItemsView.count)
     interactive : shouldBeFlickable
   }
 
@@ -217,7 +217,7 @@ Item {
       anchors.right : parent.right
       anchors.left : parent.left
       fillMode : Image.TileHorizontally
-      opacity : {console.log("HEER" + childItemsView.shouldBeFlickable ); childItemsView.shouldBeFlickable ? 1 : 0 }
+      opacity : childItemsView.shouldBeFlickable ? 1 : 0
     }
     Image {
       source : "scrollable-bottom.png"

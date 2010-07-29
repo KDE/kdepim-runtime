@@ -141,6 +141,21 @@ class MBoxContext
       mDeletedOffsets << offset;
     }
 
+    bool isValidOffset( quint64 offset ) const
+    {
+      if ( mDeletedOffsets.contains( offset ) ) {
+        return false;
+      }
+
+      Q_FOREACH( const MsgEntryInfo &entry, mMBox.entryList() ) {
+        if ( entry.offset == offset ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     bool save()
     {
       return mMBox.save();
@@ -715,11 +730,17 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
   }
 
   if ( mbox->hasIndexData() ) {
-    QVariant var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
-    job->setProperty( "remoteIdToIndexUid", var );
+    QVariant var;
 
-    var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
-    job->setProperty( "remoteIdToTagList", var );
+    if ( !uidHash.isEmpty() ) {
+      var = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
+      job->setProperty( "remoteIdToIndexUid", var );
+    }
+
+    if ( !tagListHash.isEmpty() ) {
+      var = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
+      job->setProperty( "remoteIdToTagList", var );
+    }
   }
 }
 
@@ -772,21 +793,18 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
 bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeBody, Item &item ) const
 {
 //  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Filling item" << item.remoteId() << "from MBox: includeBody=" << includeBody;
-  KMime::Message::Ptr messagePtr( new KMime::Message() );
+  bool ok = false;
+  const quint64 offset = item.remoteId().toULongLong( &ok );
+  if ( !ok || !mbox->isValidOffset( offset ) ) {
+    return false;
+  }
 
+  KMime::Message::Ptr messagePtr( new KMime::Message() );
   if ( includeBody ) {
-    bool ok = false;
-    const QByteArray data = mbox->readRawEntry( item.remoteId().toLongLong( &ok ) );
-    if ( !ok ) {
-      return false;
-    }
+    const QByteArray data = mbox->readRawEntry( offset );
     messagePtr->setContent( KMime::CRLFtoLF( data ) );
   } else {
-    bool ok = false;
-    const QByteArray data = mbox->readEntryHeaders( item.remoteId().toLongLong( &ok ) );
-    if ( !ok ) {
-      return false;
-    }
+    const QByteArray data = mbox->readEntryHeaders( offset );
     messagePtr->setHead( KMime::CRLFtoLF( data ) );
   }
 
@@ -796,7 +814,7 @@ bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeBody, Item
 
 bool MixedMaildirStore::Private::fillItem( const MaildirPtr &md, bool includeBody, Item &item ) const
 {
-//  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Filling item" << item.remoteId() << "from Maildir: includeBody=" << includeBody;
+/*  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Filling item" << item.remoteId() << "from Maildir: includeBody=" << includeBody;*/
   KMime::Message::Ptr messagePtr( new KMime::Message() );
 
   if ( includeBody ) {
@@ -1492,7 +1510,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemDeleteJob *job )
 
     bool ok = false;
     qint64 offset = item.remoteId().toLongLong( &ok );
-    if ( !ok || offset < 0 ) {
+    if ( !ok || offset < 0 || !mbox->isValidOffset( offset ) ) {
       errorText = i18nc( "@info:status", "Cannot remove emails from folder %1",
                           collection.name() );
       kError() << errorText << "FolderType=" << folderType;
@@ -1587,11 +1605,17 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
     Item::List::iterator endIt = items.end();
     for ( ; it != endIt; ++it ) {
       if ( !fillItem( findIt.value(), includeBody, *it ) ) {
-        kWarning() << "Failed to read item" << (*it).remoteId() << "in MBox file" << path;
+        const QString errorText =
+          i18nc( "@info:status", "Error while reading mails from folder %1", collection.name() );
+        q->notifyError( FileStore::Job::InvalidJobContext, errorText ); // TODO should be a different error code
+        kError() << "Failed to read item" << (*it).remoteId() << "in MBox file" << path;
+        return false;
       }
     }
 
-    q->notifyItemsProcessed( items );
+    if ( !items.isEmpty() ) {
+      q->notifyItemsProcessed( items );
+    }
   } else {
     MaildirPtr mdPtr;
     MaildirHash::const_iterator mdIt = mMaildirs.constFind( path );
@@ -1620,11 +1644,17 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
     Item::List::iterator endIt = items.end();
     for ( ; it != endIt; ++it ) {
       if ( !fillItem( mdPtr, includeBody, *it ) ) {
-        kWarning() << "Failed to read item" << (*it).remoteId() << "in Maildir" << path;
+        const QString errorText =
+          i18nc( "@info:status", "Error while reading mails from folder %1", collection.name() );
+        q->notifyError( FileStore::Job::InvalidJobContext, errorText ); // TODO should be a different error code
+        kError() << "Failed to read item" << (*it).remoteId() << "in Maildir" << path;
+        return false;
       }
     }
 
-    q->notifyItemsProcessed( items );
+    if ( !items.isEmpty() ) {
+      q->notifyItemsProcessed( items );
+    }
   }
 
   return true;
