@@ -94,6 +94,7 @@ class ItemFetchTest : public QObject
   private Q_SLOTS:
     void init();
     void cleanup();
+    void testListingMaildir();
     void testListingMBox();
 };
 
@@ -111,6 +112,334 @@ void ItemFetchTest::cleanup()
   mStore = 0;
   delete mDir;
   mDir = 0;
+}
+
+void ItemFetchTest::testListingMaildir()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection2" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir-tagged" ), topDir.path(), QLatin1String( "collection3" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "dimap" ), topDir.path(), QLatin1String( "collection4" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir-tagged" ), topDir.path(), QLatin1String( "collection5" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QSet<QString> entrySet1 = QSet<QString>::fromList( md1.entryList() );
+  QCOMPARE( (int)entrySet1.count(), 4 );
+
+  QFileInfo indexFileInfo1( indexFile( QFileInfo( md1.path() ) ) );
+  QVERIFY( QFile::remove( indexFileInfo1.absoluteFilePath() ) );
+
+  KPIM::Maildir md2 = topLevelMd.subFolder( QLatin1String( "collection2" ) );
+  QSet<QString> entrySet2 = QSet<QString>::fromList( md2.entryList() );
+  QCOMPARE( (int)entrySet2.count(), 4 );
+
+  KPIM::Maildir md3 = topLevelMd.subFolder( QLatin1String( "collection3" ) );
+  QSet<QString> entrySet3 = QSet<QString>::fromList( md3.entryList() );
+  QCOMPARE( (int)entrySet3.count(), 4 );
+
+  KPIM::Maildir md4 = topLevelMd.subFolder( QLatin1String( "collection4" ) );
+  QSet<QString> entrySet4 = QSet<QString>::fromList( md4.entryList() );
+  QCOMPARE( (int)entrySet4.count(), 4 );
+
+  KPIM::Maildir md5 = topLevelMd.subFolder( QLatin1String( "collection5" ) );
+  QSet<QString> entrySet5 = QSet<QString>::fromList( md5.entryList() );
+  QCOMPARE( (int)entrySet5.count(), 4 );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemFetchJob *job = 0;
+
+  QSignalSpy *spy = 0;
+  Item::List items;
+
+  QHash<QString, QVariant> uidHash;
+  const QVariant varUidHash = QVariant::fromValue< QHash<QString, QVariant> >( uidHash );
+  QHash<QString, QVariant> tagListHash;
+  const QVariant varTagListHash = QVariant::fromValue< QHash<QString, QVariant> >( tagListHash );
+  QVariant var;
+
+  QSet<QString> entrySet;
+  QMap<QByteArray, int> flagCounts;
+
+  // test listing maildir without index
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  job = mStore->fetchItems( collection1 );
+
+  spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  items = job->items();
+  QCOMPARE( (int)items.count(), 4 );
+  QCOMPARE( itemsFromSpy( spy ), items );
+
+  entrySet = entrySet1;
+  QVERIFY( entrySet.remove( items[ 0 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 1 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 2 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 3 ].remoteId() ) );
+
+  QCOMPARE( items[ 0 ].parentCollection(), collection1 );
+  QCOMPARE( items[ 1 ].parentCollection(), collection1 );
+  QCOMPARE( items[ 2 ].parentCollection(), collection1 );
+  QCOMPARE( items[ 3 ].parentCollection(), collection1 );
+
+  QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 2 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 3 ].flags(), QSet<QByteArray>() );
+
+  var = job->property( "remoteIdToTagList" );
+  QVERIFY( !var.isValid() );
+
+  // test listing empty mbox without index
+  Q_FOREACH( const QString &entry, entrySet1 ) {
+    QVERIFY( md1.removeEntry( entry ) );
+  }
+  QCOMPARE( md1.entryList().count(), 0 );
+
+  job = mStore->fetchItems( collection1 );
+
+  spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  items = job->items();
+  QCOMPARE( (int)items.count(), 0 );
+  QCOMPARE( spy->count(), 0 );
+
+  var = job->property( "remoteIdToTagList" );
+  QVERIFY( !var.isValid() );
+
+  // test listing maildir with index
+  Collection collection2;
+  collection2.setName( QLatin1String( "collection2" ) );
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+
+  job = mStore->fetchItems( collection2 );
+
+  spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  items = job->items();
+  QCOMPARE( (int)items.count(), 4 );
+  QCOMPARE( itemsFromSpy( spy ), items );
+
+  entrySet = entrySet2;
+  QVERIFY( entrySet.remove( items[ 0 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 1 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 2 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 3 ].remoteId() ) );
+
+  QCOMPARE( items[ 0 ].parentCollection(), collection2 );
+  QCOMPARE( items[ 1 ].parentCollection(), collection2 );
+  QCOMPARE( items[ 2 ].parentCollection(), collection2 );
+  QCOMPARE( items[ 3 ].parentCollection(), collection2 );
+
+  // see data/README
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  var = job->property( "remoteIdToTagList" );
+  QVERIFY( !var.isValid() );
+
+  // test listing empty maildir with index
+  Q_FOREACH( const QString &entry, entrySet2 ) {
+    QVERIFY( md2.removeEntry( entry ) );
+  }
+  QCOMPARE( md2.entryList().count(), 0 );
+
+  job = mStore->fetchItems( collection2 );
+
+  spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  items = job->items();
+  QCOMPARE( (int)items.count(), 0 );
+  QCOMPARE( spy->count(), 0 );
+
+  var = job->property( "remoteIdToTagList" );
+  QVERIFY( !var.isValid() );
+
+  // test listing maildir with index which has tags
+  Collection collection3;
+  collection3.setName( QLatin1String( "collection3" ) );
+  collection3.setRemoteId( QLatin1String( "collection3" ) );
+  collection3.setParentCollection( mStore->topLevelCollection() );
+
+  job = mStore->fetchItems( collection3 );
+
+  spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  items = job->items();
+  QCOMPARE( (int)items.count(), 4 );
+  QCOMPARE( itemsFromSpy( spy ), items );
+
+  entrySet = entrySet3;
+  QVERIFY( entrySet.remove( items[ 0 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 1 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 2 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 3 ].remoteId() ) );
+
+  QCOMPARE( items[ 0 ].parentCollection(), collection3 );
+  QCOMPARE( items[ 1 ].parentCollection(), collection3 );
+  QCOMPARE( items[ 2 ].parentCollection(), collection3 );
+  QCOMPARE( items[ 3 ].parentCollection(), collection3 );
+
+  // see data/README
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  var = job->property( "remoteIdToTagList" );
+  QVERIFY( var.isValid() );
+
+  tagListHash = var.value< QHash<QString, QVariant> >();
+  QCOMPARE( (int)tagListHash.count(), 3 );
+  QVERIFY( !tagListHash.contains( items[ 0 ].remoteId() ) );
+  QVERIFY( !tagListHash.value( items[ 1 ].remoteId() ).toString().isEmpty() );
+  QVERIFY( !tagListHash.value( items[ 2 ].remoteId() ).toString().isEmpty() );
+  QVERIFY( !tagListHash.value( items[ 3 ].remoteId() ).toString().isEmpty() );
+
+  // test listing maildir with index which contains IMAP UIDs (dimap cache directory)
+  Collection collection4;
+  collection4.setName( QLatin1String( "collection4" ) );
+  collection4.setRemoteId( QLatin1String( "collection4" ) );
+  collection4.setParentCollection( mStore->topLevelCollection() );
+
+  job = mStore->fetchItems( collection4 );
+
+  spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  items = job->items();
+  QCOMPARE( (int)items.count(), 4 );
+  QCOMPARE( itemsFromSpy( spy ), items );
+
+  entrySet = entrySet4;
+  QVERIFY( entrySet.remove( items[ 0 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 1 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 2 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 3 ].remoteId() ) );
+
+  QCOMPARE( items[ 0 ].parentCollection(), collection4 );
+  QCOMPARE( items[ 1 ].parentCollection(), collection4 );
+  QCOMPARE( items[ 2 ].parentCollection(), collection4 );
+  QCOMPARE( items[ 3 ].parentCollection(), collection4 );
+
+  // see data/README
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
+  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+  flagCounts.clear();
+
+  var = job->property( "remoteIdToTagList" );
+  QVERIFY( !var.isValid() );
+
+  var = job->property( "remoteIdToIndexUid" );
+  QVERIFY( var.isValid() );
+
+  uidHash = var.value< QHash<QString, QVariant> >();
+  QCOMPARE( (int)uidHash.count(), 4 );
+  bool ok = false;
+  QVERIFY( !uidHash.value( items[ 0 ].remoteId() ).toString().toInt( &ok) >= 0 && ok  );
+  QVERIFY( !uidHash.value( items[ 1 ].remoteId() ).toString().toInt( &ok) >= 0 && ok  );
+  QVERIFY( !uidHash.value( items[ 2 ].remoteId() ).toString().toInt( &ok) >= 0 && ok  );
+  QVERIFY( !uidHash.value( items[ 3 ].remoteId() ).toString().toInt( &ok) >= 0 && ok  );
+
+  // test listing mbox with index but newer modification date than index's one
+  const QByteArray data5 = md5.readEntry( entrySet5.values().first() );
+  QVERIFY( !data5.isEmpty() );
+
+  QTest::qSleep( 1000 );
+
+  QString newRemoteId = md5.addEntry( data5 );
+  QVERIFY( !newRemoteId.isEmpty() );
+
+  entrySet = QSet<QString>::fromList( md5.entryList() );
+  entrySet.remove( newRemoteId );
+  QCOMPARE( entrySet, entrySet5 );
+  QFileInfo fileInfo5( md5.path(), QLatin1String( "new" ) );
+  QFileInfo indexFileInfo5 = indexFile( QFileInfo( md5.path() ) );
+  QVERIFY( fileInfo5.lastModified() > indexFileInfo5.lastModified() );
+
+  Collection collection5;
+  collection5.setName( QLatin1String( "collection5" ) );
+  collection5.setRemoteId( QLatin1String( "collection5" ) );
+  collection5.setParentCollection( mStore->topLevelCollection() );
+
+  job = mStore->fetchItems( collection5 );
+
+  spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  items = job->items();
+  QCOMPARE( (int)items.count(), 5 );
+  QCOMPARE( itemsFromSpy( spy ), items );
+
+  entrySet = entrySet5;
+  entrySet << newRemoteId;
+  QVERIFY( entrySet.remove( items[ 0 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 1 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 2 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 3 ].remoteId() ) );
+  QVERIFY( entrySet.remove( items[ 4 ].remoteId() ) );
+
+  QCOMPARE( items[ 0 ].parentCollection(), collection5 );
+  QCOMPARE( items[ 1 ].parentCollection(), collection5 );
+  QCOMPARE( items[ 2 ].parentCollection(), collection5 );
+  QCOMPARE( items[ 3 ].parentCollection(), collection5 );
+  QCOMPARE( items[ 4 ].parentCollection(), collection5 );
+
+  QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 2 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 3 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 4 ].flags(), QSet<QByteArray>() );
+
+  var = job->property( "remoteIdToTagList" );
+  QVERIFY( !var.isValid() );
 }
 
 void ItemFetchTest::testListingMBox()
