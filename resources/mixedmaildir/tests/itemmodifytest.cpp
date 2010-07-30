@@ -34,8 +34,6 @@
 #include <KRandom>
 #include <KTempDir>
 
-#include <QSignalSpy>
-
 #include <qtest_kde.h>
 
 using namespace Akonadi;
@@ -271,7 +269,11 @@ void ItemModifyTest::testModify()
   // common variables
   FileStore::ItemModifyJob *job = 0;
 
-  // test failure of modifying a non-existant maildir entry
+  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
+  QVariant var;
+  Collection::List collections;
+
+  // test failure of modifying a maildir entry
   Collection collection1;
   collection1.setName( QLatin1String( "collection1" ) );
   collection1.setRemoteId( QLatin1String( "collection1" ) );
@@ -299,7 +301,16 @@ void ItemModifyTest::testModify()
 
   QCOMPARE( md1.readEntry( entryList1.first() ), msgPtr->encodedContent() );
 
-  // test failure of modifying a non-existant mbox entry
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
+
+  // test failure of modifying a mbox entry
   Collection collection2;
   collection2.setName( QLatin1String( "collection2" ) );
   collection2.setRemoteId( QLatin1String( "collection2" ) );
@@ -329,10 +340,19 @@ void ItemModifyTest::testModify()
   QCOMPARE( (int)entryList.count(), 5 ); // mbox file not purged yet
   QCOMPARE( entryList.last().offset, item.remoteId().toULongLong() );
 
-  QVariant var = job->property( "compactStore" );
+  var = job->property( "compactStore" );
   QVERIFY( var.isValid() );
   QCOMPARE( var.type(), QVariant::Bool );
   QCOMPARE( var.toBool(), true );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
 
   FileStore::ItemFetchJob *itemFetch = mStore->fetchItem( item2 );
   QVERIFY( !itemFetch->exec() ); // item at old offset gone
