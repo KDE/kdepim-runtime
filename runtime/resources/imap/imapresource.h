@@ -164,7 +164,7 @@ private:
 
   int m_finishedMetaDataJobs;
 
-  ImapIdleManager *m_idle;
+  ImapIdleManager *m_idle;  
 };
 
 #endif

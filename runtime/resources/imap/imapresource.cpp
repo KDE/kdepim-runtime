@@ -110,6 +110,7 @@ static const char AKONADI_COLLECTION[] = "akonadiCollection";
 static const char AKONADI_ITEM[] = "akonadiItem";
 static const char AKONADI_PARTS[] = "akonadiParts";
 static const char REPORTED_COLLECTIONS[] = "reportedCollections";
+static const char DUMMY_COLLECTIONS[] = "dummyCollections";
 static const char PREVIOUS_REMOTEID[] = "previousRemoteId";
 static const char SOURCE_COLLECTION[] = "sourceCollection";
 static const char DESTINATION_COLLECTION[] = "destinationCollection";
@@ -701,9 +702,6 @@ void ImapResource::retrieveCollections()
 
   root.setCachePolicy( policy );
 
-  setCollectionStreamingEnabled( true );
-  collectionsRetrieved( Collection::List() << root );
-
   QHash<QString, Collection> reportedCollections;
   reportedCollections.insert( QString(), root );
 
@@ -721,12 +719,13 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
                                         const QList< QList<QByteArray> > &flags )
 {
   QHash<QString, Collection> reportedCollections = sender()->property( REPORTED_COLLECTIONS ).value< QHash<QString, Collection> >();
+  QHash<QString, Collection> dummyCollections = sender()->property( DUMMY_COLLECTIONS ).value< QHash<QString, Collection> >();
 
   Collection::List collections;
   QStringList contentTypes;
   contentTypes << "message/rfc822" << Collection::mimeType();
 
-  for ( int i=0; i<descriptors.size(); ++i ) {
+  for ( int i = 0; i < descriptors.size(); ++i ) {
     KIMAP::MailBoxDescriptor descriptor = descriptors[i];
 
     const QStringList pathParts = descriptor.name.split(descriptor.separator);
@@ -743,7 +742,19 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
       if ( reportedCollections.contains( currentPath ) ) {
         if ( !isDummy )
+         if ( dummyCollections.contains( currentPath ) ) {
+            kDebug() << "Recieved the real collection for a dummy one : " << currentPath;
+            //set the correct attributes for the collection, eg. noselect needs to be removed
+            Collection c = reportedCollections.value( currentPath );
+            c.setContentMimeTypes( contentTypes );
+            c.setRights( Collection::Right() );  //TODO, REVIEW: is this right?
+            c.removeAttribute( "noselect" );
+            dummyCollections.remove( currentPath );
+            reportedCollections.remove( currentPath );
+            reportedCollections.insert( currentPath, c );
+         } else {
           kWarning() << "Something is wrong here, we already have created a collection for" << currentPath;
+         }
         parentPath = currentPath;
         continue;
       }
@@ -783,6 +794,7 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
 
       // If this folder is a noselect folder, make some special settings.
       if ( currentFlags.contains( "\\NoSelect" ) ) {
+        kDebug() << "Dummy collection created: " << currentPath;
         c.addAttribute( new NoSelectAttribute( true ) );
         c.setContentMimeTypes( QStringList() << Collection::mimeType() );
         c.setRights( Collection::ReadOnly );
@@ -791,12 +803,14 @@ void ImapResource::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > 
       collections << c;
 
       reportedCollections.insert( currentPath, c );
+      if (isDummy)
+        dummyCollections.insert( currentPath, c );
       parentPath = currentPath;
     }
   }
 
   sender()->setProperty( REPORTED_COLLECTIONS, QVariant::fromValue<StringCollectionMap>( reportedCollections ) );
-  collectionsRetrieved( collections );
+  sender()->setProperty( DUMMY_COLLECTIONS, QVariant::fromValue<StringCollectionMap>( dummyCollections ) );
 
   if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
     foreach ( const Collection &c, collections ) {
@@ -812,7 +826,8 @@ void ImapResource::onMailBoxesReceiveDone(KJob* job)
   if ( job->error() ) {
     cancelTask( job->errorString() );
   } else {
-    collectionsRetrievalDone();
+   QHash<QString, Collection> reportedCollections = sender()->property( REPORTED_COLLECTIONS ).value< QHash<QString, Collection> >();
+   collectionsRetrieved( reportedCollections.values() );
   }
 }
 
