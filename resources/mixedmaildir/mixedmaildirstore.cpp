@@ -1953,7 +1953,8 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
 
     if ( targetFolderType == MBoxFolder ) {
 /*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is MBox";*/
-      if ( !item.payload<KMime::Message::Ptr>() ) {
+      if ( !item.hasPayload<KMime::Message::Ptr>() ||
+           !item.loadedPayloadParts().contains( MessagePart::Body ) ) {
         if ( !fillItem( sourceMdPtr, true, item ) ) {
           errorText = i18nc( "@info:status", "Cannot move email from folder %1",
                               sourceCollection.name() );
