@@ -1847,6 +1847,14 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       mbox = findIt.value();
     }
 
+    if ( !mbox->isValidOffset( offset ) ) {
+      errorText = i18nc( "@info:status", "Cannot move emails from folder %1",
+                          sourceCollection.name() );
+      kError() << errorText << "FolderType=" << sourceFolderType;
+      q->notifyError( FileStore::Job::InvalidJobContext, errorText );
+      return false;
+    }
+
     if ( !item.payload<KMime::Message::Ptr>() ) {
       if ( !fillItem( mbox, true, item ) ) {
         errorText = i18nc( "@info:status", "Cannot move email from folder %1",
@@ -1939,6 +1947,14 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
   } else {
 /*    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "source is Maildir";*/
     MaildirPtr sourceMdPtr = getOrCreateMaildirPtr( sourcePath, false );
+
+    if ( !sourceMdPtr->isValidEntry( item.remoteId() ) ) {
+      errorText = i18nc( "@info:status", "Cannot move email from folder %1",
+                          sourceCollection.name() );
+      kError() << errorText << "FolderType=" << sourceFolderType;
+      q->notifyError( FileStore::Job::InvalidJobContext, errorText );
+      return false;
+    }
 
     Collection::List collections;
 
