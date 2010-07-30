@@ -66,8 +66,8 @@ class ItemModifyTest : public QObject
     void init();
     void cleanup();
     void testExpectedFail();
-    void testMaildir();
-    void testMBox();
+    void testIgnorePayload();
+    void testModify();
 };
 
 void ItemModifyTest::init()
@@ -169,11 +169,83 @@ void ItemModifyTest::testExpectedFail()
   QCOMPARE( entryList, entryList2 );
 }
 
-void ItemModifyTest::testMaildir()
+void ItemModifyTest::testIgnorePayload()
 {
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QStringList entryList1 = md1.entryList();
+  QCOMPARE( (int)entryList1.count(), 4 );
+
+  QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
+  MBox mbox2;
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
+  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  QCOMPARE( (int)entryList2.count(), 4 );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemModifyJob *job = 0;
+
+  // test failure of modifying a non-existant maildir entry
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  const QByteArray data1 = md1.readEntry( entryList1.first() );
+
+  KMime::Message::Ptr msgPtr( new KMime::Message );
+  msgPtr->subject()->from7BitString( "Modify Test" );
+  msgPtr->assemble();
+
+  Item item1;
+  item1.setMimeType( KMime::Message::mimeType() );
+  item1.setRemoteId( entryList1.first() );
+  item1.setParentCollection( collection1 );
+  item1.setPayload<KMime::Message::Ptr>( msgPtr );
+
+  job = mStore->modifyItem( item1 );
+  job->setIgnorePayload( true );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  QCOMPARE( md1.entryList(), entryList1 );
+  QCOMPARE( md1.readEntry( entryList1.first() ), data1 );
+
+  // test failure of modifying a non-existant mbox entry
+  Collection collection2;
+  collection2.setName( QLatin1String( "collection2" ) );
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+
+  const QByteArray data2 = mbox2.readRawEntry( 0 );
+
+  Item item2;
+  item2.setMimeType( KMime::Message::mimeType() );
+  item2.setRemoteId( QLatin1String( "0" ) );
+  item2.setParentCollection( collection2 );
+  item2.setPayload<KMime::Message::Ptr>( msgPtr );
+
+  job = mStore->modifyItem( item2 );
+  job->setIgnorePayload( true );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  QVERIFY( mbox2.load( mbox2.fileName() ) );
+  QCOMPARE( mbox2.entryList(), entryList2 );
+  QCOMPARE( mbox2.readRawEntry( 0 ), data2 );
 }
 
-void ItemModifyTest::testMBox()
+void ItemModifyTest::testModify()
 {
 }
 
