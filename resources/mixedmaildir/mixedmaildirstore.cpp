@@ -361,6 +361,10 @@ class MaildirContext
       return mMaildir.isValid( error );
     }
 
+    bool isValidEntry( const QString &entry ) const {
+      return mMaildir.entryList().contains( entry );
+    }
+
     void readIndexData();
 
     KMIndexDataPtr indexData( const QString &fileName ) const {
@@ -1706,7 +1710,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
 
     bool ok = false;
     qint64 offset = item.remoteId().toLongLong( &ok );
-    if ( !ok || offset < 0 ) {
+    if ( !ok || offset < 0 || !mbox->isValidOffset( offset ) ) {
       errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
                           collection.name() );
       kError() << errorText << "FolderType=" << folderType;
@@ -1749,6 +1753,14 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
       mMaildirs.insert( path, mdPtr );
     } else {
       mdPtr = findIt.value();
+    }
+
+    if ( !mdPtr->isValidEntry( item.remoteId() ) ) {
+      errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
+                          collection.name() );
+      kError() << errorText << "FolderType=" << folderType;
+      q->notifyError( FileStore::Job::InvalidJobContext, errorText );
+      return false;
     }
 
     // make sure to read the index (if available) before modifying the data, which would
