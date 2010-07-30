@@ -29,7 +29,11 @@
 
 #include <kmime/kmime_message.h>
 
+#include <akonadi/kmime/messageparts.h>
+#include <akonadi/itemfetchscope.h>
+
 #include <KRandom>
+#include <KRandomSequence>
 #include <KTempDir>
 
 #include <QSignalSpy>
@@ -52,11 +56,18 @@ static Item::List itemsFromSpy( QSignalSpy *spy ) {
   return items;
 }
 
-static bool operator==( const MsgEntryInfo &a, const MsgEntryInfo &b )
+// copied from mail serializer plugin, Copyright (c) 2007 Till Adam <adam@kde.org>
+static QSet<QByteArray> messageParts( const KMime::Message::Ptr &msgPtr )
 {
-  return a.offset == b.offset &&
-         a.separatorSize == b.separatorSize &&
-         a.entrySize == b.entrySize;
+  QSet<QByteArray> set;
+  // FIXME: we actually want "has any header" here, but the kmime api doesn't offer that yet
+  if ( msgPtr->hasContent() || msgPtr->hasHeader( "Message-ID" ) ) {
+    set << MessagePart::Envelope << MessagePart::Header;
+    if ( !msgPtr->body().isEmpty() || !msgPtr->contents().isEmpty() ) {
+      set << MessagePart::Body;
+    }
+  }
+  return set;
 }
 
 class ItemFetchTest : public QObject
@@ -96,6 +107,8 @@ class ItemFetchTest : public QObject
     void cleanup();
     void testListingMaildir();
     void testListingMBox();
+    void testSingleItemFetchMaildir();
+    void testSingleItemFetchMBox();
 };
 
 void ItemFetchTest::init()
@@ -737,6 +750,264 @@ void ItemFetchTest::testListingMBox()
 
   var = job->property( "remoteIdToTagList" );
   QVERIFY( !var.isValid() );
+}
+
+void ItemFetchTest::testSingleItemFetchMaildir()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QStringList entryList1 = md1.entryList();
+  QCOMPARE( (int)entryList1.count(), 4 );
+
+  KRandomSequence randomSequence;
+  QStringList randomList1 = entryList1;
+  randomSequence.randomize( randomList1 );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemFetchJob *job = 0;
+
+  QSignalSpy *spy = 0;
+  Item::List items;
+
+  // test fetching from maildir, headers only
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  Q_FOREACH( const QString &entry, randomList1 ) {
+    Item item1;
+    item1.setId( KRandom::random() );
+    item1.setRemoteId( entry );
+    item1.setParentCollection( collection1 );
+
+    job = mStore->fetchItem( item1 );
+    job->fetchScope().fetchPayloadPart( MessagePart::Header );
+
+    spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+
+    items = job->items();
+    QCOMPARE( (int)items.count(), 1 );
+    QCOMPARE( itemsFromSpy( spy ), items );
+
+    Item item = items.first();
+    QCOMPARE( item, item1 );
+    QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
+
+    KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+    QVERIFY( msgPtr != 0 );
+
+    const QSet<QByteArray> parts = messageParts( msgPtr );
+    QVERIFY( !parts.isEmpty() );
+    QVERIFY( parts.contains( MessagePart::Header ) );
+    QVERIFY( !parts.contains( MessagePart::Body ) );
+  }
+
+  // test fetching from maildir, including body
+  randomSequence.randomize( randomList1 );
+  Q_FOREACH( const QString &entry, randomList1 ) {
+    Item item1;
+    item1.setId( KRandom::random() );
+    item1.setRemoteId( entry );
+    item1.setParentCollection( collection1 );
+
+    job = mStore->fetchItem( item1 );
+    job->fetchScope().fetchPayloadPart( MessagePart::Header );
+    job->fetchScope().fetchPayloadPart( MessagePart::Body );
+
+    spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+
+    items = job->items();
+    QCOMPARE( (int)items.count(), 1 );
+    QCOMPARE( itemsFromSpy( spy ), items );
+
+    Item item = items.first();
+    QCOMPARE( item, item1 );
+    QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
+
+    KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+    QVERIFY( msgPtr != 0 );
+
+    const QSet<QByteArray> parts = messageParts( msgPtr );
+    QVERIFY( !parts.isEmpty() );
+    QVERIFY( parts.contains( MessagePart::Header ) );
+    QVERIFY( parts.contains( MessagePart::Body ) );
+  }
+
+  // test fetching from maildir, just specifying full payload
+  randomSequence.randomize( randomList1 );
+  Q_FOREACH( const QString &entry, randomList1 ) {
+    Item item1;
+    item1.setId( KRandom::random() );
+    item1.setRemoteId( entry );
+    item1.setParentCollection( collection1 );
+
+    job = mStore->fetchItem( item1 );
+    job->fetchScope().fetchFullPayload( true );
+
+    spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+
+    items = job->items();
+    QCOMPARE( (int)items.count(), 1 );
+    QCOMPARE( itemsFromSpy( spy ), items );
+
+    Item item = items.first();
+    QCOMPARE( item, item1 );
+    QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
+
+    KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+    QVERIFY( msgPtr != 0 );
+
+    const QSet<QByteArray> parts = messageParts( msgPtr );
+    QVERIFY( !parts.isEmpty() );
+    QVERIFY( parts.contains( MessagePart::Header ) );
+    QVERIFY( parts.contains( MessagePart::Body ) );
+  }
+}
+
+void ItemFetchTest::testSingleItemFetchMBox()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
+
+  QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
+  MBox mbox1;
+  QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
+  QList<MsgEntryInfo> entryList1 = mbox1.entryList();
+  QCOMPARE( (int)entryList1.count(), 4 );
+
+  KRandomSequence randomSequence;
+  QList<MsgEntryInfo> randomList1 = entryList1;
+  randomSequence.randomize( randomList1 );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemFetchJob *job = 0;
+
+  QSignalSpy *spy = 0;
+  Item::List items;
+
+  // test fetching from maildir, headers only
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  Q_FOREACH( const MsgEntryInfo &entry, randomList1 ) {
+    Item item1;
+    item1.setId( KRandom::random() );
+    item1.setRemoteId( QString::number( entry.offset ) );
+    item1.setParentCollection( collection1 );
+
+    job = mStore->fetchItem( item1 );
+    job->fetchScope().fetchPayloadPart( MessagePart::Header );
+
+    spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+
+    items = job->items();
+    QCOMPARE( (int)items.count(), 1 );
+    QCOMPARE( itemsFromSpy( spy ), items );
+
+    Item item = items.first();
+    QCOMPARE( item, item1 );
+    QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
+
+    KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+    QVERIFY( msgPtr != 0 );
+
+    const QSet<QByteArray> parts = messageParts( msgPtr );
+    QVERIFY( !parts.isEmpty() );
+    QVERIFY( parts.contains( MessagePart::Header ) );
+    QVERIFY( !parts.contains( MessagePart::Body ) );
+  }
+
+  // test fetching from maildir, including body
+  randomSequence.randomize( randomList1 );
+  Q_FOREACH( const MsgEntryInfo &entry, randomList1 ) {
+    Item item1;
+    item1.setId( KRandom::random() );
+    item1.setRemoteId( QString::number( entry.offset ) );
+    item1.setParentCollection( collection1 );
+
+    job = mStore->fetchItem( item1 );
+    job->fetchScope().fetchPayloadPart( MessagePart::Header );
+    job->fetchScope().fetchPayloadPart( MessagePart::Body );
+
+    spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+
+    items = job->items();
+    QCOMPARE( (int)items.count(), 1 );
+    QCOMPARE( itemsFromSpy( spy ), items );
+
+    Item item = items.first();
+    QCOMPARE( item, item1 );
+    QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
+
+    KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+    QVERIFY( msgPtr != 0 );
+
+    const QSet<QByteArray> parts = messageParts( msgPtr );
+    QVERIFY( !parts.isEmpty() );
+    QVERIFY( parts.contains( MessagePart::Header ) );
+    QVERIFY( parts.contains( MessagePart::Body ) );
+  }
+
+  // test fetching from maildir, just specifying full payload
+  randomSequence.randomize( randomList1 );
+  Q_FOREACH( const MsgEntryInfo &entry, randomList1 ) {
+    Item item1;
+    item1.setId( KRandom::random() );
+    item1.setRemoteId( QString::number( entry.offset ) );
+    item1.setParentCollection( collection1 );
+
+    job = mStore->fetchItem( item1 );
+    job->fetchScope().fetchFullPayload( true );
+
+    spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+    QVERIFY( job->exec() );
+    QCOMPARE( job->error(), 0 );
+
+    items = job->items();
+    QCOMPARE( (int)items.count(), 1 );
+    QCOMPARE( itemsFromSpy( spy ), items );
+
+    Item item = items.first();
+    QCOMPARE( item, item1 );
+    QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
+
+    KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+    QVERIFY( msgPtr != 0 );
+
+    const QSet<QByteArray> parts = messageParts( msgPtr );
+    QVERIFY( !parts.isEmpty() );
+    QVERIFY( parts.contains( MessagePart::Header ) );
+    QVERIFY( parts.contains( MessagePart::Body ) );
+  }
 }
 
 QTEST_KDEMAIN( ItemFetchTest, NoGUI )
