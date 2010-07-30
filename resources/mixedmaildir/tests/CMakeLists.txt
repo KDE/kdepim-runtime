@@ -167,3 +167,15 @@ target_link_libraries(
   itemmodifytest
   ${common_link_libraries}
 )
+
+# test for item move handling
+kde4_add_unit_test( itemmovetest
+ ../mixedmaildirstore.cpp
+ itemmovetest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  itemmovetest
+  ${common_link_libraries}
+)
