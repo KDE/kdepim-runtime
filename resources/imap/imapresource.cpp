@@ -147,6 +147,7 @@ ImapResource::ImapResource( const QString &id )
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
 
+  Settings::self(); // make sure the D-Bus settings interface is up
   new ResourceAdaptor( this );
 }
 
