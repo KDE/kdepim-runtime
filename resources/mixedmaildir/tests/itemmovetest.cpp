@@ -106,6 +106,11 @@ void ItemMoveTest::testExpectedFail()
   QList<MsgEntryInfo> entryList2 = mbox2.entryList();
   QCOMPARE( (int)entryList2.count(), 4 );
 
+  QSet<qint64> entrySet2;
+  Q_FOREACH( const MsgEntryInfo &entry, entryList2 ) {
+    entrySet2 << entry.offset;
+  }
+
   mStore->setPath( topDir.path() );
 
   // common variables
@@ -159,6 +164,7 @@ void ItemMoveTest::testExpectedFail()
   QVERIFY( !job->exec() );
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
 
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
   QCOMPARE( mbox2.entryList(), entryList2 );
 
   // test failure of moving from maildir to top level collection
@@ -173,6 +179,39 @@ void ItemMoveTest::testExpectedFail()
   QVERIFY( !job->exec() );
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
 
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
+  QCOMPARE( mbox2.entryList(), entryList2 );
+
+  // test failure of moving a non-existant maildir entry
+  QString remoteId1;
+  do {
+    remoteId1 = KRandom::randomString( 20 );
+  } while ( entrySet1.contains( remoteId1 ) );
+
+  item1.setRemoteId( remoteId1 );
+
+  job = mStore->moveItem( item1, collection2 );
+  QVERIFY( !job->exec() );
+  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+
+  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
+  QCOMPARE( mbox2.entryList(), entryList2 );
+
+  // test failure of moving a non-existant mbox entry
+  quint64 remoteId2;
+  do {
+    remoteId2 = KRandom::random();
+  } while ( entrySet2.contains( remoteId2 ) );
+
+  item2.setRemoteId( QString::number( remoteId2 ) );
+
+  job = mStore->moveItem( item2, collection1 );
+  QVERIFY( !job->exec() );
+  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+
+  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
   QCOMPARE( mbox2.entryList(), entryList2 );
 }
 
