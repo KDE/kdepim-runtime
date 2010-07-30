@@ -1855,7 +1855,8 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       return false;
     }
 
-    if ( !item.payload<KMime::Message::Ptr>() ) {
+    if ( !item.hasPayload<KMime::Message::Ptr>() ||
+         !item.loadedPayloadParts().contains( MessagePart::Body ) ) {
       if ( !fillItem( mbox, true, item ) ) {
         errorText = i18nc( "@info:status", "Cannot move email from folder %1",
                             sourceCollection.name() );
@@ -1863,6 +1864,16 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
         q->notifyError( FileStore::Job::InvalidJobContext, errorText );
         return false;
       }
+    }
+
+    Collection::List collections;
+
+    // make sure to read the index (if available) before modifying the data, which would
+    // make the index invalid
+    mbox->readIndexData();
+
+    if ( mbox->hasIndexData() ) {
+      collections << sourceCollection;
     }
 
     if ( targetFolderType == MBoxFolder ) {
@@ -1892,8 +1903,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       // if there is index data now, we let the job creator know that the on-disk index
       // became invalid
       if ( targetMBox->hasIndexData() ) {
-        const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << targetCollection );
-        job->setProperty( "onDiskIndexInvalidated", var );
+        collections << targetCollection;
       }
 
       qint64 remoteId = targetMBox->appendEntry( item.payload<KMime::Message::Ptr>() );
@@ -1925,8 +1935,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       // if there is index data now, we let the job creator know that the on-disk index
       // became invalid
       if ( targetMdPtr->hasIndexData() ) {
-        const QVariant var = QVariant::fromValue<Collection::List>( Collection::List() << targetCollection );
-        job->setProperty( "onDiskIndexInvalidated", var );
+        collections << targetCollection;
       }
 
       const QString remoteId = targetMdPtr->addEntry( mbox->readRawEntry( offset ) );
@@ -1939,6 +1948,11 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
       }
 
       item.setRemoteId( remoteId );
+    }
+
+    if ( !collections.isEmpty() ) {
+      const QVariant var = QVariant::fromValue<Collection::List>( collections );
+      job->setProperty( "onDiskIndexInvalidated", var );
     }
 
     mbox->mCollection = sourceCollection;
