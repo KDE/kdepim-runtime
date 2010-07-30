@@ -155,3 +155,15 @@ target_link_libraries(
   itemfetchtest
   ${common_link_libraries}
 )
+
+# test for item modification handling
+kde4_add_unit_test( itemmodifytest
+ ../mixedmaildirstore.cpp
+ itemmodifytest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  itemmodifytest
+  ${common_link_libraries}
+)
