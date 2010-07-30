@@ -22,6 +22,7 @@
 
 #include "testdatautil.h"
 
+#include "filestore/itemcreatejob.h"
 #include "filestore/itemfetchjob.h"
 
 #include "libmaildir/maildir.h"
@@ -750,6 +751,55 @@ void ItemFetchTest::testListingMBox()
 
   var = job->property( "remoteIdToTagList" );
   QVERIFY( !var.isValid() );
+
+  // test that a new message in an mbox with index it not marked as deleted
+  KMime::Message::Ptr msgPtr( new KMime::Message );
+  msgPtr->subject()->from7BitString( "Test 5" );
+  msgPtr->to()->from7BitString( "kevin.krammer@gmx.at" );
+  msgPtr->assemble();
+
+  Item item3_5;
+  item3_5.setMimeType( KMime::Message::mimeType() );
+  item3_5.setPayload<KMime::Message::Ptr>( msgPtr );
+
+  FileStore::ItemCreateJob *itemCreate = mStore->createItem( item3_5, collection3 );
+  QVERIFY( itemCreate->exec() );
+
+  item3_5 = itemCreate->item();
+  QVERIFY( !item3_5.remoteId().isEmpty() );
+
+  job = mStore->fetchItems( collection3 );
+
+  spy = new QSignalSpy( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ) );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  items = job->items();
+  QCOMPARE( (int)items.count(), 5 );
+  QCOMPARE( itemsFromSpy( spy ), items );
+
+  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList3[ 0 ].offset ) );
+  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList3[ 1 ].offset ) );
+  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList3[ 2 ].offset ) );
+  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList3[ 3 ].offset ) );
+  QCOMPARE( items[ 4 ].remoteId(), item3_5.remoteId() );
+
+  QCOMPARE( items[ 0 ].parentCollection(), collection3 );
+  QCOMPARE( items[ 1 ].parentCollection(), collection3 );
+  QCOMPARE( items[ 2 ].parentCollection(), collection3 );
+  QCOMPARE( items[ 3 ].parentCollection(), collection3 );
+  QCOMPARE( items[ 4 ].parentCollection(), collection3 );
+
+  // see data/README
+  QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>()  );
+  QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() << "\\SEEN" << "$TODO" );
+  QCOMPARE( items[ 2 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 3 ].flags(), QSet<QByteArray>() << "\\SEEN" << "\\FLAGGED" );
+  QCOMPARE( items[ 4 ].flags(), QSet<QByteArray>() );
+
+  var = job->property( "remoteIdToTagList" );
+  QVERIFY( var.isValid() );
 }
 
 void ItemFetchTest::testSingleItemFetchMaildir()
