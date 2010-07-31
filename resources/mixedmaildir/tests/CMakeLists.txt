@@ -179,3 +179,15 @@ target_link_libraries(
   itemmovetest
   ${common_link_libraries}
 )
+
+# test for store compact handling
+kde4_add_unit_test( storecompacttest
+ ../mixedmaildirstore.cpp
+ storecompacttest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  storecompacttest
+  ${common_link_libraries}
+)
