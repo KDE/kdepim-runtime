@@ -503,9 +503,9 @@ bool KMailMigrator::evaluateCacheHandlingOptions()
 
     const QString message =
       i18nc( "@info", "<para>Cached IMAP accounts have a local copy of the server's data.</para>"
-                      "<para>These copies can be kept in local folders or be deleted"
+                      "<para>These copies can either be kept in local folders, or be deleted "
                       "after import.</para>"
-                      "<note>Mail that did not get imported will always be kept in local folders"
+                      "<note>Mail that was not imported will always be kept in local folders."
                       "</note>" );
 
     int result = KMessageBox::questionYesNoCancel( 0, message, i18n( "KMail 2 Migration" ),
@@ -1186,8 +1186,8 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
 
       emit message( Info,
                     i18ncp( "@info:status",
-                            "Scheduling background task for recovering unimported messages.",
-                            "Scheduling background task for recovering unimported messages. "
+                            "Scheduling background task for recovering non-imported messages.",
+                            "Scheduling background task for recovering non-imported messages. "
                             "Now at a total of %1 such tasks",
                              mRunningCacheImporterCount ) );
 
