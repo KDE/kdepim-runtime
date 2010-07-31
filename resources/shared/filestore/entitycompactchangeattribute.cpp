@@ -39,12 +39,14 @@ class FileStore::EntityCompactChangeAttribute::Private
         return *this;
       }
 
-      mRemoteId = other.mRemoteId;
+      mRemoteId  = other.mRemoteId;
+      mRemoteRev = other.mRemoteRev;
       return *this;
     }
 
   public:
     QString mRemoteId;
+    QString mRemoteRev;
 };
 
 FileStore::EntityCompactChangeAttribute::EntityCompactChangeAttribute()
@@ -67,6 +69,16 @@ QString FileStore::EntityCompactChangeAttribute::remoteId() const
   return d->mRemoteId;
 }
 
+void FileStore::EntityCompactChangeAttribute::setRemoteRevision( const QString &remoteRev )
+{
+  d->mRemoteRev = remoteRev;
+}
+
+QString FileStore::EntityCompactChangeAttribute::remoteRevision() const
+{
+  return d->mRemoteRev;
+}
+
 QByteArray FileStore::EntityCompactChangeAttribute::type() const
 {
   return "ENTITYCOMPACTCHANGE";
@@ -85,6 +97,7 @@ QByteArray FileStore::EntityCompactChangeAttribute::serialized() const
   QDataStream stream( &data, QIODevice::WriteOnly );
 
   stream << d->mRemoteId;
+  stream << d->mRemoteRev;
 
   return data;
 }
@@ -93,6 +106,7 @@ void FileStore::EntityCompactChangeAttribute::deserialize( const QByteArray &dat
 {
   QDataStream stream( data );
   stream >> d->mRemoteId;
+  stream >> d->mRemoteRev;
 }
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
