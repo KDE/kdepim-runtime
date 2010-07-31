@@ -93,7 +93,8 @@ typedef enum
     KMLegacyMsgStatusForwarded='F',
     KMLegacyMsgStatusQueued='Q',
     KMLegacyMsgStatusSent='S',
-    KMLegacyMsgStatusFlag='G'
+    KMLegacyMsgStatusFlag='G',
+    KMLegacyMsgStatusToAct='K'
 } KMLegacyMsgStatus;
 
 //END: Magic definitions from old kmail code
@@ -146,6 +147,9 @@ MessageStatus& KMIndexData::status()
                   break;
               case KMLegacyMsgStatusFlag:
                   mStatus.setImportant();
+                  break;
+              case KMLegacyMsgStatusToAct:
+                  mStatus.setToAct();
                   break;
               default:
                   break;
