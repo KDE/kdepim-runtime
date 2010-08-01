@@ -22,7 +22,9 @@
 
 #include "testdatautil.h"
 
+#include "filestore/itemfetchjob.h"
 #include "filestore/itemmodifyjob.h"
+#include "filestore/storecompactjob.h"
 
 #include "libmaildir/maildir.h"
 #include "libmbox/mbox.h"
@@ -31,8 +33,6 @@
 
 #include <KRandom>
 #include <KTempDir>
-
-#include <QSignalSpy>
 
 #include <qtest_kde.h>
 
@@ -247,6 +247,124 @@ void ItemModifyTest::testIgnorePayload()
 
 void ItemModifyTest::testModify()
 {
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QStringList entryList1 = md1.entryList();
+  QCOMPARE( (int)entryList1.count(), 4 );
+
+  QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
+  MBox mbox2;
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
+  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  QCOMPARE( (int)entryList2.count(), 4 );
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemModifyJob *job = 0;
+
+  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
+  QVariant var;
+  Collection::List collections;
+
+  // test failure of modifying a maildir entry
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  const QByteArray data1 = md1.readEntry( entryList1.first() );
+
+  KMime::Message::Ptr msgPtr( new KMime::Message );
+  msgPtr->setContent( KMime::CRLFtoLF( data1 ) );
+  msgPtr->subject()->from7BitString( "Modify Test" );
+  msgPtr->assemble();
+
+  Item item1;
+  item1.setMimeType( KMime::Message::mimeType() );
+  item1.setRemoteId( entryList1.first() );
+  item1.setParentCollection( collection1 );
+  item1.setPayload<KMime::Message::Ptr>( msgPtr );
+
+  job = mStore->modifyItem( item1 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  QCOMPARE( md1.entryList(), entryList1 );
+
+  QCOMPARE( md1.readEntry( entryList1.first() ), msgPtr->encodedContent() );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
+
+  // test failure of modifying a mbox entry
+  Collection collection2;
+  collection2.setName( QLatin1String( "collection2" ) );
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+
+  const QByteArray data2 = mbox2.readRawEntry( 0 );
+
+  msgPtr->setContent( KMime::CRLFtoLF( data2 ) );
+  msgPtr->subject()->from7BitString( "Modify Test" );
+  msgPtr->assemble();
+
+  Item item2;
+  item2.setMimeType( KMime::Message::mimeType() );
+  item2.setRemoteId( QLatin1String( "0" ) );
+  item2.setParentCollection( collection2 );
+  item2.setPayload<KMime::Message::Ptr>( msgPtr );
+
+  job = mStore->modifyItem( item2 );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  Item item = job->item();
+
+  QVERIFY( mbox2.load( mbox2.fileName() ) );
+  QList<MsgEntryInfo> entryList = mbox2.entryList();
+  QCOMPARE( (int)entryList.count(), 5 ); // mbox file not purged yet
+  QCOMPARE( entryList.last().offset, item.remoteId().toULongLong() );
+
+  var = job->property( "compactStore" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.type(), QVariant::Bool );
+  QCOMPARE( var.toBool(), true );
+
+  // check for index preservation
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
+
+  FileStore::ItemFetchJob *itemFetch = mStore->fetchItem( item2 );
+  QVERIFY( !itemFetch->exec() ); // item at old offset gone
+
+  FileStore::StoreCompactJob *storeCompact = mStore->compactStore();
+  QVERIFY( storeCompact->exec() );
+
+  QVERIFY( mbox2.load( mbox2.fileName() ) );
+  entryList = mbox2.entryList();
+  QCOMPARE( (int)entryList.count(), 4 );
+
+  QCOMPARE( mbox2.readRawEntry( entryList.last().offset ), msgPtr->encodedContent() );
 }
 
 QTEST_KDEMAIN( ItemModifyTest, NoGUI )

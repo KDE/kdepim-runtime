@@ -42,8 +42,12 @@ static QVariant::Type argumentType( const QMetaObject *mo, const QString &method
       m = mo->method( i );
   }
 
-  if ( !m.signature() )
+  if ( !m.signature() ) {
+    kWarning() << "Did not find D-Bus method: " << method << " available methods are:";
+    for ( int i = 0; i < mo->methodCount(); ++ i )
+      kWarning() << mo->method( i ).signature();
     return QVariant::Invalid;
+  }
 
   const QList<QByteArray> argTypes = m.parameterTypes();
   if ( argTypes.count() != 1 )
