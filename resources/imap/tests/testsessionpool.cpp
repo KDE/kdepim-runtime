@@ -191,7 +191,7 @@ private slots:
 
     FakeServer server;
     server.setScenario( scenario );
-    server.start();
+    server.startAndWait();
 
     SessionPool pool( 2 );
 
@@ -246,7 +246,7 @@ private slots:
                         << "S: A000001 OK User Logged in"
     );
 
-    server.start();
+    server.startAndWait();
 
 
 
@@ -361,7 +361,7 @@ private slots:
                         << "X"
     );
 
-    server.start();
+    server.startAndWait();
 
     ImapAccount *account = createDefaultAccount();
     DummyPasswordRequester *requester = createDefaultRequester();

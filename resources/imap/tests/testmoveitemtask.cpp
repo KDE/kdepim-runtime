@@ -97,7 +97,7 @@ private slots:
 
     FakeServer server;
     server.setScenario( scenario );
-    server.start();
+    server.startAndWait();
 
     SessionPool pool( 1 );
 
