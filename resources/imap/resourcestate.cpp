@@ -172,6 +172,16 @@ ResourceStateInterface::Ptr ResourceState::createExpungeCollectionState( ImapRes
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createIdleState( ImapResource *resource,
+                                                            const Akonadi::Collection &collection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
 
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )

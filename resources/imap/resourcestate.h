@@ -76,6 +76,9 @@ public:
   static ResourceStateInterface::Ptr createExpungeCollectionState( ImapResource *resource,
                                                                    const Akonadi::Collection &collection );
 
+  static ResourceStateInterface::Ptr createIdleState( ImapResource *resource,
+                                                      const Akonadi::Collection &collection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
