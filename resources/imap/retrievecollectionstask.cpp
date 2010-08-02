@@ -71,8 +71,6 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
 
   root.setCachePolicy( policy );
 
-  collectionsRetrieved( Akonadi::Collection::List() << root );
-
   m_reportedCollections.insert( QString(), root );
 
   KIMAP::ListJob *listJob = new KIMAP::ListJob( session );
@@ -87,7 +85,6 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
 void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > &descriptors,
                                                    const QList< QList<QByteArray> > &flags )
 {
-  Akonadi::Collection::List collections;
   QStringList contentTypes;
   contentTypes << "message/rfc822" << Akonadi::Collection::mimeType();
 
@@ -144,14 +141,10 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
         c.setRights( Akonadi::Collection::ReadOnly );
       }
 
-      collections << c;
-
       m_reportedCollections.insert( currentPath, c );
       parentPath = currentPath;
     }
   }
-
-  collectionsRetrieved( collections );
 }
 
 void RetrieveCollectionsTask::onMailBoxesReceiveDone( KJob* job )
@@ -159,7 +152,7 @@ void RetrieveCollectionsTask::onMailBoxesReceiveDone( KJob* job )
   if ( job->error() ) {
     cancelTask( job->errorString() );
   } else {
-    collectionsRetrievalDone();
+    collectionsRetrieved( m_reportedCollections.values() );
   }
 }
 

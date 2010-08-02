@@ -71,7 +71,7 @@ private slots:
              << "S: A000003 OK list done";
 
     callNames.clear();
-    callNames << "collectionsRetrieved" << "setIdleCollection" << "collectionsRetrieved" << "collectionsRetrievalDone";
+    callNames << "setIdleCollection" << "collectionsRetrieved";
 
     isSubscriptionEnabled = false;
     isDisconnectedModeEnabled = false;
@@ -99,7 +99,7 @@ private slots:
              << "S: A000003 OK list done";
 
     callNames.clear();
-    callNames << "collectionsRetrieved" << "setIdleCollection" << "collectionsRetrieved" << "collectionsRetrievalDone";
+    callNames << "setIdleCollection" << "collectionsRetrieved";
 
     isSubscriptionEnabled = false;
     isDisconnectedModeEnabled = true;
@@ -125,7 +125,7 @@ private slots:
              << "S: A000003 OK list done";
 
     callNames.clear();
-    callNames << "collectionsRetrieved" << "setIdleCollection" << "collectionsRetrieved" << "collectionsRetrievalDone";
+    callNames << "setIdleCollection" << "collectionsRetrieved";
 
     isSubscriptionEnabled = false;
     isDisconnectedModeEnabled = false;
@@ -151,7 +151,7 @@ private slots:
              << "S: A000003 OK list done";
 
     callNames.clear();
-    callNames << "collectionsRetrieved" << "setIdleCollection" << "collectionsRetrieved" << "collectionsRetrievalDone";
+    callNames << "setIdleCollection" << "collectionsRetrieved";
 
     isSubscriptionEnabled = true;
     isDisconnectedModeEnabled = false;

@@ -86,7 +86,6 @@ protected:
   void changeCommitted( const Akonadi::Item &item );
 
   void collectionsRetrieved( const Akonadi::Collection::List &collections );
-  void collectionsRetrievalDone();
 
   void changeCommitted( const Akonadi::Collection &collection );
 

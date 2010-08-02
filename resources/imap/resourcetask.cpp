@@ -196,11 +196,6 @@ void ResourceTask::changeCommitted( const Akonadi::Item &item )
 void ResourceTask::collectionsRetrieved( const Akonadi::Collection::List &collections )
 {
   m_resource->collectionsRetrieved( collections );
-}
-
-void ResourceTask::collectionsRetrievalDone()
-{
-  m_resource->collectionsRetrievalDone();
   deleteLater();
 }
 

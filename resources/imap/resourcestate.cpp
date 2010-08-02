@@ -340,11 +340,6 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
   }
 }
 
-void ResourceState::collectionsRetrievalDone()
-{
-  m_resource->collectionsRetrievalDone();
-}
-
 void ResourceState::collectionChangeCommitted( const Akonadi::Collection &collection )
 {
   m_resource->changeCommitted( collection );

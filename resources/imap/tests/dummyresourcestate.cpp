@@ -218,11 +218,6 @@ void DummyResourceState::collectionsRetrieved( const Akonadi::Collection::List &
   recordCall( "collectionsRetrieved",  QVariant::fromValue( collections ) );
 }
 
-void DummyResourceState::collectionsRetrievalDone()
-{
-  recordCall( "collectionsRetrievalDone" );
-}
-
 void DummyResourceState::collectionChangeCommitted( const Akonadi::Collection &collection )
 {
   recordCall( "collectionChangeCommitted", QVariant::fromValue( collection ) );
