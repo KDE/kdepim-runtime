@@ -104,8 +104,22 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       currentPath += separator + pathPart;
 
       if ( m_reportedCollections.contains( currentPath ) ) {
-        if ( !isDummy )
+        if ( m_dummyCollections.contains( currentPath ) ) {
+          kDebug() << "Received the real collection for a dummy one : " << currentPath;
+
+          //set the correct attributes for the collection, eg. noselect needs to be removed
+          Akonadi::Collection c = m_reportedCollections.value( currentPath );
+          c.setContentMimeTypes( contentTypes );
+          c.setRights( Akonadi::Collection::AllRights );
+          c.removeAttribute( "noselect" );
+
+          m_dummyCollections.remove( currentPath );
+          m_reportedCollections.remove( currentPath );
+          m_reportedCollections.insert( currentPath, c );
+
+        } else {
           kWarning() << "Something is wrong here, we already have created a collection for" << currentPath;
+        }
         parentPath = currentPath;
         continue;
       }
@@ -136,12 +150,18 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
 
       // If this folder is a noselect folder, make some special settings.
       if ( currentFlags.contains( "\\NoSelect" ) ) {
+        kDebug() << "Dummy collection created: " << currentPath;
         c.addAttribute( new NoSelectAttribute( true ) );
         c.setContentMimeTypes( QStringList() << Akonadi::Collection::mimeType() );
         c.setRights( Akonadi::Collection::ReadOnly );
       }
 
       m_reportedCollections.insert( currentPath, c );
+
+      if ( isDummy ) {
+        m_dummyCollections.insert( currentPath, c );
+      }
+
       parentPath = currentPath;
     }
   }

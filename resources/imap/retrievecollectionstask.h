@@ -46,6 +46,7 @@ protected:
 
 private:
   QHash<QString, Akonadi::Collection> m_reportedCollections;
+  QHash<QString, Akonadi::Collection> m_dummyCollections;
 };
 
 #endif
