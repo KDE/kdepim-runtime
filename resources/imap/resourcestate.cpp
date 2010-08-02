@@ -384,3 +384,10 @@ void ResourceState::synchronizeCollectionTree()
 {
   m_resource->synchronizeCollectionTree();
 }
+
+void ResourceState::scheduleConnectionAttempt()
+{
+  // block all other tasks, until we are connected
+  m_resource->scheduleCustomTask( m_resource, "startConnect", QVariant(),
+                                  Akonadi::ResourceBase::Prepend );
+}

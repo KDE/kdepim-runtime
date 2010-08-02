@@ -23,15 +23,18 @@
 
 #include <akonadi/kmime/messageflags.h>
 
+#include <KDE/KLocale>
+
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
 
-ResourceTask::ResourceTask( ResourceStateInterface::Ptr resource, QObject *parent )
+ResourceTask::ResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent )
   : QObject( parent ),
     m_pool( 0 ),
     m_sessionRequestId( 0 ),
     m_session( 0 ),
+    m_actionIfNoSession( action ),
     m_resource( resource )
 {
 
@@ -54,7 +57,22 @@ void ResourceTask::start( SessionPool *pool )
 
   if ( m_sessionRequestId <= 0 ) {
     m_sessionRequestId = 0;
-    deferTask();
+
+    switch ( m_actionIfNoSession ) {
+    case CancelIfNoSession:
+      kDebug() << "Cancelling this request. Probably there is no connection.";
+      m_resource->cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
+      break;
+
+    case DeferIfNoSession:
+      kDebug() << "Defering this request. Probably there is no connection.";
+      m_resource->deferTask();
+      break;
+    }
+
+    // In this case we were likely disconnect, try to get the resource online
+    m_resource->scheduleConnectionAttempt();
+    deleteLater();
   }
 }
 
@@ -71,7 +89,19 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
   m_sessionRequestId = 0;
 
   if ( errorCode!=SessionPool::NoError ) {
-    deferTask();
+    switch ( m_actionIfNoSession ) {
+    case CancelIfNoSession:
+      kDebug() << "Cancelling this request. Probably there is no more session available.";
+      m_resource->cancelTask( i18n( "There is currently no session to the IMAP server available." ) );
+      break;
+
+    case DeferIfNoSession:
+      kDebug() << "Defering this request. Probably there is no more session available.";
+      m_resource->deferTask();
+      break;
+    }
+
+    deleteLater();
     return;
   }
 

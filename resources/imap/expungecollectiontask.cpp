@@ -29,7 +29,7 @@
 #include <kimap/session.h>
 
 ExpungeCollectionTask::ExpungeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent )
+  : ResourceTask( CancelIfNoSession, resource, parent )
 {
 
 }

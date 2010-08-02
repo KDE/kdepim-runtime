@@ -253,6 +253,11 @@ void DummyResourceState::synchronizeCollectionTree()
   recordCall( "synchronizeCollectionTree" );
 }
 
+void DummyResourceState::scheduleConnectionAttempt()
+{
+  recordCall( "scheduleConnectionAttempt" );
+}
+
 QList< QPair<QByteArray, QVariant> > DummyResourceState::calls() const
 {
   return m_calls;

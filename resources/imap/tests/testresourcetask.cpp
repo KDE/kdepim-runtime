@@ -21,16 +21,18 @@
 
 #include "resourcetask.h"
 
+Q_DECLARE_METATYPE( ResourceTask::ActionIfNoSession )
+
 class DummyResourceTask : public ResourceTask
 {
 public:
-  explicit DummyResourceTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 )
-    : ResourceTask( resource, parent )
+  explicit DummyResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = 0 )
+    : ResourceTask( action, resource, parent )
   {
 
   }
 
-  void doStart( KIMAP::Session *session )
+  void doStart( KIMAP::Session */*session*/ )
   {
     cancelTask( "Dummy task" );
   }
@@ -48,11 +50,13 @@ private slots:
     QTest::addColumn< QList<QByteArray> >("scenario");
     QTest::addColumn<bool>("shouldConnect");
     QTest::addColumn<bool>("shouldRequestSession");
-    QTest::addColumn<QString>("callName");
-    QTest::addColumn<QVariant>("callParameter");
+    QTest::addColumn<ResourceTask::ActionIfNoSession>("actionIfNoSession");
+    QTest::addColumn<QStringList>("callNames");
+    QTest::addColumn<QVariant>("firstCallParameter");
 
     DummyResourceState::Ptr state;
     QList<QByteArray> scenario;
+    QStringList callNames;
 
     state = DummyResourceState::Ptr(new DummyResourceState);
     scenario.clear();
@@ -62,15 +66,50 @@ private slots:
              << "C: A000002 CAPABILITY"
              << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
              << "S: A000002 OK Completed";
-    QTest::newRow("normal case") << state << scenario << true << false << "cancelTask" << QVariant("Dummy task");
+    callNames.clear();
+    callNames << "cancelTask";
+    QTest::newRow("normal case") << state << scenario
+                                 << true << false
+                                 << ResourceTask::DeferIfNoSession
+                                 << callNames << QVariant("Dummy task");
+
 
     state = DummyResourceState::Ptr(new DummyResourceState);
-    QTest::newRow("all sessions allocated") << state << scenario << true << true << "deferTask" << QVariant();
+    callNames.clear();
+    callNames << "deferTask";
+    QTest::newRow("all sessions allocated (defer)") << state << scenario
+                                                    << true << true
+                                                    << ResourceTask::DeferIfNoSession
+                                                    << callNames << QVariant();
+
+
+    state = DummyResourceState::Ptr(new DummyResourceState);
+    callNames.clear();
+    callNames << "cancelTask";
+    QTest::newRow("all sessions allocated (cancel)") << state << scenario
+                                                     << true << true
+                                                     << ResourceTask::CancelIfNoSession
+                                                     << callNames << QVariant();
 
 
     state = DummyResourceState::Ptr(new DummyResourceState);
     scenario.clear();
-    QTest::newRow("disconnected pool") << state << scenario << false << false << "deferTask" << QVariant();
+    callNames.clear();
+    callNames << "deferTask" << "scheduleConnectionAttempt";
+    QTest::newRow("disconnected pool (defer)") << state << scenario
+                                               << false << false
+                                               << ResourceTask::DeferIfNoSession
+                                               << callNames << QVariant();
+
+
+    state = DummyResourceState::Ptr(new DummyResourceState);
+    scenario.clear();
+    callNames.clear();
+    callNames << "cancelTask" << "scheduleConnectionAttempt";
+    QTest::newRow("disconnected pool (cancel)") << state << scenario
+                                                << false << false
+                                                << ResourceTask::CancelIfNoSession
+                                                << callNames << QVariant();
   }
 
   void shouldRequestSession()
@@ -79,8 +118,9 @@ private slots:
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( bool, shouldConnect );
     QFETCH( bool, shouldRequestSession );
-    QFETCH( QString, callName );
-    QFETCH( QVariant, callParameter );
+    QFETCH( ResourceTask::ActionIfNoSession, actionIfNoSession );
+    QFETCH( QStringList, callNames );
+    QFETCH( QVariant, firstCallParameter );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -106,7 +146,7 @@ private slots:
     }
 
     QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)) );
-    DummyResourceTask *task = new DummyResourceTask( state );
+    DummyResourceTask *task = new DummyResourceTask( actionIfNoSession, state );
     task->start( &pool );
     QTest::qWait( 100 );
 
@@ -115,9 +155,16 @@ private slots:
     } else {
       QCOMPARE( sessionSpy.count(), 0 );
     }
-    QCOMPARE( state->calls().count(), 1 );
-    QCOMPARE( QString::fromUtf8(state->calls().first().first), callName );
-    QCOMPARE( state->calls().first().second, callParameter );
+
+    QCOMPARE( state->calls().count(), callNames.size() );
+    for (int i=0; i<callNames.size(); i++) {
+      QString command = QString::fromUtf8(state->calls().at(i).first);
+      QCOMPARE( command, callNames[i] );
+    }
+
+    if ( firstCallParameter.toString()=="Dummy task" ) {
+      QCOMPARE( state->calls().first().second, firstCallParameter );
+    }
 
     QVERIFY( server.isAllScenarioDone() );
 

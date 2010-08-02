@@ -31,7 +31,7 @@
 #include "imapflags.h"
 
 RemoveItemTask::RemoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent )
+  : ResourceTask( DeferIfNoSession, resource, parent )
 {
 
 }

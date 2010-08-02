@@ -84,6 +84,7 @@ public:
   virtual void emitWarning( const QString &message ) = 0;
 
   virtual void synchronizeCollectionTree() = 0;
+  virtual void scheduleConnectionAttempt() = 0;
 };
 
 #endif

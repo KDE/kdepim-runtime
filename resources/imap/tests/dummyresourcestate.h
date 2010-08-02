@@ -100,6 +100,7 @@ public:
   virtual void emitWarning( const QString &message );
 
   virtual void synchronizeCollectionTree();
+  virtual void scheduleConnectionAttempt();
 
   QList< QPair<QByteArray, QVariant> > calls() const;
 

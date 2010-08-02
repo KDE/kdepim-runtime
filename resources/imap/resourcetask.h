@@ -41,9 +41,15 @@ class SessionPool;
 class ResourceTask : public QObject
 {
   Q_OBJECT
+  Q_ENUMS( ActionIfNoSession )
 
 public:
-  explicit ResourceTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  enum ActionIfNoSession {
+    CancelIfNoSession,
+    DeferIfNoSession
+  };
+
+  explicit ResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = 0 );
   virtual ~ResourceTask();
 
   void start( SessionPool *pool );
@@ -112,6 +118,7 @@ private:
   qint64 m_sessionRequestId;
 
   KIMAP::Session *m_session;
+  ActionIfNoSession m_actionIfNoSession;
   ResourceStateInterface::Ptr m_resource;
 };
 

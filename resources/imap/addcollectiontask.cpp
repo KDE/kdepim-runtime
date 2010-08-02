@@ -29,7 +29,7 @@
 #include <kimap/subscribejob.h>
 
 AddCollectionTask::AddCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent )
+  : ResourceTask( DeferIfNoSession, resource, parent )
 {
 
 }

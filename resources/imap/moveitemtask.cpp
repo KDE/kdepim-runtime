@@ -32,7 +32,7 @@
 #include "imapflags.h"
 
 MoveItemTask::MoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent )
+  : ResourceTask( DeferIfNoSession, resource, parent )
 {
 
 }

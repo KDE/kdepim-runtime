@@ -32,7 +32,7 @@
 #include "uidnextattribute.h"
 
 AddItemTask::AddItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent )
+  : ResourceTask( DeferIfNoSession, resource, parent )
 {
 
 }

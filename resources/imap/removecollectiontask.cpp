@@ -28,7 +28,7 @@
 #include <kimap/session.h>
 
 RemoveCollectionTask::RemoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent )
+  : ResourceTask( DeferIfNoSession, resource, parent )
 {
 
 }

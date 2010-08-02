@@ -31,7 +31,7 @@
 #include <KDE/KLocale>
 
 RetrieveCollectionsTask::RetrieveCollectionsTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent )
+  : ResourceTask( CancelIfNoSession, resource, parent )
 {
 }
 

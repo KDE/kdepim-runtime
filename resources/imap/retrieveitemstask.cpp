@@ -38,7 +38,7 @@
 #include <kimap/session.h>
 
 RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent ), m_session( 0 )
+  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 )
 {
 
 }

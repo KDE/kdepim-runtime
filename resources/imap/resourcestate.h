@@ -130,6 +130,7 @@ public:
   virtual void emitWarning( const QString &message );
 
   virtual void synchronizeCollectionTree();
+  virtual void scheduleConnectionAttempt();
 
 private:
   ImapResource *m_resource;

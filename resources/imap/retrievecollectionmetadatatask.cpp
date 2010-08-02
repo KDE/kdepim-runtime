@@ -35,7 +35,7 @@
 
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent ), m_pendingMetaDataJobs(0), m_collectionChanged(false)
+  : ResourceTask( CancelIfNoSession, resource, parent ), m_pendingMetaDataJobs(0), m_collectionChanged(false)
 {
 }
 

@@ -33,7 +33,7 @@
 #include <KLocale>
 
 ChangeCollectionTask::ChangeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( resource, parent ), m_pendingJobs(0)
+  : ResourceTask( DeferIfNoSession, resource, parent ), m_pendingJobs(0)
 {
 }
 
