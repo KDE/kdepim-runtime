@@ -48,7 +48,7 @@ QuotaColorProxyModel::QuotaColorProxyModel( QObject *parent )
   : QSortFilterProxyModel( parent ),
     d( new Private( this ) )
 {
-  setDynamicSortFilter(true);
+  setDynamicSortFilter( true );
 }
 
 QuotaColorProxyModel::~QuotaColorProxyModel()
@@ -81,13 +81,13 @@ QVariant QuotaColorProxyModel::data( const QModelIndex & index, int role) const
   if ( role == Qt::ForegroundRole ) {
     const QModelIndex sourceIndex = mapToSource( index );
     const QModelIndex rowIndex = sourceIndex.sibling( sourceIndex.row(), 0 );
-    Collection collection = sourceModel()->data( rowIndex, EntityTreeModel::CollectionRole ).value<Collection>();
+    const Collection collection = sourceModel()->data( rowIndex, EntityTreeModel::CollectionRole ).value<Collection>();
 
     if ( collection.isValid() && collection.hasAttribute<CollectionQuotaAttribute>() ) {
-      CollectionQuotaAttribute *quota = collection.attribute<CollectionQuotaAttribute>();
+      const CollectionQuotaAttribute *quota = collection.attribute<CollectionQuotaAttribute>();
 
       if ( quota->currentValue() > -1 && quota->maximumValue() > 0 ) {
-        qreal percentage = ( 100.0 * quota->currentValue() ) / quota->maximumValue();
+        const qreal percentage = ( 100.0 * quota->currentValue() ) / quota->maximumValue();
 
         if ( percentage >= d->mThreshold ) {
           return d->mColor;

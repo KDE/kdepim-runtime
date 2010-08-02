@@ -22,23 +22,31 @@
 
 #include <QtCore/QObject>
 
+#include <akonadi/differencesalgorithminterface.h>
 #include <akonadi/itemserializerplugin.h>
 #include <kabc/vcardconverter.h>
 
 namespace Akonadi {
 
-class SerializerPluginAddressee : public QObject, public ItemSerializerPlugin
+class SerializerPluginAddressee : public QObject,
+                                  public ItemSerializerPlugin,
+                                  public DifferencesAlgorithmInterface
 {
     Q_OBJECT
     Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+    Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
 
-public:
+  public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
     void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
-private:
+
+    void compare( Akonadi::AbstractDifferencesReporter *reporter,
+                  const Akonadi::Item &leftItem,
+                  const Akonadi::Item &rightItem );
+
+  private:
     KABC::VCardConverter m_converter;
 };
-
 
 }
 

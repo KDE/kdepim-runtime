@@ -19,17 +19,20 @@
 
 #include "akonadi_serializer_contactgroup.h"
 
-#include <QtCore/qplugin.h>
-
-#include <kabc/contactgroup.h>
-#include <kabc/contactgrouptool.h>
-
-#include <kdebug.h>
-
+#include <akonadi/abstractdifferencesreporter.h>
+#include <akonadi/contact/contactgroupexpandjob.h>
 #include <akonadi/item.h>
 #include <akonadi/kabc/contactparts.h>
 
+#include <kabc/contactgroup.h>
+#include <kabc/contactgrouptool.h>
+#include <klocale.h>
+
+#include <QtCore/qplugin.h>
+
 using namespace Akonadi;
+
+//// ItemSerializerPlugin interface
 
 bool SerializerPluginContactGroup::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
@@ -57,6 +60,63 @@ void SerializerPluginContactGroup::serialize( const Item& item, const QByteArray
     return;
 
   KABC::ContactGroupTool::convertToXml( item.payload<KABC::ContactGroup>(), &data );
+}
+
+//// DifferencesAlgorithmInterface interface
+
+static bool compareString( const QString &left, const QString &right )
+{
+  if ( left.isEmpty() && right.isEmpty() )
+    return true;
+  else
+    return left == right;
+}
+
+static QString toString( const KABC::Addressee &contact )
+{
+  return contact.fullEmail();
+}
+
+template <class T>
+static void compareList( AbstractDifferencesReporter *reporter, const QString &id, const QList<T> &left, const QList<T> &right )
+{
+  for ( int i = 0; i < left.count(); ++i ) {
+    if ( !right.contains( left[ i ] )  )
+      reporter->addProperty( AbstractDifferencesReporter::AdditionalLeftMode, id, toString( left[ i ] ), QString() );
+  }
+
+  for ( int i = 0; i < right.count(); ++i ) {
+    if ( !left.contains( right[ i ] )  )
+      reporter->addProperty( AbstractDifferencesReporter::AdditionalRightMode, id, QString(), toString( right[ i ] ) );
+  }
+}
+
+void SerializerPluginContactGroup::compare( Akonadi::AbstractDifferencesReporter *reporter,
+                                            const Akonadi::Item &leftItem,
+                                            const Akonadi::Item &rightItem )
+{
+  Q_ASSERT( reporter );
+  Q_ASSERT( leftItem.hasPayload<KABC::ContactGroup>() );
+  Q_ASSERT( rightItem.hasPayload<KABC::ContactGroup>() );
+
+  reporter->setLeftPropertyValueTitle( i18n( "Changed Contact Group" ) );
+  reporter->setRightPropertyValueTitle( i18n( "Conflicting Contact Group" ) );
+
+  const KABC::ContactGroup leftContactGroup = leftItem.payload<KABC::ContactGroup>();
+  const KABC::ContactGroup rightContactGroup = rightItem.payload<KABC::ContactGroup>();
+
+  if ( !compareString( leftContactGroup.name(), rightContactGroup.name() ) )
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Name" ),
+                           leftContactGroup.name(), rightContactGroup.name() );
+
+  // using job->exec() is ok here, not a hot path
+  Akonadi::ContactGroupExpandJob *leftJob = new Akonadi::ContactGroupExpandJob( leftContactGroup );
+  leftJob->exec();
+
+  Akonadi::ContactGroupExpandJob *rightJob = new Akonadi::ContactGroupExpandJob( rightContactGroup );
+  rightJob->exec();
+
+  compareList( reporter, i18n( "Member" ), leftJob->contacts(), rightJob->contacts() );
 }
 
 Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )
