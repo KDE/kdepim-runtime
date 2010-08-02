@@ -11,4 +11,4 @@ set( testidxreader_SRCS
 
 kde4_add_unit_test( testidxreader  ${testidxreader_SRCS} )
 
-target_link_libraries( testidxreader ${KDE4_KDECORE_LIBS} ${QT_QTTEST_LIBRARY} kmindexreader )
+target_link_libraries( testidxreader ${KDE4_KDECORE_LIBS} ${QT_QTTEST_LIBRARY} kmindexreader ${KDEPIMLIBS_AKONADI_KMIME_LIBS} )
