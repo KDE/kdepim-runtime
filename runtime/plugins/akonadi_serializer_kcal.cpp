@@ -25,6 +25,8 @@
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
 
+#include <KCalUtils/Stringify>
+
 #include <kdebug.h>
 #include <klocale.h>
 
@@ -32,6 +34,7 @@
 
 typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 
+using namespace KCalUtils;
 using namespace Akonadi;
 
 //// ItemSerializerPlugin interface
@@ -144,13 +147,9 @@ static void compareIncidenceBase( AbstractDifferencesReporter *reporter,
 {
   compareList( reporter, i18n( "Attendees" ), left->attendees(), right->attendees() );
 
-  if ( left->dtStart() != right->dtStart() )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Start time" ),
-                            left->dtStartStr(), right->dtStartStr() );
-
-  if ( !compareString( left->organizer().fullName(), right->organizer().fullName() ) )
+  if ( !compareString( left->organizer()->fullName(), right->organizer()->fullName() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Organizer" ),
-                            left->organizer().fullName(), right->organizer().fullName() );
+                            left->organizer()->fullName(), right->organizer()->fullName() );
 
   if ( !compareString( left->uid(), right->uid() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "UID" ),
@@ -183,7 +182,7 @@ static void compareIncidence( AbstractDifferencesReporter *reporter,
 
   if ( left->status() != right->status() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Status" ),
-                            left->statusStr(), right->statusStr() );
+                           Stringify::incidenceStatus( left ), Stringify::incidenceStatus( right ) );
 
   if ( left->secrecy() != right->secrecy() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Secrecy" ),
@@ -200,7 +199,6 @@ static void compareIncidence( AbstractDifferencesReporter *reporter,
   compareList( reporter, i18n( "Categories" ), left->categories(), right->categories() );
   compareList( reporter, i18n( "Alarms" ), left->alarms(), right->alarms() );
   compareList( reporter, i18n( "Resources" ), left->resources(), right->resources() );
-  compareList( reporter, i18n( "Relations" ), left->relations(), right->relations() );
   compareList( reporter, i18n( "Attachments" ), left->attachments(), right->attachments() );
   compareList( reporter, i18n( "Exception Dates" ), left->recurrence()->exDates(), right->recurrence()->exDates() );
   compareList( reporter, i18n( "Exception Times" ), left->recurrence()->exDateTimes(), right->recurrence()->exDateTimes() );
@@ -210,22 +208,27 @@ static void compareIncidence( AbstractDifferencesReporter *reporter,
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode,
                             i18n( "Created" ), left->created().toString(), right->created().toString() );
 
-  if ( !compareString( left->relatedToUid(), right->relatedToUid() ) )
+  if ( !compareString( left->relatedTo(), right->relatedTo() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode,
-                            i18n( "Related Uid" ), left->relatedToUid(), right->relatedToUid() );
+                            i18n( "Related Uid" ), left->relatedTo(), right->relatedTo() );
 }
 
 static void compareEvent( AbstractDifferencesReporter *reporter,
                           const KCalCore::Event::Ptr &left,
                           const KCalCore::Event::Ptr &right )
 {
+
+  if ( left->dtStart() != right->dtStart() )
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Start time" ),
+                            left->dtStart().toString(), right->dtStart().toString() );
+
   if ( left->hasEndDate() != right->hasEndDate() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Has End Date" ),
                             toString( left->hasEndDate() ), toString( right->hasEndDate() ) );
 
   if ( left->dtEnd() != right->dtEnd() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "End Date" ),
-                            left->dtEndStr(), right->dtEndStr() );
+                            left->dtEnd().toString(), right->dtEnd().toString() );
 
   // TODO: check transparency
 }
@@ -278,8 +281,8 @@ void SerializerPluginKCal::compare( Akonadi::AbstractDifferencesReporter *report
     reporter->setRightPropertyValueTitle( i18n( "Conflicting Todo" ) );
   }
 
-  compareIncidenceBase( reporter, leftIncidence, rightIncidence );
-  compareIncidence( reporter, leftIncidence, rightIncidence );
+  compareIncidenceBase( reporter, leftIncidencePtr, rightIncidencePtr );
+  compareIncidence( reporter, leftIncidencePtr, rightIncidencePtr );
 
   const KCalCore::Event::Ptr leftEvent = leftIncidencePtr.dynamicCast<KCalCore::Event>() ;
   const KCalCore::Event::Ptr rightEvent = rightIncidencePtr.dynamicCast<KCalCore::Event>() ;

@@ -24,7 +24,7 @@
 
 #include <akonadi/differencesalgorithminterface.h>
 #include <akonadi/itemserializerplugin.h>
-#include <KCalCore/ICalFormat.h>
+#include <KCalCore/ICalFormat>
 
 namespace Akonadi {
 
