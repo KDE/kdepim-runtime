@@ -19,12 +19,12 @@
 
 #include "akonadi_serializer_kcal.h"
 
-#include <boost/shared_ptr.hpp>
-
 #include <akonadi/abstractdifferencesreporter.h>
 #include <akonadi/item.h>
+
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
+
 #include <kdebug.h>
 #include <klocale.h>
 
@@ -78,22 +78,22 @@ static bool compareString( const QString &left, const QString &right )
     return left == right;
 }
 
-static QString toString( KCal::Attendee *attendee )
+static QString toString( KCalCore::Attendee::Ptr &attendee )
 {
   return attendee->name() + QLatin1Char( '<' ) + attendee->email() + QLatin1Char( '>' );
 }
 
-static QString toString( KCal::Alarm * )
+static QString toString( KCalCore::Alarm::Ptr & )
 {
   return QString();
 }
 
-static QString toString( KCal::Incidence * )
+static QString toString( KCalCore::Incidence::Ptr & )
 {
   return QString();
 }
 
-static QString toString( KCal::Attachment * )
+static QString toString( KCalCore::Attachment::Ptr & )
 {
   return QString();
 }
@@ -108,7 +108,7 @@ static QString toString( const KDateTime &dateTime )
   return dateTime.dateTime().toString();
 }
 
-static QString toString( const QString str )
+static QString toString( const QString &str )
 {
   return str;
 }
@@ -122,7 +122,10 @@ static QString toString( bool value )
 }
 
 template <class T>
-static void compareList( AbstractDifferencesReporter *reporter, const QString &id, const QList<T> &left, const QList<T> &right )
+static void compareList( AbstractDifferencesReporter *reporter,
+                         const QString &id,
+                         const QList<T> &left,
+                         const QList<T> &right )
 {
   for ( int i = 0; i < left.count(); ++i ) {
     if ( !right.contains( left[ i ] )  )
@@ -135,7 +138,9 @@ static void compareList( AbstractDifferencesReporter *reporter, const QString &i
   }
 }
 
-static void compareIncidenceBase( AbstractDifferencesReporter *reporter, const KCal::IncidenceBase *left, const KCal::IncidenceBase *right )
+static void compareIncidenceBase( AbstractDifferencesReporter *reporter,
+                                  const KCalCore::IncidenceBase::Ptr &left,
+                                  const KCalCore::IncidenceBase::Ptr &right )
 {
   compareList( reporter, i18n( "Attendees" ), left->attendees(), right->attendees() );
 
@@ -164,7 +169,9 @@ static void compareIncidenceBase( AbstractDifferencesReporter *reporter, const K
                             QString::number( left->duration().asSeconds() ), QString::number( right->duration().asSeconds() ) );
 }
 
-static void compareIncidence( AbstractDifferencesReporter *reporter, const KCal::Incidence *left, const KCal::Incidence *right )
+static void compareIncidence( AbstractDifferencesReporter *reporter,
+                              const IncidencePtr &left,
+                              const IncidencePtr &right )
 {
   if ( !compareString( left->description(), right->description() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Description" ),
@@ -208,7 +215,9 @@ static void compareIncidence( AbstractDifferencesReporter *reporter, const KCal:
                             i18n( "Related Uid" ), left->relatedToUid(), right->relatedToUid() );
 }
 
-static void compareEvent( AbstractDifferencesReporter *reporter, const KCal::Event *left, const KCal::Event *right )
+static void compareEvent( AbstractDifferencesReporter *reporter,
+                          const KCalCore::Event::Ptr &left,
+                          const KCalCore::Event::Ptr &right )
 {
   if ( left->hasEndDate() != right->hasEndDate() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Has End Date" ),
@@ -221,7 +230,9 @@ static void compareEvent( AbstractDifferencesReporter *reporter, const KCal::Eve
   // TODO: check transparency
 }
 
-static void compareTodo( AbstractDifferencesReporter *reporter, const KCal::Todo *left, const KCal::Todo *right )
+static void compareTodo( AbstractDifferencesReporter *reporter,
+                         const KCalCore::Todo::Ptr &left,
+                         const KCalCore::Todo::Ptr &right )
 {
   if ( left->hasStartDate() != right->hasStartDate() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Has Start Date" ),
@@ -258,13 +269,11 @@ void SerializerPluginKCal::compare( Akonadi::AbstractDifferencesReporter *report
 
   const IncidencePtr leftIncidencePtr = leftItem.payload<IncidencePtr>();
   const IncidencePtr rightIncidencePtr = rightItem.payload<IncidencePtr>();
-  const KCal::Incidence *leftIncidence = leftIncidencePtr.get();
-  const KCal::Incidence *rightIncidence = rightIncidencePtr.get();
 
-  if ( dynamic_cast<const KCal::Event*>( leftIncidence ) ) {
+  if ( leftIncidencePtr->type() == KCalCore::Incidence::TypeEvent  ) {
     reporter->setLeftPropertyValueTitle( i18n( "Changed Event" ) );
     reporter->setRightPropertyValueTitle( i18n( "Conflicting Event" ) );
-  } else if ( dynamic_cast<const KCal::Todo*>( leftIncidence ) ) {
+  } else if ( leftIncidencePtr->type() == KCalCore::Incidence::TypeTodo ) {
     reporter->setLeftPropertyValueTitle( i18n( "Changed Todo" ) );
     reporter->setRightPropertyValueTitle( i18n( "Conflicting Todo" ) );
   }
@@ -272,13 +281,13 @@ void SerializerPluginKCal::compare( Akonadi::AbstractDifferencesReporter *report
   compareIncidenceBase( reporter, leftIncidence, rightIncidence );
   compareIncidence( reporter, leftIncidence, rightIncidence );
 
-  const KCal::Event *leftEvent = dynamic_cast<const KCal::Event*>( leftIncidence );
-  const KCal::Event *rightEvent = dynamic_cast<const KCal::Event*>( rightIncidence );
+  const KCalCore::Event::Ptr leftEvent = leftIncidencePtr.dynamicCast<KCalCore::Event>() ;
+  const KCalCore::Event::Ptr rightEvent = rightIncidencePtr.dynamicCast<KCalCore::Event>() ;
   if ( leftEvent && rightEvent ) {
     compareEvent( reporter, leftEvent, rightEvent );
   } else {
-    const KCal::Todo *leftTodo = dynamic_cast<const KCal::Todo*>( leftIncidence );
-    const KCal::Todo *rightTodo = dynamic_cast<const KCal::Todo*>( rightIncidence );
+    const KCalCore::Todo::Ptr leftTodo =  leftIncidencePtr.dynamicCast<KCalCore::Todo>();
+    const KCalCore::Todo::Ptr rightTodo = rightIncidencePtr.dynamicCast<KCalCore::Todo>();
     if ( leftTodo && rightTodo ) {
       compareTodo( reporter, leftTodo, rightTodo );
     }
