@@ -136,6 +136,28 @@ private slots:
 
 
 
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 LIST \"\" *"
+             << "S: * LIST ( ) / INBOX/Archives"
+             << "S: * LIST ( ) / INBOX/Calendar/Private"
+             << "S: * LIST ( \\HasChildren ) / INBOX"
+             << "S: A000003 OK list done";
+
+    callNames.clear();
+    callNames << "setIdleCollection" << "collectionsRetrieved";
+
+    isSubscriptionEnabled = false;
+    isDisconnectedModeEnabled = false;
+    intervalCheckTime = -1;
+
+    QTest::newRow( "auto-insert missing nodes in the tree (reverse order)" )
+      << expectedCollections << scenario << callNames
+      << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+
+
+
     expectedCollections.clear();
     expectedCollections << createRootCollection()
                         << createCollection( "/", "INBOX" )
