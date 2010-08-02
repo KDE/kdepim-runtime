@@ -243,6 +243,11 @@ void DummyResourceState::taskDone()
   recordCall( "taskDone" );
 }
 
+void DummyResourceState::emitError( const QString &message )
+{
+  recordCall( "emitError", QVariant::fromValue(message) );
+}
+
 void DummyResourceState::emitWarning( const QString &message )
 {
   recordCall( "emitWarning", QVariant::fromValue(message) );

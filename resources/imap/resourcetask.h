@@ -101,6 +101,7 @@ protected:
   void deferTask();
   void taskDone();
 
+  void emitError( const QString &message );
   void emitWarning( const QString &message );
 
   void synchronizeCollectionTree();

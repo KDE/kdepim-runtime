@@ -81,6 +81,7 @@ public:
   virtual void deferTask() = 0;
   virtual void taskDone() = 0;
 
+  virtual void emitError( const QString &message ) = 0;
   virtual void emitWarning( const QString &message ) = 0;
 
   virtual void synchronizeCollectionTree() = 0;

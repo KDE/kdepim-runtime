@@ -259,6 +259,11 @@ void ResourceTask::taskDone()
   deleteLater();
 }
 
+void ResourceTask::emitError( const QString &message )
+{
+  m_resource->emitError( message );
+}
+
 void ResourceTask::emitWarning( const QString &message )
 {
   m_resource->emitWarning( message );

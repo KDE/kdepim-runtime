@@ -375,6 +375,11 @@ void ResourceState::taskDone()
   m_resource->taskDone();
 }
 
+void ResourceState::emitError( const QString &message )
+{
+  emit m_resource->error( message );
+}
+
 void ResourceState::emitWarning( const QString &message )
 {
   emit m_resource->warning( message );
