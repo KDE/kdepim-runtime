@@ -50,7 +50,7 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
 
   const QChar separator = parentCollection().remoteId().at( 0 );
   m_collection = collection();
-  m_collection.setName( QString( m_collection.name() ).replace( separator, QString() ) );
+  m_collection.setName( m_collection.name().replace( separator, QString() ) );
   m_collection.setRemoteId( separator + m_collection.name() );
 
   QString newMailBox = mailBoxForCollection( parentCollection() );
