@@ -107,7 +107,30 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
 
   m_session = session;
 
+  connect( m_pool, SIGNAL(connectionLost(KIMAP::Session*)),
+           this, SLOT(onConnectionLost(KIMAP::Session*)) );
+  connect( m_pool, SIGNAL(disconnectDone()),
+           this, SLOT(onPoolDisconnect()) );
+
   doStart( m_session );
+}
+
+void ResourceTask::onConnectionLost( KIMAP::Session *session )
+{
+  if ( session == m_session ) {
+    // Our session becomes invalid, so get ride of
+    // the pointer, we don't need to release it once the
+    // task is done
+    m_session = 0;
+  }
+}
+
+void ResourceTask::onPoolDisconnect()
+{
+  // All the sessions in the pool we used changed,
+  // so get ride of the pointer, we don't need to
+  // release our session anymore
+  m_pool = 0;
 }
 
 QString ResourceTask::userName() const

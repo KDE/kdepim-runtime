@@ -112,6 +112,8 @@ protected:
 private slots:
   void onSessionRequested( qint64 requestId, KIMAP::Session *session,
                            int errorCode, const QString &errorString );
+  void onConnectionLost( KIMAP::Session *session );
+  void onPoolDisconnect();
 
 
 private:
