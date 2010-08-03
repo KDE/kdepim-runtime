@@ -931,11 +931,12 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
     return false;
   }
 
+  const QString collectionName = job->collection().name().replace( QDir::separator(), QString() );
   Maildir md;
   if ( folderType == MBoxFolder ) {
     const QString subDirPath = Maildir::subDirPathForFolderPath( path );
     const QDir dir( subDirPath );
-    const QFileInfo dirInfo( dir, job->collection().name() );
+    const QFileInfo dirInfo( dir, collectionName );
     if ( dirInfo.exists() && !dirInfo.isDir() ) {
       errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
                           job->collection().name(), job->targetParent().name() );
@@ -944,7 +945,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
       return false;
     }
 
-    if ( !dir.mkpath( job->collection().name() ) ) {
+    if ( !dir.mkpath( collectionName ) ) {
       errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
                           job->collection().name(), job->targetParent().name() );
       kError() << errorText << "FolderType=" << folderType << ", mkpath failed";
@@ -965,7 +966,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
     mMaildirs.insert( md.path(), mdPtr );
   } else {
     Maildir parentMd( path, folderType == TopLevelFolder );
-    if ( parentMd.addSubFolder( job->collection().name() ).isEmpty() ) {
+    if ( parentMd.addSubFolder( collectionName ).isEmpty() ) {
       errorText = i18nc( "@info:status", "Cannot create folder %1 inside folder %2",
                           job->collection().name(), job->targetParent().name() );
       kError() << errorText << "FolderType=" << folderType;
@@ -973,13 +974,14 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionCreateJob *job )
       return false;
     }
 
-    md = Maildir( parentMd.subFolder( job->collection().name() ) );
+    md = Maildir( parentMd.subFolder( collectionName ) );
     const MaildirPtr mdPtr( new MaildirContext( md ) );
     mMaildirs.insert( md.path(), mdPtr );
   }
 
   Collection collection = job->collection();
-  collection.setRemoteId( collection.name() );
+  collection.setRemoteId( collectionName );
+  collection.setName( collectionName );
   collection.setParentCollection( job->targetParent() );
   fillMaildirCollectionDetails( md, collection );
 
@@ -1111,6 +1113,7 @@ static Collection updateMBoxCollectionTree( const Collection &collection, const 
 bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
 {
   const Collection collection = job->collection();
+  const QString collectionName = collection.name().replace( QDir::separator(), QString() );
 
   // we also only do renames
   if ( collection.remoteId() == collection.name() ) {
@@ -1135,7 +1138,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
   QDir parentDir( path );
   parentDir.cdUp();
 
-  const QFileInfo targetFileInfo( parentDir, collection.name() );
+  const QFileInfo targetFileInfo( parentDir, collectionName );
   const QFileInfo targetSubDirInfo = Maildir::subDirPathForFolderPath( targetFileInfo.absoluteFilePath() );
 
   if ( targetFileInfo.exists() || ( subDirInfo.exists() && targetSubDirInfo.exists() ) ) {
@@ -1214,7 +1217,8 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
 
     renamedCollection = q->topLevelCollection();
   } else {
-    renamedCollection.setRemoteId( collection.name() );
+    renamedCollection.setRemoteId( collectionName );
+    renamedCollection.setName( collectionName );
   }
 
   // update collections in MBox contexts so they stay usable for purge
