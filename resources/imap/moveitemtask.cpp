@@ -43,6 +43,26 @@ MoveItemTask::~MoveItemTask()
 
 void MoveItemTask::doStart( KIMAP::Session *session )
 {
+  if ( item().remoteId().isEmpty() ) {
+    emitError( i18n( "Cannot move message, it does not exist on the server." ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( sourceCollection().remoteId().isEmpty() ) {
+    emitError( i18n( "Cannot move message out of '%1', '%1' does not exist on the server.",
+                     sourceCollection().name() ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( targetCollection().remoteId().isEmpty() ) {
+    emitError( i18n( "Cannot move message to '%1', '%1' does not exist on the server.",
+                     targetCollection().name() ) );
+    changeProcessed();
+    return;
+  }
+
   const QString oldMailBox = mailBoxForCollection( sourceCollection() );
   const QString newMailBox = mailBoxForCollection( targetCollection() );
 

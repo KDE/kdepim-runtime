@@ -28,6 +28,8 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 
+#include "noselectattribute.h"
+
 ExpungeCollectionTask::ExpungeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent )
 {
@@ -40,6 +42,16 @@ ExpungeCollectionTask::~ExpungeCollectionTask()
 
 void ExpungeCollectionTask::doStart( KIMAP::Session *session )
 {
+  // Prevent expunging items from noselect folders.
+  if ( collection().hasAttribute( "noselect" ) ) {
+    NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
+    if ( noselect->noSelect() ) {
+      kDebug(5327) << "No Select folder";
+      taskDone();
+      return;
+    }
+  }
+
   const QString mailBox = mailBoxForCollection( collection() );
 
   if ( session->selectedMailBox() != mailBox ) {

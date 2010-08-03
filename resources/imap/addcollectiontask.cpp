@@ -40,6 +40,14 @@ AddCollectionTask::~AddCollectionTask()
 
 void AddCollectionTask::doStart( KIMAP::Session *session )
 {
+  if ( parentCollection().remoteId().isEmpty() ) {
+    emitError( i18n("Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.",
+                    collection().name(),
+                    parentCollection().name() ) );
+    changeProcessed();
+    return;
+  }
+
   QString newMailBox = mailBoxForCollection( parentCollection() );
 
   if ( !newMailBox.isEmpty() )

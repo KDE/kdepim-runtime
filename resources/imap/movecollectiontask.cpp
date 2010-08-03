@@ -40,6 +40,29 @@ MoveCollectionTask::~MoveCollectionTask()
 
 void MoveCollectionTask::doStart( KIMAP::Session *session )
 {
+  if ( collection().remoteId().isEmpty() ) {
+    emitError( i18n( "Cannot move IMAP folder '%1', it does not exist on the server.",
+                     collection().name() ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( sourceCollection().remoteId().isEmpty() ) {
+    emitError( i18n( "Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server.",
+                     collection().name(),
+                     sourceCollection().name() ) );
+    changeProcessed();
+    return;
+  }
+
+  if ( targetCollection().remoteId().isEmpty() ) {
+    emitError( i18n( "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server.",
+                     collection().name(),
+                     sourceCollection().name() ) );
+    changeProcessed();
+    return;
+  }
+
   // collection.remoteId() already includes the separator
   const QString oldMailBox = mailBoxForCollection( sourceCollection() )+collection().remoteId();
   const QString newMailBox = mailBoxForCollection( targetCollection() )+collection().remoteId();

@@ -32,6 +32,7 @@
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
+#include "noselectattribute.h"
 
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
@@ -45,6 +46,18 @@ RetrieveCollectionMetadataTask::~RetrieveCollectionMetadataTask()
 
 void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
 {
+  kDebug(5327) << collection().remoteId();
+
+  // Prevent fetching items from noselect folders.
+  if ( collection().hasAttribute( "noselect" ) ) {
+    NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
+    if ( noselect->noSelect() ) {
+      kDebug(5327) << "No Select folder";
+      taskDone();
+      return;
+    }
+  }
+
   m_collection = collection();
   const QString mailBox = mailBoxForCollection( m_collection );
   const QStringList capabilities = serverCapabilities();

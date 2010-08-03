@@ -43,6 +43,11 @@ AddItemTask::~AddItemTask()
 
 void AddItemTask::doStart( KIMAP::Session *session )
 {
+  if ( !item().hasPayload<KMime::Message::Ptr>() ) {
+    changeProcessed();
+    return;
+  }
+
   const QString mailBox = mailBoxForCollection( collection() );
 
   kDebug(5327) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();

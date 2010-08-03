@@ -22,6 +22,7 @@
 #include "retrieveitemstask.h"
 
 #include "collectionflagsattribute.h"
+#include "noselectattribute.h"
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
 
@@ -49,6 +50,16 @@ RetrieveItemsTask::~RetrieveItemsTask()
 
 void RetrieveItemsTask::doStart( KIMAP::Session *session )
 {
+  // Prevent fetching items from noselect folders.
+  if ( collection().hasAttribute( "noselect" ) ) {
+    NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
+    if ( noselect->noSelect() ) {
+      kDebug(5327) << "No Select folder";
+      itemsRetrievalDone();
+      return;
+    }
+  }
+
   m_session = session;
 
   const QString mailBox = mailBoxForCollection( collection() );

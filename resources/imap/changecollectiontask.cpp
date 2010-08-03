@@ -43,6 +43,13 @@ ChangeCollectionTask::~ChangeCollectionTask()
 
 void ChangeCollectionTask::doStart( KIMAP::Session *session )
 {
+  if ( collection().remoteId().isEmpty() ) {
+    emitError( i18n("Cannot modify IMAP folder '%1', it does not exist on the server.",
+                    collection().name() ) );
+    changeProcessed();
+    return;
+  }
+
   m_collection = collection();
   m_pendingJobs = 0;
 
