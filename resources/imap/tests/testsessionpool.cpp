@@ -398,6 +398,45 @@ private slots:
 
     server.quit();
   }
+
+  void shouldNotifyOnDisconnect()
+  {
+    FakeServer server;
+    server.addScenario( QList<QByteArray>()
+                        << FakeServer::greeting()
+                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "S: A000001 OK User Logged in"
+                        << "C: A000002 CAPABILITY"
+                        << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                        << "S: A000002 OK Completed"
+                        << "C: A000003 LOGOUT"
+    );
+
+    server.startAndWait();
+
+    ImapAccount *account = createDefaultAccount();
+    DummyPasswordRequester *requester = createDefaultRequester();
+
+    SessionPool pool( 1 );
+    pool.setPasswordRequester( requester );
+
+    QSignalSpy disconnectSpy( &pool, SIGNAL(disconnectDone()) );
+
+
+    // Initial connect should trigger only a password request and a connect
+    QVERIFY( pool.connect( account ) );
+    QTest::qWait( 100 );
+
+    QCOMPARE( disconnectSpy.count(), 0 );
+    pool.disconnect();
+    QTest::qWait( 100 );
+    QCOMPARE( disconnectSpy.count(), 1 );
+
+
+    QVERIFY( server.isAllScenarioDone() );
+
+    server.quit();
+  }
 };
 
 QTEST_KDEMAIN_CORE( TestSessionPool )
