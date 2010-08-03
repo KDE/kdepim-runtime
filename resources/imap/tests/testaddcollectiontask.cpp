@@ -32,6 +32,7 @@ private slots:
     QTest::addColumn<Akonadi::Collection>("collection");
     QTest::addColumn< QList<QByteArray> >("scenario");
     QTest::addColumn<QStringList>("callNames");
+    QTest::addColumn<QString>("collectionName");
 
     Akonadi::Collection parentCollection;
     Akonadi::Collection collection;
@@ -55,7 +56,27 @@ private slots:
     callNames.clear();
     callNames << "collectionChangeCommitted";
 
-    QTest::newRow( "trivial case" ) << parentCollection << collection << scenario << callNames;
+    QTest::newRow( "trivial case" ) << parentCollection << collection << scenario << callNames
+                                    << collection.name();
+
+    parentCollection = Akonadi::Collection( 1 );
+    parentCollection.setRemoteId( "/INBOX/Foo" );
+    collection = Akonadi::Collection( 2 );
+    collection.setName( "Bar/Baz" );
+    collection.setParentCollection( parentCollection );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 CREATE \"INBOX/Foo/BarBaz\""
+             << "S: A000003 OK create done"
+             << "C: A000004 SUBSCRIBE \"INBOX/Foo/BarBaz\""
+             << "S: A000004 OK subscribe done";
+
+    callNames.clear();
+    callNames << "collectionChangeCommitted";
+
+    QTest::newRow( "folder with invalid separator" ) << parentCollection << collection << scenario
+                                                     << callNames << "BarBaz";
   }
 
   void shouldCreateAndSubscribe()
@@ -64,6 +85,7 @@ private slots:
     QFETCH( Akonadi::Collection, collection );
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( QStringList, callNames );
+    QFETCH( QString, collectionName );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -89,6 +111,12 @@ private slots:
 
       if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
         kDebug() << "Got a cancel:" << parameter.toString();
+      }
+
+      if ( command == "collectionChangeCommitted" ) {
+        QCOMPARE( parameter.value<Akonadi::Collection>().name(), collectionName );
+        QCOMPARE( parameter.value<Akonadi::Collection>().remoteId().right( collectionName.length() ),
+                  collectionName );
       }
 
       QCOMPARE( command, callNames[i] );

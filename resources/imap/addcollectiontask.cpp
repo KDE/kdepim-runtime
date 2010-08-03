@@ -48,17 +48,19 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
     return;
   }
 
+  const QChar separator = parentCollection().remoteId().at( 0 );
+  m_collection = collection();
+  m_collection.setName( QString( m_collection.name() ).replace( separator, QString() ) );
+  m_collection.setRemoteId( separator + m_collection.name() );
+
   QString newMailBox = mailBoxForCollection( parentCollection() );
 
   if ( !newMailBox.isEmpty() )
-    newMailBox += parentCollection().remoteId().at( 0 ); // separator for non-toplevel mailboxes
+    newMailBox += separator;
 
-  newMailBox += collection().name();
+  newMailBox += m_collection.name();
 
   kDebug(5327) << "New folder: " << newMailBox;
-
-  m_collection = collection();
-  m_collection.setRemoteId( parentCollection().remoteId().at( 0 ) + m_collection.name() );
 
   KIMAP::CreateJob *job = new KIMAP::CreateJob( session );
   job->setMailBox( newMailBox );

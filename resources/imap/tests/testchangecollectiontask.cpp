@@ -37,6 +37,7 @@ private slots:
     QTest::addColumn< QSet<QByteArray> >("parts");
     QTest::addColumn< QList<QByteArray> >("scenario");
     QTest::addColumn<QStringList>("callNames");
+    QTest::addColumn<QString>("collectionName");
 
     Akonadi::Collection collection;
     QSet<QByteArray> parts;
@@ -88,7 +89,21 @@ private slots:
     callNames.clear();
     callNames << "collectionChangeCommitted";
 
-    QTest::newRow( "complete case" ) << collection << parts << scenario << callNames;
+    QTest::newRow( "complete case" ) << collection << parts << scenario << callNames << collection.name();
+
+    collection = Akonadi::Collection( 1 );
+    collection.setName( "Bar/Baz" );
+    collection.setRemoteId( "/Foo" );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 RENAME \"Foo\" \"BarBaz\""
+             << "S: A000003 OK rename done";
+    parts.clear();
+    parts << "NAME";
+    callNames.clear();
+    callNames << "collectionChangeCommitted";
+    QTest::newRow( "rename with invalid separator" ) << collection << parts << scenario << callNames
+                                                     << "BarBaz";
   }
 
   void shouldUpdateMetadataAclAndName()
@@ -97,6 +112,7 @@ private slots:
     QFETCH( QSet<QByteArray>, parts );
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( QStringList, callNames );
+    QFETCH( QString, collectionName );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -130,6 +146,11 @@ private slots:
 
       if ( command == "cancelTask" ) {
         QVERIFY( !parameter.toString().isEmpty() );
+      }
+      if ( command == "collectionChangeCommitted" ) {
+        QCOMPARE( parameter.value<Akonadi::Collection>().name(), collectionName );
+        QCOMPARE( parameter.value<Akonadi::Collection>().remoteId().right( collectionName.length() ),
+                  collectionName );
       }
     }
 
