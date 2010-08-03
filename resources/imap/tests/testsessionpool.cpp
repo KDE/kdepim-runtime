@@ -398,6 +398,57 @@ private slots:
 
     server.quit();
   }
+
+  void shouldNotifyConnectionLostOnDisconnect()
+  {
+    FakeServer server;
+    server.addScenario( QList<QByteArray>()
+                        << FakeServer::greeting()
+                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "S: A000001 OK User Logged in"
+                        << "C: A000002 CAPABILITY"
+                        << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                        << "S: A000002 OK Completed"
+                        << "C: A000003 LOGOUT"
+    );
+
+    server.startAndWait();
+
+    ImapAccount *account = createDefaultAccount();
+    DummyPasswordRequester *requester = createDefaultRequester();
+
+    SessionPool pool( 1 );
+    pool.setPasswordRequester( requester );
+
+    QSignalSpy connectSpy( &pool, SIGNAL(connectDone(int, QString)) );
+    QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)) );
+    QSignalSpy lostSpy( &pool, SIGNAL(connectionLost(KIMAP::Session*)) );
+
+
+    // Initial connect should trigger only a password request and a connect
+    QVERIFY( pool.connect( account ) );
+    QTest::qWait( 100 );
+    QCOMPARE( connectSpy.count(), 1 );
+    QCOMPARE( sessionSpy.count(), 0 );
+
+    qint64 requestId = pool.requestSession();
+    QTest::qWait( 100 );
+    QCOMPARE( sessionSpy.count(), 1 );
+
+    QCOMPARE( sessionSpy.at(0).at(0).toLongLong(), requestId );
+    KIMAP::Session *s = sessionSpy.at(0).at(1).value<KIMAP::Session*>();
+
+    QCOMPARE( lostSpy.count(), 0 );
+    pool.disconnect();
+    QTest::qWait( 100 );
+    QCOMPARE( lostSpy.count(), 1 );
+    QCOMPARE( lostSpy.at(0).at(0).value<KIMAP::Session*>(), s );
+
+
+    QVERIFY( server.isAllScenarioDone() );
+
+    server.quit();
+  }
 };
 
 QTEST_KDEMAIN_CORE( TestSessionPool )
