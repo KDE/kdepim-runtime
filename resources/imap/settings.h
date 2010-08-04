@@ -45,6 +45,9 @@ public:
 
     void loadAccount( ImapAccount *account ) const;
 
+    QString rootRemoteId() const;
+    void renameRootCollection( const QString &newName );
+
 signals:
     void passwordRequestCompleted( const QString &password, bool userRejected );
 
@@ -55,6 +58,8 @@ public slots:
 private slots:
     void onWalletOpened( bool success );
     void onDialogFinished( int result );
+
+    void onRootCollectionFetched( KJob *job );
 
 private:
     WId m_winId;

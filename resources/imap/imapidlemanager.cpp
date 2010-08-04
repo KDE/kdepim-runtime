@@ -3,7 +3,7 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
-    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
+    Copyright (c) 2010 Klar√§lvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
@@ -36,19 +36,22 @@
 #include "imapresource.h"
 #include "sessionpool.h"
 
-ImapIdleManager::ImapIdleManager( Akonadi::Collection &col, const QString &mailBox,
+ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
                                   SessionPool *pool, ImapResource *parent )
-  : QObject( parent ), m_sessionRequestId( 0 ), m_session( 0 ),
-    m_idle( 0 ), m_resource( parent ),  m_mailBox( mailBox ), m_collection( col ),
+  : QObject( parent ), m_sessionRequestId( 0 ), m_pool( pool ), m_session( 0 ),
+    m_idle( 0 ), m_resource( parent ), m_state( state ),
     m_lastMessageCount( -1 ), m_lastRecentCount( -1 )
 {
   connect( pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)),
            this, SLOT(onSessionRequestDone(qint64, KIMAP::Session*, int, QString)) );
-  m_sessionRequestId = pool->requestSession();
+  m_sessionRequestId = m_pool->requestSession();
 }
 
 ImapIdleManager::~ImapIdleManager()
 {
+  if ( m_session ) {
+    m_pool->releaseSession( m_session );
+  }
 }
 
 KIMAP::Session *ImapIdleManager::session() const
@@ -67,7 +70,7 @@ void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *se
   m_sessionRequestId = 0;
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-  select->setMailBox( m_mailBox );
+  select->setMailBox( m_state->mailBoxForCollection( m_state->collection() ) );
   connect( select, SIGNAL(result(KJob*)),
            this, SLOT(onSelectDone(KJob*)) );
   select->start();
@@ -101,7 +104,7 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
                                       int messageCount, int recentCount)
 {
   kDebug(5327) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
-  kDebug(5327) << "Cached information:" << m_collection.remoteId() << m_collection.id()
+  kDebug(5327) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
            << m_lastMessageCount << m_lastRecentCount;
 
   // It seems we're not in sync with the cache, resync is needed
@@ -109,8 +112,8 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
     m_lastMessageCount = messageCount;
     m_lastRecentCount = recentCount;
 
-    kDebug(5327) << "Resync needed for" << mailBox << m_collection.id();
-    m_resource->synchronizeCollection( m_collection.id() );
+    kDebug(5327) << "Resync needed for" << mailBox << m_state->collection().id();
+    m_resource->synchronizeCollection( m_state->collection().id() );
   }
 }
 

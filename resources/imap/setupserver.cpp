@@ -288,7 +288,7 @@ void SetupServer::applySettings()
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
   if ( m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty() ) {
-    m_parentResource->renameRootCollection( m_ui->accountName->text() );
+    Settings::self()->renameRootCollection( m_ui->accountName->text() );
   }
 }
 
