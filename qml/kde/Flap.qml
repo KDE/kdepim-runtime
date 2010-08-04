@@ -144,7 +144,10 @@ Rectangle {
       drag.maximumX: rightBound
       drag.filterChildren : true
 
-      Item {
+     // ###: workaround until QDeclarativeMouseArea bug is fixed
+     // the bug is related to replaying to one item the event instead of using
+     // the scene for doing that.
+      MouseArea {
         id : _contentArea
         anchors.top : parent.top
         anchors.bottom : parent.bottom
