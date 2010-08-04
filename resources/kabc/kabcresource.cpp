@@ -122,7 +122,8 @@ void KABCResource::configure( WId windowId )
     emit status( Running,
                  i18nc( "@info:status", "Changing address book plugin configuration" ) );
     KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
-    KWindowSystem::setMainWindow( &dlg, windowId );
+    if( windowId )
+      KWindowSystem::setMainWindow( &dlg, windowId );
     if ( dlg.exec() ) {
       setName( mBaseResource->resourceName() );
       manager->writeConfig( KGlobal::config().data() );
