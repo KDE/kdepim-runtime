@@ -103,17 +103,17 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
     case DateTimeEnd:
       return incidence->dateTime( Incidence::RoleEndTimeZone ).toString();
     case DateTimeDue:
-      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+      if ( Todo::Ptr todo = Akonadi::todo( item ) )
         return todo->dtDue().toString();
       else
         return QVariant();
     case Priority:
-      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+      if ( Todo::Ptr todo = Akonadi::todo( item ) )
         return todo->priority();
       else
         return QVariant();
     case PercentComplete:
-      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+      if ( Todo::Ptr todo = Akonadi::todo( item ) )
         return todo->percentComplete();
       else
         return QVariant();
@@ -133,19 +133,19 @@ QVariant CalendarModel::entityData( const Item& item, int column, int role ) con
     case DateTimeEnd:
       return incidence->dateTime( Incidence::RoleEndTimeZone ).toUtc().dateTime();
     case DateTimeDue:
-      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+      if ( Todo::Ptr todo = Akonadi::todo( item ) )
         return todo->dtDue().toUtc().dateTime();
       else
         return QVariant();
     case PrimaryDate:
       return primaryDateForIncidence( item ).toUtc().dateTime();
     case Priority:
-      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+      if ( Todo::Ptr todo = Akonadi::todo( item ) )
         return todo->priority();
       else
         return QVariant();
     case PercentComplete:
-      if ( Todo::ConstPtr todo = Akonadi::todo( item ) )
+      if ( Todo::Ptr todo = Akonadi::todo( item ) )
         return todo->percentComplete();
       else
         return QVariant();

@@ -83,7 +83,7 @@ public:
       @param incidence The new incidence.
      */
     SendStatus sendIncidenceCreatedMessage( KCalCore::iTIPMethod method,
-                                            const KCalCore::Incidence::ConstPtr &incidence );
+                                            const KCalCore::Incidence::Ptr &incidence );
 
     /**
       Handles sending of invitations for modified incidences.
@@ -91,7 +91,7 @@ public:
       @param attendeeSatusChanged ????
      */
     SendStatus sendIncidenceModifiedMessage( KCalCore::iTIPMethod method,
-                                             const KCalCore::Incidence::ConstPtr &incidence,
+                                             const KCalCore::Incidence::Ptr &incidence,
                                              bool attendeeStatusChanged );
 
     /**
@@ -99,22 +99,22 @@ public:
       @param incidence The deleted incidence.
      */
     SendStatus sendIncidenceDeletedMessage( KCalCore::iTIPMethod method,
-                                            const KCalCore::Incidence::ConstPtr &incidence );
+                                            const KCalCore::Incidence::Ptr &incidence );
 
     /**
       Send counter proposal message.
       @param oldEvent The original event provided in the invitations.
       @param newEvent The new event as edited by the user.
     */
-    SendStatus sendCounterProposal( const KCalCore::Incidence::ConstPtr &oldIncidence,
-                                    const KCalCore::Incidence::ConstPtr &newIncidence ) const;
+    SendStatus sendCounterProposal( const KCalCore::Incidence::Ptr &oldIncidence,
+                                    const KCalCore::Incidence::Ptr &newIncidence ) const;
 
 Q_SIGNALS:
     /**
       This signal is emitted when an invitation for a counter proposal is sent.
       @param incidence The incidence for which the counter proposal must be specified.
      */
-    void editorRequested( const KCalCore::Incidence::ConstPtr &incidence );
+    void editorRequested( const KCalCore::Incidence::Ptr &incidence );
 
 private:
     struct Private;

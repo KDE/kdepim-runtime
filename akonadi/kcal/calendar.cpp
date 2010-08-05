@@ -370,7 +370,7 @@ void Calendar::Private::itemChanged( const Item& item )
   kDebug() << "item changed: " << item.id();
   assertInvariants();
   Q_ASSERT( item.isValid() );
-  const KCalCore::Incidence::ConstPtr incidence = Akonadi::incidence( item );
+  const KCalCore::Incidence::Ptr incidence = Akonadi::incidence( item );
   if ( !incidence )
     return;
   updateItem( item, AssertExists );
