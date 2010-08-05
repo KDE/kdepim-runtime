@@ -17,53 +17,15 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include <qtest_kde.h>
+#include "imaptestbase.h"
 
 #include <kimap/capabilitiesjob.h>
-#include <kimaptest/fakeserver.h>
 
-#include "dummypasswordrequester.h"
-#include "imapaccount.h"
-#include "sessionpool.h"
-
-Q_DECLARE_METATYPE(ImapAccount*)
-Q_DECLARE_METATYPE(DummyPasswordRequester*)
-Q_DECLARE_METATYPE(KIMAP::Session*)
-
-
-class TestSessionPool : public QObject
+class TestSessionPool : public ImapTestBase
 {
   Q_OBJECT
 
-private:
-  ImapAccount *createDefaultAccount()
-  {
-    ImapAccount *account = new ImapAccount;
-
-    account->setServer( "127.0.0.1" );
-    account->setPort( 5989 );
-    account->setUserName( "test@kdab.com" );
-    account->setSubscriptionEnabled( true );
-    account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
-    account->setAuthenticationMode( KIMAP::LoginJob::ClearText );
-
-    return account;
-  }
-
-  DummyPasswordRequester *createDefaultRequester()
-  {
-    DummyPasswordRequester *requester = new DummyPasswordRequester( this );
-    requester->setPassword( "foobar" );
-    return requester;
-  }
-
-
 private slots:
-  void setupTestCase()
-  {
-    qRegisterMetaType<KIMAP::Session*>();
-  }
-
   void shouldPrepareFirstSessionOnConnect_data()
   {
     QTest::addColumn<ImapAccount*>("account");
@@ -229,9 +191,11 @@ private slots:
 
     FakeServer server;
     server.setScenario( scenario );
-    server.start();
+    server.startAndWait();
 
     SessionPool pool( 2 );
+
+    QVERIFY( !pool.isConnected() );
 
     QSignalSpy poolSpy( &pool, SIGNAL(connectDone(int, QString)) );
 
@@ -247,6 +211,11 @@ private slots:
 
     QCOMPARE( poolSpy.count(), 1 );
     QCOMPARE( poolSpy.at(0).at(0).toInt(), errorCode );
+    if ( errorCode == SessionPool::NoError ) {
+      QVERIFY( pool.isConnected() );
+    } else {
+      QVERIFY( !pool.isConnected() );
+    }
 
     QCOMPARE( pool.serverCapabilities(), capabilities );
     QVERIFY( pool.serverNamespaces().isEmpty() );
@@ -277,7 +246,7 @@ private slots:
                         << "S: A000001 OK User Logged in"
     );
 
-    server.start();
+    server.startAndWait();
 
 
 
@@ -392,7 +361,7 @@ private slots:
                         << "X"
     );
 
-    server.start();
+    server.startAndWait();
 
     ImapAccount *account = createDefaultAccount();
     DummyPasswordRequester *requester = createDefaultRequester();
@@ -423,6 +392,45 @@ private slots:
     QTest::qWait( 100 );
     QCOMPARE( lostSpy.count(), 1 );
     QCOMPARE( lostSpy.at(0).at(0).value<KIMAP::Session*>(), s );
+
+
+    QVERIFY( server.isAllScenarioDone() );
+
+    server.quit();
+  }
+
+  void shouldNotifyOnDisconnect()
+  {
+    FakeServer server;
+    server.addScenario( QList<QByteArray>()
+                        << FakeServer::greeting()
+                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "S: A000001 OK User Logged in"
+                        << "C: A000002 CAPABILITY"
+                        << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                        << "S: A000002 OK Completed"
+                        << "C: A000003 LOGOUT"
+    );
+
+    server.startAndWait();
+
+    ImapAccount *account = createDefaultAccount();
+    DummyPasswordRequester *requester = createDefaultRequester();
+
+    SessionPool pool( 1 );
+    pool.setPasswordRequester( requester );
+
+    QSignalSpy disconnectSpy( &pool, SIGNAL(disconnectDone()) );
+
+
+    // Initial connect should trigger only a password request and a connect
+    QVERIFY( pool.connect( account ) );
+    QTest::qWait( 100 );
+
+    QCOMPARE( disconnectSpy.count(), 0 );
+    pool.disconnect();
+    QTest::qWait( 100 );
+    QCOMPARE( disconnectSpy.count(), 1 );
 
 
     QVERIFY( server.isAllScenarioDone() );

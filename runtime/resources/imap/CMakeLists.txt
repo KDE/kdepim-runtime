@@ -9,9 +9,30 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 ########### next target ###############
 
 set( libimapresource_SRCS
+  addcollectiontask.cpp
+  additemtask.cpp
+  changecollectiontask.cpp
+  changeitemtask.cpp
+  expungecollectiontask.cpp
   imapaccount.cpp
+  imapflags.cpp
+  movecollectiontask.cpp
+  moveitemtask.cpp
+  noselectattribute.cpp
   passwordrequesterinterface.cpp
+  removecollectiontask.cpp
+  removeitemtask.cpp
+  resourcestateinterface.cpp
+  resourcetask.cpp
+  retrievecollectionmetadatatask.cpp
+  retrievecollectionstask.cpp
+  retrieveitemtask.cpp
+  retrieveitemstask.cpp
   sessionpool.cpp
+  uidvalidityattribute.cpp
+  uidnextattribute.cpp
+  ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
+  ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
 
 kde4_add_library(libimapresource STATIC ${libimapresource_SRCS})
@@ -24,16 +45,11 @@ target_link_libraries(libimapresource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIB
 set( imapresource_SRCS
   imapidlemanager.cpp
   imapresource.cpp
-  noselectattribute.cpp
+  resourcestate.cpp
   settings.cpp
-  imapflags.cpp
   settingspasswordrequester.cpp
   setupserver.cpp
   subscriptiondialog.cpp
-  uidvalidityattribute.cpp
-  uidnextattribute.cpp
-  ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
-  ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
 
 install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -47,7 +63,7 @@ kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.
 qt4_add_dbus_adaptor( imapresource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
      )
-qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml )
+qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
 qt4_add_dbus_adaptor( imapresource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
         imapresource.h ImapResource

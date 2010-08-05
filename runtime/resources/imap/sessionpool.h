@@ -63,6 +63,7 @@ public:
   KIMAP::SessionUiProxy::Ptr sessionUiProxy() const;
   void setSessionUiProxy( KIMAP::SessionUiProxy::Ptr proxy );
 
+  bool isConnected() const;
   bool connect( ImapAccount *account );
   void disconnect();
 

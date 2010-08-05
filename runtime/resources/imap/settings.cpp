@@ -32,6 +32,10 @@ using KWallet::Wallet;
 
 #include <QDBusConnection>
 
+#include <KDE/Akonadi/Collection>
+#include <KDE/Akonadi/CollectionFetchJob>
+#include <KDE/Akonadi/CollectionModifyJob>
+
 class SettingsHelper
 {
 public:
@@ -225,6 +229,35 @@ void Settings::loadAccount( ImapAccount *account ) const
       )
   );
 
+}
+
+QString Settings::rootRemoteId() const
+{
+  return "imap://" + Settings::self()->userName() + '@' + Settings::self()->imapServer() + '/';
+}
+
+void Settings::renameRootCollection( const QString &newName )
+{
+  Akonadi::Collection rootCollection;
+  rootCollection.setRemoteId( rootRemoteId() );
+  Akonadi::CollectionFetchJob *fetchJob =
+      new Akonadi::CollectionFetchJob( rootCollection, Akonadi::CollectionFetchJob::Base );
+  fetchJob->setProperty( "collectionName", newName );
+  connect( fetchJob, SIGNAL( result( KJob* ) ),
+           this, SLOT( onRootCollectionFetched( KJob* ) ) );
+}
+
+void Settings::onRootCollectionFetched( KJob *job )
+{
+  const QString newName = job->property( "collectionName" ).toString();
+  Q_ASSERT( !newName.isEmpty() );
+  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>( job );
+  if ( fetchJob->collections().size() == 1 ) {
+    Akonadi::Collection rootCollection = fetchJob->collections().first();
+    rootCollection.setName( newName );
+    new Akonadi::CollectionModifyJob( rootCollection );
+    // We don't care about the result here, nothing we can/should do if the renaming fails
+  }
 }
 
 #include "settings.moc"

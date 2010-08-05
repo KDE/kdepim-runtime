@@ -51,7 +51,7 @@ public:
   */
   QItemSelection getBreadcrumbSelection(const QItemSelection &selection);
 
-  void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+//  void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
   bool m_includeActualSelection;
   int m_selectionDepth;
@@ -147,11 +147,11 @@ QItemSelection KBreadcrumbSelectionModelPrivate::getBreadcrumbSelection(const QI
   return breadcrumbSelection;
 }
 
-void KBreadcrumbSelectionModelPrivate::sourceSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void KBreadcrumbSelectionModel::sourceSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-  Q_Q(KBreadcrumbSelectionModel);
-  QItemSelection deselectedCrumbs = getBreadcrumbSelection(deselected);
-  QItemSelection selectedCrumbs = getBreadcrumbSelection(selected);
+  Q_D(KBreadcrumbSelectionModel);
+  QItemSelection deselectedCrumbs = d->getBreadcrumbSelection(deselected);
+  QItemSelection selectedCrumbs = d->getBreadcrumbSelection(selected);
 
   QItemSelection removed = deselectedCrumbs;
   foreach(const QItemSelectionRange &range, selectedCrumbs)
@@ -167,11 +167,11 @@ void KBreadcrumbSelectionModelPrivate::sourceSelectionChanged(const QItemSelecti
 
   if (!removed.isEmpty())
   {
-    q->QItemSelectionModel::select(removed, QItemSelectionModel::Deselect);
+    QItemSelectionModel::select(removed, QItemSelectionModel::Deselect);
   }
   if (!added.isEmpty())
   {
-    q->QItemSelectionModel::select(added, QItemSelectionModel::Select);
+    QItemSelectionModel::select(added, QItemSelectionModel::Select);
   }
 }
 

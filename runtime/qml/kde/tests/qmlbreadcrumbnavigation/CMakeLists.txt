@@ -18,8 +18,10 @@ include_directories(
 set(app_SRCS
   breadcrumbnavigation.cpp
   breadcrumbnavigationcontext.cpp
+  checkableitemproxymodel.cpp
   dynamictreemodel.cpp
   dynamictreewidget.cpp
+  qmllistselectionmodel.cpp
   kresettingproxymodel.cpp
   mainwindow.cpp
   main.cpp
