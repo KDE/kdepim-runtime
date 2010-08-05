@@ -78,6 +78,78 @@ private slots:
     QTest::newRow( "modifying mail content" ) << item << parts << scenario << callNames;
 
 
+    collection = Akonadi::Collection( 1 );
+    collection.setRemoteId( "/INBOX/Foo" );
+    collection.addAttribute(new UidNextAttribute( 65 ));
+    item = Akonadi::Item( 2 );
+    item.setParentCollection( collection );
+    item.setRemoteId( "5" );
+
+    message = KMime::Message::Ptr(new KMime::Message);
+
+    messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
+
+    message->setContent(messageContent.toUtf8());
+    message->parse();
+    item.setPayload(message);
+
+    parts.clear();
+    parts << "PLD:RFC822";
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 APPEND \"INBOX/Foo\"  {90}\r\n"+message->encodedContent(true)
+             << "S: A000003 OK append done"
+             << "C: A000004 SELECT \"INBOX/Foo\""
+             << "S: A000004 OK select done"
+             << "C: A000005 UID SEARCH HEADER Message-ID <42.4242.foo@bar.org>"
+             << "S: * SEARCH 65"
+             << "S: A000005 OK search done"
+             << "C: A000006 UID STORE 5 +FLAGS (\\Deleted)"
+             << "S: A000006 OK store done";
+
+    callNames.clear();
+    callNames << "applyCollectionChanges" << "itemChangeCommitted";
+
+    QTest::newRow( "modifying mail content, no APPENDUID, message has Message-ID" ) << item << parts << scenario << callNames;
+
+
+    collection = Akonadi::Collection( 1 );
+    collection.setRemoteId( "/INBOX/Foo" );
+    collection.addAttribute(new UidNextAttribute( 65 ));
+    item = Akonadi::Item( 2 );
+    item.setParentCollection( collection );
+    item.setRemoteId( "5" );
+
+    message = KMime::Message::Ptr(new KMime::Message);
+
+    messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
+
+    message->setContent(messageContent.toUtf8());
+    message->parse();
+    item.setPayload(message);
+
+    parts.clear();
+    parts << "PLD:RFC822";
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 APPEND \"INBOX/Foo\"  {55}\r\n"+message->encodedContent(true)
+             << "S: A000003 OK append done"
+             << "C: A000004 SELECT \"INBOX/Foo\""
+             << "S: A000004 OK select done"
+             << "C: A000005 UID SEARCH NEW UID 65:*"
+             << "S: * SEARCH 65"
+             << "S: A000005 OK search done"
+             << "C: A000006 UID STORE 5 +FLAGS (\\Deleted)"
+             << "S: A000006 OK store done";
+
+    callNames.clear();
+    callNames << "applyCollectionChanges" << "itemChangeCommitted";
+
+    QTest::newRow( "modifying mail content, no APPENDUID, message has no Message-ID" ) << item << parts << scenario << callNames;
+
+
 
     // collection unchanged for this test
     // item only gets a set of flags

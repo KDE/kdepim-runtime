@@ -34,9 +34,17 @@ public:
 
 private slots:
   void onAppendMessageDone( KJob *job );
+  void onPreSearchSelectDone( KJob *job );
+  void onSearchDone( KJob *job );
 
 protected:
   virtual void doStart( KIMAP::Session *session );
+
+private:
+  void triggerSearchJob( KIMAP::Session *session );
+  void applyFoundUid( qint64 uid );
+
+  QByteArray m_messageId;
 };
 
 #endif

@@ -348,15 +348,6 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   QStringList expected;
   expected << "IMAP4REV1";
 
-  // Both GMail and GMX servers seem to be lying about their capabilities
-  // They don't report UIDPLUS correctly so don't check for it explicitly
-  // if it's one of those servers.
-  if ( !m_capabilities.contains( "X-GM-EXT-1" )
-    && !capJob->session()->serverGreeting().contains( "GMX" )
-    && !capJob->session()->serverGreeting().contains( "migmx" ) ) {
-    expected << "UIDPLUS";
-  }
-
   QStringList missing;
 
   foreach ( const QString &capability, expected ) {

@@ -86,7 +86,7 @@ private slots:
              << "C: A000001 LOGIN test@kdab.com foobar"
              << "S: A000001 OK User Logged in"
              << "C: A000002 CAPABILITY"
-             << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
+             << "S: * CAPABILITY IMAP4 IDLE"
              << "S: A000002 OK Completed"
              << "C: A000003 LOGOUT";
     password = "foobar";

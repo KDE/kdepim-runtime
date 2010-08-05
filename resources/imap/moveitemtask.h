@@ -37,13 +37,18 @@ private slots:
   void onCopyDone( KJob *job );
   void onStoreFlagsDone( KJob *job );
 
+  void onPreSearchSelectDone( KJob *job );
+  void onSearchDone( KJob *job );
+
 protected:
   virtual void doStart( KIMAP::Session *session );
 
 private:
   void triggerCopyJob( KIMAP::Session *session );
+  void recordNewUid();
 
-  Akonadi::Item m_item;
+  QByteArray m_messageId;
+  qint64 m_newUid;
 };
 
 #endif
