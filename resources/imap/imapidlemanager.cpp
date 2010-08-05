@@ -118,9 +118,14 @@ void ImapIdleManager::onSelectDone( KJob *job )
 void ImapIdleManager::onIdleStopped()
 {
   kDebug(5327) << "IDLE dropped maybe we should reconnect?";
-  if ( m_resource->isOnline() ) {
+  if ( m_session ) {
     kDebug(5327) << "Restarting the IDLE session!";
-    QTimer::singleShot( 0, m_resource, SLOT( startIdle() ) );
+    m_idle = new KIMAP::IdleJob( m_session );
+    connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*, QString, int, int)),
+             this, SLOT(onStatsReceived(KIMAP::IdleJob*, QString, int, int)) );
+    connect( m_idle, SIGNAL(result(KJob*)),
+             this, SLOT(onIdleStopped()) );
+    m_idle->start();
   }
 }
 
