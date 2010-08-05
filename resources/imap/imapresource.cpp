@@ -172,8 +172,6 @@ void ImapResource::onConnectDone( int errorCode, const QString &errorString )
 {
   switch ( errorCode ) {
   case SessionPool::NoError:
-    startIdle();
-
     setOnline( true );
     taskDone();
     emit status( Idle, i18n( "Connection established." ) );

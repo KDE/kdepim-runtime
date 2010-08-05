@@ -305,8 +305,6 @@ void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
 
   Settings::self()->setIdleRidPath( ridPath );
   Settings::self()->writeConfig();
-
-  m_resource->startIdleIfNeeded();
 }
 
 void ResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
@@ -348,6 +346,8 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
       }
     }
   }
+
+  m_resource->startIdleIfNeeded();
 }
 
 void ResourceState::collectionChangeCommitted( const Akonadi::Collection &collection )
