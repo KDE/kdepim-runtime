@@ -72,6 +72,41 @@
 using namespace KCalCore;
 using namespace Akonadi;
 
+/// Free helper functions
+
+KUrl replaceVariablesUrl( const KUrl &url,
+                          const QString &email,
+                          const QString &emailName,
+                          const QString &emailHost )
+{
+  QString saveStr = url.path();
+  saveStr.replace( QRegExp( "%[Ee][Mm][Aa][Ii][Ll]%" ), email );
+  saveStr.replace( QRegExp( "%[Nn][Aa][Mm][Ee]%" ), emailName );
+  saveStr.replace( QRegExp( "%[Ss][Ee][Rr][Vv][Ee][Rr]%" ), emailHost );
+
+  KUrl retUrl( url );
+  retUrl.setPath( saveStr );
+  return retUrl;
+}
+
+bool fbExists( const KUrl &url )
+{
+  // We need this function because using KIO::NetAccess::exists()
+  // is useless for the http and https protocols. And getting back
+  // arbitrary data is also useless because a server can respond back
+  // with a "no such document" page.  So we need smart checking.
+
+  KIO::Job *job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
+  QByteArray data;
+  if ( KIO::NetAccess::synchronousRun( job, 0, &data ) ) {
+    QString dataStr ( data );
+    if ( dataStr.contains( "BEGIN:VCALENDAR" ) ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /// FreeBusyManagerPrivate
 
 namespace Akonadi {
@@ -139,10 +174,16 @@ KUrl FreeBusyManagerPrivate::freeBusyUrl( const QString &email ) const
   // First check if there is a specific FB url for this email
   QString configFile = KStandardDirs::locateLocal( "data", QLatin1String( "korganizer/freebusyurls" ) );
   KConfig cfg( configFile );
-  KConfigGroup group = cfg.group(email);
+  KConfigGroup group = cfg.group( email );
   QString url = group.readEntry( QLatin1String( "url" ) );
   if ( !url.isEmpty() ) {
-    return KUrl( url );
+    kDebug() << "Found cached url:" << url;
+    KUrl cachedUrl( url );
+    if ( KCalPrefs::instance()->thatIsMe( email ) ) {
+      cachedUrl.setUser( KCalPrefs::instance()->mFreeBusyRetrieveUser );
+      cachedUrl.setPass( KCalPrefs::instance()->mFreeBusyRetrievePassword );
+    }
+    return cachedUrl;
   }
   // Try with the url configurated by preferred email in kcontactmanager
   Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob();
@@ -183,32 +224,57 @@ KUrl FreeBusyManagerPrivate::freeBusyUrl( const QString &email ) const
   const QString emailHost = email.mid( emailpos + 1 );
 
   // Build the URL
-  KUrl sourceURL;
-  sourceURL = KCalPrefs::instance()->mFreeBusyRetrieveUrl;
-
   if ( KCalPrefs::instance()->mFreeBusyCheckHostname ) {
     // Don't try to fetch free/busy data for users not on the specified servers
     // This tests if the hostnames match, or one is a subset of the other
-    const QString hostDomain = sourceURL.host();
+    const QString hostDomain = KUrl( KCalPrefs::instance()->mFreeBusyRetrieveUrl ).host();
     if ( hostDomain != emailHost &&
          !hostDomain.endsWith( QLatin1Char( '.' ) + emailHost ) &&
          !emailHost.endsWith( QLatin1Char( '.' ) + hostDomain ) ) {
       // Host names do not match
-      kDebug() << "Host '" << sourceURL.host()
-               << "' doesn't match email '" << email << '\'';
+      kDebug() << "Host '" << hostDomain << "' doesn't match email '" << email << '\'';
       return KUrl();
     }
   }
 
-  if ( KCalPrefs::instance()->mFreeBusyFullDomainRetrieval ) {
-    sourceURL.addPath( email + QLatin1String( ".ifb" ) );
-  } else {
-    sourceURL.addPath( emailName + QLatin1String( ".ifb" ) );
-  }
-  sourceURL.setUser( KCalPrefs::instance()->mFreeBusyRetrieveUser );
-  sourceURL.setPass( KCalPrefs::instance()->mFreeBusyRetrievePassword );
+  if ( KCalPrefs::instance()->mFreeBusyRetrieveUrl.contains( QRegExp( "\\.[xiv]fb$" ) ) ) { // user specified a fullpath
+    // do variable string replacements to the URL (MS Outlook style)
+    const KUrl sourceUrl( KCalPrefs::instance()->mFreeBusyRetrieveUrl );
+    KUrl fullpathURL = replaceVariablesUrl( sourceUrl, email, emailName, emailHost );
 
-  return sourceURL;
+    // set the User and Password part of the URL
+    fullpathURL.setUser( KCalPrefs::instance()->mFreeBusyRetrieveUser );
+    fullpathURL.setPass( KCalPrefs::instance()->mFreeBusyRetrievePassword );
+
+    // no need to cache this URL as this is pretty fast to get from the config value.
+    // return the fullpath URL
+    return fullpathURL;
+ }
+
+ // else we search for a fb file in the specified URL with known possible extensions
+
+ const QStringList extensions = QStringList() << "xfb" << "ifb" << "vfb";
+ QStringList::ConstIterator ext;
+ for ( ext = extensions.constBegin(); ext != extensions.constEnd(); ++ext ) {
+   // build a url for this extension
+   const KUrl sourceUrl = KCalPrefs::instance()->mFreeBusyRetrieveUrl;
+   KUrl dirURL = replaceVariablesUrl( sourceUrl, email, emailName, emailHost );
+   if ( KCalPrefs::instance()->mFreeBusyFullDomainRetrieval ) {
+     dirURL.addPath( email + '.' + (*ext) );
+   } else {
+     dirURL.addPath( emailName + '.' + (*ext ) );
+   }
+   dirURL.setUser( KCalPrefs::instance()->mFreeBusyRetrieveUser );
+   dirURL.setPass( KCalPrefs::instance()->mFreeBusyRetrievePassword );
+   if ( fbExists( dirURL ) ) {
+     // write the URL to the cache
+     KConfigGroup group = cfg.group( email );
+     group.writeEntry( "url", dirURL.prettyUrl() ); // prettyURL() does not write user nor password
+     return dirURL;
+   }
+ }
+
+ return KUrl();
 }
 
 QString FreeBusyManagerPrivate::freeBusyToIcal( const KCalCore::FreeBusy::Ptr &freebusy )
@@ -340,6 +406,8 @@ bool FreeBusyManagerPrivate::processRetrieveQueue()
   return true;
 }
 
+
+
 void FreeBusyManagerPrivate::uploadFreeBusy()
 {
   Q_Q( FreeBusyManager );
@@ -459,7 +527,7 @@ void FreeBusyManager::publishFreeBusy( QWidget *parentWidget )
   if ( !d->mCalendar )
     return;
 
-  KUrl targetURL ( KCalPrefs::instance()->freeBusyPublishUrl() );
+  KUrl targetURL( KCalPrefs::instance()->freeBusyPublishUrl() );
   if ( targetURL.isEmpty() )  {
     KMessageBox::sorry(
       parentWidget,
