@@ -21,6 +21,7 @@ set(app_SRCS
   checkableitemproxymodel.cpp
   dynamictreemodel.cpp
   dynamictreewidget.cpp
+  qmllistselectionmodel.cpp
   kresettingproxymodel.cpp
   mainwindow.cpp
   main.cpp
