@@ -326,9 +326,9 @@ void ImapResource::doSetOnline(bool online)
   kDebug() << "online=" << online
            << "network.status=" << Solid::Networking::status();
   if ( !online && m_pool->isConnected() ) {
+    m_pool->disconnect();
     delete m_idle;
     m_idle = 0;
-    m_pool->disconnect();
   } else if ( online && !m_pool->isConnected() ) {
     scheduleConnectionAttempt();
   }
