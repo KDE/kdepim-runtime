@@ -407,6 +407,15 @@ void SessionPool::onConnectionLost()
   m_idlePool.removeAll( session );
   m_reservedPool.removeAll( session );
 
+  if ( m_idlePool.isEmpty() && m_reservedPool.isEmpty() ) {
+    delete m_account;
+    m_account = 0;
+    m_namespaces.clear();
+    m_capabilities.clear();
+
+    m_initialConnectDone = false;
+  }
+
   emit connectionLost( session );
 
   session->deleteLater();
