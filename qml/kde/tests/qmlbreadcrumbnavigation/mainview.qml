@@ -33,11 +33,15 @@ Rectangle {
   }
 
   BreadcrumbNavigationView {
-
+    id : breadcrumbNavView
     SystemPalette { id: palette; colorGroup: "Active" }
 
-    anchors.fill : parent;
-    anchors.rightMargin : 20
+    anchors.top : parent.top;
+    anchors.bottom : parent.bottom;
+    anchors.left : parent.left;
+    width : 200
+
+// anchors.rightMargin : 20
 
     topDelegate : ListDelegate
     {
@@ -52,6 +56,7 @@ Rectangle {
     breadcrumbDelegate : ListDelegate
     {
       clickable : true
+      selectionModel : _breadcrumbCheckModel
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = row;
         breadcrumbTopLevel.state = "before_select_breadcrumb";
@@ -61,12 +66,14 @@ Rectangle {
     selectedItemDelegate : ListDelegate
     {
       isSelected : true
+      selectionModel : _selectedItemCheckModel
     }
 
     childItemsDelegate : ListDelegate
     {
       clickable : true
       isChild : true
+      selectionModel : _childCheckModel
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = row;
         breadcrumbTopLevel.state = "before_select_child";
@@ -85,6 +92,19 @@ Rectangle {
     onBreadcrumbCollectionSelected :
     {
       application.setSelectedBreadcrumbCollectionRow( row );
+    }
+  }
+
+  ListView {
+    anchors.top : breadcrumbNavView.top;
+    anchors.bottom : breadcrumbNavView.bottom;
+    anchors.left : breadcrumbNavView.right;
+    width : 100
+    model : _selectedItemsModel
+    delegate: ListDelegate
+    {
+      height : 67
+      selectionModel : _selectedItemsSelectionModel
     }
   }
 }

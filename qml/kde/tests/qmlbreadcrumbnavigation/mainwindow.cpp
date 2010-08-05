@@ -36,6 +36,39 @@
 #include <qcolumnview.h>
 #include <QFile>
 #include "kresettingproxymodel.h"
+#include "qmllistselectionmodel.h"
+#include "kselectionproxymodel.h"
+#include <klinkitemselectionmodel.h>
+#include "checkableitemproxymodel.h"
+
+class QMLCheckableItemProxyModel : public CheckableItemProxyModel
+{
+public:
+  enum MoreRoles {
+    CheckOn = Qt::UserRole + 3000
+  };
+  QMLCheckableItemProxyModel (QObject* parent = 0)
+    : CheckableItemProxyModel(parent)
+  {
+  }
+
+  virtual void setSourceModel(QAbstractItemModel* sourceModel)
+  {
+    CheckableItemProxyModel::setSourceModel(sourceModel);
+
+    QHash<int, QByteArray> roles = roleNames();
+    roles.insert( CheckOn, "checkOn" );
+    setRoleNames(roles);
+  }
+
+  virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const
+  {
+    if ( role == CheckOn )
+      return (index.data(Qt::CheckStateRole) == Qt::Checked);
+    return CheckableItemProxyModel::data(index, role);
+  }
+
+};
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   : QWidget(parent, f)
@@ -133,11 +166,17 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
 
   QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
 
+  QItemSelectionModel *checkSelectionModel = new QItemSelectionModel(m_treeModel, this);
+
+  QMLCheckableItemProxyModel *checkableProxy = new QMLCheckableItemProxyModel(this);
+  checkableProxy->setSourceModel( m_treeModel );
+  checkableProxy->setSelectionModel( checkSelectionModel );
+
   m_bnf = new KBreadcrumbNavigationFactory(this);
   m_bnf->setBreadcrumbDepth(1);
-  m_bnf->createBreadcrumbContext( m_treeModel, this );
+  m_bnf->createBreadcrumbContext( checkableProxy, this );
 
-  widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
+//   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
 
 #if 0
   QTreeView *view1 = new QTreeView;
@@ -157,9 +196,45 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   KResettingProxyModel *resettingProxy = new KResettingProxyModel(this);
   resettingProxy->setSourceModel(m_bnf->breadcrumbItemModel());
 
+  qDebug() << m_bnf->childItemModel()->roleNames();
+
+  KLinkItemSelectionModel *breadcrumbLinkSelectionModel = new KLinkItemSelectionModel( m_bnf->breadcrumbItemModel(), checkSelectionModel, this);
+  KLinkItemSelectionModel *childLinkSelectionModel = new KLinkItemSelectionModel( m_bnf->childItemModel(), checkSelectionModel, this);
+  KLinkItemSelectionModel *selectedItemLinkSelectionModel = new KLinkItemSelectionModel( m_bnf->selectedItemModel(), checkSelectionModel, this);
+
+  QMLListSelectionModel *breadcrumbCheckModel = new QMLListSelectionModel( breadcrumbLinkSelectionModel, this);
+  QMLListSelectionModel *childCheckModel = new QMLListSelectionModel( childLinkSelectionModel, this);
+  QMLListSelectionModel *selectedItemCheckModel = new QMLListSelectionModel( selectedItemLinkSelectionModel, this);
+
+  KSelectionProxyModel *selectionProxyModel = new KSelectionProxyModel( checkSelectionModel, this );
+  selectionProxyModel->setFilterBehavior( KSelectionProxyModel::ExactSelection );
+  selectionProxyModel->setSourceModel( checkableProxy );
+
+  KLinkItemSelectionModel *selectionProxyLinkModel = new KLinkItemSelectionModel( selectionProxyModel, checkSelectionModel, this);
+
+  QMLListSelectionModel *selectionModel = new QMLListSelectionModel( selectionProxyLinkModel, this);
+
+#if 0
+  QTreeView *selectedItemsView = new QTreeView;
+  selectedItemsView->setModel( selectionProxyModel );
+  selectedItemsView->setSelectionModel( selectionProxyLinkModel );
+  selectedItemsView->setWindowTitle("selectedItemsView");
+  selectedItemsView->show();
+#endif
+
+  QMLListSelectionModel *selectedItemsSelectionModel = new QMLListSelectionModel( m_bnf->childSelectionModel(), this);
+
   context->setContextProperty( "_selectedItemModel", QVariant::fromValue( static_cast<QObject*>( m_bnf->selectedItemModel() ) ) );
   context->setContextProperty( "_breadcrumbItemsModel", QVariant::fromValue( static_cast<QObject*>( resettingProxy ) ) );
   context->setContextProperty( "_childItemsModel", QVariant::fromValue( static_cast<QObject*>( m_bnf->childItemModel() ) ) );
+
+  context->setContextProperty( "_selectedItemsSelectionModel", QVariant::fromValue( static_cast<QObject*>( selectionModel ) ) );
+  context->setContextProperty( "_selectedItemsModel", QVariant::fromValue( static_cast<QObject*>( selectionProxyModel ) ) );
+
+  context->setContextProperty( "_breadcrumbCheckModel", QVariant::fromValue( static_cast<QObject*>( breadcrumbCheckModel ) ) );
+  context->setContextProperty( "_childCheckModel", QVariant::fromValue( static_cast<QObject*>( childCheckModel ) ) );
+  context->setContextProperty( "_selectedItemCheckModel", QVariant::fromValue( static_cast<QObject*>( selectedItemCheckModel ) ) );
+
   context->setContextProperty( "application", QVariant::fromValue( static_cast<QObject*>( this ) ) );
 
   m_declarativeView->setResizeMode( QDeclarativeView::SizeRootObjectToView );
