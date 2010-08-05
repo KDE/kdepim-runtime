@@ -74,11 +74,17 @@ using namespace Akonadi;
 
 /// Free helper functions
 
-KUrl replaceVariablesUrl( const KUrl &url,
-                          const QString &email,
-                          const QString &emailName,
-                          const QString &emailHost )
+KUrl replaceVariablesUrl( const KUrl &url, const QString &email )
 {
+  QString emailName;
+  QString emailHost;
+
+  const int atPos = email.indexOf( '@' );
+  if ( atPos >= 0 ) {
+    emailName = email.left( atPos );
+    emailHost = email.mid( atPos + 1 );
+  }
+
   QString saveStr = url.path();
   saveStr.replace( QRegExp( "%[Ee][Mm][Aa][Ii][Ll]%" ), email );
   saveStr.replace( QRegExp( "%[Nn][Aa][Mm][Ee]%" ), emailName );
@@ -183,7 +189,7 @@ KUrl FreeBusyManagerPrivate::freeBusyUrl( const QString &email ) const
       cachedUrl.setUser( KCalPrefs::instance()->mFreeBusyRetrieveUser );
       cachedUrl.setPass( KCalPrefs::instance()->mFreeBusyRetrievePassword );
     }
-    return cachedUrl;
+    return replaceVariablesUrl( cachedUrl, email );
   }
   // Try with the url configurated by preferred email in kcontactmanager
   Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob();
@@ -201,7 +207,7 @@ KUrl FreeBusyManagerPrivate::freeBusyUrl( const QString &email ) const
       url = group.readEntry ( "url" );
       if ( !url.isEmpty() ) {
         kDebug() << "Taken url from preferred email:" << url;
-        return KUrl( url );
+        return replaceVariablesUrl( KUrl( url ), email );
       }
     }
   }
@@ -219,8 +225,6 @@ KUrl FreeBusyManagerPrivate::freeBusyUrl( const QString &email ) const
      return KUrl();
   }
 
-  // Cut off everything left of the @ sign to get the user name.
-  const QString emailName = email.left( emailpos );
   const QString emailHost = email.mid( emailpos + 1 );
 
   // Build the URL
@@ -240,7 +244,7 @@ KUrl FreeBusyManagerPrivate::freeBusyUrl( const QString &email ) const
   if ( KCalPrefs::instance()->mFreeBusyRetrieveUrl.contains( QRegExp( "\\.[xiv]fb$" ) ) ) { // user specified a fullpath
     // do variable string replacements to the URL (MS Outlook style)
     const KUrl sourceUrl( KCalPrefs::instance()->mFreeBusyRetrieveUrl );
-    KUrl fullpathURL = replaceVariablesUrl( sourceUrl, email, emailName, emailHost );
+    KUrl fullpathURL = replaceVariablesUrl( sourceUrl, email );
 
     // set the User and Password part of the URL
     fullpathURL.setUser( KCalPrefs::instance()->mFreeBusyRetrieveUser );
@@ -258,10 +262,12 @@ KUrl FreeBusyManagerPrivate::freeBusyUrl( const QString &email ) const
  for ( ext = extensions.constBegin(); ext != extensions.constEnd(); ++ext ) {
    // build a url for this extension
    const KUrl sourceUrl = KCalPrefs::instance()->mFreeBusyRetrieveUrl;
-   KUrl dirURL = replaceVariablesUrl( sourceUrl, email, emailName, emailHost );
+   KUrl dirURL = replaceVariablesUrl( sourceUrl, email );
    if ( KCalPrefs::instance()->mFreeBusyFullDomainRetrieval ) {
      dirURL.addPath( email + '.' + (*ext) );
    } else {
+     // Cut off everything left of the @ sign to get the user name.
+     const QString emailName = email.left( emailpos );
      dirURL.addPath( emailName + '.' + (*ext ) );
    }
    dirURL.setUser( KCalPrefs::instance()->mFreeBusyRetrieveUser );
