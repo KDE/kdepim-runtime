@@ -63,6 +63,7 @@ void KCalMigrator::fileResourceCreated(KJob * job)
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
     return;
   }
   iface->setPath( kresCfg.readPathEntry( "CalendarURL", "" ) );
@@ -91,6 +92,7 @@ void KCalMigrator::birthdaysResourceCreated(KJob* job)
                                                  "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
     return;
   }
   iface->setEnableAlarm( kresCfg.readEntry( "Alarm", true ) );
