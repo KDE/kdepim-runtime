@@ -28,7 +28,7 @@ Rectangle {
   property bool isSelected : false
   property bool topItem : false
 
-  property variant selectionModel
+  property variant checkModel
 
   signal indexSelected(int row)
 
@@ -91,7 +91,7 @@ Rectangle {
         anchors.fill : parent
           onClicked : {
             // 8 is QItemSelectionModel::Toggle
-            selectionModel.select(model.index, 8);
+            checkModel.select(model.index, 8);
           }
         }
       }

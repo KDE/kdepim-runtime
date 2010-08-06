@@ -30,6 +30,37 @@
 #include "kmodelindexproxymapper.h"
 
 #include "breadcrumbnavigation.h"
+#include "qmllistselectionmodel.h"
+#include "checkableitemproxymodel.h"
+
+class QMLCheckableItemProxyModel : public CheckableItemProxyModel
+{
+public:
+  enum MoreRoles {
+    CheckOn = Qt::UserRole + 3000
+  };
+  QMLCheckableItemProxyModel (QObject* parent = 0)
+    : CheckableItemProxyModel(parent)
+  {
+  }
+
+  virtual void setSourceModel(QAbstractItemModel* sourceModel)
+  {
+    CheckableItemProxyModel::setSourceModel(sourceModel);
+
+    QHash<int, QByteArray> roles = roleNames();
+    roles.insert( CheckOn, "checkOn" );
+    setRoleNames(roles);
+  }
+
+  virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const
+  {
+    if ( role == CheckOn )
+      return (index.data(Qt::CheckStateRole) == Qt::Checked);
+    return CheckableItemProxyModel::data(index, role);
+  }
+
+};
 
 class KBreadcrumbNavigationFactoryPrivate
 {
@@ -43,7 +74,18 @@ class KBreadcrumbNavigationFactoryPrivate
       m_unfilteredChildItemsModel(0),
       m_childItemsModel(0),
       m_breadcrumbDepth(-1),
-      m_modelIndexProxyMapper(0)
+      m_modelIndexProxyMapper(0),
+      m_checkModel(0),
+      m_qmlBreadcrumbSelectionModel(0),
+      m_qmlSelectedItemSelectionModel(0),
+      m_qmlChildSelectionModel(0),
+      m_qmlBreadcrumbCheckModel(0),
+      m_qmlSelectedItemCheckModel(0),
+      m_qmlChildCheckModel(0),
+      m_checkedItemsModel(0),
+      m_checkedItemsCheckModel(0),
+      m_qmlCheckedItemsCheckModel(0)
+
   {
 
   }
@@ -54,17 +96,62 @@ class KBreadcrumbNavigationFactoryPrivate
   QItemSelectionModel *m_selectionModel;
   QItemSelectionModel *m_childItemsSelectionModel;
 
+  QMLListSelectionModel *m_qmlBreadcrumbSelectionModel;
+  QMLListSelectionModel *m_qmlSelectedItemSelectionModel;
+  QMLListSelectionModel *m_qmlChildSelectionModel;
+
   QAbstractItemModel *m_breadcrumbModel;
   QAbstractItemModel *m_selectedItemModel;
   QAbstractItemModel *m_unfilteredChildItemsModel;
   QAbstractItemModel *m_childItemsModel;
   int m_breadcrumbDepth;
   KModelIndexProxyMapper *m_modelIndexProxyMapper;
+
+  QItemSelectionModel *m_checkModel;
+
+  QMLListSelectionModel *m_qmlBreadcrumbCheckModel;
+  QMLListSelectionModel *m_qmlSelectedItemCheckModel;
+  QMLListSelectionModel *m_qmlChildCheckModel;
+
+  KSelectionProxyModel *m_checkedItemsModel;
+  QItemSelectionModel *m_checkedItemsCheckModel;
+  QMLListSelectionModel *m_qmlCheckedItemsCheckModel;
+
 };
 
 KBreadcrumbNavigationFactory::KBreadcrumbNavigationFactory(QObject* parent)
   : QObject(parent), d_ptr(new KBreadcrumbNavigationFactoryPrivate(this))
 {
+
+}
+
+void KBreadcrumbNavigationFactory::createCheckableBreadcrumbContext(QAbstractItemModel* model, QObject* parent)
+{
+  Q_D(KBreadcrumbNavigationFactory);
+
+  d->m_checkModel = new QItemSelectionModel( model, parent);
+
+  QMLCheckableItemProxyModel *checkableProxy = new QMLCheckableItemProxyModel(this);
+  checkableProxy->setSourceModel( model );
+  checkableProxy->setSelectionModel( d->m_checkModel );
+
+  createBreadcrumbContext(checkableProxy, parent);
+
+  KLinkItemSelectionModel *breadcrumbLinkSelectionModel = new KLinkItemSelectionModel( d->m_breadcrumbModel, d->m_checkModel, parent);
+  KLinkItemSelectionModel *childLinkSelectionModel = new KLinkItemSelectionModel(d->m_childItemsModel, d->m_checkModel, parent);
+  KLinkItemSelectionModel *selectedItemLinkSelectionModel = new KLinkItemSelectionModel( d->m_selectedItemModel, d->m_checkModel, parent);
+
+  d->m_qmlBreadcrumbCheckModel = new QMLListSelectionModel( breadcrumbLinkSelectionModel, parent);
+  d->m_qmlSelectedItemCheckModel = new QMLListSelectionModel( selectedItemLinkSelectionModel, parent);
+  d->m_qmlChildCheckModel = new QMLListSelectionModel( childLinkSelectionModel, parent);
+
+  d->m_checkedItemsModel = new KSelectionProxyModel( d->m_checkModel, parent );
+  d->m_checkedItemsModel->setFilterBehavior( KSelectionProxyModel::ExactSelection );
+  d->m_checkedItemsModel->setSourceModel( checkableProxy );
+
+  d->m_checkedItemsCheckModel = new KLinkItemSelectionModel( d->m_checkedItemsModel, d->m_checkModel, parent);
+
+  d->m_qmlCheckedItemsCheckModel = new QMLListSelectionModel( d->m_checkedItemsCheckModel, parent);
 
 }
 
@@ -110,8 +197,13 @@ void KBreadcrumbNavigationFactory::createBreadcrumbContext(QAbstractItemModel *m
 
   d->m_childItemsSelectionModel = new KLinkItemSelectionModel( d->m_childItemsModel, d->m_selectionModel, parent );
 
-  d->m_modelIndexProxyMapper = new KModelIndexProxyMapper(model, d->m_childItemsModel, this);
+  d->m_modelIndexProxyMapper = new KModelIndexProxyMapper(model, d->m_childItemsModel, parent);
 
+  // Navigation stuff for QML:
+
+  d->m_qmlBreadcrumbSelectionModel = new QMLListSelectionModel( d->m_breadcrumbSelectionModel, parent );
+  d->m_qmlSelectedItemSelectionModel = new QMLListSelectionModel( d->m_selectionModel, parent );
+  d->m_qmlChildSelectionModel = new QMLListSelectionModel( d->m_childItemsSelectionModel, parent );
 }
 
 QItemSelectionModel* KBreadcrumbNavigationFactory::selectionModel() const
@@ -216,5 +308,91 @@ bool KBreadcrumbNavigationFactory::childCollectionHasChildren(int row)
 
   return idx.model()->rowCount( idx ) > 0;
 }
+
+QObject* KBreadcrumbNavigationFactory::qmlBreadcrumbSelectionModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_qmlBreadcrumbSelectionModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlBreadcrumbsModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_breadcrumbModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlChildItemsModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_childItemsModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlChildSelectionModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_qmlChildSelectionModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlSelectedItemModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_selectedItemModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlSelectionModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_qmlSelectedItemSelectionModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlBreadcrumbCheckModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_qmlBreadcrumbCheckModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlChildCheckModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_qmlChildCheckModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlSelectedItemCheckModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_qmlSelectedItemCheckModel;
+}
+
+QItemSelectionModel* KBreadcrumbNavigationFactory::checkedItemsCheckModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_checkedItemsCheckModel;
+}
+
+QAbstractItemModel* KBreadcrumbNavigationFactory::checkedItemsModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_checkedItemsModel;
+}
+
+QItemSelectionModel* KBreadcrumbNavigationFactory::checkModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_checkModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlCheckedItemsCheckModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_qmlCheckedItemsCheckModel;
+}
+
+QObject* KBreadcrumbNavigationFactory::qmlCheckedItemsModel() const
+{
+  Q_D(const KBreadcrumbNavigationFactory);
+  return d->m_checkedItemsModel;
+}
+
+
 
 #include "breadcrumbnavigationcontext.moc"

@@ -38,6 +38,7 @@ public:
   KBreadcrumbNavigationFactory(QObject* parent = 0);
 
   void createBreadcrumbContext(QAbstractItemModel *model, QObject* parent = 0);
+  void createCheckableBreadcrumbContext(QAbstractItemModel *model, QObject* parent = 0);
 
   void setBreadcrumbDepth(int depth);
   int breadcrumbDepth() const;
@@ -51,7 +52,25 @@ public:
   QAbstractItemModel *unfilteredChildItemModel() const;
   QAbstractItemModel *childItemModel() const;
 
+  QItemSelectionModel *checkModel() const;
+  QAbstractItemModel *checkedItemsModel() const;
+  QItemSelectionModel *checkedItemsCheckModel() const;
+
 public slots:
+  QObject* qmlBreadcrumbSelectionModel() const;
+  QObject* qmlSelectionModel() const;
+  QObject* qmlChildSelectionModel() const;
+
+  QObject* qmlBreadcrumbCheckModel() const;
+  QObject* qmlSelectedItemCheckModel() const;
+  QObject* qmlChildCheckModel() const;
+  QObject* qmlCheckedItemsModel() const;
+  QObject* qmlCheckedItemsCheckModel() const;
+
+  QObject* qmlBreadcrumbsModel() const;
+  QObject* qmlSelectedItemModel() const;
+  QObject* qmlChildItemsModel() const;
+
   void selectBreadcrumb( int row );
   void selectChild( int row );
 
