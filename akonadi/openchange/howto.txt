@@ -1,0 +1,1 @@
+- Get and install OpenChange's libmapi (http://www.openchange.org)
