@@ -25,6 +25,7 @@
 #include <KDE/KLocale>
 
 #include <kimap/appendjob.h>
+#include <kimap/searchjob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/storejob.h>
@@ -59,6 +60,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
 
     // save message to the server.
     KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
+    m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
     KIMAP::AppendJob *job = new KIMAP::AppendJob( session );
 
@@ -134,7 +136,6 @@ void ChangeItemTask::onAppendMessageDone( KJob *job )
   KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>( job );
 
   m_newUid = append->uid();
-  Q_ASSERT( m_newUid > 0 );
 
   // OK it's a content change, so we've to mark the old version as deleted
   // remember, you can't modify messages in IMAP mailboxes so that's really
@@ -151,17 +152,74 @@ void ChangeItemTask::onAppendMessageDone( KJob *job )
     select->start();
 
   } else {
-    triggerDeleteJob();
+    if ( m_newUid > 0 ) {
+      triggerDeleteJob();
+    } else {
+      triggerSearchJob();
+    }
   }
 }
 
 void ChangeItemTask::onPreDeleteSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    recordNewUid();
+    if ( m_newUid > 0 ) {
+      recordNewUid();
+    } else {
+      cancelTask( job->errorString() );
+    }
   } else {
-    triggerDeleteJob();
+    if ( m_newUid > 0 ) {
+      triggerDeleteJob();
+    } else {
+      triggerSearchJob();
+    }
   }
+}
+
+void ChangeItemTask::triggerSearchJob()
+{
+  KIMAP::SearchJob *search = new KIMAP::SearchJob( m_session );
+
+  search->setUidBased( true );
+  search->setSearchLogic( KIMAP::SearchJob::And );
+
+  if ( !m_messageId.isEmpty() ) {
+    QByteArray header = "Message-ID ";
+    header+= m_messageId;
+
+    search->addSearchCriteria( KIMAP::SearchJob::Header, header );
+  } else {
+    search->addSearchCriteria( KIMAP::SearchJob::New );
+
+    UidNextAttribute *uidNext = item().parentCollection().attribute<UidNextAttribute>();
+    KIMAP::ImapInterval interval( uidNext->uidNext() );
+
+    search->addSearchCriteria( KIMAP::SearchJob::Uid, interval.toImapSequence() );
+  }
+
+  connect( search, SIGNAL( result( KJob* ) ),
+           this, SLOT( onSearchDone( KJob* ) ) );
+
+  search->start();
+}
+
+void ChangeItemTask::onSearchDone( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
+
+  if ( search->results().count()!=1 ) {
+    cancelTask( i18n("Couldn't determine the UID for the newly created message on the server") );
+    return;
+  }
+
+  m_newUid = search->results().first();
+  triggerDeleteJob();
 }
 
 void ChangeItemTask::triggerDeleteJob()

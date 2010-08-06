@@ -49,7 +49,7 @@ ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
 
 ImapIdleManager::~ImapIdleManager()
 {
-  if ( m_session ) {
+  if ( m_pool && m_session ) {
     m_pool->releaseSession( m_session );
   }
 }
@@ -60,14 +60,20 @@ KIMAP::Session *ImapIdleManager::session() const
 }
 
 void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *session,
-                                            int /*errorCode*/, const QString &/*errorString*/ )
+                                            int errorCode, const QString &/*errorString*/ )
 {
-  if ( requestId!=m_sessionRequestId || session==0 ) {
+  if ( requestId!=m_sessionRequestId || session==0 || errorCode!=SessionPool::NoError ) {
     return;
   }
 
   m_session = session;
   m_sessionRequestId = 0;
+
+  connect( m_pool, SIGNAL(connectionLost(KIMAP::Session*)),
+           this, SLOT(onConnectionLost(KIMAP::Session*)) );
+  connect( m_pool, SIGNAL(disconnectDone()),
+           this, SLOT(onPoolDisconnect()) );
+
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( m_state->mailBoxForCollection( m_state->collection() ) );
@@ -83,6 +89,24 @@ void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *se
   m_idle->start();
 }
 
+void ImapIdleManager::onConnectionLost( KIMAP::Session *session )
+{
+  if ( session == m_session ) {
+    // Our session becomes invalid, so get ride of
+    // the pointer, we don't need to release it once the
+    // task is done
+    m_session = 0;
+  }
+}
+
+void ImapIdleManager::onPoolDisconnect()
+{
+  // All the sessions in the pool we used changed,
+  // so get ride of the pointer, we don't need to
+  // release our session anymore
+  m_pool = 0;
+}
+
 void ImapIdleManager::onSelectDone( KJob *job )
 {
   KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
@@ -94,9 +118,14 @@ void ImapIdleManager::onSelectDone( KJob *job )
 void ImapIdleManager::onIdleStopped()
 {
   kDebug(5327) << "IDLE dropped maybe we should reconnect?";
-  if ( m_resource->isOnline() ) {
+  if ( m_session ) {
     kDebug(5327) << "Restarting the IDLE session!";
-    QTimer::singleShot( 0, m_resource, SLOT( startIdle() ) );
+    m_idle = new KIMAP::IdleJob( m_session );
+    connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*, QString, int, int)),
+             this, SLOT(onStatsReceived(KIMAP::IdleJob*, QString, int, int)) );
+    connect( m_idle, SIGNAL(result(KJob*)),
+             this, SLOT(onIdleStopped()) );
+    m_idle->start();
   }
 }
 

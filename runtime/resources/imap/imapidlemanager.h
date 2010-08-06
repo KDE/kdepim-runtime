@@ -53,6 +53,9 @@ public:
   KIMAP::Session *session() const;
 
 private slots:
+  void onConnectionLost( KIMAP::Session *session );
+  void onPoolDisconnect();
+
   void onSessionRequestDone( qint64 requestId, KIMAP::Session *session,
                              int errorCode, const QString &errorString );
   void onSelectDone( KJob *job );

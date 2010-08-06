@@ -25,6 +25,9 @@
 #include <KDE/KLocale>
 
 #include <kimap/appendjob.h>
+#include <kimap/imapset.h>
+#include <kimap/searchjob.h>
+#include <kimap/selectjob.h>
 #include <kimap/session.h>
 
 #include <kmime/kmime_message.h>
@@ -54,6 +57,7 @@ void AddItemTask::doStart( KIMAP::Session *session )
 
   // save message to the server.
   KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
+  m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
   KIMAP::AppendJob *job = new KIMAP::AppendJob( session );
   job->setMailBox( mailBox );
@@ -72,10 +76,92 @@ void AddItemTask::onAppendMessageDone( KJob *job )
     return;
   }
 
-  Akonadi::Item i = item();
-
   qint64 uid = append->uid();
+
+  if ( uid > 0 ) {
+    // We got it directly if UIDPLUS is supported...
+    applyFoundUid( uid );
+
+  } else {
+    // ... otherwise prepare searching for the message
+    KIMAP::Session *session = append->session();
+    const QString mailBox = append->mailBox();
+
+    if ( session->selectedMailBox() != mailBox ) {
+      KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
+      select->setMailBox( mailBox );
+
+      connect( select, SIGNAL( result( KJob* ) ),
+               this, SLOT( onPreSearchSelectDone( KJob* ) ) );
+
+      select->start();
+
+    } else {
+      triggerSearchJob( session );
+    }
+  }
+}
+
+void AddItemTask::onPreSearchSelectDone( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+  } else {
+    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
+    triggerSearchJob( select->session() );
+  }
+}
+
+void AddItemTask::triggerSearchJob( KIMAP::Session *session )
+{
+  KIMAP::SearchJob *search = new KIMAP::SearchJob( session );
+
+  search->setUidBased( true );
+  search->setSearchLogic( KIMAP::SearchJob::And );
+
+  if ( !m_messageId.isEmpty() ) {
+    QByteArray header = "Message-ID ";
+    header+= m_messageId;
+
+    search->addSearchCriteria( KIMAP::SearchJob::Header, header );
+  } else {
+    search->addSearchCriteria( KIMAP::SearchJob::New );
+
+    UidNextAttribute *uidNext = collection().attribute<UidNextAttribute>();
+    KIMAP::ImapInterval interval( uidNext->uidNext() );
+
+    search->addSearchCriteria( KIMAP::SearchJob::Uid, interval.toImapSequence() );
+  }
+
+  connect( search, SIGNAL( result( KJob* ) ),
+           this, SLOT( onSearchDone( KJob* ) ) );
+
+  search->start();
+}
+
+void AddItemTask::onSearchDone( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
+
+  if ( search->results().count()!=1 ) {
+    cancelTask( i18n("Couldn't determine the UID for the newly created message on the server") );
+    return;
+  }
+
+  qint64 uid = search->results().first();
+  applyFoundUid( uid );
+}
+
+void AddItemTask::applyFoundUid( qint64 uid )
+{
   Q_ASSERT( uid > 0 );
+
+  Akonadi::Item i = item();
 
   const QString remoteId =  QString::number( uid );
   kDebug(5327) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();

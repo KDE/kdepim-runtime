@@ -154,8 +154,9 @@ bool VCardResource::readFromFile( const QString &fileName )
   const QByteArray data = file.readAll();
   file.close();
 
-  KABC::Addressee::List list = mConverter.parseVCards( data );
-  for ( int i = 0; i < list.count(); ++i ) {
+  const KABC::Addressee::List list = mConverter.parseVCards( data );
+  const int numberOfElementInList = list.count();
+  for ( int i = 0; i < numberOfElementInList; ++i ) {
     mAddressees.insert( list[ i ].uid(), list[ i ] );
   }
 

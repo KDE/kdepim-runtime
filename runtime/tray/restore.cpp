@@ -99,7 +99,8 @@ void Restore::restore( const KUrl& filename )
     QDir dir( tempDir->name() + "kdeconfig" + sep );
     dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
     QFileInfoList list = dir.entryInfoList();
-    for ( int i = 0; i < list.size(); ++i ) {
+    const int numberOfElement = list.size();
+    for ( int i = 0; i < numberOfElement; ++i ) {
         QFileInfo fileInfo = list.at( i );
         const QString source = fileInfo.absoluteFilePath();
         const QString dest = KStandardDirs::locateLocal( "config", fileInfo.fileName() );
@@ -113,7 +114,8 @@ void Restore::restore( const KUrl& filename )
     dir.setPath( tempDir->name() + "akonadiconfig" + sep );
     dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
     list = dir.entryInfoList();
-    for ( int i = 0; i < list.size(); ++i ) {
+    const int sizeOfList = list.size();
+    for ( int i = 0; i < sizeOfList; ++i ) {
         QFileInfo fileInfo = list.at( i );
         const QString source = fileInfo.absoluteFilePath();
         const QString dest = akonadiconfigfolder + sep + fileInfo.fileName();

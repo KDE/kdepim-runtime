@@ -86,7 +86,7 @@ private slots:
              << "C: A000001 LOGIN test@kdab.com foobar"
              << "S: A000001 OK User Logged in"
              << "C: A000002 CAPABILITY"
-             << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
+             << "S: * CAPABILITY IMAP4 IDLE"
              << "S: A000002 OK Completed"
              << "C: A000003 LOGOUT";
     password = "foobar";
@@ -432,6 +432,96 @@ private slots:
     QTest::qWait( 100 );
     QCOMPARE( disconnectSpy.count(), 1 );
 
+
+    QVERIFY( server.isAllScenarioDone() );
+
+    server.quit();
+  }
+
+  void shouldBeDisconnectedOnAllSessionLost()
+  {
+    FakeServer server;
+    server.addScenario( QList<QByteArray>()
+                        << FakeServer::greeting()
+                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "S: A000001 OK User Logged in"
+                        << "C: A000002 CAPABILITY"
+                        << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
+                        << "S: A000002 OK Completed"
+                        << "C: A000003 CAPABILITY"
+                        << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                        << "X"
+    );
+
+    server.addScenario( QList<QByteArray>()
+                        << FakeServer::greeting()
+                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "S: A000001 OK User Logged in"
+                        << "C: A000002 CAPABILITY"
+                        << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                        << "X"
+    );
+
+    server.startAndWait();
+
+    ImapAccount *account = createDefaultAccount();
+    DummyPasswordRequester *requester = createDefaultRequester();
+
+    SessionPool pool( 2 );
+    pool.setPasswordRequester( requester );
+
+    QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)) );
+
+    // Initial connect should trigger only a password request and a connect
+    QVERIFY( pool.connect( account ) );
+    QTest::qWait( 100 );
+
+    // We should be connected now
+    QVERIFY( pool.isConnected() );
+
+    // Ask for a session
+    pool.requestSession();
+    QTest::qWait( 100 );
+    QCOMPARE( sessionSpy.count(), 1 );
+    QVERIFY( sessionSpy.at(0).at(1).value<KIMAP::Session*>() != 0 );
+
+    // Still connected obviously
+    QVERIFY( pool.isConnected() );
+
+    // Ask for a second session
+    pool.requestSession();
+    QTest::qWait( 100 );
+    QCOMPARE( sessionSpy.count(), 2 );
+    QVERIFY( sessionSpy.at(1).at(1).value<KIMAP::Session*>() != 0 );
+
+    // Still connected of course
+    QVERIFY( pool.isConnected() );
+
+    KIMAP::Session *session1 = sessionSpy.at(0).at(1).value<KIMAP::Session*>();
+    KIMAP::Session *session2 = sessionSpy.at(1).at(1).value<KIMAP::Session*>();
+
+    // Prepare for session disconnects
+    QSignalSpy lostSpy( &pool, SIGNAL(connectionLost(KIMAP::Session*)) );
+
+    // Make the first session drop
+    KIMAP::CapabilitiesJob *job = new KIMAP::CapabilitiesJob( session1 );
+    job->start();
+    QTest::qWait( 100 );
+    QCOMPARE( lostSpy.count(), 1 );
+    QCOMPARE( lostSpy.at(0).at(0).value<KIMAP::Session*>(), session1 );
+
+    // We're still connected (one session being alive)
+    QVERIFY( pool.isConnected() );
+
+    // Make the second session drop
+    job = new KIMAP::CapabilitiesJob( session2 );
+    job->start();
+    QTest::qWait( 100 );
+    QCOMPARE( lostSpy.count(), 2 );
+    QCOMPARE( lostSpy.at(1).at(0).value<KIMAP::Session*>(), session2 );
+
+    // We're not connected anymore! All sessions dropped!
+    QVERIFY( !pool.isConnected() );
 
     QVERIFY( server.isAllScenarioDone() );
 

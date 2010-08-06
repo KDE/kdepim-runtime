@@ -21,6 +21,8 @@
 
 #include "additemtask.h"
 
+#include "uidnextattribute.h"
+
 #include <kmime/kmime_message.h>
 
 class TestAddItemTask : public ImapTestBase
@@ -43,6 +45,10 @@ private slots:
 
     collection = Akonadi::Collection( 1 );
     collection.setRemoteId( "/INBOX/Foo" );
+    UidNextAttribute *uidNext = new UidNextAttribute;
+    uidNext->setUidNext( 63 );
+    collection.addAttribute( uidNext );
+
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
 
@@ -63,6 +69,56 @@ private slots:
     callNames << "itemChangeCommitted";
 
     QTest::newRow( "trivial case" ) << item << collection << scenario << callNames;
+
+
+
+    message = KMime::Message::Ptr(new KMime::Message);
+
+    messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
+
+    message->setContent(messageContent.toUtf8());
+    message->parse();
+    item.setPayload(message);
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 APPEND \"INBOX/Foo\"  {90}\r\n"+message->encodedContent(true)
+             << "S: A000003 OK append done"
+             << "C: A000004 SELECT \"INBOX/Foo\""
+             << "S: A000004 OK select done"
+             << "C: A000005 UID SEARCH HEADER Message-ID <42.4242.foo@bar.org>"
+             << "S: * SEARCH 66"
+             << "S: A000005 OK search done";
+
+    callNames.clear();
+    callNames << "itemChangeCommitted";
+
+    QTest::newRow( "no APPENDUID, message contained Message-ID" ) << item << collection << scenario << callNames;
+
+
+
+    message = KMime::Message::Ptr(new KMime::Message);
+
+    messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
+
+    message->setContent(messageContent.toUtf8());
+    message->parse();
+    item.setPayload(message);
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 APPEND \"INBOX/Foo\"  {55}\r\n"+message->encodedContent(true)
+             << "S: A000003 OK append done"
+             << "C: A000004 SELECT \"INBOX/Foo\""
+             << "S: A000004 OK select done"
+             << "C: A000005 UID SEARCH NEW UID 63:*"
+             << "S: * SEARCH 66"
+             << "S: A000005 OK search done";
+
+    callNames.clear();
+    callNames << "itemChangeCommitted";
+
+    QTest::newRow( "no APPENDUID, message didn't contain Message-ID" ) << item << collection << scenario << callNames;
   }
 
   void shouldAppendMessage()

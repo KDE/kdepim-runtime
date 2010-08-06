@@ -69,7 +69,7 @@ int SubResource::completionWeight() const
 
 void SubResource::readTypeSpecificConfig( const KConfigGroup &config )
 {
-  mCompletionWeight = config.readEntry<int>( QLatin1String( "CompletionWeight" ), 80 );
+  mCompletionWeight = config.readEntry( QLatin1String( "CompletionWeight" ), 80 );
 }
 
 void SubResource::writeTypeSpecificConfig( KConfigGroup &config ) const

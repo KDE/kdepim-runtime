@@ -36,6 +36,8 @@ Rectangle {
     id : breadcrumbNavView
     SystemPalette { id: palette; colorGroup: "Active" }
 
+    breadcrumbComponentFactory : _breadcrumbNavigationFactory
+
     anchors.top : parent.top;
     anchors.bottom : parent.bottom;
     anchors.left : parent.left;
@@ -56,7 +58,7 @@ Rectangle {
     breadcrumbDelegate : ListDelegate
     {
       clickable : true
-      selectionModel : _breadcrumbCheckModel
+      checkModel : breadcrumbComponentFactory.qmlBreadcrumbCheckModel()
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = row;
         breadcrumbTopLevel.state = "before_select_breadcrumb";
@@ -66,32 +68,18 @@ Rectangle {
     selectedItemDelegate : ListDelegate
     {
       isSelected : true
-      selectionModel : _selectedItemCheckModel
+      checkModel : breadcrumbComponentFactory.qmlSelectedItemCheckModel()
     }
 
     childItemsDelegate : ListDelegate
     {
       clickable : true
       isChild : true
-      selectionModel : _childCheckModel
+      checkModel : breadcrumbComponentFactory.qmlChildCheckModel()
       onIndexSelected : {
         breadcrumbTopLevel._transitionSelect = row;
         breadcrumbTopLevel.state = "before_select_child";
       }
-    }
-
-    breadcrumbItemsModel : _breadcrumbItemsModel
-    selectedItemModel : _selectedItemModel
-    childItemsModel : _childItemsModel
-
-    onChildCollectionSelected :
-    {
-      application.setSelectedChildCollectionRow( row );
-    }
-
-    onBreadcrumbCollectionSelected :
-    {
-      application.setSelectedBreadcrumbCollectionRow( row );
     }
   }
 
@@ -100,11 +88,11 @@ Rectangle {
     anchors.bottom : breadcrumbNavView.bottom;
     anchors.left : breadcrumbNavView.right;
     width : 100
-    model : _selectedItemsModel
+    model : _breadcrumbNavigationFactory.qmlCheckedItemsModel();
     delegate: ListDelegate
     {
       height : 67
-      selectionModel : _selectedItemsSelectionModel
+      checkModel : _breadcrumbNavigationFactory.qmlCheckedItemsCheckModel();
     }
   }
 }

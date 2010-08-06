@@ -32,7 +32,10 @@ Item {
   property bool selectedDelegate : false
   property bool topItem : false
   property bool showUnread : false
+  property bool showCheckbox : false
   property int indentation : 0
+
+  property variant checkModel
 
   signal indexSelected(int row)
 
@@ -71,21 +74,37 @@ Item {
     Row {
       id: topLayout
       x: 10; y: 10;
-      height: collectionIcon.height;
+      height: 48
       width: parent.width
       spacing: 10
 
-      Image {
-          id: collectionIcon
+      Rectangle {
+        id : checkbox
+        color : model.checkOn ? "blue" : "red"
+        width : height
+        height : 50
+        visible : wrapper.showCheckbox;
+        MouseArea {
+          anchors.fill : parent
+          onClicked :
+          {
+            // 8 is QItemSelectionModel::Toggle
+            checkModel.select(model.index, 8);
+          }
+        }
+      }
+
+      //Image {
+        //  id: collectionIcon
           // http://lists.trolltech.com/pipermail/qt-qml/2010-July/000668.html
   //        pixmap: KDE.iconToPixmap( model.decoration, height );
   //        width: 48; height: 48
-      }
+//       }
 
       Column {
-        height : collectionIcon.height
+        height : parent.height
         Text {
-          width: wrapper.width - collectionIcon.width - 50
+          width: wrapper.width - 48 - 50
           text : model.display
           //### requires a newer QML version
           //wrapMode: "WrapAnywhere" // Needs the anchors.fill to work properly
@@ -104,7 +123,7 @@ Item {
       anchors.right : parent.right
       anchors.rightMargin : 5
       anchors.verticalCenter : parent.verticalCenter
-      opacity : ( showChildIndicator && application.childCollectionHasChildren( model.index ) ) ? 1 : 0
+      opacity : ( showChildIndicator && breadcrumbComponentFactory.childCollectionHasChildren( model.index ) ) ? 1 : 0
       source: "transparentplus.png"
     }
 

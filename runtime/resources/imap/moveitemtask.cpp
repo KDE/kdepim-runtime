@@ -25,14 +25,18 @@
 #include <KDE/KLocale>
 
 #include <kimap/copyjob.h>
+#include <kimap/searchjob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/storejob.h>
 
+#include <kmime/kmime_message.h>
+
 #include "imapflags.h"
+#include "uidnextattribute.h"
 
 MoveItemTask::MoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( DeferIfNoSession, resource, parent )
+  : ResourceTask( DeferIfNoSession, resource, parent ), m_newUid( 0 )
 {
 
 }
@@ -100,6 +104,11 @@ void MoveItemTask::triggerCopyJob( KIMAP::Session *session )
   const qint64 uid = item().remoteId().toLongLong();
   const QString newMailBox = mailBoxForCollection( targetCollection() );
 
+  // save message id, might be needed later to search for the
+  // resulting message uid.
+  KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
+  m_messageId = msg->messageID()->asUnicodeString().toUtf8();
+
   KIMAP::CopyJob *copy = new KIMAP::CopyJob( session );
 
   copy->setUidBased( true );
@@ -119,19 +128,13 @@ void MoveItemTask::onCopyDone( KJob *job )
 
   } else {
     KIMAP::CopyJob *copy = static_cast<KIMAP::CopyJob*>( job );
-    Q_ASSERT( !copy->resultingUids().isEmpty() );
 
     const qint64 oldUid = item().remoteId().toLongLong();
 
-    // Create the item resulting of the operation, since at that point
-    // the first part of the move succeeded
-    m_item = item();
-
-    // Go ahead, UIDPLUS is supposed to be supported and we copied a single message
-    const qint64 newUid = copy->resultingUids().intervals().first().begin();
-
-    // Update the item content with the new UID from the copy
-    m_item.setRemoteId( QString::number( newUid ) );
+    if ( !copy->resultingUids().isEmpty() ) {
+      // Go ahead, UIDPLUS seems to be supported and we copied a single message
+      m_newUid = copy->resultingUids().intervals().first().begin();
+    }
 
     // Mark the old one ready for deletion
     KIMAP::StoreJob *store = new KIMAP::StoreJob( copy->session() );
@@ -156,7 +159,86 @@ void MoveItemTask::onStoreFlagsDone( KJob *job )
                        sourceCollection().name() ) );
   }
 
-  changeCommitted( m_item );
+  if ( m_newUid ) {
+    recordNewUid();
+  } else {
+    // Let's go for a search to find the new UID :-)
+
+    // We did a copy we're very likely not in the right mailbox
+    KIMAP::StoreJob *store = static_cast<KIMAP::StoreJob*>( job );
+    KIMAP::SelectJob *select = new KIMAP::SelectJob( store->session() );
+    select->setMailBox( mailBoxForCollection( targetCollection() ) );
+
+    connect( select, SIGNAL( result( KJob* ) ),
+             this, SLOT( onPreSearchSelectDone( KJob* ) ) );
+
+    select->start();
+  }
+}
+
+void MoveItemTask::onPreSearchSelectDone( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
+  KIMAP::SearchJob *search = new KIMAP::SearchJob( select->session() );
+
+  search->setUidBased( true );
+  search->setSearchLogic( KIMAP::SearchJob::And );
+
+  if ( !m_messageId.isEmpty() ) {
+    QByteArray header = "Message-ID ";
+    header+= m_messageId;
+
+    search->addSearchCriteria( KIMAP::SearchJob::Header, header );
+  } else {
+    search->addSearchCriteria( KIMAP::SearchJob::New );
+
+    UidNextAttribute *uidNext = targetCollection().attribute<UidNextAttribute>();
+    KIMAP::ImapInterval interval( uidNext->uidNext() );
+
+    search->addSearchCriteria( KIMAP::SearchJob::Uid, interval.toImapSequence() );
+  }
+
+  connect( search, SIGNAL( result( KJob* ) ),
+           this, SLOT( onSearchDone( KJob* ) ) );
+
+  search->start();
+}
+
+void MoveItemTask::onSearchDone( KJob *job )
+{
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+    return;
+  }
+
+  KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
+
+  if ( search->results().count()!=1 ) {
+    cancelTask( i18n("Couldn't determine the UID for the newly created message on the server") );
+    return;
+  }
+
+  m_newUid = search->results().first();
+  recordNewUid();
+}
+
+void MoveItemTask::recordNewUid()
+{
+  Q_ASSERT(m_newUid>0);
+
+  // Create the item resulting of the operation, since at that point
+  // the first part of the move succeeded
+  Akonadi::Item i = item();
+
+  // Update the item content with the new UID from the copy
+  i.setRemoteId( QString::number( m_newUid ) );
+
+  changeCommitted( i );
 }
 
 #include "moveitemtask.moc"

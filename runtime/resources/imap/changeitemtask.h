@@ -39,6 +39,7 @@ private slots:
   void onStoreFlagsDone( KJob *job );
 
   void onPreDeleteSelectDone( KJob *job );
+  void onSearchDone( KJob *job );
   void onDeleteDone( KJob *job );
 
 protected:
@@ -46,11 +47,13 @@ protected:
 
 private:
   void triggerStoreJob();
+  void triggerSearchJob();
   void triggerDeleteJob();
 
   void recordNewUid();
 
   KIMAP::Session *m_session;
+  QByteArray m_messageId;
   qint64 m_oldUid;
   qint64 m_newUid;
 };
