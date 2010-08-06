@@ -123,7 +123,7 @@ Item {
       anchors.right : parent.right
       anchors.rightMargin : 5
       anchors.verticalCenter : parent.verticalCenter
-      opacity : ( showChildIndicator && application.childCollectionHasChildren( model.index ) ) ? 1 : 0
+      opacity : ( showChildIndicator && breadcrumbComponentFactory.childCollectionHasChildren( model.index ) ) ? 1 : 0
       source: "transparentplus.png"
     }
 
