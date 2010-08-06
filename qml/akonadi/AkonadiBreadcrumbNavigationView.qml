@@ -26,6 +26,7 @@ import org.kde.akonadi 4.5
 BreadcrumbNavigationView {
   id : breadcrumbView
 
+  property bool showCheckboxes : false
   property bool showUnread : false
 
   topDelegate : CollectionDelegate {
@@ -43,7 +44,9 @@ BreadcrumbNavigationView {
     indentation : 35
     fullClickArea : true
     height : itemHeight
+    checkModel : breadcrumbComponentFactory.qmlBreadcrumbCheckModel()
     showUnread : breadcrumbView.showUnread
+    showCheckbox : breadcrumbView.showCheckboxes
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = row;
       breadcrumbTopLevel.state = "before_select_breadcrumb";
@@ -54,16 +57,19 @@ BreadcrumbNavigationView {
     indentation : 35
     height : itemHeight
     selectedDelegate : true
+    checkModel : breadcrumbComponentFactory.qmlSelectedItemCheckModel()
     showUnread : breadcrumbView.showUnread
+    showCheckbox : breadcrumbView.showCheckboxes
   }
 
   childItemsDelegate : CollectionDelegate {
     indentation : 35
-    id : childDelegateWrapper
     height : itemHeight
     fullClickArea : true
     showChildIndicator : true
+    checkModel : breadcrumbComponentFactory.qmlChildCheckModel()
     showUnread : breadcrumbView.showUnread
+    showCheckbox : breadcrumbView.showCheckboxes
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = row;
       breadcrumbTopLevel.state = "before_select_child";
