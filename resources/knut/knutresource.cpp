@@ -102,7 +102,7 @@ void KnutResource::configure( WId windowId )
 {
   QString newFile;
 
-  QString oldFile = Settings::self()->dataFile();
+  const QString oldFile = Settings::self()->dataFile();
   KUrl url;
   if ( !oldFile.isEmpty() )
     url = KUrl::fromPath( oldFile );
@@ -190,7 +190,8 @@ void KnutResource::collectionChanged( const Akonadi::Collection &collection )
   newElem = XmlWriter::collectionToElement( c, mDocument.document() );
   // move all items/collections over to the new node
   const QDomNodeList children = oldElem.childNodes();
-  for ( int i = 0; i < children.count(); ++i ) {
+  const int numberOfChildren = children.count();
+  for ( int i = 0; i < numberOfChildren; ++i ) {
     const QDomElement child = children.at( i ).toElement();
     kDebug() << "reparenting " << child.tagName() << child.attribute( "rid" );
     if ( child.isNull() )
