@@ -45,7 +45,18 @@ if (Grantlee_FOUND)
 
 endif (Grantlee_FOUND)
 
-add_subdirectory(filestore)
+if(UNIX)
+   macro_optional_find_package(OpenChange)
+   macro_log_feature(LIBMAPI_FOUND "libmapi" "OpenChange MAPI Client Library" "http://www.openchange.org" FALSE "" "Needed to support OpenChange / Exchange servers")
+
+if(LIBMAPI_FOUND)
+  add_subdirectory(openchange)
+endif(LIBMAPI_FOUND)
+
+endif(UNIX)
+
+
+# add_subdirectory(filestore)
 
 #### Clients ####
 

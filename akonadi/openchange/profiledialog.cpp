@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2007 Brad Hards <bradh@frogmouth.net>
+    Copyright (c) 2007, 2010 Brad Hards <bradh@frogmouth.net>
 
     Significant amounts of this code adapted from the openchange client utility,
     which is Copyright (C) Julien Kerihuel 2007 <j.kerihuel@openchange.org>.
@@ -103,7 +103,7 @@ void ProfileDialog::fillProfileList()
 
   memset(&proftable, 0, sizeof (struct SRowSet));
   if ((retval = GetProfileTable(&proftable)) != MAPI_E_SUCCESS) {
-    mapi_errstr("GetProfileTable", GetLastError());
+    mapi_errstr("GetProfileTable", retval);
     exit (1);
   }
 
@@ -117,11 +117,11 @@ void ProfileDialog::fillProfileList()
     dflt = proftable.aRow[count].lpProps[1].value.l;
 
     if (dflt) {
-      QString profileName( QString( name ) + QString( " [default]" ) );
+      QString profileName( QString::fromLocal8Bit( name ) + i18n( " [default]" ) );
       QListWidgetItem *item = new QListWidgetItem( profileName, m_listOfProfiles );
       m_listOfProfiles->setCurrentItem( item );
     } else {
-      new QListWidgetItem( QString( name ), m_listOfProfiles );
+      new QListWidgetItem( QString::fromLocal8Bit( name ), m_listOfProfiles );
     }
 
   }
@@ -144,9 +144,9 @@ QString ProfileDialog::selectedProfileName()
   QListWidgetItem *selectedEntry = m_listOfProfiles->currentItem();
   QString selectedProfileName( selectedEntry->text() );
   // the profile name might have " [default]" on the end - check for that
-  if ( selectedProfileName.endsWith ( " [default]" ) )
+  if ( selectedProfileName.endsWith ( i18n( " [default]" ) ) )
   {
-    int endOfName = selectedProfileName.lastIndexOf( " [default]" );
+    int endOfName = selectedProfileName.lastIndexOf( i18n( " [default]" ) );
     return selectedProfileName.mid( 0, endOfName );
   } else {
     return selectedProfileName;
@@ -158,7 +158,7 @@ void ProfileDialog::deleteSelectedProfile()
   enum MAPISTATUS retval;
   QString profileName = selectedProfileName();
   if ((retval = DeleteProfile(profileName.toUtf8().constData()) ) != MAPI_E_SUCCESS) {
-    mapi_errstr("DeleteProfile", GetLastError());
+    mapi_errstr("DeleteProfile", retval);
     exit (1);
   }
   qDebug() << profileName << "deleted";
@@ -188,17 +188,17 @@ void ProfileDialog::editExistingProfile()
   QString profileName = selectedProfileName();
 
   if ((retval = OpenProfile(&profile, profileName.toUtf8().constData(), 0)) != MAPI_E_SUCCESS) {
-    mapi_errstr("OpenProfile", GetLastError());
+    mapi_errstr("OpenProfile", retval);
     exit (1);
   }
 
   ProfileEditDialog *editDialog = new ProfileEditDialog( this,
-                                                         QString( profile.profname ),
-                                                         QString( profile.username ),
-                                                         QString( profile.password ),
-                                                         QString( profile.server ),
-                                                         QString( profile.workstation ),
-                                                         QString( profile.domain ) );
+                                                         QString::fromLocal8Bit( profile.profname ),
+                                                         QString::fromLocal8Bit( profile.username ),
+                                                         QString::fromLocal8Bit( profile.password ),
+                                                         QString::fromLocal8Bit( profile.server ),
+                                                         QString::fromLocal8Bit( profile.workstation ),
+                                                         QString::fromLocal8Bit( profile.domain ) );
 
   editDialog->exec();
   delete editDialog;
@@ -209,16 +209,18 @@ void ProfileDialog::editExistingProfile()
 
 void ProfileDialog::setAsDefaultProfile()
 {
+  enum MAPISTATUS retval;
+
   qDebug() << "selected profile: " << m_listOfProfiles->currentItem()->text();
 
   QListWidgetItem *selectedEntry = m_listOfProfiles->currentItem();
   QString selectedProfileName( selectedEntry->text() );
 
-  if ( selectedProfileName.endsWith ( " [default]" ) )
+  if ( selectedProfileName.endsWith ( i18n( " [default]" ) ) )
     return; // since this is already the default profile
 
-  if ( SetDefaultProfile(selectedProfileName.toUtf8().constData()) != MAPI_E_SUCCESS) {
-    mapi_errstr("SetDefaultProfile", GetLastError());
+  if ( (retval = SetDefaultProfile(selectedProfileName.toUtf8().constData())) != MAPI_E_SUCCESS) {
+    mapi_errstr("SetDefaultProfile", retval);
   }
   m_listOfProfiles->clear();
   fillProfileList();
@@ -233,8 +235,8 @@ void ProfileDialog::closeEvent(QCloseEvent* closeEvent)
   } else {
     QMessageBox::StandardButton pressed;
     pressed = QMessageBox::question(this,
-                                    "Configure OpenChange Profile", 
-                                    "An OpenChange User profile has not been configured. After creating a profile, you need to set the profile as [Default]. Would you like to go back and configure your profile?",
+                                    i18n( "Configure OpenChange Profile" ),
+                                    i18n( "An OpenChange User profile has not been configured. After creating a profile, you need to set the profile as [Default]. Would you like to go back and configure your profile?" ),
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
     if (pressed == QMessageBox::No)

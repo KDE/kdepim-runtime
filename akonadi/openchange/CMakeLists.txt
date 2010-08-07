@@ -27,7 +27,16 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_oc_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi OpenChange Resource")
 endif (Q_WS_MAC)
 
-target_link_libraries(akonadi_oc_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${LIBMAPI_LIBRARIES} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_KCAL_LIBS})
+target_link_libraries(akonadi_oc_resource ${KDEPIMLIBS_AKONADI_LIBS}
+                                          ${QT_QTDBUS_LIBRARY}
+                                          ${LIBMAPIPP_LIBRARY}
+                                          ${LIBMAPI_LIBRARY}
+                                          ${LIBDCERPC_LIBRARY}
+                                          ${KDE4_KIO_LIBS}
+                                          ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+                                          ${KDEPIMLIBS_KMIME_LIBS}
+                                          ${KDEPIMLIBS_KABC_LIBS}
+                                          ${KDEPIMLIBS_KCAL_LIBS})
 
 install(TARGETS akonadi_oc_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

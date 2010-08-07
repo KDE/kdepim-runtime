@@ -88,7 +88,7 @@ OCResource::OCResource( const QString &id )
   } catch (mapi_exception e) {
     delete m_session;
     qDebug() << "MAPI EXception: " << e.what();
-    emit error(e.what());
+    emit error( QString::fromLocal8Bit( e.what() ) );
   }
 }
 
@@ -101,7 +101,7 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
 {
   Q_UNUSED(parts);
 
-  QStringList ids = item.remoteId().split('-');
+  QStringList ids = item.remoteId().split( QChar::fromAscii('-') );
   mapi_id_t message_id = ids[0].toULongLong();
   mapi_id_t folder_id = ids[1].toULongLong();
 
@@ -110,25 +110,25 @@ bool OCResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>
    messagePointer = new libmapipp::message(*m_session, folder_id, message_id);
   }
   catch (mapi_exception e) {
-    cancelTask(e.what());
+    cancelTask( i18n( e.what() ) );
   }
   
   Item i;
   i.setRemoteId( item.remoteId());
-  if (item.mimeType() == "text/vcard") {
-    i.setMimeType( "text/vcard" );
+  if ( item.mimeType() == QString::fromAscii( "text/vcard" ) ) {
+    i.setMimeType( QString::fromAscii( "text/vcard" ) );
     appendMessageToItem( *messagePointer, i ); 
-  } else if ( item.mimeType() == "message/rfc822") {
-    i.setMimeType( "message/rfc822" );
+  } else if ( item.mimeType() == QString::fromAscii( "message/rfc822") ) {
+    i.setMimeType( QString::fromAscii( "message/rfc822" ) );
     appendMessageToItem( *messagePointer, i );
-  } else if ( item.mimeType() == "text/calendar" ) {
+  } else if ( item.mimeType() == QString::fromAscii( "text/calendar" ) ) {
     property_container messageProperty = messagePointer->get_property_container();
     messageProperty << PR_MESSAGE_CLASS;
     messageProperty.fetch();
     if ( *messageProperty.begin() ) {
-      if ( QString( (const char*) *messageProperty.begin() ) == "IPM.Appointment" ) {
+      if ( QString::fromAscii( (const char*) *messageProperty.begin() ) == QString::fromAscii( "IPM.Appointment" ) ) {
         appendEventToItem( *messagePointer, i );
-      } else if ( QString( (const char*) *messageProperty.begin() ) == "IPM.Task" ) {
+      } else if ( QString::fromAscii( (const char*) *messageProperty.begin() ) == QString::fromAscii( "IPM.Task" ) ) {
         appendTodoToItem( *messagePointer, i );
       } else {
         qDebug() << "retrieveItem() not implemented for Journals yet.";
@@ -177,7 +177,7 @@ void OCResource::itemChanged( const Akonadi::Item&, const QSet<QByteArray>& )
 void OCResource::itemRemoved(const Akonadi::Item & item)
 {
   // Item id is composed of "messageID-folderID"
-  QStringList ids = item.remoteId().split('-');
+  QStringList ids = item.remoteId().split( QChar::fromAscii( '-' ) );
   mapi_id_t message_id = ids[0].toULongLong();
   mapi_id_t folder_id = ids[1].toULongLong();
 
@@ -202,16 +202,16 @@ void OCResource::getChildFolders( folder& mapi_folder,
     Collection thisFolder;
     thisFolder.setParentCollection(parentCollection);
     thisFolder.setRemoteId(QString::number( hierarchy[i]->get_id() ));
-    thisFolder.setName( (const char* ) folderProperty[PR_DISPLAY_NAME] );
+    thisFolder.setName( QString::fromLocal8Bit( (const char* ) folderProperty[PR_DISPLAY_NAME] ) );
     QStringList folderMimeType;
     if (*((uint32_t*) folderProperty[PR_FOLDER_CHILD_COUNT]) > 0) {
       // if t has children, needs this mimetype:
-      folderMimeType << "inode/directory";
+      folderMimeType << QString::fromAscii( "inode/directory" );
       getChildFolders(*hierarchy[i], thisFolder, collections);
     } else {
       if (folderProperty[PR_CONTAINER_CLASS] == NULL) {
         qDebug() << "failed query for container class for " << thisFolder.name() << ", assuming rfc822 mailbox" << endl;
-        folderMimeType << "message/rfc822";
+        folderMimeType << QString::fromAscii( "message/rfc822" );
       } else {
         folderMimeType << mimeTypeForFolderType( (const char*) folderProperty[PR_CONTAINER_CLASS]);
         qDebug() << "Folder " << thisFolder.name() << ", as mimetype " << folderMimeType << endl;
@@ -224,24 +224,24 @@ void OCResource::getChildFolders( folder& mapi_folder,
 
 QString OCResource::mimeTypeForFolderType( const char* folderTypeValue ) const
 {
-  QString folderType( folderTypeValue );
-  if ( folderType == IPF_APPOINTMENT ) {
-    return QString( "text/calendar" );
-  } else if ( folderType == IPF_CONTACT ) {
-    return QString( "text/vcard" );
-  } else if ( folderType == IPF_JOURNAL ) {
-    return QString( "text/calendar" );
-  } else if ( folderType == IPF_NOTE ) {
-    return QString( "message/rfc822" );
-  } else if ( folderType == IPF_STICKYNOTE ) {
+  QString folderType = QString::fromAscii( folderTypeValue );
+  if ( folderType == QString::fromAscii( IPF_APPOINTMENT ) ) {
+    return QString::fromAscii( "text/calendar" );
+  } else if ( folderType == QString::fromAscii( IPF_CONTACT )  ) {
+    return QString::fromAscii( "text/vcard" );
+  } else if ( folderType == QString::fromAscii( IPF_JOURNAL ) ) {
+    return QString::fromAscii( "text/calendar" );
+  } else if ( folderType == QString::fromAscii( IPF_NOTE ) ) {
+    return QString::fromAscii( "message/rfc822" );
+  } else if ( folderType == QString::fromAscii( IPF_STICKYNOTE ) ) {
     // TODO: find a better mime type for this
-    return QString( "message/directory" );
-  } else if ( folderType == IPF_TASK ) {
-    return QString( "text/calendar" );
+    return QString::fromAscii( "message/directory" );
+  } else if ( folderType == QString::fromAscii( IPF_TASK ) ) {
+    return QString::fromAscii( "text/calendar" );
   }
 
   qDebug() << "Unexpected result for container class: " << folderTypeValue;
-  return QString( "message/x-unknown" );
+  return QString::fromAscii( "message/x-unknown" );
 }
 
 void OCResource::login()
@@ -253,7 +253,7 @@ void OCResource::login()
   catch(mapi_exception e)
   {
     qDebug() << "MAPI EXception: " << e.what();
-    emit error(e.what());
+    emit error( QString::fromAscii( e.what() ) );
   }
 }
 
@@ -274,15 +274,16 @@ void OCResource::retrieveCollections()
   catch(std::runtime_error e)
   {
     qDebug() << "MAPI EXception: " << e.what();
-    emit error(e.what());
+    emit error( QString::fromAscii( e.what() ) );
   }
 
   Collection account;
   account.setParentCollection( Collection::root() );
-  account.setRemoteId( m_session->get_profile_name().c_str() );
-  account.setName( QString( (const char*) *(storeProperties.begin()) ) + QString( " (OpenChange)" ) );
+  account.setRemoteId( QString::fromLocal8Bit( m_session->get_profile_name().c_str() ) );
+  account.setName( QString::fromLocal8Bit( (const char*) *(storeProperties.begin()) ) +
+                   i18n( "(OpenChange)" ) );
   QStringList mimeTypes;
-  mimeTypes << "inode/directory";
+  mimeTypes << QString::fromAscii( "inode/directory" );
   account.setContentMimeTypes( mimeTypes );
   collections.append( account );
 
@@ -296,7 +297,7 @@ void OCResource::retrieveCollections()
   catch(std::runtime_error e)
   {
     qDebug() << "MAPI EXception: " << e.what();
-    emit error(e.what());
+    emit error( QString::fromAscii( e.what() ) );
   }
 
   getChildFolders( *top_folder, account, collections );
@@ -352,7 +353,7 @@ QString OCResource::resolveMapiName(const char* username)
 
   talloc_free(mem_ctx);
 
-  return smtpAddress ? QString(smtpAddress) : QString();
+  return smtpAddress ? QString::fromLocal8Bit(smtpAddress) : QString();
 }
 
 #define MSG_MIMETYPE_MULTIPART	"multipart/mixed"
@@ -371,7 +372,7 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
   const char* senderNameStr = (const char*) message_properties[PR_SENDER_NAME];
   QString senderName;
   if (senderNameStr) {
-    senderName = senderNameStr;
+    senderName = QString::fromLocal8Bit( senderNameStr );
     qDebug() << "senderName: " << senderName;
   }
 
@@ -381,7 +382,7 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
     if (!strchr(senderEmailAddressStr, '@')) {
       senderEmailAddress = resolveMapiName(senderEmailAddressStr);
     } else {
-      senderEmailAddress = senderEmailAddressStr;
+      senderEmailAddress = QString::fromLocal8Bit( senderEmailAddressStr );
     }
 
     qDebug() << "senderEmailAddress: " << senderEmailAddress;
@@ -389,7 +390,7 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
 
   KMime::Headers::From *fromAddress = new KMime::Headers::From();
   if (senderNameStr && senderEmailAddressStr) {
-    fromAddress->addAddress( senderEmailAddress.toLatin1(), senderName.toLatin1() );
+    fromAddress->addAddress( senderEmailAddress.toLatin1(), senderName );
     msg_ptr->setHeader( fromAddress );
   } else  if (senderEmailAddressStr) {
     fromAddress->addAddress(senderEmailAddress.toLatin1());
@@ -406,16 +407,16 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
   KMime::Headers::To *toAddress = new KMime::Headers::To();
   if (displayTo && strlen(displayTo) > 0)
   {
-    QStringList toUsernames = QString(displayTo).split(';');
+    QStringList toUsernames = QString::fromLocal8Bit(displayTo).split( QChar::fromAscii( ';') );
     foreach (QString username, toUsernames) {
       username = username.simplified();
-      if ( (username.contains('@')) ) {
+      if ( username.contains( QChar::fromAscii( '@' ) ) ) {
         toAddress->addAddress(username.toLatin1());
         continue;
       } else {
         QString resolvedName = resolveMapiName(username.toAscii().constData());
         if (!resolvedName.isNull()) {
-          toAddress->addAddress(resolvedName.toLatin1(), username.toLatin1());
+          toAddress->addAddress(resolvedName.toLatin1(), username);
         }
       }
     }
@@ -431,16 +432,16 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
   KMime::Headers::Cc *CCAddress = new KMime::Headers::Cc();
   if (displayCC && strlen(displayCC) > 0)
   {
-    QStringList CCUsernames = QString(displayCC).split(';');
+    QStringList CCUsernames = QString::fromLocal8Bit(displayCC).split( QChar::fromAscii( ';') );
     foreach (QString username, CCUsernames) {
       username = username.simplified();
-      if ( (username.contains('@')) ) {
+      if ( username.contains( QChar::fromAscii( '@' ) ) ) {
         CCAddress->addAddress(username.toLatin1());
         continue;
       } else {
         QString resolvedName = resolveMapiName(username.toAscii().constData());
         if (!resolvedName.isNull()) {
-          CCAddress->addAddress(resolvedName.toLatin1(), username.toLatin1());
+          CCAddress->addAddress(resolvedName.toLatin1(), username);
         }
       }
     }
@@ -456,16 +457,16 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
   KMime::Headers::Bcc *bccAddress = new KMime::Headers::Bcc();
   if (displayBCC && strlen(displayBCC) > 0)
   {
-    QStringList bccUsernames = QString(displayBCC).split(';');
+    QStringList bccUsernames = QString::fromLocal8Bit( displayBCC ).split( QChar::fromAscii( ';' ) );
     foreach (QString username, bccUsernames) {
       username = username.simplified();
-      if ( (username.contains('@')) ) {
+      if ( username.contains( QChar::fromAscii( '@' ) ) ) {
         bccAddress->addAddress(username.toLatin1());
         continue;
       } else {
         QString resolvedName = resolveMapiName(username.toAscii().constData());
         if (!resolvedName.isNull()) {
-          bccAddress->addAddress(resolvedName.toLatin1(), username.toLatin1());
+          bccAddress->addAddress(resolvedName.toLatin1(), username);
         }
       }
     }
@@ -489,7 +490,7 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
     qDebug() << "BODY: " << plain;
     plainContent = new Content();
     plainContent->contentType(true)->setMimeType( MSG_MIMETYPE_PLAIN_TEXT );
-    plainContent->fromUnicodeString( plain );
+    plainContent->fromUnicodeString( QString::fromLocal8Bit( plain ) );
   }
   else
     qDebug() << "*** DID NOT GET PLAIN BODY ***";
@@ -551,7 +552,7 @@ void OCResource::appendMessageToItem( libmapipp::message& mapi_message, Akonadi:
       Content* c = new Content();
       c->setBody( final+"\n\n" );
 
-      QString attachFilename = QString( (*Iterator)->get_filename().c_str() );
+      QString attachFilename = QString::fromLocal8Bit( (*Iterator)->get_filename().c_str() );
 
       // Add a content type / find mime-type
       KMimeType::Ptr type = KMimeType::findByNameAndContent( attachFilename, data  );
@@ -646,11 +647,11 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
     }
     case PR_DISPLAY_NAME:
       // PT_STRING8
-      contact->setNameFromString( (const char*) *Iter );
+      contact->setNameFromString( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_OFFICE_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Work ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Work ) );
       break;
     case PR_CALLBACK_TELEPHONE_NUMBER:
       // PT_STRING8
@@ -659,7 +660,7 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
       break;
     case PR_HOME_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Home ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromAscii( (const char*) *Iter ), KABC::PhoneNumber::Home ) );
       break;
     case PR_LOCATION:
       // PT_STRING8
@@ -667,16 +668,16 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
       break;
     case PR_SURNAME:
       // PT_STRING8
-      contact->setFamilyName( (const char*) *Iter );
+      contact->setFamilyName( QString::fromAscii( (const char*) *Iter ) );
       break;
     case PR_GENERATION:
       // PT_STRING8
       // This is a bit of a stretch.
-      contact->setSuffix( (const char*) *Iter );
+      contact->setSuffix( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_GIVEN_NAME:
       // PT_STRING8
-      contact->setGivenName( (const char*) *Iter );
+      contact->setGivenName( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_POSTAL_ADDRESS:
       // PT_STRING8
@@ -684,93 +685,97 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
       break;
     case PR_COMPANY_NAME:
       // PT_STRING8
-      contact->setOrganization( (const char*) *Iter );
+      contact->setOrganization( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_TITLE:
       // PT_STRING8
-      contact->setRole( (const char*) *Iter );
+      contact->setRole( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_OFFICE_LOCATION:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "Office", (const char*) *Iter );
+      contact->insertCustom( QString::fromAscii( "KADDRESSBOOK" ), QString::fromAscii( "Office" ),
+                             QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_PRIMARY_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Pref ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Pref ) );
       break;
     case PR_OFFICE2_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Work ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Work ) );
       break;
     case PR_PAGER_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Pager ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Pager ) );
       break;
     case PR_HOME2_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Home ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Home ) );
       break;
     case PR_DEPARTMENT_NAME:
       // PT_STRING8
       // FIXME: this probably shouldn't be required. kdepimlibs needs to be cleaned up for KDE5.
-      contact->setDepartment( (const char*) *Iter );
-      contact->insertCustom( "KADDRESSBOOK", "Department", (const char*) *Iter );
+      contact->setDepartment( QString::fromLocal8Bit( (const char*) *Iter ) );
+      contact->insertCustom( QString::fromAscii( "KADDRESSBOOK" ), QString::fromAscii( "Department" ),
+                             QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_MOBILE_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Cell ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Cell ) );
       break;
     case PR_BUSINESS_FAX_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Work | KABC::PhoneNumber::Fax ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Work | KABC::PhoneNumber::Fax ) );
       break;
     case PR_COUNTRY:
       // PT_STRING8
-      workAddress.setCountry( (const char*) *Iter );
+      workAddress.setCountry( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_LOCALITY:
       // PT_STRING8
-      workAddress.setLocality( (const char*) *Iter );
+      workAddress.setLocality( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_STREET_ADDRESS :
       // PT_STRING8
-      workAddress.setStreet( (const char*) *Iter );
+      workAddress.setStreet( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_STATE_OR_PROVINCE:
       // PT_STRING8
-      workAddress.setRegion( (const char*) *Iter );
+      workAddress.setRegion( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_POSTAL_CODE:
       // PT_STRING8
-      workAddress.setPostalCode( (const char*) *Iter );
+      workAddress.setPostalCode( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_POST_OFFICE_BOX:
       // PT_STRING8
-      workAddress.setPostOfficeBox( (const char*) *Iter );
+      workAddress.setPostOfficeBox( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_ISDN_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Isdn ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Isdn ) );
       break;
     case PR_CAR_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Car ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Car ) );
       break;
     case PR_OTHER_TELEPHONE_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Voice ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Voice ) );
       break;
     case PR_HOME_FAX_NUMBER:
       // PT_STRING8
-      contact->insertPhoneNumber( KABC::PhoneNumber( (const char*) *Iter, KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home ) );
+      contact->insertPhoneNumber( KABC::PhoneNumber( QString::fromLocal8Bit( (const char*) *Iter ), KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home ) );
       break;
     case PR_ASSISTANT:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "AssistantName", (const char*) *Iter );
+      contact->insertCustom( QString::fromAscii( "KADDRESSBOOK" ), QString::fromAscii( "AssistantName" ),
+                             QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_WEDDING_ANNIVERSARY:
       // PT_SYSTIME
-      contact->insertCustom( "KADDRESSBOOK", "Anniversary", convertSysTime( *((const FILETIME*) *Iter) ).toString("%Y-%m-%d") );
+      contact->insertCustom( QString::fromAscii( "KADDRESSBOOK" ), QString::fromAscii( "Anniversary" ),
+                             convertSysTime( *((const FILETIME*) *Iter) ).toString( QString::fromLocal8Bit("%Y-%m-%d") ) );
       break;
     case PR_BIRTHDAY:
       // PT_SYSTIME
@@ -778,27 +783,30 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
       break;
     case PR_MIDDLE_NAME:
       // PT_STRING8
-      contact->setAdditionalName( (const char*) *Iter );
+      contact->setAdditionalName( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_DISPLAY_NAME_PREFIX:
       // PT_STRING8
-      contact->setPrefix( (const char*) *Iter );
+      contact->setPrefix( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_PROFESSION:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "Profession", (const char*) *Iter );
+      contact->insertCustom( QString::fromAscii( "KADDRESSBOOK" ), QString::fromAscii( "Profession" ),
+                             QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_SPOUSE_NAME:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "SpouseName", (const char*) *Iter );
+      contact->insertCustom( QString::fromAscii( "KADDRESSBOOK" ), QString::fromAscii( "SpouseName" ),
+                             QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_MANAGER_NAME:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "Manager", (const char*) *Iter );
+      contact->insertCustom( QString::fromAscii( "KADDRESSBOOK" ), QString::fromAscii( "Manager" ),
+                             QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_NICKNAME:
       // PT_STRING8
-      contact->setNickName( (const char*) *Iter );
+      contact->setNickName( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_BUSINESS_HOME_PAGE:
       // PT_STRING8
@@ -810,23 +818,23 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
       break;
     case PR_HOME_ADDRESS_CITY:
       // PT_STRING8
-      homeAddress.setLocality( (const char*) *Iter );
+      homeAddress.setLocality( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_HOME_ADDRESS_COUNTRY:
       // PT_STRING8
-      homeAddress.setCountry( (const char*) *Iter );
+      homeAddress.setCountry( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_HOME_ADDRESS_POSTAL_CODE:
       // PT_STRING8
-      homeAddress.setPostalCode( (const char*) *Iter );
+      homeAddress.setPostalCode( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_HOME_ADDRESS_STATE_OR_PROVINCE:
       // PT_STRING8
-      homeAddress.setRegion( (const char*) *Iter );
+      homeAddress.setRegion( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_HOME_ADDRESS_STREET:
       // PT_STRING8
-      homeAddress.setStreet( (const char*) *Iter );
+      homeAddress.setStreet( QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
     case PR_CREATOR_NAME:
       // PT_STRING8
@@ -838,11 +846,12 @@ void OCResource::appendContactToItem( libmapipp::message& mapi_message, Akonadi:
       break;
     case 0x8022001e:
       // PT_STRING8
-      contact->insertCustom( "KADDRESSBOOK", "IMAddress", (const char*) *Iter );
+      contact->insertCustom( QString::fromAscii( "KADDRESSBOOK" ), QString::fromAscii( "IMAddress" ),
+                             QString::fromLocal8Bit( (const char*) *Iter ) );
       break;
 
     case 0x81b0001e:
-      contact->insertEmail((const char*) *Iter);
+      contact->insertEmail( QString::fromLocal8Bit( (const char*) *Iter) );
       break;
 
     default:
@@ -1155,13 +1164,13 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 
   const char* charString = (const char*) messageProperties[PR_CONVERSATION_TOPIC];
   if ( charString && *charString) {
-    event->setSummary( charString );
+    event->setSummary( QString::fromLocal8Bit( charString ) );
     charString = NULL;
   }
 
   charString = (const char*) messageProperties[0x810c001e];
   if ( charString && *charString ) {
-    event->setLocation( charString);
+    event->setLocation( QString::fromLocal8Bit( charString ) );
     charString = NULL;
   }
  	
@@ -1203,7 +1212,7 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 	
   charString = (const char*) messageProperties[PR_BODY];
   if ( charString) {
-    event->setDescription( charString );
+    event->setDescription( QString::fromLocal8Bit( charString ) );
     charString = NULL;
   } else {
     mapi_object_t objStream;
@@ -1224,7 +1233,7 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 
     } while (bytesRead && pos < dataSize);
 		
-    event->setDescription( (const char*) binData );
+    event->setDescription( QString::fromLocal8Bit( (const char*) binData ) );
 
     mapi_object_release(&objStream);
   }
@@ -1242,15 +1251,15 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
     for (unsigned int j = 0; j < rowSet.aRow[i].cValues; ++j) {
       switch ( rowSet.aRow[i].lpProps[j].ulPropTag ) {
         case 0x5ff6001f: // Should be PR_DISPLAY_NAME
-          name = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
+          name = QString::fromLocal8Bit( rowSet.aRow[i].lpProps[j].value.lpszA );
           break;
         case 0x39fe001f: // Should be PR_SMTP_ADDRESS
-	  email = QString( rowSet.aRow[i].lpProps[j].value.lpszA );
+	  email = QString::fromLocal8Bit( rowSet.aRow[i].lpProps[j].value.lpszA );
 	  break;
         case PR_RECIPIENT_TRACKSTATUS:
           trackStatus = &rowSet.aRow[i].lpProps[j].value.l;
           break;
-        case PR_RECIPIENTS_FLAGS:
+        case PR_RECIPIENT_FLAGS:
           flags = &rowSet.aRow[i].lpProps[j].value.l;
           break;
         case PR_RECIPIENT_TYPE:
@@ -1313,7 +1322,7 @@ void OCResource::appendEventToItem( libmapipp::message & mapi_message, Akonadi::
 
     for (message::attachment_container_type::iterator Iterator = attachments.begin(); Iterator != attachments.end(); ++Iterator) {
       QByteArray data( (const char*) (*Iterator)->get_data(), (*Iterator)->get_data_size() );
-      QString attachFilename = (*Iterator)->get_filename().c_str();
+      QString attachFilename = QString::fromLocal8Bit( (*Iterator)->get_filename().c_str() );
       KMimeType::Ptr type = KMimeType::findByNameAndContent( attachFilename, data  );
       QByteArray final = KCodecs::base64Encode( data, true );
 			
@@ -1394,7 +1403,7 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
 
   const char* charString = (const char*) messageProperties[PR_CONVERSATION_TOPIC];
   if ( charString && *charString) {
-    todo->setSummary( charString );
+    todo->setSummary( QString::fromLocal8Bit( charString ) );
     charString = NULL;
   }
 
@@ -1442,10 +1451,10 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
         todo->setCompleted( true );
         break;
       case 0x00000003:
-        todo->setCustomStatus( "Waiting on someone else" );
+        todo->setCustomStatus( i18n( "Waiting on someone else" ) );
         break;
       case 0x00000004:
-        todo->setCustomStatus( "Deferred" );
+        todo->setCustomStatus( i18n( "Deferred" ) );
         break;
     }
 
@@ -1454,7 +1463,7 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
 
   charString = (const char*) messageProperties[PR_BODY];
   if ( charString) {
-    todo->setDescription( charString );
+    todo->setDescription( QString::fromLocal8Bit( charString ) );
     charString = NULL;
   } else {
     mapi_object_t objStream;
@@ -1475,7 +1484,7 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
 
     } while (bytesRead && pos < dataSize);
 
-    todo->setDescription( (const char*) binData );
+    todo->setDescription( QString::fromLocal8Bit( (const char*) binData ) );
 
     mapi_object_release(&objStream);
   }
@@ -1487,7 +1496,7 @@ void OCResource::appendTodoToItem( libmapipp::message & mapi_message, Akonadi::I
 
     for (message::attachment_container_type::iterator Iterator = attachments.begin(); Iterator != attachments.end(); ++Iterator) {
       QByteArray data( (const char*) (*Iterator)->get_data(), (*Iterator)->get_data_size() );
-      QString attachFilename = (*Iterator)->get_filename().c_str();
+      QString attachFilename = QString::fromLocal8Bit( (*Iterator)->get_filename().c_str() );
       KMimeType::Ptr type = KMimeType::findByNameAndContent( attachFilename, data  );
       QByteArray final = KCodecs::base64Encode( data, true );
 
@@ -1537,7 +1546,7 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
     folderProperties.fetch();
 
     if ( folderProperties.size() ) {
-      contentType = (const char*) *folderProperties.begin();
+      contentType = QString::fromAscii( (const char*) *folderProperties.begin() );
     } else {
       cancelTask( i18n( "Error: Did not get folder type for folder id %1", folderPtr->get_id() )  );
       return;
@@ -1552,7 +1561,7 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
       delete messages;
 
     qDebug() << "MAPI EXception: " << e.what();
-    cancelTask(e.what());
+    cancelTask( QString::fromAscii( e.what() ) );
   }
 
   for (unsigned int i = 0; i < messages->size(); ++i) {
@@ -1560,23 +1569,23 @@ void OCResource::retrieveItems( const Akonadi::Collection & collection )
     Item item;
     // NOTE: This is a workaround. Have to ask akonadi developers if they are willing to add
     // a remoteParentID to Items like collections have. For now separate both ids with a  '-' character.
-    item.setRemoteId( QString::number( (*messages)[i]->get_id()) + '-' + QString::number( (*messages)[i]->get_folder_id()) );
+    item.setRemoteId( QString::number( (*messages)[i]->get_id()) + QChar::fromAscii('-') + QString::number( (*messages)[i]->get_folder_id()) );
 
-    if ( contentType == IPF_CONTACT ) {
-      item.setMimeType( "text/vcard" );
+    if ( contentType == QString::fromAscii( IPF_CONTACT ) ) {
+      item.setMimeType( QString::fromAscii( "text/vcard" ) );
       appendContactToItem( *(*messages)[i], item );
     }
-    else if ( collection.contentMimeTypes().contains( "text/calendar" ) ) {
-      item.setMimeType( "text/calendar" );
+    else if ( collection.contentMimeTypes().contains( QString::fromAscii( "text/calendar" ) ) ) {
+      item.setMimeType( QString::fromAscii( "text/calendar" ) );
 
-      if ( contentType == IPF_APPOINTMENT )
+      if ( contentType == QString::fromAscii( IPF_APPOINTMENT ) )
         appendEventToItem( *(*messages)[i], item );
-      else if ( contentType == IPF_TASK )
+      else if ( contentType == QString::fromAscii( IPF_TASK ) )
         appendTodoToItem( *(*messages)[i], item  );
-      else if ( contentType == IPF_JOURNAL )
+      else if ( contentType == QString::fromAscii( IPF_JOURNAL ) )
         appendJournalToItem( *(*messages)[i], item );
     } else {
-      item.setMimeType("message/rfc822");
+      item.setMimeType( QString::fromAscii( "message/rfc822") );
       appendMessageToItem( *(*messages)[i], item );
     }
 
