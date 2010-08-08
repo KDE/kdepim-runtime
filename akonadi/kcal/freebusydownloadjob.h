@@ -43,7 +43,7 @@ class FreeBusyDownloadJob : public KJob
 {
   Q_OBJECT
   public:
-    FreeBusyDownloadJob( const KUrl &url, QWidget *parentWidget = 0 );
+    explicit FreeBusyDownloadJob( const KUrl &url, QWidget *parentWidget = 0 );
     virtual ~FreeBusyDownloadJob();
 
     /// Implement KJob::start()
