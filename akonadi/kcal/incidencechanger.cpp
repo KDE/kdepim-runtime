@@ -212,7 +212,7 @@ void IncidenceChanger::Private::changeIncidenceFinished( KJob* j )
   oldItem.setId( newItem.id() );
 
   if ( job->error() ) {
-    kWarning( 5250 ) << "Item modify failed:" << job->errorString();
+    kWarning() << "Item modify failed:" << job->errorString();
 
     const Incidence::Ptr newInc = Akonadi::incidence( newItem );
     KMessageBox::sorry( change->parent,
