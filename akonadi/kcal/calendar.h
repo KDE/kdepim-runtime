@@ -25,16 +25,8 @@
 #define AKONADI_KCAL_CALENDAR_H
 
 #include "akonadi-kcal_next_export.h"
-#include <kcalcore/customproperties.h>
+
 #include <kcalcore/incidencebase.h>
-
-
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QMultiHash>
-
-#include <kdatetime.h>
 
 #include <kcalcore/customproperties.h>
 #include <kcalcore/event.h>
@@ -43,6 +35,13 @@
 
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
+
+#include <KDateTime>
+
+#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <QtCore/QList>
+#include <QtCore/QMultiHash>
 
 class QAbstractItemModel;
 

@@ -17,8 +17,8 @@
   Boston, MA 02110-1301, USA.
 */
 
-#include "kcalprefs.h"
 #include "calendaradaptor.h"
+#include "kcalprefs.h"
 
 #include <kcalcore/todo.h>
 #include <kcalcore/event.h>
