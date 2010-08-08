@@ -214,7 +214,7 @@ void ChangeItemTask::onSearchDone( KJob *job )
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
 
   if ( search->results().count()!=1 ) {
-    cancelTask( i18n("Couldn't determine the UID for the newly created message on the server") );
+    cancelTask( i18n("Could not determine the UID for the newly created message on the server") );
     return;
   }
 
