@@ -74,13 +74,18 @@ struct InvitationHandler::Private
 
 QString proposalComment( const Incidence::Ptr &incidence )
 {
+  QString comment;
+
+  // TODO: doesn't KCalUtils/IncidenceFormater already provide this?
+  // if not, it should go there.
+
   switch ( incidence->type() ) {
   case IncidenceBase::TypeEvent:
     {
       const KDateTime dtEnd = incidence.dynamicCast<const Event>()->dtEnd();
-      i18n( "Proposed new meeting time: %1 - %2",
-            IncidenceFormatter::dateToString( incidence->dtStart() ),
-            IncidenceFormatter::dateToString( dtEnd ) );
+      comment = i18n( "Proposed new meeting time: %1 - %2",
+                      IncidenceFormatter::dateToString( incidence->dtStart() ),
+                      IncidenceFormatter::dateToString( dtEnd ) );
     }
     break;
   case IncidenceBase::TypeTodo:
@@ -91,6 +96,8 @@ QString proposalComment( const Incidence::Ptr &incidence )
   default:
     kWarning() << "NOT IMPLEMENTED: proposalComment called for " << incidence->typeStr();
   }
+
+  return comment;
 }
 
 InvitationHandler::Private::Private( Akonadi::Calendar *cal )
