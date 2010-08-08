@@ -82,10 +82,14 @@ QString proposalComment( const Incidence::Ptr &incidence )
             IncidenceFormatter::dateToString( incidence->dtStart() ),
             IncidenceFormatter::dateToString( dtEnd ) );
     }
+    break;
   case IncidenceBase::TypeTodo:
     {
-
+      kWarning() << "NOT IMPLEMENTED: proposalComment called for to-do.";
     }
+    break;
+  default:
+    kWarning() << "NOT IMPLEMENTED: proposalComment called for " << incidence->typeStr();
   }
 }
 
