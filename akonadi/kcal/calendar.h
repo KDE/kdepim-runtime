@@ -620,13 +620,13 @@ public:
 
   /**
      Returns if the parent collection's rights allow deleting this item.
-     Isn't merged with hasChangeRights() for convinience.
+     Isn't merged with hasChangeRights() for convenience.
    */
   bool hasDeleteRights( const Akonadi::Item &item ) const;
 
   /**
      Returns if the parent collection's rights allow changing this item.
-     Isn't merged with hasDeleteRights() for convinience.
+     Isn't merged with hasDeleteRights() for convenience.
    */
   bool hasChangeRights( const Akonadi::Item &item ) const;
 

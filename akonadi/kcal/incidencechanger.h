@@ -104,7 +104,7 @@ class AKONADI_KCAL_NEXT_EXPORT IncidenceChanger : public QObject
     // deletion, what do we return here?
     // If we return false, the application will probably show an error.
     // If we return true, the application will assume success.. but there's still the
-    // chance that the running deletion isn't successfull
+    // chance that the running deletion isn't successful
     // So we need a third return value that says "ignore me".
     bool deleteIncidence( const Akonadi::Item &incidence, QWidget *parent = 0 );
 
@@ -135,7 +135,7 @@ class AKONADI_KCAL_NEXT_EXPORT IncidenceChanger : public QObject
     void cancelAttendees( const Akonadi::Item &incidence );
 
   Q_SIGNALS:
-    // Signals emited by the Item*Job, the bool parameter is the success of the operation
+    // Signals emitted by the Item*Job, the bool parameter is the success of the operation
     void incidenceAddFinished( const Akonadi::Item &, bool );
 
     void incidenceChangeFinished( const Akonadi::Item &oldinc,
