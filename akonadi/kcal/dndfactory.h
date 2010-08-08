@@ -42,8 +42,8 @@
 
 #include "calendaradaptor.h"
 
-#include <kcalcore/calendar.h>
-#include <kcalcore/memorycalendar.h>
+#include <KCalUtils/DndFactory>
+#include <KCalCore/MemoryCalendar>
 
 #include <Akonadi/Item>
 
@@ -150,14 +150,14 @@ class AKONADI_KCAL_NEXT_EXPORT DndFactory
     /**
       Paste the event or todo and return a pointer to the new incidence pasted.
     */
-  KCalCore::Incidence::Ptr pasteIncidence( const QDate &, const QTime *newTime = 0 );
+    KCalCore::Incidence::Ptr pasteIncidence( const KDateTime &,
+                                             const KCalUtils::DndFactory::PasteFlags & = KCalUtils::DndFactory::PasteFlags() );
 
   /** pastes and returns the incidences from the clipboard
       If no date and time are given, the incidences will be pasted at
       their original date/time */
-  KCalCore::Incidence::List pasteIncidences( const QDate &newDate = QDate(),
-                                         const QTime *newTime = 0 );
-
+    KCalCore::Incidence::List pasteIncidences( const KDateTime &,
+                                               const KCalUtils::DndFactory::PasteFlags & = KCalUtils::DndFactory::PasteFlags() );
 
   /** cuts a list of incidences to the clipboard */
   bool cutIncidences( const Akonadi::Item::List &item );

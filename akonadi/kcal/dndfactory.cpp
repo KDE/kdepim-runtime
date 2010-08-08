@@ -41,9 +41,8 @@
 
 #include "dndfactory.h"
 
-#include <kcalutils/dndfactory.h>
-#include <kcalutils/vcaldrag.h>
-#include <kcalutils/icaldrag.h>
+#include <KCalUtils/VCalDrag>
+#include <KCalUtils/ICalDrag>
 
 #include <kiconloader.h>
 #include <kdebug.h>
@@ -55,6 +54,7 @@
 #include <QtGui/QDropEvent>
 #include <QtGui/QPixmap>
 
+using namespace KCalUtils;
 using namespace KCalCore;
 using namespace Akonadi;
 
@@ -173,9 +173,10 @@ bool DndFactory::copyIncidence( const Akonadi::Item &item )
   }
 }
 
-Incidence::Ptr DndFactory::pasteIncidence( const QDate &newDate, const QTime *newTime )
+Incidence::Ptr DndFactory::pasteIncidence( const KDateTime &newDateTime,
+                                           const KCalUtils::DndFactory::PasteFlags &pasteFlags )
 {
-  return d->mDndFactory->pasteIncidence( newDate, newTime );
+  return d->mDndFactory->pasteIncidence( newDateTime, pasteFlags );
 }
 
 bool DndFactory::copyIncidences( const Item::List &items )
@@ -205,10 +206,10 @@ bool DndFactory::cutIncidences( const Item::List &items )
   }
 }
 
-KCalCore::Incidence::List DndFactory::pasteIncidences( const QDate &newDate,
-                                                   const QTime *newTime )
+KCalCore::Incidence::List DndFactory::pasteIncidences( const KDateTime &newDateTime,
+                                                       const KCalUtils::DndFactory::PasteFlags &pasteFlags )
 {
-  return d->mDndFactory->pasteIncidences( newDate, newTime );
+  return d->mDndFactory->pasteIncidences( newDateTime, pasteFlags );
 }
 
 } // namespace
