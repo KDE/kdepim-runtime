@@ -36,34 +36,45 @@ QML.Rectangle {
       actionItemWidth : 200
       actionItemSpacing : 2
 
-      FakeAction { name : "quit" }
+      KPIM.FakeAction { name : "quit" }
+
       KPIM.ActionList {
         name : "file"
         KPIM.ActionList {
           name : "new"
-          FakeAction { name : "new event" }
-          FakeAction { name : "new alarm" }
-          FakeAction { name : "new birthday" }
+          KPIM.FakeAction { name : "new event" }
+          KPIM.FakeAction { name : "new alarm" }
+          KPIM.FakeAction { name : "new birthday" }
 
         }
-        FakeAction { name : "import" }
-        FakeAction { name : "export" }
+        KPIM.FakeAction { name : "import" }
+        KPIM.FakeAction { name : "export" }
       }
 
       KPIM.ActionList {
         name : "edit"
-        FakeAction { name : "copy" }
-        FakeAction { name : "move" }
-        FakeAction { name : "cut" }
+        KPIM.FakeAction { name : "copy" }
+        KPIM.FakeAction { name : "move" }
+        KPIM.FakeAction { name : "cut" }
+
+      }
+
+      KPIM.ReorderList {
+        name : "reorder"
+
+        delegate : QML.Component {
+          QML.Text { height : 20; text : model.index }
+        }
+        model : 15
 
       }
 
       KPIM.ActionList {
         name : "view"
-        FakeAction { name : "month_view" }
-        FakeAction { name : "day_view" }
-        FakeAction { name : "week_view" }
-        FakeAction { name : "hour_view" }
+        KPIM.FakeAction { name : "month_view" }
+        KPIM.FakeAction { name : "day_view" }
+        KPIM.FakeAction { name : "week_view" }
+        KPIM.FakeAction { name : "hour_view" }
 
       }
 

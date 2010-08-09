@@ -21,9 +21,6 @@ public:
   MainWindow(QWidget* parent = 0, Qt::WindowFlags f = 0);
 
 public slots:
-  void setSelectedChildCollectionRow( int row );
-  void setSelectedBreadcrumbCollectionRow( int row );
-
   /** Returns wheter or not the child collection at row @param row has children. */
   bool childCollectionHasChildren( int row );
   int selectedCollectionRow();

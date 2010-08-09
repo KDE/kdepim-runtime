@@ -235,7 +235,6 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
     newGroup.deleteEntry( "Annotation-FolderType" );
     newGroup.deleteEntry( "AnnotationFolderTypeChanged" );
-    newGroup.deleteEntry( "AlarmsBlocked" );
     newGroup.deleteEntry( "SystemLabel" );
     newGroup.deleteEntry( "ImapPath" );
 

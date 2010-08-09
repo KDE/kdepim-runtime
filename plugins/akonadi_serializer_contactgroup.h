@@ -22,6 +22,7 @@
 
 #include <QtCore/QObject>
 
+#include <akonadi/differencesalgorithminterface.h>
 #include <akonadi/itemserializerplugin.h>
 
 namespace Akonadi {
@@ -29,16 +30,22 @@ namespace Akonadi {
 /**
  * @since 4.2
  */
-class SerializerPluginContactGroup : public QObject, public ItemSerializerPlugin
+class SerializerPluginContactGroup : public QObject,
+                                     public ItemSerializerPlugin,
+                                     public DifferencesAlgorithmInterface
 {
   Q_OBJECT
   Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+  Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
 
-public:
-  bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
-  void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
+  public:
+    bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
+    void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
+
+    void compare( Akonadi::AbstractDifferencesReporter *reporter,
+                  const Akonadi::Item &leftItem,
+                  const Akonadi::Item &rightItem );
 };
-
 
 }
 

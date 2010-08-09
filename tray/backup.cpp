@@ -83,7 +83,7 @@ void Backup::create( const KUrl& filename )
 
     /* Copy over the KDE config files. */
     AgentManager *manager = AgentManager::self();
-    AgentInstance::List list = manager->instances();
+    const AgentInstance::List list = manager->instances();
     foreach( const AgentInstance &agent, list ) {
         const QString agentFileName = agent.identifier() + "rc";
         const QString configFileName = KStandardDirs::locateLocal( "config", agentFileName );

@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
+    Copyright (c) 2010 Klar√§lvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
@@ -78,6 +78,11 @@ void SessionPool::setSessionUiProxy( KIMAP::SessionUiProxy::Ptr proxy )
   m_sessionUiProxy = proxy;
 }
 
+bool SessionPool::isConnected() const
+{
+  return m_initialConnectDone;
+}
+
 bool SessionPool::connect( ImapAccount *account )
 {
   if ( m_account ) {
@@ -115,6 +120,7 @@ void SessionPool::disconnect()
   m_capabilities.clear();
 
   m_initialConnectDone = false;
+  emit disconnectDone();
 }
 
 qint64 SessionPool::requestSession()
@@ -342,15 +348,6 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   QStringList expected;
   expected << "IMAP4REV1";
 
-  // Both GMail and GMX servers seem to be lying about their capabilities
-  // They don't report UIDPLUS correctly so don't check for it explicitly
-  // if it's one of those servers.
-  if ( !m_capabilities.contains( "X-GM-EXT-1" )
-    && !capJob->session()->serverGreeting().contains( "GMX" ) 
-    && !capJob->session()->serverGreeting().contains( "migmx" ) ) {
-    expected << "UIDPLUS";
-  }
-
   QStringList missing;
 
   foreach ( const QString &capability, expected ) {
@@ -409,6 +406,15 @@ void SessionPool::onConnectionLost()
 
   m_idlePool.removeAll( session );
   m_reservedPool.removeAll( session );
+
+  if ( m_idlePool.isEmpty() && m_reservedPool.isEmpty() ) {
+    delete m_account;
+    m_account = 0;
+    m_namespaces.clear();
+    m_capabilities.clear();
+
+    m_initialConnectDone = false;
+  }
 
   emit connectionLost( session );
 

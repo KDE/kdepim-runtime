@@ -3,7 +3,7 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
-    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
+    Copyright (c) 2010 Klar√§lvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
@@ -26,19 +26,7 @@
 #ifndef __IMAP_RESOURCE_H__
 #define __IMAP_RESOURCE_H__
 
-class KJob;
-
 #include <akonadi/resourcebase.h>
-#include <boost/shared_ptr.hpp>
-#include <QtCore/QStringList>
-
-#include <kimap/fetchjob.h>
-#include <kimap/listjob.h>
-
-namespace KMime
-{
-  class Message;
-}
 
 namespace KIMAP
 {
@@ -48,6 +36,7 @@ namespace KIMAP
 class ImapAccount;
 class ImapIdleManager;
 class SessionPool;
+class ResourceState;
 
 class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
@@ -59,17 +48,21 @@ class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
 public:
   ImapResource( const QString &id );
   ~ImapResource();
-  void renameRootCollection( const QString &newName );
+
 
   int configureDialog( WId windowId );
 
 public Q_SLOTS:
   virtual void configure( WId windowId );
-  // DBus methods
-  void requestManualExpunge( qint64 collectionId );
-  void startIdle();
+
+  // DBus method
+  Q_SCRIPTABLE void requestManualExpunge( qint64 collectionId );
 
 protected Q_SLOTS:
+  void startIdleIfNeeded();
+  void startIdle();
+
+
   void retrieveCollections();
   void retrieveItems( const Akonadi::Collection &col );
   bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
@@ -81,89 +74,43 @@ protected:
   virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
                           const Akonadi::Collection &destination );
 
+
   virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
   virtual void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &parts );
   virtual void collectionRemoved( const Akonadi::Collection &collection );
   virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                 const Akonadi::Collection &destination );
 
+
   virtual void doSetOnline(bool online);
 
+
 private Q_SLOTS:
-  void onConnectDone( int errorCode, const QString &errorMessage );
-  void onMainSessionRequested( qint64 requestId, KIMAP::Session *session, int errorCode, const QString &errorMessage );
-  void onConnectionLost( KIMAP::Session *session );
-
-  void scheduleConnectionAttempt();
-
-  void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                            const QList< QList<QByteArray> > &flags );
-  void onMailBoxesReceiveDone( KJob *job );
-  void onGetAclDone( KJob *job );
-  void onRightsReceived( KJob *job );
-  void onQuotasReceived( KJob *job );
-  void onGetMetaDataDone( KJob *job );
-  void onSelectDone( KJob *job );
-  void onCollectionStatisticsReceived( KJob *job );
-  void onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
-                          const QMap<qint64, qint64> &sizes, const QMap<qint64, KIMAP::MessageFlags> &flags,
-                          const QMap<qint64, KIMAP::MessagePtr> &messages );
-  void onHeadersFetchDone( KJob *job );
-  void onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
-                        const QMap<qint64, qint64> &sizes, const QMap<qint64, KIMAP::MessageFlags> &flags,
-                        const QMap<qint64, KIMAP::MessagePtr> &messages );
-  void onFlagsFetchDone( KJob *job );
-  void onMessagesReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
-                           const QMap<qint64, KIMAP::MessagePtr> &messages );
-  void onContentFetchDone( KJob *job );
-  void onCreateMailBoxDone( KJob *job );
-  void onRenameMailBoxDone( KJob *job );
-  void onSetAclDone( KJob *job );
-  void onSetMetaDataDone( KJob *job );
-  void onDeleteMailBoxDone( KJob *job );
-  void onMailBoxMoveDone( KJob *job );
-  void onSubscribeDone( KJob *job );
-  void onAppendMessageDone( KJob *job );
-  void onStoreFlagsDone( KJob *job );
-  void onPreItemMoveSelectDone( KJob *job );
-  void onCopyMessageDone( KJob *job );
-  void onPostItemMoveStoreFlagsDone( KJob *job );
-  void onIdleCollectionFetchDone( KJob *job );
-
-  void startConnect( QVariant v ); // the parameter is necessary, since this method is used by the task scheduler
   void reconnect();
 
-  void expungeRequested( const QVariant &collectionArgument );
+  void scheduleConnectionAttempt();
+  void startConnect( const QVariant & ); // the parameter is necessary, since this method is used by the task scheduler
+  void onConnectDone( int errorCode, const QString &errorMessage );
+  void onConnectionLost( KIMAP::Session *session );
+
+
+  void onIdleCollectionFetchDone( KJob *job );
+
+
   void onExpungeCollectionFetchDone( KJob *job );
-  void onRootCollectionFetched( KJob *job );
+  void triggerCollectionExpunge( const QVariant &collectionVariant );
+
+
   void triggerCollectionExtraInfoJobs( const QVariant &collection );
 
 private:
-  void onSelectDone( const QString&, int, qint64, int, qint64, qint64, bool );
-  void triggerNextCollectionChangeJob( const Akonadi::Collection &collection,
-                                       const QStringList &remainingParts );
+  friend class ResourceState;
 
-  void triggerExpunge( const QString &mailBox );
-  void listFlagsForImapSet( const KIMAP::ImapSet& set );
-  void selectIfNeeded( const QString &mailBox );
-
-  QString rootRemoteId() const;
-  QString mailBoxForCollection( const Akonadi::Collection &col ) const;
   bool needsNetwork() const;
-  bool isSessionAvailable() const;
-  bool ensureSessionAvailableOrDefer();
-
-  static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
-  static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
 
   friend class ImapIdleManager;
 
   SessionPool *m_pool;
-  qint64 m_mainSessionRequestId;
-  KIMAP::Session *m_mainSession;
-
-  int m_finishedMetaDataJobs;
-
   ImapIdleManager *m_idle;
 };
 

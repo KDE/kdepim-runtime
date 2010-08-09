@@ -25,7 +25,9 @@
 #include "resource.h"
 #include "ispdb/ispdb.h"
 
+#include <kpimutils/emailvalidator.h>
 #include <kpimutils/email.h>
+
 #include <kemailsettings.h>
 
 #include <mailtransport/transport.h>
@@ -33,29 +35,6 @@
 #include <KDebug>
 
 #include <QScrollArea>
-#include <QValidator>
-
-class EmailValidator : public QValidator {
-  public:
-    EmailValidator( QObject* parent ) : QValidator( parent ) {}
-    virtual State validate( QString& str, int& pos ) const
-    {
-      Q_UNUSED( pos );
-      if ( KPIMUtils::isValidSimpleAddress( str ) )
-        return QValidator::Acceptable;
-
-      // we'll say any string that doesn't have whitespace
-      // is an intermediate email string
-      if( QRegExp("\\s").indexIn(str) > -1 )
-        return QValidator::Invalid;
-      return QValidator::Intermediate;
-    }
-
-    virtual void fixup( QString& str ) const
-    {
-      str = str.trimmed();
-    }
-};
 
 PersonalDataPage::PersonalDataPage(Dialog* parent) :
   Page( parent ), mSetupManager( parent->setupManager() )
@@ -79,7 +58,7 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
 
   ui.setupUi( pageParent );
 
-  EmailValidator* emailValidator = new EmailValidator( this );
+  KPIMUtils::EmailValidator* emailValidator = new KPIMUtils::EmailValidator( this );
   ui.emailEdit->setValidator( emailValidator );
 
   KEMailSettings e;

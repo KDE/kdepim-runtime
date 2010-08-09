@@ -28,6 +28,8 @@ Rectangle {
   property bool isSelected : false
   property bool topItem : false
 
+  property variant checkModel
+
   signal indexSelected(int row)
 
   color : "#00000000"
@@ -76,6 +78,21 @@ Rectangle {
           } else if (!isSelected)
             nestedItem.state = "before_select_breadcrumb";
           indexSelected(model.index);
+        }
+      }
+      Rectangle {
+        width : height
+        height : 10
+        anchors.left : parent.left
+        anchors.leftMargin : 5
+        anchors.verticalCenter : parent.verticalCenter
+        color: model.checkOn ? "blue" : "white"
+        MouseArea {
+        anchors.fill : parent
+          onClicked : {
+            // 8 is QItemSelectionModel::Toggle
+            checkModel.select(model.index, 8);
+          }
         }
       }
     }

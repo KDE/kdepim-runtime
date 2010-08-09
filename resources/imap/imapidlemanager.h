@@ -3,7 +3,7 @@
     Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
     Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
 
-    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
+    Copyright (c) 2010 Klar√§lvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
@@ -29,6 +29,8 @@
 #include <akonadi/collection.h>
 #include <QtCore/QObject>
 
+#include "resourcestateinterface.h"
+
 namespace KIMAP
 {
   class IdleJob;
@@ -45,13 +47,15 @@ class ImapIdleManager : public QObject
   Q_OBJECT
 
 public:
-  ImapIdleManager( Akonadi::Collection &col, const QString &mailBox,
-                   SessionPool *pool, ImapResource *parent );
+  ImapIdleManager( ResourceStateInterface::Ptr state, SessionPool *pool, ImapResource *parent );
   ~ImapIdleManager();
 
   KIMAP::Session *session() const;
 
 private slots:
+  void onConnectionLost( KIMAP::Session *session );
+  void onPoolDisconnect();
+
   void onSessionRequestDone( qint64 requestId, KIMAP::Session *session,
                              int errorCode, const QString &errorString );
   void onSelectDone( KJob *job );
@@ -61,11 +65,11 @@ private slots:
 
 private:
   qint64 m_sessionRequestId;
+  SessionPool *m_pool;
   KIMAP::Session *m_session;
   KIMAP::IdleJob *m_idle;
   ImapResource *m_resource;
-  QString m_mailBox;
-  Akonadi::Collection m_collection;
+  ResourceStateInterface::Ptr m_state;
   qint64 m_lastMessageCount;
   qint64 m_lastRecentCount;
 };

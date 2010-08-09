@@ -25,9 +25,7 @@ Item {
   id: breadcrumbTopLevel
   clip : true
 
-  property alias breadcrumbItemsModel : breadcrumbsView.model
-  property alias selectedItemModel : selectedItemView.model
-  property alias childItemsModel : childItemsView.model
+  property variant breadcrumbComponentFactory
 
   property alias topDelegate :  topButton.delegate
   property alias breadcrumbDelegate :  breadcrumbsView.delegate
@@ -42,7 +40,12 @@ Item {
   property bool hasSelection :  selectedItemView.count > 0
   property bool hasBreadcrumbs :  breadcrumbsView.count > 0
 
+  property alias numBreadcrumbs : breadcrumbsView.count
   property alias numSelected : selectedItemView.count
+
+  property variant breadcrumbSelectionModel : breadcrumbComponentFactory.qmlBreadcrumbSelectionModel();
+  property variant selectedItemSelectionModel : breadcrumbComponentFactory.qmlSelectionModel();
+  property variant childSelectionModel : breadcrumbComponentFactory.qmlChildSelectionModel();
 
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
@@ -78,6 +81,7 @@ Item {
 
   ListView {
     id : breadcrumbsView
+    model : breadcrumbComponentFactory.qmlBreadcrumbsModel();
     interactive : false
     height : breadcrumbsView.count > 0 ? itemHeight : 0
 
@@ -119,6 +123,7 @@ Item {
     id : selectedItemView
     interactive : false
 
+    model : breadcrumbComponentFactory.qmlSelectedItemModel();
     height : itemHeight * selectedItemView.count
     anchors.top : breadcrumbsView.bottom
     anchors.left : parent.left
@@ -176,6 +181,7 @@ Item {
 
   ListView {
     id : childItemsView
+    model : breadcrumbComponentFactory.qmlChildItemsModel();
     property bool shouldBeFlickable
 
     clip : true
@@ -267,6 +273,8 @@ Item {
   }
 
   function completeHomeSelection() {
+    selectedItemSelectionModel.clearSelection();
+    // TODO: Remove:
     breadcrumbCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
     breadcrumbTopLevel.state = "after_select_breadcrumb";
@@ -274,6 +282,8 @@ Item {
   }
 
   function completeChildSelection() {
+    childSelectionModel.select(breadcrumbTopLevel._transitionSelect, 3)
+    // TODO: Remove:
     childCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
     breadcrumbTopLevel.state = "after_select_child";
@@ -281,6 +291,8 @@ Item {
   }
 
   function completeBreadcrumbSelection() {
+    breadcrumbSelectionModel.select(breadcrumbTopLevel._transitionSelect, 3)
+    // TODO: Remove:
     breadcrumbCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
     breadcrumbTopLevel.state = "after_select_breadcrumb";

@@ -201,6 +201,7 @@ void ImapCacheLocalImporter::Private::configureResource()
 
   if (!iface->isValid() ) {
     q->importFinished( mResource, i18n("Failed to obtain D-Bus interface for remote configuration.") );
+    delete iface;
     return;
   }
 

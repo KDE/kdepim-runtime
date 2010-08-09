@@ -76,6 +76,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
     return;
   }
   iface->setPath( kresCfg.readPathEntry( "FileName", KStandardDirs::locateLocal( "data", "kabc/std.vcf" ) ) );

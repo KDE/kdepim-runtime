@@ -155,3 +155,39 @@ target_link_libraries(
   itemfetchtest
   ${common_link_libraries}
 )
+
+# test for item modification handling
+kde4_add_unit_test( itemmodifytest
+ ../mixedmaildirstore.cpp
+ itemmodifytest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  itemmodifytest
+  ${common_link_libraries}
+)
+
+# test for item move handling
+kde4_add_unit_test( itemmovetest
+ ../mixedmaildirstore.cpp
+ itemmovetest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  itemmovetest
+  ${common_link_libraries}
+)
+
+# test for store compact handling
+kde4_add_unit_test( storecompacttest
+ ../mixedmaildirstore.cpp
+ storecompacttest.cpp
+ ${testdata_SRCS}
+)
+
+target_link_libraries(
+  storecompacttest
+  ${common_link_libraries}
+)

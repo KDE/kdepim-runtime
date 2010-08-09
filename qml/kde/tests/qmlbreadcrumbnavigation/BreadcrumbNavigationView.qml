@@ -25,9 +25,7 @@ Item {
   id: breadcrumbTopLevel
   clip : true
 
-  property alias breadcrumbItemsModel : breadcrumbsView.model
-  property alias selectedItemModel : selectedItemView.model
-  property alias childItemsModel : childItemsView.model
+  property variant breadcrumbComponentFactory
 
   property alias topDelegate :  topButton.delegate
   property alias breadcrumbDelegate :  breadcrumbsView.delegate
@@ -42,14 +40,17 @@ Item {
   property bool hasSelection :  selectedItemView.count > 0
   property bool hasBreadcrumbs :  breadcrumbsView.count > 0
 
+  property alias numBreadcrumbs : breadcrumbsView.count
   property alias numSelected : selectedItemView.count
+
+  property variant breadcrumbSelectionModel : breadcrumbComponentFactory.qmlBreadcrumbSelectionModel();
+  property variant selectedItemSelectionModel : breadcrumbComponentFactory.qmlSelectionModel();
+  property variant childSelectionModel : breadcrumbComponentFactory.qmlChildSelectionModel();
 
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
 
   SystemPalette { id: palette; colorGroup: "Active" }
-  // This top button is a view for historical reasons only.
-  // Too lazy to change it.
   ListModel {
     id : topModel
     ListElement { display : "Home" }
@@ -80,7 +81,8 @@ Item {
 
   ListView {
     id : breadcrumbsView
-    //interactive : false
+    model : breadcrumbComponentFactory.qmlBreadcrumbsModel();
+    interactive : false
     height : breadcrumbsView.count > 0 ? itemHeight : 0
 
     clip : true;
@@ -92,6 +94,12 @@ Item {
     highlightRangeMode : ListView.StrictlyEnforceRange
     preferredHighlightBegin : 0
     preferredHighlightEnd : height
+    onCountChanged : {
+      positionViewAtIndex(count - 1, ListView.Beginning)
+    }
+    Component.onCompleted : {
+      positionViewAtIndex(count - 1, ListView.Beginning)
+    }
   }
 
   Item {
@@ -115,6 +123,7 @@ Item {
     id : selectedItemView
     interactive : false
 
+    model : breadcrumbComponentFactory.qmlSelectedItemModel();
     height : itemHeight * selectedItemView.count
     anchors.top : breadcrumbsView.bottom
     anchors.left : parent.left
@@ -167,24 +176,22 @@ Item {
         anchors.top : parent.top
         anchors.topMargin : -8
       }
-
-      Image {
-        source : "dividing-line-horizontal.png"
-        fillMode : Image.TileHorizontally
-        anchors.right : parent.right
-        anchors.left : parent.left
-        anchors.bottom : parent.bottom
-      }
     }
   }
 
   ListView {
     id : childItemsView
+    model : breadcrumbComponentFactory.qmlChildItemsModel();
+    property bool shouldBeFlickable
+
     clip : true
     anchors.top : selectedItemPlaceHolder.bottom
     anchors.bottom : breadcrumbTopLevel.bottom
     anchors.left : parent.left
     anchors.right : parent.right
+
+    shouldBeFlickable : childItemsView.height < (itemHeight * childItemsView.count)
+    interactive : shouldBeFlickable
   }
 
   Item {
@@ -193,6 +200,15 @@ Item {
     anchors.bottom : breadcrumbTopLevel.bottom
     anchors.left : parent.left
     anchors.right : parent.right
+
+
+    Image {
+      source : "dividing-line-horizontal.png"
+      fillMode : Image.TileHorizontally
+      anchors.right : parent.right
+      anchors.left : parent.left
+      anchors.top : parent.top
+    }
 
     Image {
       source : "dividing-line.png"
@@ -207,6 +223,7 @@ Item {
       anchors.right : parent.right
       anchors.left : parent.left
       fillMode : Image.TileHorizontally
+      opacity : childItemsView.shouldBeFlickable ? 1 : 0
     }
     Image {
       source : "scrollable-bottom.png"
@@ -214,6 +231,7 @@ Item {
       anchors.right : parent.right
       anchors.left : parent.left
       fillMode : Image.TileHorizontally
+      opacity : childItemsView.shouldBeFlickable ? 1 : 0
     }
   }
 
@@ -255,6 +273,8 @@ Item {
   }
 
   function completeHomeSelection() {
+    selectedItemSelectionModel.clearSelection();
+    // TODO: Remove:
     breadcrumbCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
     breadcrumbTopLevel.state = "after_select_breadcrumb";
@@ -262,6 +282,8 @@ Item {
   }
 
   function completeChildSelection() {
+    childSelectionModel.select(breadcrumbTopLevel._transitionSelect, 3)
+    // TODO: Remove:
     childCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
     breadcrumbTopLevel.state = "after_select_child";
@@ -269,6 +291,8 @@ Item {
   }
 
   function completeBreadcrumbSelection() {
+    breadcrumbSelectionModel.select(breadcrumbTopLevel._transitionSelect, 3)
+    // TODO: Remove:
     breadcrumbCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
     breadcrumbTopLevel.state = "after_select_breadcrumb";
@@ -319,8 +343,8 @@ Item {
       PropertyChanges {
         target : breadcrumbRightDivider
         anchors.topMargin : -8
-        height : 67
-        opacity : 0
+        height : {console.log(itemHeight); 67}
+        opacity : 0 // { 1 } // selectedItemView.count > 0 ? 1 : 0
       }
       PropertyChanges {
         target : selectedItemPlaceHolder
@@ -481,6 +505,9 @@ Item {
       NumberAnimation {
         target: selectedItemView
         properties: "opacity"
+      }
+      ScriptAction {
+        script : {console.log("### " + selectedItemView.count + " " + selectedItemView.currentIndex); }
       }
     },
     Transition {

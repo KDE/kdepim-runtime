@@ -122,7 +122,8 @@ void KABCResource::configure( WId windowId )
     emit status( Running,
                  i18nc( "@info:status", "Changing address book plugin configuration" ) );
     KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
-    KWindowSystem::setMainWindow( &dlg, windowId );
+    if( windowId )
+      KWindowSystem::setMainWindow( &dlg, windowId );
     if ( dlg.exec() ) {
       setName( mBaseResource->resourceName() );
       manager->writeConfig( KGlobal::config().data() );
@@ -848,9 +849,9 @@ KABC::ContactGroup KABCResource::contactGroupFromDistList( const KABC::Distribut
   KABC::ContactGroup contactGroup( list->name() );
   contactGroup.setId( list->identifier() );
 
-  KABC::DistributionList::Entry::List entries = list->entries();
+  const KABC::DistributionList::Entry::List entries = list->entries();
   foreach ( const KABC::DistributionList::Entry &entry, entries ) {
-    KABC::Addressee addressee = entry.addressee();
+    const KABC::Addressee addressee = entry.addressee();
     const QString email = entry.email();
     if ( addressee.isEmpty() ) {
       if ( email.isEmpty() )
@@ -859,7 +860,7 @@ KABC::ContactGroup KABCResource::contactGroupFromDistList( const KABC::Distribut
       KABC::ContactGroup::Data data( email, email );
       contactGroup.append( data );
     } else {
-      KABC::Addressee baseAddressee = mBaseResource->findByUid( addressee.uid() );
+      const KABC::Addressee baseAddressee = mBaseResource->findByUid( addressee.uid() );
       if ( baseAddressee.isEmpty() ) {
         KABC::ContactGroup::Data data( email, email );
         // TODO: transer custom fields?

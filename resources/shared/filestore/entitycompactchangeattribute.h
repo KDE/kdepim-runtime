@@ -42,6 +42,10 @@ class AKONADI_FILESTORE_EXPORT EntityCompactChangeAttribute : public Attribute
 
     QString remoteId() const;
 
+    void setRemoteRevision( const QString &remoteRev );
+
+    QString remoteRevision() const;
+
   public: /* reimpl */
     QByteArray type() const;
 

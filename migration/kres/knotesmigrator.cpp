@@ -86,6 +86,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
 
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), m_agentInstance );
+    delete iface;
     return;
   }
   iface->setReadOnly( res->readOnly() );

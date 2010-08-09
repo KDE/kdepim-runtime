@@ -36,6 +36,10 @@
 #include <qcolumnview.h>
 #include <QFile>
 #include "kresettingproxymodel.h"
+#include "qmllistselectionmodel.h"
+#include "kselectionproxymodel.h"
+#include <klinkitemselectionmodel.h>
+#include "checkableitemproxymodel.h"
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
   : QWidget(parent, f)
@@ -135,31 +139,12 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
 
   m_bnf = new KBreadcrumbNavigationFactory(this);
   m_bnf->setBreadcrumbDepth(1);
-  m_bnf->createBreadcrumbContext( m_treeModel, this );
+  m_bnf->createCheckableBreadcrumbContext( m_treeModel, this );
 
-  widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
+  context->setContextProperty( "_breadcrumbNavigationFactory", m_bnf );
 
-#if 0
-  QTreeView *view1 = new QTreeView;
-  view1->setModel( m_bnf->selectedItemModel() );
-  view1->show();
-  view1->setWindowTitle( "Selected item model");
-  QTreeView *view2 = new QTreeView;
-  view2->setModel( m_bnf->breadcrumbItemModel() );
-  view2->show();
-  view2->setWindowTitle( "Breadcrumb model");
-  QTreeView *view3 = new QTreeView;
-  view3->setModel( m_bnf->childItemModel() );
-  view3->show();
-  view3->setWindowTitle( "Child items model");
-#endif
+//   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
 
-  KResettingProxyModel *resettingProxy = new KResettingProxyModel(this);
-  resettingProxy->setSourceModel(m_bnf->breadcrumbItemModel());
-
-  context->setContextProperty( "_selectedItemModel", QVariant::fromValue( static_cast<QObject*>( m_bnf->selectedItemModel() ) ) );
-  context->setContextProperty( "_breadcrumbItemsModel", QVariant::fromValue( static_cast<QObject*>( resettingProxy ) ) );
-  context->setContextProperty( "_childItemsModel", QVariant::fromValue( static_cast<QObject*>( m_bnf->childItemModel() ) ) );
   context->setContextProperty( "application", QVariant::fromValue( static_cast<QObject*>( this ) ) );
 
   m_declarativeView->setResizeMode( QDeclarativeView::SizeRootObjectToView );
@@ -172,16 +157,6 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
 bool MainWindow::childCollectionHasChildren( int row )
 {
   return m_bnf->childCollectionHasChildren(row);
-}
-
-void MainWindow::setSelectedChildCollectionRow( int row )
-{
-  m_bnf->selectChild( row );
-}
-
-void MainWindow::setSelectedBreadcrumbCollectionRow( int row )
-{
-  m_bnf->selectBreadcrumb( row );
 }
 
 int MainWindow::selectedCollectionRow()

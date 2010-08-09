@@ -345,7 +345,8 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
   }
   else {
 
-    const QString newFolderPath = md.addSubFolder( collection.name() );
+    const QString collectionName( collection.name().replace( QDir::separator(), QString() ) );
+    const QString newFolderPath = md.addSubFolder( collectionName );
     if ( newFolderPath.isEmpty() ) {
       changeProcessed();
       return;
@@ -354,7 +355,8 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
     kDebug( 5254 ) << md.subFolderList() << md.entryList();
 
     Collection col = collection;
-    col.setRemoteId( collection.name() );
+    col.setRemoteId( collectionName );
+    col.setName( collectionName );
     changeCommitted( col );
   }
 
@@ -388,13 +390,15 @@ void MaildirResource::collectionChanged(const Collection & collection)
     md.create();
   }
 
-  if ( !md.rename( collection.name() ) ) {
+  const QString collectionName( collection.name().replace( QDir::separator(), QString() ) );
+  if ( !md.rename( collectionName ) ) {
     emit error( i18n("Unable to rename maildir folder '%1'.", collection.name() ) );
     changeProcessed();
     return;
   }
   Collection c( collection );
-  c.setRemoteId( collection.name() );
+  c.setRemoteId( collectionName );
+  c.setName( collectionName );
   changeCommitted( c );
 }
 

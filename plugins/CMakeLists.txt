@@ -22,6 +22,11 @@ kde4_add_plugin(akonadi_serializer_kcal ${akonadi_serializer_kcal_SRCS})
 target_link_libraries(akonadi_serializer_kcal ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
 install(TARGETS akonadi_serializer_kcal DESTINATION ${PLUGIN_INSTALL_DIR})
 
+set(akonadi_serializer_kcalcore_SRCS akonadi_serializer_kcalcore.cpp)
+kde4_add_plugin(akonadi_serializer_kcalcore ${akonadi_serializer_kcalcore_SRCS})
+target_link_libraries(akonadi_serializer_kcalcore ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCALUTILS_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
+install(TARGETS akonadi_serializer_kcalcore DESTINATION ${PLUGIN_INSTALL_DIR})
+
 set(akonadi_serializer_bookmark_SRCS akonadi_serializer_bookmark.cpp)
 kde4_add_plugin(akonadi_serializer_bookmark ${akonadi_serializer_bookmark_SRCS})
 target_link_libraries(akonadi_serializer_bookmark ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
@@ -29,7 +34,8 @@ install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 kde4_add_plugin(akonadi_serializer_contactgroup ${akonadi_serializer_contactgroup_PART_SRCS})
-target_link_libraries(akonadi_serializer_contactgroup ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KABC_LIBS})
+target_link_libraries(akonadi_serializer_contactgroup ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS}
+                                                      ${KDEPIMLIBS_AKONADI_KABC_LIBS} ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
@@ -43,6 +49,7 @@ install( FILES
   akonadi_serializer_addressee.desktop
   akonadi_serializer_mail.desktop
   akonadi_serializer_kcal.desktop
+  akonadi_serializer_kcalcore.desktop
   akonadi_serializer_bookmark.desktop
   akonadi_serializer_contactgroup.desktop
   akonadi_serializer_microblog.desktop
