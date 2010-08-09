@@ -97,53 +97,52 @@ public:
     QStringList subFolderList() const;
 
     /**
-     * Adds subfolder with the given @param folderName.
+     * Adds subfolder with the given @p folderName.
      * @return an empty string on failure or the full path of the new subfolder
      *         on success
      */
     QString addSubFolder( const QString& folderName );
 
     /**
-     * Removes subfolder with the given @param folderName. Returns success or failure.
+     * Removes subfolder with the given @p folderName. Returns success or failure.
      */
     bool removeSubFolder( const QString& folderName );
 
     /**
-     * Returns a Maildir object for the given @param folderName. If such a folder
+     * Returns a Maildir object for the given @p folderName. If such a folder
      * exists, the Maildir object will be valid, otherwise you can call create()
      * on it, to make a subfolder with that name.
      */
     Maildir subFolder( const QString& folderName ) const;
 
     /**
-     * Returns the size of the file in the maildir with the given @param key.
+     * Returns the size of the file in the maildir with the given @p key.
      * @since 4.2
      */
     qint64 size( const QString& key ) const;
 
     /**
-     * Return the contents of the file in the maildir with the given @param key.
+     * Return the contents of the file in the maildir with the given @p key.
      */
     QByteArray readEntry( const QString& key ) const;
 
     /**
-     * Return the contents of the headers section of the file the maildir with the given @param key.
+     * Return the contents of the headers section of the file the maildir with the given @p key.
      */
     QByteArray readEntryHeaders( const QString& key ) const;
 
     /**
-     * Write the given @param data to a file in the maildir with the given
-     * @param key.
+     * Write the given @p data to a file in the maildir with the given  @p key.
      */
     void writeEntry( const QString& key, const QByteArray& data );
 
     /**
-     * Adds the given @param to the maildir. Returns the key of the entry.
+     * Adds the given @p data to the maildir. Returns the key of the entry.
      */
     QString addEntry( const QByteArray& data );
 
     /**
-     * Removes the entry with the given @key. Returns success or failure.
+     * Removes the entry with the given @p key. Returns success or failure.
      */
     bool removeEntry( const QString& key );
 
