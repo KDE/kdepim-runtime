@@ -54,7 +54,7 @@ void LoadPage::enterPageNext()
   }
 
   KConfigGroup grpTranslate( &f, "Translate");
-  const QString poFileName = grp.readEntry( "Filename" );
+  const QString poFileName = grpTranslate.readEntry( "Filename" );
   if( !poFileName.isEmpty())
     KGlobal::locale()->insertCatalog(poFileName);
 
