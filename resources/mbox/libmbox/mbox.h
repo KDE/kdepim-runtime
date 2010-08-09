@@ -60,7 +60,7 @@ class MBOX_EXPORT MBox
     ~MBox();
 
     /**
-     * Appends @param entry to the MBox. Returns the offset in the file
+     * Appends @p entry to the MBox. Returns the offset in the file
      * where the added message starts or -1 if the entry was not added (e.g.
      * when it doesn't contain data). You must load a mbox file by makeing a call
      * to load( const QString& ) before appending entries. The returned offset
@@ -75,7 +75,7 @@ class MBOX_EXPORT MBox
 
     /**
      * Retrieve MsgInfo objects for all emails from the file except the
-     * @param deleteItems. The @param deletedItems should be a list of file
+     * @p deleteItems. The @p deletedItems should be a list of file
      * offsets of messages which are deleted.
      *
      * Each MsgEntryInfo object contains the entry offset, the offset of the actual mail
@@ -145,7 +145,7 @@ class MBOX_EXPORT MBox
     bool purge( const QSet<quint64> &deletedItems, QList<MsgInfo> *movedItems = 0 );
 
     /**
-     * Reads the entire message from the file at given @param offset. If the
+     * Reads the entire message from the file at given @p offset. If the
      * mbox file is not locked this method will lock the file before reading and
      * unlock it after reading. If the file already is locked, it will not
      * unlock the file after reading the entry.
@@ -159,7 +159,7 @@ class MBOX_EXPORT MBox
     KMime::Message *readEntry( quint64 offset );
 
     /**
-     * Reads the headers of the message at given @param offset. If the
+     * Reads the headers of the message at given @p offset. If the
      * mbox file is not locked this method will lock the file before reading and
      * unlock it after reading. If the file already is locked, it will not
      * unlock the file after reading the entry.
@@ -172,7 +172,7 @@ class MBOX_EXPORT MBox
     QByteArray readEntryHeaders( quint64 offset );
 
     /**
-     * Reads the entire message from the file at given @param offset. If the
+     * Reads the entire message from the file at given @p offset. If the
      * mbox file is not locked this method will lock the file before reading and
      * unlock it after reading. If the file already is locked, it will not
      * unlock the file after reading the entry.
