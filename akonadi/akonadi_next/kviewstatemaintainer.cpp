@@ -23,8 +23,8 @@
 
 class KViewStateMaintainerBasePrivate
 {
-  KViewStateMaintainerBasePrivate(KConfigBase *configBase, const QString &name, KViewStateMaintainerBase *qq)
-    : q_ptr(qq), m_view( 0 ), m_selectionModel( 0 ), m_configBase(configBase), m_name(name)
+  KViewStateMaintainerBasePrivate(KSharedConfigPtr configPtr, const QString &name, KViewStateMaintainerBase *qq)
+    : q_ptr(qq), m_view( 0 ), m_selectionModel( 0 ), m_configPtr(configPtr), m_name(name)
   {
 
   }
@@ -38,7 +38,7 @@ class KViewStateMaintainerBasePrivate
   QAbstractItemView *m_view;
   QItemSelectionModel *m_selectionModel;
 
-  KConfigBase * const m_configBase;
+  const KSharedConfigPtr m_configPtr;
   const QString m_name;
 };
 
@@ -54,8 +54,8 @@ void KViewStateMaintainerBasePrivate::_k_modelReset()
   q->restoreState();
 }
 
-KViewStateMaintainerBase::KViewStateMaintainerBase(KConfigBase *configBase, const QString &name, QObject* parent)
-  : QObject(parent), d_ptr(new KViewStateMaintainerBasePrivate(configBase, name, this))
+KViewStateMaintainerBase::KViewStateMaintainerBase(KSharedConfigPtr configPtr, const QString &name, QObject* parent)
+  : QObject(parent), d_ptr(new KViewStateMaintainerBasePrivate(configPtr, name, this))
 {
 
 }
@@ -63,7 +63,7 @@ KViewStateMaintainerBase::KViewStateMaintainerBase(KConfigBase *configBase, cons
 KConfigGroup KViewStateMaintainerBase::configGroup() const
 {
   Q_D(const KViewStateMaintainerBase);
-  return KConfigGroup(d->m_configBase, d->m_name);
+  return KConfigGroup(d->m_configPtr, d->m_name);
 }
 
 QItemSelectionModel* KViewStateMaintainerBase::selectionModel() const
@@ -77,7 +77,7 @@ void KViewStateMaintainerBase::setSelectionModel(QItemSelectionModel* selectionM
   Q_D(KViewStateMaintainerBase);
   d->m_selectionModel = selectionModel;
 
-  if (d->m_view->model()) {
+  if (d->m_view && d->m_view->model()) {
     disconnect(d->m_view->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(_k_modelAboutToBeReset()));
     disconnect(d->m_view->model(), SIGNAL(modelReset()), this, SLOT(_k_modelReset()));
   }
@@ -96,11 +96,11 @@ void KViewStateMaintainerBase::setView(QAbstractItemView* view)
   Q_D(KViewStateMaintainerBase);
   d->m_view = view;
 
-  if (d->m_selectionModel->model()) {
+  if (d->m_selectionModel && d->m_selectionModel->model()) {
     disconnect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(_k_modelAboutToBeReset()));
     disconnect(d->m_selectionModel->model(), SIGNAL(modelReset()), this, SLOT(_k_modelReset()));
   }
-  if (d->m_view->model()) {
+  if (d->m_view && d->m_view->model()) {
     connect(d->m_view->model(), SIGNAL(modelAboutToBeReset()), SLOT(_k_modelAboutToBeReset()), Qt::UniqueConnection);
     connect(d->m_view->model(), SIGNAL(modelReset()), SLOT(_k_modelReset()), Qt::UniqueConnection);
   }

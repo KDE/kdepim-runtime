@@ -28,14 +28,16 @@
 #include <QtGui/QAbstractItemView>
 
 #include <KConfigGroup>
+#include <KSharedConfig>
+#include <KSharedConfigPtr>
 
 class KViewStateMaintainerBasePrivate;
 
-class KViewStateMaintainerBase : public QObject
+class AKONADI_NEXT_EXPORT KViewStateMaintainerBase : public QObject
 {
   Q_OBJECT
 public:
-  KViewStateMaintainerBase(KConfigBase *configBase, const QString &name, QObject* parent = 0);
+  KViewStateMaintainerBase(KSharedConfigPtr configPtr, const QString &name, QObject* parent = 0);
 
   void setSelectionModel(QItemSelectionModel *selectionModel);
   QItemSelectionModel *selectionModel() const;
@@ -71,12 +73,12 @@ private:
  * @see KViewStateSaver
  */
 template<typename StateSaver>
-class KViewStateMaintainer : KViewStateMaintainerBase
+class AKONADI_NEXT_EXPORT KViewStateMaintainer : public KViewStateMaintainerBase
 {
   typedef StateSaver StateRestorer;
 public:
-  KViewStateMaintainer(KConfigBase *configBase, const QString &name, QObject* parent = 0)
-    : KViewStateMaintainerBase(configBase, parent)
+  KViewStateMaintainer(KSharedConfigPtr configPtr, const QString &name, QObject* parent = 0)
+    : KViewStateMaintainerBase(configPtr, name, parent)
   {
 
   }
