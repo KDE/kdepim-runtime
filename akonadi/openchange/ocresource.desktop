@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=OpenChange
+Name[es]=OpenChange
 Name[pt]=OpenChange
 Name[pt_BR]=OpenChange
 Name[sv]=Openchange
 Name[uk]=OpenChange
 Name[x-test]=xxOpenChangexx
 Comment=Makes it possible to work with an OpenChange / Exchange server
+Comment[es]=Hace posible trabajar con un servidor OpenChange / Exchange
 Comment[pt]=Possibilita a interacção com um servidor de OpenChange / Exchange
 Comment[pt_BR]=Possibilita a integração com um servidor de OpenChange / Exchange
 Comment[sv]=Gör det möjligt att arbeta med en Openchange- eller Exchange-server
