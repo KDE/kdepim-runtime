@@ -1286,14 +1286,20 @@ void ImapResource::triggerNextCollectionChangeJob( const Akonadi::Collection &co
   }
 }
 
-
 void ImapResource::onRenameMailBoxDone( KJob *job )
 {
   Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
   QStringList parts = job->property( AKONADI_PARTS ).toStringList();
 
   if ( !job->error() ) {
-    triggerNextCollectionChangeJob( collection, parts );
+    KIMAP::RenameJob *renameJob = static_cast<KIMAP::RenameJob*>( job );
+    KIMAP::SubscribeJob *subscribeJob = new KIMAP::SubscribeJob( renameJob->session() );
+    subscribeJob->setMailBox( renameJob->destinationMailBox() );
+    connect( subscribeJob, SIGNAL( result( KJob* ) ),
+             this, SLOT( onSubscribeForRenameDone( KJob* ) ) );
+    subscribeJob->setProperty( AKONADI_COLLECTION, QVariant::fromValue( collection ) );
+    subscribeJob->setProperty( AKONADI_PARTS, parts );
+    subscribeJob->start();
   } else {
     kDebug(5327) << "Failed to rename the folder, resetting it in akonadi again";
     const QString prevRid = job->property( PREVIOUS_REMOTEID ).toString();
@@ -1303,6 +1309,18 @@ void ImapResource::onRenameMailBoxDone( KJob *job )
     emit warning( i18n( "Failed to rename the folder, restoring folder list." ) );
     changeCommitted( collection );
   }
+}
+
+void ImapResource::onSubscribeForRenameDone( KJob *job )
+{
+  if ( job->error() ) {
+    // Not showing a user visible error message here, we are in string freeze
+    kWarning() << "Unable to subscribe to folder:" << job->errorText();
+  }
+
+  const Collection collection = job->property( AKONADI_COLLECTION ).value<Collection>();
+  const QStringList parts = job->property( AKONADI_PARTS ).toStringList();
+  triggerNextCollectionChangeJob( collection, parts );
 }
 
 void ImapResource::onSetAclDone( KJob *job )

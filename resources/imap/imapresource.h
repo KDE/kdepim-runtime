@@ -118,6 +118,7 @@ private Q_SLOTS:
   void onContentFetchDone( KJob *job );
   void onCreateMailBoxDone( KJob *job );
   void onRenameMailBoxDone( KJob *job );
+  void onSubscribeForRenameDone( KJob* );
   void onSetAclDone( KJob *job );
   void onSetMetaDataDone( KJob *job );
   void onDeleteMailBoxDone( KJob *job );
