@@ -30,7 +30,6 @@
 #include <nepomuk/resourcemanager.h>
 #include <nepomuk/variant.h>
 #include <kurl.h>
-#include <KLocale>
 
 // ontology includes
 #include "bbsnumber.h"
