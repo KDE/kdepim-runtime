@@ -248,6 +248,12 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
 {
   QString errorMessage;
 
+  if ( !m_account ) {
+    // it looks like the connection was lost while we were waiting
+    // for the password
+    return;
+  }
+
   switch ( resultType )
   {
   case PasswordRequesterInterface::PasswordRetrieved:
