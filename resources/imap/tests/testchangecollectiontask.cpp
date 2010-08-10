@@ -84,7 +84,9 @@ private slots:
              << "C: A000007 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
              << "S: A000007 OK acl changed"
              << "C: A000008 RENAME \"Foo\" \"Bar\""
-             << "S: A000008 OK rename done";
+             << "S: A000008 OK rename done"
+             << "C: A000009 SUBSCRIBE \"Bar\""
+             << "S: A000009 OK mailbox subscribed";
 
     callNames.clear();
     callNames << "collectionChangeCommitted";
@@ -97,7 +99,9 @@ private slots:
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 RENAME \"Foo\" \"BarBaz\""
-             << "S: A000003 OK rename done";
+             << "S: A000003 OK rename done"
+             << "C: A000004 SUBSCRIBE \"BarBaz\""
+             << "S: A000004 OK mailbox subscribed";
     parts.clear();
     parts << "NAME";
     callNames.clear();

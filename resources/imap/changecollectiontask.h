@@ -34,6 +34,7 @@ public:
 
 private slots:
   void onRenameDone( KJob *job );
+  void onSubscribeDone( KJob *job );
   void onSetAclDone( KJob *job );
   void onSetMetaDataDone( KJob *job );
 
