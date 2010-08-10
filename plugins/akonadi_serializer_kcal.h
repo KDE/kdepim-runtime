@@ -24,7 +24,7 @@
 
 #include <akonadi/differencesalgorithminterface.h>
 #include <akonadi/itemserializerplugin.h>
-#include <kcal/icalformat.h>
+#include <KCalCore/ICalFormat>
 
 namespace Akonadi {
 
@@ -45,7 +45,7 @@ class SerializerPluginKCal : public QObject,
                   const Akonadi::Item &leftItem,
                   const Akonadi::Item &rightItem );
   private:
-    KCal::ICalFormat mFormat;
+    KCalCore::ICalFormat mFormat;
 };
 
 }

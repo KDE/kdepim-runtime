@@ -19,7 +19,7 @@ install(TARGETS akonadi_serializer_mail DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kcal_SRCS akonadi_serializer_kcal.cpp)
 kde4_add_plugin(akonadi_serializer_kcal ${akonadi_serializer_kcal_SRCS})
-target_link_libraries(akonadi_serializer_kcal ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
+target_link_libraries(akonadi_serializer_kcal ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS} ${KDEPIMLIBS_KCALUTILS_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
 install(TARGETS akonadi_serializer_kcal DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kcalcore_SRCS akonadi_serializer_kcalcore.cpp)
