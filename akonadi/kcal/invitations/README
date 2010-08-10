@@ -1,3 +1,0 @@
-This subdir is an attempt to structure invitation handling in a more reusable
-way than it is currently. At some point we must get rid of Groupware
-(../groupware.cpp).
