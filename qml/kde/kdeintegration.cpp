@@ -31,13 +31,19 @@
 #include <QScriptEngine>
 
 static QString translate( const KLocalizedString &msg,
-                          const QScriptContext *context, const int start )
+                          const QScriptContext *context, const int start, bool plural = false )
 {
   KLocalizedString string( msg );
   const int numArgs = context->argumentCount();
 
   for (int i = start; i < numArgs; ++i) {
-    QVariant arg = context->argument(i).toVariant();
+    const QVariant arg = context->argument(i).toVariant();
+
+    // numbers provided from javascript seem to arrive always as double, which does not work for plural handling
+    if ( i == start && plural ) {
+      string = string.subs( arg.toInt() );
+      continue;
+    }
 
     switch ( arg.type() ) {
       case QVariant::Char:
@@ -148,7 +154,7 @@ QString KDEIntegration::i18np( const QScriptValue &array )
   KLocalizedString message = ki18np(context->argument(0).toString().toUtf8(),
                                     context->argument(1).toString().toUtf8());
 
-  return translate(message, context, 2);
+  return translate(message, context, 2, true);
 }
 
 QString KDEIntegration::i18ncp( const QScriptValue &array )
@@ -170,7 +176,7 @@ QString KDEIntegration::i18ncp( const QScriptValue &array )
                                      context->argument(1).toString().toUtf8(),
                                      context->argument(2).toString().toUtf8());
 
-  return translate(message, context, 3);
+  return translate(message, context, 3, true);
 }
 
 QString KDEIntegration::iconPath( const QString &iconName, int iconSize )
