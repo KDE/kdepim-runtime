@@ -21,6 +21,8 @@
 
 #include "calendardiffalgo.h"
 
+#include <kcalutils/stringify.h>
+
 #include <KDateTime>
 #include <KLocale>
 
@@ -36,22 +38,22 @@ static bool compareString( const QString &left, const QString &right )
 }
 #endif
 
-static QString toString( KCal::Attendee *attendee )
+static QString toString( KCalCore::Attendee *attendee )
 {
   return attendee->name() + '<' + attendee->email() + '>';
 }
 
-static QString toString( KCal::Alarm * )
+static QString toString( KCalCore::Alarm * )
 {
   return QString();
 }
 
-static QString toString( KCal::Incidence * )
+static QString toString( KCalCore::Incidence * )
 {
   return QString();
 }
 
-static QString toString( KCal::Attachment * )
+static QString toString( KCalCore::Attachment * )
 {
   return QString();
 }
@@ -79,8 +81,8 @@ static QString toString( bool value )
     return i18n( "No" );
 }
 
-CalendarDiffAlgo::CalendarDiffAlgo( KCal::Incidence *leftIncidence,
-                                    KCal::Incidence *rightIncidence )
+CalendarDiffAlgo::CalendarDiffAlgo( const KCalCore::Incidence::Ptr &leftIncidence,
+                                    const KCalCore::Incidence::Ptr &rightIncidence )
   : mLeftIncidence( leftIncidence ), mRightIncidence( rightIncidence )
 {
 }
@@ -92,13 +94,13 @@ void CalendarDiffAlgo::run()
   diffIncidenceBase( mLeftIncidence, mRightIncidence );
   diffIncidence( mLeftIncidence, mRightIncidence );
 
-  KCal::Event *leftEvent = dynamic_cast<KCal::Event*>( mLeftIncidence );
-  KCal::Event *rightEvent = dynamic_cast<KCal::Event*>( mRightIncidence );
+  KCalCore::Event::Ptr leftEvent = mLeftIncidence.dynamicCast<KCalCore::Event>();
+  KCalCore::Event::Ptr rightEvent = mRightIncidence.dynamicCast<KCalCore::Event>();
   if ( leftEvent && rightEvent ) {
     diffEvent( leftEvent, rightEvent );
   } else {
-    KCal::Todo *leftTodo = dynamic_cast<KCal::Todo*>( mLeftIncidence );
-    KCal::Todo *rightTodo = dynamic_cast<KCal::Todo*>( mRightIncidence );
+    KCalCore::Todo::Ptr leftTodo = mLeftIncidence.dynamicCast<KCalCore::Todo>();
+    KCalCore::Todo::Ptr rightTodo = mRightIncidence.dynamicCast<KCalCore::Todo>();
     if ( leftTodo && rightTodo ) {
       diffTodo( leftTodo, rightTodo );
     }
@@ -107,15 +109,15 @@ void CalendarDiffAlgo::run()
   end();
 }
 
-void CalendarDiffAlgo::diffIncidenceBase( KCal::IncidenceBase *left, KCal::IncidenceBase *right )
+void CalendarDiffAlgo::diffIncidenceBase( const KCalCore::IncidenceBase::Ptr &left, const KCalCore::IncidenceBase::Ptr &right )
 {
   diffList( i18n( "Attendees" ), left->attendees(), right->attendees() );
 
   if ( left->dtStart() != right->dtStart() )
-    conflictField( i18n( "Start time" ), left->dtStartStr(), right->dtStartStr() );
+    conflictField( i18n( "Start time" ), left->dtStart().toString(), right->dtStart().toString() );
 
-  if ( !compareString( left->organizer().fullName(), right->organizer().fullName() ) )
-    conflictField( i18n( "Organizer" ), left->organizer().fullName(), right->organizer().fullName() );
+  if ( !compareString( left->organizer()->fullName(), right->organizer()->fullName() ) )
+    conflictField( i18n( "Organizer" ), left->organizer()->fullName(), right->organizer()->fullName() );
 
   if ( !compareString( left->uid(), right->uid() ) )
     conflictField( i18n( "UID" ), left->uid(), right->uid() );
@@ -130,7 +132,8 @@ void CalendarDiffAlgo::diffIncidenceBase( KCal::IncidenceBase *left, KCal::Incid
     conflictField( i18n( "Duration" ), QString::number( left->duration().asSeconds() ), QString::number( right->duration().asSeconds() ) );
 }
 
-void CalendarDiffAlgo::diffIncidence( KCal::Incidence *left, KCal::Incidence *right )
+void CalendarDiffAlgo::diffIncidence( const KCalCore::Incidence::Ptr &left,
+                                      const KCalCore::Incidence::Ptr &right )
 {
   if ( !compareString( left->description(), right->description() ) )
     conflictField( i18n( "Description" ), left->description(), right->description() );
@@ -139,7 +142,10 @@ void CalendarDiffAlgo::diffIncidence( KCal::Incidence *left, KCal::Incidence *ri
     conflictField( i18n( "Summary" ), left->summary(), right->summary() );
 
   if ( left->status() != right->status() )
-    conflictField( i18n( "Status" ), left->statusStr(), right->statusStr() );
+    conflictField( i18n( "Status" ),
+                   KCalUtils::Stringify::incidenceStatus( left->status() ),
+                   KCalUtils::Stringify::incidenceStatus( right->status() ) );
+
 
   if ( left->secrecy() != right->secrecy() )
     conflictField( i18n( "Secrecy" ), toString( left->secrecy() ), toString( right->secrecy() ) );
@@ -153,7 +159,6 @@ void CalendarDiffAlgo::diffIncidence( KCal::Incidence *left, KCal::Incidence *ri
   diffList( i18n( "Categories" ), left->categories(), right->categories() );
   diffList( i18n( "Alarms" ), left->alarms(), right->alarms() );
   diffList( i18n( "Resources" ), left->resources(), right->resources() );
-  diffList( i18n( "Relations" ), left->relations(), right->relations() );
   diffList( i18n( "Attachments" ), left->attachments(), right->attachments() );
   diffList( i18n( "Exception Dates" ), left->recurrence()->exDates(), right->recurrence()->exDates() );
   diffList( i18n( "Exception Times" ), left->recurrence()->exDateTimes(), right->recurrence()->exDateTimes() );
@@ -162,22 +167,22 @@ void CalendarDiffAlgo::diffIncidence( KCal::Incidence *left, KCal::Incidence *ri
   if ( left->created() != right->created() )
     conflictField( i18n( "Created" ), left->created().toString(), right->created().toString() );
 
-  if ( !compareString( left->relatedToUid(), right->relatedToUid() ) )
-    conflictField( i18n( "Related Uid" ), left->relatedToUid(), right->relatedToUid() );
+  if ( !compareString( left->relatedTo(), right->relatedTo() ) )
+    conflictField( i18n( "Related Uid" ), left->relatedTo(), right->relatedTo() );
 }
 
-void CalendarDiffAlgo::diffEvent( KCal::Event *left, KCal::Event *right )
+void CalendarDiffAlgo::diffEvent( const KCalCore::Event::Ptr &left, const KCalCore::Event::Ptr &right )
 {
   if ( left->hasEndDate() != right->hasEndDate() )
     conflictField( i18n( "Has End Date" ), toString( left->hasEndDate() ), toString( right->hasEndDate() ) );
 
   if ( left->dtEnd() != right->dtEnd() )
-    conflictField( i18n( "End Date" ), left->dtEndStr(), right->dtEndStr() );
+    conflictField( i18n( "End Date" ), left->dtEnd().toString(), right->dtEnd().toString() );
 
   // TODO: check transparency
 }
 
-void CalendarDiffAlgo::diffTodo( KCal::Todo *left, KCal::Todo *right )
+void CalendarDiffAlgo::diffTodo( const KCalCore::Todo::Ptr &left, const KCalCore::Todo::Ptr &right )
 {
   if ( left->hasStartDate() != right->hasStartDate() )
     conflictField( i18n( "Has Start Date" ), toString( left->hasStartDate() ), toString( right->hasStartDate() ) );

@@ -20,10 +20,12 @@
 #include <KApplication>
 #include <KCmdLineArgs>
 
-#include <kcal/event.h>
+#include <kcalcore/event.h>
 
 #include "../kincidencechooser.h"
 using namespace KPIM;
+
+using namespace KCalCore;
 
 int main( int argc, char **argv )
 {
@@ -33,10 +35,10 @@ int main( int argc, char **argv )
   KApplication app;
   KIncidenceChooser *chooser = new KIncidenceChooser();
 
-  Event event;
-  event.setSummary( i18n( "Meeting" ) );
-  event.setDescription( i18n( "Discuss foo" ) );
-  chooser->setIncidence( &event, &event );
+  Event::Ptr event( new Event() );
+  event->setSummary( i18n( "Meeting" ) );
+  event->setDescription( i18n( "Discuss foo" ) );
+  chooser->setIncidence( event, event );
   chooser->resize( 600, 600 );
   chooser->show();
   return app.exec();

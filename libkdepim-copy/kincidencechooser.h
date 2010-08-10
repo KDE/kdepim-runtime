@@ -28,12 +28,9 @@
 #include "calendardiffalgo.h"
 #include "htmldiffalgodisplay.h"
 
-#include <KDialog>
+#include <kcalcore/incidence.h>
 
-namespace KCal {
-  class Incidence;
-}
-using namespace KCal;
+#include <KDialog>
 
 class QButtonGroup;
 class QLabel;
@@ -58,10 +55,11 @@ class KDEPIM_COPY_EXPORT KIncidenceChooser : public KDialog
     };
 
     /** Initialize dialog and pages */
-    KIncidenceChooser( QWidget *parent=0 );
+    KIncidenceChooser( QWidget *parent = 0 );
     ~KIncidenceChooser();
-    void setIncidence( Incidence *, Incidence * );
-    Incidence *getIncidence();
+    void setIncidence( const KCalCore::Incidence::Ptr &,
+                       const KCalCore::Incidence::Ptr &  );
+    KCalCore::Incidence::Ptr getIncidence();
     static int chooseMode;
 
   public Q_SLOTS:
@@ -82,8 +80,8 @@ class KDEPIM_COPY_EXPORT KIncidenceChooser : public KDialog
     HTMLDiffAlgoDisplay *mDisplayDiff;
     CalendarDiffAlgo *diff;
     KDialog *mTbL, *mTbN;
-    Incidence *mSelIncidence;
-    Incidence *mInc1, *mInc2;
+    KCalCore::Incidence::Ptr mSelIncidence;
+    KCalCore::Incidence::Ptr mInc1, mInc2;
     QButtonGroup *mBg;
     QPushButton *mDiffBut, *mShowDetails1, *mShowDetails2;
     QLabel *mInc1lab, *mInc2lab, *mInc1Sumlab, *mInc2Sumlab, *mMod1lab, *mMod2lab;
