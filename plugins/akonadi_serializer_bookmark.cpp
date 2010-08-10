@@ -29,6 +29,8 @@
 
 using namespace Akonadi;
 
+Q_DECLARE_METATYPE( KBookmark )
+
 bool SerializerPluginBookmark::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
   Q_UNUSED( version );
