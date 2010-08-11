@@ -95,6 +95,7 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
 
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
     return;
   }
 
