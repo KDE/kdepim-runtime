@@ -20,11 +20,12 @@
 #include "calendarhandler.h"
 #include "event.h"
 
+#include <KCalCore/Event>
+#include <KCalCore/CalFormat>
+
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
-#include <akonadi/kcal/incidencemimetypevisitor.h>
 
-#include <kcalcore/calformat.h>
 #include <KLocale>
 
 #include <QBuffer>
@@ -66,7 +67,7 @@ QByteArray CalendarHandler::incidenceToXml(const KCalCore::Incidence::Ptr &incid
 
 QStringList CalendarHandler::contentMimeTypes()
 {
-  return QStringList() << Akonadi::IncidenceMimeTypeVisitor::eventMimeType();
+  return QStringList() << KCalCore::Event::eventMimeType();
 }
 
 QString CalendarHandler::iconName() const
