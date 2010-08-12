@@ -28,11 +28,10 @@
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/kcal/incidencemimetypevisitor.h>
 
 #include <kabc/addressee.h>
-#include <kcalcore/event.h>
-#include <kcalcore/todo.h>
+#include <KCalCore/Event>
+#include <KCalCore/Todo>
 #include <klocale.h>
 #include <kstandarddirs.h>
 
@@ -638,11 +637,11 @@ void OpenXchangeResource::onObjectsRequestJobFinished( KJob *job )
         }
         break;
       case OXA::Folder::Calendar:
-        item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
+        item.setMimeType( KCalCore::Event::eventMimeType() );
         item.setPayload<KCalCore::Incidence::Ptr>( object.event() );
         break;
       case OXA::Folder::Tasks:
-        item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
+        item.setMimeType( KCalCore::Todo::todoMimeType() );
         item.setPayload<KCalCore::Incidence::Ptr>( object.task() );
         break;
       case OXA::Folder::Unbound:
@@ -690,11 +689,11 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished( KJob *job )
         }
         break;
       case OXA::Folder::Calendar:
-        item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
+        item.setMimeType( KCalCore::Event::eventMimeType() );
         item.setPayload<KCalCore::Incidence::Ptr>( object.event() );
         break;
       case OXA::Folder::Tasks:
-        item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
+        item.setMimeType( KCalCore::Todo::todoMimeType() );
         item.setPayload<KCalCore::Incidence::Ptr>( object.task() );
         break;
       case OXA::Folder::Unbound:
@@ -764,11 +763,11 @@ void OpenXchangeResource::onObjectRequestJobFinished( KJob *job )
       }
       break;
     case OXA::Folder::Calendar:
-      item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
+      item.setMimeType( KCalCore::Event::eventMimeType() );
       item.setPayload<KCalCore::Incidence::Ptr>( object.event() );
       break;
     case OXA::Folder::Tasks:
-      item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
+      item.setMimeType( KCalCore::Todo::todoMimeType() );
       item.setPayload<KCalCore::Incidence::Ptr>( object.task() );
       break;
     case OXA::Folder::Unbound:
@@ -872,7 +871,7 @@ static Collection folderToCollection( const OXA::Folder &folder, const Collectio
   mimeTypes.append( Collection::mimeType() );
   switch ( folder.module() ) {
     case OXA::Folder::Calendar:
-      mimeTypes.append( IncidenceMimeTypeVisitor::eventMimeType() );
+      mimeTypes.append( KCalCore::Event::eventMimeType() );
       attribute->setIconName( QString::fromLatin1( "view-calendar" ) );
       break;
     case OXA::Folder::Contacts:
@@ -881,7 +880,7 @@ static Collection folderToCollection( const OXA::Folder &folder, const Collectio
       attribute->setIconName( QString::fromLatin1( "view-pim-contacts" ) );
       break;
     case OXA::Folder::Tasks:
-      mimeTypes.append( IncidenceMimeTypeVisitor::todoMimeType() );
+      mimeTypes.append( KCalCore::Todo::todoMimeType() );
       attribute->setIconName( QString::fromLatin1( "view-pim-tasks" ) );
       break;
     case OXA::Folder::Unbound:

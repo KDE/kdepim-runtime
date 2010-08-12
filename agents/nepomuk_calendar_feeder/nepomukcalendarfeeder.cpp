@@ -21,10 +21,14 @@
 #include "selectsqarqlbuilder.h"
 #include "nco.h"
 
+#include <KCalCore/Event>
+#include <KCalCore/Todo>
+#include <KCalCore/Journal>
+#include <KCalCore/FreeBusy>
+
 #include <akonadi/changerecorder.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/kcal/incidencemimetypevisitor.h>
 
 #include <nepomuk/resource.h>
 #include <nepomuk/resourcemanager.h>
@@ -61,10 +65,10 @@ NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
   : NepomukFeederAgent<NepomukFast::Calendar>( id )
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" );
-  addSupportedMimeType( Akonadi::IncidenceMimeTypeVisitor::eventMimeType() );
-  addSupportedMimeType( Akonadi::IncidenceMimeTypeVisitor::todoMimeType() );
-  addSupportedMimeType( Akonadi::IncidenceMimeTypeVisitor::journalMimeType() );
-  addSupportedMimeType( Akonadi::IncidenceMimeTypeVisitor::freeBusyMimeType() );
+  addSupportedMimeType( KCalCore::Event::eventMimeType() );
+  addSupportedMimeType( KCalCore::Todo::todoMimeType() );
+  addSupportedMimeType( KCalCore::Journal::journalMimeType() );
+  addSupportedMimeType( KCalCore::FreeBusy::freeBusyMimeType() );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
 }
