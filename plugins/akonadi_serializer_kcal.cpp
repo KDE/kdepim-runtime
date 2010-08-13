@@ -22,19 +22,18 @@
 #include <akonadi/abstractdifferencesreporter.h>
 #include <akonadi/item.h>
 
-#include <KCalCore/Event>
-#include <KCalCore/Todo>
-
-#include <KCalUtils/Stringify>
+#include <KCal/Event>
+#include <KCal/Todo>
 
 #include <kdebug.h>
 #include <klocale.h>
 
 #include <QtCore/qplugin.h>
 
-typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
+#include <boost/shared_ptr.hpp>
 
-using namespace KCalUtils;
+typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
+
 using namespace Akonadi;
 
 //// ItemSerializerPlugin interface
@@ -47,7 +46,7 @@ bool SerializerPluginKCal::deserialize(Item & item, const QByteArray & label, QI
     return false;
   }
 
-  KCalCore::Incidence::Ptr i = mFormat.fromString( data.readAll() );
+ KCal::Incidence* i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
   if ( !i ) {
     kWarning( 5263 ) << "Failed to parse incidence!";
     data.seek( 0 );
@@ -67,7 +66,7 @@ void SerializerPluginKCal::serialize(const Item & item, const QByteArray & label
   IncidencePtr i = item.payload<IncidencePtr>();
   // ### I guess this can be done without hardcoding stuff
   data.write( "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN\nVERSION:2.0\n" );
-  data.write( mFormat.toString( i ).toUtf8() );
+  data.write( mFormat.toString( i.get() ).toUtf8() );
   data.write( "\nEND:VCALENDAR" );
 }
 
@@ -81,22 +80,24 @@ static bool compareString( const QString &left, const QString &right )
     return left == right;
 }
 
-static QString toString( KCalCore::Attendee::Ptr &attendee )
+static QString toString( KCal::Attendee *attendee )
 {
   return attendee->name() + QLatin1Char( '<' ) + attendee->email() + QLatin1Char( '>' );
 }
 
-static QString toString( KCalCore::Alarm::Ptr & )
+static QString toString( KCal::Alarm * )
 {
   return QString();
 }
 
-static QString toString( KCalCore::Incidence::Ptr & )
+/*
+static QString toString( KCal::Incidence * )
 {
   return QString();
 }
+*/
 
-static QString toString( KCalCore::Attachment::Ptr & )
+static QString toString( KCal::Attachment * )
 {
   return QString();
 }
@@ -142,14 +143,14 @@ static void compareList( AbstractDifferencesReporter *reporter,
 }
 
 static void compareIncidenceBase( AbstractDifferencesReporter *reporter,
-                                  const KCalCore::IncidenceBase::Ptr &left,
-                                  const KCalCore::IncidenceBase::Ptr &right )
+                                  const KCal::IncidenceBase *left,
+                                  const KCal::IncidenceBase *right )
 {
   compareList( reporter, i18n( "Attendees" ), left->attendees(), right->attendees() );
 
-  if ( !compareString( left->organizer()->fullName(), right->organizer()->fullName() ) )
+  if ( !compareString( left->organizer().fullName(), right->organizer().fullName() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Organizer" ),
-                            left->organizer()->fullName(), right->organizer()->fullName() );
+                            left->organizer().fullName(), right->organizer().fullName() );
 
   if ( !compareString( left->uid(), right->uid() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "UID" ),
@@ -169,8 +170,8 @@ static void compareIncidenceBase( AbstractDifferencesReporter *reporter,
 }
 
 static void compareIncidence( AbstractDifferencesReporter *reporter,
-                              const IncidencePtr &left,
-                              const IncidencePtr &right )
+                              const KCal::Incidence *left,
+                              const KCal::Incidence *right )
 {
   if ( !compareString( left->description(), right->description() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Description" ),
@@ -182,7 +183,7 @@ static void compareIncidence( AbstractDifferencesReporter *reporter,
 
   if ( left->status() != right->status() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Status" ),
-                           Stringify::incidenceStatus( left ), Stringify::incidenceStatus( right ) );
+                           left->statusStr(), right->statusStr() );
 
   if ( left->secrecy() != right->secrecy() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Secrecy" ),
@@ -208,14 +209,14 @@ static void compareIncidence( AbstractDifferencesReporter *reporter,
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode,
                             i18n( "Created" ), left->created().toString(), right->created().toString() );
 
-  if ( !compareString( left->relatedTo(), right->relatedTo() ) )
+  if ( !compareString( left->relatedToUid(), right->relatedToUid() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode,
-                            i18n( "Related Uid" ), left->relatedTo(), right->relatedTo() );
+                            i18n( "Related Uid" ), left->relatedToUid(), right->relatedToUid() );
 }
 
 static void compareEvent( AbstractDifferencesReporter *reporter,
-                          const KCalCore::Event::Ptr &left,
-                          const KCalCore::Event::Ptr &right )
+                          const KCal::Event *left,
+                          const KCal::Event *right )
 {
 
   if ( left->dtStart() != right->dtStart() )
@@ -234,8 +235,8 @@ static void compareEvent( AbstractDifferencesReporter *reporter,
 }
 
 static void compareTodo( AbstractDifferencesReporter *reporter,
-                         const KCalCore::Todo::Ptr &left,
-                         const KCalCore::Todo::Ptr &right )
+                         const KCal::Todo *left,
+                         const KCal::Todo *right )
 {
   if ( left->hasStartDate() != right->hasStartDate() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Has Start Date" ),
@@ -273,24 +274,24 @@ void SerializerPluginKCal::compare( Akonadi::AbstractDifferencesReporter *report
   const IncidencePtr leftIncidencePtr = leftItem.payload<IncidencePtr>();
   const IncidencePtr rightIncidencePtr = rightItem.payload<IncidencePtr>();
 
-  if ( leftIncidencePtr->type() == KCalCore::Incidence::TypeEvent  ) {
+  if ( leftIncidencePtr->type() == "Event"  ) {
     reporter->setLeftPropertyValueTitle( i18n( "Changed Event" ) );
     reporter->setRightPropertyValueTitle( i18n( "Conflicting Event" ) );
-  } else if ( leftIncidencePtr->type() == KCalCore::Incidence::TypeTodo ) {
+  } else if ( leftIncidencePtr->type() == "Todo" ) {
     reporter->setLeftPropertyValueTitle( i18n( "Changed Todo" ) );
     reporter->setRightPropertyValueTitle( i18n( "Conflicting Todo" ) );
   }
 
-  compareIncidenceBase( reporter, leftIncidencePtr, rightIncidencePtr );
-  compareIncidence( reporter, leftIncidencePtr, rightIncidencePtr );
+  compareIncidenceBase( reporter, leftIncidencePtr.get(), rightIncidencePtr.get() );
+  compareIncidence( reporter, leftIncidencePtr.get(), rightIncidencePtr.get() );
 
-  const KCalCore::Event::Ptr leftEvent = leftIncidencePtr.dynamicCast<KCalCore::Event>() ;
-  const KCalCore::Event::Ptr rightEvent = rightIncidencePtr.dynamicCast<KCalCore::Event>() ;
+  const KCal::Event *leftEvent = dynamic_cast<KCal::Event*>( leftIncidencePtr.get() );
+  const KCal::Event *rightEvent = dynamic_cast<KCal::Event*>( rightIncidencePtr.get() ) ;
   if ( leftEvent && rightEvent ) {
     compareEvent( reporter, leftEvent, rightEvent );
   } else {
-    const KCalCore::Todo::Ptr leftTodo =  leftIncidencePtr.dynamicCast<KCalCore::Todo>();
-    const KCalCore::Todo::Ptr rightTodo = rightIncidencePtr.dynamicCast<KCalCore::Todo>();
+    const KCal::Todo *leftTodo =  dynamic_cast<KCal::Todo*>( leftIncidencePtr.get() );
+    const KCal::Todo *rightTodo = dynamic_cast<KCal::Todo*>( rightIncidencePtr.get() );
     if ( leftTodo && rightTodo ) {
       compareTodo( reporter, leftTodo, rightTodo );
     }
