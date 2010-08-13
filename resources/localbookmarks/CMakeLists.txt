@@ -30,7 +30,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_localbookmarks_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi LocalBookmarks Resource")
 endif (Q_WS_MAC)
 
-target_link_libraries(akonadi_localbookmarks_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${KDEPIMLIBS_KCAL_LIBS} ${KDE4_KIO_LIBS})
+target_link_libraries(akonadi_localbookmarks_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY}  ${KDE4_KIO_LIBS})
 
 install(TARGETS akonadi_localbookmarks_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
