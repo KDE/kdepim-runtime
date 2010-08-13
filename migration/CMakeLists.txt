@@ -19,8 +19,8 @@ set( MIGRATION_AKONADI_SHARED_SOURCES
 add_subdirectory( kmail )
 add_subdirectory( kaddressbook )
 add_subdirectory( kjots )
-if (KDEPIMLIBS_KRESOURCES_LIBRARY)
+if (KDEPIMLIBS_KRESOURCES_LIBS)
   add_subdirectory( kres )
   add_subdirectory( tests )
-endif (KDEPIMLIBS_KRESOURCES_LIBRARY)
+endif (KDEPIMLIBS_KRESOURCES_LIBS)
 
