@@ -762,7 +762,7 @@ void Incidence::setFields( const KCalCore::Incidence::Ptr &incidence )
 
   // Alarm
   mHasAlarm = false; // Will be set to true, if we actually have one
-  if ( incidence->isAlarmEnabled() ) {
+  if ( incidence->hasEnabledAlarms() ) {
     const KCalCore::Alarm::List& alarms = incidence->alarms();
     if ( !alarms.isEmpty() ) {
       const KCalCore::Alarm::Ptr alarm = alarms.first();
