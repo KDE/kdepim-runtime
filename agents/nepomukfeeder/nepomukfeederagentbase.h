@@ -107,7 +107,7 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     virtual void updateCollection( const Akonadi::Collection &collection, const QUrl &graphUri ) = 0;
 
     /** Reimplement to allow more aggressive initial indexing. */
-    virtual Akonadi::ItemFetchScope fetchScopeForcollection( const Akonadi::Collection &collection );
+    virtual Akonadi::ItemFetchScope fetchScopeForCollection( const Akonadi::Collection &collection );
 
     /** Create a graph for the given item with we use to mark all information created by the feeder agent. */
     template <typename T>
@@ -151,6 +151,9 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     /** Trigger a complete update of all items. */
     void updateAll();
 
+  signals:
+    void fullyIndexed();
+
   protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
@@ -164,10 +167,18 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
   private:
     void processNextCollection();
 
+    /**
+      Overrides in subclasses to cause re-indexing on startup to only happen
+      when the format changes, for example. Base implementation returns true,
+      to be safe.
+      */
+    virtual bool needsReIndexing() const;
+
   private slots:
     void collectionsReceived( const Akonadi::Collection::List &collections );
     void itemHeadersReceived( const Akonadi::Item::List &items );
     void itemsReceived( const Akonadi::Item::List &items );
+    void notificationItemsReceived( const Akonadi::Item::List &items );
     void itemFetchResult( KJob* job );
 
     void selfTest();
