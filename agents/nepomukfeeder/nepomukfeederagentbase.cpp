@@ -59,6 +59,7 @@
 #include <QtDBus/QDBusReply>
 #include <QtDBus/QDBusConnectionInterface>
 #include <QtDBus/QDBusInterface>
+#include <KConfigGroup>
 
 using namespace Akonadi;
 
@@ -74,6 +75,7 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   mPendingJobs( 0 ),
   mNrlModel( 0 ),
   mStrigiIndexManager( 0 ),
+  mIndexCompatLevel( 1 ),
   mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
   mNeedsStrigi( false )
@@ -91,6 +93,7 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
   connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
   connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
+  connect( this, SIGNAL(fullyIndexed()), this, SLOT(slotFullyIndexed()) );
 
   setOnline( false );
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
@@ -460,9 +463,22 @@ ItemFetchScope NepomukFeederAgentBase::fetchScopeForCollection(const Akonadi::Co
   return changeRecorder()->itemFetchScope();
 }
 
+void NepomukFeederAgentBase::setIndexCompatibilityLevel(int level)
+{
+  mIndexCompatLevel = level;
+}
+
 bool NepomukFeederAgentBase::needsReIndexing() const
 {
-  return true;
+  const KConfigGroup grp( componentData().config(), "InitialIndexing" );
+  return mIndexCompatLevel > grp.readEntry( "IndexCompatLevel", 0 );
+}
+
+void NepomukFeederAgentBase::slotFullyIndexed()
+{
+  KConfigGroup grp( componentData().config(), "InitialIndexing" );
+  grp.writeEntry( "IndexCompatLevel", mIndexCompatLevel );
+  grp.sync();
 }
 
 #include "nepomukfeederagentbase.moc"

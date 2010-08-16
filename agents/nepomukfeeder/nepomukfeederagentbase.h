@@ -147,6 +147,11 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
      */
     void indexData( const KUrl &url, const QByteArray &data, const QDateTime &mtime = QDateTime::currentDateTime() );
 
+    /**
+     * Set the index compatibility level. If the current level is below this, a full re-indexing is performed.
+     */
+    void setIndexCompatibilityLevel( int level );
+
   public slots:
     /** Trigger a complete update of all items. */
     void updateAll();
@@ -169,9 +174,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
 
     /**
       Overrides in subclasses to cause re-indexing on startup to only happen
-      when the format changes, for example. Base implementation returns true,
-      to be safe.
-      */
+      when the format changes, for example. Base implementation checks the index compatibility level.
+    */
     virtual bool needsReIndexing() const;
 
   private slots:
@@ -182,6 +186,7 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     void itemFetchResult( KJob* job );
 
     void selfTest();
+    void slotFullyIndexed();
 
   private:
     QStringList mSupportedMimeTypes;
@@ -192,6 +197,7 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     QTimer mNepomukStartupTimeout;
     Soprano::NRLModel *mNrlModel;
     Strigi::IndexManager *mStrigiIndexManager;
+    int mIndexCompatLevel;
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
     bool mNeedsStrigi;
