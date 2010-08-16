@@ -33,6 +33,7 @@ public:
 
   void setScenario( const QList<RequestType> &expectedCalls,
                     const QList<ResultType> &results );
+  void setDelays( const QList<int> &delays );
 
 public:
   virtual void requestPassword( RequestType request = StandardRequest,
@@ -45,6 +46,7 @@ private:
   QString m_password;
   QList<RequestType> m_calls;
   QList<ResultType> m_results;
+  QList<int> m_delays;
 };
 
 #endif
