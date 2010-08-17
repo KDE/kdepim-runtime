@@ -178,8 +178,27 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 
   KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>( job );
 
+  Akonadi::ImapAclAttribute * const parentAclAttribute =
+        collection().parentCollection().attribute<Akonadi::ImapAclAttribute>();
+  KIMAP::Acl::Rights parentRights = 0;
+  if ( parentAclAttribute ) {
+    parentRights = parentAclAttribute->rights()[userName().toUtf8()];
+  }
+
   KIMAP::Acl::Rights imapRights = rightsJob->rights();
   Akonadi::Collection::Rights newRights = Akonadi::Collection::ReadOnly;
+
+  // For renaming, the parent folder needs to have the CreateMailbox or Create permission.
+  // We map renaming to CanChangeCollection here, which is not entirely correct, but we have no
+  // CanRenameCollection flag.
+  // If the ACL of the parent folder hasn't been retrieved yet, allow changing, since we don't know
+  // better. If the parent folder is a noselect folder though, don't allow it, since for those we have
+  // no CreateMailbox right.
+  if ( ( !parentAclAttribute && !collection().parentCollection().hasAttribute( "noselect" ) ) ||
+       parentRights & KIMAP::Acl::CreateMailbox ||
+       parentRights & KIMAP::Acl::Create ) {
+    newRights|= Akonadi::Collection::CanChangeCollection;
+  }
 
   if ( imapRights & KIMAP::Acl::Write ) {
     newRights|= Akonadi::Collection::CanChangeItem;
@@ -194,7 +213,6 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
   }
 
   if ( imapRights & ( KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create ) ) {
-    newRights|= Akonadi::Collection::CanChangeCollection;
     newRights|= Akonadi::Collection::CanCreateCollection;
   }
 
