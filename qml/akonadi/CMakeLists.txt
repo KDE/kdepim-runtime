@@ -4,7 +4,6 @@ install(FILES
   collectionview.qml
   AkonadiBreadcrumbNavigationView.qml
   CollectionDelegate.qml
-  FavoriteSelector.qml
   backgroundtile.png
   border_dot.png
   currentindicator.png

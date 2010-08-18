@@ -18,7 +18,6 @@
 */
 
 #include "plugin.h"
-#include "qmlcolumnview.h"
 #include "qmldateedit.h"
 
 #include <kcomponentdata.h>
@@ -38,7 +37,6 @@ void Plugin::registerTypes(const char* uri)
 {
   kDebug() << uri;
   qmlRegisterType<Qt::QmlDateEdit>( uri, 4, 7, "QmlDateEdit" );
-  qmlRegisterType<Qt::QmlColumnView>( uri, 4, 7, "QmlColumnView" );
 }
 
 #include "plugin.moc"
