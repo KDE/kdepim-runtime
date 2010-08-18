@@ -240,7 +240,7 @@ int ResourceState::intervalCheckTime() const
 
 Akonadi::Collection ResourceState::collection() const
 {
-  return attachTimestamp(m_collection);
+  return m_collection;
 }
 
 Akonadi::Item ResourceState::item() const
@@ -250,17 +250,17 @@ Akonadi::Item ResourceState::item() const
 
 Akonadi::Collection ResourceState::parentCollection() const
 {
-  return attachTimestamp(m_parentCollection);
+  return m_parentCollection;
 }
 
 Akonadi::Collection ResourceState::sourceCollection() const
 {
-  return attachTimestamp(m_sourceCollection);
+  return m_sourceCollection;
 }
 
 Akonadi::Collection ResourceState::targetCollection() const
 {
-  return attachTimestamp(m_targetCollection);
+  return m_targetCollection;
 }
 
 QSet<QByteArray> ResourceState::parts() const
@@ -310,22 +310,7 @@ void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
 
 void ResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
 {
-  Akonadi::Collection c = collection;
-
-  if ( c.hasAttribute<TimestampAttribute>() ) {
-    TimestampAttribute *attr = c.attribute<TimestampAttribute>();
-
-    QHash<QString, uint> timestamps = Settings::self()->loadTimestamps();
-    QString mailBox = mailBoxForCollection( c );
-
-    timestamps[mailBox] = attr->timestamp();
-
-    Settings::self()->saveTimestamps( timestamps );
-
-    c.removeAttribute<TimestampAttribute>();
-  }
-
-  new Akonadi::CollectionModifyJob( c );
+  new Akonadi::CollectionModifyJob( collection );
 }
 
 void ResourceState::itemRetrieved( const Akonadi::Item &item )
@@ -353,14 +338,24 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
   m_resource->collectionsRetrieved( collections );
 
   if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
+    QStringList oldMailBoxes = Settings::self()->knownMailBoxes();
+    QStringList newMailBoxes;
+
     foreach ( const Akonadi::Collection &c, collections ) {
-      if ( !c.hasAttribute<NoSelectAttribute>() ) {
+      const QString mailBox = mailBoxForCollection( c );
+
+      if ( !c.hasAttribute<NoSelectAttribute>()
+        && !oldMailBoxes.contains( mailBox ) ) {
         m_resource->scheduleCustomTask( m_resource,
                                         "triggerCollectionExtraInfoJobs",
                                         QVariant::fromValue( c ),
                                         Akonadi::ResourceBase::Append );
       }
+
+      newMailBoxes << mailBox;
     }
+
+    Settings::self()->setKnownMailBoxes( newMailBoxes );
   }
 
   m_resource->startIdleIfNeeded();
@@ -409,20 +404,4 @@ void ResourceState::synchronizeCollectionTree()
 void ResourceState::scheduleConnectionAttempt()
 {
   m_resource->scheduleConnectionAttempt();
-}
-
-Akonadi::Collection ResourceState::attachTimestamp( const Akonadi::Collection &collection ) const
-{
-  Akonadi::Collection c = collection;
-
-  if ( !c.hasAttribute<TimestampAttribute>() ) {
-    QHash<QString, uint> timestamps = Settings::self()->loadTimestamps();
-    QString mailBox = mailBoxForCollection( c );
-
-    if ( timestamps.contains( mailBox ) ) {
-      c.addAttribute( new TimestampAttribute( timestamps[mailBox] ) );
-    }
-  }
-
-  return c;
 }

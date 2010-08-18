@@ -63,6 +63,9 @@
     <entry name="AccountIdentity" type="Int">
        <label>Identity account</label>
     </entry>
+    <entry name="KnownMailBoxes" type="StringList">
+      <label>List of mailbox names reported by the server the last time</label>
+    </entry>
   </group>
   <group name="idle">
     <entry name="IdleRidPath" type="StringList">
