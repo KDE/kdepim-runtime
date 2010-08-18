@@ -134,6 +134,8 @@ public:
   virtual void scheduleConnectionAttempt();
 
 private:
+  Akonadi::Collection attachTimestamp( const Akonadi::Collection &collection ) const;
+
   ImapResource *m_resource;
 
   Akonadi::Collection m_collection;

@@ -48,6 +48,9 @@ public:
     QString rootRemoteId() const;
     void renameRootCollection( const QString &newName );
 
+    QHash<QString, uint> loadTimestamps() const;
+    void saveTimestamps( const QHash<QString, uint> &timestamps );
+
 signals:
     void passwordRequestCompleted( const QString &password, bool userRejected );
 

@@ -26,6 +26,7 @@
 #include "sessionpool.h"
 #include "settings.h"
 #include "noselectattribute.h"
+#include "timestampattribute.h"
 
 #include <akonadi/collectionmodifyjob.h>
 
@@ -239,7 +240,7 @@ int ResourceState::intervalCheckTime() const
 
 Akonadi::Collection ResourceState::collection() const
 {
-  return m_collection;
+  return attachTimestamp(m_collection);
 }
 
 Akonadi::Item ResourceState::item() const
@@ -249,17 +250,17 @@ Akonadi::Item ResourceState::item() const
 
 Akonadi::Collection ResourceState::parentCollection() const
 {
-  return m_parentCollection;
+  return attachTimestamp(m_parentCollection);
 }
 
 Akonadi::Collection ResourceState::sourceCollection() const
 {
-  return m_sourceCollection;
+  return attachTimestamp(m_sourceCollection);
 }
 
 Akonadi::Collection ResourceState::targetCollection() const
 {
-  return m_targetCollection;
+  return attachTimestamp(m_targetCollection);
 }
 
 QSet<QByteArray> ResourceState::parts() const
@@ -309,7 +310,22 @@ void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
 
 void ResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
 {
-  new Akonadi::CollectionModifyJob( collection );
+  Akonadi::Collection c = collection;
+
+  if ( c.hasAttribute<TimestampAttribute>() ) {
+    TimestampAttribute *attr = c.attribute<TimestampAttribute>();
+
+    QHash<QString, uint> timestamps = Settings::self()->loadTimestamps();
+    QString mailBox = mailBoxForCollection( c );
+
+    timestamps[mailBox] = attr->timestamp();
+
+    Settings::self()->saveTimestamps( timestamps );
+
+    c.removeAttribute<TimestampAttribute>();
+  }
+
+  new Akonadi::CollectionModifyJob( c );
 }
 
 void ResourceState::itemRetrieved( const Akonadi::Item &item )
@@ -393,4 +409,20 @@ void ResourceState::synchronizeCollectionTree()
 void ResourceState::scheduleConnectionAttempt()
 {
   m_resource->scheduleConnectionAttempt();
+}
+
+Akonadi::Collection ResourceState::attachTimestamp( const Akonadi::Collection &collection ) const
+{
+  Akonadi::Collection c = collection;
+
+  if ( !c.hasAttribute<TimestampAttribute>() ) {
+    QHash<QString, uint> timestamps = Settings::self()->loadTimestamps();
+    QString mailBox = mailBoxForCollection( c );
+
+    if ( timestamps.contains( mailBox ) ) {
+      c.addAttribute( new TimestampAttribute( timestamps[mailBox] ) );
+    }
+  }
+
+  return c;
 }

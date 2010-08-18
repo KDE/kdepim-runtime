@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Klar√§lvdalens Datakonsult AB,
+    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
@@ -19,37 +19,43 @@
     02110-1301, USA.
 */
 
-#ifndef RETRIEVECOLLECTIONMETADATATASK_H
-#define RETRIEVECOLLECTIONMETADATATASK_H
+#include "timestampattribute.h"
 
-#include "resourcetask.h"
+#include <QByteArray>
 
-class RetrieveCollectionMetadataTask : public ResourceTask
+#include <akonadi/attribute.h>
+
+TimestampAttribute::TimestampAttribute( uint timestamp )
+        : mTimestamp( timestamp )
 {
-  Q_OBJECT
+}
 
-public:
-  static const uint TimestampTimeout;
+void TimestampAttribute::setTimestamp( uint timestamp )
+{
+    mTimestamp = timestamp;
+}
 
-  explicit RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
-  virtual ~RetrieveCollectionMetadataTask();
+uint TimestampAttribute::timestamp() const
+{
+    return mTimestamp;
+}
 
-private slots:
-  void onGetMetaDataDone( KJob *job );
-  void onGetAclDone( KJob *job );
-  void onRightsReceived( KJob *job );
-  void onQuotasReceived( KJob *job );
+QByteArray TimestampAttribute::type() const
+{
+    return "timestamp";
+}
 
-protected:
-  virtual void doStart( KIMAP::Session *session );
+Akonadi::Attribute *TimestampAttribute::clone() const
+{
+    return new TimestampAttribute( mTimestamp );
+}
 
-private:
-  void endTaskIfNeeded();
+QByteArray TimestampAttribute::serialized() const
+{
+    return QByteArray::number( mTimestamp );
+}
 
-  int m_pendingMetaDataJobs;
-
-  bool m_collectionChanged;
-  Akonadi::Collection m_collection;
-};
-
-#endif
+void TimestampAttribute::deserialize( const QByteArray &data )
+{
+    mTimestamp = data.toInt();
+}

@@ -29,6 +29,7 @@ set( libimapresource_SRCS
   retrieveitemtask.cpp
   retrieveitemstask.cpp
   sessionpool.cpp
+  timestampattribute.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}

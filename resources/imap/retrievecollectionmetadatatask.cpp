@@ -21,6 +21,8 @@
 
 #include "retrievecollectionmetadatatask.h"
 
+#include <QtCore/QDateTime>
+
 #include <kimap/getacljob.h>
 #include <kimap/getmetadatajob.h>
 #include <kimap/getquotarootjob.h>
@@ -33,7 +35,9 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
+#include "timestampattribute.h"
 
+const uint RetrieveCollectionMetadataTask::TimestampTimeout = 3600 * 24 * 20; // 20 days
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ), m_pendingMetaDataJobs(0), m_collectionChanged(false)
@@ -56,6 +60,19 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
       taskDone();
       return;
     }
+  }
+
+  uint timestamp = 0;
+  const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
+
+  if ( collection().hasAttribute<TimestampAttribute>() ) {
+    timestamp = collection().attribute<TimestampAttribute>()->timestamp();
+  }
+
+  // Refresh only if we're older than twenty days
+  if ( timestamp + TimestampTimeout >  currentTimestamp ) {
+    taskDone();
+    return;
   }
 
   m_collection = collection();
@@ -297,6 +314,11 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
   if ( --m_pendingMetaDataJobs == 0 ) {
     // the others have ended, we're done, the next one can go
     if ( m_collectionChanged ) {
+      const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
+
+      TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
+      attr->setTimestamp( currentTimestamp );
+
       applyCollectionChanges( m_collection );
     }
     taskDone();

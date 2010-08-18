@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Klar√§lvdalens Datakonsult AB,
+    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
@@ -19,37 +19,24 @@
     02110-1301, USA.
 */
 
-#ifndef RETRIEVECOLLECTIONMETADATATASK_H
-#define RETRIEVECOLLECTIONMETADATATASK_H
+#ifndef TIMESTAMPATTRIBUTE_H
+#define TIMESTAMPATTRIBUTE_H
 
-#include "resourcetask.h"
+#include <akonadi/attribute.h>
 
-class RetrieveCollectionMetadataTask : public ResourceTask
+class TimestampAttribute : public Akonadi::Attribute
 {
-  Q_OBJECT
-
 public:
-  static const uint TimestampTimeout;
-
-  explicit RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
-  virtual ~RetrieveCollectionMetadataTask();
-
-private slots:
-  void onGetMetaDataDone( KJob *job );
-  void onGetAclDone( KJob *job );
-  void onRightsReceived( KJob *job );
-  void onQuotasReceived( KJob *job );
-
-protected:
-  virtual void doStart( KIMAP::Session *session );
+    TimestampAttribute( uint timestamp = 0 );
+    void setTimestamp( uint timestamp );
+    uint timestamp() const;
+    virtual QByteArray type() const;
+    virtual Attribute *clone() const;
+    virtual QByteArray serialized() const;
+    virtual void deserialize( const QByteArray &data );
 
 private:
-  void endTaskIfNeeded();
-
-  int m_pendingMetaDataJobs;
-
-  bool m_collectionChanged;
-  Akonadi::Collection m_collection;
+    uint mTimestamp;
 };
 
 #endif

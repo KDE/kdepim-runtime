@@ -260,4 +260,35 @@ void Settings::onRootCollectionFetched( KJob *job )
   }
 }
 
+QHash<QString, uint> Settings::loadTimestamps() const
+{
+  KConfigGroup group = config()->group("Cache");
+
+  QHash<QString, uint> result;
+
+  QStringList merged = group.readEntry( "Timestamps", QStringList() );
+
+  foreach ( const QString &merge, merged ) {
+    QStringList vals = merge.split( '%' );
+    result[vals.at( 0 )] = vals.at( 1 ).toInt();
+  }
+
+  return result;
+}
+
+void Settings::saveTimestamps( const QHash<QString, uint> &timestamps )
+{
+  KConfigGroup group = config()->group("Cache");
+
+  QStringList result;
+
+  for ( QHash<QString, uint>::ConstIterator it = timestamps.constBegin();
+        it!=timestamps.constEnd(); ++it ) {
+    result << it.key() + '%' + QString::number( it.value() );
+  }
+
+  group.writeEntry( "Timestamps", result );
+  group.sync();
+}
+
 #include "settings.moc"

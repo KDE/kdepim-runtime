@@ -27,6 +27,7 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
+#include "timestampattribute.h"
 
 Q_DECLARE_METATYPE( Akonadi::Collection::Rights );
 
@@ -58,6 +59,9 @@ private slots:
     collection = Akonadi::Collection( 1 );
     collection.setRemoteId( "/INBOX/Foo" );
     collection.setRights( 0 );
+    collection.addAttribute( new TimestampAttribute( QDateTime::currentDateTime().toTime_t()
+                                                   - RetrieveCollectionMetadataTask::TimestampTimeout
+                                                   - 100 ) );
 
     capabilities.clear();
     capabilities << "ANNOTATEMORE" << "ACL" << "QUOTA";
@@ -98,6 +102,7 @@ private slots:
     aclAttribute->setRights( rightsMap );
     parentCollection.addAttribute( aclAttribute );
     collection.setParentCollection( parentCollection );
+    collection.removeAttribute<TimestampAttribute>();
     rights = Akonadi::Collection::AllRights;
     rights &= ~Akonadi::Collection::CanChangeCollection;
     QTest::newRow( "parent without create rights" ) << collection << capabilities << scenario
@@ -138,6 +143,28 @@ private slots:
              Akonadi::Collection::CanChangeCollection;
     QTest::newRow( "only some rights" ) << collection << capabilities << scenario
                                         << callNames << rights;
+
+
+    //
+    // We shouldn't query the server for any metadata if we did so recently
+    //
+    collection = Akonadi::Collection( 1 );
+    collection.setRemoteId( "/INBOX/Foo" );
+    collection.setRights( 0 );
+    collection.addAttribute( new TimestampAttribute( QDateTime::currentDateTime().toTime_t() ) );
+
+    capabilities.clear();
+    capabilities << "ANNOTATEMORE" << "ACL" << "QUOTA";
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario();
+
+    callNames.clear();
+    callNames << "taskDone";
+
+    rights = Akonadi::Collection::AllRights;
+    QTest::newRow( "recent timestamp, no metadata harvesting" ) << collection << capabilities << scenario
+                                                                << callNames << rights ;
   }
 
   void shouldCollectionRetrieveMetadata()
@@ -163,6 +190,7 @@ private slots:
     state->setServerCapabilities( capabilities );
     state->setUserName( "Hans" );
     RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state );
+
     task->start( &pool );
     QTest::qWait( 100 );
 
@@ -179,11 +207,19 @@ private slots:
 
       if ( command == "cancelTask" ) {
         QVERIFY( !parameter.toString().isEmpty() );
+      } else if ( command == "applyCollectionChanges" ) {
+        Akonadi::Collection c = parameter.value<Akonadi::Collection>();
+
       }
 
       if ( command == "applyCollectionChanges" ) {
         Akonadi::Collection collection = parameter.value<Akonadi::Collection>();
         QCOMPARE( collection.rights(), expectedRights );
+        QVERIFY( collection.hasAttribute<TimestampAttribute>() );
+
+        const qint64 timestamp = collection.attribute<TimestampAttribute>()->timestamp();
+        const qint64 currentTimestamp = QDateTime::currentDateTime().toTime_t();
+        QVERIFY( qAbs( currentTimestamp - timestamp ) < 5 );
       }
     }
 
