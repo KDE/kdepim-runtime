@@ -44,5 +44,5 @@ Exec=akonadi_akonotes_resource
 Icon=view-pim-notes
 
 X-Akonadi-MimeTypes=text/x-vnd.akonadi.note
-X-Akonadi-Capabilities=Resource
+X-Akonadi-Capabilities=Resource,Notes
 X-Akonadi-Identifier=akonadi_akonotes_resource
