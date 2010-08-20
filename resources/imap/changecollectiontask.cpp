@@ -25,6 +25,7 @@
 #include <kimap/setacljob.h>
 #include <kimap/setmetadatajob.h>
 #include <kimap/session.h>
+#include <kimap/subscribejob.h>
 
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
@@ -210,14 +211,13 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
     const QString newMailBox = mailBoxForCollection( m_collection );
 
     if ( oldMailBox != newMailBox ) {
-      KIMAP::RenameJob *job = new KIMAP::RenameJob( session );
-      job->setSourceMailBox( oldMailBox );
-      job->setDestinationMailBox( newMailBox );
-
-      connect( job, SIGNAL( result( KJob* ) ),
+      KIMAP::RenameJob *renameJob = new KIMAP::RenameJob( session );
+      renameJob->setSourceMailBox( oldMailBox );
+      renameJob->setDestinationMailBox( newMailBox );
+      connect( renameJob, SIGNAL( result( KJob* ) ),
                this, SLOT( onRenameDone( KJob* ) ) );
 
-      job->start();
+      renameJob->start();
 
       m_pendingJobs++;
     }
@@ -240,6 +240,24 @@ void ChangeCollectionTask::onRenameDone( KJob *job )
 
     m_collection.setName( prevRid.mid( 1 ) );
     m_collection.setRemoteId( prevRid );
+
+    endTaskIfNeeded();
+  } else {
+    KIMAP::RenameJob *renameJob = static_cast<KIMAP::RenameJob*>( job );
+    KIMAP::SubscribeJob *subscribeJob = new KIMAP::SubscribeJob( renameJob->session() );
+    subscribeJob->setMailBox( renameJob->destinationMailBox() );
+    connect( subscribeJob, SIGNAL( result( KJob* ) ),
+             this, SLOT( onSubscribeDone( KJob* ) ) );
+    subscribeJob->start();
+  }
+}
+
+void ChangeCollectionTask::onSubscribeDone( KJob *job )
+{
+  if ( job->error() && isSubscriptionEnabled() ) {
+    emitWarning( i18n( "Failed to subscribe to the renamed folder '%1' on the IMAP server. "
+                       "It will disappear on next sync. Use the subscription dialog to overcome that",
+                       m_collection.name() ) );
   }
 
   endTaskIfNeeded();

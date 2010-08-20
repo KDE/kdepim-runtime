@@ -16,8 +16,6 @@ install( FILES qmldir
   list-line-top.png
   scrollable-bottom.png
   scrollable-top.png
-  slideout-panel-background.png
-  slideout-panel-handle.png
   flap-collapsed-top.png
   flap-collapsed-mid.png
   flap-collapsed-bottom.png

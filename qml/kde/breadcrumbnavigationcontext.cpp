@@ -125,6 +125,11 @@ KBreadcrumbNavigationFactory::KBreadcrumbNavigationFactory(QObject* parent)
 
 }
 
+KBreadcrumbNavigationFactory::~KBreadcrumbNavigationFactory()
+{
+  delete d_ptr;
+}
+
 void KBreadcrumbNavigationFactory::createCheckableBreadcrumbContext(QAbstractItemModel* model, QObject* parent)
 {
   Q_D(KBreadcrumbNavigationFactory);

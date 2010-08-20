@@ -136,6 +136,8 @@ void SendJob::Private::doAkonadiTransport()
       QDBusConnection::sessionBus(), q );
   if( !iface->isValid() ) {
     storeResult( false, i18n( "Failed to get D-Bus interface of resource %1.", resourceId ) );
+    delete iface;
+    iface = 0;
     return;
   }
 

@@ -527,6 +527,94 @@ private slots:
 
     server.quit();
   }
+
+  void shouldHandleDisconnectDuringPasswordRequest()
+  {
+    ImapAccount *account = createDefaultAccount();
+
+    // This requester will delay the second reply by a second
+    DummyPasswordRequester *requester = createDefaultRequester();
+    requester->setDelays( QList<int>() << 20 << 1000 );
+    QSignalSpy requesterSpy( requester, SIGNAL(done(int, QString)) );
+
+    FakeServer server;
+
+    server.addScenario( QList<QByteArray>()
+                        << FakeServer::greeting()
+                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "S: A000001 OK User Logged in"
+                        << "C: A000002 CAPABILITY"
+                        << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
+                        << "S: A000002 OK Completed"
+                        << "C: A000003 CAPABILITY"
+                        << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                        << "X"
+    );
+
+    server.startAndWait();
+
+    // The connect should work nicely
+    SessionPool pool( 2 );
+
+    QVERIFY( !pool.isConnected() );
+
+    QSignalSpy poolSpy( &pool, SIGNAL(connectDone(int, QString)) );
+    QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)) );
+    QSignalSpy lostSpy( &pool, SIGNAL(connectionLost(KIMAP::Session*)) );
+
+    pool.setPasswordRequester( requester );
+    QVERIFY( pool.connect( account ) );
+
+    QTest::qWait( 100 );
+    QCOMPARE( requesterSpy.count(), 1 );
+
+    QCOMPARE( poolSpy.count(), 1 );
+    QCOMPARE( poolSpy.at(0).at(0).toInt(), (int)SessionPool::NoError );
+    QVERIFY( pool.isConnected() );
+
+    // Ask for the session we just created
+    pool.requestSession();
+    QTest::qWait( 100 );
+    QCOMPARE( sessionSpy.count(), 1 );
+    QVERIFY( sessionSpy.at(0).at(1).value<KIMAP::Session*>() != 0 );
+
+    KIMAP::Session *session = sessionSpy.at(0).at(1).value<KIMAP::Session*>();
+
+    // Ask for the second session, the password requested will never reply
+    // and we'll get a disconnect in parallel (by triggering the capability
+    // job on the first session
+    // Done this way to simulate a disconnect during a password request
+
+    // Ask for the extra session, and make sure the call is placed by waiting
+    // just a bit (but not too long so that the requester didn't reply yet,
+    // we set the reply timeout to 1000 earlier in this test)
+    pool.requestSession();
+    QTest::qWait( 100 );
+    QCOMPARE( requesterSpy.count(), 1 );  // Requester didn't reply yet
+    QCOMPARE( sessionSpy.count(), 1 );
+
+    // Make the first (and only) session drop while we wait for the requester
+    // to reply
+    KIMAP::CapabilitiesJob *job = new KIMAP::CapabilitiesJob( session );
+    job->start();
+    QTest::qWait( 100 );
+    QCOMPARE( lostSpy.count(), 1 );
+    QCOMPARE( lostSpy.at(0).at(0).value<KIMAP::Session*>(), session );
+
+    // The requester didn't reply yet
+    QCOMPARE( requesterSpy.count(), 1 );
+    QCOMPARE( sessionSpy.count(), 1 );
+
+    // Now wait the remaining time to get the session creation to fail
+    QTest::qWait( 1000 );
+    QCOMPARE( requesterSpy.count(), 2 );
+    QCOMPARE( sessionSpy.count(), 2 );
+    QCOMPARE( sessionSpy.at(1).at(2).toInt(), (int)SessionPool::LoginFailError );
+
+    QVERIFY( server.isAllScenarioDone() );
+
+    server.quit();
+  }
 };
 
 QTEST_KDEMAIN_CORE( TestSessionPool )

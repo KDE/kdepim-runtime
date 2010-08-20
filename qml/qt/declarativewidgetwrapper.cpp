@@ -28,6 +28,9 @@ DeclarativeWidgetWrapperBase::DeclarativeWidgetWrapperBase(QWidget* widget, QDec
   m_proxy( new QGraphicsProxyWidget( this ) )
 {
   m_proxy->setWidget( widget );
+  QPalette pal = widget->palette();
+  pal.setColor( QPalette::Background, QColor( 0, 0, 0, 0 ) );
+  widget->setPalette( pal );
 }
 
 void DeclarativeWidgetWrapperBase::geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry)

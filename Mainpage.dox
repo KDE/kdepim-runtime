@@ -24,10 +24,10 @@ blocks section below.
 \section akonadi_building_blocks Building Blocks
 
 - Domain-specific libraries:
-  - <a href="../../kdepimlibs/kabc/index.html">Contacts (KABC)</a>
-  - <a href="../../kdepimlibs/kmime/index.html">MIME Messages (KMime)</a>
-  - <a href="../../kdepimlibs/kcal/index.html">Events, todo items and journal entries (KCal)</a>
-- <a href="../../kdepimlibs/akonadi/index.html">Core library (libakonadi)</a>
+  - <a href="../../kdepimlibs-apidocs/kabc/html/index.html">Contacts (KABC)</a>
+  - <a href="../../kdepimlibs-apidocs/kmime/html/index.html">MIME Messages (KMime)</a>
+  - <a href="../../kdepimlibs-apidocs/kcal/html/index.html">Events, todo items and journal entries (KCal)</a>
+  - <a href="../../kdepimlibs-apidocs/akonadi/html/index.html">Core library (libakonadi)</a>
 
 \authors Tobias König <tokoe@kde.org>, Volker Krause <vkrause@kde.org>
 
@@ -437,5 +437,5 @@ It is a management tool which provides user interfaces for the following tasks:
 
 */
 
-// DOXYGEN_SET_INPUT += @topdir@/akonadi/doc
-// DOXYGEN_EXCLUDE = server libakonadi resources clients kioslave kabc kmime plugins kcal
+// DOXYGEN_NAME=kdepim-runtime
+// DOXYGEN_ENABLE=YES

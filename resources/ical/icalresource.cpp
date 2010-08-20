@@ -20,26 +20,18 @@
 
 #include "icalresource.h"
 
-#include <akonadi/kcal/incidencemimetypevisitor.h>
-
-#include <kcal/assignmentvisitor.h>
-#include <kcal/calendarlocal.h>
-#include <kcal/incidence.h>
+#include <kcalcore/memorycalendar.h>
+#include <kcalcore/freebusy.h>
 
 #include <kdebug.h>
 #include <klocale.h>
 
-#include <boost/shared_ptr.hpp>
 
 using namespace Akonadi;
-using namespace KCal;
-
-typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
+using namespace KCalCore;
 
 ICalResource::ICalResource( const QString &id )
-    : ICalResourceBase( id ),
-      mMimeVisitor( new IncidenceMimeTypeVisitor ),
-      mIncidenceAssigner( new AssignmentVisitor() )
+    : ICalResourceBase( id )
 {
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/calendar" );
@@ -48,47 +40,42 @@ ICalResource::ICalResource( const QString &id )
 }
 
 ICalResource::ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon )
-    : ICalResourceBase( id ),
-      mMimeVisitor( new IncidenceMimeTypeVisitor ),
-      mIncidenceAssigner( new AssignmentVisitor() )
+    : ICalResourceBase( id )
 {
   initialise( mimeTypes, icon );
 }
 
 ICalResource::~ICalResource()
 {
-  delete mMimeVisitor;
-  delete mIncidenceAssigner;
 }
 
 bool ICalResource::doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
   const QString rid = item.remoteId();
-  Incidence* incidence = calendar()->incidence( rid );
+  Incidence::Ptr incidence = calendar()->incidence( rid );
   if ( !incidence ) {
     emit error( i18n("Incidence with uid '%1' not found.", rid ) );
     return false;
   }
 
-  IncidencePtr incidencePtr( incidence->clone() );
+  Incidence::Ptr incidencePtr( incidence->clone() );
 
   Item i = item;
-  i.setMimeType( mimeType( incidencePtr.get() ) );
-  i.setPayload<IncidencePtr>( incidencePtr );
+  i.setMimeType( incidencePtr->mimeType() );
+  i.setPayload<Incidence::Ptr>( incidencePtr );
   itemRetrieved( i );
   return true;
 }
 
 void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& )
 {
-  if ( !checkItemAddedChanged<IncidencePtr>( item, CheckForAdded ) ) {
+  if ( !checkItemAddedChanged<Incidence::Ptr>( item, CheckForAdded ) ) {
     return;
   }
 
-  IncidencePtr i = item.payload<IncidencePtr>();
-  if ( !calendar()->addIncidence( i.get()->clone() ) )
-  {
+  Incidence::Ptr i = item.payload<Incidence::Ptr>();
+  if ( !calendar()->addIncidence( Incidence::Ptr( i->clone() ) ) ) {
     cancelTask();
     return;
   }
@@ -99,32 +86,35 @@ void ICalResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collect
   changeCommitted( it );
 }
 
-void ICalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+void ICalResource::itemChanged( const Akonadi::Item &item,
+                                const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts )
 
-  if ( !checkItemAddedChanged<IncidencePtr>( item, CheckForChanged ) ) {
+    if ( !checkItemAddedChanged<Incidence::Ptr>( item, CheckForChanged ) ) {
     return;
   }
 
-  IncidencePtr payload = item.payload<IncidencePtr>();
-  Incidence *incidence = calendar()->incidence( item.remoteId() );
+  Incidence::Ptr payload = item.payload<Incidence::Ptr>();
+  Incidence::Ptr incidence = calendar()->incidence( item.remoteId() );
   if ( !incidence ) {
     // not in the calendar yet, should not happen -> add it
-    calendar()->addIncidence( payload.get()->clone() );
+    calendar()->addIncidence( Incidence::Ptr( payload->clone() ) );
   } else {
     // make sure any observer the resource might have installed gets properly notified
     incidence->startUpdates();
-    bool assignResult = mIncidenceAssigner->assign( incidence, payload.get() );
-    if ( assignResult )
-      incidence->updated();
-    incidence->endUpdates();
 
-    if ( !assignResult ) {
+    if ( incidence->type() == payload->type() ) {
+      // IncidenceBase::operator= calls virtual method assign, so it's safe.
+      *incidence.staticCast<IncidenceBase>().data() = *payload.data();
+      incidence->updated();
+      incidence->endUpdates();
+    } else {
+      incidence->endUpdates();
       kWarning() << "Item changed incidence type. Replacing it.";
 
       calendar()->deleteIncidence( incidence );
-      calendar()->addIncidence( payload.get()->clone() );
+      calendar()->addIncidence( Incidence::Ptr( payload->clone() ) );
     }
   }
   scheduleWrite();
@@ -136,10 +126,10 @@ void ICalResource::doRetrieveItems( const Akonadi::Collection & col )
   Q_UNUSED( col );
   Incidence::List incidences = calendar()->incidences();
   Item::List items;
-  foreach ( Incidence *incidence, incidences ) {
-    Item item ( mimeType( incidence ) );
+  foreach ( const Incidence::Ptr &incidence, incidences ) {
+    Item item ( incidence->mimeType() );
     item.setRemoteId( incidence->uid() );
-    item.setPayload( IncidencePtr( incidence->clone() ) );
+    item.setPayload( Incidence::Ptr( incidence->clone() ) );
     items << item;
   }
   itemsRetrieved( items );
@@ -147,12 +137,15 @@ void ICalResource::doRetrieveItems( const Akonadi::Collection & col )
 
 QStringList ICalResource::allMimeTypes() const
 {
-    return mMimeVisitor->allMimeTypes();
+  return QStringList() << KCalCore::Event::eventMimeType()
+                       << KCalCore::Todo::todoMimeType()
+                       << KCalCore::Journal::journalMimeType()
+                       << KCalCore::FreeBusy::freeBusyMimeType();
 }
 
-QString ICalResource::mimeType( IncidenceBase *incidence )
+QString ICalResource::mimeType( const IncidenceBase::Ptr &incidence ) const
 {
-  return mMimeVisitor->mimeType( incidence );
+  return incidence->mimeType();
 }
 
 #include "icalresource.moc"

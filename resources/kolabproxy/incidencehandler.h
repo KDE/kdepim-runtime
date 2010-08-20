@@ -22,8 +22,8 @@
 #define INCIDENCEHANDLER_H
 
 #include "kolabhandler.h"
-#include <kcal/incidence.h>
-#include <kcal/calendarlocal.h>
+#include <kcalcore/incidence.h>
+#include <kcalcore/memorycalendar.h>
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -44,16 +44,18 @@ Q_SIGNALS:
     void useGlobalMode();
 
 protected:
-  virtual KCal::Incidence* incidenceFromKolab(const KMime::Message::Ptr &data) = 0;
-  virtual QByteArray incidenceToXml(KCal::Incidence *incidence) = 0;
-  static void attachmentsFromKolab( const KMime::Message::Ptr &data, const QByteArray &xmlData, KCal::Incidence* incidence );
-  void incidenceToItem(const KCal::Incidence::Ptr &e, Akonadi::Item &imapItem);
+  virtual KCalCore::Incidence::Ptr incidenceFromKolab(const KMime::Message::Ptr &data) = 0;
+  virtual QByteArray incidenceToXml( const KCalCore::Incidence::Ptr &incidence) = 0;
+  static void attachmentsFromKolab( const KMime::Message::Ptr &data,
+                                    const QByteArray &xmlData,
+                                    const KCalCore::Incidence::Ptr &incidence );
+  void incidenceToItem(const KCalCore::Incidence::Ptr &e, Akonadi::Item &imapItem);
 
   struct StoredItem{
-    StoredItem(Akonadi::Entity::Id _id, const KCal::Incidence::Ptr &_inc) : id(_id), incidence(_inc) {}
+    StoredItem(Akonadi::Entity::Id _id, const KCalCore::Incidence::Ptr &_inc) : id(_id), incidence(_inc) {}
     StoredItem() : id(-1){}
     Akonadi::Entity::Id id;
-    KCal::Incidence::Ptr incidence;
+    KCalCore::Incidence::Ptr incidence;
   };
 
   enum ConflictResolution {
@@ -63,9 +65,9 @@ protected:
     Duplicate
   };
 
-  ConflictResolution resolveConflict( const KCal::Incidence::Ptr &inc);
+  ConflictResolution resolveConflict( const KCalCore::Incidence::Ptr &inc);
 
-  KCal::CalendarLocal m_calendar;
+  KCalCore::MemoryCalendar m_calendar;
   QMap<QString, StoredItem> m_uidMap;
 };
 

@@ -248,6 +248,16 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
 {
   QString errorMessage;
 
+  if ( !m_account ) {
+    // it looks like the connection was lost while we were waiting
+    // for the password, we should fail all the pending requests and stop there
+    foreach ( int request, m_pendingRequests ) {
+      emit sessionRequestDone( request, 0,
+                               LoginFailError, i18n( "Disconnected from server during login." ) );
+    }
+    return;
+  }
+
   switch ( resultType )
   {
   case PasswordRequesterInterface::PasswordRetrieved:

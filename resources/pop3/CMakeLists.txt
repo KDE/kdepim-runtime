@@ -61,7 +61,7 @@ target_link_libraries( akonadi_pop3_resource
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KIO_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDE4_MAILTRANSPORT_LIBRARY}
+  ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
 )
 
 add_subdirectory( tests )

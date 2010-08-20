@@ -35,18 +35,19 @@
 #include "settingsadaptor.h"
 #include "setupwizard.h"
 
+#include <kcalcore/incidence.h>
+#include <kcalcore/icalformat.h>
+#include <kcalcore/todo.h>
+
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/kcal/incidencemimetypevisitor.h>
-#include <boost/shared_ptr.hpp>
+
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
-#include <kcal/icalformat.h>
-#include <kcal/incidence.h>
 #include <kwindowsystem.h>
 
 #include <QtCore/QSet>
@@ -54,10 +55,10 @@
 
 using namespace Akonadi;
 
-typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
+typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 
 DavGroupwareResource::DavGroupwareResource( const QString &id )
-  : ResourceBase( id ), mMimeVisitor( new Akonadi::IncidenceMimeTypeVisitor )
+  : ResourceBase( id )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -93,7 +94,6 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
 
 DavGroupwareResource::~DavGroupwareResource()
 {
-  delete mMimeVisitor;
 }
 
 void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collection )
@@ -273,8 +273,8 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
     url = KUrl( basePath + fileName + ".ics" );
     mimeType = "text/calendar";
 
-    KCal::ICalFormat formatter;
-    rawData = formatter.toICalString( ptr.get() ).toUtf8();
+    KCalCore::ICalFormat formatter;
+    rawData = formatter.toICalString( ptr ).toUtf8();
   } else {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask( i18n( "Unable to retrieve added item %1.", item.id() ) );
@@ -323,8 +323,8 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
 
-    KCal::ICalFormat formatter;
-    rawData = formatter.toICalString( ptr.get() ).toUtf8();
+    KCalCore::ICalFormat formatter;
+    rawData = formatter.toICalString( ptr ).toUtf8();
     mimeType = "text/calendar";
   } else {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
@@ -406,10 +406,10 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
 
     const DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
     if ( contentTypes & DavCollection::Events )
-      mimeTypes << IncidenceMimeTypeVisitor::eventMimeType();
+      mimeTypes << KCalCore::Event::eventMimeType();
 
     if ( contentTypes & DavCollection::Todos )
-      mimeTypes << IncidenceMimeTypeVisitor::todoMimeType();
+      mimeTypes << KCalCore::Todo::todoMimeType();
 
     if ( contentTypes & DavCollection::Contacts )
       mimeTypes << KABC::Addressee::mimeType();
@@ -459,10 +459,10 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
       item.setMimeType( KABC::Addressee::mimeType() );
     else if ( contentMimeTypes.contains( "text/calendar" ) )
       item.setMimeType( "text/calendar" );
-    else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::eventMimeType() ) )
-      item.setMimeType( IncidenceMimeTypeVisitor::eventMimeType() );
-    else if ( contentMimeTypes.contains( IncidenceMimeTypeVisitor::todoMimeType() ) )
-      item.setMimeType( IncidenceMimeTypeVisitor::todoMimeType() );
+    else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) )
+      item.setMimeType( KCalCore::Event::eventMimeType() );
+    else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) )
+      item.setMimeType( KCalCore::Todo::todoMimeType() );
 
     if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) ) {
       // Only clear the payload (and therefor trigger a refetch from the backend) if we
@@ -530,17 +530,16 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
 
       item.setPayload<KABC::Addressee>( contact );
     } else {
-      KCal::ICalFormat formatter;
+      KCalCore::ICalFormat formatter;
       const IncidencePtr ptr( formatter.fromString( data ) );
 
-      if ( ptr.get() == 0 )
+      if ( !ptr )
         continue;
 
       item.setPayload<IncidencePtr>( ptr );
 
       // fix mime type for CalDAV collections
-      ptr->accept( *mMimeVisitor );
-      item.setMimeType( mMimeVisitor->mimeType() );
+      item.setMimeType( ptr->mimeType() );
     }
 
     // update etag
@@ -579,10 +578,10 @@ void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
 
     item.setPayload<KABC::Addressee>( contact );
   } else {
-    KCal::ICalFormat formatter;
+    KCalCore::ICalFormat formatter;
     const IncidencePtr ptr( formatter.fromString( data ) );
 
-    if ( ptr.get() == 0 ) {
+    if ( !ptr ) {
       cancelTask( i18n( "The server returned invalid data" ) );
       return;
     }
@@ -590,8 +589,7 @@ void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
     item.setPayload<IncidencePtr>( ptr );
 
     // fix mime type for CalDAV collections
-    ptr->accept( *mMimeVisitor );
-    item.setMimeType( mMimeVisitor->mimeType() );
+    item.setMimeType( ptr->mimeType() );
   }
 
   // update etag

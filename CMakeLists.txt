@@ -91,6 +91,7 @@ else(WINCE)
   set(LIBRARY_TYPE SHARED)
 endif(WINCE)
 
+
 ############### Generate akonadi-config.h ###############
 
 configure_file(akonadi-version.h.cmake "${kdepim-runtime_BINARY_DIR}/akonadi-version.h" @ONLY)
@@ -132,23 +133,26 @@ endmacro( akonadi_add_resourcetest )
 
 ############### Now, we add the components ###############
 
+# pending: resources and agents will be needed eventually on wince too
+if (NOT WINCE)
+add_subdirectory(resources) 
+add_subdirectory(agents)
+endif (NOT WINCE)
+if (NOT WINCE)
 add_subdirectory(libkdepim-copy)
 add_subdirectory(xml)
 add_subdirectory(resourcetester)
-add_subdirectory(resources)
-add_subdirectory(agents)
 add_subdirectory(kioslave)
 add_subdirectory(plugins)
 add_subdirectory(kcm)
-if (NOT WINCE)
 add_subdirectory(tray)
-endif(NOT WINCE)
 add_subdirectory(migration)
 add_subdirectory(defaultsetup)
-if (KDEPIMLIBS_KRESOURCES_LIBRARY)
+if (KDEPIMLIBS_KRESOURCES_LIBS)
   add_subdirectory(kresources)
-endif (KDEPIMLIBS_KRESOURCES_LIBRARY)
+endif (KDEPIMLIBS_KRESOURCES_LIBS)
 add_subdirectory(accountwizard)
+endif(NOT WINCE)
 if (QT_QTDECLARATIVE_FOUND AND KDEPIM_MOBILE_UI)
   add_subdirectory(qml)
 endif (QT_QTDECLARATIVE_FOUND AND KDEPIM_MOBILE_UI)

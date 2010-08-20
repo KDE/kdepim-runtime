@@ -23,10 +23,6 @@
 
 #include <akonadi/resourcebase.h>
 
-namespace Akonadi {
-class IncidenceMimeTypeVisitor;
-}
-
 class DavGroupwareResource : public Akonadi::ResourceBase,
                             public Akonadi::AgentBase::Observer
 {
@@ -68,7 +64,6 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
   private:
     bool configurationIsValid();
 
-    Akonadi::IncidenceMimeTypeVisitor *mMimeVisitor;
     Akonadi::Collection mDavCollectionRoot;
     EtagCache mEtagCache;
 };

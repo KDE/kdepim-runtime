@@ -20,6 +20,8 @@
 #ifndef INVITATIONSAGENT_H
 #define INVITATIONSAGENT_H
 
+#include <KCalCore/MemoryCalendar>
+
 #include <Akonadi/AgentBase>
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
@@ -29,9 +31,7 @@
 
 class KJob;
 
-namespace KCal {
-  class Calendar;
-  class Incidence;
+namespace KCalCore {
   class ScheduleMessage;
 }
 
@@ -76,7 +76,9 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     void initDone( KJob *job = 0 );
 
   private:
-    Akonadi::Item handleContent( const QString &vcal, KCal::Calendar* calendar, const Akonadi::Item &item );
+    Akonadi::Item handleContent( const QString &vcal,
+                                 const KCalCore::MemoryCalendar::Ptr &calendar,
+                                 const Akonadi::Item &item );
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
 
@@ -86,7 +88,7 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
-        
+
     virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
     virtual void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemUnlinked( const Akonadi::Item &item, const Akonadi::Collection &collection );

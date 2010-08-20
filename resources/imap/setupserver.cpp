@@ -121,9 +121,6 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
     m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator( this )
 {
-#ifdef KDEPIM_MOBILE_UI
-  setButtonsOrientation( Qt::Vertical );
-#endif
   Settings::self()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
   m_ui->safeImapGroup->setId( m_ui->noRadio, KIMAP::LoginJob::Unencrypted );

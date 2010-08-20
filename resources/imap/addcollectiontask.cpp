@@ -92,8 +92,8 @@ void AddCollectionTask::onCreateDone( KJob *job )
 
 void AddCollectionTask::onSubscribeDone( KJob *job )
 {
-  if ( job->error() ) {
-    emitWarning( i18n( "Failed to subscribe to the collection '%1' on the IMAP server. "
+  if ( job->error() && isSubscriptionEnabled() ) {
+    emitWarning( i18n( "Failed to subscribe to the folder '%1' on the IMAP server. "
                        "It will disappear on next sync. Use the subscription dialog to overcome that",
                        m_collection.name() ) );
   }

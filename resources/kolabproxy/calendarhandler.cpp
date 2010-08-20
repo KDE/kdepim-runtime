@@ -20,11 +20,12 @@
 #include "calendarhandler.h"
 #include "event.h"
 
+#include <KCalCore/Event>
+#include <KCalCore/CalFormat>
+
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
-#include <akonadi/kcal/incidencemimetypevisitor.h>
 
-#include <kcal/calformat.h>
 #include <KLocale>
 
 #include <QBuffer>
@@ -41,32 +42,32 @@ CalendarHandler::~CalendarHandler()
 {
 }
 
-KCal::Incidence* CalendarHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
+KCalCore::Incidence::Ptr CalendarHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
 {
    return calendarFromKolab(data);
 }
 
-KCal::Event * CalendarHandler::calendarFromKolab(const KMime::Message::Ptr &data)
+KCalCore::Event::Ptr CalendarHandler::calendarFromKolab(const KMime::Message::Ptr &data)
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {
     const QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
-    KCal::Event *calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
+    KCalCore::Event::Ptr calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
     attachmentsFromKolab( data, xmlData, calendarEvent );
     return calendarEvent;
   }
-  return 0;
+  return KCalCore::Event::Ptr();
 }
 
-QByteArray CalendarHandler::incidenceToXml(KCal::Incidence *incidence)
+QByteArray CalendarHandler::incidenceToXml(const KCalCore::Incidence::Ptr &incidence)
 {
-  return Kolab::Event::eventToXML(dynamic_cast<KCal::Event*>(incidence), m_calendar.timeZoneId()).toUtf8();
+  return Kolab::Event::eventToXML( incidence.dynamicCast<KCalCore::Event>(), m_calendar.timeZoneId() ).toUtf8();
 }
 
-QStringList  CalendarHandler::contentMimeTypes()
+QStringList CalendarHandler::contentMimeTypes()
 {
-  return QStringList() << Akonadi::IncidenceMimeTypeVisitor::eventMimeType();
+  return QStringList() << KCalCore::Event::eventMimeType();
 }
 
 QString CalendarHandler::iconName() const

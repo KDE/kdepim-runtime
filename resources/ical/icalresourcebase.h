@@ -24,9 +24,11 @@
 #include "singlefileresource.h"
 #include "settings.h"
 
-namespace KCal {
-  class CalendarLocal;
-}
+#include <KCalCore/MemoryCalendar>
+
+namespace KCalCore {
+  class FileStorage;
+};
 
 class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
 {
@@ -81,10 +83,11 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     virtual void itemRemoved( const Akonadi::Item &item );
 
     /** Return the local calendar. */
-    KCal::CalendarLocal *calendar() const;
+    KCalCore::MemoryCalendar::Ptr calendar() const;
 
   private:
-    KCal::CalendarLocal *mCalendar;
+    KCalCore::MemoryCalendar::Ptr mCalendar;
+    KCalCore::FileStorage *mFileStorage;
 };
 
 template <typename PayloadPtr>

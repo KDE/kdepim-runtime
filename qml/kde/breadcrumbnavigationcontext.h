@@ -36,6 +36,7 @@ class KBreadcrumbNavigationFactory : public QObject
   Q_OBJECT
 public:
   KBreadcrumbNavigationFactory(QObject* parent = 0);
+  ~KBreadcrumbNavigationFactory();
 
   void createBreadcrumbContext(QAbstractItemModel *model, QObject* parent = 0);
   void createCheckableBreadcrumbContext(QAbstractItemModel *model, QObject* parent = 0);

@@ -23,8 +23,8 @@
 #define KDEPIM_CALENDARDIFFALGO_H
 
 #include "diffalgo.h"
-#include <kcal/event.h>
-#include <kcal/todo.h>
+#include <kcalcore/event.h>
+#include <kcalcore/todo.h>
 #include <QList>
 
 namespace KPIM {
@@ -32,7 +32,8 @@ namespace KPIM {
 class KDEPIM_COPY_EXPORT CalendarDiffAlgo : public DiffAlgo
 {
   public:
-    CalendarDiffAlgo( KCal::Incidence *leftIncidence, KCal::Incidence *rightIncidence );
+  CalendarDiffAlgo( const KCalCore::Incidence::Ptr &leftIncidence,
+                    const KCalCore::Incidence::Ptr &rightIncidence );
 
     void run();
 
@@ -40,13 +41,13 @@ class KDEPIM_COPY_EXPORT CalendarDiffAlgo : public DiffAlgo
     template <class L>
     void diffList( const QString &id, const QList<L> &left, const QList<L> &right );
 
-    void diffIncidenceBase( KCal::IncidenceBase*, KCal::IncidenceBase* );
-    void diffIncidence( KCal::Incidence*, KCal::Incidence* );
-    void diffEvent( KCal::Event*, KCal::Event* );
-    void diffTodo( KCal::Todo*, KCal::Todo* );
+    void diffIncidenceBase( const KCalCore::IncidenceBase::Ptr &, const KCalCore::IncidenceBase::Ptr &);
+    void diffIncidence( const KCalCore::Incidence::Ptr &, const KCalCore::Incidence::Ptr & );
+    void diffEvent( const KCalCore::Event::Ptr &, const KCalCore::Event::Ptr & );
+    void diffTodo( const KCalCore::Todo::Ptr &, const KCalCore::Todo::Ptr & );
 
-    KCal::Incidence *mLeftIncidence;
-    KCal::Incidence *mRightIncidence;
+    KCalCore::Incidence::Ptr mLeftIncidence;
+    KCalCore::Incidence::Ptr mRightIncidence;
 };
 
 }

@@ -39,35 +39,33 @@ TasksHandler::~TasksHandler()
 {
 }
 
-KCal::Incidence* TasksHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
+KCalCore::Incidence::Ptr TasksHandler::incidenceFromKolab( const KMime::Message::Ptr &data )
 {
-  return todoFromKolab(data);
+  return todoFromKolab( data );
 }
 
 
-KCal::Todo * TasksHandler::todoFromKolab(const KMime::Message::Ptr &data)
+KCalCore::Todo::Ptr TasksHandler::todoFromKolab( const KMime::Message::Ptr &data )
 {
   KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
   if (xmlContent) {
     const QByteArray xmlData = xmlContent->decodedContent();
-//     kDebug() << "xmlData " << xmlData;
-    KCal::Todo *todo = Kolab::Task::xmlToTask(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
+   // kDebug() << "xmlData " << xmlData;
+    KCalCore::Todo::Ptr todo = Kolab::Task::xmlToTask(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
     attachmentsFromKolab( data, xmlData, todo );
     return todo;
   }
-  return 0;
+  return KCalCore::Todo::Ptr();
 }
 
-
-QByteArray TasksHandler::incidenceToXml(KCal::Incidence *incidence)
+QByteArray TasksHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence )
 {
-  return Kolab::Task::taskToXML(dynamic_cast<KCal::Todo*>(incidence), m_calendar.timeZoneId()).toUtf8();
+  return Kolab::Task::taskToXML( incidence.dynamicCast<KCalCore::Todo>(), m_calendar.timeZoneId() ).toUtf8();
 }
 
-
-QStringList  TasksHandler::contentMimeTypes()
+QStringList TasksHandler::contentMimeTypes()
 {
-  return QStringList() << Akonadi::IncidenceMimeTypeVisitor::todoMimeType();
+  return QStringList() << KCalCore::Todo::todoMimeType();
 }
 
 QString TasksHandler::iconName() const

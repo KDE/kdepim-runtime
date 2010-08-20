@@ -36,12 +36,12 @@
 
 #include <incidence.h>
 
-#include <kcal/incidence.h>
+#include <kcalcore/todo.h>
+#include <kcalcore/incidence.h>
 
 class QDomElement;
 
 namespace KCal {
-  class Todo;
   class ResourceKolab;
 }
 
@@ -49,7 +49,7 @@ namespace Kolab {
 
 /**
  * This class represents a task, and knows how to load/save it
- * from/to XML, and from/to a KCal::Todo.
+ * from/to XML, and from/to a KCalCore::Todo.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
@@ -57,19 +57,19 @@ class Task : public Incidence {
 public:
   /// Use this to parse an xml string to a task entry
   /// The caller is responsible for deleting the returned task
-  static KCal::Todo* xmlToTask( const QString& xml, const QString& tz/*, KCal::ResourceKolab *res = 0,
+  static KCalCore::Todo::Ptr xmlToTask( const QString& xml, const QString& tz/*, KCalCore::ResourceKolab *res = 0,
                                 const QString& subResource = QString(), quint32 sernum = 0 */);
 
   /// Use this to get an xml string describing this task entry
-  static QString taskToXML( KCal::Todo*, const QString& tz );
+  static QString taskToXML( const KCalCore::Todo::Ptr &, const QString& tz );
 
-  explicit Task( /*KCal::ResourceKolab *res, const QString& subResource, quint32 sernum,*/
-                 const QString& tz, KCal::Todo* todo = 0 );
+  explicit Task( /*KCalCore::ResourceKolab *res, const QString& subResource, quint32 sernum,*/
+    const QString& tz, const KCalCore::Todo::Ptr &todo = KCalCore::Todo::Ptr() );
   virtual ~Task();
 
   virtual QString type() const { return "Task"; }
 
-  void saveTo( KCal::Todo* todo );
+  void saveTo( const KCalCore::Todo::Ptr &todo );
 
   virtual void setPriority( int priority );
   virtual int priority() const;
@@ -77,8 +77,8 @@ public:
   virtual void setPercentCompleted( int percent );
   virtual int percentCompleted() const;
 
-  virtual void setStatus( KCal::Incidence::Status status );
-  virtual KCal::Incidence::Status status() const;
+  virtual void setStatus( KCalCore::Incidence::Status status );
+  virtual KCalCore::Incidence::Status status() const;
 
   virtual void setParent( const QString& parentUid );
   virtual QString parent() const;
@@ -110,7 +110,7 @@ public:
 
 protected:
   // Read all known fields from this ical todo
-  void setFields( const KCal::Todo* );
+  void setFields( const KCalCore::Todo::Ptr & );
 
   // This sets the priority of this task by looking at mKolabPriorityFromDom and
   // mKCalPriorityFromDom.
@@ -126,7 +126,7 @@ protected:
   int mKCalPriorityFromDom;
 
   int mPercentCompleted;
-  KCal::Incidence::Status mStatus;
+  KCalCore::Incidence::Status mStatus;
   QString mParent;
 
   bool mHasStartDate;

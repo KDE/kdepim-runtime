@@ -100,24 +100,24 @@ KABC::ContactGroup Object::contactGroup() const
   return mContactGroup;
 }
 
-void Object::setEvent( const KCal::Incidence::Ptr &event )
+void Object::setEvent( const KCalCore::Incidence::Ptr &event )
 {
   mModule = Folder::Calendar;
   mEvent = event;
 }
 
-KCal::Incidence::Ptr Object::event() const
+KCalCore::Incidence::Ptr Object::event() const
 {
   return mEvent;
 }
 
-void Object::setTask( const KCal::Incidence::Ptr &task )
+void Object::setTask( const KCalCore::Incidence::Ptr &task )
 {
   mModule = Folder::Tasks;
   mTask = task;
 }
 
-KCal::Incidence::Ptr Object::task() const
+KCalCore::Incidence::Ptr Object::task() const
 {
   return mTask;
 }

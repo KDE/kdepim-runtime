@@ -21,11 +21,9 @@
 #ifndef BIRTHDAYSRESOURCE_H
 #define BIRTHDAYSRESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include <kcalcore/event.h>
 
-namespace KCal {
-class Event;
-}
+#include <akonadi/resourcebase.h>
 
 class QDate;
 
@@ -46,11 +44,11 @@ class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   private:
-    void addPendingEvent( KCal::Event *event, const QString &remoteId );
+    void addPendingEvent( const KCalCore::Event::Ptr &event, const QString &remoteId );
 
-    KCal::Event* createBirthday( const Akonadi::Item &contactItem );
-    KCal::Event* createAnniversary( const Akonadi::Item &contactItem );
-    KCal::Event* createEvent( const QDate &date );
+    KCalCore::Event::Ptr createBirthday( const Akonadi::Item &contactItem );
+    KCalCore::Event::Ptr createAnniversary( const Akonadi::Item &contactItem );
+    KCalCore::Event::Ptr createEvent( const QDate &date );
 
   private slots:
     void doFullSearch();

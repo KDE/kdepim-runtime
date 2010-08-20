@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>451</width>
-    <height>863</height>
+    <width>307</width>
+    <height>774</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -36,16 +36,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>451</width>
-        <height>863</height>
+        <width>307</width>
+        <height>774</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <property name="margin">
-        <number>0</number>
-       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QGridLayout" name="gridLayout">
+        <layout class="QFormLayout" name="formLayout_4">
          <item row="0" column="0">
           <widget class="QLabel" name="label_9">
            <property name="text">
@@ -53,7 +50,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1" colspan="2">
+         <item row="0" column="1">
           <widget class="KLineEdit" name="accountName"/>
          </item>
          <item row="1" column="0">
@@ -70,16 +67,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="KLineEdit" name="imapServer">
-           <zorder>testInfo</zorder>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="KPushButton" name="testButton">
-           <property name="text">
-            <string>Auto Detect</string>
-           </property>
-          </widget>
+          <widget class="KLineEdit" name="imapServer"/>
          </item>
         </layout>
        </item>
@@ -107,6 +95,13 @@
         </widget>
        </item>
        <item>
+        <widget class="KPushButton" name="testButton">
+         <property name="text">
+          <string>Auto Detect</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QGroupBox" name="safeImap">
          <property name="whatsThis">
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -120,11 +115,17 @@ p, li { white-space: pre-wrap; }
          <property name="title">
           <string>Encryption</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QRadioButton" name="tlsRadio">
+           <widget class="QRadioButton" name="noRadio">
             <property name="text">
-             <string>TLS</string>
+             <string>None</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
             <attribute name="buttonGroup">
              <string>safeImapGroup</string>
@@ -142,12 +143,9 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="noRadio">
+           <widget class="QRadioButton" name="tlsRadio">
             <property name="text">
-             <string>None</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
+             <string>TLS</string>
             </property>
             <attribute name="buttonGroup">
              <string>safeImapGroup</string>
@@ -222,6 +220,9 @@ p, li { white-space: pre-wrap; }
          <property name="title">
           <string>Authentication Method</string>
          </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QComboBox" name="authenticationCombo">
@@ -271,28 +272,22 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <layout class="QFormLayout" name="formLayout_2">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        <widget class="QCheckBox" name="enableMailCheckBox">
+         <property name="text">
+          <string>Enable interval mail checking</string>
          </property>
-         <property name="labelAlignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="enableMailCheckBox">
-           <property name="text">
-            <string>Enable interval mail checking</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
             <string>Check interval:</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item>
           <widget class="KIntNumInput" name="checkInterval">
            <property name="value">
             <number>1</number>
@@ -311,36 +306,36 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
-          <widget class="QCheckBox" name="disconnectedModeEnabled">
-           <property name="text">
-            <string>Enable Disconnected Mode</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <widget class="QCheckBox" name="subscriptionEnabled">
-           <property name="text">
-            <string>Enable Server-Side Subscriptions</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="KPushButton" name="subscriptionButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Serverside Subscription...</string>
-           </property>
-          </widget>
-         </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="disconnectedModeEnabled">
+         <property name="text">
+          <string>Enable Disconnected Mode</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="subscriptionEnabled">
+         <property name="text">
+          <string>Enable Server-Side Subscriptions</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="KPushButton" name="subscriptionButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Serverside Subscription...</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="autoExpungeCheck">
          <property name="text">
-          <string>Automaticall&amp;y compact folders (expunges deleted messages)</string>
+          <string>Automaticall&amp;y expunge deleted messages</string>
          </property>
         </widget>
        </item>
@@ -354,8 +349,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="Akonadi::CollectionRequester" name="folderRequester">
-          </widget>
+          <widget class="Akonadi::CollectionRequester" name="folderRequester"/>
          </item>
         </layout>
        </item>
@@ -373,6 +367,9 @@ p, li { white-space: pre-wrap; }
         <widget class="QGroupBox" name="identityBox">
          <property name="title">
           <string/>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>

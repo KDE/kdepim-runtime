@@ -44,6 +44,7 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
+#include "timestampattribute.h"
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
 
@@ -89,6 +90,7 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<TimestampAttribute>();
 
   Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
   Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
@@ -263,8 +265,8 @@ void ImapResource::retrieveCollections()
 void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
 {
   const Collection collection( collectionVariant.value<Collection>() );
-
   ResourceStateInterface::Ptr state = ResourceState::createRetrieveCollectionMetadataState( this, collection );
+
   RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state, this );
   task->start( m_pool );
 }

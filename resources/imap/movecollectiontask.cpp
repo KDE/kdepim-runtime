@@ -104,7 +104,7 @@ void MoveCollectionTask::onRenameDone( KJob *job )
 void MoveCollectionTask::onSubscribeDone( KJob *job )
 {
   if ( job->error() ) {
-    emitWarning( i18n( "Failed to subscribe to the collection '%1' on the IMAP server. "
+    emitWarning( i18n( "Failed to subscribe to the folder '%1' on the IMAP server. "
                        "It will disappear on next sync. Use the subscription dialog to overcome that",
                        collection().name() ) );
   }

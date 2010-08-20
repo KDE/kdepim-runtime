@@ -21,6 +21,8 @@
 
 #include "retrievecollectionmetadatatask.h"
 
+#include <QtCore/QDateTime>
+
 #include <kimap/getacljob.h>
 #include <kimap/getmetadatajob.h>
 #include <kimap/getquotarootjob.h>
@@ -33,7 +35,9 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
+#include "timestampattribute.h"
 
+const uint RetrieveCollectionMetadataTask::TimestampTimeout = 3600 * 24 * 20; // 20 days
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ), m_pendingMetaDataJobs(0), m_collectionChanged(false)
@@ -56,6 +60,19 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
       taskDone();
       return;
     }
+  }
+
+  uint timestamp = 0;
+  const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
+
+  if ( collection().hasAttribute<TimestampAttribute>() ) {
+    timestamp = collection().attribute<TimestampAttribute>()->timestamp();
+  }
+
+  // Refresh only if we're older than twenty days
+  if ( timestamp + TimestampTimeout >  currentTimestamp ) {
+    taskDone();
+    return;
   }
 
   m_collection = collection();
@@ -178,8 +195,27 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 
   KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>( job );
 
+  Akonadi::ImapAclAttribute * const parentAclAttribute =
+        collection().parentCollection().attribute<Akonadi::ImapAclAttribute>();
+  KIMAP::Acl::Rights parentRights = 0;
+  if ( parentAclAttribute ) {
+    parentRights = parentAclAttribute->rights()[userName().toUtf8()];
+  }
+
   KIMAP::Acl::Rights imapRights = rightsJob->rights();
   Akonadi::Collection::Rights newRights = Akonadi::Collection::ReadOnly;
+
+  // For renaming, the parent folder needs to have the CreateMailbox or Create permission.
+  // We map renaming to CanChangeCollection here, which is not entirely correct, but we have no
+  // CanRenameCollection flag.
+  // If the ACL of the parent folder hasn't been retrieved yet, allow changing, since we don't know
+  // better. If the parent folder is a noselect folder though, don't allow it, since for those we have
+  // no CreateMailbox right.
+  if ( ( !parentAclAttribute && !collection().parentCollection().hasAttribute( "noselect" ) ) ||
+       parentRights & KIMAP::Acl::CreateMailbox ||
+       parentRights & KIMAP::Acl::Create ) {
+    newRights|= Akonadi::Collection::CanChangeCollection;
+  }
 
   if ( imapRights & KIMAP::Acl::Write ) {
     newRights|= Akonadi::Collection::CanChangeItem;
@@ -194,7 +230,6 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
   }
 
   if ( imapRights & ( KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create ) ) {
-    newRights|= Akonadi::Collection::CanChangeCollection;
     newRights|= Akonadi::Collection::CanCreateCollection;
   }
 
@@ -279,6 +314,11 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
   if ( --m_pendingMetaDataJobs == 0 ) {
     // the others have ended, we're done, the next one can go
     if ( m_collectionChanged ) {
+      const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
+
+      TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
+      attr->setTimestamp( currentTimestamp );
+
       applyCollectionChanges( m_collection );
     }
     taskDone();

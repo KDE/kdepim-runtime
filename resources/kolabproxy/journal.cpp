@@ -34,32 +34,32 @@
 #include "journal.h"
 #include "akonadi-version.h"
 
-#include <kcal/journal.h>
 #include <kdebug.h>
 
 using namespace Kolab;
 
 
-KCal::Journal* Journal::xmlToJournal( const QString& xml, const QString& tz )
+KCalCore::Journal::Ptr Journal::xmlToJournal( const QString& xml, const QString& tz )
 {
   Journal journal( tz );
   journal.load( xml );
-  KCal::Journal* kcalJournal = new KCal::Journal();
+  KCalCore::Journal::Ptr kcalJournal( new KCalCore::Journal() );
   journal.saveTo( kcalJournal );
   return kcalJournal;
 }
 
-QString Journal::journalToXML( KCal::Journal* kcalJournal, const QString& tz )
+QString Journal::journalToXML( const KCalCore::Journal::Ptr &kcalJournal, const QString& tz )
 {
   Journal journal( tz, kcalJournal );
   return journal.saveXML();
 }
 
-Journal::Journal( const QString& tz, KCal::Journal* journal )
+Journal::Journal( const QString& tz, const KCalCore::Journal::Ptr &journal )
   : KolabBase( tz )
 {
-  if ( journal )
+  if ( journal ) {
     setFields( journal );
+  }
 }
 
 Journal::~Journal()
@@ -160,7 +160,7 @@ QString Journal::saveXML() const
   return document.toString();
 }
 
-void Journal::saveTo( KCal::Journal* journal )
+void Journal::saveTo( const KCalCore::Journal::Ptr &journal )
 {
   KolabBase::saveTo( journal );
 
@@ -168,7 +168,7 @@ void Journal::saveTo( KCal::Journal* journal )
   journal->setDtStart( utcToLocal( startDate() ) );
 }
 
-void Journal::setFields( const KCal::Journal* journal )
+void Journal::setFields( const KCalCore::Journal::Ptr &journal )
 {
   // Set baseclass fields
   KolabBase::setFields( journal );

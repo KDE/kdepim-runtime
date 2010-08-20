@@ -11,7 +11,6 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 kde4_add_executable(akonadi_calendarsearch_agent ${CALENDARSEARCHAGENT_SRCS})
 
 target_link_libraries(akonadi_calendarsearch_agent
-  ${KDEPIMLIBS_KCAL_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
 )
 

@@ -29,6 +29,8 @@ class RetrieveCollectionMetadataTask : public ResourceTask
   Q_OBJECT
 
 public:
+  static const uint TimestampTimeout;
+
   explicit RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
   virtual ~RetrieveCollectionMetadataTask();
 

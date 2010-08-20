@@ -25,10 +25,9 @@
 #include <kolabhandler.h>
 #include <kabc/vcardconverter.h>
 #include <algorithm>
-#include <kcal/incidence.h>
-#include <kcal/icalformat.h>
-#include <kcal/comparisonvisitor.h>
-#include <kcal/todo.h>
+#include <kcalcore/incidence.h>
+#include <kcalcore/icalformat.h>
+#include <kcalcore/todo.h>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -239,30 +238,29 @@ class KolabConverterTest : public QObject
 
       Item::List icalItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
       QCOMPARE( icalItems.size(), 1 );
-      QVERIFY( icalItems.first().hasPayload<KCal::Incidence::Ptr>() );
-      KCal::Incidence::Ptr convertedIncidence = icalItems.first().payload<KCal::Incidence::Ptr>();
+      QVERIFY( icalItems.first().hasPayload<KCalCore::Incidence::Ptr>() );
+      KCalCore::Incidence::Ptr convertedIncidence = icalItems.first().payload<KCalCore::Incidence::Ptr>();
 
       QFile icalFile( icalFileName );
       QVERIFY( icalFile.open( QFile::ReadOnly ) );
-      KCal::ICalFormat format;
-      const KCal::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
+      KCalCore::ICalFormat format;
+      const KCalCore::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
 
       // fix up the converted incidence for comparisson
       if ( type == "task" ) {
-        QVERIFY( icalItems.first().hasPayload<KCal::Todo::Ptr>() );
-        KCal::Todo::Ptr todo = icalItems.first().payload<KCal::Todo::Ptr>();
+        QVERIFY( icalItems.first().hasPayload<KCalCore::Todo::Ptr>() );
+        KCalCore::Todo::Ptr todo = icalItems.first().payload<KCalCore::Todo::Ptr>();
         if ( !todo->hasDueDate() && !todo->hasStartDate() )
           convertedIncidence->setAllDay( realIncidence->allDay() ); // all day has no meaning if there are no start and due dates but may differ nevertheless
       }
-      // recurrence objects are created on demand, but KCal::Incidence::operator==() doesn't take that into account
+      // recurrence objects are created on demand, but KCalCore::Incidence::operator==() doesn't take that into account
       // so make sure both incidences have one
       realIncidence->recurrence();
       convertedIncidence->recurrence();
 
 //       qDebug() << format.toString( realIncidence.get() );
 //       qDebug() << format.toString( convertedIncidence.get() );
-      KCal::ComparisonVisitor visitor;
-      QVERIFY( visitor.compare( realIncidence.get(), convertedIncidence.get() ) );
+      QVERIFY( realIncidence == convertedIncidence );
 
 
       // and now the other way around

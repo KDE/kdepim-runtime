@@ -26,6 +26,7 @@
 #include "sessionpool.h"
 #include "settings.h"
 #include "noselectattribute.h"
+#include "timestampattribute.h"
 
 #include <akonadi/collectionmodifyjob.h>
 
@@ -337,14 +338,24 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
   m_resource->collectionsRetrieved( collections );
 
   if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
+    QStringList oldMailBoxes = Settings::self()->knownMailBoxes();
+    QStringList newMailBoxes;
+
     foreach ( const Akonadi::Collection &c, collections ) {
-      if ( !c.hasAttribute<NoSelectAttribute>() ) {
+      const QString mailBox = mailBoxForCollection( c );
+
+      if ( !c.hasAttribute<NoSelectAttribute>()
+        && !oldMailBoxes.contains( mailBox ) ) {
         m_resource->scheduleCustomTask( m_resource,
                                         "triggerCollectionExtraInfoJobs",
                                         QVariant::fromValue( c ),
                                         Akonadi::ResourceBase::Append );
       }
+
+      newMailBoxes << mailBox;
     }
+
+    Settings::self()->setKnownMailBoxes( newMailBoxes );
   }
 
   m_resource->startIdleIfNeeded();
@@ -363,6 +374,46 @@ void ResourceState::changeProcessed()
 void ResourceState::cancelTask( const QString &errorString )
 {
   m_resource->cancelTask( errorString );
+
+  // We get here in case of some error during the task. In such a case that can have
+  // been provoked by the fact that some of the metadata we had was wrong (most notably
+  // ACL and we took a wrong decision.
+  // So reset the timestamp of all the collections involved in the task, and also
+  // remove them from the "known mailboxes" list so that we get a chance to refresh
+  // the metadata about them ASAP.
+
+  Akonadi::Collection::List collections;
+  collections << m_collection
+              << m_parentCollection
+              << m_sourceCollection
+              << m_targetCollection;
+
+  if ( m_item.isValid() && m_item.parentCollection().isValid() ) {
+    collections << m_item.parentCollection();
+  }
+
+  if ( m_collection.isValid() && m_collection.parentCollection().isValid() ) {
+    collections << m_collection.parentCollection();
+  }
+
+  const QStringList oldMailBoxes = Settings::self()->knownMailBoxes();
+  QStringList newMailBoxes = oldMailBoxes;
+
+  foreach ( const Akonadi::Collection &collection, collections ) {
+    if ( collection.isValid()
+      && collection.hasAttribute<TimestampAttribute>() ) {
+
+      Akonadi::Collection c = collection;
+      c.removeAttribute<TimestampAttribute>();
+
+      new Akonadi::CollectionModifyJob( c );
+      newMailBoxes.removeAll( mailBoxForCollection( c ) );
+    }
+  }
+
+  if ( oldMailBoxes.size()!=newMailBoxes.size() ) {
+    Settings::self()->setKnownMailBoxes( newMailBoxes );
+  }
 }
 
 void ResourceState::deferTask()

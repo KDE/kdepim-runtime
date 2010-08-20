@@ -1,9 +1,5 @@
 project(davgroupware)
 
-find_program(XSLTPROC_EXECUTABLE xsltproc)
-macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" FALSE "" "Needed for building Akonadi resources. Recommended.")
-
-
 if (QT_QTXMLPATTERNS_LIBRARY)
 
 if (XSLTPROC_EXECUTABLE)
@@ -98,8 +94,7 @@ target_link_libraries(akonadi_davgroupware_resource
                       ${KDE4_KIO_LIBS}
                       ${KDEPIMLIBS_AKONADI_LIBS}
                       ${KDEPIMLIBS_KABC_LIBS}
-                      ${KDEPIMLIBS_KCAL_LIBS}
-                      ${KDEPIMLIBS_AKONADI_KCAL_LIBS})
+                      ${KDEPIMLIBS_KCALCORE_LIBS})
 
 install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

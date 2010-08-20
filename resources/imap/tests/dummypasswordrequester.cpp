@@ -51,13 +51,23 @@ void DummyPasswordRequester::setScenario( const QList<RequestType> &expectedCall
   m_results = results;
 }
 
+void DummyPasswordRequester::setDelays( const QList<int> &delays )
+{
+  m_delays = delays;
+}
+
 void DummyPasswordRequester::requestPassword( RequestType request,
                                               const QString &/*serverError*/ )
 {
   QVERIFY2( !m_calls.isEmpty(), QString("Got unexpected call: %1").arg( request ).toUtf8().constData() );
   QCOMPARE( m_calls.takeFirst(), request );
 
-  QTimer::singleShot( 20, this, SLOT(emitResult()) );
+  int delay = 20;
+  if ( !m_delays.isEmpty() ) {
+    delay = m_delays.takeFirst();
+  }
+
+  QTimer::singleShot( delay, this, SLOT(emitResult()) );
 }
 
 void DummyPasswordRequester::emitResult()

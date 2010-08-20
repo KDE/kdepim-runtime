@@ -27,9 +27,9 @@
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
-#include <kcal/comparisonvisitor.h>
-#include <kcal/calformat.h>
-#include <akonadi/kcal/incidencemimetypevisitor.h>
+
+#include <kcalcore/calformat.h>
+
 #include <libkdepim-copy/kincidencechooser.h>
 #include <KLocale>
 
@@ -58,18 +58,16 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-    KCal::Incidence *inc = incidenceFromKolab(payload);
-    kDebug() << "KCal::Incidence " << inc;
+    KCalCore::Incidence::Ptr inc = incidenceFromKolab( payload );
+    kDebug() << "KCalCore::Incidence " << inc;
     if (inc) {
-      Akonadi::IncidenceMimeTypeVisitor visitor;
-      inc->accept( visitor );
-      KCal::Incidence::Ptr incidencePtr(inc);
+      KCalCore::Incidence::Ptr incidencePtr(inc);
       if (m_uidMap.contains(incidencePtr->uid())) {
         ConflictResolution res = resolveConflict(incidencePtr);
         kDebug() << "ConflictResolution " << res;
         if (res == Local) {
           m_uidMap.remove(incidencePtr->uid());
-          incidencePtr.reset();
+          incidencePtr = KCalCore::Incidence::Ptr();
           emit deleteItemFromImap(item);
           continue;
         } else if (res == Remote) {
@@ -77,8 +75,8 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
           emit deleteItemFromImap(it);
         } else if (res == Both) {
           incidencePtr->setSummary( i18n("Copy of: %1", incidencePtr->summary() ) );
-          incidencePtr->setUid( KCal::CalFormat::createUniqueId() );
-          Akonadi::Item copiedItem( visitor.mimeType() );
+          incidencePtr->setUid( KCalCore::CalFormat::createUniqueId() );
+          Akonadi::Item copiedItem( incidencePtr->mimeType() );
           incidenceToItem(incidencePtr, copiedItem);
           Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
           job->fetchScope().fetchFullPayload();
@@ -92,7 +90,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
       }
       m_uidMap[incidencePtr->uid()] = StoredItem(item.id(), incidencePtr);
       kDebug() << "Add to uidMap: " << incidencePtr->uid() << item.id() << incidencePtr;
-      Akonadi::Item newItem( visitor.mimeType() );
+      Akonadi::Item newItem( incidencePtr->mimeType() );
       newItem.setPayload(incidencePtr);
       newItem.setRemoteId(QString::number(item.id()));
       newItems << newItem;
@@ -102,7 +100,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
   return newItems;
 }
 
-IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KCal::Incidence::Ptr &inc)
+IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KCalCore::Incidence::Ptr &inc)
 {
   /*
   if ( ! isResolveConflictSet() ) {
@@ -112,13 +110,12 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KC
 }
   */
   const QString origUid = inc->uid();
-  KCal::Incidence* localIncidence = m_uidMap[origUid].incidence.get();
-  KCal::Incidence* addedIncidence = inc.get();
-  KCal::Incidence* result = 0;
+  KCalCore::Incidence::Ptr localIncidence = m_uidMap[origUid].incidence;
+  KCalCore::Incidence::Ptr addedIncidence = inc;
+  KCalCore::Incidence::Ptr result;
   if ( localIncidence ) {
-    KCal::ComparisonVisitor visitor;
     kDebug() << "Compare  " << localIncidence << addedIncidence;
-    if ( visitor.compare( localIncidence, addedIncidence ) ) {
+    if ( *localIncidence.data() == *addedIncidence.data() ) {
       // real duplicate, remove the second one
       return Duplicate;
     } else {
@@ -150,31 +147,30 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KC
 void IncidenceHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
   kDebug() << "toKolabFormat";
-  KCal::Incidence::Ptr incidencePtr;
-  if (item.hasPayload<KCal::Incidence::Ptr>()) {
-    incidencePtr = item.payload<KCal::Incidence::Ptr>();
+  KCalCore::Incidence::Ptr incidencePtr;
+  if (item.hasPayload<KCalCore::Incidence::Ptr>()) {
+    incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
   }
   kDebug() << "item payload: " << item.payloadData();
   incidenceToItem(incidencePtr, imapItem);
 }
 
-void IncidenceHandler::incidenceToItem(const KCal::Incidence::Ptr &incidencePtr, Akonadi::Item &imapItem)
+void IncidenceHandler::incidenceToItem(const KCalCore::Incidence::Ptr &incidencePtr, Akonadi::Item &imapItem)
 {
-  if (!incidencePtr.get())
-  {
+  if ( !incidencePtr ) {
     imapItem.setPayloadFromData("");
     return;
   }
   imapItem.setMimeType( "message/rfc822" );
 
   KMime::Message::Ptr message = createMessage( m_mimeType );
-  message->from()->addAddress( incidencePtr->organizer().email().toUtf8(), incidencePtr->organizer().name() );
+  message->from()->addAddress( incidencePtr->organizer()->email().toUtf8(), incidencePtr->organizer()->name() );
   message->subject()->fromUnicodeString( incidencePtr->uid(), "utf-8" );
 
-  KMime::Content *content = createMainPart( m_mimeType, incidenceToXml(incidencePtr.get() ) );
+  KMime::Content *content = createMainPart( m_mimeType, incidenceToXml(incidencePtr ) );
   message->addContent( content );
 
-  Q_FOREACH (KCal::Attachment *attachment, incidencePtr->attachments()) {
+  Q_FOREACH (KCalCore::Attachment::Ptr attachment, incidencePtr->attachments()) {
     content = createAttachmentPart( attachment->mimeType(), attachment->label(), attachment->decodedData() );
     message->addContent( content );
   }
@@ -205,16 +201,17 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
     return;
   }
   KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-  KCal::Incidence *e = incidenceFromKolab(payload);
+  KCalCore::Incidence::Ptr e = incidenceFromKolab(payload);
   if ( !e )
     return;
-  const KCal::Incidence::Ptr incidence(e);
+  const KCalCore::Incidence::Ptr incidence(e);
   m_uidMap[e->uid()] = StoredItem(item.id(), incidence);
   kDebug() << "Add to uidMap: " << incidence->uid() << item.id() << incidence;
 }
 
 
-void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, const QByteArray& xmlData, KCal::Incidence* incidence)
+void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, const QByteArray& xmlData,
+                                            const KCalCore::Incidence::Ptr &incidence)
 {
   QDomDocument doc;
   doc.setContent(QString::fromUtf8(xmlData));
@@ -224,7 +221,7 @@ void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, con
     QByteArray type;
     KMime::Content *content = findContentByName(data, name, type);
     const QByteArray c = content->decodedContent().toBase64();
-    KCal::Attachment *attachment = new KCal::Attachment(c.data(), QString::fromLatin1(type));
+    KCalCore::Attachment::Ptr attachment( new KCalCore::Attachment( c, QString::fromLatin1( type ) ) );
     attachment->setLabel( name );
     incidence->addAttachment(attachment);
     kDebug() << "ATTACHEMENT NAME" << name << type;

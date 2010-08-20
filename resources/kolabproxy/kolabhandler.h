@@ -23,7 +23,6 @@
 #include <akonadi/item.h>
 #include <kmime/kmime_message.h>
 
-#include <boost/shared_ptr.hpp>
 
 namespace Akonadi {
   class Collection;

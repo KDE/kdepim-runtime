@@ -1,5 +1,7 @@
 /*
-    Copyright (c) 2009 Andras Mantia <amantia@kde.org>
+    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+                       a KDAB Group company <info@kdab.com>
+    Author: Kevin Ottens <kevin@kdab.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,27 +19,24 @@
     02110-1301, USA.
 */
 
-#ifndef CALENDARHANDLER_H
-#define CALENDARHANDLER_H
+#ifndef TIMESTAMPATTRIBUTE_H
+#define TIMESTAMPATTRIBUTE_H
 
-#include "incidencehandler.h"
-#include <kcalcore/event.h>
+#include <akonadi/attribute.h>
 
-/**
-	@author Andras Mantia <amantia@kde.org>
-*/
-class CalendarHandler : public IncidenceHandler {
-  Q_OBJECT
+class TimestampAttribute : public Akonadi::Attribute
+{
 public:
-  CalendarHandler();
-  virtual ~CalendarHandler();
-  virtual QStringList contentMimeTypes();
-  virtual QString iconName() const;
+    TimestampAttribute( uint timestamp = 0 );
+    void setTimestamp( uint timestamp );
+    uint timestamp() const;
+    virtual QByteArray type() const;
+    virtual Attribute *clone() const;
+    virtual QByteArray serialized() const;
+    virtual void deserialize( const QByteArray &data );
 
 private:
-  virtual QByteArray incidenceToXml( const KCalCore::Incidence::Ptr &incidence );
-  virtual KCalCore::Incidence::Ptr incidenceFromKolab( const KMime::Message::Ptr &data );
-  KCalCore::Event::Ptr  calendarFromKolab( const KMime::Message::Ptr &data );
+    uint mTimestamp;
 };
 
 #endif

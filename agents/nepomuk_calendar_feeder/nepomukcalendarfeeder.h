@@ -26,9 +26,9 @@
 #include <akonadi/agentbase.h>
 #include <akonadi/item.h>
 
-#include <kcal/event.h>
-#include <kcal/journal.h>
-#include <kcal/todo.h>
+#include <kcalcore/event.h>
+#include <kcalcore/journal.h>
+#include <kcalcore/todo.h>
 
 #include "ncal.h"
 
@@ -44,9 +44,9 @@ class NepomukCalendarFeeder : public NepomukFeederAgent<NepomukFast::Calendar>
 
   private:
     void updateItem( const Akonadi::Item &item, const QUrl &graphUri );
-    void updateEventItem( const Akonadi::Item& item, const KCal::Event::Ptr&, const QUrl& );
-    void updateJournalItem( const Akonadi::Item& item, const KCal::Journal::Ptr&, const QUrl& );
-    void updateTodoItem( const Akonadi::Item& item, const KCal::Todo::Ptr&, const QUrl& );
+    void updateEventItem( const Akonadi::Item& item, const KCalCore::Event::Ptr&, const QUrl& );
+    void updateJournalItem( const Akonadi::Item& item, const KCalCore::Journal::Ptr&, const QUrl& );
+    void updateTodoItem( const Akonadi::Item& item, const KCalCore::Todo::Ptr&, const QUrl& );
 
     template <typename IncidencePtr>
     void updateIncidenceItem( const IncidencePtr &calInc, NepomukFast::Resource &incidence, const QUrl &graphUri )
