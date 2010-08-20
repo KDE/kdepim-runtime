@@ -26,7 +26,6 @@
 
 class QAbstractItemModel;
 class QItemSelectionModel;
-class QDeclarativeContext;
 
 
 class KBreadcrumbNavigationFactoryPrivate;
