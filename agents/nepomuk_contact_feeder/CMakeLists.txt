@@ -12,6 +12,7 @@ kde4_add_executable(akonadi_nepomuk_contact_feeder nepomukcontactfeeder.cpp ${NE
 target_link_libraries(akonadi_nepomuk_contact_feeder
   ${KDEPIMLIBS_KABC_LIBS}
   ${NEPOMUKFEEDER_SHARED_LIBS}
+  ${NEPOMUK_QUERY_LIBRARIES}
 )
 
 if (Q_WS_MAC)
