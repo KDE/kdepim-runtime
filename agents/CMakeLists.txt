@@ -20,6 +20,7 @@ if( Nepomuk_FOUND AND STRIGI_FOUND )
       ${NEPOMUK_LIBRARIES}
       ${STRIGI_STREAMANALYZER_LIBRARY}
       ${STRIGI_STREAMS_LIBRARY}
+      ${KDE4_KIDLETIME_LIBRARY}
     )
     include( SopranoAddOntology )
     add_subdirectory( ontologies )

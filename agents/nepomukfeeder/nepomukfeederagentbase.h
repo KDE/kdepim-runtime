@@ -180,6 +180,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     */
     virtual bool needsReIndexing() const;
 
+    void checkOnline();
+
   private slots:
     void collectionsReceived( const Akonadi::Collection::List &collections );
     void itemHeadersReceived( const Akonadi::Item::List &items );
@@ -189,6 +191,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
 
     void selfTest();
     void slotFullyIndexed();
+    void systemIdle();
+    void systemResumed();
 
   private:
     QStringList mSupportedMimeTypes;
@@ -203,6 +207,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
     bool mNeedsStrigi;
+    bool mSelfTestPassed;
+    bool mSystemIsIdle;
 };
 
 #endif
