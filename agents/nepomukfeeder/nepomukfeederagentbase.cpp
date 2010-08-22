@@ -37,6 +37,10 @@
 
 #include <nepomuk/resource.h>
 #include <nepomuk/tag.h>
+#include <nepomuk/andterm.h>
+#include <nepomuk/comparisonterm.h>
+#include <nepomuk/literalterm.h>
+#include <nepomuk/resourcetypeterm.h>
 
 #include <KLocale>
 #include <KUrl>
@@ -411,17 +415,24 @@ NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QSt
   // are case insensitive. But for the moment we stick to it and hope Nepomuk
   // alignment fixes any duplicates
   //
-  SelectSparqlBuilder::BasicGraphPattern graph;
+  Nepomuk::Query::Query query;
+  Nepomuk::Query::AndTerm andTerm;
+  Nepomuk::Query::ResourceTypeTerm personTypeTerm( Vocabulary::NCO::PersonContact() );
+  andTerm.addSubTerm( personTypeTerm );
   if ( emailAddress.isEmpty() ) {
-    graph.addTriple( QLatin1String( "?person" ), Vocabulary::NCO::fullname(), name );
+    const Nepomuk::Query::ComparisonTerm nameTerm( Vocabulary::NCO::fullname(), Nepomuk::Query::LiteralTerm( name ),
+                                                   Nepomuk::Query::ComparisonTerm::Equal );
+    andTerm.addSubTerm( nameTerm );
   } else {
-    graph.addTriple( QLatin1String( "?person" ), Vocabulary::NCO::hasEmailAddress(), SparqlBuilder::QueryVariable( "?email" ) );
-    graph.addTriple( QLatin1String( "?email" ), Vocabulary::NCO::emailAddress(), emailAddress );
+    const Nepomuk::Query::ComparisonTerm addrTerm( Vocabulary::NCO::emailAddress(), Nepomuk::Query::LiteralTerm( emailAddress ),
+                                                   Nepomuk::Query::ComparisonTerm::Equal );
+    const Nepomuk::Query::ComparisonTerm mailTerm( Vocabulary::NCO::hasEmailAddress(), addrTerm );
+    andTerm.addSubTerm( mailTerm );
   }
-  SelectSparqlBuilder qb;
-  qb.setGraphPattern( graph );
-  qb.addQueryVariable( QLatin1String( "?person" ) );
-  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(), Soprano::Query::QueryLanguageSparql );
+  query.setTerm( andTerm );
+  query.setLimit( 1 );
+  
+  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( query.toSparqlQuery(), Soprano::Query::QueryLanguageSparql );
 
   if ( it.next() ) {
     if ( found ) *found = true;

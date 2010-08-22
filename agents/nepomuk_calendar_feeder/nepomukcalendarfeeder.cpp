@@ -18,7 +18,6 @@
 */
 
 #include "nepomukcalendarfeeder.h"
-#include "selectsqarqlbuilder.h"
 #include "nco.h"
 
 #include <KCalCore/Event>
