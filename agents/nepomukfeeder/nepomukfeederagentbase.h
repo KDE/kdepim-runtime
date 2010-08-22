@@ -169,6 +169,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     using AgentBase::ObserverV2::collectionChanged;
     void collectionRemoved(const Akonadi::Collection& collection);
 
+    void doSetOnline(bool online);
+
   private:
     void processNextCollection();
 

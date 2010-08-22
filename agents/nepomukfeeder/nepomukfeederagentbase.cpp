@@ -84,11 +84,10 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   Nepomuk::ResourceManager::instance()->init();
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 
-  changeRecorder()->setChangeRecordingEnabled( false );
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
 
-  mNepomukStartupTimeout.setInterval( 60 * 1000 );
+  mNepomukStartupTimeout.setInterval( 300 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
   connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
   connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
@@ -480,5 +479,12 @@ void NepomukFeederAgentBase::slotFullyIndexed()
   grp.writeEntry( "IndexCompatLevel", mIndexCompatLevel );
   grp.sync();
 }
+
+void NepomukFeederAgentBase::doSetOnline(bool online)
+{
+  changeRecorder()->setChangeRecordingEnabled( !online );
+  Akonadi::AgentBase::doSetOnline( online );
+}
+
 
 #include "nepomukfeederagentbase.moc"
