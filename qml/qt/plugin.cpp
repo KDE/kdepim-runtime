@@ -20,7 +20,6 @@
 #include "plugin.h"
 #include "qmldateedit.h"
 
-#include <kcomponentdata.h>
 #include <kdebug.h>
 //#include <QtDeclarative/qdeclarative.h>
 
@@ -28,9 +27,6 @@ using namespace Qt;
 
 Plugin::Plugin(QObject* parent): QDeclarativeExtensionPlugin(parent)
 {
-//  kDebug();
-//  if ( !KGlobal::hasMainComponent() )
-//    new KComponentData( "MessageViewerQmlPlugin", "libmessageviewer", KComponentData::RegisterAsMainComponent );
 }
 
 void Plugin::registerTypes(const char* uri)
