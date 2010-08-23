@@ -31,7 +31,9 @@
 #include <klocale.h>
 #include <KWindowSystem>
 
+#ifndef IMAPRESOURCE_NO_SOLID
 #include <solid/networking.h>
+#endif
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/collectionfetchjob.h>
@@ -214,7 +216,7 @@ void ImapResource::onConnectionLost( KIMAP::Session */*session*/ )
 
 bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  ResourceStateInterface::Ptr state = ResourceState::createRetrieveItemState( this, item, parts );
+  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemState( this, item, parts );
   RetrieveItemTask *task = new RetrieveItemTask( state, this );
   task->start( m_pool );
   return true;
@@ -222,21 +224,21 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
-  ResourceStateInterface::Ptr state = ResourceState::createAddItemState( this, item, collection );
+  ResourceStateInterface::Ptr state = ::ResourceState::createAddItemState( this, item, collection );
   AddItemTask *task = new AddItemTask( state, this );
   task->start( m_pool );
 }
 
 void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts )
 {
-  ResourceStateInterface::Ptr state = ResourceState::createChangeItemState( this, item, parts );
+  ResourceStateInterface::Ptr state = ::ResourceState::createChangeItemState( this, item, parts );
   ChangeItemTask *task = new ChangeItemTask( state, this );
   task->start( m_pool );
 }
 
 void ImapResource::itemRemoved( const Akonadi::Item &item )
 {
-  ResourceStateInterface::Ptr state = ResourceState::createRemoveItemState( this, item );
+  ResourceStateInterface::Ptr state = ::ResourceState::createRemoveItemState( this, item );
   RemoveItemTask *task = new RemoveItemTask( state, this );
   task->start( m_pool );
 }
@@ -246,7 +248,7 @@ void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collecti
 {
   Q_ASSERT( item.parentCollection() == destination ); // should have been set by the server
 
-  ResourceStateInterface::Ptr state = ResourceState::createMoveItemState( this, item, source, destination );
+  ResourceStateInterface::Ptr state = ::ResourceState::createMoveItemState( this, item, source, destination );
   MoveItemTask *task = new MoveItemTask( state, this );
   task->start( m_pool );
 }
@@ -257,7 +259,7 @@ void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collecti
 
 void ImapResource::retrieveCollections()
 {
-  ResourceStateInterface::Ptr state = ResourceState::createRetrieveCollectionsState( this );
+  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveCollectionsState( this );
   RetrieveCollectionsTask *task = new RetrieveCollectionsTask( state, this );
   task->start( m_pool );
 }
@@ -265,7 +267,7 @@ void ImapResource::retrieveCollections()
 void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
 {
   const Collection collection( collectionVariant.value<Collection>() );
-  ResourceStateInterface::Ptr state = ResourceState::createRetrieveCollectionMetadataState( this, collection );
+  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveCollectionMetadataState( this, collection );
 
   RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state, this );
   task->start( m_pool );
@@ -277,7 +279,7 @@ void ImapResource::retrieveItems( const Collection &col )
 
   setItemStreamingEnabled( true );
 
-  ResourceStateInterface::Ptr state = ResourceState::createRetrieveItemsState( this, col );
+  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemsState( this, col );
   RetrieveItemsTask *task = new RetrieveItemsTask( state, this );
   task->start( m_pool );
 }
@@ -288,21 +290,21 @@ void ImapResource::retrieveItems( const Collection &col )
 
 void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
-  ResourceStateInterface::Ptr state = ResourceState::createAddCollectionState( this, collection, parent );
+  ResourceStateInterface::Ptr state = ::ResourceState::createAddCollectionState( this, collection, parent );
   AddCollectionTask *task = new AddCollectionTask( state, this );
   task->start( m_pool );
 }
 
 void ImapResource::collectionChanged( const Collection &collection, const QSet<QByteArray> &parts )
 {
-  ResourceStateInterface::Ptr state = ResourceState::createChangeCollectionState( this, collection, parts );
+  ResourceStateInterface::Ptr state = ::ResourceState::createChangeCollectionState( this, collection, parts );
   ChangeCollectionTask *task = new ChangeCollectionTask( state, this );
   task->start( m_pool );
 }
 
 void ImapResource::collectionRemoved( const Collection &collection )
 {
-  ResourceStateInterface::Ptr state = ResourceState::createRemoveCollectionState( this, collection );
+  ResourceStateInterface::Ptr state = ::ResourceState::createRemoveCollectionState( this, collection );
   RemoveCollectionTask *task = new RemoveCollectionTask( state, this );
   task->start( m_pool );
 }
@@ -310,7 +312,7 @@ void ImapResource::collectionRemoved( const Collection &collection )
 void ImapResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                     const Akonadi::Collection &destination )
 {
-  ResourceStateInterface::Ptr state = ResourceState::createMoveCollectionState( this, collection, source, destination );
+  ResourceStateInterface::Ptr state = ::ResourceState::createMoveCollectionState( this, collection, source, destination );
   MoveCollectionTask *task = new MoveCollectionTask( state, this );
   task->start( m_pool );
 }
@@ -327,8 +329,9 @@ void ImapResource::scheduleConnectionAttempt()
 
 void ImapResource::doSetOnline(bool online)
 {
-  kDebug() << "online=" << online
-           << "network.status=" << Solid::Networking::status();
+#ifndef IMAPRESOURCE_NO_SOLID
+  kDebug() << "online=" << online;
+#endif
   if ( !online && m_pool->isConnected() ) {
     m_pool->disconnect();
     delete m_idle;
@@ -356,9 +359,14 @@ void ImapResource::reconnect()
   setNeedsNetwork( needsNetwork() );
   setOnline( false ); // we are not connected initially
 
-  setOnline( !needsNetwork() ||
+  setOnline( !needsNetwork()
+#ifndef IMAPRESOURCE_NO_SOLID
+			 ||
              Solid::Networking::status() == Solid::Networking::Unknown ||
-             Solid::Networking::status() == Solid::Networking::Connected );
+             Solid::Networking::status() == Solid::Networking::Connected
+#endif
+             );
+
 }
 
 
@@ -415,7 +423,7 @@ void ImapResource::onIdleCollectionFetchDone( KJob *job )
     if ( password.isEmpty() )
       return;
 
-    ResourceStateInterface::Ptr state = ResourceState::createIdleState( this, c );
+    ResourceStateInterface::Ptr state = ::ResourceState::createIdleState( this, c );
     m_idle = new ImapIdleManager( state, m_pool, this );
 
   } else {
@@ -469,7 +477,7 @@ void ImapResource::triggerCollectionExpunge( const QVariant &collectionVariant )
 {
   const Collection collection = collectionVariant.value<Collection>();
 
-  ResourceStateInterface::Ptr state = ResourceState::createExpungeCollectionState( this, collection );
+  ResourceStateInterface::Ptr state = ::ResourceState::createExpungeCollectionState( this, collection );
   ExpungeCollectionTask *task = new ExpungeCollectionTask( state, this );
   task->start( m_pool );
 }

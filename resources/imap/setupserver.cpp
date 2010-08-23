@@ -51,7 +51,9 @@
 #include <kpushbutton.h>
 #include <kmessagebox.h>
 #include <kuser.h>
+#ifndef IMAPRESOURCE_NO_SOLID
 #include <solid/networking.h>
+#endif
 
 #include <kpimidentities/identitymanager.h>
 #include <kpimidentities/identitycombo.h>
@@ -177,9 +179,11 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   readSettings();
   slotTestChanged();
   slotComplete();
+#ifndef IMAPRESOURCE_NO_SOLID
   connect( Solid::Networking::notifier(),
            SIGNAL( statusChanged( Solid::Networking::Status ) ),
            SLOT( slotTestChanged() ) );
+#endif
   connect( this, SIGNAL( applyClicked() ),
            SLOT( applySettings() ) );
   connect( this, SIGNAL( okClicked() ),
@@ -398,7 +402,9 @@ void SetupServer::slotTest()
 
   delete m_serverTest;
   m_serverTest = new MailTransport::ServerTest( this );
+#ifndef QT_NO_CURSOR
   qApp->setOverrideCursor( Qt::BusyCursor );
+#endif
 
   QString server = m_ui->imapServer->text();
   int port = m_ui->portSpin->value();
@@ -423,7 +429,9 @@ void SetupServer::slotFinished( QList<int> testResult )
 {
   kDebug() << testResult;
 
+#ifndef QT_NO_CURSOR
   qApp->restoreOverrideCursor();
+#endif
   enableButtonOk( true );
 
   using namespace MailTransport;

@@ -133,17 +133,17 @@ endmacro( akonadi_add_resourcetest )
 
 ############### Now, we add the components ###############
 
-# pending: resources and agents will be needed eventually on wince too
-if (NOT WINCE)
 add_subdirectory(resources) 
 add_subdirectory(agents)
-endif (NOT WINCE)
-if (NOT WINCE)
 add_subdirectory(libkdepim-copy)
+add_subdirectory(plugins)
+
+#account wizzard needs to be ported to wince yet, does not work because of kross and kassistentdialoag
+if (NOT WINCE)
+add_subdirectory(accountwizard)
 add_subdirectory(xml)
 add_subdirectory(resourcetester)
 add_subdirectory(kioslave)
-add_subdirectory(plugins)
 add_subdirectory(kcm)
 add_subdirectory(tray)
 add_subdirectory(migration)
@@ -151,7 +151,6 @@ add_subdirectory(defaultsetup)
 if (KDEPIMLIBS_KRESOURCES_LIBS)
   add_subdirectory(kresources)
 endif (KDEPIMLIBS_KRESOURCES_LIBS)
-add_subdirectory(accountwizard)
 endif(NOT WINCE)
 if (QT_QTDECLARATIVE_FOUND)
   add_subdirectory(qml)
