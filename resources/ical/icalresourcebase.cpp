@@ -35,8 +35,7 @@ using namespace Akonadi;
 using namespace KCalCore;
 
 ICalResourceBase::ICalResourceBase( const QString &id )
-    : SingleFileResource<Settings>( id ),
-      mCalendar( 0 ), mFileStorage( 0 )
+    : SingleFileResource<Settings>( id )
 {
   KGlobal::locale()->insertCatalog( "akonadi_ical_resource" );
 }
@@ -82,11 +81,10 @@ void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Set
 
 bool ICalResourceBase::readFromFile( const QString &fileName )
 {
-  delete mFileStorage;
   mCalendar = KCalCore::MemoryCalendar::Ptr( new KCalCore::MemoryCalendar( QLatin1String( "UTC" ) ) );
 
-  mFileStorage = new KCalCore::FileStorage( mCalendar, fileName,
-                                            new KCalCore::ICalFormat() );
+  mFileStorage = KCalCore::FileStorage::Ptr( new KCalCore::FileStorage( mCalendar, fileName,
+                                                                 new KCalCore::ICalFormat() ) );
 
   return mFileStorage->load();
 }
@@ -119,7 +117,7 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
     return false;
   }
 
-  KCalCore::FileStorage *fileStorage = mFileStorage;
+  KCalCore::FileStorage *fileStorage = mFileStorage.data();
   if ( fileName != mFileStorage->fileName() ) {
     fileStorage = new KCalCore::FileStorage( mCalendar,
                                              fileName,
@@ -132,7 +130,7 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
     success = false;
   }
 
-  if ( fileStorage != mFileStorage ) {
+  if ( fileStorage != mFileStorage.data() ) {
     delete fileStorage;
   }
 
@@ -142,6 +140,11 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
 KCalCore::MemoryCalendar::Ptr ICalResourceBase::calendar() const
 {
   return mCalendar;
+}
+
+KCalCore::FileStorage::Ptr ICalResourceBase::fileStorage() const
+{
+  return mFileStorage;
 }
 
 
