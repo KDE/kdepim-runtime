@@ -27,6 +27,7 @@ BreadcrumbNavigationView {
   id : breadcrumbView
 
   property bool showCheckboxes : false
+  property bool checkable : false
   property bool showUnread : false
 
   topDelegate : CollectionDelegate {
@@ -47,6 +48,7 @@ BreadcrumbNavigationView {
     checkModel : breadcrumbComponentFactory.qmlBreadcrumbCheckModel()
     showUnread : breadcrumbView.showUnread
     showCheckbox : breadcrumbView.showCheckboxes
+    checkable : breadcrumbView.checkable
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = row;
       breadcrumbTopLevel.state = "before_select_breadcrumb";
@@ -60,6 +62,7 @@ BreadcrumbNavigationView {
     checkModel : breadcrumbComponentFactory.qmlSelectedItemCheckModel()
     showUnread : breadcrumbView.showUnread
     showCheckbox : breadcrumbView.showCheckboxes
+    checkable : breadcrumbView.checkable
   }
 
   childItemsDelegate : CollectionDelegate {
@@ -70,6 +73,7 @@ BreadcrumbNavigationView {
     checkModel : breadcrumbComponentFactory.qmlChildCheckModel()
     showUnread : breadcrumbView.showUnread
     showCheckbox : breadcrumbView.showCheckboxes
+    checkable : breadcrumbView.checkable
     onIndexSelected : {
       breadcrumbTopLevel._transitionSelect = row;
       breadcrumbTopLevel.state = "before_select_child";

@@ -33,7 +33,10 @@ Item {
   property bool topItem : false
   property bool showUnread : false
   property bool showCheckbox : false
+  property bool checkable : false
+  property bool uncheckable : false
   property int indentation : 0
+  property real dragCheckThreshold : 0.5
 
   property variant checkModel
 
@@ -50,6 +53,14 @@ Item {
     width : parent.width
     height : parent.height
     id : nestedItem
+
+    Behavior on x {
+      NumberAnimation {
+        easing.type: "OutQuad"
+        easing.amplitude: 100
+        duration: 800
+      }
+    }
 
     MouseArea {
       anchors.fill: parent
@@ -70,6 +81,21 @@ Item {
           indexSelected(model.index);
         }
       }
+      drag.target : nestedItem
+      drag.axis : Drag.XAxis
+      drag.minimumX : uncheckable ? -nestedItem.width : 0
+      drag.maximumX : checkable ? nestedItem.width : 0
+      drag.onActiveChanged : {
+        if (!drag.active) {
+          if ((checkable && nestedItem.x > nestedItem.width * dragCheckThreshold)
+            || (uncheckable && nestedItem.x < nestedItem.width * dragCheckThreshold))
+          {
+            // 8 is QItemSelectionModel::Toggle
+            checkModel.select(model.index, 8);
+          }
+          nestedItem.x = 0
+        }
+      }
     }
     Row {
       id: topLayout
@@ -84,14 +110,6 @@ Item {
         width : height
         height : 50
         visible : wrapper.showCheckbox;
-        MouseArea {
-          anchors.fill : parent
-          onClicked :
-          {
-            // 8 is QItemSelectionModel::Toggle
-            checkModel.select(model.index, 8);
-          }
-        }
       }
 
       //Image {
