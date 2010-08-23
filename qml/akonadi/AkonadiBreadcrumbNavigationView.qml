@@ -31,7 +31,7 @@ BreadcrumbNavigationView {
   property bool showUnread : false
 
   topDelegate : CollectionDelegate {
-    indentation : 35
+    indentation : 80
     fullClickArea : true
     topItem : true
     height : itemHeight
