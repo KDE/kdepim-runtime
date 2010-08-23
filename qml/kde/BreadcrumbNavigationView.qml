@@ -23,7 +23,9 @@ import Qt 4.7
 
 Item {
   id: breadcrumbTopLevel
-  clip : true
+  // We must not clip here or dragging will cease to work.
+  // http://bugreports.qt.nokia.com/browse/QTBUG-13091
+//   clip : true
 
   property variant breadcrumbComponentFactory
 
@@ -85,7 +87,6 @@ Item {
     interactive : false
     height : breadcrumbsView.count > 0 ? itemHeight : 0
 
-    clip : true;
     property int selectedIndex : -1
     anchors.top : topButton.bottom
     anchors.left : parent.left
@@ -184,7 +185,6 @@ Item {
     model : breadcrumbComponentFactory.qmlChildItemsModel();
     property bool shouldBeFlickable
 
-    clip : true
     anchors.top : selectedItemPlaceHolder.bottom
     anchors.bottom : breadcrumbTopLevel.bottom
     anchors.left : parent.left
