@@ -40,7 +40,7 @@ Item {
   signal indexSelected(int row)
 
   x : indentation
-  width : breadcrumbsView.width - indentation
+  width : ListView.view.width - indentation
 
   Item {
     // This is the same as anchors.fill : parent, but ParentAnimation only works
