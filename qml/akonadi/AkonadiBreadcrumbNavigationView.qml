@@ -24,13 +24,32 @@ import org.kde 4.5
 import org.kde.akonadi 4.5
 
 Item {
+  property alias breadcrumbComponentFactory : breadcrumbView.breadcrumbComponentFactory
+
+  property alias topDelegate :  breadcrumbView.topDelegate
+  property alias breadcrumbDelegate :  breadcrumbView.breadcrumbDelegate
+  property alias selectedItemDelegate :  breadcrumbView.selectedItemDelegate
+  property alias childItemsDelegate :  breadcrumbView.childItemsDelegate
+  property alias multipleSelectionText : breadcrumbView.multipleSelectionText
+
+  property alias itemHeight : breadcrumbView.itemHeight
+  property alias _transitionSelect : breadcrumbView._transitionSelect
+
+  property alias hasChildren :  breadcrumbView.hasChildren
+  property alias hasSelection :  breadcrumbView.hasSelection
+  property alias hasBreadcrumbs :  breadcrumbView.hasBreadcrumbs
+
+  property alias numBreadcrumbs : breadcrumbView.numBreadcrumbs
+  property alias numSelected : breadcrumbView.numSelected
+
+  property alias breadcrumbSelectionModel : breadcrumbView.breadcrumbSelectionModel
+  property alias selectedItemSelectionModel : breadcrumbView.selectedItemSelectionModel
+  property alias childSelectionModel : breadcrumbView.childSelectionModel
+
+
   property alias showCheckboxes : breadcrumbView.showCheckboxes
   property alias checkable : breadcrumbView.checkable
   property alias showUnread : breadcrumbView.showUnread
-  property alias breadcrumbComponentFactory : breadcrumbView.breadcrumbComponentFactory
-  property alias numBreadcrumbs : breadcrumbView.numBreadcrumbs
-  property alias numSelected : breadcrumbView.numSelected
-  property alias multipleSelectionText : breadcrumbView.multipleSelectionText
 
   Item {
     id :dragOverlay
