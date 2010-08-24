@@ -38,26 +38,6 @@ static bool compareString( const QString &left, const QString &right )
 }
 #endif
 
-static QString toString( KCalCore::Attendee *attendee )
-{
-  return attendee->name() + '<' + attendee->email() + '>';
-}
-
-static QString toString( KCalCore::Alarm * )
-{
-  return QString();
-}
-
-static QString toString( KCalCore::Incidence * )
-{
-  return QString();
-}
-
-static QString toString( KCalCore::Attachment * )
-{
-  return QString();
-}
-
 static QString toString( const QDate &date )
 {
   return date.toString();
@@ -111,7 +91,7 @@ void CalendarDiffAlgo::run()
 
 void CalendarDiffAlgo::diffIncidenceBase( const KCalCore::IncidenceBase::Ptr &left, const KCalCore::IncidenceBase::Ptr &right )
 {
-  diffList( i18n( "Attendees" ), left->attendees(), right->attendees() );
+  diffVector( i18n( "Attendees" ), left->attendees(), right->attendees() );
 
   if ( left->dtStart() != right->dtStart() )
     conflictField( i18n( "Start time" ), left->dtStart().toString(), right->dtStart().toString() );
@@ -157,12 +137,12 @@ void CalendarDiffAlgo::diffIncidence( const KCalCore::Incidence::Ptr &left,
     conflictField( i18n( "Location" ), left->location(), right->location() );
 
   diffList( i18n( "Categories" ), left->categories(), right->categories() );
-  diffList( i18n( "Alarms" ), left->alarms(), right->alarms() );
+  diffVector( i18n( "Alarms" ), left->alarms(), right->alarms() );
   diffList( i18n( "Resources" ), left->resources(), right->resources() );
-  diffList( i18n( "Attachments" ), left->attachments(), right->attachments() );
+  diffVector( i18n( "Attachments" ), left->attachments(), right->attachments() );
   diffList( i18n( "Exception Dates" ), left->recurrence()->exDates(), right->recurrence()->exDates() );
   diffList( i18n( "Exception Times" ), left->recurrence()->exDateTimes(), right->recurrence()->exDateTimes() );
-	// TODO: recurrence dates and date/times, exrules, rrules
+  // TODO: recurrence dates and date/times, exrules, rrules
 
   if ( left->created() != right->created() )
     conflictField( i18n( "Created" ), left->created().toString(), right->created().toString() );
@@ -206,6 +186,21 @@ void CalendarDiffAlgo::diffTodo( const KCalCore::Todo::Ptr &left, const KCalCore
 template <class L>
 void CalendarDiffAlgo::diffList( const QString &id,
                                  const QList<L> &left, const QList<L> &right )
+{
+  for ( int i = 0; i < left.count(); ++i ) {
+    if ( !right.contains( left[ i ] )  )
+      additionalLeftField( id, toString( left[ i ] ) );
+  }
+
+  for ( int i = 0; i < right.count(); ++i ) {
+    if ( !left.contains( right[ i ] )  )
+      additionalRightField( id, toString( right[ i ] ) );
+  }
+}
+
+template <class L>
+void CalendarDiffAlgo::diffVector( const QString &id,
+                                   const QVector<L> &left, const QVector<L> &right )
 {
   for ( int i = 0; i < left.count(); ++i ) {
     if ( !right.contains( left[ i ] )  )

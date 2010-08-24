@@ -41,6 +41,9 @@ class KDEPIM_COPY_EXPORT CalendarDiffAlgo : public DiffAlgo
     template <class L>
     void diffList( const QString &id, const QList<L> &left, const QList<L> &right );
 
+    template <class L>
+    void diffVector( const QString &id, const QVector<L> &left, const QVector<L> &right );
+
     void diffIncidenceBase( const KCalCore::IncidenceBase::Ptr &, const KCalCore::IncidenceBase::Ptr &);
     void diffIncidence( const KCalCore::Incidence::Ptr &, const KCalCore::Incidence::Ptr & );
     void diffEvent( const KCalCore::Event::Ptr &, const KCalCore::Event::Ptr & );
