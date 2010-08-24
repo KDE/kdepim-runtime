@@ -97,7 +97,7 @@ Item {
           indexSelected(model.index);
         }
       }
-      drag.target : nestedItem
+      drag.target : (checkable || uncheckable) ? nestedItem : undefined
       drag.axis : Drag.XAxis
       drag.minimumX : uncheckable ? -nestedItem.width : wrapper.indentation
       drag.maximumX : checkable ? nestedItem.width : wrapper.indentation
