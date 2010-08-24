@@ -35,6 +35,7 @@ Item {
   property bool showCheckbox : false
   property bool checkable : false
   property bool uncheckable : false
+  property bool alternatingRowColors : false
   property int indentation : 0
   property real dragCheckThreshold : 0.5
 
@@ -45,7 +46,7 @@ Item {
   x : indentation
   width : ListView.view.width - indentation
 
-  Item {
+  Rectangle {
     // This is the same as anchors.fill : parent, but ParentAnimation only works
     // if positional layouting is used instead of anchor layouting.
     x : 0
@@ -53,6 +54,7 @@ Item {
     width : parent.width
     height : parent.height
     id : nestedItem
+    color : ( alternatingRowColors && model.index % 2 == 0 ) ? "#33ffffff" : "#00000000"
 
     Behavior on x {
       NumberAnimation {
