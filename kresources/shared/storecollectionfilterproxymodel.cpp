@@ -40,8 +40,10 @@ StoreCollectionFilterProxyModel::~StoreCollectionFilterProxyModel()
 void StoreCollectionFilterProxyModel::setSubResourceModel( const AbstractSubResourceModel *subResourceModel )
 {
   if ( mSubResourceModel != subResourceModel ) {
+    emit layoutAboutToBeChanged();
     mSubResourceModel = subResourceModel;
     invalidateFilter();
+    emit layoutChanged();
   }
 }
 

@@ -17,20 +17,25 @@ kde4_add_plugin(akonadi_serializer_mail ${akonadi_serializer_mail_PART_SRCS})
 target_link_libraries(akonadi_serializer_mail ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${AKONADI_COMMON_LIBRARIES} )
 install(TARGETS akonadi_serializer_mail DESTINATION ${PLUGIN_INSTALL_DIR})
 
+if(NOT WINCE)
 set(akonadi_serializer_kcal_SRCS akonadi_serializer_kcal.cpp)
 kde4_add_plugin(akonadi_serializer_kcal ${akonadi_serializer_kcal_SRCS})
 target_link_libraries(akonadi_serializer_kcal ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
 install(TARGETS akonadi_serializer_kcal DESTINATION ${PLUGIN_INSTALL_DIR})
+endif(NOT WINCE)
 
 set(akonadi_serializer_kcalcore_SRCS akonadi_serializer_kcalcore.cpp)
 kde4_add_plugin(akonadi_serializer_kcalcore ${akonadi_serializer_kcalcore_SRCS})
 target_link_libraries(akonadi_serializer_kcalcore ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCALUTILS_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
 install(TARGETS akonadi_serializer_kcalcore DESTINATION ${PLUGIN_INSTALL_DIR})
 
+if(NOT WINCE)
+
 set(akonadi_serializer_bookmark_SRCS akonadi_serializer_bookmark.cpp)
 kde4_add_plugin(akonadi_serializer_bookmark ${akonadi_serializer_bookmark_SRCS})
 target_link_libraries(akonadi_serializer_bookmark ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
 install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
+endif(NOT WINCE)
 
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 kde4_add_plugin(akonadi_serializer_contactgroup ${akonadi_serializer_contactgroup_PART_SRCS})
@@ -38,10 +43,12 @@ target_link_libraries(akonadi_serializer_contactgroup ${KDE4_KDECORE_LIBS} ${KDE
                                                       ${KDEPIMLIBS_AKONADI_KABC_LIBS} ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
 
+if(NOT WINCE)
 set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
 kde4_add_plugin(akonadi_serializer_microblog ${akonadi_serializer_microblog_SRCS})
 target_link_libraries(akonadi_serializer_microblog ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${KDE4_KDECORE_LIBS} ${QT_QTXML_LIBRARY} ${KDEPIMLIBS_KPIMUTILS_LIBS} ${KDEPIMLIBS_MICROBLOG_LIBS})
 install(TARGETS akonadi_serializer_microblog DESTINATION ${PLUGIN_INSTALL_DIR})
+endif(NOT WINCE)
 
 ########### install files ###############
 

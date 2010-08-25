@@ -85,7 +85,6 @@ Item {
     interactive : false
     height : breadcrumbsView.count > 0 ? itemHeight : 0
 
-    clip : true;
     property int selectedIndex : -1
     anchors.top : topButton.bottom
     anchors.left : parent.left
@@ -181,10 +180,10 @@ Item {
 
   ListView {
     id : childItemsView
+    clip : true
     model : breadcrumbComponentFactory.qmlChildItemsModel();
     property bool shouldBeFlickable
 
-    clip : true
     anchors.top : selectedItemPlaceHolder.bottom
     anchors.bottom : breadcrumbTopLevel.bottom
     anchors.left : parent.left

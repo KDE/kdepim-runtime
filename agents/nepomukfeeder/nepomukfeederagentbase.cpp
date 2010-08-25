@@ -37,12 +37,17 @@
 
 #include <nepomuk/resource.h>
 #include <nepomuk/tag.h>
+#include <nepomuk/andterm.h>
+#include <nepomuk/comparisonterm.h>
+#include <nepomuk/literalterm.h>
+#include <nepomuk/resourcetypeterm.h>
 
 #include <KLocale>
 #include <KUrl>
 #include <KProcess>
 #include <KMessageBox>
 #include <KStandardDirs>
+#include <KIdleTime>
 
 #include <Soprano/Vocabulary/NAO>
 
@@ -78,24 +83,29 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   mIndexCompatLevel( 1 ),
   mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
-  mNeedsStrigi( false )
+  mNeedsStrigi( false ),
+  mSelfTestPassed( false ),
+  mSystemIsIdle( false )
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
   mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 
-  changeRecorder()->setChangeRecordingEnabled( false );
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
 
-  mNepomukStartupTimeout.setInterval( 60 * 1000 );
+  mNepomukStartupTimeout.setInterval( 300 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
   connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
   connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
   connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
   connect( this, SIGNAL(fullyIndexed()), this, SLOT(slotFullyIndexed()) );
 
-  setOnline( false );
+  connect( KIdleTime::instance(), SIGNAL(timeoutReached(int)), SLOT(systemIdle()) );
+  connect( KIdleTime::instance(), SIGNAL(resumingFromIdle()), SLOT(systemResumed()) );
+  KIdleTime::instance()->addIdleTimeout( 10 * 1000 );
+
+  checkOnline();
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
 }
 
@@ -319,6 +329,7 @@ void NepomukFeederAgentBase::tagsFromCategories(NepomukFast::Resource& resource,
 void NepomukFeederAgentBase::selfTest()
 {
   QStringList errorMessages;
+  mSelfTestPassed = false;
 
   // if Nepomuk is not running, try to start it
   if ( !mNepomukStartupAttempted && !Nepomuk::ResourceManager::instance()->initialized() ) {
@@ -330,7 +341,7 @@ void NepomukFeederAgentBase::selfTest()
       mNepomukStartupAttempted = true;
       mNepomukStartupTimeout.start();
       // wait for Nepomuk to start
-      setOnline( false );
+      checkOnline();
       emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
       return;
     }
@@ -366,9 +377,10 @@ void NepomukFeederAgentBase::selfTest()
   }
 
   if ( errorMessages.isEmpty() ) {
-    setOnline( true );
+    mSelfTestPassed = true;
     mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
     mNepomukStartupTimeout.stop();
+    checkOnline();
     if ( !mInitialUpdateDone && needsReIndexing() ) {
       mInitialUpdateDone = true;
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
@@ -378,7 +390,7 @@ void NepomukFeederAgentBase::selfTest()
     return;
   }
 
-  setOnline( false );
+  checkOnline();
 
   QString message = i18n( "<b>Nepomuk Indexing Agents Have Been Disabled</b><br/>"
                           "The Nepomuk service is not available or fully operational and attempts to rectify this have failed. "
@@ -403,17 +415,24 @@ NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QSt
   // are case insensitive. But for the moment we stick to it and hope Nepomuk
   // alignment fixes any duplicates
   //
-  SelectSparqlBuilder::BasicGraphPattern graph;
+  Nepomuk::Query::Query query;
+  Nepomuk::Query::AndTerm andTerm;
+  Nepomuk::Query::ResourceTypeTerm personTypeTerm( Vocabulary::NCO::PersonContact() );
+  andTerm.addSubTerm( personTypeTerm );
   if ( emailAddress.isEmpty() ) {
-    graph.addTriple( QLatin1String( "?person" ), Vocabulary::NCO::fullname(), name );
+    const Nepomuk::Query::ComparisonTerm nameTerm( Vocabulary::NCO::fullname(), Nepomuk::Query::LiteralTerm( name ),
+                                                   Nepomuk::Query::ComparisonTerm::Equal );
+    andTerm.addSubTerm( nameTerm );
   } else {
-    graph.addTriple( QLatin1String( "?person" ), Vocabulary::NCO::hasEmailAddress(), SparqlBuilder::QueryVariable( "?email" ) );
-    graph.addTriple( QLatin1String( "?email" ), Vocabulary::NCO::emailAddress(), emailAddress );
+    const Nepomuk::Query::ComparisonTerm addrTerm( Vocabulary::NCO::emailAddress(), Nepomuk::Query::LiteralTerm( emailAddress ),
+                                                   Nepomuk::Query::ComparisonTerm::Equal );
+    const Nepomuk::Query::ComparisonTerm mailTerm( Vocabulary::NCO::hasEmailAddress(), addrTerm );
+    andTerm.addSubTerm( mailTerm );
   }
-  SelectSparqlBuilder qb;
-  qb.setGraphPattern( graph );
-  qb.addQueryVariable( QLatin1String( "?person" ) );
-  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(), Soprano::Query::QueryLanguageSparql );
+  query.setTerm( andTerm );
+  query.setLimit( 1 );
+  
+  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( query.toSparqlQuery(), Soprano::Query::QueryLanguageSparql );
 
   if ( it.next() ) {
     if ( found ) *found = true;
@@ -479,6 +498,32 @@ void NepomukFeederAgentBase::slotFullyIndexed()
   KConfigGroup grp( componentData().config(), "InitialIndexing" );
   grp.writeEntry( "IndexCompatLevel", mIndexCompatLevel );
   grp.sync();
+}
+
+void NepomukFeederAgentBase::doSetOnline(bool online)
+{
+  changeRecorder()->setChangeRecordingEnabled( !online );
+  Akonadi::AgentBase::doSetOnline( online );
+}
+
+void NepomukFeederAgentBase::checkOnline()
+{
+  setOnline( mSelfTestPassed && mSystemIsIdle );
+}
+
+void NepomukFeederAgentBase::systemIdle()
+{
+  emit status( Idle, i18n( "System idle, ready to index data." ) );
+  mSystemIsIdle = true;
+  KIdleTime::instance()->catchNextResumeEvent();
+  checkOnline();
+}
+
+void NepomukFeederAgentBase::systemResumed()
+{
+  emit status( Idle, i18n( "System busy, indexing suspended." ) );
+  mSystemIsIdle = false;
+  checkOnline();
 }
 
 #include "nepomukfeederagentbase.moc"

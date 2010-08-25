@@ -22,7 +22,6 @@
 #ifndef NEPOMUKFEEDERAGENTBASE_H
 #define NEPOMUKFEEDERAGENTBASE_H
 
-#include "selectsqarqlbuilder.h"
 #include "resource.h"
 #include <nie.h>
 
@@ -31,6 +30,8 @@
 #include <akonadi/item.h>
 #include <akonadi/mimetypechecker.h>
 
+#include <nepomuk/query.h>
+#include <nepomuk/resourceterm.h>
 #include <nepomuk/resourcemanager.h>
 
 #include <Soprano/Model>
@@ -82,15 +83,12 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     static void removeEntityFromNepomuk( const T &entity )
     {
       // find the graph that contains our item and delete the complete graph
-      SparqlBuilder::BasicGraphPattern graph;
       // FIXME: why isn't that in the ontology?
-      // graph.addTriple( "?g", Vocabulary::Nie::dataGraphFor(), item.url() );
-      graph.addTriple( QLatin1String( "?g" ), QUrl( QLatin1String( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ) ), entity.url() );
-      SelectSparqlBuilder qb;
-      qb.addQueryVariable( QLatin1String( "?g" ) );
-      qb.setGraphPattern( graph );
-      const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( qb.query(),
-          Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
+      const Nepomuk::Query::ComparisonTerm term( QUrl( QLatin1String( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ) ),
+                                                 Nepomuk::Query::ResourceTerm( entity.url() ) );
+      const Nepomuk::Query::Query query( term );
+      const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
+          query.toSparqlQuery(), Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
 
       foreach ( const Soprano::Node &node, list )
         Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
@@ -169,6 +167,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     using AgentBase::ObserverV2::collectionChanged;
     void collectionRemoved(const Akonadi::Collection& collection);
 
+    void doSetOnline(bool online);
+
   private:
     void processNextCollection();
 
@@ -177,6 +177,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
       when the format changes, for example. Base implementation checks the index compatibility level.
     */
     virtual bool needsReIndexing() const;
+
+    void checkOnline();
 
   private slots:
     void collectionsReceived( const Akonadi::Collection::List &collections );
@@ -187,6 +189,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
 
     void selfTest();
     void slotFullyIndexed();
+    void systemIdle();
+    void systemResumed();
 
   private:
     QStringList mSupportedMimeTypes;
@@ -201,6 +205,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
     bool mNeedsStrigi;
+    bool mSelfTestPassed;
+    bool mSystemIsIdle;
 };
 
 #endif

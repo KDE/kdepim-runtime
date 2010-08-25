@@ -608,10 +608,10 @@ static QString attendeeStatusToString( KCalCore::Attendee::PartStat status )
   case KCalCore::Attendee::InProcess:
     // These don't have any meaning in the Kolab format, so just use:
     return "accepted";
+  default:
+    // Default for the case that there are more added later:
+    return "accepted";
   }
-
-  // Default for the case that there are more added later:
-  return "accepted";
 }
 
 static KCalCore::Attendee::Role attendeeStringToRole( const QString& s )

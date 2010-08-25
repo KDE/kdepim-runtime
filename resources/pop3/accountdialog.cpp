@@ -53,12 +53,16 @@ public:
   inline BusyCursorHelper( QObject *parent )
          : QObject( parent )
   {
+#ifndef QT_NO_CURSOR
     qApp->setOverrideCursor( Qt::BusyCursor );
+#endif
   }
 
   inline ~BusyCursorHelper()
   {
+#ifndef QT_NO_CURSOR
     qApp->restoreOverrideCursor();
+#endif
   }
 };
 

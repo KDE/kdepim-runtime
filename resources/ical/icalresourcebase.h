@@ -25,10 +25,7 @@
 #include "settings.h"
 
 #include <KCalCore/MemoryCalendar>
-
-namespace KCalCore {
-  class FileStorage;
-};
+#include <KCalCore/FileStorage>
 
 class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
 {
@@ -85,9 +82,12 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
     /** Return the local calendar. */
     KCalCore::MemoryCalendar::Ptr calendar() const;
 
+    /** Return the calendar file storage. */
+    KCalCore::FileStorage::Ptr fileStorage() const;
+
   private:
     KCalCore::MemoryCalendar::Ptr mCalendar;
-    KCalCore::FileStorage *mFileStorage;
+    KCalCore::FileStorage::Ptr mFileStorage;
 };
 
 template <typename PayloadPtr>

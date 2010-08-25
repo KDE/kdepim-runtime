@@ -23,56 +23,98 @@ import Qt 4.7
 import org.kde 4.5
 import org.kde.akonadi 4.5
 
-BreadcrumbNavigationView {
-  id : breadcrumbView
+Item {
+  property alias breadcrumbComponentFactory : breadcrumbView.breadcrumbComponentFactory
 
-  property bool showCheckboxes : false
-  property bool showUnread : false
+  property alias topDelegate :  breadcrumbView.topDelegate
+  property alias breadcrumbDelegate :  breadcrumbView.breadcrumbDelegate
+  property alias selectedItemDelegate :  breadcrumbView.selectedItemDelegate
+  property alias childItemsDelegate :  breadcrumbView.childItemsDelegate
+  property alias multipleSelectionText : breadcrumbView.multipleSelectionText
 
-  topDelegate : CollectionDelegate {
-    indentation : 35
-    fullClickArea : true
-    topItem : true
-    height : itemHeight
-    onIndexSelected : {
-      breadcrumbTopLevel._transitionSelect = -1;
-      breadcrumbTopLevel.state = "before_select_home";
+  property alias itemHeight : breadcrumbView.itemHeight
+  property alias _transitionSelect : breadcrumbView._transitionSelect
+
+  property alias hasChildren :  breadcrumbView.hasChildren
+  property alias hasSelection :  breadcrumbView.hasSelection
+  property alias hasBreadcrumbs :  breadcrumbView.hasBreadcrumbs
+
+  property alias numBreadcrumbs : breadcrumbView.numBreadcrumbs
+  property alias numSelected : breadcrumbView.numSelected
+
+  property alias breadcrumbSelectionModel : breadcrumbView.breadcrumbSelectionModel
+  property alias selectedItemSelectionModel : breadcrumbView.selectedItemSelectionModel
+  property alias childSelectionModel : breadcrumbView.childSelectionModel
+
+
+  property alias showCheckboxes : breadcrumbView.showCheckboxes
+  property alias checkable : breadcrumbView.checkable
+  property alias showUnread : breadcrumbView.showUnread
+
+  Item {
+    id :dragOverlay
+    anchors.fill : parent
+  }
+
+  BreadcrumbNavigationView {
+    id : breadcrumbView
+    anchors.fill : parent
+
+    property bool showCheckboxes : false
+    property bool checkable : false
+    property bool showUnread : false
+
+    topDelegate : CollectionDelegate {
+      indentation : 80
+      fullClickArea : true
+      topItem : true
+      height : itemHeight
+      onIndexSelected : {
+        breadcrumbTopLevel._transitionSelect = -1;
+        breadcrumbTopLevel.state = "before_select_home";
+      }
     }
-  }
 
-  breadcrumbDelegate : CollectionDelegate {
-    indentation : 35
-    fullClickArea : true
-    height : itemHeight
-    checkModel : breadcrumbComponentFactory.qmlBreadcrumbCheckModel()
-    showUnread : breadcrumbView.showUnread
-    showCheckbox : breadcrumbView.showCheckboxes
-    onIndexSelected : {
-      breadcrumbTopLevel._transitionSelect = row;
-      breadcrumbTopLevel.state = "before_select_breadcrumb";
+    breadcrumbDelegate : CollectionDelegate {
+      indentation : 35
+      fullClickArea : true
+      dragParent : dragOverlay
+      height : itemHeight
+      checkModel : breadcrumbComponentFactory.qmlBreadcrumbCheckModel()
+      showUnread : breadcrumbView.showUnread
+      showCheckbox : breadcrumbView.showCheckboxes
+      checkable : breadcrumbView.checkable
+      onIndexSelected : {
+        breadcrumbTopLevel._transitionSelect = row;
+        breadcrumbTopLevel.state = "before_select_breadcrumb";
+      }
     }
-  }
 
-  selectedItemDelegate : CollectionDelegate {
-    indentation : 35
-    height : itemHeight
-    selectedDelegate : true
-    checkModel : breadcrumbComponentFactory.qmlSelectedItemCheckModel()
-    showUnread : breadcrumbView.showUnread
-    showCheckbox : breadcrumbView.showCheckboxes
-  }
+    selectedItemDelegate : CollectionDelegate {
+      indentation : 35
+      height : itemHeight
+      dragParent : dragOverlay
+      selectedDelegate : true
+      checkModel : breadcrumbComponentFactory.qmlSelectedItemCheckModel()
+      showUnread : breadcrumbView.showUnread
+      showCheckbox : breadcrumbView.showCheckboxes
+      checkable : breadcrumbView.checkable
+    }
 
-  childItemsDelegate : CollectionDelegate {
-    indentation : 35
-    height : itemHeight
-    fullClickArea : true
-    showChildIndicator : true
-    checkModel : breadcrumbComponentFactory.qmlChildCheckModel()
-    showUnread : breadcrumbView.showUnread
-    showCheckbox : breadcrumbView.showCheckboxes
-    onIndexSelected : {
-      breadcrumbTopLevel._transitionSelect = row;
-      breadcrumbTopLevel.state = "before_select_child";
+    childItemsDelegate : CollectionDelegate {
+      indentation : 35
+      height : itemHeight
+      dragParent : dragOverlay
+      fullClickArea : true
+      showChildIndicator : true
+      checkModel : breadcrumbComponentFactory.qmlChildCheckModel()
+      showUnread : breadcrumbView.showUnread
+      showCheckbox : breadcrumbView.showCheckboxes
+      checkable : breadcrumbView.checkable
+      onIndexSelected : {
+        breadcrumbTopLevel._transitionSelect = row;
+        breadcrumbTopLevel.state = "before_select_child";
+      }
     }
   }
 }

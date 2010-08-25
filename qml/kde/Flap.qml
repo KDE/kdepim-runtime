@@ -106,12 +106,11 @@ Rectangle {
 
     Text {
       id: titleLabel
-      height: imageWidth
       z : 100
       anchors.verticalCenter : parent.verticalCenter
       anchors.horizontalCenter : parent.right
-      anchors.horizontalCenterOffset : -height + 7
-      anchors.verticalCenterOffset : height/ 2
+      anchors.horizontalCenterOffset : -imageWidth / 2
+      anchors.verticalCenterOffset : - titleImage.height / 2
       transformOrigin : Item.Center
       rotation: -90
 

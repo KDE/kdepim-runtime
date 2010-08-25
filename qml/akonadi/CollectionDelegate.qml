@@ -25,7 +25,7 @@ import org.kde.akonadi 4.5
 
 Item {
   id: wrapper
-//   clip: true
+  clip: true
 
   property bool fullClickArea : false
   property bool showChildIndicator : false
@@ -33,23 +33,50 @@ Item {
   property bool topItem : false
   property bool showUnread : false
   property bool showCheckbox : false
+  property bool checkable : false
+  property bool uncheckable : false
+  property bool alternatingRowColors : false
   property int indentation : 0
+  property real dragCheckThreshold : 0.5
+
+  property alias dragParent : dragTarget.parent
 
   property variant checkModel
 
   signal indexSelected(int row)
 
   x : indentation
-  width : breadcrumbsView.width - indentation
+  width : ListView.view.width - indentation
 
-  Item {
+  Rectangle {
     // This is the same as anchors.fill : parent, but ParentAnimation only works
     // if positional layouting is used instead of anchor layouting.
     x : 0
     y : 0
-    width : parent.width
-    height : parent.height
+    width : wrapper.width
+    height : wrapper.height
     id : nestedItem
+    color : ( alternatingRowColors && model.index % 2 == 0 ) ? "#33ffffff" : "#00000000"
+
+    Behavior on x {
+      id : dragFinishedBehavior
+      SequentialAnimation {
+        NumberAnimation {
+          easing.type: "OutQuad"
+          easing.amplitude: 100
+          duration: 800
+        }
+        ScriptAction {
+          script : {
+            nestedItem.parent = wrapper
+            nestedItem.y = 0
+            dragFinishedBehavior.enabled = false
+            nestedItem.x = 0
+            dragFinishedBehavior.enabled = true
+          }
+        }
+      }
+    }
 
     MouseArea {
       anchors.fill: parent
@@ -70,6 +97,30 @@ Item {
           indexSelected(model.index);
         }
       }
+      drag.target : (checkable || uncheckable) ? nestedItem : undefined
+      drag.axis : Drag.XAxis
+      drag.minimumX : uncheckable ? -nestedItem.width : wrapper.indentation
+      drag.maximumX : checkable ? nestedItem.width : wrapper.indentation
+      drag.onActiveChanged : {
+        if (!drag.active) {
+          if ((checkable && nestedItem.x > nestedItem.width * dragCheckThreshold)
+            || (uncheckable && nestedItem.x < nestedItem.width * dragCheckThreshold))
+          {
+            // 8 is QItemSelectionModel::Toggle
+            checkModel.select(model.index, 8);
+          }
+          nestedItem.x = wrapper.indentation
+        } else {
+          var point = mapToItem(dragParent, nestedItem.x, nestedItem.y)
+          nestedItem.y = point.y
+          dragFinishedBehavior.enabled = false;
+          nestedItem.x = point.x + wrapper.indentation
+          dragFinishedBehavior.enabled = true;
+          nestedItem.parent = dragParent
+          // Using the state directly does not seem to work.
+//           nestedItem.state = "dragging"
+        }
+      }
     }
     Row {
       id: topLayout
@@ -84,14 +135,6 @@ Item {
         width : height
         height : 50
         visible : wrapper.showCheckbox;
-        MouseArea {
-          anchors.fill : parent
-          onClicked :
-          {
-            // 8 is QItemSelectionModel::Toggle
-            checkModel.select(model.index, 8);
-          }
-        }
       }
 
       //Image {
@@ -120,14 +163,18 @@ Item {
 
     Image {
       width : height
-      anchors.right : parent.right
+      anchors.right : nestedItem.right
       anchors.rightMargin : 5
-      anchors.verticalCenter : parent.verticalCenter
+      anchors.verticalCenter : nestedItem.verticalCenter
       opacity : ( showChildIndicator && breadcrumbComponentFactory.childCollectionHasChildren( model.index ) ) ? 1 : 0
       source: "transparentplus.png"
     }
 
     states : [
+      State {
+        name : "dragging"
+        ParentChange { id : dragTarget; target : nestedItem }
+      },
       State {
         name : "before_select_child"
         ParentChange { target : nestedItem; parent : selectedItemPlaceHolder; }
