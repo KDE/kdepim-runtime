@@ -32,7 +32,7 @@ Rectangle {
 
     SlideoutPanel {
       id: folderPanel
-      titleText: "Folders"
+      titleText: KDE.i18n( "Folders" )
       handleHeight: 150
       content: [
         Rectangle {
@@ -58,7 +58,7 @@ Rectangle {
 
     SlideoutPanel {
       id: actionPanel
-      titleText: "Actions"
+      titleText: KDE.i18n( "Actions" )
       titleIcon: KDE.iconPath( "akonadi", 48 );
       handleHeight: 150
       collapsedPosition : 150
