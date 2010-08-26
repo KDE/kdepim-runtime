@@ -24,7 +24,10 @@ import org.kde 4.5
 import org.kde.akonadi 4.5
 
 Item {
+  id : _top
   property alias breadcrumbComponentFactory : breadcrumbView.breadcrumbComponentFactory
+
+  property int indentation : 35
 
   property alias topDelegate :  breadcrumbView.topDelegate
   property alias breadcrumbDelegate :  breadcrumbView.breadcrumbDelegate
@@ -76,7 +79,7 @@ Item {
     }
 
     breadcrumbDelegate : CollectionDelegate {
-      indentation : 35
+      indentation : _top.indentation
       fullClickArea : true
       dragParent : dragOverlay
       height : itemHeight
@@ -91,7 +94,7 @@ Item {
     }
 
     selectedItemDelegate : CollectionDelegate {
-      indentation : 35
+      indentation : _top.indentation
       height : itemHeight
       dragParent : dragOverlay
       selectedDelegate : true
@@ -102,7 +105,7 @@ Item {
     }
 
     childItemsDelegate : CollectionDelegate {
-      indentation : 35
+      indentation : _top.indentation
       height : itemHeight
       dragParent : dragOverlay
       fullClickArea : true
