@@ -129,12 +129,11 @@ Item {
       width: parent.width
       spacing: 10
 
-      Rectangle {
+      Image {
         id : checkbox
-        color : model.checkOn ? "blue" : "red"
-        width : height
-        height : 50
-        visible : wrapper.showCheckbox;
+        y : -10
+        source : "check.png"
+        visible : wrapper.showCheckbox && model.checkOn;
       }
 
       //Image {
