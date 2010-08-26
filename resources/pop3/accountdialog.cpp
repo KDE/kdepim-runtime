@@ -31,6 +31,7 @@
 #include <Akonadi/CollectionFetchJob>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
+#include <akonadi/resourcesettings.h>
 #include <Mailtransport/ServerTest>
 
 // KDELIBS includes
@@ -102,6 +103,8 @@ void AccountDialog::setupWidgets()
   // compatibility) are allowed
   hostEdit->setValidator( &mValidator );
   intervalSpin->setSuffix( ki18np( " minute", " minutes" ) );
+
+  intervalSpin->setRange( ResourceSettings::self()->minimumCheckInterval(), 10000, 1 );
 
   connect( leaveOnServerCheck, SIGNAL( clicked() ),
            this, SLOT( slotLeaveOnServerClicked() ) );
@@ -407,7 +410,7 @@ void AccountDialog::slotPopCapabilities( QList<int> encryptionTypes )
   enableButtonOk( true );
 
   // if both fail, popup a dialog
-  if ( !mServerTest->isNormalPossible() && !mServerTest->isSecurePossible() ) 
+  if ( !mServerTest->isNormalPossible() && !mServerTest->isSecurePossible() )
     KMessageBox::sorry( this, i18n( "Unable to connect to the server, please verify the server address." ) );
 
   // If the servertest did not find any useable authentication modes, assume the
