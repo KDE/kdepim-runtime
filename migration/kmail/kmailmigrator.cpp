@@ -355,6 +355,7 @@ void KMailMigrator::migrationDone()
     }
   }
   cleanupConfigFile();
+  migrateConfigurationDialogRestriction();
   deleteLater();
 }
 
@@ -382,6 +383,18 @@ OrgKdeAkonadiPOP3SettingsInterface* KMailMigrator::createPop3SettingsInterface( 
     return 0;
   }
   return iface;
+}
+
+void KMailMigrator::migrateConfigurationDialogRestriction()
+{
+  if ( mConfig->hasGroup( "ConfigurationDialogRestrictions" ) ) {
+    KSharedConfigPtr resourcebaseconfig = KSharedConfig::openConfig( QLatin1String( "resourcebaserc" ) );
+    KConfigGroup oldGroup = mConfig->group( "ConfigurationDialogRestrictions" );
+    KConfigGroup newGroup = resourcebaseconfig->group( "ConfigurationDialogRestrictions" );
+    oldGroup.copyTo( &newGroup );
+    oldGroup.deleteGroup();
+  }
+
 }
 
 void KMailMigrator::cleanupConfigFile()

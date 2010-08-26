@@ -63,6 +63,7 @@ class KMailMigrator : public KMigratorBase
     void migrateLocalFolders();
     void migrationDone();
     void deleteOldGroup();
+    void migrateConfigurationDialogRestriction();
 
   Q_SIGNALS:
     void status( const QString &msg );
