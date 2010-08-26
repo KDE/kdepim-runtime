@@ -45,7 +45,7 @@
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
-
+#include <akonadi/resourcesettings.h>
 #include <kemailsettings.h>
 #include <klocale.h>
 #include <kpushbutton.h>
@@ -140,6 +140,7 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   m_ui->testProgress->hide();
   m_ui->accountName->setFocus();
   m_ui->checkInterval->setSuffix( ki18np( " minute", " minutes" ) );
+  m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000, 1 );
 
   // regex for evaluating a valid server name/ip
   mValidator.setRegExp( QRegExp( "[A-Za-z0-9-_:.]*" ) );
