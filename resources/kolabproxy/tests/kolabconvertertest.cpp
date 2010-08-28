@@ -267,7 +267,13 @@ class KolabConverterTest : public QObject
 
       // and now the other way around
       Item convertedKolabItem;
-      Item icalItem( QString::fromLatin1( handler->mimeType() ) );
+      Item icalItem;
+      switch ( realIncidence->type() ) {
+        case KCalCore::IncidenceBase::TypeEvent: icalItem.setMimeType( KCalCore::Event::eventMimeType() ); return;
+        case KCalCore::IncidenceBase::TypeTodo: icalItem.setMimeType( KCalCore::Todo::todoMimeType() ); return;
+        case KCalCore::IncidenceBase::TypeJournal: icalItem.setMimeType( KCalCore::Journal::journalMimeType() ); return;
+        default: QFAIL( "incidence type not supported" );
+      }
       icalItem.setPayload( realIncidence );
       handler->toKolabFormat( icalItem, convertedKolabItem );
       QVERIFY( convertedKolabItem.hasPayload<KMime::Message::Ptr>() );
