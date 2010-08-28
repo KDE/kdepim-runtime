@@ -38,7 +38,6 @@
 #include "kresettingproxymodel.h"
 #include "qmllistselectionmodel.h"
 #include "kselectionproxymodel.h"
-#include <klinkitemselectionmodel.h>
 #include "checkableitemproxymodel.h"
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )

@@ -22,7 +22,6 @@
 
 #include "kbreadcrumbselectionmodel.h"
 
-#include "kdebug.h"
 
 class KBreadcrumbSelectionModelPrivate
 {

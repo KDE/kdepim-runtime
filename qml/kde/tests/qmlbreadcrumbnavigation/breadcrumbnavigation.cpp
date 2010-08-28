@@ -22,7 +22,6 @@
 #include "breadcrumbnavigation.h"
 
 #include <QStringList>
-#include "kdebug.h"
 
 KBreadcrumbNavigationProxyModel::KBreadcrumbNavigationProxyModel(QItemSelectionModel* selectionModel, QObject* parent)
   : KSelectionProxyModel(selectionModel, parent)
