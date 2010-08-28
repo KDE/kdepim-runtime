@@ -247,6 +247,10 @@ class KolabConverterTest : public QObject
       const KCalCore::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
 
       // fix up the converted incidence for comparisson
+      foreach ( KCalCore::Attendee::Ptr a, convertedIncidence->attendees() )
+        a->setUid( QString() ); // contains random values
+      foreach ( KCalCore::Attendee::Ptr a, realIncidence->attendees() )
+        a->setUid( QString() ); // contains random values
       if ( type == "task" ) {
         QVERIFY( icalItems.first().hasPayload<KCalCore::Todo::Ptr>() );
         KCalCore::Todo::Ptr todo = icalItems.first().payload<KCalCore::Todo::Ptr>();
