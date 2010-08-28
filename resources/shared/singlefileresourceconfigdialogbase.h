@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2008 Bertjan Broeksema <b.broeksema@kdemail.org>
     Copyright (c) 2008 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2010 David Jarvie <djarvie@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -70,6 +71,12 @@ class SingleFileResourceConfigDialogBase : public KDialog
      * Set the file URL.
      */
     void setUrl( const KUrl& url );
+
+    /**
+     * Specify whether the file must be local.
+     * The default is to allow both local and remote files.
+     */
+    void setLocalFileOnly( bool local );
 
   protected Q_SLOTS:
     virtual void save() = 0;

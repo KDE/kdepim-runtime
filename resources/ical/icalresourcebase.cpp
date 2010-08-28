@@ -77,6 +77,7 @@ void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Set
 {
   dlg->setFilter( "text/calendar" );
   dlg->setCaption( i18n("Select Calendar") );
+  dlg->setLocalFileOnly( true );
 }
 
 bool ICalResourceBase::readFromFile( const QString &fileName )

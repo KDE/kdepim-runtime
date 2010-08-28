@@ -70,6 +70,12 @@ class SingleFileResourceConfigWidget : public QWidget
      */
     void setUrl( const KUrl& url );
 
+    /**
+     * Specify whether the file must be local.
+     * The default is to allow both local and remote files.
+     */
+    void setLocalFileOnly( bool local );
+
   signals:
     /**
      * Signal emitted when the user input has been validated.
@@ -84,6 +90,7 @@ class SingleFileResourceConfigWidget : public QWidget
     KIO::StatJob* mStatJob;
     bool mDirUrlChecked;
     bool mMonitorEnabled;
+    bool mLocalFileOnly;
 
   private Q_SLOTS:
     void validate();

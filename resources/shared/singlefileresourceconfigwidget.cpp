@@ -32,7 +32,8 @@ SingleFileResourceConfigWidget::SingleFileResourceConfigWidget( QWidget *parent 
   : QWidget( parent ),
     mStatJob( 0 ),
     mDirUrlChecked( false ),
-    mMonitorEnabled( true )
+    mMonitorEnabled( true ),
+    mLocalFileOnly( false )
 {
   ui.setupUi( this );
   ui.kcfg_Path->setMode( KFile::File );
@@ -72,6 +73,12 @@ KUrl SingleFileResourceConfigWidget::url() const
   return ui.kcfg_Path->url();
 }
 
+void SingleFileResourceConfigWidget::setLocalFileOnly( bool local )
+{
+  mLocalFileOnly = local;
+  ui.kcfg_Path->setMode( mLocalFileOnly ? KFile::File | KFile::LocalOnly : KFile::File );
+}
+
 void SingleFileResourceConfigWidget::validate()
 {
   const KUrl currentUrl = ui.kcfg_Path->url();
@@ -97,6 +104,10 @@ void SingleFileResourceConfigWidget::validate()
     }
     emit validated( true );
   } else {
+    if ( mLocalFileOnly ) {
+      emit validated( false );
+      return;
+    }
     if ( mMonitorEnabled ) {
       ui.kcfg_MonitorFile->setEnabled( false );
     }

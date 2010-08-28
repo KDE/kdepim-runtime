@@ -43,6 +43,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
 
   ui.ktabwidget->setTabBarHidden( true );
 
+  connect( mConfigWidget, SIGNAL(validated(bool)), SLOT(validated(bool)));
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
 }
 
@@ -72,6 +73,11 @@ void SingleFileResourceConfigDialogBase::setUrl(const KUrl &url )
 KUrl SingleFileResourceConfigDialogBase::url() const
 {
   return mConfigWidget->url();
+}
+
+void SingleFileResourceConfigDialogBase::setLocalFileOnly( bool local )
+{
+  mConfigWidget->setLocalFileOnly( local );
 }
 
 void SingleFileResourceConfigDialogBase::validated( bool ok )
