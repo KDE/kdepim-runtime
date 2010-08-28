@@ -258,9 +258,11 @@ class KolabConverterTest : public QObject
       realIncidence->recurrence();
       convertedIncidence->recurrence();
 
-//       qDebug() << format.toString( realIncidence.get() );
-//       qDebug() << format.toString( convertedIncidence.get() );
-      QVERIFY( realIncidence == convertedIncidence );
+      if ( *(realIncidence.data()) != *(convertedIncidence.data()) ) {
+        qDebug() << "REAL: " << format.toString( realIncidence );
+        qDebug() << "CONVERTED: " << format.toString( convertedIncidence );
+      }
+      QVERIFY( *(realIncidence.data()) ==  *(convertedIncidence.data()) );
 
 
       // and now the other way around
