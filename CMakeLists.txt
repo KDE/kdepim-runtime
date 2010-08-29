@@ -20,15 +20,6 @@ include(KDE4Defaults)
 
 find_package(KdepimLibs 4.5.60 REQUIRED)
 
-### remove the following when requiring kdelibs 4.5 ###
-if ( NOT KDE4_KCMUTILS_LIBS )
-  set( KDE4_KCMUTILS_LIBS ${KDE4_KUTILS_LIBS} )
-endif()
-if ( NOT KDE4_KEMOTICONS_LIBS )
-  set( KDE4_KEMOTICONS_LIBS ${KDE4_KUTILS_LIBS} )
-endif()
-### end of 4.4 compat code ###
-
 find_package(Boost 1.34.0)
 macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.34.0" "Required by Akonadi.")
 
