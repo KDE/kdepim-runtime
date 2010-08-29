@@ -60,6 +60,7 @@ target_link_libraries(kmail-migrator
   mbox
   kmindexreader
   ${NEPOMUK_LIBRARIES}
+  ${SOPRANO_LIBRARIES}
 )
 
 install(TARGETS kmail-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})
