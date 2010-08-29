@@ -26,7 +26,6 @@
 
 #include <QBuffer>
 #include <QDomDocument>
-#include <akonadi/kcal/incidencemimetypevisitor.h>
 
 
 TasksHandler::TasksHandler() : IncidenceHandler()
