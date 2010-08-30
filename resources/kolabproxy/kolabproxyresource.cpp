@@ -579,7 +579,8 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
     bool isKolabFolder = false;
     if ( annotationsAttribute ) {
       const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-      isKolabFolder = annotations.contains( "/vendor/kolab/folder-type" );
+      QByteArray folderType = annotations[ "/vendor/kolab/folder-type" ];
+      isKolabFolder = !folderType.isEmpty() && folderType != "mail";
     }
 
     if ( isKolabFolder ) {
