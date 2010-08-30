@@ -94,10 +94,14 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
       item->setIcon( KIcon( "dialog-warning" ) );
       kDebug() << msg;
       break;
-    case KMigratorBase::Error:
-      item->setIcon( KIcon( "dialog-error" ) );
-      mError = true;
-      kError() << msg;
+    case KMigratorBase::Error: {
+        item->setIcon( KIcon( "dialog-error" ) );
+        QFont currentFont = font();
+        currentFont.setBold( true );
+        item->setFont( currentFont );
+        mError = true;
+        kError() << msg;
+      }
       break;
     default:
       kError() << "WTF?";
