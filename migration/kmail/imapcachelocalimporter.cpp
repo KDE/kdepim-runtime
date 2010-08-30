@@ -168,7 +168,7 @@ void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
     kError() << "Creation of Maildir resource for local cache copy of account"
              << mAccountName << "failed:" << job->errorString();
     emit q->importFinished( mResource,
-                            i18nc( "@info", "Cannot provide access to local copies of "
+                            i18n( "Cannot provide access to local copies of "
                                             "disconnected IMAP account %1",
                                             mAccountName ) );
     return;
