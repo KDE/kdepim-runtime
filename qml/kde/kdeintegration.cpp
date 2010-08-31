@@ -186,6 +186,8 @@ QString KDEIntegration::iconPath( const QString &iconName, int iconSize )
 
 QPixmap KDEIntegration::iconToPixmap(const QIcon& icon, int size )
 {
+  if ( icon.isNull() )
+    return QPixmap();
   return icon.pixmap( size );
 }
 
