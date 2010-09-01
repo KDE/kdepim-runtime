@@ -207,6 +207,7 @@ Item {
       anchors.right : parent.right
       anchors.left : parent.left
       anchors.top : parent.top
+      visible : selectedItemView.count > 1 ? false : true
     }
 
     Image {
@@ -223,6 +224,7 @@ Item {
       anchors.left : parent.left
       fillMode : Image.TileHorizontally
       opacity : childItemsView.shouldBeFlickable ? 1 : 0
+      visible : selectedItemView.count > 1 ? false : true
     }
     Image {
       source : "scrollable-bottom.png"
@@ -231,6 +233,7 @@ Item {
       anchors.left : parent.left
       fillMode : Image.TileHorizontally
       opacity : childItemsView.shouldBeFlickable ? 1 : 0
+      visible : selectedItemView.count > 1 ? false : true
     }
   }
 
