@@ -54,6 +54,8 @@ Item {
   property alias checkable : breadcrumbView.checkable
   property alias showUnread : breadcrumbView.showUnread
 
+  signal selectedClicked()
+
   Item {
     id :dragOverlay
     anchors.fill : parent
@@ -102,6 +104,11 @@ Item {
       showUnread : breadcrumbView.showUnread
       showCheckbox : breadcrumbView.showCheckboxes
       checkable : breadcrumbView.checkable
+
+      MouseArea {
+        anchors.fill :parent
+        onClicked : selectedClicked();
+      }
     }
 
     childItemsDelegate : CollectionDelegate {
