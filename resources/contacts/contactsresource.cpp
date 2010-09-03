@@ -98,7 +98,7 @@ Collection::List ContactsResource::createCollectionsForDirectory( const QDir &pa
     collection.setRemoteId( entry.fileName() );
     collection.setName( entry.fileName() );
     collection.setContentMimeTypes( mSupportedMimeTypes );
-    collection.setRights( supportedRights() );
+    collection.setRights( supportedRights( false ) );
 
     collections << collection;
     collections << createCollectionsForDirectory( subdir, collection );
@@ -115,7 +115,7 @@ void ContactsResource::retrieveCollections()
   resourceCollection.setRemoteId( baseDirectoryPath() );
   resourceCollection.setName( name() );
   resourceCollection.setContentMimeTypes( mSupportedMimeTypes );
-  resourceCollection.setRights( supportedRights() );
+  resourceCollection.setRights( supportedRights( true ) );
 
   const QDir baseDir( baseDirectoryPath() );
 
@@ -473,7 +473,7 @@ void ContactsResource::initializeDirectory( const QString &path ) const
   }
 }
 
-Collection::Rights ContactsResource::supportedRights() const
+Collection::Rights ContactsResource::supportedRights( bool isResourceCollection ) const
 {
   Collection::Rights rights = Collection::ReadOnly;
 
@@ -483,7 +483,9 @@ Collection::Rights ContactsResource::supportedRights() const
     rights |= Collection::CanDeleteItem;
     rights |= Collection::CanCreateCollection;
     rights |= Collection::CanChangeCollection;
-    rights |= Collection::CanDeleteCollection;
+
+    if ( !isResourceCollection )
+      rights |= Collection::CanDeleteCollection;
   }
 
   return rights;

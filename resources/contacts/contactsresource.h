@@ -65,7 +65,7 @@ class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
                                                              const Akonadi::Collection &parentCollection ) const;
     QString baseDirectoryPath() const;
     void initializeDirectory( const QString &path ) const;
-    Akonadi::Collection::Rights supportedRights() const;
+    Akonadi::Collection::Rights supportedRights( bool isResourceCollection ) const;
     QString directoryForCollection( const Akonadi::Collection& collection ) const;
 
   private:
