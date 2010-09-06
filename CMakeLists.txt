@@ -4,15 +4,6 @@ project(kdepim-runtime)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
 
-############### Load the CTest options ###############
-# Set a timeout value of 5 minutes per test
-set(DART_TESTING_TIMEOUT 300)
-
-# CTestCustom.cmake has to be in the CTEST_BINARY_DIR.
-# in the KDE build system, this is the same as CMAKE_BINARY_DIR.
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake)
-
-
 ############### search packages used by KDE ###############
 
 find_package(KDE4 REQUIRED)
@@ -61,6 +52,24 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
   $ENV{STRIGI_HOME}/lib
 )
 macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the message searchprovider")
+
+
+############### Load the CTest options ###############
+
+# CMake is irritating and doesn't allow setting the tests timeout globally.
+# Let's work around this. The global timeout is now 2 minutes.
+set(_DartConfigFile "${CMAKE_BINARY_DIR}/DartConfiguration.tcl")
+if(EXISTS ${_DartConfigFile})
+  set(DartTestingTimeout "120")
+  file(READ ${_DartConfigFile} _DartConfigFile_content)
+  string(REGEX REPLACE "TimeOut: 1500" "TimeOut: ${DartTestingTimeout}" _DartConfigFile_content ${_DartConfigFile_content})
+  file(WRITE ${_DartConfigFile} ${_DartConfigFile_content})
+endif()
+
+# CTestCustom.cmake has to be in the CTEST_BINARY_DIR.
+# in the KDE build system, this is the same as CMAKE_BINARY_DIR.
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake)
+
 
 ############### Desktop vs. Mobile options ##############
 
