@@ -107,6 +107,7 @@ ImapResource::ImapResource( const QString &id )
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
+  setItemTransactionMode( ItemSync::MultipleTransactions ); // we can recover from incomplete syncs, so we can use a faster mode
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
 
