@@ -25,7 +25,9 @@
 #include <kross/core/action.h>
 #include <QtCore/qfile.h>
 
-LoadPage::LoadPage(KAssistantDialog* parent) : Page( parent )
+LoadPage::LoadPage(KAssistantDialog* parent) :
+  Page( parent ),
+  m_action( 0 )
 {
   ui.setupUi( this );
   setValid( false );
@@ -34,6 +36,10 @@ LoadPage::LoadPage(KAssistantDialog* parent) : Page( parent )
 void LoadPage::enterPageNext()
 {
   setValid( false );
+  // FIXME: deletion seems to delete the exported objects as well, killing the entire wizard...
+  //delete m_action;
+  m_action = 0;
+  emit aboutToStart();
 
   const KConfig f( Global::assistant() );
   KConfigGroup grp( &f, "Wizard" );
@@ -47,6 +53,11 @@ void LoadPage::enterPageNext()
     return;
   }
   ui.statusLabel->setText( i18n( "Loading script '%1'...", Global::assistantBasePath() + scriptFile ) );
+
+  m_action = new Kross::Action( this, "AccountWizard" );
+  typedef QPair<QObject*, QString> ObjectStringPair;
+  foreach ( const ObjectStringPair &exportedObject, m_exportedObjects )
+    m_action->addQObject( exportedObject.first, exportedObject.second );
 
   if ( !m_action->setFile( Global::assistantBasePath() + scriptFile ) ) {
     ui.statusLabel->setText( i18n( "Failed to load script: '%1'.", m_action->errorMessage() ) );
@@ -69,9 +80,9 @@ void LoadPage::enterPageBack()
   m_parent->back();
 }
 
-void LoadPage::setAction(Kross::Action* action)
+void LoadPage::exportObject(QObject* object, const QString& name)
 {
-  m_action = action;
+  m_exportedObjects.push_back( qMakePair( object, name ) );
 }
 
 

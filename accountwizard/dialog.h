@@ -48,6 +48,7 @@ class Dialog : public KAssistantDialog
     void slotManualConfigWanted( bool );
     void slotNextOk();
     void slotBackOk();
+    void clearDynamicPages();
 
   private:
     KPageWidgetItem* addPage( Page* page, const QString &title );
@@ -58,6 +59,7 @@ class Dialog : public KAssistantDialog
     KPageWidgetItem* mProviderPage;
     KPageWidgetItem* mTypePage;
     KPageWidgetItem* mLoadPage;
+    QVector<KPageWidgetItem*> mDynamicPages;
 };
 
 #endif

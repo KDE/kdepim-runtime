@@ -37,10 +37,14 @@ class LoadPage : public Page
     virtual void enterPageNext();
     virtual void enterPageBack();
 
-    void setAction( Kross::Action *action );
+    void exportObject( QObject *object, const QString &name );
+
+  Q_SIGNALS:
+    void aboutToStart();
 
   private:
     Ui::LoadPage ui;
+    QVector< QPair< QObject*, QString > > m_exportedObjects;
     Kross::Action* m_action;
 };
 

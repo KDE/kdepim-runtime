@@ -40,12 +40,6 @@ Dialog::Dialog(QWidget* parent) :
   KAssistantDialog( parent )
 {
   mSetupManager = new SetupManager( this );
-  ServerTest *serverTest = new ServerTest( this );
-  Kross::Action* action = new Kross::Action( this, "AccountWizard" );
-  action->addQObject( this, QLatin1String( "Dialog" ) );
-  action->addQObject( mSetupManager, QLatin1String( "SetupManager" ) );
-  action->addQObject( serverTest, QLatin1String( "ServerTest" ) );
-
   const bool showPersonalDataPage = Global::typeFilter().size() == 1 && Global::typeFilter().first() == KMime::Message::mimeType();
 
   if ( showPersonalDataPage ) {
@@ -74,9 +68,12 @@ Dialog::Dialog(QWidget* parent) :
   } 
 
   LoadPage *loadPage = new LoadPage( this );
-  loadPage->setAction( action );
   mLoadPage = addPage( loadPage, i18n( "Loading Assistant" ) );
   setAppropriate( mLoadPage, false );
+  loadPage->exportObject( this, QLatin1String( "Dialog" ) );
+  loadPage->exportObject( mSetupManager, QLatin1String( "SetupManager" ) );
+  loadPage->exportObject( new ServerTest( this ), QLatin1String( "ServerTest" ) );
+  connect( loadPage, SIGNAL(aboutToStart()), SLOT(clearDynamicPages()) );
 
   SetupPage *setupPage = new SetupPage( this );
   mLastPage = addPage( setupPage, i18n( "Setting up Account" )  );
@@ -149,6 +146,7 @@ QObject* Dialog::addPage(const QString& uiFile, const QString &title )
   connect( page, SIGNAL( leavePageBackOk() ), SLOT( slotBackOk() ) );
   KPageWidgetItem* item = insertPage( mLastPage, page, title );
   page->setPageWidgetItem( item );
+  mDynamicPages.push_back( item );
   return page;
 }
 
@@ -176,5 +174,13 @@ SetupManager* Dialog::setupManager()
 {
   return mSetupManager;
 }
+
+void Dialog::clearDynamicPages()
+{
+  foreach ( KPageWidgetItem *item, mDynamicPages )
+    removePage( item );
+  mDynamicPages.clear();
+}
+
 
 #include "dialog.moc"
