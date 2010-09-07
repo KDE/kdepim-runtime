@@ -23,15 +23,15 @@ String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
 // TODO: i18n??
 var page = Dialog.addPage( "imapwizard.ui", "Personal Settings" );
 
-var userChangedServerAddress = false;
-function serverChanged( arg )
-{
-  validateInput();
-  if ( arg == "" ) {
-    userChangedServerAddress = false;
-  } else {
-    userChangedServerAddress = true;
-  }
+// try to guess some defaults
+var emailAddr = SetupManager.email();
+var pos = emailAddr.indexOf( "@" );
+if ( pos >= 0 && (pos + 1) < emailAddr.length ) {
+  var server = emailAddr.slice( pos + 1, emailAddr.length );
+  page.widget().incommingAddress.text = server;
+  page.widget().outgoingAddress.text = server;
+  var user = emailAddr.slice( 0, pos );
+  page.widget().userName.text = user;
 }
 
 function validateInput()
@@ -74,21 +74,19 @@ function testOk( arg )
     imapRes.setOption( "DisconnectedModeEnabled", page.widget().disconnectedMode.checked );
     imapRes.setOption( "UseDefaultIdentity", false );
     imapRes.setOption( "AccountIdentity", identity.uoid() );
+    imapRes.setOption( "Authentication", 7 ); // ClearText
     if ( arg == "ssl" ) { 
       // The ENUM used for authentication (in the imap resource only)
       imapRes.setOption( "Safety", "SSL"); // SSL/TLS
-      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 993 );
     } else if ( arg == "tls" ) { // tls is really STARTTLS
       imapRes.setOption( "Safety", "STARTTLS");  // STARTTLS
-      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 143 );
     } else {
       imapRes.setOption( "Safety", "NONE" );  // No encryption
-      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 143 );
     }
-    
+
     stage = 2;
     setup();
   } else {
@@ -106,9 +104,13 @@ function testOk( arg )
   }
 }
 
-connect( ServerTest, "testFail()", this, "testResultFail()" );
-connect( ServerTest, "testResult(QString)", this, "testOk(QString)" );
-connect( page.widget().incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
-connect( page, "pageLeftNext()", this, "setup()" );
+try {
+  ServerTest.testFail.connect( testResultFail );
+  ServerTest.testResult.connect( testOk );
+  page.widget().incommingAddress.textChanged.connect( validateInput );
+  page.pageLeftNext.connect( setup );
+} catch ( e ) {
+  print( e );
+}
 
 validateInput();

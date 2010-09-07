@@ -51,7 +51,7 @@ Comment[zh_TW]=Imap 帳號
 
 [Wizard]
 Type=message/rfc822
-Script=imapwizard.js
+Script=imapwizard.es
 
 [Translate]
 Filename=accountwizard_imap
