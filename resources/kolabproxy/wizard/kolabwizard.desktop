@@ -59,7 +59,7 @@ Comment[zh_CN]=Kolab 群件服务器
 Comment[zh_TW]=Kolab 群組伺服器
 
 [Wizard]
-Type=message/rfc822,text/directory,text/calendar
+Type=message/rfc822,text/directory,text/calendar,text/x-vnd.akonadi.note
 Script=kolabwizard.es
 
 [Translate]
