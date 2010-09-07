@@ -21,7 +21,6 @@
 #include "providerpage.h"
 #include "global.h"
 
-#if KDE_IS_VERSION(4,4,50)
 #include <KDebug>
 #include <QSortFilterProxyModel>
 #include <knewstuff3/downloadmanager.h>
@@ -175,5 +174,3 @@ void ProviderPage::leavePageNextRequested()
 }
 
 #include "providerpage.moc"
-
-#endif

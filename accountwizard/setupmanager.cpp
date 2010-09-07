@@ -25,10 +25,16 @@
 #include "ldap.h"
 #include "identity.h"
 
+#include <kemailsettings.h>
+
 SetupManager::SetupManager( QObject* parent) :
   QObject(parent),
-  m_page( 0 )
+  m_page( 0 ),
+  m_personalDataAvailable( false )
 {
+  KEMailSettings e;
+  m_name = e.getSetting( KEMailSettings::RealName );
+  m_email = e.getSetting( KEMailSettings::EmailAddress );
 }
 
 void SetupManager::setSetupPage(SetupPage* page)
@@ -161,6 +167,16 @@ void SetupManager::setPassword( const QString& password)
 QString SetupManager::password()
 {
   return m_password;
+}
+
+bool SetupManager::personalDataAvailable()
+{
+  return m_personalDataAvailable;
+}
+
+void SetupManager::setPersonalDataAvailable(bool available)
+{
+  m_personalDataAvailable = available;
 }
 
 #include "setupmanager.moc"

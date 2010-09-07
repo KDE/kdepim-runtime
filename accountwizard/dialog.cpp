@@ -27,12 +27,14 @@
 #include "dynamicpage.h"
 #include "setupmanager.h"
 #include "servertest.h"
+#include "setuppage.h"
+
+#include <KMime/Message>
 
 #include <klocalizedstring.h>
 #include <kross/core/action.h>
 #include <kdebug.h>
 #include <kmessagebox.h>
-#include "setuppage.h"
 
 Dialog::Dialog(QWidget* parent) :
   KAssistantDialog( parent )
@@ -44,12 +46,16 @@ Dialog::Dialog(QWidget* parent) :
   action->addQObject( mSetupManager, QLatin1String( "SetupManager" ) );
   action->addQObject( serverTest, QLatin1String( "ServerTest" ) );
 
-  // todo: dont ask these details based on a setting of the desktop file.
-  PersonalDataPage *pdpage = new PersonalDataPage( this );
-  addPage( pdpage, i18n( "Provide personal data" ) );
-  connect( pdpage, SIGNAL( manualWanted( bool ) ), SLOT( slotManualConfigWanted( bool ) ) );
-  if ( !Global::assistant().isEmpty() ) {
-    pdpage->setHideOptionInternetSearch( true );
+  const bool showPersonalDataPage = Global::typeFilter().size() == 1 && Global::typeFilter().first() == KMime::Message::mimeType();
+
+  if ( showPersonalDataPage ) {
+    // todo: dont ask these details based on a setting of the desktop file.
+    PersonalDataPage *pdpage = new PersonalDataPage( this );
+    addPage( pdpage, i18n( "Provide personal data" ) );
+    connect( pdpage, SIGNAL( manualWanted( bool ) ), SLOT( slotManualConfigWanted( bool ) ) );
+    if ( !Global::assistant().isEmpty() ) {
+      pdpage->setHideOptionInternetSearch( true );
+    }
   }
 
   if ( Global::assistant().isEmpty() ) {
@@ -59,14 +65,12 @@ Dialog::Dialog(QWidget* parent) :
     mTypePage = addPage( typePage, i18n( "Select Account Type" ) );
     setAppropriate( mTypePage, false );
 
-#if KDE_IS_VERSION( 4, 4, 50 )
     ProviderPage *ppage = new ProviderPage( this );
     connect( typePage, SIGNAL( ghnsWanted() ), ppage, SLOT(startFetchingData() ) );
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     connect( ppage, SIGNAL( ghnsNotWanted() ), SLOT( slotGhnsNotWanted() ) );
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
     setAppropriate( mProviderPage, false );
-#endif
   } 
 
   LoadPage *loadPage = new LoadPage( this );
@@ -78,10 +82,13 @@ Dialog::Dialog(QWidget* parent) :
   mLastPage = addPage( setupPage, i18n( "Setting up Account" )  );
   mSetupManager->setSetupPage( setupPage );
 
+  slotManualConfigWanted( !showPersonalDataPage );
+
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   page->enterPageNext();
   emit page->pageEnteredNext();
   enableButton( KDialog::Help, false );
+
 }
 
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
@@ -154,21 +161,15 @@ void Dialog::slotManualConfigWanted( bool show )
 
 void Dialog::slotGhnsWanted() 
 {
-#if KDE_IS_VERSION( 4, 4, 50 )
   Q_ASSERT( mProviderPage );
   setAppropriate( mProviderPage, true );
   setCurrentPage( mProviderPage );
-#else 
-  KMessageBox::error( this, i18n("Sorry, you need KDE 4.5 for this....") );
-#endif
 }
 
 void Dialog::slotGhnsNotWanted() 
 {
-#if KDE_IS_VERSION( 4, 4, 50 )
   Q_ASSERT( mProviderPage );
   setAppropriate( mProviderPage, false );
-#endif
 }
 
 SetupManager* Dialog::setupManager()

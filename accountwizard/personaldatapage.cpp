@@ -28,8 +28,6 @@
 #include <kpimutils/emailvalidator.h>
 #include <kpimutils/email.h>
 
-#include <kemailsettings.h>
-
 #include <mailtransport/transport.h>
 
 #include <KDebug>
@@ -61,9 +59,9 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
   KPIMUtils::EmailValidator* emailValidator = new KPIMUtils::EmailValidator( this );
   ui.emailEdit->setValidator( emailValidator );
 
-  KEMailSettings e;
-  ui.nameEdit->setText( e.getSetting( KEMailSettings::RealName ) );
-  ui.emailEdit->setText( e.getSetting( KEMailSettings::EmailAddress ) );
+  // KEmailSettings defaults
+  ui.nameEdit->setText( mSetupManager->name() );
+  ui.emailEdit->setText( mSetupManager->email() );
   slotTextChanged();
   connect( ui.emailEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
   connect( ui.nameEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
@@ -85,6 +83,7 @@ void PersonalDataPage::slotTextChanged()
 
 void PersonalDataPage::leavePageNext()
 {
+  mSetupManager->setPersonalDataAvailable( true );
   mSetupManager->setName( ui.nameEdit->text() );
   mSetupManager->setPassword( ui.passwordEdit->text() );
   mSetupManager->setEmail( ui.emailEdit->text().trimmed() );

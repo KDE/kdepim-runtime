@@ -32,12 +32,15 @@ class SetupManager : public QObject
     explicit SetupManager( QObject *parent );
     void setSetupPage( SetupPage* page );
 
+    void setName( const QString& );
+    void setEmail( const QString& );
+    void setPassword( const QString& );
+    void setPersonalDataAvailable( bool available );
+
   public slots:
-    Q_SCRIPTABLE void setName( const QString& );
+    Q_SCRIPTABLE bool personalDataAvailable();
     Q_SCRIPTABLE QString name();
-    Q_SCRIPTABLE void setEmail( const QString& );
     Q_SCRIPTABLE QString email();
-    Q_SCRIPTABLE void setPassword( const QString& );
     Q_SCRIPTABLE QString password();
     Q_SCRIPTABLE QObject* createResource( const QString &type );
     Q_SCRIPTABLE QObject* createTransport( const QString &type );
@@ -62,6 +65,7 @@ class SetupManager : public QObject
     QList<SetupObject*> m_setupObjects;
     SetupObject* m_currentSetupObject;
     SetupPage* m_page;
+    bool m_personalDataAvailable;
 };
 
 #endif

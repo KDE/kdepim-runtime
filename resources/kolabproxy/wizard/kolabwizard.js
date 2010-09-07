@@ -17,13 +17,50 @@
     Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301, USA.
 */
+
 // add this function to trim user input of whitespace when needed
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
 
 // TODO: i18n??
 var page = Dialog.addPage( "kolabwizard.ui", "Personal Settings" );
-
 var userChangedServerAddress = false;
+
+page.widget().nameEdit.text = SetupManager.name()
+page.widget().emailEdit.text = SetupManager.email()
+page.widget().passwordEdit.text = SetupManager.password()
+guessServerName();
+
+if ( SetupManager.personalDataAvailable() ) {
+  page.widget().nameEdit.visible = false;
+  page.widget().nameLabel.visible = false;
+  page.widget().emailEdit.visible = false;
+  page.widget().emailLabel.visible = false;
+  page.widget().passwordEdit.visible = false;
+  page.widget().passwordLabel.visible = false;
+}
+
+
+function guessServerName()
+{
+  if ( userChangedServerAddress == true ) {
+    return;
+  }
+
+  var email = page.widget().emailEdit.text;
+  var pos = email.indexOf( "@" );
+  if ( pos >= 0 && (pos + 1) < email.length ) {
+    var server = email.slice( pos + 1, email.length );
+    page.widget().serverAddress.text = server;
+  }
+
+  userChangedServerAddress = false;
+}
+
+function emailChanged( arg )
+{
+  validateInput();
+  guessServerName();
+}
 
 function serverChanged( arg )
 {
@@ -37,7 +74,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.widget().serverAddress.text.trim() == "" ) {
+  if ( page.widget().serverAddress.text.trim() == "" || page.widget().emailEdit.text.trim() == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -56,8 +93,8 @@ function setup()
     SetupManager.createResource( "akonadi_kolabproxy_resource" );
 
     identity = SetupManager.createIdentity();
-    identity.setEmail( SetupManager.email() );
-    identity.setRealName( SetupManager.name() );
+    identity.setEmail( page.widget().emailEdit.text );
+    identity.setRealName( page.widget().nameEdit.text );
     
     ServerTest.test( serverAddress, "imap" );
   } else { // stage 2
@@ -67,11 +104,11 @@ function setup()
     smtp.setPort( 465 );
     smtp.setEncryption( "SSL" );
     smtp.setAuthenticationType( "plain" ); // using plain is ok, because we are using SSL.
-    smtp.setUsername( SetupManager.email() );
-    smtp.setPassword( SetupManager.password() );
+    smtp.setUsername( page.widget().emailEdit.text );
+    smtp.setPassword( page.widget().passwordEdit.text );
 
     var ldap = SetupManager.createLdap();
-    ldap.setUser( SetupManager.email() );
+    ldap.setUser( page.widget().emailEdit.text );
     ldap.setServer( serverAddress );
 
     var korganizer = SetupManager.createConfigFile( "korganizerrc" );
@@ -92,12 +129,14 @@ function testOk( arg )
 {
     print("testOk arg =", arg);
     var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
+    imapRes.setName( page.widget().serverAddress.text.trim() );
     imapRes.setOption( "ImapServer", page.widget().serverAddress.text.trim() );
-    imapRes.setOption( "UserName", SetupManager.email() );
-    imapRes.setOption( "Password", SetupManager.password() );
+    imapRes.setOption( "UserName", page.widget().emailEdit.text.trim() );
+    imapRes.setOption( "Password", page.widget().passwordEdit.text.trim() );
     imapRes.setOption( "UseDefaultIdentity", false );
     imapRes.setOption( "AccountIdentity", identity.uoid() );
     imapRes.setOption( "SubscriptionEnabled", true );
+    imapRes.setOption( "SieveSupport", true );
     if ( arg == "ssl" ) { 
       // The ENUM used for authentication (in the imap resource only)
       imapRes.setOption( "Safety", "SSL" ); // SSL/TLS
@@ -118,6 +157,7 @@ function testOk( arg )
 
 connect( ServerTest, "testFail()", this, "testResultFail()" );
 connect( ServerTest, "testResult(QString)", this, "testOk(QString)" );
+connect( page.widget().emailEdit, "textChanged(QString)", this, "emailChanged(QString)" );
 connect( page.widget().serverAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
 
