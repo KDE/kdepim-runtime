@@ -37,7 +37,7 @@ function serverChanged( arg )
 
 function validateInput()
 {
-  if ( page.pop3Wizard.incommingAddress.text.trim() == "" ) {
+  if ( page.widget().incommingAddress.text.trim() == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -47,18 +47,18 @@ function validateInput()
 function setup()
 {
   var pop3Res = SetupManager.createResource( "akonadi_pop3_resource" );
-  pop3Res.setOption( "Host", page.pop3Wizard.incommingAddress.text.trim() );
-  pop3Res.setOption( "Login", page.pop3Wizard.userName.text.trim() );
+  pop3Res.setOption( "Host", page.widget().incommingAddress.text.trim() );
+  pop3Res.setOption( "Login", page.widget().userName.text.trim() );
   pop3Res.setOption( "Password", SetupManager.password() );
 
   var smtp = SetupManager.createTransport( "smtp" );
   smtp.setName( SetupManager.name() );
-  smtp.setHost( page.pop3Wizard.outgoingAddress.text.trim() );
+  smtp.setHost( page.widget().outgoingAddress.text.trim() );
   smtp.setEncryption( "NONE" );
 
   SetupManager.execute();
 }
 
-connect( page.pop3Wizard.incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
+connect( page.widget().incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
 connect( page, "pageLeftNext()", this, "setup()" );
 validateInput();
