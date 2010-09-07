@@ -51,7 +51,7 @@ Comment[zh_TW]=Mailbox 帳號
 
 [Wizard]
 Type=message/rfc822
-Script=mailboxwizard.js
+Script=mailboxwizard.es
 
 [Translate]
 Filename=accountwizard_mailbox

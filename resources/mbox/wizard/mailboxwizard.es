@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2009 Montel Laurent <montel@kde.org>
+    Copyright (c) 2010 Montel Laurent <montel@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,11 +18,11 @@
 */
 
 // TODO: i18n??
-var page = Dialog.addPage( "maildirwizard.ui", "Personal Settings" );
+var page = Dialog.addPage( "mailboxwizard.ui", "Personal Settings" );
 
 function validateInput()
 {
-  if ( page.widget().maildirPath.text == "" ) {
+  if ( page.widget().mailboxPath.text == "" ) {
     page.setValid( false );
   } else {
     page.setValid( true );
@@ -31,12 +31,12 @@ function validateInput()
 
 function setup()
 {
-  var maildirRes = SetupManager.createResource( "akonadi_maildir_resource" );
-  maildirRes.setOption( "Path", page.widget().maildirPath.text );
+  var mboxRes = SetupManager.createResource( "akonadi_mbox_resource" );
+  mboxRes.setOption( "Path", page.widget().mailboxPath.text );
 
   SetupManager.execute();
 }
 
-connect( page.widget().maildirPath, "textChanged(QString)", this, "validateInput()" );
-connect( page, "pageLeftNext()", this, "setup()" );
+page.widget().mailboxPath.textChanged.connect( validateInput );
+page.pageLeftNext.connect( setup );
 validateInput();
