@@ -60,7 +60,7 @@ Comment[zh_TW]=Kolab 群組伺服器
 
 [Wizard]
 Type=message/rfc822,text/directory,text/calendar
-Script=kolabwizard.js
+Script=kolabwizard.es
 
 [Translate]
 Filename=accountwizard_kolab

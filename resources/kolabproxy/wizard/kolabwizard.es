@@ -95,7 +95,7 @@ function setup()
     identity = SetupManager.createIdentity();
     identity.setEmail( page.widget().emailEdit.text );
     identity.setRealName( page.widget().nameEdit.text );
-    
+
     ServerTest.test( serverAddress, "imap" );
   } else { // stage 2
     var smtp = SetupManager.createTransport( "smtp" );
@@ -137,28 +137,30 @@ function testOk( arg )
     imapRes.setOption( "AccountIdentity", identity.uoid() );
     imapRes.setOption( "SubscriptionEnabled", true );
     imapRes.setOption( "SieveSupport", true );
+    imapRes.setOption( "Authentication", 7 ); // ClearText
     if ( arg == "ssl" ) { 
       // The ENUM used for authentication (in the imap resource only)
       imapRes.setOption( "Safety", "SSL" ); // SSL/TLS
-      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 993 );
     } else if ( arg == "tls" ) { // tls is really STARTTLS
       imapRes.setOption( "Safety", "STARTTLS" );  // STARTTLS
-      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 143 );
     } else {
       imapRes.setOption( "Safety", "NONE" );  // No encryption
-      imapRes.setOption( "Authentication", 7 ); // ClearText
       imapRes.setOption( "ImapPort", 143 );
     }
     stage = 2;
     setup();
 }
 
-connect( ServerTest, "testFail()", this, "testResultFail()" );
-connect( ServerTest, "testResult(QString)", this, "testOk(QString)" );
-connect( page.widget().emailEdit, "textChanged(QString)", this, "emailChanged(QString)" );
-connect( page.widget().serverAddress, "textChanged(QString)", this, "serverChanged(QString)" );
-connect( page, "pageLeftNext()", this, "setup()" );
+try {
+  ServerTest.testFail.connect(testResultFail);
+  ServerTest.testResult.connect(testOk);
+  page.widget().emailEdit.textChanged.connect(emailChanged);
+  page.widget().serverAddress.textChanged.connect(serverChanged);
+  page.pageLeftNext.connect(setup);
+} catch (e) {
+  print(e);
+}
 
 validateInput();
