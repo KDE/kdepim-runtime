@@ -220,6 +220,8 @@ void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, con
     const QString name = nodes.at(i).toElement().text();
     QByteArray type;
     KMime::Content *content = findContentByName(data, name, type);
+    if (!content) // guard against malformed events with non-existant attachments
+        continue;
     const QByteArray c = content->decodedContent().toBase64();
     KCalCore::Attachment::Ptr attachment( new KCalCore::Attachment( c, QString::fromLatin1( type ) ) );
     attachment->setLabel( name );
