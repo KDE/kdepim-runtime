@@ -182,5 +182,11 @@ void Dialog::clearDynamicPages()
   mDynamicPages.clear();
 }
 
+void Dialog::reject()
+{
+  connect( mSetupManager, SIGNAL(rollbackComplete()), SLOT(close()) );
+  mSetupManager->requestRollback();
+}
+
 
 #include "dialog.moc"

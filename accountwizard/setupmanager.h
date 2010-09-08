@@ -49,6 +49,11 @@ class SetupManager : public QObject
     Q_SCRIPTABLE QObject* createIdentity();
     Q_SCRIPTABLE void execute();
 
+    void requestRollback();
+
+  signals:
+    void rollbackComplete();
+
   private:
     void setupNext();
     void rollback();
@@ -66,6 +71,7 @@ class SetupManager : public QObject
     SetupObject* m_currentSetupObject;
     SetupPage* m_page;
     bool m_personalDataAvailable;
+    bool m_rollbackRequested;
 };
 
 #endif

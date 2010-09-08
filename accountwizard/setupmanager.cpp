@@ -30,7 +30,8 @@
 SetupManager::SetupManager( QObject* parent) :
   QObject(parent),
   m_page( 0 ),
-  m_personalDataAvailable( false )
+  m_personalDataAvailable( false ),
+  m_rollbackRequested( false )
 {
   KEMailSettings e;
   m_name = e.getSetting( KEMailSettings::RealName );
@@ -101,6 +102,12 @@ void SetupManager::setupInfo(const QString& msg)
 
 void SetupManager::setupNext()
 {
+  // user canceld during the previous setup step
+  if ( m_rollbackRequested ) {
+    rollback();
+    return;
+  }
+
   if ( m_objectToSetup.isEmpty() ) {
     m_page->setStatus( i18n( "Setup complete." ) );
     m_page->setProgress( 100 );
@@ -128,6 +135,8 @@ void SetupManager::rollback()
   m_page->setProgress( 0 );
   m_page->setStatus( i18n( "Failed to set up account." ) );
   m_page->setValid( true );
+  m_rollbackRequested = false;
+  emit rollbackComplete();
 }
 
 SetupObject* SetupManager::connectObject(SetupObject* obj)
@@ -178,5 +187,17 @@ void SetupManager::setPersonalDataAvailable(bool available)
 {
   m_personalDataAvailable = available;
 }
+
+void SetupManager::requestRollback()
+{
+  if ( m_setupObjects.isEmpty() ) {
+    emit rollbackComplete();
+  } else {
+    m_rollbackRequested = true;
+    if ( !m_currentSetupObject )
+      rollback();
+  }
+}
+
 
 #include "setupmanager.moc"

@@ -41,6 +41,8 @@ class Dialog : public KAssistantDialog
   public slots:
     Q_SCRIPTABLE QObject* addPage( const QString &uiFile, const QString &title );
 
+    void reject();
+
   private slots:
     void slotNextPage();
     void slotGhnsWanted();
