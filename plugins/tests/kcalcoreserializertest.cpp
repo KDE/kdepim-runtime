@@ -35,6 +35,10 @@ class KCalCoreSerializerTest : public QObject
       QTest::newRow( "specific" ) << "application/x-vnd.akonadi.calendar.event";
       QTest::newRow( "generic" ) << "text/calendar";
     }
+    void testCharsets_data()
+    {
+      testEventSerialize_data();
+    }
 
     void testEventSerialize()
     {
@@ -82,6 +86,45 @@ class KCalCoreSerializerTest : public QObject
       // serializing
       const QByteArray data = item.payloadData();
       QVERIFY( !data.isEmpty() );
+    }
+
+    void testCharsets()
+    {
+      QFETCH( QString, mimeType );
+
+      // 0 defaults to latin1.
+      QVERIFY( QTextCodec::codecForCStrings() == 0 );
+
+      const QDate currentDate = QDate::currentDate();
+
+      Event::Ptr event = Event::Ptr( new Event() );
+      event->setUid( "12345" );
+      event->setDtStart( KDateTime( currentDate ) );
+      event->setDtEnd( KDateTime( currentDate.addDays( 1 ) ) );
+
+      // ü
+      const char latin1_umlaut[] = { 0xFC, '\0' };
+      event->setSummary( latin1_umlaut );
+
+      Item item;
+      item.setMimeType( mimeType );
+      item.setPayload( event );
+
+      // Serializer the item, the serialization should be in UTF-8:
+      const char utf_umlaut[] = { 0xC3, 0XBC, '\0' };
+      const QByteArray bytes = item.payloadData();
+      QVERIFY( bytes.contains( utf_umlaut ) );
+      QVERIFY( !bytes.contains( latin1_umlaut ) );
+
+      // Deserialize the data:
+      Item item2;
+      item2.setMimeType( mimeType );
+      item2.setPayloadFromData( bytes );
+
+      Event::Ptr event2 = item.payload<Event::Ptr>();
+      QVERIFY( event2 != 0 );
+      QVERIFY( event2->summary().toUtf8() == QByteArray( utf_umlaut ) );
+      QVERIFY( event2->summary().toLatin1() == QByteArray( latin1_umlaut ) );
     }
 };
 
