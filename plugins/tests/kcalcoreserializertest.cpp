@@ -25,7 +25,7 @@
 using namespace Akonadi;
 using namespace KCalCore;
 
-class KCalSerializerTest : public QObject
+class KCalCoreSerializerTest : public QObject
 {
   Q_OBJECT
   private slots:
@@ -85,6 +85,6 @@ class KCalSerializerTest : public QObject
     }
 };
 
-QTEST_KDEMAIN( KCalSerializerTest, NoGUI )
+QTEST_KDEMAIN( KCalCoreSerializerTest, NoGUI )
 
-#include "kcalserializertest.moc"
+#include "kcalcoreserializertest.moc"
