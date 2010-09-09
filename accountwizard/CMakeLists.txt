@@ -5,7 +5,6 @@ if ( ACCOUNTWIZARD_NO_GHNS )
 endif ()
 
 set(accountwizard_srcs
-  main.cpp
   dialog.cpp
   typepage.cpp
   loadpage.cpp
@@ -33,16 +32,7 @@ kde4_add_ui_files(accountwizard_srcs
   personaldatapage.ui
 )
 
-if ( NOT ACCOUNTWIZARD_NO_GHNS )
-  set( accountwizard_srcs ${accountwizard_srcs} providerpage.cpp )
-  kde4_add_ui_files(accountwizard_srcs
-    providerpage.ui
-  )
-endif ()
-
-kde4_add_executable(accountwizard ${accountwizard_srcs})
-
-target_link_libraries(accountwizard
+set(accountwizard_libs
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
@@ -56,11 +46,22 @@ target_link_libraries(accountwizard
 )
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
-  target_link_libraries(accountwizard ${KDE4_KNEWSTUFF3_LIBS})
-  install(FILES accountwizard.knsrc DESTINATION ${CONFIG_INSTALL_DIR})
+  set(accountwizard_srcs ${accountwizard_srcs} providerpage.cpp)
+  kde4_add_ui_files(accountwizard_srcs providerpage.ui)
+  set(accountwizard_libs ${accountwizard_libs} ${KDE4_KNEWSTUFF3_LIBS})
 endif ()
 
+kde4_add_executable(accountwizard ${accountwizard_srcs} main.cpp)
+target_link_libraries(accountwizard ${accountwizard_libs})
+
+kde4_add_plugin(accountwizard_plugin ${accountwizard_srcs} inprocess-main.cpp)
+target_link_libraries(accountwizard_plugin ${accountwizard_libs})
+
+if ( NOT ACCOUNTWIZARD_NO_GHNS )
+  install(FILES accountwizard.knsrc DESTINATION ${CONFIG_INSTALL_DIR})
+endif ()
 install(TARGETS accountwizard ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS accountwizard_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES accountwizard.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
