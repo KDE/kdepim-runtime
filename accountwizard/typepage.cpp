@@ -25,6 +25,7 @@
 
 #include <QSortFilterProxyModel>
 #include "global.h"
+#include <kmimetype.h>
 
 TypePage::TypePage(KAssistantDialog* parent) :
   Page( parent ),
@@ -58,14 +59,25 @@ TypePage::TypePage(KAssistantDialog* parent) :
       kDebug()<<QString( " %1 doesn't contains specific type" ).arg( f.readName() );
     }
     if ( !filter.isEmpty() ) {
-      bool findType = false;
-      foreach( const QString &type, lstType ) {
-        if ( filter.contains( type ) ) {
-          findType = true;
+      // stolen from agentfilterproxymodel
+      bool found = false;
+      foreach ( const QString &mimeType, lstType ) {
+        if ( filter.contains( mimeType ) ) {
+          found = true;
           break;
+        } else {
+          foreach ( const QString &type, filter ) {
+            KMimeType::Ptr typePtr = KMimeType::mimeType( type, KMimeType::ResolveAliases );
+            if ( !typePtr.isNull() && typePtr->is( mimeType ) ) {
+              found = true;
+              break;
+            }
+          }
         }
+        if ( found )
+          break;
       }
-      if ( !findType )
+      if ( !found )
         continue;
     }
     QStandardItem *item = new QStandardItem( f.readName() );
