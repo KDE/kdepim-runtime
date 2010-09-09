@@ -36,6 +36,10 @@ TypePage::TypePage(KAssistantDialog* parent) :
   ui.searchLine->setHidden( true );
 #endif
 
+#ifdef ACCOUNTWIZARD_NO_GHNS
+  ui.ghnsButton->hide();
+#endif
+
   QSortFilterProxyModel *proxy = new QSortFilterProxyModel( this );
   proxy->setSourceModel( m_model );
   ui.listView->setModel( proxy );

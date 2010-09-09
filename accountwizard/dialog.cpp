@@ -39,6 +39,8 @@
 Dialog::Dialog(QWidget* parent) :
   KAssistantDialog( parent )
 {
+  showButton( Help, false ); // we don't have help for the account wizard atm
+
   mSetupManager = new SetupManager( this );
   const bool showPersonalDataPage = Global::typeFilter().size() == 1 && Global::typeFilter().first() == KMime::Message::mimeType();
 
@@ -55,16 +57,20 @@ Dialog::Dialog(QWidget* parent) :
   if ( Global::assistant().isEmpty() ) {
     TypePage* typePage = new TypePage( this );
     connect( typePage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
+#ifndef ACCOUNTWIZARD_NO_GHNS
     connect( typePage, SIGNAL( ghnsWanted() ), SLOT( slotGhnsWanted() ) );
+#endif
     mTypePage = addPage( typePage, i18n( "Select Account Type" ) );
     setAppropriate( mTypePage, false );
 
+#ifndef ACCOUNTWIZARD_NO_GHNS
     ProviderPage *ppage = new ProviderPage( this );
     connect( typePage, SIGNAL( ghnsWanted() ), ppage, SLOT(startFetchingData() ) );
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     connect( ppage, SIGNAL( ghnsNotWanted() ), SLOT( slotGhnsNotWanted() ) );
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
     setAppropriate( mProviderPage, false );
+#endif
   } 
 
   LoadPage *loadPage = new LoadPage( this );
@@ -157,6 +163,7 @@ void Dialog::slotManualConfigWanted( bool show )
   setAppropriate( mLoadPage, show );
 }
 
+#ifndef ACCOUNTWIZARD_NO_GHNS
 void Dialog::slotGhnsWanted() 
 {
   Q_ASSERT( mProviderPage );
@@ -169,6 +176,7 @@ void Dialog::slotGhnsNotWanted()
   Q_ASSERT( mProviderPage );
   setAppropriate( mProviderPage, false );
 }
+#endif
 
 SetupManager* Dialog::setupManager()
 {

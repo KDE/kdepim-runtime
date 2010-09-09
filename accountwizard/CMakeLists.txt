@@ -1,7 +1,12 @@
+# allow to disable GHNS support on resource-constrained systems
+option( ACCOUNTWIZARD_NO_GHNS "Disable GHNS support in the account wizard" ${KDEPIM_MOBILE_UI} )
+if ( ACCOUNTWIZARD_NO_GHNS )
+  add_definitions( -DACCOUNTWIZARD_NO_GHNS )
+endif ()
+
 set(accountwizard_srcs
   main.cpp
   dialog.cpp
-  providerpage.cpp
   typepage.cpp
   loadpage.cpp
   global.cpp
@@ -28,6 +33,13 @@ kde4_add_ui_files(accountwizard_srcs
   personaldatapage.ui
 )
 
+if ( NOT ACCOUNTWIZARD_NO_GHNS )
+  set( accountwizard_srcs ${accountwizard_srcs} providerpage.cpp )
+  kde4_add_ui_files(accountwizard_srcs
+    providerpage.ui
+  )
+endif ()
+
 kde4_add_executable(accountwizard ${accountwizard_srcs})
 
 target_link_libraries(accountwizard
@@ -36,7 +48,6 @@ target_link_libraries(accountwizard
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${KDE4_KROSSCORE_LIBS}
   ${KDE4_KDECORE_LIBS}
-  ${KDE4_KNEWSTUFF3_LIBS}
   ${KDE4_KIO_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_KPIMIDENTITIES_LIBS}
@@ -44,8 +55,12 @@ target_link_libraries(accountwizard
   ${QT_QTUITOOLS_LIBRARY}
 )
 
+if ( NOT ACCOUNTWIZARD_NO_GHNS )
+  target_link_libraries(accountwizard ${KDE4_KNEWSTUFF3_LIBS})
+  install(FILES accountwizard.knsrc DESTINATION ${CONFIG_INSTALL_DIR})
+endif ()
+
 install(TARGETS accountwizard ${INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES accountwizard.knsrc DESTINATION ${CONFIG_INSTALL_DIR})
 install(FILES accountwizard.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})

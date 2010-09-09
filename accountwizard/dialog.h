@@ -20,11 +20,11 @@
 #ifndef DIALOG_H
 #define DIALOG_H
 
+#include "setupmanager.h"
 #include <kassistantdialog.h>
 
 class Page;
 class TypePage;
-#include "setupmanager.h"
 
 class Dialog : public KAssistantDialog
 {
@@ -45,8 +45,10 @@ class Dialog : public KAssistantDialog
 
   private slots:
     void slotNextPage();
+#ifndef ACCOUNTWIZARD_NO_GHNS
     void slotGhnsWanted();
     void slotGhnsNotWanted();
+#endif
     void slotManualConfigWanted( bool );
     void slotNextOk();
     void slotBackOk();
