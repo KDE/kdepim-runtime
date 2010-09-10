@@ -121,7 +121,7 @@ class KCalCoreSerializerTest : public QObject
       item2.setMimeType( mimeType );
       item2.setPayloadFromData( bytes );
 
-      Event::Ptr event2 = item.payload<Event::Ptr>();
+      Event::Ptr event2 = item2.payload<Event::Ptr>();
       QVERIFY( event2 != 0 );
       QVERIFY( event2->summary().toUtf8() == QByteArray( utf_umlaut ) );
       QVERIFY( event2->summary().toLatin1() == QByteArray( latin1_umlaut ) );
