@@ -77,6 +77,11 @@ qt4_add_dbus_adaptor( imapresource_SRCS
         imapresource.h ImapResource
      )
 kde4_add_kcfg_files(imapresource_SRCS settingsbase.kcfgc)
+
+if (RUNTIME_PLUGINS_STATIC)
+    add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)
+endif (RUNTIME_PLUGINS_STATIC)
+
 kde4_add_executable(akonadi_imap_resource ${imapresource_SRCS})
 
 if (Q_WS_MAC)
@@ -86,6 +91,10 @@ if (Q_WS_MAC)
 endif (Q_WS_MAC)
 
 target_link_libraries(akonadi_imap_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KPIMIDENTITIES_LIBS} kdepim-copy libimapresource)
+
+if (RUNTIME_PLUGINS_STATIC)
+  target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)
+endif (RUNTIME_PLUGINS_STATIC)
 
 if( NOT IMAPRESOURCE_NO_SOLID)
 target_link_libraries(akonadi_imap_resource ${KDE4_SOLID_LIBS})

@@ -34,6 +34,10 @@ qt4_add_dbus_adaptor(maildirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Settings
 )
 
+if (RUNTIME_PLUGINS_STATIC)
+    add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)
+endif (RUNTIME_PLUGINS_STATIC)
+
 kde4_add_executable(akonadi_maildir_resource ${maildirresource_SRCS})
 
 if (Q_WS_MAC)
@@ -43,6 +47,10 @@ if (Q_WS_MAC)
 endif (Q_WS_MAC)
 
 target_link_libraries(akonadi_maildir_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
+
+if (RUNTIME_PLUGINS_STATIC)
+  target_link_libraries(akonadi_maildir_resource akonadi_serializer_mail)
+endif (RUNTIME_PLUGINS_STATIC)
 
 install(TARGETS akonadi_maildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml

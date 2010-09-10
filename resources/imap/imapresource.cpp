@@ -76,6 +76,12 @@
 
 #include "resourceadaptor.h"
 
+#ifdef MAIL_SERIALIZER_PLUGIN_STATIC
+#include <QtPlugin>
+
+Q_IMPORT_PLUGIN(akonadi_serializer_mail)
+#endif
+
 using namespace Akonadi;
 
 ImapResource::ImapResource( const QString &id )
