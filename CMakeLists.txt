@@ -82,14 +82,13 @@ endif (KDEPIM_MOBILE_UI)
 if(WINCE)
   set(LIBRARY_TYPE STATIC)
   add_definitions(-DKDEPIM_STATIC_LIBS)
+
 else(WINCE)
   set(LIBRARY_TYPE SHARED)
 endif(WINCE)
 
 if (RUNTIME_PLUGINS_STATIC)
   set(LIBRARY_TYPE "STATIC")
-else (RUNTIME_PLUGINS_STATIC)
-  set(LIBRARY_TYPE)
 endif (RUNTIME_PLUGINS_STATIC)
 
 ############### Needed commands before building anything ###############
