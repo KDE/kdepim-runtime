@@ -117,8 +117,6 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
           m_reportedCollections.remove( currentPath );
           m_reportedCollections.insert( currentPath, c );
 
-        } else {
-          kWarning() << "Something is wrong here, we already have created a collection for" << currentPath;
         }
         parentPath = currentPath;
         continue;
