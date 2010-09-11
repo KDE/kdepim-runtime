@@ -86,6 +86,7 @@ else(WINCE)
   set(LIBRARY_TYPE SHARED)
 endif(WINCE)
 
+#FIXME: kde4_add_plugin doesn't have a parameter to build the plugins statically.
 if (RUNTIME_PLUGINS_STATIC)
   set(SERIALIZER_TYPE STATIC)
 endif (RUNTIME_PLUGINS_STATIC)
