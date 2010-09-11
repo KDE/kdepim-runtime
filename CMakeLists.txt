@@ -79,11 +79,6 @@ if (KDEPIM_MOBILE_UI)
   add_definitions( -DKDEPIM_MOBILE_UI )
 endif (KDEPIM_MOBILE_UI)
 
-############### Needed commands before building anything ###############
-
-include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR} ${AKONADI_INCLUDE_DIR} ${Boost_INCLUDE_DIR} ${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIRS})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
-
 if(WINCE)
   set(LIBRARY_TYPE STATIC)
   add_definitions(-DKDEPIM_STATIC_LIBS)
@@ -91,6 +86,16 @@ else(WINCE)
   set(LIBRARY_TYPE SHARED)
 endif(WINCE)
 
+if (RUNTIME_PLUGINS_STATIC)
+  set(LIBRARY_TYPE "STATIC")
+else (RUNTIME_PLUGINS_STATIC)
+  set(LIBRARY_TYPE)
+endif (RUNTIME_PLUGINS_STATIC)
+
+############### Needed commands before building anything ###############
+
+include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR} ${AKONADI_INCLUDE_DIR} ${Boost_INCLUDE_DIR} ${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIRS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 ############### Generate akonadi-config.h ###############
 

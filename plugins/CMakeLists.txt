@@ -6,13 +6,6 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
-if (RUNTIME_PLUGINS_STATIC)
-  set(LIBRARY_TYPE "STATIC")
-else (RUNTIME_PLUGINS_STATIC)
-  set(LIBRARY_TYPE)
-endif (RUNTIME_PLUGINS_STATIC)
-
-
 set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
 kde4_add_plugin(akonadi_serializer_addressee ${LIBRARY_TYPE} ${akonadi_serializer_addressee_PART_SRCS})
 target_link_libraries(akonadi_serializer_addressee ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KABC_LIBS})
