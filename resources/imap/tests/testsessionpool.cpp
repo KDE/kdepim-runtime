@@ -202,7 +202,7 @@ private slots:
     pool.setPasswordRequester( requester );
     QVERIFY( pool.connect( account ) );
 
-    QTest::qWait( 100 );
+    QTest::qWait( 200 );
     QVERIFY( requesterSpy.count()>0 );
     if ( requesterSpy.count()==1 ) {
       QCOMPARE( requesterSpy.at(0).at(0).toInt(), 0 );

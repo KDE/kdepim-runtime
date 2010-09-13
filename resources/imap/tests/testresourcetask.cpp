@@ -134,7 +134,7 @@ private slots:
       pool.setPasswordRequester( createDefaultRequester() );
       QVERIFY( pool.connect( createDefaultAccount() ) );
 
-      QTest::qWait( 100 );
+      QTest::qWait( 200 );
       QCOMPARE( poolSpy.count(), 1 );
       QCOMPARE( poolSpy.at(0).at(0).toInt(), (int)SessionPool::NoError );
     }
