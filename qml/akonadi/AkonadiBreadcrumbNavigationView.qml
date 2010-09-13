@@ -54,6 +54,8 @@ Item {
   property alias checkable : breadcrumbView.checkable
   property alias showUnread : breadcrumbView.showUnread
 
+  property bool clickToBulkAction : true
+
   signal selectedClicked()
 
   Item {
@@ -106,7 +108,7 @@ Item {
       checkable : breadcrumbView.checkable
 
       MouseArea {
-        anchors.fill :parent
+        anchors.fill : _top.clickToBulkAction ? parent : undefined
         onClicked : selectedClicked();
       }
     }
