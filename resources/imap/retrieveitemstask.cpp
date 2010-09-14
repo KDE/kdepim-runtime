@@ -300,8 +300,8 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
     i.setMimeType( "message/rfc822" );
     i.setPayload( KMime::Message::Ptr( messages[number] ) );
     i.setSize( sizes[number] );
-
-    foreach( const QByteArray &flag, flags[number] ) {
+    const QList<QByteArray> akonadiFlags = toAkonadiFlags( flags[number] );
+    foreach( const QByteArray &flag, akonadiFlags ) {
       i.setFlag( flag );
     }
     //kDebug(5327) << "Flags: " << i.flags();
