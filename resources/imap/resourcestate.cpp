@@ -313,6 +313,11 @@ void ResourceState::applyCollectionChanges( const Akonadi::Collection &collectio
   new Akonadi::CollectionModifyJob( collection );
 }
 
+void ResourceState::collectionAttributesRetrieved( const Akonadi::Collection &collection )
+{
+  m_resource->collectionAttributesRetrieved( collection );
+}
+
 void ResourceState::itemRetrieved( const Akonadi::Item &item )
 {
   m_resource->itemRetrieved( item );

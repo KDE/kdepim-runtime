@@ -223,6 +223,12 @@ void ResourceTask::applyCollectionChanges( const Akonadi::Collection &collection
   m_resource->applyCollectionChanges( collection );
 }
 
+void ResourceTask::collectionAttributesRetrieved( const Akonadi::Collection &collection )
+{
+  m_resource->collectionAttributesRetrieved( collection );
+  deleteLater();
+}
+
 void ResourceTask::itemRetrieved( const Akonadi::Item &item )
 {
   m_resource->itemRetrieved( item );

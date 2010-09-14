@@ -40,12 +40,23 @@
 const uint RetrieveCollectionMetadataTask::TimestampTimeout = 3600 * 24 * 20; // 20 days
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ), m_pendingMetaDataJobs(0), m_collectionChanged(false)
+  : ResourceTask( CancelIfNoSession, resource, parent ), m_isSpontaneous( true ),
+    m_pendingMetaDataJobs( 0 ), m_collectionChanged( false )
 {
 }
 
 RetrieveCollectionMetadataTask::~RetrieveCollectionMetadataTask()
 {
+}
+
+bool RetrieveCollectionMetadataTask::isSpontaneous() const
+{
+  return m_isSpontaneous;
+}
+
+void RetrieveCollectionMetadataTask::setSpontaneous( bool spontaneous )
+{
+  m_isSpontaneous = spontaneous;
 }
 
 void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
@@ -57,22 +68,28 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
       kDebug(5327) << "No Select folder";
-      taskDone();
+      endTask();
       return;
     }
   }
 
-  uint timestamp = 0;
-  const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
+  // Evaluate timestamps only if this task is spontaneous (triggered from within the resource)
+  if ( m_isSpontaneous ) {
+    uint timestamp = 0;
+    const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
 
-  if ( collection().hasAttribute<TimestampAttribute>() ) {
-    timestamp = collection().attribute<TimestampAttribute>()->timestamp();
-  }
+    if ( collection().hasAttribute<TimestampAttribute>() ) {
+      timestamp = collection().attribute<TimestampAttribute>()->timestamp();
+    } else {
+      m_collectionChanged = true;
+    }
 
-  // Refresh only if we're older than twenty days
-  if ( timestamp + TimestampTimeout >  currentTimestamp ) {
-    taskDone();
-    return;
+    // Refresh only if we're older than twenty days
+    if ( timestamp + TimestampTimeout >  currentTimestamp ) {
+      kDebug(5327) << "Not refreshing because of timestamp";
+      endTask();
+      return;
+    }
   }
 
   m_collection = collection();
@@ -124,7 +141,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   // the server does not have any of the capabilities needed to get extra info, so this
   // step is done here
   if ( m_pendingMetaDataJobs == 0 ) {
-    taskDone();
+    endTask();
   }
 }
 
@@ -319,9 +336,22 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
       TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
       attr->setTimestamp( currentTimestamp );
 
-      applyCollectionChanges( m_collection );
+      if ( m_isSpontaneous ) {
+        applyCollectionChanges( m_collection );
+      }
     }
+
+    endTask();
+  }
+}
+
+void RetrieveCollectionMetadataTask::endTask()
+{
+  kDebug() << "Done!";
+  if ( m_isSpontaneous ) {
     taskDone();
+  } else {
+    collectionAttributesRetrieved( m_collection );
   }
 }
 

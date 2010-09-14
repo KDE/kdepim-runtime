@@ -64,6 +64,8 @@ protected Q_SLOTS:
 
 
   void retrieveCollections();
+  void retrieveCollectionAttributes( const Akonadi::Collection &collection );
+
   void retrieveItems( const Akonadi::Collection &col );
   bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 

@@ -110,6 +110,8 @@ public:
   virtual void setIdleCollection( const Akonadi::Collection &collection );
   virtual void applyCollectionChanges( const Akonadi::Collection &collection );
 
+  virtual void collectionAttributesRetrieved( const Akonadi::Collection &collection );
+
   virtual void itemRetrieved( const Akonadi::Item &item );
 
   virtual void itemsRetrieved( const Akonadi::Item::List &items );

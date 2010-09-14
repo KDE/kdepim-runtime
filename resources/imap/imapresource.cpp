@@ -274,6 +274,15 @@ void ImapResource::retrieveCollections()
   task->start( m_pool );
 }
 
+void ImapResource::retrieveCollectionAttributes( const Akonadi::Collection &collection )
+{
+  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveCollectionMetadataState( this, collection );
+
+  RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state, this );
+  task->setSpontaneous( false );
+  task->start( m_pool );
+}
+
 void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
 {
   const Collection collection( collectionVariant.value<Collection>() );

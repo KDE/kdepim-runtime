@@ -193,6 +193,11 @@ void DummyResourceState::applyCollectionChanges( const Akonadi::Collection &coll
   recordCall( "applyCollectionChanges",  QVariant::fromValue( collection ) );
 }
 
+void DummyResourceState::collectionAttributesRetrieved( const Akonadi::Collection &collection )
+{
+  recordCall( "collectionAttributesRetrieved", QVariant::fromValue( collection ) );
+}
+
 void DummyResourceState::itemRetrieved( const Akonadi::Item &item )
 {
   recordCall( "itemRetrieved", QVariant::fromValue(item) );
