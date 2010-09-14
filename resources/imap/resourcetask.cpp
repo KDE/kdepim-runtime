@@ -337,6 +337,9 @@ QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
       newFlags.append( Akonadi::MessageFlags::Answered );
     } else if( oldFlag == ImapFlags::Flagged ) {
       newFlags.append( Akonadi::MessageFlags::Flagged );
+    } else if( oldFlag.isEmpty() ) {
+      // filter out empty flags, to avoid isNull/isEmpty confusions higher up
+      continue;
     } else {
       newFlags.append( oldFlag );
     }
