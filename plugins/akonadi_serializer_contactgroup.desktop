@@ -75,4 +75,4 @@ Comment[zh_TW]=聯絡人群組物件的 Akonadi 序列器外掛程式
 Type=application/x-vnd.kde.contactgroup
 X-Akonadi-Class=legacy;default;KABC::ContactGroup;
 X-KDE-Library=akonadi_serializer_contactgroup
-Class-Name=Akonadi::SerializerPluginContactGroup
+X-KDE-ClassName=Akonadi::SerializerPluginContactGroup

@@ -78,4 +78,4 @@ Comment[zh_TW]=事件、工作與日誌項目物件的 Akonadi 序列器外掛�
 Type=text/calendar,application/x-vnd.akonadi.note,application/x-vnd.kde.notes
 X-Akonadi-Class=legacy;KCal::Incidence*;
 X-KDE-Library=akonadi_serializer_kcal
-Class-Name=Akonadi::SerializerPluginKCal
+X-KDE-ClassName=Akonadi::SerializerPluginKCal

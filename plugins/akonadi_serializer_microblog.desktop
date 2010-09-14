@@ -76,4 +76,4 @@ Comment[zh_TW]=Microblog 的 Akonadi 序列器外掛程式
 Type=application/x-vnd.kde.microblog
 X-Akonadi-Class=legacy;default;Microblog::StatusItem;
 X-KDE-Library=akonadi_serializer_microblog
-Class-Name=Akonadi::SerializerPluginmicroblog
+X-KDE-ClassName=Akonadi::SerializerPluginmicroblog

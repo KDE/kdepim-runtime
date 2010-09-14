@@ -80,4 +80,4 @@ Comment[zh_TW]=信件物件的 Akonadi 序列器外掛程式
 Type=message/rfc822,message/news
 X-Akonadi-Class=legacy;default;KMime::Message*;
 X-KDE-Library=akonadi_serializer_mail
-Class-Name=Akonadi::SerializerPluginMail
+X-KDE-ClassName=Akonadi::SerializerPluginMail
