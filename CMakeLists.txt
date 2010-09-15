@@ -141,10 +141,9 @@ add_subdirectory(resources)
 add_subdirectory(agents)
 add_subdirectory(libkdepim-copy)
 add_subdirectory(plugins)
-
-#account wizzard needs to be ported to wince yet, does not work because of kross and kassistentdialoag
-if (NOT WINCE)
 add_subdirectory(accountwizard)
+
+if (NOT WINCE)
 add_subdirectory(xml)
 add_subdirectory(resourcetester)
 add_subdirectory(kioslave)
