@@ -240,6 +240,12 @@ void ResourceTask::itemsRetrieved( const Akonadi::Item::List &items )
   m_resource->itemsRetrieved( items );
 }
 
+void ResourceTask::itemsRetrievedIncremental( const Akonadi::Item::List &changed,
+                                              const Akonadi::Item::List &removed )
+{
+  m_resource->itemsRetrievedIncremental( changed, removed );
+}
+
 void ResourceTask::itemsRetrievalDone()
 {
   m_resource->itemsRetrievalDone();

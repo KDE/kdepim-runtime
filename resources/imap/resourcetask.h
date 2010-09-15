@@ -89,6 +89,8 @@ protected:
   void itemRetrieved( const Akonadi::Item &item );
 
   void itemsRetrieved( const Akonadi::Item::List &items );
+  void itemsRetrievedIncremental( const Akonadi::Item::List &changed,
+                                  const Akonadi::Item::List &removed );
   void itemsRetrievalDone();
 
   void changeCommitted( const Akonadi::Item &item );

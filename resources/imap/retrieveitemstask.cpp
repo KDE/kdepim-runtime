@@ -39,13 +39,23 @@
 #include <kimap/session.h>
 
 RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 )
+  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_fastSync( false )
 {
 
 }
 
 RetrieveItemsTask::~RetrieveItemsTask()
 {
+}
+
+void RetrieveItemsTask::setFastSyncEnabled( bool fastSync )
+{
+  m_fastSync = fastSync;
+}
+
+bool RetrieveItemsTask::isFastSyncEnabled() const
+{
+  return m_fastSync;
 }
 
 void RetrieveItemsTask::doStart( KIMAP::Session *session )
@@ -261,6 +271,13 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
+  } else if ( m_fastSync ) {
+    kDebug(5327) << "No new messages, and fast sync enabled so we're done already";
+    // In fast sync mode we skip getting flags, we basically don't
+    // detect flag changes or expunged messages because of that.
+    itemsRetrievedIncremental( Akonadi::Item::List(), Akonadi::Item::List() );
+    itemsRetrievalDone();
+    return;
   } else {
     kDebug(5327) << "All fine, asking for all message flags looking for changes";
     listFlagsForImapSet( KIMAP::ImapSet( 1, messageCount ) );
@@ -308,7 +325,11 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
     addedItems << i;
   }
 
-  itemsRetrieved( addedItems );
+  if ( m_fastSync ) {
+    itemsRetrievedIncremental( addedItems, Akonadi::Item::List() );
+  } else {
+    itemsRetrieved( addedItems );
+  }
 }
 
 void RetrieveItemsTask::onHeadersFetchDone( KJob *job )
@@ -326,6 +347,13 @@ void RetrieveItemsTask::onHeadersFetchDone( KJob *job )
   // just an optimization, as incremental retrieval assumes nothing
   // will be listed twice.
   if ( alreadyFetched.intervals().first().begin() <= 1 ) {
+    itemsRetrievalDone();
+    return;
+  }
+
+  // In fast sync mode we also skip getting flags, we basically don't
+  // detect flag changes or expunged messages because of that.
+  if ( m_fastSync ) {
     itemsRetrievalDone();
     return;
   }

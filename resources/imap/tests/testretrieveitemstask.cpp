@@ -22,6 +22,7 @@
 #include "retrieveitemstask.h"
 
 #include <akonadi/cachepolicy.h>
+#include <akonadi/collectionstatistics.h>
 #include <akonadi/kmime/messageparts.h>
 
 class TestRetrieveItemsTask : public ImapTestBase
@@ -34,10 +35,12 @@ private slots:
     QTest::addColumn<Akonadi::Collection>("collection");
     QTest::addColumn< QList<QByteArray> >("scenario");
     QTest::addColumn<QStringList>("callNames");
+    QTest::addColumn<bool>("fastSync");
 
     Akonadi::Collection collection;
     QList<QByteArray> scenario;
     QStringList callNames;
+    bool fastSync;
 
     collection = Akonadi::Collection( 1 );
     collection.setRemoteId( "/INBOX/Foo" );
@@ -71,8 +74,10 @@ private slots:
     callNames.clear();
     callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
+    fastSync = false;
 
-    QTest::newRow( "first listing, connected IMAP" ) << collection << scenario << callNames;
+
+    QTest::newRow( "first listing, connected IMAP" ) << collection << scenario << callNames << fastSync;
 
     Akonadi::CachePolicy policy;
     policy.setLocalParts( QStringList() << Akonadi::MessagePart::Envelope
@@ -111,8 +116,75 @@ private slots:
     callNames.clear();
     callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
+    fastSync = false;
 
-    QTest::newRow( "first listing, disconnected IMAP" ) << collection << scenario << callNames;
+
+    QTest::newRow( "first listing, disconnected IMAP" ) << collection << scenario << callNames << fastSync;
+
+
+
+    Akonadi::CollectionStatistics stats;
+    stats.setCount( 1 );
+
+    collection = Akonadi::Collection( 1 );
+    collection.setRemoteId( "/INBOX/Foo" );
+    collection.setCachePolicy( policy );
+    collection.setStatistics( stats );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge done"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 1 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135  ]"
+             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 FETCH 1 (FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 )"
+             << "S: A000006 OK fetch done";
+
+    callNames.clear();
+    callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
+
+    fastSync = false;
+
+
+    QTest::newRow( "second listing, full sync" ) << collection << scenario << callNames << fastSync;
+
+
+    collection = Akonadi::Collection( 1 );
+    collection.setRemoteId( "/INBOX/Foo" );
+    collection.setCachePolicy( policy );
+    collection.setStatistics( stats );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge done"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 1 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135  ]"
+             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: A000005 OK select done";
+
+    callNames.clear();
+    callNames << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+
+    fastSync = true;
+
+
+    QTest::newRow( "second listing, fast sync" ) << collection << scenario << callNames << fastSync;
   }
 
   void shouldIntrospectCollection()
@@ -120,6 +192,7 @@ private slots:
     QFETCH( Akonadi::Collection, collection );
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( QStringList, callNames );
+    QFETCH( bool, fastSync );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -134,6 +207,7 @@ private slots:
     DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
     state->setCollection( collection );
     RetrieveItemsTask *task = new RetrieveItemsTask( state );
+    task->setFastSyncEnabled( fastSync );
     task->start( &pool );
     QTest::qWait( 100 );
 

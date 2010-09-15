@@ -85,7 +85,7 @@ Q_IMPORT_PLUGIN(akonadi_serializer_mail)
 using namespace Akonadi;
 
 ImapResource::ImapResource( const QString &id )
-  : ResourceBase( id ), m_pool( new SessionPool( 2, this ) ), m_idle( 0 )
+  : ResourceBase( id ), m_pool( new SessionPool( 2, this ) ), m_idle( 0 ), m_fastSync( false )
 {
   m_pool->setPasswordRequester( new SettingsPasswordRequester( this, m_pool ) );
   m_pool->setSessionUiProxy( SessionUiProxy::Ptr( new SessionUiProxy ) );
@@ -128,7 +128,15 @@ ImapResource::~ImapResource()
 {
 }
 
+void ImapResource::setFastSyncEnabled( bool fastSync )
+{
+  m_fastSync = fastSync;
+}
 
+bool ImapResource::isFastSyncEnabled() const
+{
+  return m_fastSync;
+}
 
 // ----------------------------------------------------------------------------------
 
@@ -300,6 +308,7 @@ void ImapResource::retrieveItems( const Collection &col )
 
   ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemsState( this, col );
   RetrieveItemsTask *task = new RetrieveItemsTask( state, this );
+  task->setFastSyncEnabled( m_fastSync );
   task->start( m_pool );
 }
 

@@ -34,6 +34,9 @@ public:
   explicit RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
   virtual ~RetrieveItemsTask();
 
+  void setFastSyncEnabled( bool fastSync );
+  bool isFastSyncEnabled() const;
+
 private slots:
   void onPreExpungeSelectDone( KJob *job );
   void onExpungeDone( KJob *job );
@@ -65,6 +68,7 @@ private:
   void listFlagsForImapSet( const KIMAP::ImapSet& set );
 
   KIMAP::Session *m_session;
+  bool m_fastSync;
 };
 
 #endif

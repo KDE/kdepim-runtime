@@ -328,6 +328,11 @@ void ResourceState::itemsRetrieved( const Akonadi::Item::List &items )
   m_resource->itemsRetrieved( items );
 }
 
+void ResourceState::itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed )
+{
+  m_resource->itemsRetrievedIncremental( changed, removed );
+}
+
 void ResourceState::itemsRetrievalDone()
 {
   m_resource->itemsRetrievalDone();

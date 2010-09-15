@@ -55,8 +55,10 @@ public:
 public Q_SLOTS:
   virtual void configure( WId windowId );
 
-  // DBus method
+  // DBus methods
   Q_SCRIPTABLE void requestManualExpunge( qint64 collectionId );
+  Q_SCRIPTABLE void setFastSyncEnabled( bool fastSync );
+  Q_SCRIPTABLE bool isFastSyncEnabled() const;
 
 protected Q_SLOTS:
   void startIdleIfNeeded();
@@ -114,6 +116,7 @@ private:
 
   SessionPool *m_pool;
   ImapIdleManager *m_idle;
+  bool m_fastSync;
 };
 
 #endif

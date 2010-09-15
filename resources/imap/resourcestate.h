@@ -115,6 +115,7 @@ public:
   virtual void itemRetrieved( const Akonadi::Item &item );
 
   virtual void itemsRetrieved( const Akonadi::Item::List &items );
+  virtual void itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed );
   virtual void itemsRetrievalDone();
 
   virtual void itemChangeCommitted( const Akonadi::Item &item );
