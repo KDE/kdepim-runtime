@@ -25,7 +25,6 @@ set(accountwizard_srcs
 )
 
 kde4_add_ui_files(accountwizard_srcs
-  providerpage.ui
   typepage.ui
   loadpage.ui
   setuppage.ui

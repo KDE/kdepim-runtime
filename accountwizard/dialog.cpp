@@ -20,7 +20,9 @@
 
 #include "dialog.h"
 #include "personaldatapage.h"
+#ifndef ACCOUNTWIZARD_NO_GHNS
 #include "providerpage.h"
+#endif
 #include "typepage.h"
 #include "loadpage.h"
 #include "global.h"
