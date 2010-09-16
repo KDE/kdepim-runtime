@@ -56,6 +56,11 @@ target_link_libraries(accountwizard ${accountwizard_libs})
 kde4_add_plugin(accountwizard_plugin ${accountwizard_srcs} inprocess-main.cpp)
 target_link_libraries(accountwizard_plugin ${accountwizard_libs})
 
+if (WINCE)
+  target_link_libraries(accountwizard ${KDE4_KROSSQTSPLUGIN_LIBS})
+  target_link_libraries(accountwizard_plugin ${KDE4_KROSSQTSPLUGIN_LIBS})
+endif(WINCE)
+
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
   install(FILES accountwizard.knsrc DESTINATION ${CONFIG_INSTALL_DIR})
 endif ()

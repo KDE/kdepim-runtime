@@ -27,6 +27,12 @@
 #include <kcmdlineargs.h>
 #include <kglobal.h>
 
+#ifdef Q_OS_WINCE
+#include <QtPlugin>
+
+Q_IMPORT_PLUGIN(krossqtsplugin)
+#endif
+
 int main( int argc, char **argv )
 {
   KAboutData aboutData( "accountwizard", 0,
