@@ -30,8 +30,11 @@ if ( pos >= 0 && (pos + 1) < emailAddr.length ) {
   var server = emailAddr.slice( pos + 1, emailAddr.length );
   page.widget().incommingAddress.text = server;
   page.widget().outgoingAddress.text = server;
-  var user = emailAddr.slice( 0, pos );
-  page.widget().userName.text = user;
+  // We must not strip the server from the user identifier.
+  // Otherwise the 'user' will be kdabtest1 instead of kdabtest1@demo.kolab.org
+  // which fails,
+  //var user = emailAddr.slice( 0, pos );
+  page.widget().userName.text = emailAddr;
 }
 
 function validateInput()
