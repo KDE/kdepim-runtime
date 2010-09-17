@@ -226,7 +226,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   // has been deleted and recreated. So we wipe out the messages and
   // retrieve all.
   if ( oldUidValidity != uidValidity && !firstTime
-    && oldUidValidity != 0 ) {
+    && oldUidValidity != 0 && messageCount > 0 ) {
     kDebug(5327) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
                  << uidValidity <<") refetching "<< mailBox;
 
@@ -240,7 +240,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     connect( fetch, SIGNAL( result( KJob* ) ),
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
-  } else if( messageCount > realMessageCount ) {
+  } else if( messageCount > realMessageCount && messageCount > 0 ) {
     // The amount on the server is bigger than that we have in the cache
     // that probably means that there is new mail. Fetch missing.
     kDebug(5327) << "Fetch missing: " << messageCount << " But: " << realMessageCount;
@@ -256,7 +256,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
              this, SLOT( onHeadersFetchDone( KJob* ) ) );
     fetch->start();
   } else if ( messageCount == realMessageCount && oldNextUid != nextUid
-           && oldNextUid != 0 && !firstTime ) {
+           && oldNextUid != 0 && !firstTime && messageCount > 0 ) {
     // amount is right but uidnext is different.... something happened
     // behind our back...
     kDebug(5327) << "UIDNEXT check failed, refetching mailbox";
@@ -278,9 +278,12 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     itemsRetrievedIncremental( Akonadi::Item::List(), Akonadi::Item::List() );
     itemsRetrievalDone();
     return;
-  } else {
+  } else if ( messageCount > 0 ) {
     kDebug(5327) << "All fine, asking for all message flags looking for changes";
     listFlagsForImapSet( KIMAP::ImapSet( 1, messageCount ) );
+  } else {
+    kDebug(5327) << "No messages present so we are done";
+    itemsRetrievalDone();
   }
 }
 

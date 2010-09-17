@@ -185,6 +185,35 @@ private slots:
 
 
     QTest::newRow( "second listing, fast sync" ) << collection << scenario << callNames << fastSync;
+
+
+
+    collection = Akonadi::Collection( 1 );
+    collection.setRemoteId( "/INBOX/Foo" );
+    collection.setCachePolicy( policy );
+    collection.setStatistics( stats );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge done"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 0 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135  ]"
+             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: A000005 OK select done";
+
+    callNames.clear();
+    callNames << "applyCollectionChanges" << "itemsRetrievalDone";
+
+    fastSync = false;
+
+    QTest::newRow( "third listing, full sync, empty folder" ) << collection << scenario << callNames << fastSync;
   }
 
   void shouldIntrospectCollection()
