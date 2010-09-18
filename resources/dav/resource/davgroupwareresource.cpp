@@ -60,10 +60,6 @@ typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 DavGroupwareResource::DavGroupwareResource( const QString &id )
   : ResourceBase( id )
 {
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                                                Settings::self(), QDBusConnection::ExportAdaptors );
-
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
   AttributeFactory::registerAttribute<DavProtocolAttribute>();
 
