@@ -143,14 +143,11 @@ void ConfigDialog::onEditButtonClicked()
   const int result = dlg->exec();
 
   if ( result == QDialog::Accepted && !dlg.isNull() ) {
-    if ( dlg->remoteUrl() != urlConfig->mUrl ) {
-      Settings::self()->removeUrlConfiguration( urlConfig->mUrl );
-      urlConfig = new Settings::UrlConfiguration();
-      urlConfig->mUrl = dlg->remoteUrl();
-      Settings::self()->newUrlConfiguration( urlConfig );
-    }
-    urlConfig->mUser = dlg->username();
-    urlConfig->mProtocol = dlg->protocol();
+    Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
+    urlConfigAccepted->mUrl = dlg->remoteUrl();
+    urlConfigAccepted->mUser = dlg->username();
+    urlConfigAccepted->mProtocol = dlg->protocol();
+    Settings::self()->newUrlConfiguration( urlConfigAccepted );
 
     QStandardItem *item = mModel->item( index.row(), 0 ); // Protocol
     item->setData( QVariant::fromValue( DavUtils::protocolName( dlg->protocol() ) ), Qt::DisplayRole );
