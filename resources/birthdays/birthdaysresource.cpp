@@ -119,7 +119,7 @@ void BirthdaysResource::contactRetrieved(KJob* job)
   } else if ( fj->items().count() != 1 ) {
     cancelTask();
   } else {
-    KCalCore::Event::Ptr ev;
+    KCalCore::Incidence::Ptr ev;
     if ( currentItem().remoteId().startsWith( 'b' ) )
       ev = createBirthday( fj->items().first() );
     else if ( currentItem().remoteId().startsWith( 'a' ) )
