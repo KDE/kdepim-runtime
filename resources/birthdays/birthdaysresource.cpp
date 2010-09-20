@@ -31,6 +31,8 @@
 
 #include <kabc/addressee.h>
 
+#include <KPIMUtils/Email>
+
 #include <KDebug>
 #include <KLocale>
 #include <KWindowSystem>
@@ -263,8 +265,22 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& c
 
     QString summary;
     if ( !spouseName.isEmpty() ) {
+      QString tname, temail;
+      KPIMUtils::extractEmailAddressAndName( spouseName, temail, tname );
+      tname = KPIMUtils::quoteNameIfNecessary( tname );
+      if ( ( tname[0] == '"' ) && ( tname[tname.length() - 1] == '"' ) ) {
+        tname.remove( 0, 1 );
+        tname.truncate( tname.length() - 1 );
+      }
+      tname.remove( '\\' ); // remove escape chars
+      KABC::Addressee spouse;
+      spouse.setNameFromString( tname );
+      QString name_2 = spouse.nickName();
+      if ( name_2.isEmpty() ) {
+        name_2 = spouse.realName();
+      }
       summary = i18nc( "insert names of both spouses",
-                       "%1's & %2's anniversary", name, spouseName );
+                       "%1's & %2's anniversary", name, name_2 );
     } else {
       summary = i18nc( "only one spouse in addressbook, insert the name",
                        "%1's anniversary", name );

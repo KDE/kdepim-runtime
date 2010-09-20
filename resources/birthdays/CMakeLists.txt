@@ -26,6 +26,7 @@ target_link_libraries(akonadi_birthdays_resource
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_KABC_LIBS}
   ${KDEPIMLIBS_KCALCORE_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
 )
 
 install( TARGETS akonadi_birthdays_resource ${INSTALL_TARGETS_DEFAULT_ARGS} )
