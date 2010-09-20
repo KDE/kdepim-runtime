@@ -65,12 +65,13 @@ class Settings : public SettingsBase
      */
     DavUtils::DavUrl configuredDavUrl( const QString &searchUrl, const QString &finalUrl = QString() );
 
-    /**
-     * Creates the DavUrl from the configured URL that most closely matches the given url.
-     * Most closely means url.startsWith( collectionUrl ), where collectionUrl
-     * is taken from the mappings registered with addCollectionUrlMapping().
-     */
-    DavUtils::DavUrl davUrlFromUrl( const QString &url );
+	/**
+	 * Creates and return the DavUrl from the configured URL that has a mapping with @p collectionUrl.
+	 * If @p finalUrl is supplied it will be used in the returned object, else @p collectionUrl will
+	 * be used.
+	 * If no configured URL can be found the returned DavUrl will have an empty url().
+	 */
+     DavUtils::DavUrl davUrlFromCollectionUrl( const QString &collectionUrl, const QString &finalUrl = QString() );
 
     /**
      * Add a new mapping between the collection URL, as seen on the backend, and the

@@ -137,21 +137,14 @@ DavUtils::DavUrl Settings::configuredDavUrl( const QString &searchUrl, const QSt
   return DavUtils::DavUrl( fullUrl, protocol( searchUrl ) );
 }
 
-DavUtils::DavUrl Settings::davUrlFromUrl( const QString &url )
+DavUtils::DavUrl Settings::davUrlFromCollectionUrl( const QString &collectionUrl, const QString &finalUrl )
 {
   DavUtils::DavUrl davUrl;
-  QString configuredUrl;
+  QString targetUrl = finalUrl.isEmpty() ? collectionUrl : finalUrl;
 
-  QMapIterator<QString, QString> iter( mCollectionsUrlsMapping );
-  while ( iter.hasNext() ) {
-    if ( url.startsWith( iter.next().key() ) ) {
-      configuredUrl = iter.value();
-      break;
-    }
+  if ( mCollectionsUrlsMapping.contains( collectionUrl ) ) {
+    davUrl = configuredDavUrl( mCollectionsUrlsMapping[ collectionUrl ], targetUrl );
   }
-
-  if ( !configuredUrl.isEmpty() )
-    davUrl = configuredDavUrl( configuredUrl, url );
 
   return davUrl;
 }

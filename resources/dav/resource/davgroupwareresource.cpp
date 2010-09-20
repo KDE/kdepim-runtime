@@ -102,7 +102,7 @@ void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collect
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
   DavCollectionDeleteJob *job = new DavCollectionDeleteJob( davUrl );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onCollectionRemovedFinished( KJob* ) ) );
@@ -183,7 +183,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
   DavItemsListJob *job = new DavItemsListJob( davUrl );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
@@ -201,7 +201,7 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
     return false;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
@@ -280,7 +280,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
   const QString urlStr = url.prettyUrl();
   kDebug() << "Item " << item.id() << " will be put to " << urlStr;
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( urlStr );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId(), urlStr );
 
   DavItem davItem;
   davItem.setUrl( urlStr );
@@ -304,7 +304,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   QByteArray rawData;
   QString mimeType;
@@ -348,7 +348,7 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
@@ -438,7 +438,7 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   }
 
   const Collection collection = job->property( "collection" ).value<Collection>();
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
   const bool protocolSupportsMultiget = DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget();
 
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
