@@ -45,7 +45,7 @@
 #else
 #include <QtGui/QListView>
 #include <QtGui/QSortFilterProxyModel>
-#include <kdescendantsproxymodel.h>
+#include <kdescendantsproxymodel_p.h>
 
 class CheckableFilterProxyModel : public QSortFilterProxyModel
 {

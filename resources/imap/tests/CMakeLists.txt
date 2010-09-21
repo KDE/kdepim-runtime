@@ -43,5 +43,5 @@ set(testsubscriptiondialog_SRCS
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR}/..)
 kde4_add_executable(testsubscriptiondialog ${testsubscriptiondialog_SRCS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
-target_link_libraries(testsubscriptiondialog ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_KIMAP_LIBS})
+target_link_libraries(testsubscriptiondialog ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim)
 
