@@ -10,10 +10,8 @@ set(kdepim-copy_LIB_SRCS
     calendardiffalgo.cpp
     diffalgo.cpp
     htmldiffalgodisplay.cpp
-    kaccount.cpp
     kdatepickerpopup.cpp
     kincidencechooser.cpp
-    ksubscription.cpp
 )
 
 kde4_add_library(kdepim-copy ${LIBRARY_TYPE} ${kdepim-copy_LIB_SRCS})
