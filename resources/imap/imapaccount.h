@@ -26,10 +26,9 @@
 #ifndef IMAPACCOUNT_H
 #define IMAPACCOUNT_H
 
-#include <kaccount.h>
 #include <kimap/loginjob.h>
 
-class ImapAccount : public KPIM::KAccount
+class ImapAccount
 {
 public:
   explicit ImapAccount();
@@ -54,6 +53,7 @@ public:
   bool isSubscriptionEnabled() const;
 
 private:
+  QString m_name;
   QString m_server;
   quint16 m_port;
   QString m_userName;

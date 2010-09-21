@@ -26,7 +26,7 @@
 #include "imapaccount.h"
 
 ImapAccount::ImapAccount()
-  : KAccount(), m_port( 0 ),
+  : m_port( 0 ),
     m_encryption( KIMAP::LoginJob::Unencrypted ),
     m_authentication( KIMAP::LoginJob::ClearText ),
     m_subscriptionEnabled( false )

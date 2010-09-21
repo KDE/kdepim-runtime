@@ -1,42 +1,28 @@
-/*  -*- c++ -*-
-    subscriptiondialog.cpp
-
-    This file is part of KMail, the KDE mail client.
-    Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
-    Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
-
+/*
     Copyright (c) 2010 Klarälvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
-    KMail is free software; you can redistribute it and/or modify it
-    under the terms of the GNU General Public License, version 2, as
-    published by the Free Software Foundation.
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
 
-    KMail is distributed in the hope that it will be useful, but
-    WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
+    This library is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-
-    In addition, as a special exception, the copyright holders give
-    permission to link the code of this program with any edition of
-    the Qt library by Trolltech AS, Norway (or with modified versions
-    of Qt that use the same license as Qt), and distribute linked
-    combinations including the two.  You must obey the GNU General
-    Public License in all respects for all of the code used other than
-    Qt.  If you modify this file, you may extend this exception to
-    your version of the file, but you are not obligated to do so.  If
-    you do not wish to do so, delete this exception statement from
-    your version.
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to the
+    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.
 */
 
 #include "subscriptiondialog.h"
 
-#include <QtCore/QTimer>
+#include <QtGui/QStandardItemModel>
+#include <QtGui/QBoxLayout>
 
 #include <klocale.h>
 #include <kdebug.h>
@@ -47,389 +33,317 @@
 #include <kimap/unsubscribejob.h>
 #include <kimap/subscribejob.h>
 
+#include "imapaccount.h"
 #include "sessionuiproxy.h"
 
-SubscriptionDialogBase::SubscriptionDialogBase( QWidget *parent, const QString &caption,
-    KAccount *acct, const QString &password, bool &selectionChanged, const QString &startPath )
-  : KSubscription( parent, caption, acct, User1, QString(), false ), m_session( 0 ),
-    mStartPath( startPath ), mSubscribed( false ), mForceSubscriptionEnable( false ), mSelectionChanged( selectionChanged )
+#ifndef KDEPIM_MOBILE_UI
+#include <QtGui/QHeaderView>
+#include <QtGui/QCheckBox>
+#include <QtGui/QLabel>
+#include <QtGui/QTreeView>
+#include <klineedit.h>
+#else
+#include <QtGui/QListView>
+#include <QtGui/QSortFilterProxyModel>
+#include <kdescendantsproxymodel.h>
+
+class CheckableFilterProxyModel : public QSortFilterProxyModel
 {
-  // hide unneeded checkboxes
-  hideTreeCheckbox();
-  hideNewOnlyCheckbox();
+public:
+  CheckableFilterProxyModel( QObject *parent = 0 )
+    : QSortFilterProxyModel( parent ) { }
 
-  // reload-list button
-  connect(this, SIGNAL(user1Clicked()), SLOT(slotLoadFolders()));
+protected:
+  /*reimp*/ bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent ) const
+  {
+    QModelIndex sourceIndex = sourceModel()->index( sourceRow, 0, sourceParent );
+    return sourceModel()->flags(sourceIndex) & Qt::ItemIsUserCheckable;
+  }
+};
 
-  ImapAccount *account = static_cast<ImapAccount*>(acct);
-  m_session = new KIMAP::Session( account->server(), account->port(), this );
+
+#endif
+
+
+
+SubscriptionDialog::SubscriptionDialog( QWidget *parent )
+  : KDialog( parent ),
+    m_session( 0 ),
+    m_subscriptionChanged( false ),
+    m_filter( new SubscriptionFilterProxyModel( this ) ),
+    m_model( new QStandardItemModel( this ) )
+{
+  setModal( true );
+  setButtons( Ok | Cancel | User1 );
+
+  setButtonText( User1, i18n( "Reload &List" ) );
+  enableButton( User1, false );
+  connect( this, SIGNAL(user1Clicked()),
+          this, SLOT(onReloadRequested()) );
+
+  QWidget *mainWidget = new QWidget( this );
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  mainWidget->setLayout(mainLayout);
+  setMainWidget( mainWidget );
+
+#ifndef KDEPIM_MOBILE_UI
+  QHBoxLayout *filterBarLayout = new QHBoxLayout;
+
+  filterBarLayout->addWidget( new QLabel( i18n("Search:") ) );
+
+  KLineEdit *lineEdit = new KLineEdit( mainWidget );
+  connect( lineEdit, SIGNAL(textChanged(QString)),
+           m_filter, SLOT(setSearchPattern(QString)) );
+  filterBarLayout->addWidget( lineEdit );
+
+  QCheckBox *checkBox = new QCheckBox( i18n("Subscribed only"), mainWidget );
+  connect( checkBox, SIGNAL(stateChanged(int)),
+           m_filter, SLOT(setIncludeCheckedOnly(int)) );
+  filterBarLayout->addWidget( checkBox );
+
+  mainLayout->addLayout(filterBarLayout);
+
+  QTreeView *treeView = new QTreeView( mainWidget );
+  treeView->header()->hide();
+  m_filter->setSourceModel( m_model );
+  treeView->setModel( m_filter );
+  mainLayout->addWidget( treeView );
+#else
+  QListView *listView = new QListView( mainWidget );
+
+  KDescendantsProxyModel *flatModel = new KDescendantsProxyModel( listView );
+  flatModel->setDisplayAncestorData( true );
+  flatModel->setAncestorSeparator( "/" );
+  flatModel->setSourceModel( m_model );
+
+  CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel( listView );
+  checkableModel->setSourceModel( flatModel );
+
+  listView->setModel( checkableModel );
+  mainLayout->addWidget( listView );
+#endif
+
+
+  connect( m_model, SIGNAL(itemChanged(QStandardItem*)),
+           this, SLOT(onItemChanged(QStandardItem*)) );
+}
+
+void SubscriptionDialog::connectAccount( const ImapAccount &account, const QString &password )
+{
+  m_session = new KIMAP::Session( account.server(), account.port(), this );
   m_session->setUiProxy( SessionUiProxy::Ptr( new SessionUiProxy ) );
 
   KIMAP::LoginJob *login = new KIMAP::LoginJob( m_session );
-  login->setUserName( account->userName() );
+  login->setUserName( account.userName() );
   login->setPassword( password );
-  login->setEncryptionMode( account->encryptionMode() );
-  login->setAuthenticationMode( account->authenticationMode() );
+  login->setEncryptionMode( account.encryptionMode() );
+  login->setAuthenticationMode( account.authenticationMode() );
 
-  QObject::connect( login, SIGNAL( result( KJob* ) ),
-                    this, SLOT( slotLoginDone( KJob* ) ) );
+  connect( login, SIGNAL( result( KJob* ) ),
+           this, SLOT( onLoginDone( KJob* ) ) );
   login->start();
 }
 
-//------------------------------------------------------------------------------
-void SubscriptionDialogBase::slotMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-                                                    const QList< QList<QByteArray> > &flags )
+bool SubscriptionDialog::isSubscriptionChanged()
+{
+  return m_subscriptionChanged;
+}
+
+void SubscriptionDialog::onLoginDone( KJob *job )
+{
+  if ( !job->error() ) {
+    onReloadRequested();
+  }
+}
+
+void SubscriptionDialog::onReloadRequested()
+{
+  enableButton( User1, false );
+  m_itemsMap.clear();
+  m_model->clear();
+
+  // we need a connection
+  if ( !m_session
+    || m_session->state() != KIMAP::Session::Authenticated ) {
+    kWarning() <<"SubscriptionDialog - got no connection";
+    enableButton( User1, true );
+    return;
+  }
+
+  KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
+  list->setIncludeUnsubscribed( true );
+  connect( list, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
+           this, SLOT( onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
+  connect( list, SIGNAL( result(KJob*) ), this, SLOT( onFullListingDone(KJob*) ) );
+  list->start();
+}
+
+void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+                                              const QList< QList<QByteArray> > &flags )
 {
   for ( int i = 0; i<mailBoxes.size(); i++ ) {
     KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
 
-    mDelimiters << mailBox.separator;
-    mFolderPaths << mailBox.name;
-    mFolderNames << mailBox.name.split(mailBox.separator).last();
-    mFolderSelectable << !flags[i].contains("\\NoSelect");
-  }
-}
+    const QStringList pathParts = mailBox.name.split(mailBox.separator);
+    const QString separator = mailBox.separator;
+    Q_ASSERT( separator.size() == 1 ); // that's what the spec says
 
-void SubscriptionDialogBase::slotListDirectory( KJob *job )
-{
-  KIMAP::ListJob *list = static_cast<KIMAP::ListJob*>( job );
+    QString parentPath;
+    QString currentPath;
 
-  mOnlySubscribed = !list->isIncludeUnsubscribed();
-  mCount = 0;
+    for ( int j = 0; j < pathParts.size(); ++j ) {
+      const bool isDummy = j != pathParts.size() - 1;
+      const bool isCheckable = !isDummy && !flags[i].contains("\\NoSelect");
 
-  processFolderListing();
-}
+      const QString pathPart = pathParts.at( j );
+      currentPath += separator + pathPart;
 
-void SubscriptionDialogBase::slotButtonClicked( int button )
-{
-  if ( button == KDialog::Ok ) {
-    if ( doSave() ) {
-      accept();
+      if ( m_itemsMap.contains(currentPath) ) {
+        if ( !isDummy ) {
+          QStandardItem *item = m_itemsMap[currentPath];
+          item->setCheckable( isCheckable );
+        }
+
+      } else if ( !parentPath.isEmpty() ) {
+        Q_ASSERT( m_itemsMap.contains(parentPath) );
+
+        QStandardItem *parentItem = m_itemsMap[parentPath];
+
+        QStandardItem *item = new QStandardItem( pathPart );
+        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+        item->setCheckable( isCheckable );
+        item->setData( currentPath.mid(1), PathRole );
+        parentItem->appendRow( item );
+        m_itemsMap[currentPath] = item;
+
+      } else {
+        QStandardItem *item = new QStandardItem( pathPart );
+        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+        item->setCheckable( isCheckable );
+        item->setData( currentPath.mid(1), PathRole );
+        m_model->appendRow( item );
+        m_itemsMap[currentPath] = item;
+      }
+
+      parentPath = currentPath;
     }
   }
-  else {
+}
+
+void SubscriptionDialog::onFullListingDone( KJob *job )
+{
+  if ( job->error() ) {
+    enableButton( User1, true );
+    return;
+  }
+
+  KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
+  list->setIncludeUnsubscribed( false );
+  connect( list, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
+           this, SLOT( onSubscribedMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
+  connect( list, SIGNAL( result(KJob*) ), this, SLOT( onReloadDone(KJob*) ) );
+  list->start();
+}
+
+void SubscriptionDialog::onSubscribedMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+                                                        const QList< QList<QByteArray> > &flags )
+{
+  for ( int i = 0; i<mailBoxes.size(); i++ ) {
+    KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
+    QString descriptor = mailBox.separator + mailBox.name;
+
+    if ( m_itemsMap.contains( descriptor ) ) {
+      QStandardItem *item = m_itemsMap[mailBox.separator + mailBox.name];
+      item->setCheckState( Qt::Checked );
+      item->setData( Qt::Checked, InitialStateRole );
+    }
+  }
+}
+
+void SubscriptionDialog::onReloadDone( KJob *job )
+{
+  enableButton( User1, true );
+}
+
+void SubscriptionDialog::onItemChanged( QStandardItem *item )
+{
+  QFont font = item->font();
+  font.setBold( item->checkState()!=item->data( InitialStateRole ).toInt() );
+  item->setFont( font );
+}
+
+void SubscriptionDialog::slotButtonClicked( int button )
+{
+  if ( button == KDialog::Ok ) {
+    applyChanges();
+    accept();
+  } else {
     KDialog::slotButtonClicked( button );
   }
 }
 
-void SubscriptionDialogBase::moveChildrenToNewParent( GroupItem *oldItem, GroupItem *item  )
+void SubscriptionDialog::applyChanges()
 {
-  if ( !oldItem || !item ) return;
+  QList<QStandardItem*> items = m_itemsMap.values();
 
-  QList<QTreeWidgetItem*> itemsToMove;
-  int childIndex = 0;
-  while ( QTreeWidgetItem* curItem = oldItem->QTreeWidgetItem::child( childIndex++ ) ) {
-    itemsToMove.append( curItem );
-    }
+  while ( !items.isEmpty() ) {
+    QStandardItem *item = items.takeFirst();
 
-  foreach( QTreeWidgetItem *cur, itemsToMove ) {
-    QTreeWidgetItem *taken = oldItem->takeChild( oldItem->indexOfChild( cur ) );
-    Q_ASSERT( taken );
-    item->QTreeWidgetItem::insertChild( 0, taken );
-    if ( taken->isSelected() ) // we have new parents so open them
-      folderTree()->scrollToItem( taken );
-  }
-
-  // Delete the old item
-  QTreeWidgetItem *oldItemParent = oldItem->QTreeWidgetItem::parent();
-  if ( oldItemParent )
-    delete oldItemParent->takeChild( oldItemParent->indexOfChild( oldItem ) );
-  else {
-    QTreeWidget *treeWidget = oldItem->treeWidget();
-    delete treeWidget->takeTopLevelItem( treeWidget->indexOfTopLevelItem( oldItem ) );
-  }
-  itemsToMove.clear();
-}
-
-void SubscriptionDialogBase::createListViewItem( int i )
-{
-  GroupItem *item = 0;
-  GroupItem *parent = 0;
-
-  // get the parent
-  GroupItem *oldItem = 0;
-  QString parentPath;
-  findParentItem( mFolderNames[i], mFolderPaths[i], parentPath, &parent, &oldItem );
-
-  if (!parent && !parentPath.isEmpty())
-  {
-    // the parent is not available and it's no root-item
-    // this happens when the folders do not arrive in hierarchical order
-    // so we create each parent in advance
-    QStringList folders = parentPath.split( mDelimiters[i], QString::SkipEmptyParts );
-    uint i = 0;
-    for ( QStringList::Iterator it = folders.begin(); it != folders.end(); ++it )
-    {
-      KGroupInfo info(*it);
-      info.subscribed = false;
-
-      QStringList tmpPath;
-      for ( uint j = 0; j <= i; ++j )
-        tmpPath << folders[j];
-      QString path = tmpPath.join(mDelimiters[i]);
-      info.path = path;
-      item = mItemDict[path];
-      // as these items are "dummies" we create them non-checkable
-      if (!item)
-      {
-        if (parent) {
-          item = new GroupItem(parent, info, this, false);
-        }
-        else {
-          item = new GroupItem(folderTree(), info, this, false);
-        }
-        mItemDict.insert(info.path, item);
+    if ( item->checkState()!=item->data( InitialStateRole ).toInt() ) {
+      if ( item->checkState() == Qt::Checked ) {
+        kDebug() << "Subscribing" << item->data( PathRole );
+        KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_session );
+        subscribe->setMailBox( item->data( PathRole ).toString() );
+        subscribe->exec();
+      } else {
+        kDebug() << "Unsubscribing" << item->data( PathRole );
+        KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( m_session );
+        unsubscribe->setMailBox( item->data( PathRole ).toString() );
+        unsubscribe->exec();
       }
 
-      parent = item;
-      ++i;
-    } // folders
-  } // parent
-
-  KGroupInfo info(mFolderNames[i]);
-  if (mFolderNames[i].toUpper() == "INBOX" &&
-      mFolderPaths[i] == "INBOX")
-    info.name = "Inbox";
-  info.subscribed = false;
-  info.path = mFolderPaths[i];
-  // only checkable when the folder is selectable
-  bool checkable = mFolderSelectable[i];
-  // create a new item
-  if ( parent ) {
-    item = new GroupItem(parent, info, this, checkable);
-  }
-  else {
-    item = new GroupItem(folderTree(), info, this, checkable);
-  }
-
-  if (oldItem) // remove old item
-    mItemDict.remove(info.path);
-
-  mItemDict.insert(info.path, item);
-  if (oldItem)
-    moveChildrenToNewParent( oldItem, item );
-
-  // select the start item
-  if ( mFolderPaths[i] == mStartPath )
-  {
-    item->setSelected( true );
-    folderTree()->scrollToItem( item );
+      m_subscriptionChanged = true;
+    }
   }
 }
 
-
-
-//------------------------------------------------------------------------------
-void SubscriptionDialogBase::findParentItem( QString &name, QString &path, QString &parentPath,
-    GroupItem **parent, GroupItem **oldItem )
+SubscriptionFilterProxyModel::SubscriptionFilterProxyModel( QObject* parent )
+  : KRecursiveFilterProxyModel( parent ), m_checkedOnly( false )
 {
-  // remove the name (and the separator) from the path to get the parent path
-  int start = path.length() - (name.length()+1);
-  int length = name.length()+1;
-  if (start < 0) start = 0;
-  parentPath = path;
-  parentPath.remove(start, length);
 
-  // find the parent by it's path
-  QMap<QString, GroupItem*>::Iterator it = mItemDict.find( parentPath );
-  if ( it != mItemDict.end() )
-    *parent = ( *it );
-
-  // check if the item already exists
-  it = mItemDict.find( path );
-  if ( it != mItemDict.end() )
-    *oldItem = ( *it );
 }
 
-//------------------------------------------------------------------------------
-void SubscriptionDialogBase::slotLoadFolders()
+void SubscriptionFilterProxyModel::setSearchPattern( const QString &pattern )
 {
-  // we need a connection
-  if ( !m_session || m_session->state() != KIMAP::Session::Authenticated )
-  {
-    kWarning() <<"SubscriptionDialog - got no connection";
-    return;
-  }
-
-  // clear the views
-  KSubscription::slotLoadFolders();
-  mItemDict.clear();
-  mSubscribed = false;
-  mLoading = true;
-
-  // first step is to load a list of all available folders and create listview
-  // items for them
-  listAllAvailableAndCreateItems();
+  m_pattern = pattern;
+  invalidate();
 }
 
-//------------------------------------------------------------------------------
-void SubscriptionDialogBase::processNext()
+void SubscriptionFilterProxyModel::setIncludeCheckedOnly( bool checkedOnly )
 {
-  mDelimiters.clear();
-  mFolderNames.clear();
-  mFolderPaths.clear();
-  mFolderSelectable.clear();
-
-  KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
-  list->setIncludeUnsubscribed( !mSubscribed );
-  connect( list, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
-           this, SLOT( slotMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
-  connect( list, SIGNAL( result(KJob*) ), this, SLOT( slotListDirectory(KJob*) ) );
-  list->start();
+  m_checkedOnly = checkedOnly;
+  invalidate();
 }
 
-void SubscriptionDialogBase::loadingComplete()
+void SubscriptionFilterProxyModel::setIncludeCheckedOnly( int checkedOnlyState )
 {
-  slotLoadingComplete();
+  m_checkedOnly = (checkedOnlyState == Qt::Checked);
+  invalidate();
 }
 
-
-//------------------------------------------------------------------------------
-// implementation for server side subscription
-//------------------------------------------------------------------------------
-
-SubscriptionDialog::SubscriptionDialog( QWidget *parent, const QString &caption,
-    KAccount *acct, const QString &password, bool &selectionChanged, const QString & startPath )
-  : SubscriptionDialogBase( parent, caption, acct, password, selectionChanged, startPath )
+bool SubscriptionFilterProxyModel::acceptRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-}
+  QModelIndex sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
 
-/* virtual */
-SubscriptionDialog::~SubscriptionDialog()
-{
-}
+  const bool checked = sourceIndex.data(Qt::CheckStateRole).toInt()==Qt::Checked;
 
-/* virtual */
-void SubscriptionDialog::listAllAvailableAndCreateItems()
-{
-  processNext();
-}
-
-//------------------------------------------------------------------------------
-void SubscriptionDialogBase::slotLoginDone( KJob *job )
-{
-  if ( !job->error() ) {
-    slotLoadFolders();
-  }
-}
-
-bool SubscriptionDialogBase::checkIfSubscriptionsEnabled()
-{
-  ImapAccount *account = static_cast<ImapAccount*>(mAcct);
-  if( !account )
-    return true;
-  if( subscriptionOptionEnabled( account ) )
-    return true;
-
-  int result = KMessageBox::questionYesNoCancel( this,
-      subscriptionOptionQuestion( account->server() ),
-      i18n("Enable Subscriptions?"), KGuiItem( i18n("Enable") ), KGuiItem( i18n("Do Not Enable") ) );
-
-  switch(result) {
-    case KMessageBox::Yes:
-        mForceSubscriptionEnable = true;
-        break;
-    case KMessageBox::No:
-        break;
-    case KMessageBox::Cancel:
-        return false;
-        break;
-  }
-
-  return true;
-}
-
-// =======
-/* virtual */
-void SubscriptionDialog::processFolderListing()
-{
-  processItems();
-}
-
-/* virtual */
-bool SubscriptionDialog::doSave()
-{
-  if ( !checkIfSubscriptionsEnabled() )
+  if ( m_checkedOnly && !checked ) {
     return false;
-
-  ImapAccount *ai = static_cast<ImapAccount*>(account());
-
-  // subscribe
-  QTreeWidgetItemIterator it(subView);
-  for ( ; *it; ++it)
-  {
-    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_session );
-    subscribe->setMailBox(
-      static_cast<GroupItem*>(*it)->info().path
-    );
-    subscribe->exec();
-    mSelectionChanged = true;
-  }
-
-  // unsubscribe
-  QTreeWidgetItemIterator it2(unsubView);
-  for ( ; *it2; ++it2)
-  {
-    KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( m_session );
-    unsubscribe->setMailBox(
-      static_cast<GroupItem*>(*it2)->info().path
-    );
-    unsubscribe->exec();
-    mSelectionChanged = true;
-  }
-
-  if ( mForceSubscriptionEnable ) {
-    ai->setSubscriptionEnabled( true );
-  }
-
-  return true;
-}
-
-bool SubscriptionDialog::subscriptionOptionEnabled( const ImapAccount *account ) const
-{
-  return account->isSubscriptionEnabled();
-}
-
-QString SubscriptionDialog::subscriptionOptionQuestion( const QString &accountName ) const
-{
-  return i18nc( "@info", "Currently subscriptions are not used for server <resource>%1</resource>.<nl/>"
-                         "\nDo you want to enable subscriptions?", accountName );
-}
-
-void SubscriptionDialog::processItems()
-{
-  bool onlySubscribed = mOnlySubscribed;
-  uint done = 0;
-  for (int i = mCount; i < mFolderNames.count(); ++i)
-  {
-    // give the dialog a chance to repaint
-    if (done == 1000)
-    {
-      emit listChanged();
-      QTimer::singleShot(0, this, SLOT(processItems()));
-      return;
-    }
-    ++mCount;
-    ++done;
-    if (!onlySubscribed && mFolderPaths.size() > 0)
-    {
-      createListViewItem( i );
-    } else if (onlySubscribed)
-    {
-      // find the item
-      if ( mItemDict[mFolderPaths[i]] )
-      {
-        GroupItem* item = mItemDict[mFolderPaths[i]];
-        item->setOn( true );
-      }
-    }
-  }
-
-  if ( !mSubscribed ) {
-    mSubscribed = true;
-    processNext();
+  } else if ( !m_pattern.isEmpty() ) {
+    const QString text = sourceIndex.data(Qt::DisplayRole).toString();
+    return text.contains( m_pattern, Qt::CaseInsensitive );
   } else {
-    loadingComplete();
+    return true;
   }
 }
 

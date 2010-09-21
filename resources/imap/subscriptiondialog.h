@@ -1,201 +1,99 @@
-/*  -*- c++ -*-
-    subscriptiondialog.h
-
-    This file is part of KMail, the KDE mail client.
-    Copyright (C) 2002 Carsten Burghardt <burghardt@kde.org>
-    Copyright (C) 2009 Kevin Ottens <ervin@kde.org>
-
+/*
     Copyright (c) 2010 Klarälvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
 
-    KMail is free software; you can redistribute it and/or modify it
-    under the terms of the GNU General Public License, version 2, as
-    published by the Free Software Foundation.
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
 
-    KMail is distributed in the hope that it will be useful, but
-    WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
+    This library is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-
-    In addition, as a special exception, the copyright holders give
-    permission to link the code of this program with any edition of
-    the Qt library by Trolltech AS, Norway (or with modified versions
-    of Qt that use the same license as Qt), and distribute linked
-    combinations including the two.  You must obey the GNU General
-    Public License in all respects for all of the code used other than
-    Qt.  If you modify this file, you may extend this exception to
-    your version of the file, but you are not obligated to do so.  If
-    you do not wish to do so, delete this exception statement from
-    your version.
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to the
+    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.
 */
 
-#ifndef __SUBSCRIPTIONDIALOG_H__
-#define __SUBSCRIPTIONDIALOG_H__
+#ifndef SUBSCRIPTIONDIALOG_H
+#define SUBSCRIPTIONDIALOG_H
 
-#include "imapaccount.h"
+#include <KDE/KDialog>
 
-#include <ksubscription.h>
+#include <krecursivefilterproxymodel.h>
 #include <kimap/listjob.h>
 
-#include <QMap>
+#include <QtCore/QMap>
 
-namespace KIMAP
-{
-class Session;
-}
+class QStandardItemModel;
+class QStandardItem;
 
-using KPIM::KAccount;
-using KPIM::KSubscription;
-using KPIM::GroupItem;
-using KPIM::KGroupInfo;
+class KDescendantsProxyModel;
 
-// Abstract base class for the server side and client side subscription dialogs.
-// Scott Meyers says: "Make non-leaf classes abstract" and he is right, I think.
-// (More Effective C++, Item 33)
-class SubscriptionDialogBase : public KSubscription
+class ImapAccount;
+
+class SubscriptionFilterProxyModel : public KRecursiveFilterProxyModel
 {
   Q_OBJECT
+public:
+  explicit SubscriptionFilterProxyModel( QObject* parent = 0 );
 
-  public:
-    SubscriptionDialogBase( QWidget *parent,
-                            const QString &caption,
-                            KAccount* acct,
-                            const QString &password,
-                            bool &selectionChanged,
-                            const QString &startPath = QString() );
-    virtual ~SubscriptionDialogBase() {
-      mItemDict.clear();
-    }
+public slots:
+  void setSearchPattern( const QString &pattern );
+  void setIncludeCheckedOnly( bool checkedOnly );
+  void setIncludeCheckedOnly( int checkedOnlyState );
 
-  protected:
-    /**
-     * Find the parent item
-     */
-    void findParentItem ( QString &name, QString &path, QString &compare,
-                          GroupItem **parent, GroupItem **oldItem );
+protected:
+  /*reimp*/ bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const;
 
-    /**
-     * Process the next prefix in mPrefixList
-     */
-    void processNext();
-
-    virtual void loadingComplete();
-
-  public slots:
-    void slotMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                                const QList< QList<QByteArray> > &flags );
-
-    /**
-     * get the listing from the imap-server
-     */
-    void slotListDirectory( KJob *job );
-
-    /**
-     * Called from the account when a connection was established
-     */
-    void slotLoginDone( KJob *job );
-
-  protected slots:
-    /**
-     * Loads the folders
-     */
-    void slotLoadFolders();
-
-  protected:
-
-    /**
-     * Reimplemented from KDialog to call doSave() when the OK button is clicked.
-     * This makes it possible to keep the dialog open after the user canceled the dialog
-     * from checkIfSubscriptionsEnabled().
-     */
-    virtual void slotButtonClicked( int button );
-
-    virtual void listAllAvailableAndCreateItems() = 0;
-    virtual void processFolderListing() = 0;
-
-    /**
-     * @return false is saving was canceled by the user
-     */
-    virtual bool doSave() = 0;
-
-    // helpers
-    /** Move all child items of @param oldItem under @param item */
-    void moveChildrenToNewParent( GroupItem *oldItem, GroupItem *item  );
-
-    /** Create a listview item for the i-th entry in the list of available
-     * folders. */
-    void createListViewItem( int i );
-
-    /**
-     * If subscriptions are not enabled it
-     * shows a messagebox which asks to user to enable the option.
-     *
-     * If the subscriptions should be enabled, this method will set
-     * mForceSubscriptionEnable to true, otherwise to false.
-     *
-     * This function calls subscriptionOptionEnabled() to check if the option
-     * is currently enabled and subscriptionOptionQuestion() to get the text for
-     * the messagebox.
-     *
-     * @return false if the user clicked cancel, true otherwise
-     */
-    bool checkIfSubscriptionsEnabled();
-
-    virtual bool subscriptionOptionEnabled( const ImapAccount *account ) const = 0;
-    virtual QString subscriptionOptionQuestion( const QString &accountName ) const = 0;
-
-    KIMAP::Session *m_session;
-
-    QStringList mDelimiters;
-    QStringList mFolderNames;
-    QStringList mFolderPaths;
-    QList<bool> mFolderSelectable;
-
-    bool mOnlySubscribed;
-    uint mCount;
-
-    QMap<QString, GroupItem*> mItemDict;
-    QString mStartPath;
-    bool mSubscribed;
-    bool mForceSubscriptionEnable;
-    bool &mSelectionChanged;
+private:
+  QString m_pattern;
+  bool m_checkedOnly;
 };
 
-class SubscriptionDialog : public SubscriptionDialogBase
+
+class SubscriptionDialog : public KDialog
 {
   Q_OBJECT
+public:
+  enum Roles {
+    InitialStateRole = Qt::UserRole + 1,
+    PathRole
+  };
 
-  public:
-    SubscriptionDialog( QWidget *parent,
-                        const QString &caption,
-                        KAccount* acct,
-                        const QString &password,
-                        bool &selectionChanged,
-                        const QString & startPath = QString() );
-    virtual ~SubscriptionDialog();
-  protected:
-    /** reimpl */
-    virtual void listAllAvailableAndCreateItems();
-    /** reimpl */
-    virtual void processFolderListing();
-    /** reimpl */
-    virtual bool doSave();
-    /** reimpl */
-    virtual bool subscriptionOptionEnabled( const ImapAccount *account ) const;
-    /** reimpl */
-    virtual QString subscriptionOptionQuestion( const QString &accountName ) const;
+  explicit SubscriptionDialog( QWidget *parent = 0 );
 
-  private slots:
-    /**
-     * Create or update the listitems, depending on whether we are listing
-     * all available folders, or only subscribed ones.
-     */
-    void processItems();
+  void connectAccount( const ImapAccount &account, const QString &password );
+  bool isSubscriptionChanged();
+
+private slots:
+  void onLoginDone( KJob *job );
+  void onReloadRequested();
+  void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+                            const QList< QList<QByteArray> > &flags );
+  void onFullListingDone( KJob *job );
+  void onSubscribedMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+                                      const QList< QList<QByteArray> > &flags );
+  void onReloadDone( KJob *job );
+  void onItemChanged( QStandardItem *item );
+
+protected slots:
+  void slotButtonClicked( int button );
+
+private:
+  void applyChanges();
+
+  KIMAP::Session *m_session;
+  bool m_subscriptionChanged;
+
+  SubscriptionFilterProxyModel *m_filter;
+  KDescendantsProxyModel *m_flatModel;
+  QStandardItemModel *m_model;
+  QMap<QString, QStandardItem*> m_itemsMap;
 };
 
 #endif

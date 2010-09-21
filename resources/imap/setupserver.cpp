@@ -547,7 +547,6 @@ void SetupServer::slotManageSubscriptions()
   account.setPort( m_ui->portSpin->value() );
 
   account.setUserName( m_ui->userName->text() );
-  account.setName( m_ui->imapServer->text() + '/' + m_ui->userName->text() );
   account.setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
 
   account.setEncryptionMode(
@@ -556,10 +555,10 @@ void SetupServer::slotManageSubscriptions()
 
   account.setAuthenticationMode( Settings::mapTransportAuthToKimap( getCurrentAuthMode( m_ui->authenticationCombo ) ) );
 
-  m_subscriptionsChanged = false;
-  SubscriptionDialog *subscriptions = new SubscriptionDialog( this, i18n("Serverside Subscription..."),
-                                                              &account, m_ui->password->text(),
-                                                              m_subscriptionsChanged );
+  SubscriptionDialog *subscriptions = new SubscriptionDialog( this );
+  subscriptions->setCaption(  i18n( "Serverside Subscription..." ) );
+  subscriptions->connectAccount( account, m_ui->password->text() );
+  m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 
   subscriptions->exec();
 
