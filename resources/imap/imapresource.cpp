@@ -26,15 +26,18 @@
 #include "imapresource.h"
 
 #include <QHostInfo>
+#include <QSettings>
 
 #include <kdebug.h>
 #include <klocale.h>
+#include <kstandarddirs.h>
 #include <KWindowSystem>
 
 #ifndef IMAPRESOURCE_NO_SOLID
 #include <solid/networking.h>
 #endif
 
+#include <akonadi/agentmanager.h>
 #include <akonadi/attributefactory.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
@@ -87,6 +90,22 @@ using namespace Akonadi;
 ImapResource::ImapResource( const QString &id )
   : ResourceBase( id ), m_pool( new SessionPool( 2, this ) ), m_idle( 0 ), m_fastSync( false )
 {
+  if ( name() == identifier() ) {
+    const QString agentType = AgentManager::self()->instance( identifier() ).type().identifier();
+    const QString agentsrcFile = KGlobal::dirs()->localxdgconfdir() + "akonadi/agentsrc";
+
+    const QSettings agentsrc( agentsrcFile, QSettings::IniFormat );
+    const int instanceCounter = agentsrc.value(
+                                  QString::fromLatin1( "InstanceCounters/%1/InstanceCounter" ).arg( agentType ),
+                                  -1 ).toInt();
+
+    if ( instanceCounter>0 ) {
+      setName( i18n( "IMAP Account %1", instanceCounter ) );
+    } else {
+      setName( i18n( "IMAP Account" ) );
+    }
+  }
+
   m_pool->setPasswordRequester( new SettingsPasswordRequester( this, m_pool ) );
   m_pool->setSessionUiProxy( SessionUiProxy::Ptr( new SessionUiProxy ) );
 

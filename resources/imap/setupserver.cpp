@@ -296,8 +296,6 @@ void SetupServer::applySettings()
 
 void SetupServer::readSettings()
 {
-  if ( m_parentResource->name() == m_parentResource->identifier() )
-    m_parentResource->setName( i18n( "IMAP Account" ) );
   m_ui->accountName->setText( m_parentResource->name() );
   m_oldResourceName = m_ui->accountName->text();
 
