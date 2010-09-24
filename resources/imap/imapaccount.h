@@ -43,6 +43,11 @@ public:
   void setUserName( const QString &userName );
   QString userName() const;
 
+#ifdef Q_OS_WINCE
+  void setPassword( const QString &password );
+  QString password() const;
+#endif
+
   void setEncryptionMode( KIMAP::LoginJob::EncryptionMode mode );
   KIMAP::LoginJob::EncryptionMode encryptionMode() const;
 
@@ -57,6 +62,7 @@ private:
   QString m_server;
   quint16 m_port;
   QString m_userName;
+  QString m_password;
   KIMAP::LoginJob::EncryptionMode m_encryption;
   KIMAP::LoginJob::AuthenticationMode m_authentication;
   bool m_subscriptionEnabled;

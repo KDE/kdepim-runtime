@@ -16,6 +16,9 @@
     <entry name="UserName" type="String">
       <label>Username</label>
     </entry>
+    <entry name="Password" type="String">
+      <label>Password</label>
+    </entry>
     <entry name="Safety" type="String">
       <label>Defines the encryption type to use</label>
       <default>SSL</default>

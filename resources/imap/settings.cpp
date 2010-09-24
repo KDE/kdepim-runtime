@@ -160,6 +160,7 @@ void Settings::onDialogFinished( int result )
   }
 }
 
+#ifndef Q_OS_WINCE
 QString Settings::password(bool *userRejected) const
 {
     if ( userRejected != 0 ) {
@@ -203,6 +204,7 @@ void Settings::setPassword( const QString & password )
     }
     delete wallet;
 }
+#endif
 
 void Settings::loadAccount( ImapAccount *account ) const
 {
@@ -212,6 +214,9 @@ void Settings::loadAccount( ImapAccount *account ) const
   }
 
   account->setUserName( userName() );
+#ifdef Q_OS_WINCE
+  account->setPassword( password() );
+#endif
   account->setSubscriptionEnabled( subscriptionEnabled() );
 
   QString encryption = safety();
