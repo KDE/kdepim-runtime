@@ -172,10 +172,13 @@ void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>
   }
 
   // TODO this is probably something the store should decide
-  const bool payloadChanged = parts.contains( Item::FullPayload ) ||
-                              parts.contains( MessagePart::Header ) ||
-                              parts.contains( MessagePart::Envelope ) ||
-                              parts.contains( MessagePart::Body );
+  bool payloadChanged = false;
+  Q_FOREACH( const QByteArray &part, parts )  {
+    if( part.startsWith("PLD:") ) {
+      payloadChanged = true;
+      break;
+    }
+  }
 
   Item storeItem( item );
   storeItem.setRemoteId( mCompactHelper->currentRemoteId( item ) );

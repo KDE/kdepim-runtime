@@ -175,7 +175,14 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
       return;
     }
 
-    if ( Settings::self()->readOnly() || !parts.contains( MessagePart::Body ) ) {
+    bool payloadChanged = false;
+    Q_FOREACH( const QByteArray &part, parts )  {
+      if( part.startsWith("PLD:") ) {
+        payloadChanged = true;
+        break;
+      }
+    }
+    if ( Settings::self()->readOnly() || !payloadChanged ) {
       changeProcessed();
       return;
     }
