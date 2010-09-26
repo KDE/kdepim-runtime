@@ -135,6 +135,7 @@ ImapResource::ImapResource( const QString &id )
   setItemTransactionMode( ItemSync::MultipleTransactions ); // we can recover from incomplete syncs, so we can use a faster mode
   ItemFetchScope scope( changeRecorder()->itemFetchScope() );
   scope.fetchFullPayload( false );
+  scope.setAncestorRetrieval( ItemFetchScope::None );
   setItemSynchronizationFetchScope( scope );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
