@@ -462,7 +462,7 @@ Item InvitationsAgent::handleContent( const QString &vcal,
                                       const Item &item )
 {
   KCalCore::ICalFormat format;
-  KCalCore::ScheduleMessage *message = format.parseScheduleMessage( calendar, vcal );
+  KCalCore::ScheduleMessage::Ptr message = format.parseScheduleMessage( calendar, vcal );
   if ( !message ) {
     kWarning() << "Invalid invitation:" << vcal;
     return Item();
