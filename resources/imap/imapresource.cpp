@@ -136,6 +136,7 @@ ImapResource::ImapResource( const QString &id )
   ItemFetchScope scope( changeRecorder()->itemFetchScope() );
   scope.fetchFullPayload( false );
   scope.setAncestorRetrieval( ItemFetchScope::None );
+  scope.setFetchModificationTime( false );
   setItemSynchronizationFetchScope( scope );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
