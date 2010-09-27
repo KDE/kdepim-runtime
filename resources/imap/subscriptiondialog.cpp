@@ -21,12 +21,14 @@
 
 #include "subscriptiondialog.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QBoxLayout>
+#include <QtGui/QKeyEvent>
 
 #include <klocale.h>
 #include <kdebug.h>
-#include <kmessagebox.h>
+#include <klineedit.h>
 
 #include <kimap/session.h>
 #include <kimap/loginjob.h>
@@ -41,7 +43,6 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QLabel>
 #include <QtGui/QTreeView>
-#include <klineedit.h>
 #else
 #include <QtGui/QListView>
 #include <QtGui/QSortFilterProxyModel>
@@ -70,6 +71,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent )
   : KDialog( parent ),
     m_session( 0 ),
     m_subscriptionChanged( false ),
+    m_lineEdit( 0 ),
     m_filter( new SubscriptionFilterProxyModel( this ) ),
     m_model( new QStandardItemModel( this ) )
 {
@@ -86,22 +88,24 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent )
   mainWidget->setLayout(mainLayout);
   setMainWidget( mainWidget );
 
-#ifndef KDEPIM_MOBILE_UI
   QHBoxLayout *filterBarLayout = new QHBoxLayout;
+  mainLayout->addLayout(filterBarLayout);
 
+#ifndef KDEPIM_MOBILE_UI
   filterBarLayout->addWidget( new QLabel( i18n("Search:") ) );
+#endif
 
-  KLineEdit *lineEdit = new KLineEdit( mainWidget );
-  connect( lineEdit, SIGNAL(textChanged(QString)),
+  m_lineEdit = new KLineEdit( mainWidget );
+  m_lineEdit->setClearButtonShown( true );
+  connect( m_lineEdit, SIGNAL(textChanged(QString)),
            m_filter, SLOT(setSearchPattern(QString)) );
-  filterBarLayout->addWidget( lineEdit );
+  filterBarLayout->addWidget( m_lineEdit );
 
+#ifndef KDEPIM_MOBILE_UI
   QCheckBox *checkBox = new QCheckBox( i18n("Subscribed only"), mainWidget );
   connect( checkBox, SIGNAL(stateChanged(int)),
            m_filter, SLOT(setIncludeCheckedOnly(int)) );
   filterBarLayout->addWidget( checkBox );
-
-  mainLayout->addLayout(filterBarLayout);
 
   QTreeView *treeView = new QTreeView( mainWidget );
   treeView->header()->hide();
@@ -109,6 +113,10 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent )
   treeView->setModel( m_filter );
   mainLayout->addWidget( treeView );
 #else
+  m_lineEdit->hide();
+  connect( m_lineEdit, SIGNAL(textChanged(QString)),
+           this, SLOT(onMobileLineEditChanged(QString)) );
+
   QListView *listView = new QListView( mainWidget );
 
   KDescendantsProxyModel *flatModel = new KDescendantsProxyModel( listView );
@@ -119,10 +127,14 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent )
   CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel( listView );
   checkableModel->setSourceModel( flatModel );
 
-  listView->setModel( checkableModel );
-  mainLayout->addWidget( listView );
-#endif
+  m_filter->setSourceModel( checkableModel );
 
+  listView->setModel( m_filter );
+  mainLayout->addWidget( listView );
+
+  // We want to get all the keyboard input all the time
+  grabKeyboard();
+#endif
 
   connect( m_model, SIGNAL(itemChanged(QStandardItem*)),
            this, SLOT(onItemChanged(QStandardItem*)) );
@@ -349,6 +361,37 @@ bool SubscriptionFilterProxyModel::acceptRow(int sourceRow, const QModelIndex &s
   } else {
     return true;
   }
+}
+
+void SubscriptionDialog::onMobileLineEditChanged( const QString &text )
+{
+    if ( !text.isEmpty() && !m_lineEdit->isVisible() ) {
+      m_lineEdit->show();
+      m_lineEdit->setFocus();
+      m_lineEdit->grabKeyboard(); // Now the line edit runs the show
+    } else if ( text.isEmpty() && m_lineEdit->isVisible() ) {
+      m_lineEdit->hide();
+      grabKeyboard(); // Line edit gone, so let's get all the events for us again
+    }
+}
+
+void SubscriptionDialog::keyPressEvent( QKeyEvent *event )
+{
+#ifndef KDEPIM_MOBILE_UI
+  KDialog::keyPressEvent( event );
+#else
+  static bool isSendingEvent = false;
+
+  if ( !isSendingEvent
+    && !event->text().isEmpty()
+    && !m_lineEdit->isVisible() ) {
+    isSendingEvent = true;
+    QCoreApplication::sendEvent( m_lineEdit, event );
+    isSendingEvent = false;
+  } else {
+    KDialog::keyPressEvent( event );
+  }
+#endif
 }
 
 #include "subscriptiondialog.moc"

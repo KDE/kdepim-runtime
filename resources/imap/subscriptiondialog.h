@@ -29,10 +29,12 @@
 
 #include <QtCore/QMap>
 
+class QKeyEvent;
 class QStandardItemModel;
 class QStandardItem;
 
 class KDescendantsProxyModel;
+class KLineEdit;
 
 class ImapAccount;
 
@@ -80,6 +82,10 @@ private slots:
                                       const QList< QList<QByteArray> > &flags );
   void onReloadDone( KJob *job );
   void onItemChanged( QStandardItem *item );
+  void onMobileLineEditChanged( const QString &text );
+
+protected:
+  /* reimp */ void keyPressEvent( QKeyEvent *event );
 
 protected slots:
   void slotButtonClicked( int button );
@@ -90,6 +96,7 @@ private:
   KIMAP::Session *m_session;
   bool m_subscriptionChanged;
 
+  KLineEdit *m_lineEdit;
   SubscriptionFilterProxyModel *m_filter;
   KDescendantsProxyModel *m_flatModel;
   QStandardItemModel *m_model;
