@@ -289,7 +289,7 @@ void MaildirResource::retrieveCollections()
   }
   CachePolicy cachePolicy;
   cachePolicy.setInheritFromParent( false );
-  cachePolicy.setLocalParts( QStringList() << MessagePart::Header );
+  cachePolicy.setLocalParts( QStringList() << MessagePart::Envelope << MessagePart::Header );
   cachePolicy.setSyncOnDemand( true );
   cachePolicy.setCacheTimeout( 1 );
 
