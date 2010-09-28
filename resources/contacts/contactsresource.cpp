@@ -254,7 +254,7 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
     newItem.setRemoteId( group.id() + ".ctg" );
 
   } else {
-    Q_ASSERT( false );
+    kWarning() << "got item without (usable) payload, ignoring it";
   }
 
   changeCommitted( newItem );
