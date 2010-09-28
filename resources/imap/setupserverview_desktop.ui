@@ -128,9 +128,6 @@
               <property name="prefix">
                <string/>
               </property>
-              <property name="specialValueText">
-               <string extracomment="no interval mail check">Never</string>
-              </property>
              </widget>
             </item>
            </layout>
