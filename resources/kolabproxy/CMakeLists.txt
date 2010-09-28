@@ -26,6 +26,8 @@ set( kolabproxyresource_shared_SRCS
   journalhandler.cpp
   notehandler.cpp
   note.cpp
+  setupdefaultfoldersjob.cpp
+  kolabdefs.cpp
 )
 
 set( kolabproxyresource_SRCS

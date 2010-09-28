@@ -28,11 +28,11 @@
 #include <akonadi/collectioncreatejob.h>
 #include <akonadi/entitydisplayattribute.h>
 #include "collectionannotationsattribute.h"
+#include "setupdefaultfoldersjob.h"
 
 #define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
 
 #define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
-
 
 SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
   :KDialog(),
@@ -105,6 +105,7 @@ void SetupKolab::slotCreateDefaultKolabCollections()
 {
   const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
   if ( instanceSelected.isValid() ) {
+    new SetupDefaultFoldersJob( instanceSelected, this );
 #if 0
     Akonadi::Collection collection;
     collection.setName( "Calendar" );
