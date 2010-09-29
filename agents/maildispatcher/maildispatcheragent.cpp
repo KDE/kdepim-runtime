@@ -33,6 +33,9 @@
 #include <KDebug>
 #include <KLocalizedString>
 #include <KWindowSystem>
+#include <KIcon>
+#include <KNotification>
+#include <KIconLoader>
 
 #include <Akonadi/ItemFetchScope>
 #include <KMime/Message>
@@ -136,6 +139,13 @@ void MailDispatcherAgent::Private::dispatch()
         sentAnything = false;
         emit q->percent( 100 );
         emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
+
+        const QPixmap pix = KIcon("mail-folder-outbox").pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+        KNotification *notify = new KNotification("emailsent");
+        notify->setComponentData( q->componentData() );
+        notify->setPixmap( pix );
+        notify->setText( i18nc("Notification when the email was sent", "E-mail successfully sent" ) );
+        notify->sendEvent();
       } else {
         // Empty queue.
         emit q->status( AgentBase::Idle, i18n( "No items in queue." ) );

@@ -1,0 +1,8 @@
+[Global]
+IconName=mail-folder-outbox
+Comment=KDE e-mail client
+Name=KDE Mail
+
+[Event/emailsent]
+Name=E-mail successfully sent
+Action=Popup

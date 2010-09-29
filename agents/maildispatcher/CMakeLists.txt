@@ -30,3 +30,4 @@ target_link_libraries(akonadi_maildispatcher_agent ${KDEPIMLIBS_AKONADI_LIBS} ${
 
 install(TARGETS akonadi_maildispatcher_agent ${INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES maildispatcheragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_maildispatcher_agent" )
