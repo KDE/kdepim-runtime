@@ -70,7 +70,10 @@ int main( int argc, char **argv )
   args->clear();
   Dialog dlg;
   dlg.show();
+
+#ifndef Q_OS_WINCE
   dlg.resize(300,350);
+#endif
 
   return app.exec();
 }
