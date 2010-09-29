@@ -30,6 +30,8 @@
 #ifdef Q_OS_WINCE
 #include <QtPlugin>
 
+#include <QLayout>
+
 Q_IMPORT_PLUGIN(krossqtsplugin)
 #endif
 
@@ -73,6 +75,8 @@ int main( int argc, char **argv )
 
 #ifndef Q_OS_WINCE
   dlg.resize(300,350);
+#else
+  dlg.layout()->setSizeConstraint(QLayout::SetNoConstraint);
 #endif
 
   return app.exec();
