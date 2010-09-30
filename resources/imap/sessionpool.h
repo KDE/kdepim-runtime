@@ -54,6 +54,11 @@ public:
     NoAvailableSessionError,
   };
 
+  enum SessionTermination {
+    LogoutSession,
+    CloseSession
+  };
+
   explicit SessionPool( int maxPoolSize, QObject *parent = 0 );
   ~SessionPool();
 
@@ -65,7 +70,7 @@ public:
 
   bool isConnected() const;
   bool connect( ImapAccount *account );
-  void disconnect();
+  void disconnect( SessionTermination termination = LogoutSession );
 
   qint64 requestSession();
   void releaseSession( KIMAP::Session *session );
@@ -93,7 +98,7 @@ private slots:
   void onConnectionLost();
 
 private:
-  void killSession( KIMAP::Session *session );
+  void killSession( KIMAP::Session *session, SessionTermination termination );
   void declareSessionReady( KIMAP::Session *session );
   void cancelSessionCreation( KIMAP::Session *session, int errorCode, const QString &errorString );
 

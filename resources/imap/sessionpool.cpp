@@ -108,14 +108,14 @@ bool SessionPool::connect( ImapAccount *account )
   return true;
 }
 
-void SessionPool::disconnect()
+void SessionPool::disconnect( SessionTermination termination )
 {
   if ( !m_account ) {
     return;
   }
 
   foreach ( KIMAP::Session *s, m_idlePool+m_reservedPool ) {
-    killSession( s );
+    killSession( s, termination );
   }
   m_idlePool.clear();
   m_reservedPool.clear();
@@ -171,15 +171,20 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces() const
   return m_namespaces;
 }
 
-void SessionPool::killSession( KIMAP::Session *session )
+void SessionPool::killSession( KIMAP::Session *session, SessionTermination termination )
 {
   QObject::disconnect( session, SIGNAL(connectionLost()),
                        this, SLOT(onConnectionLost()) );
 
-  KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( session );
-  QObject::connect( logout, SIGNAL( result( KJob* ) ),
-                    session, SLOT( deleteLater() ) );
-  logout->start();
+  if ( termination==LogoutSession ) {
+    KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( session );
+    QObject::connect( logout, SIGNAL( result( KJob* ) ),
+                      session, SLOT( deleteLater() ) );
+    logout->start();
+  } else {
+    session->close();
+    session->deleteLater();
+  }
 }
 
 void SessionPool::declareSessionReady( KIMAP::Session *session )
@@ -212,9 +217,9 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
                             m_account->server(),
                             errorMessage ) );
     disconnect();
-    killSession( session );
+    killSession( session, LogoutSession );
   } else {
-    killSession( session );
+    killSession( session, LogoutSession );
     emit sessionRequestDone( m_pendingRequests.takeFirst(), 0, errorCode, errorMessage );
     if ( !m_pendingRequests.isEmpty() ) {
       QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );

@@ -399,18 +399,42 @@ private slots:
     server.quit();
   }
 
+  void shouldNotifyOnDisconnect_data()
+  {
+    QTest::addColumn< QList<QByteArray> >("scenario");
+    QTest::addColumn<int>("termination");
+
+    QList<QByteArray> scenario;
+
+    scenario.clear();
+    scenario << FakeServer::greeting()
+             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "S: A000001 OK User Logged in"
+             << "C: A000002 CAPABILITY"
+             << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+             << "S: A000002 OK Completed"
+             << "C: A000003 LOGOUT";
+
+    QTest::newRow("logout session") << scenario << (int)SessionPool::LogoutSession;
+
+    scenario.clear();
+    scenario << FakeServer::greeting()
+             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "S: A000001 OK User Logged in"
+             << "C: A000002 CAPABILITY"
+             << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+             << "S: A000002 OK Completed";
+
+    QTest::newRow("close session") << scenario << (int)SessionPool::CloseSession;
+  }
+
   void shouldNotifyOnDisconnect()
   {
+    QFETCH( QList<QByteArray>, scenario );
+    QFETCH( int, termination );
+
     FakeServer server;
-    server.addScenario( QList<QByteArray>()
-                        << FakeServer::greeting()
-                        << "C: A000001 LOGIN test@kdab.com foobar"
-                        << "S: A000001 OK User Logged in"
-                        << "C: A000002 CAPABILITY"
-                        << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-                        << "S: A000002 OK Completed"
-                        << "C: A000003 LOGOUT"
-    );
+    server.addScenario( scenario );
 
     server.startAndWait();
 
@@ -428,7 +452,7 @@ private slots:
     QTest::qWait( 100 );
 
     QCOMPARE( disconnectSpy.count(), 0 );
-    pool.disconnect();
+    pool.disconnect( (SessionPool::SessionTermination) termination );
     QTest::qWait( 100 );
     QCOMPARE( disconnectSpy.count(), 1 );
 
