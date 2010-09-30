@@ -88,7 +88,10 @@ Q_IMPORT_PLUGIN(akonadi_serializer_mail)
 using namespace Akonadi;
 
 ImapResource::ImapResource( const QString &id )
-  : ResourceBase( id ), m_pool( new SessionPool( 2, this ) ), m_idle( 0 ), m_fastSync( false )
+  : ResourceBase( id ),
+    m_pool( new SessionPool( 2, this ) ),
+    m_idle( 0 ),
+    m_fastSync( false )
 {
   if ( name() == identifier() ) {
     const QString agentType = AgentManager::self()->instance( identifier() ).type().identifier();
@@ -258,6 +261,7 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemState( this, item, parts );
   RetrieveItemTask *task = new RetrieveItemTask( state, this );
   task->start( m_pool );
+  queueTask( task );
   return true;
 }
 
@@ -266,6 +270,7 @@ void ImapResource::itemAdded( const Item &item, const Collection &collection )
   ResourceStateInterface::Ptr state = ::ResourceState::createAddItemState( this, item, collection );
   AddItemTask *task = new AddItemTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts )
@@ -273,6 +278,7 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
   ResourceStateInterface::Ptr state = ::ResourceState::createChangeItemState( this, item, parts );
   ChangeItemTask *task = new ChangeItemTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::itemRemoved( const Akonadi::Item &item )
@@ -280,6 +286,7 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
   ResourceStateInterface::Ptr state = ::ResourceState::createRemoveItemState( this, item );
   RemoveItemTask *task = new RemoveItemTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
@@ -290,6 +297,7 @@ void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collecti
   ResourceStateInterface::Ptr state = ::ResourceState::createMoveItemState( this, item, source, destination );
   MoveItemTask *task = new MoveItemTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 
@@ -301,6 +309,7 @@ void ImapResource::retrieveCollections()
   ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveCollectionsState( this );
   RetrieveCollectionsTask *task = new RetrieveCollectionsTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::retrieveCollectionAttributes( const Akonadi::Collection &collection )
@@ -310,6 +319,7 @@ void ImapResource::retrieveCollectionAttributes( const Akonadi::Collection &coll
   RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state, this );
   task->setSpontaneous( false );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
@@ -319,6 +329,7 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
 
   RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::retrieveItems( const Collection &col )
@@ -331,6 +342,7 @@ void ImapResource::retrieveItems( const Collection &col )
   RetrieveItemsTask *task = new RetrieveItemsTask( state, this );
   task->setFastSyncEnabled( m_fastSync );
   task->start( m_pool );
+  queueTask( task );
 }
 
 
@@ -342,6 +354,7 @@ void ImapResource::collectionAdded( const Collection & collection, const Collect
   ResourceStateInterface::Ptr state = ::ResourceState::createAddCollectionState( this, collection, parent );
   AddCollectionTask *task = new AddCollectionTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::collectionChanged( const Collection &collection, const QSet<QByteArray> &parts )
@@ -349,6 +362,7 @@ void ImapResource::collectionChanged( const Collection &collection, const QSet<Q
   ResourceStateInterface::Ptr state = ::ResourceState::createChangeCollectionState( this, collection, parts );
   ChangeCollectionTask *task = new ChangeCollectionTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::collectionRemoved( const Collection &collection )
@@ -356,6 +370,7 @@ void ImapResource::collectionRemoved( const Collection &collection )
   ResourceStateInterface::Ptr state = ::ResourceState::createRemoveCollectionState( this, collection );
   RemoveCollectionTask *task = new RemoveCollectionTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 void ImapResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
@@ -364,6 +379,7 @@ void ImapResource::collectionMoved( const Akonadi::Collection &collection, const
   ResourceStateInterface::Ptr state = ::ResourceState::createMoveCollectionState( this, collection, source, destination );
   MoveCollectionTask *task = new MoveCollectionTask( state, this );
   task->start( m_pool );
+  queueTask( task );
 }
 
 
@@ -529,6 +545,31 @@ void ImapResource::triggerCollectionExpunge( const QVariant &collectionVariant )
   ResourceStateInterface::Ptr state = ::ResourceState::createExpungeCollectionState( this, collection );
   ExpungeCollectionTask *task = new ExpungeCollectionTask( state, this );
   task->start( m_pool );
+  queueTask( task );
+}
+
+
+
+// ----------------------------------------------------------------------------------
+
+void ImapResource::abortActivity()
+{
+  if ( !m_taskList.isEmpty() ) {
+    m_pool->disconnect( SessionPool::CloseSession );
+    scheduleConnectionAttempt();
+  }
+}
+
+void ImapResource::queueTask( QObject *task )
+{
+  connect( task, SIGNAL(destroyed(QObject*)),
+           this, SLOT(taskDestroyed(QObject*)) );
+  m_taskList << task;
+}
+
+void ImapResource::taskDestroyed( QObject *task )
+{
+  m_taskList.removeAll( task );
 }
 
 

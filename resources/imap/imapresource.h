@@ -64,6 +64,7 @@ protected Q_SLOTS:
   void startIdleIfNeeded();
   void startIdle();
 
+  void abortActivity();
 
   void retrieveCollections();
   void retrieveCollectionAttributes( const Akonadi::Collection &collection );
@@ -107,14 +108,18 @@ private Q_SLOTS:
 
   void triggerCollectionExtraInfoJobs( const QVariant &collection );
 
+  void taskDestroyed( QObject *task );
+
 private:
   friend class ResourceState;
 
+  void queueTask( QObject *task );
   bool needsNetwork() const;
 
   friend class ImapIdleManager;
 
   SessionPool *m_pool;
+  QList<QObject*> m_taskList;
   ImapIdleManager *m_idle;
   bool m_fastSync;
 };
