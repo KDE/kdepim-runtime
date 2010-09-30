@@ -34,7 +34,9 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 )
 
 add_subdirectory( akonotes )
+if (NOT WINCE)
 add_subdirectory( birthdays )
+endif (NOT WINCE)
 add_subdirectory( contacts )
 macro_optional_add_subdirectory( dav )
 add_subdirectory( ical )
