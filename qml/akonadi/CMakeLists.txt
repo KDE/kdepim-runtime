@@ -11,6 +11,8 @@ install(FILES
   DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde/akonadi
 )
 
+if(NOT WINCE)
 add_subdirectory( tests )
+endif(NOT WINCE)
 
 endif (QT_QTDECLARATIVE_FOUND)
