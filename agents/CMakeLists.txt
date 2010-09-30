@@ -1,4 +1,5 @@
 add_subdirectory( maildispatcher )
+if(NOT WINCE)
 add_subdirectory( invitations )
 add_subdirectory( calendarsearch )
 
@@ -25,3 +26,4 @@ if( Nepomuk_FOUND AND STRIGI_FOUND )
     add_subdirectory( nepomuk_contact_feeder )
     add_subdirectory( nepomuk_calendar_feeder )
 endif( Nepomuk_FOUND AND STRIGI_FOUND )
+endif(NOT WINCE)
