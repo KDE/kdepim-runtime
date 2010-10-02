@@ -53,8 +53,10 @@ endif ()
 kde4_add_executable(accountwizard ${accountwizard_srcs} main.cpp)
 target_link_libraries(accountwizard ${accountwizard_libs})
 
+if(NOT WINCE)
 kde4_add_plugin(accountwizard_plugin ${accountwizard_srcs} inprocess-main.cpp)
 target_link_libraries(accountwizard_plugin ${accountwizard_libs})
+endif(NOT WINCE)
 
 if (WINCE)
   target_link_libraries(accountwizard ${KDE4_KROSSQTSPLUGIN_LIBS} ${KDE4_KROSSQTS_LIBS})
