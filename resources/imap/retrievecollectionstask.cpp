@@ -27,6 +27,8 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/kmime/messageparts.h>
 
+#include <kmime/kmime_message.h>
+
 #include <KDE/KDebug>
 #include <KDE/KLocale>
 
@@ -86,7 +88,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
                                                    const QList< QList<QByteArray> > &flags )
 {
   QStringList contentTypes;
-  contentTypes << "message/rfc822" << Akonadi::Collection::mimeType();
+  contentTypes << KMime::Message::mimeType() << Akonadi::Collection::mimeType();
 
   for ( int i=0; i<descriptors.size(); ++i ) {
     KIMAP::MailBoxDescriptor descriptor = descriptors[i];

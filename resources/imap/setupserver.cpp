@@ -42,6 +42,8 @@
 #include <mailtransport/transport.h>
 #include <mailtransport/servertest.h>
 
+#include <kmime/kmime_message.h>
+
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
@@ -147,7 +149,7 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   m_ui->imapServer->setValidator( &mValidator );
 
   m_ui->folderRequester->setMimeTypeFilter(
-    QStringList() << QLatin1String( "message/rfc822" ) );
+    QStringList() << KMime::Message::mimeType() );
   m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
   m_ui->folderRequester->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
   m_identityManager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );

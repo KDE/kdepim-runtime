@@ -100,7 +100,7 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
 
   KIMAP::MessagePtr message = messages[messages.keys().first()];
 
-  i.setMimeType( "message/rfc822" );
+  i.setMimeType( KMime::Message::mimeType() );
   i.setPayload( KMime::Message::Ptr( message ) );
 
   kDebug(5327) << "Has Payload: " << i.hasPayload();

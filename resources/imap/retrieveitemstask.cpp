@@ -317,7 +317,7 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
   foreach ( qint64 number, uids.keys() ) {
     Akonadi::Item i;
     i.setRemoteId( QString::number( uids[number] ) );
-    i.setMimeType( "message/rfc822" );
+    i.setMimeType( KMime::Message::mimeType() );
     i.setPayload( KMime::Message::Ptr( messages[number] ) );
     i.setSize( sizes[number] );
     const QList<QByteArray> akonadiFlags = toAkonadiFlags( flags[number] );
@@ -379,7 +379,7 @@ void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint
   foreach ( qint64 number, uids.keys() ) {
     Akonadi::Item i;
     i.setRemoteId( QString::number( uids[number] ) );
-    i.setMimeType( "message/rfc822" );
+    i.setMimeType( KMime::Message::mimeType() );
     i.setFlags( Akonadi::Item::Flags::fromList( toAkonadiFlags( flags[number] ) ) );
 
     //kDebug(5327) << "Flags: " << i.flags();
