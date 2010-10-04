@@ -571,7 +571,7 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
   if ( collection.resource() == identifier() ) // just to be sure...
     return;
 
-  kDebug() << "IMAPCOLLECTIONCHANGED";
+  //kDebug() << "IMAPCOLLECTIONCHANGED";
   if ( !m_monitoredCollections.contains(collection.id()) ) {
     // check if this is a Kolab folder at all, if yet something is wrong
     CollectionAnnotationsAttribute *annotationsAttribute =
