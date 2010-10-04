@@ -21,7 +21,7 @@
 
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
-#include <libmbox/mbox.h>
+#include <kmbox/mbox.h>
 
 #include "deleteditemsattribute.h"
 
@@ -103,7 +103,7 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
   DeletedItemsAttribute *attr
     = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
 
-  MBox mbox;
+  KMBox::MBox mbox;
   // TODO: Set lock method.
   if ( !mbox.load( KUrl( mCollectionId ).toLocalFile() ) ) {
     ui.messageLabel->setText( i18n( "Failed to load the mbox file" ) );

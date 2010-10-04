@@ -24,6 +24,7 @@
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>
 #include <QtDBus/QDBusConnection>
@@ -31,7 +32,6 @@
 #include "compactpage.h"
 #include "deleteditemsattribute.h"
 #include "lockmethodpage.h"
-#include "mbox.h"
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
@@ -93,7 +93,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     return;
   }
 
-  QList<MsgEntryInfo> entryList;
+  QList<KMBox::MsgEntryInfo> entryList;
   if ( col.hasAttribute<DeletedItemsAttribute>() ) {
     DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
     entryList = mMBox->entryList( attr->deletedItemOffsets() );
@@ -108,7 +108,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   QString colId = QString::number( col.id() );
   QString colRid = col.remoteId();
   double count = 1;
-  foreach ( const MsgEntryInfo &entry, entryList ) {
+  foreach ( const KMBox::MsgEntryInfo &entry, entryList ) {
     // TODO: Use cache policy to see what actually has to been set as payload.
     //       Currently most views need a minimal amount of information so the
     //       Items get Envelopes as payload.
@@ -120,7 +120,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.offset ) );
     item.setMimeType( "message/rfc822" );
     item.setSize( entry.entrySize );
-    item.setPayload( MessagePtr( mail ) );
+    item.setPayload( KMBox::MessagePtr( mail ) );
 
     emit percent(count++ / entryList.size());
     items << item;
@@ -149,7 +149,7 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   }
 
   Item i( item );
-  i.setPayload( MessagePtr( mail ) );
+  i.setPayload( KMBox::MessagePtr( mail ) );
   itemRetrieved( i );
   return true;
 }
@@ -169,12 +169,12 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   }
 
   // we can only deal with mail
-  if ( !item.hasPayload<MessagePtr>() ) {
+  if ( !item.hasPayload<KMBox::MessagePtr>() ) {
     cancelTask( i18n( "Only email messages can be added to the MBox resource." ) );
     return;
   }
 
-  qint64 offset = mMBox->appendEntry( item.payload<MessagePtr>() );
+  qint64 offset = mMBox->appendEntry( item.payload<KMBox::MessagePtr>() );
   if ( offset == -1 ) {
     cancelTask( i18n( "Mail message not added to the MBox." ) );
     return;
@@ -260,18 +260,18 @@ void MboxResource::handleHashChange()
 bool MboxResource::readFromFile( const QString &fileName )
 {
   delete mMBox;
-  mMBox = new MBox();
+  mMBox = new KMBox::MBox();
 
   switch ( Settings::self()->lockfileMethod() ) {
     case Settings::procmail:
-      mMBox->setLockType( MBox::ProcmailLockfile );
+      mMBox->setLockType( KMBox::MBox::ProcmailLockfile );
       mMBox->setLockFile( Settings::self()->lockfile() );
       break;
     case Settings::mutt_dotlock:
-      mMBox->setLockType( MBox::MuttDotlock );
+      mMBox->setLockType( KMBox::MBox::MuttDotlock );
       break;
     case Settings::mutt_dotlock_privileged:
-      mMBox->setLockType( MBox::MuttDotlockPrivileged );
+      mMBox->setLockType( KMBox::MBox::MuttDotlockPrivileged );
       break;
   }
 
