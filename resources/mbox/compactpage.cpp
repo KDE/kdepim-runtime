@@ -111,7 +111,7 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
     ui.messageLabel->setText( i18np( "(Deleting 1 message)",
       "(Deleting %1 messages)", attr->offsetCount() ) );
     // TODO: implement and connect to messageProcessed signal.
-    if ( mbox.purge( attr->deletedItemOffsets() ) ) {
+    if ( mbox.purge( attr->deletedItemEntries() ) ) {
       mboxCollection.removeAttribute<DeletedItemsAttribute>();
       CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
       connect( modifyJob, SIGNAL( result( KJob * ) ),

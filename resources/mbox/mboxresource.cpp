@@ -39,21 +39,21 @@ using namespace Akonadi;
 
 static Entity::Id collectionId( const QString &remoteItemId )
 {
-  // [CollectionId]:[RemoteCollectionId]:[Offset]
+  // [CollectionId]::[RemoteCollectionId]::[Offset]
   Q_ASSERT( remoteItemId.split( "::" ).size() == 3 );
   return remoteItemId.split( "::" ).first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
-  // [CollectionId]:[RemoteCollectionId]:[Offset]
+  // [CollectionId]::[RemoteCollectionId]::[Offset]
   Q_ASSERT(remoteItemId.split( "::" ).size() == 3);
   return remoteItemId.split( "::" ).at(1);
 }
 
 static quint64 itemOffset( const QString &remoteItemId )
 {
-  // [CollectionId]:[RemoteCollectionId]:[Offset]
+  // [CollectionId]::[RemoteCollectionId]::[Offset]
   Q_ASSERT( remoteItemId.split( "::" ).size() == 3 );
   return remoteItemId.split( "::" ).last().toULongLong();
 }
@@ -93,12 +93,12 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     return;
   }
 
-  QList<KMBox::MsgEntryInfo> entryList;
+  KMBox::MBoxEntry::List entryList;
   if ( col.hasAttribute<DeletedItemsAttribute>() ) {
     DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
-    entryList = mMBox->entryList( attr->deletedItemOffsets() );
+    entryList = mMBox->entries( attr->deletedItemEntries() );
   } else { // No deleted items (yet)
-    entryList = mMBox->entryList();
+    entryList = mMBox->entries();
   }
 
   mMBox->lock(); // Lock the file so that it doesn't get locked for every
@@ -108,18 +108,18 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   QString colId = QString::number( col.id() );
   QString colRid = col.remoteId();
   double count = 1;
-  foreach ( const KMBox::MsgEntryInfo &entry, entryList ) {
+  foreach ( const KMBox::MBoxEntry &entry, entryList ) {
     // TODO: Use cache policy to see what actually has to been set as payload.
     //       Currently most views need a minimal amount of information so the
     //       Items get Envelopes as payload.
     KMime::Message *mail = new KMime::Message();
-    mail->setHead( KMime::CRLFtoLF( mMBox->readEntryHeaders( entry.offset ) ) );
+    mail->setHead( KMime::CRLFtoLF( mMBox->readMessageHeaders( entry ) ) );
     mail->parse();
 
     Item item;
-    item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.offset ) );
+    item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.messageOffset() ) );
     item.setMimeType( "message/rfc822" );
-    item.setSize( entry.entrySize );
+    item.setSize( entry.messageSize() );
     item.setPayload( KMBox::MessagePtr( mail ) );
 
     emit percent(count++ / entryList.size());
@@ -141,8 +141,8 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   }
 
   QString rid = item.remoteId();
-  quint64 offset = itemOffset( rid );
-  KMime::Message *mail = mMBox->readEntry( offset );
+  const quint64 offset = itemOffset( rid );
+  KMime::Message *mail = mMBox->readMessage( KMBox::MBoxEntry( offset ) );
   if ( !mail ) {
     emit error( i18n( "Failed to read message with uid '%1'.", rid ) );
     return false;
@@ -174,15 +174,15 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
     return;
   }
 
-  qint64 offset = mMBox->appendEntry( item.payload<KMBox::MessagePtr>() );
-  if ( offset == -1 ) {
+  const KMBox::MBoxEntry entry = mMBox->appendMessage( item.payload<KMBox::MessagePtr>() );
+  if ( !entry.isValid() ) {
     cancelTask( i18n( "Mail message not added to the MBox." ) );
     return;
   }
 
   scheduleWrite();
   const QString rid = QString::number( collection.id() ) + "::"
-                      + collection.remoteId() + "::" + QString::number( offset );
+                      + collection.remoteId() + "::" + QString::number( entry.messageOffset() );
 
   Item i( item );
   i.setRemoteId( rid );
@@ -232,7 +232,7 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
   if ( Settings::self()->compactFrequency() == Settings::per_x_messages
        && Settings::self()->messageCount() == static_cast<uint>( attr->offsetCount() + 1 ) ) {
     kDebug() << "Compacting mbox file";
-    mMBox->purge( attr->deletedItemOffsets() << itemOffset( item.remoteId() ) );
+    mMBox->purge( attr->deletedItemEntries() << KMBox::MBoxEntry( itemOffset( item.remoteId() ) ) );
     scheduleWrite();
     mboxCollection.removeAttribute<DeletedItemsAttribute>();
   } else {

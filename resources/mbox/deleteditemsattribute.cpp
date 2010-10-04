@@ -51,6 +51,16 @@ QSet<quint64> DeletedItemsAttribute::deletedItemOffsets() const
   return mDeletedItemOffsets;
 }
 
+KMBox::MBoxEntry::List DeletedItemsAttribute::deletedItemEntries() const
+{
+  KMBox::MBoxEntry::List entries;
+
+  foreach ( quint64 offset, mDeletedItemOffsets )
+    entries << KMBox::MBoxEntry( offset );
+
+  return entries;
+}
+
 void DeletedItemsAttribute::deserialize( const QByteArray &data )
 {
   QList<QByteArray> offsets = data.split(',');

@@ -21,6 +21,8 @@
 #define DELETEDITEMSATTRIBUTE_H
 
 #include <akonadi/attribute.h>
+#include <kmbox/mboxentry.h>
+
 #include <QtCore/QSet>
 
 /**
@@ -41,6 +43,7 @@ class DeletedItemsAttribute : public Akonadi::Attribute
     virtual Attribute *clone() const;
 
     QSet<quint64> deletedItemOffsets() const;
+    KMBox::MBoxEntry::List deletedItemEntries() const;
 
     virtual void deserialize( const QByteArray &data );
 
