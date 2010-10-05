@@ -36,8 +36,8 @@
 #include "filestore/storecompactjob.h"
 
 #include "libmaildir/maildir.h"
-#include "libmbox/mbox.h"
 
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <akonadi/kmime/messageparts.h>
@@ -55,12 +55,13 @@
 
 using namespace Akonadi;
 using KPIM::Maildir;
+using namespace KMBox;
 
-static bool operator==( const MsgEntryInfo &a, const MsgEntryInfo &b )
+static bool fullEntryCompare( const KMBox::MBoxEntry &left, const KMBox::MBoxEntry &right )
 {
-  return a.offset == b.offset &&
-         a.separatorSize == b.separatorSize &&
-         a.entrySize == b.entrySize;
+  return ( left.messageOffset() == right.messageOffset() &&
+           left.separatorSize() == right.separatorSize() &&
+           left.messageSize() == right.messageSize() );
 }
 
 static bool indexFileForFolder( const QFileInfo &folderDirInfo, QFileInfo &indexFileInfo )
@@ -89,9 +90,10 @@ class MBoxContext
     {
       // in case of reload, check if anything changed, otherwise keep deleted entries
       if ( !mDeletedOffsets.isEmpty() && fileName == mMBox.fileName() ) {
-        const QList<MsgEntryInfo> currentEntryList = mMBox.entryList();
+        const KMBox::MBoxEntry::List currentEntryList = mMBox.entries();
         if ( mMBox.load( fileName ) ) {
-          if ( currentEntryList != mMBox.entryList() ) {
+          const KMBox::MBoxEntry::List newEntryList = mMBox.entries();
+          if ( !std::equal( currentEntryList.begin(), currentEntryList.end(), newEntryList.begin(), fullEntryCompare ) ) {
             mDeletedOffsets.clear();
           }
           return true;
@@ -104,11 +106,11 @@ class MBoxContext
       return mMBox.load( fileName );
     }
 
-    QList<MsgEntryInfo> entryList() const
+    KMBox::MBoxEntry::List entryList() const
     {
-      QList<MsgEntryInfo> result;
-      Q_FOREACH( const MsgEntryInfo &entry, mMBox.entryList() ) {
-        if ( !mDeletedOffsets.contains( entry.offset ) ) {
+      KMBox::MBoxEntry::List result;
+      Q_FOREACH( const KMBox::MBoxEntry &entry, mMBox.entries() ) {
+        if ( !mDeletedOffsets.contains( entry.messageOffset() ) ) {
           result << entry;
         }
       }
@@ -117,23 +119,23 @@ class MBoxContext
 
     QByteArray readRawEntry( quint64 offset )
     {
-      return mMBox.readRawEntry( offset );
+      return mMBox.readRawMessage( KMBox::MBoxEntry( offset ) );
     }
 
     QByteArray readEntryHeaders( quint64 offset )
     {
-      return mMBox.readEntryHeaders( offset );
+      return mMBox.readMessageHeaders( KMBox::MBoxEntry( offset ) );
     }
 
-    qint64 appendEntry( const MessagePtr &entry )
+    qint64 appendEntry( const KMime::Message::Ptr &entry )
     {
-      const qint64 result = mMBox.appendEntry( entry );
-      if ( result >= 0 && mHasIndexData ) {
-        mIndexData.insert( result, KMIndexDataPtr( new KMIndexData ) );
-        Q_ASSERT( mIndexData.value( result )->isEmpty() );
+      const KMBox::MBoxEntry result = mMBox.appendMessage( entry );
+      if ( result.isValid() && mHasIndexData ) {
+        mIndexData.insert( result.messageOffset(), KMIndexDataPtr( new KMIndexData ) );
+        Q_ASSERT( mIndexData.value( result.messageOffset() )->isEmpty() );
       }
 
-      return result;
+      return result.messageOffset();
     }
 
     void deleteEntry( quint64 offset )
@@ -147,8 +149,8 @@ class MBoxContext
         return false;
       }
 
-      Q_FOREACH( const MsgEntryInfo &entry, mMBox.entryList() ) {
-        if ( entry.offset == offset ) {
+      Q_FOREACH( const KMBox::MBoxEntry &entry, mMBox.entries() ) {
+        if ( entry.messageOffset() == offset ) {
           return true;
         }
       }
@@ -161,10 +163,15 @@ class MBoxContext
       return mMBox.save();
     }
 
-    int purge( QList<MsgInfo> &movedEntries )
+    int purge( QList<KMBox::MBoxEntry::Pair> &movedEntries )
     {
       const int deleteCount = mDeletedOffsets.count();
-      const bool result = mMBox.purge( mDeletedOffsets, &movedEntries );
+
+      KMBox::MBoxEntry::List deletedEntries;
+      Q_FOREACH( quint64 offset, mDeletedOffsets )
+        deletedEntries << KMBox::MBoxEntry( offset );
+
+      const bool result = mMBox.purge( deletedEntries, &movedEntries );
 
       if ( mHasIndexData ) {
         // keep copy of original for lookup
@@ -178,14 +185,14 @@ class MBoxContext
         // delete index data for changed entries
         // readded below in an extra loop to handled cases where a new index is equal to an
         // old index of a different entry
-        Q_FOREACH( const MsgInfo &entry, movedEntries ) {
-          mIndexData.remove( entry.first );
+        Q_FOREACH( const KMBox::MBoxEntry::Pair &entry, movedEntries ) {
+          mIndexData.remove( entry.first.messageOffset() );
         }
 
         // readd index data for changed entries at their new position
-        Q_FOREACH( const MsgInfo &entry, movedEntries ) {
-          const KMIndexDataPtr data = indexData.value( entry.first );
-          mIndexData.insert( entry.second, data );
+        Q_FOREACH( const KMBox::MBoxEntry::Pair &entry, movedEntries ) {
+          const KMIndexDataPtr data = indexData.value( entry.first.messageOffset() );
+          mIndexData.insert( entry.second.messageOffset(), data );
         }
       }
 
@@ -278,12 +285,12 @@ void MBoxContext::readIndexData()
 
   mHasIndexData = true;
 
-  const QList<MsgEntryInfo> entries = mMBox.entryList();
-  Q_FOREACH( const MsgEntryInfo &entry, entries ) {
-    const quint64 indexOffset = entry.offset + entry.separatorSize;
+  const KMBox::MBoxEntry::List entries = mMBox.entries();
+  Q_FOREACH( const KMBox::MBoxEntry &entry, entries ) {
+    const quint64 indexOffset = entry.messageOffset() + entry.separatorSize();
     const KMIndexDataPtr data = indexReader.dataByOffset( indexOffset );
     if ( data != 0 ) {
-      mIndexData.insert( entry.offset, data );
+      mIndexData.insert( entry.messageOffset(), data );
     }
   }
 
@@ -699,15 +706,15 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
   QHash<QString, QVariant> uidHash;
   QHash<QString, QVariant> tagListHash;
 
-  const QList<MsgEntryInfo> entryList = mbox->entryList();
-  Q_FOREACH( const MsgEntryInfo &entry, entryList ) {
+  const KMBox::MBoxEntry::List entryList = mbox->entryList();
+  Q_FOREACH( const KMBox::MBoxEntry &entry, entryList ) {
     Item item;
     item.setMimeType( KMime::Message::mimeType() );
-    item.setRemoteId( QString::number( entry.offset ) );
+    item.setRemoteId( QString::number( entry.messageOffset() ) );
     item.setParentCollection( collection );
 
     if ( mbox->hasIndexData() ) {
-      const KMIndexDataPtr indexData = mbox->indexData( entry.offset );
+      const KMIndexDataPtr indexData = mbox->indexData( entry.messageOffset() );
       if ( indexData != 0 && !indexData->isEmpty() ) {
         item.setFlags( indexData->status().statusFlags() );
 
@@ -2099,7 +2106,7 @@ bool MixedMaildirStore::Private::visit( FileStore::StoreCompactJob *job )
     // make the index invalid
     mbox->readIndexData();
 
-    QList<MsgInfo> movedEntries;
+    QList<KMBox::MBoxEntry::Pair> movedEntries;
     const int result = mbox->purge( movedEntries );
     if ( result > 0 ) {
       if ( movedEntries.count() > 0 ) {
@@ -2120,9 +2127,9 @@ bool MixedMaildirStore::Private::visit( FileStore::StoreCompactJob *job )
       }
 
       Item::List items;
-      Q_FOREACH( const MsgInfo &offsetPair, movedEntries ) {
-        const QString oldRemoteId( QString::number( offsetPair.first ) );
-        const QString newRemoteId( QString::number( offsetPair.second ) );
+      Q_FOREACH( const KMBox::MBoxEntry::Pair &offsetPair, movedEntries ) {
+        const QString oldRemoteId( QString::number( offsetPair.first.messageOffset() ) );
+        const QString newRemoteId( QString::number( offsetPair.second.messageOffset() ) );
 
         Item item;
         item.setRemoteId( oldRemoteId );

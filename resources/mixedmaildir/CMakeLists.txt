@@ -49,7 +49,7 @@ endif (Q_WS_MAC)
 target_link_libraries(akonadi_mixedmaildir_resource
   kmindexreader
   maildir
-  mbox
+  kmbox
   akonadi-filestore
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
