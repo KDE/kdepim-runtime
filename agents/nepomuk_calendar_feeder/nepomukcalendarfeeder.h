@@ -60,6 +60,8 @@ class NepomukCalendarFeeder : public NepomukFeederAgent<NepomukFast::Calendar>
       if ( !calInc->description().isEmpty() )
         incidence.addProperty( Vocabulary::NCAL::description(), Soprano::LiteralValue( calInc->description() ) );
 
+      incidence.addProperty( Vocabulary::NCAL::uid(), Soprano::LiteralValue( calInc->uid() ) );
+
       tagsFromCategories( incidence, calInc->categories() );
     }
 };
