@@ -120,7 +120,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.messageOffset() ) );
     item.setMimeType( "message/rfc822" );
     item.setSize( entry.messageSize() );
-    item.setPayload( KMBox::MessagePtr( mail ) );
+    item.setPayload( KMime::Message::Ptr( mail ) );
 
     emit percent(count++ / entryList.size());
     items << item;
@@ -149,7 +149,7 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   }
 
   Item i( item );
-  i.setPayload( KMBox::MessagePtr( mail ) );
+  i.setPayload( KMime::Message::Ptr( mail ) );
   itemRetrieved( i );
   return true;
 }
@@ -169,12 +169,12 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   }
 
   // we can only deal with mail
-  if ( !item.hasPayload<KMBox::MessagePtr>() ) {
+  if ( !item.hasPayload<KMime::Message::Ptr>() ) {
     cancelTask( i18n( "Only email messages can be added to the MBox resource." ) );
     return;
   }
 
-  const KMBox::MBoxEntry entry = mMBox->appendMessage( item.payload<KMBox::MessagePtr>() );
+  const KMBox::MBoxEntry entry = mMBox->appendMessage( item.payload<KMime::Message::Ptr>() );
   if ( !entry.isValid() ) {
     cancelTask( i18n( "Mail message not added to the MBox." ) );
     return;
