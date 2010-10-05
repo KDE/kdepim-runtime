@@ -22,7 +22,9 @@ install( FILES
   BreadcrumbNavigationView.qml
   SlideoutPanel.qml
   SlideoutPanelContainer.qml
+  Dialog.qml
   Flap.qml
+  Flap2.qml
   dividing-line.png
   dividing-line-horizontal.png
   list-line-top.png

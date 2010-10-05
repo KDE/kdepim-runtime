@@ -4,3 +4,5 @@ CollectionDelegate 4.5 CollectionDelegate.qml
 SlideoutPanel 4.5 SlideoutPanel.qml
 SlideoutPanelContainer 4.5 SlideoutPanelContainer.qml
 Flap 4.5 Flap.qml
+Flap2 4.5 Flap2.qml
+Dialog 4.5 Dialog.qml
