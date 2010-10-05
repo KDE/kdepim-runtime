@@ -62,6 +62,7 @@ void AddItemTask::doStart( KIMAP::Session *session )
   KIMAP::AppendJob *job = new KIMAP::AppendJob( session );
   job->setMailBox( mailBox );
   job->setContent( msg->encodedContent( true ) );
+  job->setFlags( fromAkonadiFlags( item().flags().toList() ) );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onAppendMessageDone( KJob* ) ) );
   job->start();
 }
