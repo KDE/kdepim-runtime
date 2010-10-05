@@ -28,8 +28,8 @@
 #include "filestore/storecompactjob.h"
 
 #include "libmaildir/maildir.h"
-#include "libmbox/mbox.h"
 
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
@@ -69,11 +69,11 @@ static Item::List itemsFromSpy( QSignalSpy *spy ) {
   return items;
 }
 
-static bool operator==( const MsgEntryInfo &a, const MsgEntryInfo &b )
+static bool fullEntryCompare( const KMBox::MBoxEntry &a, const KMBox::MBoxEntry &b )
 {
-  return a.offset == b.offset &&
-         a.separatorSize == b.separatorSize &&
-         a.entrySize == b.entrySize;
+  return a.messageOffset() == b.messageOffset() &&
+         a.separatorSize() == b.separatorSize() &&
+         a.messageSize() == b.messageSize();
 }
 
 class ItemDeleteTest : public QObject
@@ -186,9 +186,9 @@ void ItemDeleteTest::testMBox()
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
 
   QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
-  MBox mbox1;
+  KMBox::MBox mbox1;
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList1 = mbox1.entryList();
+  KMBox::MBoxEntry::List entryList1 = mbox1.entries();
   QCOMPARE( (int)entryList1.count(), 4 );
   int size1 = fileInfo1.size();
 
@@ -201,7 +201,7 @@ void ItemDeleteTest::testMBox()
 
   Item::List items;
   Collection::List collections;
-  QList<MsgEntryInfo> entryList;
+  KMBox::MBoxEntry::List entryList;
 
   QSignalSpy *collectionsSpy = 0;
   QSignalSpy *itemsSpy = 0;
@@ -218,7 +218,7 @@ void ItemDeleteTest::testMBox()
   Item item4;
   item4.setMimeType( KMime::Message::mimeType() );
   item4.setId( KRandom::random() );
-  item4.setRemoteId( QString::number( entryList1.value( 3 ).offset ) );
+  item4.setRemoteId( QString::number( entryList1.value( 3 ).messageOffset() ) );
   item4.setParentCollection( collection1 );
 
   job = mStore->deleteItem( item4 );
@@ -232,9 +232,9 @@ void ItemDeleteTest::testMBox()
   fileInfo1.refresh();
   QCOMPARE( (int) fileInfo1.size(), size1 );
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  entryList = mbox1.entryList();
+  entryList = mbox1.entries();
   QCOMPARE( entryList.count(), entryList1.count() );
-  QCOMPARE( entryList.value( 3 ).offset, entryList1.value( 3 ).offset );
+  QCOMPARE( entryList.value( 3 ).messageOffset(), entryList1.value( 3 ).messageOffset() );
 
   var = job->property( "compactStore" );
   QVERIFY( var.isValid() );
@@ -248,9 +248,9 @@ void ItemDeleteTest::testMBox()
 
   items = itemFetch->items();
   QCOMPARE( (int)items.count(), 3 );
-  QCOMPARE( items.value( 0 ).remoteId(), QString::number( entryList1.value( 0 ).offset ) );
-  QCOMPARE( items.value( 1 ).remoteId(), QString::number( entryList1.value( 1 ).offset ) );
-  QCOMPARE( items.value( 2 ).remoteId(), QString::number( entryList1.value( 2 ).offset ) );
+  QCOMPARE( items.value( 0 ).remoteId(), QString::number( entryList1.value( 0 ).messageOffset() ) );
+  QCOMPARE( items.value( 1 ).remoteId(), QString::number( entryList1.value( 1 ).messageOffset() ) );
+  QCOMPARE( items.value( 2 ).remoteId(), QString::number( entryList1.value( 2 ).messageOffset() ) );
 
   // test that the item is purged from the file on store compaction
   // last item purging does not change any others
@@ -274,16 +274,16 @@ void ItemDeleteTest::testMBox()
   QVERIFY( fileInfo1.size() < size1 );
   size1 = fileInfo1.size();
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  entryList = mbox1.entryList();
+  entryList = mbox1.entries();
   entryList1.pop_back();
-  QCOMPARE( entryList1, entryList );
+  QVERIFY( std::equal( entryList1.begin(), entryList1.end(), entryList.begin(), fullEntryCompare ) );
 
   // test deleting item somewhere between first and last
   // again, file stays untouched, message still accessible through MBox, but item gone
   Item item2;
   item2.setMimeType( KMime::Message::mimeType() );
   item2.setId( KRandom::random() );
-  item2.setRemoteId( QString::number( entryList1.value( 1 ).offset ) );
+  item2.setRemoteId( QString::number( entryList1.value( 1 ).messageOffset() ) );
   item2.setParentCollection( collection1 );
 
   job = mStore->deleteItem( item2 );
@@ -297,9 +297,9 @@ void ItemDeleteTest::testMBox()
   fileInfo1.refresh();
   QCOMPARE( (int) fileInfo1.size(), size1 );
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  entryList = mbox1.entryList();
+  entryList = mbox1.entries();
   QCOMPARE( entryList.count(), entryList1.count() );
-  QCOMPARE( entryList.value( 1 ).offset, entryList1.value( 1 ).offset );
+  QCOMPARE( entryList.value( 1 ).messageOffset(), entryList1.value( 1 ).messageOffset() );
 
   var = job->property( "compactStore" );
   QVERIFY( var.isValid() );
@@ -313,8 +313,8 @@ void ItemDeleteTest::testMBox()
 
   items = itemFetch->items();
   QCOMPARE( (int)items.count(), 2 );
-  QCOMPARE( items.value( 0 ).remoteId(), QString::number( entryList1.value( 0 ).offset ) );
-  QCOMPARE( items.value( 1 ).remoteId(), QString::number( entryList1.value( 2 ).offset ) );
+  QCOMPARE( items.value( 0 ).remoteId(), QString::number( entryList1.value( 0 ).messageOffset() ) );
+  QCOMPARE( items.value( 1 ).remoteId(), QString::number( entryList1.value( 2 ).messageOffset() ) );
 
   // test that the item is purged from the file on store compaction
   // non-last item purging changes all items after it
@@ -335,7 +335,7 @@ void ItemDeleteTest::testMBox()
   QCOMPARE( itemsFromSpy( itemsSpy ), items );
 
   Item item3;
-  item3.setRemoteId( QString::number( entryList1.value( 2 ).offset ) );
+  item3.setRemoteId( QString::number( entryList1.value( 2 ).messageOffset() ) );
 
   item = items.first();
   QCOMPARE( item3.remoteId(), item.remoteId() );
@@ -351,12 +351,12 @@ void ItemDeleteTest::testMBox()
   QVERIFY( fileInfo1.size() < size1 );
   size1 = fileInfo1.size();
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  entryList = mbox1.entryList();
-  QCOMPARE( QString::number( entryList.value( 1 ).offset ), newRemoteId );
+  entryList = mbox1.entries();
+  QCOMPARE( QString::number( entryList.value( 1 ).messageOffset() ), newRemoteId );
 
   entryList1.removeAt( 1 );
   QCOMPARE( entryList1.count(), entryList.count() );
-  QCOMPARE( QString::number( entryList1.value( 1 ).offset ), item3.remoteId() );
+  QCOMPARE( QString::number( entryList1.value( 1 ).messageOffset() ), item3.remoteId() );
 }
 
 void ItemDeleteTest::testCachePreservation()
@@ -374,9 +374,9 @@ void ItemDeleteTest::testCachePreservation()
   QCOMPARE( (int)entrySet1.count(), 4 );
 
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
-  MBox mbox2;
+  KMBox::MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  KMBox::MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   mStore->setPath( topDir.path() );
@@ -450,7 +450,7 @@ void ItemDeleteTest::testCachePreservation()
   Item item2;
   item2.setMimeType( KMime::Message::mimeType() );
   item2.setId( KRandom::random() );
-  item2.setRemoteId( QString::number( entryList2.value( 1 ).offset ) );
+  item2.setRemoteId( QString::number( entryList2.value( 1 ).messageOffset() ) );
   item2.setParentCollection( collection2 );
 
   job = mStore->deleteItem( item2 );
@@ -514,9 +514,9 @@ void ItemDeleteTest::testExpectedFailure()
   QCOMPARE( (int)entrySet1.count(), 4 );
 
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
-  MBox mbox2;
+  KMBox::MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  KMBox::MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   mStore->setPath( topDir.path() );
@@ -558,7 +558,7 @@ void ItemDeleteTest::testExpectedFailure()
   collection2.setParentCollection( mStore->topLevelCollection() );
 
   Item item2_1;
-  item2_1.setRemoteId( QString::number( entryList2.value( 0 ).offset ) );
+  item2_1.setRemoteId( QString::number( entryList2.value( 0 ).messageOffset() ) );
   item2_1.setParentCollection( collection2 );
 
   job = mStore->deleteItem( item2_1 );
@@ -587,7 +587,7 @@ void ItemDeleteTest::testExpectedFailure()
   QVERIFY( itemFetch->exec() );
 
   Item item4_1;
-  item4_1.setRemoteId( QString::number( entryList2.value( 3 ).offset ) );
+  item4_1.setRemoteId( QString::number( entryList2.value( 3 ).messageOffset() ) );
   item4_1.setParentCollection( collection2 );
 
   itemFetch = mStore->fetchItem( item4_1 );

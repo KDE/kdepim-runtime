@@ -26,8 +26,8 @@
 #include "filestore/itemfetchjob.h"
 
 #include "libmaildir/maildir.h"
-#include "libmbox/mbox.h"
 
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <akonadi/kmime/messageparts.h>
@@ -42,6 +42,7 @@
 #include <qtest_kde.h>
 
 using namespace Akonadi;
+using namespace KMBox;
 
 static Item::List itemsFromSpy( QSignalSpy *spy ) {
   Item::List items;
@@ -469,7 +470,7 @@ void ItemFetchTest::testListingMBox()
   QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
   MBox mbox1;
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList1 = mbox1.entryList();
+  MBoxEntry::List entryList1 = mbox1.entries();
   QCOMPARE( (int)entryList1.count(), 4 );
 
   QFileInfo indexFileInfo1 = indexFile( fileInfo1 );
@@ -478,25 +479,25 @@ void ItemFetchTest::testListingMBox()
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
   MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   QFileInfo fileInfo3( topDir.path(), QLatin1String( "collection3" ) );
   MBox mbox3;
   QVERIFY( mbox3.load( fileInfo3.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList3 = mbox3.entryList();
+  MBoxEntry::List entryList3 = mbox3.entries();
   QCOMPARE( (int)entryList3.count(), 4 );
 
   QFileInfo fileInfo4( topDir.path(), QLatin1String( "collection4" ) );
   MBox mbox4;
   QVERIFY( mbox4.load( fileInfo4.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList4 = mbox4.entryList();
+  MBoxEntry::List entryList4 = mbox4.entries();
   QCOMPARE( (int)entryList4.count(), 4 );
 
   QFileInfo fileInfo5( topDir.path(), QLatin1String( "collection5" ) );
   MBox mbox5;
   QVERIFY( mbox5.load( fileInfo5.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList5 = mbox5.entryList();
+  MBoxEntry::List entryList5 = mbox5.entries();
   QCOMPARE( (int)entryList5.count(), 4 );
 
   mStore->setPath( topDir.path() );
@@ -528,10 +529,10 @@ void ItemFetchTest::testListingMBox()
   QCOMPARE( (int)items.count(), 4 );
   QCOMPARE( itemsFromSpy( spy ), items );
 
-  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList1[ 0 ].offset ) );
-  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList1[ 1 ].offset ) );
-  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList1[ 2 ].offset ) );
-  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList1[ 3 ].offset ) );
+  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList1[ 0 ].messageOffset() ) );
+  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList1[ 1 ].messageOffset() ) );
+  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList1[ 2 ].messageOffset() ) );
+  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList1[ 3 ].messageOffset() ) );
 
   QCOMPARE( items[ 0 ].parentCollection(), collection1 );
   QCOMPARE( items[ 1 ].parentCollection(), collection1 );
@@ -583,10 +584,10 @@ void ItemFetchTest::testListingMBox()
   QCOMPARE( (int)items.count(), 4 );
   QCOMPARE( itemsFromSpy( spy ), items );
 
-  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList2[ 0 ].offset ) );
-  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList2[ 1 ].offset ) );
-  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList2[ 2 ].offset ) );
-  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList2[ 3 ].offset ) );
+  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList2[ 0 ].messageOffset() ) );
+  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList2[ 1 ].messageOffset() ) );
+  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList2[ 2 ].messageOffset() ) );
+  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList2[ 3 ].messageOffset() ) );
 
   QCOMPARE( items[ 0 ].parentCollection(), collection2 );
   QCOMPARE( items[ 1 ].parentCollection(), collection2 );
@@ -639,10 +640,10 @@ void ItemFetchTest::testListingMBox()
   QCOMPARE( (int)items.count(), 4 );
   QCOMPARE( itemsFromSpy( spy ), items );
 
-  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList3[ 0 ].offset ) );
-  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList3[ 1 ].offset ) );
-  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList3[ 2 ].offset ) );
-  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList3[ 3 ].offset ) );
+  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList3[ 0 ].messageOffset() ) );
+  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList3[ 1 ].messageOffset() ) );
+  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList3[ 2 ].messageOffset() ) );
+  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList3[ 3 ].messageOffset() ) );
 
   QCOMPARE( items[ 0 ].parentCollection(), collection3 );
   QCOMPARE( items[ 1 ].parentCollection(), collection3 );
@@ -682,10 +683,10 @@ void ItemFetchTest::testListingMBox()
   QCOMPARE( (int)items.count(), 4 );
   QCOMPARE( itemsFromSpy( spy ), items );
 
-  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList4[ 0 ].offset ) );
-  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList4[ 1 ].offset ) );
-  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList4[ 2 ].offset ) );
-  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList4[ 3 ].offset ) );
+  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList4[ 0 ].messageOffset() ) );
+  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList4[ 1 ].messageOffset() ) );
+  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList4[ 2 ].messageOffset() ) );
+  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList4[ 3 ].messageOffset() ) );
 
   QCOMPARE( items[ 0 ].parentCollection(), collection4 );
   QCOMPARE( items[ 1 ].parentCollection(), collection4 );
@@ -734,10 +735,10 @@ void ItemFetchTest::testListingMBox()
   QCOMPARE( (int)items.count(), 4 );
   QCOMPARE( itemsFromSpy( spy ), items );
 
-  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList5[ 0 ].offset ) );
-  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList5[ 1 ].offset ) );
-  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList5[ 2 ].offset ) );
-  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList5[ 3 ].offset ) );
+  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList5[ 0 ].messageOffset() ) );
+  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList5[ 1 ].messageOffset() ) );
+  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList5[ 2 ].messageOffset() ) );
+  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList5[ 3 ].messageOffset() ) );
 
   QCOMPARE( items[ 0 ].parentCollection(), collection5 );
   QCOMPARE( items[ 1 ].parentCollection(), collection5 );
@@ -779,10 +780,10 @@ void ItemFetchTest::testListingMBox()
   QCOMPARE( (int)items.count(), 5 );
   QCOMPARE( itemsFromSpy( spy ), items );
 
-  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList3[ 0 ].offset ) );
-  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList3[ 1 ].offset ) );
-  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList3[ 2 ].offset ) );
-  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList3[ 3 ].offset ) );
+  QCOMPARE( items[ 0 ].remoteId(), QString::number( entryList3[ 0 ].messageOffset() ) );
+  QCOMPARE( items[ 1 ].remoteId(), QString::number( entryList3[ 1 ].messageOffset() ) );
+  QCOMPARE( items[ 2 ].remoteId(), QString::number( entryList3[ 2 ].messageOffset() ) );
+  QCOMPARE( items[ 3 ].remoteId(), QString::number( entryList3[ 3 ].messageOffset() ) );
   QCOMPARE( items[ 4 ].remoteId(), item3_5.remoteId() );
 
   QCOMPARE( items[ 0 ].parentCollection(), collection3 );
@@ -940,11 +941,11 @@ void ItemFetchTest::testSingleItemFetchMBox()
   QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
   MBox mbox1;
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList1 = mbox1.entryList();
+  MBoxEntry::List entryList1 = mbox1.entries();
   QCOMPARE( (int)entryList1.count(), 4 );
 
   KRandomSequence randomSequence;
-  QList<MsgEntryInfo> randomList1 = entryList1;
+  MBoxEntry::List randomList1 = entryList1;
   randomSequence.randomize( randomList1 );
 
   mStore->setPath( topDir.path() );
@@ -961,10 +962,10 @@ void ItemFetchTest::testSingleItemFetchMBox()
   collection1.setRemoteId( QLatin1String( "collection1" ) );
   collection1.setParentCollection( mStore->topLevelCollection() );
 
-  Q_FOREACH( const MsgEntryInfo &entry, randomList1 ) {
+  Q_FOREACH( const MBoxEntry &entry, randomList1 ) {
     Item item1;
     item1.setId( KRandom::random() );
-    item1.setRemoteId( QString::number( entry.offset ) );
+    item1.setRemoteId( QString::number( entry.messageOffset() ) );
     item1.setParentCollection( collection1 );
 
     job = mStore->fetchItem( item1 );
@@ -994,10 +995,10 @@ void ItemFetchTest::testSingleItemFetchMBox()
 
   // test fetching from maildir, including body
   randomSequence.randomize( randomList1 );
-  Q_FOREACH( const MsgEntryInfo &entry, randomList1 ) {
+  Q_FOREACH( const MBoxEntry &entry, randomList1 ) {
     Item item1;
     item1.setId( KRandom::random() );
-    item1.setRemoteId( QString::number( entry.offset ) );
+    item1.setRemoteId( QString::number( entry.messageOffset() ) );
     item1.setParentCollection( collection1 );
 
     job = mStore->fetchItem( item1 );
@@ -1028,10 +1029,10 @@ void ItemFetchTest::testSingleItemFetchMBox()
 
   // test fetching from maildir, just specifying full payload
   randomSequence.randomize( randomList1 );
-  Q_FOREACH( const MsgEntryInfo &entry, randomList1 ) {
+  Q_FOREACH( const MBoxEntry &entry, randomList1 ) {
     Item item1;
     item1.setId( KRandom::random() );
-    item1.setRemoteId( QString::number( entry.offset ) );
+    item1.setRemoteId( QString::number( entry.messageOffset() ) );
     item1.setParentCollection( collection1 );
 
     job = mStore->fetchItem( item1 );

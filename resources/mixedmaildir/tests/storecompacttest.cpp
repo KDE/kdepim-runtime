@@ -26,7 +26,7 @@
 #include "filestore/itemdeletejob.h"
 #include "filestore/storecompactjob.h"
 
-#include "libmbox/mbox.h"
+#include <kmbox/mbox.h>
 
 #include <KRandom>
 #include <KTempDir>
@@ -36,6 +36,7 @@
 #include <qtest_kde.h>
 
 using namespace Akonadi;
+using namespace KMBox;
 
 static Collection::List collectionsFromSpy( QSignalSpy *spy ) {
   Collection::List collections;
@@ -65,11 +66,11 @@ static Item::List itemsFromSpy( QSignalSpy *spy ) {
   return items;
 }
 
-static bool operator==( const MsgEntryInfo &a, const MsgEntryInfo &b )
+static bool fullEntryCompare( const MBoxEntry &a, const MBoxEntry &b )
 {
-  return a.offset == b.offset &&
-         a.separatorSize == b.separatorSize &&
-         a.entrySize == b.entrySize;
+  return a.messageOffset() == b.messageOffset() &&
+         a.separatorSize() == b.separatorSize() &&
+         a.messageSize() == b.messageSize();
 }
 
 static quint64 changedOffset( const Item &item ) {
@@ -139,25 +140,25 @@ void StoreCompactTest::testCompact()
   QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
   MBox mbox1;
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList1 = mbox1.entryList();
+  MBoxEntry::List entryList1 = mbox1.entries();
   QCOMPARE( (int)entryList1.count(), 4 );
 
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
   MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   QFileInfo fileInfo3( topDir.path(), QLatin1String( "collection3" ) );
   MBox mbox3;
   QVERIFY( mbox3.load( fileInfo3.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList3 = mbox3.entryList();
+  MBoxEntry::List entryList3 = mbox3.entries();
   QCOMPARE( (int)entryList3.count(), 4 );
 
   QFileInfo fileInfo4( topDir.path(), QLatin1String( "collection4" ) );
   MBox mbox4;
   QVERIFY( mbox4.load( fileInfo4.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList4 = mbox4.entryList();
+  MBoxEntry::List entryList4 = mbox4.entries();
   QCOMPARE( (int)entryList4.count(), 4 );
 
   mStore->setPath( topDir.path() );
@@ -173,7 +174,7 @@ void StoreCompactTest::testCompact()
   QSignalSpy *collectionSpy = 0;
   QSignalSpy *itemSpy = 0;
 
-  QList<MsgEntryInfo> entryList;
+  MBoxEntry::List entryList;
   Collection collection;
   FileStore::EntityCompactChangeAttribute *attribute = 0;
 
@@ -187,7 +188,7 @@ void StoreCompactTest::testCompact()
   collection1.setParentCollection( mStore->topLevelCollection() );
 
   Item item1;
-  item1.setRemoteId( QString::number( entryList1.last().offset ) );
+  item1.setRemoteId( QString::number( entryList1.last().messageOffset() ) );
   item1.setParentCollection( collection1 );
 
   itemDelete = mStore->deleteItem( item1 );
@@ -212,9 +213,9 @@ void StoreCompactTest::testCompact()
   QCOMPARE( itemSpy->count(), 0 );
 
   QVERIFY( mbox1.load( mbox1.fileName() ) );
-  entryList = mbox1.entryList();
+  entryList = mbox1.entries();
   entryList1.pop_back();
-  QCOMPARE( entryList, entryList1 );
+  QVERIFY( std::equal( entryList.begin(), entryList.end(), entryList1.begin(), fullEntryCompare ) );
 
   var = job->property( "onDiskIndexInvalidated" );
   QVERIFY( var.isValid() );
@@ -231,7 +232,7 @@ void StoreCompactTest::testCompact()
   collection2.setParentCollection( mStore->topLevelCollection() );
 
   Item item2;
-  item2.setRemoteId( QString::number( entryList2.first().offset ) );
+  item2.setRemoteId( QString::number( entryList2.first().messageOffset() ) );
   item2.setParentCollection( collection2 );
 
   itemDelete = mStore->deleteItem( item2 );
@@ -265,11 +266,11 @@ void StoreCompactTest::testCompact()
   QCOMPARE( attribute->remoteRevision().toInt(), collection2.remoteRevision().toInt() + 1 );
 
   QVERIFY( mbox2.load( mbox2.fileName() ) );
-  entryList = mbox2.entryList();
+  entryList = mbox2.entries();
 
   entryList2.pop_front();
   for ( int i = 0; i < items.count(); ++i ) {
-    entryList2[ i ].offset = changedOffset( items[ i ] );
+    entryList2[ i ] = MBoxEntry( changedOffset( items[ i ] ) );
   }
   QCOMPARE( entryList, entryList2 );
 
@@ -299,7 +300,7 @@ void StoreCompactTest::testCompact()
   collection3.setParentCollection( mStore->topLevelCollection() );
 
   Item item3;
-  item3.setRemoteId( QString::number( entryList3.first().offset ) );
+  item3.setRemoteId( QString::number( entryList3.first().messageOffset() ) );
   item3.setParentCollection( collection3 );
 
   itemDelete = mStore->deleteItem( item3 );
@@ -312,7 +313,7 @@ void StoreCompactTest::testCompact()
   collection4.setParentCollection( mStore->topLevelCollection() );
 
   Item item4;
-  item4.setRemoteId( QString::number( entryList3.value( 1 ).offset ) );
+  item4.setRemoteId( QString::number( entryList3.value( 1 ).messageOffset() ) );
   item4.setParentCollection( collection4 );
 
   itemDelete = mStore->deleteItem( item4 );
@@ -346,11 +347,11 @@ void StoreCompactTest::testCompact()
   QCOMPARE( attribute->remoteRevision().toInt(), collection3.remoteRevision().toInt() + 1 );
 
   QVERIFY( mbox3.load( mbox3.fileName() ) );
-  entryList = mbox3.entryList();
+  entryList = mbox3.entries();
 
   entryList3.pop_front();
   for ( int i = 0; i < entryList3.count(); ++i ) {
-    entryList3[ i ].offset = changedOffset( items.first() );
+    entryList3[ i ] = MBoxEntry( changedOffset( items.first() ) );
     items.pop_front();
   }
   QCOMPARE( entryList, entryList3 );
@@ -362,11 +363,11 @@ void StoreCompactTest::testCompact()
   QCOMPARE( attribute->remoteRevision().toInt(), collection4.remoteRevision().toInt() + 1 );
 
   QVERIFY( mbox4.load( mbox4.fileName() ) );
-  entryList = mbox4.entryList();
+  entryList = mbox4.entries();
 
   entryList4.removeAt( 1 );
   for ( int i = 0; i < items.count(); ++i ) {
-    entryList4[ i + 1 ].offset = changedOffset( items[ i ] );
+    entryList4[ i + 1 ] = MBoxEntry( changedOffset( items[ i ] ) );
   }
   QCOMPARE( entryList, entryList4 );
 

@@ -27,8 +27,8 @@
 #include "filestore/storecompactjob.h"
 
 #include "libmaildir/maildir.h"
-#include "libmbox/mbox.h"
 
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
@@ -37,12 +37,13 @@
 #include <qtest_kde.h>
 
 using namespace Akonadi;
+using namespace KMBox;
 
-static bool operator==( const MsgEntryInfo &a, const MsgEntryInfo &b )
+static bool fullEntryCompare( const MBoxEntry &a, const MBoxEntry &b )
 {
-  return a.offset == b.offset &&
-         a.separatorSize == b.separatorSize &&
-         a.entrySize == b.entrySize;
+  return a.messageOffset() == b.messageOffset() &&
+         a.separatorSize() == b.separatorSize() &&
+         a.messageSize() == b.messageSize();
 }
 
 class ItemModifyTest : public QObject
@@ -102,12 +103,12 @@ void ItemModifyTest::testExpectedFail()
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
   MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   QSet<qint64> entrySet2;
-  Q_FOREACH( const MsgEntryInfo &entry, entryList2 ) {
-    entrySet2 << entry.offset;
+  Q_FOREACH( const MBoxEntry &entry, entryList2 ) {
+    entrySet2 << entry.messageOffset();
   }
 
   mStore->setPath( topDir.path() );
@@ -165,8 +166,8 @@ void ItemModifyTest::testExpectedFail()
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
 
   QVERIFY( mbox2.load( mbox2.fileName() ) );
-  QList<MsgEntryInfo> entryList = mbox2.entryList();
-  QCOMPARE( entryList, entryList2 );
+  MBoxEntry::List entryList = mbox2.entries();
+  QVERIFY( std::equal( entryList.begin(), entryList.end(), entryList2.begin(), fullEntryCompare ) );
 }
 
 void ItemModifyTest::testIgnorePayload()
@@ -185,7 +186,7 @@ void ItemModifyTest::testIgnorePayload()
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
   MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   mStore->setPath( topDir.path() );
@@ -226,7 +227,7 @@ void ItemModifyTest::testIgnorePayload()
   collection2.setRemoteId( QLatin1String( "collection2" ) );
   collection2.setParentCollection( mStore->topLevelCollection() );
 
-  const QByteArray data2 = mbox2.readRawEntry( 0 );
+  const QByteArray data2 = mbox2.readRawMessage( MBoxEntry( 0 ) );
 
   Item item2;
   item2.setMimeType( KMime::Message::mimeType() );
@@ -241,8 +242,8 @@ void ItemModifyTest::testIgnorePayload()
   QCOMPARE( job->error(), 0 );
 
   QVERIFY( mbox2.load( mbox2.fileName() ) );
-  QCOMPARE( mbox2.entryList(), entryList2 );
-  QCOMPARE( mbox2.readRawEntry( 0 ), data2 );
+  QCOMPARE( mbox2.entries(), entryList2 );
+  QCOMPARE( mbox2.readRawMessage( MBoxEntry( 0 ) ), data2 );
 }
 
 void ItemModifyTest::testModify()
@@ -261,7 +262,7 @@ void ItemModifyTest::testModify()
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
   MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   mStore->setPath( topDir.path() );
@@ -316,7 +317,7 @@ void ItemModifyTest::testModify()
   collection2.setRemoteId( QLatin1String( "collection2" ) );
   collection2.setParentCollection( mStore->topLevelCollection() );
 
-  const QByteArray data2 = mbox2.readRawEntry( 0 );
+  const QByteArray data2 = mbox2.readRawMessage( MBoxEntry( 0 ) );
 
   msgPtr->setContent( KMime::CRLFtoLF( data2 ) );
   msgPtr->subject()->from7BitString( "Modify Test" );
@@ -336,9 +337,9 @@ void ItemModifyTest::testModify()
   Item item = job->item();
 
   QVERIFY( mbox2.load( mbox2.fileName() ) );
-  QList<MsgEntryInfo> entryList = mbox2.entryList();
+  MBoxEntry::List entryList = mbox2.entries();
   QCOMPARE( (int)entryList.count(), 5 ); // mbox file not purged yet
-  QCOMPARE( entryList.last().offset, item.remoteId().toULongLong() );
+  QCOMPARE( entryList.last().messageOffset(), item.remoteId().toULongLong() );
 
   var = job->property( "compactStore" );
   QVERIFY( var.isValid() );
@@ -361,10 +362,10 @@ void ItemModifyTest::testModify()
   QVERIFY( storeCompact->exec() );
 
   QVERIFY( mbox2.load( mbox2.fileName() ) );
-  entryList = mbox2.entryList();
+  entryList = mbox2.entries();
   QCOMPARE( (int)entryList.count(), 4 );
 
-  QCOMPARE( mbox2.readRawEntry( entryList.last().offset ), msgPtr->encodedContent() );
+  QCOMPARE( mbox2.readRawMessage( entryList.last() ), msgPtr->encodedContent() );
 }
 
 QTEST_KDEMAIN( ItemModifyTest, NoGUI )

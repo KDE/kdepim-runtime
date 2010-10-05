@@ -26,8 +26,8 @@
 #include "filestore/itemfetchjob.h"
 
 #include "libmaildir/maildir.h"
-#include "libmbox/mbox.h"
 
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
@@ -143,9 +143,9 @@ void ItemCreateTest::testMBox()
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
 
   QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
-  MBox mbox1;
+  KMBox::MBox mbox1;
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  QCOMPARE( (int)mbox1.entryList().count(), 4 );
+  QCOMPARE( (int)mbox1.entries().count(), 4 );
   const int size1 = fileInfo1.size();
 
   // simulate empty mbox
@@ -194,9 +194,9 @@ void ItemCreateTest::testMBox()
   QVERIFY( fileInfo2.size() > 0 );
   const int size2 = fileInfo2.size();
 
-  MBox mbox2;
+  KMBox::MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QCOMPARE( (int)mbox2.entryList().count(), 1 );
+  QCOMPARE( (int)mbox2.entries().count(), 1 );
 
   Item item2;
   item2.setId( KRandom::random() );
@@ -218,7 +218,7 @@ void ItemCreateTest::testMBox()
   QVERIFY( fileInfo2.size() > 0 );
 
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QCOMPARE( (int)mbox2.entryList().count(), 2 );
+  QCOMPARE( (int)mbox2.entries().count(), 2 );
 
   // test adding to non-empty mbox
   Collection collection1;
@@ -241,7 +241,7 @@ void ItemCreateTest::testMBox()
   QVERIFY( fileInfo1.size() > size1 );
 
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  QCOMPARE( (int)mbox1.entryList().count(), 5 );
+  QCOMPARE( (int)mbox1.entries().count(), 5 );
 
   // check for index preservation
   var = job->property( "onDiskIndexInvalidated" );
@@ -285,7 +285,7 @@ void ItemCreateTest::testMBox()
   QVERIFY( fileInfo1.size() > (size1 + size2 ) );
 
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  QCOMPARE( (int)mbox1.entryList().count(), 6 );
+  QCOMPARE( (int)mbox1.entries().count(), 6 );
 
   // check for index preservation
   var = job->property( "onDiskIndexInvalidated" );

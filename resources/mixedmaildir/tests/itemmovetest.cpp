@@ -28,8 +28,8 @@
 #include "filestore/storecompactjob.h"
 
 #include "libmaildir/maildir.h"
-#include "libmbox/mbox.h"
 
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
@@ -40,12 +40,13 @@
 #include <qtest_kde.h>
 
 using namespace Akonadi;
+using namespace KMBox;
 
-static bool operator==( const MsgEntryInfo &a, const MsgEntryInfo &b )
+static bool fullEntryCompare( const MBoxEntry &a, const MBoxEntry &b )
 {
-  return a.offset == b.offset &&
-         a.separatorSize == b.separatorSize &&
-         a.entrySize == b.entrySize;
+  return a.messageOffset() == b.messageOffset() &&
+         a.separatorSize() == b.separatorSize() &&
+         a.messageSize() == b.messageSize();
 }
 
 static quint64 changedOffset( const Item &item ) {
@@ -118,12 +119,12 @@ void ItemMoveTest::testExpectedFail()
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
   MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   QSet<qint64> entrySet2;
-  Q_FOREACH( const MsgEntryInfo &entry, entryList2 ) {
-    entrySet2 << entry.offset;
+  Q_FOREACH( const MBoxEntry &entry, entryList2 ) {
+    entrySet2 << entry.messageOffset();
   }
 
   mStore->setPath( topDir.path() );
@@ -180,7 +181,8 @@ void ItemMoveTest::testExpectedFail()
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
 
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QCOMPARE( mbox2.entryList(), entryList2 );
+  MBoxEntry::List tmpEntryList = mbox2.entries();
+  QVERIFY( std::equal( tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare ) );
 
   // test failure of moving from maildir to top level collection
   job = mStore->moveItem( item1, mStore->topLevelCollection() );
@@ -195,7 +197,8 @@ void ItemMoveTest::testExpectedFail()
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
 
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QCOMPARE( mbox2.entryList(), entryList2 );
+  tmpEntryList = mbox2.entries();
+  QVERIFY( std::equal( tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare ) );
 
   // test failure of moving a non-existant maildir entry
   QString remoteId1;
@@ -211,7 +214,8 @@ void ItemMoveTest::testExpectedFail()
 
   QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QCOMPARE( mbox2.entryList(), entryList2 );
+  tmpEntryList = mbox2.entries();
+  QVERIFY( std::equal( tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare ) );
 
   // test failure of moving a non-existant mbox entry
   quint64 remoteId2;
@@ -227,7 +231,8 @@ void ItemMoveTest::testExpectedFail()
 
   QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QCOMPARE( mbox2.entryList(), entryList2 );
+  tmpEntryList = mbox2.entries();
+  QVERIFY( std::equal( tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare ) );
 }
 
 void ItemMoveTest::testMaildirItem()
@@ -247,7 +252,7 @@ void ItemMoveTest::testMaildirItem()
   QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
   MBox mbox2;
   QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList2 = mbox2.entryList();
+  MBoxEntry::List entryList2 = mbox2.entries();
   QCOMPARE( (int)entryList2.count(), 4 );
 
   KPIM::Maildir md3( topLevelMd.addSubFolder( QLatin1String( "collection3" ) ), false );
@@ -263,7 +268,7 @@ void ItemMoveTest::testMaildirItem()
   QVERIFY( fileInfo4.exists() );
   MBox mbox4;
   QVERIFY( mbox4.load( fileInfo4.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList4 = mbox4.entryList();
+  MBoxEntry::List entryList4 = mbox4.entries();
   QCOMPARE( (int)entryList4.count(), 0 );
 
   KPIM::Maildir md5 = topLevelMd.subFolder( QLatin1String( "collection5" ) );
@@ -279,7 +284,7 @@ void ItemMoveTest::testMaildirItem()
   QVariant var;
   Collection::List collections;
   Item movedItem;
-  QList<MsgEntryInfo> entryList;
+  MBoxEntry::List entryList;
 
   // test moving to an empty maildir
   Collection collection1;
@@ -369,10 +374,10 @@ void ItemMoveTest::testMaildirItem()
   QCOMPARE( movedItem.parentCollection(), collection4 );
 
   QVERIFY( mbox4.load( mbox4.fileName() ) );
-  entryList = mbox4.entryList();
+  entryList = mbox4.entries();
   QCOMPARE( (int)entryList.count(), 1 );
 
-  QCOMPARE( entryList.last().offset, movedItem.remoteId().toULongLong() );
+  QCOMPARE( entryList.last().messageOffset(), movedItem.remoteId().toULongLong() );
   entrySet1.remove( item1.remoteId() );
   QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
 
@@ -403,10 +408,10 @@ void ItemMoveTest::testMaildirItem()
   QCOMPARE( movedItem.parentCollection(), collection2 );
 
   QVERIFY( mbox2.load( mbox2.fileName() ) );
-  entryList = mbox2.entryList();
+  entryList = mbox2.entries();
   QCOMPARE( (int)entryList.count(), 5 );
 
-  QCOMPARE( entryList.last().offset, movedItem.remoteId().toULongLong() );
+  QCOMPARE( entryList.last().messageOffset(), movedItem.remoteId().toULongLong() );
   entrySet1.remove( item1.remoteId() );
   QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
 
@@ -431,7 +436,7 @@ void ItemMoveTest::testMBoxItem()
   QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
   MBox mbox1;
   QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList1 = mbox1.entryList();
+  MBoxEntry::List entryList1 = mbox1.entries();
   QCOMPARE( (int)entryList1.count(), 4 );
 
   KPIM::Maildir topLevelMd( topDir.path(), true );
@@ -453,13 +458,13 @@ void ItemMoveTest::testMBoxItem()
   QVERIFY( fileInfo4.exists() );
   MBox mbox4;
   QVERIFY( mbox4.load( fileInfo4.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList4 = mbox4.entryList();
+  MBoxEntry::List entryList4 = mbox4.entries();
   QCOMPARE( (int)entryList4.count(), 0 );
 
   QFileInfo fileInfo5( topDir.path(), QLatin1String( "collection5" ) );
   MBox mbox5;
   QVERIFY( mbox5.load( fileInfo5.absoluteFilePath() ) );
-  QList<MsgEntryInfo> entryList5 = mbox5.entryList();
+  MBoxEntry::List entryList5 = mbox5.entries();
   QCOMPARE( (int)entryList5.count(), 4 );
 
   mStore->setPath( topDir.path() );
@@ -472,7 +477,7 @@ void ItemMoveTest::testMBoxItem()
   QVariant var;
   Collection::List collections;
   Item movedItem;
-  QList<MsgEntryInfo> entryList;
+  MBoxEntry::List entryList;
   Item::List items;
 
   // test moving to an empty maildir
@@ -488,7 +493,7 @@ void ItemMoveTest::testMBoxItem()
 
   Item item1;
   item1.setId( KRandom::random() );
-  item1.setRemoteId( QString::number( entryList1.first().offset ) );
+  item1.setRemoteId( QString::number( entryList1.first().messageOffset() ) );
   item1.setParentCollection( collection1 );
 
   job = mStore->moveItem( item1, collection3 );
@@ -515,11 +520,11 @@ void ItemMoveTest::testMBoxItem()
   QCOMPARE( QSet<QString>::fromList( md3.entryList() ), entrySet3 );
 
   entryList1.removeAt( 0 );
-  entryList1[ 0 ].offset = changedOffset( items[ 0 ] );
-  entryList1[ 1 ].offset = changedOffset( items[ 1 ] );
-  entryList1[ 2 ].offset = changedOffset( items[ 2 ] );
+  entryList1[ 0 ] = MBoxEntry( changedOffset( items[ 0 ] ) );
+  entryList1[ 1 ] = MBoxEntry( changedOffset( items[ 1 ] ) );
+  entryList1[ 2 ] = MBoxEntry( changedOffset( items[ 2 ] ) );
   QVERIFY( mbox1.load( mbox1.fileName() ) );
-  QCOMPARE( mbox1.entryList(), entryList1 );
+  QCOMPARE( mbox1.entries(), entryList1 );
 
   // test moving to a non empty mbox
   Collection collection5;
@@ -557,14 +562,14 @@ void ItemMoveTest::testMBoxItem()
   QCOMPARE( (int)items.count(), 2 );
 
   QVERIFY( mbox5.load( mbox5.fileName() ) );
-  QCOMPARE( mbox5.entryList().count(), entryList5.count() + 1 );
-  QCOMPARE( mbox5.entryList().last().offset, movedItem.remoteId().toULongLong() );
+  QCOMPARE( mbox5.entries().count(), entryList5.count() + 1 );
+  QCOMPARE( mbox5.entries().last().messageOffset(), movedItem.remoteId().toULongLong() );
 
   entryList1.removeAt( 0 );
-  entryList1[ 0 ].offset = changedOffset( items[ 0 ] );
-  entryList1[ 1 ].offset = changedOffset( items[ 1 ] );
+  entryList1[ 0 ] = MBoxEntry( changedOffset( items[ 0 ] ) );
+  entryList1[ 1 ] = MBoxEntry( changedOffset( items[ 1 ] ) );
   QVERIFY( mbox1.load( mbox1.fileName() ) );
-  QCOMPARE( mbox1.entryList(), entryList1 );
+  QCOMPARE( mbox1.entries(), entryList1 );
 
   // test moving to an empty mbox
   Collection collection4;
@@ -582,10 +587,10 @@ void ItemMoveTest::testMBoxItem()
   QCOMPARE( movedItem.parentCollection(), collection4 );
 
   QVERIFY( mbox4.load( mbox4.fileName() ) );
-  entryList = mbox4.entryList();
+  entryList = mbox4.entries();
   QCOMPARE( (int)entryList.count(), 1 );
 
-  QCOMPARE( entryList.last().offset, movedItem.remoteId().toULongLong() );
+  QCOMPARE( entryList.last().messageOffset(), movedItem.remoteId().toULongLong() );
 
   var = job->property( "compactStore" );
   QVERIFY( var.isValid() );
@@ -607,13 +612,13 @@ void ItemMoveTest::testMBoxItem()
   items = compactStore->changedItems();
   QCOMPARE( (int)items.count(), 1 );
 
-  QCOMPARE( mbox4.entryList().count(), entryList4.count() + 1 );
-  QCOMPARE( mbox4.entryList().last().offset, movedItem.remoteId().toULongLong() );
+  QCOMPARE( mbox4.entries().count(), entryList4.count() + 1 );
+  QCOMPARE( mbox4.entries().last().messageOffset(), movedItem.remoteId().toULongLong() );
 
   entryList1.removeAt( 0 );
-  entryList1[ 0 ].offset = changedOffset( items[ 0 ] );
+  entryList1[ 0 ] = MBoxEntry( changedOffset( items[ 0 ] ) );
   QVERIFY( mbox1.load( mbox1.fileName() ) );
-  QCOMPARE( mbox1.entryList(), entryList1 );
+  QCOMPARE( mbox1.entries(), entryList1 );
 
   // test moving to a non empty maildir
   Collection collection2;
@@ -657,7 +662,8 @@ void ItemMoveTest::testMBoxItem()
 
   entryList1.removeAt( 0 );
   QVERIFY( mbox1.load( mbox1.fileName() ) );
-  QCOMPARE( mbox1.entryList(), entryList1 );
+  const MBoxEntry::List newEntryList = mbox1.entries();
+  QVERIFY( std::equal( newEntryList.begin(), newEntryList.end(), entryList1.begin(), fullEntryCompare ) );
 }
 
 QTEST_KDEMAIN( ItemMoveTest, NoGUI )
