@@ -43,7 +43,7 @@ target_link_libraries(
 set( common_link_libraries
   kmindexreader
   maildir
-  mbox
+  kmbox
   akonadi-filestore
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
