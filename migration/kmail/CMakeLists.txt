@@ -57,7 +57,7 @@ target_link_libraries(kmail-migrator
   ${KDE4_KDEUI_LIBS}
   akonadi-filestore
   maildir
-  mbox
+  kmbox
   kmindexreader
   ${NEPOMUK_LIBRARIES}
   ${SOPRANO_LIBRARIES}
