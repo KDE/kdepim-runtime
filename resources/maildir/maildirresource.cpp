@@ -122,7 +122,6 @@ void MaildirResource::configurationChanged()
 
 void MaildirResource::aboutToQuit()
 {
-  clearCache();
   // The settings may not have been saved if e.g. they have been modified via
   // DBus instead of the config dialog.
   Settings::self()->writeConfig();
