@@ -51,6 +51,15 @@
 #include <QtDBus/QDBusConnection>
 #include <QSet>
 
+#ifdef RUNTIME_PLUGINS_STATIC
+#include <QtPlugin>
+
+Q_IMPORT_PLUGIN(akonadi_serializer_mail)
+Q_IMPORT_PLUGIN(akonadi_serializer_addressee)
+Q_IMPORT_PLUGIN(akonadi_serializer_kcalcore)
+Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
+#endif
+
 using namespace Akonadi;
 
 static const char KOLAB_COLLECTION[] = "KolabCollection";
