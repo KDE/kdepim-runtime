@@ -50,6 +50,7 @@ soprano_add_ontology(kmail-migrator_srcs
 kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kmail-migrator ${kmail-migrator_srcs} )
 target_link_libraries(kmail-migrator
+  ${KDEPIMLIBS_KMBOX_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
@@ -57,7 +58,6 @@ target_link_libraries(kmail-migrator
   ${KDE4_KDEUI_LIBS}
   akonadi-filestore
   maildir
-  kmbox
   kmindexreader
   ${NEPOMUK_LIBRARIES}
   ${SOPRANO_LIBRARIES}

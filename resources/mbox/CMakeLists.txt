@@ -39,6 +39,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Mbox Resource")
 endif (Q_WS_MAC)
 
-target_link_libraries(akonadi_mbox_resource kmbox ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
+target_link_libraries(akonadi_mbox_resource ${KDEPIMLIBS_KMBOX_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
 
 install(TARGETS akonadi_mbox_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

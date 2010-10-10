@@ -49,12 +49,12 @@ endif (Q_WS_MAC)
 target_link_libraries(akonadi_mixedmaildir_resource
   kmindexreader
   maildir
-  kmbox
   akonadi-filestore
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KIO_LIBS}
+  ${KDEPIMLIBS_KMBOX_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${NEPOMUK_LIBRARIES}
