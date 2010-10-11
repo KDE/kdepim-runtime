@@ -46,10 +46,12 @@ template <typename Settings>
 class SingleFileResource : public SingleFileResourceBase
 {
   public:
-    SingleFileResource( const QString &id ) : SingleFileResourceBase( id )
+    SingleFileResource( const QString &id )
+      : SingleFileResourceBase( id )
+      , mSettings( new Settings( componentData().config() ) )
     {
       // The resource needs network when the path refers to a non local file.
-      setNeedsNetwork( !KUrl( Settings::self()->path() ).isLocalFile() );
+      setNeedsNetwork( !KUrl( mSettings->path() ).isLocalFile() );
     }
 
     /**
@@ -60,13 +62,13 @@ class SingleFileResource : public SingleFileResourceBase
       if ( KDirWatch::self()->contains( mCurrentUrl.toLocalFile() ) )
         KDirWatch::self()->removeFile( mCurrentUrl.toLocalFile() );
 
-      if ( Settings::self()->path().isEmpty() ) {
+      if ( mSettings->path().isEmpty() ) {
         emit status( Broken, i18n( "No file selected." ) );
         cancelTask();
         return;
       }
 
-      mCurrentUrl = KUrl( Settings::self()->path() );
+      mCurrentUrl = KUrl( mSettings->path() );
       if ( mCurrentHash.isEmpty() ) {
         // First call to readFile() lets see if there is a hash stored in a
         // cache file. If both are the same than there is no need to load the
@@ -76,7 +78,7 @@ class SingleFileResource : public SingleFileResourceBase
 
       if ( mCurrentUrl.isLocalFile() )
       {
-        if ( Settings::self()->displayName().isEmpty()
+        if ( mSettings->displayName().isEmpty()
         && ( name().isEmpty() || name() == identifier() ) && !mCurrentUrl.isEmpty() )
           setName( mCurrentUrl.fileName() );
 
@@ -108,7 +110,7 @@ class SingleFileResource : public SingleFileResourceBase
           return;
         }
 
-        if ( Settings::self()->monitorFile() )
+        if ( mSettings->monitorFile() )
           KDirWatch::self()->addFile( mCurrentUrl.toLocalFile() );
 
         emit status( Idle, i18nc( "@info:status", "Ready" ) );
@@ -141,7 +143,7 @@ class SingleFileResource : public SingleFileResourceBase
         emit status( Running, i18n( "Downloading remote file." ) );
       }
 
-      const QString display =  Settings::self()->displayName();
+      const QString display =  mSettings->displayName();
       if ( !display.isEmpty() ) {
         setName( display );
       }
@@ -152,8 +154,8 @@ class SingleFileResource : public SingleFileResourceBase
      */
     void writeFile()
     {
-      if ( Settings::self()->readOnly() ) {
-        emit error( i18n( "Trying to write to a read-only file: '%1'.", Settings::self()->path() ) );
+      if ( mSettings->readOnly() ) {
+        emit error( i18n( "Trying to write to a read-only file: '%1'.", mSettings->path() ) );
         cancelTask();
         return;
       }
@@ -227,10 +229,10 @@ class SingleFileResource : public SingleFileResourceBase
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
         newName = attr->displayName();
       }
-      const QString oldName = Settings::self()->displayName();
+      const QString oldName = mSettings->displayName();
       if ( newName != oldName ) {
-        Settings::self()->setDisplayName( newName );
-        Settings::self()->writeConfig();
+        mSettings->setDisplayName( newName );
+        mSettings->writeConfig();
       }
       SingleFileResourceBase::collectionChanged( collection );
     }
@@ -242,7 +244,7 @@ class SingleFileResource : public SingleFileResourceBase
     void configure( WId windowId )
     {
       QPointer<SingleFileResourceConfigDialog<Settings> > dlg
-          = new SingleFileResourceConfigDialog<Settings>( windowId );
+          = new SingleFileResourceConfigDialog<Settings>( windowId, mSettings );
       customizeConfigDialog( dlg );
       if ( dlg->exec() == QDialog::Accepted ) {
         if ( dlg ) {   // in case is got destroyed
@@ -279,12 +281,12 @@ class SingleFileResource : public SingleFileResourceBase
     {
       Collection c;
       c.setParentCollection( Collection::root() );
-      c.setRemoteId( Settings::self()->path() );
-      const QString display = Settings::self()->displayName();
+      c.setRemoteId( mSettings->path() );
+      const QString display = mSettings->displayName();
       c.setName( display.isEmpty() ? identifier() : display );
       QStringList mimeTypes;
       c.setContentMimeTypes( mSupportedMimetypes );
-      if ( Settings::self()->readOnly() ) {
+      if ( mSettings->readOnly() ) {
         c.setRights( Collection::CanChangeCollection );
       } else {
         Collection::Rights rights;
@@ -301,6 +303,9 @@ class SingleFileResource : public SingleFileResourceBase
       list << c;
       collectionsRetrieved( list );
     }
+
+  protected:
+    Settings *mSettings;
 };
 
 }

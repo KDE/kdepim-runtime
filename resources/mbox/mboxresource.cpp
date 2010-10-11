@@ -23,11 +23,11 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
+#include <akonadi/dbusconnectionpool.h>
 #include <akonadi/itemfetchscope.h>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>
-#include <QtDBus/QDBusConnection>
 
 #include "compactpage.h"
 #include "deleteditemsattribute.h"
@@ -62,9 +62,9 @@ MboxResource::MboxResource( const QString &id )
   : SingleFileResource<Settings>( id )
   , mMBox( 0 )
 {
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                              Settings::self(), QDBusConnection::ExportAdaptors );
+  new SettingsAdaptor( mSettings );
+  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+                                                         mSettings, QDBusConnection::ExportAdaptors );
 
   QStringList mimeTypes;
   mimeTypes << "message/rfc822";
@@ -80,7 +80,7 @@ MboxResource::~MboxResource()
 
 void MboxResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  dlg->addPage( i18n("Compact frequency"), new CompactPage( Settings::self()->path() ) );
+  dlg->addPage( i18n("Compact frequency"), new CompactPage( mSettings->path() ) );
   dlg->addPage( i18n("Lock method"), new LockMethodPage() );
   dlg->setCaption( i18n( "Select MBox file" ) );
 }
@@ -156,9 +156,9 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
 void MboxResource::aboutToQuit()
 {
-  if ( !Settings::self()->readOnly() )
+  if ( !mSettings->readOnly() )
     writeFile();
-  Settings::self()->writeConfig();
+  mSettings->writeConfig();
 }
 
 void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
@@ -229,8 +229,8 @@ void MboxResource::itemRemoved( const Akonadi::Item &item )
   DeletedItemsAttribute *attr
     = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
 
-  if ( Settings::self()->compactFrequency() == Settings::per_x_messages
-       && Settings::self()->messageCount() == static_cast<uint>( attr->offsetCount() + 1 ) ) {
+  if ( mSettings->compactFrequency() == Settings::per_x_messages
+       && mSettings->messageCount() == static_cast<uint>( attr->offsetCount() + 1 ) ) {
     kDebug() << "Compacting mbox file";
     mMBox->purge( attr->deletedItemEntries() << KMBox::MBoxEntry( itemOffset( item.remoteId() ) ) );
     scheduleWrite();
@@ -262,10 +262,10 @@ bool MboxResource::readFromFile( const QString &fileName )
   delete mMBox;
   mMBox = new KMBox::MBox();
 
-  switch ( Settings::self()->lockfileMethod() ) {
+  switch ( mSettings->lockfileMethod() ) {
     case Settings::procmail:
       mMBox->setLockType( KMBox::MBox::ProcmailLockfile );
-      mMBox->setLockFile( Settings::self()->lockfile() );
+      mMBox->setLockFile( mSettings->lockfile() );
       break;
     case Settings::mutt_dotlock:
       mMBox->setLockType( KMBox::MBox::MuttDotlock );

@@ -33,12 +33,15 @@ namespace Akonadi {
 template <typename Settings>
 class SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
 {
+  Settings *mSettings;
+
   public:
-    explicit SingleFileResourceConfigDialog( WId windowId ) :
-      SingleFileResourceConfigDialogBase( windowId )
+    explicit SingleFileResourceConfigDialog( WId windowId, Settings *settings )
+        : SingleFileResourceConfigDialogBase( windowId )
+        , mSettings( settings )
     {
-      SingleFileResourceConfigDialogBase::setUrl( KUrl( Settings::self()->path() ) );
-      mManager = new KConfigDialogManager( this, Settings::self() );
+      SingleFileResourceConfigDialogBase::setUrl( KUrl( mSettings->path() ) );
+      mManager = new KConfigDialogManager( this, mSettings );
       mManager->updateWidgets();
     }
 
@@ -46,8 +49,8 @@ class SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
     void save()
     {
       mManager->updateSettings();
-      Settings::self()->setPath( SingleFileResourceConfigDialogBase::url().url() );
-      Settings::self()->writeConfig();
+      mSettings->setPath( SingleFileResourceConfigDialogBase::url().url() );
+      mSettings->writeConfig();
     }
 };
 

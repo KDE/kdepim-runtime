@@ -35,7 +35,7 @@ static QLatin1String sNotesType( "application/x-vnd.kde.notes" );
 NotesResource::NotesResource( const QString &id )
     : ICalResource( id, allMimeTypes(), "knotes" )
 {
-  KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath*>( Settings::self()->findItem( "Path" ) );
+  KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath*>( mSettings->findItem( "Path" ) );
   if ( item ) {
     item->setDefaultValue( KGlobal::dirs()->saveLocation( "data", "knotes/" ) + "notes.ics" );
   }

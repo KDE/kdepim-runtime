@@ -15,7 +15,6 @@ set( icalresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   icalresourcebase.cpp
   icalresource.cpp
-  icalresourcemain.cpp
 )
 
 install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -27,7 +26,7 @@ qt4_add_dbus_adaptor(icalresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_ical_resource ${icalresource_SRCS})
+kde4_add_plugin(akonadi_ical_resource ${icalresource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -37,4 +36,4 @@ endif (Q_WS_MAC)
 
 target_link_libraries(akonadi_ical_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY}  ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS})
 
-install(TARGETS akonadi_ical_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_ical_resource DESTINATION ${PLUGIN_INSTALL_DIR})

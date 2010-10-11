@@ -22,6 +22,8 @@
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
+#include <akonadi/dbusconnectionpool.h>
+
 #include <kfiledialog.h>
 #include <klocale.h>
 #include <KWindowSystem>
@@ -34,9 +36,9 @@ VCardResource::VCardResource( const QString &id )
 {
   setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), "office-address-book" );
 
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
+  new SettingsAdaptor( mSettings );
+  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+                                                         mSettings, QDBusConnection::ExportAdaptors );
 }
 
 VCardResource::~VCardResource()
@@ -60,9 +62,9 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
 
 void VCardResource::aboutToQuit()
 {
-  if ( !Settings::self()->readOnly() )
+  if ( !mSettings->readOnly() )
     writeFile();
-  Settings::self()->writeConfig();
+  mSettings->writeConfig();
 }
 
 void VCardResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )

@@ -87,3 +87,4 @@ Icon=text-directory
 X-Akonadi-MimeTypes=text/directory
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_vcard_resource
+X-Akonadi-LaunchMethod=AgentServer

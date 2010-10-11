@@ -32,4 +32,5 @@ endif (Q_WS_MAC)
 
 target_link_libraries(akonadi_vcard_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDE4_KIO_LIBS})
 
-install(TARGETS akonadi_vcard_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_vcard_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+

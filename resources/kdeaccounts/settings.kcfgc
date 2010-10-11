@@ -3,5 +3,5 @@ ClassName=Settings
 Mutators=true
 ItemAccessors=true
 SetUserTexts=true
-Singleton=true
+Singleton=false
 GlobalEnums=true

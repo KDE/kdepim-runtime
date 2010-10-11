@@ -22,6 +22,8 @@
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
+#include <akonadi/dbusconnectionpool.h>
+
 #include <kcalcore/filestorage.h>
 #include <kcalcore/memorycalendar.h>
 #include <kcalcore/incidence.h>
@@ -35,7 +37,7 @@ using namespace Akonadi;
 using namespace KCalCore;
 
 ICalResourceBase::ICalResourceBase( const QString &id )
-    : SingleFileResource<Settings>( id )
+  : SingleFileResource<Settings>( id )
 {
   KGlobal::locale()->insertCatalog( "akonadi_ical_resource" );
 }
@@ -43,9 +45,9 @@ ICalResourceBase::ICalResourceBase( const QString &id )
 void ICalResourceBase::initialise( const QStringList &mimeTypes, const QString &icon )
 {
   setSupportedMimetypes( mimeTypes, icon );
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
+  new SettingsAdaptor( mSettings );
+  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+                                                         mSettings, QDBusConnection::ExportAdaptors );
 }
 
 ICalResourceBase::~ICalResourceBase()
@@ -67,10 +69,10 @@ bool ICalResourceBase::retrieveItem( const Akonadi::Item &item,
 
 void ICalResourceBase::aboutToQuit()
 {
-  if ( !Settings::self()->readOnly() ) {
+  if ( !mSettings->readOnly() ) {
     writeFile();
   }
-  Settings::self()->writeConfig();
+  mSettings->writeConfig();
 }
 
 void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Settings> *dlg )

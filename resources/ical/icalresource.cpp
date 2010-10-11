@@ -20,12 +20,15 @@
 
 #include "icalresource.h"
 
+#include <akonadi/agentfactory.h>
+
 #include <kcalcore/memorycalendar.h>
 #include <kcalcore/freebusy.h>
 
 #include <kdebug.h>
 #include <klocale.h>
 
+#include <QtCore/QtPlugin>
 
 using namespace Akonadi;
 using namespace KCalCore;
@@ -147,5 +150,7 @@ QString ICalResource::mimeType( const IncidenceBase::Ptr &incidence ) const
 {
   return incidence->mimeType();
 }
+
+AKONADI_AGENT_FACTORY( ICalResource, akonadi_ical_resource );
 
 #include "icalresource.moc"

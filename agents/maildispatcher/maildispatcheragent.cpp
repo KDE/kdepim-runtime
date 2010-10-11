@@ -37,6 +37,8 @@
 #include <KNotification>
 #include <KIconLoader>
 
+#include <akonadi/agentfactory.h>
+#include <akonadi/dbusconnectionpool.h>
 #include <Akonadi/ItemFetchScope>
 #include <KMime/Message>
 
@@ -164,12 +166,13 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
 
   new SettingsAdaptor( Settings::self() );
   new MailDispatcherAgentAdaptor( this );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                              Settings::self(), QDBusConnection::ExportAdaptors );
 
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/MailDispatcherAgent" ),
-                             this, QDBusConnection::ExportAdaptors );
-  QDBusConnection::sessionBus().registerService( QLatin1String( "org.freedesktop.Akonadi.MailDispatcherAgent" ) );
+  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+                                                         Settings::self(), QDBusConnection::ExportAdaptors );
+
+  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/MailDispatcherAgent" ),
+                                                         this, QDBusConnection::ExportAdaptors );
+  DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.MailDispatcherAgent" ) );
   
   d->queue = new OutboxQueue( this );
   connect( d->queue, SIGNAL( newItems() ), this, SLOT( dispatch() ) );
@@ -303,7 +306,7 @@ void MailDispatcherAgent::Private::emitStatusReady()
 }
 
 
-AKONADI_AGENT_MAIN( MailDispatcherAgent )
+AKONADI_AGENT_FACTORY( MailDispatcherAgent, akonadi_maildispatcher_agent )
 
 
 #include "maildispatcheragent.moc"

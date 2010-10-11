@@ -22,11 +22,12 @@
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
+#include <akonadi/dbusconnectionpool.h>
+
 #include <kfiledialog.h>
 #include <klocale.h>
 #include <KWindowSystem>
 
-#include <QtDBus/QDBusConnection>
 
 using namespace Akonadi;
 
@@ -37,9 +38,9 @@ KDEAccountsResource::KDEAccountsResource( const QString &id )
 
   setName( i18n( "KDE Accounts" ) );
 
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                                                Settings::self(), QDBusConnection::ExportAdaptors );
+  new SettingsAdaptor( mSettings );
+  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+                                                         mSettings, QDBusConnection::ExportAdaptors );
 }
 
 KDEAccountsResource::~KDEAccountsResource()
@@ -71,8 +72,8 @@ void KDEAccountsResource::configDialogAcceptedActions( SingleFileResourceConfigD
 {
     // We can't hide the GUI element but we can enforce that the
     // resource is read-only
-    Settings::self()->setReadOnly( true );
-    Settings::self()->writeConfig();
+    mSettings->setReadOnly( true );
+    mSettings->writeConfig();
 }
 
 void KDEAccountsResource::itemAdded( const Akonadi::Item&, const Akonadi::Collection& )

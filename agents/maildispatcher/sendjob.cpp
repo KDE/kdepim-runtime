@@ -45,6 +45,7 @@
 
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
+#include <akonadi/dbusconnectionpool.h>
 #include <Akonadi/TransportResourceBase>
 #include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/messageparts.h>
@@ -133,7 +134,7 @@ void SendJob::Private::doAkonadiTransport()
   iface = new QDBusInterface(
       QLatin1String( "org.freedesktop.Akonadi.Resource." ) + resourceId,
       QLatin1String( "/Transport" ), QLatin1String( "org.freedesktop.Akonadi.Resource.Transport" ),
-      QDBusConnection::sessionBus(), q );
+      DBusConnectionPool::threadConnection(), q );
   if( !iface->isValid() ) {
     storeResult( false, i18n( "Failed to get D-Bus interface of resource %1.", resourceId ) );
     delete iface;
