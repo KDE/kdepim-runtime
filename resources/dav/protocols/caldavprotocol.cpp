@@ -238,9 +238,17 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
   DavCollection::ContentTypes contentTypes;
   QDomElement compElement = DavUtils::firstChildElementNS( supportedcomponentElement, "urn:ietf:params:xml:ns:caldav", "comp" );
 
-  // Assign the calendar content-type if the server didn't return anything
-  if ( compElement.isNull() )
+  /*
+   * Assign the content-type if the server didn't return anything.
+   * According to RFC4791, §5.2.3:
+   * In the absence of this property, the server MUST accept all
+   * component types, and the client can assume that all component
+   * types are accepted.
+   */
+  if ( compElement.isNull() ) {
      contentTypes |= DavCollection::Events;
+     contentTypes |= DavCollection::Todo;
+  }
 
   while ( !compElement.isNull() ) {
     const QString type = compElement.attribute( "name" ).toLower();
