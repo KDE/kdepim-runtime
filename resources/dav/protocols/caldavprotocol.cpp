@@ -247,7 +247,7 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
    */
   if ( compElement.isNull() ) {
      contentTypes |= DavCollection::Events;
-     contentTypes |= DavCollection::Todo;
+     contentTypes |= DavCollection::Todos;
   }
 
   while ( !compElement.isNull() ) {
