@@ -107,6 +107,7 @@ void UrlConfigurationDialog::checkUserInput()
 void UrlConfigurationDialog::onFetchButtonClicked()
 {
   mUi.discoveredUrls->setEnabled( false );
+  initModel();
 
   if ( !remoteUrl().endsWith( QLatin1Char( '/' ) ) )
     setRemoteUrl( remoteUrl() + QLatin1Char( '/' ) );
