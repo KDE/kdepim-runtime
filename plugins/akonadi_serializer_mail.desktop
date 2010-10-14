@@ -77,7 +77,7 @@ Comment[zh_CN]=对邮件对象进行序列转换的 Akonadi 插件
 Comment[zh_TW]=信件物件的 Akonadi 序列器外掛程式
 
 [Plugin]
-Type=message/rfc822,message/news
+Type=message/rfc822,message/news,text/x-vnd.akonadi.note
 X-Akonadi-Class=legacy;default;KMime::Message*;
 X-KDE-Library=akonadi_serializer_mail
 X-KDE-ClassName=Akonadi::SerializerPluginMail
