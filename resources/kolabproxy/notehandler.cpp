@@ -83,6 +83,9 @@ bool NotesHandler::noteFromKolab(const KMime::Message::Ptr& kolabMsg, Akonadi::I
 
   KMime::Message::Ptr note( new KMime::Message );
   note->subject( true )->fromUnicodeString( j.summary(), "utf-8" );
+  note->contentType( true )->setMimeType( "text/plain" );
+  note->from( true )->addAddress( "kolab@kde4", QString() );
+  note->date( true )->setDateTime( kolabMsg->date()->dateTime() );
   note->setBody( j.body().toUtf8() );
   note->assemble();
   noteItem.setPayload( note );
