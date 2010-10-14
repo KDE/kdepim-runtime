@@ -177,12 +177,12 @@ Item {
       State {
         name : "before_select_child"
         ParentChange { target : nestedItem; parent : selectedItemPlaceHolder; }
-        PropertyChanges { target : nestedItem; x : 35; y : 0 }
+        //PropertyChanges { target : nestedItem; x : 35; y : 0 }
       },
       State {
         name : "before_select_breadcrumb"
         ParentChange { target : nestedItem; parent : selectedItemPlaceHolder; }
-        PropertyChanges { target : nestedItem; x : 35; y : 0 }
+        //PropertyChanges { target : nestedItem; x : 35; y : 0 }
       }
     ]
     transitions : [
