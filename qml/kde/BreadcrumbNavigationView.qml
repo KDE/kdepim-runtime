@@ -345,7 +345,7 @@ Item {
       PropertyChanges {
         target : breadcrumbRightDivider
         anchors.topMargin : -8
-        height : {console.log(itemHeight); 67}
+        height : 67
         opacity : 0 // { 1 } // selectedItemView.count > 0 ? 1 : 0
       }
       PropertyChanges {
@@ -507,9 +507,6 @@ Item {
       NumberAnimation {
         target: selectedItemView
         properties: "opacity"
-      }
-      ScriptAction {
-        script : {console.log("### " + selectedItemView.count + " " + selectedItemView.currentIndex); }
       }
     },
     Transition {
