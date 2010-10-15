@@ -249,9 +249,9 @@ class SingleFileResource : public SingleFileResourceBase
       if ( dlg->exec() == QDialog::Accepted ) {
         if ( dlg ) {   // in case is got destroyed
           configDialogAcceptedActions( dlg );
-	}
+        }
         reloadFile();
-	synchronizeCollectionTree();
+        synchronizeCollectionTree();
         emit configurationDialogAccepted();
       } else {
         emit configurationDialogRejected();
