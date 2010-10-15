@@ -109,4 +109,4 @@ Icon=view-pim-notes
 X-Akonadi-MimeTypes=application/x-vnd.kde.notes
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_notes_resource
-X-Akonadi-LaunchMethod=AgentServer
+#X-Akonadi-LaunchMethod=AgentServer
