@@ -80,4 +80,4 @@ Icon=message-rfc822
 X-Akonadi-MimeTypes=message/rfc822
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_mbox_resource
-#X-Akonadi-LaunchMethod=AgentServer
+X-Akonadi-LaunchMethod=AgentServer

@@ -31,7 +31,7 @@ qt4_add_dbus_adaptor(mboxresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Mbox.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_mbox_resource ${mboxresource_SRCS})
+kde4_add_plugin(akonadi_mbox_resource ${mboxresource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -41,4 +41,4 @@ endif (Q_WS_MAC)
 
 target_link_libraries(akonadi_mbox_resource ${KDEPIMLIBS_KMBOX_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
 
-install(TARGETS akonadi_mbox_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_mbox_resource DESTINATION ${PLUGIN_INSTALL_DIR})

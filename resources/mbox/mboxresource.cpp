@@ -19,7 +19,10 @@
 
 #include "mboxresource.h"
 
+#include <QtCore/QtPlugin>
+
 #include <akonadi/attributefactory.h>
+#include <akonadi/agentfactory.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
@@ -352,6 +355,6 @@ void MboxResource::onCollectionModify( KJob *job )
   itemAdded( item, c );
 }
 
-AKONADI_RESOURCE_MAIN( MboxResource )
+AKONADI_AGENT_FACTORY( MboxResource, akonadi_mbox_resource )
 
 #include "mboxresource.moc"
