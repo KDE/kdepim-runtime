@@ -118,6 +118,9 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         msg->inReplyTo()->from7BitString( env[8] );
         // message id
         msg->messageID()->from7BitString( env[9] );
+        // references
+        if ( env.count() > 10 )
+          msg->references()->from7BitString( env[10] );
     }
 
     return true;
@@ -171,6 +174,7 @@ void SerializerPluginMail::serialize( const Item& item, const QByteArray& label,
     env << buildAddrStruct( m->bcc() );
     env << quoteImapListEntry( m->inReplyTo()->as7BitString( false ) );
     env << quoteImapListEntry( m->messageID()->as7BitString( false ) );
+    env << quoteImapListEntry( m->references()->as7BitString( false ) );
     data.write( buildImapList( env ) );
   } else if ( label == MessagePart::Header ) {
     data.write( m->head() );
