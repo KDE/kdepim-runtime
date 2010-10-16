@@ -32,14 +32,15 @@
 using namespace Akonadi;
 using namespace KMime;
 
-template <typename T> static void parseAddrList( const QList<QByteArray> &addrList, T *hdr )
+template <typename T> static void parseAddrList( const QVarLengthArray<QByteArray, 16> &addrList, T *hdr )
 {
   hdr->clear();
-  for ( QList<QByteArray>::ConstIterator it = addrList.constBegin(); it != addrList.constEnd(); ++it ) {
-    QList<QByteArray> addr;
-    ImapParser::parseParenthesizedList( *it, addr );
+  const int count = addrList.count();
+  QVarLengthArray<QByteArray, 16> addr;
+  for ( int i = 0; i < count; ++i ) {
+    ImapParser::parseParenthesizedList( addrList[ i ], addr );
     if ( addr.count() != 4 ) {
-      kWarning( 5264 ) << "Error parsing envelope address field: " << addr;
+      kWarning( 5264 ) << "Error parsing envelope address field: " << addrList[ i ];
       continue;
     }
     KMime::Types::Mailbox addrField;
@@ -48,7 +49,6 @@ template <typename T> static void parseAddrList( const QList<QByteArray> &addrLi
     hdr->addAddress( addrField );
   }
 }
-
 
 bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
@@ -78,10 +78,10 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         msg->parse();
       }
     } else if ( label == MessagePart::Envelope ) {
-        QList<QByteArray> env;
+        QVarLengthArray<QByteArray, 16> env;
         ImapParser::parseParenthesizedList( buffer, env );
         if ( env.count() < 10 ) {
-          kWarning( 5264 ) << "Akonadi KMime Deserializer: Got invalid envelope: " << env;
+          kWarning( 5264 ) << "Akonadi KMime Deserializer: Got invalid envelope: " << buffer;
           return false;
         }
         Q_ASSERT( env.count() >= 10 );
@@ -90,7 +90,7 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         // subject
         msg->subject()->from7BitString( env[1] );
         // from
-        QList<QByteArray> addrList;
+        QVarLengthArray<QByteArray, 16> addrList;
         ImapParser::parseParenthesizedList( env[2], addrList );
         if ( !addrList.isEmpty() )
           parseAddrList( addrList, msg->from() );
@@ -118,6 +118,9 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         msg->inReplyTo()->from7BitString( env[8] );
         // message id
         msg->messageID()->from7BitString( env[9] );
+        // references
+        if ( env.count() > 10 )
+          msg->references()->from7BitString( env[10] );
     }
 
     return true;
@@ -171,6 +174,7 @@ void SerializerPluginMail::serialize( const Item& item, const QByteArray& label,
     env << buildAddrStruct( m->bcc() );
     env << quoteImapListEntry( m->inReplyTo()->as7BitString( false ) );
     env << quoteImapListEntry( m->messageID()->as7BitString( false ) );
+    env << quoteImapListEntry( m->references()->as7BitString( false ) );
     data.write( buildImapList( env ) );
   } else if ( label == MessagePart::Header ) {
     data.write( m->head() );
