@@ -171,15 +171,6 @@ and the user will (probably) never see them at work.
 Resources are processes which load data from an external data source, store them
 in the cache of the Storage and keep track of changes on both sides to keep
 the external data source and the cache synchronized.
-Resources can be grouped into profiles, where one Resource can belong to different
-profiles. Profiles are useful in use cases like this:
-You have configured a local Resource and a groupware server Resource. You want both
-to be shown in the address book application but for synchronization with your mobile
-phone only the data from the local Resource is of interest. So the easy solution
-is to create a profile 'view' which both the local Resource and the groupware server
-Resource belong to, and a profile 'synchronize' to which only the local Resource is
-assigned. Now you just have to tell the application which profile it should use to
-access the data.
 
 \subsection akonadi_design_control The Control
 The Control process is the 'brain' of the system. It starts the Storage and Resource
@@ -187,8 +178,7 @@ processes and monitors them, so that if one of these processes crashes, it resta
 Furthermore it provides a D-Bus API with the following functionality:
 
 \li Managing Resources
-\li Managing Profiles
-\li Notifications when the state of Resources or Profiles have changed
+\li Notifications when the state of Resources have changed
 
 The Control should be started in the startkde script and terminated at the end of the session.
 
@@ -238,16 +228,6 @@ Examples:
 0x8056310 7 UID FETCH 22 (UID RFC822.SIZE FLAGS BODY.PEEK[])
 0x8056310 * 1 FETCH (FLAGS (\Seen \MimeTypes[message/rfc822]) RFC822 {2450} From: Till Adam To: ...
 \endverbatim
-
-\section akonadi_design_communication_profile Profile Handling
-<div id=' akonadi_profile_handling_small.png' onClick="document.getElementById(' akonadi_profile_handling_small.png').style.display='none';document.getElementById(' akonadi_profile_handling.png').style.display='inline';" title="Click to enlarge" >
-  \image html  akonadi_profile_handling_small.png  "Akonadi Profile Handling"
- </div>
- <div id=' akonadi_profile_handling.png' onClick="document.getElementById(' akonadi_profile_handling.png').style.display='none';document.getElementById(' akonadi_profile_handling_small.png').style.display='inline';" style="display:none" >
-  \image html  akonadi_profile_handling.png  "Akonadi Profile Handling"
- </div>
-
-\image latex akonadi_profile_handling.eps "Akonadi Profile Handling" height=2.5cm
 
 \section akonadi_design_communication_agent Agent Handling
 <div id=' akonadi_agent_handling_small.png' onClick="document.getElementById(' akonadi_agent_handling_small.png').style.display='none';document.getElementById(' akonadi_agent_handling.png').style.display='inline';" title="Click to enlarge" >
