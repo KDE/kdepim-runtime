@@ -68,7 +68,7 @@ void MailSerializerTest::testEnvelopeDeserializeWithReferencesHeader()
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
   QBENCHMARK {
-    serializer->deserialize( i, MessagePart::Envelope, buffer, 0 );
+    serializer->deserialize( i, MessagePart::Envelope, buffer, 1 );
   }
   QVERIFY( i.hasPayload<KMime::Message::Ptr>() );
 

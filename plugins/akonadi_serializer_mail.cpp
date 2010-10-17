@@ -32,7 +32,7 @@
 using namespace Akonadi;
 using namespace KMime;
 
-template <typename T> static void parseAddrList( const QVarLengthArray<QByteArray, 16> &addrList, T *hdr )
+template <typename T> static void parseAddrList( const QVarLengthArray<QByteArray, 16> &addrList, T *hdr, int version )
 {
   hdr->clear();
   const int count = addrList.count();
@@ -44,7 +44,10 @@ template <typename T> static void parseAddrList( const QVarLengthArray<QByteArra
       continue;
     }
     KMime::Types::Mailbox addrField;
-    addrField.setNameFrom7Bit( addr[0] );
+    if ( version == 0 )
+      addrField.setNameFrom7Bit( addr[0] );
+    else if ( version == 1 )
+      addrField.setName( QString::fromUtf8( addr[0] ) );
     KMime::Types::AddrSpec addrSpec;
     addrSpec.localPart = QString::fromUtf8( addr[2] );
     addrSpec.domain = QString::fromUtf8( addr[3] );
@@ -56,8 +59,6 @@ template <typename T> static void parseAddrList( const QVarLengthArray<QByteArra
 
 bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
-    Q_UNUSED( version );
-
     if ( label != MessagePart::Body && label != MessagePart::Envelope && label != MessagePart::Header )
       return false;
 
@@ -97,27 +98,27 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         QVarLengthArray<QByteArray, 16> addrList;
         ImapParser::parseParenthesizedList( env[2], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->from() );
+          parseAddrList( addrList, msg->from(), version );
         // sender
         ImapParser::parseParenthesizedList( env[2], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->sender() );
+          parseAddrList( addrList, msg->sender(), version );
         // reply-to
         ImapParser::parseParenthesizedList( env[4], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->replyTo() );
+          parseAddrList( addrList, msg->replyTo(), version );
         // to
         ImapParser::parseParenthesizedList( env[5], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->to() );
+          parseAddrList( addrList, msg->to(), version );
         // cc
         ImapParser::parseParenthesizedList( env[6], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->cc() );
+          parseAddrList( addrList, msg->cc(), version );
         // bcc
         ImapParser::parseParenthesizedList( env[7], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->bcc() );
+          parseAddrList( addrList, msg->bcc(), version );
         // in-reply-to
         msg->inReplyTo()->from7BitString( env[8] );
         // message id
@@ -150,7 +151,7 @@ template <typename T> static QByteArray buildAddrStruct( T const *hdr )
   KMime::Types::Mailbox::List mb = hdr->mailboxes();
   foreach ( const KMime::Types::Mailbox &mbox, mb ) {
     QList<QByteArray> addrStruct;
-    addrStruct << quoteImapListEntry( KMime::encodeRFC2047String( mbox.name(), "utf-8" ) );
+    addrStruct << quoteImapListEntry( mbox.name().toUtf8() );
     addrStruct << quoteImapListEntry( QByteArray() );
     addrStruct << quoteImapListEntry( mbox.addrSpec().localPart.toUtf8() );
     addrStruct << quoteImapListEntry( mbox.addrSpec().domain.toUtf8() );
@@ -161,7 +162,7 @@ template <typename T> static QByteArray buildAddrStruct( T const *hdr )
 
 void SerializerPluginMail::serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version )
 {
-  Q_UNUSED( version );
+  version = 1;
 
   boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
   if ( label == MessagePart::Body ) {
