@@ -106,8 +106,13 @@ void MoveItemTask::triggerCopyJob( KIMAP::Session *session )
 
   // save message id, might be needed later to search for the
   // resulting message uid.
-  KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
-  m_messageId = msg->messageID()->asUnicodeString().toUtf8();
+  try {
+    KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
+    m_messageId = msg->messageID()->asUnicodeString().toUtf8();
+  } catch ( Akonadi::PayloadException e ) {
+    cancelTask( i18n("Failed to copy item, it has no message payload. Remote id: %1").arg( uid ) );
+    return;
+  }
 
   KIMAP::CopyJob *copy = new KIMAP::CopyJob( session );
 
