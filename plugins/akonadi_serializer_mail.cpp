@@ -45,7 +45,10 @@ template <typename T> static void parseAddrList( const QVarLengthArray<QByteArra
     }
     KMime::Types::Mailbox addrField;
     addrField.setNameFrom7Bit( addr[0] );
-    addrField.setAddress( addr[2] + '@' + addr[3] );
+    KMime::Types::AddrSpec addrSpec;
+    addrSpec.localPart = QString::fromUtf8( addr[2] );
+    addrSpec.domain = QString::fromUtf8( addr[3] );
+    addrField.setAddress( addrSpec );
     hdr->addAddress( addrField );
   }
 }
