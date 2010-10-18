@@ -41,7 +41,9 @@ void MailSerializerTest::testEnvelopeDeserialize()
   buffer.setData( env );
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
-  serializer->deserialize( i, MessagePart::Envelope, buffer, 0 );
+  QBENCHMARK {
+    serializer->deserialize( i, MessagePart::Envelope, buffer, 0 );
+  }
   QVERIFY( i.hasPayload<KMime::Message::Ptr>() );
 
   KMime::Message::Ptr msg = i.payload<KMime::Message::Ptr>();
@@ -65,7 +67,9 @@ void MailSerializerTest::testEnvelopeDeserializeWithReferencesHeader()
   buffer.setData( env );
   buffer.open( QIODevice::ReadOnly );
   buffer.seek( 0 );
-  serializer->deserialize( i, MessagePart::Envelope, buffer, 0 );
+  QBENCHMARK {
+    serializer->deserialize( i, MessagePart::Envelope, buffer, 1 );
+  }
   QVERIFY( i.hasPayload<KMime::Message::Ptr>() );
 
   KMime::Message::Ptr msg = i.payload<KMime::Message::Ptr>();
@@ -119,9 +123,11 @@ void MailSerializerTest::testEnvelopeSerialize()
   QBuffer buffer;
   buffer.setBuffer( &env );
   buffer.open( QIODevice::ReadWrite );
-  buffer.seek( 0 );
   int version = 0;
-  serializer->serialize( i, MessagePart::Envelope, buffer, version );
+  QBENCHMARK {
+    buffer.seek( 0 );
+    serializer->serialize( i, MessagePart::Envelope, buffer, version );
+  }
   QCOMPARE( env, expEnv );
 
   // envelop with references header
