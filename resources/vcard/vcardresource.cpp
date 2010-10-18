@@ -23,12 +23,14 @@
 #include "singlefileresourceconfigdialog.h"
 
 #include <akonadi/dbusconnectionpool.h>
+#include <akonadi/agentfactory.h>
 
 #include <kfiledialog.h>
 #include <klocale.h>
 #include <KWindowSystem>
 
 #include <QtDBus/QDBusConnection>
+
 using namespace Akonadi;
 
 VCardResource::VCardResource( const QString &id )
@@ -181,6 +183,6 @@ bool VCardResource::writeToFile( const QString &fileName )
   return true;
 }
 
-AKONADI_RESOURCE_MAIN( VCardResource )
+AKONADI_AGENT_FACTORY( VCardResource, akonadi_vcard_resource )
 
 #include "vcardresource.moc"
