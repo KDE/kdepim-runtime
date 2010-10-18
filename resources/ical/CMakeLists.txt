@@ -15,6 +15,7 @@ set( icalresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   icalresourcebase.cpp
   icalresource.cpp
+  icalresourceplugin.cpp
 )
 
 install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

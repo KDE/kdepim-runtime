@@ -26,8 +26,8 @@ qt4_add_dbus_adaptor(notesresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_notes_resource ${notesresource_SRCS})
+kde4_add_plugin(akonadi_notes_resource ${notesresource_SRCS})
 
 target_link_libraries(akonadi_notes_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS})
 
-install(TARGETS akonadi_notes_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_notes_resource DESTINATION ${PLUGIN_INSTALL_DIR})

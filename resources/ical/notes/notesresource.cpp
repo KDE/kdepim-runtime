@@ -20,6 +20,8 @@
 #include "notesresource.h"
 #include "settingsadaptor.h"
 
+#include <akonadi/agentfactory.h>
+
 #include <kcalcore/incidence.h>
 
 #include <kglobal.h>
@@ -55,6 +57,6 @@ QString NotesResource::mimeType( const KCalCore::IncidenceBase::Ptr &  ) const
   return sNotesType;
 }
 
-AKONADI_RESOURCE_MAIN( NotesResource )
+AKONADI_AGENT_FACTORY( NotesResource, akonadi_notes_resource )
 
 #include "notesresource.moc"
