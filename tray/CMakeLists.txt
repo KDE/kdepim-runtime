@@ -14,4 +14,4 @@ kde4_add_executable(akonaditray ${tray_sources})
 target_link_libraries(akonaditray ${KDE4_KIO_LIBS} ${KDE4_KDEUI_LIBS} ${AKONADI_COMMON_LIBRARIES} ${KDEPIMLIBS_AKONADI_LIBS})
 
 install(TARGETS akonaditray ${INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES  akonaditray.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )
+install(PROGRAMS  akonaditray.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )
