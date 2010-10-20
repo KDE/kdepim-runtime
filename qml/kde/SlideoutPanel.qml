@@ -61,19 +61,6 @@ Item {
 
   property bool noCollapse : false
 
-  onHandlePositionChanged : {
-    parent.relayout();
-  }
-  onHandleHeightChanged : {
-    parent.relayout();
-  }
-  onCollapsedHeightChanged : {
-    parent.relayout();
-  }
-  onCollapsedPositionChanged : {
-    parent.relayout();
-  }
-
   signal extensionChanged(real extension)
 
   function changeExtension(extension)
