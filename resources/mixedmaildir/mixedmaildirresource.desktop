@@ -38,6 +38,7 @@ Comment[et]=Andmete laadimine kohalikust KMaili maildir-kaustast
 Comment[fr]=Charge des données d'un dossier local KMail au format maildir
 Comment[ga]=Luchtaíonn sé seo sonraí ó fhillteán logánta maildir KMail
 Comment[it]=Carica dati da una cartella locale maildir di KMail
+Comment[ja]=ローカルの KMail maildir フォルダからデータを読み込みます
 Comment[kk]=Жергілікті KMail maildir қапшығынан деректі алып береді
 Comment[km]=ផ្ទុក​ទិន្នន័យ​ពី​ថត KMail maildir មូលដ្ឋាន
 Comment[nb]=Laster data fra en lokal KMail maildir-mappe
