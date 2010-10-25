@@ -50,7 +50,7 @@ ContactsResource::ContactsResource( const QString &id )
 
   mSupportedMimeTypes << KABC::Addressee::mimeType() << KABC::ContactGroup::mimeType() << Collection::mimeType();
 
-  if ( name().isEmpty() )
+  if ( name().startsWith( QLatin1String( "akonadi_contacts_resource" ) ) )
     setName( i18n( "Personal Contacts" ) );
 
   if ( Settings::self()->isConfigured() )
