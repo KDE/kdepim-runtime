@@ -18,7 +18,7 @@ qt4_add_dbus_adaptor( maildispatcheragent_SRCS
   org.freedesktop.Akonadi.MailDispatcherAgent.xml maildispatcheragent.h MailDispatcherAgent
 )
 
-kde4_add_plugin(akonadi_maildispatcher_agent ${maildispatcheragent_SRCS})
+kdepim_add_agent(akonadi_maildispatcher_agent ${maildispatcheragent_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_maildispatcher_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -28,6 +28,5 @@ endif (Q_WS_MAC)
 
 target_link_libraries(akonadi_maildispatcher_agent ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} )
 
-install( TARGETS akonadi_maildispatcher_agent DESTINATION ${PLUGIN_INSTALL_DIR}/ )
 install( FILES maildispatcheragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_maildispatcher_agent" )
