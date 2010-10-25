@@ -42,6 +42,16 @@
 #include <Akonadi/ItemFetchScope>
 #include <KMime/Message>
 
+#ifdef KDEPIM_STATIC_LIBS
+extern bool ___MailTransport____INIT();
+#endif
+
+#ifdef MAIL_SERIALIZER_PLUGIN_STATIC
+#include <QtPlugin>
+
+Q_IMPORT_PLUGIN(akonadi_serializer_mail)
+#endif
+
 using namespace Akonadi;
 
 class MailDispatcherAgent::Private
@@ -163,6 +173,10 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
     d( new Private( this ) )
 {
   kDebug() << "maildispatcheragent: At your service, sir!";
+  
+#ifdef KDEPIM_STATIC_LIBS
+    ___MailTransport____INIT();
+#endif
 
   new SettingsAdaptor( Settings::self() );
   new MailDispatcherAgentAdaptor( this );
