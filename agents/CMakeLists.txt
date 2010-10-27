@@ -10,6 +10,11 @@ macro(kdepim_add_agent _target)
 endmacro(kdepim_add_agent)
 
 add_subdirectory( maildispatcher )
+
+if( STRIGI_FOUND )
+add_subdirectory( strigifeeder )
+endif( STRIGI_FOUND )
+
 if(NOT WINCE)
 add_subdirectory( invitations )
 add_subdirectory( calendarsearch )
