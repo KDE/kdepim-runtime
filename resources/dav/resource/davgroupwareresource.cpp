@@ -549,6 +549,16 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
 
 void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
 {
+  onItemFetched( job, false );
+}
+
+void DavGroupwareResource::onItemRefreshed( KJob* job )
+{
+  onItemFetched( job, true );
+}
+
+void DavGroupwareResource::onItemFetched( KJob* job, bool isRefresh )
+{
   if ( job->error() ) {
     cancelTask( i18n( "Unable to retrieve item: %1", job->errorText() ) );
     return;
@@ -592,7 +602,10 @@ void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
   item.setRemoteRevision( davItem.etag() );
   mEtagCache.setEtag( item.remoteId(), davItem.etag() );
 
-  itemRetrieved( item );
+  if ( isRefresh )
+    changeCommitted( item );
+  else
+    itemRetrieved( item );
 }
 
 void DavGroupwareResource::onItemAddedFinished( KJob *job )
@@ -608,10 +621,18 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
 
   Akonadi::Item item = createJob->property( "item" ).value<Akonadi::Item>();
   item.setRemoteId( davItem.url() );
-  item.setRemoteRevision( davItem.etag() );
-  mEtagCache.setEtag( davItem.url(), davItem.etag() );
 
-  changeCommitted( item );
+  if ( davItem.etag().isEmpty() ) {
+    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
+    DavItemFetchJob *fetchJob = new DavItemFetchJob( davUrl, davItem );
+    fetchJob->setProperty( "item", QVariant::fromValue( item ) );
+    connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( onItemRefreshed( KJob* ) ) );
+    fetchJob->start();
+  } else {
+    item.setRemoteRevision( davItem.etag() );
+    mEtagCache.setEtag( davItem.url(), davItem.etag() );
+    changeCommitted( item );
+  }
 }
 
 void DavGroupwareResource::onItemChangedFinished( KJob *job )
@@ -626,10 +647,18 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
   const DavItem davItem = modifyJob->item();
 
   Akonadi::Item item = modifyJob->property( "item" ).value<Akonadi::Item>();
-  item.setRemoteRevision( davItem.etag() );
-  mEtagCache.setEtag( item.remoteId(), davItem.etag() );
 
-  changeCommitted( item );
+  if ( davItem.etag().isEmpty() ) {
+    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
+    DavItemFetchJob *fetchJob = new DavItemFetchJob( davUrl, davItem );
+    fetchJob->setProperty( "item", QVariant::fromValue( item ) );
+    connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( onItemRefreshed( KJob* ) ) );
+    fetchJob->start();
+  } else {
+    item.setRemoteRevision( davItem.etag() );
+    mEtagCache.setEtag( davItem.url(), davItem.etag() );
+    changeCommitted( item );
+  }
 }
 
 void DavGroupwareResource::onItemRemovedFinished( KJob *job )
