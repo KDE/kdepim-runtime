@@ -27,7 +27,11 @@ qt4_add_dbus_adaptor(icalresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Settings
 )
 
+if (NOT WINCE)
 kde4_add_plugin(akonadi_ical_resource ${icalresource_SRCS})
+else(NOT WINCE)
+kde4_add_plugin(akonadi_ical_resource STATIC ${icalresource_SRCS})
+endif(NOT WINCE)
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
