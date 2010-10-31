@@ -47,6 +47,7 @@ class UrlConfigurationDialog : public KDialog
     void setUsername( const QString &name );
 
   private Q_SLOTS:
+    void onConfigChanged();
     void checkUserInput();
     void onFetchButtonClicked();
     void onOkButtonClicked();
@@ -55,6 +56,7 @@ class UrlConfigurationDialog : public KDialog
     void onChangeDisplayNameFinished( KJob *job );
 
   private:
+    void initModel();
     bool checkUserAuthInput();
     void addModelRow( const QString &displayName, const QString &url );
 

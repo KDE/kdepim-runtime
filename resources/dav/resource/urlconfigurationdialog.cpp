@@ -33,18 +33,16 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   mUi.setupUi( mainWidget() );
 
   mModel = new QStandardItemModel();
-
-  QStringList headers;
-  headers << i18n( "Display name" ) << i18n( "URL" );
-  mModel->setHorizontalHeaderLabels( headers );
+  initModel();
 
   mUi.discoveredUrls->setModel( mModel );
   mUi.discoveredUrls->setRootIsDecorated( false );
   connect( mModel, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
            this, SLOT( onModelDataChanged( const QModelIndex&, const QModelIndex& ) ) );
 
-  connect( mUi.remoteUrl, SIGNAL( textChanged( const QString& ) ), this, SLOT( checkUserInput() ) );
-  connect( mUi.username, SIGNAL( textChanged( const QString& ) ), this, SLOT( checkUserInput() ) );
+  connect( mUi.remoteProtocol, SIGNAL( changed( int ) ), this, SLOT( onConfigChanged() ) );
+  connect( mUi.remoteUrl, SIGNAL( textChanged( const QString& ) ), this, SLOT( onConfigChanged() ) );
+  connect( mUi.username, SIGNAL( textChanged( const QString& ) ), this, SLOT( onConfigChanged() ) );
 
   connect( mUi.fetchButton, SIGNAL( clicked() ), this, SLOT( onFetchButtonClicked() ) );
   connect( this, SIGNAL( okClicked() ), this, SLOT( onOkButtonClicked() ) );
@@ -86,6 +84,14 @@ void UrlConfigurationDialog::setUsername( const QString &userName )
   mUi.username->setText( userName );
 }
 
+void UrlConfigurationDialog::onConfigChanged()
+{
+  initModel();
+  mUi.fetchButton->setEnabled( false );
+  enableButtonOk( false );
+  checkUserInput();
+}
+
 void UrlConfigurationDialog::checkUserInput()
 {
   if ( !mUi.remoteUrl->text().isEmpty() && checkUserAuthInput() ) {
@@ -101,14 +107,11 @@ void UrlConfigurationDialog::checkUserInput()
 void UrlConfigurationDialog::onFetchButtonClicked()
 {
   mUi.discoveredUrls->setEnabled( false );
+  initModel();
 
   if ( !remoteUrl().endsWith( QLatin1Char( '/' ) ) )
     setRemoteUrl( remoteUrl() + QLatin1Char( '/' ) );
 
-  mModel->clear();
-  QStringList headers;
-  headers << i18n( "Display name" ) << i18n( "URL" );
-  mModel->setHorizontalHeaderLabels( headers );
 
   KUrl url( mUi.remoteUrl->text() );
   url.setUser( username() );
@@ -170,6 +173,14 @@ void UrlConfigurationDialog::onChangeDisplayNameFinished( KJob *job )
   }
 
   onFetchButtonClicked();
+}
+
+void UrlConfigurationDialog::initModel()
+{
+  mModel->clear();
+  QStringList headers;
+  headers << i18n( "Display name" ) << i18n( "URL" );
+  mModel->setHorizontalHeaderLabels( headers );
 }
 
 bool UrlConfigurationDialog::checkUserAuthInput()

@@ -59,10 +59,6 @@ typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 DavGroupwareResource::DavGroupwareResource( const QString &id )
   : ResourceBase( id ), mMimeVisitor( new Akonadi::IncidenceMimeTypeVisitor )
 {
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                                                Settings::self(), QDBusConnection::ExportAdaptors );
-
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
   AttributeFactory::registerAttribute<DavProtocolAttribute>();
 
@@ -106,7 +102,7 @@ void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collect
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
   DavCollectionDeleteJob *job = new DavCollectionDeleteJob( davUrl );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onCollectionRemovedFinished( KJob* ) ) );
@@ -187,7 +183,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
   DavItemsListJob *job = new DavItemsListJob( davUrl );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
@@ -205,7 +201,7 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
     return false;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
@@ -284,7 +280,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
   const QString urlStr = url.prettyUrl();
   kDebug() << "Item " << item.id() << " will be put to " << urlStr;
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( urlStr );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId(), urlStr );
 
   DavItem davItem;
   davItem.setUrl( urlStr );
@@ -308,7 +304,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   QByteArray rawData;
   QString mimeType;
@@ -352,7 +348,7 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( item.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
@@ -442,7 +438,7 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   }
 
   const Collection collection = job->property( "collection" ).value<Collection>();
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromUrl( collection.remoteId() );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
   const bool protocolSupportsMultiget = DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget();
 
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
@@ -554,6 +550,16 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
 
 void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
 {
+  onItemFetched( job, false );
+}
+
+void DavGroupwareResource::onItemRefreshed( KJob* job )
+{
+  onItemFetched( job, true );
+}
+
+void DavGroupwareResource::onItemFetched( KJob* job, bool isRefresh )
+{
   if ( job->error() ) {
     cancelTask( i18n( "Unable to retrieve item: %1", job->errorText() ) );
     return;
@@ -598,7 +604,10 @@ void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
   item.setRemoteRevision( davItem.etag() );
   mEtagCache.setEtag( item.remoteId(), davItem.etag() );
 
-  itemRetrieved( item );
+  if ( isRefresh )
+    changeCommitted( item );
+  else
+    itemRetrieved( item );
 }
 
 void DavGroupwareResource::onItemAddedFinished( KJob *job )
@@ -614,10 +623,18 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
 
   Akonadi::Item item = createJob->property( "item" ).value<Akonadi::Item>();
   item.setRemoteId( davItem.url() );
-  item.setRemoteRevision( davItem.etag() );
-  mEtagCache.setEtag( davItem.url(), davItem.etag() );
 
-  changeCommitted( item );
+  if ( davItem.etag().isEmpty() ) {
+    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
+    DavItemFetchJob *fetchJob = new DavItemFetchJob( davUrl, davItem );
+    fetchJob->setProperty( "item", QVariant::fromValue( item ) );
+    connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( onItemRefreshed( KJob* ) ) );
+    fetchJob->start();
+  } else {
+    item.setRemoteRevision( davItem.etag() );
+    mEtagCache.setEtag( davItem.url(), davItem.etag() );
+    changeCommitted( item );
+  }
 }
 
 void DavGroupwareResource::onItemChangedFinished( KJob *job )
@@ -632,10 +649,18 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
   const DavItem davItem = modifyJob->item();
 
   Akonadi::Item item = modifyJob->property( "item" ).value<Akonadi::Item>();
-  item.setRemoteRevision( davItem.etag() );
-  mEtagCache.setEtag( item.remoteId(), davItem.etag() );
 
-  changeCommitted( item );
+  if ( davItem.etag().isEmpty() ) {
+    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
+    DavItemFetchJob *fetchJob = new DavItemFetchJob( davUrl, davItem );
+    fetchJob->setProperty( "item", QVariant::fromValue( item ) );
+    connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( onItemRefreshed( KJob* ) ) );
+    fetchJob->start();
+  } else {
+    item.setRemoteRevision( davItem.etag() );
+    mEtagCache.setEtag( davItem.url(), davItem.etag() );
+    changeCommitted( item );
+  }
 }
 
 void DavGroupwareResource::onItemRemovedFinished( KJob *job )

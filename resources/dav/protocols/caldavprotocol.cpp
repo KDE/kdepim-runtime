@@ -161,7 +161,8 @@ QDomDocument CaldavProtocol::collectionsQuery() const
 
 QString CaldavProtocol::collectionsXQuery() const
 {
-  const QString query( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/*[local-name()='supported-calendar-component-set' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/*[local-name()='comp' and namespace-uri()='urn:ietf:params:xml:ns:caldav' and (@name='VTODO' or @name='VEVENT')]/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
+  //const QString query( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/*[local-name()='supported-calendar-component-set' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/*[local-name()='comp' and namespace-uri()='urn:ietf:params:xml:ns:caldav' and (@name='VTODO' or @name='VEVENT')]/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
+  const QString query( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
 
   return query;
 }
@@ -236,6 +237,19 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
 
   DavCollection::ContentTypes contentTypes;
   QDomElement compElement = DavUtils::firstChildElementNS( supportedcomponentElement, "urn:ietf:params:xml:ns:caldav", "comp" );
+
+  /*
+   * Assign the content-type if the server didn't return anything.
+   * According to RFC4791, §5.2.3:
+   * In the absence of this property, the server MUST accept all
+   * component types, and the client can assume that all component
+   * types are accepted.
+   */
+  if ( compElement.isNull() ) {
+     contentTypes |= DavCollection::Events;
+     contentTypes |= DavCollection::Todos;
+  }
+
   while ( !compElement.isNull() ) {
     const QString type = compElement.attribute( "name" ).toLower();
     if ( type == QLatin1String( "vevent" ) )

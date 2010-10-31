@@ -54,3 +54,6 @@ class DavCollectionDeleteJob : public KJob
 };
 
 #endif
+
+
+

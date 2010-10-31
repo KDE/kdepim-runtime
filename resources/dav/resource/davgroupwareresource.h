@@ -58,6 +58,15 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     void onRetrieveItemsFinished( KJob* );
     void onMultigetFinished( KJob* );
     void onRetrieveItemFinished( KJob* );
+    /**
+      * Called when a new item has been fetched from the backend.
+      *
+      * @param job The job that fetched the item
+      * @param updatedItem Set to true if the item fetch has been requested
+      * by a refresh.
+      */
+    void onItemFetched( KJob* job, bool isRefresh = false );
+    void onItemRefreshed( KJob* job );
 
     void onItemAddedFinished( KJob* );
     void onItemChangedFinished( KJob* );
