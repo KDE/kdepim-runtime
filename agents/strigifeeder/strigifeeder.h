@@ -21,9 +21,15 @@
 #define AKONADI_STRIGI_FEEDER_H
 
 #include <akonadi/agentbase.h>
+#include <akonadi/collection.h>
+#include <akonadi/item.h>
 #include <strigi/qtdbus/strigiclient.h>
 
+class KJob;
+
 namespace Akonadi {
+
+class ItemFetchScope;
 
 /**
   Full text search provider using strigi.
@@ -35,13 +41,56 @@ class StrigiFeeder : public AgentBase, public AgentBase::Observer
   public:
     StrigiFeeder( const QString &id );
 
+    void configure( WId windowId );
+
+    /**
+     * Set the index compatibility level. If the current level is below this, a full re-indexing is performed.
+     */
+    void setIndexCompatibilityLevel( int level );
+
+  public Q_SLOTS:
+    /** Trigger a complete update of all items. */
+    void updateAll();
+
+  Q_SIGNALS:
+    void fullyIndexed();
+
   protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved( const Akonadi::Item &item );
 
+    void doSetOnline( bool online );
+
+  private Q_SLOTS:
+    void collectionsReceived( const Akonadi::Collection::List &collections );
+    void itemHeadersReceived( const Akonadi::Item::List &items );
+    void itemsReceived( const Akonadi::Item::List &items );
+    void notificationItemsReceived( const Akonadi::Item::List &items );
+    void itemFetchResult( KJob *job );
+
+    void selfTest();
+    void slotFullyIndexed();
+    void systemIdle();
+    void systemResumed();
+
   private:
+    void processNextCollection();
+    void checkOnline();
+    bool needsReIndexing() const;
+    Akonadi::ItemFetchScope fetchScopeForCollection( const Akonadi::Collection &collection );
+
     StrigiClient mStrigi;
+
+    Akonadi::Collection::List mCollectionQueue;
+    Akonadi::Collection mCurrentCollection;
+    int mTotalAmount, mProcessedAmount, mPendingJobs;
+    QTimer mStrigiDaemonStartupTimeout;
+    int mIndexCompatLevel;
+    bool mStrigiDaemonStartupAttempted;
+    bool mInitialUpdateDone;
+    bool mSelfTestPassed;
+    bool mSystemIsIdle;
 };
 
 }
