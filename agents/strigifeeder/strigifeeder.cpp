@@ -103,14 +103,27 @@ void StrigiFeeder::updateAll()
   connect( collectionFetch, SIGNAL( collectionsReceived( Akonadi::Collection::List ) ), SLOT( collectionsReceived( Akonadi::Collection::List ) ) );
 }
 
+static KUrl extendedItemUrl( const Item &item )
+{
+  KUrl url = item.url();
+  url.addQueryItem( "collection", QString::number( item.parentCollection().id() ) );
+
+  return url;
+}
+
+void StrigiFeeder::indexItem( const Item &item )
+{
+  const QByteArray data = item.payloadData();
+  mStrigi.indexFile( extendedItemUrl( item ).url(), QDateTime::currentDateTime().toTime_t(), data );
+}
+
 void StrigiFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
   if ( entityIsHidden( collection ) )
     return;
 
   if ( item.hasPayload() ) {
-    const QByteArray data = item.payloadData();
-    mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
+    indexItem( item );
   } else {
     const ItemFetchScope scope = fetchScopeForCollection( collection );
     if ( scope.fullPayload() || !scope.payloadParts().isEmpty() ) {
@@ -128,8 +141,7 @@ void StrigiFeeder::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
     return;
 
   if ( item.hasPayload() ) {
-    const QByteArray data = item.payloadData();
-    mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
+    indexItem( item );
   } else {
     const Collection collection = item.parentCollection();
     const ItemFetchScope scope = fetchScopeForCollection( collection );
@@ -234,8 +246,7 @@ void StrigiFeeder::itemsReceived( const Akonadi::Item::List &items )
 {
   foreach ( const Item &item, items ) {
     // we only get here if the item is not anywhere in strigi yet, so no need to delete it
-    const QByteArray data = item.payloadData();
-    mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
+    indexItem( item );
   }
   mProcessedAmount += items.count();
   emit percent( (mProcessedAmount * 100) / (mTotalAmount * 100) );
@@ -247,8 +258,7 @@ void StrigiFeeder::notificationItemsReceived( const Akonadi::Item::List &items )
     if ( !item.hasPayload() )
       continue;
 
-    const QByteArray data = item.payloadData();
-    mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), data );
+    indexItem( item );
   }
 }
 

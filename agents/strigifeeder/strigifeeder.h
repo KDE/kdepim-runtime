@@ -80,6 +80,8 @@ class StrigiFeeder : public AgentBase, public AgentBase::Observer
     bool needsReIndexing() const;
     Akonadi::ItemFetchScope fetchScopeForCollection( const Akonadi::Collection &collection );
 
+    void indexItem( const Item &item );
+
     StrigiClient mStrigi;
 
     Akonadi::Collection::List mCollectionQueue;
