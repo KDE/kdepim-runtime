@@ -107,6 +107,7 @@ static KUrl extendedItemUrl( const Item &item )
 {
   KUrl url = item.url();
   url.addQueryItem( "collection", QString::number( item.parentCollection().id() ) );
+  url.addQueryItem( "mimetype", item.mimeType() );
 
   return url;
 }
