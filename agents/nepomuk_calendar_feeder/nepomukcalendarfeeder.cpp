@@ -70,6 +70,8 @@ NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
   addSupportedMimeType( KCalCore::FreeBusy::freeBusyMimeType() );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
+
+  disableIdleDetection( true );
 }
 
 NepomukCalendarFeeder::~NepomukCalendarFeeder()

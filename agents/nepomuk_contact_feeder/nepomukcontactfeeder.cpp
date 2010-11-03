@@ -61,6 +61,8 @@ NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   addSupportedMimeType( KABC::ContactGroup::mimeType() );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
+
+  disableIdleDetection( true );
 }
 
 NepomukContactFeeder::~NepomukContactFeeder()

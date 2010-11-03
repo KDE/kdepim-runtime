@@ -85,7 +85,8 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   mInitialUpdateDone( false ),
   mNeedsStrigi( false ),
   mSelfTestPassed( false ),
-  mSystemIsIdle( false )
+  mSystemIsIdle( false ),
+  mIdleDetectionDisabled( false )
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
@@ -487,6 +488,11 @@ void NepomukFeederAgentBase::setIndexCompatibilityLevel(int level)
   mIndexCompatLevel = level;
 }
 
+void NepomukFeederAgentBase::disableIdleDetection( bool value )
+{
+  mIdleDetectionDisabled = value;
+}
+
 bool NepomukFeederAgentBase::needsReIndexing() const
 {
   const KConfigGroup grp( componentData().config(), "InitialIndexing" );
@@ -508,11 +514,17 @@ void NepomukFeederAgentBase::doSetOnline(bool online)
 
 void NepomukFeederAgentBase::checkOnline()
 {
-  setOnline( mSelfTestPassed && mSystemIsIdle );
+  if ( mIdleDetectionDisabled )
+    setOnline( mSelfTestPassed );
+  else
+    setOnline( mSelfTestPassed && mSystemIsIdle );
 }
 
 void NepomukFeederAgentBase::systemIdle()
 {
+  if ( mIdleDetectionDisabled )
+    return;
+
   emit status( Idle, i18n( "System idle, ready to index data." ) );
   mSystemIsIdle = true;
   KIdleTime::instance()->catchNextResumeEvent();
@@ -521,6 +533,9 @@ void NepomukFeederAgentBase::systemIdle()
 
 void NepomukFeederAgentBase::systemResumed()
 {
+  if ( mIdleDetectionDisabled )
+    return;
+
   emit status( Idle, i18n( "System busy, indexing suspended." ) );
   mSystemIsIdle = false;
   checkOnline();
