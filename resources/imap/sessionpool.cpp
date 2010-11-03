@@ -33,6 +33,8 @@
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
 
+#include <kpimutils/networkaccesshelper.h>
+
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"
 
@@ -44,7 +46,8 @@ SessionPool::SessionPool( int maxPoolSize, QObject *parent)
     m_account( 0 ),
     m_passwordRequester( 0 ),
     m_initialConnectDone( false ),
-    m_pendingInitialSession( 0 )
+    m_pendingInitialSession( 0 ),
+    m_networkAccessHelper( new KPIMUtils::NetworkAccessHelper( this ) )
 {
 }
 
@@ -89,6 +92,8 @@ bool SessionPool::connect( ImapAccount *account )
     return false;
   }
 
+  m_networkAccessHelper->establishConnection();
+
   m_account = account;
 #ifndef Q_OS_WINCE
   if ( m_account->authenticationMode() == KIMAP::LoginJob::GSSAPI ) {
@@ -113,6 +118,8 @@ void SessionPool::disconnect( SessionTermination termination )
   if ( !m_account ) {
     return;
   }
+
+  m_networkAccessHelper->releaseConnection();
 
   foreach ( KIMAP::Session *s, m_idlePool+m_reservedPool ) {
     killSession( s, termination );
@@ -449,5 +456,3 @@ void SessionPool::onConnectionLost()
 }
 
 #include "sessionpool.moc"
-
-

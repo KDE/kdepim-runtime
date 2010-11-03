@@ -27,11 +27,16 @@
 
 #include <kimap/listjob.h>
 #include <kimap/sessionuiproxy.h>
+#include <addemailaddressjob.h>
 
 namespace KIMAP
 {
   class MailBoxDescriptor;
   class Session;
+}
+
+namespace KPIMUtils {
+  class NetworkAccessHelper;
 }
 
 class ImapAccount;
@@ -118,6 +123,8 @@ private:
 
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
+
+  KPIMUtils::NetworkAccessHelper* m_networkAccessHelper;
 };
 
 #endif
