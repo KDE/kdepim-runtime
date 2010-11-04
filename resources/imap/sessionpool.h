@@ -27,7 +27,6 @@
 
 #include <kimap/listjob.h>
 #include <kimap/sessionuiproxy.h>
-#include <addemailaddressjob.h>
 
 namespace KIMAP
 {
