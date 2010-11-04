@@ -22,55 +22,68 @@
 
 #include <KJob>
 
-#include <Akonadi/Item>
-
+namespace Akonadi {
+class Item;
+}
 
 /**
-  This class takes a prevalidated Item with all the required attributes,
-  sends it using MailTransport, and then stores the result of the sending
-  operation in the item.
-*/
+ * @short A job to send a mail
+ *
+ * This class takes a prevalidated Item with all the required attributes,
+ * sends it using MailTransport, and then stores the result of the sending
+ * operation in the item.
+ */
 class SendJob : public KJob
 {
   Q_OBJECT
 
   public:
+    /**
+     * Creates a new send job.
+     *
+     * @param item The item to send.
+     * @param parent The parent object.
+     */
     explicit SendJob( const Akonadi::Item &item, QObject *parent = 0 );
+
+    /**
+     * Destroys the send job.
+     */
     virtual ~SendJob();
 
     /**
-      Sends the item.
-    */
+     * Starts the job.
+     */
     virtual void start();
 
     /**
-      If this function is called before the job is started, the SendJob will
-      just mark the item as aborted, instead of sending it.
-      Do not call this function more than once.
-    */
+     * If this function is called before the job is started, the SendJob will
+     * just mark the item as aborted, instead of sending it.
+     * Do not call this function more than once.
+     */
     void setMarkAborted();
 
     /**
-      Aborts sending the item.
-      This will give the item an ErrorAttribute of "aborted".
-      (No need to call setMarkAborted() if you call abort().)
-    */
+     * Aborts sending the item.
+     *
+     * This will give the item an ErrorAttribute of "aborted".
+     * (No need to call setMarkAborted() if you call abort().)
+     */
     void abort();
 
   private:
+    //@cond PRIVATE
     class Private;
-    //friend class Private;
-
     Private *const d;
 
     Q_PRIVATE_SLOT( d, void doTransport() )
     Q_PRIVATE_SLOT( d, void transportPercent( KJob*, unsigned long ) )
-    Q_PRIVATE_SLOT( d, void transportResult( KJob *job ) )
-    Q_PRIVATE_SLOT( d, void resourceProgress( const Akonadi::AgentInstance &instance ) )
-    Q_PRIVATE_SLOT( d, void resourceResult( qlonglong itemId, int result, const QString &message ) )
-    Q_PRIVATE_SLOT( d, void postJobResult( KJob *job ) )
-    Q_PRIVATE_SLOT( d, void doEmitResult( KJob *job ) )
-
+    Q_PRIVATE_SLOT( d, void transportResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void resourceProgress( const Akonadi::AgentInstance& ) )
+    Q_PRIVATE_SLOT( d, void resourceResult( qlonglong, int, const QString& ) )
+    Q_PRIVATE_SLOT( d, void postJobResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void doEmitResult( KJob* ) )
+    //@endcond
 };
 
 

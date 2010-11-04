@@ -24,22 +24,21 @@
 
 #include "ui_settings.h"
 
-
 class KConfigDialogManager;
 
 class ConfigDialog : public KDialog
 {
   Q_OBJECT
+
   public:
     ConfigDialog( QWidget *parent = 0 );
 
-  private slots:
+  private Q_SLOTS:
     void save();
 
   private:
-    Ui::ConfigDialog ui;
+    Ui::ConfigDialog mUi;
     KConfigDialogManager *mManager;
-
 };
 
 #endif

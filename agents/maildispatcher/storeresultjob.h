@@ -20,25 +20,38 @@
 #ifndef STORERESULTJOB_H
 #define STORERESULTJOB_H
 
-#include <QString>
-
-#include <Akonadi/Item>
 #include <Akonadi/TransactionSequence>
 
+#include <QtCore/QString>
+
+namespace Akonadi {
+class Item;
+}
 
 /**
-  This class stores the result of a StoreResultJob in an item.
-  First, it removes the 'queued' flag.
-  After that, if the result was success, it stores the 'sent' flag.
-  If the result was failure, it stores the 'error' flag and an ErrorAttribute.
-*/
+ * This class stores the result of a StoreResultJob in an item.
+ * First, it removes the 'queued' flag.
+ * After that, if the result was success, it stores the 'sent' flag.
+ * If the result was failure, it stores the 'error' flag and an ErrorAttribute.
+ */
 class StoreResultJob : public Akonadi::TransactionSequence
 {
   Q_OBJECT
 
   public:
-    // TODO docu
+    /**
+     * Creates a new store result job.
+     *
+     * @param item The item to store.
+     * @param success Whether the mail could be dispatched or not.
+     * @param message An error message in case the mail could not be dispatched.
+     * @param parent The parent object.
+     */
     explicit StoreResultJob( const Akonadi::Item &item, bool success, const QString &message, QObject *parent = 0 );
+
+    /**
+     * Destroys the store result job.
+     */
     virtual ~StoreResultJob();
 
   protected:
@@ -46,14 +59,13 @@ class StoreResultJob : public Akonadi::TransactionSequence
     virtual void doStart();
 
   private:
+    //@cond PRIVATE
     class Private;
-    //friend class Private;
     Private *const d;
 
     Q_PRIVATE_SLOT( d, void fetchDone( KJob *job ) )
     Q_PRIVATE_SLOT( d, void modifyDone( KJob *job ) )
-
+    //@endcond
 };
-
 
 #endif

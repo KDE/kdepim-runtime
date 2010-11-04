@@ -19,19 +19,16 @@
 
 #include "storeresultjob.h"
 
-#include <KDebug>
-#include <KLocalizedString>
-
 #include <Akonadi/Item>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
-
+#include <KDebug>
+#include <KLocalizedString>
 #include <mailtransport/errorattribute.h>
 #include <mailtransport/dispatchmodeattribute.h>
 
 using namespace Akonadi;
 using namespace MailTransport;
-
 
 /**
  * @internal
@@ -52,21 +49,20 @@ class StoreResultJob::Private
     // slots:
     void fetchDone( KJob *job );
     void modifyDone( KJob *job );
-
 };
 
 
 void StoreResultJob::Private::fetchDone( KJob *job )
 {
-  if( job->error() )
+  if ( job->error() )
     return;
 
   kDebug();
 
-  ItemFetchJob *fjob = dynamic_cast<ItemFetchJob*>( job );
-  Q_ASSERT( fjob );
-  if( fjob->items().count() != 1 ) {
-    kError() << "Fetched" << fjob->items().count() << "items, expected 1.";
+  const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
+  Q_ASSERT( fetchJob );
+  if ( fetchJob->items().count() != 1 ) {
+    kError() << "Fetched" << fetchJob->items().count() << "items, expected 1.";
     q->setError( Unknown );
     q->setErrorText( i18n( "Failed to fetch item." ) );
     q->commit();
@@ -74,32 +70,33 @@ void StoreResultJob::Private::fetchDone( KJob *job )
   }
   
   // Store result in item.
-  Item item = fjob->items().first();
-  if( success ) {
+  Item item = fetchJob->items().first();
+  if ( success ) {
     item.clearFlag( "queued" );
     item.setFlag( "sent" );
     item.setFlag( "\\SEEN" );
   } else {
     item.setFlag( "error" );
-    ErrorAttribute *eA = new ErrorAttribute( message );
-    item.addAttribute( eA );
+    ErrorAttribute *errorAttribute = new ErrorAttribute( message );
+    item.addAttribute( errorAttribute );
+
     // If dispatch failed, set the DispatchModeAttribute to Manual.
-    //  Otherwise, the user will *never* be able to try sending the mail again,
-    //  as Send Queued Messages will ignore it.
-    if( item.hasAttribute< DispatchModeAttribute >() ) {
-      item.attribute< DispatchModeAttribute >()->setDispatchMode( MailTransport::DispatchModeAttribute::Manual );
+    // Otherwise, the user will *never* be able to try sending the mail again,
+    // as Send Queued Messages will ignore it.
+    if ( item.hasAttribute<DispatchModeAttribute>() ) {
+      item.attribute<DispatchModeAttribute>()->setDispatchMode( MailTransport::DispatchModeAttribute::Manual );
     } else {
       item.addAttribute( new DispatchModeAttribute( MailTransport::DispatchModeAttribute::Manual ) );
     }
   }
 
-  ItemModifyJob *mjob = new ItemModifyJob( item, q );
-  QObject::connect( mjob, SIGNAL( result( KJob* ) ), q, SLOT( modifyDone( KJob* ) ) );
+  ItemModifyJob *modifyJob = new ItemModifyJob( item, q );
+  QObject::connect( modifyJob, SIGNAL( result( KJob* ) ), q, SLOT( modifyDone( KJob* ) ) );
 }
 
 void StoreResultJob::Private::modifyDone( KJob *job )
 {
-  if( job->error() )
+  if ( job->error() )
     return;
 
   kDebug();
@@ -108,10 +105,9 @@ void StoreResultJob::Private::modifyDone( KJob *job )
 }
 
 
-
 StoreResultJob::StoreResultJob( const Item &item, bool success, const QString &message, QObject *parent )
-  : TransactionSequence( parent )
-  , d( new Private( this ) )
+  : TransactionSequence( parent ),
+    d( new Private( this ) )
 {
   d->item = item;
   d->success = success;
@@ -129,6 +125,5 @@ void StoreResultJob::doStart()
   ItemFetchJob *job = new ItemFetchJob( d->item, this );
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( fetchDone( KJob* ) ) );
 }
-
 
 #include "storeresultjob.moc"

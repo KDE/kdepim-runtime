@@ -22,17 +22,19 @@
 #define MAILDISPATCHERAGENT_H
 
 #include <Akonadi/AgentBase>
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
 
+namespace Akonadi {
+class Item;
+}
 
 /**
- * This agent dispatches mail put into the outbox collection.
+ * @short This agent dispatches mail put into the outbox collection.
  */
 class MailDispatcherAgent : public Akonadi::AgentBase
 {
   Q_OBJECT
-  Q_CLASSINFO("D-Bus Interface", "org.freedesktop.Akonadi.MailDispatcherAgent")
+
+  Q_CLASSINFO( "D-Bus Interface", "org.freedesktop.Akonadi.MailDispatcherAgent" )
 
   public:
     MailDispatcherAgent( const QString &id );
@@ -43,7 +45,7 @@ class MailDispatcherAgent : public Akonadi::AgentBase
 
   Q_SIGNALS:
     /**
-      Emitted when the MDA has attempted to send an item.
+     * Emitted when the MDA has attempted to send an item.
      */
     void itemProcessed( const Akonadi::Item &item, bool result );
 
@@ -56,17 +58,18 @@ class MailDispatcherAgent : public Akonadi::AgentBase
     virtual void doSetOnline( bool online );
 
   private:
+    //@cond PRIVATE
     class Private;
     Private* const d;
 
     Q_PRIVATE_SLOT( d, void abort() )
     Q_PRIVATE_SLOT( d, void dispatch() )
-    Q_PRIVATE_SLOT( d, void itemFetched( Akonadi::Item& ) )
-    Q_PRIVATE_SLOT( d, void queueError( QString ) )
+    Q_PRIVATE_SLOT( d, void itemFetched( const Akonadi::Item& ) )
+    Q_PRIVATE_SLOT( d, void queueError( const QString& ) )
     Q_PRIVATE_SLOT( d, void sendPercent( KJob*, unsigned long ) )
     Q_PRIVATE_SLOT( d, void sendResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void emitStatusReady() )
-
+    //@endcond
 };
 
 #endif // MAILDISPATCHERAGENT_H

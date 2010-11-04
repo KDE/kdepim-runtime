@@ -21,35 +21,32 @@
 
 #include "storeresultjob.h"
 
-#include <QDBusInterface>
-#include <QDBusReply>
-#include <QTimer>
-
-#include <KDebug>
-#include <KLocalizedString>
-
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
-#include <Akonadi/ItemDeleteJob>
-#include <Akonadi/ItemModifyJob>
-#include <Akonadi/ItemMoveJob>
-
+#include <akonadi/agentinstance.h>
+#include <akonadi/agentmanager.h>
+#include <akonadi/collection.h>
+#include <akonadi/dbusconnectionpool.h>
+#include <akonadi/item.h>
+#include <akonadi/itemdeletejob.h>
+#include <akonadi/itemmodifyjob.h>
+#include <akonadi/itemmovejob.h>
+#include <akonadi/kmime/addressattribute.h>
+#include <akonadi/kmime/messageparts.h>
+#include <akonadi/kmime/specialmailcollections.h>
+#include <akonadi/transportresourcebase.h>
+#include <kdebug.h>
+#include <klocalizedstring.h>
 #include <kmime/kmime_message.h>
-#include <boost/shared_ptr.hpp>
-
 #include <mailtransport/sentbehaviourattribute.h>
 #include <mailtransport/transport.h>
 #include <mailtransport/transportattribute.h>
 #include <mailtransport/transportjob.h>
 #include <mailtransport/transportmanager.h>
 
-#include <akonadi/agentinstance.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/dbusconnectionpool.h>
-#include <Akonadi/TransportResourceBase>
-#include <akonadi/kmime/addressattribute.h>
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/kmime/specialmailcollections.h>
+#include <QtCore/QTimer>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusReply>
+
+#include <boost/shared_ptr.hpp>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -63,11 +60,11 @@ class SendJob::Private
 {
   public:
     Private( const Item &itm, SendJob *qq )
-      : q( qq )
-      , item( itm )
-      , currentJob( 0 )
-      , iface( 0 )
-      , aborting( false )
+      : q( qq ),
+        item( itm ),
+        currentJob( 0 ),
+        interface( 0 ),
+        aborting( false )
     {
     }
 
@@ -75,21 +72,22 @@ class SendJob::Private
     Item item;
     KJob *currentJob;
     QString resourceId;
-    QDBusInterface *iface;
+    QDBusInterface *interface;
     bool aborting;
 
-    void doTransport(); // slot
     void doAkonadiTransport();
     void doTraditionalTransport();
-    void transportPercent( KJob *job, unsigned long percent ); // slot
-    void transportResult( KJob *job ); // slot
-    void resourceProgress( const AgentInstance &instance ); // slot
-    void resourceResult( qlonglong itemId, int result, const QString &message ); // slot
-    void doPostJob( bool transportSuccess, const QString &transportMessage ); // result of transport
-    void postJobResult( KJob *job ); // slot
+    void doPostJob( bool transportSuccess, const QString &transportMessage );
     void storeResult( bool success, const QString &message = QString() );
-    void doEmitResult( KJob *job ); // slot: result of storeResult transaction
 
+    // slots
+    void doTransport();
+    void transportPercent( KJob *job, unsigned long percent );
+    void transportResult( KJob *job );
+    void resourceProgress( const AgentInstance &instance );
+    void resourceResult( qlonglong itemId, int result, const QString &message );
+    void postJobResult( KJob *job );
+    void doEmitResult( KJob *job );
 };
 
 
@@ -97,7 +95,7 @@ void SendJob::Private::doTransport()
 {
   kDebug() << "Transporting message.";
 
-  if( aborting ) {
+  if ( aborting ) {
     kDebug() << "Marking message as aborted.";
     q->setError( UserDefinedError );
     q->setErrorText( i18n( "Message sending aborted." ) );
@@ -106,20 +104,22 @@ void SendJob::Private::doTransport()
   }
 
   // Is it an Akonadi transport or a traditional one?
-  TransportAttribute *tA = item.attribute<TransportAttribute>();
-  Q_ASSERT( tA );
-  if( !tA->transport() ) {
+  const TransportAttribute *transportAttribute = item.attribute<TransportAttribute>();
+  Q_ASSERT( transportAttribute );
+  if ( !transportAttribute->transport() ) {
     storeResult( false, i18n( "Could not initiate message transport. Possibly invalid transport." ) );
     return;
   }
-  TransportType type = tA->transport()->transportType();
-  if( !type.isValid() ) {
+
+  const TransportType type = transportAttribute->transport()->transportType();
+  if ( !type.isValid() ) {
     storeResult( false, i18n( "Could not send message. Invalid transport." ) );
     return;
   }
-  if( type.type() == Transport::EnumType::Akonadi ) {
+
+  if ( type.type() == Transport::EnumType::Akonadi ) {
     // Send the item directly to the resource that will send it.
-    resourceId = tA->transport()->host();
+    resourceId = transportAttribute->transport()->host();
     doAkonadiTransport();
   } else {
     // Use a traditional transport job.
@@ -130,27 +130,29 @@ void SendJob::Private::doTransport()
 void SendJob::Private::doAkonadiTransport()
 {
   Q_ASSERT( !resourceId.isEmpty() );
-  Q_ASSERT( iface == 0 );
-  iface = new QDBusInterface(
+  Q_ASSERT( interface == 0 );
+
+  interface = new QDBusInterface(
       QLatin1String( "org.freedesktop.Akonadi.Resource." ) + resourceId,
       QLatin1String( "/Transport" ), QLatin1String( "org.freedesktop.Akonadi.Resource.Transport" ),
       DBusConnectionPool::threadConnection(), q );
-  if( !iface->isValid() ) {
+
+  if ( !interface->isValid() ) {
     storeResult( false, i18n( "Failed to get D-Bus interface of resource %1.", resourceId ) );
-    delete iface;
-    iface = 0;
+    delete interface;
+    interface = 0;
     return;
   }
 
   // Signals.
-  QObject::connect( AgentManager::self(), SIGNAL(instanceProgressChanged(Akonadi::AgentInstance)),
-      q, SLOT(resourceProgress(Akonadi::AgentInstance)) );
-  QObject::connect( iface, SIGNAL(transportResult(qlonglong,int,QString)),
-      q, SLOT(resourceResult(qlonglong,int,QString)) );
+  QObject::connect( AgentManager::self(), SIGNAL( instanceProgressChanged( const Akonadi::AgentInstance& ) ),
+                    q, SLOT( resourceProgress( const Akonadi::AgentInstance& ) ) );
+  QObject::connect( interface, SIGNAL( transportResult( qlonglong, int, const QString& ) ),
+                    q, SLOT( resourceResult( qlonglong, int, const QString& ) ) );
 
   // Start sending.
-  QDBusReply<void> reply = iface->call( QLatin1String( "send" ), item.id() );
-  if( !reply.isValid() ) {
+  const QDBusReply<void> reply = interface->call( QLatin1String( "send" ), item.id() );
+  if ( !reply.isValid() ) {
     storeResult( false, i18n( "Invalid D-Bus reply from resource %1.", resourceId ) );
     return;
   }
@@ -158,41 +160,45 @@ void SendJob::Private::doAkonadiTransport()
 
 void SendJob::Private::doTraditionalTransport()
 {
-  TransportAttribute *tA = item.attribute<TransportAttribute>();
-  TransportJob *tjob = TransportManager::self()->createTransportJob( tA->transportId() );
-  Q_ASSERT( tjob );
+  const TransportAttribute *transportAttribute = item.attribute<TransportAttribute>();
+  TransportJob *job = TransportManager::self()->createTransportJob( transportAttribute->transportId() );
+
+  Q_ASSERT( job );
   Q_ASSERT( currentJob == 0 );
-  currentJob = tjob;
+
+  currentJob = job;
 
   // Message.
   Q_ASSERT( item.hasPayload<Message::Ptr>() );
   const Message::Ptr message = item.payload<Message::Ptr>();
-  const QByteArray cmsg = message->encodedContent( true ) + "\r\n";
-  //kDebug() << "msg:" << cmsg;
-  Q_ASSERT( !cmsg.isEmpty() );
+  const QByteArray content = message->encodedContent( true ) + "\r\n";
+  Q_ASSERT( !content.isEmpty() );
 
   // Addresses.
-  AddressAttribute *addrA = item.attribute<AddressAttribute>();
-  Q_ASSERT( addrA );
-  tjob->setData( cmsg );
-  tjob->setSender( addrA->from() );
-  tjob->setTo( addrA->to() );
-  tjob->setCc( addrA->cc() );
-  tjob->setBcc( addrA->bcc() );
+  const AddressAttribute *addressAttribute = item.attribute<AddressAttribute>();
+  Q_ASSERT( addressAttribute );
+
+  job->setData( content );
+  job->setSender( addressAttribute->from() );
+  job->setTo( addressAttribute->to() );
+  job->setCc( addressAttribute->cc() );
+  job->setBcc( addressAttribute->bcc() );
 
   // Signals.
-  connect( tjob, SIGNAL(result(KJob*)), q, SLOT(transportResult(KJob*)) );
-  connect( tjob, SIGNAL(percent(KJob*,unsigned long)),
-      q, SLOT(transportPercent(KJob*,unsigned long)) );
-  tjob->start(); // non-Akonadi
+  connect( job, SIGNAL( result( KJob* ) ),
+           q, SLOT( transportResult( KJob* ) ) );
+  connect( job, SIGNAL( percent( KJob*, unsigned long ) ),
+           q, SLOT( transportPercent( KJob*, unsigned long ) ) );
+
+  job->start();
 }
 
-void SendJob::Private::transportPercent( KJob *job, unsigned long percent )
+void SendJob::Private::transportPercent( KJob *job, unsigned long )
 {
-  Q_UNUSED( percent );
   Q_ASSERT( currentJob == job );
   kDebug() << "Processed amount" << job->processedAmount( KJob::Bytes )
-    << "total amount" << job->totalAmount( KJob::Bytes );
+           << "total amount" << job->totalAmount( KJob::Bytes );
+
   q->setTotalAmount( KJob::Bytes, job->totalAmount( KJob::Bytes ) ); // Is not set at the time of start().
   q->setProcessedAmount( KJob::Bytes, job->processedAmount( KJob::Bytes ) );
 }
@@ -206,13 +212,13 @@ void SendJob::Private::transportResult( KJob *job )
 
 void SendJob::Private::resourceProgress( const AgentInstance &instance )
 {
-  if( !iface ) {
+  if ( !interface ) {
     // We might have gotten a very late signal.
     kWarning() << "called but no resource job running!";
     return;
   }
 
-  if( instance.identifier() == resourceId ) {
+  if ( instance.identifier() == resourceId ) {
     // This relies on the resource's progress representing the progress of
     // sending this item.
     q->setPercent( instance.progress() );
@@ -222,12 +228,15 @@ void SendJob::Private::resourceProgress( const AgentInstance &instance )
 void SendJob::Private::resourceResult( qlonglong itemId, int result,
                                        const QString &message )
 {
-  Q_ASSERT( iface );
-  delete iface; // So that abort() knows the transport job is over.
-  iface = 0;
+  Q_ASSERT( interface );
+  delete interface; // So that abort() knows the transport job is over.
+  interface = 0;
+
   const TransportResourceBase::TransportResult transportResult =
       static_cast<TransportResourceBase::TransportResult>( result );
-  const bool success = ( transportResult == TransportResourceBase::TransportSucceeded );
+
+  const bool success = (transportResult == TransportResourceBase::TransportSucceeded);
+
   Q_ASSERT( itemId == item.id() );
   doPostJob( success, message );
 }
@@ -236,31 +245,30 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
 {
   kDebug() << "success" << transportSuccess << "message" << transportMessage;
 
-  if( !transportSuccess ) {
+  if ( !transportSuccess ) {
     kDebug() << "Error transporting.";
     q->setError( UserDefinedError );
-    QString err;
-    if( aborting ) {
-      err = i18n( "Message transport aborted." );
-    } else {
-      err = i18n( "Failed to transport message." );
-    }
-    q->setErrorText( err + ' ' + transportMessage );
+
+    const QString error = aborting ? i18n( "Message transport aborted." )
+                                   : i18n( "Failed to transport message." );
+
+    q->setErrorText( error + ' ' + transportMessage );
     storeResult( false, q->errorString() );
   } else {
     kDebug() << "Success transporting.";
 
     // Delete or move to sent-mail.
-    SentBehaviourAttribute *sA = item.attribute<SentBehaviourAttribute>();
-    Q_ASSERT( sA );
-    if( sA->sentBehaviour() == SentBehaviourAttribute::Delete ) {
+    const SentBehaviourAttribute *attribute = item.attribute<SentBehaviourAttribute>();
+    Q_ASSERT( attribute );
+
+    if ( attribute->sentBehaviour() == SentBehaviourAttribute::Delete ) {
       kDebug() << "Deleting item from outbox.";
       currentJob = new ItemDeleteJob( item );
-      QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
+      QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
     } else {
-      Collection moveTo( sA->moveToCollection() );
-      if( sA->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection ) {
-        if( !SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
+      Collection moveTo( attribute->moveToCollection() );
+      if ( attribute->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection ) {
+        if ( !SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
           // We were unlucky and LocalFolders is recreating its stuff right now.
           // We will not wait for it.
           moveTo = Collection();
@@ -268,17 +276,18 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
           moveTo = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail );
         }
       } else {
-        kDebug() << "sentBehaviour=" << sA->sentBehaviour() << "using collection from attribute";
+        kDebug() << "sentBehaviour=" << attribute->sentBehaviour() << "using collection from attribute";
       }
+
       kDebug() << "Moving to sent-mail collection with id" << moveTo.id();
-      if( !moveTo.isValid() ) {
+      if ( !moveTo.isValid() ) {
         q->setError( UserDefinedError );
         q->setErrorText( i18n( "Invalid sent-mail folder. Keeping message in outbox." ) );
         storeResult( false, q->errorString() );
       } else {
         Q_ASSERT( currentJob == 0 );
         currentJob = new ItemMoveJob( item, moveTo, q );
-        QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
+        QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
       }
     }
   }
@@ -289,7 +298,7 @@ void SendJob::Private::postJobResult( KJob *job )
   Q_ASSERT( currentJob == job );
   currentJob = 0;
 
-  if( job->error() ) {
+  if ( job->error() ) {
     kDebug() << "Error deleting or moving to sent-mail.";
     q->setError( UserDefinedError );
     q->setErrorText( i18n( "Sending succeeded, but failed to finalize message." ) + ' ' + job->errorString() );
@@ -305,8 +314,8 @@ void SendJob::Private::storeResult( bool success, const QString &message )
   kDebug() << "success" << success << "message" << message;
 
   Q_ASSERT( currentJob == 0 );
-  currentJob = new StoreResultJob( item, success, message);
-  connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(doEmitResult(KJob*)) );
+  currentJob = new StoreResultJob( item, success, message );
+  connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( doEmitResult( KJob* ) ) );
 }
 
 void SendJob::Private::doEmitResult( KJob *job )
@@ -314,7 +323,7 @@ void SendJob::Private::doEmitResult( KJob *job )
   Q_ASSERT( currentJob == job );
   currentJob = 0;
 
-  if( job->error() ) {
+  if ( job->error() ) {
     kWarning() << "Error storing result.";
     q->setError( UserDefinedError );
     q->setErrorText( q->errorString() + ' ' + i18n( "Failed to store result in item." ) + ' ' + job->errorString() );
@@ -327,10 +336,9 @@ void SendJob::Private::doEmitResult( KJob *job )
 }
 
 
-
 SendJob::SendJob( const Item &item, QObject *parent )
-  : KJob( parent )
-  , d( new Private( item, this ) )
+  : KJob( parent ),
+    d( new Private( item, this ) )
 {
 }
 
@@ -338,7 +346,6 @@ SendJob::~SendJob()
 {
   delete d;
 }
-
 
 void SendJob::start()
 {
@@ -355,11 +362,11 @@ void SendJob::abort()
 {
   setMarkAborted();
 
-  if( dynamic_cast<TransportJob*>( d->currentJob ) ) {
+  if ( dynamic_cast<TransportJob*>( d->currentJob ) ) {
     kDebug() << "Abort called, active transport job.";
     // Abort transport.
     d->currentJob->kill( KJob::EmitResult );
-  } else if( d->iface != 0 ) {
+  } else if ( d->interface != 0 ) {
     kDebug() << "Abort called, propagating to resource.";
     // Abort resource doing transport.
     AgentInstance instance = AgentManager::self()->instance( d->resourceId );

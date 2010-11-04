@@ -18,92 +18,64 @@
 */
 
 #include "configdialog.h"
+
 #include "settings.h"
 
-#include <KConfigDialogManager>
-
-//#include <akonadi/collectionmodel.h>
-//#include <akonadi/collectionview.h>
-//#include <akonadi/collectionfilterproxymodel.h>
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionRequester>
+#include <KConfigDialogManager>
+#include <KMime/Message>
 
 using namespace Akonadi;
 
-ConfigDialog::ConfigDialog(QWidget * parent) :
-    KDialog( parent )
+ConfigDialog::ConfigDialog( QWidget *parent )
+  : KDialog( parent )
 {
-    ui.setupUi( mainWidget() );
-    mManager = new KConfigDialogManager( this, Settings::self() );
-    mManager->updateWidgets();
+  mUi.setupUi( mainWidget() );
 
-    ui.outboxSelector->setMimeTypeFilter( QStringList() << QLatin1String( "message/rfc822" ) );
-    // collection has no name if I skip the fetch job and just do Collection c(id)
-    CollectionFetchJob *job = new CollectionFetchJob( Collection( Settings::self()->outbox() ), CollectionFetchJob::Base );
-    if( job->exec() )
-    {
-        Collection::List cs = job->collections();
-        if( !cs.empty() )
-            ui.outboxSelector->setCollection( cs.first() );
-    }
+  mManager = new KConfigDialogManager( this, Settings::self() );
+  mManager->updateWidgets();
 
-    ui.sentMailSelector->setMimeTypeFilter( QStringList() << QLatin1String( "message/rfc822" ) );
-    job = new CollectionFetchJob( Collection( Settings::self()->sentMail() ), CollectionFetchJob::Base );
-    if( job->exec() )
-    {
-        Collection::List cs = job->collections();
-        if( !cs.empty() )
-            ui.sentMailSelector->setCollection( cs.first() );
-    }
+  ui.outboxSelector->setMimeTypeFilter( QStringList() << KMime::Message::mimeType() );
 
-//   mCollectionView = new Akonadi::CollectionView( w );
-//   mCollectionView->setSelectionMode( QAbstractItemView::SingleSelection );
-//   connect( mCollectionView, SIGNAL(clicked(QModelIndex)),
-//            this, SLOT(collectionActivated(QModelIndex)) );
-//   l->addWidget( mCollectionView );
-// 
-//   mCollectionModel = new Akonadi::CollectionModel( this );
-//   Akonadi::CollectionFilterProxyModel *sortModel = new Akonadi::CollectionFilterProxyModel( this );
-//   sortModel->setDynamicSortFilter( true );
-//   sortModel->setSortCaseSensitivity( Qt::CaseInsensitive );
-//   sortModel->addMimeTypeFilter( "message/rfc822" );
-//   sortModel->setSourceModel( mCollectionModel );
-//   mCollectionView->setModel( sortModel );
+  // collection has no name if I skip the fetch job and just do Collection c(id)
+  CollectionFetchJob *job = new CollectionFetchJob( Collection( Settings::self()->outbox() ), CollectionFetchJob::Base );
+  if ( job->exec() ) {
+    const Collection::List collections = job->collections();
 
-    connect( this, SIGNAL(okClicked()),
-             this, SLOT(save()) );
+    if ( !collections.isEmpty() )
+      ui.outboxSelector->setCollection( collections.first() );
+  }
+
+  ui.sentMailSelector->setMimeTypeFilter( QStringList() << KMime::Message::mimeType() );
+  job = new CollectionFetchJob( Collection( Settings::self()->sentMail() ), CollectionFetchJob::Base );
+  if ( job->exec() ) {
+    const Collection::List collections = job->collections();
+    if ( !collections.isEmpty() )
+      ui.sentMailSelector->setCollection( collections.first() );
+  }
+
+  connect( this, SIGNAL( okClicked() ), this, SLOT( save() ) );
 }
 
 void ConfigDialog::save()
 {
-    mManager->updateSettings();
+  mManager->updateSettings();
 
-//   QModelIndex index = mCollectionView->currentIndex();
-//   if ( index.isValid() )
-//   {
-//     const Akonadi::Collection col = index.model()->data( index, Akonadi::CollectionModel::CollectionRole ).value<Akonadi::Collection>();
-//     if ( col.isValid() )
-//     {
-//       kDebug() << "Collection" << col.id() << "selected";
-//       Settings::self()->setOutbox( col.id() );
-//     }
-//   }
-    const Collection outbox = ui.outboxSelector->collection();
-    if ( outbox.isValid() )
-    {
-        kDebug() << "Collection" << outbox.id() << "selected for outbox.";
-        Settings::self()->setOutbox( outbox.id() );
-    }
+  const Collection outbox = ui.outboxSelector->collection();
+  if ( outbox.isValid() ) {
+    kDebug() << "Collection" << outbox.id() << "selected for outbox.";
+    Settings::self()->setOutbox( outbox.id() );
+  }
 
-    const Collection sentMail = ui.sentMailSelector->collection();
-    if ( sentMail.isValid() )
-    {
-        kDebug() << "Collection" << sentMail.id() << "selected for sentMail.";
-        Settings::self()->setSentMail( sentMail.id() );
-    }
+  const Collection sentMail = ui.sentMailSelector->collection();
+  if ( sentMail.isValid() ) {
+    kDebug() << "Collection" << sentMail.id() << "selected for sentMail.";
+    Settings::self()->setSentMail( sentMail.id() );
+  }
 
-    Settings::self()->writeConfig();
+  Settings::self()->writeConfig();
 }
 
 #include "configdialog.moc"

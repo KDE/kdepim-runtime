@@ -29,7 +29,7 @@ class KJob;
 
 
 /**
-  Monitors the outbox collection and provides a queue of messages for the MDA to send.
+ * @short Monitors the outbox collection and provides a queue of messages for the MDA to send.
  */
 class OutboxQueue : public QObject
 {
@@ -37,28 +37,45 @@ class OutboxQueue : public QObject
   friend class MailDispatcherAgent;
 
   public:
-    // TODO docu
+    /**
+     * Creates a new outbox queue.
+     *
+     * @param parent The parent object.
+     */
     explicit OutboxQueue( QObject *parent = 0 );
+
+    /**
+     * Destroys the outbox queue.
+     */
     virtual ~OutboxQueue();
 
-    bool isEmpty() const;
-    int count() const;
     /**
-      Returns the size (in bytes) of all items in the queue.
-    */
+     * Returns whether the queue is empty.
+     */
+    bool isEmpty() const;
+
+    /**
+     * Returns the number of items in the queue.
+     */
+    int count() const;
+
+    /**
+     * Returns the size (in bytes) of all items in the queue.
+     */
     qulonglong totalSize() const;
 
     /**
-      Fetches an item and emits itemReady() when done.
-    */
+     * Fetches an item and emits itemReady() when done.
+     */
     void fetchOne();
 
-  signals:
-    void itemReady( Akonadi::Item &item );
+  Q_SIGNALS:
+    void itemReady( const Akonadi::Item &item );
     void newItems();
     void error( const QString &error );
 
   private:
+    //@cond PRIVATE
     class Private;
     Private* const d;
 
@@ -72,7 +89,7 @@ class OutboxQueue : public QObject
     Q_PRIVATE_SLOT( d, void itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) )
     Q_PRIVATE_SLOT( d, void itemRemoved( Akonadi::Item ) )
     Q_PRIVATE_SLOT( d, void itemProcessed( Akonadi::Item, bool ) )
-
+    //@endcond
 };
 
 

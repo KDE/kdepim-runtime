@@ -21,26 +21,26 @@
 #include "maildispatcheragent.h"
 
 //#include "configdialog.h"
+#include "maildispatcheragentadaptor.h"
 #include "outboxqueue.h"
 #include "sendjob.h"
 #include "settings.h"
 #include "settingsadaptor.h"
-#include "maildispatcheragentadaptor.h"
-
-#include <QtDBus/QDBusConnection>
-#include <QTimer>
-
-#include <KDebug>
-#include <KLocalizedString>
-#include <KWindowSystem>
-#include <KIcon>
-#include <KNotification>
-#include <KIconLoader>
 
 #include <akonadi/agentfactory.h>
 #include <akonadi/dbusconnectionpool.h>
-#include <Akonadi/ItemFetchScope>
+#include <akonadi/itemfetchscope.h>
+
+#include <KDebug>
+#include <KIcon>
+#include <KIconLoader>
+#include <KLocalizedString>
 #include <KMime/Message>
+#include <KNotification>
+#include <KWindowSystem>
+
+#include <QtCore/QTimer>
+#include <QtDBus/QDBusConnection>
 
 #ifdef KDEPIM_STATIC_LIBS
 extern bool ___MailTransport____INIT();
@@ -58,11 +58,11 @@ class MailDispatcherAgent::Private
 {
   public:
     Private( MailDispatcherAgent *parent )
-        : q( parent )
-        , currentJob( 0 )
-        , aborting( false )
-        , sendingInProgress( false )
-        , sentAnything( false )
+        : q( parent ),
+          currentJob( 0 ),
+          aborting( false ),
+          sendingInProgress( false ),
+          sentAnything( false )
     {
     }
 
@@ -83,7 +83,7 @@ class MailDispatcherAgent::Private
     // slots:
     void abort();
     void dispatch();
-    void itemFetched( Item &item );
+    void itemFetched( const Item &item );
     void queueError( const QString &message );
     void sendPercent( KJob *job, unsigned long percent );
     void sendResult( KJob *job );
@@ -94,22 +94,23 @@ class MailDispatcherAgent::Private
 
 void MailDispatcherAgent::Private::abort()
 {
-  if( !q->isOnline() ) {
+  if ( !q->isOnline() ) {
     kDebug() << "Offline. Ignoring call.";
     return;
   }
-  if( aborting ) {
+
+  if ( aborting ) {
     kDebug() << "Already aborting.";
     return;
   }
 
-  if( !sendingInProgress && queue->isEmpty() ) {
+  if ( !sendingInProgress && queue->isEmpty() ) {
     kDebug() << "MDA is idle.";
     Q_ASSERT( q->status() == AgentBase::Idle );
   } else {
     kDebug() << "Aborting...";
     aborting = true;
-    if( currentJob ) {
+    if ( currentJob ) {
       currentJob->abort();
     }
     // Further SendJobs will mark remaining items in the queue as 'aborted'.
@@ -120,13 +121,13 @@ void MailDispatcherAgent::Private::dispatch()
 {
   Q_ASSERT( queue );
 
-  if( !q->isOnline() || sendingInProgress ) {
+  if ( !q->isOnline() || sendingInProgress ) {
     kDebug() << "Offline or busy. See you later.";
     return;
   }
 
-  if( !queue->isEmpty() ) {
-    if( !sentAnything ) {
+  if ( !queue->isEmpty() ) {
+    if ( !sentAnything ) {
       sentAnything = true;
       sentItemsSize = 0;
       emit q->percent( 0 );
@@ -139,30 +140,30 @@ void MailDispatcherAgent::Private::dispatch()
     queue->fetchOne(); // will trigger itemFetched
   } else {
     kDebug() << "Empty queue.";
-    if( aborting ) {
+    if ( aborting ) {
       // Finished marking messages as 'aborted'.
       aborting = false;
       sentAnything = false;
       emit q->status( AgentBase::Idle, i18n( "Sending canceled." ) );
-      QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
+      QTimer::singleShot( 3000, q, SLOT( emitStatusReady() ) );
     } else {
-      if( sentAnything ) {
+      if ( sentAnything ) {
         // Finished sending messages in queue.
         sentAnything = false;
         emit q->percent( 100 );
         emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
 
-        const QPixmap pix = KIcon("mail-folder-outbox").pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-        KNotification *notify = new KNotification("emailsent");
+        const QPixmap pixmap = KIcon( "mail-folder-outbox" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+        KNotification *notify = new KNotification( "emailsent" );
         notify->setComponentData( q->componentData() );
-        notify->setPixmap( pix );
+        notify->setPixmap( pixmap );
         notify->setText( i18nc("Notification when the email was sent", "E-mail successfully sent" ) );
         notify->sendEvent();
       } else {
         // Empty queue.
         emit q->status( AgentBase::Idle, i18n( "No items in queue." ) );
       }
-      QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
+      QTimer::singleShot( 3000, q, SLOT( emitStatusReady() ) );
     }
   }
 }
@@ -189,13 +190,16 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.MailDispatcherAgent" ) );
   
   d->queue = new OutboxQueue( this );
-  connect( d->queue, SIGNAL( newItems() ), this, SLOT( dispatch() ) );
-  connect( d->queue, SIGNAL( itemReady( Akonadi::Item& ) ),
-      this, SLOT( itemFetched( Akonadi::Item& ) ) );
-  connect( d->queue, SIGNAL(error(QString)), this, SLOT(queueError(QString)) );
-  connect( this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
-      d->queue, SLOT(itemProcessed(Akonadi::Item,bool)) );
-  connect( this, SIGNAL(abortRequested()), this, SLOT(abort()) );
+  connect( d->queue, SIGNAL( newItems() ),
+           this, SLOT( dispatch() ) );
+  connect( d->queue, SIGNAL( itemReady( const Akonadi::Item& ) ),
+           this, SLOT( itemFetched( const Akonadi::Item& ) ) );
+  connect( d->queue, SIGNAL( error( const QString& ) ),
+           this, SLOT( queueError( const QString& ) ) );
+  connect( this, SIGNAL( itemProcessed( Akonadi::Item, bool ) ),
+           d->queue, SLOT( itemProcessed( Akonadi::Item, bool ) ) );
+  connect( this, SIGNAL( abortRequested() ),
+           this, SLOT( abort() ) );
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
@@ -212,7 +216,7 @@ void MailDispatcherAgent::configure( WId windowId )
 void MailDispatcherAgent::doSetOnline( bool online )
 {
   Q_ASSERT( d->queue );
-  if( online ) {
+  if ( online ) {
     kDebug() << "Online. Dispatching messages.";
     emit status( AgentBase::Idle, i18n( "Online, sending messages in queue." ) );
     QTimer::singleShot( 0, this, SLOT( dispatch() ) );
@@ -228,7 +232,7 @@ void MailDispatcherAgent::doSetOnline( bool online )
   AgentBase::doSetOnline( online );
 }
 
-void MailDispatcherAgent::Private::itemFetched( Item &item )
+void MailDispatcherAgent::Private::itemFetched( const Item &item )
 {
   kDebug() << "Fetched item" << item.id() << "; creating SendJob.";
   Q_ASSERT( sendingInProgress );
@@ -238,14 +242,18 @@ void MailDispatcherAgent::Private::itemFetched( Item &item )
   emit q->itemDispatchStarted();
   
   currentJob = new SendJob( item, q );
-  if( aborting ) {
+  if ( aborting ) {
     currentJob->setMarkAborted();
   }
-  q->status( AgentBase::Running, i18nc( "Message with given subject is being sent.", "Sending: ") + item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString() );
+
+  q->status( AgentBase::Running, i18nc( "Message with given subject is being sent.", "Sending: %1",
+                                        item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString() ) );
+
   connect( currentJob, SIGNAL( result( KJob* ) ),
-      q, SLOT( sendResult( KJob* ) ) );
-  connect( currentJob, SIGNAL(percent(KJob*,unsigned long)),
-      q, SLOT(sendPercent(KJob*,unsigned long)) );
+           q, SLOT( sendResult( KJob* ) ) );
+  connect( currentJob, SIGNAL( percent( KJob*, unsigned long ) ),
+           q, SLOT( sendPercent( KJob*, unsigned long ) ) );
+
   currentJob->start();
 }
 
@@ -255,7 +263,7 @@ void MailDispatcherAgent::Private::queueError( const QString &message )
   // FIXME figure out why this does not set the status to Broken, etc.
 }
 
-void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long percent )
+void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long )
 {
   Q_ASSERT( sendingInProgress );
   Q_ASSERT( job == currentJob );
@@ -266,18 +274,18 @@ void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long percent
   // Give the transport 80% of the weight, and move-to-sendmail 20%.
   const double transportWeight = 0.8;
   
-  Q_UNUSED( percent );
-  int perc = 100 * ( sentItemsSize + job->processedAmount( KJob::Bytes ) * transportWeight )
-    / ( sentItemsSize + currentItem.size() + queue->totalSize() );
-  kDebug() << "sentItemsSize" << sentItemsSize
-    << "this job processed" << job->processedAmount( KJob::Bytes )
-    << "queue totalSize" << queue->totalSize()
-    << "total total size (sent+current+queue)" << ( sentItemsSize + currentItem.size() + queue->totalSize() )
-    << "new percentage" << perc << "old percentage" << q->progress();
+  const int percent = 100 * ( sentItemsSize + job->processedAmount( KJob::Bytes ) * transportWeight )
+                          / ( sentItemsSize + currentItem.size() + queue->totalSize() );
 
-  if( perc != q->progress() ) {
+  kDebug() << "sentItemsSize" << sentItemsSize
+           << "this job processed" << job->processedAmount( KJob::Bytes )
+           << "queue totalSize" << queue->totalSize()
+           << "total total size (sent+current+queue)" << ( sentItemsSize + currentItem.size() + queue->totalSize() )
+           << "new percentage" << percent << "old percentage" << q->progress();
+
+  if ( percent != q->progress() ) {
     // The progress can decrease too, if messages got added to the queue.
-    emit q->percent( perc );
+    emit q->percent( percent );
   }
 
   // It is possible that the number of queued messages has changed.
@@ -298,7 +306,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
   emit q->itemProcessed( currentItem, !job->error() );
   currentItem = Item();
 
-  if( job->error() ) {
+  if ( job->error() ) {
     // The SendJob gave the item an ErrorAttribute, so we don't have to
     // do anything.
     kDebug() << "Sending failed. error:" << job->errorString();
@@ -313,7 +321,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
 
 void MailDispatcherAgent::Private::emitStatusReady()
 {
-  if( q->status() == AgentBase::Idle ) {
+  if ( q->status() == AgentBase::Idle ) {
     // If still idle after aborting, clear 'aborted' status.
     emit q->status( AgentBase::Idle, i18n( "Ready to dispatch messages." ) );
   }
@@ -324,6 +332,5 @@ AKONADI_AGENT_FACTORY( MailDispatcherAgent, akonadi_maildispatcher_agent )
 #else
 AKONADI_AGENT_MAIN( MailDispatcherAgent)
 #endif
-
 
 #include "maildispatcheragent.moc"
