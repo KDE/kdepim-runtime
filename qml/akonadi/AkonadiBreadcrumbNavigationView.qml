@@ -57,10 +57,16 @@ Item {
   property bool clickToBulkAction : true
 
   signal selectedClicked()
+  signal homeClicked()
 
   Item {
     id :dragOverlay
     anchors.fill : parent
+  }
+
+  Connections {
+    target: breadcrumbView
+    onHomeClicked: homeClicked()
   }
 
   BreadcrumbNavigationView {

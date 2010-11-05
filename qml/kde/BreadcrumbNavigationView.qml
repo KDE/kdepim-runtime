@@ -49,6 +49,7 @@ Item {
 
   signal childCollectionSelected(int row)
   signal breadcrumbCollectionSelected(int row)
+  signal homeClicked()
 
   SystemPalette { id: palette; colorGroup: "Active" }
   ListModel {
@@ -276,6 +277,7 @@ Item {
 
   function completeHomeSelection() {
     selectedItemSelectionModel.clearSelection();
+    homeClicked()
     // TODO: Remove:
     breadcrumbCollectionSelected(breadcrumbTopLevel._transitionSelect);
     breadcrumbTopLevel._transitionSelect = -1;
