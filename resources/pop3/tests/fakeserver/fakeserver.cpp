@@ -167,8 +167,10 @@ void FakeServer::dataAvailable()
 
   QByteArray toWrite = mWriteData.takeFirst();
   //qDebug() << "Going to write data:" << removeCRLF( toWrite );
-  Q_ASSERT( mTcpServerConnection->write( toWrite ) == toWrite.size() );
-  Q_ASSERT( mTcpServerConnection->flush() );
+  const bool allWritten = mTcpServerConnection->write( toWrite ) == toWrite.size();
+  Q_ASSERT( allWritten );
+  const bool flushed = mTcpServerConnection->flush();
+  Q_ASSERT( flushed );
 }
 
 void FakeServer::newConnection()
