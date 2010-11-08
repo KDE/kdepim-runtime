@@ -200,6 +200,36 @@ private slots:
 
     QTest::newRow( "recent timestamp, but not spontaneous: harvesting" ) << collection << capabilities << scenario
                                                                          << callNames << rights << spontaneous;
+
+    //
+    // Test that a warning is issued if the insert rights of a folder have been revoked on the server.
+    //
+    collection.setParentCollection( Akonadi::Collection() );
+    collection.setRights( collection.rights() | Akonadi::Collection::CanCreateItem );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
+             << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
+             << "S: A000003 OK annotations retrieved"
+             << "C: A000004 GETACL \"INBOX/Foo\""
+             << "S: * ACL INBOX/Foo foo@kde.org wi"
+             << "S: A000004 OK acl retrieved"
+             << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+             << "S: * MYRIGHTS \"INBOX/Foo\" w"
+             << "S: A000005 OK rights retrieved"
+             << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+             << "S: * QUOTAROOT INBOX/Foo user/foo"
+             << "S: * QUOTA user/foo ( )"
+             << "S: A000006 OK quota retrieved";
+    spontaneous = false;
+
+    callNames.clear();
+    callNames << "showInformationDialog";
+    callNames << "collectionAttributesRetrieved";
+
+    rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
+    QTest::newRow( "revoked rights" ) << collection << capabilities << scenario
+                                      << callNames << rights << spontaneous;
   }
 
   void shouldCollectionRetrieveMetadata()

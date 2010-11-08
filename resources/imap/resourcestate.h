@@ -136,6 +136,8 @@ public:
   virtual void synchronizeCollectionTree();
   virtual void scheduleConnectionAttempt();
 
+  virtual void showInformationDialog( const QString &message, const QString &title );
+
 private:
   ImapResource *m_resource;
 

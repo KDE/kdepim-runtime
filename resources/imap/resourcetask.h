@@ -110,6 +110,8 @@ protected:
 
   void synchronizeCollectionTree();
 
+  void showInformationDialog( const QString &message, const QString &title );
+
   static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
   static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
 

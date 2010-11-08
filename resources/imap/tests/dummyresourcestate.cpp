@@ -273,6 +273,11 @@ void DummyResourceState::scheduleConnectionAttempt()
   recordCall( "scheduleConnectionAttempt" );
 }
 
+void DummyResourceState::showInformationDialog( const QString &message, const QString &title )
+{
+  recordCall( "showInformationDialog", QVariant::fromValue( message ) );
+}
+
 QList< QPair<QByteArray, QVariant> > DummyResourceState::calls() const
 {
   return m_calls;

@@ -29,6 +29,7 @@
 #include "timestampattribute.h"
 
 #include <akonadi/collectionmodifyjob.h>
+#include <kmessagebox.h>
 
 ResourceStateInterface::Ptr ResourceState::createRetrieveItemState( ImapResource *resource,
                                                                     const Akonadi::Item &item,
@@ -454,4 +455,9 @@ void ResourceState::synchronizeCollectionTree()
 void ResourceState::scheduleConnectionAttempt()
 {
   m_resource->scheduleConnectionAttempt();
+}
+
+void ResourceState::showInformationDialog( const QString &message, const QString &title )
+{
+  KMessageBox::information( 0, message, title );
 }

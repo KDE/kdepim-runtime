@@ -106,6 +106,8 @@ public:
   virtual void synchronizeCollectionTree();
   virtual void scheduleConnectionAttempt();
 
+  virtual void showInformationDialog( const QString &message, const QString &title );
+
   QList< QPair<QByteArray, QVariant> > calls() const;
 
 private:

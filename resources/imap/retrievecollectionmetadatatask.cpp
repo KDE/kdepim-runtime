@@ -29,8 +29,10 @@
 #include <kimap/myrightsjob.h>
 #include <kimap/rfccodecs.h>
 #include <kimap/session.h>
+#include <klocale.h>
 
 #include <akonadi/collectionquotaattribute.h>
+#include <akonadi/entitydisplayattribute.h>
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
@@ -258,6 +260,19 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 //               << "imapRights:" << imapRights
 //               << "newRights:" << newRights
 //               << "oldRights:" << collection.rights();
+
+  if ( (m_collection.rights() & Akonadi::Collection::CanCreateItem) &&
+       !(newRights & Akonadi::Collection::CanCreateItem) ) {
+    // write access revoked
+    const QString collectionName = m_collection.hasAttribute<Akonadi::EntityDisplayAttribute>() ?
+                                     m_collection.attribute<Akonadi::EntityDisplayAttribute>()->displayName() :
+                                     m_collection.name();
+
+    showInformationDialog( i18n( "<p>Your access rights to folder <b>%1</b> have been restricted, "
+                                 "it will no longer be possible to add messages to this folder.</p>",
+                                 collectionName ),
+                           i18n( "Access rights revoked" ) );
+  }
 
   if ( newRights != m_collection.rights() ) {
     m_collection.setRights( newRights );
