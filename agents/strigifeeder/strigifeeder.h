@@ -34,7 +34,7 @@ class ItemFetchScope;
 /**
   Full text search provider using strigi.
 */
-class StrigiFeeder : public AgentBase, public AgentBase::Observer
+class StrigiFeeder : public AgentBase, public AgentBase::ObserverV2
 {
   Q_OBJECT
 
@@ -59,6 +59,8 @@ class StrigiFeeder : public AgentBase, public AgentBase::Observer
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
     void itemRemoved( const Akonadi::Item &item );
+    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                    const Akonadi::Collection &collectionDestination );
 
     void doSetOnline( bool online );
 

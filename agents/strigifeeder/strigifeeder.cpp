@@ -157,7 +157,21 @@ void StrigiFeeder::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
 void StrigiFeeder::itemRemoved( const Akonadi::Item &item )
 {
-  mStrigi.indexFile( item.url().url(), QDateTime::currentDateTime().toTime_t(), QByteArray() );
+  mStrigi.indexFile( extendedItemUrl( item ).url(), QDateTime::currentDateTime().toTime_t(), QByteArray() );
+}
+
+void StrigiFeeder::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                              const Akonadi::Collection &collectionDestination )
+{
+  Item changedItem( item );
+
+  // since the index url contains the parent collection id, we have to remove the old index and add
+  // a new one when items move between collections
+  changedItem.setParentCollection( collectionSource );
+  mStrigi.indexFile( extendedItemUrl( item ).url(), QDateTime::currentDateTime().toTime_t(), QByteArray() );
+
+  changedItem.setParentCollection( collectionDestination );
+  indexItem( changedItem );
 }
 
 void StrigiFeeder::collectionsReceived( const Akonadi::Collection::List &collections )
@@ -197,26 +211,16 @@ void StrigiFeeder::processNextCollection()
 
 void StrigiFeeder::itemHeadersReceived( const Akonadi::Item::List &items )
 {
+  const QSet<QString> indexedItems = mStrigi.getIndexedFiles().toSet();
+
   Akonadi::Item::List itemsToUpdate;
   foreach ( const Item &item, items ) {
     if ( item.storageCollectionId() != mCurrentCollection.id() )
       continue; // stay away from links
 
-    itemsToUpdate.append( item );
     // update item if it does not exist
-/*TODO: implement my strigi query
-    if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(), Soprano::Node(), Soprano::Node() ) )
+    if ( !indexedItems.contains( extendedItemUrl( item ).url() ) )
       itemsToUpdate.append( item );
-
-    // the item exists. Check if it has an item ID property, otherwise re-index it.
-    else {
-      if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(),
-                                   Akonadi::ItemSearchJob::akonadiItemIdUri(), Soprano::Node() ) ) {
-        removeEntityFromNepomuk( item );
-        itemsToUpdate.append( item );
-      }
-    }
-*/
   }
 
   if ( !itemsToUpdate.isEmpty() ) {
