@@ -31,6 +31,7 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
+#include <akonadi/kmime/messageflags.h>
 #include <akonadi/resourcesynchronizationjob.h>
 #include <akonadi/specialcollections.h>
 #include <akonadi/specialcollectionsrequestjob.h>
@@ -208,7 +209,7 @@ void InvitationsAgentItem::fetchItemDone( KJob *job )
   Item modifiedItem = fetchJob->items().first();
   Q_ASSERT( modifiedItem.isValid() );
 
-  modifiedItem.setFlag( "invitation" );
+  modifiedItem.setFlag( Akonadi::MessageFlags::HasInvitation );
   ItemModifyJob *modifyJob = new ItemModifyJob( modifiedItem, this );
   connect( modifyJob, SIGNAL( result( KJob* ) ), this, SLOT( modifyItemDone( KJob* ) ) );
   modifyJob->start();

@@ -22,6 +22,7 @@
 #include <Akonadi/Item>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
+#include <akonadi/kmime/messageflags.h>
 #include <KDebug>
 #include <KLocalizedString>
 #include <mailtransport/errorattribute.h>
@@ -72,11 +73,11 @@ void StoreResultJob::Private::fetchDone( KJob *job )
   // Store result in item.
   Item item = fetchJob->items().first();
   if ( success ) {
-    item.clearFlag( "queued" );
-    item.setFlag( "sent" );
-    item.setFlag( "\\SEEN" );
+    item.clearFlag( Akonadi::MessageFlags::Queued );
+    item.setFlag( Akonadi::MessageFlags::Sent );
+    item.setFlag( Akonadi::MessageFlags::Seen );
   } else {
-    item.setFlag( "error" );
+    item.setFlag( Akonadi::MessageFlags::HasError );
     ErrorAttribute *errorAttribute = new ErrorAttribute( message );
     item.addAttribute( errorAttribute );
 

@@ -35,6 +35,7 @@
 #include <Akonadi/Monitor>
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/private/collectionpathresolver_p.h>
+#include <akonadi/kmime/messageflags.h>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 
@@ -175,8 +176,8 @@ void AbortTest::testAbort()
 
   // "Fix" the item and send again, this time with the default (Akonadi) transport.
   item.removeAttribute<ErrorAttribute>();
-  item.clearFlag( "error" );
-  item.setFlag( "queued" );
+  item.clearFlag( Akonadi::MessageFlags::HasError );
+  item.setFlag( Akonadi::MessageFlags::Queued );
   TransportAttribute *newTA = new TransportAttribute( akoTid );
   item.addAttribute( newTA );
   ItemModifyJob *cjob = new ItemModifyJob( item );

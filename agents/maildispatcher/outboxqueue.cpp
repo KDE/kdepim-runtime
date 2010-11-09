@@ -32,6 +32,7 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Monitor>
 #include <akonadi/kmime/addressattribute.h>
+#include <akonadi/kmime/messageflags.h>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 
@@ -153,8 +154,8 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
     return;
   }
 
-  if ( !item.hasFlag( "queued" ) ) {
-    kDebug() << "Item" << item.id() << "has no 'queued' flag.";
+  if ( !item.hasFlag( Akonadi::MessageFlags::Queued ) ) {
+    kDebug() << "Item" << item.id() << "has no '$QUEUED' flag.";
     return;
   }
 
