@@ -64,5 +64,5 @@ Exec=akonadi_nepomuk_calendar_feeder
 Icon=nepomuk
 
 X-Akonadi-MimeTypes=text/calendar
-X-Akonadi-Capabilities=Unique,NoConfig
+X-Akonadi-Capabilities=Unique,Autostart,NoConfig
 X-Akonadi-Identifier=akonadi_nepomuk_calendar_feeder
