@@ -148,6 +148,7 @@ Item {
         Text {
           width: wrapper.width - 48 - 50
           text : model.display
+          color: (model.foreground != undefined ? model.foreground : "black")
           //### requires a newer QML version
           //wrapMode: "WrapAnywhere" // Needs the anchors.fill to work properly
         }
