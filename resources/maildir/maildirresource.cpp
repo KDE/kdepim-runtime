@@ -145,30 +145,25 @@ void MaildirResource::configure( WId windowId )
 
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
-    qDebug() << "dfaure: MaildirResource::itemAdded called to collection" << collection.name();
-
     if ( !ensureSaneConfiguration() ) {
-      qDebug() << "dfaure: itemAdded canceled because of insane configuration";
       cancelTask( i18n("Unusable configuration.") );
       return;
     }
     Maildir dir = maildirForCollection( collection );
     QString errMsg;
     if ( Settings::readOnly() || !dir.isValid( errMsg ) ) {
-      qDebug() << "dfaure: itemAdded canceled because resource is read-only" << Settings::readOnly() << "or directory is not valid" << !dir.isValid( errMsg );
       cancelTask( errMsg );
       return;
     }
 
     // we can only deal with mail
     if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      qDebug() << "dfaure: itemAdded canceled because message has wrong payload";
       cancelTask( i18n("Error: Unsupported type.") );
       return;
     }
     const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
     const QString rid = dir.addEntry( mail->encodedContent() );
-    qDebug() << "dfaure: itemAdded sets new remoteId:" << rid;
+
     Item i( item );
     i.setRemoteId( rid );
     changeCommitted( i );
