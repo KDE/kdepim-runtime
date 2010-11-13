@@ -271,7 +271,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
     showInformationDialog( i18n( "<p>Your access rights to folder <b>%1</b> have been restricted, "
                                  "it will no longer be possible to add messages to this folder.</p>",
                                  collectionName ),
-                           i18n( "Access rights revoked" ) );
+                           i18n( "Access rights revoked" ), "ShowRightsRevokedWarning" );
   }
 
   if ( newRights != m_collection.rights() ) {

@@ -91,7 +91,7 @@ public:
   virtual void synchronizeCollectionTree() = 0;
   virtual void scheduleConnectionAttempt() = 0;
 
-  virtual void showInformationDialog( const QString &message, const QString &title ) = 0;
+  virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName ) = 0;
 };
 
 #endif

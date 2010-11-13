@@ -309,9 +309,9 @@ void ResourceTask::synchronizeCollectionTree()
   m_resource->synchronizeCollectionTree();
 }
 
-void ResourceTask::showInformationDialog( const QString &message, const QString &title )
+void ResourceTask::showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName )
 {
-  m_resource->showInformationDialog( message, title );
+  m_resource->showInformationDialog( message, title, dontShowAgainName );
 }
 
 QList<QByteArray> ResourceTask::fromAkonadiFlags( const QList<QByteArray> &flags )

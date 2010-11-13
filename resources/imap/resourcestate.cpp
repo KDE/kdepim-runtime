@@ -457,7 +457,7 @@ void ResourceState::scheduleConnectionAttempt()
   m_resource->scheduleConnectionAttempt();
 }
 
-void ResourceState::showInformationDialog( const QString &message, const QString &title )
+void ResourceState::showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName )
 {
-  KMessageBox::information( 0, message, title );
+  KMessageBox::information( 0, message, title, dontShowAgainName );
 }
