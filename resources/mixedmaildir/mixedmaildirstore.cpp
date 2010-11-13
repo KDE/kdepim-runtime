@@ -827,6 +827,7 @@ bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeBody, Item
     const QByteArray data = mbox->readEntryHeaders( offset );
     messagePtr->setHead( KMime::CRLFtoLF( data ) );
   }
+  messagePtr->parse();
 
   item.setPayload<KMime::Message::Ptr>( messagePtr );
   return true;
@@ -852,6 +853,7 @@ bool MixedMaildirStore::Private::fillItem( const MaildirPtr &md, bool includeBod
 
     messagePtr->setHead( KMime::CRLFtoLF( data ) );
   }
+  messagePtr->parse();
 
   item.setPayload<KMime::Message::Ptr>( messagePtr );
   return true;
