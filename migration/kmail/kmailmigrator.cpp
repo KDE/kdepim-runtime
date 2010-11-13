@@ -685,7 +685,9 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
   iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
   iface->setDisconnectedModeEnabled( disconnected );
-  iface->setAutomaticExpungeEnabled( config.readEntry("auto-expunge", true ) );
+  if ( !disconnected ) {
+    iface->setAutomaticExpungeEnabled( config.readEntry("auto-expunge", true ) );
+  }
   const bool useDefaultIdentity = config.readEntry( "use-default-identity", true );
   iface->setUseDefaultIdentity( useDefaultIdentity );
   if ( !useDefaultIdentity )
