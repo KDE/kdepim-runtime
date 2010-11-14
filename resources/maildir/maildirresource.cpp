@@ -288,11 +288,6 @@ void MaildirResource::retrieveCollections()
     collectionsRetrieved( Collection::List() );
     return;
   }
-  CachePolicy cachePolicy;
-  cachePolicy.setInheritFromParent( false );
-  cachePolicy.setLocalParts( QStringList() << MessagePart::Envelope << MessagePart::Header );
-  cachePolicy.setSyncOnDemand( true );
-  cachePolicy.setCacheTimeout( 1 );
 
   Collection root;
   root.setParentCollection( Collection::root() );
@@ -300,7 +295,7 @@ void MaildirResource::retrieveCollections()
   root.setName( name() );
   root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
                 | Collection::CanCreateCollection );
-  root.setCachePolicy( cachePolicy );
+
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
   if ( !Settings::self()->topLevelIsContainer() )
