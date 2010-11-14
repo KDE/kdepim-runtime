@@ -180,6 +180,11 @@ void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>
     }
   }
 
+  if ( !payloadChanged ) {
+    changeProcessed();
+    return; //ignore flag-only changes
+  }
+
   Item storeItem( item );
   storeItem.setRemoteId( mCompactHelper->currentRemoteId( item ) );
 
