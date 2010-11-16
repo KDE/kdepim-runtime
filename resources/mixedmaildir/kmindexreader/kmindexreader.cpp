@@ -124,7 +124,7 @@ MessageStatus& KMIndexData::status()
                   mStatus.clear();
                   break;
               case KMLegacyMsgStatusUnread:
-                  mStatus.setUnread();
+                  mStatus.setRead( false );
                   break;
               case KMLegacyMsgStatusRead:
                   mStatus.setRead();

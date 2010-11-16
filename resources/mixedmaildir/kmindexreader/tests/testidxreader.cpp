@@ -99,7 +99,7 @@ void TestIdxReader::testRead() {
     QCOMPARE ( subject, QString ( "foo bar" ) );
     QVERIFY ( status.isImportant() );
     QVERIFY ( msg->status().isImportant() );
-    QVERIFY ( msg->status().isUnread() );
+    QVERIFY ( !msg->status().isRead() );
     QVERIFY ( msg->tagList().size() == 0 );
 }
 
