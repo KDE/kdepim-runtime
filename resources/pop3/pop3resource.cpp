@@ -23,8 +23,10 @@
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemCreateJob>
+#include <akonadi/kmime/messageflags.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 #include <akonadi/kmime/specialmailcollections.h>
+#include <kmime/kmime_util.h>
 #include <Mailtransport/PrecommandJob>
 #include <Mailtransport/Transport>
 
@@ -603,6 +605,16 @@ void POP3Resource::messageFinished( int messageId, KMime::Message::Ptr message )
   Akonadi::Item item;
   item.setMimeType( "message/rfc822" );
   item.setPayload<KMime::Message::Ptr>( message );
+
+  // update status flags
+  if ( KMime::isSigned( message.get() ) )
+    item.setFlag( Akonadi::MessageFlags::Signed );
+  if ( KMime::isEncrypted( message.get() ) )
+    item.setFlag( Akonadi::MessageFlags::Encrypted );
+  if ( KMime::isInvitation( message.get() ) )
+    item.setFlag( Akonadi::MessageFlags::HasInvitation );
+  if ( KMime::hasAttachment( message.get() ) )
+    item.setFlag( Akonadi::MessageFlags::HasAttachment );
 
   ItemCreateJob *itemCreateJob = new ItemCreateJob( item, mTargetCollection );
 

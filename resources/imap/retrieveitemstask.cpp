@@ -28,6 +28,7 @@
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionstatistics.h>
+#include <akonadi/kmime/messageflags.h>
 #include <akonadi/kmime/messageparts.h>
 
 #include <KDE/KDebug>
@@ -320,6 +321,17 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
     i.setMimeType( KMime::Message::mimeType() );
     i.setPayload( KMime::Message::Ptr( messages[number] ) );
     i.setSize( sizes[number] );
+
+    // update status flags
+    if ( KMime::isSigned( messages[number].get() ) )
+      i.setFlag( Akonadi::MessageFlags::Signed );
+    if ( KMime::isEncrypted( messages[number].get() ) )
+      i.setFlag( Akonadi::MessageFlags::Encrypted );
+    if ( KMime::isInvitation( messages[number].get() ) )
+      i.setFlag( Akonadi::MessageFlags::HasInvitation );
+    if ( KMime::hasAttachment( messages[number].get() ) )
+      i.setFlag( Akonadi::MessageFlags::HasAttachment );
+
     const QList<QByteArray> akonadiFlags = toAkonadiFlags( flags[number] );
     foreach( const QByteArray &flag, akonadiFlags ) {
       i.setFlag( flag );

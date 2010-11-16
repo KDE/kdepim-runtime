@@ -24,6 +24,7 @@
 #include <KDE/KDebug>
 #include <KDE/KLocale>
 
+#include <akonadi/kmime/messageflags.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 
@@ -102,6 +103,16 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
 
   i.setMimeType( KMime::Message::mimeType() );
   i.setPayload( KMime::Message::Ptr( message ) );
+
+  // update status flags
+  if ( KMime::isSigned( message.get() ) )
+    i.setFlag( Akonadi::MessageFlags::Signed );
+  if ( KMime::isEncrypted( message.get() ) )
+    i.setFlag( Akonadi::MessageFlags::Encrypted );
+  if ( KMime::isInvitation( message.get() ) )
+    i.setFlag( Akonadi::MessageFlags::HasInvitation );
+  if ( KMime::hasAttachment( message.get() ) )
+    i.setFlag( Akonadi::MessageFlags::HasAttachment );
 
   kDebug(5327) << "Has Payload: " << i.hasPayload();
 
