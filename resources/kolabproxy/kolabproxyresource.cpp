@@ -365,7 +365,11 @@ void KolabProxyResource::itemRemoved( const Item &item )
 
 void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
 {
-  Q_ASSERT( !KolabHandler::kolabTypeForCollection( collection ).isEmpty() );
+  if ( KolabHandler::kolabTypeForCollection( collection ).isEmpty() ) {
+    kWarning() << "Collection " << collection.name() << " (" << collection.id()
+               << ") doesn't have kolab type set.";
+    Q_ASSERT_X( false, "collectionAdded", "Colection doesn't have kolab type set. Crashing..." );
+  }
 
   Collection imapCollection( collection );
   imapCollection.setId( -1 );
@@ -450,6 +454,7 @@ void KolabProxyResource::collectionChanged(const Akonadi::Collection& collection
   applyAttributesToImap( imapCollection, collection );
 
   CollectionModifyJob *job = new CollectionModifyJob( imapCollection, this );
+  Q_UNUSED( job );
   // TODO wait for the result
   changeCommitted( collection );
 }
@@ -466,6 +471,7 @@ void KolabProxyResource::collectionRemoved(const Akonadi::Collection& collection
   Collection imapCollection = kolabToImap( collection );
 
   CollectionDeleteJob *job = new CollectionDeleteJob( imapCollection, this );
+  Q_UNUSED( job );
   // TODO wait for result
   changeCommitted( collection );
 }
@@ -545,6 +551,7 @@ void KolabProxyResource::imapItemRemoved(const Item& item)
     handler->itemDeleted(item);
   }
   ItemDeleteJob *job = new ItemDeleteJob( kolabItem, this );
+  Q_UNUSED( job );
 }
 
 void KolabProxyResource::imapItemMoved(const Akonadi::Item& item, const Akonadi::Collection& collectionSource, const Akonadi::Collection& collectionDestination)
@@ -600,6 +607,7 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
     // if that fails it's not in our tree -> we don't care
     Collection kolabCollection = createCollection( collection );
     CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
+    Q_UNUSED( job );
   } else {
     // Kolab folder we already have in our tree, if the update fails, reload our tree
     Collection kolabCollection = createCollection( collection );
