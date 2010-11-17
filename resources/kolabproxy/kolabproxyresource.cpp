@@ -366,8 +366,10 @@ void KolabProxyResource::itemRemoved( const Item &item )
 void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
 {
   if ( KolabHandler::kolabTypeForCollection( collection ).isEmpty() ) {
-    kWarning() << "Collection " << collection.name() << " (" << collection.id()
-               << ") doesn't have kolab type set.";
+    kWarning() << "Collection " << collection.name() << collection.id() << collection.isValid()
+               << "doesn't have kolab type set. isValid = "
+               << "; parent is " << parent.name() << parent.id() << parent.isValid();
+    cancelTask( QLatin1String( "Collection doesn't have kolab type." ) );
     Q_ASSERT_X( false, "collectionAdded", "Colection doesn't have kolab type set. Crashing..." );
   }
 
