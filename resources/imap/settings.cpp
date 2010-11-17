@@ -155,8 +155,11 @@ void Settings::onDialogFinished( int result )
   if ( result == QDialog::Accepted ) {
     KPasswordDialog *dlg = qobject_cast<KPasswordDialog*>( sender() );
 #ifdef Q_OS_WINCE
-    setPassword( dlg->password() );
+    // no wallet.
+    SettingsBase::setPassword( dlg->password() );
     writeConfig();
+#else
+    setPassword( dlg->password() );
 #endif
     emit passwordRequestCompleted( dlg->password(), false );
   } else {
