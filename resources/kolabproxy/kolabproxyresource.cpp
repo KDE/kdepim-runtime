@@ -199,6 +199,7 @@ void KolabProxyResource::retrieveItemFetchDone(KJob *job)
 void KolabProxyResource::aboutToQuit()
 {
   qDeleteAll(m_monitoredCollections);
+  m_monitoredCollections.clear();
 }
 
 void KolabProxyResource::configure( WId windowId )
