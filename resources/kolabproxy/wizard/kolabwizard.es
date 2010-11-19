@@ -135,6 +135,7 @@ function testOk( arg )
     imapRes.setOption( "Password", page.widget().passwordEdit.text.trim() );
     imapRes.setOption( "UseDefaultIdentity", false );
     imapRes.setOption( "AccountIdentity", identity.uoid() );
+    imapRes.setOption( "DisconnectedModeEnabled", true );
     imapRes.setOption( "SubscriptionEnabled", true );
     imapRes.setOption( "SieveSupport", true );
     imapRes.setOption( "Authentication", 7 ); // ClearText
