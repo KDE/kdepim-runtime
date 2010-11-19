@@ -63,6 +63,12 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
     if (inc) {
       KCalCore::Incidence::Ptr incidencePtr(inc);
       if (m_uidMap.contains(incidencePtr->uid())) {
+        StoredItem storedItem = m_uidMap[incidencePtr->uid()];
+        kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
+                 << " for imap item id = " << item.id()
+                 << " and the other imap item id is "
+                 << storedItem.id;
+
         ConflictResolution res = resolveConflict(incidencePtr);
         kDebug() << "ConflictResolution " << res;
         if (res == Local) {

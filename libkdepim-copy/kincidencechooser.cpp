@@ -267,6 +267,7 @@ KIncidenceChooser::~KIncidenceChooser()
 void KIncidenceChooser::setIncidence( const Incidence::Ptr &local,
                                       const Incidence::Ptr &remote )
 {
+
   mInc1 = local;
   mInc2 = remote;
   setLabels();
