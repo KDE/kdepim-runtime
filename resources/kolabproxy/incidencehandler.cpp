@@ -70,7 +70,19 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
                  << " and the other imap item id is "
                  << storedItem.id << "; imap collection is "
                  << item.parentCollection().name()
-                 << item.parentCollection().id();
+                 << item.parentCollection().id()
+                 << "; collection has rights "
+                 << item.parentCollection().rights();
+
+        /*
+        const Akonadi::Collection::Rights requiredRights = Akonadi::Collection::CanDeleteItem |
+                                                           Akonadi::Collection::CanCreateItem;
+
+        if ( ( item.parentCollection().rights() & requiredRights ) != requiredRights ) {
+          kDebug() << "Skipping conflict resolution, no rights on collection " << item.parentCollection().name();
+          continue;
+        }
+        */
 
         ConflictResolution res = resolveConflict(incidencePtr);
         kDebug() << "ConflictResolution " << res;
