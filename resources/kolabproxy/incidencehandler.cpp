@@ -24,6 +24,7 @@
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/collection.h>
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
@@ -67,7 +68,9 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
         kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
                  << " for imap item id = " << item.id()
                  << " and the other imap item id is "
-                 << storedItem.id;
+                 << storedItem.id << "; imap collection is "
+                 << item.parentCollection().name()
+                 << item.parentCollection().id();
 
         ConflictResolution res = resolveConflict(incidencePtr);
         kDebug() << "ConflictResolution " << res;
