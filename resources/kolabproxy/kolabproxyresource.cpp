@@ -147,7 +147,6 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
   m_retrieveState = RetrieveItems;
   ItemFetchJob *job = new ItemFetchJob( kolabToImap( collection ) );
   job->fetchScope().fetchFullPayload();
-  job->fetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
 
   connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
 }
@@ -159,7 +158,6 @@ bool KolabProxyResource::retrieveItem( const Item &item, const QSet<QByteArray> 
   m_retrieveState = RetrieveItem;
   ItemFetchJob *job = new ItemFetchJob( kolabToImap( item ) );
   job->fetchScope().fetchFullPayload();
-  job->fetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
   connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
   return true;
 }

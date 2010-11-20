@@ -74,15 +74,13 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
                  << "; collection has rights "
                  << m_imapCollection.rights();
 
-        /*
         const Akonadi::Collection::Rights requiredRights = Akonadi::Collection::CanDeleteItem |
                                                            Akonadi::Collection::CanCreateItem;
 
         if ( ( m_imapCollection.rights() & requiredRights ) != requiredRights ) {
-          kDebug() << "Skipping conflict resolution, no rights on collection " << item.parentCollection().name();
+          kDebug() << "Skipping conflict resolution, no rights on collection " << m_imapCollection.name();
           continue;
-        }*/
-
+        }
 
         ConflictResolution res = resolveConflict(incidencePtr);
         kDebug() << "ConflictResolution " << res;
