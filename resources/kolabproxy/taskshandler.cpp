@@ -28,7 +28,7 @@
 #include <QDomDocument>
 
 
-TasksHandler::TasksHandler() : IncidenceHandler()
+TasksHandler::TasksHandler( const Akonadi::Collection &imapCollection ) : IncidenceHandler( imapCollection )
 {
   m_mimeType = "application/x-vnd.kolab.task";
 }

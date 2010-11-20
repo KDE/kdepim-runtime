@@ -29,7 +29,7 @@
 */
 class TasksHandler : public IncidenceHandler {
 public:
-  TasksHandler();
+  explicit TasksHandler( const Akonadi::Collection &imapCollection );
   virtual ~TasksHandler();
   virtual QStringList contentMimeTypes();
   virtual QString iconName() const;

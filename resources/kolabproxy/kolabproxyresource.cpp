@@ -148,6 +148,7 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
   ItemFetchJob *job = new ItemFetchJob( kolabToImap( collection ) );
   job->fetchScope().fetchFullPayload();
   job->fetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
+
   connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
 }
 
@@ -716,7 +717,7 @@ bool KolabProxyResource::registerHandlerForCollection(const Akonadi::Collection&
   if ( annotationsAttribute ) {
     QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
 
-    KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"]);
+    KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"], imapCollection );
     if ( handler ) {
       connect(handler, SIGNAL(deleteItemFromImap(const Akonadi::Item&)), this, SLOT(deleteImapItem(const Akonadi::Item&)));
       connect(handler, SIGNAL(addItemToImap(const Akonadi::Item&, Akonadi::Entity::Id)), this, SLOT(addImapItem(const Akonadi::Item&, Akonadi::Entity::Id)));

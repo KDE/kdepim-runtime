@@ -30,7 +30,7 @@
 #include <QBuffer>
 
 
-AddressBookHandler::AddressBookHandler(): KolabHandler()
+AddressBookHandler::AddressBookHandler( const Akonadi::Collection &imapCollection ) : KolabHandler( imapCollection )
 {
   m_mimeType = "application/x-vnd.kolab.contact";
 }

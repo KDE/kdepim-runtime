@@ -31,7 +31,7 @@
 class IncidenceHandler : public KolabHandler {
   Q_OBJECT
 public:
-    IncidenceHandler();
+    explicit IncidenceHandler( const Akonadi::Collection &imapCollection );
 
     virtual ~IncidenceHandler();
 

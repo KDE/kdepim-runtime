@@ -38,10 +38,10 @@
 #include <QDomDocument>
 
 
-IncidenceHandler::IncidenceHandler() : KolabHandler(), m_calendar( QString::fromLatin1("UTC") )
+IncidenceHandler::IncidenceHandler( const Akonadi::Collection &imapCollection )
+  : KolabHandler( imapCollection), m_calendar( QString::fromLatin1("UTC") )
 {
 }
-
 
 IncidenceHandler::~IncidenceHandler()
 {
@@ -69,20 +69,20 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
                  << " for imap item id = " << item.id()
                  << " and the other imap item id is "
                  << storedItem.id << "; imap collection is "
-                 << item.parentCollection().name()
-                 << item.parentCollection().id()
+                 << m_imapCollection.name()
+                 << m_imapCollection.id()
                  << "; collection has rights "
-                 << item.parentCollection().rights();
+                 << m_imapCollection.rights();
 
         /*
         const Akonadi::Collection::Rights requiredRights = Akonadi::Collection::CanDeleteItem |
                                                            Akonadi::Collection::CanCreateItem;
 
-        if ( ( item.parentCollection().rights() & requiredRights ) != requiredRights ) {
+        if ( ( m_imapCollection.rights() & requiredRights ) != requiredRights ) {
           kDebug() << "Skipping conflict resolution, no rights on collection " << item.parentCollection().name();
           continue;
-        }
-        */
+        }*/
+
 
         ConflictResolution res = resolveConflict(incidencePtr);
         kDebug() << "ConflictResolution " << res;

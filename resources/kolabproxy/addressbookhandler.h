@@ -39,7 +39,7 @@ namespace Kolab {
 */
 class AddressBookHandler : public KolabHandler {
 public:
-    AddressBookHandler();
+    explicit AddressBookHandler( const Akonadi::Collection &imapCollection );
 
     virtual ~AddressBookHandler();
 

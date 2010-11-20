@@ -21,12 +21,8 @@
 #define KOLABHANDLER_H
 
 #include <akonadi/item.h>
+#include <akonadi/collection.h>
 #include <kmime/kmime_message.h>
-
-
-namespace Akonadi {
-  class Collection;
-}
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -34,7 +30,7 @@ namespace Akonadi {
 class KolabHandler : public QObject{
   Q_OBJECT
 public:
-  static KolabHandler *createHandler(const QByteArray& type);
+  static KolabHandler *createHandler( const QByteArray& type, const Akonadi::Collection &imapCollection );
 
   /**
     Returns the Kolab folder type for the given collection.
@@ -77,7 +73,7 @@ Q_SIGNALS:
     void addItemToImap(const Akonadi::Item& item, Akonadi::Entity::Id collectionId);
 
 protected:
-  explicit KolabHandler();
+  explicit KolabHandler( const Akonadi::Collection &imapCollection );
   static KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type);
   static KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type);
 
@@ -91,6 +87,7 @@ protected:
   static KMime::Content* createAttachmentPart( const QString &mimeType, const QString &fileName, const QByteArray &decodedContent );
 
   QByteArray m_mimeType;
+  Akonadi::Collection m_imapCollection;
 };
 
 #endif

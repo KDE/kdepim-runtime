@@ -29,7 +29,7 @@
 class CalendarHandler : public IncidenceHandler {
   Q_OBJECT
 public:
-  CalendarHandler();
+  explicit CalendarHandler( const Akonadi::Collection &imapCollection );
   virtual ~CalendarHandler();
   virtual QStringList contentMimeTypes();
   virtual QString iconName() const;

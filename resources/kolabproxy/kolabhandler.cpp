@@ -27,26 +27,26 @@
 #include <KCalCore/Todo>
 #include <KCalCore/Journal>
 
-#include <akonadi/collection.h>
 #include <kabc/addressee.h>
 
 
-KolabHandler::KolabHandler()
+KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection ) : m_imapCollection( imapCollection )
 {
 }
 
-KolabHandler *KolabHandler::createHandler(const QByteArray& type)
+KolabHandler *KolabHandler::createHandler( const QByteArray& type,
+                                           const Akonadi::Collection &imapCollection )
 {
   if (type ==  "contact.default" || type ==  "contact") {
-    return new AddressBookHandler();
+    return new AddressBookHandler( imapCollection );
   } else if (type ==  "event.default" || type ==  "event") {
-    return new CalendarHandler();
+    return new CalendarHandler( imapCollection );
   } else if (type ==  "task.default" || type ==  "task") {
-    return new TasksHandler();
+    return new TasksHandler( imapCollection );
   } else if (type ==  "journal.default" || type ==  "journal") {
-    return new JournalHandler();
+    return new JournalHandler( imapCollection );
   } else if (type ==  "note.default" || type ==  "note") {
-    return new NotesHandler();
+    return new NotesHandler( imapCollection );
   } else {
     return 0;
   }

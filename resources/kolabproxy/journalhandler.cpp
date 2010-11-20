@@ -29,7 +29,7 @@
 #include <QBuffer>
 #include <QDomDocument>
 
-JournalHandler::JournalHandler() : IncidenceHandler()
+JournalHandler::JournalHandler( const Akonadi::Collection &imapCollection) : IncidenceHandler( imapCollection )
 {
   m_mimeType = "application/x-vnd.kolab.journal";
 }

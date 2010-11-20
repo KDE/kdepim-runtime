@@ -23,7 +23,7 @@
 #include <akonadi/item.h>
 #include <QStringList>
 
-NotesHandler::NotesHandler() : JournalHandler()
+NotesHandler::NotesHandler( const Akonadi::Collection &imapCollection ) : JournalHandler( imapCollection )
 {
   m_mimeType = "application/x-vnd.kolab.note";
 }

@@ -32,7 +32,7 @@
 #include <QDomDocument>
 
 
-CalendarHandler::CalendarHandler()  : IncidenceHandler()
+CalendarHandler::CalendarHandler( const Akonadi::Collection &imapCollection ) : IncidenceHandler( imapCollection )
 {
   m_mimeType = "application/x-vnd.kolab.event";
 }

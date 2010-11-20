@@ -160,7 +160,7 @@ class KolabConverterTest : public QObject
       QFETCH( QString, vcardFileName );
       QFETCH( QString, mimeFileName );
 
-      KolabHandler *handler = KolabHandler::createHandler( "contact" );
+      KolabHandler *handler = KolabHandler::createHandler( "contact", Collection() );
       QVERIFY( handler );
 
       // mime -> vcard conversion
@@ -229,7 +229,7 @@ class KolabConverterTest : public QObject
       QFETCH( QString, icalFileName );
       QFETCH( QString, mimeFileName );
 
-      KolabHandler *handler = KolabHandler::createHandler( type.toLatin1() );
+      KolabHandler *handler = KolabHandler::createHandler( type.toLatin1(), Collection() );
       QVERIFY( handler );
 
       // mime -> vcard conversion
