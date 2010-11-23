@@ -181,7 +181,7 @@
          <item>
           <widget class="KIntSpinBox" name="sievePortSpin">
            <property name="maximum">
-            <number>2000</number>
+            <number>65535</number>
            </property>
           </widget>
          </item>
