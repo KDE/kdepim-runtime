@@ -43,7 +43,8 @@ bool SerializerPluginBookmark::deserialize( Item& item, const QByteArray& label,
   KBookmark bk;
   QMimeData *mimeData = new QMimeData();
   mimeData->setData( QString::fromLatin1( "application/x-xbel" ), data.readAll() );
-  KBookmark::List bkl = KBookmark::List::fromMimeData( mimeData );
+  QDomDocument doc;
+  KBookmark::List bkl = KBookmark::List::fromMimeData( mimeData, doc );
 
   if ( !bkl.isEmpty() )
     item.setPayload<KBookmark>( bkl[0] );
