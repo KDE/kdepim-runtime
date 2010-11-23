@@ -106,7 +106,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       currentPath += separator + pathPart;
 
       if ( m_reportedCollections.contains( currentPath ) ) {
-        if ( m_dummyCollections.contains( currentPath ) ) {
+        if ( m_dummyCollections.contains( currentPath ) && !isDummy ) {
           kDebug() << "Received the real collection for a dummy one : " << currentPath;
 
           //set the correct attributes for the collection, eg. noselect needs to be removed
