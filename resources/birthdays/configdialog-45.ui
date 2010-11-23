@@ -69,12 +69,15 @@
        </widget>
       </item>
       <item>
-       <widget class="KEditListWidget" name="kcfg_FilterCategories" >
+       <widget class="KEditListBox" name="kcfg_FilterCategories" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
+        <property name="title" >
+         <string>Categories</string>
+        </property>
         <property name="buttons" >
-         <set>KEditListWidget::Add|KEditListWidget::Remove</set>
+         <set>KEditListBox::Add|KEditListBox::Remove</set>
         </property>
        </widget>
       </item>
@@ -98,9 +101,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KEditListWidget</class>
+   <class>KEditListBox</class>
    <extends>QGroupBox</extends>
-   <header>keditlistwidget.h</header>
+   <header>keditlistbox.h</header>
   </customwidget>
   <customwidget>
    <class>KIntSpinBox</class>
