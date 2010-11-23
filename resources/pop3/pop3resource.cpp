@@ -192,17 +192,22 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
   bool rememberPassword = Settings::self()->storePassword();
 
   // FIXME: give this a proper parent widget
-  if ( KIO::PasswordDialog::getNameAndPassword(
-       login, mPassword, &rememberPassword, queryText,
-       false, name(), name(), i18n( "Account:" ) ) != KDialog::Accepted )
-    {
+  KPasswordDialog dlg( 0, KPasswordDialog::ShowUsernameLine | KPasswordDialog::ShowKeepPassword );
+  dlg.setUsername( login );
+  dlg.setPassword( mPassword );
+  dlg.setKeepPassword( rememberPassword );
+  dlg.setPrompt( queryText );
+  dlg.setCaption( name() );
+  dlg.addCommentLine( i18n( "Account:" ), name() );
+
+  if ( dlg.exec() != KDialog::Accepted ) {
     cancelSync( i18n( "No username and password supplied." ) );
     return;
   } else {
     Settings::self()->setLogin( login );
     Settings::self()->writeConfig();
     Settings::self()->setStorePassword( false );
-    if ( rememberPassword ) {
+    if ( dlg.keepPassword() ) {
       // setStorePassword( true ) is called only after the password is written into
       // the wallet, as otherwise, the resource thinks the password is in the wallet
       // and loads an empty password from it
