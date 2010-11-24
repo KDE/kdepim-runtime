@@ -29,6 +29,8 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/collectionfetchscope.h>
+#include <akonadi/cachepolicy.h>
+#include <akonadi/dbusconnectionpool.h>
 
 #include <kdebug.h>
 #include <kurl.h>
@@ -40,7 +42,6 @@
 #include "libmaildir/maildir.h"
 
 #include <kmime/kmime_message.h>
-#include <akonadi/cachepolicy.h>
 
 using namespace Akonadi;
 using KPIM::Maildir;
@@ -65,7 +66,7 @@ MaildirResource::MaildirResource( const QString &id )
     mSettings( new Settings( componentData().config() ) )
 {
   new SettingsAdaptor( mSettings );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                               mSettings, QDBusConnection::ExportAdaptors );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(configurationChanged()) );
 
@@ -78,7 +79,6 @@ MaildirResource::MaildirResource( const QString &id )
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
-
 }
 
 MaildirResource::~ MaildirResource()
