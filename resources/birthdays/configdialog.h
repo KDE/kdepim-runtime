@@ -21,7 +21,12 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
+#include <kdeversion.h>
+#if KDE_IS_VERSION( 4, 5, 74 )
 #include "ui_configdialog.h"
+#else
+#include "ui_configdialog-45.h"
+#endif
 
 #include <KDialog>
 
