@@ -45,8 +45,7 @@
 using namespace Akonadi;
 using KPIM::Maildir;
 
-/** Creates a maildir object for the collection @p col, given it has the full ancestor chain set. */
-static Maildir maildirForCollection( const Collection &col )
+Maildir MaildirResource::maildirForCollection( const Collection &col ) const
 {
   if ( col.remoteId().isEmpty() ) {
     kWarning() << "Got incomplete ancestor chain:" << col;
@@ -54,19 +53,20 @@ static Maildir maildirForCollection( const Collection &col )
   }
 
   if ( col.parentCollection() == Collection::root() ) {
-    kWarning( col.remoteId() != Settings::self()->path() ) << "RID mismatch, is " << col.remoteId() << " expected " << Settings::self()->path();
-    return Maildir( col.remoteId(), Settings::self()->topLevelIsContainer() );
+    kWarning( col.remoteId() != mSettings->path() ) << "RID mismatch, is " << col.remoteId() << " expected " << mSettings->path();
+    return Maildir( col.remoteId(), mSettings->topLevelIsContainer() );
   }
   Maildir parentMd = maildirForCollection( col.parentCollection() );
   return parentMd.subFolder( col.remoteId() );
 }
 
 MaildirResource::MaildirResource( const QString &id )
-    :ResourceBase( id )
+    :ResourceBase( id ),
+    mSettings( new Settings( componentData().config() ) )
 {
-  new SettingsAdaptor( Settings::self() );
+  new SettingsAdaptor( mSettings );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                              Settings::self(), QDBusConnection::ExportAdaptors );
+                              mSettings, QDBusConnection::ExportAdaptors );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(configurationChanged()) );
 
   // We need to enable this here, otherwise we neither get the remote ID of the
@@ -114,7 +114,7 @@ QString MaildirResource::itemMimeType()
 
 void MaildirResource::configurationChanged()
 {
-  Settings::self()->writeConfig();
+  mSettings->writeConfig();
   ensureSaneConfiguration();
   ensureDirExists();
 }
@@ -124,12 +124,12 @@ void MaildirResource::aboutToQuit()
 {
   // The settings may not have been saved if e.g. they have been modified via
   // DBus instead of the config dialog.
-  Settings::self()->writeConfig();
+  mSettings->writeConfig();
 }
 
 void MaildirResource::configure( WId windowId )
 {
-  ConfigDialog dlg;
+  ConfigDialog dlg( mSettings );
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   if ( dlg.exec() ) {
@@ -150,7 +150,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     }
     Maildir dir = maildirForCollection( collection );
     QString errMsg;
-    if ( Settings::readOnly() || !dir.isValid( errMsg ) ) {
+    if ( mSettings->readOnly() || !dir.isValid( errMsg ) ) {
       cancelTask( errMsg );
       return;
     }
@@ -182,7 +182,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         break;
       }
     }
-    if ( Settings::self()->readOnly() || !payloadChanged ) {
+    if ( mSettings->readOnly() || !payloadChanged ) {
       changeProcessed();
       return;
     }
@@ -246,7 +246,7 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
     return;
   }
 
-  if ( !Settings::self()->readOnly() ) {
+  if ( !mSettings->readOnly() ) {
     Maildir dir = maildirForCollection( item.parentCollection() );
     // !dir.isValid() means that our parent folder has been deleted already,
     // so we don't care at all as that one will be recursive anyway
@@ -280,7 +280,7 @@ Collection::List MaildirResource::listRecursive( const Collection &root, const M
 
 void MaildirResource::retrieveCollections()
 {
-  Maildir dir( Settings::self()->path(), Settings::self()->topLevelIsContainer() );
+  Maildir dir( mSettings->path(), mSettings->topLevelIsContainer() );
   QString errMsg;
   if ( !dir.isValid( errMsg ) ) {
     emit error( errMsg );
@@ -290,14 +290,14 @@ void MaildirResource::retrieveCollections()
 
   Collection root;
   root.setParentCollection( Collection::root() );
-  root.setRemoteId( Settings::self()->path() );
+  root.setRemoteId( mSettings->path() );
   root.setName( name() );
   root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
                 | Collection::CanCreateCollection );
 
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
-  if ( !Settings::self()->topLevelIsContainer() )
+  if ( !mSettings->topLevelIsContainer() )
     mimeTypes << itemMimeType();
   root.setContentMimeTypes( mimeTypes );
 
@@ -341,7 +341,7 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 
   Maildir md = maildirForCollection( parent );
   kDebug( 5254 ) << md.subFolderList() << md.entryList();
-  if ( Settings::self()->readOnly() || !md.isValid() ) {
+  if ( mSettings->readOnly() || !md.isValid() ) {
     changeProcessed();
     return;
   }
@@ -446,7 +446,7 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
   }
 
   if ( collection.parentCollection() == Collection::root() ) {
-    emit error( i18n("Cannot delete top-level maildir folder '%1'.", Settings::self()->path() ) );
+    emit error( i18n("Cannot delete top-level maildir folder '%1'.", mSettings->path() ) );
     changeProcessed();
     return;
   }
@@ -461,16 +461,16 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
 
 void MaildirResource::ensureDirExists()
 {
-  Maildir root( Settings::self()->path() );
+  Maildir root( mSettings->path() );
   if ( !root.isValid() ) {
     if ( !root.create() )
-      emit status( Broken, i18n( "Unable to create maildir '%1'.", Settings::self()->path() ) );
+      emit status( Broken, i18n( "Unable to create maildir '%1'.", mSettings->path() ) );
   }
 }
 
 bool MaildirResource::ensureSaneConfiguration()
 {
-  if ( Settings::self()->path().isEmpty() ) {
+  if ( mSettings->path().isEmpty() ) {
     emit status( Broken, i18n( "No usable storage location configured.") );
     setOnline( false );
     return false;

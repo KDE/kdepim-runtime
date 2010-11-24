@@ -23,6 +23,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
 
+class Settings;
 namespace KPIM
 {
 class Maildir;
@@ -66,6 +67,11 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     void ensureDirExists();
     bool ensureSaneConfiguration();
     Akonadi::Collection::List listRecursive( const Akonadi::Collection &root, const KPIM::Maildir &dir );
+    /** Creates a maildir object for the collection @p col, given it has the full ancestor chain set. */
+    KPIM::Maildir maildirForCollection( const Akonadi::Collection &col ) const;
+
+  private:
+    Settings *mSettings;
 
 };
 

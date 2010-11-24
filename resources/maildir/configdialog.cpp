@@ -28,16 +28,17 @@
 
 using KPIM::Maildir;
 
-ConfigDialog::ConfigDialog(QWidget * parent) :
+ConfigDialog::ConfigDialog( Settings *settings, QWidget * parent) :
     KDialog( parent ),
+    mSettings( settings ),
     mToplevelIsContainer( false )
 {
   setCaption( i18n( "Select a MailDir folder" ) );
   ui.setupUi( mainWidget() );
-  mManager = new KConfigDialogManager( this, Settings::self() );
+  mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
   ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
-  ui.kcfg_Path->setUrl( KUrl( Settings::self()->path() ) );
+  ui.kcfg_Path->setUrl( KUrl( mSettings->path() ) );
 
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
   connect( ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()) );
@@ -87,9 +88,9 @@ void ConfigDialog::checkPath()
 void ConfigDialog::save()
 {
   mManager->updateSettings();
-  Settings::self()->setPath( ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile()  : ui.kcfg_Path->url().path() );
-  Settings::self()->setTopLevelIsContainer( mToplevelIsContainer );
-  Settings::self()->writeConfig();
+  mSettings->setPath( ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile()  : ui.kcfg_Path->url().path() );
+  mSettings->setTopLevelIsContainer( mToplevelIsContainer );
+  mSettings->writeConfig();
 }
 
 #include "configdialog.moc"
