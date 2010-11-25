@@ -62,3 +62,7 @@ Name[x-test]=xxE-mail successfully sentxx
 Name[zh_CN]=邮件已成功发送
 Name[zh_TW]=電子郵件已成功傳送
 Action=Popup
+
+[Event/sendingfailed]
+Name=E-mail sending failed
+Action=Popup

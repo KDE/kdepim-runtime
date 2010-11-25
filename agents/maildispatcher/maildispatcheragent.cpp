@@ -310,6 +310,13 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
     // The SendJob gave the item an ErrorAttribute, so we don't have to
     // do anything.
     kDebug() << "Sending failed. error:" << job->errorString();
+
+    const QPixmap pixmap = KIcon( "dialog-error" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+    KNotification *notify = new KNotification( "sendingfailed" );
+    notify->setComponentData( q->componentData() );
+    notify->setPixmap( pixmap );
+    notify->setText( i18nc("Notification when email sending failed", "E-mail sending failed: %1", job->errorString() ) );
+    notify->sendEvent();
   } else {
     kDebug() << "Sending succeeded.";
   }
