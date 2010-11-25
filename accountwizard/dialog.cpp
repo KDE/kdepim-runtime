@@ -38,6 +38,8 @@
 #include <kdebug.h>
 #include <kmessagebox.h>
 
+#include <kpimutils/networkaccesshelper.h>
+
 Dialog::Dialog(QWidget* parent) :
   KAssistantDialog( parent )
 {
@@ -94,6 +96,9 @@ Dialog::Dialog(QWidget* parent) :
   emit page->pageEnteredNext();
   enableButton( KDialog::Help, false );
 
+  // attach network access helper to this instance,
+  // establish connection for the lifetime of this dialog
+  new KPIMUtils::NetworkAccessHelper(this);
 }
 
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
