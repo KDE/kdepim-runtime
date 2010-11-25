@@ -27,6 +27,7 @@
 #include <kabc/contactgrouptool.h>
 #include <kabc/vcardconverter.h>
 
+class Settings;
 class QDir;
 
 class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
@@ -70,6 +71,7 @@ class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
 
   private:
     QStringList mSupportedMimeTypes;
+    Settings *mSettings;
 };
 
 #endif

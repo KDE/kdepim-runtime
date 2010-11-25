@@ -28,8 +28,9 @@
 
 using namespace Akonadi;
 
-SettingsDialog::SettingsDialog( WId windowId )
-  : KDialog()
+SettingsDialog::SettingsDialog( Settings *settings, WId windowId )
+  : KDialog(),
+  mSettings( settings )
 {
   ui.setupUi( mainWidget() );
   ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
@@ -45,16 +46,16 @@ SettingsDialog::SettingsDialog( WId windowId )
 
   QTimer::singleShot( 0, this, SLOT( validate() ) );
 
-  ui.kcfg_Path->setUrl( KUrl( Settings::self()->path() ) );
-  mManager = new KConfigDialogManager( this, Settings::self() );
+  ui.kcfg_Path->setUrl( KUrl( mSettings->path() ) );
+  mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
 }
 
 void SettingsDialog::save()
 {
   mManager->updateSettings();
-  Settings::self()->setPath( ui.kcfg_Path->url().toLocalFile() );
-  Settings::self()->writeConfig();
+  mSettings->setPath( ui.kcfg_Path->url().toLocalFile() );
+  mSettings->writeConfig();
 }
 
 void SettingsDialog::validate()

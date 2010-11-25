@@ -34,12 +34,13 @@
 using namespace Akonadi;
 
 ContactsResource::ContactsResource( const QString &id )
-  : ResourceBase( id )
+  : ResourceBase( id ),
+  mSettings( new Settings( componentData().config() ) )
 {
   // setup the resource
-  new SettingsAdaptor( Settings::self() );
+  new SettingsAdaptor( mSettings );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
+                            mSettings, QDBusConnection::ExportAdaptors );
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
@@ -53,12 +54,13 @@ ContactsResource::ContactsResource( const QString &id )
   if ( name().startsWith( QLatin1String( "akonadi_contacts_resource" ) ) )
     setName( i18n( "Personal Contacts" ) );
 
-  if ( Settings::self()->isConfigured() )
+  if ( mSettings->isConfigured() )
     synchronize();
 }
 
 ContactsResource::~ContactsResource()
 {
+  delete mSettings;
 }
 
 void ContactsResource::aboutToQuit()
@@ -67,10 +69,10 @@ void ContactsResource::aboutToQuit()
 
 void ContactsResource::configure( WId windowId )
 {
-  SettingsDialog dlg( windowId );
+  SettingsDialog dlg( mSettings, windowId );
   if ( dlg.exec() ) {
-    Settings::self()->setIsConfigured( true );
-    Settings::self()->writeConfig();
+    mSettings->setIsConfigured( true );
+    mSettings->writeConfig();
 
     clearCache();
     initializeDirectory( baseDirectoryPath() );
@@ -209,7 +211,7 @@ bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
 
 void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  if ( Settings::self()->readOnly() ) {
+  if ( mSettings->readOnly() ) {
     cancelTask( i18n( "Trying to write to a read-only directory: '%1'", collection.remoteId() ) );
     return;
   }
@@ -263,7 +265,7 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
 void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  if ( Settings::self()->readOnly() ) {
+  if ( mSettings->readOnly() ) {
     cancelTask( i18n( "Trying to write to a read-only file: '%1'", item.remoteId() ) );
     return;
   }
@@ -313,7 +315,7 @@ void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
 
 void ContactsResource::itemRemoved( const Akonadi::Item &item )
 {
-  if ( Settings::self()->readOnly() ) {
+  if ( mSettings->readOnly() ) {
     cancelTask( i18n( "Trying to write to a read-only file: '%1'", item.remoteId() ) );
     return;
   }
@@ -338,7 +340,7 @@ void ContactsResource::itemRemoved( const Akonadi::Item &item )
 
 void ContactsResource::collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent )
 {
-  if ( Settings::self()->readOnly() ) {
+  if ( mSettings->readOnly() ) {
     cancelTask( i18n( "Trying to write to a read-only directory: '%1'", parent.remoteId() ) );
     return;
   }
@@ -359,7 +361,7 @@ void ContactsResource::collectionAdded( const Akonadi::Collection &collection, c
 
 void ContactsResource::collectionChanged( const Akonadi::Collection &collection )
 {
-  if ( Settings::self()->readOnly() ) {
+  if ( mSettings->readOnly() ) {
     cancelTask( i18n( "Trying to write to a read-only directory: '%1'", collection.remoteId() ) );
     return;
   }
@@ -413,7 +415,7 @@ static bool removeDirectory( const QDir &directory )
 
 void ContactsResource::collectionRemoved( const Akonadi::Collection &collection )
 {
-  if ( Settings::self()->readOnly() ) {
+  if ( mSettings->readOnly() ) {
     cancelTask( i18n( "Trying to write to a read-only directory: '%1'", collection.remoteId() ) );
     return;
   }
@@ -452,7 +454,7 @@ void ContactsResource::collectionMoved( const Akonadi::Collection &collection, c
 
 QString ContactsResource::baseDirectoryPath() const
 {
-  return Settings::self()->path();
+  return mSettings->path();
 }
 
 void ContactsResource::initializeDirectory( const QString &path ) const
@@ -478,7 +480,7 @@ Collection::Rights ContactsResource::supportedRights( bool isResourceCollection 
 {
   Collection::Rights rights = Collection::ReadOnly;
 
-  if ( !Settings::self()->readOnly() ) {
+  if ( !mSettings->readOnly() ) {
     rights |= Collection::CanChangeItem;
     rights |= Collection::CanCreateItem;
     rights |= Collection::CanDeleteItem;

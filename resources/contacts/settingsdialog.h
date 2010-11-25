@@ -24,6 +24,7 @@
 
 #include <KDE/KDialog>
 
+class Settings;
 class KConfigDialogManager;
 
 namespace Akonadi {
@@ -32,7 +33,7 @@ class SettingsDialog : public KDialog
 {
   Q_OBJECT
   public:
-    explicit SettingsDialog( WId windowId );
+    explicit SettingsDialog( Settings* settings, WId windowId );
 
   private Q_SLOTS:
     void save();
@@ -41,6 +42,7 @@ class SettingsDialog : public KDialog
   private:
     Ui::SettingsDialog ui;
     KConfigDialogManager* mManager;
+    Settings *mSettings;
 };
 
 }
