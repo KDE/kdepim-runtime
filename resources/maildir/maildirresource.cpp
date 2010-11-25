@@ -83,6 +83,7 @@ MaildirResource::MaildirResource( const QString &id )
 
 MaildirResource::~ MaildirResource()
 {
+  delete mSettings;
 }
 
 bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
