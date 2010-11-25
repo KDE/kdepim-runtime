@@ -62,8 +62,6 @@ InfoDialog::InfoDialog( bool closeWhenDone ) :
   statusLayout->addWidget( mProgressBar );
 
   setMainWidget( widget );
-
-  connect( this, SIGNAL(closeClicked()), SLOT(deleteLater()) );
 }
 
 InfoDialog::~InfoDialog()
