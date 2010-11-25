@@ -23,5 +23,5 @@ target_link_libraries(akonadi_agent_server
 )
 
 install(TARGETS akonadi_agent_server
-        DESTINATION ${BIN_INSTALL_DIR}
+        ${INSTALL_TARGETS_DEFAULT_ARGS}
 )
