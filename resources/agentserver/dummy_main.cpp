@@ -22,6 +22,7 @@
 Q_IMPORT_PLUGIN(akonadi_ical_resource)
 Q_IMPORT_PLUGIN(akonadi_vcard_resource)
 Q_IMPORT_PLUGIN(akonadi_maildir_resource)
+Q_IMPORT_PLUGIN(akonadi_akonotes_resource)
 
 Q_IMPORT_PLUGIN(akonadi_serializer_mail)
 Q_IMPORT_PLUGIN(akonadi_serializer_addressee)
