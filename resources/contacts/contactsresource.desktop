@@ -76,3 +76,4 @@ Icon=text-directory
 X-Akonadi-MimeTypes=text/directory,application/x-vnd.kde.contactgroup
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_contacts_resource
+X-Akonadi-LaunchMethod=AgentServer

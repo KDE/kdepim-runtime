@@ -22,7 +22,12 @@ qt4_add_dbus_adaptor(contactsresource_SRCS
 
 install( FILES contactsresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_executable(akonadi_contacts_resource ${contactsresource_SRCS})
+if (NOT WINCE)
+  kde4_add_plugin(akonadi_contacts_resource ${contactsresource_SRCS})
+else(NOT WINCE)
+  kde4_add_plugin(akonadi_contacts_resource STATIC ${contactsresource_SRCS})
+endif(NOT WINCE)
+
 target_link_libraries(akonadi_contacts_resource
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTCORE_LIBRARY}
@@ -31,10 +36,4 @@ target_link_libraries(akonadi_contacts_resource
   ${KDE4_KIO_LIBS}
 )
 
-if (Q_WS_MAC)
-  set_target_properties(akonadi_contacts_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
-  set_target_properties(akonadi_contacts_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Contacts")
-  set_target_properties(akonadi_contacts_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Contacts Resource")
-endif (Q_WS_MAC)
-
-install(TARGETS akonadi_contacts_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_contacts_resource DESTINATION ${PLUGIN_INSTALL_DIR})

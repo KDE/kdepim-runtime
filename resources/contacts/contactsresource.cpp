@@ -31,6 +31,7 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/dbusconnectionpool.h>
+#include <akonadi/agentfactory.h>
 
 using namespace Akonadi;
 
@@ -521,6 +522,6 @@ QString ContactsResource::directoryForCollection( const Collection& collection )
   return directory;
 }
 
-AKONADI_RESOURCE_MAIN( ContactsResource )
+AKONADI_AGENT_FACTORY( ContactsResource, akonadi_contacts_resource )
 
 #include "contactsresource.moc"
