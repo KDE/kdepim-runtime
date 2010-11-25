@@ -19,10 +19,12 @@
 
 #include "akonotesresource.h"
 
+#include <KLocale>
 
 AkonotesResource::AkonotesResource( const QString &id )
     : MaildirResource( id )
 {
+  KGlobal::locale()->insertCatalog( "akonadi_maildir_resource" );
 }
 
 AkonotesResource::~AkonotesResource()
