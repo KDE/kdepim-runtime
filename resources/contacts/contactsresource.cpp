@@ -30,6 +30,7 @@
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/dbusconnectionpool.h>
 
 using namespace Akonadi;
 
@@ -39,7 +40,7 @@ ContactsResource::ContactsResource( const QString &id )
 {
   // setup the resource
   new SettingsAdaptor( mSettings );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                             mSettings, QDBusConnection::ExportAdaptors );
 
   changeRecorder()->fetchCollection( true );
