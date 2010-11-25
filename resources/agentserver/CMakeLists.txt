@@ -12,6 +12,12 @@ target_link_libraries(akonadi_agent_server
   ${AKONADI_COMMON_LIBRARIES}
   akonadi_ical_resource
   akonadi_vcard_resource
+  akonadi_maildir_resource
+
+  akonadi_serializer_mail
+  akonadi_serializer_kcalcore
+  akonadi_serializer_contactgroup
+  akonadi_serializer_addressee
 )
 
 install(TARGETS akonadi_agent_server

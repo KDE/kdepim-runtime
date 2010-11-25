@@ -88,3 +88,4 @@ Icon=message-rfc822
 X-Akonadi-MimeTypes=message/rfc822
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_maildir_resource
+X-Akonadi-LaunchMethod=AgentServer

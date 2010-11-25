@@ -19,10 +19,8 @@
 
 #include "maildirresource.h"
 
-#ifdef MAIL_SERIALIZER_PLUGIN_STATIC
-#include <QtPlugin>
+#include <akonadi/agentfactory.h>
 
-Q_IMPORT_PLUGIN(akonadi_serializer_mail)
-#endif
+#include <QtCore/QtPlugin>
 
-AKONADI_RESOURCE_MAIN( MaildirResource )
+AKONADI_AGENT_FACTORY( MaildirResource, akonadi_maildir_resource );

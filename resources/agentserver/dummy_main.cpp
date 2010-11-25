@@ -21,6 +21,12 @@
 
 Q_IMPORT_PLUGIN(akonadi_ical_resource)
 Q_IMPORT_PLUGIN(akonadi_vcard_resource)
+Q_IMPORT_PLUGIN(akonadi_maildir_resource)
+
+Q_IMPORT_PLUGIN(akonadi_serializer_mail)
+Q_IMPORT_PLUGIN(akonadi_serializer_addressee)
+Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
+Q_IMPORT_PLUGIN(akonadi_serializer_kcalcore)
 
 extern int cemain( int argc, char ** argv );
 

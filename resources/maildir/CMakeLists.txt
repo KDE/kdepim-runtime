@@ -34,24 +34,14 @@ qt4_add_dbus_adaptor(maildirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Settings
 )
 
-if (RUNTIME_PLUGINS_STATIC)
-    add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)
-endif (RUNTIME_PLUGINS_STATIC)
-
-kde4_add_executable(akonadi_maildir_resource ${maildirresource_SRCS})
-
-if (Q_WS_MAC)
-  set_target_properties(akonadi_maildir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
-  set_target_properties(akonadi_maildir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Maildir")
-  set_target_properties(akonadi_maildir_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Maildir Resource")
-endif (Q_WS_MAC)
+if (NOT WINCE)
+  kde4_add_plugin(akonadi_maildir_resource ${maildirresource_SRCS})
+else(NOT WINCE)
+kde4_add_plugin(akonadi_maildir_resource STATIC ${maildirresource_SRCS})
+endif(NOT WINCE)
 
 target_link_libraries(akonadi_maildir_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
 
-if (RUNTIME_PLUGINS_STATIC)
-  target_link_libraries(akonadi_maildir_resource akonadi_serializer_mail)
-endif (RUNTIME_PLUGINS_STATIC)
-
-install(TARGETS akonadi_maildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_maildir_resource DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
         DESTINATION ${DBUS_INTERFACES_INSTALL_DIR})
