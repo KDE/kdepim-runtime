@@ -1,5 +1,5 @@
 File=maildirresource.kcfg
-ClassName=Settings
+ClassName=MaildirSettings
 Mutators=true
 ItemAccessors=true
 SetUserTexts=true

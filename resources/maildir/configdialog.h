@@ -25,13 +25,13 @@
 #include "ui_settings.h"
 
 class KConfigDialogManager;
-class Settings;
+class MaildirSettings;
 
 class ConfigDialog : public KDialog
 {
   Q_OBJECT
   public:
-    explicit ConfigDialog( Settings *settings, QWidget *parent = 0 );
+    explicit ConfigDialog( MaildirSettings *settings, QWidget *parent = 0 );
 
   private slots:
     void checkPath();
@@ -40,7 +40,7 @@ class ConfigDialog : public KDialog
   private:
     Ui::ConfigDialog ui;
     KConfigDialogManager* mManager;
-    Settings *mSettings;
+    MaildirSettings *mSettings;
     bool mToplevelIsContainer;
 };
 

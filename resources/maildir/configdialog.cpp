@@ -28,7 +28,7 @@
 
 using KPIM::Maildir;
 
-ConfigDialog::ConfigDialog( Settings *settings, QWidget * parent) :
+ConfigDialog::ConfigDialog( MaildirSettings *settings, QWidget * parent) :
     KDialog( parent ),
     mSettings( settings ),
     mToplevelIsContainer( false )

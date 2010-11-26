@@ -28,7 +28,7 @@ kde4_add_ui_files(akonotesresource_SRCS ../maildir/settings.ui)
 kde4_add_kcfg_files(akonotesresource_SRCS ../maildir/settings.kcfgc)
 
 qt4_add_dbus_adaptor(akonotesresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h MaildirSettings maildirsettingsadaptor MaildirSettingsAdaptor
 )
 
 install( FILES akonotesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

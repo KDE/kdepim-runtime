@@ -31,7 +31,7 @@ kde4_add_kcfg_files(maildirresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
 
 qt4_add_dbus_adaptor(maildirresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h MaildirSettings maildirsettingsadaptor MaildirSettingsAdaptor
 )
 
 if (NOT WINCE)

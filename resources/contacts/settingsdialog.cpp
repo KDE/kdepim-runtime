@@ -28,7 +28,7 @@
 
 using namespace Akonadi;
 
-SettingsDialog::SettingsDialog( Settings *settings, WId windowId )
+SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId )
   : KDialog(),
   mSettings( settings )
 {

@@ -1,5 +1,5 @@
 File=contactsresource.kcfg
-ClassName=Settings
+ClassName=ContactsResourceSettings
 Mutators=true
 ItemAccessors=true
 SetUserTexts=true

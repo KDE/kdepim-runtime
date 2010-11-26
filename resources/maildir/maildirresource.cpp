@@ -19,7 +19,7 @@
 
 #include "maildirresource.h"
 #include "settings.h"
-#include "settingsadaptor.h"
+#include "maildirsettingsadaptor.h"
 #include "configdialog.h"
 
 #include <QtCore/QDir>
@@ -63,9 +63,9 @@ Maildir MaildirResource::maildirForCollection( const Collection &col ) const
 
 MaildirResource::MaildirResource( const QString &id )
     :ResourceBase( id ),
-    mSettings( new Settings( componentData().config() ) )
+    mSettings( new MaildirSettings( componentData().config() ) )
 {
-  new SettingsAdaptor( mSettings );
+  new MaildirSettingsAdaptor( mSettings );
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                               mSettings, QDBusConnection::ExportAdaptors );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(configurationChanged()) );

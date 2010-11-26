@@ -19,7 +19,8 @@
 
 #include "contactsresource.h"
 
-#include "settingsadaptor.h"
+#include "settings.h"
+#include "contactsresourcesettingsadaptor.h"
 #include "settingsdialog.h"
 
 #include <QtCore/QDir>
@@ -37,10 +38,10 @@ using namespace Akonadi;
 
 ContactsResource::ContactsResource( const QString &id )
   : ResourceBase( id ),
-  mSettings( new Settings( componentData().config() ) )
+  mSettings( new ContactsResourceSettings( componentData().config() ) )
 {
   // setup the resource
-  new SettingsAdaptor( mSettings );
+  new ContactsResourceSettingsAdaptor( mSettings );
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                             mSettings, QDBusConnection::ExportAdaptors );
 
