@@ -256,6 +256,7 @@ class SingleFileResource : public SingleFileResourceBase
       } else {
         emit configurationDialogRejected();
       }
+      delete dlg;
     }
 
   protected:
