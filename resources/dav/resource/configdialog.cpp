@@ -102,8 +102,7 @@ void ConfigDialog::onAddButtonClicked()
     checkUserInput();
   }
 
-  if ( !dlg.isNull() )
-    delete dlg;
+  delete dlg;
 }
 
 void ConfigDialog::onRemoveButtonClicked()
@@ -155,6 +154,7 @@ void ConfigDialog::onEditButtonClicked()
     item = mModel->item( index.row(), 1 ); // URL
     item->setData( QVariant::fromValue( dlg->remoteUrl() ), Qt::DisplayRole );
   }
+  delete dlg;
 }
 
 void ConfigDialog::onOkClicked()
