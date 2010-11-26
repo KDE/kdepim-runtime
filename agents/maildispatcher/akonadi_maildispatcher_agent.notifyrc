@@ -65,4 +65,5 @@ Action=Popup
 
 [Event/sendingfailed]
 Name=E-mail sending failed
+Name[x-test]=xxE-mail sending failedxx
 Action=Popup
