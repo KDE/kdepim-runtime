@@ -98,7 +98,8 @@ Dialog::Dialog(QWidget* parent) :
 
   // attach network access helper to this instance,
   // establish connection for the lifetime of this dialog
-  new KPIMUtils::NetworkAccessHelper(this);
+  KPIMUtils::NetworkAccessHelper* networkHelper = new KPIMUtils::NetworkAccessHelper(this);
+  networkHelper->establishConnection();
 }
 
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
