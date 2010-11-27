@@ -65,5 +65,9 @@ Action=Popup
 
 [Event/sendingfailed]
 Name=E-mail sending failed
+Name[ia]=Expedition de e-posta falleva
+Name[pt]=O envio do e-mail foi mal-sucedido
+Name[sv]=Misslyckades skicka brev
+Name[uk]=Спроба надсилання повідомлення зазнала невдачі
 Name[x-test]=xxE-mail sending failedxx
 Action=Popup
