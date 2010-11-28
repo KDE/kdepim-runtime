@@ -469,6 +469,28 @@ void KMailMigrator::migrationFailed( const QString &errorMsg,
 void KMailMigrator::migrationCompleted( const AgentInstance &instance, bool doMigrateNext )
 {
   const KConfigGroup group( mConfig, mCurrentAccount );
+  const QString accountId = group.readEntry( QLatin1String( "Id" ) );
+
+  // check if the account is used in filters
+  const QStringList filterGroups = mConfig->groupList().filter( QRegExp( "Filter #\\d+" ) );
+  //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "filterGroups=" << filterGroups;
+  Q_FOREACH( const QString &groupName, filterGroups ) {
+    KConfigGroup filterGroup( mConfig, groupName );
+
+    QStringList accountsSet = filterGroup.readEntry( QLatin1String( "accounts-set" ), QStringList() );
+    //if ( !accountsSet.isEmpty() ) {
+    //  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountsSet=" << accountsSet;
+    //}
+    const int index = accountsSet.indexOf( accountId );
+    if ( index != -1 ) {
+      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "replacing account id" << accountId
+                                       << "in filter" << groupName
+                                       << "with resource id" << instance.identifier();
+      accountsSet.replace( index, instance.identifier() );
+      filterGroup.writeEntry( QLatin1String( "accounts-set" ), accountsSet );
+    }
+  }
+
   setMigrationState( group.readEntry( "Id" ), Complete, instance.identifier(),
                      group.readEntry( "Type" ).toLower() );
   emit message( Success, i18n( "Migration of '%1' succeeded.", group.readEntry( "Name" ) ) );
