@@ -15,6 +15,7 @@ target_link_libraries(akonadi_agent_server
   akonadi_maildir_resource
   akonadi_akonotes_resource
   akonadi_contacts_resource
+  korgac
 
   akonadi_serializer_mail
   akonadi_serializer_kcalcore
