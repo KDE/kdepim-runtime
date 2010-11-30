@@ -99,7 +99,7 @@ void BirthdaysResource::retrieveCollections()
 void BirthdaysResource::retrieveItems(const Akonadi::Collection& collection)
 {
   Q_UNUSED( collection );
-  itemsRetrievedIncremental( mPendingItems, mDeletedItems );
+  itemsRetrievedIncremental( mPendingItems.values(), mDeletedItems.values() );
   mPendingItems.clear();
   mDeletedItems.clear();
 }
@@ -174,7 +174,7 @@ void BirthdaysResource::addPendingEvent( KCal::Event* event, const QString &remo
   Item i( "application/x-vnd.akonadi.calendar.event" );
   i.setRemoteId( remoteId );
   i.setPayload( evptr );
-  mPendingItems << i; // TODO check if we have that item already
+  mPendingItems[ remoteId ] = i;
   synchronize();
 }
 
@@ -183,9 +183,9 @@ void BirthdaysResource::contactRemoved( const Akonadi::Item& item )
 {
   Item i( "application/x-vnd.akonadi.calendar.event" );
   i.setRemoteId( QString::fromLatin1( "b%1" ).arg( item.id() ) );
-  mDeletedItems << i;
+  mDeletedItems[ i.remoteId() ] = i;
   i.setRemoteId( QString::fromLatin1( "a%1" ).arg( item.id() ) );
-  mDeletedItems << i;
+  mDeletedItems[ i.remoteId() ] = i;
   synchronize();
 }
 
