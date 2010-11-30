@@ -397,8 +397,9 @@ void ImapResource::doSetOnline(bool online)
 #ifndef IMAPRESOURCE_NO_SOLID
   kDebug() << "online=" << online;
 #endif
-  if ( !online && m_pool->isConnected() ) {
-    m_pool->disconnect();
+  if ( !online ) {
+    if ( m_pool->isConnected() )
+      m_pool->disconnect();
     delete m_idle;
     m_idle = 0;
   } else if ( online && !m_pool->isConnected() ) {
