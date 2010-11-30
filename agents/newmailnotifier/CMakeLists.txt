@@ -15,7 +15,7 @@ set(newmailnotifieragent_SRCS
 if (NOT WINCE)
   kde4_add_plugin(newmailnotifieragent ${newmailnotifieragent_SRCS})
 else ()
-  kde4_add_plugin(newmailnotifieragent ${newmailnotifieragent_SRCS})
+  kde4_add_plugin(newmailnotifieragent STATIC ${newmailnotifieragent_SRCS})
 endif ()
 
 target_link_libraries(newmailnotifieragent
