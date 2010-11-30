@@ -156,11 +156,10 @@ qint64 SessionPool::requestSession()
 
 void SessionPool::releaseSession( KIMAP::Session *session )
 {
-  Q_ASSERT( m_initialConnectDone );
-  Q_ASSERT( m_reservedPool.contains( session ) );
-
-  m_reservedPool.removeAll( session );
-  m_idlePool << session;
+  if ( m_reservedPool.contains( session ) ) {
+    m_reservedPool.removeAll( session );
+    m_idlePool << session;
+  }
 }
 
 ImapAccount *SessionPool::account() const
