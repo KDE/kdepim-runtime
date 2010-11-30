@@ -10,6 +10,7 @@ macro(kdepim_add_agent _target)
 endmacro(kdepim_add_agent)
 
 add_subdirectory( maildispatcher )
+add_subdirectory( newmailnotifier )
 
 if( STRIGI_FOUND )
 add_subdirectory( strigifeeder )

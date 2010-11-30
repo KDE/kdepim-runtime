@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Andreas Holzammer <andreas.holzammer@kdab.com>
+    Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,24 +17,28 @@
     02110-1301, USA.
 */
 
-#include <QtPlugin>
+#ifndef NEWMAILNOTIFIERAGENT_H
+#define NEWMAILNOTIFIERAGENT_H
 
-Q_IMPORT_PLUGIN(akonadi_ical_resource)
-Q_IMPORT_PLUGIN(akonadi_vcard_resource)
-Q_IMPORT_PLUGIN(akonadi_maildir_resource)
-Q_IMPORT_PLUGIN(akonadi_akonotes_resource)
-Q_IMPORT_PLUGIN(akonadi_contacts_resource)
-Q_IMPORT_PLUGIN(korgac)
-Q_IMPORT_PLUGIN(newmailnotifieragent)
+#include <Akonadi/Collection>
+#include <akonadi/agentbase.h>
 
-Q_IMPORT_PLUGIN(akonadi_serializer_mail)
-Q_IMPORT_PLUGIN(akonadi_serializer_addressee)
-Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
-Q_IMPORT_PLUGIN(akonadi_serializer_kcalcore)
+#include <QtCore/QTimer>
 
-extern int cemain( int argc, char ** argv );
-
-int main( int argc, char ** argv )
+class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
-  return cemain( argc, argv );
-}
+  Q_OBJECT
+
+  public:
+    NewMailNotifierAgent(const QString& id);
+    void itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection);
+
+  private slots:
+    void showNotifications();
+
+  private:
+    QHash<Akonadi::Collection, int> m_newMails;
+    QTimer m_timer;
+};
+
+#endif

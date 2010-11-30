@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=New Email Notfier
+Comment=Notifications about newly received emails
+Icon=mail-unread-new
+Type=AkonadiAgent
+Exec=newmailnotifieragent
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Unique,Autostart,NoConfig
+X-Akonadi-Identifier=akonadi_newmailnotifier_agent
+X-Akonadi-LaunchMethod=AgentServer
