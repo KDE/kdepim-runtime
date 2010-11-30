@@ -20,8 +20,8 @@
 #ifndef NEWMAILNOTIFIERAGENT_H
 #define NEWMAILNOTIFIERAGENT_H
 
+#include <akonadi/collection.h> // make sure this is included before QHash, otherwise it wont find the correct qHash implementation for some reason
 #include <akonadi/agentbase.h>
-#include <akonadi/collection.h>
 
 #include <QtCore/QTimer>
 
