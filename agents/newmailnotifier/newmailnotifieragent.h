@@ -20,8 +20,8 @@
 #ifndef NEWMAILNOTIFIERAGENT_H
 #define NEWMAILNOTIFIERAGENT_H
 
-#include <Akonadi/Collection>
 #include <akonadi/agentbase.h>
+#include <akonadi/collection.h>
 
 #include <QtCore/QTimer>
 
@@ -30,8 +30,8 @@ class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBas
   Q_OBJECT
 
   public:
-    NewMailNotifierAgent(const QString& id);
-    void itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection);
+    NewMailNotifierAgent( const QString &id );
+    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
 
   private slots:
     void showNotifications();

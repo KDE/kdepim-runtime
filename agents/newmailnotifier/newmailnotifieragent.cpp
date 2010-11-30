@@ -21,14 +21,15 @@
 
 #include <akonadi/agentfactory.h>
 #include <akonadi/changerecorder.h>
-#include <KMime/Message>
-#include <akonadi/itemfetchscope.h>
-#include <KNotification>
-#include <KLocalizedString>
-#include <akonadi/kmime/messagestatus.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
+#include <akonadi/kmime/messagestatus.h>
+#include <KLocalizedString>
+#include <KMime/Message>
+#include <KNotification>
 
-NewMailNotifierAgent::NewMailNotifierAgent(const QString& id) : AgentBase(id)
+NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
+  : AgentBase( id )
 {
   changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
   changeRecorder()->itemFetchScope().setCacheOnly( true );
@@ -38,17 +39,19 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString& id) : AgentBase(id)
 
   m_timer.setInterval( 30 * 1000 );
   m_timer.setSingleShot( true );
-  connect( &m_timer, SIGNAL(timeout()), SLOT(showNotifications()) );
+  connect( &m_timer, SIGNAL( timeout() ), SLOT( showNotifications() ) );
 }
 
-void NewMailNotifierAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
+void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
   Akonadi::MessageStatus status;
   status.setStatusFromFlags( item.flags() );
   if ( status.isRead() )
     return;
+
   if ( !m_timer.isActive() )
     m_timer.start();
+
   m_newMails[collection]++;
 }
 
