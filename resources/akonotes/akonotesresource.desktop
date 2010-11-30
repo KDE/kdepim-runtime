@@ -26,6 +26,7 @@ Comment=Loads a notes hierarchy from a local maildir folder
 Comment[ca]=Carrega una jerarquia de notes des d'una carpeta maildir local
 Comment[ca@valencia]=Carrega una jerarquia de notes des d'una carpeta maildir local
 Comment[da]=Indlæser et hierarki af noter fra en lokal maildir-mappe
+Comment[de]=Laden einer Notizenhierarchie aus einem lokalen Maildir-Ordner
 Comment[en_GB]=Loads a notes hierarchy from a local maildir folder
 Comment[es]=Carga una jerarquía de notas desde una carpeta de directorio de correo local
 Comment[et]=Märkmete hierarhia laadimine kohalikust maildir-kaustast
