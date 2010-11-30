@@ -133,13 +133,13 @@ ImapResource::ImapResource( const QString &id )
   changeRecorder()->collectionFetchScope().setIncludeStatistics( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
+  changeRecorder()->itemFetchScope().setFetchModificationTime( false );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
   setItemTransactionMode( ItemSync::MultipleTransactions ); // we can recover from incomplete syncs, so we can use a faster mode
   ItemFetchScope scope( changeRecorder()->itemFetchScope() );
   scope.fetchFullPayload( false );
   scope.setAncestorRetrieval( ItemFetchScope::None );
-  scope.setFetchModificationTime( false );
   setItemSynchronizationFetchScope( scope );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
