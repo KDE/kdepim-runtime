@@ -25,6 +25,8 @@
 
 #include <akonadi/resourcebase.h>
 
+#include <QHash>
+
 class QDate;
 
 class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
@@ -60,8 +62,8 @@ class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
 
     void contactRetrieved( KJob *job );
   private:
-    Akonadi::Item::List mPendingItems;
-    Akonadi::Item::List mDeletedItems;
+    QHash<QString, Akonadi::Item> mPendingItems;
+    QHash<QString, Akonadi::Item> mDeletedItems;
 };
 
 #endif
