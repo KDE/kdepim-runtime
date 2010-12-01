@@ -180,6 +180,8 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces() const
 void SessionPool::killSession( KIMAP::Session *session, SessionTermination termination )
 {
   QObject::disconnect( session, SIGNAL(connectionLost()),
+                       this, SLOT(onEarlyConnectionLost()) );
+  QObject::disconnect( session, SIGNAL(connectionLost()),
                        this, SLOT(onConnectionLost()) );
 
   if ( termination==LogoutSession ) {
@@ -197,6 +199,8 @@ void SessionPool::declareSessionReady( KIMAP::Session *session )
 {
   m_pendingInitialSession = 0;
 
+  QObject::disconnect( session, SIGNAL(connectionLost()),
+                       this, SLOT(onEarlyConnectionLost()) );
   QObject::connect( session, SIGNAL(connectionLost()),
                     this, SLOT(onConnectionLost()) );
 
@@ -325,6 +329,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     session = new KIMAP::Session( m_account->server(), m_account->port(), this );
     session->setUiProxy( m_sessionUiProxy );
   }
+  QObject::connect( session, SIGNAL(connectionLost()), this, SLOT(onEarlyConnectionLost()) );
 
   KIMAP::LoginJob *loginJob = new KIMAP::LoginJob( session );
   loginJob->setUserName( m_account->userName() );
@@ -335,6 +340,14 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
   QObject::connect( loginJob, SIGNAL( result( KJob* ) ),
                     this, SLOT( onLoginDone( KJob* ) ) );
   loginJob->start();
+}
+
+void SessionPool::onEarlyConnectionLost()
+{
+  kDebug() << sender();
+  KIMAP::Session *session = qobject_cast<KIMAP::Session*>( sender() );
+  Q_ASSERT( session );
+  cancelSessionCreation( session, LoginFailError, i18n( "Failed to connect to server" ) );
 }
 
 void SessionPool::onLoginDone( KJob *job )

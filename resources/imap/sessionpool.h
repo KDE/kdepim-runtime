@@ -100,6 +100,7 @@ private slots:
   void onNamespacesTestDone( KJob *job );
 
   void onConnectionLost();
+  void onEarlyConnectionLost();
 
 private:
   void killSession( KIMAP::Session *session, SessionTermination termination );
