@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=New Email Notfier
-Name[x-test]=xxNew Email Notfierxx
+Name=New Email Notifier
+Name[x-test]=xxNew Email Notifierxx
 Comment=Notifications about newly received emails
 Comment[x-test]=xxNotifications about newly received emailsxx
 Icon=mail-unread-new
