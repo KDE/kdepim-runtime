@@ -2,6 +2,11 @@
 Name=New Email Notifier
 Name[x-test]=xxNew Email Notifierxx
 Comment=Notifications about newly received emails
+Comment[ia]=Notificationes re nove e-postas recipite
+Comment[nl]=Meldingen over nieuw ontvangen e-mails
+Comment[pt]=Notificações acerca do correio novo recebido
+Comment[sv]=Underrättelser om nyss mottagen e-post
+Comment[uk]=Сповіщення щодо щойно отриманих повідомлень
 Comment[x-test]=xxNotifications about newly received emailsxx
 Icon=mail-unread-new
 Type=AkonadiAgent
