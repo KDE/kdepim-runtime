@@ -27,6 +27,7 @@
 
 ImapAccount::ImapAccount()
   : m_port( 0 ),
+    m_timeout( 30 ),
     m_encryption( KIMAP::LoginJob::Unencrypted ),
     m_authentication( KIMAP::LoginJob::ClearText ),
     m_subscriptionEnabled( false )
@@ -109,3 +110,12 @@ bool ImapAccount::isSubscriptionEnabled() const
   return m_subscriptionEnabled;
 }
 
+void ImapAccount::setTimeout(int timeout)
+{
+  m_timeout = timeout;
+}
+
+int ImapAccount::timeout() const
+{
+  return m_timeout;
+}

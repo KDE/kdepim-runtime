@@ -241,6 +241,8 @@ void Settings::loadAccount( ImapAccount *account ) const
       )
   );
 
+  account->setTimeout( sessionTimeout() );
+
 }
 
 QString Settings::rootRemoteId() const

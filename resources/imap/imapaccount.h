@@ -57,12 +57,16 @@ public:
   void setSubscriptionEnabled( bool enabled );
   bool isSubscriptionEnabled() const;
 
+  void setTimeout( int timeout );
+  int timeout() const;
+
 private:
   QString m_name;
   QString m_server;
   quint16 m_port;
   QString m_userName;
   QString m_password;
+  int m_timeout;
   KIMAP::LoginJob::EncryptionMode m_encryption;
   KIMAP::LoginJob::AuthenticationMode m_authentication;
   bool m_subscriptionEnabled;

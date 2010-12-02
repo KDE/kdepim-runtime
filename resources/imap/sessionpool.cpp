@@ -328,6 +328,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
   } else {
     session = new KIMAP::Session( m_account->server(), m_account->port(), this );
     session->setUiProxy( m_sessionUiProxy );
+    session->setTimeout( m_account->timeout() );
   }
   QObject::connect( session, SIGNAL(connectionLost()), this, SLOT(onEarlyConnectionLost()) );
 
