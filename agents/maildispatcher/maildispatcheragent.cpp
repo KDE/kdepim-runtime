@@ -58,11 +58,12 @@ class MailDispatcherAgent::Private
 {
   public:
     Private( MailDispatcherAgent *parent )
-        : q( parent ),
-          currentJob( 0 ),
-          aborting( false ),
-          sendingInProgress( false ),
-          sentAnything( false )
+      : q( parent ),
+        currentJob( 0 ),
+        aborting( false ),
+        sendingInProgress( false ),
+        sentAnything( false ),
+        errorOccurred( false )
     {
     }
 
@@ -78,6 +79,7 @@ class MailDispatcherAgent::Private
     bool aborting;
     bool sendingInProgress;
     bool sentAnything;
+    bool errorOccurred;
     qulonglong sentItemsSize;
 
     // slots:
@@ -88,7 +90,6 @@ class MailDispatcherAgent::Private
     void sendPercent( KJob *job, unsigned long percent );
     void sendResult( KJob *job );
     void emitStatusReady();
-
 };
 
 
@@ -153,18 +154,22 @@ void MailDispatcherAgent::Private::dispatch()
         emit q->percent( 100 );
         emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
 
-        const QPixmap pixmap = KIcon( "mail-folder-outbox" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-        KNotification *notify = new KNotification( "emailsent" );
-        notify->setComponentData( q->componentData() );
-        notify->setPixmap( pixmap );
-        notify->setText( i18nc("Notification when the email was sent", "E-mail successfully sent" ) );
-        notify->sendEvent();
+        if ( !errorOccurred ) {
+          const QPixmap pixmap = KIcon( "mail-folder-outbox" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+          KNotification *notify = new KNotification( "emailsent" );
+          notify->setComponentData( q->componentData() );
+          notify->setPixmap( pixmap );
+          notify->setText( i18nc("Notification when the email was sent", "E-mail successfully sent" ) );
+          notify->sendEvent();
+        }
       } else {
         // Empty queue.
         emit q->status( AgentBase::Idle, i18n( "No items in queue." ) );
       }
       QTimer::singleShot( 3000, q, SLOT( emitStatusReady() ) );
     }
+
+    errorOccurred = false;
   }
 }
 
@@ -174,7 +179,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
     d( new Private( this ) )
 {
   kDebug() << "maildispatcheragent: At your service, sir!";
-  
+
 #ifdef KDEPIM_STATIC_LIBS
     ___MailTransport____INIT();
 #endif
@@ -188,7 +193,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/MailDispatcherAgent" ),
                                                          this, QDBusConnection::ExportAdaptors );
   DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.MailDispatcherAgent" ) );
-  
+
   d->queue = new OutboxQueue( this );
   connect( d->queue, SIGNAL( newItems() ),
            this, SLOT( dispatch() ) );
@@ -228,7 +233,7 @@ void MailDispatcherAgent::doSetOnline( bool online )
     // the outbox, but the MDA will just not send anything.  Is this what we
     // want?
   }
-  
+
   AgentBase::doSetOnline( online );
 }
 
@@ -240,7 +245,7 @@ void MailDispatcherAgent::Private::itemFetched( const Item &item )
   currentItem = item;
   Q_ASSERT( currentJob == 0 );
   emit q->itemDispatchStarted();
-  
+
   currentJob = new SendJob( item, q );
   if ( aborting ) {
     currentJob->setMarkAborted();
@@ -260,6 +265,7 @@ void MailDispatcherAgent::Private::itemFetched( const Item &item )
 void MailDispatcherAgent::Private::queueError( const QString &message )
 {
   emit q->error( message );
+  errorOccurred = true;
   // FIXME figure out why this does not set the status to Broken, etc.
 }
 
@@ -273,7 +279,7 @@ void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long )
 
   // Give the transport 80% of the weight, and move-to-sendmail 20%.
   const double transportWeight = 0.8;
-  
+
   const int percent = 100 * ( sentItemsSize + job->processedAmount( KJob::Bytes ) * transportWeight )
                           / ( sentItemsSize + currentItem.size() + queue->totalSize() );
 
@@ -317,6 +323,8 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
     notify->setPixmap( pixmap );
     notify->setText( i18nc("Notification when email sending failed", "E-mail sending failed: %1", job->errorString() ) );
     notify->sendEvent();
+
+    errorOccurred = true;
   } else {
     kDebug() << "Sending succeeded.";
   }
