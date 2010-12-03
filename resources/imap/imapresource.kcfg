@@ -32,7 +32,7 @@
       <default>false</default>
     </entry>
     <entry name="SessionTimeout" type="Int">
-      <default>30</default>
+      <default>-1</default>
     </entry>
   </group>
   <group name="cache">
