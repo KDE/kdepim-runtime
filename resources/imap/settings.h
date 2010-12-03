@@ -51,11 +51,9 @@ public:
 signals:
     void passwordRequestCompleted( const QString &password, bool userRejected );
 
-#ifndef Q_OS_WINCE
 public slots:
     Q_SCRIPTABLE QString password( bool *userRejected = 0 ) const;
     Q_SCRIPTABLE void setPassword( const QString &password );
-#endif
 
 private slots:
     void onWalletOpened( bool success );

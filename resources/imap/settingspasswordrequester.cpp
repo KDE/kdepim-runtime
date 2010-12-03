@@ -39,17 +39,13 @@ SettingsPasswordRequester::SettingsPasswordRequester( ImapResource *resource, QO
 
 void SettingsPasswordRequester::requestPassword( RequestType request, const QString &serverError )
 {
-#ifndef Q_OS_WINCE
   if ( request == WrongPasswordRequest ) {
-#endif
     QMetaObject::invokeMethod( this, "askUserInput", Qt::QueuedConnection, Q_ARG(QString, serverError) );
-#ifndef Q_OS_WINCE
   } else {
     connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
              this, SLOT(onPasswordRequestCompleted(QString, bool)) );
     Settings::self()->requestPassword();
   }
-#endif
 }
 
 void SettingsPasswordRequester::askUserInput( const QString &serverError )

@@ -154,20 +154,13 @@ void Settings::onDialogFinished( int result )
 {
   if ( result == QDialog::Accepted ) {
     KPasswordDialog *dlg = qobject_cast<KPasswordDialog*>( sender() );
-#ifdef Q_OS_WINCE
-    // no wallet.
-    SettingsBase::setPassword( dlg->password() );
-    writeConfig();
-#else
     setPassword( dlg->password() );
-#endif
     emit passwordRequestCompleted( dlg->password(), false );
   } else {
     emit passwordRequestCompleted( QString(), true );
   }
 }
 
-#ifndef Q_OS_WINCE
 QString Settings::password(bool *userRejected) const
 {
     if ( userRejected != 0 ) {
@@ -211,7 +204,6 @@ void Settings::setPassword( const QString & password )
     }
     delete wallet;
 }
-#endif
 
 void Settings::loadAccount( ImapAccount *account ) const
 {
@@ -221,9 +213,6 @@ void Settings::loadAccount( ImapAccount *account ) const
   }
 
   account->setUserName( userName() );
-#ifdef Q_OS_WINCE
-  account->setPassword( password() );
-#endif
   account->setSubscriptionEnabled( subscriptionEnabled() );
 
   QString encryption = safety();

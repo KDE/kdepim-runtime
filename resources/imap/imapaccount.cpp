@@ -68,18 +68,6 @@ QString ImapAccount::userName() const
   return m_userName;
 }
 
-#ifdef Q_OS_WINCE
-void ImapAccount::setPassword( const QString &password )
-{
-  m_password = password;
-}
-
-QString ImapAccount::password() const
-{
-  return m_password;
-}
-#endif
-
 void ImapAccount::setEncryptionMode( KIMAP::LoginJob::EncryptionMode mode)
 {
   m_encryption = mode;

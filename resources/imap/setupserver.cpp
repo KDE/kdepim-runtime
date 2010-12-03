@@ -332,7 +332,6 @@ void SetupServer::readSettings()
   kDebug() << "read IMAP auth mode: " << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) i );
   setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) i );
 
-#ifndef Q_OS_WINCE
   bool rejected = false;
   QString password = Settings::self()->password( &rejected );
   if ( rejected ) {
@@ -346,9 +345,6 @@ void SetupServer::readSettings()
   } else {
     m_ui->password->insert( password );
   }
-#else
-  m_ui->password->insert( Settings::self()->password() );
-#endif
 
   m_ui->subscriptionEnabled->setChecked( Settings::self()->subscriptionEnabled() );
 

@@ -147,11 +147,7 @@ void SubscriptionDialog::connectAccount( const ImapAccount &account, const QStri
 
   KIMAP::LoginJob *login = new KIMAP::LoginJob( m_session );
   login->setUserName( account.userName() );
-#ifndef Q_OS_WINCE
   login->setPassword( password );
-#else
-  login->setPassword( account.password() );
-#endif
   login->setEncryptionMode( account.encryptionMode() );
   login->setAuthenticationMode( account.authenticationMode() );
 
