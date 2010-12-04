@@ -30,7 +30,7 @@
 #include <Mailtransport/PrecommandJob>
 #include <Mailtransport/Transport>
 
-#include <KIO/PasswordDialog>
+#include <KPasswordDialog>
 #include <KMessageBox>
 #include <kwallet.h>
 
