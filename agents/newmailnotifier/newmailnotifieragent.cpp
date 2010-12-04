@@ -22,6 +22,7 @@
 #include <akonadi/agentfactory.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/entityhiddenattribute.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/kmime/messagestatus.h>
 #include <KLocalizedString>
@@ -44,9 +45,12 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
 
 void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
+  if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
+    return;
+
   Akonadi::MessageStatus status;
   status.setStatusFromFlags( item.flags() );
-  if ( status.isRead() )
+  if ( status.isRead() || status.isSpam() || status.isIgnored() )
     return;
 
   if ( !m_timer.isActive() )
