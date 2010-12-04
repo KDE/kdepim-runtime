@@ -73,6 +73,7 @@ Action=Popup
 [Event/sendingfailed]
 Name=E-mail sending failed
 Name[de]=Fehler beim Versenden der E-Mail
+Name[en_GB]=E-mail sending failed
 Name[et]=E-kirja saatmine nurjus
 Name[fr]=Erreur lors de l'envoi du courriel
 Name[ia]=Expedition de e-posta falleva
