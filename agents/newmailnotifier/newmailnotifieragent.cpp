@@ -74,7 +74,7 @@ void NewMailNotifierAgent::showNotifications()
 
   kDebug() << texts;
   KNotification *notify = new KNotification( "new-email", 0L, KNotification::Persistent );
-  notify->setText( texts.join( "\n" ) );
+  notify->setText( texts.join( "<br>" ) );
   notify->sendEvent();
 
   m_newMails.clear();
