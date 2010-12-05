@@ -114,6 +114,7 @@ public:
 
   // Load this object by reading the XML file
   bool load( const QString& xml );
+  static QDomDocument loadDocument( const QString& xmlData );
 
   // Load this QDomDocument
   virtual bool loadXML( const QDomDocument& xml ) = 0;

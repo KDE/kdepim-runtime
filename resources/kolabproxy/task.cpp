@@ -74,10 +74,10 @@ static int kolabPrioritytoKCal( const int kolabPriority )
   }
 }
 
-KCalCore::Todo::Ptr Task::xmlToTask( const QString& xml, const QString& tz )
+KCalCore::Todo::Ptr Task::fromXml( const QDomDocument& xmlDoc, const QString& tz )
 {
   Task task( tz );
-  task.load( xml );
+  task.loadXML( xmlDoc );
   KCalCore::Todo::Ptr todo(  new KCalCore::Todo() );
   task.saveTo( todo );
   return todo;

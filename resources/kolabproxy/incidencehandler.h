@@ -24,6 +24,9 @@
 #include "kolabhandler.h"
 #include <kcalcore/incidence.h>
 #include <kcalcore/memorycalendar.h>
+#include "task.h"
+
+class QDomDocument;
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -45,9 +48,25 @@ Q_SIGNALS:
 
 protected:
   virtual KCalCore::Incidence::Ptr incidenceFromKolab(const KMime::Message::Ptr &data) = 0;
+  template <typename IncidencePtr, typename Converter>
+  inline IncidencePtr incidenceFromKolabImpl( const KMime::Message::Ptr &data )
+  {
+    KMime::Content *xmlContent = findContentByType( data, m_mimeType );
+    if ( xmlContent ) {
+      const QByteArray xmlData = xmlContent->decodedContent();
+      const QDomDocument xmlDoc = Converter::loadDocument( QString::fromUtf8(xmlData) );
+      if ( !xmlDoc.isNull() ) {
+        IncidencePtr i = Converter::fromXml( xmlDoc, m_calendar.timeZoneId() );
+        attachmentsFromKolab( data, xmlDoc, i );
+        return i;
+      }
+    }
+    return IncidencePtr();
+  }
+
   virtual QByteArray incidenceToXml( const KCalCore::Incidence::Ptr &incidence) = 0;
   static void attachmentsFromKolab( const KMime::Message::Ptr &data,
-                                    const QByteArray &xmlData,
+                                    const QDomDocument &xmlDoc,
                                     const KCalCore::Incidence::Ptr &incidence );
   void incidenceToItem(const KCalCore::Incidence::Ptr &e, Akonadi::Item &imapItem);
 

@@ -41,21 +41,7 @@ JournalHandler::~JournalHandler()
 
 KCalCore::Incidence::Ptr JournalHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
 {
-  return journalFromKolab(data);
-}
-
-
-KCalCore::Journal::Ptr  JournalHandler::journalFromKolab(const KMime::Message::Ptr &data)
-{
-  KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
-  if (xmlContent) {
-    const QByteArray xmlData = xmlContent->decodedContent();
-//     kDebug() << "xmlData " << xmlData;
-    KCalCore::Journal::Ptr journal = Kolab::Journal::xmlToJournal(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
-    attachmentsFromKolab( data, xmlData, journal );
-    return journal;
-  }
-  return KCalCore::Journal::Ptr();
+  return incidenceFromKolabImpl<KCalCore::Journal::Ptr, Kolab::Journal>( data );
 }
 
 QByteArray JournalHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence)

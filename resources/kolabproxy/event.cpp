@@ -39,10 +39,10 @@
 using namespace Kolab;
 
 
-KCalCore::Event::Ptr Event::xmlToEvent( const QString& xml, const QString& tz)
+KCalCore::Event::Ptr Event::fromXml( const QDomDocument& xmlDoc, const QString& tz)
 {
   Event event( tz );
-  event.load( xml );
+  event.loadXML( xmlDoc );
   KCalCore::Event::Ptr kcalEvent( new KCalCore::Event() );
   event.saveTo( kcalEvent );
   return kcalEvent;

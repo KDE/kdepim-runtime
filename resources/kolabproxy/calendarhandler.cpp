@@ -44,20 +44,7 @@ CalendarHandler::~CalendarHandler()
 
 KCalCore::Incidence::Ptr CalendarHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
 {
-   return calendarFromKolab(data);
-}
-
-KCalCore::Event::Ptr CalendarHandler::calendarFromKolab(const KMime::Message::Ptr &data)
-{
-  KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
-  if (xmlContent) {
-    const QByteArray xmlData = xmlContent->decodedContent();
-//     kDebug() << "xmlData " << xmlData;
-    KCalCore::Event::Ptr calendarEvent = Kolab::Event::xmlToEvent(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
-    attachmentsFromKolab( data, xmlData, calendarEvent );
-    return calendarEvent;
-  }
-  return KCalCore::Event::Ptr();
+  return incidenceFromKolabImpl<KCalCore::Event::Ptr, Kolab::Event>( data );
 }
 
 QByteArray CalendarHandler::incidenceToXml(const KCalCore::Incidence::Ptr &incidence)

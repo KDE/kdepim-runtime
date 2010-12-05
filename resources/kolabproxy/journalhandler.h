@@ -38,7 +38,6 @@ public:
 private:
   virtual QByteArray incidenceToXml( const KCalCore::Incidence::Ptr &incidence);
   virtual KCalCore::Incidence::Ptr incidenceFromKolab(const KMime::Message::Ptr &data);
-  KCalCore::Journal::Ptr journalFromKolab(const KMime::Message::Ptr &data);
 };
 
 #endif

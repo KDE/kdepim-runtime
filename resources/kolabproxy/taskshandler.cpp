@@ -40,21 +40,7 @@ TasksHandler::~TasksHandler()
 
 KCalCore::Incidence::Ptr TasksHandler::incidenceFromKolab( const KMime::Message::Ptr &data )
 {
-  return todoFromKolab( data );
-}
-
-
-KCalCore::Todo::Ptr TasksHandler::todoFromKolab( const KMime::Message::Ptr &data )
-{
-  KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
-  if (xmlContent) {
-    const QByteArray xmlData = xmlContent->decodedContent();
-   // kDebug() << "xmlData " << xmlData;
-    KCalCore::Todo::Ptr todo = Kolab::Task::xmlToTask(QString::fromUtf8(xmlData), m_calendar.timeZoneId() );
-    attachmentsFromKolab( data, xmlData, todo );
-    return todo;
-  }
-  return KCalCore::Todo::Ptr();
+  return incidenceFromKolabImpl<KCalCore::Todo::Ptr, Kolab::Task>( data );
 }
 
 QByteArray TasksHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence )

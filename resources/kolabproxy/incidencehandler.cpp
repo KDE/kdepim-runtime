@@ -229,12 +229,10 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
 }
 
 
-void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, const QByteArray& xmlData,
+void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, const QDomDocument &xmlDoc,
                                             const KCalCore::Incidence::Ptr &incidence)
 {
-  QDomDocument doc;
-  doc.setContent(QString::fromUtf8(xmlData));
-  QDomNodeList nodes = doc.elementsByTagName("inline-attachment");
+  QDomNodeList nodes = xmlDoc.elementsByTagName("inline-attachment");
   for (int i = 0; i < nodes.size(); i++ ) {
     const QString name = nodes.at(i).toElement().text();
     QByteArray type;

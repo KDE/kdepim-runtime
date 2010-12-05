@@ -52,7 +52,7 @@ class Journal : public KolabBase {
 public:
   /// Use this to parse an xml string to a journal entry
   /// The caller is responsible for deleting the returned journal
-  static KCalCore::Journal::Ptr xmlToJournal( const QString& xml, const QString& tz );
+  static KCalCore::Journal::Ptr fromXml( const QDomDocument& xmlDoc, const QString& tz );
 
   /// Use this to get an xml string describing this journal entry
   static QString journalToXML( const KCalCore::Journal::Ptr &, const QString& tz );

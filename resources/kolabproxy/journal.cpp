@@ -39,10 +39,10 @@
 using namespace Kolab;
 
 
-KCalCore::Journal::Ptr Journal::xmlToJournal( const QString& xml, const QString& tz )
+KCalCore::Journal::Ptr Journal::fromXml( const QDomDocument& xmlDoc, const QString& tz )
 {
   Journal journal( tz );
-  journal.load( xml );
+  journal.loadXML( xmlDoc );
   KCalCore::Journal::Ptr kcalJournal( new KCalCore::Journal() );
   journal.saveTo( kcalJournal );
   return kcalJournal;

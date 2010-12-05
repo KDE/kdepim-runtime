@@ -392,19 +392,26 @@ bool KolabBase::saveAttributes( QDomElement& element ) const
 
 bool KolabBase::load( const QString& xml )
 {
+  const QDomDocument document = loadDocument( xml );
+  if ( document.isNull() )
+    return false;
+  // XML file loaded into tree. Now parse it
+  return loadXML( document );
+}
+
+QDomDocument KolabBase::loadDocument( const QString& xmlData )
+{
   QString errorMsg;
   int errorLine, errorColumn;
   QDomDocument document;
-  bool ok = document.setContent( xml, &errorMsg, &errorLine, &errorColumn );
+  bool ok = document.setContent( xmlData, &errorMsg, &errorLine, &errorColumn );
 
   if ( !ok ) {
-    qWarning( "Error loading document: %s, line %d, column %d",
-              qPrintable( errorMsg ), errorLine, errorColumn );
-    return false;
+    qWarning( "Error loading document: %s, line %d, column %d", qPrintable( errorMsg ), errorLine, errorColumn );
+    return QDomDocument();
   }
 
-  // XML file loaded into tree. Now parse it
-  return loadXML( document );
+  return document;
 }
 
 QDomDocument KolabBase::domTree()

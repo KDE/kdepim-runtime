@@ -53,7 +53,7 @@ class Event : public Incidence {
 public:
   /// Use this to parse an xml string to a event entry
   /// The caller is responsible for deleting the returned event
-  static KCalCore::Event::Ptr xmlToEvent( const QString& xml, const QString& tz);
+  static KCalCore::Event::Ptr fromXml( const QDomDocument& xmlDoc, const QString& tz);
 
   /// Use this to get an xml string describing this event entry
   static QString eventToXML( const KCalCore::Event::Ptr &, const QString& tz );
