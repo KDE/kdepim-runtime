@@ -39,7 +39,6 @@
 #include <kcalcore/journal.h>
 #include <ksystemtimezone.h>
 #include <kdebug.h>
-#include <QFile>
 
 using namespace Kolab;
 
@@ -397,23 +396,6 @@ bool KolabBase::load( const QString& xml )
   int errorLine, errorColumn;
   QDomDocument document;
   bool ok = document.setContent( xml, &errorMsg, &errorLine, &errorColumn );
-
-  if ( !ok ) {
-    qWarning( "Error loading document: %s, line %d, column %d",
-              qPrintable( errorMsg ), errorLine, errorColumn );
-    return false;
-  }
-
-  // XML file loaded into tree. Now parse it
-  return loadXML( document );
-}
-
-bool KolabBase::load( QFile& xml )
-{
-  QString errorMsg;
-  int errorLine, errorColumn;
-  QDomDocument document;
-  bool ok = document.setContent( &xml, &errorMsg, &errorLine, &errorColumn );
 
   if ( !ok ) {
     qWarning( "Error loading document: %s, line %d, column %d",

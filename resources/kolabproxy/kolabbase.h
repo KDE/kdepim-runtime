@@ -43,8 +43,6 @@
 #include <QColor>
 #include <qdom.h>
 
-class QFile;
-
 namespace KABC {
   class Addressee;
   class ContactGroup;
@@ -116,7 +114,6 @@ public:
 
   // Load this object by reading the XML file
   bool load( const QString& xml );
-  bool load( QFile& xml );
 
   // Load this QDomDocument
   virtual bool loadXML( const QDomDocument& xml ) = 0;

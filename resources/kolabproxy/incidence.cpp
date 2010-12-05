@@ -34,7 +34,6 @@
 #include "incidence.h"
 #include "akonadi-version.h"
 
-#include <QFile>
 #include <QList>
 
 #include <kcalcore/journal.h>
