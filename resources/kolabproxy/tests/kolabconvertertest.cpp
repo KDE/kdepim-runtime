@@ -34,7 +34,7 @@ using namespace KMime;
 
 static Akonadi::Item readMimeFile( const QString &fileName )
 {
-  qDebug() << fileName;
+//   qDebug() << fileName;
   QFile file( fileName );
   file.open( QFile::ReadOnly );
   const QByteArray data = file.readAll();
@@ -142,8 +142,8 @@ static bool normalizeAddresses( KABC::Addressee &addressee, const KABC::Addresse
 class KolabConverterTest : public QObject
 {
   Q_OBJECT
-  private slots:
-    void testContacts_data()
+  private:
+    void createContactsTestSet()
     {
       QTest::addColumn<QString>( "vcardFileName" );
       QTest::addColumn<QString>( "mimeFileName" );
@@ -153,6 +153,29 @@ class KolabConverterTest : public QObject
       foreach( const QString &entry, entries ) {
         QTest::newRow( QString::fromLatin1( "contact-%1" ).arg( entry ).toLatin1() ) << (dir.path() + '/' + entry) << QString::fromLatin1( "%1/%2.mime" ).arg( dir.path() ).arg( entry );
       }
+    }
+
+    void createIndidenceTestSet()
+    {
+      QTest::addColumn<QString>( "type" );
+      QTest::addColumn<QString>( "icalFileName" );
+      QTest::addColumn<QString>( "mimeFileName" );
+
+      const QStringList types = QStringList() << "event" << "task" << "journal" << "note";
+
+      foreach ( const QString &type, types ) {
+        const QDir dir( QString::fromLatin1( "%1/%2" ).arg( KDESRCDIR ).arg( type ) );
+        const QStringList entries = dir.entryList( QStringList("*.ics"), QDir::Files | QDir::Readable | QDir::NoSymLinks );
+        foreach( const QString &entry, entries ) {
+          QTest::newRow( QString::fromLatin1( "%1-%2" ).arg( type ).arg( entry ).toLatin1() ) << type << (dir.path() + '/' + entry) << QString::fromLatin1( "%1/%2.mime" ).arg( dir.path() ).arg( entry );
+        }
+      }
+    }
+  
+  private slots:
+    void testContacts_data()
+    {
+      createContactsTestSet();
     }
 
     void testContacts()
@@ -208,19 +231,7 @@ class KolabConverterTest : public QObject
 
     void testIncidences_data()
     {
-      QTest::addColumn<QString>( "type" );
-      QTest::addColumn<QString>( "icalFileName" );
-      QTest::addColumn<QString>( "mimeFileName" );
-
-      const QStringList types = QStringList() << "event" << "task" << "journal" << "note";
-
-      foreach ( const QString &type, types ) {
-        const QDir dir( QString::fromLatin1( "%1/%2" ).arg( KDESRCDIR ).arg( type ) );
-        const QStringList entries = dir.entryList( QStringList("*.ics"), QDir::Files | QDir::Readable | QDir::NoSymLinks );
-        foreach( const QString &entry, entries ) {
-          QTest::newRow( QString::fromLatin1( "%1-%2" ).arg( type ).arg( entry ).toLatin1() ) << type << (dir.path() + '/' + entry) << QString::fromLatin1( "%1/%2.mime" ).arg( dir.path() ).arg( entry );
-        }
-      }
+      createIndidenceTestSet();
     }
 
     void testIncidences()
@@ -290,6 +301,42 @@ class KolabConverterTest : public QObject
       QVERIFY( compareMimeMessage( convertedMime, realMime ) );
 
       delete handler;
+    }
+
+    void benchmarkContactsLoading_data()
+    {
+      createContactsTestSet();
+    }
+
+    void benchmarkContactsLoading()
+    {
+      QFETCH( QString, vcardFileName );
+      QFETCH( QString, mimeFileName );
+
+      QBENCHMARK {
+        KolabHandler *handler = KolabHandler::createHandler( "contact", Collection() );
+        const Item kolabItem = readMimeFile( mimeFileName );
+        const Item::List vcardItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
+        delete handler;
+      }
+    }
+
+    void benchmarkIncidenceLoading_data()
+    {
+      createIndidenceTestSet();
+    }
+
+    void benchmarkIncidenceLoading()
+    {
+      QFETCH( QString, type );
+      QFETCH( QString, mimeFileName );
+
+      QBENCHMARK {
+        KolabHandler *handler = KolabHandler::createHandler( type.toLatin1(), Collection() );
+        const Item kolabItem = readMimeFile( mimeFileName );
+        const Item::List icalItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
+        delete handler;
+      }
     }
 };
 
