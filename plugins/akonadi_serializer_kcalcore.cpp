@@ -48,7 +48,8 @@ bool SerializerPluginKCalCore::deserialize(Item & item, const QByteArray & label
 
   Incidence::Ptr i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
   if ( !i ) {
-    kWarning( 5263 ) << "Failed to parse incidence!";
+    kWarning( 5263 ) << "Failed to parse incidence! Item id = " << item.id()
+                     << "Storage collection id " << item.storageCollectionId();
     data.seek( 0 );
     kWarning( 5263 ) << QString::fromUtf8( data.readAll() );
     return false;
