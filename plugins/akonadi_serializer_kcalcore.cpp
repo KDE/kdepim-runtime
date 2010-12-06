@@ -21,6 +21,7 @@
 
 #include <akonadi/abstractdifferencesreporter.h>
 #include <akonadi/item.h>
+#include <akonadi/collection.h>
 
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
@@ -49,7 +50,8 @@ bool SerializerPluginKCalCore::deserialize(Item & item, const QByteArray & label
   Incidence::Ptr i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
   if ( !i ) {
     kWarning( 5263 ) << "Failed to parse incidence! Item id = " << item.id()
-                     << "Storage collection id " << item.storageCollectionId();
+                     << "Storage collection id " << item.storageCollectionId()
+                     << "parentCollectionId = " << item.parentCollection().id();
     data.seek( 0 );
     kWarning( 5263 ) << QString::fromUtf8( data.readAll() );
     return false;
