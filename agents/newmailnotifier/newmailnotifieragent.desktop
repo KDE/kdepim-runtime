@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=New Email Notifier
 Name[en_GB]=New Email Notifier
+Name[fr]=Notification de nouveau courriel
 Name[ia]=Notificator de nove messages de e-posta
 Name[pt]=Notificação de Correio Novo
 Name[pt_BR]=Notificação de novo e-mail
@@ -9,6 +10,7 @@ Name[uk]=Сповіщувач про нові повідомлення
 Name[x-test]=xxNew Email Notifierxx
 Comment=Notifications about newly received emails
 Comment[en_GB]=Notifications about newly received emails
+Comment[fr]=Notifications des nouveaux courriers électroniques
 Comment[ia]=Notificationes re nove e-postas recipite
 Comment[nl]=Meldingen over nieuw ontvangen e-mails
 Comment[pt]=Notificações acerca do correio novo recebido
