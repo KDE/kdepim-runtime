@@ -47,6 +47,14 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 {
   if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
     return;
+  const Akonadi::EntityDisplayAttribute* attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
+  if ( attr && (attr->iconName() == "mail-folder-outbox"
+             || attr->iconName() == "document-properties" /*drafts*/
+             || attr->iconName() == "mail-folder-sent"
+             || attr->iconName() == "user-trash"
+             || attr->iconName() == "document-new" /*templates*/) ) {
+    return;
+  }
 
   Akonadi::MessageStatus status;
   status.setStatusFromFlags( item.flags() );
