@@ -261,8 +261,10 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 //               << "newRights:" << newRights
 //               << "oldRights:" << collection.rights();
 
+  const bool isNewCollection = !m_collection.hasAttribute<TimestampAttribute>();
   if ( (m_collection.rights() & Akonadi::Collection::CanCreateItem) &&
-       !(newRights & Akonadi::Collection::CanCreateItem) ) {
+       !(newRights & Akonadi::Collection::CanCreateItem) &&
+       !isNewCollection ) {
     // write access revoked
     const QString collectionName = m_collection.hasAttribute<Akonadi::EntityDisplayAttribute>() ?
                                      m_collection.attribute<Akonadi::EntityDisplayAttribute>()->displayName() :
