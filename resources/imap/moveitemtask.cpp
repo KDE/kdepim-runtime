@@ -244,6 +244,31 @@ void MoveItemTask::recordNewUid()
   i.setRemoteId( QString::number( m_newUid ) );
 
   changeCommitted( i );
+
+  Akonadi::Collection c = targetCollection();
+
+  // Get the current uid next value and store it
+  UidNextAttribute *uidAttr = 0;
+  int oldNextUid = 0;
+  if ( c.hasAttribute( "uidnext" ) ) {
+    uidAttr = static_cast<UidNextAttribute*>( c.attribute( "uidnext" ) );
+    oldNextUid = uidAttr->uidNext();
+  }
+
+  // If the uid we just got back is the expected next one of the box
+  // then update the property to the probable next uid to keep the cache in sync.
+  // If not something happened in our back, so we don't update and a refetch will
+  // happen at some point.
+  if ( m_newUid == oldNextUid ) {
+    if ( uidAttr == 0 ) {
+      uidAttr = new UidNextAttribute( m_newUid + 1 );
+      c.addAttribute( uidAttr );
+    } else {
+      uidAttr->setUidNext( m_newUid + 1 );
+    }
+
+    applyCollectionChanges( c );
+  }
 }
 
 #include "moveitemtask.moc"
