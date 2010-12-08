@@ -125,15 +125,6 @@ void OutboxQueue::Private::addIfComplete( const Item &item )
     return;
   }
 
-  if ( item.remoteId().isEmpty() ) {
-    kDebug() << "Item" << item.id() << "has an empty remoteId.";
-    // HACK:
-    // This probably means that it hasn't yet been stored on disk by the
-    // maildir resource, so I'll let it go for now, and process it when
-    // it's ready.
-    return;
-  }
-
   if ( !item.hasAttribute<AddressAttribute>() ) {
     kWarning() << "Item" << item.id() << "does not have the required attribute Address.";
     return;
