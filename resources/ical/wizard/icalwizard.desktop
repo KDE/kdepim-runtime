@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=ICal Calendar File
+Icon=text-calendar
+Comment=Loads data from an iCal file
+
+[Wizard]
+Type=text/calendar
+Script=icalwizard.es
+
+[Translate]
+Filename=accountwizard_ical
