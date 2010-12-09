@@ -657,6 +657,7 @@ void KolabProxyResource::imapCollectionRemoved(const Collection &imapCollection)
 Collection KolabProxyResource::createCollection(const Collection& imapCollection)
 {
   Collection c;
+  QStringList contentTypes;
   if ( imapCollection.parentCollection() == Collection::root() ) {
     c.setParentCollection( Collection::root() );
     CachePolicy policy;
@@ -668,12 +669,16 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     c.parentCollection().setRemoteId( QString::number( imapCollection.parentCollection().id() ) );
   }
   c.setName( imapCollection.name() );
+  c.setRights( imapCollection.rights() );
+
   EntityDisplayAttribute *imapAttr = imapCollection.attribute<EntityDisplayAttribute>();
   EntityDisplayAttribute *kolabAttr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
   if ( imapAttr ) {
     if ( imapAttr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
       kolabAttr->setDisplayName( i18n( "My Data" ) );
       kolabAttr->setIconName( QLatin1String( "view-pim-summary" ) );
+      contentTypes << KolabHandler::allSupportedMimeTypes();
+      c.setRights( Collection::ReadOnly | Collection::CanCreateCollection );
     } else if ( imapCollection.parentCollection() == Collection::root() ) {
       c.setName( i18n( "Kolab (%1)", imapAttr->displayName() ) );
       kolabAttr->setIconName( QLatin1String( "kolab" ) );
@@ -689,7 +694,6 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
   }
   applyAttributesFromImap( c, imapCollection );
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
-  QStringList contentTypes;
   contentTypes.append( Collection::mimeType() );
   if ( handler ) {
     contentTypes.append( handler->contentMimeTypes() );
@@ -703,7 +707,6 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     }
   }
   c.setContentMimeTypes( contentTypes );
-  c.setRights( imapCollection.rights() );
   c.setRemoteId(QString::number(imapCollection.id()));
   return c;
 }

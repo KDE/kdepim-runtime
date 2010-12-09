@@ -37,6 +37,11 @@ public:
   */
   static QByteArray kolabTypeForCollection( const Akonadi::Collection &collection );
 
+  /**
+   * Returns all mime types supported by Kolab.
+   */
+  static QStringList allSupportedMimeTypes();
+
   virtual ~KolabHandler();
 
   /**

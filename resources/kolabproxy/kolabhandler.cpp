@@ -28,6 +28,7 @@
 #include <KCalCore/Journal>
 
 #include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
 
 
 KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection ) : m_imapCollection( imapCollection )
@@ -70,6 +71,16 @@ QByteArray KolabHandler::kolabTypeForCollection(const Akonadi::Collection& colle
   return QByteArray();
 }
 
+QStringList KolabHandler::allSupportedMimeTypes()
+{
+  return QStringList()
+   << KABC::Addressee::mimeType()
+   << KABC::ContactGroup::mimeType()
+   << KCalCore::Event::eventMimeType()
+   << KCalCore::Todo::todoMimeType()
+   << KCalCore::Journal::journalMimeType()
+   << QLatin1String( "application/x-vnd.akonadi.note" );
+}
 
 
 KolabHandler::~KolabHandler()
