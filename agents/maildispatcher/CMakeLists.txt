@@ -4,6 +4,7 @@ set( maildispatcheragent_SRCS
   maildispatcheragent.cpp
   outboxqueue.cpp
   sendjob.cpp
+  sentactionhandler.cpp
   storeresultjob.cpp
   #configdialog.cpp
 )

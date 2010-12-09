@@ -24,12 +24,14 @@
 #include "maildispatcheragentadaptor.h"
 #include "outboxqueue.h"
 #include "sendjob.h"
+#include "sentactionhandler.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
 #include <akonadi/agentfactory.h>
 #include <akonadi/dbusconnectionpool.h>
 #include <akonadi/itemfetchscope.h>
+#include <mailtransport/sentactionattribute.h>
 
 #include <KDebug>
 #include <KIcon>
@@ -81,6 +83,7 @@ class MailDispatcherAgent::Private
     bool sentAnything;
     bool errorOccurred;
     qulonglong sentItemsSize;
+    SentActionHandler *sentActionHandler;
 
     // slots:
     void abort();
@@ -179,7 +182,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
     d( new Private( this ) )
 {
   kDebug() << "maildispatcheragent: At your service, sir!";
-  
+
 #ifdef _WIN32_WCE
   QThread::currentThread()->setPriority(QThread::LowPriority);
 #endif
@@ -209,6 +212,8 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
            d->queue, SLOT( itemProcessed( Akonadi::Item, bool ) ) );
   connect( this, SIGNAL( abortRequested() ),
            this, SLOT( abort() ) );
+
+  d->sentActionHandler = new SentActionHandler( this );
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
@@ -314,6 +319,8 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
   Q_ASSERT( currentItem.isValid() );
   sentItemsSize += currentItem.size();
   emit q->itemProcessed( currentItem, !job->error() );
+
+  const Akonadi::Item sentItem = currentItem;
   currentItem = Item();
 
   if ( job->error() ) {
@@ -331,6 +338,13 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
     errorOccurred = true;
   } else {
     kDebug() << "Sending succeeded.";
+
+    // handle possible sent actions
+    const MailTransport::SentActionAttribute *attribute = sentItem.attribute<MailTransport::SentActionAttribute>();
+    if ( attribute ) {
+      foreach ( const MailTransport::SentActionAttribute::Action &action, attribute->actions() )
+        sentActionHandler->runAction( action );
+    }
   }
 
   // dispatch next message
