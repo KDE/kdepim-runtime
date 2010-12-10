@@ -48,6 +48,7 @@
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 #include <akonadi/resourcesettings.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <kemailsettings.h>
 #include <klocale.h>
 #include <kpushbutton.h>
@@ -277,6 +278,12 @@ void SetupServer::applySettings()
   Settings::self()->setSieveVacationFilename( m_vacationFileName );
 
   Settings::self()->setTrashCollection( m_ui->folderRequester->collection().id() );
+  Akonadi::Collection trash = m_ui->folderRequester->collection();
+  Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
+  attribute->setIconName( QLatin1String( "user-trash" ) );
+  new Akonadi::CollectionModifyJob( trash );
+
+
 
   Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
   Settings::self()->setUseDefaultIdentity( m_ui->useDefaultIdentityCheck->isChecked() );
