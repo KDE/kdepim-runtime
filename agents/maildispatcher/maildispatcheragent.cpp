@@ -184,7 +184,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   kDebug() << "maildispatcheragent: At your service, sir!";
 
 #ifdef _WIN32_WCE
-  QThread::currentThread()->setPriority(QThread::LowPriority);
+  QThread::currentThread()->setPriority(QThread::NormalPriority);
 #endif
 
 #ifdef KDEPIM_STATIC_LIBS
