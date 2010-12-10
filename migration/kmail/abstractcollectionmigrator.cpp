@@ -179,18 +179,24 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     }
     if ( newGroup.hasKey( "Annotation-FolderType" ) ) {
       const QString annotationFolderType = newGroup.readEntry( "Annotation-FolderType" );
+      EntityDisplayAttribute *attribute = mCurrentCollection.attribute<EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
       if ( annotationFolderType == "mail" ) {
         //????
       } else if ( annotationFolderType == "event" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "event";
+	attribute->setIconName("view-calendar");
       } else if ( annotationFolderType == "task" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "task";
+	attribute->setIconName("view-pim-tasks");
       } else if ( annotationFolderType == "contact" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "contact";
+	attribute->setIconName("view-pim-contacts");
       } else if ( annotationFolderType == "note" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "note";
+        attribute->setIconName("view-pim-notes");
       } else if ( annotationFolderType == "journal" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "journal";
+        attribute->setIconName("view-pim-journal");	
       } else {
         //????
       }
