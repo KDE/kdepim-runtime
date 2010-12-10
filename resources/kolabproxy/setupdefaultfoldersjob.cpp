@@ -83,6 +83,31 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
 
   // create/fix folders
   for ( int i = Kolab::Contact; i < Kolab::FolderTypeSize; ++i ) {
+    QString iconName;
+    if ( i == Kolab::Mail )
+    {
+      //Nothing
+    }
+    else if ( i == Kolab::Contact )
+    {
+      iconName = QString::fromLatin1( "view-pim-contacts" );
+    }
+    else if ( i == Kolab::Event )
+    {
+      iconName = QString::fromLatin1( "view-calendar" );
+    }
+    else if ( i == Kolab::Task )
+    {
+      iconName = QString::fromLatin1( "view-pim-tasks" );
+    }
+    else if ( i == Kolab::Journal )
+    {
+      iconName = QString::fromLatin1( "view-pim-journal" );
+    }
+    else if ( i == Kolab::Note )
+    {
+      iconName = QString::fromLatin1( "view-pim-notes" );
+    }
     if ( existingDefaultFolders[ i ].isValid() ) {
       continue; // all good
     } else if ( recoveryCandidates[ i ].isValid() ) {
@@ -91,6 +116,11 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
       QMap<QByteArray, QByteArray> annotations;
       annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, Kolab::folderTypeToString( static_cast<Kolab::FolderType>( i ), true ) );
       attr->setAnnotations( annotations );
+      if ( !iconName.isEmpty() ) {
+        Akonadi::EntityDisplayAttribute *attribute =  col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
+        attribute->setIconName( iconName );
+      }
+
       new CollectionModifyJob( col, 0 );
     } else {
       Collection col;
@@ -100,6 +130,10 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
       QMap<QByteArray, QByteArray> annotations;
       annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, Kolab::folderTypeToString( static_cast<Kolab::FolderType>( i ), true ) );
       attr->setAnnotations( annotations );
+      if ( !iconName.isEmpty() ) {
+        Akonadi::EntityDisplayAttribute *attribute =  col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
+        attribute->setIconName( iconName );
+      }
       new CollectionCreateJob( col, 0 );
     }
   }
