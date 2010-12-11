@@ -1,6 +1,7 @@
 [Global]
 IconName=mail-folder-outbox
 Comment=KDE e-mail client
+Comment[ca]=Client de correu electrònic del KDE
 Comment[de]=E-Mail-Programm für KDE
 Comment[en_GB]=KDE e-mail client
 Comment[es]=Cliente de correo de KDE
@@ -25,6 +26,7 @@ Comment[x-test]=xxKDE e-mail clientxx
 Comment[zh_CN]=KDE 邮件客户端
 Comment[zh_TW]=KDE 收發信軟體
 Name=KDE Mail
+Name[ca]=Correu del KDE
 Name[de]=KDE-E-Mail
 Name[en_GB]=KDE Mail
 Name[es]=Correo de KDE
@@ -51,6 +53,7 @@ Name[zh_TW]=KDE 郵件軟體
 
 [Event/emailsent]
 Name=E-mail successfully sent
+Name[ca]=Correu electrònic enviat correctament
 Name[de]=E-Mail erfolgreich gesendet
 Name[en_GB]=E-mail successfully sent
 Name[es]=Correo enviado satisfactoriamente
@@ -75,6 +78,7 @@ Action=Popup
 
 [Event/sendingfailed]
 Name=E-mail sending failed
+Name[ca]=Ha fallat en enviar el correu electrònic
 Name[de]=Fehler beim Versenden der E-Mail
 Name[en_GB]=E-mail sending failed
 Name[et]=E-kirja saatmine nurjus
