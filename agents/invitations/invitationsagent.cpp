@@ -512,13 +512,13 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
     kDebug() << "message is multipart:" << message->attachments().size();
 
     InvitationsAgentItem *it = 0;
-    foreach ( KMime::Content *content, message->attachments() ) {
-      KMime::Headers::ContentDisposition *contentDisposition = content->header< KMime::Headers::ContentDisposition >();
-      kDebug() << "looking at " << contentDisposition << (contentDisposition ? QFileInfo( contentDisposition->filename() ).suffix().toLower() : QString());
-      if ( !contentDisposition || QFileInfo( contentDisposition->filename() ).suffix().toLower() != "ics" ) {
-        kDebug() << "no CD header or not an ics file";
+    foreach ( KMime::Content *content, message->contents() ) {
+
+      KMime::Headers::ContentType *ct = content->contentType();
+      Q_ASSERT(ct);
+      kDebug() << "Mimetype of the body part is " << ct->mimeType();
+      if ( ct->mimeType() != "text/calendar" )
         continue;
-      }
 
       Item newItem = handleContent( content->body(), calendar, item );
       if ( !newItem.hasPayload() ) {
@@ -533,7 +533,15 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
     }
   } else {
     kDebug() << "message is not multipart";
-    //TODO check what is allowed/possible here.
+
+    KMime::Headers::ContentType *ct = message->contentType();
+    Q_ASSERT(ct);
+    kDebug() << "Mimetype of the body is " << ct->mimeType();
+    if ( ct->mimeType() != "text/calendar" )
+      return;
+
+    kDebug() << "Message has an invitation in the body, processing";
+
     Item newItem = handleContent( message->body(), calendar, item );
     if ( !newItem.hasPayload() ) {
       kDebug() << "new item has no payload";
