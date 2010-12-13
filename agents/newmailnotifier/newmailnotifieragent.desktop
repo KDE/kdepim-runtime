@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=New Email Notifier
 Name[ca]=Notificador de nou correu electrònic
+Name[el]=Ειδοποιητής νέας αλληλογραφίας
 Name[en_GB]=New Email Notifier
 Name[fr]=Notification de nouveau courriel
+Name[gl]=Novo notificador de correo electrónico
 Name[ia]=Notificator de nove messages de e-posta
 Name[kk]=Жаңа эл.пошта туралы хабарлау
 Name[km]=កម្មវិធី​ជូន​ដំណឹង​អ៊ីមែល​ថ្មី
@@ -15,8 +17,10 @@ Name[x-test]=xxNew Email Notifierxx
 Name[zh_TW]=新郵件通知器
 Comment=Notifications about newly received emails
 Comment[ca]=Notificacions quant a nous correus electrònics rebuts
+Comment[el]=Ειδοποιήσεις για νέα αλληλογραφία 
 Comment[en_GB]=Notifications about newly received emails
 Comment[fr]=Notifications des nouveaux courriers électroniques
+Comment[gl]=Notificacións sobre mensaxes que acaban de chegar
 Comment[ia]=Notificationes re nove e-postas recipite
 Comment[kk]=Жаңа эл.пошта келгені туралы хабарлау
 Comment[km]=ការ​ជូន​ដំណឹង​អំពី​អ៊ីមែល​​​ដែល​បាន​ទទួល​ថ្មីៗ
