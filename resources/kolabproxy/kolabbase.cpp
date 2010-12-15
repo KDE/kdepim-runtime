@@ -379,9 +379,8 @@ bool KolabBase::saveAttributes( QDomElement& element ) const
   writeString( element, "uid", uid() );
   writeString( element, "body", body() );
   writeString( element, "categories", categories() );
-  writeString( element, "creation-date", dateTimeToString( creationDate() ) );
-  writeString( element, "last-modification-date",
-               dateTimeToString( lastModified().toZone( mTimeZone ) ) );
+  writeString( element, "creation-date", dateTimeToString( creationDate().toUtc() ) );
+  writeString( element, "last-modification-date", dateTimeToString( lastModified().toUtc() ) );
   writeString( element, "sensitivity", sensitivityToString( sensitivity() ) );
   if ( hasPilotSyncId() )
     writeString( element, "pilot-sync-id", QString::number( pilotSyncId() ) );
