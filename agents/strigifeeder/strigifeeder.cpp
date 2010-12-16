@@ -40,6 +40,15 @@
 
 #include <QtCore/QDateTime>
 
+#ifdef SERIALIZER_PLUGINS_STATIC
+#include <QtCore/QtPlugin>
+
+Q_IMPORT_PLUGIN(akonadi_serializer_mail)
+Q_IMPORT_PLUGIN(akonadi_serializer_addressee)
+Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
+Q_IMPORT_PLUGIN(akonadi_serializer_kcalcore)
+#endif
+
 using namespace Akonadi;
 
 static const int INDEX_COMPAT_LEVEL = 1; // increment when the index format changes
