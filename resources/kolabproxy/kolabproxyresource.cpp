@@ -147,6 +147,7 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
   m_retrieveState = RetrieveItems;
   ItemFetchJob *job = new ItemFetchJob( kolabToImap( collection ) );
   job->fetchScope().fetchFullPayload();
+  job->setProperty( "resultCanBeEmpty", true );
 
   connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
 }
@@ -168,11 +169,17 @@ void KolabProxyResource::retrieveItemFetchDone(KJob *job)
     kWarning( ) << "Error on item fetch:" << job->errorText();
     cancelTask();
   } else {
+    const bool resultCanBeEmpty = job->property( "resultCanBeEmpty" ).isValid();
+
     Item::Id collectionId = -1;
-    Item::List items = qobject_cast<ItemFetchJob*>(job)->items();
-    if (items.size() < 1) {
-      kWarning() << "Items is emtpy";
-      cancelTask();
+    const Item::List items = qobject_cast<ItemFetchJob*>(job)->items();
+    if ( items.size() < 1 ) {
+      if ( resultCanBeEmpty ) {
+        itemsRetrieved( Akonadi::Item::List() );
+      } else {
+        kWarning() << "Items is emtpy";
+        cancelTask();
+      }
       return;
     }
     collectionId = items[0].storageCollectionId();
