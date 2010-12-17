@@ -75,3 +75,4 @@ Comment[zh_TW]=地址物件的 Akonadi 序列器外掛程式
 [Plugin]
 Type=text/vcard,text/directory
 X-KDE-Library=akonadi_serializer_addressee
+X-Akonadi-Class=legacy;default;KABC::Addressee;

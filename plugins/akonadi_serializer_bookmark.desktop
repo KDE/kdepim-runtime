@@ -73,3 +73,4 @@ Comment[zh_TW]=書籤物件的 Akonadi 序列器外掛程式
 [Plugin]
 Type=application/x-xbel
 X-KDE-Library=akonadi_serializer_bookmark
+X-Akonadi-Class=legacy;default;KBookmark;
