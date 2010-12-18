@@ -46,6 +46,9 @@
 using namespace Akonadi;
 using namespace MailTransport;
 
+static const int OUTBOX_DISCOVERY_RETRIES = 3; // number of times we try to find or create the outbox
+static const int OUTBOX_DISCOVERY_WAIT_TIME = 5000; // number of ms to wait before retrying
+
 /**
  * @internal
  */
@@ -55,7 +58,8 @@ class OutboxQueue::Private
     Private( OutboxQueue *qq )
       : q( qq ),
         outbox( -1 ),
-        futureTimer( 0 )
+        futureTimer( 0 ),
+        outboxDiscoveryRetries( 0 )
     {
     }
 
@@ -68,6 +72,7 @@ class OutboxQueue::Private
     QMultiMap<QDateTime, Item> futureMap;
     QTimer *futureTimer;
     qulonglong totalSize;
+    int outboxDiscoveryRetries;
 
 #if 0
     // If an item is modified externally between the moment we pass it to
@@ -314,8 +319,20 @@ void OutboxQueue::Private::localFoldersChanged()
 void OutboxQueue::Private::localFoldersRequestResult( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Failed to get outbox folder.";
-    emit q->error( i18n( "Could not access the outbox folder (%1).", job->errorString() ) );
+    // We tried to create the outbox, but that failed. This could be because some
+    // other process, the mail app, for example, tried to create it at the
+    // same time. So try again, once or twice, but wait a little in between, longer
+    // each time. If we still haven't managed to create it after a few retries,
+    // error hard.
+
+    if ( ++outboxDiscoveryRetries <= OUTBOX_DISCOVERY_RETRIES ) {
+      const int timeout = OUTBOX_DISCOVERY_WAIT_TIME * outboxDiscoveryRetries;
+      kWarning() << "Failed to get outbox folder. Retrying in: " << timeout;
+      QTimer::singleShot( timeout, q, SLOT( localFoldersChanged() ) );
+    } else {
+      kWarning() << "Failed to get outbox folder. Giving up."; ;
+      emit q->error( i18n( "Could not access the outbox folder (%1).", job->errorString() ) );
+    }
     return;
   }
 
