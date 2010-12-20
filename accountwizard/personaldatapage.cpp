@@ -19,6 +19,8 @@
 */
 
 #include "personaldatapage.h"
+
+#include "config-enterprise.h"
 #include "global.h"
 #include "dialog.h"
 #include "transport.h"
@@ -65,6 +67,10 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
   slotTextChanged();
   connect( ui.emailEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
   connect( ui.nameEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
+
+#ifdef KDEPIM_ENTERPRISE_BUILD
+  ui.checkOnlineGroupBox->setChecked( false );
+#endif
 }
 
 void PersonalDataPage::setHideOptionInternetSearch( bool hide )
