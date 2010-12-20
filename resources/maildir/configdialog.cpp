@@ -27,6 +27,7 @@
 #include <klineedit.h>
 
 using KPIM::Maildir;
+using namespace Akonadi_Maildir_Resource;
 
 ConfigDialog::ConfigDialog( MaildirSettings *settings, QWidget * parent) :
     KDialog( parent ),

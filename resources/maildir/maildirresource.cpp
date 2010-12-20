@@ -45,6 +45,7 @@
 
 using namespace Akonadi;
 using KPIM::Maildir;
+using namespace Akonadi_Maildir_Resource;
 
 Maildir MaildirResource::maildirForCollection( const Collection &col ) const
 {

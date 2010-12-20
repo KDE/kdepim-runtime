@@ -23,7 +23,10 @@
 #include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
 
+namespace Akonadi_Maildir_Resource
+{
 class MaildirSettings;
+}
 namespace KPIM
 {
 class Maildir;
@@ -71,7 +74,7 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     KPIM::Maildir maildirForCollection( const Akonadi::Collection &col ) const;
 
   private:
-    MaildirSettings *mSettings;
+    Akonadi_Maildir_Resource::MaildirSettings *mSettings;
 
 };
 

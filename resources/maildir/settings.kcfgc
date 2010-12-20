@@ -6,3 +6,4 @@ SetUserTexts=true
 Singleton=false
 #IncludeFiles=
 GlobalEnums=true
+Namespace=Akonadi_Maildir_Resource
