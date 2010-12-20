@@ -35,6 +35,7 @@
 #include <akonadi/resourcesynchronizationjob.h>
 #include <akonadi/specialcollections.h>
 #include <akonadi/specialcollectionsrequestjob.h>
+#include <akonadi/private/collectionutils_p.h>
 
 #include <kcalcore/event.h>
 #include <kcalcore/icalformat.h>
@@ -495,6 +496,9 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
     kDebug() << "No default collection found";
     return;
   }
+
+  if ( CollectionUtils::isVirtual( collection ) )
+    return;
 
   if ( !item.hasPayload<KMime::Message::Ptr>() ) {
     kDebug() << "Item has no payload";
