@@ -24,7 +24,7 @@
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
-#include <akonadi/private/collectionutils_p.h>
+#include <akonadi/collection.h>
 #include <akonadi/entityhiddenattribute.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
@@ -133,7 +133,7 @@ void StrigiFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   if ( entityIsHidden( collection ) )
     return;
 
-  if ( CollectionUtils::isVirtual( collection ) )
+  if ( collection.isVirtual() )
     return;
 
   if ( item.hasPayload() ) {
@@ -193,7 +193,7 @@ void StrigiFeeder::collectionsReceived( const Akonadi::Collection::List &collect
     if ( entityIsHidden( collection ) )
       continue;
 
-    if ( CollectionUtils::isVirtual( collection ) )
+    if ( collection.isVirtual() )
       continue;
 
     mCollectionQueue.append( collection );

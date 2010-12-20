@@ -25,6 +25,7 @@
 #include <Akonadi/AgentInstanceCreateJob>
 #include <Akonadi/AgentManager>
 #include <Akonadi/ChangeRecorder>
+#include <Akonadi/Collection>
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
@@ -35,7 +36,6 @@
 #include <akonadi/resourcesynchronizationjob.h>
 #include <akonadi/specialcollections.h>
 #include <akonadi/specialcollectionsrequestjob.h>
-#include <akonadi/private/collectionutils_p.h>
 
 #include <kcalcore/event.h>
 #include <kcalcore/icalformat.h>
@@ -497,7 +497,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
     return;
   }
 
-  if ( CollectionUtils::isVirtual( collection ) )
+  if ( collection.isVirtual() )
     return;
 
   if ( !item.hasPayload<KMime::Message::Ptr>() ) {
