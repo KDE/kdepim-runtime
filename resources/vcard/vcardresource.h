@@ -26,7 +26,7 @@
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
 
-class VCardResource : public Akonadi::SingleFileResource<Settings>
+class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource::Settings>
 {
   Q_OBJECT
 
@@ -42,7 +42,7 @@ class VCardResource : public Akonadi::SingleFileResource<Settings>
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings>* dlg );
 
     bool readFromFile( const QString &fileName );
     bool writeToFile( const QString &fileName );

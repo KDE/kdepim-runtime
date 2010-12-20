@@ -32,6 +32,7 @@
 #include <QtDBus/QDBusConnection>
 
 using namespace Akonadi;
+using namespace Akonadi_VCard_Resource;
 
 VCardResource::VCardResource( const QString &id )
   : SingleFileResource<Settings>( id )
