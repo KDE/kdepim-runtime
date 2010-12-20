@@ -6,9 +6,9 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
+add_subdirectory( wizard )
 if (NOT WINCE)
 add_subdirectory( notes )
-add_subdirectory( wizard )
 add_subdirectory( tests )
 endif(NOT WINCE)
 
