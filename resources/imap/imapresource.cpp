@@ -66,6 +66,7 @@
 #include "expungecollectiontask.h"
 #include "movecollectiontask.h"
 #include "moveitemtask.h"
+#include "removecollectionrecursivetask.h"
 #include "removecollectiontask.h"
 #include "removeitemtask.h"
 #include "retrievecollectionmetadatatask.h"
@@ -284,6 +285,14 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
 void ImapResource::itemRemoved( const Akonadi::Item &item )
 {
   ResourceStateInterface::Ptr state = ::ResourceState::createRemoveItemState( this, item );
+
+  const QString mailBox = state->mailBoxForCollection( item.parentCollection() );
+  if ( mailBox.isEmpty() ) {
+    // this item will be removed soon by its parent collection
+    changeProcessed();
+    return;
+  }
+
   RemoveItemTask *task = new RemoveItemTask( state, this );
   task->start( m_pool );
   queueTask( task );
@@ -368,7 +377,15 @@ void ImapResource::collectionChanged( const Collection &collection, const QSet<Q
 void ImapResource::collectionRemoved( const Collection &collection )
 {
   ResourceStateInterface::Ptr state = ::ResourceState::createRemoveCollectionState( this, collection );
-  RemoveCollectionTask *task = new RemoveCollectionTask( state, this );
+
+  const QString mailBox = state->mailBoxForCollection( collection );
+  if ( mailBox.isEmpty() ) {
+    // this collection will be removed soon by its parent collection
+    changeProcessed();
+    return;
+  }
+
+  RemoveCollectionRecursiveTask *task = new RemoveCollectionRecursiveTask( state, this );
   task->start( m_pool );
   queueTask( task );
 }

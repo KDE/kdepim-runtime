@@ -26,6 +26,7 @@ set( libimapresource_SRCS
   noselectattribute.cpp
   passwordrequesterinterface.cpp
   removecollectiontask.cpp
+  removecollectionrecursivetask.cpp
   removeitemtask.cpp
   resourcestateinterface.cpp
   resourcetask.cpp
