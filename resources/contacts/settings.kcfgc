@@ -5,3 +5,4 @@ ItemAccessors=true
 SetUserTexts=true
 Singleton=false
 GlobalEnums=true
+Namespace=Akonadi_Contacts_Resource

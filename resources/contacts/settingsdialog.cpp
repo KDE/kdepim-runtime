@@ -27,6 +27,7 @@
 #include <QtCore/QTimer>
 
 using namespace Akonadi;
+using namespace Akonadi_Contacts_Resource;
 
 SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId )
   : KDialog(),

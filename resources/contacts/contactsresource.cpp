@@ -35,6 +35,7 @@
 #include <akonadi/agentfactory.h>
 
 using namespace Akonadi;
+using namespace Akonadi_Contacts_Resource;
 
 ContactsResource::ContactsResource( const QString &id )
   : ResourceBase( id ),

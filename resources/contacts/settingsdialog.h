@@ -24,7 +24,9 @@
 
 #include <KDE/KDialog>
 
+namespace Akonadi_Contacts_Resource {
 class ContactsResourceSettings;
+}
 class KConfigDialogManager;
 
 namespace Akonadi {
@@ -33,7 +35,7 @@ class SettingsDialog : public KDialog
 {
   Q_OBJECT
   public:
-    explicit SettingsDialog( ContactsResourceSettings* settings, WId windowId );
+    explicit SettingsDialog( Akonadi_Contacts_Resource::ContactsResourceSettings* settings, WId windowId );
 
   private Q_SLOTS:
     void save();
@@ -42,7 +44,7 @@ class SettingsDialog : public KDialog
   private:
     Ui::SettingsDialog ui;
     KConfigDialogManager* mManager;
-    ContactsResourceSettings *mSettings;
+    Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings;
 };
 
 }
