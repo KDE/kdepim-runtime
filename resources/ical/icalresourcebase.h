@@ -28,7 +28,7 @@
 #include <KCalCore/FileStorage>
 
 
-class ICalResourceBase : public Akonadi::SingleFileResource<Akonadi_Aknotes_Resource::Settings>
+class ICalResourceBase : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::Settings>
 {
   Q_OBJECT
 
@@ -50,7 +50,7 @@ class ICalResourceBase : public Akonadi::SingleFileResource<Akonadi_Aknotes_Reso
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Akonadi_Aknotes_Resource::Settings>* dlg );
+    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<SETTINGS_NAMESPACE::Settings>* dlg );
 
     virtual void aboutToQuit();
 

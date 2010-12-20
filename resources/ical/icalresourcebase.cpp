@@ -35,7 +35,7 @@
 
 using namespace Akonadi;
 using namespace KCalCore;
-using namespace Akonadi_Aknotes_Resource;
+using namespace SETTINGS_NAMESPACE;
 
 ICalResourceBase::ICalResourceBase( const QString &id )
   : SingleFileResource<Settings>( id )

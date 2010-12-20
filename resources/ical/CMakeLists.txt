@@ -13,6 +13,7 @@ add_subdirectory( tests )
 endif(NOT WINCE)
 
 ########### next target ###############
+add_definitions( -DSETTINGS_NAMESPACE=Akonadi_ICal_Resource )
 
 set( icalresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
@@ -27,7 +28,7 @@ kde4_add_ui_files(icalresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kde4_add_kcfg_files(icalresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
 qt4_add_dbus_adaptor(icalresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Akonadi_Aknotes_Resource::Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Akonadi_ICal_Resource::Settings
 )
 
 if (NOT WINCE)

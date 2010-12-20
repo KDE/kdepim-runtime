@@ -10,6 +10,8 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 ########### next target ###############
 
+add_definitions( -DSETTINGS_NAMESPACE=Akonadi_Aknotes_Resource )
+
 set( notesresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   ../icalresourcebase.cpp
@@ -23,7 +25,7 @@ kde4_add_ui_files(notesresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kde4_add_kcfg_files(notesresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/notesresource.kcfg org.kde.Akonadi.Notes.Settings)
 qt4_add_dbus_adaptor(notesresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml settings.h Akonadi_Aknotes_Resource::Settings
 )
 
 kde4_add_plugin(akonadi_notes_resource ${notesresource_SRCS})
