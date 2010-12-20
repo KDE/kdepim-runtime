@@ -21,7 +21,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="KUrlRequester" name="lineEdit">
+       <property name="mode">
+        <set>KFile::File|KFile::LocalOnly</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -40,6 +44,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KUrlRequester</class>
+   <extends>QFrame</extends>
+   <header>kurlrequester.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

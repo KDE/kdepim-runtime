@@ -20,6 +20,8 @@
 // TODO: i18n??
 var page = Dialog.addPage( "icalwizard.ui", "Settings" );
 
+page.widget().lineEdit.text = "${ICAL_FILE_DEFAULT_PATH}";
+
 function validateInput()
 {
   if ( page.widget().lineEdit.text == "" ) {
@@ -32,8 +34,8 @@ function validateInput()
 function setup()
 {
   var icalRes = SetupManager.createResource( "akonadi_ical_resource" );
-  icalRes.setOption( "Path", "/My Documents/.local/share/korganizer/" +  + ".ics" );
-  icalRes.setName( page.widget().lineEdit.text );
+  icalRes.setOption( "Path", page.widget().lineEdit.text );
+  icalRes.setName( "Default Calendar" ); //TODO: i18n
   SetupManager.execute();
 }
 
