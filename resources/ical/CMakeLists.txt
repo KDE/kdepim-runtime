@@ -6,9 +6,11 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
+if (NOT WINCE)
 add_subdirectory( notes )
 add_subdirectory( wizard )
 add_subdirectory( tests )
+endif(NOT WINCE)
 
 ########### next target ###############
 
@@ -25,7 +27,7 @@ kde4_add_ui_files(icalresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kde4_add_kcfg_files(icalresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
 qt4_add_dbus_adaptor(icalresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Akonadi_Aknotes_Resource::Settings
 )
 
 if (NOT WINCE)
