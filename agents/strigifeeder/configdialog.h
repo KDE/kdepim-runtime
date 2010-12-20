@@ -26,20 +26,27 @@
 #include <KDialog>
 
 class KConfigDialogManager;
+namespace Akonadi_Strigifeeder_Agent {
+class Settings;
+}
 
+namespace Akonadi_Strigifeeder_Agent {
 class ConfigDialog : public KDialog
 {
   Q_OBJECT
 
   public:
-    explicit ConfigDialog( WId windowId, QWidget* parent = 0 );
+    explicit ConfigDialog( WId windowId, Akonadi_Strigifeeder_Agent::Settings *settings, QWidget* parent = 0 );
 
   private Q_SLOTS:
     void save();
 
   private:
     KConfigDialogManager *m_manager;
+    Akonadi_Strigifeeder_Agent::Settings *mSettings;
     Ui::ConfigDialog ui;
 };
+
+}
 
 #endif

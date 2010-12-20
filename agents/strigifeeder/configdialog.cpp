@@ -25,8 +25,11 @@
 #include <kconfigdialogmanager.h>
 #include <kwindowsystem.h>
 
-ConfigDialog::ConfigDialog( WId windowId, QWidget * parent )
-  : KDialog( parent )
+using namespace Akonadi_Strigifeeder_Agent;
+
+ConfigDialog::ConfigDialog( WId windowId, Settings *settings, QWidget * parent )
+  : KDialog( parent ),
+    mSettings( settings )
 {
   ui.setupUi( mainWidget() );
   setButtons( Ok | Cancel );
@@ -36,7 +39,7 @@ ConfigDialog::ConfigDialog( WId windowId, QWidget * parent )
 
   connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
 
-  m_manager = new KConfigDialogManager( this, Settings::self() );
+  m_manager = new KConfigDialogManager( this, mSettings );
   m_manager->updateWidgets();
 }
 
@@ -44,7 +47,7 @@ ConfigDialog::ConfigDialog( WId windowId, QWidget * parent )
 void ConfigDialog::save()
 {
   m_manager->updateSettings();
-  Settings::self()->writeConfig();
+  mSettings->writeConfig();
 }
 
 #include "configdialog.moc"

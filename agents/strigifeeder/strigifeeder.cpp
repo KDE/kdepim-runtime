@@ -51,6 +51,7 @@ Q_IMPORT_PLUGIN(akonadi_serializer_kcalcore)
 #endif
 
 using namespace Akonadi;
+using namespace Akonadi_Strigifeeder_Agent;
 
 static const int INDEX_COMPAT_LEVEL = 1; // increment when the index format changes
 
@@ -68,7 +69,8 @@ StrigiFeeder::StrigiFeeder( const QString &id )
     mStrigiDaemonStartupAttempted( false ),
     mInitialUpdateDone( false ),
     mSelfTestPassed( false ),
-    mSystemIsIdle( false )
+    mSystemIsIdle( false ),
+    mSettings( new Settings( componentData().config() ) )
 {
   setIndexCompatibilityLevel( INDEX_COMPAT_LEVEL );
 
@@ -91,9 +93,9 @@ StrigiFeeder::StrigiFeeder( const QString &id )
 
 void StrigiFeeder::configure( WId windowId )
 {
-  ConfigDialog dlg( windowId );
+  ConfigDialog dlg( windowId, mSettings );
   if ( dlg.exec() ) {
-    Settings::self()->writeConfig();
+    mSettings->writeConfig();
     emit configurationDialogAccepted();
 
     QTimer::singleShot( 0, this, SLOT( selfTest() ) );
@@ -358,7 +360,7 @@ ItemFetchScope StrigiFeeder::fetchScopeForCollection( const Akonadi::Collection 
 {
   ItemFetchScope scope = changeRecorder()->itemFetchScope();
 
-  switch ( Settings::self()->indexAggressiveness() ) {
+  switch ( mSettings->indexAggressiveness() ) {
     case Settings::LocalAndCached:
     {
       const QStringList localResources = QStringList()

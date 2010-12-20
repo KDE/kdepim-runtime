@@ -26,6 +26,9 @@
 #include <strigi/qtdbus/strigiclient.h>
 
 class KJob;
+namespace Akonadi_Strigifeeder_Agent {
+class Settings;
+}
 
 namespace Akonadi {
 
@@ -95,6 +98,7 @@ class StrigiFeeder : public AgentBase, public AgentBase::ObserverV2
     bool mInitialUpdateDone;
     bool mSelfTestPassed;
     bool mSystemIsIdle;
+    Akonadi_Strigifeeder_Agent::Settings *mSettings;
 };
 
 }
