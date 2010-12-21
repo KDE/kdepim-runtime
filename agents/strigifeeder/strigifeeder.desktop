@@ -75,6 +75,6 @@ Type=AkonadiAgent
 Exec=akonadi_strigi_feeder
 
 X-Akonadi-MimeTypes=all/all
-X-Akonadi-Capabilities=Unique
+X-Akonadi-Capabilities=Unique,Autostart
 X-Akonadi-Identifier=akonadi_strigi_feeder
 X-Akonadi-LaunchMethod=AgentServer
