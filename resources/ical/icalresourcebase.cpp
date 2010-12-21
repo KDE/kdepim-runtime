@@ -19,7 +19,7 @@
 */
 
 #include "icalresourcebase.h"
-#include "settingsadaptor.h"
+#include "icalsettingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
 #include <akonadi/dbusconnectionpool.h>
@@ -46,7 +46,7 @@ ICalResourceBase::ICalResourceBase( const QString &id )
 void ICalResourceBase::initialise( const QStringList &mimeTypes, const QString &icon )
 {
   setSupportedMimetypes( mimeTypes, icon );
-  new SettingsAdaptor( mSettings );
+  new ICalSettingsAdaptor( mSettings );
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                                                          mSettings, QDBusConnection::ExportAdaptors );
 }

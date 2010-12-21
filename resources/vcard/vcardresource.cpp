@@ -19,7 +19,7 @@
 */
 
 #include "vcardresource.h"
-#include "settingsadaptor.h"
+#include "vcardsettingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
 #include <akonadi/dbusconnectionpool.h>
@@ -39,7 +39,7 @@ VCardResource::VCardResource( const QString &id )
 {
   setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), "office-address-book" );
 
-  new SettingsAdaptor( mSettings );
+  new VCardSettingsAdaptor( mSettings );
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                                                          mSettings, QDBusConnection::ExportAdaptors );
 }
