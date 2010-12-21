@@ -18,7 +18,6 @@
 */
 
 #include "notesresource.h"
-#include "settingsadaptor.h"
 
 #include <akonadi/agentfactory.h>
 
