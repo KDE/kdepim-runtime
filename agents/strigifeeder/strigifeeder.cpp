@@ -91,6 +91,11 @@ StrigiFeeder::StrigiFeeder( const QString &id )
   QTimer::singleShot( 0, this, SLOT( selfTest() ) );
 }
 
+StrigiFeeder::~StrigiFeeder()
+{
+  delete mSettings;
+}
+
 void StrigiFeeder::configure( WId windowId )
 {
   ConfigDialog dlg( windowId, mSettings );
