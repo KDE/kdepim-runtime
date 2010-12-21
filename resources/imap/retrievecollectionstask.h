@@ -40,6 +40,8 @@ private slots:
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
                             const QList< QList<QByteArray> > &flags );
   void onMailBoxesReceiveDone( KJob *job );
+  void onFullMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags );
+  void onFullMailBoxesReceiveDone( KJob *job );
 
 protected:
   virtual void doStart( KIMAP::Session *session );
@@ -47,6 +49,7 @@ protected:
 private:
   QHash<QString, Akonadi::Collection> m_reportedCollections;
   QHash<QString, Akonadi::Collection> m_dummyCollections;
+  QSet<QString> m_fullReportedCollections;
 };
 
 #endif

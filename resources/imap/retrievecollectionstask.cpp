@@ -75,6 +75,19 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
 
   m_reportedCollections.insert( QString(), root );
 
+  // this is ugly, but the result of LSUB is unfortunately not a sub-set of LIST
+  // it also contains subscribed but currently not available (eg. deleted) mailboxes
+  // so we need to use both and exclude mailboxes in LSUB but not in LIST
+  if ( isSubscriptionEnabled() ) {
+    KIMAP::ListJob *fullListJob = new KIMAP::ListJob( session );
+    fullListJob->setIncludeUnsubscribed( true );
+    fullListJob->setQueriedNamespaces( serverNamespaces() );
+    connect( fullListJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
+             this, SLOT(onFullMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
+    connect( fullListJob, SIGNAL(result(KJob*)), SLOT(onFullMailBoxesReceiveDone(KJob*)) );
+    fullListJob->start();
+  }
+
   KIMAP::ListJob *listJob = new KIMAP::ListJob( session );
   listJob->setIncludeUnsubscribed( !isSubscriptionEnabled() );
   listJob->setQueriedNamespaces( serverNamespaces() );
@@ -92,6 +105,12 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
 
   for ( int i=0; i<descriptors.size(); ++i ) {
     KIMAP::MailBoxDescriptor descriptor = descriptors[i];
+
+    // skip phantom mailboxes contained in LSUB but not LIST
+    if ( isSubscriptionEnabled() && !m_fullReportedCollections.contains( descriptor.name ) ) {
+      kDebug() << "Got phantom mailbox: " << descriptor.name;
+      continue;
+    }
 
     const QStringList pathParts = descriptor.name.split(descriptor.separator);
     const QString separator = descriptor.separator;
@@ -175,6 +194,22 @@ void RetrieveCollectionsTask::onMailBoxesReceiveDone( KJob* job )
     collectionsRetrieved( m_reportedCollections.values() );
   }
 }
+
+void RetrieveCollectionsTask::onFullMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor >& descriptors,
+                                                       const QList< QList< QByteArray > >& flags )
+{
+  Q_UNUSED( flags );
+  foreach ( const KIMAP::MailBoxDescriptor &descriptor, descriptors )
+    m_fullReportedCollections.insert( descriptor.name );
+}
+
+void RetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob* job)
+{
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+  }
+}
+
 
 #include "retrievecollectionstask.moc"
 
