@@ -1,5 +1,6 @@
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_CURRENT_BINARY_DIR}/..
     ${kdepim-runtime_SOURCE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
@@ -25,7 +26,7 @@ kde4_add_ui_files(notesresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kde4_add_kcfg_files(notesresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/notesresource.kcfg org.kde.Akonadi.Notes.Settings)
 qt4_add_dbus_adaptor(notesresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml settings.h Akonadi_Aknotes_Resource::Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml settings.h Akonadi_Aknotes_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor
 )
 
 kde4_add_plugin(akonadi_notes_resource ${notesresource_SRCS})
