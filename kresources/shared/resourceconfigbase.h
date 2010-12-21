@@ -31,6 +31,9 @@
 
 namespace Akonadi {
   class CollectionView;
+}
+
+namespace AkonadiFuture {
   class StoreCollectionModel;
 }
 
@@ -63,7 +66,7 @@ class ResourceConfigBase : public KRES::ConfigWidget
 
     Akonadi::Collection mCollection;
 
-    Akonadi::StoreCollectionModel *mCollectionModel;
+    AkonadiFuture::StoreCollectionModel *mCollectionModel;
     Akonadi::CollectionView *mCollectionView;
 
     QDialogButtonBox *mButtonBox;

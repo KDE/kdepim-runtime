@@ -25,19 +25,22 @@
 #include <akonadi/job.h>
 
 namespace Akonadi {
-
 class Collection;
+}
+
+namespace AkonadiFuture {
+
 class XmlWriteJobPrivate;
 
 /**
   Serializes a given Akonadi collection into a XML file.
 */
-class AKONADI_XML_EXPORT XmlWriteJob : public Job
+class AKONADI_XML_EXPORT XmlWriteJob : public Akonadi::Job
 {
   Q_OBJECT
   public:
-    XmlWriteJob( const Collection &root, const QString &fileName, QObject *parent = 0 );
-    XmlWriteJob( const QList<Collection> &roots, const QString &fileName, QObject *parent = 0 );
+    XmlWriteJob( const Akonadi::Collection &root, const QString &fileName, QObject *parent = 0 );
+    XmlWriteJob( const QList<Akonadi::Collection> &roots, const QString &fileName, QObject *parent = 0 );
     ~XmlWriteJob();
 
   protected:

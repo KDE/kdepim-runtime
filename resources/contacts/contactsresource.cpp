@@ -32,6 +32,7 @@
 #include <akonadi/itemfetchscope.h>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 ContactsResource::ContactsResource( const QString &id )
   : ResourceBase( id )

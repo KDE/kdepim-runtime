@@ -22,7 +22,7 @@
 
 #include <QString>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 namespace Format {
 

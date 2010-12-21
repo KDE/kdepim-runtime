@@ -31,6 +31,7 @@
 #include <QVBoxLayout>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 static QModelIndex findCollection( const Collection &collection,
         const QModelIndex &parent, QAbstractItemModel *model)

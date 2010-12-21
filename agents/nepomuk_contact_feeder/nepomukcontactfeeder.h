@@ -26,7 +26,7 @@
 #include <akonadi/agentbase.h>
 #include <akonadi/item.h>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class NepomukContactFeeder : public NepomukFeederAgent<NepomukFast::ContactList>
 {

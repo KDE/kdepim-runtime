@@ -29,8 +29,11 @@
 #include <QtXml/QDomElement>
 
 namespace Akonadi {
-
 class Attribute;
+}
+
+namespace AkonadiFuture {
+
 
 /**
   Low-level methods to transform DOM elements into the corresponding Akonadi objects.
@@ -41,28 +44,28 @@ namespace XmlReader
   /**
     Converts an attribute element.
   */
-  AKONADI_XML_EXPORT Attribute* elementToAttribute( const QDomElement &elem );
+  AKONADI_XML_EXPORT Akonadi::Attribute* elementToAttribute( const QDomElement &elem );
 
   /**
     Reads all attributes that are immediate children of @p elem and adds them
     to @p entity.
   */
-  AKONADI_XML_EXPORT void readAttributes( const QDomElement &elem, Entity &entity );
+  AKONADI_XML_EXPORT void readAttributes( const QDomElement &elem, Akonadi::Entity &entity );
 
   /**
     Converts a collection element.
   */
-  AKONADI_XML_EXPORT Collection elementToCollection( const QDomElement &elem );
+  AKONADI_XML_EXPORT Akonadi::Collection elementToCollection( const QDomElement &elem );
 
   /**
     Reads recursively all collections starting from the given DOM element.
   */
-  AKONADI_XML_EXPORT Collection::List readCollections( const QDomElement &elem );
+  AKONADI_XML_EXPORT Akonadi::Collection::List readCollections( const QDomElement &elem );
 
   /**
     Converts an item element.
   */
-  AKONADI_XML_EXPORT Item elementToItem( const QDomElement &elem, bool includePayload = true );
+  AKONADI_XML_EXPORT Akonadi::Item elementToItem( const QDomElement &elem, bool includePayload = true );
 }
 
 }

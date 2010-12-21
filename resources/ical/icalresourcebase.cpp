@@ -30,6 +30,7 @@
 #include <kdebug.h>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 using namespace KCal;
 
 ICalResourceBase::ICalResourceBase( const QString &id, const QString &fileTypeDescription )

@@ -27,6 +27,9 @@
 
 namespace Akonadi {
   class CollectionView;
+}
+
+namespace AkonadiFuture {
   class StoreCollectionFilterProxyModel;
 }
 
@@ -55,7 +58,7 @@ class StoreCollectionDialog : public KDialog
 
   protected:
     QLabel *mLabel;
-    Akonadi::StoreCollectionFilterProxyModel *mFilterModel;
+    AkonadiFuture::StoreCollectionFilterProxyModel *mFilterModel;
     Akonadi::CollectionView *mView;
 
     Akonadi::Collection mSelectedCollection;

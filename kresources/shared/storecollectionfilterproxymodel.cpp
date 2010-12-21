@@ -26,6 +26,7 @@
 #include <akonadi/collectionmodel.h>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 StoreCollectionFilterProxyModel::StoreCollectionFilterProxyModel( QObject *parent )
   : CollectionFilterProxyModel( parent ),

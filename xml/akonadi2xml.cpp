@@ -28,6 +28,7 @@
 #include <KDebug>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 int main( int argc, char *argv[] )
 {

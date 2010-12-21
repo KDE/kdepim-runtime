@@ -32,7 +32,7 @@ namespace KIO {
 class StatJob;
 }
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 /**
  * Base class for the configuration dialog for single file based resources.

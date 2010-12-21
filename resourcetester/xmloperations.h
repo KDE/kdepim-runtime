@@ -114,7 +114,7 @@ class XmlOperations : public QObject
 
   private:
     Akonadi::Collection::List mRoots;
-    Akonadi::XmlDocument mDocument;
+    AkonadiFuture::XmlDocument mDocument;
     QString mFileName;
     QString mErrorMsg;
     CollectionFields mCollectionFields;

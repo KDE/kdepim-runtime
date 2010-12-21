@@ -33,7 +33,7 @@
 #include <QFile>
 #include <QDir>
 
-namespace Akonadi
+namespace AkonadiFuture
 {
 
 /**
@@ -214,26 +214,26 @@ class SingleFileResource : public SingleFileResourceBase
   protected:
     void retrieveCollections()
     {
-      Collection c;
-      c.setParentCollection( Collection::root() );
+      Akonadi::Collection c;
+      c.setParentCollection( Akonadi::Collection::root() );
       c.setRemoteId( Settings::self()->path() );
       c.setName( identifier() );
       QStringList mimeTypes;
       c.setContentMimeTypes( mSupportedMimetypes );
       if ( Settings::self()->readOnly() ) {
-        c.setRights( Collection::CanChangeCollection );
+        c.setRights( Akonadi::Collection::CanChangeCollection );
       } else {
-        Collection::Rights rights;
-        rights |= Collection::CanChangeItem;
-        rights |= Collection::CanCreateItem;
-        rights |= Collection::CanDeleteItem;
-        rights |= Collection::CanChangeCollection;
+        Akonadi::Collection::Rights rights;
+        rights |= Akonadi::Collection::CanChangeItem;
+        rights |= Akonadi::Collection::CanCreateItem;
+        rights |= Akonadi::Collection::CanDeleteItem;
+        rights |= Akonadi::Collection::CanChangeCollection;
         c.setRights( rights );
       }
-      EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+      Akonadi::EntityDisplayAttribute* attr = c.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
       attr->setDisplayName( name() );
       attr->setIconName( mCollectionIcon );
-      Collection::List list;
+      Akonadi::Collection::List list;
       list << c;
       collectionsRetrieved( list );
     }

@@ -29,6 +29,7 @@
 #include <akonadi/kabc/contactparts.h>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 bool SerializerPluginAddressee::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
@@ -105,6 +106,6 @@ void SerializerPluginAddressee::serialize( const Item& item, const QByteArray& l
     data.write( m_converter.createVCard( addr ) );
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_addressee, Akonadi::SerializerPluginAddressee )
+Q_EXPORT_PLUGIN2( akonadi_serializer_addressee, AkonadiFuture::SerializerPluginAddressee )
 
 #include "akonadi_serializer_addressee.moc"

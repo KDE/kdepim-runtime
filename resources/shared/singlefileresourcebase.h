@@ -31,14 +31,14 @@ class FileCopyJob;
 class Job;
 }
 
-namespace Akonadi
+namespace AkonadiFuture
 {
 
 /**
  * Base class for single file based resources.
  * @see SingleFileResource
  */
-class SingleFileResourceBase : public ResourceBase, public Akonadi::AgentBase::Observer
+class SingleFileResourceBase : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
   public:

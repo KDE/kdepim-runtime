@@ -23,7 +23,7 @@
 #include <QByteArray>
 #include <akonadi/attribute.h>
 
-using namespace Akonadi;
+using namespace AkonadiFuture;
 
 CollectionAnnotationsAttribute::CollectionAnnotationsAttribute()
 {

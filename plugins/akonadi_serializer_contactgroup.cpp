@@ -30,6 +30,7 @@
 #include <akonadi/kabc/contactparts.h>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 bool SerializerPluginContactGroup::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
@@ -59,7 +60,7 @@ void SerializerPluginContactGroup::serialize( const Item& item, const QByteArray
   KABC::ContactGroupTool::convertToXml( item.payload<KABC::ContactGroup>(), &data );
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )
+Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, AkonadiFuture::SerializerPluginContactGroup )
 
 #include "akonadi_serializer_contactgroup.moc"
 // kate: space-indent on; indent-width 2; replace-tabs on;

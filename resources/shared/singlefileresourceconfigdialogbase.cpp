@@ -27,7 +27,7 @@
 
 #include <QTimer>
 
-using namespace Akonadi;
+using namespace AkonadiFuture;
 
 SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId windowId ) :
     KDialog(), mStatJob( 0 ), mDirUrlChecked( false )

@@ -28,6 +28,7 @@
 typedef boost::shared_ptr<KCal::Incidence> IncidencePtr;
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 bool SerializerPluginKCal::deserialize(Item & item, const QByteArray & label, QIODevice & data, int version)
 {
@@ -60,6 +61,6 @@ void SerializerPluginKCal::serialize(const Item & item, const QByteArray & label
   data.write( "\nEND:VCALENDAR" );
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_kcal, SerializerPluginKCal )
+Q_EXPORT_PLUGIN2( akonadi_serializer_kcal, AkonadiFuture::SerializerPluginKCal )
 
 #include "akonadi_serializer_kcal.moc"

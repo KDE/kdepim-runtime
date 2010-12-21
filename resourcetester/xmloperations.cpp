@@ -34,6 +34,7 @@
 #include <QStringList>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 template <typename T> QTextStream& operator<<( QTextStream &s, const QSet<T> &set )
 {

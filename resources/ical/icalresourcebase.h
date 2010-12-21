@@ -28,7 +28,7 @@ namespace KCal {
   class CalendarLocal;
 }
 
-class ICalResourceBase : public Akonadi::SingleFileResource<Settings>
+class ICalResourceBase : public AkonadiFuture::SingleFileResource<Settings>
 {
   Q_OBJECT
 

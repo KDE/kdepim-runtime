@@ -74,7 +74,7 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
   mainLayout->setMargin( KDialog::marginHint() );
   mainLayout->setSpacing( KDialog::spacingHint() );
 
-  mCollectionModel = new Akonadi::StoreCollectionModel( this );
+  mCollectionModel = new AkonadiFuture::StoreCollectionModel( this );
 
   QWidget *widget = new QWidget( this );
 
@@ -143,7 +143,7 @@ void ResourceConfigBase::loadSettings( KRES::Resource *resource )
     return;
   }
 
-  Akonadi::StoreCollectionModel::StoreItemsByCollection storeMapping;
+  AkonadiFuture::StoreCollectionModel::StoreItemsByCollection storeMapping;
 
   mStoreCollections = akonadiResource->storeConfig().storeCollectionsByMimeType();
   StoreConfigIface::CollectionsByMimeType::const_iterator it    = mStoreCollections.constBegin();
@@ -214,12 +214,12 @@ void ResourceConfigBase::mimeCheckBoxToggled( bool checked )
 
   const QString itemType = mItemTypes.value( mimeType, QString() );
 
-  Akonadi::StoreCollectionModel::StoreItemsByCollection storeMapping = mCollectionModel->storeMapping();
+  AkonadiFuture::StoreCollectionModel::StoreItemsByCollection storeMapping = mCollectionModel->storeMapping();
 
   if ( checked ) {
-    Akonadi::StoreCollectionModel::StoreItemsByCollection::iterator it =
+    AkonadiFuture::StoreCollectionModel::StoreItemsByCollection::iterator it =
       storeMapping.begin();
-    Akonadi::StoreCollectionModel::StoreItemsByCollection::iterator endIt =
+    AkonadiFuture::StoreCollectionModel::StoreItemsByCollection::iterator endIt =
       storeMapping.end();
     for ( ; it != endIt; ++it ) {
       it.value().removeAll( itemType );

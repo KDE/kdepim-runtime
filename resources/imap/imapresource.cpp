@@ -95,6 +95,7 @@
 #include "resourceadaptor.h"
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 static const char AKONADI_COLLECTION[] = "akonadiCollection";
 static const char AKONADI_ITEM[] = "akonadiItem";

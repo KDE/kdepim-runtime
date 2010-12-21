@@ -24,19 +24,19 @@
 
 #include <akonadi/itemserializerplugin.h>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 /**
  * @since 4.2
  */
-class SerializerPluginContactGroup : public QObject, public ItemSerializerPlugin
+class SerializerPluginContactGroup : public QObject, public Akonadi::ItemSerializerPlugin
 {
   Q_OBJECT
   Q_INTERFACES( Akonadi::ItemSerializerPlugin )
 
 public:
-  bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
-  void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
+  bool deserialize( Akonadi::Item& item, const QByteArray& label, QIODevice& data, int version );
+  void serialize( const Akonadi::Item& item, const QByteArray& label, QIODevice& data, int &version );
 };
 
 

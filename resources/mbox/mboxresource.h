@@ -25,7 +25,7 @@
 
 class MBox;
 
-class MboxResource : public Akonadi::SingleFileResource<Settings>
+class MboxResource : public AkonadiFuture::SingleFileResource<Settings>
 {
   Q_OBJECT
 

@@ -25,7 +25,7 @@
 
 #include <KDE/KConfigDialogManager>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 /**
  * Configuration dialog for single file resources.

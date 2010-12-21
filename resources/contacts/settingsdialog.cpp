@@ -26,7 +26,7 @@
 
 #include <QtCore/QTimer>
 
-using namespace Akonadi;
+using namespace AkonadiFuture;
 
 SettingsDialog::SettingsDialog( WId windowId )
   : KDialog()

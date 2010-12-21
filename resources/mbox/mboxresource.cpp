@@ -36,6 +36,7 @@
 #include "singlefileresourceconfigdialog.h"
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 static Entity::Id collectionId( const QString &remoteItemId )
 {

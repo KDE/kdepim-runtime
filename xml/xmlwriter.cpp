@@ -28,6 +28,7 @@
 #include <QStringList>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 QDomElement XmlWriter::attributeToElement(Attribute* attr, QDomDocument& document)
 {

@@ -54,7 +54,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
   : NepomukFeederAgent<NepomukFast::Calendar>( id )
@@ -167,6 +167,6 @@ void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCa
 
 } // namespace Akonadi
 
-AKONADI_AGENT_MAIN( Akonadi::NepomukCalendarFeeder )
+AKONADI_AGENT_MAIN( AkonadiFuture::NepomukCalendarFeeder )
 
 #include "nepomukcalendarfeeder.moc"

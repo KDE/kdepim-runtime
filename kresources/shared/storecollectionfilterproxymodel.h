@@ -25,9 +25,9 @@
 
 class AbstractSubResourceModel;
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
-class StoreCollectionFilterProxyModel : public CollectionFilterProxyModel
+class StoreCollectionFilterProxyModel : public Akonadi::CollectionFilterProxyModel
 {
   Q_OBJECT
 

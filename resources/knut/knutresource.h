@@ -64,7 +64,7 @@ class KnutResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     void save();
 
   private:
-    Akonadi::XmlDocument mDocument;
+    AkonadiFuture::XmlDocument mDocument;
     QFileSystemWatcher *mWatcher;
 };
 

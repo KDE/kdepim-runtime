@@ -25,6 +25,7 @@
 #include <QtCore/qplugin.h>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 using namespace Microblog;
 
 bool SerializerPluginmicroblog::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
@@ -60,6 +61,6 @@ QSet<QByteArray> SerializerPluginmicroblog::parts( const Item &item ) const
   return ItemSerializerPlugin::parts( item );
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_microblog, Akonadi::SerializerPluginmicroblog )
+Q_EXPORT_PLUGIN2( akonadi_serializer_microblog, AkonadiFuture::SerializerPluginmicroblog )
 
 #include "akonadi_serializer_microblog.moc"

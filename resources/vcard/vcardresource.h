@@ -26,7 +26,7 @@
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
 
-class VCardResource : public Akonadi::SingleFileResource<Settings>
+class VCardResource : public AkonadiFuture::SingleFileResource<Settings>
 {
   Q_OBJECT
 

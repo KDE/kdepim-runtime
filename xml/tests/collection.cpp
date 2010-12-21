@@ -28,6 +28,8 @@
 
 QTEST_KDEMAIN(CollectionTest, NoGUI)
 
+using namespace AkonadiFuture;
+
 QByteArray collection1(
 "<test>\n"
 " <collection content=\"inode/directory,message/rfc822\" rid=\"c11\" name=\"Inbox\">\n"

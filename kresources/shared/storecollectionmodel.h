@@ -26,14 +26,14 @@
 
 #include <QHash>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
-class StoreCollectionModel : public CollectionModel
+class StoreCollectionModel : public Akonadi::CollectionModel
 {
   Q_OBJECT
 
   public:
-    typedef QHash<Collection::Id, QStringList> StoreItemsByCollection;
+    typedef QHash<Akonadi::Collection::Id, QStringList> StoreItemsByCollection;
 
     enum Roles {
       ItemTypeRole = CollectionModel::UserRole + 1,

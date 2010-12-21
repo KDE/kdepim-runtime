@@ -25,16 +25,16 @@
 #include <akonadi/itemserializerplugin.h>
 #include <kabc/vcardconverter.h>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
-class SerializerPluginAddressee : public QObject, public ItemSerializerPlugin
+class SerializerPluginAddressee : public QObject, public Akonadi::ItemSerializerPlugin
 {
     Q_OBJECT
     Q_INTERFACES( Akonadi::ItemSerializerPlugin )
 
 public:
-    bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
-    void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
+    bool deserialize( Akonadi::Item& item, const QByteArray& label, QIODevice& data, int version );
+    void serialize( const Akonadi::Item& item, const QByteArray& label, QIODevice& data, int &version );
 private:
     KABC::VCardConverter m_converter;
 };

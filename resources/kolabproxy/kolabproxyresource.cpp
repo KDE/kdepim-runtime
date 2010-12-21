@@ -51,6 +51,7 @@
 #include <QSet>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 static const char KOLAB_COLLECTION[] = "KolabCollection";
 static const char KOLAB_ITEM[] = "KolabItem";

@@ -22,7 +22,7 @@
 #include <QByteArray>
 #include <akonadi/attribute.h>
 
-using namespace Akonadi;
+using namespace AkonadiFuture;
 
 CollectionFlagsAttribute::CollectionFlagsAttribute( const QList<QByteArray> &flags )
   : mFlags( flags )

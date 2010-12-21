@@ -28,8 +28,9 @@
 
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
-bool SerializerPluginBookmark::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
+bool SerializerPluginBookmark::deserialize( Akonadi::Item& item, const QByteArray& label, QIODevice& data, int version )
 {
   Q_UNUSED( version );
 
@@ -46,7 +47,7 @@ bool SerializerPluginBookmark::deserialize( Item& item, const QByteArray& label,
   return true;
 }
 
-void SerializerPluginBookmark::serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version )
+void SerializerPluginBookmark::serialize( const Akonadi::Item& item, const QByteArray& label, QIODevice& data, int &version )
 {
   Q_UNUSED( version );
 
@@ -67,6 +68,6 @@ void SerializerPluginBookmark::serialize( const Item& item, const QByteArray& la
 
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_bookmark, SerializerPluginBookmark )
+Q_EXPORT_PLUGIN2( akonadi_serializer_bookmark, AkonadiFuture::SerializerPluginBookmark )
 
 #include "akonadi_serializer_bookmark.moc"

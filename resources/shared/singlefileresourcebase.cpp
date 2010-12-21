@@ -35,6 +35,7 @@
 #include <QtCore/QCryptographicHash>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   : ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 )

@@ -26,7 +26,7 @@
 
 class KConfigDialogManager;
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class SettingsDialog : public KDialog
 {

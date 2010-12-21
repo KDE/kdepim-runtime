@@ -27,7 +27,7 @@
 
 #include <QtXml/QDomDocument>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class XmlDocumentPrivate;
 
@@ -91,7 +91,7 @@ class AKONADI_XML_EXPORT XmlDocument
     /**
       Returns the DOM element representing @p collection.
     */
-    QDomElement collectionElement( const Collection &collection ) const;
+    QDomElement collectionElement( const Akonadi::Collection &collection ) const;
 
     /**
       Returns the DOM element representing the item with the given remote id
@@ -101,33 +101,33 @@ class AKONADI_XML_EXPORT XmlDocument
     /**
       Returns the collection with the given remote id.
     */
-    Collection collectionByRemoteId( const QString &rid ) const;
+    Akonadi::Collection collectionByRemoteId( const QString &rid ) const;
 
     /**
       Returns the item with the given remote id.
     */
-    Item itemByRemoteId( const QString& rid, bool includePayload = true ) const;
+    Akonadi::Item itemByRemoteId( const QString& rid, bool includePayload = true ) const;
 
     /**
       Returns the collections defined in this document.
     */
-    Collection::List collections() const;
+    Akonadi::Collection::List collections() const;
 
     /**
       Returns immediate child collections of the specified parent collection.
       @deprecated Not HRID aware, use childCollections( Akonadi::Collection ) instead
     */
-    KDE_DEPRECATED Collection::List childCollections( const QString &parentCollectionRid ) const;
+    KDE_DEPRECATED Akonadi::Collection::List childCollections( const QString &parentCollectionRid ) const;
 
     /**
       Returns the immediate child collections of @p parentCollection.
     */
-    Collection::List childCollections( const Collection &parentCollection ) const;
+    Akonadi::Collection::List childCollections( const Akonadi::Collection &parentCollection ) const;
 
     /**
       Returns the items in the given collection.
     */
-    Item::List items( const Collection& collection, bool includePayload = true ) const;
+    Akonadi::Item::List items( const Akonadi::Collection& collection, bool includePayload = true ) const;
 
   private:
     XmlDocumentPrivate * const d;

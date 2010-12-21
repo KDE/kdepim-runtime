@@ -30,6 +30,7 @@
 #include <akonadi/private/imapparser_p.h>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 using namespace KMime;
 
 typedef boost::shared_ptr<KMime::Message> MessagePtr;
@@ -193,6 +194,6 @@ QSet<QByteArray> SerializerPluginMail::parts(const Item & item) const
   return set;
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_mail, SerializerPluginMail )
+Q_EXPORT_PLUGIN2( akonadi_serializer_mail, AkonadiFuture::SerializerPluginMail )
 
 #include "akonadi_serializer_mail.moc"

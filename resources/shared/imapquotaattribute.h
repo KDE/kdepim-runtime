@@ -24,7 +24,7 @@
 
 #include <QtCore/QMap>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class ImapQuotaAttribute : public Akonadi::Attribute
 {

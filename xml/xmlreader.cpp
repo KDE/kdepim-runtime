@@ -26,6 +26,7 @@
 #include <QStringList>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 Attribute* XmlReader::elementToAttribute(const QDomElement& elem)
 {

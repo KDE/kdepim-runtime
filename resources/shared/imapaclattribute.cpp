@@ -21,7 +21,7 @@
 
 #include <QtCore/QByteArray>
 
-using namespace Akonadi;
+using namespace AkonadiFuture;
 
 ImapAclAttribute::ImapAclAttribute()
 {

@@ -28,6 +28,7 @@
 #include <QtGui/QFont>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 StoreCollectionModel::StoreCollectionModel( QObject *parent )
   : CollectionModel( parent )

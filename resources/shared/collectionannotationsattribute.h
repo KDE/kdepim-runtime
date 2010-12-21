@@ -24,7 +24,7 @@
 
 #include <QtCore/QMap>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class CollectionAnnotationsAttribute : public Akonadi::Attribute
 {

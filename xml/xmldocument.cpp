@@ -35,6 +35,7 @@
 #include <libxml/xmlschemas.h>
 #endif
 
+using namespace AkonadiFuture;
 using namespace Akonadi;
 
 // helper class for dealing with libxml resource management
@@ -80,7 +81,7 @@ static QDomElement findElementByRidHelper( const QDomElement &elem, const QStrin
   return QDomElement();
 }
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class XmlDocumentPrivate
 {
@@ -121,7 +122,7 @@ XmlDocument::~XmlDocument()
   delete d;
 }
 
-bool Akonadi::XmlDocument::loadFile(const QString& fileName)
+bool AkonadiFuture::XmlDocument::loadFile(const QString& fileName)
 {
   d->valid = false;
   d->document = QDomDocument();

@@ -24,6 +24,7 @@
 #include <qtest_kde.h>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 class XmlDocumentTest : public QObject
 {

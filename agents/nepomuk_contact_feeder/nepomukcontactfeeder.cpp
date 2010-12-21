@@ -51,7 +51,7 @@
 
 #include <KDebug>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 NepomukContactFeeder::NepomukContactFeeder( const QString &id )
   : NepomukFeederAgent<NepomukFast::ContactList>( id )
@@ -259,6 +259,6 @@ void NepomukContactFeeder::updateGroupItem( const Akonadi::Item &item, const QUr
 
 } // namespace Akonadi
 
-AKONADI_AGENT_MAIN( Akonadi::NepomukContactFeeder )
+AKONADI_AGENT_MAIN( AkonadiFuture::NepomukContactFeeder )
 
 #include "nepomukcontactfeeder.moc"

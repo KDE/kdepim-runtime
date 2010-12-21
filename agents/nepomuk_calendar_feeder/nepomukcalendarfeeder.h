@@ -32,7 +32,7 @@
 
 #include "ncal.h"
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class NepomukCalendarFeeder : public NepomukFeederAgent<NepomukFast::Calendar>
 {

@@ -22,7 +22,7 @@
 
 #include <akonadi/attribute.h>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class CollectionFlagsAttribute : public Akonadi::Attribute
 {

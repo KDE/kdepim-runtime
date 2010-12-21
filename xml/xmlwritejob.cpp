@@ -33,7 +33,9 @@
 #include <QFile>
 #include <QStack>
 
-namespace Akonadi {
+using namespace Akonadi; 
+
+namespace AkonadiFuture {
 
 class XmlWriteJobPrivate {
   public:

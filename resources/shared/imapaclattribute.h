@@ -26,7 +26,7 @@
 
 #include <kimap/acl.h>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class ImapAclAttribute : public Akonadi::Attribute
 {

@@ -28,6 +28,7 @@
 
 #include <QtDBus/QDBusConnection>
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 VCardResource::VCardResource( const QString &id )
   : SingleFileResource<Settings>( id )

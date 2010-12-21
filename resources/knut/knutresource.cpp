@@ -39,6 +39,7 @@
 #include <QtCore/QUuid>
 
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 KnutResource::KnutResource( const QString &id )
   : ResourceBase( id ),
