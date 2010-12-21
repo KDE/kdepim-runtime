@@ -24,6 +24,7 @@ Q_IMPORT_PLUGIN(akonadi_vcard_resource)
 Q_IMPORT_PLUGIN(akonadi_maildir_resource)
 Q_IMPORT_PLUGIN(akonadi_akonotes_resource)
 Q_IMPORT_PLUGIN(akonadi_contacts_resource)
+Q_IMPORT_PLUGIN(akonadi_strigi_feeder)
 Q_IMPORT_PLUGIN(korgac)
 Q_IMPORT_PLUGIN(newmailnotifieragent)
 

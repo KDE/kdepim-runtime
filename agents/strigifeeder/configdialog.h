@@ -44,7 +44,7 @@ class ConfigDialog : public KDialog
   private:
     KConfigDialogManager *m_manager;
     Akonadi_Strigifeeder_Agent::Settings *mSettings;
-    Ui::ConfigDialog ui;
+    Ui::StrigiFeederConfigDialog ui;
 };
 
 }

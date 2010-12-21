@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ConfigDialog</class>
+ <class>StrigiFeederConfigDialog</class>
  <widget class="QWidget" name="ConfigDialog">
   <property name="geometry">
    <rect>

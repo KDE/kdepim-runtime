@@ -20,11 +20,11 @@ set(strigi_feeder_SRCS
 kde4_add_kcfg_files(strigi_feeder_SRCS settings.kcfgc)
 kde4_add_ui_files(strigi_feeder_SRCS configdialog.ui)
 
-if (RUNTIME_PLUGINS_STATIC)
-  add_definitions(-DSERIALIZER_PLUGINS_STATIC)
-endif (RUNTIME_PLUGINS_STATIC)
-
-kde4_add_executable(akonadi_strigi_feeder ${strigi_feeder_SRCS})
+if (NOT WINCE)
+  kde4_add_plugin(akonadi_strigi_feeder ${strigi_feeder_SRCS})
+else(NOT WINCE)
+  kde4_add_plugin(akonadi_strigi_feeder STATIC ${strigi_feeder_SRCS})
+endif(NOT WINCE)
 target_link_libraries(akonadi_strigi_feeder
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
@@ -35,11 +35,7 @@ target_link_libraries(akonadi_strigi_feeder
   ${KDE4_KIDLETIME_LIBRARY}
 )
 
-if (RUNTIME_PLUGINS_STATIC)
-  target_link_libraries(akonadi_strigi_feeder akonadi_serializer_mail akonadi_serializer_addressee akonadi_serializer_contactgroup akonadi_serializer_kcalcore)
-endif (RUNTIME_PLUGINS_STATIC)
-
-install(TARGETS akonadi_strigi_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_strigi_feeder DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES strigifeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
 endif ( STRIGIQTDBUSCLIENT_LIBRARY )

@@ -41,14 +41,7 @@
 
 #include <QtCore/QDateTime>
 
-#ifdef SERIALIZER_PLUGINS_STATIC
-#include <QtCore/QtPlugin>
-
-Q_IMPORT_PLUGIN(akonadi_serializer_mail)
-Q_IMPORT_PLUGIN(akonadi_serializer_addressee)
-Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
-Q_IMPORT_PLUGIN(akonadi_serializer_kcalcore)
-#endif
+#include <akonadi/agentfactory.h>
 
 using namespace Akonadi;
 using namespace Akonadi_Strigifeeder_Agent;
@@ -98,7 +91,7 @@ StrigiFeeder::~StrigiFeeder()
 
 void StrigiFeeder::configure( WId windowId )
 {
-  ConfigDialog dlg( windowId, mSettings );
+  Akonadi_Strigifeeder_Agent::ConfigDialog dlg( windowId, mSettings );
   if ( dlg.exec() ) {
     mSettings->writeConfig();
     emit configurationDialogAccepted();
@@ -422,6 +415,6 @@ void StrigiFeeder::systemResumed()
   checkOnline();
 }
 
-AKONADI_AGENT_MAIN( StrigiFeeder )
+AKONADI_AGENT_FACTORY( StrigiFeeder, akonadi_strigi_feeder )
 
 #include "strigifeeder.moc"
