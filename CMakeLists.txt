@@ -176,6 +176,5 @@ endif (QT_QTDECLARATIVE_FOUND)
 install(FILES kdepim-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
-if(CMAKE_SOURCE_DIR STREQUAL "${kdepim-runtime_SOURCE_DIR}")
-    macro_display_feature_log()
-endif(CMAKE_SOURCE_DIR STREQUAL "${kdepim-runtime_SOURCE_DIR}")
+macro_display_feature_log()
+
