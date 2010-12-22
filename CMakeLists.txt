@@ -3,6 +3,12 @@ project(kdepim-runtime)
 # where to look first for cmake modules. This line must be the first one or cmake will use the system's FindFoo.cmake
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
+############### search-related options ################
+option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
+
+if(KDEPIM_NO_NEPOMUK)
+  add_definitions(-DKDEPIM_NO_NEPOMUK)
+endif(KDEPIM_NO_NEPOMUK)
 
 ############### search packages used by KDE ###############
 
@@ -27,6 +33,8 @@ macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applica
 set(SDO_MIN_VERSION 0.2)
 set(SOPRANO_MIN_VERSION 2.3.70)
 
+if(NOT KDEPIM_NO_NEPOMUK)
+
 find_package(SharedDesktopOntologies ${SDO_MIN_VERSION})
 macro_log_feature(SHAREDDESKTOPONTOLOGIES_FOUND "Shared desktop ontologies" "Desktop ontologies" "http://oscaf.sourceforge.net" TRUE "${SDO_MIN_VERSION}" "Ontologies necessary for the Nepomuk semantic desktop.")
 
@@ -35,6 +43,12 @@ macro_log_feature(Soprano_FOUND "Soprano" "Semantic Desktop Storing" "http://sop
 
 find_package(Nepomuk)
 macro_log_feature(Nepomuk_FOUND "Nepomuk" "The Nepomuk libraries" "http://www.kde.org" TRUE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
+
+else( NOT KDEPIM_NO_NEPOMUK )
+
+message( STATUS "Skipping detection of Nepomuk dependencies, feature is disabled." )
+
+endif(NOT KDEPIM_NO_NEPOMUK)
 
 find_package(Strigi)
 macro_log_feature(STRIGI_FOUND "Strigi" "Index metadata of files" "http://strigi.sourceforge.net" FALSE "" "")

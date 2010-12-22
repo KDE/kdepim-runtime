@@ -40,12 +40,14 @@ add_resource_iface( maildir/maildirresource.kcfg
 add_resource_iface( mixedmaildir/mixedmaildirresource.kcfg
                     org.kde.Akonadi.MixedMaildir.Settings MixedMaildirSettings )
 
+if ( NOT KDEPIM_NO_NEPOMUK )
 soprano_add_ontology(kmail-migrator_srcs
   ${CMAKE_CURRENT_SOURCE_DIR}/messagetag.trig
   "MessageTag"
   "Vocabulary"
   "trig"
 )
+endif ( NOT KDEPIM_NO_NEPOMUK )
 
 kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kmail-migrator ${kmail-migrator_srcs} )
