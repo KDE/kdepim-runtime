@@ -12,9 +12,9 @@ endmacro(kdepim_add_agent)
 add_subdirectory( maildispatcher )
 add_subdirectory( newmailnotifier )
 
-if( STRIGI_FOUND )
+if( STRIGI_FOUND AND AKONADI_USE_STRIGI_SEARCH )
 add_subdirectory( strigifeeder )
-endif( STRIGI_FOUND )
+endif( STRIGI_FOUND AND AKONADI_USE_STRIGI_SEARCH )
 
 if(NOT WINCE)
 add_subdirectory( invitations )
