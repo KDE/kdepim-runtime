@@ -278,6 +278,7 @@ void AccountDialog::walletOpenedForSaving( bool success )
         mWallet->writePassword( mParentResource->identifier(), passwordEdit->text() );
       }
 
+      mParentResource->clearCachedPassword();
       Settings::self()->setStorePassword( !passwordEdit->text().isEmpty() );
     }
     else {

@@ -42,6 +42,8 @@ class POP3Resource : public Akonadi::ResourceBase,
     POP3Resource( const QString &id );
     ~POP3Resource();
 
+    void clearCachedPassword();
+
   public Q_SLOTS:
     virtual void configure( WId windowId );
 

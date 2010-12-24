@@ -1006,4 +1006,10 @@ void POP3Resource::retrieveCollections()
   }
 }
 
+void POP3Resource::clearCachedPassword()
+{
+  mPassword.clear();
+}
+
+
 AKONADI_RESOURCE_MAIN( POP3Resource )
