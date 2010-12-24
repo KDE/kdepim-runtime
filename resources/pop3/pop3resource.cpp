@@ -83,10 +83,14 @@ void POP3Resource::updateIntervalTimer()
 
 void POP3Resource::intervalCheckTriggered()
 {
-  kDebug() << "Starting interval mail check.";
   Q_ASSERT( mState == Idle );
-  startMailCheck();
-  mIntervalCheckInProgress = true;
+  if (isOnline()) {
+    kDebug() << "Starting interval mail check.";
+    startMailCheck();
+    mIntervalCheckInProgress = true;
+  } else {
+    mIntervalTimer->start();
+  }
 }
 
 void POP3Resource::aboutToQuit()
