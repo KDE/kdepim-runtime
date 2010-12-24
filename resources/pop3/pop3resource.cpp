@@ -47,7 +47,8 @@ POP3Resource::POP3Resource( const QString &id )
       mAskAgain( false ),
       mIntervalTimer( new QTimer( this ) ),
       mTestLocalInbox( false ),
-      mWallet( 0 )
+      mWallet( 0 ),
+      mErrorDialogShown( false )
 {
   setNeedsNetwork( true );
   Settings::self()->setResourceId( identifier() );
@@ -84,7 +85,7 @@ void POP3Resource::updateIntervalTimer()
 void POP3Resource::intervalCheckTriggered()
 {
   Q_ASSERT( mState == Idle );
-  if (isOnline()) {
+  if ( isOnline() && !mErrorDialogShown ) {
     kDebug() << "Starting interval mail check.";
     startMailCheck();
     mIntervalCheckInProgress = true;
@@ -522,6 +523,7 @@ void POP3Resource::loginJobResult( KJob *job )
 
     // FIXME: "The server refused the supplied username and password." is not correct! The server might
     //        not even be online, there might be a connection problem etc
+    mErrorDialogShown = true;
     int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
                                   i18n( "The server refused the supplied username and password. "
                                         "Do you want to go to the settings, have another attempt "
@@ -530,6 +532,7 @@ void POP3Resource::loginJobResult( KJob *job )
                                   i18n( "Could Not Authenticate" ),
                                   KGuiItem( i18n( "Settings" ) ),
                                   KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
+    mErrorDialogShown = false;
     if ( i == KMessageBox::Yes ) {
       configure( winIdForDialogs() );
       return;
@@ -995,7 +998,7 @@ void POP3Resource::startMailCheck()
 
 void POP3Resource::retrieveCollections()
 {
-  if ( mState == Idle ) {
+  if ( mState == Idle && !mErrorDialogShown ) {
     startMailCheck();
   }
   else {
