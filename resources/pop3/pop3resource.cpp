@@ -521,6 +521,9 @@ void POP3Resource::loginJobResult( KJob *job )
       mAskAgain = true;
     cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
                 '\n' + job->errorString() );
+
+    // FIXME: "The server refused the supplied username and password." is not correct! The server might
+    //        not even be online, there might be a connection problem etc
     int i = KMessageBox::questionYesNoCancelWId( winIdForDialogs(),
                                   i18n( "The server refused the supplied username and password. "
                                         "Do you want to go to the settings, have another attempt "
