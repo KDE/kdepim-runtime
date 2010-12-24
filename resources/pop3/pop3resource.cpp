@@ -192,14 +192,11 @@ void POP3Resource::walletOpenedForSaving( bool success )
 
 void POP3Resource::showPasswordDialog( const QString &queryText )
 {
-  QString login = Settings::self()->login();
-  bool rememberPassword = Settings::self()->storePassword();
-
   // FIXME: give this a proper parent widget
   KPasswordDialog dlg( 0, KPasswordDialog::ShowUsernameLine | KPasswordDialog::ShowKeepPassword );
-  dlg.setUsername( login );
+  dlg.setUsername( Settings::self()->login() );
   dlg.setPassword( mPassword );
-  dlg.setKeepPassword( rememberPassword );
+  dlg.setKeepPassword( Settings::self()->storePassword() );
   dlg.setPrompt( queryText );
   dlg.setCaption( name() );
   dlg.addCommentLine( i18n( "Account:" ), name() );
@@ -208,7 +205,8 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
     cancelSync( i18n( "No username and password supplied." ) );
     return;
   } else {
-    Settings::self()->setLogin( login );
+    mPassword = dlg.password();
+    Settings::self()->setLogin( dlg.username() );
     Settings::self()->writeConfig();
     Settings::self()->setStorePassword( false );
     if ( dlg.keepPassword() ) {
