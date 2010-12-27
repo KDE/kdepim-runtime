@@ -173,7 +173,10 @@ void Dock::updateMenu( bool registered )
 
 void Dock::slotInstanceWarning( const Akonadi::AgentInstance& agent, const QString& message )
 {
-    infoMessage( message, agent.name() );
+    QString msg = message;
+    if ( !agent.name().isEmpty() )
+      msg = i18nc( "<source>: <error message>", "%1: %2", agent.name(), msg );
+    infoMessage( msg, agent.name() );
 }
 
 void Dock::infoMessage( const QString &message, const QString &title )
@@ -184,13 +187,16 @@ void Dock::infoMessage( const QString &message, const QString &title )
 
 void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString& message )
 {
-    errorMessage( message, agent.name() );
+    QString msg = message;
+    if ( !agent.name().isEmpty() )
+      msg = i18nc( "<source>: <error message>", "%1: %2", agent.name(), msg );
+    errorMessage( msg, agent.name() );
 }
 
 void Dock::errorMessage( const QString &message, const QString &title )
 {
-    KMessageBox::error( m_parentWidget , message,
-                        title.isEmpty() ?i18n( "Akonadi error" ) : title );
+    KNotification::event( KNotification::Error, title.isEmpty() ? i18n( "Akonadi error" ) : title,
+                          message, DesktopIcon( "dialog-warning" ), m_parentWidget );
 }
 
 qlonglong Dock::getWinId()
