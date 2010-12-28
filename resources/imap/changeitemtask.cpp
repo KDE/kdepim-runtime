@@ -34,6 +34,7 @@
 
 #include "imapflags.h"
 #include "uidnextattribute.h"
+#include "collectionflagsattribute.h"
 
 ChangeItemTask::ChangeItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent ), m_session( 0 ), m_oldUid( 0 ), m_newUid( 0 )
@@ -104,11 +105,25 @@ void ChangeItemTask::onPreStoreSelectDone( KJob *job )
 
 void ChangeItemTask::triggerStoreJob()
 {
+  QList<QByteArray> flags = fromAkonadiFlags( item().flags().toList() );
+  Akonadi::CollectionFlagsAttribute *flagAttr = item().parentCollection().attribute<Akonadi::CollectionFlagsAttribute>();
+  // the server does not support arbitrary flags, so filter out those it can't handle
+  if ( flagAttr && !flagAttr->flags().isEmpty() && !flagAttr->flags().contains( "\\*" ) ) {
+    for ( QList< QByteArray >::iterator it = flags.begin(); it != flags.end(); ) {
+      if ( flagAttr->flags().contains( *it ) ) {
+        ++it;
+      } else {
+        kDebug() << "Server does not support flag" << *it;
+        it = flags.erase( it );
+      }
+    }
+  }
+
   KIMAP::StoreJob *store = new KIMAP::StoreJob( m_session );
 
   store->setUidBased( true );
   store->setSequenceSet( KIMAP::ImapSet( m_oldUid ) );
-  store->setFlags( fromAkonadiFlags( item().flags().toList() ) );
+  store->setFlags( flags );
   store->setMode( KIMAP::StoreJob::SetFlags );
 
   connect( store, SIGNAL( result( KJob* ) ),

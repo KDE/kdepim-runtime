@@ -148,7 +148,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   const int messageCount = select->messageCount();
   const qint64 uidValidity = select->uidValidity();
   const qint64 nextUid = select->nextUid();
-  const QList<QByteArray> flags = select->flags();
+  const QList<QByteArray> flags = select->permanentFlags();
 
   // uidvalidity can change between sessions, we don't want to refetch
   // folders in that case. Keep track of what is processed and what not.
