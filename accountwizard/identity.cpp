@@ -81,8 +81,9 @@ QString Identity::identityName() const
 
 void Identity::destroy()
 {
+  m_manager->removeIdentity( m_identity->identityName() );
+  m_manager->commit();
   m_identity = 0;
-  m_manager->rollback();
   emit info( i18n( "Identity removed." ) );
 }
 
