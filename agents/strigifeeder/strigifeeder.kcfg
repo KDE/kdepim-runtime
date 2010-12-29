@@ -5,6 +5,11 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile arg="true"/>
+  <group name="General">
+    <entry name="NeedsReindexing" type="Bool">
+      <default>false</default>
+    </entry>
+  </group>
   <group name="Encryption">
     <entry name="IndexEncryptedContent" type="Enum">
       <label>Index encrypted mail content.</label>

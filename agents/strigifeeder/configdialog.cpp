@@ -47,6 +47,7 @@ ConfigDialog::ConfigDialog( WId windowId, Settings *settings, QWidget * parent )
 void ConfigDialog::save()
 {
   m_manager->updateSettings();
+  mSettings->setNeedsReindexing( true );
   mSettings->writeConfig();
 }
 

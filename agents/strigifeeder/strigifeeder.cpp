@@ -351,7 +351,8 @@ void StrigiFeeder::selfTest()
 bool StrigiFeeder::needsReIndexing() const
 {
   const KConfigGroup group( componentData().config(), "InitialIndexing" );
-  return mIndexCompatLevel > group.readEntry( "IndexCompatLevel", 0 );
+  return mSettings->needsReindexing()
+      || mIndexCompatLevel > group.readEntry( "IndexCompatLevel", 0 );
 }
 
 ItemFetchScope StrigiFeeder::fetchScopeForCollection( const Akonadi::Collection &collection )
