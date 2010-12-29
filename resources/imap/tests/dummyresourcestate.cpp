@@ -178,7 +178,7 @@ QString DummyResourceState::rootRemoteId() const
   return "root-id";
 }
 
-QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection ) const
+QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool ) const
 {
   return collection.remoteId().mid(1);
 }

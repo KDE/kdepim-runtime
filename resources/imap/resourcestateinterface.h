@@ -59,7 +59,7 @@ public:
   virtual QSet<QByteArray> parts() const = 0;
 
   virtual QString rootRemoteId() const = 0;
-  virtual QString mailBoxForCollection( const Akonadi::Collection &collection ) const = 0;
+  virtual QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true ) const = 0;
 
   virtual void setIdleCollection( const Akonadi::Collection &collection ) = 0;
   virtual void applyCollectionChanges( const Akonadi::Collection &collection ) = 0;

@@ -274,15 +274,17 @@ QString ResourceState::rootRemoteId() const
   return Settings::self()->rootRemoteId();
 }
 
-QString ResourceState::mailBoxForCollection( const Akonadi::Collection &collection ) const
+QString ResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings ) const
 {
   if ( collection.remoteId().isEmpty() ) {
-    kWarning() << "Got incomplete ancestor chain:" << collection;
+    if ( showWarnings )
+      kWarning() << "Got incomplete ancestor chain:" << collection;
     return QString();
   }
 
   if ( collection.parentCollection() == Akonadi::Collection::root() ) {
-    kWarning( collection.remoteId() != rootRemoteId() ) << "RID mismatch, is " << collection.remoteId() << " expected " << rootRemoteId();
+    if ( showWarnings )
+      kWarning( collection.remoteId() != rootRemoteId() ) << "RID mismatch, is " << collection.remoteId() << " expected " << rootRemoteId();
     return QString( "" );
   }
   const QString parentMailbox = mailBoxForCollection( collection.parentCollection() );

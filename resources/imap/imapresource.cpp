@@ -286,7 +286,7 @@ void ImapResource::itemRemoved( const Akonadi::Item &item )
 {
   ResourceStateInterface::Ptr state = ::ResourceState::createRemoveItemState( this, item );
 
-  const QString mailBox = state->mailBoxForCollection( item.parentCollection() );
+  const QString mailBox = state->mailBoxForCollection( item.parentCollection(), false );
   if ( mailBox.isEmpty() ) {
     // this item will be removed soon by its parent collection
     changeProcessed();
@@ -378,7 +378,7 @@ void ImapResource::collectionRemoved( const Collection &collection )
 {
   ResourceStateInterface::Ptr state = ::ResourceState::createRemoveCollectionState( this, collection );
 
-  const QString mailBox = state->mailBoxForCollection( collection );
+  const QString mailBox = state->mailBoxForCollection( collection, false );
   if ( mailBox.isEmpty() ) {
     // this collection will be removed soon by its parent collection
     changeProcessed();
