@@ -211,6 +211,7 @@ void StrigiFeeder::processNextCollection()
 
   if ( mCollectionQueue.isEmpty() ) {
     emit fullyIndexed();
+    mSettings->setNeedsReindexing( false );
     return;
   }
 
