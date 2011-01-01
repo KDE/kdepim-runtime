@@ -20,6 +20,7 @@ Name[x-test]=xxNew Email Notifierxx
 Name[zh_TW]=新郵件通知器
 Comment=Notifications about newly received emails
 Comment[ca]=Notificacions quant a nous correus electrònics rebuts
+Comment[de]=Benachrichtigungen über neu empfangene E-Mails
 Comment[el]=Ειδοποιήσεις για νέα αλληλογραφία 
 Comment[en_GB]=Notifications about newly received emails
 Comment[es]=Notificaciones sobre correos recibidos recientemente
