@@ -136,6 +136,11 @@ class SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
      */
     void saveHash( const QByteArray &hash ) const;
 
+    /**
+     * Returns whether the resource can be written to.
+     */
+    virtual bool readOnly() const = 0;
+
   protected:
     KUrl mCurrentUrl;
     QStringList mSupportedMimetypes;

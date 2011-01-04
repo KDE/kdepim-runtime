@@ -182,7 +182,7 @@ void SingleFileResourceBase::reloadFile()
 
   // if we have something loaded already, make sure we write that back in case
   // the settings changed
-  if ( !mCurrentUrl.isEmpty() )
+  if ( !mCurrentUrl.isEmpty() && !readOnly() )
     writeFile();
 
   readFile();

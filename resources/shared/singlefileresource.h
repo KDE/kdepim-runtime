@@ -287,7 +287,7 @@ class SingleFileResource : public SingleFileResourceBase
       c.setName( display.isEmpty() ? identifier() : display );
       QStringList mimeTypes;
       c.setContentMimeTypes( mSupportedMimetypes );
-      if ( mSettings->readOnly() ) {
+      if ( readOnly() ) {
         c.setRights( Collection::CanChangeCollection );
       } else {
         Collection::Rights rights;
@@ -303,6 +303,11 @@ class SingleFileResource : public SingleFileResourceBase
       Collection::List list;
       list << c;
       collectionsRetrieved( list );
+    }
+
+    bool readOnly() const
+    {
+      return mSettings->readOnly();
     }
 
   protected:
