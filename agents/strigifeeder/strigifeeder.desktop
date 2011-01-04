@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Strigi Feeder
 Name[ca]=Alimentador de l'Strigi
+Name[ca@valencia]=Alimentador de l'Strigi
 Name[da]=Strigi-feeder
 Name[de]=Modul für Strigi
 Name[el]=Τροφοδότης Strigi
@@ -36,6 +37,7 @@ Name[x-test]=xxStrigi Feederxx
 Name[zh_TW]=Strigi Feeder
 Comment=Strigi-based fulltext search
 Comment[ca]=Cerca de text complert basada en Strigi
+Comment[ca@valencia]=Cerca de text complert basada en Strigi
 Comment[da]=Strigi-baseret fuldtekst-søgning
 Comment[de]=Strigi-basierte Volltextsuche
 Comment[el]=Αναζήτηση κειμένου βασισμένη στο Strigi
