@@ -6,9 +6,13 @@
 set(CTEST_CUSTOM_MAXIMUM_NUMBER_OF_WARNINGS 2000)
 
 # Warnings that will be ignored
-#set(CTEST_CUSTOM_WARNING_EXCEPTION
-#  
-#  )
+set(CTEST_CUSTOM_WARNING_EXCEPTION
+  
+  "too big, try a different debug format"
+  "qlist.h.*increases required alignment of target type"
+  "qmap.h.*increases required alignment of target type"
+  "qhash.h.*increases required alignment of target type"
+  )
 
 # Errors that will be ignored
 set(CTEST_CUSTOM_ERROR_EXCEPTION
@@ -17,6 +21,9 @@ set(CTEST_CUSTOM_ERROR_EXCEPTION
   "Segmentation fault"
   "Error 1 (ignored)"
   "invoking macro kDebug argument 1"
+  "GConf Error"
+  "Client failed to connect to the D-BUS daemon"
+  "Failed to connect to socket"
   )
 
 # No coverage for these files
