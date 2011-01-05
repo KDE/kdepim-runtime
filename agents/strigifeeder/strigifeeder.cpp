@@ -40,6 +40,7 @@
 #include <kurl.h>
 
 #include <QtCore/QDateTime>
+#include <QDBusServiceWatcher>
 
 #include <akonadi/agentfactory.h>
 
@@ -65,7 +66,8 @@ StrigiFeeder::StrigiFeeder( const QString &id )
 #ifndef _WIN32_WCE
     mSystemIsIdle( false ),
 #endif
-    mSettings( new Settings( componentData().config() ) )
+    mSettings( new Settings( componentData().config() ) ),
+    mStrigiDBusWatcher( QLatin1String( "org.freedesktop.xesam.searcher" ), QDBusConnection::sessionBus() )
 {
 #ifdef _WIN32_WCE
   QThread::currentThread()->setPriority(QThread::LowestPriority);
@@ -80,6 +82,9 @@ StrigiFeeder::StrigiFeeder( const QString &id )
   mStrigiDaemonStartupTimeout.setSingleShot( true );
   connect( &mStrigiDaemonStartupTimeout, SIGNAL( timeout() ), SLOT( selfTest() ) );
   connect( this, SIGNAL( fullyIndexed() ), this, SLOT( slotFullyIndexed() ) );
+  
+  connect( &mStrigiDBusWatcher, SIGNAL(	serviceRegistered ( const QString & ) ), this, SLOT( selfTest() ) );
+  connect( &mStrigiDBusWatcher, SIGNAL(	serviceUnregistered ( const QString & ) ), this, SLOT( selfTest() ) );
 
 // Dont use Idle detection for wince, because it does not work properly
 // it could be inplemented, but the scheduler is just a round robin over
