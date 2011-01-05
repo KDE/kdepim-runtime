@@ -243,7 +243,7 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
 
 void SingleFileResourceBase::scheduleWrite()
 {
-  scheduleCustomTask(this, "writeFile", QVariant(), ResourceBase::AfterChangeReplay);
+  scheduleCustomTask(this, "writeFile", QVariant(true), ResourceBase::AfterChangeReplay);
 }
 
 void SingleFileResourceBase::slotDownloadJobResult( KJob *job )

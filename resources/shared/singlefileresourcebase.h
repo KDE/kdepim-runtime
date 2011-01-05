@@ -53,8 +53,21 @@ class SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
 
   public Q_SLOTS:
     void reloadFile();
-    virtual void readFile() = 0;
-    virtual void writeFile() = 0;
+
+    /*
+     * Read the current state from a file. This can happen
+     * from direct callers, or as part of a scheduled task.
+     * @p taskContext specifies whether the method is being
+     * called from within a task or not.
+     */
+    virtual void readFile( bool taskContext = false ) = 0;
+    /*
+     * Writes the current state out to a file. This can happen
+     * from direct callers, or as part of a scheduled task.
+     * @p taskContext specifies whether the method is being
+     * called from within a task or not.
+     */
+    virtual void writeFile( bool taskContext = false ) = 0;
 
   protected:
     /**
