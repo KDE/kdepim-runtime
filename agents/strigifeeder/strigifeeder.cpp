@@ -62,9 +62,14 @@ StrigiFeeder::StrigiFeeder( const QString &id )
     mStrigiDaemonStartupAttempted( false ),
     mInitialUpdateDone( false ),
     mSelfTestPassed( false ),
+#ifndef _WIN32_WCE
     mSystemIsIdle( false ),
+#endif
     mSettings( new Settings( componentData().config() ) )
 {
+#ifdef _WIN32_WCE
+  QThread::currentThread()->setPriority(QThread::LowestPriority);
+#endif
   setIndexCompatibilityLevel( INDEX_COMPAT_LEVEL );
 
   changeRecorder()->setAllMonitored();
@@ -76,9 +81,15 @@ StrigiFeeder::StrigiFeeder( const QString &id )
   connect( &mStrigiDaemonStartupTimeout, SIGNAL( timeout() ), SLOT( selfTest() ) );
   connect( this, SIGNAL( fullyIndexed() ), this, SLOT( slotFullyIndexed() ) );
 
+// Dont use Idle detection for wince, because it does not work properly
+// it could be inplemented, but the scheduler is just a round robin over
+// priority classes, so if we set the prority low, it will suspend the thread
+// if the user does something
+#ifndef _WIN32_WCE
   connect( KIdleTime::instance(), SIGNAL( timeoutReached( int ) ), SLOT( systemIdle() ) );
   connect( KIdleTime::instance(), SIGNAL( resumingFromIdle() ), SLOT( systemResumed() ) );
   KIdleTime::instance()->addIdleTimeout( 10 * 1000 );
+#endif
 
   checkOnline();
   QTimer::singleShot( 0, this, SLOT( selfTest() ) );
@@ -399,21 +410,30 @@ void StrigiFeeder::doSetOnline( bool online )
 
 void StrigiFeeder::checkOnline()
 {
+#ifdef _WIN32_WCE
+  setOnline( mSelfTestPassed );
+#else
   setOnline( mSelfTestPassed && mSystemIsIdle );
+#endif
 }
+
 
 void StrigiFeeder::systemIdle()
 {
   emit status( Idle, i18n( "System idle, ready to index data." ) );
+#ifndef _WIN32_WCE
   mSystemIsIdle = true;
   KIdleTime::instance()->catchNextResumeEvent();
+#endif
   checkOnline();
 }
 
 void StrigiFeeder::systemResumed()
 {
   emit status( Idle, i18n( "System busy, indexing suspended." ) );
+#ifndef _WIN32_WCE
   mSystemIsIdle = false;
+#endif
   checkOnline();
 }
 
