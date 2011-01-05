@@ -78,7 +78,11 @@ void ICalResourceBase::aboutToQuit()
 
 void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Settings> *dlg )
 {
+#ifndef KDEPIM_MOBILE_UI
   dlg->setFilter( "text/calendar" );
+#else
+  dlg->setFilter( "*.ics *.vcs" );
+#endif
   dlg->setCaption( i18n("Select Calendar") );
   dlg->setLocalFileOnly( true );
 }
