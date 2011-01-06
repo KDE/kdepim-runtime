@@ -57,8 +57,8 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
                                                      "at logging in, or do nothing?\n\n"
                                                      "%1", serverError ),
                                                i18n( "Could Not Authenticate" ),
-                                               KGuiItem( i18n( "Settings" ) ),
-                                               KGuiItem( i18nc( "Input username/password manually and not store them", "Single Input" ) ) );
+                                               KGuiItem( i18n( "Account Settings" ) ),
+                                               KGuiItem( i18nc( "Input username/password manually and not store them", "Try Again" ) ) );
 
   if ( i == KMessageBox::Yes ) {
     int result = m_resource->configureDialog( m_resource->winIdForDialogs() );
