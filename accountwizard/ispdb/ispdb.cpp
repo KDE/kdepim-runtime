@@ -109,15 +109,15 @@ void Ispdb::slotResult( KJob* job )
     kDebug() << "Domains" << mDomains;
     kDebug() << "Name" << mDisplayName << "(" << mDisplayShortName << ")";
     kDebug() << "Imap servers:";
-    foreach( const server s, mImapServers ) {
+    foreach( const server& s, mImapServers ) {
         kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
     kDebug() << "pop3 servers:";
-    foreach( const server s, mPop3Servers ) {
+    foreach( const server& s, mPop3Servers ) {
         kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
     kDebug() << "smtp servers:";
-    foreach( const server s, mSmtpServers ) {
+    foreach( const server& s, mSmtpServers ) {
         kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
     // end section.
