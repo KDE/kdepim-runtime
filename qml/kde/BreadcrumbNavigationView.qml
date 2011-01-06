@@ -27,7 +27,7 @@ Item {
 
   property variant breadcrumbComponentFactory
 
-  property alias topDelegate :  topButton.delegate
+  property alias topDelegate :  topButton.sourceComponent
   property alias breadcrumbDelegate :  breadcrumbsView.delegate
   property alias selectedItemDelegate :  selectedItemView.delegate
   property alias childItemsDelegate :  childItemsView.delegate
@@ -52,21 +52,15 @@ Item {
   signal homeClicked()
 
   SystemPalette { id: palette; colorGroup: "Active" }
-  ListModel {
-    id : topModel
-    ListElement { display : "Home" }
-  }
 
-  ListView {
+  Loader {
     id : topButton
-    interactive : false
     height : itemHeight
 
     anchors.top : parent.top
 
     anchors.left : parent.left
     anchors.right : parent.right
-    model : topModel
 
     Image {
       id : topRightDivider

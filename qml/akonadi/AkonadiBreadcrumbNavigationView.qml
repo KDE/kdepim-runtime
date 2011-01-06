@@ -77,14 +77,22 @@ Item {
     property bool checkable : false
     property bool showUnread : false
 
-    topDelegate : CollectionDelegate {
-      indentation : 80
-      fullClickArea : true
-      topItem : true
-      height : itemHeight
-      onIndexSelected : {
-        breadcrumbTopLevel._transitionSelect = -1;
-        breadcrumbTopLevel.state = "before_select_home";
+    topDelegate : Item {
+      clip: true
+
+      MouseArea {
+        anchors.fill: parent
+        onClicked: {
+          breadcrumbView._transitionSelect = -1;
+          breadcrumbView.state = "before_select_home";
+        }
+      }
+      Text {
+        id : textElement
+        x : 90
+        width: parent.width - 48 - 50
+        text : KDE.i18nc( "Go to the Home screen of the application", "Home")
+        color: "black"
       }
     }
 
