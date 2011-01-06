@@ -36,6 +36,7 @@
 #include <KDebug>
 #include <KIcon>
 #include <KIconLoader>
+#include <KLocale>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
@@ -190,6 +191,8 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
 #ifdef KDEPIM_STATIC_LIBS
     ___MailTransport____INIT();
 #endif
+
+  KGlobal::locale()->insertCatalog( "libakonadi-kmime" ); // for special collection translation
 
   new SettingsAdaptor( Settings::self() );
   new MailDispatcherAgentAdaptor( this );
