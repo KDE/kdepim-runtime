@@ -91,6 +91,7 @@ protected slots:
   virtual void slotSlaveResult( KJob *job );
 
 protected:
+  virtual QString errorString() const;
   virtual bool doKill();
   void startJob( const QString &path );
   virtual void connectJob();
@@ -106,11 +107,16 @@ public:
   LoginJob( POPSession *popSession );
   virtual void start();
 
+protected:
+  virtual QString errorString() const;
+
 private slots:
   void slaveConnected( KIO::Slave *slave );
 
 private:
   virtual void slaveError( int errorCode, const QString &errorMessage );
+
+  QString mErrorString;
 };
 
 

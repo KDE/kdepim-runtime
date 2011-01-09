@@ -260,6 +260,16 @@ void SlaveBaseJob::startJob( const QString &path)
   connectJob();
 }
 
+QString SlaveBaseJob::errorString() const
+{
+  if ( mJob ) {
+    return mJob->errorString();
+  } else {
+    return KJob::errorString();
+  }
+}
+
+
 LoginJob::LoginJob( POPSession *popSession )
   : SlaveBaseJob( popSession )
 {
@@ -292,7 +302,13 @@ void LoginJob::slaveError( int errorCode, const QString &errorMessage )
 {
   setError( errorCode );
   setErrorText( errorMessage );
+  mErrorString = KIO::buildErrorString( errorCode, errorMessage );
   emitResult();
+}
+
+QString LoginJob::errorString() const
+{
+  return mErrorString;
 }
 
 ListJob::ListJob( POPSession *popSession )
