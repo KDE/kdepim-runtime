@@ -519,7 +519,6 @@ void POP3Resource::loginJobResult( KJob *job )
       mAskAgain = true;
     cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
                 '\n' + job->errorString() );
-    }
   }
   else {
     advanceState( List );
