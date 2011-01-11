@@ -364,7 +364,6 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
 
 void RetrieveCollectionMetadataTask::endTask()
 {
-  kDebug() << "Done!";
   if ( m_isSpontaneous ) {
     taskDone();
   } else {
