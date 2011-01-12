@@ -216,10 +216,10 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
   m_pendingInitialSession = 0;
 
   if ( !m_initialConnectDone ) {
-    emit connectDone( errorCode,
-                      i18n( "Could not connect to the IMAP-server %1.\n%2",
-                            m_account->server(),
-                            errorMessage ) );
+    if ( m_account )
+      emit connectDone( errorCode, i18n( "Could not connect to the IMAP-server %1.\n%2", m_account->server(), errorMessage ) );
+    else // this case can happen when we loose all ready connections while trying to establish a new one for example
+      emit connectDone( errorCode, i18n( "Cound not connect to the IMAP server.\n%1", errorMessage ) );
     disconnect();
     killSession( session, LogoutSession );
   } else {
