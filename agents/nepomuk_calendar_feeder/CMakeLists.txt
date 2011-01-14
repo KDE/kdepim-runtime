@@ -25,5 +25,11 @@ target_link_libraries(akonadi_nepomuk_calendar_feeder
   ${KDEPIMLIBS_KCALCORE_LIBS}
 )
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_nepomuk_calendar_feeder PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_nepomuk_calendar_feeder PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.calendarfeeder")
+  set_target_properties(akonadi_nepomuk_calendar_feeder PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Nepomuk Calendar Feeder")
+endif (Q_WS_MAC)
+
 install(TARGETS akonadi_nepomuk_calendar_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES nepomukcalendarfeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
