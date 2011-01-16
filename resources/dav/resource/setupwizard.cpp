@@ -33,6 +33,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
+#include <QtGui/QRegExpValidator>
 #include <QtGui/QTextBrowser>
 
 enum GroupwareServers
@@ -253,7 +254,9 @@ ConnectionPage::ConnectionPage( QWidget *parent )
 
   QFormLayout *layout = new QFormLayout( this );
 
+  QRegExp hostnameRegexp( "^[a-z0-9][.a-z0-9-]*[a-z0-9]$" );
   mHost = new KLineEdit;
+  mHost->setValidator( new QRegExpValidator( hostnameRegexp, this ) );
   layout->addRow( i18n( "Host" ), mHost );
 
   mUseSecureConnection = new QCheckBox( i18n( "Use secure connection" ) );
