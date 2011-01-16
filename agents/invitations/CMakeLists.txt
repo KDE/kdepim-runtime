@@ -24,5 +24,12 @@ target_link_libraries(akonadi_invitations_agent
   ${KDEPIMLIBS_KCALCORE_LIBS}
 )
 
+if (Q_WS_MAC)
+  set_target_properties(akonadi_invitations_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
+  set_target_properties(akonadi_invitations_agent PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.invitationsagent")
+  set_target_properties(akonadi_invitations_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Invitations Calendar")
+endif (Q_WS_MAC)
+
+
 install(TARGETS akonadi_invitations_agent ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES invitationsagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
