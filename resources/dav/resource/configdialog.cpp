@@ -150,6 +150,7 @@ void ConfigDialog::onEditButtonClicked()
 
     QStandardItem *item = mModel->item( index.row(), 0 ); // Protocol
     item->setData( QVariant::fromValue( DavUtils::protocolName( dlg->protocol() ) ), Qt::DisplayRole );
+    mRemovedUrls << url;
 
     item = mModel->item( index.row(), 1 ); // URL
     item->setData( QVariant::fromValue( dlg->remoteUrl() ), Qt::DisplayRole );
