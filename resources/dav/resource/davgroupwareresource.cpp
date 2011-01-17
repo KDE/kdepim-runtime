@@ -410,14 +410,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     if ( contentTypes & DavCollection::Contacts )
       mimeTypes << KABC::Addressee::mimeType();
 
-    // CalDAV collections can contain events and todos, however in onRetrieveItemsFinished() we
-    // can't figure out what type of items are provided. For this case we'll set the
-    // temporary mime type to 'text/calendar' and fix it in onRetrieveItemFinished() where we can
-    // find out the mime type from the payload. The Akonadi collections from CalDAV need content
-    // mime type 'text/calendar' to temporary store the items.
-    if ( (contentTypes & DavCollection::Events) && (contentTypes & DavCollection::Todos) ) // only valid for CalDAV
-      mimeTypes << QLatin1String( "text/calendar" );
-
     collection.setContentMimeTypes( mimeTypes );
 
     DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
@@ -453,8 +445,6 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     const QStringList contentMimeTypes = collection.contentMimeTypes();
     if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) )
       item.setMimeType( KABC::Addressee::mimeType() );
-    else if ( contentMimeTypes.contains( "text/calendar" ) )
-      item.setMimeType( "text/calendar" );
     else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) )
       item.setMimeType( KCalCore::Event::eventMimeType() );
     else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) )
