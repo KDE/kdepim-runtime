@@ -46,7 +46,8 @@ class DavCollection
       Events = 1,    ///< The collection can contain event DAV resources.
       Todos = 2,     ///< The collection can contain todo DAV resources.
       Contacts = 4,  ///< The collection can contain contact DAV resources.
-      FreeBusy = 8   ///< The collection can contain free/busy information.
+      FreeBusy = 8,  ///< The collection can contain free/busy information.
+      Journal = 16   ///< The collection can contain journal DAV resources.
     };
     Q_DECLARE_FLAGS( ContentTypes, ContentType )
 

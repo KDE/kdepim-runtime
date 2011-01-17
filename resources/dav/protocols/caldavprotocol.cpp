@@ -249,6 +249,7 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
     contentTypes |= DavCollection::Events;
     contentTypes |= DavCollection::Todos;
     contentTypes |= DavCollection::FreeBusy;
+    contentTypes |= DavCollection::Journal;
   }
 
   while ( !compElement.isNull() ) {
@@ -259,6 +260,8 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
       contentTypes |= DavCollection::Todos;
     else if ( type == QLatin1String( "vfreebusy" ) )
       contentTypes |= DavCollection::FreeBusy;
+    else if ( type == QLatin1String( "vjournal" ) )
+      contentTypes |= DavCollection::Journal;
 
     compElement = DavUtils::nextSiblingElementNS( compElement, "urn:ietf:params:xml:ns:caldav", "comp" );
   }
