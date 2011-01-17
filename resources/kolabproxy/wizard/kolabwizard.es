@@ -147,8 +147,12 @@ function testOk( arg )
     } else if ( arg == "tls" ) { // tls is really STARTTLS
       imapRes.setOption( "Safety", "STARTTLS" );  // STARTTLS
       imapRes.setOption( "ImapPort", 143 );
-    } else {
+    } else if ( arg == "none" ) {
       imapRes.setOption( "Safety", "NONE" );  // No encryption
+      imapRes.setOption( "ImapPort", 143 );
+    } else {
+      // safe default fallback in case server test failed
+      imapRes.setOption( "Safety", "STARTTLS" );
       imapRes.setOption( "ImapPort", 143 );
     }
     stage = 2;
