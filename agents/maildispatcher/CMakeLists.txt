@@ -15,7 +15,7 @@ qt4_add_dbus_adaptor(maildispatcheragent_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MailDispatcher.Settings.xml settings.h Settings
 )
 # qt4_add_dbus_adaptor( maildispatcheragent_SRCS
-# ${KDE4_DBUS_INTERFACES_DIR}/org.kde.Akonadi.MailDispatcher.xml maildispatcheragent.h MailDispatcherAgent
+# ${DBUS_INTERFACES_INSTALL_DIR}/org.kde.Akonadi.MailDispatcher.xml maildispatcheragent.h MailDispatcherAgent
 # )
 
 kde4_add_executable(akonadi_maildispatcher_agent ${maildispatcheragent_SRCS})
