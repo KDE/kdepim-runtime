@@ -410,6 +410,9 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     if ( contentTypes & DavCollection::Contacts )
       mimeTypes << KABC::Addressee::mimeType();
 
+    if ( contentTypes & DavCollection::FreeBusy )
+      mimeTypes << KCalCore::FreeBusy::freeBusyMimeType();
+
     collection.setContentMimeTypes( mimeTypes );
 
     DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
@@ -449,6 +452,8 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
       item.setMimeType( KCalCore::Event::eventMimeType() );
     else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) )
       item.setMimeType( KCalCore::Todo::todoMimeType() );
+    else if ( contentMimeTypes.contains( KCalCore::FreeBusy::freeBusyMimeType() ) )
+      item.setMimeType( KCalCore::FreeBusy::freeBusyMimeType() );
 
     if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) ) {
       // Only clear the payload (and therefor trigger a refetch from the backend) if we

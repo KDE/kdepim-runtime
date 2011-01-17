@@ -43,9 +43,10 @@ class DavCollection
      */
     enum ContentType
     {
-      Events = 1,   ///< The collection can contain event DAV resources.
-      Todos = 2,    ///< The collection can contain todo DAV resources.
-      Contacts = 4  ///< The collection can contain contact DAV resources.
+      Events = 1,    ///< The collection can contain event DAV resources.
+      Todos = 2,     ///< The collection can contain todo DAV resources.
+      Contacts = 4,  ///< The collection can contain contact DAV resources.
+      FreeBusy = 8   ///< The collection can contain free/busy information.
     };
     Q_DECLARE_FLAGS( ContentTypes, ContentType )
 
