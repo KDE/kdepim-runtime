@@ -34,10 +34,29 @@
 
 #include <KDebug>
 
+#include <QScrollArea>
+
 PersonalDataPage::PersonalDataPage(Dialog* parent) :
   Page( parent ), mSetupManager( parent->setupManager() )
 {
-  ui.setupUi( this );
+#ifdef _WIN32_WCE
+  // for mobile ui we put the page into a scroll area in case it's too big
+  QVBoxLayout *layout = new QVBoxLayout;
+  layout->setMargin( 0 );
+  setLayout( layout );
+
+  QScrollArea *scrollArea = new QScrollArea( this );
+  scrollArea->setFrameShape( QFrame::NoFrame );
+  scrollArea->setWidgetResizable( true );
+  layout->addWidget( scrollArea );
+
+  QWidget *pageParent = new QWidget;
+  scrollArea->setWidget( pageParent );
+#else
+  QWidget *pageParent = this;
+#endif
+
+  ui.setupUi( pageParent );
 
   KPIMUtils::EmailValidator* emailValidator = new KPIMUtils::EmailValidator( this );
   ui.emailEdit->setValidator( emailValidator );
