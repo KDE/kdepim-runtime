@@ -401,6 +401,9 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     QStringList mimeTypes;
 
     const DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
+    if ( contentTypes & DavCollection::Calendar )
+      mimeTypes << QLatin1String( "text/calendar" );
+
     if ( contentTypes & DavCollection::Events )
       mimeTypes << KCalCore::Event::eventMimeType();
 
@@ -451,6 +454,8 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     const QStringList contentMimeTypes = collection.contentMimeTypes();
     if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) )
       item.setMimeType( KABC::Addressee::mimeType() );
+    else if ( contentMimeTypes.contains( QLatin1String( "text/calendar" ) ) )
+      item.setMimeType( QLatin1String( "text/calendar" ) );
     else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) )
       item.setMimeType( KCalCore::Event::eventMimeType() );
     else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) )

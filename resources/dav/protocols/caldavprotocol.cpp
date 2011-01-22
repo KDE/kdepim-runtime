@@ -246,6 +246,7 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
    * types are accepted.
    */
   if ( compElement.isNull() ) {
+    contentTypes |= DavCollection::Calendar;
     contentTypes |= DavCollection::Events;
     contentTypes |= DavCollection::Todos;
     contentTypes |= DavCollection::FreeBusy;
@@ -254,7 +255,9 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
 
   while ( !compElement.isNull() ) {
     const QString type = compElement.attribute( "name" ).toLower();
-    if ( type == QLatin1String( "vevent" ) )
+    if ( type == QLatin1String( "vcalendar" ) )
+      contentTypes |= DavCollection::Calendar;
+    else if ( type == QLatin1String( "vevent" ) )
       contentTypes |= DavCollection::Events;
     else if ( type == QLatin1String( "vtodo" ) )
       contentTypes |= DavCollection::Todos;
