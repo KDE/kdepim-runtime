@@ -28,5 +28,5 @@
     if we put the line below in icalresource.cpp. Now we can compile it only for
     the ical resource
  */
-AKONADI_AGENT_FACTORY( ICalResource, akonadi_ical_resource );
+AKONADI_AGENT_FACTORY( ICalResource, akonadi_ical_resource )
 

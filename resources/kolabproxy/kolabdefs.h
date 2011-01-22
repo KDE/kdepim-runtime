@@ -42,7 +42,7 @@ namespace Kolab
     Task,
     Journal,
     Note,
-    FolderTypeSize = Note + 1,
+    FolderTypeSize = Note + 1
   };
 
   FolderType folderTypeFromString( const QByteArray &folderTypeName );

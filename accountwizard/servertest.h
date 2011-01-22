@@ -24,7 +24,7 @@
 
 namespace MailTransport {
     class ServerTest;
-};
+}
 
 class ServerTest : public QObject
 {

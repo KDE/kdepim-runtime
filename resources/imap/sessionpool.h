@@ -55,7 +55,7 @@ public:
     LoginFailError,
     CapabilitiesTestError,
     IncompatibleServerError,
-    NoAvailableSessionError,
+    NoAvailableSessionError
   };
 
   enum SessionTermination {

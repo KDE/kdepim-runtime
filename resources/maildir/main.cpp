@@ -23,4 +23,4 @@
 
 #include <QtCore/QtPlugin>
 
-AKONADI_AGENT_FACTORY( MaildirResource, akonadi_maildir_resource );
+AKONADI_AGENT_FACTORY( MaildirResource, akonadi_maildir_resource )
