@@ -137,7 +137,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   _jobUrl.setUser( QString() );
 
   const QString jobUrl = _jobUrl.prettyUrl();
-  kDebug() << davJob->response().toString();
+  //kDebug() << davJob->response().toString();
 
   QByteArray resp( davJob->response().toByteArray() );
   QBuffer buffer( &resp );
