@@ -21,17 +21,19 @@
 
 #include "addcollectiontask.h"
 
+#include "collectionannotationsattribute.h"
+
 #include <KDE/KDebug>
 #include <KDE/KLocale>
 
 #include <kimap/createjob.h>
 #include <kimap/session.h>
+#include <kimap/setmetadatajob.h>
 #include <kimap/subscribejob.h>
 
 AddCollectionTask::AddCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent )
 {
-
 }
 
 AddCollectionTask::~AddCollectionTask()
@@ -49,6 +51,8 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
   }
 
   const QChar separator = parentCollection().remoteId().at( 0 );
+  m_pendingJobs = 0;
+  m_session = session;
   m_collection = collection();
   m_collection.setName( m_collection.name().replace( separator, QString() ) );
   m_collection.setRemoteId( separator + m_collection.name() );
@@ -98,9 +102,53 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
                        m_collection.name() ) );
   }
 
-  changeCommitted( m_collection );
+  if ( !m_collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>() ) {
+    // we are finished
+    changeCommitted( m_collection );
+    return;
+  }
+
+  const Akonadi::CollectionAnnotationsAttribute *attribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
+
+  const QMap<QByteArray, QByteArray> annotations = attribute->annotations();
+
+  foreach ( const QByteArray &entry, annotations.keys() ) {
+    KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob( m_session );
+    if ( serverCapabilities().contains( "METADATA" ) ) {
+      job->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
+    } else {
+      job->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
+    }
+
+    QByteArray attribute = entry;
+    if ( job->serverCapability()==KIMAP::MetaDataJobBase::Annotatemore ) {
+      attribute = "value.shared";
+    }
+
+    job->setMailBox( mailBoxForCollection( m_collection ) );
+    job->setEntry( entry );
+    job->addMetaData( attribute, annotations[entry] );
+
+    connect( job, SIGNAL( result( KJob* ) ),
+             this, SLOT( onSetMetaDataDone( KJob* ) ) );
+
+    m_pendingJobs++;
+
+    job->start();
+  }
+}
+
+void AddCollectionTask::onSetMetaDataDone( KJob *job )
+{
+  if ( job->error() ) {
+    emitWarning( i18n( "Failed to write some annotations for '%1' on the IMAP server. %2",
+                       collection().name(), job->errorText() ) );
+  }
+
+  m_pendingJobs--;
+
+  if ( m_pendingJobs == 0 )
+    changeCommitted( m_collection );
 }
 
 #include "addcollectiontask.moc"
-
-

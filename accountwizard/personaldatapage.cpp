@@ -39,7 +39,7 @@
 PersonalDataPage::PersonalDataPage(Dialog* parent) :
   Page( parent ), mSetupManager( parent->setupManager() )
 {
-#ifdef KDEPIM_MOBILE_UI
+#ifdef _WIN32_WCE
   // for mobile ui we put the page into a scroll area in case it's too big
   QVBoxLayout *layout = new QVBoxLayout;
   layout->setMargin( 0 );

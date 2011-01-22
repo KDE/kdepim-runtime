@@ -24,6 +24,10 @@
 
 #include "resourcetask.h"
 
+namespace KIMAP {
+class Session;
+}
+
 class AddCollectionTask : public ResourceTask
 {
   Q_OBJECT
@@ -35,12 +39,15 @@ public:
 private slots:
   void onCreateDone( KJob *job );
   void onSubscribeDone( KJob *job );
+  void onSetMetaDataDone( KJob *job );
 
 protected:
   virtual void doStart( KIMAP::Session *session );
 
 private:
   Akonadi::Collection m_collection;
+  uint m_pendingJobs;
+  KIMAP::Session *m_session;
 };
 
 #endif
