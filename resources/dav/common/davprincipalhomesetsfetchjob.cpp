@@ -31,6 +31,11 @@ DavPrincipalHomeSetsFetchJob::DavPrincipalHomeSetsFetchJob( const DavUtils::DavU
 
 void DavPrincipalHomeSetsFetchJob::start()
 {
+  fetchHomeSets( false );
+}
+
+void DavPrincipalHomeSetsFetchJob::fetchHomeSets( bool homeSetsOnly )
+{
   QDomDocument document;
 
   QDomElement propfindElement = document.createElementNS( "DAV:", "propfind" );
@@ -42,6 +47,11 @@ void DavPrincipalHomeSetsFetchJob::start()
   const QString homeSet = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSet();
   const QString homeSetNS = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSetNS();
   propElement.appendChild( document.createElementNS( homeSetNS, homeSet ) );
+
+  if ( !homeSetsOnly ) {
+    propElement.appendChild( document.createElementNS( "DAV:", "current-user-principal" ) );
+    propElement.appendChild( document.createElementNS( "DAV:", "principal-URL" ) );
+  }
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), document );
   job->addMetaData( "PropagateHttpHeader", "true" );
@@ -81,7 +91,30 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
   }
 
   /*
-   * Extract information from a document like the following :
+   * Extract information from a document like the following (if no homeset is defined) :
+   *
+   * <D:multistatus xmlns:D="DAV:">
+   *  <D:response xmlns:D="DAV:">
+   *   <D:href xmlns:D="DAV:">/dav/</D:href>
+   *   <D:propstat xmlns:D="DAV:">
+   *    <D:status xmlns:D="DAV:">HTTP/1.1 200 OK</D:status>
+   *    <D:prop xmlns:D="DAV:">
+   *     <D:current-user-principal xmlns:D="DAV:">
+   *      <D:href xmlns:D="DAV:">/principals/users/gdacoin/</D:href>
+   *     </D:current-user-principal>
+   *    </D:prop>
+   *   </D:propstat>
+   *   <D:propstat xmlns:D="DAV:">
+   *    <D:status xmlns:D="DAV:">HTTP/1.1 404 Not Found</D:status>
+   *    <D:prop xmlns:D="DAV:">
+   *     <principal-URL xmlns="DAV:"/>
+   *     <calendar-home-set xmlns="urn:ietf:params:xml:ns:caldav"/>
+   *    </D:prop>
+   *   </D:propstat>
+   *  </D:response>
+   * </D:multistatus>
+   * 
+   * Or like this (if the homeset is defined):
    *
    *  <?xml version="1.0" encoding="utf-8" ?>
    *  <multistatus xmlns="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
@@ -101,6 +134,8 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
 
   const QString homeSet = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSet();
   const QString homeSetNS = DavManager::self()->davProtocol( mUrl.protocol() )->principalHomeSetNS();
+  QString nextRoundHref; // The content of the href element that will be used if no homeset was found.
+                         // This is either given by current-user-principal or by principal-URL.
 
   const QDomDocument document = davJob->response();
   const QDomElement multistatusElement = document.documentElement();
@@ -130,18 +165,58 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
     // extract home sets
     const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
     const QDomElement homeSetElement = DavUtils::firstChildElementNS( propElement, homeSetNS, homeSet );
-    QDomElement hrefElement = DavUtils::firstChildElementNS( homeSetElement, "DAV:", "href" );
 
-    while ( !hrefElement.isNull() ) {
-      const QString href = hrefElement.text();
-      if ( !mHomeSets.contains( href ) )
-        mHomeSets << href;
+    if ( !homeSetElement.isNull() ) {
+      QDomElement hrefElement = DavUtils::firstChildElementNS( homeSetElement, "DAV:", "href" );
+  
+      while ( !hrefElement.isNull() ) {
+        const QString href = hrefElement.text();
+        if ( !mHomeSets.contains( href ) )
+          mHomeSets << href;
+  
+        hrefElement = DavUtils::nextSiblingElementNS( hrefElement, "DAV:", "href" );
+      }
+    }
+    else {
+      // Trying to get the principal url, given either by current-user-principal or principal-URL
+      QDomElement urlHolder = DavUtils::firstChildElementNS( propElement, "DAV:", "current-user-principal" );
+      if ( urlHolder.isNull() )
+        urlHolder = DavUtils::firstChildElementNS( propElement, "DAV:", "principal-URL" );
 
-      hrefElement = DavUtils::nextSiblingElementNS( hrefElement, "DAV:", "href" );
+      if ( !urlHolder.isNull() ) {
+        // Getting the href that will be used for the next round
+        QDomElement hrefElement = DavUtils::firstChildElementNS( urlHolder, "DAV:", "href" );
+        if ( !hrefElement.isNull() )
+          nextRoundHref = hrefElement.text();
+      }
     }
 
     responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
   }
 
-  emitResult();
+  /*
+   * Now either we got one or more homesets, or we got an href for the next round
+   * or nothing can be found by this job.
+   * If we have homesets, we're done here and can notify the caller.
+   * Else we must ensure that we have an href for the next round.
+   */
+  if ( !mHomeSets.isEmpty() || nextRoundHref.isEmpty() ) {
+    emitResult();
+  } else {
+    KUrl nextRoundUrl( mUrl.url() );
+
+    if ( nextRoundHref.startsWith( '/' ) ) {
+      // nextRoundHref is only a path, use request url to complete
+      nextRoundUrl.setEncodedPath( nextRoundHref.toAscii() );
+    } else {
+      // href is a complete url
+      KUrl tmpUrl( nextRoundHref );
+      nextRoundUrl = tmpUrl;
+      nextRoundUrl.setUser( mUrl.url().user() );
+    }
+
+    mUrl.setUrl( nextRoundUrl );
+    // And one more round, fetching only homesets
+    fetchHomeSets( true );
+  }
 }
