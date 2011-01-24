@@ -117,9 +117,14 @@ void RetrieveItemsTask::triggerExpunge( const QString &mailBox )
   expunge->start();
 }
 
-void RetrieveItemsTask::onExpungeDone( KJob */*job*/ )
+void RetrieveItemsTask::onExpungeDone( KJob *job )
 {
   // We can ignore the error IMO, we just had a wrong expunge so some old messages will just reappear
+  // Not entirely, we at least have to handle network errors here to avoid getting stuck
+  if ( job->error() && m_session->state() == KIMAP::Session::Disconnected ) {
+    cancelTask( job->errorString() );
+    return;
+  }
 
   // We have to re-select the mailbox to update all the stats after the expunge
   // (the EXPUNGE command doesn't return enough for our needs)
