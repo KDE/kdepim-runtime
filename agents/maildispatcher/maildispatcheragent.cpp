@@ -28,6 +28,7 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include <kpimutils/networkaccesshelper.h>
 #include <akonadi/agentfactory.h>
 #include <akonadi/dbusconnectionpool.h>
 #include <akonadi/itemfetchscope.h>
@@ -66,7 +67,8 @@ class MailDispatcherAgent::Private
         aborting( false ),
         sendingInProgress( false ),
         sentAnything( false ),
-        errorOccurred( false )
+        errorOccurred( false ),
+        networkAccessHelper( new KPIMUtils::NetworkAccessHelper( parent ) )
     {
     }
 
@@ -85,6 +87,7 @@ class MailDispatcherAgent::Private
     bool errorOccurred;
     qulonglong sentItemsSize;
     SentActionHandler *sentActionHandler;
+    KPIMUtils::NetworkAccessHelper *networkAccessHelper;
 
     // slots:
     void abort();
@@ -125,6 +128,7 @@ void MailDispatcherAgent::Private::abort()
 void MailDispatcherAgent::Private::dispatch()
 {
   Q_ASSERT( queue );
+  networkAccessHelper->establishConnection();
 
   if ( !q->isOnline() || sendingInProgress ) {
     kDebug() << "Offline or busy. See you later.";
@@ -217,6 +221,8 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
            this, SLOT( abort() ) );
 
   d->sentActionHandler = new SentActionHandler( this );
+
+  setNeedsNetwork( true );
 }
 
 MailDispatcherAgent::~MailDispatcherAgent()
