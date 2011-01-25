@@ -104,6 +104,7 @@ void Transport::create()
   m_transportId = mt->id();
   mt->writeConfig();
   MailTransport::TransportManager::self()->addTransport( mt );
+  MailTransport::TransportManager::self()->setDefaultTransport( mt->id() );
   emit finished( i18n( "Mail transport account set up." ) );
 }
 
@@ -146,6 +147,11 @@ void Transport::setEncryption( const QString &encryption )
 void Transport::setAuthenticationType( const QString &authType )
 {
   m_auth = stringToValue( authenticationTypeEnum, authenticationTypeEnumSize, authType );
+}
+
+int Transport::transportId() const
+{
+  return m_transportId;
 }
 
 #include "transport.moc"

@@ -32,6 +32,8 @@ class Transport : public SetupObject
     void create();
     void destroy();
 
+    int transportId() const;
+
   public slots:
     Q_SCRIPTABLE void setName( const QString &name );
     Q_SCRIPTABLE void setHost( const QString &host );

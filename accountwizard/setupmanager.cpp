@@ -69,10 +69,21 @@ QObject* SetupManager::createIdentity()
   return connectObject( new Identity( this ) );
 }
 
+static bool dependencyCompare( SetupObject *left, SetupObject *right )
+{
+  if ( !left->dependsOn() && right->dependsOn() )
+    return true;
+  return false;
+}
+
 void SetupManager::execute()
 {
   m_page->setStatus( i18n( "Setting up account..." ) );
   m_page->setValid( false );
+
+  // ### FIXME this is a bad over-simplification and would need a real topological sort
+  // but for current usage it is good enough
+  qStableSort( m_objectToSetup.begin(), m_objectToSetup.end(), dependencyCompare );
   setupNext();
 }
 

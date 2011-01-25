@@ -31,10 +31,16 @@ class SetupObject : public QObject
     virtual void create() = 0;
     virtual void destroy() = 0;
 
+    SetupObject* dependsOn() const;
+    void setDependsOn( SetupObject* obj );
+
   signals:
     void error( const QString &msg );
     void info( const QString &msg );
     void finished( const QString &msg );
+
+  private:
+    SetupObject *m_dependsOn;
 };
 
 #endif

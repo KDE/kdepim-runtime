@@ -107,6 +107,7 @@ function testOk( arg )
     } else {
       smtp.setEncryption( "None" );
     }
+    identity.setTransport( smtp );
     SetupManager.execute();
   }
 }

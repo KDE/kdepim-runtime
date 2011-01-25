@@ -18,6 +18,7 @@
 */
 
 #include "identity.h"
+#include "transport.h"
 
 #include <kpimidentities/identitymanager.h>
 #include <kpimidentities/identity.h>
@@ -25,7 +26,8 @@
 #include <KLocale>
 
 Identity::Identity( QObject *parent )
-  : SetupObject( parent )
+  : SetupObject( parent ),
+  m_transport( 0 )
 {
   m_manager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
   m_identity = &m_manager->newFromScratch( QString() );
@@ -47,6 +49,8 @@ void Identity::create()
   m_identity->setFullName( m_realName );
   m_identity->setPrimaryEmailAddress( m_email );
   m_identity->setOrganization( m_organization );
+  if ( m_transport && m_transport->transportId() > 0 )
+    m_identity->setTransport( QString::number( m_transport->transportId() ) );
   m_manager->setAsDefault( m_identity->uoid() );
   m_manager->commit();
 
@@ -107,5 +111,10 @@ uint Identity::uoid() const
   return m_identity->uoid();
 }
 
+void Identity::setTransport(QObject* transport)
+{
+  m_transport = qobject_cast<Transport*>( transport );
+  setDependsOn( qobject_cast<SetupObject*>( transport ) );
+}
 
 #include "identity.moc"

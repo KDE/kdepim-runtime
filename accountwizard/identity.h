@@ -22,6 +22,8 @@
 
 #include "setupobject.h"
 
+class Transport;
+
 namespace KPIMIdentities {
   class Identity;
   class IdentityManager;
@@ -41,6 +43,7 @@ class Identity : public SetupObject
     Q_SCRIPTABLE void setEmail( const QString &email );
     Q_SCRIPTABLE void setOrganization( const QString &org );
     Q_SCRIPTABLE uint uoid() const;
+    Q_SCRIPTABLE void setTransport( QObject* transport );
 
   protected:
     QString identityName() const;
@@ -49,6 +52,7 @@ class Identity : public SetupObject
     QString m_realName;
     QString m_email;
     QString m_organization;
+    Transport *m_transport;
     KPIMIdentities::IdentityManager *m_manager;
     KPIMIdentities::Identity *m_identity;
 };

@@ -106,6 +106,7 @@ function setup()
     smtp.setAuthenticationType( "plain" ); // using plain is ok, because we are using SSL.
     smtp.setUsername( page.widget().emailEdit.text );
     smtp.setPassword( page.widget().passwordEdit.text );
+    identity.setTrasnport( smtp );
 
     var ldap = SetupManager.createLdap();
     ldap.setUser( page.widget().emailEdit.text );
