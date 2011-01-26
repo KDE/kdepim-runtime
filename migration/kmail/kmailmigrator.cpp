@@ -22,9 +22,9 @@
 
 #include "kmailmigrator.h"
 
-#include "messagetag.h"
 
 #ifndef KDEPIM_NO_NEPOMUK
+#include "messagetag.h"
 // avoid metatype.h from interfering
 #include <Nepomuk/Variant>
 #define POP3_METATYPE_H
