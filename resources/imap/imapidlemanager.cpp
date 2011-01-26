@@ -59,6 +59,13 @@ KIMAP::Session *ImapIdleManager::session() const
   return m_session;
 }
 
+void ImapIdleManager::reconnect()
+{
+  kDebug() << "attempting to reconnect IDLE session";
+  if ( m_session == 0 && m_pool->isConnected() && m_sessionRequestId == 0 )
+    m_sessionRequestId = m_pool->requestSession();
+}
+
 void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *session,
                                             int errorCode, const QString &/*errorString*/ )
 {
@@ -96,6 +103,7 @@ void ImapIdleManager::onConnectionLost( KIMAP::Session *session )
     // the pointer, we don't need to release it once the
     // task is done
     m_session = 0;
+    QMetaObject::invokeMethod( this, "reconnect", Qt::QueuedConnection );
   }
 }
 
