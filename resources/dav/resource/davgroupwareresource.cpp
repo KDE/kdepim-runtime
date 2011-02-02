@@ -68,6 +68,9 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   mDavCollectionRoot.setRemoteId( identifier() );
   mDavCollectionRoot.setContentMimeTypes( QStringList() << Collection::mimeType() );
 
+  EntityDisplayAttribute *attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attribute->setIconName( QLatin1String( "folder-remote" ) );
+
   int refreshInterval = Settings::self()->refreshInterval();
   if ( refreshInterval == 0 )
     refreshInterval = -1;
