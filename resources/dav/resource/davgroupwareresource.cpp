@@ -420,6 +420,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
       mimeTypes << KCalCore::Journal::journalMimeType();
 
     collection.setContentMimeTypes( mimeTypes );
+    setCollectionIcon( collection /*by-ref*/ );
 
     DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
     protoAttr->setDavProtocol( davCollection.protocol() );
@@ -704,6 +705,23 @@ bool DavGroupwareResource::configurationIsValid()
   }
 
   return true;
+}
+
+/*static*/
+void DavGroupwareResource::setCollectionIcon( Akonadi::Collection &collection )
+{
+  const QStringList mimeTypes = collection.contentMimeTypes();
+  if ( mimeTypes.count() == 1 ) {
+    QHash<QString,QString> mapping;
+    mapping.insert( KCalCore::Event::eventMimeType(), QLatin1String( "view-calendar" ) );
+    mapping.insert( KCalCore::Todo::todoMimeType(), QLatin1String( "view-calendar-tasks" ) );
+    mapping.insert( KCalCore::Journal::journalMimeType(), QLatin1String( "view-pim-journal" ) );
+
+    if ( mapping.contains( mimeTypes.first() ) ) {
+      EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+      attribute->setIconName( mapping.value( mimeTypes.first() ) );
+    }
+  }
 }
 
 AKONADI_RESOURCE_MAIN( DavGroupwareResource )

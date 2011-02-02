@@ -73,6 +73,11 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
   private:
     bool configurationIsValid();
 
+    /**
+     * Collections which only support one mime type have an icon indicating what they support.
+     */
+    static void setCollectionIcon( Akonadi::Collection &collection );
+
     Akonadi::Collection mDavCollectionRoot;
     EtagCache mEtagCache;
 };
