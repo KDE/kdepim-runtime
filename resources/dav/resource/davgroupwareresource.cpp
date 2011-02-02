@@ -719,6 +719,7 @@ void DavGroupwareResource::setCollectionIcon( Akonadi::Collection &collection )
     mapping.insert( KCalCore::Event::eventMimeType(), QLatin1String( "view-calendar" ) );
     mapping.insert( KCalCore::Todo::todoMimeType(), QLatin1String( "view-calendar-tasks" ) );
     mapping.insert( KCalCore::Journal::journalMimeType(), QLatin1String( "view-pim-journal" ) );
+    mapping.insert( KABC::Addressee::mimeType(), QLatin1String( "view-pim-contacts" ) );
 
     if ( mapping.contains( mimeTypes.first() ) ) {
       EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
