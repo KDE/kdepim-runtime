@@ -128,7 +128,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     // User-side error
     setError( UserDefinedError );
     setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   }
 
@@ -147,7 +148,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   if ( !xquery.setFocus( &buffer ) ) {
     setError( UserDefinedError );
     setErrorText( i18n( "Error setting focus for XQuery" ) );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   }
 
@@ -155,7 +157,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   if ( !xquery.isValid() ) {
     setError( UserDefinedError );
     setErrorText( i18n( "Invalid XQuery submitted by DAV implementation" ) );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   }
 
@@ -168,7 +171,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   if ( !document.setContent( responsesStr, true ) ) {
     setError( UserDefinedError );
     setErrorText( i18n( "Invalid responses from backend" ) );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   }
 

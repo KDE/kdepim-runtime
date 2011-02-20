@@ -83,13 +83,15 @@ void DavItemsListJob::davJobFinished( KJob *job )
     // Server-side error, unrecoverable
     setError( UserDefinedError );
     setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
     setError( UserDefinedError );
     setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
-    emitResult();
+    if ( mSubJobCount == 0 )
+      emitResult();
     return;
   }
 
