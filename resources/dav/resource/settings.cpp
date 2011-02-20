@@ -26,6 +26,8 @@
 #include <kglobal.h>
 #include <klocale.h>
 
+#include <QtCore/QByteArray>
+#include <QtCore/QDataStream>
 #include <QtDBus/QDBusConnection>
 
 class SettingsHelper
@@ -88,6 +90,13 @@ Settings::Settings()
   new SettingsAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+
+  if ( !collectionsUrlsMappings().isEmpty() ) {
+    QByteArray rawMappings = QByteArray::fromBase64( collectionsUrlsMappings().toAscii() );
+    QDataStream stream( &rawMappings, QIODevice::ReadOnly );
+    stream >> mCollectionsUrlsMapping;
+    Q_ASSERT_X( !mCollectionsUrlsMapping.isEmpty(), "Settings::Settings()", "Failed to import collections mappings" );
+  }
 
   foreach ( const QString &serializedUrl, remoteUrls() ) {
     UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
@@ -152,6 +161,13 @@ DavUtils::DavUrl Settings::davUrlFromCollectionUrl( const QString &collectionUrl
 void Settings::addCollectionUrlMapping( const QString &collectionUrl, const QString &configuredUrl )
 {
   mCollectionsUrlsMapping.insert( collectionUrl, configuredUrl );
+
+  // Update the settings now
+  QMap<QString, QString> tmp( mCollectionsUrlsMapping );
+  QByteArray rawMappings;
+  QDataStream stream( &rawMappings, QIODevice::WriteOnly );
+  stream << tmp;
+  setCollectionsUrlsMappings( QString::fromAscii( rawMappings.toBase64() ) );
 }
 
 void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )

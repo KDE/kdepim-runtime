@@ -370,6 +370,11 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
   job->start();
 }
 
+void DavGroupwareResource::aboutToQuit()
+{
+  Settings::self()->writeConfig();
+}
+
 void DavGroupwareResource::onCollectionRemovedFinished( KJob *job )
 {
   if ( job->error() ) {

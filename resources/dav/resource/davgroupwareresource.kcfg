@@ -18,6 +18,10 @@
       <label>Remote URLs</label>
       <default></default>
     </entry>
+    <entry name="collectionsUrlsMappings" type="String">
+      <label>String representation of the mappings between discovered collections and configured URLs</label>
+      <default></default>
+    </entry>
     <entry name="readOnly" type="Bool">
       <label>Do not change the actual backend data.</label>
       <default>false</default>
