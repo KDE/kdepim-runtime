@@ -188,6 +188,14 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
 
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
+  if ( !davUrl.url().isValid() ) {
+    kError() << "Url is invalid, collection.remoteId() is " << collection.remoteId();
+    // TODO: Grégory uncomment these lines or add some error handling that you like more
+    // cancelTask( "Url is invalid" ) );
+    //Q_ASSERT_X( false, "DavGroupwareResource::retrieveItems", "Url is invalid" );
+    //return;
+  }
+
   DavItemsListJob *job = new DavItemsListJob( davUrl );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveItemsFinished( KJob* ) ) );
