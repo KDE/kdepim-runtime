@@ -35,7 +35,9 @@ DavItemsListJob::DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent )
 
 void DavItemsListJob::start()
 {
-  QListIterator<QDomDocument> it( DavManager::self()->davProtocol( mUrl.protocol() )->itemsQueries() );
+  const DavProtocolBase *protocol = DavManager::self()->davProtocol( mUrl.protocol() );
+  Q_ASSERT( protocol );
+  QListIterator<QDomDocument> it( protocol->itemsQueries() );
 
   while ( it.hasNext() ) {
     const QDomDocument props = it.next();

@@ -23,6 +23,7 @@
 #include "groupdavprotocol.h"
 
 #include <kio/davjob.h>
+#include <KDebug>
 
 #include <QtXml/QDomDocument>
 
@@ -104,6 +105,7 @@ bool DavManager::createProtocol( DavUtils::Protocol protocol )
       mProtocols.insert( DavUtils::GroupDav, new GroupdavProtocol() );
       break;
     default:
+      kError() << "Unknown protocol: " << static_cast<int>( protocol );
       return false;
   }
 
