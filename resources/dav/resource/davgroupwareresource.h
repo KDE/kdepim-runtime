@@ -47,6 +47,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
     virtual void aboutToQuit();
+    virtual void doSetOnline( bool online );
 
   private Q_SLOTS:
     void onCollectionRemovedFinished( KJob* );

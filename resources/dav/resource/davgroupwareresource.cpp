@@ -88,7 +88,6 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
 
   Settings::self()->setWinId( winIdForDialogs() );
-  synchronize();
 }
 
 DavGroupwareResource::~DavGroupwareResource()
@@ -373,6 +372,17 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
 void DavGroupwareResource::aboutToQuit()
 {
   Settings::self()->writeConfig();
+}
+
+void DavGroupwareResource::doSetOnline( bool online )
+{
+  kDebug() << "Resource changed online status to" << online;
+
+  if ( online ) {
+    synchronize();
+  }
+
+  ResourceBase::doSetOnline( online );
 }
 
 void DavGroupwareResource::onCollectionRemovedFinished( KJob *job )
