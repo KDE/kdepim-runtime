@@ -26,6 +26,7 @@
 #include "addressbookhandler.h"
 #include "collectiontreebuilder.h"
 
+#include <akonadi/agentmanager.h>
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectioncreatejob.h>
@@ -112,6 +113,8 @@ KolabProxyResource::KolabProxyResource( const QString &id )
 
   // among other things, this ensures that m_root actually exists when a new imap folder is added
   synchronizeCollectionTree();
+
+  connect(this, SIGNAL(synchronized()), SLOT(synchronizationFinished()));
 }
 
 KolabProxyResource::~KolabProxyResource()
@@ -643,6 +646,24 @@ void KolabProxyResource::kolabFolderChangeResult(KJob* job)
     // so re-sync the entire tree.
     kDebug() << "Re-syncing collection tree as incremental changes did not succeed." << job->errorText();
     synchronizeCollectionTree();
+  }
+}
+
+void KolabProxyResource::synchronizationFinished()
+{
+  // If our resource has been synchronized, synchronize all monitored imap resources
+  // as well to propagate all changes to the imap server immediately
+  QSet<QString> monitoredResources;
+
+  QMapIterator<Akonadi::Item::Id, KolabHandler*> it( m_monitoredCollections );
+  while ( it.hasNext() ) {
+    it.next();
+    monitoredResources.insert( it.value()->imapCollection().resource() );
+  }
+
+  foreach ( const QString &resourceIdentifier, monitoredResources ) {
+    Akonadi::AgentInstance instance = Akonadi::AgentManager::self()->instance( resourceIdentifier );
+    instance.synchronize();
   }
 }
 

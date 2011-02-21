@@ -93,6 +93,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapItemUpdateCollectionFetchResult( KJob *job );
     void imapFolderCreateResult( KJob* job );
     void kolabFolderChangeResult( KJob* job );
+    void synchronizationFinished();
 
   private:
     Akonadi::Monitor *m_monitor;

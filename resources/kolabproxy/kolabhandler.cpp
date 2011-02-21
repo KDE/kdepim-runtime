@@ -171,3 +171,8 @@ KMime::Content* KolabHandler::createAttachmentPart(const QString& mimeType, cons
   content->setBody( decodedContent );
   return content;
 }
+
+Akonadi::Collection KolabHandler::imapCollection() const
+{
+  return m_imapCollection;
+}

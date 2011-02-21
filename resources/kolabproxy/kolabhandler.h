@@ -73,6 +73,8 @@ public:
   virtual void itemDeleted(const Akonadi::Item &item) { Q_UNUSED( item ); }
   virtual void itemAdded(const Akonadi::Item &item) { Q_UNUSED( item ); }
 
+  Akonadi::Collection imapCollection() const;
+
 Q_SIGNALS:
     void deleteItemFromImap(const Akonadi::Item& item);
     void addItemToImap(const Akonadi::Item& item, Akonadi::Entity::Id collectionId);
