@@ -109,7 +109,12 @@ void ICalResourceBase::itemRemoved( const Akonadi::Item &item )
 
   Incidence::Ptr i = mCalendar->incidence( item.remoteId() );
   if ( i ) {
-    mCalendar->deleteIncidence( i );
+    if ( !mCalendar->deleteIncidence( i ) ) {
+      kError() << "Can't delete incidence with uid " << item.remoteId()
+               << "; item.id() = " << item.id();
+      cancelTask();
+      return;
+    }
   } else {
     kError() << "Can't find incidence with uid " << item.remoteId()
              << "; item.id() = " << item.id();
