@@ -76,7 +76,7 @@ enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
 #define SPECIALCOLLECTIONS_LOCK_SERVICE QLatin1String( "org.kde.pim.SpecialCollections" )
 
-static MixedMaildirStore *createCacheStore( const QString &basePath )
+static MixedMaildirStore *createStoreFromBasePath( const QString &basePath )
 {
   MixedMaildirStore *store = 0;
   const QFileInfo baseDir( basePath );
@@ -769,12 +769,12 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
       options |= ImapCacheCollectionMigrator::DeleteImportedMessages;
     }
     if ( mDImapCache == 0 ){
-      mDImapCache = createCacheStore( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/dimap" ) ) );
+      mDImapCache = createStoreFromBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/dimap" ) ) );
     }
     store = mDImapCache;
   } else {
     if ( mImapCache == 0 ){
-      mImapCache = createCacheStore( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/imap" ) ) );
+      mImapCache = createStoreFromBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/imap" ) ) );
     }
     store = mImapCache;
   }
@@ -1140,7 +1140,9 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   emit status( instanceName );
   instance.reconfigure();
 
-  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
+  MixedMaildirStore *store = createStoreFromBasePath( mLocalMaildirPath );
+
+  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, store, this );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );

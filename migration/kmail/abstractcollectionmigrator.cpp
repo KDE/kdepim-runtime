@@ -720,6 +720,8 @@ void AbstractCollectionMigrator::Private::processingDone()
 AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
   : QObject( parent ), d( new Private( this, resource, store ) )
 {
+  Q_ASSERT( store != 0 );
+
   d->mHiddenSession = new Session( resource.identifier().toAscii() );
 
   CollectionFetchScope colScope;
