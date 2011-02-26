@@ -271,7 +271,9 @@ void OutboxQueue::Private::itemFetched( KJob *job )
     q->fetchOne();
   }
 
-  emit q->itemReady( fetchJob->items().first() );
+  if ( !fetchJob->items().isEmpty() ) {
+    emit q->itemReady( fetchJob->items().first() );
+  }
 }
 
 void OutboxQueue::Private::localFoldersChanged()
