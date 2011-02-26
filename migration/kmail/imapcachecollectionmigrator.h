@@ -23,8 +23,6 @@
 
 #include "abstractcollectionmigrator.h"
 
-class MixedMaildirStore;
-
 class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 {
   Q_OBJECT

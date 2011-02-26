@@ -48,7 +48,7 @@ class LocalFoldersCollectionMigrator::Private
 };
 
 LocalFoldersCollectionMigrator::LocalFoldersCollectionMigrator( const AgentInstance &resource, QObject *parent )
-  : AbstractCollectionMigrator( resource, parent ), d( new Private( this ) )
+  : AbstractCollectionMigrator( resource, 0, parent ), d( new Private( this ) )
 {
 }
 

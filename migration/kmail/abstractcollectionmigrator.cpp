@@ -32,6 +32,7 @@
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/monitor.h>
+#include <akonadi/session.h>
 
 #include "collectionannotationsattribute.h"
 
@@ -71,12 +72,17 @@ class AbstractCollectionMigrator::Private
       Finished
     };
 
-    Private( AbstractCollectionMigrator *parent, const AgentInstance &resource )
-      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mTemplatesConfig( 0 ), mMonitor( 0 ),
+    Private( AbstractCollectionMigrator *parent, const AgentInstance &resource, MixedMaildirStore *store )
+      : q( parent ), mResource( resource ),  mStore( store ), mHiddenSession( 0 ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mTemplatesConfig( 0 ), mMonitor( 0 ),
         mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle ),
         mNeedModifyJob( false )
     {
       mRecheckTimer.setSingleShot( true );
+    }
+
+    ~Private()
+    {
+      delete mHiddenSession;
     }
 
     void migrateConfig();
@@ -84,6 +90,9 @@ class AbstractCollectionMigrator::Private
 
   public:
     AgentInstance mResource;
+    MixedMaildirStore *mStore;
+    Session *mHiddenSession;
+
     Status mStatus;
     QString mTopLevelFolder;
     KSharedConfigPtr mKMailConfig;
@@ -196,7 +205,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         attribute->setIconName("view-pim-notes");
       } else if ( annotationFolderType == "journal" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "journal";
-        attribute->setIconName("view-pim-journal");	
+        attribute->setIconName("view-pim-journal");
       } else {
         //????
       }
@@ -708,9 +717,11 @@ void AbstractCollectionMigrator::Private::processingDone()
   }
 }
 
-AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, QObject *parent )
-  : QObject( parent ), d( new Private( this, resource ) )
+AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
+  : QObject( parent ), d( new Private( this, resource, store ) )
 {
+  d->mHiddenSession = new Session( resource.identifier().toAscii() );
+
   CollectionFetchScope colScope;
   colScope.setResource( d->mResource.identifier() );
   colScope.setAncestorRetrieval( CollectionFetchScope::All );
@@ -859,6 +870,16 @@ void AbstractCollectionMigrator::registerAsSpecialCollection( int type )
     attribute->setIconName( findIt.value() );
     d->mNeedModifyJob = true;
   }
+}
+
+MixedMaildirStore *AbstractCollectionMigrator::store()
+{
+  return d->mStore;
+}
+
+Session *AbstractCollectionMigrator::hiddenSession()
+{
+  return d->mHiddenSession;
 }
 
 #include "abstractcollectionmigrator.moc"

@@ -26,6 +26,7 @@
 namespace Akonadi {
   class AgentInstance;
   class Collection;
+  class Session;
 }
 
 class KJob;
@@ -34,12 +35,14 @@ class KSharedConfig;
 template <typename T> class KSharedPtr;
 typedef KSharedPtr<KSharedConfig> KSharedConfigPtr;
 
+class MixedMaildirStore;
+
 class AbstractCollectionMigrator : public QObject
 {
   Q_OBJECT
 
   public:
-    explicit AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    explicit AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, MixedMaildirStore *store, QObject *parent = 0 );
     ~AbstractCollectionMigrator();
 
     virtual void setTopLevelFolder( const QString &topLevelFolder );
@@ -76,6 +79,10 @@ class AbstractCollectionMigrator : public QObject
     // TODO SpecialMailCollections doesn't export its enum to bytearray mapping
     // so we use an int for the enum value
     void registerAsSpecialCollection( int type );
+
+    MixedMaildirStore *store();
+
+    Akonadi::Session *hiddenSession();
 
   private:
     class Private;

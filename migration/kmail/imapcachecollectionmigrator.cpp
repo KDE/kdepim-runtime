@@ -60,17 +60,12 @@ class ImapCacheCollectionMigrator::Private
   ImapCacheCollectionMigrator *const q;
 
   public:
-    Private( ImapCacheCollectionMigrator *parent, MixedMaildirStore *store )
-      : q( parent ), mStore( store ), mHiddenSession( 0 ),
+    Private( ImapCacheCollectionMigrator *parent )
+      : q( parent ),
         mImportNewMessages( false ), mImportCachedMessages( false ),
         mRemoveDeletedMessages( false ), mDeleteImportedMessages( false ),
         mItemProgress( -1 )
     {
-    }
-
-    ~Private()
-    {
-      delete mHiddenSession;
     }
 
     Collection cacheCollection( const Collection &collection ) const;
@@ -78,10 +73,6 @@ class ImapCacheCollectionMigrator::Private
     bool isUnsubscribedImapFolder( const Collection &collection, QString &idPath ) const;
 
   public:
-    MixedMaildirStore *mStore;
-
-    Session *mHiddenSession;
-
     Collection mCurrentCollection;
     Item::List mItems;
     UidHash mUidHash;
@@ -119,7 +110,7 @@ Collection ImapCacheCollectionMigrator::Private::cacheCollection( const Collecti
   if ( collection.parentCollection() == Collection::root() ) {
     Collection cache;
     cache.setRemoteId( q->topLevelFolder() );
-    cache.setParentCollection( mStore->topLevelCollection() );
+    cache.setParentCollection( q->store()->topLevelCollection() );
     return cache;
   }
 
@@ -235,7 +226,7 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
     return;
   }
 
-  FileStore::ItemFetchJob *job = mStore->fetchItem( item );
+  FileStore::ItemFetchJob *job = q->store()->fetchItem( item );
   job->fetchScope().fetchFullPayload( true );
   connect( job, SIGNAL( result( KJob* ) ), q, SLOT( fetchItemResult( KJob* ) ) );
 }
@@ -268,7 +259,7 @@ void ImapCacheCollectionMigrator::Private::processNextDeletedUid()
   item.setMimeType( KMime::Message::mimeType() );
   item.setRemoteId( uid );
 
-  ItemCreateJob *createJob = new ItemCreateJob( item, mCurrentCollection, mHiddenSession );
+  ItemCreateJob *createJob = new ItemCreateJob( item, mCurrentCollection, q->hiddenSession() );
   connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemDeletePhase1Result( KJob* ) ) );
 }
 
@@ -310,7 +301,7 @@ void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
 //                                     << "flags=" << item.flags();
   } else if ( mImportCachedMessages ) {
     item.setRemoteId( uid );
-    createJob = new ItemCreateJob( item, mCurrentCollection, mHiddenSession );
+    createJob = new ItemCreateJob( item, mCurrentCollection, q->hiddenSession() );
 
 //    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "synchronized cacheItem: remoteId=" << item.remoteId()
 //                                     << "mimeType=" << item.mimeType()
@@ -365,7 +356,7 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
       Item cacheItem = item;
       cacheItem.setRemoteId( storeRemoteId );
       cacheItem.setParentCollection( storeCollection );
-      FileStore::ItemDeleteJob *deleteJob = mStore->deleteItem( cacheItem );
+      FileStore::ItemDeleteJob *deleteJob = q->store()->deleteItem( cacheItem );
       connect( deleteJob, SIGNAL( result( KJob* ) ), q, SLOT( cacheItemDeleteResult( KJob* ) ) );
     } else {
       processNextItem();
@@ -445,10 +436,8 @@ void ImapCacheCollectionMigrator::Private::unsubscribeCollectionsResult( KJob *j
 }
 
 ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
-  : AbstractCollectionMigrator( resource, parent ), d( new Private( this, store ) )
+  : AbstractCollectionMigrator( resource, store, parent ), d( new Private( this ) )
 {
-  d->mHiddenSession = new Session( resource.identifier().toAscii() );
-
   connect( this, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( unsubscribeCollections() ) );
 }
@@ -462,7 +451,7 @@ void ImapCacheCollectionMigrator::setMigrationOptions( const MigrationOptions &o
 {
   MigrationOptions actualOptions = options;
 
-  if ( d->mStore == 0 ) {
+  if ( store() == 0 ) {
     emit message( KMigratorBase::Skip,
                   i18nc( "@info:status", "No cache for account %1 available",
                          resource().name() ) );
@@ -536,7 +525,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   // check that we don't get entered while we are still processing
   Q_ASSERT( !d->mCurrentCollection.isValid() );
 
-  Q_ASSERT( d->mStore != 0 );
+  Q_ASSERT( store() != 0 );
 
   if ( collection.parentCollection() == Collection::root() ) {
     emit status( QString() );
@@ -569,7 +558,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   emit status( collection.name() );
 
   if ( d->mImportNewMessages || d->mImportCachedMessages ) {
-    FileStore::ItemFetchJob *job = d->mStore->fetchItems( cache );
+    FileStore::ItemFetchJob *job = store()->fetchItems( cache );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchItemsResult( KJob * ) ) );
     emit status( i18nc( "@info:status foldername", "%1: listing messages...", collection.name() ) );
   } else if ( d->mRemoveDeletedMessages ) {
