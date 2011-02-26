@@ -85,6 +85,7 @@ class AbstractCollectionMigrator::Private
     Session *mHiddenSession;
 
     QString mTopLevelFolder;
+    QString mTopLevelRemoteId;
     KSharedConfigPtr mKMailConfig;
     KSharedConfigPtr mEmailIdentityConfig;
     KSharedConfigPtr mKcmKmailSummaryConfig;
@@ -612,9 +613,10 @@ AbstractCollectionMigrator::~AbstractCollectionMigrator()
   delete d;
 }
 
-void AbstractCollectionMigrator::setTopLevelFolder( const QString &topLevelFolder )
+void AbstractCollectionMigrator::setTopLevelFolder( const QString &topLevelFolder, const QString &remoteId )
 {
   d->mTopLevelFolder = topLevelFolder;
+  d->mTopLevelRemoteId = remoteId;
 }
 
 QString AbstractCollectionMigrator::topLevelFolder() const
@@ -654,6 +656,10 @@ void AbstractCollectionMigrator::startMigration()
     topLevelCollection.setRights( Collection::CanChangeCollection |
                                   Collection::CanCreateCollection |
                                   Collection::CanDeleteCollection );
+  }
+
+  if ( !d->mTopLevelRemoteId.isEmpty() ) {
+    topLevelCollection.setRemoteId( d->mTopLevelRemoteId );
   }
 
   d->mCollectionQueue << topLevelCollection;
