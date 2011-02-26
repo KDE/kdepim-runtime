@@ -141,9 +141,10 @@ class KMailMigrator : public KMigratorBase
     bool mLocalFoldersDone;
 
     struct AccountConfig {
-      AccountConfig() : imapAccount( false ){ }
+      AccountConfig() : imapAccount( false ), disconnectedImap( false ) { }
       Akonadi::AgentInstance instance;
       bool imapAccount;
+      bool disconnectedImap;
     };
     QHash<QString, AccountConfig> mAccountInstance;
     QList<Akonadi::AgentInstance> mFailedInstances;
