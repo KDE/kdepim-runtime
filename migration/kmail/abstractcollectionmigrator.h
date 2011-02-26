@@ -54,6 +54,10 @@ class AbstractCollectionMigrator : public QObject
     virtual void setEmailIdentityConfig( const KSharedConfigPtr &config );
     virtual void setKcmKmailSummaryConfig( const KSharedConfigPtr &config );
     virtual void setTemplatesConfig( const KSharedConfigPtr &config );
+
+  public Q_SLOTS:
+    void startMigration();
+
   Q_SIGNALS:
     void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
 
@@ -89,13 +93,10 @@ class AbstractCollectionMigrator : public QObject
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void collectionAdded( Akonadi::Collection ) )
-    Q_PRIVATE_SLOT( d, void fetchResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void modifyResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void processNextCollection() )
-    Q_PRIVATE_SLOT( d, void recheckBrokenResource() )
-    Q_PRIVATE_SLOT( d, void recheckIdleResource() )
-    Q_PRIVATE_SLOT( d, void resourceStatusChanged( Akonadi::AgentInstance ) )
 };
 
 #endif

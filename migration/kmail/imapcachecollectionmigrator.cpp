@@ -39,7 +39,6 @@
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/monitor.h>
 #include <akonadi/session.h>
 #include <akonadi/kmime/messagestatus.h>
 
