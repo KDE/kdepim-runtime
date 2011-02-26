@@ -27,15 +27,47 @@
 #include <KConfigGroup>
 #include <KGlobal>
 #include <KLocalizedString>
+#include <KStandardDirs>
+#include <KDebug>
 
+#include <QFile>
 #include <QMetaEnum>
+#include <QStringBuilder>
 #include <QTimer>
+#include <kcomponentdata.h>
 
 using namespace Akonadi;
 
-KMigratorBase::KMigratorBase()
+namespace {
+
+QString messageTypeToString( KMigratorBase::MessageType type )
+{
+  switch ( type ) {
+    case KMigratorBase::Success: return QLatin1String( "Success" );
+    case KMigratorBase::Skip:    return QLatin1String( "Skipped" );
+    case KMigratorBase::Info:    return QLatin1String( "Info   " );
+    case KMigratorBase::Warning: return QLatin1String( "WARNING" );
+    case KMigratorBase::Error:   return QLatin1String( "ERROR  " );
+  }
+  Q_ASSERT( false );
+  return QString();
+}
+
+}
+
+KMigratorBase::KMigratorBase() : m_logFile( 0 )
 {
   KGlobal::ref();
+
+  const QString logFileName = KStandardDirs::locateLocal( "data", KGlobal::mainComponent().componentName() + "/migration.log" );
+  m_logFile = new QFile( logFileName );
+  if ( !m_logFile->open( QFile::Append ) ) {
+    delete m_logFile;
+    m_logFile = 0;
+    kWarning() << "Unable to open log file: " << logFileName;
+  }
+  logMessage( Info, "Starting migration..." );
+  connect( this, SIGNAL(message(KMigratorBase::MessageType,QString)), SLOT(logMessage(KMigratorBase::MessageType,QString)) );
 
   // load the vtable before we continue
   QTimer::singleShot( 0, this, SLOT(migrate()) );
@@ -43,6 +75,8 @@ KMigratorBase::KMigratorBase()
 
 KMigratorBase::~KMigratorBase()
 {
+  logMessage( Info, "Migration finished." );
+  delete m_logFile;
   KGlobal::deref();
 }
 
@@ -92,6 +126,15 @@ KJob *KMigratorBase::createAgentInstance(const QString& typeId, QObject* receive
   connect( job, SIGNAL( result( KJob* ) ), receiver, slot );
   job->start();
   return job;
+}
+
+void KMigratorBase::logMessage(KMigratorBase::MessageType type, const QString& msg)
+{
+  if ( m_logFile ) {
+    m_logFile->write( (QLatin1Char( '[' ) + QDateTime::currentDateTime().toString() + QLatin1String( "] " )
+      + messageTypeToString( type ) + QLatin1String( ": " ) + msg + QLatin1Char( '\n' )).toUtf8() );
+    m_logFile->flush();
+  }
 }
 
 #include "kmigratorbase.moc"

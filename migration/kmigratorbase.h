@@ -24,6 +24,7 @@
 
 #include <QObject>
 
+class QFile;
 class KJob;
 
 /**
@@ -71,6 +72,11 @@ class KMigratorBase : public QObject
   protected slots:
     virtual void migrate() = 0;
 
+  private slots:
+    void logMessage( KMigratorBase::MessageType type, const QString &msg );
+
+  private:
+    QFile* m_logFile;
 };
 
 #endif
