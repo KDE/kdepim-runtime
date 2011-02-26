@@ -705,7 +705,11 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( topLevelFolder.isEmpty() ) {
     topLevelFolder = config.readEntry( "Id" );
   }
-  collectionMigrator->setTopLevelFolder( topLevelFolder );
+
+  const QString topLevelRemoteId =
+    "imap://" + config.readEntry( "host" ) + '@' + config.readEntry( "login" ) + '/';
+
+  collectionMigrator->setTopLevelFolder( topLevelFolder, topLevelRemoteId );
   collectionMigrator->setMigrationOptions( options );
 
   kDebug() << "Starting IMAP collection migration: options="
