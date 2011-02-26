@@ -193,13 +193,13 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         //????
       } else if ( annotationFolderType == "event" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "event";
-	attribute->setIconName("view-calendar");
+        attribute->setIconName("view-calendar");
       } else if ( annotationFolderType == "task" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "task";
-	attribute->setIconName("view-pim-tasks");
+        attribute->setIconName("view-pim-tasks");
       } else if ( annotationFolderType == "contact" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "contact";
-	attribute->setIconName("view-pim-contacts");
+        attribute->setIconName("view-pim-contacts");
       } else if ( annotationFolderType == "note" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "note";
         attribute->setIconName("view-pim-notes");
