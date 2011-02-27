@@ -126,7 +126,7 @@ void InfoDialog::migratorDone()
   if ( mMigratorCount == 0 ) {
     enableButton( Close, true );
     if ( mCloseWhenDone && !hasError() && !hasChange() )
-      emit closeClicked();
+      accept();
   }
 }
 
