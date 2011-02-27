@@ -533,8 +533,8 @@ void AbstractCollectionMigrator::Private::collectionCreateResult( KJob *job )
 
 //   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection:" << mCurrentStoreCollection
 //                                    << "Akonadi Collection:" << collection;
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection: remoteId=" << mCurrentCollection.remoteId()
-    << "parent=" << mCurrentCollection.parentCollection().remoteId()
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection: remoteId=" << mCurrentStoreCollection.remoteId()
+    << "parent=" << mCurrentStoreCollection.parentCollection().remoteId()
     << "\nStore Collection: id=" << collection.id() << "remoteId=" << collection.remoteId()
     << "parent=" << collection.parentCollection().remoteId();
 
