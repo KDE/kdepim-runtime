@@ -662,6 +662,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   KConfigGroup config( mConfig, mCurrentAccount );
 
   const QString nameAccount = config.readEntry( "Name" );
+  instance.setName( nameAccount );
   emit status( nameAccount );
 
   ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportCachedMessages;
@@ -1044,6 +1045,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
     QDBusConnection::sessionBus().unregisterService( SPECIALCOLLECTIONS_LOCK_SERVICE );
   }
 
+  instance.setName( instanceName );
   emit status( instanceName );
 
   MixedMaildirStore *store = createStoreFromBasePath( mLocalMaildirPath );
@@ -1076,9 +1078,7 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
   // make sure the config is saved
   iface->writeConfig();
 
-  const QString instanceName = i18n("KMail Folders");
   AgentInstance resource = instance;
-  resource.setName( instanceName );
   resource.reconfigure();
 
   if ( error.isEmpty() ) {
@@ -1223,7 +1223,6 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   iface->writeConfig();
 
   AgentInstance resource = instance;
-  resource.setName( nameAccount );
   resource.reconfigure();
 
   config.deleteEntry( "locally-subscribed-folders" );
