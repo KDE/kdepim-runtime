@@ -31,6 +31,10 @@
 #include <QScrollBar>
 #include <QVBoxLayout>
 
+enum {
+  MAX_PROGRESS = 100
+};
+
 InfoDialog::InfoDialog( bool closeWhenDone ) :
     mMigratorCount( 0 ),
     mError( false ),
@@ -134,7 +138,7 @@ void InfoDialog::status( const QString &msg )
 {
   mStatusLabel->setText( msg );
   if ( msg.isEmpty() ) {
-    progress( 0, 100, 100 );
+    progress( 0, MAX_PROGRESS, MAX_PROGRESS );
     mProgressBar->setFormat( QString() );
   }
 }
