@@ -1,6 +1,7 @@
 /*  This file is part of the KDE project
     Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Author: Kevin Krammer, krake@kdab.com
+    Copyright (C) 2011 Kevin Krammer, kevin.krammer@gmx.at
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -21,17 +22,19 @@
 #include "abstractcollectionmigrator.h"
 
 #include "libmaildir/maildir.h"
+#include "mixedmaildirstore.h"
+
+#include "filestore/collectionfetchjob.h"
 
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/messagefolderattribute.h>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
 #include <akonadi/collection.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
+#include <akonadi/collectioncreatejob.h>
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/entitydisplayattribute.h>
-#include <akonadi/monitor.h>
+#include <akonadi/session.h>
 
 #include "collectionannotationsattribute.h"
 
@@ -51,32 +54,35 @@
 using namespace Akonadi;
 using KPIM::Maildir;
 
-typedef QHash<Collection::Id, Collection> CollectionHash;
+typedef QHash<QString, Collection> CollectionHash;
 typedef QQueue<Collection> CollectionQueue;
 
 typedef QHash<int, QString> IconNameHash;
+
+static QString remoteIdPath( const Collection& collection ) {
+  const Collection parent = collection.parentCollection();
+  if ( parent.remoteId().isEmpty() ) {
+    return collection.remoteId();
+  }
+
+  return remoteIdPath( parent ) + QLatin1Char( '/' ) + collection.remoteId();
+}
 
 class AbstractCollectionMigrator::Private
 {
   AbstractCollectionMigrator *const q;
 
   public:
-    enum Status
+    Private( AbstractCollectionMigrator *parent, const AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store )
+      : q( parent ), mResource( resource ),  mResourceName( resourceName ), mStore( store ), mHiddenSession( 0 ), mKMailConfig( 0 ),
+        mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mTemplatesConfig( 0 ),
+        mProcessedCollectionsCount( 0 ), mNeedModifyJob( false )
     {
-      Idle,
-      Waiting,
-      Scheduling,
-      Running,
-      Failed,
-      Finished
-    };
+    }
 
-    Private( AbstractCollectionMigrator *parent, const AgentInstance &resource )
-      : q( parent ), mResource( resource ), mStatus( Idle ), mKMailConfig( 0 ), mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mTemplatesConfig( 0 ), mMonitor( 0 ),
-        mProcessedCollectionsCount( 0 ), mExplicitFetchStatus( Idle ),
-        mNeedModifyJob( false )
+    ~Private()
     {
-      mRecheckTimer.setSingleShot( true );
+      delete mHiddenSession;
     }
 
     void migrateConfig();
@@ -84,37 +90,37 @@ class AbstractCollectionMigrator::Private
 
   public:
     AgentInstance mResource;
-    Status mStatus;
+    const QString mResourceName;
+    MixedMaildirStore *mStore;
+    Session *mHiddenSession;
+
     QString mTopLevelFolder;
+    QString mTopLevelCollectionName;
+    QString mTopLevelRemoteId;
     KSharedConfigPtr mKMailConfig;
     KSharedConfigPtr mEmailIdentityConfig;
     KSharedConfigPtr mKcmKmailSummaryConfig;
     KSharedConfigPtr mTemplatesConfig;
-    Monitor *mMonitor;
 
-    CollectionHash mCollectionsById;
     CollectionQueue mCollectionQueue;
+    int mOverallCollectionsCount;
     int mProcessedCollectionsCount;
 
-    Status mExplicitFetchStatus;
+    CollectionHash mAkonadiCollectionsByPath;
 
     Collection mCurrentCollection;
+    Collection mCurrentStoreCollection;
     QString mCurrentFolderId;
-
-    QTimer mRecheckTimer;
 
     bool mNeedModifyJob;
 
     static IconNameHash mIconNamesBySpecialType;
 
   public: // slots
-    void collectionAdded( const Collection &collection );
-    void fetchResult( KJob *job );
+    void collectionFetchResult( KJob *job );
+    void collectionCreateResult( KJob *job );
     void modifyResult( KJob *job );
     void processNextCollection();
-    void recheckBrokenResource();
-    void recheckIdleResource();
-    void resourceStatusChanged( const AgentInstance &instance );
 
   private:
     QStringList folderPathComponentsForCollection( const Collection &collection ) const;
@@ -184,19 +190,19 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         //????
       } else if ( annotationFolderType == "event" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "event";
-	attribute->setIconName("view-calendar");
+        attribute->setIconName("view-calendar");
       } else if ( annotationFolderType == "task" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "task";
-	attribute->setIconName("view-pim-tasks");
+        attribute->setIconName("view-pim-tasks");
       } else if ( annotationFolderType == "contact" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "contact";
-	attribute->setIconName("view-pim-contacts");
+        attribute->setIconName("view-pim-contacts");
       } else if ( annotationFolderType == "note" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "note";
         attribute->setIconName("view-pim-notes");
       } else if ( annotationFolderType == "journal" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "journal";
-        attribute->setIconName("view-pim-journal");	
+        attribute->setIconName("view-pim-journal");
       } else {
         //????
       }
@@ -484,62 +490,60 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
 void AbstractCollectionMigrator::Private::collectionDone()
 {
+  mCurrentStoreCollection = Collection();
   mCurrentFolderId = QString();
   mCurrentCollection = Collection();
 
-  mStatus = Private::Scheduling;
   QMetaObject::invokeMethod( q, "processNextCollection", Qt::QueuedConnection );
 
-  q->migrationProgress( mProcessedCollectionsCount, mCollectionsById.count() );
+  q->migrationProgress( mProcessedCollectionsCount, mOverallCollectionsCount );
 }
 
-void AbstractCollectionMigrator::Private::collectionAdded( const Collection &collection )
+void AbstractCollectionMigrator::Private::collectionFetchResult( KJob *job )
 {
-  if ( mStatus == Waiting ) {
-    mRecheckTimer.stop();
-    mRecheckTimer.disconnect();
-    mStatus = Idle;
+  if ( job->error() != 0 ) {
+    kError() << "Store CollectionFetch failed:" << job->errorString();
+    q->migrationCancelled( job->errorString() );
+    return;
   }
 
-  // don't wait any longer, start explicit fetch right away
-  if ( mExplicitFetchStatus == Waiting ) {
-    mRecheckTimer.stop();
-    mRecheckTimer.disconnect();
-    QMetaObject::invokeMethod( q, "recheckIdleResource", Qt::QueuedConnection );
-  }
-
-  if ( !mCollectionsById.contains( collection.id() ) ) {
-    mCollectionQueue.enqueue( collection );
-    mCollectionsById.insert( collection.id(), collection );
-  }
-
-  if ( mStatus == Idle ) {
-    mStatus = Scheduling;
-    QMetaObject::invokeMethod( q, "processNextCollection", Qt::QueuedConnection );
-  }
-}
-
-void AbstractCollectionMigrator::Private::fetchResult( KJob *job )
-{
-  mExplicitFetchStatus = Finished;
-
-  CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
+  FileStore::CollectionFetchJob *fetchJob = qobject_cast<FileStore::CollectionFetchJob*>( job );
   Q_ASSERT( fetchJob != 0 );
 
-  if ( fetchJob->error() != 0 ) {
-    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' did not create any folders",
-                                  mResource.name() ) );
-  } else {
-    const Collection::List collections = fetchJob->collections();
-    Q_FOREACH( const Collection &collection, collections ) {
-      collectionAdded( collection );
-    }
+  mCollectionQueue << fetchJob->collections();
 
-    if ( mStatus == Idle ) {
-      Q_ASSERT( mCollectionQueue.isEmpty() );
-      processingDone();
-    }
+  processNextCollection();
+}
+
+void AbstractCollectionMigrator::Private::collectionCreateResult( KJob *job )
+{
+  const QString idPath = job->property( "remoteIdPath" ).value<QString>();
+  if ( job->error() != 0 ) {
+    kError() << "Akonadi CollectionCreate for" << idPath << "failed:" << job->errorString();
+    processNextCollection();
+    return;
   }
+
+  CollectionCreateJob *createJob = qobject_cast<CollectionCreateJob*>( job );
+  Q_ASSERT( createJob != 0 );
+
+  const Collection collection = createJob->collection();
+
+  mAkonadiCollectionsByPath.insert( idPath, collection );
+
+  mCurrentFolderId = folderIdentifierForCollection( collection );
+  mCurrentCollection = collection;
+  mNeedModifyJob = false;
+
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection:" << mCurrentStoreCollection
+//                                    << "Akonadi Collection:" << collection;
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection: remoteId=" << mCurrentStoreCollection.remoteId()
+    << "parent=" << mCurrentStoreCollection.parentCollection().remoteId()
+    << "\nStore Collection: id=" << collection.id() << "remoteId=" << collection.remoteId()
+    << "parent=" << collection.parentCollection().remoteId()
+    << "\nFolder ID=" << mCurrentFolderId;
+
+  q->migrateCollection( collection, mCurrentFolderId );
 }
 
 void AbstractCollectionMigrator::Private::modifyResult( KJob *job )
@@ -553,113 +557,51 @@ void AbstractCollectionMigrator::Private::modifyResult( KJob *job )
 
 void AbstractCollectionMigrator::Private::processNextCollection()
 {
-  if ( mStatus == Failed || mStatus == Finished ) {
-    return;
-  }
-
   if ( mCollectionQueue.isEmpty() ) {
-    mStatus = Idle;
-
-    if ( mExplicitFetchStatus == Finished ) {
-      processingDone();
-      return;
-    }
-
-    if ( mExplicitFetchStatus == Idle ) {
-      // TODO should explicitly create fetch job instead of tricking recheckIdleResource()
-      // into doing it
-      mExplicitFetchStatus = Waiting;
-      recheckIdleResource();
-      return;
-    }
-
-    if ( mResource.status() == AgentInstance::Idle && mExplicitFetchStatus != Running ) {
-      processingDone();
-      return;
-    }
-  } else {
-    mStatus = Running;
-    ++mProcessedCollectionsCount;
-
-    const Collection collection = mCollectionQueue.dequeue();
-
-    mCurrentFolderId = folderIdentifierForCollection( collection );
-    mCurrentCollection = collection;
-    mNeedModifyJob = false;
-
-    q->migrateCollection( collection, mCurrentFolderId );
-  }
-}
-
-void AbstractCollectionMigrator::Private::recheckBrokenResource()
-{
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
-  if ( mStatus == Waiting ) {
-    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' is not working correctly",
-                                  mResource.name() ) );
-  }
-}
-
-void AbstractCollectionMigrator::Private::recheckIdleResource()
-{
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mStatus=" << mStatus << "mResource.status()=" << mResource.status();
-
-  if ( mExplicitFetchStatus == Waiting ) {
-    mExplicitFetchStatus = Running;
-
-    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
-
-    CollectionFetchScope colScope;
-    colScope.setResource( mResource.identifier() );
-    colScope.setAncestorRetrieval( CollectionFetchScope::All );
-    job->setFetchScope( colScope );
-
-    connect( job, SIGNAL( result( KJob* ) ), q, SLOT( fetchResult( KJob* ) ) );
-  }
-}
-
-void AbstractCollectionMigrator::Private::resourceStatusChanged( const AgentInstance &instance )
-{
-  if ( instance.identifier() != mResource.identifier() ) {
+    processingDone();
     return;
   }
 
-  const AgentInstance::Status oldStatus = mResource.status();
-  const QString oldMessage = mResource.statusMessage();
-  mResource = instance;
+  ++mProcessedCollectionsCount;
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "resource=" << mResource.identifier()
-           << "oldStatus=" << oldStatus << "message=" << oldMessage
-           << "newStatus" << mResource.status() << "message=" << mResource.statusMessage();
+  const Collection storeCollection = mCollectionQueue.dequeue();
 
-  if ( oldStatus == AgentInstance::Broken && mResource.status() == AgentInstance::Broken ) {
-    if ( oldMessage != mResource.statusMessage() ) {
-      // changing to a new broken state. if still waiting, wait for at most 10 seconds before
-      // giving up
-      if ( mStatus == Waiting ) {
-        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Restaring recheck timer for last 10 seconds";
-        mRecheckTimer.start( 10000 );
-      }
+  mCurrentStoreCollection = storeCollection;
+
+  const QString idPath = remoteIdPath( storeCollection );
+
+//  mStoreCollectionsByPath.insert( idPath, storeCollection );
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "inserting storeCollection" << storeCollection.remoteId()
+//                                    << "at idPath" << idPath;
+
+  // create on Akonadi server
+  Collection collection = storeCollection;
+  const Collection parent = collection.parentCollection();
+  if ( parent == Collection::root() ) {
+    collection.setParentCollection( Collection::root() );
+    collection.setName( mTopLevelCollectionName );
+  } else if ( parent.remoteId() == mStore->topLevelCollection().remoteId() && !mTopLevelRemoteId.isEmpty() ) {
+    collection.setRemoteId( mTopLevelRemoteId );
+    collection.setParentCollection( Collection::root() );
+    collection.setName( mTopLevelCollectionName );
+  } else {
+    CollectionHash::const_iterator findIt = mAkonadiCollectionsByPath.constFind( remoteIdPath( parent ) );
+    if ( findIt != mAkonadiCollectionsByPath.constEnd() ) {
+      collection.setParentCollection( findIt.value() );
+    } else {
+      kError() << "storeCollection with idPath" << idPath << "parent=" << parent.remoteId()
+               << "does not have parent in Akonadi collection hash";
     }
+    collection.setRemoteId( q->mapRemoteIdFromStore( collection.remoteId() ) );
   }
 
-  if ( mStatus == Waiting && mResource.status() != AgentInstance::Broken ) {
-    mRecheckTimer.stop();
-    mRecheckTimer.disconnect();
-    mStatus = Idle;
-  }
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Processing collection" << collection.remoteId()
+                                   << "remoteIdPath=" << idPath
+                                   << ", " << mCollectionQueue.count() << "remaining";
 
-  if ( oldStatus != AgentInstance::Idle && mResource.status() == AgentInstance::Idle && mExplicitFetchStatus == Idle ) {
-    mExplicitFetchStatus = Waiting;
-
-    // if resource is now "Idle" it might still need time to process until it becomes ready
-    // unfortunately this is not a separate state so lets delay the explicit fetch
-    // wait for at most one minute
-    mRecheckTimer.stop();
-    mRecheckTimer.disconnect();
-    QObject::connect( &mRecheckTimer, SIGNAL( timeout() ), q, SLOT( recheckIdleResource() ) );
-    mRecheckTimer.start( 60000 );
-  }
+  CollectionCreateJob *createJob = new CollectionCreateJob( collection, mHiddenSession );
+  createJob->setProperty( "remoteIdPath", idPath );
+  QObject::connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( collectionCreateResult( KJob* ) ) );
 }
 
 QStringList AbstractCollectionMigrator::Private::folderPathComponentsForCollection( const Collection &collection ) const
@@ -700,45 +642,22 @@ QString AbstractCollectionMigrator::Private::folderIdentifierForCollection( cons
 
 void AbstractCollectionMigrator::Private::processingDone()
 {
-  if ( mCollectionsById.count() == 0 ) {
-    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' did not create any folders",
-                                  mResource.name() ) );
+  if ( mOverallCollectionsCount == 0 ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Resource" << mResourceName
+                                     << "did not have any local collections";
+/*    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' did not have any folders",
+                                  mResource.name() ) );*/
   } else {
     q->migrationDone();
   }
 }
 
-AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, QObject *parent )
-  : QObject( parent ), d( new Private( this, resource ) )
+AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent )
+  : QObject( parent ), d( new Private( this, resource, resourceName, store ) )
 {
-  CollectionFetchScope colScope;
-  colScope.setResource( d->mResource.identifier() );
-  colScope.setAncestorRetrieval( CollectionFetchScope::All );
+  Q_ASSERT( store != 0 );
 
-  d->mMonitor = new Monitor( this );
-  d->mMonitor->setResourceMonitored( d->mResource.identifier().toAscii(), true );
-  d->mMonitor->fetchCollection( true );
-  d->mMonitor->setCollectionFetchScope( colScope );
-
-  connect( d->mMonitor, SIGNAL( collectionAdded( Akonadi::Collection, Akonadi::Collection ) ), SLOT( collectionAdded( Akonadi::Collection ) ) );
-
-  if ( d->mResource.status() == AgentInstance::Idle ) {
-    // if resource is "Idle" it might still need time to process until it becomes ready
-    // unfortunately this is not a separate state so lets delay the explicit fetch
-    // wait for at most one minute
-    connect( &(d->mRecheckTimer), SIGNAL( timeout() ), SLOT( recheckIdleResource() ) );
-    d->mRecheckTimer.start( 60000 );
-  } else if ( d->mResource.status() == AgentInstance::Broken ) {
-    // if resource is "Broken", it could still become idle after fully processing its new config
-    // wait for at most one minute
-    d->mStatus = Private::Waiting;
-    connect( &(d->mRecheckTimer), SIGNAL( timeout() ), SLOT( recheckBrokenResource() ) );
-    d->mRecheckTimer.start( 60000 );
-  }
-
-  // monitor resource status so we know when to quit waiting
-  connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
-           this, SLOT( resourceStatusChanged( Akonadi::AgentInstance  ) ) );
+  d->mHiddenSession = new Session( resource.identifier().toAscii() );
 }
 
 AbstractCollectionMigrator::~AbstractCollectionMigrator()
@@ -746,9 +665,11 @@ AbstractCollectionMigrator::~AbstractCollectionMigrator()
   delete d;
 }
 
-void AbstractCollectionMigrator::setTopLevelFolder( const QString &topLevelFolder )
+void AbstractCollectionMigrator::setTopLevelFolder( const QString &topLevelFolder, const QString &name, const QString &remoteId )
 {
   d->mTopLevelFolder = topLevelFolder;
+  d->mTopLevelCollectionName = name;
+  d->mTopLevelRemoteId = remoteId;
 }
 
 QString AbstractCollectionMigrator::topLevelFolder() const
@@ -776,9 +697,34 @@ void AbstractCollectionMigrator::setTemplatesConfig( const KSharedConfigPtr& con
   d->mTemplatesConfig = config;
 }
 
+void AbstractCollectionMigrator::startMigration()
+{
+  Collection topLevelCollection;
+  if ( d->mTopLevelFolder.isEmpty() ) {
+    topLevelCollection = d->mStore->topLevelCollection();
+  } else {
+    topLevelCollection.setRemoteId( d->mTopLevelFolder );
+    topLevelCollection.setParentCollection( d->mStore->topLevelCollection() );
+    topLevelCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
+    topLevelCollection.setRights( Collection::CanChangeCollection |
+                                  Collection::CanCreateCollection |
+                                  Collection::CanDeleteCollection );
+  }
+
+  FileStore::CollectionFetchJob *fetchJob = d->mStore->fetchCollections( topLevelCollection, FileStore::CollectionFetchJob::Recursive );
+  QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( collectionFetchResult( KJob* ) ) );
+
+  d->mCollectionQueue << topLevelCollection;
+}
+
 void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
 {
   emit progress( 0, seenCollections, processedCollections );
+}
+
+QString AbstractCollectionMigrator::mapRemoteIdFromStore( const QString &storeRemotedId  ) const
+{
+  return storeRemotedId;
 }
 
 void AbstractCollectionMigrator::collectionProcessed()
@@ -796,22 +742,27 @@ void AbstractCollectionMigrator::collectionProcessed()
 void AbstractCollectionMigrator::migrationDone()
 {
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "processed" << d->mProcessedCollectionsCount << "collection"
-                                   << "seen" << d->mCollectionsById.count();
-  d->mStatus = Private::Finished;
+                                   << "seen" << d->mOverallCollectionsCount;
+
   emit migrationFinished( d->mResource, QString() );
 }
 
 void AbstractCollectionMigrator::migrationCancelled( const QString &error )
 {
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "processed" << d->mProcessedCollectionsCount << "collection"
-                                   << "seen" << d->mCollectionsById.count();
-  d->mStatus = Private::Failed;
+                                   << "seen" << d->mOverallCollectionsCount;
+
   emit migrationFinished( d->mResource, error );
 }
 
 const AgentInstance AbstractCollectionMigrator::resource() const
 {
   return d->mResource;
+}
+
+QString AbstractCollectionMigrator::resourceName() const
+{
+  return d->mResourceName;
 }
 
 KSharedConfigPtr AbstractCollectionMigrator::kmailConfig() const
@@ -859,6 +810,21 @@ void AbstractCollectionMigrator::registerAsSpecialCollection( int type )
     attribute->setIconName( findIt.value() );
     d->mNeedModifyJob = true;
   }
+}
+
+MixedMaildirStore *AbstractCollectionMigrator::store()
+{
+  return d->mStore;
+}
+
+Session *AbstractCollectionMigrator::hiddenSession()
+{
+  return d->mHiddenSession;
+}
+
+Collection AbstractCollectionMigrator::currentStoreCollection() const
+{
+  return d->mCurrentStoreCollection;
 }
 
 #include "abstractcollectionmigrator.moc"

@@ -1,6 +1,7 @@
 /*  This file is part of the KDE project
     Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Author: Kevin Krammer, krake@kdab.com
+    Copyright (C) 2011 Kevin Krammer, kevin.krammer@gmx.at
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -26,6 +27,7 @@
 namespace Akonadi {
   class AgentInstance;
   class Collection;
+  class Session;
 }
 
 class KJob;
@@ -34,15 +36,17 @@ class KSharedConfig;
 template <typename T> class KSharedPtr;
 typedef KSharedPtr<KSharedConfig> KSharedConfigPtr;
 
+class MixedMaildirStore;
+
 class AbstractCollectionMigrator : public QObject
 {
   Q_OBJECT
 
   public:
-    explicit AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = 0 );
     ~AbstractCollectionMigrator();
 
-    virtual void setTopLevelFolder( const QString &topLevelFolder );
+    virtual void setTopLevelFolder( const QString &topLevelFolder, const QString &name, const QString &remoteId = QString() );
 
     QString topLevelFolder() const;
 
@@ -50,6 +54,10 @@ class AbstractCollectionMigrator : public QObject
     virtual void setEmailIdentityConfig( const KSharedConfigPtr &config );
     virtual void setKcmKmailSummaryConfig( const KSharedConfigPtr &config );
     virtual void setTemplatesConfig( const KSharedConfigPtr &config );
+
+  public Q_SLOTS:
+    void startMigration();
+
   Q_SIGNALS:
     void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
 
@@ -65,11 +73,14 @@ class AbstractCollectionMigrator : public QObject
     // override if subclass wants to do its own reporting
     virtual void migrationProgress( int processedCollections, int seenCollections );
 
+    virtual QString mapRemoteIdFromStore( const QString &storeRemotedId ) const;
+
     void collectionProcessed();
     void migrationDone();
     void migrationCancelled( const QString &error );
 
     const Akonadi::AgentInstance resource() const;
+    QString resourceName() const;
     KSharedConfigPtr kmailConfig() const;
     KSharedConfigPtr emailIdentityConfig() const;
 
@@ -77,17 +88,20 @@ class AbstractCollectionMigrator : public QObject
     // so we use an int for the enum value
     void registerAsSpecialCollection( int type );
 
+    MixedMaildirStore *store();
+
+    Akonadi::Session *hiddenSession();
+
+    Akonadi::Collection currentStoreCollection() const;
+
   private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void collectionAdded( Akonadi::Collection ) )
-    Q_PRIVATE_SLOT( d, void fetchResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void modifyResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void processNextCollection() )
-    Q_PRIVATE_SLOT( d, void recheckBrokenResource() )
-    Q_PRIVATE_SLOT( d, void recheckIdleResource() )
-    Q_PRIVATE_SLOT( d, void resourceStatusChanged( Akonadi::AgentInstance ) )
 };
 
 #endif

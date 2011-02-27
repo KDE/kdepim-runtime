@@ -1,6 +1,7 @@
 /*  This file is part of the KDE project
     Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Author: Kevin Krammer, krake@kdab.com
+    Copyright (C) 2011 Kevin Krammer, kevin.krammer@gmx.at
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -23,8 +24,6 @@
 
 #include "abstractcollectionmigrator.h"
 
-class MixedMaildirStore;
-
 class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 {
   Q_OBJECT
@@ -41,7 +40,7 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     Q_DECLARE_FLAGS( MigrationOptions, MigrationOption )
 
-    explicit ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, MixedMaildirStore *store, QObject *parent = 0 );
+    ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = 0 );
 
     ~ImapCacheCollectionMigrator();
 
@@ -56,6 +55,8 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     // overridden because of own reporting
     void migrationProgress( int processedCollections, int seenCollections );
+
+    QString mapRemoteIdFromStore( const QString &storeRemotedId ) const;
 
   private:
     class Private;

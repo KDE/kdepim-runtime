@@ -3,6 +3,7 @@
     Copyright (c) 2010 Volker Krause <vkrause@kde.org>
     Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Author: Kevin Krammer, krake@kdab.com
+    Copyright (C) 2011 Kevin Krammer, kevin.krammer@gmx.at
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -76,7 +77,7 @@ enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
 #define SPECIALCOLLECTIONS_LOCK_SERVICE QLatin1String( "org.kde.pim.SpecialCollections" )
 
-static MixedMaildirStore *createCacheStore( const QString &basePath )
+static MixedMaildirStore *createStoreFromBasePath( const QString &basePath )
 {
   MixedMaildirStore *store = 0;
   const QFileInfo baseDir( basePath );
@@ -651,97 +652,18 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 {
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   mCurrentInstance = instance;
-  KConfigGroup config( mConfig, mCurrentAccount );
-
-  OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
-  if (!iface ) {
-    return;
-  }
 
   AccountConfig conf;
   conf.instance = instance;
   conf.imapAccount = true;
+  conf.disconnectedImap = disconnected;
   mAccountInstance.insert( mCurrentAccount, conf );
 
-  iface->setImapServer( config.readEntry( "host" ) );
-  iface->setImapPort( config.readEntry( "port", 143 ) );
-  iface->setUserName( config.readEntry( "login" ) );
-  if ( config.readEntry( "use-ssl" ).toLower() == "true" )
-    iface->setSafety( "SSL" );
-  else if ( config.readEntry( "use-tls" ).toLower() == "true" )
-    iface->setSafety( "STARTTLS" );
-  else
-    iface->setSafety( "NONE" );
-  const QString authentication = config.readEntry( "auth" ).toUpper();
-  if ( authentication == "LOGIN" )
-    iface->setAuthentication(  MailTransport::Transport::EnumAuthenticationType::LOGIN );
-  else if ( authentication == "PLAIN" )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::PLAIN );
-  else if ( authentication == "CRAM-MD5" )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
-  else if ( authentication == "DIGEST-MD5" )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
-  else if ( authentication == "NTLM" )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::NTLM );
-  else if ( authentication == "GSSAPI" )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::GSSAPI );
-  else if ( authentication == "ANONYMOUS" )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::ANONYMOUS );
-  else {
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CLEAR );
-  }
-  if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
-    iface->setSubscriptionEnabled( true );
-
-  // skip interval checking so it doesn't interfere with cache importing
-  iface->setIntervalCheckTime( -1 ); //exclude
-
-  // check-exclude in Account section means that this account should not be included
-  // in manual checks. In KMail UI this is called "Include in manual checks"
-  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
-  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
-  const KConfigGroup generalGroup( mConfig, "General" );
-  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
-  resourceGroup.writeEntry( "OfflineOnShutdown", true );
-
-  iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
-  iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
-  iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
-  iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
-  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
-  iface->setDisconnectedModeEnabled( disconnected );
-  if ( !disconnected ) {
-    iface->setAutomaticExpungeEnabled( config.readEntry("auto-expunge", true ) );
-  }
-  const bool useDefaultIdentity = config.readEntry( "use-default-identity", true );
-  iface->setUseDefaultIdentity( useDefaultIdentity );
-  if ( !useDefaultIdentity )
-    iface->setAccountIdentity( config.readEntry( "identity-id" ).toInt() );
-
-  // make sure the config is saved
-  iface->writeConfig();
-
-  QString encpasswd ;
-  if ( config.readEntry( "store-passwd", false ) ) {
-    encpasswd = config.readEntry( "pass" );
-    if ( encpasswd.isEmpty() ) {
-      encpasswd = config.readEntry( "passwd" );
-      if ( !encpasswd.isEmpty() )
-        encpasswd = importPassword( encpasswd );
-    }
-
-    if ( !encpasswd.isEmpty() ) {
-      encpasswd = KStringHandler::obscure( encpasswd );
-    }
-    config.deleteEntry( "store-passwd" );
-    config.deleteEntry( "passwd" );
-  }
-  migratePassword( config.readEntry( "Id" ), instance, "imap", encpasswd );
+  KConfigGroup config( mConfig, mCurrentAccount );
 
   const QString nameAccount = config.readEntry( "Name" );
   instance.setName( nameAccount );
   emit status( nameAccount );
-  instance.reconfigure();
 
   ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportCachedMessages;
   if ( disconnected ) {
@@ -769,22 +691,26 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
       options |= ImapCacheCollectionMigrator::DeleteImportedMessages;
     }
     if ( mDImapCache == 0 ){
-      mDImapCache = createCacheStore( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/dimap" ) ) );
+      mDImapCache = createStoreFromBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/dimap" ) ) );
     }
     store = mDImapCache;
   } else {
     if ( mImapCache == 0 ){
-      mImapCache = createCacheStore( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/imap" ) ) );
+      mImapCache = createStoreFromBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/imap" ) ) );
     }
     store = mImapCache;
   }
 
-  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, store, this );
+  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, nameAccount, store, this );
   QString topLevelFolder = config.readEntry( "Folder" );
   if ( topLevelFolder.isEmpty() ) {
     topLevelFolder = config.readEntry( "Id" );
   }
-  collectionMigrator->setTopLevelFolder( topLevelFolder );
+
+  const QString topLevelRemoteId =
+    "imap://" + config.readEntry( "login" ) + '@' + config.readEntry( "host" ) + '/';
+
+  collectionMigrator->setTopLevelFolder( topLevelFolder, nameAccount, topLevelRemoteId );
   collectionMigrator->setMigrationOptions( options );
 
   kDebug() << "Starting IMAP collection migration: options="
@@ -797,10 +723,6 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( config.readEntry( "locally-subscribed-folders", false ) ) {
     collectionMigrator->setUnsubscribedImapFolders( config.readEntry( "locallyUnsubscribedFolders", QStringList() ) );
   }
-  config.deleteEntry( "locally-subscribed-folders" );
-  config.deleteEntry( "locallyUnsubscribedFolders" );
-
-  config.deleteEntry( "capabilities" );
 
   if ( disconnected && store ) {
     mLocalCacheImporter = new ImapCacheLocalImporter( store, this );
@@ -817,6 +739,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
            SLOT( imapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
 
   connectCollectionMigrator( collectionMigrator );
+
+  collectionMigrator->startMigration();
 }
 
 void KMailMigrator::pop3AccountCreated( KJob *job )
@@ -1069,21 +993,6 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
   mCurrentInstance = instance;
 
-  OrgKdeAkonadiMixedMaildirSettingsInterface *iface = new OrgKdeAkonadiMixedMaildirSettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), this );
-
-  if (!iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
-    delete iface;
-    return;
-  }
-
-  iface->setPath( mLocalMaildirPath );
-
-  // make sure the config is saved
-  iface->writeConfig();
-
   // do not include KMail folders in manual checks by default
   KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
   resourceGroup.writeEntry( "IncludeInManualChecks", false );
@@ -1138,9 +1047,11 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
   instance.setName( instanceName );
   emit status( instanceName );
-  instance.reconfigure();
 
-  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, this );
+  MixedMaildirStore *store = createStoreFromBasePath( mLocalMaildirPath );
+
+  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, instanceName, store, this );
+  collectionMigrator->setTopLevelFolder( QString(), instanceName );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
@@ -1149,10 +1060,30 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
   connectCollectionMigrator( collectionMigrator );
+
+  collectionMigrator->startMigration();
 }
 
 void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
 {
+  OrgKdeAkonadiMixedMaildirSettingsInterface *iface = new OrgKdeAkonadiMixedMaildirSettingsInterface(
+    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+    "/Settings", QDBusConnection::sessionBus(), this );
+
+  if (!iface->isValid() ) {
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
+    return;
+  }
+
+  iface->setPath( mLocalMaildirPath );
+
+  // make sure the config is saved
+  iface->writeConfig();
+
+  AgentInstance resource = instance;
+  resource.reconfigure();
+
   if ( error.isEmpty() ) {
     KConfigGroup config( KGlobal::config(), QLatin1String( "SpecialMailCollections" ) );
     if ( config.readEntry( QLatin1String( "TakeOverIfDefaultIsTotallyEmpty" ), false ) ) {
@@ -1201,22 +1132,108 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
 {
   kDebug() << "imapMigrationFinished: instance=" << instance.identifier()
            << "error=" << error;
-  if ( error.isEmpty() ) {
-    OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
-    if (!iface) {
-      return;
+
+  OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
+  if (!iface ) {
+    return;
+  }
+
+  const bool disconnected = mAccountInstance[ mCurrentAccount ].disconnectedImap;
+
+  KConfigGroup config( mConfig, mCurrentAccount );
+  const QString nameAccount = config.readEntry( "Name" );
+
+  iface->setImapServer( config.readEntry( "host" ) );
+  iface->setImapPort( config.readEntry( "port", 143 ) );
+  iface->setUserName( config.readEntry( "login" ) );
+  if ( config.readEntry( "use-ssl" ).toLower() == "true" )
+    iface->setSafety( "SSL" );
+  else if ( config.readEntry( "use-tls" ).toLower() == "true" )
+    iface->setSafety( "STARTTLS" );
+  else
+    iface->setSafety( "NONE" );
+  const QString authentication = config.readEntry( "auth" ).toUpper();
+  if ( authentication == "LOGIN" )
+    iface->setAuthentication(  MailTransport::Transport::EnumAuthenticationType::LOGIN );
+  else if ( authentication == "PLAIN" )
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::PLAIN );
+  else if ( authentication == "CRAM-MD5" )
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
+  else if ( authentication == "DIGEST-MD5" )
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
+  else if ( authentication == "NTLM" )
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::NTLM );
+  else if ( authentication == "GSSAPI" )
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::GSSAPI );
+  else if ( authentication == "ANONYMOUS" )
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::ANONYMOUS );
+  else {
+    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CLEAR );
+  }
+  if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
+    iface->setSubscriptionEnabled( true );
+
+  // skip interval checking so it doesn't interfere with cache importing
+  iface->setIntervalCheckTime( -1 ); //exclude
+
+  // check-exclude in Account section means that this account should not be included
+  // in manual checks. In KMail UI this is called "Include in manual checks"
+  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
+  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
+  const KConfigGroup generalGroup( mConfig, "General" );
+  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
+  resourceGroup.writeEntry( "OfflineOnShutdown", true );
+
+  iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
+  iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
+  iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
+  iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
+  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
+  iface->setDisconnectedModeEnabled( disconnected );
+  if ( !disconnected ) {
+    iface->setAutomaticExpungeEnabled( config.readEntry("auto-expunge", true ) );
+  }
+  const bool useDefaultIdentity = config.readEntry( "use-default-identity", true );
+  iface->setUseDefaultIdentity( useDefaultIdentity );
+  if ( !useDefaultIdentity )
+    iface->setAccountIdentity( config.readEntry( "identity-id" ).toInt() );
+
+  QString encpasswd ;
+  if ( config.readEntry( "store-passwd", false ) ) {
+    encpasswd = config.readEntry( "pass" );
+    if ( encpasswd.isEmpty() ) {
+      encpasswd = config.readEntry( "passwd" );
+      if ( !encpasswd.isEmpty() )
+        encpasswd = importPassword( encpasswd );
     }
 
-    // enable interval checking in case this had been configured
-    const KConfigGroup config( mConfig, mCurrentAccount );
-    const int checkInterval = config.readEntry( "check-interval", 0 );
-    if ( checkInterval != 0 ) {
-      iface->setIntervalCheckEnabled( true );
-      iface->setIntervalCheckTime( checkInterval );
-      // make sure the config is saved
-      iface->writeConfig();
-      instance.reconfigure();
+    if ( !encpasswd.isEmpty() ) {
+      encpasswd = KStringHandler::obscure( encpasswd );
     }
+    config.deleteEntry( "store-passwd" );
+    config.deleteEntry( "passwd" );
+  }
+  migratePassword( config.readEntry( "Id" ), instance, "imap", encpasswd );
+
+  // enable interval checking in case this had been configured
+  const int checkInterval = config.readEntry( "check-interval", 0 );
+  if ( checkInterval != 0 ) {
+    iface->setIntervalCheckEnabled( true );
+    iface->setIntervalCheckTime( checkInterval );
+  }
+
+  // make sure the config is saved
+  iface->writeConfig();
+
+  AgentInstance resource = instance;
+  resource.reconfigure();
+
+  config.deleteEntry( "locally-subscribed-folders" );
+  config.deleteEntry( "locallyUnsubscribedFolders" );
+
+  config.deleteEntry( "capabilities" );
+
+  if ( error.isEmpty() ) {
 
     // if we don't keep the whole cache, run this as a background job
     // the migration has not failed, so there are at worst only a few messages left to
