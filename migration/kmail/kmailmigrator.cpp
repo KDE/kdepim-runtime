@@ -55,6 +55,8 @@ using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
 
+#include <KIO/CopyJob>
+
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDateTime>
@@ -64,9 +66,11 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KSharedConfig>
 #include <KCursor>
 #include <kwallet.h>
-#include <QApplication>
 #include <kstringhandler.h>
 #include <KLocalizedString>
+
+#include <QApplication>
+
 using KWallet::Wallet;
 
 using namespace KMail;
@@ -175,6 +179,18 @@ void KMailMigrator::migrate()
   migrateTags();
   migrateRCFiles();
 
+  // copy autosave files if there are any
+  const QString autoSaveDir = KGlobal::dirs()->saveLocation( "data", "kmail/autosave", false );
+  if ( !autoSaveDir.isEmpty() ) {
+    const QString destDir = KGlobal::dirs()->saveLocation( "data", "kmail2" );
+    KIO::CopyJob *job = KIO::copy( KUrl::fromPath( autoSaveDir ),
+                                   KUrl::fromPath( destDir ),
+                                   KIO::HideProgressInfo );
+    job->setAutoSkip( true );
+    job->setWriteIntoExistingDirectories( true );
+    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( autoSaveCopyResult( KJob* ) ) );
+  }
+
   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
 
   if ( evaluateCacheHandlingOptions() ) {
@@ -185,6 +201,12 @@ void KMailMigrator::migrate()
     qApp->exit( 5 );
   }
 
+}
+
+void KMailMigrator::autoSaveCopyResult( KJob *job )
+{
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "error=" << job->error()
+    << "text=" << job->errorString();
 }
 
 void KMailMigrator::deleteOldGroup()
