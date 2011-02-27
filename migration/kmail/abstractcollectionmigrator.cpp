@@ -658,14 +658,14 @@ void AbstractCollectionMigrator::startMigration()
                                   Collection::CanDeleteCollection );
   }
 
+  FileStore::CollectionFetchJob *fetchJob = d->mStore->fetchCollections( topLevelCollection, FileStore::CollectionFetchJob::Recursive );
+  QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( collectionFetchResult( KJob* ) ) );
+
   if ( !d->mTopLevelRemoteId.isEmpty() ) {
     topLevelCollection.setRemoteId( d->mTopLevelRemoteId );
   }
 
   d->mCollectionQueue << topLevelCollection;
-
-  FileStore::CollectionFetchJob *fetchJob = d->mStore->fetchCollections( topLevelCollection, FileStore::CollectionFetchJob::Recursive );
-  QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( collectionFetchResult( KJob* ) ) );
 }
 
 void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
