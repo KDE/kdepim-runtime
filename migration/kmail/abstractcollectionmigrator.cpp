@@ -511,6 +511,7 @@ void AbstractCollectionMigrator::Private::collectionFetchResult( KJob *job )
   Q_ASSERT( fetchJob != 0 );
 
   mCollectionQueue << fetchJob->collections();
+  mOverallCollectionsCount = mCollectionQueue.count();
 
   processNextCollection();
 }
@@ -715,6 +716,7 @@ void AbstractCollectionMigrator::startMigration()
   QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( collectionFetchResult( KJob* ) ) );
 
   d->mCollectionQueue << topLevelCollection;
+  d->mOverallCollectionsCount = d->mCollectionQueue.count();
 }
 
 void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
@@ -741,7 +743,7 @@ void AbstractCollectionMigrator::collectionProcessed()
 
 void AbstractCollectionMigrator::migrationDone()
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "processed" << d->mProcessedCollectionsCount << "collection"
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "processed" << d->mProcessedCollectionsCount << "collections"
                                    << "seen" << d->mOverallCollectionsCount;
 
   emit migrationFinished( d->mResource, QString() );
@@ -749,7 +751,7 @@ void AbstractCollectionMigrator::migrationDone()
 
 void AbstractCollectionMigrator::migrationCancelled( const QString &error )
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "processed" << d->mProcessedCollectionsCount << "collection"
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "processed" << d->mProcessedCollectionsCount << "collections"
                                    << "seen" << d->mOverallCollectionsCount;
 
   emit migrationFinished( d->mResource, error );
