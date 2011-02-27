@@ -707,7 +707,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   }
 
   const QString topLevelRemoteId =
-    "imap://" + config.readEntry( "host" ) + '@' + config.readEntry( "login" ) + '/';
+    "imap://" + config.readEntry( "login" ) + '@' + config.readEntry( "host" ) + '/';
 
   collectionMigrator->setTopLevelFolder( topLevelFolder, topLevelRemoteId );
   collectionMigrator->setMigrationOptions( options );
