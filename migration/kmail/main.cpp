@@ -81,7 +81,7 @@ int main( int argc, char **argv )
   }
   args->clear();
   const int result = app->exec();
-  if ( infoDialog && infoDialog->hasError() )
+  if ( InfoDialog::hasError() )
     return 3;
   return result;
 }

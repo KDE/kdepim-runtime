@@ -37,13 +37,16 @@ enum {
   MAX_PROGRESS = 100
 };
 
+bool InfoDialog::mError = false;
+
 InfoDialog::InfoDialog( bool closeWhenDone ) :
     mMigratorCount( 0 ),
-    mError( false ),
     mChange( false ),
     mCloseWhenDone( closeWhenDone ),
     mAutoScrollList( true )
 {
+  setAttribute( Qt::WA_DeleteOnClose );
+
   KGlobal::ref();
   setButtons( Close );
   enableButton( Close, false );

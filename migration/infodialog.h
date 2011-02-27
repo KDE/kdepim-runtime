@@ -41,7 +41,7 @@ class InfoDialog : public KDialog
     void migratorAdded();
     void migratorDone();
 
-    bool hasError() const { return mError; }
+    static bool hasError() { return mError; }
     bool hasChange() const { return mChange; }
 
     void status( const QString &msg );
@@ -57,7 +57,7 @@ class InfoDialog : public KDialog
     QLabel *mStatusLabel;
     QProgressBar *mProgressBar;
     int mMigratorCount;
-    bool mError;
+    static bool mError;
     bool mChange;
     bool mCloseWhenDone;
     bool mAutoScrollList;
