@@ -1051,6 +1051,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   MixedMaildirStore *store = createStoreFromBasePath( mLocalMaildirPath );
 
   LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, instanceName, store, this );
+  collectionMigrator->setTopLevelFolder( QString(), instanceName );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
@@ -1059,6 +1060,8 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
   connectCollectionMigrator( collectionMigrator );
+
+  collectionMigrator->startMigration();
 }
 
 void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
