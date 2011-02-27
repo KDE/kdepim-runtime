@@ -114,8 +114,12 @@ void Settings::requestPassword()
     emit passwordRequestCompleted( m_password, false );
   } else {
     Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous );
-    connect( wallet, SIGNAL( walletOpened(bool) ),
-             this, SLOT( onWalletOpened(bool) ) );
+    if ( wallet ) {
+      connect( wallet, SIGNAL( walletOpened(bool) ),
+               this, SLOT( onWalletOpened(bool) ) );
+    } else {
+      QMetaObject::invokeMethod( this, "onWalletOpened", Qt::QueuedConnection, Q_ARG(bool, true) );
+    }
   }
 }
 
@@ -127,23 +131,25 @@ void Settings::onWalletOpened( bool success )
     Wallet *wallet = qobject_cast<Wallet*>( sender() );
     bool passwordNotStoredInWallet = true;
     if ( wallet && wallet->hasFolder( "imap" ) ) {
-        wallet->setFolder( "imap" );
-        wallet->readPassword( config()->name(), m_password );
+      wallet->setFolder( "imap" );
+      wallet->readPassword( config()->name(), m_password );
       passwordNotStoredInWallet = false;
     }
     if ( passwordNotStoredInWallet || m_password.isEmpty() )
       requestManualAuth();
     else
       emit passwordRequestCompleted( m_password, passwordNotStoredInWallet );
-
-    wallet->deleteLater();
+    
+    if ( wallet ) {
+      wallet->deleteLater();
+    }
   }
 }
 
 void Settings::requestManualAuth()
 {
   KPasswordDialog *dlg = new KPasswordDialog( 0 );
-  dlg->setPrompt( i18n( "Could not find a valid password for user '%1' on IMAP server '%2', please enter it here.",
+  dlg->setPrompt( i18n( "Please enter password for user '%1' on IMAP server '%2'.",
                         userName(), imapServer() ) );
   dlg->setAttribute( Qt::WA_DeleteOnClose );
   connect( dlg, SIGNAL(finished(int)), this, SLOT(onDialogFinished(int)) );
