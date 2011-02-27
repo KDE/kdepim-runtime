@@ -738,6 +738,8 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
            SLOT( imapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
 
   connectCollectionMigrator( collectionMigrator );
+
+  collectionMigrator->startMigration();
 }
 
 void KMailMigrator::pop3AccountCreated( KJob *job )
