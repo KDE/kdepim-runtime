@@ -710,7 +710,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   const QString topLevelRemoteId =
     "imap://" + config.readEntry( "login" ) + '@' + config.readEntry( "host" ) + '/';
 
-  collectionMigrator->setTopLevelFolder( topLevelFolder, topLevelRemoteId );
+  collectionMigrator->setTopLevelFolder( topLevelFolder, nameAccount, topLevelRemoteId );
   collectionMigrator->setMigrationOptions( options );
 
   kDebug() << "Starting IMAP collection migration: options="
@@ -1051,6 +1051,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   MixedMaildirStore *store = createStoreFromBasePath( mLocalMaildirPath );
 
   LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, store, this );
+  collectionMigrator->setTopLevelFolder( QString(), instanceName );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );

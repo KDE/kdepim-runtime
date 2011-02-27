@@ -54,10 +54,19 @@
 using namespace Akonadi;
 using KPIM::Maildir;
 
-typedef QHash<Collection::Id, Collection> CollectionHash;
+typedef QHash<QString, Collection> CollectionHash;
 typedef QQueue<Collection> CollectionQueue;
 
 typedef QHash<int, QString> IconNameHash;
+
+static QString remoteIdPath( const Collection& collection ) {
+  const Collection parent = collection.parentCollection();
+  if ( parent.remoteId().isEmpty() ) {
+    return collection.remoteId();
+  }
+
+  return remoteIdPath( parent ) + QLatin1Char( '/' ) + collection.remoteId();
+}
 
 class AbstractCollectionMigrator::Private
 {
@@ -85,6 +94,7 @@ class AbstractCollectionMigrator::Private
     Session *mHiddenSession;
 
     QString mTopLevelFolder;
+    QString mTopLevelCollectionName;
     QString mTopLevelRemoteId;
     KSharedConfigPtr mKMailConfig;
     KSharedConfigPtr mEmailIdentityConfig;
@@ -94,6 +104,8 @@ class AbstractCollectionMigrator::Private
     CollectionQueue mCollectionQueue;
     int mOverallCollectionsCount;
     int mProcessedCollectionsCount;
+
+    CollectionHash mAkonadiCollectionsByPath;
 
     Collection mCurrentCollection;
     Collection mCurrentStoreCollection;
@@ -504,9 +516,9 @@ void AbstractCollectionMigrator::Private::collectionFetchResult( KJob *job )
 
 void AbstractCollectionMigrator::Private::collectionCreateResult( KJob *job )
 {
+  const QString idPath = job->property( "remoteIdPath" ).value<QString>();
   if ( job->error() != 0 ) {
-    kError() << "Creating collection" << mCurrentStoreCollection.remoteId()
-             << "failed:" << job->errorString();
+    kError() << "Akonadi CollectionCreate for" << idPath << "failed:" << job->errorString();
     processNextCollection();
     return;
   }
@@ -516,8 +528,14 @@ void AbstractCollectionMigrator::Private::collectionCreateResult( KJob *job )
 
   const Collection collection = createJob->collection();
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection:" << mCurrentStoreCollection
-                                   << "Akonadi Collection:" << collection;
+  mAkonadiCollectionsByPath.insert( idPath, collection );
+
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection:" << mCurrentStoreCollection
+//                                    << "Akonadi Collection:" << collection;
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection: remoteId=" << mCurrentCollection.remoteId()
+    << "parent=" << mCurrentCollection.parentCollection().remoteId()
+    << "\nStore Collection: id=" << collection.id() << "remoteId=" << collection.remoteId()
+    << "parent=" << collection.parentCollection().remoteId();
 
   mCurrentFolderId = folderIdentifierForCollection( collection );
   mCurrentCollection = collection;
@@ -544,12 +562,44 @@ void AbstractCollectionMigrator::Private::processNextCollection()
 
   ++mProcessedCollectionsCount;
 
-  const Collection collection = mCollectionQueue.dequeue();
+  const Collection storeCollection = mCollectionQueue.dequeue();
 
-  mCurrentStoreCollection = collection;
+  mCurrentStoreCollection = storeCollection;
 
-  CollectionCreateJob *job = new CollectionCreateJob( collection, mHiddenSession );
-  connect( job, SIGNAL( result( KJob* ) ), q, SLOT( collectionCreateResult( KJob* ) ) );
+  const QString idPath = remoteIdPath( storeCollection );
+
+//  mStoreCollectionsByPath.insert( idPath, storeCollection );
+//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "inserting storeCollection" << storeCollection.remoteId()
+//                                    << "at idPath" << idPath;
+
+  // create on Akonadi server
+  Collection collection = storeCollection;
+  const Collection parent = collection.parentCollection();
+  if ( parent == Collection::root() || parent.remoteId() == mStore->topLevelCollection().remoteId() ) {
+    if ( !mTopLevelRemoteId.isEmpty() ) {
+      collection.setRemoteId( mTopLevelRemoteId );
+    }
+
+    collection.setParentCollection( Collection::root() );
+    collection.setName( mTopLevelCollectionName );
+  } else {
+    CollectionHash::const_iterator findIt = mAkonadiCollectionsByPath.constFind( remoteIdPath( parent ) );
+    if ( findIt != mAkonadiCollectionsByPath.constEnd() ) {
+      collection.setParentCollection( findIt.value() );
+    } else {
+      kError() << "storeCollection with idPath" << idPath << "parent=" << parent.remoteId()
+               << "does not have parent in Akonadi collection hash";
+    }
+    collection.setRemoteId( q->mapRemoteIdFromStore( collection.remoteId() ) );
+  }
+
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Processing collection" << collection.remoteId()
+                                   << "remoteIdPath=" << idPath
+                                   << ", " << mCollectionQueue.count() << "remaining";
+
+  CollectionCreateJob *createJob = new CollectionCreateJob( collection, mHiddenSession );
+  createJob->setProperty( "remoteIdPath", idPath );
+  QObject::connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( collectionCreateResult( KJob* ) ) );
 }
 
 QStringList AbstractCollectionMigrator::Private::folderPathComponentsForCollection( const Collection &collection ) const
@@ -613,9 +663,10 @@ AbstractCollectionMigrator::~AbstractCollectionMigrator()
   delete d;
 }
 
-void AbstractCollectionMigrator::setTopLevelFolder( const QString &topLevelFolder, const QString &remoteId )
+void AbstractCollectionMigrator::setTopLevelFolder( const QString &topLevelFolder, const QString &name, const QString &remoteId )
 {
   d->mTopLevelFolder = topLevelFolder;
+  d->mTopLevelCollectionName = name;
   d->mTopLevelRemoteId = remoteId;
 }
 
@@ -661,16 +712,17 @@ void AbstractCollectionMigrator::startMigration()
   FileStore::CollectionFetchJob *fetchJob = d->mStore->fetchCollections( topLevelCollection, FileStore::CollectionFetchJob::Recursive );
   QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( collectionFetchResult( KJob* ) ) );
 
-  if ( !d->mTopLevelRemoteId.isEmpty() ) {
-    topLevelCollection.setRemoteId( d->mTopLevelRemoteId );
-  }
-
   d->mCollectionQueue << topLevelCollection;
 }
 
 void AbstractCollectionMigrator::migrationProgress( int processedCollections, int seenCollections )
 {
   emit progress( 0, seenCollections, processedCollections );
+}
+
+QString AbstractCollectionMigrator::mapRemoteIdFromStore( const QString &storeRemotedId  ) const
+{
+  return storeRemotedId;
 }
 
 void AbstractCollectionMigrator::collectionProcessed()
@@ -761,6 +813,11 @@ MixedMaildirStore *AbstractCollectionMigrator::store()
 Session *AbstractCollectionMigrator::hiddenSession()
 {
   return d->mHiddenSession;
+}
+
+Collection AbstractCollectionMigrator::currentStoreCollection() const
+{
+  return d->mCurrentStoreCollection;
 }
 
 #include "abstractcollectionmigrator.moc"

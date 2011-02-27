@@ -56,6 +56,8 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
     // overridden because of own reporting
     void migrationProgress( int processedCollections, int seenCollections );
 
+    QString mapRemoteIdFromStore( const QString &storeRemotedId ) const;
+
   private:
     class Private;
     Private *const d;

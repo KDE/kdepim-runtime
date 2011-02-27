@@ -68,8 +68,6 @@ class ImapCacheCollectionMigrator::Private
     {
     }
 
-    Collection cacheCollection( const Collection &collection ) const;
-
     bool isUnsubscribedImapFolder( const Collection &collection, QString &idPath ) const;
 
   public:
@@ -104,23 +102,6 @@ class ImapCacheCollectionMigrator::Private
     void unsubscribeCollections();
     void unsubscribeCollectionsResult( KJob *job );
 };
-
-Collection ImapCacheCollectionMigrator::Private::cacheCollection( const Collection &collection ) const
-{
-  if ( collection.parentCollection() == Collection::root() ) {
-    Collection cache;
-    cache.setRemoteId( q->topLevelFolder() );
-    cache.setParentCollection( q->store()->topLevelCollection() );
-    return cache;
-  }
-
-  const QString remoteId = collection.remoteId().mid( 1 );
-
-  Collection cache;
-  cache.setRemoteId( remoteId );
-  cache.setParentCollection( cacheCollection( collection.parentCollection() ) );
-  return cache;
-}
 
 bool ImapCacheCollectionMigrator::Private::isUnsubscribedImapFolder( const Collection &collection, QString &idPath ) const
 {
@@ -535,8 +516,9 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
 
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Akonadi collection remoteId=" << collection.remoteId() << ", parent=" << collection.parentCollection().remoteId();
 
-  Collection cache = d->cacheCollection( collection );
+  Collection cache = currentStoreCollection();
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Cache collection remoteId=" << cache.remoteId() << ", parent=" << cache.parentCollection().remoteId();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "folderId=" << folderId << "imapIdPath=" << imapIdPath;
 
   d->mDeletedUids.clear();
   if ( d->mRemoveDeletedMessages ) {
@@ -577,6 +559,11 @@ void ImapCacheCollectionMigrator::migrationProgress( int processedCollections, i
   if ( migrationOptions() == ConfigOnly ) {
     AbstractCollectionMigrator::migrationProgress( processedCollections, seenCollections );
   }
+}
+
+QString ImapCacheCollectionMigrator::mapRemoteIdFromStore( const QString &storeRemotedId  ) const
+{
+  return '/' + storeRemotedId;
 }
 
 #include "imapcachecollectionmigrator.moc"

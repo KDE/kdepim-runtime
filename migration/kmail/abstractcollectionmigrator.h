@@ -46,7 +46,7 @@ class AbstractCollectionMigrator : public QObject
     explicit AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, MixedMaildirStore *store, QObject *parent = 0 );
     ~AbstractCollectionMigrator();
 
-    virtual void setTopLevelFolder( const QString &topLevelFolder, const QString &remoteId = QString() );
+    virtual void setTopLevelFolder( const QString &topLevelFolder, const QString &name, const QString &remoteId = QString() );
 
     QString topLevelFolder() const;
 
@@ -73,6 +73,8 @@ class AbstractCollectionMigrator : public QObject
     // override if subclass wants to do its own reporting
     virtual void migrationProgress( int processedCollections, int seenCollections );
 
+    virtual QString mapRemoteIdFromStore( const QString &storeRemotedId ) const;
+
     void collectionProcessed();
     void migrationDone();
     void migrationCancelled( const QString &error );
@@ -88,6 +90,8 @@ class AbstractCollectionMigrator : public QObject
     MixedMaildirStore *store();
 
     Akonadi::Session *hiddenSession();
+
+    Akonadi::Collection currentStoreCollection() const;
 
   private:
     class Private;
