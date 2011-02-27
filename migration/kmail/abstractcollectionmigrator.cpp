@@ -531,16 +531,17 @@ void AbstractCollectionMigrator::Private::collectionCreateResult( KJob *job )
 
   mAkonadiCollectionsByPath.insert( idPath, collection );
 
+  mCurrentFolderId = folderIdentifierForCollection( collection );
+  mCurrentCollection = collection;
+  mNeedModifyJob = false;
+
 //   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection:" << mCurrentStoreCollection
 //                                    << "Akonadi Collection:" << collection;
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store Collection: remoteId=" << mCurrentStoreCollection.remoteId()
     << "parent=" << mCurrentStoreCollection.parentCollection().remoteId()
     << "\nStore Collection: id=" << collection.id() << "remoteId=" << collection.remoteId()
-    << "parent=" << collection.parentCollection().remoteId();
-
-  mCurrentFolderId = folderIdentifierForCollection( collection );
-  mCurrentCollection = collection;
-  mNeedModifyJob = false;
+    << "parent=" << collection.parentCollection().remoteId()
+    << "\nFolder ID=" << mCurrentFolderId;
 
   q->migrateCollection( collection, mCurrentFolderId );
 }
@@ -576,11 +577,11 @@ void AbstractCollectionMigrator::Private::processNextCollection()
   // create on Akonadi server
   Collection collection = storeCollection;
   const Collection parent = collection.parentCollection();
-  if ( parent == Collection::root() || parent.remoteId() == mStore->topLevelCollection().remoteId() ) {
-    if ( !mTopLevelRemoteId.isEmpty() ) {
-      collection.setRemoteId( mTopLevelRemoteId );
-    }
-
+  if ( parent == Collection::root() ) {
+    collection.setParentCollection( Collection::root() );
+    collection.setName( mTopLevelCollectionName );
+  } else if ( parent.remoteId() == mStore->topLevelCollection().remoteId() && !mTopLevelRemoteId.isEmpty() ) {
+    collection.setRemoteId( mTopLevelRemoteId );
     collection.setParentCollection( Collection::root() );
     collection.setName( mTopLevelCollectionName );
   } else {
