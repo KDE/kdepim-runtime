@@ -73,8 +73,8 @@ class AbstractCollectionMigrator::Private
   AbstractCollectionMigrator *const q;
 
   public:
-    Private( AbstractCollectionMigrator *parent, const AgentInstance &resource, MixedMaildirStore *store )
-      : q( parent ), mResource( resource ),  mStore( store ), mHiddenSession( 0 ), mKMailConfig( 0 ),
+    Private( AbstractCollectionMigrator *parent, const AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store )
+      : q( parent ), mResource( resource ),  mResourceName( resourceName ), mStore( store ), mHiddenSession( 0 ), mKMailConfig( 0 ),
         mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mTemplatesConfig( 0 ),
         mProcessedCollectionsCount( 0 ), mNeedModifyJob( false )
     {
@@ -90,6 +90,7 @@ class AbstractCollectionMigrator::Private
 
   public:
     AgentInstance mResource;
+    const QString mResourceName;
     MixedMaildirStore *mStore;
     Session *mHiddenSession;
 
@@ -641,7 +642,7 @@ QString AbstractCollectionMigrator::Private::folderIdentifierForCollection( cons
 void AbstractCollectionMigrator::Private::processingDone()
 {
   if ( mOverallCollectionsCount == 0 ) {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Resource" << mResource.name()
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Resource" << mResourceName
                                      << "did not have any local collections";
 /*    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' did not have any folders",
                                   mResource.name() ) );*/
@@ -650,8 +651,8 @@ void AbstractCollectionMigrator::Private::processingDone()
   }
 }
 
-AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
-  : QObject( parent ), d( new Private( this, resource, store ) )
+AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent )
+  : QObject( parent ), d( new Private( this, resource, resourceName, store ) )
 {
   Q_ASSERT( store != 0 );
 
@@ -756,6 +757,11 @@ void AbstractCollectionMigrator::migrationCancelled( const QString &error )
 const AgentInstance AbstractCollectionMigrator::resource() const
 {
   return d->mResource;
+}
+
+QString AbstractCollectionMigrator::resourceName() const
+{
+  return d->mResourceName;
 }
 
 KSharedConfigPtr AbstractCollectionMigrator::kmailConfig() const

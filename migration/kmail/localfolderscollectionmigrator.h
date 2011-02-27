@@ -29,7 +29,7 @@ class LocalFoldersCollectionMigrator : public AbstractCollectionMigrator
   Q_OBJECT
 
   public:
-    explicit LocalFoldersCollectionMigrator( const Akonadi::AgentInstance &resource, MixedMaildirStore *store, QObject *parent = 0 );
+    LocalFoldersCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = 0 );
 
     void setKMailConfig( const KSharedConfigPtr &config );
 

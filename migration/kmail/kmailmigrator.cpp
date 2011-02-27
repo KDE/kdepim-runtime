@@ -701,7 +701,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     store = mImapCache;
   }
 
-  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, store, this );
+  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, nameAccount, store, this );
   QString topLevelFolder = config.readEntry( "Folder" );
   if ( topLevelFolder.isEmpty() ) {
     topLevelFolder = config.readEntry( "Id" );
@@ -1050,8 +1050,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
 
   MixedMaildirStore *store = createStoreFromBasePath( mLocalMaildirPath );
 
-  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, store, this );
-  collectionMigrator->setTopLevelFolder( QString(), instanceName );
+  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, instanceName, store, this );
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );

@@ -48,8 +48,8 @@ class LocalFoldersCollectionMigrator::Private
     TypeHash mSystemFolders;
 };
 
-LocalFoldersCollectionMigrator::LocalFoldersCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
-  : AbstractCollectionMigrator( resource, store, parent ), d( new Private( this ) )
+LocalFoldersCollectionMigrator::LocalFoldersCollectionMigrator( const AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent )
+  : AbstractCollectionMigrator( resource, resourceName, store, parent ), d( new Private( this ) )
 {
 }
 

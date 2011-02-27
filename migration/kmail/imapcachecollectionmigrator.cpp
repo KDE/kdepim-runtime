@@ -416,8 +416,8 @@ void ImapCacheCollectionMigrator::Private::unsubscribeCollectionsResult( KJob *j
   }
 }
 
-ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, MixedMaildirStore *store, QObject *parent )
-  : AbstractCollectionMigrator( resource, store, parent ), d( new Private( this ) )
+ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent )
+  : AbstractCollectionMigrator( resource, resourceName, store, parent ), d( new Private( this ) )
 {
   connect( this, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
            SLOT( unsubscribeCollections() ) );
@@ -435,10 +435,10 @@ void ImapCacheCollectionMigrator::setMigrationOptions( const MigrationOptions &o
   if ( store() == 0 ) {
     emit message( KMigratorBase::Skip,
                   i18nc( "@info:status", "No cache for account %1 available",
-                         resource().name() ) );
+                         resourceName() ) );
     kWarning() << "No store for folder" << topLevelFolder()
                << "so only config migration (instead of" << options << ") for"
-               << resource().identifier() << resource().name();
+               << resource().identifier() << resourceName();
     actualOptions = ConfigOnly;
   }
 
@@ -535,7 +535,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
   d->mCurrentCollection = collection;
   d->mTagListHash.clear();
 
-  emit message( KMigratorBase::Info, i18nc( "@info:status", "Starting cache migration for folder %1 of account %2", collection.name(), resource().name() ) );
+  emit message( KMigratorBase::Info, i18nc( "@info:status", "Starting cache migration for folder %1 of account %2", collection.name(), resourceName() ) );
 
   emit status( collection.name() );
 
