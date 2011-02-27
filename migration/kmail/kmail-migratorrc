@@ -7,5 +7,5 @@ TakeOverIfDefaultIsTotallyEmpty=true
 
 [Disconnected IMAP]
 ImportNewMessages=true
-ImportCachedMessages=true
+ImportCachedMessages=false
 RemoveDeletedMessages=false
