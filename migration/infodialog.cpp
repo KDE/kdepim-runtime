@@ -129,6 +129,7 @@ void InfoDialog::migratorDone()
   --mMigratorCount;
   if ( mMigratorCount == 0 ) {
     enableButton( Close, true );
+    status( QString() );
     if ( mCloseWhenDone && !hasError() && !hasChange() )
       accept();
   }
