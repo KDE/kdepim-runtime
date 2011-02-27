@@ -32,6 +32,8 @@
 #include <QVBoxLayout>
 
 enum {
+  // The max value of the scrollbar. Don't change this without making the kmail
+  // migrator use this. It still uses hardcoded "100".
   MAX_PROGRESS = 100
 };
 
