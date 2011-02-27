@@ -57,6 +57,7 @@ using Akonadi::AgentInstanceCreateJob;
 
 #include <KConfig>
 #include <KConfigGroup>
+#include <KDateTime>
 #include <KDebug>
 #include <KStandardDirs>
 #include <KMessageBox>
@@ -89,6 +90,14 @@ static MixedMaildirStore *createStoreFromBasePath( const QString &basePath )
   return store;
 }
 
+static void backupConfig( const QString &name, const QDir &backupDir )
+{
+  const QString configFile = KStandardDirs::locate( "config", name );
+  if ( !configFile.isEmpty() ) {
+    QFile::copy( configFile, QFileInfo( backupDir, name ).absoluteFilePath() );
+  }
+}
+
 KMailMigrator::KMailMigrator() :
   KMigratorBase(),
   mWallet( 0 ),
@@ -117,6 +126,19 @@ KMailMigrator::~KMailMigrator()
 void KMailMigrator::migrate()
 {
   emit message( Info, i18n("Beginning KMail migration...") );
+
+  // copy config files to backup locations
+  const KDateTime now = KDateTime::currentLocalDateTime();
+  const QDir backupDir( KGlobal::dirs()->saveLocation( "appdata", now.toString() ) );
+
+  // copy current configs to backup location
+  // strickly speaking neither kmailrc not mailtransports are changed by the migrator
+  // but copy them anyway as the belong conceptually to the KMail1 -> KMail2 migration
+  backupConfig( "kmailrc", backupDir );
+  backupConfig( "mailtransports", backupDir );
+  backupConfig( "emailidentities", backupDir );
+  backupConfig( "kcmkmailsummaryrc", backupDir );
+  backupConfig( "templatesconfigurationrc", backupDir );
 
   KSharedConfigPtr oldConfig = KSharedConfig::openConfig( QLatin1String( "kmailrc" ) );
   mConfig = KSharedConfig::openConfig( QLatin1String( "kmail2rc" ) );
