@@ -94,9 +94,7 @@ void ResourcesManagementWidget::addClicked()
 
     if ( dlg.exec() ) {
         const Akonadi::AgentType agentType = dlg.agentType();
-
         if ( agentType.isValid() ) {
-
             Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( agentType, this );
             job->configure( this );
             job->start();
@@ -116,21 +114,21 @@ void ResourcesManagementWidget::editClicked()
 void ResourcesManagementWidget::removeClicked()
 {
     const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
-
-    if ( KMessageBox::questionYesNo( this,
-                                     i18np( "Do you really want to delete the selected agent instance?",
-                                            "Do you really want to delete these %1 agent instances?",
-                                            instanceList.size() ),
-                                     i18n( "Multiple Agent Deletion" ),
-                                     KStandardGuiItem::del(),
-                                     KStandardGuiItem::cancel(),
-                                     QString(),
-                                     KMessageBox::Dangerous )
-         == KMessageBox::Yes ) {
-
-      foreach( const Akonadi::AgentInstance &agent, instanceList )
-        Akonadi::AgentManager::self()->removeInstance( agent );
-      updateButtonState();
+    if ( !instanceList.isEmpty() ) {
+        if ( KMessageBox::questionYesNo( this,
+                                         i18np( "Do you really want to delete the selected agent instance?",
+                                                "Do you really want to delete these %1 agent instances?",
+                                                instanceList.size() ),
+                                         i18n( "Multiple Agent Deletion" ),
+                                         KStandardGuiItem::del(),
+                                         KStandardGuiItem::cancel(),
+                                         QString(),
+                                         KMessageBox::Dangerous )
+             == KMessageBox::Yes ) {
+          foreach( const Akonadi::AgentInstance &agent, instanceList )
+              Akonadi::AgentManager::self()->removeInstance( agent );
+          updateButtonState();
+	}
     }
 }
 
