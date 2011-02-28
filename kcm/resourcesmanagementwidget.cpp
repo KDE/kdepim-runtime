@@ -75,12 +75,13 @@ ResourcesManagementWidget::~ResourcesManagementWidget()
 
 void ResourcesManagementWidget::updateButtonState()
 {
-    const Akonadi::AgentInstance current = d->ui.resourcesList->currentAgentInstance();
-    if ( !current.isValid() ) {
+    const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
+    if ( instanceList.isEmpty() ) {
         d->ui.editButton->setEnabled( false );
         d->ui.removeButton->setEnabled( false );
     } else {
-        d->ui.editButton->setEnabled( (d->ui.resourcesList->view()->selectionModel()->selectedRows().size() == 1 ) && !current.type().capabilities().contains( QLatin1String( "NoConfig" ) ) );
+        const Akonadi::AgentInstance current = instanceList.first();
+        d->ui.editButton->setEnabled( !current.type().capabilities().contains( QLatin1String( "NoConfig" ) ) );
         d->ui.removeButton->setEnabled( true );
     }
 }
@@ -104,10 +105,11 @@ void ResourcesManagementWidget::addClicked()
 
 void ResourcesManagementWidget::editClicked()
 {
-    Akonadi::AgentInstance instance = d->ui.resourcesList->currentAgentInstance();
-    if ( instance.isValid() ) {
+    const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
+    if ( !instanceList.isEmpty() && instanceList.first().isValid() ) {
         KWindowSystem::allowExternalProcessWindowActivation();
-        instance.configure( this );
+        Akonadi::AgentInstance instance = instanceList.first();
+	instance.configure( this );
     }
 }
 
