@@ -58,6 +58,7 @@ target_link_libraries(kmail-migrator
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDE4_KDEUI_LIBS}
+  ${KDE4_KIO_LIBS}
   akonadi-filestore
   maildir
   kmindexreader
