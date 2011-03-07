@@ -30,7 +30,7 @@
 #include <QHash>
 
 class AbstractCollectionMigrator;
-class ImapCacheLocalImporter;
+class ImapCacheAdapter;
 class KJob;
 class MixedMaildirStore;
 class OrgKdeAkonadiImapSettingsInterface;
@@ -88,14 +88,17 @@ class KMailMigrator : public KMigratorBase
     void instanceStatusChanged( const Akonadi::AgentInstance &instance );
     void instanceProgressChanged( const Akonadi::AgentInstance &instance );
 
+#if 0
     void imapCacheImportFinished( const Akonadi::AgentInstance &instance, const QString &error );
     void imapCacheCleanupFinished( const Akonadi::AgentInstance &instance );
+#endif
+    void imapCacheAdaptionFinished( int messageType, const QString &message );
 
     void specialColDefaultResourceCheckFinished( const Akonadi::AgentInstance &instance );
 
     void autoSaveCopyResult( KJob* );
 
-    private:
+  private:
     void deleteOldGroup( const QString& );
     void migrateImapAccount( KJob *job, bool disconnected );
     bool migrateCurrentAccount();
@@ -111,7 +114,6 @@ class KMailMigrator : public KMigratorBase
 
     void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
 
-    bool evaluateCacheHandlingOptions();
     void migrateInstanceTrashFolder();
 
     void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,
@@ -136,11 +138,8 @@ class KMailMigrator : public KMigratorBase
     typedef QStringList::iterator AccountIterator;
     AccountIterator mIt;
     Akonadi::AgentInstance mCurrentInstance;
-    bool mDeleteCacheAfterImport;
     MixedMaildirStore *mDImapCache;
     MixedMaildirStore *mImapCache;
-    int mRunningCacheImporterCount;
-    bool mLocalFoldersDone;
 
     struct AccountConfig {
       AccountConfig() : imapAccount( false ), disconnectedImap( false ) { }
@@ -153,7 +152,7 @@ class KMailMigrator : public KMigratorBase
 
     bool mForwardResourceNotifications;
 
-    ImapCacheLocalImporter *mLocalCacheImporter;
+    ImapCacheAdapter *mImapCacheAdapter;
 };
 
 } // namespace KMail
