@@ -168,6 +168,25 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
     kDebug( KDE_DEFAULT_DEBUG_AREA ) << mTagListHash.count() << "items have tags";
   }
 
+  // filter out items we don't process later on
+  const int oldCount = mItems.count();
+
+  Item::List::iterator itemIt = mItems.begin();
+  while ( itemIt != mItems.end() ) {
+    const QString storeRemoteId = (*itemIt).remoteId();
+    if ( mImportCachedMessages ||
+         ( mImportNewMessages && !mUidHash.contains( storeRemoteId ) ) ||
+         mTagListHash.contains( storeRemoteId ) ) {
+      ++itemIt;
+    } else {
+      itemIt = mItems.erase( itemIt );
+    }
+  }
+
+  if ( oldCount != mItems.count() ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "After filtering:" << mItems.count() << "items remaining";
+  }
+
   mItemProgress = -1;
   emit q->progress( 0, mItems.count(), 0 );
   processNextItem();
@@ -194,7 +213,7 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
     return;
   }
 
-  const Item item = mItems.front();
+  Item item = mItems.front();
   mItems.pop_front();
 
   // don't import items that are marked deleted. These come from normal/online IMAP caches
@@ -207,9 +226,30 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
     return;
   }
 
-  FileStore::ItemFetchJob *job = q->store()->fetchItem( item );
-  job->fetchScope().fetchFullPayload( true );
-  connect( job, SIGNAL( result( KJob* ) ), q, SLOT( fetchItemResult( KJob* ) ) );
+  const QString storeRemoteId = item.remoteId();
+  if ( mImportCachedMessages || ( mImportNewMessages && !mUidHash.contains( storeRemoteId ) ) ) {
+    FileStore::ItemFetchJob *job = q->store()->fetchItem( item );
+    job->fetchScope().fetchFullPayload( true );
+    connect( job, SIGNAL( result( KJob* ) ), q, SLOT( fetchItemResult( KJob* ) ) );
+  } else if ( mTagListHash.contains( storeRemoteId ) ) {
+    ItemCreateJob *createJob = 0;
+
+    if ( !mUidHash.contains( storeRemoteId ) ) {
+      item.setRemoteId( QString() );
+      createJob = new ItemCreateJob( item, mCurrentCollection );
+    } else {
+      const QString uid = mUidHash[ storeRemoteId ];
+      item.setRemoteId( uid );
+      createJob = new ItemCreateJob( item, mCurrentCollection, q->hiddenSession() );
+    }
+
+    createJob->setProperty( "storeRemoteId", storeRemoteId );
+    createJob->setProperty( "storeParentCollection", QVariant::fromValue<Collection>( item.parentCollection() ) );
+    connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
+
+  } else {
+    QMetaObject::invokeMethod( q, "processNextItem", Qt::QueuedConnection );
+  }
 }
 
 void ImapCacheCollectionMigrator::Private::processNextDeletedUid()
