@@ -651,7 +651,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   instance.setName( nameAccount );
   emit status( nameAccount );
 
-  ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportCachedMessages;
+  ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportNewMessages;
   if ( disconnected ) {
     const KConfigGroup dimapConfig( KGlobal::config(), QLatin1String( "Disconnected IMAP" ) );
     if ( dimapConfig.isValid() ) {
