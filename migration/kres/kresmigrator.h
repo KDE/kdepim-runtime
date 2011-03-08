@@ -64,13 +64,20 @@ template <typename T> class KResMigrator : public KResMigratorBase
       
       mManager = new KRES::Manager<T>( mType );
       mManager->readConfig();
-      mIt = mManager->begin();
+      {
+        ResourceIterator it = mManager->begin();
+        while( it != mManager->end() ) {
+          mResourcesToMigrate.append( *it );
+          ++it;
+        }
+        mIt = mResourcesToMigrate.begin();
+      }
       migrateNext();
     }
 
     void migrateNext()
     {
-      while ( mIt != mManager->end() ) {
+      while ( mIt != mResourcesToMigrate.end() ) {
         mUnknownTypeResources.remove( (*mIt)->identifier() );
         if ( (*mIt)->type() == "akonadi" ) {
           mClientBridgeIdentifier = (*mIt)->identifier();
@@ -106,8 +113,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         ++mIt;
       }
       if ( !mBridgeType.isEmpty() ) {
-
-        if ( mIt == mManager->end() ) {
+        if ( mIt == mResourcesToMigrate.end() ) {
           migrateBridged();
           if ( mPendingBridgedResources.isEmpty() ) {
             migrateUnknown();
@@ -285,7 +291,8 @@ template <typename T> class KResMigrator : public KResMigratorBase
     KConfig *mConfig;
     KRES::Manager<T> *mManager, *mBridgeManager;
     typedef typename KRES::Manager<T>::Iterator ResourceIterator;
-    ResourceIterator mIt;
+    typename QList<T*>::const_iterator mIt;
+    QList<T*> mResourcesToMigrate;
     bool mClientBridgeFound;
     QString mClientBridgeIdentifier;
     QString mAgentForOldDefaultResource;
