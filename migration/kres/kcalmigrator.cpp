@@ -21,6 +21,7 @@
 
 #include "icalsettings.h"
 #include "birthdayssettings.h"
+#include "davsettings.h"
 
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
@@ -28,6 +29,8 @@
 #include <akonadi/agenttype.h>
 
 #include <KDebug>
+
+#include <QtCore/QString>
 
 using namespace Akonadi;
 
@@ -43,6 +46,8 @@ bool KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
     createAgentInstance( "akonadi_ical_resource", this, SLOT(fileResourceCreated(KJob*)) );
   else if ( res->type() == "birthdays" )
     createAgentInstance( "akonadi_birthdays_resource", this, SLOT(birthdaysResourceCreated(KJob*)) );
+  else if ( res->type() == "groupdav" )
+    createAgentInstance( "akonadi_davgroupware_resource", this, SLOT(davResourceCreated(KJob*)) );
   else
     return false;
   return true;
@@ -100,6 +105,64 @@ void KCalMigrator::birthdaysResourceCreated(KJob* job)
   iface->setFilterOnCategories( kresCfg.readEntry( "UseCategories", false ) );
   iface->setFilterCategories( kresCfg.readEntry( "Categories", QStringList() ) );
   instance.reconfigure();
+  migrationCompleted( instance );
+}
+
+void KCalMigrator::davResourceCreated(KJob *job)
+{
+  if ( job->error() ) {
+    migrationFailed( i18n("Failed to create DAV resource: %1", job->errorText() ) );
+    return;
+  }
+  KCal::ResourceCalendar *res = currentResource();
+  AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
+  const KConfigGroup kresCfg = kresConfig( res );
+  QString name = kresCfg.readEntry( "ResourceName", "Migrated GroupDAV" );
+  instance.setName( name );
+
+  QString groupdavCfgFile = KStandardDirs::locateLocal( "config", "kresources_groupwarerc" );
+  if ( !KStandardDirs::exists( groupdavCfgFile ) ) {
+    migrationFailed( i18n("Failed to find the configuration file for the GroupDAV KResource"), instance );
+    return;
+  }
+
+  KConfig groupdavCfg( groupdavCfgFile );
+  if ( !groupdavCfg.hasGroup( res->identifier() + ":General" ) ) {
+    migrationFailed( i18n("Apparently invalid configuration file for the GroupDAV KResource"), instance );
+    return;
+  }
+  KConfigGroup groupdavGeneralCfg = groupdavCfg.group( res->identifier() + ":General" );
+
+  OrgKdeAkonadiDavGroupwareSettingsInterface *iface =
+    new OrgKdeAkonadiDavGroupwareSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
+                                           "/Settings", QDBusConnection::sessionBus(), this );
+  if ( !iface->isValid() ) {
+    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    delete iface;
+    return;
+  }
+
+  QString user = groupdavGeneralCfg.readEntry( "User" );
+  QString url = groupdavGeneralCfg.readEntry( "Url" );
+  if ( user.isEmpty() || url.isEmpty() ) {
+    migrationFailed( i18n("Empty username or URL in GroupDAV KResource configuration"), instance );
+    delete iface;
+    return;
+  }
+
+  if ( !url.endsWith( "/" ) )
+    url.append( "/" );
+
+  QStringList remoteUrls;
+  remoteUrls << QString( user + "|GroupDav|" + url );
+  kDebug() << name << remoteUrls;
+
+  iface->setDisplayName( name );
+  iface->setRemoteUrls( remoteUrls );
+  iface->writeConfig();
+
+  // Must restart the resource to get the first sync done right
+  instance.restart();
   migrationCompleted( instance );
 }
 
