@@ -70,14 +70,14 @@ template <typename T> class KResMigrator : public KResMigratorBase
           mResourcesToMigrate.append( *it );
           ++it;
         }
-        mIt = mResourcesToMigrate.begin();
+        mIt = mResourcesToMigrate.constBegin();
       }
       migrateNext();
     }
 
     void migrateNext()
     {
-      while ( mIt != mResourcesToMigrate.end() ) {
+      while ( mIt != mResourcesToMigrate.constEnd() ) {
         mUnknownTypeResources.remove( (*mIt)->identifier() );
         if ( (*mIt)->type() == "akonadi" ) {
           mClientBridgeIdentifier = (*mIt)->identifier();
@@ -113,7 +113,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         ++mIt;
       }
       if ( !mBridgeType.isEmpty() ) {
-        if ( mIt == mResourcesToMigrate.end() ) {
+        if ( mIt == mResourcesToMigrate.constEnd() ) {
           migrateBridged();
           if ( mPendingBridgedResources.isEmpty() ) {
             migrateUnknown();
