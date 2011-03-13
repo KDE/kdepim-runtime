@@ -29,7 +29,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavItemsListJob::DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url ), mSubJobCount( 0 )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mSubJobSuccessful( false )
 {
 }
 
@@ -67,7 +67,7 @@ void DavItemsListJob::davJobFinished( KJob *job )
 {
   --mSubJobCount;
 
-  if ( job->error() ) {
+  if ( job->error() && !mSubJobSuccessful ) {
     setError( job->error() );
     setErrorText( job->errorText() );
     if ( mSubJobCount == 0 )
@@ -79,20 +79,25 @@ void DavItemsListJob::davJobFinished( KJob *job )
 
   const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
-  if ( responseCode > 499 && responseCode < 600 ) {
+  if ( responseCode > 499 && responseCode < 600 && !mSubJobSuccessful ) {
     // Server-side error, unrecoverable
     setError( UserDefinedError );
     setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
     if ( mSubJobCount == 0 )
       emitResult();
     return;
-  } else if ( responseCode > 399 && responseCode < 500 ) {
+  } else if ( responseCode > 399 && responseCode < 500 && !mSubJobSuccessful ) {
     // User-side error
     setError( UserDefinedError );
     setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
     if ( mSubJobCount == 0 )
       emitResult();
     return;
+  }
+
+  if ( !mSubJobSuccessful ) {
+    setError( 0 ); // nope, everything went fine
+    mSubJobSuccessful = true;
   }
 
   /*

@@ -47,12 +47,17 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
 {
   --mSubJobCount;
 
-  if ( job->error() ) {
+  if ( job->error() && !mSubJobSuccessful ) {
     setError( job->error() );
     setErrorText( job->errorText() );
     if ( mSubJobCount == 0 )
       emitResult();
     return;
+  }
+
+  if ( !mSubJobSuccessful ) {
+    setError( 0 ); // nope, everything went fine
+    mSubJobSuccessful = true;
   }
 
   DavCollectionsFetchJob *fetchJob = qobject_cast<DavCollectionsFetchJob*>( job );

@@ -72,6 +72,7 @@ class DavCollectionsFetchJob : public KJob
     DavUtils::DavUrl mUrl;
     DavCollection::List mCollections;
     uint mSubJobCount;
+    bool mSubJobSuccessful;
 };
 
 #endif
