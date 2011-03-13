@@ -17,7 +17,6 @@
 */
 
 #include "configdialog.h"
-#include "davutils.h"
 #include "settings.h"
 #include "urlconfigurationdialog.h"
 
@@ -98,7 +97,7 @@ void ConfigDialog::onAddButtonClicked()
     const QString protocolName = DavUtils::protocolName( dlg->protocol() );
 
     addModelRow( protocolName, dlg->remoteUrl() );
-    mAddedUrls << dlg->remoteUrl();
+    mAddedUrls << QPair<QString, DavUtils::Protocol>( dlg->remoteUrl(), DavUtils::Protocol( dlg->protocol() ) );
     checkUserInput();
   }
 
@@ -111,11 +110,11 @@ void ConfigDialog::onRemoveButtonClicked()
   if ( indexes.size() == 0 )
     return;
 
-  // There can be only one (selected row)
-  const QModelIndex index = mModel->index( indexes.at( 0 ).row(), 1 );
+  QString proto = mModel->index( indexes.at( 0 ).row(), 0 ).data().toString();
+  QString url = mModel->index( indexes.at( 0 ).row(), 1 ).data().toString();
 
-  mRemovedUrls << index.data().toString();
-  mModel->removeRow( index.row() );
+  mRemovedUrls << QPair<QString, DavUtils::Protocol>( url, DavUtils::protocolByName( proto ) );
+  mModel->removeRow( indexes.at( 0 ).row() );
 
   checkUserInput();
 }
@@ -126,11 +125,10 @@ void ConfigDialog::onEditButtonClicked()
   if ( indexes.size() == 0 )
     return;
 
-  // There can be only one (selected row)
-  const QModelIndex index = mModel->index( indexes.at( 0 ).row(), 1 );
-  const QString url = index.data().toString();
+  const QString proto = mModel->index( indexes.at( 0 ).row(), 0 ).data().toString();
+  const QString url = mModel->index( indexes.at( 0 ).row(), 1 ).data().toString();
 
-  Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( url );
+  Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( DavUtils::protocolByName( proto ), url );
   if ( !urlConfig )
     return;
 
@@ -148,11 +146,11 @@ void ConfigDialog::onEditButtonClicked()
     urlConfigAccepted->mProtocol = dlg->protocol();
     Settings::self()->newUrlConfiguration( urlConfigAccepted );
 
-    QStandardItem *item = mModel->item( index.row(), 0 ); // Protocol
+    QStandardItem *item = mModel->item( indexes.at( 0 ).row(), 0 ); // Protocol
     item->setData( QVariant::fromValue( DavUtils::protocolName( dlg->protocol() ) ), Qt::DisplayRole );
-    mRemovedUrls << url;
+    mRemovedUrls << QPair<QString, DavUtils::Protocol>( url, DavUtils::protocolByName( proto ) );
 
-    item = mModel->item( index.row(), 1 ); // URL
+    item = mModel->item( indexes.at( 0 ).row(), 1 ); // URL
     item->setData( QVariant::fromValue( dlg->remoteUrl() ), Qt::DisplayRole );
   }
   delete dlg;
@@ -160,8 +158,9 @@ void ConfigDialog::onEditButtonClicked()
 
 void ConfigDialog::onOkClicked()
 {
-  foreach ( const QString &url, mRemovedUrls )
-    Settings::self()->removeUrlConfiguration( url );
+  QPair<QString, DavUtils::Protocol> url;
+  foreach ( url, mRemovedUrls )
+    Settings::self()->removeUrlConfiguration( url.second, url.first );
 
   mManager->updateSettings();
 }
@@ -170,8 +169,9 @@ void ConfigDialog::onCancelClicked()
 {
   mRemovedUrls.clear();
 
-  foreach ( const QString &url, mAddedUrls )
-    Settings::self()->removeUrlConfiguration( url );
+  QPair<QString, DavUtils::Protocol> url;
+  foreach ( url, mAddedUrls )
+    Settings::self()->removeUrlConfiguration( url.second, url.first );
 }
 
 void ConfigDialog::checkConfiguredUrlsButtonsState()

@@ -170,8 +170,8 @@ void DavGroupwareResource::retrieveCollections()
 
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->configuredDavUrls() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveCollectionsFinished( KJob* ) ) );
-  connect( job, SIGNAL( collectionDiscovered( const QString&, const QString& ) ),
-           SLOT( onCollectionDiscovered( const QString&, const QString& ) ) );
+  connect( job, SIGNAL( collectionDiscovered( int, const QString&, const QString& ) ),
+           SLOT( onCollectionDiscovered( int, const QString&, const QString& ) ) );
   job->start();
 }
 
@@ -703,9 +703,9 @@ void DavGroupwareResource::onItemRemovedFinished( KJob *job )
   changeProcessed();
 }
 
-void DavGroupwareResource::onCollectionDiscovered( const QString &collection, const QString &config )
+void DavGroupwareResource::onCollectionDiscovered( int protocol, const QString &collection, const QString &config )
 {
-  Settings::self()->addCollectionUrlMapping( collection, config );
+  Settings::self()->addCollectionUrlMapping( DavUtils::Protocol( protocol ), collection, config );
 }
 
 bool DavGroupwareResource::configurationIsValid()

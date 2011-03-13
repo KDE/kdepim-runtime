@@ -260,7 +260,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol( mUrl.protocol() )->collectionContentTypes( propstatElement );
 
     mCollections << DavCollection( mUrl.protocol(), url.prettyUrl(), displayName, contentTypes );
-    emit collectionDiscovered( url.prettyUrl(), jobUrl );
+    emit collectionDiscovered( mUrl.protocol(), url.prettyUrl(), jobUrl );
 
     responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
   }

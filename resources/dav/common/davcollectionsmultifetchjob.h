@@ -63,7 +63,7 @@ class DavCollectionsMultiFetchJob : public KJob
      * @param collectionUrl The URL of the discovered collection
      * @param configuredUrl The URL given to the job
      */
-    void collectionDiscovered( const QString &collectionUrl, const QString &configuredUrl );
+    void collectionDiscovered( int protocol, const QString &collectionUrl, const QString &configuredUrl );
 
   private Q_SLOTS:
     void davJobFinished( KJob* );

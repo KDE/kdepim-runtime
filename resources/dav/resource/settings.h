@@ -63,7 +63,7 @@ class Settings : public SettingsBase
      * Creates and returns the DavUrl that corresponds to the configuration for searchUrl.
      * If finalUrl is supplied, then it will be used in the returned object instead of the searchUrl.
      */
-    DavUtils::DavUrl configuredDavUrl( const QString &searchUrl, const QString &finalUrl = QString() );
+    DavUtils::DavUrl configuredDavUrl( DavUtils::Protocol protocol, const QString &searchUrl, const QString &finalUrl = QString() );
 
 	/**
 	 * Creates and return the DavUrl from the configured URL that has a mapping with @p collectionUrl.
@@ -78,14 +78,14 @@ class Settings : public SettingsBase
      * URL configured by the user. A mapping here means that the collectionUrl has
      * been discovered by a DavCollectionsFetchJob on the configuredUrl.
      */
-    void addCollectionUrlMapping( const QString &collectionUrl, const QString &configuredUrl );
+    void addCollectionUrlMapping( DavUtils::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl );
 
     void newUrlConfiguration( UrlConfiguration *urlConfig );
-    void removeUrlConfiguration( const QString &url );
-    UrlConfiguration * urlConfiguration( const QString &url );
+    void removeUrlConfiguration( DavUtils::Protocol protocol, const QString &url );
+    UrlConfiguration * urlConfiguration( DavUtils::Protocol protocol, const QString &url );
 
-    DavUtils::Protocol protocol( const QString &url ) const;
-    QString username( const QString &url ) const;
+    //DavUtils::Protocol protocol( const QString &url ) const;
+    QString username( DavUtils::Protocol protocol, const QString &url ) const;
 
   private:
     void updateRemoteUrls();

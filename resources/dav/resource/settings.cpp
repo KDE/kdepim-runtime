@@ -100,7 +100,8 @@ Settings::Settings()
 
   foreach ( const QString &serializedUrl, remoteUrls() ) {
     UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
-    mUrls[ urlConfig->mUrl ] = urlConfig;
+    QString key = urlConfig->mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
+    mUrls[ key ] = urlConfig;
   }
 }
 
@@ -125,13 +126,14 @@ DavUtils::DavUrl::List Settings::configuredDavUrls()
 
   while ( it.hasNext() ) {
     it.next();
-    davUrls << configuredDavUrl( it.key() );
+    QStringList split = it.key().split( "," );
+    davUrls << configuredDavUrl( DavUtils::protocolByName( split.at( 1 ) ), split.at( 0 ) );
   }
 
   return davUrls;
 }
 
-DavUtils::DavUrl Settings::configuredDavUrl( const QString &searchUrl, const QString &finalUrl )
+DavUtils::DavUrl Settings::configuredDavUrl( DavUtils::Protocol proto, const QString &searchUrl, const QString &finalUrl )
 {
   KUrl fullUrl;
 
@@ -140,10 +142,10 @@ DavUtils::DavUrl Settings::configuredDavUrl( const QString &searchUrl, const QSt
   else
     fullUrl = searchUrl;
 
-  const QString user = username( searchUrl );
+  const QString user = username( proto, searchUrl );
   fullUrl.setUser( user );
 
-  return DavUtils::DavUrl( fullUrl, protocol( searchUrl ) );
+  return DavUtils::DavUrl( fullUrl, proto );
 }
 
 DavUtils::DavUrl Settings::davUrlFromCollectionUrl( const QString &collectionUrl, const QString &finalUrl )
@@ -152,15 +154,18 @@ DavUtils::DavUrl Settings::davUrlFromCollectionUrl( const QString &collectionUrl
   QString targetUrl = finalUrl.isEmpty() ? collectionUrl : finalUrl;
 
   if ( mCollectionsUrlsMapping.contains( collectionUrl ) ) {
-    davUrl = configuredDavUrl( mCollectionsUrlsMapping[ collectionUrl ], targetUrl );
+    QStringList split = mCollectionsUrlsMapping[ collectionUrl ].split( "," );
+    if ( split.size() == 2 )
+      davUrl = configuredDavUrl( DavUtils::protocolByName( split.at( 1 ) ), split.at( 0 ), targetUrl );
   }
 
   return davUrl;
 }
 
-void Settings::addCollectionUrlMapping( const QString &collectionUrl, const QString &configuredUrl )
+void Settings::addCollectionUrlMapping( DavUtils::Protocol proto, const QString &collectionUrl, const QString &configuredUrl )
 {
-  mCollectionsUrlsMapping.insert( collectionUrl, configuredUrl );
+  QString value = configuredUrl + "," + DavUtils::protocolName( proto );
+  mCollectionsUrlsMapping.insert( collectionUrl, value );
 
   // Update the settings now
   QMap<QString, QString> tmp( mCollectionsUrlsMapping );
@@ -172,46 +177,53 @@ void Settings::addCollectionUrlMapping( const QString &collectionUrl, const QStr
 
 void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
 {
-  if ( mUrls.contains( urlConfig->mUrl ) ) {
-    removeUrlConfiguration( urlConfig->mUrl );
-    updateRemoteUrls();
+  QString key = urlConfig->mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
+
+  if ( mUrls.contains( key ) ) {
+    removeUrlConfiguration( DavUtils::Protocol( urlConfig->mProtocol ), urlConfig->mUrl );
   }
 
-  mUrls[ urlConfig->mUrl ] = urlConfig;
+  mUrls[ key ] = urlConfig;
   updateRemoteUrls();
 }
 
-void Settings::removeUrlConfiguration( const QString &url )
+void Settings::removeUrlConfiguration( DavUtils::Protocol proto, const QString &url )
 {
-  if ( !mUrls.contains( url ) )
+  QString key = url + "," + DavUtils::protocolName( proto );
+
+  if ( !mUrls.contains( key ) )
     return;
 
-  delete mUrls[ url ];
-  mUrls.remove( url );
+  delete mUrls[ key ];
+  mUrls.remove( key );
   updateRemoteUrls();
 }
 
-Settings::UrlConfiguration * Settings::urlConfiguration( const QString &url )
+Settings::UrlConfiguration * Settings::urlConfiguration( DavUtils::Protocol proto, const QString &url )
 {
+  QString key = url + "," + DavUtils::protocolName( proto );
+
   UrlConfiguration *ret = 0;
-  if ( mUrls.contains( url ) )
-    ret = mUrls[url];
+  if ( mUrls.contains( key ) )
+    ret = mUrls[ key ];
 
   return ret;
 }
 
-DavUtils::Protocol Settings::protocol( const QString &url ) const
-{
-  if ( mUrls.contains( url ) )
-    return DavUtils::Protocol( mUrls[ url ]->mProtocol );
-  else
-    return DavUtils::CalDav;
-}
+// DavUtils::Protocol Settings::protocol( const QString &url ) const
+// {
+//   if ( mUrls.contains( url ) )
+//     return DavUtils::Protocol( mUrls[ url ]->mProtocol );
+//   else
+//     return DavUtils::CalDav;
+// }
 
-QString Settings::username( const QString &url ) const
+QString Settings::username( DavUtils::Protocol proto, const QString &url ) const
 {
-  if ( mUrls.contains( url ) )
-    return mUrls[ url ]->mUser;
+  QString key = url + "," + DavUtils::protocolName( proto );
+
+  if ( mUrls.contains( key ) )
+    return mUrls[ key ]->mUser;
   else
     return QString();
 }

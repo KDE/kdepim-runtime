@@ -21,9 +21,13 @@
 
 #include "ui_configdialog.h"
 
+#include "davutils.h"
+
 #include <kdialog.h>
 
-#include <QtCore/QStringList>
+#include <QtCore/QList>
+#include <QtCore/QPair>
+#include <QtCore/QString>
 
 class KConfigDialogManager;
 class QStandardItemModel;
@@ -50,8 +54,8 @@ class ConfigDialog : public KDialog
 
     Ui::ConfigDialog mUi;
     KConfigDialogManager *mManager;
-    QStringList mAddedUrls;
-    QStringList mRemovedUrls;
+    QList< QPair<QString, DavUtils::Protocol> > mAddedUrls;
+    QList< QPair<QString, DavUtils::Protocol> > mRemovedUrls;
     QStandardItemModel *mModel;
 };
 
