@@ -250,6 +250,18 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       url = tmpUrl;
     }
 
+    // don't add this resource if it has already been detected
+    bool alreadySeen = false;
+    foreach ( const DavCollection &seen, mCollections ) {
+      kDebug() << seen.url() << url.prettyUrl();
+      if ( seen.url() == url.prettyUrl() )
+        alreadySeen = true;
+    }
+    if ( alreadySeen ) {
+      responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
+      continue;
+    }
+
     // extract display name
     const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
     const QDomElement displaynameElement = DavUtils::firstChildElementNS( propElement, "DAV:", "displayname" );
