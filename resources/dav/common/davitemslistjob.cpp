@@ -67,9 +67,11 @@ void DavItemsListJob::davJobFinished( KJob *job )
 {
   --mSubJobCount;
 
-  if ( job->error() && !mSubJobSuccessful ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+  if ( job->error() ) {
+    if ( !mSubJobSuccessful ) {
+      setError( job->error() );
+      setErrorText( job->errorText() );
+    }
     if ( mSubJobCount == 0 )
       emitResult();
     return;
@@ -79,17 +81,21 @@ void DavItemsListJob::davJobFinished( KJob *job )
 
   const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
-  if ( responseCode > 499 && responseCode < 600 && !mSubJobSuccessful ) {
+  if ( responseCode > 499 && responseCode < 600 ) {
     // Server-side error, unrecoverable
-    setError( UserDefinedError );
-    setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
+    if ( !mSubJobSuccessful ) {
+      setError( UserDefinedError );
+      setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
+    }
     if ( mSubJobCount == 0 )
       emitResult();
     return;
-  } else if ( responseCode > 399 && responseCode < 500 && !mSubJobSuccessful ) {
+  } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
-    setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
+    if ( !mSubJobSuccessful ) {
+      setError( UserDefinedError );
+      setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
+    }
     if ( mSubJobCount == 0 )
       emitResult();
     return;

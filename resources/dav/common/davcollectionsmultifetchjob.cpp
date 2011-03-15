@@ -47,9 +47,11 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
 {
   --mSubJobCount;
 
-  if ( job->error() && !mSubJobSuccessful ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+  if ( job->error() ) {
+    if ( !mSubJobSuccessful ) {
+      setError( job->error() );
+      setErrorText( job->errorText() );
+    }
     if ( mSubJobCount == 0 )
       emitResult();
     return;
