@@ -53,6 +53,7 @@ set( davgroupwareresource_SRCS
   ../common/davmanager.cpp
   ../common/davmultigetprotocol.cpp
   ../common/davprincipalhomesetsfetchjob.cpp
+  ../common/davprincipalsearchjob.cpp
   ../common/davutils.cpp
   ../common/etagcache.cpp
 
@@ -61,6 +62,7 @@ set( davgroupwareresource_SRCS
   ../protocols/groupdavprotocol.cpp
 
   configdialog.cpp
+  davfreebusyhandler.cpp
   davgroupwareresource.cpp
   davprotocolattribute.cpp
   setupwizard.cpp
@@ -97,6 +99,7 @@ target_link_libraries(akonadi_davgroupware_resource
                       ${KDE4_KDECORE_LIBS}
                       ${KDE4_KIO_LIBS}
                       ${KDEPIMLIBS_AKONADI_LIBS}
+                      ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
                       ${KDEPIMLIBS_KABC_LIBS}
                       ${KDEPIMLIBS_KCALCORE_LIBS})
 

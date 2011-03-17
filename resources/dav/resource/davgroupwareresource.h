@@ -22,11 +22,16 @@
 #include "etagcache.h"
 
 #include <akonadi/resourcebase.h>
+#include <akonadi/kcal/freebusyproviderbase.h>
+
+class DavFreeBusyHandler;
+class KDateTime;
 
 #include <QtCore/QStringList>
 
 class DavGroupwareResource : public Akonadi::ResourceBase,
-                            public Akonadi::AgentBase::Observer
+                             public Akonadi::AgentBase::Observer,
+                             public Akonadi::FreeBusyProviderBase
 {
   Q_OBJECT
 
@@ -36,6 +41,10 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
 
     virtual void collectionRemoved( const Akonadi::Collection &collection );
     virtual void cleanup();
+
+    virtual KDateTime lastCacheUpdate() const;
+    virtual void canHandleFreeBusy( const QString &email ) const;
+    virtual void retrieveFreeBusy( const QString &email, const KDateTime &start, const KDateTime &end );
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
@@ -54,6 +63,9 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
 
   private Q_SLOTS:
     void onCollectionRemovedFinished( KJob* );
+
+    void onHandlesFreeBusy( const QString &email, bool handles );
+    void onFreeBusyRetrieved( const QString &email, const QString &freeBusy, bool success, const QString &errorText );
 
     void onRetrieveCollectionsFinished( KJob* );
     void onRetrieveItemsFinished( KJob* );
@@ -86,6 +98,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     Akonadi::Collection mDavCollectionRoot;
     EtagCache mEtagCache;
     QStringList mCollectionsWithTemporaryError;
+    DavFreeBusyHandler *mFreeBusyHandler;
 };
 
 #endif

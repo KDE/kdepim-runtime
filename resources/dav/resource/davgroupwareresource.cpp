@@ -22,6 +22,7 @@
 #include "davcollectiondeletejob.h"
 #include "davcollectionsfetchjob.h"
 #include "davcollectionsmultifetchjob.h"
+#include "davfreebusyhandler.h"
 #include "davitemcreatejob.h"
 #include "davitemdeletejob.h"
 #include "davitemfetchjob.h"
@@ -35,9 +36,11 @@
 #include "settingsadaptor.h"
 #include "setupwizard.h"
 
+#include <kcalcore/freebusy.h>
 #include <kcalcore/incidence.h>
 #include <kcalcore/icalformat.h>
 #include <kcalcore/todo.h>
+#include <kdatetime.h>
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
@@ -58,7 +61,7 @@ using namespace Akonadi;
 typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 
 DavGroupwareResource::DavGroupwareResource( const QString &id )
-  : ResourceBase( id )
+  : ResourceBase( id ), FreeBusyProviderBase()
 {
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
   AttributeFactory::registerAttribute<DavProtocolAttribute>();
@@ -90,10 +93,15 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
 
   Settings::self()->setWinId( winIdForDialogs() );
+
+  mFreeBusyHandler = new DavFreeBusyHandler( this );
+  connect( mFreeBusyHandler, SIGNAL( handlesFreeBusy(QString,bool)), this, SLOT( onHandlesFreeBusy(QString,bool)) );
+  connect( mFreeBusyHandler, SIGNAL( freeBusyRetrieved(QString,QString,bool,QString)), this, SLOT( onFreeBusyRetrieved(QString,QString,bool,QString)) );
 }
 
 DavGroupwareResource::~DavGroupwareResource()
 {
+  delete mFreeBusyHandler;
 }
 
 void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collection )
@@ -122,6 +130,37 @@ void DavGroupwareResource::cleanup()
 {
   Settings::self()->cleanup();
   Akonadi::AgentBase::cleanup();
+}
+
+KDateTime DavGroupwareResource::lastCacheUpdate() const
+{
+  return KDateTime::currentLocalDateTime();
+}
+
+void DavGroupwareResource::canHandleFreeBusy( const QString& email ) const
+{
+  if ( !isOnline() )
+    handlesFreeBusy( email, false );
+  else
+    mFreeBusyHandler->canHandleFreeBusy( email );
+}
+
+void DavGroupwareResource::onHandlesFreeBusy( const QString &email, bool handles )
+{
+  handlesFreeBusy( email, handles );
+}
+
+void DavGroupwareResource::retrieveFreeBusy( const QString& email, const KDateTime& start, const KDateTime& end )
+{
+  if ( !isOnline() )
+    freeBusyRetrieved( email, QString(), false, i18n( "Unable to retrieve free-busy info while offline" ) );
+  else
+    mFreeBusyHandler->retrieveFreeBusy( email, start, end );
+}
+
+void DavGroupwareResource::onFreeBusyRetrieved( const QString& email, const QString& freeBusy, bool success, const QString &errorText )
+{
+  freeBusyRetrieved( email, freeBusy, success, errorText );
 }
 
 void DavGroupwareResource::configure( WId windowId )

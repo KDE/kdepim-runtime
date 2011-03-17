@@ -67,7 +67,7 @@ class DavFreeBusyHandler : public QObject
     /**
      * Emitted once the free-busy has been retrieved
      */
-    void freeBusyRetrieved( const QString &email, bool success, const QString &freeBusy );
+    void freeBusyRetrieved( const QString &email, const QString &freeBusy, bool success, const QString &errorText );
 
   private slots:
     void onPrincipalSearchJobFinished( KJob *job );
