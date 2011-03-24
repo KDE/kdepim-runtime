@@ -63,6 +63,8 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
   AttributeFactory::registerAttribute<DavProtocolAttribute>();
 
+  setNeedsNetwork( true );
+
   mDavCollectionRoot.setParentCollection( Collection::root() );
   mDavCollectionRoot.setName( identifier() );
   mDavCollectionRoot.setRemoteId( identifier() );
