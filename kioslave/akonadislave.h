@@ -22,6 +22,11 @@
 
 #include <kio/slavebase.h>
 
+namespace Akonadi {
+class Item;
+class Collection;
+}
+
 class AkonadiSlave : public KIO::SlaveBase
 {
   public:
@@ -47,6 +52,10 @@ class AkonadiSlave : public KIO::SlaveBase
      * Reimplemented from SlaveBase
      */
     virtual void del( const KUrl &url, bool isFile );
+
+  private:
+    static KIO::UDSEntry entryForItem( const Akonadi::Item &item );
+    static KIO::UDSEntry entryForCollection( const Akonadi::Collection &collection );
 };
 
 #endif

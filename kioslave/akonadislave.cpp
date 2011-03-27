@@ -25,11 +25,14 @@
 #include <akonadi/collection.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectiondeletejob.h>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kdebug.h>
 #include <klocale.h>
+
+#include <QDateTime>
 
 extern "C" { int KDE_EXPORT kdemain(int argc, char **argv); }
 
@@ -113,12 +116,7 @@ void AkonadiSlave::stat(const KUrl & url)
         collection = job->collections().first();
       }
 
-      KIO::UDSEntry entry;
-      entry.insert( KIO::UDSEntry::UDS_NAME, collection.name()  );
-      entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType() );
-      entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR );
-      entry.insert( KIO::UDSEntry::UDS_URL, url.url() );
-      statEntry( entry );
+      statEntry( entryForCollection( collection ) );
       finished();
   }
   // Stats for an item
@@ -137,12 +135,7 @@ void AkonadiSlave::stat(const KUrl & url)
     }
 
     const Item item = job->items().first();
-    KIO::UDSEntry entry;
-    entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.id() ) );
-    entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
-    entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG );
-
-    statEntry( entry );
+    statEntry( entryForItem( item ) );
     finished();
   }
 }
@@ -194,18 +187,8 @@ void AkonadiSlave::listDir( const KUrl &url )
   }
 
   Collection::List collections = job->collections();
-
-  KIO::UDSEntry entry;
   foreach( const Collection &col, collections )
-  {
-    kDebug( 7129 ) <<"Collection (" << col.id() <<"," << col.name() <<")";
-    entry.clear();
-    entry.insert( KIO::UDSEntry::UDS_NAME, col.name() );
-    entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType() );
-    entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR );
-    entry.insert( KIO::UDSEntry::UDS_URL, col.url().url() );
-    listEntry( entry, false );
-  }
+    listEntry( entryForCollection( col ), false );
 
   // Fetching items
   if ( collection != Collection::root() ) {
@@ -217,18 +200,39 @@ void AkonadiSlave::listDir( const KUrl &url )
     Item::List items = fjob->items();
     totalSize( collections.count() + items.count() );
     foreach( const Item &item, items )
-    {
-      kDebug( 7129 ) <<"Item (" << item.id()  <<")";
-      entry.clear();
-      entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.id() ) );
-      entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
-      entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG );
-      entry.insert( KIO::UDSEntry::UDS_URL, item.url().url() );
-      listEntry( entry, false );
-    }
+      listEntry( entryForItem( item ), false );
   }
 
-  listEntry( entry, true );
+  listEntry( KIO::UDSEntry(), true );
   finished();
 }
 
+KIO::UDSEntry AkonadiSlave::entryForItem(const Akonadi::Item& item)
+{
+  KIO::UDSEntry entry;
+  entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.id() ) );
+  entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
+  entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG );
+  entry.insert( KIO::UDSEntry::UDS_URL, item.url().url() );
+  entry.insert( KIO::UDSEntry::UDS_SIZE, item.size() );
+  entry.insert( KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH );
+  entry.insert( KIO::UDSEntry::UDS_MODIFICATION_TIME, item.modificationTime().toTime_t() );
+  return entry;
+}
+
+KIO::UDSEntry AkonadiSlave::entryForCollection(const Akonadi::Collection& collection)
+{
+  KIO::UDSEntry entry;
+  entry.insert( KIO::UDSEntry::UDS_NAME, collection.name()  );
+  entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType() );
+  entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR );
+  entry.insert( KIO::UDSEntry::UDS_URL, collection.url().url() );
+  entry.insert( KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH );
+  if ( EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>() ) {
+    if ( !attr->iconName().isEmpty() )
+      entry.insert( KIO::UDSEntry::UDS_ICON_NAME, attr->iconName() );
+    if ( !attr->displayName().isEmpty() )
+      entry.insert( KIO::UDSEntry::UDS_DISPLAY_NAME, attr->displayName() );
+  }
+  return entry;
+}
