@@ -260,6 +260,7 @@ ConnectionPage::ConnectionPage( QWidget *parent )
   layout->addRow( i18n( "Host" ), mHost );
 
   mUseSecureConnection = new QCheckBox( i18n( "Use secure connection" ) );
+  mUseSecureConnection->setChecked( true );
   layout->addRow( QString(), mUseSecureConnection );
 
   registerField( "connectionHost*", mHost );
