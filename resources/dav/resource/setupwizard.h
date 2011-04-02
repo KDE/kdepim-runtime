@@ -30,6 +30,7 @@ class KTextBrowser;
 
 class QButtonGroup;
 class QCheckBox;
+class QLabel;
 class QRadioButton;
 
 class SetupWizard : public QWizard
@@ -68,11 +69,18 @@ class ServerTypePage : public QWizardPage
 
 class ConnectionPage : public QWizardPage
 {
+  Q_OBJECT
+
   public:
     ConnectionPage( QWidget *parent = 0 );
 
+  private slots:
+    void urlElementChanged();
+
   private:
     KLineEdit *mHost;
+    KLineEdit *mPath;
+    QLabel *mFullUrlPreview;
     QCheckBox *mUseSecureConnection;
 };
 

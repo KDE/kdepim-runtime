@@ -30,6 +30,7 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
@@ -70,6 +71,14 @@ static QString settingsToUrl( const QWizard *wizard )
     pathPattern = "/principals/users/$user$/";
 
   pathPattern.replace( "$user$", wizard->field( "credentialsUserName" ).toString() );
+
+  QString localPath = wizard->field( "installationPath" ).toString();
+  if ( !localPath.isEmpty() ) {
+    if ( !localPath.startsWith( "/" ) )
+      pathPattern.prepend( "/" + localPath );
+    else
+      pathPattern.prepend( localPath );
+  }
 
   QUrl url;
   if ( wizard->field( "connectionUseSecureConnection" ).toBool() )
@@ -259,12 +268,31 @@ ConnectionPage::ConnectionPage( QWidget *parent )
   mHost->setValidator( new QRegExpValidator( hostnameRegexp, this ) );
   layout->addRow( i18n( "Host" ), mHost );
 
+  mPath = new KLineEdit;
+  layout->addRow( i18n( "Installation path" ), mPath );
+
   mUseSecureConnection = new QCheckBox( i18n( "Use secure connection" ) );
   mUseSecureConnection->setChecked( true );
   layout->addRow( QString(), mUseSecureConnection );
 
+  mFullUrlPreview = new QLabel;
+  layout->addRow( i18n( "Final URL" ), mFullUrlPreview );
+
+  connect( mHost, SIGNAL(textChanged(QString)), this, SLOT(urlElementChanged()) );
+  connect( mPath, SIGNAL(textChanged(QString)), this, SLOT(urlElementChanged()) );
+  connect( mUseSecureConnection, SIGNAL(toggled(bool)), this, SLOT(urlElementChanged()) );
+
   registerField( "connectionHost*", mHost );
+  registerField( "installationPath", mPath );
   registerField( "connectionUseSecureConnection", mUseSecureConnection );
+}
+
+void ConnectionPage::urlElementChanged()
+{
+  if ( mHost->text().isEmpty() )
+    return;
+
+  mFullUrlPreview->setText( settingsToUrl( this->wizard() ) );
 }
 
 CredentialsPage::CredentialsPage( QWidget *parent )
