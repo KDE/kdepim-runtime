@@ -86,8 +86,16 @@ static QString settingsToUrl( const QWizard *wizard )
   else
     url.setScheme( "http" );
 
-  url.setHost( wizard->field( "connectionHost" ).toString() );
+  QString host = wizard->field( "connectionHost" ).toString();
+  QStringList hostParts = host.split( ':' );
+  url.setHost( hostParts.at( 0 ) );
   url.setPath( pathPattern );
+
+  if ( hostParts.size() == 2 ) {
+    int port = hostParts.at( 1 ).toInt();
+    if ( port )
+      url.setPort( port );
+  }
 
   return url.toString();
 }
@@ -263,7 +271,7 @@ ConnectionPage::ConnectionPage( QWidget *parent )
 
   QFormLayout *layout = new QFormLayout( this );
 
-  QRegExp hostnameRegexp( "^[a-z0-9][.a-z0-9-]*[a-z0-9]$" );
+  QRegExp hostnameRegexp( "^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$" );
   mHost = new KLineEdit;
   mHost->setValidator( new QRegExpValidator( hostnameRegexp, this ) );
   layout->addRow( i18n( "Host" ), mHost );
@@ -275,7 +283,7 @@ ConnectionPage::ConnectionPage( QWidget *parent )
   mUseSecureConnection->setChecked( true );
   layout->addRow( QString(), mUseSecureConnection );
 
-  mFullUrlPreview = new QLabel;
+  mFullUrlPreview = new QLabel( "-" );
   layout->addRow( i18n( "Final URL" ), mFullUrlPreview );
 
   connect( mHost, SIGNAL(textChanged(QString)), this, SLOT(urlElementChanged()) );
@@ -290,9 +298,9 @@ ConnectionPage::ConnectionPage( QWidget *parent )
 void ConnectionPage::urlElementChanged()
 {
   if ( mHost->text().isEmpty() )
-    return;
-
-  mFullUrlPreview->setText( settingsToUrl( this->wizard() ) );
+    mFullUrlPreview->setText( "-" );
+  else
+    mFullUrlPreview->setText( settingsToUrl( this->wizard() ) );
 }
 
 CredentialsPage::CredentialsPage( QWidget *parent )
