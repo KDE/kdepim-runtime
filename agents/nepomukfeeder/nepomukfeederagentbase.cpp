@@ -49,6 +49,7 @@
 #include <KMessageBox>
 #include <KStandardDirs>
 #include <KIdleTime>
+#include <KNotification>
 
 #include <Soprano/Vocabulary/NAO>
 
@@ -412,7 +413,7 @@ void NepomukFeederAgentBase::selfTest()
   emit status( Broken, i18n( "Nepomuk not operational" ) );
   if ( !QDBusConnection::sessionBus().registerService( QLatin1String( "org.kde.pim.nepomukfeeder.selftestreport" ) ) )
     return;
-  KMessageBox::error( 0, message, i18n( "Nepomuk Indexing Disabled" ), KMessageBox::Notify | KMessageBox::AllowLink );
+  KNotification::event( KNotification::Warning, i18n( "Nepomuk Indexing Disabled" ), message );
   QDBusConnection::sessionBus().unregisterService( QLatin1String( "org.kde.pim.nepomukfeeder.selftestreport" ) );
 }
 
