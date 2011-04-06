@@ -29,6 +29,8 @@
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/itemmovejob.h>
+#include <akonadi/collectionfetchjob.h>
+#include <akonadi/collection.h>
 #include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/kmime/specialmailcollections.h>
@@ -79,6 +81,7 @@ class SendJob::Private
     void doTraditionalTransport();
     void doPostJob( bool transportSuccess, const QString &transportMessage );
     void storeResult( bool success, const QString &message = QString() );
+    void abortPostJob();
 
     // slots
     void doTransport();
@@ -88,6 +91,7 @@ class SendJob::Private
     void resourceResult( qlonglong itemId, int result, const QString &message );
     void postJobResult( KJob *job );
     void doEmitResult( KJob *job );
+    void slotSentMailCollectionFetched( KJob *job );
 };
 
 
@@ -241,6 +245,16 @@ void SendJob::Private::resourceResult( qlonglong itemId, int result,
   doPostJob( success, message );
 }
 
+void SendJob::Private::abortPostJob()
+{
+  // We were unlucky and LocalFolders is recreating its stuff right now.
+  // We will not wait for it.
+  kWarning() << "Default sent mail collection unavailable, not moving the mail after sending.";
+  q->setError( UserDefinedError );
+  q->setErrorText( i18n( "Default sent-mail folder unavailable. Keeping message in outbox." ) );
+  storeResult( false, q->errorString() );
+}
+
 void SendJob::Private::doPostJob( bool transportSuccess, const QString &transportMessage )
 {
   kDebug() << "success" << transportSuccess << "message" << transportMessage;
@@ -266,31 +280,38 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
       currentJob = new ItemDeleteJob( item );
       QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
     } else {
-      Collection moveTo( attribute->moveToCollection() );
       if ( attribute->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection ) {
-        if ( !SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
-          // We were unlucky and LocalFolders is recreating its stuff right now.
-          // We will not wait for it.
-          moveTo = Collection();
+        if ( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
+          currentJob = new ItemMoveJob( item, SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail ) , q );
+          QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
         } else {
-          moveTo = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail );
+          abortPostJob();
         }
       } else {
         kDebug() << "sentBehaviour=" << attribute->sentBehaviour() << "using collection from attribute";
-      }
-
-      kDebug() << "Moving to sent-mail collection with id" << moveTo.id();
-      if ( !moveTo.isValid() ) {
-        q->setError( UserDefinedError );
-        q->setErrorText( i18n( "Invalid sent-mail folder. Keeping message in outbox." ) );
-        storeResult( false, q->errorString() );
-      } else {
-        Q_ASSERT( currentJob == 0 );
-        currentJob = new ItemMoveJob( item, moveTo, q );
-        QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
+        currentJob = new CollectionFetchJob( attribute->moveToCollection(), Akonadi::CollectionFetchJob::Base );
+        QObject::connect( currentJob, SIGNAL( result( KJob* ) ),
+                          q, SLOT( slotSentMailCollectionFetched( KJob* ) ) );
       }
     }
   }
+}
+
+void SendJob::Private::slotSentMailCollectionFetched(KJob* job)
+{
+  Akonadi::Collection fetchCol;
+  if( job->error() ) {
+    if ( !SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
+      abortPostJob();
+      return;
+    }
+    fetchCol = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail );
+  } else {
+    const CollectionFetchJob *const fetchJob = qobject_cast<CollectionFetchJob*>( job );
+    fetchCol = fetchJob->collections().first();
+  }
+  currentJob = new ItemMoveJob( item, fetchCol, q );
+  QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
 }
 
 void SendJob::Private::postJobResult( KJob *job )

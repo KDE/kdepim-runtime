@@ -83,6 +83,7 @@ class SendJob : public KJob
     Q_PRIVATE_SLOT( d, void resourceResult( qlonglong, int, const QString& ) )
     Q_PRIVATE_SLOT( d, void postJobResult( KJob* ) )
     Q_PRIVATE_SLOT( d, void doEmitResult( KJob* ) )
+    Q_PRIVATE_SLOT( d, void slotSentMailCollectionFetched( KJob* ) )
     //@endcond
 };
 
