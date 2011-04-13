@@ -68,6 +68,7 @@ if (NOT WINCE)
   add_subdirectory( mbox )
   add_subdirectory( nntp )
   add_subdirectory( vcarddir )
+else (NOT WINCE)
   add_subdirectory( agentserver )
 endif (NOT WINCE)
 
