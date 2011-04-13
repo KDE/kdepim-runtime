@@ -196,8 +196,10 @@ void KMailMigrator::migrate()
 
 void KMailMigrator::autoSaveCopyResult( KJob *job )
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "error=" << job->error()
-    << "text=" << job->errorString();
+  if ( job->error() ) {
+    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "error=" << job->error()
+      << "text=" << job->errorString();
+  }
 }
 
 void KMailMigrator::deleteOldGroup()
