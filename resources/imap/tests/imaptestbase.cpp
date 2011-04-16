@@ -69,7 +69,7 @@ QList<QByteArray> ImapTestBase::defaultAuthScenario() const
   QList<QByteArray> scenario;
 
   scenario << FakeServer::greeting()
-           << "C: A000001 LOGIN test@kdab.com foobar"
+           << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
            << "S: A000001 OK User Logged in";
 
   return scenario;

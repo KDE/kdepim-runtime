@@ -46,7 +46,7 @@ private slots:
     requester = createDefaultRequester();
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 OK User Logged in"
              << "C: A000002 CAPABILITY"
              << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE"
@@ -66,7 +66,7 @@ private slots:
     requester = createDefaultRequester();
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 OK User Logged in"
              << "C: A000002 CAPABILITY"
              << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -83,7 +83,7 @@ private slots:
     requester = createDefaultRequester();
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 OK User Logged in"
              << "C: A000002 CAPABILITY"
              << "S: * CAPABILITY IMAP4 IDLE"
@@ -108,7 +108,7 @@ private slots:
     requester->setScenario( requests, results );
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 NO Login failed"
              << "C: A000002 LOGOUT";
     password = "foobar";
@@ -126,9 +126,9 @@ private slots:
     requester->setScenario( requests, results );
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 NO Login failed"
-             << "C: A000002 LOGIN test@kdab.com foobar"
+             << "C: A000002 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000002 OK Login succeeded"
              << "C: A000003 CAPABILITY"
              << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -149,7 +149,7 @@ private slots:
     requester->setScenario( requests, results );
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 NO Login failed"
              << "C: A000002 LOGOUT";
     password = "foobar";
@@ -167,7 +167,7 @@ private slots:
     requester->setScenario( requests, results );
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 NO Login failed"
              << "C: A000002 LOGOUT";
     password = "foobar";
@@ -230,7 +230,7 @@ private slots:
     FakeServer server;
     server.addScenario( QList<QByteArray>()
                         << FakeServer::greeting()
-                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                         << "S: A000001 OK User Logged in"
                         << "C: A000002 CAPABILITY"
                         << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE"
@@ -242,7 +242,7 @@ private slots:
 
     server.addScenario( QList<QByteArray>()
                         << FakeServer::greeting()
-                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                         << "S: A000001 OK User Logged in"
     );
 
@@ -351,7 +351,7 @@ private slots:
     FakeServer server;
     server.addScenario( QList<QByteArray>()
                         << FakeServer::greeting()
-                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                         << "S: A000001 OK User Logged in"
                         << "C: A000002 CAPABILITY"
                         << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -408,7 +408,7 @@ private slots:
 
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 OK User Logged in"
              << "C: A000002 CAPABILITY"
              << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -419,7 +419,7 @@ private slots:
 
     scenario.clear();
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN test@kdab.com foobar"
+             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 OK User Logged in"
              << "C: A000002 CAPABILITY"
              << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -467,7 +467,7 @@ private slots:
     FakeServer server;
     server.addScenario( QList<QByteArray>()
                         << FakeServer::greeting()
-                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                         << "S: A000001 OK User Logged in"
                         << "C: A000002 CAPABILITY"
                         << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
@@ -479,7 +479,7 @@ private slots:
 
     server.addScenario( QList<QByteArray>()
                         << FakeServer::greeting()
-                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                         << "S: A000001 OK User Logged in"
                         << "C: A000002 CAPABILITY"
                         << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -565,7 +565,7 @@ private slots:
 
     server.addScenario( QList<QByteArray>()
                         << FakeServer::greeting()
-                        << "C: A000001 LOGIN test@kdab.com foobar"
+                        << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                         << "S: A000001 OK User Logged in"
                         << "C: A000002 CAPABILITY"
                         << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
