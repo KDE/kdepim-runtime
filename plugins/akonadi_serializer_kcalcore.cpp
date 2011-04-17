@@ -37,6 +37,7 @@
 using namespace KCalCore;
 using namespace KCalUtils;
 using namespace Akonadi;
+using namespace AkonadiFuture;
 
 //// ItemSerializerPlugin interface
 

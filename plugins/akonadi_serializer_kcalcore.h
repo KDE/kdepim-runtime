@@ -26,11 +26,11 @@
 #include <akonadi/itemserializerplugin.h>
 #include <KCalCore/ICalFormat>
 
-namespace Akonadi {
+namespace AkonadiFuture {
 
 class SerializerPluginKCalCore : public QObject,
-                             public ItemSerializerPlugin,
-                             public DifferencesAlgorithmInterface
+                                 public Akonadi::ItemSerializerPlugin,
+                                 public Akonadi::DifferencesAlgorithmInterface
 
 {
     Q_OBJECT
@@ -38,8 +38,8 @@ class SerializerPluginKCalCore : public QObject,
     Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
 
   public:
-    bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
-    void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
+    bool deserialize( Akonadi::Item& item, const QByteArray& label, QIODevice& data, int version );
+    void serialize( const Akonadi::Item& item, const QByteArray& label, QIODevice& data, int &version );
 
     void compare( Akonadi::AbstractDifferencesReporter *reporter,
                   const Akonadi::Item &leftItem,
