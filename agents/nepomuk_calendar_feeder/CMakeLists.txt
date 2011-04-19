@@ -31,5 +31,14 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_nepomuk_calendar_feeder PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Nepomuk Calendar Feeder")
 endif (Q_WS_MAC)
 
+## Patch from http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=596908
+## We've not seen the reported issue, but it's better to have patches upstream,
+## so we take it in.
+# akonadi_nepomuk_calendar_feeder_automoc depend on the presence of the
+# ontology class headers. We can be sure that they are present when niefast
+# target is built. This is needed to avoid a race condition when building in
+# parallel.
+add_dependencies( akonadi_nepomuk_calendar_feeder_automoc niefast )
+
 install(TARGETS akonadi_nepomuk_calendar_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES nepomukcalendarfeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
