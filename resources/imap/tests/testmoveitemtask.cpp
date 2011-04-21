@@ -130,7 +130,7 @@ private slots:
              << "S: A000007 OK search done";
 
     callNames.clear();
-    callNames << "itemChangeCommitted";
+    callNames << "itemChangeCommitted" << "applyCollectionChanges";
 
     QTest::newRow( "moving mail, no COPYUID, message had Message-ID" ) << item << source << target << scenario << callNames;
 
@@ -170,7 +170,7 @@ private slots:
              << "S: A000007 OK search done";
 
     callNames.clear();
-    callNames << "itemChangeCommitted";
+    callNames << "itemChangeCommitted" << "applyCollectionChanges";
 
     QTest::newRow( "moving mail, no COPYUID, message didn't have Message-ID" ) << item << source << target << scenario << callNames;
   }
