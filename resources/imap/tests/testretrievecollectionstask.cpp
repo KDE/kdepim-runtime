@@ -166,11 +166,18 @@ private slots:
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
-             << "C: A000003 LSUB \"\" *"
+             << "C: A000003 LIST \"\" *"
+             << "S: * LIST ( ) / INBOX/Unsubscribed"
+             << "S: * LIST ( ) / INBOX/Calendar"
+             << "S: * LIST ( ) / INBOX/Calendar/Private"
+             << "S: * LIST ( \\HasChildren ) / INBOX"
+             << "S: A000003 OK list done"
+             << "C: A000004 LSUB \"\" *"
              << "S: * LSUB ( \\HasChildren ) / INBOX"
+             << "S: * LSUB ( ) / INBOX/SubscribedButNotExisting"
              << "S: * LSUB ( ) / INBOX/Calendar"
              << "S: * LSUB ( ) / INBOX/Calendar/Private"
-             << "S: A000003 OK list done";
+             << "S: A000004 OK list done";
 
     callNames.clear();
     callNames << "setIdleCollection" << "collectionsRetrieved";
