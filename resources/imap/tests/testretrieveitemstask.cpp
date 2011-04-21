@@ -20,6 +20,7 @@
 #include "imaptestbase.h"
 
 #include "retrieveitemstask.h"
+#include "uidnextattribute.h"
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionstatistics.h>
@@ -214,6 +215,40 @@ private slots:
     fastSync = false;
 
     QTest::newRow( "third listing, full sync, empty folder" ) << collection << scenario << callNames << fastSync;
+
+
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2470 );
+    stats.setCount( 5 );
+    collection.setStatistics( stats );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge done"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 5 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135  ]"
+             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 FETCH 4:5 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2471 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                "RFC822.SIZE 75 BODY[] {75}\r\n"
+                "From: Foo <foo@kde.org>\r\n"
+                "To: Bar <bar@kde.org>\r\n"
+                "Subject: Test Mail\r\n"
+                "\r\n"
+                "Test\r\n"
+                " )"
+             << "S: A000006 OK fetch done";
+    callNames.clear();
+    callNames << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+    fastSync = true;
+
+    QTest::newRow( "uidnext mismatch with recovery attempt" ) << collection << scenario << callNames << fastSync;
   }
 
   void shouldIntrospectCollection()

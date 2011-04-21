@@ -267,8 +267,18 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     // behind our back...
     kDebug(5327) << "UIDNEXT check failed, refetching mailbox";
 
+    qint64 startIndex = 1;
+    // one scenario we can recover from is that an equal amount of mails has been deleted and added while we were not looking
+    // the amount has to be less or equal to (nextUid - oldNextUid) due to strictly ascending UIDs
+    // so, we just have to reload the last (nextUid - oldNextUid) mails if the uidnext values seem sane
+    if ( oldNextUid < nextUid && oldNextUid != 0 && !firstTime )
+      startIndex = qMax( 1ll, messageCount - (nextUid - oldNextUid) );
+
+    Q_ASSERT( startIndex >= 1 );
+    Q_ASSERT( startIndex <= messageCount );
+
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
-    fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
+    fetch->setSequenceSet( KIMAP::ImapSet( startIndex, messageCount ) );
     fetch->setScope( scope );
     connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                              QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
