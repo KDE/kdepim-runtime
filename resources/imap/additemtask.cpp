@@ -21,6 +21,8 @@
 
 #include "additemtask.h"
 
+#include <QtCore/QUuid>
+
 #include <KDE/KDebug>
 #include <KDE/KLocale>
 
@@ -149,24 +151,24 @@ void AddItemTask::onSearchDone( KJob *job )
 
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
 
-  if ( search->results().count()!=1 ) {
-    cancelTask( i18n("Could not determine the UID for the newly created message on the server") );
-    return;
-  }
+  qint64 uid = 0;
+  if ( search->results().count() == 1 )
+    uid = search->results().first();
 
-  qint64 uid = search->results().first();
   applyFoundUid( uid );
 }
 
 void AddItemTask::applyFoundUid( qint64 uid )
 {
-  Q_ASSERT( uid > 0 );
-
   Akonadi::Item i = item();
 
-  const QString remoteId =  QString::number( uid );
-  kDebug(5327) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();
-  i.setRemoteId( remoteId );
+  // if we didn't manage to get a valid UID from the server, use a random RID instead
+  // this will make ItemSync clean up the mess during the next sync (while empty RIDs are protected as not yet existing on the server)
+  if ( uid > 0 )
+    i.setRemoteId( QString::number( uid ) );
+  else
+    i.setRemoteId( QUuid::createUuid() );
+  kDebug(5327) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
 
   changeCommitted( i );
 

@@ -96,6 +96,20 @@ private slots:
     QTest::newRow( "no APPENDUID, message contained Message-ID" ) << item << collection << scenario << callNames;
 
 
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 APPEND \"INBOX/Foo\"  {90}\r\n"+message->encodedContent(true)
+             << "S: A000003 OK append done"
+             << "C: A000004 SELECT \"INBOX/Foo\""
+             << "S: A000004 OK select done"
+             << "C: A000005 UID SEARCH HEADER Message-ID <42.4242.foo@bar.org>"
+             << "S: * SEARCH 65 66"
+             << "S: A000005 OK search done";
+    callNames.clear();
+    callNames << "itemChangeCommitted";
+    QTest::newRow( "no APPENDUID, message contained non-unique Message-ID" ) << item << collection << scenario << callNames;
+
+
 
     message = KMime::Message::Ptr(new KMime::Message);
 

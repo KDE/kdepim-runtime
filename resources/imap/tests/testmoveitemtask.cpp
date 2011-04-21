@@ -173,6 +173,34 @@ private slots:
     callNames << "itemChangeCommitted" << "applyCollectionChanges";
 
     QTest::newRow( "moving mail, no COPYUID, message didn't have Message-ID" ) << item << source << target << scenario << callNames;
+
+
+    item = Akonadi::Item( 1 );
+    item.setRemoteId( "5" );
+    message = KMime::Message::Ptr(new KMime::Message);
+    messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
+    message->setContent(messageContent.toUtf8());
+    message->parse();
+    item.setPayload(message);
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 UID COPY 5 \"INBOX/Bar\""
+             << "S: A000004 OK copy done"
+             << "C: A000005 UID STORE 5 +FLAGS (\\Deleted)"
+             << "S: A000005 OK store done"
+             << "C: A000006 SELECT \"INBOX/Bar\""
+             << "S: A000006 OK select done"
+             << "C: A000007 UID SEARCH HEADER Message-ID <42.4242.foo@bar.org>"
+             << "S: * SEARCH 61 65"
+             << "S: A000007 OK search done";
+
+    callNames.clear();
+    callNames << "itemChangeCommitted";
+
+    QTest::newRow( "moving mail, no COPYUID, message didn't have unique Message-ID" ) << item << source << target << scenario << callNames;
   }
 
   void shouldCopyAndDeleteMessage()

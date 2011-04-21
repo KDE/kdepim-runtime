@@ -21,6 +21,8 @@
 
 #include "moveitemtask.h"
 
+#include <QtCore/QUuid>
+
 #include <KDE/KDebug>
 #include <KDE/KLocale>
 
@@ -228,25 +230,25 @@ void MoveItemTask::onSearchDone( KJob *job )
 
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
 
-  if ( search->results().count()!=1 ) {
-    cancelTask( i18n("Could not determine the UID for the newly created message on the server") );
-    return;
-  }
+  if ( search->results().count() == 1 )
+    m_newUid = search->results().first();
 
-  m_newUid = search->results().first();
   recordNewUid();
 }
 
 void MoveItemTask::recordNewUid()
 {
-  Q_ASSERT(m_newUid>0);
-
   // Create the item resulting of the operation, since at that point
   // the first part of the move succeeded
   Akonadi::Item i = item();
 
   // Update the item content with the new UID from the copy
-  i.setRemoteId( QString::number( m_newUid ) );
+  // if we didn't manage to get a valid UID from the server, use a random RID instead
+  // this will make ItemSync clean up the mess during the next sync (while empty RIDs are protected as not yet existing on the server)
+  if ( m_newUid > 0 )
+    i.setRemoteId( QString::number( m_newUid ) );
+  else
+    i.setRemoteId( QUuid::createUuid() );
 
   changeCommitted( i );
 
