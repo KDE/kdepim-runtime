@@ -97,6 +97,19 @@ class SubResourceModel : public AbstractSubResourceModel
       return result;
     }
 
+    bool hasWritableSubResource() const
+    {
+      Akonadi::MimeTypeChecker mimeChecker;
+      mimeChecker.setWantedMimeTypes( SubResourceClass::supportedMimeTypes() );
+
+      foreach ( const SubResourceClass *subResource, mSubResourcesByColId ) {
+        if ( subResource->isWritable() && mimeChecker.isWantedCollection( subResource->collection() ) ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     SubResourceClass *findSubResourceForMappedItem( const QString &kresId ) const
     {
       foreach ( SubResourceClass *subResource, mSubResourcesByColId ) {

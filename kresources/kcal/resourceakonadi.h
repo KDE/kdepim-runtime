@@ -140,6 +140,8 @@ class ResourceAkonadi : public ResourceCalendar, public SharedResourceIface
 
     virtual QString infoText() const;
 
+    virtual bool readOnly() const;
+
   protected:
     virtual bool doLoad( bool syncCache );
 

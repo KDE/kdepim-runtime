@@ -432,6 +432,11 @@ void ResourceAkonadi::doClose()
   d->doClose();
 }
 
+bool ResourceAkonadi::readOnly() const
+{
+  return d->isReadOnly();
+}
+
 #include "resourceakonadi.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
