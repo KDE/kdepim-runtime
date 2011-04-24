@@ -73,6 +73,8 @@ class ResourceAkonadi : public ResourceABC, public SharedResourceIface
     virtual QStringList subresources() const;
     virtual QMap<QString, QString> uidToResourceMap() const;
 
+    virtual bool readOnly() const;
+
     StoreConfigIface &storeConfig();
 
   public Q_SLOTS:

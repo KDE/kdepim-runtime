@@ -68,6 +68,11 @@ class SharedResourcePrivate : public ResourcePrivateBase
       return mModel.subResource( id );
     }
 
+    bool isReadOnly() const
+    {
+      return !mModel.hasWritableSubResource();
+    }
+
   protected:
      SubResourceModelClass mModel;
 
