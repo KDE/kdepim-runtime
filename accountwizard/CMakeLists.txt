@@ -44,6 +44,8 @@ set(accountwizard_libs
   ${QT_QTUITOOLS_LIBRARY}
 )
 
+add_subdirectory(ispdb)
+
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
   set(accountwizard_srcs ${accountwizard_srcs} providerpage.cpp)
   kde4_add_ui_files(accountwizard_srcs providerpage.ui)

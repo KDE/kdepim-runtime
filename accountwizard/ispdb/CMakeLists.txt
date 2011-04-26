@@ -20,3 +20,6 @@ target_link_libraries(ispdb
 )
 
 install(TARGETS ispdb ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+
+add_subdirectory(dataengine)
