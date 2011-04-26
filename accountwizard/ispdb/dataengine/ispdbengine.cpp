@@ -77,9 +77,6 @@ bool IspdbEngine::sourceRequestEvent(const QString &name)
 void IspdbEngine::onIspDbRequestFinished(bool result)
 {
     Ispdb *db = qobject_cast< Ispdb* >(sender());
-    QString email = db->property("__ispdb_engine_email").toString();
-
-    setData(email, "name", db->name(Ispdb::Long));
 
     QStringList allServers;
     foreach (const server &s, db->imapServers()) {
@@ -94,7 +91,13 @@ void IspdbEngine::onIspDbRequestFinished(bool result)
         allServers.append(populateSource(s, "POP3"));
     }
 
-    setData(email, "allServers", allServers);
+    QString email = db->property("__ispdb_engine_email").toString();
+
+    setData(email, "successful", !allServers.isEmpty());
+    if (!allServers.isEmpty()) {
+        setData(email, "name", db->name(Ispdb::Long));
+        setData(email, "allServers", allServers);
+    }
 }
 
 QString IspdbEngine::populateSource(server s, const QString& protocol)
