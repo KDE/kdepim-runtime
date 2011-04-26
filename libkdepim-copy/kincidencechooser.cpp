@@ -252,12 +252,8 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
 
 KIncidenceChooser::~KIncidenceChooser()
 {
-  if ( mTbL ) {
-    delete mTbL;
-  }
-  if ( mTbN ) {
-    delete mTbN;
-  }
+  delete mTbL;
+  delete mTbN;
   if ( mDisplayDiff ) {
     delete mDisplayDiff;
     delete diff;
