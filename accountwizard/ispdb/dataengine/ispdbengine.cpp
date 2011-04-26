@@ -19,6 +19,8 @@
 
 #include "ispdbengine.h"
 
+#include "../ispdb.h"
+
 #define RESULT_LIMIT 10
 
 class IspdbEnginePrivate
@@ -61,6 +63,84 @@ QStringList IspdbEngine::sources() const
 
 bool IspdbEngine::sourceRequestEvent(const QString &name)
 {
+    Ispdb *db = new Ispdb(this);
+
+    connect(db, SIGNAL(finished(bool)), this, SLOT(onIspDbRequestFinished(bool)));
+
+    db->setEmail(name);
+    db->setProperty("__ispdb_engine_email", name);
+    db->start();
+
     return true;
 }
+
+void IspdbEngine::onIspDbRequestFinished(bool result)
+{
+    Ispdb *db = qobject_cast< Ispdb* >(sender());
+    QString email = db->property("__ispdb_engine_email").toString();
+
+    setData(email, "name", db->name(Ispdb::Long));
+
+    QStringList allServers;
+    foreach (const server &s, db->imapServers()) {
+        allServers.append(populateSource(s, "IMAP"));
+    }
+
+    foreach (const server &s, db->smtpServers()) {
+        allServers.append(populateSource(s, "SMTP"));
+    }
+
+    foreach (const server &s, db->pop3Servers()) {
+        allServers.append(populateSource(s, "POP3"));
+    }
+
+    setData(email, "allServers", allServers);
+}
+
+QString IspdbEngine::populateSource(server s, const QString& protocol)
+{
+    QString source = QString("%1@%2:%3").arg(s.username).arg(s.hostname).arg(s.port);
+    QString socketType = QString("None");
+    switch (s.socketType) {
+        case Ispdb::SSL:
+            socketType = QString("SSL");
+            break;
+        case Ispdb::StartTLS:
+            socketType = QString("StartTLS");
+            break;
+        default:
+            break;
+    }
+
+    QString authType = QString("Plain");
+    switch (s.authentication) {
+        case Ispdb::ClientIP:
+            authType = QString("ClientIP");
+            break;
+        case Ispdb::CramMD5:
+            authType = QString("CramMD5");
+            break;
+        case Ispdb::GSSAPI:
+            authType = QString("GSSAPI");
+            break;
+        case Ispdb::NoAuth:
+            authType = QString("NoAuth");
+            break;
+        case Ispdb::NTLM:
+            authType = QString("NTLM");
+            break;
+        default:
+            break;
+    }
+
+    setData(source, "hostname", s.hostname);
+    setData(source, "username", s.username);
+    setData(source, "port", s.port);
+    setData(source, "protocol", protocol);
+    setData(source, "socketType", socketType);
+    setData(source, "authType", authType);
+
+    return source;
+}
+
 #include "ispdbengine.moc"

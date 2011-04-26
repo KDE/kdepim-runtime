@@ -25,6 +25,7 @@
 
 
 class IspdbEnginePrivate;
+struct server;
 
 class IspdbEngine : public Plasma::DataEngine
 {
@@ -42,7 +43,10 @@ class IspdbEngine : public Plasma::DataEngine
 
     private:
         QString icon(const QStringList &types);
+        QString populateSource(server s, const QString &protocol);
         IspdbEnginePrivate* d;
+public slots:
+    void onIspDbRequestFinished(bool);
 };
 
 K_EXPORT_PLASMA_DATAENGINE(metadataengine, IspdbEngine)
