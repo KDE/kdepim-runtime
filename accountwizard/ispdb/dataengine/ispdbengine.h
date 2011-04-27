@@ -42,7 +42,6 @@ class IspdbEngine : public Plasma::DataEngine
         bool sourceRequestEvent(const QString &name);
 
     private:
-        QString icon(const QStringList &types);
         QString populateSource(server s, const QString &protocol);
         IspdbEnginePrivate* d;
 public slots:

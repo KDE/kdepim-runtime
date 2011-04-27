@@ -41,12 +41,6 @@ IspdbEngine::IspdbEngine(QObject* parent, const QVariantList& args)
     init();
 }
 
-QString IspdbEngine::icon(const QStringList &types)
-{
-    // keep searching until the most specific icon is found
-    return QString();
-}
-
 void IspdbEngine::init()
 {
 }
@@ -76,6 +70,7 @@ bool IspdbEngine::sourceRequestEvent(const QString &name)
 
 void IspdbEngine::onIspDbRequestFinished(bool result)
 {
+    kDebug() << "result:" << result;
     Ispdb *db = qobject_cast< Ispdb* >(sender());
 
     QStringList allServers;
@@ -95,9 +90,12 @@ void IspdbEngine::onIspDbRequestFinished(bool result)
 
     setData(email, "successful", !allServers.isEmpty());
     if (!allServers.isEmpty()) {
-        setData(email, "name", db->name(Ispdb::Long));
+        setData(email, "name", db->name(Ispdb::Short));
+        setData(email, "longName", db->name(Ispdb::Long));
+        setData(email, "relevantDomains", db->relevantDomains());
         setData(email, "allServers", allServers);
     }
+    scheduleSourcesUpdated();
 }
 
 QString IspdbEngine::populateSource(server s, const QString& protocol)
