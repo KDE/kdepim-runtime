@@ -32,7 +32,7 @@ Item {
           id: isdbSource
           engine: "org.kde.plasma.ispdb"
           interval: 0
-          connectedSources: ["test@gmail.com"]
+          //connectedSources: ["test@gmail.com"]
           onDataChanged: {
               console.log("data changed...");
           }
@@ -62,8 +62,8 @@ Item {
         }
         PlasmaWidgets.LineEdit {
             id: searchBox
-            text: "test@gmail.com"
-            clickMessage: i18n("Type a word...");
+            //text: "test@gmail.com"
+            clickMessage: i18n("Type you email address...");
             clearButtonShown: true
             width: parent.width - icon.width - parent.spacing
             onTextChanged: {
