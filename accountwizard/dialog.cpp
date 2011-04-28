@@ -41,7 +41,7 @@
 #include <kpimutils/networkaccesshelper.h>
 
 Dialog::Dialog(QWidget* parent) :
-  KAssistantDialog( parent )
+  KAssistantDialog( parent, Qt::WindowStaysOnTopHint )
 {
   showButton( Help, false ); // we don't have help for the account wizard atm
 
