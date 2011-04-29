@@ -28,6 +28,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/mimetypechecker.h>
 #include <akonadi/monitor.h>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <kabc/addressee.h>
 
@@ -89,6 +90,10 @@ void BirthdaysResource::retrieveCollections()
   c.setName( name() );
   c.setContentMimeTypes( QStringList() << "application/x-vnd.akonadi.calendar.event" );
   c.setRights( Collection::ReadOnly );
+
+  EntityDisplayAttribute *attribute = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attribute->setIconName( QLatin1String( "view-calendar-birthday" ) );
+
   Collection::List list;
   list << c;
   collectionsRetrieved( list );
