@@ -65,7 +65,7 @@ QByteArray KolabHandler::kolabTypeForCollection(const Akonadi::Collection& colle
     return "task";
   } else if ( contentMimeTypes.contains( KCalCore::Journal::journalMimeType() ) ) {
     return "journal";
-  } else if ( contentMimeTypes.contains( "application/x-vnd.akonadi.note" ) ) {
+  } else if ( contentMimeTypes.contains( "application/x-vnd.akonadi.note" ) || contentMimeTypes.contains( "text/x-vnd.akonadi.note" ) ) {
     return "note";
   }
   return QByteArray();
@@ -79,7 +79,8 @@ QStringList KolabHandler::allSupportedMimeTypes()
    << KCalCore::Event::eventMimeType()
    << KCalCore::Todo::todoMimeType()
    << KCalCore::Journal::journalMimeType()
-   << QLatin1String( "application/x-vnd.akonadi.note" );
+   << QLatin1String( "application/x-vnd.akonadi.note" )
+   << QLatin1String( "text/x-vnd.akonadi.note" );
 }
 
 
