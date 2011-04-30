@@ -113,7 +113,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
    *   </D:propstat>
    *  </D:response>
    * </D:multistatus>
-   * 
+   *
    * Or like this (if the homeset is defined):
    *
    *  <?xml version="1.0" encoding="utf-8" ?>
@@ -168,12 +168,12 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
 
     if ( !homeSetElement.isNull() ) {
       QDomElement hrefElement = DavUtils::firstChildElementNS( homeSetElement, "DAV:", "href" );
-  
+
       while ( !hrefElement.isNull() ) {
         const QString href = hrefElement.text();
         if ( !mHomeSets.contains( href ) )
           mHomeSets << href;
-  
+
         hrefElement = DavUtils::nextSiblingElementNS( hrefElement, "DAV:", "href" );
       }
     }

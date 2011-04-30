@@ -58,6 +58,7 @@ KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument 
   // workaround needed, Depth: header doesn't seem to be correctly added
   const QString header = "Content-Type: text/xml\r\nDepth: " + davDepth;
   job->addMetaData( "customHTTPHeader", header );
+  job->addMetaData( "cookies", "none" );
   job->setProperty( "extraDavDepth", QVariant::fromValue( davDepth ) );
 
   return job;
@@ -71,6 +72,7 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
   // workaround needed, Depth: header doesn't seem to be correctly added
   const QString header = "Content-Type: text/xml\r\nDepth: " + davDepth;
   job->addMetaData( "customHTTPHeader", header );
+  job->addMetaData( "cookies", "none" );
   job->setProperty( "extraDavDepth", QVariant::fromValue( davDepth ) );
 
   return job;
@@ -78,7 +80,9 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
 
 KIO::DavJob* DavManager::createPropPatchJob( const KUrl &url, const QDomDocument &document ) const
 {
-  return KIO::davPropPatch( url, document, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::DavJob *job = KIO::davPropPatch( url, document, KIO::HideProgressInfo | KIO::DefaultFlags );
+  job->addMetaData( "cookies", "none" );
+  return job;
 }
 
 const DavProtocolBase* DavManager::davProtocol( DavUtils::Protocol protocol )
