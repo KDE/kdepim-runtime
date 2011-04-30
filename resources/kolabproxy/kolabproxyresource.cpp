@@ -407,6 +407,7 @@ void KolabProxyResource::imapFolderCreateResult(KJob* job)
     cancelTask( job->errorText() );
   } else {
     const Collection imapCollection = qobject_cast<CollectionCreateJob*>( job )->collection();
+    registerHandlerForCollection( imapCollection );
     Collection kolabCollection = job->property( KOLAB_COLLECTION ).value<Collection>();
     kolabCollection.setRemoteId( QString::number( imapCollection.id() ) );
     changeCommitted( kolabCollection );
