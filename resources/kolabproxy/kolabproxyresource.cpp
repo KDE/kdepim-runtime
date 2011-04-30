@@ -424,9 +424,12 @@ void KolabProxyResource::applyAttributesToImap( Collection &imapCollection, cons
       // Don't propagate HIDDEN because that would hide collections in korg, kab too.
       continue;
 
-    if ( attr->type() == eda.type() )
+    if ( attr->type() == eda.type() ) {
       // Don't propagate DISPLAYATTRIBUTE because that would cause icons from the imap resource to use kolab icons.
+      EntityDisplayAttribute *imapEda = imapCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
+      imapEda->setDisplayName( static_cast<const EntityDisplayAttribute*>( attr )->displayName() );
       continue;
+    }
 
     if ( attr->type() == "AccessRights" )
       continue;
