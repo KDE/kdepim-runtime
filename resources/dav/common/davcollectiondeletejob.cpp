@@ -30,6 +30,7 @@ void DavCollectionDeleteJob::start()
 {
   KIO::DeleteJob *job = KIO::del( mUrl.url(), KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
+  job->addMetaData( "cookies", "none" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }

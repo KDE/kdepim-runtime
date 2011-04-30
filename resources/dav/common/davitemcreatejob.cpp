@@ -55,6 +55,7 @@ void DavItemCreateJob::start()
   KIO::StoredTransferJob *job = KIO::storedPut( mItem.data(), mUrl.url(), -1, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", headers );
+  job->addMetaData( "cookies", "none" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }

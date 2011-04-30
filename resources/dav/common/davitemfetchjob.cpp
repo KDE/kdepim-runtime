@@ -53,6 +53,7 @@ void DavItemFetchJob::start()
   // contains "Mozilla", some strange debug data is displayed in the shared calendars.
   // This kinda mess up the events parsing...
   job->addMetaData( "UserAgent", "KDE DAV groupware client" );
+  job->addMetaData( "cookies", "none" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }
