@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Citadel
+Type=Service
+X-KDE-ServiceTypes=DavGroupwareProvider
+
+X-DavGroupware-SupportedProtocols=GroupDav
+X-DavGroupware-GroupDavPath=/groupdav

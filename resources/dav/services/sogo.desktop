@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=ScalableOGo
+Type=Service
+X-KDE-ServiceTypes=DavGroupwareProvider
+
+X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-InstallationPath=/SOGo
+X-DavGroupware-CalDavPath=/dav/$user$/Calendar
+X-DavGroupware-CardDavPath=/dav/$user$/Contacts

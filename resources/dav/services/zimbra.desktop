@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Zimbra
+Type=Service
+X-KDE-ServiceTypes=DavGroupwareProvider
+
+X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-CalDavPath=/principals/users/$user$
+X-DavGroupware-CardDavPath=/principals/users/$user$

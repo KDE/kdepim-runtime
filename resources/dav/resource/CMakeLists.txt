@@ -69,6 +69,10 @@ set( davgroupwareresource_SRCS
 )
 
 install( FILES davgroupwareresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES davgroupwareprovider.desktop DESTINATION ${SERVICETYPES_INSTALL_DIR} )
+
+file( GLOB providersFiles "../services/*.desktop" )
+install( FILES ${providersFiles} DESTINATION "${SERVICES_INSTALL_DIR}/akonadi/davgroupware-providers" )
 
 kde4_add_kcfg_files(davgroupwareresource_SRCS settingsbase.kcfgc)
 kde4_add_ui_files(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui)

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=eGroupware
+Type=Service
+X-KDE-ServiceTypes=DavGroupwareProvider
+
+X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-CalDavPath=/groupdav.php
+X-DavGroupware-CardDavPath=/groupdav.php

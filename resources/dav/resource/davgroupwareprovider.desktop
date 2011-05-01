@@ -1,0 +1,25 @@
+[Desktop Entry]
+Type=ServiceType
+X-KDE-ServiceType=DavGroupwareProvider
+Name=DAV Groupware resource provider
+
+[PropertyDef::X-DavGroupware-SupportedProtocols]
+Type=QStringList
+
+[PropertyDef::X-DavGroupware-InstallationPath]
+Type=QString
+
+[PropertyDef::X-DavGroupware-CalDavHost]
+Type=QString
+
+[PropertyDef::X-DavGroupware-CalDavPath]
+Type=QString
+
+[PropertyDef::X-DavGroupware-CardDavHost]
+Type=QString
+
+[PropertyDef::X-DavGroupware-CardDavPath]
+Type=QString
+
+[PropertyDef::X-DavGroupware-GroupDavPath]
+Type=QString

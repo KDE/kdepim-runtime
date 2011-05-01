@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Scalix
+Type=Service
+X-KDE-ServiceTypes=DavGroupwareProvider
+
+X-DavGroupware-SupportedProtocols=CalDav
+X-DavGroupware-CalDavPath=/api/dav/Principals/$user$
