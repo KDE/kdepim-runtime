@@ -100,6 +100,10 @@ static QString settingsToUrl( const QWizard *wizard )
   return url.toString();
 }
 
+/*
+ * SetupWizard
+ */
+
 SetupWizard::SetupWizard( QWidget *parent )
   : QWizard( parent )
 {
@@ -201,6 +205,28 @@ SetupWizard::Url::List SetupWizard::urls() const
   return urls;
 }
 
+/*
+ * CredentialsPage
+ */
+
+CredentialsPage::CredentialsPage( QWidget *parent )
+  : QWizardPage( parent )
+{
+  setTitle( i18n( "Login Credentials" ) );
+  setSubTitle( i18n( "Enter your credentials to login to the groupware server" ) );
+
+  QFormLayout *layout = new QFormLayout( this );
+
+  mUserName = new KLineEdit;
+  layout->addRow( i18n( "User" ), mUserName );
+
+  registerField( "credentialsUserName*", mUserName );
+}
+
+/*
+ * ServerTypePage
+ */
+
 ServerTypePage::ServerTypePage( QWidget *parent )
   : QWizardPage( parent )
 {
@@ -263,6 +289,10 @@ bool ServerTypePage::isComplete() const
   return (mServerGroup->checkedButton() != 0);
 }
 
+/*
+ * ConnectionPage
+ */
+
 ConnectionPage::ConnectionPage( QWidget *parent )
   : QWizardPage( parent )
 {
@@ -303,19 +333,9 @@ void ConnectionPage::urlElementChanged()
     mFullUrlPreview->setText( settingsToUrl( this->wizard() ) );
 }
 
-CredentialsPage::CredentialsPage( QWidget *parent )
-  : QWizardPage( parent )
-{
-  setTitle( i18n( "Login Credentials" ) );
-  setSubTitle( i18n( "Enter your credentials to login to the groupware server" ) );
-
-  QFormLayout *layout = new QFormLayout( this );
-
-  mUserName = new KLineEdit;
-  layout->addRow( i18n( "User" ), mUserName );
-
-  registerField( "credentialsUserName*", mUserName );
-}
+/*
+ * CheckPage
+ */
 
 CheckPage::CheckPage( QWidget *parent )
   : QWizardPage( parent )

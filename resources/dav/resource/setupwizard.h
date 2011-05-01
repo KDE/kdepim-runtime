@@ -54,6 +54,15 @@ class SetupWizard : public QWizard
     QString displayName() const;
 };
 
+class CredentialsPage : public QWizardPage
+{
+  public:
+    CredentialsPage( QWidget *parent = 0 );
+
+  private:
+    KLineEdit *mUserName;
+};
+
 class ServerTypePage : public QWizardPage
 {
   public:
@@ -82,15 +91,6 @@ class ConnectionPage : public QWizardPage
     KLineEdit *mPath;
     QLabel *mFullUrlPreview;
     QCheckBox *mUseSecureConnection;
-};
-
-class CredentialsPage : public QWizardPage
-{
-  public:
-    CredentialsPage( QWidget *parent = 0 );
-
-  private:
-    KLineEdit *mUserName;
 };
 
 class CheckPage : public QWizardPage
