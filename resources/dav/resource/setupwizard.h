@@ -23,6 +23,7 @@
 
 #include <QtGui/QWizard>
 #include <QtGui/QWizardPage>
+#include <qlabel.h>
 
 class KJob;
 class KLineEdit;
@@ -115,6 +116,7 @@ class ConnectionPage : public QWizardPage
     ConnectionPage( QWidget *parent = 0 );
 
     virtual void initializePage();
+    virtual void cleanupPage();
 
   private slots:
     void urlElementChanged();
@@ -124,8 +126,12 @@ class ConnectionPage : public QWizardPage
     KLineEdit *mHost;
     KLineEdit *mPath;
     QCheckBox *mUseSecureConnection;
+    QFormLayout *mPreviewLayout;
+    QLabel *mCalDavUrlLabel;
     QLabel *mCalDavUrlPreview;
+    QLabel *mCardDavUrlLabel;
     QLabel *mCardDavUrlPreview;
+    QLabel *mGroupDavUrlLabel;
     QLabel *mGroupDavUrlPreview;
 };
 

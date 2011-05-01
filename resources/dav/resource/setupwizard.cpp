@@ -342,7 +342,7 @@ void ServerTypePage::manualConfigToggled( bool value )
  */
 
 ConnectionPage::ConnectionPage( QWidget *parent )
-  : QWizardPage( parent ), mCalDavUrlPreview( 0 ), mCardDavUrlPreview( 0 ), mGroupDavUrlPreview( 0 )
+  : QWizardPage( parent ), mPreviewLayout( 0 ), mCalDavUrlPreview( 0 ), mCardDavUrlPreview( 0 ), mGroupDavUrlPreview( 0 )
 {
   setTitle( i18n( "Connection" ) );
   setSubTitle( i18n( "Enter the connection information for the groupware server" ) );
@@ -382,18 +382,49 @@ void ConnectionPage::initializePage()
 
   QStringList supportedProtocols = service->property( "X-DavGroupware-SupportedProtocols" ).toStringList();
 
+  mPreviewLayout = new QFormLayout( this );
+  mLayout->addRow( mPreviewLayout );
+
   if ( supportedProtocols.contains( "CalDav" ) ) {
+    mCalDavUrlLabel = new QLabel( i18n( "Final URL (CalDav)" ) );
     mCalDavUrlPreview = new QLabel;
-    mLayout->addRow( i18n( "Final URL (CalDav)" ), mCalDavUrlPreview );
+    mPreviewLayout->addRow( mCalDavUrlLabel, mCalDavUrlPreview );
   }
   if ( supportedProtocols.contains( "CardDav" ) ) {
+    mCardDavUrlLabel = new QLabel( i18n( "Final URL (CardDav)" ) );
     mCardDavUrlPreview = new QLabel;
-    mLayout->addRow( i18n( "Final URL (CardDav)" ), mCardDavUrlPreview );
+    mPreviewLayout->addRow( mCardDavUrlLabel, mCardDavUrlPreview );
   }
   if ( supportedProtocols.contains( "GroupDav" ) ) {
+    mGroupDavUrlLabel = new QLabel( i18n( "Final URL (GroupDav)" ) );
     mGroupDavUrlPreview = new QLabel;
-    mLayout->addRow( i18n( "Final URL (GroupDav)" ), mGroupDavUrlPreview );
+    mPreviewLayout->addRow( mGroupDavUrlLabel, mGroupDavUrlPreview );
   }
+}
+
+void ConnectionPage::cleanupPage()
+{
+  delete mPreviewLayout;
+
+  if ( mCalDavUrlPreview ) {
+    delete mCalDavUrlLabel;
+    delete mCalDavUrlPreview;
+    mCalDavUrlPreview = 0;
+  }
+
+  if ( mCardDavUrlPreview ) {
+    delete mCardDavUrlLabel;
+    delete mCardDavUrlPreview;
+    mCardDavUrlPreview = 0;
+  }
+
+  if ( mGroupDavUrlPreview ) {
+    delete mGroupDavUrlLabel;
+    delete mGroupDavUrlPreview;
+    mGroupDavUrlPreview = 0;
+  }
+
+  QWizardPage::cleanupPage();
 }
 
 void ConnectionPage::urlElementChanged()
