@@ -103,9 +103,9 @@ static QString settingsToUrl( const QWizard *wizard )
 SetupWizard::SetupWizard( QWidget *parent )
   : QWizard( parent )
 {
+  addPage( new CredentialsPage );
   addPage( new ServerTypePage );
   addPage( new ConnectionPage );
-  addPage( new CredentialsPage );
   addPage( new CheckPage );
 }
 
