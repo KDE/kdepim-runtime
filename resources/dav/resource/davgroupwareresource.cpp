@@ -113,6 +113,12 @@ void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collect
   job->start();
 }
 
+void DavGroupwareResource::cleanup()
+{
+  Settings::self()->cleanup();
+  Akonadi::AgentBase::cleanup();
+}
+
 void DavGroupwareResource::configure( WId windowId )
 {
   Settings::self()->setWinId( windowId );

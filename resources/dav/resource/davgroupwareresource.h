@@ -33,6 +33,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     ~DavGroupwareResource();
 
     virtual void collectionRemoved( const Akonadi::Collection &collection );
+    virtual void cleanup();
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
