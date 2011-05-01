@@ -30,6 +30,8 @@ class KTextBrowser;
 
 class QButtonGroup;
 class QCheckBox;
+class QComboBox;
+class QFormLayout;
 class QLabel;
 class QRadioButton;
 
@@ -42,6 +44,7 @@ class SetupWizard : public QWizard
 
     enum {
       W_CredentialsPage,
+      W_PredefinedProviderPage,
       W_ServerTypePage,
       W_ConnectionPage,
       W_CheckPage
@@ -61,10 +64,26 @@ class SetupWizard : public QWizard
     QString displayName() const;
 };
 
+class PredefinedProviderPage : public QWizardPage
+{
+  public:
+    PredefinedProviderPage( QWidget* parent = 0 );
+
+    virtual void initializePage();
+    virtual int nextId() const;
+
+  private:
+    QLabel *mLabel;
+    QButtonGroup *mProviderGroup;
+    QRadioButton *mUseProvider;
+    QRadioButton *mDontUseProvider;
+};
+
 class CredentialsPage : public QWizardPage
 {
   public:
     CredentialsPage( QWidget *parent = 0 );
+    virtual int nextId() const;
 
   private:
     KLineEdit *mUserName;
@@ -72,15 +91,20 @@ class CredentialsPage : public QWizardPage
 
 class ServerTypePage : public QWizardPage
 {
+  Q_OBJECT
+
   public:
     ServerTypePage( QWidget *parent = 0 );
 
     virtual bool isComplete() const;
+    virtual bool validatePage();
+
+  private slots:
+    void manualConfigToggled( bool value );
 
   private:
     QButtonGroup *mServerGroup;
-    QRadioButton *mEGroupwareServer;
-    QRadioButton *mScalixServer;
+    QComboBox *mProvidersCombo;
 };
 
 class ConnectionPage : public QWizardPage
@@ -90,14 +114,19 @@ class ConnectionPage : public QWizardPage
   public:
     ConnectionPage( QWidget *parent = 0 );
 
+    virtual void initializePage();
+
   private slots:
     void urlElementChanged();
 
   private:
+    QFormLayout *mLayout;
     KLineEdit *mHost;
     KLineEdit *mPath;
-    QLabel *mFullUrlPreview;
     QCheckBox *mUseSecureConnection;
+    QLabel *mCalDavUrlPreview;
+    QLabel *mCardDavUrlPreview;
+    QLabel *mGroupDavUrlPreview;
 };
 
 class CheckPage : public QWizardPage
