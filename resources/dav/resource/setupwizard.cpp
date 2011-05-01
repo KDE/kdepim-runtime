@@ -107,10 +107,10 @@ static QString settingsToUrl( const QWizard *wizard )
 SetupWizard::SetupWizard( QWidget *parent )
   : QWizard( parent )
 {
-  addPage( new CredentialsPage );
-  addPage( new ServerTypePage );
-  addPage( new ConnectionPage );
-  addPage( new CheckPage );
+  setPage( W_CredentialsPage, new CredentialsPage );
+  setPage( W_ServerTypePage, new ServerTypePage );
+  setPage( W_ConnectionPage, new ConnectionPage );
+  setPage( W_CheckPage, new CheckPage );
 }
 
 QString SetupWizard::displayName() const

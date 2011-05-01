@@ -40,6 +40,13 @@ class SetupWizard : public QWizard
   public:
     SetupWizard( QWidget *parent = 0 );
 
+    enum {
+      W_CredentialsPage,
+      W_ServerTypePage,
+      W_ConnectionPage,
+      W_CheckPage
+    };
+
     class Url
     {
       public:
