@@ -4,6 +4,7 @@ Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-ProviderUsesSSL=1
 X-DavGroupware-CalDavHost=caldav.calendar.yahoo.com
 X-DavGroupware-CalDavPath=/principals/users/$user$
 X-DavGroupware-CardDavHost=carddav.address.yahoo.com

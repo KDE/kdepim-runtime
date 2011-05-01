@@ -9,6 +9,9 @@ Type=QStringList
 [PropertyDef::X-DavGroupware-InstallationPath]
 Type=QString
 
+[PropertyDef::X-DavGroupware-ProviderUsesSSL]
+Type=bool
+
 [PropertyDef::X-DavGroupware-CalDavHost]
 Type=QString
 
