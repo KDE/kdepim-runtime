@@ -23,11 +23,15 @@
 
 #include "settingsadaptor.h"
 
+#include <kapplication.h>
+#include <kdebug.h>
 #include <kglobal.h>
 #include <klocale.h>
+#include <kstandarddirs.h>
 
 #include <QtCore/QByteArray>
 #include <QtCore/QDataStream>
+#include <QtCore/QFile>
 #include <QtDBus/QDBusConnection>
 
 class SettingsHelper
@@ -91,11 +95,22 @@ Settings::Settings()
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
 
-  if ( !collectionsUrlsMappings().isEmpty() ) {
+  QString collectionsMappingCacheBase = QString( "akonadi-davgroupware/%1_c2u.dat" ).arg( KApplication::applicationName() );
+  mCollectionsUrlsMappingCache = KStandardDirs::locateLocal( "data", collectionsMappingCacheBase );
+  QFile collectionsMappingsCache( mCollectionsUrlsMappingCache );
+
+  if ( collectionsMappingsCache.exists() ) {
+    if ( collectionsMappingsCache.open( QIODevice::ReadOnly ) ) {
+      QDataStream cache( &collectionsMappingsCache );
+      cache >> mCollectionsUrlsMapping;
+      collectionsMappingsCache.close();
+    }
+  }
+  else if ( !collectionsUrlsMappings().isEmpty() ) {
     QByteArray rawMappings = QByteArray::fromBase64( collectionsUrlsMappings().toAscii() );
     QDataStream stream( &rawMappings, QIODevice::ReadOnly );
     stream >> mCollectionsUrlsMapping;
-    Q_ASSERT_X( !mCollectionsUrlsMapping.isEmpty(), "Settings::Settings()", "Failed to import collections mappings" );
+    setCollectionsUrlsMappings( QString() );
   }
 
   foreach ( const QString &serializedUrl, remoteUrls() ) {
@@ -117,6 +132,12 @@ Settings::~Settings()
 void Settings::setWinId( WId winId )
 {
   mWinId = winId;
+}
+
+void Settings::cleanup()
+{
+  QFile cacheFile( mCollectionsUrlsMappingCache );
+  cacheFile.remove();
 }
 
 DavUtils::DavUrl::List Settings::configuredDavUrls()
@@ -167,12 +188,15 @@ void Settings::addCollectionUrlMapping( DavUtils::Protocol proto, const QString 
   QString value = configuredUrl + "," + DavUtils::protocolName( proto );
   mCollectionsUrlsMapping.insert( collectionUrl, value );
 
-  // Update the settings now
+  // Update the cache now
   QMap<QString, QString> tmp( mCollectionsUrlsMapping );
-  QByteArray rawMappings;
-  QDataStream stream( &rawMappings, QIODevice::WriteOnly );
-  stream << tmp;
-  setCollectionsUrlsMappings( QString::fromAscii( rawMappings.toBase64() ) );
+  QFile cacheFile( mCollectionsUrlsMappingCache );
+  if ( cacheFile.open( QIODevice::WriteOnly ) ) {
+    QDataStream cache( &cacheFile );
+    cache.setVersion( QDataStream::Qt_4_7 );
+    cache << mCollectionsUrlsMapping;
+    cacheFile.close();
+  }
 }
 
 void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )

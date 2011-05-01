@@ -56,6 +56,7 @@ class Settings : public SettingsBase
     virtual ~Settings();
     static Settings* self();
     void setWinId( WId wid );
+    void cleanup();
 
     DavUtils::DavUrl::List configuredDavUrls();
 
@@ -92,6 +93,7 @@ class Settings : public SettingsBase
 
     WId mWinId;
     QMap<QString, UrlConfiguration*> mUrls;
+    QString mCollectionsUrlsMappingCache;
     QMap<QString, QString> mCollectionsUrlsMapping;
     QList<UrlConfiguration*> mToDeleteUrlConfigs;
 };
