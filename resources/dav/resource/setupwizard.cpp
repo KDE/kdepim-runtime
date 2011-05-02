@@ -128,7 +128,7 @@ static QString settingsToUrl( const QWizard *wizard, const QString &protocol )
 SetupWizard::SetupWizard( QWidget *parent )
   : QWizard( parent )
 {
-  setWindowTitle( "DAV groupware configuration wizard" );
+  setWindowTitle( i18n( "DAV groupware configuration wizard" ) );
   setPage( W_CredentialsPage, new CredentialsPage );
   setPage( W_PredefinedProviderPage, new PredefinedProviderPage );
   setPage( W_ServerTypePage, new ServerTypePage );
