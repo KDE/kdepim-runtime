@@ -143,7 +143,8 @@ void DavGroupwareResource::configure( WId windowId )
         Settings::self()->newUrlConfiguration( urlConfig );
       }
 
-      Settings::self()->setDisplayName( wizard.displayName() );
+      if ( !urls.isEmpty() )
+        Settings::self()->setDisplayName( wizard.displayName() );
     }
   }
 

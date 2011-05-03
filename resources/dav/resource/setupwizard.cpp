@@ -107,6 +107,8 @@ static QString settingsToUrl( const QWizard *wizard, const QString &protocol )
       url.setScheme( "http" );
 
     QString host = wizard->field( "connectionHost" ).toString();
+    if ( host.isEmpty() )
+      return QString();
     QStringList hostParts = host.split( ':' );
     url.setHost( hostParts.at( 0 ) );
     url.setPath( pathPattern );
@@ -174,10 +176,13 @@ SetupWizard::Url::List SetupWizard::urls() const
     else
       return urls;
 
-    url.url = settingsToUrl( this, protocol );
-    url.userName = field( "credentialsUserName" ).toString();
+    QString urlStr = settingsToUrl( this, protocol );
 
-    urls << url;
+    if ( !urlStr.isEmpty() ) {
+      url.url = urlStr;
+      url.userName = field( "credentialsUserName" ).toString();
+      urls << url;
+    }
   }
 
   return urls;
