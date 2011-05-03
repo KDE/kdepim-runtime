@@ -202,8 +202,12 @@ CredentialsPage::CredentialsPage( QWidget *parent )
 
   mUserName = new KLineEdit;
   layout->addRow( i18n( "User" ), mUserName );
-
   registerField( "credentialsUserName*", mUserName );
+
+  mPassword = new KLineEdit;
+  mPassword->setPasswordMode( true );
+  layout->addRow( i18n( "Password" ), mPassword );
+  registerField( "credentialsPassword*", mPassword );
 }
 
 int CredentialsPage::nextId() const
@@ -510,6 +514,7 @@ void CheckPage::checkConnection()
 
     KUrl serverUrl( url.url );
     serverUrl.setUser( url.userName );
+    serverUrl.setPass( wizard()->field( "credentialsPassword" ).toString() );
     davUrl.setUrl( serverUrl );
 
     davUrls << davUrl;

@@ -54,6 +54,7 @@ void DavItemFetchJob::start()
   // This kinda mess up the events parsing...
   job->addMetaData( "UserAgent", "KDE DAV groupware client" );
   job->addMetaData( "cookies", "none" );
+  job->addMetaData( "no-auth-prompt", "true" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }

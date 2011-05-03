@@ -46,6 +46,9 @@ class UrlConfigurationDialog : public KDialog
     QString username() const;
     void setUsername( const QString &name );
 
+    QString password() const;
+    void setPassword( const QString &password );
+
   private Q_SLOTS:
     void onConfigChanged();
     void checkUserInput();

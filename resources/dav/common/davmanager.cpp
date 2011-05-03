@@ -59,6 +59,7 @@ KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument 
   const QString header = "Content-Type: text/xml\r\nDepth: " + davDepth;
   job->addMetaData( "customHTTPHeader", header );
   job->addMetaData( "cookies", "none" );
+  job->addMetaData( "no-auth-prompt", "true" );
   job->setProperty( "extraDavDepth", QVariant::fromValue( davDepth ) );
 
   return job;
@@ -73,6 +74,7 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
   const QString header = "Content-Type: text/xml\r\nDepth: " + davDepth;
   job->addMetaData( "customHTTPHeader", header );
   job->addMetaData( "cookies", "none" );
+  job->addMetaData( "no-auth-prompt", "true" );
   job->setProperty( "extraDavDepth", QVariant::fromValue( davDepth ) );
 
   return job;
@@ -82,6 +84,7 @@ KIO::DavJob* DavManager::createPropPatchJob( const KUrl &url, const QDomDocument
 {
   KIO::DavJob *job = KIO::davPropPatch( url, document, KIO::HideProgressInfo | KIO::DefaultFlags );
   job->addMetaData( "cookies", "none" );
+  job->addMetaData( "no-auth-prompt", "true" );
   return job;
 }
 

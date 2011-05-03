@@ -90,6 +90,7 @@ void ConfigDialog::onAddButtonClicked()
 
     urlConfig->mUrl = dlg->remoteUrl();
     urlConfig->mUser = dlg->username();
+    urlConfig->mPassword = dlg->password();
     urlConfig->mProtocol = dlg->protocol();
 
     Settings::self()->newUrlConfiguration( urlConfig );
@@ -136,6 +137,7 @@ void ConfigDialog::onEditButtonClicked()
   dlg->setRemoteUrl( urlConfig->mUrl );
   dlg->setProtocol( DavUtils::Protocol( urlConfig->mProtocol ) );
   dlg->setUsername( urlConfig->mUser );
+  dlg->setPassword( urlConfig->mPassword );
 
   const int result = dlg->exec();
 
@@ -143,6 +145,7 @@ void ConfigDialog::onEditButtonClicked()
     Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
     urlConfigAccepted->mUrl = dlg->remoteUrl();
     urlConfigAccepted->mUser = dlg->username();
+    urlConfigAccepted->mPassword = dlg->password();
     urlConfigAccepted->mProtocol = dlg->protocol();
     Settings::self()->newUrlConfiguration( urlConfigAccepted );
 

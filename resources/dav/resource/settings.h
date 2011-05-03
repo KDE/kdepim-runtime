@@ -49,6 +49,7 @@ class Settings : public SettingsBase
         QString serialize();
         QString mUrl;
         QString mUser;
+        QString mPassword;
         int mProtocol;
     };
 
@@ -87,9 +88,12 @@ class Settings : public SettingsBase
 
     //DavUtils::Protocol protocol( const QString &url ) const;
     QString username( DavUtils::Protocol protocol, const QString &url ) const;
+    QString password( DavUtils::Protocol protocol, const QString &url );
 
   private:
     void updateRemoteUrls();
+    void savePassword( const QString &key, const QString &user, const QString &password );
+    QString loadPassword( const QString &key, const QString &user );
 
     WId mWinId;
     QMap<QString, UrlConfiguration*> mUrls;
