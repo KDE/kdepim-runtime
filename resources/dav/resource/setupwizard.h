@@ -48,6 +48,7 @@ class SetupWizard : public QWizard
         DavUtils::Protocol protocol;
         QString url;
         QString userName;
+        QString password;
     };
 
     Url::List urls() const;
@@ -91,6 +92,7 @@ class CredentialsPage : public QWizardPage
 
   private:
     KLineEdit *mUserName;
+    KLineEdit *mPassword;
 };
 
 class CheckPage : public QWizardPage

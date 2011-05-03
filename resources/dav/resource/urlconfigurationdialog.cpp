@@ -43,6 +43,7 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   connect( mUi.remoteProtocol, SIGNAL( changed( int ) ), this, SLOT( onConfigChanged() ) );
   connect( mUi.remoteUrl, SIGNAL( textChanged( const QString& ) ), this, SLOT( onConfigChanged() ) );
   connect( mUi.username, SIGNAL( textChanged( const QString& ) ), this, SLOT( onConfigChanged() ) );
+  connect( mUi.password, SIGNAL( textChanged( const QString& ) ), this, SLOT( onConfigChanged() ) );
 
   connect( mUi.fetchButton, SIGNAL( clicked() ), this, SLOT( onFetchButtonClicked() ) );
   connect( this, SIGNAL( okClicked() ), this, SLOT( onOkButtonClicked() ) );
@@ -84,6 +85,16 @@ void UrlConfigurationDialog::setUsername( const QString &userName )
   mUi.username->setText( userName );
 }
 
+QString UrlConfigurationDialog::password() const
+{
+  return mUi.password->text();
+}
+
+void UrlConfigurationDialog::setPassword(const QString& password)
+{
+  mUi.password->setText( password );
+}
+
 void UrlConfigurationDialog::onConfigChanged()
 {
   initModel();
@@ -115,6 +126,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
 
   KUrl url( mUi.remoteUrl->text() );
   url.setUser( username() );
+  url.setPassword( password() );
 
   DavUtils::DavUrl davUrl( url, protocol() );
   DavCollectionsFetchJob *job = new DavCollectionsFetchJob( davUrl );
@@ -156,6 +168,7 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
 
   KUrl fullUrl( url );
   fullUrl.setUser( username() );
+  fullUrl.setPassword( password() );
 
   DavUtils::DavUrl davUrl( fullUrl, protocol() );
   DavCollectionModifyJob *job = new DavCollectionModifyJob( davUrl );
@@ -185,7 +198,7 @@ void UrlConfigurationDialog::initModel()
 
 bool UrlConfigurationDialog::checkUserAuthInput()
 {
-  return !mUi.username->text().isEmpty();
+  return ( !mUi.username->text().isEmpty() && !mUi.password->text().isEmpty() );
 }
 
 void UrlConfigurationDialog::addModelRow( const QString &displayName, const QString &url )

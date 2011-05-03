@@ -28,6 +28,7 @@
 #include <kglobal.h>
 #include <klocale.h>
 #include <kstandarddirs.h>
+#include <kwallet.h>
 
 #include <QtCore/QByteArray>
 #include <QtCore/QDataStream>
@@ -116,6 +117,7 @@ Settings::Settings()
   foreach ( const QString &serializedUrl, remoteUrls() ) {
     UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
     QString key = urlConfig->mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
+    urlConfig->mPassword = loadPassword( key, urlConfig->mUser );
     mUrls[ key ] = urlConfig;
   }
 }
@@ -208,6 +210,7 @@ void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
   }
 
   mUrls[ key ] = urlConfig;
+  savePassword( key, urlConfig->mUser, urlConfig->mPassword );
   updateRemoteUrls();
 }
 
@@ -252,6 +255,16 @@ QString Settings::username( DavUtils::Protocol proto, const QString &url ) const
     return QString();
 }
 
+QString Settings::password(DavUtils::Protocol proto, const QString& url)
+{
+  QString key = url + "," + DavUtils::protocolName( proto );
+
+  if ( mUrls.contains( key ) )
+    return mUrls[ key ]->mPassword;
+  else
+    return QString();
+}
+
 void Settings::updateRemoteUrls()
 {
   QStringList newUrls;
@@ -263,6 +276,43 @@ void Settings::updateRemoteUrls()
   }
 
   setRemoteUrls( newUrls );
+}
+
+void Settings::savePassword(const QString& key, const QString& user, const QString& password)
+{
+  KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
+  if ( !wallet )
+    return;
+
+  if ( !wallet->hasFolder( KWallet::Wallet::PasswordFolder() ) )
+    wallet->createFolder( KWallet::Wallet::PasswordFolder() );
+
+  if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) )
+    return;
+
+  QString entry = key + "," + user;
+  wallet->writePassword( entry, password );
+}
+
+QString Settings::loadPassword( const QString& key, const QString &user )
+{
+  KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
+  if ( !wallet )
+    return QString();
+
+  if ( !wallet->hasFolder( KWallet::Wallet::PasswordFolder() ) )
+    wallet->createFolder( KWallet::Wallet::PasswordFolder() );
+
+  if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) )
+    return QString();
+
+  QString entry = key + "," + user;
+  if ( !wallet->hasEntry( entry ) )
+    return QString();
+
+  QString pass;
+  wallet->readPassword( entry, pass );
+  return pass;
 }
 
 #include "settings.moc"

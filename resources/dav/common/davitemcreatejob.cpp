@@ -56,6 +56,7 @@ void DavItemCreateJob::start()
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", headers );
   job->addMetaData( "cookies", "none" );
+  job->addMetaData( "no-auth-prompt", "true" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }

@@ -34,6 +34,7 @@ void DavItemDeleteJob::start()
   job->addMetaData( "PropagateHttpHeader", "true" );
   job->addMetaData( "customHTTPHeader", "If-Match: " + mItem.etag() );
   job->addMetaData( "cookies", "none" );
+  job->addMetaData( "no-auth-prompt", "true" );
 
   connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
 }

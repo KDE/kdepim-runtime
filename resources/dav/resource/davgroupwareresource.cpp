@@ -139,6 +139,7 @@ void DavGroupwareResource::configure( WId windowId )
         urlConfig->mUrl = url.url;
         urlConfig->mProtocol = url.protocol;
         urlConfig->mUser = url.userName;
+        urlConfig->mPassword = wizard.field( "credentialsPassword" ).toString();
 
         Settings::self()->newUrlConfiguration( urlConfig );
       }
