@@ -95,31 +95,6 @@ Settings::Settings()
   new SettingsAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
-
-  QString collectionsMappingCacheBase = QString( "akonadi-davgroupware/%1_c2u.dat" ).arg( KApplication::applicationName() );
-  mCollectionsUrlsMappingCache = KStandardDirs::locateLocal( "data", collectionsMappingCacheBase );
-  QFile collectionsMappingsCache( mCollectionsUrlsMappingCache );
-
-  if ( collectionsMappingsCache.exists() ) {
-    if ( collectionsMappingsCache.open( QIODevice::ReadOnly ) ) {
-      QDataStream cache( &collectionsMappingsCache );
-      cache >> mCollectionsUrlsMapping;
-      collectionsMappingsCache.close();
-    }
-  }
-  else if ( !collectionsUrlsMappings().isEmpty() ) {
-    QByteArray rawMappings = QByteArray::fromBase64( collectionsUrlsMappings().toAscii() );
-    QDataStream stream( &rawMappings, QIODevice::ReadOnly );
-    stream >> mCollectionsUrlsMapping;
-    setCollectionsUrlsMappings( QString() );
-  }
-
-  foreach ( const QString &serializedUrl, remoteUrls() ) {
-    UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
-    QString key = urlConfig->mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
-    urlConfig->mPassword = loadPassword( key, urlConfig->mUser );
-    mUrls[ key ] = urlConfig;
-  }
 }
 
 Settings::~Settings()
@@ -144,6 +119,14 @@ void Settings::cleanup()
 
 DavUtils::DavUrl::List Settings::configuredDavUrls()
 {
+  if ( mUrls.isEmpty() ) {
+    foreach ( const QString &serializedUrl, remoteUrls() ) {
+      UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
+      QString key = urlConfig->mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
+      urlConfig->mPassword = loadPassword( key, urlConfig->mUser );
+      mUrls[ key ] = urlConfig;
+    }
+  }
   DavUtils::DavUrl::List davUrls;
   QMapIterator<QString, UrlConfiguration*> it( mUrls );
 
@@ -167,12 +150,16 @@ DavUtils::DavUrl Settings::configuredDavUrl( DavUtils::Protocol proto, const QSt
 
   const QString user = username( proto, searchUrl );
   fullUrl.setUser( user );
+  fullUrl.setPassword( password( proto, searchUrl ) );
 
   return DavUtils::DavUrl( fullUrl, proto );
 }
 
 DavUtils::DavUrl Settings::davUrlFromCollectionUrl( const QString &collectionUrl, const QString &finalUrl )
 {
+  if ( mCollectionsUrlsMapping.isEmpty() )
+    loadMappings();
+
   DavUtils::DavUrl davUrl;
   QString targetUrl = finalUrl.isEmpty() ? collectionUrl : finalUrl;
 
@@ -187,6 +174,9 @@ DavUtils::DavUrl Settings::davUrlFromCollectionUrl( const QString &collectionUrl
 
 void Settings::addCollectionUrlMapping( DavUtils::Protocol proto, const QString &collectionUrl, const QString &configuredUrl )
 {
+  if ( mCollectionsUrlsMapping.isEmpty() )
+    loadMappings();
+
   QString value = configuredUrl + "," + DavUtils::protocolName( proto );
   mCollectionsUrlsMapping.insert( collectionUrl, value );
 
@@ -263,6 +253,27 @@ QString Settings::password(DavUtils::Protocol proto, const QString& url)
     return mUrls[ key ]->mPassword;
   else
     return QString();
+}
+
+void Settings::loadMappings()
+{
+  QString collectionsMappingCacheBase = QString( "akonadi-davgroupware/%1_c2u.dat" ).arg( KApplication::applicationName() );
+  mCollectionsUrlsMappingCache = KStandardDirs::locateLocal( "data", collectionsMappingCacheBase );
+  QFile collectionsMappingsCache( mCollectionsUrlsMappingCache );
+
+  if ( collectionsMappingsCache.exists() ) {
+    if ( collectionsMappingsCache.open( QIODevice::ReadOnly ) ) {
+      QDataStream cache( &collectionsMappingsCache );
+      cache >> mCollectionsUrlsMapping;
+      collectionsMappingsCache.close();
+    }
+  }
+  else if ( !collectionsUrlsMappings().isEmpty() ) {
+    QByteArray rawMappings = QByteArray::fromBase64( collectionsUrlsMappings().toAscii() );
+    QDataStream stream( &rawMappings, QIODevice::ReadOnly );
+    stream >> mCollectionsUrlsMapping;
+    setCollectionsUrlsMappings( QString() );
+  }
 }
 
 void Settings::updateRemoteUrls()
