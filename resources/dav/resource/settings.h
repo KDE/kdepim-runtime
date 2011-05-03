@@ -91,6 +91,7 @@ class Settings : public SettingsBase
     QString password( DavUtils::Protocol protocol, const QString &url );
 
   private:
+    void loadMappings();
     void updateRemoteUrls();
     void savePassword( const QString &key, const QString &user, const QString &password );
     QString loadPassword( const QString &key, const QString &user );
