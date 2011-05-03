@@ -298,13 +298,13 @@ ServerTypePage::ServerTypePage( QWidget *parent )
 
   mServerGroup = new QButtonGroup( this );
   mServerGroup->setExclusive( true );
-  connect( mServerGroup, SIGNAL( buttonClicked( QAbstractButton* ) ), SIGNAL( completeChanged() ) );
 
   QRadioButton *button;
 
   QHBoxLayout *hLayout = new QHBoxLayout( this );
   button = new QRadioButton( i18n( "Use one of those servers:" ) );
   mServerGroup->addButton( button );
+  mServerGroup->setId( button, 0 );
   hLayout->addWidget( button );
   hLayout->addWidget( mProvidersCombo );
   hLayout->addStretch( 1 );
@@ -312,17 +312,32 @@ ServerTypePage::ServerTypePage( QWidget *parent )
 
   button = new QRadioButton( i18n( "Configure the resource manually" ) );
   mServerGroup->addButton( button );
+  mServerGroup->setId( button, 1 );
   layout->addWidget( button );
   registerField( "manualConfiguration", button );
-  connect( button, SIGNAL(toggled(bool)),
-           this, SLOT(manualConfigToggled(bool)) );
+
+  connect( mServerGroup, SIGNAL(buttonReleased(int)),
+           this, SLOT(typeToggled(int)) );
 
   layout->addStretch( 1 );
 }
 
 bool ServerTypePage::isComplete() const
 {
-  return ( mServerGroup->checkedButton() != 0 );
+  return false;
+}
+
+void ServerTypePage::initializePage()
+{
+  QWizardPage::initializePage();
+  int buttonId = mServerGroup->checkedId();
+  if ( buttonId != -1 ) {
+    typeToggled( buttonId );
+  }
+  else {
+    wizard()->button( QWizard::FinishButton )->setEnabled( false );
+    wizard()->button( QWizard::NextButton )->setEnabled( false );
+  }
 }
 
 bool ServerTypePage::validatePage()
@@ -337,10 +352,17 @@ bool ServerTypePage::validatePage()
   }
 }
 
-void ServerTypePage::manualConfigToggled( bool value )
+void ServerTypePage::typeToggled(int buttonId)
 {
-  wizard()->button( QWizard::FinishButton )->setEnabled( value );
-  wizard()->button( QWizard::NextButton )->setDisabled( value );
+  bool enableFinish;
+
+  if ( buttonId == 0 )
+    enableFinish = false;
+  else
+    enableFinish = true;
+
+  wizard()->button( QWizard::FinishButton )->setEnabled( enableFinish );
+  wizard()->button( QWizard::NextButton )->setDisabled( enableFinish );
 }
 
 /*
