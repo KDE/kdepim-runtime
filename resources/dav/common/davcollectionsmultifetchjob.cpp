@@ -27,6 +27,9 @@ DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob( const DavUtils::DavUrl
 
 void DavCollectionsMultiFetchJob::start()
 {
+  if ( mUrls.size() == 0 )
+    emitResult();
+
   foreach ( const DavUtils::DavUrl &url, mUrls ) {
     DavCollectionsFetchJob *job = new DavCollectionsFetchJob( url, this );
     connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
