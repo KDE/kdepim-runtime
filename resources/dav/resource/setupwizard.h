@@ -89,6 +89,7 @@ class CredentialsPage : public QWizardPage
 
   private:
     KLineEdit *mUserName;
+    KLineEdit *mPassword;
 };
 
 class ServerTypePage : public QWizardPage
@@ -135,16 +136,6 @@ class ConnectionPage : public QWizardPage
     QLabel *mCardDavUrlPreview;
     QLabel *mGroupDavUrlLabel;
     QLabel *mGroupDavUrlPreview;
-};
-
-class CredentialsPage : public QWizardPage
-{
-  public:
-    CredentialsPage( QWidget *parent = 0 );
-
-  private:
-    KLineEdit *mUserName;
-    KLineEdit *mPassword;
 };
 
 class CheckPage : public QWizardPage
