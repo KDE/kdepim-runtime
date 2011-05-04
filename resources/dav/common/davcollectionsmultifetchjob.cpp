@@ -27,7 +27,7 @@ DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob( const DavUtils::DavUrl
 
 void DavCollectionsMultiFetchJob::start()
 {
-  if ( mUrls.size() == 0 )
+  if ( mUrls.isEmpty() )
     emitResult();
 
   foreach ( const DavUtils::DavUrl &url, mUrls ) {
