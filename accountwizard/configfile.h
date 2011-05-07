@@ -30,6 +30,7 @@ struct Config {
   QString group;
   QString key;
   QString value;
+  bool obscure;
 };
 
 class ConfigFile : public SetupObject
@@ -43,6 +44,7 @@ class ConfigFile : public SetupObject
   public slots:
     Q_SCRIPTABLE void setName( const QString & name );
     Q_SCRIPTABLE void setConfig( const QString &group, const QString &key, const QString &value );
+    Q_SCRIPTABLE void setPassword( const QString &group, const QString &key, const QString &value );
   private:
     QList<Config> m_configData;
     QString m_name;

@@ -22,7 +22,7 @@
 #include <KConfig>
 #include <KConfigGroup>
 #include <KLocale>
-
+#include <KStringHandler>
 
 ConfigFile::ConfigFile( const QString & configName, QObject *parent )
   : SetupObject( parent )
@@ -40,10 +40,12 @@ void ConfigFile::create()
 {
   emit info( i18n( "Writing config file for %1...",m_name ) );
 
-  const int count = m_configData.count();
-  for (int i = 0; i < count; ++i) {
-    KConfigGroup grp = m_config->group( m_configData.at( i ).group );
-    grp.writeEntry( m_configData.at( i ).key, m_configData.at( i ).value );
+  foreach ( const Config &c, m_configData ) {
+    KConfigGroup grp = m_config->group( c.group );
+    if ( c.obscure )
+      grp.writeEntry( c.key, KStringHandler::obscure( c.value ) );
+    else
+      grp.writeEntry( c.key, c.value );
   }
 
   m_config->sync();
@@ -67,7 +69,19 @@ void ConfigFile::setConfig( const QString &group, const QString &key, const QStr
   conf.group = group;
   conf.key = key;
   conf.value = value;
+  conf.obscure = false;
   m_configData.append( conf );
 }
+
+void ConfigFile::setPassword(const QString& group, const QString& key, const QString& value)
+{
+  Config conf;
+  conf.group = group;
+  conf.key = key;
+  conf.value = value;
+  conf.obscure = true;
+  m_configData.append( conf );
+}
+
 
 #include "configfile.moc"
