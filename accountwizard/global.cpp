@@ -85,10 +85,22 @@ QString Global::assistantBasePath()
   return QString();
 }
 
-QString Global::unpackAssistant( const QString& path )
+QString Global::unpackAssistant( const KUrl& remotePackageUrl )
 {
-  const KUrl file( "tar://" + path );
-  const QFileInfo fi( path );
+  QString localPackageFile;
+  if ( remotePackageUrl.protocol() == QLatin1String("file") ) {
+    localPackageFile = remotePackageUrl.path();
+  } else {
+    QString remoteFileName = QFileInfo( remotePackageUrl.path() ).fileName();
+    localPackageFile = KStandardDirs::locateLocal( "cache", "accountwizard/" + remoteFileName );
+    KIO::Job* job = KIO::copy( remotePackageUrl, localPackageFile, KIO::Overwrite | KIO::HideProgressInfo );
+    kDebug() << "downloading remote URL" << remotePackageUrl << "to" << localPackageFile;
+    if ( !KIO::NetAccess::synchronousRun(job, 0) ) 
+      return QString();
+  }
+
+  const KUrl file( "tar://" + localPackageFile );
+  const QFileInfo fi( localPackageFile );
   const QString assistant = fi.baseName();
   const QString dest = KStandardDirs::locateLocal("appdata", "/" );
   KStandardDirs::makeDir( dest + file.fileName() );

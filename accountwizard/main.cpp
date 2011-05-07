@@ -63,7 +63,7 @@ int main( int argc, char **argv )
   Akonadi::Control::start( 0 );
 
   if ( !args->getOption( "package" ).isEmpty() ) {
-    Global::setAssistant( Global::unpackAssistant( args->getOption( "package" ) ) );
+    Global::setAssistant( Global::unpackAssistant( KUrl::fromPathOrUrl( args->getOption( "package" ) ) ) );
   } else
     Global::setAssistant( args->getOption( "assistant" ) );
 

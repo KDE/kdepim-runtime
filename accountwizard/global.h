@@ -20,6 +20,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include <KUrl>
 #include <QStringList>
 
 namespace Global
@@ -32,7 +33,7 @@ namespace Global
 
   QString assistantBasePath();
 
-  QString unpackAssistant( const QString& );
+  QString unpackAssistant( const KUrl& remotePackageUrl );
 }
 
 #endif
