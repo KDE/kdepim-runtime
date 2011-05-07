@@ -57,6 +57,10 @@ void Identity::create()
   }
   if ( !m_prefCryptoFormat.isEmpty() )
     m_identity->setPreferredCryptoMessageFormat( m_prefCryptoFormat );
+  if ( !m_xface.isEmpty() ) {
+    m_identity->setXFaceEnabled( true );
+    m_identity->setXFace( m_xface );
+  }
   m_manager->setAsDefault( m_identity->uoid() );
   m_manager->commit();
 
@@ -141,5 +145,9 @@ void Identity::setPreferredCryptoMessageFormat(const QString& format)
   m_prefCryptoFormat = format;
 }
 
+void Identity::setXFace(const QString& xface)
+{
+  m_xface = xface;
+}
 
 #include "identity.moc"

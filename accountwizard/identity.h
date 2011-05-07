@@ -47,6 +47,7 @@ class Identity : public SetupObject
     Q_SCRIPTABLE uint uoid() const;
     Q_SCRIPTABLE void setTransport( QObject* transport );
     Q_SCRIPTABLE void setPreferredCryptoMessageFormat( const QString &format );
+    Q_SCRIPTABLE void setXFace( const QString &xface );
 
   protected:
     QString identityName() const;
@@ -58,6 +59,7 @@ class Identity : public SetupObject
     QString m_organization;
     QString m_signature;
     QString m_prefCryptoFormat;
+    QString m_xface;
     Transport *m_transport;
     KPIMIdentities::IdentityManager *m_manager;
     KPIMIdentities::Identity *m_identity;
