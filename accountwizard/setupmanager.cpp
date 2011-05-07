@@ -189,6 +189,11 @@ QString SetupManager::password()
   return m_password;
 }
 
+QString SetupManager::country()
+{
+  return KGlobal::locale()->country();
+}
+
 bool SetupManager::personalDataAvailable()
 {
   return m_personalDataAvailable;

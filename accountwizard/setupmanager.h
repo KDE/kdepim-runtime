@@ -42,6 +42,7 @@ class SetupManager : public QObject
     Q_SCRIPTABLE QString name();
     Q_SCRIPTABLE QString email();
     Q_SCRIPTABLE QString password();
+    Q_SCRIPTABLE QString country();
     Q_SCRIPTABLE QObject* createResource( const QString &type );
     Q_SCRIPTABLE QObject* createTransport( const QString &type );
     Q_SCRIPTABLE QObject* createConfigFile( const QString &configName );
