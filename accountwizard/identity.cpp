@@ -55,6 +55,8 @@ void Identity::create()
     const KPIMIdentities::Signature sig( m_signature );
     m_identity->setSignature( sig );
   }
+  if ( !m_prefCryptoFormat.isEmpty() )
+    m_identity->setPreferredCryptoMessageFormat( m_prefCryptoFormat );
   m_manager->setAsDefault( m_identity->uoid() );
   m_manager->commit();
 
@@ -133,5 +135,11 @@ void Identity::setSignature(const QString& sig)
 {
   m_signature = sig;
 }
+
+void Identity::setPreferredCryptoMessageFormat(const QString& format)
+{
+  m_prefCryptoFormat = format;
+}
+
 
 #include "identity.moc"
