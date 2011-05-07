@@ -34,9 +34,15 @@ class Ldap : public SetupObject
   public slots:
     Q_SCRIPTABLE void setUser( const QString & name );
     Q_SCRIPTABLE void setServer( const QString &server );
+    Q_SCRIPTABLE void setAuthenticationMethod( const QString &meth );
+    Q_SCRIPTABLE void setBindDn( const QString &bindDn );
+    Q_SCRIPTABLE void setPassword( const QString &password );
   private:
     QString m_user;
     QString m_server;
+    QString m_bindDn;
+    QString m_authMethod;
+    QString m_password;
 };
 
 #endif

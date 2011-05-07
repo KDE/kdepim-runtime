@@ -76,6 +76,11 @@ void Ldap::create()
     group.writeEntry( QString("SelectedHost%1").arg(selHosts), host);
     group.writeEntry( QString("SelectedBase%1").arg(selHosts), basedn);
     group.writeEntry( QString("SelectedPort%1").arg(selHosts), "389");
+    if ( !m_authMethod.isEmpty() ) {
+      group.writeEntry( QString("SelectedAuth%1").arg(selHosts), m_authMethod);
+      group.writeEntry( QString("SelectedBind%1").arg(selHosts), m_bindDn);
+      group.writeEntry( QString("SelectedPwdBind%1").arg(selHosts), m_password);
+    }
   }
   emit finished( i18n( "LDAP set up." ) );
 }
@@ -95,6 +100,19 @@ void Ldap::setServer( const QString &server )
   m_server = server;
 }
 
+void Ldap::setAuthenticationMethod(const QString& meth)
+{
+  m_authMethod = meth;
+}
 
+void Ldap::setBindDn(const QString& bindDn)
+{
+  m_bindDn = bindDn;
+}
+
+void Ldap::setPassword(const QString& password)
+{
+  m_password = password;
+}
 
 #include "ldap.moc"
