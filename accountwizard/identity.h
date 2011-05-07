@@ -39,9 +39,11 @@ class Identity : public SetupObject
     void destroy();
 
   public slots:
+    Q_SCRIPTABLE void setIdentityName( const QString &name );
     Q_SCRIPTABLE void setRealName( const QString & name );
     Q_SCRIPTABLE void setEmail( const QString &email );
     Q_SCRIPTABLE void setOrganization( const QString &org );
+    Q_SCRIPTABLE void setSignature( const QString &sig );
     Q_SCRIPTABLE uint uoid() const;
     Q_SCRIPTABLE void setTransport( QObject* transport );
 
@@ -49,9 +51,11 @@ class Identity : public SetupObject
     QString identityName() const;
 
   private:
+    QString m_identityName;
     QString m_realName;
     QString m_email;
     QString m_organization;
+    QString m_signature;
     Transport *m_transport;
     KPIMIdentities::IdentityManager *m_manager;
     KPIMIdentities::Identity *m_identity;

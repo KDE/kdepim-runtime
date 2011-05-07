@@ -51,6 +51,10 @@ void Identity::create()
   m_identity->setOrganization( m_organization );
   if ( m_transport && m_transport->transportId() > 0 )
     m_identity->setTransport( QString::number( m_transport->transportId() ) );
+  if ( !m_signature.isEmpty() ) {
+    const KPIMIdentities::Signature sig( m_signature );
+    m_identity->setSignature( sig );
+  }
   m_manager->setAsDefault( m_identity->uoid() );
   m_manager->commit();
 
@@ -60,21 +64,24 @@ void Identity::create()
 QString Identity::identityName() const
 {
   // create identity name
-  QString name( i18nc( "Default name for new email accounts/identities.", "Unnamed" ) );
+  QString name( m_identityName );
+  if ( name.isEmpty() ) {
+    name = i18nc( "Default name for new email accounts/identities.", "Unnamed" );
 
-  QString idName = m_email;
-  int pos = idName.indexOf( '@' );
-  if ( pos != -1 ) {
-    name = idName.mid( 0, pos );
-  }
+    QString idName = m_email;
+    int pos = idName.indexOf( '@' );
+    if ( pos != -1 ) {
+      name = idName.mid( 0, pos );
+    }
 
-  // Make the name a bit more human friendly
-  name.replace( '.', ' ' );
-  pos = name.indexOf( ' ' );
-  if ( pos != 0 ) {
-    name[ pos + 1 ] = name[ pos + 1 ].toUpper();
+    // Make the name a bit more human friendly
+    name.replace( '.', ' ' );
+    pos = name.indexOf( ' ' );
+    if ( pos != 0 ) {
+      name[ pos + 1 ] = name[ pos + 1 ].toUpper();
+    }
+    name[ 0 ] = name[ 0 ].toUpper();
   }
-  name[ 0 ] = name[ 0 ].toUpper();
 
   if ( !m_manager->isUnique( name ) ) {
     name = m_manager->makeUnique( name );
@@ -89,6 +96,11 @@ void Identity::destroy()
   m_manager->commit();
   m_identity = 0;
   emit info( i18n( "Identity removed." ) );
+}
+
+void Identity::setIdentityName(const QString& name)
+{
+  m_identityName = name;
 }
 
 void Identity::setRealName( const QString &name )
@@ -115,6 +127,11 @@ void Identity::setTransport(QObject* transport)
 {
   m_transport = qobject_cast<Transport*>( transport );
   setDependsOn( qobject_cast<SetupObject*>( transport ) );
+}
+
+void Identity::setSignature(const QString& sig)
+{
+  m_signature = sig;
 }
 
 #include "identity.moc"
