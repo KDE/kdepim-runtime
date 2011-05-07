@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=Citadel
+Name[nl]=Citadel
+Name[pt]=Citadel
+Name[sv]=Citadel
+Name[uk]=Citadel
+Name[x-test]=xxCitadelxx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

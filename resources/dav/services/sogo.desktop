@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=ScalableOGo
+Name[nl]=ScalableOGo
+Name[pt]=ScalableOGo
+Name[sv]=ScalableOGo
+Name[uk]=ScalableOGo
+Name[x-test]=xxScalableOGoxx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

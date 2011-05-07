@@ -2,6 +2,11 @@
 Type=ServiceType
 X-KDE-ServiceType=DavGroupwareProvider
 Name=DAV Groupware resource provider
+Name[nl]=Leverancier van DAV-groupware-hulpbron
+Name[pt]=Fornecedor de recursos de 'groupware' em DAV
+Name[sv]=Leverantör av DAV-grupprogramresurs
+Name[uk]=Надавач ресурсу групової роботи DAV
+Name[x-test]=xxDAV Groupware resource providerxx
 
 [PropertyDef::X-DavGroupware-SupportedProtocols]
 Type=QStringList

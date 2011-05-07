@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=Scalix
+Name[nl]=Scalix
+Name[pt]=Scalix
+Name[sv]=Scalix
+Name[uk]=Scalix
+Name[x-test]=xxScalixxx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

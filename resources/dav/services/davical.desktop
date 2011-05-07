@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=Davical
+Name[nl]=Davical
+Name[pt]=Davical
+Name[sv]=Davical
+Name[uk]=Davical
+Name[x-test]=xxDavicalxx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

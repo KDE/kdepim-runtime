@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=OpenGroupware
+Name[nl]=OpenGroupware
+Name[pt]=OpenGroupware
+Name[sv]=OpenGroupware
+Name[uk]=OpenGroupware
+Name[x-test]=xxOpenGroupwarexx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

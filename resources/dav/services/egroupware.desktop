@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=eGroupware
+Name[nl]=eGroupware
+Name[pt]=eGroupware
+Name[sv]=eGroupware
+Name[uk]=eGroupware
+Name[x-test]=xxeGroupwarexx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=Zimbra
+Name[nl]=Zimbra
+Name[pt]=Zimbra
+Name[sv]=Zimbra
+Name[uk]=Zimbra
+Name[x-test]=xxZimbraxx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 
