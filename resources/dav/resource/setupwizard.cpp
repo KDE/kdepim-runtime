@@ -221,7 +221,7 @@ int CredentialsPage::nextId() const
 
     wizard()->setProperty( "usePredefinedProvider", true );
     wizard()->setProperty( "predefinedProviderName", offers.at( 0 )->name() );
-    wizard()->setProperty( "providerDesktopFilePath", offers.at( 0 )->desktopEntryPath() );
+    wizard()->setProperty( "providerDesktopFilePath", offers.at( 0 )->entryPath() );
     return SetupWizard::W_PredefinedProviderPage;
   }
   else {
@@ -294,7 +294,7 @@ ServerTypePage::ServerTypePage( QWidget *parent )
   KServiceTypeTrader *trader = KServiceTypeTrader::self();
   providers = trader->query( "DavGroupwareProvider" );
   foreach ( const KService::Ptr &provider, providers ) {
-    mProvidersCombo->addItem( provider->name(), provider->desktopEntryPath() );
+    mProvidersCombo->addItem( provider->name(), provider->entryPath() );
   }
   registerField( "provider", mProvidersCombo, "currentText" );
 
