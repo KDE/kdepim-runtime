@@ -10,13 +10,7 @@ set( birthdayresource_srcs
 kde4_add_kcfg_files( birthdayresource_srcs settings.kcfgc )
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.Settings)
 
-macro_ensure_version( "4.5.74" ${KDE_VERSION} KDE_IS_AT_LEAST_4_5_74 )
-
-if(KDE_IS_AT_LEAST_4_5_74)
-  kde4_add_ui_files(birthdayresource_srcs configdialog.ui)
-else(KDE_IS_AT_LEAST_4_5_74)
-  kde4_add_ui_files(birthdayresource_srcs configdialog-45.ui)
-endif(KDE_IS_AT_LEAST_4_5_74)
+kde4_add_ui_files(birthdayresource_srcs configdialog.ui)
 
 qt4_add_dbus_adaptor(birthdayresource_srcs
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Birthdays.Settings.xml settings.h Settings
