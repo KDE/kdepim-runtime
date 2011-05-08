@@ -52,7 +52,6 @@ endif( NOT IMAPRESOURCE_NO_SOLID)
 ########### next target ###############
 
 set( akonadi_imap_resource_SRCS
-  kdescendantsproxymodel.cpp
   imapidlemanager.cpp
   imapresource.cpp
   resourcestate.cpp

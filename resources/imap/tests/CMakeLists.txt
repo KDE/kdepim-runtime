@@ -43,7 +43,6 @@ endif()
 
 set(testsubscriptiondialog_SRCS
   testsubscriptiondialog.cpp
-  ../kdescendantsproxymodel.cpp
   ../imapaccount.cpp
   ../subscriptiondialog.cpp
 )
