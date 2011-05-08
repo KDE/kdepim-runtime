@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Local Bookmarks
 Name[ar]=علامات محلية
+Name[bs]=Lokale oznake
 Name[ca]=Punts locals
 Name[ca@valencia]=Punts locals
 Name[cs]=Místní záložky
@@ -40,6 +41,7 @@ Name[zh_CN]=本地书签
 Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
 Comment[ar]=تحمل البيانات من ملف العلامات المحلية
+Comment[bs]=Učitava podatke iz datoteke lokalnih oznaka
 Comment[ca]=Carrega dades des d'un fitxer de punts local
 Comment[ca@valencia]=Carrega dades des d'un fitxer de punts local
 Comment[cs]=Načítá data z místních záložek

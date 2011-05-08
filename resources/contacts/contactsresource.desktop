@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Personal Contacts
+Name[bs]=Lični kontakti
 Name[ca]=Contactes personals
 Name[ca@valencia]=Contactes personals
 Name[cs]=Osobní kontakty
@@ -37,6 +38,7 @@ Name[x-test]=xxPersonal Contactsxx
 Name[zh_CN]=个人联系人
 Name[zh_TW]=個人聯絡人
 Comment=The address book with personal contacts
+Comment[bs]=Imenik sa ličnim kontaktima
 Comment[ca]=La llibreta d'adreces amb contactes personals
 Comment[ca@valencia]=La llibreta d'adreces amb contactes personals
 Comment[da]=Adressebog med personlige kontakter

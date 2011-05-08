@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=KDE Calendar (traditional)
 Name[ar]=تقويم كدي (تقليدي)
+Name[bs]=KDE kalendar (tradicionalno)
 Name[ca]=Calendari del KDE (tradicional)
 Name[ca@valencia]=Calendari del KDE (tradicional)
 Name[cs]=KDE kalendář (tradiční)
@@ -42,6 +43,7 @@ Name[zh_CN]=KDE 日历(传统)
 Name[zh_TW]=KDE 行事曆（傳統）
 Comment=Loads data from a traditional KDE calendar resource
 Comment[ar]=تحمل البيانات من موارد تقويم كدي التقليدي
+Comment[bs]=Učitava podatke iz tradicionalog KDE izvora kalendara
 Comment[ca]=Carregar dades des d'un recurs de calendari tradicional del KDE
 Comment[ca@valencia]=Carregar dades des d'un recurs de calendari tradicional del KDE
 Comment[cs]=Načítá data z tradičního kalendáře KDE

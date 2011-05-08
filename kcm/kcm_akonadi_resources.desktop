@@ -15,6 +15,7 @@ X-KDE-System-Settings-Parent-Category=personal-information
 
 Name=Akonadi Resources Configuration
 Name[ar]=ضبط موارد اكوندا
+Name[bs]=Konfiguracija Akonadi resursa
 Name[ca]=Configuració de recursos de l'Akonadi
 Name[ca@valencia]=Configuració de recursos de l'Akonadi
 Name[cs]=Nastavení zdrojů Akonadi
@@ -56,6 +57,7 @@ Name[zh_CN]=Akonadi 资源配置
 Name[zh_TW]=Akonadi 資源設定
 Comment=Configuration of the Akonadi Personal Information Management framework
 Comment[ar]=ضبط إطار إدارة المعلومات الشخصية اكوندا
+Comment[bs]=Konfiguracija Akonadi frameworka za upravljanje licnim podacima
 Comment[ca]=Configuració de l'entorn de gestió d'informació personal de l'Akonadi
 Comment[ca@valencia]=Configuració de l'entorn de gestió d'informació personal de l'Akonadi
 Comment[da]=Konfiguration af Akonadi - framework til håndtering af personlig information (PIM)

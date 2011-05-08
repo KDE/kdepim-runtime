@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=ICal Calendar File
 Name[ar]=ملف تقويم ICal
+Name[bs]=ICal kalendar datoteka
 Name[ca]=Fitxer de calendari ICal
 Name[ca@valencia]=Fitxer de calendari ICal
 Name[cs]=Soubor s iCal kalendářem
@@ -42,6 +43,7 @@ Name[zh_CN]=ICal 日历文件
 Name[zh_TW]=ICal 行事曆檔案
 Comment=Loads data from an iCal file
 Comment[ar]=تحميل البيانات من ملف ICal
+Comment[bs]=Učitava podatke iz iCal datoteke
 Comment[ca]=Carregar dades des d'un fitxer iCal
 Comment[ca@valencia]=Carregar dades des d'un fitxer iCal
 Comment[cs]=Načítá data z iCal souboru

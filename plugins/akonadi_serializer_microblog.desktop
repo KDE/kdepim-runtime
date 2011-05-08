@@ -1,6 +1,7 @@
 [Misc]
 Name=Microblog Serializer
 Name[ar]=مسلسل التدوين المصغر
+Name[bs]=Siralizator mikrobloga
 Name[ca]=Serialitzador de microbloc
 Name[ca@valencia]=Serialitzador de microbloc
 Name[da]=Serieordning af microblogs
@@ -38,6 +39,7 @@ Name[zh_CN]=微博客序列转换器
 Name[zh_TW]=Microblog 序列器
 Comment=An Akonadi serializer plugin for Microblog
 Comment[ar]=ملحق مسلسل اكوندا للتدوين المصغر
+Comment[bs]=Akonadi dodatak serializatora za Microblog
 Comment[ca]=Un connector de serialització de l'Akonadi pels microblocs
 Comment[ca@valencia]=Un connector de serialització de l'Akonadi pels microblocs
 Comment[da]=Et Akonadi-plugin til serieordning af microblogs

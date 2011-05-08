@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=KDE Address Book (traditional)
 Name[ar]=دفتر عناوين كدي (التقليدي)
+Name[bs]=KDE adresad (tradicionalno)
 Name[ca]=Llibreta d'adreces del KDE (tradicional)
 Name[ca@valencia]=Llibreta d'adreces del KDE (tradicional)
 Name[da]=KDE's adressebog (traditionel)
@@ -40,6 +41,7 @@ Name[zh_CN]=KDE 地址簿(传统)
 Name[zh_TW]=KDE 通訊錄（傳統）
 Comment=Loads data from a traditional KDE address book resource
 Comment[ar]=تحمل البيانات من موارد دفتر عنوان كدي التقليدي
+Comment[bs]=Učitava podatke iz tradicionalog KDE izvora adresara
 Comment[ca]=Carrega dades des d'un recurs de llibreta d'adreces tradicional del KDE
 Comment[ca@valencia]=Carrega dades des d'un recurs de llibreta d'adreces tradicional del KDE
 Comment[da]=Indlæser data fra en traditionel KDE adressebogsressource

@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Maildir
 Name[ar]=Maildir
+Name[bs]=Maildir
 Name[ca]=Maildir
 Name[ca@valencia]=Maildir
 Name[cs]=Maildir
@@ -43,6 +44,7 @@ Name[zh_CN]=邮件目录
 Name[zh_TW]=Maildir
 Comment=Loads data from a local maildir folder
 Comment[ar]=تحمل البيانات من مجلد maildir المحلي
+Comment[bs]=Učitava podatke iz lokalnog maildir direktorija
 Comment[ca]=Carregar dades des d'una carpeta «maildir» local
 Comment[ca@valencia]=Carregar dades des d'una carpeta «maildir» local
 Comment[cs]=Načítá data z místní složky maildir

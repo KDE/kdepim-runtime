@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi
 Name[ar]=اكوندا
+Name[bs]=Akonadi
 Name[ca]=Akonadi
 Name[ca@valencia]=Akonadi
 Name[cs]=Akonadi
@@ -44,6 +45,7 @@ Name[zh_CN]=Akonadi
 Name[zh_TW]=Akonadi
 Comment=Provides access to calendars stored in Akonadi calendar folders
 Comment[ar]=يوفر الوصول للتقويمات المحفوظة في مجلد تقويم اكوندا
+Comment[bs]=Omogućava pristup kalendarima pohranjenim u Akonadi direktorijima kalendara
 Comment[ca]=Proporciona l'accés als calendaris emmagatzemats en carpetes de calendari de l'Akonadi
 Comment[ca@valencia]=Proporciona l'accés als calendaris emmagatzemats en carpetes de calendari de l'Akonadi
 Comment[da]=Giver adgang til kalendere lagret i Akonadi kalender-mapper

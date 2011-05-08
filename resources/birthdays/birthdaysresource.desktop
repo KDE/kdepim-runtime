@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Birthdays & Anniversaries
 Name[ar]=أعياد الميلاد و الذكريات
+Name[bs]=Rođendani i godišnjice
 Name[ca]=Dates de naixement i aniversaris
 Name[ca@valencia]=Dates de naixement i aniversaris
 Name[cs]=Narozeniny a výročí
@@ -40,6 +41,7 @@ Name[zh_CN]=生日和纪念日
 Name[zh_TW]=生日與紀念日
 Comment=Provides access to birthday and anniversary dates of contacts in your address book as calendar events
 Comment[ar]=يوفر الحصول على موعد الذكرى السنوية لميلاد أو ذكرى لقائمة دفتر العناوين الخاص بك حسب الجدول الزمني للأحداث
+Comment[bs]=Omogućava pristup datumima rođendana i godišnjica u vašem adresaru kao događajima na kalendaru
 Comment[ca]=Proporciona l'accés a les dates de naixement i els aniversaris dels contactes de la llibreta d'adreces com a esdeveniments de calendari
 Comment[ca@valencia]=Proporciona l'accés a les dates de naixement i els aniversaris dels contactes de la llibreta d'adreces com a esdeveniments de calendari
 Comment[da]=Giver adgang til datoer for fødsels- og årsdage for kontakter i din adressebog som kalenderbegivenheder

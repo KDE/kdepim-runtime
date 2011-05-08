@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Nepomuk Calendar Feeder
+Name[bs]=Nepomuk dovod kalendara
 Name[ca]=Alimentador de calendaris del Nepomuk
 Name[ca@valencia]=Alimentador de calendaris del Nepomuk
 Name[da]=Nepomuk kalender-feeder
@@ -32,6 +33,7 @@ Name[x-test]=xxNepomuk Calendar Feederxx
 Name[zh_CN]=Nepomuk 日历采集器
 Name[zh_TW]=Nepomuk Calendar Feeder
 Comment=Extension to push events, journals and todos into Nepomuk
+Comment[bs]=Dodatak za slanje događaja, žurnala i budućih zadataka u Nepomuk
 Comment[ca]=Extensió per a introduir esdeveniments, diaris i pendents en el Nepomuk
 Comment[ca@valencia]=Extensió per a introduir esdeveniments, diaris i pendents en el Nepomuk
 Comment[da]=Udvidelse til at skubbe begivenheder, journaler og gøremål ind i Nepomuk
