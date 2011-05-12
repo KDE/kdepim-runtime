@@ -135,7 +135,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
   if ( !addressee.nickName().isEmpty() )
     contact.setNicknames( listFromString( addressee.nickName() ) );
 
-  contact.setContactUIDs( listFromString( addressee.uid() ) ); // never empty
+  contact.setContactUID( addressee.uid() ); // never empty
 
   if ( !addressee.name().isEmpty() )
     contact.setFullname( addressee.name() );

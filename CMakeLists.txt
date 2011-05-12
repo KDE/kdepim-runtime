@@ -33,7 +33,7 @@ macro_log_feature(SHARED_MIME_INFO_FOUND "SMI" "SharedMimeInfo" "http://freedesk
 find_package(LibXml2)
 macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applications" "http://xmlsoft.org" FALSE "" "Needed for building the knut Akonadi resource.")
 
-set(SDO_MIN_VERSION 0.6.50)
+set(SDO_MIN_VERSION 0.6.51)
 set(SOPRANO_MIN_VERSION 2.3.70)
 
 if(NOT KDEPIM_NO_NEPOMUK)

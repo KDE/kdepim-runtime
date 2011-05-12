@@ -117,7 +117,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
 
   if ( !uri.isEmpty() ) {
     NepomukFast::EventStatus status( uri, graphUri );
-    event.addEventStatus( status );
+    event.setEventStatus( status );
   }
 
   foreach ( const KCalCore::Attendee::Ptr &calAttendee, calEvent->attendees() ) {
