@@ -104,13 +104,13 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
     contact.setLabel( addressee.assembledName() );
 
   if ( !addressee.givenName().isEmpty() )
-    contact.setNameGivens( listFromString( addressee.givenName() ) );
+    contact.setNameGiven( addressee.givenName() );
 
   if ( !addressee.additionalName().isEmpty() )
     contact.setNameAdditionals( listFromString( addressee.additionalName() ) );
 
   if ( !addressee.familyName().isEmpty() )
-    contact.setNameFamilys( listFromString( addressee.familyName() ) );
+    contact.setNameFamily( addressee.familyName() );
 
   if ( !addressee.prefix().isEmpty() )
     contact.setNameHonorificPrefixs( listFromString( addressee.prefix() ) );
@@ -159,51 +159,51 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
   for ( int i = 0; i < phoneNumbers.count(); ++i ) {
     if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Bbs ) {
       NepomukFast::BbsNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Car ) {
       NepomukFast::CarPhoneNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Cell ) {
       NepomukFast::CellPhoneNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Fax ) {
       NepomukFast::FaxNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Isdn ) {
       NepomukFast::IsdnNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Msg ) {
       NepomukFast::MessagingNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Modem ) {
       NepomukFast::ModemNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Pager ) {
       NepomukFast::PagerNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Pcs ) {
       NepomukFast::PcsNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Video ) {
       NepomukFast::VideoTelephoneNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Voice ) {
       NepomukFast::VoicePhoneNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     } else { // matches Home and Work
       NepomukFast::PhoneNumber number( QUrl(), graphUri );
-      number.setPhoneNumbers( QStringList( phoneNumbers[ i ].number() ) );
+      number.setPhoneNumber( phoneNumbers[ i ].number() );
       contact.addPhoneNumber( number );
     }
   }
@@ -222,7 +222,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
   const KABC::Address::List addresses = addressee.addresses();
   for ( int i = 0; i < addresses.count(); ++i ) {
     NepomukFast::PostalAddress address( QUrl(), graphUri );
-    address.setStreetAddresses( listFromString( addresses[ i ].street() ) );
+    address.setStreetAddress( addresses[ i ].street() );
     if ( !addresses[ i ].postalCode().isEmpty() )
       address.setPostalcode( addresses[ i ].postalCode() );
     if ( !addresses[ i ].locality().isEmpty() )
@@ -230,10 +230,10 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, const Q
     if ( !addresses[ i ].region().isEmpty() )
       address.setRegion( addresses[ i ].region() );
     if ( !addresses[ i ].postOfficeBox().isEmpty() )
-      address.addPobox( addresses[ i ].postOfficeBox() );
+      address.setPobox( addresses[ i ].postOfficeBox() );
     if ( !addresses[ i ].country().isEmpty() )
       address.setCountry( addresses[ i ].country() );
-    address.setExtendedAddresses( listFromString( addresses[ i ].extended() ) );
+    address.setExtendedAddress( addresses[ i ].extended() );
 
     contact.addPostalAddress( address );
   }
