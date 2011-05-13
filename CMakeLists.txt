@@ -5,6 +5,41 @@ set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
 add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 
+############### KDEPIM-Runtime version ################
+# KDEPIM_RUNTIME_VERSION
+# Version scheme: "x.y.z build".
+#
+# x is the version number.
+# y is the major release number.
+# z is the minor release number.
+#
+# "x.y.z" follow the kdelibs version kdepim is released with.
+#
+# If "z" is 0, it the version is "x.y"
+#
+# KDEPIM_RUNTIME_DEV_VERSION
+# is empty for final versions. For development versions "build" is
+# something like "pre", "alpha1", "alpha2", "beta1", "beta2", "rc1", "rc2".
+#
+# Examples in chronological order:
+#
+#    3.0
+#    3.0.1
+#    3.1 alpha1
+#    3.1 beta1
+#    3.1 beta2
+#    3.1 rc1
+#    3.1
+#    3.1.1
+#    3.2 pre
+#    3.2 alpha1
+
+if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
+    set( KDEPIM_RUNTIME_DEV_VERSION "pre" )
+endif ()
+
+set( KDEPIM_RUNTIME_VERSION "4.7 ${KDEPIM_RUNTIME_DEV_VERSION}" )
+
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
 
@@ -161,7 +196,7 @@ endmacro( akonadi_add_resourcetest )
 
 ############### Now, we add the components ###############
 
-add_subdirectory(resources) 
+add_subdirectory(resources)
 add_subdirectory(agents)
 add_subdirectory(libkdepim-copy)
 add_subdirectory(plugins)
