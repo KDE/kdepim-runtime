@@ -8,6 +8,7 @@ Name[pt_BR]=OpenGroupware
 Name[sv]=OpenGroupware
 Name[uk]=OpenGroupware
 Name[x-test]=xxOpenGroupwarexx
+Name[zh_TW]=OpenGroupware
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

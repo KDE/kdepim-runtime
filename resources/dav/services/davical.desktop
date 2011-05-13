@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Davical
+Name[cs]=Davical
 Name[ia]=Davical
 Name[nds]=DAVical
 Name[nl]=Davical
@@ -8,6 +9,7 @@ Name[pt_BR]=Davical
 Name[sv]=Davical
 Name[uk]=Davical
 Name[x-test]=xxDavicalxx
+Name[zh_TW]=Davical
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

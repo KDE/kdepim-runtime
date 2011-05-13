@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Zarafa
+Name[cs]=Zarafa
 Name[ia]=Zarafa
 Name[nds]=Zarafa
 Name[nl]=Zarafa
@@ -8,6 +9,7 @@ Name[pt_BR]=Zarafa
 Name[sv]=Zarafa
 Name[uk]=Zarafa
 Name[x-test]=xxZarafaxx
+Name[zh_TW]=Zarafa
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 

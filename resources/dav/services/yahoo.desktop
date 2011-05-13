@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Yahoo!
+Name[cs]=Yahoo!
 Name[ia]=Yahoo!
 Name[nds]=Yahoo!
 Name[nl]=Yahoo!
@@ -8,6 +9,7 @@ Name[pt_BR]=Yahoo!
 Name[sv]=Yahoo!
 Name[uk]=Yahoo!
 Name[x-test]=xxYahoo!xx
+Name[zh_TW]=Yahoo!
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 
