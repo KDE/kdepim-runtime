@@ -972,7 +972,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
 void KMailMigrator::localMaildirCreated( KJob *job )
 {
   if ( job->error() ) {
-    emit message( Error, i18n( "Failed to resource for local folders: %1", job->errorText() ) );
+    emit message( Error, i18n( "Failed to create resource for local folders: %1", job->errorText() ) );
     deleteLater();
     return;
   }
