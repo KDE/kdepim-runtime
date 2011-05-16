@@ -31,7 +31,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavCollectionsFetchJob::DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url ), mSubJobCount( 0 )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mHasTemporaryError( false )
 {
 }
 
@@ -49,6 +49,16 @@ void DavCollectionsFetchJob::start()
 DavCollection::List DavCollectionsFetchJob::collections() const
 {
   return mCollections;
+}
+
+bool DavCollectionsFetchJob::hasTemporaryError() const
+{
+  return mHasTemporaryError;
+}
+
+DavUtils::DavUrl DavCollectionsFetchJob::davUrl() const
+{
+  return mUrl;
 }
 
 void DavCollectionsFetchJob::doCollectionsFetch( const KUrl &url )
@@ -106,6 +116,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   --mSubJobCount;
 
   if ( job->error() ) {
+    mHasTemporaryError = true;
     if ( !mSubJobSuccessful ) {
       setError( job->error() );
       setErrorText( job->errorText() );
@@ -120,7 +131,9 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
   if ( responseCode > 499 && responseCode < 600 ) {
-    // Server-side error, unrecoverable
+    // Server-side error, unrecoverable. As the collections may be available
+    // later save the job URL just in case
+    mHasTemporaryError = true;
     if ( !mSubJobSuccessful ) {
       setError( UserDefinedError );
       setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
@@ -129,7 +142,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       emitResult();
     return;
   } else if ( responseCode > 399 && responseCode < 500 ) {
-    // User-side error
+    // User-side error, or the collection was removed, or the rights revoked, or…
+    // Anyway, just forget about collections at this URL.
     if ( !mSubJobSuccessful ) {
       setError( UserDefinedError );
       setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
@@ -147,9 +161,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   // For use in the collectionDiscovered() signal
   KUrl _jobUrl = mUrl.url();
   _jobUrl.setUser( QString() );
-
   const QString jobUrl = _jobUrl.prettyUrl();
-  //kDebug() << davJob->response().toString();
 
   QByteArray resp( davJob->response().toByteArray() );
   QBuffer buffer( &resp );

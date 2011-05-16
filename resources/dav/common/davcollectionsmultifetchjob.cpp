@@ -46,9 +46,17 @@ DavCollection::List DavCollectionsMultiFetchJob::collections() const
   return mCollections;
 }
 
+DavUtils::DavUrl::List DavCollectionsMultiFetchJob::urlsWithTemporaryError() const
+{
+  return mUrlsWithTemporaryError;
+}
+
 void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
 {
   --mSubJobCount;
+  DavCollectionsFetchJob *fetchJob = qobject_cast<DavCollectionsFetchJob*>( job );
+  if ( fetchJob->hasTemporaryError() )
+    mUrlsWithTemporaryError << fetchJob->davUrl();
 
   if ( job->error() ) {
     if ( !mSubJobSuccessful ) {
@@ -65,7 +73,6 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
     mSubJobSuccessful = true;
   }
 
-  DavCollectionsFetchJob *fetchJob = qobject_cast<DavCollectionsFetchJob*>( job );
   mCollections << fetchJob->collections();
 
   if ( mSubJobCount == 0 )

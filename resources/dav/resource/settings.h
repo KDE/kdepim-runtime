@@ -82,6 +82,11 @@ class Settings : public SettingsBase
      */
     void addCollectionUrlMapping( DavUtils::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl );
 
+    /**
+     * Returns the collections URLs mapped behing @p configured and protocol @protocol.
+     */
+    QStringList mappedCollections( DavUtils::Protocol protocol, const QString &configuredUrl );
+
     void newUrlConfiguration( UrlConfiguration *urlConfig );
     void removeUrlConfiguration( DavUtils::Protocol protocol, const QString &url );
     UrlConfiguration * urlConfiguration( DavUtils::Protocol protocol, const QString &url );

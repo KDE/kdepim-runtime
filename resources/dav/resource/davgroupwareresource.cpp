@@ -195,6 +195,11 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
     return;
   }
 
+  if ( mCollectionsWithTemporaryError.contains( collection.remoteId() ) ) {
+    cancelTask();
+    return;
+  }
+
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
   if ( !davUrl.url().isValid() ) {
@@ -407,20 +412,41 @@ void DavGroupwareResource::onCollectionRemovedFinished( KJob *job )
 
 void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
 {
-  if ( job->error() ) {
+  const DavCollectionsMultiFetchJob *fetchJob = qobject_cast<DavCollectionsMultiFetchJob*>( job );
+
+  if ( job->error() && fetchJob->urlsWithTemporaryError().isEmpty() ) {
+    kWarning() << "Unable to fetch collections" << job->error() << job->errorText();
     cancelTask( i18n( "Unable to retrieve collections: %1", job->errorText() ) );
     return;
   }
 
-  const DavCollectionsMultiFetchJob *fetchJob = qobject_cast<DavCollectionsMultiFetchJob*>( job );
-
   Akonadi::Collection::List collections;
   collections << mDavCollectionRoot;
+
+  foreach ( const DavUtils::DavUrl &davUrl, fetchJob->urlsWithTemporaryError() )
+  {
+    KUrl url = davUrl.url();
+    url.setUser( QString() );
+    kWarning() << url;
+    QStringList urls = Settings::self()->mappedCollections( davUrl.protocol(), url.prettyUrl() );
+    mCollectionsWithTemporaryError << urls;
+
+    foreach ( const QString &url, urls ) {
+      kWarning() << "Temporary error with collection" << url;
+      Akonadi::Collection collection;
+      collection.setParentCollection( mDavCollectionRoot );
+      collection.setRemoteId( url );
+      collections << collection;
+    }
+  }
 
   const DavCollection::List davCollections = fetchJob->collections();
   QSet<QString> seenCollectionsNames;
 
   foreach ( const DavCollection &davCollection, davCollections ) {
+    if ( mCollectionsWithTemporaryError.contains( davCollection.url() ) )
+      mCollectionsWithTemporaryError.removeOne( davCollection.url() );
+
     Akonadi::Collection collection;
     collection.setParentCollection( mDavCollectionRoot );
     collection.setRemoteId( davCollection.url() );
