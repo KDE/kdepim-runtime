@@ -191,6 +191,15 @@ void Settings::addCollectionUrlMapping( DavUtils::Protocol proto, const QString 
   }
 }
 
+QStringList Settings::mappedCollections( DavUtils::Protocol proto, const QString &configuredUrl )
+{
+  if ( mCollectionsUrlsMapping.isEmpty() )
+    loadMappings();
+
+  QString value = configuredUrl + "," + DavUtils::protocolName( proto );
+  return mCollectionsUrlsMapping.keys( value );
+}
+
 void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
 {
   QString key = urlConfig->mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );

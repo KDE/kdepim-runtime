@@ -56,6 +56,13 @@ class DavCollectionsMultiFetchJob : public KJob
      */
     DavCollection::List collections() const;
 
+    /**
+     * Returns the list of URLs for which a temporary error
+     * was encountered. Only collections for which a 4xx HTTP response
+     * code was returned will not be part of this list.
+     */
+    DavUtils::DavUrl::List urlsWithTemporaryError() const;
+
   Q_SIGNALS:
     /**
      * This signal is emitted every time a new collection has been discovered.
@@ -71,6 +78,7 @@ class DavCollectionsMultiFetchJob : public KJob
   private:
     DavUtils::DavUrl::List mUrls;
     DavCollection::List mCollections;
+    DavUtils::DavUrl::List mUrlsWithTemporaryError;
     uint mSubJobCount;
     bool mSubJobSuccessful;
 };

@@ -23,6 +23,8 @@
 
 #include <akonadi/resourcebase.h>
 
+#include <QtCore/QStringList>
+
 class DavGroupwareResource : public Akonadi::ResourceBase,
                             public Akonadi::AgentBase::Observer
 {
@@ -83,6 +85,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
 
     Akonadi::Collection mDavCollectionRoot;
     EtagCache mEtagCache;
+    QStringList mCollectionsWithTemporaryError;
 };
 
 #endif
