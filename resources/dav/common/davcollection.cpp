@@ -57,6 +57,16 @@ QString DavCollection::displayName() const
   return mDisplayName;
 }
 
+void DavCollection::setColor( const QColor &color )
+{
+  mColor = color;
+}
+
+QColor DavCollection::color() const
+{
+  return mColor;
+}
+
 void DavCollection::setContentTypes( ContentTypes contentTypes )
 {
   mContentTypes = contentTypes;

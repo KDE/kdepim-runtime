@@ -21,6 +21,7 @@
 
 #include "davutils.h"
 
+#include <QtGui/QColor>
 #include <QtCore/QList>
 #include <QtCore/QString>
 
@@ -98,6 +99,17 @@ class DavCollection
     QString displayName() const;
 
     /**
+     * Sets the color for this collection
+     */
+    void setColor( const QColor &color );
+
+    /**
+     * Return the color of the collection, or an empty string if
+     * none was provided by the backend.
+     */
+    QColor color() const;
+
+    /**
      * Sets the possible content @p types of the collection.
      */
     void setContentTypes( ContentTypes types );
@@ -111,6 +123,7 @@ class DavCollection
     DavUtils::Protocol mProtocol;
     QString mUrl;
     QString mDisplayName;
+    QColor mColor;
     ContentTypes mContentTypes;
 };
 

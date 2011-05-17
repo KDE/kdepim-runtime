@@ -288,13 +288,24 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     // extract display name
     const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
     const QDomElement displaynameElement = DavUtils::firstChildElementNS( propElement, "DAV:", "displayname" );
-
     const QString displayName = displaynameElement.text();
+
+    // extract calendar color if provided
+    const QDomElement colorElement = DavUtils::firstChildElementNS( propElement, "http://apple.com/ns/ical/", "calendar-color" );
+    QColor color;
+    if ( !colorElement.isNull() ) {
+      QString colorValue = colorElement.text();
+      if ( QColor::isValidColor( colorValue ) )
+        color.setNamedColor( colorValue );
+    }
 
     // extract allowed content types
     const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol( mUrl.protocol() )->collectionContentTypes( propstatElement );
 
-    mCollections << DavCollection( mUrl.protocol(), url.prettyUrl(), displayName, contentTypes );
+    DavCollection collection( mUrl.protocol(), url.prettyUrl(), displayName, contentTypes );
+    if ( color.isValid() )
+      collection.setColor( color );
+    mCollections << collection;
     emit collectionDiscovered( mUrl.protocol(), url.prettyUrl(), jobUrl );
 
     responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );

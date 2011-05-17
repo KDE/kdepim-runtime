@@ -154,6 +154,7 @@ QDomDocument CaldavProtocol::collectionsQuery() const
 
   propElement.appendChild( document.createElementNS( "DAV:", "displayname" ) );
   propElement.appendChild( document.createElementNS( "DAV:", "resourcetype" ) );
+  propElement.appendChild( document.createElementNS( "http://apple.com/ns/ical/", "calendar-color" ) );
   propElement.appendChild( document.createElementNS( "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" ) );
 
   return document;
