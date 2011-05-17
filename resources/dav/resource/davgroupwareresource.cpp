@@ -106,6 +106,11 @@ void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collect
     return;
   }
 
+  if ( mCollectionsWithTemporaryError.contains( collection.remoteId() ) ) {
+    cancelTask();
+    return;
+  }
+
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
   DavCollectionDeleteJob *job = new DavCollectionDeleteJob( davUrl );
@@ -226,6 +231,11 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
     return false;
   }
 
+  if ( mCollectionsWithTemporaryError.contains( item.parentCollection().remoteId() ) ) {
+    cancelTask();
+    return false;
+  }
+
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   DavItem davItem;
@@ -250,6 +260,11 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
   if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
+    return;
+  }
+
+  if ( mCollectionsWithTemporaryError.contains( collection.remoteId() ) ) {
+    cancelTask();
     return;
   }
 
@@ -329,6 +344,11 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     return;
   }
 
+  if ( mCollectionsWithTemporaryError.contains( item.parentCollection().remoteId() ) ) {
+    cancelTask();
+    return;
+  }
+
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   QByteArray rawData;
@@ -370,6 +390,11 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
   if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
+    return;
+  }
+
+  if ( mCollectionsWithTemporaryError.contains( item.parentCollection().remoteId() ) ) {
+    cancelTask();
     return;
   }
 
@@ -427,7 +452,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   {
     KUrl url = davUrl.url();
     url.setUser( QString() );
-    kWarning() << url;
     QStringList urls = Settings::self()->mappedCollections( davUrl.protocol(), url.prettyUrl() );
     mCollectionsWithTemporaryError << urls;
 
@@ -444,8 +468,10 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   QSet<QString> seenCollectionsNames;
 
   foreach ( const DavCollection &davCollection, davCollections ) {
-    if ( mCollectionsWithTemporaryError.contains( davCollection.url() ) )
+    if ( mCollectionsWithTemporaryError.contains( davCollection.url() ) ) {
+      kWarning() << davCollection.url() << "is now available";
       mCollectionsWithTemporaryError.removeOne( davCollection.url() );
+    }
 
     Akonadi::Collection collection;
     collection.setParentCollection( mDavCollectionRoot );
