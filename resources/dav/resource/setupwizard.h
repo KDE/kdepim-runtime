@@ -100,6 +100,7 @@ class ServerTypePage : public QWizardPage
     ServerTypePage( QWidget *parent = 0 );
 
     virtual bool isComplete() const;
+    virtual void cleanupPage();
     virtual void initializePage();
     virtual bool validatePage();
 

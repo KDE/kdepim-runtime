@@ -287,7 +287,6 @@ ServerTypePage::ServerTypePage( QWidget *parent )
 {
   setTitle( i18n( "Groupware Server" ) );
   setSubTitle( i18n( "Select the groupware server the resource shall be configured for" ) );
-  setFinalPage( true );
 
   mProvidersCombo = new QComboBox( this );
   KService::List providers;
@@ -328,20 +327,21 @@ ServerTypePage::ServerTypePage( QWidget *parent )
 
 bool ServerTypePage::isComplete() const
 {
-  return false;
+  return ( mServerGroup->checkedId() != -1 );
 }
 
 void ServerTypePage::initializePage()
 {
-  QWizardPage::initializePage();
   int buttonId = mServerGroup->checkedId();
-  if ( buttonId != -1 ) {
+  if ( buttonId != -1 )
     typeToggled( buttonId );
-  }
-  else {
-    wizard()->button( QWizard::FinishButton )->setEnabled( false );
-    wizard()->button( QWizard::NextButton )->setEnabled( false );
-  }
+}
+
+void ServerTypePage::cleanupPage()
+{
+  QList<QWizard::WizardButton> buttons;
+  buttons << QWizard::Stretch << QWizard::BackButton << QWizard::NextButton << QWizard::CancelButton;
+  wizard()->setButtonLayout( buttons );
 }
 
 bool ServerTypePage::validatePage()
@@ -356,17 +356,22 @@ bool ServerTypePage::validatePage()
   }
 }
 
-void ServerTypePage::typeToggled(int buttonId)
+void ServerTypePage::typeToggled( int buttonId )
 {
-  bool enableFinish;
+  QList<QWizard::WizardButton> buttons;
+  buttons << QWizard::Stretch << QWizard::BackButton;
 
-  if ( buttonId == 0 )
-    enableFinish = false;
-  else
-    enableFinish = true;
+  if ( buttonId == 0 ) {
+    setFinalPage( false );
+    buttons << QWizard::NextButton;
+  }
+  else {
+    setFinalPage( true );
+    buttons << QWizard::FinishButton;
+  }
 
-  wizard()->button( QWizard::FinishButton )->setEnabled( enableFinish );
-  wizard()->button( QWizard::NextButton )->setDisabled( enableFinish );
+  buttons << QWizard::CancelButton;
+  wizard()->setButtonLayout( buttons );
 }
 
 /*
@@ -408,7 +413,6 @@ void ConnectionPage::initializePage()
     return;
 
   QString providerInstallationPath = service->property( "X-DavGroupware-InstallationPath" ).toString();
-  kDebug() << wizard()->property( "providerDesktopFilePath" ).toString() << providerInstallationPath;
   if ( !providerInstallationPath.isEmpty() )
     mPath->setText( providerInstallationPath );
 
