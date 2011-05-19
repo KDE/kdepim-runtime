@@ -87,7 +87,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
       // FIXME: why isn't that in the ontology?
       const Nepomuk::Query::ComparisonTerm term( QUrl( QLatin1String( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ) ),
                                                  Nepomuk::Query::ResourceTerm( entity.url() ) );
-      const Nepomuk::Query::Query query( term );
+      Nepomuk::Query::Query query( term );
+      query.setQueryFlags( Nepomuk::Query::Query::NoResultRestrictions );
       const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
           query.toSparqlQuery(), Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
 
