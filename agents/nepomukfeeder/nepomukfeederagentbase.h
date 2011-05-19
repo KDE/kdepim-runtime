@@ -85,8 +85,11 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     {
       // find the graph that contains our item and delete the complete graph
       // FIXME: why isn't that in the ontology?
+      // FIXME: Resource::fromResourceUri is used, because the feeders currently generate resources with an akonadi uri and there can be a conflict
+      // with resources generated with the Resource api, which will result in the correct resource not being found here.
+      // This is a workaround for this issue, and must be removed once the DMS is in place.
       const Nepomuk::Query::ComparisonTerm term( QUrl( QLatin1String( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ) ),
-                                                 Nepomuk::Query::ResourceTerm( entity.url() ) );
+                                                 Nepomuk::Query::ResourceTerm( Nepomuk::Resource::fromResourceUri( entity.url() ) ) );
       Nepomuk::Query::Query query( term );
       query.setQueryFlags( Nepomuk::Query::Query::NoResultRestrictions );
       const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
