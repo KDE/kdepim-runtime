@@ -237,6 +237,7 @@ void NepomukFeederAgentBase::processNextCollection()
     return;
   mTotalAmount = 0;
   if ( mCollectionQueue.isEmpty() ) {
+    mReIndex = false;
     emit fullyIndexed();
     return;
   }
@@ -591,7 +592,6 @@ void NepomukFeederAgentBase::processPipeline()
     mCurrentCollection = Collection();
     emit status( Idle, i18n( "Indexing completed." ) );
     processNextCollection();
-    mReIndex = false;
     return;
   }
 }
