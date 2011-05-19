@@ -95,7 +95,8 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   mNeedsStrigi( false ),
   mSelfTestPassed( false ),
   mSystemIsIdle( false ),
-  mIdleDetectionDisabled( false )
+  mIdleDetectionDisabled( false ),
+  mReIndex( false )
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
@@ -206,6 +207,7 @@ void NepomukFeederAgentBase::addSupportedMimeType( const QString &mimeType )
 
 void NepomukFeederAgentBase::updateAll()
 {
+  mReIndex = true;
   CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
   collectionFetch->fetchScope().setContentMimeTypes( mSupportedMimeTypes );
   connect( collectionFetch, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
@@ -266,7 +268,7 @@ void NepomukFeederAgentBase::itemHeadersReceived(const Akonadi::Item::List& item
     // the item exists. Check if it has an item ID property, otherwise re-index it.
     else {
       if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(),
-                                   Akonadi::ItemSearchJob::akonadiItemIdUri(), Soprano::Node() ) ) {
+                                   Akonadi::ItemSearchJob::akonadiItemIdUri(), Soprano::Node() ) || mReIndex ) {
         removeEntityFromNepomuk( item );
         itemsToUpdate.append( item );
       }
@@ -589,6 +591,7 @@ void NepomukFeederAgentBase::processPipeline()
     mCurrentCollection = Collection();
     emit status( Idle, i18n( "Indexing completed." ) );
     processNextCollection();
+    mReIndex = false;
     return;
   }
 }
