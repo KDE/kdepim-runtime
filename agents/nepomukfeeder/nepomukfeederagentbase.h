@@ -218,6 +218,7 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     bool mSelfTestPassed;
     bool mSystemIsIdle;
     bool mIdleDetectionDisabled;
+    bool mReIndex;
 };
 
 #endif
