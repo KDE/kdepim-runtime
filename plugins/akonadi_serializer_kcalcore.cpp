@@ -18,6 +18,7 @@
 */
 
 #include "akonadi_serializer_kcalcore.h"
+#include "config-kcalcore.h"
 
 #include <akonadi/abstractdifferencesreporter.h>
 #include <akonadi/item.h>
@@ -30,7 +31,6 @@
 
 #include <kdebug.h>
 #include <klocale.h>
-#include <kdeversion.h>
 
 #include <QtCore/qplugin.h>
 
@@ -70,7 +70,7 @@ void SerializerPluginKCalCore::serialize(const Item & item, const QByteArray & l
   Incidence::Ptr i = item.payload<Incidence::Ptr>();
   // ### I guess this can be done without hardcoding stuff
   data.write( "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN\nVERSION:2.0\n" );
-#if KDE_IS_VERSION( 4, 6, 40 )
+#ifdef HAVE_TORAWSTRING
   data.write( mFormat.toRawString( i ) );
 #else
   data.write( mFormat.toString( i ).toUtf8() );

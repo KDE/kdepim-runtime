@@ -1,0 +1,1 @@
+#cmakedefine HAVE_TORAWSTRING 1

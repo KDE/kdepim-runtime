@@ -1,3 +1,7 @@
+macro_ensure_version("4.6.40" "${KDEPIMLIBS_VERSION}" HAVE_TORAWSTRING)
+
+configure_file(config-kcalcore.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kcalcore.h)
+
 add_subdirectory( tests )
 
 include_directories(
