@@ -45,6 +45,12 @@ void RetrieveItemTask::doStart( KIMAP::Session *session )
   const QString mailBox = mailBoxForCollection( item().parentCollection() );
   m_uid = item().remoteId().toLongLong();
 
+  if ( m_uid == 0 ) {
+    kWarning() << "Remote id is " << item().remoteId();
+    cancelTask( "Remote id is empty or invalid" ); // TODO: i18n
+    return;
+  }
+
   if ( session->selectedMailBox() != mailBox ) {
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
     select->setMailBox( mailBox );
