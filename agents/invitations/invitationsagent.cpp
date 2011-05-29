@@ -69,7 +69,7 @@ class InvitationsCollectionRequestJob : public SpecialCollectionsRequestJob
       setDefaultResourceType( QLatin1String( "akonadi_ical_resource" ) );
 
       QVariantMap options;
-      options.insert( QLatin1String( "Path" ), KGlobal::dirs()->localxdgdatadir() + "akonadi_invitations" );
+      options.insert( QLatin1String( "Path" ), QString(KGlobal::dirs()->localxdgdatadir() + QLatin1String("akonadi_invitations")) );
       options.insert( QLatin1String( "Name" ), i18n( "Invitations" ) );
       setDefaultResourceOptions( options );
 

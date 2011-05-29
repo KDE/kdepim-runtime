@@ -75,9 +75,9 @@ void Backup::create( const KUrl& filename )
     /* first create the temp folder. */
     KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", "akonadi" ) );
     tempDir->setAutoRemove( false );
-    KIO::NetAccess::mkdir( tempDir->name() + "kdeconfig", this );
-    KIO::NetAccess::mkdir( tempDir->name() + "akonadiconfig", this );
-    KIO::NetAccess::mkdir( tempDir->name() + "db", this );
+    KIO::NetAccess::mkdir( QString(tempDir->name() + "kdeconfig"), this );
+    KIO::NetAccess::mkdir( QString(tempDir->name() + "akonadiconfig"), this );
+    KIO::NetAccess::mkdir( QString(tempDir->name() + "db"), this );
 
     QStringList filesToBackup;
 
@@ -90,7 +90,7 @@ void Backup::create( const KUrl& filename )
         bool exists = KIO::NetAccess::exists( configFileName, KIO::NetAccess::DestinationSide, this );
         if ( exists ) {
             KIO::NetAccess::file_copy( configFileName,
-                                       tempDir->name() + "kdeconfig" + sep + agentFileName, this );
+                                       QString(tempDir->name() + "kdeconfig" + sep + agentFileName), this );
             filesToBackup << "kdeconfig" + sep + agentFileName;
         }
     }
@@ -100,8 +100,8 @@ void Backup::create( const KUrl& filename )
     QDir dir( config );
     const QStringList configlist = dir.entryList( QDir::Files );
     foreach( const QString& item, configlist ) {
-        KIO::NetAccess::file_copy( config + sep + item,
-                                   tempDir->name() + "akonadiconfig" + sep + item, this );
+        KIO::NetAccess::file_copy( QString(config + sep + item),
+                                   QString(tempDir->name() + "akonadiconfig" + sep + item), this );
         filesToBackup << "akonadiconfig/" + item;
     }
 

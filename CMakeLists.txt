@@ -46,6 +46,8 @@ option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
 if(KDEPIM_NO_NEPOMUK)
   add_definitions(-DKDEPIM_NO_NEPOMUK)
 endif(KDEPIM_NO_NEPOMUK)
+add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
+
 
 ############### search packages used by KDE ###############
 

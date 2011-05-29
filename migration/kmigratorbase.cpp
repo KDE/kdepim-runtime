@@ -131,7 +131,7 @@ KJob *KMigratorBase::createAgentInstance(const QString& typeId, QObject* receive
 void KMigratorBase::logMessage(KMigratorBase::MessageType type, const QString& msg)
 {
   if ( m_logFile ) {
-    m_logFile->write( (QLatin1Char( '[' ) + QDateTime::currentDateTime().toString() + QLatin1String( "] " )
+    m_logFile->write( QString(QLatin1Char( '[' ) + QDateTime::currentDateTime().toString() + QLatin1String( "] " )
       + messageTypeToString( type ) + QLatin1String( ": " ) + msg + QLatin1Char( '\n' )).toUtf8() );
     m_logFile->flush();
   }

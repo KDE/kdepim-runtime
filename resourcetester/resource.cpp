@@ -65,7 +65,7 @@ void Resource::setPathOption(const QString& key, const QString& path)
   if ( QFileInfo( path ).isAbsolute() )
     setOption( key, path );
   else
-    setOption( key, Global::basePath() + QDir::separator() + path );
+    setOption( key, QString(Global::basePath() + QDir::separator() + path) );
 }
 
 
