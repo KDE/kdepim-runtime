@@ -151,7 +151,7 @@ class KolabConverterTest : public QObject
       const QDir dir( KDESRCDIR "/contacts" );
       const QStringList entries = dir.entryList( QStringList("*.vcf"), QDir::Files | QDir::Readable | QDir::NoSymLinks );
       foreach( const QString &entry, entries ) {
-        QTest::newRow( QString::fromLatin1( "contact-%1" ).arg( entry ).toLatin1() ) << (dir.path() + '/' + entry) << QString::fromLatin1( "%1/%2.mime" ).arg( dir.path() ).arg( entry );
+        QTest::newRow( QString::fromLatin1( "contact-%1" ).arg( entry ).toLatin1() ) << QString(dir.path() + '/' + entry) << QString::fromLatin1( "%1/%2.mime" ).arg( dir.path() ).arg( entry );
       }
     }
 
@@ -167,7 +167,7 @@ class KolabConverterTest : public QObject
         const QDir dir( QString::fromLatin1( "%1/%2" ).arg( KDESRCDIR ).arg( type ) );
         const QStringList entries = dir.entryList( QStringList("*.ics"), QDir::Files | QDir::Readable | QDir::NoSymLinks );
         foreach( const QString &entry, entries ) {
-          QTest::newRow( QString::fromLatin1( "%1-%2" ).arg( type ).arg( entry ).toLatin1() ) << type << (dir.path() + '/' + entry) << QString::fromLatin1( "%1/%2.mime" ).arg( dir.path() ).arg( entry );
+          QTest::newRow( QString::fromLatin1( "%1-%2" ).arg( type ).arg( entry ).toLatin1() ) << type << QString(dir.path() + '/' + entry) << QString::fromLatin1( "%1/%2.mime" ).arg( dir.path() ).arg( entry );
         }
       }
     }
