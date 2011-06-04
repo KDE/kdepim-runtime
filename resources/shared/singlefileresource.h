@@ -302,7 +302,6 @@ class SingleFileResource : public SingleFileResourceBase
       c.setRemoteId( mSettings->path() );
       const QString display = mSettings->displayName();
       c.setName( display.isEmpty() ? identifier() : display );
-      QStringList mimeTypes;
       c.setContentMimeTypes( mSupportedMimetypes );
       if ( readOnly() ) {
         c.setRights( Collection::CanChangeCollection );
