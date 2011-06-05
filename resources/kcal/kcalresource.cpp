@@ -624,6 +624,7 @@ void KCalResource::reloadConfig()
 
 void KCalResource::initialLoadingFinished( ResourceCalendar *resource )
 {
+  Q_UNUSED( resource );
   Q_ASSERT( resource == mResource );
 
   kDebug();
@@ -641,6 +642,7 @@ void KCalResource::initialLoadingFinished( ResourceCalendar *resource )
 
 void KCalResource::resourceChanged( ResourceCalendar *resource )
 {
+  Q_UNUSED( resource );
   Q_ASSERT( resource == mResource );
 
   kDebug();
@@ -656,6 +658,7 @@ void KCalResource::resourceChanged( ResourceCalendar *resource )
 
 void KCalResource::loadingError( ResourceCalendar *resource, const QString &message )
 {
+  Q_UNUSED( resource );
   Q_ASSERT( resource == mResource );
 
   kError() << "Loading error: " << message;
@@ -668,6 +671,7 @@ void KCalResource::loadingError( ResourceCalendar *resource, const QString &mess
 
 void KCalResource::savingError( ResourceCalendar *resource, const QString &message )
 {
+  Q_UNUSED( resource );
   Q_ASSERT( resource == mResource );
 
   kError() << "Saving error: " << message;

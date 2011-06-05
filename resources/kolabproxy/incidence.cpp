@@ -49,6 +49,7 @@ using namespace Kolab;
 Incidence::Incidence( const QString& tz, const KCalCore::Incidence::Ptr &incidence )
   : KolabBase( tz ), mFloatingStatus( Unset ), mHasAlarm( false )
 {
+  Q_UNUSED( incidence );
 }
 
 Incidence::~Incidence()

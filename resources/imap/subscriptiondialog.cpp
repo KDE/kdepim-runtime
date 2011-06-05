@@ -260,6 +260,7 @@ void SubscriptionDialog::onFullListingDone( KJob *job )
 void SubscriptionDialog::onSubscribedMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
                                                         const QList< QList<QByteArray> > &flags )
 {
+  Q_UNUSED( flags );
   for ( int i = 0; i<mailBoxes.size(); i++ ) {
     KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
     QString descriptor = mailBox.separator + mailBox.name;
@@ -274,6 +275,7 @@ void SubscriptionDialog::onSubscribedMailBoxesReceived( const QList<KIMAP::MailB
 
 void SubscriptionDialog::onReloadDone( KJob *job )
 {
+  Q_UNUSED( job );
   enableButton( User1, true );
 }
 

@@ -133,6 +133,7 @@ void Dock::slotStartBackup()
 {
     bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
+    Q_UNUSED( registered );
 
     QPointer<BackupAssistant> backup = new BackupAssistant( m_parentWidget );
     backup->exec();
@@ -143,6 +144,7 @@ void Dock::slotStartRestore()
 {
     bool registered = ServerManager::isRunning();
     Q_ASSERT( registered );
+    Q_UNUSED( registered );
 
     QPointer<RestoreAssistant> restore = new RestoreAssistant( m_parentWidget );
     restore->exec();

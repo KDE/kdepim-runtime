@@ -215,6 +215,7 @@ StoreConfigIface::CollectionsByMimeType ResourceAkonadi::Private::storeCollectio
 
 void ResourceAkonadi::Private::calendarIncidenceAdded( Incidence *incidence )
 {
+  Q_UNUSED( incidence );
   if ( mInternalCalendarModification ) {
     return;
   }

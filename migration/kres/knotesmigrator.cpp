@@ -105,6 +105,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
 
 void KNotesMigrator::syncDone(KJob *job)
 {
+  Q_UNUSED( job );
   emit message( Info, i18n( "Instance \"%1\" synchronized" , m_agentInstance.identifier() ) );
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
@@ -166,6 +167,7 @@ void KNotesMigrator::startMigration()
 
 void KNotesMigrator::newResourceFilled(KJob* job)
 {
+  Q_UNUSED( job );
   migrationCompleted( m_agentInstance );
 }
 

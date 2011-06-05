@@ -152,6 +152,7 @@ void NepomukFeederAgentBase::itemAdded(const Akonadi::Item& item, const Akonadi:
 
 void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
+  Q_UNUSED( partIdentifiers );
   if ( indexingDisabled( item.parentCollection() ) )
     return;
   // TODO: check part identfiers if anything interesting changed at all
@@ -491,6 +492,7 @@ void NepomukFeederAgentBase::indexData(const KUrl& url, const QByteArray& data, 
 
 ItemFetchScope NepomukFeederAgentBase::fetchScopeForCollection(const Akonadi::Collection& collection)
 {
+  Q_UNUSED( collection );
   return changeRecorder()->itemFetchScope();
 }
 

@@ -213,6 +213,7 @@ void ImapResource::startConnect( const QVariant& )
 
   const bool result = m_pool->connect( account );
   Q_ASSERT( result );
+  Q_UNUSED( result );
 }
 
 void ImapResource::onConnectDone( int errorCode, const QString &errorString )

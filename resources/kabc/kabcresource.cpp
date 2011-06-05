@@ -700,6 +700,8 @@ void KABCResource::addressBookChanged()
 void KABCResource::subResourceAdded( KABC::ResourceABC *resource,
         const QString &type, const QString &subResource )
 {
+  Q_UNUSED( resource );
+  Q_UNUSED( type );
   kDebug() << "subResource" << subResource;
   Q_ASSERT( resource == mFolderResource );
   Q_ASSERT( type.toLower() == QLatin1String( "contact" ) );
@@ -713,6 +715,8 @@ void KABCResource::subResourceAdded( KABC::ResourceABC *resource,
 void KABCResource::subResourceRemoved( KABC::ResourceABC *resource,
         const QString &type, const QString &subResource )
 {
+  Q_UNUSED( resource );
+  Q_UNUSED( type );
   kDebug() << "subResource" << subResource;
   Q_ASSERT( resource == mFolderResource );
   Q_ASSERT( type.toLower() == QLatin1String( "contact" ) );
@@ -726,6 +730,8 @@ void KABCResource::subResourceRemoved( KABC::ResourceABC *resource,
 void KABCResource::subResourceChanged( KABC::ResourceABC *resource,
         const QString &type, const QString &subResource )
 {
+  Q_UNUSED( resource );
+  Q_UNUSED( type );
   kDebug() << "subResource" << subResource;
   Q_ASSERT( resource == mFolderResource );
   Q_ASSERT( type.toLower() == QLatin1String( "contact" ) );

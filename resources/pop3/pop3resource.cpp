@@ -624,6 +624,7 @@ void POP3Resource::messageFinished( int messageId, KMime::Message::Ptr message )
 void POP3Resource::messageDownloadProgress( KJob *job, KJob::Unit unit, qulonglong totalBytes )
 {
   Q_UNUSED( totalBytes );
+  Q_UNUSED( uids );
   Q_ASSERT( unit == KJob::Bytes );
   QString statusMessage;
   const int totalMessages = mIdsToDownload.size() + mDownloadedIDs.size();
