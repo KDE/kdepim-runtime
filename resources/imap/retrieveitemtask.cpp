@@ -94,7 +94,6 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
                                            const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
   Q_UNUSED( mailBox );
-  Q_UNUSED( fetch );
   Q_UNUSED( uids );
 
   KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( sender() );
