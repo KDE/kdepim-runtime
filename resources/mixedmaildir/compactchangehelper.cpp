@@ -116,6 +116,13 @@ void CompactChangeHelper::Private::itemFetchResult( KJob *job )
     return;
   }
 
+  // since we only need the item to modify its remote ID, we don't care
+  // if it does not exist (anymore)
+  if ( fetchJob->items().isEmpty() ) {
+    processNextItem();
+    return;
+  }
+
   const Item item = fetchJob->items().first();
 
   Item updatedItem( item );
