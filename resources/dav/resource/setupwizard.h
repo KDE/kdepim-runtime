@@ -99,13 +99,10 @@ class ServerTypePage : public QWizardPage
   public:
     ServerTypePage( QWidget *parent = 0 );
 
-    virtual bool isComplete() const;
-    virtual void cleanupPage();
-    virtual void initializePage();
     virtual bool validatePage();
 
   private slots:
-    void typeToggled( int buttonId );
+    void manualConfigToggled( bool toggled );
 
   private:
     QButtonGroup *mServerGroup;

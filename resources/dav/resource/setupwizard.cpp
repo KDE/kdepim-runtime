@@ -306,42 +306,30 @@ ServerTypePage::ServerTypePage( QWidget *parent )
 
   QHBoxLayout *hLayout = new QHBoxLayout( this );
   button = new QRadioButton( i18n( "Use one of those servers:" ) );
+  registerField( "templateConfiguration", button );
   mServerGroup->addButton( button );
   mServerGroup->setId( button, 0 );
+  button->setChecked( true );
   hLayout->addWidget( button );
   hLayout->addWidget( mProvidersCombo );
   hLayout->addStretch( 1 );
   layout->addLayout( hLayout );
 
   button = new QRadioButton( i18n( "Configure the resource manually" ) );
+  connect( button, SIGNAL(toggled(bool)),
+           this, SLOT(manualConfigToggled(bool)) );
+  registerField( "manualConfiguration", button );
   mServerGroup->addButton( button );
   mServerGroup->setId( button, 1 );
   layout->addWidget( button );
-  registerField( "manualConfiguration", button );
-
-  connect( mServerGroup, SIGNAL(buttonReleased(int)),
-           this, SLOT(typeToggled(int)) );
 
   layout->addStretch( 1 );
 }
 
-bool ServerTypePage::isComplete() const
+void ServerTypePage::manualConfigToggled( bool state )
 {
-  return ( mServerGroup->checkedId() != -1 );
-}
-
-void ServerTypePage::initializePage()
-{
-  int buttonId = mServerGroup->checkedId();
-  if ( buttonId != -1 )
-    typeToggled( buttonId );
-}
-
-void ServerTypePage::cleanupPage()
-{
-  QList<QWizard::WizardButton> buttons;
-  buttons << QWizard::Stretch << QWizard::BackButton << QWizard::NextButton << QWizard::CancelButton;
-  wizard()->setButtonLayout( buttons );
+  setFinalPage( state );
+  wizard()->button( QWizard::NextButton )->setEnabled( !state );
 }
 
 bool ServerTypePage::validatePage()
@@ -354,24 +342,6 @@ bool ServerTypePage::validatePage()
     wizard()->setProperty( "providerDesktopFilePath", desktopFilePath );
     return true;
   }
-}
-
-void ServerTypePage::typeToggled( int buttonId )
-{
-  QList<QWizard::WizardButton> buttons;
-  buttons << QWizard::Stretch << QWizard::BackButton;
-
-  if ( buttonId == 0 ) {
-    setFinalPage( false );
-    buttons << QWizard::NextButton;
-  }
-  else {
-    setFinalPage( true );
-    buttons << QWizard::FinishButton;
-  }
-
-  buttons << QWizard::CancelButton;
-  wizard()->setButtonLayout( buttons );
 }
 
 /*
@@ -492,6 +462,7 @@ CheckPage::CheckPage( QWidget *parent )
 {
   setTitle( i18n( "Test Connection" ) );
   setSubTitle( i18n( "You can test now whether the groupware server can be accessed with the current configuration" ) );
+  setFinalPage( true );
 
   QVBoxLayout *layout = new QVBoxLayout( this );
 
