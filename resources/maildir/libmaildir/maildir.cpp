@@ -19,6 +19,7 @@
 
 #include "maildir.h"
 
+#include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
 #include <QUuid>
@@ -387,6 +388,21 @@ qint64 Maildir::size( const QString& key ) const
         return 0;
 
     return info.size();
+}
+
+QDateTime Maildir::lastModified(const QString& key) const
+{
+    const QString realKey( d->findRealKey( key ) );
+    if ( realKey.isEmpty() ) {
+        qWarning() << "Maildir::lastModified unable to find: " << key;
+        return QDateTime();
+    }
+
+    const QFileInfo info( realKey );
+    if ( !info.exists() )
+        return QDateTime();
+
+    return info.lastModified();
 }
 
 QByteArray Maildir::readEntryHeaders( const QString& key ) const

@@ -26,6 +26,8 @@
 #include <QString>
 #include <QStringList>
 
+class QDateTime;
+
 namespace KPIM {
 
 class MAILDIR_EXPORT Maildir
@@ -120,6 +122,12 @@ public:
      * @since 4.2
      */
     qint64 size( const QString& key ) const;
+
+    /**
+     * Returns the modification time of the file in the maildir with the given @p key.
+     * @since 4.7
+     */
+    QDateTime lastModified( const QString &key ) const;
 
     /**
      * Return the contents of the file in the maildir with the given @p key.
