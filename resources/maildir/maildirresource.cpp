@@ -77,9 +77,16 @@ MaildirResource::MaildirResource( const QString &id )
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
+  changeRecorder()->itemFetchScope().setFetchModificationTime( false );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
+
+  ItemFetchScope scope( changeRecorder()->itemFetchScope() );
+  scope.fetchFullPayload( false );
+  scope.fetchPayloadPart( MessagePart::Header );
+  scope.setAncestorRetrieval( ItemFetchScope::None );
+  setItemSynchronizationFetchScope( scope );
 }
 
 MaildirResource::~ MaildirResource()
