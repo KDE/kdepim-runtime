@@ -65,6 +65,7 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
 
   private slots:
     void configurationChanged();
+    void slotItemsRetrievalResult(KJob* job);
 
   private:
     void ensureDirExists();

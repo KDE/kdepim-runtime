@@ -42,6 +42,7 @@
 #include "libmaildir/maildir.h"
 
 #include <kmime/kmime_message.h>
+#include "retrieveitemsjob.h"
 
 using namespace Akonadi;
 using KPIM::Maildir;
@@ -323,21 +324,18 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
     cancelTask( i18n("Maildir '%1' for collection '%2' is invalid.", md.path(), col.remoteId() ) );
     return;
   }
-  const QStringList entryList = md.entryList();
 
-  Item::List items;
-  foreach ( const QString &entry, entryList ) {
-    Item item;
-    item.setRemoteId( entry );
-    item.setMimeType( itemMimeType() );
-    item.setSize( md.size( entry ) );
-    KMime::Message *msg = new KMime::Message;
-    msg->setHead( KMime::CRLFtoLF( md.readEntryHeaders( entry ) ) );
-    msg->parse();
-    item.setPayload( KMime::Message::Ptr( msg ) );
-    items << item;
-  }
-  itemsRetrieved( items );
+  RetrieveItemsJob *job = new RetrieveItemsJob( col, md, this );
+  job->setMimeType( itemMimeType() );
+  connect( job, SIGNAL(result(KJob*)), SLOT(slotItemsRetrievalResult(KJob*)) );
+}
+
+void MaildirResource::slotItemsRetrievalResult ( KJob* job )
+{
+  if ( job->error() )
+    cancelTask( job->errorString() );
+  else
+    itemsRetrievalDone();
 }
 
 void MaildirResource::collectionAdded(const Collection & collection, const Collection &parent)

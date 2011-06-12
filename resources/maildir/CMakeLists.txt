@@ -20,6 +20,7 @@ set( maildirresource_SRCS
   maildirresource.cpp
   configdialog.cpp
   main.cpp
+  retrieveitemsjob.cpp
 )
 
 install( FILES maildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
