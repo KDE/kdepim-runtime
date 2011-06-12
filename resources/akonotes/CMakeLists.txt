@@ -15,6 +15,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set( akonotesresource_SRCS
   ../maildir/maildirresource.cpp
   ../maildir/configdialog.cpp
+  ../maildir/retrieveitemsjob.cpp
   akonotesresource.cpp
 
   main.cpp
