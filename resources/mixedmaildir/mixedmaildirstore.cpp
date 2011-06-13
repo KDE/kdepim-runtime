@@ -2181,7 +2181,7 @@ void MixedMaildirStore::setTopLevelCollection( const Collection &collection )
 
   CachePolicy cachePolicy;
   cachePolicy.setInheritFromParent( false );
-  cachePolicy.setLocalParts( QStringList() << MessagePart::Header );
+  cachePolicy.setLocalParts( QStringList() << MessagePart::Envelope );
   cachePolicy.setSyncOnDemand( true );
 
   Collection modifiedCollection = collection;
