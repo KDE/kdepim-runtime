@@ -21,8 +21,10 @@
 #include "settings.h"
 #include "maildirsettingsadaptor.h"
 #include "configdialog.h"
+#include "retrieveitemsjob.h"
 
 #include <QtCore/QDir>
+#include <QtCore/QFileSystemWatcher>
 #include <QtDBus/QDBusConnection>
 
 #include <akonadi/kmime/messageparts.h>
@@ -32,6 +34,8 @@
 #include <akonadi/cachepolicy.h>
 #include <akonadi/dbusconnectionpool.h>
 
+#include <kmime/kmime_message.h>
+
 #include <kdebug.h>
 #include <kurl.h>
 #include <kfiledialog.h>
@@ -40,9 +44,6 @@
 #include <KWindowSystem>
 
 #include "libmaildir/maildir.h"
-
-#include <kmime/kmime_message.h>
-#include "retrieveitemsjob.h"
 
 using namespace Akonadi;
 using KPIM::Maildir;
@@ -65,7 +66,8 @@ Maildir MaildirResource::maildirForCollection( const Collection &col ) const
 
 MaildirResource::MaildirResource( const QString &id )
     :ResourceBase( id ),
-    mSettings( new MaildirSettings( componentData().config() ) )
+    mSettings( new MaildirSettings( componentData().config() ) ),
+    m_fsWatcher( new QFileSystemWatcher( this ) )
 {
   new MaildirSettingsAdaptor( mSettings );
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
@@ -88,6 +90,10 @@ MaildirResource::MaildirResource( const QString &id )
   scope.fetchPayloadPart( MessagePart::Header );
   scope.setAncestorRetrieval( ItemFetchScope::None );
   setItemSynchronizationFetchScope( scope );
+
+  connect( m_fsWatcher, SIGNAL(directoryChanged(QString)), SLOT(slotDirChanged(QString)) );
+
+  synchronizeCollectionTree();
 }
 
 MaildirResource::~ MaildirResource()
@@ -269,6 +275,9 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
 
 Collection::List MaildirResource::listRecursive( const Collection &root, const Maildir &dir )
 {
+  if ( !dir.isRoot() && mSettings->monitorFilesystem() )
+    m_fsWatcher->addPath( dir.path() + QDir::separator() + QLatin1String( "new" ) );
+
   Collection::List list;
   const QStringList mimeTypes = QStringList() << itemMimeType() << Collection::mimeType();
   foreach ( const QString &sub, dir.subFolderList() ) {
@@ -290,6 +299,9 @@ Collection::List MaildirResource::listRecursive( const Collection &root, const M
 
 void MaildirResource::retrieveCollections()
 {
+  if ( !m_fsWatcher->directories().isEmpty() )
+    m_fsWatcher->removePaths( m_fsWatcher->directories() );
+
   Maildir dir( mSettings->path(), mSettings->topLevelIsContainer() );
   QString errMsg;
   if ( !dir.isValid( errMsg ) ) {
@@ -483,6 +495,15 @@ bool MaildirResource::ensureSaneConfiguration()
     return false;
   }
   return true;
+}
+
+void MaildirResource::slotDirChanged(const QString& dir)
+{
+  QDir d( dir );
+  if ( !d.cdUp() )
+    return;
+
+  kDebug() << d.path();
 }
 
 #include "maildirresource.moc"
