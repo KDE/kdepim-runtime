@@ -118,6 +118,11 @@ public:
     Maildir subFolder( const QString& folderName ) const;
 
     /**
+     * Returns the parent Maildir object for this Maildir, if there is one (ie. this is not the root).
+     */
+    Maildir parent() const;
+
+    /**
      * Returns the size of the file in the maildir with the given @p key.
      * @since 4.2
      */

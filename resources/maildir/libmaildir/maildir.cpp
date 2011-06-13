@@ -325,6 +325,20 @@ Maildir Maildir::subFolder( const QString& subFolder ) const
     return Maildir();
 }
 
+Maildir Maildir::parent() const
+{
+  if ( !isValid() || d->isRoot )
+    return Maildir();
+  QDir dir( d->path );
+  dir.cdUp();
+  if ( !dir.dirName().startsWith( '.' ) || !dir.dirName().endsWith( QLatin1String(".directory") ) )
+    return Maildir();
+  const QString parentName = dir.dirName().mid( 1, dir.dirName().size() - 11 );
+  dir.cdUp();
+  dir.cd( parentName );
+  return Maildir ( dir.path() );
+}
+
 QStringList Maildir::entryList() const
 {
     QStringList result;
