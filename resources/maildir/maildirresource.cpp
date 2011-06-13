@@ -32,6 +32,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/cachepolicy.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/dbusconnectionpool.h>
 
 #include <kmime/kmime_message.h>
@@ -62,6 +63,24 @@ Maildir MaildirResource::maildirForCollection( const Collection &col ) const
   }
   Maildir parentMd = maildirForCollection( col.parentCollection() );
   return parentMd.subFolder( col.remoteId() );
+}
+
+Collection MaildirResource::collectionForMaildir(const Maildir& md) const
+{
+  if ( !md.isValid() )
+    return Collection();
+
+  Collection col;
+  if ( md.path() == mSettings->path() ) {
+    col.setRemoteId( md.path() );
+    col.setParentCollection( Collection::root() );
+  } else {
+    const Collection parent = collectionForMaildir( md.parent() );
+    col.setRemoteId( md.name() );
+    col.setParentCollection( parent );
+  }
+
+  return col;
 }
 
 MaildirResource::MaildirResource( const QString &id )
@@ -503,7 +522,30 @@ void MaildirResource::slotDirChanged(const QString& dir)
   if ( !d.cdUp() )
     return;
 
-  kDebug() << d.path();
+  const Maildir md( d.path() );
+  if ( !md.isValid() )
+    return;
+
+  const Collection col = collectionForMaildir( md );
+  if ( col.remoteId().isEmpty() ) {
+    kDebug() << "unable to find collection for path" << dir;
+    return;
+  }
+
+  CollectionFetchJob *job = new CollectionFetchJob( col, Akonadi::CollectionFetchJob::Base, this );
+  connect( job, SIGNAL(result(KJob*)), SLOT(fsWatchFetchResult(KJob*)) );
+}
+
+void MaildirResource::fsWatchFetchResult(KJob* job)
+{
+  if ( job->error() ) {
+    kDebug() << job->errorString();
+    return;
+  }
+  const Collection::List cols = qobject_cast<CollectionFetchJob*>( job )->collections();
+  if ( cols.isEmpty() )
+    return;
+  synchronizeCollection( cols.first().id() );
 }
 
 #include "maildirresource.moc"
