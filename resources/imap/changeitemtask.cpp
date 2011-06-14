@@ -208,6 +208,11 @@ void ChangeItemTask::triggerSearchJob()
     search->addSearchCriteria( KIMAP::SearchJob::New );
 
     UidNextAttribute *uidNext = item().parentCollection().attribute<UidNextAttribute>();
+    if ( !uidNext ){
+      cancelTask( i18n("Could not determine the UID for the newly created message on the server") );
+      search->deleteLater();
+      return;
+    }
     KIMAP::ImapInterval interval( uidNext->uidNext() );
 
     search->addSearchCriteria( KIMAP::SearchJob::Uid, interval.toImapSequence() );
