@@ -75,7 +75,12 @@ static QString settingsToUrl( const QWizard *wizard, const QString &protocol )
     return QString();
 
   pathPattern.append( service->property( pathPropertyName ).toString() + "/" );
-  pathPattern.replace( "$user$", wizard->field( "credentialsUserName" ).toString() );
+
+  QString username = wizard->field( "credentialsUserName" ).toString();
+  QString localPart( username );
+  localPart.replace( QRegExp( "@.*$" ), "" );
+  pathPattern.replace( "$user$", username );
+  pathPattern.replace( "$localpart$", localPart );
 
   QString localPath = wizard->field( "installationPath" ).toString();
   if ( !localPath.isEmpty() ) {
