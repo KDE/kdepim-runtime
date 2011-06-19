@@ -514,9 +514,9 @@ bool KCalResource::openConfiguration()
              this, SLOT( initialLoadingFinished( ResourceCalendar* ) ) );
     connect( mResource, SIGNAL( resourceLoadError( ResourceCalendar*, const QString& ) ),
              this, SLOT( loadingError( ResourceCalendar*, const QString& ) ) );
-  }
 
   setName( mResource->resourceName() );
+  }
 
   return true;
 }

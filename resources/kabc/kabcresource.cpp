@@ -574,12 +574,13 @@ bool KABCResource::openConfiguration()
                  SIGNAL( signalSubresourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ),
                  this, SLOT( subResourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ) );
     }
-  }
+
 
   // do not react on addressbook changes until we have finished its initial loading
   mAddressBook->blockSignals( true );
 
   setName( mBaseResource->resourceName() );
+  }
 
   return true;
 }
