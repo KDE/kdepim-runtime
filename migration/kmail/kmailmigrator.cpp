@@ -175,7 +175,8 @@ void KMailMigrator::migrate()
   deleteOldGroup();
   migrateTags();
   migrateRCFiles();
-
+  migrateNotifyFile();
+  
   // copy autosave files if there are any
   const QString autoSaveDir = KGlobal::dirs()->saveLocation( "data", "kmail/autosave", false );
   if ( !autoSaveDir.isEmpty() ) {
@@ -216,6 +217,15 @@ void KMailMigrator::deleteOldGroup( const QString& name ) {
     KConfigGroup groupName( mConfig, name );
     groupName.deleteGroup();
   }
+}
+
+void KMailMigrator::migrateNotifyFile()
+{
+    const QString notifyFile = KStandardDirs::locate( "config", "kmail.notifyrc" );
+    if ( !notifyFile.isEmpty() ) {
+        QFile::copy( notifyFile, KStandardDirs::locateLocal("config", "kmail2.notifyrc"));
+    }
+
 }
 
 void KMailMigrator::migrateTags()
