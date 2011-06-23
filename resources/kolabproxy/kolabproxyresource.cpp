@@ -45,6 +45,7 @@
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/collectionmovejob.h>
 #include <akonadi/itemmovejob.h>
+#include <akonadi/kmime/messageflags.h>
 
 #include <KLocale>
 
@@ -247,6 +248,7 @@ void KolabProxyResource::itemAdded( const Item &item, const Collection &collecti
   }
   Item imapItem(handler->contentMimeTypes()[0]);
   handler->toKolabFormat( kolabItem, imapItem );
+  imapItem.setFlag( Akonadi::MessageFlags::Seen );
 
   ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
   cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
@@ -339,6 +341,7 @@ void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob* job )
   }
   Item imapItem(handler->contentMimeTypes()[0]);
   handler->toKolabFormat( kolabItem, imapItem );
+  imapItem.setFlag( Akonadi::MessageFlags::Seen );
 
   ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
   cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
