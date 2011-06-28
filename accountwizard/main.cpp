@@ -73,10 +73,5 @@ int main( int argc, char **argv )
   Dialog dlg;
   dlg.show();
 
-  // On WinCE the dialog will be maximized automatically , resizing it manually breaks its appearance
-#ifndef Q_OS_WINCE
-  dlg.resize(300,350);
-#endif
-
   return app.exec();
 }
