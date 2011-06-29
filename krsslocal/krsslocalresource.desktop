@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Akonadi RSS Resource
+Comment=An Akonadi resource for RSS feeds
+Type=AkonadiResource
+Exec=akonadi_krsslocal_resource
+Icon=akregator
+
+X-Akonadi-MimeTypes=application/rss+xml
+X-Akonadi-Capabilities=Resource,RssResource
+X-Akonadi-Identifier=akonadi_krsslocal_resource
