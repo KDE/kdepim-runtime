@@ -75,15 +75,13 @@ void krsslocalResource::configure( WId windowId )
     startUrl = KUrl( oldPath );
   
   const QString title = i18nc("@title:window", "Select an OPML Document");
-  const KUrl newPath = KFileDialog::getOpenUrl( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
+  KUrl newPath = KFileDialog::getOpenUrl( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
                                               0, title );
   
   if ( newPath.isEmpty() )
-    m_path = KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
-  else
-    m_path = newPath;
+    newPath = KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
     
-  Settings::self()->setPath( m_path.url() );
+  Settings::self()->setPath( newPath.url() );
   Settings::self()->writeConfig();
   synchronize();
   
