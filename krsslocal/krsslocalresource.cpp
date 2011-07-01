@@ -5,6 +5,11 @@
 
 #include <QtDBus/QDBusConnection>
 
+#include <KFileDialog>
+#include <KDebug>
+#include <KStandardDirs>
+#include <KLocale>
+
 using namespace Akonadi;
 
 krsslocalResource::krsslocalResource( const QString &id )
@@ -61,16 +66,27 @@ void krsslocalResource::configure( WId windowId )
 {
   Q_UNUSED( windowId );
 
-  // TODO: this method is usually called when a new resource is being
-  // added to the Akonadi setup. You can do any kind of user interaction here,
-  // e.g. showing dialogs.
-  // The given window ID is usually useful to get the correct
-  // "on top of parent" behavior if the running window manager applies any kind
-  // of focus stealing prevention technique
-  //
-  // If the configuration dialog has been accepted by the user by clicking Ok,
-  // the signal configurationDialogAccepted() has to be emitted, otherwise, if
-  // the user canceled the dialog, configurationDialogRejected() has to be emitted.
+  const QString oldPath = Settings::self()->path();
+  
+  KUrl startUrl;
+  if ( oldPath.isEmpty() )
+    startUrl = KUrl( QDir::homePath() );
+  else
+    startUrl = KUrl( oldPath );
+  
+  const QString title = i18nc("@title:window", "Select an OPML Document");
+  const KUrl newPath = KFileDialog::getOpenUrl( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
+                                              0, title );
+  
+  if ( newPath.isEmpty() )
+    m_path = KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
+  else
+    m_path = newPath;
+    
+  Settings::self()->setPath( m_path.url() );
+  Settings::self()->writeConfig();
+  synchronize();
+  
 }
 
 void krsslocalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
