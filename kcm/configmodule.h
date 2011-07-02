@@ -21,9 +21,7 @@
 #ifndef RESOURCES_CONFIGMODULE_H
 #define RESOURCES_CONFIGMODULE_H
 
-#define KDE3_SUPPORT
 #include <kcmodule.h>
-#undef KDE3_SUPPORT
 
 /**
   KCModule for transport management.
