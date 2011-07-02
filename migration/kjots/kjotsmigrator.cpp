@@ -336,6 +336,8 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
   c->fromUnicodeString( isRichText ? document.toHtml() : document.toPlainText() );
 
   note->contentType( true )->setMimeType( isRichText ? "text/html" : "text/plain" );
+  note->contentType( true )->setCharset( "utf-8" );
+  note->contentTransferEncoding( true )->setEncoding( KMime::Headers::CEquPr );
 
   note->assemble();
 
