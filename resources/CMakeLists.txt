@@ -7,18 +7,17 @@ include_directories(
 
 set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourcebase.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigwidget.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialogbase.cpp
 )
 
 if (KDEPIM_MOBILE_UI)
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigwidget_mobile.ui
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_mobile.ui
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
 )
 else (KDEPIM_MOBILE_UI)
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigwidget_desktop.ui
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_desktop.ui
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
 )
 endif (KDEPIM_MOBILE_UI)
