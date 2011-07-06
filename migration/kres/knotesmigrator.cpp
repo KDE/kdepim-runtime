@@ -71,6 +71,12 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
   QString resourcePath = kresCfg.readEntry( "NotesURL" );
   KUrl url(resourcePath);
 
+  if (!QFile::exists(url.toLocalFile()))
+  {
+    migrationCompleted(m_agentInstance);
+    return;
+  }
+
   m_notesResource = new KCal::CalendarLocal(QString());
 
   bool success = m_notesResource->load(url.toLocalFile());
