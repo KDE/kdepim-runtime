@@ -52,10 +52,10 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
 {
   // the credentials were not ok....
   int i = KMessageBox::questionYesNoCancelWId( m_resource->winIdForDialogs(),
-                                               i18n( "The server refused the supplied username and password. "
+                                               i18n( "The server for account \"%2\" refused the supplied username and password. "
                                                      "Do you want to go to the settings, have another attempt "
                                                      "at logging in, or do nothing?\n\n"
-                                                     "%1", serverError ),
+                                                     "%1", serverError, m_resource->name() ),
                                                i18n( "Could Not Authenticate" ),
                                                KGuiItem( i18n( "Account Settings" ) ),
                                                KGuiItem( i18nc( "Input username/password manually and not store them", "Try Again" ) ) );
