@@ -516,9 +516,10 @@ void POP3Resource::loginJobResult( KJob *job )
   if ( job->error() ) {
     kDebug() << job->error() << job->errorText();
     if ( job->error() == KIO::ERR_COULD_NOT_LOGIN && !Settings::self()->storePassword() )
-      mAskAgain = true;
-    cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
-                '\n' + job->errorString() );
+        mAskAgain = true;
+    const QString errorString = i18n( "Unable to login to the server %1.", Settings::self()->host() ) + '\n' + job->errorString();
+    cancelSync( errorString );
+    KMessageBox::sorry( 0, errorString );
   }
   else {
     advanceState( List );
