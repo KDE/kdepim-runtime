@@ -9,8 +9,16 @@
 #include <KDebug>
 #include <KStandardDirs>
 #include <KLocale>
+#include <QtXml/QXmlStreamReader>
+#include <QMessageBox>
+#include <boost/shared_ptr.hpp>
+#include <akonadi/entitydisplayattribute.h>
+
+#include <krssresource/opmlparser.h>
 
 using namespace Akonadi;
+using namespace KRssResource;
+using namespace boost;
 
 krsslocalResource::krsslocalResource( const QString &id )
   : ResourceBase( id )
@@ -31,6 +39,62 @@ void krsslocalResource::retrieveCollections()
   // TODO: this method is called when Akonadi wants to have all the
   // collections your resource provides.
   // Be sure to set the remote ID and the content MIME types
+  
+/*   QList<Akonadi::Collection> feeds = fjob->feeds();
+   collectionsRetrieved( feeds );
+*/     
+    const QString path = Settings::self()->path();
+    
+    /* We'll parse the opml file */
+    QFile* file = new QFile( path );
+    /* If we can't open it, let's show an error message. */
+    if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
+	QMessageBox::critical(0, i18n("krsslocalresource::retrieveCollections"), 
+		                    i18n("Couldn't open ") + path, 
+		                    QMessageBox::Ok);
+	return;
+    }
+
+    
+    QXmlStreamReader reader( file );
+    
+    OpmlReader parser;
+    
+    while ( !reader.atEnd() ) {
+        reader.readNext();
+
+        if ( reader.isStartElement() ) {
+            if ( reader.name().toString().toLower() == QLatin1String("opml") ) {
+                kDebug() << "OPML version" << reader.attributes().value( QLatin1String("version") ).toString();
+                parser.readOpml( reader );
+            }
+            else {
+                reader.raiseError( i18n ( "The file is not an valid OPML document." ) );
+            }
+        }
+    }
+    
+    QList<shared_ptr<const ParsedFeed> > parsedNodes = parser.feeds();
+    
+    // create a top-level collection
+    Collection top;
+    top.setParent( Akonadi::Collection::root() );
+    top.setRemoteId( Settings::path() );
+    top.setName( Settings::path() );
+    top.setContentMimeTypes( QStringList( Akonadi::Collection::mimeType() ) );
+    //customize icon of the collection
+    top.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing )->setIconName( QString("application-rss+xml") );
+    
+    Collection::List list;
+    list << top;
+    
+    foreach(const shared_ptr<const ParsedFeed>& parsedNode, parsedNodes) {
+	Collection c = parsedNode->toAkonadiCollection();
+	c.setParent(top);
+	list << c;
+    }
+    
+    collectionsRetrieved( list );
 }
 
 void krsslocalResource::retrieveItems( const Akonadi::Collection &collection )
@@ -73,15 +137,15 @@ void krsslocalResource::configure( WId windowId )
     startUrl = KUrl( QDir::homePath() );
   else
     startUrl = KUrl( oldPath );
-  
+
   const QString title = i18nc("@title:window", "Select an OPML Document");
-  KUrl newPath = KFileDialog::getOpenUrl( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
+  QString newPath = KFileDialog::getOpenFileName( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
                                               0, title );
   
   if ( newPath.isEmpty() )
     newPath = KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
     
-  Settings::self()->setPath( newPath.url() );
+  Settings::self()->setPath( newPath );
   Settings::self()->writeConfig();
   synchronize();
   
