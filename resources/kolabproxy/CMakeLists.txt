@@ -22,6 +22,7 @@ set( kolabproxyresource_shared_SRCS
   addressbookhandler.cpp
   incidencehandler.cpp
   calendarhandler.cpp
+  freebusyupdatehandler.cpp
   taskshandler.cpp
   journalhandler.cpp
   notehandler.cpp

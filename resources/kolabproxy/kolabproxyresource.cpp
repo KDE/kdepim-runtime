@@ -25,12 +25,14 @@
 #include "collectionannotationsattribute.h"
 #include "addressbookhandler.h"
 #include "collectiontreebuilder.h"
+#include "freebusyupdatehandler.h"
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectioncreatejob.h>
 #include <akonadi/collectiondeletejob.h>
 #include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionfetchscope.h>
 #include <akonadi/itemcreatejob.h>
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
@@ -81,6 +83,27 @@ static inline T imapToKolab( const T &imapObject )
   return kolabObject;
 }
 
+static QString mailBoxForImapCollection( const Akonadi::Collection &imapCollection, bool showWarnings )
+{
+  if ( imapCollection.remoteId().isEmpty() ) {
+    if ( showWarnings )
+      kWarning() << "Got incomplete ancestor chain:" << imapCollection;
+    return QString();
+  }
+
+  if ( imapCollection.parentCollection() == Akonadi::Collection::root() ) {
+    return QString( "" );
+  }
+
+  const QString parentMailbox = mailBoxForImapCollection( imapCollection.parentCollection(), showWarnings );
+  if ( parentMailbox.isNull() ) // invalid, != isEmpty() here!
+    return QString();
+
+  const QString mailbox =  parentMailbox + imapCollection.remoteId();
+
+  return mailbox;
+}
+
 KolabProxyResource::KolabProxyResource( const QString &id )
   : ResourceBase( id )
 {
@@ -95,19 +118,30 @@ KolabProxyResource::KolabProxyResource( const QString &id )
 
   m_monitor = new Monitor( this );
   m_monitor->itemFetchScope().fetchFullPayload();
+  m_monitor->itemFetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::All );
 
   m_collectionMonitor = new Monitor( this );
   m_collectionMonitor->fetchCollection( true );
   m_collectionMonitor->setCollectionMonitored(Collection::root());
   m_collectionMonitor->ignoreSession( Session::defaultSession() );
+  m_collectionMonitor->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
 
-  connect(m_monitor, SIGNAL(itemAdded(const Akonadi::Item & , const Akonadi::Collection &)), this, SLOT(imapItemAdded(const Akonadi::Item & , const Akonadi::Collection &)));
-  connect(m_monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)), this, SLOT(imapItemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)));
-  connect(m_monitor, SIGNAL(itemRemoved(const Akonadi::Item &)), this, SLOT(imapItemRemoved(const Akonadi::Item &)));
-  connect(m_collectionMonitor, SIGNAL(collectionAdded(const Akonadi::Collection &, const Akonadi::Collection &)), this, SLOT(imapCollectionAdded(const Akonadi::Collection &, const Akonadi::Collection &)));
-  connect(m_collectionMonitor, SIGNAL(collectionRemoved(const Akonadi::Collection &)), this, SLOT(imapCollectionRemoved(const Akonadi::Collection &)));
-  connect(m_collectionMonitor, SIGNAL(collectionChanged(const Akonadi::Collection &)), this, SLOT(imapCollectionChanged(const Akonadi::Collection &)));
-  connect(m_collectionMonitor, SIGNAL(collectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)), this, SLOT(imapCollectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)) );
+  m_freeBusyUpdateHandler = new FreeBusyUpdateHandler( this );
+
+  connect( m_monitor, SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
+           this, SLOT( imapItemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ) );
+  connect( m_monitor, SIGNAL( itemMoved( const Akonadi::Item&, const Akonadi::Collection&, const Akonadi::Collection& ) ),
+           this, SLOT( imapItemMoved( const Akonadi::Item&, const Akonadi::Collection&, const Akonadi::Collection& ) ) );
+  connect( m_monitor, SIGNAL( itemRemoved( const Akonadi::Item& ) ), this, SLOT( imapItemRemoved( const Akonadi::Item& ) ) );
+
+  connect( m_collectionMonitor, SIGNAL( collectionAdded( const Akonadi::Collection&, const Akonadi::Collection& ) ),
+           this, SLOT( imapCollectionAdded( const Akonadi::Collection&, const Akonadi::Collection& ) ) );
+  connect( m_collectionMonitor, SIGNAL( collectionRemoved( const Akonadi::Collection& ) ),
+           this, SLOT( imapCollectionRemoved( const Akonadi::Collection& ) ) );
+  connect( m_collectionMonitor, SIGNAL( collectionChanged( const Akonadi::Collection& ) ),
+           this, SLOT( imapCollectionChanged( const Akonadi::Collection& ) ) );
+  connect( m_collectionMonitor, SIGNAL( collectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection& ) ),
+           this, SLOT( imapCollectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection& ) ) );
 
   setName( i18n("Kolab") );
 
@@ -462,6 +496,57 @@ void KolabProxyResource::applyAttributesFromImap( Collection &kolabCollection, c
   }
 }
 
+void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &imapCollection )
+{
+  const CollectionAnnotationsAttribute *annotationsAttribute = imapCollection.attribute<CollectionAnnotationsAttribute>();
+  if ( annotationsAttribute ) {
+    const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
+    const QByteArray folderType = annotations[ "/vendor/kolab/folder-type" ];
+    if ( folderType != "event" && folderType != "event.default" ) {
+      return; // no kolab calendar collection
+    }
+  } else {
+    return; // no kolab collection
+  }
+
+  const QString path = mailBoxForImapCollection( imapCollection, true );
+  if ( path.isEmpty() ) {
+    return;
+  }
+
+  const QString resourceId = imapCollection.resource();
+
+  QDBusInterface settingsInterface( QString::fromLatin1( "org.freedesktop.Akonadi.Agent.%1" ).arg( resourceId ),
+                                    QLatin1String( "/Settings" ), QLatin1String( "org.kde.Akonadi.Imap.Settings" ) );
+
+  QDBusInterface walletInterface( QString::fromLatin1( "org.freedesktop.Akonadi.Agent.%1" ).arg( resourceId ),
+                                  QLatin1String( "/Settings" ), QLatin1String( "org.kde.Akonadi.Imap.Wallet" ) );
+
+  if ( !settingsInterface.isValid() || !walletInterface.isValid() ) {
+    kWarning() << "unable to retrieve imap resource settings interface";
+    return;
+  }
+
+  const QDBusReply<QString> userNameReply = settingsInterface.call( QLatin1String( "userName" ) );
+  if ( !userNameReply.isValid() ) {
+    kWarning() << "unable to retrieve user name from imap resource settings";
+    return;
+  }
+
+  const QDBusReply<QString> passwordReply = walletInterface.call( QLatin1String( "password" ) );
+  if ( !passwordReply.isValid() ) {
+    kWarning() << "unable to retrieve password from imap resource settings";
+    return;
+  }
+
+  const QDBusReply<QString> hostReply = settingsInterface.call( QLatin1String( "imapServer" ) );
+  if ( !hostReply.isValid() ) {
+    kWarning() << "unable to retrieve host from imap resource settings";
+    return;
+  }
+
+  m_freeBusyUpdateHandler->updateFolder( path, userNameReply.value(), passwordReply.value(), hostReply.value() );
+}
 
 void KolabProxyResource::collectionChanged(const Akonadi::Collection& collection)
 {
@@ -634,6 +719,8 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
     CollectionModifyJob *job = new CollectionModifyJob( kolabCollection, this );
     connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
   }
+
+  updateFreeBusyInformation( collection );
 }
 
 void KolabProxyResource::imapCollectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination)
@@ -666,6 +753,8 @@ void KolabProxyResource::imapCollectionRemoved(const Collection &imapCollection)
   KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
   delete handler;
   m_monitoredCollections.remove(imapCollection.id());
+
+  updateFreeBusyInformation( imapCollection );
 }
 
 Collection KolabProxyResource::createCollection(const Collection& imapCollection)

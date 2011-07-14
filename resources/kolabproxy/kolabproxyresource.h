@@ -29,6 +29,7 @@ namespace Akonadi {
   class Monitor;
 }
 
+class FreeBusyUpdateHandler;
 class KolabHandler;
 
 class KolabProxyResource : public Akonadi::ResourceBase,
@@ -85,6 +86,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     Akonadi::Collection createCollection(const Akonadi::Collection& imapCollection);
     void applyAttributesToImap( Akonadi::Collection &imapCollection, const Akonadi::Collection &kolabCollection );
     void applyAttributesFromImap( Akonadi::Collection &kolabCollection, const Akonadi::Collection &imapCollection );
+    void updateFreeBusyInformation( const Akonadi::Collection &imapCollection );
 
   private slots:
     void imapItemCreationResult( KJob* job );
@@ -101,6 +103,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;
+    FreeBusyUpdateHandler *m_freeBusyUpdateHandler;
 
     enum RetrieveState {
       RetrieveItems,
