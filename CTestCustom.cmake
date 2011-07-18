@@ -12,6 +12,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
   "qlist.h.*increases required alignment of target type"
   "qmap.h.*increases required alignment of target type"
   "qhash.h.*increases required alignment of target type"
+  ".*warning.* is deprecated"
   )
 
 # Errors that will be ignored
