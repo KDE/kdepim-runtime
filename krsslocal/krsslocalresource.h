@@ -2,16 +2,20 @@
 #define KRSSLOCALRESOURCE_H
 
 #include <akonadi/resourcebase.h>
+#include <boost/shared_ptr.hpp>
+#include <krssresource/opmlparser.h>
 
-class krsslocalResource : public Akonadi::ResourceBase,
+class KRssLocalResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
 
   public:
-    krsslocalResource( const QString &id );
-    ~krsslocalResource();
-
+    KRssLocalResource( const QString &id );
+    ~KRssLocalResource();
+    Akonadi::Collection::List buildCollectionTree( QList<boost::shared_ptr<const KRssResource::ParsedNode> > listOfNodes, 
+ 				   Akonadi::Collection::List &list, Akonadi::Collection &parent);
+    
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
@@ -19,14 +23,14 @@ class krsslocalResource : public Akonadi::ResourceBase,
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-
+    
   protected:
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
-    
+       
 };
 
 #endif
