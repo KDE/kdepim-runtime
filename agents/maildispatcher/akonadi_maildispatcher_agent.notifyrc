@@ -1,6 +1,7 @@
 [Global]
 IconName=mail-folder-outbox
 Comment=KDE e-mail client
+Comment[bg]=Пощенски клиент за KDE
 Comment[ca]=Client de correu electrònic del KDE
 Comment[ca@valencia]=Client de correu electrònic del KDE
 Comment[cs]=Klient KDE pro čtení elektronické pošty
@@ -33,6 +34,7 @@ Comment[x-test]=xxKDE e-mail clientxx
 Comment[zh_CN]=KDE 邮件客户端
 Comment[zh_TW]=KDE 收發信軟體
 Name=KDE Mail
+Name[bg]=KDE поща
 Name[ca]=Correu del KDE
 Name[ca@valencia]=Correu del KDE
 Name[cs]=Pošta v KDE
