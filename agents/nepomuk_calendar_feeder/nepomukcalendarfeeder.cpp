@@ -19,6 +19,9 @@
 
 #include "nepomukcalendarfeeder.h"
 #include "nco.h"
+#include "ncal.h"
+
+#include "nepomukfeederutils.h"
 
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
@@ -35,23 +38,29 @@
 #include <kurl.h>
 #include <KLocale>
 
+#include <nepomuk/andterm.h>
+#include <nepomuk/comparisonterm.h>
+#include <nepomuk/literalterm.h>
+#include <nepomuk/resourcetypeterm.h>
+#include <nepomuk/simpleresource.h>
+#include <nepomuk/simpleresourcegraph.h>
+
 #include <Soprano/Model>
 #include <Soprano/NodeIterator>
 #include <Soprano/QueryResultIterator>
+#include <Soprano/Vocabulary/NAO>
 
 // ontology includes
-#include "attendee.h"
-#include "emailaddress.h"
-#include "event.h"
-#include "eventstatus.h"
-#include "journal.h"
-#include "participationstatus.h"
-#include "personcontact.h"
-#include "todo.h"
-#include "unionofalarmeventfreebusyjournaltodo.h"
+#include <ncal/attendee.h>
+#include <ncal/event.h>
+#include <ncal/todo.h>
+#include <ncal/journal.h>
+#include <nco/emailaddress.h>
+#include <nco/personcontact.h>
 
 #include <QtCore/QTime>
 #include <QtCore/QTimer>
+#include <QtCore/QString>
 #include <QtDBus/QDBusConnection>
 
 #include <KDebug>
@@ -61,7 +70,7 @@
 namespace Akonadi {
 
 NepomukCalendarFeeder::NepomukCalendarFeeder( const QString &id )
-  : NepomukFeederAgent<NepomukFast::Calendar>( id )
+  : NepomukFeederAgentBase( id )
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" );
   addSupportedMimeType( KCalCore::Event::eventMimeType() );
@@ -78,27 +87,44 @@ NepomukCalendarFeeder::~NepomukCalendarFeeder()
 {
 }
 
-void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
+    kWarning() << item.id();
   if ( item.hasPayload<KCalCore::Event::Ptr>() ) {
-    updateEventItem( item, item.payload<KCalCore::Event::Ptr>(), graphUri );
+    updateEventItem( item, item.payload<KCalCore::Event::Ptr>(), res, graph );
   } else if ( item.hasPayload<KCalCore::Journal::Ptr>() ) {
-    updateJournalItem( item, item.payload<KCalCore::Journal::Ptr>(), graphUri );
+    updateJournalItem( item, item.payload<KCalCore::Journal::Ptr>(), res, graph );
   } else if ( item.hasPayload<KCalCore::Todo::Ptr>() ) {
-    updateTodoItem( item, item.payload<KCalCore::Todo::Ptr>(), graphUri );
+    updateTodoItem( item, item.payload<KCalCore::Todo::Ptr>(), res, graph );
   } else {
     kDebug() << "Got item without known payload. Mimetype:" << item.mimeType()
              << "Id:" << item.id();
   }
 }
 
-void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCalCore::Event::Ptr &calEvent, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateIncidenceItem( const KCalCore::Incidence::Ptr &calInc, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
+{
+  res.setProperty( Soprano::Vocabulary::NAO::prefLabel(), calInc->summary() );
+  res.setProperty( Vocabulary::NCAL::summary(), calInc->summary() );
+  res.setProperty( Vocabulary::NIE::title(), calInc->summary() );
+  if ( !calInc->location().isEmpty() )
+    res.setProperty( Vocabulary::NCAL::location(), calInc->location() );
+  if ( !calInc->description().isEmpty() ) {
+    res.setProperty( Vocabulary::NCAL::description(), calInc->description() );
+    res.setProperty( Vocabulary::NIE::plainTextContent(), calInc->description() );
+  }
+
+  res.setProperty( Vocabulary::NCAL::uid(), calInc->uid() );
+
+  NepomukFeederUtils::tagsFromCategories( calInc->categories(), res, graph );
+}
+
+void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCalCore::Event::Ptr &calEvent, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
   // create event with the graph reference
-  NepomukFast::Event event( item.url(), graphUri );
-  event.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( "view-pim-calendar" ) );
-  setParent( event, item );
-  updateIncidenceItem( calEvent, event, graphUri );
+  Nepomuk::NCAL::Event event( &res );
+  NepomukFeederUtils::setIcon( "view-pim-calendar", res, graph );
+  updateIncidenceItem( calEvent, res, graph );
 
   QUrl uri;
   switch ( calEvent->status() ) {
@@ -116,13 +142,13 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
   }
 
   if ( !uri.isEmpty() ) {
-    NepomukFast::EventStatus status( uri, graphUri );
-    event.setEventStatus( status );
+    event.setEventStatus( uri );
   }
 
   foreach ( const KCalCore::Attendee::Ptr &calAttendee, calEvent->attendees() ) {
-    NepomukFast::Contact contact = findOrCreateContact( calAttendee->email(), calAttendee->name(), graphUri );
-    NepomukFast::Attendee attendee( QUrl(), graphUri );
+    QUrl contact = findOrCreateContact( calAttendee->email(), calAttendee->name(), graph );
+    Nepomuk::SimpleResource attendeeResource;
+    Nepomuk::NCAL::Attendee attendee(&attendeeResource);
     attendee.addInvolvedContact( contact );
 
     uri.clear();
@@ -147,30 +173,83 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
     }
 
     if ( !uri.isEmpty() ) {
-      NepomukFast::ParticipationStatus partStatus( uri, graphUri );
-      attendee.addPartstat( partStatus );
+      attendee.addPartstat( uri );
     }
+    graph << attendeeResource;
 
-    event.toUnionOfAlarmEventFreebusyJournalTodo().addAttendee( attendee );
+    event.addAttendee( attendeeResource.uri() ); //FIXME is this correct?
   }
 }
 
-void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCalCore::Journal::Ptr &calJournal, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCalCore::Journal::Ptr &calJournal, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
-    // create journal entry with the graph reference
-    NepomukFast::Journal journal( item.url(), graphUri );
-    journal.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( "view-pim-journal" ) );
-    setParent( journal, item );
-    updateIncidenceItem( calJournal, journal, graphUri );
+  // create journal entry with the graph reference
+  Nepomuk::NCAL::Journal journal( &res );
+  NepomukFeederUtils::setIcon( "view-pim-journal", res, graph );
+  updateIncidenceItem( calJournal, res, graph );
 }
 
-void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCalCore::Todo::Ptr &calTodo, const QUrl &graphUri )
+void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCalCore::Todo::Ptr &calTodo, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
-  NepomukFast::Todo todo( item.url(), graphUri );
-  setParent( todo, item );
-  todo.addProperty( Soprano::Vocabulary::NAO::hasSymbol(), Soprano::LiteralValue( "view-pim-task" ) );
-  updateIncidenceItem( calTodo, todo, graphUri );
+  Nepomuk::NCAL::Todo todo( &res );
+  NepomukFeederUtils::setIcon( "view-pim-task", res, graph );
+  updateIncidenceItem( calTodo, res, graph );
 }
+
+QUrl NepomukCalendarFeeder::findOrCreateContact(const QString& emailAddress, const QString& name, Nepomuk::SimpleResourceGraph &graph, bool* found)
+{
+  //
+  // Querying with the exact address string is not perfect since email addresses
+  // are case insensitive. But for the moment we stick to it and hope Nepomuk
+  // alignment fixes any duplicates
+  //
+  Nepomuk::Query::Query query;
+  Nepomuk::Query::AndTerm andTerm;
+  Nepomuk::Query::ResourceTypeTerm personTypeTerm( Vocabulary::NCO::PersonContact() );
+  andTerm.addSubTerm( personTypeTerm );
+  if ( emailAddress.isEmpty() ) {
+    const Nepomuk::Query::ComparisonTerm nameTerm( Vocabulary::NCO::fullname(), Nepomuk::Query::LiteralTerm( name ),
+                                                   Nepomuk::Query::ComparisonTerm::Equal );
+    andTerm.addSubTerm( nameTerm );
+  } else {
+    const Nepomuk::Query::ComparisonTerm addrTerm( Vocabulary::NCO::emailAddress(), Nepomuk::Query::LiteralTerm( emailAddress ),
+                                                   Nepomuk::Query::ComparisonTerm::Equal );
+    const Nepomuk::Query::ComparisonTerm mailTerm( Vocabulary::NCO::hasEmailAddress(), addrTerm );
+    andTerm.addSubTerm( mailTerm );
+  }
+  query.setTerm( andTerm );
+  query.setLimit( 1 );
+  
+  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( query.toSparqlQuery(), Soprano::Query::QueryLanguageSparql );
+
+  if ( it.next() ) {
+    if ( found ) *found = true;
+    const QUrl uri = it.binding( 0 ).uri();
+    it.close();
+    return uri;
+  }
+  if ( found ) *found = false;
+  // create a new contact
+  kDebug() << "Did not find " << name << emailAddress << ", creating a new PersonContact";
+
+  Nepomuk::SimpleResource contactRes;
+  Nepomuk::NCO::PersonContact contact(&contactRes);
+  contactRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), name.isEmpty() ? emailAddress : name);
+  if ( !emailAddress.isEmpty() ) {
+    Nepomuk::SimpleResource emailRes;
+    Nepomuk::NCO::EmailAddress email( &emailRes );
+    //TODO the email was used in constructor as identifier/uri QUrl( QLatin1String( "mailto:" ) + emailAddress ) sooooo should we set a mailto:identifier?
+    email.setEmailAddress( emailAddress );
+    graph << emailRes;
+    contact.addHasEmailAddress( emailRes.uri() );
+  }
+  if ( !name.isEmpty() )
+    contact.setFullname( name );
+
+  graph << contactRes;
+  return contactRes.uri();
+}
+
 
 } // namespace Akonadi
 

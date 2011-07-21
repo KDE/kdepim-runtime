@@ -20,8 +20,7 @@
 #ifndef AKONADI_NEPOMUK_CALENDAR_FEEDER_H
 #define AKONADI_NEPOMUK_CALENDAR_FEEDER_H
 
-#include <nepomukfeederagent.h>
-#include "calendar.h"
+#include <nepomukfeederagentbase.h>
 
 #include <akonadi/agentbase.h>
 #include <akonadi/item.h>
@@ -30,11 +29,10 @@
 #include <kcalcore/journal.h>
 #include <kcalcore/todo.h>
 
-#include "ncal.h"
 
 namespace Akonadi {
 
-class NepomukCalendarFeeder : public NepomukFeederAgent<NepomukFast::Calendar>
+class NepomukCalendarFeeder : public NepomukFeederAgentBase
 {
   Q_OBJECT
 
@@ -43,27 +41,20 @@ class NepomukCalendarFeeder : public NepomukFeederAgent<NepomukFast::Calendar>
     ~NepomukCalendarFeeder();
 
   private:
-    void updateItem( const Akonadi::Item &item, const QUrl &graphUri );
-    void updateEventItem( const Akonadi::Item& item, const KCalCore::Event::Ptr&, const QUrl& );
-    void updateJournalItem( const Akonadi::Item& item, const KCalCore::Journal::Ptr&, const QUrl& );
-    void updateTodoItem( const Akonadi::Item& item, const KCalCore::Todo::Ptr&, const QUrl& );
-
-    template <typename IncidencePtr>
-    void updateIncidenceItem( const IncidencePtr &calInc, NepomukFast::Resource &incidence, const QUrl &graphUri )
-    {
-      Q_UNUSED( graphUri );
-
-      incidence.setLabel( calInc->summary() );
-      incidence.addProperty( Vocabulary::NCAL::summary(), Soprano::LiteralValue( calInc->summary() ) );
-      if ( !calInc->location().isEmpty() )
-        incidence.addProperty( Vocabulary::NCAL::location(), Soprano::LiteralValue( calInc->location() ) );
-      if ( !calInc->description().isEmpty() )
-        incidence.addProperty( Vocabulary::NCAL::description(), Soprano::LiteralValue( calInc->description() ) );
-
-      incidence.addProperty( Vocabulary::NCAL::uid(), Soprano::LiteralValue( calInc->uid() ) );
-
-      tagsFromCategories( incidence, calInc->categories() );
-    }
+    void updateItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
+    void updateEventItem( const Akonadi::Item& item, const KCalCore::Event::Ptr&, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
+    void updateJournalItem( const Akonadi::Item& item, const KCalCore::Journal::Ptr&, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
+    void updateTodoItem( const Akonadi::Item& item, const KCalCore::Todo::Ptr&, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
+  
+    void updateIncidenceItem( const KCalCore::Incidence::Ptr &calInc, Nepomuk::SimpleResource &res , Nepomuk::SimpleResourceGraph &graph);
+    
+    /** Finds (or if it doesn't exist creates) a PersonContact object for the given name and address.
+    @param found Used to indicate if the contact is already there are was just newly created. In the latter case you might
+    want to add additional information you have available for it.
+    
+    If a new contact is created it is added to @param graph and it's url is returned.
+    */
+    static QUrl findOrCreateContact( const QString &email, const QString &name, Nepomuk::SimpleResourceGraph &graph, bool *found = 0 );
 };
 
 }
