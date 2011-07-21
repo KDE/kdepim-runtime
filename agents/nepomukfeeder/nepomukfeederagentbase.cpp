@@ -20,10 +20,7 @@
 */
 
 #include "nepomukfeederagentbase.h"
-#include <nie.h>
-#include <nco.h>
-#include <personcontact.h>
-#include <emailaddress.h>
+#include <aneo.h>
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
@@ -34,14 +31,12 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/mimetypechecker.h>
-#include <Akonadi/ItemSearchJob>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/entityhiddenattribute.h>
 
-#include <nepomuk/resource.h>
+#include <nepomuk/simpleresource.h>
+#include <nepomuk/simpleresourcegraph.h>
 #include <nepomuk/tag.h>
-#include <nepomuk/andterm.h>
-#include <nepomuk/comparisonterm.h>
-#include <nepomuk/literalterm.h>
-#include <nepomuk/resourcetypeterm.h>
 
 #include <KLocale>
 #include <KUrl>
@@ -52,6 +47,7 @@
 #include <KNotification>
 
 #include <Soprano/Vocabulary/NAO>
+#include <Soprano/Vocabulary/RDF>
 
 #include <strigi/analyzerconfiguration.h>
 #include <strigi/analysisresult.h>
@@ -77,7 +73,7 @@ static inline bool indexingDisabled( const Collection &collection )
 
   IndexPolicyAttribute *indexPolicy = collection.attribute<IndexPolicyAttribute>();
   if ( indexPolicy && !indexPolicy->indexingEnabled() )
-      return true;
+    return true;
 
   return false;
 }
@@ -87,7 +83,8 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   mTotalAmount( 0 ),
   mProcessedAmount( 0 ),
   mPendingJobs( 0 ),
-  mNrlModel( 0 ),
+  mPendingRemoveDataJobs( 0 ),
+  mResourceGraph( 0 ),
   mStrigiIndexManager( 0 ),
   mIndexCompatLevel( 1 ),
   mNepomukStartupAttempted( false ),
@@ -100,7 +97,6 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
 {
   // initialize Nepomuk
   Nepomuk::ResourceManager::instance()->init();
-  mNrlModel = new Soprano::NRLModel( Nepomuk::ResourceManager::instance()->mainModel() );
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
@@ -126,9 +122,88 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
 
 NepomukFeederAgentBase::~NepomukFeederAgentBase()
 {
-  delete mNrlModel;
+  if (mResourceGraph) {
+      delete mResourceGraph;
+  }
   if ( mStrigiIndexManager )
     Strigi::IndexPluginLoader::deleteIndexManager( mStrigiIndexManager );
+}
+
+void NepomukFeederAgentBase::setParentCollection( const Akonadi::Entity &entity, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph )
+{
+  if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() ) {
+    Nepomuk::SimpleResource parentResource( entity.parentCollection().url() );
+    parentResource.setTypes(QList <QUrl>() << Vocabulary::NIE::DataObject() << Vocabulary::NIE::InformationElement());
+    graph << parentResource; //To use the nie::isPartOf relation both parent and child must be in the graph
+    res.setProperty( Vocabulary::NIE::isPartOf(), parentResource );
+  }
+}
+
+void NepomukFeederAgentBase::updateCollection(const Akonadi::Collection& collection, Nepomuk::SimpleResource &r, Nepomuk::SimpleResourceGraph &graph)
+{
+  if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
+    return;
+
+  const Akonadi::EntityDisplayAttribute *attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
+
+  if ( attr && !attr->displayName().isEmpty() ) {
+    r.setProperty( Soprano::Vocabulary::NAO::prefLabel(), attr->displayName() );
+  } else {
+    r.setProperty( Soprano::Vocabulary::NAO::prefLabel(), collection.name() );
+  }
+  if ( attr && !attr->iconName().isEmpty() )
+    r.setProperty( Soprano::Vocabulary::NAO::hasSymbol(), attr->iconName() );
+}
+
+void NepomukFeederAgentBase::addCollectionToNepomuk( const Akonadi::Collection &collection ) 
+{
+  kWarning() << collection.url();
+  Nepomuk::SimpleResourceGraph graph;
+  Nepomuk::SimpleResource res( collection.url() );
+  res.setTypes(QList <QUrl>() << Vocabulary::NIE::DataObject() << Vocabulary::NIE::InformationElement());
+  res.setProperty( Vocabulary::NIE::url(), collection.url() );
+  setParentCollection( collection, res, graph);
+  updateCollection( collection, res, graph );
+  graph.insert(res);
+  /*kWarning() << "--------------------------------";
+  foreach( const Nepomuk::SimpleResource &res, graph.toList() ) {
+      kWarning() << res.property(Soprano::Vocabulary::RDF::type());
+  }
+  kWarning() << "--------------------------------";*/
+  QHash <QUrl, QVariant> additionalMetadata;
+  additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
+  //We overwrite properties, as the resource is not removed on update (TODO remove subresources as well?)
+  KJob *job = Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent());
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( jobResult( KJob* ) ) );
+}
+
+void NepomukFeederAgentBase::addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &graph ) 
+{
+  kWarning() << item.url();
+  Nepomuk::SimpleResource res( item.url() );
+  res.setTypes(QList <QUrl>() << Vocabulary::NIE::DataObject() << Vocabulary::NIE::InformationElement());
+  res.setProperty( Vocabulary::NIE::url(), item.url() );
+  res.setProperty( Vocabulary::ANEO::akonadiItemId(), QString::number( item.id() ) );
+  setParentCollection( item, res, graph);
+  updateItem(item, res, graph);
+  graph << res;
+}
+
+void NepomukFeederAgentBase::addGraphToNepomuk( const Nepomuk::SimpleResourceGraph &graph ) 
+{
+  kWarning();
+  kWarning() << "--------------------------------";
+  foreach( const Nepomuk::SimpleResource &res, mResourceGraph->toList() ) {
+    //kWarning() << res.property(Soprano::Vocabulary::RDF::type());
+    kWarning() << res.property(Vocabulary::NIE::url());
+    kWarning() << res.property(Soprano::Vocabulary::NAO::prefLabel());
+  }
+  kWarning() << "--------------------------------";
+  QHash <QUrl, QVariant> additionalMetadata;
+  additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
+  //FIXME sometimes there are warning about the cardinality, maybe the old values are not always removed before the new on
+  KJob *job = Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::NoStoreResourcesFlags, additionalMetadata, KGlobal::mainComponent());
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( jobResult( KJob* ) ) );
 }
 
 void NepomukFeederAgentBase::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
@@ -157,7 +232,6 @@ void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< 
     return;
   // TODO: check part identfiers if anything interesting changed at all
   if ( item.hasPayload() ) {
-    removeEntityFromNepomuk( item );
     mItemPipeline.enqueue( item );
     mProcessPipelineTimer.start();
   } else {
@@ -174,7 +248,7 @@ void NepomukFeederAgentBase::itemChanged(const Akonadi::Item& item, const QSet< 
 
 void NepomukFeederAgentBase::itemRemoved(const Akonadi::Item& item)
 {
-  removeEntityFromNepomuk( item );
+  Nepomuk::removeResources(QList <QUrl>() << item.url());
 }
 
 void NepomukFeederAgentBase::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
@@ -182,21 +256,20 @@ void NepomukFeederAgentBase::collectionAdded(const Akonadi::Collection& collecti
   Q_UNUSED( parent );
   if ( indexingDisabled( collection ) )
     return;
-  updateCollection( collection, createGraphForEntity( collection ) );
+  addCollectionToNepomuk(collection);
 }
 
 void NepomukFeederAgentBase::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
 {
   Q_UNUSED( partIdentifiers );
-  removeEntityFromNepomuk( collection );
   if ( indexingDisabled( collection ) )
     return;
-  updateCollection( collection, createGraphForEntity( collection ) );
+  addCollectionToNepomuk(collection);
 }
 
 void NepomukFeederAgentBase::collectionRemoved(const Akonadi::Collection& collection)
 {
-  removeEntityFromNepomuk( collection );
+  Nepomuk::removeResources(QList <QUrl>() << collection.url());
 }
 
 void NepomukFeederAgentBase::addSupportedMimeType( const QString &mimeType )
@@ -238,6 +311,7 @@ void NepomukFeederAgentBase::processNextCollection()
     return;
   mTotalAmount = 0;
   if ( mCollectionQueue.isEmpty() ) {
+      kWarning() << "fully indexed";
     mReIndex = false;
     emit fullyIndexed();
     return;
@@ -245,8 +319,10 @@ void NepomukFeederAgentBase::processNextCollection()
   mCurrentCollection = mCollectionQueue.takeFirst();
   emit status( AgentBase::Running, i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
   kDebug() << "Indexing collection" << mCurrentCollection.name();
-  if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( mCurrentCollection.url(), Soprano::Node(), Soprano::Node() ) )
-    updateCollection( mCurrentCollection, createGraphForEntity( mCurrentCollection ) );
+  if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(), Vocabulary::NIE::url(), mCurrentCollection.url() ) ) { //TODO check if this still works
+    addCollectionToNepomuk(mCurrentCollection);
+  }
+
   ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
   itemFetch->fetchScope().setCacheOnly( true );
   connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemHeadersReceived(Akonadi::Item::List)) );
@@ -264,14 +340,13 @@ void NepomukFeederAgentBase::itemHeadersReceived(const Akonadi::Item::List& item
     if ( !mMimeTypeChecker.isWantedItem( item ) )
       continue;
     // update item if it does not exist
-    if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(), Soprano::Node(), Soprano::Node() ) )
+    if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(),  Vocabulary::NIE::url(), item.url() ) ) { //TODO check if this still works
       itemsToUpdate.append( item );
 
     // the item exists. Check if it has an item ID property, otherwise re-index it.
-    else {
-      if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( item.url(),
-                                   Akonadi::ItemSearchJob::akonadiItemIdUri(), Soprano::Node() ) || mReIndex ) {
-        removeEntityFromNepomuk( item );
+    } else {
+      if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(),
+                                   Vocabulary::ANEO::akonadiItemId(), Soprano::LiteralValue( QUrl( QString::number( item.id() ) ) ) ) || mReIndex ) { //TODO check if this still works
         itemsToUpdate.append( item );
       }
     }
@@ -305,7 +380,6 @@ void NepomukFeederAgentBase::itemsReceived(const Akonadi::Item::List& items)
 {
   kDebug() << items.size();
   foreach ( Item item, items ) {
-    // we only get here if the item is not anywhere in Nepomuk yet, so no need to delete it
     item.setParentCollection( mCurrentCollection );
     mItemPipeline.enqueue( item );
   }
@@ -319,20 +393,9 @@ void NepomukFeederAgentBase::notificationItemsReceived(const Akonadi::Item::List
     if ( !item.hasPayload() ) {
       continue;
     }
-    removeEntityFromNepomuk( item );
     mItemPipeline.enqueue( item );
   }
   mProcessPipelineTimer.start();
-}
-
-void NepomukFeederAgentBase::tagsFromCategories(NepomukFast::Resource& resource, const QStringList& categories)
-{
-  foreach ( const QString &category, categories ) {
-    Nepomuk::Tag tag( category );
-    if ( tag.label().isEmpty() )
-      tag.setLabel( category );
-    resource.addProperty( Soprano::Vocabulary::NAO::hasTag(), tag.resourceUri() );
-  }
 }
 
 
@@ -419,53 +482,6 @@ void NepomukFeederAgentBase::selfTest()
     return;
   KNotification::event( KNotification::Warning, i18n( "Nepomuk Indexing Disabled" ), message );
   QDBusConnection::sessionBus().unregisterService( QLatin1String( "org.kde.pim.nepomukfeeder.selftestreport" ) );
-}
-
-NepomukFast::PersonContact NepomukFeederAgentBase::findOrCreateContact(const QString& emailAddress, const QString& name, const QUrl& graphUri, bool* found)
-{
-  //
-  // Querying with the exact address string is not perfect since email addresses
-  // are case insensitive. But for the moment we stick to it and hope Nepomuk
-  // alignment fixes any duplicates
-  //
-  Nepomuk::Query::Query query;
-  Nepomuk::Query::AndTerm andTerm;
-  Nepomuk::Query::ResourceTypeTerm personTypeTerm( Vocabulary::NCO::PersonContact() );
-  andTerm.addSubTerm( personTypeTerm );
-  if ( emailAddress.isEmpty() ) {
-    const Nepomuk::Query::ComparisonTerm nameTerm( Vocabulary::NCO::fullname(), Nepomuk::Query::LiteralTerm( name ),
-                                                   Nepomuk::Query::ComparisonTerm::Equal );
-    andTerm.addSubTerm( nameTerm );
-  } else {
-    const Nepomuk::Query::ComparisonTerm addrTerm( Vocabulary::NCO::emailAddress(), Nepomuk::Query::LiteralTerm( emailAddress ),
-                                                   Nepomuk::Query::ComparisonTerm::Equal );
-    const Nepomuk::Query::ComparisonTerm mailTerm( Vocabulary::NCO::hasEmailAddress(), addrTerm );
-    andTerm.addSubTerm( mailTerm );
-  }
-  query.setTerm( andTerm );
-  query.setLimit( 1 );
-  
-  Soprano::QueryResultIterator it = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( query.toSparqlQuery(), Soprano::Query::QueryLanguageSparql );
-
-  if ( it.next() ) {
-    if ( found ) *found = true;
-    const QUrl uri = it.binding( 0 ).uri();
-    it.close();
-    return NepomukFast::PersonContact( uri, graphUri );
-  }
-  if ( found ) *found = false;
-  // create a new contact
-  kDebug() << "Did not find " << name << emailAddress << ", creating a new PersonContact";
-  NepomukFast::PersonContact contact( QUrl(), graphUri );
-  contact.setLabel( name.isEmpty() ? emailAddress : name );
-  if ( !emailAddress.isEmpty() ) {
-    NepomukFast::EmailAddress emailRes( QUrl( QLatin1String( "mailto:" ) + emailAddress ), graphUri );
-    emailRes.setEmailAddress( emailAddress );
-    contact.addEmailAddress( emailRes );
-  }
-  if ( !name.isEmpty() )
-    contact.setFullname( name );
-  return contact;
 }
 
 void NepomukFeederAgentBase::setNeedsStrigi(bool enableStrigi)
@@ -570,10 +586,20 @@ void NepomukFeederAgentBase::processPipeline()
   processing = true;
   if ( !mItemPipeline.isEmpty() && isOnline() ) {
     const Akonadi::Item &item = mItemPipeline.dequeue();
-    const QUrl graph = createGraphForEntity( item );
-    mNrlModel->addStatement( item.url(), Akonadi::ItemSearchJob::akonadiItemIdUri(),
-                             QUrl( QString::number( item.id() ) ), graph );
-    updateItem( item, graph );
+
+    if ( !mResourceGraph ) {
+      mResourceGraph = new Nepomuk::SimpleResourceGraph();
+    }
+
+    //removeDataByApplication, to ensure also subproperties are removed, i.e. in case addresses of a contact have changed
+    KJob *job = Nepomuk::removeDataByApplication( QList <QUrl>() << item.url(), Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
+    ++mPendingRemoveDataJobs;
+    connect( job, SIGNAL( finished( KJob* ) ), this, SLOT( removeDataResult( KJob* ) ) );
+
+    addItemToGraph( item, *mResourceGraph );
+    //The actual saving to the nepomukstore is deferred until a complete pipeline is processed and all deletejobs have finished to ensure the old items have been removed
+    //and to minimize disk access
+
     ++mProcessedAmount;
     if ( (mProcessedAmount % 10) == 0 && mTotalAmount > 0 && mProcessedAmount <= mTotalAmount )
       emit percent( (mProcessedAmount * 100) / mTotalAmount );
@@ -584,18 +610,47 @@ void NepomukFeederAgentBase::processPipeline()
   }
   processing = false;
 
-  if ( mItemPipeline.isEmpty() )
+  if ( mItemPipeline.isEmpty() ) {
     emit status( AgentBase::Idle, QString() );
+  }
 
   if ( !isOnline() )
     return;
 
   if ( mPendingJobs == 0 && mCurrentCollection.isValid() && mItemPipeline.isEmpty() ) {
+    kWarning() << "indexing completed";
     mCurrentCollection = Collection();
     emit status( Idle, i18n( "Indexing completed." ) );
     processNextCollection();
     return;
   }
 }
+
+void NepomukFeederAgentBase::removeDataResult(KJob* job)
+{
+  kWarning() << mPendingRemoveDataJobs;
+  if ( job->error() )
+    kWarning() << job->errorString();
+
+  --mPendingRemoveDataJobs;
+  if ( mPendingRemoveDataJobs == 0 ) { //All old items have been removed, so we can now store the items
+    kWarning() << "Saving Graph";
+    Q_ASSERT( mResourceGraph );
+    addGraphToNepomuk( *mResourceGraph );
+    delete mResourceGraph;
+    mResourceGraph = 0;
+    mPendingRemoveDataJobs = 0;
+  }
+}
+
+void NepomukFeederAgentBase::jobResult(KJob* job)
+{
+  kWarning();
+  if (job->error())
+    kWarning() << job->errorString();
+}
+
+
+
 
 #include "nepomukfeederagentbase.moc"
