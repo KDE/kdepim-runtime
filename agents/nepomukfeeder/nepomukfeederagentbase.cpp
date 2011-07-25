@@ -134,7 +134,7 @@ void NepomukFeederAgentBase::setParentCollection( const Akonadi::Entity &entity,
 {
   if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() ) {
     Nepomuk::SimpleResource parentResource( entity.parentCollection().url() );
-    parentResource.setTypes(QList <QUrl>() << Vocabulary::NIE::DataObject() << Vocabulary::NIE::InformationElement());
+    parentResource.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << Vocabulary::NIE::InformationElement());
     graph << parentResource; //To use the nie::isPartOf relation both parent and child must be in the graph
     res.setProperty( Vocabulary::NIE::isPartOf(), parentResource );
   }
@@ -161,7 +161,7 @@ void NepomukFeederAgentBase::addCollectionToNepomuk( const Akonadi::Collection &
   kWarning() << collection.url();
   Nepomuk::SimpleResourceGraph graph;
   Nepomuk::SimpleResource res( collection.url() );
-  res.setTypes(QList <QUrl>() << Vocabulary::NIE::DataObject() << Vocabulary::NIE::InformationElement());
+  res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << Vocabulary::NIE::InformationElement());
   res.setProperty( Vocabulary::NIE::url(), collection.url() );
   setParentCollection( collection, res, graph);
   updateCollection( collection, res, graph );
@@ -182,7 +182,7 @@ void NepomukFeederAgentBase::addItemToGraph( const Akonadi::Item &item, Nepomuk:
 {
   kWarning() << item.url();
   Nepomuk::SimpleResource res( item.url() );
-  res.setTypes(QList <QUrl>() << Vocabulary::NIE::DataObject() << Vocabulary::NIE::InformationElement());
+  res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << Vocabulary::NIE::InformationElement());
   res.setProperty( Vocabulary::NIE::url(), item.url() );
   res.setProperty( Vocabulary::ANEO::akonadiItemId(), QString::number( item.id() ) );
   setParentCollection( item, res, graph);

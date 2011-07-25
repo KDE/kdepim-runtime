@@ -81,8 +81,8 @@ class KJob;
  * subclasses only have to reimplement updateItem() where they can set the needed properties on the resource using the info from the Akonadi::Item.
  * They should also add a more specific type from one of the appropriate nie:informationElement subtypes.
  * 
- * The Feeders are supposed to represent the akonadi items as both NIE:InformationElement and NIE:DataObject.
- * If higher level representations such as PIMO:Person from the PIMO ontology which map to real world entities are desired, they would have to be created separately. 
+ * The Feeders are supposed to represent the akonadi items as both NIE:InformationElement and NIE:DataObject (for the DataObject side ANEO:AkonadiDataObject is used).
+ * If higher level representations such as PIMO:Person from the PIMO ontology which map to real world entities are desired, they have to be created separately. 
  * 
  * Every created resource has the following properties:
  * NIE:url: akonadi uri, can be used to retrieve the akonadi item

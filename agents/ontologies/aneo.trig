@@ -45,11 +45,17 @@
 
 aneo: {
 
+    aneo:AkonadiDataObject a rdfs:Class ;
+          rdfs:subClassOf nie:DataObject ;
+          rdfs:label "AkonadiDataObject" ;
+          rdfs:comment "used to identify akonadi entities (items and collections) created by the akonadi-nepomuk feeders" ;
+          nao:userVisible false .
+
     aneo:akonadiItemId a rdf:Property ;
         rdfs:label "Akonadi Item ID" ;
-        rdfs:comment "used to identify items created by the akonadi-nepomuk feeders" ;
+        rdfs:comment "used to identify items created by the akonadi-nepomuk feeders (depreceated usage, use the AkonadiDataObject type instead)" ;
         rdfs:range xsd:string ;
-        rdfs:domain nie:InformationElement ;
+        rdfs:domain aneo:AkonadiDataObject ;
         rdfs:subPropertyOf nao:identifier ;
         nrl:maxCardinality 1 ;
         nao:userVisible false .
