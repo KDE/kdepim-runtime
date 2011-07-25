@@ -2,6 +2,7 @@
     Copyright (c) 2007 Tobias Koenig <tokoe@kde.org>
                   2008 Sebastian Trueg <trueg@kde.org>
                   2009 Volker Krause <vkrause@kde.org>
+                  2011 Christian Mollekopf <chrigi_1@fastmail.fm>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -319,7 +320,8 @@ void NepomukFeederAgentBase::processNextCollection()
   mCurrentCollection = mCollectionQueue.takeFirst();
   emit status( AgentBase::Running, i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
   kDebug() << "Indexing collection" << mCurrentCollection.name();
-  if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(), Vocabulary::NIE::url(), mCurrentCollection.url() ) ) { //TODO check if this still works
+  //TODO maybe reindex anyways to be sure that type etc is correct
+  if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(), Vocabulary::NIE::url(), mCurrentCollection.url() ) ) {
     addCollectionToNepomuk(mCurrentCollection);
   }
 
@@ -340,13 +342,13 @@ void NepomukFeederAgentBase::itemHeadersReceived(const Akonadi::Item::List& item
     if ( !mMimeTypeChecker.isWantedItem( item ) )
       continue;
     // update item if it does not exist
-    if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(),  Vocabulary::NIE::url(), item.url() ) ) { //TODO check if this still works
+    if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(),  Vocabulary::NIE::url(), item.url() ) ) {
       itemsToUpdate.append( item );
 
     // the item exists. Check if it has an item ID property, otherwise re-index it.
-    } else {
+    } else { //TODO maybe reindex anyways to be sure that type etc is correct
       if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(),
-                                   Vocabulary::ANEO::akonadiItemId(), Soprano::LiteralValue( QUrl( QString::number( item.id() ) ) ) ) || mReIndex ) { //TODO check if this still works
+                                   Vocabulary::ANEO::akonadiItemId(), Soprano::LiteralValue( QUrl( QString::number( item.id() ) ) ) ) || mReIndex ) {
         itemsToUpdate.append( item );
       }
     }

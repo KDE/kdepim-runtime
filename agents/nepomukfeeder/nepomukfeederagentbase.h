@@ -2,6 +2,7 @@
     Copyright (c) 2007 Tobias Koenig <tokoe@kde.org>
                   2008 Sebastian Trueg <trueg@kde.org>
                   2009 Volker Krause <vkrause@kde.org>
+                  2011 Christian Mollekopf <chrigi_1@fastmail.fm>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -89,7 +90,10 @@ class KJob;
  * nfo:isPartOf: collection hierarchy
  * 
  * To use the same resources from an application, i.e. the Nepomuk::Resource api can be used using the Akonadi::Item::url() in the constructor.
- * This will also work if the item is indexed after being used from the application.
+ * This will also work if the item is indexed after being used from the application. 
+ * 
+ * While the feeder keeps ownership of the created NIE:InformationElement/NIE:DataObject resource and will delete it as soon as the item is removed from akonadi,
+ * other resource (i.e. a PIMO representation will not be touched by the feeder)
  * 
  * Reindexing:
  * Subclasses can set the indexCompatibilityLevel to issue a full reindexing of all data when the format changed.
