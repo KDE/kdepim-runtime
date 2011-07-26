@@ -1,0 +1,9 @@
+[Global]
+IconName=mail-folder-outbox
+Comment=New email notify
+Name=New email notify
+
+[Event/new-email]
+Name=New email arrived
+Action=Popup
+

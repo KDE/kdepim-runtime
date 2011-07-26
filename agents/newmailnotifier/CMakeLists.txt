@@ -28,5 +28,6 @@ target_link_libraries(newmailnotifieragent
 
 install(TARGETS newmailnotifieragent DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES akonadi_newmailnotify_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotify_agent" )
 
 endif ()
