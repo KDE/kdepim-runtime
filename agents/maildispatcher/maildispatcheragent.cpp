@@ -34,6 +34,7 @@
 #include <akonadi/itemfetchscope.h>
 #include <mailtransport/sentactionattribute.h>
 
+#include <knotifyconfigwidget.h>
 #include <KDebug>
 #include <KIcon>
 #include <KIconLoader>
@@ -233,7 +234,7 @@ MailDispatcherAgent::~MailDispatcherAgent()
 void MailDispatcherAgent::configure( WId windowId )
 {
   Q_UNUSED( windowId );
-  kDebug() << "I have no options; you can't break me.";
+  KNotifyConfigWidget::configure( 0 );
 }
 
 void MailDispatcherAgent::doSetOnline( bool online )
