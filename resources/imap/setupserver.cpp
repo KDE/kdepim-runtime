@@ -49,6 +49,7 @@
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 #include <akonadi/resourcesettings.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <Akonadi/CollectionModifyJob>
 #include <kemailsettings.h>
 #include <klocale.h>
 #include <kpushbutton.h>
@@ -235,8 +236,6 @@ void SetupServer::slotEncryptionRadioChanged()
   }
 
 }
-
-#include <Akonadi/CollectionModifyJob>
 
 void SetupServer::applySettings()
 {
