@@ -104,6 +104,7 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
       // homeSet is a complete url
       KUrl tmpUrl( homeSet );
       tmpUrl.setUser( url.user() );
+      tmpUrl.setPass( url.pass() );
       url = tmpUrl;
     }
 

@@ -213,6 +213,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
       KUrl tmpUrl( nextRoundHref );
       nextRoundUrl = tmpUrl;
       nextRoundUrl.setUser( mUrl.url().user() );
+      nextRoundUrl.setPass( mUrl.url().pass() );
     }
 
     mUrl.setUrl( nextRoundUrl );
