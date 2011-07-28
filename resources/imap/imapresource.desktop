@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=IMAP E-Mail Server
+Name[bg]=Пощенски сървър IMAP
 Name[bs]=IMAP server za e-poštu
 Name[ca]=Servidor de correu IMAP
 Name[ca@valencia]=Servidor de correu IMAP
@@ -39,6 +40,7 @@ Name[x-test]=xxIMAP E-Mail Serverxx
 Name[zh_CN]=IMAP 邮件服务器
 Name[zh_TW]=IMAP 信件伺服器
 Comment=Connects to an IMAP e-mail server
+Comment[bg]=Свързване с пощенски сървър IMAP
 Comment[ca]=Connecta a un servidor de correu IMAP
 Comment[ca@valencia]=Connecta a un servidor de correu IMAP
 Comment[cs]=Připojí se na emailový IMAP server

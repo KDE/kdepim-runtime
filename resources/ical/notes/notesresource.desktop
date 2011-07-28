@@ -70,6 +70,7 @@ Name[zh_CN]=便笺
 Name[zh_TW]=備忘錄
 Comment=Loads data from a notes file
 Comment[ar]=تحميل البيانات من ملف الملاحظات
+Comment[bg]=Зареждане на данни от файл с бележки
 Comment[bs]=Učitava podatke iz datoteka bilješki
 Comment[ca]=Carrega dades des d'un fitxer de notes
 Comment[ca@valencia]=Carrega dades des d'un fitxer de notes
