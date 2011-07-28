@@ -169,6 +169,7 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
       // href is a complete url
       KUrl tmpUrl( href );
       tmpUrl.setUser( url.user() );
+      tmpUrl.setPass( url.pass() );
       url = tmpUrl;
     }
 

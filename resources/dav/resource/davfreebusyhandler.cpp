@@ -110,7 +110,6 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished( KJob* job )
     } else {
       // href is a complete url
       KUrl tmpUrl( result.value );
-      tmpUrl.setUser( url.user() );
       url = tmpUrl;
     }
 
