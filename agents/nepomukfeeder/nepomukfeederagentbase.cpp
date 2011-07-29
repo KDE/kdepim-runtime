@@ -64,6 +64,7 @@
 #include <QtDBus/QDBusConnectionInterface>
 #include <QtDBus/QDBusInterface>
 #include <KConfigGroup>
+#include "nepomukfeederutils.h"
 
 using namespace Akonadi;
 
@@ -153,7 +154,7 @@ void NepomukFeederAgentBase::updateCollection(const Akonadi::Collection& collect
     r.setProperty( Soprano::Vocabulary::NAO::prefLabel(), collection.name() );
   }
   if ( attr && !attr->iconName().isEmpty() )
-    r.setProperty( Soprano::Vocabulary::NAO::hasSymbol(), attr->iconName() );
+    NepomukFeederUtils::setIcon( attr->iconName(), r, graph );
 }
 
 void NepomukFeederAgentBase::addCollectionToNepomuk( const Akonadi::Collection &collection ) 
