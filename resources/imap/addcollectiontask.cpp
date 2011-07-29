@@ -69,8 +69,8 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
   KIMAP::CreateJob *job = new KIMAP::CreateJob( session );
   job->setMailBox( newMailBox );
 
-  connect( job, SIGNAL( result( KJob* ) ),
-           this, SLOT( onCreateDone( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)),
+           this, SLOT(onCreateDone(KJob*)) );
 
   job->start();
 }
@@ -87,8 +87,8 @@ void AddCollectionTask::onCreateDone( KJob *job )
     KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( create->session() );
     subscribe->setMailBox( create->mailBox() );
 
-    connect( subscribe, SIGNAL( result( KJob* ) ),
-             this, SLOT( onSubscribeDone( KJob* ) ) );
+    connect( subscribe, SIGNAL(result(KJob*)),
+             this, SLOT(onSubscribeDone(KJob*)) );
 
     subscribe->start();
   }
@@ -129,8 +129,8 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
     job->setEntry( entry );
     job->addMetaData( attribute, annotations[entry] );
 
-    connect( job, SIGNAL( result( KJob* ) ),
-             this, SLOT( onSetMetaDataDone( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)),
+             this, SLOT(onSetMetaDataDone(KJob*)) );
 
     m_pendingJobs++;
 

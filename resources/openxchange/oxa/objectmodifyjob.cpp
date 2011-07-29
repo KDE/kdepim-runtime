@@ -39,7 +39,7 @@ void ObjectModifyJob::start()
 {
   if ( ObjectUtils::needsPreloading( mObject ) ) {
     KJob *job = ObjectUtils::preloadJob( mObject );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( preloadingJobFinished( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(preloadingJobFinished(KJob*)) );
     job->start();
   } else {
     QDomDocument document;
@@ -52,7 +52,7 @@ void ObjectModifyJob::start()
     const QString path = ObjectUtils::davPath( mObject.module() );
 
     KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
   }
 }
 
@@ -75,7 +75,7 @@ void ObjectModifyJob::preloadingJobFinished( KJob *job )
   const QString path = ObjectUtils::davPath( mObject.module() );
 
   KIO::DavJob *davJob = DavManager::self()->createPatchJob( path, document );
-  connect( davJob, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+  connect( davJob, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }
 
 void ObjectModifyJob::davJobFinished( KJob *job )

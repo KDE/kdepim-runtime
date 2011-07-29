@@ -72,8 +72,8 @@ void MoveCollectionTask::doStart( KIMAP::Session *session )
     job->setSourceMailBox( oldMailBox );
     job->setDestinationMailBox( newMailBox );
 
-    connect( job, SIGNAL( result( KJob* ) ),
-             this, SLOT( onRenameDone( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)),
+             this, SLOT(onRenameDone(KJob*)) );
 
     job->start();
 
@@ -94,8 +94,8 @@ void MoveCollectionTask::onRenameDone( KJob *job )
     KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( rename->session() );
     subscribe->setMailBox( rename->destinationMailBox() );
 
-    connect( subscribe, SIGNAL( result( KJob* ) ),
-             this, SLOT( onSubscribeDone( KJob* ) ) );
+    connect( subscribe, SIGNAL(result(KJob*)),
+             this, SLOT(onSubscribeDone(KJob*)) );
 
     subscribe->start();
   }

@@ -53,10 +53,10 @@ SetupKolab::~SetupKolab()
 void SetupKolab::initConnection()
 {
 
-  connect( m_ui->launchWizard, SIGNAL( clicked() ), this, SLOT( slotLaunchWizard() ) );
-  connect( m_ui->createKolabFolderButton, SIGNAL( clicked() ), this, SLOT( slotCreateDefaultKolabCollections() ) );
-  connect( Akonadi::AgentManager::self(), SIGNAL( instanceAdded( const Akonadi::AgentInstance & ) ), this, SLOT( slotInstanceAddedRemoved() ) );
-  connect( Akonadi::AgentManager::self(), SIGNAL( instanceRemoved( const Akonadi::AgentInstance & ) ), this, SLOT( slotInstanceAddedRemoved() ) );
+  connect( m_ui->launchWizard, SIGNAL(clicked()), this, SLOT(slotLaunchWizard()) );
+  connect( m_ui->createKolabFolderButton, SIGNAL(clicked()), this, SLOT(slotCreateDefaultKolabCollections()) );
+  connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
+  connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
 
 }
 
@@ -126,7 +126,7 @@ void SetupKolab::slotCreateDefaultKolabCollections()
 void SetupKolab::createKolabCollection( Akonadi::Collection & collection )
 {
   Akonadi::CollectionCreateJob *job = new Akonadi::CollectionCreateJob( collection );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( createResult( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(createResult(KJob*)) );
 
 }
 

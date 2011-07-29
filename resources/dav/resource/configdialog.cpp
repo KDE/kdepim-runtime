@@ -52,16 +52,16 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
-  connect( mUi.kcfg_displayName, SIGNAL( textChanged( const QString& ) ), this, SLOT( checkUserInput() ) );
-  connect( mUi.configuredUrls->selectionModel(), SIGNAL( selectionChanged( const QItemSelection&, const QItemSelection& ) ),
-           this, SLOT( checkConfiguredUrlsButtonsState() ) );
+  connect( mUi.kcfg_displayName, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
+  connect( mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+           this, SLOT(checkConfiguredUrlsButtonsState()) );
 
-  connect( mUi.addButton, SIGNAL( clicked() ), this, SLOT( onAddButtonClicked() ) );
-  connect( mUi.removeButton, SIGNAL( clicked() ), this, SLOT( onRemoveButtonClicked() ) );
-  connect( mUi.editButton, SIGNAL( clicked() ), this, SLOT( onEditButtonClicked() ) );
+  connect( mUi.addButton, SIGNAL(clicked()), this, SLOT(onAddButtonClicked()) );
+  connect( mUi.removeButton, SIGNAL(clicked()), this, SLOT(onRemoveButtonClicked()) );
+  connect( mUi.editButton, SIGNAL(clicked()), this, SLOT(onEditButtonClicked()) );
 
-  connect( this, SIGNAL( okClicked() ), this, SLOT( onOkClicked() ) );
-  connect( this, SIGNAL( cancelClicked() ), this, SLOT( onCancelClicked() ) );
+  connect( this, SIGNAL(okClicked()), this, SLOT(onOkClicked()) );
+  connect( this, SIGNAL(cancelClicked()), this, SLOT(onCancelClicked()) );
 
   checkUserInput();
 }

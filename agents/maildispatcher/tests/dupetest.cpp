@@ -140,7 +140,7 @@ void DupeTest::testDupes()
 
   // queue messages
   Q_ASSERT( monitor );
-  QSignalSpy *addSpy = new QSignalSpy( monitor, SIGNAL( itemAdded( Akonadi::Item, Akonadi::Collection ) ) );
+  QSignalSpy *addSpy = new QSignalSpy( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)) );
   kDebug() << "Queuing" << count << "messages...";
   for( int i = 0; i < count; i++ ) {
     //kDebug() << "Queuing message" << i + 1 << "of" << count;

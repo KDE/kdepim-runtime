@@ -219,7 +219,7 @@ private slots:
 
     pool.setPasswordRequester( createDefaultRequester() );
     QVERIFY( pool.connect( createDefaultAccount() ) );
-    QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int, QString)) ) );
+    QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
     DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
     state->setItem( item );

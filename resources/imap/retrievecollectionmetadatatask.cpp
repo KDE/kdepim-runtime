@@ -111,7 +111,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
       meta->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
       meta->addEntry( "*", "value.shared" );
     }
-    connect( meta, SIGNAL( result( KJob* ) ), SLOT( onGetMetaDataDone( KJob* ) ) );
+    connect( meta, SIGNAL(result(KJob*)), SLOT(onGetMetaDataDone(KJob*)) );
     meta->start();
     m_pendingMetaDataJobs++;
   }
@@ -120,13 +120,13 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   if ( capabilities.contains( "ACL" ) ) {
     KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( session );
     acl->setMailBox( mailBox );
-    connect( acl, SIGNAL( result( KJob* ) ), SLOT( onGetAclDone( KJob* ) ) );
+    connect( acl, SIGNAL(result(KJob*)), SLOT(onGetAclDone(KJob*)) );
     acl->start();
     m_pendingMetaDataJobs++;
 
     KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( session );
     rights->setMailBox( mailBox );
-    connect( rights, SIGNAL( result( KJob* ) ), SLOT( onRightsReceived( KJob* ) ) );
+    connect( rights, SIGNAL(result(KJob*)), SLOT(onRightsReceived(KJob*)) );
     rights->start();
     m_pendingMetaDataJobs++;
   }
@@ -135,7 +135,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   if ( capabilities.contains( "QUOTA" ) ) {
     KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( session );
     quota->setMailBox( mailBox );
-    connect( quota, SIGNAL( result( KJob* ) ), SLOT( onQuotasReceived( KJob* ) ) );
+    connect( quota, SIGNAL(result(KJob*)), SLOT(onQuotasReceived(KJob*)) );
     quota->start();
     m_pendingMetaDataJobs++;
   }

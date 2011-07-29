@@ -52,8 +52,8 @@ void RemoveItemTask::doStart( KIMAP::Session *session )
     KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
     select->setMailBox( mailBox );
 
-    connect( select, SIGNAL( result( KJob* ) ),
-             this, SLOT( onSelectDone( KJob* ) ) );
+    connect( select, SIGNAL(result(KJob*)),
+             this, SLOT(onSelectDone(KJob*)) );
 
     select->start();
 
@@ -79,7 +79,7 @@ void RemoveItemTask::triggerStoreJob( KIMAP::Session *session )
   store->setSequenceSet( KIMAP::ImapSet( item().remoteId().toLongLong() ) );
   store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
   store->setMode( KIMAP::StoreJob::AppendFlags );
-  connect( store, SIGNAL( result( KJob* ) ), SLOT( onStoreFlagsDone( KJob* ) ) );
+  connect( store, SIGNAL(result(KJob*)), SLOT(onStoreFlagsDone(KJob*)) );
   store->start();
 }
 

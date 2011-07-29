@@ -63,7 +63,7 @@ KCalResource::KCalResource( const QString &id )
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadConfig()) );
 
-  connect( mDelayedSaveTimer, SIGNAL( timeout() ), this, SLOT( delayedSaveCalendar() ) );
+  connect( mDelayedSaveTimer, SIGNAL(timeout()), this, SLOT(delayedSaveCalendar()) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->fetchCollection( true );
@@ -107,8 +107,8 @@ void KCalResource::configure( WId windowId )
   KResourceAssistant kresAssistant( QLatin1String( "Calendar" ) );
   KWindowSystem::setMainWindow( &kresAssistant, windowId );
 
-  connect( &kresAssistant, SIGNAL( error( const QString& ) ),
-           this, SIGNAL( error( const QString& ) ) );
+  connect( &kresAssistant, SIGNAL(error(QString)),
+           this, SIGNAL(error(QString)) );
 
   if ( kresAssistant.exec() != QDialog::Accepted ) {
     emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
@@ -510,10 +510,10 @@ bool KCalResource::openConfiguration()
       }
     }
 
-    connect( mResource, SIGNAL( resourceLoaded( ResourceCalendar* ) ),
-             this, SLOT( initialLoadingFinished( ResourceCalendar* ) ) );
-    connect( mResource, SIGNAL( resourceLoadError( ResourceCalendar*, const QString& ) ),
-             this, SLOT( loadingError( ResourceCalendar*, const QString& ) ) );
+    connect( mResource, SIGNAL(resourceLoaded(ResourceCalendar*)),
+             this, SLOT(initialLoadingFinished(ResourceCalendar*)) );
+    connect( mResource, SIGNAL(resourceLoadError(ResourceCalendar*,QString)),
+             this, SLOT(loadingError(ResourceCalendar*,QString)) );
 
   setName( mResource->resourceName() );
   }
@@ -529,12 +529,12 @@ void KCalResource::closeConfiguration()
     if ( mResource->isOpen() )
       mResource->close();
 
-    disconnect( mResource, SIGNAL( resourceLoadError( ResourceCalendar*, const QString& ) ),
-                this, SLOT( loadingError( ResourceCalendar*, const QString& ) ) );
-    disconnect( mResource, SIGNAL( resourceSaveError( ResourceCalendar*, const QString& ) ),
-                this, SLOT( savingError( ResourceCalendar*, const QString& ) ) );
-    disconnect( mResource, SIGNAL( resourceChanged( ResourceCalendar* ) ),
-                this, SLOT( resourceChanged( ResourceCalendar* ) ) );
+    disconnect( mResource, SIGNAL(resourceLoadError(ResourceCalendar*,QString)),
+                this, SLOT(loadingError(ResourceCalendar*,QString)) );
+    disconnect( mResource, SIGNAL(resourceSaveError(ResourceCalendar*,QString)),
+                this, SLOT(savingError(ResourceCalendar*,QString)) );
+    disconnect( mResource, SIGNAL(resourceChanged(ResourceCalendar*)),
+                this, SLOT(resourceChanged(ResourceCalendar*)) );
   }
 }
 
@@ -629,11 +629,11 @@ void KCalResource::initialLoadingFinished( ResourceCalendar *resource )
 
   kDebug();
 
-  disconnect( mResource, SIGNAL( resourceLoaded( ResourceCalendar* ) ),
-              this, SLOT( initialLoadingFinished( ResourceCalendar* ) ) );
+  disconnect( mResource, SIGNAL(resourceLoaded(ResourceCalendar*)),
+              this, SLOT(initialLoadingFinished(ResourceCalendar*)) );
 
-  connect( mResource, SIGNAL( resourceChanged( ResourceCalendar* ) ),
-           this, SLOT( resourceChanged( ResourceCalendar* ) ) );
+  connect( mResource, SIGNAL(resourceChanged(ResourceCalendar*)),
+           this, SLOT(resourceChanged(ResourceCalendar*)) );
 
   emit status( Idle, QString() );
   mFullItemRetrieve = false;

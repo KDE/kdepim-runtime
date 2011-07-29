@@ -477,7 +477,7 @@ CheckPage::CheckPage( QWidget *parent )
   mStatusLabel = new KTextBrowser;
   layout->addWidget( mStatusLabel );
 
-  connect( button, SIGNAL( clicked() ), SLOT( checkConnection() ) );
+  connect( button, SIGNAL(clicked()), SLOT(checkConnection()) );
 }
 
 void CheckPage::checkConnection()
@@ -502,7 +502,7 @@ void CheckPage::checkConnection()
 
   // start the dav collections fetch job to test connectivity
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( davUrls, this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFetchDone( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onFetchDone(KJob*)) );
   job->start();
 }
 

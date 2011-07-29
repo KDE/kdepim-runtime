@@ -101,7 +101,7 @@ void CollectionFetchTest::testEmptyDir()
   // test base fetch of top level collection
   job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::Base );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
@@ -115,7 +115,7 @@ void CollectionFetchTest::testEmptyDir()
   // test first level fetch of top level collection
   job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::FirstLevel );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
@@ -128,7 +128,7 @@ void CollectionFetchTest::testEmptyDir()
   // test recursive fetch of top level collection
   job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::Recursive );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
@@ -146,7 +146,7 @@ void CollectionFetchTest::testEmptyDir()
 
   job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::Base );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( !job->exec() );
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
@@ -159,7 +159,7 @@ void CollectionFetchTest::testEmptyDir()
   // test fail of first level fetching non existant collection
   job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::FirstLevel );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( !job->exec() );
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
@@ -172,7 +172,7 @@ void CollectionFetchTest::testEmptyDir()
   // test fail of recursive fetching non existant collection
   job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::FirstLevel );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( !job->exec() );
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
@@ -264,7 +264,7 @@ void CollectionFetchTest::testMixedTree()
   // test base fetch of top level collection
   job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::Base );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
@@ -278,7 +278,7 @@ void CollectionFetchTest::testMixedTree()
   // test first level fetch of top level collection
   job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::FirstLevel );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
@@ -307,7 +307,7 @@ void CollectionFetchTest::testMixedTree()
   // test recursive fetch of top level collection
   job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::Recursive );
 
-  spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+  spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
@@ -346,7 +346,7 @@ void CollectionFetchTest::testMixedTree()
   Q_FOREACH( const Collection &collection, collections ) {
     job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::Base );
 
-    spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+    spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
     QVERIFY( job->exec() );
     QCOMPARE( job->error(), 0 );
@@ -374,7 +374,7 @@ void CollectionFetchTest::testMixedTree()
   Q_FOREACH( const Collection &collection, collections ) {
     job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::FirstLevel );
 
-    spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+    spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
     QVERIFY( job->exec() );
     QCOMPARE( job->error(), 0 );
@@ -420,7 +420,7 @@ void CollectionFetchTest::testMixedTree()
   Q_FOREACH( const Collection &collection, collections ) {
     job = mStore->fetchCollections( collection, FileStore::CollectionFetchJob::Recursive );
 
-    spy = new QSignalSpy( job, SIGNAL( collectionsReceived( const Akonadi::Collection::List& ) ) );
+    spy = new QSignalSpy( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)) );
 
     QVERIFY( job->exec() );
     QCOMPARE( job->error(), 0 );

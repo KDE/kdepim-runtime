@@ -89,10 +89,10 @@ StoreCollectionDialog::StoreCollectionDialog( QWidget* parent )
   mView->setSelectionMode( QAbstractItemView::SingleSelection );
   mView->setModel( mFilterModel );
 
-  connect( mView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
-           this, SLOT( collectionChanged( const Akonadi::Collection& ) ) );
-  connect( mView->model(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
-           this, SLOT( collectionsInserted( const QModelIndex&, int, int ) ) );
+  connect( mView, SIGNAL(currentChanged(Akonadi::Collection)),
+           this, SLOT(collectionChanged(Akonadi::Collection)) );
+  connect( mView->model(), SIGNAL(rowsInserted(QModelIndex,int,int)),
+           this, SLOT(collectionsInserted(QModelIndex,int,int)) );
 
   mainLayout->addWidget( mView );
 

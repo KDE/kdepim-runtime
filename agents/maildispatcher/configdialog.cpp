@@ -56,7 +56,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
       ui.sentMailSelector->setCollection( collections.first() );
   }
 
-  connect( this, SIGNAL( okClicked() ), this, SLOT( save() ) );
+  connect( this, SIGNAL(okClicked()), this, SLOT(save()) );
 }
 
 void ConfigDialog::save()

@@ -303,7 +303,7 @@ void FileStore::AbstractLocalStore::Private::processJobs( const QList<FileStore:
 FileStore::AbstractLocalStore::AbstractLocalStore()
   : QObject(), d( new Private( this ) )
 {
-  connect( d->mSession, SIGNAL( jobsReady( QList<FileStore::Job*> ) ), this, SLOT( processJobs( QList<FileStore::Job*> ) ) );
+  connect( d->mSession, SIGNAL(jobsReady(QList<FileStore::Job*>)), this, SLOT(processJobs(QList<FileStore::Job*>)) );
 }
 
 FileStore::AbstractLocalStore::~AbstractLocalStore()

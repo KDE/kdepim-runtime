@@ -259,12 +259,12 @@ void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResourceBas
 
   SubResource *subResource = qobject_cast<SubResource*>( subResourceBase );
 
-  connect( subResource, SIGNAL( incidenceAdded( IncidencePtr, QString ) ),
-           this, SLOT( incidenceAdded( IncidencePtr, QString ) ) );
-  connect( subResource, SIGNAL( incidenceChanged( IncidencePtr, QString ) ),
-           this, SLOT( incidenceChanged( IncidencePtr, QString ) ) );
-  connect( subResource, SIGNAL( incidenceRemoved( QString, QString ) ),
-           this, SLOT( incidenceRemoved( QString, QString ) ) );
+  connect( subResource, SIGNAL(incidenceAdded(IncidencePtr,QString)),
+           this, SLOT(incidenceAdded(IncidencePtr,QString)) );
+  connect( subResource, SIGNAL(incidenceChanged(IncidencePtr,QString)),
+           this, SLOT(incidenceChanged(IncidencePtr,QString)) );
+  connect( subResource, SIGNAL(incidenceRemoved(QString,QString)),
+           this, SLOT(incidenceRemoved(QString,QString)) );
 
   emit mParent->signalSubresourceAdded( mParent, QLatin1String( "calendar" ), subResourceBase->subResourceIdentifier(), subResourceBase->label() );
 }
@@ -277,12 +277,12 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResourceB
 
   SubResource *subResource = qobject_cast<SubResource*>( subResourceBase );
 
-  disconnect( subResource, SIGNAL( incidenceAdded( IncidencePtr, QString ) ),
-              this, SLOT( incidenceAdded( IncidencePtr, QString ) ) );
-  disconnect( subResource, SIGNAL( incidenceChanged( IncidencePtr, QString ) ),
-              this, SLOT( incidenceChanged( IncidencePtr, QString ) ) );
-  disconnect( subResource, SIGNAL( incidenceRemoved( QString, QString ) ),
-              this, SLOT( incidenceRemoved( QString, QString ) ) );
+  disconnect( subResource, SIGNAL(incidenceAdded(IncidencePtr,QString)),
+              this, SLOT(incidenceAdded(IncidencePtr,QString)) );
+  disconnect( subResource, SIGNAL(incidenceChanged(IncidencePtr,QString)),
+              this, SLOT(incidenceChanged(IncidencePtr,QString)) );
+  disconnect( subResource, SIGNAL(incidenceRemoved(QString,QString)),
+              this, SLOT(incidenceRemoved(QString,QString)) );
 
   // block scope for BoolGuard
   {

@@ -46,12 +46,12 @@ void DavItemsListJob::start()
       KIO::DavJob *job = DavManager::self()->createReportJob( mUrl.url(), props );
       job->addMetaData( "PropagateHttpHeader", "true" );
       job->setProperty( "davType", "report" );
-      connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
+      connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
     } else {
       KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), props );
       job->addMetaData( "PropagateHttpHeader", "true" );
       job->setProperty( "davType", "propFind" );
-      connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
+      connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
     }
 
     ++mSubJobCount;

@@ -93,7 +93,7 @@ void DavCollectionModifyJob::start()
 
   KIO::DavJob *job = DavManager::self()->createPropPatchJob( mUrl.url(), mQuery );
   job->addMetaData( "PropagateHttpHeader", "true" );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }
 
 void DavCollectionModifyJob::davJobFinished( KJob *job )

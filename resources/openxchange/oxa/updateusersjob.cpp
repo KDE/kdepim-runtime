@@ -35,10 +35,10 @@ UpdateUsersJob::UpdateUsersJob( QObject *parent )
 void UpdateUsersJob::start()
 {
   UserIdRequestJob *userIdJob = new UserIdRequestJob( this );
-  connect( userIdJob, SIGNAL( result( KJob* ) ), SLOT( userIdRequestJobFinished( KJob* ) ) );
+  connect( userIdJob, SIGNAL(result(KJob*)), SLOT(userIdRequestJobFinished(KJob*)) );
 
   UsersRequestJob *usersJob = new UsersRequestJob( this );
-  connect( usersJob, SIGNAL( result( KJob* ) ), SLOT( usersRequestJobFinished( KJob* ) ) );
+  connect( usersJob, SIGNAL(result(KJob*)), SLOT(usersRequestJobFinished(KJob*)) );
 
   userIdJob->start();
   usersJob->start();

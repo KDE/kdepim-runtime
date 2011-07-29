@@ -111,8 +111,8 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
       job->setRights( KIMAP::SetAclJob::Change, imapRights );
       job->setIdentifier( userName().toUtf8() );
 
-      connect( job, SIGNAL( result( KJob* ) ),
-               this, SLOT( onSetAclDone( KJob* ) ) );
+      connect( job, SIGNAL(result(KJob*)),
+               this, SLOT(onSetAclDone(KJob*)) );
 
       job->start();
 
@@ -147,8 +147,8 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
 
         kDebug(5327) << "Job got entry:" << entry << " attribute:" << attribute << "value:" << annotations[entry];
 
-        connect( job, SIGNAL( result( KJob* ) ),
-                 this, SLOT( onSetMetaDataDone( KJob* ) ) );
+        connect( job, SIGNAL(result(KJob*)),
+                 this, SLOT(onSetMetaDataDone(KJob*)) );
 
         job->start();
 
@@ -174,8 +174,8 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
           job->setIdentifier( oldId );
           job->setRights( KIMAP::SetAclJob::Remove, oldRights[oldId] );
 
-          connect( job, SIGNAL( result( KJob* ) ),
-                   this, SLOT( onSetAclDone( KJob* ) ) );
+          connect( job, SIGNAL(result(KJob*)),
+                   this, SLOT(onSetAclDone(KJob*)) );
 
           job->start();
 
@@ -189,8 +189,8 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
         job->setIdentifier( id );
         job->setRights( KIMAP::SetAclJob::Change, rights[id] );
 
-        connect( job, SIGNAL( result( KJob* ) ),
-                 this, SLOT( onSetAclDone( KJob* ) ) );
+        connect( job, SIGNAL(result(KJob*)),
+                 this, SLOT(onSetAclDone(KJob*)) );
 
         job->start();
 
@@ -214,8 +214,8 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
       KIMAP::RenameJob *renameJob = new KIMAP::RenameJob( session );
       renameJob->setSourceMailBox( oldMailBox );
       renameJob->setDestinationMailBox( newMailBox );
-      connect( renameJob, SIGNAL( result( KJob* ) ),
-               this, SLOT( onRenameDone( KJob* ) ) );
+      connect( renameJob, SIGNAL(result(KJob*)),
+               this, SLOT(onRenameDone(KJob*)) );
 
       renameJob->start();
 
@@ -246,8 +246,8 @@ void ChangeCollectionTask::onRenameDone( KJob *job )
     KIMAP::RenameJob *renameJob = static_cast<KIMAP::RenameJob*>( job );
     KIMAP::SubscribeJob *subscribeJob = new KIMAP::SubscribeJob( renameJob->session() );
     subscribeJob->setMailBox( renameJob->destinationMailBox() );
-    connect( subscribeJob, SIGNAL( result( KJob* ) ),
-             this, SLOT( onSubscribeDone( KJob* ) ) );
+    connect( subscribeJob, SIGNAL(result(KJob*)),
+             this, SLOT(onSubscribeDone(KJob*)) );
     subscribeJob->start();
   }
 }

@@ -173,7 +173,7 @@ void InvitationsAgentItem::add( const Item &item )
   Q_ASSERT( collection.isValid() );
 
   ItemCreateJob *job = new ItemCreateJob( item, collection, this );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( createItemResult( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(createItemResult(KJob*)) );
 
   m_jobs << job;
 
@@ -193,7 +193,7 @@ void InvitationsAgentItem::createItemResult( KJob *job )
     return;
 
   ItemFetchJob *fetchJob = new ItemFetchJob( m_originalItem, this );
-  connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( fetchItemDone( KJob* ) ) );
+  connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(fetchItemDone(KJob*)) );
   fetchJob->start();
 }
 
@@ -212,7 +212,7 @@ void InvitationsAgentItem::fetchItemDone( KJob *job )
 
   modifiedItem.setFlag( Akonadi::MessageFlags::HasInvitation );
   ItemModifyJob *modifyJob = new ItemModifyJob( modifiedItem, this );
-  connect( modifyJob, SIGNAL( result( KJob* ) ), this, SLOT( modifyItemDone( KJob* ) ) );
+  connect( modifyJob, SIGNAL(result(KJob*)), this, SLOT(modifyItemDone(KJob*)) );
   modifyJob->start();
 }
 
@@ -239,8 +239,8 @@ InvitationsAgent::InvitationsAgent( const QString &id )
   changeRecorder()->setMimeTypeMonitored( "message/rfc822", true );
   //changeRecorder()->setCollectionMonitored( Collection::root(), true );
 
-  connect( this, SIGNAL( reloadConfiguration() ), this, SLOT( initStart() ) );
-  QTimer::singleShot( 0, this, SLOT( initStart() ) );
+  connect( this, SIGNAL(reloadConfiguration()), this, SLOT(initStart()) );
+  QTimer::singleShot( 0, this, SLOT(initStart()) );
 }
 
 InvitationsAgent::~InvitationsAgent()
@@ -257,7 +257,7 @@ void InvitationsAgent::initStart()
     initDone();
   } else {
     SpecialCollectionsRequestJob *job = m_invitationsCollection->reguestJob();
-    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( initDone( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(initDone(KJob*)) );
     job->start();
   }
 
@@ -275,7 +275,7 @@ void InvitationsAgent::initStart()
     emit status( AgentBase::Running, i18n("Creating...") );
     AgentType type = AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
     AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-    connect( job, SIGNAL( result( KJob * ) ), this, SLOT( createAgentResult( KJob * ) ) );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(createAgentResult(KJob*)) );
     job->start();
   }
   */

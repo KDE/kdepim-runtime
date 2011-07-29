@@ -42,8 +42,8 @@ ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
     m_idle( 0 ), m_resource( parent ), m_state( state ),
     m_lastMessageCount( -1 ), m_lastRecentCount( -1 )
 {
-  connect( pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)),
-           this, SLOT(onSessionRequestDone(qint64, KIMAP::Session*, int, QString)) );
+  connect( pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)),
+           this, SLOT(onSessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
   m_sessionRequestId = m_pool->requestSession();
 }
 
@@ -89,8 +89,8 @@ void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *se
   select->start();
 
   m_idle = new KIMAP::IdleJob( m_session );
-  connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*, QString, int, int)),
-           this, SLOT(onStatsReceived(KIMAP::IdleJob*, QString, int, int)) );
+  connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*,QString,int,int)),
+           this, SLOT(onStatsReceived(KIMAP::IdleJob*,QString,int,int)) );
   connect( m_idle, SIGNAL(result(KJob*)),
            this, SLOT(onIdleStopped()) );
   m_idle->start();
@@ -129,8 +129,8 @@ void ImapIdleManager::onIdleStopped()
   if ( m_session ) {
     kDebug(5327) << "Restarting the IDLE session!";
     m_idle = new KIMAP::IdleJob( m_session );
-    connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*, QString, int, int)),
-             this, SLOT(onStatsReceived(KIMAP::IdleJob*, QString, int, int)) );
+    connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*,QString,int,int)),
+             this, SLOT(onStatsReceived(KIMAP::IdleJob*,QString,int,int)) );
     connect( m_idle, SIGNAL(result(KJob*)),
              this, SLOT(onIdleStopped()) );
     m_idle->start();

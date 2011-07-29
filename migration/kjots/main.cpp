@@ -70,9 +70,9 @@ int main( int argc, char **argv )
   KJotsMigrator *migrator = new KJotsMigrator;
   if ( infoDialog && migrator ) {
     infoDialog->migratorAdded();
-    QObject::connect( migrator, SIGNAL( message( KMigratorBase::MessageType, QString ) ),
-                      infoDialog, SLOT( message( KMigratorBase::MessageType, QString ) ) );
-    QObject::connect( migrator, SIGNAL( destroyed() ), infoDialog, SLOT( migratorDone() ) );
+    QObject::connect( migrator, SIGNAL(message(KMigratorBase::MessageType,QString)),
+                      infoDialog, SLOT(message(KMigratorBase::MessageType,QString)) );
+    QObject::connect( migrator, SIGNAL(destroyed()), infoDialog, SLOT(migratorDone()) );
   }
 
   const int result = app->exec();

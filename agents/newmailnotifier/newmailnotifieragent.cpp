@@ -40,7 +40,7 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
 
   m_timer.setInterval( 30 * 1000 );
   m_timer.setSingleShot( true );
-  connect( &m_timer, SIGNAL( timeout() ), SLOT( showNotifications() ) );
+  connect( &m_timer, SIGNAL(timeout()), SLOT(showNotifications()) );
 }
 
 void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )

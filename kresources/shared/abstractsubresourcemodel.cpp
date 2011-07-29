@@ -45,10 +45,10 @@ class AbstractSubResourceModel::AsyncLoadContext
     {
       mColFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
 
-      connect( mColFetchJob, SIGNAL( collectionsReceived( Akonadi::Collection::List ) ),
-               parent, SLOT( asyncCollectionsReceived( Akonadi::Collection::List ) ) );
-      connect( mColFetchJob, SIGNAL( result( KJob* ) ),
-               parent, SLOT( asyncCollectionsResult( KJob* ) ) );
+      connect( mColFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
+               parent, SLOT(asyncCollectionsReceived(Akonadi::Collection::List)) );
+      connect( mColFetchJob, SIGNAL(result(KJob*)),
+               parent, SLOT(asyncCollectionsResult(KJob*)) );
     }
 
     ~AsyncLoadContext()
@@ -85,19 +85,19 @@ AbstractSubResourceModel::AbstractSubResourceModel( const QStringList &supported
   mMonitor->fetchCollection( true );
   mMonitor->itemFetchScope().fetchFullPayload();
 
-  connect( mMonitor, SIGNAL( collectionAdded( Akonadi::Collection, Akonadi::Collection ) ),
-          SLOT( monitorCollectionAdded( Akonadi::Collection ) ) );
-  connect( mMonitor, SIGNAL( collectionChanged( Akonadi::Collection ) ),
-          SLOT( monitorCollectionChanged( Akonadi::Collection ) ) );
-  connect( mMonitor, SIGNAL( collectionRemoved( Akonadi::Collection ) ),
-          SLOT( monitorCollectionRemoved( Akonadi::Collection ) ) );
+  connect( mMonitor, SIGNAL(collectionAdded(Akonadi::Collection,Akonadi::Collection)),
+          SLOT(monitorCollectionAdded(Akonadi::Collection)) );
+  connect( mMonitor, SIGNAL(collectionChanged(Akonadi::Collection)),
+          SLOT(monitorCollectionChanged(Akonadi::Collection)) );
+  connect( mMonitor, SIGNAL(collectionRemoved(Akonadi::Collection)),
+          SLOT(monitorCollectionRemoved(Akonadi::Collection)) );
 
-  connect( mMonitor, SIGNAL( itemAdded( Akonadi::Item, Akonadi::Collection ) ),
-          SLOT( monitorItemAdded( Akonadi::Item, Akonadi::Collection ) ) );
-  connect( mMonitor, SIGNAL( itemChanged( Akonadi::Item, QSet<QByteArray> ) ),
-          SLOT( monitorItemChanged( Akonadi::Item ) ) );
-  connect( mMonitor, SIGNAL( itemRemoved( Akonadi::Item ) ),
-          SLOT( monitorItemRemoved( Akonadi::Item ) ) );
+  connect( mMonitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
+          SLOT(monitorItemAdded(Akonadi::Item,Akonadi::Collection)) );
+  connect( mMonitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
+          SLOT(monitorItemChanged(Akonadi::Item)) );
+  connect( mMonitor, SIGNAL(itemRemoved(Akonadi::Item)),
+          SLOT(monitorItemRemoved(Akonadi::Item)) );
 }
 
 AbstractSubResourceModel::~AbstractSubResourceModel()

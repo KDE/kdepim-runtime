@@ -36,7 +36,7 @@ void DavItemDeleteJob::start()
   job->addMetaData( "cookies", "none" );
   job->addMetaData( "no-auth-prompt", "true" );
 
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( davJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
 }
 
 void DavItemDeleteJob::davJobFinished( KJob *job )

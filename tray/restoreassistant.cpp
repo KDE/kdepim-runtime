@@ -31,7 +31,7 @@
 RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent )
 {
     m_restore = new Restore( this );
-    connect( m_restore, SIGNAL( completed( bool ) ), SLOT( slotRestoreComplete( bool ) ) );
+    connect( m_restore, SIGNAL(completed(bool)), SLOT(slotRestoreComplete(bool)) );
     bool possible = m_restore->possible();
 
     KVBox *box1 = new KVBox( this );
@@ -49,7 +49,7 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
                                       "applications (but do not stop the akonadi server)." ) + "\n\n" );
 
         m_selectFileButton = new QPushButton( i18n( "&Click Here to Select the File to Restore..." ), box1 );
-        connect( m_selectFileButton, SIGNAL( clicked( bool ) ), SLOT( slotSelectFile() ) );
+        connect( m_selectFileButton, SIGNAL(clicked(bool)), SLOT(slotSelectFile()) );
 
         QLabel *label2 = new QLabel( "\n\n" + i18n( "Press 'Next' to start the Restore" ), box1 );
         label2->setWordWrap( true );
@@ -67,8 +67,8 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
     addPage( m_page2 );
     showButton( KDialog::Help, false );
 
-    connect( this, SIGNAL( currentPageChanged( KPageWidgetItem*, KPageWidgetItem* ) ),
-             SLOT( slotPageChanged( KPageWidgetItem*, KPageWidgetItem* ) ) );
+    connect( this, SIGNAL(currentPageChanged(KPageWidgetItem*,KPageWidgetItem*)),
+             SLOT(slotPageChanged(KPageWidgetItem*,KPageWidgetItem*)) );
 }
 
 void RestoreAssistant::slotSelectFile()

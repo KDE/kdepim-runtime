@@ -35,11 +35,11 @@ ObjectsRequestDeltaJob::ObjectsRequestDeltaJob( const Folder &folder, qulonglong
 void ObjectsRequestDeltaJob::start()
 {
   ObjectsRequestJob *modifiedJob = new ObjectsRequestJob( mFolder, mLastSync, ObjectsRequestJob::Modified, this );
-  connect( modifiedJob, SIGNAL( result( KJob* ) ), SLOT( fetchModifiedJobFinished( KJob* ) ) );
+  connect( modifiedJob, SIGNAL(result(KJob*)), SLOT(fetchModifiedJobFinished(KJob*)) );
   modifiedJob->start();
 
   ObjectsRequestJob *deletedJob = new ObjectsRequestJob( mFolder, mLastSync, ObjectsRequestJob::Deleted, this );
-  connect( deletedJob, SIGNAL( result( KJob* ) ), SLOT( fetchDeletedJobFinished( KJob* ) ) );
+  connect( deletedJob, SIGNAL(result(KJob*)), SLOT(fetchDeletedJobFinished(KJob*)) );
   deletedJob->start();
 }
 

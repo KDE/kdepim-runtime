@@ -64,8 +64,8 @@ void MicroblogResource::initComm()
     m_comm = new Communication( this );
     m_comm->setService( Settings::self()->service() );
     m_comm->setCredentials( Settings::self()->userName(),  Settings::self()->password() );
-    connect( m_comm, SIGNAL( statusList( const QList<QByteArray> ) ),
-             SLOT( slotStatusList( const QList<QByteArray> ) ) );
+    connect( m_comm, SIGNAL(statusList(QList<QByteArray>)),
+             SLOT(slotStatusList(QList<QByteArray>)) );
 
     synchronizeCollectionTree();
 }

@@ -155,7 +155,7 @@ void MailDispatcherAgent::Private::dispatch()
       aborting = false;
       sentAnything = false;
       emit q->status( AgentBase::Idle, i18n( "Sending canceled." ) );
-      QTimer::singleShot( 3000, q, SLOT( emitStatusReady() ) );
+      QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
     } else {
       if ( sentAnything ) {
         // Finished sending messages in queue.
@@ -175,7 +175,7 @@ void MailDispatcherAgent::Private::dispatch()
         // Empty queue.
         emit q->status( AgentBase::Idle, i18n( "No items in queue." ) );
       }
-      QTimer::singleShot( 3000, q, SLOT( emitStatusReady() ) );
+      QTimer::singleShot( 3000, q, SLOT(emitStatusReady()) );
     }
 
     errorOccurred = false;
@@ -210,16 +210,16 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.MailDispatcherAgent" ) );
 
   d->queue = new OutboxQueue( this );
-  connect( d->queue, SIGNAL( newItems() ),
-           this, SLOT( dispatch() ) );
-  connect( d->queue, SIGNAL( itemReady( const Akonadi::Item& ) ),
-           this, SLOT( itemFetched( const Akonadi::Item& ) ) );
-  connect( d->queue, SIGNAL( error( const QString& ) ),
-           this, SLOT( queueError( const QString& ) ) );
-  connect( this, SIGNAL( itemProcessed( Akonadi::Item, bool ) ),
-           d->queue, SLOT( itemProcessed( Akonadi::Item, bool ) ) );
-  connect( this, SIGNAL( abortRequested() ),
-           this, SLOT( abort() ) );
+  connect( d->queue, SIGNAL(newItems()),
+           this, SLOT(dispatch()) );
+  connect( d->queue, SIGNAL(itemReady(Akonadi::Item)),
+           this, SLOT(itemFetched(Akonadi::Item)) );
+  connect( d->queue, SIGNAL(error(QString)),
+           this, SLOT(queueError(QString)) );
+  connect( this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
+           d->queue, SLOT(itemProcessed(Akonadi::Item,bool)) );
+  connect( this, SIGNAL(abortRequested()),
+           this, SLOT(abort()) );
 
   d->sentActionHandler = new SentActionHandler( this );
 
@@ -243,7 +243,7 @@ void MailDispatcherAgent::doSetOnline( bool online )
   if ( online ) {
     kDebug() << "Online. Dispatching messages.";
     emit status( AgentBase::Idle, i18n( "Online, sending messages in queue." ) );
-    QTimer::singleShot( 0, this, SLOT( dispatch() ) );
+    QTimer::singleShot( 0, this, SLOT(dispatch()) );
   } else {
     kDebug() << "Offline.";
     emit status( AgentBase::Idle, i18n( "Offline, message sending suspended." ) );
@@ -273,10 +273,10 @@ void MailDispatcherAgent::Private::itemFetched( const Item &item )
   q->status( AgentBase::Running, i18nc( "Message with given subject is being sent.", "Sending: %1",
                                         item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString() ) );
 
-  connect( currentJob, SIGNAL( result( KJob* ) ),
-           q, SLOT( sendResult( KJob* ) ) );
-  connect( currentJob, SIGNAL( percent( KJob*, unsigned long ) ),
-           q, SLOT( sendPercent( KJob*, unsigned long ) ) );
+  connect( currentJob, SIGNAL(result(KJob*)),
+           q, SLOT(sendResult(KJob*)) );
+  connect( currentJob, SIGNAL(percent(KJob*,ulong)),
+           q, SLOT(sendPercent(KJob*,ulong)) );
 
   currentJob->start();
 }
@@ -359,7 +359,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
 
   // dispatch next message
   sendingInProgress = false;
-  QTimer::singleShot( 0, q, SLOT( dispatch() ) );
+  QTimer::singleShot( 0, q, SLOT(dispatch()) );
 }
 
 void MailDispatcherAgent::Private::emitStatusReady()

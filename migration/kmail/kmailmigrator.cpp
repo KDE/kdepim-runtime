@@ -111,10 +111,10 @@ KMailMigrator::KMailMigrator() :
   mImapCacheAdapter( 0 )
 {
   Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionAnnotationsAttribute>();
-  connect( AgentManager::self(), SIGNAL( instanceStatusChanged( Akonadi::AgentInstance ) ),
-           this, SLOT( instanceStatusChanged( Akonadi::AgentInstance ) ) );
-  connect( AgentManager::self(), SIGNAL( instanceProgressChanged( Akonadi::AgentInstance ) ),
-           this, SLOT( instanceProgressChanged( Akonadi::AgentInstance ) ) );
+  connect( AgentManager::self(), SIGNAL(instanceStatusChanged(Akonadi::AgentInstance)),
+           this, SLOT(instanceStatusChanged(Akonadi::AgentInstance)) );
+  connect( AgentManager::self(), SIGNAL(instanceProgressChanged(Akonadi::AgentInstance)),
+           this, SLOT(instanceProgressChanged(Akonadi::AgentInstance)) );
 }
 
 KMailMigrator::~KMailMigrator()
@@ -186,7 +186,7 @@ void KMailMigrator::migrate()
                                    KIO::HideProgressInfo );
     job->setAutoSkip( true );
     job->setWriteIntoExistingDirectories( true );
-    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( autoSaveCopyResult( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(autoSaveCopyResult(KJob*)) );
   }
 
   mAccounts = mConfig->groupList().filter( QRegExp( "Account \\d+" ) );
@@ -377,7 +377,7 @@ void KMailMigrator::migrateLocalFolders()
     mForwardResourceNotifications = true;
 
     createAgentInstance( "akonadi_mixedmaildir_resource", this,
-                         SLOT( localMaildirCreated( KJob * ) ) );
+                         SLOT(localMaildirCreated(KJob*)) );
   }
 }
 
@@ -544,19 +544,19 @@ void KMailMigrator::migrationCompleted( const AgentInstance &instance, bool doMi
 
 void KMailMigrator::connectCollectionMigrator( AbstractCollectionMigrator *migrator )
 {
-  connect( migrator, SIGNAL( message( int, QString ) ),
-           SLOT ( collectionMigratorMessage( int, QString ) ) );
-  connect( migrator, SIGNAL( status( QString ) ), SIGNAL ( status( QString ) ) );
-  connect( migrator, SIGNAL( progress( int ) ), SIGNAL ( progress( int ) ) );
-  connect( migrator, SIGNAL( progress( int, int, int ) ), SIGNAL ( progress( int, int, int ) ) );
-  connect( migrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
-           this, SLOT( collectionMigratorFinished() ) );
-  connect( migrator, SIGNAL( status( QString ) ),
-           SLOT ( collectionMigratorEmittedNotification() ) );
-  connect( migrator, SIGNAL( progress( int ) ),
-           SLOT ( collectionMigratorEmittedNotification() ) );
-  connect( migrator, SIGNAL( progress( int, int, int ) ),
-           SLOT ( collectionMigratorEmittedNotification() ) );
+  connect( migrator, SIGNAL(message(int,QString)),
+           SLOT (collectionMigratorMessage(int,QString)) );
+  connect( migrator, SIGNAL(status(QString)), SIGNAL (status(QString)) );
+  connect( migrator, SIGNAL(progress(int)), SIGNAL (progress(int)) );
+  connect( migrator, SIGNAL(progress(int,int,int)), SIGNAL (progress(int,int,int)) );
+  connect( migrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
+           this, SLOT(collectionMigratorFinished()) );
+  connect( migrator, SIGNAL(status(QString)),
+           SLOT (collectionMigratorEmittedNotification()) );
+  connect( migrator, SIGNAL(progress(int)),
+           SLOT (collectionMigratorEmittedNotification()) );
+  connect( migrator, SIGNAL(progress(int,int,int)),
+           SLOT (collectionMigratorEmittedNotification()) );
 }
 
 void KMailMigrator::migratePassword( const QString &idString, const AgentInstance &instance,
@@ -599,24 +599,24 @@ bool KMailMigrator::migrateCurrentAccount()
   const QString type = group.readEntry( "Type" ).toLower();
   if ( type == "imap" ) {
     createAgentInstance( "akonadi_imap_resource", this,
-                         SLOT( imapAccountCreated( KJob * ) ) );
+                         SLOT(imapAccountCreated(KJob*)) );
   }
   else if ( type == "dimap" ) {
     createAgentInstance( "akonadi_imap_resource", this,
-                         SLOT( imapDisconnectedAccountCreated( KJob * ) ) );
+                         SLOT(imapDisconnectedAccountCreated(KJob*)) );
 
   }
   else if ( type == "pop" ) {
     createAgentInstance( "akonadi_pop3_resource", this,
-                         SLOT( pop3AccountCreated( KJob * ) ) );
+                         SLOT(pop3AccountCreated(KJob*)) );
   }
   else if ( type == "maildir" ) {
     createAgentInstance( "akonadi_maildir_resource", this,
-                         SLOT( maildirAccountCreated( KJob * ) ) );
+                         SLOT(maildirAccountCreated(KJob*)) );
   }
   else if ( type == "local" ) {
     createAgentInstance( "akonadi_mbox_resource", this,
-                         SLOT( mboxAccountCreated( KJob * ) ) );
+                         SLOT(mboxAccountCreated(KJob*)) );
   }
   else {
     return false;
@@ -727,14 +727,14 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   if ( disconnected && store ) {
     if ( mImapCacheAdapter == 0 ) {
       mImapCacheAdapter = new ImapCacheAdapter( store, this );
-      connect( mImapCacheAdapter, SIGNAL( finished( int, QString ) ),
-               SLOT( imapCacheAdaptionFinished( int, QString ) ) );
+      connect( mImapCacheAdapter, SIGNAL(finished(int,QString)),
+               SLOT(imapCacheAdaptionFinished(int,QString)) );
     }
     mImapCacheAdapter->addAccount( topLevelFolder, nameAccount );
   }
 
-  connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
-           SLOT( imapFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+  connect( collectionMigrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
+           SLOT(imapFoldersMigrationFinished(Akonadi::AgentInstance,QString)) );
 
   connectCollectionMigrator( collectionMigrator );
 
@@ -1055,8 +1055,8 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
   collectionMigrator->setTemplatesConfig( mTemplatesConfig );
 
-  connect( collectionMigrator, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
-           SLOT( localFoldersMigrationFinished( Akonadi::AgentInstance, QString ) ) );
+  connect( collectionMigrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
+           SLOT(localFoldersMigrationFinished(Akonadi::AgentInstance,QString)) );
   connectCollectionMigrator( collectionMigrator );
 
   collectionMigrator->startMigration();
@@ -1097,8 +1097,8 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
 
         EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( defaultResource, this );
         cleaner->setCleaningOptions( EmptyResourceCleaner::CheckOnly );
-        connect( cleaner, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ),
-                 SLOT( specialColDefaultResourceCheckFinished( Akonadi::AgentInstance ) ) );
+        connect( cleaner, SIGNAL(cleanupFinished(Akonadi::AgentInstance)),
+                 SLOT(specialColDefaultResourceCheckFinished(Akonadi::AgentInstance)) );
         return;
       }
     }

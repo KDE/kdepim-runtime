@@ -55,7 +55,7 @@ void DavPrincipalHomeSetsFetchJob::fetchHomeSets( bool homeSetsOnly )
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), document );
   job->addMetaData( "PropagateHttpHeader", "true" );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }
 
 QStringList DavPrincipalHomeSetsFetchJob::homeSets() const

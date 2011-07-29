@@ -31,7 +31,7 @@ FreeBusyUpdateHandler::FreeBusyUpdateHandler( QObject *parent )
   : QObject( parent ), mTimer( new QTimer( this ) )
 {
   mTimer->setInterval( 2000 );
-  connect( mTimer, SIGNAL( timeout() ), SLOT( timeout() ) );
+  connect( mTimer, SIGNAL(timeout()), SLOT(timeout()) );
 }
 
 FreeBusyUpdateHandler::~FreeBusyUpdateHandler()
@@ -87,7 +87,7 @@ void FreeBusyUpdateHandler::timeout()
 
     KIO::Job* job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
     job->addMetaData( QLatin1String( "errorPage" ), QLatin1String( "false" ) ); // we want an error in case of 404
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( slotFreeBusyTriggerResult( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(slotFreeBusyTriggerResult(KJob*)) );
   }
 
   mUrls.clear();

@@ -42,8 +42,8 @@ void SettingsPasswordRequester::requestPassword( RequestType request, const QStr
   if ( request == WrongPasswordRequest ) {
     QMetaObject::invokeMethod( this, "askUserInput", Qt::QueuedConnection, Q_ARG(QString, serverError) );
   } else {
-    connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
-             this, SLOT(onPasswordRequestCompleted(QString, bool)) );
+    connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString,bool)),
+             this, SLOT(onPasswordRequestCompleted(QString,bool)) );
     Settings::self()->requestPassword();
   }
 }
@@ -68,8 +68,8 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
       emit done( UserRejected );
     }
   } else if ( i == KMessageBox::No ) {
-    connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
-             this, SLOT(onPasswordRequestCompleted(QString, bool)) );
+    connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString,bool)),
+             this, SLOT(onPasswordRequestCompleted(QString,bool)) );
     Settings::self()->requestManualAuth();
   } else {
     emit done( UserRejected );
@@ -78,8 +78,8 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
 
 void SettingsPasswordRequester::onPasswordRequestCompleted( const QString &password, bool userRejected )
 {
-  disconnect( Settings::self(), SIGNAL(passwordRequestCompleted(QString, bool)),
-              this, SLOT(onPasswordRequestCompleted(QString, bool)) );
+  disconnect( Settings::self(), SIGNAL(passwordRequestCompleted(QString,bool)),
+              this, SLOT(onPasswordRequestCompleted(QString,bool)) );
 
   if ( userRejected ) {
     emit done( UserRejected );

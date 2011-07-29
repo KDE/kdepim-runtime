@@ -51,7 +51,7 @@ void FoldersRequestJob::start()
   const QString path = QLatin1String( "/servlet/webdav.folders" );
 
   KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }
 
 Folder::List FoldersRequestJob::folders() const

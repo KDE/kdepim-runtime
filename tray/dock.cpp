@@ -71,25 +71,25 @@ Dock::Dock( QWidget *parent )
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerObject( "/Actions", this );
 
-    m_stopAction = menu->addAction( i18n( "&Stop Akonadi" ), this, SLOT( slotStopAkonadi() ) );
-    m_startAction = menu->addAction( i18n( "S&tart Akonadi" ), this, SLOT( slotStartAkonadi() ) );
-    m_backupAction = menu->addAction( i18n( "Make &Backup..." ), this, SLOT( slotStartBackup() ) );
-    m_restoreAction = menu->addAction( i18n( "&Restore Backup..." ), this, SLOT( slotStartRestore() ) );
-    menu->addAction( KIcon( "configure" ), i18n( "&Configure..." ), this, SLOT( slotConfigure() ) );
+    m_stopAction = menu->addAction( i18n( "&Stop Akonadi" ), this, SLOT(slotStopAkonadi()) );
+    m_startAction = menu->addAction( i18n( "S&tart Akonadi" ), this, SLOT(slotStartAkonadi()) );
+    m_backupAction = menu->addAction( i18n( "Make &Backup..." ), this, SLOT(slotStartBackup()) );
+    m_restoreAction = menu->addAction( i18n( "&Restore Backup..." ), this, SLOT(slotStartRestore()) );
+    menu->addAction( KIcon( "configure" ), i18n( "&Configure..." ), this, SLOT(slotConfigure()) );
 
     setContextMenu( menu );
-    connect( menu, SIGNAL( aboutToShow() ), SLOT( slotActivated() ) );
+    connect( menu, SIGNAL(aboutToShow()), SLOT(slotActivated()) );
 
-    connect( ServerManager::self(), SIGNAL( started() ), SLOT( slotServerStarted() ) );
-    connect( ServerManager::self(), SIGNAL( stopped() ), SLOT( slotServerStopped() ) );
+    connect( ServerManager::self(), SIGNAL(started()), SLOT(slotServerStarted()) );
+    connect( ServerManager::self(), SIGNAL(stopped()), SLOT(slotServerStopped()) );
 
     AgentManager *manager = AgentManager::self();
     connect( manager,
-             SIGNAL( instanceWarning( const Akonadi::AgentInstance&, const QString& ) ),
-             SLOT( slotInstanceWarning( const Akonadi::AgentInstance&, const QString& ) ) );
+             SIGNAL(instanceWarning(Akonadi::AgentInstance,QString)),
+             SLOT(slotInstanceWarning(Akonadi::AgentInstance,QString)) );
     connect( manager,
-             SIGNAL( instanceError( const Akonadi::AgentInstance&, const QString& ) ),
-             SLOT( slotInstanceError( const Akonadi::AgentInstance&, const QString& ) ) );
+             SIGNAL(instanceError(Akonadi::AgentInstance,QString)),
+             SLOT(slotInstanceError(Akonadi::AgentInstance,QString)) );
 }
 
 Dock::~Dock()

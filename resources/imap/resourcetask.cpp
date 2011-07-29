@@ -50,8 +50,8 @@ ResourceTask::~ResourceTask()
 void ResourceTask::start( SessionPool *pool )
 {
   m_pool = pool;
-  connect( m_pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)),
-           this, SLOT(onSessionRequested(qint64, KIMAP::Session*, int, QString)) );
+  connect( m_pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)),
+           this, SLOT(onSessionRequested(qint64,KIMAP::Session*,int,QString)) );
 
   m_sessionRequestId = m_pool->requestSession();
 
@@ -84,8 +84,8 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
     return;
   }
 
-  disconnect( m_pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)),
-              this, SLOT(onSessionRequested(qint64, KIMAP::Session*, int, QString)) );
+  disconnect( m_pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)),
+              this, SLOT(onSessionRequested(qint64,KIMAP::Session*,int,QString)) );
   m_sessionRequestId = 0;
 
   if ( errorCode!=SessionPool::NoError ) {

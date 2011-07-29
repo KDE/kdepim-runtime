@@ -62,7 +62,7 @@ void Communication::checkAuth()
     KUrl url = getBaseUrl();
     url.addPath( "account/verify_credentials.xml" );
     KIO::StoredTransferJob *job = KIO::storedGet( url, Reload, HideProgressInfo ) ;
-    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotCheckAuthData( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(slotCheckAuthData(KJob*)) );
 }
 
 void Communication::slotCheckAuthData( KJob *job )
@@ -120,7 +120,7 @@ void Communication::retrieveFolder( const QString &folder, qlonglong since )
     kDebug() << url;
 
     KIO::StoredTransferJob *job = KIO::storedGet( url, Reload, HideProgressInfo ) ;
-    connect( job, SIGNAL( result( KJob* ) ), this, SLOT( slotStatusListReceived( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(slotStatusListReceived(KJob*)) );
 }
 
 void Communication::slotStatusListReceived( KJob* job )

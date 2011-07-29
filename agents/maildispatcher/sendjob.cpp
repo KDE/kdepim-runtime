@@ -149,10 +149,10 @@ void SendJob::Private::doAkonadiTransport()
   }
 
   // Signals.
-  QObject::connect( AgentManager::self(), SIGNAL( instanceProgressChanged( const Akonadi::AgentInstance& ) ),
-                    q, SLOT( resourceProgress( const Akonadi::AgentInstance& ) ) );
-  QObject::connect( interface, SIGNAL( transportResult( qlonglong, int, const QString& ) ),
-                    q, SLOT( resourceResult( qlonglong, int, const QString& ) ) );
+  QObject::connect( AgentManager::self(), SIGNAL(instanceProgressChanged(Akonadi::AgentInstance)),
+                    q, SLOT(resourceProgress(Akonadi::AgentInstance)) );
+  QObject::connect( interface, SIGNAL(transportResult(qlonglong,int,QString)),
+                    q, SLOT(resourceResult(qlonglong,int,QString)) );
 
   // Start sending.
   const QDBusReply<void> reply = interface->call( QLatin1String( "send" ), item.id() );
@@ -189,10 +189,10 @@ void SendJob::Private::doTraditionalTransport()
   job->setBcc( addressAttribute->bcc() );
 
   // Signals.
-  connect( job, SIGNAL( result( KJob* ) ),
-           q, SLOT( transportResult( KJob* ) ) );
-  connect( job, SIGNAL( percent( KJob*, unsigned long ) ),
-           q, SLOT( transportPercent( KJob*, unsigned long ) ) );
+  connect( job, SIGNAL(result(KJob*)),
+           q, SLOT(transportResult(KJob*)) );
+  connect( job, SIGNAL(percent(KJob*,ulong)),
+           q, SLOT(transportPercent(KJob*,ulong)) );
 
   job->start();
 }
@@ -279,20 +279,20 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
     if ( attribute->sentBehaviour() == SentBehaviourAttribute::Delete ) {
       kDebug() << "Deleting item from outbox.";
       currentJob = new ItemDeleteJob( item );
-      QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
+      QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
     } else {
       if ( attribute->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection ) {
         if ( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
           currentJob = new ItemMoveJob( item, SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail ) , q );
-          QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
+          QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
         } else {
           abortPostJob();
         }
       } else {
         kDebug() << "sentBehaviour=" << attribute->sentBehaviour() << "using collection from attribute";
         currentJob = new CollectionFetchJob( attribute->moveToCollection(), Akonadi::CollectionFetchJob::Base );
-        QObject::connect( currentJob, SIGNAL( result( KJob* ) ),
-                          q, SLOT( slotSentMailCollectionFetched( KJob* ) ) );
+        QObject::connect( currentJob, SIGNAL(result(KJob*)),
+                          q, SLOT(slotSentMailCollectionFetched(KJob*)) );
       }
     }
   }
@@ -312,7 +312,7 @@ void SendJob::Private::slotSentMailCollectionFetched(KJob* job)
     fetchCol = fetchJob->collections().first();
   }
   currentJob = new ItemMoveJob( item, fetchCol, q );
-  QObject::connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( postJobResult( KJob* ) ) );
+  QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
 }
 
 void SendJob::Private::postJobResult( KJob *job )
@@ -337,7 +337,7 @@ void SendJob::Private::storeResult( bool success, const QString &message )
 
   Q_ASSERT( currentJob == 0 );
   currentJob = new StoreResultJob( item, success, message );
-  connect( currentJob, SIGNAL( result( KJob* ) ), q, SLOT( doEmitResult( KJob* ) ) );
+  connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(doEmitResult(KJob*)) );
 }
 
 void SendJob::Private::doEmitResult( KJob *job )
@@ -371,7 +371,7 @@ SendJob::~SendJob()
 
 void SendJob::start()
 {
-  QTimer::singleShot( 0, this, SLOT( doTransport() ) );
+  QTimer::singleShot( 0, this, SLOT(doTransport()) );
 }
 
 void SendJob::setMarkAborted()

@@ -76,14 +76,14 @@ void ImapCacheAdapter::Private::processNextCollection()
            << "parent=" << collection.parentCollection().remoteId();
 
   FileStore::CollectionModifyJob *job = mStore->modifyCollection( collection );
-  connect( job, SIGNAL( result( KJob* ) ), q, SLOT( collectionModifyResult( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), q, SLOT(collectionModifyResult(KJob*)) );
 }
 
 void ImapCacheAdapter::Private::createResource()
 {
   const QString typeId = QLatin1String( "akonadi_mixedmaildir_resource" );
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( typeId, q );
-  connect( job, SIGNAL( result( KJob* ) ), q, SLOT( createResourceResult( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), q, SLOT(createResourceResult(KJob*)) );
   job->start();
 }
 

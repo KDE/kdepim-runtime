@@ -48,7 +48,7 @@ void FolderMoveJob::start()
   const QString path = QLatin1String( "/servlet/webdav.folders" );
 
   KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }
 
 Folder FolderMoveJob::folder() const

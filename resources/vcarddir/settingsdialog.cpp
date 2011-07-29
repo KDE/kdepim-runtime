@@ -38,12 +38,12 @@ SettingsDialog::SettingsDialog( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
-  connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
+  connect( this, SIGNAL(okClicked()), SLOT(save()) );
 
-  connect( ui.kcfg_Path, SIGNAL( textChanged( QString ) ), SLOT( validate() ) );
-  connect( ui.kcfg_ReadOnly, SIGNAL( toggled( bool ) ), SLOT( validate() ) );
+  connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
+  connect( ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()) );
 
-  QTimer::singleShot( 0, this, SLOT( validate() ) );
+  QTimer::singleShot( 0, this, SLOT(validate()) );
 
   ui.kcfg_Path->setUrl( KUrl( Settings::self()->path() ) );
   ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));

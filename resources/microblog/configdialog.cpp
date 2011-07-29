@@ -31,8 +31,8 @@ ConfigDialog::ConfigDialog( QWidget * parent ) :
         KDialog( parent )
 {
     m_comm = new Communication( this );
-    connect( m_comm, SIGNAL( authOk() ), SLOT( slotAuthOk() ) );
-    connect( m_comm, SIGNAL( authFailed( const QString& ) ), SLOT( slotAuthFailed( const QString& ) ) );
+    connect( m_comm, SIGNAL(authOk()), SLOT(slotAuthOk()) );
+    connect( m_comm, SIGNAL(authFailed(QString)), SLOT(slotAuthFailed(QString)) );
     ui.setupUi( mainWidget() );
     mManager = new KConfigDialogManager( this, Settings::self() );
     mManager->updateWidgets();
@@ -47,9 +47,9 @@ ConfigDialog::ConfigDialog( QWidget * parent ) :
     }
     setButtons( KDialog::Ok | KDialog::Cancel );
     ui.testButton->setEnabled(!ui.kcfg_Name->text().isEmpty());
-    connect( ui.testButton, SIGNAL( clicked() ), SLOT( slotTestClicked() ) );
-    connect( ui.kcfg_UserName, SIGNAL(textChanged(const QString&)), SLOT(slotTextChanged(const QString&)));
-    connect( ui.openidLabel, SIGNAL( linkActivated ( const QString & ) ), SLOT( slotLinkClicked() ) );
+    connect( ui.testButton, SIGNAL(clicked()), SLOT(slotTestClicked()) );
+    connect( ui.kcfg_UserName, SIGNAL(textChanged(QString)), SLOT(slotTextChanged(QString)));
+    connect( ui.openidLabel, SIGNAL(linkActivated(QString)), SLOT(slotLinkClicked()) );
 }
 
 ConfigDialog::~ConfigDialog()

@@ -55,11 +55,11 @@ ConfigDialog::ConfigDialog( WId windowId )
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
-  connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
-  connect( this, SIGNAL( user1Clicked() ), this, SLOT( showAboutDialog() ) );
-  connect( mServerEdit, SIGNAL( textChanged( const QString& ) ), SLOT( updateButtonState() ) );
-  connect( mUserEdit, SIGNAL( textChanged( const QString& ) ), SLOT( updateButtonState() ) );
-  connect( mCheckConnectionButton, SIGNAL( clicked() ), SLOT( checkConnection() ) );
+  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  connect( this, SIGNAL(user1Clicked()), this, SLOT(showAboutDialog()) );
+  connect( mServerEdit, SIGNAL(textChanged(QString)), SLOT(updateButtonState()) );
+  connect( mUserEdit, SIGNAL(textChanged(QString)), SLOT(updateButtonState()) );
+  connect( mCheckConnectionButton, SIGNAL(clicked()), SLOT(checkConnection()) );
 
   setInitialSize( QSize( 410, 200 ) );
 }
@@ -92,7 +92,7 @@ void ConfigDialog::checkConnection()
 {
   OXA::ConnectionTestJob *job = new OXA::ConnectionTestJob( mServerEdit->text(), mUserEdit->text(),
                                                             mPasswordEdit->text(), this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( checkConnectionJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(checkConnectionJobFinished(KJob*)) );
   job->start();
 
   QApplication::setOverrideCursor( Qt::WaitCursor );

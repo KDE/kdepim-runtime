@@ -92,7 +92,7 @@ void StoreResultJob::Private::fetchDone( KJob *job )
   }
 
   ItemModifyJob *modifyJob = new ItemModifyJob( item, q );
-  QObject::connect( modifyJob, SIGNAL( result( KJob* ) ), q, SLOT( modifyDone( KJob* ) ) );
+  QObject::connect( modifyJob, SIGNAL(result(KJob*)), q, SLOT(modifyDone(KJob*)) );
 }
 
 void StoreResultJob::Private::modifyDone( KJob *job )
@@ -124,7 +124,7 @@ void StoreResultJob::doStart()
 {
   // Fetch item in case it was modified elsewhere.
   ItemFetchJob *job = new ItemFetchJob( d->item, this );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( fetchDone( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(fetchDone(KJob*)) );
 }
 
 #include "storeresultjob.moc"

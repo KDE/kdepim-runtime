@@ -190,8 +190,8 @@ class KResourceConfigWidget : public QWidget
         mStackedWidgets.insert( type, configWidget );
 
         if ( configWidget->mPluginWidget != 0 ) {
-          connect( configWidget->mPluginWidget, SIGNAL( setReadOnly( bool ) ),
-                   parent, SLOT( setReadOnly( bool ) ) );
+          connect( configWidget->mPluginWidget, SIGNAL(setReadOnly(bool)),
+                   parent, SLOT(setReadOnly(bool)) );
         }
       }
     }
@@ -268,8 +268,8 @@ class KResourceFolderConfigWidget : public QWidget
       mainLayout->addWidget( generalGroup );
       mainLayout->addStretch();
 
-      connect( mName, SIGNAL( textChanged( const QString& ) ),
-               parent, SLOT( slotNameChanged( const QString& ) ) );
+      connect( mName, SIGNAL(textChanged(QString)),
+               parent, SLOT(slotNameChanged(QString)) );
     }
 
   public:

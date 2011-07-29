@@ -67,8 +67,8 @@ void SessionPool::setPasswordRequester( PasswordRequesterInterface *requester )
 
   m_passwordRequester = requester;
   m_passwordRequester->setParent( this );
-  QObject::connect( m_passwordRequester, SIGNAL(done(int, QString)),
-                    this, SLOT(onPasswordRequestDone(int, QString)) );
+  QObject::connect( m_passwordRequester, SIGNAL(done(int,QString)),
+                    this, SLOT(onPasswordRequestDone(int,QString)) );
 }
 
 KIMAP::SessionUiProxy::Ptr SessionPool::sessionUiProxy() const
@@ -180,8 +180,8 @@ void SessionPool::killSession( KIMAP::Session *session, SessionTermination termi
 
   if ( session->state() != KIMAP::Session::Disconnected && termination == LogoutSession ) {
     KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( session );
-    QObject::connect( logout, SIGNAL( result( KJob* ) ),
-                      session, SLOT( deleteLater() ) );
+    QObject::connect( logout, SIGNAL(result(KJob*)),
+                      session, SLOT(deleteLater()) );
     logout->start();
   } else {
     session->close();
@@ -326,8 +326,8 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
   loginJob->setEncryptionMode( m_account->encryptionMode() );
   loginJob->setAuthenticationMode( m_account->authenticationMode() );
 
-  QObject::connect( loginJob, SIGNAL( result( KJob* ) ),
-                    this, SLOT( onLoginDone( KJob* ) ) );
+  QObject::connect( loginJob, SIGNAL(result(KJob*)),
+                    this, SLOT(onLoginDone(KJob*)) );
   loginJob->start();
 }
 
@@ -349,7 +349,7 @@ void SessionPool::onLoginDone( KJob *job )
     } else {
       // On initial connection we ask for capabilities
       KIMAP::CapabilitiesJob *capJob = new KIMAP::CapabilitiesJob( login->session() );
-      QObject::connect( capJob, SIGNAL( result( KJob* ) ), SLOT( onCapabilitiesTestDone( KJob* ) ) );
+      QObject::connect( capJob, SIGNAL(result(KJob*)), SLOT(onCapabilitiesTestDone(KJob*)) );
       capJob->start();
     }
   } else {
@@ -404,7 +404,7 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   // If the extension is supported, grab the namespaces from the server
   if ( m_capabilities.contains( "NAMESPACE" ) ) {
     KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob( capJob->session() );
-    QObject::connect( nsJob, SIGNAL( result( KJob* ) ), SLOT( onNamespacesTestDone( KJob* ) ) );
+    QObject::connect( nsJob, SIGNAL(result(KJob*)), SLOT(onNamespacesTestDone(KJob*)) );
     nsJob->start();
     return;
   } else {

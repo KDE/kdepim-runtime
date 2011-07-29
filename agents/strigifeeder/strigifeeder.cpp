@@ -80,24 +80,24 @@ StrigiFeeder::StrigiFeeder( const QString &id )
 
   mStrigiDaemonStartupTimeout.setInterval( 300 * 1000 );
   mStrigiDaemonStartupTimeout.setSingleShot( true );
-  connect( &mStrigiDaemonStartupTimeout, SIGNAL( timeout() ), SLOT( selfTest() ) );
-  connect( this, SIGNAL( fullyIndexed() ), this, SLOT( slotFullyIndexed() ) );
+  connect( &mStrigiDaemonStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
+  connect( this, SIGNAL(fullyIndexed()), this, SLOT(slotFullyIndexed()) );
   
-  connect( &mStrigiDBusWatcher, SIGNAL(	serviceRegistered ( const QString & ) ), this, SLOT( selfTest() ) );
-  connect( &mStrigiDBusWatcher, SIGNAL(	serviceUnregistered ( const QString & ) ), this, SLOT( selfTest() ) );
+  connect( &mStrigiDBusWatcher, SIGNAL(serviceRegistered(QString)), this, SLOT(selfTest()) );
+  connect( &mStrigiDBusWatcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(selfTest()) );
 
 // Dont use Idle detection for wince, because it does not work properly
 // it could be inplemented, but the scheduler is just a round robin over
 // priority classes, so if we set the prority low, it will suspend the thread
 // if the user does something
 #ifndef _WIN32_WCE
-  connect( KIdleTime::instance(), SIGNAL( timeoutReached( int ) ), SLOT( systemIdle() ) );
-  connect( KIdleTime::instance(), SIGNAL( resumingFromIdle() ), SLOT( systemResumed() ) );
+  connect( KIdleTime::instance(), SIGNAL(timeoutReached(int)), SLOT(systemIdle()) );
+  connect( KIdleTime::instance(), SIGNAL(resumingFromIdle()), SLOT(systemResumed()) );
   KIdleTime::instance()->addIdleTimeout( 10 * 1000 );
 #endif
 
   checkOnline();
-  QTimer::singleShot( 0, this, SLOT( selfTest() ) );
+  QTimer::singleShot( 0, this, SLOT(selfTest()) );
 }
 
 StrigiFeeder::~StrigiFeeder()
@@ -112,7 +112,7 @@ void StrigiFeeder::configure( WId windowId )
     mSettings->writeConfig();
     emit configurationDialogAccepted();
 
-    QTimer::singleShot( 0, this, SLOT( selfTest() ) );
+    QTimer::singleShot( 0, this, SLOT(selfTest()) );
   } else {
     emit configurationDialogRejected();
   }
@@ -126,7 +126,7 @@ void StrigiFeeder::setIndexCompatibilityLevel( int level )
 void StrigiFeeder::updateAll()
 {
   CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
-  connect( collectionFetch, SIGNAL( collectionsReceived( Akonadi::Collection::List ) ), SLOT( collectionsReceived( Akonadi::Collection::List ) ) );
+  connect( collectionFetch, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
 }
 
 static KUrl extendedItemUrl( const Item &item )
@@ -159,8 +159,8 @@ void StrigiFeeder::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
     if ( scope.fullPayload() || !scope.payloadParts().isEmpty() ) {
       ItemFetchJob *job = new ItemFetchJob( item );
       job->setFetchScope( scope );
-      connect( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ),
-               SLOT( notificationItemsReceived( Akonadi::Item::List ) ) );
+      connect( job, SIGNAL(itemsReceived(Akonadi::Item::List)),
+               SLOT(notificationItemsReceived(Akonadi::Item::List)) );
     }
   }
 }
@@ -178,8 +178,8 @@ void StrigiFeeder::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
     if ( scope.fullPayload() || !scope.payloadParts().isEmpty() ) {
       ItemFetchJob *job = new ItemFetchJob( item );
       job->setFetchScope( scope );
-      connect( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ),
-               SLOT( notificationItemsReceived( Akonadi::Item::List ) ) );
+      connect( job, SIGNAL(itemsReceived(Akonadi::Item::List)),
+               SLOT(notificationItemsReceived(Akonadi::Item::List)) );
     }
   }
 }
@@ -236,8 +236,8 @@ void StrigiFeeder::processNextCollection()
 
   ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
   itemFetch->fetchScope().setCacheOnly( true );
-  connect( itemFetch, SIGNAL( itemsReceived( const Akonadi::Item::List& ) ), SLOT( itemHeadersReceived( const Akonadi::Item::List& ) ) );
-  connect( itemFetch, SIGNAL( result( KJob* ) ), SLOT( itemFetchResult( KJob* ) ) );
+  connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemHeadersReceived(Akonadi::Item::List)) );
+  connect( itemFetch, SIGNAL(result(KJob*)), SLOT(itemFetchResult(KJob*)) );
   ++mPendingJobs;
   mTotalAmount = 0;
 }
@@ -259,8 +259,8 @@ void StrigiFeeder::itemHeadersReceived( const Akonadi::Item::List &items )
   if ( !itemsToUpdate.isEmpty() ) {
     ItemFetchJob *itemFetch = new ItemFetchJob( itemsToUpdate, this );
     itemFetch->setFetchScope( fetchScopeForCollection( mCurrentCollection ) );
-    connect( itemFetch, SIGNAL( itemsReceived( const Akonadi::Item::List& ) ), SLOT( itemsReceived( const Akonadi::Item::List& ) ) );
-    connect( itemFetch, SIGNAL( result( KJob* ) ), SLOT( itemFetchResult( KJob* ) ) );
+    connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(itemsReceived(Akonadi::Item::List)) );
+    connect( itemFetch, SIGNAL(result(KJob*)), SLOT(itemFetchResult(KJob*)) );
     ++mPendingJobs;
     mTotalAmount += itemsToUpdate.size();
   }
@@ -344,7 +344,7 @@ void StrigiFeeder::selfTest()
     checkOnline();
     if ( !mInitialUpdateDone && needsReIndexing() ) {
       mInitialUpdateDone = true;
-      QTimer::singleShot( 0, this, SLOT( updateAll() ) );
+      QTimer::singleShot( 0, this, SLOT(updateAll()) );
     } else {
       emit status( Idle, i18n( "Ready to index data." ) );
     }

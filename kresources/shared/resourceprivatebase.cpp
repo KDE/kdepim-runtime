@@ -201,8 +201,8 @@ bool ResourcePrivateBase::doAsyncSave()
   }
 
   ItemSaveJob *itemSaveJob = new ItemSaveJob( saveContext );
-  connect( itemSaveJob, SIGNAL( result( KJob* ) ),
-           SLOT( savingResult( KJob* ) ) );
+  connect( itemSaveJob, SIGNAL(result(KJob*)),
+           SLOT(savingResult(KJob*)) );
 
   return true;
 }

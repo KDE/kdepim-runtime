@@ -31,8 +31,8 @@ POPSession::POPSession( const QString &password )
   : mPassword( password )
 {
   KIO::Scheduler::connect(
-    SIGNAL( slaveError( KIO::Slave *, int, const QString & ) ), this,
-    SLOT( slotSlaveError( KIO::Slave*, int, const QString & ) ) );
+    SIGNAL(slaveError(KIO::Slave*,int,QString)), this,
+    SLOT(slotSlaveError(KIO::Slave*,int,QString)) );
 }
 
 POPSession::~POPSession()
@@ -245,10 +245,10 @@ void SlaveBaseJob::slaveError( int errorCode, const QString &errorMessage )
 
 void SlaveBaseJob::connectJob()
 {
-  connect( mJob, SIGNAL( data( KIO::Job*, const QByteArray & ) ),
-           SLOT( slotSlaveData( KIO::Job*, const QByteArray & ) ) );
-  connect( mJob, SIGNAL( result( KJob * ) ),
-           SLOT( slotSlaveResult( KJob * ) ) );
+  connect( mJob, SIGNAL(data(KIO::Job*,QByteArray)),
+           SLOT(slotSlaveData(KIO::Job*,QByteArray)) );
+  connect( mJob, SIGNAL(result(KJob*)),
+           SLOT(slotSlaveResult(KJob*)) );
 }
 
 void SlaveBaseJob::startJob( const QString &path)
@@ -278,7 +278,7 @@ LoginJob::LoginJob( POPSession *popSession )
 void LoginJob::start()
 {
   // This will create a connected slave, which means it will also try to login.
-  KIO::Scheduler::connect( SIGNAL( slaveConnected(KIO::Slave*)),
+  KIO::Scheduler::connect( SIGNAL(slaveConnected(KIO::Slave*)),
                            this, SLOT(slaveConnected(KIO::Slave*)));
   if ( !mPOPSession->connectSlave() ) {
     setError ( KJob::UserDefinedError );
@@ -460,8 +460,8 @@ void FetchJob::start()
 void FetchJob::connectJob()
 {
   SlaveBaseJob::connectJob();
-  connect( mJob, SIGNAL(infoMessage( KJob*, const QString &, const QString & ) ),
-           SLOT( slotInfoMessage( KJob*, const QString &, const QString & ) ) );
+  connect( mJob, SIGNAL(infoMessage(KJob*,QString,QString)),
+           SLOT(slotInfoMessage(KJob*,QString,QString)) );
 }
 
 void FetchJob::slotSlaveData( KIO::Job *job, const QByteArray &data )

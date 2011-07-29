@@ -54,8 +54,8 @@ void RetrieveItemTask::doStart( KIMAP::Session *session )
   if ( session->selectedMailBox() != mailBox ) {
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
     select->setMailBox( mailBox );
-    connect( select, SIGNAL( result( KJob* ) ),
-             this, SLOT( onSelectDone( KJob* ) ) );
+    connect( select, SIGNAL(result(KJob*)),
+             this, SLOT(onSelectDone(KJob*)) );
     select->start();
   } else {
     triggerFetchJob();
@@ -80,13 +80,13 @@ void RetrieveItemTask::triggerFetchJob()
   scope.parts.clear();// = parts.toList();
   scope.mode = KIMAP::FetchJob::FetchScope::Content;
   fetch->setScope( scope );
-  connect( fetch, SIGNAL( messagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ),
-           this, SLOT( onMessagesReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+  connect( fetch, SIGNAL(messagesReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessagePtr>)),
+           this, SLOT(onMessagesReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessagePtr>)) );
   //TODO: Handle parts retrieval
-  //connect( fetch, SIGNAL( partsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ),
-  //         this, SLOT( onPartsReceived( QString, QMap<qint64, qint64>, QMap<qint64, KIMAP::MessageParts> ) ) );
-  connect( fetch, SIGNAL( result( KJob* ) ),
-           this, SLOT( onContentFetchDone( KJob* ) ) );
+  //connect( fetch, SIGNAL(partsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)),
+  //         this, SLOT(onPartsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)) );
+  connect( fetch, SIGNAL(result(KJob*)),
+           this, SLOT(onContentFetchDone(KJob*)) );
   fetch->start();
 }
 

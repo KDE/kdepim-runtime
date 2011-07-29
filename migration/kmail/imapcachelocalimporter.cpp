@@ -135,7 +135,7 @@ void ImapCacheLocalImporter::Private::processNextCollection()
 
   CollectionCreateJob *createJob = new CollectionCreateJob( collection, mHiddenSession );
   createJob->setProperty( "remoteIdPath", idPath );
-  QObject::connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( collectionCreateResult( KJob* ) ) );
+  QObject::connect( createJob, SIGNAL(result(KJob*)), q, SLOT(collectionCreateResult(KJob*)) );
 }
 
 void ImapCacheLocalImporter::Private::processNextItem()
@@ -159,7 +159,7 @@ void ImapCacheLocalImporter::Private::processNextItem()
 //                                    << ", " << mPendingCollections.count() << "remaining";
 
   ItemCreateJob *createJob = new ItemCreateJob( item, item.parentCollection(), mHiddenSession );
-  QObject::connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
+  QObject::connect( createJob, SIGNAL(result(KJob*)), q, SLOT(itemCreateResult(KJob*)) );
 }
 
 void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
@@ -190,7 +190,7 @@ void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
   mPendingCollections << topLevelCollection;
 
   FileStore::CollectionFetchJob *fetchJob = mStore->fetchCollections( topLevelCollection, FileStore::CollectionFetchJob::Recursive );
-  QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), q, SLOT( collectionFetchResult( KJob* ) ) );
+  QObject::connect( fetchJob, SIGNAL(result(KJob*)), q, SLOT(collectionFetchResult(KJob*)) );
 }
 
 void ImapCacheLocalImporter::Private::configureResource()
@@ -258,7 +258,7 @@ void ImapCacheLocalImporter::Private::collectionCreateResult( KJob *job )
 
   FileStore::ItemFetchJob *fetchJob = mStore->fetchItems( storeCollection );
   fetchJob->setProperty( "remoteIdPath", idPath );
-  QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), q, SLOT( itemFetchResult( KJob* ) ) );
+  QObject::connect( fetchJob, SIGNAL(result(KJob*)), q, SLOT(itemFetchResult(KJob*)) );
 
   emit q->status( i18nc( "@info:status foldername", "%1: listing messages...", collection.name() ) );
 }
@@ -339,7 +339,7 @@ void ImapCacheLocalImporter::startImport()
 
   const QString typeId = QLatin1String( "akonadi_maildir_resource" );
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( typeId, this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( createResourceResult( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(createResourceResult(KJob*)) );
   job->start();
 }
 

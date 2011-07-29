@@ -345,7 +345,7 @@ void OpenXchangeResource::configure( WId windowId )
     // Both is done by UpdateUsersJob, so trigger it here before we continue
     // with synchronization in onUpdateUsersJobFinished.
     OXA::UpdateUsersJob *job = new OXA::UpdateUsersJob( this );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( onUpdateUsersJobFinished( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(onUpdateUsersJobFinished(KJob*)) );
     job->start();
   } else {
     emit configurationDialogRejected();
@@ -358,11 +358,11 @@ void OpenXchangeResource::retrieveCollections()
   if ( Settings::self()->useIncrementalUpdates() ) {
     //qDebug("lastSync=%llu", Settings::self()->foldersLastSync());
     OXA::FoldersRequestDeltaJob *job = new OXA::FoldersRequestDeltaJob( Settings::self()->foldersLastSync(), this );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( onFoldersRequestDeltaJobFinished( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(onFoldersRequestDeltaJobFinished(KJob*)) );
     job->start();
   } else {
     OXA::FoldersRequestJob *job = new OXA::FoldersRequestJob( 0, OXA::FoldersRequestJob::Modified, this );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( onFoldersRequestJobFinished( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(onFoldersRequestJobFinished(KJob*)) );
     job->start();
   }
 }
@@ -381,11 +381,11 @@ void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
     //qDebug("lastSync=%llu", lastSyncInfo.lastSync( collection.id() ));
     OXA::ObjectsRequestDeltaJob *job = new OXA::ObjectsRequestDeltaJob( folder, lastSyncInfo.lastSync( collection.id() ), this );
     job->setProperty( "collection", QVariant::fromValue( collection ) );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectsRequestDeltaJobFinished( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(onObjectsRequestDeltaJobFinished(KJob*)) );
     job->start();
   } else {
     OXA::ObjectsRequestJob *job = new OXA::ObjectsRequestJob( folder, 0, OXA::ObjectsRequestJob::Modified, this );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectsRequestJobFinished( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(onObjectsRequestJobFinished(KJob*)) );
     job->start();
   }
 }
@@ -401,7 +401,7 @@ bool OpenXchangeResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
 
   OXA::ObjectRequestJob *job = new OXA::ObjectRequestJob( object, this );
   job->setProperty( "item", QVariant::fromValue( item ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectRequestJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onObjectRequestJobFinished(KJob*)) );
   job->start();
 
   return true;
@@ -429,7 +429,7 @@ void OpenXchangeResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
 
   OXA::ObjectCreateJob *job = new OXA::ObjectCreateJob( object, this );
   job->setProperty( "item", QVariant::fromValue( item ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectCreateJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onObjectCreateJobFinished(KJob*)) );
   job->start();
 }
 
@@ -458,7 +458,7 @@ void OpenXchangeResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
 
   OXA::ObjectModifyJob *job = new OXA::ObjectModifyJob( object, this );
   job->setProperty( "item", QVariant::fromValue( item ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectModifyJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onObjectModifyJobFinished(KJob*)) );
   job->start();
 }
 
@@ -474,7 +474,7 @@ void OpenXchangeResource::itemRemoved( const Akonadi::Item &item )
   object.setLastModified( remoteInformation.lastModified() );
 
   OXA::ObjectDeleteJob *job = new OXA::ObjectDeleteJob( object, this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectDeleteJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onObjectDeleteJobFinished(KJob*)) );
 
   job->start();
 }
@@ -497,7 +497,7 @@ void OpenXchangeResource::itemMoved( const Akonadi::Item &item, const Akonadi::C
 
   OXA::ObjectMoveJob *job = new OXA::ObjectMoveJob( object, destinationFolder, this );
   job->setProperty( "item", QVariant::fromValue( item ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onObjectMoveJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onObjectMoveJobFinished(KJob*)) );
 
   job->start();
 }
@@ -531,7 +531,7 @@ void OpenXchangeResource::collectionAdded( const Akonadi::Collection &collection
 
   OXA::FolderCreateJob *job = new OXA::FolderCreateJob( folder, this );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderCreateJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onFolderCreateJobFinished(KJob*)) );
   job->start();
 }
 
@@ -555,7 +555,7 @@ void OpenXchangeResource::collectionChanged( const Akonadi::Collection &collecti
 
   OXA::FolderModifyJob *job = new OXA::FolderModifyJob( folder, this );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderModifyJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onFolderModifyJobFinished(KJob*)) );
 }
 
 void OpenXchangeResource::collectionRemoved( const Akonadi::Collection &collection )
@@ -567,7 +567,7 @@ void OpenXchangeResource::collectionRemoved( const Akonadi::Collection &collecti
   folder.setLastModified( remoteInformation.lastModified() );
 
   OXA::FolderDeleteJob *job = new OXA::FolderDeleteJob( folder, this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderDeleteJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onFolderDeleteJobFinished(KJob*)) );
 
   job->start();
 }
@@ -588,7 +588,7 @@ void OpenXchangeResource::collectionMoved( const Akonadi::Collection &collection
 
   OXA::FolderMoveJob *job = new OXA::FolderMoveJob( folder, destinationFolder, this );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFolderMoveJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onFolderMoveJobFinished(KJob*)) );
 
   job->start();
 }
@@ -1100,7 +1100,7 @@ void OpenXchangeResource::syncCollectionsRemoteIdCache()
   mCollectionsMap = mStandardCollectionsMap;
 
   CollectionFetchJob *job = new CollectionFetchJob( mResourceCollection, CollectionFetchJob::Recursive, this );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onFetchResourceCollectionsFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onFetchResourceCollectionsFinished(KJob*)) );
 }
 
 void OpenXchangeResource::onFetchResourceCollectionsFinished( KJob *job )

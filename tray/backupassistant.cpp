@@ -32,7 +32,7 @@
 BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
 {
     m_backup = new Backup( this );
-    connect( m_backup, SIGNAL( completed( bool ) ), SLOT( slotBackupComplete( bool ) ) );
+    connect( m_backup, SIGNAL(completed(bool)), SLOT(slotBackupComplete(bool)) );
     bool possible = m_backup->possible();
 
     KVBox *box1 = new KVBox( this );
@@ -48,7 +48,7 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
                                       "the backup, give it the extension .tar.bz2" ) + "\n\n" );
 
         m_selectFileButton = new QPushButton( i18n( "&Click Here to Select the Backup Location..." ), box1 );
-        connect( m_selectFileButton, SIGNAL( clicked( bool ) ), SLOT( slotSelectFile() ) );
+        connect( m_selectFileButton, SIGNAL(clicked(bool)), SLOT(slotSelectFile()) );
 
         QLabel *label2 = new QLabel( "\n\n" + i18n( "Press 'Next' to start the Backup" ), box1 );
         label2->setWordWrap( true );
@@ -66,8 +66,8 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
     addPage( m_page2 );
     showButton( KDialog::Help, false );
 
-    connect( this, SIGNAL( currentPageChanged( KPageWidgetItem*, KPageWidgetItem* ) ),
-             SLOT( slotPageChanged( KPageWidgetItem*, KPageWidgetItem* ) ) );
+    connect( this, SIGNAL(currentPageChanged(KPageWidgetItem*,KPageWidgetItem*)),
+             SLOT(slotPageChanged(KPageWidgetItem*,KPageWidgetItem*)) );
 }
 
 void BackupAssistant::slotSelectFile()

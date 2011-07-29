@@ -33,7 +33,7 @@ void EtagCache::sync( const Akonadi::Collection &collection )
 {
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( collection );
   job->fetchScope().fetchFullPayload( false ); // We only need the remote id and the revision
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( onItemFetchJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(onItemFetchJobFinished(KJob*)) );
   job->start();
 }
 

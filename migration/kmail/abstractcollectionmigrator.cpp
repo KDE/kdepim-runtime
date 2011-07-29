@@ -602,7 +602,7 @@ void AbstractCollectionMigrator::Private::processNextCollection()
 
   CollectionCreateJob *createJob = new CollectionCreateJob( collection, mHiddenSession );
   createJob->setProperty( "remoteIdPath", idPath );
-  QObject::connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( collectionCreateResult( KJob* ) ) );
+  QObject::connect( createJob, SIGNAL(result(KJob*)), q, SLOT(collectionCreateResult(KJob*)) );
 }
 
 QStringList AbstractCollectionMigrator::Private::folderPathComponentsForCollection( const Collection &collection ) const
@@ -713,7 +713,7 @@ void AbstractCollectionMigrator::startMigration()
   }
 
   FileStore::CollectionFetchJob *fetchJob = d->mStore->fetchCollections( topLevelCollection, FileStore::CollectionFetchJob::Recursive );
-  QObject::connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( collectionFetchResult( KJob* ) ) );
+  QObject::connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(collectionFetchResult(KJob*)) );
 
   d->mCollectionQueue << topLevelCollection;
   d->mOverallCollectionsCount = d->mCollectionQueue.count();
@@ -735,7 +735,7 @@ void AbstractCollectionMigrator::collectionProcessed()
 
   if ( d->mNeedModifyJob ) {
     CollectionModifyJob *job = new CollectionModifyJob( d->mCurrentCollection );
-    connect( job, SIGNAL( result( KJob*) ), SLOT( modifyResult( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(modifyResult(KJob*)) );
   } else {
     d->collectionDone();
   }

@@ -62,17 +62,17 @@ KNavigatingProxyModel::KNavigatingProxyModel(KForwardingItemSelectionModel* sele
 
 void KNavigatingProxyModel::silentSelect(const QItemSelection& selection, QItemSelectionModel::SelectionFlags command)
 {
-  disconnect( m_selectionModel, SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
-      this, SLOT( navigationSelectionChanged( const QItemSelection &, const QItemSelection & ) ) );
+  disconnect( m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+      this, SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)) );
   m_selectionModel->select( selection, command);
-  connect( m_selectionModel, SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
-      SLOT( navigationSelectionChanged( const QItemSelection &, const QItemSelection & ) ) );
+  connect( m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+      SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)) );
 }
 
 void KNavigatingProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
 {
-  connect( m_selectionModel, SIGNAL( selectionChanged( const QItemSelection &, const QItemSelection & ) ),
-      SLOT( navigationSelectionChanged( const QItemSelection &, const QItemSelection & ) ) );
+  connect( m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+      SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)) );
   connect( m_selectionModel, SIGNAL(resetNavigation()), SLOT(updateNavigation()) );
 
   disconnect(sourceModel, SIGNAL(modelReset()), this, SLOT(updateNavigation()));
@@ -140,8 +140,8 @@ KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel*
   : QItemSelectionModel(model, parent), m_selectionModel(selectionModel), m_direction(Forward)
 {
   Q_ASSERT(model == selectionModel->model());
-  connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-          SLOT(navigationSelectionChanged(const QItemSelection&,const QItemSelection&)));
+  connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+          SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
 }
 
 KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel* model, QItemSelectionModel* selectionModel, Direction direction, QObject *parent)
@@ -149,8 +149,8 @@ KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel*
 {
   Q_ASSERT(model == selectionModel->model());
   if (m_direction == Forward)
-    connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-            SLOT(navigationSelectionChanged(const QItemSelection&,const QItemSelection&)));
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
 }
 
 void KForwardingItemSelectionModel::select(const QModelIndex& index, QItemSelectionModel::SelectionFlags command)

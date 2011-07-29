@@ -65,7 +65,7 @@ void DavPrincipalSearchJob::start()
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), query );
   job->addMetaData( "PropagateHttpHeader", "true" );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( principalCollectionSetSearchFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(principalCollectionSetSearchFinished(KJob*)) );
   job->start();
 }
 
@@ -177,7 +177,7 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
     buildReportQuery( principalPropertySearchQuery );
     KIO::DavJob *reportJob = DavManager::self()->createReportJob( url, principalPropertySearchQuery );
     reportJob->addMetaData( "PropagateHttpHeader", "true" );
-    connect( reportJob, SIGNAL( result( KJob* ) ), this, SLOT( principalPropertySearchFinished( KJob* ) ) );
+    connect( reportJob, SIGNAL(result(KJob*)), this, SLOT(principalPropertySearchFinished(KJob*)) );
     ++mPrincipalPropertySearchSubJobCount;
     reportJob->start();
   }

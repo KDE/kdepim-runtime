@@ -141,7 +141,7 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KC
       KPIM::KIncidenceChooser* ch = new KPIM::KIncidenceChooser();
       ch->setIncidence( localIncidence, addedIncidence );
       if ( KPIM::KIncidenceChooser::chooseMode == KPIM::KIncidenceChooser::ask ) {
-        connect ( this, SIGNAL( useGlobalMode() ), ch, SLOT (  useGlobalMode() ) );
+        connect ( this, SIGNAL(useGlobalMode()), ch, SLOT (useGlobalMode()) );
         if ( ch->exec() )
           if ( KPIM::KIncidenceChooser::chooseMode != KPIM::KIncidenceChooser::ask )
             emit useGlobalMode() ;

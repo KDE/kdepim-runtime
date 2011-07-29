@@ -49,7 +49,7 @@ void ObjectMoveJob::start()
   const QString path = ObjectUtils::davPath( mObject.module() );
 
   KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }
 
 Object ObjectMoveJob::object() const

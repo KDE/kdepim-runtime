@@ -151,8 +151,8 @@ void SubscriptionDialog::connectAccount( const ImapAccount &account, const QStri
   login->setEncryptionMode( account.encryptionMode() );
   login->setAuthenticationMode( account.authenticationMode() );
 
-  connect( login, SIGNAL( result( KJob* ) ),
-           this, SLOT( onLoginDone( KJob* ) ) );
+  connect( login, SIGNAL(result(KJob*)),
+           this, SLOT(onLoginDone(KJob*)) );
   login->start();
 }
 
@@ -184,9 +184,9 @@ void SubscriptionDialog::onReloadRequested()
 
   KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
   list->setIncludeUnsubscribed( true );
-  connect( list, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
-           this, SLOT( onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
-  connect( list, SIGNAL( result(KJob*) ), this, SLOT( onFullListingDone(KJob*) ) );
+  connect( list, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
+           this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
+  connect( list, SIGNAL(result(KJob*)), this, SLOT(onFullListingDone(KJob*)) );
   list->start();
 }
 
@@ -251,9 +251,9 @@ void SubscriptionDialog::onFullListingDone( KJob *job )
 
   KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
   list->setIncludeUnsubscribed( false );
-  connect( list, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
-           this, SLOT( onSubscribedMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
-  connect( list, SIGNAL( result(KJob*) ), this, SLOT( onReloadDone(KJob*) ) );
+  connect( list, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
+           this, SLOT(onSubscribedMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
+  connect( list, SIGNAL(result(KJob*)), this, SLOT(onReloadDone(KJob*)) );
   list->start();
 }
 

@@ -92,8 +92,8 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
   mCollectionView->setModel( filterModel );
   mCollectionView->header()->setResizeMode( QHeaderView::ResizeToContents );
 
-  connect( mCollectionView, SIGNAL( currentChanged( const Akonadi::Collection& ) ),
-           this, SLOT( collectionChanged( const Akonadi::Collection& ) ) );
+  connect( mCollectionView, SIGNAL(currentChanged(Akonadi::Collection)),
+           this, SLOT(collectionChanged(Akonadi::Collection)) );
 
   collectionLayout->addWidget( mCollectionView );
 
@@ -111,13 +111,13 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
   mSyncButton = new QPushButton( mSyncAction->text() );
   mSyncButton->setIcon( mSyncAction->icon() );
   mButtonBox->addButton( mSyncButton, QDialogButtonBox::ActionRole );
-  connect( mSyncButton, SIGNAL( clicked() ), mSyncAction, SLOT( trigger() ) );
+  connect( mSyncButton, SIGNAL(clicked()), mSyncAction, SLOT(trigger()) );
   mSourcesDialog = new AkonadiResourceDialog( mimeList, this );
 
   mSourcesButton = new QPushButton( this );
   mButtonBox->addButton( mSourcesButton, QDialogButtonBox::ActionRole );
 
-  connect( mSourcesButton, SIGNAL( clicked() ), mSourcesDialog, SLOT( show() ) );
+  connect( mSourcesButton, SIGNAL(clicked()), mSourcesDialog, SLOT(show()) );
 
   mInfoTextLabel = new QLabel( this );
   mInfoTextLabel->setWordWrap( true );
@@ -127,8 +127,8 @@ ResourceConfigBase::ResourceConfigBase( const QStringList &mimeList, QWidget *pa
 
   updateCollectionButtonState();
 
-  connect( actionManager, SIGNAL( actionStateUpdated() ),
-           this, SLOT( updateCollectionButtonState() ) );
+  connect( actionManager, SIGNAL(actionStateUpdated()),
+           this, SLOT(updateCollectionButtonState()) );
 }
 
 ResourceConfigBase::~ResourceConfigBase()
@@ -169,7 +169,7 @@ void ResourceConfigBase::saveSettings( KRES::Resource *resource )
 void ResourceConfigBase::connectMimeCheckBoxes()
 {
   foreach ( const QCheckBox *checkBox, mMimeCheckBoxes ) {
-    connect( checkBox, SIGNAL( toggled( bool ) ), SLOT( mimeCheckBoxToggled( bool ) ) );
+    connect( checkBox, SIGNAL(toggled(bool)), SLOT(mimeCheckBoxToggled(bool)) );
   }
 }
 

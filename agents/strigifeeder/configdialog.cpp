@@ -37,7 +37,7 @@ ConfigDialog::ConfigDialog( WId windowId, Settings *settings, QWidget * parent )
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
-  connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
+  connect( this, SIGNAL(okClicked()), SLOT(save()) );
 
   m_manager = new KConfigDialogManager( this, mSettings );
   m_manager->updateWidgets();

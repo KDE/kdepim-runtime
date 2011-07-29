@@ -122,7 +122,7 @@ void KJotsMigrator::syncDone(KJob *job)
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
   connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
-  connect( collectionFetchJob, SIGNAL(result(KJob*)), SLOT( rootFetchFinished(KJob*)) );
+  connect( collectionFetchJob, SIGNAL(result(KJob*)), SLOT(rootFetchFinished(KJob*)) );
 }
 
 void KJotsMigrator::rootFetchFinished( KJob *job )

@@ -71,13 +71,13 @@ int main( int argc, char **argv )
   KMailMigrator *migrator = new KMailMigrator;
   if ( infoDialog && migrator ) {
     infoDialog->migratorAdded();
-    QObject::connect( migrator, SIGNAL( message( KMigratorBase::MessageType, QString ) ),
-                      infoDialog, SLOT( message( KMigratorBase::MessageType, QString ) ) );
-    QObject::connect( migrator, SIGNAL( destroyed() ), infoDialog, SLOT( migratorDone() ) );
-    QObject::connect( migrator, SIGNAL( status( QString ) ), infoDialog, SLOT( status( QString ) ) );
-    QObject::connect( migrator, SIGNAL( progress( int ) ), infoDialog, SLOT( progress( int ) ) );
-    QObject::connect( migrator, SIGNAL( progress( int, int, int ) ),
-                      infoDialog, SLOT( progress( int, int, int ) ) );
+    QObject::connect( migrator, SIGNAL(message(KMigratorBase::MessageType,QString)),
+                      infoDialog, SLOT(message(KMigratorBase::MessageType,QString)) );
+    QObject::connect( migrator, SIGNAL(destroyed()), infoDialog, SLOT(migratorDone()) );
+    QObject::connect( migrator, SIGNAL(status(QString)), infoDialog, SLOT(status(QString)) );
+    QObject::connect( migrator, SIGNAL(progress(int)), infoDialog, SLOT(progress(int)) );
+    QObject::connect( migrator, SIGNAL(progress(int,int,int)),
+                      infoDialog, SLOT(progress(int,int,int)) );
   }
   args->clear();
   const int result = app->exec();

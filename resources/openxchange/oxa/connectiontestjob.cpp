@@ -36,7 +36,7 @@ void ConnectionTestJob::start()
   const KUrl url( mUrl + QString::fromLatin1( "/ajax/login?action=login&name=%1&password=%2" ).arg( mUser ).arg( mPassword ) );
 
   KJob *job = KIO::storedGet( url, KIO::Reload, KIO::HideProgressInfo );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( httpJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(httpJobFinished(KJob*)) );
 }
 
 void ConnectionTestJob::httpJobFinished( KJob *job )

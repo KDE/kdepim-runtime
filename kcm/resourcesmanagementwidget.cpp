@@ -56,13 +56,13 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     foreach( const QString& type, d->wantedMimeTypes )
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
     connect( d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-             SLOT( updateButtonState() ) );
-    connect( d->ui.resourcesList, SIGNAL( doubleClicked( const Akonadi::AgentInstance& ) ),
-             SLOT( editClicked() ) );
+             SLOT(updateButtonState()) );
+    connect( d->ui.resourcesList, SIGNAL(doubleClicked(Akonadi::AgentInstance)),
+             SLOT(editClicked()) );
 
-    connect( d->ui.addButton, SIGNAL( clicked () ), SLOT( addClicked() ) );
-    connect( d->ui.editButton, SIGNAL( clicked() ), SLOT( editClicked() ) );
-    connect( d->ui.removeButton, SIGNAL( clicked() ), SLOT( removeClicked() ) );
+    connect( d->ui.addButton, SIGNAL(clicked()), SLOT(addClicked()) );
+    connect( d->ui.editButton, SIGNAL(clicked()), SLOT(editClicked()) );
+    connect( d->ui.removeButton, SIGNAL(clicked()), SLOT(removeClicked()) );
 
     updateButtonState();
     Akonadi::Control::widgetNeedsAkonadi( this );

@@ -106,25 +106,25 @@ void AccountDialog::setupWidgets()
 
   intervalSpin->setRange( ResourceSettings::self()->minimumCheckInterval(), 10000, 1 );
 
-  connect( leaveOnServerCheck, SIGNAL( clicked() ),
-           this, SLOT( slotLeaveOnServerClicked() ) );
-  connect( leaveOnServerDaysCheck, SIGNAL( toggled(bool) ),
-           this, SLOT( slotEnableLeaveOnServerDays(bool)) );
+  connect( leaveOnServerCheck, SIGNAL(clicked()),
+           this, SLOT(slotLeaveOnServerClicked()) );
+  connect( leaveOnServerDaysCheck, SIGNAL(toggled(bool)),
+           this, SLOT(slotEnableLeaveOnServerDays(bool)) );
   connect( leaveOnServerDaysSpin, SIGNAL(valueChanged(int)),
            SLOT(slotLeaveOnServerDaysChanged(int)));
-  connect( leaveOnServerCountCheck, SIGNAL( toggled(bool) ),
-           this, SLOT( slotEnableLeaveOnServerCount(bool)) );
+  connect( leaveOnServerCountCheck, SIGNAL(toggled(bool)),
+           this, SLOT(slotEnableLeaveOnServerCount(bool)) );
   connect( leaveOnServerCountSpin, SIGNAL(valueChanged(int)),
            SLOT(slotLeaveOnServerCountChanged(int)));
-  connect( leaveOnServerSizeCheck, SIGNAL( toggled(bool) ),
-           this, SLOT( slotEnableLeaveOnServerSize(bool)) );
+  connect( leaveOnServerSizeCheck, SIGNAL(toggled(bool)),
+           this, SLOT(slotEnableLeaveOnServerSize(bool)) );
 
   connect(filterOnServerSizeSpin, SIGNAL(valueChanged(int)),
           SLOT(slotFilterOnServerSizeChanged(int)));
   connect( filterOnServerCheck, SIGNAL(toggled(bool)),
            filterOnServerSizeSpin, SLOT(setEnabled(bool)) );
-  connect( filterOnServerCheck, SIGNAL( clicked() ),
-           this, SLOT( slotFilterOnServerClicked() ) );
+  connect( filterOnServerCheck, SIGNAL(clicked()),
+           this, SLOT(slotFilterOnServerClicked()) );
 
   connect( checkCapabilities, SIGNAL(clicked()),
            SLOT(slotCheckPopCapabilities()) );
@@ -396,10 +396,10 @@ void AccountDialog::slotCheckPopCapabilities()
   mServerTest->setPort( encryptionType, portEdit->value() );
   mServerTest->setServer( hostEdit->text() );
   mServerTest->setProtocol( "pop" );
-  connect( mServerTest, SIGNAL( finished(QList<int>) ),
-           this, SLOT( slotPopCapabilities(QList<int>) ) );
-  connect( mServerTest, SIGNAL( finished(QList<int>) ),
-           busyCursorHelper, SLOT( deleteLater() ) );
+  connect( mServerTest, SIGNAL(finished(QList<int>)),
+           this, SLOT(slotPopCapabilities(QList<int>)) );
+  connect( mServerTest, SIGNAL(finished(QList<int>)),
+           busyCursorHelper, SLOT(deleteLater()) );
 
   mServerTest->start();
   mServerTestFailed = false;

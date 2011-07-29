@@ -126,8 +126,8 @@ void DataSink::getChanges()
   ItemFetchJob *job = new ItemFetchJob( col );
   job->fetchScope().fetchFullPayload();
 
-  QObject::connect( job, SIGNAL( itemsReceived( const Akonadi::Item::List & ) ), this, SLOT( slotItemsReceived( const Akonadi::Item::List & ) ) );
-  QObject::connect( job, SIGNAL( result( KJob * ) ), this, SLOT( slotGetChangesFinished( KJob * ) ) );
+  QObject::connect( job, SIGNAL(itemsReceived(Akonadi::Item::List)), this, SLOT(slotItemsReceived(Akonadi::Item::List)) );
+  QObject::connect( job, SIGNAL(result(KJob*)), this, SLOT(slotGetChangesFinished(KJob*)) );
 
   // FIXME give me a real eventloop please!
   if ( !job->exec() ) {

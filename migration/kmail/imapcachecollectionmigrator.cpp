@@ -232,7 +232,7 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
   if ( mImportCachedMessages || ( mImportNewMessages && !mUidHash.contains( storeRemoteId ) ) ) {
     FileStore::ItemFetchJob *job = q->store()->fetchItem( item );
     job->fetchScope().fetchFullPayload( true );
-    connect( job, SIGNAL( result( KJob* ) ), q, SLOT( fetchItemResult( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), q, SLOT(fetchItemResult(KJob*)) );
   } else if ( mTagListHash.contains( storeRemoteId ) ) {
     ItemCreateJob *createJob = 0;
 
@@ -247,7 +247,7 @@ void ImapCacheCollectionMigrator::Private::processNextItem()
 
     createJob->setProperty( "storeRemoteId", storeRemoteId );
     createJob->setProperty( "storeParentCollection", QVariant::fromValue<Collection>( item.parentCollection() ) );
-    connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
+    connect( createJob, SIGNAL(result(KJob*)), q, SLOT(itemCreateResult(KJob*)) );
 
   } else {
     QMetaObject::invokeMethod( q, "processNextItem", Qt::QueuedConnection );
@@ -283,7 +283,7 @@ void ImapCacheCollectionMigrator::Private::processNextDeletedUid()
   item.setRemoteId( uid );
 
   ItemCreateJob *createJob = new ItemCreateJob( item, mCurrentCollection, q->hiddenSession() );
-  connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemDeletePhase1Result( KJob* ) ) );
+  connect( createJob, SIGNAL(result(KJob*)), q, SLOT(itemDeletePhase1Result(KJob*)) );
 }
 
 void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
@@ -334,7 +334,7 @@ void ImapCacheCollectionMigrator::Private::fetchItemResult( KJob *job )
   if ( createJob != 0 ) {
     createJob->setProperty( "storeRemoteId", storeRemoteId );
     createJob->setProperty( "storeParentCollection", QVariant::fromValue<Collection>( item.parentCollection() ) );
-    connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( itemCreateResult( KJob* ) ) );
+    connect( createJob, SIGNAL(result(KJob*)), q, SLOT(itemCreateResult(KJob*)) );
   } else {
     kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Skipping cacheItem: remoteId=" << item.remoteId()
                                      << "mimeType=" << item.mimeType()
@@ -381,7 +381,7 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
       cacheItem.setRemoteId( storeRemoteId );
       cacheItem.setParentCollection( storeCollection );
       FileStore::ItemDeleteJob *deleteJob = q->store()->deleteItem( cacheItem );
-      connect( deleteJob, SIGNAL( result( KJob* ) ), q, SLOT( cacheItemDeleteResult( KJob* ) ) );
+      connect( deleteJob, SIGNAL(result(KJob*)), q, SLOT(cacheItemDeleteResult(KJob*)) );
     } else {
       processNextItem();
     }
@@ -403,7 +403,7 @@ void ImapCacheCollectionMigrator::Private::itemDeletePhase1Result( KJob *job )
     processNextDeletedUid();
   } else {
     ItemDeleteJob *deleteJob = new ItemDeleteJob( item );
-    connect( deleteJob, SIGNAL( result( KJob* ) ), q, SLOT( itemDeletePhase2Result( KJob* ) ) );
+    connect( deleteJob, SIGNAL(result(KJob*)), q, SLOT(itemDeletePhase2Result(KJob*)) );
   }
 }
 
@@ -445,7 +445,7 @@ void ImapCacheCollectionMigrator::Private::unsubscribeCollections()
 
     SubscriptionJob *job = new SubscriptionJob( q );
     job->unsubscribe( mUnsubscribedCollections );
-    QObject::connect( job, SIGNAL( result( KJob* ) ), q, SLOT( unsubscribeCollectionsResult( KJob * ) ) );
+    QObject::connect( job, SIGNAL(result(KJob*)), q, SLOT(unsubscribeCollectionsResult(KJob*)) );
   }
 }
 
@@ -462,8 +462,8 @@ void ImapCacheCollectionMigrator::Private::unsubscribeCollectionsResult( KJob *j
 ImapCacheCollectionMigrator::ImapCacheCollectionMigrator( const AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent )
   : AbstractCollectionMigrator( resource, resourceName, store, parent ), d( new Private( this ) )
 {
-  connect( this, SIGNAL( migrationFinished( Akonadi::AgentInstance, QString ) ),
-           SLOT( unsubscribeCollections() ) );
+  connect( this, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
+           SLOT(unsubscribeCollections()) );
 }
 
 ImapCacheCollectionMigrator::~ImapCacheCollectionMigrator()
@@ -584,7 +584,7 @@ void ImapCacheCollectionMigrator::migrateCollection( const Collection &collectio
 
   if ( d->mImportNewMessages || d->mImportCachedMessages ) {
     FileStore::ItemFetchJob *job = store()->fetchItems( cache );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchItemsResult( KJob * ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(fetchItemsResult(KJob*)) );
     emit status( i18nc( "@info:status foldername", "%1: listing messages...", collection.name() ) );
   } else if ( d->mRemoveDeletedMessages ) {
     emit status( collection.name() );

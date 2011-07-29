@@ -133,12 +133,12 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   m_ui->safeImapGroup->setId( m_ui->sslRadio, KIMAP::LoginJob::AnySslVersion );
   m_ui->safeImapGroup->setId( m_ui->tlsRadio, KIMAP::LoginJob::TlsV1 );
 
-  connect( m_ui->noRadio, SIGNAL( toggled(bool) ),
-           this, SLOT( slotSafetyChanged() ) );
-  connect( m_ui->sslRadio, SIGNAL( toggled(bool) ),
-           this, SLOT( slotSafetyChanged() ) );
-  connect( m_ui->tlsRadio, SIGNAL( toggled(bool) ),
-           this, SLOT( slotSafetyChanged() ) );
+  connect( m_ui->noRadio, SIGNAL(toggled(bool)),
+           this, SLOT(slotSafetyChanged()) );
+  connect( m_ui->sslRadio, SIGNAL(toggled(bool)),
+           this, SLOT(slotSafetyChanged()) );
+  connect( m_ui->tlsRadio, SIGNAL(toggled(bool)),
+           this, SLOT(slotSafetyChanged()) );
 
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
@@ -161,38 +161,38 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   m_ui->identityLabel->setBuddy( m_identityCombobox );
 
 
-  connect( m_ui->testButton, SIGNAL( pressed() ), SLOT( slotTest() ) );
+  connect( m_ui->testButton, SIGNAL(pressed()), SLOT(slotTest()) );
 
-  connect( m_ui->imapServer, SIGNAL( textChanged( const QString & ) ),
-           SLOT( slotTestChanged() ) );
-  connect( m_ui->imapServer, SIGNAL( textChanged( const QString & ) ),
-           SLOT( slotComplete() ) );
-  connect( m_ui->userName, SIGNAL( textChanged( const QString & ) ),
-           SLOT( slotComplete() ) );
-  connect( m_ui->subscriptionEnabled, SIGNAL( toggled(bool) ), this, SLOT( slotSubcriptionCheckboxChanged() ) );
-  connect( m_ui->subscriptionButton, SIGNAL( pressed() ), SLOT( slotManageSubscriptions() ) );
+  connect( m_ui->imapServer, SIGNAL(textChanged(QString)),
+           SLOT(slotTestChanged()) );
+  connect( m_ui->imapServer, SIGNAL(textChanged(QString)),
+           SLOT(slotComplete()) );
+  connect( m_ui->userName, SIGNAL(textChanged(QString)),
+           SLOT(slotComplete()) );
+  connect( m_ui->subscriptionEnabled, SIGNAL(toggled(bool)), this, SLOT(slotSubcriptionCheckboxChanged()) );
+  connect( m_ui->subscriptionButton, SIGNAL(pressed()), SLOT(slotManageSubscriptions()) );
 
   connect( m_ui->managesieveCheck, SIGNAL(toggled(bool)),
            SLOT(slotEnableWidgets()) );
   connect( m_ui->sameConfigCheck, SIGNAL(toggled(bool)),
            SLOT(slotEnableWidgets()) );
 
-  connect( m_ui->useDefaultIdentityCheck, SIGNAL( toggled(bool) ), this, SLOT( slotIdentityCheckboxChanged() ) );
-  connect( m_ui->enableMailCheckBox, SIGNAL( toggled(bool) ), this, SLOT( slotMailCheckboxChanged() ) );
-  connect( m_ui->safeImapGroup, SIGNAL( buttonClicked( int ) ), this, SLOT( slotEncryptionRadioChanged() ) );
+  connect( m_ui->useDefaultIdentityCheck, SIGNAL(toggled(bool)), this, SLOT(slotIdentityCheckboxChanged()) );
+  connect( m_ui->enableMailCheckBox, SIGNAL(toggled(bool)), this, SLOT(slotMailCheckboxChanged()) );
+  connect( m_ui->safeImapGroup, SIGNAL(buttonClicked(int)), this, SLOT(slotEncryptionRadioChanged()) );
 
   readSettings();
   slotTestChanged();
   slotComplete();
 #ifndef IMAPRESOURCE_NO_SOLID
   connect( Solid::Networking::notifier(),
-           SIGNAL( statusChanged( Solid::Networking::Status ) ),
-           SLOT( slotTestChanged() ) );
+           SIGNAL(statusChanged(Solid::Networking::Status)),
+           SLOT(slotTestChanged()) );
 #endif
-  connect( this, SIGNAL( applyClicked() ),
-           SLOT( applySettings() ) );
-  connect( this, SIGNAL( okClicked() ),
-           SLOT( applySettings() ) );
+  connect( this, SIGNAL(applyClicked()),
+           SLOT(applySettings()) );
+  connect( this, SIGNAL(okClicked()),
+           SLOT(applySettings()) );
 }
 
 SetupServer::~SetupServer()
@@ -426,8 +426,8 @@ void SetupServer::slotTest()
 
   m_serverTest->setProtocol( "imap" );
   m_serverTest->setProgressBar( m_ui->testProgress );
-  connect( m_serverTest, SIGNAL( finished( QList<int> ) ),
-           SLOT( slotFinished( QList<int> ) ) );
+  connect( m_serverTest, SIGNAL(finished(QList<int>)),
+           SLOT(slotFinished(QList<int>)) );
   enableButtonOk( false );
   m_serverTest->start();
 }

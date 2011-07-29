@@ -49,7 +49,7 @@ void ObjectDeleteJob::start()
   const QString path = ObjectUtils::davPath( mObject.module() );
 
   KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( davJobFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }
 
 void ObjectDeleteJob::davJobFinished( KJob *job )

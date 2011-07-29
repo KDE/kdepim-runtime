@@ -96,8 +96,8 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
   connect( ServerManager::self(), SIGNAL(started()), SLOT(updateStatus()) );
   connect( ServerManager::self(), SIGNAL(stopped()), SLOT(updateStatus()) );
 
-  connect( ui_driver.driverBox, SIGNAL(currentIndexChanged( int )), SLOT(driverChanged(int)) );
-  connect( ui_driver.driverBox, SIGNAL(currentIndexChanged( int )), SLOT(changed()) );
+  connect( ui_driver.driverBox, SIGNAL(currentIndexChanged(int)), SLOT(driverChanged(int)) );
+  connect( ui_driver.driverBox, SIGNAL(currentIndexChanged(int)), SLOT(changed()) );
 }
 
 void ServerConfigModule::load()

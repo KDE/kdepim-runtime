@@ -317,8 +317,8 @@ void POP3Resource::doStateStep()
       kDebug() << "================ Starting state Connect ========================";
       Q_ASSERT( !mPopSession );
       mPopSession = new POPSession( mPassword );
-      connect( mPopSession, SIGNAL( slaveError(int,const QString &)),
-               this, SLOT(slotSessionError(int, const QString&)) );
+      connect( mPopSession, SIGNAL(slaveError(int,QString)),
+               this, SLOT(slotSessionError(int,QString)) );
       advanceState( Login );
       break;
     }

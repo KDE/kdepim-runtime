@@ -33,7 +33,7 @@ CompactPage::CompactPage( const QString &collectionId, QWidget *parent )
 {
   ui.setupUi( this );
 
-  connect( ui.compactButton, SIGNAL( clicked() ), this, SLOT( compact() ) );
+  connect( ui.compactButton, SIGNAL(clicked()), this, SLOT(compact()) );
 
   checkCollectionId();
 }
@@ -46,8 +46,8 @@ void CompactPage::checkCollectionId()
     CollectionFetchJob *fetchJob =
         new CollectionFetchJob( collection, CollectionFetchJob::Base );
 
-    connect( fetchJob, SIGNAL( result( KJob* ) ),
-             this, SLOT( onCollectionFetchCheck( KJob* ) ) );
+    connect( fetchJob, SIGNAL(result(KJob*)),
+             this, SLOT(onCollectionFetchCheck(KJob*)) );
   }
 }
 
@@ -60,8 +60,8 @@ void CompactPage::compact()
   CollectionFetchJob *fetchJob =
       new CollectionFetchJob( collection, CollectionFetchJob::Base );
 
-  connect( fetchJob, SIGNAL( result( KJob* ) ),
-           this, SLOT( onCollectionFetchCompact( KJob* ) ) );
+  connect( fetchJob, SIGNAL(result(KJob*)),
+           this, SLOT(onCollectionFetchCompact(KJob*)) );
 }
 
 void CompactPage::onCollectionFetchCheck( KJob *job )
@@ -114,8 +114,8 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
     if ( mbox.purge( attr->deletedItemEntries() ) ) {
       mboxCollection.removeAttribute<DeletedItemsAttribute>();
       CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
-      connect( modifyJob, SIGNAL( result( KJob * ) ),
-               this, SLOT( onCollectionModify( KJob *) ) );
+      connect( modifyJob, SIGNAL(result(KJob*)),
+               this, SLOT(onCollectionModify(KJob*)) );
     } else
       ui.messageLabel->setText( i18n( "Failed to compact the mbox file." ) );
   }

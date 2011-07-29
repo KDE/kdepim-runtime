@@ -115,8 +115,8 @@ void Settings::requestPassword()
   } else {
     Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous );
     if ( wallet ) {
-      connect( wallet, SIGNAL( walletOpened(bool) ),
-               this, SLOT( onWalletOpened(bool) ) );
+      connect( wallet, SIGNAL(walletOpened(bool)),
+               this, SLOT(onWalletOpened(bool)) );
     } else {
       QMetaObject::invokeMethod( this, "onWalletOpened", Qt::QueuedConnection, Q_ARG(bool, true) );
     }
@@ -252,8 +252,8 @@ void Settings::renameRootCollection( const QString &newName )
   Akonadi::CollectionFetchJob *fetchJob =
       new Akonadi::CollectionFetchJob( rootCollection, Akonadi::CollectionFetchJob::Base );
   fetchJob->setProperty( "collectionName", newName );
-  connect( fetchJob, SIGNAL( result( KJob* ) ),
-           this, SLOT( onRootCollectionFetched( KJob* ) ) );
+  connect( fetchJob, SIGNAL(result(KJob*)),
+           this, SLOT(onRootCollectionFetched(KJob*)) );
 }
 
 void Settings::onRootCollectionFetched( KJob *job )

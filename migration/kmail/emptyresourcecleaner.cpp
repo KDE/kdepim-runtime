@@ -81,7 +81,7 @@ void EmptyResourceCleaner::Private::deleteCollections()
                                        << "remoteId=" << collection.remoteId();
       CollectionDeleteJob *deleteJob = new CollectionDeleteJob( collection );
       deleteJob->setProperty( "collection", QVariant::fromValue<Collection>( collection ) );
-      connect( deleteJob, SIGNAL( result( KJob* ) ), q, SLOT( collectionDeleteResult( KJob* ) ) );
+      connect( deleteJob, SIGNAL(result(KJob*)), q, SLOT(collectionDeleteResult(KJob*)) );
       return;
     }
   }
@@ -186,7 +186,7 @@ EmptyResourceCleaner::EmptyResourceCleaner( const AgentInstance &resource, QObje
 {
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Creating cleaner for resource"
                                    << d->mResource.identifier();
-  connect( this, SIGNAL( cleanupFinished( Akonadi::AgentInstance ) ), SLOT( deleteLater() ) );
+  connect( this, SIGNAL(cleanupFinished(Akonadi::AgentInstance)), SLOT(deleteLater()) );
 
   CollectionFetchScope scope;
   scope.setResource( d->mResource.identifier() );
@@ -195,7 +195,7 @@ EmptyResourceCleaner::EmptyResourceCleaner( const AgentInstance &resource, QObje
 
   CollectionFetchJob *fetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive );
   fetchJob->setFetchScope( scope );
-  connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( collectionFetchResult( KJob* ) ) );
+  connect( fetchJob, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)) );
 }
 
 EmptyResourceCleaner::~EmptyResourceCleaner()

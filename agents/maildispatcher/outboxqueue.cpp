@@ -115,7 +115,7 @@ void OutboxQueue::Private::initQueue()
   ItemFetchJob *job = new ItemFetchJob( outbox );
   job->fetchScope().fetchAllAttributes();
   job->fetchScope().fetchFullPayload( false );
-  connect( job, SIGNAL( result( KJob* ) ), q, SLOT( collectionFetched( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), q, SLOT(collectionFetched(KJob*)) );
 }
 
 void OutboxQueue::Private::addIfComplete( const Item &item )
@@ -302,7 +302,7 @@ void OutboxQueue::Private::localFoldersChanged()
 
     SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob( q );
     job->requestDefaultCollection( SpecialMailCollections::Outbox );
-    connect( job, SIGNAL( result( KJob* ) ), q, SLOT( localFoldersRequestResult( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), q, SLOT(localFoldersRequestResult(KJob*)) );
 
     kDebug() << "Requesting outbox folder.";
     job->start();
@@ -330,7 +330,7 @@ void OutboxQueue::Private::localFoldersRequestResult( KJob *job )
     if ( ++outboxDiscoveryRetries <= OUTBOX_DISCOVERY_RETRIES ) {
       const int timeout = OUTBOX_DISCOVERY_WAIT_TIME * outboxDiscoveryRetries;
       kWarning() << "Failed to get outbox folder. Retrying in: " << timeout;
-      QTimer::singleShot( timeout, q, SLOT( localFoldersChanged() ) );
+      QTimer::singleShot( timeout, q, SLOT(localFoldersChanged()) );
     } else {
       kWarning() << "Failed to get outbox folder. Giving up."; ;
       emit q->error( i18n( "Could not access the outbox folder (%1).", job->errorString() ) );
@@ -394,20 +394,20 @@ OutboxQueue::OutboxQueue( QObject *parent )
   d->monitor = new Monitor( this );
   d->monitor->itemFetchScope().fetchAllAttributes();
   d->monitor->itemFetchScope().fetchFullPayload( false );
-  connect( d->monitor, SIGNAL( itemAdded( Akonadi::Item, Akonadi::Collection ) ),
-           this, SLOT( itemAdded( Akonadi::Item ) ) );
-  connect( d->monitor, SIGNAL( itemChanged( Akonadi::Item, QSet<QByteArray> ) ),
-           this, SLOT( itemChanged( Akonadi::Item ) ) );
-  connect( d->monitor, SIGNAL( itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) ),
-           this, SLOT( itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) ) );
-  connect( d->monitor, SIGNAL( itemRemoved( Akonadi::Item ) ),
-           this, SLOT( itemRemoved( Akonadi::Item ) ) );
+  connect( d->monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
+           this, SLOT(itemAdded(Akonadi::Item)) );
+  connect( d->monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
+           this, SLOT(itemChanged(Akonadi::Item)) );
+  connect( d->monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
+           this, SLOT(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)) );
+  connect( d->monitor, SIGNAL(itemRemoved(Akonadi::Item)),
+           this, SLOT(itemRemoved(Akonadi::Item)) );
 
-  connect( SpecialMailCollections::self(), SIGNAL( defaultCollectionsChanged() ), this, SLOT( localFoldersChanged() ) );
+  connect( SpecialMailCollections::self(), SIGNAL(defaultCollectionsChanged()), this, SLOT(localFoldersChanged()) );
   d->localFoldersChanged();
 
   d->futureTimer = new QTimer( this );
-  connect( d->futureTimer, SIGNAL( timeout() ), this, SLOT( checkFuture() ) );
+  connect( d->futureTimer, SIGNAL(timeout()), this, SLOT(checkFuture()) );
   d->futureTimer->start( 60 * 60 * 1000 ); // 1 hour
 }
 
@@ -451,7 +451,7 @@ void OutboxQueue::fetchOne()
   ItemFetchJob *job = new ItemFetchJob( item );
   job->fetchScope().fetchAllAttributes();
   job->fetchScope().fetchFullPayload();
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( itemFetched( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(itemFetched(KJob*)) );
 }
 
 #include "outboxqueue.moc"

@@ -95,8 +95,8 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   Settings::self()->setWinId( winIdForDialogs() );
 
   mFreeBusyHandler = new DavFreeBusyHandler( this );
-  connect( mFreeBusyHandler, SIGNAL( handlesFreeBusy(QString,bool)), this, SLOT( onHandlesFreeBusy(QString,bool)) );
-  connect( mFreeBusyHandler, SIGNAL( freeBusyRetrieved(QString,QString,bool,QString)), this, SLOT( onFreeBusyRetrieved(QString,QString,bool,QString)) );
+  connect( mFreeBusyHandler, SIGNAL(handlesFreeBusy(QString,bool)), this, SLOT(onHandlesFreeBusy(QString,bool)) );
+  connect( mFreeBusyHandler, SIGNAL(freeBusyRetrieved(QString,QString,bool,QString)), this, SLOT(onFreeBusyRetrieved(QString,QString,bool,QString)) );
 }
 
 DavGroupwareResource::~DavGroupwareResource()
@@ -122,7 +122,7 @@ void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collect
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
   DavCollectionDeleteJob *job = new DavCollectionDeleteJob( davUrl );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onCollectionRemovedFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onCollectionRemovedFinished(KJob*)) );
   job->start();
 }
 
@@ -223,9 +223,9 @@ void DavGroupwareResource::retrieveCollections()
   emit status( Running, i18n( "Fetching collections" ) );
 
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->configuredDavUrls() );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveCollectionsFinished( KJob* ) ) );
-  connect( job, SIGNAL( collectionDiscovered( int, const QString&, const QString& ) ),
-           SLOT( onCollectionDiscovered( int, const QString&, const QString& ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onRetrieveCollectionsFinished(KJob*)) );
+  connect( job, SIGNAL(collectionDiscovered(int,QString,QString)),
+           SLOT(onCollectionDiscovered(int,QString,QString)) );
   job->start();
 }
 
@@ -256,7 +256,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
 
   DavItemsListJob *job = new DavItemsListJob( davUrl );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveItemsFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onRetrieveItemsFinished(KJob*)) );
   job->start();
 }
 
@@ -284,7 +284,7 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
 
   DavItemFetchJob *job = new DavItemFetchJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onRetrieveItemFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onRetrieveItemFinished(KJob*)) );
   job->start();
 
   return true;
@@ -368,7 +368,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
 
   DavItemCreateJob *job = new DavItemCreateJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemAddedFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onItemAddedFinished(KJob*)) );
   job->start();
 }
 
@@ -420,7 +420,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
 
   DavItemModifyJob *job = new DavItemModifyJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemChangedFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onItemChangedFinished(KJob*)) );
   job->start();
 }
 
@@ -444,7 +444,7 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
   davItem.setEtag( item.remoteRevision() );
 
   DavItemDeleteJob *job = new DavItemDeleteJob( davUrl, davItem );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( onItemRemovedFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(onItemRemovedFinished(KJob*)) );
   job->start();
 }
 
@@ -615,7 +615,7 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   // to the remote server : only one request for n items instead of n requests.
   if ( protocolSupportsMultiget && !mEtagCache.changedRemoteIds().isEmpty() ) {
     DavItemsFetchJob *fetchJob = new DavItemsFetchJob( davUrl, mEtagCache.changedRemoteIds() );
-    connect( fetchJob, SIGNAL( result( KJob* ) ), this, SLOT( onMultigetFinished( KJob* ) ) );
+    connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(onMultigetFinished(KJob*)) );
     fetchJob->setProperty( "items", QVariant::fromValue( items ) );
     fetchJob->start();
 
@@ -759,7 +759,7 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
     const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
     DavItemFetchJob *fetchJob = new DavItemFetchJob( davUrl, davItem );
     fetchJob->setProperty( "item", QVariant::fromValue( item ) );
-    connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( onItemRefreshed( KJob* ) ) );
+    connect( fetchJob, SIGNAL(result(KJob*)), SLOT(onItemRefreshed(KJob*)) );
     fetchJob->start();
   } else {
     item.setRemoteRevision( davItem.etag() );
@@ -785,7 +785,7 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
     const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
     DavItemFetchJob *fetchJob = new DavItemFetchJob( davUrl, davItem );
     fetchJob->setProperty( "item", QVariant::fromValue( item ) );
-    connect( fetchJob, SIGNAL( result( KJob* ) ), SLOT( onItemRefreshed( KJob* ) ) );
+    connect( fetchJob, SIGNAL(result(KJob*)), SLOT(onItemRefreshed(KJob*)) );
     fetchJob->start();
   } else {
     item.setRemoteRevision( davItem.etag() );

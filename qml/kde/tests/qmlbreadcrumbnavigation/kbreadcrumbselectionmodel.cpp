@@ -71,8 +71,8 @@ KBreadcrumbSelectionModel::KBreadcrumbSelectionModel(QItemSelectionModel *select
     d_ptr(new KBreadcrumbSelectionModelPrivate(this, selectionModel, direction))
 {
   if ( direction != MakeBreadcrumbSelectionInSelf)
-    connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-            this, SLOT(sourceSelectionChanged(const QItemSelection&,const QItemSelection&)));
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            this, SLOT(sourceSelectionChanged(QItemSelection,QItemSelection)));
 }
 
 KBreadcrumbSelectionModel::~KBreadcrumbSelectionModel()

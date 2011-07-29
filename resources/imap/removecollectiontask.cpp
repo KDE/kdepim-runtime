@@ -44,8 +44,8 @@ void RemoveCollectionTask::doStart( KIMAP::Session *session )
   KIMAP::DeleteJob *job = new KIMAP::DeleteJob( session );
   job->setMailBox( mailBox );
 
-  connect( job, SIGNAL( result( KJob* ) ),
-           this, SLOT( onDeleteDone( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)),
+           this, SLOT(onDeleteDone(KJob*)) );
 
   job->start();
 }

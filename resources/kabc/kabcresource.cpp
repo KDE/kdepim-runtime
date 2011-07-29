@@ -92,13 +92,13 @@ KABCResource::KABCResource( const QString &id )
   KGlobal::locale()->insertCatalog("akonadi_kresourceassistant");
 
   mAddressBook->setErrorHandler( mErrorHandler );
-  connect( this, SIGNAL( reloadConfiguration() ), SLOT( reloadConfiguration() ) );
+  connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadConfiguration()) );
 
-  connect( mAddressBook, SIGNAL( addressBookChanged( AddressBook* ) ),
-           this, SLOT( addressBookChanged() ) );
+  connect( mAddressBook, SIGNAL(addressBookChanged(AddressBook*)),
+           this, SLOT(addressBookChanged()) );
 
-  connect( mDelayedSaveTimer, SIGNAL( timeout() ),
-           this, SLOT( delayedSaveAddressBook() ) );
+  connect( mDelayedSaveTimer, SIGNAL(timeout()),
+           this, SLOT(delayedSaveAddressBook()) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->fetchCollection( true );
@@ -145,8 +145,8 @@ void KABCResource::configure( WId windowId )
   KResourceAssistant kresAssistant( QLatin1String( "Contact" ) );
   KWindowSystem::setMainWindow( &kresAssistant, windowId );
 
-  connect( &kresAssistant, SIGNAL( error( const QString& ) ),
-           this, SIGNAL( error( const QString& ) ) );
+  connect( &kresAssistant, SIGNAL(error(QString)),
+           this, SIGNAL(error(QString)) );
 
   if ( kresAssistant.exec() != QDialog::Accepted ) {
     emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
@@ -555,24 +555,24 @@ bool KABCResource::openConfiguration()
       }
     }
 
-    connect( mBaseResource, SIGNAL( loadingError( Resource*, const QString& ) ),
-             this, SLOT( loadingError( Resource*, const QString& ) ) );
+    connect( mBaseResource, SIGNAL(loadingError(Resource*,QString)),
+             this, SLOT(loadingError(Resource*,QString)) );
 
-    connect( mBaseResource, SIGNAL( loadingFinished( Resource* ) ),
-             this, SLOT( initialLoadingFinished( Resource* ) ) );
+    connect( mBaseResource, SIGNAL(loadingFinished(Resource*)),
+             this, SLOT(initialLoadingFinished(Resource*)) );
 
     if ( mFolderResource != 0 ) {
         connect( mFolderResource,
-                 SIGNAL( signalSubresourceAdded( KABC::ResourceABC*, const QString&, const QString& ) ),
-                 this, SLOT( subResourceAdded( KABC::ResourceABC*, const QString&, const QString& ) ) );
+                 SIGNAL(signalSubresourceAdded(KABC::ResourceABC*,QString,QString)),
+                 this, SLOT(subResourceAdded(KABC::ResourceABC*,QString,QString)) );
 
         connect( mFolderResource,
-                 SIGNAL( signalSubresourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ),
-                 this, SLOT( subResourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ) );
+                 SIGNAL(signalSubresourceRemoved(KABC::ResourceABC*,QString,QString)),
+                 this, SLOT(subResourceRemoved(KABC::ResourceABC*,QString,QString)) );
 
         connect( mFolderResource,
-                 SIGNAL( signalSubresourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ),
-                 this, SLOT( subResourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ) );
+                 SIGNAL(signalSubresourceChanged(KABC::ResourceABC*,QString,QString)),
+                 this, SLOT(subResourceChanged(KABC::ResourceABC*,QString,QString)) );
     }
 
 
@@ -593,24 +593,24 @@ void KABCResource::closeConfiguration()
   mAddressBook->blockSignals( true );
 
   if ( mBaseResource != 0 ) {
-    disconnect( mBaseResource, SIGNAL( loadingError( Resource*, const QString& ) ),
-                this, SLOT( loadingError( Resource*, const QString& ) ) );
+    disconnect( mBaseResource, SIGNAL(loadingError(Resource*,QString)),
+                this, SLOT(loadingError(Resource*,QString)) );
 
-    disconnect( mBaseResource, SIGNAL( loadingFinished( Resource* ) ),
-                this, SLOT( initialLoadingFinished( Resource* ) ) );
+    disconnect( mBaseResource, SIGNAL(loadingFinished(Resource*)),
+                this, SLOT(initialLoadingFinished(Resource*)) );
 
     if ( mFolderResource != 0 ) {
         disconnect( mFolderResource,
-                    SIGNAL( signalSubresourceAdded( KABC::ResourceABC*, const QString&, const QString& ) ),
-                    this, SLOT( subResourceAdded( KABC::ResourceABC*, const QString&, const QString& ) ) );
+                    SIGNAL(signalSubresourceAdded(KABC::ResourceABC*,QString,QString)),
+                    this, SLOT(subResourceAdded(KABC::ResourceABC*,QString,QString)) );
 
         disconnect( mFolderResource,
-                    SIGNAL( signalSubresourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ),
-                    this, SLOT( subResourceRemoved( KABC::ResourceABC*, const QString&, const QString& ) ) );
+                    SIGNAL(signalSubresourceRemoved(KABC::ResourceABC*,QString,QString)),
+                    this, SLOT(subResourceRemoved(KABC::ResourceABC*,QString,QString)) );
 
         disconnect( mFolderResource,
-                    SIGNAL( signalSubresourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ),
-                    this, SLOT( subResourceChanged( KABC::ResourceABC*, const QString&, const QString& ) ) );
+                    SIGNAL(signalSubresourceChanged(KABC::ResourceABC*,QString,QString)),
+                    this, SLOT(subResourceChanged(KABC::ResourceABC*,QString,QString)) );
     }
 
     if ( mBaseResource->isOpen() )
@@ -673,8 +673,8 @@ void KABCResource::initialLoadingFinished( KABC::Resource *resource )
   Q_ASSERT( resource == mBaseResource );
 
 
-  disconnect( mBaseResource, SIGNAL( loadingFinished( Resource* ) ),
-              this, SLOT( initialLoadingFinished( Resource* ) ) );
+  disconnect( mBaseResource, SIGNAL(loadingFinished(Resource*)),
+              this, SLOT(initialLoadingFinished(Resource*)) );
 
   emit status( Idle, QString() );
 

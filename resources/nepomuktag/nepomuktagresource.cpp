@@ -141,7 +141,7 @@ void NepomukTagResource::slotLocalListResult( KJob *job )
 
     if ( !itemsToLink.isEmpty() ) {
       Akonadi::LinkJob* linkJob = new Akonadi::LinkJob( currentCollection(), itemsToLink, this );
-      connect( linkJob, SIGNAL( result( KJob* ) ), this, SLOT( slotLinkResult( KJob* ) ) );
+      connect( linkJob, SIGNAL(result(KJob*)), this, SLOT(slotLinkResult(KJob*)) );
     } else {
       itemsRetrievalDone();
     }
@@ -260,7 +260,7 @@ void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
     tagCollection.setRemoteId( statement.object().uri().toString() );
 
     LinkJob *job = new LinkJob( tagCollection, Item::List() << item, this );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( linkDone( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(linkDone(KJob*)) );
   } else if ( statement.predicate() == Soprano::Vocabulary::RDF::type() && statement.object() == Soprano::Vocabulary::NAO::Tag() ) {
     // we need to delay the actual folder creation a bit, otherwise we will not see the fully created tag yet
     m_pendingTagUris.append( statement.subject().uri() );
@@ -281,7 +281,7 @@ void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
     tagCollection.setRemoteId( statement.object().uri().toString() );
 
     UnlinkJob *job = new UnlinkJob( tagCollection, Item::List() << item, this );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( unlinkDone( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(unlinkDone(KJob*)) );
   }
 }
 

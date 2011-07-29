@@ -45,9 +45,9 @@ void RemoveCollectionRecursiveTask::doStart( KIMAP::Session *session )
   KIMAP::ListJob *listJob = new KIMAP::ListJob( session );
   listJob->setIncludeUnsubscribed( !isSubscriptionEnabled() );
   listJob->setQueriedNamespaces( serverNamespaces() );
-  connect( listJob, SIGNAL( mailBoxesReceived( QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> > ) ),
-           this, SLOT( onMailBoxesReceived( QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> > ) ) );
-  connect( listJob, SIGNAL( result( KJob* ) ), SLOT( onJobDone( KJob* ) ) );
+  connect( listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
+           this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
+  connect( listJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
   listJob->start();
 }
 
@@ -79,7 +79,7 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived( const QList< KIMAP::Mai
       // first select the mailbox
       KIMAP::SelectJob *selectJob = new KIMAP::SelectJob( mSession );
       selectJob->setMailBox( descriptor.name );
-      connect( selectJob, SIGNAL( result( KJob* ) ), SLOT( onJobDone( KJob* ) ) );
+      connect( selectJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
       selectJob->start();
 
       // mark all items as deleted
@@ -89,18 +89,18 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived( const QList< KIMAP::Mai
       storeJob->setSequenceSet( allItems );
       storeJob->setFlags( KIMAP::MessageFlags() << Akonadi::MessageFlags::Deleted );
       storeJob->setMode( KIMAP::StoreJob::AppendFlags );
-      connect( storeJob, SIGNAL( result( KJob* ) ), SLOT( onJobDone( KJob* ) ) );
+      connect( storeJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
       storeJob->start();
 
       // expunge the mailbox
       KIMAP::ExpungeJob *expungeJob = new KIMAP::ExpungeJob( mSession );
-      connect( expungeJob, SIGNAL( result( KJob* ) ), SLOT( onJobDone( KJob* ) ) );
+      connect( expungeJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
       expungeJob->start();
 
       // finally delete the mailbox
       KIMAP::DeleteJob *deleteJob = new KIMAP::DeleteJob( mSession );
       deleteJob->setMailBox( descriptor.name );
-      connect( deleteJob, SIGNAL( result( KJob* ) ), SLOT( onDeleteJobDone( KJob* ) ) );
+      connect( deleteJob, SIGNAL(result(KJob*)), SLOT(onDeleteJobDone(KJob*)) );
       mRunningDeleteJobs++;
       deleteJob->start();
     }

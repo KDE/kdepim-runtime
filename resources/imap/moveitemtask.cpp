@@ -81,8 +81,8 @@ void MoveItemTask::doStart( KIMAP::Session *session )
     KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
 
     select->setMailBox( oldMailBox );
-    connect( select, SIGNAL( result( KJob* ) ),
-             this, SLOT( onSelectDone( KJob* ) ) );
+    connect( select, SIGNAL(result(KJob*)),
+             this, SLOT(onSelectDone(KJob*)) );
 
     select->start();
   } else {
@@ -122,8 +122,8 @@ void MoveItemTask::triggerCopyJob( KIMAP::Session *session )
   copy->setSequenceSet( KIMAP::ImapSet( uid ) );
   copy->setMailBox( newMailBox );
 
-  connect( copy, SIGNAL( result( KJob* ) ),
-           this, SLOT( onCopyDone( KJob* ) ) );
+  connect( copy, SIGNAL(result(KJob*)),
+           this, SLOT(onCopyDone(KJob*)) );
 
   copy->start();
 }
@@ -151,8 +151,8 @@ void MoveItemTask::onCopyDone( KJob *job )
     store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
     store->setMode( KIMAP::StoreJob::AppendFlags );
 
-    connect( store, SIGNAL( result( KJob* ) ),
-             this,  SLOT( onStoreFlagsDone( KJob* ) ) );
+    connect( store, SIGNAL(result(KJob*)),
+             this,  SLOT(onStoreFlagsDone(KJob*)) );
 
     store->start();
   }
@@ -176,8 +176,8 @@ void MoveItemTask::onStoreFlagsDone( KJob *job )
     KIMAP::SelectJob *select = new KIMAP::SelectJob( store->session() );
     select->setMailBox( mailBoxForCollection( targetCollection() ) );
 
-    connect( select, SIGNAL( result( KJob* ) ),
-             this, SLOT( onPreSearchSelectDone( KJob* ) ) );
+    connect( select, SIGNAL(result(KJob*)),
+             this, SLOT(onPreSearchSelectDone(KJob*)) );
 
     select->start();
   }
@@ -215,8 +215,8 @@ void MoveItemTask::onPreSearchSelectDone( KJob *job )
     search->addSearchCriteria( KIMAP::SearchJob::Uid, interval.toImapSequence() );
   }
 
-  connect( search, SIGNAL( result( KJob* ) ),
-           this, SLOT( onSearchDone( KJob* ) ) );
+  connect( search, SIGNAL(result(KJob*)),
+           this, SLOT(onSearchDone(KJob*)) );
 
   search->start();
 }

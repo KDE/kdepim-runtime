@@ -31,16 +31,16 @@ ItemFetchAdapter::ItemFetchAdapter( const Collection &collection, QObject *paren
   ItemFetchJob *job = new ItemFetchJob( mCollection, this );
   job->fetchScope().fetchFullPayload();
 
-  connect( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ),
-           SLOT( jobItemsReceived( Akonadi::Item::List ) ) ),
-  connect( job,  SIGNAL( result( KJob* ) ),
-           SLOT ( jobResult( KJob* ) ) );
+  connect( job, SIGNAL(itemsReceived(Akonadi::Item::List)),
+           SLOT(jobItemsReceived(Akonadi::Item::List)) ),
+  connect( job,  SIGNAL(result(KJob*)),
+           SLOT (jobResult(KJob*)) );
 
-  connect( this, SIGNAL( itemsReceived( Akonadi::Collection, Akonadi::Item::List ) ),
-           parent, SLOT( asyncItemsReceived( Akonadi::Collection, Akonadi::Item::List ) ) );
+  connect( this, SIGNAL(itemsReceived(Akonadi::Collection,Akonadi::Item::List)),
+           parent, SLOT(asyncItemsReceived(Akonadi::Collection,Akonadi::Item::List)) );
 
-  connect( this, SIGNAL( result( ItemFetchAdapter*, KJob* ) ),
-           parent, SLOT( asyncItemsResult( ItemFetchAdapter*, KJob* ) ) );
+  connect( this, SIGNAL(result(ItemFetchAdapter*,KJob*)),
+           parent, SLOT(asyncItemsResult(ItemFetchAdapter*,KJob*)) );
 }
 
 Collection ItemFetchAdapter::collection() const

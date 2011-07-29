@@ -128,20 +128,20 @@ KolabProxyResource::KolabProxyResource( const QString &id )
 
   m_freeBusyUpdateHandler = new FreeBusyUpdateHandler( this );
 
-  connect( m_monitor, SIGNAL( itemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ),
-           this, SLOT( imapItemAdded( const Akonadi::Item&, const Akonadi::Collection& ) ) );
-  connect( m_monitor, SIGNAL( itemMoved( const Akonadi::Item&, const Akonadi::Collection&, const Akonadi::Collection& ) ),
-           this, SLOT( imapItemMoved( const Akonadi::Item&, const Akonadi::Collection&, const Akonadi::Collection& ) ) );
-  connect( m_monitor, SIGNAL( itemRemoved( const Akonadi::Item& ) ), this, SLOT( imapItemRemoved( const Akonadi::Item& ) ) );
+  connect( m_monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
+           this, SLOT(imapItemAdded(Akonadi::Item,Akonadi::Collection)) );
+  connect( m_monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
+           this, SLOT(imapItemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)) );
+  connect( m_monitor, SIGNAL(itemRemoved(Akonadi::Item)), this, SLOT(imapItemRemoved(Akonadi::Item)) );
 
-  connect( m_collectionMonitor, SIGNAL( collectionAdded( const Akonadi::Collection&, const Akonadi::Collection& ) ),
-           this, SLOT( imapCollectionAdded( const Akonadi::Collection&, const Akonadi::Collection& ) ) );
-  connect( m_collectionMonitor, SIGNAL( collectionRemoved( const Akonadi::Collection& ) ),
-           this, SLOT( imapCollectionRemoved( const Akonadi::Collection& ) ) );
-  connect( m_collectionMonitor, SIGNAL( collectionChanged( const Akonadi::Collection& ) ),
-           this, SLOT( imapCollectionChanged( const Akonadi::Collection& ) ) );
-  connect( m_collectionMonitor, SIGNAL( collectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection& ) ),
-           this, SLOT( imapCollectionMoved( const Akonadi::Collection&, const Akonadi::Collection&, const Akonadi::Collection& ) ) );
+  connect( m_collectionMonitor, SIGNAL(collectionAdded(Akonadi::Collection,Akonadi::Collection)),
+           this, SLOT(imapCollectionAdded(Akonadi::Collection,Akonadi::Collection)) );
+  connect( m_collectionMonitor, SIGNAL(collectionRemoved(Akonadi::Collection)),
+           this, SLOT(imapCollectionRemoved(Akonadi::Collection)) );
+  connect( m_collectionMonitor, SIGNAL(collectionChanged(Akonadi::Collection)),
+           this, SLOT(imapCollectionChanged(Akonadi::Collection)) );
+  connect( m_collectionMonitor, SIGNAL(collectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)),
+           this, SLOT(imapCollectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)) );
 
   setName( i18n("Kolab") );
 
@@ -157,7 +157,7 @@ void KolabProxyResource::retrieveCollections()
 {
   kDebug() << "RETRIEVECOLLECTIONS ";
   CollectionTreeBuilder *job = new CollectionTreeBuilder( this );
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveCollectionsTreeDone(KJob *)));
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveCollectionsTreeDone(KJob*)));
 }
 
 void KolabProxyResource::retrieveCollectionsTreeDone(KJob* job)
@@ -184,7 +184,7 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
   job->fetchScope().fetchFullPayload();
   job->setProperty( "resultCanBeEmpty", true );
 
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)));
 }
 
 bool KolabProxyResource::retrieveItem( const Item &item, const QSet<QByteArray> &parts )
@@ -194,7 +194,7 @@ bool KolabProxyResource::retrieveItem( const Item &item, const QSet<QByteArray> 
   m_retrieveState = RetrieveItem;
   ItemFetchJob *job = new ItemFetchJob( kolabToImap( item ) );
   job->fetchScope().fetchFullPayload();
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob *)));
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)));
   return true;
 }
 
@@ -605,7 +605,7 @@ void KolabProxyResource::imapItemAdded(const Item& item, const Collection &colle
 //TODO: slow, would be nice if ItemCreateJob would work with a Collection having only the remoteId set
   const Collection kolabCol = imapToKolab( collection );
   CollectionFetchJob *job = new CollectionFetchJob( kolabCol, CollectionFetchJob::Base, this );
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchDone(KJob *)));
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchDone(KJob*)));
   m_ids[job] = QString::number(collection.id());
   m_items[job] = item;
 }
@@ -633,7 +633,7 @@ void KolabProxyResource::collectionFetchDone(KJob *job)
     Item::List newItems = handler->translateItems(Item::List() << m_items[job]);
     if (!newItems.isEmpty()) {
       ItemCreateJob *cjob = new ItemCreateJob( newItems[0],  c );
-      connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob *)));
+      connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
     }
   }
   m_ids.remove(job);
@@ -823,8 +823,8 @@ bool KolabProxyResource::registerHandlerForCollection(const Akonadi::Collection&
 
     KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"], imapCollection );
     if ( handler ) {
-      connect(handler, SIGNAL(deleteItemFromImap(const Akonadi::Item&)), this, SLOT(deleteImapItem(const Akonadi::Item&)));
-      connect(handler, SIGNAL(addItemToImap(const Akonadi::Item&, Akonadi::Entity::Id)), this, SLOT(addImapItem(const Akonadi::Item&, Akonadi::Entity::Id)));
+      connect(handler, SIGNAL(deleteItemFromImap(Akonadi::Item)), this, SLOT(deleteImapItem(Akonadi::Item)));
+      connect(handler, SIGNAL(addItemToImap(Akonadi::Item,Akonadi::Entity::Id)), this, SLOT(addImapItem(Akonadi::Item,Akonadi::Entity::Id)));
       m_monitor->setCollectionMonitored(imapCollection);
       m_monitoredCollections.insert(imapCollection.id(), handler);
       return true;

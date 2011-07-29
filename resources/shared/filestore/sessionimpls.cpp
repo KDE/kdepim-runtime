@@ -111,7 +111,7 @@ class FileStore::FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
     explicit Private( FileStore::FiFoQueueJobSession *parent )
       : mParent( parent )
     {
-      QObject::connect( &mJobRunTimer, SIGNAL( timeout() ), mParent, SLOT( runNextJob() ) );
+      QObject::connect( &mJobRunTimer, SIGNAL(timeout()), mParent, SLOT(runNextJob()) );
     }
 
     void runNextJob()

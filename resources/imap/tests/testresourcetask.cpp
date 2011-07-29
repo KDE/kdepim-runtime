@@ -129,7 +129,7 @@ private slots:
     SessionPool pool( 1 );
 
     if ( shouldConnect ) {
-      QSignalSpy poolSpy( &pool, SIGNAL(connectDone(int, QString)) );
+      QSignalSpy poolSpy( &pool, SIGNAL(connectDone(int,QString)) );
 
       pool.setPasswordRequester( createDefaultRequester() );
       QVERIFY( pool.connect( createDefaultAccount() ) );
@@ -145,7 +145,7 @@ private slots:
       QTest::qWait( 100 );
     }
 
-    QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64, KIMAP::Session*, int, QString)) );
+    QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
     DummyResourceTask *task = new DummyResourceTask( actionIfNoSession, state );
     task->start( &pool );
     QTest::qWait( 100 );

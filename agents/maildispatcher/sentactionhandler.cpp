@@ -39,7 +39,7 @@ void SentActionHandler::runAction( const SentActionAttribute::Action &action )
 
     const Akonadi::Item item( action.value().toLongLong() );
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( itemFetchResult( KJob* ) ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchResult(KJob*)) );
     job->setProperty( "type", static_cast<int>( action.type() ) );
   }
 }

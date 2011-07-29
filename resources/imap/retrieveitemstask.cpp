@@ -92,8 +92,8 @@ void RetrieveItemsTask::triggerPreExpungeSelect( const QString &mailBox )
 {
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( mailBox );
-  connect( select, SIGNAL( result( KJob* ) ),
-           this, SLOT( onPreExpungeSelectDone( KJob* ) ) );
+  connect( select, SIGNAL(result(KJob*)),
+           this, SLOT(onPreExpungeSelectDone(KJob*)) );
   select->start();
 }
 
@@ -112,8 +112,8 @@ void RetrieveItemsTask::triggerExpunge( const QString &mailBox )
   kDebug(5327) << mailBox;
 
   KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_session );
-  connect( expunge, SIGNAL( result( KJob* ) ),
-           this, SLOT( onExpungeDone( KJob* ) ) );
+  connect( expunge, SIGNAL(result(KJob*)),
+           this, SLOT(onExpungeDone(KJob*)) );
   expunge->start();
 }
 
@@ -135,8 +135,8 @@ void RetrieveItemsTask::triggerFinalSelect( const QString &mailBox )
 {
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( mailBox );
-  connect( select, SIGNAL( result( KJob* ) ),
-           this, SLOT( onFinalSelectDone( KJob* ) ) );
+  connect( select, SIGNAL(result(KJob*)),
+           this, SLOT(onFinalSelectDone(KJob*)) );
   select->start();
 }
 
@@ -243,8 +243,8 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
                                              QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
              this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-    connect( fetch, SIGNAL( result( KJob* ) ),
-             this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    connect( fetch, SIGNAL(result(KJob*)),
+             this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if( messageCount > realMessageCount && messageCount > 0 ) {
     // The amount on the server is bigger than that we have in the cache
@@ -258,8 +258,8 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
                                              QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
              this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-    connect( fetch, SIGNAL( result( KJob* ) ),
-             this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    connect( fetch, SIGNAL(result(KJob*)),
+             this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( messageCount == realMessageCount && oldNextUid != nextUid
            && oldNextUid != 0 && !firstTime && messageCount > 0 ) {
@@ -284,8 +284,8 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
                                              QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
              this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-    connect( fetch, SIGNAL( result( KJob* ) ),
-             this, SLOT( onHeadersFetchDone( KJob* ) ) );
+    connect( fetch, SIGNAL(result(KJob*)),
+             this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( m_fastSync ) {
     kDebug(5327) << "No new messages, and fast sync enabled so we're done already";
@@ -316,8 +316,8 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set )
                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
            this, SLOT( onFlagsReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
                                         QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-  connect( fetch, SIGNAL( result( KJob* ) ),
-           this, SLOT( onFlagsFetchDone( KJob* ) ) );
+  connect( fetch, SIGNAL(result(KJob*)),
+           this, SLOT(onFlagsFetchDone(KJob*)) );
   fetch->start();
 }
 

@@ -37,16 +37,16 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
 
   mUi.discoveredUrls->setModel( mModel );
   mUi.discoveredUrls->setRootIsDecorated( false );
-  connect( mModel, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
-           this, SLOT( onModelDataChanged( const QModelIndex&, const QModelIndex& ) ) );
+  connect( mModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+           this, SLOT(onModelDataChanged(QModelIndex,QModelIndex)) );
 
-  connect( mUi.remoteProtocol, SIGNAL( changed( int ) ), this, SLOT( onConfigChanged() ) );
-  connect( mUi.remoteUrl, SIGNAL( textChanged( const QString& ) ), this, SLOT( onConfigChanged() ) );
-  connect( mUi.username, SIGNAL( textChanged( const QString& ) ), this, SLOT( onConfigChanged() ) );
-  connect( mUi.password, SIGNAL( textChanged( const QString& ) ), this, SLOT( onConfigChanged() ) );
+  connect( mUi.remoteProtocol, SIGNAL(changed(int)), this, SLOT(onConfigChanged()) );
+  connect( mUi.remoteUrl, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
+  connect( mUi.username, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
+  connect( mUi.password, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
 
-  connect( mUi.fetchButton, SIGNAL( clicked() ), this, SLOT( onFetchButtonClicked() ) );
-  connect( this, SIGNAL( okClicked() ), this, SLOT( onOkButtonClicked() ) );
+  connect( mUi.fetchButton, SIGNAL(clicked()), this, SLOT(onFetchButtonClicked()) );
+  connect( this, SIGNAL(okClicked()), this, SLOT(onOkButtonClicked()) );
 
   checkUserInput();
 }
@@ -130,7 +130,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
 
   DavUtils::DavUrl davUrl( url, protocol() );
   DavCollectionsFetchJob *job = new DavCollectionsFetchJob( davUrl );
-  connect( job, SIGNAL( result( KJob * ) ), this, SLOT( onCollectionsFetchDone( KJob * ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(onCollectionsFetchDone(KJob*)) );
   job->start();
 }
 
@@ -173,7 +173,7 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
   DavUtils::DavUrl davUrl( fullUrl, protocol() );
   DavCollectionModifyJob *job = new DavCollectionModifyJob( davUrl );
   job->setProperty( "displayname", newName );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( onChangeDisplayNameFinished( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(onChangeDisplayNameFinished(KJob*)) );
   job->start();
   mUi.discoveredUrls->setEnabled( false );
 }

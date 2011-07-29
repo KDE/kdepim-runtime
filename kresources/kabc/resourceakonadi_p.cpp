@@ -190,19 +190,19 @@ void ResourceAkonadi::Private::subResourceAdded( SubResourceBase *subResourceBas
 
   SubResource *subResource = qobject_cast<SubResource*>( subResourceBase );
 
-  connect( subResource, SIGNAL( addresseeAdded( KABC::Addressee, QString ) ),
-           this, SLOT( addresseeAdded( KABC::Addressee, QString ) ) );
-  connect( subResource, SIGNAL( addresseeChanged( KABC::Addressee, QString ) ),
-           this, SLOT( addresseeChanged( KABC::Addressee, QString ) ) );
-  connect( subResource, SIGNAL( addresseeRemoved( QString, QString ) ),
-           this, SLOT( addresseeRemoved( QString, QString ) ) );
+  connect( subResource, SIGNAL(addresseeAdded(KABC::Addressee,QString)),
+           this, SLOT(addresseeAdded(KABC::Addressee,QString)) );
+  connect( subResource, SIGNAL(addresseeChanged(KABC::Addressee,QString)),
+           this, SLOT(addresseeChanged(KABC::Addressee,QString)) );
+  connect( subResource, SIGNAL(addresseeRemoved(QString,QString)),
+           this, SLOT(addresseeRemoved(QString,QString)) );
 
-  connect( subResource, SIGNAL( contactGroupAdded( KABC::ContactGroup, QString ) ),
-           this, SLOT( contactGroupAdded( KABC::ContactGroup, QString ) ) );
-  connect( subResource, SIGNAL( contactGroupChanged( KABC::ContactGroup, QString ) ),
-           this, SLOT( contactGroupChanged( KABC::ContactGroup, QString ) ) );
-  connect( subResource, SIGNAL( contactGroupRemoved( QString, QString ) ),
-           this, SLOT( contactGroupRemoved( QString, QString ) ) );
+  connect( subResource, SIGNAL(contactGroupAdded(KABC::ContactGroup,QString)),
+           this, SLOT(contactGroupAdded(KABC::ContactGroup,QString)) );
+  connect( subResource, SIGNAL(contactGroupChanged(KABC::ContactGroup,QString)),
+           this, SLOT(contactGroupChanged(KABC::ContactGroup,QString)) );
+  connect( subResource, SIGNAL(contactGroupRemoved(QString,QString)),
+           this, SLOT(contactGroupRemoved(QString,QString)) );
 
   emit mParent->signalSubresourceAdded( mParent, QLatin1String( "contact" ), subResourceBase->subResourceIdentifier() );
 }
@@ -215,19 +215,19 @@ void ResourceAkonadi::Private::subResourceRemoved( SubResourceBase *subResourceB
 
   SubResource *subResource = qobject_cast<SubResource*>( subResourceBase );
 
-  disconnect( subResource, SIGNAL( addresseeAdded( KABC::Addressee, QString ) ),
-              this, SLOT( addresseeAdded( KABC::Addressee, QString ) ) );
-  disconnect( subResource, SIGNAL( addresseeChanged( KABC::Addressee, QString ) ),
-              this, SLOT( addresseeChanged( KABC::Addressee, QString ) ) );
-  disconnect( subResource, SIGNAL( addresseeRemoved( QString, QString ) ),
-              this, SLOT( addresseeRemoved( QString, QString ) ) );
+  disconnect( subResource, SIGNAL(addresseeAdded(KABC::Addressee,QString)),
+              this, SLOT(addresseeAdded(KABC::Addressee,QString)) );
+  disconnect( subResource, SIGNAL(addresseeChanged(KABC::Addressee,QString)),
+              this, SLOT(addresseeChanged(KABC::Addressee,QString)) );
+  disconnect( subResource, SIGNAL(addresseeRemoved(QString,QString)),
+              this, SLOT(addresseeRemoved(QString,QString)) );
 
-  disconnect( subResource, SIGNAL( contactGroupAdded( KABC::ContactGroup, QString ) ),
-              this, SLOT( contactGroupAdded( KABC::ContactGroup, QString ) ) );
-  disconnect( subResource, SIGNAL( contactGroupChanged( KABC::ContactGroup, QString ) ),
-              this, SLOT( contactGroupChanged( KABC::ContactGroup, QString ) ) );
-  disconnect( subResource, SIGNAL( contactGroupRemoved( QString, QString ) ),
-              this, SLOT( contactGroupRemoved( QString, QString ) ) );
+  disconnect( subResource, SIGNAL(contactGroupAdded(KABC::ContactGroup,QString)),
+              this, SLOT(contactGroupAdded(KABC::ContactGroup,QString)) );
+  disconnect( subResource, SIGNAL(contactGroupChanged(KABC::ContactGroup,QString)),
+              this, SLOT(contactGroupChanged(KABC::ContactGroup,QString)) );
+  disconnect( subResource, SIGNAL(contactGroupRemoved(QString,QString)),
+              this, SLOT(contactGroupRemoved(QString,QString)) );
 
   // block scope for BoolGuard
   {

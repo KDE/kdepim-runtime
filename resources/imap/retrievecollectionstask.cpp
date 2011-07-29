@@ -91,8 +91,8 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
   KIMAP::ListJob *listJob = new KIMAP::ListJob( session );
   listJob->setIncludeUnsubscribed( !isSubscriptionEnabled() );
   listJob->setQueriedNamespaces( serverNamespaces() );
-  connect( listJob, SIGNAL( mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ),
-           this, SLOT( onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>, QList< QList<QByteArray> >) ) );
+  connect( listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
+           this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
   connect( listJob, SIGNAL(result(KJob*)), SLOT(onMailBoxesReceiveDone(KJob*)) );
   listJob->start();
 }
