@@ -202,6 +202,8 @@ void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCa
   updateIncidenceItem( calTodo, res, graph );
 }
 
+//FIXME just storing it again would do the same, so no need for the query.
+//We're supposed to find the contact created by the contactfeeder, so some code sharing would probably be useful
 QUrl NepomukCalendarFeeder::findOrCreateContact(const QString& emailAddress, const QString& name, Nepomuk::SimpleResourceGraph &graph, bool* found)
 {
   //
@@ -244,7 +246,6 @@ QUrl NepomukCalendarFeeder::findOrCreateContact(const QString& emailAddress, con
   if ( !emailAddress.isEmpty() ) {
     Nepomuk::SimpleResource emailRes;
     Nepomuk::NCO::EmailAddress email( &emailRes );
-    //TODO the email was used in constructor as identifier/uri QUrl( QLatin1String( "mailto:" ) + emailAddress ) sooooo should we set a mailto:identifier?
     email.setEmailAddress( emailAddress );
     graph << emailRes;
     contact.addHasEmailAddress( emailRes.uri() );

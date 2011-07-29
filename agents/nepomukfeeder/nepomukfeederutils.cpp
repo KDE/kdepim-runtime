@@ -31,7 +31,7 @@
 
 namespace NepomukFeederUtils 
 {
-  
+
 void tagsFromCategories(const QStringList& categories, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
 {
   foreach ( const QString &category, categories ) {
@@ -51,5 +51,5 @@ void setIcon(const QString& iconName, Nepomuk::SimpleResource& res, Nepomuk::Sim
   graph << iconRes;
   res.setProperty( Soprano::Vocabulary::NAO::prefSymbol(), iconRes.uri() );
 }
-  
+
 }
