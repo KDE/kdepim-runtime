@@ -65,8 +65,8 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
   ui.nameEdit->setText( mSetupManager->name() );
   ui.emailEdit->setText( mSetupManager->email() );
   slotTextChanged();
-  connect( ui.emailEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
-  connect( ui.nameEdit, SIGNAL( textChanged(QString) ), SLOT( slotTextChanged() ) );
+  connect( ui.emailEdit, SIGNAL(textChanged(QString)), SLOT(slotTextChanged()) );
+  connect( ui.nameEdit, SIGNAL(textChanged(QString)), SLOT(slotTextChanged()) );
 
 #ifdef KDEPIM_ENTERPRISE_BUILD
   ui.checkOnlineGroupBox->setChecked( false );
@@ -103,8 +103,8 @@ void PersonalDataPage::leavePageNext()
     mIspdb->setEmail( ui.emailEdit->text() );
     mIspdb->start();
 
-    connect( mIspdb, SIGNAL( finished( bool ) ),
-             SLOT( ispdbSearchFinished( bool ) ) );
+    connect( mIspdb, SIGNAL(finished(bool)),
+             SLOT(ispdbSearchFinished(bool)) );
   } else {
     emit manualWanted( true );     // enable the manual page
     emit leavePageNextOk();  // go to the next page

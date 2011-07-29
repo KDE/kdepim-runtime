@@ -44,10 +44,10 @@ ProviderPage::ProviderPage(KAssistantDialog* parent) :
 
   // we can start the search, whenever the user reaches this page, chances
   // are we have the full list.
-  connect( m_downloadManager, SIGNAL( searchResult( const KNS3::Entry::List& ) ),
-           SLOT( fillModel( const KNS3::Entry::List& ) ) );
-  connect( m_downloadManager, SIGNAL( entryStatusChanged( const KNS3::Entry& ) ),
-           SLOT( providerStatusChanged( const KNS3::Entry& ) ) );
+  connect( m_downloadManager, SIGNAL(searchResult(KNS3::Entry::List)),
+           SLOT(fillModel(KNS3::Entry::List)) );
+  connect( m_downloadManager, SIGNAL(entryStatusChanged(KNS3::Entry)),
+           SLOT(providerStatusChanged(KNS3::Entry)) );
   m_downloadManager->setSearchOrder( KNS3::DownloadManager::Alphabetical );
 
   connect( ui.listView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged()) );

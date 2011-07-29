@@ -52,7 +52,7 @@ Dialog::Dialog(QWidget* parent) :
     // todo: dont ask these details based on a setting of the desktop file.
     PersonalDataPage *pdpage = new PersonalDataPage( this );
     addPage( pdpage, i18n( "Provide personal data" ) );
-    connect( pdpage, SIGNAL( manualWanted( bool ) ), SLOT( slotManualConfigWanted( bool ) ) );
+    connect( pdpage, SIGNAL(manualWanted(bool)), SLOT(slotManualConfigWanted(bool)) );
     if ( !Global::assistant().isEmpty() ) {
       pdpage->setHideOptionInternetSearch( true );
     }
@@ -62,16 +62,16 @@ Dialog::Dialog(QWidget* parent) :
     TypePage* typePage = new TypePage( this );
     connect( typePage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
 #ifndef ACCOUNTWIZARD_NO_GHNS
-    connect( typePage, SIGNAL( ghnsWanted() ), SLOT( slotGhnsWanted() ) );
+    connect( typePage, SIGNAL(ghnsWanted()), SLOT(slotGhnsWanted()) );
 #endif
     mTypePage = addPage( typePage, i18n( "Select Account Type" ) );
     setAppropriate( mTypePage, false );
 
 #ifndef ACCOUNTWIZARD_NO_GHNS
     ProviderPage *ppage = new ProviderPage( this );
-    connect( typePage, SIGNAL( ghnsWanted() ), ppage, SLOT(startFetchingData() ) );
+    connect( typePage, SIGNAL(ghnsWanted()), ppage, SLOT(startFetchingData()) );
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
-    connect( ppage, SIGNAL( ghnsNotWanted() ), SLOT( slotGhnsNotWanted() ) );
+    connect( ppage, SIGNAL(ghnsNotWanted()), SLOT(slotGhnsNotWanted()) );
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
     setAppropriate( mProviderPage, false );
 #endif
@@ -105,8 +105,8 @@ Dialog::Dialog(QWidget* parent) :
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
 {
   KPageWidgetItem *item = KAssistantDialog::addPage( page, title );
-  connect( page, SIGNAL( leavePageNextOk() ), SLOT( slotNextOk() ) );
-  connect( page, SIGNAL( leavePageBackOk() ), SLOT( slotBackOk() ) );
+  connect( page, SIGNAL(leavePageNextOk()), SLOT(slotNextOk()) );
+  connect( page, SIGNAL(leavePageBackOk()), SLOT(slotBackOk()) );
   page->setPageWidgetItem( item );
   return item;
 }
@@ -156,8 +156,8 @@ QObject* Dialog::addPage(const QString& uiFile, const QString &title )
 {
   kDebug() << uiFile;
   DynamicPage *page = new DynamicPage( Global::assistantBasePath() + uiFile, this );
-  connect( page, SIGNAL( leavePageNextOk() ), SLOT( slotNextOk() ) );
-  connect( page, SIGNAL( leavePageBackOk() ), SLOT( slotBackOk() ) );
+  connect( page, SIGNAL(leavePageNextOk()), SLOT(slotNextOk()) );
+  connect( page, SIGNAL(leavePageBackOk()), SLOT(slotBackOk()) );
   KPageWidgetItem* item = insertPage( mLastPage, page, title );
   page->setPageWidgetItem( item );
   mDynamicPages.push_back( item );
