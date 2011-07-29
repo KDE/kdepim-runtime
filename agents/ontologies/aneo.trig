@@ -46,10 +46,10 @@
 aneo: {
 
     aneo:AkonadiDataObject a rdfs:Class ;
-          rdfs:subClassOf nie:DataObject ;
-          rdfs:label "AkonadiDataObject" ;
-          rdfs:comment "used to identify akonadi entities (items and collections) created by the akonadi-nepomuk feeders" ;
-          nao:userVisible false .
+        rdfs:subClassOf nie:DataObject ;
+        rdfs:label "AkonadiDataObject" ;
+        rdfs:comment "used to identify akonadi entities (items and collections) created by the akonadi-nepomuk feeders" ;
+        nao:userVisible false .
 
     aneo:akonadiItemId a rdf:Property ;
         rdfs:label "Akonadi Item ID" ;
@@ -65,17 +65,17 @@ aneo: {
 <http://akonadi-project.org/ontologies/aneo/metadata#> {
 
     aneo: a nrl:Ontology ;
-          nao:prefLabel "Akonadi Ontology" ;
-          nao:hasDefaultNamespace "http://akonadi-project.org/ontologies/aneo#" ;
-          nao:hasDefaultNamespaceAbbreviation "aneo" ;
-          nao:lastModified "2011-06-23T14:31:43Z" ;
-          nao:serializationLanguage "TriG" ;
-          nao:status "Unstable" ;
-          nrl:updatable "0" ;
-          nao:version "2" .
+        nao:prefLabel "Akonadi Ontology" ;
+        nao:hasDefaultNamespace "http://akonadi-project.org/ontologies/aneo#" ;
+        nao:hasDefaultNamespaceAbbreviation "aneo" ;
+        nao:lastModified "2011-06-23T14:31:43Z" ;
+        nao:serializationLanguage "TriG" ;
+        nao:status "Unstable" ;
+        nrl:updatable "0" ;
+        nao:version "2" .
 
     <http://akonadi-project.org/ontologies/aneo/metadata#>
-          a nrl:GraphMetadata ;
-          nrl:coreGraphMetadataFor aneo: .
+        a nrl:GraphMetadata ;
+        nrl:coreGraphMetadataFor aneo: .
 }
 
