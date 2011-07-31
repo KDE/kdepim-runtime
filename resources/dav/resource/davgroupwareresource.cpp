@@ -552,6 +552,25 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
     protoAttr->setDavProtocol( davCollection.protocol() );
 
+    DavCollection::Privileges privileges = davCollection.privileges();
+    Akonadi::Collection::Rights rights;
+
+    if ( privileges & DavCollection::All || privileges & DavCollection::Write )
+      rights |= Akonadi::Collection::AllRights;
+
+    if ( privileges & DavCollection::WriteContent )
+      rights |= Akonadi::Collection::CanChangeItem;
+
+    if ( privileges & DavCollection::Bind )
+      rights |= Akonadi::Collection::CanCreateItem;
+
+    if ( privileges & DavCollection::Unbind )
+      rights |= Akonadi::Collection::CanDeleteItem;
+
+    if ( privileges & DavCollection::Read && !( privileges & !DavCollection::Read ) )
+      rights |= Akonadi::Collection::ReadOnly;
+
+    collection.setRights( rights );
     mEtagCache.sync( collection );
     collections << collection;
   }
