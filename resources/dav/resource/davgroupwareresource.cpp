@@ -466,12 +466,18 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
 
   const DavCollection::List davCollections = fetchJob->collections();
   QSet<QString> seenCollectionsNames;
+  QSet<QString> seenCollectionsUrls;
 
   foreach ( const DavCollection &davCollection, davCollections ) {
     if ( mCollectionsWithTemporaryError.contains( davCollection.url() ) ) {
       kWarning() << davCollection.url() << "is now available";
       mCollectionsWithTemporaryError.removeOne( davCollection.url() );
     }
+
+    if ( seenCollectionsUrls.contains( davCollection.url() ) )
+      continue;
+    else
+      seenCollectionsUrls.insert( davCollection.url() );
 
     Akonadi::Collection collection;
     collection.setParentCollection( mDavCollectionRoot );
