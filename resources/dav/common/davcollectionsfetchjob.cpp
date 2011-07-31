@@ -180,6 +180,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   _jobUrl.setUser( QString() );
   const QString jobUrl = _jobUrl.prettyUrl();
 
+  //kDebug() << davJob->response().toString();
+
   QByteArray resp( davJob->response().toByteArray() );
   QBuffer buffer( &resp );
   buffer.open( QIODevice::ReadOnly );
@@ -237,6 +239,11 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
    *           <C:schedule-calendar xmlns:C="urn:ietf:params:xml:ns:caldav"/>
    *         </resourcetype>
    *         <displayname xmlns="DAV:">Test1 User</displayname>
+   *         <current-user-privilege-set xmlns="DAV:">
+   *           <privilege xmlns="DAV:">
+   *             <read xmlns="DAV:"/>
+   *           </privilege>
+   *         </current-user-privilege-set>
    *       </prop>
    *       <status xmlns="DAV:">HTTP/1.1 200 OK</status>
    *     </propstat>
@@ -322,6 +329,47 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     DavCollection collection( mUrl.protocol(), url.prettyUrl(), displayName, contentTypes );
     if ( color.isValid() )
       collection.setColor( color );
+
+    // extract privileges
+    const QDomElement currentPrivsElement = DavUtils::firstChildElementNS( propElement, "DAV:", "current-user-privilege-set" );
+    if ( currentPrivsElement.isNull() ) {
+      // Assume that we have all privileges
+      collection.setPrivileges( DavCollection::All );
+    } else {
+      QDomElement privElement = DavUtils::firstChildElementNS( currentPrivsElement, "DAV:", "privilege" );
+      DavCollection::Privileges privileges = DavCollection::None;
+      while ( !privElement.isNull() ) {
+        const QString privname = privElement.firstChildElement().nodeName();
+
+        if ( privname == "read" )
+          privileges |= DavCollection::Read;
+        else if ( privname == "write" )
+          privileges |= DavCollection::Write;
+        else if ( privname == "write-properties" )
+          privileges |= DavCollection::WriteProperties;
+        else if ( privname == "write-content" )
+          privileges |= DavCollection::WriteContent;
+        else if ( privname == "unlock" )
+          privileges |= DavCollection::Unlock;
+        else if ( privname == "read-acl" )
+          privileges |= DavCollection::ReadAcl;
+        else if ( privname == "read-current-user-privilege-set" )
+          privileges |= DavCollection::ReadCurrentUserPrivilegeSet;
+        else if ( privname == "write-acl" )
+          privileges |= DavCollection::WriteAcl;
+        else if ( privname == "bind" )
+          privileges |= DavCollection::Bind;
+        else if ( privname == "unbind" )
+          privileges |= DavCollection::Unbind;
+        else if ( privname == "all" )
+          privileges |= DavCollection::All;
+
+        privElement = DavUtils::nextSiblingElementNS( privElement, "DAV:", "privilege" );
+      }
+      collection.setPrivileges( privileges );
+    }
+
+    kDebug() << "PRIVS: " << collection.privileges();
     mCollections << collection;
     emit collectionDiscovered( mUrl.protocol(), url.prettyUrl(), jobUrl );
 

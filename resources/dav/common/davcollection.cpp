@@ -23,7 +23,7 @@ DavCollection::DavCollection()
 }
 
 DavCollection::DavCollection( DavUtils::Protocol protocol, const QString &url, const QString &displayName, ContentTypes contentTypes )
-  : mProtocol( protocol ), mUrl( url ), mDisplayName( displayName ), mContentTypes( contentTypes )
+  : mProtocol( protocol ), mUrl( url ), mDisplayName( displayName ), mContentTypes( contentTypes ), mPrivileges( All )
 {
 }
 
@@ -76,3 +76,14 @@ DavCollection::ContentTypes DavCollection::contentTypes() const
 {
   return mContentTypes;
 }
+
+void DavCollection::setPrivileges( Privileges privs )
+{
+  mPrivileges = privs;
+}
+
+DavCollection::Privileges DavCollection::privileges() const
+{
+  return mPrivileges;
+}
+
