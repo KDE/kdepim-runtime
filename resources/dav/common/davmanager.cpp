@@ -50,32 +50,30 @@ DavManager* DavManager::self()
   return mSelf;
 }
 
-KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument &document ) const
+KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument &document, const QString &depth ) const
 {
-  const QString davDepth( '1' );
-  KIO::DavJob *job = KIO::davPropFind( url, document, davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::DavJob *job = KIO::davPropFind( url, document, depth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
   // workaround needed, Depth: header doesn't seem to be correctly added
-  const QString header = "Content-Type: text/xml\r\nDepth: " + davDepth;
+  const QString header = "Content-Type: text/xml\r\nDepth: " + depth;
   job->addMetaData( "customHTTPHeader", header );
   job->addMetaData( "cookies", "none" );
   job->addMetaData( "no-auth-prompt", "true" );
-  job->setProperty( "extraDavDepth", QVariant::fromValue( davDepth ) );
+  job->setProperty( "extraDavDepth", QVariant::fromValue( depth ) );
 
   return job;
 }
 
-KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &document ) const
+KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &document, const QString &depth ) const
 {
-  const QString davDepth( '1' );
-  KIO::DavJob *job = KIO::davReport( url, document.toString(), davDepth, KIO::HideProgressInfo | KIO::DefaultFlags );
+  KIO::DavJob *job = KIO::davReport( url, document.toString(), depth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
   // workaround needed, Depth: header doesn't seem to be correctly added
-  const QString header = "Content-Type: text/xml\r\nDepth: " + davDepth;
+  const QString header = "Content-Type: text/xml\r\nDepth: " + depth;
   job->addMetaData( "customHTTPHeader", header );
   job->addMetaData( "cookies", "none" );
   job->addMetaData( "no-auth-prompt", "true" );
-  job->setProperty( "extraDavDepth", QVariant::fromValue( davDepth ) );
+  job->setProperty( "extraDavDepth", QVariant::fromValue( depth ) );
 
   return job;
 }

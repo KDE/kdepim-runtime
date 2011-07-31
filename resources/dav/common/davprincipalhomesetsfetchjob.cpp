@@ -53,7 +53,7 @@ void DavPrincipalHomeSetsFetchJob::fetchHomeSets( bool homeSetsOnly )
     propElement.appendChild( document.createElementNS( "DAV:", "principal-URL" ) );
   }
 
-  KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), document );
+  KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), document, "0" );
   job->addMetaData( "PropagateHttpHeader", "true" );
   connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }

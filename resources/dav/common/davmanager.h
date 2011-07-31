@@ -59,16 +59,18 @@ class DavManager
      *
      * @param url The target url of the job.
      * @param document The query XML document.
+     * @param depth The Depth: value to send in the HTTP request
      */
-    KIO::DavJob* createPropFindJob( const KUrl &url, const QDomDocument &document ) const;
+    KIO::DavJob* createPropFindJob( const KUrl &url, const QDomDocument &document, const QString &depth = QString( "1" ) ) const;
 
     /**
      * Returns a preconfigured DAV REPORT job.
      *
      * @param url The target url of the job.
      * @param document The query XML document.
+     * @param depth The Depth: value to send in the HTTP request
      */
-    KIO::DavJob* createReportJob( const KUrl &url, const QDomDocument &document ) const;
+    KIO::DavJob* createReportJob( const KUrl &url, const QDomDocument &document, const QString &depth = QString( "1" ) ) const;
 
     /**
      * Returns a preconfigured DAV PROPPATCH job.
