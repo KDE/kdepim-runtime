@@ -132,26 +132,42 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
   if ( responseCode > 499 && responseCode < 600 ) {
-    // Server-side error, unrecoverable. As the collections may be available
-    // later save the job URL just in case
-    mHasTemporaryError = true;
-    if ( !mSubJobSuccessful ) {
-      setError( UserDefinedError );
-      setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
+    if ( davJob->url() != mUrl.url() ) {
+      // Retry as if the initial URL was a calendar URL.
+      // We can end up here when retrieving a homeset on
+      // which a PROPFIND resulted in an error
+      doCollectionsFetch( mUrl.url() );
     }
-    if ( mSubJobCount == 0 )
-      emitResult();
-    return;
+    else {
+      // Server-side error, unrecoverable. As the collections may be available
+      // later save the job URL just in case
+      mHasTemporaryError = true;
+      if ( !mSubJobSuccessful ) {
+        setError( UserDefinedError );
+        setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
+      }
+      if ( mSubJobCount == 0 )
+        emitResult();
+      return;
+    }
   } else if ( responseCode > 399 && responseCode < 500 ) {
-    // User-side error, or the collection was removed, or the rights revoked, or…
-    // Anyway, just forget about collections at this URL.
-    if ( !mSubJobSuccessful ) {
-      setError( UserDefinedError );
-      setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
+    if ( davJob->url() != mUrl.url() ) {
+      // Retry as if the initial URL was a calendar URL.
+      // We can end up here when retrieving a homeset on
+      // which a PROPFIND resulted in an error
+      doCollectionsFetch( mUrl.url() );
     }
-    if ( mSubJobCount == 0 )
-      emitResult();
-    return;
+    else {
+      // User-side error, or the collection was removed, or the rights revoked, or…
+      // Anyway, just forget about collections at this URL.
+      if ( !mSubJobSuccessful ) {
+        setError( UserDefinedError );
+        setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
+      }
+      if ( mSubJobCount == 0 )
+        emitResult();
+      return;
+    }
   }
 
   if ( !mSubJobSuccessful ) {
