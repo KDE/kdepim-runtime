@@ -121,6 +121,7 @@ void NepomukCalendarFeeder::updateIncidenceItem( const KCalCore::Incidence::Ptr 
 
 void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCalCore::Event::Ptr &calEvent, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
+  Q_UNUSED(item);
   // create event with the graph reference
   Nepomuk::NCAL::Event event( &res );
   //workaround since the wrapper class doesn't set the type if no property is set
@@ -185,6 +186,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
 
 void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCalCore::Journal::Ptr &calJournal, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
+  Q_UNUSED(item);
   // create journal entry with the graph reference
   Nepomuk::NCAL::Journal journal( &res );
   //workaround since the wrapper class doesn't set the type if no property is set
@@ -195,6 +197,7 @@ void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const 
 
 void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCalCore::Todo::Ptr &calTodo, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
+  Q_UNUSED(item);
   Nepomuk::NCAL::Todo todo( &res );
   //workaround since the wrapper class doesn't set the type if no property is set
   res.addProperty(Soprano::Vocabulary::RDF::type(), QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Todo", QUrl::StrictMode));
