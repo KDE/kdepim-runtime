@@ -120,6 +120,11 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
      * It is not necessary for the reimplementation to add @param res to @param graph, nor to store @param graph.
      */
     virtual void updateItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph& graph ) = 0;
+    /**
+     * Sets the label and icon from the EntityDisplayAttribute.
+     *
+     * Collections are not supposed to have subresources, so they would not be removed on an update.
+     */
     virtual void updateCollection( const Akonadi::Collection &collection, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph& graph );
 
     /** Reimplement to allow more aggressive initial indexing. */

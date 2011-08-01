@@ -159,7 +159,7 @@ void NepomukFeederAgentBase::updateCollection(const Akonadi::Collection& collect
 
 void NepomukFeederAgentBase::addCollectionToNepomuk( const Akonadi::Collection &collection ) 
 {
-  kWarning() << collection.url();
+  //kWarning() << collection.url();
   Nepomuk::SimpleResourceGraph graph;
   Nepomuk::SimpleResource res( collection.url() );
   res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << Vocabulary::NIE::InformationElement());
@@ -174,17 +174,18 @@ void NepomukFeederAgentBase::addCollectionToNepomuk( const Akonadi::Collection &
   kWarning() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
   additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
-  //We overwrite properties, as the resource is not removed on update (TODO remove subresources as well?)
+  //We overwrite properties, as the resource is not removed on update, and there are not subproperties on collections (if there were, we would remove them first too)
   KJob *job = Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent());
   connect( job, SIGNAL( result( KJob* ) ), SLOT( jobResult( KJob* ) ) );
 }
 
 void NepomukFeederAgentBase::addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &graph ) 
 {
-  kWarning() << item.url();
+  //kWarning() << item.url();
   Nepomuk::SimpleResource res( item.url() );
   res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << Vocabulary::NIE::InformationElement());
-  res.setProperty( Vocabulary::NIE::url(), item.url() );
+  res.setProperty( Vocabulary::NIE::url(), QUrl(item.url()) );
+  Q_ASSERT(res.property(Vocabulary::NIE::url()).first().toUrl() == QUrl(item.url()));
   res.setProperty( Vocabulary::ANEO::akonadiItemId(), QString::number( item.id() ) );
   setParentCollection( item, res, graph);
   updateItem(item, res, graph);
@@ -193,17 +194,18 @@ void NepomukFeederAgentBase::addItemToGraph( const Akonadi::Item &item, Nepomuk:
 
 void NepomukFeederAgentBase::addGraphToNepomuk( const Nepomuk::SimpleResourceGraph &graph ) 
 {
-  kWarning();
-  kWarning() << "--------------------------------";
+  /*kWarning() << "--------------------------------";
   foreach( const Nepomuk::SimpleResource &res, mResourceGraph->toList() ) {
-    //kWarning() << res.property(Soprano::Vocabulary::RDF::type());
-    kWarning() << res.property(Vocabulary::NIE::url());
-    kWarning() << res.property(Soprano::Vocabulary::NAO::prefLabel());
+    if (res.contains(Vocabulary::NIE::url())) {
+        Q_ASSERT(res.property(Vocabulary::NIE::url()).size() == 1);
+        kWarning() << res.property(Vocabulary::NIE::url()).first().toUrl();
+        kWarning() << res.property(Soprano::Vocabulary::NAO::prefLabel());
+    }
   }
-  kWarning() << "--------------------------------";
+  kWarning() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
   additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
-  //FIXME sometimes there are warning about the cardinality, maybe the old values are not always removed before the new on
+  //FIXME sometimes there are warning about the cardinality, maybe the old values are not always removed before the new ones are (although there is no failing removejob)?
   KJob *job = Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::NoStoreResourcesFlags, additionalMetadata, KGlobal::mainComponent());
   connect( job, SIGNAL( result( KJob* ) ), SLOT( jobResult( KJob* ) ) );
 }
@@ -313,7 +315,7 @@ void NepomukFeederAgentBase::processNextCollection()
     return;
   mTotalAmount = 0;
   if ( mCollectionQueue.isEmpty() ) {
-      kWarning() << "fully indexed";
+    //kWarning() << "fully indexed";
     mReIndex = false;
     emit fullyIndexed();
     return;
@@ -596,6 +598,7 @@ void NepomukFeederAgentBase::processPipeline()
 
     //removeDataByApplication, to ensure also subproperties are removed, i.e. in case addresses of a contact have changed
     KJob *job = Nepomuk::removeDataByApplication( QList <QUrl>() << item.url(), Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
+    //kWarning() << item.url();
     ++mPendingRemoveDataJobs;
     connect( job, SIGNAL( finished( KJob* ) ), this, SLOT( removeDataResult( KJob* ) ) );
 
@@ -621,7 +624,7 @@ void NepomukFeederAgentBase::processPipeline()
     return;
 
   if ( mPendingJobs == 0 && mCurrentCollection.isValid() && mItemPipeline.isEmpty() ) {
-    kWarning() << "indexing completed";
+    //kWarning() << "indexing completed";
     mCurrentCollection = Collection();
     emit status( Idle, i18n( "Indexing completed." ) );
     processNextCollection();
@@ -631,24 +634,26 @@ void NepomukFeederAgentBase::processPipeline()
 
 void NepomukFeederAgentBase::removeDataResult(KJob* job)
 {
-  kWarning() << mPendingRemoveDataJobs;
+  //kWarning() << mPendingRemoveDataJobs;
   if ( job->error() )
     kWarning() << job->errorString();
 
+  if ( mPendingRemoveDataJobs <= 0 )
+    return;
+
   --mPendingRemoveDataJobs;
-  if ( mPendingRemoveDataJobs == 0 ) { //All old items have been removed, so we can now store the items
-    kWarning() << "Saving Graph";
+  if ( mPendingRemoveDataJobs == 0 ) { //All old items have been removed, so we can now store the new items
+    //kWarning() << "Saving Graph";
     Q_ASSERT( mResourceGraph );
     addGraphToNepomuk( *mResourceGraph );
     delete mResourceGraph;
     mResourceGraph = 0;
-    mPendingRemoveDataJobs = 0;
   }
 }
 
 void NepomukFeederAgentBase::jobResult(KJob* job)
 {
-  kWarning();
+  //kWarning();
   if (job->error())
     kWarning() << job->errorString();
 }
