@@ -88,7 +88,7 @@ NepomukFeederAgentBase::NepomukFeederAgentBase(const QString& id) :
   mPendingRemoveDataJobs( 0 ),
   mResourceGraph( 0 ),
   mStrigiIndexManager( 0 ),
-  mIndexCompatLevel( 1 ),
+  mIndexCompatLevel( 2 ),
   mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
   mNeedsStrigi( false ),
