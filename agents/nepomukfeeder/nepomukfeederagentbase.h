@@ -46,7 +46,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QDateTime>
 #include <QtCore/QQueue>
-#include <nepomuk/datamanagement.h>
+#include "dms-copy/datamanagement.h"
 #include <KDE/Nepomuk/Vocabulary/NIE>
 
 namespace Nepomuk

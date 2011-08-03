@@ -30,7 +30,7 @@ if( NOT KDEPIM_NO_NEPOMUK AND Nepomuk_FOUND AND STRIGI_FOUND )
 
     set( NEPOMUKFEEDER_SHARED_LIBS
       niefast
-      nepomukdatamanagement
+      nepomukdatamanagement-copy
       ${SOPRANO_LIBRARIES}
       ${KDE4_KDEUI_LIBRARY}
       ${KDE4_KDECORE_LIBS}

@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Tobias Koenig <tokoe@kde.org>
+                  2011 Christian Mollekopf <chrigi_1@fastmail.fm>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -42,8 +43,8 @@
 #include <nepomuk/comparisonterm.h>
 #include <nepomuk/literalterm.h>
 #include <nepomuk/resourcetypeterm.h>
-#include <nepomuk/simpleresource.h>
-#include <nepomuk/simpleresourcegraph.h>
+#include "dms-copy/simpleresource.h"
+#include "dms-copy/simpleresourcegraph.h"
 
 #include <Soprano/Model>
 #include <Soprano/NodeIterator>

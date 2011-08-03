@@ -35,9 +35,8 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entityhiddenattribute.h>
 
-#include <nepomuk/simpleresource.h>
-#include <nepomuk/simpleresourcegraph.h>
-#include <nepomuk/tag.h>
+#include "dms-copy/simpleresource.h"
+#include "dms-copy/simpleresourcegraph.h"
 
 #include <KLocale>
 #include <KUrl>
