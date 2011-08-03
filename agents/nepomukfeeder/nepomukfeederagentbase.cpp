@@ -181,7 +181,7 @@ void NepomukFeederAgentBase::addCollectionToNepomuk( const Akonadi::Collection &
 void NepomukFeederAgentBase::addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &graph ) 
 {
   //kWarning() << item.url();
-  Nepomuk::SimpleResource res( item.url() );
+  Nepomuk::SimpleResource res;
   res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << Vocabulary::NIE::InformationElement());
   res.setProperty( Vocabulary::NIE::url(), QUrl(item.url()) );
   Q_ASSERT(res.property(Vocabulary::NIE::url()).first().toUrl() == QUrl(item.url()));
