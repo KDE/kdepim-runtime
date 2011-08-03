@@ -160,7 +160,7 @@ void NepomukFeederAgentBase::addCollectionToNepomuk( const Akonadi::Collection &
 {
   //kWarning() << collection.url();
   Nepomuk::SimpleResourceGraph graph;
-  Nepomuk::SimpleResource res( collection.url() );
+  Nepomuk::SimpleResource res;
   res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << Vocabulary::NIE::InformationElement());
   res.setProperty( Vocabulary::NIE::url(), collection.url() );
   setParentCollection( collection, res, graph);
