@@ -147,6 +147,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     KConfigGroup newGroup( mKMailConfig, folderGroupPattern.arg( mCurrentCollection.id() ) );
     oldGroup.copyTo( &newGroup );
     oldGroup.deleteGroup();
+    newGroup.writeEntry( "ConvertedFrom", mCurrentFolderId );
     if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
       EntityDisplayAttribute *attribute = mCurrentCollection.attribute<EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
       //kDebug( KDE_DEFAULT_DEBUG_AREA )<<" NormalIconPath :"<<newGroup.readEntry( "NormalIconPath" )<<" UnreadIconPath :"<<newGroup.readEntry( "UnreadIconPath" );
