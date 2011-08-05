@@ -127,7 +127,7 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
   Nepomuk::NCAL::Event event( &res );
   //workaround since the wrapper class doesn't set the type if no property is set
   res.addProperty(Soprano::Vocabulary::RDF::type(), QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Event", QUrl::StrictMode));
-  NepomukFeederUtils::setIcon( "view-pim-calendar", res, graph );
+  //NepomukFeederUtils::setIcon( "view-pim-calendar", res, graph ); //Disable Icon until we know how to properly set them
   updateIncidenceItem( calEvent, res, graph );
 
   QUrl uri;
@@ -192,7 +192,7 @@ void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const 
   Nepomuk::NCAL::Journal journal( &res );
   //workaround since the wrapper class doesn't set the type if no property is set
   res.addProperty(Soprano::Vocabulary::RDF::type(), QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Journal", QUrl::StrictMode));
-  NepomukFeederUtils::setIcon( "view-pim-journal", res, graph );
+  //NepomukFeederUtils::setIcon( "view-pim-journal", res, graph );
   updateIncidenceItem( calJournal, res, graph );
 }
 
@@ -202,7 +202,7 @@ void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCa
   Nepomuk::NCAL::Todo todo( &res );
   //workaround since the wrapper class doesn't set the type if no property is set
   res.addProperty(Soprano::Vocabulary::RDF::type(), QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Todo", QUrl::StrictMode));
-  NepomukFeederUtils::setIcon( "view-pim-task", res, graph );
+  //NepomukFeederUtils::setIcon( "view-pim-task", res, graph );
   updateIncidenceItem( calTodo, res, graph );
 }
 
