@@ -167,6 +167,8 @@ void SingleFileResourceBase::collectionChanged( const Akonadi::Collection & coll
     EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
     if ( !attr->displayName().isEmpty() )
       newName = attr->displayName();
+    if ( !attr->iconName().isEmpty() )
+      mCollectionIcon = attr->iconName();
   }
 
   if ( newName != name() )
