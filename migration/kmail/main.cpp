@@ -68,6 +68,18 @@ int main( int argc, char **argv )
     infoDialog->show();
   }
 
+  // Don't run the migration twice
+  // The second time, it would only copy kmailrc over kmail2rc and
+  // not migrate the accounts and folders again...
+  KConfigGroup migrationCfg( KGlobal::config(), "Migration" );
+  const bool enabled = migrationCfg.readEntry( "Enabled", false );
+  const int currentVersion = migrationCfg.readEntry( "Version", 0 );
+  const int targetVersion = migrationCfg.readEntry( "TargetVersion", 1 );
+  if ( !enabled || currentVersion >= targetVersion ) {
+    kWarning() << "Migration of kmailrc has already run, not running it again";
+    return 4;
+  }
+
   KMailMigrator *migrator = new KMailMigrator;
   if ( infoDialog && migrator ) {
     infoDialog->migratorAdded();
