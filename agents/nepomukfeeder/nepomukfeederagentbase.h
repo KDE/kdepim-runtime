@@ -2,6 +2,7 @@
     Copyright (c) 2007 Tobias Koenig <tokoe@kde.org>
                   2008 Sebastian Trueg <trueg@kde.org>
                   2009 Volker Krause <vkrause@kde.org>
+                  2011 Christian Mollekopf <chrigi_1@fastmail.fm>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -22,7 +23,6 @@
 #ifndef NEPOMUKFEEDERAGENTBASE_H
 #define NEPOMUKFEEDERAGENTBASE_H
 
-#include "resource.h"
 #include <nie.h>
 
 #include <akonadi/agentbase.h>
@@ -46,21 +46,19 @@
 #include <QtCore/QTimer>
 #include <QtCore/QDateTime>
 #include <QtCore/QQueue>
+#include "dms-copy/datamanagement.h"
+#include <KDE/Nepomuk/Vocabulary/NIE>
 
-namespace NepomukFast
+namespace Nepomuk
 {
-  class PersonContact;
+  class SimpleResource;
+  class SimpleResourceGraph;
 }
 
 namespace Akonadi
 {
   class Item;
   class ItemFetchScope;
-}
-
-namespace Soprano
-{
-  class NRLModel;
 }
 
 namespace Strigi
@@ -70,7 +68,37 @@ namespace Strigi
 
 class KJob;
 
-/** Shared base class for all Nepomuk feeders. */
+
+/** Shared base class for all Nepomuk feeders. 
+ *
+ * The feeder adds/removes all items to/from nepomuk as long as the items are available in akonadi.
+ * When an item changes, it is removed and inserted again, which ensures that all subproperties created by the feeder
+ * are also removed (i.e. addresses of a contact). As long as the item is only modified or moved, but not removed completely from
+ * the akonadi storage all properties set by other applications remain untouched. When the item is finally removed from akonadi,
+ * all related properties, including properties set by other applications are removed.
+ * 
+ * After setting the appropriate mimetime, 
+ * subclasses only have to reimplement updateItem() where they can set the needed properties on the resource using the info from the Akonadi::Item.
+ * They should also add a more specific type from one of the appropriate nie:informationElement subtypes.
+ * 
+ * The Feeders are supposed to represent the akonadi items as both NIE:InformationElement and NIE:DataObject (for the DataObject side ANEO:AkonadiDataObject is used).
+ * If higher level representations such as PIMO:Person from the PIMO ontology which map to real world entities are desired, they have to be created separately. 
+ * 
+ * Every created resource has the following properties:
+ * NIE:url: akonadi uri, can be used to retrieve the akonadi item
+ * Akonadi::ItemSearchJob::akonadiItemIdUri(): akonadi id, this attribute is used in queriers to restrict the query to only akonadi items (see ItemSearchJob for more information)
+ * nfo:isPartOf: collection hierarchy
+ * 
+ * To use the same resources from an application, i.e. the Nepomuk::Resource api can be used using the Akonadi::Item::url() in the constructor.
+ * This will also work if the item is indexed after being used from the application. 
+ * 
+ * While the feeder keeps ownership of the created NIE:InformationElement/NIE:DataObject resource and will delete it as soon as the item is removed from akonadi,
+ * other resource (i.e. a PIMO representation will not be touched by the feeder)
+ * 
+ * Reindexing:
+ * Subclasses can set the indexCompatibilityLevel to issue a full reindexing of all data when the format changed.
+ * Increasing the level, issues a reindexing.
+ */
 class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
   Q_OBJECT
@@ -79,66 +107,28 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     NepomukFeederAgentBase(const QString& id);
     ~NepomukFeederAgentBase();
 
-    /** Remove all references to the given item from Nepomuk. */
-    template <typename T>
-    static void removeEntityFromNepomuk( const T &entity )
-    {
-      // find the graph that contains our item and delete the complete graph
-      // FIXME: why isn't that in the ontology?
-      // FIXME: Resource::fromResourceUri is used, because the feeders currently generate resources with an akonadi uri and there can be a conflict
-      // with resources generated with the Resource api, which will result in the correct resource not being found here.
-      // This is a workaround for this issue, and must be removed once the DMS is in place.
-      const Nepomuk::Query::ComparisonTerm term( QUrl( QLatin1String( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor" ) ),
-                                                 Nepomuk::Query::ResourceTerm( Nepomuk::Resource::fromResourceUri( entity.url() ) ) );
-      Nepomuk::Query::Query query( term );
-      query.setQueryFlags( Nepomuk::Query::Query::NoResultRestrictions );
-      const QList<Soprano::Node> list = Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(
-          query.toSparqlQuery(), Soprano::Query::QueryLanguageSparql ).iterateBindings( 0 ).allNodes();
-
-      foreach ( const Soprano::Node &node, list )
-        Nepomuk::ResourceManager::instance()->mainModel()->removeContext( node );
-    }
-
-    /** Adds tags to @p resource based on the given string list. */
-    static void tagsFromCategories( NepomukFast::Resource &resource, const QStringList &categories );
-
     /** Add a supported mimetype. */
     void addSupportedMimeType( const QString &mimeType );
 
-    /** Reimplement to do the actual work. */
-    virtual void updateItem( const Akonadi::Item &item, const QUrl &graphUri ) = 0;
-    virtual void updateCollection( const Akonadi::Collection &collection, const QUrl &graphUri ) = 0;
+    /** Reimplement to do the actual work. 
+     *  
+     * It is only necessary to add the attributes to @param res,
+     * the storing of the resource will happen automatically.
+     * If additional resources are needed, the can be added to @param graph.
+     * Additionaly created resources are only removed before an update if they are subresources of the @param res.
+     * 
+     * It is not necessary for the reimplementation to add @param res to @param graph, nor to store @param graph.
+     */
+    virtual void updateItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph& graph ) = 0;
+    /**
+     * Sets the label and icon from the EntityDisplayAttribute.
+     *
+     * Collections are not supposed to have subresources, so they would not be removed on an update.
+     */
+    virtual void updateCollection( const Akonadi::Collection &collection, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph& graph );
 
     /** Reimplement to allow more aggressive initial indexing. */
     virtual Akonadi::ItemFetchScope fetchScopeForCollection( const Akonadi::Collection &collection );
-
-    /** Create a graph for the given item with we use to mark all information created by the feeder agent. */
-    template <typename T>
-    QUrl createGraphForEntity( const T &item )
-    {
-      QUrl metaDataGraphUri;
-      const QUrl graphUri = mNrlModel->createGraph( Soprano::Vocabulary::NRL::InstanceBase(), &metaDataGraphUri );
-
-      // remember to which graph the item belongs to (used in search query in removeItemFromNepomuk())
-      mNrlModel->addStatement( graphUri,
-                              QUrl::fromEncoded( "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataGraphFor", QUrl::StrictMode ),
-                              item.url(), metaDataGraphUri );
-
-      return graphUri;
-    }
-
-    /** Finds (or if it doesn't exist creates) a PersonContact object for the given name and address.
-        @param found Used to indicate if the contact is already there are was just newly created. In the latter case you might
-        want to add additional information you have available for it.
-    */
-    static NepomukFast::PersonContact findOrCreateContact( const QString &email, const QString &name, const QUrl &graphUri, bool *found = 0 );
-
-    template <typename R, typename E>
-    static void setParent( R& res, const E &entity )
-    {
-      if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() )
-        res.addProperty( Vocabulary::NIE::isPartOf(), entity.parentCollection().url() );
-    }
 
     /**
       Enables Strigi support for indexing attachments.
@@ -178,9 +168,14 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     void collectionRemoved(const Akonadi::Collection& collection);
 
     void doSetOnline(bool online);
+    /** Saves the graph, and marks the data as discardable. Use this function to store data created by the feeder */
+    void addGraphToNepomuk( const Nepomuk::SimpleResourceGraph &graph );
 
   private:
     void processNextCollection();
+
+    /** Set the parent collection of the entity @param entity */
+    void setParentCollection( const Akonadi::Entity &entity, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
 
     /**
       Overrides in subclasses to cause re-indexing on startup to only happen
@@ -189,6 +184,9 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     virtual bool needsReIndexing() const;
 
     void checkOnline();
+    
+    void addCollectionToNepomuk( const Akonadi::Collection &collection );
+    void addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &graph );
 
   private slots:
     void collectionsReceived( const Akonadi::Collection::List &collections );
@@ -196,6 +194,8 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     void itemsReceived( const Akonadi::Item::List &items );
     void notificationItemsReceived( const Akonadi::Item::List &items );
     void itemFetchResult( KJob* job );
+    void removeDataResult( KJob* job );
+    void jobResult( KJob* job );
 
     void selfTest();
     void slotFullyIndexed();
@@ -211,9 +211,12 @@ class NepomukFeederAgentBase : public Akonadi::AgentBase, public Akonadi::AgentB
     Akonadi::Collection mCurrentCollection;
     QQueue<Akonadi::Item> mItemPipeline;
     int mTotalAmount, mProcessedAmount, mPendingJobs;
+    int mPendingRemoveDataJobs;
     QTimer mNepomukStartupTimeout;
     QTimer mProcessPipelineTimer;
-    Soprano::NRLModel *mNrlModel;
+
+    Nepomuk::SimpleResourceGraph *mResourceGraph;
+
     Strigi::IndexManager *mStrigiIndexManager;
     int mIndexCompatLevel;
     bool mNepomukStartupAttempted;

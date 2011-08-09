@@ -1,0 +1,8 @@
+[Ontology]
+Version=1.0
+Name=Akonadi Ontology
+Comment=Currently only defines a single attribute
+Namespace=http://akonadi-project.org/ontologies/aneo#
+Path=${CMAKE_INSTALL_PREFIX}/share/ontology/kde/aneo.trig
+MimeType=application/x-trig
+Type=Data

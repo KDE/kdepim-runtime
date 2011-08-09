@@ -21,12 +21,16 @@ add_subdirectory( invitations )
 add_subdirectory( calendarsearch )
 
 if( NOT KDEPIM_NO_NEPOMUK AND Nepomuk_FOUND AND STRIGI_FOUND )
-    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder ${CMAKE_CURRENT_BINARY_DIR}/ontologies ${SOPRANO_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR})
+    add_subdirectory( nepomukfeeder/dms-copy )
+    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder ${CMAKE_CURRENT_BINARY_DIR}/ontologies ontologies ${SOPRANO_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR} )
     set( NEPOMUKFEEDER_SHARED_SRCS
          ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederagentbase.cpp
+         ${CMAKE_CURRENT_SOURCE_DIR}/nepomukfeeder/nepomukfeederutils.cpp
     )
+
     set( NEPOMUKFEEDER_SHARED_LIBS
       niefast
+      nepomukdatamanagement-copy
       ${SOPRANO_LIBRARIES}
       ${KDE4_KDEUI_LIBRARY}
       ${KDE4_KDECORE_LIBS}
@@ -40,7 +44,7 @@ if( NOT KDEPIM_NO_NEPOMUK AND Nepomuk_FOUND AND STRIGI_FOUND )
     )
     include( SopranoAddOntology )
     add_subdirectory( ontologies )
-    add_subdirectory( nepomuk_contact_feeder )
+    #add_subdirectory( nepomuk_contact_feeder )
     add_subdirectory( nepomuk_calendar_feeder )
 endif( NOT KDEPIM_NO_NEPOMUK AND Nepomuk_FOUND AND STRIGI_FOUND )
 endif(NOT WINCE)
