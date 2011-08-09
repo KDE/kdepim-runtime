@@ -204,7 +204,6 @@ void NepomukFeederAgentBase::addGraphToNepomuk( const Nepomuk::SimpleResourceGra
   kWarning() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
   additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
-  //FIXME sometimes there are warning about the cardinality, maybe the old values are not always removed before the new ones are (although there is no failing removejob)?
   KJob *job = Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::NoStoreResourcesFlags, additionalMetadata, KGlobal::mainComponent());
   connect( job, SIGNAL( result( KJob* ) ), SLOT( jobResult( KJob* ) ) );
 }

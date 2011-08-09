@@ -90,7 +90,7 @@ NepomukCalendarFeeder::~NepomukCalendarFeeder()
 
 void NepomukCalendarFeeder::updateItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
-    kWarning() << item.id();
+  //kWarning() << item.id();
   if ( item.hasPayload<KCalCore::Event::Ptr>() ) {
     updateEventItem( item, item.payload<KCalCore::Event::Ptr>(), res, graph );
   } else if ( item.hasPayload<KCalCore::Journal::Ptr>() ) {
@@ -242,7 +242,7 @@ QUrl NepomukCalendarFeeder::findOrCreateContact(const QString& emailAddress, con
   }
   if ( found ) *found = false;
   // create a new contact
-  kDebug() << "Did not find " << name << emailAddress << ", creating a new PersonContact";
+  //kDebug() << "Did not find " << name << emailAddress << ", creating a new PersonContact";
 
   Nepomuk::SimpleResource contactRes;
   Nepomuk::NCO::PersonContact contact(&contactRes);
