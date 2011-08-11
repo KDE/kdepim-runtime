@@ -90,6 +90,8 @@ Dock::Dock( QWidget *parent )
     connect( manager,
              SIGNAL(instanceError(Akonadi::AgentInstance,QString)),
              SLOT(slotInstanceError(Akonadi::AgentInstance,QString)) );
+
+    updateMenu( ServerManager::isRunning() );
 }
 
 Dock::~Dock()
