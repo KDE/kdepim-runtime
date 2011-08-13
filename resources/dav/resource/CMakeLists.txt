@@ -99,7 +99,7 @@ target_link_libraries(akonadi_davgroupware_resource
                       ${KDE4_KDECORE_LIBS}
                       ${KDE4_KIO_LIBS}
                       ${KDEPIMLIBS_AKONADI_LIBS}
-                      ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
+		      ${KDEPIMLIBS_AKONADI_CALENDAR_LIBS}
                       ${KDEPIMLIBS_KABC_LIBS}
                       ${KDEPIMLIBS_KCALCORE_LIBS})
 

@@ -34,9 +34,7 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 
 add_subdirectory( akonotes )
 add_subdirectory( contacts )
-if (NOT KDE_PLATFORM_FEATURE_DISABLE_DEPRECATED)
-  macro_optional_add_subdirectory( dav )
-endif (NOT KDE_PLATFORM_FEATURE_DISABLE_DEPRECATED)
+macro_optional_add_subdirectory( dav )
 add_subdirectory( ical )
 add_subdirectory( imap )
 if (KDEPIMLIBS_KRESOURCES_LIBS)

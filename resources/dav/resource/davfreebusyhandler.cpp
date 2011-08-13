@@ -28,7 +28,6 @@
 #include <klocale.h>
 #include <kio/davjob.h>
 #include <kio/job.h>
-#include <kcal/alarm.h>
 
 DavFreeBusyHandler::DavFreeBusyHandler( QObject* parent )
   : QObject( parent ), mNextRequestId( 0 )
