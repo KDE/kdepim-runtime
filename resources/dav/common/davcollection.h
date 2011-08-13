@@ -71,7 +71,7 @@ class DavCollection
       Unbind = 0x200,
       All = 0x400
     };
-    Q_DECLARE_FLAGS( Privileges, Privilege );
+    Q_DECLARE_FLAGS( Privileges, Privilege )
 
     /**
      * Creates an empty DAV collection.
