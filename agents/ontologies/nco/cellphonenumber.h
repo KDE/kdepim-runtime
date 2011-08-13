@@ -9,7 +9,7 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <nepomuk/simpleresource.h>
+#include <dms-copy/simpleresource.h>
 
 #include "nco/voicephonenumber.h"
 #include "nco/messagingnumber.h"

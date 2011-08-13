@@ -20,8 +20,8 @@
 
 #include "nepomukfeederutils.h"
 
-#include <nepomuk/simpleresource.h>
-#include <nepomuk/simpleresourcegraph.h>
+#include <dms-copy/simpleresource.h>
+#include <dms-copy/simpleresourcegraph.h>
 
 #include <nao/tag.h>
 #include <nao/freedesktopicon.h>

@@ -9,7 +9,7 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <nepomuk/simpleresource.h>
+#include <dms-copy/simpleresource.h>
 
 #include "ncal/unionoftimezoneobservanceeventfreebusyjournaltimezonetodo.h"
 #include "ncal/unionoftimezoneobservanceeventjournaltimezonetodo.h"
