@@ -4,6 +4,7 @@
 #include <akonadi/resourcebase.h>
 #include <boost/shared_ptr.hpp>
 #include <krssresource/opmlparser.h>
+#include <qtimer.h>
 
 class KRssLocalResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
@@ -24,12 +25,20 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     
+  private Q_SLOTS:
+    void intervalFetch();
+    
   protected:
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
+    
+    void fetchFeed( const Akonadi::Collection &feed );
+    
+  private:
+    QTimer timer;
        
 };
 

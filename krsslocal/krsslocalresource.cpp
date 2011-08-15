@@ -12,6 +12,9 @@
 #include <QtXml/QXmlStreamReader>
 #include <QMessageBox>
 #include <akonadi/entitydisplayattribute.h>
+#include <Syndication/Loader>
+
+#define FETCH_INTERVAL  1800000 // (30 mins)
 
 using namespace Akonadi;
 using namespace KRssResource;
@@ -23,12 +26,17 @@ KRssLocalResource::KRssLocalResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
-
-  // TODO: you can put any resource specific initialization code here.
+ 
+  timer = new QTimer(this);
+  connect(timer, SIGNAL(timeout()), this, SLOT(intervalFetch()));
+  timer->setInterval(FETCH_INTERVAL);
+  timer->start();
+  
 }
 
 KRssLocalResource::~KRssLocalResource()
 {
+  timer->stop();
 }
 
 void KRssLocalResource::retrieveCollections()
@@ -119,7 +127,7 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
 void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
 {
   
-  Q_UNUSED(collection);
+  //Q_UNUSED(collection);
   
   // TODO: this method is called when Akonadi wants to know about all the
   // items in the given collection. You can but don't have to provide all the
@@ -127,9 +135,14 @@ void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
   // Depending on how your resource accesses the data, there are several
   // different ways to tell Akonadi when you are done.
 
+  QString xmlUrl = collection.remoteId();
   
-  Item::List itemlist;
-  itemsRetrieved(itemlist);
+  Item::List items;
+  Item prova;
+  prova.setId(12);
+  prova.setRemoteId(xmlUrl + "1");
+  items << prova;
+  itemsRetrieved(items);
 
 }
 
@@ -209,6 +222,44 @@ void KRssLocalResource::itemRemoved( const Akonadi::Item &item )
 
   // NOTE: There is an equivalent method for collections, but it isn't part
   // of this template code to keep it simple
+}
+
+void KRssLocalResource::intervalFetch()
+{
+  
+  
+  
+}
+
+void KRssLocalResource::fetchFeed(const Akonadi::Collection &feed)
+{
+  
+  Syndication::Loader * const loader = Syndication::Loader::create();
+  connect( loader, SIGNAL( loadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ),
+            this, SLOT( slotFeedFetched( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ) );
+  KUrl xmlUrl( feed.remoteId() ); 
+  loader->loadFrom( xmlUrl );
+
+}
+
+void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
+					    Syndication::ErrorCode status)
+{
+     if (status != Syndication::Success)
+         return;
+
+     QString title = feed->title();
+     const QList<Syndication::ItemPtr> syndItems = feed->items();
+     Q_FOREACH( const Syndication::ItemPtr& syndItem, syndItems ) {
+            Akonadi::Item item;
+            item.setRemoteId( syndItem->id() );
+	    /*
+            item.setMimeType( KRss::Item::mimeType() );
+            item.setPayload<KRss::RssItem>( KRssResource::fromSyndicationItem( syndItem ) );
+            item.setFlag( KRss::RssItem::flagNew() );
+            m_items.append( item );
+	    */
+     }
 }
 
 AKONADI_RESOURCE_MAIN( KRssLocalResource )
