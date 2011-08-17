@@ -1,6 +1,5 @@
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/..
-    ${CMAKE_CURRENT_BINARY_DIR}/..
+    ${CMAKE_CURRENT_SOURCE_DIR}/../shared
     ${kdepim-runtime_SOURCE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
@@ -15,8 +14,8 @@ add_definitions( -DSETTINGS_NAMESPACE=Akonadi_Aknotes_Resource )
 
 set( notesresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
-  ../icalresourcebase.cpp
-  ../icalresource.cpp
+  ../shared/icalresourcebase.cpp
+  ../shared/icalresource.cpp
   notesresource.cpp
 )
 

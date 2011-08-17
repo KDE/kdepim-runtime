@@ -3,6 +3,7 @@ include_directories(
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/shared
 )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
@@ -18,8 +19,8 @@ add_definitions( -DSETTINGS_NAMESPACE=Akonadi_ICal_Resource )
 
 set( icalresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
-  icalresourcebase.cpp
-  icalresource.cpp
+  shared/icalresourcebase.cpp
+  shared/icalresource.cpp
   icalresourceplugin.cpp
 )
 
