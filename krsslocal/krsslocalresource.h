@@ -1,10 +1,12 @@
 #ifndef KRSSLOCALRESOURCE_H
 #define KRSSLOCALRESOURCE_H
 
+#include <akonadi/cachepolicy.h>
 #include <akonadi/resourcebase.h>
 #include <boost/shared_ptr.hpp>
 #include <krssresource/opmlparser.h>
 #include <qtimer.h>
+#include <Syndication/Syndication>
 
 class KRssLocalResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
@@ -27,6 +29,8 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     
   private Q_SLOTS:
     void intervalFetch();
+    void slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
+					    Syndication::ErrorCode status);
     
   protected:
     virtual void aboutToQuit();
@@ -39,6 +43,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     
   private:
     QTimer timer;
+    Akonadi::CachePolicy policy;
        
 };
 
