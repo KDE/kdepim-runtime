@@ -13,8 +13,8 @@
 #include <QMessageBox>
 #include <akonadi/entitydisplayattribute.h>
 
-#define CACHE_TIMEOUT 30 
-#define INTERVAL_CHECK_TIME 20  
+#define CACHE_TIMEOUT 1
+#define INTERVAL_CHECK_TIME 1  
 
 using namespace Akonadi;
 using namespace KRssResource;
@@ -245,6 +245,8 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
      Q_FOREACH( const Syndication::ItemPtr& syndItem, syndItems ) {
             Akonadi::Item item;
             item.setRemoteId( syndItem->id() );
+	    item.setMimeType( QLatin1String("application/rss+xml") );
+	    
             items << item;
      }
      
