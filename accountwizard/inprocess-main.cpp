@@ -32,11 +32,11 @@ class AccountWizard : public QObject
     explicit AccountWizard( QObject* parent = 0 ) : QObject( parent ) {}
 
   public slots:
-    void run( const QStringList &types )
+    void run( const QStringList &types, QWidget *parent )
     {
       if( !types.isEmpty() )
         Global::setTypeFilter( types );
-      Dialog dlg;
+      Dialog dlg( parent );
       dlg.exec();
     }
 };

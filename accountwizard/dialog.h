@@ -30,7 +30,7 @@ class Dialog : public KAssistantDialog
 {
   Q_OBJECT
   public:
-    explicit Dialog( QWidget *parent = 0 );
+    explicit Dialog( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
 
     /* reimpl */ void next();
     /* reimpl */ void back();

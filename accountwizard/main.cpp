@@ -70,7 +70,7 @@ int main( int argc, char **argv )
   if( !args->getOption("type").isEmpty() )
      Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
   args->clear();
-  Dialog dlg;
+  Dialog dlg( 0, Qt::WindowStaysOnTopHint );
   dlg.show();
 
   return app.exec();
