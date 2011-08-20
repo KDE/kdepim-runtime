@@ -26,12 +26,9 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    
-  private Q_SLOTS:
-    void intervalFetch();
     void slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 					    Syndication::ErrorCode status);
-    
+        
   protected:
     virtual void aboutToQuit();
 

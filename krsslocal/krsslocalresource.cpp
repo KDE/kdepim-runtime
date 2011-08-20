@@ -82,7 +82,7 @@ void KRssLocalResource::retrieveCollections()
     
     //it customizes the root collection with an opml icon
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
-    //TODO: modify CMakeLists.txt to install the icon
+    //TODO: modify CMakeLists.txt so that it installs the icon
     
     Collection::List list;
     list = buildCollectionTree(parser.topLevelNodes(), list, top); 
@@ -96,8 +96,6 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
 {
     list << parent;
   
-    
-    
     foreach(const shared_ptr<const ParsedNode> parsedNode, listOfNodes) {
       if (!parsedNode->isFolder()) {
 	    Collection c = (static_pointer_cast<const ParsedFeed>(parsedNode))->toAkonadiCollection();
@@ -221,36 +219,28 @@ void KRssLocalResource::itemRemoved( const Akonadi::Item &item )
   // of this template code to keep it simple
 }
 
-void KRssLocalResource::intervalFetch()
-{
-
-}
-
-void KRssLocalResource::fetchFeed(const Akonadi::Collection &feed)
-{
-    Q_UNUSED(feed);
-}
-
 void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 					    Syndication::ErrorCode status)
 {
      Q_UNUSED(loader);
      
-     if (status != Syndication::Success)
-         return;
+     if (status != Syndication::Success) {
+	    kWarning() << "Error while parsing xml file";
+	    itemsRetrievalDone();
+	    return;
+     }
 
      QString title = feed->title();
      const QList<Syndication::ItemPtr> syndItems = feed->items();
      Akonadi::Item::List items;
      Q_FOREACH( const Syndication::ItemPtr& syndItem, syndItems ) {
-            Akonadi::Item item;
-            item.setRemoteId( syndItem->id() );
-	    item.setMimeType( QLatin1String("application/rss+xml") );
-	    
+            kWarning() << syndItem->title();
+	    Akonadi::Item item( QLatin1String("application/rss+xml") );
+	    item.setRemoteId( syndItem->id() );
             items << item;
      }
      
-     itemsRetrieved(items);
+     itemsRetrieved( items );
 
 }
 
