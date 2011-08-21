@@ -390,7 +390,16 @@ void UIDListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
     bool idIsNumber;
     int id = QString::fromAscii( idString ).toInt( &idIsNumber );
     if ( idIsNumber ) {
-      mUidList.insert( id, QString::fromAscii( uidString ) );
+      const QString uidQString = QString::fromAscii( uidString );
+      if ( !uidQString.isEmpty() ) {
+        mUidList.insert( id, uidQString );
+        mIdList.insert( uidQString, id );
+      }
+      else {
+        kWarning() << "Got invalid/empty UID from the UIDL command:"
+                   << uidString.data();
+        kWarning() << "The whole response was:" << data.data();
+      }
     }
     else {
       kWarning() << "Got invalid ID from the UIDL command:" << idString.data();
@@ -402,6 +411,11 @@ void UIDListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
 QMap<int,QString> UIDListJob::uidList() const
 {
   return mUidList;
+}
+
+QMap<QString,int> UIDListJob::idList() const
+{
+  return mIdList;
 }
 
 DeleteJob::DeleteJob( POPSession *popSession )

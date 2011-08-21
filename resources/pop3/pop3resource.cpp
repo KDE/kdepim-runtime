@@ -364,7 +364,7 @@ void POP3Resource::doStateStep()
       const QList<QString> alreadyDownloadedUIDs = Settings::self()->seenUidList();
       foreach( const QString &uidOnServer, UIDsOnServer ) {
         if ( alreadyDownloadedUIDs.contains( uidOnServer ) ) {
-          const int idOfUIDOnServer = mIdsToUidsMap.key( uidOnServer, -1 );
+          const int idOfUIDOnServer = mUidsToIdsMap.value( uidOnServer, -1 );
           Q_ASSERT( idOfUIDOnServer != -1 );
           idsToDownload.removeAll( idOfUIDOnServer );
         }
@@ -551,7 +551,9 @@ void POP3Resource::uidListJobResult( KJob *job )
     UIDListJob *listJob = dynamic_cast<UIDListJob*>( job );
     Q_ASSERT( listJob );
     mIdsToUidsMap = listJob->uidList();
+    mUidsToIdsMap = listJob->idList();
     kDebug() << "IdToUidMap:" << mIdsToUidsMap;
+    kDebug() << "UidToIdMap:" << mUidsToIdsMap;
 
     mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
     if ( Settings::self()->leaveOnServer() && !mUidListValid ) {
@@ -631,7 +633,7 @@ void POP3Resource::messageDownloadProgress( KJob *job, KJob::Unit unit, qulonglo
   const int totalMessages = mIdsToDownload.size() + mDownloadedIDs.size();
   int bytesRemainingOnServer = 0;
   foreach( const QString &alreadyDownloadedUID, Settings::self()->seenUidList() ) {
-    const int alreadyDownloadedID = mIdsToUidsMap.key( alreadyDownloadedUID, -1 );
+    const int alreadyDownloadedID = mUidsToIdsMap.value( alreadyDownloadedUID, -1 );
     if ( alreadyDownloadedID != -1 )
       bytesRemainingOnServer += mIdsToSizeMap.value( alreadyDownloadedID );
   }
@@ -903,7 +905,7 @@ void POP3Resource::saveSeenUIDList()
     QList<int>::iterator timeIt = timeOfSeenUIDs.begin();
     while ( uidIt != seenUIDs.end() ) {
       const QString curSeenUID = *uidIt;
-      if ( !mIdsToUidsMap.values().contains( curSeenUID ) ) {
+      if ( !mUidsToIdsMap.contains( curSeenUID ) ) {
         // Ok, we have a UID in the seen UID list that is not anymore on the server.
         // Therefore remove it from the seen UID list, it is not needed there anymore,
         // it just wastes space.
@@ -950,6 +952,7 @@ void POP3Resource::resetState()
   mTargetCollection = Collection( -1 );
   mIdsToSizeMap.clear();
   mIdsToUidsMap.clear();
+  mUidsToIdsMap.clear();
   mDownloadedIDs.clear();
   mIdsToDownload.clear();
   mPendingCreateJobs.clear();
