@@ -142,12 +142,14 @@ class UIDListJob : public SlaveBaseJob
 public:
   UIDListJob( POPSession *popSession );
   QMap<int,QString> uidList() const;
+  QMap<QString,int> idList() const;
   virtual void start();
 
 private:
   virtual void slotSlaveData( KIO::Job *job, const QByteArray &data );
 
   QMap<int,QString> mUidList;
+  QMap<QString,int> mIdList;
 };
 
 class DeleteJob : public SlaveBaseJob

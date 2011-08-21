@@ -151,6 +151,10 @@ class POP3Resource : public Akonadi::ResourceBase,
     // This can be empty, if the server doesn't support UIDL
     QMap<int,QString> mIdsToUidsMap;
 
+    // Maps UIDs on the server to IDs on the server.
+    // This can be empty, if the server doesn't support UIDL
+    QMap<QString,int> mUidsToIdsMap;
+
     // Whether we actually received a valid UID list from the server
     bool mUidListValid;
 
