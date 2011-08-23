@@ -25,6 +25,7 @@
 #include <akonadi/agentmanager.h>
 #include <kresources/manager.h>
 #include <kresources/resource.h>
+#include <QFile>
 
 #include <KConfigGroup>
 #include <KDebug>
@@ -87,6 +88,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           continue;
         }
         KConfigGroup cfg( KGlobal::config(), "Resource " + (*mIt)->identifier() );
+        kDebug() << "migrateNext:" << (*mIt)->identifier();
         if ( migrationState( (*mIt)->identifier() ) == None ) {
           emit message( Info, i18n( "Trying to migrate '%1'...", (*mIt)->resourceName() ) );
           mPendingBridgedResources.removeAll( (*mIt)->identifier() );
@@ -140,10 +142,10 @@ template <typename T> class KResMigrator : public KResMigratorBase
         return;
       }
       const QString resId = mPendingBridgedResources.takeFirst();
-      mUnknownTypeResources.remove( resId );
       KConfigGroup resMigrationCfg( KGlobal::config(), "Resource " + resId );
       const QString akoResId = resMigrationCfg.readEntry( "ResourceIdentifier", "" );
       if ( akoResId.isEmpty() ) {
+        mUnknownTypeResources.remove( resId );
         emit message( Error, i18n("No Akonadi agent identifier specified for previously bridged resource '%1'", resId ));
         migrateNext();
         return;
@@ -151,6 +153,23 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
       const QString bridgedCfgFile = KStandardDirs::locateLocal( "config", QString( "%1rc" ).arg( akoResId ) );
       kDebug() << bridgedCfgFile;
+      if ( !QFile::exists( bridgedCfgFile ) ) {
+          emit message( Info, i18n( "Bridged resource %1 doesn't exist anymore, let's try a direct migration", akoResId ) );
+          setMigrationState( resId /*old id*/, None,
+                             QString() /*akonadi id*/, mType );
+
+          ResourceIterator it = mManager->begin();
+          while( it != mManager->end() ) {
+              if ((*it)->identifier() == resId) {
+                  mResourcesToMigrate.append( *it );
+                  break;
+              }
+              ++it;
+          }
+          migrateNext();
+          return;
+      }
+      mUnknownTypeResources.remove( resId );
       mConfig = new KConfig( bridgedCfgFile );
 
       mBridgeManager = new KRES::Manager<T>( mType );
