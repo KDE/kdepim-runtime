@@ -154,7 +154,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       const QString bridgedCfgFile = KStandardDirs::locateLocal( "config", QString( "%1rc" ).arg( akoResId ) );
       kDebug() << bridgedCfgFile;
       if ( !QFile::exists( bridgedCfgFile ) ) {
-          emit message( Info, i18n( "Bridged resource %1 doesn't exist anymore, let's try a direct migration", akoResId ) );
+          emit message( Info, i18n( "Bridged resource %1 does not exist anymore, trying a direct migration", akoResId ) );
           setMigrationState( resId /*old id*/, None,
                              QString() /*akonadi id*/, mType );
 
