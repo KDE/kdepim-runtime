@@ -2,6 +2,7 @@
 
 #include "settings.h"
 #include "settingsadaptor.h"
+#include "util.h"
 
 #include <QtDBus/QDBusConnection>
 
@@ -12,6 +13,8 @@
 #include <QtXml/QXmlStreamReader>
 #include <QMessageBox>
 #include <akonadi/entitydisplayattribute.h>
+#include <krss/rssitem.h>
+#include <krssresource/krssresource_export.h>
 
 #define CACHE_TIMEOUT 1
 #define INTERVAL_CHECK_TIME 1  
@@ -123,10 +126,7 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
 }
 
 void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
-{
-  
-  //Q_UNUSED(collection);
-  
+{   
   // TODO: this method is called when Akonadi wants to know about all the
   // items in the given collection. You can but don't have to provide all the
   // data for each item, remote ID and MIME type are enough at this stage.
@@ -141,15 +141,43 @@ void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
 
 }
 
+void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
+					    Syndication::ErrorCode status)
+{
+     Q_UNUSED(loader);
+     
+     if (status != Syndication::Success) {
+	    kWarning() << "Error while parsing xml file";
+	    itemsRetrievalDone();
+	    return;
+     }
+
+     QString title = feed->title();
+     const QList<Syndication::ItemPtr> syndItems = feed->items();
+     Akonadi::Item::List items;
+     Q_FOREACH( const Syndication::ItemPtr& syndItem, syndItems ) {
+            kWarning() << syndItem->title();
+	    Akonadi::Item item( QLatin1String("application/rss+xml") );
+	    item.setRemoteId( syndItem->id() );
+	    item.setPayload<KRss::RssItem>( fromSyndicationItem( syndItem ) );
+            item.setFlag( KRss::RssItem::flagNew() );
+	    items << item;
+     }
+     
+     itemsRetrieved( items );
+
+}
+
 bool KRssLocalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  Q_UNUSED( item );
   Q_UNUSED( parts );
-
+  Q_UNUSED( item );
+  
   // TODO: this method is called when Akonadi wants more data for a given item.
   // You can only provide the parts that have been requested but you are allowed
   // to provide all in one go
 
+  
   return true;
 }
 
@@ -217,31 +245,6 @@ void KRssLocalResource::itemRemoved( const Akonadi::Item &item )
 
   // NOTE: There is an equivalent method for collections, but it isn't part
   // of this template code to keep it simple
-}
-
-void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
-					    Syndication::ErrorCode status)
-{
-     Q_UNUSED(loader);
-     
-     if (status != Syndication::Success) {
-	    kWarning() << "Error while parsing xml file";
-	    itemsRetrievalDone();
-	    return;
-     }
-
-     QString title = feed->title();
-     const QList<Syndication::ItemPtr> syndItems = feed->items();
-     Akonadi::Item::List items;
-     Q_FOREACH( const Syndication::ItemPtr& syndItem, syndItems ) {
-            kWarning() << syndItem->title();
-	    Akonadi::Item item( QLatin1String("application/rss+xml") );
-	    item.setRemoteId( syndItem->id() );
-            items << item;
-     }
-     
-     itemsRetrieved( items );
-
 }
 
 AKONADI_RESOURCE_MAIN( KRssLocalResource )
