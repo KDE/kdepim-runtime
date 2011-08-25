@@ -29,7 +29,7 @@ class SetupManager : public QObject
 {
   Q_OBJECT
   public:
-    explicit SetupManager( QObject *parent );
+    explicit SetupManager( QWidget *parent );
     void setSetupPage( SetupPage* page );
 
     void setName( const QString& );
@@ -43,6 +43,8 @@ class SetupManager : public QObject
     Q_SCRIPTABLE QString email();
     Q_SCRIPTABLE QString password();
     Q_SCRIPTABLE QString country();
+    /** Ensures the wallet is open for subsequent sync wallet access in the resources. */
+    Q_SCRIPTABLE void openWallet();
     Q_SCRIPTABLE QObject* createResource( const QString &type );
     Q_SCRIPTABLE QObject* createTransport( const QString &type );
     Q_SCRIPTABLE QObject* createConfigFile( const QString &configName );

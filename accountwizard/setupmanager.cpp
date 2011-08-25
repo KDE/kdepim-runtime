@@ -26,8 +26,9 @@
 #include "identity.h"
 
 #include <kemailsettings.h>
+#include <kwallet.h>
 
-SetupManager::SetupManager( QObject* parent) :
+SetupManager::SetupManager( QWidget* parent) :
   QObject(parent),
   m_page( 0 ),
   m_personalDataAvailable( false ),
@@ -192,6 +193,19 @@ QString SetupManager::password()
 QString SetupManager::country()
 {
   return KGlobal::locale()->country();
+}
+
+void SetupManager::openWallet()
+{
+  using namespace KWallet;
+  if ( Wallet::isOpen( Wallet::NetworkWallet() ) )
+    return;
+  
+  Q_ASSERT( parent()->isWidgetType() );
+  Wallet *w = Wallet::openWallet( Wallet::NetworkWallet(), qobject_cast<QWidget*>(parent())->effectiveWinId(), Wallet::Asynchronous );
+  QEventLoop loop;
+  connect( w, SIGNAL(walletOpened(bool)), &loop, SLOT(quit()) );
+  loop.exec();
 }
 
 bool SetupManager::personalDataAvailable()
