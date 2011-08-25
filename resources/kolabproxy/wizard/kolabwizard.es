@@ -90,6 +90,7 @@ function setup()
 {
   var serverAddress = page.widget().serverAddress.text.trim();
   if ( stage == 1 ) {
+    SetupManager.openWallet();
     SetupManager.createResource( "akonadi_kolabproxy_resource" );
 
     identity = SetupManager.createIdentity();

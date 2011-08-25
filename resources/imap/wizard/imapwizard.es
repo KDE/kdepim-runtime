@@ -70,6 +70,7 @@ function testResultFail()
 function testOk( arg )
 {
   if (stage == 1) {
+    SetupManager.openWallet();
     var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
     imapRes.setOption( "ImapServer", page.widget().incommingAddress.text.trim() );
     imapRes.setOption( "UserName", page.widget().userName.text );
