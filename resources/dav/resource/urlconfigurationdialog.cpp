@@ -23,7 +23,8 @@
 #include "davutils.h"
 #include "settings.h"
 
-#include <QtGui/QErrorMessage>
+#include <kmessagebox.h>
+
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
 
@@ -145,8 +146,7 @@ void UrlConfigurationDialog::onCollectionsFetchDone( KJob *job )
   mUi.discoveredUrls->setEnabled( true );
 
   if ( job->error() ) {
-    QErrorMessage msg;
-    msg.showMessage( job->errorText() );
+    KMessageBox::error( this, job->errorText() );
     return;
   }
 
@@ -181,8 +181,7 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
 void UrlConfigurationDialog::onChangeDisplayNameFinished( KJob *job )
 {
   if ( job->error() ) {
-    QErrorMessage msg;
-    msg.showMessage( job->errorText() );
+    KMessageBox::error( this, job->errorText() );
   }
 
   onFetchButtonClicked();
