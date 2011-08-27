@@ -17,42 +17,19 @@
     02110-1301, USA.
 */
 
-#ifndef KDEINTEGRATION_H
-#define KDEINTEGRATION_H
+import Qt 4.7
+import org.kde 4.5
 
-#include <QObject>
-#include <QVariant>
-#include <QStringList>
-
-class QIcon;
-class QPixmap;
-class QScriptValue;
-class QScriptContext;
-
-class KDEIntegration : public QObject
-{
-  Q_OBJECT
-
-  public:
-    explicit KDEIntegration(QObject* parent = 0);
-
-  public slots:
-    QString i18n( const QScriptValue &array );
-    QString i18nc( const QScriptValue &array );
-    QString i18np( const QScriptValue &array );
-    QString i18ncp( const QScriptValue &array );
-
-    QString iconPath( const QString &iconName, int size );
-    QPixmap iconToPixmap( const QIcon &icon, int size );
-
-    QString locate( const QString &type, const QString &filename );
-
-    /// convert millimeters into pixels
-    qreal mm2px( qreal mm );
-
-  private:
-    QScriptContext *getContext( const QScriptValue &v );
-};
-
-#endif
+Rectangle {
+  width: KDE.mm2px( 100 )
+  height: KDE.mm2px( 100 )
+  color: "lightsteelblue"
+  Rectangle {
+    width: KDE.mm2px( 40 )
+    height: KDE.mm2px( 40 )
+    x: KDE.mm2px( 20 )
+    y: KDE.mm2px( 10 )
+    color: "yellow"
+  }
+}
 

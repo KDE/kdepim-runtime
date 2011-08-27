@@ -25,6 +25,8 @@
 #include <KStandardDirs>
 #include <QIcon>
 #include <QPixmap>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
 
 #include <QScriptValue>
 #include <QScriptContext>
@@ -194,6 +196,11 @@ QPixmap KDEIntegration::iconToPixmap(const QIcon& icon, int size )
 QString KDEIntegration::locate(const QString& type, const QString& filename)
 {
   return KStandardDirs::locate( type.toLatin1(), filename );
+}
+
+qreal KDEIntegration::mm2px(qreal mm)
+{
+  return mm * QApplication::desktop()->logicalDpiX() / 25.4;
 }
 
 #include "kdeintegration.moc"
