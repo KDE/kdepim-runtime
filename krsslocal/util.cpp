@@ -46,7 +46,7 @@ static inline int calcHash( const QString& str )
     return qChecksum( array.constData(), array.size() );
 }
 
-KRss::RssItem KRssResource::fromSyndicationItem( const Syndication::ItemPtr& syndItem )
+static KRss::RssItem KRssResource::fromSyndicationItem( const Syndication::ItemPtr& syndItem )
 {
     KRss::RssItem rssItem;
     rssItem.setHeadersLoaded( true );
