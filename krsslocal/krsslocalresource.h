@@ -1,11 +1,10 @@
 #ifndef KRSSLOCALRESOURCE_H
 #define KRSSLOCALRESOURCE_H
 
-#include <akonadi/cachepolicy.h>
-#include <akonadi/resourcebase.h>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/ResourceBase>
 #include <boost/shared_ptr.hpp>
 #include <krssresource/opmlparser.h>
-#include <qtimer.h>
 #include <Syndication/Syndication>
 
 class KRssLocalResource : public Akonadi::ResourceBase,
@@ -29,8 +28,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 			Syndication::ErrorCode status );
-//   bool jobFinished( KJob *job );
-    
+   
   protected:
     virtual void aboutToQuit();
 

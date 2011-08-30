@@ -1,18 +1,16 @@
 #include "krsslocalresource.h"
-
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "util.h"
 
 #include <QtDBus/QDBusConnection>
-
 #include <KFileDialog>
 #include <KDebug>
 #include <KStandardDirs>
 #include <KLocale>
 #include <QtXml/QXmlStreamReader>
 #include <QMessageBox>
-#include <akonadi/entitydisplayattribute.h>
+#include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ChangeRecorder>
@@ -29,9 +27,14 @@ KRssLocalResource::KRssLocalResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
-   
-  policy.setCacheTimeout( CACHE_TIMEOUT );
-  policy.setIntervalCheckTime( INTERVAL_CHECK_TIME );
+
+  //policy.setCacheTimeout( CACHE_TIMEOUT );
+  //policy.setIntervalCheckTime( INTERVAL_CHECK_TIME );
+  //policy.setSyncOnDemand( true );
+
+  policy.setInheritFromParent( false );
+  policy.setSyncOnDemand( true );
+  policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
   
   /*
   changeRecorder()->fetchCollection( true );
@@ -170,39 +173,23 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
 	  item.setRemoteId( syndItem->id() );
 	  item.setPayload<KRss::RssItem>( fromSyndicationItem( syndItem ) );
 	  item.setFlag( KRss::RssItem::flagNew() );
-	  /*	  
-	  Akonadi::ItemCreateJob *job = new Akonadi::ItemCreateJob( item, collection );
-	  connect( job, SIGNAL( result( KJob* ) ), SLOT( jobFinished( KJob* ) ) );
-	  job->start();
-	  */
 	  items << item;
      }
 
      itemsRetrieved( items );
  
 }
-/*
-bool KRssLocalResource::jobFinished(KJob* job)
-{
-    if ( job->error() ) {
-      qDebug() << "Error occurred";
-      return false;
-    }
-   
-
-}  */  
 
 bool KRssLocalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
-  Q_UNUSED( item );
-  
+    
   // TODO: this method is called when Akonadi wants more data for a given item.
   // You can only provide the parts that have been requested but you are allowed
   // to provide all in one go
 
-  
-  return false;
+  itemRetrieved( item );
+  return true;
 }
 
 void KRssLocalResource::aboutToQuit()
