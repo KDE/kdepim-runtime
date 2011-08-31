@@ -52,19 +52,19 @@
      </widget>
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
+       <item row="1" column="0">
         <widget class="QPushButton" name="createKolabFolderButton">
          <property name="text">
-          <string>Create Kolab Folder</string>
+          <string>Create Kolab Folders</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Resource folders are in account:</string>
+            <string>Create resource folders in account:</string>
            </property>
           </widget>
          </item>
@@ -72,6 +72,16 @@
           <widget class="QComboBox" name="imapAccountComboBox"/>
          </item>
         </layout>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Note that the Kolab resource will use all IMAP accounts that contain the special Kolab folders.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

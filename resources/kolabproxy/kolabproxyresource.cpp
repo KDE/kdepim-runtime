@@ -255,12 +255,8 @@ void KolabProxyResource::configure( WId windowId )
   // of focus stealing prevention technique
 
   QPointer<SetupKolab> kolabConfigDialog( new SetupKolab( this, windowId ) );
-  if ( kolabConfigDialog->exec() == QDialog::Accepted ) {
-    emit configurationDialogAccepted();
-  }
-  else {
-    emit configurationDialogRejected();
-  }
+  kolabConfigDialog->exec();
+  emit configurationDialogAccepted();
 
   delete kolabConfigDialog;
 }

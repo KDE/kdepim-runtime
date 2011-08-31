@@ -43,6 +43,7 @@ SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
   m_ui->setupUi( mainWidget() );
   initConnection();
   updateCombobox();
+  setButtons( Close );
 }
 
 SetupKolab::~SetupKolab()
