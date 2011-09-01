@@ -2,6 +2,11 @@
 Id=defaultcalendar
 Type=akonadi_ical_resource
 Name=Personal Calendar
+Name[nl]=Persoonlijke agenda
+Name[pt]=Calendário Pessoal
+Name[sv]=Personlig kalender
+Name[uk]=Особистий календар
+Name[x-test]=xxPersonal Calendarxx
 
 [Settings]
 Path[$e]=/My Documents/.local/share/korganizer/std.ics
