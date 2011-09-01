@@ -38,7 +38,7 @@ if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
     set( KDEPIM_RUNTIME_DEV_VERSION "" )
 endif ()
 
-set( KDEPIM_RUNTIME_VERSION "4.7.0 ${KDEPIM_RUNTIME_DEV_VERSION}" )
+set( KDEPIM_RUNTIME_VERSION "4.7.1${KDEPIM_RUNTIME_DEV_VERSION}" )
 
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
