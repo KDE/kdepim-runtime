@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2009    Dmitry Ivanov <vonami@gmail.com>
+    Copyright (C) 2011    Alessandro Cosentino <cosenal@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,9 +37,7 @@
 #include <QtCore/QMultiMap>
 #include <QtCore/QMapIterator>
 #include <QtXml/QDomElement>
-
-namespace Util
-{
+  
 // from akregator/src/utils.cpp
 static inline int calcHash( const QString& str )
 {
@@ -46,7 +45,7 @@ static inline int calcHash( const QString& str )
     return qChecksum( array.constData(), array.size() );
 }
 
-static KRss::RssItem KRssResource::fromSyndicationItem( const Syndication::ItemPtr& syndItem )
+KRss::RssItem KRssResource::Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem)
 {
     KRss::RssItem rssItem;
     rssItem.setHeadersLoaded( true );
@@ -133,6 +132,16 @@ static KRss::RssItem KRssResource::fromSyndicationItem( const Syndication::ItemP
     return rssItem;
 }
 
+QList< boost::shared_ptr< KRssResource::ParsedFeed > > KRssResource::Util::toParsedFeedList(const QList< Akonadi::Collection >& feeds)
+{
+    QList<boost::shared_ptr<ParsedFeed> > parsedFeeds;
+    Q_FOREACH( const Akonadi::Collection& feed, feeds ) {
+        if ( feed.parent() != Akonadi::Collection::root().id() )
+            parsedFeeds.append( ParsedFeed::fromAkonadiCollection( feed ) );
+    }
+    return parsedFeeds;
+}
+
 /*
 QString KRssResource::generateCollectionName( const Akonadi::Collection& collection )
 {
@@ -142,5 +151,3 @@ QString KRssResource::generateCollectionName( const Akonadi::Collection& collect
 
     return static_cast<KRss::FeedCollection>( collection ).title() + QLatin1Char( '-' ) + collection.remoteId();
 }*/
-
-}

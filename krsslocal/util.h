@@ -18,22 +18,17 @@
 #ifndef KRSSRESOURCE_UTIL_H
 #define KRSSRESOURCE_UTIL_H
 
+#include <krss/rssitem.h>
 #include <Syndication/Item>
+#include <krssresource/opmlparser.h>
 
-namespace KRss {
-class RssItem;
-}
-
-namespace Akonadi {
-class Collection;
-}
-
-namespace KRssResource
-{
-
-KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem );
-//QString generateCollectionName( const Akonadi::Collection& collection );
-
-} // namespace KRssResource
+namespace KRssResource {
+  namespace Util {
+  
+    KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem );
+    QList<boost::shared_ptr<ParsedFeed> > toParsedFeedList( const QList<Akonadi::Collection>& feeds );
+  
+  };
+};
 
 #endif // KRSSRESOURCE_UTIL_H

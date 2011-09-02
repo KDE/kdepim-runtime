@@ -47,6 +47,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 set( krsslocalresource_SRCS
   krsslocalresource.cpp
+  util.cpp
 )
 
 install( FILES krsslocalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

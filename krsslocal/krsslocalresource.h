@@ -18,6 +18,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     Akonadi::Collection::List buildCollectionTree( QList<boost::shared_ptr<const KRssResource::ParsedNode> > listOfNodes, 
  				   Akonadi::Collection::List &list, Akonadi::Collection &parent);
     QString mimeType();
+    void writeFeedsToOpml(const QString &path, const QList<Akonadi::Collection>& feeds);
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
@@ -28,15 +29,16 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 			Syndication::ErrorCode status );
-   
+    void fetchCollectionsFinished( KJob *job );
+
+			
   protected:
     virtual void aboutToQuit();
 
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     virtual void itemRemoved( const Akonadi::Item &item );
-    
-    void fetchFeed( const Akonadi::Collection &feed );
+    virtual void collectionChanged( const Akonadi::Collection &collection );
     
   private:    
     Akonadi::CachePolicy policy;

@@ -9,11 +9,15 @@
 #include <KStandardDirs>
 #include <KLocale>
 #include <QtXml/QXmlStreamReader>
+#include <QtXml/QXmlStreamWriter>
 #include <QMessageBox>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ChangeRecorder>
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
 #include <krss/rssitem.h>
 #include <krssresource/krssresource_export.h>
 
@@ -30,17 +34,17 @@ KRssLocalResource::KRssLocalResource( const QString &id )
 
   //policy.setCacheTimeout( CACHE_TIMEOUT );
   //policy.setIntervalCheckTime( INTERVAL_CHECK_TIME );
-  //policy.setSyncOnDemand( true );
 
   policy.setInheritFromParent( false );
-  policy.setSyncOnDemand( true );
-  policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
+  policy.setSyncOnDemand( false );
+  policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart );
   
-  /*
-  changeRecorder()->fetchCollection( true );
+  
+  //changeRecorder()->fetchCollection( true );
+  
   changeRecorder()->itemFetchScope().fetchFullPayload( false );
-  changeRecorder()->itemFetchScope().fetchAllAttributes( true );
-  */
+  //changeRecorder()->itemFetchScope().fetchAllAttributes( true );
+  
 }
 
 KRssLocalResource::~KRssLocalResource()
@@ -116,7 +120,8 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
     foreach(const shared_ptr<const ParsedNode> parsedNode, listOfNodes) {
       if (!parsedNode->isFolder()) {
 	    Collection c = (static_pointer_cast<const ParsedFeed>(parsedNode))->toAkonadiCollection();
-	    c.setParent(parent);
+	    c.setContentMimeTypes( c.contentMimeTypes() );
+	    c.setParent( parent );
 
 	    c.setCachePolicy( policy );
 	    
@@ -128,11 +133,11 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
 	else {
 	    shared_ptr<const ParsedFolder> parsedFolder = static_pointer_cast<const ParsedFolder>(parsedNode);
 	    Collection folder;
-	    folder.setParent(parent);
-	    folder.setName(parsedFolder->title());
-	    folder.setRemoteId(Settings::self()->path() + parsedFolder->title());
+	    folder.setParent( parent );
+	    folder.setName( parsedFolder->title() );
+	    folder.setRemoteId( Settings::self()->path() + parsedFolder->title() );
 	    folder.setContentMimeTypes( QStringList( Collection::mimeType() ) );
-	    list = buildCollectionTree(parsedFolder->children(), list, folder);
+	    list = buildCollectionTree( parsedFolder->children(), list, folder );
 	}
     }
   
@@ -171,7 +176,7 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
      foreach ( const Syndication::ItemPtr& syndItem, m_syndItems ) {
 	  Akonadi::Item item( mimeType() );
 	  item.setRemoteId( syndItem->id() );
-	  item.setPayload<KRss::RssItem>( fromSyndicationItem( syndItem ) );
+	  item.setPayload<KRss::RssItem>( Util::fromSyndicationItem( syndItem ) );
 	  item.setFlag( KRss::RssItem::flagNew() );
 	  items << item;
      }
@@ -225,15 +230,13 @@ void KRssLocalResource::configure( WId windowId )
 
 void KRssLocalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  //Q_UNUSED( item );
   Q_UNUSED( collection );
-
-  // TODO: this method is called when somebody else, e.g. a client application,
-  // has created an item in a collection managed by your resource.
-
-  // NOTE: There is an equivalent method for collections, but it isn't part
-  // of this template code to keep it simple
   
+  changeCommitted( item );
+}
+
+void KRssLocalResource::itemRemoved( const Akonadi::Item &item )
+{  
   changeCommitted( item );
 }
 
@@ -244,21 +247,55 @@ void KRssLocalResource::itemChanged( const Akonadi::Item &item, const QSet<QByte
 
   // TODO: this method is called when somebody else, e.g. a client application,
   // has changed an item managed by your resource.
-
-  // NOTE: There is an equivalent method for collections, but it isn't part
-  // of this template code to keep it simple
 }
 
-void KRssLocalResource::itemRemoved( const Akonadi::Item &item )
+void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
 {
-  Q_UNUSED( item );
-
-  // TODO: this method is called when somebody else, e.g. a client application,
-  // has deleted an item managed by your resource.
-
-  // NOTE: There is an equivalent method for collections, but it isn't part
-  // of this template code to keep it simple
+  using namespace Akonadi;
+  
+  Q_UNUSED( collection );
+  
+  // fetching all collections containing rss feeds recursively, starting at the root collection
+  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
+  job->fetchScope().setContentMimeTypes( QStringList() << mimeType() );
+  connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchCollectionsFinished( KJob* ) ) );
+  
 }
+
+void KRssLocalResource::fetchCollectionsFinished(KJob *job) {
+  
+   if ( job->error() ) {
+     qDebug() << "Error occurred";
+     return;
+   }
+
+   CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
+
+   const Collection::List collections = fetchJob->collections();
+  
+   const QString path = Settings::self()->path();
+  
+   writeFeedsToOpml( path, collections );
+}
+
+void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<Akonadi::Collection>& feeds)
+{
+  QFile file( path );
+  /* If we can't open it, let's show an error message. */
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+      error(i18n("Couldn't open ") + path);
+      return;
+  }
+        
+  QXmlStreamWriter writer( &file );
+  writer.setAutoFormatting( true );
+  writer.writeStartDocument();
+  OpmlWriter::writeOpml( writer, Util::toParsedFeedList( feeds ));
+  writer.writeEndDocument();
+
+}
+
+
 
 AKONADI_RESOURCE_MAIN( KRssLocalResource )
 
