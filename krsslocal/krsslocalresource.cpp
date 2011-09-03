@@ -45,6 +45,14 @@ KRssLocalResource::KRssLocalResource( const QString &id )
   changeRecorder()->itemFetchScope().fetchFullPayload( false );
   //changeRecorder()->itemFetchScope().fetchAllAttributes( true );
   
+  //This timer handles the situation in which at least one collection is changed
+  //and the modifications must be written back on the opml file.
+  //
+  writeBackTimer = new QTimer(this);
+  writeBackTimer->setSingleShot( true );
+  connect(writeBackTimer, SIGNAL(timeout()), this, SIGNAL(quitOrTimeout()));
+  connect(this, SIGNAL(quitOrTimeout()), this, SLOT(fetchCollections()));
+  
 }
 
 KRssLocalResource::~KRssLocalResource()
@@ -56,11 +64,14 @@ QString KRssLocalResource::mimeType()
   return QLatin1String("application/rss+xml");
 }
 
+// this method is called when Akonadi wants to have all the
+// collections your resource provides.
+// Be sure to set the remote ID and the content MIME types
 void KRssLocalResource::retrieveCollections()
 {
-  // TODO: this method is called when Akonadi wants to have all the
-  // collections your resource provides.
-  // Be sure to set the remote ID and the content MIME types
+    
+    //it forces previous changes of the Collections to be written back
+    fetchCollections();
   
     const QString path = Settings::self()->path();
     
@@ -171,9 +182,9 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
 	    return;
      }
 
-     m_syndItems = feed->items();
+     QList<Syndication::ItemPtr> syndItems = feed->items();
      Akonadi::Item::List items;
-     foreach ( const Syndication::ItemPtr& syndItem, m_syndItems ) {
+     foreach ( const Syndication::ItemPtr& syndItem, syndItems ) {
 	  Akonadi::Item item( mimeType() );
 	  item.setRemoteId( syndItem->id() );
 	  item.setPayload<KRss::RssItem>( Util::fromSyndicationItem( syndItem ) );
@@ -201,6 +212,12 @@ void KRssLocalResource::aboutToQuit()
 {
   // TODO: any cleanup you need to do while there is still an active
   // event loop. The resource will terminate after this method returns
+  
+  if (writeBackTimer->isActive()) {
+      writeBackTimer->stop();
+      emit quitOrTimeout();
+  }
+  
 }
 
 void KRssLocalResource::configure( WId windowId )
@@ -250,16 +267,20 @@ void KRssLocalResource::itemChanged( const Akonadi::Item &item, const QSet<QByte
 }
 
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
-{
-  using namespace Akonadi;
-  
+{  
   Q_UNUSED( collection );
   
+  if (!writeBackTimer->isActive()) {
+      writeBackTimer->start(WRITE_BACK_TIMEOUT);
+  }
+  
+}
+
+void KRssLocalResource::fetchCollections() {
   // fetching all collections containing rss feeds recursively, starting at the root collection
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
   job->fetchScope().setContentMimeTypes( QStringList() << mimeType() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchCollectionsFinished( KJob* ) ) );
-  
 }
 
 void KRssLocalResource::fetchCollectionsFinished(KJob *job) {
@@ -273,9 +294,9 @@ void KRssLocalResource::fetchCollectionsFinished(KJob *job) {
 
    const Collection::List collections = fetchJob->collections();
   
-   const QString path = Settings::self()->path();
-  
+   const QString path = Settings::self()->path();  
    writeFeedsToOpml( path, collections );
+   
 }
 
 void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<Akonadi::Collection>& feeds)
@@ -294,7 +315,6 @@ void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<Akonad
   writer.writeEndDocument();
 
 }
-
 
 
 AKONADI_RESOURCE_MAIN( KRssLocalResource )
