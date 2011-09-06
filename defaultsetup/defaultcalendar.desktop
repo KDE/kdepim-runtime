@@ -2,9 +2,12 @@
 Id=defaultcalendar
 Type=akonadi_ical_resource
 Name=Personal Calendar
+Name[cs]=Osobní kalendář
+Name[de]=Persönlicher Kalender
 Name[ia]=Calendario Personal
 Name[it]=Calendario personale
 Name[kk]=Дербес күнтізбе
+Name[nds]=Persöönlich Kalenner
 Name[nl]=Persoonlijke agenda
 Name[pl]=Kalendarz osobisty
 Name[pt]=Calendário Pessoal
@@ -13,6 +16,7 @@ Name[ru]=Личный календарь
 Name[sv]=Personlig kalender
 Name[uk]=Особистий календар
 Name[x-test]=xxPersonal Calendarxx
+Name[zh_TW]=個人行事曆
 
 [Settings]
 Path[$e]=$HOME/${KDE_DEFAULT_HOME}/share/apps/korganizer/std.ics
