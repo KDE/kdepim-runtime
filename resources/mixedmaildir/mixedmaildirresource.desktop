@@ -41,6 +41,7 @@ Comment=Loads data from a local KMail maildir folder
 Comment[bg]=Зареждане на данни от локална папка maildir на KMail
 Comment[ca]=Carrega dades des d'una carpeta local de directori de correu del KMail
 Comment[ca@valencia]=Carrega dades des d'una carpeta local de directori de correu del KMail
+Comment[cs]=Načítá data z místní složky KMail maildir
 Comment[da]=Indlæser data fra en lokal KMail maildir-mappe
 Comment[de]=Daten werden aus einem lokalen Maildir-Ordner geladen
 Comment[el]=Φόρτωση δεδομένων από έναν τοπικό φάκελο maildir του KMail
