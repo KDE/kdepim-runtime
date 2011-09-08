@@ -32,6 +32,10 @@
 #include <QScriptContext>
 #include <QScriptEngine>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 static QString translate( const KLocalizedString &msg,
                           const QScriptContext *context, const int start, bool plural = false )
 {
@@ -200,6 +204,92 @@ QString KDEIntegration::locate(const QString& type, const QString& filename)
 
 qreal KDEIntegration::mm2px(qreal mm)
 {
+#ifdef _WIN32
+//TODO: Cache value
+  HMONITOR mon = MonitorFromWindow(QApplication::desktop()->winId(), MONITOR_DEFAULTTONEAREST);
+  MONITORINFOEX moninfo;
+  moninfo.cbSize = sizeof(MONITORINFOEX);
+  GetMonitorInfo(mon, &moninfo);
+
+  long monitorWidthInPixel = moninfo.rcMonitor.right - moninfo.rcMonitor.left;
+  long monitorHeightinPixel = moninfo.rcMonitor.bottom - moninfo.rcMonitor.top;
+
+  DISPLAY_DEVICE dd;
+  dd.cb = sizeof(DISPLAY_DEVICE);
+  EnumDisplayDevices(moninfo.szDevice, 0, &dd, 0);
+
+  const QString deviceID = QString::fromUtf16(dd.DeviceID);
+
+  QRegExp rx("^MONITOR\\\\(\\w+)\\\\");
+
+  if (rx.indexIn(deviceID) != -1) {
+    const QString devID = rx.cap(1);
+
+    const QString baseRegKey =
+      QLatin1String("SYSTEM\\CurrentControlSet\\Enum\\DISPLAY\\") + devID;
+
+    HKEY registryHandle;
+    LONG res = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+                            reinterpret_cast<const wchar_t *>(baseRegKey.utf16()),
+                            0,
+                            KEY_READ,
+                            &registryHandle);
+    if (res != ERROR_SUCCESS) {
+        RegCloseKey(registryHandle);
+        return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+    }
+
+    DWORD keyLength = 0;
+    res = RegQueryInfoKey(registryHandle, 0, 0, 0, 0, &keyLength, 0, 0, 0, 0, 0, 0);
+    if (res != ERROR_SUCCESS) {
+        RegCloseKey(registryHandle);
+        return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+    }
+
+    //Utf16 so 2 Bytes per Character
+    QByteArray buf(keyLength * 2, 0);
+    keyLength++; //keyLength including the terminating 0, which is already in a QByteArray
+
+    res = RegEnumKeyEx(registryHandle,
+                       0,
+                       reinterpret_cast<wchar_t *>(buf.data()),
+                       &keyLength,
+                       0,
+                       0,
+                       0,
+                       0);
+    if (res != ERROR_SUCCESS) {
+        RegCloseKey(registryHandle);
+        return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+    }
+    RegCloseKey(registryHandle);
+
+    const QString guidString =  QString::fromWCharArray(reinterpret_cast<const wchar_t *>(buf.data()));
+
+    const QString edidRegString = QLatin1String("SYSTEM\\CurrentControlSet\\Enum\\DISPLAY\\")
+                        + devID + QLatin1String("\\") + guidString + QLatin1String("\\Device Parameters");
+    RegOpenKeyEx(HKEY_LOCAL_MACHINE, reinterpret_cast<const wchar_t *>(edidRegString.utf16()),
+                 0, KEY_READ, &registryHandle);
+
+    DWORD dataSize;
+    res = RegQueryValueEx(registryHandle, L"EDID", 0, 0, 0, &dataSize);
+    if (res != ERROR_SUCCESS) {
+        RegCloseKey(registryHandle);
+        return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+    }
+
+    QByteArray data(dataSize, 0);
+    res = RegQueryValueEx(registryHandle, L"EDID", 0, 0,
+                          reinterpret_cast<unsigned char*>(data.data()), &dataSize);
+    RegCloseKey(registryHandle);
+
+    const int monitorWidthInCM = data.at(21);
+    //int monitorHeightInCM = data.at(22);
+
+    return (monitorWidthInPixel * mm) / (monitorWidthInCM * 10.0);
+    //int pixelPerMM = monitorHeightinPixel / (monitorHeightInCM * 10.0);
+  }
+#endif
   return mm * QApplication::desktop()->logicalDpiX() / 25.4;
 }
 
