@@ -1,12 +1,29 @@
+/*
+    Copyright (C) 2011    Alessandro Cosentino <cosenal@gmail.com>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef KRSSLOCALRESOURCE_H
 #define KRSSLOCALRESOURCE_H
 
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ResourceBase>
 #include <boost/shared_ptr.hpp>
-#include <krssresource/opmlparser.h>
 #include <Syndication/Syndication>
 #include <QTimer>
+#include "opmlparser.h"
 
 class KRssLocalResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
@@ -19,7 +36,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     Akonadi::Collection::List buildCollectionTree( QList<boost::shared_ptr<const KRssResource::ParsedNode> > listOfNodes, 
  				   Akonadi::Collection::List &list, Akonadi::Collection &parent);
     QString mimeType();
-    void writeFeedsToOpml(const QString &path, const QList<Akonadi::Collection>& feeds);
+    void writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr<const KRssResource::ParsedNode> >& nodes);
 
   public Q_SLOTS:
     virtual void configure( WId windowId );    
@@ -46,7 +63,6 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     
   private:    
     Akonadi::CachePolicy policy;
-    //QList<Syndication::ItemPtr> m_syndItems;
     QTimer *writeBackTimer;
     static const int CACHE_TIMEOUT = -1, INTERVAL_CHECK_TIME = 5; 
     static const int WRITE_BACK_TIMEOUT = 30000; // in milliseconds

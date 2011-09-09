@@ -23,7 +23,7 @@
 #include <krss/person.h>
 #include <krss/category.h>
 #include <krss/enclosure.h>
-//#include <krss/feedcollection.h>
+#include <krss/feedcollection.h>
 
 #include <Akonadi/Collection>
 #include <Syndication/Person>
@@ -34,6 +34,7 @@
 #include <QtCore/QByteArray>
 
 #include <KDebug>
+#include <KLocale>
 #include <QtCore/QMultiMap>
 #include <QtCore/QMapIterator>
 #include <QtXml/QDomElement>
@@ -124,7 +125,7 @@ KRss::RssItem KRssResource::Util::fromSyndicationItem(const Syndication::ItemPtr
     QMapIterator<QString, QDomElement> it( syndProperties );
     while ( it.hasNext() ) {
         it.next();
-        rssItem.setCustomProperty( it.key(), it.value().text() );
+        rssItem.setCustomProperty( it.key(), it.value().text() ); //FIXME (Alessandro: why is it yellow on kdevelop?)
     }
 
     rssItem.setHash( calcHash( syndItem->title() + syndItem->description() +
@@ -132,15 +133,37 @@ KRss::RssItem KRssResource::Util::fromSyndicationItem(const Syndication::ItemPtr
     return rssItem;
 }
 
-QList< boost::shared_ptr< KRssResource::ParsedFeed > > KRssResource::Util::toParsedFeedList(const QList< Akonadi::Collection >& feeds)
+QList< boost::shared_ptr< const KRssResource::ParsedNode > > KRssResource::Util::parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent )
 {
-    QList<boost::shared_ptr<ParsedFeed> > parsedFeeds;
-    Q_FOREACH( const Akonadi::Collection& feed, feeds ) {
-        if ( feed.parent() != Akonadi::Collection::root().id() )
-            parsedFeeds.append( ParsedFeed::fromAkonadiCollection( feed ) );
+    QList<boost::shared_ptr< const KRssResource::ParsedNode > > nodesList;
+        
+    Q_FOREACH( const Akonadi::Collection& collection , collections ) {
+	if (collection.parentCollection() == parent) {
+	    boost::shared_ptr< KRssResource::ParsedNode > node;
+	    const KRss::FeedCollection feedCollection = collection;
+	    if (feedCollection.feedType() == QLatin1String( "rss" )) { //it's a feed. correct test???
+		node = ParsedFeed::fromAkonadiCollection ( collection );
+	    }
+	    else if (feedCollection.feedType() == QLatin1String( "" )) { //it's a feed. again, correct test???
+		boost::shared_ptr<ParsedFolder> parsedFolder( new ParsedFolder );
+		parsedFolder->setTitle( feedCollection.name() );
+		QList< boost::shared_ptr< const KRssResource::ParsedNode > > children = parsedDescendants( collections, collection );
+		parsedFolder->setChildren( children );
+		
+		node = parsedFolder;		  
+	    }
+	    else {
+		kWarning() << "Collection type not recognized";
+	    }
+	    collections.removeOne( collection );
+	    nodesList.append( node );
+	}
     }
-    return parsedFeeds;
+    
+    return nodesList;
+    
 }
+
 
 /*
 QString KRssResource::generateCollectionName( const Akonadi::Collection& collection )

@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2009    Dmitry Ivanov <vonami@gmail.com>
+    Copyright (C) 2011    Alessandro Cosentino <cosenal@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,15 +19,17 @@
 #ifndef KRSSRESOURCE_UTIL_H
 #define KRSSRESOURCE_UTIL_H
 
+#include "opmlparser.h"
+
 #include <krss/rssitem.h>
 #include <Syndication/Item>
-#include <krssresource/opmlparser.h>
 
 namespace KRssResource {
   namespace Util {
   
     KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem );
-    QList<boost::shared_ptr<ParsedFeed> > toParsedFeedList( const QList<Akonadi::Collection>& feeds );
+    QList<boost::shared_ptr<const ParsedNode> > toParsedNodesTree( QList<Akonadi::Collection>& collections );
+    QList<boost::shared_ptr<const ParsedNode> > parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent );
   
   };
 };

@@ -1,3 +1,20 @@
+/*
+    Copyright (C) 2011    Alessandro Cosentino <cosenal@gmail.com>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "krsslocalresource.h"
 #include "settings.h"
 #include "settingsadaptor.h"
@@ -8,9 +25,9 @@
 #include <KDebug>
 #include <KStandardDirs>
 #include <KLocale>
+#include <KSaveFile>
 #include <QtXml/QXmlStreamReader>
 #include <QtXml/QXmlStreamWriter>
-#include <QMessageBox>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
@@ -20,6 +37,8 @@
 #include <Akonadi/CollectionFetchScope>
 #include <krss/rssitem.h>
 #include <krssresource/krssresource_export.h>
+#include <krss/resourcemanager.h>
+#include <krss/feedcollection.h>
 
 using namespace Akonadi;
 using namespace KRssResource;
@@ -35,6 +54,8 @@ KRssLocalResource::KRssLocalResource( const QString &id )
   //policy.setCacheTimeout( CACHE_TIMEOUT );
   //policy.setIntervalCheckTime( INTERVAL_CHECK_TIME );
 
+  KRss::ResourceManager::registerAttributes();
+  
   policy.setInheritFromParent( false );
   policy.setSyncOnDemand( false );
   policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart );
@@ -57,6 +78,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
 
 KRssLocalResource::~KRssLocalResource()
 {
+  delete writeBackTimer;
 }
 
 QString KRssLocalResource::mimeType()
@@ -79,7 +101,7 @@ void KRssLocalResource::retrieveCollections()
     QFile file( path );
     /* If we can't open it, let's show an error message. */
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-	error(i18n("Couldn't open ") + path);
+	error(i18n("Could not open %1: %2", path, file.errorString()) );
 	return;
     }
     
@@ -120,6 +142,8 @@ void KRssLocalResource::retrieveCollections()
     list = buildCollectionTree(parser.topLevelNodes(), list, top); 
       
     collectionsRetrieved( list );
+    
+    file.close();
 
 }
 
@@ -277,7 +301,6 @@ void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
 }
 
 void KRssLocalResource::fetchCollections() {
-  // fetching all collections containing rss feeds recursively, starting at the root collection
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
   job->fetchScope().setContentMimeTypes( QStringList() << mimeType() );
   connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchCollectionsFinished( KJob* ) ) );
@@ -291,29 +314,32 @@ void KRssLocalResource::fetchCollectionsFinished(KJob *job) {
    }
 
    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
-
-   const Collection::List collections = fetchJob->collections();
+   Collection::List collections = fetchJob->collections();
+   writeFeedsToOpml( Settings::self()->path(), Util::parsedDescendants( collections, Akonadi::Collection::root() ) );
   
-   const QString path = Settings::self()->path();  
-   writeFeedsToOpml( path, collections );
-   
 }
 
-void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<Akonadi::Collection>& feeds)
+void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr< const ParsedNode> >& nodes)
 {
-  QFile file( path );
-  /* If we can't open it, let's show an error message. */
-  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-      error(i18n("Couldn't open ") + path);
-      return;
-  }
-        
+  
+  KSaveFile file( path );
+  if ( !file.open( QIODevice::ReadWrite | QIODevice::Text ) ) {
+     error( i18n("Could not open %1: %2", path, file.errorString()) );
+     return;
+ }
+ 
   QXmlStreamWriter writer( &file );
   writer.setAutoFormatting( true );
   writer.writeStartDocument();
-  OpmlWriter::writeOpml( writer, Util::toParsedFeedList( feeds ));
+  OpmlWriter::writeOpml( writer, nodes, QLatin1String("test_title")); //TODO: replace with the actual title
   writer.writeEndDocument();
-
+  
+  if ( !file.finalize() ) {
+     error( i18n("Could not save %1: %2", path, file.errorString()) );
+  }
+  file.close();
+  return;
+  
 }
 
 
