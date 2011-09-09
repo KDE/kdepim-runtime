@@ -183,7 +183,7 @@ shared_ptr<ParsedFeed> ParsedFeed::fromAkonadiCollection( const Akonadi::Collect
 {
     const KRss::FeedCollection feedCollection = collection;
     shared_ptr<ParsedFeed> parsedFeed( new ParsedFeed );
-    parsedFeed->setTitle( feedCollection.title() );
+    parsedFeed->setTitle( collection.name() );
     parsedFeed->d->xmlUrl = feedCollection.xmlUrl();
     parsedFeed->d->htmlUrl = feedCollection.htmlUrl();
     parsedFeed->d->description = feedCollection.description();
@@ -487,13 +487,16 @@ void OpmlWriter::writeOutlineFeed( QXmlStreamWriter& writer, const shared_ptr<co
     writer.writeStartElement( QLatin1String("outline") );
     writer.writeAttribute( QLatin1String("text"), feed->title() );
     writer.writeAttribute( QLatin1String("title"), feed->title() );
-    writer.writeAttribute( QLatin1String("description"), feed->description() );
+//    writer.writeAttribute( QLatin1String("description"), feed->description() );
     writer.writeAttribute( QLatin1String("htmlUrl"), feed->htmlUrl() );
     writer.writeAttribute( QLatin1String("xmlUrl"), feed->xmlUrl() );
+    writer.writeAttribute( QLatin1String("type"), feed->type());
+/*    
     QHashIterator<QString, QString> it( feed->attributes() );
     while ( it.hasNext() ) {
         it.next();
         writer.writeAttribute( it.key(), it.value() );
     }
+*/
     writer.writeEndElement();   // outline
 }

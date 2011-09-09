@@ -145,17 +145,20 @@ QList< boost::shared_ptr< const KRssResource::ParsedNode > > KRssResource::Util:
 		node = ParsedFeed::fromAkonadiCollection ( collection );
 	    }
 	    else if (feedCollection.feedType() == QLatin1String( "" )) { //it's a feed. again, correct test???
+		QList< boost::shared_ptr< const KRssResource::ParsedNode > > children = parsedDescendants( collections, collection );
+		if (parent == Akonadi::Collection::root()) {
+		    return children;
+		}
 		boost::shared_ptr<ParsedFolder> parsedFolder( new ParsedFolder );
 		parsedFolder->setTitle( feedCollection.name() );
-		QList< boost::shared_ptr< const KRssResource::ParsedNode > > children = parsedDescendants( collections, collection );
 		parsedFolder->setChildren( children );
-		
-		node = parsedFolder;		  
+		node = parsedFolder;		
 	    }
 	    else {
 		kWarning() << "Collection type not recognized";
 	    }
 	    collections.removeOne( collection );
+
 	    nodesList.append( node );
 	}
     }

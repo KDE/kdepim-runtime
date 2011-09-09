@@ -92,9 +92,6 @@ QString KRssLocalResource::mimeType()
 void KRssLocalResource::retrieveCollections()
 {
     
-    //it forces previous changes of the Collections to be written back
-    fetchCollections();
-  
     const QString path = Settings::self()->path();
     
     /* We'll parse the opml file */
@@ -292,7 +289,8 @@ void KRssLocalResource::itemChanged( const Akonadi::Item &item, const QSet<QByte
 
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
 {  
-  Q_UNUSED( collection );
+
+  changeCommitted( collection );
   
   if (!writeBackTimer->isActive()) {
       writeBackTimer->start(WRITE_BACK_TIMEOUT);
@@ -322,24 +320,25 @@ void KRssLocalResource::fetchCollectionsFinished(KJob *job) {
 void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr< const ParsedNode> >& nodes)
 {
   
-  KSaveFile file( path );
-  if ( !file.open( QIODevice::ReadWrite | QIODevice::Text ) ) {
-     error( i18n("Could not open %1: %2", path, file.errorString()) );
-     return;
- }
- 
-  QXmlStreamWriter writer( &file );
-  writer.setAutoFormatting( true );
-  writer.writeStartDocument();
-  OpmlWriter::writeOpml( writer, nodes, QLatin1String("test_title")); //TODO: replace with the actual title
-  writer.writeEndDocument();
+    KSaveFile file( path );
+    if ( !file.open( QIODevice::ReadWrite | QIODevice::Text ) ) {
+      error( i18n("Could not open %1: %2", path, file.errorString()) );
+      return;
+    }
   
-  if ( !file.finalize() ) {
-     error( i18n("Could not save %1: %2", path, file.errorString()) );
-  }
-  file.close();
-  return;
-  
+    QXmlStreamWriter writer( &file );
+    writer.setAutoFormatting( true );
+    writer.writeStartDocument();
+    OpmlWriter::writeOpml( writer, nodes, QLatin1String("test_title")); //TODO: replace with the actual title
+    writer.writeEndDocument();
+    
+    if ( !file.finalize() ) {
+      error( i18n("Could not save %1: %2", path, file.errorString()) );
+    }
+    
+    file.close();
+    return;
+    
 }
 
 
