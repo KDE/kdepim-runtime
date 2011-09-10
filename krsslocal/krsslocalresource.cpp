@@ -122,13 +122,14 @@ void KRssLocalResource::retrieveCollections()
         }
     }    
     
+    titleOpml = parser.titleOpml();
     QList<shared_ptr<const ParsedNode> > parsedNodes = parser.topLevelNodes();
     
     // create a top-level collection
     Collection top;
     top.setParent( Collection::root() );
     top.setRemoteId( path );
-    top.setName( path );
+    top.setName( titleOpml );
     top.setContentMimeTypes( QStringList( Collection::mimeType() ) );
     
     //it customizes the root collection with an opml icon
@@ -293,7 +294,7 @@ void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
   changeCommitted( collection );
   
   if (!writeBackTimer->isActive()) {
-      writeBackTimer->start(WRITE_BACK_TIMEOUT);
+      writeBackTimer->start(WriteBackTimeout);
   }
   
 }
@@ -312,8 +313,8 @@ void KRssLocalResource::fetchCollectionsFinished(KJob *job) {
    }
 
    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
-   Collection::List collections = fetchJob->collections();
-   writeFeedsToOpml( Settings::self()->path(), Util::parsedDescendants( collections, Akonadi::Collection::root() ) );
+   QList<Collection> collections = fetchJob->collections();
+   writeFeedsToOpml( Settings::self()->path(), Util::parsedDescendants( collections, Collection::root() ) );
   
 }
 
@@ -329,7 +330,7 @@ void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<boost:
     QXmlStreamWriter writer( &file );
     writer.setAutoFormatting( true );
     writer.writeStartDocument();
-    OpmlWriter::writeOpml( writer, nodes, QLatin1String("test_title")); //TODO: replace with the actual title
+    OpmlWriter::writeOpml( writer, nodes, titleOpml);
     writer.writeEndDocument();
     
     if ( !file.finalize() ) {

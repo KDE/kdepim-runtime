@@ -64,9 +64,9 @@ class KRssLocalResource : public Akonadi::ResourceBase,
   private:    
     Akonadi::CachePolicy policy;
     QTimer *writeBackTimer;
-    static const int CACHE_TIMEOUT = -1, INTERVAL_CHECK_TIME = 5; 
-    static const int WRITE_BACK_TIMEOUT = 30000; // in milliseconds
-    
+    static const int CacheTimeout = -1, IntervalCheckTime = 5; 
+    static const int WriteBackTimeout = 30000; // in milliseconds
+    QString titleOpml;
 };
 
 #endif

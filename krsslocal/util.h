@@ -28,7 +28,6 @@ namespace KRssResource {
   namespace Util {
   
     KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem );
-    QList<boost::shared_ptr<const ParsedNode> > toParsedNodesTree( QList<Akonadi::Collection>& collections );
     QList<boost::shared_ptr<const ParsedNode> > parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent );
   
   };

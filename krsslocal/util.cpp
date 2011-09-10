@@ -136,15 +136,12 @@ KRss::RssItem KRssResource::Util::fromSyndicationItem(const Syndication::ItemPtr
 QList< boost::shared_ptr< const KRssResource::ParsedNode > > KRssResource::Util::parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent )
 {
     QList<boost::shared_ptr< const KRssResource::ParsedNode > > nodesList;
-        
+    
     Q_FOREACH( const Akonadi::Collection& collection , collections ) {
 	if (collection.parentCollection() == parent) {
 	    boost::shared_ptr< KRssResource::ParsedNode > node;
 	    const KRss::FeedCollection feedCollection = collection;
-	    if (feedCollection.feedType() == QLatin1String( "rss" )) { //it's a feed. correct test???
-		node = ParsedFeed::fromAkonadiCollection ( collection );
-	    }
-	    else if (feedCollection.feedType() == QLatin1String( "" )) { //it's a feed. again, correct test???
+	    if (feedCollection.feedType() == QLatin1String( "" )) { // it's a folder. correct test???
 		QList< boost::shared_ptr< const KRssResource::ParsedNode > > children = parsedDescendants( collections, collection );
 		if (parent == Akonadi::Collection::root()) {
 		    return children;
@@ -155,8 +152,9 @@ QList< boost::shared_ptr< const KRssResource::ParsedNode > > KRssResource::Util:
 		node = parsedFolder;		
 	    }
 	    else {
-		kWarning() << "Collection type not recognized";
+		node = ParsedFeed::fromAkonadiCollection ( collection );
 	    }
+	    
 	    collections.removeOne( collection );
 
 	    nodesList.append( node );

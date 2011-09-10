@@ -123,6 +123,7 @@ public:
 
     void readOpml( QXmlStreamReader& reader );
 
+    QString titleOpml();
     QList<boost::shared_ptr<const ParsedFeed> > feeds() const;
     QList<boost::shared_ptr<const ParsedNode> > topLevelNodes() const;
 

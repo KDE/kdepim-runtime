@@ -243,10 +243,12 @@ public:
 
     QStringRef attributeValue( const QXmlStreamAttributes& attributes, const QString& name );
     void readBody( QXmlStreamReader& reader );
+    void readHead( QXmlStreamReader& reader );
     void readOutline( QXmlStreamReader& reader, const shared_ptr<ParsedFolder> &parent );
     void readUnknownElement( QXmlStreamReader& reader );
 
     QList<shared_ptr<ParsedNode> > m_topNodes;
+    QString titleOpml;
 };
 
 QStringRef OpmlReader::Private::attributeValue( const QXmlStreamAttributes& attributes, const QString& name )
@@ -258,6 +260,28 @@ QStringRef OpmlReader::Private::attributeValue( const QXmlStreamAttributes& attr
     }
 
     return QStringRef();
+}
+
+void OpmlReader::Private::readHead( QXmlStreamReader& reader )
+{
+    Q_ASSERT( reader.isStartElement() && reader.name().toString().toLower() == QLatin1String("head") );
+    
+     while ( !reader.atEnd() ) {
+        reader.readNext();
+
+        if ( reader.isEndElement() )
+            break;
+
+        if ( reader.isStartElement() ) {
+            if ( reader.name().toString().toLower() == QLatin1String("title") ) {
+                titleOpml = reader.readElementText();
+            }
+            else {
+                readUnknownElement( reader );
+            }
+        }
+    }
+    
 }
 
 void OpmlReader::Private::readBody( QXmlStreamReader& reader )
@@ -394,11 +418,17 @@ void OpmlReader::Private::readUnknownElement( QXmlStreamReader& reader )
 OpmlReader::OpmlReader()
     : d( new Private )
 {
+    d->titleOpml = QLatin1String("");
 }
 
 OpmlReader::~OpmlReader()
 {
     delete d;
+}
+
+QString OpmlReader::titleOpml() 
+{
+    return d->titleOpml;
 }
 
 QList<shared_ptr<const ParsedFeed> > OpmlReader::feeds() const
@@ -440,7 +470,7 @@ void OpmlReader::readOpml( QXmlStreamReader& reader )
 
         if ( reader.isStartElement() ) {
             if ( reader.name().toString().toLower() == QLatin1String("head") ) {
-                d->readUnknownElement( reader );
+		d->readHead( reader );
             }
             else if ( reader.name().toString().toLower() == QLatin1String("body") ) {
                 d->readBody( reader );
@@ -471,8 +501,8 @@ void OpmlWriter::writeOutlineNodes( QXmlStreamWriter& writer, const QList<shared
 	if (node->isFolder()) {
 	    const shared_ptr<const ParsedFolder> folder = (static_pointer_cast<const ParsedFolder>( node ));
 	    writer.writeStartElement( QLatin1String("outline") );
-	    writer.writeAttribute( QLatin1String("text"), folder->title() );
 	    writer.writeAttribute( QLatin1String("title"), folder->title() );
+	    writer.writeAttribute( QLatin1String("text"), folder->title() );
 	    writeOutlineNodes( writer, folder->children());
 	    writer.writeEndElement();
 	}
@@ -487,10 +517,11 @@ void OpmlWriter::writeOutlineFeed( QXmlStreamWriter& writer, const shared_ptr<co
     writer.writeStartElement( QLatin1String("outline") );
     writer.writeAttribute( QLatin1String("text"), feed->title() );
     writer.writeAttribute( QLatin1String("title"), feed->title() );
-//    writer.writeAttribute( QLatin1String("description"), feed->description() );
-    writer.writeAttribute( QLatin1String("htmlUrl"), feed->htmlUrl() );
-    writer.writeAttribute( QLatin1String("xmlUrl"), feed->xmlUrl() );
     writer.writeAttribute( QLatin1String("type"), feed->type());
+//    writer.writeAttribute( QLatin1String("description"), feed->description() );
+    writer.writeAttribute( QLatin1String("xmlUrl"), feed->xmlUrl() );
+    writer.writeAttribute( QLatin1String("htmlUrl"), feed->htmlUrl() );
+    
 /*    
     QHashIterator<QString, QString> it( feed->attributes() );
     while ( it.hasNext() ) {
