@@ -2,8 +2,10 @@
 Id=defaultcalendar
 Type=akonadi_ical_resource
 Name=Personal Calendar
+Name[ca]=Calendari personal
 Name[cs]=Osobní kalendář
 Name[de]=Persönlicher Kalender
+Name[el]=Προσωπικό ημερολόγιο
 Name[ia]=Calendario Personal
 Name[kk]=Дербес күнтізбе
 Name[nds]=Persöönlich Kalenner
