@@ -145,7 +145,7 @@ void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instanc
 void KResMigratorBase::createKolabResource( const QString &kresId, const QString &kresName )
 {
   // check if kolab resource exists. If not, create one.
-  Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolab_resource" );
+  Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolabproxy_resource" );
   if ( !kolabAgent.isValid() ) {
     emit message( Info, i18n( "Attempting to create kolab resource" ) );
     KJob * job = createAgentInstance( "akonadi_kolabproxy_resource", this, SLOT(kolabResourceCreated(KJob*)) );
