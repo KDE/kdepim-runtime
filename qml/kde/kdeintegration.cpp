@@ -290,6 +290,11 @@ qreal KDEIntegration::mm2px(qreal mm)
     //int pixelPerMM = monitorHeightinPixel / (monitorHeightInCM * 10.0);
   }
 #endif
+
+#ifdef Q_WS_MAEMO_5
+  // N900 (which is the only thing actually running Maemo5) reports 96 dpi while its screen actually has 267 dpi
+  return mm * 267 / 25.4;
+#endif
   return mm * QApplication::desktop()->logicalDpiX() / 25.4;
 }
 
