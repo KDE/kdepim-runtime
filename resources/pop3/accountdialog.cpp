@@ -78,6 +78,8 @@ AccountDialog::AccountDialog( POP3Resource *parentResource, WId parentWindow )
     mWallet( 0 )
 {
   KWindowSystem::setMainWindow( this, parentWindow );
+  setWindowIcon( KIcon( "message-rfc822" ) );
+  setWindowTitle( i18n( "POP3 Account Settings" ) );
   setButtons( Ok|Cancel );
   mValidator.setRegExp( QRegExp( "[A-Za-z0-9-_:.]*" ) );
 
