@@ -55,6 +55,7 @@ class POP3Resource : public Akonadi::ResourceBase,
   protected:
 
     virtual void aboutToQuit();
+    virtual void doSetOnline( bool online );
 
   private Q_SLOTS:
 

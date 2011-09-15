@@ -999,5 +999,17 @@ void POP3Resource::clearCachedPassword()
   mPassword.clear();
 }
 
+void POP3Resource::doSetOnline( bool online )
+{
+  ResourceBase::doSetOnline( online );
+  if ( online ) {
+    emit status( Idle, "Ready" );
+  } else {
+    if ( mState != Idle ) {
+      cancelSync( i18n( "Mail check aborted after going offline." ), false /* no error */ );
+    }
+    emit status( Idle, "Offline" );
+  }
+}
 
 AKONADI_RESOURCE_MAIN( POP3Resource )
