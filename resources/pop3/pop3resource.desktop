@@ -83,7 +83,7 @@ Comment[zh_CN]=连接到一个 POP3 电子邮件服务器
 Comment[zh_TW]=連線到 POP3 信件伺服器
 Type=AkonadiResource
 Exec=akonadi_pop3_resource
-Icon=message-rfc822
+Icon=network-server
 
 X-Akonadi-MimeTypes=message/rfc822
 X-Akonadi-Capabilities=Resource
