@@ -327,7 +327,7 @@ void ItemDeleteTest::testMBox()
   QCOMPARE( storeCompact->error(), 0 );
 
   collections = storeCompact->changedCollections();
-  QCOMPARE( collections.count(), 0 );
+  QCOMPARE( collections.count(), 1 );
   items = storeCompact->changedItems();
   QCOMPARE( items.count(), 1 );
 
