@@ -356,6 +356,31 @@ QStringList Maildir::entryList() const
     return result;
 }
 
+QStringList Maildir::listCurrent() const
+{
+    QStringList result;
+    if ( isValid() ) {
+        result += d->listCurrent();
+    }
+    return result;
+}
+
+QString Maildir::findRealKey(const QString& key) const
+{
+    return d->findRealKey(key);
+}
+
+
+QStringList Maildir::listNew() const
+{
+    QStringList result;
+    if ( isValid() ) {
+        result += d->listNew();
+    }
+    return result;
+}
+
+
 QStringList Maildir::subFolderList() const
 {
     QDir dir( d->path );
@@ -424,23 +449,17 @@ QDateTime Maildir::lastModified(const QString& key) const
     return info.lastModified();
 }
 
-QByteArray Maildir::readEntryHeaders( const QString& key ) const
+QByteArray Maildir::readEntryHeaders( const QString& file ) const
 {
     QByteArray result;
 
-    QString realKey( d->findRealKey( key ) );
-    if ( realKey.isEmpty() ) {
-        // FIXME error handling?
-        qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
-        return result;
-    }
-
-    QFile f( realKey );
+    QFile f( file );
     if ( !f.open( QIODevice::ReadOnly ) ) {
         // FIXME error handling?
-        qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
+        qWarning() << "Maildir::readEntryHeaders unable to find: " << file;
         return result;
     }
+    f.map(0, qMin((qint64)8000, f.size() ) );
     forever {
         QByteArray line = f.readLine();
         if ( line.trimmed().isEmpty() )
