@@ -24,12 +24,13 @@
 #include "retrieveitemsjob.h"
 
 #include <QtCore/QDir>
-#include <QtCore/QFileSystemWatcher>
 #include <QtDBus/QDBusConnection>
 
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionfetchjob.h>
@@ -38,11 +39,11 @@
 #include <kmime/kmime_message.h>
 
 #include <kdebug.h>
+#include <kdirwatch.h>
 #include <kurl.h>
 #include <kfiledialog.h>
 #include <klocale.h>
-
-#include <KWindowSystem>
+#include <kwindowsystem.h>
 
 #include "libmaildir/maildir.h"
 
@@ -86,7 +87,7 @@ Collection MaildirResource::collectionForMaildir(const Maildir& md) const
 MaildirResource::MaildirResource( const QString &id )
     :ResourceBase( id ),
     mSettings( new MaildirSettings( componentData().config() ) ),
-    m_fsWatcher( new QFileSystemWatcher( this ) )
+    m_fsWatcher( new KDirWatch( this ) )
 {
   new MaildirSettingsAdaptor( mSettings );
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
@@ -110,7 +111,7 @@ MaildirResource::MaildirResource( const QString &id )
   scope.setAncestorRetrieval( ItemFetchScope::None );
   setItemSynchronizationFetchScope( scope );
 
-  connect( m_fsWatcher, SIGNAL(directoryChanged(QString)), SLOT(slotDirChanged(QString)) );
+  connect( m_fsWatcher, SIGNAL(dirty(QString)), SLOT(slotDirChanged(QString)) );
 
   synchronizeCollectionTree();
 }
@@ -241,7 +242,15 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     }
     
     if ( flagsChanged ) {
+      QString path = dir.path();
+      m_fsWatcher->removeDir( path + QLatin1Literal("/new") );
+      m_fsWatcher->removeDir( path + QLatin1Literal("/cur") );
+      
       QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
+      
+      m_fsWatcher->addDir( path + QLatin1Literal("/new") );
+      m_fsWatcher->addDir( path + QLatin1Literal("/cur") );
+      
       Item i( item );
       i.setRemoteId( newKey );
       changeCommitted( i );
@@ -259,7 +268,16 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         return;
     }
     const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
+    
+    QString path = dir.path();
+    m_fsWatcher->removeDir( path + QLatin1Literal("/new") );
+    m_fsWatcher->removeDir( path + QLatin1Literal("/cur") );
+    
     dir.writeEntry( item.remoteId(), mail->encodedContent() );
+    
+    m_fsWatcher->addDir( path + QLatin1Literal("/new") );
+    m_fsWatcher->addDir( path + QLatin1Literal("/cur") );
+    
     changeCommitted( item );
 }
 
@@ -319,8 +337,10 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
 
 Collection::List MaildirResource::listRecursive( const Collection &root, const Maildir &dir )
 {
-  if ( !dir.isRoot() && mSettings->monitorFilesystem() )
-    m_fsWatcher->addPath( dir.path() + QDir::separator() + QLatin1String( "new" ) );
+  if ( !dir.isRoot() && mSettings->monitorFilesystem() ) {
+    m_fsWatcher->addDir( dir.path() + QDir::separator() + QLatin1String( "new" ) );
+    m_fsWatcher->addDir( dir.path() + QDir::separator() + QLatin1String( "cur" ) );
+  }
 
   Collection::List list;
   const QStringList mimeTypes = QStringList() << itemMimeType() << Collection::mimeType();
@@ -343,9 +363,6 @@ Collection::List MaildirResource::listRecursive( const Collection &root, const M
 
 void MaildirResource::retrieveCollections()
 {
-  if ( !m_fsWatcher->directories().isEmpty() )
-    m_fsWatcher->removePaths( m_fsWatcher->directories() );
-
   Maildir dir( mSettings->path(), mSettings->topLevelIsContainer() );
   QString errMsg;
   if ( !dir.isValid( errMsg ) ) {
@@ -551,6 +568,14 @@ bool MaildirResource::ensureSaneConfiguration()
 
 void MaildirResource::slotDirChanged(const QString& dir)
 {
+  qDebug()<< Q_FUNC_INFO << dir;
+  
+  QFileInfo fileInfo(dir);
+  if (fileInfo.isFile()) {
+    slotFileChanged(dir);
+    return;
+  }
+  
   QDir d( dir );
   if ( !d.cdUp() )
     return;
@@ -566,10 +591,10 @@ void MaildirResource::slotDirChanged(const QString& dir)
   }
 
   CollectionFetchJob *job = new CollectionFetchJob( col, Akonadi::CollectionFetchJob::Base, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(fsWatchFetchResult(KJob*)) );
+  connect( job, SIGNAL(result(KJob*)), SLOT(fsWatchDirFetchResult(KJob*)) );
 }
 
-void MaildirResource::fsWatchFetchResult(KJob* job)
+void MaildirResource::fsWatchDirFetchResult(KJob* job)
 {
   if ( job->error() ) {
     kDebug() << job->errorString();
@@ -580,5 +605,82 @@ void MaildirResource::fsWatchFetchResult(KJob* job)
     return;
   synchronizeCollection( cols.first().id() );
 }
+
+void MaildirResource::slotFileChanged( const QString& fileName )
+{
+  QFileInfo fileInfo( fileName );
+  QString key = fileInfo.fileName();
+  QString path = fileInfo.path();
+  if ( path.endsWith( QLatin1String("/new") ) ) {
+    path.remove( path.length() - 4, 4 );
+  } else if ( path.endsWith( QLatin1String("/cur") ) ) {
+    path.remove( path.length() - 4, 4 );
+  }
+  
+  const Maildir md( path );
+  if ( !md.isValid() )
+    return;
+  
+  qDebug() << "md valid";
+    
+  const Collection col = collectionForMaildir( md );
+  if ( col.remoteId().isEmpty() ) {
+    kDebug() << "unable to find collection for path" << fileInfo.path();
+    return;
+  }
+
+  Item item;
+  item.setRemoteId( key );
+  item.setParentCollection( col );
+
+  ItemFetchJob *job = new ItemFetchJob( item, this );
+  job->setProperty("entry", key );
+  job->setProperty("dir", path );
+  connect( job, SIGNAL(result(KJob*)), SLOT(fsWatchFileFetchResult(KJob*)) );
+}
+
+void MaildirResource::fsWatchFileFetchResult( KJob* job )
+{
+  if ( job->error() ) {
+    kDebug() << job->errorString();
+    return;
+  }
+  Item::List items = qobject_cast<ItemFetchJob*>( job )->items();
+  if ( items.isEmpty() )
+    return;
+
+  QString fileName = job->property( "entry" ).toString();
+  QString path = job->property( "dir" ).toString();
+
+  const Maildir md( path );
+
+  QString entry = fileName;
+  Item item ( items.at(0) );
+  item.setSize( md.size( entry ) );
+
+  Item::Flags flags = md.readEntryFlags( entry );
+  Q_FOREACH( Item::Flag flag, flags ) {
+    item.setFlag(flag);      
+  }
+    
+  const QByteArray data = md.readEntry( entry );
+  KMime::Message *mail = new KMime::Message();
+  mail->setContent( KMime::CRLFtoLF( data ) );
+  mail->parse();
+
+  item.setPayload( KMime::Message::Ptr( mail ) );
+    
+  ItemModifyJob *mjob = new ItemModifyJob( item );
+  connect( mjob, SIGNAL(result(KJob*)), SLOT(fsWatchFileModifyResult(KJob*)) );
+}
+
+void MaildirResource::fsWatchFileModifyResult(KJob* job)
+{
+  if ( job->error() ) {
+    kDebug() << job->errorString();
+    return;
+  }
+}
+
 
 #include "maildirresource.moc"

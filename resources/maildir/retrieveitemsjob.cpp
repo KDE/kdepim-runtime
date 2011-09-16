@@ -109,7 +109,7 @@ void RetrieveItemsJob::localListDone ( KJob* job )
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( newCol, transaction() );
     transaction()->setIgnoreJobFailure( job );
   }
-
+  
   if ( !m_transaction ) // no jobs created here -> done
     emitResult();
 }

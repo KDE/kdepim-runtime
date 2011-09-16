@@ -356,7 +356,6 @@ QStringList Maildir::entryList() const
     return result;
 }
 
-
 QStringList Maildir::subFolderList() const
 {
     QDir dir( d->path );
