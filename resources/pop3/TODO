@@ -12,7 +12,6 @@ BUGS
 FEATURES
 --------
 
-- online/offline handling
 - filter on server
 - delete on server
 - fix "include in manual mail check", should be something in the akonadi libs
