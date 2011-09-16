@@ -937,6 +937,8 @@ void ItemFetchTest::testSingleItemFetchMBox()
   QDir topDir( mDir->name() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
+  // one message has no body
+  const QByteArray messageIdOfEmptyBodyMsg = "201007241551.37547.kevin.krammer@demo.kolab.org";
 
   QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
   MBox mbox1;
@@ -956,7 +958,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
   QSignalSpy *spy = 0;
   Item::List items;
 
-  // test fetching from maildir, headers only
+  // test fetching from mbox, headers only
   Collection collection1;
   collection1.setName( QLatin1String( "collection1" ) );
   collection1.setRemoteId( QLatin1String( "collection1" ) );
@@ -993,7 +995,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
     QVERIFY( !parts.contains( MessagePart::Body ) );
   }
 
-  // test fetching from maildir, including body
+  // test fetching from mbox, including body
   randomSequence.randomize( randomList1 );
   Q_FOREACH( const MBoxEntry &entry, randomList1 ) {
     Item item1;
@@ -1022,12 +1024,16 @@ void ItemFetchTest::testSingleItemFetchMBox()
     QVERIFY( msgPtr != 0 );
 
     const QSet<QByteArray> parts = messageParts( msgPtr );
+    qDebug() << msgPtr->messageID()->identifier();
     QVERIFY( !parts.isEmpty() );
     QVERIFY( parts.contains( MessagePart::Header ) );
-    QVERIFY( parts.contains( MessagePart::Body ) );
+    if ( msgPtr->messageID()->identifier() == messageIdOfEmptyBodyMsg )
+      QVERIFY( !parts.contains( MessagePart::Body ) );
+    else
+      QVERIFY( parts.contains( MessagePart::Body ) );
   }
 
-  // test fetching from maildir, just specifying full payload
+  // test fetching from mbox, just specifying full payload
   randomSequence.randomize( randomList1 );
   Q_FOREACH( const MBoxEntry &entry, randomList1 ) {
     Item item1;
@@ -1057,7 +1063,10 @@ void ItemFetchTest::testSingleItemFetchMBox()
     const QSet<QByteArray> parts = messageParts( msgPtr );
     QVERIFY( !parts.isEmpty() );
     QVERIFY( parts.contains( MessagePart::Header ) );
-    QVERIFY( parts.contains( MessagePart::Body ) );
+    if ( msgPtr->messageID()->identifier() == messageIdOfEmptyBodyMsg )
+      QVERIFY( !parts.contains( MessagePart::Body ) );
+    else
+      QVERIFY( parts.contains( MessagePart::Body ) );
   }
 }
 
