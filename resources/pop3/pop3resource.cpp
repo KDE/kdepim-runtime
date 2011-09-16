@@ -162,7 +162,7 @@ void POP3Resource::walletOpenedForLoading( bool success )
   if ( !passwordLoaded ) {
     QString queryText = buildLabelForPasswordDialog(
         i18n( "You are asked here because the password could not be loaded from the wallet." ) );
-    showPasswordDialog( queryText );
+    showPasswordDialog( queryText, false );
   }
   else {
     advanceState( Connect );
@@ -190,10 +190,14 @@ void POP3Resource::walletOpenedForSaving( bool success )
 }
 
 
-void POP3Resource::showPasswordDialog( const QString &queryText )
+void POP3Resource::showPasswordDialog( const QString &queryText, bool showRememberPasswordCheckbox )
 {
+  KPasswordDialog::KPasswordDialogFlags flags = KPasswordDialog::ShowUsernameLine;
+  if ( showRememberPasswordCheckbox ) {
+    flags |= KPasswordDialog::ShowKeepPassword;
+  }
   // FIXME: give this a proper parent widget
-  KPasswordDialog dlg( 0, KPasswordDialog::ShowUsernameLine | KPasswordDialog::ShowKeepPassword );
+  KPasswordDialog dlg( 0, flags );
   dlg.setUsername( Settings::self()->login() );
   dlg.setPassword( mPassword );
   dlg.setKeepPassword( Settings::self()->storePassword() );
@@ -209,7 +213,7 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
     Settings::self()->setLogin( dlg.username() );
     Settings::self()->writeConfig();
     Settings::self()->setStorePassword( false );
-    if ( dlg.keepPassword() ) {
+    if ( dlg.keepPassword() && showRememberPasswordCheckbox ) {
       // setStorePassword( true ) is called only after the password is written into
       // the wallet, as otherwise, the resource thinks the password is in the wallet
       // and loads an empty password from it
@@ -303,7 +307,7 @@ void POP3Resource::doStateStep()
         else if ( !Settings::self()->storePassword() )
           detail = i18n( "You are asked here because you choose to not store the password in the wallet." );
 
-        showPasswordDialog( buildLabelForPasswordDialog( detail ) );
+        showPasswordDialog( buildLabelForPasswordDialog( detail ), true );
       }
       else {
         // No password needed or using previous password, go on with Connect
