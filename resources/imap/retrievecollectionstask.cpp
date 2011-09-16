@@ -143,7 +143,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
         continue;
       }
 
-      const QList<QByteArray> currentFlags = isDummy ? (QList<QByteArray>() << "\\NoSelect") : flags[i];
+      const QList<QByteArray> currentFlags = isDummy ? (QList<QByteArray>() << "\\noselect") : flags[i];
 
       Akonadi::Collection c;
       c.setName( pathPart );
@@ -161,14 +161,14 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       }
 
       // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
-      if ( currentPath == (separator + QLatin1String( "user" )) && currentFlags.contains( "\\NoSelect" ) ) {
+      if ( currentPath == (separator + QLatin1String( "user" )) && currentFlags.contains( "\\noselect" ) ) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Shared Folders" ) );
         attr->setIconName( "x-mail-distribution-list" );
       }
 
       // If this folder is a noselect folder, make some special settings.
-      if ( currentFlags.contains( "\\NoSelect" ) ) {
+      if ( currentFlags.contains( "\\noselect" ) ) {
         kDebug() << "Dummy collection created: " << currentPath;
         c.addAttribute( new NoSelectAttribute( true ) );
         c.setContentMimeTypes( QStringList() << Akonadi::Collection::mimeType() );

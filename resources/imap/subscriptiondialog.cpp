@@ -205,7 +205,7 @@ void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescript
 
     for ( int j = 0; j < pathParts.size(); ++j ) {
       const bool isDummy = j != pathParts.size() - 1;
-      const bool isCheckable = !isDummy && !flags[i].contains("\\NoSelect");
+      const bool isCheckable = !isDummy && !flags[i].contains("\\noselect");
 
       const QString pathPart = pathParts.at( j );
       currentPath += separator + pathPart;
