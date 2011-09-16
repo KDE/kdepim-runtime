@@ -38,6 +38,8 @@
 
 #include <qtest_kde.h>
 
+#include <QCryptographicHash>
+
 using namespace Akonadi;
 using namespace KMBox;
 
@@ -70,7 +72,8 @@ class ItemModifyTest : public QObject
     void cleanup();
     void testExpectedFail();
     void testIgnorePayload();
-    void testModify();
+    void testModifyPayload();
+    void testModifyFlags();
 };
 
 void ItemModifyTest::init()
@@ -248,7 +251,7 @@ void ItemModifyTest::testIgnorePayload()
   QCOMPARE( mbox2.readRawMessage( MBoxEntry( 0 ) ), data2 );
 }
 
-void ItemModifyTest::testModify()
+void ItemModifyTest::testModifyPayload()
 {
   QDir topDir( mDir->name() );
 
@@ -377,6 +380,98 @@ void ItemModifyTest::testModify()
   QCOMPARE( mbox2.readRawMessage( entryList.last() ), msgPtr->encodedContent() );
 }
 
+void ItemModifyTest::testModifyFlags()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QStringList entryList1 = md1.entryList();
+  QCOMPARE( (int)entryList1.count(), 4 );
+
+  QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
+  MBox mbox2;
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
+  MBoxEntry::List entryList2 = mbox2.entries();
+  QCOMPARE( (int)entryList2.count(), 4 );
+  
+  QCryptographicHash cryptoHash( QCryptographicHash::Sha1 );
+  
+  QFile file2( fileInfo2.absoluteFilePath() );
+  QVERIFY( file2.open( QIODevice::ReadOnly ) );
+  cryptoHash.addData( file2.readAll() );
+  const QByteArray mbox2Sha1 = cryptoHash.result();
+  
+  file2.close();
+  cryptoHash.reset();
+
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemModifyJob *job = 0;
+
+  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
+  QVariant var;
+  Collection::List collections;
+  KMime::Message::Ptr msgPtr( new KMime::Message );
+  
+  // test modifying flags of an mbox item "succeeds" (no error) but does not change
+  // anything in store or on disk
+  Collection collection2;
+  collection2.setName( QLatin1String( "collection2" ) );
+  collection2.setRemoteId( QLatin1String( "collection2" ) );
+  collection2.setParentCollection( mStore->topLevelCollection() );
+
+  const QByteArray data2 = mbox2.readRawMessage( MBoxEntry( 0 ) );
+
+  msgPtr->setContent( KMime::CRLFtoLF( data2 ) );
+  msgPtr->subject()->from7BitString( "Modify Test" );
+  msgPtr->assemble();
+
+  Item item2;
+  item2.setMimeType( KMime::Message::mimeType() );
+  item2.setRemoteId( QLatin1String( "0" ) );
+  item2.setParentCollection( collection2 );
+  item2.setPayload<KMime::Message::Ptr>( msgPtr );
+  item2.setFlag( "\\SEEN" );
+
+  job = mStore->modifyItem( item2 );
+  // setting \SEEN, so indicate a flags change
+  job->setParts( QSet<QByteArray>() << "FLAGS" );
+
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  Item item = job->item();
+  
+  // returned item should contain the change
+  QVERIFY( item.flags().contains( "\\SEEN" ) );
+  
+  // mbox not changed
+  QVERIFY( mbox2.load( mbox2.fileName() ) );
+  MBoxEntry::List entryList = mbox2.entries();
+  QCOMPARE( (int)entryList.count(), 4 );
+
+  var = job->property( "compactStore" );
+  QVERIFY( !var.isValid() );
+  
+  // file not modified
+  QVERIFY( file2.open( QIODevice::ReadOnly ) );
+  cryptoHash.addData( file2.readAll() );
+  QCOMPARE( cryptoHash.result(), mbox2Sha1 );
+  
+  file2.close();
+  cryptoHash.reset();
+  
+  // check index preservation is not triggered
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( !var.isValid() );
+  
+}
 QTEST_KDEMAIN( ItemModifyTest, NoGUI )
 
 #include "itemmodifytest.moc"
