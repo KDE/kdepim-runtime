@@ -234,8 +234,12 @@ void AccountDialog::loadSettings()
 
   mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
                                 Wallet::Asynchronous );
-  connect( mWallet, SIGNAL(walletOpened(bool)),
-           this, SLOT(walletOpenedForLoading(bool)) );
+  if ( mWallet ) {
+    connect( mWallet, SIGNAL(walletOpened(bool)),
+             this, SLOT(walletOpenedForLoading(bool)) );
+  } else {
+    passwordEdit->setClickMessage( i18n( "Wallet disabled in system settings" ) );
+  }
   passwordEdit->setEnabled( false );
   passwordLabel->setEnabled( false );
 }
@@ -623,8 +627,13 @@ void AccountDialog::saveSettings()
       kDebug() << "we need to open the wallet";
       mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
                                     Wallet::Asynchronous );
-      connect( mWallet, SIGNAL(walletOpened(bool)),
-              this, SLOT(walletOpenedForSaving(bool)) );
+      if ( mWallet ) {
+        connect( mWallet, SIGNAL(walletOpened(bool)),
+                this, SLOT(walletOpenedForSaving(bool)) );
+      } else {
+        Settings::self()->setStorePassword( false );
+        accept();
+      }
     }
   }
   else {

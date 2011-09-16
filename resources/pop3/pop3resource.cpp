@@ -295,6 +295,8 @@ void POP3Resource::doStateStep()
       if ( loadPasswordFromWallet ) {
         mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs(),
                                       Wallet::Asynchronous );
+      }
+      if ( loadPasswordFromWallet && mWallet ) {
         connect( mWallet, SIGNAL(walletOpened(bool)),
                  this, SLOT(walletOpenedForLoading(bool)) );
       }
@@ -304,10 +306,13 @@ void POP3Resource::doStateStep()
           detail = i18n( "You are asked here because the previous login was not successful." );
         else if ( Settings::self()->login().isEmpty() )
           detail = i18n( "You are asked here because the username you supplied is empty." );
+        else if ( !mWallet )
+          detail = i18n( "You are asked here because the wallet password storage is disabled." );
         else if ( !Settings::self()->storePassword() )
           detail = i18n( "You are asked here because you choose to not store the password in the wallet." );
 
-        showPasswordDialog( buildLabelForPasswordDialog( detail ), true );
+        const bool showKeepPasswordCheckbox = mWallet != 0;
+        showPasswordDialog( buildLabelForPasswordDialog( detail ), showKeepPasswordCheckbox );
       }
       else {
         // No password needed or using previous password, go on with Connect
@@ -444,8 +449,12 @@ void POP3Resource::doStateStep()
         emit status( Running, i18n( "Saving password to the wallet." ) );
         mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs(),
                                       Wallet::Asynchronous );
-        connect( mWallet, SIGNAL(walletOpened(bool)),
-                 this, SLOT(walletOpenedForSaving(bool)) );
+        if ( mWallet ) {
+          connect( mWallet, SIGNAL(walletOpened(bool)),
+                   this, SLOT(walletOpenedForSaving(bool)) );
+        } else {
+          finish();
+        }
       }
       break;
     }
