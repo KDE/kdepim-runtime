@@ -1696,8 +1696,23 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
 
 bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
 {
+  const QSet<QByteArray> parts = job->parts();
+  bool payloadChanged = false;
+  bool flagsChanged = false;
+  Q_FOREACH( const QByteArray &part, parts )  {
+    if( part.startsWith( "PLD:" ) ) {
+      payloadChanged = true;
+    }
+    if ( part.contains( "FLAGS" ) ) {
+      flagsChanged = true;
+    }
+  }
+
+  const bool nothingChanged = ( !payloadChanged && !flagsChanged );
   // if we can ignore payload, we have nothing to do
-  if ( job->ignorePayload() ) {
+  if ( nothingChanged ||
+         ( payloadChanged && !flagsChanged && job->ignorePayload() ) ) {
+    q->notifyItemsProcessed( Item::List() << job->item() );
     return true;
   }
 
@@ -1716,6 +1731,10 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
   }
 
   if ( folderType == MBoxFolder ) {
+    if ( !payloadChanged ) {
+      q->notifyItemsProcessed( Item::List() << item );
+      return true;
+    }
     MBoxPtr mbox;
     MBoxHash::const_iterator findIt = mMBoxes.constFind( path );
     if ( findIt == mMBoxes.constEnd() ) {
@@ -1799,7 +1818,16 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
       job->setProperty( "onDiskIndexInvalidated", var );
     }
 
-    mdPtr->writeEntry( item.remoteId(), item.payload<KMime::Message::Ptr>()->encodedContent() );
+    QString newKey = item.remoteId();
+    if ( flagsChanged ) {
+      Maildir md( mdPtr->maildir() );
+      const QString newKey = md.changeEntryFlags( item.remoteId(), item.flags() );
+      item.setRemoteId( newKey );
+    }
+
+    if ( payloadChanged ) {
+      mdPtr->writeEntry( newKey, item.payload<KMime::Message::Ptr>()->encodedContent() );
+    }
   }
 
   q->notifyItemsProcessed( Item::List() << item );

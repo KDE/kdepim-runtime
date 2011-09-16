@@ -34,6 +34,7 @@ class FileStore::ItemModifyJob::Private
   public:
     bool mIgnorePayload;
     Item mItem;
+    QSet<QByteArray> mParts;
 
   private:
     FileStore::ItemModifyJob *mParent;
@@ -65,6 +66,16 @@ bool FileStore::ItemModifyJob::ignorePayload() const
 Item FileStore::ItemModifyJob::item() const
 {
   return d->mItem;
+}
+
+void FileStore::ItemModifyJob::setParts( const QSet<QByteArray>& parts )
+{
+    d->mParts = parts;
+}
+
+const QSet<QByteArray>& FileStore::ItemModifyJob::parts() const
+{
+  return d->mParts;
 }
 
 bool FileStore::ItemModifyJob::accept( FileStore::Job::Visitor *visitor )

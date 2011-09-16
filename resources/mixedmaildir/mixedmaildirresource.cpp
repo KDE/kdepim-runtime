@@ -173,25 +173,12 @@ void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>
     return;
   }
 
-  // TODO this is probably something the store should decide
-  bool payloadChanged = false;
-  Q_FOREACH( const QByteArray &part, parts )  {
-    if( part.startsWith("PLD:") ) {
-      payloadChanged = true;
-      break;
-    }
-  }
-
-  if ( !payloadChanged ) {
-    changeProcessed();
-    return; //ignore flag-only changes
-  }
-
   Item storeItem( item );
   storeItem.setRemoteId( mCompactHelper->currentRemoteId( item ) );
 
   FileStore::ItemModifyJob *job = mStore->modifyItem( storeItem );
-  job->setIgnorePayload( !payloadChanged || !item.hasPayload<KMime::Message::Ptr>() );
+  job->setIgnorePayload( !item.hasPayload<KMime::Message::Ptr>() );
+  job->setParts( parts );
   job->setProperty( "originalRemoteId", storeItem.remoteId() );
   connect( job, SIGNAL(result(KJob*)), SLOT(itemChangedResult(KJob*)) );
 }
