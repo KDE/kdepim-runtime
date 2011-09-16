@@ -50,6 +50,9 @@ class AKONADI_FILESTORE_EXPORT ItemModifyJob : public Job
 
     Item item() const;
 
+    const QSet<QByteArray>& parts() const;
+    void setParts( const QSet<QByteArray>& parts );
+
     virtual bool accept( Visitor *visitor );
 
   private:
