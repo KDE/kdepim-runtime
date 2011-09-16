@@ -426,6 +426,9 @@ void AccountDialog::slotPopCapabilities( QList<int> encryptionTypes )
   encryptionNone->setEnabled( encryptionTypes.contains( Transport::EnumEncryption::None ) );
   encryptionSSL->setEnabled( encryptionTypes.contains( Transport::EnumEncryption::SSL ) );
   encryptionTLS->setEnabled(  encryptionTypes.contains( Transport::EnumEncryption::TLS )  );
+
+  usePipeliningCheck->setChecked( mServerTest->capabilities().contains( ServerTest::Pipelining ) );
+
   checkHighest( encryptionButtonGroup );
 }
 
