@@ -606,7 +606,43 @@ void ImapCacheCollectionMigrator::migrationProgress( int processedCollections, i
 
 QString ImapCacheCollectionMigrator::mapRemoteIdFromStore( const QString &storeRemotedId  ) const
 {
-  return '/' + storeRemotedId;
+  const QString accountId = topLevelFolder();
+  const KConfigGroup accountGroup = kmailConfig()->group( QString( "Account %1" ).arg( accountId ) );
+
+  const QString folderId = currentStoreFolderId();
+  const KConfigGroup folderGroup
+    = kmailConfig()->group( QString( "Folder-%1" ).arg( folderId ) );
+
+  QString imapPath = folderGroup.readEntry( "ImapPath", QString() );
+  imapPath.remove( 0, 1 );
+  imapPath.chop( 1 );
+
+  QChar separator = '/';
+  int namespaceLength = -1;
+
+  for ( int i=0; i<=2; i++ ) {
+    QStringList namespaces = accountGroup.readEntry( QString::number( i ), QStringList() );
+    namespaces.replaceInStrings( QRegExp( "\"" ), "" );
+
+    foreach ( const QString &ns, namespaces ) {
+      QString imapNs = ns;
+      imapNs.chop( 1 );
+
+      if ( ( ns.size()>namespaceLength )
+        && imapPath.startsWith( imapNs ) ) {
+
+        const QString potentialSeparator
+          = accountGroup.readEntry( QString( "Namespace:%1" ).arg( ns ), QString() );
+
+        if ( !potentialSeparator.isEmpty() ) {
+          namespaceLength = ns.size();
+          separator = potentialSeparator.at( 0 );
+        }
+      }
+    }
+  }
+
+  return separator + storeRemotedId;
 }
 
 #include "imapcachecollectionmigrator.moc"

@@ -111,6 +111,7 @@ class AbstractCollectionMigrator::Private
     Collection mCurrentCollection;
     Collection mCurrentStoreCollection;
     QString mCurrentFolderId;
+    QString mCurrentStoreFolderId;
 
     bool mNeedModifyJob;
 
@@ -123,8 +124,8 @@ class AbstractCollectionMigrator::Private
     void processNextCollection();
 
   private:
-    QStringList folderPathComponentsForCollection( const Collection &collection ) const;
-    QString folderIdentifierForCollection( const Collection &collection ) const;
+    QStringList folderPathComponentsForCollection( const Collection &collection, bool isStoreCollection = false ) const;
+    QString folderIdentifierForCollection( const Collection &collection, bool isStoreCollection = false ) const;
     void processingDone();
 };
 
@@ -491,6 +492,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
 void AbstractCollectionMigrator::Private::collectionDone()
 {
+  mCurrentStoreFolderId = QString();
   mCurrentStoreCollection = Collection();
   mCurrentFolderId = QString();
   mCurrentCollection = Collection();
@@ -568,6 +570,7 @@ void AbstractCollectionMigrator::Private::processNextCollection()
 
   const Collection storeCollection = mCollectionQueue.dequeue();
 
+  mCurrentStoreFolderId = folderIdentifierForCollection( storeCollection, true );
   mCurrentStoreCollection = storeCollection;
 
   const QString idPath = remoteIdPath( storeCollection );
@@ -606,12 +609,12 @@ void AbstractCollectionMigrator::Private::processNextCollection()
   QObject::connect( createJob, SIGNAL( result( KJob* ) ), q, SLOT( collectionCreateResult( KJob* ) ) );
 }
 
-QStringList AbstractCollectionMigrator::Private::folderPathComponentsForCollection( const Collection &collection ) const
+QStringList AbstractCollectionMigrator::Private::folderPathComponentsForCollection( const Collection &collection, bool isStoreCollection ) const
 {
   QStringList result;
 
   if ( collection.parentCollection() == Collection::root() ) {
-    if ( !mTopLevelFolder.isEmpty() ) {
+     if ( !mTopLevelFolder.isEmpty() && !isStoreCollection ) {
       result << mTopLevelFolder;
     }
   } else {
@@ -622,9 +625,9 @@ QStringList AbstractCollectionMigrator::Private::folderPathComponentsForCollecti
   return result;
 }
 
-QString AbstractCollectionMigrator::Private::folderIdentifierForCollection( const Collection &collection ) const
+QString AbstractCollectionMigrator::Private::folderIdentifierForCollection( const Collection &collection, bool isStoreCollection ) const
 {
-  QStringList components = folderPathComponentsForCollection( collection );
+  QStringList components = folderPathComponentsForCollection( collection, isStoreCollection );
 
   QString result;
   while ( !components.isEmpty() ) {
@@ -828,6 +831,11 @@ Session *AbstractCollectionMigrator::hiddenSession()
 Collection AbstractCollectionMigrator::currentStoreCollection() const
 {
   return d->mCurrentStoreCollection;
+}
+
+QString AbstractCollectionMigrator::currentStoreFolderId() const
+{
+  return d->mCurrentStoreFolderId;
 }
 
 #include "abstractcollectionmigrator.moc"
