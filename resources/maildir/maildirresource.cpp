@@ -526,7 +526,7 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
 void MaildirResource::ensureDirExists()
 {
   Maildir root( mSettings->path() );
-  if ( !root.isValid() ) {
+  if ( !root.isValid() && !mSettings->topLevelIsContainer() ) {
     if ( !root.create() )
       emit status( Broken, i18n( "Unable to create maildir '%1'.", mSettings->path() ) );
   }
