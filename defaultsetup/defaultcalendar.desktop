@@ -16,6 +16,7 @@ Name[ru]=Личный календарь
 Name[sv]=Personlig kalender
 Name[uk]=Особистий календар
 Name[x-test]=xxPersonal Calendarxx
+Name[zh_TW]=個人行事曆
 
 [Settings]
 Path[$e]=$HOME/${KDE_DEFAULT_HOME}/share/apps/korganizer/std.ics
