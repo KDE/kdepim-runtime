@@ -209,10 +209,18 @@ void ItemFetchTest::testListingMaildir()
   QCOMPARE( items[ 2 ].parentCollection(), collection1 );
   QCOMPARE( items[ 3 ].parentCollection(), collection1 );
 
-  QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>() );
-  QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() );
-  QCOMPARE( items[ 2 ].flags(), QSet<QByteArray>() );
-  QCOMPARE( items[ 3 ].flags(), QSet<QByteArray>() );
+  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH( const QByteArray &flag, item.flags() ) {
+      ++flagCounts[ flag ];
+    }
+  }
+  
+  // 2x \SEEN flags from maildir file name, no advanced flags without index
+  QCOMPARE( flagCounts.count(), 1 );
+  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  QCOMPARE( flagCounts[ "\\FLAGGED" ], 0 );
+  QCOMPARE( flagCounts[ "$TODO" ], 0 );
+  flagCounts.clear();
 
   var = job->property( "remoteIdToTagList" );
   QVERIFY( !var.isValid() );
@@ -333,7 +341,9 @@ void ItemFetchTest::testListingMaildir()
       ++flagCounts[ flag ];
     }
   }
-  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
+  
+  // 4x \SEEN flags: 2x from index, additional 2x from file name
+  QCOMPARE( flagCounts[ "\\SEEN" ], 4 );
   QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
   QCOMPARE( flagCounts[ "$TODO" ], 1 );
   flagCounts.clear();
@@ -401,7 +411,7 @@ void ItemFetchTest::testListingMaildir()
   QVERIFY( !uidHash.value( items[ 2 ].remoteId() ).toString().toInt( &ok) >= 0 && ok  );
   QVERIFY( !uidHash.value( items[ 3 ].remoteId() ).toString().toInt( &ok) >= 0 && ok  );
 
-  // test listing mbox with index but newer modification date than index's one
+  // test listing maildir with index but newer modification date than index's one
   const QByteArray data5 = md5.readEntry( entrySet5.values().first() );
   QVERIFY( !data5.isEmpty() );
 
@@ -447,11 +457,12 @@ void ItemFetchTest::testListingMaildir()
   QCOMPARE( items[ 3 ].parentCollection(), collection5 );
   QCOMPARE( items[ 4 ].parentCollection(), collection5 );
 
+  // 4x flags from maildir file names
   QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>() );
-  QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() );
-  QCOMPARE( items[ 2 ].flags(), QSet<QByteArray>() );
-  QCOMPARE( items[ 3 ].flags(), QSet<QByteArray>() );
-  QCOMPARE( items[ 4 ].flags(), QSet<QByteArray>() );
+  QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() << "\\SEEN" );
+  QCOMPARE( items[ 2 ].flags(), QSet<QByteArray>() << "\\SEEN" );
+  QCOMPARE( items[ 3 ].flags(), QSet<QByteArray>() << "\\SEEN" );
+  QCOMPARE( items[ 4 ].flags(), QSet<QByteArray>() << "\\SEEN" );
 
   var = job->property( "remoteIdToTagList" );
   QVERIFY( !var.isValid() );
