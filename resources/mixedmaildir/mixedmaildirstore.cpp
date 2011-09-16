@@ -393,6 +393,10 @@ class MaildirContext
       mMaildir = Maildir( newPath, mMaildir.isRoot() );
     }
 
+    const Maildir & maildir() const {
+        return mMaildir;
+    }
+
   private:
     Maildir mMaildir;
 
@@ -790,6 +794,10 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
           tagListHash.insert( item.remoteId(), tagList );
         }
       }
+    }
+    Akonadi::Item::Flags flags = md->maildir().readEntryFlags( entry );
+    Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
+      item.setFlag(flag);
     }
 
     items << item;
