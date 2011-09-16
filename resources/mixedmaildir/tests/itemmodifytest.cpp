@@ -28,6 +28,8 @@
 
 #include "libmaildir/maildir.h"
 
+#include <akonadi/kmime/messageparts.h>
+
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
@@ -274,7 +276,7 @@ void ItemModifyTest::testModify()
   QVariant var;
   Collection::List collections;
 
-  // test failure of modifying a maildir entry
+  // test modifying a maildir entry's header
   Collection collection1;
   collection1.setName( QLatin1String( "collection1" ) );
   collection1.setRemoteId( QLatin1String( "collection1" ) );
@@ -294,12 +296,16 @@ void ItemModifyTest::testModify()
   item1.setPayload<KMime::Message::Ptr>( msgPtr );
 
   job = mStore->modifyItem( item1 );
+  // changing subject, so indicate a header change
+  job->setParts( QSet<QByteArray>() << QByteArray( "PLD:" ) + MessagePart::Header );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
 
   QCOMPARE( md1.entryList(), entryList1 );
 
+  QCOMPARE( md1.readEntry( entryList1.first() ).size(),
+            msgPtr->encodedContent().size() );
   QCOMPARE( md1.readEntry( entryList1.first() ), msgPtr->encodedContent() );
 
   // check for index preservation
@@ -311,7 +317,7 @@ void ItemModifyTest::testModify()
   QCOMPARE( (int)collections.count(), 1 );
   QCOMPARE( collections.first(), collection1 );
 
-  // test failure of modifying a mbox entry
+  // test modifying an mbox entry's header
   Collection collection2;
   collection2.setName( QLatin1String( "collection2" ) );
   collection2.setRemoteId( QLatin1String( "collection2" ) );
@@ -330,6 +336,8 @@ void ItemModifyTest::testModify()
   item2.setPayload<KMime::Message::Ptr>( msgPtr );
 
   job = mStore->modifyItem( item2 );
+  // changing subject, so indicate a header change
+  job->setParts( QSet<QByteArray>() << QByteArray( "PLD:" ) + MessagePart::Header );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
