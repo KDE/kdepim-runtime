@@ -94,6 +94,8 @@ class AbstractCollectionMigrator : public QObject
 
     Akonadi::Collection currentStoreCollection() const;
 
+    QString currentStoreFolderId() const;
+
   private:
     class Private;
     Private *const d;
