@@ -2183,6 +2183,7 @@ void MixedMaildirStore::setTopLevelCollection( const Collection &collection )
   cachePolicy.setInheritFromParent( false );
   cachePolicy.setLocalParts( QStringList() << MessagePart::Envelope );
   cachePolicy.setSyncOnDemand( true );
+  cachePolicy.setCacheTimeout( 1 );
 
   Collection modifiedCollection = collection;
   modifiedCollection.setContentMimeTypes( contentMimeTypes );
