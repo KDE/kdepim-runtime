@@ -122,7 +122,7 @@ void TemplateMethodsTest::testSetTopLevelCollection()
                                  Collection::CanDeleteCollection );
   const CachePolicy cachePolicy = collection.cachePolicy();
   QVERIFY( !cachePolicy.inheritFromParent() );
-  QCOMPARE( cachePolicy.localParts(), QStringList() << MessagePart::Header );
+  QCOMPARE( cachePolicy.localParts(), QStringList() << MessagePart::Envelope );
   QVERIFY( cachePolicy.syncOnDemand() );
 }
 
