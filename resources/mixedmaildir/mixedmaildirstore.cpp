@@ -1709,13 +1709,10 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
   }
 
   const bool nothingChanged = ( !payloadChanged && !flagsChanged );
-  // if we can ignore payload, we have nothing to do
-  if ( nothingChanged ||
-         ( payloadChanged && !flagsChanged && job->ignorePayload() ) ) {
-    q->notifyItemsProcessed( Item::List() << job->item() );
-    return true;
-  }
-
+  const bool payloadChangedButIgnored = payloadChanged && job->ignorePayload();
+  const bool ignoreModifyIfValid = nothingChanged ||
+                                   ( payloadChangedButIgnored && !flagsChanged );
+  
   Item item = job->item();
   const Collection collection = item.parentCollection();
   QString path;
@@ -1731,10 +1728,6 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
   }
 
   if ( folderType == MBoxFolder ) {
-    if ( !payloadChanged ) {
-      q->notifyItemsProcessed( Item::List() << item );
-      return true;
-    }
     MBoxPtr mbox;
     MBoxHash::const_iterator findIt = mMBoxes.constFind( path );
     if ( findIt == mMBoxes.constEnd() ) {
@@ -1762,6 +1755,24 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
       return false;
     }
 
+    // if we can ignore payload, or we have nothing else to change, then we are finished
+    if ( ignoreModifyIfValid ) {
+      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "ItemModifyJob for item" << item.remoteId()
+          << "in collection" << collection.remoteId()
+          << "skipped: nothing of interest changed (" << nothingChanged
+          << ") or only payload changed but should be ignored ("
+          << ( payloadChanged && !flagsChanged && job->ignorePayload() )
+          << "). Modified parts:" << parts;
+      q->notifyItemsProcessed( Item::List() << job->item() );
+      return true;
+    }
+
+    // mbox can only change payload, ignore any other change
+    if ( !payloadChanged ) {
+      q->notifyItemsProcessed( Item::List() << item );
+      return true;
+    }
+ 
     // make sure to read the index (if available) before modifying the data, which would
     // make the index invalid
     mbox->readIndexData();
@@ -1805,6 +1816,18 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
       kError() << errorText << "FolderType=" << folderType;
       q->notifyError( FileStore::Job::InvalidJobContext, errorText );
       return false;
+    }
+
+    // if we can ignore payload, or we have nothing else to change, then we are finished
+    if ( ignoreModifyIfValid ) {
+      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "ItemModifyJob for item" << item.remoteId()
+          << "in collection" << collection.remoteId()
+          << "skipped: nothing of interest changed (" << nothingChanged
+          << ") or only payload changed but should be ignored ("
+          << ( payloadChanged && !flagsChanged && job->ignorePayload() )
+          << "). Modified parts:" << parts;
+      q->notifyItemsProcessed( Item::List() << job->item() );
+      return true;
     }
 
     // make sure to read the index (if available) before modifying the data, which would
