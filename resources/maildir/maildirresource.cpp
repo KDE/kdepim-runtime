@@ -211,13 +211,17 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     }
 
     bool payloadChanged = false;
+    bool flagsChanged = false;
     Q_FOREACH( const QByteArray &part, parts )  {
       if( part.startsWith("PLD:") ) {
         payloadChanged = true;
-        break;
+      }
+      if ( part.contains( "FLAGS" ) ) {
+        flagsChanged = true;
       }
     }
-    if ( mSettings->readOnly() || !payloadChanged ) {
+    
+    if ( mSettings->readOnly() || ( !payloadChanged && !flagsChanged ) ) {
       changeProcessed();
       return;
     }
@@ -228,6 +232,20 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         cancelTask( errMsg );
         return;
     }
+    
+    if ( flagsChanged ) {
+      QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
+      Item i( item );
+      i.setRemoteId( newKey );
+      changeCommitted( i );
+      return;
+    }
+    
+    if ( !payloadChanged ) {
+      emit changeProcessed();
+      return;
+    }
+    
     // we can only deal with mail
     if ( !item.hasPayload<KMime::Message::Ptr>() ) {
         cancelTask( i18n("Error: Unsupported type.") );

@@ -79,6 +79,12 @@ void RetrieveItemsJob::localListDone ( KJob* job )
     KMime::Message *msg = new KMime::Message;
     msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeaders( entry ) ) );
     msg->parse();
+    
+    Akonadi::Item::Flags flags = m_maildir.readEntryFlags( entry );
+    Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
+      item.setFlag(flag);      
+    }
+    
     item.setPayload( KMime::Message::Ptr( msg ) );
 
     if ( m_localItems.contains( entry ) ) { // modification

@@ -22,11 +22,13 @@
 #include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
+#include <QHostInfo>
 #include <QUuid>
 
 #include <kdebug.h>
 #include <klocale.h>
 #include <kpimutils/kfileio.h>
+#include <akonadi/kmime/messageflags.h>
 
 #include <kde_file.h>
 #include <time.h>
@@ -60,6 +62,7 @@ public:
     Private( const QString& p, bool isRoot )
         :path(p), isRoot(isRoot)
     {
+      hostName = QHostInfo::localHostName();
       // The default implementation of QUuid::createUuid() doesn't use
       // a seed that is random enough. Therefor we use our own initialization
       // until this issue will be fixed in Qt 4.7.
@@ -70,6 +73,7 @@ public:
     {
         path = rhs.path;
         isRoot = rhs.isRoot;
+        hostName = QHostInfo::localHostName();
     }
 
     bool operator==( const Private& rhs ) const
@@ -107,8 +111,9 @@ public:
         if ( !f.exists() )
             realKey = path + QString::fromLatin1("/cur/") + key;
         QFile f2( realKey );
-        if ( !f2.exists() )
+        if ( !f2.exists() ) {
             realKey.clear();
+        } 
         return realKey;
     }
 
@@ -150,6 +155,7 @@ public:
 
     QString path;
     bool isRoot;
+    QString hostName;
 };
 
 Maildir::Maildir( const QString& path, bool isRoot )
@@ -448,7 +454,13 @@ QByteArray Maildir::readEntryHeaders( const QString& key ) const
 
 static QString createUniqueFileName()
 {
-    return QUuid::createUuid().toString();
+    qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
+    int r = qrand() % 1000;
+    QString identifier = QLatin1String("R") + QString::number(r);
+    
+    QString fileName = QString::number(time) + QLatin1String(".") + identifier + QLatin1String(".");
+    
+    return fileName;
 }
 
 void Maildir::writeEntry( const QString& key, const QByteArray& data )
@@ -475,7 +487,7 @@ QString Maildir::addEntry( const QByteArray& data )
     // QUuid doesn't return globally unique identifiers, therefor we query until we
     // get one that doesn't exists yet
     do {
-      uniqueKey = createUniqueFileName();
+      uniqueKey = createUniqueFileName() + d->hostName;
       key = d->path + QLatin1String( "/tmp/" ) + uniqueKey;
       finalKey = d->path + QLatin1String( "/new/" ) + uniqueKey;
       curKey = d->path + QLatin1String( "/cur/" ) + uniqueKey;
@@ -510,6 +522,69 @@ bool Maildir::removeEntry( const QString& key )
     }
     return QFile::remove(realKey);
 }
+
+QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags& flags)
+{
+    QString realKey( d->findRealKey( key ) );
+    if ( realKey.isEmpty() ) {
+        // FIXME error handling?
+        qWarning() << "Maildir::changeEntryFlags unable to find: " << key;
+        return key;
+    }
+    
+    static const QRegExp separatorRx("[\\:,\\!]");
+    QString finalKey = key.left( key.indexOf( separatorRx ) );
+          
+    QStringList mailDirFlags;
+    Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
+      if ( flag == Akonadi::MessageFlags::Forwarded )
+        mailDirFlags << QLatin1String("P");
+      if ( flag == Akonadi::MessageFlags::Replied )
+        mailDirFlags << QLatin1String("R");
+      if ( flag == Akonadi::MessageFlags::Seen )
+        mailDirFlags << QLatin1String("S");
+      if ( flag == Akonadi::MessageFlags::Deleted )
+        mailDirFlags << QLatin1String("T");
+      if ( flag == Akonadi::MessageFlags::Flagged )
+        mailDirFlags << QLatin1String("F");
+    }
+    mailDirFlags.sort();
+    if (!mailDirFlags.isEmpty()) {
+#ifdef Q_OS_WIN      
+      finalKey.append( QLatin1String("!2,") + mailDirFlags.join(QString()) );
+#else
+      finalKey.append( QLatin1String(":2,") + mailDirFlags.join(QString()) );
+#endif      
+    }
+    
+    QString newUniqueKey = finalKey; //key without path
+    finalKey.prepend( d->path + QString::fromLatin1("/cur/") );
+    
+    QFile f( realKey );
+    if (!f.rename( finalKey )) {
+        qWarning() << "Maildir: Failed to add entry: " << finalKey  << "!";
+    }
+    return newUniqueKey;
+}
+
+Akonadi::Item::Flags Maildir::readEntryFlags(const QString& key) const
+{
+    Akonadi::Item::Flags flags;
+    QString mailDirFlags = key.right( key.indexOf( QRegExp("\\:\\!") ) + 2 );
+    for ( int i = 0; i < mailDirFlags.size(); i++ ) {
+        if ( mailDirFlags[i] == QLatin1Char('P') )
+          flags << Akonadi::MessageFlags::Forwarded;
+        if ( mailDirFlags[i] == QLatin1Char('R') )
+          flags << Akonadi::MessageFlags::Replied;
+        if ( mailDirFlags[i] == QLatin1Char('S') )
+          flags << Akonadi::MessageFlags::Seen;
+        if ( mailDirFlags[i] == QLatin1Char('F') )
+          flags << Akonadi::MessageFlags::Flagged;
+    }
+    
+    return flags;
+}
+
 
 bool Maildir::moveTo( const Maildir &newParent )
 {

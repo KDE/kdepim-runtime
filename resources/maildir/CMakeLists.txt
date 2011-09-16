@@ -41,7 +41,7 @@ else(NOT WINCE)
 kde4_add_plugin(akonadi_maildir_resource STATIC ${maildirresource_SRCS})
 endif(NOT WINCE)
 
-target_link_libraries(akonadi_maildir_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
+target_link_libraries(akonadi_maildir_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} )
 
 install(TARGETS akonadi_maildir_resource DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml

@@ -25,6 +25,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <akonadi/item.h>
 
 class QDateTime;
 
@@ -138,6 +139,11 @@ public:
      * Return the contents of the file in the maildir with the given @p key.
      */
     QByteArray readEntry( const QString& key ) const;
+    
+    /**
+     * Return the flags encoded in the maildir file name for an entry
+     **/
+    Akonadi::Item::Flags readEntryFlags( const QString& key ) const;
 
     /**
      * Return the contents of the headers section of the file the maildir with the given @p key.
@@ -158,6 +164,12 @@ public:
      * Removes the entry with the given @p key. Returns success or failure.
      */
     bool removeEntry( const QString& key );
+
+    /**
+     * Change the flags for an entry specified by @p key. Returns the new key of the entry (the key might change because
+     * flags are stored in the unique filename).
+     */
+    QString changeEntryFlags( const QString& key, const Akonadi::Item::Flags& flags );
 
     /**
      * Moves this maildir into @p destination.
