@@ -169,6 +169,13 @@ void MaildirResource::configure( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   if ( dlg.exec() ) {
+      // if we have no name, or the default one,
+      // better use the name of the top level collection
+      // that looks nicer
+      if ( name().isEmpty() || name() == identifier() ) {
+        Maildir md( mSettings->path() );
+        setName( md.name() );
+      }
     emit configurationDialogAccepted();
   } else {
     emit configurationDialogRejected();
