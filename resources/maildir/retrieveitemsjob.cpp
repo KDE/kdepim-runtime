@@ -60,52 +60,76 @@ void RetrieveItemsJob::localListDone ( KJob* job )
   foreach ( const Akonadi::Item &item, items )
     m_localItems.insert( item.remoteId(), item );
 
-  const QStringList entryList = m_maildir.entryList();
-  qint64 previousMtime = m_collection.remoteRevision().toLongLong();
-  qint64 highestMtime = 0;
+  m_listingPath = m_maildir.path() + QLatin1String( "/new/" );
+  m_entryList = m_maildir.listNew();
+  m_previousMtime = m_collection.remoteRevision().toLongLong();
+  m_highestMtime = 0;
+  processEntry(0);
+}
 
-  foreach ( const QString &entry, entryList ) {
-    const qint64 currentMtime = m_maildir.lastModified( entry ).toMSecsSinceEpoch();
-    highestMtime = qMax( highestMtime, currentMtime );
-    if ( currentMtime <= previousMtime ) { // old, we got this one already
-      m_localItems.remove( entry );
-      continue;
+void RetrieveItemsJob::processEntry(qint64 index)
+{
+  if (index >= m_entryList.size()) {
+    if ( m_listingPath.endsWith( QLatin1String( "/new/" ) ) ) {
+      m_listingPath = m_maildir.path() + QLatin1String( "/cur/" );
+      m_entryList = m_maildir.listCurrent();
+      processEntry(0);
+    } else {
+      entriesProcessed();
     }
-
-    Akonadi::Item item;
-    item.setRemoteId( entry );
-    item.setMimeType( m_mimeType );
-    item.setSize( m_maildir.size( entry ) );
-    KMime::Message *msg = new KMime::Message;
-    msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeaders( entry ) ) );
-    msg->parse();
+    return;
+  }
     
-    Akonadi::Item::Flags flags = m_maildir.readEntryFlags( entry );
-    Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
-      item.setFlag(flag);      
-    }
-    
-    item.setPayload( KMime::Message::Ptr( msg ) );
-
-    if ( m_localItems.contains( entry ) ) { // modification
-      item.setId( m_localItems.value( entry ).id() );
-      new Akonadi::ItemModifyJob( item, transaction() );
-      m_localItems.remove( entry );
-    } else { // new item
-      new Akonadi::ItemCreateJob( item, m_collection, transaction() );
-    }
+  QString entry = m_entryList[index];  
+  const qint64 currentMtime = m_maildir.lastModified( entry ).toMSecsSinceEpoch();
+  m_highestMtime = qMax( m_highestMtime, currentMtime );
+  if ( currentMtime <= m_previousMtime ) { // old, we got this one already
+    m_localItems.remove( entry );
+    processEntry(index+1);
+    return;
   }
 
-  // delete the rest
+  Akonadi::Item item;
+  item.setRemoteId( entry );
+  item.setMimeType( m_mimeType );
+  item.setSize( m_maildir.size( entry ) );
+  KMime::Message *msg = new KMime::Message;
+  msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeaders( m_listingPath + entry ) ) );
+  msg->parse();
+  
+  Akonadi::Item::Flags flags = m_maildir.readEntryFlags( entry );
+  Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
+    item.setFlag(flag);      
+  }
+  
+  item.setPayload( KMime::Message::Ptr( msg ) );
+
+  if ( m_localItems.contains( entry ) ) { // modification
+    item.setId( m_localItems.value( entry ).id() );
+    new Akonadi::ItemModifyJob( item, transaction() );
+    m_localItems.remove( entry );
+  } else { // new item
+    new Akonadi::ItemCreateJob( item, m_collection, transaction() );  
+  }
+  
+  if ( index % 20 == 0 ) {
+     QMetaObject::invokeMethod( this, "processEntry", Qt::QueuedConnection, Q_ARG(qint64, index + 1) );
+  } else
+      processEntry(index+1);
+
+}
+
+void RetrieveItemsJob::entriesProcessed()
+{
   if ( !m_localItems.isEmpty() ) {
     Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( m_localItems.values(), transaction() );
     transaction()->setIgnoreJobFailure( job );
   }
 
   // update mtime
-  if ( highestMtime != previousMtime ) {
+  if ( m_highestMtime != m_previousMtime ) {
     Akonadi::Collection newCol( m_collection );
-    newCol.setRemoteRevision( QString::number( highestMtime ) );
+    newCol.setRemoteRevision( QString::number( m_highestMtime ) );
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( newCol, transaction() );
     transaction()->setIgnoreJobFailure( job );
   }
@@ -113,6 +137,8 @@ void RetrieveItemsJob::localListDone ( KJob* job )
   if ( !m_transaction ) // no jobs created here -> done
     emitResult();
 }
+
+
 
 Akonadi::TransactionSequence* RetrieveItemsJob::transaction()
 {

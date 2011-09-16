@@ -603,6 +603,8 @@ void MaildirResource::fsWatchDirFetchResult(KJob* job)
   const Collection::List cols = qobject_cast<CollectionFetchJob*>( job )->collections();
   if ( cols.isEmpty() )
     return;
+  
+  qDebug() << "Request collection sync";
   synchronizeCollection( cols.first().id() );
 }
 

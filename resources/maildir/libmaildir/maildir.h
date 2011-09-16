@@ -92,6 +92,23 @@ public:
      * should not be relied on.
      */
     QStringList entryList() const;
+     
+    /** Returns the list of items (mails) in the maildirs "new" folder. These are keys, which
+     * map to filenames, internally, but that's an implementation detail, which
+     * should not be relied on.
+     */
+    QStringList listNew() const;
+
+    /** Returns the list of items (mails) in the maildirs "cur" folder. These are keys, which
+     * map to filenames, internally, but that's an implementation detail, which
+     * should not be relied on.
+     */
+    QStringList listCurrent() const;
+    
+    /**
+     * Return the full path to the file identified by key (it can be either in the "new" or "cur" folder
+     **/    
+    QString findRealKey( const QString& key ) const;
 
     /**
      * Returns the list of subfolders, as names (relative paths). Use the
@@ -146,9 +163,10 @@ public:
     Akonadi::Item::Flags readEntryFlags( const QString& key ) const;
 
     /**
-     * Return the contents of the headers section of the file the maildir with the given @p key.
+     * Return the contents of the headers section of the file the maildir with the given @p file, that
+     * is a full path to the file. You can get it by using findRealKey(key) .
      */
-    QByteArray readEntryHeaders( const QString& key ) const;
+    QByteArray readEntryHeaders( const QString& file ) const;
 
     /**
      * Write the given @p data to a file in the maildir with the given  @p key.
