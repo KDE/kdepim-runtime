@@ -23,7 +23,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
 
-class QFileSystemWatcher;
+class KDirWatch;
 namespace Akonadi_Maildir_Resource
 {
 class MaildirSettings;
@@ -68,7 +68,10 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     void configurationChanged();
     void slotItemsRetrievalResult(KJob* job);
     void slotDirChanged( const QString &dir );
-    void fsWatchFetchResult( KJob* job );
+    void slotFileChanged( const QString &fileName );
+    void fsWatchDirFetchResult( KJob* job );
+    void fsWatchFileFetchResult( KJob* job );
+    void fsWatchFileModifyResult( KJob* job );
 
   private:
     void ensureDirExists();
@@ -81,7 +84,7 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
 
   private:
     Akonadi_Maildir_Resource::MaildirSettings *mSettings;
-    QFileSystemWatcher *m_fsWatcher;
+    KDirWatch *m_fsWatcher;
 
 };
 
