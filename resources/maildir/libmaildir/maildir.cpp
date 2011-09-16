@@ -507,7 +507,7 @@ QString Maildir::addEntry( const QByteArray& data )
      * For reference: http://trolltech.com/developer/task-tracker/index_html?method=entry&id=211215
      */
     if (!f.rename( finalKey )) {
-        qWarning() << "Maildir: Failed to add entry: " << finalKey  << "!";
+        qWarning() << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
     }
     return uniqueKey;
 }
@@ -562,7 +562,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
     
     QFile f( realKey );
     if (!f.rename( finalKey )) {
-        qWarning() << "Maildir: Failed to add entry: " << finalKey  << "!";
+        qWarning() << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
     }
     return newUniqueKey;
 }
@@ -632,7 +632,7 @@ QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
   // ### is this safe regarding the maildir locking scheme?
   const QString targetKey = destination.path() + QDir::separator() + QLatin1String( "new" ) + QDir::separator() + key;
   if ( !f.rename( targetKey ) ) {
-    kDebug() << "Failed to rename" << realKey << "to" << targetKey;
+    kDebug() << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();;
     return QString();
   }
 
