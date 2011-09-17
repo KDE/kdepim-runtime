@@ -205,7 +205,15 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       return;
     }
     const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
+    
+    QString path = dir.path();
+    m_fsWatcher->removeDir( path + QLatin1Literal("/new") );
+    m_fsWatcher->removeDir( path + QLatin1Literal("/cur") );
+      
     const QString rid = dir.addEntry( mail->encodedContent() );
+ 
+    m_fsWatcher->addDir( path + QLatin1Literal("/new") );
+    m_fsWatcher->addDir( path + QLatin1Literal("/cur") );
 
     Item i( item );
     i.setRemoteId( rid );
@@ -307,7 +315,20 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
     return;
   }
 
+  QString sourceDirPath = sourceDir.path();
+  QString destDirPath = destDir.path();
+  m_fsWatcher->removeDir( sourceDirPath + QLatin1Literal("/new") );
+  m_fsWatcher->removeDir( sourceDirPath + QLatin1Literal("/cur") );
+  m_fsWatcher->removeDir( destDirPath + QLatin1Literal("/new") );
+  m_fsWatcher->removeDir( destDirPath + QLatin1Literal("/cur") );
+
   const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
+  
+  m_fsWatcher->addDir( sourceDirPath + QLatin1Literal("/new") );
+  m_fsWatcher->addDir( sourceDirPath + QLatin1Literal("/cur") );
+  m_fsWatcher->addDir( destDirPath + QLatin1Literal("/new") );
+  m_fsWatcher->addDir( destDirPath + QLatin1Literal("/cur") );
+
   if ( newRid.isEmpty() ) {
     cancelTask( i18n( "Could not move message '%1'.", item.remoteId() ) );
     return;
