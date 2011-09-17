@@ -23,6 +23,7 @@
 #include <boost/shared_ptr.hpp>
 #include <Syndication/Syndication>
 #include <QTimer>
+#include <QHash>
 #include "opmlparser.h"
 
 class KRssLocalResource : public Akonadi::ResourceBase,
@@ -63,6 +64,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     
   private:    
     Akonadi::CachePolicy policy;
+    QHash<Syndication::Loader*, Akonadi::Collection> m_collectionByLoader;
     QTimer *writeBackTimer;
     static const int CacheTimeout = -1, IntervalCheckTime = 5; 
     static const int WriteBackTimeout = 30000; // in milliseconds

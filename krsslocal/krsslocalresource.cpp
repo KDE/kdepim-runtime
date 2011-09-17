@@ -33,12 +33,14 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/Collection>
+#include <Akonadi/CollectionModifyJob>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
 #include <krss/rssitem.h>
 #include <krssresource/krssresource_export.h>
 #include <krss/resourcemanager.h>
 #include <krss/feedcollection.h>
+
 
 using namespace Akonadi;
 using namespace KRssResource;
@@ -185,36 +187,46 @@ void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
 // Depending on how your resource accesses the data, there are several
 // different ways to tell Akonadi when you are done.
 
-      Syndication::Loader * const loader = Syndication::Loader::create();
-      connect( loader, SIGNAL( loadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ),
-		this, SLOT( slotLoadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ) );
-      KUrl xmlUrl( collection.remoteId() ); 
-      loader->loadFrom( xmlUrl );
-      
+    Syndication::Loader * const loader = Syndication::Loader::create();
+    connect( loader, SIGNAL( loadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ),
+            this, SLOT( slotLoadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ) );
+    const KRss::FeedCollection fc( collection );
+    const KUrl xmlUrl = fc.xmlUrl();
+    m_collectionByLoader.insert( loader, collection );
+    loader->loadFrom( xmlUrl );
 }
 
 void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 					    Syndication::ErrorCode status)
 {
-     Q_UNUSED(loader);
-     
-     if (status != Syndication::Success) {
-	    kWarning() << "Error while parsing xml file";
-	    itemsRetrievalDone();
-	    return;
-     }
+    const Collection c = m_collectionByLoader.take( loader );
 
-     QList<Syndication::ItemPtr> syndItems = feed->items();
-     Akonadi::Item::List items;
-     foreach ( const Syndication::ItemPtr& syndItem, syndItems ) {
-	  Akonadi::Item item( mimeType() );
-	  item.setRemoteId( syndItem->id() );
-	  item.setPayload<KRss::RssItem>( Util::fromSyndicationItem( syndItem ) );
-	  item.setFlag( KRss::RssItem::flagNew() );
-	  items << item;
-     }
+    if (status != Syndication::Success) {
+        kWarning() << "Error while parsing xml file";
+        //TODO report error to user?
+        itemsRetrievalDone();
+        return;
+    }
+    KRss::FeedCollection fc( c );
+    if ( fc.title().isEmpty() ) {
+        fc.setTitle( feed->title() );
+        fc.setName( feed->title() );
+        fc.setDescription( feed->description() );
+        fc.setHtmlUrl( feed->link() );
+        Akonadi::CollectionModifyJob* job = new Akonadi::CollectionModifyJob( fc );
+        job->start();
+    }
+    QList<Syndication::ItemPtr> syndItems = feed->items();
+    Akonadi::Item::List items;
+    foreach ( const Syndication::ItemPtr& syndItem, syndItems ) {
+        Akonadi::Item item( mimeType() );
+        item.setRemoteId( syndItem->id() );
+        item.setPayload<KRss::RssItem>( Util::fromSyndicationItem( syndItem ) );
+        item.setFlag( KRss::RssItem::flagNew() );
+        items << item;
+    }
 
-     itemsRetrieved( items );
+    itemsRetrieved( items );
  
 }
 
