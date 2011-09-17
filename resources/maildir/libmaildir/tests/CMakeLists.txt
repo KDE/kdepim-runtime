@@ -9,5 +9,5 @@ set(testmaildir_SRCS testmaildir.cpp )
 
 kde4_add_unit_test(testmaildir TESTNAME maildir-testmaildir ${testmaildir_SRCS})
 
-target_link_libraries(testmaildir ${KDE4_KDECORE_LIBS} ${QT_QTTEST_LIBRARY} ${QT_QTGUI_LIBRARY} maildir)
+target_link_libraries(testmaildir ${KDE4_KDECORE_LIBS} ${QT_QTTEST_LIBRARY} ${QT_QTGUI_LIBRARY} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir)
 
