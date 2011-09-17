@@ -431,7 +431,7 @@ qint64 Maildir::size( const QString& key ) const
     QString realKey( d->findRealKey( key ) );
     if ( realKey.isEmpty() ) {
         // FIXME error handling?
-        qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
+        qWarning() << "Maildir::size unable to find: " << key;
         return 0;
     }
 
@@ -481,7 +481,7 @@ QByteArray Maildir::readEntryHeaders( const QString& key ) const
 {
     const QString realKey( d->findRealKey( key ) );
     if ( realKey.isEmpty() ) {
-        qWarning() << "Maildir::lastModified unable to find: " << key;
+        qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
         return QByteArray();
     }
   
