@@ -376,7 +376,6 @@ void ItemModifyTest::testModifyPayload()
   entryList = mbox2.entries();
   QCOMPARE( (int)entryList.count(), 4 );
 
-  QEXPECT_FAIL( "", "MBox reading last entry strips too much. Fix there!", Continue );
   QCOMPARE( mbox2.readRawMessage( entryList.last() ), msgPtr->encodedContent() );
 }
 
