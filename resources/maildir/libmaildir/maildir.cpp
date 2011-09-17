@@ -56,6 +56,8 @@ static void initRandomSeed()
 
 using namespace KPIM;
 
+Q_GLOBAL_STATIC_WITH_ARGS( QRegExp, statusSeparatorRx, (":|!") )
+
 class Maildir::Private
 {
 public:
@@ -73,7 +75,7 @@ public:
     {
         path = rhs.path;
         isRoot = rhs.isRoot;
-        hostName = QHostInfo::localHostName();
+        hostName = rhs.hostName;
     }
 
     bool operator==( const Private& rhs ) const
@@ -569,8 +571,8 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
         return key;
     }
     
-    static const QRegExp separatorRx("[\\:,\\!]");
-    QString finalKey = key.left( key.indexOf( separatorRx ) );
+    const QRegExp rx = *(statusSeparatorRx());
+    QString finalKey = key.left( key.indexOf( rx ) );
           
     QStringList mailDirFlags;
     Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
@@ -607,16 +609,21 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
 Akonadi::Item::Flags Maildir::readEntryFlags(const QString& key) const
 {
     Akonadi::Item::Flags flags;
-    QString mailDirFlags = key.right( key.indexOf( QRegExp("\\:\\!") ) + 2 );
-    for ( int i = 0; i < mailDirFlags.size(); i++ ) {
-        if ( mailDirFlags[i] == QLatin1Char('P') )
-          flags << Akonadi::MessageFlags::Forwarded;
-        if ( mailDirFlags[i] == QLatin1Char('R') )
-          flags << Akonadi::MessageFlags::Replied;
-        if ( mailDirFlags[i] == QLatin1Char('S') )
-          flags << Akonadi::MessageFlags::Seen;
-        if ( mailDirFlags[i] == QLatin1Char('F') )
-          flags << Akonadi::MessageFlags::Flagged;
+    
+    const QRegExp rx = *(statusSeparatorRx());
+    const int index = key.indexOf( rx );
+    if ( index != -1 ) {
+        const QString mailDirFlags = key.mid( index + 3 ); // after "(:|!)2,"
+        for ( int i = 0; i < mailDirFlags.size(); i++ ) {
+            if ( mailDirFlags[i] == QLatin1Char('P') )
+                flags << Akonadi::MessageFlags::Forwarded;
+            else if ( mailDirFlags[i] == QLatin1Char('R') )
+                flags << Akonadi::MessageFlags::Replied;
+            else if ( mailDirFlags[i] == QLatin1Char('S') )
+                flags << Akonadi::MessageFlags::Seen;
+            else if ( mailDirFlags[i] == QLatin1Char('F') )
+                flags << Akonadi::MessageFlags::Flagged;
+        }
     }
     
     return flags;
