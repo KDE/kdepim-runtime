@@ -71,26 +71,31 @@ void RetrieveItemsJob::localListDone ( KJob* job )
 
 void RetrieveItemsJob::processEntry(qint64 index)
 {
-  if (index >= m_entryList.size()) {
-    if ( m_listingPath.endsWith( QLatin1String( "/new/" ) ) ) {
-      m_listingPath = m_maildir.path() + QLatin1String( "/cur/" );
-      m_entryList = m_maildir.listCurrent();
-      processEntry(0);
-    } else {
-      entriesProcessed();
+  QString entry;
+  
+  bool newItemFound = false;
+  while ( !newItemFound ) {
+    if (index >= m_entryList.size()) {
+      if ( m_listingPath.endsWith( QLatin1String( "/new/" ) ) ) {
+        m_listingPath = m_maildir.path() + QLatin1String( "/cur/" );
+        m_entryList = m_maildir.listCurrent();
+        processEntry(0);
+      } else {
+        entriesProcessed();
+      }
+      return;
     }
-    return;
+      
+    entry = m_entryList[index];  
+    const qint64 currentMtime = m_maildir.lastModified( entry ).toMSecsSinceEpoch();
+    m_highestMtime = qMax( m_highestMtime, currentMtime );
+    if ( currentMtime <= m_previousMtime && m_localItems.contains(entry)) { // old, we got this one already
+      m_localItems.remove( entry );
+      index++;
+    } else {
+      newItemFound = true;
+    }
   }
-    
-  QString entry = m_entryList[index];  
-  const qint64 currentMtime = m_maildir.lastModified( entry ).toMSecsSinceEpoch();
-  m_highestMtime = qMax( m_highestMtime, currentMtime );
-  if ( currentMtime <= m_previousMtime && m_localItems.contains(entry)) { // old, we got this one already
-    m_localItems.remove( entry );
-    processEntry(index+1);
-    return;
-  }
-
   Akonadi::Item item;
   item.setRemoteId( entry );
   item.setMimeType( m_mimeType );
