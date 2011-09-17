@@ -1844,7 +1844,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
     QString newKey = item.remoteId();
     if ( flagsChanged ) {
       Maildir md( mdPtr->maildir() );
-      const QString newKey = md.changeEntryFlags( item.remoteId(), item.flags() );
+      newKey = md.changeEntryFlags( item.remoteId(), item.flags() );
       item.setRemoteId( newKey );
     }
 
