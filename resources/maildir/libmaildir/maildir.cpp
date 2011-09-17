@@ -437,12 +437,12 @@ qint64 Maildir::size( const QString& key ) const
     if ( realKey.isEmpty() ) {
         // FIXME error handling?
         qWarning() << "Maildir::size unable to find: " << key;
-        return 0;
+        return -1;
     }
 
     QFileInfo info( realKey );
     if ( !info.exists() )
-        return 0;
+        return -1;
 
     return info.size();
 }
