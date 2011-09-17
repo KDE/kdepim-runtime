@@ -40,15 +40,19 @@ bool SerializerPluginRss::deserialize( Akonadi::Item& item, const QByteArray& la
         rssItem = item.payload<RssItem>();
     }
 
+    bool success = false;
     if ( label == Akonadi::Item::FullPayload ) {
-        m_serializer.deserialize( rssItem, data.readAll(), RssItemSerializer::Full );
+        success = m_serializer.deserialize( rssItem, data.readAll(), RssItemSerializer::Full );
     }
     else if ( label == KRss::Item::HeadersPart ) {
-        m_serializer.deserialize( rssItem, data.readAll(), RssItemSerializer::Headers );
+        success = m_serializer.deserialize( rssItem, data.readAll(), RssItemSerializer::Headers );
     }
     else if ( label == KRss::Item::ContentPart ) {
-        m_serializer.deserialize( rssItem, data.readAll(), RssItemSerializer::Content );
+        success = m_serializer.deserialize( rssItem, data.readAll(), RssItemSerializer::Content );
     }
+
+    if ( !success )
+        return false;
 
     item.setPayload<RssItem>( rssItem );
     return true;
