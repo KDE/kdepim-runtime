@@ -337,9 +337,13 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
 
 Collection::List MaildirResource::listRecursive( const Collection &root, const Maildir &dir )
 {
-  if ( !dir.isRoot() && mSettings->monitorFilesystem() ) {
+  if ( mSettings->monitorFilesystem() ) {
     m_fsWatcher->addDir( dir.path() + QDir::separator() + QLatin1String( "new" ) );
     m_fsWatcher->addDir( dir.path() + QDir::separator() + QLatin1String( "cur" ) );
+    m_fsWatcher->addDir( dir.subDirPath() );
+    if ( dir.isRoot() ) {
+      m_fsWatcher->addDir( dir.path() );
+    }
   }
 
   Collection::List list;
@@ -567,12 +571,21 @@ bool MaildirResource::ensureSaneConfiguration()
 }
 
 void MaildirResource::slotDirChanged(const QString& dir)
-{
-  qDebug()<< Q_FUNC_INFO << dir;
-  
+{  
   QFileInfo fileInfo(dir);
   if (fileInfo.isFile()) {
     slotFileChanged(dir);
+    return;
+  }
+  
+  if (dir == mSettings->path() ) {
+    synchronizeCollectionTree();
+   synchronizeCollection( Collection::root().id() );
+    return;
+  }
+
+  if ( dir.endsWith( QLatin1String( ".directory") ) ) {
+    synchronizeCollectionTree(); //might be too much, but this is not a common case anyway
     return;
   }
   
@@ -589,7 +602,7 @@ void MaildirResource::slotDirChanged(const QString& dir)
     kDebug() << "unable to find collection for path" << dir;
     return;
   }
-
+ 
   CollectionFetchJob *job = new CollectionFetchJob( col, Akonadi::CollectionFetchJob::Base, this );
   connect( job, SIGNAL(result(KJob*)), SLOT(fsWatchDirFetchResult(KJob*)) );
 }
@@ -604,7 +617,6 @@ void MaildirResource::fsWatchDirFetchResult(KJob* job)
   if ( cols.isEmpty() )
     return;
   
-  qDebug() << "Request collection sync";
   synchronizeCollection( cols.first().id() );
 }
 
@@ -622,9 +634,7 @@ void MaildirResource::slotFileChanged( const QString& fileName )
   const Maildir md( path );
   if ( !md.isValid() )
     return;
-  
-  qDebug() << "md valid";
-    
+      
   const Collection col = collectionForMaildir( md );
   if ( col.remoteId().isEmpty() ) {
     kDebug() << "unable to find collection for path" << fileInfo.path();

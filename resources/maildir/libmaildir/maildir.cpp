@@ -380,6 +380,14 @@ QStringList Maildir::listNew() const
     return result;
 }
 
+QString Maildir::subDirPath() const
+{
+  QDir dir( d->path );
+  dir.cdUp();
+  return dir.path() + QDir::separator() + d->subDirPath();
+}
+
+
 
 QStringList Maildir::subFolderList() const
 {

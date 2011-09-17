@@ -106,6 +106,11 @@ public:
     QStringList listCurrent() const;
     
     /**
+     * Returns the full path to the subdir (the NAME.directory folder ).
+     **/
+    QString subDirPath() const;
+    
+    /**
      * Return the full path to the file identified by key (it can be either in the "new" or "cur" folder
      **/    
     QString findRealKey( const QString& key ) const;
