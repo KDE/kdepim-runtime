@@ -1,6 +1,7 @@
 /*  This file is part of the KDE project
     Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Author: Kevin Krammer, krake@kdab.com
+    Copyright (C) 2011 Kevin Krammer, kevin.krammer@gmx.at
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -29,6 +30,7 @@
 #include "libmaildir/maildir.h"
 
 #include <akonadi/kmime/messageparts.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
@@ -74,6 +76,7 @@ class ItemModifyTest : public QObject
     void testIgnorePayload();
     void testModifyPayload();
     void testModifyFlags();
+    void testModifyFlagsAndPayload();
 };
 
 void ItemModifyTest::init()
@@ -544,6 +547,122 @@ void ItemModifyTest::testModifyFlags()
   QVERIFY( !var.isValid() );
   
 }
+
+
+void ItemModifyTest::testModifyFlagsAndPayload()
+{
+  QDir topDir( mDir->name() );
+
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
+
+  KPIM::Maildir topLevelMd( topDir.path(), true );
+
+  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
+  QStringList entryList1 = md1.entryList();
+  QCOMPARE( (int)entryList1.count(), 4 );
+
+  QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
+  MBox mbox2;
+  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
+  MBoxEntry::List entryList2 = mbox2.entries();
+  QCOMPARE( (int)entryList2.count(), 4 );
+    
+  mStore->setPath( topDir.path() );
+
+  // common variables
+  FileStore::ItemModifyJob *job = 0;
+
+  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
+  QVariant var;
+  Collection::List collections;
+  KMime::Message::Ptr msgPtr( new KMime::Message );
+  
+  // test modifying a flag of a maildir items changes the entry name but not the
+  // message contents
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  // check that the \SEEN flag is not set yet
+  QVERIFY( !md1.readEntryFlags( entryList1.first() ).contains( "\\SEEN" ) );
+  
+  const QByteArray data1 = md1.readEntry( entryList1.first() );
+
+  msgPtr->setContent( KMime::CRLFtoLF( data1 ) );
+  msgPtr->subject()->from7BitString( "Modify Test" );
+  msgPtr->assemble();
+
+  Item item1;
+  item1.setMimeType( KMime::Message::mimeType() );
+  item1.setRemoteId( entryList1.first() );
+  item1.setParentCollection( collection1 );
+  item1.setPayload<KMime::Message::Ptr>( msgPtr );
+  item1.setFlag( "\\SEEN" );
+
+  job = mStore->modifyItem( item1 );
+  // setting \SEEN so indicate a flags change and
+  // setting new subject so indicate a payload change
+  job->setParts( QSet<QByteArray>() << "FLAGS"
+                                    << QByteArray( "PLD:" ) + MessagePart::Header );
+    
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  Item item = job->item();
+  
+  // returned item should contain the change
+  QVERIFY( item.flags().contains( "\\SEEN" ) );
+  
+  // remote ID has changed
+  QVERIFY( item.remoteId() != entryList1.first() );
+  QVERIFY( !md1.entryList().contains( entryList1.first() ) );
+  
+  // no change in number of entries, one difference
+  QStringList entryList3 = md1.entryList();
+  QCOMPARE( entryList3.count(), entryList1.count() );
+  Q_FOREACH( const QString &oldEntry, entryList1 ) {
+    entryList3.removeAll( oldEntry );
+  }
+  QCOMPARE( entryList3.count(), 1 );
+  
+  // data changed
+  QCOMPARE( md1.readEntry( entryList3.first() ), msgPtr->encodedContent() );
+
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
+  
+  // fetch new item, check flag
+  item1 = Item();
+  item1.setMimeType( KMime::Message::mimeType() );
+  item1.setRemoteId( entryList3.first() );
+  item1.setParentCollection( collection1 );
+  
+  FileStore::ItemFetchJob *itemFetch = mStore->fetchItem( item1 );
+  itemFetch->fetchScope().fetchFullPayload();
+  
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+  
+  QCOMPARE( itemFetch->items().count(), 1 );
+  Item fetchedItem = itemFetch->items().first();
+  QEXPECT_FAIL( "", "ItemFetch handling needs to be fixed to also fetch flags", Continue );
+  QVERIFY( fetchedItem.flags().contains( "\\SEEN" ) );
+  
+  QVERIFY( fetchedItem.hasPayload<KMime::Message::Ptr>() );
+  KMime::Message::Ptr fetchedMsgPtr = fetchedItem.payload<KMime::Message::Ptr>();
+  QCOMPARE( msgPtr->encodedContent(), fetchedMsgPtr->encodedContent() );
+  
+  
+  // TODO test for mbox.
+}
+
 QTEST_KDEMAIN( ItemModifyTest, NoGUI )
 
 #include "itemmodifytest.moc"
