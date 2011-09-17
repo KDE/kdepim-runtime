@@ -418,6 +418,79 @@ void ItemModifyTest::testModifyFlags()
   Collection::List collections;
   KMime::Message::Ptr msgPtr( new KMime::Message );
   
+  // test modifying a flag of a maildir items changes the entry name but not the
+  // message contents
+  Collection collection1;
+  collection1.setName( QLatin1String( "collection1" ) );
+  collection1.setRemoteId( QLatin1String( "collection1" ) );
+  collection1.setParentCollection( mStore->topLevelCollection() );
+
+  // check that the \SEEN flag is not set yet
+  QVERIFY( !md1.readEntryFlags( entryList1.first() ).contains( "\\SEEN" ) );
+  
+  const QByteArray data1 = md1.readEntry( entryList1.first() );
+
+  msgPtr->setContent( KMime::CRLFtoLF( data1 ) );
+  msgPtr->subject()->from7BitString( "Modify Test" );
+  msgPtr->assemble();
+
+  Item item1;
+  item1.setMimeType( KMime::Message::mimeType() );
+  item1.setRemoteId( entryList1.first() );
+  item1.setParentCollection( collection1 );
+  item1.setPayload<KMime::Message::Ptr>( msgPtr );
+  item1.setFlag( "\\SEEN" );
+
+  job = mStore->modifyItem( item1 );
+  // setting \SEEN, so indicate a flags change
+  job->setParts( QSet<QByteArray>() << "FLAGS" );
+    
+  QVERIFY( job->exec() );
+  QCOMPARE( job->error(), 0 );
+
+  Item item = job->item();
+  
+  // returned item should contain the change
+  QVERIFY( item.flags().contains( "\\SEEN" ) );
+  
+  // remote ID has changed
+  QVERIFY( item.remoteId() != entryList1.first() );
+  QVERIFY( !md1.entryList().contains( entryList1.first() ) );
+  
+  // no change in number of entries, one difference
+  QStringList entryList3 = md1.entryList();
+  QCOMPARE( entryList3.count(), entryList1.count() );
+  Q_FOREACH( const QString &oldEntry, entryList1 ) {
+    entryList3.removeAll( oldEntry );
+  }
+  QCOMPARE( entryList3.count(), 1 );
+  
+  // no change to data
+  QCOMPARE( md1.readEntry( entryList3.first() ), data1 );
+
+  var = job->property( "onDiskIndexInvalidated" );
+  QVERIFY( var.isValid() );
+  QCOMPARE( var.userType(), colListVar.userType() );
+
+  collections = var.value<Collection::List>();
+  QCOMPARE( (int)collections.count(), 1 );
+  QCOMPARE( collections.first(), collection1 );
+  
+  // fetch new item, check flag
+  item1 = Item();
+  item1.setMimeType( KMime::Message::mimeType() );
+  item1.setRemoteId( entryList3.first() );
+  item1.setParentCollection( collection1 );
+  
+  FileStore::ItemFetchJob *itemFetch = mStore->fetchItem( item1 );
+  
+  QVERIFY( itemFetch->exec() );
+  QCOMPARE( itemFetch->error(), 0 );
+  
+  QCOMPARE( itemFetch->items().count(), 1 );
+  QEXPECT_FAIL( "", "ItemFetch handling needs to be fixed to also fetch flags", Continue );
+  QVERIFY( itemFetch->items()[ 0 ].flags().contains( "\\SEEN" ) );
+  
   // test modifying flags of an mbox item "succeeds" (no error) but does not change
   // anything in store or on disk
   Collection collection2;
@@ -445,7 +518,7 @@ void ItemModifyTest::testModifyFlags()
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
 
-  Item item = job->item();
+  item = job->item();
   
   // returned item should contain the change
   QVERIFY( item.flags().contains( "\\SEEN" ) );
