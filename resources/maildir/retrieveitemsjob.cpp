@@ -85,7 +85,7 @@ void RetrieveItemsJob::processEntry(qint64 index)
   QString entry = m_entryList[index];  
   const qint64 currentMtime = m_maildir.lastModified( entry ).toMSecsSinceEpoch();
   m_highestMtime = qMax( m_highestMtime, currentMtime );
-  if ( currentMtime <= m_previousMtime ) { // old, we got this one already
+  if ( currentMtime <= m_previousMtime && m_localItems.contains(entry)) { // old, we got this one already
     m_localItems.remove( entry );
     processEntry(index+1);
     return;
@@ -129,7 +129,7 @@ void RetrieveItemsJob::entriesProcessed()
   }
 
   // update mtime
-  if ( m_highestMtime != m_previousMtime ) {
+ if ( m_highestMtime != m_previousMtime ) {
     Akonadi::Collection newCol( m_collection );
     newCol.setRemoteRevision( QString::number( m_highestMtime ) );
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( newCol, transaction() );
