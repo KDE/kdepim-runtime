@@ -457,7 +457,7 @@ QDateTime Maildir::lastModified(const QString& key) const
     return info.lastModified();
 }
 
-QByteArray Maildir::readEntryHeaders( const QString& file ) const
+QByteArray Maildir::readEntryHeadersFromFile( const QString& file ) const
 {
     QByteArray result;
 
@@ -475,6 +475,17 @@ QByteArray Maildir::readEntryHeaders( const QString& file ) const
         result.append( line );
     }
     return result;
+}
+
+QByteArray Maildir::readEntryHeaders( const QString& key ) const 
+{
+    const QString realKey( d->findRealKey( key ) );
+    if ( realKey.isEmpty() ) {
+        qWarning() << "Maildir::lastModified unable to find: " << key;
+        return QByteArray();
+    }
+  
+  return readEntryHeadersFromFile( realKey );
 }
 
 
