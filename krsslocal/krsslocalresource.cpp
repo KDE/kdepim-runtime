@@ -222,7 +222,6 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
         Akonadi::Item item( mimeType() );
         item.setRemoteId( syndItem->id() );
         item.setPayload<KRss::RssItem>( Util::fromSyndicationItem( syndItem ) );
-        item.setFlag( KRss::RssItem::flagNew() );
         items << item;
     }
 
