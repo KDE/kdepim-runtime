@@ -58,7 +58,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
   
   policy.setInheritFromParent( false );
   policy.setSyncOnDemand( false );
-  policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart );
+  policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
   
   
   //changeRecorder()->fetchCollection( true );
@@ -281,11 +281,10 @@ void KRssLocalResource::itemRemoved( const Akonadi::Item &item )
 
 void KRssLocalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
-  Q_UNUSED( item );
   Q_UNUSED( parts );
 
-  // TODO: this method is called when somebody else, e.g. a client application,
-  // has changed an item managed by your resource.
+  changeCommitted( item );
+  
 }
 
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
