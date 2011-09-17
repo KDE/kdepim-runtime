@@ -146,7 +146,7 @@ public:
     Maildir parent() const;
 
     /**
-     * Returns the size of the file in the maildir with the given @p key.
+     * Returns the size of the file in the maildir with the given @p key or \c -1 if key is not valid.
      * @since 4.2
      */
     qint64 size( const QString& key ) const;

@@ -99,7 +99,10 @@ void RetrieveItemsJob::processEntry(qint64 index)
   Akonadi::Item item;
   item.setRemoteId( entry );
   item.setMimeType( m_mimeType );
-  item.setSize( m_maildir.size( entry ) );
+  const qint64 entrySize = m_maildir.size( entry );
+  if ( entrySize >= 0 )
+    item.setSize( entrySize );
+
   KMime::Message *msg = new KMime::Message;
   msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeadersFromFile( m_listingPath + entry ) ) );
   msg->parse();

@@ -700,7 +700,9 @@ void MaildirResource::fsWatchFileFetchResult( KJob* job )
 
   QString entry = fileName;
   Item item ( items.at(0) );
-  item.setSize( md.size( entry ) );
+  const qint64 entrySize = md.size( entry );
+  if ( entrySize >= 0 )
+    item.setSize( entrySize );
 
   Item::Flags flags = md.readEntryFlags( entry );
   Q_FOREACH( Item::Flag flag, flags ) {
