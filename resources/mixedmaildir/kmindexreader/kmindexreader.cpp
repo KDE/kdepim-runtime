@@ -322,12 +322,12 @@ bool KMIndexReader::readIndex()
   // loop through the entire index
   while (!feof(mFp))
   {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "NEW MSG!";
+    //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "NEW MSG!";
     msg = 0;
     // check version (parsed by readHeader)
     // because different versions must be
     // parsed differently
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "parsing version" << version;
+    //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "parsing version" << version;
     if(version >= 1505) {
       // parse versions >= 1505
       if(!fread(&len, sizeof(len), 1, mFp))
@@ -473,7 +473,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
 {
   if( !msg )
     return false;
-  kDebug( KDE_DEFAULT_DEBUG_AREA );
+  //kDebug( KDE_DEFAULT_DEBUG_AREA );
   if (g_chunk_length < indexLen)
       g_chunk = (uchar *)realloc(g_chunk, g_chunk_length = indexLen);
 
@@ -524,7 +524,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
       Q_ASSERT(mIndexSizeOfLong == len);
       if (mIndexSizeOfLong == sizeof(ret))
       {
-        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mIndexSizeOfLong == sizeof(ret)";
+        //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mIndexSizeOfLong == sizeof(ret)";
         // this memcpy replaces the original call to copy_from_stream
         // so that g_chunk_offset is not changed
         memcpy( &ret, g_chunk + g_chunk_offset, sizeof(ret) );
