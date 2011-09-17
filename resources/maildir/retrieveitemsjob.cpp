@@ -101,7 +101,7 @@ void RetrieveItemsJob::processEntry(qint64 index)
   item.setMimeType( m_mimeType );
   item.setSize( m_maildir.size( entry ) );
   KMime::Message *msg = new KMime::Message;
-  msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeaders( m_listingPath + entry ) ) );
+  msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeadersFromFile( m_listingPath + entry ) ) );
   msg->parse();
   
   Akonadi::Item::Flags flags = m_maildir.readEntryFlags( entry );
