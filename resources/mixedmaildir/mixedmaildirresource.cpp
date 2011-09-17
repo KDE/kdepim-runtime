@@ -42,10 +42,11 @@
 #include "filestore/storecompactjob.h"
 
 #include <akonadi/kmime/messageparts.h>
+#include <akonadi/kmime/messagestatus.h>
+
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
-#include <akonadi/kmime/messagestatus.h>
 #include <akonadi/itemmodifyjob.h>
 #include <akonadi/collectionfetchscope.h>
 
@@ -250,7 +251,8 @@ void MixedMaildirResource::retrieveItems( const Collection & col )
   }
 
   FileStore::ItemFetchJob *job = mStore->fetchItems( col );
-  connect( job, SIGNAL( result( KJob* ) ), SLOT( retrieveItemsResult( KJob* ) ) );
+  job->fetchScope().fetchPayloadPart( MessagePart::Envelope );
+  connect( job, SIGNAL(result(KJob*)), SLOT(retrieveItemsResult(KJob*)) );
 
   status( Running, i18nc( "@info:status", "Synchronizing email folder %1", col.name() ) );
 }
