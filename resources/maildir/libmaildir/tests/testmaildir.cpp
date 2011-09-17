@@ -405,5 +405,29 @@ void MaildirTest::testMaildirFlagsWriting()
 {
   initTestCase();
 
+  // create an initialy flagless mail
+  QFile file;
+  QDir::setCurrent( m_temp->name() + QLatin1Char( '/' ) + "cur" );
+  file.setFileName( QLatin1String( "testmail" ) );
+  file.open( QIODevice::WriteOnly );
+  file.write( testString );
+  file.flush();
+  file.close();
+
+  // add a single flag
+  Maildir d( m_temp->name() );
+  const QStringList entries = d.entryList();
+  QCOMPARE( entries.size(), 1 );
+  const QString newKey = d.changeEntryFlags( entries[0], Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen );
+  // make sure the new key exists
+  QCOMPARE( newKey, d.entryList()[0] );
+  // and it's the right file
+  QCOMPARE( d.readEntry( newKey ), QByteArray( testString ) );
+  // now check the file name
+  QVERIFY( newKey.endsWith( QLatin1String("2,S") ) );
+  // and more flags
+  const QString newKey2 = d.changeEntryFlags( newKey, Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen << Akonadi::MessageFlags::Replied );
+  // check the file name, and the sorting of markers
+  QVERIFY( newKey2.endsWith( QLatin1String("2,RS") ) );
   cleanupTestCase();
 }
