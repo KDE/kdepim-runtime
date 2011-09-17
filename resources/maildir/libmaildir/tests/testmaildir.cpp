@@ -30,6 +30,7 @@
 #include <qtest_kde.h>
 #include <kstandarddirs.h>
 #include <ktempdir.h>
+#include <akonadi/kmime/messageflags.h>
 
 QTEST_KDEMAIN( MaildirTest, NoGUI )
 
@@ -344,3 +345,65 @@ void MaildirTest::cleanupTestCase()
   m_temp->unlink();
 }
 
+void MaildirTest::testMaildirFlagsReading()
+{
+  initTestCase();
+  QFile file;
+  const QStringList markers = QStringList() << "P" << "R" << "S" << "F" << "FPRS";
+  QDir::setCurrent( m_temp->name() + QLatin1Char( '/' ) + "cur" );
+  for ( int i=0; i<6 ; i++) {
+    QString fileName = QLatin1String( "testmail-" ) + QString::number(i);
+    if ( i < 5 ) {
+      fileName +=
+  #ifdef Q_OS_WIN
+                      "!2,"
+  #else
+                      ":2,"
+  #endif
+                      + markers[i];
+    }
+    file.setFileName( fileName );
+    file.open( QIODevice::WriteOnly );
+    file.write( testString );
+    file.flush();
+    file.close();
+  }
+
+  Maildir d( m_temp->name() );
+  QStringList entries = d.entryList();
+  QCOMPARE( entries.count(), 6 );
+
+  Akonadi::Item::Flags flags = d.readEntryFlags( entries[0] );
+  QCOMPARE( flags.count(), 1);
+  QVERIFY( flags.contains( Akonadi::MessageFlags::Forwarded ) );
+
+  flags = d.readEntryFlags( entries[1] );
+  QCOMPARE( flags.count(), 1);
+  QVERIFY( flags.contains( Akonadi::MessageFlags::Replied ) );
+
+  flags = d.readEntryFlags( entries[2] );
+  QCOMPARE( flags.count(), 1);
+  QVERIFY( flags.contains( Akonadi::MessageFlags::Seen ) );
+
+  flags = d.readEntryFlags( entries[3] );
+  QCOMPARE( flags.count(), 1);
+  QVERIFY( flags.contains( Akonadi::MessageFlags::Flagged ) );
+
+  flags = d.readEntryFlags( entries[4] );
+  QCOMPARE( flags.count(), 4);
+  QVERIFY( flags.contains( Akonadi::MessageFlags::Forwarded ) );
+  QVERIFY( flags.contains( Akonadi::MessageFlags::Replied ) );
+  QVERIFY( flags.contains( Akonadi::MessageFlags::Seen ) );
+  QVERIFY( flags.contains( Akonadi::MessageFlags::Flagged ) );
+
+  flags = d.readEntryFlags( entries[5] );
+  QVERIFY( flags.isEmpty() );
+  cleanupTestCase();
+}
+
+void MaildirTest::testMaildirFlagsWriting()
+{
+  initTestCase();
+
+  cleanupTestCase();
+}
