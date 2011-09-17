@@ -487,8 +487,8 @@ class MixedMaildirStore::Private : public FileStore::Job::Visitor
     void fillMaildirTreeDetails( const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse );
     void listCollection( FileStore::Job *job, MBoxPtr &mbox, const Collection &collection, Item::List &items );
     void listCollection( FileStore::Job *job, MaildirPtr &md, const Collection &collection, Item::List &items );
-    bool fillItem( MBoxPtr &mbox, bool includeBody, Item &item ) const;
-    bool fillItem( const MaildirPtr &md, bool includeBody, Item &item ) const;
+    bool fillItem( MBoxPtr &mbox, bool includeHeaders, bool includeBody, Item &item ) const;
+    bool fillItem( const MaildirPtr &md, bool includeHeaders, bool includeBody, Item &item ) const;
     void updateContextHashes( const QString &oldPath, const QString &newPath );
 
   public: // visitor interface implementation
@@ -818,7 +818,7 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
   }
 }
 
-bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeBody, Item &item ) const
+bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeHeaders, bool includeBody, Item &item ) const
 {
 //  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Filling item" << item.remoteId() << "from MBox: includeBody=" << includeBody;
   bool ok = false;
@@ -826,44 +826,57 @@ bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeBody, Item
   if ( !ok || !mbox->isValidOffset( offset ) ) {
     return false;
   }
+  
+  // TODO: size and modification timestamp?
 
-  KMime::Message::Ptr messagePtr( new KMime::Message() );
-  if ( includeBody ) {
-    const QByteArray data = mbox->readRawEntry( offset );
-    messagePtr->setContent( KMime::CRLFtoLF( data ) );
-  } else {
-    const QByteArray data = mbox->readEntryHeaders( offset );
-    messagePtr->setHead( KMime::CRLFtoLF( data ) );
+  if ( includeHeaders || includeBody ) {
+    KMime::Message::Ptr messagePtr( new KMime::Message() );
+    if ( includeBody ) {
+      const QByteArray data = mbox->readRawEntry( offset );
+      messagePtr->setContent( KMime::CRLFtoLF( data ) );
+    } else {
+      const QByteArray data = mbox->readEntryHeaders( offset );
+      messagePtr->setHead( KMime::CRLFtoLF( data ) );
+    }
+    messagePtr->parse();
+
+    item.setPayload<KMime::Message::Ptr>( messagePtr );
   }
-  messagePtr->parse();
-
-  item.setPayload<KMime::Message::Ptr>( messagePtr );
   return true;
 }
 
-bool MixedMaildirStore::Private::fillItem( const MaildirPtr &md, bool includeBody, Item &item ) const
+bool MixedMaildirStore::Private::fillItem( const MaildirPtr &md, bool includeHeaders, bool includeBody, Item &item ) const
 {
 /*  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Filling item" << item.remoteId() << "from Maildir: includeBody=" << includeBody;*/
-  KMime::Message::Ptr messagePtr( new KMime::Message() );
 
-  if ( includeBody ) {
-    const QByteArray data = md->readEntry( item.remoteId() );
-    if ( data.isEmpty() ) {
-      return false;
+  const qint64 entrySize = md->maildir().size( item.remoteId() );
+  if ( entrySize < 0 )
+    return false;
+  
+  item.setSize( entrySize );
+  item.setModificationTime( md->maildir().lastModified( item.remoteId() ) );
+
+  if ( includeHeaders || includeBody ) {
+    KMime::Message::Ptr messagePtr( new KMime::Message() );
+    if ( includeBody ) {
+      const QByteArray data = md->readEntry( item.remoteId() );
+      if ( data.isEmpty() ) {
+        return false;
+      }
+
+      messagePtr->setContent( KMime::CRLFtoLF( data ) );
+    } else {
+      const QByteArray data = md->readEntryHeaders( item.remoteId() );
+      if ( data.isEmpty() ) {
+        return false;
+      }
+
+      messagePtr->setHead( KMime::CRLFtoLF( data ) );
     }
+    messagePtr->parse();
 
-    messagePtr->setContent( KMime::CRLFtoLF( data ) );
-  } else {
-    const QByteArray data = md->readEntryHeaders( item.remoteId() );
-    if ( data.isEmpty() ) {
-      return false;
-    }
-
-    messagePtr->setHead( KMime::CRLFtoLF( data ) );
+    item.setPayload<KMime::Message::Ptr>( messagePtr );
   }
-  messagePtr->parse();
-
-  item.setPayload<KMime::Message::Ptr>( messagePtr );
   return true;
 }
 
@@ -1595,6 +1608,8 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
   ItemFetchScope scope = job->fetchScope();
   const bool includeBody = scope.fullPayload() ||
                            scope.payloadParts().contains( MessagePart::Body );
+  const bool includeHeaders = scope.payloadParts().contains( MessagePart::Header ) ||
+                              scope.payloadParts().contains( MessagePart::Envelope );
 
   const bool fetchSingleItem = job->collection().remoteId().isEmpty();
   const Collection collection = fetchSingleItem ? job->item().parentCollection() : job->collection();
@@ -1638,7 +1653,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
     Item::List::iterator it    = items.begin();
     Item::List::iterator endIt = items.end();
     for ( ; it != endIt; ++it ) {
-      if ( !fillItem( findIt.value(), includeBody, *it ) ) {
+      if ( !fillItem( findIt.value(), includeHeaders, includeBody, *it ) ) {
         const QString errorText =
           i18nc( "@info:status", "Error while reading mails from folder %1", collection.name() );
         q->notifyError( FileStore::Job::InvalidJobContext, errorText ); // TODO should be a different error code
@@ -1677,7 +1692,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
     Item::List::iterator it    = items.begin();
     Item::List::iterator endIt = items.end();
     for ( ; it != endIt; ++it ) {
-      if ( !fillItem( mdPtr, includeBody, *it ) ) {
+      if ( !fillItem( mdPtr, includeHeaders, includeBody, *it ) ) {
         const QString errorText =
           i18nc( "@info:status", "Error while reading mails from folder %1", collection.name() );
         q->notifyError( FileStore::Job::InvalidJobContext, errorText ); // TODO should be a different error code
@@ -1933,7 +1948,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
 
     if ( !item.hasPayload<KMime::Message::Ptr>() ||
          !item.loadedPayloadParts().contains( MessagePart::Body ) ) {
-      if ( !fillItem( mbox, true, item ) ) {
+      if ( !fillItem( mbox, true, true, item ) ) {
         errorText = i18nc( "@info:status", "Cannot move email from folder %1",
                             sourceCollection.name() );
         kError() << errorText << "FolderType=" << sourceFolderType;
@@ -2062,7 +2077,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemMoveJob *job )
 /*      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "target is MBox";*/
       if ( !item.hasPayload<KMime::Message::Ptr>() ||
            !item.loadedPayloadParts().contains( MessagePart::Body ) ) {
-        if ( !fillItem( sourceMdPtr, true, item ) ) {
+        if ( !fillItem( sourceMdPtr, true, true, item ) ) {
           errorText = i18nc( "@info:status", "Cannot move email from folder %1",
                               sourceCollection.name() );
           kError() << errorText << "FolderType=" << sourceFolderType;
