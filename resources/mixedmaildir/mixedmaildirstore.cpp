@@ -357,7 +357,7 @@ class MaildirContext
     }
 
     QByteArray readEntryHeaders( const QString &key ) const {
-      return mMaildir.readEntryHeaders( key );
+      return mMaildir.readEntryHeaders( mMaildir.findRealKey(key) );
     }
 
     QByteArray readEntry( const QString &key ) const {
