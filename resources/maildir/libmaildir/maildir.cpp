@@ -609,7 +609,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
 Akonadi::Item::Flags Maildir::readEntryFlags(const QString& key) const
 {
     Akonadi::Item::Flags flags;
-    
+
     const QRegExp rx = *(statusSeparatorRx());
     const int index = key.indexOf( rx );
     if ( index != -1 ) {
@@ -625,7 +625,7 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString& key) const
                 flags << Akonadi::MessageFlags::Flagged;
         }
     }
-    
+
     return flags;
 }
 

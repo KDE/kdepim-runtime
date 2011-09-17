@@ -44,6 +44,8 @@ class MaildirTest : public QObject
     void testMaildirRemoveSubfolder();
     void testMaildirRename();
     void testMaildirMoveTo();
+    void testMaildirFlagsReading();
+    void testMaildirFlagsWriting();
     void cleanupTestCase();
 private:
     void fillDirectory(const QString &name, int limit );
