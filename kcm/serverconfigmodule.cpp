@@ -83,6 +83,7 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
   connect( ui_mysql.password, SIGNAL(textChanged(QString)), SLOT(changed()) );
   connect( ui_mysql.options, SIGNAL(textChanged(QString)), SLOT(changed()) );
 
+  connect( ui_psql.startServer, SIGNAL(toggled(bool)), SLOT(changed()) );
   connect( ui_psql.name, SIGNAL(textChanged(QString)), SLOT(changed()) );
   connect( ui_psql.host, SIGNAL(textChanged(QString)), SLOT(changed()) );
   connect( ui_psql.username, SIGNAL(textChanged(QString)), SLOT(changed()) );
@@ -116,6 +117,7 @@ void ServerConfigModule::load()
 
   // postgresql group
   settings.beginGroup( "QPSQL" );
+  ui_psql.startServer->setChecked( settings.value( "StartServer", true ).toBool() );
   ui_psql.name->setText( settings.value( "Name", "akonadi" ).toString() );
   ui_psql.host->setText( settings.value( "Host", "" ).toString() );
   ui_psql.username->setText( settings.value( "User", "" ).toString() );
@@ -149,6 +151,7 @@ void ServerConfigModule::save()
 
   // postgresql group
   settings.beginGroup( "QPSQL" );
+  settings.setValue( "StartServer", ui_psql.startServer->isChecked() );
   settings.setValue( "Name", ui_psql.name->text() );
   settings.setValue( "Host", ui_psql.host->text() );
   settings.setValue( "User", ui_psql.username->text() );

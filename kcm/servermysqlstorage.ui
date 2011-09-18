@@ -43,7 +43,7 @@
       <item>
        <widget class="KUrlRequester" name="serverPath">
         <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;MySQL server location&lt;/b&gt;&lt;/p&gt;&lt;br&gt;Enter the location of your internal MySQL server or click on the Browse button.</string>
+         <string>&lt;p&gt;&lt;b&gt;MySQL server location&lt;/b&gt;&lt;/p&gt;&lt;br/&gt;Enter the location of your internal MySQL server or click on the Browse button.</string>
         </property>
        </widget>
       </item>
@@ -72,7 +72,7 @@
       <item row="0" column="1">
        <widget class="KLineEdit" name="name">
         <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;Database Name&lt;/b&gt;&lt;/p&gt;&lt;br&gt;Enter the name of your Akonadi database on your external MySQL server.</string>
+         <string>&lt;p&gt;&lt;b&gt;Database Name&lt;/b&gt;&lt;/p&gt;&lt;br/&gt;Enter the name of your Akonadi database on your external MySQL server.</string>
         </property>
        </widget>
       </item>
@@ -89,7 +89,7 @@
       <item row="1" column="1">
        <widget class="KLineEdit" name="host">
         <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;Host&lt;/b&gt;&lt;/p&gt;&lt;br&gt;Enter the hostname or the IP address of the machine hosting your MySQL server.</string>
+         <string>&lt;p&gt;&lt;b&gt;Host&lt;/b&gt;&lt;/p&gt;&lt;br/&gt;Enter the hostname or the IP address of the machine hosting your MySQL server.</string>
         </property>
        </widget>
       </item>
@@ -143,7 +143,7 @@
       <item row="4" column="1">
        <widget class="KLineEdit" name="options">
         <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;External MySQL server options&lt;/b&gt;&lt;/p&gt;&lt;br&gt;If necessary, you may pass options to your MySQL server.</string>
+         <string>&lt;p&gt;&lt;b&gt;External MySQL server options&lt;/b&gt;&lt;/p&gt;&lt;br/&gt;If necessary, you may pass options to your MySQL server.</string>
         </property>
        </widget>
       </item>

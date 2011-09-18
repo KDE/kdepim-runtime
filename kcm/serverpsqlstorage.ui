@@ -11,10 +11,23 @@
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
+    <item row="0" column="0">
+      <widget class="QCheckBox" name="startServer">
+        <property name="whatsThis">
+          <string>Choose whether Akonadi should use an internal or external PostgreSQL server.</string>
+        </property>
+        <property name="text">
+          <string>Use internal PostgreSQL server</string>
+        </property>
+        <property name="checked">
+          <bool>true</bool>
+        </property>
+      </widget>
+    </item>
+   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="title">
       <string>External PostgreSQL Server</string>
@@ -36,7 +49,7 @@
       <item row="0" column="1">
        <widget class="KLineEdit" name="name">
         <property name="whatsThis">
-         <string>&lt;p&gt;&lt;b&gt;Database Name&lt;/b&gt;&lt;/p&gt;&lt;br&gt;Enter the name of your Akonadi database on your external PostgreSQL server.</string>
+         <string>&lt;p&gt;&lt;b&gt;Database Name&lt;/b&gt;&lt;/p&gt;&lt;br/&gt;Enter the name of your Akonadi database on your external PostgreSQL server.</string>
         </property>
        </widget>
       </item>
@@ -53,7 +66,7 @@
       <item row="1" column="1">
        <widget class="KLineEdit" name="host">
         <property name="whatsThis">
-          <string>&lt;p&gt;&lt;b&gt;Host&lt;/b&gt;&lt;/p&gt;&lt;br&gt;Enter the hostname or the IP address of the machine hosting your PostgreSQL server.</string>
+          <string>&lt;p&gt;&lt;b&gt;Host&lt;/b&gt;&lt;/p&gt;&lt;br/&gt;Enter the hostname or the IP address of the machine hosting your PostgreSQL server.</string>
         </property>
        </widget>
       </item>
@@ -117,11 +130,45 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>startServer</tabstop>
   <tabstop>name</tabstop>
   <tabstop>host</tabstop>
   <tabstop>username</tabstop>
   <tabstop>password</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+   <connection>
+     <sender>startServer</sender>
+     <signal>toggled(bool)</signal>
+     <receiver>groupBox_2</receiver>
+     <slot>setEnabled(bool)</slot>
+     <hints>
+       <hint type="sourcelabel">
+         <x>53</x>
+         <y>18</y>
+       </hint>
+       <hint type="destinationlabel">
+         <x>56</x>
+         <y>34</y>
+       </hint>
+     </hints>
+   </connection>
+   <connection>
+     <sender>startServer</sender>
+     <signal>toggled(bool)</signal>
+     <receiver>groupBox</receiver>
+     <slot>setDisabled(bool)</slot>
+     <hints>
+       <hint type="sourcelabel">
+         <x>135</x>
+         <y>20</y>
+       </hint>
+       <hint type="destinationlabel">
+         <x>146</x>
+         <y>110</y>
+       </hint>
+     </hints>
+   </connection>
+ </connections>
 </ui>
