@@ -162,7 +162,7 @@ void POP3Resource::walletOpenedForLoading( bool success )
   if ( !passwordLoaded ) {
     QString queryText = buildLabelForPasswordDialog(
         i18n( "You are asked here because the password could not be loaded from the wallet." ) );
-    showPasswordDialog( queryText, false );
+    showPasswordDialog( queryText );
   }
   else {
     advanceState( Connect );
@@ -178,7 +178,6 @@ void POP3Resource::walletOpenedForSaving( bool success )
       }
       mWallet->setFolder( "pop3" );
       mWallet->writePassword( identifier(), mPassword );
-      Settings::self()->setStorePassword( true );
     }
   }
   else
@@ -190,17 +189,12 @@ void POP3Resource::walletOpenedForSaving( bool success )
 }
 
 
-void POP3Resource::showPasswordDialog( const QString &queryText, bool showRememberPasswordCheckbox )
+void POP3Resource::showPasswordDialog( const QString &queryText )
 {
-  KPasswordDialog::KPasswordDialogFlags flags = KPasswordDialog::ShowUsernameLine;
-  if ( showRememberPasswordCheckbox ) {
-    flags |= KPasswordDialog::ShowKeepPassword;
-  }
   // FIXME: give this a proper parent widget
-  KPasswordDialog dlg( 0, flags );
+  KPasswordDialog dlg( 0, KPasswordDialog::ShowUsernameLine );
   dlg.setUsername( Settings::self()->login() );
   dlg.setPassword( mPassword );
-  dlg.setKeepPassword( Settings::self()->storePassword() );
   dlg.setPrompt( queryText );
   dlg.setCaption( name() );
   dlg.addCommentLine( i18n( "Account:" ), name() );
@@ -212,11 +206,7 @@ void POP3Resource::showPasswordDialog( const QString &queryText, bool showRememb
     mPassword = dlg.password();
     Settings::self()->setLogin( dlg.username() );
     Settings::self()->writeConfig();
-    Settings::self()->setStorePassword( false );
-    if ( dlg.keepPassword() && showRememberPasswordCheckbox ) {
-      // setStorePassword( true ) is called only after the password is written into
-      // the wallet, as otherwise, the resource thinks the password is in the wallet
-      // and loads an empty password from it
+    if ( !dlg.password().isEmpty()  ) {
       mSavePassword = true;
     }
 
@@ -290,8 +280,8 @@ void POP3Resource::doStateStep()
       }
 
       const bool passwordNeeded = Settings::self()->authenticationMethod() != MailTransport::Transport::EnumAuthenticationType::GSSAPI;
-      const bool loadPasswordFromWallet = Settings::self()->storePassword() && !mAskAgain &&
-                                passwordNeeded && !Settings::self()->login().isEmpty() && mPassword.isEmpty();
+      const bool loadPasswordFromWallet = !mAskAgain && passwordNeeded && !Settings::self()->login().isEmpty() &&
+                                          mPassword.isEmpty();
       if ( loadPasswordFromWallet ) {
         mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winIdForDialogs(),
                                       Wallet::Asynchronous );
@@ -306,11 +296,10 @@ void POP3Resource::doStateStep()
           detail = i18n( "You are asked here because the previous login was not successful." );
         else if ( Settings::self()->login().isEmpty() )
           detail = i18n( "You are asked here because the username you supplied is empty." );
-        else if ( !Settings::self()->storePassword() || !mWallet)
+        else if ( !mWallet )
           detail = i18n( "You are asked here because you choose to not store the password in the wallet." );
 
-        const bool showKeepPasswordCheckbox = mWallet != 0;
-        showPasswordDialog( buildLabelForPasswordDialog( detail ), showKeepPasswordCheckbox );
+        showPasswordDialog( buildLabelForPasswordDialog( detail ) );
       }
       else {
         // No password needed or using previous password, go on with Connect
@@ -526,7 +515,7 @@ void POP3Resource::loginJobResult( KJob *job )
 {
   if ( job->error() ) {
     kDebug() << job->error() << job->errorText();
-    if ( job->error() == KIO::ERR_COULD_NOT_LOGIN && !Settings::self()->storePassword() )
+    if ( job->error() == KIO::ERR_COULD_NOT_LOGIN )
       mAskAgain = true;
     cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
                 '\n' + job->errorString() );

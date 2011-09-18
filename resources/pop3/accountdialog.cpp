@@ -281,7 +281,6 @@ void AccountDialog::walletOpenedForSaving( bool success )
       }
 
       mParentResource->clearCachedPassword();
-      Settings::self()->setStorePassword( !passwordEdit->text().isEmpty() );
     }
     else {
       kWarning() << "Wallet not open.";
@@ -616,17 +615,11 @@ void AccountDialog::saveSettings()
         connect( mWallet, SIGNAL(walletOpened(bool)),
                 this, SLOT(walletOpenedForSaving(bool)) );
       } else {
-        Settings::self()->setStorePassword( false );
         accept();
       }
     }
   }
   else {
-    // Neither save nor delete the password. However we need to call
-    // setStorePassword() here, to make we know that the password is in the
-    // wallet.
-    Settings::self()->setStorePassword( !passwordEdit->text().isEmpty() );
-
     accept();
   }
 }
