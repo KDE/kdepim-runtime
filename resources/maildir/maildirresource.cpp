@@ -204,13 +204,13 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       return;
     }
     const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
-    
+
     QString path = dir.path();
     m_fsWatcher->removeDir( path + QLatin1Literal("/new") );
     m_fsWatcher->removeDir( path + QLatin1Literal("/cur") );
-      
+
     const QString rid = dir.addEntry( mail->encodedContent() );
- 
+
     m_fsWatcher->addDir( path + QLatin1Literal("/new") );
     m_fsWatcher->addDir( path + QLatin1Literal("/cur") );
 
@@ -236,7 +236,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         flagsChanged = true;
       }
     }
-    
+
     if ( mSettings->readOnly() || ( !payloadChanged && !flagsChanged ) ) {
       changeProcessed();
       return;
@@ -248,45 +248,37 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         cancelTask( errMsg );
         return;
     }
-    
-    if ( flagsChanged ) {
-      QString path = dir.path();
+
+    Item newItem( item );
+
+    if ( flagsChanged || payloadChanged ) {
+      const QString path = dir.path();
       m_fsWatcher->removeDir( path + QLatin1Literal("/new") );
       m_fsWatcher->removeDir( path + QLatin1Literal("/cur") );
-      
-      QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
-      
+
+      if ( flagsChanged ) {
+        const QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
+        newItem.setRemoteId( newKey );
+      }
+
+      if ( payloadChanged ) {
+        // we can only deal with mail
+        if ( !item.hasPayload<KMime::Message::Ptr>() ) {
+            cancelTask( i18n("Error: Unsupported type.") );
+            return;
+        }
+
+        const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
+        dir.writeEntry( newItem.remoteId(), mail->encodedContent() );
+      }
+
       m_fsWatcher->addDir( path + QLatin1Literal("/new") );
       m_fsWatcher->addDir( path + QLatin1Literal("/cur") );
-      
-      Item i( item );
-      i.setRemoteId( newKey );
-      changeCommitted( i );
-      return;
-    }
-    
-    if ( !payloadChanged ) {
+
+      changeCommitted( newItem );
+    } else {
       emit changeProcessed();
-      return;
     }
-    
-    // we can only deal with mail
-    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-        cancelTask( i18n("Error: Unsupported type.") );
-        return;
-    }
-    const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
-    
-    QString path = dir.path();
-    m_fsWatcher->removeDir( path + QLatin1Literal("/new") );
-    m_fsWatcher->removeDir( path + QLatin1Literal("/cur") );
-    
-    dir.writeEntry( item.remoteId(), mail->encodedContent() );
-    
-    m_fsWatcher->addDir( path + QLatin1Literal("/new") );
-    m_fsWatcher->addDir( path + QLatin1Literal("/cur") );
-    
-    changeCommitted( item );
 }
 
 void MaildirResource::itemMoved( const Item &item, const Collection &source, const Collection &destination )
@@ -322,7 +314,7 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   m_fsWatcher->removeDir( destDirPath + QLatin1Literal("/cur") );
 
   const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
-  
+
   m_fsWatcher->addDir( sourceDirPath + QLatin1Literal("/new") );
   m_fsWatcher->addDir( sourceDirPath + QLatin1Literal("/cur") );
   m_fsWatcher->addDir( destDirPath + QLatin1Literal("/new") );
