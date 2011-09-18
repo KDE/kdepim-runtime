@@ -237,11 +237,16 @@ void AccountDialog::loadSettings()
              this, SLOT(walletOpenedForLoading(bool)) );
   }
   passwordEdit->setEnabled( false );
+  passwordLabel->setEnabled( false );
 }
 
 void AccountDialog::walletOpenedForLoading( bool success )
 {
   if ( success ) {
+    if ( mWallet->isOpen() ) {
+      passwordEdit->setEnabled( true );
+      passwordLabel->setEnabled( true );
+    }
     if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
       QString password;
       mWallet->setFolder( "pop3" );
@@ -256,8 +261,6 @@ void AccountDialog::walletOpenedForLoading( bool success )
   else {
     kWarning() << "Failed to open wallet for loading the password.";
   }
-
-  passwordEdit->setEnabled( true );
 }
 
 void AccountDialog::walletOpenedForSaving( bool success )
