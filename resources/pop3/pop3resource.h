@@ -130,7 +130,7 @@ class POP3Resource : public Akonadi::ResourceBase,
     int idOfOldestMessage( QList<int> &idList ) const;
     void startMailCheck();
     void updateIntervalTimer();
-    void showPasswordDialog( const QString &queryText, bool showRememberPasswordCheckbox );
+    void showPasswordDialog( const QString &queryText );
     QString buildLabelForPasswordDialog( const QString &detailedError ) const;
     void finish();
 

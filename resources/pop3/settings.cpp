@@ -74,9 +74,7 @@ void Settings::setPassword( const QString& password )
     if( !wallet->hasFolder( "pop3" ) )
       wallet->createFolder( "pop3" );
     wallet->setFolder( "pop3" );
-    if ( wallet->writePassword( mResourceId, password ) ==  0 ) {
-      setStorePassword( true );
-    }
+    wallet->writePassword( mResourceId, password );
   } else {
     kWarning() << "Unable to open wallet!";
   }
