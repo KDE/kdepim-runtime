@@ -135,7 +135,7 @@ ImapResource::ImapResource( const QString &id )
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
   changeRecorder()->itemFetchScope().setFetchModificationTime( false );
-  changeRecorder()->fetchChangedOnly( true );
+ //(Andras) disable now, as tokoe reported problems with it and the mail filter: changeRecorder()->fetchChangedOnly( true );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
   setItemTransactionMode( ItemSync::MultipleTransactions ); // we can recover from incomplete syncs, so we can use a faster mode
