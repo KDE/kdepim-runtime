@@ -770,8 +770,6 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
     iface->setUseSSL( true );
   if ( config.readEntry( "use-tls", true ) )
     iface->setUseTLS( true );
-  if ( config.readEntry( "store-passwd", false ) )
-    iface->setStorePassword( true );
   if ( config.readEntry( "pipelining", false ) )
     iface->setPipelining( true );
   if ( config.readEntry( "leave-on-server", true ) ) {
