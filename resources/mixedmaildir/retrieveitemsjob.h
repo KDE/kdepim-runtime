@@ -44,6 +44,8 @@ class RetrieveItemsJob : public Akonadi::Job
     ~RetrieveItemsJob();
 
     Akonadi::Collection collection() const;
+
+    Akonadi::Item::List availableItems() const;
     
     Akonadi::Item::List itemsMarkedAsDeleted() const;
     

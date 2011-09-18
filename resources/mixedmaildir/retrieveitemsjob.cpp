@@ -72,6 +72,7 @@ class RetrieveItemsJob::Private
     
     QQueue<Item> mNewItems;
     QQueue<Item> mChangedItems;
+    Item::List mAvailableItems;
     Item::List mItemsMarkedAsDeleted;
     
     qint64 mHighestModTime;
@@ -128,8 +129,8 @@ void RetrieveItemsJob::Private::storeListResult( KJob *job )
   
   const qint64 collectionTimestamp = mCollection.remoteRevision().toLongLong();
     
-  const Item::List availableItems = storeList->items();
-  Q_FOREACH( const Item &item, availableItems ) {
+  const Item::List storedItems = storeList->items();
+  Q_FOREACH( const Item &item, storedItems ) {
     // messages marked as deleted have been deleted from mbox files but never got purged
     Akonadi::MessageStatus status;
     status.setStatusFromFlags( item.flags() );
@@ -137,6 +138,8 @@ void RetrieveItemsJob::Private::storeListResult( KJob *job )
       mItemsMarkedAsDeleted << item;
       continue;
     }
+    
+    mAvailableItems << item;
     
     const QHash<QString, Item>::iterator it = mServerItemsByRemoteId.find( item.remoteId() );
     if ( it == mServerItemsByRemoteId.end() ) {
@@ -271,6 +274,11 @@ RetrieveItemsJob::~RetrieveItemsJob()
 Collection RetrieveItemsJob::collection() const
 {
   return d->mCollection;
+}
+
+Item::List RetrieveItemsJob::availableItems() const
+{
+  return d->mAvailableItems;
 }
 
 Item::List RetrieveItemsJob::itemsMarkedAsDeleted() const
