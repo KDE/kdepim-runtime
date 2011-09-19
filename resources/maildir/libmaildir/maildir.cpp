@@ -109,13 +109,16 @@ public:
     QString findRealKey( const QString& key ) const
     {
         QString realKey = path + QString::fromLatin1("/new/") + key;
-        QFile f( realKey );
-        if ( !f.exists() )
+        
+        QFile f( realKey );        
+        if ( !f.exists() ) { //not in "new", search in "cur"
             realKey = path + QString::fromLatin1("/cur/") + key;
-        QFile f2( realKey );
-        if ( !f2.exists() ) {
-            realKey.clear();
-        } 
+            QFile f2( realKey );
+            if ( !f2.exists() ) {
+                realKey.clear(); //not in "cur" either
+            } 
+        }
+        
         return realKey;
     }
 
