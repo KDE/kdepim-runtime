@@ -102,6 +102,7 @@ MaildirResource::MaildirResource( const QString &id )
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
   changeRecorder()->itemFetchScope().setFetchModificationTime( false );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
+  changeRecorder()->fetchChangedOnly( true );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
 
@@ -225,19 +226,24 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
       cancelTask( i18n("Unusable configuration.") );
       return;
     }
+    
 
-    bool payloadChanged = false;
+    bool bodyChanged = false;
     bool flagsChanged = false;
+    bool headChanged = false;
     Q_FOREACH( const QByteArray &part, parts )  {
-      if( part.startsWith("PLD:") ) {
-        payloadChanged = true;
+      if( part.startsWith("PLD:RFC822") ) {
+        bodyChanged = true;
+      }
+      if( part.startsWith("PLD:HEAD") ) {
+        headChanged = true;
       }
       if ( part.contains( "FLAGS" ) ) {
         flagsChanged = true;
       }
     }
 
-    if ( mSettings->readOnly() || ( !payloadChanged && !flagsChanged ) ) {
+    if ( mSettings->readOnly() || ( !bodyChanged && !flagsChanged && !headChanged ) ) {
       changeProcessed();
       return;
     }
@@ -251,25 +257,33 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
 
     Item newItem( item );
 
-    if ( flagsChanged || payloadChanged ) {
+    if ( flagsChanged || bodyChanged || headChanged ) { //something has changed that we can deal with
       const QString path = dir.path();
       m_fsWatcher->removeDir( path + QLatin1Literal("/new") );
       m_fsWatcher->removeDir( path + QLatin1Literal("/cur") );
 
-      if ( flagsChanged ) {
+      if ( flagsChanged ) { //flags changed, store in file name and get back the new filename (id)
         const QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
         newItem.setRemoteId( newKey );
       }
 
-      if ( payloadChanged ) {
+      if ( bodyChanged || headChanged ) { //head or body changed
         // we can only deal with mail
-        if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-            cancelTask( i18n("Error: Unsupported type.") );
-            return;
+        if ( item.hasPayload<KMime::Message::Ptr>() ) {
+          const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
+          QByteArray data = mail->encodedContent();
+          if ( headChanged && !bodyChanged ) { 
+            //only the head has changed, get the current version of the mail
+            //replace the head and store the new mail in the file
+            QByteArray currentData = dir.readEntry( newItem.remoteId() );
+            QByteArray newHead = mail->head();
+            mail->setContent( currentData );
+            mail->setHead( newHead );
+            mail->parse();
+            data = mail->encodedContent();
+          }
+          dir.writeEntry( newItem.remoteId(), data );
         }
-
-        const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
-        dir.writeEntry( newItem.remoteId(), mail->encodedContent() );
       }
 
       m_fsWatcher->addDir( path + QLatin1Literal("/new") );
