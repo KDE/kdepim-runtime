@@ -89,6 +89,7 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
   connect( ui_psql.username, SIGNAL(textChanged(QString)), SLOT(changed()) );
   connect( ui_psql.password, SIGNAL(textChanged(QString)), SLOT(changed()) );
   connect( ui_psql.port, SIGNAL(textChanged(QString)), SLOT(changed()) );
+  connect( ui_psql.startServer, SIGNAL(toggled(bool)), ui_psql.messagewidget, SLOT(setHidden(bool)));
 
   connect( ui.startStopButton, SIGNAL(clicked()), SLOT(startStopClicked()) );
   connect( ui.restartButton, SIGNAL(clicked()), SLOT(restartClicked()) );
@@ -123,6 +124,13 @@ void ServerConfigModule::load()
   ui_psql.username->setText( settings.value( "User", "" ).toString() );
   ui_psql.password->setText( settings.value( "Password", "" ).toString() );
   ui_psql.port->setText( settings.value( "Port", "5432" ).toString() );
+  ui_psql.messagewidget->setVisible( !ui_psql.startServer->isChecked() );
+  ui_psql.messagewidget->setCloseButtonVisible( false );
+  ui_psql.messagewidget->setWordWrap( true );
+  ui_psql.messagewidget->setMessageType( KMessageWidget::Information );
+  ui_psql.messagewidget->setText(i18nc( "@info: special setting to configure",
+                                 "Make sure you have %1 in your server postgres.conf "
+                                 "file before starting Akonadi.", QLatin1String( "<b>standard_conforming_strings = on</b>" ) ) );
   settings.endGroup();
 
   // selected driver
