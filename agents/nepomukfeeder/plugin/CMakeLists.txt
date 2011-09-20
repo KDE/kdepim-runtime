@@ -15,14 +15,3 @@ target_link_libraries(nepomukfeederpluginlib
 install(TARGETS nepomukfeederpluginlib
   DESTINATION ${LIB_INSTALL_DIR})
 
-install(FILES
-  nepomukfeederplugin.h
-  nepomukfeederutils.h
-  DESTINATION ${INCLUDE_INSTALL_DIR}/akonadi
-  COMPONENT Devel)
-
-
-
-
-
-
