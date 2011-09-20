@@ -218,7 +218,7 @@ qreal KDEIntegration::mm2px(qreal mm)
   dd.cb = sizeof(DISPLAY_DEVICE);
   EnumDisplayDevices(moninfo.szDevice, 0, &dd, 0);
 
-  const QString deviceID = QString::fromUtf16(dd.DeviceID);
+  const QString deviceID = QString::fromUtf16( ( const unsigned short *)dd.DeviceID);
 
   QRegExp rx("^MONITOR\\\\(\\w+)\\\\");
 
