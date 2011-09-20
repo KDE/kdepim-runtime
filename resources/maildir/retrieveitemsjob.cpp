@@ -57,8 +57,10 @@ void RetrieveItemsJob::localListDone ( KJob* job )
 
   const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>( job )->items();
   m_localItems.reserve( items.size() );
-  foreach ( const Akonadi::Item &item, items )
-    m_localItems.insert( item.remoteId(), item );
+  foreach ( const Akonadi::Item &item, items ) {
+    if ( !item.remoteId().isEmpty() )
+      m_localItems.insert( item.remoteId(), item );
+  }
 
   m_listingPath = m_maildir.path() + QLatin1String( "/new/" );
   m_entryList = m_maildir.listNew();
