@@ -18,27 +18,22 @@
 */
 
 
-#ifndef NEPOMUKFEEDERUTILS_H
-#define NEPOMUKFEEDERUTILS_H
+#ifndef NEPOMUKNOTEFEEDER_H
+#define NEPOMUKNOTEFEEDER_H
 
-namespace Nepomuk
-{
-  class SimpleResource;
-  class SimpleResourceGraph;
-}
-class QString;
-class QStringList;
+#include <nepomukfeederplugin.h>
 
-/**
- * A namespace for various helper functions
- */
-namespace NepomukFeederUtils
+namespace Akonadi {
+
+class NepomukNoteFeeder: public NepomukFeederPlugin
 {
-  
-    /** Adds tags to @p resource based on the given string list*/
-    void tagsFromCategories(const QStringList& categories, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
-    
-    void setIcon(const QString& iconName, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
+  Q_OBJECT
+  Q_INTERFACES( Akonadi::NepomukFeederPlugin )
+public:
+  NepomukNoteFeeder( QObject *parent, const QVariantList & ): NepomukFeederPlugin( parent ){};
+  virtual void updateItem( const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
+};
+
 }
 
-#endif // NEPOMUKFEEDERUTILS_H
+#endif // NEPOMUKNOTEFEEDER_H

@@ -1,0 +1,7 @@
+[Desktop Entry]
+MimeType=text/x-vnd.akonadi.note;
+Type=Service
+X-KDE-ServiceTypes=AkonadiNepomukFeeder
+X-KDE-Library=akonadi_nepomuk_note_feeder
+X-KDE-ClassName=Akonadi::NepomukNoteFeeder
+Name=Nepomuk Note Feeder

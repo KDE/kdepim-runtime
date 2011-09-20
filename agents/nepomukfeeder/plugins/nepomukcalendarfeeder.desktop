@@ -1,0 +1,7 @@
+[Desktop Entry]
+MimeType=application/x-vnd.akonadi.calendar.event;application/x-vnd.akonadi.calendar.todo;application/x-vnd.akonadi.calendar.journal;application/x-vnd.akonadi.calendar.freebusy;
+Type=Service
+X-KDE-ServiceTypes=AkonadiNepomukFeeder
+X-KDE-Library=akonadi_nepomuk_calendar_feeder
+X-KDE-ClassName=Akonadi::NepomukCalendarFeeder
+Name=Nepomuk Calendar Feeder

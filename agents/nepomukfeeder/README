@@ -1,0 +1,1 @@
+The plugin code actually belongs to kdepimlibs, as soon as the dms-copy mess is sorted out (nepomuk repository on which we can depend in kdepimlibs)

@@ -1,0 +1,7 @@
+[Desktop Entry]
+MimeType=text/directory;application/x-vnd.kde.contactgroup;
+Type=Service
+X-KDE-ServiceTypes=AkonadiNepomukFeeder
+X-KDE-Library=akonadi_nepomuk_contact_feeder
+X-KDE-ClassName=Akonadi::NepomukContactFeeder
+Name=Nepomuk Contact Feeder
