@@ -88,7 +88,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->itemFetchScope().setCacheOnly( true );
 
-  disableIdleDetection( true ); //Could be removed if not needed anymore
+  disableIdleDetection( false ); //Could be removed if not needed anymore
 
   mNepomukStartupTimeout.setInterval( 300 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
