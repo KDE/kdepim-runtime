@@ -285,8 +285,8 @@ void FeederQueue::setItemFetchScope(ItemFetchScope scope)
 ItemQueue::ItemQueue(int batchSize, QObject* parent)
 : QObject(parent),
   mPendingRemoveDataJobs( 0 ),
-  block( false),
-  mBatchSize(batchSize)
+  mBatchSize(batchSize), 
+  block( false)
 {
 
 }
