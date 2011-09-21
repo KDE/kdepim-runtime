@@ -134,7 +134,8 @@ void KRssLocalResource::retrieveCollections()
     top.setRemoteId( path );
     top.setName( titleOpml );
     top.setContentMimeTypes( QStringList( Collection::mimeType() ) );
-    
+
+    top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( titleOpml );
     //it customizes the root collection with an opml icon
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
     //TODO: modify CMakeLists.txt so that it installs the icon
@@ -171,6 +172,7 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
 	    Collection folder;
 	    folder.setParent( parent );
 	    folder.setName( parsedFolder->title() );
+            folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedFolder->title() );
 	    folder.setRemoteId( Settings::self()->path() + parsedFolder->title() );
 	    folder.setContentMimeTypes( QStringList( Collection::mimeType() ) );
 	    list = buildCollectionTree( parsedFolder->children(), list, folder );
@@ -212,6 +214,7 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
 
     if ( fc.htmlUrl().isEmpty() ) {
         fc.setName( feed->title() );
+        fc.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( feed->title() );
         fc.setDescription( feed->description() );
         fc.setHtmlUrl( feed->link() );
         Akonadi::CollectionModifyJob* job = new Akonadi::CollectionModifyJob( fc );
