@@ -36,11 +36,12 @@
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
+#include <Akonadi/AttributeFactory>
+
 #include <krss/rssitem.h>
 #include <krssresource/krssresource_export.h>
-#include <krss/resourcemanager.h>
 #include <krss/feedcollection.h>
-
+#include <krss/feedpropertiescollectionattribute.h>
 
 using namespace Akonadi;
 using namespace KRssResource;
@@ -56,8 +57,8 @@ KRssLocalResource::KRssLocalResource( const QString &id )
   //policy.setCacheTimeout( CACHE_TIMEOUT );
   //policy.setIntervalCheckTime( INTERVAL_CHECK_TIME );
 
-  KRss::ResourceManager::registerAttributes();
-  
+  AttributeFactory::registerAttribute<KRss::FeedPropertiesCollectionAttribute>();
+
   policy.setInheritFromParent( false );
   policy.setSyncOnDemand( false );
   policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
@@ -208,8 +209,8 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
         return;
     }
     KRss::FeedCollection fc( c );
-    if ( fc.title().isEmpty() ) {
-        fc.setTitle( feed->title() );
+
+    if ( fc.htmlUrl().isEmpty() ) {
         fc.setName( feed->title() );
         fc.setDescription( feed->description() );
         fc.setHtmlUrl( feed->link() );
