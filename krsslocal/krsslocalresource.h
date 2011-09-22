@@ -25,6 +25,7 @@
 #include <QTimer>
 #include <QHash>
 #include "opmlparser.h"
+#include "rssitemsync.h"
 
 class KRssLocalResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
@@ -52,6 +53,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
 			Syndication::ErrorCode status );
     void fetchCollections();
     void fetchCollectionsFinished( KJob *job );
+    void slotItemSyncDone( KJob *job );
 
 			
   protected:
@@ -69,6 +71,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     static const int CacheTimeout = -1, IntervalCheckTime = 5; 
     static const int WriteBackTimeout = 30000; // in milliseconds
     QString titleOpml;
+    RssItemSync *m_syncer;
 };
 
 #endif

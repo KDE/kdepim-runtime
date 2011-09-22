@@ -48,7 +48,7 @@ using namespace KRssResource;
 using namespace boost;
 
 KRssLocalResource::KRssLocalResource( const QString &id )
-  : ResourceBase( id )
+  : ResourceBase( id ), m_syncer( 0 )
 {
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
@@ -89,9 +89,6 @@ QString KRssLocalResource::mimeType()
   return QLatin1String("application/rss+xml");
 }
 
-// this method is called when Akonadi wants to have all the
-// collections your resource provides.
-// Be sure to set the remote ID and the content MIME types
 void KRssLocalResource::retrieveCollections()
 {
     
@@ -184,12 +181,6 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
 
 void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
 {   
-// TODO: this method is called when Akonadi wants to know about all the
-// items in the given collection. You can but don't have to provide all the
-// data for each item, remote ID and MIME type are enough at this stage.
-// Depending on how your resource accesses the data, there are several
-// different ways to tell Akonadi when you are done.
-
     Syndication::Loader * const loader = Syndication::Loader::create();
     connect( loader, SIGNAL( loadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ),
             this, SLOT( slotLoadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ) );
@@ -229,18 +220,28 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
         items << item;
     }
 
-    itemsRetrieved( items );
+    //--- a replacement of itemsRetrieved that uses a custom ItemSync---
+    if (!m_syncer) {
+	m_syncer = new RssItemSync( fc );
+	connect( m_syncer, SIGNAL(result(KJob*)), this, SLOT(slotItemSyncDone(KJob*)) );
+    }
+    m_syncer->setFullSyncItems( items );
+    //------------------------------------------------------------------
  
+}
+
+void KRssLocalResource::slotItemSyncDone( KJob *job ) {
+  m_syncer = 0;
+  if ( job->error() && job->error() != Job::UserCanceled ) {
+    emit error( job->errorString() );
+  }
+  itemsRetrievalDone();
 }
 
 bool KRssLocalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
-    
-  // TODO: this method is called when Akonadi wants more data for a given item.
-  // You can only provide the parts that have been requested but you are allowed
-  // to provide all in one go
-
+ 
   itemRetrieved( item );
   return true;
 }
