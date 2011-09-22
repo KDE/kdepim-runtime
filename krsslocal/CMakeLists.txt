@@ -55,9 +55,9 @@ set( krsslocalresource_SRCS
 install( FILES krsslocalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 kde4_add_kcfg_files(krsslocalresource_SRCS settings.kcfgc)
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/krsslocalresource.kcfg org.kde.Akonadi.krsslocal.Settings)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/krsslocalresource.kcfg org.kde.Akonadi.RssLocal.Settings)
 qt4_add_dbus_adaptor(krsslocalresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.krsslocal.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.RssLocal.Settings.xml settings.h Settings
 )
 
 kde4_add_executable(akonadi_krsslocal_resource RUN_UNINSTALLED ${krsslocalresource_SRCS})
