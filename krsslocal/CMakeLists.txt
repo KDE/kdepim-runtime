@@ -49,6 +49,7 @@ set( krsslocalresource_SRCS
   krsslocalresource.cpp
   util.cpp
   opmlparser.cpp
+  rssitemsync.cpp
 )
 
 install( FILES krsslocalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
