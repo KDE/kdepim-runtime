@@ -1,5 +1,9 @@
 [Desktop Entry]
 Name=Akonadi Nepomuk Feeder
+Name[pt]=Fontes do Nepomuk para o Akonadi
+Name[sv]=Akonadi-inmatning till Nepomuk
+Name[uk]=Передавач даних Akonadi Nepomuk
+Name[x-test]=xxAkonadi Nepomuk Feederxx
 
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_feeder

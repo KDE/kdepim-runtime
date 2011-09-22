@@ -2,3 +2,7 @@
 Type=ServiceType
 X-KDE-ServiceType=AkonadiNepomukFeeder
 Name=Akonadi NepomukFeeder Plugin
+Name[pt]='Plugin' de Fontes do Nepomuk para o Akonadi
+Name[sv]=Akonadi insticksprogram för inmatning till Nepomuk
+Name[uk]=Додаток передавання даних Akonadi Nepomuk
+Name[x-test]=xxAkonadi NepomukFeeder Pluginxx
