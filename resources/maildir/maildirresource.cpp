@@ -355,10 +355,16 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
     Maildir dir = maildirForCollection( item.parentCollection() );
     // !dir.isValid() means that our parent folder has been deleted already,
     // so we don't care at all as that one will be recursive anyway
+    QString dirPath = dir.path();
+    m_fsWatcher->removeDir( dirPath + QLatin1Literal("/new") );
+    m_fsWatcher->removeDir( dirPath + QLatin1Literal("/cur") );
     if ( dir.isValid() && !dir.removeEntry( item.remoteId() ) ) {
       emit error( i18n("Failed to delete message: %1", item.remoteId()) );
     }
+    m_fsWatcher->addDir( dirPath + QLatin1Literal("/new") );
+    m_fsWatcher->addDir( dirPath + QLatin1Literal("/cur") );
   }
+  qDebug() << "Item removed";
   changeProcessed();
 }
 
