@@ -225,7 +225,7 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
 	m_syncer = new RssItemSync( fc );
 	connect( m_syncer, SIGNAL(result(KJob*)), this, SLOT(slotItemSyncDone(KJob*)) );
     }
-    m_syncer->setFullSyncItems( items );
+    m_syncer->setIncrementalSyncItems( items, Item::List() );
     //------------------------------------------------------------------
  
 }
