@@ -58,9 +58,15 @@ bool RssItemSync::updateItem( const Akonadi::Item &storedItem, Akonadi::Item &ne
 
     if ( !newRssItem.guidIsHash() && storedHash != newHash ) {
         kDebug() << "The article's content is updated:" << newItem.remoteId();
-        // dont overwrite the existing flags
-        // and set 'New'
-        newItem.setFlags( storedItem.flags() );
+
+	Akonadi::Item::Flags flags = storedItem.flags();
+	if (storedItem.hasFlag( KRss::RssItem::flagRead() ) && 
+	      !storedItem.hasFlag( KRss::RssItem::flagUpdated() )) {
+	    // case when an item was marked as read by a client 
+	    // and the content changes on the server
+	    flags.insert( KRss::RssItem::flagUpdated() );
+	}
+	newItem.setFlags( flags );
         return true;
     }
 
