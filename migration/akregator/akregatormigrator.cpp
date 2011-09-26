@@ -34,6 +34,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
+#include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
 #include <akonadi/resourcesynchronizationjob.h>
 
@@ -191,15 +192,30 @@ void AkregatorMigrator::rootCollectionsReceived( KJob* j )
   }
 
   const Collection::List list = job->collections();
-  foreach( const Collection &collection, list ) {
-    if ( collection.resource() == m_resourceIdentifier ) {
-      m_resourceCollection = collection;
-      emit message( Info, i18n( "New resource is rooted at Collection(%1)", collection.id() ) );
-      startMigration();
-      return;
-    }
+  foreach( const Collection& i, list ) {
+    if ( i.resource() != m_resourceIdentifier )
+      continue;
+
+    FeedCollection fc( i );
+    fc.setTitle( i18n("Local Feeds") );
+    emit message( Info, i18n( "New resource is rooted at Collection(%1)", fc.id() ) );
+    CollectionModifyJob* mjob = new CollectionModifyJob( fc, this );
+    connect( mjob, SIGNAL(result(KJob*)), this, SLOT(rootCollectionRenamed(KJob*)) );
+    mjob->start();
+    return;
   }
   emit message( Error, i18n( "Could not find root collection for resource \"%1\"" ,m_resourceIdentifier ) );
+}
+
+void AkregatorMigrator::rootCollectionRenamed( KJob* j ) {
+  if ( j->error() ) {
+    emit message( Error, i18nc( "A job to rename the root collection failed. %1 is the error string.", "Could not rename root collection: %1" , j->errorString() ) );
+    return;
+  }
+
+  CollectionModifyJob* job = qobject_cast<CollectionModifyJob*>( j );
+  m_resourceCollection = job->collection();
+  startMigration();
 }
 
 void AkregatorMigrator::startMigration()

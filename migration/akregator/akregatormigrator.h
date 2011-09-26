@@ -49,6 +49,7 @@ private slots:
   void rootCollectionsReceived( KJob* );
   void feedCollectionsReceived( KJob* job );
   void feedCollectionsReceived( const Akonadi::Collection::List& );
+  void rootCollectionRenamed( KJob* );
   void syncDone(KJob *job);
   void itemImportDone( KJob* );
 
