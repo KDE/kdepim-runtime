@@ -172,7 +172,7 @@ Akonadi::Collection ParsedFeed::toAkonadiCollection() const
     feed.setHtmlUrl( d->htmlUrl );
     feed.setDescription( d->description );
     feed.setFeedType( d->type );
-    feed.setName( title() );
+    feed.setName( i18n("T_%1", title()) );
     feed.setContentMimeTypes( QStringList( QLatin1String("application/rss+xml") ) );
     return feed;
 }

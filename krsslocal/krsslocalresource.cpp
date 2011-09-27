@@ -127,7 +127,7 @@ void KRssLocalResource::retrieveCollections()
     Collection top;
     top.setParent( Collection::root() );
     top.setRemoteId( path );
-    top.setName( titleOpml );
+    top.setName( i18n("Local Feeds") );
     top.setContentMimeTypes( QStringList( Collection::mimeType() ) );
 
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( titleOpml );
@@ -152,21 +152,21 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
     foreach(const shared_ptr<const ParsedNode> parsedNode, listOfNodes) {
       if (!parsedNode->isFolder()) {
 	    Collection c = (static_pointer_cast<const ParsedFeed>(parsedNode))->toAkonadiCollection();
+	    c.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedNode->title() );
 	    c.setContentMimeTypes( c.contentMimeTypes() );
 	    c.setParent( parent );
-
 	    c.setCachePolicy( policy );
 	    
 	    //it customizes the collection with an rss icon
 	    c.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-rss+xml") );
-	    
+	        
 	    list << c;
 	}
 	else {
 	    shared_ptr<const ParsedFolder> parsedFolder = static_pointer_cast<const ParsedFolder>(parsedNode);
 	    Collection folder;
 	    folder.setParent( parent );
-	    folder.setName( parsedFolder->title() );
+	    folder.setName( i18n("T_%1", parsedFolder->title()) );
             folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedFolder->title() );
 	    folder.setRemoteId( Settings::self()->path() + parsedFolder->title() );
 	    folder.setContentMimeTypes( QStringList( Collection::mimeType() ) );
