@@ -46,7 +46,7 @@ static inline int calcHash( const QString& str )
     return qChecksum( array.constData(), array.size() );
 }
 
-KRss::RssItem KRssResource::Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem)
+KRss::RssItem Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem)
 {
     KRss::RssItem rssItem;
     rssItem.setHeadersLoaded( true );
@@ -133,16 +133,16 @@ KRss::RssItem KRssResource::Util::fromSyndicationItem(const Syndication::ItemPtr
     return rssItem;
 }
 
-QList< boost::shared_ptr< const KRssResource::ParsedNode > > KRssResource::Util::parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent )
+QList< boost::shared_ptr< const ParsedNode > > Util::parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent )
 {
-    QList<boost::shared_ptr< const KRssResource::ParsedNode > > nodesList;
+    QList<boost::shared_ptr< const ParsedNode > > nodesList;
     
     Q_FOREACH( const Akonadi::Collection& collection , collections ) {
 	if (collection.parentCollection() == parent) {
-	    boost::shared_ptr< KRssResource::ParsedNode > node;
+	    boost::shared_ptr< ParsedNode > node;
 	    const KRss::FeedCollection feedCollection = collection;
 	    if (feedCollection.feedType() == QLatin1String( "" )) { // it's a folder. correct test???
-		QList< boost::shared_ptr< const KRssResource::ParsedNode > > children = parsedDescendants( collections, collection );
+		QList< boost::shared_ptr< const ParsedNode > > children = parsedDescendants( collections, collection );
 		if (parent == Akonadi::Collection::root()) {
 		    return children;
 		}
@@ -167,7 +167,7 @@ QList< boost::shared_ptr< const KRssResource::ParsedNode > > KRssResource::Util:
 
 
 /*
-QString KRssResource::generateCollectionName( const Akonadi::Collection& collection )
+QString generateCollectionName( const Akonadi::Collection& collection )
 {
     if ( static_cast<KRss::FeedCollection>( collection ).title().isEmpty() ) {
         return collection.remoteId();

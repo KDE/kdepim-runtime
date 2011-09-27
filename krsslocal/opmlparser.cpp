@@ -27,7 +27,6 @@
 #include <memory>
 
 using namespace boost;
-using namespace KRssResource;
 
 class ParsedNode::Private {
 public:

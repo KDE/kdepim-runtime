@@ -15,8 +15,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KRSSRESOURCE_RSSITEMSYNC
-#define KRSSRESOURCE_RSSITEMSYNC
+#ifndef RSSITEMSYNC
+#define RSSITEMSYNC
 
 #include <akonadi/itemsync.h>
 
@@ -35,4 +35,4 @@ private:
     bool m_synchronizeFlags;
 };
 
-#endif // KRSSRESOURCE_RSSITEMSYNC
+#endif // RSSITEMSYNC

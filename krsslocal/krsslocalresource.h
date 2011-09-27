@@ -24,6 +24,7 @@
 #include <Syndication/Syndication>
 #include <QTimer>
 #include <QHash>
+
 #include "opmlparser.h"
 #include "rssitemsync.h"
 
@@ -33,12 +34,12 @@ class KRssLocalResource : public Akonadi::ResourceBase,
   Q_OBJECT
 
   public:
-    KRssLocalResource( const QString &id );
+    explicit KRssLocalResource( const QString &id );
     ~KRssLocalResource();
-    Akonadi::Collection::List buildCollectionTree( QList<boost::shared_ptr<const KRssResource::ParsedNode> > listOfNodes, 
+    Akonadi::Collection::List buildCollectionTree( QList<boost::shared_ptr<const ParsedNode> > listOfNodes, 
  				   Akonadi::Collection::List &list, Akonadi::Collection &parent);
     QString mimeType();
-    void writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr<const KRssResource::ParsedNode> >& nodes);
+    void writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr<const ParsedNode> >& nodes);
 
   public Q_SLOTS:
     virtual void configure( WId windowId );    

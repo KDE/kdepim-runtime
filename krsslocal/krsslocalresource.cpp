@@ -39,12 +39,10 @@
 #include <Akonadi/AttributeFactory>
 
 #include <krss/rssitem.h>
-#include <krssresource/krssresource_export.h>
 #include <krss/feedcollection.h>
 #include <krss/feedpropertiescollectionattribute.h>
 
 using namespace Akonadi;
-using namespace KRssResource;
 using namespace boost;
 
 KRssLocalResource::KRssLocalResource( const QString &id )

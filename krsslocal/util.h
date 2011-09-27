@@ -16,21 +16,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KRSSRESOURCE_UTIL_H
-#define KRSSRESOURCE_UTIL_H
+#ifndef UTIL_H
+#define UTIL_H
 
 #include "opmlparser.h"
 
 #include <krss/rssitem.h>
 #include <Syndication/Item>
 
-namespace KRssResource {
-  namespace Util {
+namespace Util {
   
     KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem );
-    QList<boost::shared_ptr<const ParsedNode> > parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent );
-  
-  };
+    QList<boost::shared_ptr<const ParsedNode> > parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent );  
 };
 
-#endif // KRSSRESOURCE_UTIL_H
+#endif // UTIL_H

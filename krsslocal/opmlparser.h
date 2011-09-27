@@ -15,10 +15,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KRSSRESOURCE_OPMLPARSER_H
-#define KRSSRESOURCE_OPMLPARSER_H
-
-#include <krssresource/krssresource_export.h>
+#ifndef OPMLPARSER_H
+#define OPMLPARSER_H
 
 #include <Akonadi/Collection>
 #include <QtCore/QString>
@@ -35,12 +33,11 @@
 class QXmlStreamWriter;
 class QXmlStreamAttributes;
 
-namespace KRssResource {
 
 class ParsedFeed;
 class ParsedFolder;
 
-class KRSSRESOURCE_EXPORT ParsedNode : public boost::enable_shared_from_this<ParsedNode>
+class ParsedNode : public boost::enable_shared_from_this<ParsedNode>
 {
 public:
     ParsedNode();
@@ -68,7 +65,7 @@ private:
     Private* const d;
 };
 
-class KRSSRESOURCE_EXPORT ParsedFeed : public ParsedNode
+class ParsedFeed : public ParsedNode
 {
 public:
     ParsedFeed();
@@ -96,7 +93,7 @@ private:
     Private* const d;
 };
 
-class KRSSRESOURCE_EXPORT ParsedFolder : public ParsedNode
+class ParsedFolder : public ParsedNode
 {
 public:
     ParsedFolder();
@@ -115,7 +112,7 @@ private:
     Private* const d;
 };
 
-class KRSSRESOURCE_EXPORT OpmlReader
+class OpmlReader
 {
 public:
     OpmlReader();
@@ -135,7 +132,7 @@ private:
     Q_DISABLE_COPY( OpmlReader )
 };
 
-class KRSSRESOURCE_EXPORT OpmlWriter
+class OpmlWriter
 {
 public:
     static void writeOpml( QXmlStreamWriter& writer, const QList<boost::shared_ptr< const ParsedNode> >& nodes,
@@ -145,6 +142,4 @@ public:
 
 };
 
-} //namespace KRssResource
-
-#endif // KRSSRESOURCE_OPMLPARSER_H
+#endif // OPMLPARSER_H
