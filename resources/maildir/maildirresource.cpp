@@ -102,7 +102,6 @@ MaildirResource::MaildirResource( const QString &id )
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
   changeRecorder()->itemFetchScope().setFetchModificationTime( false );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
-  changeRecorder()->fetchChangedOnly( true );
 
   setHierarchicalRemoteIdentifiersEnabled( true );
 
