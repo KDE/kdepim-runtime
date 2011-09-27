@@ -7,6 +7,7 @@ Name[pt_BR]=Alimentador do Nepomuk para o Akonadi
 Name[sv]=Akonadi-inmatning till Nepomuk
 Name[uk]=Передавач даних Akonadi Nepomuk
 Name[x-test]=xxAkonadi Nepomuk Feederxx
+Name[zh_TW]=Akonadi Nepomuk Feeder
 
 Type=AkonadiAgent
 Exec=akonadi_nepomuk_feeder
