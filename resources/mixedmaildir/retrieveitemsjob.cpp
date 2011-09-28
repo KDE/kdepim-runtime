@@ -98,7 +98,10 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
   
   mServerItemsByRemoteId.reserve( items.size() );
   Q_FOREACH ( const Item &item, items ) {
-    mServerItemsByRemoteId.insert( item.remoteId(), item );
+    // items without remoteId have not been written to the resource yet
+    if ( !item.remoteId().isEmpty() ) {
+      mServerItemsByRemoteId.insert( item.remoteId(), item );
+    }
   }
   
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItems( mCollection );
