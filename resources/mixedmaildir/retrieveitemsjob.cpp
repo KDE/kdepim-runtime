@@ -224,7 +224,7 @@ void RetrieveItemsJob::Private::processChangedItem()
     if ( !mTransaction ) {
       // no jobs created here -> done
       q->emitResult();
-    } else {
+    } else if ( mHighestModTime > -1 ) {
       Collection collection( mCollection );
       collection.setRemoteRevision( QString::number( mHighestModTime ) );
       CollectionModifyJob *job = new CollectionModifyJob( collection, transaction() );
