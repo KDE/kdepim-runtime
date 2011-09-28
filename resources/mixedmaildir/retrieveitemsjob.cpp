@@ -95,6 +95,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
   Q_ASSERT( itemFetch != 0 );
   
   const Item::List items = itemFetch->items();
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Akonadi fetch got" << items.count() << "items";
   
   mServerItemsByRemoteId.reserve( items.size() );
   Q_FOREACH ( const Item &item, items ) {
@@ -104,6 +105,8 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
     }
   }
   
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "of which" << mServerItemsByRemoteId.count() << "have remoteId";
+  
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItems( mCollection );
   // just basic items, no data
   
@@ -112,6 +115,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
 
 void RetrieveItemsJob::Private::storeListResult( KJob *job )
 {
+  kDebug() << "storeList->error=" << job->error();
   FileStore::ItemFetchJob *storeList = qobject_cast<FileStore::ItemFetchJob*>( job );
   Q_ASSERT( storeList != 0 );
   
@@ -160,7 +164,13 @@ void RetrieveItemsJob::Private::storeListResult( KJob *job )
     }
   }
   
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store fetch got" << storedItems.count() << "items"
+                                   << "of which" << mNewItems.count() << "are new and" << mChangedItems.count()
+                                   << "are changed and" << mServerItemsByRemoteId.count()
+                                   << "need to be removed";
+                                   
   // all items remaining in mServerItemsByRemoteId are no longer in the store
+  
   ItemDeleteJob *deleteJob = new ItemDeleteJob( mServerItemsByRemoteId.values(), transaction() );
   transaction()->setIgnoreJobFailure( deleteJob );
   
@@ -204,7 +214,8 @@ void RetrieveItemsJob::Private::fetchNewResult( KJob *job )
   }
   
   ItemCreateJob *itemCreate = new ItemCreateJob( item, mCollection, transaction() );
-  connect( itemCreate, SIGNAL( result( KJob* ) ), q, SLOT( processNewItem() ) );
+  Q_UNUSED( itemCreate );
+  QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
 }
 
 void RetrieveItemsJob::Private::processChangedItem()
@@ -252,7 +263,8 @@ void RetrieveItemsJob::Private::fetchChangedResult( KJob *job )
   }
   
   ItemModifyJob *itemModify = new ItemModifyJob( item, transaction() );
-  connect( itemModify, SIGNAL( result( KJob* ) ), q, SLOT( processChangedItem() ) );
+  Q_UNUSED( itemModify );
+  QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
 }
 
 void RetrieveItemsJob::Private::transactionResult( KJob *job )
