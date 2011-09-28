@@ -2,6 +2,7 @@
     Copyright (c) 2007 Till Adam <adam@kde.org>
     Copyright (C) 2010 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Author: Kevin Krammer, krake@kdab.com
+    Copyright (C) 2011 Kevin Krammer <kevin.krammer@gmx.at>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -26,6 +27,7 @@
 #include "mixedmaildirstore.h"
 #include "settings.h"
 #include "settingsadaptor.h"
+#include "retrieveitemsjob.h"
 
 
 #include "filestore/collectioncreatejob.h"
@@ -249,9 +251,8 @@ void MixedMaildirResource::retrieveItems( const Collection & col )
     cancelTask( message );
     return;
   }
-
-  FileStore::ItemFetchJob *job = mStore->fetchItems( col );
-  job->fetchScope().fetchPayloadPart( MessagePart::Envelope );
+  
+  RetrieveItemsJob *job = new RetrieveItemsJob( col, mStore, this );
   connect( job, SIGNAL(result(KJob*)), SLOT(retrieveItemsResult(KJob*)) );
 
   status( Running, i18nc( "@info:status", "Synchronizing email folder %1", col.name() ) );
@@ -485,38 +486,32 @@ void MixedMaildirResource::retrieveItemsResult( KJob *job )
     return;
   }
 
-  FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob != 0 );
+  RetrieveItemsJob *retrieveJob = qobject_cast<RetrieveItemsJob*>( job );
+  Q_ASSERT( retrieveJob != 0 );
 
   // messages marked as deleted have been deleted from mbox files but never got purged
   // TODO FileStore could provide deleteItems() to deleted all filtered items in one go
   KJob* deleteJob = 0;
-  Item::List items;
-  Q_FOREACH( const Item &item, fetchJob->items() ) {
-    Akonadi::MessageStatus status;
-    status.setStatusFromFlags( item.flags() );
-    if ( status.isDeleted() ) {
-      deleteJob = mStore->deleteItem( item );
-    } else {
-      items << item;
-    }
+  kDebug( KDE_DEFAULT_DEBUG_AREA ) << retrieveJob->itemsMarkedAsDeleted().count()
+                                   << "items marked as Deleted";
+  Q_FOREACH( const Item &item, retrieveJob->itemsMarkedAsDeleted() ) {
+    deleteJob = mStore->deleteItem( item );
   }
 
   if ( deleteJob != 0 ) {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << items.count() << "of" << fetchJob->items().count()
-      << "items remain after checking for items marked as Deleted";
     // last item delete triggers mbox purge, i.e. store compact
     Q_ASSERT( connect( deleteJob, SIGNAL(result(KJob*)), this, SLOT(itemsDeleted(KJob*)) ) );
   }
 
   // if some items have tags, we need to complete the retrieval and schedule tagging
   // to a later time so we can then fetch the items to get their Akonadi URLs
-  const QVariant var = fetchJob->property( "remoteIdToTagList" );
+  const Item::List items = retrieveJob->availableItems();
+  const QVariant var = retrieveJob->property( "remoteIdToTagList" );
   if ( var.isValid() ) {
     const QHash<QString, QVariant> tagListHash = var.value< QHash<QString, QVariant> >();
     if ( !tagListHash.isEmpty() ) {
       kDebug() << tagListHash.count() << "of" << items.count()
-               << "items in collection" << fetchJob->collection().remoteId() << "have tags";
+               << "items in collection" << retrieveJob->collection().remoteId() << "have tags";
 
       TagContextList taggedItems;
       Q_FOREACH( const Item &item, items ) {
@@ -534,17 +529,17 @@ void MixedMaildirResource::retrieveItemsResult( KJob *job )
       }
 
       if ( !taggedItems.isEmpty() ) {
-        mTagContextByColId.insert( fetchJob->collection().id(), taggedItems );
+        mTagContextByColId.insert( retrieveJob->collection().id(), taggedItems );
 
-        scheduleCustomTask( this, "restoreTags", QVariant::fromValue<Collection>( fetchJob->collection() ) );
+        scheduleCustomTask( this, "restoreTags", QVariant::fromValue<Collection>( retrieveJob->collection() ) );
       }
     }
   }
 
-  mSynchronizedCollections << fetchJob->collection().id();
-  mPendingSynchronizeCollections.remove( fetchJob->collection().id() );
+  mSynchronizedCollections << retrieveJob->collection().id();
+  mPendingSynchronizeCollections.remove( retrieveJob->collection().id() );
 
-  itemsRetrieved( items );
+  itemsRetrievalDone();
 }
 
 void MixedMaildirResource::retrieveItemResult( KJob *job )
