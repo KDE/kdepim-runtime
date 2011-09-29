@@ -453,17 +453,18 @@ void AbstractLocalStoreTest::testModifyCollection()
   QVERIFY( !job->exec() );
   QVERIFY( mStore->mLastProcessedJob == 0 );
 
-  // test with invalid collection (has remoteId, but no parent remoteId)
+  // test with potentially valid collection (has remoteId, but no parent remoteId)
   Collection collection;
   collection.setRemoteId( QLatin1String( "/tmp/test/foo" ) );
   job = mStore->modifyCollection( collection );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
-  QVERIFY( !job->errorText().isEmpty() );
+  QCOMPARE( job->error(), 0 );
+  QVERIFY( job->errorText().isEmpty() );
 
-  QVERIFY( !job->exec() );
-  QVERIFY( mStore->mLastProcessedJob == 0 );
+  QVERIFY( job->exec() );
+  QCOMPARE( mStore->mLastProcessedJob, job );
+  mStore->mLastProcessedJob = 0;
 
   // test with potentially valid collection (has remoteId and parent remoteId)
   Collection parentCollection;
