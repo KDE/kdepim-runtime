@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=ownCloud
+Name[x-test]=xxownCloudxx
+Type=Service
+X-KDE-ServiceTypes=DavGroupwareProvider
+
+X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-CalDavPath=/apps/calendar/caldav.php
+X-DavGroupware-CardDavPath=/apps/contacts/carddav.php
