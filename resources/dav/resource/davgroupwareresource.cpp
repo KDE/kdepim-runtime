@@ -221,6 +221,8 @@ void DavGroupwareResource::retrieveCollections()
   }
 
   emit status( Running, i18n( "Fetching collections" ) );
+  mSeenCollectionsNames.clear();
+  mSeenCollectionsUrls.clear();
 
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->configuredDavUrls() );
   connect( job, SIGNAL(result(KJob*)), SLOT(onRetrieveCollectionsFinished(KJob*)) );
@@ -504,8 +506,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   }
 
   const DavCollection::List davCollections = fetchJob->collections();
-  QSet<QString> seenCollectionsNames;
-  QSet<QString> seenCollectionsUrls;
 
   foreach ( const DavCollection &davCollection, davCollections ) {
     if ( mCollectionsWithTemporaryError.contains( davCollection.url() ) ) {
@@ -513,10 +513,10 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
       mCollectionsWithTemporaryError.removeOne( davCollection.url() );
     }
 
-    if ( seenCollectionsUrls.contains( davCollection.url() ) )
+    if ( mSeenCollectionsUrls.contains( davCollection.url() ) )
       continue;
     else
-      seenCollectionsUrls.insert( davCollection.url() );
+      mSeenCollectionsUrls.insert( davCollection.url() );
 
     Akonadi::Collection collection;
     collection.setParentCollection( mDavCollectionRoot );
@@ -524,10 +524,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     if ( davCollection.displayName().isEmpty() ) {
       collection.setName( name() + " (" + davCollection.url() + ')' );
     } else {
-      if ( seenCollectionsNames.contains( davCollection.displayName() ) ) {
+      if ( mSeenCollectionsNames.contains( davCollection.displayName() ) ) {
         collection.setName( davCollection.displayName() + " (" + davCollection.url() + ')' );
       } else {
         collection.setName( davCollection.displayName() );
+        mSeenCollectionsNames.insert( davCollection.displayName() );
       }
     }
 

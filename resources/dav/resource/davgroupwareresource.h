@@ -27,6 +27,7 @@
 class DavFreeBusyHandler;
 class KDateTime;
 
+#include <QtCore/QSet>
 #include <QtCore/QStringList>
 
 class DavGroupwareResource : public Akonadi::ResourceBase,
@@ -99,6 +100,8 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     EtagCache mEtagCache;
     QStringList mCollectionsWithTemporaryError;
     DavFreeBusyHandler *mFreeBusyHandler;
+    QSet<QString> mSeenCollectionsNames;
+    QSet<QString> mSeenCollectionsUrls;
 };
 
 #endif
