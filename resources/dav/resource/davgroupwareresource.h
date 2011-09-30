@@ -23,6 +23,7 @@
 
 #include <akonadi/resourcebase.h>
 
+#include <QtCore/QSet>
 #include <QtCore/QStringList>
 
 class DavGroupwareResource : public Akonadi::ResourceBase,
@@ -86,6 +87,8 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     Akonadi::Collection mDavCollectionRoot;
     EtagCache mEtagCache;
     QStringList mCollectionsWithTemporaryError;
+    QSet<QString> mSeenCollectionsNames;
+    QSet<QString> mSeenCollectionsUrls;
 };
 
 #endif
