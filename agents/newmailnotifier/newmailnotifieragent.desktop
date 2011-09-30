@@ -2,7 +2,7 @@
 Name=New Email Notifier
 Name[ca]=Notificador de nou correu electrònic
 Name[ca@valencia]=Notificador de nou correu electrònic
-Name[cs]=Upozornění na nový email
+Name[cs]=Upozornění na nový e-mail
 Name[da]=Bekendtgørelse af nye e-mails
 Name[de]=E-Mail-Benachrichtigung
 Name[el]=Ειδοποιητής νέας αλληλογραφίας
@@ -36,7 +36,7 @@ Name[zh_TW]=新郵件通知器
 Comment=Notifications about newly received emails
 Comment[ca]=Notificacions quant a nous correus electrònics rebuts
 Comment[ca@valencia]=Notificacions quant a nous correus electrònics rebuts
-Comment[cs]=Oznamování nově příchozích emailů
+Comment[cs]=Oznamování nově příchozích e-mailů
 Comment[da]=Bekendtgørelser om nyligt modtagne e-mails
 Comment[de]=Benachrichtigungen über neu empfangene E-Mails
 Comment[el]=Ειδοποιήσεις για νέα αλληλογραφία 
