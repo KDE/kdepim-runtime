@@ -569,8 +569,9 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     if ( privileges & DavCollection::Unbind )
       rights |= Akonadi::Collection::CanDeleteItem;
 
-    if ( privileges & DavCollection::Read && !( privileges & static_cast<DavCollection::Privileges>(!DavCollection::Read) ) )
+    if ( privileges & DavCollection::Read && !( privileges & (~DavCollection::Read) ) )
       rights |= Akonadi::Collection::ReadOnly;
+
 
     collection.setRights( rights );
     mEtagCache.sync( collection );
