@@ -450,11 +450,6 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
   job->start();
 }
 
-void DavGroupwareResource::aboutToQuit()
-{
-  Settings::self()->writeConfig();
-}
-
 void DavGroupwareResource::doSetOnline( bool online )
 {
   kDebug() << "Resource changed online status to" << online;
