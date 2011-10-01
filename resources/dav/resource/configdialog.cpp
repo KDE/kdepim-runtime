@@ -142,6 +142,7 @@ void ConfigDialog::onEditButtonClicked()
   const int result = dlg->exec();
 
   if ( result == QDialog::Accepted && !dlg.isNull() ) {
+    Settings::self()->removeUrlConfiguration( DavUtils::protocolByName( proto ), url );
     Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
     urlConfigAccepted->mUrl = dlg->remoteUrl();
     urlConfigAccepted->mUser = dlg->username();
@@ -151,7 +152,6 @@ void ConfigDialog::onEditButtonClicked()
 
     QStandardItem *item = mModel->item( indexes.at( 0 ).row(), 0 ); // Protocol
     item->setData( QVariant::fromValue( DavUtils::protocolName( dlg->protocol() ) ), Qt::DisplayRole );
-    mRemovedUrls << QPair<QString, DavUtils::Protocol>( url, DavUtils::protocolByName( proto ) );
 
     item = mModel->item( indexes.at( 0 ).row(), 1 ); // URL
     item->setData( QVariant::fromValue( dlg->remoteUrl() ), Qt::DisplayRole );
