@@ -437,6 +437,12 @@ void KMailMigrator::cleanupConfigFile()
   }
 
   deleteOldGroup( "FavoriteFolderView" );
+
+  if ( mConfig->hasGroup( "General" ) )
+  {
+    KConfigGroup cfgGroup( mConfig, "General" );
+    cfgGroup.deleteEntry( "MsgDictSizeHint" );
+  }
 }
 
 void KMailMigrator::migrateInstanceTrashFolder()
