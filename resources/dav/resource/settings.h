@@ -59,6 +59,10 @@ class Settings : public SettingsBase
     void setWinId( WId wid );
     void cleanup();
 
+    void setResourceIdentifier( const QString &identifier );
+    void setDefaultPassword( const QString &password );
+    QString defaultPassword();
+
     DavUtils::DavUrl::List configuredDavUrls();
 
     /**
@@ -83,7 +87,7 @@ class Settings : public SettingsBase
     void addCollectionUrlMapping( DavUtils::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl );
 
     /**
-     * Returns the collections URLs mapped behing @p configured and protocol @protocol.
+     * Returns the collections URLs mapped behing @p configuredUrl and @p protocol.
      */
     QStringList mappedCollections( DavUtils::Protocol protocol, const QString &configuredUrl );
 
@@ -96,12 +100,16 @@ class Settings : public SettingsBase
     QString password( DavUtils::Protocol protocol, const QString &url );
 
   private:
+    void buildUrlsList();
     void loadMappings();
     void updateRemoteUrls();
     void savePassword( const QString &key, const QString &user, const QString &password );
     QString loadPassword( const QString &key, const QString &user );
 
+    void updateToV2();
+
     WId mWinId;
+    QString mResourceIdentifier;
     QMap<QString, UrlConfiguration*> mUrls;
     QString mCollectionsUrlsMappingCache;
     QMap<QString, QString> mCollectionsUrlsMapping;

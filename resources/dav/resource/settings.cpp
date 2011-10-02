@@ -33,6 +33,7 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QDataStream>
 #include <QtCore/QFile>
+#include <QtCore/QRegExp>
 #include <QtDBus/QDBusConnection>
 
 class SettingsHelper
@@ -95,6 +96,9 @@ Settings::Settings()
   new SettingsAdaptor( this );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
                               QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+
+  if ( settingsVersion() == 1 )
+    updateToV2();
 }
 
 Settings::~Settings()
@@ -117,16 +121,25 @@ void Settings::cleanup()
   cacheFile.remove();
 }
 
+void Settings::setResourceIdentifier(const QString& identifier)
+{
+  mResourceIdentifier = identifier;
+}
+
+void Settings::setDefaultPassword( const QString &password )
+{
+  savePassword( mResourceIdentifier, "$default$", password );
+}
+
+QString Settings::defaultPassword()
+{
+  return loadPassword( mResourceIdentifier, "$default$" );
+}
+
 DavUtils::DavUrl::List Settings::configuredDavUrls()
 {
-  if ( mUrls.isEmpty() ) {
-    foreach ( const QString &serializedUrl, remoteUrls() ) {
-      UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
-      QString key = urlConfig->mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
-      urlConfig->mPassword = loadPassword( key, urlConfig->mUser );
-      mUrls[ key ] = urlConfig;
-    }
-  }
+  if ( mUrls.isEmpty() )
+    buildUrlsList();
   DavUtils::DavUrl::List davUrls;
   QMapIterator<QString, UrlConfiguration*> it( mUrls );
 
@@ -209,7 +222,8 @@ void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
   }
 
   mUrls[ key ] = urlConfig;
-  savePassword( key, urlConfig->mUser, urlConfig->mPassword );
+  if ( urlConfig->mUser != QLatin1String( "$default$" ) )
+    savePassword( key, urlConfig->mUser, urlConfig->mPassword );
   updateRemoteUrls();
 }
 
@@ -249,7 +263,10 @@ QString Settings::username( DavUtils::Protocol proto, const QString &url ) const
   QString key = url + "," + DavUtils::protocolName( proto );
 
   if ( mUrls.contains( key ) )
-    return mUrls[ key ]->mUser;
+    if ( mUrls[ key ]->mUser == QLatin1String( "$default$" ) )
+      return defaultUsername();
+    else
+      return mUrls[ key ]->mUser;
   else
     return QString();
 }
@@ -259,9 +276,22 @@ QString Settings::password(DavUtils::Protocol proto, const QString& url)
   QString key = url + "," + DavUtils::protocolName( proto );
 
   if ( mUrls.contains( key ) )
-    return mUrls[ key ]->mPassword;
+    if ( mUrls[ key ]->mUser == QLatin1String( "$default$" ) )
+      return defaultPassword();
+    else
+      return mUrls[ key ]->mPassword;
   else
     return QString();
+}
+
+void Settings::buildUrlsList()
+{
+  foreach ( const QString &serializedUrl, remoteUrls() ) {
+    UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
+    QString key = urlConfig->mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
+    urlConfig->mPassword = loadPassword( key, urlConfig->mUser );
+    mUrls[ key ] = urlConfig;
+  }
 }
 
 void Settings::loadMappings()
@@ -326,13 +356,43 @@ QString Settings::loadPassword( const QString& key, const QString &user )
   if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) )
     return QString();
 
-  QString entry = key + "," + user;
+  QString entry;
+  if ( user == QLatin1String( "$default$" ) )
+    entry = mResourceIdentifier + "," + user;
+  else
+    entry = key + "," + user;
+ 
   if ( !wallet->hasEntry( entry ) )
     return QString();
 
   QString pass;
   wallet->readPassword( entry, pass );
   return pass;
+}
+
+void Settings::updateToV2()
+{
+  // Take the first URL that was configured to get the username that
+  // has the most chances being the default
+
+  QStringList urls = remoteUrls();
+  if ( urls.isEmpty() )
+    return;
+  
+  QString urlConfigStr = urls.at( 0 );
+  UrlConfiguration urlConfig( urlConfigStr );
+  QRegExp regexp( "^" + urlConfig.mUser );
+
+  QMutableStringListIterator it( urls );
+  while ( it.hasNext() ) {
+    it.next();
+    it.value().replace( regexp, QString( "$default$" ) );
+  }
+
+  setDefaultUsername( urlConfig.mUser );
+  setRemoteUrls( urls );
+  setSettingsVersion( 2 );
+  writeConfig();
 }
 
 #include "settings.moc"

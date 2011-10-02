@@ -6,6 +6,10 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile/>
   <group name="General">
+    <entry name="settingsVersion" type="Int">
+      <label>Settings Version</label>
+      <default>1</default>
+    </entry>
     <entry name="displayName" type="String">
       <label>Display name</label>
       <default></default>
@@ -16,6 +20,10 @@
     </entry>
     <entry name="remoteUrls" type="StringList">
       <label>Remote URLs</label>
+      <default></default>
+    </entry>
+    <entry name="defaultUsername" type="String">
+      <label>User name</label>
       <default></default>
     </entry>
     <entry name="collectionsUrlsMappings" type="String">

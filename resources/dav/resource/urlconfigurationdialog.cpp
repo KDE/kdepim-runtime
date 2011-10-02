@@ -32,6 +32,7 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   : KDialog( parent )
 {
   mUi.setupUi( mainWidget() );
+  mUi.credentialsGroup->setVisible( false );
 
   mModel = new QStandardItemModel();
   initModel();
@@ -43,6 +44,7 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
 
   connect( mUi.remoteProtocol, SIGNAL(changed(int)), this, SLOT(onConfigChanged()) );
   connect( mUi.remoteUrl, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
+  connect( mUi.useDefaultCreds, SIGNAL(toggled(bool)), this, SLOT(onConfigChanged()) );
   connect( mUi.username, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
   connect( mUi.password, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
 
@@ -74,6 +76,19 @@ QString UrlConfigurationDialog::remoteUrl() const
 void UrlConfigurationDialog::setRemoteUrl( const QString &url )
 {
   mUi.remoteUrl->setText( url );
+}
+
+bool UrlConfigurationDialog::useDefaultCredentials() const
+{
+  return mUi.useDefaultCreds->isChecked();
+}
+
+void UrlConfigurationDialog::setUseDefaultCredentials( bool defaultCreds )
+{
+  if ( defaultCreds )
+    mUi.useDefaultCreds->setChecked( true );
+  else
+    mUi.useSpecificCreds->setChecked( true );
 }
 
 QString UrlConfigurationDialog::username() const
@@ -197,7 +212,7 @@ void UrlConfigurationDialog::initModel()
 
 bool UrlConfigurationDialog::checkUserAuthInput()
 {
-  return ( !mUi.username->text().isEmpty() && !mUi.password->text().isEmpty() );
+  return ( mUi.useDefaultCreds->isChecked() || !( mUi.username->text().isEmpty() || mUi.password->text().isEmpty() ) );
 }
 
 void UrlConfigurationDialog::addModelRow( const QString &displayName, const QString &url )

@@ -185,7 +185,7 @@ SetupWizard::Url::List SetupWizard::urls() const
 
     if ( !urlStr.isEmpty() ) {
       url.url = urlStr;
-      url.userName = field( "credentialsUserName" ).toString();
+      url.userName = QString( "$default$" );
       urls << url;
     }
   }

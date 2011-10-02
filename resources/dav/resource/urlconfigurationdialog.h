@@ -43,6 +43,9 @@ class UrlConfigurationDialog : public KDialog
     QString remoteUrl() const;
     void setRemoteUrl( const QString &url );
 
+    bool useDefaultCredentials() const;
+    void setUseDefaultCredentials( bool defaultCreds );
+
     QString username() const;
     void setUsername( const QString &name );
 

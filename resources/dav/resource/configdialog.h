@@ -40,6 +40,8 @@ class ConfigDialog : public KDialog
     ConfigDialog( QWidget *parent = 0 );
     virtual ~ConfigDialog();
 
+    void setPassword( const QString &password );
+
   private Q_SLOTS:
     void checkUserInput();
     void onAddButtonClicked();

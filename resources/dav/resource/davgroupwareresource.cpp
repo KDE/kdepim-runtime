@@ -93,6 +93,7 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
 
   Settings::self()->setWinId( winIdForDialogs() );
+  Settings::self()->setResourceIdentifier( identifier() );
 
   mFreeBusyHandler = new DavFreeBusyHandler( this );
   connect( mFreeBusyHandler, SIGNAL(handlesFreeBusy(QString,bool)), this, SLOT(onHandlesFreeBusy(QString,bool)) );
@@ -190,6 +191,12 @@ void DavGroupwareResource::configure( WId windowId )
 
       if ( !urls.isEmpty() )
         Settings::self()->setDisplayName( wizard.displayName() );
+
+      QString defaultUser = wizard.field( "credentialsUsername" ).toString();
+      if ( !defaultUser.isEmpty() ) {
+        Settings::self()->setDefaultUsername( defaultUser );
+        Settings::self()->setDefaultPassword( wizard.field( "credentialsPassword" ).toString() );
+      }
     }
   }
 
@@ -199,9 +206,13 @@ void DavGroupwareResource::configure( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( &dialog, windowId );
 
+  if ( !Settings::self()->defaultUsername().isEmpty() )
+    dialog.setPassword( Settings::self()->defaultPassword() );
+
   const int result = dialog.exec();
 
   if ( result == QDialog::Accepted ) {
+    Settings::self()->setSettingsVersion( 2 );
     Settings::self()->writeConfig();
     synchronize();
     emit configurationDialogAccepted();

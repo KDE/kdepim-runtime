@@ -23,6 +23,7 @@
 #include <kconfigdialogmanager.h>
 #include <kconfigskeleton.h>
 #include <klocale.h>
+#include <kmessagebox.h>
 
 #include <QtCore/QList>
 #include <QtCore/QPointer>
@@ -70,6 +71,11 @@ ConfigDialog::~ConfigDialog()
 {
 }
 
+void ConfigDialog::setPassword(const QString& password)
+{
+  mUi.password->setText( password );
+}
+
 void ConfigDialog::checkUserInput()
 {
   checkConfiguredUrlsButtonsState();
@@ -83,23 +89,36 @@ void ConfigDialog::checkUserInput()
 void ConfigDialog::onAddButtonClicked()
 {
   QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
+  dlg->setUsername( mUi.kcfg_defaultUsername->text() );
+  dlg->setPassword( mUi.password->text() );
   const int result = dlg->exec();
 
   if ( result == QDialog::Accepted && !dlg.isNull() ) {
-    Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
+    if ( Settings::self()->urlConfiguration( DavUtils::Protocol( dlg->protocol() ), dlg->remoteUrl() ) ) {
+      KMessageBox::error( this, i18n( "Another configuration entry already uses the same URL/protocol couple.\n"
+                                      "Please use a different URL" ) );
+    }
+    else {
+      Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
-    urlConfig->mUrl = dlg->remoteUrl();
-    urlConfig->mUser = dlg->username();
-    urlConfig->mPassword = dlg->password();
-    urlConfig->mProtocol = dlg->protocol();
+      urlConfig->mUrl = dlg->remoteUrl();
+      if ( dlg->useDefaultCredentials() ) {
+        urlConfig->mUser = "$default$";
+      }
+      else {
+        urlConfig->mUser = dlg->username();
+        urlConfig->mPassword = dlg->password();
+      }
+      urlConfig->mProtocol = dlg->protocol();
 
-    Settings::self()->newUrlConfiguration( urlConfig );
+      Settings::self()->newUrlConfiguration( urlConfig );
 
-    const QString protocolName = DavUtils::protocolName( dlg->protocol() );
+      const QString protocolName = DavUtils::protocolName( dlg->protocol() );
 
-    addModelRow( protocolName, dlg->remoteUrl() );
-    mAddedUrls << QPair<QString, DavUtils::Protocol>( dlg->remoteUrl(), DavUtils::Protocol( dlg->protocol() ) );
-    checkUserInput();
+      addModelRow( protocolName, dlg->remoteUrl() );
+      mAddedUrls << QPair<QString, DavUtils::Protocol>( dlg->remoteUrl(), DavUtils::Protocol( dlg->protocol() ) );
+      checkUserInput();
+    }
   }
 
   delete dlg;
@@ -136,8 +155,16 @@ void ConfigDialog::onEditButtonClicked()
   QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
   dlg->setRemoteUrl( urlConfig->mUrl );
   dlg->setProtocol( DavUtils::Protocol( urlConfig->mProtocol ) );
-  dlg->setUsername( urlConfig->mUser );
-  dlg->setPassword( urlConfig->mPassword );
+  if ( urlConfig->mUser == QLatin1String( "$default$" ) ) {
+    dlg->setUseDefaultCredentials( true );
+    dlg->setUsername( mUi.kcfg_defaultUsername->text() );
+    dlg->setPassword( mUi.password->text() );
+  }
+  else {
+    dlg->setUseDefaultCredentials( false );
+    dlg->setUsername( urlConfig->mUser );
+    dlg->setPassword( urlConfig->mPassword );
+  }
 
   const int result = dlg->exec();
 
@@ -145,8 +172,13 @@ void ConfigDialog::onEditButtonClicked()
     Settings::self()->removeUrlConfiguration( DavUtils::protocolByName( proto ), url );
     Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
     urlConfigAccepted->mUrl = dlg->remoteUrl();
-    urlConfigAccepted->mUser = dlg->username();
-    urlConfigAccepted->mPassword = dlg->password();
+    if ( dlg->useDefaultCredentials() ) {
+      urlConfig->mUser = "$default$";
+    }
+    else {
+      urlConfig->mUser = dlg->username();
+      urlConfig->mPassword = dlg->password();
+    }
     urlConfigAccepted->mProtocol = dlg->protocol();
     Settings::self()->newUrlConfiguration( urlConfigAccepted );
 
@@ -166,6 +198,7 @@ void ConfigDialog::onOkClicked()
     Settings::self()->removeUrlConfiguration( url.second, url.first );
 
   mManager->updateSettings();
+  Settings::self()->setDefaultPassword( mUi.password->text() );
 }
 
 void ConfigDialog::onCancelClicked()
