@@ -438,7 +438,7 @@ void KMailMigrator::cleanupConfigFile()
 
   deleteOldGroup( "FavoriteFolderView" );
 
-  if ( mConfig->hasGroup( "General" ) )
+  if ( mConfig->hasGroup( "Internal" ) )
   {
     KConfigGroup cfgGroup( mConfig, "General" );
     cfgGroup.deleteEntry( "MsgDictSizeHint" );
