@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=ownCloud
+Name[pt]=ownCloud
+Name[pt_BR]=ownCloud
+Name[sv]=ownCloud
+Name[uk]=ownCloud
+Name[x-test]=xxownCloudxx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 
