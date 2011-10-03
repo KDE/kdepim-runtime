@@ -286,6 +286,11 @@ void KMailMigrator::migrateTags()
 #endif
   }
 
+  //Cleanup migrated group
+  Q_FOREACH( const QString &groupName, newlyMigratedTags ) {
+    deleteOldGroup( groupName );
+  }
+
   if ( !newlyMigratedTags.isEmpty() ) {
     tagMigrationConfig.writeEntry( "MigratedTags", migratedTags + newlyMigratedTags );
     tagMigrationConfig.sync();
