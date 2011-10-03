@@ -580,7 +580,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     if ( privileges & DavCollection::Unbind )
       rights |= Akonadi::Collection::CanDeleteItem;
 
-    if ( privileges & DavCollection::Read && !( privileges & (~DavCollection::Read) ) )
+    if ( privileges == DavCollection::Read )
       rights |= Akonadi::Collection::ReadOnly;
 
 
