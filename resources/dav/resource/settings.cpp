@@ -390,6 +390,8 @@ void Settings::updateToV2()
   }
 
   setDefaultUsername( urlConfig.mUser );
+  QString key = urlConfig.mUrl + "," + DavUtils::protocolName( DavUtils::Protocol( urlConfig.mProtocol ) );
+  setDefaultPassword( loadPassword( key, urlConfig.mUser ) );
   setRemoteUrls( urls );
   setSettingsVersion( 2 );
   writeConfig();
