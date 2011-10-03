@@ -47,9 +47,11 @@ class UrlConfigurationDialog : public KDialog
     void setUseDefaultCredentials( bool defaultCreds );
 
     QString username() const;
+    void setDefaultUsername( const QString &name );
     void setUsername( const QString &name );
 
     QString password() const;
+    void setDefaultPassword( const QString &password );
     void setPassword( const QString &password );
 
   private Q_SLOTS:
@@ -68,6 +70,8 @@ class UrlConfigurationDialog : public KDialog
 
     Ui::UrlConfigurationDialog mUi;
     QStandardItemModel *mModel;
+    QString mDefaultUsername;
+    QString mDefaultPassword;
 };
 
 #endif

@@ -93,7 +93,15 @@ void UrlConfigurationDialog::setUseDefaultCredentials( bool defaultCreds )
 
 QString UrlConfigurationDialog::username() const
 {
-  return mUi.username->text();
+  if ( mUi.useDefaultCreds->isChecked() )
+    return mDefaultUsername;
+  else
+    return mUi.username->text();
+}
+
+void UrlConfigurationDialog::setDefaultUsername( const QString &userName )
+{
+  mDefaultUsername = userName;
 }
 
 void UrlConfigurationDialog::setUsername( const QString &userName )
@@ -103,7 +111,15 @@ void UrlConfigurationDialog::setUsername( const QString &userName )
 
 QString UrlConfigurationDialog::password() const
 {
-  return mUi.password->text();
+  if ( mUi.useDefaultCreds->isChecked() )
+    return mDefaultPassword;
+  else
+    return mUi.password->text();
+}
+
+void UrlConfigurationDialog::setDefaultPassword( const QString &password )
+{
+  mDefaultPassword = password;
 }
 
 void UrlConfigurationDialog::setPassword(const QString& password)
@@ -141,8 +157,14 @@ void UrlConfigurationDialog::onFetchButtonClicked()
 
 
   KUrl url( mUi.remoteUrl->text() );
-  url.setUser( username() );
-  url.setPassword( password() );
+  if ( mUi.useDefaultCreds->isChecked() ) {
+    url.setUser( mDefaultUsername );
+    url.setPassword( mDefaultPassword );
+  }
+  else {
+    url.setUser( username() );
+    url.setPassword( password() );
+  }
 
   DavUtils::DavUrl davUrl( url, protocol() );
   DavCollectionsFetchJob *job = new DavCollectionsFetchJob( davUrl );

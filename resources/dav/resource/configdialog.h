@@ -53,6 +53,7 @@ class ConfigDialog : public KDialog
 
   private:
     void addModelRow( const QString &protocol, const QString &url );
+    void insertModelRow( int index, const QString &protocol, const QString &url );
 
     Ui::ConfigDialog mUi;
     KConfigDialogManager *mManager;

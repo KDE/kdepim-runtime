@@ -89,8 +89,8 @@ void ConfigDialog::checkUserInput()
 void ConfigDialog::onAddButtonClicked()
 {
   QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
-  dlg->setUsername( mUi.kcfg_defaultUsername->text() );
-  dlg->setPassword( mUi.password->text() );
+  dlg->setDefaultUsername( mUi.kcfg_defaultUsername->text() );
+  dlg->setDefaultPassword( mUi.password->text() );
   const int result = dlg->exec();
 
   if ( result == QDialog::Accepted && !dlg.isNull() ) {
@@ -145,8 +145,9 @@ void ConfigDialog::onEditButtonClicked()
   if ( indexes.size() == 0 )
     return;
 
-  const QString proto = mModel->index( indexes.at( 0 ).row(), 0 ).data().toString();
-  const QString url = mModel->index( indexes.at( 0 ).row(), 1 ).data().toString();
+  const int row = indexes.at( 0 ).row();
+  const QString proto = mModel->index( row, 0 ).data().toString();
+  const QString url = mModel->index( row, 1 ).data().toString();
 
   Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( DavUtils::protocolByName( proto ), url );
   if ( !urlConfig )
@@ -155,16 +156,17 @@ void ConfigDialog::onEditButtonClicked()
   QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
   dlg->setRemoteUrl( urlConfig->mUrl );
   dlg->setProtocol( DavUtils::Protocol( urlConfig->mProtocol ) );
+
   if ( urlConfig->mUser == QLatin1String( "$default$" ) ) {
     dlg->setUseDefaultCredentials( true );
-    dlg->setUsername( mUi.kcfg_defaultUsername->text() );
-    dlg->setPassword( mUi.password->text() );
   }
   else {
     dlg->setUseDefaultCredentials( false );
     dlg->setUsername( urlConfig->mUser );
     dlg->setPassword( urlConfig->mPassword );
   }
+  dlg->setDefaultUsername( mUi.kcfg_defaultUsername->text() );
+  dlg->setDefaultPassword( mUi.password->text() );
 
   const int result = dlg->exec();
 
@@ -173,20 +175,17 @@ void ConfigDialog::onEditButtonClicked()
     Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
     urlConfigAccepted->mUrl = dlg->remoteUrl();
     if ( dlg->useDefaultCredentials() ) {
-      urlConfig->mUser = "$default$";
+      urlConfigAccepted->mUser = "$default$";
     }
     else {
-      urlConfig->mUser = dlg->username();
-      urlConfig->mPassword = dlg->password();
+      urlConfigAccepted->mUser = dlg->username();
+      urlConfigAccepted->mPassword = dlg->password();
     }
     urlConfigAccepted->mProtocol = dlg->protocol();
     Settings::self()->newUrlConfiguration( urlConfigAccepted );
 
-    QStandardItem *item = mModel->item( indexes.at( 0 ).row(), 0 ); // Protocol
-    item->setData( QVariant::fromValue( DavUtils::protocolName( dlg->protocol() ) ), Qt::DisplayRole );
-
-    item = mModel->item( indexes.at( 0 ).row(), 1 ); // URL
-    item->setData( QVariant::fromValue( dlg->remoteUrl() ), Qt::DisplayRole );
+    mModel->removeRow( row );
+    insertModelRow( row, DavUtils::protocolName( dlg->protocol() ), dlg->remoteUrl() );
   }
   delete dlg;
 }
@@ -220,6 +219,11 @@ void ConfigDialog::checkConfiguredUrlsButtonsState()
 
 void ConfigDialog::addModelRow( const QString &protocol, const QString &url )
 {
+  insertModelRow( -1, protocol, url );
+}
+
+void ConfigDialog::insertModelRow( int index, const QString &protocol, const QString &url )
+{
   QStandardItem *rootItem = mModel->invisibleRootItem();
   QList<QStandardItem*> items;
 
@@ -231,7 +235,10 @@ void ConfigDialog::addModelRow( const QString &protocol, const QString &url )
   urlStandardItem->setEditable( false );
   items << urlStandardItem;
 
-  rootItem->appendRow( items );
+  if ( index == -1 )
+    rootItem->appendRow( items );
+  else
+    rootItem->insertRow( index, items );
 }
 
 #include "configdialog.moc"
