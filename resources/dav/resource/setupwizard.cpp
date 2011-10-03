@@ -493,7 +493,7 @@ void CheckPage::checkConnection()
     davUrl.setProtocol( url.protocol );
 
     KUrl serverUrl( url.url );
-    serverUrl.setUser( url.userName );
+    serverUrl.setUser( wizard()->field( "credentialsUserName" ).toString() );
     serverUrl.setPass( wizard()->field( "credentialsPassword" ).toString() );
     davUrl.setUrl( serverUrl );
 
