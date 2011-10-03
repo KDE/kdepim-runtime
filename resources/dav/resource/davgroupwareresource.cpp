@@ -192,7 +192,7 @@ void DavGroupwareResource::configure( WId windowId )
       if ( !urls.isEmpty() )
         Settings::self()->setDisplayName( wizard.displayName() );
 
-      QString defaultUser = wizard.field( "credentialsUsername" ).toString();
+      QString defaultUser = wizard.field( "credentialsUserName" ).toString();
       if ( !defaultUser.isEmpty() ) {
         Settings::self()->setDefaultUsername( defaultUser );
         Settings::self()->setDefaultPassword( wizard.field( "credentialsPassword" ).toString() );
