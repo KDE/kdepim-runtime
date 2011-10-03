@@ -287,6 +287,11 @@ int PredefinedProviderPage::nextId() const
  * ServerTypePage
  */
 
+bool compareServiceOffers( QPair<QString, QString> off1, QPair<QString,QString> off2 )
+{
+  return off1.first.toLower() < off2.first.toLower();
+}
+
 ServerTypePage::ServerTypePage( QWidget *parent )
   : QWizardPage( parent )
 {
@@ -297,8 +302,15 @@ ServerTypePage::ServerTypePage( QWidget *parent )
   KService::List providers;
   KServiceTypeTrader *trader = KServiceTypeTrader::self();
   providers = trader->query( "DavGroupwareProvider" );
+  QList< QPair<QString, QString> > offers;
   foreach ( const KService::Ptr &provider, providers ) {
-    mProvidersCombo->addItem( provider->name(), provider->entryPath() );
+    offers.append( QPair<QString, QString>( provider->name(), provider->entryPath() ) );
+  }
+  qSort( offers.begin(), offers.end(), compareServiceOffers );
+  QListIterator< QPair<QString, QString> > it( offers );
+  while ( it.hasNext() ) {
+    QPair<QString, QString> p = it.next();
+    mProvidersCombo->addItem( p.first, p.second );
   }
   registerField( "provider", mProvidersCombo, "currentText" );
 
