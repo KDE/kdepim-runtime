@@ -339,7 +339,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       QDomElement privElement = DavUtils::firstChildElementNS( currentPrivsElement, "DAV:", "privilege" );
       DavCollection::Privileges privileges = DavCollection::None;
       while ( !privElement.isNull() ) {
-        const QString privname = privElement.firstChildElement().nodeName();
+        const QString privname = privElement.firstChildElement().localName();
 
         if ( privname == "read" )
           privileges |= DavCollection::Read;
@@ -369,7 +369,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       collection.setPrivileges( privileges );
     }
 
-    kDebug() << "PRIVS: " << collection.privileges();
+    kDebug() << url.prettyUrl() << "PRIVS: " << collection.privileges();
     mCollections << collection;
     emit collectionDiscovered( mUrl.protocol(), url.prettyUrl(), jobUrl );
 
