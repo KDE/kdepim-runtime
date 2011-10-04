@@ -57,6 +57,7 @@ void NotesMigrationTest::initTestCase()
 void NotesMigrationTest::testKJotsBooksMigration()
 {
   KJotsMigrator *migrator = new KJotsMigrator;
+  Q_UNUSED( migrator )
 
   m_expectedStructure.insert( "Local Notes", ( QStringList() << "rich content book" << "Something" << "Book2" << "kde3_book3" << "kde3_test1" ) );
   m_expectedStructure.insert( "Something", ( QStringList() << "Page 1" << "Page 2" ) );
@@ -85,7 +86,8 @@ void NotesMigrationTest::testKJotsBooksMigration()
 
 void NotesMigrationTest::checkRowsInserted( const QModelIndex &parent, int start, int end )
 {
-  int rowCount = m_etm->rowCount( parent );
+  const int rowCount = m_etm->rowCount( parent );
+  Q_UNUSED( rowCount )
   static const int column = 0;
   if ( !parent.isValid() && !m_expectedStructure.isEmpty() )
   {
@@ -139,7 +141,8 @@ void NotesMigrationTest::testLocalKNotesMigration()
   m_expectedNotes << "Notes" << "2010-02-08 12:12" << "2010-02-08 12:29";
 
   KNotesMigrator *migrator = new KNotesMigrator;
-
+  Q_UNUSED( migrator )
+  
   QTest::qWait( 2000 );
 
   m_expectedNotes.sort();

@@ -210,6 +210,8 @@ void DummyResourceState::itemsRetrieved( const Akonadi::Item::List &items )
 
 void DummyResourceState::itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed )
 {
+  Q_UNUSED( removed )
+  
   recordCall( "itemsRetrievedIncremental",  QVariant::fromValue( changed ) );
 }
 

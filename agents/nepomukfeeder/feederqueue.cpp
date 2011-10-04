@@ -157,6 +157,7 @@ void FeederQueue::itemFetchResult(KJob* job)
   if ( job->error() )
     kWarning() << job->errorString();
   ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>(job);
+  Q_UNUSED( fetchJob )
   //kDebug() << fetchJob->items().size();
   --mPendingJobs;
   if ( mPendingJobs == 0 && lowPrioQueue.isEmpty() ) { //Fetch jobs finished but there are were no items in the collection

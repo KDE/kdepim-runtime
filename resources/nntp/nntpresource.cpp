@@ -219,6 +219,7 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
     item.setPayload( MessagePtr( art ) );
     ItemCreateJob *append = new ItemCreateJob( item, currentCollection() );
     // TODO: check error
+    Q_UNUSED( append )
   }
 }
 
@@ -235,6 +236,7 @@ void NntpResource::listGroupResult(KJob * job)
       attr->setLastArticle( j->metaData().value("LastSerialNumber").toInt() );
     CollectionModifyJob *modify = new CollectionModifyJob( col );
     // TODO: check result signal
+    Q_UNUSED( modify )
   }
 
   itemsRetrievalDone();

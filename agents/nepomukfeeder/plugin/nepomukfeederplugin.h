@@ -49,7 +49,7 @@ class NepomukFeederPlugin: public QObject
      *
      * Collections are not supposed to have subresources, so they would not be removed on an update.
      */
-    virtual void updateCollection( const Akonadi::Collection &collection, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph ){};
+    virtual void updateCollection( const Akonadi::Collection &collection, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph ){ Q_UNUSED( collection ); Q_UNUSED( res ); Q_UNUSED( graph ) };
 };
 
 }
