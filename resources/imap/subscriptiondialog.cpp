@@ -100,6 +100,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent )
   connect( m_lineEdit, SIGNAL(textChanged(QString)),
            m_filter, SLOT(setSearchPattern(QString)) );
   filterBarLayout->addWidget( m_lineEdit );
+  m_lineEdit->setFocus();
 
 #ifndef KDEPIM_MOBILE_UI
   QCheckBox *checkBox = new QCheckBox( i18n("Subscribed only"), mainWidget );
