@@ -340,12 +340,19 @@ void StoreCompactTest::testCompact()
   QCOMPARE( collectionsFromSpy( collectionSpy ), collections );
   QCOMPARE( itemsFromSpy( itemSpy ), items );
 
-  collection = collections.first();
+  QHash<QString, Collection> compactedCollections;
+  Q_FOREACH ( const Collection &col, collections ) {
+    compactedCollections.insert( col.remoteId(), col );
+  }
+  QCOMPARE( compactedCollections.count(), 2 );
+  
+  QVERIFY( compactedCollections.contains( collection3.remoteId() ) );
+  collection = compactedCollections[ collection3.remoteId() ];
   QCOMPARE( collection, collection3 );
   QVERIFY( collection.hasAttribute<FileStore::EntityCompactChangeAttribute>() );
   attribute = collection.attribute<FileStore::EntityCompactChangeAttribute>();
   QCOMPARE( attribute->remoteRevision().toInt(), collection3.remoteRevision().toInt() + 1 );
-
+  
   QVERIFY( mbox3.load( mbox3.fileName() ) );
   entryList = mbox3.entries();
 
@@ -356,7 +363,8 @@ void StoreCompactTest::testCompact()
   }
   QCOMPARE( entryList, entryList3 );
 
-  collection = collections.last();
+  QVERIFY( compactedCollections.contains( collection4.remoteId() ) );
+  collection = compactedCollections[ collection4.remoteId() ];
   QCOMPARE( collection, collection4 );
   QVERIFY( collection.hasAttribute<FileStore::EntityCompactChangeAttribute>() );
   attribute = collection.attribute<FileStore::EntityCompactChangeAttribute>();
