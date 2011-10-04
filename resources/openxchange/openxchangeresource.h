@@ -51,6 +51,9 @@ class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentB
 
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
+    // do not hide the other variant, use implementation from base class
+    // which just forwards to the one above
+    using Akonadi::AgentBase::ObserverV2::collectionChanged;
     virtual void collectionRemoved( const Akonadi::Collection &collection );
     virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
                                   const Akonadi::Collection &collectionDestination );

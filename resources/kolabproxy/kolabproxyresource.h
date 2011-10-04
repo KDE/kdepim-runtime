@@ -79,6 +79,9 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     virtual void itemRemoved( const Akonadi::Item &item );
     virtual void collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent);
     virtual void collectionChanged(const Akonadi::Collection& collection);
+    // do not hide the other variant, use implementation from base class
+    // which just forwards to the one above
+    using Akonadi::AgentBase::ObserverV2::collectionChanged;
     virtual void collectionMoved(const Akonadi::Collection& collection, const Akonadi::Collection& source, const Akonadi::Collection& destination);
     virtual void collectionRemoved(const Akonadi::Collection& collection);
 

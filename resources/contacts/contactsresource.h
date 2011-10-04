@@ -56,6 +56,9 @@ class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
 
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
+    // do not hide the other variant, use implementation from base class
+    // which just forwards to the one above
+    using Akonadi::AgentBase::ObserverV2::collectionChanged;
     virtual void collectionRemoved( const Akonadi::Collection &collection );
 
     virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,

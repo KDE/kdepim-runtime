@@ -59,6 +59,9 @@ protected:
     virtual void itemUnlinked( const Akonadi::Item& item, const Akonadi::Collection& collection );
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers);
+    // do not hide the other variant, use implementation from base class
+    // which just forwards to the one above
+    using Akonadi::AgentBase::ObserverV2::collectionChanged;
     virtual void collectionRemoved( const Akonadi::Collection& collection );
 
   private:
