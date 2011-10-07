@@ -301,15 +301,20 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
 void SendJob::Private::slotSentMailCollectionFetched(KJob* job)
 {
   Akonadi::Collection fetchCol;
-  if( job->error() ) {
+  bool ok = false;
+  if( !job->error() ) {
+    const CollectionFetchJob *const fetchJob = qobject_cast<CollectionFetchJob*>( job );
+    if ( !fetchJob->collections().isEmpty() ) {
+        fetchCol = fetchJob->collections().first();
+        ok = true;
+    }
+  }
+  if ( !ok ) {
     if ( !SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
       abortPostJob();
       return;
     }
     fetchCol = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail );
-  } else {
-    const CollectionFetchJob *const fetchJob = qobject_cast<CollectionFetchJob*>( job );
-    fetchCol = fetchJob->collections().first();
   }
   currentJob = new ItemMoveJob( item, fetchCol, q );
   QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
