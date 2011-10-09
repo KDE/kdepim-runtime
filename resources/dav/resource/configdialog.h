@@ -45,6 +45,7 @@ class ConfigDialog : public KDialog
   private Q_SLOTS:
     void checkUserInput();
     void onAddButtonClicked();
+    void onSearchButtonClicked();
     void onRemoveButtonClicked();
     void onEditButtonClicked();
     void checkConfiguredUrlsButtonsState();

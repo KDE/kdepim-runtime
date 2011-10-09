@@ -17,6 +17,7 @@
 */
 
 #include "configdialog.h"
+#include "searchdialog.h"
 #include "settings.h"
 #include "urlconfigurationdialog.h"
 
@@ -58,6 +59,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
            this, SLOT(checkConfiguredUrlsButtonsState()) );
 
   connect( mUi.addButton, SIGNAL(clicked()), this, SLOT(onAddButtonClicked()) );
+  connect( mUi.searchButton, SIGNAL(clicked()), this, SLOT(onSearchButtonClicked()) );
   connect( mUi.removeButton, SIGNAL(clicked()), this, SLOT(onRemoveButtonClicked()) );
   connect( mUi.editButton, SIGNAL(clicked()), this, SLOT(onEditButtonClicked()) );
 
@@ -118,6 +120,43 @@ void ConfigDialog::onAddButtonClicked()
       addModelRow( protocolName, dlg->remoteUrl() );
       mAddedUrls << QPair<QString, DavUtils::Protocol>( dlg->remoteUrl(), DavUtils::Protocol( dlg->protocol() ) );
       checkUserInput();
+    }
+  }
+
+  delete dlg;
+}
+
+void ConfigDialog::onSearchButtonClicked()
+{
+  QPointer<SearchDialog> dlg = new SearchDialog( this );
+  dlg->setUsername( mUi.kcfg_defaultUsername->text() );
+  dlg->setPassword( mUi.password->text() );
+  const int result = dlg->exec();
+
+  if ( result == QDialog::Accepted && !dlg.isNull() ) {
+    QStringList results = dlg->selection();
+    foreach ( const QString &result, results ) {
+      QStringList split = result.split( "|" );
+      DavUtils::Protocol protocol = DavUtils::protocolByName( split.at( 0 ) );
+      if ( !Settings::self()->urlConfiguration( protocol, split.at( 1 ) ) ) {
+        Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
+
+        urlConfig->mUrl = split.at( 1 );
+        if ( dlg->useDefaultCredentials() ) {
+          urlConfig->mUser = "$default$";
+        }
+        else {
+          urlConfig->mUser = dlg->username();
+          urlConfig->mPassword = dlg->password();
+        }
+                urlConfig->mProtocol = protocol;
+
+        Settings::self()->newUrlConfiguration( urlConfig );
+        
+        addModelRow( split.at( 0 ), split.at( 1 ) );
+        mAddedUrls << QPair<QString, DavUtils::Protocol>( split.at( 1 ), protocol );
+        checkUserInput();
+      }
     }
   }
 

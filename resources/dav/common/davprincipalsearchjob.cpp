@@ -40,6 +40,11 @@ void DavPrincipalSearchJob::fetchProperty( const QString& name, const QString& n
   mFetchProperties << QPair<QString, QString>( propNamespace, name );
 }
 
+DavUtils::DavUrl DavPrincipalSearchJob::davUrl() const
+{
+  return mUrl;
+}
+
 void DavPrincipalSearchJob::start()
 {
   /*

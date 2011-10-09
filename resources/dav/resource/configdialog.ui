@@ -179,6 +179,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="searchButton">
+            <property name="text">
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="KPushButton" name="removeButton">
             <property name="text">
              <string>Remove</string>

@@ -65,6 +65,7 @@ set( davgroupwareresource_SRCS
   davfreebusyhandler.cpp
   davgroupwareresource.cpp
   davprotocolattribute.cpp
+  searchdialog.cpp
   setupwizard.cpp
   settings.cpp
   urlconfigurationdialog.cpp
@@ -77,7 +78,7 @@ file( GLOB providersFiles "../services/*.desktop" )
 install( FILES ${providersFiles} DESTINATION "${SERVICES_INSTALL_DIR}/akonadi/davgroupware-providers" )
 
 kde4_add_kcfg_files(davgroupwareresource_SRCS settingsbase.kcfgc)
-kde4_add_ui_files(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui)
+kde4_add_ui_files(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davgroupwareresource.kcfg org.kde.Akonadi.davGroupware.Settings)
 qt4_add_dbus_adaptor(davgroupwareresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davGroupware.Settings.xml settings.h Settings
