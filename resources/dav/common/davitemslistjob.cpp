@@ -93,8 +93,19 @@ void DavItemsListJob::davJobFinished( KJob *job )
   } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
     if ( !mSubJobSuccessful ) {
+      QString extraMessage;
+      if ( responseCode == 401 )
+        extraMessage = i18n( "Invalid username/password" );
+      else if ( responseCode == 403 )
+        extraMessage = i18n( "Acess forbidden" );
+      else if ( responseCode == 404 )
+        extraMessage = i18n( "Resource not found" );
+      else
+        extraMessage = i18n( "HTTP error" );
+
       setError( UserDefinedError );
-      setErrorText( i18n( "There was a problem with the request : error %1.", responseCode ) );
+      setErrorText( i18n( "There was a problem with the request.\n"
+                          "%1 (%2).", extraMessage, responseCode ) );
     }
     if ( mSubJobCount == 0 )
       emitResult();

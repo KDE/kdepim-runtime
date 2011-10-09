@@ -61,8 +61,17 @@ void DavCollectionDeleteJob::davJobFinished( KJob *job )
     return;
   } else if ( responseCode > 399 && responseCode < 500 ) {
     // User-side error
+    QString extraMessage;
+    if ( responseCode == 401 )
+      extraMessage = i18n( "Invalid username/password" );
+    else if ( responseCode == 403 )
+      extraMessage = i18n( "Acess forbidden" );
+    else
+      extraMessage = i18n( "HTTP error" );
+
     setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request - the collection has not been deleted from the server. Error %1.", responseCode ) );
+    setErrorText( i18n( "There was a problem with the request. The collection has not been deleted from the server.\n"
+                        "%1 (%2).", extraMessage, responseCode ) );
     emitResult();
     return;
   }
