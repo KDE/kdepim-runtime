@@ -206,7 +206,7 @@ public:
      * by the property. Inspired by RFC 2445 sec. 4.2.12. Originally 
      * this parameter had three sets of allowed values. Which set applied 
      * to a particular case - depended on the type of calendar entity 
-     * this parameter occured in. (event, todo, journal entry). This 
+     * this parameter occurred in. (event, todo, journal entry). This 
      * would be awkward to model in RDF so a single ParticipationStatus 
      * class has been introduced. Terms of the values vocabulary are 
      * expressed as instances of this class. Users are advised to pay 
@@ -225,7 +225,7 @@ public:
      * by the property. Inspired by RFC 2445 sec. 4.2.12. Originally 
      * this parameter had three sets of allowed values. Which set applied 
      * to a particular case - depended on the type of calendar entity 
-     * this parameter occured in. (event, todo, journal entry). This 
+     * this parameter occurred in. (event, todo, journal entry). This 
      * would be awkward to model in RDF so a single ParticipationStatus 
      * class has been introduced. Terms of the values vocabulary are 
      * expressed as instances of this class. Users are advised to pay 
@@ -245,7 +245,7 @@ public:
      * by the property. Inspired by RFC 2445 sec. 4.2.12. Originally 
      * this parameter had three sets of allowed values. Which set applied 
      * to a particular case - depended on the type of calendar entity 
-     * this parameter occured in. (event, todo, journal entry). This 
+     * this parameter occurred in. (event, todo, journal entry). This 
      * would be awkward to model in RDF so a single ParticipationStatus 
      * class has been introduced. Terms of the values vocabulary are 
      * expressed as instances of this class. Users are advised to pay 

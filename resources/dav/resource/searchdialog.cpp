@@ -129,7 +129,7 @@ void SearchDialog::search()
 void SearchDialog::onSearchJobFinished( KJob* job )
 {
   if ( job->error() ) {
-    KMessageBox::error( this, i18n( "An error occured when executing search:\n%1", job->errorText() ) );
+    KMessageBox::error( this, i18n( "An error occurred when executing search:\n%1", job->errorText() ) );
     return;
   }
 
@@ -173,7 +173,7 @@ void SearchDialog::onCollectionsFetchJobFinished( KJob* job )
   
   if ( job->error() ) {
     if ( mSubJobCount == 0 )
-      KMessageBox::error( this, i18n( "An error occured when executing search:\n%1", job->errorText() ) );
+      KMessageBox::error( this, i18n( "An error occurred when executing search:\n%1", job->errorText() ) );
     return;
   }
 

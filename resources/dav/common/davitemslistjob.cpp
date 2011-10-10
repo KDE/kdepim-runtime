@@ -97,7 +97,7 @@ void DavItemsListJob::davJobFinished( KJob *job )
       if ( responseCode == 401 )
         extraMessage = i18n( "Invalid username/password" );
       else if ( responseCode == 403 )
-        extraMessage = i18n( "Acess forbidden" );
+        extraMessage = i18n( "Access forbidden" );
       else if ( responseCode == 404 )
         extraMessage = i18n( "Resource not found" );
       else
