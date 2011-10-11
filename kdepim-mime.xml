@@ -20,5 +20,6 @@ Notes:
   <mime-type type="text/x-vnd.akonadi.note">
     <sub-class-of type="text/plain"/>
     <comment>Akonadi Note</comment>
+    <alias type="application/x-vnd.akonadi.note"/>
   </mime-type>
 </mime-info>
