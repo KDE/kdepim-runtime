@@ -19,6 +19,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/filestore
   ${NEPOMUK_INCLUDES}
+  ${SOPRANO_INCLUDE_DIR}
 )
 
 macro(add_resource_iface _kcfgFile _ifaceName _className)
