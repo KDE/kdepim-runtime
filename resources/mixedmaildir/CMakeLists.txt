@@ -9,8 +9,13 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/kmindexreader
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
-    ${NEPOMUK_INCLUDES}
 )
+if(NOT KDEPIM_NO_NEPOMUK)
+  include_directories(
+      ${NEPOMUK_INCLUDES}
+      ${SOPRANO_INCLUDE_DIR}
+  )
+endif()
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
