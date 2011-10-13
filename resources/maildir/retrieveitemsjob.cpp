@@ -146,6 +146,8 @@ void RetrieveItemsJob::entriesProcessed()
   
   if ( !m_transaction ) // no jobs created here -> done
     emitResult();
+  else
+    m_transaction->commit();
 }
 
 
@@ -154,6 +156,7 @@ Akonadi::TransactionSequence* RetrieveItemsJob::transaction()
 {
   if ( !m_transaction ) {
     m_transaction = new Akonadi::TransactionSequence( this );
+    m_transaction->setAutomaticCommittingEnabled( false );
     connect( m_transaction, SIGNAL(result(KJob*)), SLOT(transactionDone(KJob*)) );
   }
   return m_transaction;
