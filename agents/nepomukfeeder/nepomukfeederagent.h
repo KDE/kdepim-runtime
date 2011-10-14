@@ -115,6 +115,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     virtual bool needsReIndexing() const;
 
     void checkOnline();
+    void setRunning( bool running );
 
   private slots:
     void selfTest();

@@ -262,19 +262,25 @@ void NepomukFeederAgent::slotFullyIndexed()
 
 void NepomukFeederAgent::doSetOnline(bool online)
 {
-  changeRecorder()->setChangeRecordingEnabled( !online );
+  setRunning( online );
   Akonadi::AgentBase::doSetOnline( online );
 }
 
 void NepomukFeederAgent::checkOnline()
 {
-  if ( mIdleDetectionDisabled )
-    setOnline( mSelfTestPassed );
-  else
-    setOnline( mSelfTestPassed && mSystemIsIdle );
+  setOnline( mSelfTestPassed );
+}
 
-  mQueue.setOnline(isOnline());
-  if ( isOnline() && !mQueue.isEmpty() ) {
+void NepomukFeederAgent::setRunning( bool running )
+{
+  //If the agent was taken offline manually the idle detection shouldn't bring it online again,
+  //and the online state shouldn't start the feeder if the system is not idle
+  if ( running && ( !isOnline() || ( !mIdleDetectionDisabled && !mSystemIsIdle ) ) ) {
+    return;
+  }
+  changeRecorder()->setChangeRecordingEnabled( !running );
+  mQueue.setOnline(running);
+  if ( running && !mQueue.isEmpty() ) {
     if ( mQueue.currentCollection().isValid() )
       emit status( AgentBase::Running, i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() ) );
     else
@@ -290,7 +296,7 @@ void NepomukFeederAgent::systemIdle()
   emit status( Idle, i18n( "System idle, ready to index data." ) );
   mSystemIsIdle = true;
   KIdleTime::instance()->catchNextResumeEvent();
-  checkOnline();
+  setRunning( mSystemIsIdle );
 }
 
 void NepomukFeederAgent::systemResumed()
@@ -300,7 +306,7 @@ void NepomukFeederAgent::systemResumed()
 
   emit status( Idle, i18n( "System busy, indexing suspended." ) );
   mSystemIsIdle = false;
-  checkOnline();
+  setRunning( mSystemIsIdle );
 }
 
 void NepomukFeederAgent::idle(const QString &string) 
