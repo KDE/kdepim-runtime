@@ -330,6 +330,9 @@ void Settings::updateRemoteUrls()
 
 void Settings::savePassword(const QString& key, const QString& user, const QString& password)
 {
+  QString entry = key + "," + user;
+  mPasswordsCache[entry] = password;
+
   KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
   if ( !wallet )
     return;
@@ -340,33 +343,37 @@ void Settings::savePassword(const QString& key, const QString& user, const QStri
   if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) )
     return;
 
-  QString entry = key + "," + user;
   wallet->writePassword( entry, password );
 }
 
 QString Settings::loadPassword( const QString& key, const QString &user )
 {
+  QString entry;
+  QString pass;
+
+  if ( user == QLatin1String( "$default$" ) )
+    entry = mResourceIdentifier + "," + user;
+  else
+    entry = key + "," + user;
+
+  if ( mPasswordsCache.contains( entry ) )
+    return mPasswordsCache[entry];
+  
   KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
   if ( !wallet )
-    return QString();
+    return pass;
 
   if ( !wallet->hasFolder( KWallet::Wallet::PasswordFolder() ) )
     wallet->createFolder( KWallet::Wallet::PasswordFolder() );
 
   if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) )
-    return QString();
+    return pass;
 
-  QString entry;
-  if ( user == QLatin1String( "$default$" ) )
-    entry = mResourceIdentifier + "," + user;
-  else
-    entry = key + "," + user;
- 
   if ( !wallet->hasEntry( entry ) )
-    return QString();
+    return pass;
 
-  QString pass;
   wallet->readPassword( entry, pass );
+  mPasswordsCache[entry] = pass;
   return pass;
 }
 

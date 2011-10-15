@@ -111,6 +111,7 @@ class Settings : public SettingsBase
     WId mWinId;
     QString mResourceIdentifier;
     QMap<QString, UrlConfiguration*> mUrls;
+    QMap<QString, QString> mPasswordsCache;
     QString mCollectionsUrlsMappingCache;
     QMap<QString, QString> mCollectionsUrlsMapping;
     QList<UrlConfiguration*> mToDeleteUrlConfigs;
