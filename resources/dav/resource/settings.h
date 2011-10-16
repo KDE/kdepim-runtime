@@ -105,6 +105,7 @@ class Settings : public SettingsBase
     void updateRemoteUrls();
     void savePassword( const QString &key, const QString &user, const QString &password );
     QString loadPassword( const QString &key, const QString &user );
+    QString promptForPassword( const QString &user );
 
     void updateToV2();
 

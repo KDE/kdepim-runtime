@@ -25,7 +25,9 @@
 
 #include <kapplication.h>
 #include <kdebug.h>
+#include <kdialog.h>
 #include <kglobal.h>
+#include <klineedit.h>
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <kwallet.h>
@@ -33,8 +35,12 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QDataStream>
 #include <QtCore/QFile>
+#include <QtCore/QPointer>
 #include <QtCore/QRegExp>
 #include <QtDBus/QDBusConnection>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QVBoxLayout>
 
 class SettingsHelper
 {
@@ -328,7 +334,7 @@ void Settings::updateRemoteUrls()
   setRemoteUrls( newUrls );
 }
 
-void Settings::savePassword(const QString& key, const QString& user, const QString& password)
+void Settings::savePassword( const QString &key, const QString &user, const QString &password )
 {
   QString entry = key + "," + user;
   mPasswordsCache[entry] = password;
@@ -346,7 +352,7 @@ void Settings::savePassword(const QString& key, const QString& user, const QStri
   wallet->writePassword( entry, password );
 }
 
-QString Settings::loadPassword( const QString& key, const QString &user )
+QString Settings::loadPassword( const QString &key, const QString &user )
 {
   QString entry;
   QString pass;
@@ -360,21 +366,63 @@ QString Settings::loadPassword( const QString& key, const QString &user )
     return mPasswordsCache[entry];
   
   KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
-  if ( !wallet )
-    return pass;
+  if ( !wallet ) {
+    pass = promptForPassword( user );
+  }
+  else {
+    if ( !wallet->hasFolder( KWallet::Wallet::PasswordFolder() ) )
+      wallet->createFolder( KWallet::Wallet::PasswordFolder() );
 
-  if ( !wallet->hasFolder( KWallet::Wallet::PasswordFolder() ) )
-    wallet->createFolder( KWallet::Wallet::PasswordFolder() );
+    if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) ) {
+      pass = promptForPassword( user );
+    }
+    else {
+      if ( !wallet->hasEntry( entry ) ) {
+        pass = promptForPassword( user );
+        wallet->writePassword( entry, pass );
+      }
+      else {
+        wallet->readPassword( entry, pass );
+      }
+    }
+  }
 
-  if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) )
-    return pass;
+  if ( !pass.isEmpty() )
+    mPasswordsCache[entry] = pass;
 
-  if ( !wallet->hasEntry( entry ) )
-    return pass;
-
-  wallet->readPassword( entry, pass );
-  mPasswordsCache[entry] = pass;
   return pass;
+}
+
+QString Settings::promptForPassword( const QString &user )
+{
+  QPointer<KDialog> dlg = new KDialog();
+  QString password;
+
+  QWidget *mainWidget = new QWidget( dlg );
+  QVBoxLayout *vLayout = new QVBoxLayout();
+  mainWidget->setLayout( vLayout );
+  QLabel *label = new QLabel( i18n( "A password is required for user %1",
+                                    ( user == QLatin1String( "$default$" ) ? defaultUsername() : user ) ),
+                              mainWidget
+                            );
+  vLayout->addWidget( label );
+  QHBoxLayout *hLayout = new QHBoxLayout();
+  label = new QLabel( i18n( "Password: " ), mainWidget );
+  hLayout->addWidget( label );
+  KLineEdit *lineEdit = new KLineEdit();
+  lineEdit->setPasswordMode( true );
+  hLayout->addWidget( lineEdit );
+  vLayout->addLayout( hLayout );
+  dlg->setMainWidget( mainWidget );
+
+  const int result = dlg->exec();
+
+  if ( result == QDialog::Accepted && !dlg.isNull() ) {
+    password = lineEdit->text();
+  }
+
+  delete dlg;
+  return password;
 }
 
 void Settings::updateToV2()
