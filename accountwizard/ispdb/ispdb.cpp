@@ -88,17 +88,21 @@ void Ispdb::slotResult( KJob* job )
         QDomElement e = n.toElement();
         if ( !e.isNull() ) {
             //kDebug()  << qPrintable(e.tagName());
-            if ( e.tagName() == "domain" )
+          const QString tagName( e.tagName() );
+            if ( tagName == QLatin1String( "domain" ) )
                 mDomains << e.text();
-            else if ( e.tagName() == "displayName" )
+            else if ( tagName == QLatin1String( "displayName" ) )
                 mDisplayName = e.text();
-            else if ( e.tagName() == "displayShortName" )
+            else if ( tagName == QLatin1String( "displayShortName" ) )
                 mDisplayShortName = e.text();
-            else if ( e.tagName() == "incomingServer" && e.attribute( "type" ) == "imap" )
+            else if ( tagName == QLatin1String( "incomingServer" )
+                      && e.attribute( "type" ) == QLatin1String( "imap" ) )
                 mImapServers.append( createServer( e ) );
-            else if ( e.tagName() == "incomingServer" && e.attribute( "type" ) == "pop3" )
+            else if ( tagName == QLatin1String( "incomingServer" )
+                      && e.attribute( "type" ) == QLatin1String( "pop3" ) )
                 mPop3Servers.append( createServer( e ) );
-            else if ( e.tagName() == "outgoingServer" && e.attribute( "type" ) == "smtp" )
+            else if ( tagName == QLatin1String( "outgoingServer" )
+                      && e.attribute( "type" ) == QLatin1String( "smtp" ) )
                 mSmtpServers.append( createServer( e ) );
         }
         n = n.nextSibling();
@@ -132,31 +136,36 @@ server Ispdb::createServer( const QDomElement& n )
     while ( !o.isNull() ) {
         QDomElement f = o.toElement();
         if ( !f.isNull() ) {
-            if ( f.tagName() == "hostname" )
+          const QString tagName( f.tagName() );
+            if ( tagName == QLatin1String( "hostname" ) )
                 s.hostname = replacePlaceholders( f.text() );
-            else if ( f.tagName() == "port" )
+            else if ( tagName == QLatin1String( "port" ) )
                 s.port = f.text().toInt();
-            else if ( f.tagName() == "socketType" ) {
-                if ( f.text() == "plain" )
+            else if ( tagName == QLatin1String( "socketType" ) ) {
+              const QString type( f.text() );
+                if ( type == QLatin1String( "plain" ) )
                     s.socketType = None;
-                else if ( f.text() == "SSL" )
+                else if ( type == QLatin1String( "SSL" ) )
                     s.socketType = SSL;
-                if ( f.text() == "STARTTLS" )
+                if ( type == QLatin1String( "STARTTLS" ) )
                     s.socketType = StartTLS;
-            } else if ( f.tagName() == "username" ) {
+            } else if ( tagName == QLatin1String( "username" ) ) {
                 s.username = replacePlaceholders( f.text() );
-            } else if ( f.tagName() == "authentication" ) {
-                if ( f.text() == "password-cleartext" || f.text() == "plain" )
-                    s.authentication = Plain;
-                else if ( f.text() == "password-encrypted" || f.text() == "secure" )
-                    s.authentication = CramMD5;
-                else if ( f.text() == "NTLM" )
+            } else if ( tagName == QLatin1String( "authentication" ) ) {
+              const QString type( f.text() );
+                if ( type == QLatin1String( "password-cleartext" )
+                     || type == QLatin1String( "plain" ) )
+                  s.authentication = Plain;
+                else if ( type == QLatin1String( "password-encrypted" )
+                          || type == QLatin1String( "secure" ) )
+                  s.authentication = CramMD5;
+                else if ( type == QLatin1String( "NTLM" ) )
                     s.authentication = NTLM;
-                else if ( f.text() == "GSSAPI" )
+                else if ( type == QLatin1String( "GSSAPI" ) )
                     s.authentication = GSSAPI;
-                else if ( f.text() == "client-ip-based" )
+                else if ( type == QLatin1String( "client-ip-based" ) )
                     s.authentication = ClientIP;
-                else if ( f.text() == "none" )
+                else if ( type == QLatin1String( "none" ) )
                     s.authentication = NoAuth;
             }
         }
