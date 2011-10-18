@@ -32,7 +32,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
     KDialog( parent ),
     mToplevelIsContainer( false )
 {
-  setCaption( i18n( "Select a MailDir folder" ) );
+  setCaption( i18n( "Select a KMail Mail folder" ) );
   ui.setupUi( mainWidget() );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
