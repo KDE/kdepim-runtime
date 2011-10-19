@@ -445,7 +445,9 @@ void KMailMigrator::migrateConfigurationDialogRestriction()
 void KMailMigrator::cleanupConfigFile()
 {
   mIt = mAccounts.begin();
-  while ( mIt != mAccounts.end() ) {
+  AccountIterator end( mAccounts.end() ) ;
+
+  while ( mIt != end ) {
     const QString accountName = *mIt;
     deleteOldGroup( accountName );
     ++mIt;
@@ -608,24 +610,24 @@ bool KMailMigrator::migrateCurrentAccount()
   mForwardResourceNotifications = true;
 
   const QString type = group.readEntry( "Type" ).toLower();
-  if ( type == "imap" ) {
+  if ( type == QLatin1String( "imap" ) ) {
     createAgentInstance( "akonadi_imap_resource", this,
                          SLOT(imapAccountCreated(KJob*)) );
   }
-  else if ( type == "dimap" ) {
+  else if ( type == QLatin1String( "dimap" ) ) {
     createAgentInstance( "akonadi_imap_resource", this,
                          SLOT(imapDisconnectedAccountCreated(KJob*)) );
 
   }
-  else if ( type == "pop" ) {
+  else if ( type == QLatin1String( "pop" ) ) {
     createAgentInstance( "akonadi_pop3_resource", this,
                          SLOT(pop3AccountCreated(KJob*)) );
   }
-  else if ( type == "maildir" ) {
+  else if ( type == QLatin1String( "maildir" ) ) {
     createAgentInstance( "akonadi_maildir_resource", this,
                          SLOT(maildirAccountCreated(KJob*)) );
   }
-  else if ( type == "local" ) {
+  else if ( type == QLatin1String( "local" ) ) {
     createAgentInstance( "akonadi_mbox_resource", this,
                          SLOT(mboxAccountCreated(KJob*)) );
   }
@@ -897,15 +899,15 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
 
   iface->setPath( config.readEntry( "Location" ) );
   const QString lockType = config.readEntry( "LockType" ).toLower();
-  if ( lockType == "procmail_locktype" ) {
+  if ( lockType == QLatin1String( "procmail_locktype" ) ) {
     iface->setLockfileMethod( Procmail );
     iface->setLockfile( config.readEntry( "ProcmailLockFile" ) );
   }
-  else if ( lockType == "mutt_dotlock" )
+  else if ( lockType == QLatin1String( "mutt_dotlock" ) )
     iface->setLockfileMethod( MuttDotLock );
-  else if ( lockType == "mutt_dotlock_privileged" )
+  else if ( lockType == QLatin1String( "mutt_dotlock_privileged" ) )
     iface->setLockfileMethod( MuttDotLockPrivileged );
-  else if ( lockType == "none" )
+  else if ( lockType == QLatin1String( "none" ) )
     iface->setLockfileMethod( MboxNone );
 
   // make sure the config is saved
@@ -1151,19 +1153,19 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   else
     iface->setSafety( "NONE" );
   const QString authentication = config.readEntry( "auth" ).toUpper();
-  if ( authentication == "LOGIN" )
+  if ( authentication == QLatin1String( "LOGIN" ) )
     iface->setAuthentication(  MailTransport::Transport::EnumAuthenticationType::LOGIN );
-  else if ( authentication == "PLAIN" )
+  else if ( authentication == QLatin1String( "PLAIN" ) )
     iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::PLAIN );
-  else if ( authentication == "CRAM-MD5" )
+  else if ( authentication == QLatin1String( "CRAM-MD5" ) )
     iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
-  else if ( authentication == "DIGEST-MD5" )
+  else if ( authentication == QLatin1String( "DIGEST-MD5" ) )
     iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
-  else if ( authentication == "NTLM" )
+  else if ( authentication == QLatin1String( "NTLM" ) )
     iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::NTLM );
-  else if ( authentication == "GSSAPI" )
+  else if ( authentication == QLatin1String( "GSSAPI" ) )
     iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::GSSAPI );
-  else if ( authentication == "ANONYMOUS" )
+  else if ( authentication == QLatin1String( "ANONYMOUS" ) )
     iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::ANONYMOUS );
   else {
     iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CLEAR );
