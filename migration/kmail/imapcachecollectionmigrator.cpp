@@ -512,7 +512,7 @@ ImapCacheCollectionMigrator::MigrationOptions ImapCacheCollectionMigrator::migra
 void ImapCacheCollectionMigrator::setUnsubscribedImapFolders( const QStringList &imapFolders )
 {
   d->mUnsubscribedImapFolders.clear();
-  Q_FOREACH( const QString imapFolder, imapFolders ) {
+  Q_FOREACH( const QString &imapFolder, imapFolders ) {
     if ( imapFolder.endsWith( QLatin1Char( '/' ) ) ) {
       d->mUnsubscribedImapFolders << imapFolder.left( imapFolder.size() - 1 );
     } else {
