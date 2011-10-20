@@ -1,0 +1,18 @@
+[Desktop Entry]
+MimeType=message/rfc822;message/news;
+Type=Service
+X-KDE-ServiceTypes=AkonadiNepomukFeeder
+X-KDE-Library=akonadi_nepomuk_email_feeder
+X-KDE-ClassName=Akonadi::NepomukMailFeeder
+Name=Nepomuk Mail Feeder
+Name[ia]=Syndication de posta de Nepomuk
+Name[lt]=Nepomuk pašto tiektuvas
+Name[nb]=E-postmater for Nepomuk
+Name[nds]=Nepomuk-Nettpostingaav
+Name[nl]=Nepumuk E-mail-feeder
+Name[pt]=Alimentação de E-Mail do Nepomuk
+Name[pt_BR]=Alimentador de e-mail do Nepomuk
+Name[sv]=E-postinmatning till Nepomuk
+Name[uk]=Передавач пошти Nepomuk
+Name[x-test]=xxNepomuk Mail Feederxx
+Name[zh_TW]=Nepomuk Mail Feeder

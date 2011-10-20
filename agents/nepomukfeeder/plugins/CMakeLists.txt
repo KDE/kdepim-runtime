@@ -51,7 +51,23 @@ install(
   TARGETS akonadi_nepomuk_contact_feeder
   DESTINATION ${PLUGIN_INSTALL_DIR})
 
+kde4_add_plugin( akonadi_nepomuk_email_feeder nepomukmailfeeder.cpp )
+target_link_libraries( akonadi_nepomuk_email_feeder 
+  ${NEPOMUKFEEDER_SHARED_LIBS}
+  ${KDEPIMLIBS_KCALCORE_LIBS}
+  ${KDEPIMLIBS_AKONADI_LIBS}
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  nepomukfeederpluginlib
+)
 
+install(
+  FILES nepomukmailfeeder.desktop
+  DESTINATION ${SERVICES_INSTALL_DIR})
+
+install(
+  TARGETS akonadi_nepomuk_email_feeder
+  DESTINATION ${PLUGIN_INSTALL_DIR})
 
 
 
