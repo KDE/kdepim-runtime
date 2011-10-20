@@ -325,7 +325,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
     QStringList lstCollection = kcmkmailsummary.readEntry( "Role_CheckState", QStringList() );
     QString visualPath( mCurrentFolderId );
-    visualPath.replace( ".directory", "" );
+    visualPath.remove( ".directory" );
     visualPath.replace( "/.", "/" );
     if ( !visualPath.isEmpty() && ( visualPath.at( 0 ) == '.' ) )
       visualPath.remove( 0, 1 ); //remove first "."
