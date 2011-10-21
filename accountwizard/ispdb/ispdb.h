@@ -96,9 +96,12 @@ signals:
     void finished( bool );
 
 private:
+    enum searchServerType { IspAutoConfig = 0, IspWellKnow, DataBase };
+
     server createServer( const QDomElement& n );
     void lookupInDb();
     QString replacePlaceholders( const QString& );
+    void startJob( const KUrl&url );
 
     KMime::Types::AddrSpec mAddr; // emailaddress
     QByteArray mData;             // storage of incoming data from kio
@@ -107,6 +110,7 @@ private:
     QStringList mDomains;
     QString mDisplayName, mDisplayShortName;
     QList< server > mImapServers, mPop3Servers, mSmtpServers;
+    Ispdb::searchServerType mServerType;
 };
 
 struct server {
