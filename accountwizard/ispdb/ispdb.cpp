@@ -25,7 +25,8 @@
 #include <kmime/kmime_header_parsing.h>
 #include <QDomDocument>
 
-Ispdb::Ispdb( QObject *parent ) : QObject( parent )
+Ispdb::Ispdb( QObject *parent )
+  : QObject( parent ), mServerType( IspAutoConfig )
 {
 }
 
@@ -47,11 +48,8 @@ void Ispdb::start()
     lookupInDb();
 }
 
-void Ispdb::lookupInDb()
+void Ispdb::startJob( const KUrl&url )
 {
-    const KUrl url( "https://live.mozillamessaging.com/autoconfig/v1.1/" + mAddr.domain );
-    kDebug() << mAddr.domain << url;
-
     QMap< QString, QVariant > map;
     map["errorPage"] = false;
 
@@ -63,12 +61,56 @@ void Ispdb::lookupInDb()
              this, SLOT( dataArrived( KIO::Job*, const QByteArray& ) ) );
 }
 
+void Ispdb::lookupInDb()
+{
+  KUrl url;
+  switch( mServerType )
+  {
+  case IspAutoConfig:
+  {
+    url = KUrl( "http://autoconfig." + mAddr.domain.toLower() + "/mail/config-v1.1.xml" );
+  }
+  break;  
+  case IspWellKnow:
+  {
+    url = KUrl( "http://" + mAddr.domain.toLower() + "/.well-known/autoconfig/mail/config-v1.1.xml" );
+    break;
+  }
+  case DataBase:
+    url = KUrl( "https://live.mozillamessaging.com/autoconfig/v1.1/" + mAddr.domain.toLower() );
+  break;
+  }
+  startJob( url );
+}
+
 void Ispdb::slotResult( KJob* job )
 {
     if ( job->error() ) {
-        kDebug() << "Fetching failed" << job->errorString();
+      kDebug() << "Fetching failed" << job->errorString();
+      bool lookupFinished = false;
+      
+      switch( mServerType ) {
+      case IspAutoConfig: {
+        mServerType = IspWellKnow;
+        break;
+      }
+      case IspWellKnow: {
+        mServerType = DataBase;
+        break;
+      }
+      case DataBase: {
+        lookupFinished = true;
+        break;
+      }
+      }
+      
+      if ( lookupFinished )
+      {
         emit finished( false );
         return;
+      }
+      lookupInDb();
+      return;
     }
 
     //kDebug() << mData;
