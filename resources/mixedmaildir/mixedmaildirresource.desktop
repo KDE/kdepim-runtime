@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=KMail Mail Folder
 Name[el]=Φάκελος αλληλογραφίας KMail
+Name[ia]=Dossier de posta de KMail
 Name[nds]=KMail-Nettpostorner
 Name[nl]=E-mailmap van KMail
 Name[pt]=Pasta de Correio do KMail
@@ -9,6 +10,7 @@ Name[uk]=Тека пошти KMail
 Name[x-test]=xxKMail Mail Folderxx
 Comment=Loads data from a local KMail mail folder
 Comment[el]=Φόρτωση δεδομένων από έναν τοπικό φάκελο αλληλογραφίας του KMail
+Comment[ia]=Carga datos ex un dossier local de posta de KMail
 Comment[nds]=Laadt Daten ut en lokaal KMail-Nettpostorner
 Comment[nl]=Laadt gegevens van een lokale e-mailmap van Kmail
 Comment[pt]=Carrega os dados a partir de uma pasta de correio local do KMail
