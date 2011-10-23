@@ -25,4 +25,20 @@ Notes:
     <sub-class-of type="text/plain"/>
     <comment>Legacy Akonadi Note</comment>
   </mime-type>
+  <mime-type type="application/x-vnd.kde.alarm">
+    <sub-class-of type="text/calendar"/>
+    <comment>KAlarm Alarm</comment>
+  </mime-type>
+  <mime-type type="application/x-vnd.kde.alarm.active">
+    <sub-class-of type="application/x-vnd.kde.alarm"/>
+    <comment>KAlarm Active Alarm</comment>
+  </mime-type>
+  <mime-type type="application/x-vnd.kde.alarm.archived">
+    <sub-class-of type="application/x-vnd.kde.alarm"/>
+    <comment>KAlarm Archived Alarm</comment>
+  </mime-type>
+  <mime-type type="application/x-vnd.kde.alarm.template">
+    <sub-class-of type="application/x-vnd.kde.alarm"/>
+    <comment>KAlarm Alarm Template</comment>
+  </mime-type>
 </mime-info>

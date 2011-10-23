@@ -49,6 +49,17 @@ target_link_libraries(akonadi_serializer_microblog ${KDEPIMLIBS_AKONADI_LIBS} ${
 install(TARGETS akonadi_serializer_microblog DESTINATION ${PLUGIN_INSTALL_DIR})
 endif(NOT WINCE)
 
+set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp)
+kde4_add_plugin(akonadi_serializer_kalarm ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})
+target_link_libraries(akonadi_serializer_kalarm
+                      ${KDEPIMLIBS_KALARMCAL_LIBS}
+                      ${KDEPIMLIBS_KCALCORE_LIBS}
+                      ${KDEPIMLIBS_KCALUTILS_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS}
+                      ${KDE4_KDECORE_LIBS}
+                     )
+install(TARGETS akonadi_serializer_kalarm DESTINATION ${PLUGIN_INSTALL_DIR})
+
 ########### install files ###############
 
 install( FILES
@@ -59,5 +70,6 @@ install( FILES
   akonadi_serializer_bookmark.desktop
   akonadi_serializer_contactgroup.desktop
   akonadi_serializer_microblog.desktop
+  akonadi_serializer_kalarm.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)
 

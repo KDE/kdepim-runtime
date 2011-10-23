@@ -33,6 +33,7 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 )
 
 add_subdirectory( akonotes )
+add_subdirectory( kalarm )
 add_subdirectory( contacts )
 macro_optional_add_subdirectory( dav )
 add_subdirectory( ical )
