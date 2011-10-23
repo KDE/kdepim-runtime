@@ -1,6 +1,5 @@
 /*
  *  akonadi_serializer_kalarm.cpp  -  Akonadi resource serializer for KAlarm
- *  Program:  kalarm
  *  Copyright © 2009-2011 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it

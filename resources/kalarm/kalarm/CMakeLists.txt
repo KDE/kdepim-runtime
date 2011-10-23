@@ -1,51 +1,34 @@
-########### files copied from kdepim-runtime module ###############
-set(AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
-    ${AKONADI_SHARED_RESOURCES}/singlefileresourcebase.cpp
-    ${AKONADI_SHARED_RESOURCES}/singlefileresourceconfigdialogbase.cpp
-)
-
-if (KDEPIM_MOBILE_UI)
-set(AKONADI_SINGLEFILERESOURCE_SHARED_UI
-    ${AKONADI_SHARED_RESOURCES}/singlefileresourceconfigdialog_mobile.ui
-)
-else (KDEPIM_MOBILE_UI)
-set(AKONADI_SINGLEFILERESOURCE_SHARED_UI
-    ${AKONADI_SHARED_RESOURCES}/singlefileresourceconfigdialog_desktop.ui
-)
-endif (KDEPIM_MOBILE_UI)
-########### end files copied from kdepim-runtime module ###############
-
 include_directories(
-    ${KALARM_COMMON_RESOURCES}
     ${AKONADI_ICAL_RESOURCE}
-    ${AKONADI_SHARED_RESOURCES}
+    #${AKONADI_SHARED_RESOURCES}
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../shared
 )
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
+
 ########### next target ###############
-remove_definitions(-DKDE_DEFAULT_DEBUG_AREA=5950)
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5952)
 add_definitions(-DSETTINGS_NAMESPACE=Akonadi_KAlarm_Resource)
 
 set(kalarmresource_SRCS
-    ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
+    #${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
     ${AKONADI_ICAL_RESOURCE}/icalresourcebase.cpp
     kalarmresource.cpp
-    ../common/kalarmresourcecommon.cpp
-    ../common/alarmtyperadiowidget.cpp
+    ../shared/kalarmresourcecommon.cpp
+    ../shared/alarmtyperadiowidget.cpp
 )
 
 install(FILES kalarmresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
-kde4_add_ui_files(kalarmresource_SRCS ../common/alarmtyperadiowidget.ui ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+kde4_add_ui_files(kalarmresource_SRCS ../shared/alarmtyperadiowidget.ui ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kde4_add_kcfg_files(kalarmresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmresource.kcfg org.kde.Akonadi.KAlarm.Settings)
 qt4_add_dbus_adaptor(kalarmresource_SRCS
-    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor
+    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor)
 add_custom_target(kalarm_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml)
-)
 
 if (NOT WINCE)
     kde4_add_plugin(akonadi_kalarm_resource ${kalarmresource_SRCS})
