@@ -348,18 +348,18 @@ void ItemQueue::removeDataResult(KJob* job)
   mResourceGraph.clear();
   //trigger processing of next collection as everything of this one has been stored
   //kDebug() << "removing completed, saving complete, batch done==================";
-  block = false;
-  emit batchFinished();
-  if ( mItemPipeline.isEmpty() ) {
-    //kDebug() << "indexing completed";
-    emit finished();
-  }
 }
 
 void ItemQueue::jobResult(KJob* job)
 {
   if ( job->error() )
     kWarning() << job->errorString();
+  block = false;
+  emit batchFinished();
+  if ( mItemPipeline.isEmpty() ) {
+    //kDebug() << "indexing completed";
+    emit finished();
+  }
 }
 
 bool ItemQueue::isEmpty()
