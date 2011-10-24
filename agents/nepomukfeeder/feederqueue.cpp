@@ -232,7 +232,7 @@ void FeederQueue::processItemQueue()
     }
   } else {
     //kDebug() << "idle";
-    emit idle(QString());
+    emit idle( i18n( "Ready to index data." ) );
   }
 
   if ( !highPrioQueue.isEmpty() || !lowPrioQueue.isEmpty() ) {
