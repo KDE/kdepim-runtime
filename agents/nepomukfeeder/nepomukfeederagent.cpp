@@ -88,8 +88,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->itemFetchScope().setCacheOnly( true );
 
-  disableIdleDetection( false ); //Could be removed if not needed anymore
-
   mNepomukStartupTimeout.setInterval( 300 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
   connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
@@ -101,6 +99,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect( KIdleTime::instance(), SIGNAL(timeoutReached(int)), SLOT(systemIdle()) );
   connect( KIdleTime::instance(), SIGNAL(resumingFromIdle()), SLOT(systemResumed()) );
   KIdleTime::instance()->addIdleTimeout( 10 * 1000 );
+  disableIdleDetection( false ); //Could be removed if not needed anymore
 
   checkOnline();
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
@@ -245,6 +244,11 @@ void NepomukFeederAgent::selfTest()
 void NepomukFeederAgent::disableIdleDetection( bool value )
 {
   mIdleDetectionDisabled = value;
+  if (KIdleTime::instance()->idleTime()) {
+    systemIdle();
+  } else {
+    systemResumed();
+  }
 }
 
 bool NepomukFeederAgent::needsReIndexing() const
