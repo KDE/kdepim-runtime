@@ -47,7 +47,3 @@ target_link_libraries(akonadi_kalarm_dir_resource
                      )
 
 install(TARGETS akonadi_kalarm_dir_resource DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml
-        DESTINATION ${DBUS_INTERFACES_INSTALL_DIR})
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/kalarmdirresource.kcfg
-        DESTINATION ${KCFG_INSTALL_DIR})
