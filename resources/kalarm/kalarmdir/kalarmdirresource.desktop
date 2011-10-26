@@ -1,6 +1,18 @@
 [Desktop Entry]
 Name=KAlarm Directory
+Name[nds]=KAlarm-Verteken
+Name[nl]=KAlarm-map
+Name[pt_BR]=Pasta do KAlarm
+Name[sv]=Kalarm-katalog
+Name[uk]=Каталог KAlarm
+Name[x-test]=xxKAlarm Directoryxx
 Comment=Loads data from a local KAlarm folder
+Comment[nds]=Laadt Daten ut en lokaal KAlarm-Orner
+Comment[nl]=Laadt gegevens uit een lokale KAlarm-map
+Comment[pt_BR]=Carrega os dados de uma pasta local do KAlarm
+Comment[sv]=Laddar data från en lokal Kalarm-katalog
+Comment[uk]=Завантажує дані з локальної теки KAlarm
+Comment[x-test]=xxLoads data from a local KAlarm folderxx
 Type=AkonadiResource
 Exec=akonadi_kalarm_dir_resource
 Icon=kalarm
