@@ -54,7 +54,7 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
   httpUrl.setProtocol( QLatin1String( "https" ) );
 
   // IMAP path is either /INBOX/<path> or /user/someone/<path>
-  Q_ASSERT( path.startsWith( "/" ) );
+  Q_ASSERT( path.startsWith( '/' ) );
   const int secondSlash = path.indexOf( '/', 1 );
   if ( secondSlash == -1 ) {
     kWarning() << "path is too short: " << path;
@@ -71,7 +71,7 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
     path = path.mid( secondSlash );
   }
 
-  if ( path.startsWith( "/" ) )
+  if ( path.startsWith( '/' ) )
     httpUrl.setPath( "/freebusy/trigger" + path + ".pfb" );
   else
     httpUrl.setPath( "/freebusy/trigger/" + path + ".pfb" );

@@ -515,8 +515,8 @@ class MixedMaildirStore::Private : public FileStore::Job::Visitor
 
 MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForCollection( const Collection &col, QString &path, QString &errorText ) const
 {
-  path = QString();
-  errorText = QString();
+  path.clear();
+  errorText.clear();
 
   if ( col.remoteId().isEmpty() ) {
     errorText = i18nc( "@info:status", "Given folder name is empty" );
@@ -796,7 +796,7 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
       }
     }
     Akonadi::Item::Flags flags = md->maildir().readEntryFlags( entry );
-    Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
+    Q_FOREACH( const Akonadi::Item::Flag& flag, flags ) {
       item.setFlag(flag);
     }
 
@@ -900,7 +900,7 @@ void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, co
         key.replace( oldSubDirPath, newSubDirPath );
       } else {
         // if there is no index data yet, just discard this context
-        key = QString();
+        key.clear();
       }
     }
 
@@ -926,7 +926,7 @@ void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, co
         key.replace( oldSubDirPath, newSubDirPath );
       } else {
         // if there is no index data yet, just discard this context
-        key = QString();
+        key.clear();
       }
     }
 

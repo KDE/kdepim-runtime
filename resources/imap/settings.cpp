@@ -206,7 +206,7 @@ void Settings::setPassword( const QString & password )
             wallet->createFolder( "imap" );
         wallet->setFolder( "imap" );
         wallet->writePassword( config()->name(), password );
-        kDebug() << "Wallet save: " << wallet->sync() << endl;
+        kDebug() << "Wallet save: " << wallet->sync();
     }
     delete wallet;
 }

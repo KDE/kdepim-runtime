@@ -108,7 +108,7 @@ void RetrieveItemsJob::processEntry(qint64 index)
   msg->parse();
   
   Akonadi::Item::Flags flags = m_maildir.readEntryFlags( entry );
-  Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
+  Q_FOREACH( const Akonadi::Item::Flag& flag, flags ) {
     item.setFlag(flag);      
   }
   

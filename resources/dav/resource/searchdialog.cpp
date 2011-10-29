@@ -182,7 +182,7 @@ void SearchDialog::onCollectionsFetchJobFinished( KJob* job )
 
   foreach ( const DavCollection &collection, collections ) {
     QStandardItem *item = new QStandardItem( collection.displayName() );
-    QString data( DavUtils::protocolName( collection.protocol() ) + "|" + collection.url() );
+    QString data( DavUtils::protocolName( collection.protocol() ) + '|' + collection.url() );
     item->setData( data, Qt::UserRole + 1 );
     item->setToolTip( collection.url() );
     if ( collection.protocol() == DavUtils::CalDav )

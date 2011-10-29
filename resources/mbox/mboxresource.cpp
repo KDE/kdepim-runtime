@@ -196,7 +196,7 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 void MboxResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   if ( parts.contains( "PLD:RFC822" ) ) {
-    kDebug() << "MboxResource::itemChanged()" << itemOffset( item.remoteId() );
+    kDebug() << itemOffset( item.remoteId() );
     // Only complete messages can be stored in a MBox file. Because all messages
     // are stored in one single file we do an ItemDelete and an ItemCreate to
     // prevent that whole file must been rewritten.

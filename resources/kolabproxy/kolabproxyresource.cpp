@@ -592,7 +592,7 @@ void KolabProxyResource::addImapItem(const Item& item, Akonadi::Entity::Id colle
 
 void KolabProxyResource::imapItemAdded(const Item& item, const Collection &collection)
 {
-  kDebug() << "imapItemAdded " << item.id() << collection.id() << Collection::root().id();
+  kDebug() << item.id() << collection.id() << Collection::root().id();
   if (m_excludeAppend.contains(item.id()))   {
     kDebug() << "item already present";
     m_excludeAppend.removeAll(item.id());

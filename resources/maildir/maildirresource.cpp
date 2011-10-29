@@ -706,7 +706,7 @@ void MaildirResource::fsWatchFileFetchResult( KJob* job )
     item.setSize( entrySize );
 
   Item::Flags flags = md.readEntryFlags( entry );
-  Q_FOREACH( Item::Flag flag, flags ) {
+  Q_FOREACH( const Item::Flag& flag, flags ) {
     item.setFlag(flag);      
   }
     
