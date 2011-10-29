@@ -23,6 +23,7 @@
 #include "kalarmresourcecommon.h"
 #include "alarmtyperadiowidget.h"
 
+#include <kalarmcal/compatibilityattribute.h>
 #include <kalarmcal/kacalendar.h>
 #include <kalarmcal/kaevent.h>
 
@@ -49,7 +50,7 @@ KAlarmResource::KAlarmResource(const QString& id)
 {
     kDebug() << id;
     KAlarmResourceCommon::initialise(this);
-    initialise(KAlarmResourceCommon::mimeTypes(id), "kalarm");
+    initialise(mSettings->alarmTypes(), "kalarm");
     connect(mSettings, SIGNAL(configChanged()), SLOT(settingsChanged()));
 }
 
@@ -199,20 +200,32 @@ void KAlarmResource::settingsChanged()
     {
         // This is a flag to request that the backend calendar storage format should
         // be updated to the current KAlarm format.
-        if (mCompatibility != KACalendar::Convertible)
-            kWarning() << "Either incompatible storage format or nothing to update: compat=" << mCompatibility;
-        else if (mSettings->readOnly())
-            kWarning() << "Cannot update storage format for a read-only resource";
-        else
+        switch (mCompatibility)
         {
-            // Update the backend storage format to the current KAlarm format
-            QString filename = fileStorage()->fileName();
-            kDebug() << "Updating storage for" << filename;
-            KACalendar::setKAlarmVersion(fileStorage()->calendar());
-            if (!writeToFile(filename))
-                kWarning() << "Error updating calendar storage format";
-            else
+            case KACalendar::Current:
+                kWarning() << "Already current storage format";
+                break;
+            case KACalendar::Incompatible:
+            default:
+                kWarning() << "Incompatible storage format: compat=" << mCompatibility;
+                break;
+            case KACalendar::Converted:
+            case KACalendar::Convertible:
             {
+                if (mSettings->readOnly())
+                {
+                    kWarning() << "Cannot update storage format for a read-only resource";
+                    break;
+                }
+                // Update the backend storage format to the current KAlarm format
+                QString filename = fileStorage()->fileName();
+                kDebug() << "Updating storage for" << filename;
+                KACalendar::setKAlarmVersion(fileStorage()->calendar());
+                if (!writeToFile(filename))
+                {
+                    kWarning() << "Error updating calendar storage format";
+                    break;
+                }
                 // Prevent a new file read being triggered by writeToFile(), which
                 // would replace the current Collection by a new one.
                 mCurrentHash = calculateHash(filename);
@@ -222,6 +235,7 @@ void KAlarmResource::settingsChanged()
                 c.setParentCollection(Collection::root());
                 c.setRemoteId(mSettings->path());
                 KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, 0);
+                break;
             }
         }
         mSettings->setUpdateStorageFormat(false);

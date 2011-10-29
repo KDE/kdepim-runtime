@@ -37,7 +37,6 @@ using namespace KAlarmCal;
 namespace KAlarmResourceCommon
 {
     void          initialise(QObject* parent);
-    QStringList   mimeTypes(const QString& id);
 //    void          customizeConfigDialog(SingleFileResourceConfigDialog<Settings>*);
     KACalendar::Compat getCompatibility(const KCalCore::FileStorage::Ptr&, int& version);
     Akonadi::Item retrieveItem(const Akonadi::Item&, KAEvent&);

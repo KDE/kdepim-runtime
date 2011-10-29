@@ -74,24 +74,6 @@ void initialise(QObject* parent)
 }
 
 /******************************************************************************
-* Fetch the list of mime types which KAlarm resources can potentially handle.
-*/
-QStringList mimeTypes(const QString& id)
-{
-    QStringList mimes;
-    if (id.contains("_active"))
-        mimes << KAlarmCal::MIME_ACTIVE;
-    else if (id.contains("_archived"))
-        mimes << KAlarmCal::MIME_ARCHIVED;
-    else if (id.contains("_template"))
-        mimes << KAlarmCal::MIME_TEMPLATE;
-    else
-        mimes << KAlarmCal::MIME_BASE
-              << KAlarmCal::MIME_ACTIVE << KAlarmCal::MIME_ARCHIVED << KAlarmCal::MIME_TEMPLATE;
-    return mimes;
-}
-
-/******************************************************************************
 * Find the compatibility of an existing calendar file, and convert it in
 * memory to the current KAlarm format (if possible).
 */
