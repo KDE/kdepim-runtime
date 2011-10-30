@@ -57,6 +57,7 @@ class RetrieveItemsJob::Private
     {
       if ( !mTransaction ) {
         mTransaction = new TransactionSequence( q );
+	mTransaction->setAutomaticCommittingEnabled( false );
         connect( mTransaction, SIGNAL( result( KJob* ) ),
                  q, SLOT( transactionResult( KJob* ) ) );
       }
@@ -231,6 +232,7 @@ void RetrieveItemsJob::Private::processChangedItem()
       collection.setRemoteRevision( QString::number( mHighestModTime ) );
       CollectionModifyJob *job = new CollectionModifyJob( collection, transaction() );
       transaction()->setIgnoreJobFailure( job );
+      transaction()->commit();
     }
     return;
   }
