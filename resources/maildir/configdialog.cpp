@@ -47,6 +47,10 @@ ConfigDialog::ConfigDialog( MaildirSettings *settings, QWidget * parent) :
   checkPath();
 }
 
+ConfigDialog::~ConfigDialog()
+{
+}
+
 void ConfigDialog::checkPath()
 {
   if( ui.kcfg_Path->url().isEmpty()) {

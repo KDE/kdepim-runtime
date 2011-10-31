@@ -53,6 +53,10 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   KGlobal::locale()->insertCatalog( "akonadi_singlefile_resource" );
 }
 
+SingleFileResourceBase::~SingleFileResourceBase()
+{
+}
+
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
 {
   return KSharedConfig::openConfig( name() + "rc", KConfig::SimpleConfig, "cache" );

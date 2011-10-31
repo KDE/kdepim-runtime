@@ -61,6 +61,10 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   QTimer::singleShot( 0, this, SLOT(validate()) );
 }
 
+SingleFileResourceConfigDialogBase::~SingleFileResourceConfigDialogBase()
+{
+}
+
 void SingleFileResourceConfigDialogBase::addPage( const QString &title, QWidget *page )
 {
   ui.ktabwidget->setTabBarHidden( false );

@@ -35,6 +35,7 @@ class ConfigDialog : public KDialog
   Q_OBJECT
   public:
     explicit ConfigDialog( Akonadi_Maildir_Resource::MaildirSettings *settings, QWidget *parent = 0 );
+    virtual ~ConfigDialog();
 
   private slots:
     void checkPath();

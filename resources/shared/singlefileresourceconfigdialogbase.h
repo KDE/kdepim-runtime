@@ -50,6 +50,7 @@ class SingleFileResourceConfigDialogBase : public KDialog
     Q_OBJECT
   public:
     explicit SingleFileResourceConfigDialogBase( WId windowId );
+    virtual ~SingleFileResourceConfigDialogBase();
 
     /**
      * Adds @param page to the tabwidget. This can be used to add custom
