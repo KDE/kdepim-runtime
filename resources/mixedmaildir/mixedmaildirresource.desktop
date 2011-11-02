@@ -11,6 +11,7 @@ Name[sv]=Kmail brevkatalog
 Name[uk]=Тека пошти KMail
 Name[x-test]=xxKMail Mail Folderxx
 Comment=Loads data from a local KMail mail folder
+Comment[cs]=Načítá data z místní složky pošty  KMail
 Comment[el]=Φόρτωση δεδομένων από έναν τοπικό φάκελο αλληλογραφίας του KMail
 Comment[ia]=Carga datos ex un dossier local de posta de KMail
 Comment[nds]=Laadt Daten ut en lokaal KMail-Nettpostorner
