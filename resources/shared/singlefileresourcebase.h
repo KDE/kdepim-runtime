@@ -43,7 +43,7 @@ class SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
   Q_OBJECT
   public:
     SingleFileResourceBase( const QString &id );
-    virtual ~SingleFileResourceBase();
+
     /**
      * Set the mimetypes supported by this resource and an optional icon for the collection.
      */
