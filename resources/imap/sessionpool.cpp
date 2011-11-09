@@ -150,7 +150,7 @@ qint64 SessionPool::requestSession()
 
 void SessionPool::releaseSession( KIMAP::Session *session )
 {
-  if ( m_reservedPool.contains( session ) ) {
+  if ( !m_reservedPool.isEmpty() && m_reservedPool.contains( session ) ) {
     m_reservedPool.removeAll( session );
     m_idlePool << session;
   }
@@ -204,9 +204,11 @@ void SessionPool::declareSessionReady( KIMAP::Session *session )
     emit connectDone();
   } else {
     m_reservedPool << session;
-    emit sessionRequestDone( m_pendingRequests.takeFirst(), session );
     if ( !m_pendingRequests.isEmpty() ) {
-      QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
+      emit sessionRequestDone( m_pendingRequests.takeFirst(), session );
+      if ( !m_pendingRequests.isEmpty() ) {
+        QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
+      }
     }
   }
 }
@@ -224,9 +226,11 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
     killSession( session, LogoutSession );
   } else {
     killSession( session, LogoutSession );
-    emit sessionRequestDone( m_pendingRequests.takeFirst(), 0, errorCode, errorMessage );
     if ( !m_pendingRequests.isEmpty() ) {
-      QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
+      emit sessionRequestDone( m_pendingRequests.takeFirst(), 0, errorCode, errorMessage );
+      if ( !m_pendingRequests.isEmpty() ) {
+        QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
+      }
     }
   }
 }
@@ -237,24 +241,26 @@ void SessionPool::processPendingRequests()
     // We have a session ready to give out
     KIMAP::Session *session = m_idlePool.takeFirst();
     m_reservedPool << session;
-    emit sessionRequestDone( m_pendingRequests.takeFirst(), session );
-
     if ( !m_pendingRequests.isEmpty() ) {
-      QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
+      emit sessionRequestDone( m_pendingRequests.takeFirst(), session );
+      if ( !m_pendingRequests.isEmpty() ) {
+        QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
+      }
     }
-
   } else if ( m_idlePool.size() + m_reservedPool.size() < m_maxPoolSize ) {
     // We didn't reach the max pool size yet so create a new one
     m_passwordRequester->requestPassword();
 
   } else {
     // No session available, and max pool size reached
-    emit sessionRequestDone( m_pendingRequests.takeFirst(), 0, NoAvailableSessionError,
-                             i18n( "Could not create another extra connection to the IMAP-server %1.",
-                                   m_account->server() ) );
-
     if ( !m_pendingRequests.isEmpty() ) {
-      QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
+      emit sessionRequestDone(
+        m_pendingRequests.takeFirst(), 0, NoAvailableSessionError,
+        i18n( "Could not create another extra connection to the IMAP-server %1.",
+              m_account->server() ) );
+      if ( !m_pendingRequests.isEmpty() ) {
+        QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
+      }
     }
   }
 }
