@@ -40,7 +40,7 @@
 
 qint64 SessionPool::m_requestCounter = 0;
 
-SessionPool::SessionPool( int maxPoolSize, QObject *parent)
+SessionPool::SessionPool( int maxPoolSize, QObject *parent )
   : QObject( parent ),
     m_maxPoolSize( maxPoolSize ),
     m_account( 0 ),
@@ -115,7 +115,7 @@ void SessionPool::disconnect( SessionTermination termination )
 
   m_networkAccessHelper->releaseConnection();
 
-  foreach ( KIMAP::Session *s, m_idlePool+m_reservedPool ) {
+  foreach ( KIMAP::Session *s, m_idlePool + m_reservedPool ) {
     killSession( s, termination );
   }
   m_idlePool.clear();
@@ -213,15 +213,22 @@ void SessionPool::declareSessionReady( KIMAP::Session *session )
   }
 }
 
-void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode, const QString &errorMessage )
+void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
+                                         const QString &errorMessage )
 {
   m_pendingInitialSession = 0;
 
   if ( !m_initialConnectDone ) {
-    if ( m_account )
-      emit connectDone( errorCode, i18n( "Could not connect to the IMAP-server %1.\n%2", m_account->server(), errorMessage ) );
-    else // this case can happen when we loose all ready connections while trying to establish a new one for example
-      emit connectDone( errorCode, i18n( "Cound not connect to the IMAP server.\n%1", errorMessage ) );
+    if ( m_account ) {
+      emit connectDone( errorCode,
+                        i18n( "Could not connect to the IMAP-server %1.\n%2",
+                              m_account->server(), errorMessage ) );
+    } else {
+      // Can happen when we loose all ready connections while trying to establish
+      // a new connection, for example.
+      emit connectDone( errorCode,
+                        i18n( "Cound not connect to the IMAP server.\n%1", errorMessage ) );
+    }
     disconnect();
     killSession( session, LogoutSession );
   } else {
@@ -265,7 +272,7 @@ void SessionPool::processPendingRequests()
   }
 }
 
-void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
+void SessionPool::onPasswordRequestDone( int resultType, const QString &password )
 {
   QString errorMessage;
 
@@ -279,13 +286,12 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     return;
   }
 
-  switch ( resultType )
-  {
+  switch ( resultType ) {
   case PasswordRequesterInterface::PasswordRetrieved:
     // All is fine
     break;
   case PasswordRequesterInterface::ReconnectNeeded:
-    Q_ASSERT( m_pendingInitialSession!=0 );
+    Q_ASSERT( m_pendingInitialSession != 0 );
     cancelSessionCreation( m_pendingInitialSession, ReconnectNeededError, errorMessage );
     return;
   case PasswordRequesterInterface::UserRejected:
@@ -306,12 +312,11 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     return;
   }
 
-
   if ( m_account->encryptionMode() != KIMAP::LoginJob::Unencrypted && !QSslSocket::supportsSsl() ) {
     kWarning() << "Crypto not supported!";
     emit connectDone( EncryptionError,
-                i18n( "You requested TLS/SSL to connect to %1, but your "
-                      "system does not seem to be set up for that.", m_account->server() ) );
+                      i18n( "You requested TLS/SSL to connect to %1, but your "
+                            "system does not seem to be set up for that.", m_account->server() ) );
     disconnect();
     return;
   }
@@ -349,7 +354,7 @@ void SessionPool::onLoginDone( KJob *job )
 {
   KIMAP::LoginJob *login = static_cast<KIMAP::LoginJob*>( job );
 
-  if ( job->error()==0 ) {
+  if ( job->error() == 0 ) {
     if ( m_initialConnectDone ) {
       declareSessionReady( login->session() );
     } else {
@@ -364,11 +369,11 @@ void SessionPool::onLoginDone( KJob *job )
       cancelSessionCreation( login->session(),
                              LoginFailError,
                              i18n( "Could not connect to the IMAP-server %1.\n%2",
-                                   m_account->server(),
-                                   job->errorString() ) );
+                                   m_account->server(), job->errorString() ) );
     } else {
       m_pendingInitialSession = login->session();
-      m_passwordRequester->requestPassword( PasswordRequesterInterface::WrongPasswordRequest, job->errorString() );
+      m_passwordRequester->requestPassword( PasswordRequesterInterface::WrongPasswordRequest,
+                                            job->errorString() );
     }
   }
 }
@@ -378,10 +383,19 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
 
   if ( job->error() ) {
-    cancelSessionCreation( capJob->session(),
-                           CapabilitiesTestError,
-                           i18n( "Could not test the capabilities supported by the IMAP server %1.",
-                                 m_account->server() ) );
+    if ( m_account ) {
+      cancelSessionCreation( capJob->session(),
+                             CapabilitiesTestError,
+                             i18n( "Could not test the capabilities supported by the "
+                                   "IMAP server %1.\n%2",
+                                   m_account->server(), job->errorString() ) );
+    } else {
+      // Can happen when we loose all ready connections while trying to check capabilities.
+      cancelSessionCreation( capJob->session(),
+                             CapabilitiesTestError,
+                             i18n( "Could not test the capabilities supported by the "
+                                   "IMAP server.\n%1", job->errorString() ) );
+    }
     return;
   }
 
@@ -390,7 +404,6 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   expected << "IMAP4REV1";
 
   QStringList missing;
-
   foreach ( const QString &capability, expected ) {
     if ( !m_capabilities.contains( capability ) ) {
       missing << capability;
@@ -400,7 +413,8 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   if ( !missing.isEmpty() ) {
     cancelSessionCreation( capJob->session(),
                            IncompatibleServerError,
-                           i18n( "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
+                           i18n( "Cannot use the IMAP server %1, "
+                                 "some mandatory capabilities are missing: %2. "
                                  "Please ask your sysadmin to upgrade the server.",
                                  m_account->server(),
                                  missing.join( ", " ) ) );
@@ -433,9 +447,9 @@ void SessionPool::onNamespacesTestDone( KJob *job )
     // ... otherwise we assume that we have to list explicitly each
     // namespace
 
-    m_namespaces = nsJob->personalNamespaces()
-                 + nsJob->userNamespaces()
-                 + nsJob->sharedNamespaces();
+    m_namespaces = nsJob->personalNamespaces() +
+                   nsJob->userNamespaces() +
+                   nsJob->sharedNamespaces();
   }
 
   declareSessionReady( nsJob->session() );
