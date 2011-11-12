@@ -372,10 +372,14 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
 
   if ( job->error() ) {
+    QString server;
+    if ( m_account ) {
+      server = m_account->server();
+    }
     cancelSessionCreation( capJob->session(),
                            CapabilitiesTestError,
                            i18n( "Could not test the capabilities supported by the IMAP server %1.",
-                                 m_account->server() ) );
+                                 server ) );
     return;
   }
 
