@@ -32,6 +32,7 @@ CaldavProtocol::CaldavProtocol()
    * <calendar-query>
    *   <prop>
    *     <getetag/>
+   *     <resourcetype/>
    *   </prop>
    *   <filter>
    *     <comp-filter name="VCALENDAR">
@@ -51,6 +52,9 @@ CaldavProtocol::CaldavProtocol()
 
     QDomElement getetagElement = document.createElementNS( "DAV:", "getetag" );
     propElement.appendChild( getetagElement );
+
+    QDomElement getRTypeElement = document.createElementNS( "DAV:", "resourcetype" );
+    propElement.appendChild( getRTypeElement );
 
     QDomElement filterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "filter" );
     queryElement.appendChild( filterElement );
@@ -77,6 +81,7 @@ CaldavProtocol::CaldavProtocol()
    * <calendar-query>
    *   <prop>
    *     <getetag/>
+   *     <resourcetype/>
    *   </prop>
    *   <filter>
    *     <comp-filter name="VCALENDAR">
@@ -96,6 +101,9 @@ CaldavProtocol::CaldavProtocol()
 
     QDomElement getetagElement = document.createElementNS( "DAV:", "getetag" );
     propElement.appendChild( getetagElement );
+
+    QDomElement getRTypeElement = document.createElementNS( "DAV:", "resourcetype" );
+    propElement.appendChild( getRTypeElement );
 
     QDomElement filterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "filter" );
     queryElement.appendChild( filterElement );
