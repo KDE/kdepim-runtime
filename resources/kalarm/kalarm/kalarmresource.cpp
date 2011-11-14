@@ -29,6 +29,7 @@
 
 #include <akonadi/agentfactory.h>
 #include <akonadi/attributefactory.h>
+#include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionmodifyjob.h>
 
 #include <kcalcore/memorycalendar.h>
@@ -46,7 +47,11 @@ using KAlarmResourceCommon::errorMessage;
 KAlarmResource::KAlarmResource(const QString& id)
     : ICalResourceBase(id),
       mCompatibility(KACalendar::Incompatible),
-      mVersion(KACalendar::MixedFormat)
+      mFileCompatibility(KACalendar::Incompatible),
+      mVersion(KACalendar::MixedFormat),
+      mFileVersion(KACalendar::IncompatibleFormat),
+      mHaveReadFile(false),
+      mFetchedAttributes(false)
 {
     kDebug() << id;
     KAlarmResourceCommon::initialise(this);
@@ -64,6 +69,9 @@ KAlarmResource::~KAlarmResource()
 void KAlarmResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings>* dlg)
 {
     ICalResourceBase::customizeConfigDialog(dlg);
+#ifdef KDEPIM_MOBILE_UI
+    dlg->setFilter("*.ics");
+#endif
     mTypeSelector = new AlarmTypeRadioWidget(dlg);
     QStringList types = mSettings->alarmTypes();
     CalEvent::Type alarmType = CalEvent::ACTIVE;
@@ -100,7 +108,46 @@ void KAlarmResource::configDialogAcceptedActions(SingleFileResourceConfigDialog<
 }
 
 /******************************************************************************
+* Reimplemented to fetch collection attributes after creating the collection.
+*/
+void KAlarmResource::retrieveCollections()
+{
+    kDebug();
+    ICalResourceBase::retrieveCollections();
+
+    Collection c;
+    c.setParentCollection(Collection::root());
+    c.setRemoteId(mSettings->path());
+    CollectionFetchJob* job = new CollectionFetchJob(c, CollectionFetchJob::FirstLevel);
+    connect(job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)));
+}
+
+/******************************************************************************
+* Called when the collection fetch job completes.
+* Check the calendar file's compatibility status if pending.
+*/
+void KAlarmResource::collectionFetchResult(KJob* j)
+{
+    if (j->error())
+        kError() << "CollectionFetchJob error: " << j->errorString();
+    else
+    {
+        mFetchedAttributes = true;
+        CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
+        Collection::List collections = job->collections();
+        if (!collections.isEmpty())
+        {
+            // Check whether calendar file format needs to be updated
+            checkFileCompatibility(collections[0]);
+        }
+    }
+}
+
+/******************************************************************************
 * Reimplemented to read data from the given file.
+* This is called every time the resource starts up (see SingleFileResourceBase
+* constructor).
+* Find the calendar file's compatibility with the current KAlarm format.
 * The file is always local; loading from the network is done automatically if
 * needed.
 */
@@ -114,20 +161,50 @@ bool KAlarmResource::readFromFile(const QString& fileName)
         // It's a new file. Set up the KAlarm custom property.
         KACalendar::setKAlarmVersion(calendar());
     }
-    // Find the calendar file's compatibility with the current KAlarm format,
-    // and if necessary convert it in memory to the current version.
-    int version;
-    KACalendar::Compat compat = KAlarmResourceCommon::getCompatibility(fileStorage(), version);
-    if (compat != mCompatibility  ||  version != mVersion)
+    mFileCompatibility = KAlarmResourceCommon::getCompatibility(fileStorage(), mFileVersion);
+    mHaveReadFile = true;
+
+    if (mFetchedAttributes)
     {
-        mCompatibility = compat;
-        mVersion       = version;
-        Collection c;
-        c.setParentCollection(Collection::root());
-        c.setRemoteId(mSettings->path());
-        KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
+        // The old calendar file version and compatibility have been read from
+        // the database. Check if the file format needs to be converted.
+        checkFileCompatibility();
     }
     return true;
+}
+
+/******************************************************************************
+* To be called when the collection attributes have been fetched, or if they
+* have changed.
+* Check if the recorded calendar version and compatibility are different from
+* the actual backend file, and if necessary convert the calendar in memory to
+* the current version.
+*/
+void KAlarmResource::checkFileCompatibility(const Collection& collection)
+{
+    if (collection.isValid()
+    &&  collection.hasAttribute<CompatibilityAttribute>())
+    {
+        // Update our note of the calendar version and compatibility
+        CompatibilityAttribute* attr = collection.attribute<CompatibilityAttribute>();
+        mCompatibility = attr->compatibility();
+        mVersion       = attr->version();
+    }
+    if (mHaveReadFile
+    &&  (mFileCompatibility != mCompatibility  ||  mFileVersion != mVersion))
+    {
+        // The actual file's version and compatibility are different from
+        // those in the Akonadi database, so update the database attributes.
+        mCompatibility = mFileCompatibility;
+        mVersion       = mFileVersion;
+        Collection c(collection);
+        if (!c.isValid())
+        {
+            c.setParentCollection(Collection::root());
+            c.setRemoteId(mSettings->path());
+        }
+        KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
+    }
 }
 
 /******************************************************************************
@@ -200,6 +277,15 @@ void KAlarmResource::settingsChanged()
     {
         // This is a flag to request that the backend calendar storage format should
         // be updated to the current KAlarm format.
+        Collection c;
+        c.setParentCollection(Collection::root());
+        c.setRemoteId(mSettings->path());
+        if (c.hasAttribute<CompatibilityAttribute>())
+        {
+            CompatibilityAttribute* attr = c.attribute<CompatibilityAttribute>();
+            if (attr->compatibility() != mCompatibility)
+                kDebug()<<"Compatibility changed:"<<mCompatibility<<"->"<<attr->compatibility();
+        }
         switch (mCompatibility)
         {
             case KACalendar::Current:
@@ -325,6 +411,19 @@ void KAlarmResource::itemChanged(const Akonadi::Item& item, const QSet<QByteArra
     }
     scheduleWrite();
     changeCommitted(item);
+}
+
+void KAlarmResource::collectionChanged(const Akonadi::Collection& collection)
+{
+    /*if (collection.hasAttribute<CompatibilityAttribute>())
+    {
+        CompatibilityAttribute* attr = collection.attribute<CompatibilityAttribute>();
+        if (attr->compatibility() != mCompatibility)
+            kDebug()<<"Compatibility changed:"<<mCompatibility<<"->"<<attr->compatibility();
+    }*/
+    mFetchedAttributes = true;
+    // Check whether calendar file format needs to be updated
+    checkFileCompatibility(collection);
 }
 
 /******************************************************************************

@@ -51,14 +51,23 @@ class KAlarmResource : public ICalResourceBase
         virtual bool writeToFile(const QString& fileName);
         virtual void itemAdded(const Akonadi::Item&, const Akonadi::Collection&);
         virtual void itemChanged(const Akonadi::Item&, const QSet<QByteArray>& parts);
+        virtual void collectionChanged(const Akonadi::Collection&);
+        virtual void retrieveCollections();
 
     private Q_SLOTS:
         void settingsChanged();
+        void collectionFetchResult(KJob*);
 
     private:
-        AlarmTypeRadioWidget*      mTypeSelector;
-        KACalendar::Compat mCompatibility;
-        int                        mVersion;   // calendar format version
+        void checkFileCompatibility(const Akonadi::Collection& = Akonadi::Collection());
+
+        AlarmTypeRadioWidget* mTypeSelector;
+        KACalendar::Compat    mCompatibility;
+        KACalendar::Compat    mFileCompatibility;  // calendar file compatibility found by readFromFile()
+        int                   mVersion;            // calendar format version
+        int                   mFileVersion;        // calendar format version found by readFromFile()
+        bool                  mHaveReadFile;       // the calendar file has been read
+        bool                  mFetchedAttributes;  // attributes have been fetched after initialisation
 };
 
 #endif

@@ -145,7 +145,17 @@ KAEvent checkItemChanged(const Akonadi::Item& item, QString& errorMsg)
 void setCollectionCompatibility(const Collection& collection, KACalendar::Compat compatibility, int version)
 {
     kDebug() << collection.id() << "->" << compatibility << version;
-    Collection col = collection;
+    // Update the CompatibilityAttribute value only.
+    // Note that we can't supply 'collection' to CollectionModifyJob since
+    // that may also contain the CollectionAttribute value, which is read-only
+    // for the resource. So create a new Collection instance and only set a
+    // value for CompatibilityAttribute.
+    Collection col(collection.id());
+    if (!collection.isValid())
+    {
+        col.setParentCollection(collection.parentCollection());
+        col.setRemoteId(collection.remoteId());
+    }
     CompatibilityAttribute* attr = col.attribute<CompatibilityAttribute>(Collection::AddIfMissing);
     attr->setCompatibility(compatibility);
     attr->setVersion(version);
