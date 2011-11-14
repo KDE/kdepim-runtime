@@ -147,6 +147,7 @@ ImapResource::ImapResource( const QString &id )
 
   Settings::self(); // make sure the D-Bus settings interface is up
   new ResourceAdaptor( this );
+  setNeedsNetwork( needsNetwork() );
 }
 
 ImapResource::~ImapResource()
