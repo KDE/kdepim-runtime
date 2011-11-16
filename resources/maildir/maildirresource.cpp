@@ -364,7 +364,7 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
     m_fsWatcher->addDir( dirPath + QLatin1Literal("/new") );
     m_fsWatcher->addDir( dirPath + QLatin1Literal("/cur") );
   }
-  kDebug() << "Item removed";
+  kDebug() << "Item removed"<<item.id()<<" in collection :"<<item.parentCollection().id();
   changeProcessed();
 }
 
