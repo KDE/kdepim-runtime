@@ -327,8 +327,21 @@ void SendJob::Private::postJobResult( KJob *job )
 
   if ( job->error() ) {
     kDebug() << "Error deleting or moving to sent-mail.";
+
+    const SentBehaviourAttribute *attribute = item.attribute<SentBehaviourAttribute>();
+    Q_ASSERT( attribute );
+
+    QString errorString;
+    switch( attribute->sentBehaviour() ) {
+    case SentBehaviourAttribute::Delete:
+      errorString = i18n( "but failed to remove the message from the outbox" );
+      break;
+    default:
+      errorString = i18n( "but failed to move the message to the sent-mail folder" );
+      break;
+    }
     q->setError( UserDefinedError );
-    q->setErrorText( i18n( "Sending succeeded, but failed to finalize message." ) + ' ' + job->errorString() );
+    q->setErrorText( i18n( "Sending succeeded, %1.", errorString ) + ' ' + job->errorString() );
     storeResult( false, q->errorString() );
   } else {
     kDebug() << "Success deleting or moving to sent-mail.";
