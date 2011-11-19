@@ -134,6 +134,7 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
     SimpleResource attachmentRes;
     Nepomuk::NCAL::Attachment attachment( &attachmentRes );
     attachmentRes.addType( Vocabulary::NCAL::Attachment() );
+    attachmentRes.addType( Vocabulary::NIE::InformationElement() ); //it needs to be an informationElement in order to set nie:description
     attachmentRes.addProperty( Vocabulary::NIE::isPartOf(), res.uri() );
     NepomukFeederUtils::setIcon( "mail-attachment", attachmentRes, graph );
     if ( !content->contentType()->name().isEmpty() )
