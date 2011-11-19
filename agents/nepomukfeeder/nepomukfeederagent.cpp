@@ -99,7 +99,11 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect( KIdleTime::instance(), SIGNAL(timeoutReached(int)), SLOT(systemIdle()) );
   connect( KIdleTime::instance(), SIGNAL(resumingFromIdle()), SLOT(systemResumed()) );
   KIdleTime::instance()->addIdleTimeout( 10 * 1000 );
-  disableIdleDetection( false ); //Could be removed if not needed anymore
+  KConfig config( "akonadi_nepomuk_feederrc" );
+  KConfigGroup cfgGrp( &config, identifier() );
+  kDebug() << "DisableIdleDetection: " << cfgGrp.readEntry( "DisableIdleDetection", false );
+  disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", false ) );
+  cfgGrp.writeEntry( "DisableIdleDetection", cfgGrp.readEntry( "DisableIdleDetection", false ) );
 
   checkOnline();
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
