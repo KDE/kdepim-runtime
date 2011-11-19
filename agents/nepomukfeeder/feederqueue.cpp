@@ -42,8 +42,8 @@ FeederQueue::FeederQueue( QObject* parent )
   mProcessedAmount( 0 ),
   mPendingJobs( 0 ),
   mReIndex( false ),
-  lowPrioQueue(20, this),
-  highPrioQueue(100, this)
+  lowPrioQueue(1, this),
+  highPrioQueue(1, this)
 {
   mProcessItemQueueTimer.setInterval( 0 );
   mProcessItemQueueTimer.setSingleShot( true );
