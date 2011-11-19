@@ -31,6 +31,7 @@
 #include <QScriptValue>
 #include <QScriptContext>
 #include <QScriptEngine>
+#include <qplatformdefs.h>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -294,6 +295,9 @@ qreal KDEIntegration::mm2px(qreal mm)
 #ifdef Q_WS_MAEMO_5
   // N900 (which is the only thing actually running Maemo5) reports 96 dpi while its screen actually has 267 dpi
   return mm * 267 / 25.4;
+#elif defined(MEEGO_EDITION_HARMATTAN)
+  // N9[50] (which is the only thing actually running Maemo6) reports 96 dpi as well while its screen actually has 251 dpi
+  return mm * 251 / 25.4;
 #endif
   return mm * QApplication::desktop()->logicalDpiX() / 25.4;
 }
