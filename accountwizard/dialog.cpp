@@ -38,11 +38,17 @@
 #include <kdebug.h>
 #include <kmessagebox.h>
 
+#include <qplatformdefs.h>
+
 #include <kpimutils/networkaccesshelper.h>
 
 Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   KAssistantDialog( parent, flags )
 {
+#if defined (Q_WS_MAEMO_5) || defined (Q_OS_WINCE) || defined (MEEGO_EDITION_HARMATTAN)
+  setWindowState( Qt::WindowFullScreen );
+#endif
+
   showButton( Help, false ); // we don't have help for the account wizard atm
 
   mSetupManager = new SetupManager( this );
