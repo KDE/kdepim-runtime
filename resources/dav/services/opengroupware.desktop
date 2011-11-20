@@ -31,6 +31,7 @@ Name[sv]=OpenGroupware
 Name[tr]=OpenGroupware
 Name[uk]=OpenGroupware
 Name[x-test]=xxOpenGroupwarexx
+Name[zh_CN]=OpenGroupware
 Name[zh_TW]=OpenGroupware
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
