@@ -94,6 +94,8 @@ function testOk( arg )
       imapRes.setOption( "Safety", "STARTTLS");
       imapRes.setOption( "ImapPort", 143 );
     }
+    imapRes.setOption( "IntervalCheckTime", 60 );
+    imapRes.setOption( "SubscriptionEnabled", true );
 
     stage = 2;
     setup();
@@ -108,6 +110,8 @@ function testOk( arg )
     } else {
       smtp.setEncryption( "None" );
     }
+    smtp.setUsername( page.widget().userName.text );
+    smtp.setPassword( SetupManager.password() );
     identity.setTransport( smtp );
     SetupManager.execute();
   }
