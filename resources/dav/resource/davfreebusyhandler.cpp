@@ -53,7 +53,8 @@ void DavFreeBusyHandler::canHandleFreeBusy( const QString& email )
 void DavFreeBusyHandler::retrieveFreeBusy( const QString& email, const KDateTime& start, const KDateTime& end )
 {
   if ( !mPrincipalScheduleOutbox.contains( email ) ) {
-    emit freeBusyRetrieved( email, QString(), false, i18n( "No schedule-outbox found for %1" ).arg( email ) );
+    emit freeBusyRetrieved( email, QString(), false,
+                            i18n( "No schedule-outbox found for %1", email ) );
     return;
   }
 
