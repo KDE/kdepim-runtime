@@ -2,6 +2,7 @@
 *~
 *.[oa]
 *.kdev4
+.kdev_include_paths
 .swp.*
 .*.swp
 *.kate-swp
