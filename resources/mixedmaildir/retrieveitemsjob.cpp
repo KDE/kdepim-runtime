@@ -45,7 +45,7 @@ using namespace Akonadi;
 class RetrieveItemsJob::Private
 {
   RetrieveItemsJob *const q;
-    
+
   public:
     Private( RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store )
       : q( parent ), mCollection( collection ), mStore( store ),
@@ -62,21 +62,21 @@ class RetrieveItemsJob::Private
       }
       return mTransaction;
     }
-      
+
   public:
     const Collection mCollection;
     MixedMaildirStore *const mStore;
     TransactionSequence *mTransaction;
-    
+
     QHash<QString, Item> mServerItemsByRemoteId;
-    
+
     QQueue<Item> mNewItems;
     QQueue<Item> mChangedItems;
     Item::List mAvailableItems;
     Item::List mItemsMarkedAsDeleted;
-    
+
     qint64 mHighestModTime;
-    
+
   public: // slots
     void akonadiFetchResult( KJob *job );
     void transactionResult( KJob *job );
@@ -93,10 +93,10 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
 
   ItemFetchJob *itemFetch = qobject_cast<ItemFetchJob*>( job );
   Q_ASSERT( itemFetch != 0 );
-  
+
   const Item::List items = itemFetch->items();
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Akonadi fetch got" << items.count() << "items";
-  
+
   mServerItemsByRemoteId.reserve( items.size() );
   Q_FOREACH ( const Item &item, items ) {
     // items without remoteId have not been written to the resource yet
@@ -104,12 +104,12 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
       mServerItemsByRemoteId.insert( item.remoteId(), item );
     }
   }
-  
+
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "of which" << mServerItemsByRemoteId.count() << "have remoteId";
-  
+
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItems( mCollection );
   // just basic items, no data
-  
+
   connect( storeFetch, SIGNAL( result( KJob* ) ), q, SLOT( storeListResult( KJob* ) ) );
 }
 
@@ -118,14 +118,14 @@ void RetrieveItemsJob::Private::storeListResult( KJob *job )
   kDebug() << "storeList->error=" << job->error();
   FileStore::ItemFetchJob *storeList = qobject_cast<FileStore::ItemFetchJob*>( job );
   Q_ASSERT( storeList != 0 );
-  
+
   if ( storeList->error() != 0 ) {
     q->setError( storeList->error() );
     q->setErrorText( storeList->errorText() );
     q->emitResult();
     return;
   }
-  
+
   // if some items have tags, we need to complete the retrieval and schedule tagging
   // to a later time so we can then fetch the items to get their Akonadi URLs
   // forward the property to this instance so the resource can take care of that
@@ -133,9 +133,9 @@ void RetrieveItemsJob::Private::storeListResult( KJob *job )
   if ( var.isValid() ) {
     q->setProperty( "remoteIdToTagList", var );
   }
-  
+
   const qint64 collectionTimestamp = mCollection.remoteRevision().toLongLong();
-    
+
   const Item::List storedItems = storeList->items();
   Q_FOREACH( const Item &item, storedItems ) {
     // messages marked as deleted have been deleted from mbox files but never got purged
@@ -145,9 +145,9 @@ void RetrieveItemsJob::Private::storeListResult( KJob *job )
       mItemsMarkedAsDeleted << item;
       continue;
     }
-    
+
     mAvailableItems << item;
-    
+
     const QHash<QString, Item>::iterator it = mServerItemsByRemoteId.find( item.remoteId() );
     if ( it == mServerItemsByRemoteId.end() ) {
       // item not in server items -> new
@@ -158,22 +158,24 @@ void RetrieveItemsJob::Private::storeListResult( KJob *job )
       if ( !modTime.isValid() || modTime.toMSecsSinceEpoch() > collectionTimestamp ) {
         mChangedItems << it.value();
       }
-      
+
       // remove from hash so only no longer existing items remain
       mServerItemsByRemoteId.erase( it );
     }
   }
-  
+
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store fetch got" << storedItems.count() << "items"
                                    << "of which" << mNewItems.count() << "are new and" << mChangedItems.count()
                                    << "are changed and" << mServerItemsByRemoteId.count()
                                    << "need to be removed";
-                                   
+
   // all items remaining in mServerItemsByRemoteId are no longer in the store
-  
-  ItemDeleteJob *deleteJob = new ItemDeleteJob( mServerItemsByRemoteId.values(), transaction() );
-  transaction()->setIgnoreJobFailure( deleteJob );
-  
+
+  if ( !mServerItemsByRemoteId.isEmpty() ) {
+    ItemDeleteJob *deleteJob = new ItemDeleteJob( mServerItemsByRemoteId.values(), transaction() );
+    transaction()->setIgnoreJobFailure( deleteJob );
+  }
+
   processNewItem();
 }
 
@@ -183,11 +185,11 @@ void RetrieveItemsJob::Private::processNewItem()
     processChangedItem();
     return;
   }
-  
+
   const Item item = mNewItems.dequeue();
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItem( item );
   storeFetch->fetchScope().fetchPayloadPart( MessagePart::Envelope );
-  
+
   connect( storeFetch, SIGNAL( result( KJob* ) ), q, SLOT( fetchNewResult( KJob* ) ) );
 }
 
@@ -206,13 +208,13 @@ void RetrieveItemsJob::Private::fetchNewResult( KJob *job )
     processNewItem();
     return;
   }
- 
+
   const Item item = fetchJob->items().first();
   const QDateTime modTime = item.modificationTime();
   if ( modTime.isValid() ) {
     mHighestModTime = qMax( modTime.toMSecsSinceEpoch(), mHighestModTime );
   }
-  
+
   ItemCreateJob *itemCreate = new ItemCreateJob( item, mCollection, transaction() );
   Q_UNUSED( itemCreate );
   QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
@@ -232,11 +234,11 @@ void RetrieveItemsJob::Private::processChangedItem()
     }
     return;
   }
-  
+
   const Item item = mChangedItems.dequeue();
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItem( item );
   storeFetch->fetchScope().fetchPayloadPart( MessagePart::Envelope );
-  
+
   connect( storeFetch, SIGNAL( result( KJob* ) ), q, SLOT( fetchChangedResult( KJob* ) ) );
 }
 
@@ -255,13 +257,13 @@ void RetrieveItemsJob::Private::fetchChangedResult( KJob *job )
     processChangedItem();
     return;
   }
- 
+
   const Item item = fetchJob->items().first();
   const QDateTime modTime = item.modificationTime();
   if ( modTime.isValid() ) {
     mHighestModTime = qMax( modTime.toMSecsSinceEpoch(), mHighestModTime );
   }
-  
+
   ItemModifyJob *itemModify = new ItemModifyJob( item, transaction() );
   Q_UNUSED( itemModify );
   QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
