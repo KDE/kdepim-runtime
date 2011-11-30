@@ -20,6 +20,7 @@
 #include <dms-copy/simpleresource.h>
 #include <dms-copy/simpleresourcegraph.h>
 #include <dms-copy/datamanagement.h>
+#include <dms-copy/storeresourcesjob.h>
 
 #include <Soprano/Vocabulary/NAO>
 #include <Soprano/Vocabulary/RDF>
