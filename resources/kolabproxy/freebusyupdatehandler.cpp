@@ -96,7 +96,9 @@ void FreeBusyUpdateHandler::timeout()
 void FreeBusyUpdateHandler::slotFreeBusyTriggerResult( KJob *job )
 {
   if ( job->error() ) {
-    KMessageBox::sorry( 0, i18n( "Could not trigger Free/Busy information update: %1." ).arg( job->errorText() ) );
+    KMessageBox::sorry(
+      0,
+      i18n( "Could not trigger Free/Busy information update: %1.", job->errorText() ) );
   }
 }
 

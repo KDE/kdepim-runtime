@@ -156,5 +156,6 @@ Name[sv]=Misslyckades skicka brev
 Name[tr]=E-posta gönderimi başarısız oldu
 Name[uk]=Спроба надсилання повідомлення зазнала невдачі
 Name[x-test]=xxE-mail sending failedxx
+Name[zh_CN]=发送邮件失败
 Name[zh_TW]=傳送信件失敗
 Action=Popup

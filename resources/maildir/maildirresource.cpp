@@ -264,6 +264,10 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
 
       if ( flagsChanged ) { //flags changed, store in file name and get back the new filename (id)
         const QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
+        if (newKey.isEmpty()) {
+          cancelTask( i18n("Failed to change the flags for the mail.") );
+          return;          
+        }
         newItem.setRemoteId( newKey );
       }
 

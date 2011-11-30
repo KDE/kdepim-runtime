@@ -34,6 +34,7 @@
 #include <time.h>
 #include <unistd.h>
 
+
 static void initRandomSeed()
 {
   static bool init = false;
@@ -603,8 +604,35 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
     finalKey.prepend( d->path + QString::fromLatin1("/cur/") );
     
     QFile f( realKey );
+    if (QFile::exists(finalKey)) {
+      QFile destFile(finalKey);
+      QByteArray destContent;
+      if (destFile.open(QIODevice::ReadOnly) ) {
+        destContent = destFile.readAll();
+        destFile.close();
+      }
+      QByteArray sourceContent;
+      if (f.open(QIODevice::ReadOnly) ) {
+        sourceContent = f.readAll();
+        f.close();
+      }
+      
+      if ( destContent != sourceContent ) {         
+         QString newFinalKey = "1-" + newUniqueKey;
+         int i = 1;
+         while ( QFile::exists(d->path + QString::fromLatin1("/cur/") + newFinalKey ) ) {
+           i++;
+           newFinalKey = QString::number(i) + "-" + newUniqueKey;
+         }
+         finalKey = d->path + QString::fromLatin1("/cur/") + newFinalKey;
+      } else {
+            QFile::remove( finalKey ); //they are the same                                                    
+      }
+    } 
+    
     if (!f.rename( finalKey )) {
         qWarning() << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
+        newUniqueKey = "";
     }
     return newUniqueKey;
 }

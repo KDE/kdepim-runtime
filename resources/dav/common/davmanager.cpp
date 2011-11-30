@@ -81,6 +81,8 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
 KIO::DavJob* DavManager::createPropPatchJob( const KUrl &url, const QDomDocument &document ) const
 {
   KIO::DavJob *job = KIO::davPropPatch( url, document, KIO::HideProgressInfo | KIO::DefaultFlags );
+  const QString header = "Content-Type: text/xml";
+  job->addMetaData( "customHTTPHeader", header );
   job->addMetaData( "cookies", "none" );
   job->addMetaData( "no-auth-prompt", "true" );
   return job;

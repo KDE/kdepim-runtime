@@ -10,6 +10,7 @@ Name[el]=Πάροχος πόρου DAV groupware
 Name[es]=Proveedor de recurso de trabajo en grupo DAV
 Name[et]=DAV grupitöö ressursi pakkuja
 Name[fi]=DAV-työryhmäresurssitarjoaja
+Name[fr]=Fournisseur de ressources de logiciel de collaboration DAV
 Name[ia]=Fornitor de ressource de DAV Groupware
 Name[it]=Fornitore di risorsa di groupware DAV
 Name[kk]=DAV топтық жұмыс ресурс провайдері
@@ -29,6 +30,7 @@ Name[sv]=Leverantör av DAV-grupprogramresurs
 Name[tr]=DAV Groupware kaynak sağlayıcı
 Name[uk]=Надавач ресурсу групової роботи DAV
 Name[x-test]=xxDAV Groupware resource providerxx
+Name[zh_CN]=DAV 群件资源提供方
 Name[zh_TW]=DAV 群組資源提供者
 
 [PropertyDef::X-DavGroupware-SupportedProtocols]

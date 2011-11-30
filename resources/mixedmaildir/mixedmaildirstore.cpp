@@ -1860,6 +1860,13 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
     if ( flagsChanged ) {
       Maildir md( mdPtr->maildir() );
       newKey = md.changeEntryFlags( item.remoteId(), item.flags() );
+      if (newKey.isEmpty()) {
+        errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
+                            collection.name() );
+        kError() << errorText << "FolderType=" << folderType;
+        q->notifyError( FileStore::Job::InvalidJobContext, errorText );
+        return false;
+      }
       item.setRemoteId( newKey );
     }
 

@@ -96,7 +96,7 @@
                <number>10000000</number>
               </property>
               <property name="suffix">
-               <string> </string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -563,21 +563,21 @@ p, li { white-space: pre-wrap; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>KTabWidget</class>
-   <extends>QTabWidget</extends>
-   <header>ktabwidget.h</header>
+   <class>KSeparator</class>
+   <extends>QFrame</extends>
+   <header>kseparator.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KPushButton</class>
+   <extends>QPushButton</extends>
+   <header>kpushbutton.h</header>
   </customwidget>
   <customwidget>
    <class>KIntNumInput</class>
@@ -585,9 +585,9 @@ p, li { white-space: pre-wrap; }
    <header>knuminput.h</header>
   </customwidget>
   <customwidget>
-   <class>KSeparator</class>
-   <extends>QFrame</extends>
-   <header>kseparator.h</header>
+   <class>KTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>ktabwidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -597,6 +597,32 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>nameEdit</tabstop>
+  <tabstop>hostEdit</tabstop>
+  <tabstop>loginEdit</tabstop>
+  <tabstop>passwordEdit</tabstop>
+  <tabstop>intervalCheck</tabstop>
+  <tabstop>intervalSpin</tabstop>
+  <tabstop>leaveOnServerCheck</tabstop>
+  <tabstop>leaveOnServerDaysCheck</tabstop>
+  <tabstop>leaveOnServerDaysSpin</tabstop>
+  <tabstop>leaveOnServerCountCheck</tabstop>
+  <tabstop>leaveOnServerCountSpin</tabstop>
+  <tabstop>leaveOnServerSizeCheck</tabstop>
+  <tabstop>leaveOnServerSizeSpin</tabstop>
+  <tabstop>filterOnServerCheck</tabstop>
+  <tabstop>filterOnServerSizeSpin</tabstop>
+  <tabstop>usePipeliningCheck</tabstop>
+  <tabstop>precommand</tabstop>
+  <tabstop>checkCapabilities</tabstop>
+  <tabstop>encryptionNone</tabstop>
+  <tabstop>encryptionSSL</tabstop>
+  <tabstop>encryptionTLS</tabstop>
+  <tabstop>portEdit</tabstop>
+  <tabstop>authCombo</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

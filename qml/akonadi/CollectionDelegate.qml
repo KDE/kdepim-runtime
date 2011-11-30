@@ -165,7 +165,7 @@ Item {
           height: 7
           visible: (model.collectionSyncProgress != undefined && model.collectionSyncProgress != 0 && model.collectionSyncProgress != 100)
           Rectangle {
-            color: "blue"
+            color: "lightsteelblue"
             x: 1
             y: 1
             height: 5

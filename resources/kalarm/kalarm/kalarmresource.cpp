@@ -113,6 +113,7 @@ void KAlarmResource::configDialogAcceptedActions(SingleFileResourceConfigDialog<
 void KAlarmResource::retrieveCollections()
 {
     kDebug();
+    mSupportedMimetypes = mSettings->alarmTypes();
     ICalResourceBase::retrieveCollections();
 
     Collection c;
@@ -415,12 +416,6 @@ void KAlarmResource::itemChanged(const Akonadi::Item& item, const QSet<QByteArra
 
 void KAlarmResource::collectionChanged(const Akonadi::Collection& collection)
 {
-    /*if (collection.hasAttribute<CompatibilityAttribute>())
-    {
-        CompatibilityAttribute* attr = collection.attribute<CompatibilityAttribute>();
-        if (attr->compatibility() != mCompatibility)
-            kDebug()<<"Compatibility changed:"<<mCompatibility<<"->"<<attr->compatibility();
-    }*/
     mFetchedAttributes = true;
     // Check whether calendar file format needs to be updated
     checkFileCompatibility(collection);

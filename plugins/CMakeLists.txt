@@ -57,6 +57,7 @@ target_link_libraries(akonadi_serializer_kalarm
                       ${KDEPIMLIBS_KCALUTILS_LIBS}
                       ${KDEPIMLIBS_AKONADI_LIBS}
                       ${KDE4_KDECORE_LIBS}
+                      ${QT_QTGUI_LIBRARY}
                      )
 install(TARGETS akonadi_serializer_kalarm DESTINATION ${PLUGIN_INSTALL_DIR})
 
