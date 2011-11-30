@@ -416,6 +416,8 @@ void KAlarmResource::itemChanged(const Akonadi::Item& item, const QSet<QByteArra
 
 void KAlarmResource::collectionChanged(const Akonadi::Collection& collection)
 {
+    ICalResourceBase::collectionChanged(collection);
+
     mFetchedAttributes = true;
     // Check whether calendar file format needs to be updated
     checkFileCompatibility(collection);
