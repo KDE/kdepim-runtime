@@ -43,9 +43,9 @@ FeederQueue::FeederQueue( QObject* parent )
   mProcessedAmount( 0 ),
   mPendingJobs( 0 ),
   mReIndex( false ),
+  mOnline( true ),
   lowPrioQueue(1, 100, this),
-  highPrioQueue(1, 100, this),
-  mOnline( true )
+  highPrioQueue(1, 100, this)
 {
   mProcessItemQueueTimer.setInterval( 0 );
   mProcessItemQueueTimer.setSingleShot( true );
@@ -69,7 +69,7 @@ void FeederQueue::setReindexing( bool reindex )
 
 void FeederQueue::setOnline( bool online )
 {
-  kDebug() << online;
+  //kDebug() << online;
   mOnline = online;
   if (online)
     continueIndexing();
@@ -77,7 +77,7 @@ void FeederQueue::setOnline( bool online )
 
 void FeederQueue::addCollection( const Akonadi::Collection &collection )
 {
-  kDebug() << collection.id();
+  //kDebug() << collection.id();
   mCollectionQueue.append( collection );
   if ( mPendingJobs == 0 ) {
     processNextCollection();
@@ -178,7 +178,7 @@ void FeederQueue::continueIndexing()
 
 void FeederQueue::processItemQueue()
 {
-  kDebug();
+  //kDebug();
   ++mProcessedAmount;
   if ( (mProcessedAmount % 100) == 0 && mTotalAmount > 0 && mProcessedAmount <= mTotalAmount )
     emit progress( (mProcessedAmount * 100) / mTotalAmount );
@@ -202,7 +202,7 @@ void FeederQueue::processItemQueue()
   }
 
   if ( !highPrioQueue.isEmpty() || ( !lowPrioQueue.isEmpty() && mOnline ) ) {
-    kDebug() << "continue";
+    //kDebug() << "continue";
     // go to eventloop before processing the next one, otherwise we miss the idle status change
     mProcessItemQueueTimer.start();
   }
@@ -211,7 +211,7 @@ void FeederQueue::processItemQueue()
 void FeederQueue::prioQueueFinished()
 {
   if (highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && (mPendingJobs == 0) && mCurrentCollection.isValid() ) {
-    kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
+    //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
     mCurrentCollection = Collection();
     emit idle( i18n( "Indexing completed." ) );
     processNextCollection();
@@ -252,9 +252,9 @@ void FeederQueue::setItemFetchScope(ItemFetchScope scope)
 ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
 : QObject(parent),
   mPendingRemoveDataJobs( 0 ),
-  mFetchSize(fetchSize),
-  mBatchSize(batchSize), 
-  block(false)
+  mBatchSize( batchSize ),
+  mFetchSize( fetchSize ),
+  block( false )
 {
   if ( fetchSize < batchSize )  {
     kWarning() << "fetchSize must be >= batchsize";
@@ -270,7 +270,7 @@ ItemQueue::~ItemQueue()
 
 void ItemQueue::addItem(const Akonadi::Item &item)
 {
-  kDebug() << "pipline size: " << mItemPipeline.size();
+  //kDebug() << "pipline size: " << mItemPipeline.size();
   mItemPipeline.enqueue(item.id()); //TODO if payload is available add directly to 
 }
 
@@ -285,10 +285,10 @@ void ItemQueue::addItems(const Akonadi::Item::List &list )
 bool ItemQueue::processItem()
 {
   if (block) {//wait until the old graph has been saved
-    kDebug() << "blocked";
+    //kDebug() << "blocked";
     return false;
   }
-  kDebug() << "------------------------procItem";
+  //kDebug() << "------------------------procItem";
   static bool processing = false; // guard against sub-eventloop reentrancy
   if ( processing )
     return false;
@@ -299,7 +299,7 @@ bool ItemQueue::processItem()
   processing = false;
   
   if (mItemFetchList.size() >= mFetchSize || mItemPipeline.isEmpty() ) {
-    kDebug() << QString("Fetching %1 items").arg(mItemFetchList.size());
+    //kDebug() << QString("Fetching %1 items").arg(mItemFetchList.size());
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItemFetchList, 0 );
     job->fetchScope().fetchFullPayload();
     job->fetchScope().setCacheOnly( true );
@@ -320,12 +320,10 @@ void ItemQueue::itemsReceived(const Akonadi::Item::List& items)
 {
     Akonadi::ItemFetchJob *job = qobject_cast<Akonadi::ItemFetchJob*>(sender());
     int numberOfItems = job->property("numberOfItems").toInt();
-    kDebug() << items.size() << numberOfItems;
+    //kDebug() << items.size() << numberOfItems;
     mFetchedItemList.append(items);
     if ( mFetchedItemList.size() >= numberOfItems ) { //Sometimes we get a partial delivery only, wait for the rest
         processBatch();
-    } else {
-        kDebug() << "waiting for more";
     }
 }
 
@@ -340,24 +338,24 @@ void ItemQueue::fetchJobResult(KJob* job)
 
 bool ItemQueue::processBatch()
 {
-    int size = mFetchedItemList.size();
-    kDebug() << size;
-    for ( int i = 0; i < size && i < mBatchSize; i++ ) {
-        const Akonadi::Item &item = mFetchedItemList.takeFirst();
-        //kDebug() << item.id();
-        Q_ASSERT(item.hasPayload());
-        Q_ASSERT(mBatch.size() == 0 ? mResourceGraph.isEmpty() : true); //otherwise we havent reached removeDataByApplication yet, and therfore mustn't overwrite mResourceGraph
-        NepomukHelpers::addItemToGraph( item, mResourceGraph );
-        mBatch.append(item.url());
-    }
-    if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
-        kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
-        KJob *job = Nepomuk::removeDataByApplication( mBatch, Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
-        connect( job, SIGNAL( finished( KJob* ) ), this, SLOT( removeDataResult( KJob* ) ) );
-        mBatch.clear();
-        return false;
-    }
-    return true;
+  int size = mFetchedItemList.size();
+  //kDebug() << size;
+  for ( int i = 0; i < size && i < mBatchSize; i++ ) {
+    const Akonadi::Item &item = mFetchedItemList.takeFirst();
+    //kDebug() << item.id();
+    Q_ASSERT(item.hasPayload());
+    Q_ASSERT(mBatch.size() == 0 ? mResourceGraph.isEmpty() : true); //otherwise we havent reached removeDataByApplication yet, and therfore mustn't overwrite mResourceGraph
+    NepomukHelpers::addItemToGraph( item, mResourceGraph );
+    mBatch.append(item.url());
+  }
+  if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
+    //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
+    KJob *job = Nepomuk::removeDataByApplication( mBatch, Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
+    connect( job, SIGNAL( finished( KJob* ) ), this, SLOT( removeDataResult( KJob* ) ) );
+    mBatch.clear();
+    return false;
+  }
+  return true;
 }
 
 void ItemQueue::removeDataResult(KJob* job)
@@ -369,7 +367,7 @@ void ItemQueue::removeDataResult(KJob* job)
   //kDebug() << "Saving Graph";
   KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mResourceGraph );
   connect( addGraphJob, SIGNAL( result( KJob* ) ), SLOT( batchJobResult( KJob* ) ) );
-  m_debugGraph = mResourceGraph;
+  //m_debugGraph = mResourceGraph;
   mResourceGraph.clear();
   //trigger processing of next collection as everything of this one has been stored
   //kDebug() << "removing completed, saving complete, batch done==================";
@@ -377,15 +375,15 @@ void ItemQueue::removeDataResult(KJob* job)
 
 void ItemQueue::batchJobResult(KJob* job)
 {
-  kDebug() << "------------------------------------------";
-  kDebug() << "pipline size: " << mItemPipeline.size();
-  kDebug() << "fetchedItemList : " << mFetchedItemList.size();
+  //kDebug() << "------------------------------------------";
+  //kDebug() << "pipline size: " << mItemPipeline.size();
+  //kDebug() << "fetchedItemList : " << mFetchedItemList.size();
   Q_ASSERT(mBatch.isEmpty());
   int timeout = 0;
   if ( job->error() ) {
-    foreach( const Nepomuk::SimpleResource &res, m_debugGraph.toList() ) {
+    /*foreach( const Nepomuk::SimpleResource &res, m_debugGraph.toList() ) {
         kWarning() << res;
-    }
+    }*/
     kWarning() << job->errorString();
     timeout = 30000; //Nepomuk is probably still working. Lets wait a bit and hope it has finished until the next batch arrives.
   }
@@ -395,11 +393,11 @@ void ItemQueue::batchJobResult(KJob* job)
 void ItemQueue::continueProcessing()
 {
   if (processBatch()) { //Go back for more
-    kDebug() << "batch finished";
+    //kDebug() << "batch finished";
     block = false;
     emit batchFinished();
   } else {
-      kDebug() << "there was more...";
+      //kDebug() << "there was more...";
       return;
   }
   if ( mItemPipeline.isEmpty() && mFetchedItemList.isEmpty() ) {

@@ -72,7 +72,7 @@ private:
 
   QQueue<Akonadi::Item::Id> mItemPipeline;
   Nepomuk::SimpleResourceGraph mResourceGraph;
-  Nepomuk::SimpleResourceGraph m_debugGraph;
+  //Nepomuk::SimpleResourceGraph m_debugGraph;
   QList<QUrl> mBatch;
   Akonadi::Item::List mItemFetchList;
   Akonadi::Item::List mFetchedItemList;
