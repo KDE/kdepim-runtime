@@ -1,6 +1,5 @@
 project(libdatamanagement)
 
-add_subdirectory( interfaces )
 include_directories( interfaces )
 
 set(datamanagement_SRC
