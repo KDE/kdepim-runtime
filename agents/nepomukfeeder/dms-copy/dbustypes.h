@@ -36,10 +36,14 @@ Q_DECLARE_METATYPE(Nepomuk::PropertyHash)
 Q_DECLARE_METATYPE(Nepomuk::SimpleResource)
 Q_DECLARE_METATYPE(QList<Nepomuk::SimpleResource>)
 
+//CAUTION: Q_DECLARE_METATYPE doesn't accept template arguments like QHash<T, T>
+typedef QHash<QString, QString> __nepomuk_QHashQStringQString;
+Q_DECLARE_METATYPE( __nepomuk_QHashQStringQString )
+
 namespace Nepomuk {
     namespace DBus {
-        QString convertUri(const QUrl& uri);
-        QStringList convertUriList(const QList<QUrl>& uris);
+        QString NEPOMUK_DATA_MANAGEMENT_EXPORT convertUri(const QUrl& uri);
+        QStringList NEPOMUK_DATA_MANAGEMENT_EXPORT convertUriList(const QList<QUrl>& uris);
 
         /// Convert QDBusArguments variants into QUrl, QDate, QTime, and QDateTime variants
         NEPOMUK_DATA_MANAGEMENT_EXPORT QVariant resolveDBusArguments(const QVariant& v);

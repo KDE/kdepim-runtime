@@ -24,6 +24,7 @@
 #include "simpleresourcegraph.h"
 #include "dbustypes.h"
 #include "genericdatamanagementjob_p.h"
+#include "kdbusconnectionpool.h"
 
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusPendingReply>
@@ -43,7 +44,8 @@ public:
 };
 
 Nepomuk::DescribeResourcesJob::DescribeResourcesJob(const QList<QUrl>& resources,
-                                                    bool includeSubResources)
+                                                    DescribeResourcesFlags flags,
+                                                    const QList<QUrl>& targetGroups)
     : KJob(0),
       d(new Private)
 {
@@ -51,10 +53,11 @@ Nepomuk::DescribeResourcesJob::DescribeResourcesJob(const QList<QUrl>& resources
 
     org::kde::nepomuk::DataManagement dms(QLatin1String(DMS_DBUS_SERVICE),
                                           QLatin1String("/datamanagement"),
-                                          QDBusConnection::sessionBus());
+                                          KDBusConnectionPool::threadConnection());
     QDBusPendingCallWatcher* dbusCallWatcher
             = new QDBusPendingCallWatcher(dms.describeResources(Nepomuk::DBus::convertUriList(resources),
-                                                                includeSubResources));
+                                                                int(flags),
+                                                                Nepomuk::DBus::convertUriList(targetGroups)));
     connect(dbusCallWatcher, SIGNAL(finished(QDBusPendingCallWatcher*)),
             this, SLOT(slotDBusCallFinished(QDBusPendingCallWatcher*)));
 }

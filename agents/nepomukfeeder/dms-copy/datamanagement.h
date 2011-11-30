@@ -47,6 +47,7 @@ class KUrl;
 
 namespace Nepomuk {
     class DescribeResourcesJob;
+    class StoreResourcesJob;
     class CreateResourceJob;
     class SimpleResourceGraph;
 
@@ -129,6 +130,41 @@ namespace Nepomuk {
      *
      * This information is updated automatically and cannot be changed through the API (except for special cases used for
      * syncing). But it can be queried at any time to be used for whatever purpose.
+     *
+     *
+     * \section nepomuk_dms_resource_identification Resource Identification
+     *
+     * Resource identification is an important issue in storeResources(). There are basically three ways to identify a resource:
+     * -# The trivial way to identify a resource is to provide the exact resource URI.
+     * -# The second, also rather trivial way to identify a resource is through its nie:url. This can be a local file URL or an
+     * http URL or anything else as decribed in \ref nepomuk_dms_resource_uris.
+     * -# The last, most interesting way to identify a resource is through its properties and relations. This is what
+     * storeResources() does in Nepomuk::IdentifyNew mode.
+     *
+     * In general all properties with a literal range are considered identifying. This includes properties like nao:prefLabel,
+     * nie:title, nco:fullname, and so on. All properties with a non-literal range are considered non-identifying. However,
+     * there are exceptions to this rule. Some properties with literal ranges are non-identifying since they express the state
+     * of a resource or an opinion of a particular user.
+     *
+     * Examples of properties like this include \c nao:numericRating, nie:comment, or nco:imStatus. On the other hand there are
+     * properties with non-literal ranges which are in fact identifying. Typical examples include \c rdf:type, \c nfo:hasHash,
+     * or \c nmm:performer.
+     *
+     * To this end we make use of \c nrl:IdentifyingProperty and \c nrl:FluxProperty. The former is used to mark specific properties
+     * as being identifying while the latter states that a property can change over time without actually chaning the identity
+     * of the resource.
+     *
+     * In storeResources() two resources are considered being equal if all of their identifying properties match and they have at
+     * least one identifying propery in common. Matching identifying properties here means that there is no identifying property
+     * with a different value in the other resource.
+     *
+     *
+     * \section nepomuk_dms_permissions Permissions in %Nepomuk
+     *
+     * FIXME: define exactly how permissions are handled. By default all is private. Questions remaining:
+     * - Do we define permissions on the graph level?
+     * - What is the range of the permissions? \c nao:Party?
+     * - How do we define "public to all"?
      *
      *
      * \section nepomuk_dms_advanced Advanced Nepomuk Concepts
@@ -350,6 +386,23 @@ namespace Nepomuk {
     Q_DECLARE_FLAGS(StoreResourcesFlags, StoreResourcesFlag)
 
     /**
+     * \brief Flags to influence the result of describeResources().
+     *
+     * See the documentation of describeResources() for details.
+     */
+    enum DescribeResourcesFlag {
+        /// No flags - default behaviour
+        NoDescribeResourcesFlags = 0,
+
+        /// Exclude discardable data, ie. data which can be re-generated
+        ExcludeDiscardableData = 1,
+
+        /// Exclude related resources, only include literal properties
+        ExcludeRelatedResources = 2
+    };
+    Q_DECLARE_FLAGS(DescribeResourcesFlags, DescribeResourcesFlag)
+
+    /**
      * \brief Remove all information about resources from the database which
      * has been created by a specific application.
      *
@@ -410,8 +463,10 @@ namespace Nepomuk {
      * to state that the provided information can be recreated at any time. Only built-in types
      * such as int, string, or url are supported.
      * \param component The calling component. Typically this is left to the default.
+     *
+     * See \ref nepomuk_dms_resource_identification for details on how resources are identified.
      */
-    NEPOMUK_DATA_MANAGEMENT_EXPORT KJob* storeResources(const Nepomuk::SimpleResourceGraph& resources,
+    NEPOMUK_DATA_MANAGEMENT_EXPORT StoreResourcesJob* storeResources(const Nepomuk::SimpleResourceGraph& resources,
                                                         Nepomuk::StoreIdentificationMode identificationMode = Nepomuk::IdentifyNew,
                                                         Nepomuk::StoreResourcesFlags flags = Nepomuk::NoStoreResourcesFlags,
                                                         const QHash<QUrl, QVariant>& additionalMetadata = QHash<QUrl, QVariant>(),
@@ -439,6 +494,8 @@ namespace Nepomuk {
      * to state that the provided information can be recreated at any time. Only built-in types
      * such as int, string, or url are supported.
      * \param component The calling component. Typically this is left to the default.
+     *
+     * See \ref nepomuk_dms_resource_identification for details on how resources are identified.
      */
     NEPOMUK_DATA_MANAGEMENT_EXPORT KJob* importResources(const KUrl& url,
                                                          Soprano::RdfSerialization serialization,
@@ -451,16 +508,42 @@ namespace Nepomuk {
     /**
      * \brief Retrieve all information about a set of resources.
      *
+     * Different levels of detail are available when retrieving resources. These are modified through the
+     * \p flags where the following values are supported:
+     *
+     * - \c ExcludeDiscardableData - If this flag is enabled no discardable data will be returned. This means
+     * that any data that has been created through storeResources() using additional metadata including a graph
+     * type \c nrl:DiscardableInstanceBase is ignored. This includes for example all information the file
+     * indexer has created. Be aware that this might even mean that some of the requested \p resources are not
+     * returned at all since they only contain discardable information.
+     *
+     * - \c ExcludeRelatedResources - If this flag is enabled related resources are ignored, only properties with
+     * a literal value will be returned. The only exception are sub-resources which are treated as part of the
+     * resource itself. Typical examples of sub-resources are address details of a contact or the performer
+     * contact of a music track.
+     *
+     * \b Related \b resources:
+     *
+     * If the \c ExcludeRelatedResources flag is not specified related resources are returned as well. Related
+     * resoures are returned by including only their identifying properties. \ref nepomuk_dms_resource_identification
+     * explains the usage of identifying properties in more detail.
+     *
      * \param resources The resources to describe. See \ref nepomuk_dms_resource_uris for details.
-     * \param includeSubResources If \p true sub resources will be included. See \ref nepomuk_dms_sub_resources for details.
+     * \param flags Optional flags to modify the data which is returned.
+     * \param targetParties This optional list can be used to specify the parties (nao:Party) which should
+     * receive the returned data. This will result in a filtering of the result according to configured
+     * permissions. Only data which is set as being public or readable by the specified parties is returned.
+     * See \ref nepomuk_dms_permissions for details. \b NOT \b IMPLEMENTED \b YET!
      */
     NEPOMUK_DATA_MANAGEMENT_EXPORT DescribeResourcesJob* describeResources(const QList<QUrl>& resources,
-                                                                           bool includeSubResources);
+                                                                           DescribeResourcesFlags flags = NoDescribeResourcesFlags,
+                                                                           const QList<QUrl>& targetParties = QList<QUrl>() );
     //@}
     //@}
 }
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Nepomuk::RemovalFlags)
 Q_DECLARE_OPERATORS_FOR_FLAGS(Nepomuk::StoreResourcesFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS(Nepomuk::DescribeResourcesFlags)
 
 #endif

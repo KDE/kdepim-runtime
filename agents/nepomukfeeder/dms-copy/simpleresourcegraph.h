@@ -27,6 +27,7 @@
 #include <QtCore/QSet>
 #include <QtCore/QUrl>
 #include <QtCore/QMetaType>
+#include <QtCore/QVariant>
 
 #include <KGlobal>
 
@@ -41,6 +42,7 @@ class Node;
 }
 namespace Nepomuk {
 class SimpleResource;
+class StoreResourcesJob;
 
 class NEPOMUK_DATA_MANAGEMENT_EXPORT SimpleResourceGraph
 {
@@ -68,7 +70,12 @@ public:
     void set(const QUrl& uri, const QUrl& property, const QVariant& value);
 
     void remove(const QUrl& uri, const QUrl& property, const QVariant& value);
-    void removeAll(const QUrl& uri, const QUrl& property);
+
+    /**
+     * Remove all properties matching the provided parameters. It is possible to
+     * provide empty values to act as wildcards.
+     */
+    void removeAll(const QUrl& uri, const QUrl& property, const QVariant& value = QVariant());
 
     void clear();
 
@@ -82,12 +89,27 @@ public:
 
     SimpleResource operator[](const QUrl& uri) const;
 
+    /**
+     * Get a list of the URIs of all resources in this graph.
+     * The result is equivalent to:
+     *
+     * \code
+     * QList<QUrl> uris;
+     * foreach(const SimpleResource& res, toList())
+     *     uris << res.uri();
+     * \endcode
+     *
+     * \return A list of all resource URIs in this graph.
+     */
+    QList<QUrl> allResourceUris() const;
+
     QSet<SimpleResource> toSet() const;
     QList<SimpleResource> toList() const;
 
     void addStatement(const Soprano::Statement& statement);
-    void addStatement( const Soprano::Node & subject, const Soprano::Node & predicate,
-                       const Soprano::Node & object );
+    void addStatement(const Soprano::Node & subject,
+                      const Soprano::Node & predicate,
+                      const Soprano::Node & object);
 
     SimpleResourceGraph& operator+=( const SimpleResourceGraph & graph );
 
@@ -102,7 +124,7 @@ public:
      *
      * \sa Nepomuk::storeResources()
      */
-    KJob* save(const KComponentData& component = KGlobal::mainComponent()) const;
+    StoreResourcesJob* save(const KComponentData& component = KGlobal::mainComponent()) const;
 
     bool operator==( const SimpleResourceGraph & rhs) const;
     bool operator!=( const SimpleResourceGraph & rhs) const;

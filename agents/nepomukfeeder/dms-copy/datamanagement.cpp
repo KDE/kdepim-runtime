@@ -23,6 +23,7 @@
 #include "genericdatamanagementjob_p.h"
 #include "createresourcejob.h"
 #include "describeresourcesjob.h"
+#include "storeresourcesjob.h"
 #include "dbustypes.h"
 #include "simpleresourcegraph.h"
 
@@ -131,18 +132,15 @@ KJob* Nepomuk::mergeResources(const QUrl& resource1,
                                         Q_ARG(QString, component.componentName()));
 }
 
-KJob* Nepomuk::storeResources(const SimpleResourceGraph& resources,
-                              StoreIdentificationMode identificationMode,
-                              StoreResourcesFlags flags,
-                              const QHash<QUrl, QVariant>& additionalMetadata,
-                              const KComponentData& component)
+
+Nepomuk::StoreResourcesJob* Nepomuk::storeResources(const Nepomuk::SimpleResourceGraph& resources,
+                                                    Nepomuk::StoreIdentificationMode identificationMode,
+                                                    Nepomuk::StoreResourcesFlags flags,
+                                                    const QHash<QUrl, QVariant>& additionalMetadata,
+                                                    const KComponentData& component)
 {
-    return new GenericDataManagementJob("storeResources",
-                                        Q_ARG(QList<Nepomuk::SimpleResource>, resources.toList()),
-                                        Q_ARG(int, int(identificationMode)),
-                                        Q_ARG(int, int(flags)),
-                                        Q_ARG(Nepomuk::PropertyHash, additionalMetadata),
-                                        Q_ARG(QString, component.componentName()));
+    return new StoreResourcesJob( resources, identificationMode, flags,
+                                  additionalMetadata, component );
 }
 
 KJob* Nepomuk::importResources(const KUrl& url,
@@ -163,7 +161,8 @@ KJob* Nepomuk::importResources(const KUrl& url,
 }
 
 Nepomuk::DescribeResourcesJob* Nepomuk::describeResources(const QList<QUrl>& resources,
-                                                          bool includeSubResources)
+                                                          DescribeResourcesFlags flags,
+                                                          const QList<QUrl>& targetParties )
 {
-    return new DescribeResourcesJob(resources, includeSubResources);
+    return new DescribeResourcesJob(resources, flags, targetParties);
 }

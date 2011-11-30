@@ -118,7 +118,6 @@ bool Nepomuk::ResourceWatcher::start()
 void Nepomuk::ResourceWatcher::stop()
 {
     if (d->m_connectionInterface) {
-        d->m_connectionInterface->disconnect( this );
         d->m_connectionInterface->close();
         delete d->m_connectionInterface;
         d->m_connectionInterface = 0;

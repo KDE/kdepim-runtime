@@ -22,6 +22,7 @@
 #include "genericdatamanagementjob_p.h"
 #include "datamanagementinterface.h"
 #include "dbustypes.h"
+#include "kdbusconnectionpool.h"
 
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusPendingReply>
@@ -46,7 +47,7 @@ Nepomuk::GenericDataManagementJob::GenericDataManagementJob(const char *methodNa
 
     org::kde::nepomuk::DataManagement dms(QLatin1String(DMS_DBUS_SERVICE),
                                           QLatin1String("/datamanagement"),
-                                          QDBusConnection::sessionBus());
+                                          KDBusConnectionPool::threadConnection());
     QDBusPendingReply<> reply;
     QMetaObject::invokeMethod(&dms,
                               methodName,

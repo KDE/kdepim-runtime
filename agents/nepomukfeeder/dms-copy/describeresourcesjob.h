@@ -27,8 +27,8 @@
 #include <QtCore/QList>
 #include <QtCore/QUrl>
 
-#include "nepomukdatamanagement_export.h"
 #include "datamanagement.h"
+#include "nepomukdatamanagement_export.h"
 
 class QDBusPendingCallWatcher;
 
@@ -69,14 +69,16 @@ private Q_SLOTS:
 
 private:
     DescribeResourcesJob(const QList<QUrl>& resources,
-                         bool includeSubResources);
+                         DescribeResourcesFlags flags,
+                         const QList<QUrl>& targetGroups);
     void start();
 
     class Private;
     Private* const d;
 
     friend Nepomuk::DescribeResourcesJob* Nepomuk::describeResources(const QList<QUrl>&,
-                                                                     bool);
+                                                                     Nepomuk::DescribeResourcesFlags,
+                                                                     const QList<QUrl>&);
 };
 }
 

@@ -122,6 +122,9 @@ void Nepomuk::DBus::registerDBusTypes()
 
     // required for the additional metadata in storeResources
     qDBusRegisterMetaType<Nepomuk::PropertyHash>();
+
+    // required for returning the mappings in storeResources
+    qDBusRegisterMetaType< QHash<QString, QString> >();
 }
 
 // We need the QUrl serialization to be able to pass URIs in variants

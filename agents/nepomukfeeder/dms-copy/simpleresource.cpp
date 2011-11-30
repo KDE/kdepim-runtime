@@ -81,7 +81,7 @@ Nepomuk::SimpleResource::~SimpleResource()
 {
 }
 
-Nepomuk::SimpleResource & Nepomuk::SimpleResource::operator =(const Nepomuk::SimpleResource &other)
+Nepomuk::SimpleResource & Nepomuk::SimpleResource::operator=(const Nepomuk::SimpleResource &other)
 {
     d = other.d;
     return *this;
@@ -147,7 +147,7 @@ bool Nepomuk::SimpleResource::isValid() const
     return true;
 }
 
-bool Nepomuk::SimpleResource::operator ==(const Nepomuk::SimpleResource &other) const
+bool Nepomuk::SimpleResource::operator==(const Nepomuk::SimpleResource &other) const
 {
     return d->m_uri == other.d->m_uri && d->m_properties == other.d->m_properties;
 }
@@ -224,14 +224,34 @@ void Nepomuk::SimpleResource::addPropertyNode(const QUrl &property, const Sopran
     // else do nothing
 }
 
-void Nepomuk::SimpleResource::removeProperty(const QUrl &property, const QVariant &value)
+void Nepomuk::SimpleResource::remove(const QUrl &property, const QVariant &value)
 {
     d->m_properties.remove(property, value);
 }
 
-void Nepomuk::SimpleResource::removeProperty(const QUrl &property)
+void Nepomuk::SimpleResource::remove(const QUrl &property)
 {
     d->m_properties.remove(property);
+}
+
+void Nepomuk::SimpleResource::removeAll(const QUrl &property, const QVariant &value)
+{
+    if(property.isEmpty()) {
+        if(value.isValid()) {
+            foreach(const QUrl& prop, d->m_properties.keys(value)) {
+                d->m_properties.remove(prop, value);
+            }
+        }
+        else {
+            d->m_properties.clear();
+        }
+    }
+    else if(value.isValid()){
+        d->m_properties.remove(property, value);
+    }
+    else {
+        d->m_properties.remove(property);
+    }
 }
 
 void Nepomuk::SimpleResource::addType(const QUrl &type)

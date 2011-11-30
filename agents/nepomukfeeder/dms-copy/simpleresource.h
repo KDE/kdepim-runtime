@@ -131,8 +131,14 @@ public:
      */
     void addPropertyNode(const QUrl& property, const Soprano::Node& value);
 
-    void removeProperty(const QUrl& property, const QVariant& value);
-    void removeProperty(const QUrl& property);
+    void remove(const QUrl& property, const QVariant& value);
+    void remove(const QUrl& property);
+
+    /**
+     * Remove all property/value pairs matchin the provided pattern. Both
+     * parameters can be set to empty values to act as wildcards.
+     */
+    void removeAll(const QUrl& property, const QVariant& value);
 
     /**
      * A convenience method which adds a property of type rdf:type.
