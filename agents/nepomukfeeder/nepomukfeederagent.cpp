@@ -70,7 +70,7 @@ static inline bool indexingDisabled( const Collection &collection )
 
 NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
-  mIndexCompatLevel( 2 ),
+  mIndexCompatLevel( 3 ),
   mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
   mSelfTestPassed( false ),
