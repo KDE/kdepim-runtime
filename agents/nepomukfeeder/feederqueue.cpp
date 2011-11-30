@@ -44,7 +44,8 @@ FeederQueue::FeederQueue( QObject* parent )
   mPendingJobs( 0 ),
   mReIndex( false ),
   lowPrioQueue(1, 100, this),
-  highPrioQueue(1, 100, this)
+  highPrioQueue(1, 100, this),
+  mOnline( true )
 {
   mProcessItemQueueTimer.setInterval( 0 );
   mProcessItemQueueTimer.setSingleShot( true );
@@ -68,6 +69,7 @@ void FeederQueue::setReindexing( bool reindex )
 
 void FeederQueue::setOnline( bool online )
 {
+  kDebug() << online;
   mOnline = online;
   if (online)
     continueIndexing();
@@ -75,7 +77,7 @@ void FeederQueue::setOnline( bool online )
 
 void FeederQueue::addCollection( const Akonadi::Collection &collection )
 {
-  //kDebug();
+  kDebug() << collection.id();
   mCollectionQueue.append( collection );
   if ( mPendingJobs == 0 ) {
     processNextCollection();
@@ -97,7 +99,7 @@ void FeederQueue::processNextCollection()
   }
   mCurrentCollection = mCollectionQueue.takeFirst();
   emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ));
-  //kDebug() << "Indexing collection" << mCurrentCollection.name();
+  kDebug() << "Indexing collection" << mCurrentCollection.name();
   //TODO maybe reindex anyways to be sure that type etc is correct
   if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(), Vocabulary::NIE::url(), mCurrentCollection.url() ) ) {
     //kDebug() << "adding collection to nepomuk";
@@ -114,7 +116,7 @@ void FeederQueue::processNextCollection()
 
 void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
 {
-  //kDebug() << items.count();
+  kDebug() << items.count();
   Akonadi::Item::List itemsToUpdate;
   foreach( const Item &item, items ) {
     if ( item.storageCollectionId() != mCurrentCollection.id() )
@@ -158,7 +160,7 @@ void FeederQueue::itemFetchResult(KJob* job)
 
 void FeederQueue::addItem( const Akonadi::Item &item )
 {
-  //kDebug() << item.id();
+  kDebug() << item.id();
   highPrioQueue.addItem( item );
   mProcessItemQueueTimer.start();
 }
@@ -170,13 +172,13 @@ bool FeederQueue::isEmpty()
 
 void FeederQueue::continueIndexing()
 {
-  //kDebug();
+  kDebug();
   mProcessItemQueueTimer.start();
 }
 
 void FeederQueue::processItemQueue()
 {
-  //kDebug();
+  kDebug();
   ++mProcessedAmount;
   if ( (mProcessedAmount % 100) == 0 && mTotalAmount > 0 && mProcessedAmount <= mTotalAmount )
     emit progress( (mProcessedAmount * 100) / mTotalAmount );
@@ -187,6 +189,7 @@ void FeederQueue::processItemQueue()
       return;
     }
   } else if ( !mOnline ) {
+    kDebug() << "not Online, stopping processing";
     return;
   } else if ( !lowPrioQueue.isEmpty() ){ 
     //kDebug() << "low";
@@ -199,7 +202,7 @@ void FeederQueue::processItemQueue()
   }
 
   if ( !highPrioQueue.isEmpty() || ( !lowPrioQueue.isEmpty() && mOnline ) ) {
-    //kDebug() << "continue";
+    kDebug() << "continue";
     // go to eventloop before processing the next one, otherwise we miss the idle status change
     mProcessItemQueueTimer.start();
   }
@@ -317,10 +320,12 @@ void ItemQueue::itemsReceived(const Akonadi::Item::List& items)
 {
     Akonadi::ItemFetchJob *job = qobject_cast<Akonadi::ItemFetchJob*>(sender());
     int numberOfItems = job->property("numberOfItems").toInt();
-    kDebug() << items.size();
+    kDebug() << items.size() << numberOfItems;
     mFetchedItemList.append(items);
     if ( mFetchedItemList.size() >= numberOfItems ) { //Sometimes we get a partial delivery only, wait for the rest
         processBatch();
+    } else {
+        kDebug() << "waiting for more";
     }
 }
 
