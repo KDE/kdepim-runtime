@@ -217,14 +217,13 @@ void FeederQueue::processItemQueue()
   if ( (mProcessedAmount % 100) == 0 && mTotalAmount > 0 && mProcessedAmount <= mTotalAmount )
     emit progress( (mProcessedAmount * 100) / mTotalAmount );
   
-  if ( !mOnline )
-    return;
-  
   if ( !highPrioQueue.isEmpty() ) {
     //kDebug() << "high";
     if (!highPrioQueue.processItem()) {
       return;
     }
+  } else if ( !mOnline ) {
+    return;
   } else if ( !lowPrioQueue.isEmpty() ){ 
     //kDebug() << "low";
     if (!lowPrioQueue.processItem()) {
