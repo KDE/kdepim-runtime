@@ -15,7 +15,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
 
 add_subdirectory( plugin )
 add_subdirectory( plugins )
-
+add_subdirectory( test )
 
 kde4_add_executable(akonadi_nepomuk_feeder nepomukfeederagent.cpp pluginloader.cpp feederqueue.cpp nepomukhelpers.cpp)
 
