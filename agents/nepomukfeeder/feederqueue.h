@@ -42,11 +42,12 @@ class SimpleResourceGraph;
 class ItemQueue : public QObject {
   Q_OBJECT
 public:
-    explicit ItemQueue(int batchSize, QObject* parent = 0);
+    explicit ItemQueue(int batchSize, int fetchSize, QObject* parent = 0);
     ~ItemQueue();
   
   /** add item to queue */
   void addItem(const Akonadi::Item &);
+  void addItems(const Akonadi::Item::List &);
   /** process one item @return returns false if currently blocked */
   bool processItem();
   /** queue is empty */
@@ -59,16 +60,25 @@ signals:
   
 private slots:
   void removeDataResult( KJob* job );
-  void jobResult( KJob* job );
+  void batchJobResult( KJob* job );
+  void fetchJobResult( KJob* job );
+  void itemsReceived( const Akonadi::Item::List &items );
+  void continueProcessing();
   
 private:
+  bool processBatch();
+
   int mPendingRemoveDataJobs, mBatchCounter;
 
-  QQueue<Akonadi::Item> mItemPipeline;
+  QQueue<Akonadi::Item::Id> mItemPipeline;
   Nepomuk::SimpleResourceGraph mResourceGraph;
+  Nepomuk::SimpleResourceGraph m_debugGraph;
   QList<QUrl> mBatch;
+  Akonadi::Item::List mItemFetchList;
+  Akonadi::Item::List mFetchedItemList;
 
-  int mBatchSize;
+  int mBatchSize; //Size of Nepomuk batch, number of items stored together in nepomuk
+  int mFetchSize; //Maximum number of items fetched with full payload (defines ram usage of feeder), must be >= mBatchSize, ideally a multiple of it
   bool block;
 };
 
@@ -127,8 +137,6 @@ signals:
   
 private slots:
   void itemHeadersReceived( const Akonadi::Item::List &items );
-  void itemsReceived( const Akonadi::Item::List &items );
-  void notificationItemsReceived( const Akonadi::Item::List &items );
   void itemFetchResult( KJob* job );
   void processItemQueue();
   void prioQueueFinished();
