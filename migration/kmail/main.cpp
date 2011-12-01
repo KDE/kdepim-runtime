@@ -95,5 +95,10 @@ int main( int argc, char **argv )
   const int result = app->exec();
   if ( InfoDialog::hasError() )
     return 3;
+  
+  // if we have succeeded, update version information
+  migrationCfg.writeEntry( "Version", targetVersion );
+  migrationCfg.sync();
+  
   return result;
 }
