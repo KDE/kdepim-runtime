@@ -33,7 +33,8 @@ namespace Akonadi_KAlarm_Dir_Resource
 
 SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
   : KDialog(),
-    mSettings(settings)
+    mSettings(settings),
+    mReadOnlySelected(false)
 {
     ui.setupUi(mainWidget());
     mTypeSelector = new AlarmTypeWidget(ui.tab, ui.tabLayout);
@@ -56,8 +57,8 @@ SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
     mManager->updateWidgets();
 
     connect(this, SIGNAL(okClicked()), SLOT(save()));
-    connect(ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()));
-    connect(ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()));
+    connect(ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(textChanged()));
+    connect(ui.kcfg_ReadOnly, SIGNAL(clicked(bool)), SLOT(readOnlyClicked(bool)));
     connect(mTypeSelector, SIGNAL(changed()), SLOT(validate()));
 
     QTimer::singleShot(0, this, SLOT(validate()));
@@ -71,6 +72,23 @@ void SettingsDialog::save()
     mSettings->writeConfig();
 }
 
+void SettingsDialog::readOnlyClicked(bool set)
+{
+    mReadOnlySelected = set;
+}
+
+void SettingsDialog::textChanged()
+{
+    bool oldReadOnly = ui.kcfg_ReadOnly->isEnabled();
+    validate();
+    if (ui.kcfg_ReadOnly->isEnabled()  &&  !oldReadOnly)
+    {
+        // If read-only was only set earlier by validating the input path,
+        // and the path is now ok to be read-write, clear the read-only status.
+        ui.kcfg_ReadOnly->setChecked(mReadOnlySelected);
+    }
+}
+
 void SettingsDialog::validate()
 {
     bool enableOk = false;
@@ -79,7 +97,9 @@ void SettingsDialog::validate()
     {
         // The entered URL must be valid and local
         const KUrl currentUrl = ui.kcfg_Path->url();
-        if (!currentUrl.isEmpty() && currentUrl.isLocalFile())
+        if (currentUrl.isEmpty())
+            ui.kcfg_ReadOnly->setEnabled(true);
+        else if (currentUrl.isLocalFile())
         {
             const QFileInfo file(currentUrl.toLocalFile());
             // It must either be a directory, or not yet exist

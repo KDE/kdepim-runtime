@@ -50,12 +50,15 @@ class SettingsDialog : public KDialog
     private Q_SLOTS:
         void save();
         void validate();
+        void textChanged();
+        void readOnlyClicked(bool);
 
     private:
         Ui::SettingsDialog    ui;
         AlarmTypeWidget*      mTypeSelector;
         KConfigDialogManager* mManager;
         Akonadi_KAlarm_Dir_Resource::Settings* mSettings;
+        bool                  mReadOnlySelected;   // read-only was set by user (not by validate())
 };
 
 }
