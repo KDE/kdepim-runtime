@@ -80,7 +80,9 @@ using namespace KMail;
    changing too. */
 enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
+#ifdef SPECIALCOLLECTION_TAKEOVER
 #define SPECIALCOLLECTIONS_LOCK_SERVICE QLatin1String( "org.kde.pim.SpecialCollections" )
+#endif
 
 static MixedMaildirStore *createStoreFromBasePath( const QString &basePath )
 {
@@ -997,6 +999,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   resourceGroup.writeEntry( "CheckOnStartup", false );
   resourceGroup.writeEntry( "OfflineOnShutdown", false );
 
+#ifdef SPECIALCOLLECTION_TAKEOVER  
   const bool specialCollectionsLock =
     QDBusConnection::sessionBus().registerService( SPECIALCOLLECTIONS_LOCK_SERVICE );
 
@@ -1020,9 +1023,11 @@ void KMailMigrator::localMaildirCreated( KJob *job )
       defaultInstanceName = defaultInstance.name();
     }
   }
+#endif
 
   const QString instanceName = i18n("KMail Folders");
 
+#ifdef SPECIALCOLLECTION_TAKEOVER
   if ( defaultInstanceName.isEmpty() && specialCollectionsLock ) {
     specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), defaultResourceId );
     specialMailCollectionsGroup.sync();
@@ -1041,6 +1046,7 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   if ( specialCollectionsLock ){
     QDBusConnection::sessionBus().unregisterService( SPECIALCOLLECTIONS_LOCK_SERVICE );
   }
+#endif
 
   instance.setName( instanceName );
   emit status( instanceName );
@@ -1082,6 +1088,7 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
   resource.reconfigure();
 
   if ( error.isEmpty() ) {
+#ifdef SPECIALCOLLECTION_TAKEOVER
     KConfigGroup config( KGlobal::config(), QLatin1String( "SpecialMailCollections" ) );
     if ( config.readEntry( QLatin1String( "TakeOverIfDefaultIsTotallyEmpty" ), false ) ) {
       KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
@@ -1101,6 +1108,7 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
         return;
       }
     }
+#endif
 
     mCurrentInstance = AgentInstance();
 
@@ -1308,6 +1316,7 @@ void KMailMigrator::imapCacheAdaptionFinished( int messageType, const QString &m
 
 void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance &instance )
 {
+#ifdef SPECIALCOLLECTION_TAKEOVER
   KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
   KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
 
@@ -1339,6 +1348,7 @@ void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance 
   emit message( Success, i18n( "Local folders migrated successfully." ) );
   emit status( QString() );
   migrationDone();
+#endif   
 }
 
 QString KMailMigrator::importPassword(const QString &aStr)
