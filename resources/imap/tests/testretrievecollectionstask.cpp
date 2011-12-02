@@ -188,6 +188,30 @@ private slots:
 
     QTest::newRow( "subscription enabled" ) << expectedCollections << scenario << callNames
                                             << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 LIST \"\" *"
+             << "S: * LIST ( ) / INBOX/Unsubscribed"
+             << "S: * LIST ( ) / INBOX/Calendar"
+             << "S: * LIST ( ) / INBOX/Calendar/Private"
+             << "S: * LIST ( \\HasChildren ) / INBOX"
+             << "S: A000003 OK list done"
+             << "C: A000004 LSUB \"\" *"
+             << "S: * LSUB ( \\HasChildren ) / Inbox"
+             << "S: * LSUB ( ) / Inbox/SubscribedButNotExisting"
+             << "S: * LSUB ( ) / Inbox/Calendar"
+             << "S: * LSUB ( ) / Inbox/Calendar/Private"
+             << "S: A000004 OK list done";
+
+    callNames.clear();
+    callNames << "setIdleCollection" << "collectionsRetrieved";
+
+    isSubscriptionEnabled = true;
+    isDisconnectedModeEnabled = false;
+    intervalCheckTime = -1;
+
+    QTest::newRow( "subscription enabled, case insensitive inbox" ) << expectedCollections << scenario << callNames
+                                            << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
   }
 
   void shouldListCollections()
