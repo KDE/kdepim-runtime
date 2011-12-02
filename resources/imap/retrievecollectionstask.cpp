@@ -105,7 +105,6 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
 
   for ( int i=0; i<descriptors.size(); ++i ) {
     KIMAP::MailBoxDescriptor descriptor = descriptors[i];
-    convertInboxName( descriptor );
 
     // skip phantom mailboxes contained in LSUB but not LIST
     if ( isSubscriptionEnabled() && !m_fullReportedCollections.contains( descriptor.name ) ) {
@@ -201,9 +200,7 @@ void RetrieveCollectionsTask::onFullMailBoxesReceived( const QList< KIMAP::MailB
 {
   Q_UNUSED( flags );
   foreach ( const KIMAP::MailBoxDescriptor &descriptor, descriptors ) {
-    KIMAP::MailBoxDescriptor desc( descriptor );
-    convertInboxName( desc );
-    m_fullReportedCollections.insert( desc.name );
+    m_fullReportedCollections.insert( descriptor.name );
   }
 }
 
@@ -213,19 +210,6 @@ void RetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob* job)
     cancelTask( job->errorString() );
   }
 }
-
-void RetrieveCollectionsTask::convertInboxName(KIMAP::MailBoxDescriptor& descriptor)
-{
-    //Inbox must be case sensitive, according to the RFC, so make it always uppercase
-    QStringList pathParts = descriptor.name.split(descriptor.separator);
-    if ( !pathParts.isEmpty() && pathParts[0].compare( QLatin1String("INBOX"), Qt::CaseInsensitive ) == 0 ) {
-       pathParts.removeAt(0);
-       descriptor.name = QLatin1String("INBOX");
-       if ( !pathParts.isEmpty() )
-        descriptor.name += descriptor.separator + pathParts.join( descriptor.separator );
-    } 
-}
-
 
 #include "retrievecollectionstask.moc"
 
