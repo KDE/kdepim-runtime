@@ -175,6 +175,10 @@ void SendJob::Private::doTraditionalTransport()
   // Message.
   Q_ASSERT( item.hasPayload<Message::Ptr>() );
   const Message::Ptr message = item.payload<Message::Ptr>();
+  if( message->hasHeader( "Bcc" ) ) {
+    message->removeHeader( "Bcc" );
+    message->assemble();
+  }
   const QByteArray content = message->encodedContent( true ) + "\r\n";
   Q_ASSERT( !content.isEmpty() );
 
