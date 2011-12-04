@@ -278,6 +278,7 @@ void KAlarmResource::settingsChanged()
     {
         // This is a flag to request that the backend calendar storage format should
         // be updated to the current KAlarm format.
+        kDebug() << "Update storage format";
         Collection c;
         c.setParentCollection(Collection::root());
         c.setRemoteId(mSettings->path());
@@ -317,7 +318,8 @@ void KAlarmResource::settingsChanged()
                 // would replace the current Collection by a new one.
                 mCurrentHash = calculateHash(filename);
 
-                mCompatibility = KACalendar::Current;
+                mCompatibility = mFileCompatibility = KACalendar::Current;
+                mVersion = mFileVersion = KACalendar::CurrentFormat;
                 Collection c;
                 c.setParentCollection(Collection::root());
                 c.setRemoteId(mSettings->path());
