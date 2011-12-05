@@ -55,7 +55,6 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
 
   connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
-  connect( ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()) );
   connect( ui.kcfg_MonitorFile, SIGNAL(toggled(bool)), SLOT(validate()) );
   ui.kcfg_Path->setFocus();
   QTimer::singleShot( 0, this, SLOT(validate()) );
@@ -129,15 +128,13 @@ void SingleFileResourceConfigDialogBase::validate()
     ui.statusLabel->setText( QString() );
 #endif
 
-    const QFileInfo file( currentUrl.toLocalFile() );
-    if ( file.exists() && file.isFile() && !file.isWritable() ) {
-      ui.kcfg_ReadOnly->setEnabled( false );
-      ui.kcfg_ReadOnly->setChecked( true );
-    } else {
-      ui.kcfg_ReadOnly->setEnabled( true );
-    }
+    // The read-only checkbox used to be disabled if the file is read-only,
+    // but it is then impossible to know at a later date if the file
+    // permissions change, whether the user actually wanted the resource to be
+    // read-only or not. So just leave the read-only checkbox untouched.
     enableButton( Ok, true );
   } else {
+    // Not a local file.
     if ( mLocalFileOnly ) {
       enableButton( Ok, false );
       return;
@@ -167,8 +164,8 @@ void SingleFileResourceConfigDialogBase::validate()
 void SingleFileResourceConfigDialogBase::slotStatJobResult( KJob* job )
 {
   if ( job->error() == KIO::ERR_DOES_NOT_EXIST && !mDirUrlChecked ) {
-    // The file did not exists, so let's see if the directory the file should
-    // reside supports writing.
+    // The file did not exist, so let's see if the directory the file should
+    // reside in supports writing.
     const KUrl dirUrl = ui.kcfg_Path->url().upUrl();
 
     mStatJob = KIO::stat( dirUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
@@ -191,16 +188,6 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult( KJob* job )
     mDirUrlChecked = false;
     mStatJob = 0;
     return;
-  }
-
-  KIO::StatJob* statJob = qobject_cast<KIO::StatJob *>( job );
-  const KFileItem item( statJob->statResult(), KUrl() );
-
-  if ( item.isWritable() ) {
-    ui.kcfg_ReadOnly->setEnabled( true );
-  } else {
-    ui.kcfg_ReadOnly->setEnabled( false );
-    ui.kcfg_ReadOnly->setChecked( true );
   }
 
 #ifndef KDEPIM_MOBILE_UI
