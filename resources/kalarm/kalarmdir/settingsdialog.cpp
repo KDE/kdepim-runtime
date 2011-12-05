@@ -101,18 +101,29 @@ void SettingsDialog::validate()
             ui.kcfg_ReadOnly->setEnabled(true);
         else if (currentUrl.isLocalFile())
         {
-            const QFileInfo file(currentUrl.toLocalFile());
-            // It must either be a directory, or not yet exist
-            if (!file.exists() || file.isDir())
+            QFileInfo file(currentUrl.toLocalFile());
+            // It must either be an existing directory, or in a writable
+            // directory, and it must not be an existing file.
+            if (file.exists())
             {
-                if (file.exists() && !file.isWritable())
+                if (file.isDir())
+                    enableOk = true;   // it's an existing directory
+            }
+            else
+            {
+                // Specified directory doesn't already exist.
+                // Find the first level of parent directory which exists,
+                // and check that it is writable.
+                for ( ; ; )
                 {
-                    ui.kcfg_ReadOnly->setEnabled(false);
-                    ui.kcfg_ReadOnly->setChecked(true);
+                    file.setFile(file.dir().absolutePath());   // get parent dir's file info
+                    if (file.exists())
+                    {
+                        if (file.isDir()  &&  file.isWritable())
+                            enableOk = true;   // it's possible to create the directory
+                        break;
+                    }
                 }
-                else
-                    ui.kcfg_ReadOnly->setEnabled(true);
-                enableOk = true;
             }
         }
     }
