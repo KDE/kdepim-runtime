@@ -70,7 +70,7 @@ Nepomuk::SimpleResource addTag( Nepomuk::SimpleResource& res, Nepomuk::SimpleRes
 Nepomuk::SimpleResource addContact( const QString &emailAddress, const QString &name, Nepomuk::SimpleResourceGraph &graph )
 {
   Nepomuk::SimpleResource contactRes;
-  Nepomuk::NCO::PersonContact contact(&contactRes);
+  Nepomuk::NCO::Contact contact(&contactRes);
   contactRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), name.isEmpty() ? emailAddress : name);
   if ( !emailAddress.isEmpty() ) {
     Nepomuk::SimpleResource emailRes;
