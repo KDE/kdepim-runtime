@@ -76,7 +76,7 @@ private:
     class Private;
     Private* const d;
 
-    friend Nepomuk::CreateResourceJob* Nepomuk::createResource(const QList<QUrl>&,
+    friend CreateResourceJob* createResource(const QList<QUrl>&,
                                                                const QString&,
                                                                const QString&,
                                                                const KComponentData&);
