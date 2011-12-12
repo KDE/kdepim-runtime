@@ -567,6 +567,7 @@ void SetupServer::slotManageSubscriptions()
   m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 
   subscriptions->exec();
+  delete subscriptions;
 
   m_ui->subscriptionEnabled->setChecked( account.isSubscriptionEnabled() );
 }
