@@ -416,8 +416,12 @@ void MaildirResource::retrieveCollections()
   root.setParentCollection( Collection::root() );
   root.setRemoteId( mSettings->path() );
   root.setName( name() );
-  root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
-                | Collection::CanCreateCollection );
+  if ( mSettings->readOnly() ) {
+    root.setRights( Collection::ReadOnly );
+  } else {
+    root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
+                    | Collection::CanCreateCollection );
+  } 
 
   CachePolicy policy;
   policy.setInheritFromParent( false );
