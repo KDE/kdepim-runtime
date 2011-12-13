@@ -473,7 +473,8 @@ void SessionPool::onConnectionLost()
 
   emit connectionLost( session );
 
-  session->deleteLater();
+//This next line seems like it can induce a crash
+//  session->deleteLater();
 }
 
 #include "sessionpool.moc"
