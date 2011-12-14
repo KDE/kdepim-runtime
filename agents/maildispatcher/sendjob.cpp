@@ -162,6 +162,7 @@ void SendJob::Private::doAkonadiTransport()
     storeResult( false, i18n( "Invalid D-Bus reply from resource %1.", resourceId ) );
     return;
   }
+  filterItem();
 }
 
 void SendJob::Private::doTraditionalTransport()
