@@ -65,6 +65,7 @@ class SendJob::Private
         item( itm ),
         currentJob( 0 ),
         interface( 0 ),
+	mailfilterInterface( 0 ),
         aborting( false )
     {
     }
@@ -74,6 +75,7 @@ class SendJob::Private
     KJob *currentJob;
     QString resourceId;
     QDBusInterface *interface;
+    QDBusInterface *mailfilterInterface;
     bool aborting;
 
     void doAkonadiTransport();
@@ -81,6 +83,7 @@ class SendJob::Private
     void doPostJob( bool transportSuccess, const QString &transportMessage );
     void storeResult( bool success, const QString &message = QString() );
     void abortPostJob();
+    void filterItem();
 
     // slots
     void doTransport();
@@ -288,6 +291,7 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         if ( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
           currentJob = new ItemMoveJob( item, SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail ) , q );
           QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
+	  filterItem();
         } else {
           abortPostJob();
         }
@@ -296,8 +300,35 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         currentJob = new CollectionFetchJob( attribute->moveToCollection(), Akonadi::CollectionFetchJob::Base );
         QObject::connect( currentJob, SIGNAL(result(KJob*)),
                           q, SLOT(slotSentMailCollectionFetched(KJob*)) );
+	filterItem();
       }
     }
+  }
+}
+
+void SendJob::Private::filterItem()
+{
+  //Q_ASSERT( !resourceId.isEmpty() );
+  Q_ASSERT( mailfilterInterface == 0 );
+
+  mailfilterInterface = new QDBusInterface(
+      QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent"),
+      QLatin1String( "/MailFilterAgent" ), QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent" ),
+      DBusConnectionPool::threadConnection(), q );
+
+
+  if ( !mailfilterInterface->isValid() ) {
+    storeResult( false, i18n( "Failed to get D-Bus interface of mailfilteragent.") );
+    delete mailfilterInterface;
+    mailfilterInterface = 0;
+    return;
+  }
+
+  //Outbound = 0x2
+  const QDBusReply<void> reply = mailfilterInterface->call( QLatin1String( "filterItem" ), item.id(), 2, QString() );
+  if ( !reply.isValid() ) {
+    storeResult( false, i18n( "Invalid D-Bus reply from mailfilteragent") );
+    return;
   }
 }
 
