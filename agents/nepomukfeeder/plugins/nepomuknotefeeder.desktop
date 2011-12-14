@@ -5,6 +5,7 @@ X-KDE-ServiceTypes=AkonadiNepomukFeeder
 X-KDE-Library=akonadi_nepomuk_note_feeder
 X-KDE-ClassName=Akonadi::NepomukNoteFeeder
 Name=Nepomuk Note Feeder
+Name[de]=Notizen-Modul für Nepomuk
 Name[el]=Τροφοδότης σημειώσεων Nepomuk
 Name[es]=Proveedor de notas de Nepomuk
 Name[ia]=Syndication de Nota de Nepomuk
