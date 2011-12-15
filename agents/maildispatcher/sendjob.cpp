@@ -83,7 +83,7 @@ class SendJob::Private
     void doPostJob( bool transportSuccess, const QString &transportMessage );
     void storeResult( bool success, const QString &message = QString() );
     void abortPostJob();
-    void filterItem();
+    void filterItem( int filterset );
 
     // slots
     void doTransport();
@@ -162,7 +162,7 @@ void SendJob::Private::doAkonadiTransport()
     storeResult( false, i18n( "Invalid D-Bus reply from resource %1.", resourceId ) );
     return;
   }
-  filterItem();
+  filterItem(2); //Outbound
 }
 
 void SendJob::Private::doTraditionalTransport()
@@ -174,6 +174,7 @@ void SendJob::Private::doTraditionalTransport()
   Q_ASSERT( currentJob == 0 );
 
   currentJob = job;
+  filterItem(8); //BeforeOutbound
 
   // Message.
   Q_ASSERT( item.hasPayload<Message::Ptr>() );
@@ -292,7 +293,7 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         if ( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
           currentJob = new ItemMoveJob( item, SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail ) , q );
           QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
-	  filterItem();
+	  filterItem(2); //Outbound
         } else {
           abortPostJob();
         }
@@ -301,15 +302,15 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         currentJob = new CollectionFetchJob( attribute->moveToCollection(), Akonadi::CollectionFetchJob::Base );
         QObject::connect( currentJob, SIGNAL(result(KJob*)),
                           q, SLOT(slotSentMailCollectionFetched(KJob*)) );
-	filterItem();
+
+	filterItem(2); //Outbound
       }
     }
   }
 }
 
-void SendJob::Private::filterItem()
+void SendJob::Private::filterItem(int filterset )
 {
-  //Q_ASSERT( !resourceId.isEmpty() );
   Q_ASSERT( mailfilterInterface == 0 );
 
   mailfilterInterface = new QDBusInterface(
@@ -326,11 +327,16 @@ void SendJob::Private::filterItem()
   }
 
   //Outbound = 0x2
-  const QDBusReply<void> reply = mailfilterInterface->call( QLatin1String( "filterItem" ), item.id(), 2, QString() );
+  const QDBusReply<void> reply = mailfilterInterface->call( QLatin1String( "filterItem" ), item.id(), filterset, QString() );
   if ( !reply.isValid() ) {
     storeResult( false, i18n( "Invalid D-Bus reply from mailfilteragent") );
+    delete mailfilterInterface;
+    mailfilterInterface = 0;
     return;
   }
+
+  delete mailfilterInterface;
+  mailfilterInterface = 0;
 }
 
 void SendJob::Private::slotSentMailCollectionFetched(KJob* job)
