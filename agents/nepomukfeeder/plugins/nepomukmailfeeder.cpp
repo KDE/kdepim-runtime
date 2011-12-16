@@ -223,6 +223,7 @@ void NepomukMailFeeder::processHeaders(const KMime::Message::Ptr& msg, Nepomuk::
   addSpecificHeader( msg, "X-Loop",mail, graph );
   addSpecificHeader( msg, "X-Mailing-List", mail, graph );
   addSpecificHeader( msg, "X-Spam-Flag", mail, graph );
+  addSpecificHeader( msg, "Organization", mail, graph );
 }
 
 void NepomukMailFeeder::addSpecificHeader( const KMime::Message::Ptr& msg, const QByteArray& headerName, Nepomuk::NMO::Email& mail, Nepomuk::SimpleResourceGraph& graph )
