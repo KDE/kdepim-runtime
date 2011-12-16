@@ -25,6 +25,7 @@
 
 #include <kmime/kmime_headers.h>
 #include <kmime/kmime_message.h>
+#include <nmo/email.h>
 
 namespace Akonadi {
 
@@ -44,6 +45,7 @@ private:
   void processFlags( const Akonadi::Item::Flags &flags, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
   void processHeaders( const KMime::Message::Ptr &msg, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
   void processPart( KMime::Content *content, const Akonadi::Item &item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
+  void addSpecificHeader( const KMime::Message::Ptr& msg, const QByteArray& headerName, Nepomuk::NMO::Email& mail, Nepomuk::SimpleResourceGraph& graph );
 
   KMime::Content *m_mainBodyPart;
 };

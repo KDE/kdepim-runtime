@@ -34,6 +34,7 @@
 #include <nepomuk/nfo.h>
 #include <nepomuk/nmo.h>
 #include <nmo/email.h>
+#include <nmo/messageheader.h>
 #include <nao/tag.h>
 #include <ncal/attachment.h>
 #include <Nepomuk/Vocabulary/NCAL>
@@ -216,6 +217,23 @@ void NepomukMailFeeder::processHeaders(const KMime::Message::Ptr& msg, Nepomuk::
 
   if ( msg->messageID( false ) ) {
     mail.setMessageIds( QStringList( msg->messageID()->asUnicodeString() ) );
+  }
+
+  addSpecificHeader( msg, "List-Id",mail, graph );
+  addSpecificHeader( msg, "X-Loop",mail, graph );
+  addSpecificHeader( msg, "X-Mailing-List", mail, graph );
+  addSpecificHeader( msg, "X-Spam-Flag", mail, graph );
+}
+
+void NepomukMailFeeder::addSpecificHeader( const KMime::Message::Ptr& msg, const QByteArray& headerName, Nepomuk::NMO::Email& mail, Nepomuk::SimpleResourceGraph& graph )
+{
+  if ( msg->headerByType( headerName ) ) {
+    Nepomuk::SimpleResource headerRes;
+    Nepomuk::NMO::MessageHeader header(&headerRes);
+    header.setHeaderName(headerName);
+    header.setHeaderValue( msg->headerByType( headerName )->asUnicodeString());
+    graph << headerRes;
+    mail.addMessageHeader(headerRes.uri());
   }
 }
 
