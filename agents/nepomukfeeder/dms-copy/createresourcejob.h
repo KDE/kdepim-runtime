@@ -27,6 +27,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QUrl>
 
+#include "datamanagement.h"
 #include "nepomukdatamanagement_export.h"
 
 class KComponentData;
