@@ -199,7 +199,7 @@ QDomDocument CaldavProtocol::itemsReportQuery( const QStringList &urls ) const
     QDomElement hrefElement = document.createElementNS( "DAV:", "href" );
     const KUrl pathUrl( url );
 
-    const QDomText textNode = document.createTextNode( pathUrl.path() );
+    const QDomText textNode = document.createTextNode( pathUrl.encodedPathAndQuery() );
     hrefElement.appendChild( textNode );
 
     multigetElement.appendChild( hrefElement );
