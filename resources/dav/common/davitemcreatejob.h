@@ -54,6 +54,7 @@ class DavItemCreateJob : public KJob
 
   private Q_SLOTS:
     void davJobFinished( KJob* );
+    void itemRefreshed( KJob* );
 
   private:
     DavUtils::DavUrl mUrl;

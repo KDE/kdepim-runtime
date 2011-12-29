@@ -18,6 +18,7 @@
 
 #include "davitemmodifyjob.h"
 
+#include "davitemfetchjob.h"
 #include "davmanager.h"
 
 #include <kio/job.h>
@@ -125,6 +126,22 @@ void DavItemModifyJob::davJobFinished( KJob *job )
   mItem.setUrl( url.prettyUrl() );
   mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
 
+  if ( mItem.etag().isEmpty() ) {
+    DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
+    connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(itemRefreshed(KJob*)) );
+    fetchJob->start();
+  }
+  else {
+    emitResult();
+  }
+}
+
+void DavItemModifyJob::itemRefreshed( KJob *job )
+{
+  if ( !job->error() ) {
+    DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
+    mItem.setEtag( fetchJob->item().etag() );
+  }
   emitResult();
 }
 
