@@ -320,64 +320,22 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
     return;
   }
 
-  const QString basePath = collection.remoteId();
-  if ( basePath.isEmpty() ) {
+  if ( collection.remoteId().isEmpty() ) {
     kError() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
     cancelTask( i18n( "Invalid collection for item %1.", item.id() ) );
     return;
   }
 
-  KUrl url;
-  QByteArray rawData;
-  QString mimeType;
-
-  if ( item.hasPayload<KABC::Addressee>() ) {
-    const KABC::Addressee contact = item.payload<KABC::Addressee>();
-
-    const QString fileName = contact.uid();
-    if ( fileName.isEmpty() ) {
-      kError() << "Invalid contact uid";
-      cancelTask( i18n( "Client did not create a UID for item %1.", item.id() ) );
-      return;
-    }
-
-    url = KUrl( basePath + fileName + ".vcf" );
-
-    const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
-    mimeType = DavManager::self()->davProtocol( DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
-
-    KABC::VCardConverter converter;
-    rawData = converter.createVCard( contact );
-  } else if ( item.hasPayload<IncidencePtr>() ) {
-    const IncidencePtr ptr = item.payload<IncidencePtr>();
-
-    const QString fileName = ptr->uid();
-    if ( fileName.isEmpty() ) {
-      kError() << "Invalid incidence uid";
-      cancelTask( i18n( "Client did not create a UID for item %1.", item.id() ) );
-      return;
-    }
-
-    url = KUrl( basePath + fileName + ".ics" );
-    mimeType = "text/calendar";
-
-    KCalCore::ICalFormat formatter;
-    rawData = formatter.toICalString( ptr ).toUtf8();
-  } else {
+  DavItem davItem = DavUtils::createDavItem( item, collection );
+  if ( davItem.data().isEmpty() ) {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
-    cancelTask( i18n( "Unable to retrieve added item %1.", item.id() ) );
+    cancelTask();
     return;
   }
 
-  const QString urlStr = url.prettyUrl();
-  kDebug() << "Item " << item.id() << " will be put to " << urlStr;
-
+  QString urlStr = davItem.url();
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId(), urlStr );
-
-  DavItem davItem;
-  davItem.setUrl( urlStr );
-  davItem.setContentType( mimeType );
-  davItem.setData( rawData );
+  kDebug() << "Item " << item.id() << " will be put to " << urlStr;
 
   DavItemCreateJob *job = new DavItemCreateJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
@@ -403,33 +361,15 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
 
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
-  QByteArray rawData;
-  QString mimeType;
-
-  if ( item.hasPayload<KABC::Addressee>() ) {
-    const KABC::Addressee contact = item.payload<KABC::Addressee>();
-
-    KABC::VCardConverter converter;
-    rawData = converter.createVCard( contact );
-
-    mimeType = DavManager::self()->davProtocol( davUrl.protocol() )->contactsMimeType();
-  } else if ( item.hasPayload<IncidencePtr>() ) {
-    const IncidencePtr ptr = item.payload<IncidencePtr>();
-
-    KCalCore::ICalFormat formatter;
-    rawData = formatter.toICalString( ptr ).toUtf8();
-    mimeType = "text/calendar";
-  } else {
+  DavItem davItem = DavUtils::createDavItem( item, item.parentCollection() );
+  if ( davItem.data().isEmpty() ) {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
-    cancelTask( i18n( "Unable to retrieve added item %1.", item.id() ) );
+    cancelTask();
     return;
   }
-
-  DavItem davItem;
+  // We have to re-set the URL as it's not necessarily valid after createDavItem()
   davItem.setUrl( item.remoteId() );
   davItem.setEtag( item.remoteRevision() );
-  davItem.setContentType( mimeType );
-  davItem.setData( rawData );
 
   DavItemModifyJob *job = new DavItemModifyJob( davUrl, davItem );
   job->setProperty( "item", QVariant::fromValue( item ) );
