@@ -21,8 +21,8 @@
 
 #include <kdebug.h>
 #include <kio/job.h>
-#include <kmessagebox.h>
 #include <klocale.h>
+#include <kpassivepopup.h>
 #include <kurl.h>
 
 #include <QtCore/QTimer>
@@ -96,9 +96,8 @@ void FreeBusyUpdateHandler::timeout()
 void FreeBusyUpdateHandler::slotFreeBusyTriggerResult( KJob *job )
 {
   if ( job->error() ) {
-    KMessageBox::sorry(
-      0,
-      i18n( "Could not trigger Free/Busy information update: %1.", job->errorText() ) );
+    KPassivePopup::message(
+      i18n( "Could not trigger Free/Busy information update: %1.", job->errorText() ) , (QWidget*)0 );
   }
 }
 
