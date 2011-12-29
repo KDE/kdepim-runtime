@@ -116,6 +116,10 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   KUrl url;
   if ( location.isEmpty() )
     url = storedJob->url();
+  else if ( location.startsWith( '/' ) ) {
+    url = storedJob->url();
+    url.setPath( location );
+  }
   else
     url = location;
 
