@@ -17,8 +17,23 @@
 */
 
 #include "davutils.h"
+#include "davitem.h"
+#include "davmanager.h"
+#include "davprotocolattribute.h"
+#include "davprotocolbase.h"
 
+#include <akonadi/collection.h>
+#include <akonadi/item.h>
+#include <kabc/addressee.h>
+#include <kabc/vcardconverter.h>
+#include <kcalcore/icalformat.h>
+#include <kcalcore/incidence.h>
 #include <klocale.h>
+
+#include <QtCore/QByteArray>
+#include <QtCore/QString>
+
+typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 
 QDomElement DavUtils::firstChildElementNS( const QDomElement &parent, const QString &namespaceUri, const QString &tagName )
 {
@@ -107,4 +122,51 @@ DavUtils::Protocol DavUtils::protocolByName( const QString &name )
   }
 
   return protocol;
+}
+
+DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection )
+{
+  QByteArray rawData;
+  QString mimeType;
+  KUrl url;
+  DavItem davItem;
+  const QString basePath = collection.remoteId();
+  
+  if ( item.hasPayload<KABC::Addressee>() ) {
+    const KABC::Addressee contact = item.payload<KABC::Addressee>();
+    
+    const QString fileName = contact.uid();
+    if ( fileName.isEmpty() ) {
+      kError() << "Invalid contact uid";
+      return davItem;
+    }
+
+    url = KUrl( basePath + fileName + ".vcf" );
+
+    const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
+    mimeType = DavManager::self()->davProtocol( DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
+
+    KABC::VCardConverter converter;
+    rawData = converter.createVCard( contact );
+  } else if ( item.hasPayload<IncidencePtr>() ) {
+    const IncidencePtr ptr = item.payload<IncidencePtr>();
+
+    const QString fileName = ptr->uid();
+    if ( fileName.isEmpty() ) {
+      kError() << "Invalid incidence uid";
+      return davItem;
+    }
+
+    url = KUrl( basePath + fileName + ".ics" );
+    mimeType = "text/calendar";
+
+    KCalCore::ICalFormat formatter;
+    rawData = formatter.toICalString( ptr ).toUtf8();
+  }
+
+  davItem.setContentType( mimeType );
+  davItem.setData( rawData );
+  davItem.setUrl( url.prettyUrl() );
+
+  return davItem;
 }

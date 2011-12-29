@@ -24,6 +24,12 @@
 
 #include <KUrl>
 
+class DavItem;
+namespace Akonadi {
+  class Collection;
+  class Item;
+}
+
 /**
  * @short A namespace that contains helper methods for DAV functionality.
  */
@@ -108,6 +114,14 @@ namespace DavUtils
    * Returns the next sibling element of @p element that has the given @p tagName and is part of the @p namespaceUri.
    */
   QDomElement nextSiblingElementNS( const QDomElement &element, const QString &namespaceUri, const QString &tagName );
+
+  /**
+   * Creates a new DavItem from the Akonadi::Item @p item.
+   *
+   * The returned item will have no payload (DavItem::data() will return an empty
+   * QByteArray) if the @p item payload is not recognized.
+   */
+  DavItem createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection );
 }
 
 #endif
