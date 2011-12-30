@@ -122,6 +122,27 @@ namespace DavUtils
    * QByteArray) if the @p item payload is not recognized.
    */
   DavItem createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection );
+
+  /**
+   * Returns whether or not an HTTP error is recoverable.
+   *
+   * An error is considered recoverable if the *same* request can be attempted at
+   * a later time.
+   *
+   * The status codes that are not considered recoverable are:
+   * - 400
+   * - 404 to 406
+   * - 409 to 418 (yes, a teapot is unlikely to respond)
+   * - 422
+   * - 428
+   * - 431
+   * - 450
+   * - 505
+   * - 508
+   * - 510
+   *
+   */
+  bool httpRequestRetryable( int statusCode );
 }
 
 #endif

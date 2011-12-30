@@ -41,44 +41,19 @@ void DavItemDeleteJob::start()
 
 void DavItemDeleteJob::davJobFinished( KJob *job )
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-  }
-
   KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
 
-  const int responseCode = deleteJob->queryMetaData( "responsecode" ).toInt();
-
-  if ( responseCode > 499 && responseCode < 600 ) {
-    // Server-side error, unrecoverable
-    setError( UserDefinedError );
-    setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
-  } else if ( responseCode == 404 ) {
-    // We don't mind getting a 404 error as the that's what we want in the end.
-  } else if ( responseCode == 423 ) {
-    // The remote resource has been locked
-    setError( UserDefinedError );
-    setErrorText( i18n( "The remote item has been locked, try again later" ) );
-    emitResult();
-    return;
-  } else if ( responseCode > 399 && responseCode < 500 ) {
-    // User-side error
-    QString extraMessage;
-    if ( responseCode == 401 )
-      extraMessage = i18n( "Invalid username/password" );
-    else if ( responseCode == 403 )
-      extraMessage = i18n( "Access forbidden" );
-    else if ( responseCode == 404 )
-      extraMessage = i18n( "Resource not found" );
-    else
-      extraMessage = i18n( "HTTP error" );
-
-    setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request. The item has not been deleted from the server.\n"
-                        "%1 (%2).", extraMessage, responseCode ) );
-    emitResult();
-    return;
+  if ( deleteJob->error() ) {
+    if ( deleteJob->queryMetaData( "responsecode" ).isEmpty() ) {
+      setError( deleteJob->error() );
+      setErrorText( deleteJob->errorText() );
+    }
+    else {
+      const int responseCode = deleteJob->queryMetaData( "responsecode" ).toInt();
+      setError( UserDefinedError + responseCode );
+      setErrorText( i18n( "There was a problem with the request. The item has not been deleted from the server.\n"
+                          "%1 (%2).", deleteJob->errorString(), responseCode ) );
+    }
   }
 
   emitResult();
