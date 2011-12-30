@@ -51,7 +51,20 @@ void ReplayCache::addReplayEntry( const QString &collectionUrl, ReplayCache::Rep
   if ( !item.remoteRevision().isEmpty() )
     entry.etag = item.remoteRevision();
 
-  mReplayEntries[collectionUrl] << entry;
+  bool isEntryUpdate = false;
+  QMutableListIterator<ReplayEntry> it( mReplayEntries[collectionUrl] );
+  while ( it.hasNext() ) {
+    it.next();
+    if ( it.value().id == entry.id ) {
+      isEntryUpdate = true;
+      if ( entry.type == ItemRemoved )
+        it.setValue( entry ); // No point in keeping the previous change
+        // All other cases will result in the latest item fetched from Akonadi
+        // (Added -> Changed or Changed -> Changed)
+    }
+  }
+  if ( !isEntryUpdate )
+    mReplayEntries[collectionUrl] << entry;
 }
 
 void ReplayCache::delReplayEntry( const QString &collectionUrl, Akonadi::Item::Id id )
