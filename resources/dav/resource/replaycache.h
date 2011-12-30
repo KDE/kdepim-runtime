@@ -47,14 +47,14 @@ class ReplayCache : public QObject
 
       typedef QList<ReplayEntry> List;
     };
-    
+
     ReplayCache();
 
     void addReplayEntry( const QString &collectionUrl, ReplayType type, const Akonadi::Item &item );
     void delReplayEntry( const QString &collectionUrl, Akonadi::Item::Id id );
     bool hasReplayEntries( const QString &collectionUrl ) const;
     ReplayEntry::List replayEntries( const QString &collectionUrl ) const;
-    
+
     /**
      * Tries to replay all missed changes from the replay cache for
      * the collection with given @p collectionUrl.

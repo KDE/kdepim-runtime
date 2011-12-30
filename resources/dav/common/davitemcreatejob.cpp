@@ -126,7 +126,7 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   url.setUser( QString() );
   mItem.setUrl( url.prettyUrl() );
   mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
-  
+
   if ( mItem.etag().isEmpty() ) {
     DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
     connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(itemRefreshed(KJob*)) );

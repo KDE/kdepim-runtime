@@ -58,7 +58,7 @@ void ReplayCache::delReplayEntry( const QString &collectionUrl, Akonadi::Item::I
 {
   if ( !mReplayEntries.contains( collectionUrl ) )
     return;
-  
+
   int index = 0;
   foreach ( const ReplayEntry &entry, mReplayEntries[collectionUrl] ) {
     if ( entry.id == id )
@@ -86,7 +86,7 @@ void ReplayCache::flush( const QString &collectionUrl )
   ReplayEntry::List entries = replayEntries( collectionUrl );
   if ( entries.isEmpty() )
     return;
-  
+
   foreach ( const ReplayEntry &entry, entries ) {
     if ( entry.type == ReplayCache::ItemAdded || entry.type == ReplayCache::ItemChanged ) {
       // Here we have to fetch the item from the backend
@@ -97,12 +97,12 @@ void ReplayCache::flush( const QString &collectionUrl )
 
       job->setProperty( "replayCollectionRemoteId", QVariant::fromValue( collectionUrl ) );
       job->setProperty( "replayItemId", QVariant::fromValue( entry.id ) );
-      
+
       if ( entry.type == ReplayCache::ItemAdded )
         job->setProperty( "replayType", QVariant::fromValue( QString( "add" ) ) );
       else
         job->setProperty( "replayType", QVariant::fromValue( QString( "change" ) ) );
-      
+
       connect( job, SIGNAL(result(KJob*)), this, SLOT(onItemFetchFinished(KJob*)) );
       job->start();
     }
@@ -112,7 +112,7 @@ void ReplayCache::flush( const QString &collectionUrl )
       DavItem davItem;
       davItem.setUrl( entry.url );
       davItem.setEtag( entry.etag );
-      
+
       DavItemDeleteJob *job = new DavItemDeleteJob( davUrl, davItem );
       job->setProperty( "replayCollectionRemoteId", QVariant::fromValue( collectionUrl ) );
       job->setProperty( "replayItemId", QVariant::fromValue( entry.id ) );
@@ -134,7 +134,7 @@ void ReplayCache::onItemFetchFinished( KJob *job )
   Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
   QString collectionUrl = job->property( "replayCollectionRemoteId" ).toString();
   Akonadi::Item::Id itemId = job->property( "replayItemId" ).toLongLong();
-  
+
   const Akonadi::Item::List items = fetchJob->items();
   if ( items.isEmpty() ) {
     // The item may have been deleted, just remove this from the replay cache
@@ -149,7 +149,7 @@ void ReplayCache::onItemFetchFinished( KJob *job )
     delReplayEntry( collectionUrl, itemId );
     return;
   }
-  
+
   QString urlStr = davItem.url();
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collectionUrl, urlStr );
 
@@ -183,16 +183,16 @@ void ReplayCache::onItemAddFinished( KJob *job )
     newItem.setRemoteId( davItem.url() );
     newItem.setMimeType( davItem.contentType() );
     emit etagChanged( item.remoteId(), davItem.etag() );
-    
+
     // We just can't use an ItemModifyJob here, so we create a new item
     // and delete the old one
     Akonadi::ItemCreateJob *cJob = new Akonadi::ItemCreateJob( newItem, item.parentCollection() );
     cJob->start();
-    
+
     Akonadi::Item::Id itemId = job->property( "replayItemId" ).toLongLong();
     Akonadi::ItemDeleteJob *dJob = new Akonadi::ItemDeleteJob( Akonadi::Item( itemId ) );
     dJob->start();
-    
+
     QString collectionRemoteId = createJob->property( "replayCollectionRemoteId" ).toString();
     delReplayEntry( collectionRemoteId, item.id() );
   }

@@ -37,7 +37,7 @@ SearchDialog::SearchDialog( QWidget *parent )
   mUi.setupUi( mainWidget() );
   mUi.credentialsGroup->setVisible( false );
   mUi.searchResults->setModel( mModel );
-  
+
   setButtonFocus( KDialog::None );
   setDefaultButton( KDialog::None );
   setButtonText( KDialog::Ok, i18n( "Add selected items" ) );
@@ -102,7 +102,7 @@ void SearchDialog::search()
   mUi.searchResults->setEnabled( false );
   mModel->clear();
   DavPrincipalSearchJob::FilterType filter;
-  
+
   if ( mUi.searchType->currentIndex() == 0 )
     filter = DavPrincipalSearchJob::DisplayName;
   else
@@ -113,9 +113,9 @@ void SearchDialog::search()
   url.setPassword( mUi.password->text() );
   DavUtils::DavUrl davUrl;
   davUrl.setUrl( url );
-  
+
   DavPrincipalSearchJob *job = new DavPrincipalSearchJob( davUrl, filter, mUi.searchParam->text() );
-  
+
   const DavProtocolBase *proto = DavManager::self()->davProtocol( DavUtils::CalDav );
   job->fetchProperty( proto->principalHomeSet(), proto->principalHomeSetNS() );
 
@@ -135,7 +135,7 @@ void SearchDialog::onSearchJobFinished( KJob* job )
 
   DavPrincipalSearchJob *davJob = qobject_cast<DavPrincipalSearchJob*>( job );
   QList<DavPrincipalSearchJob::Result> results = davJob->results();
-  
+
   const DavProtocolBase *caldav = DavManager::self()->davProtocol( DavUtils::CalDav );
   DavUtils::DavUrl davUrl = davJob->davUrl();
   KUrl url = davUrl.url();
@@ -151,7 +151,7 @@ void SearchDialog::onSearchJobFinished( KJob* job )
       url = tmp;
     }
     davUrl.setUrl( url );
-    
+
     if ( result.property == caldav->principalHomeSet() )
       davUrl.setProtocol( DavUtils::CalDav );
     else
@@ -170,7 +170,7 @@ void SearchDialog::onCollectionsFetchJobFinished( KJob* job )
 
   if ( mSubJobCount == 0 )
     mUi.searchResults->setEnabled( true );
-  
+
   if ( job->error() ) {
     if ( mSubJobCount == 0 )
       KMessageBox::error( this, i18n( "An error occurred when executing search:\n%1", job->errorText() ) );
