@@ -32,6 +32,7 @@
 #include "davmanager.h"
 #include "davprotocolattribute.h"
 #include "davprotocolbase.h"
+#include "replaycache.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "setupwizard.h"
@@ -98,6 +99,8 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   mFreeBusyHandler = new DavFreeBusyHandler( this );
   connect( mFreeBusyHandler, SIGNAL(handlesFreeBusy(QString,bool)), this, SLOT(onHandlesFreeBusy(QString,bool)) );
   connect( mFreeBusyHandler, SIGNAL(freeBusyRetrieved(QString,QString,bool,QString)), this, SLOT(onFreeBusyRetrieved(QString,QString,bool,QString)) );
+
+  connect( &mReplayCache, SIGNAL(etagChanged(QString,QString)), this, SLOT(onEtagChanged(QString,QString)) );
 }
 
 DavGroupwareResource::~DavGroupwareResource()
@@ -314,22 +317,27 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
-
-  if ( mCollectionsWithTemporaryError.contains( collection.remoteId() ) ) {
-    cancelTask();
-    return;
-  }
-
+  
   if ( collection.remoteId().isEmpty() ) {
     kError() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
     cancelTask( i18n( "Invalid collection for item %1.", item.id() ) );
     return;
   }
-
+  
   DavItem davItem = DavUtils::createDavItem( item, collection );
   if ( davItem.data().isEmpty() ) {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask();
+    return;
+  }
+
+  if ( mCollectionsWithTemporaryError.contains( collection.remoteId() ) ) {
+    mReplayCache.addReplayEntry( collection.remoteId(), ReplayCache::ItemAdded, item );
+    // We must set the remote id here. If it's changed by the server then a new item
+    // will be created and this one deleted.
+    Akonadi::Item newItem( item );
+    newItem.setRemoteId( davItem.url() );
+    changeCommitted( newItem );
     return;
   }
 
@@ -353,20 +361,22 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
-
-  if ( mCollectionsWithTemporaryError.contains( item.parentCollection().remoteId() ) ) {
-    cancelTask();
-    return;
-  }
-
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
-
+  
   DavItem davItem = DavUtils::createDavItem( item, item.parentCollection() );
   if ( davItem.data().isEmpty() ) {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask();
     return;
   }
+
+  if ( mCollectionsWithTemporaryError.contains( item.parentCollection().remoteId() ) ) {
+    mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemChanged, item );
+    changeCommitted( item );
+    return;
+  }
+
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
+
   // We have to re-set the URL as it's not necessarily valid after createDavItem()
   davItem.setUrl( item.remoteId() );
   davItem.setEtag( item.remoteRevision() );
@@ -386,7 +396,8 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
   }
 
   if ( mCollectionsWithTemporaryError.contains( item.parentCollection().remoteId() ) ) {
-    cancelTask();
+    mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemRemoved, item );
+    changeProcessed();
     return;
   }
 
@@ -454,6 +465,9 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   const DavCollection::List davCollections = fetchJob->collections();
 
   foreach ( const DavCollection &davCollection, davCollections ) {
+    if ( mReplayCache.hasReplayEntries( davCollection.url() ) )
+      mReplayCache.flush( davCollection.url() );
+
     if ( mCollectionsWithTemporaryError.contains( davCollection.url() ) ) {
       kWarning() << davCollection.url() << "is now available";
       mCollectionsWithTemporaryError.removeOne( davCollection.url() );
@@ -716,17 +730,15 @@ void DavGroupwareResource::onItemFetched( KJob* job, bool isRefresh )
 
 void DavGroupwareResource::onItemAddedFinished( KJob *job )
 {
-  if ( job->error() ) {
+  const DavItemCreateJob *createJob = qobject_cast<DavItemCreateJob*>( job );
+  const DavItem davItem = createJob->item();
+  Akonadi::Item item = createJob->property( "item" ).value<Akonadi::Item>();
+  item.setRemoteId( davItem.url() );
+
+  if ( createJob->error() ) {
     cancelTask( i18n( "Unable to add item: %1", job->errorText() ) );
     return;
   }
-
-  const DavItemCreateJob *createJob = qobject_cast<DavItemCreateJob*>( job );
-
-  const DavItem davItem = createJob->item();
-
-  Akonadi::Item item = createJob->property( "item" ).value<Akonadi::Item>();
-  item.setRemoteId( davItem.url() );
 
   if ( davItem.etag().isEmpty() ) {
     const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
@@ -780,6 +792,11 @@ void DavGroupwareResource::onItemRemovedFinished( KJob *job )
 void DavGroupwareResource::onCollectionDiscovered( int protocol, const QString &collection, const QString &config )
 {
   Settings::self()->addCollectionUrlMapping( DavUtils::Protocol( protocol ), collection, config );
+}
+
+void DavGroupwareResource::onEtagChanged(const QString& itemUrl, const QString& etag)
+{
+  mEtagCache.setEtag( itemUrl, etag );
 }
 
 bool DavGroupwareResource::configurationIsValid()
