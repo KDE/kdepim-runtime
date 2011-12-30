@@ -171,3 +171,29 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
 
   return davItem;
 }
+
+bool DavUtils::httpRequestRetryable( int statusCode )
+{
+  if ( statusCode == 400 )
+    return false;
+  else if ( statusCode >= 404 && statusCode <= 406 )
+    return false;
+  else if ( statusCode >= 409 && statusCode <= 418 )
+    return false;
+  else if ( statusCode == 422 )
+    return false;
+  else if ( statusCode == 428 )
+    return false;
+  else if ( statusCode == 431 )
+    return false;
+  else if ( statusCode == 450 )
+    return false;
+  else if ( statusCode == 505 )
+    return false;
+  else if ( statusCode == 508 )
+    return false;
+  else if ( statusCode == 510 )
+    return false;
+  else
+    return true;
+}

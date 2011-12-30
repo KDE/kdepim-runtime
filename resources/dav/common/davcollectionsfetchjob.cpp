@@ -115,74 +115,41 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
 void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
 {
   --mSubJobCount;
+  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
+  const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
-  if ( job->error() ) {
-    mHasTemporaryError = true;
-    if ( !mSubJobSuccessful ) {
-      setError( job->error() );
-      setErrorText( job->errorText() );
+  // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
+  if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
+    if ( davJob->queryMetaData( "responsecode" ).isEmpty() ) {
+      // If in doubt just consider this a temporary error
+      mHasTemporaryError = true;
+      setError( davJob->error() );
+      setErrorText( davJob->errorText() );
     }
+    else {
+      if ( DavUtils::httpRequestRetryable( responseCode ) )
+        mHasTemporaryError = true;
+
+      if ( davJob->url() != mUrl.url() ) {
+        // Retry as if the initial URL was a calendar URL.
+        // We can end up here when retrieving a homeset on
+        // which a PROPFIND resulted in an error
+        doCollectionsFetch( mUrl.url() );
+        return;
+      }
+
+      setError( UserDefinedError + responseCode );
+      setErrorText( i18n( "There was a problem with the request.\n"
+                          "%1 (%2).", davJob->errorString(), responseCode ) );
+    }
+
     if ( mSubJobCount == 0 )
       emitResult();
     return;
   }
 
-  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-
-  const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
-
-  if ( responseCode > 499 && responseCode < 600 ) {
-    if ( davJob->url() != mUrl.url() ) {
-      // Retry as if the initial URL was a calendar URL.
-      // We can end up here when retrieving a homeset on
-      // which a PROPFIND resulted in an error
-      doCollectionsFetch( mUrl.url() );
-    }
-    else {
-      // Server-side error, unrecoverable. As the collections may be available
-      // later save the job URL just in case
-      mHasTemporaryError = true;
-      if ( !mSubJobSuccessful ) {
-        setError( UserDefinedError );
-        setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
-      }
-      if ( mSubJobCount == 0 )
-        emitResult();
-      return;
-    }
-  } else if ( responseCode > 399 && responseCode < 500 ) {
-    if ( davJob->url() != mUrl.url() ) {
-      // Retry as if the initial URL was a calendar URL.
-      // We can end up here when retrieving a homeset on
-      // which a PROPFIND resulted in an error
-      doCollectionsFetch( mUrl.url() );
-    }
-    else {
-      // User-side error, or the collection was removed, or the rights revoked, or…
-      // Anyway, just forget about collections at this URL.
-      if ( !mSubJobSuccessful ) {
-        QString extraMessage;
-        if ( responseCode == 401 )
-          extraMessage = i18n( "Invalid username/password" );
-        else if ( responseCode == 403 )
-          extraMessage = i18n( "Access forbidden" );
-        else if ( responseCode == 404 )
-          extraMessage = i18n( "Resource not found" );
-        else
-          extraMessage = i18n( "HTTP error" );
-
-        setError( UserDefinedError );
-        setErrorText( i18n( "There was a problem with the request.\n"
-                            "%1 (%2).", extraMessage, responseCode ) );
-      }
-      if ( mSubJobCount == 0 )
-        emitResult();
-      return;
-    }
-  }
-
   if ( !mSubJobSuccessful ) {
-    setError( 0 ); // nope, everything went fine
+    setError( 0 ); // nope, everything went fine if we're here
     mSubJobSuccessful = true;
   }
 

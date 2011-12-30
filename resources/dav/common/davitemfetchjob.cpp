@@ -66,45 +66,25 @@ DavItem DavItemFetchJob::item() const
 
 void DavItemFetchJob::davJobFinished( KJob *job )
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-    emitResult();
-    return;
-  }
-
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
 
-  const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
-
-  if ( responseCode > 499 && responseCode < 600 ) {
-    // Server-side error, unrecoverable
-    setError( UserDefinedError );
-    setErrorText( i18n( "The server encountered an error that prevented it from completing your request" ) );
-    emitResult();
-    return;
-  } else if ( responseCode > 399 && responseCode < 500 ) {
-    // User-side error
-    QString extraMessage;
-    if ( responseCode == 401 )
-      extraMessage = i18n( "Invalid username/password" );
-    else if ( responseCode == 403 )
-      extraMessage = i18n( "Access forbidden" );
-    else if ( responseCode == 404 )
-      extraMessage = i18n( "Resource not found" );
-    else
-      extraMessage = i18n( "HTTP error" );
-
-    setError( UserDefinedError );
-    setErrorText( i18n( "There was a problem with the request.\n"
-                        "%1 (%2).", extraMessage, responseCode ) );
-    emitResult();
-    return;
+  if ( storedJob->error() ) {
+    if ( storedJob->queryMetaData( "responsecode" ).isEmpty() ) {
+      setError( storedJob->error() );
+      setErrorText( storedJob->errorText() );
+    }
+    else {
+      const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
+      setError( UserDefinedError + responseCode );
+      setErrorText( i18n( "There was a problem with the request.\n"
+                          "%1 (%2).", storedJob->errorString(), responseCode ) );
+    }
   }
-
-  mItem.setData( storedJob->data() );
-  mItem.setContentType( storedJob->queryMetaData( "content-type" ) );
-  mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
+  else {
+    mItem.setData( storedJob->data() );
+    mItem.setContentType( storedJob->queryMetaData( "content-type" ) );
+    mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
+  }
 
   emitResult();
 }

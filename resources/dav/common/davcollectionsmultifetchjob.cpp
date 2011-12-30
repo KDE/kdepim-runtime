@@ -21,7 +21,7 @@
 #include "davcollectionsfetchjob.h"
 
 DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent )
-  : KJob( parent ), mUrls( urls ), mSubJobCount( 0 )
+  : KJob( parent ), mUrls( urls ), mSubJobCount( 0 ), mSubJobSuccessful( false )
 {
 }
 
@@ -69,7 +69,7 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
   }
 
   if ( !mSubJobSuccessful ) {
-    setError( 0 ); // nope, everything went fine
+    setError( 0 ); // nope, everything went fine if we're here
     mSubJobSuccessful = true;
   }
 
