@@ -42,6 +42,7 @@
 #include <kcalcore/icalformat.h>
 #include <kcalcore/todo.h>
 #include <kdatetime.h>
+#include <kjob.h>
 
 #include <akonadi/attributefactory.h>
 #include <akonadi/cachepolicy.h>
@@ -408,6 +409,7 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
   davItem.setEtag( item.remoteRevision() );
 
   DavItemDeleteJob *job = new DavItemDeleteJob( davUrl, davItem );
+  job->setProperty( "item", QVariant::fromValue( item ) );
   connect( job, SIGNAL(result(KJob*)), SLOT(onItemRemovedFinished(KJob*)) );
   job->start();
 }
@@ -736,7 +738,23 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
   item.setRemoteId( davItem.url() );
 
   if ( createJob->error() ) {
-    cancelTask( i18n( "Unable to add item: %1", job->errorText() ) );
+    kError() << "Error when uploading item:" << createJob->error() << createJob->errorString();
+    int errorCode = createJob->error();
+    if ( errorCode > KJob::UserDefinedError )
+      errorCode -= KJob::UserDefinedError;
+
+    // We only bail out for errors that are unlikely to be recoverable
+    if ( !DavUtils::httpRequestRetryable( errorCode ) ) {
+      cancelTask( i18n( "Unable to add item: %1", job->errorString() ) );
+    }
+    else {
+      mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemAdded, item );
+      // We must set the remote id here. If it's changed by the server then a new item
+      // will be created and this one deleted.
+      Akonadi::Item newItem( item );
+      newItem.setRemoteId( davItem.url() );
+      changeCommitted( newItem );
+    }
     return;
   }
 
@@ -755,16 +773,27 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
 
 void DavGroupwareResource::onItemChangedFinished( KJob *job )
 {
-  if ( job->error() ) {
-    cancelTask( i18n( "Unable to change item: %1", job->errorText() ) );
+  const DavItemModifyJob *modifyJob = qobject_cast<DavItemModifyJob*>( job );
+  const DavItem davItem = modifyJob->item();
+  Akonadi::Item item = modifyJob->property( "item" ).value<Akonadi::Item>();
+
+  if ( modifyJob->error() ) {
+    kError() << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
+    int errorCode = modifyJob->error();
+    if ( errorCode > KJob::UserDefinedError )
+      errorCode -= KJob::UserDefinedError;
+
+    // We only bail out for errors that are unlikely to be recoverable
+    if ( !DavUtils::httpRequestRetryable( errorCode ) ) {
+      cancelTask( i18n( "Unable to change item: %1", job->errorString() ) );
+    }
+    else {
+      mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemChanged, item );
+      Akonadi::Item newItem( item );
+      changeCommitted( newItem );
+    }
     return;
   }
-
-  const DavItemModifyJob *modifyJob = qobject_cast<DavItemModifyJob*>( job );
-
-  const DavItem davItem = modifyJob->item();
-
-  Akonadi::Item item = modifyJob->property( "item" ).value<Akonadi::Item>();
 
   if ( davItem.etag().isEmpty() ) {
     const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
@@ -782,8 +811,19 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
 void DavGroupwareResource::onItemRemovedFinished( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Unable to remove item: %1", job->errorText() ) );
-    return;
+    kError() << "Error when deleting item:" << job->error() << job->errorString();
+    Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();
+    int errorCode = job->error();
+    if ( errorCode > KJob::UserDefinedError )
+      errorCode -= KJob::UserDefinedError;
+
+    if ( !DavUtils::httpRequestRetryable( errorCode ) ) {
+      cancelTask( i18n( "Unable to remove item: %1", job->errorString() ) );
+      return;
+    }
+    else {
+      mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemRemoved, item );
+    }
   }
 
   changeProcessed();
