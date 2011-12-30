@@ -364,7 +364,7 @@ QString Settings::loadPassword( const QString &key, const QString &user )
 
   if ( mPasswordsCache.contains( entry ) )
     return mPasswordsCache[entry];
-  
+
   KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
   if ( !wallet ) {
     pass = promptForPassword( user );
@@ -433,7 +433,7 @@ void Settings::updateToV2()
   QStringList urls = remoteUrls();
   if ( urls.isEmpty() )
     return;
-  
+
   QString urlConfigStr = urls.at( 0 );
   UrlConfiguration urlConfig( urlConfigStr );
   QRegExp regexp( '^' + urlConfig.mUser );

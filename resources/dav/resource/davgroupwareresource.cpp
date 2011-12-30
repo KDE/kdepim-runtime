@@ -317,13 +317,13 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
-  
+
   if ( collection.remoteId().isEmpty() ) {
     kError() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
     cancelTask( i18n( "Invalid collection for item %1.", item.id() ) );
     return;
   }
-  
+
   DavItem davItem = DavUtils::createDavItem( item, collection );
   if ( davItem.data().isEmpty() ) {
     kError() << "Item " << item.id() << " doesn't has a valid payload";
@@ -361,7 +361,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
-  
+
   DavItem davItem = DavUtils::createDavItem( item, item.parentCollection() );
   if ( davItem.data().isEmpty() ) {
     kError() << "Item " << item.id() << " doesn't has a valid payload";

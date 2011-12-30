@@ -152,7 +152,7 @@ void ConfigDialog::onSearchButtonClicked()
                 urlConfig->mProtocol = protocol;
 
         Settings::self()->newUrlConfiguration( urlConfig );
-        
+
         addModelRow( split.at( 0 ), split.at( 1 ) );
         mAddedUrls << QPair<QString, DavUtils::Protocol>( split.at( 1 ), protocol );
         checkUserInput();

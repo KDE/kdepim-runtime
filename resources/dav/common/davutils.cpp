@@ -131,10 +131,10 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
   KUrl url;
   DavItem davItem;
   const QString basePath = collection.remoteId();
-  
+
   if ( item.hasPayload<KABC::Addressee>() ) {
     const KABC::Addressee contact = item.payload<KABC::Addressee>();
-    
+
     const QString fileName = contact.uid();
     if ( fileName.isEmpty() ) {
       kError() << "Invalid contact uid";

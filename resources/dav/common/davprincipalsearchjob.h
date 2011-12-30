@@ -81,7 +81,7 @@ class DavPrincipalSearchJob : public KJob
      * Starts the job
      */
     virtual void start();
-    
+
     /**
      * Return the DavUrl used by this job
      */
