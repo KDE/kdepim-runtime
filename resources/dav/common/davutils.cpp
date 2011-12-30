@@ -167,6 +167,7 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
   davItem.setContentType( mimeType );
   davItem.setData( rawData );
   davItem.setUrl( url.prettyUrl() );
+  davItem.setEtag( item.remoteRevision() );
 
   return davItem;
 }

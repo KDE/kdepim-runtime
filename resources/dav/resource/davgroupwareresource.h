@@ -20,6 +20,7 @@
 #define DAVGROUPWARERESOURCE_H
 
 #include "etagcache.h"
+#include "replaycache.h"
 
 #include <akonadi/resourcebase.h>
 #include <akonadi/calendar/freebusyproviderbase.h>
@@ -86,6 +87,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     void onItemRemovedFinished( KJob* );
 
     void onCollectionDiscovered( int protocol, const QString &collectionUrl, const QString &configuredUrl );
+    void onEtagChanged( const QString &itemUrl, const QString &etag );
 
   private:
     bool configurationIsValid();
@@ -101,6 +103,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     DavFreeBusyHandler *mFreeBusyHandler;
     QSet<QString> mSeenCollectionsNames;
     QSet<QString> mSeenCollectionsUrls;
+    ReplayCache mReplayCache;
 };
 
 #endif
