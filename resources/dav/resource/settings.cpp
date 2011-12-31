@@ -414,6 +414,7 @@ QString Settings::promptForPassword( const QString &user )
   hLayout->addWidget( lineEdit );
   vLayout->addLayout( hLayout );
   dlg->setMainWidget( mainWidget );
+  lineEdit->setFocus();
 
   const int result = dlg->exec();
 
