@@ -31,10 +31,32 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
-#include <kdebug.h>
+#include <KApplication>
+#include <KStandardDirs>
+#include <KDebug>
+
+#include <QtCore/QDataStream>
+#include <QtCore/QFile>
 
 ReplayCache::ReplayCache()
 {
+  QString cacheBase = QString( "akonadi-davgroupware/%1_replay.dat" ).arg( KApplication::applicationName() );
+  mCacheFileName = KStandardDirs::locateLocal( "data", cacheBase );
+  QFile cacheFile( mCacheFileName );
+
+  if ( cacheFile.exists() ) {
+    if ( cacheFile.open( QIODevice::ReadOnly ) ) {
+      QDataStream cache( &cacheFile );
+      cache.setVersion( QDataStream::Qt_4_7 );
+      cache >> mReplayEntries;
+      cacheFile.close();
+    }
+  }
+}
+
+ReplayCache::~ReplayCache()
+{
+  write();
 }
 
 void ReplayCache::addReplayEntry( const QString &collectionUrl, ReplayCache::ReplayType type, const Akonadi::Item &item )
@@ -235,6 +257,38 @@ void ReplayCache::onItemDeleteFinished( KJob *job )
     Akonadi::Item::Id itemId = job->property( "replayItemId" ).toLongLong();
     delReplayEntry( collectionUrl, itemId );
   }
+}
+
+void ReplayCache::write()
+{
+  QFile cacheFile( mCacheFileName );
+
+  if ( cacheFile.open( QIODevice::WriteOnly ) ) {
+    QDataStream cache( &cacheFile );
+    cache.setVersion( QDataStream::Qt_4_7 );
+    cache << mReplayEntries;
+    cacheFile.close();
+  }
+}
+
+QDataStream& operator<<( QDataStream &out, const ReplayCache::ReplayEntry &entry )
+{
+  out << (int)entry.type;
+  out << entry.id;
+  out << entry.url;
+  out << entry.etag;
+  return out;
+}
+
+QDataStream& operator>>( QDataStream &in, ReplayCache::ReplayEntry &entry )
+{
+  int type;
+  in >> type;
+  entry.type = ReplayCache::ReplayType( type );
+  in >> entry.id;
+  in >> entry.url;
+  in >> entry.etag;
+  return in;
 }
 
 #include "replaycache.moc"
