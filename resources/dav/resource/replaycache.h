@@ -27,6 +27,7 @@
 #include <QtCore/QString>
 
 class KJob;
+class QDataStream;
 
 class ReplayCache : public QObject
 {
@@ -49,6 +50,7 @@ class ReplayCache : public QObject
     };
 
     ReplayCache();
+    virtual ~ReplayCache();
 
     void addReplayEntry( const QString &collectionUrl, ReplayType type, const Akonadi::Item &item );
     void delReplayEntry( const QString &collectionUrl, Akonadi::Item::Id id );
@@ -71,7 +73,12 @@ class ReplayCache : public QObject
     void onItemDeleteFinished( KJob *job );
 
   private:
+    void write();
+    QString mCacheFileName;
     QMap<QString, ReplayEntry::List> mReplayEntries;
 };
+
+QDataStream& operator<<( QDataStream &out, const ReplayCache::ReplayEntry &entry );
+QDataStream& operator>>( QDataStream &in, ReplayCache::ReplayEntry &entry );
 
 #endif // REPLAY_CACHE_H
