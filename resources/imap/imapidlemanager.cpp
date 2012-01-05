@@ -49,6 +49,9 @@ ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
 
 ImapIdleManager::~ImapIdleManager()
 {
+  if ( m_idle ) {
+    m_idle->stop();
+  }
   if ( m_pool && m_session ) {
     m_pool->releaseSession( m_session );
   }
