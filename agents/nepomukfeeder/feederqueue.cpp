@@ -254,7 +254,7 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mPendingRemoveDataJobs( 0 ),
   mBatchSize( batchSize ),
   mFetchSize( fetchSize ),
-  block( false )
+  mRunningJobs( 0 )
 {
   if ( fetchSize < batchSize )  {
     kWarning() << "fetchSize must be >= batchsize";
@@ -284,10 +284,13 @@ void ItemQueue::addItems(const Akonadi::Item::List &list )
 
 bool ItemQueue::processItem()
 {
-  if (block) {//wait until the old graph has been saved
-    //kDebug() << "blocked";
+  //kDebug() << "pipline size: " << mItemPipeline.size() << mItemFetchList.size() << mFetchedItemList.size();
+  if (mRunningJobs > 0) {//wait until the old graph has been saved
+    //kDebug() << "blocked: " << mRunningJobs;
     return false;
   }
+  Q_ASSERT(mRunningJobs == 0);
+  mRunningJobs = 0;
   //kDebug() << "------------------------procItem";
   static bool processing = false; // guard against sub-eventloop reentrancy
   if ( processing )
@@ -304,11 +307,9 @@ bool ItemQueue::processItem()
     job->fetchScope().fetchFullPayload();
     job->fetchScope().setCacheOnly( true );
     job->setProperty("numberOfItems", mItemFetchList.size());
-    connect( job, SIGNAL( itemsReceived( Akonadi::Item::List ) ),
-            SLOT( itemsReceived( Akonadi::Item::List ) ) );
     connect( job, SIGNAL(result(KJob*)), SLOT(fetchJobResult(KJob*)) );
+    mRunningJobs++;
     mItemFetchList.clear();
-    block = true;
     return false;
   } else { //In case there is nothing in the itemFetchList, but still in the fetchedItemList
     return processBatch();
@@ -316,35 +317,35 @@ bool ItemQueue::processItem()
   return true;
 }
 
-void ItemQueue::itemsReceived(const Akonadi::Item::List& items)
-{
-    Akonadi::ItemFetchJob *job = qobject_cast<Akonadi::ItemFetchJob*>(sender());
-    int numberOfItems = job->property("numberOfItems").toInt();
-    //kDebug() << items.size() << numberOfItems;
-    mFetchedItemList.append(items);
-    if ( mFetchedItemList.size() >= numberOfItems ) { //Sometimes we get a partial delivery only, wait for the rest
-        processBatch();
-    }
-}
-
 void ItemQueue::fetchJobResult(KJob* job)
 {
+  mRunningJobs--;
   if ( job->error() ) {
     kWarning() << job->errorString();
-    block = false;
     emit batchFinished();
   }
+  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
+  Q_ASSERT(fetchJob);
+  int numberOfItems = fetchJob->property("numberOfItems").toInt();
+  mFetchedItemList.append(fetchJob->items());
+  if(fetchJob->items().size() != numberOfItems) {
+    kWarning() << "Not all items were fetched: " << fetchJob->items().size() << numberOfItems;
+  }
+  processBatch();
 }
 
 bool ItemQueue::processBatch()
 {
-  int size = mFetchedItemList.size();
   //kDebug() << size;
-  for ( int i = 0; i < size && i < mBatchSize; i++ ) {
+  for ( int i = 0; i < mFetchedItemList.size() && i < mBatchSize; i++ ) {
     const Akonadi::Item &item = mFetchedItemList.takeFirst();
     //kDebug() << item.id();
+    if (!item.hasPayload()) { //can happen due to deserialization error
+      kWarning() << "failed to fetch item: " << item.id();
+      continue;
+    }
     Q_ASSERT(item.hasPayload());
-    Q_ASSERT(mBatch.size() == 0 ? mResourceGraph.isEmpty() : true); //otherwise we havent reached removeDataByApplication yet, and therfore mustn't overwrite mResourceGraph
+    Q_ASSERT(mBatch.size() == 0 ? mResourceGraph.isEmpty() : true); //otherwise we havent reached removeDataByApplication yet, and therefore mustn't overwrite mResourceGraph
     NepomukHelpers::addItemToGraph( item, mResourceGraph );
     mBatch.append(item.url());
   }
@@ -352,6 +353,7 @@ bool ItemQueue::processBatch()
     //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
     KJob *job = Nepomuk::removeDataByApplication( mBatch, Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
     connect( job, SIGNAL( finished( KJob* ) ), this, SLOT( removeDataResult( KJob* ) ) );
+    mRunningJobs++;
     mBatch.clear();
     return false;
   }
@@ -360,6 +362,7 @@ bool ItemQueue::processBatch()
 
 void ItemQueue::removeDataResult(KJob* job)
 {
+  mRunningJobs--;
   if ( job->error() )
     kWarning() << job->errorString();
 
@@ -367,6 +370,7 @@ void ItemQueue::removeDataResult(KJob* job)
   //kDebug() << "Saving Graph";
   KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mResourceGraph );
   connect( addGraphJob, SIGNAL( result( KJob* ) ), SLOT( batchJobResult( KJob* ) ) );
+  mRunningJobs++;
   //m_debugGraph = mResourceGraph;
   mResourceGraph.clear();
   //trigger processing of next collection as everything of this one has been stored
@@ -375,6 +379,7 @@ void ItemQueue::removeDataResult(KJob* job)
 
 void ItemQueue::batchJobResult(KJob* job)
 {
+  mRunningJobs--;
   //kDebug() << "------------------------------------------";
   //kDebug() << "pipline size: " << mItemPipeline.size();
   //kDebug() << "fetchedItemList : " << mFetchedItemList.size();
@@ -385,16 +390,17 @@ void ItemQueue::batchJobResult(KJob* job)
         kWarning() << res;
     }*/
     kWarning() << job->errorString();
-    timeout = 30000; //Nepomuk is probably still working. Lets wait a bit and hope it has finished until the next batch arrives.
+    timeout = 0; //This timeout is here in case nepomuk is still processing and the dbus connection just timed out (to avoid just adding more work). Since we have now a huge dbus timeout that timeout is probably not needed anymore.
   }
   QTimer::singleShot(timeout, this, SLOT(continueProcessing()));
+  mRunningJobs++;
 }
 
 void ItemQueue::continueProcessing()
 {
+  mRunningJobs--;
   if (processBatch()) { //Go back for more
     //kDebug() << "batch finished";
-    block = false;
     emit batchFinished();
   } else {
       //kDebug() << "there was more...";
