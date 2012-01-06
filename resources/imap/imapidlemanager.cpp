@@ -129,6 +129,7 @@ void ImapIdleManager::onSelectDone( KJob *job )
 void ImapIdleManager::onIdleStopped()
 {
   kDebug(5327) << "IDLE dropped maybe we should reconnect?";
+  m_idle = 0;
   if ( m_session ) {
     kDebug(5327) << "Restarting the IDLE session!";
     m_idle = new KIMAP::IdleJob( m_session );
