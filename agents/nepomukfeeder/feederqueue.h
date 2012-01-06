@@ -62,7 +62,6 @@ private slots:
   void removeDataResult( KJob* job );
   void batchJobResult( KJob* job );
   void fetchJobResult( KJob* job );
-  void itemsReceived( const Akonadi::Item::List &items );
   void continueProcessing();
   
 private:
@@ -79,7 +78,7 @@ private:
 
   int mBatchSize; //Size of Nepomuk batch, number of items stored together in nepomuk
   int mFetchSize; //Maximum number of items fetched with full payload (defines ram usage of feeder), must be >= mBatchSize, ideally a multiple of it
-  bool block;
+  int mRunningJobs;
 };
 
 /**
