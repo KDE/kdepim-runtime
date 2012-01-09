@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=KAlarm Directory
+Name[ca]=Directori del KAlarm
 Name[cs]=Adresář KAlarmu
 Name[da]=KAlarm-mappe
 Name[de]=KAlarm-Ordner
+Name[el]=Κατάλογος KAlarm
 Name[es]=Directorio de KAlarm
 Name[et]=KAlarmi kataloog
 Name[ga]=Comhadlann KAlarm
@@ -23,9 +25,11 @@ Name[x-test]=xxKAlarm Directoryxx
 Name[zh_CN]=KAlarm 目录
 Name[zh_TW]=KAlarm 目錄
 Comment=Loads data from a local KAlarm folder
+Comment[ca]=Carrega dades des d'una carpeta KAlarm local
 Comment[cs]=Načítá data z místní složky KAlarmu
 Comment[da]=Indlæser data fra en lokal KAlarm-mappe
 Comment[de]=Laden von Daten aus einem lokalen KAlarm-Ordner
+Comment[el]=Φορτώνει δεδομένα από έναν τοπικό φάκελο KAlarm
 Comment[es]=Carga datos de una carpeta local de KAlarm
 Comment[et]=Andmete laadimine kohalikust KAlarmi kataloogist
 Comment[ga]=Luchtaíonn sé sonraí ó fhillteán logánta KAlarm
