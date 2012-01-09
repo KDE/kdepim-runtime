@@ -28,6 +28,7 @@
 
 #include <akonadi/collection.h>
 #include <QtCore/QObject>
+#include <QPointer>
 
 #include "resourcestateinterface.h"
 
@@ -68,7 +69,7 @@ private:
   qint64 m_sessionRequestId;
   SessionPool *m_pool;
   KIMAP::Session *m_session;
-  KIMAP::IdleJob *m_idle;
+  QPointer<KIMAP::IdleJob> m_idle;
   ImapResource *m_resource;
   ResourceStateInterface::Ptr m_state;
   qint64 m_lastMessageCount;
