@@ -40,7 +40,7 @@ void DavCollectionDeleteJob::davJobFinished( KJob *job )
 {
   KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
 
-  if ( deleteJob->error() ) {
+  if ( deleteJob->error() && deleteJob->error() != KIO::ERR_NO_CONTENT ) {
     if ( deleteJob->queryMetaData( "responsecode" ).isEmpty() ) {
       setError( deleteJob->error() );
       setErrorText( deleteJob->errorText() );
