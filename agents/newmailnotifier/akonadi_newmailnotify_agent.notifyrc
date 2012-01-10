@@ -1,6 +1,7 @@
 [Global]
 IconName=mail-folder-outbox
 Comment=New email notify
+Comment[ca]=Notificador de correu electrònic nou
 Comment[cs]=Upozornění na nový e-mail
 Comment[da]=Bekendtgørelse af nye e-mails
 Comment[de]=E-Mail-Benachrichtigung
@@ -29,6 +30,7 @@ Comment[x-test]=xxNew email notifyxx
 Comment[zh_CN]=新邮件提醒
 Comment[zh_TW]=新郵件通知
 Name=New email notify
+Name[ca]=Notificador de correu electrònic nou
 Name[cs]=Upozornění na nový e-mail
 Name[da]=Bekendtgørelse af nye e-mails
 Name[de]=E-Mail-Benachrichtigung
@@ -60,6 +62,7 @@ Name[zh_TW]=新郵件通知
 
 [Event/new-email]
 Name=New email arrived
+Name[ca]=Ha arribat correu electrònic nou
 Name[cs]=Přišel nový e-mail
 Name[da]=Ny e-mail ankommet
 Name[de]=Neue Nachrichten sind eingetroffen

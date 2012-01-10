@@ -118,7 +118,7 @@ private:
   KIMAP::Session *m_pendingInitialSession;
 
   QList<qint64> m_pendingRequests;
-  QList<KIMAP::Session*> m_idlePool;
+  QList<KIMAP::Session*> m_unusedPool;
   QList<KIMAP::Session*> m_reservedPool;
 
   QStringList m_capabilities;

@@ -115,10 +115,10 @@ void SessionPool::disconnect( SessionTermination termination )
 
   m_networkAccessHelper->releaseConnection();
 
-  foreach ( KIMAP::Session *s, m_idlePool + m_reservedPool ) {
+  foreach ( KIMAP::Session *s, m_unusedPool + m_reservedPool ) {
     killSession( s, termination );
   }
-  m_idlePool.clear();
+  m_unusedPool.clear();
   m_reservedPool.clear();
 
   delete m_account;
@@ -152,7 +152,7 @@ void SessionPool::releaseSession( KIMAP::Session *session )
 {
   if ( !m_reservedPool.isEmpty() && m_reservedPool.contains( session ) ) {
     m_reservedPool.removeAll( session );
-    m_idlePool << session;
+    m_unusedPool << session;
   }
 }
 
@@ -177,7 +177,7 @@ void SessionPool::killSession( KIMAP::Session *session, SessionTermination termi
                        this, SLOT(onEarlyConnectionLost()) );
   QObject::disconnect( session, SIGNAL(connectionLost()),
                        this, SLOT(onConnectionLost()) );
-  m_idlePool.removeAll( session );
+  m_unusedPool.removeAll( session );
   m_reservedPool.removeAll( session );
 
   if ( session->state() != KIMAP::Session::Disconnected && termination == LogoutSession ) {
@@ -201,7 +201,7 @@ void SessionPool::declareSessionReady( KIMAP::Session *session )
                     this, SLOT(onConnectionLost()) );
 
   if ( !m_initialConnectDone ) {
-    m_idlePool << session;
+    m_unusedPool << session;
     m_initialConnectDone = true;
     emit connectDone();
   } else {
@@ -246,9 +246,9 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
 
 void SessionPool::processPendingRequests()
 {
-  if ( !m_idlePool.isEmpty() ) {
+  if ( !m_unusedPool.isEmpty() ) {
     // We have a session ready to give out
-    KIMAP::Session *session = m_idlePool.takeFirst();
+    KIMAP::Session *session = m_unusedPool.takeFirst();
     m_reservedPool << session;
     if ( !m_pendingRequests.isEmpty() ) {
       emit sessionRequestDone( m_pendingRequests.takeFirst(), session );
@@ -256,7 +256,7 @@ void SessionPool::processPendingRequests()
         QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
       }
     }
-  } else if ( m_idlePool.size() + m_reservedPool.size() < m_maxPoolSize ) {
+  } else if ( m_unusedPool.size() + m_reservedPool.size() < m_maxPoolSize ) {
     // We didn't reach the max pool size yet so create a new one
     m_passwordRequester->requestPassword();
 
@@ -461,10 +461,10 @@ void SessionPool::onConnectionLost()
 {
   KIMAP::Session *session = static_cast<KIMAP::Session*>( sender() );
 
-  m_idlePool.removeAll( session );
+  m_unusedPool.removeAll( session );
   m_reservedPool.removeAll( session );
 
-  if ( m_idlePool.isEmpty() && m_reservedPool.isEmpty() ) {
+  if ( m_unusedPool.isEmpty() && m_reservedPool.isEmpty() ) {
     delete m_account;
     m_account = 0;
     m_namespaces.clear();
