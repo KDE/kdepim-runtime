@@ -96,7 +96,7 @@
         <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label_4">
-           <property name="accessibleDescription">
+           <property name="toolTip">
             <string comment="The user's login on the remote server"/>
            </property>
            <property name="locale">
@@ -112,7 +112,7 @@
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_5">
-           <property name="accessibleDescription">
+           <property name="toolTip">
             <string comment="The user's login on the remote server"/>
            </property>
            <property name="locale">
