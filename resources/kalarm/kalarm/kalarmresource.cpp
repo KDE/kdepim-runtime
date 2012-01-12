@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.cpp  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2011 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2012 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -30,6 +30,7 @@
 #include <akonadi/agentfactory.h>
 #include <akonadi/attributefactory.h>
 #include <akonadi/collectionfetchjob.h>
+#include <akonadi/collectionfetchscope.h>
 #include <akonadi/collectionmodifyjob.h>
 
 #include <kcalcore/memorycalendar.h>
@@ -57,6 +58,11 @@ KAlarmResource::KAlarmResource(const QString& id)
     KAlarmResourceCommon::initialise(this);
     initialise(mSettings->alarmTypes(), "kalarm");
     connect(mSettings, SIGNAL(configChanged()), SLOT(settingsChanged()));
+
+    // Fetch the collection attributes
+    CollectionFetchJob* job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
+    job->fetchScope().setResource(identifier());
+    connect(job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)));
 }
 
 KAlarmResource::~KAlarmResource()
@@ -130,7 +136,11 @@ void KAlarmResource::retrieveCollections()
 void KAlarmResource::collectionFetchResult(KJob* j)
 {
     if (j->error())
-        kError() << "CollectionFetchJob error: " << j->errorString();
+    {
+        // An error occurred. Note that if it's a new resource, it will complain
+        // about an invalid collection if the collection has not yet been created.
+        kDebug() << "Error: " << j->errorString();
+    }
     else
     {
         mFetchedAttributes = true;
@@ -139,6 +149,7 @@ void KAlarmResource::collectionFetchResult(KJob* j)
         if (!collections.isEmpty())
         {
             // Check whether calendar file format needs to be updated
+            kDebug() << "Fetched collection";
             checkFileCompatibility(collections[0]);
         }
     }
