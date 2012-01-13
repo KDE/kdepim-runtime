@@ -51,6 +51,7 @@ public:
 
 
   int configureDialog( WId windowId );
+  QStringList serverCapabilities() const;
 
 public Q_SLOTS:
   virtual void configure( WId windowId );

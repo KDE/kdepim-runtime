@@ -70,6 +70,7 @@
 #else
 #include "ui_setupserverview_desktop.h"
 #endif
+#include "ui_serverinfo.h"
 
 /** static helper functions **/
 static QString authenticationModeString( MailTransport::Transport::EnumAuthenticationType::type mode )
@@ -180,6 +181,7 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   connect( m_ui->useDefaultIdentityCheck, SIGNAL(toggled(bool)), this, SLOT(slotIdentityCheckboxChanged()) );
   connect( m_ui->enableMailCheckBox, SIGNAL(toggled(bool)), this, SLOT(slotMailCheckboxChanged()) );
   connect( m_ui->safeImapGroup, SIGNAL(buttonClicked(int)), this, SLOT(slotEncryptionRadioChanged()) );
+  connect( m_ui->showServerInfo, SIGNAL(pressed()), this, SLOT(slotShowServerInfo()) );
 
   readSettings();
   slotTestChanged();
@@ -572,6 +574,18 @@ void SetupServer::slotManageSubscriptions()
   m_ui->subscriptionEnabled->setChecked( account.isSubscriptionEnabled() );
 }
 
+void SetupServer::slotShowServerInfo()
+{
+  KDialog *dialog = new KDialog( this );
+  dialog->setCaption( i18nc("Dialog title for dialog showing information about a server", "Server Info" ) );
+  dialog->setButtons( KDialog::Close );
+
+  Ui::ServerInfo *serverInfoWidget = new Ui::ServerInfo();
+  serverInfoWidget->setupUi( dialog );
+  dialog->setMainWidget( serverInfoWidget->serverInfo );
+  serverInfoWidget->serverInfo->setPlainText( m_parentResource->serverCapabilities().join( QLatin1String( "\n" ) ) );
+  dialog->show();
+}
 
 void SetupServer::targetCollectionReceived( Akonadi::Collection::List collections )
 {

@@ -68,6 +68,8 @@ kde4_add_ui_files(akonadi_imap_resource_SRCS setupserverview_mobile.ui)
 else (KDEPIM_MOBILE_UI)
 kde4_add_ui_files(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
 endif (KDEPIM_MOBILE_UI)
+kde4_add_ui_files(akonadi_imap_resource_SRCS serverinfo.ui)
+
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
 qt4_add_dbus_adaptor( akonadi_imap_resource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings

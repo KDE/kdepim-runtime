@@ -78,6 +78,7 @@ private slots:
   void slotMailCheckboxChanged();
   void slotEncryptionRadioChanged();
   void slotSubcriptionCheckboxChanged();
+  void slotShowServerInfo();
 private:
   void readSettings();
   void populateDefaultAuthenticationOptions();

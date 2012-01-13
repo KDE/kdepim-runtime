@@ -594,7 +594,10 @@ void ImapResource::taskDestroyed( QObject *task )
 }
 
 
-
+QStringList ImapResource::serverCapabilities() const
+{
+  return m_pool->serverCapabilities();
+}
 // ----------------------------------------------------------------------------------
 
 AKONADI_RESOURCE_MAIN( ImapResource )
