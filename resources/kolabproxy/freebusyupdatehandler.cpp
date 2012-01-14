@@ -39,7 +39,8 @@ FreeBusyUpdateHandler::~FreeBusyUpdateHandler()
   mTimer->stop();
 }
 
-void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QString &userName, const QString &password, const QString &host )
+void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QString &userName,
+                                          const QString &password, const QString &host )
 {
   QString path( folderPath );
 
@@ -71,10 +72,11 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
     path = path.mid( secondSlash );
   }
 
-  if ( path.startsWith( '/' ) )
+  if ( path.startsWith( '/' ) ) {
     httpUrl.setPath( "/freebusy/trigger" + path + ".pfb" );
-  else
+  } else {
     httpUrl.setPath( "/freebusy/trigger/" + path + ".pfb" );
+  }
 
   mUrls.insert( httpUrl );
   mTimer->start();
@@ -85,8 +87,9 @@ void FreeBusyUpdateHandler::timeout()
   foreach ( const KUrl &url, mUrls ) {
     kDebug() << "Triggering PFB update for " << url;
 
-    KIO::Job* job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
-    job->addMetaData( QLatin1String( "errorPage" ), QLatin1String( "false" ) ); // we want an error in case of 404
+    KIO::Job *job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
+    // we want an error in case of 404
+    job->addMetaData( QLatin1String( "errorPage" ), QLatin1String( "false" ) );
     connect( job, SIGNAL(result(KJob*)), SLOT(slotFreeBusyTriggerResult(KJob*)) );
   }
 
@@ -96,8 +99,10 @@ void FreeBusyUpdateHandler::timeout()
 void FreeBusyUpdateHandler::slotFreeBusyTriggerResult( KJob *job )
 {
   if ( job->error() ) {
+    KUrl url( job->errorText() );
     KPassivePopup::message(
-      i18n( "Could not trigger Free/Busy information update: %1.", job->errorText() ) , (QWidget*)0 );
+      i18n( "Could not trigger Free/Busy information update: %1.", url.prettyUrl() ),
+      (QWidget*)0 );
   }
 }
 
