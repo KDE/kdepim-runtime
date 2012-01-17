@@ -44,7 +44,7 @@ private slots:
 
 private:
   QString m_password;
-  QList<RequestType> m_calls;
+  QList<RequestType> m_expectedCalls;
   QList<ResultType> m_results;
   QList<int> m_delays;
 };

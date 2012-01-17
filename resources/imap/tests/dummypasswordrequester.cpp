@@ -27,7 +27,7 @@ DummyPasswordRequester::DummyPasswordRequester( QObject *parent)
   : PasswordRequesterInterface(parent)
 {
   for ( int i=0; i<10; ++i ) {
-    m_calls << StandardRequest;
+    m_expectedCalls << StandardRequest;
     m_results << PasswordRetrieved;
   }
 }
@@ -47,7 +47,7 @@ void DummyPasswordRequester::setScenario( const QList<RequestType> &expectedCall
 {
   Q_ASSERT( expectedCalls.size() == results.size() );
 
-  m_calls = expectedCalls;
+  m_expectedCalls = expectedCalls;
   m_results = results;
 }
 
@@ -59,8 +59,8 @@ void DummyPasswordRequester::setDelays( const QList<int> &delays )
 void DummyPasswordRequester::requestPassword( RequestType request,
                                               const QString &/*serverError*/ )
 {
-  QVERIFY2( !m_calls.isEmpty(), QString("Got unexpected call: %1").arg( request ).toUtf8().constData() );
-  QCOMPARE( m_calls.takeFirst(), request );
+  QVERIFY2( !m_expectedCalls.isEmpty(), QString("Got unexpected call: %1").arg( request ).toUtf8().constData() );
+  QCOMPARE( (int)request, (int)m_expectedCalls.takeFirst() );
 
   int delay = 20;
   if ( !m_delays.isEmpty() ) {
