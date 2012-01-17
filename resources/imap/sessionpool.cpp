@@ -30,8 +30,6 @@
 #include <kimap/capabilitiesjob.h>
 #include <kimap/logoutjob.h>
 #include <kimap/namespacejob.h>
-#include <kimap/session.h>
-#include <kimap/sessionuiproxy.h>
 
 #include <kpimutils/networkaccesshelper.h>
 
@@ -173,10 +171,8 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces() const
 
 void SessionPool::killSession( KIMAP::Session *session, SessionTermination termination )
 {
-  QObject::disconnect( session, SIGNAL(connectionLost()),
-                       this, SLOT(onEarlyConnectionLost()) );
-  QObject::disconnect( session, SIGNAL(connectionLost()),
-                       this, SLOT(onConnectionLost()) );
+  QObject::disconnect( session, SIGNAL(stateChanged(KIMAP::Session::State,KIMAP::Session::State)),
+                       this, SLOT(onSessionStateChanged(KIMAP::Session::State,KIMAP::Session::State)) );
   m_unusedPool.removeAll( session );
   m_reservedPool.removeAll( session );
 
@@ -194,11 +190,6 @@ void SessionPool::killSession( KIMAP::Session *session, SessionTermination termi
 void SessionPool::declareSessionReady( KIMAP::Session *session )
 {
   m_pendingInitialSession = 0;
-
-  QObject::disconnect( session, SIGNAL(connectionLost()),
-                       this, SLOT(onEarlyConnectionLost()) );
-  QObject::connect( session, SIGNAL(connectionLost()),
-                    this, SLOT(onConnectionLost()) );
 
   if ( !m_initialConnectDone ) {
     m_unusedPool << session;
@@ -220,17 +211,18 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
 {
   m_pendingInitialSession = 0;
 
+  if ( m_account ) {
+    emit connectDone( errorCode,
+                      i18n( "Could not connect to the IMAP-server %1.\n%2",
+                            m_account->server(), errorMessage ) );
+  } else {
+    // Can happen when we lose all ready connections while trying to establish
+    // a new connection, for example.
+    emit connectDone( errorCode,
+                      i18n( "Cound not connect to the IMAP server.\n%1", errorMessage ) );
+  }
+
   if ( !m_initialConnectDone ) {
-    if ( m_account ) {
-      emit connectDone( errorCode,
-                        i18n( "Could not connect to the IMAP-server %1.\n%2",
-                              m_account->server(), errorMessage ) );
-    } else {
-      // Can happen when we loose all ready connections while trying to establish
-      // a new connection, for example.
-      emit connectDone( errorCode,
-                        i18n( "Cound not connect to the IMAP server.\n%1", errorMessage ) );
-    }
     disconnect();
     killSession( session, LogoutSession );
   } else {
@@ -331,7 +323,9 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
     session->setUiProxy( m_sessionUiProxy );
     session->setTimeout( m_account->timeout() );
   }
-  QObject::connect( session, SIGNAL(connectionLost()), this, SLOT(onEarlyConnectionLost()) );
+
+  QObject::connect( session, SIGNAL(stateChanged(KIMAP::Session::State,KIMAP::Session::State)),
+                    this, SLOT(onSessionStateChanged(KIMAP::Session::State,KIMAP::Session::State)) );
 
   KIMAP::LoginJob *loginJob = new KIMAP::LoginJob( session );
   loginJob->setUserName( m_account->userName() );
@@ -342,14 +336,6 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
   QObject::connect( loginJob, SIGNAL(result(KJob*)),
                     this, SLOT(onLoginDone(KJob*)) );
   loginJob->start();
-}
-
-void SessionPool::onEarlyConnectionLost()
-{
-  kDebug() << sender();
-  KIMAP::Session *session = qobject_cast<KIMAP::Session*>( sender() );
-  Q_ASSERT( session );
-  cancelSessionCreation( session, LoginFailError, i18n( "Failed to connect to server" ) );
 }
 
 void SessionPool::onLoginDone( KJob *job )
@@ -366,13 +352,13 @@ void SessionPool::onLoginDone( KJob *job )
       capJob->start();
     }
   } else {
-    //kWarning() << "Error during login:" << job->errorString();
-    if ( m_initialConnectDone ) {
+    if ( job->error() == KIMAP::LoginJob::ERR_COULD_NOT_CONNECT ) {
       cancelSessionCreation( login->session(),
-                             LoginFailError,
+                             CouldNotConnectError,
                              i18n( "Could not connect to the IMAP-server %1.\n%2",
                                    m_account->server(), job->errorString() ) );
     } else {
+      // Connection worked, but login failed -> ask for a different password or ssl settings.
       m_pendingInitialSession = login->session();
       m_passwordRequester->requestPassword( PasswordRequesterInterface::WrongPasswordRequest,
                                             job->errorString() );
@@ -457,6 +443,13 @@ void SessionPool::onNamespacesTestDone( KJob *job )
   declareSessionReady( nsJob->session() );
 }
 
+void SessionPool::onSessionStateChanged(KIMAP::Session::State newState, KIMAP::Session::State oldState)
+{
+  if (newState == KIMAP::Session::Disconnected && oldState != KIMAP::Session::Disconnected) {
+    onConnectionLost();
+  }
+}
+
 void SessionPool::onConnectionLost()
 {
   KIMAP::Session *session = static_cast<KIMAP::Session*>( sender() );
@@ -475,8 +468,7 @@ void SessionPool::onConnectionLost()
 
   emit connectionLost( session );
 
-//This next line seems like it can induce a crash
-//  session->deleteLater();
+  session->deleteLater();
 }
 
 #include "sessionpool.moc"
