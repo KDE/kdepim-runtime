@@ -222,7 +222,8 @@ void SubscriptionDialog::onReloadRequested()
 void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
                                               const QList< QList<QByteArray> > &flags )
 {
-  for ( int i = 0; i<mailBoxes.size(); i++ ) {
+  const int numberOfMailBoxes( mailBoxes.size() );
+  for ( int i = 0; i<numberOfMailBoxes; i++ ) {
     KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
 
     const QStringList pathParts = mailBox.name.split(mailBox.separator);
@@ -231,9 +232,9 @@ void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescript
 
     QString parentPath;
     QString currentPath;
-
+    const int numberOfPath( pathParts.size() );
     for ( int j = 0; j < pathParts.size(); ++j ) {
-      const bool isDummy = j != pathParts.size() - 1;
+      const bool isDummy = ( j != ( numberOfPath - 1 ) );
       const bool isCheckable = !isDummy && !flags[i].contains("\\noselect");
 
       const QString pathPart = pathParts.at( j );
@@ -290,7 +291,8 @@ void SubscriptionDialog::onSubscribedMailBoxesReceived( const QList<KIMAP::MailB
                                                         const QList< QList<QByteArray> > &flags )
 {
   Q_UNUSED( flags );
-  for ( int i = 0; i<mailBoxes.size(); i++ ) {
+  const int numberOfMailBoxes( mailBoxes.size() );
+  for ( int i = 0; i<numberOfMailBoxes; i++ ) {
     KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
     QString descriptor = mailBox.separator + mailBox.name;
 
