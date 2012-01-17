@@ -239,6 +239,11 @@ void ImapResource::onConnectDone( int errorCode, const QString &errorString )
     taskDone();
     return;
 
+  case SessionPool::CouldNotConnectError:
+    setOnline( false );
+    taskDone();
+    return;
+
   case SessionPool::ReconnectNeededError:
     reconnect();
     return;

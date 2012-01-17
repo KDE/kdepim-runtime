@@ -26,12 +26,12 @@
 #include <QtCore/QStringList>
 
 #include <kimap/listjob.h>
+#include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
 
 namespace KIMAP
 {
   class MailBoxDescriptor;
-  class Session;
 }
 
 namespace KPIMUtils {
@@ -55,7 +55,8 @@ public:
     LoginFailError,
     CapabilitiesTestError,
     IncompatibleServerError,
-    NoAvailableSessionError
+    NoAvailableSessionError,
+    CouldNotConnectError
   };
 
   enum SessionTermination {
@@ -99,10 +100,10 @@ private slots:
   void onCapabilitiesTestDone( KJob *job );
   void onNamespacesTestDone( KJob *job );
 
-  void onConnectionLost();
-  void onEarlyConnectionLost();
+  void onSessionStateChanged(KIMAP::Session::State newState, KIMAP::Session::State oldState);
 
 private:
+  void onConnectionLost();
   void killSession( KIMAP::Session *session, SessionTermination termination );
   void declareSessionReady( KIMAP::Session *session );
   void cancelSessionCreation( KIMAP::Session *session, int errorCode, const QString &errorString );

@@ -639,6 +639,35 @@ private slots:
 
     server.quit();
   }
+
+  void shouldNotifyFailureToConnect()
+  {
+    // This tests what happens when we can't connect to the server, e.g. due to being offline.
+    // In this test we just use 0.0.0.0 as an invalid server IP, instead.
+    ImapAccount *account = createDefaultAccount();
+    account->setServer("0.0.0.0"); // so that the connexion fails
+    DummyPasswordRequester *requester = createDefaultRequester();
+    QList<DummyPasswordRequester::RequestType> requests;
+    QList<DummyPasswordRequester::ResultType> results;
+    // I don't want to see "WrongPasswordRequest". A password popup is annoying when we're offline or the server is down.
+    requests << DummyPasswordRequester::StandardRequest;
+    results << DummyPasswordRequester::PasswordRetrieved;
+    requester->setScenario( requests, results );
+
+    QSignalSpy requesterSpy( requester, SIGNAL(done(int,QString)) );
+    SessionPool pool( 2 );
+    QSignalSpy connectDoneSpy( &pool, SIGNAL(connectDone(int,QString)) );
+    QSignalSpy lostSpy( &pool, SIGNAL(connectionLost(KIMAP::Session*)) );
+    QVERIFY( !pool.isConnected() );
+    pool.setPasswordRequester( requester );
+    pool.connect( account );
+    QVERIFY( !pool.isConnected() );
+    QTRY_COMPARE( requesterSpy.count(), requests.count() );
+    QTRY_COMPARE( connectDoneSpy.count(), 1 );
+    QCOMPARE( connectDoneSpy.at(0).at(0).toInt(), (int)SessionPool::CouldNotConnectError );
+    QCOMPARE( lostSpy.count(), 0 ); // don't want this, it makes the resource reconnect immediately (and fail, and reconnect, and so on...)
+  }
+
 };
 
 QTEST_KDEMAIN_CORE( TestSessionPool )
