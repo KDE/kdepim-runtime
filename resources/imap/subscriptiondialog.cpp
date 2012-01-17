@@ -67,7 +67,7 @@ protected:
 
 
 
-SubscriptionDialog::SubscriptionDialog( QWidget *parent )
+SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option )
   : KDialog( parent ),
     m_session( 0 ),
     m_subscriptionChanged( false ),
@@ -87,6 +87,9 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent )
   QVBoxLayout *mainLayout = new QVBoxLayout;
   mainWidget->setLayout(mainLayout);
   setMainWidget( mainWidget );
+
+  m_enableSubscription = new QCheckBox( i18n( "Enable server-side subscriptions" ) );
+  mainLayout->addWidget(m_enableSubscription);
 
   QHBoxLayout *filterBarLayout = new QHBoxLayout;
   mainLayout->addLayout(filterBarLayout);
@@ -118,7 +121,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent )
   connect( m_lineEdit, SIGNAL(textChanged(QString)),
            this, SLOT(onMobileLineEditChanged(QString)) );
 
-  QListView *listView = new QListView( mainWidget );
+  QListView* listView = new QListView( mainWidget );
 
   KDescendantsProxyModel *flatModel = new KDescendantsProxyModel( listView );
   flatModel->setDisplayAncestorData( true );
@@ -139,7 +142,32 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent )
 
   connect( m_model, SIGNAL(itemChanged(QStandardItem*)),
            this, SLOT(onItemChanged(QStandardItem*)) );
+
+  if ( option & SubscriptionDialog::AllowToEnableSubscription ) {
+#ifndef KDEPIM_MOBILE_UI
+    connect( m_enableSubscription, SIGNAL( clicked ( bool ) ), treeView, SLOT( setEnabled(bool) ) );
+#else
+    connect( m_enableSubscription, SIGNAL( clicked ( bool ) ), listView, SLOT( setEnabled(bool) ) );
+#endif
+  } else {
+    m_enableSubscription->hide();
+  }
 }
+
+SubscriptionDialog::~SubscriptionDialog()
+{
+}
+
+void SubscriptionDialog::setSubscriptionEnabled( bool enabled )
+{
+  m_enableSubscription->setChecked( enabled );
+}
+
+bool SubscriptionDialog::subscriptionEnabled() const
+{
+  return m_enableSubscription->isChecked();
+}
+
 
 void SubscriptionDialog::connectAccount( const ImapAccount &account, const QString &password )
 {
@@ -157,7 +185,7 @@ void SubscriptionDialog::connectAccount( const ImapAccount &account, const QStri
   login->start();
 }
 
-bool SubscriptionDialog::isSubscriptionChanged()
+bool SubscriptionDialog::isSubscriptionChanged() const
 {
   return m_subscriptionChanged;
 }

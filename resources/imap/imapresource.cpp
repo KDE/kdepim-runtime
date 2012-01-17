@@ -58,6 +58,7 @@
 #include "imapaccount.h"
 #include "imapidlemanager.h"
 #include "resourcestate.h"
+#include "subscriptiondialog.h"
 
 #include "addcollectiontask.h"
 #include "additemtask.h"
@@ -216,6 +217,29 @@ void ImapResource::startConnect( const QVariant& )
   const bool result = m_pool->connect( account );
   Q_ASSERT( result );
   Q_UNUSED( result );
+}
+
+int ImapResource::configureSubscription()
+{
+  if( !m_pool->account() )
+     return -2;
+  const QString password = Settings::self()->password();
+  if ( password.isEmpty() )
+     return -1;
+
+  SubscriptionDialog *subscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
+  subscriptions->setCaption( i18n( "Serverside Subscription..." ) );
+  subscriptions->connectAccount( *m_pool->account(), password );
+  subscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
+
+  if(subscriptions->exec()) {
+    Settings::self()->setSubscriptionEnabled( subscriptions->subscriptionEnabled() );
+    Settings::self()->writeConfig();
+    emit configurationDialogAccepted();
+    reconnect();
+  }
+  delete subscriptions;
+  return 0;
 }
 
 void ImapResource::onConnectDone( int errorCode, const QString &errorString )

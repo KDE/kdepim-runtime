@@ -60,6 +60,7 @@ public Q_SLOTS:
   Q_SCRIPTABLE void requestManualExpunge( qint64 collectionId );
   Q_SCRIPTABLE void setFastSyncEnabled( bool fastSync );
   Q_SCRIPTABLE bool isFastSyncEnabled() const;
+  Q_SCRIPTABLE int configureSubscription();
 
 protected Q_SLOTS:
   void startIdleIfNeeded();

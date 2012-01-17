@@ -35,7 +35,7 @@ class QStandardItem;
 
 class KDescendantsProxyModel;
 class KLineEdit;
-
+class QCheckBox;
 class ImapAccount;
 
 class SubscriptionFilterProxyModel : public KRecursiveFilterProxyModel
@@ -66,11 +66,19 @@ public:
     InitialStateRole = Qt::UserRole + 1,
     PathRole
   };
+  enum SubscriptionDialogOption {
+    None = 0,
+    AllowToEnableSubscription = 1
+  };
+  Q_DECLARE_FLAGS( SubscriptionDialogOptions, SubscriptionDialogOption )
 
-  explicit SubscriptionDialog( QWidget *parent = 0 );
+  explicit SubscriptionDialog( QWidget *parent = 0, SubscriptionDialog::SubscriptionDialogOptions option = SubscriptionDialog::None );
+  ~SubscriptionDialog();
 
   void connectAccount( const ImapAccount &account, const QString &password );
-  bool isSubscriptionChanged();
+  bool isSubscriptionChanged() const;
+  void setSubscriptionEnabled( bool enabled );
+  bool subscriptionEnabled() const;
 
 private slots:
   void onLoginDone( KJob *job );
@@ -89,7 +97,6 @@ protected:
 
 protected slots:
   void slotButtonClicked( int button );
-
 private:
   void applyChanges();
 
@@ -97,6 +104,7 @@ private:
   bool m_subscriptionChanged;
 
   KLineEdit *m_lineEdit;
+  QCheckBox *m_enableSubscription;
   SubscriptionFilterProxyModel *m_filter;
   KDescendantsProxyModel *m_flatModel;
   QStandardItemModel *m_model;
