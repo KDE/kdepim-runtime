@@ -34,11 +34,11 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 pre
 #    3.2 alpha1
 
-if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set( KDEPIM_RUNTIME_DEV_VERSION "rc2" )
-endif ()
+#if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
+#    set( KDEPIM_RUNTIME_DEV_VERSION "rc2" )
+#endif ()
 
-set( KDEPIM_RUNTIME_VERSION "4.8${KDEPIM_RUNTIME_DEV_VERSION}" )
+set( KDEPIM_RUNTIME_VERSION "4.8.0" )
 
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
