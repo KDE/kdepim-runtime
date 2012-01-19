@@ -353,10 +353,18 @@ void SessionPool::onLoginDone( KJob *job )
     }
   } else {
     if ( job->error() == KIMAP::LoginJob::ERR_COULD_NOT_CONNECT ) {
-      cancelSessionCreation( login->session(),
-                             CouldNotConnectError,
-                             i18n( "Could not connect to the IMAP-server %1.\n%2",
-                                   m_account->server(), job->errorString() ) );
+      if ( m_account ) {
+        cancelSessionCreation( login->session(),
+                               CouldNotConnectError,
+                               i18n( "Could not connect to the IMAP-server %1.\n%2",
+                                     m_account->server(), job->errorString() ) );
+      } else {
+        // Can happen when we loose all ready connections while trying to login.
+        cancelSessionCreation( login->session(),
+                               CouldNotConnectError,
+                               i18n( "Could not connect to the IMAP-server.\n%1",
+                                     job->errorString() ) );
+      }
     } else {
       // Connection worked, but login failed -> ask for a different password or ssl settings.
       m_pendingInitialSession = login->session();
