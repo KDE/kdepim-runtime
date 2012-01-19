@@ -362,8 +362,8 @@ void SessionPool::onLoginDone( KJob *job )
         // Can happen when we loose all ready connections while trying to login.
         cancelSessionCreation( login->session(),
                                CouldNotConnectError,
-                               i18n( "Could not connect to the IMAP-server.\n%1",
-                                     job->errorString() ) );
+                               i18n( "Could not connect to the IMAP-server %1.\n%2",
+                                     "", job->errorString() ) );
       }
     } else {
       // Connection worked, but login failed -> ask for a different password or ssl settings.
