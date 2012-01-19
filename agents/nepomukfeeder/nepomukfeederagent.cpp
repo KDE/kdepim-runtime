@@ -65,6 +65,9 @@ static inline bool indexingDisabled( const Collection &collection )
   if ( indexPolicy && !indexPolicy->indexingEnabled() )
     return true;
 
+  if (collection.isVirtual())
+    return true;
+
   return false;
 }
 
