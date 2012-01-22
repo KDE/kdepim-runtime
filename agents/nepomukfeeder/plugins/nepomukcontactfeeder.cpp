@@ -101,11 +101,12 @@ void NepomukContactFeeder::updateItem(const Akonadi::Item& item, Nepomuk::Simple
 
 void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
-    res.addType(Nepomuk::Vocabulary::NCO::PersonContact());
+    res.addType(Nepomuk::Vocabulary::NCO::Contact());
 
     //NepomukFeederUtils::setIcon("view-pim-contacts", res, graph);
 
-    Nepomuk::NCO::PersonContact contact(&res);
+    Nepomuk::NCO::Contact contact(&res);
+    Nepomuk::NCO::PersonContact person(&res);
 
     const KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
@@ -138,19 +139,19 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
     }
 
     if ( !addressee.givenName().isEmpty() )
-        contact.setNameGiven( addressee.givenName() );
+        person.setNameGiven( addressee.givenName() );
 
     if ( !addressee.additionalName().isEmpty() )
-        contact.setNameAdditionals( listFromString( addressee.additionalName() ) );
+        person.setNameAdditionals( listFromString( addressee.additionalName() ) );
 
     if ( !addressee.familyName().isEmpty() )
-        contact.setNameFamily( addressee.familyName() );
+        person.setNameFamily( addressee.familyName() );
 
     if ( !addressee.prefix().isEmpty() )
-        contact.setNameHonorificPrefixs( listFromString( addressee.prefix() ) );
+        person.setNameHonorificPrefixs( listFromString( addressee.prefix() ) );
 
     if ( !addressee.suffix().isEmpty() )
-        contact.setNameHonorificSuffixs( listFromString( addressee.suffix() ) );
+        person.setNameHonorificSuffixs( listFromString( addressee.suffix() ) );
 
     const KABC::Geo geo = addressee.geo();
     if ( geo.isValid() ) {
@@ -329,7 +330,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
     }
 
     if ( affiliationRes.isValid() ) {
-        contact.setHasAffiliations( QList<QUrl>() << affiliationRes.uri() );
+        person.setHasAffiliations( QList<QUrl>() << affiliationRes.uri() );
         graph << affiliationRes;
     }
 
