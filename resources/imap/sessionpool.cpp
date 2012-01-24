@@ -192,16 +192,18 @@ void SessionPool::declareSessionReady( KIMAP::Session *session )
   m_pendingInitialSession = 0;
 
   if ( !m_initialConnectDone ) {
-    m_unusedPool << session;
     m_initialConnectDone = true;
     emit connectDone();
+  }
+
+  if ( m_pendingRequests.isEmpty() ) {
+    m_unusedPool << session;
   } else {
     m_reservedPool << session;
+    emit sessionRequestDone( m_pendingRequests.takeFirst(), session );
+
     if ( !m_pendingRequests.isEmpty() ) {
-      emit sessionRequestDone( m_pendingRequests.takeFirst(), session );
-      if ( !m_pendingRequests.isEmpty() ) {
-        QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
-      }
+      QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
     }
   }
 }
