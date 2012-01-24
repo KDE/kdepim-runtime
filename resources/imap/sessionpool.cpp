@@ -365,7 +365,7 @@ void SessionPool::onLoginDone( KJob *job )
         cancelSessionCreation( login->session(),
                                CouldNotConnectError,
                                i18n( "Could not connect to the IMAP-server %1.\n%2",
-                                     "", job->errorString() ) );
+                                     QString(), job->errorString() ) );
       }
     } else {
       // Connection worked, but login failed -> ask for a different password or ssl settings.
