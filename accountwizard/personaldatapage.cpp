@@ -117,7 +117,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
 
   if ( ok ) {
     // configure the stuff 
-    if ( mIspdb->smtpServers().count() > 0 ) {
+    if ( !mIspdb->smtpServers().isEmpty() ) {
       server s = mIspdb->smtpServers().first(); // should be ok.
       kDebug() << "Configuring transport for" << s.hostname;
 
@@ -150,7 +150,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
     // configure incoming
 
 
-    if ( mIspdb->imapServers().count() > 0 ) {
+    if ( !mIspdb->imapServers().isEmpty() ) {
       server s = mIspdb->imapServers().first(); // should be ok.
       kDebug() << "Configuring imap for" << s.hostname;
 
@@ -176,7 +176,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
         case Ispdb::StartTLS: t->setOption( "Safety", "STARTTLS" );break;
         default: break;
       }
-    } else if ( mIspdb->pop3Servers().count() > 0 ) {
+    } else if ( !mIspdb->pop3Servers().isEmpty() ) {
       server s = mIspdb->pop3Servers().first(); // should be ok.
       kDebug() << "No Imap to be created, configuring pop3 for" << s.hostname;
 
