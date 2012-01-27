@@ -38,7 +38,7 @@
 #include <QScrollArea>
 
 PersonalDataPage::PersonalDataPage(Dialog* parent) :
-  Page( parent ), mSetupManager( parent->setupManager() )
+  Page( parent ), mIspdb( 0 ), mSetupManager( parent->setupManager() )
 {
 #ifdef _WIN32_WCE
   // for mobile ui we put the page into a scroll area in case it's too big
@@ -134,7 +134,8 @@ void PersonalDataPage::leavePageNext()
     emit manualWanted( false );
 
     kDebug() << "Searching on internet";
-    mIspdb = new Ispdb();
+    delete mIspdb;
+    mIspdb = new Ispdb(this);
     mIspdb->setEmail( ui.emailEdit->text() );
     mIspdb->start();
 
