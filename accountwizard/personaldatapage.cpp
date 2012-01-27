@@ -124,6 +124,8 @@ void PersonalDataPage::slotTextChanged()
 
 void PersonalDataPage::leavePageNext()
 {
+  ui.stackedPage->setCurrentIndex( 0 );
+  ui.imapAccount->setChecked( true );
   mSetupManager->setPersonalDataAvailable( true );
   mSetupManager->setName( ui.nameEdit->text() );
   mSetupManager->setPassword( ui.passwordEdit->text() );
