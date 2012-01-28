@@ -72,6 +72,7 @@ public:
 
   virtual void itemDeleted(const Akonadi::Item &item) { Q_UNUSED( item ); }
   virtual void itemAdded(const Akonadi::Item &item) { Q_UNUSED( item ); }
+  virtual void reset() {}
 
 Q_SIGNALS:
     void deleteItemFromImap(const Akonadi::Item& item);

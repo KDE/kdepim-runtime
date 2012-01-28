@@ -213,6 +213,11 @@ void IncidenceHandler::itemDeleted(const Akonadi::Item &item)
   }
 }
 
+void IncidenceHandler::reset()
+{
+  m_uidMap.clear();
+}
+
 void IncidenceHandler::itemAdded(const Akonadi::Item& item)
 {
   if (!item.hasPayload<KMime::Message::Ptr>()) {

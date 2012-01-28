@@ -42,6 +42,7 @@ public:
     virtual void itemDeleted(const Akonadi::Item &item);
     virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
     virtual void toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem);
+    /**reimp*/ void reset();
 
 Q_SIGNALS:
     void useGlobalMode();

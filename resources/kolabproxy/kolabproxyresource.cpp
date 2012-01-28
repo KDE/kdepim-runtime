@@ -180,7 +180,11 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
 {
   kDebug() << "RETRIEVEITEMS";
   m_retrieveState = RetrieveItems;
-  ItemFetchJob *job = new ItemFetchJob( kolabToImap( collection ) );
+  const Collection imapCollection = kolabToImap( collection );
+  KolabHandler *handler = m_monitoredCollections.value( imapCollection.id() );
+  Q_ASSERT( handler );
+  handler->reset();
+  ItemFetchJob *job = new ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
   job->setProperty( "resultCanBeEmpty", true );
 
