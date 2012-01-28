@@ -134,6 +134,8 @@ void Restore::restore( const KUrl& filename )
              << "--dbname=" + global.dbname()
              << "--format=custom"
              << "--clean"
+             << "--no-owner"
+             << "--no-privileges"
              << tempDir->name() + "db" + sep + "database.sql";
     }
     else if (global.dbdriver() == "QMYSQL" ) {
