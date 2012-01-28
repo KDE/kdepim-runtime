@@ -132,7 +132,7 @@ void Restore::restore( const KUrl& filename )
     if( global.dbdriver() == "QPSQL" ) {
       params << global.dboptions()
              << "--dbname=" + global.dbname()
-             << "--format=c"
+             << "--format=custom"
              << "--clean"
              << tempDir->name() + "db" + sep + "database.sql";
     }

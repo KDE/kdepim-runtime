@@ -119,8 +119,8 @@ void Backup::create( const KUrl& filename )
                << global.dbname();
     }
     else if ( global.dbdriver() == "QPSQL" ) {
-        params << "--blobs"
-               << "--format=c"
+        params << "--format=custom"
+               << "--blobs"
                << "--file=" + tempDir->name() + "db" + sep + "database.sql"
                << global.dboptions()
                << global.dbname();
