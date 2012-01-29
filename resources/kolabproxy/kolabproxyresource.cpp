@@ -780,7 +780,7 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     if ( imapAttr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
       kolabAttr->setDisplayName( i18n( "My Data" ) );
       kolabAttr->setIconName( QLatin1String( "view-pim-summary" ) );
-      contentTypes << KolabHandler::allSupportedMimeTypes();
+      //contentTypes << KolabHandler::allSupportedMimeTypes();
       c.setRights( Collection::ReadOnly | Collection::CanCreateCollection );
     } else if ( imapCollection.parentCollection() == Collection::root() ) {
       c.setName( i18n( "Kolab (%1)", imapAttr->displayName() ) );
