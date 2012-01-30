@@ -97,7 +97,7 @@ void PersonalDataPage::leavePageNext()
   if ( ui.checkOnlineGroupBox->isChecked() ) {
     // since the user can go back and forth, explicitly disable the man page
     emit manualWanted( false );
-
+    setCursor( Qt::BusyCursor );
     kDebug() << "Searching on internet";
     delete mIspdb;
     mIspdb = new Ispdb(this);
@@ -115,7 +115,7 @@ void PersonalDataPage::leavePageNext()
 void PersonalDataPage::ispdbSearchFinished( bool ok )
 {
   kDebug() << ok;
-
+  unsetCursor();
   if ( ok ) {
     // configure the stuff 
     if ( mIspdb->smtpServers().count() > 0 ) {
