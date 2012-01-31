@@ -144,7 +144,13 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
     url = KUrl( basePath + fileName + ".vcf" );
 
     const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
-    mimeType = DavManager::self()->davProtocol( DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
+    if ( protoAttr ) {
+      mimeType =
+        DavManager::self()->davProtocol(
+          DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
+    } else {
+      mimeType = KABC::Addressee::mimeType();
+    }
 
     KABC::VCardConverter converter;
     rawData = converter.createVCard( contact );
