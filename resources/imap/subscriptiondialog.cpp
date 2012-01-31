@@ -111,30 +111,30 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
            m_filter, SLOT(setIncludeCheckedOnly(int)) );
   filterBarLayout->addWidget( checkBox );
 
-  QTreeView *treeView = new QTreeView( mainWidget );
-  treeView->header()->hide();
+  m_treeView = new QTreeView( mainWidget );
+  m_treeView->header()->hide();
   m_filter->setSourceModel( m_model );
-  treeView->setModel( m_filter );
-  mainLayout->addWidget( treeView );
+  m_treeView->setModel( m_filter );
+  mainLayout->addWidget( m_treeView );
 #else
   m_lineEdit->hide();
   connect( m_lineEdit, SIGNAL(textChanged(QString)),
            this, SLOT(onMobileLineEditChanged(QString)) );
 
-  QListView* listView = new QListView( mainWidget );
+  m_listView = new QListView( mainWidget );
 
-  KDescendantsProxyModel *flatModel = new KDescendantsProxyModel( listView );
+  KDescendantsProxyModel *flatModel = new KDescendantsProxyModel( m_listView );
   flatModel->setDisplayAncestorData( true );
   flatModel->setAncestorSeparator( "/" );
   flatModel->setSourceModel( m_model );
 
-  CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel( listView );
+  CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel( m_listView );
   checkableModel->setSourceModel( flatModel );
 
   m_filter->setSourceModel( checkableModel );
 
-  listView->setModel( m_filter );
-  mainLayout->addWidget( listView );
+  m_listView->setModel( m_filter );
+  mainLayout->addWidget( m_listView );
 
   // We want to get all the keyboard input all the time
   grabKeyboard();
@@ -145,9 +145,9 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
 
   if ( option & SubscriptionDialog::AllowToEnableSubscription ) {
 #ifndef KDEPIM_MOBILE_UI
-    connect( m_enableSubscription, SIGNAL( clicked ( bool ) ), treeView, SLOT( setEnabled(bool) ) );
+    connect( m_enableSubscription, SIGNAL( clicked ( bool ) ), m_treeView, SLOT( setEnabled(bool) ) );
 #else
-    connect( m_enableSubscription, SIGNAL( clicked ( bool ) ), listView, SLOT( setEnabled(bool) ) );
+    connect( m_enableSubscription, SIGNAL( clicked ( bool ) ), m_listView, SLOT( setEnabled(bool) ) );
 #endif
   } else {
     m_enableSubscription->hide();
@@ -161,6 +161,11 @@ SubscriptionDialog::~SubscriptionDialog()
 void SubscriptionDialog::setSubscriptionEnabled( bool enabled )
 {
   m_enableSubscription->setChecked( enabled );
+#ifndef KDEPIM_MOBILE_UI
+  m_treeView->setEnabled( enabled );
+#else
+  m_listView->setEnabled( enabled );
+#endif	
 }
 
 bool SubscriptionDialog::subscriptionEnabled() const
