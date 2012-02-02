@@ -214,7 +214,8 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
 
     // phone numbers
     const KABC::PhoneNumber::List phoneNumbers = addressee.phoneNumbers();
-    for ( int i = 0; i < phoneNumbers.count(); ++i ) {
+    const int countOfPhoneNumber(phoneNumbers.count());
+    for ( int i = 0; i < countOfPhoneNumber; ++i ) {
         Nepomuk::SimpleResource affiliationPhoneRes;
         Nepomuk::SimpleResource phoneRes;
         if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Bbs ) {
@@ -349,7 +350,8 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
 
     // addresses
     const KABC::Address::List addresses = addressee.addresses();
-    for ( int i = 0; i < addresses.count(); ++i ) {
+    const int numberOfAddresses(addresses.count());
+    for ( int i = 0; i < numberOfAddresses; ++i ) {
         Nepomuk::SimpleResource postalRes;
         Nepomuk::NCO::PostalAddress address(&postalRes);
         address.setStreetAddress( addresses[ i ].street() );
