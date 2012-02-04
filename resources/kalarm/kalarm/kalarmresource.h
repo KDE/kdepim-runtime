@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.h  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2011 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2012 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -60,6 +60,7 @@ class KAlarmResource : public ICalResourceBase
 
     private:
         void checkFileCompatibility(const Akonadi::Collection& = Akonadi::Collection());
+        QString remoteIdFromPath() const;
 
         AlarmTypeRadioWidget* mTypeSelector;
         KACalendar::Compat    mCompatibility;

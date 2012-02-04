@@ -124,7 +124,7 @@ void KAlarmResource::retrieveCollections()
 
     Collection c;
     c.setParentCollection(Collection::root());
-    c.setRemoteId(mSettings->path());
+    c.setRemoteId(remoteIdFromPath());
     CollectionFetchJob* job = new CollectionFetchJob(c, CollectionFetchJob::FirstLevel);
     connect(job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)));
 }
@@ -166,6 +166,9 @@ void KAlarmResource::collectionFetchResult(KJob* j)
 bool KAlarmResource::readFromFile(const QString& fileName)
 {
     kDebug() << fileName;
+#ifdef __GNUC__
+#warning Notify user if error occurs on next line
+#endif
     if (!ICalResourceBase::readFromFile(fileName))
         return false;
     if (calendar()->incidences().isEmpty())
@@ -213,7 +216,7 @@ void KAlarmResource::checkFileCompatibility(const Collection& collection)
         if (!c.isValid())
         {
             c.setParentCollection(Collection::root());
-            c.setRemoteId(mSettings->path());
+            c.setRemoteId(remoteIdFromPath());
         }
         KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
     }
@@ -292,7 +295,7 @@ void KAlarmResource::settingsChanged()
         kDebug() << "Update storage format";
         Collection c;
         c.setParentCollection(Collection::root());
-        c.setRemoteId(mSettings->path());
+        c.setRemoteId(remoteIdFromPath());
         if (c.hasAttribute<CompatibilityAttribute>())
         {
             CompatibilityAttribute* attr = c.attribute<CompatibilityAttribute>();
@@ -333,7 +336,7 @@ void KAlarmResource::settingsChanged()
                 mVersion = mFileVersion = KACalendar::CurrentFormat;
                 Collection c;
                 c.setParentCollection(Collection::root());
-                c.setRemoteId(mSettings->path());
+                c.setRemoteId(remoteIdFromPath());
                 KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, 0);
                 break;
             }
@@ -478,6 +481,16 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection& collection)
         items << item;
     }
     itemsRetrieved(items);
+}
+
+/******************************************************************************
+* Return the remote ID to use for the resource.
+*/
+QString KAlarmResource::remoteIdFromPath() const
+{
+    QString location(mSettings->path());
+    KUrl url(location);
+    return url.isLocalFile() ? url.toLocalFile() : location;
 }
 
 AKONADI_AGENT_FACTORY(KAlarmResource, akonadi_kalarm_resource)
