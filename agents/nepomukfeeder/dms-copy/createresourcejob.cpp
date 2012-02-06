@@ -49,11 +49,9 @@ Nepomuk::CreateResourceJob::CreateResourceJob(const QList<QUrl>& types,
     : KJob(0),
       d(new Private)
 {
-    org::kde::nepomuk::DataManagement dms(QLatin1String(DMS_DBUS_SERVICE),
-                                          QLatin1String("/datamanagement"),
-                                          KDBusConnectionPool::threadConnection());
+    org::kde::nepomuk::DataManagement* dms = Nepomuk::dataManagementDBusInterface();
     QDBusPendingCallWatcher* dbusCallWatcher
-            = new QDBusPendingCallWatcher(dms.createResource(Nepomuk::DBus::convertUriList(types),
+           = new QDBusPendingCallWatcher(dms->createResource(Nepomuk::DBus::convertUriList(types),
                                                              label,
                                                              description,
                                                              component.componentName()));

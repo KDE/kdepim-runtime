@@ -42,14 +42,8 @@ Nepomuk::GenericDataManagementJob::GenericDataManagementJob(const char *methodNa
                                                             QGenericArgument val5)
     : KJob(0)
 {
-    // DBus types necessary for storeResources
-    DBus::registerDBusTypes();
-
-    org::kde::nepomuk::DataManagement dms(QLatin1String(DMS_DBUS_SERVICE),
-                                          QLatin1String("/datamanagement"),
-                                          KDBusConnectionPool::threadConnection());
     QDBusPendingReply<> reply;
-    QMetaObject::invokeMethod(&dms,
+    QMetaObject::invokeMethod(Nepomuk::dataManagementDBusInterface(),
                               methodName,
                               Qt::DirectConnection,
                               Q_RETURN_ARG(QDBusPendingReply<> , reply),
@@ -84,6 +78,24 @@ void Nepomuk::GenericDataManagementJob::slotDBusCallFinished(QDBusPendingCallWat
     }
     delete watcher;
     emitResult();
+}
+
+OrgKdeNepomukDataManagementInterface* Nepomuk::dataManagementDBusInterface()
+{
+  // This implementation isn't thread-safe, but apparently this agent has only one thread.
+  // Use QThreadStorage like in kdbusconnectionpool if this code can be called from multiple threads
+  Q_ASSERT(QThread::currentThread() == QCoreApplication::instance()->thread());
+
+  static org::kde::nepomuk::DataManagement* s_dms = 0;
+  if (!s_dms) {
+    // DBus types necessary for storeResources
+    DBus::registerDBusTypes();
+
+    s_dms = new org::kde::nepomuk::DataManagement(QLatin1String(DMS_DBUS_SERVICE),
+                                                  QLatin1String("/datamanagement"),
+                                                  KDBusConnectionPool::threadConnection());
+  }
+  return s_dms;
 }
 
 #include "genericdatamanagementjob_p.moc"
