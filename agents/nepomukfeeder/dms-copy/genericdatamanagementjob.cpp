@@ -30,6 +30,7 @@
 
 #include <QtCore/QVariant>
 #include <QtCore/QHash>
+#include <QThreadStorage>
 
 #include <KDebug>
 
@@ -80,22 +81,20 @@ void Nepomuk::GenericDataManagementJob::slotDBusCallFinished(QDBusPendingCallWat
     emitResult();
 }
 
+QThreadStorage<OrgKdeNepomukDataManagementInterface *> s_perThreadDms;
+
 OrgKdeNepomukDataManagementInterface* Nepomuk::dataManagementDBusInterface()
 {
-  // This implementation isn't thread-safe, but apparently this agent has only one thread.
-  // Use QThreadStorage like in kdbusconnectionpool if this code can be called from multiple threads
-  Q_ASSERT(QThread::currentThread() == QCoreApplication::instance()->thread());
-
-  static org::kde::nepomuk::DataManagement* s_dms = 0;
-  if (!s_dms) {
+  if (!s_perThreadDms.hasLocalData()) {
     // DBus types necessary for storeResources
     DBus::registerDBusTypes();
 
-    s_dms = new org::kde::nepomuk::DataManagement(QLatin1String(DMS_DBUS_SERVICE),
-                                                  QLatin1String("/datamanagement"),
-                                                  KDBusConnectionPool::threadConnection());
+    s_perThreadDms.setLocalData(
+      new org::kde::nepomuk::DataManagement(QLatin1String(DMS_DBUS_SERVICE),
+                                            QLatin1String("/datamanagement"),
+                                            KDBusConnectionPool::threadConnection()));
   }
-  return s_dms;
+  return s_perThreadDms.localData();
 }
 
 #include "genericdatamanagementjob_p.moc"
