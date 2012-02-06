@@ -33,6 +33,7 @@
 #include <KJob>
 
 class QDBusPendingCallWatcher;
+class OrgKdeNepomukDataManagementInterface;
 
 namespace Nepomuk {
 class GenericDataManagementJob : public KJob
@@ -59,6 +60,9 @@ public:
 private Q_SLOTS:
     void slotDBusCallFinished(QDBusPendingCallWatcher*);
 };
+
+OrgKdeNepomukDataManagementInterface* dataManagementDBusInterface();
+
 }
 
 #endif

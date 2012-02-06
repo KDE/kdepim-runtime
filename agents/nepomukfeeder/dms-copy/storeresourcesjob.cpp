@@ -54,15 +54,12 @@ Nepomuk::StoreResourcesJob::StoreResourcesJob(const Nepomuk::SimpleResourceGraph
       d( new Nepomuk::StoreResourcesJob::Private )
 {
     d->q = this;
-    DBus::registerDBusTypes();
 
-    org::kde::nepomuk::DataManagement dms(QLatin1String(DMS_DBUS_SERVICE),
-                                          QLatin1String("/datamanagement"),
-                                          QDBusConnection::sessionBus());
+    org::kde::nepomuk::DataManagement* dms = Nepomuk::dataManagementDBusInterface();
     QDBusPendingCallWatcher* dbusCallWatcher
-    = new QDBusPendingCallWatcher(dms.storeResources( resources.toList(), identificationMode,
-                                                      flags, additionalMetadata,
-                                                      component.componentName() ));
+    = new QDBusPendingCallWatcher(dms->storeResources( resources.toList(), identificationMode,
+                                                       flags, additionalMetadata,
+                                                       component.componentName() ));
 
     connect(dbusCallWatcher, SIGNAL(finished(QDBusPendingCallWatcher*)),
             this, SLOT(_k_slotDBusCallFinished(QDBusPendingCallWatcher*)));
