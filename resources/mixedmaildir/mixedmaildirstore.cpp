@@ -520,6 +520,8 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
 
   if ( col.remoteId().isEmpty() ) {
     errorText = i18nc( "@info:status", "Given folder name is empty" );
+    kWarning() << "Incomplete ancestor chain for collection.";
+    Q_ASSERT(!col.remoteId().isEmpty()); // abort! Look at backtrace to see where we came from.
     return InvalidFolder;
   }
 
@@ -1616,6 +1618,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemFetchJob *job )
 
   QString path;
   QString errorText;
+  Q_ASSERT( !collection.remoteId().isEmpty() );
   const FolderType folderType = folderForCollection( collection, path, errorText );
 
   if ( folderType == InvalidFolder ) {
@@ -2325,6 +2328,14 @@ void MixedMaildirStore::checkItemModify( FileStore::ItemModifyJob *job, int &err
     errorCode = FileStore::Job::InvalidJobContext;
     errorText = i18nc( "@info:status", "Cannot modify email in folder %1 because there is no email content", job->item().parentCollection().name() );
   }
+}
+
+void MixedMaildirStore::checkItemFetch( FileStore::ItemFetchJob *job, int &errorCode, QString &errorText ) const
+{
+  Q_UNUSED( errorCode );
+  Q_UNUSED( errorText );
+  Collection coll = job->item().parentCollection();
+  Q_ASSERT( !coll.remoteId().isEmpty() );
 }
 
 #include "mixedmaildirstore.moc"

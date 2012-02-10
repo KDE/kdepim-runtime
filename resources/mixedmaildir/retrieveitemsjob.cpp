@@ -102,7 +102,10 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
   Q_FOREACH ( const Item &item, items ) {
     // items without remoteId have not been written to the resource yet
     if ( !item.remoteId().isEmpty() ) {
-      mServerItemsByRemoteId.insert( item.remoteId(), item );
+      // set the parent collection (with all ancestors) in every item
+      Item copy( item );
+      copy.setParentCollection( mCollection );
+      mServerItemsByRemoteId.insert( copy.remoteId(), copy );
     }
   }
 
@@ -285,6 +288,7 @@ RetrieveItemsJob::RetrieveItemsJob( const Akonadi::Collection &collection, Mixed
   : Job( parent ), d( new Private( this, collection, store ) )
 {
   Q_ASSERT( d->mCollection.isValid() );
+  Q_ASSERT( !d->mCollection.remoteId().isEmpty() );
   Q_ASSERT( d->mStore != 0 );
 }
 

@@ -42,6 +42,8 @@ class MixedMaildirStore : public Akonadi::FileStore::AbstractLocalStore
 
     void checkItemModify( Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText ) const;
 
+    void checkItemFetch( Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText ) const;
+
   private:
     class Private;
     Private *const d;
