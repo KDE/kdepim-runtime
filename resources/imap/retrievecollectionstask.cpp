@@ -132,7 +132,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
           Akonadi::Collection c = m_reportedCollections.value( currentPath );
           c.setContentMimeTypes( contentTypes );
           c.setRights( Akonadi::Collection::AllRights );
-          c.removeAttribute( "noselect" );
+          c.removeAttribute<NoSelectAttribute>();
 
           m_dummyCollections.remove( currentPath );
           m_reportedCollections.remove( currentPath );
@@ -173,6 +173,9 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
         c.addAttribute( new NoSelectAttribute( true ) );
         c.setContentMimeTypes( QStringList() << Akonadi::Collection::mimeType() );
         c.setRights( Akonadi::Collection::ReadOnly );
+      } else {
+        // remove the noselect attribute explicitly, in case we had set it before (eg. for non-subscribed non-leaf folders)
+        c.removeAttribute<NoSelectAttribute>();
       }
 
       m_reportedCollections.insert( currentPath, c );
