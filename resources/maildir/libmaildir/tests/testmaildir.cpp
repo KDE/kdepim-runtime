@@ -59,6 +59,10 @@ void MaildirTest::init()
 void MaildirTest::cleanup()
 {
   m_temp->unlink();
+  QDir d( m_temp->name() );
+  const QString subFolderPath( QString::fromLatin1( ".%1.directory" ).arg( d.dirName() ));
+  KTempDir::removeDir(subFolderPath);
+
   delete m_temp;
   m_temp = 0;
 }
