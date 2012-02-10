@@ -46,6 +46,7 @@ class MaildirTest : public QObject
     void testMaildirMoveTo();
     void testMaildirFlagsReading();
     void testMaildirFlagsWriting();
+    void testMarkNewFileAsRead();
     void cleanup();
 private:
     void fillDirectory(const QString &name, int limit );
