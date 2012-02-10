@@ -30,7 +30,7 @@ class MaildirTest : public QObject
 {
   Q_OBJECT
   private Q_SLOTS:
-    void initTestCase();
+    void init();
     void testMaildirInstantiation();
     void testMaildirCreation();
     void testMaildirListing();
@@ -46,7 +46,7 @@ class MaildirTest : public QObject
     void testMaildirMoveTo();
     void testMaildirFlagsReading();
     void testMaildirFlagsWriting();
-    void cleanupTestCase();
+    void cleanup();
 private:
     void fillDirectory(const QString &name, int limit );
     void fillNewDirectory();
