@@ -41,7 +41,7 @@ static const char * testDir = "libmaildir-unit-test";
 static const char * testString = "From: theDukeOfMonmouth@uk.gov\n\ntest\n";
 static const char * testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n";
 
-void MaildirTest::initTestCase()
+void MaildirTest::init()
 {
   m_temp = new KTempDir( KStandardDirs::locateLocal("tmp", QLatin1String( testDir ) ) );
 
@@ -54,6 +54,13 @@ void MaildirTest::initTestCase()
   QVERIFY( temp.exists( QLatin1String( "cur" ) ) );
   temp.mkdir( QLatin1String( "tmp" ) );
   QVERIFY( temp.exists( QLatin1String( "tmp" ) ) );
+}
+
+void MaildirTest::cleanup()
+{
+  m_temp->unlink();
+  delete m_temp;
+  m_temp = 0;
 }
 
 void MaildirTest::fillDirectory(const QString& name, int limit )
@@ -123,12 +130,10 @@ void MaildirTest::testMaildirInstantiation()
   QCOMPARE( root1Copy.isRoot(), root1.isRoot() );
 
   // FIXME test insufficient permissions?
-  cleanupTestCase();
 }
 
 void MaildirTest::testMaildirListing()
 {
-  initTestCase();
   fillNewDirectory();
 
   Maildir d( m_temp->name() );
@@ -139,12 +144,10 @@ void MaildirTest::testMaildirListing()
   fillCurrentDirectory();
   entries = d.entryList();
   QCOMPARE( entries.count(), 160 );
-  cleanupTestCase();
 }
 
 void MaildirTest::testMaildirAccess()
 {
-  initTestCase();
   fillCurrentDirectory();
   Maildir d( m_temp->name() );
   QStringList entries = d.entryList();
@@ -157,6 +160,7 @@ void MaildirTest::testMaildirAccess()
 
 void MaildirTest::testMaildirReadHeaders()
 {
+  fillCurrentDirectory();
   Maildir d( m_temp->name() );
   QStringList entries = d.entryList();
   QCOMPARE( entries.count(), 20 );
@@ -168,6 +172,7 @@ void MaildirTest::testMaildirReadHeaders()
 
 void MaildirTest::testMaildirWrite()
 {
+  fillCurrentDirectory();
   Maildir d( m_temp->name() );
   QStringList entries = d.entryList();
   QCOMPARE( entries.count(), 20 );
@@ -210,7 +215,6 @@ void MaildirTest::testMaildirRemoveEntry()
 
 void MaildirTest::testMaildirListSubfolders()
 {
-  initTestCase();
   fillNewDirectory();
 
   Maildir d( m_temp->name() );
@@ -223,14 +227,11 @@ void MaildirTest::testMaildirListSubfolders()
   entries = d.subFolderList();
   QVERIFY( !entries.isEmpty() );
   QCOMPARE( entries.count(), 3 );
-
-  cleanupTestCase();
 }
 
 
 void MaildirTest::testMaildirCreateSubfolder()
 {
-  initTestCase();
   Maildir d( m_temp->name() );
   QStringList entries = d.subFolderList();
   QVERIFY( entries.isEmpty() );
@@ -241,13 +242,10 @@ void MaildirTest::testMaildirCreateSubfolder()
   QCOMPARE( entries.count(), 1 );
   Maildir child = d.subFolder( entries.first() );
   QVERIFY( child.isValid() );
-
-  cleanupTestCase();
 }
 
 void MaildirTest::testMaildirRemoveSubfolder()
 {
-  initTestCase();
   Maildir d( m_temp->name() );
   QVERIFY( d.isValid() );
 
@@ -256,13 +254,10 @@ void MaildirTest::testMaildirRemoveSubfolder()
   QVERIFY( folderPath.endsWith( QLatin1String( ".directory/subFolderTest" ) ) );
   bool removingWorked = d.removeSubFolder( QLatin1String( "subFolderTest" ) );
   QVERIFY( removingWorked );
-
-  cleanupTestCase();
 }
 
 void MaildirTest::testMaildirRename()
 {
-  initTestCase();
   Maildir d( m_temp->name() );
   QVERIFY( d.isValid() );
 
@@ -281,13 +276,10 @@ void MaildirTest::testMaildirRename()
   // already existing name
   QVERIFY( !d.addSubFolder( QLatin1String( "this name is already taken" ) ).isEmpty() );
   QVERIFY( !d2.rename( QLatin1String( "this name is already taken" ) ) );
-
-  cleanupTestCase();
 }
 
 void MaildirTest::testMaildirMoveTo()
 {
-  initTestCase();
   Maildir d( m_temp->name() );
   QVERIFY( d.isValid() );
 
@@ -336,18 +328,10 @@ void MaildirTest::testMaildirMoveTo()
   d2 = Maildir( folderPath1 );
   QVERIFY( !d2.isValid() );
   QVERIFY( !d2.moveTo( d3 ) );
-
-  cleanupTestCase();
-}
-
-void MaildirTest::cleanupTestCase()
-{
-  m_temp->unlink();
 }
 
 void MaildirTest::testMaildirFlagsReading()
 {
-  initTestCase();
   QFile file;
   const QStringList markers = QStringList() << "P" << "R" << "S" << "F" << "FPRS";
   QDir::setCurrent( m_temp->name() + QLatin1Char( '/' ) + "cur" );
@@ -398,13 +382,10 @@ void MaildirTest::testMaildirFlagsReading()
 
   flags = d.readEntryFlags( entries[5] );
   QVERIFY( flags.isEmpty() );
-  cleanupTestCase();
 }
 
 void MaildirTest::testMaildirFlagsWriting()
 {
-  initTestCase();
-
   // create an initialy flagless mail
   QFile file;
   QDir::setCurrent( m_temp->name() + QLatin1Char( '/' ) + "cur" );
@@ -429,5 +410,4 @@ void MaildirTest::testMaildirFlagsWriting()
   const QString newKey2 = d.changeEntryFlags( newKey, Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen << Akonadi::MessageFlags::Replied );
   // check the file name, and the sorting of markers
   QVERIFY( newKey2.endsWith( QLatin1String("2,RS") ) );
-  cleanupTestCase();
 }
