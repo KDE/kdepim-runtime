@@ -388,43 +388,25 @@ void MaildirTest::testMaildirFlagsReading()
   QVERIFY( flags.isEmpty() );
 }
 
-void MaildirTest::testMaildirFlagsWriting()
+void MaildirTest::testMaildirFlagsWriting_data()
 {
-  // create an initialy flagless mail
-  QFile file;
-  QDir::setCurrent( m_temp->name() + QLatin1Char( '/' ) + "cur" );
-  file.setFileName( QLatin1String( "testmail" ) );
-  file.open( QIODevice::WriteOnly );
-  file.write( testString );
-  file.flush();
-  file.close();
-
-  // add a single flag
-  Maildir d( m_temp->name() );
-  const QStringList entries = d.entryList();
-  QCOMPARE( entries.size(), 1 );
-  QVERIFY( QFile::exists( entries[0] ) );
-  const QString newKey = d.changeEntryFlags( entries[0], Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen );
-  // make sure the new key exists
-  QCOMPARE( newKey, d.entryList()[0] );
-  QVERIFY( QFile::exists( newKey ) );
-  // and it's the right file
-  QCOMPARE( d.readEntry( newKey ), QByteArray( testString ) );
-  // now check the file name
-  QVERIFY( newKey.endsWith( QLatin1String("2,S") ) );
-  // and more flags
-  const QString newKey2 = d.changeEntryFlags( newKey, Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen << Akonadi::MessageFlags::Replied );
-  // check the file name, and the sorting of markers
-  QVERIFY( newKey2.endsWith( QLatin1String("2,RS") ) );
-  QVERIFY( QFile::exists( newKey2 ) );
+  QTest::addColumn<QString>("origDir");
+  QTest::addColumn<QString>("origFileName");
+  QTest::newRow("cur/") << "cur" << "testmail";
+  QTest::newRow("cur/S") << "cur" << "testmail:2,S"; // wrongly marked as "seen" on disk (#289428)
+  QTest::newRow("new/") << "new" << "testmail";
+  QTest::newRow("new/S") << "new" << "testmail:2,S";
 }
 
-void MaildirTest::testMarkNewFileAsRead()
+void MaildirTest::testMaildirFlagsWriting()
 {
+  QFETCH( QString, origDir );
+  QFETCH( QString, origFileName );
+
   // create an initialy new mail
   QFile file;
   QDir::setCurrent( m_temp->name() );
-  file.setFileName( QLatin1String( "new/newmail" ) );
+  file.setFileName( origDir + '/' + origFileName );
   file.open( QIODevice::WriteOnly );
   file.write( testString );
   file.flush();
@@ -434,7 +416,7 @@ void MaildirTest::testMarkNewFileAsRead()
   Maildir d( m_temp->name() );
   const QStringList entries = d.entryList();
   QCOMPARE( entries.size(), 1 );
-  QVERIFY( QFile::exists( "new/" + entries[0] ) );
+  QVERIFY( QFile::exists( origDir + '/' + entries[0] ) );
   const QString newKey = d.changeEntryFlags( entries[0], Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen );
   // make sure the new key exists
   QCOMPARE( newKey, d.entryList()[0] );
