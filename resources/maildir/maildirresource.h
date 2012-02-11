@@ -77,7 +77,7 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     void fsWatchFileModifyResult( KJob* job );
 
   private:
-    void ensureDirExists();
+    bool ensureDirExists();
     bool ensureSaneConfiguration();
     Akonadi::Collection::List listRecursive( const Akonadi::Collection &root, const KPIM::Maildir &dir );
     /** Creates a maildir object for the collection @p col, given it has the full ancestor chain set. */
