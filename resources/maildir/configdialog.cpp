@@ -90,13 +90,18 @@ void ConfigDialog::checkPath()
 void ConfigDialog::save()
 {
   mManager->updateSettings();
-  mSettings->setPath( ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile()  : ui.kcfg_Path->url().path() );
+  QString path =  ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile()  : ui.kcfg_Path->url().path();
+  mSettings->setPath( path );
   mSettings->setTopLevelIsContainer( mToplevelIsContainer );
   mSettings->writeConfig();
-  
-  QDir d( ui.kcfg_Path->url().toLocalFile() );
-  if ( !d.exists() ) {
-    d.mkpath( ui.kcfg_Path->url().toLocalFile() );
+
+  if (ui.kcfg_Path->url().isLocalFile()) {   
+    QDir d( path );
+    if ( !d.exists() ) {
+      d.mkpath( ui.kcfg_Path->url().toLocalFile() );
+      Maildir md( path, true );
+      md.addSubFolder( QLatin1String("inbox") ); //This is a workaround to be sure that newly created maildir folders show up in KMail
+    }
   }
 }
 
