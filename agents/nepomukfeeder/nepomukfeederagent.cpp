@@ -195,7 +195,7 @@ void NepomukFeederAgent::selfTest()
   // check if we have been disabled explicitly
   {
     KConfig config( "akonadi_nepomuk_feederrc" );
-    KConfigGroup cfgGrp( &config, identifier() );
+    KConfigGroup cfgGrp( &config, "akonadi_nepomuk_email_feeder" );
     if ( !cfgGrp.readEntry( "Enabled", true ) ) {
       checkOnline();
       emit status( Broken, i18n( "Indexing has been disabled by you." ) );
