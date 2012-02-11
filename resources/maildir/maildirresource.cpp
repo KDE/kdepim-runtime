@@ -112,6 +112,8 @@ MaildirResource::MaildirResource( const QString &id )
   scope.setAncestorRetrieval( ItemFetchScope::None );
   setItemSynchronizationFetchScope( scope );
 
+  ensureSaneConfiguration();
+  
   connect( m_fsWatcher, SIGNAL(dirty(QString)), SLOT(slotDirChanged(QString)) );
 
   synchronizeCollectionTree();
