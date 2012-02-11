@@ -78,6 +78,7 @@ void ConfigDialog::checkPath()
     d.cdUp();
     if ( d.exists() ) {
       ui.statusLabel->setText( i18n( "The selected path does not exist yet, a new Maildir will be created." ) );
+      mToplevelIsContainer = true;
       ok = true;
     } else {
       ui.statusLabel->setText( i18n( "The selected path does not exist." ) );
@@ -92,6 +93,11 @@ void ConfigDialog::save()
   mSettings->setPath( ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile()  : ui.kcfg_Path->url().path() );
   mSettings->setTopLevelIsContainer( mToplevelIsContainer );
   mSettings->writeConfig();
+  
+  QDir d( ui.kcfg_Path->url().toLocalFile() );
+  if ( !d.exists() ) {
+    d.mkpath( ui.kcfg_Path->url().toLocalFile() );
+  }
 }
 
 #include "configdialog.moc"
