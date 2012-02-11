@@ -425,8 +425,12 @@ void MaildirResource::retrieveCollections()
   if ( mSettings->readOnly() ) {
     root.setRights( Collection::ReadOnly );
   } else {
-    root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
+    if ( mSettings->topLevelIsContainer() ) {
+      root.setRights( Collection::ReadOnly | Collection::CanCreateCollection );    
+    } else {
+      root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
                     | Collection::CanCreateCollection );
+    }
   } 
 
   CachePolicy policy;
@@ -439,9 +443,9 @@ void MaildirResource::retrieveCollections()
 
   QStringList mimeTypes;
   mimeTypes << Collection::mimeType();
-  if ( !mSettings->topLevelIsContainer() )
-    mimeTypes << itemMimeType();
+  mimeTypes << itemMimeType();
   root.setContentMimeTypes( mimeTypes );
+    
 
   Collection::List list;
   list << root;
