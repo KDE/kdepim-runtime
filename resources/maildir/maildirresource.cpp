@@ -154,8 +154,12 @@ QString MaildirResource::itemMimeType()
 void MaildirResource::configurationChanged()
 {
   mSettings->writeConfig();
-  ensureSaneConfiguration();
-  ensureDirExists();
+  bool configValid = ensureSaneConfiguration();
+  configValid &= ensureDirExists();
+  if (configValid) {
+    emit status( Idle );
+    setOnline(true);
+  }
 }
 
 
@@ -184,7 +188,7 @@ void MaildirResource::configure( WId windowId )
     emit configurationDialogRejected();
   }
 
-  ensureDirExists();
+  configurationChanged();
   synchronizeCollectionTree();
 }
 
@@ -594,13 +598,15 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
   changeProcessed();
 }
 
-void MaildirResource::ensureDirExists()
+bool MaildirResource::ensureDirExists()
 {
   Maildir root( mSettings->path() );
   if ( !root.isValid() && !mSettings->topLevelIsContainer() ) {
     if ( !root.create() )
       emit status( Broken, i18n( "Unable to create maildir '%1'.", mSettings->path() ) );
+    return false;
   }
+  return true;
 }
 
 bool MaildirResource::ensureSaneConfiguration()
