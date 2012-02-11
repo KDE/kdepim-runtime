@@ -449,6 +449,8 @@ void ImapResource::doSetOnline(bool online)
   if ( !online ) {
     if ( m_pool->isConnected() )
       m_pool->disconnect();
+    qDeleteAll(m_taskList);
+    m_taskList.clear();
     delete m_idle;
     m_idle = 0;
   } else if ( online && !m_pool->isConnected() ) {
