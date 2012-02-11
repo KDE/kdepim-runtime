@@ -99,8 +99,6 @@ void ConfigDialog::save()
     QDir d( path );
     if ( !d.exists() ) {
       d.mkpath( ui.kcfg_Path->url().toLocalFile() );
-      Maildir md( path, true );
-      md.addSubFolder( QLatin1String("inbox") ); //This is a workaround to be sure that newly created maildir folders show up in KMail
     }
   }
 }
