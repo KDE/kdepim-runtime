@@ -602,7 +602,12 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
     
     QString newUniqueKey = finalKey; //key without path
     finalKey.prepend( d->path + QString::fromLatin1("/cur/") );
-    
+
+    if( realKey == finalKey ) {
+      // Somehow it already is named this way (e.g. migration bug -> wrong status in akonadi)
+      return newUniqueKey;
+    }
+
     QFile f( realKey );
     if (QFile::exists(finalKey)) {
       QFile destFile(finalKey);
