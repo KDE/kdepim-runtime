@@ -462,6 +462,51 @@ private slots:
     server.quit();
   }
 
+  void shouldCleanupOnClosingDuringLogin()
+  {
+    FakeServer server;
+    server.addScenario( QList<QByteArray>()
+                        << FakeServer::greeting()
+                        << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+    );
+
+    server.startAndWait();
+
+    ImapAccount *account = createDefaultAccount();
+    DummyPasswordRequester *requester = createDefaultRequester();
+
+    SessionPool pool( 1 );
+    pool.setPasswordRequester( requester );
+
+    QSignalSpy connectSpy( &pool, SIGNAL(connectDone(int,QString)) );
+    QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
+    QSignalSpy lostSpy( &pool, SIGNAL(connectionLost(KIMAP::Session*)) );
+
+    // Initial connect should trigger only a password request and a connect
+    QVERIFY( pool.connect( account ) );
+    QTest::qWait( 100 );
+    QCOMPARE( connectSpy.count(), 0 ); // Login not done yet
+    QWeakPointer<KIMAP::Session> session = qFindChild<KIMAP::Session *>( &pool );
+    QVERIFY( session.data() );
+    QCOMPARE( sessionSpy.count(), 0 );
+
+    pool.disconnect( SessionPool::CloseSession );
+
+    QTest::qWait( 100 );
+    QCOMPARE( connectSpy.count(), 1 ); // We're informed that connect failed
+    QCOMPARE( connectSpy.at(0).at(0).toInt(), int(SessionPool::CouldNotConnectError) );
+    QCOMPARE( lostSpy.count(), 0 ); // We're not supposed to know the session pointer, so no connectionLost emitted
+
+    // Make the session->deleteLater work, it can't happen in qWait (nested event loop)
+    QCoreApplication::sendPostedEvents(0, QEvent::DeferredDelete);
+
+    QVERIFY( session.isNull() );
+
+    QVERIFY( server.isAllScenarioDone() );
+
+    server.quit();
+  }
+
   void shouldBeDisconnectedOnAllSessionLost()
   {
     FakeServer server;

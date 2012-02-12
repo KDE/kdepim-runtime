@@ -119,8 +119,9 @@ private:
   KIMAP::Session *m_pendingInitialSession;
 
   QList<qint64> m_pendingRequests;
-  QList<KIMAP::Session*> m_unusedPool;
-  QList<KIMAP::Session*> m_reservedPool;
+  QList<KIMAP::Session*> m_connectingPool; // in preparation
+  QList<KIMAP::Session*> m_unusedPool;     // ready to be used
+  QList<KIMAP::Session*> m_reservedPool;   // currently used
 
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
