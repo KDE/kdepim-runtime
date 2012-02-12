@@ -69,7 +69,15 @@ static inline bool indexingDisabled( const Collection &collection )
   if (collection.isVirtual())
     return true;
 
-  return false;
+  // check if we have a plugin for the stuff in this collection
+  foreach (const QString &mimeType, collection.contentMimeTypes()) {
+    if (mimeType == Collection::mimeType())
+     continue;
+    if (!FeederPluginloader::instance().feederPluginsForMimeType(mimeType).isEmpty())
+      return false;
+  }
+
+  return true;
 }
 
 NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
