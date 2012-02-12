@@ -113,11 +113,12 @@ void SessionPool::disconnect( SessionTermination termination )
 
   m_networkAccessHelper->releaseConnection();
 
-  foreach ( KIMAP::Session *s, m_unusedPool + m_reservedPool ) {
+  foreach ( KIMAP::Session *s, m_unusedPool + m_reservedPool + m_connectingPool ) {
     killSession( s, termination );
   }
   m_unusedPool.clear();
   m_reservedPool.clear();
+  m_connectingPool.clear();
 
   delete m_account;
   m_account = 0;
@@ -175,6 +176,7 @@ void SessionPool::killSession( KIMAP::Session *session, SessionTermination termi
                        this, SLOT(onSessionStateChanged(KIMAP::Session::State,KIMAP::Session::State)) );
   m_unusedPool.removeAll( session );
   m_reservedPool.removeAll( session );
+  m_connectingPool.removeAll( session );
 
   if ( session->state() != KIMAP::Session::Disconnected && termination == LogoutSession ) {
     KIMAP::LogoutJob *logout = new KIMAP::LogoutJob( session );
@@ -195,6 +197,8 @@ void SessionPool::declareSessionReady( KIMAP::Session *session )
     m_initialConnectDone = true;
     emit connectDone();
   }
+
+  m_connectingPool.removeAll( session );
 
   if ( m_pendingRequests.isEmpty() ) {
     m_unusedPool << session;
@@ -324,6 +328,7 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
     session = new KIMAP::Session( m_account->server(), m_account->port(), this );
     session->setUiProxy( m_sessionUiProxy );
     session->setTimeout( m_account->timeout() );
+    m_connectingPool << session;
   }
 
   QObject::connect( session, SIGNAL(stateChanged(KIMAP::Session::State,KIMAP::Session::State)),
@@ -466,6 +471,7 @@ void SessionPool::onConnectionLost()
 
   m_unusedPool.removeAll( session );
   m_reservedPool.removeAll( session );
+  m_connectingPool.removeAll( session );
 
   if ( m_unusedPool.isEmpty() && m_reservedPool.isEmpty() ) {
     delete m_account;
