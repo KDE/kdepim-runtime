@@ -101,7 +101,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 
   connect( KIdleTime::instance(), SIGNAL(timeoutReached(int)), SLOT(systemIdle()) );
   connect( KIdleTime::instance(), SIGNAL(resumingFromIdle()), SLOT(systemResumed()) );
-  KIdleTime::instance()->addIdleTimeout( 10 * 1000 );
+  KIdleTime::instance()->addIdleTimeout( 2 * 60 * 1000 ); // only go full-speed after 2 min
+
   KConfig config( "akonadi_nepomuk_feederrc" );
   KConfigGroup cfgGrp( &config, identifier() );
   kDebug() << "DisableIdleDetection: " << cfgGrp.readEntry( "DisableIdleDetection", false );
@@ -112,6 +113,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
 
   mQueue.setItemFetchScope(changeRecorder()->itemFetchScope());
+  mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 
   connect(&mQueue, SIGNAL(progress(int)), SIGNAL(percent(int)));
   connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(idle(QString)));
@@ -126,7 +128,7 @@ NepomukFeederAgent::~NepomukFeederAgent()
 
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-  //kDebug() << item.id();
+  kDebug() << item.id();
   if ( indexingDisabled( collection ) )
     return;
 
@@ -136,7 +138,7 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
 
 void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
-  //kDebug() << item.id();
+  kDebug() << item.id();
   Q_UNUSED( partIdentifiers );
   if ( indexingDisabled( item.parentCollection() ) )
     return;
@@ -307,7 +309,8 @@ void NepomukFeederAgent::systemIdle()
   emit status( Idle, i18n( "System idle, ready to index data." ) );
   mSystemIsIdle = true;
   KIdleTime::instance()->catchNextResumeEvent();
-  setRunning( mSystemIsIdle );
+  //setRunning( mSystemIsIdle );
+  mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
 }
 
 void NepomukFeederAgent::systemResumed()
@@ -317,7 +320,8 @@ void NepomukFeederAgent::systemResumed()
 
   emit status( Idle, i18n( "System busy, indexing suspended." ) );
   mSystemIsIdle = false;
-  setRunning( mSystemIsIdle );
+  //setRunning( mSystemIsIdle );
+  mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
 
 void NepomukFeederAgent::idle(const QString &string) 

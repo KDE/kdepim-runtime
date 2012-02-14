@@ -44,6 +44,7 @@ FeederQueue::FeederQueue( QObject* parent )
   mPendingJobs( 0 ),
   mReIndex( false ),
   mOnline( true ),
+  mIndexingDelay( 0 ),
   lowPrioQueue(1, 100, this),
   highPrioQueue(1, 100, this)
 {
@@ -72,7 +73,21 @@ void FeederQueue::setOnline( bool online )
   //kDebug() << online;
   mOnline = online;
   if (online)
-    continueIndexing();
+      continueIndexing();
+}
+
+void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
+{
+    const int s_reducedSpeedDelay = 500; // ms
+    const int s_snailPaceDelay = 3000;   // ms
+
+    mIndexingDelay = 0;
+    if ( speed != FullSpeed ) {
+        mIndexingDelay = (speed == ReducedSpeed) ? s_reducedSpeedDelay : s_snailPaceDelay;
+    }
+    kDebug() << mIndexingDelay;
+    lowPrioQueue.setProcessingDelay(mIndexingDelay);
+    highPrioQueue.setProcessingDelay(mIndexingDelay);
 }
 
 void FeederQueue::addCollection( const Akonadi::Collection &collection )
@@ -254,7 +269,8 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mPendingRemoveDataJobs( 0 ),
   mBatchSize( batchSize ),
   mFetchSize( fetchSize ),
-  mRunningJobs( 0 )
+  mRunningJobs( 0 ),
+  mProcessingDelay( 0 )
 {
   if ( fetchSize < batchSize )  {
     kWarning() << "fetchSize must be >= batchsize";
@@ -384,15 +400,13 @@ void ItemQueue::batchJobResult(KJob* job)
   //kDebug() << "pipline size: " << mItemPipeline.size();
   //kDebug() << "fetchedItemList : " << mFetchedItemList.size();
   Q_ASSERT(mBatch.isEmpty());
-  int timeout = 0;
   if ( job->error() ) {
     /*foreach( const Nepomuk::SimpleResource &res, m_debugGraph.toList() ) {
         kWarning() << res;
     }*/
     kWarning() << job->errorString();
-    timeout = 0; //This timeout is here in case nepomuk is still processing and the dbus connection just timed out (to avoid just adding more work). Since we have now a huge dbus timeout that timeout is probably not needed anymore.
   }
-  QTimer::singleShot(timeout, this, SLOT(continueProcessing()));
+  QTimer::singleShot(mProcessingDelay, this, SLOT(continueProcessing()));
   mRunningJobs++;
 }
 
@@ -415,7 +429,12 @@ void ItemQueue::continueProcessing()
 
 bool ItemQueue::isEmpty()
 {
-  return mItemPipeline.isEmpty() && mFetchedItemList.isEmpty();
+    return mItemPipeline.isEmpty() && mFetchedItemList.isEmpty();
+}
+
+void ItemQueue::setProcessingDelay(int ms)
+{
+    mProcessingDelay = ms;
 }
 
 
