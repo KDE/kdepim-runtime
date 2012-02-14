@@ -52,6 +52,10 @@ public:
   bool processItem();
   /** queue is empty */
   bool isEmpty();
+
+  /** the delay between two batches */
+  void setProcessingDelay(int ms);
+
 signals:
   /** all items processed */
   void finished();
@@ -79,6 +83,8 @@ private:
   int mBatchSize; //Size of Nepomuk batch, number of items stored together in nepomuk
   int mFetchSize; //Maximum number of items fetched with full payload (defines ram usage of feeder), must be >= mBatchSize, ideally a multiple of it
   int mRunningJobs;
+
+  int mProcessingDelay;
 };
 
 /**
@@ -128,6 +134,34 @@ public:
   /** start/stop indexing */
   void setOnline(bool);
 
+  enum IndexingSpeed {
+      /**
+       * Index at full speed, i.e. do not use any artificial
+       * delays.
+       *
+       * This is the mode used if the user is "away".
+       */
+      FullSpeed = 0,
+
+      /**
+       * Reduce the indexing speed mildly. This is the normal
+       * mode used while the user works. The indexer uses small
+       * delay between indexing two batches in order to keep the
+       * load on CPU and IO down.
+       */
+      ReducedSpeed,
+
+      /**
+       * Like ReducedSpeed delays are used but they are much longer
+       * to get even less CPU and IO load. This mode is used for the
+       * first 2 minutes after startup to give the KDE session manager
+       * time to start up the KDE session rapidly.
+       */
+      SnailPace
+  };
+
+  void setIndexingSpeed( IndexingSpeed speed );
+
 signals:
   void fullyIndexed();
   void progress(int);
@@ -152,6 +186,8 @@ private:
   bool mReIndex;
   bool mOnline;
   QTimer mProcessItemQueueTimer;
+
+  int mIndexingDelay;
 
   ItemQueue lowPrioQueue;
   ItemQueue highPrioQueue;
