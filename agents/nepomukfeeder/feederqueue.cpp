@@ -155,8 +155,11 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
 
     // the item exists. Check if it has an item ID property, otherwise re-index it.
     } else { //TODO maybe reindex anyways to be sure that type etc is correct
-      if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(),
-                                   Vocabulary::ANEO::akonadiItemId(), Soprano::LiteralValue( QString::number( item.id() ) ) ) || mReIndex ) {
+      if ( mReIndex ||
+           !Nepomuk::ResourceManager::instance()->mainModel()
+           ->containsAnyStatement( Soprano::Node(),
+                                   Vocabulary::ANEO::akonadiItemId(),
+                                   Soprano::LiteralValue( QString::number( item.id() ) ) ) ) {
         itemsToUpdate.append( item );
       }
     }
