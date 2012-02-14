@@ -44,7 +44,6 @@ FeederQueue::FeederQueue( QObject* parent )
   mPendingJobs( 0 ),
   mReIndex( false ),
   mOnline( true ),
-  mIndexingDelay( 0 ),
   lowPrioQueue(1, 100, this),
   highPrioQueue(1, 100, this)
 {
@@ -81,13 +80,26 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     const int s_reducedSpeedDelay = 500; // ms
     const int s_snailPaceDelay = 3000;   // ms
 
-    mIndexingDelay = 0;
-    if ( speed != FullSpeed ) {
-        mIndexingDelay = (speed == ReducedSpeed) ? s_reducedSpeedDelay : s_snailPaceDelay;
+    kDebug() << speed;
+
+    //
+    // The high priority queue is never suspended entirely, even if we are offline.
+    // The low prio queue is always throttled a little more than the high prio one
+    //
+    if ( speed == FullSpeed ) {
+        lowPrioQueue.setProcessingDelay(0);
+        highPrioQueue.setProcessingDelay(0);
+        setOnline(true);
     }
-    kDebug() << mIndexingDelay;
-    lowPrioQueue.setProcessingDelay(mIndexingDelay);
-    highPrioQueue.setProcessingDelay(mIndexingDelay);
+    else if ( speed == ReducedSpeed ) {
+        lowPrioQueue.setProcessingDelay(s_snailPaceDelay);
+        highPrioQueue.setProcessingDelay(s_reducedSpeedDelay);
+        setOnline(true);
+    }
+    else if ( speed == SnailPace ) {
+        highPrioQueue.setProcessingDelay(s_snailPaceDelay);
+        setOnline(false);
+    }
 }
 
 void FeederQueue::addCollection( const Akonadi::Collection &collection )

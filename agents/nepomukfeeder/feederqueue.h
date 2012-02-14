@@ -187,8 +187,6 @@ private:
   bool mOnline;
   QTimer mProcessItemQueueTimer;
 
-  int mIndexingDelay;
-
   ItemQueue lowPrioQueue;
   ItemQueue highPrioQueue;
 };
