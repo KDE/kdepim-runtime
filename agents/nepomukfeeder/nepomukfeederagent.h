@@ -107,13 +107,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void doSetOnline(bool online);
 
   private:
-
-    /**
-      Overrides in subclasses to cause re-indexing on startup to only happen
-      when the format changes, for example. Base implementation checks the index compatibility level.
-    */
-    virtual bool needsReIndexing() const;
-
     void checkOnline();
     void setRunning( bool running );
 

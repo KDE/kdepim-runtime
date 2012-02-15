@@ -40,6 +40,7 @@
 #include <nepomukfeederutils.h>
 
 #include "pluginloader.h"
+#include "nepomukfeeder-config.h"
 
 using namespace Nepomuk::Vocabulary;
 
@@ -102,6 +103,7 @@ void addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &gr
   res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << NIE::InformationElement());
   res.setProperty( NIE::url(), QUrl(item.url()) );
   res.setProperty( NIE::lastModified(), item.modificationTime() );
+  res.setProperty( Vocabulary::ANEO::akonadiIndexCompatLevel(), NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
   Q_ASSERT(res.property( NIE::url() ).first().toUrl() == QUrl(item.url()));
   res.setProperty( Vocabulary::ANEO::akonadiItemId(), QString::number( item.id() ) );
   setParentCollection( item, res, graph);
