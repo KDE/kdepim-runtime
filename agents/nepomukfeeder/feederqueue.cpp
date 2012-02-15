@@ -23,6 +23,7 @@
 #include "dms-copy/simpleresource.h"
 #include <Nepomuk/ResourceManager>
 #include <Soprano/Model>
+#include <Soprano/QueryResultIterator>
 #include <nie.h>
 
 #include <Akonadi/ItemFetchJob>
@@ -149,19 +150,15 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
     if ( item.storageCollectionId() != mCurrentCollection.id() )
       continue; // stay away from links
 
-    // update item if it does not exist
-    if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(),  Vocabulary::NIE::url(), item.url() ) ) {
+    // update item if it does not exist or does not have a proper id
+    if ( mReIndex ||
+         !Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 . }")
+                                                                          .arg(Soprano::Node::resourceToN3(Vocabulary::NIE::url()),
+                                                                               Soprano::Node::resourceToN3(item.url()),
+                                                                               Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId()),
+                                                                               Soprano::Node::literalToN3(QString::number(item.id()))),
+                                                                          Soprano::Query::QueryLanguageSparql).boolValue() ) {
       itemsToUpdate.append( item );
-
-    // the item exists. Check if it has an item ID property, otherwise re-index it.
-    } else { //TODO maybe reindex anyways to be sure that type etc is correct
-      if ( mReIndex ||
-           !Nepomuk::ResourceManager::instance()->mainModel()
-           ->containsAnyStatement( Soprano::Node(),
-                                   Vocabulary::ANEO::akonadiItemId(),
-                                   Soprano::LiteralValue( QString::number( item.id() ) ) ) ) {
-        itemsToUpdate.append( item );
-      }
     }
   }
 
