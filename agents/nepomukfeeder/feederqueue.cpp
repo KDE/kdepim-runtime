@@ -37,6 +37,7 @@
 #include <aneo.h>
 
 #include "nepomukhelpers.h"
+#include "nepomukfeeder-config.h"
 
 using namespace Akonadi;
 
@@ -153,14 +154,21 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
       continue; // stay away from links
 
     // update item if it does not exist or does not have a proper id
+    // we check if the item already exists with the following values:
+    // - nie:url needs to be set
+    // - aneo:akonadiItemId needs to be set
+    // - nie:lastModified needs to match the item's modification time
+    // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
     if ( mReIndex ||
-         !Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 ; %5 %6 .}")
+         !Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }")
                                                                           .arg(Soprano::Node::resourceToN3(Vocabulary::NIE::url()),
                                                                                Soprano::Node::resourceToN3(item.url()),
                                                                                Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId()),
                                                                                Soprano::Node::literalToN3(QString::number(item.id())),
                                                                                Soprano::Node::resourceToN3(Vocabulary::NIE::lastModified()),
-                                                                               Soprano::Node::literalToN3(item.modificationTime())),
+                                                                               Soprano::Node::literalToN3(item.modificationTime()),
+                                                                               Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiIndexCompatLevel()),
+                                                                               Soprano::Node::literalToN3(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL)),
                                                                           Soprano::Query::QueryLanguageSparql).boolValue() ) {
       itemsToUpdate.append( item );
     }

@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2011 Christian Mollekopf <chrigi_1@fastmail.fm>
+# Copyright (c) 2012 Sebastian Trueg <trueg@kde.org>
 # All rights reserved, licensed under either CC-BY or BSD.
 #
 # You are free:
@@ -59,6 +60,14 @@ aneo: {
         rdfs:subPropertyOf nao:identifier ;
         nrl:maxCardinality 1 ;
         nao:userVisible false .
+
+    aneo:akonadiIndexCompatLevel a rdf:Property ;
+        rdfs:label "Akonadi index compat level" ;
+        rdfs:comment "Saves the version of the indexer used to write this item." ;
+        rdfs:range xsd:int ;
+        rdfs:domain aneo:AkonadiDataObject ;
+        nrl:cardinality 1 ;
+        nao:userVisible false .
 }
 
 
@@ -68,7 +77,7 @@ aneo: {
         nao:prefLabel "Akonadi Ontology" ;
         nao:hasDefaultNamespace "http://akonadi-project.org/ontologies/aneo#" ;
         nao:hasDefaultNamespaceAbbreviation "aneo" ;
-        nao:lastModified "2011-06-23T14:31:43Z" ;
+        nao:lastModified "2012-02-15T09:56:43Z" ;
         nao:serializationLanguage "TriG" ;
         nao:status "Unstable" ;
         nrl:updatable "0" ;

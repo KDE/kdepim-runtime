@@ -236,9 +236,14 @@ void NepomukFeederAgent::selfTest()
     mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
     mNepomukStartupTimeout.stop();
     checkOnline();
-    if ( !mInitialUpdateDone ) {
+    const KConfigGroup grp( componentData().config(), "InitialIndexing" );
+    const bool initialUpdateComplete = grp.readEntry( "InitialIndexingComplete", false );
+    const int indexCompatLevelIncreased = grp.readEntry( "IndexCompatLevel", 0 ) < NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL;
+    if ( !mInitialUpdateDone && ( !initialUpdateComplete || indexCompatLevelIncreased ) ) {
       mInitialUpdateDone = true;
-      mQueue.setReindexing(needsReIndexing());
+      // we actually never need to reindex everything in normal operation
+      // we leave the setting in anyway in case we ever introduce a manual override or whatever
+      mQueue.setReindexing(false);
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
     } else {
       emit status( Idle, i18n( "Ready to index data." ) );
@@ -260,15 +265,10 @@ void NepomukFeederAgent::disableIdleDetection( bool value )
   }
 }
 
-bool NepomukFeederAgent::needsReIndexing() const
-{
-  const KConfigGroup grp( componentData().config(), "InitialIndexing" );
-  return grp.readEntry( "IndexCompatLevel", 0 ) < NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL;
-}
-
 void NepomukFeederAgent::slotFullyIndexed()
 {
   KConfigGroup grp( componentData().config(), "InitialIndexing" );
+  grp.writeEntry( "InitialIndexingComplete", true );
   grp.writeEntry( "IndexCompatLevel", NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
   grp.sync();
 }
