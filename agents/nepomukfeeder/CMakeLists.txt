@@ -5,6 +5,7 @@ include_directories(
   dms-copy
   plugin
   ./
+  ${CMAKE_CURRENT_BINARY_DIR}
   )
 
 include( SopranoAddOntology )
@@ -16,6 +17,9 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
 add_subdirectory( plugin )
 add_subdirectory( plugins )
 add_subdirectory( test )
+
+set(CMAKE_NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL 3)
+configure_file(nepomukfeeder-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/nepomukfeeder-config.h)
 
 kde4_add_executable(akonadi_nepomuk_feeder nepomukfeederagent.cpp pluginloader.cpp feederqueue.cpp nepomukhelpers.cpp)
 
