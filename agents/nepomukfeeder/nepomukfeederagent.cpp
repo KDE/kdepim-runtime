@@ -53,6 +53,7 @@
 #include <nepomukfeederutils.h>
 #include "pluginloader.h"
 #include "nepomukhelpers.h"
+#include "nepomukfeeder-config.h"
 
 namespace Akonadi {
 
@@ -73,7 +74,6 @@ static inline bool indexingDisabled( const Collection &collection )
 
 NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
-  mIndexCompatLevel( 3 ),
   mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
   mSelfTestPassed( false ),
@@ -175,7 +175,6 @@ void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::updateAll()
 {
-  mQueue.setReindexing(true);
   CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
   connect( collectionFetch, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
 }
@@ -237,8 +236,9 @@ void NepomukFeederAgent::selfTest()
     mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
     mNepomukStartupTimeout.stop();
     checkOnline();
-    if ( !mInitialUpdateDone && needsReIndexing() ) {
+    if ( !mInitialUpdateDone ) {
       mInitialUpdateDone = true;
+      mQueue.setReindexing(needsReIndexing());
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
     } else {
       emit status( Idle, i18n( "Ready to index data." ) );
@@ -263,13 +263,13 @@ void NepomukFeederAgent::disableIdleDetection( bool value )
 bool NepomukFeederAgent::needsReIndexing() const
 {
   const KConfigGroup grp( componentData().config(), "InitialIndexing" );
-  return mIndexCompatLevel > grp.readEntry( "IndexCompatLevel", 0 );
+  return grp.readEntry( "IndexCompatLevel", 0 ) < NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL;
 }
 
 void NepomukFeederAgent::slotFullyIndexed()
 {
   KConfigGroup grp( componentData().config(), "InitialIndexing" );
-  grp.writeEntry( "IndexCompatLevel", mIndexCompatLevel );
+  grp.writeEntry( "IndexCompatLevel", NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
   grp.sync();
 }
 

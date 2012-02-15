@@ -128,7 +128,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   private:
     QTimer mNepomukStartupTimeout;
 
-    int mIndexCompatLevel;
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
     bool mSelfTestPassed;
