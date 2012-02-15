@@ -32,6 +32,8 @@
 #include <KUrl>
 #include <KJob>
 
+#include <QDateTime>
+
 #include <aneo.h>
 
 #include "nepomukhelpers.h"
@@ -152,11 +154,13 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
 
     // update item if it does not exist or does not have a proper id
     if ( mReIndex ||
-         !Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 . }")
+         !Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 ; %5 %6 .}")
                                                                           .arg(Soprano::Node::resourceToN3(Vocabulary::NIE::url()),
                                                                                Soprano::Node::resourceToN3(item.url()),
                                                                                Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId()),
-                                                                               Soprano::Node::literalToN3(QString::number(item.id()))),
+                                                                               Soprano::Node::literalToN3(QString::number(item.id())),
+                                                                               Soprano::Node::resourceToN3(Vocabulary::NIE::lastModified()),
+                                                                               Soprano::Node::literalToN3(item.modificationTime())),
                                                                           Soprano::Query::QueryLanguageSparql).boolValue() ) {
       itemsToUpdate.append( item );
     }
