@@ -309,7 +309,6 @@ void NepomukFeederAgent::systemIdle()
   emit status( Idle, i18n( "System idle, ready to index data." ) );
   mSystemIsIdle = true;
   KIdleTime::instance()->catchNextResumeEvent();
-  //setRunning( mSystemIsIdle );
   mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
 }
 
@@ -320,7 +319,6 @@ void NepomukFeederAgent::systemResumed()
 
   emit status( Idle, i18n( "System busy, indexing suspended." ) );
   mSystemIsIdle = false;
-  //setRunning( mSystemIsIdle );
   mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
 
