@@ -34,6 +34,8 @@
 
 #include <KJob>
 
+#include <QDateTime>
+
 #include <nepomukfeederplugin.h>
 #include <nepomukfeederutils.h>
 
@@ -99,6 +101,7 @@ void addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &gr
   Nepomuk::SimpleResource res;
   res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << NIE::InformationElement());
   res.setProperty( NIE::url(), QUrl(item.url()) );
+  res.setProperty( NIE::lastModified(), item.modificationTime() );
   Q_ASSERT(res.property( NIE::url() ).first().toUrl() == QUrl(item.url()));
   res.setProperty( Vocabulary::ANEO::akonadiItemId(), QString::number( item.id() ) );
   setParentCollection( item, res, graph);
