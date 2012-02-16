@@ -149,15 +149,7 @@ public:
        * delay between indexing two batches in order to keep the
        * load on CPU and IO down.
        */
-      ReducedSpeed,
-
-      /**
-       * Like ReducedSpeed delays are used but they are much longer
-       * to get even less CPU and IO load. This mode is used for the
-       * first 2 minutes after startup to give the KDE session manager
-       * time to start up the KDE session rapidly.
-       */
-      SnailPace
+      ReducedSpeed
   };
 
   void setIndexingSpeed( IndexingSpeed speed );
