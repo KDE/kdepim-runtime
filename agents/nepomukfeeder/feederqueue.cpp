@@ -87,22 +87,15 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     kDebug() << speed;
 
     //
-    // The high priority queue is never suspended entirely, even if we are offline.
     // The low prio queue is always throttled a little more than the high prio one
     //
     if ( speed == FullSpeed ) {
         lowPrioQueue.setProcessingDelay(0);
         highPrioQueue.setProcessingDelay(0);
-        setOnline(true);
     }
-    else if ( speed == ReducedSpeed ) {
+    else {
         lowPrioQueue.setProcessingDelay(s_snailPaceDelay);
         highPrioQueue.setProcessingDelay(s_reducedSpeedDelay);
-        setOnline(true);
-    }
-    else if ( speed == SnailPace ) {
-        highPrioQueue.setProcessingDelay(s_snailPaceDelay);
-        setOnline(false);
     }
 }
 
