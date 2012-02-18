@@ -158,13 +158,13 @@ signals:
   void running(QString);
   
 private slots:
-  void itemHeadersReceived( const Akonadi::Item::List &items );
   void itemFetchResult( KJob* job );
   void processItemQueue();
   void prioQueueFinished();
   void batchFinished();
   void jobResult( KJob* job );
 private:
+  void itemHeadersReceived( const Akonadi::Item::List &items );
   void continueIndexing(); //start the indexing if work is to be done
   void processNextCollection();
   int mTotalAmount, mProcessedAmount, mPendingJobs;

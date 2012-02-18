@@ -134,8 +134,7 @@ void FeederQueue::processNextCollection()
 
   ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
   itemFetch->fetchScope().setCacheOnly( true );
-  connect( itemFetch, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT( itemHeadersReceived(Akonadi::Item::List)) );
-  connect( itemFetch, SIGNAL(result(KJob*)), SLOT(itemFetchResult(KJob*)) );
+  connect( itemFetch, SIGNAL(finished(KJob*)), SLOT(itemFetchResult(KJob*)) );
   ++mPendingJobs;
 }
 
@@ -179,6 +178,10 @@ void FeederQueue::itemFetchResult(KJob* job)
 {
   if ( job->error() )
     kWarning() << job->errorString();
+
+  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
+  Q_ASSERT(fetchJob);
+  itemHeadersReceived(fetchJob->items());
 
   --mPendingJobs;
   if ( mPendingJobs == 0 && lowPrioQueue.isEmpty() ) { //Fetch jobs finished but there were no items in the collection
