@@ -126,8 +126,8 @@ void FeederQueue::processNextCollection()
   emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ));
   kDebug() << "Indexing collection" << mCurrentCollection.name();
   //TODO maybe reindex anyways to be sure that type etc is correct
-  if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(), Vocabulary::NIE::url(), mCurrentCollection.url() ) ) {
     //kDebug() << "adding collection to nepomuk";
+  if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(), Vocabulary::NIE::url(), mCurrentCollection.url() ) || mReIndex ) {
     KJob *job = NepomukHelpers::addCollectionToNepomuk(mCurrentCollection);
     connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
   }
