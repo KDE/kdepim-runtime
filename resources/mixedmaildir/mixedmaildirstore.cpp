@@ -2334,8 +2334,11 @@ void MixedMaildirStore::checkItemFetch( FileStore::ItemFetchJob *job, int &error
 {
   Q_UNUSED( errorCode );
   Q_UNUSED( errorText );
-  Collection coll = job->item().parentCollection();
-  Q_ASSERT( !coll.remoteId().isEmpty() );
+  const bool fetchSingleItem = job->collection().remoteId().isEmpty();
+  if ( fetchSingleItem ) {
+      Collection coll = job->item().parentCollection();
+      Q_ASSERT( !coll.remoteId().isEmpty() );
+  }
 }
 
 #include "mixedmaildirstore.moc"
