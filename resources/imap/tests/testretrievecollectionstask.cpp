@@ -109,6 +109,31 @@ private slots:
                                                         << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
 
 
+
+    expectedCollections.clear();
+    expectedCollections << createRootCollection( true, 5 )
+                        << createCollection( "/", "INBOX" )
+                        << createCollection( "/", "INBOX/Archives" );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 LIST \"\" *"
+             << "S: * LIST ( \\HasChildren ) / INBOX"
+             << "S: * LIST ( \\HasChildren ) / INBOX/"
+             << "S: * LIST ( \\HasChildren ) / INBOX/Archives"
+             << "S: A000003 OK list done";
+
+    callNames.clear();
+    callNames << "setIdleCollection" << "collectionsRetrieved";
+
+    isSubscriptionEnabled = false;
+    isDisconnectedModeEnabled = true;
+    intervalCheckTime = 5;
+
+    QTest::newRow( "first listing, spurious INBOX/ (BR: 25342)" ) << expectedCollections << scenario << callNames
+                                                                  << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+
+
     expectedCollections.clear();
     expectedCollections << createRootCollection()
                         << createCollection( "/", "INBOX" )
@@ -367,6 +392,8 @@ private:
 
         if ( result.remoteId()==expected.remoteId() ) {
           found = true;
+
+          QVERIFY( !result.name().isEmpty() );
 
           QCOMPARE( result.name(), expected.name() );
           QCOMPARE( result.contentMimeTypes(), expected.contentMimeTypes() );
