@@ -199,7 +199,7 @@ void NepomukFeederAgent::selfTest()
     KConfigGroup cfgGrp( &config, "akonadi_nepomuk_email_feeder" );
     if ( !cfgGrp.readEntry( "Enabled", true ) ) {
       checkOnline();
-      emit status( Broken, i18n( "Indexing has been disabled by you." ) );
+      emit status( AgentBase::Broken, i18n( "Indexing has been disabled by you." ) );
       return;
     }
   }
@@ -215,7 +215,7 @@ void NepomukFeederAgent::selfTest()
       mNepomukStartupTimeout.start();
       // wait for Nepomuk to start
       checkOnline();
-      emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
+      emit status( AgentBase::Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
       return;
     }
   }
@@ -224,7 +224,7 @@ void NepomukFeederAgent::selfTest()
     if ( mNepomukStartupAttempted && mNepomukStartupTimeout.isActive() ) {
       // still waiting for Nepomuk to start
       setOnline( false );
-      emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
+      emit status( AgentBase::Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
       return;
     } else {
       errorMessages.append( i18n( "Nepomuk is not running." ) );
@@ -246,13 +246,13 @@ void NepomukFeederAgent::selfTest()
       mQueue.setReindexing(false);
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
     } else {
-      emit status( Idle, i18n( "Ready to index data." ) );
+      emit status( AgentBase::Idle, i18n( "Ready to index data." ) );
     }
     return;
   }
 
   checkOnline();
-  emit status( Broken, i18n( "Nepomuk is not operational: %1", errorMessages.join( " " ) ) );
+  emit status( AgentBase::Broken, i18n( "Nepomuk is not operational: %1", errorMessages.join( " " ) ) );
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )
@@ -306,7 +306,7 @@ void NepomukFeederAgent::systemIdle()
   if ( mIdleDetectionDisabled )
     return;
 
-  emit status( Idle, i18n( "System idle, ready to index data." ) );
+  emit status( AgentBase::Idle, i18n( "System idle, ready to index data." ) );
   mSystemIsIdle = true;
   KIdleTime::instance()->catchNextResumeEvent();
   mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
@@ -317,7 +317,7 @@ void NepomukFeederAgent::systemResumed()
   if ( mIdleDetectionDisabled )
     return;
 
-  emit status( Idle, i18n( "System busy, indexing suspended." ) );
+  emit status( AgentBase::Idle, i18n( "System busy, indexing suspended." ) );
   mSystemIsIdle = false;
   mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
