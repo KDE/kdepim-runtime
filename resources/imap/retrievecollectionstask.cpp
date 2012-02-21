@@ -112,9 +112,14 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       continue;
     }
 
-    const QStringList pathParts = descriptor.name.split(descriptor.separator);
     const QString separator = descriptor.separator;
     Q_ASSERT( separator.size() == 1 ); // that's what the spec says
+
+    const QString boxName = descriptor.name.endsWith( separator )
+                          ? descriptor.name.left( descriptor.name.size()-1 )
+                          : descriptor.name;
+
+    const QStringList pathParts = boxName.split(separator);
 
     QString parentPath;
     QString currentPath;
