@@ -22,7 +22,6 @@
 #include <QObject>
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
-#include <Akonadi/ItemFetchScope>
 #include <QTimer>
 #include <QQueue>
 #include <QUrl>
@@ -114,8 +113,6 @@ public:
   explicit FeederQueue( QObject* parent = 0 );
   virtual ~FeederQueue();
   
-  void setItemFetchScope( Akonadi::ItemFetchScope scope);
-
   ///add the collection to the queue, all items of it will be fetched and indexed
   void addCollection(const Akonadi::Collection &);
   ///adds the item to the highPrioQueue
@@ -174,7 +171,6 @@ private:
     
   Akonadi::Collection::List mCollectionQueue;
   Akonadi::Collection mCurrentCollection;
-  Akonadi::ItemFetchScope mItemFetchScope;
   bool mReIndex;
   bool mOnline;
   QTimer mProcessItemQueueTimer;

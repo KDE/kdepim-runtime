@@ -112,7 +112,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   checkOnline();
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
 
-  mQueue.setItemFetchScope(changeRecorder()->itemFetchScope());
   mQueue.setIndexingSpeed( mIdleDetectionDisabled ? FeederQueue::FullSpeed : FeederQueue::ReducedSpeed );
 
   connect(&mQueue, SIGNAL(progress(int)), SIGNAL(percent(int)));
