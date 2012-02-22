@@ -27,6 +27,7 @@
 #include <nie.h>
 
 #include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 
 #include <KLocalizedString>
 #include <KUrl>
@@ -274,13 +275,6 @@ const Akonadi::Collection& FeederQueue::currentCollection()
   return mCurrentCollection;
 }
 
-void FeederQueue::setItemFetchScope(ItemFetchScope scope)
-{
-  mItemFetchScope = scope;
-}
-
-
-
 ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
 : QObject(parent),
   mPendingRemoveDataJobs( 0 ),
@@ -338,6 +332,7 @@ bool ItemQueue::processItem()
     //kDebug() << QString("Fetching %1 items").arg(mItemFetchList.size());
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItemFetchList, 0 );
     job->fetchScope().fetchFullPayload();
+    job->fetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
     job->fetchScope().setCacheOnly( true );
     job->setProperty("numberOfItems", mItemFetchList.size());
     connect( job, SIGNAL(result(KJob*)), SLOT(fetchJobResult(KJob*)) );
