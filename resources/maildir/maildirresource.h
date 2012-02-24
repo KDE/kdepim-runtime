@@ -81,13 +81,14 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     bool ensureSaneConfiguration();
     Akonadi::Collection::List listRecursive( const Akonadi::Collection &root, const KPIM::Maildir &dir );
     /** Creates a maildir object for the collection @p col, given it has the full ancestor chain set. */
-    KPIM::Maildir maildirForCollection( const Akonadi::Collection &col ) const;
+    KPIM::Maildir maildirForCollection( const Akonadi::Collection &col );
     /** Creates a collection object for the given maildir @p md. */
     Akonadi::Collection collectionForMaildir( const KPIM::Maildir &md ) const;
 
   private:
     Akonadi_Maildir_Resource::MaildirSettings *mSettings;
-    KDirWatch *m_fsWatcher;
+    KDirWatch *mFsWatcher;
+    QHash<Akonadi::Collection::Id, KPIM::Maildir> mMaildirsForCollection;
 
 };
 

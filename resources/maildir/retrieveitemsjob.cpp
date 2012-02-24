@@ -72,7 +72,7 @@ void RetrieveItemsJob::localListDone ( KJob* job )
 void RetrieveItemsJob::processEntry(qint64 index)
 {
   QString entry;
-  
+
   bool newItemFound = false;
   while ( !newItemFound ) {
     if (index >= m_entryList.size()) {
@@ -85,8 +85,8 @@ void RetrieveItemsJob::processEntry(qint64 index)
       }
       return;
     }
-      
-    entry = m_entryList[index];  
+
+    entry = m_entryList[index];
     const qint64 currentMtime = m_maildir.lastModified( entry ).toMSecsSinceEpoch();
     m_highestMtime = qMax( m_highestMtime, currentMtime );
     if ( currentMtime <= m_previousMtime && m_localItems.contains(entry)) { // old, we got this one already
@@ -106,12 +106,12 @@ void RetrieveItemsJob::processEntry(qint64 index)
   KMime::Message *msg = new KMime::Message;
   msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeadersFromFile( m_listingPath + entry ) ) );
   msg->parse();
-  
+
   Akonadi::Item::Flags flags = m_maildir.readEntryFlags( entry );
   Q_FOREACH( const Akonadi::Item::Flag& flag, flags ) {
-    item.setFlag(flag);      
+    item.setFlag(flag);
   }
-  
+
   item.setPayload( KMime::Message::Ptr( msg ) );
 
   if ( m_localItems.contains( entry ) ) { // modification
@@ -119,9 +119,9 @@ void RetrieveItemsJob::processEntry(qint64 index)
     new Akonadi::ItemModifyJob( item, transaction() );
     m_localItems.remove( entry );
   } else { // new item
-    new Akonadi::ItemCreateJob( item, m_collection, transaction() );  
+    new Akonadi::ItemCreateJob( item, m_collection, transaction() );
   }
-  
+
   if ( index % 20 == 0 ) {
      QMetaObject::invokeMethod( this, "processEntry", Qt::QueuedConnection, Q_ARG(qint64, index + 1) );
   } else
@@ -133,6 +133,7 @@ void RetrieveItemsJob::entriesProcessed()
 {
   if ( !m_localItems.isEmpty() ) {
     Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( m_localItems.values(), transaction() );
+    m_maildir.removeCachedKeys( m_localItems.keys() );
     transaction()->setIgnoreJobFailure( job );
   }
 
@@ -143,7 +144,7 @@ void RetrieveItemsJob::entriesProcessed()
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( newCol, transaction() );
     transaction()->setIgnoreJobFailure( job );
   }
-  
+
   if ( !m_transaction ) // no jobs created here -> done
     emitResult();
   else
