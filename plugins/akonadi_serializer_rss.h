@@ -18,7 +18,7 @@
 #ifndef AKONADI_SERIALIZER_RSS
 #define AKONADI_SERIALIZER_RSS
 
-#include <krss/rssitemserializer.h>
+#include "rssitemserializer.h"
 
 #include <akonadi/itemserializerplugin.h>
 

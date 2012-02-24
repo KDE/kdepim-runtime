@@ -1,0 +1,49 @@
+package KRss.Protobuf;
+
+
+message ItemHeader {
+   repeated string tags = 1;
+   required int32 hash = 2;
+   required bool guidIsHash = 3;
+   required string guid = 4;
+   required string title = 5;
+   required string link = 6;
+   required int64 datePublished = 7;
+   required int64 dateUpdated = 8;
+   required string language = 9;
+   repeated Person authors = 10;
+   repeated Enclosure enclosures = 11;
+   repeated Category categories = 12;
+   required int32 commentsCount = 13;
+   required string commentsLink = 14;
+   required string commentsFeed = 15;
+   required string commentPostUri = 16;
+   repeated string additionalProperties = 17;
+}
+
+message ItemContent {
+   required string description = 1;
+   required string content = 2;	
+}
+
+message Person {
+   required string name = 1;
+   required string email = 2;
+   required string uri = 3;
+}
+
+message Enclosure {
+   required string url = 1;
+   required string title = 2;
+   required string type = 3;
+   required uint32 length = 4;
+   required uint32 duration = 5;  
+}
+
+message Category {
+   required string label = 1;
+   required string scheme = 2;
+   required string term = 3;
+}
+
+
