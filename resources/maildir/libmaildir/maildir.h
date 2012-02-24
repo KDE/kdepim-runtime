@@ -92,7 +92,7 @@ public:
      * should not be relied on.
      */
     QStringList entryList() const;
-     
+
     /** Returns the list of items (mails) in the maildirs "new" folder. These are keys, which
      * map to filenames, internally, but that's an implementation detail, which
      * should not be relied on.
@@ -104,15 +104,15 @@ public:
      * should not be relied on.
      */
     QStringList listCurrent() const;
-    
+
     /**
      * Returns the full path to the subdir (the NAME.directory folder ).
      **/
     QString subDirPath() const;
-    
+
     /**
      * Return the full path to the file identified by key (it can be either in the "new" or "cur" folder
-     **/    
+     **/
     QString findRealKey( const QString& key ) const;
 
     /**
@@ -161,7 +161,7 @@ public:
      * Return the contents of the file in the maildir with the given @p key.
      */
     QByteArray readEntry( const QString& key ) const;
-    
+
     /**
      * Return the flags encoded in the maildir file name for an entry
      **/
@@ -172,7 +172,7 @@ public:
      * is a full path to the file. You can get it by using findRealKey(key) .
      */
     QByteArray readEntryHeadersFromFile( const QString& file ) const;
-    
+
     /**
      * Return the contents of the headers section of the file the maildir with the given @p key.
      */
@@ -234,6 +234,13 @@ public:
      * @see subDirPathForFolderPath()
      */
     static QString subDirNameForFolderName( const QString &folderName );
+
+    /** Removes the listed keys from the key cache */
+    void removeCachedKeys(const QStringList & keys);
+
+
+    /** Reloads the keys associated with the maildir in the key cache*/
+    void refreshKeyCache();
 
 private:
     void swap( const Maildir& );

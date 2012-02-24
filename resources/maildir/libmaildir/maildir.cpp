@@ -18,6 +18,7 @@
 */
 
 #include "maildir.h"
+#include "keycache.h"
 
 #include <QDateTime>
 #include <QDir>
@@ -33,6 +34,9 @@
 #include <kde_file.h>
 #include <time.h>
 #include <unistd.h>
+
+//Define it to get more debug output to expense of operating speed
+// #define DEBUG_KEYCACHE_CONSITENCY
 
 
 static void initRandomSeed()
@@ -70,6 +74,10 @@ public:
       // a seed that is random enough. Therefor we use our own initialization
       // until this issue will be fixed in Qt 4.7.
       initRandomSeed();
+
+      //Cache object is created the first time this runs.
+      //It will live throughout the lifetime of the application
+      KeyCache::self()->addKeys(path);
     }
 
     Private( const Private& rhs )
@@ -109,17 +117,42 @@ public:
 
     QString findRealKey( const QString& key ) const
     {
-        QString realKey = path + QString::fromLatin1("/new/") + key;
-        
-        QFile f( realKey );        
-        if ( !f.exists() ) { //not in "new", search in "cur"
-            realKey = path + QString::fromLatin1("/cur/") + key;
-            QFile f2( realKey );
-            if ( !f2.exists() ) {
-                realKey.clear(); //not in "cur" either
-            } 
+        KeyCache* keyCache = KeyCache::self();
+        if ( keyCache->isNewKey(path, key) ) {
+#ifdef DEBUG_KEYCACHE_CONSITENCY
+          if (!QFile::exists(path + QString::fromLatin1("/new/") + key) )
+          {
+            kDebug() << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/new/") + key;
+          }
+#endif
+          return path + QString::fromLatin1("/new/") + key;
         }
-        
+        if ( keyCache->isCurKey(path, key) ) {
+#ifdef DEBUG_KEYCACHE_CONSITENCY
+          if (!QFile::exists(path + QString::fromLatin1("/cur/") + key) )
+          {
+            kDebug() << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/cur/") + key;
+          }
+#endif
+          return path + QString::fromLatin1("/cur/") + key;
+        }
+        QString realKey = path + QString::fromLatin1("/new/") + key;
+
+        QFile f( realKey );
+        if ( f.exists() )
+        {
+          keyCache->addNewKey(path, key);
+        } else  { //not in "new", search in "cur"
+          realKey = path + QString::fromLatin1("/cur/") + key;
+          QFile f2( realKey );
+          if ( f2.exists() )
+          {
+            keyCache->addCurKey(path, key);
+          } else {
+            realKey.clear(); //not in "cur" either
+          }
+        }
+
         return realKey;
     }
 
@@ -182,7 +215,6 @@ Maildir::Maildir(const Maildir & rhs)
 
 {
 }
-
 
 Maildir& Maildir::operator= (const Maildir & rhs)
 {
@@ -483,14 +515,14 @@ QByteArray Maildir::readEntryHeadersFromFile( const QString& file ) const
     return result;
 }
 
-QByteArray Maildir::readEntryHeaders( const QString& key ) const 
+QByteArray Maildir::readEntryHeaders( const QString& key ) const
 {
     const QString realKey( d->findRealKey( key ) );
     if ( realKey.isEmpty() ) {
         qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
         return QByteArray();
     }
-  
+
   return readEntryHeadersFromFile( realKey );
 }
 
@@ -500,9 +532,9 @@ static QString createUniqueFileName()
     qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
     int r = qrand() % 1000;
     QString identifier = QLatin1String("R") + QString::number(r);
-    
+
     QString fileName = QString::number(time) + QLatin1String(".") + identifier + QLatin1String(".");
-    
+
     return fileName;
 }
 
@@ -552,6 +584,9 @@ QString Maildir::addEntry( const QByteArray& data )
     if (!f.rename( finalKey )) {
         qWarning() << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
     }
+    KeyCache *keyCache = KeyCache::self();
+    keyCache->removeKey( d->path, key ); //remove all keys, be it "cur" or "new" first
+    keyCache->addNewKey( d->path, key ); //and add a key for "new", as the mail was moved there
     return uniqueKey;
 }
 
@@ -563,6 +598,8 @@ bool Maildir::removeEntry( const QString& key )
         qWarning() << "Maildir::removeEntry unable to find: " << key;
         return false;
     }
+    KeyCache *keyCache = KeyCache::self();
+    keyCache->removeKey( d->path, key );
     return QFile::remove(realKey);
 }
 
@@ -574,10 +611,10 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
         qWarning() << "Maildir::changeEntryFlags unable to find: " << key;
         return key;
     }
-    
+
     const QRegExp rx = *(statusSeparatorRx());
     QString finalKey = key.left( key.indexOf( rx ) );
-          
+
     QStringList mailDirFlags;
     Q_FOREACH( Akonadi::Item::Flag flag, flags ) {
       if ( flag == Akonadi::MessageFlags::Forwarded )
@@ -593,13 +630,13 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
     }
     mailDirFlags.sort();
     if (!mailDirFlags.isEmpty()) {
-#ifdef Q_OS_WIN      
+#ifdef Q_OS_WIN
       finalKey.append( QLatin1String("!2,") + mailDirFlags.join(QString()) );
 #else
       finalKey.append( QLatin1String(":2,") + mailDirFlags.join(QString()) );
-#endif      
+#endif
     }
-    
+
     QString newUniqueKey = finalKey; //key without path
     finalKey.prepend( d->path + QString::fromLatin1("/cur/") );
 
@@ -621,8 +658,8 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
         sourceContent = f.readAll();
         f.close();
       }
-      
-      if ( destContent != sourceContent ) {         
+
+      if ( destContent != sourceContent ) {
          QString newFinalKey = "1-" + newUniqueKey;
          int i = 1;
          while ( QFile::exists(d->path + QString::fromLatin1("/cur/") + newFinalKey ) ) {
@@ -631,14 +668,19 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
          }
          finalKey = d->path + QString::fromLatin1("/cur/") + newFinalKey;
       } else {
-            QFile::remove( finalKey ); //they are the same                                                    
+            QFile::remove( finalKey ); //they are the same
       }
-    } 
-    
-    if (!f.rename( finalKey )) {
-        qWarning() << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
-        newUniqueKey = "";
     }
+
+    if (!f.rename( finalKey )) {
+        qWarning() << "Maildir: Failed to rename entry: " << f.fileName() << " to "  << finalKey  << "! Error: " << f.errorString();
+        return QString();
+    }
+
+    KeyCache *keyCache = KeyCache::self();
+    keyCache->removeKey( d->path, key );
+    keyCache->addCurKey( d->path, newUniqueKey );
+
     return newUniqueKey;
 }
 
@@ -716,6 +758,11 @@ QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
     return QString();
   }
 
+  KeyCache* keyCache = KeyCache::self();
+
+  keyCache->addNewKey( destination.path(), key );
+  keyCache->removeKey( d->path, key );
+
   return key;
 }
 
@@ -730,4 +777,17 @@ QString Maildir::subDirPathForFolderPath( const QString &folderPath )
 QString Maildir::subDirNameForFolderName( const QString &folderName )
 {
   return Private::subDirNameForFolderName( folderName );
+}
+
+void Maildir::removeCachedKeys(const QStringList & keys)
+{
+  KeyCache *keyCache = KeyCache::self();
+  foreach( const QString& key, keys ) {
+    keyCache->removeKey( d->path, key );
+  }
+}
+
+void Maildir::refreshKeyCache()
+{
+  KeyCache::self()->refreshKeys( d->path );
 }

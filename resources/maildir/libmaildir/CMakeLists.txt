@@ -1,7 +1,7 @@
 
 add_subdirectory( tests )
 
-set(maildir_LIB_SRCS maildir.cpp)
+set(maildir_LIB_SRCS keycache.cpp maildir.cpp)
 
 kde4_add_library(maildir ${LIBRARY_TYPE} ${maildir_LIB_SRCS})
 
