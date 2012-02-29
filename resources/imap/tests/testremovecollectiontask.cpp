@@ -170,11 +170,22 @@ private slots:
              << "S: * 0 EXISTS"
              << "S: * 0 RECENT"
              << "S: A000011 OK Completed";
-
     callNames.clear();
     callNames << "changeProcessed";
 
     QTest::newRow( "normal case" ) << collection << scenario << callNames;
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+              << "C: A000003 LSUB \"\" *"
+             << "S: * LSUB ( \\HasChildren ) / INBOX"
+             << "S: * LSUB ( \\HasChildren ) / INBOX/test1"
+             << "S: * LSUB ( ) / INBOX/test1/test2"
+             << "S: A000003 OK Completed ( 0.000 secs 26 calls )";
+    collection.setRemoteId( "test1" );
+    callNames.clear();
+    callNames << "changeProcessed" << "emitWarning" << "synchronizeCollectionTree";
+    QTest::newRow( "invalid collection" ) << collection << scenario << callNames;
   }
 
   void shouldDeleteMailBoxRecursive()
