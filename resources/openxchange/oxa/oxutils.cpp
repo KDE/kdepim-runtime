@@ -37,12 +37,15 @@ QString OXUtils::writeNumber( qlonglong value )
 
 QString OXUtils::writeString( const QString &value )
 {
-  QString text( value );
-  text.replace( '\\', "\\\\" );
-  text.replace( '"', "\\\"" );
-  text.replace( '\n', "\\n" );
+  QStringList lines = value.split( "\n" );
 
-  return text;
+  for ( int i = 0; i < lines.count(); ++i )
+  {
+    lines[i].replace( '\\', "\\\\" );
+    lines[i].replace( '"', "\\\"" );
+  }
+
+  return lines.join( "\n" );
 }
 
 QString OXUtils::writeName( const QString &value )
@@ -51,16 +54,14 @@ QString OXUtils::writeName( const QString &value )
   return value;
 }
 
-QString OXUtils::writeDateTime( const KDateTime &value )
+QString OXUtils::writeDateTime( const QDateTime &value )
 {
-  const uint ticks = value.toTime_t();
-
-  return QString::number( ticks ) + QLatin1String( "000" );
+  return QString::number( value.toUTC().toTime_t() ) + QLatin1String( "000" );
 }
 
-QString OXUtils::writeDate( const KDateTime &value )
+QString OXUtils::writeDate( const QDate &value )
 {
-  return writeDateTime( value );
+  return writeDateTime( QDateTime( value, QTime( 0, 0, 0 ), Qt::UTC ) );
 }
 
 bool OXUtils::readBoolean( const QString &text )
@@ -83,7 +84,6 @@ qlonglong OXUtils::readNumber( const QString &text )
 QString OXUtils::readString( const QString &text )
 {
   QString value( text );
-  value.replace( "\\n", "\n" );
   value.replace( "\\\"", "\"" );
   value.replace( "\\\\", "\\" );
 
@@ -95,18 +95,18 @@ QString OXUtils::readName( const QString &text )
   return text;
 }
 
-KDateTime OXUtils::readDateTime( const QString &text )
+QDateTime OXUtils::readDateTime( const QString &text )
 {
   // remove the trailing '000', they exceed the unsigned integer dimension
   const uint ticks = text.mid( 0, text.length() - 3 ).toLongLong();
 
-  KDateTime value;
+  QDateTime value;
   value.setTime_t( ticks );
 
   return value;
 }
 
-KDateTime OXUtils::readDate( const QString &text )
+QDate OXUtils::readDate( const QString &text )
 {
-  return readDateTime( text );
+  return readDateTime( text ).date();
 }

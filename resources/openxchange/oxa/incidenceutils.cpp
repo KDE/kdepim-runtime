@@ -136,14 +136,14 @@ static void parseEventAttribute( const QDomElement &element,
   const QString text = OXUtils::readString( element.text() );
 
   if ( tagName == QLatin1String( "start_date" ) ) {
-    KDateTime dateTime = OXUtils::readDateTime( element.text() );
+    KDateTime dateTime = KDateTime( OXUtils::readDateTime( element.text() ), KDateTime::UTC );
     if ( event->allDay() )
       dateTime.setDateOnly( true );
 
     event->setDtStart( dateTime );
 
   } else if ( tagName == QLatin1String( "end_date" ) ) {
-    KDateTime dateTime = OXUtils::readDateTime( element.text() );
+    KDateTime dateTime = KDateTime( OXUtils::readDateTime( element.text() ), KDateTime::UTC );
     if ( event->allDay() )
       dateTime = dateTime.addSecs( -1 );
 
@@ -161,13 +161,13 @@ static void parseTodoAttribute( const QDomElement &element,
   const QString text = OXUtils::readString( element.text() );
 
   if ( tagName == QLatin1String( "start_date" ) ) {
-    const KDateTime dateTime = OXUtils::readDateTime( element.text() );
+    const KDateTime dateTime = KDateTime( OXUtils::readDateTime( element.text() ), KDateTime::UTC );
     if ( dateTime.isValid() ) {
       todo->setDtStart( dateTime );
       todo->setHasStartDate( true );
     }
   } else if ( tagName == QLatin1String( "end_date" ) ) {
-    const KDateTime dateTime = OXUtils::readDateTime( element.text() );
+    const KDateTime dateTime = KDateTime( OXUtils::readDateTime( element.text() ), KDateTime::UTC );
     if ( dateTime.isValid() ) {
       todo->setDtDue( dateTime );
       todo->setHasDueDate( true );
@@ -203,7 +203,7 @@ static void parseRecurrence( const QDomElement &element,
   QString type;
 
   int dailyValue = -1;
-  KDateTime endDate;
+  QDateTime endDate;
 
   int weeklyValue = -1;
   QBitArray days( 7 ); // days, starting with monday
@@ -250,10 +250,10 @@ static void parseRecurrence( const QDomElement &element,
     } else if ( tagName == QLatin1String( "month" ) ) {
       yearlyMonth = text.toInt() + 1; // starts at 0
       yearly2Month = text.toInt() + 1;
-    } else if ( tagName == QLatin1String( "deleteexceptions" ) ) {
+    } else if ( ( tagName == QLatin1String( "deleteexceptions" ) ) || ( tagName == QLatin1String( "changeexceptions" ) ) ) {
       const QStringList exceptionDates = text.split( QLatin1String( "," ) );
       foreach ( const QString &date, exceptionDates )
-        deleteExceptions.append( OXUtils::readDateTime( date ).date() );
+        deleteExceptions.append( OXUtils::readDate( date ) );
     } else if ( tagName == QLatin1String( "until" ) ) {
       endDate = OXUtils::readDateTime( child.text() );
     }
@@ -353,12 +353,15 @@ static void createIncidenceAttributes( QDomDocument &document, QDomElement &pare
 static void createEventAttributes( QDomDocument &document, QDomElement &parent,
                                    const KCalCore::Event::Ptr &event )
 {
-  DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ), OXUtils::writeDateTime( event->dtStart() ) );
+  if ( event->allDay() ) {
+    DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ), OXUtils::writeDate( event->dtStart().date() ) );
+    if ( event->hasEndDate() ) DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ), OXUtils::writeDate( event->dtEnd().date() ) );
+  } else {
+    DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ), OXUtils::writeDateTime( event->dtStart().dateTime() ) );
+    if ( event->hasEndDate() ) DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ), OXUtils::writeDateTime( event->dtEnd().dateTime() ) );
+  }
 
-  if ( event->hasEndDate() )
-    DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ), OXUtils::writeDateTime( event->dtEnd() ) );
-  else
-    DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ) );
+  if ( !event->hasEndDate() ) DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ) );
 
   DAVUtils::addOxElement( document, parent, QLatin1String( "location" ), OXUtils::writeString( event->location() ) );
   DAVUtils::addOxElement( document, parent, QLatin1String( "full_time" ), OXUtils::writeBoolean( event->allDay() ) );
@@ -368,12 +371,12 @@ static void createTaskAttributes( QDomDocument &document, QDomElement &parent,
                                   const KCalCore::Todo::Ptr &todo )
 {
   if ( todo->hasStartDate() )
-    DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ), OXUtils::writeDateTime( todo->dtStart() ) );
+    DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ), OXUtils::writeDateTime( todo->dtStart().dateTime() ) );
   else
     DAVUtils::addOxElement( document, parent, QLatin1String( "start_date" ) );
 
   if ( todo->hasDueDate() )
-    DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ), OXUtils::writeDateTime( todo->dtDue() ) );
+    DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ), OXUtils::writeDateTime( todo->dtDue().dateTime() ) );
   else
     DAVUtils::addOxElement( document, parent, QLatin1String( "end_date" ) );
 
@@ -462,7 +465,7 @@ static void createRecurrenceAttributes( QDomDocument &document, QDomElement &par
   }
 
   if ( recurrence->endDateTime().isValid() )
-    DAVUtils::addOxElement( document, parent, QLatin1String( "until" ), OXUtils::writeDateTime( recurrence->endDateTime() ) );
+    DAVUtils::addOxElement( document, parent, QLatin1String( "until" ), OXUtils::writeDateTime( recurrence->endDateTime().dateTime() ) );
   else
     DAVUtils::addOxElement( document, parent, QLatin1String( "until" ) );
 
@@ -471,9 +474,12 @@ static void createRecurrenceAttributes( QDomDocument &document, QDomElement &par
 
   QStringList dates;
   foreach ( const QDate &date, exceptionList )
-    dates.append( OXUtils::writeDateTime( KDateTime( date ) ) );
+    dates.append( OXUtils::writeDate( date ) );
 
   DAVUtils::addOxElement( document, parent, QLatin1String( "deleteexceptions" ), dates.join( QLatin1String( "," ) ) );
+
+  //TODO: changeexceptions
+
 }
 
 void OXA::IncidenceUtils::parseEvent( const QDomElement &propElement, Object &object )

@@ -23,6 +23,8 @@
 #define OXA_OXUTILS_H
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QDateTime>
 
 class KDateTime;
 
@@ -34,15 +36,15 @@ namespace OXUtils
   QString writeNumber( qlonglong value );
   QString writeString( const QString &value );
   QString writeName( const QString &value );
-  QString writeDateTime( const KDateTime &value );
-  QString writeDate( const KDateTime &value );
+  QString writeDateTime( const QDateTime &value );
+  QString writeDate( const QDate &value );
 
   bool readBoolean( const QString &text );
   qlonglong readNumber( const QString &text );
   QString readString( const QString &text );
   QString readName( const QString &text );
-  KDateTime readDateTime( const QString &text );
-  KDateTime readDate( const QString &text );
+  QDateTime readDateTime( const QString &text );
+  QDate readDate( const QString &text );
 }
 
 }

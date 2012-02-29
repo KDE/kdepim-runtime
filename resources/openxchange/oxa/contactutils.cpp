@@ -119,10 +119,9 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
         contact.setNickName( text );
       // dates
       } else if ( tagName == QLatin1String( "birthday" ) ) {
-        contact.setBirthday( OXUtils::readDateTime( element.text() ).dateTime() );
+        contact.setBirthday( OXUtils::readDateTime( element.text() ) );
       } else if ( tagName == QLatin1String( "anniversary" ) ) {
-        const QDateTime dateTime = OXUtils::readDateTime( element.text() ).dateTime();
-        contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Anniversary" ), dateTime.toString( Qt::ISODate ) );
+        contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Anniversary" ), OXUtils::readDateTime( element.text() ).toString( Qt::ISODate ) );
       } else if ( tagName == QLatin1String( "spouse_name" ) ) {
         contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-SpousesName" ), text );
       // addresses
@@ -275,7 +274,7 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
     // dates
     const QDateTime birthday( contact.birthday().date(), QTime(), Qt::UTC );
     if ( birthday.isValid() )
-      DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ), OXUtils::writeDateTime( KDateTime( birthday ) ) );
+      DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ), OXUtils::writeDateTime( birthday ) );
     else
       DAVUtils::addOxElement( document, propElement, QLatin1String( "birthday" ) );
 
@@ -283,7 +282,7 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
     const QDate date = QDate::fromString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-Anniversary" ) ), Qt::ISODate );
     const QDateTime anniversary( date, QTime(), Qt::UTC );
     if ( anniversary.isValid() )
-      DAVUtils::addOxElement( document, propElement, QLatin1String( "anniversary" ), OXUtils::writeDateTime( KDateTime( anniversary ) ) );
+      DAVUtils::addOxElement( document, propElement, QLatin1String( "anniversary" ), OXUtils::writeDateTime( anniversary ) );
     else
       DAVUtils::addOxElement( document, propElement, QLatin1String( "anniversary" ) );
     DAVUtils::addOxElement( document, propElement, QLatin1String( "spouse_name" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-SpousesName" ) ) ) );
