@@ -69,6 +69,15 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived( const QList< KIMAP::Mai
     }
   }
 
+  if  ( foldersToDelete.isEmpty() ) {
+      changeProcessed();
+
+      kDebug(5327) << "Failed to delete the folder, resync the folder tree";
+      emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
+      synchronizeCollectionTree();
+      return;
+  }
+
   // Now start the actual deletion work
   QMapIterator<int, QList<KIMAP::MailBoxDescriptor> > it( foldersToDelete );
   it.toBack(); // we start with largest nesting value first
