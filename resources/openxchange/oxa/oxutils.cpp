@@ -56,7 +56,23 @@ QString OXUtils::writeName( const QString &value )
 
 QString OXUtils::writeDateTime( const QDateTime &value )
 {
-  return QString::number( value.toUTC().toTime_t() ) + QLatin1String( "000" );
+  QString result;
+
+  //workaround, as QDateTime does not support negative time_t values
+  QDateTime Time_t_S( QDate( 1970, 1, 1 ), QTime( 0, 0, 0 ), Qt::UTC);
+
+  if ( value < Time_t_S ) {
+
+    result = QString::number( Time_t_S.secsTo( value ) );
+
+  } else {
+
+    result = QString::number( value.toUTC().toTime_t() );
+
+  }
+
+  return QString( result + QLatin1String( "000" ) );
+
 }
 
 QString OXUtils::writeDate( const QDate &value )
@@ -97,11 +113,21 @@ QString OXUtils::readName( const QString &text )
 
 QDateTime OXUtils::readDateTime( const QString &text )
 {
-  // remove the trailing '000', they exceed the unsigned integer dimension
-  const uint ticks = text.mid( 0, text.length() - 3 ).toLongLong();
+  // remove the trailing '000', they exceed the integer dimension
+  const int ticks = text.mid( 0, text.length() - 3 ).toLongLong();
 
+  //workaround, as QDateTime does not support negative time_t values
   QDateTime value;
-  value.setTime_t( ticks );
+  if ( ticks < 0 ) {
+
+    value.setTime_t( 0 );
+    value = value.addSecs( ticks );
+
+  } else {
+
+    value.setTime_t( ticks );
+
+  }
 
   return value;
 }
