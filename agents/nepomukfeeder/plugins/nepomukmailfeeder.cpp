@@ -117,6 +117,17 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
 
   // plain text main body part, we already dealt with that
   else if ( content == m_mainBodyPart ) {
+    return;
+  }
+
+  // ignore useless stuff such as signatures, certificates, encrypted parts, etc
+  else if ( content->contentType()->mimeType() == "application/pgp-signature" ||
+            content->contentType()->mimeType() == "application/pkcs7-signature" ||
+            content->contentType()->mimeType() == "application/x-pkcs7-signature" ||
+            content->contentType()->mimeType() == "application/pgp-encrypted" ||
+            content->contentType()->mimeType() == "application/pkcs7-mime" ) 
+  {
+    return;
   }
 
   // non plain text main body part, let strigi figure out what to do about that
