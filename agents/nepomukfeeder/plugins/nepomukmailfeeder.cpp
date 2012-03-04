@@ -36,7 +36,6 @@
 #include <nmo/email.h>
 #include <nmo/messageheader.h>
 #include <nao/tag.h>
-#include <ncal/attachment.h>
 #include <Nepomuk/Vocabulary/NFO>
 #include <Soprano/Vocabulary/NAO>
 #include <Nepomuk/Vocabulary/NIE>
@@ -144,7 +143,6 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
     //attachmentUrl.setHTMLRef( index.toString() );
     //kDebug() << attachmentUrl;
     SimpleResource attachmentRes;
-    Nepomuk::NCAL::Attachment attachment( &attachmentRes );
     attachmentRes.addType( Vocabulary::NFO::Attachment() );
     attachmentRes.addType( Vocabulary::NIE::InformationElement() ); //it needs to be an informationElement in order to set nie:description
     attachmentRes.addProperty( Vocabulary::NIE::isPartOf(), res.uri() );
