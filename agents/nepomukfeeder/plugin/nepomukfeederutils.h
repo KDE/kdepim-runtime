@@ -27,6 +27,7 @@ namespace Nepomuk
 {
   class SimpleResourceGraph;
 }
+class KUrl;
 class QString;
 class QStringList;
 
@@ -43,6 +44,9 @@ namespace NepomukFeederUtils
     *   adds it to @param graph and returns it's url.
     */
     Nepomuk::SimpleResource addContact( const QString &email, const QString &name, Nepomuk::SimpleResourceGraph &graph );
+
+    /** Indexes the given QByteArray using Strigi. Use for e.g. attachments of types that you can't handle yourself. */
+    void indexData( const KUrl &uri, const QByteArray &data, const QDateTime &mtime );
 }
 
 #endif // NEPOMUKFEEDERUTILS_H

@@ -25,11 +25,15 @@
 
 #include <nao/tag.h>
 #include <nao/freedesktopicon.h>
-#include <QStringList>
 #include <Soprano/Vocabulary/NAO>
 #include <nco/personcontact.h>
 #include <nco/emailaddress.h>
 
+#include <KDebug>
+#include <KProcess>
+#include <KUrl>
+
+#include <QStringList>
 
 
 namespace NepomukFeederUtils 
@@ -86,5 +90,25 @@ Nepomuk::SimpleResource addContact( const QString &emailAddress, const QString &
   return contactRes;
 }
 
+void indexData(const KUrl& url, const QByteArray& data, const QDateTime& mtime)
+{
+  KProcess proc;
+  proc.setOutputChannelMode( KProcess::ForwardedChannels );
+  proc.setProgram( "nepomukindexer" );
+  proc << "--uri" << url.url().toLocal8Bit();
+  proc << "--mtime" << QString::number( mtime.toTime_t() );
+  proc.start();
+  if ( proc.waitForStarted() ) {
+    proc.write( data );
+    proc.waitForBytesWritten();
+    proc.closeWriteChannel();
+  } else {
+    kDebug() << "Failed to launch nepomukindexer: " << proc.errorString();
+  }
+  proc.waitForFinished();
+  if ( !proc.exitStatus() == QProcess::NormalExit ) {
+    kDebug() << proc.exitCode() << proc.errorString();
+  }
+}
 
 }
