@@ -26,7 +26,7 @@
 #include <QDomDocument>
 
 Ispdb::Ispdb( QObject *parent )
-  : QObject( parent ), mServerType( IspAutoConfig )
+  : QObject( parent ), mServerType( DataBase )
 {
 }
 
@@ -95,11 +95,11 @@ void Ispdb::slotResult( KJob* job )
         break;
       }
       case IspWellKnow: {
-        mServerType = DataBase;
+        lookupFinished = true;
         break;
       }
       case DataBase: {
-        lookupFinished = true;
+        mServerType = IspAutoConfig;
         break;
       }
       }
