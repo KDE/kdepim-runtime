@@ -1002,12 +1002,12 @@ void POP3Resource::doSetOnline( bool online )
 {
   ResourceBase::doSetOnline( online );
   if ( online ) {
-    emit status( Idle, "Ready" );
+    emit status( Idle, i18n("Ready") );
   } else {
     if ( mState != Idle ) {
       cancelSync( i18n( "Mail check aborted after going offline." ), false /* no error */ );
     }
-    emit status( Idle, "Offline" );
+    emit status( Idle, i18n("Offline") );
   }
 }
 
