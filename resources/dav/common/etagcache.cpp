@@ -45,6 +45,11 @@ void EtagCache::setEtag( const QString &remoteId, const QString &etag )
     mChangedRemoteIds.remove( remoteId );
 }
 
+bool EtagCache::contains( const QString &remoteId )
+{
+  return mCache.contains( remoteId );
+}
+
 bool EtagCache::etagChanged( const QString &remoteId, const QString &refEtag )
 {
   const bool changed = (mCache.value( remoteId ) != refEtag);
