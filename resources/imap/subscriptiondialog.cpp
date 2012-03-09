@@ -40,10 +40,10 @@
 
 #ifndef KDEPIM_MOBILE_UI
 #include <QtGui/QHeaderView>
-#include <QtGui/QCheckBox>
 #include <QtGui/QLabel>
 #include <QtGui/QTreeView>
 #else
+#include <QtGui/QCheckBox>
 #include <QtGui/QListView>
 #include <QtGui/QSortFilterProxyModel>
 #include <kdescendantsproxymodel.h>
