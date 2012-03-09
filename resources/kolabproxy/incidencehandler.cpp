@@ -19,7 +19,7 @@
 */
 
 #include "journalhandler.h"
-#include "journal.h"
+#include <kolabformatV2/journal.h>
 
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
@@ -233,7 +233,7 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
   kDebug() << "Add to uidMap: " << incidence->uid() << item.id() << incidence;
 }
 
-
+//TODO replace 
 void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, const QDomDocument &xmlDoc,
                                             const KCalCore::Incidence::Ptr &incidence)
 {

@@ -63,48 +63,48 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
   }
 
   // look for existing folders
-  QVector<Collection> existingDefaultFolders( Kolab::FolderTypeSize );
-  QVector<Collection> recoveryCandidates( Kolab::FolderTypeSize );
+  QVector<Collection> existingDefaultFolders( KolabV2::FolderTypeSize );
+  QVector<Collection> recoveryCandidates( KolabV2::FolderTypeSize );
   foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
     if ( col.parentCollection() != defaultParent )
       continue;
-    Kolab::FolderType folderType = Kolab::Mail;
+    KolabV2::FolderType folderType = KolabV2::Mail;
     CollectionAnnotationsAttribute *attr = 0;
     if ( (attr = col.attribute<CollectionAnnotationsAttribute>()) ) {
-      folderType = Kolab::folderTypeFromString( attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
+      folderType = KolabV2::folderTypeFromString( attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
     }
-    Kolab::FolderType guessedType = Kolab::guessFolderTypeFromName( col.name() );
+    KolabV2::FolderType guessedType = KolabV2::guessFolderTypeFromName( col.name() );
 
-    if ( folderType != Kolab::Mail )
+    if ( folderType != KolabV2::Mail )
       existingDefaultFolders[ folderType ] = col;
-    else if ( guessedType != Kolab::Mail )
+    else if ( guessedType != KolabV2::Mail )
       recoveryCandidates[ guessedType ] = col;
   }
 
   // create/fix folders
-  for ( int i = Kolab::Contact; i < Kolab::FolderTypeSize; ++i ) {
+  for ( int i = KolabV2::Contact; i < KolabV2::FolderTypeSize; ++i ) {
     QString iconName;
-    if ( i == Kolab::Mail )
+    if ( i == KolabV2::Mail )
     {
       //Nothing
     }
-    else if ( i == Kolab::Contact )
+    else if ( i == KolabV2::Contact )
     {
       iconName = QString::fromLatin1( "view-pim-contacts" );
     }
-    else if ( i == Kolab::Event )
+    else if ( i == KolabV2::Event )
     {
       iconName = QString::fromLatin1( "view-calendar" );
     }
-    else if ( i == Kolab::Task )
+    else if ( i == KolabV2::Task )
     {
       iconName = QString::fromLatin1( "view-pim-tasks" );
     }
-    else if ( i == Kolab::Journal )
+    else if ( i == KolabV2::Journal )
     {
       iconName = QString::fromLatin1( "view-pim-journal" );
     }
-    else if ( i == Kolab::Note )
+    else if ( i == KolabV2::Note )
     {
       iconName = QString::fromLatin1( "view-pim-notes" );
     }
@@ -114,7 +114,7 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
       Collection col = recoveryCandidates[ i ];
       CollectionAnnotationsAttribute* attr = col.attribute<CollectionAnnotationsAttribute>( Entity::AddIfMissing );
       QMap<QByteArray, QByteArray> annotations;
-      annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, Kolab::folderTypeToString( static_cast<Kolab::FolderType>( i ), true ) );
+      annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
       attr->setAnnotations( annotations );
       if ( !iconName.isEmpty() ) {
         Akonadi::EntityDisplayAttribute *attribute =  col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
@@ -124,11 +124,11 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
       new CollectionModifyJob( col, 0 );
     } else {
       Collection col;
-      col.setName( Kolab::nameForFolderType( static_cast<Kolab::FolderType>( i ) ) );
+      col.setName( KolabV2::nameForFolderType( static_cast<KolabV2::FolderType>( i ) ) );
       col.setParentCollection( defaultParent );
       CollectionAnnotationsAttribute* attr = col.attribute<CollectionAnnotationsAttribute>( Entity::AddIfMissing );
       QMap<QByteArray, QByteArray> annotations;
-      annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, Kolab::folderTypeToString( static_cast<Kolab::FolderType>( i ), true ) );
+      annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
       attr->setAnnotations( annotations );
       if ( !iconName.isEmpty() ) {
         Akonadi::EntityDisplayAttribute *attribute =  col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );

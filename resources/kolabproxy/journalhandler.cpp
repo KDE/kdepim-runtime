@@ -19,7 +19,7 @@
 */
 
 #include "journalhandler.h"
-#include "journal.h"
+#include <kolabformatV2/journal.h>
 
 #include <KCalCore/Journal>
 
@@ -41,12 +41,12 @@ JournalHandler::~JournalHandler()
 
 KCalCore::Incidence::Ptr JournalHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
 {
-  return incidenceFromKolabImpl<KCalCore::Journal::Ptr, Kolab::Journal>( data );
+  return incidenceFromKolabImpl<KCalCore::Journal::Ptr, KolabV2::Journal>( data );
 }
 
 QByteArray JournalHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence)
 {
-  return Kolab::Journal::journalToXML( incidence.dynamicCast<KCalCore::Journal>(), m_calendar.timeZoneId()).toUtf8();
+  return KolabV2::Journal::journalToXML( incidence.dynamicCast<KCalCore::Journal>(), m_calendar.timeZoneId()).toUtf8();
 }
 
 QStringList  JournalHandler::contentMimeTypes()

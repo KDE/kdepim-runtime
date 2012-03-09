@@ -33,7 +33,7 @@
 
 #define KOLAB_FOLDER_TYPE_ANNOTATION "/vendor/kolab/folder-type"
 
-namespace Kolab
+namespace KolabV2
 {
   enum FolderType {
     Mail = 0,

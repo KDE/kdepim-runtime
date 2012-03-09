@@ -6,18 +6,11 @@ include_directories(
     ${Boost_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
 
 ########### next target ###############
 
 set( kolabproxyresource_shared_SRCS
-  contact.cpp
-  distributionlist.cpp
-  event.cpp
-  task.cpp
-  journal.cpp
-  incidence.cpp
-  kolabbase.cpp
   kolabhandler.cpp
   addressbookhandler.cpp
   incidencehandler.cpp
@@ -26,10 +19,10 @@ set( kolabproxyresource_shared_SRCS
   taskshandler.cpp
   journalhandler.cpp
   notehandler.cpp
-  note.cpp
   setupdefaultfoldersjob.cpp
   kolabdefs.cpp
 )
+
 
 set( kolabproxyresource_SRCS
   kolabproxyresource.cpp
@@ -60,7 +53,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_kolabproxy_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Kolabproxy Resource")
 endif (Q_WS_MAC)
 
-target_link_libraries(akonadi_kolabproxy_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy ${KDEPIMLIBS_KCALCORE_LIBS} )
+target_link_libraries(akonadi_kolabproxy_resource ${KDEPIMLIBS_KOLABFORMATV2_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy ${KDEPIMLIBS_KCALCORE_LIBS} )
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_kolabproxy_resource akonadi_serializer_mail akonadi_serializer_addressee akonadi_serializer_kcalcore akonadi_serializer_contactgroup)

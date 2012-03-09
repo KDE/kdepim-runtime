@@ -19,8 +19,8 @@
 */
 
 #include "addressbookhandler.h"
-#include "contact.h"
-#include "distributionlist.h"
+#include <kolabformatV2/contact.h>
+#include <kolabformatV2/distributionlist.h>
 
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
@@ -76,7 +76,7 @@ bool AddressBookHandler::addresseFromKolab( const KMime::Message::Ptr &data, KAB
   if (xmlContent) {
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
-    Kolab::Contact contact(QString::fromUtf8(xmlData));
+    KolabV2::Contact contact(QString::fromUtf8(xmlData));
     const QString pictureAttachmentName = contact.pictureAttachmentName();
     if (!pictureAttachmentName.isEmpty()) {
       QByteArray type;
@@ -126,7 +126,7 @@ bool AddressBookHandler::contactGroupFromKolab(const KMime::Message::Ptr &data, 
   if (xmlContent) {
     QByteArray xmlData = xmlContent->decodedContent();
 //     kDebug() << "xmlData " << xmlData;
-    Kolab::DistributionList distList(QString::fromUtf8(xmlData));
+    KolabV2::DistributionList distList(QString::fromUtf8(xmlData));
     distList.saveTo(&contactGroup);
     return true;
   }
@@ -137,12 +137,12 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
 {
   if (item.hasPayload<KABC::Addressee>()) {
     KABC::Addressee addressee = item.payload<KABC::Addressee>();
-    Kolab::Contact contact(&addressee);
+    KolabV2::Contact contact(&addressee);
 
     contactToKolabFormat(contact, imapItem);
   } else if (item.hasPayload<KABC::ContactGroup>()) {
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
-    Kolab::DistributionList distList(&contactGroup);
+    KolabV2::DistributionList distList(&contactGroup);
 
     distListToKolabFormat(distList, imapItem);
   } else {
@@ -151,7 +151,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
   }
 }
 
-void AddressBookHandler::contactToKolabFormat(const Kolab::Contact& contact, Akonadi::Item &imapItem)
+void AddressBookHandler::contactToKolabFormat(const KolabV2::Contact& contact, Akonadi::Item &imapItem)
 {
   imapItem.setMimeType( "message/rfc822" );
 
@@ -194,7 +194,7 @@ void AddressBookHandler::contactToKolabFormat(const Kolab::Contact& contact, Ako
   imapItem.setPayload(message);
 }
 
-void AddressBookHandler::distListToKolabFormat(const Kolab::DistributionList& distList, Akonadi::Item &imapItem)
+void AddressBookHandler::distListToKolabFormat(const KolabV2::DistributionList& distList, Akonadi::Item &imapItem)
 {
   imapItem.setMimeType( "message/rfc822" );
 

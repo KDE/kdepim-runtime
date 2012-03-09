@@ -29,7 +29,7 @@ namespace KABC{
   class ContactGroup;
 }
 
-namespace Kolab {
+namespace KolabV2 {
   class Contact;
   class DistributionList;
 }
@@ -53,9 +53,9 @@ private:
 
     bool contactGroupFromKolab(const KMime::Message::Ptr &data, KABC::ContactGroup &contactGroup);
 
-    void contactToKolabFormat(const Kolab::Contact &contact, Akonadi::Item &imapItem);
+    void contactToKolabFormat(const KolabV2::Contact &contact, Akonadi::Item &imapItem);
 
-    void distListToKolabFormat(const Kolab::DistributionList &distList, Akonadi::Item &imapItem);
+    void distListToKolabFormat(const KolabV2::DistributionList &distList, Akonadi::Item &imapItem);
 
     KABC::AddressBook* mAddressBook;
 };

@@ -24,7 +24,7 @@
 #include "kolabhandler.h"
 #include <kcalcore/incidence.h>
 #include <kcalcore/memorycalendar.h>
-#include "task.h"
+#include <kolabformatV2/task.h>
 
 class QDomDocument;
 
