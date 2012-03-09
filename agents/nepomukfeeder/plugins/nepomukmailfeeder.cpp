@@ -133,7 +133,7 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
   else if ( !m_mainBodyPart ) {
     m_mainBodyPart = content;
     //TODO defer to post-processing
-    //indexData( res.uri(), content->decodedContent(), item.modificationTime() ); //FIXME index the attachment with strigi but don't force the uri
+    //NepomukFeederUtils::indexData( res.uri(), content->decodedContent(), item.modificationTime() ); //FIXME index the attachment with strigi but don't force the uri
   }
 
   // attachment -> delegate to strigi
@@ -159,7 +159,7 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
     graph << attachmentRes;
     //TODO defer to post-processing
     //another option would be to let a strigifeeder automatically find unprocessed attachments so we don't have to do anything further here
-    //indexData( attachmentUrl, content->decodedContent(), item.modificationTime() ); //FIXME index the attachment with strigi but don't force the uri
+    //NepomukFeederUtils::indexData( attachmentRes.uri(), content->decodedContent(), item.modificationTime() ); //FIXME index the attachment with strigi but don't force the uri
   }
 
 }
