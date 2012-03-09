@@ -25,6 +25,7 @@
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QCheckBox>
 
 #include <klocale.h>
 #include <kdebug.h>
@@ -43,7 +44,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QTreeView>
 #else
-#include <QtGui/QCheckBox>
 #include <QtGui/QListView>
 #include <QtGui/QSortFilterProxyModel>
 #include <kdescendantsproxymodel.h>
