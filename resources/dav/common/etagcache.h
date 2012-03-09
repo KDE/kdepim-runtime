@@ -60,6 +60,11 @@ class EtagCache : public QObject
     void setEtag( const QString &remoteId, const QString &etag );
 
     /**
+     * Checks if the given item is in the cache
+     */
+    bool contains( const QString &remoteId );
+
+    /**
      * Check if the known ETag for the remote ID is equal to @p refEtag and, if not,
      * mark it as changed.
      */

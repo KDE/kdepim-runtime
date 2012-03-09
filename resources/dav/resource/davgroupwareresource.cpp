@@ -629,7 +629,7 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
     const DavItem davItem = davJob->item( item.remoteId() );
 
     // No data was retrieved for this item, maybe because it is not out of date
-    if ( davItem.data().isEmpty() ) {
+    if ( davItem.data().isEmpty() && mEtagCache.contains( item.remoteId() ) ) {
       items << item;
       continue;
     }
