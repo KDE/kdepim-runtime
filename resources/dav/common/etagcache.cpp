@@ -52,12 +52,12 @@ bool EtagCache::contains( const QString &remoteId )
 
 bool EtagCache::etagChanged( const QString &remoteId, const QString &refEtag )
 {
-  const bool changed = (mCache.value( remoteId ) != refEtag);
+  return mCache.value( remoteId ) != refEtag;
+}
 
-  if ( changed )
-    mChangedRemoteIds.insert( remoteId );
-
-  return changed;
+void EtagCache::markAsChanged( const QString &remoteId )
+{
+  mChangedRemoteIds.insert( remoteId );
 }
 
 bool EtagCache::isOutOfDate( const QString &remoteId ) const
@@ -78,8 +78,10 @@ void EtagCache::onItemFetchJobFinished( KJob *job )
   const Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
   const Akonadi::Item::List items = fetchJob->items();
 
-  foreach ( const Akonadi::Item &item, items )
-    setEtag( item.remoteId(), item.remoteRevision() );
+  foreach ( const Akonadi::Item &item, items ) {
+    if ( !mCache.contains( item.remoteId() ) )
+      mCache[item.remoteId()] = item.remoteRevision();
+  }
 }
 
 #include "etagcache.moc"

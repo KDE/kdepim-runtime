@@ -583,6 +583,8 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
       item.setMimeType( KCalCore::Journal::journalMimeType() );
 
     if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) ) {
+      mEtagCache.markAsChanged( item.remoteId() );
+
       // Only clear the payload (and therefor trigger a refetch from the backend) if we
       // do not use multiget, because in this case we fetch the complete payload
       // some lines below already.
