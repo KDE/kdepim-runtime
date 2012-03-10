@@ -57,7 +57,8 @@ class KDEAccountsResource : public Akonadi::SingleFileResource<Settings>
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
-    QMap<QString, KABC::Addressee> mContacts;
+    typedef QMap<QString, KABC::Addressee> ContactsMap;
+    ContactsMap mContacts;
 };
 
 #endif

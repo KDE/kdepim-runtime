@@ -98,11 +98,11 @@ void KDEAccountsResource::retrieveItems( const Akonadi::Collection &collection )
 
   Akonadi::Item::List items;
 
-  foreach ( const KABC::Addressee &contact, mContacts ) {
+  for ( ContactsMap::const_iterator it = mContacts.constBegin(); it != mContacts.constEnd(); ++it ) {
     Item item;
-    item.setRemoteId( contact.uid() );
+    item.setRemoteId( it.key() );
     item.setMimeType( KABC::Addressee::mimeType() );
-    item.setPayload( contact );
+    item.setPayload( it.value() );
     items.append( item );
   }
 
@@ -143,7 +143,7 @@ bool KDEAccountsResource::readFromFile( const QString &fileName )
     contact.insertCategory( i18n( "KDE Developer" ) );
     contact.insertEmail( email  );
 
-    mContacts.insert( contact.uid(), contact );
+    mContacts.insert( nickName, contact );
   }
 
   return true;
