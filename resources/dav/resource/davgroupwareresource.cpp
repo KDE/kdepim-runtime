@@ -49,6 +49,7 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchscope.h>
 
 #include <kabc/addressee.h>
@@ -703,6 +704,10 @@ void DavGroupwareResource::onItemFetched( KJob* job, bool isRefresh )
 
     if ( contact.isEmpty() ) {
       cancelTask( i18n( "The server returned invalid data" ) );
+      // Just remove the item from the collection, though it will be fetched
+      // again when using GroupDav. Nothing to do about it.
+      Akonadi::ItemDeleteJob *delJob = new Akonadi::ItemDeleteJob( item );
+      delJob->start();
       return;
     }
 
@@ -713,6 +718,10 @@ void DavGroupwareResource::onItemFetched( KJob* job, bool isRefresh )
 
     if ( !ptr ) {
       cancelTask( i18n( "The server returned invalid data" ) );
+      // Just remove the item from the collection, though it will be fetched
+      // again when using GroupDav. Nothing to do about it.
+      Akonadi::ItemDeleteJob *delJob = new Akonadi::ItemDeleteJob( item );
+      delJob->start();
       return;
     }
 
