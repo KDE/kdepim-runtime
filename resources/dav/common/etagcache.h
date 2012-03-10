@@ -71,6 +71,11 @@ class EtagCache : public QObject
     bool etagChanged( const QString &remoteId, const QString &refEtag );
 
     /**
+     * Mark an item as changed in the backend.
+     */
+    void markAsChanged( const QString &remoteId );
+
+    /**
      * Returns true if the remote ID is marked as changed (is contained in the
      * return of changedRemoteIds)
      */
