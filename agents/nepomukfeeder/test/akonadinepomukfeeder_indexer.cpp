@@ -22,7 +22,7 @@
 #include <aneo.h>
 #include <QtCore/QStringList>
 #include <akonadi/item.h>
-#include <nepomuk/datamanagement.h>
+#include <dms-copy/datamanagement.h>
 #include <KJob>
 #include <KUrl>
 #include <Nepomuk/ResourceManager>
