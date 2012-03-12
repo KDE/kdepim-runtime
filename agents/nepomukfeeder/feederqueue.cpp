@@ -124,13 +124,25 @@ void FeederQueue::processNextCollection()
   }
   mCurrentCollection = mCollectionQueue.takeFirst();
   emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ));
-  kDebug() << "Indexing collection" << mCurrentCollection.name();
-  //TODO maybe reindex anyways to be sure that type etc is correct
-    //kDebug() << "adding collection to nepomuk";
-  if ( !Nepomuk::ResourceManager::instance()->mainModel()->containsAnyStatement( Soprano::Node(), Vocabulary::NIE::url(), mCurrentCollection.url() ) || mReIndex ) {
-    KJob *job = NepomukHelpers::addCollectionToNepomuk(mCurrentCollection);
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
+  kDebug() << "Indexing collection " << mCurrentCollection.name() << mCurrentCollection.id();
+
+  // process the collection only if it has not already been indexed
+  // we check if the collection already has been indexed with the following values
+  // - nie:url needs to be set
+  // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
+  if ( !mReIndex &&
+        Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 . }")
+                                                                        .arg(Soprano::Node::resourceToN3(Vocabulary::NIE::url()),
+                                                                            Soprano::Node::resourceToN3(mCurrentCollection.url()),
+                                                                            Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiIndexCompatLevel()),
+                                                                            Soprano::Node::literalToN3(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL)),
+                                                                            Soprano::Query::QueryLanguageSparql).boolValue() ) {
+    kDebug() << "already indexed collection: " << mCurrentCollection.id() << " skipping";
+    QTimer::singleShot(0, this, SLOT(processNextCollection()));
+    return;
   }
+  KJob *job = NepomukHelpers::addCollectionToNepomuk(mCurrentCollection);
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
 
   ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
   itemFetch->fetchScope().setCacheOnly( true );
@@ -185,11 +197,7 @@ void FeederQueue::itemFetchResult(KJob* job)
 
   --mPendingJobs;
   if ( mPendingJobs == 0 && lowPrioQueue.isEmpty() ) { //Fetch jobs finished but there were no items in the collection
-    mCurrentCollection = Collection();
-    emit idle( i18n( "Indexing completed." ) );
-    //kDebug() << "Indexing completed.";
-
-    processNextCollection();
+    collectionFullyIndexed();
     return;
   }
 }
@@ -210,6 +218,15 @@ void FeederQueue::continueIndexing()
 {
   kDebug();
   mProcessItemQueueTimer.start();
+}
+
+void FeederQueue::collectionFullyIndexed()
+{
+    NepomukHelpers::markCollectionAsIndexed(mCurrentCollection);
+    mCurrentCollection = Collection();
+    emit idle( i18n( "Indexing completed." ) );
+    //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
+    processNextCollection();
 }
 
 void FeederQueue::processItemQueue()
@@ -247,10 +264,7 @@ void FeederQueue::processItemQueue()
 void FeederQueue::prioQueueFinished()
 {
   if (highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && (mPendingJobs == 0) && mCurrentCollection.isValid() ) {
-    //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
-    mCurrentCollection = Collection();
-    emit idle( i18n( "Indexing completed." ) );
-    processNextCollection();
+    collectionFullyIndexed();
   }
 }
 

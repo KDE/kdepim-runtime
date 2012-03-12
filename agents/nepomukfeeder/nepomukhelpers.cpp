@@ -96,6 +96,19 @@ KJob *addCollectionToNepomuk( const Akonadi::Collection &collection)
   return Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent());  
 }
 
+KJob *markCollectionAsIndexed( const Akonadi::Collection &collection )
+{
+    kDebug() << "marking collection as completed: " << collection.id();
+    Nepomuk::SimpleResourceGraph graph;
+    Nepomuk::SimpleResource res;
+    res.setProperty( NIE::url(), collection.url() );
+    res.setProperty( Vocabulary::ANEO::akonadiIndexCompatLevel(), NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
+    graph << res;
+    QHash <QUrl, QVariant> additionalMetadata;
+    additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
+    return Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent());  
+}
+
 void addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &graph ) 
 {
   //kDebug() << item.url();
