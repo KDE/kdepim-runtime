@@ -347,7 +347,7 @@ bool ItemQueue::processItem()
   
   if (mItemFetchList.size() >= mFetchSize || mItemPipeline.isEmpty() ) {
     //kDebug() << QString("Fetching %1 items").arg(mItemFetchList.size());
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItemFetchList, 0 );
+    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItemFetchList, this );
     job->fetchScope().fetchFullPayload();
     job->fetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
     job->fetchScope().setCacheOnly( true );
