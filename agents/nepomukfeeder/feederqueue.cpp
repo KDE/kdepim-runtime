@@ -138,6 +138,7 @@ void FeederQueue::processNextCollection()
                                                                             Soprano::Node::literalToN3(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL)),
                                                                             Soprano::Query::QueryLanguageSparql).boolValue() ) {
     kDebug() << "already indexed collection: " << mCurrentCollection.id() << " skipping";
+    mCurrentCollection = Collection();
     QTimer::singleShot(0, this, SLOT(processNextCollection()));
     return;
   }
