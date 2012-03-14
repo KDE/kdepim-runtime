@@ -509,6 +509,10 @@ void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &i
     return; // no kolab collection
   }
 
+  if ( !Settings::self()->updateFreeBusy() ) {
+    return; // disabled by user
+  }
+
   const QString path = mailBoxForImapCollection( imapCollection, true );
   if ( path.isEmpty() ) {
     return;
