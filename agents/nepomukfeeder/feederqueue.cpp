@@ -103,7 +103,18 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
 void FeederQueue::addCollection( const Akonadi::Collection &collection )
 {
   //kDebug() << collection.id();
-  mCollectionQueue.append( collection );
+ 
+  // If the collection contains mail, append it, otherwise prepend.
+  // This ensures the smaller, fewer collections with things like
+  // contacts or events in them are processed first. They tend to
+  // be more important than the full text index of mail.
+  // Bit of a hack, yes, would probably be better to have priorties
+  // in the plugins and then keep a priority queue properly.
+  if ( collection.contentMimeTypes().contains( QLatin1String( "message/rfc822" ) ) )
+    mCollectionQueue.append( collection );
+  else
+    mCollectionQueue.prepend( collection );
+
   if ( mPendingJobs == 0 ) {
     processNextCollection();
   }
