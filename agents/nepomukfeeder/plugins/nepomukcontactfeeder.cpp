@@ -342,7 +342,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
     for ( int i = 0; i < emails.count(); ++i ) {
         Nepomuk::SimpleResource emailRes;
         Nepomuk::NCO::EmailAddress email( &emailRes );
-        email.setEmailAddress( emails[ i ] );
+        email.setEmailAddress( emails[ i ].toLower() );
 
         contact.addHasEmailAddress( emailRes.uri() );
         graph << emailRes;

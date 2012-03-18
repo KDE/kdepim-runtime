@@ -79,7 +79,7 @@ Nepomuk::SimpleResource addContact( const QString &emailAddress, const QString &
   if ( !emailAddress.isEmpty() ) {
     Nepomuk::SimpleResource emailRes;
     Nepomuk::NCO::EmailAddress email( &emailRes );
-    email.setEmailAddress( emailAddress );
+    email.setEmailAddress( emailAddress.toLower() );
     graph << emailRes;
     contact.addHasEmailAddress( emailRes.uri() );
   }
