@@ -26,12 +26,12 @@ KeyCache* KeyCache::mSelf = 0;
 void KeyCache::addKeys( const QString& dir )
 {
   if (!mNewKeys.contains( dir )) {
-    mNewKeys[dir] = listNew( dir );
+    mNewKeys.insert( dir, listNew( dir ) );
     //kDebug() << "Added new keys for: " << dir;
   }
 
   if (!mCurKeys.contains( dir )) {
-    mCurKeys[dir] = listCurrent( dir );
+    mCurKeys.insert( dir, listCurrent( dir ) );
     //kDebug() << "Added cur keys for: " << dir;
   }
 }
@@ -64,20 +64,12 @@ void KeyCache::removeKey( const QString& dir, const QString& key )
 
 bool KeyCache::isCurKey( const QString& dir, const QString& key ) const
 {
-  if ( mCurKeys.contains( dir ) && mCurKeys[dir].contains( key  ) )
-  {
-    return true;
-  }
-  return false;
+    return mCurKeys.value( dir ).contains( key  );
 }
 
 bool KeyCache::isNewKey( const QString& dir, const QString& key ) const
 {
-  if ( mNewKeys.contains( dir ) && mNewKeys[dir].contains( key ) )
-  {
-    return true;
-  }
-  return false;
+    return mNewKeys.value( dir ).contains( key );
 }
 
 QSet< QString > KeyCache::listNew( const QString& dir ) const
