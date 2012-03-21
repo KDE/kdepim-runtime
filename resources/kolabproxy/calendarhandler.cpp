@@ -18,13 +18,13 @@
 */
 
 #include "calendarhandler.h"
-#include <kolabformatV2/event.h>
 
 #include <KCalCore/Event>
 #include <KCalCore/CalFormat>
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
+#include <kolab/kolabobject.h>
 
 #include <KLocale>
 
@@ -42,15 +42,11 @@ CalendarHandler::~CalendarHandler()
 {
 }
 
-KCalCore::Incidence::Ptr CalendarHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
+KMime::Message::Ptr CalendarHandler::incidenceToMime(const KCalCore::Incidence::Ptr& incidence)
 {
-  return incidenceFromKolabImpl<KCalCore::Event::Ptr, KolabV2::Event>( data );
+    return Kolab::KolabObjectWriter::writeEvent(incidence.dynamicCast<KCalCore::Event>(), Kolab::KolabV2, m_calendar.timeZoneId());
 }
 
-QByteArray CalendarHandler::incidenceToXml(const KCalCore::Incidence::Ptr &incidence)
-{
-  return KolabV2::Event::eventToXML( incidence.dynamicCast<KCalCore::Event>(), m_calendar.timeZoneId() ).toUtf8();
-}
 
 QStringList CalendarHandler::contentMimeTypes()
 {

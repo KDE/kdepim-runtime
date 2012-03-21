@@ -19,7 +19,6 @@
 */
 
 #include "journalhandler.h"
-#include <kolabformatV2/journal.h>
 
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
@@ -30,6 +29,7 @@
 #include <kmime/kmime_codecs.h>
 
 #include <kcalcore/calformat.h>
+#include <kolab/kolabobject.h>
 
 #include <libkdepim-copy/kincidencechooser.h>
 #include <KLocale>
@@ -59,7 +59,8 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-    KCalCore::Incidence::Ptr inc = incidenceFromKolab( payload );
+    
+    KCalCore::Incidence::Ptr inc = Kolab::KolabObjectReader(payload).getIncidence();
     kDebug() << "KCalCore::Incidence " << inc;
     if (inc) {
       KCalCore::Incidence::Ptr incidencePtr(inc);
@@ -181,21 +182,13 @@ void IncidenceHandler::incidenceToItem(const KCalCore::Incidence::Ptr &incidence
     return;
   }
   imapItem.setMimeType( "message/rfc822" );
-
-  KMime::Message::Ptr message = createMessage( m_mimeType );
-  message->from()->addAddress( incidencePtr->organizer()->email().toUtf8(), incidencePtr->organizer()->name() );
-  message->subject()->fromUnicodeString( incidencePtr->uid(), "utf-8" );
-
-  KMime::Content *content = createMainPart( m_mimeType, incidenceToXml(incidencePtr ) );
-  message->addContent( content );
-
-  Q_FOREACH (KCalCore::Attachment::Ptr attachment, incidencePtr->attachments()) {
-    content = createAttachmentPart( attachment->mimeType(), attachment->label(), attachment->decodedData() );
-    message->addContent( content );
-  }
-
-  message->assemble();
+  const KMime::Message::Ptr &message = incidenceToMime(incidencePtr);
   imapItem.setPayload(message);
+}
+
+KCalCore::Incidence::Ptr IncidenceHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
+{
+    return Kolab::KolabObjectReader(data).getIncidence();
 }
 
 
@@ -225,29 +218,13 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
     return;
   }
   KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-  KCalCore::Incidence::Ptr e = incidenceFromKolab(payload);
+  Kolab::KolabObjectReader reader;
+  reader.parseMimeMessage(payload);
+  
+  KCalCore::Incidence::Ptr e = reader.getIncidence();/*incidenceFromKolab(payload);*/
   if ( !e )
     return;
   const KCalCore::Incidence::Ptr incidence(e);
   m_uidMap[e->uid()] = StoredItem(item.id(), incidence);
   kDebug() << "Add to uidMap: " << incidence->uid() << item.id() << incidence;
-}
-
-//TODO replace 
-void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, const QDomDocument &xmlDoc,
-                                            const KCalCore::Incidence::Ptr &incidence)
-{
-  QDomNodeList nodes = xmlDoc.elementsByTagName("inline-attachment");
-  for (int i = 0; i < nodes.size(); i++ ) {
-    const QString name = nodes.at(i).toElement().text();
-    QByteArray type;
-    KMime::Content *content = findContentByName(data, name, type);
-    if (!content) // guard against malformed events with non-existent attachments
-        continue;
-    const QByteArray c = content->decodedContent().toBase64();
-    KCalCore::Attachment::Ptr attachment( new KCalCore::Attachment( c, QString::fromLatin1( type ) ) );
-    attachment->setLabel( name );
-    incidence->addAttachment(attachment);
-    kDebug() << "ATTACHEMENT NAME" << name << type;
-  }
 }

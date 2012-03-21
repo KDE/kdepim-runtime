@@ -29,11 +29,6 @@ namespace KABC{
   class ContactGroup;
 }
 
-namespace KolabV2 {
-  class Contact;
-  class DistributionList;
-}
-
 /**
 	@author Andras Mantia <amantia@kde.org>
 */
@@ -47,17 +42,6 @@ public:
     virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
-
-private:
-    bool addresseFromKolab(const KMime::Message::Ptr &data, KABC::Addressee &addressee);
-
-    bool contactGroupFromKolab(const KMime::Message::Ptr &data, KABC::ContactGroup &contactGroup);
-
-    void contactToKolabFormat(const KolabV2::Contact &contact, Akonadi::Item &imapItem);
-
-    void distListToKolabFormat(const KolabV2::DistributionList &distList, Akonadi::Item &imapItem);
-
-    KABC::AddressBook* mAddressBook;
 };
 
 #endif

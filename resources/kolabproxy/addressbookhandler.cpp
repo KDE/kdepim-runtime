@@ -19,13 +19,12 @@
 */
 
 #include "addressbookhandler.h"
-#include <kolabformatV2/contact.h>
-#include <kolabformatV2/distributionlist.h>
 
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
+#include <kolab/kolabobject.h>
 
 #include <QBuffer>
 
@@ -52,17 +51,16 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-    KABC::Addressee addressee;
-    KABC::ContactGroup contactGroup;
-    if (addresseFromKolab(payload, addressee)) {
+    Kolab::KolabObjectReader reader(payload);
+    if (reader.getType() == Kolab::ContactObject) {
       Akonadi::Item newItem(KABC::Addressee::mimeType());
       newItem.setRemoteId(QString::number(item.id()));
-      newItem.setPayload(addressee);
+      newItem.setPayload(reader.getContact());
       newItems << newItem;
-    } else if (contactGroupFromKolab(payload, contactGroup)) {
+    } else if (reader.getType() == Kolab::DistlistObject) {
       Akonadi::Item newItem(KABC::ContactGroup::mimeType());
       newItem.setRemoteId(QString::number(item.id()));
-      newItem.setPayload(contactGroup);
+      newItem.setPayload(reader.getDistlist());
       newItems << newItem;
     }
   }
@@ -70,143 +68,24 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
   return newItems;
 }
 
-bool AddressBookHandler::addresseFromKolab( const KMime::Message::Ptr &data, KABC::Addressee &addressee)
-{
-  KMime::Content *xmlContent  = findContentByType(data, m_mimeType);
-  if (xmlContent) {
-    QByteArray xmlData = xmlContent->decodedContent();
-//     kDebug() << "xmlData " << xmlData;
-    KolabV2::Contact contact(QString::fromUtf8(xmlData));
-    const QString pictureAttachmentName = contact.pictureAttachmentName();
-    if (!pictureAttachmentName.isEmpty()) {
-      QByteArray type;
-      KMime::Content *imgContent = findContentByName(data, "kolab-picture.png", type);
-      if (imgContent) {
-        QByteArray imgData = imgContent->decodedContent();
-        QBuffer buffer(&imgData);
-        buffer.open(QIODevice::ReadOnly);
-        QImage image;
-        image.load(&buffer, "PNG");
-        contact.setPicture(image);
-      }
-    }
-
-    QString logoAttachmentName = contact.logoAttachmentName();
-    if (!logoAttachmentName.isEmpty()) {
-      QByteArray type;
-      KMime::Content *imgContent = findContentByName(data, "kolab-logo.png", type);
-      if (imgContent) {
-        QByteArray imgData = imgContent->decodedContent();
-        QBuffer buffer(&imgData);
-        buffer.open(QIODevice::ReadOnly);
-        QImage image;
-        image.load(&buffer, "PNG");
-        contact.setLogo(image);
-      }
-    }
-
-    QString soundAttachmentName = contact.soundAttachmentName();
-    if (!soundAttachmentName.isEmpty()) {
-      QByteArray type;
-      KMime::Content *content = findContentByName(data, "sound", type);
-      if (content) {
-        QByteArray sData = content->decodedContent();
-        contact.setSound(sData);
-      }
-    }
-    contact.saveTo(&addressee);
-    return true;
-  }
-  return false;
-}
-
-bool AddressBookHandler::contactGroupFromKolab(const KMime::Message::Ptr &data, KABC::ContactGroup &contactGroup)
-{
-  KMime::Content *xmlContent  = findContentByType(data, m_mimeType + ".distlist");
-  if (xmlContent) {
-    QByteArray xmlData = xmlContent->decodedContent();
-//     kDebug() << "xmlData " << xmlData;
-    KolabV2::DistributionList distList(QString::fromUtf8(xmlData));
-    distList.saveTo(&contactGroup);
-    return true;
-  }
-  return false;
-}
-
 void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
   if (item.hasPayload<KABC::Addressee>()) {
     KABC::Addressee addressee = item.payload<KABC::Addressee>();
-    KolabV2::Contact contact(&addressee);
-
-    contactToKolabFormat(contact, imapItem);
+    
+    const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeContact(addressee, Kolab::KolabV2);
+    imapItem.setMimeType( "message/rfc822" );
+    imapItem.setPayload(message);
   } else if (item.hasPayload<KABC::ContactGroup>()) {
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
-    KolabV2::DistributionList distList(&contactGroup);
-
-    distListToKolabFormat(distList, imapItem);
+    
+    const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeDistlist(contactGroup, Kolab::KolabV2);
+    imapItem.setMimeType( "message/rfc822" );
+    imapItem.setPayload(message);
   } else {
     kWarning() << "Payload is neither a KABC::Addressee nor KABC::ContactGroup!";
     return;
   }
-}
-
-void AddressBookHandler::contactToKolabFormat(const KolabV2::Contact& contact, Akonadi::Item &imapItem)
-{
-  imapItem.setMimeType( "message/rfc822" );
-
-  KMime::Message::Ptr message = createMessage( m_mimeType );
-  message->subject()->fromUnicodeString( contact.uid(), "utf-8" );
-  message->from()->fromUnicodeString( contact.fullEmail(), "utf-8" );
-
-  KMime::Content* content = createMainPart( m_mimeType, contact.saveXML().toUtf8() );
-  message->addContent( content );
-
-  if ( !contact.picture().isNull() ) {
-    QByteArray pic;
-    QBuffer buffer(&pic);
-    buffer.open(QIODevice::WriteOnly);
-    contact.picture().save(&buffer, "PNG");
-    buffer.close();
-
-    content = createAttachmentPart( "image/png", "kolab-picture.png", pic );
-    message->addContent(content);
-  }
-
-  if ( !contact.logo().isNull() ) {
-    QByteArray pic;
-    QBuffer buffer(&pic);
-    buffer.open(QIODevice::WriteOnly);
-    contact.logo().save(&buffer, "PNG");
-    buffer.close();
-
-    content = createAttachmentPart( "image/png", "kolab-logo.png", pic );
-    message->addContent(content);
-  }
-
-
-  if ( !contact.sound().isEmpty() ) {
-    content = createAttachmentPart( "audio/unknown", "sound", contact.sound() );
-    message->addContent(content);
-  }
-
-  message->assemble();
-  imapItem.setPayload(message);
-}
-
-void AddressBookHandler::distListToKolabFormat(const KolabV2::DistributionList& distList, Akonadi::Item &imapItem)
-{
-  imapItem.setMimeType( "message/rfc822" );
-
-  KMime::Message::Ptr message = createMessage( m_mimeType + ".distlist" );
-  message->subject()->fromUnicodeString( distList.uid(), "utf-8" );
-  message->from()->fromUnicodeString( distList.uid(), "utf-8" );
-
-  KMime::Content* content = createMainPart( m_mimeType + ".distlist", distList.saveXML().toUtf8() );
-  message->addContent( content );
-
-  message->assemble();
-  imapItem.setPayload(message);
 }
 
 QStringList AddressBookHandler::contentMimeTypes()

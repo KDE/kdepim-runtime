@@ -19,12 +19,12 @@
 */
 
 #include "journalhandler.h"
-#include <kolabformatV2/journal.h>
 
 #include <KCalCore/Journal>
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
+#include <kolab/kolabobject.h>
 
 #include <QBuffer>
 #include <QDomDocument>
@@ -39,14 +39,9 @@ JournalHandler::~JournalHandler()
 {
 }
 
-KCalCore::Incidence::Ptr JournalHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
+KMime::Message::Ptr JournalHandler::incidenceToMime(const KCalCore::Incidence::Ptr& incidence)
 {
-  return incidenceFromKolabImpl<KCalCore::Journal::Ptr, KolabV2::Journal>( data );
-}
-
-QByteArray JournalHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence)
-{
-  return KolabV2::Journal::journalToXML( incidence.dynamicCast<KCalCore::Journal>(), m_calendar.timeZoneId()).toUtf8();
+    return Kolab::KolabObjectWriter::writeJournal(incidence.dynamicCast<KCalCore::Journal>(), Kolab::KolabV2, m_calendar.timeZoneId());
 }
 
 QStringList  JournalHandler::contentMimeTypes()

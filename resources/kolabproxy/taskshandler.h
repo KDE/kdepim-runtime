@@ -35,8 +35,7 @@ public:
   virtual QString iconName() const;
 
 private:
-  virtual QByteArray incidenceToXml( const KCalCore::Incidence::Ptr &incidence);
-  virtual KCalCore::Incidence::Ptr incidenceFromKolab( const KMime::Message::Ptr &data );
+  virtual KMime::Message::Ptr incidenceToMime(const KCalCore::Incidence::Ptr& incidence);
 
 };
 

@@ -18,7 +18,6 @@
 */
 
 #include "notehandler.h"
-#include <kolabformatV2/note.h>
 
 #include <akonadi/item.h>
 #include <QStringList>
@@ -73,39 +72,39 @@ QString NotesHandler::iconName() const
 
 bool NotesHandler::noteFromKolab(const KMime::Message::Ptr& kolabMsg, Akonadi::Item& noteItem)
 {
-  KMime::Content *xmlContent  = findContentByType(kolabMsg, m_mimeType);
-  if ( !xmlContent )
-    return false;
-  const QByteArray xmlData = xmlContent->decodedContent();
-  KolabV2::Note j;
-  if ( !j.load( xmlData ) )
-    return false;
-
-  KMime::Message::Ptr note( new KMime::Message );
-  note->subject( true )->fromUnicodeString( j.summary(), "utf-8" );
-  note->contentType( true )->setMimeType( "text/plain" );
-  note->from( true )->addAddress( "kolab@kde4", QString() );
-  note->date( true )->setDateTime( kolabMsg->date()->dateTime() );
-  note->setBody( j.body().toUtf8() );
-  note->assemble();
-  noteItem.setPayload( note );
+//   KMime::Content *xmlContent  = findContentByType(kolabMsg, m_mimeType);
+//   if ( !xmlContent )
+//     return false;
+//   const QByteArray xmlData = xmlContent->decodedContent();
+//   KolabV2::Note j;
+//   if ( !j.load( xmlData ) )
+//     return false;
+// 
+//   KMime::Message::Ptr note( new KMime::Message );
+//   note->subject( true )->fromUnicodeString( j.summary(), "utf-8" );
+//   note->contentType( true )->setMimeType( "text/plain" );
+//   note->from( true )->addAddress( "kolab@kde4", QString() );
+//   note->date( true )->setDateTime( kolabMsg->date()->dateTime() );
+//   note->setBody( j.body().toUtf8() );
+//   note->assemble();
+//   noteItem.setPayload( note );
   return true;
 }
 
 void NotesHandler::noteToKolab(const KMime::Message::Ptr& note, Akonadi::Item& kolabItem)
 {
-  KolabV2::Note j;
-  j.setSummary( note->subject( true )->asUnicodeString() );
-  j.setBody( note->textContent()->decodedText() );
-
-  kolabItem.setMimeType( "message/rfc822" );
-
-  KMime::Message::Ptr message = createMessage( m_mimeType );
-  message->subject()->fromUnicodeString( j.summary(), "utf-8" );
-
-  KMime::Content* content = createMainPart( m_mimeType, j.saveXML().toUtf8() );
-  message->addContent( content );
-
-  message->assemble();
-  kolabItem.setPayload(message);
+//   KolabV2::Note j;
+//   j.setSummary( note->subject( true )->asUnicodeString() );
+//   j.setBody( note->textContent()->decodedText() );
+// 
+//   kolabItem.setMimeType( "message/rfc822" );
+// 
+//   KMime::Message::Ptr message = createMessage( m_mimeType );
+//   message->subject()->fromUnicodeString( j.summary(), "utf-8" );
+// 
+//   KMime::Content* content = createMainPart( m_mimeType, j.saveXML().toUtf8() );
+//   message->addContent( content );
+// 
+//   message->assemble();
+//   kolabItem.setPayload(message);
 }

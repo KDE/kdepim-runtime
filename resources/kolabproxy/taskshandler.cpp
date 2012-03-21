@@ -19,10 +19,10 @@
 */
 
 #include "taskshandler.h"
-#include <kolabformatV2/task.h>
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
+#include <kolab/kolabobject.h>
 
 #include <QBuffer>
 #include <QDomDocument>
@@ -38,14 +38,9 @@ TasksHandler::~TasksHandler()
 {
 }
 
-KCalCore::Incidence::Ptr TasksHandler::incidenceFromKolab( const KMime::Message::Ptr &data )
+KMime::Message::Ptr TasksHandler::incidenceToMime(const KCalCore::Incidence::Ptr& incidence)
 {
-  return incidenceFromKolabImpl<KCalCore::Todo::Ptr, KolabV2::Task>( data );
-}
-
-QByteArray TasksHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence )
-{
-  return KolabV2::Task::taskToXML( incidence.dynamicCast<KCalCore::Todo>(), m_calendar.timeZoneId() ).toUtf8();
+    return Kolab::KolabObjectWriter::writeTodo(incidence.dynamicCast<KCalCore::Todo>(), Kolab::KolabV2, m_calendar.timeZoneId());
 }
 
 QStringList TasksHandler::contentMimeTypes()
