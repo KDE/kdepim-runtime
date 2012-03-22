@@ -42,8 +42,8 @@ SearchDialog::SearchDialog( QWidget *parent )
   setDefaultButton( KDialog::None );
   setButtonText( KDialog::Ok, i18n( "Add selected items" ) );
 
-  connect( mUi.searchUrl, SIGNAL(textChanged(const QString&)), this, SLOT(checkUserInput()) );
-  connect( mUi.searchParam, SIGNAL(textChanged(const QString&)), this, SLOT(checkUserInput()) );
+  connect( mUi.searchUrl, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
+  connect( mUi.searchParam, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
   connect( mUi.searchButton, SIGNAL(clicked()), this, SLOT(search()) );
 
   checkUserInput();

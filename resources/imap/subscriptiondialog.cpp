@@ -145,9 +145,9 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
 
   if ( option & SubscriptionDialog::AllowToEnableSubscription ) {
 #ifndef KDEPIM_MOBILE_UI
-    connect( m_enableSubscription, SIGNAL( clicked ( bool ) ), m_treeView, SLOT( setEnabled(bool) ) );
+    connect( m_enableSubscription, SIGNAL(clicked(bool)), m_treeView, SLOT(setEnabled(bool)) );
 #else
-    connect( m_enableSubscription, SIGNAL( clicked ( bool ) ), m_listView, SLOT( setEnabled(bool) ) );
+    connect( m_enableSubscription, SIGNAL(clicked(bool)), m_listView, SLOT(setEnabled(bool)) );
 #endif
   } else {
     m_enableSubscription->hide();

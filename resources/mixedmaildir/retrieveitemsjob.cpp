@@ -58,8 +58,8 @@ class RetrieveItemsJob::Private
       if ( !mTransaction ) {
         mTransaction = new TransactionSequence( q );
 	mTransaction->setAutomaticCommittingEnabled( false );
-        connect( mTransaction, SIGNAL( result( KJob* ) ),
-                 q, SLOT( transactionResult( KJob* ) ) );
+        connect( mTransaction, SIGNAL(result(KJob*)),
+                 q, SLOT(transactionResult(KJob*)) );
       }
       return mTransaction;
     }
@@ -114,7 +114,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItems( mCollection );
   // just basic items, no data
 
-  connect( storeFetch, SIGNAL( result( KJob* ) ), q, SLOT( storeListResult( KJob* ) ) );
+  connect( storeFetch, SIGNAL(result(KJob*)), q, SLOT(storeListResult(KJob*)) );
 }
 
 void RetrieveItemsJob::Private::storeListResult( KJob *job )
@@ -194,7 +194,7 @@ void RetrieveItemsJob::Private::processNewItem()
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItem( item );
   storeFetch->fetchScope().fetchPayloadPart( MessagePart::Envelope );
 
-  connect( storeFetch, SIGNAL( result( KJob* ) ), q, SLOT( fetchNewResult( KJob* ) ) );
+  connect( storeFetch, SIGNAL(result(KJob*)), q, SLOT(fetchNewResult(KJob*)) );
 }
 
 void RetrieveItemsJob::Private::fetchNewResult( KJob *job )
@@ -247,7 +247,7 @@ void RetrieveItemsJob::Private::processChangedItem()
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItem( item );
   storeFetch->fetchScope().fetchPayloadPart( MessagePart::Envelope );
 
-  connect( storeFetch, SIGNAL( result( KJob* ) ), q, SLOT( fetchChangedResult( KJob* ) ) );
+  connect( storeFetch, SIGNAL(result(KJob*)), q, SLOT(fetchChangedResult(KJob*)) );
 }
 
 void RetrieveItemsJob::Private::fetchChangedResult( KJob *job )
@@ -315,7 +315,7 @@ Item::List RetrieveItemsJob::itemsMarkedAsDeleted() const
 void RetrieveItemsJob::doStart()
 {
   ItemFetchJob *job = new Akonadi::ItemFetchJob( d->mCollection, this );
-  connect( job, SIGNAL( result( KJob* ) ), this, SLOT( akonadiFetchResult( KJob* ) ) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(akonadiFetchResult(KJob*)) );
 }
 
 #include "retrieveitemsjob.moc"

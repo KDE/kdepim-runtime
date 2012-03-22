@@ -409,7 +409,7 @@ bool ItemQueue::processBatch()
   if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
     //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
     KJob *job = Nepomuk::removeDataByApplication( mBatch, Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
-    connect( job, SIGNAL( finished( KJob* ) ), this, SLOT( removeDataResult( KJob* ) ) );
+    connect( job, SIGNAL(finished(KJob*)), this, SLOT(removeDataResult(KJob*)) );
     mRunningJobs++;
     mBatch.clear();
     return false;
@@ -426,7 +426,7 @@ void ItemQueue::removeDataResult(KJob* job)
   //All old items have been removed, so we can now store the new items
   //kDebug() << "Saving Graph";
   KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mResourceGraph );
-  connect( addGraphJob, SIGNAL( result( KJob* ) ), SLOT( batchJobResult( KJob* ) ) );
+  connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
   mRunningJobs++;
   //m_debugGraph = mResourceGraph;
   mResourceGraph.clear();
