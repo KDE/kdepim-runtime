@@ -393,9 +393,12 @@ bool KRss::RssItemSerializer::deserialize( KRss::RssItem& item, const QByteArray
     if ( readHeaders )
         item.setHeadersLoaded( true );
 
-    if ( readContent )
+    if ( readContent ) {
         item.setContentLoaded( true );
-
+        item.setEnclosures(QList<Enclosure>());
+        item.setCategories(QList<Category>());
+        item.setAuthors(QList<Person>());
+    }
     while ( !reader.atEnd() )
     {
         reader.readNext();
