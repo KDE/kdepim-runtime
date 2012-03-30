@@ -1,6 +1,6 @@
 /*
  *  akonadi_serializer_kalarm.cpp  -  Akonadi resource serializer for KAlarm
- *  Copyright © 2009-2011 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2012 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -61,7 +61,7 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
         return false;
     }
     KAEvent event(i.staticCast<KCalCore::Event>());
-    QString mime = CalEvent::mimeType(event.category());
+    const QString mime = CalEvent::mimeType(event.category());
     if (mime.isEmpty()  ||  !event.isValid())
     {
         kWarning(5263) << "Event with uid" << event.id() << "contains no usable alarms!";
@@ -71,11 +71,10 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
     event.setItemId(item.id());
 
     // Set additional event data contained in attributes
-    static bool attrRegistered = false;
-    if (!attrRegistered)
+    if (mRegistered.isEmpty())
     {
         AttributeFactory::registerAttribute<KAlarmCal::EventAttribute>();
-        attrRegistered = true;
+        mRegistered = QLatin1String("x");   // set to any non-null string
     }
     if (item.hasAttribute<EventAttribute>())
     {
@@ -95,7 +94,7 @@ void SerializerPluginKAlarm::serialize(const Item& item, const QByteArray& label
 
     if (label != Item::FullPayload || !item.hasPayload<KAEvent>())
         return;
-    KAEvent e = item.payload<KAEvent>();
+    const KAEvent e = item.payload<KAEvent>();
     KCalCore::Event::Ptr kcalEvent(new KCalCore::Event);
     e.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
     QByteArray head = "BEGIN:VCALENDAR\nPRODID:";
