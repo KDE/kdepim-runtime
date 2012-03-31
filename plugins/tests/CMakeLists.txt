@@ -10,7 +10,7 @@ macro(add_simple_test _testName)
   set(_targetName ${_testName})
   set(_srcList ${ARGN})
   kde4_add_unit_test(${_targetName} ${_srcList})
-  target_link_libraries(${_targetName} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTTEST_LIBRARY} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_SYNDICATION_LIBS} ${KDE4_KDECORE_LIBS} krss)
+  target_link_libraries(${_targetName} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTTEST_LIBRARY} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_SYNDICATION_LIBS} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KRSS_LIBS})
 endmacro(add_simple_test)
 
 set(testxmlitemserializer_SRCS
