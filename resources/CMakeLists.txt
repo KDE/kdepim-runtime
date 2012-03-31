@@ -43,6 +43,7 @@ if (KDEPIMLIBS_KRESOURCES_LIBS)
   add_subdirectory( kcal )
 endif (KDEPIMLIBS_KRESOURCES_LIBS)
 macro_optional_add_subdirectory( kdeaccounts )
+add_subdirectory( krsslocal )
 add_subdirectory( kolabproxy )
 macro_optional_add_subdirectory( localbookmarks )
 

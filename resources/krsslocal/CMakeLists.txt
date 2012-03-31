@@ -21,11 +21,11 @@ qt4_add_dbus_adaptor(krsslocalresource_SRCS
 kde4_add_executable(akonadi_krsslocal_resource RUN_UNINSTALLED ${krsslocalresource_SRCS})
 
 target_link_libraries(akonadi_krsslocal_resource
-                      krss
                       ${KDE4_KDECORE_LIBS}
                       ${KDE4_KIO_LIBS}
                       ${KDEPIMLIBS_AKONADI_LIBS}
                       ${KDEPIMLIBS_SYNDICATION_LIBS}
+                      ${KDEPIMLIBS_KRSS_LIBS}
                       ${QT_QTCORE_LIBRARY}
                       ${QT_QTDBUS_LIBRARY}
 )
