@@ -37,7 +37,8 @@ target_link_libraries(akregatormigrator
   ${KDE4_KDEPIMLIBS_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_SYNDICATION_LIBS}
-  krss
+  ${KDEPIMLIBS_KRSS_LIBS}
 )
 
 install(TARGETS akregatormigrator ${INSTALL_TARGETS_DEFAULT_ARGS})
+
