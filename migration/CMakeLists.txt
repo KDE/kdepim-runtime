@@ -16,6 +16,7 @@ set( MIGRATION_AKONADI_SHARED_SOURCES
 )
 
 
+add_subdirectory( akregator )
 add_subdirectory( kmail )
 add_subdirectory( kaddressbook )
 add_subdirectory( kjots )
