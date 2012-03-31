@@ -17,22 +17,11 @@ set(testxmlitemserializer_SRCS
     testxmlitemserializer.cpp
 )
 
-if(KRSS_ENABLE_PROTOBUF_SERIALIZER)
-    WRAP_PROTO(krss_LIB_PROTOBUF_SRCS krss.proto)
-
-    set(testxmlitemserializer_SRCS
-        ${testxmlitemserializer_SRCS}
-        ${krss_LIB_PROTOBUF_SRCS}
-        ${CMAKE_CURRENT_SOURCE_DIR}/../rssitemserializer_protobuf.cpp
-    )
-    set(KRSS_EXTRA_LIBS ${PROTOBUF_LIBRARY})
-else(KRSS_ENABLE_PROTOBUF_SERIALIZER)
 if(KRSS_ENABLE_QDATASTREAM_SERIALIZER)
     set(testxmlitemserializer_SRCS
         ${testxmlitemserializer_SRCS}
         ${CMAKE_CURRENT_SOURCE_DIR}/../rssitemserializer_qdatastream.cpp
     )
-    set(KRSS_EXTRA_LIBS ${PROTOBUF_LIBRARY})
 else(KRSS_ENABLE_QDATASTREAM_SERIALIZER)
 if(KRSS_ENABLE_JSON_SERIALIZER)
    set(testxmlitemserializer_SRCS
@@ -47,6 +36,5 @@ else(KRSS_ENABLE_JSON_SERIALIZER)
    )
 endif(KRSS_ENABLE_JSON_SERIALIZER)
 endif(KRSS_ENABLE_QDATASTREAM_SERIALIZER)
-endif(KRSS_ENABLE_PROTOBUF_SERIALIZER)
 
 add_simple_test(testxmlitemserializer ${testxmlitemserializer_SRCS})
