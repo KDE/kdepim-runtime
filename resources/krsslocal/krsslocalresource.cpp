@@ -158,8 +158,8 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
             shared_ptr<const ParsedFolder> parsedFolder = static_pointer_cast<const ParsedFolder>(parsedNode);
             Collection folder;
             folder.setParent( parent );
-            folder.setName( i18n("T_%1", parsedFolder->title()) );
-                folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedFolder->title() );
+            folder.setName( parsedFolder->title() );
+            folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedFolder->title() );
             folder.setRemoteId( Settings::self()->path() + parsedFolder->title() );
             folder.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
             list = buildCollectionTree( parsedFolder->children(), list, folder );
