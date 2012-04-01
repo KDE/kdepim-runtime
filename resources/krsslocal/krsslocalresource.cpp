@@ -181,27 +181,81 @@ void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
     loader->loadFrom( xmlUrl );
 }
 
+static QString errorCodeToString( Syndication::ErrorCode err )
+{
+    using namespace Syndication;
+    switch ( err )
+    {
+        case Timeout:
+            return i18n( "Timeout on remote server" );
+        case UnknownHost:
+            return i18n( "Unknown host" );
+        case FileNotFound:
+            return i18n( "Feed file not found on remote server" );
+        case InvalidXml:
+            return i18n( "Could not read feed (invalid XML)" );
+        case XmlNotAccepted:
+            return i18n( "Could not read feed (unknown format)" );
+        case InvalidFormat:
+            return i18n( "Could not read feed (invalid feed)" );
+        case Success:
+        case Aborted:
+        default:
+            break;
+    }
+    return QString();
+
+}
+
 void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 					    Syndication::ErrorCode status)
 {
     const Collection c = m_collectionByLoader.take( loader );
 
-    if (status != Syndication::Success) {
-        kWarning() << "Error while parsing xml file";
-        //TODO report error to user?
+    if ( status == Syndication::Aborted ) {
         itemsRetrievalDone();
         return;
     }
+
+    if ( status != Syndication::Success ) {
+        KRss::FeedCollection fc( c );
+        const QString prevString = fc.fetchErrorString();
+        const QString newString = errorCodeToString( status );
+        if ( prevString != newString ) {
+            fc.setFetchError( true );
+            fc.setFetchErrorString( newString );
+            Akonadi::CollectionModifyJob* job = new Akonadi::CollectionModifyJob( fc );
+            job->start();
+        }
+        itemsRetrievalDone();
+        return;
+    }
+
     KRss::FeedCollection fc( c );
 
+    bool fcChanged = false;
+
+    // if no HTML URL is set, we assume that the feed was previously added by the user (URL only) and we now add the metadata from the fetched feed
     if ( fc.htmlUrl().isEmpty() ) {
         fc.setName( feed->title() );
         fc.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( feed->title() );
         fc.setDescription( feed->description() );
         fc.setHtmlUrl( feed->link() );
+        fcChanged = true;
+    }
+
+    // clear previous fetch error
+    if ( fc.fetchError() ) {
+        fc.setFetchError( false );
+        fc.setFetchErrorString( QString() );
+        fcChanged = true;
+    }
+
+    if ( fcChanged ) {
         Akonadi::CollectionModifyJob* job = new Akonadi::CollectionModifyJob( fc );
         job->start();
     }
+
     QList<Syndication::ItemPtr> syndItems = feed->items();
     Akonadi::Item::List items;
     foreach ( const Syndication::ItemPtr& syndItem, syndItems ) {
