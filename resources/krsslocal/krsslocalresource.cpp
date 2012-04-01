@@ -351,6 +351,22 @@ void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
     }
 }
 
+void KRssLocalResource::collectionAdded( const Collection &collection, const Collection &parent )
+{
+    Q_UNUSED( parent )
+    changeCommitted( collection );
+
+    if ( !writeBackTimer->isActive() )
+        writeBackTimer->start( WriteBackTimeout );
+}
+
+void KRssLocalResource::collectionRemoved( const Collection &collection )
+{
+    changeCommitted( collection );
+    if ( !writeBackTimer->isActive() )
+        writeBackTimer->start( WriteBackTimeout );
+}
+
 void KRssLocalResource::fetchCollections()
 {
     CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
