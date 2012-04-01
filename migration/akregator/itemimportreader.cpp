@@ -193,6 +193,7 @@ static bool readItem( Akonadi::Item& akonadiItem, QXmlStreamReader& reader ) {
         reader.readNext();
 
     Akonadi::Item::Flags flags;
+    flags.insert( KRss::RssItem::flagRead() );
     KRss::RssItem item;
     item.setHeadersLoaded( true );
     item.setContentLoaded( true );
@@ -237,8 +238,8 @@ static bool readItem( Akonadi::Item& akonadiItem, QXmlStreamReader& reader ) {
                 item.setDateUpdated( KDateTime::fromString( reader.readElementText(), KDateTime::ISODate ) );
             else if ( el.readStatus.isNextIn( reader ) ) {
                 const QString statusStr = reader.readElementText();
-                if ( statusStr != QLatin1String("new") && statusStr != QLatin1String("unread") )
-                    flags.insert( KRss::RssItem::flagRead() );
+                if ( statusStr == QLatin1String("new") || statusStr == QLatin1String("unread") )
+                    flags.remove( KRss::RssItem::flagRead() );
             } else if ( el.important.isNextIn( reader ) ) {
                 if ( reader.readElementText() == QLatin1String("true") )
                     flags.insert( KRss::RssItem::flagImportant() );
