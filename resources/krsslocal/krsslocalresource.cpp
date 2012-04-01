@@ -125,7 +125,7 @@ void KRssLocalResource::retrieveCollections()
     top.setParent( Collection::root() );
     top.setRemoteId( path );
     top.setName( i18n("Local Feeds") );
-    top.setContentMimeTypes( QStringList( Collection::mimeType() ) );
+    top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
 
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( titleOpml );
     //it customizes the root collection with an opml icon
@@ -147,7 +147,6 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
         if (!parsedNode->isFolder()) {
             Collection c = (static_pointer_cast<const ParsedFeed>(parsedNode))->toAkonadiCollection();
             c.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedNode->title() );
-            c.setContentMimeTypes( c.contentMimeTypes() );
             c.setParent( parent );
             c.setCachePolicy( policy );
 
@@ -162,7 +161,7 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
             folder.setName( i18n("T_%1", parsedFolder->title()) );
                 folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedFolder->title() );
             folder.setRemoteId( Settings::self()->path() + parsedFolder->title() );
-            folder.setContentMimeTypes( QStringList( Collection::mimeType() ) );
+            folder.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
             list = buildCollectionTree( parsedFolder->children(), list, folder );
         }
     }
