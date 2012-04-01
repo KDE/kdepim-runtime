@@ -36,8 +36,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
   public:
     explicit KRssLocalResource( const QString &id );
     ~KRssLocalResource();
-    Akonadi::Collection::List buildCollectionTree( QList<boost::shared_ptr<const ParsedNode> > listOfNodes, 
- 				   Akonadi::Collection::List &list, Akonadi::Collection &parent);
+    Akonadi::Collection::List buildCollectionTree( const QList<boost::shared_ptr<const ParsedNode> >& listOfNodes, const Akonadi::Collection &parent);
     QString mimeType();
     void writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr<const ParsedNode> >& nodes);
 

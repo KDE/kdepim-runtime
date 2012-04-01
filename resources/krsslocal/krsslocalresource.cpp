@@ -117,7 +117,13 @@ void KRssLocalResource::retrieveCollections()
                 reader.raiseError( i18n ( "The file is not a valid OPML document." ) );
             }
         }
-    }    
+    }
+
+    if (reader.hasError()) {
+        error(i18n("Could not parse OPML from %1: %2").arg( path, reader.errorString() ) );
+        return;
+
+    }
     
     titleOpml = parser.titleOpml();
     QList<shared_ptr<const ParsedNode> > parsedNodes = parser.topLevelNodes();
@@ -127,7 +133,7 @@ void KRssLocalResource::retrieveCollections()
     top.setParent( Collection::root() );
     top.setRemoteId( path );
     top.setIsFolder( true );
-    top.setName( i18n("Local Feeds") + KRandom::randomString( 8 ) );
+    top.setName( i18n("Local Feeds") );
     top.setTitle( i18n("Local Feeds") );
     top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
 
@@ -136,15 +142,14 @@ void KRssLocalResource::retrieveCollections()
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
     //TODO: modify CMakeLists.txt so that it installs the icon
     
-    Collection::List list;
-    list = buildCollectionTree(parsedNodes, list, top);
+    const Collection::List list = buildCollectionTree(parsedNodes, top);
       
     collectionsRetrieved( list );
 }
 
-Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const ParsedNode> > listOfNodes, 
-				   Collection::List &list, Collection &parent)
+Collection::List KRssLocalResource::buildCollectionTree( const QList<shared_ptr<const ParsedNode> >& listOfNodes, const Collection &parent)
 {
+    Collection::List list;
     list << parent;
   
     foreach(const shared_ptr<const ParsedNode> parsedNode, listOfNodes) {
@@ -167,7 +172,7 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
             folder.setRemoteId( Settings::self()->path() + parsedFolder->title() );
             folder.setIsFolder( true );
             folder.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
-            list = buildCollectionTree( parsedFolder->children(), list, folder );
+            list << buildCollectionTree( parsedFolder->children(), folder );
         }
     }
   
