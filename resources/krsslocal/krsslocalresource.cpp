@@ -121,9 +121,10 @@ void KRssLocalResource::retrieveCollections()
     QList<shared_ptr<const ParsedNode> > parsedNodes = parser.topLevelNodes();
     
     // create a top-level collection
-    Collection top;
+    KRss::FeedCollection top;
     top.setParent( Collection::root() );
     top.setRemoteId( path );
+    top.setIsFolder( true );
     top.setName( i18n("Local Feeds") );
     top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
 
@@ -133,7 +134,7 @@ void KRssLocalResource::retrieveCollections()
     //TODO: modify CMakeLists.txt so that it installs the icon
     
     Collection::List list;
-    list = buildCollectionTree(parser.topLevelNodes(), list, top); 
+    list = buildCollectionTree(parsedNodes, list, top);
       
     collectionsRetrieved( list );
 }
@@ -156,11 +157,12 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
             list << c;
         } else {
             shared_ptr<const ParsedFolder> parsedFolder = static_pointer_cast<const ParsedFolder>(parsedNode);
-            Collection folder;
+            KRss::FeedCollection folder;
             folder.setParent( parent );
             folder.setName( parsedFolder->title() );
             folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedFolder->title() );
             folder.setRemoteId( Settings::self()->path() + parsedFolder->title() );
+            folder.setIsFolder( true );
             folder.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
             list = buildCollectionTree( parsedFolder->children(), list, folder );
         }
