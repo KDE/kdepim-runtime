@@ -57,7 +57,6 @@ bool RssItemSync::updateItem( const Akonadi::Item &storedItem, Akonadi::Item &ne
     const int storedHash = storedItem.payload<KRss::RssItem>().hash();
 
     if ( !newRssItem.guidIsHash() && storedHash != newHash ) {
-        kDebug() << "The article's content is updated:" << newItem.remoteId();
         // dont overwrite the existing flags
         // and set 'New'
         newItem.setFlags( storedItem.flags() );
@@ -73,7 +72,6 @@ bool RssItemSync::updateItem( const Akonadi::Item &storedItem, Akonadi::Item &ne
         // either 'Seen' or 'Important' was changed in the backend
         // push the item to Akonadi clearing 'New'
         if ( readFlagsDiffer || importantFlagsDiffer ) {
-            kDebug() << "The article's flags are updated:" << newItem.remoteId();
             // We need to explicitely overwrite the item's flags
             // otherwise Akonadi::ItemModifyJob just ignores them,
             // see Akonadi::ItemModifyJob::doStart()

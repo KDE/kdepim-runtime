@@ -243,8 +243,10 @@ static bool readItem( Akonadi::Item& akonadiItem, QXmlStreamReader& reader ) {
                 if ( reader.readElementText() == QLatin1String("true") )
                     flags.insert( KRss::RssItem::flagImportant() );
             } else if ( el.deleted.isNextIn( reader ) ) {
-                if ( reader.readElementText() == QLatin1String("true") )
+                if ( reader.readElementText() == QLatin1String("true") ) {
                     flags.insert( KRss::RssItem::flagDeleted() );
+                    flags.insert( KRss::RssItem::flagRead() );
+                }
             }
 
         }
