@@ -198,7 +198,8 @@ void AkregatorMigrator::rootCollectionsReceived( KJob* j )
 
     FeedCollection fc( i );
     fc.setTitle( i18n("Local Feeds") );
-    emit message( Info, i18n( "New resource is rooted at Collection(%1)", fc.id() ) );
+    fc.setIsFolder( true );
+    emit message( Info, i18n( "New resource is rooted at Collection (%1)", fc.id() ) );
     CollectionModifyJob* mjob = new CollectionModifyJob( fc, this );
     connect( mjob, SIGNAL(result(KJob*)), this, SLOT(rootCollectionRenamed(KJob*)) );
     mjob->start();
