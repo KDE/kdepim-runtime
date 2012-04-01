@@ -25,6 +25,7 @@
 #include <KDebug>
 #include <KStandardDirs>
 #include <KLocale>
+#include <KRandom>
 #include <KSaveFile>
 #include <QtXml/QXmlStreamReader>
 #include <QtXml/QXmlStreamWriter>
@@ -48,6 +49,7 @@ using namespace boost;
 KRssLocalResource::KRssLocalResource( const QString &id )
   : ResourceBase( id ), m_syncer( 0 )
 {
+    qsrand(QDateTime::currentDateTime().toTime_t());
     new SettingsAdaptor( Settings::self() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
@@ -125,7 +127,8 @@ void KRssLocalResource::retrieveCollections()
     top.setParent( Collection::root() );
     top.setRemoteId( path );
     top.setIsFolder( true );
-    top.setName( i18n("Local Feeds") );
+    top.setName( i18n("Local Feeds") + KRandom::randomString( 8 ) );
+    top.setTitle( i18n("Local Feeds") );
     top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
 
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( titleOpml );
@@ -159,7 +162,7 @@ Collection::List KRssLocalResource::buildCollectionTree( QList<shared_ptr<const 
             shared_ptr<const ParsedFolder> parsedFolder = static_pointer_cast<const ParsedFolder>(parsedNode);
             KRss::FeedCollection folder;
             folder.setParent( parent );
-            folder.setName( parsedFolder->title() );
+            folder.setName( parsedFolder->title() + KRandom::randomString( 8 ) );
             folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedFolder->title() );
             folder.setRemoteId( Settings::self()->path() + parsedFolder->title() );
             folder.setIsFolder( true );
