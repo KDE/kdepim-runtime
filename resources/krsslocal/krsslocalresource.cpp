@@ -335,25 +335,6 @@ void KRssLocalResource::configure( WId windowId )
     synchronize();
 }
 
-void KRssLocalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
-{
-    Q_UNUSED( collection );
-
-    changeCommitted( item );
-}
-
-void KRssLocalResource::itemRemoved( const Akonadi::Item &item )
-{  
-    changeCommitted( item );
-}
-
-void KRssLocalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
-{
-    Q_UNUSED( parts );
-
-    changeCommitted( item );
-}
-
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
 {  
     changeCommitted( collection );
