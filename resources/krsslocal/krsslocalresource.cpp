@@ -47,7 +47,7 @@ using namespace Akonadi;
 using namespace boost;
 
 KRssLocalResource::KRssLocalResource( const QString &id )
-  : ResourceBase( id ), m_syncer( 0 )
+    : ResourceBase( id ), m_syncer( 0 ), m_quitLoop( 0 )
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
     new SettingsAdaptor( Settings::self() );
@@ -74,8 +74,8 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     //
     writeBackTimer = new QTimer(this);
     writeBackTimer->setSingleShot( true );
-    connect(writeBackTimer, SIGNAL(timeout()), this, SIGNAL(quitOrTimeout()));
-    connect(this, SIGNAL(quitOrTimeout()), this, SLOT(fetchCollections()));
+    writeBackTimer->setInterval( 5000 );
+    connect(writeBackTimer, SIGNAL(timeout()), this, SLOT(fetchCollections()));
 }
 
 KRssLocalResource::~KRssLocalResource()
@@ -300,13 +300,15 @@ bool KRssLocalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByt
 
 void KRssLocalResource::aboutToQuit()
 {
-    // TODO: any cleanup you need to do while there is still an active
+    // any cleanup you need to do while there is still an active
     // event loop. The resource will terminate after this method returns
 
-    if (writeBackTimer->isActive()) {
-        writeBackTimer->stop();
-        emit quitOrTimeout();
-    }
+    writeBackTimer->stop();
+    fetchCollections();
+    QEventLoop loop;
+    m_quitLoop = &loop;
+    loop.exec();
+    m_quitLoop = 0;
 }
 
 void KRssLocalResource::configure( WId windowId )
@@ -395,6 +397,8 @@ void KRssLocalResource::fetchCollectionsFinished(KJob *job)
     CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
     QList<Collection> collections = fetchJob->collections();
     writeFeedsToOpml( Settings::self()->path(), Util::parsedDescendants( collections, Collection::root() ) );
+    if ( m_quitLoop )
+        m_quitLoop->quit();
 }
 
 void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr< const ParsedNode> >& nodes)

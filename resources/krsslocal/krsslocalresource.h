@@ -28,6 +28,8 @@
 #include "opmlparser.h"
 #include "rssitemsync.h"
 
+class QEventLoop;
+
 class KRssLocalResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
 {
@@ -73,6 +75,7 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     static const int WriteBackTimeout = 30000; // in milliseconds
     QString titleOpml;
     RssItemSync *m_syncer;
+    QEventLoop* m_quitLoop;
 };
 
 #endif
