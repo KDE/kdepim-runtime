@@ -390,15 +390,17 @@ bool KRss::RssItemSerializer::deserialize( KRss::RssItem& item, const QByteArray
     const bool readHeaders = ( part & Headers ) != 0;
     const bool readContent = ( part & Content ) != 0;
 
-    if ( readHeaders )
+    if ( readHeaders ) {
         item.setHeadersLoaded( true );
+        item.setAuthors(QList<Person>());
+        item.setCategories(QList<Category>());
+        item.setEnclosures(QList<Enclosure>());
+    }
 
     if ( readContent ) {
         item.setContentLoaded( true );
-        item.setEnclosures(QList<Enclosure>());
-        item.setCategories(QList<Category>());
-        item.setAuthors(QList<Person>());
     }
+
     while ( !reader.atEnd() )
     {
         reader.readNext();
