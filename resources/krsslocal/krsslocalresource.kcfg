@@ -13,5 +13,9 @@
       <label>Do not change the actual backend data.</label>
       <default>false</default>
     </entry>
+<!--    <entry name="UseIntervalFetch" type="Bool">
+      <label>Do not change the actual backend data.</label>
+      <default>false</default>
+    </entry>-->
   </group>
 </kcfg>
