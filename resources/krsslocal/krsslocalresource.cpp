@@ -1,4 +1,5 @@
 /*
+    KRssLocalResource - an Akonadi resource to store subscriptions in an opml file
     Copyright (C) 2011    Alessandro Cosentino <cosenal@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
@@ -19,11 +20,12 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "util.h"
+#include "configdialog.h"
+
 
 #include <QtDBus/QDBusConnection>
-#include <KFileDialog>
+#include <KWindowSystem>
 #include <KDebug>
-#include <KStandardDirs>
 #include <KLocale>
 #include <KRandom>
 #include <KSaveFile>
@@ -313,24 +315,16 @@ void KRssLocalResource::aboutToQuit()
 
 void KRssLocalResource::configure( WId windowId )
 {
-    Q_UNUSED( windowId );
+    
+    ConfigDialog dlg;
+    if ( windowId )
+      KWindowSystem::setMainWindow( &dlg, windowId );
+    if ( dlg.exec() ) {
+      emit configurationDialogAccepted();
+    } else {
+      emit configurationDialogRejected();
+    }
 
-    const QString oldPath = Settings::self()->path();
-
-    KUrl startUrl;
-    if ( oldPath.isEmpty() )
-        startUrl = KUrl( QDir::homePath() );
-    else
-        startUrl = KUrl( oldPath );
-
-    const QString title = i18nc("@title:window", "Select an OPML Document");
-    QString newPath = KFileDialog::getOpenFileName( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
-                                              0, title );
-
-    if ( newPath.isEmpty() )
-        newPath = KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
-
-    Settings::self()->setPath( newPath );
     Settings::self()->writeConfig();
     synchronize();
 }

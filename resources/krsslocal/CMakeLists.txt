@@ -9,8 +9,10 @@ set( krsslocalresource_SRCS
   util.cpp
   opmlparser.cpp
   rssitemsync.cpp
+  configdialog.cpp
 )
 
+kde4_add_ui_files(krsslocalresource_SRCS configdialog.ui)
 kde4_add_kcfg_files(krsslocalresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/krsslocalresource.kcfg org.kde.Akonadi.RssLocal.Settings)
 qt4_add_dbus_adaptor(krsslocalresource_SRCS
