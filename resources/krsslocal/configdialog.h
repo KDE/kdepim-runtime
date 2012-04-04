@@ -39,7 +39,7 @@ class ConfigDialog : public KDialog
   
   private:
     Ui::ConfigDialog ui;
-    KConfigDialogManager* mManager;
+    KConfigDialogManager* m_manager;
     
 };
 

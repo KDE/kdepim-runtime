@@ -31,8 +31,8 @@ ConfigDialog::ConfigDialog( QWidget *parent )
 {
   
     ui.setupUi( mainWidget() );
-    mManager = new KConfigDialogManager( this, Settings::self() );
-    mManager->updateWidgets();
+    m_manager = new KConfigDialogManager( this, Settings::self() );
+    m_manager->updateWidgets();
    
     connect( ui.browseButton, SIGNAL( clicked() ), SLOT( getPath() ) );
     connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
@@ -64,8 +64,6 @@ void ConfigDialog::save()
       path = KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
     
     Settings::self()->setPath( path );
-    m_manager->updateSettings();
-
 }
 
 #include "configdialog.moc"
