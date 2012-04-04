@@ -46,7 +46,7 @@ static inline int calcHash( const QString& str )
     return qChecksum( array.constData(), array.size() );
 }
 
-KRss::RssItem Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem)
+KRss::RssItem Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem, KDateTime* fetchDate)
 {
     KRss::RssItem rssItem;
     rssItem.setHeadersLoaded( true );
@@ -63,8 +63,10 @@ KRss::RssItem Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem)
         dt.setTime_t( syndItem->datePublished() );
         rssItem.setDatePublished( dt );
     }
-    else {
-        rssItem.setDatePublished( KDateTime::currentLocalDateTime() );
+    else { //if there is no published date in the feed,
+           //set current date but subtract a second for each item to retain the ordering in the feed
+        rssItem.setDatePublished( *fetchDate );
+        fetchDate->addSecs( -1 );
     }
     dt.setTime_t( syndItem->dateUpdated() );
     rssItem.setDateUpdated( dt );

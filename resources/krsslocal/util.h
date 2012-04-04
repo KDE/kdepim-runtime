@@ -24,9 +24,11 @@
 #include <krss/rssitem.h>
 #include <Syndication/Item>
 
+class KDateTime;
+
 namespace Util {
   
-    KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem );
+    KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem, KDateTime* fetchDate );
     QList<boost::shared_ptr<const ParsedNode> > parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent );  
 };
 

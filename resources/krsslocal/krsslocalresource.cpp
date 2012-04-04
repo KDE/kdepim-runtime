@@ -27,6 +27,7 @@
 #include <KWindowSystem>
 #include <KDebug>
 #include <KLocale>
+#include <KDateTime>
 #include <KRandom>
 #include <KSaveFile>
 #include <QtXml/QXmlStreamReader>
@@ -269,10 +270,11 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
 
     QList<Syndication::ItemPtr> syndItems = feed->items();
     Akonadi::Item::List items;
+    KDateTime now = KDateTime::currentLocalDateTime();
     foreach ( const Syndication::ItemPtr& syndItem, syndItems ) {
         Akonadi::Item item( mimeType() );
         item.setRemoteId( syndItem->id() );
-        item.setPayload<KRss::RssItem>( Util::fromSyndicationItem( syndItem ) );
+        item.setPayload<KRss::RssItem>( Util::fromSyndicationItem( syndItem, &now ) );
         items << item;
     }
 
