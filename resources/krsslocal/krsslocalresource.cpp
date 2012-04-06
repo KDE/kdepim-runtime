@@ -74,14 +74,15 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     m_policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
 
 
-    //changeRecorder()->fetchCollection( true );
-
-    changeRecorder()->itemFetchScope().fetchFullPayload( false );
-    //changeRecorder()->itemFetchScope().fetchAllAttributes( true );
+    // Change recording makes the resource unusable for hours here
+    // after migrating 130000 items, so disable it, as we don't write back item changes anyway.
+    changeRecorder()->setChangeRecordingEnabled( false );
+    changeRecorder()->fetchCollection( true );
+    changeRecorder()->fetchChangedOnly( true );
+    changeRecorder()->setItemFetchScope( ItemFetchScope() );
 
     //This timer handles the situation in which at least one collection is changed
     //and the modifications must be written back on the opml file.
-    //
     m_writeBackTimer->setSingleShot( true );
     m_writeBackTimer->setInterval( WriteBackTimeout );
     connect(m_writeBackTimer, SIGNAL(timeout()), this, SLOT(fetchCollections()));
