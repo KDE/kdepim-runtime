@@ -387,7 +387,7 @@ void KRssLocalResource::fetchCollectionsFinished(KJob *job)
 void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr< const ParsedNode> >& nodes)
 {
     KSaveFile file( path );
-    if ( !file.open( QIODevice::ReadWrite | QIODevice::Text ) ) {
+    if ( !file.open( QIODevice::WriteOnly ) ) {
         error( i18n("Could not open %1: %2", path, file.errorString()) );
         return;
     }
