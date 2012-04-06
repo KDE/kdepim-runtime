@@ -83,7 +83,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     //and the modifications must be written back on the opml file.
     //
     m_writeBackTimer->setSingleShot( true );
-    m_writeBackTimer->setInterval( 5000 );
+    m_writeBackTimer->setInterval( WriteBackTimeout );
     connect(m_writeBackTimer, SIGNAL(timeout()), this, SLOT(fetchCollections()));
 }
 
@@ -344,7 +344,7 @@ void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
     changeCommitted( collection );
 
     if ( !m_writeBackTimer->isActive() )
-        m_writeBackTimer->start( WriteBackTimeout );
+        m_writeBackTimer->start();
 }
 
 void KRssLocalResource::collectionAdded( const Collection &collection, const Collection &parent )
@@ -353,14 +353,14 @@ void KRssLocalResource::collectionAdded( const Collection &collection, const Col
     changeCommitted( collection );
 
     if ( !m_writeBackTimer->isActive() )
-        m_writeBackTimer->start( WriteBackTimeout );
+        m_writeBackTimer->start();
 }
 
 void KRssLocalResource::collectionRemoved( const Collection &collection )
 {
     changeCommitted( collection );
     if ( !m_writeBackTimer->isActive() )
-        m_writeBackTimer->start( WriteBackTimeout );
+        m_writeBackTimer->start();
 }
 
 void KRssLocalResource::fetchCollections()
