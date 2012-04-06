@@ -65,12 +65,10 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
   private:    
-    Akonadi::CachePolicy policy;
+    Akonadi::CachePolicy m_policy;
     QHash<Syndication::Loader*, Akonadi::Collection> m_collectionByLoader;
-    QTimer *writeBackTimer;
-    static const int CacheTimeout = -1, IntervalCheckTime = 5; 
-    static const int WriteBackTimeout = 30000; // in milliseconds
-    QString titleOpml;
+    QTimer *m_writeBackTimer;
+    QString m_titleOpml;
     RssItemSync *m_syncer;
     QEventLoop* m_quitLoop;
 };

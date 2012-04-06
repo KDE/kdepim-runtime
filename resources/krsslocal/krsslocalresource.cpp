@@ -49,8 +49,14 @@
 using namespace Akonadi;
 using namespace boost;
 
+static const int CacheTimeout = -1, IntervalCheckTime = 5;
+static const int WriteBackTimeout = 30000; // in milliseconds
+
 KRssLocalResource::KRssLocalResource( const QString &id )
-    : ResourceBase( id ), m_syncer( 0 ), m_quitLoop( 0 )
+    : ResourceBase( id )
+    , m_writeBackTimer( new QTimer( this ) )
+    , m_syncer( 0 )
+    , m_quitLoop( 0 )
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
     new SettingsAdaptor( Settings::self() );
@@ -62,9 +68,9 @@ KRssLocalResource::KRssLocalResource( const QString &id )
 
     AttributeFactory::registerAttribute<KRss::FeedPropertiesCollectionAttribute>();
 
-    policy.setInheritFromParent( false );
-    policy.setSyncOnDemand( false );
-    policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
+    m_policy.setInheritFromParent( false );
+    m_policy.setSyncOnDemand( false );
+    m_policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
 
 
     //changeRecorder()->fetchCollection( true );
@@ -75,10 +81,9 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     //This timer handles the situation in which at least one collection is changed
     //and the modifications must be written back on the opml file.
     //
-    writeBackTimer = new QTimer(this);
-    writeBackTimer->setSingleShot( true );
-    writeBackTimer->setInterval( 5000 );
-    connect(writeBackTimer, SIGNAL(timeout()), this, SLOT(fetchCollections()));
+    m_writeBackTimer->setSingleShot( true );
+    m_writeBackTimer->setInterval( 5000 );
+    connect(m_writeBackTimer, SIGNAL(timeout()), this, SLOT(fetchCollections()));
 }
 
 KRssLocalResource::~KRssLocalResource()
@@ -128,7 +133,7 @@ void KRssLocalResource::retrieveCollections()
 
     }
     
-    titleOpml = parser.titleOpml();
+    m_titleOpml = parser.titleOpml();
     QList<shared_ptr<const ParsedNode> > parsedNodes = parser.topLevelNodes();
     
     // create a top-level collection
@@ -140,7 +145,7 @@ void KRssLocalResource::retrieveCollections()
     top.setTitle( i18n("Local Feeds") );
     top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
 
-    top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( titleOpml );
+    top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( m_titleOpml );
     //it customizes the root collection with an opml icon
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
     //TODO: modify CMakeLists.txt so that it installs the icon
@@ -160,7 +165,7 @@ Collection::List KRssLocalResource::buildCollectionTree( const QList<shared_ptr<
             Collection c = (static_pointer_cast<const ParsedFeed>(parsedNode))->toAkonadiCollection();
             c.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( parsedNode->title() );
             c.setParent( parent );
-            c.setCachePolicy( policy );
+            c.setCachePolicy( m_policy );
 
             //it customizes the collection with an rss icon
             c.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-rss+xml") );
@@ -307,7 +312,7 @@ void KRssLocalResource::aboutToQuit()
     // any cleanup you need to do while there is still an active
     // event loop. The resource will terminate after this method returns
 
-    writeBackTimer->stop();
+    m_writeBackTimer->stop();
     fetchCollections();
     QEventLoop loop;
     m_quitLoop = &loop;
@@ -335,9 +340,8 @@ void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
 {  
     changeCommitted( collection );
 
-    if (!writeBackTimer->isActive()) {
-        writeBackTimer->start(WriteBackTimeout);
-    }
+    if ( !m_writeBackTimer->isActive() )
+        m_writeBackTimer->start( WriteBackTimeout );
 }
 
 void KRssLocalResource::collectionAdded( const Collection &collection, const Collection &parent )
@@ -345,15 +349,15 @@ void KRssLocalResource::collectionAdded( const Collection &collection, const Col
     Q_UNUSED( parent )
     changeCommitted( collection );
 
-    if ( !writeBackTimer->isActive() )
-        writeBackTimer->start( WriteBackTimeout );
+    if ( !m_writeBackTimer->isActive() )
+        m_writeBackTimer->start( WriteBackTimeout );
 }
 
 void KRssLocalResource::collectionRemoved( const Collection &collection )
 {
     changeCommitted( collection );
-    if ( !writeBackTimer->isActive() )
-        writeBackTimer->start( WriteBackTimeout );
+    if ( !m_writeBackTimer->isActive() )
+        m_writeBackTimer->start( WriteBackTimeout );
 }
 
 void KRssLocalResource::fetchCollections()
@@ -389,7 +393,7 @@ void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<boost:
     QXmlStreamWriter writer( &file );
     writer.setAutoFormatting( true );
     writer.writeStartDocument();
-    OpmlWriter::writeOpml( writer, nodes, titleOpml);
+    OpmlWriter::writeOpml( writer, nodes, m_titleOpml );
     writer.writeEndDocument();
     
     if ( !file.finalize() ) {
