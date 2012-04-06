@@ -398,8 +398,8 @@ void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<boost:
     OpmlWriter::writeOpml( writer, nodes, m_titleOpml );
     writer.writeEndDocument();
     
-    if ( !file.finalize() ) {
-        error( i18n("Could not save %1: %2", path, file.errorString()) );
+    if ( writer.hasError() || !file.finalize() ) { //hasError() refers to the underlying device, so file.errorString() is our best bet in both cases
+        error( i18n("Could not save %1: %2", path, file.errorString() ) );
     }
 }
 
