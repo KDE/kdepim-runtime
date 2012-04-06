@@ -28,6 +28,7 @@
 #include <KDebug>
 #include <KLocale>
 #include <KDateTime>
+#include <KDebug>
 #include <KRandom>
 #include <KSaveFile>
 #include <QtXml/QXmlStreamReader>
@@ -373,13 +374,12 @@ void KRssLocalResource::fetchCollectionsFinished(KJob *job)
 {
     if ( job->error() )
     {
-        qDebug() << "Error occurred";
-        return;
+        kDebug() << "Error occurred" << job->errorString();
+    } else {
+        CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
+        QList<Collection> collections = fetchJob->collections();
+        writeFeedsToOpml( Settings::self()->path(), Util::parsedDescendants( collections, Collection::root() ) );
     }
-
-    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
-    QList<Collection> collections = fetchJob->collections();
-    writeFeedsToOpml( Settings::self()->path(), Util::parsedDescendants( collections, Collection::root() ) );
     if ( m_quitLoop )
         m_quitLoop->quit();
 }
