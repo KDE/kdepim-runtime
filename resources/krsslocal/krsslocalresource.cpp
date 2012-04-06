@@ -312,6 +312,8 @@ void KRssLocalResource::aboutToQuit()
     // any cleanup you need to do while there is still an active
     // event loop. The resource will terminate after this method returns
 
+    if ( !m_writeBackTimer->isActive() )
+        return;
     m_writeBackTimer->stop();
     fetchCollections();
     QEventLoop loop;
