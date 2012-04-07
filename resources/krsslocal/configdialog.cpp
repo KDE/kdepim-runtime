@@ -25,7 +25,6 @@
 #include <KStandardDirs>
 #include <KFileDialog>
 
-
 ConfigDialog::ConfigDialog( QWidget *parent )
    : KDialog( parent )
 {
@@ -33,7 +32,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
     ui.setupUi( mainWidget() );
     m_manager = new KConfigDialogManager( this, Settings::self() );
     m_manager->updateWidgets();
-   
+    ui.linePath->setText( Settings::self()->path() );
     connect( ui.browseButton, SIGNAL( clicked() ), SLOT( getPath() ) );
     connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
    
@@ -41,7 +40,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
  
 void ConfigDialog::getPath()
 {
-    const QString oldPath = Settings::self()->path();
+    const QString oldPath = ui.linePath->text();
 
     KUrl startUrl;
     if ( oldPath.isEmpty() )
@@ -51,7 +50,7 @@ void ConfigDialog::getPath()
 
     const QString title = i18nc("@title:window", "Select an OPML Document");
     QString newPath = KFileDialog::getOpenFileName( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
-                                              0, title );
+                                              this, title );
     
     ui.linePath->setText( newPath );
     
@@ -59,9 +58,7 @@ void ConfigDialog::getPath()
 
 void ConfigDialog::save()
 { 
-    QString path = ui.linePath->text();
-    if ( path.isEmpty() )
-      path = KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
+    const QString path = ui.linePath->text();
     
     Settings::self()->setPath( path );
 }

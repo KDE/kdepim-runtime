@@ -31,7 +31,7 @@ class ConfigDialog : public KDialog
 {
   Q_OBJECT
   public:
-    ConfigDialog( QWidget *parent = 0 );
+    explicit ConfigDialog( QWidget *parent = 0 );
 
   private slots:
     void getPath();

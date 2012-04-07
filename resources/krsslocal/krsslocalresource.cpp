@@ -31,6 +31,8 @@
 #include <KDebug>
 #include <KRandom>
 #include <KSaveFile>
+#include <KStandardDirs>
+
 #include <QtXml/QXmlStreamReader>
 #include <QtXml/QXmlStreamWriter>
 #include <Akonadi/EntityDisplayAttribute>
@@ -50,6 +52,11 @@
 using namespace Akonadi;
 using namespace boost;
 
+static QString newLocation() {
+    return KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
+
+}
+
 static const int CacheTimeout = -1, IntervalCheckTime = 5;
 static const int WriteBackTimeout = 30000; // in milliseconds
 
@@ -61,6 +68,8 @@ KRssLocalResource::KRssLocalResource( const QString &id )
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
     new SettingsAdaptor( Settings::self() );
+    if ( Settings::self()->path().isEmpty() )
+        Settings::self()->setPath( newLocation() );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
@@ -72,7 +81,6 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     m_policy.setInheritFromParent( false );
     m_policy.setSyncOnDemand( false );
     m_policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
-
 
     // Change recording makes the resource unusable for hours here
     // after migrating 130000 items, so disable it, as we don't write back item changes anyway.
@@ -327,17 +335,17 @@ void KRssLocalResource::aboutToQuit()
 void KRssLocalResource::configure( WId windowId )
 {
     
-    ConfigDialog dlg;
+    QPointer<ConfigDialog> dlg( new ConfigDialog );
     if ( windowId )
-      KWindowSystem::setMainWindow( &dlg, windowId );
-    if ( dlg.exec() ) {
+      KWindowSystem::setMainWindow( dlg, windowId );
+    if ( dlg->exec() == KDialog::Accepted ) {
       emit configurationDialogAccepted();
     } else {
       emit configurationDialogRejected();
     }
-
+    delete dlg;
     Settings::self()->writeConfig();
-    synchronize();
+    synchronizeCollectionTree();
 }
 
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
