@@ -105,10 +105,49 @@ QString KRssLocalResource::mimeType()
     return QLatin1String("application/rss+xml");
 }
 
+
+static bool ensureOpmlCreated( const QString& path, QString* errorString ) {
+    Q_ASSERT( errorString );
+    errorString->clear();
+    if ( QFile::exists( path ) )
+        return true;
+
+    KSaveFile out( path );
+    if ( !out.open( QIODevice::WriteOnly ) ) {
+        *errorString = i18n("Could not create OPML file %1: %2").arg( path, out.errorString() );
+        return false;
+    }
+
+    QXmlStreamWriter writer( &out );
+    writer.writeStartDocument();
+    writer.writeStartElement( QLatin1String("opml") );
+    writer.writeAttribute( QLatin1String("version"), QLatin1String("1.0") );
+    writer.writeStartElement( QLatin1String("head") );
+    writer.writeTextElement( QLatin1String("text"), i18n("Feeds") );
+    writer.writeEndElement(); // head
+    writer.writeStartElement( QLatin1String("body") );
+    writer.writeEndElement(); // body
+    writer.writeEndElement(); // opml
+    writer.writeEndDocument();
+
+    if ( writer.hasError() || !out.finalize() ) {
+        *errorString = i18n("Could not finish writing to OPML file %1: %2").arg( path, out.errorString() );
+        return false;
+    }
+
+    return true;
+}
+
 void KRssLocalResource::retrieveCollections()
 {
     const QString path = Settings::self()->path();
-    
+
+    QString errorString;
+    if ( !ensureOpmlCreated( path, &errorString ) ) {
+        error( errorString );
+        return;
+    }
+
     /* We'll parse the opml file */
     QFile file( path );
     /* If we can't open it, let's show an error message. */
