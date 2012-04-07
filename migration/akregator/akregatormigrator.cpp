@@ -26,7 +26,6 @@
 #include <KSaveFile>
 #include <KGlobal>
 #include <KLocale>
-#include <KRandom>
 #include <KStandardDirs>
 
 #include <Akonadi/AgentInstance>
@@ -141,7 +140,7 @@ void AkregatorMigrator::resourceCreated( KJob *job )
     return;
   }
 
-  const QString targetPath = KGlobal::dirs()->localxdgdatadir() + "/feeds/" + KRandom::randomString( 10 );
+  const QString targetPath = KGlobal::dirs()->localxdgdatadir() + "/feeds/" + instance.identifier();
 
   errno = 0;
   if ( !QDir().mkpath( targetPath ) ) {
