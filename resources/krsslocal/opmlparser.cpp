@@ -184,7 +184,7 @@ shared_ptr<ParsedFeed> ParsedFeed::fromAkonadiCollection( const Akonadi::Collect
 {
     const KRss::FeedCollection feedCollection = collection;
     shared_ptr<ParsedFeed> parsedFeed( new ParsedFeed );
-    parsedFeed->setTitle( collection.name() );
+    parsedFeed->setTitle( feedCollection.title() );
     parsedFeed->d->xmlUrl = feedCollection.xmlUrl();
     parsedFeed->d->htmlUrl = feedCollection.htmlUrl();
     parsedFeed->d->description = feedCollection.description();
