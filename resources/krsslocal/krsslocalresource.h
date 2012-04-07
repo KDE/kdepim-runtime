@@ -64,7 +64,8 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
-  private:    
+
+private:
     Akonadi::CachePolicy m_policy;
     QHash<Syndication::Loader*, Akonadi::Collection> m_collectionByLoader;
     QTimer *m_writeBackTimer;

@@ -29,6 +29,7 @@
 #include <KLocale>
 #include <KDateTime>
 #include <KDebug>
+#include <KGlobal>
 #include <KRandom>
 #include <KSaveFile>
 #include <KStandardDirs>
@@ -52,11 +53,6 @@
 using namespace Akonadi;
 using namespace boost;
 
-static QString newLocation() {
-    return KStandardDirs::locateLocal( "appdata", QLatin1String("feeds.opml") );
-
-}
-
 static const int CacheTimeout = -1, IntervalCheckTime = 5;
 static const int WriteBackTimeout = 30000; // in milliseconds
 
@@ -69,7 +65,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     qsrand(QDateTime::currentDateTime().toTime_t());
     new SettingsAdaptor( Settings::self() );
     if ( Settings::self()->path().isEmpty() )
-        Settings::self()->setPath( newLocation() );
+        Settings::self()->setPath( KGlobal::dirs()->localxdgdatadir() + "/feeds/" + identifier() + QLatin1String("/feeds.opml") );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
