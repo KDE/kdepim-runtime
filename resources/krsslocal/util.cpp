@@ -68,8 +68,10 @@ KRss::RssItem Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem, KD
         rssItem.setDatePublished( *fetchDate );
         fetchDate->addSecs( -1 );
     }
-    dt.setTime_t( syndItem->dateUpdated() );
-    rssItem.setDateUpdated( dt );
+    if ( syndItem->dateUpdated() > 0 ) {
+        dt.setTime_t( syndItem->dateUpdated() );
+        rssItem.setDateUpdated( dt );
+    }
     rssItem.setGuid( syndItem->id() );
     rssItem.setLanguage( syndItem->language() );
     rssItem.setCommentsCount( syndItem->commentsCount() );
