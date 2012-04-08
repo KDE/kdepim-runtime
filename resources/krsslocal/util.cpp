@@ -145,7 +145,7 @@ QList< boost::shared_ptr< const ParsedNode > > Util::parsedDescendants( QList< A
 	if (collection.parentCollection() == parent) {
 	    boost::shared_ptr< ParsedNode > node;
 	    const KRss::FeedCollection feedCollection = collection;
-	    if (feedCollection.feedType() == QLatin1String( "" )) { // it's a folder. correct test???
+        if (feedCollection.isFolder()) {
 		QList< boost::shared_ptr< const ParsedNode > > children = parsedDescendants( collections, collection );
 		if (parent == Akonadi::Collection::root()) {
 		    return children;
