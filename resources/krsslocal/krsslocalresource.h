@@ -30,6 +30,33 @@
 
 class QEventLoop;
 
+#include <Akonadi/Collection>
+#include <KJob>
+
+class ExportToOpmlJob : public KJob {
+    Q_OBJECT
+public:
+    explicit ExportToOpmlJob( QObject* parent );
+    ~ExportToOpmlJob();
+
+    void start();
+
+    QString outputFile() const;
+    void setOutputFile( const QString& path );
+
+    bool includeCustomProperties() const;
+    void setIncludeCustomProperties( bool includeCustomProperties );
+
+    QString resource() const;
+    void setResource( const QString& identifier );
+
+private:
+    class Private;
+    Private* const d;
+    Q_PRIVATE_SLOT(d, void doStart())
+    Q_PRIVATE_SLOT(d, void fetchFinished(KJob*))
+};
+
 class KRssLocalResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
 {
@@ -40,7 +67,6 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     ~KRssLocalResource();
     Akonadi::Collection::List buildCollectionTree( const QList<boost::shared_ptr<const ParsedNode> >& listOfNodes, const Akonadi::Collection &parent);
     QString mimeType();
-    void writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr<const ParsedNode> >& nodes);
 
   public Q_SLOTS:
     virtual void configure( WId windowId );    
@@ -53,8 +79,8 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
     void slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 			Syndication::ErrorCode status );
-    void fetchCollections();
-    void fetchCollectionsFinished( KJob *job );
+    void startOpmlExport();
+    void opmlExportFinished( KJob *job );
     void slotItemSyncDone( KJob *job );
 
 			

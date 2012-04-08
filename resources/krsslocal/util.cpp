@@ -137,32 +137,30 @@ KRss::RssItem Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem, KD
     return rssItem;
 }
 
-QList< boost::shared_ptr< const ParsedNode > > Util::parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent )
+QList< boost::shared_ptr< const ParsedNode > > Util::parsedDescendants( const Akonadi::Collection::List& collections_, Akonadi::Collection parent )
 {
+    Akonadi::Collection::List collections = collections_;
     QList<boost::shared_ptr< const ParsedNode > > nodesList;
     
     Q_FOREACH( const Akonadi::Collection& collection , collections ) {
-	if (collection.parentCollection() == parent) {
-	    boost::shared_ptr< ParsedNode > node;
-	    const KRss::FeedCollection feedCollection = collection;
-        if (feedCollection.isFolder()) {
-		QList< boost::shared_ptr< const ParsedNode > > children = parsedDescendants( collections, collection );
-		if (parent == Akonadi::Collection::root()) {
-		    return children;
-		}
-		boost::shared_ptr<ParsedFolder> parsedFolder( new ParsedFolder );
-		parsedFolder->setTitle( feedCollection.name() );
-		parsedFolder->setChildren( children );
-		node = parsedFolder;		
-	    }
-	    else {
-		node = ParsedFeed::fromAkonadiCollection ( collection );
-	    }
+        if (collection.parentCollection() == parent) {
+            boost::shared_ptr< ParsedNode > node;
+            const KRss::FeedCollection feedCollection = collection;
+            if (feedCollection.isFolder()) {
+                QList< boost::shared_ptr< const ParsedNode > > children = parsedDescendants( collections, collection );
+                if (parent == Akonadi::Collection::root())
+                    return children;
+                boost::shared_ptr<ParsedFolder> parsedFolder( new ParsedFolder );
+                parsedFolder->setTitle( feedCollection.name() );
+                parsedFolder->setChildren( children );
+                node = parsedFolder;
+            } else {
+                node = ParsedFeed::fromAkonadiCollection ( collection );
+            }
 	    
-	    collections.removeOne( collection );
-
-	    nodesList.append( node );
-	}
+            collections.removeOne( collection );
+            nodesList.append( node );
+        }
     }
     
     return nodesList;

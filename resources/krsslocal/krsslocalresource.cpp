@@ -51,6 +51,120 @@
 #include <krss/feedpropertiescollectionattribute.h>
 
 using namespace Akonadi;
+
+static bool writeFeedsToOpml(const QString &path,
+                             const QList<boost::shared_ptr< const ParsedNode> >& nodes,
+                             const QString& titleOpml,
+                             bool withCustomProperties,
+                             QString* errorString)
+{
+    Q_UNUSED(withCustomProperties)
+    Q_ASSERT(errorString);
+    KSaveFile file( path );
+    if ( !file.open( QIODevice::WriteOnly ) ) {
+        *errorString = i18n("Could not open %1: %2", path, file.errorString());
+        return false;
+    }
+
+    QXmlStreamWriter writer( &file );
+    writer.setAutoFormatting( true );
+    writer.writeStartDocument();
+    OpmlWriter::writeOpml( writer, nodes, titleOpml );
+    writer.writeEndDocument();
+
+    if ( writer.hasError() || !file.finalize() ) { //hasError() refers to the underlying device, so file.errorString() is our best bet in both cases
+        *errorString = i18n("Could not save %1: %2", path, file.errorString() );
+        return false;
+    }
+
+    return true;
+}
+
+class ExportToOpmlJob::Private {
+    ExportToOpmlJob* const q;
+public:
+    explicit Private( ExportToOpmlJob* qq ) : q( qq ), includeCustomProperties( false ) {}
+
+    void doStart();
+    void fetchFinished( KJob* job );
+
+    QString resource;
+    QString outputFile;
+    bool includeCustomProperties;
+};
+
+ExportToOpmlJob::ExportToOpmlJob( QObject* parent )
+    : d( new Private( this ) )
+{}
+
+ExportToOpmlJob::~ExportToOpmlJob() {
+    delete d;
+}
+
+void ExportToOpmlJob::start()
+{
+    QMetaObject::invokeMethod( this, "doStart", Qt::QueuedConnection );
+}
+
+
+QString ExportToOpmlJob::resource() const {
+    return d->resource;
+}
+
+void ExportToOpmlJob::setResource( const QString& identifier ) {
+    d->resource = identifier;
+}
+
+
+QString ExportToOpmlJob::outputFile() const {
+    return d->outputFile;
+}
+
+void ExportToOpmlJob::setOutputFile( const QString& path ) {
+    d->outputFile = path;
+}
+
+bool ExportToOpmlJob::includeCustomProperties() const {
+    return d->includeCustomProperties;
+}
+
+void ExportToOpmlJob::setIncludeCustomProperties( bool includeCustomProperties ) {
+    d->includeCustomProperties = includeCustomProperties;
+}
+
+void ExportToOpmlJob::Private::doStart() {
+    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, q );
+    job->setResource( resource );
+    job->fetchScope().setContentMimeTypes( QStringList() << QLatin1String("application/rss+xml") );
+    connect( job, SIGNAL( result( KJob* ) ), q, SLOT( fetchFinished( KJob* ) ) );
+}
+
+void ExportToOpmlJob::Private::fetchFinished( KJob* j ) {
+    CollectionFetchJob* job = qobject_cast<CollectionFetchJob*>( j );
+    Q_ASSERT(job);
+    if ( job->error() ) {
+        q->setErrorText( job->errorText() );
+        q->setError( KJob::UserDefinedError );
+        q->emitResult();
+        return;
+    }
+
+    const Collection::List collections = job->collections();
+    QString errorString;
+    const bool written = writeFeedsToOpml( outputFile,
+                                           Util::parsedDescendants( collections, Collection::root() ),
+                                           QString(),
+                                           includeCustomProperties,
+                                           &errorString );
+    if ( !written ) {
+        q->setErrorText( errorString );
+        q->setError( KJob::UserDefinedError );
+    }
+
+    q->emitResult();
+}
+
+using namespace Akonadi;
 using namespace boost;
 
 static const int CacheTimeout = -1, IntervalCheckTime = 5;
@@ -89,7 +203,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     //and the modifications must be written back on the opml file.
     m_writeBackTimer->setSingleShot( true );
     m_writeBackTimer->setInterval( WriteBackTimeout );
-    connect(m_writeBackTimer, SIGNAL(timeout()), this, SLOT(fetchCollections()));
+    connect(m_writeBackTimer, SIGNAL(timeout()), this, SLOT(startOpmlExport()));
 }
 
 KRssLocalResource::~KRssLocalResource()
@@ -360,7 +474,7 @@ void KRssLocalResource::aboutToQuit()
     if ( !m_writeBackTimer->isActive() )
         return;
     m_writeBackTimer->stop();
-    fetchCollections();
+    startOpmlExport();
     QEventLoop loop;
     m_quitLoop = &loop;
     loop.exec();
@@ -407,45 +521,24 @@ void KRssLocalResource::collectionRemoved( const Collection &collection )
         m_writeBackTimer->start();
 }
 
-void KRssLocalResource::fetchCollections()
+void KRssLocalResource::startOpmlExport()
 {
-    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
-    job->fetchScope().setContentMimeTypes( QStringList() << mimeType() );
-    connect( job, SIGNAL( result( KJob* ) ), SLOT( fetchCollectionsFinished( KJob* ) ) );
+    ExportToOpmlJob* job = new ExportToOpmlJob( this );
+    job->setResource( identifier() );
+    job->setOutputFile( Settings::self()->path() );
+    job->setIncludeCustomProperties( true );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(opmlExportFinished(KJob*)) );
 }
 
-void KRssLocalResource::fetchCollectionsFinished(KJob *job)
+void KRssLocalResource::opmlExportFinished( KJob *job )
 {
     if ( job->error() )
-    {
         kDebug() << "Error occurred" << job->errorString();
-    } else {
-        CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>( job );
-        QList<Collection> collections = fetchJob->collections();
-        writeFeedsToOpml( Settings::self()->path(), Util::parsedDescendants( collections, Collection::root() ) );
-    }
+
     if ( m_quitLoop )
         m_quitLoop->quit();
 }
 
-void KRssLocalResource::writeFeedsToOpml(const QString &path, const QList<boost::shared_ptr< const ParsedNode> >& nodes)
-{
-    KSaveFile file( path );
-    if ( !file.open( QIODevice::WriteOnly ) ) {
-        error( i18n("Could not open %1: %2", path, file.errorString()) );
-        return;
-    }
-  
-    QXmlStreamWriter writer( &file );
-    writer.setAutoFormatting( true );
-    writer.writeStartDocument();
-    OpmlWriter::writeOpml( writer, nodes, m_titleOpml );
-    writer.writeEndDocument();
-    
-    if ( writer.hasError() || !file.finalize() ) { //hasError() refers to the underlying device, so file.errorString() is our best bet in both cases
-        error( i18n("Could not save %1: %2", path, file.errorString() ) );
-    }
-}
 
 
 AKONADI_RESOURCE_MAIN( KRssLocalResource )

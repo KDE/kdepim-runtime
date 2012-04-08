@@ -29,7 +29,7 @@ class KDateTime;
 namespace Util {
   
     KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem, KDateTime* fetchDate );
-    QList<boost::shared_ptr<const ParsedNode> > parsedDescendants( QList< Akonadi::Collection >& collections, Akonadi::Collection parent );  
+    QList<boost::shared_ptr<const ParsedNode> > parsedDescendants( const Akonadi::Collection::List& collections, Akonadi::Collection parent );
 };
 
 #endif // UTIL_H
