@@ -25,37 +25,9 @@
 #include <QTimer>
 #include <QHash>
 
-#include "opmlparser.h"
 #include "rssitemsync.h"
 
 class QEventLoop;
-
-#include <Akonadi/Collection>
-#include <KJob>
-
-class ExportToOpmlJob : public KJob {
-    Q_OBJECT
-public:
-    explicit ExportToOpmlJob( QObject* parent );
-    ~ExportToOpmlJob();
-
-    void start();
-
-    QString outputFile() const;
-    void setOutputFile( const QString& path );
-
-    bool includeCustomProperties() const;
-    void setIncludeCustomProperties( bool includeCustomProperties );
-
-    QString resource() const;
-    void setResource( const QString& identifier );
-
-private:
-    class Private;
-    Private* const d;
-    Q_PRIVATE_SLOT(d, void doStart())
-    Q_PRIVATE_SLOT(d, void fetchFinished(KJob*))
-};
 
 class KRssLocalResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::Observer
@@ -65,31 +37,28 @@ class KRssLocalResource : public Akonadi::ResourceBase,
   public:
     explicit KRssLocalResource( const QString &id );
     ~KRssLocalResource();
-    Akonadi::Collection::List buildCollectionTree( const QList<boost::shared_ptr<const ParsedNode> >& listOfNodes, const Akonadi::Collection &parent);
-    QString mimeType();
 
   public Q_SLOTS:
-    virtual void configure( WId windowId );    
-  signals:
-    void quitOrTimeout();
+    void configure( WId windowId );
 
-  protected Q_SLOTS:
+  protected:
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+
+    virtual void aboutToQuit();
+
+    void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
+    void collectionChanged( const Akonadi::Collection &collection );
+    void collectionRemoved( const Akonadi::Collection &collection );
+
+  private Q_SLOTS:
     void slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 			Syndication::ErrorCode status );
     void startOpmlExport();
     void opmlExportFinished( KJob *job );
+    void opmlImportFinished( KJob *job );
     void slotItemSyncDone( KJob *job );
-
-			
-  protected:
-    virtual void aboutToQuit();
-
-    virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-    virtual void collectionChanged( const Akonadi::Collection &collection );
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
 
 private:
     Akonadi::CachePolicy m_policy;

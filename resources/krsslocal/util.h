@@ -19,8 +19,6 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include "opmlparser.h"
-
 #include <krss/rssitem.h>
 #include <Syndication/Item>
 
@@ -29,7 +27,6 @@ class KDateTime;
 namespace Util {
   
     KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem, KDateTime* fetchDate );
-    QList<boost::shared_ptr<const ParsedNode> > parsedDescendants( const Akonadi::Collection::List& collections, Akonadi::Collection parent );
-};
+}
 
 #endif // UTIL_H
