@@ -20,7 +20,7 @@
 #ifndef SETUPKOLAB_H
 #define SETUPKOLAB_H
 
-#include <kconfigdialog.h>
+#include <kdialog.h>
 
 #include <akonadi/agentinstance.h>
 #include <akonadi/collection.h>
@@ -28,7 +28,7 @@
 
 class KolabProxyResource;
 class KJob;
-class SetupKolab : public KConfigDialog
+class SetupKolab : public KDialog
 {
   Q_OBJECT
 
@@ -46,7 +46,7 @@ protected slots:
   void slotInstanceAddedRemoved();
   void slotCreateDefaultKolabCollections();
   void createResult( KJob * );
-  virtual void updateSettings();
+  virtual void accept();
 private:
   QMap<QString, Akonadi::AgentInstance> m_agentList;
   Ui::SetupKolabView *m_ui;

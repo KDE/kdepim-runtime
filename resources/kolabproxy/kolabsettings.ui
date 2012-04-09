@@ -97,7 +97,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="kcfg_FormatVersion"/>
+      <widget class="QComboBox" name="formatVersion"/>
      </item>
     </layout>
    </item>

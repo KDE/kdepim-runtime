@@ -37,7 +37,7 @@
 #define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
 
 SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
-:KConfigDialog(QWidget::find(parent), "settings", Settings::self() ),
+:KDialog(),
    m_ui(new Ui::SetupKolabView),
    m_parentResource( parentResource )
 {
@@ -63,10 +63,11 @@ void SetupKolab::initConnection()
 
 }
 
-void SetupKolab::updateSettings()
+void SetupKolab::accept()
 {
+    Settings::self()->setFormatVersion(m_ui->formatVersion->itemData(m_ui->formatVersion->currentIndex()).toInt());
     kDebug() << Settings::self()->formatVersion();
-    KConfigDialog::updateSettings();
+    KDialog::accept();
 }
 
 void SetupKolab::updateCombobox()
