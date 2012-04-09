@@ -22,6 +22,7 @@
 #include <KJob>
 #include <kstandarddirs.h>
 #include <kmessagebox.h>
+#include <KDE/KDebug>
 #include <QProcess>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
@@ -29,13 +30,14 @@
 #include <akonadi/entitydisplayattribute.h>
 #include "collectionannotationsattribute.h"
 #include "setupdefaultfoldersjob.h"
+#include "settings.h"
 
 #define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
 
 #define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
 
 SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
-  :KDialog(),
+:KConfigDialog(QWidget::find(parent), "settings", Settings::self() ),
    m_ui(new Ui::SetupKolabView),
    m_parentResource( parentResource )
 {
@@ -59,6 +61,12 @@ void SetupKolab::initConnection()
   connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
   connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
 
+}
+
+void SetupKolab::updateSettings()
+{
+    kDebug() << Settings::self()->formatVersion();
+    KConfigDialog::updateSettings();
 }
 
 void SetupKolab::updateCombobox()

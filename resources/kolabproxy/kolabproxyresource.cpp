@@ -112,6 +112,9 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
+  
+  Settings::self()->formatVersion();
+  
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -631,6 +634,8 @@ void KolabProxyResource::collectionFetchDone(KJob *job)
     KolabHandler *handler = m_monitoredCollections.value(c.remoteId().toUInt());
     if (!handler) {
       kWarning() << "No handler found";
+      m_ids.remove(job);
+      m_items.remove(job);
       return;
     }
 
