@@ -31,6 +31,7 @@
 #include "collectionannotationsattribute.h"
 #include "setupdefaultfoldersjob.h"
 #include "settings.h"
+#include <kolab/kolabobject.h>
 
 #define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
 
@@ -45,7 +46,13 @@ SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
   m_ui->setupUi( mainWidget() );
   initConnection();
   updateCombobox();
-  setButtons( Close );
+  m_ui->formatVersion->insertItem(0, "Kolab Format v2", Kolab::KolabV2);
+  m_ui->formatVersion->insertItem(1, "Kolab Format v3", Kolab::KolabV3);
+  if (Settings::self()->formatVersion() == Kolab::KolabV2) {
+      m_ui->formatVersion->setCurrentIndex(0);
+  } else {
+      m_ui->formatVersion->setCurrentIndex(1);
+  }
 }
 
 SetupKolab::~SetupKolab()
@@ -67,6 +74,7 @@ void SetupKolab::accept()
 {
     Settings::self()->setFormatVersion(m_ui->formatVersion->itemData(m_ui->formatVersion->currentIndex()).toInt());
     kDebug() << Settings::self()->formatVersion();
+    Settings::self()->writeConfig();
     KDialog::accept();
 }
 
