@@ -23,6 +23,7 @@
 #include <akonadi/item.h>
 #include <akonadi/collection.h>
 #include <kmime/kmime_message.h>
+#include <kolab/kolabobject.h>
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -73,6 +74,8 @@ public:
   virtual void itemDeleted(const Akonadi::Item &item) { Q_UNUSED( item ); }
   virtual void itemAdded(const Akonadi::Item &item) { Q_UNUSED( item ); }
   virtual void reset() {}
+  
+  void setKolabFormatVersion(Kolab::Version);
 
 Q_SIGNALS:
     void deleteItemFromImap(const Akonadi::Item& item);
@@ -83,6 +86,7 @@ protected:
 
   QByteArray m_mimeType;
   Akonadi::Collection m_imapCollection;
+  Kolab::Version m_formatVersion;
 };
 
 #endif

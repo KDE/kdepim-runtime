@@ -112,9 +112,6 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
-  
-  Settings::self()->formatVersion();
-  
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -264,6 +261,10 @@ void KolabProxyResource::configure( WId windowId )
   QPointer<SetupKolab> kolabConfigDialog( new SetupKolab( this, windowId ) );
   kolabConfigDialog->exec();
   emit configurationDialogAccepted();
+  
+  foreach (KolabHandler *handler, m_monitoredCollections.values()) {
+      handler->setKolabFormatVersion(static_cast<Kolab::Version>(Settings::self()->formatVersion()));
+  }
 
   delete kolabConfigDialog;
 }
@@ -832,6 +833,7 @@ bool KolabProxyResource::registerHandlerForCollection(const Akonadi::Collection&
 
     KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"], imapCollection );
     if ( handler ) {
+      handler->setKolabFormatVersion(static_cast<Kolab::Version>(Settings::self()->formatVersion()));
       connect(handler, SIGNAL(deleteItemFromImap(Akonadi::Item)), this, SLOT(deleteImapItem(Akonadi::Item)));
       connect(handler, SIGNAL(addItemToImap(Akonadi::Item,Akonadi::Entity::Id)), this, SLOT(addImapItem(Akonadi::Item,Akonadi::Entity::Id)));
       m_monitor->setCollectionMonitored(imapCollection);

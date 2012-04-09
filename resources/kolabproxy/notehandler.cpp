@@ -38,7 +38,7 @@ void NotesHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item& imapI
   if ( item.hasPayload<KMime::Message::Ptr>() ) {
     KMime::Message::Ptr note = item.payload<KMime::Message::Ptr>();
     imapItem.setMimeType( "message/rfc822" );
-    imapItem.setPayload(Kolab::KolabObjectWriter::writeNote(note));
+    imapItem.setPayload(Kolab::KolabObjectWriter::writeNote(note, m_formatVersion));
   } else {
     kWarning() << "Payload is not a note!";
     return;

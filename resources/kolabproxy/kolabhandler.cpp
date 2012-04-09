@@ -31,7 +31,7 @@
 #include <kabc/contactgroup.h>
 
 
-KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection ) : m_imapCollection( imapCollection )
+KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection ) : m_imapCollection( imapCollection ), m_formatVersion(Kolab::KolabV3)
 {
 }
 
@@ -52,6 +52,12 @@ KolabHandler *KolabHandler::createHandler( const QByteArray& type,
     return 0;
   }
 }
+
+void KolabHandler::setKolabFormatVersion(Kolab::Version version)
+{
+    m_formatVersion = version;
+}
+
 
 
 QByteArray KolabHandler::kolabTypeForCollection(const Akonadi::Collection& collection)
