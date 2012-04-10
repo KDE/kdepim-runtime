@@ -75,8 +75,8 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
-    //policy.setCacheTimeout( CACHE_TIMEOUT );
-    //policy.setIntervalCheckTime( INTERVAL_CHECK_TIME );
+    //policy.setCacheTimeout( CacheTimeout );
+    //policy.setIntervalCheckTime( IntervalCheckTime );
 
     AttributeFactory::registerAttribute<KRss::FeedPropertiesCollectionAttribute>();
 
@@ -96,6 +96,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     m_writeBackTimer->setSingleShot( true );
     m_writeBackTimer->setInterval( WriteBackTimeout );
     connect(m_writeBackTimer, SIGNAL(timeout()), this, SLOT(startOpmlExport()));
+    
 }
 
 KRssLocalResource::~KRssLocalResource()
@@ -330,7 +331,9 @@ void KRssLocalResource::configure( WId windowId )
       emit configurationDialogRejected();
     }
     delete dlg;
+    
     Settings::self()->writeConfig();
+    
     synchronizeCollectionTree();
 }
 

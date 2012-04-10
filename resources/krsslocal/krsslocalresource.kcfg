@@ -7,15 +7,22 @@
   <group name="General">
     <entry name="Path" type="Path">
       <label>Path to a file.</label>
+      <whatsthis>Path of the subscriptions OPML file</whatsthis>
       <default></default>
     </entry>
     <entry name="ReadOnly" type="Bool">
       <label>Do not change the actual backend data.</label>
+      <default>true</default>
+    </entry>
+    <entry name="UseIntervalFetch" type="Bool" >
+      <label>Use interval fetching</label>
+      <whatsthis>Fetch all feeds every %1 minutes.</whatsthis>
       <default>false</default>
     </entry>
-<!--    <entry name="UseIntervalFetch" type="Bool">
-      <label>Do not change the actual backend data.</label>
-      <default>false</default>
-    </entry>-->
-  </group>
+    <entry name="AutoFetchInterval" type="Int" >
+      <label>Interval for autofetching</label>
+      <whatsthis>Interval for autofetching in minutes.</whatsthis>
+      <default>30</default>
+    </entry>
+    </group>
 </kcfg>

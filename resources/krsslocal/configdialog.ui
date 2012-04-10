@@ -46,9 +46,6 @@
       </item>
       <item>
        <widget class="QCheckBox" name="kcfg_UseIntervalFetch">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="text">
          <string>&amp;Use interval fetching</string>
         </property>

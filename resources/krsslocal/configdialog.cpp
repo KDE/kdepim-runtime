@@ -32,10 +32,21 @@ ConfigDialog::ConfigDialog( QWidget *parent )
     ui.setupUi( mainWidget() );
     m_manager = new KConfigDialogManager( this, Settings::self() );
     m_manager->updateWidgets();
+    
     ui.linePath->setText( Settings::self()->path() );
     connect( ui.browseButton, SIGNAL( clicked() ), SLOT( getPath() ) );
     connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
-   
+    
+    ui.kcfg_AutoFetchInterval->setSuffix(ki18np(" minute", "minutes"));
+    connect( ui.kcfg_UseIntervalFetch, SIGNAL( toggled( bool ) ),
+             ui.kcfg_AutoFetchInterval, SLOT( setEnabled( bool ) ) );
+    connect( ui.kcfg_UseIntervalFetch, SIGNAL( toggled( bool ) ),
+             ui.autoFetchIntervalLabel, SLOT( setEnabled( bool ) ) );
+    if ( ui.kcfg_UseIntervalFetch->isChecked() ) {
+        ui.kcfg_AutoFetchInterval->setEnabled( true );
+	ui.autoFetchIntervalLabel->setEnabled( true );
+    }
+    
 }
  
 void ConfigDialog::getPath()
@@ -58,9 +69,11 @@ void ConfigDialog::getPath()
 
 void ConfigDialog::save()
 { 
+    m_manager->updateSettings();
+
     const QString path = ui.linePath->text();
-    
     Settings::self()->setPath( path );
+    
 }
 
 #include "configdialog.moc"
