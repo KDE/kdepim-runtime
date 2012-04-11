@@ -6,7 +6,7 @@ target_link_libraries(nepomukfeederpluginlib
     ${KDE4_KDECORE_LIBS}
     ${KDEPIMLIBS_AKONADI_LIBS}
     ${QT_QTCORE_LIBRARY}
-    nepomukdatamanagement-copy
+    kdepim-runtime-dms-copy
     niefast
 )
 

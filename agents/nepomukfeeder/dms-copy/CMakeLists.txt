@@ -20,15 +20,15 @@ set(datamanagement_SRC
 #the interfaces are directly copied from the buildfiles to avoid installing the interface multiple times
 set(datamanagement_SRC ${datamanagement_SRC} interfaces/resourcewatcherconnectioninterface.cpp interfaces/resourcewatchermanagerinterface.cpp)
 
-kde4_add_library(nepomukdatamanagement-copy SHARED
+kde4_add_library(kdepim-runtime-dms-copy SHARED
   ${datamanagement_SRC})
 
-target_link_libraries(nepomukdatamanagement-copy
+target_link_libraries(kdepim-runtime-dms-copy
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${SOPRANO_LIBRARIES}
   ${NEPOMUK_LIBRARIES}
   ${KDE4_KDECORE_LIBS})
 
-install(TARGETS nepomukdatamanagement-copy
+install(TARGETS kdepim-runtime-dms-copy
    DESTINATION ${LIB_INSTALL_DIR})
