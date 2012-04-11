@@ -25,11 +25,11 @@ CarddavProtocol::CarddavProtocol()
 {
   QDomDocument document;
 
-  QDomElement propfindElement = document.createElementNS( "DAV:", "propfind" );
-  document.appendChild( propfindElement );
+  QDomElement queryElement = document.createElementNS( "urn:ietf:params:xml:ns:carddav", "addressbook-query" );
+  document.appendChild( queryElement );
 
   QDomElement propElement = document.createElementNS( "DAV:", "prop" );
-  propfindElement.appendChild( propElement );
+  queryElement.appendChild( propElement );
 
   propElement.appendChild( document.createElementNS( "DAV:", "displayname" ) );
   propElement.appendChild( document.createElementNS( "DAV:", "resourcetype" ) );
@@ -45,7 +45,7 @@ bool CarddavProtocol::supportsPrincipals() const
 
 bool CarddavProtocol::useReport() const
 {
-  return false;
+  return true;
 }
 
 bool CarddavProtocol::useMultiget() const
