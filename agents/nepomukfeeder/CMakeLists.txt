@@ -25,7 +25,7 @@ kde4_add_executable(akonadi_nepomuk_feeder nepomukfeederagent.cpp pluginloader.c
 
 set( NEPOMUKFEEDER_SHARED_LIBS
     niefast
-    nepomukdatamanagement-copy
+    kdepim-runtime-dms-copy
     ${SOPRANO_LIBRARIES}
     ${KDE4_KDEUI_LIBRARY}
     ${KDE4_KDECORE_LIBS}
