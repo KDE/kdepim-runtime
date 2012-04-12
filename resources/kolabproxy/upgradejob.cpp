@@ -32,6 +32,9 @@
 using namespace Akonadi;
 
 UpgradeJob::UpgradeJob(Kolab::Version targetVersion, const Akonadi::AgentInstance& instance, QObject* parent)
+    : Akonadi::Job(parent),
+    m_targetVersion(targetVersion),
+    m_agentInstance(instance)
 {
     kDebug() << targetVersion;
 }
