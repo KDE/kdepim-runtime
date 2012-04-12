@@ -28,8 +28,11 @@
 #include <akonadi/agentmanager.h>
 #include <akonadi/collectioncreatejob.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchjob.h>
 #include "collectionannotationsattribute.h"
 #include "setupdefaultfoldersjob.h"
+#include "upgradejob.h"
+#include "upgradejob.h"
 #include "settings.h"
 #include <kolab/kolabobject.h>
 
@@ -65,10 +68,18 @@ void SetupKolab::initConnection()
 
   connect( m_ui->launchWizard, SIGNAL(clicked()), this, SLOT(slotLaunchWizard()) );
   connect( m_ui->createKolabFolderButton, SIGNAL(clicked()), this, SLOT(slotCreateDefaultKolabCollections()) );
+  connect( m_ui->upgradeFormatButton, SIGNAL(clicked()), this, SLOT(slotReloadAll()) );
   connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
   connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
 
 }
+
+void SetupKolab::slotReloadAll()
+{
+    const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
+    new UpgradeJob(static_cast<Kolab::Version>(Settings::self()->formatVersion()), instanceSelected, this);
+}
+
 
 void SetupKolab::accept()
 {

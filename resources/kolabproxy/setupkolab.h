@@ -47,6 +47,7 @@ protected slots:
   void slotCreateDefaultKolabCollections();
   void createResult( KJob * );
   virtual void accept();
+  void slotReloadAll();
 private:
   QMap<QString, Akonadi::AgentInstance> m_agentList;
   Ui::SetupKolabView *m_ui;

@@ -27,6 +27,7 @@ set( kolabproxyresource_shared_SRCS
   notehandler.cpp
   setupdefaultfoldersjob.cpp
   kolabdefs.cpp
+  upgradejob.cpp
 )
 
 
