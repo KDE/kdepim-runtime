@@ -28,6 +28,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemcreatejob.h>
+#include <klocalizedstring.h>
 
 using namespace Akonadi;
 
@@ -50,12 +51,37 @@ void UpgradeJob::doStart()
 
 void UpgradeJob::collectionFetchResult(KJob* job)
 {
-    if ( job->error() )
+    kDebug();
+    if ( job->error() ) {
+        kDebug() << job->errorString();
         return; // Akonadi::Job propagates that automatically
-        
+    }
+    
+    // We only want to upgrade our items, not the ones in shared folders.
+    // So we search for our inbox first.
+    Collection defaultParent;
     foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
-        kDebug() << "upgarding " << col.id();
+        EntityDisplayAttribute* attr = 0;
+        if ( (attr = col.attribute<EntityDisplayAttribute>()) ) {
+            if ( attr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
+                defaultParent = col;
+            }
+        }
+    }
+    
+    if ( !defaultParent.isValid() ) {
+        kWarning() << "No inbox found!";
+        setError( Job::Unknown );
+        setErrorText( i18n( "No inbox found!" ) );
+        emitResult();
+        return;
+    }
         
+    foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {  
+        if (col.parent() != defaultParent.id()) {
+            kDebug() << "skipping toplevel folder";
+            continue;
+        }
         KolabV2::FolderType folderType = KolabV2::Mail;
         CollectionAnnotationsAttribute *attr = 0;
         if ( (attr = col.attribute<CollectionAnnotationsAttribute>()) ) {
@@ -65,6 +91,7 @@ void UpgradeJob::collectionFetchResult(KJob* job)
             kDebug() << "skipping mail folder";
             continue;
         }
+        kDebug() << "upgrading " << col.id();
         
         ItemFetchJob *itemFetchJob = new ItemFetchJob(col, this);
         itemFetchJob->fetchScope().fetchFullPayload(true);
@@ -76,6 +103,7 @@ void UpgradeJob::collectionFetchResult(KJob* job)
 void UpgradeJob::itemFetchResult(KJob* job)
 {
     if ( job->error() ) {
+        kDebug() << job->errorString();
         return; // Akonadi::Job propagates that automatically
     }
     ItemFetchJob *j = static_cast<ItemFetchJob*>( job );
@@ -93,7 +121,15 @@ void UpgradeJob::itemFetchResult(KJob* job)
     //we have only one handler per collection, so we can evaluate it only once
     KolabHandler::Ptr handler;
     const QByteArray &kolabType = KolabHandler::kolabTypeForMimeType(QStringList() << j->items().first().mimeType());
+    if (kolabType.isEmpty()) {
+        qWarning() << "invalid item";
+        return;
+    }
     handler = KolabHandler::createHandler(kolabType, imapCollection);
+    if (!handler) {
+        qWarning() << "invalid handler";
+        return;
+    }
     handler->setKolabFormatVersion(m_targetVersion);
     
     const Akonadi::Item::List &translatedItems = handler->translateItems(j->items());
