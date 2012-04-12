@@ -52,6 +52,26 @@ KolabHandler::Ptr KolabHandler::createHandler( const QByteArray& type,
   return KolabHandler::Ptr();
 }
 
+KolabHandler::Ptr KolabHandler::createHandler(const KolabV2::FolderType& type, const Akonadi::Collection& imapCollection)
+{
+    switch (type) {
+        case KolabV2::Contact:
+            return Ptr(new AddressBookHandler( imapCollection ));
+        case KolabV2::Event:
+            return Ptr(new CalendarHandler( imapCollection ));
+        case KolabV2::Task:
+            return Ptr(new TasksHandler( imapCollection ));
+        case KolabV2::Journal:
+            return Ptr(new JournalHandler( imapCollection ));
+        case KolabV2::Note:
+            return Ptr(new NotesHandler( imapCollection ));
+        default:
+            qWarning() << "invalid type";
+    }
+    return KolabHandler::Ptr();
+}
+
+
 void KolabHandler::setKolabFormatVersion(Kolab::Version version)
 {
     m_formatVersion = version;

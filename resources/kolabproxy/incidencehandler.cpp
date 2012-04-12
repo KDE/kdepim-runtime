@@ -186,12 +186,6 @@ void IncidenceHandler::incidenceToItem(const KCalCore::Incidence::Ptr &incidence
   imapItem.setPayload(message);
 }
 
-KCalCore::Incidence::Ptr IncidenceHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
-{
-    return Kolab::KolabObjectReader(data).getIncidence();
-}
-
-
 
 void IncidenceHandler::itemDeleted(const Akonadi::Item &item)
 {
@@ -221,7 +215,7 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
   Kolab::KolabObjectReader reader;
   reader.parseMimeMessage(payload);
   
-  KCalCore::Incidence::Ptr e = reader.getIncidence();/*incidenceFromKolab(payload);*/
+  KCalCore::Incidence::Ptr e = reader.getIncidence();
   if ( !e )
     return;
   const KCalCore::Incidence::Ptr incidence(e);

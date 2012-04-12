@@ -47,7 +47,6 @@ Q_SIGNALS:
     void useGlobalMode();
 
 protected:
-  virtual KCalCore::Incidence::Ptr incidenceFromKolab( const KMime::Message::Ptr &data );
   virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence) = 0;
 
   void incidenceToItem(const KCalCore::Incidence::Ptr &e, Akonadi::Item &imapItem);

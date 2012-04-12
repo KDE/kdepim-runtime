@@ -24,6 +24,7 @@
 #include <akonadi/collection.h>
 #include <kmime/kmime_message.h>
 #include <kolab/kolabobject.h>
+#include "kolabdefs.h"
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -33,6 +34,7 @@ class KolabHandler : public QObject{
 public:
   typedef QSharedPointer<KolabHandler>  Ptr;
   static Ptr createHandler( const QByteArray& type, const Akonadi::Collection &imapCollection );
+  static Ptr createHandler( const KolabV2::FolderType& type, const Akonadi::Collection &imapCollection );
 
   /**
     Returns the Kolab folder type for the given collection.

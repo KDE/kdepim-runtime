@@ -32,6 +32,9 @@
 
 using namespace Akonadi;
 
+#define IMAP_COLLECTION "IMAP_COLLECTION"
+#define FOLDER_TYPE "FOLDER_TYPE"
+
 UpgradeJob::UpgradeJob(Kolab::Version targetVersion, const Akonadi::AgentInstance& instance, QObject* parent)
     : Akonadi::Job(parent),
     m_targetVersion(targetVersion),
@@ -46,7 +49,7 @@ void UpgradeJob::doStart()
     //Get all subdirectories of kolab resource
     CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
     job->fetchScope().setResource( m_agentInstance.identifier() );
-    connect( job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)) );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchResult(KJob*)) );
 }
 
 void UpgradeJob::collectionFetchResult(KJob* job)
@@ -88,15 +91,17 @@ void UpgradeJob::collectionFetchResult(KJob* job)
             folderType = KolabV2::folderTypeFromString( attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
         }
         if (folderType == KolabV2::Mail) {
-            kDebug() << "skipping mail folder";
-            continue;
+            kWarning() << "Wrong folder annotation (this should never happen, the annotation is probably not available)";
         }
+        
         kDebug() << "upgrading " << col.id();
         
         ItemFetchJob *itemFetchJob = new ItemFetchJob(col, this);
         itemFetchJob->fetchScope().fetchFullPayload(true);
         itemFetchJob->fetchScope().setCacheOnly(false);
-        connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchResult(KJob*)) );
+        itemFetchJob->setProperty( IMAP_COLLECTION, QVariant::fromValue( col ) );
+        itemFetchJob->setProperty( FOLDER_TYPE, QVariant::fromValue( static_cast<int>(folderType) ) );
+        connect( itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(itemFetchResult(KJob*)) );
     }
 }
 
@@ -112,20 +117,15 @@ void UpgradeJob::itemFetchResult(KJob* job)
         return;
     }
     
-    const Collection imapCollection = j->items().first().parentCollection();
+    const Collection imapCollection = j->property(IMAP_COLLECTION).value<Akonadi::Collection>();
     if (!imapCollection.isValid()) {
         qWarning() << "invalid imap collection";
         return;
     }
     
-    //we have only one handler per collection, so we can evaluate it only once
-    KolabHandler::Ptr handler;
-    const QByteArray &kolabType = KolabHandler::kolabTypeForMimeType(QStringList() << j->items().first().mimeType());
-    if (kolabType.isEmpty()) {
-        qWarning() << "invalid item";
-        return;
-    }
-    handler = KolabHandler::createHandler(kolabType, imapCollection);
+    KolabV2::FolderType folderType = static_cast<KolabV2::FolderType>(j->property(FOLDER_TYPE).toInt());
+    KolabHandler::Ptr handler = KolabHandler::createHandler(folderType, imapCollection);
+        
     if (!handler) {
         qWarning() << "invalid handler";
         return;
@@ -138,9 +138,6 @@ void UpgradeJob::itemFetchResult(KJob* job)
         Item imapItem(handler->contentMimeTypes()[0]);
         handler->toKolabFormat( tItem, imapItem );
         
-        ItemCreateJob *cjob = new ItemCreateJob(imapItem, imapCollection);
-//         cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( tItem ) );
-//         cjob->setProperty( IMAP_COLLECTION, QVariant::fromValue( imapCollection ) );
-//         connect( cjob, SIGNAL(result(KJob*)), SLOT(imapItemCreationResult(KJob*)) );
+        new ItemCreateJob(imapItem, imapCollection, this);
     }    
 }
