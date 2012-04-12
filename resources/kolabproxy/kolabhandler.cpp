@@ -35,22 +35,21 @@ KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection ) : m_imap
 {
 }
 
-KolabHandler *KolabHandler::createHandler( const QByteArray& type,
+KolabHandler::Ptr KolabHandler::createHandler( const QByteArray& type,
                                            const Akonadi::Collection &imapCollection )
 {
   if (type ==  "contact.default" || type ==  "contact") {
-    return new AddressBookHandler( imapCollection );
+    return Ptr(new AddressBookHandler( imapCollection ));
   } else if (type ==  "event.default" || type ==  "event") {
-    return new CalendarHandler( imapCollection );
+    return Ptr(new CalendarHandler( imapCollection ));
   } else if (type ==  "task.default" || type ==  "task") {
-    return new TasksHandler( imapCollection );
+    return Ptr(new TasksHandler( imapCollection ));
   } else if (type ==  "journal.default" || type ==  "journal") {
-    return new JournalHandler( imapCollection );
+    return Ptr(new JournalHandler( imapCollection ));
   } else if (type ==  "note.default" || type ==  "note") {
-    return new NotesHandler( imapCollection );
-  } else {
-    return 0;
+    return Ptr(new NotesHandler( imapCollection ));
   }
+  return KolabHandler::Ptr();
 }
 
 void KolabHandler::setKolabFormatVersion(Kolab::Version version)
@@ -60,9 +59,8 @@ void KolabHandler::setKolabFormatVersion(Kolab::Version version)
 
 
 
-QByteArray KolabHandler::kolabTypeForCollection(const Akonadi::Collection& collection)
+QByteArray KolabHandler::kolabTypeForMimeType(const QStringList& contentMimeTypes)
 {
-  const QStringList contentMimeTypes = collection.contentMimeTypes();
   if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) ) {
     return "contact";
   } else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) ) {

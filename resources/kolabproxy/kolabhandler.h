@@ -31,12 +31,13 @@
 class KolabHandler : public QObject{
   Q_OBJECT
 public:
-  static KolabHandler *createHandler( const QByteArray& type, const Akonadi::Collection &imapCollection );
+  typedef QSharedPointer<KolabHandler>  Ptr;
+  static Ptr createHandler( const QByteArray& type, const Akonadi::Collection &imapCollection );
 
   /**
     Returns the Kolab folder type for the given collection.
   */
-  static QByteArray kolabTypeForCollection( const Akonadi::Collection &collection );
+  static QByteArray kolabTypeForMimeType( const QStringList &mimetypes );
 
   /**
    * Returns all mime types supported by Kolab.

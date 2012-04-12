@@ -23,6 +23,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
 #include <QStringList>
+#include "kolabhandler.h"
 
 
 namespace Akonadi {
@@ -30,7 +31,6 @@ namespace Akonadi {
 }
 
 class FreeBusyUpdateHandler;
-class KolabHandler;
 
 class KolabProxyResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::ObserverV2
@@ -102,7 +102,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
   private:
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
-    QMap<Akonadi::Item::Id, KolabHandler*> m_monitoredCollections;
+    QMap<Akonadi::Item::Id, KolabHandler::Ptr> m_monitoredCollections;
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;

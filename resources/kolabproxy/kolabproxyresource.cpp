@@ -181,7 +181,7 @@ void KolabProxyResource::retrieveItems( const Collection &collection )
   kDebug() << "RETRIEVEITEMS";
   m_retrieveState = RetrieveItems;
   const Collection imapCollection = kolabToImap( collection );
-  KolabHandler *handler = m_monitoredCollections.value( imapCollection.id() );
+  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
   Q_ASSERT( handler );
   handler->reset();
   ItemFetchJob *job = new ItemFetchJob( imapCollection );
@@ -222,7 +222,7 @@ void KolabProxyResource::retrieveItemFetchDone(KJob *job)
       return;
     }
     collectionId = items[0].storageCollectionId();
-    KolabHandler *handler = m_monitoredCollections.value(collectionId);
+    KolabHandler::Ptr handler = m_monitoredCollections.value(collectionId);
     if (handler) {
       if (m_retrieveState == DeleteItem) {
         kDebug() << "m_retrieveState = DeleteItem";
@@ -243,7 +243,6 @@ void KolabProxyResource::retrieveItemFetchDone(KJob *job)
 
 void KolabProxyResource::aboutToQuit()
 {
-  qDeleteAll(m_monitoredCollections);
   m_monitoredCollections.clear();
 }
 
@@ -262,7 +261,7 @@ void KolabProxyResource::configure( WId windowId )
   kolabConfigDialog->exec();
   emit configurationDialogAccepted();
   
-  foreach (KolabHandler *handler, m_monitoredCollections.values()) {
+  foreach (KolabHandler::Ptr handler, m_monitoredCollections.values()) {
       handler->setKolabFormatVersion(static_cast<Kolab::Version>(Settings::self()->formatVersion()));
   }
 
@@ -278,7 +277,7 @@ void KolabProxyResource::itemAdded( const Item &item, const Collection &collecti
 
   const Collection imapCollection = kolabToImap( collection );
 
-  KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
+  KolabHandler::Ptr handler  = m_monitoredCollections.value(imapCollection.id());
   if ( !handler ) {
     kWarning() << "No handler found for collection" << collection << ", available handlers: " << m_monitoredCollections;
     cancelTask();
@@ -307,7 +306,7 @@ void KolabProxyResource::imapItemCreationResult(KJob* job)
   // TODO add accessor to ItemCreateJob for the parent collection
   const Collection imapCollection = cjob->property( IMAP_COLLECTION ).value<Collection>();
 
-  KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
+  KolabHandler::Ptr handler  = m_monitoredCollections.value(imapCollection.id());
   Q_ASSERT( handler );
   handler->itemAdded(imapItem);
   m_excludeAppend << imapItem.id();
@@ -340,7 +339,7 @@ void KolabProxyResource::imapItemUpdateFetchResult(KJob* job)
   if ( fetchJob->items().size() == 1 ) {
     Item imapItem = fetchJob->items().first();
 
-    KolabHandler *handler = m_monitoredCollections.value( imapItem.storageCollectionId() );
+    KolabHandler::Ptr handler = m_monitoredCollections.value( imapItem.storageCollectionId() );
     if (!handler) {
       kWarning() << "No handler found";
       cancelTask();
@@ -371,7 +370,7 @@ void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob* job )
   const Collection kolabCollection = fetchJob->collections().first();
   const Collection imapCollection = kolabToImap( kolabCollection );
 
-  KolabHandler *handler  = m_monitoredCollections.value(imapCollection.id());
+  KolabHandler::Ptr handler  = m_monitoredCollections.value(imapCollection.id());
   if ( !handler ) {
     kWarning() << "No handler found";
     cancelTask();
@@ -416,7 +415,7 @@ void KolabProxyResource::itemRemoved( const Item &item )
 
 void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
 {
-  if ( KolabHandler::kolabTypeForCollection( collection ).isEmpty() ) {
+    if ( KolabHandler::kolabTypeForMimeType( collection.contentMimeTypes() ).isEmpty() ) {
     kWarning() << "Collection " << collection.name() << collection.id() << collection.isValid()
                << "doesn't have kolab type set. isValid = "
                << "; parent is " << parent.name() << parent.id() << parent.isValid();
@@ -434,7 +433,7 @@ void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, 
   CollectionAnnotationsAttribute* attr =
     imapCollection.attribute<CollectionAnnotationsAttribute>( Collection::AddIfMissing );
   QMap<QByteArray, QByteArray> annotations = attr->annotations();
-  annotations["/vendor/kolab/folder-type"] = KolabHandler::kolabTypeForCollection( collection );
+  annotations["/vendor/kolab/folder-type"] = KolabHandler::kolabTypeForMimeType( collection.contentMimeTypes() );
   attr->setAnnotations( annotations );
 
   CollectionCreateJob *job = new CollectionCreateJob( imapCollection, this );
@@ -632,7 +631,7 @@ void KolabProxyResource::collectionFetchDone(KJob *job)
       }
     }
 
-    KolabHandler *handler = m_monitoredCollections.value(c.remoteId().toUInt());
+    KolabHandler::Ptr handler = m_monitoredCollections.value(c.remoteId().toUInt());
     if (!handler) {
       kWarning() << "No handler found";
       m_ids.remove(job);
@@ -662,7 +661,7 @@ void KolabProxyResource::imapItemRemoved(const Item& item)
 {
   kDebug() << "IMAPITEMREMOVED";
   const Item kolabItem = imapToKolab( item );
-  Q_FOREACH(KolabHandler *handler, m_monitoredCollections) {
+  Q_FOREACH(KolabHandler::Ptr handler, m_monitoredCollections) {
     handler->itemDeleted(item);
   }
   ItemDeleteJob *job = new ItemDeleteJob( kolabItem, this );
@@ -760,8 +759,6 @@ void KolabProxyResource::imapCollectionRemoved(const Collection &imapCollection)
   kolabCollection.setRemoteId( QString::number( imapCollection.id() ) );
   new CollectionDeleteJob( kolabCollection );
 
-  KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
-  delete handler;
   m_monitoredCollections.remove(imapCollection.id());
 
   updateFreeBusyInformation( imapCollection );
@@ -806,7 +803,7 @@ Collection KolabProxyResource::createCollection(const Collection& imapCollection
     }
   }
   applyAttributesFromImap( c, imapCollection );
-  KolabHandler *handler = m_monitoredCollections.value(imapCollection.id());
+  KolabHandler::Ptr handler = m_monitoredCollections.value(imapCollection.id());
   contentTypes.append( Collection::mimeType() );
   if ( handler ) {
     contentTypes.append( handler->contentMimeTypes() );
@@ -831,11 +828,11 @@ bool KolabProxyResource::registerHandlerForCollection(const Akonadi::Collection&
   if ( annotationsAttribute ) {
     QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
 
-    KolabHandler *handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"], imapCollection );
+    KolabHandler::Ptr handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"], imapCollection );
     if ( handler ) {
       handler->setKolabFormatVersion(static_cast<Kolab::Version>(Settings::self()->formatVersion()));
-      connect(handler, SIGNAL(deleteItemFromImap(Akonadi::Item)), this, SLOT(deleteImapItem(Akonadi::Item)));
-      connect(handler, SIGNAL(addItemToImap(Akonadi::Item,Akonadi::Entity::Id)), this, SLOT(addImapItem(Akonadi::Item,Akonadi::Entity::Id)));
+      connect(handler.data(), SIGNAL(deleteItemFromImap(Akonadi::Item)), this, SLOT(deleteImapItem(Akonadi::Item)));
+      connect(handler.data(), SIGNAL(addItemToImap(Akonadi::Item,Akonadi::Entity::Id)), this, SLOT(addImapItem(Akonadi::Item,Akonadi::Entity::Id)));
       m_monitor->setCollectionMonitored(imapCollection);
       m_monitoredCollections.insert(imapCollection.id(), handler);
       return true;

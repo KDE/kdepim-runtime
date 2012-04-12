@@ -183,7 +183,7 @@ class KolabConverterTest : public QObject
       QFETCH( QString, vcardFileName );
       QFETCH( QString, mimeFileName );
 
-      KolabHandler *handler = KolabHandler::createHandler( "contact", Collection() );
+      KolabHandler::Ptr handler = KolabHandler::createHandler( "contact", Collection() );
       QVERIFY( handler );
 
       // mime -> vcard conversion
@@ -225,8 +225,6 @@ class KolabConverterTest : public QObject
 //       qDebug() << convertedMime->encodedContent();
 //       qDebug() << realMime->encodedContent();
       QVERIFY( compareMimeMessage( convertedMime, realMime ) );
-
-      delete handler;
     }
 
     void testIncidences_data()
@@ -240,7 +238,7 @@ class KolabConverterTest : public QObject
       QFETCH( QString, icalFileName );
       QFETCH( QString, mimeFileName );
 
-      KolabHandler *handler = KolabHandler::createHandler( type.toLatin1(), Collection() );
+      KolabHandler::Ptr handler = KolabHandler::createHandler( type.toLatin1(), Collection() );
       QVERIFY( handler );
 
       // mime -> vcard conversion
@@ -299,8 +297,6 @@ class KolabConverterTest : public QObject
 //       qDebug() << convertedMime->encodedContent();
 //       qDebug() << realMime->encodedContent();
       QVERIFY( compareMimeMessage( convertedMime, realMime ) );
-
-      delete handler;
     }
 
     void benchmarkContactsLoading_data()
@@ -314,10 +310,9 @@ class KolabConverterTest : public QObject
       QFETCH( QString, mimeFileName );
 
       QBENCHMARK {
-        KolabHandler *handler = KolabHandler::createHandler( "contact", Collection() );
+        KolabHandler::Ptr handler = KolabHandler::createHandler( "contact", Collection() );
         const Item kolabItem = readMimeFile( mimeFileName );
         const Item::List vcardItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
-        delete handler;
       }
     }
 
@@ -332,10 +327,9 @@ class KolabConverterTest : public QObject
       QFETCH( QString, mimeFileName );
 
       QBENCHMARK {
-        KolabHandler *handler = KolabHandler::createHandler( type.toLatin1(), Collection() );
+        KolabHandler::Ptr handler = KolabHandler::createHandler( type.toLatin1(), Collection() );
         const Item kolabItem = readMimeFile( mimeFileName );
         const Item::List icalItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
-        delete handler;
       }
     }
 };
