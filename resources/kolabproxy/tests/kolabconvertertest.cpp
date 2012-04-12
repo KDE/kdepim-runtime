@@ -74,7 +74,7 @@ static bool compareMimeMessage( const KMime::Message::Ptr &msg, const KMime::Mes
   KCOMPARE( msg->contents().size(), expectedMsg->contents().size() );
   for ( int i = 0; i < msg->contents().size(); ++i ) {
     KMime::Content *part = msg->contents().at( i );
-    KMime::Content *expectedPart = msg->contents().at( i );
+    KMime::Content *expectedPart = expectedMsg->contents().at( i );
 
     // part headers
     KCOMPARE( part->contentType()->mimeType(), expectedPart->contentType()->mimeType() );
