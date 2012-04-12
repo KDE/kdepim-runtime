@@ -25,6 +25,7 @@
 #include <collectionannotationsattribute.h>
 #include <akonadi/collectioncreatejob.h>
 #include <akonadi/collectionmodifyjob.h>
+#include <klocalizedstring.h>
 
 using namespace Akonadi;
 
@@ -58,8 +59,12 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
   }
 
   if ( !defaultParent.isValid() ) {
-    // TODO: implement me
+    //If we can't find the parent, we end up creating toplevel directories (which is not what we want).
     kWarning() << "No inbox found!";
+    setError( Job::Unknown );
+    setErrorText( i18n( "No inbox found!" ) );
+    emitResult();
+    return;
   }
 
   // look for existing folders
