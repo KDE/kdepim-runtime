@@ -21,6 +21,7 @@
 #include "upgradejob.h"
 #include "kolabdefs.h"
 #include "kolabhandler.h"
+#include <collectionannotationsattribute.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
@@ -32,11 +33,12 @@ using namespace Akonadi;
 
 UpgradeJob::UpgradeJob(Kolab::Version targetVersion, const Akonadi::AgentInstance& instance, QObject* parent)
 {
-
+    kDebug() << targetVersion;
 }
 
 void UpgradeJob::doStart()
 {
+    kDebug();
     //Get all subdirectories of kolab resource
     CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
     job->fetchScope().setResource( m_agentInstance.identifier() );
@@ -50,6 +52,17 @@ void UpgradeJob::collectionFetchResult(KJob* job)
         
     foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
         kDebug() << "upgarding " << col.id();
+        
+        KolabV2::FolderType folderType = KolabV2::Mail;
+        CollectionAnnotationsAttribute *attr = 0;
+        if ( (attr = col.attribute<CollectionAnnotationsAttribute>()) ) {
+            folderType = KolabV2::folderTypeFromString( attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
+        }
+        if (folderType == KolabV2::Mail) {
+            kDebug() << "skipping mail folder";
+            continue;
+        }
+        
         ItemFetchJob *itemFetchJob = new ItemFetchJob(col, this);
         itemFetchJob->fetchScope().fetchFullPayload(true);
         itemFetchJob->fetchScope().setCacheOnly(false);
