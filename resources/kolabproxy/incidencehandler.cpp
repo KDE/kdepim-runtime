@@ -60,10 +60,11 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
     
-    KCalCore::Incidence::Ptr inc = Kolab::KolabObjectReader(payload).getIncidence();
-    kDebug() << "KCalCore::Incidence " << inc;
-    if (inc) {
-      KCalCore::Incidence::Ptr incidencePtr(inc);
+    KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
+    if (!incidencePtr) {
+        kWarning() << "Failed to read incidence.";
+        return newItems;
+    }
       if (m_uidMap.contains(incidencePtr->uid())) {
         StoredItem storedItem = m_uidMap[incidencePtr->uid()];
         kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
@@ -114,7 +115,6 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
       newItem.setPayload(incidencePtr);
       newItem.setRemoteId(QString::number(item.id()));
       newItems << newItem;
-    }
   }
 
   return newItems;
@@ -166,12 +166,12 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KC
 
 void IncidenceHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
-  kDebug() << "toKolabFormat";
+//   kDebug() << "toKolabFormat";
   KCalCore::Incidence::Ptr incidencePtr;
   if (item.hasPayload<KCalCore::Incidence::Ptr>()) {
     incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
   }
-  kDebug() << "item payload: " << item.payloadData();
+//   kDebug() << "item payload: " << item.payloadData();
   incidenceToItem(incidencePtr, imapItem);
 }
 

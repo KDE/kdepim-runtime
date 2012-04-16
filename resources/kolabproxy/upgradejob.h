@@ -41,6 +41,7 @@ protected:
 private slots:
     void collectionFetchResult( KJob *job );
     void itemFetchResult( KJob *job );
+    void itemModifyResult( KJob *job );
     
 private:
     Akonadi::AgentInstance m_agentInstance;

@@ -28,6 +28,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/itemcreatejob.h>
+#include <akonadi/itemmodifyjob.h>
 #include <klocalizedstring.h>
 
 using namespace Akonadi;
@@ -123,6 +124,25 @@ void UpgradeJob::itemFetchResult(KJob* job)
         return;
     }
     
+//     foreach(const Akonadi::Item &imapItem, j->items()) {
+//         if (!imapItem.hasPayload<KMime::Message::Ptr>()) {
+//             kWarning() << "Payload is not a MessagePtr!";
+//             continue;
+//         }
+//         const KMime::Message::Ptr payload = imapItem.payload<KMime::Message::Ptr>();
+//         KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
+//         if (!incidencePtr) {
+//             kWarning() << "Failed to read incidence.";
+//             continue;
+//         }
+//         
+//         imapItem.setMimeType( "message/rfc822" );
+//         const KMime::Message::Ptr &message = incidenceToMime(incidencePtr);
+//         imapItem.setPayload(message);
+//         new ItemModifyJob(imapItem, this);
+//         
+//     }
+    
     KolabV2::FolderType folderType = static_cast<KolabV2::FolderType>(j->property(FOLDER_TYPE).toInt());
     KolabHandler::Ptr handler = KolabHandler::createHandler(folderType, imapCollection);
         
@@ -132,12 +152,29 @@ void UpgradeJob::itemFetchResult(KJob* job)
     }
     handler->setKolabFormatVersion(m_targetVersion);
     
-    const Akonadi::Item::List &translatedItems = handler->translateItems(j->items());
-    foreach(const Akonadi::Item &tItem, translatedItems) {
-        kDebug() << "updating item " << tItem.id();
-        Item imapItem(handler->contentMimeTypes()[0]);
-        handler->toKolabFormat( tItem, imapItem );
-        
-        new ItemCreateJob(imapItem, imapCollection, this);
-    }    
+    foreach(Akonadi::Item imapItem, j->items()) {
+        if (!imapItem.isValid()) {
+            qWarning() << "invalid item";
+            continue;
+        }
+        kDebug() << "updating item " << imapItem.id();
+        const Akonadi::Item::List &translatedItems = handler->translateItems(Akonadi::Item::List() << imapItem);
+        if (translatedItems.size() != 1) {
+            qWarning() << "failed to translateItems" << translatedItems.size();
+            continue;
+        }
+        handler->toKolabFormat( translatedItems.first(), imapItem );
+        ItemModifyJob *modJob = new ItemModifyJob(imapItem, this);
+        connect(modJob, SIGNAL(result(KJob*)), this, SLOT(itemModifyResult(KJob*)) );
+    }
 }
+
+void UpgradeJob::itemModifyResult(KJob* job)
+{
+    if ( job->error() ) {
+        kDebug() << job->errorString();
+        return; // Akonadi::Job propagates that automatically
+    }
+    kDebug() << "modjob done";
+}
+
