@@ -24,7 +24,7 @@
 #include <kdemacros.h>
 
 #ifndef NEPOMUK_DATA_MANAGEMENT_EXPORT
-# if defined(MAKE_NEPOMUKDATAMANAGEMENT_COPY_LIB)
+# if defined(MAKE_KDEPIM_RUNTIME_DMS_COPY_LIB)
    /* We are building this library */ 
 #  define NEPOMUK_DATA_MANAGEMENT_EXPORT KDE_EXPORT
 # else
