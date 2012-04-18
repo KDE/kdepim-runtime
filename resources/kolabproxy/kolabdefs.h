@@ -22,16 +22,7 @@
 
 #include <QtCore/QByteArray>
 
-#define KOLAB_FOLDER_TYPE_MAIL    "mail"
-#define KOLAB_FOLDER_TYPE_CONTACT "contact"
-#define KOLAB_FOLDER_TYPE_EVENT   "event"
-#define KOLAB_FOLDER_TYPE_TASK    "task"
-#define KOLAB_FOLDER_TYPE_JOURNAL "journal"
-#define KOLAB_FOLDER_TYPE_NOTE    "note"
-
-#define KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ".default"
-
-#define KOLAB_FOLDER_TYPE_ANNOTATION "/vendor/kolab/folder-type"
+#include <kolab/kolabdefinitions.h>
 
 namespace KolabV2
 {
