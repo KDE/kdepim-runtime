@@ -54,7 +54,7 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
   httpUrl.setHost( host );
   httpUrl.setProtocol( QLatin1String( "https" ) );
 
-  // IMAP path is either /INBOX/<path> or /user/someone/<path>
+  // IMAP path is either /INBOX/<path> or /user/someone/<path> FIXME this assumption is wrong also / is a valid path
   Q_ASSERT( path.startsWith( '/' ) );
   const int secondSlash = path.indexOf( '/', 1 );
   if ( secondSlash == -1 ) {

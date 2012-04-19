@@ -60,30 +60,10 @@ void UpgradeJob::collectionFetchResult(KJob* job)
         kDebug() << job->errorString();
         return; // Akonadi::Job propagates that automatically
     }
-    
-    // We only want to upgrade our items, not the ones in shared folders.
-    // So we search for our inbox first.
-    Collection defaultParent;
-    foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
-        EntityDisplayAttribute* attr = 0;
-        if ( (attr = col.attribute<EntityDisplayAttribute>()) ) {
-            if ( attr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
-                defaultParent = col;
-            }
-        }
-    }
-    
-    if ( !defaultParent.isValid() ) {
-        kWarning() << "No inbox found!";
-        setError( Job::Unknown );
-        setErrorText( i18n( "No inbox found!" ) );
-        emitResult();
-        return;
-    }
         
     foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {  
-        if (col.parent() != defaultParent.id()) {
-            kDebug() << "skipping toplevel folder";
+        if (!(col.rights() & Collection::CanChangeItem)) { //FIXME detect shared folders?
+            kDebug() << "skipping non editable folder";
             continue;
         }
         KolabV2::FolderType folderType = KolabV2::Mail;
@@ -92,7 +72,8 @@ void UpgradeJob::collectionFetchResult(KJob* job)
             folderType = KolabV2::folderTypeFromString( attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
         }
         if (folderType == KolabV2::Mail) {
-            kWarning() << "Wrong folder annotation (this should never happen, the annotation is probably not available)";
+            //kWarning() << "Wrong folder annotation (this should never happen, the annotation is probably not available)";
+            continue;
         }
         
         kDebug() << "upgrading " << col.id();

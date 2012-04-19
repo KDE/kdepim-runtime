@@ -47,24 +47,18 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
   if ( job->error() )
     return; // Akonadi::Job propagates that automatically
 
+  //FIXME: This should really look for the personal namespace, and use the folder there. As a workaround we try to use the inbox, and fallback to toplevel otherwise.
   // look for inbox
   Collection defaultParent;
   foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
+    if (!(col.rights() & Collection::CanCreateCollection))
+        continue;
     EntityDisplayAttribute* attr = 0;
     if ( (attr = col.attribute<EntityDisplayAttribute>()) ) {
       if ( attr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
         defaultParent = col;
       }
     }
-  }
-
-  if ( !defaultParent.isValid() ) {
-    //If we can't find the parent, we end up creating toplevel directories (which is not what we want).
-    kWarning() << "No inbox found!";
-    setError( Job::Unknown );
-    setErrorText( i18n( "No inbox found!" ) );
-    emitResult();
-    return;
   }
 
   // look for existing folders
@@ -136,7 +130,7 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
       annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
       attr->setAnnotations( annotations );
       if ( !iconName.isEmpty() ) {
-        Akonadi::EntityDisplayAttribute *attribute =  col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
+        Akonadi::EntityDisplayAttribute *attribute = col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
         attribute->setIconName( iconName );
       }
       new CollectionCreateJob( col, 0 );
