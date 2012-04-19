@@ -5,7 +5,6 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile/>
-  <include>kolab/kolabobject.h</include>
   <group name="General">
     <entry name="ReadOnly" type="Bool">
       <label>Do not change the actual backend data.</label>
@@ -14,12 +13,6 @@
     <entry name="UpdateFreeBusy" type="Bool">
       <label>Trigger a free/busy update on the server, when a calendar collection changes.</label>
       <default>true</default>
-    </entry>
-    <entry name="FormatVersion" type="Enum">
-        <label>Set the format version in which objects should be written out.</label>
-        <choices>Kolab::KolabV2</choices>
-        <choices>Kolab::KolabV3</choices>
-        <default>Kolab::KolabV2</default>
     </entry>
   </group>
 </kcfg>

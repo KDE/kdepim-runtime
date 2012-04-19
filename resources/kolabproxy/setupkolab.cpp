@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2010 Laurent Montel <montel@kde.org>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,43 +20,29 @@
 
 #include "setupkolab.h"
 #include "kolabproxyresource.h"
-#include <KJob>
 #include <kstandarddirs.h>
 #include <kmessagebox.h>
 #include <KDE/KDebug>
 #include <QProcess>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
-#include <akonadi/collectioncreatejob.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchjob.h>
-#include "collectionannotationsattribute.h"
 #include "setupdefaultfoldersjob.h"
 #include "upgradejob.h"
-#include "upgradejob.h"
-#include "settings.h"
 #include <kolab/kolabobject.h>
 
 #define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
 
-#define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
-
 SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
-:KDialog(),
+:  KDialog(QWidget::find(parent)),
    m_ui(new Ui::SetupKolabView),
+   m_versionUi(new Ui::ChangeFormatView),
    m_parentResource( parentResource )
 {
   Q_UNUSED( parent );
   m_ui->setupUi( mainWidget() );
+  setButtons(Close);
   initConnection();
   updateCombobox();
-  m_ui->formatVersion->insertItem(0, "Kolab Format v2", Kolab::KolabV2);
-  m_ui->formatVersion->insertItem(1, "Kolab Format v3", Kolab::KolabV3);
-  if (Settings::self()->formatVersion() == Kolab::KolabV2) {
-      m_ui->formatVersion->setCurrentIndex(0);
-  } else {
-      m_ui->formatVersion->setCurrentIndex(1);
-  }
 }
 
 SetupKolab::~SetupKolab()
@@ -65,28 +52,44 @@ SetupKolab::~SetupKolab()
 
 void SetupKolab::initConnection()
 {
-
   connect( m_ui->launchWizard, SIGNAL(clicked()), this, SLOT(slotLaunchWizard()) );
   connect( m_ui->createKolabFolderButton, SIGNAL(clicked()), this, SLOT(slotCreateDefaultKolabCollections()) );
-  connect( m_ui->upgradeFormatButton, SIGNAL(clicked()), this, SLOT(slotReloadAll()) );
+  connect( m_ui->upgradeFormatButton, SIGNAL(clicked()), this, SLOT(slotShowUpgradeDialog()) );
   connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
   connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
 
 }
 
-void SetupKolab::slotReloadAll()
+void SetupKolab::slotShowUpgradeDialog()
 {
     const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
-    new UpgradeJob(static_cast<Kolab::Version>(Settings::self()->formatVersion()), instanceSelected, this);
+    
+    KDialog *dialog = new KDialog(this);
+    dialog->setButtons(Close);
+    m_versionUi->setupUi(dialog->mainWidget());
+    connect(m_versionUi->pushButton, SIGNAL(clicked()), this, SLOT(slotDoUpgrade()));
+    
+    KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
+    Kolab::Version v = static_cast<Kolab::Version>(grp.readEntry("KolabFormatVersion"+instanceSelected.identifier(), static_cast<int>(Kolab::KolabV2)));
+    
+    m_versionUi->formatVersion->insertItem(0, "Kolab Format v2", Kolab::KolabV2);
+    m_versionUi->formatVersion->insertItem(1, "Kolab Format v3", Kolab::KolabV3);
+    if (v == Kolab::KolabV2) {
+        m_versionUi->formatVersion->setCurrentIndex(0);
+    } else {
+        m_versionUi->formatVersion->setCurrentIndex(1);
+    }
+    dialog->exec();
+    grp.writeEntry("KolabFormatVersion"+instanceSelected.identifier(), m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()));
+    grp.sync();
+    updateCombobox();
+    dialog->deleteLater();
 }
 
-
-void SetupKolab::accept()
+void SetupKolab::slotDoUpgrade()
 {
-    Settings::self()->setFormatVersion(m_ui->formatVersion->itemData(m_ui->formatVersion->currentIndex()).toInt());
-    kDebug() << Settings::self()->formatVersion();
-    Settings::self()->writeConfig();
-    KDialog::accept();
+    const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
+    new UpgradeJob(static_cast<Kolab::Version>(m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()).toInt()), instanceSelected, this);
 }
 
 void SetupKolab::updateCombobox()
@@ -109,6 +112,22 @@ void SetupKolab::updateCombobox()
   } else {
     m_ui->stackedWidget->setCurrentIndex( 0 );
   }
+  
+  const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
+  KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
+  Kolab::Version v = static_cast<Kolab::Version>(grp.readEntry("KolabFormatVersion"+instanceSelected.identifier(), static_cast<int>(Kolab::KolabV2)));
+  if (v == Kolab::KolabV2) {
+      m_ui->formatVersion->setText("Kolab Format v2");
+  } else {
+      m_ui->formatVersion->setText("Kolab Format v3");
+  }
+  if (!grp.readEntry( "enableKolabV3", false )) {
+      m_ui->upgradeLabel->hide();
+      m_ui->upgradeFormatButton->hide();
+      grp.writeEntry( "enableKolabV3", false );
+      grp.sync();
+  }
+  
 }
 
 void SetupKolab::slotLaunchWizard()
@@ -136,40 +155,6 @@ void SetupKolab::slotCreateDefaultKolabCollections()
   const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
   if ( instanceSelected.isValid() ) {
     new SetupDefaultFoldersJob( instanceSelected, this );
-#if 0
-    Akonadi::Collection collection;
-    collection.setName( "Calendar" );
-    collection.setParentCollection( Akonadi::Collection::root() );
-    qDebug()<<" instanceSelected.identifier() :"<<instanceSelected.identifier();
-    collection.setResource( instanceSelected.identifier() );
-    collection.setContentMimeTypes( QStringList() << Akonadi::Collection::mimeType() << QLatin1String( "message/rfc822" ) );
-    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute = collection.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Entity::AddIfMissing );
-    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-
-    annotations[ KOLAB_FOLDERTYPE ] = "task";
-    createKolabCollection( collection );
-#endif
-  }
-}
-
-void SetupKolab::createKolabCollection( Akonadi::Collection & collection )
-{
-  Akonadi::CollectionCreateJob *job = new Akonadi::CollectionCreateJob( collection );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(createResult(KJob*)) );
-
-}
-
-void SetupKolab::createResult( KJob *job )
-{
-  if ( job->error() ) {
-    kWarning()<<" Error during kolab collection created : "<<job->errorString();
-    return;
-  }
-  Akonadi::CollectionCreateJob *createJob = static_cast<Akonadi::CollectionCreateJob*>( job );
-  Akonadi::Collection collection = createJob->collection();
-  bool collectionRegistered = m_parentResource->registerHandlerForCollection( collection );
-  if ( !collectionRegistered ) {
-    kWarning()<<" Can not register Collection "<<collection.id();
   }
 }
 

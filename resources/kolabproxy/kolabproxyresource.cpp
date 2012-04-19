@@ -246,6 +246,12 @@ void KolabProxyResource::aboutToQuit()
   m_monitoredCollections.clear();
 }
 
+Kolab::Version readKolabVersion(const QString &resourceIdentifier)
+{
+  KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
+  return static_cast<Kolab::Version>(grp.readEntry<int>("KolabFormatVersion"+resourceIdentifier, static_cast<int>(Kolab::KolabV2)));
+}
+
 void KolabProxyResource::configure( WId windowId )
 {
   Q_UNUSED( windowId );
@@ -261,8 +267,10 @@ void KolabProxyResource::configure( WId windowId )
   kolabConfigDialog->exec();
   emit configurationDialogAccepted();
   
-  foreach (KolabHandler::Ptr handler, m_monitoredCollections.values()) {
-      handler->setKolabFormatVersion(static_cast<Kolab::Version>(Settings::self()->formatVersion()));
+  foreach (Akonadi::Entity::Id id, m_monitoredCollections.keys()) {
+      KolabHandler::Ptr handler = m_monitoredCollections.value(id);
+      Kolab::Version v = readKolabVersion(m_resourceIdentifier.value(id));
+      handler->setKolabFormatVersion(v);
   }
 
   delete kolabConfigDialog;
@@ -828,13 +836,15 @@ bool KolabProxyResource::registerHandlerForCollection(const Akonadi::Collection&
   if ( annotationsAttribute ) {
     QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
 
-    KolabHandler::Ptr handler = KolabHandler::createHandler(annotations["/vendor/kolab/folder-type"], imapCollection );
+    KolabHandler::Ptr handler = KolabHandler::createHandler(annotations[KOLAB_FOLDER_TYPE_ANNOTATION], imapCollection );
     if ( handler ) {
-      handler->setKolabFormatVersion(static_cast<Kolab::Version>(Settings::self()->formatVersion()));
+      Kolab::Version v = readKolabVersion(imapCollection.resource());
+      handler->setKolabFormatVersion(v);
       connect(handler.data(), SIGNAL(deleteItemFromImap(Akonadi::Item)), this, SLOT(deleteImapItem(Akonadi::Item)));
       connect(handler.data(), SIGNAL(addItemToImap(Akonadi::Item,Akonadi::Entity::Id)), this, SLOT(addImapItem(Akonadi::Item,Akonadi::Entity::Id)));
       m_monitor->setCollectionMonitored(imapCollection);
       m_monitoredCollections.insert(imapCollection.id(), handler);
+      m_resourceIdentifier.insert(imapCollection.id(), imapCollection.resource());
       return true;
     }
   }
