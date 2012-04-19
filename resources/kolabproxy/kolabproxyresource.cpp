@@ -441,7 +441,7 @@ void KolabProxyResource::collectionAdded(const Akonadi::Collection& collection, 
   CollectionAnnotationsAttribute* attr =
     imapCollection.attribute<CollectionAnnotationsAttribute>( Collection::AddIfMissing );
   QMap<QByteArray, QByteArray> annotations = attr->annotations();
-  annotations["/vendor/kolab/folder-type"] = KolabHandler::kolabTypeForMimeType( collection.contentMimeTypes() );
+  annotations[KOLAB_FOLDER_TYPE_ANNOTATION] = KolabHandler::kolabTypeForMimeType( collection.contentMimeTypes() );
   attr->setAnnotations( annotations );
 
   CollectionCreateJob *job = new CollectionCreateJob( imapCollection, this );
@@ -512,8 +512,8 @@ void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &i
   const CollectionAnnotationsAttribute *annotationsAttribute = imapCollection.attribute<CollectionAnnotationsAttribute>();
   if ( annotationsAttribute ) {
     const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-    const QByteArray folderType = annotations[ "/vendor/kolab/folder-type" ];
-    if ( folderType != "event" && folderType != "event.default" ) {
+    const QByteArray folderType = annotations[ KOLAB_FOLDER_TYPE_ANNOTATION ];
+    if ( folderType != KOLAB_FOLDER_TYPE_EVENT && folderType != KOLAB_FOLDER_TYPE_EVENT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
       return; // no kolab calendar collection
     }
   } else {
@@ -717,8 +717,8 @@ void KolabProxyResource::imapCollectionChanged(const Collection &collection)
     bool isKolabFolder = false;
     if ( annotationsAttribute ) {
       const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-      QByteArray folderType = annotations[ "/vendor/kolab/folder-type" ];
-      isKolabFolder = !folderType.isEmpty() && folderType != "mail";
+      QByteArray folderType = annotations[ KOLAB_FOLDER_TYPE_ANNOTATION ];
+      isKolabFolder = !folderType.isEmpty() && folderType != KOLAB_FOLDER_TYPE_MAIL;
     }
 
     if ( isKolabFolder ) {
