@@ -43,6 +43,14 @@ SetupKolab::SetupKolab( KolabProxyResource* parentResource,WId parent )
   setButtons(Close);
   initConnection();
   updateCombobox();
+  
+  KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
+  if (!grp.readEntry( "enableKolabV3", false )) {
+    m_ui->upgradeLabel->hide();
+    m_ui->upgradeFormatButton->hide();
+    grp.writeEntry( "enableKolabV3", false );
+    grp.sync();
+  }
 }
 
 SetupKolab::~SetupKolab()
@@ -55,6 +63,7 @@ void SetupKolab::initConnection()
   connect( m_ui->launchWizard, SIGNAL(clicked()), this, SLOT(slotLaunchWizard()) );
   connect( m_ui->createKolabFolderButton, SIGNAL(clicked()), this, SLOT(slotCreateDefaultKolabCollections()) );
   connect( m_ui->upgradeFormatButton, SIGNAL(clicked()), this, SLOT(slotShowUpgradeDialog()) );
+  connect( m_ui->imapAccountComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotSelectedAccountChanged()) );
   connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
   connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)), this, SLOT(slotInstanceAddedRemoved()) );
 
@@ -66,6 +75,7 @@ void SetupKolab::slotShowUpgradeDialog()
     
     KDialog *dialog = new KDialog(this);
     dialog->setButtons(Close);
+    m_versionUi->progressBar->setDisabled(true);
     m_versionUi->setupUi(dialog->mainWidget());
     connect(m_versionUi->pushButton, SIGNAL(clicked()), this, SLOT(slotDoUpgrade()));
     
@@ -82,15 +92,50 @@ void SetupKolab::slotShowUpgradeDialog()
     dialog->exec();
     grp.writeEntry("KolabFormatVersion"+instanceSelected.identifier(), m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()));
     grp.sync();
-    updateCombobox();
+    slotSelectedAccountChanged();
     dialog->deleteLater();
 }
 
 void SetupKolab::slotDoUpgrade()
 {
     const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
-    new UpgradeJob(static_cast<Kolab::Version>(m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()).toInt()), instanceSelected, this);
+    m_versionUi->statusLabel->setText("started");
+    m_versionUi->progressBar->setEnabled(true);
+    UpgradeJob *job = new UpgradeJob(static_cast<Kolab::Version>(m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()).toInt()), instanceSelected, this);
+    connect(job, SIGNAL(percent(KJob*,ulong)), this, SLOT(slotUpgradeProgress(KJob*,ulong)));
+    connect(job, SIGNAL(result(KJob*)), this, SLOT(slotUpgradeDone(KJob*)));
 }
+
+void SetupKolab::slotUpgradeProgress(KJob* , ulong value)
+{
+    m_versionUi->progressBar->setValue(value);
+}
+
+void SetupKolab::slotUpgradeDone(KJob *job)
+{
+    if (job->error()) {
+        kWarning() << job->errorString();
+        m_versionUi->statusLabel->setText("error");
+        KMessageBox::error( this, i18n( "Could not complete the upgrade process: ")+job->errorString(),
+        i18n( "Error during Upgrade Process" ) );
+        return;
+    }
+    m_versionUi->statusLabel->setText("complete");
+    m_versionUi->progressBar->setValue(100);
+}
+
+void SetupKolab::slotSelectedAccountChanged()
+{
+    const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
+    KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
+    Kolab::Version v = static_cast<Kolab::Version>(grp.readEntry("KolabFormatVersion"+instanceSelected.identifier(), static_cast<int>(Kolab::KolabV2)));
+    if (v == Kolab::KolabV2) {
+        m_ui->formatVersion->setText("Kolab Format v2");
+    } else {
+        m_ui->formatVersion->setText("Kolab Format v3");
+    }
+}
+
 
 void SetupKolab::updateCombobox()
 {
@@ -112,22 +157,6 @@ void SetupKolab::updateCombobox()
   } else {
     m_ui->stackedWidget->setCurrentIndex( 0 );
   }
-  
-  const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
-  KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
-  Kolab::Version v = static_cast<Kolab::Version>(grp.readEntry("KolabFormatVersion"+instanceSelected.identifier(), static_cast<int>(Kolab::KolabV2)));
-  if (v == Kolab::KolabV2) {
-      m_ui->formatVersion->setText("Kolab Format v2");
-  } else {
-      m_ui->formatVersion->setText("Kolab Format v3");
-  }
-  if (!grp.readEntry( "enableKolabV3", false )) {
-      m_ui->upgradeLabel->hide();
-      m_ui->upgradeFormatButton->hide();
-      grp.writeEntry( "enableKolabV3", false );
-      grp.sync();
-  }
-  
 }
 
 void SetupKolab::slotLaunchWizard()

@@ -60,7 +60,7 @@ void UpgradeJob::collectionFetchResult(KJob* job)
         kDebug() << job->errorString();
         return; // Akonadi::Job propagates that automatically
     }
-        
+    int collections = 0;
     foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {  
         if (!(col.rights() & Collection::CanChangeItem)) { //FIXME detect shared folders?
             kDebug() << "skipping non editable folder";
@@ -77,7 +77,7 @@ void UpgradeJob::collectionFetchResult(KJob* job)
         }
         
         kDebug() << "upgrading " << col.id();
-        
+        collections++;
         ItemFetchJob *itemFetchJob = new ItemFetchJob(col, this);
         itemFetchJob->fetchScope().fetchFullPayload(true);
         itemFetchJob->fetchScope().setCacheOnly(false);
@@ -85,6 +85,8 @@ void UpgradeJob::collectionFetchResult(KJob* job)
         itemFetchJob->setProperty( FOLDER_TYPE, QVariant::fromValue( static_cast<int>(folderType) ) );
         connect( itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(itemFetchResult(KJob*)) );
     }
+    //Percent is only emitted when Bytes is the unit
+    setTotalAmount(Bytes, collections);
 }
 
 void UpgradeJob::itemFetchResult(KJob* job)
@@ -104,25 +106,6 @@ void UpgradeJob::itemFetchResult(KJob* job)
         qWarning() << "invalid imap collection";
         return;
     }
-    
-//     foreach(const Akonadi::Item &imapItem, j->items()) {
-//         if (!imapItem.hasPayload<KMime::Message::Ptr>()) {
-//             kWarning() << "Payload is not a MessagePtr!";
-//             continue;
-//         }
-//         const KMime::Message::Ptr payload = imapItem.payload<KMime::Message::Ptr>();
-//         KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
-//         if (!incidencePtr) {
-//             kWarning() << "Failed to read incidence.";
-//             continue;
-//         }
-//         
-//         imapItem.setMimeType( "message/rfc822" );
-//         const KMime::Message::Ptr &message = incidenceToMime(incidencePtr);
-//         imapItem.setPayload(message);
-//         new ItemModifyJob(imapItem, this);
-//         
-//     }
     
     KolabV2::FolderType folderType = static_cast<KolabV2::FolderType>(j->property(FOLDER_TYPE).toInt());
     KolabHandler::Ptr handler = KolabHandler::createHandler(folderType, imapCollection);
@@ -148,6 +131,7 @@ void UpgradeJob::itemFetchResult(KJob* job)
         ItemModifyJob *modJob = new ItemModifyJob(imapItem, this);
         connect(modJob, SIGNAL(result(KJob*)), this, SLOT(itemModifyResult(KJob*)) );
     }
+    setProcessedAmount(Bytes, processedAmount(Bytes)+1);
 }
 
 void UpgradeJob::itemModifyResult(KJob* job)

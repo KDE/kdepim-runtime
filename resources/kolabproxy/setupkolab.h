@@ -27,6 +27,7 @@
 #include "ui_kolabsettings.h"
 #include "ui_changeformat.h"
 
+class KJob;
 class KolabProxyResource;
 class SetupKolab : public KDialog
 {
@@ -46,6 +47,9 @@ protected slots:
   void slotCreateDefaultKolabCollections();
   void slotShowUpgradeDialog();
   void slotDoUpgrade();
+  void slotSelectedAccountChanged();
+  void slotUpgradeProgress(KJob*,ulong);
+  void slotUpgradeDone(KJob*);
 private:
   QMap<QString, Akonadi::AgentInstance> m_agentList;
   Ui::SetupKolabView *m_ui;
