@@ -1,13 +1,10 @@
 project(kolabproxy)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/local/share/apps/cmake/modules/")
-find_package(KolabLibraries REQUIRED)
-
 include_directories(
     ${kdepim-runtime_SOURCE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
-    ${KOLAB_INCLUDE_DIR}
+    ${Libkolab_INCLUDES}
 )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
@@ -58,7 +55,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_kolabproxy_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Kolabproxy Resource")
 endif (Q_WS_MAC)
 
-target_link_libraries(akonadi_kolabproxy_resource ${Kolab_LIBRARIES} ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy ${KDEPIMLIBS_KCALCORE_LIBS} )
+target_link_libraries(akonadi_kolabproxy_resource ${Libkolab_LIBRARIES} ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy ${KDEPIMLIBS_KCALCORE_LIBS} )
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_kolabproxy_resource akonadi_serializer_mail akonadi_serializer_addressee akonadi_serializer_kcalcore akonadi_serializer_contactgroup)
