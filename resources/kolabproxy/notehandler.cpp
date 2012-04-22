@@ -37,8 +37,12 @@ void NotesHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item& imapI
 {
   if ( item.hasPayload<KMime::Message::Ptr>() ) {
     KMime::Message::Ptr note = item.payload<KMime::Message::Ptr>();
+    KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeNote(note, m_formatVersion);
+    if (checkForErrors(item.id())) {
+        return;
+    }
     imapItem.setMimeType( "message/rfc822" );
-    imapItem.setPayload(Kolab::KolabObjectWriter::writeNote(note, m_formatVersion));
+    imapItem.setPayload(msg);
   } else {
     kWarning() << "Payload is not a note!";
     return;
@@ -55,7 +59,11 @@ Akonadi::Item::List NotesHandler::translateItems(const Akonadi::Item::List& kola
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
     Akonadi::Item noteItem( "text/x-vnd.akonadi.note" );
-    if ( noteFromKolab(payload, noteItem ) ) {
+    bool ret = noteFromKolab(payload, noteItem );
+    if (checkForErrors(item.id())) {
+      continue;
+    }
+    if ( ret ) {
       noteItem.setRemoteId( QString::number( item.id() ) );
       newItems.append( noteItem );
     } else {

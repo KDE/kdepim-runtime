@@ -61,10 +61,14 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
     
     KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
+    if (checkForErrors(item.id())) {
+        continue;
+    }
     if (!incidencePtr) {
         kWarning() << "Failed to read incidence.";
-        return newItems;
+        continue;
     }
+    //TODO conflict resolving should happen for all object types, and not only for incidences (move to kolabhandler)
       if (m_uidMap.contains(incidencePtr->uid())) {
         StoredItem storedItem = m_uidMap[incidencePtr->uid()];
         kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
@@ -99,6 +103,11 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
           incidencePtr->setUid( KCalCore::CalFormat::createUniqueId() );
           Akonadi::Item copiedItem( incidencePtr->mimeType() );
           incidenceToItem(incidencePtr, copiedItem);
+          if (checkForErrors(item.id())) {
+              copiedItem.setPayloadFromData("");
+              //TODO clear mimetype?
+              continue;
+          }
           Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
           job->fetchScope().fetchFullPayload();
           if (job->exec()) {
@@ -173,6 +182,11 @@ void IncidenceHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &i
   }
 //   kDebug() << "item payload: " << item.payloadData();
   incidenceToItem(incidencePtr, imapItem);
+  if (checkForErrors(item.id())) {
+      imapItem.setPayloadFromData("");
+      //TODO clear mimetype?
+      return;
+  }
 }
 
 void IncidenceHandler::incidenceToItem(const KCalCore::Incidence::Ptr &incidencePtr, Akonadi::Item &imapItem)
@@ -181,8 +195,8 @@ void IncidenceHandler::incidenceToItem(const KCalCore::Incidence::Ptr &incidence
     imapItem.setPayloadFromData("");
     return;
   }
-  imapItem.setMimeType( "message/rfc822" );
   const KMime::Message::Ptr &message = incidenceToMime(incidencePtr);
+  imapItem.setMimeType( "message/rfc822" );
   imapItem.setPayload(message);
 }
 
@@ -214,7 +228,9 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
   KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
   Kolab::KolabObjectReader reader;
   reader.parseMimeMessage(payload);
-  
+  if (checkForErrors(item.id())) {
+      return;
+  }
   KCalCore::Incidence::Ptr e = reader.getIncidence();
   if ( !e )
     return;

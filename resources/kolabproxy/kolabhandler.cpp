@@ -30,6 +30,10 @@
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
 
+#include <kolab/errorhandler.h>
+#include <kpassivepopup.h>
+#include <klocalizedstring.h>
+
 
 KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection ) : m_imapCollection( imapCollection ), m_formatVersion(Kolab::KolabV3)
 {
@@ -116,3 +120,35 @@ QByteArray KolabHandler::mimeType() const
 {
   return m_mimeType;
 }
+
+bool KolabHandler::checkForErrors(Akonadi::Item::Id affectedItem)
+{
+    if (Kolab::ErrorHandler::instance().error() > Kolab::ErrorHandler::NoError) {
+        QString errorMsg = QString("Error on item %1:\n").arg(affectedItem);
+        foreach(const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors()) {
+            kDebug() << "error on item " << affectedItem <<": " << error.message;
+            errorMsg.append(error.message);
+            errorMsg.append("\n");
+        }
+        KPassivePopup::message(errorMsg, (QWidget*)0 ); //Temporary for testing
+    }
+    
+    switch (Kolab::ErrorHandler::instance().error()) {
+        case Kolab::ErrorHandler::Warning:
+        case Kolab::ErrorHandler::NoError:
+            Kolab::ErrorHandler::instance().clear();
+            return false;
+        default:
+            kWarning() << "error";
+    }
+    foreach(const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors()) {
+        if (error.severity > Kolab::ErrorHandler::Warning) {
+            KPassivePopup::message(
+                i18n( "An error occured while reading/writing a Kolab-Groupware-Object: (%1) ", error.message )+i18n( "The following akonadi item is affected: %1", QString::number(affectedItem) ),
+                (QWidget*)0 );
+        }
+    }
+    Kolab::ErrorHandler::instance().clear();
+    return true;
+}
+

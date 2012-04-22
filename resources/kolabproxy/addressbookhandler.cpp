@@ -63,6 +63,9 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
       newItem.setPayload(reader.getDistlist());
       newItems << newItem;
     }
+    if (checkForErrors(item.id())) {
+        newItems.removeLast(); //TODO what are the implications of this?
+    }
   }
 
   return newItems;
@@ -71,15 +74,21 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
 void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
   if (item.hasPayload<KABC::Addressee>()) {
-    KABC::Addressee addressee = item.payload<KABC::Addressee>();
+    const KABC::Addressee &addressee = item.payload<KABC::Addressee>();
     
     const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeContact(addressee, m_formatVersion);
+    if (checkForErrors(item.id())) {
+        return;
+    }
     imapItem.setMimeType( "message/rfc822" );
     imapItem.setPayload(message);
   } else if (item.hasPayload<KABC::ContactGroup>()) {
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
     
     const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeDistlist(contactGroup, m_formatVersion);
+    if (checkForErrors(item.id())) {
+        return;
+    }
     imapItem.setMimeType( "message/rfc822" );
     imapItem.setPayload(message);
   } else {
