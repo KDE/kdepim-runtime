@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2009 Andras Mantia <amantia@kde.org>
     Copyright (c) 2009 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
