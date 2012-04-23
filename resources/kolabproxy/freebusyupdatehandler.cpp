@@ -56,7 +56,10 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
 
   // IMAP path is either /INBOX/<path> or /user/someone/<path>
   //FIXME this assumption is no longer true. Kolabfolders can also be toplevel.
-  Q_ASSERT( path.startsWith( '/' ) );
+  if( !path.startsWith( '/' ) ) { //The path separator can i.e. also be '.' on a different imap server
+    kWarning() << "Unsupported path separator";
+    return;
+  }
   const int secondSlash = path.indexOf( '/', 1 );
   if ( secondSlash == -1 ) {
     kWarning() << "path is too short: " << path;
