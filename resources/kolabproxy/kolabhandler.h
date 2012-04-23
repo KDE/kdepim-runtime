@@ -93,8 +93,8 @@ public:
    */
   bool checkForErrors(Akonadi::Item::Id affectedItem);
 Q_SIGNALS:
-    void deleteItemFromImap(const Akonadi::Item& item);
-    void addItemToImap(const Akonadi::Item& item, Akonadi::Entity::Id collectionId);
+  void deleteItemFromImap(const Akonadi::Item& item);
+  void addItemToImap(const Akonadi::Item& item, Akonadi::Entity::Id collectionId);
 
 protected:
   explicit KolabHandler( const Akonadi::Collection &imapCollection );

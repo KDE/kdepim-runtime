@@ -62,27 +62,27 @@ KolabHandler::Ptr KolabHandler::createHandler( const QByteArray& type,
 
 KolabHandler::Ptr KolabHandler::createHandler(const KolabV2::FolderType& type, const Akonadi::Collection& imapCollection)
 {
-    switch (type) {
-        case KolabV2::Contact:
-            return Ptr(new AddressBookHandler( imapCollection ));
-        case KolabV2::Event:
-            return Ptr(new CalendarHandler( imapCollection ));
-        case KolabV2::Task:
-            return Ptr(new TasksHandler( imapCollection ));
-        case KolabV2::Journal:
-            return Ptr(new JournalHandler( imapCollection ));
-        case KolabV2::Note:
-            return Ptr(new NotesHandler( imapCollection ));
-        default:
-            qWarning() << "invalid type";
-    }
-    return KolabHandler::Ptr();
+  switch (type) {
+    case KolabV2::Contact:
+      return Ptr(new AddressBookHandler( imapCollection ));
+    case KolabV2::Event:
+      return Ptr(new CalendarHandler( imapCollection ));
+    case KolabV2::Task:
+      return Ptr(new TasksHandler( imapCollection ));
+    case KolabV2::Journal:
+      return Ptr(new JournalHandler( imapCollection ));
+    case KolabV2::Note:
+      return Ptr(new NotesHandler( imapCollection ));
+    default:
+      qWarning() << "invalid type";
+  }
+  return KolabHandler::Ptr();
 }
 
 
 void KolabHandler::setKolabFormatVersion(Kolab::Version version)
 {
-    m_formatVersion = version;
+  m_formatVersion = version;
 }
 
 
@@ -127,20 +127,20 @@ QByteArray KolabHandler::mimeType() const
 
 bool KolabHandler::checkForErrors(Akonadi::Item::Id affectedItem)
 {
-    if (Kolab::ErrorHandler::instance().error() < m_warningDisplayLevel) {
-        Kolab::ErrorHandler::instance().clear();
-        return false;
-    }
-    QString errorMsg;
-    foreach(const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors()) {
-        errorMsg.append(error.message);
-        errorMsg.append("\n");
-    }
-    kWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
-    KPassivePopup::message(
-        i18n( "An error occured while reading/writing a Kolab-Groupware-Object(akonadi id %1): \n%2", QString::number(affectedItem), errorMsg ),
-                           (QWidget*)0 );
+  if (Kolab::ErrorHandler::instance().error() < m_warningDisplayLevel) {
     Kolab::ErrorHandler::instance().clear();
-    return true;
+    return false;
+  }
+  QString errorMsg;
+  foreach(const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors()) {
+    errorMsg.append(error.message);
+    errorMsg.append("\n");
+  }
+  kWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
+  KPassivePopup::message(
+    i18n( "An error occured while reading/writing a Kolab-Groupware-Object(akonadi id %1): \n%2", QString::number(affectedItem), errorMsg ),
+                        (QWidget*)0 );
+  Kolab::ErrorHandler::instance().clear();
+  return true;
 }
 

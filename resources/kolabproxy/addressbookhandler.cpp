@@ -65,7 +65,7 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
       newItems << newItem;
     }
     if (checkForErrors(item.id())) {
-        newItems.removeLast(); //TODO what are the implications of this?
+      newItems.removeLast(); //TODO what are the implications of this?
     }
   }
 
@@ -79,7 +79,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
     
     const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeContact(addressee, m_formatVersion);
     if (checkForErrors(item.id())) {
-        return;
+      return;
     }
     imapItem.setMimeType( "message/rfc822" );
     imapItem.setPayload(message);
@@ -88,7 +88,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
     
     const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeDistlist(contactGroup, m_formatVersion);
     if (checkForErrors(item.id())) {
-        return;
+      return;
     }
     imapItem.setMimeType( "message/rfc822" );
     imapItem.setPayload(message);

@@ -36,7 +36,7 @@ public:
   virtual QString iconName() const;
 
 private:
-  virtual KMime::Message::Ptr incidenceToMime(const KCalCore::Incidence::Ptr& incidence);
+  virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr& incidence );
 };
 
 #endif

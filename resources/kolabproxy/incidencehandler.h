@@ -34,18 +34,18 @@ class QDomDocument;
 class IncidenceHandler : public KolabHandler {
   Q_OBJECT
 public:
-    explicit IncidenceHandler( const Akonadi::Collection &imapCollection );
+  explicit IncidenceHandler( const Akonadi::Collection &imapCollection );
 
-    virtual ~IncidenceHandler();
+  virtual ~IncidenceHandler();
 
-    virtual void itemAdded(const Akonadi::Item &item);
-    virtual void itemDeleted(const Akonadi::Item &item);
-    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
-    virtual void toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem);
-    /**reimp*/ void reset();
+  virtual void itemAdded(const Akonadi::Item &item);
+  virtual void itemDeleted(const Akonadi::Item &item);
+  virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
+  virtual void toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem);
+  /**reimp*/ void reset();
 
 Q_SIGNALS:
-    void useGlobalMode();
+  void useGlobalMode();
 
 protected:
   virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence) = 0;

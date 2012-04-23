@@ -63,68 +63,68 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
     
     KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
     if (checkForErrors(item.id())) {
-        continue;
+      continue;
     }
     if (!incidencePtr) {
-        kWarning() << "Failed to read incidence.";
-        continue;
+      kWarning() << "Failed to read incidence.";
+      continue;
     }
     //TODO conflict resolving should happen for all object types, and not only for incidences (move to kolabhandler)
-      if (m_uidMap.contains(incidencePtr->uid())) {
-        StoredItem storedItem = m_uidMap[incidencePtr->uid()];
-        kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
-                 << " for imap item id = " << item.id()
-                 << " and the other imap item id is "
-                 << storedItem.id << "; imap collection is "
-                 << m_imapCollection.name()
-                 << m_imapCollection.id()
-                 << "; collection has rights "
-                 << m_imapCollection.rights();
+    if (m_uidMap.contains(incidencePtr->uid())) {
+      StoredItem storedItem = m_uidMap[incidencePtr->uid()];
+      kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
+                << " for imap item id = " << item.id()
+                << " and the other imap item id is "
+                << storedItem.id << "; imap collection is "
+                << m_imapCollection.name()
+                << m_imapCollection.id()
+                << "; collection has rights "
+                << m_imapCollection.rights();
 
-        const Akonadi::Collection::Rights requiredRights = Akonadi::Collection::CanDeleteItem |
-                                                           Akonadi::Collection::CanCreateItem;
+      const Akonadi::Collection::Rights requiredRights = Akonadi::Collection::CanDeleteItem |
+                                                          Akonadi::Collection::CanCreateItem;
 
-        if ( ( m_imapCollection.rights() & requiredRights ) != requiredRights ) {
-          kDebug() << "Skipping conflict resolution, no rights on collection " << m_imapCollection.name();
-          continue;
-        }
-
-        ConflictResolution res = resolveConflict(incidencePtr);
-        kDebug() << "ConflictResolution " << res;
-        if (res == Local) {
-          m_uidMap.remove(incidencePtr->uid());
-          incidencePtr = KCalCore::Incidence::Ptr();
-          emit deleteItemFromImap(item);
-          continue;
-        } else if (res == Remote) {
-          Akonadi::Item it(m_uidMap[incidencePtr->uid()].id);
-          emit deleteItemFromImap(it);
-        } else if (res == Both) {
-          incidencePtr->setSummary( i18n("Copy of: %1", incidencePtr->summary() ) );
-          incidencePtr->setUid( KCalCore::CalFormat::createUniqueId() );
-          Akonadi::Item copiedItem( incidencePtr->mimeType() );
-          incidenceToItem(incidencePtr, copiedItem);
-          if (checkForErrors(item.id())) {
-              copiedItem.setPayloadFromData("");
-              //TODO clear mimetype?
-              continue;
-          }
-          Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
-          job->fetchScope().fetchFullPayload();
-          if (job->exec()) {
-            emit addItemToImap(copiedItem, job->items()[0].storageCollectionId());
-          }
-          // we can't do newItem.setRemoteId(..) yet because we don't have copiedItem.id()
-          // it's being added to imap, so we continue.
-          continue;
-        }
+      if ( ( m_imapCollection.rights() & requiredRights ) != requiredRights ) {
+        kDebug() << "Skipping conflict resolution, no rights on collection " << m_imapCollection.name();
+        continue;
       }
-      m_uidMap[incidencePtr->uid()] = StoredItem(item.id(), incidencePtr);
-      kDebug() << "Add to uidMap: " << incidencePtr->uid() << item.id() << incidencePtr;
-      Akonadi::Item newItem( incidencePtr->mimeType() );
-      newItem.setPayload(incidencePtr);
-      newItem.setRemoteId(QString::number(item.id()));
-      newItems << newItem;
+
+      ConflictResolution res = resolveConflict(incidencePtr);
+      kDebug() << "ConflictResolution " << res;
+      if (res == Local) {
+        m_uidMap.remove(incidencePtr->uid());
+        incidencePtr = KCalCore::Incidence::Ptr();
+        emit deleteItemFromImap(item);
+        continue;
+      } else if (res == Remote) {
+        Akonadi::Item it(m_uidMap[incidencePtr->uid()].id);
+        emit deleteItemFromImap(it);
+      } else if (res == Both) {
+        incidencePtr->setSummary( i18n("Copy of: %1", incidencePtr->summary() ) );
+        incidencePtr->setUid( KCalCore::CalFormat::createUniqueId() );
+        Akonadi::Item copiedItem( incidencePtr->mimeType() );
+        incidenceToItem(incidencePtr, copiedItem);
+        if (checkForErrors(item.id())) {
+            copiedItem.setPayloadFromData("");
+            //TODO clear mimetype?
+            continue;
+        }
+        Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
+        job->fetchScope().fetchFullPayload();
+        if (job->exec()) {
+          emit addItemToImap(copiedItem, job->items()[0].storageCollectionId());
+        }
+        // we can't do newItem.setRemoteId(..) yet because we don't have copiedItem.id()
+        // it's being added to imap, so we continue.
+        continue;
+      }
+    }
+    m_uidMap[incidencePtr->uid()] = StoredItem(item.id(), incidencePtr);
+    kDebug() << "Add to uidMap: " << incidencePtr->uid() << item.id() << incidencePtr;
+    Akonadi::Item newItem( incidencePtr->mimeType() );
+    newItem.setPayload(incidencePtr);
+    newItem.setRemoteId(QString::number(item.id()));
+    newItems << newItem;
   }
 
   return newItems;
@@ -184,9 +184,9 @@ void IncidenceHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &i
 //   kDebug() << "item payload: " << item.payloadData();
   incidenceToItem(incidencePtr, imapItem);
   if (checkForErrors(item.id())) {
-      imapItem.setPayloadFromData("");
-      //TODO clear mimetype?
-      return;
+    imapItem.setPayloadFromData("");
+    //TODO clear mimetype?
+    return;
   }
 }
 

@@ -269,9 +269,9 @@ void KolabProxyResource::configure( WId windowId )
   emit configurationDialogAccepted();
   
   foreach (Akonadi::Entity::Id id, m_monitoredCollections.keys()) {
-      KolabHandler::Ptr handler = m_monitoredCollections.value(id);
-      Kolab::Version v = readKolabVersion(m_resourceIdentifier.value(id));
-      handler->setKolabFormatVersion(v);
+    KolabHandler::Ptr handler = m_monitoredCollections.value(id);
+    Kolab::Version v = readKolabVersion(m_resourceIdentifier.value(id));
+    handler->setKolabFormatVersion(v);
   }
 
   delete kolabConfigDialog;

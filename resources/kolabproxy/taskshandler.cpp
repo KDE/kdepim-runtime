@@ -41,7 +41,7 @@ TasksHandler::~TasksHandler()
 
 KMime::Message::Ptr TasksHandler::incidenceToMime(const KCalCore::Incidence::Ptr& incidence)
 {
-    return Kolab::KolabObjectWriter::writeTodo(incidence.dynamicCast<KCalCore::Todo>(), m_formatVersion, m_calendar.timeZoneId());
+  return Kolab::KolabObjectWriter::writeTodo(incidence.dynamicCast<KCalCore::Todo>(), m_formatVersion, m_calendar.timeZoneId());
 }
 
 QStringList TasksHandler::contentMimeTypes()

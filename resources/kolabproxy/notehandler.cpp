@@ -85,7 +85,7 @@ bool NotesHandler::noteFromKolab(const KMime::Message::Ptr& kolabMsg, Akonadi::I
 {
   Kolab::KolabObjectReader reader(kolabMsg);
   if(reader.getType() != Kolab::NoteObject) {
-      return false;
+    return false;
   }
   noteItem.setPayload( reader.getNote() );
   return true;

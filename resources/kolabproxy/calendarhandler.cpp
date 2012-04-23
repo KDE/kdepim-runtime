@@ -43,9 +43,9 @@ CalendarHandler::~CalendarHandler()
 {
 }
 
-KMime::Message::Ptr CalendarHandler::incidenceToMime(const KCalCore::Incidence::Ptr& incidence)
+KMime::Message::Ptr CalendarHandler::incidenceToMime( const KCalCore::Incidence::Ptr& incidence )
 {
-    return Kolab::KolabObjectWriter::writeEvent(incidence.dynamicCast<KCalCore::Event>(), m_formatVersion, m_calendar.timeZoneId());
+  return Kolab::KolabObjectWriter::writeEvent(incidence.dynamicCast<KCalCore::Event>(), m_formatVersion, m_calendar.timeZoneId());
 }
 
 

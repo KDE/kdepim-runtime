@@ -71,69 +71,69 @@ void SetupKolab::initConnection()
 
 void SetupKolab::slotShowUpgradeDialog()
 {
-    const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
-    
-    KDialog *dialog = new KDialog(this);
-    dialog->setButtons(Close);
-    m_versionUi->setupUi(dialog->mainWidget());
-    m_versionUi->progressBar->setDisabled(true);
-    connect(m_versionUi->pushButton, SIGNAL(clicked()), this, SLOT(slotDoUpgrade()));
-    
-    KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
-    Kolab::Version v = static_cast<Kolab::Version>(grp.readEntry("KolabFormatVersion"+instanceSelected.identifier(), static_cast<int>(Kolab::KolabV2)));
-    
-    m_versionUi->formatVersion->insertItem(0, "Kolab Format v2", Kolab::KolabV2);
-    m_versionUi->formatVersion->insertItem(1, "Kolab Format v3", Kolab::KolabV3);
-    if (v == Kolab::KolabV2) {
-        m_versionUi->formatVersion->setCurrentIndex(0);
-    } else {
-        m_versionUi->formatVersion->setCurrentIndex(1);
-    }
-    dialog->exec();
-    grp.writeEntry("KolabFormatVersion"+instanceSelected.identifier(), m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()));
-    grp.sync();
-    slotSelectedAccountChanged();
-    dialog->deleteLater();
+  const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
+
+  KDialog *dialog = new KDialog(this);
+  dialog->setButtons(Close);
+  m_versionUi->setupUi(dialog->mainWidget());
+  m_versionUi->progressBar->setDisabled(true);
+  connect(m_versionUi->pushButton, SIGNAL(clicked()), this, SLOT(slotDoUpgrade()));
+
+  KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
+  Kolab::Version v = static_cast<Kolab::Version>(grp.readEntry("KolabFormatVersion"+instanceSelected.identifier(), static_cast<int>(Kolab::KolabV2)));
+
+  m_versionUi->formatVersion->insertItem(0, "Kolab Format v2", Kolab::KolabV2);
+  m_versionUi->formatVersion->insertItem(1, "Kolab Format v3", Kolab::KolabV3);
+  if (v == Kolab::KolabV2) {
+    m_versionUi->formatVersion->setCurrentIndex(0);
+  } else {
+    m_versionUi->formatVersion->setCurrentIndex(1);
+  }
+  dialog->exec();
+  grp.writeEntry("KolabFormatVersion"+instanceSelected.identifier(), m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()));
+  grp.sync();
+  slotSelectedAccountChanged();
+  dialog->deleteLater();
 }
 
 void SetupKolab::slotDoUpgrade()
 {
-    const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
-    m_versionUi->statusLabel->setText("started");
-    m_versionUi->progressBar->setEnabled(true);
-    UpgradeJob *job = new UpgradeJob(static_cast<Kolab::Version>(m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()).toInt()), instanceSelected, this);
-    connect(job, SIGNAL(percent(KJob*,ulong)), this, SLOT(slotUpgradeProgress(KJob*,ulong)));
-    connect(job, SIGNAL(result(KJob*)), this, SLOT(slotUpgradeDone(KJob*)));
+  const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
+  m_versionUi->statusLabel->setText("started");
+  m_versionUi->progressBar->setEnabled(true);
+  UpgradeJob *job = new UpgradeJob(static_cast<Kolab::Version>(m_versionUi->formatVersion->itemData(m_versionUi->formatVersion->currentIndex()).toInt()), instanceSelected, this);
+  connect(job, SIGNAL(percent(KJob*,ulong)), this, SLOT(slotUpgradeProgress(KJob*,ulong)));
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(slotUpgradeDone(KJob*)));
 }
 
 void SetupKolab::slotUpgradeProgress(KJob* , ulong value)
 {
-    m_versionUi->progressBar->setValue(value);
+  m_versionUi->progressBar->setValue(value);
 }
 
 void SetupKolab::slotUpgradeDone(KJob *job)
 {
-    if (job->error()) {
-        kWarning() << job->errorString();
-        m_versionUi->statusLabel->setText("error");
-        KMessageBox::error( this, i18n( "Could not complete the upgrade process: ")+job->errorString(),
-        i18n( "Error during Upgrade Process" ) );
-        return;
-    }
-    m_versionUi->statusLabel->setText("complete");
-    m_versionUi->progressBar->setValue(100);
+  if (job->error()) {
+    kWarning() << job->errorString();
+    m_versionUi->statusLabel->setText("error");
+    KMessageBox::error( this, i18n( "Could not complete the upgrade process: ")+job->errorString(),
+    i18n( "Error during Upgrade Process" ) );
+    return;
+  }
+  m_versionUi->statusLabel->setText("complete");
+  m_versionUi->progressBar->setValue(100);
 }
 
 void SetupKolab::slotSelectedAccountChanged()
 {
-    const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
-    KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
-    Kolab::Version v = static_cast<Kolab::Version>(grp.readEntry("KolabFormatVersion"+instanceSelected.identifier(), static_cast<int>(Kolab::KolabV2)));
-    if (v == Kolab::KolabV2) {
-        m_ui->formatVersion->setText("Kolab Format v2");
-    } else {
-        m_ui->formatVersion->setText("Kolab Format v3");
-    }
+  const Akonadi::AgentInstance instanceSelected = m_agentList[m_ui->imapAccountComboBox->currentText()];
+  KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
+  Kolab::Version v = static_cast<Kolab::Version>(grp.readEntry("KolabFormatVersion"+instanceSelected.identifier(), static_cast<int>(Kolab::KolabV2)));
+  if (v == Kolab::KolabV2) {
+    m_ui->formatVersion->setText("Kolab Format v2");
+  } else {
+    m_ui->formatVersion->setText("Kolab Format v3");
+  }
 }
 
 
