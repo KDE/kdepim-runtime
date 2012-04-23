@@ -44,6 +44,7 @@ private slots:
     void itemModifyResult( KJob *job );
     
 private:
+    void checkResult();
     Akonadi::AgentInstance m_agentInstance;
     Kolab::Version m_targetVersion;
 };

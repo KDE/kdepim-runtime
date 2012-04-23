@@ -58,12 +58,14 @@ void UpgradeJob::collectionFetchResult(KJob* job)
     kDebug();
     if ( job->error() ) {
         kDebug() << job->errorString();
-        return; // Akonadi::Job propagates that automatically
+        emitResult();
+        return;
     }
     int collections = 0;
     foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {  
-        if (!(col.rights() & Collection::CanChangeItem)) { //FIXME detect shared folders?
-            kDebug() << "skipping non editable folder";
+        //FIXME find a way to properly detect shared folders (Collection::CanCreateCollection never applies to shared folders, but that's just a workaround)
+        if ( !(col.rights() & Collection::CanCreateCollection) || !(col.rights() & Collection::CanChangeItem) ) {
+            kDebug() << "skipping shared/non-editable folder";
             continue;
         }
         KolabV2::FolderType folderType = KolabV2::Mail;
@@ -87,23 +89,29 @@ void UpgradeJob::collectionFetchResult(KJob* job)
     }
     //Percent is only emitted when Bytes is the unit
     setTotalAmount(Bytes, collections);
+    if (!collections) {
+        emitResult();
+    }
 }
 
 void UpgradeJob::itemFetchResult(KJob* job)
 {
     if ( job->error() ) {
         kDebug() << job->errorString();
+        checkResult();
         return; // Akonadi::Job propagates that automatically
     }
     ItemFetchJob *j = static_cast<ItemFetchJob*>( job );
     if (j->items().isEmpty()) {
         qWarning() << "no items fetched ";
+        checkResult();
         return;
     }
     
     const Collection imapCollection = j->property(IMAP_COLLECTION).value<Akonadi::Collection>();
     if (!imapCollection.isValid()) {
         qWarning() << "invalid imap collection";
+        checkResult();
         return;
     }
     
@@ -112,6 +120,7 @@ void UpgradeJob::itemFetchResult(KJob* job)
         
     if (!handler) {
         qWarning() << "invalid handler";
+        checkResult();
         return;
     }
     handler->setKolabFormatVersion(m_targetVersion);
@@ -131,7 +140,15 @@ void UpgradeJob::itemFetchResult(KJob* job)
         ItemModifyJob *modJob = new ItemModifyJob(imapItem, this);
         connect(modJob, SIGNAL(result(KJob*)), this, SLOT(itemModifyResult(KJob*)) );
     }
+    checkResult();
+}
+
+void UpgradeJob::checkResult()
+{
     setProcessedAmount(Bytes, processedAmount(Bytes)+1);
+    if (processedAmount(Bytes) >= totalAmount(Bytes)) {
+        emitResult();
+    }
 }
 
 void UpgradeJob::itemModifyResult(KJob* job)
