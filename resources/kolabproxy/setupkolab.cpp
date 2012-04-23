@@ -75,8 +75,8 @@ void SetupKolab::slotShowUpgradeDialog()
     
     KDialog *dialog = new KDialog(this);
     dialog->setButtons(Close);
-    m_versionUi->progressBar->setDisabled(true);
     m_versionUi->setupUi(dialog->mainWidget());
+    m_versionUi->progressBar->setDisabled(true);
     connect(m_versionUi->pushButton, SIGNAL(clicked()), this, SLOT(slotDoUpgrade()));
     
     KConfigGroup grp(KGlobal::mainComponent().config(), "KolabProxyResourceSettings");
