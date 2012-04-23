@@ -101,6 +101,7 @@ protected:
   QByteArray m_mimeType;
   Akonadi::Collection m_imapCollection;
   Kolab::Version m_formatVersion;
+  int m_warningDisplayLevel;
 };
 
 #endif
