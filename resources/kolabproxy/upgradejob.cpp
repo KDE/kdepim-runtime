@@ -37,9 +37,9 @@ using namespace Akonadi;
 #define FOLDER_TYPE "FOLDER_TYPE"
 
 UpgradeJob::UpgradeJob(Kolab::Version targetVersion, const Akonadi::AgentInstance& instance, QObject* parent)
-    : Akonadi::Job(parent),
-    m_targetVersion(targetVersion),
-    m_agentInstance(instance)
+  : Akonadi::Job(parent),
+  m_agentInstance(instance),
+  m_targetVersion(targetVersion)
 {
   kDebug() << targetVersion;
 }
