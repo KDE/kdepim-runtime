@@ -21,6 +21,7 @@
 
 #include "retrievecollectionstask.h"
 #include "noselectattribute.h"
+#include <noinferiorsattribute.h>
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/entitydisplayattribute.h>
@@ -237,6 +238,28 @@ private slots:
 
     QTest::newRow( "subscription enabled, case insensitive inbox" ) << expectedCollections << scenario << callNames
                                             << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+
+    expectedCollections.clear();
+    expectedCollections << createRootCollection()
+                        << createCollection( "/", "INBOX", false, true )
+                        << createCollection( "/", "Archive" );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 LIST \"\" *"
+             << "S: * LIST ( \\Noinferiors ) / INBOX"
+             << "S: * LIST ( ) / Archive"
+             << "S: A000003 OK list done";
+
+    callNames.clear();
+    callNames << "setIdleCollection" << "collectionsRetrieved";
+
+    isSubscriptionEnabled = false;
+    isDisconnectedModeEnabled = false;
+    intervalCheckTime = -1;
+
+    QTest::newRow( "Noinferiors" ) << expectedCollections << scenario << callNames
+                                                     << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
   }
 
   void shouldListCollections()
@@ -330,7 +353,7 @@ private:
     return collection;
   }
 
-  Akonadi::Collection createCollection( const QString &separator, const QString &path, bool isNoSelect = false )
+  Akonadi::Collection createCollection( const QString &separator, const QString &path, bool isNoSelect = false, bool isNoInferiors = false )
   {
     // No path? That's the root of this resource then
     if ( path.isEmpty() ) {
@@ -375,6 +398,11 @@ private:
       collection.addAttribute( new NoSelectAttribute( true ) );
       collection.setContentMimeTypes( QStringList() << Akonadi::Collection::mimeType() );
       collection.setRights( Akonadi::Collection::ReadOnly );
+    }
+
+    if ( isNoInferiors ) {
+        collection.addAttribute( new NoInferiorsAttribute( true ) );
+        collection.setRights( collection.rights() & ~Akonadi::Collection::CanCreateCollection );
     }
 
     return collection;

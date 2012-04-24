@@ -22,6 +22,7 @@
 #include "retrievecollectionstask.h"
 
 #include "noselectattribute.h"
+#include "noinferiorsattribute.h"
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/entitydisplayattribute.h>
@@ -181,6 +182,13 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       } else {
         // remove the noselect attribute explicitly, in case we had set it before (eg. for non-subscribed non-leaf folders)
         c.removeAttribute<NoSelectAttribute>();
+      }
+
+      // If this folder is a noinferiors folder, it is not allowed to create subfolders inside.
+      if ( currentFlags.contains( "\\noinferiors" ) ) {
+          //kDebug() << "Noinferiors: " << currentPath;
+          c.addAttribute( new NoInferiorsAttribute( true ) );
+          c.setRights( c.rights() & ~Akonadi::Collection::CanCreateCollection );
       }
 
       m_reportedCollections.insert( currentPath, c );
