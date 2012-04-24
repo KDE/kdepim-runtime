@@ -276,9 +276,9 @@ QString ResourceState::rootRemoteId() const
 
 QString ResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings ) const
 {
-  if ( collection.remoteId().isEmpty() ) {
+  if ( collection.remoteId().isEmpty() ) { //This should never happen, investigate why a collection without remoteId made it this far
     if ( showWarnings )
-      kWarning() << "Got incomplete ancestor chain:" << collection;
+      kWarning() << "Got incomplete ancestor chain due to empty remoteId:" << collection;
     return QString();
   }
 

@@ -248,7 +248,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
     newRights|= Akonadi::Collection::CanDeleteItem;
   }
 
-  if ( imapRights & ( KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create ) ) {
+  if ( !m_collection.hasAttribute( "noinferiors" ) && imapRights & ( KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create ) ) {
     newRights|= Akonadi::Collection::CanCreateCollection;
   }
 
