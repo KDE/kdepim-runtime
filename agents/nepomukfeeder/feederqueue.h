@@ -62,15 +62,12 @@ signals:
   void batchFinished();
   
 private slots:
-  void removeDataResult( KJob* job );
   void batchJobResult( KJob* job );
   void fetchJobResult( KJob* job );
   void continueProcessing();
   
 private:
   bool processBatch();
-
-  int mPendingRemoveDataJobs, mBatchCounter;
 
   QQueue<Akonadi::Item::Id> mItemPipeline;
   Nepomuk::SimpleResourceGraph mResourceGraph;

@@ -42,7 +42,9 @@ class NepomukFeederPlugin: public QObject
      * It is only necessary to add the attributes to @param res,
      * the storing of the resource will happen automatically.
      * If additional resources are needed, the can be added to @param graph.
-     * Additionaly created resources are only removed before an update if they are subresources of the @param res.
+     * Additionaly created resources are only removed on removal of the item if they are subresources of the @param res.
+     * Properties are not removed on an update, but only overwritten. In case you need to remove properties after an update,
+     * you have to remove the affected properties yourself during each update.
      * 
      * It is not necessary for the reimplementation to add @param res to @param graph, nor to store @param graph.
      */

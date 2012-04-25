@@ -153,7 +153,7 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
   //kDebug() << item.url();
-  Nepomuk::removeResources(QList <QUrl>() << item.url());
+  Nepomuk::removeResources(QList <QUrl>() << item.url(), Nepomuk::RemoveSubResoures);
 }
 
 void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
