@@ -1,2 +1,4 @@
+include_directories(${LIBKGOOGLE_INCLUDE_DIR})
+
 macro_optional_add_subdirectory(calendar)
 macro_optional_add_subdirectory(contacts)
