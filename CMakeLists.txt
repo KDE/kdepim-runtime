@@ -93,6 +93,17 @@ endif(NOT KDEPIM_NO_NEPOMUK)
 find_package(Strigi)
 macro_log_feature(STRIGI_FOUND "Strigi" "Index metadata of files" "http://strigi.sourceforge.net" FALSE "" "")
 
+set(LIBKGOOGLE_MIN_VERSION 0.3.1)
+find_package(LibKGoogle)
+macro_log_feature(LIBKGOOGLE_FOUND "LibKGoogle" "A library to access Google services" "http://projects.kde.org/libkgoogle" FALSE "${LIBKGOOGLE_MIN_VERSION}" "LibKGoogle is required to build Akonadi resources to access Google Contacts, Calendars and Tasks" )
+
+if(LIBKGOOGLE_FOUND)
+
+  find_package(QJSON)
+  macro_log_feature(QJSON_FOUND "QJSON" "Qt library for handling JSON data" "http://qjson.sourceforge.net/" TRUE)
+
+endif(LIBKGOOGLE_FOUND)
+
 ############### search programs & libraries used by kdepim-runtime ###############
 
 find_program(XSLTPROC_EXECUTABLE xsltproc)

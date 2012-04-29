@@ -53,6 +53,10 @@ macro_optional_add_subdirectory( microblog )
 macro_optional_add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
+if ( LIBKGOOGLE_FOUND )
+  add_subdirectory ( google )
+endif ( LIBKGOOGLE_FOUND )
+
 if (NOT WINCE)
 if ( NEPOMUK_FOUND )
   add_subdirectory( nepomuktag )
