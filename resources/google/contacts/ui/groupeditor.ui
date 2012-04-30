@@ -22,10 +22,17 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLineEdit" name="groupNameEdit"/>
+    <widget class="KLineEdit" name="groupNameEdit"/>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
