@@ -152,8 +152,9 @@ void CalendarResource::reloadConfig()
 
 Account::Ptr CalendarResource::getAccount()
 {
-  if ( !m_account.isNull() )
+  if ( !m_account.isNull() ) {
     return m_account;
+  }
 
   Auth *auth = Auth::instance();
   try {
@@ -240,7 +241,6 @@ void CalendarResource::cachedItemsRetrieved( KJob *job )
   fetchJob->start();
 }
 
-
 bool CalendarResource::retrieveItem( const Akonadi::Item &item, const QSet< QByteArray >& parts )
 {
   Q_UNUSED( parts );
@@ -299,12 +299,14 @@ void CalendarResource::retrieveCollections()
 
   FetchListJob *fetchJob;
 
-  fetchJob = new FetchListJob( Services::Calendar::fetchCalendarsUrl(), "Calendar", account->accountName() );
+  fetchJob = new FetchListJob( Services::Calendar::fetchCalendarsUrl(),
+                               "Calendar", account->accountName() );
   connect( fetchJob, SIGNAL(finished(KJob*)),
            this, SLOT(calendarsReceived(KJob*)) );
   fetchJob->start();
 
-  fetchJob = new FetchListJob( Services::Tasks::fetchTaskListsUrl(), "Tasks", account->accountName() );
+  fetchJob = new FetchListJob( Services::Tasks::fetchTaskListsUrl(),
+                               "Tasks", account->accountName() );
   connect( fetchJob, SIGNAL(finished(KJob*)),
            this, SLOT(taskListReceived(KJob*)) );
   fetchJob->start();
@@ -347,14 +349,15 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
     service = "Tasks";
     url = Services::Tasks::createTaskUrl( collection.remoteId() );
-    if ( !todo->relatedTo( Incidence::RelTypeParent ).isEmpty() )
+    if ( !todo->relatedTo( Incidence::RelTypeParent ).isEmpty() ) {
       url.addQueryItem( "parent", todo->relatedTo( Incidence::RelTypeParent ) );
+    }
 
     Services::Tasks service;
     data = service.objectToJSON( static_cast< KGoogle::Object * >( &ktodo ) );
 
   } else {
-    cancelTask( i18n( "Unknown payload type '%1'" ).arg( item.mimeType() ) );
+    cancelTask( i18n( "Unknown payload type '%1'", item.mimeType() ) );
     return;
   }
 
@@ -366,7 +369,8 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
   m_gam->sendRequest( request );
 }
 
-void CalendarResource::itemChanged( const Akonadi::Item &item, const QSet< QByteArray >& partIdentifiers )
+void CalendarResource::itemChanged( const Akonadi::Item &item,
+                                    const QSet< QByteArray > &partIdentifiers )
 {
   QUrl url;
   QByteArray data;
@@ -420,7 +424,7 @@ void CalendarResource::itemChanged( const Akonadi::Item &item, const QSet< QByte
     m_gam->sendRequest( request );
 
   } else {
-    cancelTask( i18n( "Unknown payload type '%1'" ).arg( item.mimeType() ) );
+    cancelTask( i18n( "Unknown payload type '%1'", item.mimeType() ) );
     return;
   }
 
@@ -431,7 +435,6 @@ void CalendarResource::itemRemoved( const Akonadi::Item &item )
 {
   QString service;
   QUrl url;
-
 
   Account::Ptr account = getAccount();
   if ( account.isNull() ) {
@@ -462,13 +465,15 @@ void CalendarResource::itemRemoved( const Akonadi::Item &item )
     fetchJob->start();
 
   } else {
-    cancelTask( i18n( "Unknown payload type '%1'" ).arg( item.mimeType() ) );
+    cancelTask( i18n( "Unknown payload type '%1'", item.mimeType() ) );
     return;
   }
 
 }
 
-void CalendarResource::itemMoved( const Item &item, const Collection &collectionSource, const Collection &collectionDestination )
+void CalendarResource::itemMoved( const Item &item,
+                                  const Collection &collectionSource,
+                                  const Collection &collectionDestination )
 {
   QString service;
   QUrl url;
@@ -485,16 +490,18 @@ void CalendarResource::itemMoved( const Item &item, const Collection &collection
   }
 
   /* Moving tasks between task lists is not supported */
-  if ( item.mimeType() != Event::eventMimeType() )
+  if ( item.mimeType() != Event::eventMimeType() ) {
     return;
+  }
 
-  url = Services::Calendar::moveEventUrl( collectionSource.remoteId(), collectionDestination.remoteId(), item.remoteId() );
+  url = Services::Calendar::moveEventUrl( collectionSource.remoteId(),
+                                          collectionDestination.remoteId(),
+                                          item.remoteId() );
   Request *request = new Request( url, KGoogle::Request::Move, "Calendar", account );
   request->setProperty( "Item", qVariantFromValue( item ) );
 
   m_gam->sendRequest( request );
 }
-
 
 void CalendarResource::replyReceived( KGoogle::Reply *reply )
 {
@@ -647,6 +654,5 @@ void CalendarResource::emitPercent( KJob *job, ulong progress )
 
   Q_EMIT percent( progress );
 }
-
 
 AKONADI_RESOURCE_MAIN( CalendarResource );
