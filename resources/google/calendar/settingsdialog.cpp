@@ -21,13 +21,14 @@
 #include "tasklisteditor.h"
 #include "ui_settingsdialog.h"
 
-#include <QtGui/QPixmap>
-#include <QtGui/QIcon>
-#include <QtGui/QListWidget>
-
 #include <KWindowSystem>
 #include <KLocalizedString>
 #include <KMessageBox>
+
+#include <QPixmap>
+#include <QIcon>
+#include <QListWidget>
+#include <QPointer>
 
 #include <libkgoogle/accessmanager.h>
 #include <libkgoogle/request.h>
@@ -257,7 +258,7 @@ void SettingsDialog::accountChanged()
 
 void SettingsDialog::addCalendarClicked()
 {
-  CalendarEditor *editor = new CalendarEditor;
+  QPointer<CalendarEditor> editor = new CalendarEditor;
   connect( editor, SIGNAL(accepted(KGoogle::Objects::Calendar*)),
            this, SLOT(addCalendar(KGoogle::Objects::Calendar*)) );
 
@@ -318,7 +319,7 @@ void SettingsDialog::editCalendarClicked()
     return;
   }
 
-  CalendarEditor *editor = new CalendarEditor( calendar );
+  QPointer<CalendarEditor> editor = new CalendarEditor( calendar );
   connect( editor, SIGNAL(accepted(KGoogle::Objects::Calendar*)),
            this, SLOT(editCalendar(KGoogle::Objects::Calendar*)) );
 
@@ -505,7 +506,7 @@ void SettingsDialog::editTaskListClicked()
     return;
   }
 
-  TasklistEditor *editor = new TasklistEditor( taskList );
+  QPointer<TasklistEditor> editor = new TasklistEditor( taskList );
   connect( editor, SIGNAL(accepted(KGoogle::Objects::TaskList*)),
            this, SLOT(editTaskList(KGoogle::Objects::TaskList*)) );
 
