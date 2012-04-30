@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GOOGLE_CALENDAR_CALENDARRESOURCE_H
 #define GOOGLE_CALENDAR_CALENDARRESOURCE_H
 
@@ -28,24 +27,22 @@
 #include <libkgoogle/account.h>
 
 namespace KGoogle {
-class AccessManager;
-class Account;
-class Reply;
-class Request;
+  class AccessManager;
+  class Account;
+  class Reply;
+  class Request;
 }
 
 using namespace KGoogle;
 
 class CalendarResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
-
-    Q_OBJECT
+  Q_OBJECT
   public:
     CalendarResource( const QString &id );
     ~CalendarResource();
 
     void configure( WId windowId );
-
 
   public Q_SLOTS:
     void reloadConfig();
@@ -56,7 +53,9 @@ class CalendarResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemChanged( const Akonadi::Item &item, const QSet< QByteArray >& partIdentifiers );
     void itemRemoved( const Akonadi::Item &item );
-    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
+    void itemMoved( const Akonadi::Item &item,
+                    const Akonadi::Collection &collectionSource,
+                    const Akonadi::Collection &collectionDestination );
 
   protected:
     void aboutToQuit();

@@ -35,7 +35,6 @@
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/ItemFetchScope>
 
-
 using namespace Akonadi;
 using namespace KGoogle;
 using namespace KCalCore;
@@ -63,7 +62,6 @@ void CalendarResource::taskDoUpdate( Reply *reply )
   m_gam->sendRequest( request );
 }
 
-
 void CalendarResource::taskListReceived( KJob *job )
 {
   if ( job->error() ) {
@@ -81,8 +79,9 @@ void CalendarResource::taskListReceived( KJob *job )
 
     Objects::TaskList *taskList = static_cast< Objects::TaskList * >( replyData );
 
-    if ( !taskLists.contains( taskList->uid() ) )
+    if ( !taskLists.contains( taskList->uid() ) ) {
       continue;
+    }
 
     Collection collection;
     collection.setRemoteId( taskList->uid() );
@@ -191,7 +190,7 @@ void CalendarResource::taskCreated( KGoogle::Reply *reply )
   QList< Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
-    cancelTask( i18n( "Expected a single item, server sent %1 items.",  data.length() ) );
+    cancelTask( i18n( "Expected a single item, server sent %1 items.", data.length() ) );
     return;
   }
 
@@ -288,8 +287,10 @@ void CalendarResource::doRemoveTask( KJob *job )
   Item item = job->property( "Item" ).value< Item >();
 
   /* Now finally we can safely remove the task we wanted to */
-  Request *request = new Request( Services::Tasks::removeTaskUrl( item.parentCollection().remoteId(), item.remoteId() ),
-                                  KGoogle::Request::Remove, "Tasks", account );
+  Request *request =
+    new Request(
+      Services::Tasks::removeTaskUrl( item.parentCollection().remoteId(), item.remoteId() ),
+      KGoogle::Request::Remove, "Tasks", account );
   request->setProperty( "Item", qVariantFromValue( item ) );
   m_gam->sendRequest( request );
 }

@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GOOGLE_CONTACTS_CONTACTSRESOURCE_H
 #define GOOGLE_CONTACTS_CONTACTSRESOURCE_H
 
@@ -29,9 +28,9 @@
 #include <libkgoogle/account.h>
 
 namespace KGoogle {
-class AccessManager;
-class Reply;
-class Request;
+  class AccessManager;
+  class Reply;
+  class Request;
 };
 
 class QNetworkAccessManager;
@@ -40,9 +39,9 @@ class QNetworkReply;
 using namespace KGoogle;
 
 class ContactsResource: public Akonadi::ResourceBase,
-  public Akonadi::AgentBase::ObserverV2
+                        public Akonadi::AgentBase::ObserverV2
 {
-    Q_OBJECT
+  Q_OBJECT
 
   public:
     ContactsResource( const QString &id );

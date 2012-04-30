@@ -16,7 +16,6 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #ifndef GOOGLE_CALENDAR_DEFAULTREMINDERATTRIBUTE_H
 #define GOOGLE_CALENDAR_DEFAULTREMINDERATTRIBUTE_H
 
@@ -32,7 +31,8 @@ using namespace KGoogle;
 class DefaultReminderAttribute : public Akonadi::Attribute
 {
   public:
-    DefaultReminderAttribute( const Objects::Reminder::List &reminders = Objects::Reminder::List() );
+    DefaultReminderAttribute(
+      const Objects::Reminder::List &reminders = Objects::Reminder::List() );
 
     Attribute *clone() const;
     void deserialize( const QByteArray &data );
