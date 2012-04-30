@@ -114,14 +114,14 @@ void CalendarResource::taskListReceived( KJob *job )
 void CalendarResource::taskReceived( KGoogle::Reply *reply )
 {
   if ( reply->error() != OK ) {
-    cancelTask( i18n( "Failed to fetch task: %1" ).arg( reply->errorString() ) );
+    cancelTask( i18n( "Failed to fetch task: %1", reply->errorString() ) );
     return;
   }
 
   QList< Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
-    cancelTask( i18n( "Expected a single item, server sent %1 items." ).arg( data.length() ) );
+    cancelTask( i18n( "Expected a single item, server sent %1 items.", data.length() ) );
     return;
   }
 
@@ -143,7 +143,7 @@ void CalendarResource::taskReceived( KGoogle::Reply *reply )
 void CalendarResource::tasksReceived( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Failed to fetch tasks: %1" ).arg( job->errorString() ) );
+    cancelTask( i18n( "Failed to fetch tasks: %1", job->errorString() ) );
     return;
   }
 
@@ -184,14 +184,14 @@ void CalendarResource::tasksReceived( KJob *job )
 void CalendarResource::taskCreated( KGoogle::Reply *reply )
 {
   if ( reply->error() != OK ) {
-    cancelTask( i18n( "Failed to create a task: %1" ).arg( reply->errorString() ) );
+    cancelTask( i18n( "Failed to create a task: %1", reply->errorString() ) );
     return;
   }
 
   QList< Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
-    cancelTask( i18n( "Expected a single item, server sent %1 items." ).arg( data.length() ) );
+    cancelTask( i18n( "Expected a single item, server sent %1 items.",  data.length() ) );
     return;
   }
 
@@ -209,14 +209,14 @@ void CalendarResource::taskCreated( KGoogle::Reply *reply )
 void CalendarResource::taskUpdated( KGoogle::Reply *reply )
 {
   if ( reply->error() != OK ) {
-    cancelTask( i18n( "Failed to update task: %1" ).arg( reply->errorString() ) );
+    cancelTask( i18n( "Failed to update task: %1", reply->errorString() ) );
     return;
   }
 
   QList< Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
-    cancelTask( i18n( "Expected a single item, server sent %1 items." ).arg( data.length() ) );
+    cancelTask( i18n( "Expected a single item, server sent %1 items.", data.length() ) );
     return;
   }
 
@@ -231,7 +231,7 @@ void CalendarResource::taskUpdated( KGoogle::Reply *reply )
 void CalendarResource::removeTaskFetchJobFinished( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Failed to delete task (1): %1" ).arg( job->errorString() ) );
+    cancelTask( i18n( "Failed to delete task (1): %1", job->errorString() ) );
     return;
   }
 
@@ -241,7 +241,7 @@ void CalendarResource::removeTaskFetchJobFinished( KJob *job )
   Item::List detachItems;
 
   Item::List items = fetchJob->items();
-  Q_FOREACH ( Item item, items ) {
+  Q_FOREACH ( Item item, items ) { //krazy:exclude=foreach
     if( !item.hasPayload< Todo::Ptr >() ) {
       kDebug() << "Item " << item.remoteId() << " does not have Todo payload";
       continue;
@@ -275,7 +275,7 @@ void CalendarResource::removeTaskFetchJobFinished( KJob *job )
 void CalendarResource::doRemoveTask( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Failed to delete task (2): %1" ).arg( job->errorString() ) );
+    cancelTask( i18n( "Failed to delete task (2): %1", job->errorString() ) );
     return;
   }
 
@@ -297,7 +297,7 @@ void CalendarResource::doRemoveTask( KJob *job )
 void CalendarResource::taskRemoved( KGoogle::Reply *reply )
 {
   if ( reply->error() != NoContent ) {
-    cancelTask( i18n( "Failed to delete task (5): %1" ).arg( reply->errorString() ) );
+    cancelTask( i18n( "Failed to delete task (5): %1", reply->errorString() ) );
     return;
   }
 

@@ -16,8 +16,8 @@
 */
 
 
-#ifndef CONTACTSRESOURCE_H
-#define CONTACTSRESOURCE_H
+#ifndef GOOGLE_CONTACTS_CONTACTSRESOURCE_H
+#define GOOGLE_CONTACTS_CONTACTSRESOURCE_H
 
 #include <Akonadi/ResourceBase>
 #include <Akonadi/AgentBase>
@@ -40,7 +40,7 @@ class QNetworkReply;
 using namespace KGoogle;
 
 class ContactsResource: public Akonadi::ResourceBase,
-  public Akonadi::AgentBase::ObserverV2 
+  public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

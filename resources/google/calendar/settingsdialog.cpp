@@ -15,8 +15,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "calendareditor.h"
 #include "settingsdialog.h"
+#include "calendareditor.h"
 #include "settings.h"
 #include "tasklisteditor.h"
 #include "ui_settingsdialog.h"
@@ -25,7 +25,6 @@
 #include <QtGui/QIcon>
 #include <QtGui/QListWidget>
 
-#include <KMessageBox>
 #include <KWindowSystem>
 #include <KLocalizedString>
 #include <KMessageBox>

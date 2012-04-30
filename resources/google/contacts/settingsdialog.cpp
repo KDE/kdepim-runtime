@@ -15,16 +15,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <KMessageBox>
-#include <KWindowSystem>
-
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 #include "settings.h"
 
+#include <KMessageBox>
+#include <KWindowSystem>
+
 #include <libkgoogle/auth.h>
 #include <libkgoogle/services/contacts.h>
-
 
 using namespace KGoogle;
 

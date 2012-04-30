@@ -15,25 +15,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#ifndef SETTINGSDIALOG_H
-#define SETTINGSDIALOG_H
+#ifndef GOOGLE_CONTACTS_SETTINGSDIALOG_H
+#define GOOGLE_CONTACTS_SETTINGSDIALOG_H
 
 #include <KDialog>
 
 #include <libkgoogle/common.h>
 
 namespace Ui {
-class SettingsDialog;
+  class SettingsDialog;
 }
 
 class QTreeWidgetItem;
 
 class SettingsDialog : public KDialog
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
-    SettingsDialog( WId windowId, QWidget *parent = 0 );
+    explicit SettingsDialog( WId windowId, QWidget *parent = 0 );
     ~SettingsDialog();
 
   private Q_SLOTS:

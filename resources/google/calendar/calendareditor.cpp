@@ -68,14 +68,15 @@ void CalendarEditor::accepted()
   Q_EMIT accepted( m_calendar );
 }
 
-
 void CalendarEditor::initTimezones()
 {
 
-  Q_FOREACH ( const KTimeZone tz, KSystemTimeZones::zones() ) {
+  Q_FOREACH ( const KTimeZone &tz, KSystemTimeZones::zones() ) {
     QIcon icon;
 
-    QString flag = KStandardDirs::locate( "locale", QString( "l10n/%1/flag.png" ).arg( tz.countryCode().toLower() ) );
+    QString flag =
+      KStandardDirs::locate( "locale",
+                             QString( "l10n/%1/flag.png" ).arg( tz.countryCode().toLower() ) );
 
     if ( QFile::exists( flag ) ) {
       icon = QIcon( flag );

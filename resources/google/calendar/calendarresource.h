@@ -16,8 +16,8 @@
 */
 
 
-#ifndef CALENDARRESOURCE_H
-#define CALENDARRESOURCE_H
+#ifndef GOOGLE_CALENDAR_CALENDARRESOURCE_H
+#define GOOGLE_CALENDAR_CALENDARRESOURCE_H
 
 #include <Akonadi/AgentBase>
 #include <Akonadi/ResourceBase>

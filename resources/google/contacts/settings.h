@@ -16,8 +16,8 @@
 */
 
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef GOOGLE_CONTACTS_SETTINGS_H
+#define GOOGLE_CONTACTS_SETTINGS_H
 
 #include "settingsbase.h"
 
