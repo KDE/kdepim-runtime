@@ -131,7 +131,6 @@ void SettingsDialog::error( KGoogle::Error code, const QString &msg )
   Q_UNUSED( code )
 }
 
-
 void SettingsDialog::saveSettings()
 {
   Settings::self()->setAccount( m_ui->accountsCombo->currentText() );
@@ -173,8 +172,9 @@ void SettingsDialog::reloadAccounts()
     m_ui->accountsCombo->setCurrentIndex( index );
   }
 
-  if ( accCnt != m_ui->accountsCombo->count() )
+  if ( accCnt != m_ui->accountsCombo->count() ) {
     accountChanged();
+  }
 
   connect( m_ui->accountsCombo, SIGNAL(currentIndexChanged(int)),
            this, SLOT(accountChanged()) );
@@ -198,15 +198,20 @@ void SettingsDialog::addAccountClicked()
 void SettingsDialog::removeAccountClicked()
 {
   KGoogle::Account::Ptr account = m_ui->accountsCombo->currentAccount();
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
   if ( KMessageBox::warningYesNo(
         this,
         i18n( "Do you really want to revoke access to account <b>%1</b>?"
-              "<br>This will revoke access to all resources using this account!", account->accountName() ),
+              "<p>This will revoke access to all resources using this account!</p>",
+              account->accountName() ),
         i18n( "Revoke Access?" ),
-        KStandardGuiItem::yes(), KStandardGuiItem::no(), QString(), KMessageBox::Dangerous ) != KMessageBox::Yes ) {
+        KStandardGuiItem::yes(),
+        KStandardGuiItem::no(),
+        QString(),
+        KMessageBox::Dangerous ) != KMessageBox::Yes ) {
 
     return;
   }
@@ -240,11 +245,13 @@ void SettingsDialog::accountChanged()
   KGoogle::Request *request;
 
   m_ui->calendarsList->clear();
-  request = new KGoogle::Request( Services::Calendar::fetchCalendarsUrl(), Request::FetchAll, "Calendar", account );
+  request = new KGoogle::Request( Services::Calendar::fetchCalendarsUrl(),
+                                  Request::FetchAll, "Calendar", account );
   m_gam->queueRequest( request );
 
   m_ui->tasksList->clear();
-  request = new KGoogle::Request( Services::Tasks::fetchTaskListsUrl(), Request::FetchAll, "Tasks", account );
+  request = new KGoogle::Request( Services::Tasks::fetchTaskListsUrl(),
+                                  Request::FetchAll, "Tasks", account );
   m_gam->sendRequest( request );
 }
 
@@ -268,8 +275,9 @@ void SettingsDialog::addCalendar( KGoogle::Objects::Calendar *calendar )
   QByteArray data;
 
   account = m_ui->accountsCombo->currentAccount();
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
   m_ui->accountsBox->setDisabled( true );
   m_ui->calendarsBox->setDisabled( true );
@@ -296,16 +304,19 @@ void SettingsDialog::editCalendarClicked()
   QList< QListWidgetItem * > selected;
 
   selected = m_ui->calendarsList->selectedItems();
-  if ( selected.isEmpty() )
+  if ( selected.isEmpty() ) {
     return;
+  }
 
   item = selected.first();
-  if ( !item )
+  if ( !item ) {
     return;
+  }
 
   calendar = item->data( KGoogleObjectRole ).value< KGoogle::Objects::Calendar * >();
-  if ( !calendar )
+  if ( !calendar ) {
     return;
+  }
 
   CalendarEditor *editor = new CalendarEditor( calendar );
   connect( editor, SIGNAL(accepted(KGoogle::Objects::Calendar*)),
@@ -325,8 +336,9 @@ void SettingsDialog::editCalendar( KGoogle::Objects::Calendar *calendar )
   QByteArray data;
 
   account = m_ui->accountsCombo->currentAccount();
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
   m_ui->accountsBox->setDisabled( true );
   m_ui->calendarsBox->setDisabled( true );
@@ -353,22 +365,30 @@ void SettingsDialog::removeCalendarClicked()
   QList< QListWidgetItem * > selected;
 
   selected = m_ui->calendarsList->selectedItems();
-  if ( selected.isEmpty() )
+  if ( selected.isEmpty() ) {
     return;
+  }
 
   item = selected.first();
-  if ( !item )
+  if ( !item ) {
     return;
+  }
 
   calendar = item->data( KGoogleObjectRole ).value< KGoogle::Objects::Calendar * >();
-  if ( !calendar )
+  if ( !calendar ) {
     return;
+  }
 
-  if ( KMessageBox::warningYesNo( this,
-                                 i18n( "Do you really want to remove calendar <b>%1</b>?<br>"
-                                       "<b>This will remove the calendar from Google servers as well!</b>", calendar->title() ),
-                                 i18n( "Remove Calendar?" ),
-                                 KStandardGuiItem::yes(), KStandardGuiItem::no(), QString(), KMessageBox::Dangerous ) != KStandardGuiItem::Yes ) {
+  if ( KMessageBox::warningYesNo(
+         this,
+         i18n( "Do you really want to remove calendar <b>%1</b>?"
+               "<p>This will remove the calendar from Google servers as well!</p>",
+               calendar->title() ),
+         i18n( "Remove Calendar?" ),
+         KStandardGuiItem::yes(),
+         KStandardGuiItem::no(),
+         QString(),
+         KMessageBox::Dangerous ) != KStandardGuiItem::Yes ) {
 
     return;
   }
@@ -378,8 +398,9 @@ void SettingsDialog::removeCalendarClicked()
   KGoogle::Request *request;
 
   account = m_ui->accountsCombo->currentAccount();
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
   m_ui->accountsBox->setDisabled( true );
   m_ui->calendarsBox->setDisabled( true );
@@ -413,8 +434,9 @@ void SettingsDialog::reloadCalendarsClicked()
   KGoogle::Request *request;
 
   account = m_ui->accountsCombo->currentAccount();
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
   m_ui->accountsBox->setDisabled( true );
   m_ui->calendarsBox->setDisabled( true );
@@ -426,7 +448,8 @@ void SettingsDialog::reloadCalendarsClicked()
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
 
-  request = new KGoogle::Request( Services::Calendar::fetchCalendarsUrl(), Request::FetchAll, "Calendar", account );
+  request = new KGoogle::Request( Services::Calendar::fetchCalendarsUrl(),
+                                  Request::FetchAll, "Calendar", account );
   gam->sendRequest( request );
 }
 
@@ -439,8 +462,9 @@ void SettingsDialog::addTaskList( TaskList *taskList )
   QByteArray data;
 
   account = m_ui->accountsCombo->currentAccount();
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
   m_ui->accountsBox->setDisabled( true );
   m_ui->tasksBox->setDisabled( true );
@@ -451,7 +475,8 @@ void SettingsDialog::addTaskList( TaskList *taskList )
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
 
-  request = new KGoogle::Request( Services::Tasks::createTaskListUrl(), Request::Create, "Tasks", account );
+  request = new KGoogle::Request( Services::Tasks::createTaskListUrl(),
+                                  Request::Create, "Tasks", account );
   data = parser.objectToJSON( dynamic_cast< KGoogle::Object * >( taskList ) );
   request->setRequestData( data, "application/json" );
   gam->sendRequest( request );
@@ -466,16 +491,19 @@ void SettingsDialog::editTaskListClicked()
   QList< QListWidgetItem * > selected;
 
   selected = m_ui->tasksList->selectedItems();
-  if ( selected.isEmpty() )
+  if ( selected.isEmpty() ) {
     return;
+  }
 
   item = selected.first();
-  if ( !item )
+  if ( !item ) {
     return;
+  }
 
   taskList = item->data( KGoogleObjectRole ).value< KGoogle::Objects::TaskList * >();
-  if ( !taskList )
+  if ( !taskList ) {
     return;
+  }
 
   TasklistEditor *editor = new TasklistEditor( taskList );
   connect( editor, SIGNAL(accepted(KGoogle::Objects::TaskList*)),
@@ -495,8 +523,9 @@ void SettingsDialog::editTaskList( TaskList *taskList )
   QByteArray data;
 
   account = m_ui->accountsCombo->currentAccount();
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
   m_ui->accountsBox->setDisabled( true );
   m_ui->tasksBox->setDisabled( true );
@@ -523,22 +552,30 @@ void SettingsDialog::removeTaskListClicked()
   QList< QListWidgetItem * > selected;
 
   selected = m_ui->calendarsList->selectedItems();
-  if ( selected.isEmpty() )
+  if ( selected.isEmpty() ) {
     return;
+  }
 
   item = selected.first();
-  if ( !item )
+  if ( !item ) {
     return;
+  }
 
   taskList = item->data( KGoogleObjectRole ).value< KGoogle::Objects::TaskList * >();
-  if ( !taskList )
+  if ( !taskList ) {
     return;
+  }
 
-  if ( KMessageBox::warningYesNo( this,
-                                 i18n( "Do you really want to remove tasklist <b>%1</b>?<br>"
-                                       "<b>This will remove the tasklist from Google servers as well!</b>", taskList->title() ),
-                                 i18n( "Remove tasklist?" ),
-                                 KStandardGuiItem::yes(), KStandardGuiItem::no(), QString(), KMessageBox::Dangerous ) != KStandardGuiItem::Yes ) {
+  if ( KMessageBox::warningYesNo(
+         this,
+         i18n( "Do you really want to remove tasklist <b>%1</b>?"
+               "<p>This will remove the tasklist from Google servers as well!</p>",
+               taskList->title() ),
+         i18n( "Remove tasklist?" ),
+         KStandardGuiItem::yes(),
+         KStandardGuiItem::no(),
+         QString(),
+         KMessageBox::Dangerous ) != KStandardGuiItem::Yes ) {
 
     return;
   }
@@ -548,8 +585,9 @@ void SettingsDialog::removeTaskListClicked()
   KGoogle::Request *request;
 
   account = m_ui->accountsCombo->currentAccount();
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
   m_ui->accountsBox->setDisabled( true );
   m_ui->tasksBox->setDisabled( true );
@@ -572,8 +610,9 @@ void SettingsDialog::reloadTaskListsClicked()
   KGoogle::Request *request;
 
   account = m_ui->accountsCombo->currentAccount();
-  if ( !account )
+  if ( !account ) {
     return;
+  }
 
   m_ui->accountsBox->setDisabled( true );
   m_ui->tasksBox->setDisabled( true );
@@ -586,7 +625,8 @@ void SettingsDialog::reloadTaskListsClicked()
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
 
-  request = new KGoogle::Request( Services::Tasks::fetchTaskListsUrl(), Request::FetchAll, "Tasks", account );
+  request = new KGoogle::Request( Services::Tasks::fetchTaskListsUrl(),
+                                  Request::FetchAll, "Tasks", account );
   gam->sendRequest( request );
 }
 
@@ -631,7 +671,6 @@ void SettingsDialog::gam_objectCreated( Reply *reply )
   delete reply;
 }
 
-
 void SettingsDialog::gam_objectsListReceived( Reply *reply )
 {
   QList< KGoogle::Object * > objects = reply->replyData();
@@ -648,10 +687,11 @@ void SettingsDialog::gam_objectsListReceived( Reply *reply )
       item->setData( KGoogleObjectRole, qVariantFromValue( calendar ) );
       item->setData( ObjectUIDRole, calendar->uid() );
 
-      if ( Settings::self()->calendars().contains( calendar->uid() ) )
+      if ( Settings::self()->calendars().contains( calendar->uid() ) ) {
         item->setCheckState( Qt::Checked );
-      else
+      } else {
         item->setCheckState( Qt::Unchecked );
+      }
 
       m_ui->calendarsList->addItem( item );
     }
@@ -661,7 +701,7 @@ void SettingsDialog::gam_objectsListReceived( Reply *reply )
 
   } else if ( reply->serviceName() == "Tasks" ) {
 
-    Q_FOREACH ( KGoogle::Object * object, objects ) {
+    Q_FOREACH ( KGoogle::Object *object, objects ) {
       Objects::TaskList *taskList;
       QListWidgetItem *item;
 
@@ -671,10 +711,11 @@ void SettingsDialog::gam_objectsListReceived( Reply *reply )
       item->setData( KGoogleObjectRole, qVariantFromValue( taskList ) );
       item->setData( ObjectUIDRole, taskList->uid() );
 
-      if ( Settings::self()->taskLists().contains( taskList->uid() ) )
+      if ( Settings::self()->taskLists().contains( taskList->uid() ) ) {
         item->setCheckState( Qt::Checked );
-      else
+      } else {
         item->setCheckState( Qt::Unchecked );
+      }
 
       m_ui->tasksList->addItem( item );
     }
@@ -684,8 +725,9 @@ void SettingsDialog::gam_objectsListReceived( Reply *reply )
 
   }
 
-  if ( m_ui->calendarsBox->isEnabled() && m_ui->tasksList->isEnabled() )
+  if ( m_ui->calendarsBox->isEnabled() && m_ui->tasksList->isEnabled() ) {
     m_ui->accountsBox->setEnabled( true );
+  }
 }
 
 void SettingsDialog::gam_objectModified( Reply *reply )

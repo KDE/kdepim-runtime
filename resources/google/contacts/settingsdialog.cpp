@@ -77,17 +77,16 @@ void SettingsDialog::saveSettings()
   Settings::self()->writeConfig();
 }
 
-
 void SettingsDialog::error( KGoogle::Error errCode, const QString &msg )
 {
-  if ( errCode == KGoogle::OK )
+  if ( errCode == KGoogle::OK ) {
     return;
+  }
 
   KMessageBox::error( this, msg, i18n( "An error occurred" ) );
 
   m_ui->accountsBox->setEnabled( true );
 }
-
 
 void SettingsDialog::reloadAccounts()
 {
@@ -96,8 +95,9 @@ void SettingsDialog::reloadAccounts()
   QString accName = Settings::self()->account();
   int index = -1;
 
-  if ( !accName.isEmpty() )
+  if ( !accName.isEmpty() ) {
     index = m_ui->accountsCombo->findText( accName );
+  }
 
   if ( index > -1 ) {
     m_ui->accountsCombo->setCurrentIndex( index );
@@ -122,14 +122,20 @@ void SettingsDialog::removeAccountClicked()
 {
   KGoogle::Account::Ptr account = m_ui->accountsCombo->currentAccount();
 
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
-  if ( KMessageBox::warningYesNo( this,
-                                 i18n( "Do you really want to revoke access to account <b>%1</b>?"
-                                       "<br>This will revoke access to all resources using this account!", account->accountName() ),
-                                 i18n( "Revoke Access?" ),
-                                 KStandardGuiItem::yes(), KStandardGuiItem::no(), QString(), KMessageBox::Dangerous ) != KMessageBox::Yes ) {
+  if ( KMessageBox::warningYesNo(
+         this,
+         i18n( "Do you really want to revoke access to account <b>%1</b>?"
+               "<p>This will revoke access to all resources using this account!</p>",
+               account->accountName() ),
+         i18n( "Revoke Access?" ),
+         KStandardGuiItem::yes(),
+         KStandardGuiItem::no(),
+         QString(),
+         KMessageBox::Dangerous ) != KMessageBox::Yes ) {
 
     return;
   }
