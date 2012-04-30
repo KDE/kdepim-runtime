@@ -22,13 +22,17 @@
 #include <KGlobal>
 #include <KWallet/Wallet>
 
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 
 class SettingsHelper
 {
   public:
-    SettingsHelper(): q( 0 ) {};
-    ~SettingsHelper() {
+    SettingsHelper() : q( 0 )
+    {
+    }
+
+    ~SettingsHelper()
+    {
       delete q;
       q = 0;
     }

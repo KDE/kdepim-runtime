@@ -20,6 +20,22 @@
 #include "settings.h"
 #include "settingsdialog.h"
 
+#include <Akonadi/Attribute>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <KCalCore/Calendar>
+
+#include <KLocalizedString>
+#include <KDialog>
+
+#include <QStringList>
+#include <QMetaType>
+
 #include <libkgoogle/common.h>
 #include <libkgoogle/account.h>
 #include <libkgoogle/accessmanager.h>
@@ -33,21 +49,6 @@
 #include <libkgoogle/objects/tasklist.h>
 #include <libkgoogle/services/calendar.h>
 #include <libkgoogle/services/tasks.h>
-
-#include <QtCore/QStringList>
-#include <QtCore/QMetaType>
-
-#include <KLocalizedString>
-#include <KDialog>
-#include <Akonadi/Attribute>
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/CachePolicy>
-#include <Akonadi/ChangeRecorder>
-#include <Akonadi/CollectionFetchScope>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <KCalCore/Calendar>
 
 using namespace KCalCore;
 using namespace Akonadi;
@@ -506,30 +507,30 @@ void CalendarResource::itemMoved( const Item &item,
 void CalendarResource::replyReceived( KGoogle::Reply *reply )
 {
   switch ( reply->requestType() ) {
-    case Request::FetchAll:
-      /* Handled by FetchListJob */
-      break;
+  case Request::FetchAll:
+    /* Handled by FetchListJob */
+    break;
 
-    case Request::Fetch:
-      itemReceived( reply );
-      break;
+  case Request::Fetch:
+    itemReceived( reply );
+    break;
 
-    case Request::Create:
-      itemCreated( reply );
-      break;
+  case Request::Create:
+    itemCreated( reply );
+    break;
 
-    case Request::Update:
-    case Request::Patch:
-      itemUpdated( reply );
-      break;
+  case Request::Update:
+  case Request::Patch:
+    itemUpdated( reply );
+    break;
 
-    case Request::Remove:
-      itemRemoved( reply );
-      break;
+  case Request::Remove:
+    itemRemoved( reply );
+    break;
 
-    case Request::Move:
-      itemMoved( reply );
-      break;
+  case Request::Move:
+    itemMoved( reply );
+    break;
   }
 }
 

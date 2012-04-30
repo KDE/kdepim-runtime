@@ -15,16 +15,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "calendareditor.h"
 #include "ui_calendar_editor.h"
 
-#include <libkgoogle/services/calendar.h>
-
-#include <QtCore/QFile>
 #include <KStandardDirs>
 #include <KSystemTimeZone>
 
+#include <QFile>
+
+#include <libkgoogle/services/calendar.h>
 using namespace KGoogle::Objects;
 
 CalendarEditor::CalendarEditor( Calendar *calendar ) :

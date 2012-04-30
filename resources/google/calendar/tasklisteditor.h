@@ -15,11 +15,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GOOGLE_CALENDAR_TASKLISTEDITOR_H
 #define GOOGLE_CALENDAR_TASKLISTEDITOR_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 
 #include <libkgoogle/objects/tasklist.h>
 

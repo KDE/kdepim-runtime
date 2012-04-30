@@ -19,22 +19,6 @@
 #include "settingsdialog.h"
 #include "settings.h"
 
-#include <libkgoogle/accessmanager.h>
-#include <libkgoogle/auth.h>
-#include <libkgoogle/fetchlistjob.h>
-#include <libkgoogle/request.h>
-#include <libkgoogle/reply.h>
-#include <libkgoogle/objects/contact.h>
-#include <libkgoogle/services/contacts.h>
-
-#include <QtCore/QStringList>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkRequest>
-#include <QtCore/QBuffer>
-
-#include <KLocalizedString>
-#include <KDebug>
-#include <KIO/AccessManager>
 #include <Akonadi/Attribute>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
@@ -47,6 +31,23 @@
 
 #include <KABC/Addressee>
 #include <KABC/Picture>
+
+#include <KLocalizedString>
+#include <KDebug>
+#include <KIO/AccessManager>
+
+#include <QBuffer>
+#include <QStringList>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+
+#include <libkgoogle/accessmanager.h>
+#include <libkgoogle/auth.h>
+#include <libkgoogle/fetchlistjob.h>
+#include <libkgoogle/request.h>
+#include <libkgoogle/reply.h>
+#include <libkgoogle/objects/contact.h>
+#include <libkgoogle/services/contacts.h>
 
 using namespace Akonadi;
 using namespace KGoogle;
@@ -156,8 +157,9 @@ void ContactsResource::reloadConfig()
 
 Account::Ptr ContactsResource::getAccount()
 {
-  if ( !m_account.isNull() )
+  if ( !m_account.isNull() ) {
     return m_account;
+  }
 
   Auth *auth = Auth::instance();
   try {
@@ -169,7 +171,6 @@ Account::Ptr ContactsResource::getAccount()
 
   return m_account;
 }
-
 
 void ContactsResource::retrieveItems( const Akonadi::Collection &collection )
 {
@@ -188,12 +189,13 @@ void ContactsResource::retrieveItems( const Akonadi::Collection &collection )
   fetchJob->start();
 }
 
-bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet< QByteArray >& parts )
+bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet< QByteArray > &parts )
 {
   Q_UNUSED( parts );
 
-  if ( item.mimeType() != KABC::Addressee::mimeType() )
+  if ( item.mimeType() != KABC::Addressee::mimeType() ) {
     return false;
+  }
 
   Account::Ptr account = getAccount();
   if ( account.isNull() ) {
@@ -236,13 +238,14 @@ void ContactsResource::retrieveCollections()
 
   Collection myContacts;
   myContacts.setName( i18n( "My Contacts" ) );
-  myContacts.setRemoteId( "http://www.google.com/m8/feeds/groups/" + Settings::self()->account() + "/base/6" );
+  myContacts.setRemoteId( "http://www.google.com/m8/feeds/groups/" +
+                          Settings::self()->account() +
+                          "/base/6" );
   myContacts.setParentCollection( rootCollection );
   myContacts.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
   myContacts.addAttribute( attr );
   myContacts.setRights( rights );
   m_collections[MyContacts] = myContacts;
-
 
   attr = new Akonadi::EntityDisplayAttribute();
   attr->setDisplayName( i18n( "Other Contacts" ) );
@@ -297,8 +300,9 @@ void ContactsResource::initialItemsFetchJobFinished( KJob *job )
 
 void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  if ( !item.hasPayload< KABC::Addressee >() )
+  if ( !item.hasPayload< KABC::Addressee >() ) {
     return;
+  }
 
   Account::Ptr account = getAccount();
   if ( account.isNull() ) {
@@ -340,7 +344,8 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
   Q_UNUSED( collection );
 }
 
-void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet< QByteArray >& partIdentifiers )
+void ContactsResource::itemChanged( const Akonadi::Item &item,
+                                    const QSet< QByteArray >& partIdentifiers )
 {
   if ( !item.hasPayload< KABC::Addressee >() ) {
     cancelTask( i18n( "Invalid Payload" ) );
@@ -371,8 +376,10 @@ void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet< QByte
   data.append( "</atom:entry>" );
 
   KGoogle::Request *request;
-  request = new KGoogle::Request( Services::Contacts::updateContactUrl( account->accountName(), item.remoteId() ),
-                                  Request::Update, "Contacts", account );
+  request =
+    new KGoogle::Request(
+      Services::Contacts::updateContactUrl( account->accountName(), item.remoteId() ),
+      Request::Update, "Contacts", account );
   request->setRequestData( data, "application/atom+xml" );
   request->setProperty( "Item", QVariant::fromValue( item ) );
 
@@ -381,7 +388,8 @@ void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet< QByte
   Q_UNUSED( partIdentifiers );
 }
 
-void ContactsResource::itemMoved( const Item &item, const Collection &collectionSource, const Collection &collectionDestination )
+void ContactsResource::itemMoved( const Item &item, const Collection &collectionSource,
+                                  const Collection &collectionDestination )
 {
   if ( !item.hasPayload< KABC::Addressee >() ) {
     cancelTask( i18n( "Invalid payload" ) );
@@ -394,16 +402,18 @@ void ContactsResource::itemMoved( const Item &item, const Collection &collection
     return;
   }
 
-  kDebug() << "Moving contact" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
+  kDebug() << "Moving contact" << item.remoteId()
+           << "from" << collectionSource.remoteId()
+           << "to" << collectionDestination.remoteId();
 
   KABC::Addressee addressee = item.payload< KABC::Addressee >();
   Objects::Contact contact( addressee );
 
-  if ( collectionSource.remoteId() == m_collections[MyContacts].remoteId()
-      && collectionDestination.remoteId() == m_collections[OtherContacts].remoteId() ) {
+  if ( collectionSource.remoteId() == m_collections[MyContacts].remoteId() &&
+       collectionDestination.remoteId() == m_collections[OtherContacts].remoteId() ) {
     contact.removeGroup( collectionSource.remoteId() );
-  } else if ( collectionSource.remoteId() == m_collections[OtherContacts].remoteId()
-             && collectionDestination.remoteId() == m_collections[MyContacts].remoteId() ) {
+  } else if ( collectionSource.remoteId() == m_collections[OtherContacts].remoteId() &&
+              collectionDestination.remoteId() == m_collections[MyContacts].remoteId() ) {
     contact.addGroup( collectionDestination.remoteId() );
   } else {
     cancelTask( i18n( "Invalid source or destination collection" ) );
@@ -421,14 +431,15 @@ void ContactsResource::itemMoved( const Item &item, const Collection &collection
   data.append( "</atom:entry>" );
 
   KGoogle::Request *request;
-  request = new KGoogle::Request( Services::Contacts::updateContactUrl( account->accountName(), item.remoteId() ),
-                                  Request::Update, "Contacts", account );
+  request =
+    new KGoogle::Request(
+      Services::Contacts::updateContactUrl( account->accountName(), item.remoteId() ),
+      Request::Update, "Contacts", account );
   request->setRequestData( data, "application/atom+xml" );
   request->setProperty( "Item", QVariant::fromValue( item ) );
 
   m_gam->sendRequest( request );
 }
-
 
 void ContactsResource::itemRemoved( const Akonadi::Item &item )
 {
@@ -439,37 +450,38 @@ void ContactsResource::itemRemoved( const Akonadi::Item &item )
   }
 
   KGoogle::Request *request;
-  request = new KGoogle::Request( Services::Contacts::removeContactUrl( account->accountName(), item.remoteId() ),
-                                  Request::Remove, "Contacts", account );
+  request =
+    new KGoogle::Request(
+      Services::Contacts::removeContactUrl( account->accountName(), item.remoteId() ),
+      Request::Remove, "Contacts", account );
   request->setProperty( "Item", QVariant::fromValue( item ) );
 
   m_gam->sendRequest( request );
 }
 
-
 void ContactsResource::replyReceived( KGoogle::Reply *reply )
 {
   switch ( reply->requestType() ) {
-    case Request::Fetch:
-      contactReceived( reply );
-      break;
+  case Request::Fetch:
+    contactReceived( reply );
+    break;
 
-    case Request::Create:
-      contactCreated( reply );
-      break;
+  case Request::Create:
+    contactCreated( reply );
+    break;
 
-    case Request::Update:
-      contactUpdated( reply );
-      break;
+  case Request::Update:
+    contactUpdated( reply );
+    break;
 
-    case Request::Remove:
-      contactRemoved( reply );
-      break;
+  case Request::Remove:
+    contactRemoved( reply );
+    break;
 
-    case Request::FetchAll:
-    case Request::Move:
-    case Request::Patch:
-      break;
+  case Request::FetchAll:
+  case Request::Move:
+  case Request::Patch:
+    break;
   }
 
   delete reply;
@@ -635,9 +647,9 @@ void ContactsResource::photoRequestFinished( QNetworkReply *reply )
   if ( reply->operation() == QNetworkAccessManager::GetOperation ) {
     QImage image;
 
-    if ( !image.loadFromData( reply->readAll(), "JPG" ) )
+    if ( !image.loadFromData( reply->readAll(), "JPG" ) ) {
       return;
-
+    }
 
     Item item = reply->request().attribute( QNetworkRequest::User, QVariant() ).value< Item >();
 
@@ -668,7 +680,6 @@ void ContactsResource::fetchPhoto( Akonadi::Item &item )
   request.setAttribute( QNetworkRequest::User, qVariantFromValue( item ) );
   m_photoNam->get( request );
 }
-
 
 void ContactsResource::updatePhoto( Item &item )
 {
@@ -707,6 +718,5 @@ void ContactsResource::emitPercent( KJob *job, ulong progress )
 
   Q_UNUSED( job )
 }
-
 
 AKONADI_RESOURCE_MAIN( ContactsResource )
