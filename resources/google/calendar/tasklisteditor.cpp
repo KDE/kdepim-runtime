@@ -31,8 +31,8 @@ TasklistEditor::TasklistEditor( TaskList *taskList ):
   if ( m_taskList )
     m_ui->nameEdit->setText( m_taskList->title() );
 
-  connect( m_ui->buttons, SIGNAL( accepted() ),
-           this, SLOT( accepted() ) );
+  connect( m_ui->buttons, SIGNAL(accepted()),
+           this, SLOT(accepted()) );
 }
 
 TasklistEditor::~TasklistEditor()

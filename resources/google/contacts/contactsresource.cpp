@@ -71,17 +71,17 @@ ContactsResource::ContactsResource( const QString &id ):
   m_gam = new KGoogle::AccessManager();
   m_photoNam = new KIO::Integration::AccessManager( this );
 
-  connect( m_gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( replyReceived( KGoogle::Reply * ) ) );
+  connect( m_gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(replyReceived(KGoogle::Reply*)) );
 
-  connect( m_gam, SIGNAL( error( KGoogle::Error, QString ) ),
-           this, SLOT( error( KGoogle::Error, QString ) ) );
-  connect( this, SIGNAL( abortRequested() ),
-           this, SLOT( slotAbortRequested() ) );
-  connect( this, SIGNAL( reloadConfiguration() ),
-           this, SLOT( reloadConfig() ) );
-  connect( m_photoNam, SIGNAL( finished( QNetworkReply * ) ),
-           this, SLOT( photoRequestFinished( QNetworkReply * ) ) );
+  connect( m_gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( this, SIGNAL(abortRequested()),
+           this, SLOT(slotAbortRequested()) );
+  connect( this, SIGNAL(reloadConfiguration()),
+           this, SLOT(reloadConfig()) );
+  connect( m_photoNam, SIGNAL(finished(QNetworkReply*)),
+           this, SLOT(photoRequestFinished(QNetworkReply*)) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->fetchCollection( true );
@@ -182,8 +182,8 @@ void ContactsResource::retrieveItems( const Akonadi::Collection &collection )
   ItemFetchJob *fetchJob = new ItemFetchJob( collection, this );
   fetchJob->fetchScope().fetchFullPayload( true );
   fetchJob->setProperty( "Collection", qVariantFromValue( collection ) );
-  connect( fetchJob, SIGNAL( finished( KJob * ) ),
-           this, SLOT( initialItemsFetchJobFinished( KJob * ) ) );
+  connect( fetchJob, SIGNAL(finished(KJob*)),
+           this, SLOT(initialItemsFetchJobFinished(KJob*)) );
 
   fetchJob->start();
 }
@@ -290,8 +290,8 @@ void ContactsResource::initialItemsFetchJobFinished( KJob *job )
 
   FetchListJob *fetchJob = new FetchListJob( url, "Contacts", account->accountName() );
   fetchJob->setProperty( "Collection", qVariantFromValue( collection ) );
-  connect( fetchJob, SIGNAL( finished( KJob * ) ), this, SLOT( contactListReceived( KJob * ) ) );
-  connect( fetchJob, SIGNAL( percent( KJob *, ulong ) ), this, SLOT( emitPercent( KJob *, ulong ) ) );
+  connect( fetchJob, SIGNAL(finished(KJob*)), this, SLOT(contactListReceived(KJob*)) );
+  connect( fetchJob, SIGNAL(percent(KJob*,ulong)), this, SLOT(emitPercent(KJob*,ulong)) );
   fetchJob->start();
 }
 

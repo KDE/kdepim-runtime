@@ -268,7 +268,7 @@ void CalendarResource::removeTaskFetchJobFinished( KJob *job )
   ItemModifyJob *modifyJob = new ItemModifyJob( detachItems );
   modifyJob->setProperty( "Item", qVariantFromValue( removedItem ) );
   modifyJob->setAutoDelete( true );
-  connect( modifyJob, SIGNAL( finished( KJob * ) ), this, SLOT( doRemoveTask( KJob * ) ) );
+  connect( modifyJob, SIGNAL(finished(KJob*)), this, SLOT(doRemoveTask(KJob*)) );
   modifyJob->start();
 }
 

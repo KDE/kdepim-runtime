@@ -50,17 +50,17 @@ SettingsDialog::SettingsDialog( WId windowId, QWidget *parent ):
   m_ui->addAccountBtn->setIcon( QIcon::fromTheme( "list-add-user" ) );
   m_ui->removeAccountBtn->setIcon( QIcon::fromTheme( "list-remove-user" ) );
 
-  connect( this, SIGNAL( accepted() ),
-           this, SLOT( saveSettings() ) );
+  connect( this, SIGNAL(accepted()),
+           this, SLOT(saveSettings()) );
 
-  connect( m_ui->addAccountBtn, SIGNAL( clicked( bool ) ),
-           this, SLOT( addAccountClicked() ) );
-  connect( m_ui->removeAccountBtn, SIGNAL( clicked( bool ) ),
-           this, SLOT( removeAccountClicked() ) );
+  connect( m_ui->addAccountBtn, SIGNAL(clicked(bool)),
+           this, SLOT(addAccountClicked()) );
+  connect( m_ui->removeAccountBtn, SIGNAL(clicked(bool)),
+           this, SLOT(removeAccountClicked()) );
 
   KGoogle::Auth *auth = KGoogle::Auth::instance();
-  connect( auth, SIGNAL( authenticated( KGoogle::Account::Ptr & ) ),
-           this, SLOT( reloadAccounts() ) );
+  connect( auth, SIGNAL(authenticated(KGoogle::Account::Ptr&)),
+           this, SLOT(reloadAccounts()) );
 
   reloadAccounts();
 }

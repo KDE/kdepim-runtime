@@ -45,8 +45,8 @@ CalendarEditor::CalendarEditor( Calendar *calendar ) :
     }
   }
 
-  connect( m_ui->buttons, SIGNAL( accepted() ),
-           this, SLOT( accepted() ) );
+  connect( m_ui->buttons, SIGNAL(accepted()),
+           this, SLOT(accepted()) );
 }
 
 CalendarEditor::~CalendarEditor()

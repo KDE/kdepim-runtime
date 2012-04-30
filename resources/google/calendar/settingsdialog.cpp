@@ -67,45 +67,45 @@ SettingsDialog::SettingsDialog( WId windowId, QWidget *parent ):
   m_ui->addTasksBtn->setIcon( QIcon::fromTheme( "list-add" ) );
   m_ui->removeTasksBtn->setIcon( QIcon::fromTheme( "list-remove" ) );
 
-  connect( m_ui->addAccountBtn, SIGNAL( clicked() ),
-           this, SLOT( addAccountClicked() ) );
-  connect( m_ui->removeAccountBtn, SIGNAL( clicked() ),
-           this, SLOT( removeAccountClicked() ) );
-  connect( m_ui->accountsCombo, SIGNAL( currentIndexChanged( int ) ),
-           this, SLOT( accountChanged() ) );
-  connect( m_ui->addCalBtn, SIGNAL( clicked() ),
-           this, SLOT( addCalendarClicked() ) );
-  connect( m_ui->editCalBtn, SIGNAL( clicked() ),
-           this, SLOT( editCalendarClicked() ) );
-  connect( m_ui->calendarsList, SIGNAL( itemDoubleClicked( QListWidgetItem * ) ),
-           this, SLOT( editCalendarClicked() ) );
-  connect( m_ui->removeCalBtn, SIGNAL( clicked() ),
-           this, SLOT( removeCalendarClicked() ) );
-  connect( m_ui->reloadCalendarsBtn, SIGNAL( clicked() ),
-           this, SLOT( reloadCalendarsClicked() ) );
-  connect( m_ui->addTasksBtn, SIGNAL( clicked() ),
-           this, SLOT( addTaskListClicked() ) );
-  connect( m_ui->editTasksBtn, SIGNAL( clicked() ),
-           this, SLOT( editTaskListClicked() ) );
-  connect( m_ui->tasksList, SIGNAL( itemDoubleClicked( QListWidgetItem * ) ),
-           this, SLOT( editTaskListClicked() ) );
-  connect( m_ui->removeTasksBtn, SIGNAL( clicked() ),
-           this, SLOT( removeTaskListClicked() ) );
-  connect( m_ui->reloadTasksBtn, SIGNAL( clicked() ),
-           this, SLOT( reloadTaskListsClicked() ) );
+  connect( m_ui->addAccountBtn, SIGNAL(clicked()),
+           this, SLOT(addAccountClicked()) );
+  connect( m_ui->removeAccountBtn, SIGNAL(clicked()),
+           this, SLOT(removeAccountClicked()) );
+  connect( m_ui->accountsCombo, SIGNAL(currentIndexChanged(int)),
+           this, SLOT(accountChanged()) );
+  connect( m_ui->addCalBtn, SIGNAL(clicked()),
+           this, SLOT(addCalendarClicked()) );
+  connect( m_ui->editCalBtn, SIGNAL(clicked()),
+           this, SLOT(editCalendarClicked()) );
+  connect( m_ui->calendarsList, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+           this, SLOT(editCalendarClicked()) );
+  connect( m_ui->removeCalBtn, SIGNAL(clicked()),
+           this, SLOT(removeCalendarClicked()) );
+  connect( m_ui->reloadCalendarsBtn, SIGNAL(clicked()),
+           this, SLOT(reloadCalendarsClicked()) );
+  connect( m_ui->addTasksBtn, SIGNAL(clicked()),
+           this, SLOT(addTaskListClicked()) );
+  connect( m_ui->editTasksBtn, SIGNAL(clicked()),
+           this, SLOT(editTaskListClicked()) );
+  connect( m_ui->tasksList, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+           this, SLOT(editTaskListClicked()) );
+  connect( m_ui->removeTasksBtn, SIGNAL(clicked()),
+           this, SLOT(removeTaskListClicked()) );
+  connect( m_ui->reloadTasksBtn, SIGNAL(clicked()),
+           this, SLOT(reloadTaskListsClicked()) );
 
-  connect( this, SIGNAL( accepted() ),
-           this, SLOT( saveSettings() ) );
+  connect( this, SIGNAL(accepted()),
+           this, SLOT(saveSettings()) );
 
   m_gam = new KGoogle::AccessManager;
-  connect( m_gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( gam_objectsListReceived( KGoogle::Reply * ) ) );
-  connect( m_gam, SIGNAL( error( KGoogle::Error, QString ) ),
-           this, SLOT( error( KGoogle::Error, QString ) ) );
+  connect( m_gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(gam_objectsListReceived(KGoogle::Reply*)) );
+  connect( m_gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   KGoogle::Auth *auth = KGoogle::Auth::instance();
-  connect( auth, SIGNAL( authenticated( KGoogle::Account::Ptr & ) ),
-           this, SLOT( reloadAccounts() ) );
+  connect( auth, SIGNAL(authenticated(KGoogle::Account::Ptr&)),
+           this, SLOT(reloadAccounts()) );
 
   m_ui->accountsCombo->clear();
   reloadAccounts();
@@ -161,8 +161,8 @@ void SettingsDialog::saveSettings()
 
 void SettingsDialog::reloadAccounts()
 {
-  disconnect( m_ui->accountsCombo, SIGNAL( currentIndexChanged( int ) ),
-              this, SLOT( accountChanged() ) );
+  disconnect( m_ui->accountsCombo, SIGNAL(currentIndexChanged(int)),
+              this, SLOT(accountChanged()) );
 
   int accCnt = m_ui->accountsCombo->count();
   m_ui->accountsCombo->reload();
@@ -176,8 +176,8 @@ void SettingsDialog::reloadAccounts()
   if ( accCnt != m_ui->accountsCombo->count() )
     accountChanged();
 
-  connect( m_ui->accountsCombo, SIGNAL( currentIndexChanged( int ) ),
-           this, SLOT( accountChanged() ) );
+  connect( m_ui->accountsCombo, SIGNAL(currentIndexChanged(int)),
+           this, SLOT(accountChanged()) );
 }
 
 void SettingsDialog::addAccountClicked()
@@ -251,8 +251,8 @@ void SettingsDialog::accountChanged()
 void SettingsDialog::addCalendarClicked()
 {
   CalendarEditor *editor = new CalendarEditor;
-  connect( editor, SIGNAL( accepted( KGoogle::Objects::Calendar * ) ),
-           this, SLOT( addCalendar( KGoogle::Objects::Calendar * ) ) );
+  connect( editor, SIGNAL(accepted(KGoogle::Objects::Calendar*)),
+           this, SLOT(addCalendar(KGoogle::Objects::Calendar*)) );
 
   editor->exec();
 
@@ -275,10 +275,10 @@ void SettingsDialog::addCalendar( KGoogle::Objects::Calendar *calendar )
   m_ui->calendarsBox->setDisabled( true );
 
   gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( gam_objectCreated( KGoogle::Reply * ) ) );
-  connect( gam, SIGNAL( requestFinished( KGoogle::Request * ) ),
-           gam, SLOT( deleteLater() ) );
+  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(gam_objectCreated(KGoogle::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+           gam, SLOT(deleteLater()) );
 
   request = new KGoogle::Request( Services::Calendar::createCalendarUrl(),
                                   Request::Create, "Calendar", account );
@@ -308,8 +308,8 @@ void SettingsDialog::editCalendarClicked()
     return;
 
   CalendarEditor *editor = new CalendarEditor( calendar );
-  connect( editor, SIGNAL( accepted( KGoogle::Objects::Calendar * ) ),
-           this, SLOT( editCalendar( KGoogle::Objects::Calendar * ) ) );
+  connect( editor, SIGNAL(accepted(KGoogle::Objects::Calendar*)),
+           this, SLOT(editCalendar(KGoogle::Objects::Calendar*)) );
 
   editor->exec();
 
@@ -332,10 +332,10 @@ void SettingsDialog::editCalendar( KGoogle::Objects::Calendar *calendar )
   m_ui->calendarsBox->setDisabled( true );
 
   gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( gam_objectModified( KGoogle::Reply * ) ) );
-  connect( gam, SIGNAL( requestFinished( KGoogle::Request * ) ),
-           gam, SLOT( deleteLater() ) );
+  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(gam_objectModified(KGoogle::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+           gam, SLOT(deleteLater()) );
 
   request = new KGoogle::Request( Services::Calendar::updateCalendarUrl( calendar->uid() ),
                                   Request::Update, "Calendar", account );
@@ -385,10 +385,10 @@ void SettingsDialog::removeCalendarClicked()
   m_ui->calendarsBox->setDisabled( true );
 
   gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( reloadCalendarsClicked() ) );
-  connect( gam, SIGNAL( requestFinished( KGoogle::Request * ) ),
-           gam, SLOT( deleteLater() ) );
+  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(reloadCalendarsClicked()) );
+  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+           gam, SLOT(deleteLater()) );
 
   request = new KGoogle::Request( Services::Calendar::removeCalendarUrl( calendar->uid() ),
                                   Request::Remove, "Calendar", account );
@@ -398,8 +398,8 @@ void SettingsDialog::removeCalendarClicked()
 void SettingsDialog::addTaskListClicked()
 {
   TasklistEditor *editor = new TasklistEditor;
-  connect( editor, SIGNAL( accepted( KGoogle::Objects::TaskList * ) ),
-           this, SLOT( addTaskList( KGoogle::Objects::TaskList * ) ) );
+  connect( editor, SIGNAL(accepted(KGoogle::Objects::TaskList*)),
+           this, SLOT(addTaskList(KGoogle::Objects::TaskList*)) );
 
   editor->exec();
 
@@ -421,10 +421,10 @@ void SettingsDialog::reloadCalendarsClicked()
 
   m_ui->calendarsList->clear();
   gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( gam_objectsListReceived( KGoogle::Reply * ) ) );
-  connect( gam, SIGNAL( requestFinished( KGoogle::Request * ) ),
-           gam, SLOT( deleteLater() ) );
+  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(gam_objectsListReceived(KGoogle::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+           gam, SLOT(deleteLater()) );
 
   request = new KGoogle::Request( Services::Calendar::fetchCalendarsUrl(), Request::FetchAll, "Calendar", account );
   gam->sendRequest( request );
@@ -446,10 +446,10 @@ void SettingsDialog::addTaskList( TaskList *taskList )
   m_ui->tasksBox->setDisabled( true );
 
   gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( gam_objectCreated( KGoogle::Reply * ) ) );
-  connect( gam, SIGNAL( requestFinished( KGoogle::Request * ) ),
-           gam, SLOT( deleteLater() ) );
+  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(gam_objectCreated(KGoogle::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+           gam, SLOT(deleteLater()) );
 
   request = new KGoogle::Request( Services::Tasks::createTaskListUrl(), Request::Create, "Tasks", account );
   data = parser.objectToJSON( dynamic_cast< KGoogle::Object * >( taskList ) );
@@ -478,8 +478,8 @@ void SettingsDialog::editTaskListClicked()
     return;
 
   TasklistEditor *editor = new TasklistEditor( taskList );
-  connect( editor, SIGNAL( accepted( KGoogle::Objects::TaskList * ) ),
-           this, SLOT( editTaskList( KGoogle::Objects::TaskList * ) ) );
+  connect( editor, SIGNAL(accepted(KGoogle::Objects::TaskList*)),
+           this, SLOT(editTaskList(KGoogle::Objects::TaskList*)) );
 
   editor->exec();
 
@@ -502,10 +502,10 @@ void SettingsDialog::editTaskList( TaskList *taskList )
   m_ui->tasksBox->setDisabled( true );
 
   gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( gam_objectModified( KGoogle::Reply * ) ) );
-  connect( gam, SIGNAL( requestFinished( KGoogle::Request * ) ),
-           gam, SLOT( deleteLater() ) );
+  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(gam_objectModified(KGoogle::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+           gam, SLOT(deleteLater()) );
 
   request = new KGoogle::Request( Services::Tasks::updateTaskListUrl( taskList->uid() ),
                                   Request::Update, "Tasks", account );
@@ -555,10 +555,10 @@ void SettingsDialog::removeTaskListClicked()
   m_ui->tasksBox->setDisabled( true );
 
   gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( reloadTaskListsClicked() ) );
-  connect( gam, SIGNAL( requestFinished( KGoogle::Request * ) ),
-           gam, SLOT( deleteLater() ) );
+  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(reloadTaskListsClicked()) );
+  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+           gam, SLOT(deleteLater()) );
 
   request = new KGoogle::Request( Services::Tasks::removeTaskListUrl( taskList->uid() ),
                                   Request::Remove, "Tasks", account );
@@ -581,10 +581,10 @@ void SettingsDialog::reloadTaskListsClicked()
   m_ui->tasksList->clear();
 
   gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( gam_objectsListReceived( KGoogle::Reply * ) ) );
-  connect( gam, SIGNAL( requestFinished( KGoogle::Request * ) ),
-           gam, SLOT( deleteLater() ) );
+  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(gam_objectsListReceived(KGoogle::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+           gam, SLOT(deleteLater()) );
 
   request = new KGoogle::Request( Services::Tasks::fetchTaskListsUrl(), Request::FetchAll, "Tasks", account );
   gam->sendRequest( request );

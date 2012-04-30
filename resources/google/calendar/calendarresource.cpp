@@ -70,15 +70,15 @@ CalendarResource::CalendarResource( const QString &id ):
   setOnline( true );
 
   m_gam = new AccessManager();
-  connect( m_gam, SIGNAL( error( KGoogle::Error, QString ) ),
-           this, SLOT( error( KGoogle::Error, QString ) ) );
-  connect( m_gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( replyReceived( KGoogle::Reply * ) ) );
+  connect( m_gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( m_gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(replyReceived(KGoogle::Reply*)) );
 
-  connect( this, SIGNAL( abortRequested() ),
-           this, SLOT( slotAbortRequested() ) );
-  connect( this, SIGNAL( reloadConfiguration() ),
-           this, SLOT( reloadConfig() ) );
+  connect( this, SIGNAL(abortRequested()),
+           this, SLOT(slotAbortRequested()) );
+  connect( this, SIGNAL(reloadConfiguration()),
+           this, SLOT(reloadConfig()) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
@@ -174,10 +174,10 @@ void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
    * to be fetched from this collection! */
   if ( collection.parentCollection() != Akonadi::Collection::root() ) {
     ItemFetchJob *fetchJob = new ItemFetchJob( collection, this );
-    connect( fetchJob, SIGNAL( finished( KJob * ) ),
-             this, SLOT( cachedItemsRetrieved( KJob * ) ) );
-    connect( fetchJob, SIGNAL( finished( KJob * ) ),
-             fetchJob, SLOT( deleteLater() ) );
+    connect( fetchJob, SIGNAL(finished(KJob*)),
+             this, SLOT(cachedItemsRetrieved(KJob*)) );
+    connect( fetchJob, SIGNAL(finished(KJob*)),
+             fetchJob, SLOT(deleteLater()) );
 
     fetchJob->fetchScope().fetchFullPayload( false );
     fetchJob->setProperty( "collection", qVariantFromValue( collection ) );
@@ -233,10 +233,10 @@ void CalendarResource::cachedItemsRetrieved( KJob *job )
 
   FetchListJob *fetchJob = new FetchListJob( url, service, account->accountName() );
   fetchJob->setProperty( "collection", qVariantFromValue( collection ) );
-  connect( fetchJob, SIGNAL( finished( KJob * ) ),
-           this, SLOT( itemsReceived( KJob * ) ) );
-  connect( fetchJob, SIGNAL( percent( KJob *, ulong ) ),
-           this, SLOT( emitPercent( KJob *, ulong ) ) );
+  connect( fetchJob, SIGNAL(finished(KJob*)),
+           this, SLOT(itemsReceived(KJob*)) );
+  connect( fetchJob, SIGNAL(percent(KJob*,ulong)),
+           this, SLOT(emitPercent(KJob*,ulong)) );
   fetchJob->start();
 }
 
@@ -300,13 +300,13 @@ void CalendarResource::retrieveCollections()
   FetchListJob *fetchJob;
 
   fetchJob = new FetchListJob( Services::Calendar::fetchCalendarsUrl(), "Calendar", account->accountName() );
-  connect( fetchJob, SIGNAL( finished( KJob * ) ),
-           this, SLOT( calendarsReceived( KJob * ) ) );
+  connect( fetchJob, SIGNAL(finished(KJob*)),
+           this, SLOT(calendarsReceived(KJob*)) );
   fetchJob->start();
 
   fetchJob = new FetchListJob( Services::Tasks::fetchTaskListsUrl(), "Tasks", account->accountName() );
-  connect( fetchJob, SIGNAL( finished( KJob * ) ),
-           this, SLOT( taskListReceived( KJob * ) ) );
+  connect( fetchJob, SIGNAL(finished(KJob*)),
+           this, SLOT(taskListReceived(KJob*)) );
   fetchJob->start();
 }
 
@@ -457,8 +457,8 @@ void CalendarResource::itemRemoved( const Akonadi::Item &item )
     fetchJob->setAutoDelete( true );
     fetchJob->fetchScope().fetchFullPayload( true );
     fetchJob->setProperty( "Item", qVariantFromValue( item ) );
-    connect( fetchJob, SIGNAL( finished( KJob * ) ),
-             this, SLOT( removeTaskFetchJobFinished( KJob * ) ) );
+    connect( fetchJob, SIGNAL(finished(KJob*)),
+             this, SLOT(removeTaskFetchJobFinished(KJob*)) );
     fetchJob->start();
 
   } else {
