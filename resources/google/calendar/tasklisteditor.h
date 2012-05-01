@@ -15,21 +15,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef GOOGLE_CALENDAR_TASKLISTEDITOR_H
+#define GOOGLE_CALENDAR_TASKLISTEDITOR_H
 
-#ifndef TASKLISTEDITOR_H
-#define TASKLISTEDITOR_H
-
-#include <QtGui/QDialog>
+#include <QDialog>
 
 #include <libkgoogle/objects/tasklist.h>
 
 namespace Ui {
-class TaskListEditor;
+  class TaskListEditor;
 }
 
 class TasklistEditor : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
   public:
     explicit TasklistEditor( KGoogle::Objects::TaskList *taskList = 0 );

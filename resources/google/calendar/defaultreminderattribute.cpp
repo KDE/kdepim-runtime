@@ -17,20 +17,19 @@
 
 #include "defaultreminderattribute.h"
 
+#include <QVariant>
+
 #include <libkgoogle/objects/calendar.h>
 
 #include <qjson/parser.h>
 #include <qjson/serializer.h>
 
-#include <QtCore/QVariant>
-
 using namespace KCalCore;
 using namespace KGoogle::Objects;
 
-DefaultReminderAttribute::DefaultReminderAttribute( const Reminder::List &reminders ):
-  m_reminders( reminders )
+DefaultReminderAttribute::DefaultReminderAttribute( const Reminder::List &reminders )
+  : m_reminders( reminders )
 {
-
 }
 
 Akonadi::Attribute *DefaultReminderAttribute::clone() const
@@ -100,7 +99,6 @@ Alarm::List DefaultReminderAttribute::alarms( Incidence *incidence ) const
 
   return alarms;
 }
-
 
 QByteArray DefaultReminderAttribute::type() const
 {

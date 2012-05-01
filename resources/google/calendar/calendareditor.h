@@ -15,24 +15,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef GOOGLE_CALENDAR_CALENDAREDITOR_H
+#define GOOGLE_CALENDAR_CALENDAREDITOR_H
 
-#ifndef CALENDAREDITOR_H
-#define CALENDAREDITOR_H
-
-#include <QtGui/QDialog>
+#include <QDialog>
 
 #include <libkgoogle/objects/calendar.h>
 
 namespace Ui {
-class CalendarEditor;
+  class CalendarEditor;
 }
 
 using namespace KGoogle::Objects;
 
 class CalendarEditor: public QDialog
 {
-    Q_OBJECT
-
+  Q_OBJECT
   public:
     explicit CalendarEditor( Calendar *calendar = 0 );
 

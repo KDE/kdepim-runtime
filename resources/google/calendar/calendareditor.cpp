@@ -15,16 +15,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "calendareditor.h"
 #include "ui_calendar_editor.h"
 
-#include <libkgoogle/services/calendar.h>
-
-#include <QtCore/QFile>
 #include <KStandardDirs>
 #include <KSystemTimeZone>
 
+#include <QFile>
+
+#include <libkgoogle/services/calendar.h>
 using namespace KGoogle::Objects;
 
 CalendarEditor::CalendarEditor( Calendar *calendar ) :
@@ -45,8 +44,8 @@ CalendarEditor::CalendarEditor( Calendar *calendar ) :
     }
   }
 
-  connect( m_ui->buttons, SIGNAL( accepted() ),
-           this, SLOT( accepted() ) );
+  connect( m_ui->buttons, SIGNAL(accepted()),
+           this, SLOT(accepted()) );
 }
 
 CalendarEditor::~CalendarEditor()
@@ -68,14 +67,15 @@ void CalendarEditor::accepted()
   Q_EMIT accepted( m_calendar );
 }
 
-
 void CalendarEditor::initTimezones()
 {
 
-  Q_FOREACH ( const KTimeZone tz, KSystemTimeZones::zones() ) {
+  Q_FOREACH ( const KTimeZone &tz, KSystemTimeZones::zones() ) {
     QIcon icon;
 
-    QString flag = KStandardDirs::locate( "locale", QString( "l10n/%1/flag.png" ).arg( tz.countryCode().toLower() ) );
+    QString flag =
+      KStandardDirs::locate( "locale",
+                             QString( "l10n/%1/flag.png" ).arg( tz.countryCode().toLower() ) );
 
     if ( QFile::exists( flag ) ) {
       icon = QIcon( flag );

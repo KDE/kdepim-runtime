@@ -15,16 +15,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <KMessageBox>
-#include <KWindowSystem>
-
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 #include "settings.h"
 
+#include <KMessageBox>
+#include <KWindowSystem>
+
 #include <libkgoogle/auth.h>
 #include <libkgoogle/services/contacts.h>
-
 
 using namespace KGoogle;
 
@@ -51,17 +50,17 @@ SettingsDialog::SettingsDialog( WId windowId, QWidget *parent ):
   m_ui->addAccountBtn->setIcon( QIcon::fromTheme( "list-add-user" ) );
   m_ui->removeAccountBtn->setIcon( QIcon::fromTheme( "list-remove-user" ) );
 
-  connect( this, SIGNAL( accepted() ),
-           this, SLOT( saveSettings() ) );
+  connect( this, SIGNAL(accepted()),
+           this, SLOT(saveSettings()) );
 
-  connect( m_ui->addAccountBtn, SIGNAL( clicked( bool ) ),
-           this, SLOT( addAccountClicked() ) );
-  connect( m_ui->removeAccountBtn, SIGNAL( clicked( bool ) ),
-           this, SLOT( removeAccountClicked() ) );
+  connect( m_ui->addAccountBtn, SIGNAL(clicked(bool)),
+           this, SLOT(addAccountClicked()) );
+  connect( m_ui->removeAccountBtn, SIGNAL(clicked(bool)),
+           this, SLOT(removeAccountClicked()) );
 
   KGoogle::Auth *auth = KGoogle::Auth::instance();
-  connect( auth, SIGNAL( authenticated( KGoogle::Account::Ptr & ) ),
-           this, SLOT( reloadAccounts() ) );
+  connect( auth, SIGNAL(authenticated(KGoogle::Account::Ptr&)),
+           this, SLOT(reloadAccounts()) );
 
   reloadAccounts();
 }
@@ -78,17 +77,16 @@ void SettingsDialog::saveSettings()
   Settings::self()->writeConfig();
 }
 
-
 void SettingsDialog::error( KGoogle::Error errCode, const QString &msg )
 {
-  if ( errCode == KGoogle::OK )
+  if ( errCode == KGoogle::OK ) {
     return;
+  }
 
   KMessageBox::error( this, msg, i18n( "An error occurred" ) );
 
   m_ui->accountsBox->setEnabled( true );
 }
-
 
 void SettingsDialog::reloadAccounts()
 {
@@ -97,8 +95,9 @@ void SettingsDialog::reloadAccounts()
   QString accName = Settings::self()->account();
   int index = -1;
 
-  if ( !accName.isEmpty() )
+  if ( !accName.isEmpty() ) {
     index = m_ui->accountsCombo->findText( accName );
+  }
 
   if ( index > -1 ) {
     m_ui->accountsCombo->setCurrentIndex( index );
@@ -123,14 +122,20 @@ void SettingsDialog::removeAccountClicked()
 {
   KGoogle::Account::Ptr account = m_ui->accountsCombo->currentAccount();
 
-  if ( account.isNull() )
+  if ( account.isNull() ) {
     return;
+  }
 
-  if ( KMessageBox::warningYesNo( this,
-                                 i18n( "Do you really want to revoke access to account <b>%1</b>?"
-                                       "<br>This will revoke access to all resources using this account!", account->accountName() ),
-                                 i18n( "Revoke Access?" ),
-                                 KStandardGuiItem::yes(), KStandardGuiItem::no(), QString(), KMessageBox::Dangerous ) != KMessageBox::Yes ) {
+  if ( KMessageBox::warningYesNo(
+         this,
+         i18n( "Do you really want to revoke access to account <b>%1</b>?"
+               "<p>This will revoke access to all resources using this account!</p>",
+               account->accountName() ),
+         i18n( "Revoke Access?" ),
+         KStandardGuiItem::yes(),
+         KStandardGuiItem::no(),
+         QString(),
+         KMessageBox::Dangerous ) != KMessageBox::Yes ) {
 
     return;
   }

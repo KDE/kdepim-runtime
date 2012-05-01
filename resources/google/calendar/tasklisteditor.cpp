@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "tasklisteditor.h"
 #include "ui_tasklist_editor.h"
 
@@ -28,11 +27,12 @@ TasklistEditor::TasklistEditor( TaskList *taskList ):
   m_ui = new ::Ui::TaskListEditor();
   m_ui->setupUi( this );
 
-  if ( m_taskList )
+  if ( m_taskList ) {
     m_ui->nameEdit->setText( m_taskList->title() );
+  }
 
-  connect( m_ui->buttons, SIGNAL( accepted() ),
-           this, SLOT( accepted() ) );
+  connect( m_ui->buttons, SIGNAL(accepted()),
+           this, SLOT(accepted()) );
 }
 
 TasklistEditor::~TasklistEditor()
@@ -42,14 +42,11 @@ TasklistEditor::~TasklistEditor()
 
 void TasklistEditor::accepted()
 {
-  if ( !m_taskList )
+  if ( !m_taskList ) {
     m_taskList = new KGoogle::Objects::TaskList;
+  }
 
   m_taskList->setTitle( m_ui->nameEdit->text() );
 
   Q_EMIT accepted( m_taskList );
 }
-
-
-
-

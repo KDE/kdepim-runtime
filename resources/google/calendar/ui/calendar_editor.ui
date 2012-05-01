@@ -17,7 +17,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Name:</string>
+      <string comment="calendar name">Name:</string>
      </property>
     </widget>
    </item>
@@ -53,19 +53,36 @@
     </widget>
    </item>
    <item row="1" column="1" colspan="2">
-    <widget class="QLineEdit" name="nameEdit"/>
+    <widget class="KLineEdit" name="nameEdit"/>
    </item>
    <item row="2" column="1" colspan="2">
-    <widget class="QTextEdit" name="descriptionEdit"/>
+    <widget class="KTextEdit" name="descriptionEdit"/>
    </item>
    <item row="3" column="1" colspan="2">
-    <widget class="QLineEdit" name="locationEdit"/>
+    <widget class="KLineEdit" name="locationEdit"/>
    </item>
    <item row="4" column="1" colspan="2">
-    <widget class="QComboBox" name="timezoneCombo"/>
+    <widget class="KComboBox" name="timezoneCombo"/>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header>ktextedit.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>nameEdit</tabstop>
   <tabstop>descriptionEdit</tabstop>

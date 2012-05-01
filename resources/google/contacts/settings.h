@@ -15,9 +15,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef GOOGLE_CONTACTS_SETTINGS_H
+#define GOOGLE_CONTACTS_SETTINGS_H
 
 #include "settingsbase.h"
 
@@ -32,8 +31,8 @@
  */
 class Settings: public SettingsBase
 {
-    Q_OBJECT
-    Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.GoogleContacts.ExtendedSettings" )
+  Q_OBJECT
+  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.GoogleContacts.ExtendedSettings" )
   public:
     Settings();
     void setWindowId( WId id );

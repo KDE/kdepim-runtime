@@ -42,7 +42,7 @@ using namespace KGoogle;
 void CalendarResource::calendarsReceived( KJob *job )
 {
   if ( job->error() ) {
-    Q_EMIT status( Broken, i18n( "Failed to fetch calendars: %1" ).arg( job->errorString() ) );
+    Q_EMIT status( Broken, i18n( "Failed to fetch calendars: %1", job->errorString() ) );
     cancelTask();
     return;
   }
@@ -56,22 +56,27 @@ void CalendarResource::calendarsReceived( KJob *job )
 
     Objects::Calendar *calendar = static_cast< Objects::Calendar * >( replyData );
 
-    if ( !calendars.contains( calendar->uid() ) )
+    if ( !calendars.contains( calendar->uid() ) ) {
       continue;
+    }
 
     Collection collection;
     collection.setRemoteId( calendar->uid() );
     collection.setParentCollection( m_collections.first() );
     collection.setContentMimeTypes( QStringList() << Event::eventMimeType() );
     collection.setName( calendar->title() );
-    collection.setRights( Collection::CanCreateItem | Collection::CanChangeItem | Collection::CanDeleteItem );
+    collection.setRights( Collection::CanCreateItem |
+                          Collection::CanChangeItem |
+                          Collection::CanDeleteItem );
 
     EntityDisplayAttribute *attr = new EntityDisplayAttribute;
     attr->setDisplayName( calendar->title() );
     attr->setIconName( "text-calendar" );
     collection.addAttribute( attr );
 
-    DefaultReminderAttribute *reminderAttr = new DefaultReminderAttribute( calendar->defaultReminders() );
+    DefaultReminderAttribute *reminderAttr =
+      new DefaultReminderAttribute( calendar->defaultReminders() );
+
     collection.addAttribute( reminderAttr );
 
     m_collections.append( collection );
@@ -93,14 +98,14 @@ void CalendarResource::eventReceived( KGoogle::Reply *reply )
 {
   if ( reply->error() != OK ) {
     cancelTask();
-    Q_EMIT status( Broken, i18n( "Failed to fetch event: %1" ).arg( reply->errorString() ) );
+    Q_EMIT status( Broken, i18n( "Failed to fetch event: %1", reply->errorString() ) );
     return;
   }
 
   QList< Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
-    cancelTask( i18n( "Expected a single item, server sent %1 items." ).arg( data.length() ) );
+    cancelTask( i18n( "Expected a single item, server sent %1 items.", data.length() ) );
     return;
   }
 
@@ -110,10 +115,11 @@ void CalendarResource::eventReceived( KGoogle::Reply *reply )
 
   if ( event->useDefaultReminders() ) {
     Collection collection = item.parentCollection();
-    DefaultReminderAttribute *attr = dynamic_cast< DefaultReminderAttribute * >( collection.attribute( "defaultReminders" ) );
+    DefaultReminderAttribute *attr =
+      dynamic_cast< DefaultReminderAttribute * >( collection.attribute( "defaultReminders" ) );
     if ( attr ) {
       Alarm::List alarms = attr->alarms( event );
-      Q_FOREACH( Alarm::Ptr alarm, alarms ) {
+      Q_FOREACH ( Alarm::Ptr alarm, alarms ) {
         event->addAlarm( alarm );
       }
     }
@@ -124,22 +130,24 @@ void CalendarResource::eventReceived( KGoogle::Reply *reply )
   item.setMimeType( Event::eventMimeType() );
   item.setPayload< Event::Ptr >( EventPtr( event ) );
 
-  if ( event->deleted() )
+  if ( event->deleted() ) {
     itemsRetrievedIncremental( Item::List(), Item::List() << item );
-  else
+  } else {
     itemRetrieved( item );
+  }
 }
 
 void CalendarResource::eventsReceived( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Failed to fetch events: %1" ).arg( job->errorString() ) );
+    cancelTask( i18n( "Failed to fetch events: %1", job->errorString() ) );
     return;
   }
 
   FetchListJob *fetchJob = dynamic_cast< FetchListJob * >( job );
   Collection collection = fetchJob->property( "collection" ).value< Collection >();
-  DefaultReminderAttribute *attr = dynamic_cast< DefaultReminderAttribute * >( collection.attribute( "defaultReminders" ) );
+  DefaultReminderAttribute *attr =
+    dynamic_cast< DefaultReminderAttribute * >( collection.attribute( "defaultReminders" ) );
 
   Item::List removed;
   Item::List changed;
@@ -152,7 +160,7 @@ void CalendarResource::eventsReceived( KJob *job )
 
     if ( event->useDefaultReminders() && attr ) {
       Alarm::List alarms = attr->alarms( event );
-      Q_FOREACH( Alarm::Ptr alarm, alarms ) {
+      Q_FOREACH ( Alarm::Ptr alarm, alarms ) {
         event->addAlarm( alarm );
       }
     }
@@ -182,11 +190,11 @@ void CalendarResource::eventsReceived( KJob *job )
     item.setMimeType( Event::eventMimeType() );
     item.setParentCollection( collection );
 
-    if ( event->deleted() )
+    if ( event->deleted() ) {
       removed << item;
-    else
+    } else {
       changed << item;
-
+    }
   }
 
   /* Now process the recurrent events */
@@ -213,14 +221,14 @@ void CalendarResource::eventsReceived( KJob *job )
 void CalendarResource::eventCreated( KGoogle::Reply *reply )
 {
   if ( reply->error() != OK ) {
-    cancelTask( i18n( "Failed to create a new event: %1" ).arg( reply->errorString() ) );
+    cancelTask( i18n( "Failed to create a new event: %1", reply->errorString() ) );
     return;
   }
 
   QList< Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
-    cancelTask( i18n( "Expected a single item, server sent %1 items." ).arg( data.length() ) );
+    cancelTask( i18n( "Expected a single item, server sent %1 items.", data.length() ) );
     return;
   }
 
@@ -239,14 +247,14 @@ void CalendarResource::eventCreated( KGoogle::Reply *reply )
 void CalendarResource::eventUpdated( KGoogle::Reply *reply )
 {
   if ( reply->error() != OK ) {
-    cancelTask( i18n( "Failed to update an event: %1" ).arg( reply->errorString() ) );
+    cancelTask( i18n( "Failed to update an event: %1", reply->errorString() ) );
     return;
   }
 
   QList< Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
-    cancelTask( i18n( "Expected a single item, server sent %1 items." ).arg( data.length() ) );
+    cancelTask( i18n( "Expected a single item, server sent %1 items.", data.length() ) );
     return;
   }
 
@@ -261,7 +269,7 @@ void CalendarResource::eventUpdated( KGoogle::Reply *reply )
 void CalendarResource::eventRemoved( KGoogle::Reply *reply )
 {
   if ( reply->error() != NoContent ) {
-    cancelTask( i18n( "Failed to delete event: %1" ).arg( reply->errorString() ) );
+    cancelTask( i18n( "Failed to delete event: %1", reply->errorString() ) );
     return;
   }
 
@@ -272,7 +280,7 @@ void CalendarResource::eventRemoved( KGoogle::Reply *reply )
 void CalendarResource::eventMoved( KGoogle::Reply *reply )
 {
   if ( reply->error() != OK ) {
-    cancelTask( i18n( "Failed to move event: %1" ).arg( reply->errorString() ) );
+    cancelTask( i18n( "Failed to move event: %1", reply->errorString() ) );
     return;
   }
 

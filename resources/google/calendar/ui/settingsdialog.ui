@@ -93,7 +93,7 @@
       <item row="6" column="1">
        <widget class="QPushButton" name="reloadCalendarsBtn">
         <property name="text">
-         <string>Reload</string>
+         <string comment="reload the calendars">Reload</string>
         </property>
        </widget>
       </item>
@@ -156,7 +156,7 @@
       <item row="4" column="1">
        <widget class="QPushButton" name="reloadTasksBtn">
         <property name="text">
-         <string>Reload</string>
+         <string comment="reload the tasks">Reload</string>
         </property>
        </widget>
       </item>

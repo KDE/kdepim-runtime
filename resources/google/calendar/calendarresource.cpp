@@ -20,6 +20,22 @@
 #include "settings.h"
 #include "settingsdialog.h"
 
+#include <Akonadi/Attribute>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <KCalCore/Calendar>
+
+#include <KLocalizedString>
+#include <KDialog>
+
+#include <QStringList>
+#include <QMetaType>
+
 #include <libkgoogle/common.h>
 #include <libkgoogle/account.h>
 #include <libkgoogle/accessmanager.h>
@@ -33,21 +49,6 @@
 #include <libkgoogle/objects/tasklist.h>
 #include <libkgoogle/services/calendar.h>
 #include <libkgoogle/services/tasks.h>
-
-#include <QtCore/QStringList>
-#include <QtCore/QMetaType>
-
-#include <KLocalizedString>
-#include <KDialog>
-#include <Akonadi/Attribute>
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/CachePolicy>
-#include <Akonadi/ChangeRecorder>
-#include <Akonadi/CollectionFetchScope>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <KCalCore/Calendar>
 
 using namespace KCalCore;
 using namespace Akonadi;
@@ -70,15 +71,15 @@ CalendarResource::CalendarResource( const QString &id ):
   setOnline( true );
 
   m_gam = new AccessManager();
-  connect( m_gam, SIGNAL( error( KGoogle::Error, QString ) ),
-           this, SLOT( error( KGoogle::Error, QString ) ) );
-  connect( m_gam, SIGNAL( replyReceived( KGoogle::Reply * ) ),
-           this, SLOT( replyReceived( KGoogle::Reply * ) ) );
+  connect( m_gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( m_gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+           this, SLOT(replyReceived(KGoogle::Reply*)) );
 
-  connect( this, SIGNAL( abortRequested() ),
-           this, SLOT( slotAbortRequested() ) );
-  connect( this, SIGNAL( reloadConfiguration() ),
-           this, SLOT( reloadConfig() ) );
+  connect( this, SIGNAL(abortRequested()),
+           this, SLOT(slotAbortRequested()) );
+  connect( this, SIGNAL(reloadConfiguration()),
+           this, SLOT(reloadConfig()) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
@@ -152,8 +153,9 @@ void CalendarResource::reloadConfig()
 
 Account::Ptr CalendarResource::getAccount()
 {
-  if ( !m_account.isNull() )
+  if ( !m_account.isNull() ) {
     return m_account;
+  }
 
   Auth *auth = Auth::instance();
   try {
@@ -174,10 +176,10 @@ void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
    * to be fetched from this collection! */
   if ( collection.parentCollection() != Akonadi::Collection::root() ) {
     ItemFetchJob *fetchJob = new ItemFetchJob( collection, this );
-    connect( fetchJob, SIGNAL( finished( KJob * ) ),
-             this, SLOT( cachedItemsRetrieved( KJob * ) ) );
-    connect( fetchJob, SIGNAL( finished( KJob * ) ),
-             fetchJob, SLOT( deleteLater() ) );
+    connect( fetchJob, SIGNAL(finished(KJob*)),
+             this, SLOT(cachedItemsRetrieved(KJob*)) );
+    connect( fetchJob, SIGNAL(finished(KJob*)),
+             fetchJob, SLOT(deleteLater()) );
 
     fetchJob->fetchScope().fetchFullPayload( false );
     fetchJob->setProperty( "collection", qVariantFromValue( collection ) );
@@ -233,13 +235,12 @@ void CalendarResource::cachedItemsRetrieved( KJob *job )
 
   FetchListJob *fetchJob = new FetchListJob( url, service, account->accountName() );
   fetchJob->setProperty( "collection", qVariantFromValue( collection ) );
-  connect( fetchJob, SIGNAL( finished( KJob * ) ),
-           this, SLOT( itemsReceived( KJob * ) ) );
-  connect( fetchJob, SIGNAL( percent( KJob *, ulong ) ),
-           this, SLOT( emitPercent( KJob *, ulong ) ) );
+  connect( fetchJob, SIGNAL(finished(KJob*)),
+           this, SLOT(itemsReceived(KJob*)) );
+  connect( fetchJob, SIGNAL(percent(KJob*,ulong)),
+           this, SLOT(emitPercent(KJob*,ulong)) );
   fetchJob->start();
 }
-
 
 bool CalendarResource::retrieveItem( const Akonadi::Item &item, const QSet< QByteArray >& parts )
 {
@@ -299,14 +300,16 @@ void CalendarResource::retrieveCollections()
 
   FetchListJob *fetchJob;
 
-  fetchJob = new FetchListJob( Services::Calendar::fetchCalendarsUrl(), "Calendar", account->accountName() );
-  connect( fetchJob, SIGNAL( finished( KJob * ) ),
-           this, SLOT( calendarsReceived( KJob * ) ) );
+  fetchJob = new FetchListJob( Services::Calendar::fetchCalendarsUrl(),
+                               "Calendar", account->accountName() );
+  connect( fetchJob, SIGNAL(finished(KJob*)),
+           this, SLOT(calendarsReceived(KJob*)) );
   fetchJob->start();
 
-  fetchJob = new FetchListJob( Services::Tasks::fetchTaskListsUrl(), "Tasks", account->accountName() );
-  connect( fetchJob, SIGNAL( finished( KJob * ) ),
-           this, SLOT( taskListReceived( KJob * ) ) );
+  fetchJob = new FetchListJob( Services::Tasks::fetchTaskListsUrl(),
+                               "Tasks", account->accountName() );
+  connect( fetchJob, SIGNAL(finished(KJob*)),
+           this, SLOT(taskListReceived(KJob*)) );
   fetchJob->start();
 }
 
@@ -347,14 +350,15 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
     service = "Tasks";
     url = Services::Tasks::createTaskUrl( collection.remoteId() );
-    if ( !todo->relatedTo( Incidence::RelTypeParent ).isEmpty() )
+    if ( !todo->relatedTo( Incidence::RelTypeParent ).isEmpty() ) {
       url.addQueryItem( "parent", todo->relatedTo( Incidence::RelTypeParent ) );
+    }
 
     Services::Tasks service;
     data = service.objectToJSON( static_cast< KGoogle::Object * >( &ktodo ) );
 
   } else {
-    cancelTask( i18n( "Unknown payload type '%1'" ).arg( item.mimeType() ) );
+    cancelTask( i18n( "Unknown payload type '%1'", item.mimeType() ) );
     return;
   }
 
@@ -366,7 +370,8 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
   m_gam->sendRequest( request );
 }
 
-void CalendarResource::itemChanged( const Akonadi::Item &item, const QSet< QByteArray >& partIdentifiers )
+void CalendarResource::itemChanged( const Akonadi::Item &item,
+                                    const QSet< QByteArray > &partIdentifiers )
 {
   QUrl url;
   QByteArray data;
@@ -420,7 +425,7 @@ void CalendarResource::itemChanged( const Akonadi::Item &item, const QSet< QByte
     m_gam->sendRequest( request );
 
   } else {
-    cancelTask( i18n( "Unknown payload type '%1'" ).arg( item.mimeType() ) );
+    cancelTask( i18n( "Unknown payload type '%1'", item.mimeType() ) );
     return;
   }
 
@@ -431,7 +436,6 @@ void CalendarResource::itemRemoved( const Akonadi::Item &item )
 {
   QString service;
   QUrl url;
-
 
   Account::Ptr account = getAccount();
   if ( account.isNull() ) {
@@ -457,18 +461,20 @@ void CalendarResource::itemRemoved( const Akonadi::Item &item )
     fetchJob->setAutoDelete( true );
     fetchJob->fetchScope().fetchFullPayload( true );
     fetchJob->setProperty( "Item", qVariantFromValue( item ) );
-    connect( fetchJob, SIGNAL( finished( KJob * ) ),
-             this, SLOT( removeTaskFetchJobFinished( KJob * ) ) );
+    connect( fetchJob, SIGNAL(finished(KJob*)),
+             this, SLOT(removeTaskFetchJobFinished(KJob*)) );
     fetchJob->start();
 
   } else {
-    cancelTask( i18n( "Unknown payload type '%1'" ).arg( item.mimeType() ) );
+    cancelTask( i18n( "Unknown payload type '%1'", item.mimeType() ) );
     return;
   }
 
 }
 
-void CalendarResource::itemMoved( const Item &item, const Collection &collectionSource, const Collection &collectionDestination )
+void CalendarResource::itemMoved( const Item &item,
+                                  const Collection &collectionSource,
+                                  const Collection &collectionDestination )
 {
   QString service;
   QUrl url;
@@ -485,44 +491,46 @@ void CalendarResource::itemMoved( const Item &item, const Collection &collection
   }
 
   /* Moving tasks between task lists is not supported */
-  if ( item.mimeType() != Event::eventMimeType() )
+  if ( item.mimeType() != Event::eventMimeType() ) {
     return;
+  }
 
-  url = Services::Calendar::moveEventUrl( collectionSource.remoteId(), collectionDestination.remoteId(), item.remoteId() );
+  url = Services::Calendar::moveEventUrl( collectionSource.remoteId(),
+                                          collectionDestination.remoteId(),
+                                          item.remoteId() );
   Request *request = new Request( url, KGoogle::Request::Move, "Calendar", account );
   request->setProperty( "Item", qVariantFromValue( item ) );
 
   m_gam->sendRequest( request );
 }
 
-
 void CalendarResource::replyReceived( KGoogle::Reply *reply )
 {
   switch ( reply->requestType() ) {
-    case Request::FetchAll:
-      /* Handled by FetchListJob */
-      break;
+  case Request::FetchAll:
+    /* Handled by FetchListJob */
+    break;
 
-    case Request::Fetch:
-      itemReceived( reply );
-      break;
+  case Request::Fetch:
+    itemReceived( reply );
+    break;
 
-    case Request::Create:
-      itemCreated( reply );
-      break;
+  case Request::Create:
+    itemCreated( reply );
+    break;
 
-    case Request::Update:
-    case Request::Patch:
-      itemUpdated( reply );
-      break;
+  case Request::Update:
+  case Request::Patch:
+    itemUpdated( reply );
+    break;
 
-    case Request::Remove:
-      itemRemoved( reply );
-      break;
+  case Request::Remove:
+    itemRemoved( reply );
+    break;
 
-    case Request::Move:
-      itemMoved( reply );
-      break;
+  case Request::Move:
+    itemMoved( reply );
+    break;
   }
 }
 
@@ -647,6 +655,5 @@ void CalendarResource::emitPercent( KJob *job, ulong progress )
 
   Q_EMIT percent( progress );
 }
-
 
 AKONADI_RESOURCE_MAIN( CalendarResource );
