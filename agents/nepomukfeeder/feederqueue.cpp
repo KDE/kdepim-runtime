@@ -306,7 +306,6 @@ const Akonadi::Collection& FeederQueue::currentCollection()
 
 ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
 : QObject(parent),
-  mPendingRemoveDataJobs( 0 ),
   mBatchSize( batchSize ),
   mFetchSize( fetchSize ),
   mRunningJobs( 0 ),
@@ -402,36 +401,20 @@ bool ItemQueue::processBatch()
       continue;
     }
     Q_ASSERT(item.hasPayload());
-    Q_ASSERT(mBatch.size() == 0 ? mResourceGraph.isEmpty() : true); //otherwise we havent reached removeDataByApplication yet, and therefore mustn't overwrite mResourceGraph
+    Q_ASSERT(mBatch.size() == 0 ? mResourceGraph.isEmpty() : true); //otherwise we havent reached addGraphToNepomuk yet, and therefore mustn't overwrite mResourceGraph
     NepomukHelpers::addItemToGraph( item, mResourceGraph );
     mBatch.append(item.url());
   }
   if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
     //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
-    KJob *job = Nepomuk::removeDataByApplication( mBatch, Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
-    connect( job, SIGNAL( finished( KJob* ) ), this, SLOT( removeDataResult( KJob* ) ) );
+    KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mResourceGraph );
+    connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
     mRunningJobs++;
     mBatch.clear();
+    mResourceGraph.clear();
     return false;
   }
   return true;
-}
-
-void ItemQueue::removeDataResult(KJob* job)
-{
-  mRunningJobs--;
-  if ( job->error() )
-    kWarning() << job->errorString();
-
-  //All old items have been removed, so we can now store the new items
-  //kDebug() << "Saving Graph";
-  KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mResourceGraph );
-  connect( addGraphJob, SIGNAL( result( KJob* ) ), SLOT( batchJobResult( KJob* ) ) );
-  mRunningJobs++;
-  //m_debugGraph = mResourceGraph;
-  mResourceGraph.clear();
-  //trigger processing of next collection as everything of this one has been stored
-  //kDebug() << "removing completed, saving complete, batch done==================";
 }
 
 void ItemQueue::batchJobResult(KJob* job)

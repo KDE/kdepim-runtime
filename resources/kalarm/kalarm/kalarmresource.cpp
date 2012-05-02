@@ -44,7 +44,6 @@ using namespace Akonadi_KAlarm_Resource;
 using namespace KAlarmCal;
 using KAlarmResourceCommon::errorMessage;
 
-
 KAlarmResource::KAlarmResource(const QString& id)
     : ICalResourceBase(id),
       mCompatibility(KACalendar::Incompatible),
@@ -263,7 +262,7 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item& item, const QSet<QByteA
     }
 
     KAEvent event(kcalEvent);
-    QString mime = CalEvent::mimeType(event.category());
+    const QString mime = CalEvent::mimeType(event.category());
     if (mime.isEmpty())
     {
         kWarning() << "KAEvent has no alarms:" << rid;
@@ -284,7 +283,7 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item& item, const QSet<QByteA
 void KAlarmResource::settingsChanged()
 {
     kDebug();
-    QStringList mimeTypes = mSettings->alarmTypes();
+    const QStringList mimeTypes = mSettings->alarmTypes();
     if (mimeTypes != mSupportedMimetypes)
         mSupportedMimetypes = mimeTypes;
 

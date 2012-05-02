@@ -38,8 +38,10 @@ static QVariant::Type argumentType( const QMetaObject *mo, const QString &method
   QMetaMethod m;
   for ( int i = 0; i < mo->methodCount(); ++i ) {
     const QString signature = QString::fromLatin1( mo->method( i ).signature() );
-    if ( signature.startsWith( method ) )
+    if ( signature.contains(method + QLatin1Char('(') )) {
       m = mo->method( i );
+      break;
+    }
   }
 
   if ( !m.signature() ) {
@@ -119,7 +121,8 @@ void Resource::instanceCreateResult(KJob* job)
     // configure resource
     if ( !m_name.isEmpty() )
       m_instance.setName( m_name );
-    for ( QMap<QString, QVariant>::const_iterator it = m_settings.constBegin(); it != m_settings.constEnd(); ++it ) {
+    QMap<QString, QVariant>::const_iterator end( m_settings.constEnd());
+    for ( QMap<QString, QVariant>::const_iterator it = m_settings.constBegin(); it != end; ++it ) {
       kDebug() << "Setting up " << it.key() << " for agent " << m_instance.identifier();
       const QString methodName = QString::fromLatin1("set%1").arg( it.key() );
       QVariant arg = it.value();

@@ -68,8 +68,8 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
   slotTextChanged();
   connect( ui.emailEdit, SIGNAL(textChanged(QString)), SLOT(slotTextChanged()) );
   connect( ui.nameEdit, SIGNAL(textChanged(QString)), SLOT(slotTextChanged()) );
-  connect( ui.createAccountPb, SIGNAL( clicked() ), SLOT( slotCreateAccountClicked() ) );
-  connect( ui.buttonGroup, SIGNAL( buttonClicked ( QAbstractButton *) ), SLOT( slotRadioButtonClicked( QAbstractButton* ) ) );
+  connect( ui.createAccountPb, SIGNAL(clicked()), SLOT(slotCreateAccountClicked()) );
+  connect( ui.buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(slotRadioButtonClicked(QAbstractButton*)) );
 #ifdef KDEPIM_ENTERPRISE_BUILD
   ui.checkOnlineGroupBox->setChecked( false );
 #endif

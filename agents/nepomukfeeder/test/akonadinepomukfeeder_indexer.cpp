@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     } else if (app.arguments().at(1) == QString::fromLatin1("rm-item")) {
         kDebug() << "removing item: " << Akonadi::Item(id).url().url();
         KJob *job = Nepomuk::removeDataByApplication( QList<QUrl>() << Akonadi::Item(id).url().url(), Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
-        QObject::connect( job, SIGNAL( finished( KJob* ) ), tester, SLOT( removalComplete( KJob* ) ) );
+        QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
     } else if (app.arguments().at(1) == QString::fromLatin1("collection")) {
         FeederQueue *feederq = new FeederQueue(&app);
         kDebug() << "indexing collection: " << id;
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
         app.quit();
     } else if (app.arguments().at(1) == QString::fromLatin1("mark-collection")) {
         KJob *job = NepomukHelpers::markCollectionAsIndexed(Akonadi::Collection(id));
-        QObject::connect( job, SIGNAL( finished( KJob* ) ), tester, SLOT( removalComplete( KJob* ) ) );
+        QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
     }
     
     return app.exec();

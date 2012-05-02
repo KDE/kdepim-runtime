@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Google Contacts
+Name[nl]=Google contactpersonen
+Name[uk]=Контакти Google
+Name[x-test]=xxGoogle Contactsxx
+Comment=Access your Google Contacts from KDE
+Comment[nl]=Heb toegang tot uw Google contactpersonen vanuit KDE 
+Comment[uk]=Доступ до ваших записів контактів Google з KDE
+Comment[x-test]=xxAccess your Google Contacts from KDExx
+Type=AkonadiResource
+Exec=akonadi_googlecontacts_resource
+X-Akonadi-MimeTypes=text/directory,
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_googlecontacts_resource

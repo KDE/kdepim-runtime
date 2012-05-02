@@ -375,6 +375,11 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
 
 void ImapResource::retrieveItems( const Collection &col )
 {
+  if (col.remoteId().isEmpty()) {
+    //This can happen due to FetchHelper::triggerOnDemandFetch() in the akonadi server (not an error).
+    cancelTask();
+    return;
+  }
   scheduleCustomTask( this, "triggerCollectionExtraInfoJobs", QVariant::fromValue( col ), ResourceBase::Append );
 
   setItemStreamingEnabled( true );

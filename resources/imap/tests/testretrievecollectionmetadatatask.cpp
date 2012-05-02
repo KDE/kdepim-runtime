@@ -28,6 +28,7 @@
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include "timestampattribute.h"
+#include <noinferiorsattribute.h>
 
 Q_DECLARE_METATYPE( Akonadi::Collection::Rights );
 
@@ -229,6 +230,40 @@ private slots:
 
     rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
     QTest::newRow( "revoked rights" ) << collection << capabilities << scenario
+                                      << callNames << rights << spontaneous;
+
+    //
+    // Test that NoInferiors overrides acl rigths and disallows creating new mailboxes
+    //
+    collection.setParentCollection( Akonadi::Collection() );
+    collection.setRemoteId("/INBOX");
+    collection.setRights( Akonadi::Collection::AllRights );
+    collection.addAttribute( new NoInferiorsAttribute(true) );
+    collection.removeAttribute<TimestampAttribute>();
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 GETANNOTATION \"INBOX\" \"*\" \"value.shared\""
+             << "S: * ANNOTATION INBOX /vendor/kolab/folder-test ( value.shared true )"
+             << "S: A000003 OK annotations retrieved"
+             << "C: A000004 GETACL \"INBOX\""
+             << "S: * ACL INBOX foo@kde.org wik"
+             << "S: A000004 OK acl retrieved"
+             << "C: A000005 MYRIGHTS \"INBOX\""
+             << "S: * MYRIGHTS \"INBOX\" wk"
+             << "S: A000005 OK rights retrieved"
+             << "C: A000006 GETQUOTAROOT \"INBOX\""
+             << "S: * QUOTAROOT INBOX user"
+             << "S: * QUOTA user ( )"
+             << "S: A000006 OK quota retrieved";
+    spontaneous = true;
+
+    callNames.clear();
+    callNames << "applyCollectionChanges";
+    callNames << "taskDone";
+
+    rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
+
+    QTest::newRow( "noinferiors" ) << collection << capabilities << scenario
                                       << callNames << rights << spontaneous;
   }
 

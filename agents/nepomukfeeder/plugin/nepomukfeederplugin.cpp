@@ -20,3 +20,4 @@
 #include "nepomukfeederplugin.h"
 
 #include "nepomukfeederplugin.moc"
+
