@@ -134,6 +134,7 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   connect( m_monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
            this, SLOT(imapItemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)) );
   connect( m_monitor, SIGNAL(itemRemoved(Akonadi::Item)), this, SLOT(imapItemRemoved(Akonadi::Item)) );
+  //We don't connect to changed because an edit results in a new item (append/delete) on imap
 
   connect( m_collectionMonitor, SIGNAL(collectionAdded(Akonadi::Collection,Akonadi::Collection)),
            this, SLOT(imapCollectionAdded(Akonadi::Collection,Akonadi::Collection)) );
