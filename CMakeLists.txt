@@ -107,8 +107,8 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
 )
 macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the message searchprovider")
 
-find_package(Libkolab)
-macro_log_feature(Libkolab_FOUND "KolabLibraries" "Kolab libraries" "http://www.kolab.org" FALSE "" "The Kolab libraries are required to build the Kolab Groupware Resource")
+find_package(Libkolab 0.2)
+macro_log_feature(Libkolab_FOUND "KolabLibraries" "The Kolab Format libraries" "http://git.kolab.org/" FALSE "0.2" "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
 ############### Load the CTest options ###############
 
