@@ -34,7 +34,7 @@ class AccountWizard : public QObject
   public slots:
     void run( const QStringList &types, QWidget *parent )
     {
-      if( !types.isEmpty() )
+      if ( !types.isEmpty() )
         Global::setTypeFilter( types );
       Dialog dlg( parent );
       dlg.exec();

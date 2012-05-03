@@ -51,9 +51,9 @@ int main( int argc, char **argv )
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
-  options.add( "type <type>", ki18n("Only offer accounts that support the given type.") );
-  options.add( "assistant <assistant>", ki18n("Run the specified assistant.") );
-  options.add( "package <fullpath>", ki18n("unpack fullpath on startup and launch that assistant") );
+  options.add( "type <type>", ki18n( "Only offer accounts that support the given type." ) );
+  options.add( "assistant <assistant>", ki18n( "Run the specified assistant." ) );
+  options.add( "package <fullpath>", ki18n( "unpack fullpath on startup and launch that assistant" ) );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
@@ -67,7 +67,7 @@ int main( int argc, char **argv )
   } else
     Global::setAssistant( args->getOption( "assistant" ) );
 
-  if( !args->getOption("type").isEmpty() )
+  if ( !args->getOption( "type" ).isEmpty() )
      Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
   args->clear();
   Dialog dlg( 0, Qt::WindowStaysOnTopHint );

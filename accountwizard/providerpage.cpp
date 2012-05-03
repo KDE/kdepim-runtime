@@ -63,20 +63,20 @@ void ProviderPage::startFetchingData()
 void ProviderPage::fillModel(  const KNS3::Entry::List& list )
 {
   kDebug();
-  m_model->removeRows( m_model->indexFromItem( m_fetchItem ).row(),1 );
+  m_model->removeRows( m_model->indexFromItem( m_fetchItem ).row(), 1 );
 
   // KNS3::Entry::Entry() is private, so we need to save the whole list. 
   // we can not use a QHash or whatever, as that needs that constructor...
   m_providerEntries = list;
 
-  foreach (const KNS3::Entry& e, list) {
+  foreach ( const KNS3::Entry& e, list ) {
     kDebug() << "Found Entry: " << e.name();
-    
+
     QStandardItem *item = new QStandardItem( e.name() );
     item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setData( e.name(), Qt::ToolTipRole );
     item->setData( e.id(), Qt::UserRole );
-    item->setData( e.providerId(), Qt::UserRole+1);
+    item->setData( e.providerId(), Qt::UserRole+ 1 );
     m_model->appendRow( item );
   }
 }
@@ -104,13 +104,13 @@ void ProviderPage::leavePageNext()
   kDebug() << "Item selected:"<< item->text();
 
   // download and execute it...
-  foreach (const KNS3::Entry& e, m_providerEntries) {
-    if (e.id() == item->data( Qt::UserRole ) &&
-        e.providerId() == item->data( Qt::UserRole+1 ) ) {
+  foreach ( const KNS3::Entry& e, m_providerEntries ) {
+    if ( e.id() == item->data( Qt::UserRole ) &&
+         e.providerId() == item->data( Qt::UserRole+ 1 ) ) {
 
       m_wantedProvider.entryId = e.id();
       m_wantedProvider.entryProviderId = e.providerId();
-      
+
       if ( e.status() == KNS3::Entry::Installed ) {
         kDebug() << "already installed" << e.installedFiles();
         findDesktopAndSetAssistant(  e.installedFiles() );
@@ -128,7 +128,7 @@ void ProviderPage::providerStatusChanged( const KNS3::Entry& e )
 {
   kDebug() << e.name();
   if ( e.id() == m_wantedProvider.entryId &&
-       e.providerId() == m_wantedProvider.entryProviderId && 
+       e.providerId() == m_wantedProvider.entryProviderId &&
        e.status() == KNS3::Entry::Installed ) {
     findDesktopAndSetAssistant(  e.installedFiles() );
   }
@@ -136,7 +136,7 @@ void ProviderPage::providerStatusChanged( const KNS3::Entry& e )
 
 void ProviderPage::findDesktopAndSetAssistant( const QStringList& list )
 {
-  foreach (const QString& file, list ) {
+  foreach ( const QString& file, list ) {
     kDebug() << file;
     if ( file.endsWith( ".desktop" ) ) {
       kDebug() << "Yay, a desktop file!" << file;
@@ -159,7 +159,7 @@ QTreeView *ProviderPage::treeview() const
 void ProviderPage::leavePageBackRequested()
 {
   emit leavePageBackOk();
-  emit ghnsNotWanted();  
+  emit ghnsNotWanted();
 }
 
 void ProviderPage::leavePageNextRequested()

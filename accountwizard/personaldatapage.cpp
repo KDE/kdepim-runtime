@@ -88,18 +88,15 @@ void PersonalDataPage::slotRadioButtonClicked( QAbstractButton* button)
     server s = mIspdb->smtpServers().first();
     smptHostname = s.hostname;
   }
-  ui.outgoingLabel->setText(i18n( "Smtp, %1", smptHostname ));
-  if ( button ==  ui.imapAccount )
-  {
+  ui.outgoingLabel->setText( i18n( "Smtp, %1", smptHostname ) );
+  if ( button ==  ui.imapAccount ) {
     server simap = mIspdb->imapServers().first(); // should be ok.
-    ui.incommingLabel->setText(i18n( "Imap, %1", simap.hostname));
-    ui.usernameLabel->setText(simap.username);
-  }
-  else if ( button == ui.pop3Account )
-  {
+    ui.incommingLabel->setText( i18n( "Imap, %1", simap.hostname ) );
+    ui.usernameLabel->setText( simap.username );
+  } else if ( button == ui.pop3Account ) {
     server spop3 = mIspdb->pop3Servers().first(); // should be ok.
-    ui.incommingLabel->setText(i18n( "Pop3, %1", spop3.hostname));
-    ui.usernameLabel->setText(spop3.username);
+    ui.incommingLabel->setText( i18n( "Pop3, %1", spop3.hostname ) );
+    ui.usernameLabel->setText( spop3.username );
   }
 }
 
@@ -137,7 +134,7 @@ void PersonalDataPage::leavePageNext()
     setCursor( Qt::BusyCursor );
     kDebug() << "Searching on internet";
     delete mIspdb;
-    mIspdb = new Ispdb(this);
+    mIspdb = new Ispdb( this );
     mIspdb->setEmail( ui.emailEdit->text() );
     mIspdb->start();
 
@@ -159,7 +156,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
     if ( !mIspdb->imapServers().isEmpty() && !mIspdb->pop3Servers().isEmpty() )
     {
       ui.stackedPage->setCurrentIndex( 1 );
-      slotRadioButtonClicked( ui.imapAccount);
+      slotRadioButtonClicked( ui.imapAccount );
     }
     else
       automaticConfigureAccount();
@@ -177,14 +174,14 @@ void PersonalDataPage::configureSmtpAccount()
     server s = mIspdb->smtpServers().first(); // should be ok.
     kDebug() << "Configuring transport for" << s.hostname;
 
-    QObject* object = mSetupManager->createTransport("smtp");
+    QObject* object = mSetupManager->createTransport( "smtp" );
     Transport* t = qobject_cast<Transport*>( object );
     t->setName( mIspdb->name( Ispdb::Long ) );
     t->setHost( s.hostname );
     t->setPort( s.port );
     t->setUsername( s.username );
     t->setPassword( ui.passwordEdit->text() );
-    switch (s.authentication) {
+    switch ( s.authentication ) {
     case Ispdb::Plain: t->setAuthenticationType( "plain" ); break;
     case Ispdb::CramMD5: t->setAuthenticationType( "cram-md5" ); break;
     case Ispdb::NTLM: t->setAuthenticationType( "ntlm" ); break;
@@ -193,7 +190,7 @@ void PersonalDataPage::configureSmtpAccount()
     case Ispdb::NoAuth: break;
     default: break;
     }
-    switch (s.socketType) {
+    switch ( s.socketType ) {
     case Ispdb::Plain: t->setEncryption( "none" );break;
     case Ispdb::SSL: t->setEncryption( "ssl" );break;
     case Ispdb::StartTLS: t->setEncryption( "tls" );break;
@@ -209,23 +206,23 @@ void PersonalDataPage::configureImapAccount()
     server s = mIspdb->imapServers().first(); // should be ok.
     kDebug() << "Configuring imap for" << s.hostname;
 
-    QObject* object = mSetupManager->createResource("akonadi_imap_resource");
+    QObject* object = mSetupManager->createResource( "akonadi_imap_resource" );
     Resource* t = qobject_cast<Resource*>( object );
     t->setName( mIspdb->name( Ispdb::Long ) );
     t->setOption( "ImapServer", s.hostname );
     t->setOption( "ImapPort", s.port );
     t->setOption( "UserName", s.username );
     t->setOption( "Password", ui.passwordEdit->text() );
-    switch (s.authentication) {
-    case Ispdb::Plain: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CLEAR ); break;
-    case Ispdb::CramMD5: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
-    case Ispdb::NTLM: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
-    case Ispdb::GSSAPI: t->setOption("Authentication", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
+    switch ( s.authentication ) {
+    case Ispdb::Plain: t->setOption( "Authentication", MailTransport::Transport::EnumAuthenticationType::CLEAR ); break;
+    case Ispdb::CramMD5: t->setOption( "Authentication", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
+    case Ispdb::NTLM: t->setOption( "Authentication", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
+    case Ispdb::GSSAPI: t->setOption( "Authentication", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
     case Ispdb::ClientIP: break;
     case Ispdb::NoAuth: break;
     default: break;
     }
-    switch (s.socketType) {
+    switch ( s.socketType ) {
     case Ispdb::None: t->setOption( "Safety", "None" );break;
     case Ispdb::SSL: t->setOption( "Safety", "SSL" );break;
     case Ispdb::StartTLS: t->setOption( "Safety", "STARTTLS" );break;
@@ -240,23 +237,23 @@ void PersonalDataPage::configurePop3Account()
     server s = mIspdb->pop3Servers().first(); // should be ok.
     kDebug() << "No Imap to be created, configuring pop3 for" << s.hostname;
 
-    QObject* object = mSetupManager->createResource("akonadi_pop3_resource");
+    QObject* object = mSetupManager->createResource( "akonadi_pop3_resource" );
     Resource* t = qobject_cast<Resource*>( object );
     t->setName( mIspdb->name( Ispdb::Long ) );
     t->setOption( "Host", s.hostname );
     t->setOption( "Port", s.port );
     t->setOption( "Login", s.username );
     t->setOption( "Password", ui.passwordEdit->text() );
-    switch (s.authentication) {
-    case Ispdb::Plain: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::PLAIN ); break;
-    case Ispdb::CramMD5: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
-    case Ispdb::NTLM: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
-    case Ispdb::GSSAPI: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
+    switch ( s.authentication ) {
+    case Ispdb::Plain: t->setOption( "AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::PLAIN ); break;
+    case Ispdb::CramMD5: t->setOption( "AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 ); break;
+    case Ispdb::NTLM: t->setOption( "AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::NTLM ); break;
+    case Ispdb::GSSAPI: t->setOption( "AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::GSSAPI ); break;
     case Ispdb::ClientIP:
     case Ispdb::NoAuth:
-    default: t->setOption("AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::CLEAR ); break;
+    default: t->setOption( "AuthenticationMethod", MailTransport::Transport::EnumAuthenticationType::CLEAR ); break;
     }
-    switch (s.socketType) {
+    switch ( s.socketType ) {
     case Ispdb::SSL: t->setOption( "UseSSL", 1 );break;
     case Ispdb::StartTLS: t->setOption( "UseTLS", 1 );break;
     case Ispdb::None:

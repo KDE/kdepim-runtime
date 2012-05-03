@@ -127,7 +127,7 @@ void SetupManager::setupNext()
   } else {
     const int setupObjectCount = m_objectToSetup.size() + m_setupObjects.size();
     const int remainingObjectCount = setupObjectCount - m_objectToSetup.size();
-    m_page->setProgress( (remainingObjectCount * 100) / setupObjectCount );
+    m_page->setProgress( ( remainingObjectCount * 100 ) / setupObjectCount );
     m_currentSetupObject = m_objectToSetup.takeFirst();
     m_currentSetupObject->create();
   }
@@ -139,7 +139,7 @@ void SetupManager::rollback()
   const int setupObjectCount = m_objectToSetup.size() + m_setupObjects.size();
   int remainingObjectCount = m_setupObjects.size();
   foreach ( SetupObject* obj, m_setupObjects ) {
-    m_page->setProgress( (remainingObjectCount * 100) / setupObjectCount );
+    m_page->setProgress( ( remainingObjectCount * 100 ) / setupObjectCount );
     obj->destroy();
     m_objectToSetup.prepend( obj );
   }
@@ -200,9 +200,9 @@ void SetupManager::openWallet()
   using namespace KWallet;
   if ( Wallet::isOpen( Wallet::NetworkWallet() ) )
     return;
-  
+
   Q_ASSERT( parent()->isWidgetType() );
-  Wallet *w = Wallet::openWallet( Wallet::NetworkWallet(), qobject_cast<QWidget*>(parent())->effectiveWinId(), Wallet::Asynchronous );
+  Wallet *w = Wallet::openWallet( Wallet::NetworkWallet(), qobject_cast<QWidget*>( parent() )->effectiveWinId(), Wallet::Asynchronous );
   QEventLoop loop;
   connect( w, SIGNAL(walletOpened(bool)), &loop, SLOT(quit()) );
   loop.exec();

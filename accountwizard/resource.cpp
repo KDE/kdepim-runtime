@@ -38,7 +38,7 @@ static QVariant::Type argumentType( const QMetaObject *mo, const QString &method
   QMetaMethod m;
   for ( int i = 0; i < mo->methodCount(); ++i ) {
     const QString signature = QString::fromLatin1( mo->method( i ).signature() );
-    if ( signature.contains(method + QLatin1Char('(') )) {
+    if ( signature.contains( method + QLatin1Char( '(' ) ) ) {
       m = mo->method( i );
       break;
     }
@@ -86,7 +86,7 @@ void Resource::create()
   kDebug() << type.capabilities();
   if ( type.capabilities().contains( QLatin1String( "Unique" ) ) ) {
     foreach ( const AgentInstance &instance, AgentManager::self()->instances() ) {
-      kDebug() << instance.type().identifier() << (instance.type() == type);
+      kDebug() << instance.type().identifier() << ( instance.type() == type );
       if ( instance.type() == type ) {
         emit finished( i18n( "Resource '%1' is already set up.", type.name() ) );
         return;
@@ -121,10 +121,10 @@ void Resource::instanceCreateResult(KJob* job)
     // configure resource
     if ( !m_name.isEmpty() )
       m_instance.setName( m_name );
-    QMap<QString, QVariant>::const_iterator end( m_settings.constEnd());
+    QMap<QString, QVariant>::const_iterator end( m_settings.constEnd() );
     for ( QMap<QString, QVariant>::const_iterator it = m_settings.constBegin(); it != end; ++it ) {
       kDebug() << "Setting up " << it.key() << " for agent " << m_instance.identifier();
-      const QString methodName = QString::fromLatin1("set%1").arg( it.key() );
+      const QString methodName = QString::fromLatin1( "set%1" ).arg( it.key() );
       QVariant arg = it.value();
       const QVariant::Type targetType = argumentType( iface.metaObject(), methodName );
       if ( !arg.canConvert( targetType ) ) {

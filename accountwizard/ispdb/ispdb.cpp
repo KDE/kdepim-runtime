@@ -70,7 +70,7 @@ void Ispdb::lookupInDb()
   {
     url = KUrl( "http://autoconfig." + mAddr.domain.toLower() + "/mail/config-v1.1.xml" );
   }
-  break;  
+  break;
   case IspWellKnow:
   {
     url = KUrl( "http://" + mAddr.domain.toLower() + "/.well-known/autoconfig/mail/config-v1.1.xml" );
@@ -88,7 +88,7 @@ void Ispdb::slotResult( KJob* job )
     if ( job->error() ) {
       kDebug() << "Fetching failed" << job->errorString();
       bool lookupFinished = false;
-      
+
       switch( mServerType ) {
       case IspAutoConfig: {
         mServerType = IspWellKnow;
@@ -103,7 +103,7 @@ void Ispdb::slotResult( KJob* job )
         break;
       }
       }
-      
+
       if ( lookupFinished )
       {
         emit finished( false );
@@ -129,7 +129,7 @@ void Ispdb::slotResult( KJob* job )
     while ( !n.isNull() ) {
         QDomElement e = n.toElement();
         if ( !e.isNull() ) {
-            //kDebug()  << qPrintable(e.tagName());
+            //kDebug()  << qPrintable( e.tagName() );
           const QString tagName( e.tagName() );
             if ( tagName == QLatin1String( "domain" ) )
                 mDomains << e.text();
@@ -155,15 +155,15 @@ void Ispdb::slotResult( KJob* job )
     kDebug() << "Domains" << mDomains;
     kDebug() << "Name" << mDisplayName << "(" << mDisplayShortName << ")";
     kDebug() << "Imap servers:";
-    foreach( const server& s, mImapServers ) {
+    foreach ( const server& s, mImapServers ) {
         kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
     kDebug() << "pop3 servers:";
-    foreach( const server& s, mPop3Servers ) {
+    foreach ( const server& s, mPop3Servers ) {
         kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
     kDebug() << "smtp servers:";
-    foreach( const server& s, mSmtpServers ) {
+    foreach ( const server& s, mSmtpServers ) {
         kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
     // end section.
