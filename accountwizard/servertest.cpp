@@ -29,7 +29,7 @@ ServerTest::ServerTest( QObject* parent) :
   QObject(parent), m_serverTest( new MailTransport::ServerTest( 0 ) )
 {
   kDebug() << "Welcome!";
-  connect( m_serverTest, SIGNAL(finished(QList<int>)), 
+  connect( m_serverTest, SIGNAL(finished(QList<int>)),
            SLOT(testFinished(QList<int>)) );
 }
 
@@ -46,7 +46,7 @@ void ServerTest::test( const QString server, const QString protocol )
   m_serverTest->start();
 }
 
-void ServerTest::testFinished( QList< int > list ) 
+void ServerTest::testFinished( QList< int > list )
 {
   kDebug() << "types: " << list;
   if ( list.contains( MailTransport::Transport::EnumEncryption::TLS ) ) {
@@ -56,8 +56,8 @@ void ServerTest::testFinished( QList< int > list )
   } else {
     KMessageBox::information( 0, i18n( "There seems to be a problem in reaching this server "
           "or choosing a safe way to sent the credentials to server. We advise you to "
-          "check the settings of the account and adjust it manually if needed."), 
-          i18n("Autodetecting settings failed") );
+          "check the settings of the account and adjust it manually if needed." ),
+          i18n( "Autodetecting settings failed" ) );
     emit testFail();
   }
 }

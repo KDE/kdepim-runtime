@@ -55,8 +55,8 @@ TypePage::TypePage(KAssistantDialog* parent) :
     const KConfig configWizard( entry );
     KConfigGroup grp( &configWizard, "Wizard" );
     const QStringList lstType = grp.readEntry( "Type", QStringList() );
-    if ( lstType.isEmpty()) {
-      kDebug()<<QString( " %1 doesn't contains specific type" ).arg( f.readName() );
+    if ( lstType.isEmpty() ) {
+      kDebug() << QString( " %1 doesn't contains specific type" ).arg( f.readName() );
     }
     if ( !filter.isEmpty() ) {
       // stolen from agentfilterproxymodel

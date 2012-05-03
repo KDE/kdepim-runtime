@@ -24,7 +24,7 @@
 #include <KDebug>
 #include <KLocale>
 
-#define TABLE_SIZE x 
+#define TABLE_SIZE x
 
 template <typename T>
 struct StringValueTable {
