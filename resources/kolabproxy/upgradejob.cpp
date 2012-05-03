@@ -1,16 +1,16 @@
 /*
  *  Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
- * 
+ *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or (at your
  *  option) any later version.
- * 
+ *
  *  This library is distributed in the hope that it will be useful, but WITHOUT
  *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
  *  License for more details.
- * 
+ *
  *  You should have received a copy of the GNU Library General Public License
  *  along with this library; see the file COPYING.LIB.  If not, write to the
  *  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
@@ -62,7 +62,7 @@ void UpgradeJob::collectionFetchResult(KJob* job)
     return;
   }
   int collections = 0;
-  foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {  
+  foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
     //FIXME find a way to properly detect shared folders (Collection::CanCreateCollection never applies to shared folders, but that's just a workaround)
     if ( !(col.rights() & Collection::CanCreateCollection) || !(col.rights() & Collection::CanChangeItem) ) {
       kDebug() << "skipping shared/non-editable folder";
@@ -77,7 +77,7 @@ void UpgradeJob::collectionFetchResult(KJob* job)
       //kWarning() << "Wrong folder annotation (this should never happen, the annotation is probably not available)";
       continue;
     }
-    
+
     kDebug() << "upgrading " << col.id();
     collections++;
     ItemFetchJob *itemFetchJob = new ItemFetchJob(col, this);
@@ -117,7 +117,7 @@ void UpgradeJob::itemFetchResult(KJob* job)
 
   KolabV2::FolderType folderType = static_cast<KolabV2::FolderType>(j->property(FOLDER_TYPE).toInt());
   KolabHandler::Ptr handler = KolabHandler::createHandler(folderType, imapCollection);
-    
+
   if (!handler) {
     qWarning() << "invalid handler";
     checkResult();

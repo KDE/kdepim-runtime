@@ -268,7 +268,7 @@ void KolabProxyResource::configure( WId windowId )
   QPointer<SetupKolab> kolabConfigDialog( new SetupKolab( this, windowId ) );
   kolabConfigDialog->exec();
   emit configurationDialogAccepted();
-  
+
   foreach (Akonadi::Entity::Id id, m_monitoredCollections.keys()) {
     KolabHandler::Ptr handler = m_monitoredCollections.value(id);
     Kolab::Version v = readKolabVersion(m_resourceIdentifier.value(id));

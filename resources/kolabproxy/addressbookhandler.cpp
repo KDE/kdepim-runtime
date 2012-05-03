@@ -65,7 +65,7 @@ Akonadi::Item::List AddressBookHandler::translateItems(const Akonadi::Item::List
       newItems << newItem;
     }
     if (checkForErrors(item.id())) {
-      newItems.removeLast(); //TODO what are the implications of this?
+      newItems.removeLast(); //TODO: does this delete the item? rather set it to read-only (v2 never sets an error, so we should be safe for now).
     }
   }
 
@@ -76,7 +76,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
 {
   if (item.hasPayload<KABC::Addressee>()) {
     const KABC::Addressee &addressee = item.payload<KABC::Addressee>();
-    
+
     const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeContact(addressee, m_formatVersion);
     if (checkForErrors(item.id())) {
       return;
@@ -85,7 +85,7 @@ void AddressBookHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item 
     imapItem.setPayload(message);
   } else if (item.hasPayload<KABC::ContactGroup>()) {
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
-    
+
     const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeDistlist(contactGroup, m_formatVersion);
     if (checkForErrors(item.id())) {
       return;

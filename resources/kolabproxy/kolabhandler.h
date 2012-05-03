@@ -78,17 +78,17 @@ public:
   virtual void itemDeleted(const Akonadi::Item &item) { Q_UNUSED( item ); }
   virtual void itemAdded(const Akonadi::Item &item) { Q_UNUSED( item ); }
   virtual void reset() {}
-  
+
   void setKolabFormatVersion(Kolab::Version);
-  
+
   /**
    * Returns true if the current operation should be aborted and false if everything is ok.
-   * 
+   *
    * Error handling strategy:
    * If an error happend, either:
-   * - completely skip item => will be redownloaded (or will it be deleted from the server? (it shouldn0t))
+   * - completely skip item => will be redownloaded (or will it be deleted from the server? (it shouldn't))
    * - mark item as corrup => readonly, will not be written back and will be redownloaded
-   * 
+   *
    * @param affectedItem The item which is currently being processed.
    */
   bool checkForErrors(Akonadi::Item::Id affectedItem);

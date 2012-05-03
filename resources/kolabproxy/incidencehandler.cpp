@@ -60,7 +60,7 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-    
+
     KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
     if (checkForErrors(item.id())) {
       continue;
