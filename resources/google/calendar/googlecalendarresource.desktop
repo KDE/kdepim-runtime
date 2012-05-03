@@ -1,12 +1,16 @@
 [Desktop Entry]
 Name=Google Calendars and Tasks
 Name[nl]=Google agenda's en taken
+Name[pt]=Calendários e Tarefas do Google
 Name[uk]=Календарі та записи завдань Google
 Name[x-test]=xxGoogle Calendars and Tasksxx
+Name[zh_TW]=Google 行事曆與工作
 Comment=Access your Google Calendars and Tasks from KDE
 Comment[nl]=Heb toegang tot uw Google agenda's en taken vanuit KDE 
+Comment[pt]=Aceda aos seus calendários e tarefas da Google a partir do KDE
 Comment[uk]=Доступ до ваших календарів і записів завдань Google з KDE
 Comment[x-test]=xxAccess your Google Calendars and Tasks from KDExx
+Comment[zh_TW]=用 KDE 存取您的 Google 行事曆與工作
 Type=AkonadiResource
 Exec=akonadi_googlecalendar_resource
 X-Akonadi-MimeTypes=text/calendar,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.calendar.todo
