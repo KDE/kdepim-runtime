@@ -68,7 +68,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="imapAccountComboBox">
+          <widget class="KComboBox" name="imapAccountComboBox">
            <property name="toolTip">
             <string>IMAP-Account used for Kolab-Groupware.</string>
            </property>
@@ -183,6 +183,11 @@
    <extends>QFrame</extends>
    <header>kseparator.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

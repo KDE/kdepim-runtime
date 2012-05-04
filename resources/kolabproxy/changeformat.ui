@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string comment="Format Version">Form</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <property name="sizeConstraint">
@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QComboBox" name="formatVersion"/>
+    <widget class="KComboBox" name="formatVersion"/>
    </item>
    <item row="1" column="1">
     <widget class="QPushButton" name="pushButton">
@@ -80,5 +80,12 @@
   </layout>
  </widget>
  <resources/>
+ <customwidgets>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
+ </customwidgets>
  <connections/>
 </ui>
