@@ -1,48 +1,52 @@
 /*
-    Copyright (c) 2009 Volker Krause <vkrause@kde.org>
+  Copyright (c) 2009 Volker Krause <vkrause@kde.org>
 
-    This library is free software; you can redistribute it and/or modify it
-    under the terms of the GNU Library General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
+  This library is free software; you can redistribute it and/or modify it
+  under the terms of the GNU Library General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or (at your
+  option) any later version.
 
-    This library is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
-    License for more details.
+  This library is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+  License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to the
-    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to the
+  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+  02110-1301, USA.
 */
 
 #include "collectiontreebuilder.h"
+#include "collectionannotationsattribute.h" //from shared
 
-#include <collectionannotationsattribute.h>
-
-#include <akonadi/collectionfetchjob.h>
+#include <Akonadi/CollectionFetchJob>
 
 using namespace Akonadi;
 
-CollectionTreeBuilder::CollectionTreeBuilder(KolabProxyResource* parent) :
-  Job( parent ),
-  m_resource( parent )
+CollectionTreeBuilder::CollectionTreeBuilder( KolabProxyResource *parent )
+  : Job( parent ),
+    m_resource( parent )
 {
 }
 
 void CollectionTreeBuilder::doStart()
 {
-  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
-  connect(job, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
-  connect(job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)) );
+  CollectionFetchJob *job =
+    new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
+
+  connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
+           SLOT(collectionsReceived(Akonadi::Collection::List)) );
+
+  connect( job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)) );
 }
 
-void CollectionTreeBuilder::collectionsReceived(const Akonadi::Collection::List& collections)
+void CollectionTreeBuilder::collectionsReceived( const Akonadi::Collection::List &collections )
 {
-  foreach( const Collection &collection, collections ) {
-    if ( collection.resource() == resource()->identifier() )
+  foreach ( const Collection &collection, collections ) {
+    if ( collection.resource() == resource()->identifier() ) {
       continue;
+    }
     if ( resource()->registerHandlerForCollection( collection ) ) {
       m_kolabCollections.append( collection );
     }
@@ -55,8 +59,9 @@ Collection::List CollectionTreeBuilder::allCollections() const
   return m_resultCollections;
 }
 
-Collection::List CollectionTreeBuilder::treeToList( const QHash< Entity::Id, Collection::List > &tree,
-                                                    const Akonadi::Collection& current )
+Collection::List CollectionTreeBuilder::treeToList( const QHash< Entity::Id,
+                                                    Collection::List > &tree,
+                                                    const Akonadi::Collection &current )
 {
   Collection::List rv;
   foreach ( const Collection &child, tree.value( current.id() ) ) {
@@ -66,7 +71,7 @@ Collection::List CollectionTreeBuilder::treeToList( const QHash< Entity::Id, Col
   return rv;
 }
 
-void CollectionTreeBuilder::collectionFetchResult(KJob* job)
+void CollectionTreeBuilder::collectionFetchResult( KJob *job )
 {
   Q_UNUSED( job );
   m_resultCollections.clear();
