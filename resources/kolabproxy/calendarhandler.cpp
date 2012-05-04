@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Andras Mantia <amantia@kde.org>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,13 +19,13 @@
 */
 
 #include "calendarhandler.h"
-#include "event.h"
 
 #include <KCalCore/Event>
 #include <KCalCore/CalFormat>
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
+#include <kolab/kolabobject.h>
 
 #include <KLocale>
 
@@ -42,15 +43,11 @@ CalendarHandler::~CalendarHandler()
 {
 }
 
-KCalCore::Incidence::Ptr CalendarHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
+KMime::Message::Ptr CalendarHandler::incidenceToMime( const KCalCore::Incidence::Ptr& incidence )
 {
-  return incidenceFromKolabImpl<KCalCore::Event::Ptr, Kolab::Event>( data );
+  return Kolab::KolabObjectWriter::writeEvent(incidence.dynamicCast<KCalCore::Event>(), m_formatVersion, m_calendar.timeZoneId());
 }
 
-QByteArray CalendarHandler::incidenceToXml(const KCalCore::Incidence::Ptr &incidence)
-{
-  return Kolab::Event::eventToXML( incidence.dynamicCast<KCalCore::Event>(), m_calendar.timeZoneId() ).toUtf8();
-}
 
 QStringList CalendarHandler::contentMimeTypes()
 {

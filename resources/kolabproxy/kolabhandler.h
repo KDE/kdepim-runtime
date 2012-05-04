@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Andras Mantia <amantia@kde.org>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -23,6 +24,8 @@
 #include <akonadi/item.h>
 #include <akonadi/collection.h>
 #include <kmime/kmime_message.h>
+#include <kolab/kolabobject.h>
+#include "kolabdefs.h"
 
 /**
 	@author Andras Mantia <amantia@kde.org>
@@ -30,12 +33,14 @@
 class KolabHandler : public QObject{
   Q_OBJECT
 public:
-  static KolabHandler *createHandler( const QByteArray& type, const Akonadi::Collection &imapCollection );
+  typedef QSharedPointer<KolabHandler>  Ptr;
+  static Ptr createHandler( const QByteArray& type, const Akonadi::Collection &imapCollection );
+  static Ptr createHandler( const KolabV2::FolderType& type, const Akonadi::Collection &imapCollection );
 
   /**
     Returns the Kolab folder type for the given collection.
   */
-  static QByteArray kolabTypeForCollection( const Akonadi::Collection &collection );
+  static QByteArray kolabTypeForMimeType( const QStringList &mimetypes );
 
   /**
    * Returns all mime types supported by Kolab.
@@ -74,26 +79,30 @@ public:
   virtual void itemAdded(const Akonadi::Item &item) { Q_UNUSED( item ); }
   virtual void reset() {}
 
+  void setKolabFormatVersion(Kolab::Version);
+
+  /**
+   * Returns true if the current operation should be aborted and false if everything is ok.
+   *
+   * Error handling strategy:
+   * If an error happend, either:
+   * - completely skip item => will be redownloaded (or will it be deleted from the server? (it shouldn't))
+   * - mark item as corrup => readonly, will not be written back and will be redownloaded
+   *
+   * @param affectedItem The item which is currently being processed.
+   */
+  bool checkForErrors(Akonadi::Item::Id affectedItem);
 Q_SIGNALS:
-    void deleteItemFromImap(const Akonadi::Item& item);
-    void addItemToImap(const Akonadi::Item& item, Akonadi::Entity::Id collectionId);
+  void deleteItemFromImap(const Akonadi::Item& item);
+  void addItemToImap(const Akonadi::Item& item, Akonadi::Entity::Id collectionId);
 
 protected:
   explicit KolabHandler( const Akonadi::Collection &imapCollection );
-  static KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type);
-  static KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type);
-
-  /** Create the top-level message object of an Kolab MIME message, including the explanation part. */
-  static KMime::Message::Ptr createMessage( const QString &mimeType );
-  /** Creates the explanation part added to every Kolab MIME message. */
-  static KMime::Content* createExplanationPart();
-  /** Creates the main Kolab MIME part. */
-  static KMime::Content* createMainPart( const QString &mimeType, const QByteArray &decodedContent );
-  /** Create a MIME part for an attachment. */
-  static KMime::Content* createAttachmentPart( const QString &mimeType, const QString &fileName, const QByteArray &decodedContent );
 
   QByteArray m_mimeType;
   Akonadi::Collection m_imapCollection;
+  Kolab::Version m_formatVersion;
+  int m_warningDisplayLevel;
 };
 
 #endif

@@ -6,11 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>529</width>
-    <height>209</height>
+    <width>667</width>
+    <height>491</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinimumSize</enum>
+   </property>
    <item>
     <widget class="QLabel" name="label">
      <property name="font">
@@ -30,7 +33,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_2">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -53,30 +56,99 @@
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout">
        <item row="1" column="0">
-        <widget class="QPushButton" name="createKolabFolderButton">
-         <property name="text">
-          <string>Create Kolab Folders</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Create resource folders in account:</string>
+            <string>Select IMAP-Account:</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="imapAccountComboBox"/>
+          <widget class="QComboBox" name="imapAccountComboBox">
+           <property name="toolTip">
+            <string>IMAP-Account used for Kolab-Groupware.</string>
+           </property>
+          </widget>
          </item>
         </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Account Settings</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Create/Recover KolabFolders in IMAP-Account:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="createKolabFolderButton">
+            <property name="toolTip">
+             <string>Ensure that Kolab-Groupware-Folders are existing in IMAP-Account.</string>
+            </property>
+            <property name="text">
+             <string>Create Kolab Folders</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="formatVersionLabel">
+            <property name="text">
+             <string>Current Format Version:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="upgradeLabel">
+            <property name="text">
+             <string>Change the Kolab-Format Version:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="upgradeFormatButton">
+            <property name="toolTip">
+             <string>Convert Account to different format version.</string>
+            </property>
+            <property name="text">
+             <string>Change Format Version</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="formatVersion">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Note that the Kolab resource will use all IMAP accounts that contain the special Kolab folders.</string>
+          <string>Note that the Kolab-Resource will use all available IMAP accounts that contain Kolab folders to provide Groupware-Data. The selection below applies to the settings only.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -91,6 +163,9 @@
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>

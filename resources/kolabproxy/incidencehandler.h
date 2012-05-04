@@ -1,6 +1,7 @@
 /*
     Copyright (C) 2009 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Copyright (c) 2009 Andras Mantia <andras@kdab.net>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -24,7 +25,6 @@
 #include "kolabhandler.h"
 #include <kcalcore/incidence.h>
 #include <kcalcore/memorycalendar.h>
-#include "task.h"
 
 class QDomDocument;
 
@@ -34,41 +34,22 @@ class QDomDocument;
 class IncidenceHandler : public KolabHandler {
   Q_OBJECT
 public:
-    explicit IncidenceHandler( const Akonadi::Collection &imapCollection );
+  explicit IncidenceHandler( const Akonadi::Collection &imapCollection );
 
-    virtual ~IncidenceHandler();
+  virtual ~IncidenceHandler();
 
-    virtual void itemAdded(const Akonadi::Item &item);
-    virtual void itemDeleted(const Akonadi::Item &item);
-    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
-    virtual void toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem);
-    /**reimp*/ void reset();
+  virtual void itemAdded(const Akonadi::Item &item);
+  virtual void itemDeleted(const Akonadi::Item &item);
+  virtual Akonadi::Item::List translateItems(const Akonadi::Item::List & addrs);
+  virtual void toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem);
+  /**reimp*/ void reset();
 
 Q_SIGNALS:
-    void useGlobalMode();
+  void useGlobalMode();
 
 protected:
-  virtual KCalCore::Incidence::Ptr incidenceFromKolab(const KMime::Message::Ptr &data) = 0;
-  template <typename IncidencePtr, typename Converter>
-  inline IncidencePtr incidenceFromKolabImpl( const KMime::Message::Ptr &data )
-  {
-    KMime::Content *xmlContent = findContentByType( data, m_mimeType );
-    if ( xmlContent ) {
-      const QByteArray xmlData = xmlContent->decodedContent();
-      const QDomDocument xmlDoc = Converter::loadDocument( QString::fromUtf8(xmlData) );
-      if ( !xmlDoc.isNull() ) {
-        IncidencePtr i = Converter::fromXml( xmlDoc, m_calendar.timeZoneId() );
-        attachmentsFromKolab( data, xmlDoc, i );
-        return i;
-      }
-    }
-    return IncidencePtr();
-  }
+  virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence) = 0;
 
-  virtual QByteArray incidenceToXml( const KCalCore::Incidence::Ptr &incidence) = 0;
-  static void attachmentsFromKolab( const KMime::Message::Ptr &data,
-                                    const QDomDocument &xmlDoc,
-                                    const KCalCore::Incidence::Ptr &incidence );
   void incidenceToItem(const KCalCore::Incidence::Ptr &e, Akonadi::Item &imapItem);
 
   struct StoredItem{

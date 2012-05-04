@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Andras Mantia <amantia@kde.org>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -30,33 +31,64 @@
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
 
+#include <kolab/errorhandler.h>
+#include <kpassivepopup.h>
+#include <klocalizedstring.h>
 
-KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection ) : m_imapCollection( imapCollection )
+
+KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection )
+: m_imapCollection( imapCollection ),
+  m_formatVersion(Kolab::KolabV3),
+  m_warningDisplayLevel( Kolab::ErrorHandler::Warning )
 {
 }
 
-KolabHandler *KolabHandler::createHandler( const QByteArray& type,
+KolabHandler::Ptr KolabHandler::createHandler( const QByteArray& type,
                                            const Akonadi::Collection &imapCollection )
 {
   if (type ==  "contact.default" || type ==  "contact") {
-    return new AddressBookHandler( imapCollection );
+    return Ptr(new AddressBookHandler( imapCollection ));
   } else if (type ==  "event.default" || type ==  "event") {
-    return new CalendarHandler( imapCollection );
+    return Ptr(new CalendarHandler( imapCollection ));
   } else if (type ==  "task.default" || type ==  "task") {
-    return new TasksHandler( imapCollection );
+    return Ptr(new TasksHandler( imapCollection ));
   } else if (type ==  "journal.default" || type ==  "journal") {
-    return new JournalHandler( imapCollection );
+    return Ptr(new JournalHandler( imapCollection ));
   } else if (type ==  "note.default" || type ==  "note") {
-    return new NotesHandler( imapCollection );
-  } else {
-    return 0;
+    return Ptr(new NotesHandler( imapCollection ));
   }
+  return KolabHandler::Ptr();
+}
+
+KolabHandler::Ptr KolabHandler::createHandler(const KolabV2::FolderType& type, const Akonadi::Collection& imapCollection)
+{
+  switch (type) {
+    case KolabV2::Contact:
+      return Ptr(new AddressBookHandler( imapCollection ));
+    case KolabV2::Event:
+      return Ptr(new CalendarHandler( imapCollection ));
+    case KolabV2::Task:
+      return Ptr(new TasksHandler( imapCollection ));
+    case KolabV2::Journal:
+      return Ptr(new JournalHandler( imapCollection ));
+    case KolabV2::Note:
+      return Ptr(new NotesHandler( imapCollection ));
+    default:
+      qWarning() << "invalid type";
+  }
+  return KolabHandler::Ptr();
 }
 
 
-QByteArray KolabHandler::kolabTypeForCollection(const Akonadi::Collection& collection)
+void KolabHandler::setKolabFormatVersion(Kolab::Version version)
 {
-  const QStringList contentMimeTypes = collection.contentMimeTypes();
+  m_formatVersion = version;
+}
+
+
+
+QByteArray KolabHandler::kolabTypeForMimeType(const QStringList& contentMimeTypes)
+{
   if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) ) {
     return "contact";
   } else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) ) {
@@ -93,82 +125,22 @@ QByteArray KolabHandler::mimeType() const
   return m_mimeType;
 }
 
-KMime::Content* KolabHandler::findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
+bool KolabHandler::checkForErrors(Akonadi::Item::Id affectedItem)
 {
-  const KMime::Content::List list = data->contents();
-  Q_FOREACH(KMime::Content *c, list)
-  {
-    if (c->contentType()->mimeType() ==  type)
-      return c;
+  if (Kolab::ErrorHandler::instance().error() < m_warningDisplayLevel) {
+    Kolab::ErrorHandler::instance().clear();
+    return false;
   }
-  return 0;
-
-}
-
-KMime::Content* KolabHandler::findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type)
-{
-  const KMime::Content::List list = data->contents();
-  Q_FOREACH(KMime::Content *c, list)
-  {
-    if ( c->contentType()->name() == name ) {
-      type = c->contentType()->mimeType();
-      return c;
-    }
+  QString errorMsg;
+  foreach(const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors()) {
+    errorMsg.append(error.message);
+    errorMsg.append("\n");
   }
-  return 0;
-
+  kWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
+  KPassivePopup::message(
+    i18n( "An error occured while reading/writing a Kolab-Groupware-Object(akonadi id %1): \n%2", QString::number(affectedItem), errorMsg ),
+                        (QWidget*)0 );
+  Kolab::ErrorHandler::instance().clear();
+  return true;
 }
 
-
-KMime::Content* KolabHandler::createExplanationPart()
-{
-  KMime::Content *content = new KMime::Content();
-  content->contentType()->setMimeType( "text/plain" );
-  content->contentType()->setCharset( "us-ascii" );
-  content->contentTransferEncoding()->setEncoding( KMime::Headers::CE7Bit );
-  content->setBody( "This is a Kolab Groupware object.\n"
-                    "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
-                    "For a list of such email clients please visit\n"
-                    "http://www.kolab.org/kolab2-clients.html\n" );
-  return content;
-}
-
-
-KMime::Message::Ptr KolabHandler::createMessage(const QString& mimeType)
-{
-  KMime::Message::Ptr message( new KMime::Message );
-  message->date()->setDateTime( KDateTime::currentLocalDateTime() );
-  KMime::Headers::Generic *h = new KMime::Headers::Generic( "X-Kolab-Type", message.get(), mimeType, "utf-8" );
-  message->appendHeader( h );
-  message->userAgent()->from7BitString( "Akonadi Kolab Proxy Resource" );
-  message->contentType()->setMimeType( "multipart/mixed" );
-  message->contentType()->setBoundary( KMime::multiPartBoundary() );
-
-  message->addContent( createExplanationPart() );
-  return message;
-}
-
-
-KMime::Content* KolabHandler::createMainPart(const QString& mimeType, const QByteArray& decodedContent)
-{
-  KMime::Content* content = new KMime::Content();
-  content->contentType()->setMimeType( mimeType.toLatin1() );
-  content->contentType()->setName( "kolab.xml", "us-ascii" );
-  content->contentTransferEncoding()->setEncoding( KMime::Headers::CEquPr );
-  content->contentDisposition()->setDisposition( KMime::Headers::CDattachment );
-  content->contentDisposition()->setFilename( "kolab.xml" );
-  content->setBody( decodedContent );
-  return content;
-}
-
-KMime::Content* KolabHandler::createAttachmentPart(const QString& mimeType, const QString& fileName, const QByteArray& decodedContent)
-{
-  KMime::Content* content = new KMime::Content();
-  content->contentType()->setMimeType( mimeType.toLatin1() );
-  content->contentType()->setName( fileName, "us-ascii" );
-  content->contentTransferEncoding()->setEncoding( KMime::Headers::CEbase64 );
-  content->contentDisposition()->setDisposition( KMime::Headers::CDattachment );
-  content->contentDisposition()->setFilename( fileName );
-  content->setBody( decodedContent );
-  return content;
-}

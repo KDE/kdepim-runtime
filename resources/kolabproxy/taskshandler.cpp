@@ -1,6 +1,7 @@
 /*
     Copyright (C) 2009 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Copyright (c) 2009 Andras Mantia <andras@kdab.net>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,10 +20,10 @@
 */
 
 #include "taskshandler.h"
-#include "task.h"
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
+#include <kolab/kolabobject.h>
 
 #include <QBuffer>
 #include <QDomDocument>
@@ -38,14 +39,9 @@ TasksHandler::~TasksHandler()
 {
 }
 
-KCalCore::Incidence::Ptr TasksHandler::incidenceFromKolab( const KMime::Message::Ptr &data )
+KMime::Message::Ptr TasksHandler::incidenceToMime(const KCalCore::Incidence::Ptr& incidence)
 {
-  return incidenceFromKolabImpl<KCalCore::Todo::Ptr, Kolab::Task>( data );
-}
-
-QByteArray TasksHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence )
-{
-  return Kolab::Task::taskToXML( incidence.dynamicCast<KCalCore::Todo>(), m_calendar.timeZoneId() ).toUtf8();
+  return Kolab::KolabObjectWriter::writeTodo(incidence.dynamicCast<KCalCore::Todo>(), m_formatVersion, m_calendar.timeZoneId());
 }
 
 QStringList TasksHandler::contentMimeTypes()

@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2010 Laurent Montel <montel@kde.org>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -20,13 +21,14 @@
 #ifndef SETUPKOLAB_H
 #define SETUPKOLAB_H
 
-#include <KDialog>
-#include <akonadi/agentinstance.h>
-#include <akonadi/collection.h>
-#include "ui_kolabsettings.h"
+#include <kdialog.h>
 
-class KolabProxyResource;
+#include <akonadi/agentinstance.h>
+#include "ui_kolabsettings.h"
+#include "ui_changeformat.h"
+
 class KJob;
+class KolabProxyResource;
 class SetupKolab : public KDialog
 {
   Q_OBJECT
@@ -38,17 +40,20 @@ public:
 protected:
   void initConnection();
   void updateCombobox();
-  void createKolabCollection( Akonadi::Collection & collection );
 
 protected slots:
   void slotLaunchWizard();
   void slotInstanceAddedRemoved();
   void slotCreateDefaultKolabCollections();
-  void createResult( KJob * );
-
+  void slotShowUpgradeDialog();
+  void slotDoUpgrade();
+  void slotSelectedAccountChanged();
+  void slotUpgradeProgress(KJob*,ulong);
+  void slotUpgradeDone(KJob*);
 private:
   QMap<QString, Akonadi::AgentInstance> m_agentList;
   Ui::SetupKolabView *m_ui;
+  Ui::ChangeFormatView *m_versionUi;
   KolabProxyResource *m_parentResource;
 };
 

@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Andras Mantia <amantia@kde.org>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -23,6 +24,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
 #include <QStringList>
+#include "kolabhandler.h"
 
 
 namespace Akonadi {
@@ -30,7 +32,6 @@ namespace Akonadi {
 }
 
 class FreeBusyUpdateHandler;
-class KolabHandler;
 
 class KolabProxyResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::ObserverV2
@@ -102,7 +103,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
   private:
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
-    QMap<Akonadi::Item::Id, KolabHandler*> m_monitoredCollections;
+    QMap<Akonadi::Collection::Id, KolabHandler::Ptr> m_monitoredCollections;
+    QMap<Akonadi::Collection::Id, QString> m_resourceIdentifier;
     QMap<KJob*, QString> m_ids;
     QMap<KJob*, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;

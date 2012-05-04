@@ -1,6 +1,7 @@
 /*
     Copyright (C) 2009 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Copyright (c) 2009 Andras Mantia <andras@kdab.net>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,12 +20,12 @@
 */
 
 #include "journalhandler.h"
-#include "journal.h"
 
 #include <KCalCore/Journal>
 
 #include <kdebug.h>
 #include <kmime/kmime_codecs.h>
+#include <kolab/kolabobject.h>
 
 #include <QBuffer>
 #include <QDomDocument>
@@ -39,14 +40,9 @@ JournalHandler::~JournalHandler()
 {
 }
 
-KCalCore::Incidence::Ptr JournalHandler::incidenceFromKolab(const KMime::Message::Ptr &data)
+KMime::Message::Ptr JournalHandler::incidenceToMime(const KCalCore::Incidence::Ptr& incidence)
 {
-  return incidenceFromKolabImpl<KCalCore::Journal::Ptr, Kolab::Journal>( data );
-}
-
-QByteArray JournalHandler::incidenceToXml( const KCalCore::Incidence::Ptr &incidence)
-{
-  return Kolab::Journal::journalToXML( incidence.dynamicCast<KCalCore::Journal>(), m_calendar.timeZoneId()).toUtf8();
+  return Kolab::KolabObjectWriter::writeJournal(incidence.dynamicCast<KCalCore::Journal>(), m_formatVersion, m_calendar.timeZoneId());
 }
 
 QStringList  JournalHandler::contentMimeTypes()

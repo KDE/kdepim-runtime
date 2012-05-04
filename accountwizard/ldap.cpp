@@ -60,26 +60,26 @@ void Ldap::create()
     group.writeEntry( "Default domain", basedn );
   }
 
-  basedn.replace('.',",dc=");
-  basedn.prepend("dc=");
+  basedn.replace( '.', ",dc=" );
+  basedn.prepend( "dc=" );
 
   // Set the changes
   KConfig c( "kabldaprc" );
   KConfigGroup group = c.group( "LDAP" );
   bool hasMyServer = false;
-  uint selHosts = group.readEntry("NumSelectedHosts", 0);
+  uint selHosts = group.readEntry( "NumSelectedHosts", 0 );
   for ( uint i = 0 ; i < selHosts && !hasMyServer; ++i )
-    if ( group.readEntry( QString("SelectedHost%1").arg(i), QString() ) == host )
+    if ( group.readEntry( QString( "SelectedHost%1" ).arg( i ), QString() ) == host )
       hasMyServer = true;
   if ( !hasMyServer ) {
     group.writeEntry( "NumSelectedHosts", selHosts + 1 );
-    group.writeEntry( QString("SelectedHost%1").arg(selHosts), host);
-    group.writeEntry( QString("SelectedBase%1").arg(selHosts), basedn);
-    group.writeEntry( QString("SelectedPort%1").arg(selHosts), "389");
+    group.writeEntry( QString( "SelectedHost%1" ).arg( selHosts ), host );
+    group.writeEntry( QString( "SelectedBase%1" ).arg( selHosts ), basedn );
+    group.writeEntry( QString( "SelectedPort%1" ).arg( selHosts ), "389" );
     if ( !m_authMethod.isEmpty() ) {
-      group.writeEntry( QString("SelectedAuth%1").arg(selHosts), m_authMethod);
-      group.writeEntry( QString("SelectedBind%1").arg(selHosts), m_bindDn);
-      group.writeEntry( QString("SelectedPwdBind%1").arg(selHosts), m_password);
+      group.writeEntry( QString( "SelectedAuth%1" ).arg( selHosts ), m_authMethod );
+      group.writeEntry( QString( "SelectedBind%1" ).arg( selHosts ), m_bindDn );
+      group.writeEntry( QString( "SelectedPwdBind%1" ).arg( selHosts ), m_password );
     }
   }
   emit finished( i18n( "LDAP set up." ) );

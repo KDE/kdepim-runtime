@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -18,9 +19,9 @@
 */
 
 #include "notehandler.h"
-#include "note.h"
 
 #include <akonadi/item.h>
+#include <kolab/kolabobject.h>
 #include <QStringList>
 
 NotesHandler::NotesHandler( const Akonadi::Collection &imapCollection ) : JournalHandler( imapCollection )
@@ -37,7 +38,12 @@ void NotesHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item& imapI
 {
   if ( item.hasPayload<KMime::Message::Ptr>() ) {
     KMime::Message::Ptr note = item.payload<KMime::Message::Ptr>();
-    noteToKolab( note, imapItem );
+    KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeNote(note, m_formatVersion);
+    if (checkForErrors(item.id())) {
+        return;
+    }
+    imapItem.setMimeType( "message/rfc822" );
+    imapItem.setPayload(msg);
   } else {
     kWarning() << "Payload is not a note!";
     return;
@@ -54,7 +60,11 @@ Akonadi::Item::List NotesHandler::translateItems(const Akonadi::Item::List& kola
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
     Akonadi::Item noteItem( "text/x-vnd.akonadi.note" );
-    if ( noteFromKolab(payload, noteItem ) ) {
+    bool ret = noteFromKolab(payload, noteItem );
+    if (checkForErrors(item.id())) {
+      continue;
+    }
+    if ( ret ) {
       noteItem.setRemoteId( QString::number( item.id() ) );
       newItems.append( noteItem );
     } else {
@@ -73,39 +83,11 @@ QString NotesHandler::iconName() const
 
 bool NotesHandler::noteFromKolab(const KMime::Message::Ptr& kolabMsg, Akonadi::Item& noteItem)
 {
-  KMime::Content *xmlContent  = findContentByType(kolabMsg, m_mimeType);
-  if ( !xmlContent )
+  Kolab::KolabObjectReader reader(kolabMsg);
+  if(reader.getType() != Kolab::NoteObject) {
     return false;
-  const QByteArray xmlData = xmlContent->decodedContent();
-  Kolab::Note j;
-  if ( !j.load( xmlData ) )
-    return false;
-
-  KMime::Message::Ptr note( new KMime::Message );
-  note->subject( true )->fromUnicodeString( j.summary(), "utf-8" );
-  note->contentType( true )->setMimeType( "text/plain" );
-  note->from( true )->addAddress( "kolab@kde4", QString() );
-  note->date( true )->setDateTime( kolabMsg->date()->dateTime() );
-  note->setBody( j.body().toUtf8() );
-  note->assemble();
-  noteItem.setPayload( note );
+  }
+  noteItem.setPayload( reader.getNote() );
   return true;
 }
 
-void NotesHandler::noteToKolab(const KMime::Message::Ptr& note, Akonadi::Item& kolabItem)
-{
-  Kolab::Note j;
-  j.setSummary( note->subject( true )->asUnicodeString() );
-  j.setBody( note->textContent()->decodedText() );
-
-  kolabItem.setMimeType( "message/rfc822" );
-
-  KMime::Message::Ptr message = createMessage( m_mimeType );
-  message->subject()->fromUnicodeString( j.summary(), "utf-8" );
-
-  KMime::Content* content = createMainPart( m_mimeType, j.saveXML().toUtf8() );
-  message->addContent( content );
-
-  message->assemble();
-  kolabItem.setPayload(message);
-}

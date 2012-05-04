@@ -4,20 +4,14 @@ include_directories(
     ${kdepim-runtime_SOURCE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
+    ${Libkolab_INCLUDES}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
 
 ########### next target ###############
 
 set( kolabproxyresource_shared_SRCS
-  contact.cpp
-  distributionlist.cpp
-  event.cpp
-  task.cpp
-  journal.cpp
-  incidence.cpp
-  kolabbase.cpp
   kolabhandler.cpp
   addressbookhandler.cpp
   incidencehandler.cpp
@@ -26,10 +20,11 @@ set( kolabproxyresource_shared_SRCS
   taskshandler.cpp
   journalhandler.cpp
   notehandler.cpp
-  note.cpp
   setupdefaultfoldersjob.cpp
   kolabdefs.cpp
+  upgradejob.cpp
 )
+
 
 set( kolabproxyresource_SRCS
   kolabproxyresource.cpp
@@ -43,7 +38,7 @@ install( FILES kolabproxyresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/s
 
 kde4_add_kcfg_files(kolabproxyresource_SRCS settings.kcfgc)
 
-kde4_add_ui_files(kolabproxyresource_SRCS kolabsettings.ui)
+kde4_add_ui_files(kolabproxyresource_SRCS kolabsettings.ui changeformat.ui)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kolabproxyresource.kcfg org.kde.Akonadi.kolabproxy.Settings)
 qt4_add_dbus_adaptor(kolabproxyresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.kolabproxy.Settings.xml settings.h Settings
@@ -60,7 +55,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_kolabproxy_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Kolabproxy Resource")
 endif (Q_WS_MAC)
 
-target_link_libraries(akonadi_kolabproxy_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy ${KDEPIMLIBS_KCALCORE_LIBS} )
+target_link_libraries(akonadi_kolabproxy_resource ${Libkolab_LIBRARIES} ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KMIME_LIBS} kdepim-copy ${KDEPIMLIBS_KCALCORE_LIBS} )
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_kolabproxy_resource akonadi_serializer_mail akonadi_serializer_addressee akonadi_serializer_kcalcore akonadi_serializer_contactgroup)

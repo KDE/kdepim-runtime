@@ -24,7 +24,7 @@
 #include <boost/static_assert.hpp>
 #include <sys/stat.h>
 
-using namespace Kolab;
+using namespace KolabV2;
 
 static const struct {
   const char *name;
@@ -39,24 +39,24 @@ static const struct {
 };
 static const int numFolderTypeData = sizeof folderTypeData / sizeof *folderTypeData;
 
-BOOST_STATIC_ASSERT( numFolderTypeData == Kolab::FolderTypeSize );
+BOOST_STATIC_ASSERT( numFolderTypeData == KolabV2::FolderTypeSize );
 
-FolderType Kolab::folderTypeFromString(const QByteArray& folderTypeName)
+FolderType KolabV2::folderTypeFromString(const QByteArray& folderTypeName)
 {
   if ( folderTypeName == KOLAB_FOLDER_TYPE_CONTACT || folderTypeName == KOLAB_FOLDER_TYPE_CONTACT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX )
-    return Kolab::Contact;
+    return KolabV2::Contact;
   if ( folderTypeName == KOLAB_FOLDER_TYPE_EVENT   || folderTypeName == KOLAB_FOLDER_TYPE_EVENT   KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX )
-    return Kolab::Event;
+    return KolabV2::Event;
   if ( folderTypeName == KOLAB_FOLDER_TYPE_TASK    || folderTypeName == KOLAB_FOLDER_TYPE_TASK    KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX )
-    return Kolab::Task;
+    return KolabV2::Task;
   if ( folderTypeName == KOLAB_FOLDER_TYPE_JOURNAL || folderTypeName == KOLAB_FOLDER_TYPE_JOURNAL KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX )
-    return Kolab::Journal;
+    return KolabV2::Journal;
   if ( folderTypeName == KOLAB_FOLDER_TYPE_NOTE    || folderTypeName == KOLAB_FOLDER_TYPE_NOTE    KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX )
-    return Kolab::Note;
-  return Kolab::Mail;
+    return KolabV2::Note;
+  return KolabV2::Mail;
 }
 
-QByteArray Kolab::folderTypeToString(FolderType type, bool isDefault )
+QByteArray KolabV2::folderTypeToString(FolderType type, bool isDefault )
 {
   Q_ASSERT( type >= 0 && type < FolderTypeSize );
   QByteArray result = folderTypeData[ type ].name;
@@ -65,16 +65,16 @@ QByteArray Kolab::folderTypeToString(FolderType type, bool isDefault )
   return result;
 }
 
-Kolab::FolderType Kolab::guessFolderTypeFromName(const QString& name)
+KolabV2::FolderType KolabV2::guessFolderTypeFromName(const QString& name)
 {
   for ( int i = 0; i < numFolderTypeData; ++i ) {
     if ( name == i18n( folderTypeData[ i ].label ) || name == QString::fromLatin1( folderTypeData[ i ].label ) )
       return static_cast<FolderType>( i );
   }
-  return Kolab::Mail;
+  return KolabV2::Mail;
 }
 
-QString Kolab::nameForFolderType(FolderType type)
+QString KolabV2::nameForFolderType(FolderType type)
 {
   Q_ASSERT( type >= 0 && type < FolderTypeSize );
   return  i18n( folderTypeData[ type ].label );

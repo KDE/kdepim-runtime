@@ -81,7 +81,7 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
     setAppropriate( mProviderPage, false );
 #endif
-  } 
+  }
 
   LoadPage *loadPage = new LoadPage( this );
   mLoadPage = addPage( loadPage, i18n( "Loading Assistant" ) );
@@ -104,7 +104,7 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
 
   // attach network access helper to this instance,
   // establish connection for the lifetime of this dialog
-  KPIMUtils::NetworkAccessHelper* networkHelper = new KPIMUtils::NetworkAccessHelper(this);
+  KPIMUtils::NetworkAccessHelper* networkHelper = new KPIMUtils::NetworkAccessHelper( this );
   networkHelper->establishConnection();
 }
 
@@ -130,7 +130,7 @@ void Dialog::next()
   page->leavePageNextRequested();
 }
 
-void Dialog::slotNextOk() 
+void Dialog::slotNextOk()
 {
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   emit page->pageLeftNext();
@@ -178,14 +178,14 @@ void Dialog::slotManualConfigWanted( bool show )
 }
 
 #ifndef ACCOUNTWIZARD_NO_GHNS
-void Dialog::slotGhnsWanted() 
+void Dialog::slotGhnsWanted()
 {
   Q_ASSERT( mProviderPage );
   setAppropriate( mProviderPage, true );
   setCurrentPage( mProviderPage );
 }
 
-void Dialog::slotGhnsNotWanted() 
+void Dialog::slotGhnsNotWanted()
 {
   Q_ASSERT( mProviderPage );
   setAppropriate( mProviderPage, false );

@@ -1,6 +1,7 @@
 /*
     Copyright (C) 2009 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.net
     Copyright (c) 2009 Andras Mantia <andras@kdab.net>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,7 +20,6 @@
 */
 
 #include "journalhandler.h"
-#include "journal.h"
 
 #include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
@@ -30,6 +30,7 @@
 #include <kmime/kmime_codecs.h>
 
 #include <kcalcore/calformat.h>
+#include <kolab/kolabobject.h>
 
 #include <libkdepim-copy/kincidencechooser.h>
 #include <KLocale>
@@ -59,61 +60,71 @@ Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-    KCalCore::Incidence::Ptr inc = incidenceFromKolab( payload );
-    kDebug() << "KCalCore::Incidence " << inc;
-    if (inc) {
-      KCalCore::Incidence::Ptr incidencePtr(inc);
-      if (m_uidMap.contains(incidencePtr->uid())) {
-        StoredItem storedItem = m_uidMap[incidencePtr->uid()];
-        kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
-                 << " for imap item id = " << item.id()
-                 << " and the other imap item id is "
-                 << storedItem.id << "; imap collection is "
-                 << m_imapCollection.name()
-                 << m_imapCollection.id()
-                 << "; collection has rights "
-                 << m_imapCollection.rights();
 
-        const Akonadi::Collection::Rights requiredRights = Akonadi::Collection::CanDeleteItem |
-                                                           Akonadi::Collection::CanCreateItem;
-
-        if ( ( m_imapCollection.rights() & requiredRights ) != requiredRights ) {
-          kDebug() << "Skipping conflict resolution, no rights on collection " << m_imapCollection.name();
-          continue;
-        }
-
-        ConflictResolution res = resolveConflict(incidencePtr);
-        kDebug() << "ConflictResolution " << res;
-        if (res == Local) {
-          m_uidMap.remove(incidencePtr->uid());
-          incidencePtr = KCalCore::Incidence::Ptr();
-          emit deleteItemFromImap(item);
-          continue;
-        } else if (res == Remote) {
-          Akonadi::Item it(m_uidMap[incidencePtr->uid()].id);
-          emit deleteItemFromImap(it);
-        } else if (res == Both) {
-          incidencePtr->setSummary( i18n("Copy of: %1", incidencePtr->summary() ) );
-          incidencePtr->setUid( KCalCore::CalFormat::createUniqueId() );
-          Akonadi::Item copiedItem( incidencePtr->mimeType() );
-          incidenceToItem(incidencePtr, copiedItem);
-          Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
-          job->fetchScope().fetchFullPayload();
-          if (job->exec()) {
-            emit addItemToImap(copiedItem, job->items()[0].storageCollectionId());
-          }
-          // we can't do newItem.setRemoteId(..) yet because we don't have copiedItem.id()
-          // it's being added to imap, so we continue.
-          continue;
-        }
-      }
-      m_uidMap[incidencePtr->uid()] = StoredItem(item.id(), incidencePtr);
-      kDebug() << "Add to uidMap: " << incidencePtr->uid() << item.id() << incidencePtr;
-      Akonadi::Item newItem( incidencePtr->mimeType() );
-      newItem.setPayload(incidencePtr);
-      newItem.setRemoteId(QString::number(item.id()));
-      newItems << newItem;
+    KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
+    if (checkForErrors(item.id())) {
+      continue;
     }
+    if (!incidencePtr) {
+      kWarning() << "Failed to read incidence.";
+      continue;
+    }
+    //TODO conflict resolving should happen for all object types, and not only for incidences (move to kolabhandler)
+    if (m_uidMap.contains(incidencePtr->uid())) {
+      StoredItem storedItem = m_uidMap[incidencePtr->uid()];
+      kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
+                << " for imap item id = " << item.id()
+                << " and the other imap item id is "
+                << storedItem.id << "; imap collection is "
+                << m_imapCollection.name()
+                << m_imapCollection.id()
+                << "; collection has rights "
+                << m_imapCollection.rights();
+
+      const Akonadi::Collection::Rights requiredRights = Akonadi::Collection::CanDeleteItem |
+                                                          Akonadi::Collection::CanCreateItem;
+
+      if ( ( m_imapCollection.rights() & requiredRights ) != requiredRights ) {
+        kDebug() << "Skipping conflict resolution, no rights on collection " << m_imapCollection.name();
+        continue;
+      }
+
+      ConflictResolution res = resolveConflict(incidencePtr);
+      kDebug() << "ConflictResolution " << res;
+      if (res == Local) {
+        m_uidMap.remove(incidencePtr->uid());
+        incidencePtr = KCalCore::Incidence::Ptr();
+        emit deleteItemFromImap(item);
+        continue;
+      } else if (res == Remote) {
+        Akonadi::Item it(m_uidMap[incidencePtr->uid()].id);
+        emit deleteItemFromImap(it);
+      } else if (res == Both) {
+        incidencePtr->setSummary( i18n("Copy of: %1", incidencePtr->summary() ) );
+        incidencePtr->setUid( KCalCore::CalFormat::createUniqueId() );
+        Akonadi::Item copiedItem( incidencePtr->mimeType() );
+        incidenceToItem(incidencePtr, copiedItem);
+        if (checkForErrors(item.id())) {
+            copiedItem.setPayloadFromData("");
+            //TODO clear mimetype?
+            continue;
+        }
+        Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
+        job->fetchScope().fetchFullPayload();
+        if (job->exec()) {
+          emit addItemToImap(copiedItem, job->items()[0].storageCollectionId());
+        }
+        // we can't do newItem.setRemoteId(..) yet because we don't have copiedItem.id()
+        // it's being added to imap, so we continue.
+        continue;
+      }
+    }
+    m_uidMap[incidencePtr->uid()] = StoredItem(item.id(), incidencePtr);
+    kDebug() << "Add to uidMap: " << incidencePtr->uid() << item.id() << incidencePtr;
+    Akonadi::Item newItem( incidencePtr->mimeType() );
+    newItem.setPayload(incidencePtr);
+    newItem.setRemoteId(QString::number(item.id()));
+    newItems << newItem;
   }
 
   return newItems;
@@ -165,13 +176,18 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict( const KC
 
 void IncidenceHandler::toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem)
 {
-  kDebug() << "toKolabFormat";
+//   kDebug() << "toKolabFormat";
   KCalCore::Incidence::Ptr incidencePtr;
   if (item.hasPayload<KCalCore::Incidence::Ptr>()) {
     incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
   }
-  kDebug() << "item payload: " << item.payloadData();
+//   kDebug() << "item payload: " << item.payloadData();
   incidenceToItem(incidencePtr, imapItem);
+  if (checkForErrors(item.id())) {
+    imapItem.setPayloadFromData("");
+    //TODO clear mimetype?
+    return;
+  }
 }
 
 void IncidenceHandler::incidenceToItem(const KCalCore::Incidence::Ptr &incidencePtr, Akonadi::Item &imapItem)
@@ -180,24 +196,10 @@ void IncidenceHandler::incidenceToItem(const KCalCore::Incidence::Ptr &incidence
     imapItem.setPayloadFromData("");
     return;
   }
+  const KMime::Message::Ptr &message = incidenceToMime(incidencePtr);
   imapItem.setMimeType( "message/rfc822" );
-
-  KMime::Message::Ptr message = createMessage( m_mimeType );
-  message->from()->addAddress( incidencePtr->organizer()->email().toUtf8(), incidencePtr->organizer()->name() );
-  message->subject()->fromUnicodeString( incidencePtr->uid(), "utf-8" );
-
-  KMime::Content *content = createMainPart( m_mimeType, incidenceToXml(incidencePtr ) );
-  message->addContent( content );
-
-  Q_FOREACH (KCalCore::Attachment::Ptr attachment, incidencePtr->attachments()) {
-    content = createAttachmentPart( attachment->mimeType(), attachment->label(), attachment->decodedData() );
-    message->addContent( content );
-  }
-
-  message->assemble();
   imapItem.setPayload(message);
 }
-
 
 
 void IncidenceHandler::itemDeleted(const Akonadi::Item &item)
@@ -225,29 +227,15 @@ void IncidenceHandler::itemAdded(const Akonadi::Item& item)
     return;
   }
   KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-  KCalCore::Incidence::Ptr e = incidenceFromKolab(payload);
+  Kolab::KolabObjectReader reader;
+  reader.parseMimeMessage(payload);
+  if (checkForErrors(item.id())) {
+      return;
+  }
+  KCalCore::Incidence::Ptr e = reader.getIncidence();
   if ( !e )
     return;
   const KCalCore::Incidence::Ptr incidence(e);
   m_uidMap[e->uid()] = StoredItem(item.id(), incidence);
   kDebug() << "Add to uidMap: " << incidence->uid() << item.id() << incidence;
-}
-
-
-void IncidenceHandler::attachmentsFromKolab(const KMime::Message::Ptr& data, const QDomDocument &xmlDoc,
-                                            const KCalCore::Incidence::Ptr &incidence)
-{
-  QDomNodeList nodes = xmlDoc.elementsByTagName("inline-attachment");
-  for (int i = 0; i < nodes.size(); i++ ) {
-    const QString name = nodes.at(i).toElement().text();
-    QByteArray type;
-    KMime::Content *content = findContentByName(data, name, type);
-    if (!content) // guard against malformed events with non-existent attachments
-        continue;
-    const QByteArray c = content->decodedContent().toBase64();
-    KCalCore::Attachment::Ptr attachment( new KCalCore::Attachment( c, QString::fromLatin1( type ) ) );
-    attachment->setLabel( name );
-    incidence->addAttachment(attachment);
-    kDebug() << "ATTACHEMENT NAME" << name << type;
-  }
 }

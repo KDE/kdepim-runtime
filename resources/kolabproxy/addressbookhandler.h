@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2009 Andras Mantia <amantia@kde.org>
     Copyright (c) 2009 Kevin Krammer <kevin.krammer@gmx.at>
+    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -29,11 +30,6 @@ namespace KABC{
   class ContactGroup;
 }
 
-namespace Kolab {
-  class Contact;
-  class DistributionList;
-}
-
 /**
 	@author Andras Mantia <amantia@kde.org>
 */
@@ -47,17 +43,6 @@ public:
     virtual void toKolabFormat(const Akonadi::Item& item, Akonadi::Item &imapItem);
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
-
-private:
-    bool addresseFromKolab(const KMime::Message::Ptr &data, KABC::Addressee &addressee);
-
-    bool contactGroupFromKolab(const KMime::Message::Ptr &data, KABC::ContactGroup &contactGroup);
-
-    void contactToKolabFormat(const Kolab::Contact &contact, Akonadi::Item &imapItem);
-
-    void distListToKolabFormat(const Kolab::DistributionList &distList, Akonadi::Item &imapItem);
-
-    KABC::AddressBook* mAddressBook;
 };
 
 #endif
