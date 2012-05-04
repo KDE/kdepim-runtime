@@ -23,8 +23,6 @@
 
 #include "incidencehandler.h"
 
-#include <KCalCore/Event>
-
 /**
 	@author Andras Mantia <amantia@kde.org>
 */
@@ -39,6 +37,7 @@ class CalendarHandler : public IncidenceHandler
 
   private:
     virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence );
+
 };
 
 #endif

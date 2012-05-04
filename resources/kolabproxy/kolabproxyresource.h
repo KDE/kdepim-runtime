@@ -23,16 +23,13 @@
 
 #include "kolabhandler.h"
 
-#include <Akonadi/Collection>
 #include <Akonadi/ResourceBase>
 
-#include <QStringList>
+class FreeBusyUpdateHandler;
 
 namespace Akonadi {
   class Monitor;
 }
-
-class FreeBusyUpdateHandler;
 
 class KolabProxyResource : public Akonadi::ResourceBase,
                            public Akonadi::AgentBase::ObserverV2

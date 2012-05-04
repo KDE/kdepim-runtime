@@ -24,15 +24,12 @@
 #include "setupdefaultfoldersjob.h"
 #include "upgradejob.h"
 
-#include <Akonadi/AgentInstance>
 #include <Akonadi/AgentManager>
 
 #include <KMessageBox>
 #include <KStandardDirs>
 
 #include <QProcess>
-
-#include <kolab/kolabobject.h> //libkolab
 
 #define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
 

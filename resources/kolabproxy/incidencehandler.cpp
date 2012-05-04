@@ -19,23 +19,16 @@
   02110-1301, USA.
 */
 
-#include "journalhandler.h"
+#include "incidencehandler.h"
 
 #include <libkdepim-copy/kincidencechooser.h> //krazy:exclude=camelcase
 
-#include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/Collection>
-
-#include <KMime/Codecs>
 
 #include <KCalCore/CalFormat>
 
-#include <KDebug>
 #include <KLocale>
-
-#include <kolab/kolabobject.h> //libkolab
 
 IncidenceHandler::IncidenceHandler( const Akonadi::Collection &imapCollection )
   : KolabHandler( imapCollection ),

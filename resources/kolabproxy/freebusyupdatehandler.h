@@ -25,6 +25,7 @@
 
 class KJob;
 class KUrl;
+
 class QTimer;
 
 /**

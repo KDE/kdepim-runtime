@@ -22,7 +22,6 @@
 
 #include "kolabproxyresource.h"
 
-#include <Akonadi/Collection>
 #include <Akonadi/Job>
 
 class CollectionTreeBuilder : public Akonadi::Job

@@ -22,21 +22,13 @@
 
 #include "addressbookhandler.h"
 #include "calendarhandler.h"
-#include "journalhandler.h"
 #include "notehandler.h"
 #include "taskshandler.h"
 
-#include <KCalCore/Event>
-#include <KCalCore/Journal>
-#include <KCalCore/Todo>
-
-#include <KABC/Addressee>
-#include <KABC/ContactGroup>
-
-#include <KLocalizedString>
-#include <KPassivePopup>
-
 #include <kolab/errorhandler.h> //libkolab
+
+#include <KLocale>
+#include <KPassivePopup>
 
 KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection )
   : m_imapCollection( imapCollection ),

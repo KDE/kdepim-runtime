@@ -18,11 +18,8 @@
 */
 
 #include "collectiontreebuilder.h"
-#include "collectionannotationsattribute.h" //from shared
 
 #include <Akonadi/CollectionFetchJob>
-
-using namespace Akonadi;
 
 CollectionTreeBuilder::CollectionTreeBuilder( KolabProxyResource *parent )
   : Job( parent ),
@@ -32,8 +29,9 @@ CollectionTreeBuilder::CollectionTreeBuilder( KolabProxyResource *parent )
 
 void CollectionTreeBuilder::doStart()
 {
-  CollectionFetchJob *job =
-    new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
+  Akonadi::CollectionFetchJob *job =
+    new Akonadi::CollectionFetchJob( Akonadi::Collection::root(),
+                                     Akonadi::CollectionFetchJob::Recursive, this );
 
   connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
            SLOT(collectionsReceived(Akonadi::Collection::List)) );
@@ -43,7 +41,7 @@ void CollectionTreeBuilder::doStart()
 
 void CollectionTreeBuilder::collectionsReceived( const Akonadi::Collection::List &collections )
 {
-  foreach ( const Collection &collection, collections ) {
+  foreach ( const Akonadi::Collection &collection, collections ) {
     if ( collection.resource() == resource()->identifier() ) {
       continue;
     }
@@ -54,17 +52,17 @@ void CollectionTreeBuilder::collectionsReceived( const Akonadi::Collection::List
   }
 }
 
-Collection::List CollectionTreeBuilder::allCollections() const
+Akonadi::Collection::List CollectionTreeBuilder::allCollections() const
 {
   return m_resultCollections;
 }
 
-Collection::List CollectionTreeBuilder::treeToList( const QHash< Entity::Id,
-                                                    Collection::List > &tree,
-                                                    const Akonadi::Collection &current )
+Akonadi::Collection::List CollectionTreeBuilder::treeToList(
+  const QHash< Akonadi::Entity::Id, Akonadi::Collection::List > &tree,
+  const Akonadi::Collection &current )
 {
-  Collection::List rv;
-  foreach ( const Collection &child, tree.value( current.id() ) ) {
+  Akonadi::Collection::List rv;
+  foreach ( const Akonadi::Collection &child, tree.value( current.id() ) ) {
     rv += child;
     rv += treeToList( tree, child );
   }
@@ -77,10 +75,10 @@ void CollectionTreeBuilder::collectionFetchResult( KJob *job )
   m_resultCollections.clear();
 
   // step 1: build the minimal sub-tree that contains all Kolab collections
-  QHash<Collection::Id, Collection::List> remainingTree;
-  foreach ( const Collection &kolabCollection, m_kolabCollections ) {
-    Collection child = kolabCollection;
-    Collection::Id parentId = child.parentCollection().id();
+  QHash<Akonadi::Collection::Id, Akonadi::Collection::List> remainingTree;
+  foreach ( const Akonadi::Collection &kolabCollection, m_kolabCollections ) {
+    Akonadi::Collection child = kolabCollection;
+    Akonadi::Collection::Id parentId = child.parentCollection().id();
     while ( child.isValid() && !remainingTree.value( parentId ).contains( child ) ) {
       remainingTree[ parentId ].append( child );
       child = m_allCollections.value( parentId );
@@ -92,8 +90,9 @@ void CollectionTreeBuilder::collectionFetchResult( KJob *job )
   // TODO
 
   // step 3: flatten the tree and adjust root node
-  foreach ( Collection topLevel, remainingTree.value( Collection::root().id() ) ) { //krazy:exclude=foreach
-    topLevel.setParentCollection( Collection::root() );
+  Akonadi::Collection::List collections = remainingTree.value( Akonadi::Collection::root().id() );
+  foreach ( Akonadi::Collection topLevel, collections ) { //krazy:exclude=foreach
+    topLevel.setParentCollection( Akonadi::Collection::root() );
     m_resultCollections.append( topLevel );
     m_resultCollections += treeToList( remainingTree, topLevel );
   }

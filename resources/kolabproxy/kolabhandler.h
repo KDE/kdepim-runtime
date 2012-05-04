@@ -25,7 +25,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
-#include <KMime/KMimeMessage>
+#include <QSharedPointer>
 
 #include <kolab/kolabobject.h> //libkolab
 
@@ -35,6 +35,7 @@
 class KolabHandler : public QObject
 {
   Q_OBJECT
+
   public:
     typedef QSharedPointer<KolabHandler>  Ptr;
 

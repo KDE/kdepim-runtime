@@ -21,12 +21,6 @@
 
 #include "journalhandler.h"
 
-#include <KCalCore/Journal>
-
-#include <KMime/Codecs>
-
-#include <kolab/kolabobject.h> //libkolab
-
 JournalHandler::JournalHandler( const Akonadi::Collection &imapCollection )
   : IncidenceHandler( imapCollection )
 {

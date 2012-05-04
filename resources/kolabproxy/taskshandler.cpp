@@ -21,10 +21,6 @@
 
 #include "taskshandler.h"
 
-#include <KMime/Codecs>
-
-#include <kolab/kolabobject.h> //libkolab
-
 TasksHandler::TasksHandler( const Akonadi::Collection &imapCollection )
   : IncidenceHandler( imapCollection )
 {

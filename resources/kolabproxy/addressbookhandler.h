@@ -24,12 +24,6 @@
 
 #include "kolabhandler.h"
 
-namespace KABC {
-  class AddressBook;
-  class Addressee;
-  class ContactGroup;
-}
-
 /**
 	@author Andras Mantia <amantia@kde.org>
 */

@@ -26,15 +26,9 @@
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
-
-#include <KLocalizedString>
-
-using namespace Akonadi;
 
 #define IMAP_COLLECTION "IMAP_COLLECTION"
 #define FOLDER_TYPE "FOLDER_TYPE"
@@ -53,8 +47,9 @@ void UpgradeJob::doStart()
 {
   kDebug();
   //Get all subdirectories of kolab resource
-  CollectionFetchJob *job =
-    new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
+  Akonadi::CollectionFetchJob *job =
+    new Akonadi::CollectionFetchJob( Akonadi::Collection::root(),
+                                     Akonadi::CollectionFetchJob::Recursive, this );
   job->fetchScope().setResource( m_agentInstance.identifier() );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchResult(KJob*)) );
 }
@@ -67,20 +62,22 @@ void UpgradeJob::collectionFetchResult( KJob *job )
     emitResult();
     return;
   }
-  int collections = 0;
-  foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
+  int collCount = 0;
+  Akonadi::Collection::List collections =
+    static_cast<Akonadi::CollectionFetchJob*>( job )->collections();
+  foreach ( const Akonadi::Collection &col, collections ) {
     //FIXME:
     // find a way to properly detect shared folders.
     // Collection::CanCreateCollection never applies to shared folders,
     // but that's just a workaround.
-    if ( !( col.rights() & Collection::CanCreateCollection ) ||
-         !( col.rights() & Collection::CanChangeItem ) ) {
+    if ( !( col.rights() & Akonadi::Collection::CanCreateCollection ) ||
+         !( col.rights() & Akonadi::Collection::CanChangeItem ) ) {
       kDebug() << "skipping shared/non-editable folder";
       continue;
     }
     KolabV2::FolderType folderType = KolabV2::Mail;
-    CollectionAnnotationsAttribute *attr = 0;
-    if ( ( attr = col.attribute<CollectionAnnotationsAttribute>() ) ) {
+    Akonadi::CollectionAnnotationsAttribute *attr = 0;
+    if ( ( attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>() ) ) {
       folderType =
         KolabV2::folderTypeFromString(
           attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
@@ -92,8 +89,8 @@ void UpgradeJob::collectionFetchResult( KJob *job )
     }
 
     kDebug() << "upgrading " << col.id();
-    collections++;
-    ItemFetchJob *itemFetchJob = new ItemFetchJob( col, this );
+    collCount++;
+    Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob( col, this );
     itemFetchJob->fetchScope().fetchFullPayload( true );
     itemFetchJob->fetchScope().setCacheOnly( false );
     itemFetchJob->setProperty( IMAP_COLLECTION, QVariant::fromValue( col ) );
@@ -101,8 +98,8 @@ void UpgradeJob::collectionFetchResult( KJob *job )
     connect( itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(itemFetchResult(KJob*)) );
   }
   //Percent is only emitted when Bytes is the unit
-  setTotalAmount( Bytes, collections );
-  if ( !collections ) {
+  setTotalAmount( Bytes, collCount );
+  if ( !collCount ) {
     emitResult();
   }
 }
@@ -114,14 +111,15 @@ void UpgradeJob::itemFetchResult( KJob *job )
     checkResult();
     return; // Akonadi::Job propagates that automatically
   }
-  ItemFetchJob *j = static_cast<ItemFetchJob*>( job );
+  Akonadi::ItemFetchJob *j = static_cast<Akonadi::ItemFetchJob*>( job );
   if ( j->items().isEmpty() ) {
     qWarning() << "no items fetched ";
     checkResult();
     return;
   }
 
-  const Collection imapCollection = j->property(IMAP_COLLECTION).value<Akonadi::Collection>();
+  const Akonadi::Collection imapCollection =
+    j->property( IMAP_COLLECTION ).value<Akonadi::Collection>();
   if ( !imapCollection.isValid() ) {
     qWarning() << "invalid imap collection";
     checkResult();
@@ -154,7 +152,7 @@ void UpgradeJob::itemFetchResult( KJob *job )
       continue;
     }
     handler->toKolabFormat( translatedItems.first(), imapItem );
-    ItemModifyJob *modJob = new ItemModifyJob( imapItem, this );
+    Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob( imapItem, this );
     connect( modJob, SIGNAL(result(KJob*)), this, SLOT(itemModifyResult(KJob*)) );
   }
   checkResult();

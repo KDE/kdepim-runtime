@@ -21,13 +21,6 @@
 
 #include "addressbookhandler.h"
 
-#include <KABC/Addressee>
-#include <KABC/ContactGroup>
-
-#include <KMime/Codecs>
-
-#include <kolab/kolabobject.h> //libkolab
-
 AddressBookHandler::AddressBookHandler( const Akonadi::Collection &imapCollection )
   : KolabHandler( imapCollection )
 {

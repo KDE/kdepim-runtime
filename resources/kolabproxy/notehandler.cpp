@@ -20,12 +20,6 @@
 
 #include "notehandler.h"
 
-#include <Akonadi/Item>
-
-#include <QStringList>
-
-#include <kolab/kolabobject.h> //libkolab
-
 NotesHandler::NotesHandler( const Akonadi::Collection &imapCollection )
   : JournalHandler( imapCollection )
 {

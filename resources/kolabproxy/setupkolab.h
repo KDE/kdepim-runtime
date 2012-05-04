@@ -21,15 +21,16 @@
 #ifndef KOLABPROXY_SETUPKOLAB_H
 #define KOLABPROXY_SETUPKOLAB_H
 
-#include "ui_kolabsettings.h"
 #include "ui_changeformat.h"
+#include "ui_kolabsettings.h"
 
 #include <Akonadi/AgentInstance>
 
 #include <KDialog>
 
-class KJob;
 class KolabProxyResource;
+
+class KJob;
 
 class SetupKolab : public KDialog
 {

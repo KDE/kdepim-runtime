@@ -20,15 +20,6 @@
 
 #include "calendarhandler.h"
 
-#include <KCalCore/Event>
-#include <KCalCore/CalFormat>
-
-#include <KMime/Codecs>
-
-#include <KLocale>
-
-#include <kolab/kolabobject.h> //libkolab
-
 CalendarHandler::CalendarHandler( const Akonadi::Collection &imapCollection )
   : IncidenceHandler( imapCollection )
 {

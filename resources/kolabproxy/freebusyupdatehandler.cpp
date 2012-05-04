@@ -22,7 +22,6 @@
 #include <KDebug>
 #include <KLocale>
 #include <KPassivePopup>
-#include <KUrl>
 #include <KIO/Job>
 
 #include <QTimer>

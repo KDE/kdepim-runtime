@@ -24,7 +24,6 @@
 
 #include "kolabhandler.h"
 
-#include <KCalCore/Incidence>
 #include <KCalCore/MemoryCalendar>
 
 /**

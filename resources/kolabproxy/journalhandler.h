@@ -24,8 +24,6 @@
 
 #include "incidencehandler.h"
 
-#include <KCalCore/Journal>
-
 /**
 	@author Andras Mantia <amantia@kde.org>
 */
