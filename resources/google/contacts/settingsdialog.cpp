@@ -63,6 +63,7 @@ SettingsDialog::SettingsDialog( WId windowId, QWidget *parent ):
            this, SLOT(reloadAccounts()) );
 
   reloadAccounts();
+  updateButtons();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -113,6 +114,7 @@ void SettingsDialog::addAccountClicked()
 
   try {
     auth->authenticate( account, true );
+    updateButtons();
   } catch ( KGoogle::Exception::BaseException &e ) {
     KMessageBox::error( this, e.what() );
   }
@@ -144,9 +146,16 @@ void SettingsDialog::removeAccountClicked()
 
   try {
     auth->revoke( account );
+    updateButtons();
   } catch ( KGoogle::Exception::BaseException &e ) {
     KMessageBox::error( this, e.what() );
   }
 
   reloadAccounts();
+}
+
+void SettingsDialog::updateButtons()
+{
+  bool enableRemoveButton = (m_ui->accountsCombo->count()>0);
+  m_ui->removeAccountBtn->setEnabled(enableRemoveButton);
 }
