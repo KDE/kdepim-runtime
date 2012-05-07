@@ -108,6 +108,6 @@ target_link_libraries(akonadi_davgroupware_resource
 install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 else()
-  macro_log_feature(QT_QTXMLPATTERNS_LIBRARY "QtXmlPatterns" "The Qt module QtXmlPatterns" "Part of Qt" FALSE "" "Needed for building Akonadi resources. Recommended. Remove -no-exceptions from the Qt configure line if you are missing this library.")
+  macro_log_feature(QT_QTXMLPATTERNS_LIBRARY "QtXmlPatterns" "The Qt module QtXmlPatterns (included with Qt)" "http://qt.nokia.com/downloads" FALSE "" "Needed for building Akonadi resources. STRONGLY RECOMMENDED. Remove -no-exceptions from the Qt configure line if you are missing this library.")
 endif()
 

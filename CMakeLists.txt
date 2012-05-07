@@ -91,7 +91,7 @@ message( STATUS "Skipping detection of Nepomuk dependencies, feature is disabled
 endif(NOT KDEPIM_NO_NEPOMUK)
 
 find_package(Strigi)
-macro_log_feature(STRIGI_FOUND "Strigi" "Index metadata of files" "http://strigi.sourceforge.net" FALSE "" "")
+macro_log_feature(STRIGI_FOUND "Strigi" "Strigi desktop search engine" "http://strigi.sourceforge.net" FALSE "" "")
 
 set(LIBKGOOGLE_MIN_VERSION 0.3.1)
 find_package(LibKGoogle)
@@ -116,7 +116,7 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
   ${LIB_INSTALL_DIR}
   $ENV{STRIGI_HOME}/lib
 )
-macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "strigi indexing" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the message searchprovider")
+macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "Strigi Qt D-Bus client library" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the message searchprovider")
 
 find_package(Libkolab 0.2)
 macro_log_feature(Libkolab_FOUND "KolabLibraries" "The Kolab Format libraries" "http://git.kolab.org/" FALSE "0.2" "The Kolab Format libraries are required to build the Kolab Groupware Resource")
