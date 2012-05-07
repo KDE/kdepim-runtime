@@ -1,31 +1,30 @@
 /*
-    Copyright (c) 2011 Tobias Koenig <tokoe@kde.org>
+  Copyright (c) 2011 Tobias Koenig <tokoe@kde.org>
 
-    This library is free software; you can redistribute it and/or modify it
-    under the terms of the GNU Library General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
+  This library is free software; you can redistribute it and/or modify it
+  under the terms of the GNU Library General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or (at your
+  option) any later version.
 
-    This library is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
-    License for more details.
+  This library is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+  License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to the
-    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to the
+  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+  02110-1301, USA.
 */
 
 #include "freebusyupdatehandler.h"
 
-#include <kdebug.h>
-#include <kio/job.h>
-#include <klocale.h>
-#include <kpassivepopup.h>
-#include <kurl.h>
+#include <KDebug>
+#include <KLocale>
+#include <KPassivePopup>
+#include <KIO/Job>
 
-#include <QtCore/QTimer>
+#include <QTimer>
 
 FreeBusyUpdateHandler::FreeBusyUpdateHandler( QObject *parent )
   : QObject( parent ), mTimer( new QTimer( this ) )
@@ -56,7 +55,8 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
 
   // IMAP path is either /INBOX/<path> or /user/someone/<path>
   //FIXME this assumption is no longer true. Kolabfolders can also be toplevel.
-  if( !path.startsWith( '/' ) ) { //The path separator can i.e. also be '.' on a different imap server
+  if ( !path.startsWith( '/' ) ) {
+    //The path separator can i.e. also be '.' on a different imap server
     kWarning() << "Unsupported path separator";
     return;
   }
@@ -66,7 +66,7 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
     return;
   }
 
-  if ( path.startsWith( "/INBOX/", Qt::CaseInsensitive ) ) {
+  if ( path.startsWith( QLatin1String( "/INBOX/" ), Qt::CaseInsensitive ) ) {
     // If INBOX, replace it with the username (which is user@domain)
     path = path.mid( secondSlash );
     path.prepend( userName );

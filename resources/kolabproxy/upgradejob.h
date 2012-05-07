@@ -17,14 +17,13 @@
  *  02110-1301, USA.
  */
 
+#ifndef KOLABPROXY_UPGRADEJOB_H
+#define KOLABPROXY_UPGRADEJOB_H
 
-#ifndef UPGRADEJOB_H
-#define UPGRADEJOB_H
+#include <Akonadi/AgentInstance>
+#include <Akonadi/Job>
 
-#include <akonadi/job.h>
-#include <akonadi/agentinstance.h>
-#include <kolab/kolabobject.h>
-
+#include <kolab/kolabobject.h> //libkolab
 
 /**
  * Fetch all items of an imap resource, read them, and write them out in the target version.
@@ -32,21 +31,23 @@
 class UpgradeJob : public Akonadi::Job
 {
   Q_OBJECT
-public:
-  explicit UpgradeJob( Kolab::Version targetVersion, const Akonadi::AgentInstance &instance, QObject *parent = 0 );
+  public:
+    explicit UpgradeJob( Kolab::Version targetVersion,
+                         const Akonadi::AgentInstance &instance,
+                         QObject *parent = 0 );
 
-protected:
-  void doStart();
+  protected:
+    void doStart();
 
-private slots:
-  void collectionFetchResult( KJob *job );
-  void itemFetchResult( KJob *job );
-  void itemModifyResult( KJob *job );
+  private slots:
+    void collectionFetchResult( KJob *job );
+    void itemFetchResult( KJob *job );
+    void itemModifyResult( KJob *job );
 
-private:
-  void checkResult();
-  Akonadi::AgentInstance m_agentInstance;
-  Kolab::Version m_targetVersion;
+  private:
+    void checkResult();
+    Akonadi::AgentInstance m_agentInstance;
+    Kolab::Version m_targetVersion;
 };
 
 #endif // UPGRADEJOB_H

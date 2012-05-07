@@ -44,6 +44,7 @@ class SettingsDialog : public KDialog
     void saveSettings();
 
   private:
+    void updateButtons();
     Ui::SettingsDialog *m_ui;
     QWidget *m_mainWidget;
 

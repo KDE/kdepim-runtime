@@ -1,61 +1,71 @@
 /*
-    Copyright (c) 2010 Volker Krause <vkrause@kde.org>
-    Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
+  Copyright (c) 2010 Volker Krause <vkrause@kde.org>
+  Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
-    This library is free software; you can redistribute it and/or modify it
-    under the terms of the GNU Library General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
+  This library is free software; you can redistribute it and/or modify it
+  under the terms of the GNU Library General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or (at your
+  option) any later version.
 
-    This library is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
-    License for more details.
+  This library is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+  License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to the
-    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to the
+  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+  02110-1301, USA.
 */
 
 #include "setupdefaultfoldersjob.h"
+
 #include "kolabdefs.h"
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <collectionannotationsattribute.h>
-#include <akonadi/collectioncreatejob.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <klocalizedstring.h>
 
-using namespace Akonadi;
+#include "collectionannotationsattribute.h" //from shared
 
-SetupDefaultFoldersJob::SetupDefaultFoldersJob(const Akonadi::AgentInstance& instance, QObject* parent): Job( parent ),
-  m_agentInstance( instance )
+#include <Akonadi/CollectionCreateJob>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
+
+SetupDefaultFoldersJob::SetupDefaultFoldersJob( const Akonadi::AgentInstance &instance,
+                                                QObject *parent )
+  : Job( parent ),
+    m_agentInstance( instance )
 {
   Q_ASSERT( instance.isValid() );
 }
 
 void SetupDefaultFoldersJob::doStart()
 {
-  CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
+  Akonadi::CollectionFetchJob *job =
+    new Akonadi::CollectionFetchJob( Akonadi::Collection::root(),
+                                     Akonadi::CollectionFetchJob::Recursive, this );
   job->fetchScope().setResource( m_agentInstance.identifier() );
   connect( job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)) );
 }
 
-void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
+void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
 {
-  if ( job->error() )
+  if ( job->error() ) {
     return; // Akonadi::Job propagates that automatically
+  }
 
-  //FIXME: This should really look for the personal namespace, and use the folder there. As a workaround we try to use the inbox, and fallback to toplevel otherwise.
+  Akonadi::Collection::List collections;
+
+  //FIXME: This should really look for the personal namespace, and use the folder there.
+  //        As a workaround we try to use the inbox, and fallback to toplevel otherwise.
   // look for inbox
-  Collection defaultParent;
-  foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
-    if (!(col.rights() & Collection::CanCreateCollection))
-        continue;
-    EntityDisplayAttribute* attr = 0;
-    if ( (attr = col.attribute<EntityDisplayAttribute>()) ) {
+  Akonadi::Collection defaultParent;
+  collections = static_cast<Akonadi::CollectionFetchJob*>( job )->collections();
+  foreach ( const Akonadi::Collection &col, collections ) {
+    if ( !( col.rights() & Akonadi::Collection::CanCreateCollection ) ) {
+      continue;
+    }
+    Akonadi::EntityDisplayAttribute *attr = 0;
+    if ( ( attr = col.attribute<Akonadi::EntityDisplayAttribute>() ) ) {
       if ( attr->iconName() == QLatin1String( "mail-folder-inbox" ) ) {
         defaultParent = col;
       }
@@ -63,78 +73,85 @@ void SetupDefaultFoldersJob::collectionFetchResult(KJob* job)
   }
 
   // look for existing folders
-  QVector<Collection> existingDefaultFolders( KolabV2::FolderTypeSize );
-  QVector<Collection> recoveryCandidates( KolabV2::FolderTypeSize );
-  foreach ( const Collection &col, static_cast<CollectionFetchJob*>( job )->collections() ) {
-    if ( col.parentCollection() != defaultParent )
+  QVector<Akonadi::Collection> existingDefaultFolders( KolabV2::FolderTypeSize );
+  QVector<Akonadi::Collection> recoveryCandidates( KolabV2::FolderTypeSize );
+  collections = static_cast<Akonadi::CollectionFetchJob*>( job )->collections();
+  foreach ( const Akonadi::Collection &col, collections ) {
+    if ( col.parentCollection() != defaultParent ) {
       continue;
+    }
     KolabV2::FolderType folderType = KolabV2::Mail;
-    CollectionAnnotationsAttribute *attr = 0;
-    if ( (attr = col.attribute<CollectionAnnotationsAttribute>()) ) {
-      folderType = KolabV2::folderTypeFromString( attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
+    Akonadi::CollectionAnnotationsAttribute *attr = 0;
+    if ( ( attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>() ) ) {
+      folderType =
+        KolabV2::folderTypeFromString(
+          attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
     }
     KolabV2::FolderType guessedType = KolabV2::guessFolderTypeFromName( col.name() );
 
-    if ( folderType != KolabV2::Mail )
+    if ( folderType != KolabV2::Mail ) {
       existingDefaultFolders[ folderType ] = col;
-    else if ( guessedType != KolabV2::Mail )
+    } else if ( guessedType != KolabV2::Mail ) {
       recoveryCandidates[ guessedType ] = col;
+    }
   }
 
   // create/fix folders
   for ( int i = KolabV2::Contact; i < KolabV2::FolderTypeSize; ++i ) {
     QString iconName;
-    if ( i == KolabV2::Mail )
-    {
+    if ( i == KolabV2::Mail ) {
       //Nothing
-    }
-    else if ( i == KolabV2::Contact )
-    {
+    } else if ( i == KolabV2::Contact ) {
       iconName = QString::fromLatin1( "view-pim-contacts" );
-    }
-    else if ( i == KolabV2::Event )
-    {
+    } else if ( i == KolabV2::Event ) {
       iconName = QString::fromLatin1( "view-calendar" );
-    }
-    else if ( i == KolabV2::Task )
-    {
+    } else if ( i == KolabV2::Task ) {
       iconName = QString::fromLatin1( "view-pim-tasks" );
-    }
-    else if ( i == KolabV2::Journal )
-    {
+    } else if ( i == KolabV2::Journal ) {
       iconName = QString::fromLatin1( "view-pim-journal" );
-    }
-    else if ( i == KolabV2::Note )
-    {
+    } else if ( i == KolabV2::Note ) {
       iconName = QString::fromLatin1( "view-pim-notes" );
     }
+
     if ( existingDefaultFolders[ i ].isValid() ) {
       continue; // all good
     } else if ( recoveryCandidates[ i ].isValid() ) {
-      Collection col = recoveryCandidates[ i ];
-      CollectionAnnotationsAttribute* attr = col.attribute<CollectionAnnotationsAttribute>( Entity::AddIfMissing );
+      Akonadi::Collection col = recoveryCandidates[ i ];
+      Akonadi::CollectionAnnotationsAttribute *attr =
+        col.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Entity::AddIfMissing );
+
       QMap<QByteArray, QByteArray> annotations;
-      annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
+      annotations.insert(
+        KOLAB_FOLDER_TYPE_ANNOTATION,
+        KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
+
       attr->setAnnotations( annotations );
       if ( !iconName.isEmpty() ) {
-        Akonadi::EntityDisplayAttribute *attribute =  col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
+        Akonadi::EntityDisplayAttribute *attribute =
+          col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
         attribute->setIconName( iconName );
       }
 
-      new CollectionModifyJob( col, 0 );
+      new Akonadi::CollectionModifyJob( col, 0 );
     } else {
-      Collection col;
+      Akonadi::Collection col;
       col.setName( KolabV2::nameForFolderType( static_cast<KolabV2::FolderType>( i ) ) );
       col.setParentCollection( defaultParent );
-      CollectionAnnotationsAttribute* attr = col.attribute<CollectionAnnotationsAttribute>( Entity::AddIfMissing );
+      Akonadi::CollectionAnnotationsAttribute *attr =
+        col.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Entity::AddIfMissing );
+
       QMap<QByteArray, QByteArray> annotations;
-      annotations.insert( KOLAB_FOLDER_TYPE_ANNOTATION, KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
+      annotations.insert(
+        KOLAB_FOLDER_TYPE_ANNOTATION,
+        KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
+
       attr->setAnnotations( annotations );
       if ( !iconName.isEmpty() ) {
-        Akonadi::EntityDisplayAttribute *attribute = col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
+        Akonadi::EntityDisplayAttribute *attribute =
+          col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
         attribute->setIconName( iconName );
       }
-      new CollectionCreateJob( col, 0 );
+      new Akonadi::CollectionCreateJob( col, 0 );
     }
   }
 
