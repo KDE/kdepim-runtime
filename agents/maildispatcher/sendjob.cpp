@@ -179,8 +179,16 @@ void SendJob::Private::doTraditionalTransport()
   // Message.
   Q_ASSERT( item.hasPayload<Message::Ptr>() );
   const Message::Ptr message = item.payload<Message::Ptr>();
+  bool needAssemble = false;
   if( message->hasHeader( "Bcc" ) ) {
     message->removeHeader( "Bcc" );
+    needAssemble = true;
+  }
+  if( message->hasHeader( "X-KMail-Identity" ) ) {
+    message->removeHeader( "X-KMail-Identity" );
+    needAssemble = true;
+  }
+  if(needAssemble) {
     message->assemble();
   }
   const QByteArray content = message->encodedContent( true ) + "\r\n";
