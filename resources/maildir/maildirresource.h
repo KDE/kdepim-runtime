@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef __MAILDIR_RESOURCE_H__
-#define __MAILDIR_RESOURCE_H__
+#ifndef MAILDIR_RESOURCE_H
+#define MAILDIR_RESOURCE_H
 
 #include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>

@@ -25,12 +25,12 @@ KeyCache* KeyCache::mSelf = 0;
 
 void KeyCache::addKeys( const QString& dir )
 {
-  if (!mNewKeys.contains( dir )) {
+  if ( !mNewKeys.contains( dir ) ) {
     mNewKeys.insert( dir, listNew( dir ) );
     //kDebug() << "Added new keys for: " << dir;
   }
 
-  if (!mCurKeys.contains( dir )) {
+  if ( !mCurKeys.contains( dir ) ) {
     mCurKeys.insert( dir, listCurrent( dir ) );
     //kDebug() << "Added cur keys for: " << dir;
   }

@@ -164,9 +164,9 @@ void MaildirResource::configurationChanged()
   mSettings->writeConfig();
   bool configValid = ensureSaneConfiguration();
   configValid &= ensureDirExists();
-  if (configValid) {
+  if ( configValid ) {
     emit status( Idle );
-    setOnline(true);
+    setOnline( true );
   }
 }
 
@@ -184,13 +184,13 @@ void MaildirResource::configure( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   if ( dlg.exec() ) {
-      // if we have no name, or the default one,
-      // better use the name of the top level collection
-      // that looks nicer
-      if ( name().isEmpty() || name() == identifier() ) {
-        Maildir md( mSettings->path() );
-        setName( md.name() );
-      }
+    // if we have no name, or the default one,
+    // better use the name of the top level collection
+    // that looks nicer
+    if ( name().isEmpty() || name() == identifier() ) {
+      Maildir md( mSettings->path() );
+      setName( md.name() );
+    }
     emit configurationDialogAccepted();
   } else {
     emit configurationDialogRejected();
@@ -203,7 +203,7 @@ void MaildirResource::configure( WId windowId )
 void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
 {
     if ( !ensureSaneConfiguration() ) {
-      cancelTask( i18n("Unusable configuration.") );
+      cancelTask( i18n( "Unusable configuration." ) );
       return;
     }
     Maildir dir = maildirForCollection( collection );
@@ -215,19 +215,19 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 
     // we can only deal with mail
     if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      cancelTask( i18n("Error: Unsupported type.") );
+      cancelTask( i18n( "Error: Unsupported type." ) );
       return;
     }
     const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
 
     QString path = dir.path();
-    mFsWatcher->removeDir( path + QLatin1Literal("/new") );
-    mFsWatcher->removeDir( path + QLatin1Literal("/cur") );
+    mFsWatcher->removeDir( path + QLatin1Literal( "/new" ) );
+    mFsWatcher->removeDir( path + QLatin1Literal( "/cur" ) );
 
     const QString rid = dir.addEntry( mail->encodedContent() );
 
-    mFsWatcher->addDir( path + QLatin1Literal("/new") );
-    mFsWatcher->addDir( path + QLatin1Literal("/cur") );
+    mFsWatcher->addDir( path + QLatin1Literal( "/new" ) );
+    mFsWatcher->addDir( path + QLatin1Literal( "/cur" ) );
 
     Item i( item );
     i.setRemoteId( rid );
@@ -237,7 +237,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
 {
     if ( !ensureSaneConfiguration() ) {
-      cancelTask( i18n("Unusable configuration.") );
+      cancelTask( i18n( "Unusable configuration." ) );
       return;
     }
 
@@ -245,11 +245,10 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     bool bodyChanged = false;
     bool flagsChanged = false;
     bool headChanged = false;
-    Q_FOREACH( const QByteArray &part, parts )  {
-      if( part.startsWith("PLD:RFC822") ) {
+    Q_FOREACH ( const QByteArray &part, parts )  {
+      if ( part.startsWith( "PLD:RFC822" ) ) {
         bodyChanged = true;
-      }
-      if( part.startsWith("PLD:HEAD") ) {
+      } else if ( part.startsWith( "PLD:HEAD" ) ) {
         headChanged = true;
       }
       if ( part.contains( "FLAGS" ) ) {
@@ -273,13 +272,13 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
 
     if ( flagsChanged || bodyChanged || headChanged ) { //something has changed that we can deal with
       const QString path = dir.path();
-        mFsWatcher->removeDir( path + QLatin1Literal("/new") );
-        mFsWatcher->removeDir( path + QLatin1Literal("/cur") );
+        mFsWatcher->removeDir( path + QLatin1Literal( "/new" ) );
+        mFsWatcher->removeDir( path + QLatin1Literal( "/cur" ) );
 
       if ( flagsChanged ) { //flags changed, store in file name and get back the new filename (id)
         const QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
-        if (newKey.isEmpty()) {
-          cancelTask( i18n("Failed to change the flags for the mail.") );
+        if ( newKey.isEmpty() ) {
+          cancelTask( i18n( "Failed to change the flags for the mail." ) );
           return;
         }
         newItem.setRemoteId( newKey );
@@ -304,8 +303,8 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         }
       }
 
-        mFsWatcher->addDir( path + QLatin1Literal("/new") );
-        mFsWatcher->addDir( path + QLatin1Literal("/cur") );
+        mFsWatcher->addDir( path + QLatin1Literal( "/new" ) );
+        mFsWatcher->addDir( path + QLatin1Literal( "/cur" ) );
 
       changeCommitted( newItem );
     } else {
@@ -321,7 +320,7 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   }
 
   if ( !ensureSaneConfiguration() ) {
-    cancelTask( i18n("Unusable configuration.") );
+    cancelTask( i18n( "Unusable configuration." ) );
     return;
   }
 
@@ -340,17 +339,17 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
 
   QString sourceDirPath = sourceDir.path();
   QString destDirPath = destDir.path();
-    mFsWatcher->removeDir( sourceDirPath + QLatin1Literal("/new") );
-    mFsWatcher->removeDir( sourceDirPath + QLatin1Literal("/cur") );
-    mFsWatcher->removeDir( destDirPath + QLatin1Literal("/new") );
-    mFsWatcher->removeDir( destDirPath + QLatin1Literal("/cur") );
+    mFsWatcher->removeDir( sourceDirPath + QLatin1Literal( "/new" ) );
+    mFsWatcher->removeDir( sourceDirPath + QLatin1Literal( "/cur" ) );
+    mFsWatcher->removeDir( destDirPath + QLatin1Literal( "/new" ) );
+    mFsWatcher->removeDir( destDirPath + QLatin1Literal( "/cur" ) );
 
   const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
 
-    mFsWatcher->addDir( sourceDirPath + QLatin1Literal("/new") );
-    mFsWatcher->addDir( sourceDirPath + QLatin1Literal("/cur") );
-    mFsWatcher->addDir( destDirPath + QLatin1Literal("/new") );
-    mFsWatcher->addDir( destDirPath + QLatin1Literal("/cur") );
+    mFsWatcher->addDir( sourceDirPath + QLatin1Literal( "/new" ) );
+    mFsWatcher->addDir( sourceDirPath + QLatin1Literal( "/cur" ) );
+    mFsWatcher->addDir( destDirPath + QLatin1Literal( "/new" ) );
+    mFsWatcher->addDir( destDirPath + QLatin1Literal( "/cur" ) );
 
   if ( newRid.isEmpty() ) {
     cancelTask( i18n( "Could not move message '%1'.", item.remoteId() ) );
@@ -365,7 +364,7 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
 void MaildirResource::itemRemoved(const Akonadi::Item & item)
 {
   if ( !ensureSaneConfiguration() ) {
-    cancelTask( i18n("Unusable configuration.") );
+    cancelTask( i18n( "Unusable configuration." ) );
     return;
   }
 
@@ -374,15 +373,15 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
     // !dir.isValid() means that our parent folder has been deleted already,
     // so we don't care at all as that one will be recursive anyway
     QString dirPath = dir.path();
-        mFsWatcher->removeDir( dirPath + QLatin1Literal("/new") );
-        mFsWatcher->removeDir( dirPath + QLatin1Literal("/cur") );
+        mFsWatcher->removeDir( dirPath + QLatin1Literal( "/new" ) );
+        mFsWatcher->removeDir( dirPath + QLatin1Literal( "/cur" ) );
     if ( dir.isValid() && !dir.removeEntry( item.remoteId() ) ) {
-      emit error( i18n("Failed to delete message: %1", item.remoteId()) );
+      emit error( i18n( "Failed to delete message: %1", item.remoteId() ) );
     }
-        mFsWatcher->addDir( dirPath + QLatin1Literal("/new") );
-        mFsWatcher->addDir( dirPath + QLatin1Literal("/cur") );
+        mFsWatcher->addDir( dirPath + QLatin1Literal( "/new" ) );
+        mFsWatcher->addDir( dirPath + QLatin1Literal( "/cur" ) );
   }
-  kDebug() << "Item removed"<<item.id()<<" in collection :"<<item.parentCollection().id();
+  kDebug() << "Item removed" << item.id() << " in collection :" << item.parentCollection().id();
   changeProcessed();
 }
 
@@ -465,7 +464,7 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
 {
   const Maildir md = maildirForCollection( col );
   if ( !md.isValid() ) {
-    cancelTask( i18n("Maildir '%1' for collection '%2' is invalid.", md.path(), col.remoteId() ) );
+    cancelTask( i18n( "Maildir '%1' for collection '%2' is invalid.", md.path(), col.remoteId() ) );
     return;
   }
 
@@ -485,7 +484,7 @@ void MaildirResource::slotItemsRetrievalResult ( KJob* job )
 void MaildirResource::collectionAdded(const Collection & collection, const Collection &parent)
 {
   if ( !ensureSaneConfiguration() ) {
-    emit error( i18n("Unusable configuration.") );
+    emit error( i18n( "Unusable configuration." ) );
     changeProcessed();
     return;
   }
@@ -495,9 +494,7 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
   if ( mSettings->readOnly() || !md.isValid() ) {
     changeProcessed();
     return;
-  }
-  else {
-
+  } else {
     const QString collectionName( collection.name().replace( QDir::separator(), QString() ) );
     const QString newFolderPath = md.addSubFolder( collectionName );
     if ( newFolderPath.isEmpty() ) {
@@ -518,7 +515,7 @@ void MaildirResource::collectionAdded(const Collection & collection, const Colle
 void MaildirResource::collectionChanged(const Collection & collection)
 {
   if ( !ensureSaneConfiguration() ) {
-    emit error( i18n("Unusable configuration.") );
+    emit error( i18n( "Unusable configuration." ) );
     changeProcessed();
     return;
   }
@@ -545,7 +542,7 @@ void MaildirResource::collectionChanged(const Collection & collection)
 
   const QString collectionName( collection.name().replace( QDir::separator(), QString() ) );
   if ( !md.rename( collectionName ) ) {
-    emit error( i18n("Unable to rename maildir folder '%1'.", collection.name() ) );
+    emit error( i18n( "Unable to rename maildir folder '%1'.", collection.name() ) );
     changeProcessed();
     return;
   }
@@ -560,7 +557,7 @@ void MaildirResource::collectionMoved( const Collection &collection, const Colle
   kDebug() << collection << source << dest;
 
   if ( !ensureSaneConfiguration() ) {
-    emit error( i18n("Unusable configuration.") );
+    emit error( i18n( "Unusable configuration." ) );
     changeProcessed();
     return;
   }
@@ -581,7 +578,7 @@ void MaildirResource::collectionMoved( const Collection &collection, const Colle
   Maildir md = maildirForCollection( c );
   Maildir destMd = maildirForCollection( dest );
   if ( !md.moveTo( destMd ) ) {
-    emit error( i18n("Unable to move maildir folder '%1' from '%2' to '%3'.", collection.remoteId(), source.remoteId(), dest.remoteId() ) );
+    emit error( i18n( "Unable to move maildir folder '%1' from '%2' to '%3'.", collection.remoteId(), source.remoteId(), dest.remoteId() ) );
     changeProcessed();
   } else {
     changeCommitted( collection );
@@ -591,13 +588,13 @@ void MaildirResource::collectionMoved( const Collection &collection, const Colle
 void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
 {
    if ( !ensureSaneConfiguration() ) {
-    emit error( i18n("Unusable configuration.") );
+    emit error( i18n( "Unusable configuration." ) );
     changeProcessed();
     return;
   }
 
   if ( collection.parentCollection() == Collection::root() ) {
-    emit error( i18n("Cannot delete top-level maildir folder '%1'.", mSettings->path() ) );
+    emit error( i18n( "Cannot delete top-level maildir folder '%1'.", mSettings->path() ) );
     changeProcessed();
     return;
   }
@@ -606,7 +603,7 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
   // !md.isValid() means that our parent folder has been deleted already,
   // so we don't care at all as that one will be recursive anyway
   if ( md.isValid() && !md.removeSubFolder( collection.remoteId() ) ) {
-    emit error( i18n("Failed to delete sub-folder '%1'.", collection.remoteId() ) );
+    emit error( i18n( "Failed to delete sub-folder '%1'.", collection.remoteId() ) );
   }
 
     mMaildirsForCollection.remove( collection.id() );
@@ -628,7 +625,7 @@ bool MaildirResource::ensureDirExists()
 bool MaildirResource::ensureSaneConfiguration()
 {
   if ( mSettings->path().isEmpty() ) {
-    emit status( Broken, i18n( "No usable storage location configured.") );
+    emit status( Broken, i18n( "No usable storage location configured." ) );
     setOnline( false );
     return false;
   }
@@ -638,19 +635,19 @@ bool MaildirResource::ensureSaneConfiguration()
 
 void MaildirResource::slotDirChanged(const QString& dir)
 {
-  QFileInfo fileInfo(dir);
-  if (fileInfo.isFile()) {
-    slotFileChanged(dir);
+  QFileInfo fileInfo( dir );
+  if ( fileInfo.isFile() ) {
+    slotFileChanged( dir );
     return;
   }
 
-  if (dir == mSettings->path() ) {
+  if ( dir == mSettings->path() ) {
     synchronizeCollectionTree();
    synchronizeCollection( Collection::root().id() );
     return;
   }
 
-  if ( dir.endsWith( QLatin1String( ".directory") ) ) {
+  if ( dir.endsWith( QLatin1String( ".directory" ) ) ) {
     synchronizeCollectionTree(); //might be too much, but this is not a common case anyway
     return;
   }
@@ -694,9 +691,9 @@ void MaildirResource::slotFileChanged( const QString& fileName )
 
   QString key = fileInfo.fileName();
   QString path = fileInfo.path();
-  if ( path.endsWith( QLatin1String("/new") ) ) {
+  if ( path.endsWith( QLatin1String( "/new" ) ) ) {
     path.remove( path.length() - 4, 4 );
-  } else if ( path.endsWith( QLatin1String("/cur") ) ) {
+  } else if ( path.endsWith( QLatin1String( "/cur" ) ) ) {
     path.remove( path.length() - 4, 4 );
   }
 
@@ -715,8 +712,8 @@ void MaildirResource::slotFileChanged( const QString& fileName )
   item.setParentCollection( col );
 
   ItemFetchJob *job = new ItemFetchJob( item, this );
-  job->setProperty("entry", key );
-  job->setProperty("dir", path );
+  job->setProperty( "entry", key );
+  job->setProperty( "dir", path );
   connect( job, SIGNAL(result(KJob*)), SLOT(fsWatchFileFetchResult(KJob*)) );
 }
 
@@ -736,13 +733,13 @@ void MaildirResource::fsWatchFileFetchResult( KJob* job )
   const Maildir md( path );
 
   QString entry = fileName;
-  Item item ( items.at(0) );
+  Item item( items.at( 0 ) );
   const qint64 entrySize = md.size( entry );
   if ( entrySize >= 0 )
     item.setSize( entrySize );
 
   Item::Flags flags = md.readEntryFlags( entry );
-  Q_FOREACH( const Item::Flag& flag, flags ) {
+  Q_FOREACH ( const Item::Flag &flag, flags ) {
     item.setFlag( flag );
   }
 

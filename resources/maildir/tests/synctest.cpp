@@ -45,15 +45,15 @@ void SyncTest::testSync()
   AgentInstance instance = AgentManager::self()->instance( "akonadi_maildir_resource_0" );
   QVERIFY( instance.isValid() );
 
-  for( int i = 0; i < 100; i++ ) {
+  for ( int i = 0; i < 100; i++ ) {
     QDBusInterface *interface = new QDBusInterface(
-        QString::fromLatin1( "org.freedesktop.Akonadi.Resource.%1").arg( instance.identifier() ),
+        QString::fromLatin1( "org.freedesktop.Akonadi.Resource.%1" ).arg( instance.identifier() ),
         "/", "org.freedesktop.Akonadi.Resource", QDBusConnection::sessionBus(), this );
     QVERIFY( interface->isValid() );
     QTime t;
     t.start();
     instance.synchronize();
-    QVERIFY( QTest::kWaitForSignal( interface, SIGNAL(synchronized()), TIMEOUT * 1000 ) );
+    QVERIFY( QTest::kWaitForSignal( interface, SIGNAL(synchronized() ), TIMEOUT * 1000 ) );
     kDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
   }
 }
