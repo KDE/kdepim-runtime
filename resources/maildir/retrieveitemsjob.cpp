@@ -75,11 +75,11 @@ void RetrieveItemsJob::processEntry(qint64 index)
 
   bool newItemFound = false;
   while ( !newItemFound ) {
-    if (index >= m_entryList.size()) {
+    if ( index >= m_entryList.size() ) {
       if ( m_listingPath.endsWith( QLatin1String( "/new/" ) ) ) {
         m_listingPath = m_maildir.path() + QLatin1String( "/cur/" );
         m_entryList = m_maildir.listCurrent();
-        processEntry(0);
+        processEntry( 0 );
       } else {
         entriesProcessed();
       }
@@ -89,7 +89,7 @@ void RetrieveItemsJob::processEntry(qint64 index)
     entry = m_entryList[index];
     const qint64 currentMtime = m_maildir.lastModified( entry ).toMSecsSinceEpoch();
     m_highestMtime = qMax( m_highestMtime, currentMtime );
-    if ( currentMtime <= m_previousMtime && m_localItems.contains(entry)) { // old, we got this one already
+    if ( currentMtime <= m_previousMtime && m_localItems.contains( entry ) ) { // old, we got this one already
       m_localItems.remove( entry );
       index++;
     } else {
@@ -108,8 +108,8 @@ void RetrieveItemsJob::processEntry(qint64 index)
   msg->parse();
 
   Akonadi::Item::Flags flags = m_maildir.readEntryFlags( entry );
-  Q_FOREACH( const Akonadi::Item::Flag& flag, flags ) {
-    item.setFlag(flag);
+  Q_FOREACH ( const Akonadi::Item::Flag &flag, flags ) {
+    item.setFlag( flag );
   }
 
   item.setPayload( KMime::Message::Ptr( msg ) );
@@ -123,9 +123,9 @@ void RetrieveItemsJob::processEntry(qint64 index)
   }
 
   if ( index % 20 == 0 ) {
-     QMetaObject::invokeMethod( this, "processEntry", Qt::QueuedConnection, Q_ARG(qint64, index + 1) );
+     QMetaObject::invokeMethod( this, "processEntry", Qt::QueuedConnection, Q_ARG( qint64, index + 1 ) );
   } else
-      processEntry(index+1);
+      processEntry( index + 1 );
 
 }
 

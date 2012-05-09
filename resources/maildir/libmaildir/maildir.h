@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef __MAILDIR_H__
-#define __MAILDIR_H__
+#ifndef MAILDIR_H
+#define MAILDIR_H
 
 
 #include "maildir_export.h"

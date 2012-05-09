@@ -43,7 +43,7 @@ static const char * testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n";
 
 void MaildirTest::init()
 {
-  m_temp = new KTempDir( KStandardDirs::locateLocal("tmp", QLatin1String( testDir ) ) );
+  m_temp = new KTempDir( KStandardDirs::locateLocal( "tmp", QLatin1String( testDir ) ) );
 
   QDir temp( m_temp->name() );
   QVERIFY( temp.exists() );
@@ -60,7 +60,7 @@ void MaildirTest::cleanup()
 {
   m_temp->unlink();
   QDir d( m_temp->name() );
-  const QString subFolderPath( QString::fromLatin1( ".%1.directory" ).arg( d.dirName() ));
+  const QString subFolderPath( QString::fromLatin1( ".%1.directory" ).arg( d.dirName() ) );
   KTempDir::removeDir(subFolderPath);
 
   delete m_temp;
@@ -72,7 +72,7 @@ void MaildirTest::fillDirectory(const QString& name, int limit )
    QFile file;
    QDir::setCurrent( m_temp->name() + QLatin1Char( '/' ) + name );
    for ( int i=0; i<limit ; i++) {
-     file.setFileName( QLatin1String( "testmail-" ) + QString::number(i) );
+     file.setFileName( QLatin1String( "testmail-" ) + QString::number( i ) );
      file.open( QIODevice::WriteOnly );
      file.write( testString );
      file.flush();
@@ -83,7 +83,7 @@ void MaildirTest::fillDirectory(const QString& name, int limit )
 void MaildirTest::createSubFolders()
 {
   QDir d( m_temp->name() );
-  const QString subFolderPath( QString::fromLatin1( ".%1.directory" ).arg( d.dirName() ));
+  const QString subFolderPath( QString::fromLatin1( ".%1.directory" ).arg( d.dirName() ) );
   d.cdUp();
   d.mkdir( subFolderPath );
   d.cd( subFolderPath );
@@ -94,12 +94,12 @@ void MaildirTest::createSubFolders()
 
 void MaildirTest::fillNewDirectory()
 {
-  fillDirectory( QLatin1String( "new" ), 140);
+  fillDirectory( QLatin1String( "new" ), 140 );
 }
 
 void MaildirTest::fillCurrentDirectory()
 {
-  fillDirectory( QLatin1String( "cur" ), 20);
+  fillDirectory( QLatin1String( "cur" ), 20 );
 }
 
 
@@ -109,22 +109,22 @@ void MaildirTest::testMaildirInstantiation()
   Maildir d2( d );
   Maildir d3;
   d3 = d;
-  QVERIFY(d == d2);
-  QVERIFY(d3 == d2);
-  QVERIFY(d == d3);
+  QVERIFY( d == d2 );
+  QVERIFY( d3 == d2 );
+  QVERIFY( d == d3 );
   QCOMPARE( d.path(), QString( QLatin1String( "/foo/bar/Mail" ) ) );
   QCOMPARE( d.name(), QString( QLatin1String( "Mail" ) ) );
 
-  QVERIFY(!d.isValid());
+  QVERIFY( !d.isValid() );
 
   Maildir good( m_temp->name() );
-  QVERIFY(good.isValid());
+  QVERIFY( good.isValid() );
 
   QDir temp( m_temp->name() );
   temp.rmdir( QLatin1String( "new" ) );
   QString error;
-  QVERIFY(!good.isValid( error ));
-  QVERIFY(!error.isEmpty());
+  QVERIFY( !good.isValid( error ) );
+  QVERIFY( !error.isEmpty() );
 
   Maildir root1( QLatin1String( "/foo/bar/Mail" ), true );
   QVERIFY( root1.isRoot() );
@@ -143,7 +143,7 @@ void MaildirTest::testMaildirListing()
   Maildir d( m_temp->name() );
   QStringList entries = d.entryList();
 
-  QCOMPARE( entries.count(), 140);
+  QCOMPARE( entries.count(), 140 );
 
   fillCurrentDirectory();
   entries = d.entryList();
@@ -158,8 +158,8 @@ void MaildirTest::testMaildirAccess()
   QCOMPARE( entries.count(), 20 );
 
   QByteArray data = d.readEntry( entries[0] );
-  QVERIFY(!data.isEmpty());
-  QCOMPARE( data, QByteArray( testString) );
+  QVERIFY( !data.isEmpty() );
+  QCOMPARE( data, QByteArray( testString ) );
 }
 
 void MaildirTest::testMaildirReadHeaders()
@@ -170,7 +170,7 @@ void MaildirTest::testMaildirReadHeaders()
   QCOMPARE( entries.count(), 20 );
 
   QByteArray data = d.readEntryHeaders( entries[0] );
-  QVERIFY(!data.isEmpty());
+  QVERIFY( !data.isEmpty() );
   QCOMPARE( data, QByteArray( testStringHeaders ) );
 }
 
@@ -199,11 +199,11 @@ void MaildirTest::testMaildirAppend()
 void MaildirTest::testMaildirCreation()
 {
   QString p( QLatin1String( "CREATETEST" ) );
-  std::auto_ptr<KTempDir> temp ( new KTempDir( KStandardDirs::locateLocal("tmp", p ) ) );
+  std::auto_ptr<KTempDir> temp ( new KTempDir( KStandardDirs::locateLocal( "tmp", p ) ) );
   Maildir d( temp->name() + p );
-  QVERIFY(!d.isValid());
+  QVERIFY( !d.isValid() );
   d.create();
-  QVERIFY(d.isValid());
+  QVERIFY( d.isValid() );
 }
 
 void MaildirTest::testMaildirRemoveEntry()
@@ -214,7 +214,7 @@ void MaildirTest::testMaildirRemoveEntry()
   QVERIFY( !key.isEmpty() );
   QCOMPARE( data, d.readEntry( key ) );
   QVERIFY( d.removeEntry( key ) );
-  QVERIFY( d.readEntry(key).isEmpty() );
+  QVERIFY( d.readEntry( key ).isEmpty() );
 }
 
 void MaildirTest::testMaildirListSubfolders()
@@ -340,7 +340,7 @@ void MaildirTest::testMaildirFlagsReading()
   const QStringList markers = QStringList() << "P" << "R" << "S" << "F" << "FPRS";
   QDir::setCurrent( m_temp->name() + QLatin1Char( '/' ) + "cur" );
   for ( int i=0; i<6 ; i++) {
-    QString fileName = QLatin1String( "testmail-" ) + QString::number(i);
+    QString fileName = QLatin1String( "testmail-" ) + QString::number( i );
     if ( i < 5 ) {
       fileName +=
   #ifdef Q_OS_WIN
@@ -362,23 +362,23 @@ void MaildirTest::testMaildirFlagsReading()
   QCOMPARE( entries.count(), 6 );
 
   Akonadi::Item::Flags flags = d.readEntryFlags( entries[0] );
-  QCOMPARE( flags.count(), 1);
+  QCOMPARE( flags.count(), 1 );
   QVERIFY( flags.contains( Akonadi::MessageFlags::Forwarded ) );
 
   flags = d.readEntryFlags( entries[1] );
-  QCOMPARE( flags.count(), 1);
+  QCOMPARE( flags.count(), 1 );
   QVERIFY( flags.contains( Akonadi::MessageFlags::Replied ) );
 
   flags = d.readEntryFlags( entries[2] );
-  QCOMPARE( flags.count(), 1);
+  QCOMPARE( flags.count(), 1 );
   QVERIFY( flags.contains( Akonadi::MessageFlags::Seen ) );
 
   flags = d.readEntryFlags( entries[3] );
-  QCOMPARE( flags.count(), 1);
+  QCOMPARE( flags.count(), 1 );
   QVERIFY( flags.contains( Akonadi::MessageFlags::Flagged ) );
 
   flags = d.readEntryFlags( entries[4] );
-  QCOMPARE( flags.count(), 4);
+  QCOMPARE( flags.count(), 4 );
   QVERIFY( flags.contains( Akonadi::MessageFlags::Forwarded ) );
   QVERIFY( flags.contains( Akonadi::MessageFlags::Replied ) );
   QVERIFY( flags.contains( Akonadi::MessageFlags::Seen ) );
@@ -390,12 +390,12 @@ void MaildirTest::testMaildirFlagsReading()
 
 void MaildirTest::testMaildirFlagsWriting_data()
 {
-  QTest::addColumn<QString>("origDir");
-  QTest::addColumn<QString>("origFileName");
-  QTest::newRow("cur/") << "cur" << "testmail";
-  QTest::newRow("cur/S") << "cur" << "testmail:2,S"; // wrongly marked as "seen" on disk (#289428)
-  QTest::newRow("new/") << "new" << "testmail";
-  QTest::newRow("new/S") << "new" << "testmail:2,S";
+  QTest::addColumn<QString>( "origDir" );
+  QTest::addColumn<QString>( "origFileName" );
+  QTest::newRow( "cur/" ) << "cur" << "testmail";
+  QTest::newRow( "cur/S" ) << "cur" << "testmail:2,S"; // wrongly marked as "seen" on disk (#289428)
+  QTest::newRow( "new/" ) << "new" << "testmail";
+  QTest::newRow( "new/S" ) << "new" << "testmail:2,S";
 }
 
 void MaildirTest::testMaildirFlagsWriting()
@@ -424,10 +424,10 @@ void MaildirTest::testMaildirFlagsWriting()
   // and it's the right file
   QCOMPARE( d.readEntry( newKey ), QByteArray( testString ) );
   // now check the file name
-  QVERIFY( newKey.endsWith( QLatin1String("2,S") ) );
+  QVERIFY( newKey.endsWith( QLatin1String( "2,S" ) ) );
   // and more flags
   const QString newKey2 = d.changeEntryFlags( newKey, Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen << Akonadi::MessageFlags::Replied );
   // check the file name, and the sorting of markers
-  QVERIFY( newKey2.endsWith( QLatin1String("2,RS") ) );
+  QVERIFY( newKey2.endsWith( QLatin1String( "2,RS" ) ) );
   QVERIFY( QFile::exists( "cur/" + newKey2 ) );
 }
