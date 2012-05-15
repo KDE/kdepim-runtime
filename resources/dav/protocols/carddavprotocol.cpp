@@ -35,6 +35,12 @@ CarddavProtocol::CarddavProtocol()
   propElement.appendChild( document.createElementNS( "DAV:", "resourcetype" ) );
   propElement.appendChild( document.createElementNS( "DAV:", "getetag" ) );
 
+  QDomElement filterElement = document.createElementNS( "urn:ietf:params:xml:ns:carddav", "filter" );
+  queryElement.appendChild( filterElement );
+  QDomElement propfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:carddav", "prop-filter" );
+  propfilterElement.setAttribute( "name", "FN" );
+  filterElement.appendChild( propfilterElement );
+
   mItemsQueries << document;
 }
 
