@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Tine 2.0 Groupware Server
+Icon=applications-internet
+Comment=Tine 2.0 Groupware Server
+
+[Wizard]
+Type=message/rfc822,text/directory,text/calendar
+Script=tine20wizard.es
+
+[Translate]
+Filename=accountwizard_tine20
