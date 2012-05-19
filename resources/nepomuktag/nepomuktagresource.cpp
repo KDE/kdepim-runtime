@@ -31,6 +31,10 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/collectioncreatejob.h>
 
+#include <Nepomuk/Resource>
+#include <Nepomuk/Vocabulary/NIE>
+#include <Nepomuk/Variant>
+
 #include <nepomuk/tag.h>
 #include <nepomuk/resourcemanager.h>
 #include <soprano/signalcachemodel.h>
@@ -252,7 +256,8 @@ void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection
 void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
 {
   if ( statement.predicate() == Soprano::Vocabulary::NAO::hasTag() ) {
-    const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
+    Nepomuk::Resource resource(statement.subject().uri());
+    const Akonadi::Item item = Item::fromUrl( resource.property(Nepomuk::Vocabulary::NIE::url()).toUrl() );
     if ( !item.isValid() )
       return;
 
@@ -272,8 +277,9 @@ void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
 void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
 {
   if ( statement.predicate() == Soprano::Vocabulary::NAO::hasTag() ) {
+    Nepomuk::Resource resource(statement.subject().uri());
+    const Akonadi::Item item = Item::fromUrl( resource.property(Nepomuk::Vocabulary::NIE::url()).toUrl() );
 
-    const Akonadi::Item item = Item::fromUrl( statement.subject().uri() );
     if ( !item.isValid() )
       return;
 
