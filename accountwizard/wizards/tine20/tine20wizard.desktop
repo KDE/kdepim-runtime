@@ -2,14 +2,18 @@
 Name=Tine 2.0 Groupware Server
 Name[cs]=Groupware Server Tine 2.0
 Name[ia]=Servitor de Tine 2.0 Groupware
+Name[nl]=Tine 2.0 groupwareserver
 Name[pt]=Servidor de Groupware Tine 2.0
+Name[pt_BR]=Servidor groupware Tine 2.0
 Name[uk]=Сервер групової роботи Tine 2.0
 Name[x-test]=xxTine 2.0 Groupware Serverxx
 Icon=applications-internet
 Comment=Tine 2.0 Groupware Server
 Comment[cs]=Groupware Server Tine 2.0
 Comment[ia]=Servitor de Tine 2.0 Groupware
+Comment[nl]=Tine 2.0 groupwareserver
 Comment[pt]=Servidor de 'Groupware' Tine 2.0
+Comment[pt_BR]=Servidor groupware Tine 2.0
 Comment[uk]=Сервер групової роботи Tine 2.0
 Comment[x-test]=xxTine 2.0 Groupware Serverxx
 
