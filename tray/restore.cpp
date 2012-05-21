@@ -140,13 +140,13 @@ void Restore::restore( const KUrl& filename )
     }
     else if (global.dbdriver() == "QMYSQL" ) {
       params << global.dboptions()
-             << "--database=" + global.dbname()
-             << "<" + tempDir->name() + "db" + sep + "database.sql";
+             << "--database=" + global.dbname();
     }
 
     kDebug() << "Executing:" << m_dbRestoreApp << params;
     ;
     proc->setProgram( KStandardDirs::findExe( m_dbRestoreApp ), params );
+    proc->setStandardInputFile(tempDir->name() + "db" + sep + "database.sql");
     result = proc->execute();
     delete proc;
     if ( result != 0 ) {
