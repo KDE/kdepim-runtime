@@ -288,6 +288,8 @@ void SettingsDialog::addCalendar( KGoogle::Objects::Calendar *calendar )
            this, SLOT(gam_objectCreated(KGoogle::Reply*)) );
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
+  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   request = new KGoogle::Request( Services::Calendar::createCalendarUrl(),
                                   Request::Create, "Calendar", account );
@@ -349,6 +351,8 @@ void SettingsDialog::editCalendar( KGoogle::Objects::Calendar *calendar )
            this, SLOT(gam_objectModified(KGoogle::Reply*)) );
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
+  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   request = new KGoogle::Request( Services::Calendar::updateCalendarUrl( calendar->uid() ),
                                   Request::Update, "Calendar", account );
@@ -411,6 +415,8 @@ void SettingsDialog::removeCalendarClicked()
            this, SLOT(reloadCalendarsClicked()) );
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
+  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   request = new KGoogle::Request( Services::Calendar::removeCalendarUrl( calendar->uid() ),
                                   Request::Remove, "Calendar", account );
@@ -448,6 +454,8 @@ void SettingsDialog::reloadCalendarsClicked()
            this, SLOT(gam_objectsListReceived(KGoogle::Reply*)) );
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
+  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   request = new KGoogle::Request( Services::Calendar::fetchCalendarsUrl(),
                                   Request::FetchAll, "Calendar", account );
@@ -475,6 +483,8 @@ void SettingsDialog::addTaskList( TaskList *taskList )
            this, SLOT(gam_objectCreated(KGoogle::Reply*)) );
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
+  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   request = new KGoogle::Request( Services::Tasks::createTaskListUrl(),
                                   Request::Create, "Tasks", account );
@@ -536,6 +546,8 @@ void SettingsDialog::editTaskList( TaskList *taskList )
            this, SLOT(gam_objectModified(KGoogle::Reply*)) );
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
+  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   request = new KGoogle::Request( Services::Tasks::updateTaskListUrl( taskList->uid() ),
                                   Request::Update, "Tasks", account );
@@ -598,6 +610,8 @@ void SettingsDialog::removeTaskListClicked()
            this, SLOT(reloadTaskListsClicked()) );
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
+  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   request = new KGoogle::Request( Services::Tasks::removeTaskListUrl( taskList->uid() ),
                                   Request::Remove, "Tasks", account );
@@ -625,6 +639,8 @@ void SettingsDialog::reloadTaskListsClicked()
            this, SLOT(gam_objectsListReceived(KGoogle::Reply*)) );
   connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
            gam, SLOT(deleteLater()) );
+  connect (gam, SIGNAL(error(KGoogle::Error,QString)),
+           this, SLOT(error(KGoogle::Error,QString)) );
 
   request = new KGoogle::Request( Services::Tasks::fetchTaskListsUrl(),
                                   Request::FetchAll, "Tasks", account );
