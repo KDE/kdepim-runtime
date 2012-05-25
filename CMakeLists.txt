@@ -93,16 +93,14 @@ endif(NOT KDEPIM_NO_NEPOMUK)
 find_package(Strigi)
 macro_log_feature(STRIGI_FOUND "Strigi" "Strigi desktop search engine" "http://strigi.sourceforge.net" FALSE "" "")
 
-set(LIBKGOOGLE_MIN_VERSION 0.3.1)
-find_package(LibKGoogle)
-macro_log_feature(LIBKGOOGLE_FOUND "LibKGoogle" "A library to access Google services" "http://projects.kde.org/libkgoogle" FALSE "${LIBKGOOGLE_MIN_VERSION}" "LibKGoogle is required to build Akonadi resources to access Google Contacts, Calendars and Tasks" )
+set(LibKGoogle_MIN_VERSION 0.3.2)
+find_package(LibKGoogle QUIET NO_MODULE)
+macro_log_feature(LibKGoogle_FOUND "LibKGoogle" "A library to access Google services" "http://projects.kde.org/libkgoogle" FALSE "${LibKGoogle_MIN_VERSION}" "LibKGoogle is required to build Akonadi resources to access Google Contacts, Calendars and Tasks" )
 
-if(LIBKGOOGLE_FOUND)
-
+if(LibKGoogle_FOUND)
   find_package(QJSON)
   macro_log_feature(QJSON_FOUND "QJSON" "Qt library for handling JSON data" "http://qjson.sourceforge.net/" TRUE)
-
-endif(LIBKGOOGLE_FOUND)
+endif()
 
 ############### search programs & libraries used by kdepim-runtime ###############
 

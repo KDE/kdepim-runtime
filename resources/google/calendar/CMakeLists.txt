@@ -43,7 +43,7 @@ target_link_libraries(akonadi_googlecalendar_resource
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEWEBKIT_LIBS}
   ${QJSON_LIBRARIES}
-  ${LIBKGOOGLE_LIBRARY}
+  ${LibKGoogle_LIBRARY}
 )
 
 install(TARGETS akonadi_googlecalendar_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
