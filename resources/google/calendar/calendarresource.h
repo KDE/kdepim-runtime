@@ -23,17 +23,17 @@
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 
-#include <libkgoogle/common.h>
-#include <libkgoogle/account.h>
+#include <libkgapi/common.h>
+#include <libkgapi/account.h>
 
-namespace KGoogle {
+namespace KGAPI {
   class AccessManager;
   class Account;
   class Reply;
   class Request;
 }
 
-using namespace KGoogle;
+using namespace KGAPI;
 
 class CalendarResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
@@ -61,40 +61,40 @@ class CalendarResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
     void aboutToQuit();
 
   private Q_SLOTS:
-    void error( const KGoogle::Error, const QString & );
+    void error( const KGAPI::Error, const QString & );
     void slotAbortRequested();
 
     void cachedItemsRetrieved( KJob *job );
-    void replyReceived( KGoogle::Reply *reply );
+    void replyReceived( KGAPI::Reply *reply );
 
     void itemsReceived( KJob *job );
-    void itemReceived( KGoogle::Reply *reply );
-    void itemCreated( KGoogle::Reply *reply );
-    void itemUpdated( KGoogle::Reply *reply );
-    void itemRemoved( KGoogle::Reply *reply );
-    void itemMoved( KGoogle::Reply *reply );
+    void itemReceived( KGAPI::Reply *reply );
+    void itemCreated( KGAPI::Reply *reply );
+    void itemUpdated( KGAPI::Reply *reply );
+    void itemRemoved( KGAPI::Reply *reply );
+    void itemMoved( KGAPI::Reply *reply );
 
     void taskListReceived( KJob *job );
     void calendarsReceived( KJob *job );
 
     /* The actual update of task */
-    void taskDoUpdate( KGoogle::Reply *reply );
+    void taskDoUpdate( KGAPI::Reply *reply );
 
-    void taskReceived( KGoogle::Reply *reply );
+    void taskReceived( KGAPI::Reply *reply );
     void tasksReceived( KJob *job );
-    void taskCreated( KGoogle::Reply *reply );
-    void taskUpdated( KGoogle::Reply *reply );
-    void taskRemoved( KGoogle::Reply *reply );
+    void taskCreated( KGAPI::Reply *reply );
+    void taskUpdated( KGAPI::Reply *reply );
+    void taskRemoved( KGAPI::Reply *reply );
 
     void removeTaskFetchJobFinished( KJob *job );
     void doRemoveTask( KJob *job );
 
-    void eventReceived( KGoogle::Reply *reply );
+    void eventReceived( KGAPI::Reply *reply );
     void eventsReceived( KJob *job );
-    void eventCreated( KGoogle::Reply *reply );
-    void eventUpdated( KGoogle::Reply *reply );
-    void eventRemoved( KGoogle::Reply *reply );
-    void eventMoved( KGoogle::Reply *reply );
+    void eventCreated( KGAPI::Reply *reply );
+    void eventUpdated( KGAPI::Reply *reply );
+    void eventRemoved( KGAPI::Reply *reply );
+    void eventMoved( KGAPI::Reply *reply );
 
     void emitPercent( KJob *job, ulong percent );
 

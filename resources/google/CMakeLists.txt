@@ -1,4 +1,4 @@
-include_directories(${LibKGoogle_INCLUDE_DIR})
+include_directories(${LibKGAPI_INCLUDE_DIR})
 
 macro_optional_add_subdirectory(calendar)
 macro_optional_add_subdirectory(contacts)

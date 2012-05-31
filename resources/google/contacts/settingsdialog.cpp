@@ -22,13 +22,13 @@
 #include <KMessageBox>
 #include <KWindowSystem>
 
-#include <libkgoogle/auth.h>
-#include <libkgoogle/services/contacts.h>
+#include <libkgapi/auth.h>
+#include <libkgapi/services/contacts.h>
 
-using namespace KGoogle;
+using namespace KGAPI;
 
 enum {
-  KGoogleObjectRole = Qt::UserRole,
+  KGAPIObjectRole = Qt::UserRole,
   ObjectUIDRole
 };
 
@@ -38,7 +38,7 @@ SettingsDialog::SettingsDialog( WId windowId, QWidget *parent ):
 {
   KWindowSystem::setMainWindow( this, windowId );
 
-  qRegisterMetaType<KGoogle::Services::Contacts>( "Contacts" );
+  qRegisterMetaType<KGAPI::Services::Contacts>( "Contacts" );
 
   this->setButtons( Ok | Cancel );
 
@@ -58,8 +58,8 @@ SettingsDialog::SettingsDialog( WId windowId, QWidget *parent ):
   connect( m_ui->removeAccountBtn, SIGNAL(clicked(bool)),
            this, SLOT(removeAccountClicked()) );
 
-  KGoogle::Auth *auth = KGoogle::Auth::instance();
-  connect( auth, SIGNAL(authenticated(KGoogle::Account::Ptr&)),
+  KGAPI::Auth *auth = KGAPI::Auth::instance();
+  connect( auth, SIGNAL(authenticated(KGAPI::Account::Ptr&)),
            this, SLOT(reloadAccounts()) );
 
   reloadAccounts();
@@ -78,9 +78,9 @@ void SettingsDialog::saveSettings()
   Settings::self()->writeConfig();
 }
 
-void SettingsDialog::error( KGoogle::Error errCode, const QString &msg )
+void SettingsDialog::error( KGAPI::Error errCode, const QString &msg )
 {
-  if ( errCode == KGoogle::OK ) {
+  if ( errCode == KGAPI::OK ) {
     return;
   }
 
@@ -107,22 +107,22 @@ void SettingsDialog::reloadAccounts()
 
 void SettingsDialog::addAccountClicked()
 {
-  KGoogle::Auth *auth = KGoogle::Auth::instance();
+  KGAPI::Auth *auth = KGAPI::Auth::instance();
 
-  KGoogle::Account::Ptr account( new KGoogle::Account() );
+  KGAPI::Account::Ptr account( new KGAPI::Account() );
   account->addScope( Services::Contacts::ScopeUrl );
 
   try {
     auth->authenticate( account, true );
     updateButtons();
-  } catch ( KGoogle::Exception::BaseException &e ) {
+  } catch ( KGAPI::Exception::BaseException &e ) {
     KMessageBox::error( this, e.what() );
   }
 }
 
 void SettingsDialog::removeAccountClicked()
 {
-  KGoogle::Account::Ptr account = m_ui->accountsCombo->currentAccount();
+  KGAPI::Account::Ptr account = m_ui->accountsCombo->currentAccount();
 
   if ( account.isNull() ) {
     return;
@@ -142,12 +142,12 @@ void SettingsDialog::removeAccountClicked()
     return;
   }
 
-  KGoogle::Auth *auth = KGoogle::Auth::instance();
+  KGAPI::Auth *auth = KGAPI::Auth::instance();
 
   try {
     auth->revoke( account );
     updateButtons();
-  } catch ( KGoogle::Exception::BaseException &e ) {
+  } catch ( KGAPI::Exception::BaseException &e ) {
     KMessageBox::error( this, e.what() );
   }
 

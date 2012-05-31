@@ -21,7 +21,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="KGoogle::Ui::AccountsCombo" name="accountsCombo">
+       <widget class="KGAPI::Ui::AccountsCombo" name="accountsCombo">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -51,9 +51,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KGoogle::Ui::AccountsCombo</class>
+   <class>KGAPI::Ui::AccountsCombo</class>
    <extends>QComboBox</extends>
-   <header location="global">libkgoogle/ui/accountscombo.h</header>
+   <header location="global">libkgapi/ui/accountscombo.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

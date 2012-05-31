@@ -36,23 +36,23 @@
 #include <QStringList>
 #include <QMetaType>
 
-#include <libkgoogle/common.h>
-#include <libkgoogle/account.h>
-#include <libkgoogle/accessmanager.h>
-#include <libkgoogle/auth.h>
-#include <libkgoogle/fetchlistjob.h>
-#include <libkgoogle/request.h>
-#include <libkgoogle/reply.h>
-#include <libkgoogle/objects/calendar.h>
-#include <libkgoogle/objects/event.h>
-#include <libkgoogle/objects/task.h>
-#include <libkgoogle/objects/tasklist.h>
-#include <libkgoogle/services/calendar.h>
-#include <libkgoogle/services/tasks.h>
+#include <libkgapi/common.h>
+#include <libkgapi/account.h>
+#include <libkgapi/accessmanager.h>
+#include <libkgapi/auth.h>
+#include <libkgapi/fetchlistjob.h>
+#include <libkgapi/request.h>
+#include <libkgapi/reply.h>
+#include <libkgapi/objects/calendar.h>
+#include <libkgapi/objects/event.h>
+#include <libkgapi/objects/task.h>
+#include <libkgapi/objects/tasklist.h>
+#include <libkgapi/services/calendar.h>
+#include <libkgapi/services/tasks.h>
 
 using namespace KCalCore;
 using namespace Akonadi;
-using namespace KGoogle;
+using namespace KGAPI;
 
 CalendarResource::CalendarResource( const QString &id ):
   ResourceBase( id ),
@@ -60,8 +60,8 @@ CalendarResource::CalendarResource( const QString &id ):
   m_fetchedCalendars( false ),
   m_fetchedTaskLists( false )
 {
-  qRegisterMetaType< KGoogle::Services::Calendar >( "Calendar" );
-  qRegisterMetaType< KGoogle::Services::Tasks >( "Tasks" );
+  qRegisterMetaType< KGAPI::Services::Calendar >( "Calendar" );
+  qRegisterMetaType< KGAPI::Services::Tasks >( "Tasks" );
   AttributeFactory::registerAttribute< DefaultReminderAttribute >();
 
   Auth *auth = Auth::instance();
@@ -71,10 +71,10 @@ CalendarResource::CalendarResource( const QString &id ):
   setOnline( true );
 
   m_gam = new AccessManager();
-  connect( m_gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
-  connect( m_gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(replyReceived(KGoogle::Reply*)) );
+  connect( m_gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
+  connect( m_gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(replyReceived(KGAPI::Reply*)) );
 
   connect( this, SIGNAL(abortRequested()),
            this, SLOT(slotAbortRequested()) );
@@ -113,7 +113,7 @@ void CalendarResource::slotAbortRequested()
   abort();
 }
 
-void CalendarResource::error( const KGoogle::Error errCode, const QString &msg )
+void CalendarResource::error( const KGAPI::Error errCode, const QString &msg )
 {
   cancelTask( msg );
 
@@ -160,7 +160,7 @@ Account::Ptr CalendarResource::getAccount()
   Auth *auth = Auth::instance();
   try {
     m_account = auth->getAccount( Settings::self()->account() );
-  } catch( KGoogle::Exception::BaseException &e ) {
+  } catch( KGAPI::Exception::BaseException &e ) {
     Q_EMIT status( Broken, e.what() );
     return Account::Ptr();
   }
@@ -267,7 +267,7 @@ bool CalendarResource::retrieveItem( const Akonadi::Item &item, const QSet< QByt
     return true;
   }
 
-  Request *request = new Request( url, KGoogle::Request::Fetch, service, account );
+  Request *request = new Request( url, KGAPI::Request::Fetch, service, account );
   request->setProperty( "Item", QVariant::fromValue( item ) );
   m_gam->sendRequest( request );
 
@@ -340,7 +340,7 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
     Services::Calendar service;
     kevent.setUid( "" );
-    data = service.objectToJSON( static_cast< KGoogle::Object * >( &kevent ) );
+    data = service.objectToJSON( static_cast< KGAPI::Object * >( &kevent ) );
 
   } else if ( item.mimeType() == Todo::todoMimeType() ) {
 
@@ -355,7 +355,7 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
     }
 
     Services::Tasks service;
-    data = service.objectToJSON( static_cast< KGoogle::Object * >( &ktodo ) );
+    data = service.objectToJSON( static_cast< KGAPI::Object * >( &ktodo ) );
 
   } else {
     cancelTask( i18n( "Unknown payload type '%1'", item.mimeType() ) );
@@ -399,7 +399,7 @@ void CalendarResource::itemChanged( const Akonadi::Item &item,
     url = Services::Calendar::updateEventUrl( item.parentCollection().remoteId(), item.remoteId() );
 
     Services::Calendar service;
-    data = service.objectToJSON( static_cast< KGoogle::Object * >( &kevent ) );
+    data = service.objectToJSON( static_cast< KGAPI::Object * >( &kevent ) );
 
     Request *request = new Request( url, Request::Patch, "Calendar", account );
     request->setRequestData( data, "application/json" );
@@ -498,13 +498,13 @@ void CalendarResource::itemMoved( const Item &item,
   url = Services::Calendar::moveEventUrl( collectionSource.remoteId(),
                                           collectionDestination.remoteId(),
                                           item.remoteId() );
-  Request *request = new Request( url, KGoogle::Request::Move, "Calendar", account );
+  Request *request = new Request( url, KGAPI::Request::Move, "Calendar", account );
   request->setProperty( "Item", qVariantFromValue( item ) );
 
   m_gam->sendRequest( request );
 }
 
-void CalendarResource::replyReceived( KGoogle::Reply *reply )
+void CalendarResource::replyReceived( KGAPI::Reply *reply )
 {
   switch ( reply->requestType() ) {
   case Request::FetchAll:

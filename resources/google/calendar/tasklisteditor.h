@@ -20,7 +20,7 @@
 
 #include <QDialog>
 
-#include <libkgoogle/objects/tasklist.h>
+#include <libkgapi/objects/tasklist.h>
 
 namespace Ui {
   class TaskListEditor;
@@ -31,18 +31,18 @@ class TasklistEditor : public QDialog
   Q_OBJECT
 
   public:
-    explicit TasklistEditor( KGoogle::Objects::TaskList *taskList = 0 );
+    explicit TasklistEditor( KGAPI::Objects::TaskList *taskList = 0 );
 
     virtual ~TasklistEditor();
 
   Q_SIGNALS:
-    void accepted( KGoogle::Objects::TaskList *taskList );
+    void accepted( KGAPI::Objects::TaskList *taskList );
 
   private Q_SLOTS:
     void accepted();
 
   private:
-    KGoogle::Objects::TaskList *m_taskList;
+    KGAPI::Objects::TaskList *m_taskList;
     Ui::TaskListEditor *m_ui;
 };
 

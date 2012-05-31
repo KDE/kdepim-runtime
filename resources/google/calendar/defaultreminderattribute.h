@@ -19,14 +19,14 @@
 #ifndef GOOGLE_CALENDAR_DEFAULTREMINDERATTRIBUTE_H
 #define GOOGLE_CALENDAR_DEFAULTREMINDERATTRIBUTE_H
 
-#include <libkgoogle/objects/calendar.h>
+#include <libkgapi/objects/calendar.h>
 
 #include <Akonadi/Attribute>
 #include <KCalCore/Alarm>
 #include <KCalCore/Incidence>
 
 using namespace KCalCore;
-using namespace KGoogle;
+using namespace KGAPI;
 
 class DefaultReminderAttribute : public Akonadi::Attribute
 {
