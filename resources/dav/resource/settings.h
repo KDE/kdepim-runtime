@@ -91,6 +91,15 @@ class Settings : public SettingsBase
      */
     QStringList mappedCollections( DavUtils::Protocol protocol, const QString &configuredUrl );
 
+    /**
+     * Reloads the resource configuration taking into account any new modification
+     *
+     * Whenever the resource configuration is modified it needs to be reload in order
+     * to make the resource use the new config. This slot will call the needed methods
+     * to be sure that any new setting is taken into account.
+     */
+    void reloadConfig();
+
     void newUrlConfiguration( UrlConfiguration *urlConfig );
     void removeUrlConfiguration( DavUtils::Protocol protocol, const QString &url );
     UrlConfiguration * urlConfiguration( DavUtils::Protocol protocol, const QString &url );

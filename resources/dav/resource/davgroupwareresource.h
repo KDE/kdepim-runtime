@@ -63,6 +63,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     virtual void doSetOnline( bool online );
 
   private Q_SLOTS:
+    void onReloadConfig();
     void onCollectionRemovedFinished( KJob* );
 
     void onHandlesFreeBusy( const QString &email, bool handles );

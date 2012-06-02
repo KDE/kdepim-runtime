@@ -103,6 +103,8 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   connect( mFreeBusyHandler, SIGNAL(freeBusyRetrieved(QString,QString,bool,QString)), this, SLOT(onFreeBusyRetrieved(QString,QString,bool,QString)) );
 
   connect( &mReplayCache, SIGNAL(etagChanged(QString,QString)), this, SLOT(onEtagChanged(QString,QString)) );
+
+  connect(this, SIGNAL(reloadConfiguration()), this, SLOT(onReloadConfig()));
 }
 
 DavGroupwareResource::~DavGroupwareResource()
@@ -424,6 +426,12 @@ void DavGroupwareResource::doSetOnline( bool online )
   }
 
   ResourceBase::doSetOnline( online );
+}
+
+void DavGroupwareResource::onReloadConfig()
+{
+    Settings::self()->reloadConfig();
+    synchronize();
 }
 
 void DavGroupwareResource::onCollectionRemovedFinished( KJob *job )
