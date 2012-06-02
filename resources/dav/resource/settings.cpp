@@ -219,6 +219,13 @@ QStringList Settings::mappedCollections( DavUtils::Protocol proto, const QString
   return mCollectionsUrlsMapping.keys( value );
 }
 
+void Settings::reloadConfig()
+{
+    buildUrlsList();
+    updateRemoteUrls();
+    loadMappings();
+}
+
 void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
 {
   QString key = urlConfig->mUrl + ',' + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
