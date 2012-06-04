@@ -58,6 +58,9 @@ ContactsResource::ContactsResource( const QString &id )
   if ( name().startsWith( QLatin1String( "akonadi_contacts_resource" ) ) )
     setName( i18n( "Personal Contacts" ) );
 
+  // Make sure we have a valid directory (XDG dirs want this very much).
+  initializeDirectory(mSettings->path());
+
   if ( mSettings->isConfigured() )
     synchronize();
 }
