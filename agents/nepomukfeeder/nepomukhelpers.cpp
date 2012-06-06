@@ -45,27 +45,27 @@
 using namespace Nepomuk::Vocabulary;
 
 namespace  NepomukHelpers {
-  
+
 /** Set the parent collection of the entity @param entity */
 void setParentCollection( const Akonadi::Entity &entity, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph )
 {
   if ( entity.parentCollection().isValid() && entity.parentCollection() != Akonadi::Collection::root() ) {
     Nepomuk::SimpleResource parentResource( entity.parentCollection().url() );
-    parentResource.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << NIE::InformationElement());
+    parentResource.setTypes( QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << NIE::InformationElement() );
     graph << parentResource; //To use the nie::isPartOf relation both parent and child must be in the graph
     res.setProperty( NIE::isPartOf(), parentResource );
   }
 }
 
 
-KJob *addCollectionToNepomuk( const Akonadi::Collection &collection) 
+KJob *addCollectionToNepomuk( const Akonadi::Collection &collection)
 {
   //kDebug() << collection.url();
   Nepomuk::SimpleResourceGraph graph;
   Nepomuk::SimpleResource res;
   res.setTypes( QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << NIE::InformationElement() );
   res.setProperty( NIE::url(), collection.url() );
-  setParentCollection( collection, res, graph);
+  setParentCollection( collection, res, graph );
 
   const Akonadi::EntityDisplayAttribute *attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
 
@@ -76,24 +76,24 @@ KJob *addCollectionToNepomuk( const Akonadi::Collection &collection)
   }
   if ( attr && !attr->iconName().isEmpty() )
       NepomukFeederUtils::setIcon( attr->iconName(), res, graph );
-  
-  foreach( const QString &type, collection.contentMimeTypes()) {
-      //QSharedPointer<Akonadi::NepomukFeederPlugin> plugin = FeederPluginloader::instance().feederPluginForMimeType(type);
+
+  foreach ( const QString &type, collection.contentMimeTypes() ) {
+      //QSharedPointer<Akonadi::NepomukFeederPlugin> plugin = FeederPluginloader::instance().feederPluginForMimeType( type );
       foreach ( const QSharedPointer<Akonadi::NepomukFeederPlugin> &plugin , FeederPluginloader::instance().feederPluginsForMimeType( type ) ) {
-        plugin->updateCollection(collection, res, graph); //FIXME create one resource for each feeder, nepomuk will merge if possible
+        plugin->updateCollection( collection, res, graph ); //FIXME create one resource for each feeder, nepomuk will merge if possible
       }
   }
-  
-  graph.insert(res);
+
+  graph.insert( res );
   /*kDebug() << "--------------------------------";
-  foreach( const Nepomuk::SimpleResource &res, graph.toList() ) {
-      kDebug() << res.property(Soprano::Vocabulary::RDF::type());
+  foreach ( const Nepomuk::SimpleResource &res, graph.toList() ) {
+      kDebug() << res.property( Soprano::Vocabulary::RDF::type() );
   }
   kDebug() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
-  additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
+  additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
   //We overwrite properties, as the resource is not removed on update, and there are not subproperties on collections (if there were, we would remove them first too)
-  return Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent());  
+  return Nepomuk::storeResources( graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent() );
 }
 
 KJob *markCollectionAsIndexed( const Akonadi::Collection &collection )
@@ -105,32 +105,32 @@ KJob *markCollectionAsIndexed( const Akonadi::Collection &collection )
     res.setProperty( Vocabulary::ANEO::akonadiIndexCompatLevel(), NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
     graph << res;
     QHash <QUrl, QVariant> additionalMetadata;
-    additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
-    return Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent());  
+    additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
+    return Nepomuk::storeResources( graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent() );
 }
 
-void addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &graph ) 
+void addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &graph )
 {
   //kDebug() << item.url();
   Nepomuk::SimpleResource res;
-  res.setTypes(QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << NIE::InformationElement());
-  res.setProperty( NIE::url(), QUrl(item.url()) );
+  res.setTypes( QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << NIE::InformationElement() );
+  res.setProperty( NIE::url(), QUrl( item.url() ) );
   res.setProperty( NIE::lastModified(), item.modificationTime() );
   res.setProperty( Vocabulary::ANEO::akonadiIndexCompatLevel(), NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
-  Q_ASSERT(res.property( NIE::url() ).first().toUrl() == QUrl(item.url()));
+  Q_ASSERT( res.property( NIE::url() ).first().toUrl() == QUrl( item.url() ) );
   res.setProperty( Vocabulary::ANEO::akonadiItemId(), QString::number( item.id() ) );
-  setParentCollection( item, res, graph);
+  setParentCollection( item, res, graph );
   foreach ( const QSharedPointer<Akonadi::NepomukFeederPlugin> &plugin , FeederPluginloader::instance().feederPluginsForMimeType( item.mimeType() ) ) {
-    plugin->updateItem(item, res, graph);
+    plugin->updateItem( item, res, graph );
   }
   graph << res;
 }
 
 /** Saves the graph, and marks the data as discardable. Use this function to store data created by the feeder */
-KJob *addGraphToNepomuk( const Nepomuk::SimpleResourceGraph &graph ) 
+KJob *addGraphToNepomuk( const Nepomuk::SimpleResourceGraph &graph )
 {
   /*kDebug() << "--------------------------------";
-  foreach( const Nepomuk::SimpleResource &res, graph.toList() ) {
+  foreach ( const Nepomuk::SimpleResource &res, graph.toList() ) {
     if ( res.contains( NIE::url() ) ) {
         Q_ASSERT( res.property( NIE::url() ).size() == 1 );
         kDebug() << res.property( NIE::url() ).first().toUrl();
@@ -139,9 +139,9 @@ KJob *addGraphToNepomuk( const Nepomuk::SimpleResourceGraph &graph )
   }
   kDebug() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
-  additionalMetadata.insert(Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase());
+  additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
   //FIXME sometimes there are warning about the cardinality, maybe the old values are not always removed before the new ones are (although there is no failing removejob)?
-  return Nepomuk::storeResources(graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent());
+  return Nepomuk::storeResources( graph, Nepomuk::IdentifyNew, Nepomuk::OverwriteProperties, additionalMetadata, KGlobal::mainComponent() );
 }
 
 

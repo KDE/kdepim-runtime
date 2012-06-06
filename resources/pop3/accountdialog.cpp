@@ -618,7 +618,7 @@ void AccountDialog::saveSettings()
   if ( ( !passwordEdit->text().isEmpty() && userChangedPassword ) ||
        userWantsToDeletePassword ) {
     kDebug() << mWallet <<  mWallet->isOpen();
-    if( mWallet && mWallet->isOpen() ) {
+    if ( mWallet && mWallet->isOpen() ) {
       // wallet is already open
       walletOpenedForSaving( true );
     } else {

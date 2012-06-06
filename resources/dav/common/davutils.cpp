@@ -40,7 +40,7 @@ QDomElement DavUtils::firstChildElementNS( const QDomElement &parent, const QStr
   for ( QDomNode child = parent.firstChild(); !child.isNull(); child = child.nextSibling() ) {
     if ( child.isElement() ) {
       const QDomElement elt = child.toElement();
-      if ( tagName.isEmpty() || (elt.tagName() == tagName && elt.namespaceURI() == namespaceUri) )
+      if ( tagName.isEmpty() || ( elt.tagName() == tagName && elt.namespaceURI() == namespaceUri ) )
         return elt;
     }
   }
@@ -53,7 +53,7 @@ QDomElement DavUtils::nextSiblingElementNS( const QDomElement &element, const QS
   for ( QDomNode sib = element.nextSibling(); !sib.isNull(); sib = sib.nextSibling() ) {
     if ( sib.isElement() ) {
       const QDomElement elt = sib.toElement();
-      if ( tagName.isEmpty() || (elt.tagName() == tagName && elt.namespaceURI() == namespaceUri) )
+      if ( tagName.isEmpty() || ( elt.tagName() == tagName && elt.namespaceURI() == namespaceUri ) )
         return elt;
     }
   }

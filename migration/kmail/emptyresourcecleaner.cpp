@@ -118,7 +118,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
 
   mAllCollections = fetchJob->collections();
   CollectionHash nonEmptyCollections;
-  Q_FOREACH( const Collection &collection, mAllCollections ) {
+  Q_FOREACH ( const Collection &collection, mAllCollections ) {
     qint64 itemCount = collection.statistics().count();
     // TODO should be async as well
     if ( itemCount == -1 ) {
@@ -142,7 +142,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
                                    << "potenially deletable collections"
                                    << nonEmptyCollections.count() << "not empty";
 
-  Q_FOREACH( const Collection &collection, nonEmptyCollections ) {
+  Q_FOREACH ( const Collection &collection, nonEmptyCollections ) {
     Collection parent = collection.parentCollection();
     while ( parent.isValid() && parent != Collection::root() ) {
       mDeletableCollections.remove( parent.id() );

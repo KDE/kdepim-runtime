@@ -44,8 +44,7 @@ void DavCollectionDeleteJob::davJobFinished( KJob *job )
     if ( deleteJob->queryMetaData( "responsecode" ).isEmpty() ) {
       setError( deleteJob->error() );
       setErrorText( deleteJob->errorText() );
-    }
-    else {
+    } else {
       const int responseCode = deleteJob->queryMetaData( "responsecode" ).toInt();
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request. The collection has not been deleted from the server.\n"

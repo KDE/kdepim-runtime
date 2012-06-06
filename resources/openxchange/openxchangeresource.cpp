@@ -356,7 +356,7 @@ void OpenXchangeResource::retrieveCollections()
 {
   //qDebug("tokoe: retrieve collections called");
   if ( Settings::self()->useIncrementalUpdates() ) {
-    //qDebug("lastSync=%llu", Settings::self()->foldersLastSync());
+    //qDebug( "lastSync=%llu", Settings::self()->foldersLastSync() );
     OXA::FoldersRequestDeltaJob *job = new OXA::FoldersRequestDeltaJob( Settings::self()->foldersLastSync(), this );
     connect( job, SIGNAL(result(KJob*)), SLOT(onFoldersRequestDeltaJobFinished(KJob*)) );
     job->start();
@@ -369,7 +369,7 @@ void OpenXchangeResource::retrieveCollections()
 
 void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  //qDebug("tokoe: retrieveItems on %s called", qPrintable(collection.name()));
+  //qDebug( "tokoe: retrieveItems on %s called", qPrintable( collection.name() ) );
   const RemoteInformation remoteInformation = RemoteInformation::load( collection );
 
   OXA::Folder folder;
@@ -378,7 +378,7 @@ void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
 
   if ( Settings::self()->useIncrementalUpdates() ) {
     ObjectsLastSync lastSyncInfo;
-    //qDebug("lastSync=%llu", lastSyncInfo.lastSync( collection.id() ));
+    //qDebug( "lastSync=%llu", lastSyncInfo.lastSync( collection.id() ) );
     OXA::ObjectsRequestDeltaJob *job = new OXA::ObjectsRequestDeltaJob( folder, lastSyncInfo.lastSync( collection.id() ), this );
     job->setProperty( "collection", QVariant::fromValue( collection ) );
     connect( job, SIGNAL(result(KJob*)), SLOT(onObjectsRequestDeltaJobFinished(KJob*)) );
@@ -392,7 +392,7 @@ void OpenXchangeResource::retrieveItems( const Akonadi::Collection &collection )
 
 bool OpenXchangeResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  //qDebug("tokoe: retrieveItem %lld called", item.id());
+  //qDebug( "tokoe: retrieveItem %lld called", item.id() );
   const RemoteInformation remoteInformation = RemoteInformation::load( item );
 
   OXA::Object object;
@@ -730,8 +730,8 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished( KJob *job )
     lastSyncInfo.save();
   }
 
-  //qDebug("changedObjects=%d removedObjects=%d", modifiedObjects.count(), deletedObjects.count());
-  //qDebug("changedItems=%d removedItems=%d", changedItems.count(), removedItems.count());
+  //qDebug( "changedObjects=%d removedObjects=%d", modifiedObjects.count(), deletedObjects.count() );
+  //qDebug( "changedItems=%d removedItems=%d", changedItems.count(), removedItems.count() );
   itemsRetrievedIncremental( changedItems, removedItems );
 }
 
@@ -931,7 +931,7 @@ void OpenXchangeResource::onFoldersRequestJobFinished( KJob *job )
 
 void OpenXchangeResource::onFoldersRequestDeltaJobFinished( KJob *job )
 {
-  //qDebug("onFoldersRequestDeltaJobFinished mCollectionsMap.count() = %d", mCollectionsMap.count());
+  //qDebug( "onFoldersRequestDeltaJobFinished mCollectionsMap.count() = %d", mCollectionsMap.count() );
 
   if ( job->error() ) {
     cancelTask( job->errorText() );
@@ -988,8 +988,8 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished( KJob *job )
     Settings::self()->writeConfig();
   }
 
-  //qDebug("changedFolders=%d removedFolders=%d", modifiedFolders.count(), deletedFolders.count());
-  //qDebug("changedCollections=%d removedCollections=%d", changedCollections.count(), removedCollections.count());
+  //qDebug( "changedFolders=%d removedFolders=%d", modifiedFolders.count(), deletedFolders.count() );
+  //qDebug( "changedCollections=%d removedCollections=%d", changedCollections.count(), removedCollections.count() );
   collectionsRetrievedIncremental( changedCollections, removedCollections );
 }
 

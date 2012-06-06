@@ -45,7 +45,7 @@ ChangeCollectionTask::~ChangeCollectionTask()
 void ChangeCollectionTask::doStart( KIMAP::Session *session )
 {
   if ( collection().remoteId().isEmpty() ) {
-    emitError( i18n("Cannot modify IMAP folder '%1', it does not exist on the server.",
+    emitError( i18n( "Cannot modify IMAP folder '%1', it does not exist on the server.",
                     collection().name() ) );
     changeProcessed();
     return;
@@ -103,8 +103,8 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
         imapRights&= ~KIMAP::Acl::Delete;
       }
 
-      kDebug(5327) << "imapRights:" << imapRights
-                   << "newRights:" << newRights;
+      kDebug( 5327 ) << "imapRights:" << imapRights
+                     << "newRights:" << newRights;
 
       KIMAP::SetAclJob *job = new KIMAP::SetAclJob( session );
       job->setMailBox( mailBoxForCollection( collection() ) );
@@ -126,7 +126,7 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
 
     if ( annotationsAttribute ) { // No annotations it seems... server is lieing to us?
       QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-      kDebug(5327) << "All annotations: " << annotations;
+      kDebug( 5327 ) << "All annotations: " << annotations;
 
       foreach ( const QByteArray &entry, annotations.keys() ) {
         KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob( session );
@@ -145,7 +145,7 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
         job->setEntry( entry );
         job->addMetaData( attribute, annotations[entry] );
 
-        kDebug(5327) << "Job got entry:" << entry << " attribute:" << attribute << "value:" << annotations[entry];
+        kDebug( 5327 ) << "Job got entry:" << entry << " attribute:" << attribute << "value:" << annotations[entry];
 
         connect( job, SIGNAL(result(KJob*)),
                  this, SLOT(onSetMetaDataDone(KJob*)) );

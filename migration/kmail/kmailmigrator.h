@@ -106,7 +106,7 @@ class KMailMigrator : public KMigratorBase
     void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance
                           = Akonadi::AgentInstance() )
     {
-      migrationFailed( errorMsg, true, instance);
+      migrationFailed( errorMsg, true, instance );
     }
 
     void migrationFailed( const QString &errorMsg, bool doMigrateNext,
@@ -124,7 +124,7 @@ class KMailMigrator : public KMigratorBase
     OrgKdeAkonadiPOP3SettingsInterface* createPop3SettingsInterface( const Akonadi::AgentInstance& instance );
 
     //code from kmaccount
-    QString importPassword(const QString &aStr);
+    QString importPassword( const QString &aStr );
     void cleanupConfigFile();
 
   private:

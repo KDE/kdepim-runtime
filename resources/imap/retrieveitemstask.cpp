@@ -65,7 +65,7 @@ void RetrieveItemsTask::doStart( KIMAP::Session *session )
   if ( collection().hasAttribute( "noselect" ) ) {
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
-      kDebug(5327) << "No Select folder";
+      kDebug( 5327 ) << "No Select folder";
       itemsRetrievalDone();
       return;
     }
@@ -109,7 +109,7 @@ void RetrieveItemsTask::onPreExpungeSelectDone( KJob *job )
 
 void RetrieveItemsTask::triggerExpunge( const QString &mailBox )
 {
-  kDebug(5327) << mailBox;
+  kDebug( 5327 ) << mailBox;
 
   KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_session );
   connect( expunge, SIGNAL(result(KJob*)),
@@ -233,8 +233,8 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   // retrieve all.
   if ( oldUidValidity != uidValidity && !firstTime
     && oldUidValidity != 0 && messageCount > 0 ) {
-    kDebug(5327) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-                 << uidValidity <<") refetching "<< mailBox;
+    kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
+                   << uidValidity << ") refetching " << mailBox;
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
@@ -246,10 +246,10 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     connect( fetch, SIGNAL(result(KJob*)),
              this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
-  } else if( messageCount > realMessageCount && messageCount > 0 ) {
+  } else if ( messageCount > realMessageCount && messageCount > 0 ) {
     // The amount on the server is bigger than that we have in the cache
     // that probably means that there is new mail. Fetch missing.
-    kDebug(5327) << "Fetch missing: " << messageCount << " But: " << realMessageCount;
+    kDebug( 5327 ) << "Fetch missing: " << messageCount << " But: " << realMessageCount;
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     fetch->setSequenceSet( KIMAP::ImapSet( realMessageCount+1, messageCount ) );
@@ -265,14 +265,14 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
            && oldNextUid != 0 && !firstTime && messageCount > 0 ) {
     // amount is right but uidnext is different.... something happened
     // behind our back...
-    kDebug(5327) << "UIDNEXT check failed, refetching mailbox";
+    kDebug( 5327 ) << "UIDNEXT check failed, refetching mailbox";
 
     qint64 startIndex = 1;
     // one scenario we can recover from is that an equal amount of mails has been deleted and added while we were not looking
     // the amount has to be less or equal to (nextUid - oldNextUid) due to strictly ascending UIDs
     // so, we just have to reload the last (nextUid - oldNextUid) mails if the uidnext values seem sane
     if ( oldNextUid < nextUid && oldNextUid != 0 && !firstTime )
-      startIndex = qMax( 1ll, messageCount - (nextUid - oldNextUid) );
+      startIndex = qMax( 1ll, messageCount - ( nextUid - oldNextUid ) );
 
     Q_ASSERT( startIndex >= 1 );
     Q_ASSERT( startIndex <= messageCount );
@@ -288,17 +288,17 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
              this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( m_fastSync ) {
-    kDebug(5327) << "No new messages, and fast sync enabled so we're done already";
+    kDebug( 5327 ) << "No new messages, and fast sync enabled so we're done already";
     // In fast sync mode we skip getting flags, we basically don't
     // detect flag changes or expunged messages because of that.
     itemsRetrievedIncremental( Akonadi::Item::List(), Akonadi::Item::List() );
     itemsRetrievalDone();
     return;
   } else if ( messageCount > 0 ) {
-    kDebug(5327) << "All fine, asking for all message flags looking for changes";
+    kDebug( 5327 ) << "All fine, asking for all message flags looking for changes";
     listFlagsForImapSet( KIMAP::ImapSet( 1, messageCount ) );
   } else {
-    kDebug(5327) << "No messages present so we are done";
+    kDebug( 5327 ) << "No messages present so we are done";
     itemsRetrievalDone();
   }
 }
@@ -348,10 +348,10 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
       i.setFlag( Akonadi::MessageFlags::HasAttachment );
 
     const QList<QByteArray> akonadiFlags = toAkonadiFlags( flags[number] );
-    foreach( const QByteArray &flag, akonadiFlags ) {
+    foreach ( const QByteArray &flag, akonadiFlags ) {
       i.setFlag( flag );
     }
-    //kDebug(5327) << "Flags: " << i.flags();
+    //kDebug( 5327 ) << "Flags: " << i.flags();
     addedItems << i;
   }
 
@@ -409,7 +409,7 @@ void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint
     i.setMimeType( KMime::Message::mimeType() );
     i.setFlags( Akonadi::Item::Flags::fromList( toAkonadiFlags( flags[number] ) ) );
 
-    //kDebug(5327) << "Flags: " << i.flags();
+    //kDebug( 5327 ) << "Flags: " << i.flags();
     changedItems << i;
   }
 

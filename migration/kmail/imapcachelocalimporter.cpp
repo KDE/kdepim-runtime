@@ -199,8 +199,8 @@ void ImapCacheLocalImporter::Private::configureResource()
     "org.freedesktop.Akonadi.Resource." + mResource.identifier(),
     "/Settings", QDBusConnection::sessionBus(), q );
 
-  if (!iface->isValid() ) {
-    q->importFinished( mResource, i18n("Failed to obtain D-Bus interface for remote configuration.") );
+  if ( !iface->isValid() ) {
+    q->importFinished( mResource, i18n( "Failed to obtain D-Bus interface for remote configuration." ) );
     delete iface;
     return;
   }
@@ -282,7 +282,7 @@ void ImapCacheLocalImporter::Private::itemFetchResult( KJob *job )
   Item::List::iterator it    = items.begin();
   Item::List::iterator endIt = items.end();
   for ( ; it != endIt; ++it ) {
-    (*it).setParentCollection( collection );
+    ( *it ).setParentCollection( collection );
   }
 
   mPendingItems << items;

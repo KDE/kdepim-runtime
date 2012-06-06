@@ -36,7 +36,7 @@ QString IdArbiter::createArbitratedId() const
 {
   QString id;
   do {
-    id = KRandom::randomString(10);
+    id = KRandom::randomString( 10 );
   } while ( mArbitratedToOriginal.constFind( id ) != mArbitratedToOriginal.constEnd() );
 
   return id;

@@ -62,12 +62,12 @@ template <typename T> class KResMigrator : public KResMigratorBase
       mConfig = new KConfig( kresCfgFile );
       const KConfigGroup generalGroup( mConfig, QLatin1String( "General" ) );
       mUnknownTypeResources = QSet<QString>::fromList( generalGroup.readEntry( QLatin1String( "ResourceKeys" ), QStringList() ) );
-      
+
       mManager = new KRES::Manager<T>( mType );
       mManager->readConfig();
       {
         ResourceIterator it = mManager->begin();
-        while( it != mManager->end() ) {
+        while ( it != mManager->end() ) {
           mResourcesToMigrate.append( *it );
           ++it;
         }
@@ -79,19 +79,19 @@ template <typename T> class KResMigrator : public KResMigratorBase
     void migrateNext()
     {
       while ( mIt != mResourcesToMigrate.constEnd() ) {
-        mUnknownTypeResources.remove( (*mIt)->identifier() );
-        if ( (*mIt)->type() == "akonadi" ) {
-          mClientBridgeIdentifier = (*mIt)->identifier();
+        mUnknownTypeResources.remove( ( *mIt )->identifier() );
+        if ( ( *mIt )->type() == "akonadi" ) {
+          mClientBridgeIdentifier = ( *mIt )->identifier();
           mClientBridgeFound = true;
           emit message( Skip, i18n( "Client-side bridge already set up." ) );
           ++mIt;
           continue;
         }
-        KConfigGroup cfg( KGlobal::config(), "Resource " + (*mIt)->identifier() );
-        kDebug() << "migrateNext:" << (*mIt)->identifier();
-        if ( migrationState( (*mIt)->identifier() ) == None ) {
-          emit message( Info, i18n( "Trying to migrate '%1'...", (*mIt)->resourceName() ) );
-          mPendingBridgedResources.removeAll( (*mIt)->identifier() );
+        KConfigGroup cfg( KGlobal::config(), "Resource " + ( *mIt )->identifier() );
+        kDebug() << "migrateNext:" << ( *mIt )->identifier();
+        if ( migrationState( ( *mIt )->identifier() ) == None ) {
+          emit message( Info, i18n( "Trying to migrate '%1'...", ( *mIt )->resourceName() ) );
+          mPendingBridgedResources.removeAll( ( *mIt )->identifier() );
           T* res = *mIt;
           mCurrentKResource = res;
           ++mIt;
@@ -107,11 +107,11 @@ template <typename T> class KResMigrator : public KResMigratorBase
           }
           return;
         }
-        if ( migrationState( (*mIt)->identifier() ) == Bridged &&
-             !mPendingBridgedResources.contains( (*mIt)->identifier() ) )
-          mPendingBridgedResources << (*mIt)->identifier();
-        if ( migrationState( (*mIt)->identifier() ) == Complete )
-          emit message( Skip, i18n( "'%1' has already been migrated.", (*mIt)->resourceName() ) );
+        if ( migrationState( ( *mIt )->identifier() ) == Bridged &&
+             !mPendingBridgedResources.contains( ( *mIt )->identifier() ) )
+          mPendingBridgedResources << ( *mIt )->identifier();
+        if ( migrationState( ( *mIt )->identifier() ) == Complete )
+          emit message( Skip, i18n( "'%1' has already been migrated.", ( *mIt )->resourceName() ) );
         ++mIt;
       }
       if ( !mBridgeType.isEmpty() ) {
@@ -146,7 +146,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       const QString akoResId = resMigrationCfg.readEntry( "ResourceIdentifier", "" );
       if ( akoResId.isEmpty() ) {
         mUnknownTypeResources.remove( resId );
-        emit message( Error, i18n("No Akonadi agent identifier specified for previously bridged resource '%1'", resId ));
+        emit message( Error, i18n( "No Akonadi agent identifier specified for previously bridged resource '%1'", resId ) );
         migrateNext();
         return;
       }
@@ -159,8 +159,8 @@ template <typename T> class KResMigrator : public KResMigratorBase
                              QString() /*akonadi id*/, mType );
 
           ResourceIterator it = mManager->begin();
-          while( it != mManager->end() ) {
-              if ((*it)->identifier() == resId) {
+          while ( it != mManager->end() ) {
+              if ( ( *it )->identifier() == resId ) {
                   mResourcesToMigrate.append( *it );
                   break;
               }
@@ -176,7 +176,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       mBridgeManager->readConfig( mConfig );
       if ( !mBridgeManager->standardResource() ) {
         // the plugin for this type might no longer be available
-        const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1").arg( resId ) );
+        const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1" ).arg( resId ) );
         const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
         if ( !resourceType.isEmpty() ) {
           if ( resourceType == QLatin1String( "imap" ) ) {
@@ -189,7 +189,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
             return;
           }
         }
-        emit message( Error, i18n("Bridged resource '%1' has no standard resource.", resId) );
+        emit message( Error, i18n( "Bridged resource '%1' has no standard resource.", resId ) );
         migrateNext();
         return;
       }
@@ -264,7 +264,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           T* clientBridge = mManager->createResource( "akonadi" );
           if ( clientBridge ) {
             mClientBridgeIdentifier = clientBridge->identifier();
-            clientBridge->setResourceName( i18n("Akonadi Compatibility Resource") );
+            clientBridge->setResourceName( i18n( "Akonadi Compatibility Resource" ) );
             mManager->add( clientBridge );
             mManager->setStandardResource( clientBridge );
             emit message( Info, i18n( "Client-side bridge set up successfully." ) );
@@ -282,28 +282,28 @@ template <typename T> class KResMigrator : public KResMigratorBase
         }
       }
     }
-    
+
     void migrateUnknown()
     {
       if ( mUnknownTypeResources.isEmpty() ) {
         return;
       }
-      
+
       QSet<QString>::iterator setIt = mUnknownTypeResources.begin();
       const QString kresId = *setIt;
       mUnknownTypeResources.erase( setIt );
-      
-      const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1").arg( kresId ) );
+
+      const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1" ).arg( kresId ) );
       const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
       const QString resourceName = kresCfgGroup.readEntry( QLatin1String( "ResourceName" ), QString() );
 
       kDebug() << "migrating Unknown" << resourceName << ", type=" << resourceType << ",id=" << kresId;
-      
+
       if ( resourceType == QLatin1String( "imap" ) ) {
         createKolabResource( kresId, resourceName );
       } else {
         migrateUnknownResource( kresId, resourceType, kresCfgGroup );
-      } 
+      }
     }
 
   private:

@@ -21,7 +21,7 @@
 #include <KDebug>
 
 #define WRAP(X) \
-  osync_trace( TRACE_ENTRY, "%s(%p, %p, %p)", __PRETTY_FUNCTION__, userdata, info, ctx); \
+  osync_trace( TRACE_ENTRY, "%s(%p, %p, %p)", __PRETTY_FUNCTION__, userdata, info, ctx ); \
   SinkBase *sink = reinterpret_cast<SinkBase*>( \
     osync_objtype_sink_get_userdata( osync_plugin_info_get_sink( info ) ) ); \
   sink->setContext( ctx ); \
@@ -79,7 +79,7 @@ SinkBase::SinkBase( int features ) :
 
 SinkBase::~SinkBase()
 {
-  if( mSink )
+  if ( mSink )
     osync_objtype_sink_unref( mSink );
 }
 

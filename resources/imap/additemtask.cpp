@@ -55,7 +55,7 @@ void AddItemTask::doStart( KIMAP::Session *session )
 
   const QString mailBox = mailBoxForCollection( collection() );
 
-  kDebug(5327) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
+  kDebug( 5327 ) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
 
   // save message to the server.
   KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
@@ -131,8 +131,8 @@ void AddItemTask::triggerSearchJob( KIMAP::Session *session )
     search->addSearchCriteria( KIMAP::SearchJob::New );
 
     UidNextAttribute *uidNext = collection().attribute<UidNextAttribute>();
-    if ( !uidNext ){
-      cancelTask( i18n("Could not determine the UID for the newly created message on the server") );
+    if ( !uidNext ) {
+      cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
       search->deleteLater();
       return;
     }
@@ -173,7 +173,7 @@ void AddItemTask::applyFoundUid( qint64 uid )
     i.setRemoteId( QString::number( uid ) );
   else
     i.setRemoteId( QUuid::createUuid() );
-  kDebug(5327) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
+  kDebug( 5327 ) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
 
   changeCommitted( i );
 

@@ -40,8 +40,8 @@ ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
     l->setMargin( 0 );
 
     QStringList args2;
-    foreach( const QVariant& item, args )
-    args2 << item.toString();
+    foreach ( const QVariant& item, args )
+      args2 << item.toString();
 
     ResourcesManagementWidget *tmw = new ResourcesManagementWidget( this, args2 );
     l->addWidget( tmw );

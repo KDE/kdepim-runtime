@@ -47,8 +47,8 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
 
 void ConfigDialog::checkPath()
 {
-  if( ui.kcfg_Path->url().isEmpty()) {
-    ui.statusLabel->setText( i18n("The selected path is empty."));
+  if ( ui.kcfg_Path->url().isEmpty() ) {
+    ui.statusLabel->setText( i18n( "The selected path is empty.") );
     enableButton( Ok, false);
     return;
   }

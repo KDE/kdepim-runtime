@@ -42,8 +42,7 @@ class DavCollection
     /**
      * Describes the possible content type of the DAV collection.
      */
-    enum ContentType
-    {
+    enum ContentType {
       Events = 1,    ///< The collection can contain event DAV resources.
       Todos = 2,     ///< The collection can contain todo DAV resources.
       Contacts = 4,  ///< The collection can contain contact DAV resources.
@@ -56,8 +55,7 @@ class DavCollection
     /**
      * Describes the DAV privileges on the collection (see RFC3744)
      */
-    enum Privilege
-    {
+    enum Privilege {
       None = 0x0,
       Read = 0x1,
       Write = 0x2,

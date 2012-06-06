@@ -56,15 +56,15 @@ int main( int argc, char **argv )
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
-  options.add( "bridge-only", ki18n("Only migrate to Akonadi KResource bridges") );
-  options.add( "omit-client-bridge", ki18n("Omit setting up of the client side compatibility bridges") );
-  options.add( "contacts-only", ki18n("Only migrate contact resources") );
-  options.add( "calendar-only", ki18n("Only migrate calendar resources") );
-  options.add( "notes-only", ki18n("Only migrate knotes resources") );
-  options.add( "type <type>", ki18n("Only migrate the specified types (supported: contact, calendar, notes)" ),
+  options.add( "bridge-only", ki18n( "Only migrate to Akonadi KResource bridges" ) );
+  options.add( "omit-client-bridge", ki18n( "Omit setting up of the client side compatibility bridges" ) );
+  options.add( "contacts-only", ki18n( "Only migrate contact resources" ) );
+  options.add( "calendar-only", ki18n( "Only migrate calendar resources" ) );
+  options.add( "notes-only", ki18n( "Only migrate knotes resources" ) );
+  options.add( "type <type>", ki18n( "Only migrate the specified types (supported: contact, calendar, notes)" ),
                supportedTypes.join( "," ).toLatin1() );
-  options.add( "interactive", ki18n( "Show reporting dialog") );
-  options.add( "interactive-on-change", ki18n("Show report only if changes were made") );
+  options.add( "interactive", ki18n( "Show reporting dialog" ) );
+  options.add( "interactive-on-change", ki18n( "Show report only if changes were made" ) );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 

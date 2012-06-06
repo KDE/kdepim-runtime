@@ -63,13 +63,13 @@ void RetrieveCollectionMetadataTask::setSpontaneous( bool spontaneous )
 
 void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
 {
-  kDebug(5327) << collection().remoteId();
+  kDebug( 5327 ) << collection().remoteId();
 
   // Prevent fetching items from noselect folders.
   if ( collection().hasAttribute( "noselect" ) ) {
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
-      kDebug(5327) << "No Select folder";
+      kDebug( 5327 ) << "No Select folder";
       endTask();
       return;
     }
@@ -88,7 +88,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
 
     // Refresh only if we're older than twenty days
     if ( timestamp + TimestampTimeout >  currentTimestamp ) {
-      kDebug(5327) << "Not refreshing because of timestamp";
+      kDebug( 5327 ) << "Not refreshing because of timestamp";
       endTask();
       return;
     }
@@ -256,10 +256,10 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
     newRights|= Akonadi::Collection::CanDeleteCollection;
   }
 
-//  kDebug(5327) << collection.remoteId()
-//               << "imapRights:" << imapRights
-//               << "newRights:" << newRights
-//               << "oldRights:" << collection.rights();
+//  kDebug( 5327 ) << collection.remoteId()
+//                 << "imapRights:" << imapRights
+//                 << "newRights:" << newRights
+//                 << "oldRights:" << collection.rights();
 
   const bool isNewCollection = !m_collection.hasAttribute<TimestampAttribute>();
   if ( (m_collection.rights() & Akonadi::Collection::CanCreateItem) &&
@@ -321,8 +321,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived( KJob *job )
 
   if ( oldRoots != newRoots
     || oldLimits != newLimits
-    || oldUsages != newUsages )
-  {
+    || oldUsages != newUsages ) {
     imapQuotaAttribute->setQuotas( newRoots, newLimits, newUsages );
     m_collectionChanged = true;
   }

@@ -51,7 +51,7 @@ void ResourceAkonadi::clear()
 
 void ResourceAkonadi::writeConfig( KConfigGroup &group )
 {
-  kDebug(5700);
+  kDebug( 5700 );
   ResourceABC::writeConfig( group );
 
   d->writeConfig( group );
@@ -70,9 +70,9 @@ void ResourceAkonadi::doClose()
 
 Ticket *ResourceAkonadi::requestSaveTicket()
 {
-  kDebug(5700);
+  kDebug( 5700 );
   if ( !addressBook() ) {
-    kDebug(5700) << "no addressbook";
+    kDebug( 5700 ) << "no addressbook";
     return 0;
   }
 
@@ -86,7 +86,7 @@ void ResourceAkonadi::releaseSaveTicket( Ticket *ticket )
 
 bool ResourceAkonadi::load()
 {
-  kDebug(5700);
+  kDebug( 5700 );
 
   d->clear();
   return d->doLoad();
@@ -94,7 +94,7 @@ bool ResourceAkonadi::load()
 
 bool ResourceAkonadi::asyncLoad()
 {
-  kDebug(5700);
+  kDebug( 5700 );
 
   d->clear();
   return d->doAsyncLoad();
@@ -103,7 +103,7 @@ bool ResourceAkonadi::asyncLoad()
 bool ResourceAkonadi::save( Ticket *ticket )
 {
   Q_UNUSED( ticket );
-  kDebug(5700);
+  kDebug( 5700 );
 
   return d->doSave();
 }
@@ -111,14 +111,14 @@ bool ResourceAkonadi::save( Ticket *ticket )
 bool ResourceAkonadi::asyncSave( Ticket *ticket )
 {
   Q_UNUSED( ticket );
-  kDebug(5700);
+  kDebug( 5700 );
 
   return d->doAsyncSave();
 }
 
 void ResourceAkonadi::insertAddressee( const Addressee &addr )
 {
-  kDebug(5700);
+  kDebug( 5700 );
   if ( d->insertAddressee( addr ) ) {
     ResourceABC::insertAddressee( addr );
   }
@@ -126,7 +126,7 @@ void ResourceAkonadi::insertAddressee( const Addressee &addr )
 
 void ResourceAkonadi::removeAddressee( const Addressee &addr )
 {
-  kDebug(5700);
+  kDebug( 5700 );
   d->removeAddressee( addr );
 
   ResourceABC::removeAddressee( addr );
@@ -134,7 +134,7 @@ void ResourceAkonadi::removeAddressee( const Addressee &addr )
 
 void ResourceAkonadi::insertDistributionList( DistributionList *list )
 {
-  kDebug(5700) << "identifier=" << list->identifier()
+  kDebug( 5700 ) << "identifier=" << list->identifier()
                << ", name=" << list->name();
 
   if ( d->insertDistributionList( list ) ) {
@@ -144,7 +144,7 @@ void ResourceAkonadi::insertDistributionList( DistributionList *list )
 
 void ResourceAkonadi::removeDistributionList( DistributionList *list )
 {
-  kDebug(5700) << "identifier=" << list->identifier()
+  kDebug( 5700 ) << "identifier=" << list->identifier()
                << ", name=" << list->name();
 
   d->removeDistributionList( list );
@@ -154,7 +154,7 @@ void ResourceAkonadi::removeDistributionList( DistributionList *list )
 
 bool ResourceAkonadi::subresourceActive( const QString &subResource ) const
 {
-  kDebug(5700) << "subResource" << subResource;
+  kDebug( 5700 ) << "subResource" << subResource;
 
   bool active = false;
   SubResource *resource = d->subResource( subResource );
@@ -167,7 +167,7 @@ bool ResourceAkonadi::subresourceActive( const QString &subResource ) const
 
 bool ResourceAkonadi::subresourceWritable( const QString &subResource ) const
 {
-  kDebug(5700) << "subResource" << subResource;
+  kDebug( 5700 ) << "subResource" << subResource;
 
   bool writable = false;
   SubResource *resource = d->subResource( subResource );
@@ -180,7 +180,7 @@ bool ResourceAkonadi::subresourceWritable( const QString &subResource ) const
 
 QString ResourceAkonadi::subresourceLabel( const QString &subResource ) const
 {
-  kDebug(5700) << "subResource" << subResource;
+  kDebug( 5700 ) << "subResource" << subResource;
 
   QString label;
   SubResource *resource = d->subResource( subResource );
@@ -193,7 +193,7 @@ QString ResourceAkonadi::subresourceLabel( const QString &subResource ) const
 
 int ResourceAkonadi::subresourceCompletionWeight( const QString &subResource ) const
 {
-  kDebug(5700) << "subResource" << subResource;
+  kDebug( 5700 ) << "subResource" << subResource;
 
   int weight = 80;
   SubResource *resource = d->subResource( subResource );
@@ -206,7 +206,7 @@ int ResourceAkonadi::subresourceCompletionWeight( const QString &subResource ) c
 
 QStringList ResourceAkonadi::subresources() const
 {
-  kDebug(5700) << d->subResourceIdentifiers();
+  kDebug( 5700 ) << d->subResourceIdentifiers();
   return d->subResourceIdentifiers();
 }
 
@@ -222,7 +222,7 @@ StoreConfigIface &ResourceAkonadi::storeConfig()
 
 void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool active )
 {
-  kDebug(5700) << "subResource" << subResource << ", active" << active;
+  kDebug( 5700 ) << "subResource" << subResource << ", active" << active;
 
   // TODO check if this check for change isn't already handled in the private
   bool changed = false;
@@ -241,7 +241,7 @@ void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool act
 
 void ResourceAkonadi::setSubresourceCompletionWeight( const QString &subResource, int weight )
 {
-  kDebug(5700) << "subResource" << subResource << ", weight" << weight;
+  kDebug( 5700 ) << "subResource" << subResource << ", weight" << weight;
 
   SubResource *resource = d->subResource( subResource );
   if ( resource != 0 ) {

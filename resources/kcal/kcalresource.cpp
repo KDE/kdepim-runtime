@@ -55,7 +55,7 @@ KCalResource::KCalResource( const QString &id )
     mDelayedSaveTimer( new QTimer( this ) ),
     mIncidenceAssigner( new KCal::AssignmentVisitor() )
 {
-  KGlobal::locale()->insertCatalog("akonadi_kresourceassistant");
+  KGlobal::locale()->insertCatalog( QLatin1String( "akonadi_kresourceassistant" ) );
 
   // setup for UID generation
   const QString prodId = QLatin1String( "-//Akonadi//NONSGML KDE Compatibility Resource %1//EN" );
@@ -83,7 +83,7 @@ void KCalResource::configure( WId windowId )
     emit status( Running,
                  i18nc( "@info:status", "Changing calendar plugin configuration" ) );
     KRES::ConfigDialog dlg( 0, QLatin1String( "calendar" ), mResource );
-    if( windowId ) 
+    if ( windowId )
       KWindowSystem::setMainWindow( &dlg, windowId );
     if ( dlg.exec() ) {
       setName( mResource->resourceName() );

@@ -94,9 +94,9 @@ void SetupKolab::slotShowUpgradeDialog()
   m_versionUi->formatVersion->insertItem( 0, "Kolab Format v2", Kolab::KolabV2 );
   m_versionUi->formatVersion->insertItem( 1, "Kolab Format v3", Kolab::KolabV3 );
   if ( v == Kolab::KolabV2 ) {
-    m_versionUi->formatVersion->setCurrentIndex(0);
+    m_versionUi->formatVersion->setCurrentIndex( 0 );
   } else {
-    m_versionUi->formatVersion->setCurrentIndex(1);
+    m_versionUi->formatVersion->setCurrentIndex( 1 );
   }
   dialog->exec();
   grp.writeEntry(

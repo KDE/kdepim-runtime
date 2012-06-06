@@ -160,8 +160,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
   if ( mUi.useDefaultCreds->isChecked() ) {
     url.setUser( mDefaultUsername );
     url.setPassword( mDefaultPassword );
-  }
-  else {
+  } else {
     url.setUser( username() );
     url.setPassword( password() );
   }

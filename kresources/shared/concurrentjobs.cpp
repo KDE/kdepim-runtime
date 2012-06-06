@@ -38,7 +38,7 @@ ConcurrentJobBase::JobRunner::JobRunner( ConcurrentJobBase *parent )
 
 void ConcurrentJobBase::JobRunner::run()
 {
-  QMutexLocker mutexLocker( &(mParent->mMutex) );
+  QMutexLocker mutexLocker( &( mParent->mMutex ) );
 
   mParent->createJob();
   Job *job = mParent->job();

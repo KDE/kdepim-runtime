@@ -456,8 +456,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   Akonadi::Collection::List collections;
   collections << mDavCollectionRoot;
 
-  foreach ( const DavUtils::DavUrl &davUrl, fetchJob->urlsWithTemporaryError() )
-  {
+  foreach ( const DavUtils::DavUrl &davUrl, fetchJob->urlsWithTemporaryError() ) {
     KUrl url = davUrl.url();
     url.setUser( QString() );
     QStringList urls = Settings::self()->mappedCollections( davUrl.protocol(), url.prettyUrl() );
@@ -756,8 +755,7 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
     // We only bail out for errors that are unlikely to be recoverable
     if ( !DavUtils::httpRequestRetryable( errorCode ) ) {
       cancelTask( i18n( "Unable to add item: %1", job->errorString() ) );
-    }
-    else {
+    } else {
       mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemAdded, item );
       // We must set the remote id here. If it's changed by the server then a new item
       // will be created and this one deleted.
@@ -796,8 +794,7 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
     // We only bail out for errors that are unlikely to be recoverable
     if ( !DavUtils::httpRequestRetryable( errorCode ) ) {
       cancelTask( i18n( "Unable to change item: %1", job->errorString() ) );
-    }
-    else {
+    } else {
       mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemChanged, item );
       Akonadi::Item newItem( item );
       changeCommitted( newItem );

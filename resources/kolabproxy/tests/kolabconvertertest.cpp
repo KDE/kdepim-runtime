@@ -51,11 +51,11 @@ static Akonadi::Item readMimeFile( const QString &fileName )
 
 #define KCOMPARE(actual, expected) \
 do {\
-    if ( !(actual == expected) ) { \
+    if ( !( actual == expected ) ) { \
       qDebug() << __FILE__ << ':' << __LINE__ << "Actual: " #actual ": " << actual << "\nExpceted: " #expected ": " << expected; \
       return false; \
    } \
-} while (0)
+} while ( 0 )
 
 static bool compareMimeMessage( const KMime::Message::Ptr &msg, const KMime::Message::Ptr &expectedMsg )
 {

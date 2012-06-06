@@ -156,9 +156,9 @@ void ContactsResource::retrieveItems( const Akonadi::Collection &collection )
     Item item;
     item.setRemoteId( entry.fileName() );
 
-    if ( entry.fileName().endsWith( ".vcf" ) )
+    if ( entry.fileName().endsWith( QLatin1String( ".vcf" ) ) )
       item.setMimeType( KABC::Addressee::mimeType() );
-    else if ( entry.fileName().endsWith( ".ctg" ) )
+    else if ( entry.fileName().endsWith( QLatin1String( ".ctg" ) ) )
       item.setMimeType( KABC::ContactGroup::mimeType() );
     else {
       cancelTask( i18n( "Found file of unknown format: '%1'", entry.absoluteFilePath() ) );
@@ -183,7 +183,7 @@ bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
     return false;
   }
 
-  if ( filePath.endsWith( ".vcf" ) ) {
+  if ( filePath.endsWith( QLatin1String( ".vcf" ) ) ) {
     KABC::VCardConverter converter;
 
     const QByteArray content = file.readAll();
@@ -194,7 +194,7 @@ bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
     }
 
     newItem.setPayload<KABC::Addressee>( contact );
-  } else if ( filePath.endsWith( ".ctg" ) ) {
+  } else if ( filePath.endsWith( QLatin1String( ".ctg" ) ) ) {
     KABC::ContactGroup group;
     QString errorMessage;
 
@@ -355,7 +355,7 @@ void ContactsResource::collectionAdded( const Akonadi::Collection &collection, c
   const QString dirName = directoryForCollection( parent ) + QDir::separator() + collection.name();
 
   if ( !QDir::root().mkpath( dirName ) ) {
-    cancelTask( i18n("Unable to create folder '%1'.", dirName ) );
+    cancelTask( i18n( "Unable to create folder '%1'.", dirName ) );
     return;
   }
 
@@ -389,7 +389,7 @@ void ContactsResource::collectionChanged( const Akonadi::Collection &collection 
 
   QFileInfo oldDirectory( dirName );
   if ( !QDir::root().rename( dirName, oldDirectory.absolutePath() + QDir::separator() + collection.name() ) ) {
-    cancelTask( i18n("Unable to rename folder '%1'.", collection.name() ) );
+    cancelTask( i18n( "Unable to rename folder '%1'.", collection.name() ) );
     return;
   }
 

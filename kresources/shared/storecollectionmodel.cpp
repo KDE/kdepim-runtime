@@ -54,7 +54,7 @@ QVariant StoreCollectionModel::data( const QModelIndex &index, int role ) const
     return QVariant();
   }
 
-  if ( index.column() == 1 && (role == ItemTypeRole || role == Qt::DisplayRole ) ) {
+  if ( index.column() == 1 && ( role == ItemTypeRole || role == Qt::DisplayRole ) ) {
     QStringList itemTypes = mStoreMapping.value( collection.id(), QStringList() );
     itemTypes.sort();
     return itemTypes.join( QLatin1String( ", " ) );

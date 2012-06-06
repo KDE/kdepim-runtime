@@ -228,7 +228,7 @@ bool SubResourceBase::isWritable( const Akonadi::Collection &collection )
   itemRights |= Akonadi::Collection::CanChangeItem;
   itemRights |= Akonadi::Collection::CanDeleteItem;
 
-  return (collection.rights() & itemRights) != 0;
+  return ( collection.rights() & itemRights ) != 0;
 }
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

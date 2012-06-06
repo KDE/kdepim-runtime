@@ -254,7 +254,7 @@ bool ResourceAkonadi::canHaveSubresources() const
 
 QString ResourceAkonadi::labelForSubresource( const QString &subResource ) const
 {
-  kDebug(5800) << "subresource=" << subResource;
+  kDebug( 5800 ) << "subresource=" << subResource;
 
   QString label;
   SubResource *resource = d->subResource( subResource );
@@ -267,7 +267,7 @@ QString ResourceAkonadi::labelForSubresource( const QString &subResource ) const
 
 void ResourceAkonadi::setSubresourceActive( const QString &subResource, bool active )
 {
-  kDebug(5800) << "subResource" << subResource << ", active" << active;
+  kDebug( 5800 ) << "subResource" << subResource << ", active" << active;
 
   // TODO might no longer be necessary
   bool changed = false;
@@ -309,11 +309,11 @@ bool ResourceAkonadi::subresourceWritable( const QString &subResource ) const
 
 bool ResourceAkonadi::addSubresource( const QString &resource, const QString &parent )
 {
-  kDebug(5800) << "resource=" << resource << ", parent=" << parent;
+  kDebug( 5800 ) << "resource=" << resource << ", parent=" << parent;
   Q_ASSERT( !resource.isEmpty() );
 
   if ( parent.isEmpty() ) {
-    kError(5800) << "Cannot create Akonadi toplevel collection";
+    kError( 5800 ) << "Cannot create Akonadi toplevel collection";
     // TODO probably display a dialog working on the agent filter proxy model
     // and then create and name the resource appropriately.
     return false;
@@ -321,7 +321,7 @@ bool ResourceAkonadi::addSubresource( const QString &resource, const QString &pa
 
   SubResource *subResource = d->subResource( parent );
   if ( subResource == 0 ) {
-    kError(5800) << "No such parent subresource/collection:" << parent;
+    kError( 5800 ) << "No such parent subresource/collection:" << parent;
     return false;
   }
 
@@ -330,12 +330,12 @@ bool ResourceAkonadi::addSubresource( const QString &resource, const QString &pa
 
 bool ResourceAkonadi::removeSubresource( const QString &resource )
 {
-  kDebug(5800) << "resource=" << resource;
+  kDebug( 5800 ) << "resource=" << resource;
   Q_ASSERT( !resource.isEmpty() );
 
   SubResource *subResource = d->subResource( resource );
   if ( subResource == 0 ) {
-    kError(5800) << "No such subresource: " << resource;
+    kError( 5800 ) << "No such subresource: " << resource;
     return false;
   }
 
@@ -344,7 +344,7 @@ bool ResourceAkonadi::removeSubresource( const QString &resource )
 
 QString ResourceAkonadi::subresourceType( const QString &resource )
 {
-  kDebug(5800) << "resource=" << resource;
+  kDebug( 5800 ) << "resource=" << resource;
 
   QString type;
   SubResource *subResource = d->subResource( resource );
@@ -362,7 +362,7 @@ QString ResourceAkonadi::subresourceIdentifier( Incidence *incidence )
 
 QStringList ResourceAkonadi::subresources() const
 {
-  kDebug(5800) << d->subResourceIdentifiers();
+  kDebug( 5800 ) << d->subResourceIdentifiers();
   return d->subResourceIdentifiers();
 }
 
@@ -405,7 +405,7 @@ QString ResourceAkonadi::infoText() const
 
 bool ResourceAkonadi::doLoad( bool syncCache )
 {
-  kDebug(5800) << "syncCache=" << syncCache;
+  kDebug( 5800 ) << "syncCache=" << syncCache;
 
   d->clear();
   return d->doLoad();
@@ -413,15 +413,15 @@ bool ResourceAkonadi::doLoad( bool syncCache )
 
 bool ResourceAkonadi::doSave( bool syncCache )
 {
-  kDebug(5800) << "syncCache=" << syncCache;
+  kDebug( 5800 ) << "syncCache=" << syncCache;
 
   return d->doSave();
 }
 
 bool ResourceAkonadi::doSave( bool syncCache, Incidence *incidence )
 {
-  kDebug(5800) << "syncCache=" << syncCache
-               << ", incidence" << incidence->uid();
+  kDebug( 5800 ) << "syncCache=" << syncCache
+                 << ", incidence" << incidence->uid();
 
   return d->doSaveIncidence( incidence );
 }

@@ -32,10 +32,10 @@ class TestAddItemTask : public ImapTestBase
 private slots:
   void shouldAppendMessage_data()
   {
-    QTest::addColumn<Akonadi::Item>("item");
-    QTest::addColumn<Akonadi::Collection>("collection");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QStringList>("callNames");
+    QTest::addColumn<Akonadi::Item>( "item" );
+    QTest::addColumn<Akonadi::Collection>( "collection" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QStringList>( "callNames" );
 
     Akonadi::Collection collection;
     Akonadi::Item item;
@@ -56,9 +56,9 @@ private slots:
 
     messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
-    item.setPayload(message);
+    item.setPayload( message );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -72,13 +72,13 @@ private slots:
 
 
 
-    message = KMime::Message::Ptr(new KMime::Message);
+    message = KMime::Message::Ptr( new KMime::Message );
 
     messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
-    item.setPayload(message);
+    item.setPayload( message );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -111,11 +111,11 @@ private slots:
 
 
 
-    message = KMime::Message::Ptr(new KMime::Message);
+    message = KMime::Message::Ptr( new KMime::Message );
 
     messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
     item.setPayload(message);
 
@@ -152,7 +152,7 @@ private slots:
     QVERIFY( pool.connect( createDefaultAccount() ) );
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
-    DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+    DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setCollection( collection );
     state->setItem( item );
     AddItemTask *task = new AddItemTask( state );
@@ -160,11 +160,11 @@ private slots:
     QTest::qWait( 100 );
 
     QCOMPARE( state->calls().count(), callNames.size() );
-    for (int i=0; i<callNames.size(); i++) {
-      QString command = QString::fromUtf8(state->calls().at(i).first);
-      QVariant parameter = state->calls().at(i).second;
+    for ( int i = 0; i < callNames.size(); i++ ) {
+      QString command = QString::fromUtf8( state->calls().at( i ).first );
+      QVariant parameter = state->calls().at( i ).second;
 
-      if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
+      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 

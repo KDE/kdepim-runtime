@@ -37,7 +37,7 @@ QString OXUtils::writeNumber( qlonglong value )
 
 QString OXUtils::writeString( const QString &value )
 {
-  QStringList lines = value.split( "\n" );
+  QStringList lines = value.split( '\n' );
 
   for ( int i = 0; i < lines.count(); ++i )
   {

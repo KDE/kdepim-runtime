@@ -156,6 +156,6 @@ void SettingsDialog::removeAccountClicked()
 
 void SettingsDialog::updateButtons()
 {
-  bool enableRemoveButton = (m_ui->accountsCombo->count()>0);
-  m_ui->removeAccountBtn->setEnabled(enableRemoveButton);
+  bool enableRemoveButton = ( m_ui->accountsCombo->count()>0 );
+  m_ui->removeAccountBtn->setEnabled( enableRemoveButton );
 }

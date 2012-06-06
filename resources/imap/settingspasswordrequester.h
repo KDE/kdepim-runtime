@@ -31,7 +31,7 @@ class SettingsPasswordRequester : public PasswordRequesterInterface
   Q_OBJECT
 
 public:
-  SettingsPasswordRequester( ImapResource *resource, QObject *parent = 0 );
+  explicit SettingsPasswordRequester( ImapResource *resource, QObject *parent = 0 );
 
   virtual void requestPassword( RequestType request = StandardRequest,
                                 const QString &serverError = QString() );

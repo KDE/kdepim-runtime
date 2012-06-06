@@ -33,11 +33,11 @@ class TestMoveItemTask : public ImapTestBase
 private slots:
   void shouldCopyAndDeleteMessage_data()
   {
-    QTest::addColumn<Akonadi::Item>("item");
-    QTest::addColumn<Akonadi::Collection>("source");
-    QTest::addColumn<Akonadi::Collection>("target");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QStringList>("callNames");
+    QTest::addColumn<Akonadi::Item>( "item" );
+    QTest::addColumn<Akonadi::Collection>( "source" );
+    QTest::addColumn<Akonadi::Collection>( "target" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QStringList>( "callNames" );
 
     Akonadi::Item item;
     Akonadi::Collection source;
@@ -52,7 +52,7 @@ private slots:
 
     QString messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
     item.setPayload(message);
 
@@ -100,13 +100,13 @@ private slots:
     item = Akonadi::Item( 1 );
     item.setRemoteId( "5" );
 
-    message = KMime::Message::Ptr(new KMime::Message);
+    message = KMime::Message::Ptr( new KMime::Message );
 
     messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
-    item.setPayload(message);
+    item.setPayload( message );
 
     source = Akonadi::Collection( 2 );
     source.setRemoteId( "/INBOX/Foo" );
@@ -140,13 +140,13 @@ private slots:
     item = Akonadi::Item( 1 );
     item.setRemoteId( "5" );
 
-    message = KMime::Message::Ptr(new KMime::Message);
+    message = KMime::Message::Ptr( new KMime::Message );
 
     messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
-    item.setPayload(message);
+    item.setPayload( message );
 
     source = Akonadi::Collection( 2 );
     source.addAttribute( new UidNextAttribute( 42 ) );
@@ -179,9 +179,9 @@ private slots:
     item.setRemoteId( "5" );
     message = KMime::Message::Ptr(new KMime::Message);
     messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
-    item.setPayload(message);
+    item.setPayload( message );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -230,11 +230,11 @@ private slots:
     QTest::qWait( 100 );
 
     QCOMPARE( state->calls().count(), callNames.size() );
-    for (int i=0; i<callNames.size(); i++) {
-      QString command = QString::fromUtf8(state->calls().at(i).first);
-      QVariant parameter = state->calls().at(i).second;
+    for ( int i = 0; i < callNames.size(); i++ ) {
+      QString command = QString::fromUtf8(state->calls().at( i ).first);
+      QVariant parameter = state->calls().at( i ).second;
 
-      if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
+      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 

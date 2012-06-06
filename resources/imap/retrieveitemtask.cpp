@@ -103,7 +103,7 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
 
   Akonadi::Item i = item();
 
-  kDebug(5327) << "MESSAGE from Imap server" << item().remoteId();
+  kDebug( 5327 ) << "MESSAGE from Imap server" << item().remoteId();
   Q_ASSERT( item().isValid() );
 
   KIMAP::MessagePtr message = messages[messages.keys().first()];
@@ -121,7 +121,7 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
   if ( KMime::hasAttachment( message.get() ) )
     i.setFlag( Akonadi::MessageFlags::HasAttachment );
 
-  kDebug(5327) << "Has Payload: " << i.hasPayload();
+  kDebug( 5327 ) << "Has Payload: " << i.hasPayload();
 
   m_messageReceived = true;
   itemRetrieved( i );
@@ -132,7 +132,7 @@ void RetrieveItemTask::onContentFetchDone( KJob *job )
   if ( job->error() ) {
     cancelTask( job->errorString() );
   } else if ( !m_messageReceived ) {
-    cancelTask( i18n("No message retrieved, server reply was empty.") );
+    cancelTask( i18n( "No message retrieved, server reply was empty." ) );
   }
 }
 

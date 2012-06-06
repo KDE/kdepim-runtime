@@ -29,8 +29,7 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
   Q_OBJECT
 
   public:
-    enum MigrationOption
-    {
+    enum MigrationOption {
       ConfigOnly = 0x0,
       ImportNewMessages = 0x01,
       ImportCachedMessages = 0x02,

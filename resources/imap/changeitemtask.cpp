@@ -208,8 +208,8 @@ void ChangeItemTask::triggerSearchJob()
     search->addSearchCriteria( KIMAP::SearchJob::New );
 
     UidNextAttribute *uidNext = item().parentCollection().attribute<UidNextAttribute>();
-    if ( !uidNext ){
-      cancelTask( i18n("Could not determine the UID for the newly created message on the server") );
+    if ( !uidNext ) {
+      cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
       search->deleteLater();
       return;
     }
@@ -234,7 +234,7 @@ void ChangeItemTask::onSearchDone( KJob *job )
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
 
   if ( search->results().count()!=1 ) {
-    cancelTask( i18n("Could not determine the UID for the newly created message on the server") );
+    cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
     return;
   }
 
@@ -264,7 +264,7 @@ void ChangeItemTask::onDeleteDone( KJob */*job*/ )
 
 void ChangeItemTask::recordNewUid()
 {
-  Q_ASSERT(m_newUid>0);
+  Q_ASSERT( m_newUid > 0 );
 
   Akonadi::Item i = item();
   Akonadi::Collection c = i.parentCollection();
@@ -293,7 +293,7 @@ void ChangeItemTask::recordNewUid()
   }
 
   const QString remoteId =  QString::number( m_newUid );
-  kDebug(5327) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();
+  kDebug( 5327 ) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();
   i.setRemoteId( remoteId );
 
   changeCommitted( i );

@@ -66,14 +66,14 @@ static inline bool indexingDisabled( const Collection &collection )
   if ( indexPolicy && !indexPolicy->indexingEnabled() )
     return true;
 
-  if (collection.isVirtual())
+  if ( collection.isVirtual() )
     return true;
 
   // check if we have a plugin for the stuff in this collection
-  foreach (const QString &mimeType, collection.contentMimeTypes()) {
-    if (mimeType == Collection::mimeType())
+  foreach ( const QString &mimeType, collection.contentMimeTypes() ) {
+    if ( mimeType == Collection::mimeType() )
      continue;
-    if (!FeederPluginloader::instance().feederPluginsForMimeType(mimeType).isEmpty())
+    if ( !FeederPluginloader::instance().feederPluginsForMimeType( mimeType ).isEmpty() )
       return false;
   }
 
@@ -95,7 +95,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
-  changeRecorder()->setAllMonitored(true);
+  changeRecorder()->setAllMonitored( true );
   changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->itemFetchScope().setCacheOnly( true );
 
@@ -136,7 +136,7 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
   if ( indexingDisabled( collection ) )
     return;
 
-  Q_ASSERT( item.parentCollection() == collection);
+  Q_ASSERT( item.parentCollection() == collection );
   mQueue.addItem( item );
 }
 
@@ -153,7 +153,7 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
   //kDebug() << item.url();
-  Nepomuk::removeResources(QList <QUrl>() << item.url(), Nepomuk::RemoveSubResoures);
+  Nepomuk::removeResources( QList <QUrl>() << item.url(), Nepomuk::RemoveSubResoures );
 }
 
 void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
@@ -161,7 +161,7 @@ void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, 
   Q_UNUSED( parent );
   if ( indexingDisabled( collection ) )
     return;
-  NepomukHelpers::addCollectionToNepomuk(collection);
+  NepomukHelpers::addCollectionToNepomuk( collection );
 }
 
 void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
@@ -169,12 +169,12 @@ void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection
   Q_UNUSED( partIdentifiers );
   if ( indexingDisabled( collection ) )
     return;
-  NepomukHelpers::addCollectionToNepomuk(collection);
+  NepomukHelpers::addCollectionToNepomuk( collection );
 }
 
 void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection)
 {
-  Nepomuk::removeResources(QList <QUrl>() << collection.url());
+  Nepomuk::removeResources( QList <QUrl>() << collection.url() );
 }
 
 void NepomukFeederAgent::updateAll()
@@ -185,7 +185,7 @@ void NepomukFeederAgent::updateAll()
 
 void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& collections)
 {
-  foreach( const Collection &collection, collections ) {
+  foreach ( const Collection &collection, collections ) {
     if ( indexingDisabled( collection ) )
       continue;
     mQueue.addCollection( collection );
@@ -211,7 +211,7 @@ void NepomukFeederAgent::selfTest()
   // if Nepomuk is not running, try to start it
   if ( !mNepomukStartupAttempted && !Nepomuk::ResourceManager::instance()->initialized() ) {
     KProcess process;
-    const QString nepomukserver = KStandardDirs::findExe( QLatin1String("nepomukserver") );
+    const QString nepomukserver = KStandardDirs::findExe( QLatin1String( "nepomukserver" ) );
     if ( process.startDetached( nepomukserver ) == 0 ) {
       errorMessages.append( i18n( "Unable to start the Nepomuk server." ) );
     } else {
@@ -247,7 +247,7 @@ void NepomukFeederAgent::selfTest()
       mInitialUpdateDone = true;
       // we actually never need to reindex everything in normal operation
       // we leave the setting in anyway in case we ever introduce a manual override or whatever
-      mQueue.setReindexing(false);
+      mQueue.setReindexing( false );
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
     } else {
       emit status( Idle, i18n( "Ready to index data." ) );
@@ -262,7 +262,7 @@ void NepomukFeederAgent::selfTest()
 void NepomukFeederAgent::disableIdleDetection( bool value )
 {
   mIdleDetectionDisabled = value;
-  if (KIdleTime::instance()->idleTime()) {
+  if ( KIdleTime::instance()->idleTime() ) {
     systemIdle();
   } else {
     systemResumed();
@@ -296,7 +296,7 @@ void NepomukFeederAgent::setRunning( bool running )
     return;
   }
   changeRecorder()->setChangeRecordingEnabled( !running );
-  mQueue.setOnline(running);
+  mQueue.setOnline( running );
   if ( running && !mQueue.isEmpty() ) {
     if ( mQueue.currentCollection().isValid() )
       emit status( AgentBase::Running, i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() ) );
@@ -326,12 +326,12 @@ void NepomukFeederAgent::systemResumed()
   mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
 
-void NepomukFeederAgent::idle(const QString &string) 
+void NepomukFeederAgent::idle(const QString &string)
 {
   emit status( AgentBase::Idle, string );
 }
 
-void NepomukFeederAgent::running(const QString &string) 
+void NepomukFeederAgent::running(const QString &string)
 {
   emit status( AgentBase::Running, string );
 }

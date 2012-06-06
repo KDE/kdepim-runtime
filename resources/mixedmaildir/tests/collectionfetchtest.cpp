@@ -196,7 +196,7 @@ void CollectionFetchTest::testMixedTree()
 
   // simulate second level mbox in maildir parent
   QFileInfo fileInfo1_1( KPIM::Maildir::subDirPathForFolderPath( md1.path() ),
-                         QLatin1String( "collection1_1" ));
+                         QLatin1String( "collection1_1" ) );
   QFile file1_1( fileInfo1_1.absoluteFilePath() );
   file1_1.open( QIODevice::WriteOnly );
   file1_1.close();
@@ -208,7 +208,7 @@ void CollectionFetchTest::testMixedTree()
   KPIM::Maildir md1_1_1( md1_1.addSubFolder( "collection1_1_1" ), false );
 
   // simulate third level mbox in mbox parent
-  QFileInfo fileInfo1_1_2( md1_1.path(), QLatin1String( "collection1_1_2" ));
+  QFileInfo fileInfo1_1_2( md1_1.path(), QLatin1String( "collection1_1_2" ) );
   QFile file1_1_2( fileInfo1_1_2.absoluteFilePath() );
   file1_1_2.open( QIODevice::WriteOnly );
   file1_1_2.close();
@@ -217,14 +217,14 @@ void CollectionFetchTest::testMixedTree()
   KPIM::Maildir md2( topLevelMd.addSubFolder( "collection2" ), false );
 
   // simulate first level mbox
-  QFileInfo fileInfo3( mDir->name(), QLatin1String( "collection3" ));
+  QFileInfo fileInfo3( mDir->name(), QLatin1String( "collection3" ) );
   QFile file3( fileInfo3.absoluteFilePath() );
   file3.open( QIODevice::WriteOnly );
   file3.close();
   QVERIFY( fileInfo3.exists() );
 
   // simulate first level mbox with subtree
-  QFileInfo fileInfo4( mDir->name(), QLatin1String( "collection4" ));
+  QFileInfo fileInfo4( mDir->name(), QLatin1String( "collection4" ) );
   QFile file4( fileInfo4.absoluteFilePath() );
   file4.open( QIODevice::WriteOnly );
   file4.close();
@@ -238,7 +238,7 @@ void CollectionFetchTest::testMixedTree()
 
   // simulate second level mbox in mbox parent
   QFileInfo fileInfo4_2( subDirInfo4.absoluteFilePath(),
-                         QLatin1String( "collection4_2" ));
+                         QLatin1String( "collection4_2" ) );
   QFile file4_2( fileInfo4_2.absoluteFilePath() );
   file4_2.open( QIODevice::WriteOnly );
   file4_2.close();

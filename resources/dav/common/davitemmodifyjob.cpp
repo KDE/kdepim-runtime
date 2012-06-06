@@ -72,8 +72,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
     if ( storedJob->queryMetaData( "responsecode" ).isEmpty() ) {
       setError( storedJob->error() );
       setErrorText( storedJob->errorText() );
-    }
-    else {
+    } else {
       const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request. The item was not modified on the server.\n"
@@ -97,8 +96,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
   else if ( location.startsWith( '/' ) ) {
     url = storedJob->url();
     url.setPath( location );
-  }
-  else
+  } else
     url = location;
 
   url.setUser( QString() );
@@ -109,8 +107,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
     DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
     connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(itemRefreshed(KJob*)) );
     fetchJob->start();
-  }
-  else {
+  } else {
     emitResult();
   }
 }

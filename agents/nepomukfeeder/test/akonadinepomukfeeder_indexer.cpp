@@ -40,60 +40,60 @@ public Q_SLOTS:
     void progress(int p) {
         kDebug() << "progress " << p;
     }
-    
+
     void running(const QString &p) {
         kDebug() << "running " << p;
     }
-    
+
     void removalComplete(KJob *job) {
         kDebug();
-        if (job->error())
+        if ( job->error() )
             kDebug() << job->errorString();
     }
 };
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication app(argc, argv);
-    if (app.arguments().size() != 3) {
+    QCoreApplication app( argc, argv );
+    if ( app.arguments().size() != 3 ) {
         kWarning() << "not enough arguments, check the source";
     }
-    Tester *tester = new Tester(&app);
-    Akonadi::Entity::Id id = app.arguments().at(2).toInt();
-    if (app.arguments().at(1) == QString::fromLatin1("item")) {
-        ItemQueue *queue = new ItemQueue(1, 1, &app);
+    Tester *tester = new Tester( &app );
+    Akonadi::Entity::Id id = app.arguments().at( 2 ).toInt();
+    if ( app.arguments().at( 1 ) == QString::fromLatin1( "item" ) ) {
+        ItemQueue *queue = new ItemQueue( 1, 1, &app );
         kDebug() << "indexing item: " << id;
-        queue->addItem(Akonadi::Item(id));
+        queue->addItem( Akonadi::Item( id ) );
         queue->processItem();
         QObject::connect( queue, SIGNAL(finished()), &app, SLOT(quit()));
-    } else if (app.arguments().at(1) == QString::fromLatin1("rm-item")) {
-        kDebug() << "removing item: " << Akonadi::Item(id).url().url();
-        KJob *job = Nepomuk::removeDataByApplication( QList<QUrl>() << Akonadi::Item(id).url().url(), Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
+    } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "rm-item" ) ) {
+        kDebug() << "removing item: " << Akonadi::Item( id ).url().url();
+        KJob *job = Nepomuk::removeDataByApplication( QList<QUrl>() << Akonadi::Item( id ).url().url(), Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
         QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
-    } else if (app.arguments().at(1) == QString::fromLatin1("collection")) {
-        FeederQueue *feederq = new FeederQueue(&app);
+    } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "collection" ) ) {
+        FeederQueue *feederq = new FeederQueue( &app );
         kDebug() << "indexing collection: " << id;
-        feederq->setReindexing(true);
-        feederq->setOnline(true);
-        feederq->addCollection(Akonadi::Collection(id));
+        feederq->setReindexing( true );
+        feederq->setOnline( true );
+        feederq->addCollection( Akonadi::Collection( id ) );
 
         QObject::connect(feederq, SIGNAL(fullyIndexed()), &app, SLOT(quit()));
         QObject::connect(feederq, SIGNAL(progress(int)), tester, SLOT(progress(int)));
         QObject::connect(feederq, SIGNAL(running(QString)), tester, SLOT(running(QString)));
-    } else if (app.arguments().at(1) == QString::fromLatin1("check-collection")) {
+    } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "check-collection" ) ) {
         int indexerLevel = 3;
-        kDebug() << "Already indexed: " << Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 . }")
-        .arg(Soprano::Node::resourceToN3(Vocabulary::NIE::url()),
-             Soprano::Node::resourceToN3(Akonadi::Collection(id).url()),
-             Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiIndexCompatLevel()),
-             Soprano::Node::literalToN3(indexerLevel)),
-            Soprano::Query::QueryLanguageSparql).boolValue();
+        kDebug() << "Already indexed: " << Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
+        .arg( Soprano::Node::resourceToN3( Vocabulary::NIE::url() ),
+              Soprano::Node::resourceToN3( Akonadi::Collection( id ).url() ),
+              Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
+              Soprano::Node::literalToN3( indexerLevel ) ),
+            Soprano::Query::QueryLanguageSparql ).boolValue();
         app.quit();
-    } else if (app.arguments().at(1) == QString::fromLatin1("mark-collection")) {
-        KJob *job = NepomukHelpers::markCollectionAsIndexed(Akonadi::Collection(id));
+    } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "mark-collection" ) ) {
+        KJob *job = NepomukHelpers::markCollectionAsIndexed( Akonadi::Collection( id ) );
         QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
     }
-    
+
     return app.exec();
 }
 

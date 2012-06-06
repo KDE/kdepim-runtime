@@ -95,13 +95,13 @@ template <typename PayloadPtr>
 bool ICalResourceBase::checkItemAddedChanged( const Akonadi::Item &item, CheckType type )
 {
   if ( !mCalendar ) {
-    cancelTask( i18n("Calendar not loaded.") );
+    cancelTask( i18n( "Calendar not loaded." ) );
     return false;
   }
   if ( !item.hasPayload<PayloadPtr>() ) {
-    QString msg = (type == CheckForAdded)
-                          ? i18n("Unable to retrieve added item %1.", item.id() )
-                          : i18n("Unable to retrieve modified item %1.", item.id() );
+    QString msg = ( type == CheckForAdded )
+                          ? i18n( "Unable to retrieve added item %1.", item.id() )
+                          : i18n( "Unable to retrieve modified item %1.", item.id() );
     cancelTask( msg );
     return false;
   }

@@ -162,7 +162,7 @@ void SendJob::Private::doAkonadiTransport()
     storeResult( false, i18n( "Invalid D-Bus reply from resource %1.", resourceId ) );
     return;
   }
-  filterItem(2); //Outbound
+  filterItem( 2 ); //Outbound
 }
 
 void SendJob::Private::doTraditionalTransport()
@@ -174,13 +174,13 @@ void SendJob::Private::doTraditionalTransport()
   Q_ASSERT( currentJob == 0 );
 
   currentJob = job;
-  filterItem(8); //BeforeOutbound
+  filterItem( 8 ); //BeforeOutbound
 
   // Message.
   Q_ASSERT( item.hasPayload<Message::Ptr>() );
   const Message::Ptr message = item.payload<Message::Ptr>();
   bool needAssemble = false;
-  if( message->hasHeader( "Bcc" ) ) {
+  if ( message->hasHeader( "Bcc" ) ) {
     message->removeHeader( "Bcc" );
     needAssemble = true;
   }
@@ -256,7 +256,7 @@ void SendJob::Private::resourceResult( qlonglong itemId, int result,
   const TransportResourceBase::TransportResult transportResult =
       static_cast<TransportResourceBase::TransportResult>( result );
 
-  const bool success = (transportResult == TransportResourceBase::TransportSucceeded);
+  const bool success = ( transportResult == TransportResourceBase::TransportSucceeded );
 
   Q_ASSERT( itemId == item.id() );
   doPostJob( success, message );
@@ -301,7 +301,7 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         if ( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
           currentJob = new ItemMoveJob( item, SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail ) , q );
           QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
-	  filterItem(2); //Outbound
+	  filterItem( 2 ); //Outbound
         } else {
           abortPostJob();
         }
@@ -311,7 +311,7 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         QObject::connect( currentJob, SIGNAL(result(KJob*)),
                           q, SLOT(slotSentMailCollectionFetched(KJob*)) );
 
-	filterItem(2); //Outbound
+	filterItem( 2 ); //Outbound
       }
     }
   }
@@ -322,13 +322,13 @@ void SendJob::Private::filterItem(int filterset )
   Q_ASSERT( mailfilterInterface == 0 );
 
   mailfilterInterface = new QDBusInterface(
-      QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent"),
+      QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent" ),
       QLatin1String( "/MailFilterAgent" ), QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent" ),
       DBusConnectionPool::threadConnection(), q );
 
 
   if ( !mailfilterInterface->isValid() ) {
-    storeResult( false, i18n( "Failed to get D-Bus interface of mailfilteragent.") );
+    storeResult( false, i18n( "Failed to get D-Bus interface of mailfilteragent." ) );
     delete mailfilterInterface;
     mailfilterInterface = 0;
     return;
@@ -337,7 +337,7 @@ void SendJob::Private::filterItem(int filterset )
   //Outbound = 0x2
   const QDBusReply<void> reply = mailfilterInterface->call( QLatin1String( "filterItem" ), item.id(), filterset, QString() );
   if ( !reply.isValid() ) {
-    storeResult( false, i18n( "Invalid D-Bus reply from mailfilteragent") );
+    storeResult( false, i18n( "Invalid D-Bus reply from mailfilteragent" ) );
     delete mailfilterInterface;
     mailfilterInterface = 0;
     return;
@@ -351,7 +351,7 @@ void SendJob::Private::slotSentMailCollectionFetched(KJob* job)
 {
   Akonadi::Collection fetchCol;
   bool ok = false;
-  if( !job->error() ) {
+  if ( !job->error() ) {
     const CollectionFetchJob *const fetchJob = qobject_cast<CollectionFetchJob*>( job );
     if ( !fetchJob->collections().isEmpty() ) {
         fetchCol = fetchJob->collections().first();

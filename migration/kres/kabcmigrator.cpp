@@ -42,7 +42,7 @@ bool KABCMigrator::migrateResource( KABC::Resource* res)
     return migrateFileResource( res );
   else
     return false;
-  return true;
+  //return true;                  this line will never been reached
 }
 
 bool KABCMigrator::migrateFileResource(KABC::Resource * res)
@@ -50,7 +50,7 @@ bool KABCMigrator::migrateFileResource(KABC::Resource * res)
   const KConfigGroup kresCfg = kresConfig( res );
   const QString format = kresCfg.readEntry( "FileFormat", "" );
   if ( format == "binary" ) {
-    emit message( Warning, i18n("Unsupported file format found. "
+    emit message( Warning, i18n( "Unsupported file format found. "
         "The file format '%1' is no longer supported, please convert to another one.", format ) );
     return false;
   } else if ( format != "vcard" ) {
@@ -64,7 +64,7 @@ bool KABCMigrator::migrateFileResource(KABC::Resource * res)
 void KABCMigrator::fileResourceCreated(KJob * job)
 {
   if ( job->error() ) {
-    migrationFailed( i18n("Failed to create resource: %1", job->errorText()) );
+    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
     return;
   }
   KABC::Resource *res = currentResource();
@@ -75,7 +75,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   OrgKdeAkonadiVCardSettingsInterface *iface = new OrgKdeAkonadiVCardSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
     return;
   }

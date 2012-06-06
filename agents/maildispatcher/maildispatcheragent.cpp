@@ -168,7 +168,7 @@ void MailDispatcherAgent::Private::dispatch()
           KNotification *notify = new KNotification( "emailsent" );
           notify->setComponentData( q->componentData() );
           notify->setPixmap( pixmap );
-          notify->setText( i18nc("Notification when the email was sent", "E-mail successfully sent" ) );
+          notify->setText( i18nc( "Notification when the email was sent", "E-mail successfully sent" ) );
           notify->sendEvent();
         }
       } else {
@@ -190,7 +190,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   kDebug() << "maildispatcheragent: At your service, sir!";
 
 #ifdef _WIN32_WCE
-  QThread::currentThread()->setPriority(QThread::NormalPriority);
+  QThread::currentThread()->setPriority( QThread::NormalPriority );
 #endif
 
 #ifdef KDEPIM_STATIC_LIBS
@@ -342,7 +342,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
     KNotification *notify = new KNotification( "sendingfailed" );
     notify->setComponentData( q->componentData() );
     notify->setPixmap( pixmap );
-    notify->setText( i18nc("Notification when email sending failed", "E-mail sending failed: %1", job->errorString() ) );
+    notify->setText( i18nc( "Notification when email sending failed", "E-mail sending failed: %1", job->errorString() ) );
     notify->sendEvent();
 
     errorOccurred = true;
@@ -373,7 +373,7 @@ void MailDispatcherAgent::Private::emitStatusReady()
 #ifdef KDEPIM_PLUGIN_AGENT
 AKONADI_AGENT_FACTORY( MailDispatcherAgent, akonadi_maildispatcher_agent )
 #else
-AKONADI_AGENT_MAIN( MailDispatcherAgent)
+AKONADI_AGENT_MAIN( MailDispatcherAgent )
 #endif
 
 #include "maildispatcheragent.moc"

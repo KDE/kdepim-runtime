@@ -53,7 +53,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     d->ui.setupUi( this );
 
     d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter( "Resource" );
-    foreach( const QString& type, d->wantedMimeTypes )
+    foreach ( const QString& type, d->wantedMimeTypes )
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
     connect( d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
              SLOT(updateButtonState()) );
@@ -90,7 +90,7 @@ void ResourcesManagementWidget::addClicked()
 {
     Akonadi::AgentTypeDialog dlg( this );
     Akonadi::AgentFilterProxyModel* filter = dlg.agentFilterProxyModel();
-    foreach( const QString& type, d->wantedMimeTypes )
+    foreach ( const QString& type, d->wantedMimeTypes )
         filter->addMimeTypeFilter( type );
 
     if ( dlg.exec() ) {
@@ -127,7 +127,7 @@ void ResourcesManagementWidget::removeClicked()
                                          QString(),
                                          KMessageBox::Dangerous )
              == KMessageBox::Yes ) {
-          foreach( const Akonadi::AgentInstance &agent, instanceList )
+          foreach ( const Akonadi::AgentInstance &agent, instanceList )
               Akonadi::AgentManager::self()->removeInstance( agent );
           updateButtonState();
 	}

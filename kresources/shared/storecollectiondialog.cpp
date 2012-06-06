@@ -64,7 +64,7 @@ StoreCollectionDialog::StoreCollectionDialog( QWidget* parent )
     mFilterModel( 0 ),
     mView( 0 )
 {
-  setCaption( i18nc( "@title:window", "Target Folder Selection") );
+  setCaption( i18nc( "@title:window", "Target Folder Selection" ) );
 
   setButtons( KDialog::Ok | KDialog::Cancel );
 

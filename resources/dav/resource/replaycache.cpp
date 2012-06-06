@@ -140,8 +140,7 @@ void ReplayCache::flush( const QString &collectionUrl )
 
       connect( job, SIGNAL(result(KJob*)), this, SLOT(onItemFetchFinished(KJob*)) );
       job->start();
-    }
-    else if ( entry.type == ReplayCache::ItemRemoved ) {
+    } else if ( entry.type == ReplayCache::ItemRemoved ) {
       // Easiest case, we just have to create the appropriate job
       const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collectionUrl, entry.url );
       DavItem davItem;
@@ -153,8 +152,7 @@ void ReplayCache::flush( const QString &collectionUrl )
       job->setProperty( "replayItemId", QVariant::fromValue( entry.id ) );
       connect( job, SIGNAL(result(KJob*)), SLOT(onItemDeleteFinished(KJob*)) );
       job->start();
-    }
-    else {
+    } else {
       kError() << "Unknown replay type for item id" << entry.id;
       delReplayEntry( collectionUrl, entry.id );
     }
@@ -196,8 +194,7 @@ void ReplayCache::onItemFetchFinished( KJob *job )
     createJob->setProperty( "replayItemId", QVariant::fromValue( itemId ) );
     connect( createJob, SIGNAL(result(KJob*)), this, SLOT(onItemAddFinished(KJob*)) );
     createJob->start();
-  }
-  else {
+  } else {
     DavItemModifyJob *modifyJob = new DavItemModifyJob( davUrl, davItem );
     modifyJob->setProperty( "item", QVariant::fromValue( item ) );
     modifyJob->setProperty( "replayCollectionRemoteId", QVariant::fromValue( collectionUrl ) );

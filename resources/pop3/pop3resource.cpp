@@ -590,7 +590,7 @@ void POP3Resource::fetchJobResult( KJob *job )
 
 void POP3Resource::messageFinished( int messageId, KMime::Message::Ptr message )
 {
-  if( mState != Download ) {
+  if ( mState != Download ) {
     // This can happen if the slave does not get notified in time about the fact
     // that the job was killed
     return;

@@ -58,7 +58,7 @@ QStringList SubResource::supportedMimeTypes()
 bool SubResource::createChildSubResource( const QString &resourceName )
 {
   if ( ( mCollection.rights() & Akonadi::Collection::CanCreateCollection ) == 0 ) {
-    kError(5800) << "Parent collection does not allow creation of child collections";
+    kError( 5800 ) << "Parent collection does not allow creation of child collections";
     return false;
   }
 

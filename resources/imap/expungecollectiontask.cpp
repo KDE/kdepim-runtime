@@ -46,7 +46,7 @@ void ExpungeCollectionTask::doStart( KIMAP::Session *session )
   if ( collection().hasAttribute( "noselect" ) ) {
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
-      kDebug(5327) << "No Select folder";
+      kDebug( 5327 ) << "No Select folder";
       taskDone();
       return;
     }

@@ -125,8 +125,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       mHasTemporaryError = true;
       setError( davJob->error() );
       setErrorText( davJob->errorText() );
-    }
-    else {
+    } else {
       if ( DavUtils::httpRequestRetryable( responseCode ) )
         mHasTemporaryError = true;
 

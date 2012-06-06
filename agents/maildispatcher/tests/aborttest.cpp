@@ -122,7 +122,7 @@ void AbortTest::testAbort()
   QByteArray line( 70, 'a' );
   line.append( "\n" );
   QByteArray content( "\n" );
-  for( int i = 0; i < MESSAGE_MB * 1024 * 1024 / line.length() + 10; i++ ) {
+  for ( int i = 0; i < MESSAGE_MB * 1024 * 1024 / line.length() + 10; i++ ) {
     content.append( line );
   }
   QVERIFY( content.length() > MESSAGE_MB * 1024 * 1024 ); // >10MiB
@@ -141,9 +141,9 @@ void AbortTest::testAbort()
   AKVERIFYEXEC( qjob );
 
   // Wait for the MDA to begin dispatching.
-  for( int ds = 0; iface.dispatcherInstance().status() == AgentInstance::Idle; ds++ ) {
+  for ( int ds = 0; iface.dispatcherInstance().status() == AgentInstance::Idle; ds++ ) {
     QTest::qWait( 100 );
-    if( ds % 10 == 0 ) {
+    if ( ds % 10 == 0 ) {
       kDebug() << "Waiting for the MDA to begin dispatching." << ds / 10 << "seconds elapsed.";
     }
 
@@ -154,9 +154,9 @@ void AbortTest::testAbort()
   // Tell the MDA to abort.
   QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Running );
   iface.dispatcherInstance().abortCurrentTask();
-  for( int ds = 0; iface.dispatcherInstance().status() != AgentInstance::Idle; ds++ ) {
+  for ( int ds = 0; iface.dispatcherInstance().status() != AgentInstance::Idle; ds++ ) {
     QTest::qWait( 100 );
-    if( ds % 10 == 0 ) {
+    if ( ds % 10 == 0 ) {
       kDebug() << "Waiting for the MDA to become idle after aborting." << ds / 10 << "seconds elapsed.";
     }
 
@@ -185,9 +185,9 @@ void AbortTest::testAbort()
   AKVERIFYEXEC( cjob );
 
   // Verify that the item got sent.
-  for( int ds = 0; addSpy->isEmpty(); ds++ ) {
+  for ( int ds = 0; addSpy->isEmpty(); ds++ ) {
     QTest::qWait( 100 );
-    if( ds % 10 == 0 ) {
+    if ( ds % 10 == 0 ) {
       kDebug() << "Waiting for an item to be sent." << ds / 10 << "seconds elapsed.";
     }
 
@@ -225,7 +225,7 @@ void AbortTest::testAbortWhileIdle()
   AKVERIFYEXEC( qjob );
 
   // Verify that the item got sent.
-  for( int s = 0; addSpy->isEmpty(); s++ ) {
+  for ( int s = 0; addSpy->isEmpty(); s++ ) {
     QTest::qWait( 1000 );
     QVERIFY2( s <= 10, "Timeout" );
   }

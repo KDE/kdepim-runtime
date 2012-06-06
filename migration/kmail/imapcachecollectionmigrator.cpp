@@ -175,7 +175,7 @@ void ImapCacheCollectionMigrator::Private::fetchItemsResult( KJob *job )
 
   Item::List::iterator itemIt = mItems.begin();
   while ( itemIt != mItems.end() ) {
-    const QString storeRemoteId = (*itemIt).remoteId();
+    const QString storeRemoteId = ( *itemIt ).remoteId();
     if ( mImportCachedMessages ||
          ( mImportNewMessages && !mUidHash.contains( storeRemoteId ) ) ||
          mTagListHash.contains( storeRemoteId ) ) {
@@ -362,7 +362,7 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
       kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Tagging item" << item.url() << "with" << tagList;
 #ifndef KDEPIM_NO_NEPOMUK
       QList<Nepomuk::Tag> nepomukTags;
-      Q_FOREACH( const QString &tag, tagList ) {
+      Q_FOREACH ( const QString &tag, tagList ) {
         if ( tag.isEmpty() ) {
           kWarning() << "TagList for item" << item.url() << "contains an empty tag";
         } else {
@@ -512,7 +512,7 @@ ImapCacheCollectionMigrator::MigrationOptions ImapCacheCollectionMigrator::migra
 void ImapCacheCollectionMigrator::setUnsubscribedImapFolders( const QStringList &imapFolders )
 {
   d->mUnsubscribedImapFolders.clear();
-  Q_FOREACH( const QString &imapFolder, imapFolders ) {
+  Q_FOREACH ( const QString &imapFolder, imapFolders ) {
     if ( imapFolder.endsWith( QLatin1Char( '/' ) ) ) {
       d->mUnsubscribedImapFolders << imapFolder.left( imapFolder.size() - 1 );
     } else {

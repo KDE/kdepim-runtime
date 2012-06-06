@@ -43,7 +43,7 @@ AddCollectionTask::~AddCollectionTask()
 void AddCollectionTask::doStart( KIMAP::Session *session )
 {
   if ( parentCollection().remoteId().isEmpty() ) {
-    emitError( i18n("Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.",
+    emitError( i18n( "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.",
                     collection().name(),
                     parentCollection().name() ) );
     changeProcessed();
@@ -64,7 +64,7 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
 
   newMailBox += m_collection.name();
 
-  kDebug(5327) << "New folder: " << newMailBox;
+  kDebug( 5327 ) << "New folder: " << newMailBox;
 
   KIMAP::CreateJob *job = new KIMAP::CreateJob( session );
   job->setMailBox( newMailBox );

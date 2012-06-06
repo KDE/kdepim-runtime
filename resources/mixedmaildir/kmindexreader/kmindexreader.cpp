@@ -39,9 +39,9 @@ using Akonadi::MessageStatus;
 #include <byteswap.h>
 #endif
 
-#define INDEX_VERSION 1506
+static const int INDEX_VERSION = 1506;
 #ifndef MAX_LINE
-#define MAX_LINE 4096
+  static const int MAX_LINE = 4096;
 #endif
 
 // We define functions as kmail_swap_NN so that we don't get compile errors
@@ -119,7 +119,7 @@ MessageStatus& KMIndexData::status()
           // status to the new multiple status scheme.
           KMLegacyMsgStatus legacyMsgStatus = (KMLegacyMsgStatus) mCachedLongParts[KMIndexReader::MsgLegacyStatusPart];
           mStatus.setRead();
-          switch (legacyMsgStatus) {
+          switch ( legacyMsgStatus ) {
               case KMLegacyMsgStatusUnknown:
                   mStatus.clear();
                   break;
@@ -180,19 +180,17 @@ KMIndexReader::KMIndexReader(const QString& indexFile)
 , mHeaderOffset( 0 )
 , mError( false )
 {
-  if( !mIndexFile.exists() )
-  {
+  if( !mIndexFile.exists() ) {
     kDebug( KDE_DEFAULT_DEBUG_AREA ) << "file doesn't exist";
     mError = true;
   }
 
-  if( !mIndexFile.open( QIODevice::ReadOnly ) )
-  {
+  if( !mIndexFile.open( QIODevice::ReadOnly ) ) {
     kDebug( KDE_DEFAULT_DEBUG_AREA ) << "file cant be open";
     mError = true;
   }
 
-  mFp = fdopen(mIndexFile.handle(), "r");
+  mFp = fdopen( mIndexFile.handle(), "r");
 }
 
 KMIndexReader::~KMIndexReader()
@@ -227,68 +225,64 @@ KMIndexDataPtr KMIndexReader::dataByFileName( const QString &fileName ) const
 bool KMIndexReader::readHeader( int *version )
 {
   int indexVersion;
-  Q_ASSERT(mFp != 0);
+  Q_ASSERT( mFp != 0 );
   mIndexSwapByteOrder = false;
-  mIndexSizeOfLong = sizeof(long);
+  mIndexSizeOfLong = sizeof( long );
 
-  int ret = fscanf(mFp, "# KMail-Index V%d\n", &indexVersion);
+  int ret = fscanf( mFp, "# KMail-Index V%d\n", &indexVersion );
   if ( ret == EOF || ret == 0 )
       return false; // index file has invalid header
-  if(version)
+  if( version )
       *version = indexVersion;
-  if (indexVersion < 1505 ) {
-      if(indexVersion == 1503) {
+  if ( indexVersion < 1505 ) {
+      if( indexVersion == 1503 ) {
         kWarning() << "Need to convert old index file" << mIndexFileName << "to utf-8";
         mConvertToUtf8 = true;
       }
       return true;
-  } else if (indexVersion == 1505) {
-  } else if (indexVersion < INDEX_VERSION) {
+  } else if ( indexVersion == 1505 ) {
+  } else if ( indexVersion < INDEX_VERSION ) {
       kFatal() << "Index file" << mIndexFileName << "is out of date. What to do?";
 //       createIndexFromContents();
       return false;
-  } else if(indexVersion > INDEX_VERSION) {
+  } else if( indexVersion > INDEX_VERSION ) {
       kFatal() << "index file of newer version";
       return false;
-  }
-  else {
+  } else {
       // Header
       quint32 byteOrder = 0;
-      quint32 sizeOfLong = sizeof(long); // default
+      quint32 sizeOfLong = sizeof( long ); // default
 
       quint32 header_length = 0;
-      KDE_fseek(mFp, sizeof(char), SEEK_CUR );
-      fread(&header_length, sizeof(header_length), 1, mFp);
-      if (header_length > 0xFFFF)
-         header_length = kmail_swap_32(header_length);
+      KDE_fseek( mFp, sizeof( char ), SEEK_CUR );
+      fread( &header_length, sizeof( header_length ), 1, mFp );
+      if ( header_length > 0xFFFF )
+         header_length = kmail_swap_32( header_length );
 
-      off_t endOfHeader = KDE_ftell(mFp) + header_length;
+      off_t endOfHeader = KDE_ftell( mFp ) + header_length;
 
       bool needs_update = true;
       // Process available header parts
-      if (header_length >= sizeof(byteOrder))
-      {
-         fread(&byteOrder, sizeof(byteOrder), 1, mFp);
-         mIndexSwapByteOrder = (byteOrder == 0x78563412);
-         header_length -= sizeof(byteOrder);
+      if ( header_length >= sizeof( byteOrder ) ) {
+         fread( &byteOrder, sizeof( byteOrder ), 1, mFp );
+         mIndexSwapByteOrder = ( byteOrder == 0x78563412 );
+         header_length -= sizeof( byteOrder );
 
-         if (header_length >= sizeof(sizeOfLong))
-         {
-            fread(&sizeOfLong, sizeof(sizeOfLong), 1, mFp);
-            if (mIndexSwapByteOrder)
-               sizeOfLong = kmail_swap_32(sizeOfLong);
+         if ( header_length >= sizeof( sizeOfLong ) ) {
+            fread( &sizeOfLong, sizeof( sizeOfLong ), 1, mFp );
+            if ( mIndexSwapByteOrder )
+               sizeOfLong = kmail_swap_32( sizeOfLong );
             mIndexSizeOfLong = sizeOfLong;
-            header_length -= sizeof(sizeOfLong);
+            header_length -= sizeof( sizeOfLong );
             needs_update = false;
          }
       }
-      if (needs_update || mIndexSwapByteOrder || (mIndexSizeOfLong != sizeof(long)))
-      {
+      if ( needs_update || mIndexSwapByteOrder || ( mIndexSizeOfLong != sizeof( long ) ) ) {
       kDebug( KDE_DEFAULT_DEBUG_AREA ) << "DIRTY!";
 //         setDirty( true );
       }
       // Seek to end of header
-      KDE_fseek(mFp, endOfHeader, SEEK_SET );
+      KDE_fseek( mFp, endOfHeader, SEEK_SET );
 
       if ( mIndexSwapByteOrder ) {
          kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Index File has byte order swapped!";
@@ -307,7 +301,7 @@ bool KMIndexReader::readIndex()
   KMIndexData* msg;
 
   Q_ASSERT( mFp != 0 );
-  rewind(mFp);
+  rewind( mFp );
 
   mMsgList.clear();
   mMsgByFileName.clear();
@@ -315,48 +309,45 @@ bool KMIndexReader::readIndex()
 
   int version;
 
-  if (!readHeader(&version)) return false;
+  if ( !readHeader( &version ) ) return false;
 
-  mHeaderOffset = KDE_ftell(mFp);
+  mHeaderOffset = KDE_ftell( mFp );
 
   // loop through the entire index
-  while (!feof(mFp))
-  {
+  while ( !feof( mFp ) ) {
     //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "NEW MSG!";
     msg = 0;
     // check version (parsed by readHeader)
     // because different versions must be
     // parsed differently
     //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "parsing version" << version;
-    if(version >= 1505) {
+    if( version >= 1505 ) {
       // parse versions >= 1505
-      if(!fread(&len, sizeof(len), 1, mFp))
+      if( !fread( &len, sizeof( len ), 1, mFp ) )
         break;
 
       // swap bytes if needed
-      if (mIndexSwapByteOrder)
-        len = kmail_swap_32(len);
+      if ( mIndexSwapByteOrder )
+        len = kmail_swap_32( len );
 
-      off_t offs = KDE_ftell(mFp);
-      if(KDE_fseek(mFp, len, SEEK_CUR))
+      off_t offs = KDE_ftell( mFp );
+      if( KDE_fseek( mFp, len, SEEK_CUR ) )
         break;
       msg = new KMIndexData();
-      fillPartsCache(msg, offs, len);
-    }
-    else
-    {
+      fillPartsCache( msg, offs, len );
+    } else {
       //////////////////////
       //BEGIN UNTESTED CODE
       //////////////////////
       //parse verions < 1505
       QByteArray line( MAX_LINE, '\0' );
-      fgets(line.data(), MAX_LINE, mFp);
-      if (feof(mFp)) break;
-      if (*line.data() == '\0') {
+      fgets( line.data(), MAX_LINE, mFp );
+      if ( feof( mFp ) ) break;
+      if ( *line.data() == '\0' ) {
         // really, i have no idea when or how this would occur
         // but we probably want to know if it does - Casey
         kWarning() << "Unknowable bad occurred";
-        fclose(mFp);
+        fclose( mFp );
         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "fclose(mFp = " << mFp << ")";
         mFp = 0;
         mMsgList.clear();
@@ -365,20 +356,19 @@ bool KMIndexReader::readIndex()
         return false;
       }
       msg = new KMIndexData;
-      fromOldIndexString( msg, line, mConvertToUtf8);
-      off_t offs = KDE_ftell(mFp);
-      if(KDE_fseek(mFp, len, SEEK_CUR))
+      fromOldIndexString( msg, line, mConvertToUtf8 );
+      off_t offs = KDE_ftell( mFp );
+      if ( KDE_fseek( mFp, len, SEEK_CUR ) )
         break;
-      fillPartsCache(msg, offs, len);
+      fillPartsCache( msg, offs, len );
       //////////////////////
       //END UNTESTED CODE
       //////////////////////
     }
-    if(!msg)
+    if ( !msg )
       break;
 
-    if (msg->status().isDeleted())
-    {
+    if ( msg->status().isDeleted() ) {
       delete msg;  // skip messages that are marked as deleted
       continue;
     }
@@ -408,7 +398,7 @@ bool KMIndexReader::readIndex()
 //--- For compatibility with old index files
 bool KMIndexReader::fromOldIndexString( KMIndexData* msg, const QByteArray& str, bool toUtf8)
 {
-  Q_UNUSED(toUtf8)
+  Q_UNUSED( toUtf8 )
 //     const char *start, *offset;
 //   msg->modifiers = KMMsgInfoPrivate::ALL_SET;
 //   msg->xmark   = str.mid(33, 3).trimmed();
@@ -456,15 +446,15 @@ static uchar *g_chunk = 0;
 
 namespace {
   template < typename T > void copy_from_stream( T & x ) {
-    if( g_chunk_offset + int(sizeof(T)) > g_chunk_length ) {
+    if( g_chunk_offset + int( sizeof( T ) ) > g_chunk_length ) {
       g_chunk_offset = g_chunk_length;
       kWarning() << "This should never happen..";
       x = 0;
     } else {
       // the memcpy is optimized out by the compiler for the values
       // of sizeof(T) that is called with
-      memcpy( &x, g_chunk + g_chunk_offset, sizeof(T) );
-      g_chunk_offset += sizeof(T);
+      memcpy( &x, g_chunk + g_chunk_offset, sizeof( T ) );
+      g_chunk_offset += sizeof( T );
     }
   }
 }
@@ -474,28 +464,27 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
   if( !msg )
     return false;
   //kDebug( KDE_DEFAULT_DEBUG_AREA );
-  if (g_chunk_length < indexLen)
-      g_chunk = (uchar *)realloc(g_chunk, g_chunk_length = indexLen);
+  if ( g_chunk_length < indexLen )
+       g_chunk = (uchar *)realloc( g_chunk, g_chunk_length = indexLen );
 
-  off_t first_off = KDE_ftell(mFp);
-  KDE_fseek(mFp, indexOff, SEEK_SET);
-  fread( g_chunk, indexLen, 1, mFp);
-  KDE_fseek(mFp, first_off, SEEK_SET);
+  off_t first_off = KDE_ftell( mFp );
+  KDE_fseek( mFp, indexOff, SEEK_SET );
+  fread( g_chunk, indexLen, 1, mFp );
+  KDE_fseek( mFp, first_off, SEEK_SET );
 
   MsgPartType type;
   quint16 len;
   off_t ret = 0;
   for ( g_chunk_offset = 0; g_chunk_offset < indexLen; g_chunk_offset += len ) {
     quint32 tmp;
-    copy_from_stream(tmp);
-    copy_from_stream(len);
-    if (mIndexSwapByteOrder)
-    {
-       tmp = kmail_swap_32(tmp);
-       len = kmail_swap_16(len);
+    copy_from_stream( tmp );
+    copy_from_stream( len );
+    if ( mIndexSwapByteOrder ) {
+       tmp = kmail_swap_32( tmp );
+       len = kmail_swap_16( len );
     }
     type = (MsgPartType) tmp;
-    if( g_chunk_offset + len > indexLen ) {
+    if ( g_chunk_offset + len > indexLen ) {
       kWarning() << "g_chunk_offset + len > indexLen" << "This should never happen..";
       return false;
     }
@@ -505,7 +494,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
 
       // This works because the QString constructor does a memcpy.
       // Otherwise we would need to be concerned about the alignment.
-      QString str((QChar *)(g_chunk + g_chunk_offset), len/2);
+      QString str( (QChar *)( g_chunk + g_chunk_offset ), len/2 );
       msg->mCachedStringParts[type] = str;
 
       // Normally we need to swap the byte order because the QStrings are written
@@ -519,39 +508,33 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
 #     else
       // Byte order is big endian (swap is false)
 #     endif
-    } else  if( ( type >= 7 && type <= 10 ) || type == 12 || type == 13 || (type >= 16 && type <= 18) )
-    {
-      Q_ASSERT(mIndexSizeOfLong == len);
-      if (mIndexSizeOfLong == sizeof(ret))
-      {
+    } else  if( ( type >= 7 && type <= 10 ) || type == 12 || type == 13 || ( type >= 16 && type <= 18 ) ) {
+      Q_ASSERT( mIndexSizeOfLong == len );
+      if ( mIndexSizeOfLong == sizeof( ret ) ) {
         //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mIndexSizeOfLong == sizeof(ret)";
         // this memcpy replaces the original call to copy_from_stream
         // so that g_chunk_offset is not changed
-        memcpy( &ret, g_chunk + g_chunk_offset, sizeof(ret) );
-        if (mIndexSwapByteOrder)
-        {
-          if (sizeof(ret) == 4)
-            ret = kmail_swap_32(ret);
+        memcpy( &ret, g_chunk + g_chunk_offset, sizeof( ret ) );
+        if ( mIndexSwapByteOrder ) {
+          if ( sizeof(ret) == 4 )
+            ret = kmail_swap_32( ret );
           else
-            ret = kmail_swap_64(ret);
+            ret = kmail_swap_64( ret );
         }
       }
       //////////////////////
       //BEGIN UNTESTED CODE
       //////////////////////
-      else if (mIndexSizeOfLong == 4)
-      {
+      else if ( mIndexSizeOfLong == 4 ) {
          // Long is stored as 4 bytes in index file, sizeof(long) = 8
          quint32 ret_32;
          // this memcpy replaces the original call to copy_from_stream
          // so that g_chunk_offset is not changed
          memcpy( &ret_32, g_chunk + g_chunk_offset, sizeof( quint32 ) );
-         if (mIndexSwapByteOrder)
-            ret_32 = kmail_swap_32(ret_32);
+         if ( mIndexSwapByteOrder )
+            ret_32 = kmail_swap_32( ret_32 );
          ret = ret_32;
-      }
-      else if (mIndexSizeOfLong == 8)
-      {
+      } else if ( mIndexSizeOfLong == 8 ) {
          // Long is stored as 8 bytes in index file, sizeof(long) = 4
          quint32 ret_1;
          quint32 ret_2;
@@ -559,8 +542,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
          // so that g_chunk_offset is not changed
          memcpy( &ret_1, g_chunk + g_chunk_offset, sizeof( quint32 ) );
          memcpy( &ret_2, g_chunk + g_chunk_offset, sizeof( quint32 ) );
-         if (!mIndexSwapByteOrder)
-         {
+         if ( !mIndexSwapByteOrder ) {
             // Index file order is the same as the order of this CPU.
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
             // Index file order is little endian
@@ -569,9 +551,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
             // Index file order is big endian
             ret = ret_2; // We drop the 4 most significant bytes
 #endif
-         }
-         else
-         {
+         } else {
             // Index file order is different from this CPU.
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
             // Index file order is big endian
@@ -581,9 +561,8 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
             ret = ret_1; // We drop the 4 most significant bytes
 #endif
             // We swap the result to host order.
-            ret = kmail_swap_32(ret);
+            ret = kmail_swap_32( ret );
          }
-
       }
       //////////////////////
       //END UNTESTED CODE
@@ -601,5 +580,3 @@ QList< KMIndexDataPtr > KMIndexReader::messages()
 {
   return mMsgList;
 }
-
-

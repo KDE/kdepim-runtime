@@ -69,7 +69,7 @@ void StoreResultJob::Private::fetchDone( KJob *job )
     q->commit();
     return;
   }
-  
+
   // Store result in item.
   Item item = fetchJob->items().first();
   if ( success ) {

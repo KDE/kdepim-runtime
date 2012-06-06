@@ -30,15 +30,15 @@ using namespace Microblog;
 bool SerializerPluginmicroblog::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
 {
   Q_UNUSED( version );
- 
+
   if ( label != Item::FullPayload )
     return false;
- 
+
   StatusItem status;
   status.setData( data.readAll() );
-  
+
   item.setPayload<StatusItem>( status );
- 
+
   return true;
 }
 
@@ -48,7 +48,7 @@ void SerializerPluginmicroblog::serialize( const Item& item, const QByteArray& l
 
   if ( label != Item::FullPayload || !item.hasPayload<StatusItem>() )
     return;
- 
+
   const StatusItem status = item.payload<StatusItem>();
   data.write( status.data() );
 }

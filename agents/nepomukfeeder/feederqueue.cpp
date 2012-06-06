@@ -64,7 +64,7 @@ FeederQueue::FeederQueue( QObject* parent )
 
 FeederQueue::~FeederQueue()
 {
-  
+
 }
 
 void FeederQueue::setReindexing( bool reindex )
@@ -76,7 +76,7 @@ void FeederQueue::setOnline( bool online )
 {
   //kDebug() << online;
   mOnline = online;
-  if (online)
+  if ( online )
       continueIndexing();
 }
 
@@ -91,19 +91,18 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     // The low prio queue is always throttled a little more than the high prio one
     //
     if ( speed == FullSpeed ) {
-        lowPrioQueue.setProcessingDelay(0);
-        highPrioQueue.setProcessingDelay(0);
-    }
-    else {
-        lowPrioQueue.setProcessingDelay(s_snailPaceDelay);
-        highPrioQueue.setProcessingDelay(s_reducedSpeedDelay);
+        lowPrioQueue.setProcessingDelay( 0 );
+        highPrioQueue.setProcessingDelay( 0 );
+    } else {
+        lowPrioQueue.setProcessingDelay( s_snailPaceDelay );
+        highPrioQueue.setProcessingDelay( s_reducedSpeedDelay );
     }
 }
 
 void FeederQueue::addCollection( const Akonadi::Collection &collection )
 {
   //kDebug() << collection.id();
- 
+
   // If the collection contains mail, append it, otherwise prepend.
   // This ensures the smaller, fewer collections with things like
   // contacts or events in them are processed first. They tend to
@@ -134,7 +133,7 @@ void FeederQueue::processNextCollection()
     return;
   }
   mCurrentCollection = mCollectionQueue.takeFirst();
-  emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ));
+  emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
   kDebug() << "Indexing collection " << mCurrentCollection.name() << mCurrentCollection.id();
 
   // process the collection only if it has not already been indexed
@@ -142,18 +141,18 @@ void FeederQueue::processNextCollection()
   // - nie:url needs to be set
   // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
   if ( !mReIndex &&
-        Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 . }")
-                                                                        .arg(Soprano::Node::resourceToN3(Vocabulary::NIE::url()),
-                                                                            Soprano::Node::resourceToN3(mCurrentCollection.url()),
-                                                                            Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiIndexCompatLevel()),
-                                                                            Soprano::Node::literalToN3(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL)),
-                                                                            Soprano::Query::QueryLanguageSparql).boolValue() ) {
+        Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
+                                                                        .arg( Soprano::Node::resourceToN3( Vocabulary::NIE::url() ),
+                                                                              Soprano::Node::resourceToN3( mCurrentCollection.url() ),
+                                                                              Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
+                                                                              Soprano::Node::literalToN3( NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL ) ),
+                                                                              Soprano::Query::QueryLanguageSparql ).boolValue() ) {
     kDebug() << "already indexed collection: " << mCurrentCollection.id() << " skipping";
     mCurrentCollection = Collection();
     QTimer::singleShot(0, this, SLOT(processNextCollection()));
     return;
   }
-  KJob *job = NepomukHelpers::addCollectionToNepomuk(mCurrentCollection);
+  KJob *job = NepomukHelpers::addCollectionToNepomuk( mCurrentCollection );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
 
   ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
@@ -166,7 +165,7 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
 {
   kDebug() << items.count();
   Akonadi::Item::List itemsToUpdate;
-  foreach( const Item &item, items ) {
+  foreach ( const Item &item, items ) {
     if ( item.storageCollectionId() != mCurrentCollection.id() )
       continue; // stay away from links
 
@@ -177,22 +176,22 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
     // - nie:lastModified needs to match the item's modification time
     // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
     if ( mReIndex ||
-         !Nepomuk::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }")
-                                                                          .arg(Soprano::Node::resourceToN3(Vocabulary::NIE::url()),
-                                                                               Soprano::Node::resourceToN3(item.url()),
-                                                                               Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId()),
-                                                                               Soprano::Node::literalToN3(QString::number(item.id())),
-                                                                               Soprano::Node::resourceToN3(Vocabulary::NIE::lastModified()),
-                                                                               Soprano::Node::literalToN3(item.modificationTime()),
-                                                                               Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiIndexCompatLevel()),
-                                                                               Soprano::Node::literalToN3(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL)),
-                                                                          Soprano::Query::QueryLanguageSparql).boolValue() ) {
+         !Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }" )
+                                                                           .arg( Soprano::Node::resourceToN3( Vocabulary::NIE::url() ),
+                                                                                 Soprano::Node::resourceToN3( item.url() ),
+                                                                                 Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiItemId() ),
+                                                                                 Soprano::Node::literalToN3( QString::number( item.id() ) ),
+                                                                                 Soprano::Node::resourceToN3( Vocabulary::NIE::lastModified() ),
+                                                                                 Soprano::Node::literalToN3( item.modificationTime() ),
+                                                                                 Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
+                                                                                 Soprano::Node::literalToN3( NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL ) ),
+                                                                                 Soprano::Query::QueryLanguageSparql ).boolValue() ) {
       itemsToUpdate.append( item );
     }
   }
 
   if ( !itemsToUpdate.isEmpty() ) {
-    lowPrioQueue.addItems(itemsToUpdate);
+    lowPrioQueue.addItems( itemsToUpdate );
     mTotalAmount += itemsToUpdate.size();
     mProcessItemQueueTimer.start();
   }
@@ -203,9 +202,9 @@ void FeederQueue::itemFetchResult(KJob* job)
   if ( job->error() )
     kWarning() << job->errorString();
 
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
-  Q_ASSERT(fetchJob);
-  itemHeadersReceived(fetchJob->items());
+  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>( job );
+  Q_ASSERT( fetchJob );
+  itemHeadersReceived( fetchJob->items() );
 
   --mPendingJobs;
   if ( mPendingJobs == 0 && lowPrioQueue.isEmpty() ) { //Fetch jobs finished but there were no items in the collection
@@ -234,7 +233,7 @@ void FeederQueue::continueIndexing()
 
 void FeederQueue::collectionFullyIndexed()
 {
-    NepomukHelpers::markCollectionAsIndexed(mCurrentCollection);
+    NepomukHelpers::markCollectionAsIndexed( mCurrentCollection );
     mCurrentCollection = Collection();
     emit idle( i18n( "Indexing completed." ) );
     //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
@@ -245,20 +244,20 @@ void FeederQueue::processItemQueue()
 {
   //kDebug();
   ++mProcessedAmount;
-  if ( (mProcessedAmount % 100) == 0 && mTotalAmount > 0 && mProcessedAmount <= mTotalAmount )
-    emit progress( (mProcessedAmount * 100) / mTotalAmount );
-  
+  if ( ( mProcessedAmount % 100 ) == 0 && mTotalAmount > 0 && mProcessedAmount <= mTotalAmount )
+    emit progress( ( mProcessedAmount * 100 ) / mTotalAmount );
+
   if ( !mOnline ) {
     kDebug() << "not Online, stopping processing";
     return;
   } else if ( !highPrioQueue.isEmpty() ) {
     //kDebug() << "high";
-    if (!highPrioQueue.processItem()) {
+    if ( !highPrioQueue.processItem() ) {
       return;
     }
-  } else if ( !lowPrioQueue.isEmpty() ){
+  } else if ( !lowPrioQueue.isEmpty() ) {
     //kDebug() << "low";
-    if (!lowPrioQueue.processItem()) {
+    if ( !lowPrioQueue.processItem() ) {
       return;
     }
   } else {
@@ -275,7 +274,7 @@ void FeederQueue::processItemQueue()
 
 void FeederQueue::prioQueueFinished()
 {
-  if (highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && (mPendingJobs == 0) && mCurrentCollection.isValid() ) {
+  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && ( mPendingJobs == 0 ) && mCurrentCollection.isValid() ) {
     collectionFullyIndexed();
   }
 }
@@ -326,13 +325,13 @@ ItemQueue::~ItemQueue()
 void ItemQueue::addItem(const Akonadi::Item &item)
 {
   //kDebug() << "pipline size: " << mItemPipeline.size();
-  mItemPipeline.enqueue(item.id()); //TODO if payload is available add directly to 
+  mItemPipeline.enqueue( item.id() ); //TODO if payload is available add directly to
 }
 
 void ItemQueue::addItems(const Akonadi::Item::List &list )
 {
-  foreach (const Akonadi::Item &item, list) {
-    addItem(item);
+  foreach ( const Akonadi::Item &item, list ) {
+    addItem( item );
   }
 }
 
@@ -340,11 +339,11 @@ void ItemQueue::addItems(const Akonadi::Item::List &list )
 bool ItemQueue::processItem()
 {
   //kDebug() << "pipline size: " << mItemPipeline.size() << mItemFetchList.size() << mFetchedItemList.size();
-  if (mRunningJobs > 0) {//wait until the old graph has been saved
+  if ( mRunningJobs > 0 ) {//wait until the old graph has been saved
     //kDebug() << "blocked: " << mRunningJobs;
     return false;
   }
-  Q_ASSERT(mRunningJobs == 0);
+  Q_ASSERT( mRunningJobs == 0 );
   mRunningJobs = 0;
   //kDebug() << "------------------------procItem";
   static bool processing = false; // guard against sub-eventloop reentrancy
@@ -355,14 +354,14 @@ bool ItemQueue::processItem()
     mItemFetchList.append( Akonadi::Item( mItemPipeline.dequeue() ) );
   }
   processing = false;
-  
-  if (mItemFetchList.size() >= mFetchSize || mItemPipeline.isEmpty() ) {
-    //kDebug() << QString("Fetching %1 items").arg(mItemFetchList.size());
+
+  if ( mItemFetchList.size() >= mFetchSize || mItemPipeline.isEmpty() ) {
+    //kDebug() << QString( "Fetching %1 items" ).arg( mItemFetchList.size() );
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItemFetchList, this );
     job->fetchScope().fetchFullPayload();
     job->fetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
     job->fetchScope().setCacheOnly( true );
-    job->setProperty("numberOfItems", mItemFetchList.size());
+    job->setProperty( "numberOfItems", mItemFetchList.size() );
     connect( job, SIGNAL(result(KJob*)), SLOT(fetchJobResult(KJob*)) );
     mRunningJobs++;
     mItemFetchList.clear();
@@ -380,11 +379,11 @@ void ItemQueue::fetchJobResult(KJob* job)
     kWarning() << job->errorString();
     emit batchFinished();
   }
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
-  Q_ASSERT(fetchJob);
-  int numberOfItems = fetchJob->property("numberOfItems").toInt();
-  mFetchedItemList.append(fetchJob->items());
-  if(fetchJob->items().size() != numberOfItems) {
+  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
+  Q_ASSERT( fetchJob );
+  int numberOfItems = fetchJob->property( "numberOfItems" ).toInt();
+  mFetchedItemList.append( fetchJob->items() );
+  if ( fetchJob->items().size() != numberOfItems ) {
     kWarning() << "Not all items were fetched: " << fetchJob->items().size() << numberOfItems;
   }
   processBatch();
@@ -396,14 +395,14 @@ bool ItemQueue::processBatch()
   for ( int i = 0; i < mFetchedItemList.size() && i < mBatchSize; i++ ) {
     const Akonadi::Item &item = mFetchedItemList.takeFirst();
     //kDebug() << item.id();
-    if (!item.hasPayload()) { //can happen due to deserialization error
+    if ( !item.hasPayload() ) { //can happen due to deserialization error
       kWarning() << "failed to fetch item: " << item.id();
       continue;
     }
-    Q_ASSERT(item.hasPayload());
-    Q_ASSERT(mBatch.size() == 0 ? mResourceGraph.isEmpty() : true); //otherwise we havent reached addGraphToNepomuk yet, and therefore mustn't overwrite mResourceGraph
+    Q_ASSERT( item.hasPayload() );
+    Q_ASSERT( mBatch.size() == 0 ? mResourceGraph.isEmpty() : true ); //otherwise we havent reached addGraphToNepomuk yet, and therefore mustn't overwrite mResourceGraph
     NepomukHelpers::addItemToGraph( item, mResourceGraph );
-    mBatch.append(item.url());
+    mBatch.append( item.url() );
   }
   if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
     //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
@@ -423,7 +422,7 @@ void ItemQueue::batchJobResult(KJob* job)
   //kDebug() << "------------------------------------------";
   //kDebug() << "pipline size: " << mItemPipeline.size();
   //kDebug() << "fetchedItemList : " << mFetchedItemList.size();
-  Q_ASSERT(mBatch.isEmpty());
+  Q_ASSERT( mBatch.isEmpty() );
   if ( job->error() ) {
     /*foreach( const Nepomuk::SimpleResource &res, m_debugGraph.toList() ) {
         kWarning() << res;
@@ -437,7 +436,7 @@ void ItemQueue::batchJobResult(KJob* job)
 void ItemQueue::continueProcessing()
 {
   mRunningJobs--;
-  if (processBatch()) { //Go back for more
+  if ( processBatch() ) { //Go back for more
     //kDebug() << "batch finished";
     emit batchFinished();
   } else {
