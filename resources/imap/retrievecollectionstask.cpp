@@ -48,7 +48,7 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
   root.setName( resourceName() );
   root.setRemoteId( rootRemoteId() );
   root.setContentMimeTypes( QStringList( Akonadi::Collection::mimeType() ) );
-  root.setRights( Akonadi::Collection::ReadOnly );
+  root.setRights( Akonadi::Collection::CanCreateCollection );
   root.setParentCollection( Akonadi::Collection::root() );
   root.addAttribute( new NoSelectAttribute( true ) );
 
