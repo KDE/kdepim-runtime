@@ -138,7 +138,7 @@
           <item row="1" column="1">
            <widget class="QLabel" name="formatVersion">
             <property name="text">
-             <string>TextLabel</string>
+             <string comment="KDE::DoNotExtract">TextLabel</string>
             </property>
            </widget>
           </item>
