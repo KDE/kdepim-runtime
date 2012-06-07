@@ -82,7 +82,7 @@ do { \
     if ( ( __expr ) != ( __expected ) ) { \
         QTest::qWait( 0 ); \
     } \
-    for ( int __i = 0; __i < __timeout && ( ( __expr ) != ( __expected ) ); __i+ = __step ) { \
+    for ( int __i = 0; __i < __timeout && ( ( __expr ) != ( __expected ) ); __i += __step ) { \
         QTest::qWait( __step ); \
     } \
     QCOMPARE( __expr, __expected ); \
