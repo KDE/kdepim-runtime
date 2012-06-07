@@ -68,7 +68,7 @@ do { \
     if ( !( __expr ) ) { \
         QTest::qWait( 0 ); \
     } \
-    for ( int __i = 0; __i < __timeout && !( __expr ); __i+ = __step ) { \
+    for ( int __i = 0; __i < __timeout && !( __expr ); __i += __step ) { \
         QTest::qWait( __step ); \
     } \
     QVERIFY( __expr ); \
