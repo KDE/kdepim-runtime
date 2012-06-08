@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Google Contacts
 Name[cs]=Kontakty Google
+Name[de]=Google-Kontakte
 Name[el]=Google Επαφές
 Name[es]=Contactos Google
 Name[et]=Google'i kontaktid
@@ -15,6 +16,7 @@ Name[uk]=Контакти Google
 Name[x-test]=xxGoogle Contactsxx
 Name[zh_TW]=Google 聯絡人
 Comment=Access your Google Contacts from KDE
+Comment[de]=Greifen Sie in KDE auf Google-Kontakte zu
 Comment[el]=Αποκτήστε πρόσβαση στις Google επαφές σας από το KDE
 Comment[es]=Acceda a sus contactos Google desde KDE
 Comment[et]=Oma Google'i kontaktide kasutamine otse KDE-st
