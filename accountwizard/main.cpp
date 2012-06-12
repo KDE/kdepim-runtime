@@ -55,16 +55,18 @@ int main( int argc, char **argv )
 
   KCmdLineArgs::init( argc, argv, &aboutData );
 
-  if ( !KUniqueApplication::start() ) {
-      fprintf( stderr, "accountwizard is already running!\n" );
-      exit( 0 );
-  }
-
   KCmdLineOptions options;
   options.add( "type <type>", ki18n( "Only offer accounts that support the given type." ) );
   options.add( "assistant <assistant>", ki18n( "Run the specified assistant." ) );
   options.add( "package <fullpath>", ki18n( "unpack fullpath on startup and launch that assistant" ) );
   KCmdLineArgs::addCmdLineOptions( options );
+  KUniqueApplication::addCmdLineOptions();
+
+  if ( !KUniqueApplication::start() ) {
+      fprintf( stderr, "accountwizard is already running!\n" );
+      exit( 0 );
+  }
+
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   KUniqueApplication app;
