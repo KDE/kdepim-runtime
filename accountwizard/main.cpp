@@ -67,7 +67,7 @@ int main( int argc, char **argv )
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
-  KApplication app;
+  KUniqueApplication app;
   KGlobal::locale()->insertCatalog( "libakonadi" );
 
   Akonadi::Control::start( 0 );
