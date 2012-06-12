@@ -26,6 +26,10 @@
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kglobal.h>
+#include <KUniqueApplication>
+
+
+#include <stdio.h>
 
 #ifdef Q_OS_WINCE
 #include <QtPlugin>
@@ -50,6 +54,12 @@ int main( int argc, char **argv )
   aboutData.addAuthor( ki18n( "Laurent Montel" ), KLocalizedString() , "montel@kde.org" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
+
+  if ( !KUniqueApplication::start() ) {
+      fprintf( stderr, "accountwizard is already running!\n" );
+      exit( 0 );
+  }
+
   KCmdLineOptions options;
   options.add( "type <type>", ki18n( "Only offer accounts that support the given type." ) );
   options.add( "assistant <assistant>", ki18n( "Run the specified assistant." ) );
