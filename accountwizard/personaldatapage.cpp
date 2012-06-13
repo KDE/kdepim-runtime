@@ -37,6 +37,13 @@
 
 #include <QScrollArea>
 
+QString accountName(Ispdb *ispdb, QString username)
+{
+  const int pos(username.indexOf(QLatin1Char('@')));
+  username = username.left(pos);
+  return ispdb->name( Ispdb::Long ) + QString::fromLatin1(" (%1)").arg(username);
+}
+
 PersonalDataPage::PersonalDataPage(Dialog* parent) :
   Page( parent ), mIspdb( 0 ), mSetupManager( parent->setupManager() )
 {
@@ -176,7 +183,7 @@ void PersonalDataPage::configureSmtpAccount()
 
     QObject* object = mSetupManager->createTransport( "smtp" );
     Transport* t = qobject_cast<Transport*>( object );
-    t->setName( mIspdb->name( Ispdb::Long ) );
+    t->setName( accountName(mIspdb,s.username) );
     t->setHost( s.hostname );
     t->setPort( s.port );
     t->setUsername( s.username );
@@ -208,7 +215,7 @@ void PersonalDataPage::configureImapAccount()
 
     QObject* object = mSetupManager->createResource( "akonadi_imap_resource" );
     Resource* t = qobject_cast<Resource*>( object );
-    t->setName( mIspdb->name( Ispdb::Long ) );
+    t->setName( accountName(mIspdb,s.username) );
     t->setOption( "ImapServer", s.hostname );
     t->setOption( "ImapPort", s.port );
     t->setOption( "UserName", s.username );
@@ -239,7 +246,7 @@ void PersonalDataPage::configurePop3Account()
 
     QObject* object = mSetupManager->createResource( "akonadi_pop3_resource" );
     Resource* t = qobject_cast<Resource*>( object );
-    t->setName( mIspdb->name( Ispdb::Long ) );
+    t->setName( accountName(mIspdb,s.username) );
     t->setOption( "Host", s.hostname );
     t->setOption( "Port", s.port );
     t->setOption( "Login", s.username );
