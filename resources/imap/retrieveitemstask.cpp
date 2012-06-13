@@ -61,6 +61,7 @@ bool RetrieveItemsTask::isFastSyncEnabled() const
 
 void RetrieveItemsTask::doStart( KIMAP::Session *session )
 {
+  emitPercent(0);
   // Prevent fetching items from noselect folders.
   if ( collection().hasAttribute( "noselect" ) ) {
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );

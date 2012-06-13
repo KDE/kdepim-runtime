@@ -235,6 +235,7 @@ void ResourceTask::collectionAttributesRetrieved( const Akonadi::Collection &col
 void ResourceTask::itemRetrieved( const Akonadi::Item &item )
 {
   m_resource->itemRetrieved( item );
+  emitPercent(100);
   deleteLater();
 }
 
@@ -295,6 +296,11 @@ void ResourceTask::taskDone()
 {
   m_resource->taskDone();
   deleteLater();
+}
+
+void ResourceTask::emitPercent( int percent )
+{
+  m_resource->emitPercent( percent );
 }
 
 void ResourceTask::emitError( const QString &message )
