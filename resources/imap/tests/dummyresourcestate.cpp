@@ -265,6 +265,12 @@ void DummyResourceState::emitWarning( const QString &message )
   recordCall( "emitWarning", QVariant::fromValue(message) );
 }
 
+void DummyResourceState::emitPercent( int percent )
+{
+  // FIXME: Many tests need to be updated for this to be uncommented out.
+  // recordCall( "emitPercent", QVariant::fromValue(percent) );
+}
+
 void DummyResourceState::synchronizeCollectionTree()
 {
   recordCall( "synchronizeCollectionTree" );
