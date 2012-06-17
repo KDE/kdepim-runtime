@@ -29,6 +29,7 @@
 using namespace KAlarmCal;
 
 class KJob;
+namespace Akonadi { class CollectionFetchJob; }
 class AlarmTypeRadioWidget;
 
 class KAlarmResource : public ICalResourceBase
@@ -57,10 +58,12 @@ class KAlarmResource : public ICalResourceBase
     private Q_SLOTS:
         void settingsChanged();
         void collectionFetchResult(KJob*);
+        void updateFormat(KJob*);
+        void setCompatibility(KJob*);
 
     private:
         void checkFileCompatibility(const Akonadi::Collection& = Akonadi::Collection());
-        QString remoteIdFromPath() const;
+        Akonadi::CollectionFetchJob* fetchCollection(const char* slot);
 
         AlarmTypeRadioWidget* mTypeSelector;
         KACalendar::Compat    mCompatibility;
