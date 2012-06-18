@@ -194,12 +194,12 @@ class SubResourceModel : public AbstractSubResourceModel
       SubResourceClass *subResource = mSubResourcesByColId.value( collection.id(), 0 );
       if ( subResource == 0 ) {
         kWarning( 5650 ) << "Item id=" << item.id()
-                        << ", remoteId=" << item.remoteId()
-                        << ", mimeType=" << item.mimeType()
-                        << "added to an unknown collection"
-                        << "(id=" << collection.id()
-                        << ", remoteId=" << collection.remoteId()
-                        << ")";
+                         << ", remoteId=" << item.remoteId()
+                         << ", mimeType=" << item.mimeType()
+                         << "added to an unknown collection"
+                         << "(id=" << collection.id()
+                         << ", remoteId=" << collection.remoteId()
+                         << ")";
       } else {
         subResource->addItem( item );
 

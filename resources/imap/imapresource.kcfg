@@ -86,7 +86,7 @@
     </entry>
     <entry name="SievePort" type="Int">
       <label>Define sieve port</label>
-      <default>2000</default>
+      <default>4190</default>
     </entry>
     <entry name="SieveAlternateUrl" type="String">
       <label>Define alternate URL</label>

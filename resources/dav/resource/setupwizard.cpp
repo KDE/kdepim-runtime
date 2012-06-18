@@ -104,8 +104,7 @@ static QString settingsToUrl( const QWizard *wizard, const QString &protocol )
 
     url.setHost( service->property( hostPropertyName ).toString() );
     url.setPath( pathPattern );
-  }
-  else {
+  } else {
     if ( wizard->field( "connectionUseSecureConnection" ).toBool() )
       url.setScheme( "https" );
     else
@@ -228,8 +227,7 @@ int CredentialsPage::nextId() const
     wizard()->setProperty( "predefinedProviderName", offers.at( 0 )->name() );
     wizard()->setProperty( "providerDesktopFilePath", offers.at( 0 )->entryPath() );
     return SetupWizard::W_PredefinedProviderPage;
-  }
-  else {
+  } else {
     return SetupWizard::W_ServerTypePage;
   }
 }
@@ -459,8 +457,7 @@ void ConnectionPage::urlElementChanged()
       mCardDavUrlPreview->setText( "-" );
     if ( mGroupDavUrlPreview )
       mGroupDavUrlPreview->setText( "-" );
-  }
-  else {
+  } else {
     if ( mCalDavUrlPreview )
       mCalDavUrlPreview->setText( settingsToUrl( this->wizard(), "CalDav" ) );
     if ( mCardDavUrlPreview )

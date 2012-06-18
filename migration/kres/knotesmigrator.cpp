@@ -59,7 +59,7 @@ bool KNotesMigrator::migrateResource( KRES::Resource* res)
 void KNotesMigrator::notesResourceCreated(KJob * job)
 {
   if ( job->error() ) {
-    migrationFailed( i18n("Failed to create resource: %1", job->errorText()) );
+    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
     return;
   }
 
@@ -69,19 +69,17 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
   m_agentInstance.setName( kresCfg.readEntry( "ResourceName", "Migrated Notes" ) );
 
   QString resourcePath = kresCfg.readEntry( "NotesURL" );
-  KUrl url(resourcePath);
+  KUrl url( resourcePath );
 
-  if (!QFile::exists(url.toLocalFile()))
-  {
-    migrationCompleted(m_agentInstance);
+  if ( !QFile::exists( url.toLocalFile() ) ) {
+    migrationCompleted( m_agentInstance );
     return;
   }
 
-  m_notesResource = new KCal::CalendarLocal(QString());
+  m_notesResource = new KCal::CalendarLocal( QString() );
 
-  bool success = m_notesResource->load(url.toLocalFile());
-  if (!success)
-  {
+  bool success = m_notesResource->load( url.toLocalFile() );
+  if ( !success ) {
     migrationFailed( i18n( "Failed to open file for reading: %1" , resourcePath ) );
     return;
   }
@@ -90,8 +88,8 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
     "org.freedesktop.Akonadi.Resource." + m_agentInstance.identifier(),
     "/Settings", QDBusConnection::sessionBus(), this );
 
-  if (!iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), m_agentInstance );
+  if ( !iface->isValid() ) {
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), m_agentInstance );
     delete iface;
     return;
   }
@@ -104,7 +102,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
 
   m_agentInstance.reconfigure();
 
-  ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob(m_agentInstance, this);
+  ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( m_agentInstance, this );
   connect( syncJob, SIGNAL(result(KJob*)), SLOT(syncDone(KJob*)));
   syncJob->start();
 }
@@ -130,7 +128,7 @@ void KNotesMigrator::rootFetchFinished( KJob *job )
 void KNotesMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &list )
 {
   emit message( Info, i18n( "Received root collections" ) );
-  foreach( const Collection &collection, list ) {
+  foreach ( const Collection &collection, list ) {
     if ( collection.resource() == m_agentInstance.identifier() ) {
       m_resourceCollection = collection;
       startMigration();
@@ -147,14 +145,13 @@ void KNotesMigrator::startMigration()
 
   emit message( Info, i18np( "Starting migration of %1 journal", "Starting migration of %1 journals", oldNotesList.size() ) );
 
-  foreach ( KCal::Journal *journal, oldNotesList )
-  {
+  foreach ( KCal::Journal *journal, oldNotesList ) {
     Item newItem;
     newItem.setMimeType( "text/x-vnd.akonadi.note" );
     newItem.setParentCollection( m_resourceCollection );
     KMime::Message::Ptr note( new KMime::Message() );
 
-    QByteArray encoding("utf-8");
+    QByteArray encoding( "utf-8" );
     note->subject( true )->fromUnicodeString( journal->summary(), encoding );
     note->mainBodyPart()->fromUnicodeString( journal->description() );
     note->contentType( true )->setMimeType( journal->descriptionIsRich() ? "text/html" : "text/plain" );

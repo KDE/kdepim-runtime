@@ -72,15 +72,13 @@ void DavItemFetchJob::davJobFinished( KJob *job )
     if ( storedJob->queryMetaData( "responsecode" ).isEmpty() ) {
       setError( storedJob->error() );
       setErrorText( storedJob->errorText() );
-    }
-    else {
+    } else {
       const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request.\n"
                           "%1 (%2).", storedJob->errorString(), responseCode ) );
     }
-  }
-  else {
+  } else {
     mItem.setData( storedJob->data() );
     mItem.setContentType( storedJob->queryMetaData( "content-type" ) );
     mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );

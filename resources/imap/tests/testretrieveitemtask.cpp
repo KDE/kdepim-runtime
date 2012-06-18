@@ -28,10 +28,10 @@ class TestRetrieveItemTask : public ImapTestBase
 private slots:
   void shouldFetchMessage_data()
   {
-    QTest::addColumn<Akonadi::Item>("item");
-    QTest::addColumn<QString>("message");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QString>("callName");
+    QTest::addColumn<Akonadi::Item>( "item" );
+    QTest::addColumn<QString>( "message" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QString>( "callName" );
 
     Akonadi::Collection collection;
     Akonadi::Item item;
@@ -87,7 +87,7 @@ private slots:
     QVERIFY( pool.connect( createDefaultAccount() ) );
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
-    DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+    DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setItem( item );
     RetrieveItemTask *task = new RetrieveItemTask( state );
     task->start( &pool );
@@ -96,14 +96,14 @@ private slots:
     QCOMPARE( state->calls().count(), 1 );
 
     QString command = QString::fromUtf8(state->calls().first().first);
-    if ( command=="cancelTask" && callName!="cancelTask" ) {
+    if ( command == "cancelTask" && callName != "cancelTask" ) {
       kDebug() << "Got a cancel:" << state->calls().first().second.toString();
     }
     QCOMPARE( command, callName );
 
     QVariant parameter = state->calls().first().second;
 
-    if ( callName=="itemRetrieved" ) {
+    if ( callName == "itemRetrieved" ) {
       QCOMPARE( parameter.value<Akonadi::Item>().id(), item.id() );
       QCOMPARE( parameter.value<Akonadi::Item>().remoteId(), item.remoteId() );
 
@@ -111,10 +111,10 @@ private slots:
 
       QCOMPARE( payload, message );
 
-    } else if ( callName=="cancelTask" ) {
+    } else if ( callName == "cancelTask" ) {
       QVERIFY( !parameter.toString().isEmpty() );
     } else {
-      QFAIL( QString("Unexpected call type: %1").arg( callName ).toUtf8().constData() );
+      QFAIL( QString( "Unexpected call type: %1" ).arg( callName ).toUtf8().constData() );
     }
 
     QVERIFY( server.isAllScenarioDone() );

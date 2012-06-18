@@ -76,7 +76,7 @@ using namespace Nepomuk;
 
 
 namespace Akonadi {
-  
+
 namespace {
   inline QStringList listFromString( const QString& s ) {
     if ( s.isEmpty() )
@@ -89,7 +89,7 @@ namespace {
 void NepomukContactFeeder::updateItem(const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
 {
   //kDebug() << item.id();
-  Q_ASSERT(item.hasPayload());
+  Q_ASSERT( item.hasPayload() );
   if ( item.hasPayload<KABC::Addressee>() )
     updateContactItem( item, res, graph );
   else if ( item.hasPayload<KABC::ContactGroup>() )
@@ -101,39 +101,38 @@ void NepomukContactFeeder::updateItem(const Akonadi::Item& item, Nepomuk::Simple
 
 void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
 {
-    res.addType(Nepomuk::Vocabulary::NCO::Contact());
+    res.addType( Nepomuk::Vocabulary::NCO::Contact() );
 
-    //NepomukFeederUtils::setIcon("view-pim-contacts", res, graph);
+    //NepomukFeederUtils::setIcon( "view-pim-contacts", res, graph );
 
-    Nepomuk::NCO::Contact contact(&res);
-    Nepomuk::NCO::PersonContact person(&res);
+    Nepomuk::NCO::Contact contact( &res );
+    Nepomuk::NCO::PersonContact person( &res );
 
     const KABC::Addressee addressee = item.payload<KABC::Addressee>();
 
     if ( !addressee.photo().isEmpty() ) {
         const KStandardDirs ksd;
-        const QDir storeDir( QDir::toNativeSeparators( ksd.localxdgdatadir().append("/nepomuk-contact-images/") ) );
+        const QDir storeDir( QDir::toNativeSeparators( ksd.localxdgdatadir().append( "/nepomuk-contact-images/" ) ) );
 
-        if (!storeDir.exists()) {
+        if ( !storeDir.exists() ) {
             storeDir.mkpath( storeDir.absolutePath() );
         }
 
-        const QString filePath = storeDir.absolutePath().append("/%1.png").arg(addressee.uid());
-        bool imageSaved = addressee.photo().data().save(filePath, "PNG");
+        const QString filePath = storeDir.absolutePath().append( "/%1.png" ).arg( addressee.uid() );
+        bool imageSaved = addressee.photo().data().save( filePath, "PNG" );
 
         if ( imageSaved ) {
-            KUrl fileUrl(filePath);
-            fileUrl.setProtocol("file");
+            KUrl fileUrl( filePath );
+            fileUrl.setProtocol( "file" );
 
-            res.addProperty(Nepomuk::Vocabulary::NCO::photo(), fileUrl.url());
+            res.addProperty( Nepomuk::Vocabulary::NCO::photo(), fileUrl.url() );
         }
     }
 
     if ( !addressee.formattedName().isEmpty() ) {
-        contact.setFullname(addressee.formattedName());
+        contact.setFullname( addressee.formattedName() );
         res.addProperty( Soprano::Vocabulary::NAO::prefLabel(), addressee.formattedName() );
-    }
-    else {
+    } else {
         contact.setFullname( addressee.assembledName() );
         res.addProperty( Soprano::Vocabulary::NAO::prefLabel(), addressee.assembledName() );
     }
@@ -159,7 +158,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
         //       Nepomuk::SimpleResource locRes;
         //       QString geoString;
         //       geoString.sprintf( "%.6f;%.6f", geo.latitude(), geo.longitude() );// make it better
-        //       contact.setHasLocation(locRes.uri());
+        //       contact.setHasLocation( locRes.uri() );
     }
 
     // keys
@@ -191,7 +190,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
     }
 
     Nepomuk::SimpleResource affiliationRes;
-    Nepomuk::NCO::Affiliation affiliation(&affiliationRes);
+    Nepomuk::NCO::Affiliation affiliation( &affiliationRes );
 
     if ( !addressee.organization().isEmpty() ) {
         Nepomuk::SimpleResource organizationRes;
@@ -203,119 +202,119 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
         graph << organizationRes;
     }
     if ( !addressee.role().isEmpty() ) {
-        affiliation.setRoles( listFromString( addressee.role() ));
+        affiliation.setRoles( listFromString( addressee.role() ) );
     }
     if ( !addressee.title().isEmpty() ) {
-        affiliation.setTitle( addressee.title());
+        affiliation.setTitle( addressee.title() );
     }
     if ( !addressee.department().isEmpty() ) {
-        affiliation.setDepartments( listFromString( addressee.department() ));
+        affiliation.setDepartments( listFromString( addressee.department() ) );
     }
 
     // phone numbers
     const KABC::PhoneNumber::List phoneNumbers = addressee.phoneNumbers();
-    const int countOfPhoneNumber(phoneNumbers.count());
+    const int countOfPhoneNumber( phoneNumbers.count() );
     for ( int i = 0; i < countOfPhoneNumber; ++i ) {
         Nepomuk::SimpleResource affiliationPhoneRes;
         Nepomuk::SimpleResource phoneRes;
         if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Bbs ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::BbsNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::BbsNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::BbsNumber number(&phoneRes);
+                Nepomuk::NCO::BbsNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Car ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::CarPhoneNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::CarPhoneNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::CarPhoneNumber number(&phoneRes);
+                Nepomuk::NCO::CarPhoneNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Cell ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::CellPhoneNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::CellPhoneNumber number( &affiliationPhoneRes );
                 //FIXME: this could really use some better way, but it depends on autogenerated code from ontologies
                 //       which needs fixing first
                 number.Nepomuk::NCO::MessagingNumber::addPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::CellPhoneNumber number(&phoneRes);
+                Nepomuk::NCO::CellPhoneNumber number( &phoneRes );
                 //FIXME: this could really use some better way, but it depends on autogenerated code from ontologies
                 //       which needs fixing first
                 number.Nepomuk::NCO::MessagingNumber::addPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Fax ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::FaxNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::FaxNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::FaxNumber number(&phoneRes);
+                Nepomuk::NCO::FaxNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Isdn ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::IsdnNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::IsdnNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::IsdnNumber number(&phoneRes);
+                Nepomuk::NCO::IsdnNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Msg ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::MessagingNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::MessagingNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::MessagingNumber number(&phoneRes);
+                Nepomuk::NCO::MessagingNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Modem ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::ModemNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::ModemNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::ModemNumber number(&phoneRes);
+                Nepomuk::NCO::ModemNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Pager ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::PagerNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::PagerNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::PagerNumber number(&phoneRes);
+                Nepomuk::NCO::PagerNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Pcs ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::PcsNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::PcsNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::PcsNumber number(&phoneRes);
+                Nepomuk::NCO::PcsNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Video ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::VideoTelephoneNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::VideoTelephoneNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::VideoTelephoneNumber number(&phoneRes);
+                Nepomuk::NCO::VideoTelephoneNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Voice ) {
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::VoicePhoneNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::VoicePhoneNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::VoicePhoneNumber number(&phoneRes);
+                Nepomuk::NCO::VoicePhoneNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         } else { // matches Home and Work
             if ( phoneNumbers[ i ].type() & KABC::PhoneNumber::Work ) {
-                Nepomuk::NCO::PhoneNumber number(&affiliationPhoneRes);
+                Nepomuk::NCO::PhoneNumber number( &affiliationPhoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             } else {
-                Nepomuk::NCO::PhoneNumber number(&phoneRes);
+                Nepomuk::NCO::PhoneNumber number( &phoneRes );
                 number.setPhoneNumber( phoneNumbers[ i ].number() );
             }
         }
@@ -350,10 +349,10 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
 
     // addresses
     const KABC::Address::List addresses = addressee.addresses();
-    const int numberOfAddresses(addresses.count());
+    const int numberOfAddresses( addresses.count() );
     for ( int i = 0; i < numberOfAddresses; ++i ) {
         Nepomuk::SimpleResource postalRes;
-        Nepomuk::NCO::PostalAddress address(&postalRes);
+        Nepomuk::NCO::PostalAddress address( &postalRes );
         address.setStreetAddress( addresses[ i ].street() );
         if ( !addresses[ i ].postalCode().isEmpty() )
             address.setPostalcode( addresses[ i ].postalCode() );
@@ -383,7 +382,7 @@ void NepomukContactFeeder::updateGroupItem( const Akonadi::Item &item, Nepomuk::
 
     group.setContactGroupName( contactGroup.name() );
 
-    res.addProperty(Soprano::Vocabulary::NAO::prefLabel(), contactGroup.name());
+    res.addProperty( Soprano::Vocabulary::NAO::prefLabel(), contactGroup.name() );
 
     for ( uint i = 0; i < contactGroup.contactReferenceCount(); ++i ) {
         const Akonadi::Item contactItem( contactGroup.contactReference( i ).uid().toLongLong() );
@@ -397,7 +396,7 @@ void NepomukContactFeeder::updateGroupItem( const Akonadi::Item &item, Nepomuk::
 }
 
 
-K_PLUGIN_FACTORY(factory, registerPlugin<NepomukContactFeeder>();)      
+K_PLUGIN_FACTORY(factory, registerPlugin<NepomukContactFeeder>();)
 K_EXPORT_PLUGIN(factory("akonadi_nepomuk_contact_feeder"))
 
 }

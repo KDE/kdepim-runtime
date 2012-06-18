@@ -339,6 +339,7 @@ void ResourceState::itemsRetrievedIncremental( const Akonadi::Item::List &change
 void ResourceState::itemsRetrievalDone()
 {
   m_resource->itemsRetrievalDone();
+  emitPercent(100);
 }
 
 void ResourceState::itemChangeCommitted( const Akonadi::Item &item )
@@ -448,6 +449,12 @@ void ResourceState::emitWarning( const QString &message )
 {
   emit m_resource->warning( message );
 }
+
+void ResourceState::emitPercent( int percent )
+{
+  emit m_resource->percent( percent );
+}
+
 
 void ResourceState::synchronizeCollectionTree()
 {

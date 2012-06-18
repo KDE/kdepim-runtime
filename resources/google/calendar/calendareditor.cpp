@@ -23,8 +23,9 @@
 
 #include <QFile>
 
-#include <libkgoogle/services/calendar.h>
-using namespace KGoogle::Objects;
+#include <libkgapi/services/calendar.h>
+
+using namespace KGAPI::Objects;
 
 CalendarEditor::CalendarEditor( Calendar *calendar ) :
   QDialog(),
@@ -56,7 +57,7 @@ CalendarEditor::~CalendarEditor()
 void CalendarEditor::accepted()
 {
   if ( !m_calendar ) {
-    m_calendar = new KGoogle::Objects::Calendar();
+    m_calendar = new KGAPI::Objects::Calendar();
   }
 
   m_calendar->setTitle( m_ui->nameEdit->text() );

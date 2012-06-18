@@ -41,9 +41,9 @@ namespace Akonadi {
 void NepomukNoteFeeder::updateItem(const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
 {
     //kDebug() << item.id();
-    Q_ASSERT(item.hasPayload());
+    Q_ASSERT( item.hasPayload() );
     if ( item.hasPayload<KMime::Message::Ptr>() ) {
-        Akonadi::NoteUtils::NoteMessageWrapper note(item.payload<KMime::Message::Ptr>());
+        Akonadi::NoteUtils::NoteMessageWrapper note( item.payload<KMime::Message::Ptr>() );
         res.addType( Nepomuk::Vocabulary::NFO::HtmlDocument() );
 
         NepomukFeederUtils::setIcon( Akonadi::NoteUtils::noteIconName(), res, graph );
@@ -64,7 +64,7 @@ void NepomukNoteFeeder::updateItem(const Akonadi::Item& item, Nepomuk::SimpleRes
     }
 }
 
-K_PLUGIN_FACTORY(factory, registerPlugin<NepomukNoteFeeder>();)      
+K_PLUGIN_FACTORY(factory, registerPlugin<NepomukNoteFeeder>();)
 K_EXPORT_PLUGIN(factory("akonadi_nepomuk_note_feeder"))
 
 }

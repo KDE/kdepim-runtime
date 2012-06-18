@@ -70,7 +70,7 @@ StrigiFeeder::StrigiFeeder( const QString &id )
     mStrigiDBusWatcher( QLatin1String( "org.freedesktop.xesam.searcher" ), QDBusConnection::sessionBus() )
 {
 #ifdef _WIN32_WCE
-  QThread::currentThread()->setPriority(QThread::LowestPriority);
+  QThread::currentThread()->setPriority( QThread::LowestPriority );
 #endif
   setIndexCompatibilityLevel( INDEX_COMPAT_LEVEL );
 
@@ -82,7 +82,7 @@ StrigiFeeder::StrigiFeeder( const QString &id )
   mStrigiDaemonStartupTimeout.setSingleShot( true );
   connect( &mStrigiDaemonStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
   connect( this, SIGNAL(fullyIndexed()), this, SLOT(slotFullyIndexed()) );
-  
+
   connect( &mStrigiDBusWatcher, SIGNAL(serviceRegistered(QString)), this, SLOT(selfTest()) );
   connect( &mStrigiDBusWatcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(selfTest()) );
 

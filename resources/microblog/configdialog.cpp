@@ -46,7 +46,7 @@ ConfigDialog::ConfigDialog( QWidget * parent ) :
             ui.kcfg_Name->setText( usersName );
     }
     setButtons( KDialog::Ok | KDialog::Cancel );
-    ui.testButton->setEnabled(!ui.kcfg_Name->text().isEmpty());
+    ui.testButton->setEnabled( !ui.kcfg_Name->text().isEmpty() );
     connect( ui.testButton, SIGNAL(clicked()), SLOT(slotTestClicked()) );
     connect( ui.kcfg_UserName, SIGNAL(textChanged(QString)), SLOT(slotTextChanged(QString)));
     connect( ui.openidLabel, SIGNAL(linkActivated(QString)), SLOT(slotLinkClicked()) );
@@ -71,7 +71,7 @@ void ConfigDialog::slotTestClicked()
 
 void ConfigDialog::slotTextChanged(const QString &text)
 {
-    ui.testButton->setEnabled(!text.isEmpty());
+    ui.testButton->setEnabled( !text.isEmpty() );
 }
 
 void ConfigDialog::slotButtonClicked( int button )

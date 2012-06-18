@@ -53,7 +53,7 @@ Attribute* IncidenceAttribute::clone() const
   IncidenceAttribute *other = new IncidenceAttribute;
   return other;
 }
- 
+
 QByteArray IncidenceAttribute::serialized() const
 {
   QString data;

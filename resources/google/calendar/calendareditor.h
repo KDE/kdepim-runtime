@@ -20,13 +20,13 @@
 
 #include <QDialog>
 
-#include <libkgoogle/objects/calendar.h>
+#include <libkgapi/objects/calendar.h>
 
 namespace Ui {
   class CalendarEditor;
 }
 
-using namespace KGoogle::Objects;
+using namespace KGAPI::Objects;
 
 class CalendarEditor: public QDialog
 {
@@ -37,7 +37,7 @@ class CalendarEditor: public QDialog
     virtual ~CalendarEditor();
 
   Q_SIGNALS:
-    void accepted( KGoogle::Objects::Calendar *calendar );
+    void accepted( KGAPI::Objects::Calendar *calendar );
 
   private Q_SLOTS:
     void accepted();

@@ -91,7 +91,7 @@ void TestIdxReader::testRead() {
     QVERIFY ( !status.isImportant() );
     QVERIFY ( !msg->status().isImportant() );
     QVERIFY ( msg->status().isRead() );
-    QVERIFY ( msg->tagList().contains("N5tUHPOZFf") );
+    QVERIFY ( msg->tagList().contains( "N5tUHPOZFf" ) );
 
     msg = reader.messages().back();
     status.fromQInt32 ( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );

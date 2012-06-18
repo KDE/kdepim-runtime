@@ -33,7 +33,7 @@ K_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
 Settings *Settings::self()
 {
-  if (!s_globalSettings->q) {
+  if ( !s_globalSettings->q ) {
     new Settings;
     s_globalSettings->q->readConfig();
   }
@@ -43,7 +43,7 @@ Settings *Settings::self()
 
 Settings::Settings() : SettingsBase()
 {
-  Q_ASSERT(!s_globalSettings->q);
+  Q_ASSERT( !s_globalSettings->q );
   s_globalSettings->q = this;
 }
 

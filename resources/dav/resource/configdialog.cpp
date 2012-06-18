@@ -99,15 +99,13 @@ void ConfigDialog::onAddButtonClicked()
     if ( Settings::self()->urlConfiguration( DavUtils::Protocol( dlg->protocol() ), dlg->remoteUrl() ) ) {
       KMessageBox::error( this, i18n( "Another configuration entry already uses the same URL/protocol couple.\n"
                                       "Please use a different URL" ) );
-    }
-    else {
+    } else {
       Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
       urlConfig->mUrl = dlg->remoteUrl();
       if ( dlg->useDefaultCredentials() ) {
         urlConfig->mUser = "$default$";
-      }
-      else {
+      } else {
         urlConfig->mUser = dlg->username();
         urlConfig->mPassword = dlg->password();
       }
@@ -144,12 +142,11 @@ void ConfigDialog::onSearchButtonClicked()
         urlConfig->mUrl = split.at( 1 );
         if ( dlg->useDefaultCredentials() ) {
           urlConfig->mUser = "$default$";
-        }
-        else {
+        } else {
           urlConfig->mUser = dlg->username();
           urlConfig->mPassword = dlg->password();
         }
-                urlConfig->mProtocol = protocol;
+        urlConfig->mProtocol = protocol;
 
         Settings::self()->newUrlConfiguration( urlConfig );
 
@@ -198,8 +195,7 @@ void ConfigDialog::onEditButtonClicked()
 
   if ( urlConfig->mUser == QLatin1String( "$default$" ) ) {
     dlg->setUseDefaultCredentials( true );
-  }
-  else {
+  } else {
     dlg->setUseDefaultCredentials( false );
     dlg->setUsername( urlConfig->mUser );
     dlg->setPassword( urlConfig->mPassword );
@@ -215,8 +211,7 @@ void ConfigDialog::onEditButtonClicked()
     urlConfigAccepted->mUrl = dlg->remoteUrl();
     if ( dlg->useDefaultCredentials() ) {
       urlConfigAccepted->mUser = "$default$";
-    }
-    else {
+    } else {
       urlConfigAccepted->mUser = dlg->username();
       urlConfigAccepted->mPassword = dlg->password();
     }

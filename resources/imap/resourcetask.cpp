@@ -122,7 +122,7 @@ void ResourceTask::onConnectionLost( KIMAP::Session *session )
     // the pointer, we don't need to release it once the
     // task is done
     m_session = 0;
-    cancelTask( i18n("Connection lost") );
+    cancelTask( i18n( "Connection lost" ) );
   }
 }
 
@@ -133,7 +133,7 @@ void ResourceTask::onPoolDisconnect()
   // release our session anymore
   m_pool = 0;
 
-  cancelTask( i18n("Connection lost") );
+  cancelTask( i18n( "Connection lost" ) );
 }
 
 QString ResourceTask::userName() const
@@ -235,6 +235,7 @@ void ResourceTask::collectionAttributesRetrieved( const Akonadi::Collection &col
 void ResourceTask::itemRetrieved( const Akonadi::Item &item )
 {
   m_resource->itemRetrieved( item );
+  emitPercent(100);
   deleteLater();
 }
 
@@ -297,6 +298,11 @@ void ResourceTask::taskDone()
   deleteLater();
 }
 
+void ResourceTask::emitPercent( int percent )
+{
+  m_resource->emitPercent( percent );
+}
+
 void ResourceTask::emitError( const QString &message )
 {
   m_resource->emitError( message );
@@ -322,13 +328,13 @@ QList<QByteArray> ResourceTask::fromAkonadiFlags( const QList<QByteArray> &flags
   QList<QByteArray> newFlags;
 
   foreach ( const QByteArray &oldFlag, flags ) {
-    if( oldFlag == Akonadi::MessageFlags::Seen ) {
+    if ( oldFlag == Akonadi::MessageFlags::Seen ) {
       newFlags.append( ImapFlags::Seen );
-    } else if( oldFlag == Akonadi::MessageFlags::Deleted ) {
+    } else if ( oldFlag == Akonadi::MessageFlags::Deleted ) {
       newFlags.append( ImapFlags::Deleted );
-    } else if( oldFlag == Akonadi::MessageFlags::Answered ) {
+    } else if ( oldFlag == Akonadi::MessageFlags::Answered ) {
       newFlags.append( ImapFlags::Answered );
-    } else if( oldFlag == Akonadi::MessageFlags::Flagged ) {
+    } else if ( oldFlag == Akonadi::MessageFlags::Flagged ) {
       newFlags.append( ImapFlags::Flagged );
     } else {
       newFlags.append( oldFlag );
@@ -343,15 +349,15 @@ QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
   QList<QByteArray> newFlags;
 
   foreach ( const QByteArray &oldFlag, flags ) {
-    if( oldFlag == ImapFlags::Seen ) {
+    if ( oldFlag == ImapFlags::Seen ) {
       newFlags.append( Akonadi::MessageFlags::Seen );
-    } else if( oldFlag == ImapFlags::Deleted ) {
+    } else if ( oldFlag == ImapFlags::Deleted ) {
       newFlags.append( Akonadi::MessageFlags::Deleted );
-    } else if( oldFlag == ImapFlags::Answered ) {
+    } else if ( oldFlag == ImapFlags::Answered ) {
       newFlags.append( Akonadi::MessageFlags::Answered );
-    } else if( oldFlag == ImapFlags::Flagged ) {
+    } else if ( oldFlag == ImapFlags::Flagged ) {
       newFlags.append( Akonadi::MessageFlags::Flagged );
-    } else if( oldFlag.isEmpty() ) {
+    } else if ( oldFlag.isEmpty() ) {
       // filter out empty flags, to avoid isNull/isEmpty confusions higher up
       continue;
     } else {

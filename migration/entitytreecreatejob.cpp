@@ -48,8 +48,7 @@ void EntityTreeCreateJob::createNextLevelOfCollections()
   CollectionCreateJob *job;
 
   const Collection::List colList = m_collections.takeFirst();
-  foreach( const Collection &collection, colList )
-  {
+  foreach ( const Collection &collection, colList ) {
     ++m_pendingJobs;
     job = new CollectionCreateJob( collection, this );
     job->setProperty( collectionIdMappingProperty, collection.id() );
@@ -60,11 +59,9 @@ void EntityTreeCreateJob::createNextLevelOfCollections()
 void EntityTreeCreateJob::createReadyItems()
 {
   Item::List::iterator it;
-  for ( it = m_items.begin(); it != m_items.end(); )
-  {
+  for ( it = m_items.begin(); it != m_items.end(); ) {
     Collection parentCollection = ( *it ).parentCollection();
-    if ( parentCollection.isValid() )
-    {
+    if ( parentCollection.isValid() ) {
       (void) new ItemCreateJob( *it, parentCollection, this );
       it = m_items.erase( it );
     } else {
@@ -82,8 +79,7 @@ void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
   CollectionCreateJob *collectionCreateJob = qobject_cast<CollectionCreateJob *>( job );
   Collection createdCollection = collectionCreateJob->collection();
 
-  if ( job->error() )
-  {
+  if ( job->error() ) {
     kDebug() << job->errorString();
     return;
   }
@@ -92,25 +88,20 @@ void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
 
   Item::List::iterator it;
   const Item::List::iterator end = m_items.end();
-  for ( it = m_items.begin(); it != end; ++it )
-  {
+  for ( it = m_items.begin(); it != end; ++it ) {
     kDebug() << "updating items";
-    if ( it->parentCollection().id() == creationId )
-    {
+    if ( it->parentCollection().id() == creationId ) {
       it->setParentCollection( createdCollection );
     }
   }
 
   createReadyItems();
 
-  if ( !m_collections.isEmpty() )
-  {
+  if ( !m_collections.isEmpty() ) {
     Collection::List::iterator col_it;
     const Collection::List::iterator col_end = m_collections[0].end();
-    for ( col_it = m_collections[0].begin(); col_it != col_end; ++col_it )
-    {
-      if ( col_it->parentCollection().id() == creationId )
-      {
+    for ( col_it = m_collections[0].begin(); col_it != col_end; ++col_it ) {
+      if ( col_it->parentCollection().id() == creationId ) {
         col_it->setParentCollection( createdCollection );
       }
     }

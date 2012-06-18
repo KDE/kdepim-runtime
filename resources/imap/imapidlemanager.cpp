@@ -128,10 +128,10 @@ void ImapIdleManager::onSelectDone( KJob *job )
 
 void ImapIdleManager::onIdleStopped()
 {
-  kDebug(5327) << "IDLE dropped maybe we should reconnect?";
+  kDebug( 5327 ) << "IDLE dropped maybe we should reconnect?";
   m_idle = 0;
   if ( m_session ) {
-    kDebug(5327) << "Restarting the IDLE session!";
+    kDebug( 5327 ) << "Restarting the IDLE session!";
     m_idle = new KIMAP::IdleJob( m_session );
     connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*,QString,int,int)),
              this, SLOT(onStatsReceived(KIMAP::IdleJob*,QString,int,int)) );
@@ -144,16 +144,16 @@ void ImapIdleManager::onIdleStopped()
 void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,
                                       int messageCount, int recentCount)
 {
-  kDebug(5327) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
-  kDebug(5327) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
-           << m_lastMessageCount << m_lastRecentCount;
+  kDebug( 5327 ) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
+  kDebug( 5327 ) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
+                 << m_lastMessageCount << m_lastRecentCount;
 
   // It seems we're not in sync with the cache, resync is needed
   if ( messageCount!=m_lastMessageCount || recentCount!=m_lastRecentCount ) {
     m_lastMessageCount = messageCount;
     m_lastRecentCount = recentCount;
 
-    kDebug(5327) << "Resync needed for" << mailBox << m_state->collection().id();
+    kDebug( 5327 ) << "Resync needed for" << mailBox << m_state->collection().id();
     m_resource->synchronizeCollection( m_state->collection().id() );
   }
 }

@@ -28,12 +28,12 @@ class TestSessionPool : public ImapTestBase
 private slots:
   void shouldPrepareFirstSessionOnConnect_data()
   {
-    QTest::addColumn<ImapAccount*>("account");
-    QTest::addColumn<DummyPasswordRequester*>("requester");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QString>("password");
-    QTest::addColumn<int>("errorCode");
-    QTest::addColumn<QStringList>("capabilities");
+    QTest::addColumn<ImapAccount*>( "account" );
+    QTest::addColumn<DummyPasswordRequester*>( "requester" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QString>( "password" );
+    QTest::addColumn<int>( "errorCode" );
+    QTest::addColumn<QStringList>( "capabilities" );
 
     ImapAccount *account = 0;
     DummyPasswordRequester *requester = 0;
@@ -58,8 +58,8 @@ private slots:
     errorCode = SessionPool::NoError;
     capabilities.clear();
     capabilities << "IMAP4" << "IMAP4REV1" << "NAMESPACE" << "UIDPLUS" << "IDLE";
-    QTest::newRow("normal case") << account << requester << scenario
-                                 << password << errorCode << capabilities;
+    QTest::newRow( "normal case" ) << account << requester << scenario
+                                   << password << errorCode << capabilities;
 
 
     account = createDefaultAccount();
@@ -75,8 +75,8 @@ private slots:
     errorCode = SessionPool::NoError;
     capabilities.clear();
     capabilities << "IMAP4" << "IMAP4REV1" << "UIDPLUS" << "IDLE";
-    QTest::newRow("no NAMESPACE support") << account << requester << scenario
-                                          << password << errorCode << capabilities;
+    QTest::newRow( "no NAMESPACE support" ) << account << requester << scenario
+                                            << password << errorCode << capabilities;
 
 
     account = createDefaultAccount();
@@ -92,8 +92,8 @@ private slots:
     password = "foobar";
     errorCode = SessionPool::IncompatibleServerError;
     capabilities.clear();
-    QTest::newRow("incompatible server") << account << requester << scenario
-                                         << password << errorCode << capabilities;
+    QTest::newRow( "incompatible server" ) << account << requester << scenario
+                                           << password << errorCode << capabilities;
 
 
     QList<DummyPasswordRequester::RequestType> requests;
@@ -114,8 +114,8 @@ private slots:
     password = "foobar";
     errorCode = SessionPool::LoginFailError;
     capabilities.clear();
-    QTest::newRow("login fail, user reject password entry") << account << requester << scenario
-                                                            << password << errorCode << capabilities;
+    QTest::newRow( "login fail, user reject password entry" ) << account << requester << scenario
+                                                              << password << errorCode << capabilities;
 
     account = createDefaultAccount();
     requester = createDefaultRequester();
@@ -137,8 +137,8 @@ private slots:
     errorCode = SessionPool::NoError;
     capabilities.clear();
     capabilities << "IMAP4" << "IMAP4REV1" << "UIDPLUS" << "IDLE";
-    QTest::newRow("login fail, user provide new password") << account << requester << scenario
-                                                           << password << errorCode << capabilities;
+    QTest::newRow( "login fail, user provide new password" ) << account << requester << scenario
+                                                             << password << errorCode << capabilities;
 
     account = createDefaultAccount();
     requester = createDefaultRequester();
@@ -155,8 +155,8 @@ private slots:
     password = "foobar";
     errorCode = SessionPool::LoginFailError;
     capabilities.clear();
-    QTest::newRow("login fail, user provided empty password") << account << requester << scenario
-                                                              << password << errorCode << capabilities;
+    QTest::newRow( "login fail, user provided empty password" ) << account << requester << scenario
+                                                                << password << errorCode << capabilities;
 
     account = createDefaultAccount();
     requester = createDefaultRequester();
@@ -173,8 +173,8 @@ private slots:
     password = "foobar";
     errorCode = SessionPool::ReconnectNeededError;
     capabilities.clear();
-    QTest::newRow("login fail, user change the settings") << account << requester << scenario
-                                                          << password << errorCode << capabilities;
+    QTest::newRow( "login fail, user change the settings" ) << account << requester << scenario
+                                                            << password << errorCode << capabilities;
   }
 
 
@@ -204,13 +204,13 @@ private slots:
 
     QTest::qWait( 200 );
     QVERIFY( requesterSpy.count()>0 );
-    if ( requesterSpy.count()==1 ) {
-      QCOMPARE( requesterSpy.at(0).at(0).toInt(), 0 );
-      QCOMPARE( requesterSpy.at(0).at(1).toString(), password );
+    if ( requesterSpy.count() == 1 ) {
+      QCOMPARE( requesterSpy.at( 0 ).at( 0 ).toInt(), 0 );
+      QCOMPARE( requesterSpy.at( 0 ).at( 1 ).toString(), password );
     }
 
     QCOMPARE( poolSpy.count(), 1 );
-    QCOMPARE( poolSpy.at(0).at(0).toInt(), errorCode );
+    QCOMPARE( poolSpy.at( 0 ).at( 0 ).toInt(), errorCode );
     if ( errorCode == SessionPool::NoError ) {
       QVERIFY( pool.isConnected() );
     } else {
@@ -270,7 +270,7 @@ private slots:
     // Initial connect should trigger only a password request and a connect
     QVERIFY( pool.connect( account ) );
     QTest::qWait( 100 );
-    QCOMPARE( requesterSpy.count(),  1 );
+    QCOMPARE( requesterSpy.count(), 1 );
     QCOMPARE( connectSpy.count(), 1 );
     QCOMPARE( sessionSpy.count(), 0 );
 
@@ -278,66 +278,66 @@ private slots:
     // Requesting a first session shouldn't create a new one,
     // only sessionRequestDone is emitted right away
     requestId = pool.requestSession();
-    QCOMPARE( requestId, qint64(1) );
+    QCOMPARE( requestId, qint64( 1 ) );
     QTest::qWait( 100 );
     QCOMPARE( requesterSpy.count(),  1 );
     QCOMPARE( connectSpy.count(), 1 );
     QCOMPARE( sessionSpy.count(), 1 );
 
-    QCOMPARE( sessionSpy.at(0).at(0).toLongLong(), requestId );
-    QVERIFY( sessionSpy.at(0).at(1).value<KIMAP::Session*>() != 0 );
-    QCOMPARE( sessionSpy.at(0).at(2).toInt(), 0 );
-    QCOMPARE( sessionSpy.at(0).at(3).toString(), QString() );
+    QCOMPARE( sessionSpy.at( 0 ).at( 0 ).toLongLong(), requestId );
+    QVERIFY( sessionSpy.at( 0 ).at( 1 ).value<KIMAP::Session*>() != 0 );
+    QCOMPARE( sessionSpy.at( 0 ).at( 2 ).toInt(), 0 );
+    QCOMPARE( sessionSpy.at( 0 ).at( 3 ).toString(), QString() );
 
 
     // Requesting an extra session should create a new one
     // So for instance password will be requested
     requestId = pool.requestSession();
-    QCOMPARE( requestId, qint64(2) );
+    QCOMPARE( requestId, qint64( 2 ) );
     QTest::qWait( 100 );
     QCOMPARE( requesterSpy.count(),  2 );
     QCOMPARE( connectSpy.count(), 1 );
     QCOMPARE( sessionSpy.count(), 2 );
 
-    QCOMPARE( sessionSpy.at(1).at(0).toLongLong(), requestId );
-    QVERIFY( sessionSpy.at(1).at(1).value<KIMAP::Session*>() != 0 );
+    QCOMPARE( sessionSpy.at( 1 ).at( 0 ).toLongLong(), requestId );
+    QVERIFY( sessionSpy.at( 1 ).at( 1 ).value<KIMAP::Session*>() != 0 );
     // Should be different sessions...
-    QVERIFY( sessionSpy.at(0).at(1).value<KIMAP::Session*>() != sessionSpy.at(1).at(1).value<KIMAP::Session*>() );
-    QCOMPARE( sessionSpy.at(1).at(2).toInt(), 0 );
-    QCOMPARE( sessionSpy.at(1).at(3).toString(), QString() );
+    QVERIFY( sessionSpy.at( 0 ).at( 1 ).value<KIMAP::Session*>() != sessionSpy.at( 1 ).at( 1 ).value<KIMAP::Session*>() );
+    QCOMPARE( sessionSpy.at( 1 ).at( 2 ).toInt(), 0 );
+    QCOMPARE( sessionSpy.at( 1 ).at( 3 ).toString(), QString() );
 
 
     // Requesting yet another session should fail as we reached the
     // maximum pool size, and they're all reserved
     requestId = pool.requestSession();
-    QCOMPARE( requestId, qint64(3) );
+    QCOMPARE( requestId, qint64( 3 ) );
     QTest::qWait( 100 );
     QCOMPARE( requesterSpy.count(),  2 );
     QCOMPARE( connectSpy.count(), 1 );
     QCOMPARE( sessionSpy.count(), 3 );
 
-    QCOMPARE( sessionSpy.at(2).at(0).toLongLong(), requestId );
-    QVERIFY( sessionSpy.at(2).at(1).value<KIMAP::Session*>()==0 );
-    QCOMPARE( sessionSpy.at(2).at(2).toInt(), (int)SessionPool::NoAvailableSessionError );
-    QVERIFY( !sessionSpy.at(2).at(3).toString().isEmpty() );
+    QCOMPARE( sessionSpy.at( 2 ).at( 0 ).toLongLong(), requestId );
+    QVERIFY( sessionSpy.at( 2 ).at( 1 ).value<KIMAP::Session*>()==0 );
+    QCOMPARE( sessionSpy.at( 2 ).at( 2 ).toInt(), (int)SessionPool::NoAvailableSessionError );
+    QVERIFY( !sessionSpy.at( 2 ).at( 3 ).toString().isEmpty() );
 
 
     // OTOH, if we release one now, and then request another one
     // it should succeed without even creating a new session
-    KIMAP::Session *session = sessionSpy.at(0).at(1).value<KIMAP::Session*>();
+    KIMAP::Session *session = sessionSpy.at( 0 ).at( 1 ).value<KIMAP::Session*>();
     pool.releaseSession( session );
     requestId = pool.requestSession();
-    QCOMPARE( requestId, qint64(4) );
+    QCOMPARE( requestId, qint64( 4 ) );
     QTest::qWait( 100 );
-    QCOMPARE( requesterSpy.count(),  2 );
+    QCOMPARE( requesterSpy.count(), 2 );
     QCOMPARE( connectSpy.count(), 1 );
     QCOMPARE( sessionSpy.count(), 4 );
 
-    QCOMPARE( sessionSpy.at(3).at(0).toLongLong(), requestId );
+    QCOMPARE( sessionSpy.at( 3 ).at( 0 ).toLongLong(), requestId );
     // Only one session was available, so that should be the one we get gack
-    QVERIFY( sessionSpy.at(3).at(1).value<KIMAP::Session*>() == session );
-    QCOMPARE( sessionSpy.at(3).at(2).toInt(), 0 );
-    QCOMPARE( sessionSpy.at(3).at(3).toString(), QString() );
+    QVERIFY( sessionSpy.at( 3 ).at( 1 ).value<KIMAP::Session*>() == session );
+    QCOMPARE( sessionSpy.at( 3 ).at( 2 ).toInt(), 0 );
+    QCOMPARE( sessionSpy.at( 3 ).at( 3 ).toString(), QString() );
 
 
 
@@ -384,14 +384,14 @@ private slots:
     QTest::qWait( 100 );
     QCOMPARE( sessionSpy.count(), 1 );
 
-    QCOMPARE( sessionSpy.at(0).at(0).toLongLong(), requestId );
-    KIMAP::Session *s = sessionSpy.at(0).at(1).value<KIMAP::Session*>();
+    QCOMPARE( sessionSpy.at( 0 ).at( 0 ).toLongLong(), requestId );
+    KIMAP::Session *s = sessionSpy.at( 0 ).at( 1 ).value<KIMAP::Session*>();
 
     KIMAP::CapabilitiesJob *job = new KIMAP::CapabilitiesJob( s );
     job->start();
     QTest::qWait( 100 );
     QCOMPARE( lostSpy.count(), 1 );
-    QCOMPARE( lostSpy.at(0).at(0).value<KIMAP::Session*>(), s );
+    QCOMPARE( lostSpy.at( 0 ).at( 0 ).value<KIMAP::Session*>(), s );
 
 
     QVERIFY( server.isAllScenarioDone() );
@@ -401,8 +401,8 @@ private slots:
 
   void shouldNotifyOnDisconnect_data()
   {
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<int>("termination");
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<int>( "termination" );
 
     QList<QByteArray> scenario;
 
@@ -415,7 +415,7 @@ private slots:
              << "S: A000002 OK Completed"
              << "C: A000003 LOGOUT";
 
-    QTest::newRow("logout session") << scenario << (int)SessionPool::LogoutSession;
+    QTest::newRow( "logout session" ) << scenario << (int)SessionPool::LogoutSession;
 
     scenario.clear();
     scenario << FakeServer::greeting()
@@ -425,7 +425,7 @@ private slots:
              << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
              << "S: A000002 OK Completed";
 
-    QTest::newRow("close session") << scenario << (int)SessionPool::CloseSession;
+    QTest::newRow( "close session" ) << scenario << (int)SessionPool::CloseSession;
   }
 
   void shouldNotifyOnDisconnect()
@@ -494,11 +494,11 @@ private slots:
 
     QTest::qWait( 100 );
     QCOMPARE( connectSpy.count(), 1 ); // We're informed that connect failed
-    QCOMPARE( connectSpy.at(0).at(0).toInt(), int(SessionPool::CouldNotConnectError) );
+    QCOMPARE( connectSpy.at( 0 ).at( 0 ).toInt(), int(SessionPool::CouldNotConnectError) );
     QCOMPARE( lostSpy.count(), 0 ); // We're not supposed to know the session pointer, so no connectionLost emitted
 
     // Make the session->deleteLater work, it can't happen in qWait (nested event loop)
-    QCoreApplication::sendPostedEvents(0, QEvent::DeferredDelete);
+    QCoreApplication::sendPostedEvents( 0, QEvent::DeferredDelete);
 
     QVERIFY( session.isNull() );
 
@@ -552,7 +552,7 @@ private slots:
     pool.requestSession();
     QTest::qWait( 100 );
     QCOMPARE( sessionSpy.count(), 1 );
-    QVERIFY( sessionSpy.at(0).at(1).value<KIMAP::Session*>() != 0 );
+    QVERIFY( sessionSpy.at( 0 ).at( 1 ).value<KIMAP::Session*>() != 0 );
 
     // Still connected obviously
     QVERIFY( pool.isConnected() );
@@ -561,13 +561,13 @@ private slots:
     pool.requestSession();
     QTest::qWait( 100 );
     QCOMPARE( sessionSpy.count(), 2 );
-    QVERIFY( sessionSpy.at(1).at(1).value<KIMAP::Session*>() != 0 );
+    QVERIFY( sessionSpy.at( 1 ).at( 1 ).value<KIMAP::Session*>() != 0 );
 
     // Still connected of course
     QVERIFY( pool.isConnected() );
 
-    KIMAP::Session *session1 = sessionSpy.at(0).at(1).value<KIMAP::Session*>();
-    KIMAP::Session *session2 = sessionSpy.at(1).at(1).value<KIMAP::Session*>();
+    KIMAP::Session *session1 = sessionSpy.at( 0 ).at( 1 ).value<KIMAP::Session*>();
+    KIMAP::Session *session2 = sessionSpy.at( 1 ).at( 1 ).value<KIMAP::Session*>();
 
     // Prepare for session disconnects
     QSignalSpy lostSpy( &pool, SIGNAL(connectionLost(KIMAP::Session*)) );
@@ -577,7 +577,7 @@ private slots:
     job->start();
     QTest::qWait( 100 );
     QCOMPARE( lostSpy.count(), 1 );
-    QCOMPARE( lostSpy.at(0).at(0).value<KIMAP::Session*>(), session1 );
+    QCOMPARE( lostSpy.at( 0 ).at( 0 ).value<KIMAP::Session*>(), session1 );
 
     // We're still connected (one session being alive)
     QVERIFY( pool.isConnected() );
@@ -587,7 +587,7 @@ private slots:
     job->start();
     QTest::qWait( 100 );
     QCOMPARE( lostSpy.count(), 2 );
-    QCOMPARE( lostSpy.at(1).at(0).value<KIMAP::Session*>(), session2 );
+    QCOMPARE( lostSpy.at( 1 ).at( 0 ).value<KIMAP::Session*>(), session2 );
 
     // We're not connected anymore! All sessions dropped!
     QVERIFY( !pool.isConnected() );
@@ -638,16 +638,16 @@ private slots:
     QCOMPARE( requesterSpy.count(), 1 );
 
     QCOMPARE( poolSpy.count(), 1 );
-    QCOMPARE( poolSpy.at(0).at(0).toInt(), (int)SessionPool::NoError );
+    QCOMPARE( poolSpy.at( 0 ).at( 0 ).toInt(), (int)SessionPool::NoError );
     QVERIFY( pool.isConnected() );
 
     // Ask for the session we just created
     pool.requestSession();
     QTest::qWait( 100 );
     QCOMPARE( sessionSpy.count(), 1 );
-    QVERIFY( sessionSpy.at(0).at(1).value<KIMAP::Session*>() != 0 );
+    QVERIFY( sessionSpy.at( 0 ).at( 1 ).value<KIMAP::Session*>() != 0 );
 
-    KIMAP::Session *session = sessionSpy.at(0).at(1).value<KIMAP::Session*>();
+    KIMAP::Session *session = sessionSpy.at( 0 ).at( 1 ).value<KIMAP::Session*>();
 
     // Ask for the second session, the password requested will never reply
     // and we'll get a disconnect in parallel (by triggering the capability
@@ -668,7 +668,7 @@ private slots:
     job->start();
     QTest::qWait( 100 );
     QCOMPARE( lostSpy.count(), 1 );
-    QCOMPARE( lostSpy.at(0).at(0).value<KIMAP::Session*>(), session );
+    QCOMPARE( lostSpy.at( 0 ).at( 0 ).value<KIMAP::Session*>(), session );
 
     // The requester didn't reply yet
     QCOMPARE( requesterSpy.count(), 1 );
@@ -678,7 +678,7 @@ private slots:
     QTest::qWait( 1000 );
     QCOMPARE( requesterSpy.count(), 2 );
     QCOMPARE( sessionSpy.count(), 2 );
-    QCOMPARE( sessionSpy.at(1).at(2).toInt(), (int)SessionPool::LoginFailError );
+    QCOMPARE( sessionSpy.at( 1 ).at( 2 ).toInt(), (int)SessionPool::LoginFailError );
 
     QVERIFY( server.isAllScenarioDone() );
 
@@ -690,7 +690,7 @@ private slots:
     // This tests what happens when we can't connect to the server, e.g. due to being offline.
     // In this test we just use 0.0.0.0 as an invalid server IP, instead.
     ImapAccount *account = createDefaultAccount();
-    account->setServer("0.0.0.0"); // so that the connexion fails
+    account->setServer( "0.0.0.0" ); // so that the connexion fails
     DummyPasswordRequester *requester = createDefaultRequester();
     QList<DummyPasswordRequester::RequestType> requests;
     QList<DummyPasswordRequester::ResultType> results;
@@ -709,7 +709,7 @@ private slots:
     QVERIFY( !pool.isConnected() );
     QTRY_COMPARE( requesterSpy.count(), requests.count() );
     QTRY_COMPARE( connectDoneSpy.count(), 1 );
-    QCOMPARE( connectDoneSpy.at(0).at(0).toInt(), (int)SessionPool::CouldNotConnectError );
+    QCOMPARE( connectDoneSpy.at( 0 ).at( 0 ).toInt(), (int)SessionPool::CouldNotConnectError );
     QCOMPARE( lostSpy.count(), 0 ); // don't want this, it makes the resource reconnect immediately (and fail, and reconnect, and so on...)
   }
 

@@ -89,7 +89,7 @@ KABCResource::KABCResource( const QString &id )
     mDelayedSaveTimer( new QTimer( this ) ),
     mContactGroupMimeChecker( new MimeTypeChecker() )
 {
-  KGlobal::locale()->insertCatalog("akonadi_kresourceassistant");
+  KGlobal::locale()->insertCatalog( QLatin1String( "akonadi_kresourceassistant" ) );
 
   mAddressBook->setErrorHandler( mErrorHandler );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadConfiguration()) );
@@ -122,7 +122,7 @@ void KABCResource::configure( WId windowId )
     emit status( Running,
                  i18nc( "@info:status", "Changing address book plugin configuration" ) );
     KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
-    if( windowId )
+    if ( windowId )
       KWindowSystem::setMainWindow( &dlg, windowId );
     if ( dlg.exec() ) {
       setName( mBaseResource->resourceName() );
@@ -636,7 +636,7 @@ bool KABCResource::saveAddressBook()
     return false;
   }
 
-  if ( !mAddressBook->save(ticket) ) {
+  if ( !mAddressBook->save( ticket ) ) {
     kError() << "Saving failed: " << mErrorHandler->mLastError;
     mAddressBook->releaseSaveTicket( ticket );
     return false;

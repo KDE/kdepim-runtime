@@ -104,9 +104,10 @@ protected:
   void cancelTask( const QString &errorString );
   void deferTask();
   void taskDone();
-
+  void emitPercent( int percent );
   void emitError( const QString &message );
   void emitWarning( const QString &message );
+  
 
   void synchronizeCollectionTree();
 

@@ -18,13 +18,13 @@
 #include "calendarresource.h"
 #include "settings.h"
 
-#include <libkgoogle/accessmanager.h>
-#include <libkgoogle/auth.h>
-#include <libkgoogle/fetchlistjob.h>
-#include <libkgoogle/reply.h>
-#include <libkgoogle/objects/task.h>
-#include <libkgoogle/objects/tasklist.h>
-#include <libkgoogle/services/tasks.h>
+#include <libkgapi/accessmanager.h>
+#include <libkgapi/auth.h>
+#include <libkgapi/fetchlistjob.h>
+#include <libkgapi/reply.h>
+#include <libkgapi/objects/task.h>
+#include <libkgapi/objects/tasklist.h>
+#include <libkgapi/services/tasks.h>
 
 #include <KLocalizedString>
 #include <KDebug>
@@ -36,7 +36,7 @@
 #include <Akonadi/ItemFetchScope>
 
 using namespace Akonadi;
-using namespace KGoogle;
+using namespace KGAPI;
 using namespace KCalCore;
 
 void CalendarResource::taskDoUpdate( Reply *reply )
@@ -54,7 +54,7 @@ void CalendarResource::taskDoUpdate( Reply *reply )
   QUrl url = Services::Tasks::updateTaskUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   Services::Tasks service;
-  QByteArray data = service.objectToJSON( static_cast< KGoogle::Object *>( &ktodo ) );
+  QByteArray data = service.objectToJSON( static_cast< KGAPI::Object *>( &ktodo ) );
 
   Request *request = new Request( url, Request::Update, "Tasks", account );
   request->setRequestData( data, "application/json" );
@@ -110,7 +110,7 @@ void CalendarResource::taskListReceived( KJob *job )
   }
 }
 
-void CalendarResource::taskReceived( KGoogle::Reply *reply )
+void CalendarResource::taskReceived( KGAPI::Reply *reply )
 {
   if ( reply->error() != OK ) {
     cancelTask( i18n( "Failed to fetch task: %1", reply->errorString() ) );
@@ -180,7 +180,7 @@ void CalendarResource::tasksReceived( KJob *job )
   modifyJob->start();
 }
 
-void CalendarResource::taskCreated( KGoogle::Reply *reply )
+void CalendarResource::taskCreated( KGAPI::Reply *reply )
 {
   if ( reply->error() != OK ) {
     cancelTask( i18n( "Failed to create a task: %1", reply->errorString() ) );
@@ -205,7 +205,7 @@ void CalendarResource::taskCreated( KGoogle::Reply *reply )
   changeCommitted( item );
 }
 
-void CalendarResource::taskUpdated( KGoogle::Reply *reply )
+void CalendarResource::taskUpdated( KGAPI::Reply *reply )
 {
   if ( reply->error() != OK ) {
     cancelTask( i18n( "Failed to update task: %1", reply->errorString() ) );
@@ -290,12 +290,12 @@ void CalendarResource::doRemoveTask( KJob *job )
   Request *request =
     new Request(
       Services::Tasks::removeTaskUrl( item.parentCollection().remoteId(), item.remoteId() ),
-      KGoogle::Request::Remove, "Tasks", account );
+      KGAPI::Request::Remove, "Tasks", account );
   request->setProperty( "Item", qVariantFromValue( item ) );
   m_gam->sendRequest( request );
 }
 
-void CalendarResource::taskRemoved( KGoogle::Reply *reply )
+void CalendarResource::taskRemoved( KGAPI::Reply *reply )
 {
   if ( reply->error() != NoContent ) {
     cancelTask( i18n( "Failed to delete task (5): %1", reply->errorString() ) );

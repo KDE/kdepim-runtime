@@ -28,9 +28,9 @@ class TestRemoveItemTask : public ImapTestBase
 private slots:
   void shouldAppendMessage_data()
   {
-    QTest::addColumn<Akonadi::Item>("item");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QStringList>("callNames");
+    QTest::addColumn<Akonadi::Item>( "item" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QStringList>( "callNames" );
 
     Akonadi::Collection collection;
     Akonadi::Item item;
@@ -81,11 +81,11 @@ private slots:
     QTest::qWait( 100 );
 
     QCOMPARE( state->calls().count(), callNames.size() );
-    for (int i=0; i<callNames.size(); i++) {
-      QString command = QString::fromUtf8(state->calls().at(i).first);
-      QVariant parameter = state->calls().at(i).second;
+    for ( int i = 0; i < callNames.size(); i++ ) {
+      QString command = QString::fromUtf8(state->calls().at( i ).first);
+      QVariant parameter = state->calls().at( i ).second;
 
-      if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
+      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 

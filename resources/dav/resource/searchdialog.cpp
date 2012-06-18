@@ -143,8 +143,7 @@ void SearchDialog::onSearchJobFinished( KJob* job )
   foreach ( const DavPrincipalSearchJob::Result &result, results ) {
     if ( result.value.startsWith( '/' ) ) {
       url.setPath( result.value );
-    }
-    else {
+    } else {
       KUrl tmp( result.value );
       tmp.setUser( url.user() );
       tmp.setPassword( url.password() );

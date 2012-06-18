@@ -72,7 +72,7 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived( const QList< KIMAP::Mai
   if  ( foldersToDelete.isEmpty() ) {
       changeProcessed();
 
-      kDebug(5327) << "Failed to find the folder to be deleted, resync the folder tree";
+      kDebug( 5327 ) << "Failed to find the folder to be deleted, resync the folder tree";
       emitWarning( i18n( "Failed to find the folder to be deleted, restoring folder list." ) );
       synchronizeCollectionTree();
       return;
@@ -121,7 +121,7 @@ void RemoveCollectionRecursiveTask::onDeleteJobDone( KJob* job )
   if ( job->error() ) {
     changeProcessed();
 
-    kDebug(5327) << "Failed to delete the folder, resync the folder tree";
+    kDebug( 5327 ) << "Failed to delete the folder, resync the folder tree";
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
   } else {
@@ -138,7 +138,7 @@ void RemoveCollectionRecursiveTask::onJobDone( KJob* job )
   if ( job->error() ) {
     changeProcessed();
 
-    kDebug(5327) << "Failed to delete the folder, resync the folder tree";
+    kDebug( 5327 ) << "Failed to delete the folder, resync the folder tree";
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
   }

@@ -51,7 +51,7 @@ Akonadi::Item::List NotesHandler::translateItems( const Akonadi::Item::List &kol
 {
   Akonadi::Item::List newItems;
   foreach ( const Akonadi::Item &item, kolabItems ) {
-    if (!item.hasPayload<KMime::Message::Ptr>()) {
+    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
       kWarning() << "Payload is not a MessagePtr!";
       continue;
     }

@@ -112,7 +112,7 @@ void MoveItemTask::triggerCopyJob( KIMAP::Session *session )
     KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
     m_messageId = msg->messageID()->asUnicodeString().toUtf8();
   } catch ( Akonadi::PayloadException e ) {
-    cancelTask( i18n("Failed to copy item, it has no message payload. Remote id: %1", uid ) );
+    cancelTask( i18n( "Failed to copy item, it has no message payload. Remote id: %1", uid ) );
     return;
   }
 
@@ -205,8 +205,8 @@ void MoveItemTask::onPreSearchSelectDone( KJob *job )
     search->addSearchCriteria( KIMAP::SearchJob::New );
 
     UidNextAttribute *uidNext = targetCollection().attribute<UidNextAttribute>();
-    if ( !uidNext ){
-      cancelTask( i18n("Could not determine the UID for the newly created message on the server") );
+    if ( !uidNext ) {
+      cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
       search->deleteLater();
       return;
     }

@@ -38,8 +38,7 @@ namespace DavUtils
   /**
    * Describes the DAV protocol dialect.
    */
-  enum Protocol
-  {
+  enum Protocol {
     CalDav = 0,   ///< The CalDav protocol as defined in http://caldav.calconnect.org
     CardDav,      ///< The CardDav protocol as defined in http://carddav.calconnect.org
     GroupDav      ///< The GroupDav protocol as defined in http://www.groupdav.org

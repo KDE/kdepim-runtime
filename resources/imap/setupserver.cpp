@@ -102,7 +102,7 @@ static void setCurrentAuthMode( QComboBox* authCombo, MailTransport::Transport::
 {
   kDebug() << "setting authcombo: " << authenticationModeString( authtype );
   int index = authCombo->findData( authtype );
-  if( index == -1 )
+  if ( index == -1 )
     kWarning() << "desired authmode not in the combo";
   kDebug() << "found corresponding index: " << index << "with data" << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData( index ).toInt() );
   authCombo->setCurrentIndex( index );
@@ -293,7 +293,7 @@ void SetupServer::applySettings()
     Settings::self()->setAccountIdentity( m_identityCombobox->currentIdentity() );
 
   Settings::self()->setIntervalCheckEnabled( m_ui->enableMailCheckBox->isChecked() );
-  if( m_ui->enableMailCheckBox->isChecked() )
+  if ( m_ui->enableMailCheckBox->isChecked() )
     Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
 
   Settings::self()->writeConfig();
@@ -324,9 +324,9 @@ void SetupServer::readSettings()
 
   QString safety = Settings::self()->safety();
   int i = 0;
-  if( safety == "SSL" )
+  if ( safety == QLatin1String( "SSL" ) )
     i = KIMAP::LoginJob::AnySslVersion;
-  else if ( safety == "STARTTLS" )
+  else if ( safety == QLatin1String( "STARTTLS" ) )
     i = KIMAP::LoginJob::TlsV1;
   else
     i = KIMAP::LoginJob::Unencrypted;
@@ -359,7 +359,7 @@ void SetupServer::readSettings()
   m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
   m_ui->disconnectedModeEnabled->setChecked( Settings::self()->disconnectedModeEnabled() );
 
-  m_ui->managesieveCheck->setChecked(Settings::self()->sieveSupport());
+  m_ui->managesieveCheck->setChecked( Settings::self()->sieveSupport() );
   m_ui->sameConfigCheck->setChecked( Settings::self()->sieveReuseConfig() );
   m_ui->sievePortSpin->setValue( Settings::self()->sievePort() );
   m_ui->alternateURL->setText( Settings::self()->sieveAlternateUrl() );
@@ -371,8 +371,7 @@ void SetupServer::readSettings()
     Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob( trashCollection,Akonadi::CollectionFetchJob::Base,this );
     connect( fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
              this, SLOT(targetCollectionReceived(Akonadi::Collection::List)) );
-  }
-  else {
+  } else {
     Akonadi::SpecialMailCollectionsRequestJob *requestJob = new Akonadi::SpecialMailCollectionsRequestJob( this );
     connect ( requestJob, SIGNAL(result(KJob*)),
               this, SLOT(localFolderRequestJobFinished(KJob*)) );
@@ -385,7 +384,7 @@ void SetupServer::readSettings()
     m_identityCombobox->setCurrentIdentity( Settings::self()->accountIdentity() );
 
   m_ui->enableMailCheckBox->setChecked( Settings::self()->intervalCheckEnabled() );
-  if( m_ui->enableMailCheckBox->isChecked() )
+  if ( m_ui->enableMailCheckBox->isChecked() )
     m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
   else
     m_ui->checkInterval->setEnabled( false );
@@ -537,10 +536,10 @@ void SetupServer::slotSafetyChanged()
 
   m_ui->authenticationCombo->clear();
   addAuthenticationItem( m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CLEAR );
-  foreach( int prot, protocols ) {
+  foreach ( int prot, protocols ) {
     addAuthenticationItem( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) prot );
   }
-  if( protocols.size() > 0 )
+  if ( protocols.size() > 0 )
     setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) protocols.first() );
   else
     kDebug() << "no authmodes found";
@@ -577,9 +576,9 @@ void SetupServer::slotManageSubscriptions()
 void SetupServer::slotShowServerInfo()
 {
   KDialog *dialog = new KDialog( this );
-  dialog->setCaption( i18nc("Dialog title for dialog showing information about a server", "Server Info" ) );
+  dialog->setCaption( i18nc( "Dialog title for dialog showing information about a server", "Server Info" ) );
   dialog->setButtons( KDialog::Close );
-  dialog->setAttribute( Qt::WA_DeleteOnClose ); 
+  dialog->setAttribute( Qt::WA_DeleteOnClose );
 
   Ui::ServerInfo *serverInfoWidget = new Ui::ServerInfo();
   serverInfoWidget->setupUi( dialog );

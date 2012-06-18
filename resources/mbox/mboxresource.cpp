@@ -83,8 +83,8 @@ MboxResource::~MboxResource()
 
 void MboxResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  dlg->addPage( i18n("Compact frequency"), new CompactPage( mSettings->path() ) );
-  dlg->addPage( i18n("Lock method"), new LockMethodPage() );
+  dlg->addPage( i18n( "Compact frequency" ), new CompactPage( mSettings->path() ) );
+  dlg->addPage( i18n( "Lock method" ), new LockMethodPage() );
   dlg->setCaption( i18n( "Select MBox file" ) );
 }
 
@@ -111,7 +111,7 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
   QString colId = QString::number( col.id() );
   QString colRid = col.remoteId();
   double count = 1;
-  const int entryListSize(entryList.size());
+  const int entryListSize( entryList.size() );
   foreach ( const KMBox::MBoxEntry &entry, entryList ) {
     // TODO: Use cache policy to see what actually has to been set as payload.
     //       Currently most views need a minimal amount of information so the
@@ -301,8 +301,8 @@ bool MboxResource::writeToFile( const QString &fileName )
   if ( fileName != mMBox->fileName() ) {
     QFile file( fileName );
     file.open( QIODevice::WriteOnly );
-    file.seek(file.size());
-    file.write("\n");
+    file.seek( file.size() );
+    file.write( "\n" );
   }
 
   return true;

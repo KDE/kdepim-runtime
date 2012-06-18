@@ -56,7 +56,7 @@ bool KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
 void KCalMigrator::fileResourceCreated(KJob * job)
 {
   if ( job->error() ) {
-    migrationFailed( i18n("Failed to create resource: %1", job->errorText()) );
+    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
     return;
   }
   KCal::ResourceCalendar *res = currentResource();
@@ -67,7 +67,7 @@ void KCalMigrator::fileResourceCreated(KJob * job)
   OrgKdeAkonadiICalSettingsInterface *iface = new OrgKdeAkonadiICalSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
       "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
     return;
   }
@@ -84,7 +84,7 @@ void KCalMigrator::fileResourceCreated(KJob * job)
 void KCalMigrator::birthdaysResourceCreated(KJob* job)
 {
   if ( job->error() ) {
-    migrationFailed( i18n("Failed to create birthdays resource: %1", job->errorText() ) );
+    migrationFailed( i18n( "Failed to create birthdays resource: %1", job->errorText() ) );
     return;
   }
   KCal::ResourceCalendar *res = currentResource();
@@ -96,7 +96,7 @@ void KCalMigrator::birthdaysResourceCreated(KJob* job)
     new OrgKdeAkonadiBirthdaysSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
                                                  "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
     return;
   }
@@ -111,7 +111,7 @@ void KCalMigrator::birthdaysResourceCreated(KJob* job)
 void KCalMigrator::davResourceCreated(KJob *job)
 {
   if ( job->error() ) {
-    migrationFailed( i18n("Failed to create DAV resource: %1", job->errorText() ) );
+    migrationFailed( i18n( "Failed to create DAV resource: %1", job->errorText() ) );
     return;
   }
   KCal::ResourceCalendar *res = currentResource();
@@ -122,13 +122,13 @@ void KCalMigrator::davResourceCreated(KJob *job)
 
   QString groupdavCfgFile = KStandardDirs::locateLocal( "config", "kresources_groupwarerc" );
   if ( !KStandardDirs::exists( groupdavCfgFile ) ) {
-    migrationFailed( i18n("Failed to find the configuration file for the GroupDAV KResource"), instance );
+    migrationFailed( i18n( "Failed to find the configuration file for the GroupDAV KResource" ), instance );
     return;
   }
 
   KConfig groupdavCfg( groupdavCfgFile );
   if ( !groupdavCfg.hasGroup( res->identifier() + ":General" ) ) {
-    migrationFailed( i18n("Apparently invalid configuration file for the GroupDAV KResource"), instance );
+    migrationFailed( i18n( "Apparently invalid configuration file for the GroupDAV KResource" ), instance );
     return;
   }
   KConfigGroup groupdavGeneralCfg = groupdavCfg.group( res->identifier() + ":General" );
@@ -137,7 +137,7 @@ void KCalMigrator::davResourceCreated(KJob *job)
     new OrgKdeAkonadiDavGroupwareSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
                                            "/Settings", QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
     return;
   }
@@ -145,7 +145,7 @@ void KCalMigrator::davResourceCreated(KJob *job)
   QString user = groupdavGeneralCfg.readEntry( "User" );
   QString url = groupdavGeneralCfg.readEntry( "Url" );
   if ( user.isEmpty() || url.isEmpty() ) {
-    migrationFailed( i18n("Empty username or URL in GroupDAV KResource configuration"), instance );
+    migrationFailed( i18n( "Empty username or URL in GroupDAV KResource configuration" ), instance );
     delete iface;
     return;
   }

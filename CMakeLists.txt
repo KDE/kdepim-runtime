@@ -35,7 +35,7 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set( KDEPIM_RUNTIME_DEV_VERSION "beta1" )
+    set( KDEPIM_RUNTIME_DEV_VERSION "beta2" )
 endif ()
 
 set( KDEPIM_RUNTIME_VERSION "4.9${KDEPIM_RUNTIME_DEV_VERSION}" )
@@ -93,11 +93,11 @@ endif(NOT KDEPIM_NO_NEPOMUK)
 find_package(Strigi)
 macro_log_feature(STRIGI_FOUND "Strigi" "Strigi desktop search engine" "http://strigi.sourceforge.net" FALSE "" "")
 
-set(LibKGoogle_MIN_VERSION 0.3.2)
-find_package(LibKGoogle QUIET NO_MODULE)
-macro_log_feature(LibKGoogle_FOUND "LibKGoogle" "A library to access Google services" "http://projects.kde.org/libkgoogle" FALSE "${LibKGoogle_MIN_VERSION}" "LibKGoogle is required to build Akonadi resources to access Google Contacts, Calendars and Tasks" )
+set(LibKGAPI_MIN_VERSION 0.4.0)
+find_package(LibKGAPI QUIET NO_MODULE)
+macro_log_feature(LibKGAPI_FOUND "LibKGAPI" "A library to access Google services" "http://projects.kde.org/libkgapi" FALSE "${LibKGAPI_MIN_VERSION}" "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks" )
 
-if(LibKGoogle_FOUND)
+if(LibKGAPI_FOUND)
   find_package(QJSON)
   macro_log_feature(QJSON_FOUND "QJSON" "Qt library for handling JSON data" "http://qjson.sourceforge.net/" TRUE)
 endif()

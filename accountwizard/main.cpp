@@ -26,6 +26,10 @@
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kglobal.h>
+#include <KUniqueApplication>
+
+
+#include <stdio.h>
 
 #ifdef Q_OS_WINCE
 #include <QtPlugin>
@@ -50,14 +54,22 @@ int main( int argc, char **argv )
   aboutData.addAuthor( ki18n( "Laurent Montel" ), KLocalizedString() , "montel@kde.org" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );
+
   KCmdLineOptions options;
   options.add( "type <type>", ki18n( "Only offer accounts that support the given type." ) );
   options.add( "assistant <assistant>", ki18n( "Run the specified assistant." ) );
   options.add( "package <fullpath>", ki18n( "unpack fullpath on startup and launch that assistant" ) );
   KCmdLineArgs::addCmdLineOptions( options );
+  KUniqueApplication::addCmdLineOptions();
+
+  if ( !KUniqueApplication::start() ) {
+      fprintf( stderr, "accountwizard is already running!\n" );
+      exit( 0 );
+  }
+
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
-  KApplication app;
+  KUniqueApplication app;
   KGlobal::locale()->insertCatalog( "libakonadi" );
 
   Akonadi::Control::start( 0 );
@@ -70,7 +82,7 @@ int main( int argc, char **argv )
   if ( !args->getOption( "type" ).isEmpty() )
      Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
   args->clear();
-  Dialog dlg( 0, Qt::WindowStaysOnTopHint );
+  Dialog dlg( 0/*, Qt::WindowStaysOnTopHint*/ );
   dlg.show();
 
   return app.exec();

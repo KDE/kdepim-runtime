@@ -252,7 +252,7 @@ void OutboxQueue::Private::collectionFetched( KJob *job )
   Q_ASSERT( fetchJob );
   kDebug() << "Fetched" << fetchJob->items().count() << "items.";
 
-  foreach( const Item &item, fetchJob->items() ) {
+  foreach ( const Item &item, fetchJob->items() ) {
     addIfComplete( item );
   }
 }

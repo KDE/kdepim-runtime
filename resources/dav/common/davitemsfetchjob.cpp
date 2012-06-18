@@ -66,8 +66,7 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
     if ( davJob->queryMetaData( "responsecode" ).isEmpty() ) {
       setError( davJob->error() );
       setErrorText( davJob->errorText() );
-    }
-    else {
+    } else {
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request.\n"
                           "%1 (%2).", davJob->errorString(), responseCode ) );

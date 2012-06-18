@@ -67,31 +67,31 @@ void LocalFoldersCollectionMigrator::setKMailConfig( const KSharedConfigPtr &con
   if ( group.hasKey( QLatin1String( "inboxFolder" ) ) ) {
     const QString name = group.readEntry( QLatin1String( "inboxFolder" ), i18nc( "mail folder name for role inbox",  "inbox" ) );
     d->mSystemFolders.insert( name, SpecialMailCollections::Inbox );
-  } else 
+  } else
     d->mSystemFolders.insert( QLatin1String( "inbox" ), SpecialMailCollections::Inbox );
 
   if ( group.hasKey( QLatin1String( "outboxFolder" ) ) ) {
     const QString name = group.readEntry( QLatin1String( "outboxFolder" ), i18nc( "mail folder name for role outbox",  "outbox" ) );
     d->mSystemFolders.insert( name, SpecialMailCollections::Outbox );
-  } else 
+  } else
     d->mSystemFolders.insert( QLatin1String( "outbox" ), SpecialMailCollections::Outbox );
 
   if ( group.hasKey( QLatin1String( "sentFolder" ) ) ) {
     const QString name = group.readEntry( QLatin1String( "sentFolder" ), i18nc( "mail folder name for role sent-mail",  "sent-mail" ) );
     d->mSystemFolders.insert( name, SpecialMailCollections::SentMail );
-  } else 
+  } else
     d->mSystemFolders.insert( QLatin1String( "sent-mail" ), SpecialMailCollections::SentMail );
 
   if ( group.hasKey( QLatin1String( "trashFolder" ) ) ) {
     const QString name = group.readEntry( QLatin1String( "trashFolder" ), i18nc( "mail folder name for role trash",  "trash" ) );
     d->mSystemFolders.insert( name, SpecialMailCollections::Trash );
-  } else 
+  } else
     d->mSystemFolders.insert( QLatin1String( "trash" ), SpecialMailCollections::Trash );
 
   if ( group.hasKey( QLatin1String( "draftsFolder" ) ) ) {
     const QString name = group.readEntry( QLatin1String( "draftsFolder" ), i18nc( "mail folder name for role drafts",  "drafts" ) );
     d->mSystemFolders.insert( name, SpecialMailCollections::Drafts );
-  } else 
+  } else
     d->mSystemFolders.insert( QLatin1String( "drafts" ), SpecialMailCollections::Drafts );
 
   if ( group.hasKey( QLatin1String( "templatesFolder" ) ) ) {

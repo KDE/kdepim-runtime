@@ -85,17 +85,17 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
 
   QWidget *mainWidget = new QWidget( this );
   QVBoxLayout *mainLayout = new QVBoxLayout;
-  mainWidget->setLayout(mainLayout);
+  mainWidget->setLayout( mainLayout );
   setMainWidget( mainWidget );
 
   m_enableSubscription = new QCheckBox( i18n( "Enable server-side subscriptions" ) );
-  mainLayout->addWidget(m_enableSubscription);
+  mainLayout->addWidget( m_enableSubscription );
 
   QHBoxLayout *filterBarLayout = new QHBoxLayout;
-  mainLayout->addLayout(filterBarLayout);
+  mainLayout->addLayout( filterBarLayout );
 
 #ifndef KDEPIM_MOBILE_UI
-  filterBarLayout->addWidget( new QLabel( i18n("Search:") ) );
+  filterBarLayout->addWidget( new QLabel( i18n( "Search:" ) ) );
 #endif
 
   m_lineEdit = new KLineEdit( mainWidget );
@@ -106,7 +106,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   m_lineEdit->setFocus();
 
 #ifndef KDEPIM_MOBILE_UI
-  QCheckBox *checkBox = new QCheckBox( i18n("Subscribed only"), mainWidget );
+  QCheckBox *checkBox = new QCheckBox( i18n( "Subscribed only" ), mainWidget );
   connect( checkBox, SIGNAL(stateChanged(int)),
            m_filter, SLOT(setIncludeCheckedOnly(int)) );
   filterBarLayout->addWidget( checkBox );
@@ -211,7 +211,7 @@ void SubscriptionDialog::onReloadRequested()
   // we need a connection
   if ( !m_session
     || m_session->state() != KIMAP::Session::Authenticated ) {
-    kWarning() <<"SubscriptionDialog - got no connection";
+    kWarning() << "SubscriptionDialog - got no connection";
     enableButton( User1, true );
     return;
   }
@@ -231,7 +231,7 @@ void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescript
   for ( int i = 0; i<numberOfMailBoxes; i++ ) {
     KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
 
-    const QStringList pathParts = mailBox.name.split(mailBox.separator);
+    const QStringList pathParts = mailBox.name.split( mailBox.separator );
     const QString separator = mailBox.separator;
     Q_ASSERT( separator.size() == 1 ); // that's what the spec says
 
@@ -240,26 +240,26 @@ void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescript
     const int numberOfPath( pathParts.size() );
     for ( int j = 0; j < pathParts.size(); ++j ) {
       const bool isDummy = ( j != ( numberOfPath - 1 ) );
-      const bool isCheckable = !isDummy && !flags[i].contains("\\noselect");
+      const bool isCheckable = !isDummy && !flags[i].contains( "\\noselect" );
 
       const QString pathPart = pathParts.at( j );
       currentPath += separator + pathPart;
 
-      if ( m_itemsMap.contains(currentPath) ) {
+      if ( m_itemsMap.contains( currentPath ) ) {
         if ( !isDummy ) {
           QStandardItem *item = m_itemsMap[currentPath];
           item->setCheckable( isCheckable );
         }
 
       } else if ( !parentPath.isEmpty() ) {
-        Q_ASSERT( m_itemsMap.contains(parentPath) );
+        Q_ASSERT( m_itemsMap.contains( parentPath ) );
 
         QStandardItem *parentItem = m_itemsMap[parentPath];
 
         QStandardItem *item = new QStandardItem( pathPart );
         item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         item->setCheckable( isCheckable );
-        item->setData( currentPath.mid(1), PathRole );
+        item->setData( currentPath.mid( 1 ), PathRole );
         parentItem->appendRow( item );
         m_itemsMap[currentPath] = item;
 
@@ -267,7 +267,7 @@ void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescript
         QStandardItem *item = new QStandardItem( pathPart );
         item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         item->setCheckable( isCheckable );
-        item->setData( currentPath.mid(1), PathRole );
+        item->setData( currentPath.mid( 1 ), PathRole );
         m_model->appendRow( item );
         m_itemsMap[currentPath] = item;
       }
@@ -383,7 +383,7 @@ void SubscriptionFilterProxyModel::setIncludeCheckedOnly( int checkedOnlyState )
 
 bool SubscriptionFilterProxyModel::acceptRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-  QModelIndex sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
+  QModelIndex sourceIndex = sourceModel()->index( sourceRow, 0, sourceParent );
 
   const bool checked = sourceIndex.data(Qt::CheckStateRole).toInt()==Qt::Checked;
 

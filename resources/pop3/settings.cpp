@@ -71,7 +71,7 @@ void Settings::setPassword( const QString& password )
   Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId,
                                        Wallet::Synchronous );
   if ( wallet && wallet->isOpen() ) {
-    if( !wallet->hasFolder( "pop3" ) )
+    if ( !wallet->hasFolder( "pop3" ) )
       wallet->createFolder( "pop3" );
     wallet->setFolder( "pop3" );
     wallet->writePassword( mResourceId, password );

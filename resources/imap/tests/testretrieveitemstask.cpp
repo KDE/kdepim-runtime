@@ -33,10 +33,10 @@ class TestRetrieveItemsTask : public ImapTestBase
 private slots:
   void shouldIntrospectCollection_data()
   {
-    QTest::addColumn<Akonadi::Collection>("collection");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QStringList>("callNames");
-    QTest::addColumn<bool>("fastSync");
+    QTest::addColumn<Akonadi::Collection>( "collection" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QStringList>( "callNames" );
+    QTest::addColumn<bool>( "fastSync" );
 
     Akonadi::Collection collection;
     QList<QByteArray> scenario;
@@ -268,7 +268,7 @@ private slots:
     QVERIFY( pool.connect( createDefaultAccount() ) );
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
-    DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+    DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setCollection( collection );
     RetrieveItemsTask *task = new RetrieveItemsTask( state );
     task->setFastSyncEnabled( fastSync );
@@ -276,11 +276,11 @@ private slots:
     QTest::qWait( 100 );
 
     QCOMPARE( state->calls().count(), callNames.size() );
-    for (int i=0; i<callNames.size(); i++) {
-      QString command = QString::fromUtf8(state->calls().at(i).first);
-      QVariant parameter = state->calls().at(i).second;
+    for ( int i = 0; i < callNames.size(); i++ ) {
+      QString command = QString::fromUtf8(state->calls().at( i ).first);
+      QVariant parameter = state->calls().at( i ).second;
 
-      if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
+      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 

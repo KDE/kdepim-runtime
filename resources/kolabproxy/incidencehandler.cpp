@@ -82,12 +82,12 @@ Akonadi::Item::List IncidenceHandler::translateItems( const Akonadi::Item::List 
         continue;
       }
 
-      ConflictResolution res = resolveConflict(incidencePtr);
+      ConflictResolution res = resolveConflict( incidencePtr );
       kDebug() << "ConflictResolution " << res;
       if ( res == Local ) {
         m_uidMap.remove( incidencePtr->uid() );
         incidencePtr = KCalCore::Incidence::Ptr();
-        emit deleteItemFromImap(item);
+        emit deleteItemFromImap( item );
         continue;
       } else if ( res == Remote ) {
         Akonadi::Item it( m_uidMap[incidencePtr->uid()].id );
@@ -127,7 +127,7 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict(
   const KCalCore::Incidence::Ptr &inc )
 {
   /*
-  if ( ! isResolveConflictSet() ) {
+  if ( !isResolveConflictSet() ) {
         // we should do no conflict resolution
   delete inc;
   return;

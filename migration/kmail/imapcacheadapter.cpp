@@ -104,7 +104,7 @@ void ImapCacheAdapter::Private::createResourceResult( KJob *job )
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
     "/Settings", QDBusConnection::sessionBus(), q );
 
-  if (!iface->isValid() ) {
+  if ( !iface->isValid() ) {
     kError() << "Failed to obtain D-Bus interface for remote configuration of local cache adapter resource" << instance.identifier();
     delete iface;
 

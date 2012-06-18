@@ -58,10 +58,8 @@ KAlarmResource::KAlarmResource(const QString& id)
     initialise(mSettings->alarmTypes(), "kalarm");
     connect(mSettings, SIGNAL(configChanged()), SLOT(settingsChanged()));
 
-    // Fetch the collection attributes
-    CollectionFetchJob* job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
-    job->fetchScope().setResource(identifier());
-    connect(job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)));
+    // Start a job to fetch the collection attributes
+    fetchCollection(SLOT(collectionFetchResult(KJob*)));
 }
 
 KAlarmResource::~KAlarmResource()
@@ -120,12 +118,7 @@ void KAlarmResource::retrieveCollections()
     kDebug();
     mSupportedMimetypes = mSettings->alarmTypes();
     ICalResourceBase::retrieveCollections();
-
-    Collection c;
-    c.setParentCollection(Collection::root());
-    c.setRemoteId(remoteIdFromPath());
-    CollectionFetchJob* job = new CollectionFetchJob(c, CollectionFetchJob::FirstLevel);
-    connect(job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)));
+    fetchCollection(SLOT(collectionFetchResult(KJob*)));
 }
 
 /******************************************************************************
@@ -142,14 +135,31 @@ void KAlarmResource::collectionFetchResult(KJob* j)
     }
     else
     {
+        bool firstTime = !mFetchedAttributes;
         mFetchedAttributes = true;
         CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
         Collection::List collections = job->collections();
-        if (!collections.isEmpty())
+        if (collections.isEmpty())
+            kDebug() << "Error: resource's collection not found";
+        else
         {
             // Check whether calendar file format needs to be updated
             kDebug() << "Fetched collection";
-            checkFileCompatibility(collections[0]);
+            Collection& c(collections[0]);
+            if (firstTime  &&  mSettings->path().isEmpty())
+            {
+                // Initialising a resource which seems to have no stored
+                // settings config file. Recreate the settings.
+                static Collection::Rights writableRights = Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem;
+                kDebug() << "Recreating config for remote id:" << c.remoteId();
+                mSettings->setPath(c.remoteId());
+                mSettings->setDisplayName(c.name());
+                mSettings->setAlarmTypes(c.contentMimeTypes());
+                mSettings->setReadOnly((c.rights() & writableRights) != writableRights);
+                mSettings->writeConfig();
+                synchronize();   // tell the server to use the new config
+            }
+            checkFileCompatibility(c);
         }
     }
 }
@@ -212,13 +222,26 @@ void KAlarmResource::checkFileCompatibility(const Collection& collection)
         mCompatibility = mFileCompatibility;
         mVersion       = mFileVersion;
         Collection c(collection);
-        if (!c.isValid())
-        {
-            c.setParentCollection(Collection::root());
-            c.setRemoteId(remoteIdFromPath());
-        }
-        KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
+        if (c.isValid())
+            KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
+        else
+            fetchCollection(SLOT(setCompatibility(KJob*)));
     }
+}
+
+/******************************************************************************
+* Called when a collection fetch job completes.
+* Set the compatibility attribute for the collection.
+*/
+void KAlarmResource::setCompatibility(KJob* j)
+{
+    CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
+    if (j->error())
+        kDebug() << "Error: " << j->errorString();
+    else if (job->collections().isEmpty())
+        kDebug() << "Error: resource's collection not found";
+    else
+        KAlarmResourceCommon::setCollectionCompatibility(job->collections()[0], mCompatibility, mVersion);
 }
 
 /******************************************************************************
@@ -292,9 +315,24 @@ void KAlarmResource::settingsChanged()
         // This is a flag to request that the backend calendar storage format should
         // be updated to the current KAlarm format.
         kDebug() << "Update storage format";
-        Collection c;
-        c.setParentCollection(Collection::root());
-        c.setRemoteId(remoteIdFromPath());
+        fetchCollection(SLOT(updateFormat(KJob*)));
+    }
+}
+
+/******************************************************************************
+* Called when a collection fetch job completes.
+* Update the backend calendar storage format to the current KAlarm format.
+*/
+void KAlarmResource::updateFormat(KJob* j)
+{
+    CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
+    if (j->error())
+        kDebug() << "Error: " << j->errorString();
+    else if (job->collections().isEmpty())
+        kDebug() << "Error: resource's collection not found";
+    else
+    {
+        Collection c(job->collections()[0]);
         if (c.hasAttribute<CompatibilityAttribute>())
         {
             CompatibilityAttribute* attr = c.attribute<CompatibilityAttribute>();
@@ -333,9 +371,6 @@ void KAlarmResource::settingsChanged()
 
                 mCompatibility = mFileCompatibility = KACalendar::Current;
                 mVersion = mFileVersion = KACalendar::CurrentFormat;
-                Collection c;
-                c.setParentCollection(Collection::root());
-                c.setRemoteId(remoteIdFromPath());
                 KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, 0);
                 break;
             }
@@ -429,6 +464,10 @@ void KAlarmResource::itemChanged(const Akonadi::Item& item, const QSet<QByteArra
     changeCommitted(item);
 }
 
+/******************************************************************************
+* Called when a collection has been changed.
+* Determine the calendar file's storage format.
+*/
 void KAlarmResource::collectionChanged(const Akonadi::Collection& collection)
 {
     ICalResourceBase::collectionChanged(collection);
@@ -483,13 +522,14 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection& collection)
 }
 
 /******************************************************************************
-* Return the remote ID to use for the resource.
+* Execute a CollectionFetchJob to fetch details of this resource's collection.
 */
-QString KAlarmResource::remoteIdFromPath() const
+CollectionFetchJob* KAlarmResource::fetchCollection(const char* slot)
 {
-    QString location(mSettings->path());
-    KUrl url(location);
-    return url.isLocalFile() ? url.toLocalFile() : location;
+    CollectionFetchJob* job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
+    job->fetchScope().setResource(identifier());
+    connect(job, SIGNAL(result(KJob*)), slot);
+    return job;
 }
 
 AKONADI_AGENT_FACTORY(KAlarmResource, akonadi_kalarm_resource)

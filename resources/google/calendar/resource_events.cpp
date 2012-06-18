@@ -19,12 +19,12 @@
 #include "defaultreminderattribute.h"
 #include "settings.h"
 
-#include <libkgoogle/fetchlistjob.h>
-#include <libkgoogle/reply.h>
-#include <libkgoogle/request.h>
-#include <libkgoogle/objects/event.h>
-#include <libkgoogle/objects/calendar.h>
-#include <libkgoogle/services/calendar.h>
+#include <libkgapi/fetchlistjob.h>
+#include <libkgapi/reply.h>
+#include <libkgapi/request.h>
+#include <libkgapi/objects/event.h>
+#include <libkgapi/objects/calendar.h>
+#include <libkgapi/services/calendar.h>
 
 #include <KLocalizedString>
 
@@ -37,7 +37,7 @@
 #include <KCalCore/Todo>
 
 using namespace Akonadi;
-using namespace KGoogle;
+using namespace KGAPI;
 
 void CalendarResource::calendarsReceived( KJob *job )
 {
@@ -51,8 +51,8 @@ void CalendarResource::calendarsReceived( KJob *job )
 
   QStringList calendars = Settings::self()->calendars();
 
-  QList< KGoogle::Object *> allData = fetchJob->items();
-  Q_FOREACH ( KGoogle::Object * replyData, allData ) {
+  QList< KGAPI::Object *> allData = fetchJob->items();
+  Q_FOREACH ( KGAPI::Object * replyData, allData ) {
 
     Objects::Calendar *calendar = static_cast< Objects::Calendar * >( replyData );
 
@@ -94,7 +94,7 @@ void CalendarResource::calendarsReceived( KJob *job )
   }
 }
 
-void CalendarResource::eventReceived( KGoogle::Reply *reply )
+void CalendarResource::eventReceived( KGAPI::Reply *reply )
 {
   if ( reply->error() != OK ) {
     cancelTask();
@@ -218,7 +218,7 @@ void CalendarResource::eventsReceived( KJob *job )
   modifyJob->start();
 }
 
-void CalendarResource::eventCreated( KGoogle::Reply *reply )
+void CalendarResource::eventCreated( KGAPI::Reply *reply )
 {
   if ( reply->error() != OK ) {
     cancelTask( i18n( "Failed to create a new event: %1", reply->errorString() ) );
@@ -244,7 +244,7 @@ void CalendarResource::eventCreated( KGoogle::Reply *reply )
   changeCommitted( item );
 }
 
-void CalendarResource::eventUpdated( KGoogle::Reply *reply )
+void CalendarResource::eventUpdated( KGAPI::Reply *reply )
 {
   if ( reply->error() != OK ) {
     cancelTask( i18n( "Failed to update an event: %1", reply->errorString() ) );
@@ -266,7 +266,7 @@ void CalendarResource::eventUpdated( KGoogle::Reply *reply )
   changeCommitted( item );
 }
 
-void CalendarResource::eventRemoved( KGoogle::Reply *reply )
+void CalendarResource::eventRemoved( KGAPI::Reply *reply )
 {
   if ( reply->error() != NoContent ) {
     cancelTask( i18n( "Failed to delete event: %1", reply->errorString() ) );
@@ -277,7 +277,7 @@ void CalendarResource::eventRemoved( KGoogle::Reply *reply )
   changeCommitted( item );
 }
 
-void CalendarResource::eventMoved( KGoogle::Reply *reply )
+void CalendarResource::eventMoved( KGAPI::Reply *reply )
 {
   if ( reply->error() != OK ) {
     cancelTask( i18n( "Failed to move event: %1", reply->errorString() ) );

@@ -41,16 +41,16 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 
-#include <libkgoogle/accessmanager.h>
-#include <libkgoogle/auth.h>
-#include <libkgoogle/fetchlistjob.h>
-#include <libkgoogle/request.h>
-#include <libkgoogle/reply.h>
-#include <libkgoogle/objects/contact.h>
-#include <libkgoogle/services/contacts.h>
+#include <libkgapi/accessmanager.h>
+#include <libkgapi/auth.h>
+#include <libkgapi/fetchlistjob.h>
+#include <libkgapi/request.h>
+#include <libkgapi/reply.h>
+#include <libkgapi/objects/contact.h>
+#include <libkgapi/services/contacts.h>
 
 using namespace Akonadi;
-using namespace KGoogle;
+using namespace KGAPI;
 
 #define RootCollection "root"
 #define MyContacts     "myContacts"
@@ -69,14 +69,14 @@ ContactsResource::ContactsResource( const QString &id ):
   Auth *auth = Auth::instance();
   auth->init( "Akonadi Google", Settings::self()->clientId(), Settings::self()->clientSecret() );
 
-  m_gam = new KGoogle::AccessManager();
+  m_gam = new KGAPI::AccessManager();
   m_photoNam = new KIO::Integration::AccessManager( this );
 
-  connect( m_gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(replyReceived(KGoogle::Reply*)) );
+  connect( m_gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(replyReceived(KGAPI::Reply*)) );
 
-  connect( m_gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( m_gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
   connect( this, SIGNAL(abortRequested()),
            this, SLOT(slotAbortRequested()) );
   connect( this, SIGNAL(reloadConfiguration()),
@@ -164,7 +164,7 @@ Account::Ptr ContactsResource::getAccount()
   Auth *auth = Auth::instance();
   try {
     m_account = auth->getAccount( Settings::self()->account() );
-  } catch ( KGoogle::Exception::BaseException &e ) {
+  } catch ( KGAPI::Exception::BaseException &e ) {
     Q_EMIT status( Broken, e.what() );
     return Account::Ptr();
   }
@@ -205,8 +205,8 @@ bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet< QByt
 
   QUrl url( Services::Contacts::fetchContactUrl( account->accountName(), item.remoteId() ) );
 
-  KGoogle::Request *request;
-  request = new KGoogle::Request( url, KGoogle::Request::Fetch, "Contacts", account );
+  KGAPI::Request *request;
+  request = new KGAPI::Request( url, KGAPI::Request::Fetch, "Contacts", account );
   request->setProperty( "Item", QVariant::fromValue( item ) );
 
   m_gam->sendRequest( request );
@@ -278,7 +278,7 @@ void ContactsResource::initialItemsFetchJobFinished( KJob *job )
 
   Collection collection = job->property( "Collection" ).value< Collection >();
 
-  QUrl url = KGoogle::Services::Contacts::fetchAllContactsUrl( account->accountName(), true );
+  QUrl url = KGAPI::Services::Contacts::fetchAllContactsUrl( account->accountName(), true );
 
   QString lastSync = collection.remoteRevision();
   if ( !lastSync.isEmpty() ) {
@@ -333,8 +333,8 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
                 "term=\"http://schemas.google.com/contact/2008#contact\"/>" );
   data.append( "</atom:entry>" );
 
-  KGoogle::Request *request;
-  request = new KGoogle::Request( Services::Contacts::createContactUrl( account->accountName() ),
+  KGAPI::Request *request;
+  request = new KGAPI::Request( Services::Contacts::createContactUrl( account->accountName() ),
                                   Request::Create, "Contacts", account );
   request->setRequestData( data, "application/atom+xml" );
   request->setProperty( "Item", QVariant::fromValue( item ) );
@@ -375,9 +375,9 @@ void ContactsResource::itemChanged( const Akonadi::Item &item,
                 "term=\"http://schemas.google.com/contact/2008#contact\"/>" );
   data.append( "</atom:entry>" );
 
-  KGoogle::Request *request;
+  KGAPI::Request *request;
   request =
-    new KGoogle::Request(
+    new KGAPI::Request(
       Services::Contacts::updateContactUrl( account->accountName(), item.remoteId() ),
       Request::Update, "Contacts", account );
   request->setRequestData( data, "application/atom+xml" );
@@ -430,9 +430,9 @@ void ContactsResource::itemMoved( const Item &item, const Collection &collection
                 "term=\"http://schemas.google.com/contact/2008#contact\"/>" );
   data.append( "</atom:entry>" );
 
-  KGoogle::Request *request;
+  KGAPI::Request *request;
   request =
-    new KGoogle::Request(
+    new KGAPI::Request(
       Services::Contacts::updateContactUrl( account->accountName(), item.remoteId() ),
       Request::Update, "Contacts", account );
   request->setRequestData( data, "application/atom+xml" );
@@ -449,9 +449,9 @@ void ContactsResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
-  KGoogle::Request *request;
+  KGAPI::Request *request;
   request =
-    new KGoogle::Request(
+    new KGAPI::Request(
       Services::Contacts::removeContactUrl( account->accountName(), item.remoteId() ),
       Request::Remove, "Contacts", account );
   request->setProperty( "Item", QVariant::fromValue( item ) );
@@ -459,7 +459,7 @@ void ContactsResource::itemRemoved( const Akonadi::Item &item )
   m_gam->sendRequest( request );
 }
 
-void ContactsResource::replyReceived( KGoogle::Reply *reply )
+void ContactsResource::replyReceived( KGAPI::Reply *reply )
 {
   switch ( reply->requestType() ) {
   case Request::Fetch:
@@ -500,9 +500,9 @@ void ContactsResource::contactListReceived( KJob *job )
   Item::List changed;
 
   FetchListJob *fetchJob = dynamic_cast< FetchListJob * >( job );
-  QList< KGoogle::Object * > objects = fetchJob->items();
+  QList< KGAPI::Object * > objects = fetchJob->items();
 
-  Q_FOREACH ( KGoogle::Object * object, objects ) {
+  Q_FOREACH ( KGAPI::Object * object, objects ) {
 
     Item item;
     Objects::Contact *contact = static_cast< Objects::Contact * >( object );
@@ -543,14 +543,14 @@ void ContactsResource::contactListReceived( KJob *job )
   modifyJob->setAutoDelete( true );
 }
 
-void ContactsResource::contactReceived( KGoogle::Reply *reply )
+void ContactsResource::contactReceived( KGAPI::Reply *reply )
 {
-  if ( reply->error() != KGoogle::OK ) {
+  if ( reply->error() != KGAPI::OK ) {
     cancelTask( i18n( "Failed to fetch contact" ) );
     return;
   }
 
-  QList< KGoogle::Object * > data = reply->replyData();
+  QList< KGAPI::Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
     cancelTask( i18n( "Failed to create a contact" ) );
@@ -575,14 +575,14 @@ void ContactsResource::contactReceived( KGoogle::Reply *reply )
   }
 }
 
-void ContactsResource::contactCreated( KGoogle::Reply *reply )
+void ContactsResource::contactCreated( KGAPI::Reply *reply )
 {
-  if ( reply->error() != KGoogle::Created ) {
+  if ( reply->error() != KGAPI::Created ) {
     cancelTask( i18n( "Failed to create a contact" ) );
     return;
   }
 
-  QList< KGoogle::Object * > data = reply->replyData();
+  QList< KGAPI::Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
     cancelTask( i18n( "Failed to create a contact" ) );
@@ -604,14 +604,14 @@ void ContactsResource::contactCreated( KGoogle::Reply *reply )
   updatePhoto( item );
 }
 
-void ContactsResource::contactUpdated( KGoogle::Reply *reply )
+void ContactsResource::contactUpdated( KGAPI::Reply *reply )
 {
-  if ( reply->error() != KGoogle::OK ) {
+  if ( reply->error() != KGAPI::OK ) {
     cancelTask( i18n( "Failed to update contact" ) );
     return;
   }
 
-  QList< KGoogle::Object * > data = reply->replyData();
+  QList< KGAPI::Object * > data = reply->replyData();
   if ( data.length() != 1 ) {
     kWarning() << "Server send " << data.length() << "items, which is not OK";
     cancelTask( i18n( "Failed to update a contact" ) );
@@ -629,9 +629,9 @@ void ContactsResource::contactUpdated( KGoogle::Reply *reply )
   updatePhoto( item );
 }
 
-void ContactsResource::contactRemoved( KGoogle::Reply *reply )
+void ContactsResource::contactRemoved( KGAPI::Reply *reply )
 {
-  if ( reply->error() != KGoogle::OK ) {
+  if ( reply->error() != KGAPI::OK ) {
     cancelTask( i18n( "Failed to remove contact" ) );
     return;
   }

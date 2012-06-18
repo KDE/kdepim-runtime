@@ -134,7 +134,7 @@ bool KolabHandler::checkForErrors( Akonadi::Item::Id affectedItem )
   KPassivePopup::message(
     i18n( "An error occurred while reading/writing a Kolab-Groupware-Object(akonadi id %1): \n%2",
           affectedItem, errorMsg ),
-    (QWidget*)0 );
+    (QWidget*) 0 );
   Kolab::ErrorHandler::instance().clear();
   return true;
 }

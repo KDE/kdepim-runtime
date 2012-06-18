@@ -52,7 +52,7 @@ class IncidenceAttribute : public Akonadi::Attribute
      */
     Akonadi::Item::Id reference() const;
     void setReference( Akonadi::Item::Id id );
-    
+
   private:
     class Private;
     Private *const d;

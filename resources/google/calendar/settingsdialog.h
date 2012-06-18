@@ -22,13 +22,13 @@
 #include <KJob>
 #include <Akonadi/ResourceBase>
 
-#include <libkgoogle/common.h>
+#include <libkgapi/common.h>
 
 namespace Ui {
   class SettingsDialog;
 }
 
-namespace KGoogle {
+namespace KGAPI {
   class Reply;
   class AccessManager;
 
@@ -40,7 +40,7 @@ namespace Objects {
 
 class QListWidgetItem;
 
-using namespace KGoogle;
+using namespace KGAPI;
 
 class SettingsDialog : public KDialog
 {
@@ -63,19 +63,19 @@ class SettingsDialog : public KDialog
     void removeTaskListClicked();
     void reloadTaskListsClicked();
 
-    void gam_objectsListReceived( KGoogle::Reply *reply );
-    void gam_objectCreated( KGoogle::Reply *reply );
-    void gam_objectModified( KGoogle::Reply *reply );
+    void gam_objectsListReceived( KGAPI::Reply *reply );
+    void gam_objectCreated( KGAPI::Reply *reply );
+    void gam_objectModified( KGAPI::Reply *reply );
 
-    void addCalendar( KGoogle::Objects::Calendar *calendar );
-    void editCalendar( KGoogle::Objects::Calendar *calendar );
+    void addCalendar( KGAPI::Objects::Calendar *calendar );
+    void editCalendar( KGAPI::Objects::Calendar *calendar );
 
-    void addTaskList( KGoogle::Objects::TaskList *taskList );
-    void editTaskList( KGoogle::Objects::TaskList *taskList );
+    void addTaskList( KGAPI::Objects::TaskList *taskList );
+    void editTaskList( KGAPI::Objects::TaskList *taskList );
 
     void saveSettings();
 
-    void error( KGoogle::Error code, const QString &msg );
+    void error( KGAPI::Error code, const QString &msg );
 
   private:
     Ui::SettingsDialog *m_ui;

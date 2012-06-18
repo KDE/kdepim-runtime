@@ -128,9 +128,9 @@ void ServerConfigModule::load()
   ui_psql.messagewidget->setCloseButtonVisible( false );
   ui_psql.messagewidget->setWordWrap( true );
   ui_psql.messagewidget->setMessageType( KMessageWidget::Information );
-  ui_psql.messagewidget->setText(i18nc( "@info: special setting to configure",
-                                 "Make sure you have %1 in your server postgres.conf "
-                                 "file before starting Akonadi.", QLatin1String( "<b>standard_conforming_strings = on</b>" ) ) );
+  ui_psql.messagewidget->setText( i18nc( "@info: special setting to configure",
+                                  "Make sure you have %1 in your server postgres.conf "
+                                  "file before starting Akonadi.", QLatin1String( "<b>standard_conforming_strings = on</b>" ) ) );
   settings.endGroup();
 
   // selected driver
@@ -182,7 +182,7 @@ void ServerConfigModule::defaults()
   // TODO: detect default server path
   ui_mysql.name->setText( "akonadi" );
 
-  ui_driver.driverBox->setCurrentIndex( ui_driver.driverBox->findData ("QMYSQL") );
+  ui_driver.driverBox->setCurrentIndex( ui_driver.driverBox->findData( "QMYSQL" ) );
 }
 
 void ServerConfigModule::updateStatus()
@@ -218,10 +218,9 @@ void ServerConfigModule::selfTestClicked()
 
 void ServerConfigModule::driverChanged( int index )
 {
-  if( ui_driver.driverBox->itemData( index ).toString() == "QMYSQL" ) {
+  if ( ui_driver.driverBox->itemData( index ).toString() == "QMYSQL" ) {
     m_stackWidget->setCurrentWidget( m_mysqlWidget );
-  }
-  else {
+  } else {
     m_stackWidget->setCurrentWidget( m_psqlWidget );
   }
 }

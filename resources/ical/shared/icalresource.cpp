@@ -55,7 +55,7 @@ bool ICalResource::doRetrieveItem( const Akonadi::Item &item, const QSet<QByteAr
   Incidence::Ptr incidence = calendar()->incidence( rid );
   if ( !incidence ) {
     kError() << "Can't find incidence with uid " << rid << "; item.id() = " << item.id();
-    emit error( i18n("Incidence with uid '%1' not found.", rid ) );
+    emit error( i18n( "Incidence with uid '%1' not found.", rid ) );
     return false;
   }
 

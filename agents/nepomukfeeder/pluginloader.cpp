@@ -23,29 +23,29 @@
 QList< QSharedPointer< Akonadi::NepomukFeederPlugin > > FeederPluginloader::feederPluginsForMimeType(const QString& mimetype)
 {
   //kDebug() << mimetype;
-  if (m_plugins.contains(mimetype)) {
+  if ( m_plugins.contains( mimetype ) ) {
     //kDebug() << "cached plugin found";
-    return m_plugins.values(mimetype);
-  } else if ( m_noPluginList.contains(mimetype) ) {
+    return m_plugins.values( mimetype );
+  } else if ( m_noPluginList.contains( mimetype ) ) {
     //kDebug() << "No feeder for type " << mimetype << " found";
     return QList< QSharedPointer< Akonadi::NepomukFeederPlugin > >();
   }
 
-  KService::List lst = KMimeTypeTrader::self()->query(mimetype, QString::fromLatin1("AkonadiNepomukFeeder"));
-  if (lst.isEmpty()) {
+  KService::List lst = KMimeTypeTrader::self()->query( mimetype, QString::fromLatin1( "AkonadiNepomukFeeder" ) );
+  if ( lst.isEmpty() ) {
     kWarning() << "No feeder for type " << mimetype << " found";
-    m_noPluginList.append(mimetype);
+    m_noPluginList.append( mimetype );
     return QList< QSharedPointer< Akonadi::NepomukFeederPlugin > >();
   }
   QList< QSharedPointer< Akonadi::NepomukFeederPlugin > > pluginList;
-  foreach (KService::Ptr ptr, lst) {;
+  foreach ( KService::Ptr ptr, lst ) {;
     QString error;
-    QSharedPointer<Akonadi::NepomukFeederPlugin> plugin(ptr->createInstance<Akonadi::NepomukFeederPlugin>(0, QVariantList(), &error));
-    if (plugin.isNull()) {
+    QSharedPointer<Akonadi::NepomukFeederPlugin> plugin( ptr->createInstance<Akonadi::NepomukFeederPlugin>( 0, QVariantList(), &error ) );
+    if ( plugin.isNull() ) {
       kWarning() << "could not create " << error;
       continue;
     }
-    m_plugins.insertMulti(mimetype, plugin);
+    m_plugins.insertMulti( mimetype, plugin );
     pluginList << plugin;
     kDebug() << "created new plugin";
   }

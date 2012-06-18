@@ -180,7 +180,7 @@ QString DummyResourceState::rootRemoteId() const
 
 QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool ) const
 {
-  return collection.remoteId().mid(1);
+  return collection.remoteId().mid( 1 );
 }
 
 void DummyResourceState::setIdleCollection( const Akonadi::Collection &collection )
@@ -211,7 +211,7 @@ void DummyResourceState::itemsRetrieved( const Akonadi::Item::List &items )
 void DummyResourceState::itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed )
 {
   Q_UNUSED( removed )
-  
+
   recordCall( "itemsRetrievedIncremental",  QVariant::fromValue( changed ) );
 }
 
@@ -263,6 +263,12 @@ void DummyResourceState::emitError( const QString &message )
 void DummyResourceState::emitWarning( const QString &message )
 {
   recordCall( "emitWarning", QVariant::fromValue(message) );
+}
+
+void DummyResourceState::emitPercent( int percent )
+{
+  // FIXME: Many tests need to be updated for this to be uncommented out.
+  // recordCall( "emitPercent", QVariant::fromValue(percent) );
 }
 
 void DummyResourceState::synchronizeCollectionTree()

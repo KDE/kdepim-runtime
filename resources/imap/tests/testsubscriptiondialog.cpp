@@ -26,25 +26,25 @@
 
 int main( int argc, char **argv )
 {
-  QApplication app(argc, argv);
+  QApplication app( argc, argv );
 
-  if (app.arguments().size() < 5) {
-    qWarning("Not enough parameters, expecting: <server> <port> <user> <password>");
+  if ( app.arguments().size() < 5 ) {
+    qWarning( "Not enough parameters, expecting: <server> <port> <user> <password>" );
     return 1;
   }
 
-  QString server = app.arguments().at(1);
-  int port = app.arguments().at(2).toInt();
-  QString user = app.arguments().at(3);
-  QString password = app.arguments().at(4);
+  QString server = app.arguments().at( 1 );
+  int port = app.arguments().at( 2 ).toInt();
+  QString user = app.arguments().at( 3 );
+  QString password = app.arguments().at( 4 );
 
   qDebug() << "Querying:" << server << port << user << password;
   qDebug();
 
   ImapAccount account;
-  account.setServer(server);
-  account.setPort(port);
-  account.setUserName(user);
+  account.setServer( server );
+  account.setPort( port );
+  account.setUserName( user );
 
   SubscriptionDialog *dialog = new SubscriptionDialog();
   dialog->connectAccount( account, password );

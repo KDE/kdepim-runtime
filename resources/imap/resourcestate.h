@@ -133,6 +133,8 @@ public:
   virtual void emitError( const QString &message );
   virtual void emitWarning( const QString &message );
 
+  virtual void emitPercent( int percent );
+
   virtual void synchronizeCollectionTree();
   virtual void scheduleConnectionAttempt();
 

@@ -20,7 +20,7 @@
 
 #include <KDialog>
 
-#include <libkgoogle/common.h>
+#include <libkgapi/common.h>
 
 namespace Ui {
   class SettingsDialog;
@@ -40,7 +40,7 @@ class SettingsDialog : public KDialog
     void removeAccountClicked();
     void reloadAccounts();
 
-    void error( KGoogle::Error errCode, const QString &msg );
+    void error( KGAPI::Error errCode, const QString &msg );
     void saveSettings();
 
   private:

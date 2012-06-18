@@ -36,7 +36,7 @@
 #include <QStringList>
 
 
-namespace NepomukFeederUtils 
+namespace NepomukFeederUtils
 {
 
 void tagsFromCategories(const QStringList& categories, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
@@ -49,7 +49,7 @@ void tagsFromCategories(const QStringList& categories, Nepomuk::SimpleResource& 
 void setIcon(const QString& iconName, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
 {
   Nepomuk::SimpleResource iconRes;
-  Nepomuk::NAO::FreeDesktopIcon icon(&iconRes);
+  Nepomuk::NAO::FreeDesktopIcon icon( &iconRes );
   icon.setIconNames( QStringList() << iconName );
   graph << iconRes;
   res.setProperty( Soprano::Vocabulary::NAO::prefSymbol(), iconRes.uri() );
@@ -59,8 +59,8 @@ Nepomuk::SimpleResource addTag( Nepomuk::SimpleResource& res, Nepomuk::SimpleRes
 {
   Nepomuk::SimpleResource tagResource;
   Nepomuk::NAO::Tag tag( &tagResource );
-  tagResource.addProperty( Soprano::Vocabulary::NAO::identifier(), identifier);
-  if (!prefLabel.isEmpty()) {
+  tagResource.addProperty( Soprano::Vocabulary::NAO::identifier(), identifier );
+  if ( !prefLabel.isEmpty() ) {
     tag.setPrefLabel( prefLabel );
   } else {
     tag.setPrefLabel( identifier );
@@ -74,8 +74,8 @@ Nepomuk::SimpleResource addTag( Nepomuk::SimpleResource& res, Nepomuk::SimpleRes
 Nepomuk::SimpleResource addContact( const QString &emailAddress, const QString &name, Nepomuk::SimpleResourceGraph &graph )
 {
   Nepomuk::SimpleResource contactRes;
-  Nepomuk::NCO::Contact contact(&contactRes);
-  contactRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), name.isEmpty() ? emailAddress : name);
+  Nepomuk::NCO::Contact contact( &contactRes );
+  contactRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), name.isEmpty() ? emailAddress : name );
   if ( !emailAddress.isEmpty() ) {
     Nepomuk::SimpleResource emailRes;
     Nepomuk::NCO::EmailAddress email( &emailRes );

@@ -31,7 +31,7 @@ class Entity;
 class KJob;
 
 namespace  NepomukHelpers {
-  
+
 /** Set the parent collection of the entity @param entity */
 void setParentCollection( const Akonadi::Entity &entity, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
 

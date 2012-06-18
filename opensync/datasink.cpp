@@ -46,7 +46,7 @@ DataSink::DataSink( int type ) :
 }
 
 DataSink::~DataSink() {
-  if( m_hashtable )
+  if ( m_hashtable )
     osync_hashtable_unref( m_hashtable );
 }
 
@@ -57,18 +57,18 @@ bool DataSink::initialize(OSyncPlugin * plugin, OSyncPluginInfo * info, OSyncObj
   Q_UNUSED( error );
 
   bool enabled = osync_objtype_sink_is_enabled( sink );
-  if( ! enabled ) {
+  if ( !enabled ) {
     kDebug() << "sink is not enabled..";
     return false;
   }
 
   QString configdir( osync_plugin_info_get_configdir( info ) );
-  QString hashfile = QString("%1/%2-hash.db").arg( configdir, osync_objtype_sink_get_name( sink ) );
+  QString hashfile = QString( "%1/%2-hash.db" ).arg( configdir, osync_objtype_sink_get_name( sink ) );
 
   m_hashtable = osync_hashtable_new( hashfile.toUtf8(), osync_objtype_sink_get_name( sink ), error );
 
-  if( ! osync_hashtable_load( m_hashtable, error ) ) {
-    osync_trace(TRACE_EXIT_ERROR, "%s: %s", __PRETTY_FUNCTION__, osync_error_print( error ) );
+  if ( !osync_hashtable_load( m_hashtable, error ) ) {
+    osync_trace( TRACE_EXIT_ERROR, "%s: %s", __PRETTY_FUNCTION__, osync_error_print( error ) );
     return false;
   }
 
@@ -87,13 +87,13 @@ Akonadi::Collection DataSink::collection() const
   OSyncPluginResource *res = osync_plugin_config_find_active_resource( config, objtype );
 
   if ( !res ) {
-    error( OSYNC_ERROR_MISCONFIGURATION, i18n("No active resource for type \"%1\" found", objtype ) );
+    error( OSYNC_ERROR_MISCONFIGURATION, i18n( "No active resource for type \"%1\" found", objtype ) );
     return Collection();
   }
 
   const KUrl url = KUrl( osync_plugin_resource_get_url( res ) );
   if ( url.isEmpty() ) {
-    error( OSYNC_ERROR_MISCONFIGURATION, i18n("Url for object type \"%1\" is not configured.", objtype ) );
+    error( OSYNC_ERROR_MISCONFIGURATION, i18n( "Url for object type \"%1\" is not configured.", objtype ) );
     return Collection();
   }
 
@@ -113,10 +113,10 @@ void DataSink::getChanges()
 
   OSyncError *oerror = 0;
 
-  if( osync_objtype_sink_get_slowsync( sink() ) ) {
+  if ( osync_objtype_sink_get_slowsync( sink() ) ) {
     kDebug() << "we're in the middle of slow-syncing...";
     osync_trace( TRACE_INTERNAL, "Got slow-sync, resetting hashtable" );
-    if( ! osync_hashtable_slowsync( m_hashtable, &oerror ) ) {
+    if ( !osync_hashtable_slowsync( m_hashtable, &oerror ) ) {
       warning( oerror );
       osync_trace( TRACE_EXIT_ERROR, "%s: %s", __PRETTY_FUNCTION__, osync_error_print( &oerror ) );
       return;
@@ -139,7 +139,7 @@ void DataSink::getChanges()
 void DataSink::slotItemsReceived( const Item::List &items )
 {
   kDebug() << "retrieved" << items.count() << "items";
-  Q_FOREACH( const Item& item, items ) {
+  Q_FOREACH ( const Item& item, items ) {
     //kDebug() << item.payloadData();
     reportChange( item );
   }
@@ -210,12 +210,12 @@ void DataSink::slotGetChangesFinished( KJob * )
   OSyncError *error = 0;
   OSyncList *u, *uids = osync_hashtable_get_deleted( m_hashtable );
 
-  for( u = uids; u; u = u->next) {
+  for ( u = uids; u; u = u->next ) {
     QString uid( (char *)u->data );
     kDebug() << "going to delete with uid:" << uid;
 
     OSyncChange *change = osync_change_new( &error );
-    if( !change ) {
+    if ( !change ) {
       warning( error );
       continue;
     }
@@ -225,7 +225,7 @@ void DataSink::slotGetChangesFinished( KJob * )
 
     error = 0;
     OSyncData *data = osync_data_new( 0, 0, format, &error );
-    if( !data ) {
+    if ( !data ) {
       osync_change_unref( change );
       warning( error );
       continue;
@@ -248,7 +248,7 @@ void DataSink::commit(OSyncChange *change)
 {
   kDebug() << "change uid:" << osync_change_get_uid( change );
   kDebug() << "objtype:" << osync_change_get_objtype( change );
-  kDebug() << "objform:" << osync_objformat_get_name (osync_change_get_objformat( change ) );
+  kDebug() << "objform:" << osync_objformat_get_name( osync_change_get_objformat( change ) );
 
   switch( osync_change_get_changetype( change ) ) {
     case OSYNC_CHANGE_TYPE_ADDED: {
@@ -292,7 +292,7 @@ const Item DataSink::createItem( OSyncChange *change )
 
   ItemCreateJob *job = new Akonadi::ItemCreateJob( createAkonadiItem( change ), col );
 
-  if( ! job->exec() )
+  if ( !job->exec() )
     kDebug() << "creating an item failed";
 
   return job->item(); // handle !job->exec in return too..
@@ -306,20 +306,18 @@ const Item DataSink::modifyItem( OSyncChange *change )
 
   QString id = QString( osync_change_get_uid( change ) );
   Item item = fetchItem( id );
-  if( ! item.isValid() ) // TODO proper error handling
+  if ( !item.isValid() ) // TODO proper error handling
     return Item();
 
   //event.setMimeType( "application/x-vnd.akonadi.calendar.event" );
   //Item newItem = createAkonadiItem( change );
-  setPayload(&item, str);
+  setPayload( &item, str );
   ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob( item );
-  if( modifyJob->exec() ) {
+  if ( modifyJob->exec() ) {
     kDebug() << "modification completed";
     return modifyJob->item();
-  }
-  else
+  } else
     kDebug() << "unable to modify";
-
 
   return Item();
 }
@@ -328,13 +326,13 @@ void DataSink::deleteItem( OSyncChange *change )
 {
   QString id = QString( osync_change_get_uid( change ) );
   Item item = fetchItem( id );
-  if( ! item.isValid() ) // TODO proper error handling
+  if ( !item.isValid() ) // TODO proper error handling
     return;
 
   kDebug() << "delete with id: " << item.id();
   /*ItemDeleteJob *job = new ItemDeleteJob( item );
 
- if( job->exec() ) {
+ if ( job->exec() ) {
    kDebug() << "item deleted";
  }
  else
@@ -380,7 +378,7 @@ const Item DataSink::createAkonadiItem( OSyncChange *change )
   osync_data_get_data( osync_change_get_data( change ), &plain, /*size*/0 );
   QString str = QString::fromUtf8( plain );
   Akonadi::Item item;
-  setPayload(&item, str);
+  setPayload( &item, str );
   return item;
 }
 
@@ -410,9 +408,9 @@ const Item DataSink::fetchItem( const QString& id )
   ItemFetchJob *fetchJob = new ItemFetchJob( Item( id ) );
   fetchJob->fetchScope().fetchFullPayload();
 
-  if( fetchJob->exec() ) {
+  if ( fetchJob->exec() ) {
     foreach ( const Item &item, fetchJob->items() ) {
-      if( QString::number( item.id() ) == id ) {
+      if ( QString::number( item.id() ) == id ) {
         kDebug() << "got item";
         return item;
       }

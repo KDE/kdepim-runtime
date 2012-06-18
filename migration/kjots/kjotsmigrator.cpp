@@ -60,8 +60,8 @@ KJotsMigrator::KJotsMigrator()
   const QString &kjotsCfgFile = KStandardDirs::locateLocal( "config", QString( "kjotsrc" ) );
 
   KConfig config( kjotsCfgFile );
-  KConfigGroup cfgGroup = config.group("kjots");
-  unicode = cfgGroup.readEntry("Unicode", false);
+  KConfigGroup cfgGroup = config.group( "kjots" );
+  unicode = cfgGroup.readEntry( "Unicode", false );
 }
 
 KJotsMigrator::~KJotsMigrator()
@@ -93,8 +93,8 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
     "org.freedesktop.Akonadi.Resource." + instance.identifier(),
     "/Settings", QDBusConnection::sessionBus(), this );
 
-  if (!iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
+  if ( !iface->isValid() ) {
+    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
     return;
   }
@@ -107,7 +107,7 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
   instance.reconfigure();
   m_resourceIdentifier = instance.identifier();
 
-  ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob(instance, this);
+  ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( instance, this );
   connect( syncJob, SIGNAL(result(KJob*)), SLOT(syncDone(KJob*)));
   syncJob->start();
 }
@@ -134,7 +134,7 @@ void KJotsMigrator::rootFetchFinished( KJob *job )
 
 void KJotsMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &list )
 {
-  foreach( const Collection &collection, list ) {
+  foreach ( const Collection &collection, list ) {
     if ( collection.resource() == m_resourceIdentifier ) {
       m_resourceCollection = collection;
       emit message( Info, i18n( "New resource is rooted at Collection(%1)", collection.id() ) );
@@ -246,7 +246,7 @@ void KJotsMigrator::parseBookXml( QDomElement &me, bool oldBook, const Collectio
 
       if ( e.tagName() == "Title" ) {
         eda->setDisplayName( e.text()  );
-        collection.setName( KRandom::randomString(10) );
+        collection.setName( KRandom::randomString( 10 ) );
       } else
         if ( e.tagName() == "ID" ) {
           // Legacy ID attribute?
@@ -316,13 +316,10 @@ void KJotsMigrator::parsePageXml( QDomElement&me , bool oldBook, const Collectio
             // https://bugs.kde.org/show_bug.cgi?id=175100
             document.setPlainText( bodyText );
           } else {
-
-            if ( Qt::mightBeRichText( bodyText ) )
-            {
-              document.setHtml(bodyText);
+            if ( Qt::mightBeRichText( bodyText ) ) {
+              document.setHtml( bodyText );
               isRichText = KPIMTextEdit::TextUtils::containsFormatting( &document );
-            }
-            else
+            } else
               document.setPlainText( bodyText );
           }
         } else {

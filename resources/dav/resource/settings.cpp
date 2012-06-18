@@ -219,6 +219,13 @@ QStringList Settings::mappedCollections( DavUtils::Protocol proto, const QString
   return mCollectionsUrlsMapping.keys( value );
 }
 
+void Settings::reloadConfig()
+{
+    buildUrlsList();
+    updateRemoteUrls();
+    loadMappings();
+}
+
 void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
 {
   QString key = urlConfig->mUrl + ',' + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
@@ -312,8 +319,7 @@ void Settings::loadMappings()
       cache >> mCollectionsUrlsMapping;
       collectionsMappingsCache.close();
     }
-  }
-  else if ( !collectionsUrlsMappings().isEmpty() ) {
+  } else if ( !collectionsUrlsMappings().isEmpty() ) {
     QByteArray rawMappings = QByteArray::fromBase64( collectionsUrlsMappings().toAscii() );
     QDataStream stream( &rawMappings, QIODevice::ReadOnly );
     stream >> mCollectionsUrlsMapping;
@@ -368,20 +374,17 @@ QString Settings::loadPassword( const QString &key, const QString &user )
   KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
   if ( !wallet ) {
     pass = promptForPassword( user );
-  }
-  else {
+  } else {
     if ( !wallet->hasFolder( KWallet::Wallet::PasswordFolder() ) )
       wallet->createFolder( KWallet::Wallet::PasswordFolder() );
 
     if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) ) {
       pass = promptForPassword( user );
-    }
-    else {
+    } else {
       if ( !wallet->hasEntry( entry ) ) {
         pass = promptForPassword( user );
         wallet->writePassword( entry, pass );
-      }
-      else {
+      } else {
         wallet->readPassword( entry, pass );
       }
     }

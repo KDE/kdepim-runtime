@@ -45,15 +45,13 @@ class ResourcePrivateBase : public QObject, public StoreConfigIface
   Q_OBJECT
 
   public:
-    enum State
-    {
+    enum State {
       Closed,
       Opened,
       Failed
     };
 
-    enum ChangeType
-    {
+    enum ChangeType {
       NoChange,
       Added,
       Changed,

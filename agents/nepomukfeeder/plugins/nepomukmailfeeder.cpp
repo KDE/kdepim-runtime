@@ -60,7 +60,7 @@ NepomukMailFeeder::NepomukMailFeeder(QObject *parent, const QVariantList &)
 void NepomukMailFeeder::updateItem(const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
 {
   //kDebug() << item.id();
-  Q_ASSERT(item.hasPayload());
+  Q_ASSERT( item.hasPayload() );
 
   if ( !item.hasPayload<KMime::Message::Ptr>() ) {
     kWarning() << "Got item without known payload. Mimetype:" << item.mimeType()
@@ -95,7 +95,7 @@ void NepomukMailFeeder::processContent(const KMime::Message::Ptr& msg, const Ako
     const QString text = m_mainBodyPart->decodedText( true, true );
     if ( !text.isEmpty() ) {
       //kDebug() << "indexingText";
-      Nepomuk::NMO::Message message(&res); //The email wrapper doesn't contain the functions from Message
+      Nepomuk::NMO::Message message( &res ); //The email wrapper doesn't contain the functions from Message
       message.setPlainTextMessageContents( QStringList( text ) );
     }
   }
@@ -124,7 +124,7 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
             content->contentType()->mimeType() == "application/pkcs7-signature" ||
             content->contentType()->mimeType() == "application/x-pkcs7-signature" ||
             content->contentType()->mimeType() == "application/pgp-encrypted" ||
-            content->contentType()->mimeType() == "application/pkcs7-mime" ) 
+            content->contentType()->mimeType() == "application/pkcs7-mime" )
   {
     return;
   }
@@ -154,7 +154,7 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
     if ( content->contentDescription( false ) && !content->contentDescription()->asUnicodeString().isEmpty() )
       attachmentRes.setProperty( Vocabulary::NIE::description(), content->contentDescription()->asUnicodeString() );
 
-    Nepomuk::NMO::Email email(&res);
+    Nepomuk::NMO::Email email( &res );
     email.addHasAttachment( attachmentRes.uri() );
     graph << attachmentRes;
     //TODO defer to post-processing
@@ -169,15 +169,15 @@ void NepomukMailFeeder::processFlags(const Akonadi::Item::Flags& flags, Nepomuk:
   Akonadi::MessageStatus status;
   status.setStatusFromFlags( flags );
 
-  Nepomuk::NMO::Email mail(&res);
+  Nepomuk::NMO::Email mail( &res );
   mail.setIsRead( status.isRead() );
 
   if ( status.isImportant() )
-    addTranslatedTag( "important", i18n("Important"), "mail-mark-important" , res, graph );
+    addTranslatedTag( "important", i18n( "Important" ), "mail-mark-important" , res, graph );
   if ( status.isToAct() )
-    addTranslatedTag( "todo", i18n("To Do"), "mail-mark-task", res, graph );
+    addTranslatedTag( "todo", i18n( "To Do" ), "mail-mark-task", res, graph );
   if ( status.isWatched() )
-    addTranslatedTag( "watched", i18n("Watched"), QString(), res, graph );
+    addTranslatedTag( "watched", i18n( "Watched" ), QString(), res, graph );
 }
 
 
@@ -193,7 +193,7 @@ void NepomukMailFeeder::addTranslatedTag(const char* tagName, const QString& tag
 
 void NepomukMailFeeder::processHeaders(const KMime::Message::Ptr& msg, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
 {
-  Nepomuk::NMO::Email mail(&res);
+  Nepomuk::NMO::Email mail( &res );
   if ( msg->subject( false ) ) {
     mail.setMessageSubject( msg->subject()->asUnicodeString() );
     res.setProperty( Soprano::Vocabulary::NAO::prefLabel(), msg->subject()->asUnicodeString() );
@@ -239,18 +239,18 @@ void NepomukMailFeeder::addSpecificHeader( const KMime::Message::Ptr& msg, const
 {
   if ( msg->headerByType( headerName ) ) {
     Nepomuk::SimpleResource headerRes;
-    Nepomuk::NMO::MessageHeader header(&headerRes);
-    header.setHeaderName(headerName);
-    header.setHeaderValue( msg->headerByType( headerName )->asUnicodeString());
+    Nepomuk::NMO::MessageHeader header( &headerRes );
+    header.setHeaderName( headerName );
+    header.setHeaderValue( msg->headerByType( headerName )->asUnicodeString() );
     graph << headerRes;
-    mail.addMessageHeader(headerRes.uri());
+    mail.addMessageHeader( headerRes.uri() );
   }
 }
 
 QList<QUrl> NepomukMailFeeder::extractContactsFromMailboxes(const KMime::Types::Mailbox::List& mbs, Nepomuk::SimpleResourceGraph &graph )
 {
   QList<QUrl> contacts;
-  foreach( const KMime::Types::Mailbox& mbox, mbs ) {
+  foreach ( const KMime::Types::Mailbox& mbox, mbs ) {
     if ( mbox.hasAddress() ) {
       contacts << NepomukFeederUtils::addContact( QString::fromLatin1( mbox.address() ), mbox.name(), graph ).uri();
     }

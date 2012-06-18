@@ -221,7 +221,7 @@ void ImapResource::startConnect( const QVariant& )
 
 int ImapResource::configureSubscription()
 {
-  if( !m_pool->account() )
+  if ( !m_pool->account() )
      return -2;
   const QString password = Settings::self()->password();
   if ( password.isEmpty() )
@@ -232,7 +232,7 @@ int ImapResource::configureSubscription()
   subscriptions->connectAccount( *m_pool->account(), password );
   subscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
 
-  if(subscriptions->exec()) {
+  if ( subscriptions->exec() ) {
     Settings::self()->setSubscriptionEnabled( subscriptions->subscriptionEnabled() );
     Settings::self()->writeConfig();
     emit configurationDialogAccepted();
@@ -375,7 +375,7 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
 
 void ImapResource::retrieveItems( const Collection &col )
 {
-  if (col.remoteId().isEmpty()) {
+  if ( col.remoteId().isEmpty() ) {
     //This can happen due to FetchHelper::triggerOnDemandFetch() in the akonadi server (not an error).
     cancelTask();
     return;
@@ -454,7 +454,7 @@ void ImapResource::doSetOnline(bool online)
   if ( !online ) {
     if ( m_pool->isConnected() )
       m_pool->disconnect();
-    qDeleteAll(m_taskList);
+    qDeleteAll( m_taskList );
     m_taskList.clear();
     delete m_idle;
     m_idle = 0;
@@ -497,7 +497,7 @@ void ImapResource::reconnect()
 
 void ImapResource::startIdleIfNeeded()
 {
-  if (!m_idle) {
+  if ( !m_idle ) {
     startIdle();
   }
 }

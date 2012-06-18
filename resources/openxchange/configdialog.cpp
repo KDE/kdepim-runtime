@@ -75,7 +75,7 @@ void ConfigDialog::showAboutDialog()
   KAboutData aboutData( "ox", "", ki18n( "Open-Xchange" ), "0.1",
                         ki18n( "Akonadi Open-Xchange Resource" ),
                         KAboutData::License_LGPL,
-                        ki18n("(c) 2009 by Tobias Koenig (credativ GmbH)") );
+                        ki18n( "(c) 2009 by Tobias Koenig (credativ GmbH)" ) );
   aboutData.addAuthor( ki18n( "Tobias Koenig" ), ki18n( "Current maintainer" ), "tokoe@kde.org" );
   aboutData.addCredit( ki18n( "credativ GmbH" ), ki18n( "Funded and supported" ), 0, "http://www.credativ.com" );
 

@@ -19,13 +19,13 @@
 
 #include <QVariant>
 
-#include <libkgoogle/objects/calendar.h>
+#include <libkgapi/objects/calendar.h>
 
 #include <qjson/parser.h>
 #include <qjson/serializer.h>
 
 using namespace KCalCore;
-using namespace KGoogle::Objects;
+using namespace KGAPI::Objects;
 
 DefaultReminderAttribute::DefaultReminderAttribute( const Reminder::List &reminders )
   : m_reminders( reminders )

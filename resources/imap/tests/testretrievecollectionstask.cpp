@@ -39,12 +39,12 @@ public:
 private slots:
   void shouldListCollections_data()
   {
-    QTest::addColumn<Akonadi::Collection::List>("expectedCollections");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QStringList>("callNames");
-    QTest::addColumn<bool>("isSubscriptionEnabled");
-    QTest::addColumn<bool>("isDisconnectedModeEnabled");
-    QTest::addColumn<int>("intervalCheckTime");
+    QTest::addColumn<Akonadi::Collection::List>( "expectedCollections" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QStringList>( "callNames" );
+    QTest::addColumn<bool>( "isSubscriptionEnabled" );
+    QTest::addColumn<bool>( "isDisconnectedModeEnabled" );
+    QTest::addColumn<int>( "intervalCheckTime" );
 
     Akonadi::Collection collection;
 
@@ -281,7 +281,7 @@ private slots:
     QVERIFY( pool.connect( createDefaultAccount() ) );
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
-    DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+    DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setResourceName( "resource" );
     state->setSubscriptionEnabled( isSubscriptionEnabled );
     state->setDisconnectedModeEnabled( isDisconnectedModeEnabled );
@@ -294,9 +294,9 @@ private slots:
     Akonadi::Collection::List collections;
 
     QCOMPARE( state->calls().count(), callNames.size() );
-    for (int i=0; i<callNames.size(); i++) {
-      QString command = QString::fromUtf8(state->calls().at(i).first);
-      QVariant parameter = state->calls().at(i).second;
+    for ( int i = 0; i < callNames.size(); i++ ) {
+      QString command = QString::fromUtf8(state->calls().at( i ).first);
+      QVariant parameter = state->calls().at( i ).second;
 
       if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
         kDebug() << "Got a cancel:" << parameter.toString();
@@ -360,10 +360,10 @@ private:
       return createRootCollection();
     }
 
-    QStringList pathParts = path.split(separator);
+    QStringList pathParts = path.split( separator );
 
     const QString pathPart = pathParts.takeLast();
-    const QString parentPath = pathParts.join(separator);
+    const QString parentPath = pathParts.join( separator );
 
     // Here we should likely reuse already produced collections if possible to be 100% accurate
     // but in the tests we check only a limited amount of properties (namely remote id and name).
@@ -378,7 +378,7 @@ private:
     collection.setContentMimeTypes( QStringList() << "message/rfc822" << Akonadi::Collection::mimeType() );
 
     // If the folder is the Inbox, make some special settings.
-    if ( pathPart.compare( QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
+    if ( pathPart.compare( QLatin1String( "INBOX" ) , Qt::CaseInsensitive ) == 0 ) {
       Akonadi::EntityDisplayAttribute *attr = new Akonadi::EntityDisplayAttribute;
       attr->setDisplayName( i18n( "Inbox" ) );
       attr->setIconName( "mail-folder-inbox" );
@@ -386,7 +386,7 @@ private:
     }
 
     // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
-    if ( (pathPart.compare( QLatin1String("user") , Qt::CaseInsensitive ) == 0) && isNoSelect ) {
+    if ( ( pathPart.compare( QLatin1String( "user" ) , Qt::CaseInsensitive ) == 0) && isNoSelect ) {
       Akonadi::EntityDisplayAttribute *attr = new Akonadi::EntityDisplayAttribute;
       attr->setDisplayName( i18n( "Shared Folders" ) );
       attr->setIconName( "x-mail-distribution-list" );
@@ -411,14 +411,14 @@ private:
   void compareCollectionLists( const Akonadi::Collection::List &resultList,
                                const Akonadi::Collection::List &expectedList )
   {
-    for ( int i=0; i<expectedList.size(); i++ ) {
+    for ( int i = 0; i< expectedList.size(); i++ ) {
       Akonadi::Collection expected = expectedList[i];
       bool found = false;
 
-      for ( int j=0; j<resultList.size(); j++ ) {
+      for ( int j = 0; j < resultList.size(); j++ ) {
         Akonadi::Collection result = resultList[j];
 
-        if ( result.remoteId()==expected.remoteId() ) {
+        if ( result.remoteId() == expected.remoteId() ) {
           found = true;
 
           QVERIFY( !result.name().isEmpty() );
@@ -426,7 +426,7 @@ private:
           QCOMPARE( result.name(), expected.name() );
           QCOMPARE( result.contentMimeTypes(), expected.contentMimeTypes() );
           QCOMPARE( result.rights(), expected.rights() );
-          if ( expected.parentCollection()==Akonadi::Collection::root() ) {
+          if ( expected.parentCollection() == Akonadi::Collection::root() ) {
             QCOMPARE( result.parentCollection(), expected.parentCollection() );
           } else {
             QCOMPARE( result.parentCollection().remoteId(), expected.parentCollection().remoteId() );
@@ -445,7 +445,7 @@ private:
         }
       }
 
-      QVERIFY2( found, QString("%1 not found!").arg(expected.remoteId()).toUtf8() );
+      QVERIFY2( found, QString( "%1 not found!" ).arg(expected.remoteId() ).toUtf8() );
     }
 
     QCOMPARE( resultList.size(), expectedList.size() );

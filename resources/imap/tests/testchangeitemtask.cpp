@@ -33,10 +33,10 @@ class TestChangeItemTask : public ImapTestBase
 private slots:
   void shouldAppendMessage_data()
   {
-    QTest::addColumn<Akonadi::Item>("item");
-    QTest::addColumn< QSet<QByteArray> >("parts");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QStringList>("callNames");
+    QTest::addColumn<Akonadi::Item>( "item" );
+    QTest::addColumn< QSet<QByteArray> >( "parts" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QStringList>( "callNames" );
 
     Akonadi::Collection collection;
     Akonadi::Item item;
@@ -47,18 +47,18 @@ private slots:
 
     collection = Akonadi::Collection( 1 );
     collection.setRemoteId( "/INBOX/Foo" );
-    collection.addAttribute(new UidNextAttribute( 65 ));
+    collection.addAttribute( new UidNextAttribute( 65 ) );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
     item.setRemoteId( "5" );
 
-    KMime::Message::Ptr message(new KMime::Message);
+    KMime::Message::Ptr message( new KMime::Message );
 
     messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
-    item.setPayload(message);
+    item.setPayload( message );
 
     parts.clear();
     parts << "PLD:RFC822";
@@ -80,18 +80,18 @@ private slots:
 
     collection = Akonadi::Collection( 1 );
     collection.setRemoteId( "/INBOX/Foo" );
-    collection.addAttribute(new UidNextAttribute( 65 ));
+    collection.addAttribute( new UidNextAttribute( 65 ) );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
     item.setRemoteId( "5" );
 
-    message = KMime::Message::Ptr(new KMime::Message);
+    message = KMime::Message::Ptr( new KMime::Message );
 
     messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
-    item.setPayload(message);
+    item.setPayload( message );
 
     parts.clear();
     parts << "PLD:RFC822";
@@ -116,18 +116,18 @@ private slots:
 
     collection = Akonadi::Collection( 1 );
     collection.setRemoteId( "/INBOX/Foo" );
-    collection.addAttribute(new UidNextAttribute( 65 ));
+    collection.addAttribute( new UidNextAttribute( 65 ));
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
     item.setRemoteId( "5" );
 
-    message = KMime::Message::Ptr(new KMime::Message);
+    message = KMime::Message::Ptr( new KMime::Message );
 
     messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
 
-    message->setContent(messageContent.toUtf8());
+    message->setContent( messageContent.toUtf8() );
     message->parse();
-    item.setPayload(message);
+    item.setPayload( message );
 
     parts.clear();
     parts << "PLD:RFC822";
@@ -188,7 +188,7 @@ private slots:
     QVERIFY( pool.connect( createDefaultAccount() ) );
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
-    DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+    DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setParts( parts );
     state->setItem( item );
     ChangeItemTask *task = new ChangeItemTask( state );
@@ -196,11 +196,11 @@ private slots:
     QTest::qWait( 100 );
 
     QCOMPARE( state->calls().count(), callNames.size() );
-    for (int i=0; i<callNames.size(); i++) {
-      QString command = QString::fromUtf8(state->calls().at(i).first);
-      QVariant parameter = state->calls().at(i).second;
+    for ( int i = 0; i < callNames.size(); i++ ) {
+      QString command = QString::fromUtf8(state->calls().at( i ).first);
+      QVariant parameter = state->calls().at( i ).second;
 
-      if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
+      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 

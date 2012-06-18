@@ -239,7 +239,7 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
     }
     collectionId = items[0].storageCollectionId();
     KolabHandler::Ptr handler = m_monitoredCollections.value(collectionId);
-    if (handler) {
+    if ( handler ) {
       if ( m_retrieveState == DeleteItem ) {
         kDebug() << "m_retrieveState = DeleteItem";
         handler->itemDeleted( items[0] );
@@ -736,7 +736,7 @@ void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
   kDebug() << "IMAPITEMREMOVED";
   const Akonadi::Item kolabItem = imapToKolab( item );
   Q_FOREACH ( KolabHandler::Ptr handler, m_monitoredCollections ) {
-    handler->itemDeleted(item);
+    handler->itemDeleted( item );
   }
   Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( kolabItem, this );
   Q_UNUSED( job );
@@ -930,7 +930,7 @@ bool KolabProxyResource::registerHandlerForCollection( const Akonadi::Collection
                this, SLOT(deleteImapItem(Akonadi::Item)));
       connect( handler.data(), SIGNAL(addItemToImap(Akonadi::Item,Akonadi::Entity::Id)),
                this, SLOT(addImapItem(Akonadi::Item,Akonadi::Entity::Id)));
-      m_monitor->setCollectionMonitored(imapCollection);
+      m_monitor->setCollectionMonitored( imapCollection );
       m_monitoredCollections.insert( imapCollection.id(), handler );
       m_resourceIdentifier.insert( imapCollection.id(), imapCollection.resource() );
       return true;

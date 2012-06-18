@@ -30,20 +30,20 @@
 #include <QListWidget>
 #include <QPointer>
 
-#include <libkgoogle/accessmanager.h>
-#include <libkgoogle/request.h>
-#include <libkgoogle/reply.h>
-#include <libkgoogle/auth.h>
-#include <libkgoogle/objects/calendar.h>
-#include <libkgoogle/objects/tasklist.h>
-#include <libkgoogle/services/calendar.h>
-#include <libkgoogle/services/tasks.h>
-#include <libkgoogle/ui/accountscombo.h>
+#include <libkgapi/accessmanager.h>
+#include <libkgapi/request.h>
+#include <libkgapi/reply.h>
+#include <libkgapi/auth.h>
+#include <libkgapi/objects/calendar.h>
+#include <libkgapi/objects/tasklist.h>
+#include <libkgapi/services/calendar.h>
+#include <libkgapi/services/tasks.h>
+#include <libkgapi/ui/accountscombo.h>
 
-using namespace KGoogle;
+using namespace KGAPI;
 
 enum {
-  KGoogleObjectRole = Qt::UserRole,
+  KGAPIObjectRole = Qt::UserRole,
   ObjectUIDRole = Qt::UserRole + 1
 };
 
@@ -51,8 +51,8 @@ SettingsDialog::SettingsDialog( WId windowId, QWidget *parent ):
   KDialog( parent ),
   m_windowId( windowId )
 {
-  qRegisterMetaType<KGoogle::Services::Calendar>( "Calendar" );
-  qRegisterMetaType<KGoogle::Services::Tasks>( "Tasks" );
+  qRegisterMetaType<KGAPI::Services::Calendar>( "Calendar" );
+  qRegisterMetaType<KGAPI::Services::Tasks>( "Tasks" );
 
   KWindowSystem::setMainWindow( this, windowId );
 
@@ -98,14 +98,14 @@ SettingsDialog::SettingsDialog( WId windowId, QWidget *parent ):
   connect( this, SIGNAL(accepted()),
            this, SLOT(saveSettings()) );
 
-  m_gam = new KGoogle::AccessManager;
-  connect( m_gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(gam_objectsListReceived(KGoogle::Reply*)) );
-  connect( m_gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  m_gam = new KGAPI::AccessManager;
+  connect( m_gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(gam_objectsListReceived(KGAPI::Reply*)) );
+  connect( m_gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  KGoogle::Auth *auth = KGoogle::Auth::instance();
-  connect( auth, SIGNAL(authenticated(KGoogle::Account::Ptr&)),
+  KGAPI::Auth *auth = KGAPI::Auth::instance();
+  connect( auth, SIGNAL(authenticated(KGAPI::Account::Ptr&)),
            this, SLOT(reloadAccounts()) );
 
   m_ui->accountsCombo->clear();
@@ -121,7 +121,7 @@ SettingsDialog::~SettingsDialog()
   delete m_ui;
 }
 
-void SettingsDialog::error( KGoogle::Error code, const QString &msg )
+void SettingsDialog::error( KGAPI::Error code, const QString &msg )
 {
   KMessageBox::sorry( this, msg, i18n( "Error while talking to Google" ) );
 
@@ -183,22 +183,22 @@ void SettingsDialog::reloadAccounts()
 
 void SettingsDialog::addAccountClicked()
 {
-  KGoogle::Auth *auth = KGoogle::Auth::instance();
+  KGAPI::Auth *auth = KGAPI::Auth::instance();
 
-  KGoogle::Account::Ptr account( new KGoogle::Account() );
+  KGAPI::Account::Ptr account( new KGAPI::Account() );
   account->addScope( Services::Calendar::ScopeUrl );
   account->addScope( Services::Tasks::ScopeUrl );
 
   try {
     auth->authenticate( account, true );
-  } catch ( KGoogle::Exception::BaseException &e ) {
+  } catch ( KGAPI::Exception::BaseException &e ) {
     KMessageBox::error( this, e.what() );
   }
 }
 
 void SettingsDialog::removeAccountClicked()
 {
-  KGoogle::Account::Ptr account = m_ui->accountsCombo->currentAccount();
+  KGAPI::Account::Ptr account = m_ui->accountsCombo->currentAccount();
   if ( account.isNull() ) {
     return;
   }
@@ -217,10 +217,10 @@ void SettingsDialog::removeAccountClicked()
     return;
   }
 
-  KGoogle::Auth *auth = KGoogle::Auth::instance();
+  KGAPI::Auth *auth = KGAPI::Auth::instance();
   try {
     auth->revoke( account );
-  } catch ( KGoogle::Exception::BaseException &e ) {
+  } catch ( KGAPI::Exception::BaseException &e ) {
     KMessageBox::error( this, e.what() );
   }
 
@@ -243,15 +243,15 @@ void SettingsDialog::accountChanged()
     return;
   }
 
-  KGoogle::Request *request;
+  KGAPI::Request *request;
 
   m_ui->calendarsList->clear();
-  request = new KGoogle::Request( Services::Calendar::fetchCalendarsUrl(),
+  request = new KGAPI::Request( Services::Calendar::fetchCalendarsUrl(),
                                   Request::FetchAll, "Calendar", account );
   m_gam->queueRequest( request );
 
   m_ui->tasksList->clear();
-  request = new KGoogle::Request( Services::Tasks::fetchTaskListsUrl(),
+  request = new KGAPI::Request( Services::Tasks::fetchTaskListsUrl(),
                                   Request::FetchAll, "Tasks", account );
   m_gam->sendRequest( request );
 }
@@ -259,19 +259,19 @@ void SettingsDialog::accountChanged()
 void SettingsDialog::addCalendarClicked()
 {
   QPointer<CalendarEditor> editor = new CalendarEditor;
-  connect( editor, SIGNAL(accepted(KGoogle::Objects::Calendar*)),
-           this, SLOT(addCalendar(KGoogle::Objects::Calendar*)) );
+  connect( editor, SIGNAL(accepted(KGAPI::Objects::Calendar*)),
+           this, SLOT(addCalendar(KGAPI::Objects::Calendar*)) );
 
   editor->exec();
 
   delete editor;
 }
 
-void SettingsDialog::addCalendar( KGoogle::Objects::Calendar *calendar )
+void SettingsDialog::addCalendar( KGAPI::Objects::Calendar *calendar )
 {
-  KGoogle::Account::Ptr account;
-  KGoogle::AccessManager *gam;
-  KGoogle::Request *request;
+  KGAPI::Account::Ptr account;
+  KGAPI::AccessManager *gam;
+  KGAPI::Request *request;
   Services::Calendar parser;
   QByteArray data;
 
@@ -283,17 +283,17 @@ void SettingsDialog::addCalendar( KGoogle::Objects::Calendar *calendar )
   m_ui->accountsBox->setDisabled( true );
   m_ui->calendarsBox->setDisabled( true );
 
-  gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(gam_objectCreated(KGoogle::Reply*)) );
-  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+  gam = new KGAPI::AccessManager;
+  connect( gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(gam_objectCreated(KGAPI::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGAPI::Request*)),
            gam, SLOT(deleteLater()) );
-  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  request = new KGoogle::Request( Services::Calendar::createCalendarUrl(),
+  request = new KGAPI::Request( Services::Calendar::createCalendarUrl(),
                                   Request::Create, "Calendar", account );
-  data = parser.objectToJSON( dynamic_cast< KGoogle::Object * >( calendar ) );
+  data = parser.objectToJSON( dynamic_cast< KGAPI::Object * >( calendar ) );
   request->setRequestData( data, "application/json" );
   gam->sendRequest( request );
 
@@ -316,25 +316,25 @@ void SettingsDialog::editCalendarClicked()
     return;
   }
 
-  calendar = item->data( KGoogleObjectRole ).value< KGoogle::Objects::Calendar * >();
+  calendar = item->data( KGAPIObjectRole ).value< KGAPI::Objects::Calendar * >();
   if ( !calendar ) {
     return;
   }
 
   QPointer<CalendarEditor> editor = new CalendarEditor( calendar );
-  connect( editor, SIGNAL(accepted(KGoogle::Objects::Calendar*)),
-           this, SLOT(editCalendar(KGoogle::Objects::Calendar*)) );
+  connect( editor, SIGNAL(accepted(KGAPI::Objects::Calendar*)),
+           this, SLOT(editCalendar(KGAPI::Objects::Calendar*)) );
 
   editor->exec();
 
   delete editor;
 }
 
-void SettingsDialog::editCalendar( KGoogle::Objects::Calendar *calendar )
+void SettingsDialog::editCalendar( KGAPI::Objects::Calendar *calendar )
 {
-  KGoogle::Account::Ptr account;
-  KGoogle::AccessManager *gam;
-  KGoogle::Request *request;
+  KGAPI::Account::Ptr account;
+  KGAPI::AccessManager *gam;
+  KGAPI::Request *request;
   Services::Calendar parser;
   QByteArray data;
 
@@ -346,17 +346,17 @@ void SettingsDialog::editCalendar( KGoogle::Objects::Calendar *calendar )
   m_ui->accountsBox->setDisabled( true );
   m_ui->calendarsBox->setDisabled( true );
 
-  gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(gam_objectModified(KGoogle::Reply*)) );
-  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+  gam = new KGAPI::AccessManager;
+  connect( gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(gam_objectModified(KGAPI::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGAPI::Request*)),
            gam, SLOT(deleteLater()) );
-  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  request = new KGoogle::Request( Services::Calendar::updateCalendarUrl( calendar->uid() ),
+  request = new KGAPI::Request( Services::Calendar::updateCalendarUrl( calendar->uid() ),
                                   Request::Update, "Calendar", account );
-  data = parser.objectToJSON( dynamic_cast< KGoogle::Object * >( calendar ) );
+  data = parser.objectToJSON( dynamic_cast< KGAPI::Object * >( calendar ) );
   request->setRequestData( data, "application/json" );
   gam->sendRequest( request );
 
@@ -379,7 +379,7 @@ void SettingsDialog::removeCalendarClicked()
     return;
   }
 
-  calendar = item->data( KGoogleObjectRole ).value< KGoogle::Objects::Calendar * >();
+  calendar = item->data( KGAPIObjectRole ).value< KGAPI::Objects::Calendar * >();
   if ( !calendar ) {
     return;
   }
@@ -398,9 +398,9 @@ void SettingsDialog::removeCalendarClicked()
     return;
   }
 
-  KGoogle::Account::Ptr account;
-  KGoogle::AccessManager *gam;
-  KGoogle::Request *request;
+  KGAPI::Account::Ptr account;
+  KGAPI::AccessManager *gam;
+  KGAPI::Request *request;
 
   account = m_ui->accountsCombo->currentAccount();
   if ( account.isNull() ) {
@@ -410,15 +410,15 @@ void SettingsDialog::removeCalendarClicked()
   m_ui->accountsBox->setDisabled( true );
   m_ui->calendarsBox->setDisabled( true );
 
-  gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+  gam = new KGAPI::AccessManager;
+  connect( gam, SIGNAL(replyReceived(KGAPI::Reply*)),
            this, SLOT(reloadCalendarsClicked()) );
-  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+  connect( gam, SIGNAL(requestFinished(KGAPI::Request*)),
            gam, SLOT(deleteLater()) );
-  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  request = new KGoogle::Request( Services::Calendar::removeCalendarUrl( calendar->uid() ),
+  request = new KGAPI::Request( Services::Calendar::removeCalendarUrl( calendar->uid() ),
                                   Request::Remove, "Calendar", account );
   gam->sendRequest( request );
 }
@@ -426,8 +426,8 @@ void SettingsDialog::removeCalendarClicked()
 void SettingsDialog::addTaskListClicked()
 {
   TasklistEditor *editor = new TasklistEditor;
-  connect( editor, SIGNAL(accepted(KGoogle::Objects::TaskList*)),
-           this, SLOT(addTaskList(KGoogle::Objects::TaskList*)) );
+  connect( editor, SIGNAL(accepted(KGAPI::Objects::TaskList*)),
+           this, SLOT(addTaskList(KGAPI::Objects::TaskList*)) );
 
   editor->exec();
 
@@ -436,9 +436,9 @@ void SettingsDialog::addTaskListClicked()
 
 void SettingsDialog::reloadCalendarsClicked()
 {
-  KGoogle::AccessManager *gam;
-  KGoogle::Account::Ptr account;
-  KGoogle::Request *request;
+  KGAPI::AccessManager *gam;
+  KGAPI::Account::Ptr account;
+  KGAPI::Request *request;
 
   account = m_ui->accountsCombo->currentAccount();
   if ( account.isNull() ) {
@@ -449,24 +449,24 @@ void SettingsDialog::reloadCalendarsClicked()
   m_ui->calendarsBox->setDisabled( true );
 
   m_ui->calendarsList->clear();
-  gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(gam_objectsListReceived(KGoogle::Reply*)) );
-  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+  gam = new KGAPI::AccessManager;
+  connect( gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(gam_objectsListReceived(KGAPI::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGAPI::Request*)),
            gam, SLOT(deleteLater()) );
-  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  request = new KGoogle::Request( Services::Calendar::fetchCalendarsUrl(),
+  request = new KGAPI::Request( Services::Calendar::fetchCalendarsUrl(),
                                   Request::FetchAll, "Calendar", account );
   gam->sendRequest( request );
 }
 
 void SettingsDialog::addTaskList( TaskList *taskList )
 {
-  KGoogle::Account::Ptr account;
-  KGoogle::AccessManager *gam;
-  KGoogle::Request *request;
+  KGAPI::Account::Ptr account;
+  KGAPI::AccessManager *gam;
+  KGAPI::Request *request;
   Services::Tasks parser;
   QByteArray data;
 
@@ -478,17 +478,17 @@ void SettingsDialog::addTaskList( TaskList *taskList )
   m_ui->accountsBox->setDisabled( true );
   m_ui->tasksBox->setDisabled( true );
 
-  gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(gam_objectCreated(KGoogle::Reply*)) );
-  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+  gam = new KGAPI::AccessManager;
+  connect( gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(gam_objectCreated(KGAPI::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGAPI::Request*)),
            gam, SLOT(deleteLater()) );
-  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  request = new KGoogle::Request( Services::Tasks::createTaskListUrl(),
+  request = new KGAPI::Request( Services::Tasks::createTaskListUrl(),
                                   Request::Create, "Tasks", account );
-  data = parser.objectToJSON( dynamic_cast< KGoogle::Object * >( taskList ) );
+  data = parser.objectToJSON( dynamic_cast< KGAPI::Object * >( taskList ) );
   request->setRequestData( data, "application/json" );
   gam->sendRequest( request );
 
@@ -511,14 +511,14 @@ void SettingsDialog::editTaskListClicked()
     return;
   }
 
-  taskList = item->data( KGoogleObjectRole ).value< KGoogle::Objects::TaskList * >();
+  taskList = item->data( KGAPIObjectRole ).value< KGAPI::Objects::TaskList * >();
   if ( !taskList ) {
     return;
   }
 
   QPointer<TasklistEditor> editor = new TasklistEditor( taskList );
-  connect( editor, SIGNAL(accepted(KGoogle::Objects::TaskList*)),
-           this, SLOT(editTaskList(KGoogle::Objects::TaskList*)) );
+  connect( editor, SIGNAL(accepted(KGAPI::Objects::TaskList*)),
+           this, SLOT(editTaskList(KGAPI::Objects::TaskList*)) );
 
   editor->exec();
 
@@ -527,9 +527,9 @@ void SettingsDialog::editTaskListClicked()
 
 void SettingsDialog::editTaskList( TaskList *taskList )
 {
-  KGoogle::Account::Ptr account;
-  KGoogle::AccessManager *gam;
-  KGoogle::Request *request;
+  KGAPI::Account::Ptr account;
+  KGAPI::AccessManager *gam;
+  KGAPI::Request *request;
   Services::Tasks parser;
   QByteArray data;
 
@@ -541,17 +541,17 @@ void SettingsDialog::editTaskList( TaskList *taskList )
   m_ui->accountsBox->setDisabled( true );
   m_ui->tasksBox->setDisabled( true );
 
-  gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(gam_objectModified(KGoogle::Reply*)) );
-  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+  gam = new KGAPI::AccessManager;
+  connect( gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(gam_objectModified(KGAPI::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGAPI::Request*)),
            gam, SLOT(deleteLater()) );
-  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  request = new KGoogle::Request( Services::Tasks::updateTaskListUrl( taskList->uid() ),
+  request = new KGAPI::Request( Services::Tasks::updateTaskListUrl( taskList->uid() ),
                                   Request::Update, "Tasks", account );
-  data = parser.objectToJSON( dynamic_cast< KGoogle::Object * >( taskList ) );
+  data = parser.objectToJSON( dynamic_cast< KGAPI::Object * >( taskList ) );
   request->setRequestData( data, "application/json" );
   gam->sendRequest( request );
 
@@ -574,7 +574,7 @@ void SettingsDialog::removeTaskListClicked()
     return;
   }
 
-  taskList = item->data( KGoogleObjectRole ).value< KGoogle::Objects::TaskList * >();
+  taskList = item->data( KGAPIObjectRole ).value< KGAPI::Objects::TaskList * >();
   if ( !taskList ) {
     return;
   }
@@ -593,9 +593,9 @@ void SettingsDialog::removeTaskListClicked()
     return;
   }
 
-  KGoogle::Account::Ptr account;
-  KGoogle::AccessManager *gam;
-  KGoogle::Request *request;
+  KGAPI::Account::Ptr account;
+  KGAPI::AccessManager *gam;
+  KGAPI::Request *request;
 
   account = m_ui->accountsCombo->currentAccount();
   if ( account.isNull() ) {
@@ -605,24 +605,24 @@ void SettingsDialog::removeTaskListClicked()
   m_ui->accountsBox->setDisabled( true );
   m_ui->tasksBox->setDisabled( true );
 
-  gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
+  gam = new KGAPI::AccessManager;
+  connect( gam, SIGNAL(replyReceived(KGAPI::Reply*)),
            this, SLOT(reloadTaskListsClicked()) );
-  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+  connect( gam, SIGNAL(requestFinished(KGAPI::Request*)),
            gam, SLOT(deleteLater()) );
-  connect( gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect( gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  request = new KGoogle::Request( Services::Tasks::removeTaskListUrl( taskList->uid() ),
+  request = new KGAPI::Request( Services::Tasks::removeTaskListUrl( taskList->uid() ),
                                   Request::Remove, "Tasks", account );
   gam->sendRequest( request );
 }
 
 void SettingsDialog::reloadTaskListsClicked()
 {
-  KGoogle::AccessManager *gam;
-  KGoogle::Account::Ptr account;
-  KGoogle::Request *request;
+  KGAPI::AccessManager *gam;
+  KGAPI::Account::Ptr account;
+  KGAPI::Request *request;
 
   account = m_ui->accountsCombo->currentAccount();
   if ( !account ) {
@@ -634,30 +634,30 @@ void SettingsDialog::reloadTaskListsClicked()
 
   m_ui->tasksList->clear();
 
-  gam = new KGoogle::AccessManager;
-  connect( gam, SIGNAL(replyReceived(KGoogle::Reply*)),
-           this, SLOT(gam_objectsListReceived(KGoogle::Reply*)) );
-  connect( gam, SIGNAL(requestFinished(KGoogle::Request*)),
+  gam = new KGAPI::AccessManager;
+  connect( gam, SIGNAL(replyReceived(KGAPI::Reply*)),
+           this, SLOT(gam_objectsListReceived(KGAPI::Reply*)) );
+  connect( gam, SIGNAL(requestFinished(KGAPI::Request*)),
            gam, SLOT(deleteLater()) );
-  connect (gam, SIGNAL(error(KGoogle::Error,QString)),
-           this, SLOT(error(KGoogle::Error,QString)) );
+  connect (gam, SIGNAL(error(KGAPI::Error,QString)),
+           this, SLOT(error(KGAPI::Error,QString)) );
 
-  request = new KGoogle::Request( Services::Tasks::fetchTaskListsUrl(),
+  request = new KGAPI::Request( Services::Tasks::fetchTaskListsUrl(),
                                   Request::FetchAll, "Tasks", account );
   gam->sendRequest( request );
 }
 
 void SettingsDialog::gam_objectCreated( Reply *reply )
 {
-  QList< KGoogle::Object * > objects = reply->replyData();
+  QList< KGAPI::Object * > objects = reply->replyData();
 
   if ( reply->serviceName() == "Calendar" ) {
 
-    Q_FOREACH ( KGoogle::Object * object, objects ) {
-      KGoogle::Objects::Calendar *calendar = static_cast< KGoogle::Objects::Calendar * >( object );
+    Q_FOREACH ( KGAPI::Object * object, objects ) {
+      KGAPI::Objects::Calendar *calendar = static_cast< KGAPI::Objects::Calendar * >( object );
 
       QListWidgetItem *item = new QListWidgetItem( calendar->title() );
-      item->setData( KGoogleObjectRole, qVariantFromValue( calendar ) );
+      item->setData( KGAPIObjectRole, qVariantFromValue( calendar ) );
       item->setData( ObjectUIDRole, calendar->uid() );
       item->setCheckState( Qt::Unchecked );
 
@@ -669,11 +669,11 @@ void SettingsDialog::gam_objectCreated( Reply *reply )
 
   } else if ( reply->serviceName() == "Tasks" ) {
 
-    Q_FOREACH ( KGoogle::Object * object, objects ) {
-      KGoogle::Objects::TaskList *taskList = static_cast< KGoogle::Objects::TaskList * >( object );
+    Q_FOREACH ( KGAPI::Object * object, objects ) {
+      KGAPI::Objects::TaskList *taskList = static_cast< KGAPI::Objects::TaskList * >( object );
 
       QListWidgetItem *item = new QListWidgetItem( taskList->title() );
-      item->setData( KGoogleObjectRole, qVariantFromValue( taskList ) );
+      item->setData( KGAPIObjectRole, qVariantFromValue( taskList ) );
       item->setData( ObjectUIDRole, taskList->uid() );
       item->setCheckState( Qt::Unchecked );
 
@@ -690,18 +690,18 @@ void SettingsDialog::gam_objectCreated( Reply *reply )
 
 void SettingsDialog::gam_objectsListReceived( Reply *reply )
 {
-  QList< KGoogle::Object * > objects = reply->replyData();
+  QList< KGAPI::Object * > objects = reply->replyData();
 
   if ( reply->serviceName() == "Calendar" ) {
 
-    Q_FOREACH ( KGoogle::Object * object, objects ) {
+    Q_FOREACH ( KGAPI::Object * object, objects ) {
       Objects::Calendar *calendar;
       QListWidgetItem *item;
 
       calendar = static_cast< Objects::Calendar * >( object );
       item = new QListWidgetItem;
       item->setText( calendar->title() );
-      item->setData( KGoogleObjectRole, qVariantFromValue( calendar ) );
+      item->setData( KGAPIObjectRole, qVariantFromValue( calendar ) );
       item->setData( ObjectUIDRole, calendar->uid() );
 
       if ( Settings::self()->calendars().contains( calendar->uid() ) ) {
@@ -718,14 +718,14 @@ void SettingsDialog::gam_objectsListReceived( Reply *reply )
 
   } else if ( reply->serviceName() == "Tasks" ) {
 
-    Q_FOREACH ( KGoogle::Object *object, objects ) {
+    Q_FOREACH ( KGAPI::Object *object, objects ) {
       Objects::TaskList *taskList;
       QListWidgetItem *item;
 
       taskList = static_cast< Objects::TaskList * >( object );
       item = new QListWidgetItem;
       item->setText( taskList->title() );
-      item->setData( KGoogleObjectRole, qVariantFromValue( taskList ) );
+      item->setData( KGAPIObjectRole, qVariantFromValue( taskList ) );
       item->setData( ObjectUIDRole, taskList->uid() );
 
       if ( Settings::self()->taskLists().contains( taskList->uid() ) ) {
@@ -749,12 +749,12 @@ void SettingsDialog::gam_objectsListReceived( Reply *reply )
 
 void SettingsDialog::gam_objectModified( Reply *reply )
 {
-  QList< KGoogle::Object * > objects = reply->replyData();
+  QList< KGAPI::Object * > objects = reply->replyData();
 
   if ( reply->serviceName() == "Calendar" ) {
 
-    Q_FOREACH ( KGoogle::Object * object, objects ) {
-      KGoogle::Objects::Calendar *calendar = static_cast< KGoogle::Objects::Calendar * >( object );
+    Q_FOREACH ( KGAPI::Object * object, objects ) {
+      KGAPI::Objects::Calendar *calendar = static_cast< KGAPI::Objects::Calendar * >( object );
       QListWidgetItem *item = 0;
 
       for ( int i = 0; i < m_ui->calendarsList->count(); i++ ) {
@@ -773,7 +773,7 @@ void SettingsDialog::gam_objectModified( Reply *reply )
 
       item->setText( calendar->title() );
       item->setData( ObjectUIDRole, calendar->uid() );
-      item->setData( KGoogleObjectRole, qVariantFromValue( calendar ) );
+      item->setData( KGAPIObjectRole, qVariantFromValue( calendar ) );
     }
 
     m_ui->calendarsBox->setEnabled( true );
@@ -781,8 +781,8 @@ void SettingsDialog::gam_objectModified( Reply *reply )
 
   } else if ( reply->serviceName() == "Tasks" ) {
 
-    Q_FOREACH ( KGoogle::Object * object, objects ) {
-      KGoogle::Objects::TaskList *taskList = static_cast< KGoogle::Objects::TaskList * >( object );
+    Q_FOREACH ( KGAPI::Object * object, objects ) {
+      KGAPI::Objects::TaskList *taskList = static_cast< KGAPI::Objects::TaskList * >( object );
       QListWidgetItem *item = 0;
 
       for ( int i = 0; i < m_ui->tasksList->count(); i++ ) {
@@ -801,7 +801,7 @@ void SettingsDialog::gam_objectModified( Reply *reply )
 
       item->setText( taskList->title() );
       item->setData( ObjectUIDRole, taskList->uid() );
-      item->setData( KGoogleObjectRole, qVariantFromValue( taskList ) );
+      item->setData( KGAPIObjectRole, qVariantFromValue( taskList ) );
 
     }
     m_ui->tasksBox->setEnabled( true );

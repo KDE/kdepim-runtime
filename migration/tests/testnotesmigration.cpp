@@ -71,8 +71,7 @@ void NotesMigrationTest::testKJotsBooksMigration()
   QTest::qWait( 5000 );
 
   QHashIterator<QString, QStringList> it( m_expectedStructure );
-  while ( it.hasNext() )
-  {
+  while ( it.hasNext() ) {
     it.next();
     QString key = it.key();
     QStringList value = it.value();
@@ -89,9 +88,8 @@ void NotesMigrationTest::checkRowsInserted( const QModelIndex &parent, int start
   const int rowCount = m_etm->rowCount( parent );
   Q_UNUSED( rowCount )
   static const int column = 0;
-  if ( !parent.isValid() && !m_expectedStructure.isEmpty() )
-  {
-    Collection resourceRootCollection = m_etm->index(start, column, parent).data( EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
+  if ( !parent.isValid() && !m_expectedStructure.isEmpty() ) {
+    Collection resourceRootCollection = m_etm->index( start, column, parent ).data( EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
     QVERIFY( resourceRootCollection.isValid() );
     QVERIFY( resourceRootCollection.name() == "Local Notes" );
     QVERIFY( resourceRootCollection.contentMimeTypes() == ( QStringList() << Akonadi::Collection::mimeType() << "text/x-vnd.akonadi.note" ) );
@@ -99,22 +97,18 @@ void NotesMigrationTest::checkRowsInserted( const QModelIndex &parent, int start
     m_seenStructure.insert( resourceRootCollection.name(), QStringList() );
     return;
   }
-  for (int row = start; row <= end; ++row )
-  {
+  for ( int row = start; row <= end; ++row ) {
     QModelIndex index = m_etm->index( row, column, parent );
 
     Collection newCollection = index.data( EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
     QString parentName = parent.data().toString();
-    if ( newCollection.isValid() )
-    {
+    if ( newCollection.isValid() ) {
       // This is a new collection in the resource.
       QVERIFY( newCollection.contentMimeTypes() == ( QStringList() << Akonadi::Collection::mimeType() << "text/x-vnd.akonadi.note" ) );
-      if ( !m_expectedStructure.isEmpty() )
-      {
+      if ( !m_expectedStructure.isEmpty() ) {
         QVERIFY( m_expectedStructure[ parentName ].contains( index.data().toString() ) );
         m_seenStructure[ parentName ].append( index.data().toString() );
-      }
-      else
+      } else
         m_seenNotes.append( index.data().toString() );
     } else {
       Item newItem = index.data( EntityTreeModel::ItemRole ).value<Akonadi::Item>();
@@ -122,8 +116,7 @@ void NotesMigrationTest::checkRowsInserted( const QModelIndex &parent, int start
       QVERIFY( newItem.hasPayload<KMime::Message::Ptr>() );
       KMime::Message::Ptr note = newItem.payload<KMime::Message::Ptr>();
 
-      if ( !m_expectedStructure.isEmpty() )
-      {
+      if ( !m_expectedStructure.isEmpty() ) {
         QVERIFY( m_expectedStructure[ parentName ].contains( note->subject()->asUnicodeString() ) );
         m_seenStructure[ parentName ].append( note->subject()->asUnicodeString() );
       } else {
@@ -142,7 +135,7 @@ void NotesMigrationTest::testLocalKNotesMigration()
 
   KNotesMigrator *migrator = new KNotesMigrator;
   Q_UNUSED( migrator )
-  
+
   QTest::qWait( 2000 );
 
   m_expectedNotes.sort();

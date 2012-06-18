@@ -56,7 +56,7 @@ void RemoveCollectionTask::onDeleteDone( KJob *job )
   changeProcessed();
 
   if ( job->error() ) {
-    kDebug(5327) << "Failed to delete the folder, resync the folder tree";
+    kDebug( 5327 ) << "Failed to delete the folder, resync the folder tree";
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
   }

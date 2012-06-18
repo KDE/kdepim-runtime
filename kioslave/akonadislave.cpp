@@ -38,17 +38,17 @@ extern "C" { int KDE_EXPORT kdemain(int argc, char **argv); }
 
 int kdemain(int argc, char **argv) {
 
-  KCmdLineArgs::init(argc, argv, "kio_akonadi", 0, KLocalizedString(), 0);
+  KCmdLineArgs::init( argc, argv, "kio_akonadi", 0, KLocalizedString(), 0 );
 
   KCmdLineOptions options;
-  options.add("+protocol", ki18n( "Protocol name" ));
-  options.add("+pool", ki18n( "Socket name" ));
-  options.add("+app", ki18n( "Socket name" ));
+  options.add( "+protocol", ki18n( "Protocol name" ) );
+  options.add( "+pool", ki18n( "Socket name" ) );
+  options.add( "+app", ki18n( "Socket name" ) );
   KCmdLineArgs::addCmdLineOptions( options );
   KApplication app( false );
 
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-  AkonadiSlave slave( args->arg(1).toLocal8Bit(), args->arg(2).toLocal8Bit() );
+  AkonadiSlave slave( args->arg( 1 ).toLocal8Bit(), args->arg( 2 ).toLocal8Bit() );
   slave.dispatchLoop();
 
   return 0;
@@ -79,7 +79,7 @@ void AkonadiSlave::get(const KUrl & url)
   }
 
   if ( job->items().count() != 1 ) {
-    error( KIO::ERR_DOES_NOT_EXIST, i18n("No such item.") );
+    error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such item." ) );
   } else {
     const Item item = job->items().first();
     QByteArray tmp = item.payloadData();
@@ -96,8 +96,7 @@ void AkonadiSlave::stat(const KUrl & url)
   kDebug( 7129 ) << url;
 
   // Stats for a collection
-  if ( Collection::fromUrl( url ).isValid() )
-  {
+  if ( Collection::fromUrl( url ).isValid() ) {
       Collection collection = Collection::fromUrl( url );
 
       if ( collection != Collection::root() ) {
@@ -109,7 +108,7 @@ void AkonadiSlave::stat(const KUrl & url)
         }
 
         if ( job->collections().count() != 1 ) {
-          error( KIO::ERR_DOES_NOT_EXIST, i18n("No such item.") );
+          error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such item." ) );
           return;
         }
 
@@ -120,8 +119,7 @@ void AkonadiSlave::stat(const KUrl & url)
       finished();
   }
   // Stats for an item
-  else if ( Item::fromUrl( url ).isValid() )
-  {
+  else if ( Item::fromUrl( url ).isValid() ) {
     ItemFetchJob *job = new ItemFetchJob( Item::fromUrl( url ) );
 
     if ( !job->exec() ) {
@@ -130,7 +128,7 @@ void AkonadiSlave::stat(const KUrl & url)
     }
 
     if ( job->items().count() != 1 ) {
-      error( KIO::ERR_DOES_NOT_EXIST, i18n("No such item.") );
+      error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such item." ) );
       return;
     }
 
@@ -144,8 +142,7 @@ void AkonadiSlave::del( const KUrl &url, bool isFile )
 {
   kDebug( 7129 ) << url;
 
-  if ( !isFile ) // It's a directory
-  {
+  if ( !isFile ) {                 // It's a directory
     Collection collection = Collection::fromUrl( url );
     CollectionDeleteJob *job = new CollectionDeleteJob( collection );
     if ( !job->exec() ) {
@@ -153,8 +150,7 @@ void AkonadiSlave::del( const KUrl &url, bool isFile )
       return;
     }
     finished();
-  } else // It's a file
-  {
+  } else {                         // It's a file
     ItemDeleteJob* job = new ItemDeleteJob( Item::fromUrl( url ) );
     if ( !job->exec() ) {
       error( KIO::ERR_INTERNAL, job->errorString() );
@@ -168,16 +164,15 @@ void AkonadiSlave::listDir( const KUrl &url )
 {
   kDebug( 7129 ) << url;
 
-  if ( !Collection::fromUrl( url ).isValid() )
-  {
-    error( KIO::ERR_DOES_NOT_EXIST, i18n("No such collection.") );
+  if ( !Collection::fromUrl( url ).isValid() ) {
+    error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such collection." ) );
     return;
   }
 
   // Fetching collections
   Collection collection = Collection::fromUrl( url );
   if ( !collection.isValid() ) {
-    error( KIO::ERR_DOES_NOT_EXIST, i18n("No such collection.") );
+    error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such collection." ) );
     return;
   }
   CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::FirstLevel );
@@ -187,7 +182,7 @@ void AkonadiSlave::listDir( const KUrl &url )
   }
 
   Collection::List collections = job->collections();
-  foreach( const Collection &col, collections )
+  foreach ( const Collection &col, collections )
     listEntry( entryForCollection( col ), false );
 
   // Fetching items
@@ -199,7 +194,7 @@ void AkonadiSlave::listDir( const KUrl &url )
     }
     Item::List items = fjob->items();
     totalSize( collections.count() + items.count() );
-    foreach( const Item &item, items )
+    foreach ( const Item &item, items )
       listEntry( entryForItem( item ), false );
   }
 

@@ -384,7 +384,7 @@ void MixedMaildirResource::collectionRemoved( const Collection &collection )
   }
 
   if ( collection.parentCollection() == Collection::root() ) {
-    emit error( i18n("Cannot delete top-level maildir folder '%1'.", Settings::self()->path() ) );
+    emit error( i18n( "Cannot delete top-level maildir folder '%1'.", Settings::self()->path() ) );
     changeProcessed();
     return;
   }
@@ -410,7 +410,7 @@ bool MixedMaildirResource::ensureDirExists()
 bool MixedMaildirResource::ensureSaneConfiguration()
 {
   if ( Settings::self()->path().isEmpty() ) {
-    const QString message = i18nc( "@info:status", "No usable storage location configured.");
+    const QString message = i18nc( "@info:status", "No usable storage location configured." );
     kError() << message;
     status( Broken, message );
     return false;

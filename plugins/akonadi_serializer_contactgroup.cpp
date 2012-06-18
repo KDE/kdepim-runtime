@@ -41,7 +41,7 @@ bool SerializerPluginContactGroup::deserialize( Item& item, const QByteArray& la
 
   KABC::ContactGroup contactGroup;
 
-  if ( !KABC::ContactGroupTool::convertFromXml( &data, contactGroup ) ){
+  if ( !KABC::ContactGroupTool::convertFromXml( &data, contactGroup ) ) {
     // TODO: error reporting
     return false;
   }

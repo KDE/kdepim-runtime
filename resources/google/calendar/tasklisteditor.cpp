@@ -18,7 +18,7 @@
 #include "tasklisteditor.h"
 #include "ui_tasklist_editor.h"
 
-using namespace KGoogle::Objects;
+using namespace KGAPI::Objects;
 
 TasklistEditor::TasklistEditor( TaskList *taskList ):
   QDialog(),
@@ -43,7 +43,7 @@ TasklistEditor::~TasklistEditor()
 void TasklistEditor::accepted()
 {
   if ( !m_taskList ) {
-    m_taskList = new KGoogle::Objects::TaskList;
+    m_taskList = new KGAPI::Objects::TaskList;
   }
 
   m_taskList->setTitle( m_ui->nameEdit->text() );

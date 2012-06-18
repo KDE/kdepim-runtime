@@ -126,7 +126,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     bool mSelfTestPassed;
     bool mSystemIsIdle;
     bool mIdleDetectionDisabled;
-    
+
     FeederQueue mQueue;
 };
 

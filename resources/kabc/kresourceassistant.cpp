@@ -329,12 +329,12 @@ KResourceAssistant::KResourceAssistant( const QString& resourceFamily, QWidget *
 
   d->mCreationWidget = new KResourceCreationWidget( familyName, d->mFactory, this );
   addPage( d->mCreationWidget, i18nc( "@title assistant dialog step",
-                                      "Step 1: Select a KDE resource plugin") );
+                                      "Step 1: Select a KDE resource plugin" ) );
 
   d->mConfigWidget =
     new KResourceConfigWidget( d->mCreationWidget->mTypes, d->mFactory, this );
   addPage( d->mConfigWidget, i18nc( "@title assistant dialog step",
-                                    "Step 2: Configure the selected KDE resource plugin") );
+                                    "Step 2: Configure the selected KDE resource plugin" ) );
 
   d->mFolderWidget = new KResourceFolderConfigWidget( familyName, this );
   d->mLastPage = addPage( d->mFolderWidget, i18nc( "@title assistant dialog step",

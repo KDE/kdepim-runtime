@@ -37,7 +37,7 @@ KABC::Addressee::List readContacts( bool *ok )
   const QString fileName = KStandardDirs::locateLocal( "data", "kabc/std.vcf" );
   QFile file( fileName );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    kDebug()<< QString("Unable to open file %1 for reading").arg( fileName );
+    kDebug() << QString( "Unable to open file %1 for reading" ).arg( fileName );
     *ok = false;
     return KABC::Addressee::List();
   }
@@ -65,7 +65,7 @@ bool writeContacts( const KABC::Addressee::List &contacts )
     const QString fileName = path + QDir::separator() + contact.uid() + ".vcf";
     QFile file( fileName );
     if ( !file.open( QIODevice::WriteOnly ) ) {
-      kDebug()<<QString("Unable to open file %1 for writing").arg( fileName );
+      kDebug() << QString( "Unable to open file %1 for writing" ).arg( fileName );
       return false;
     }
 

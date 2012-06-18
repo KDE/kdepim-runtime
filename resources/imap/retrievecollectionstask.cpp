@@ -48,7 +48,7 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
   root.setName( resourceName() );
   root.setRemoteId( rootRemoteId() );
   root.setContentMimeTypes( QStringList( Akonadi::Collection::mimeType() ) );
-  root.setRights( Akonadi::Collection::ReadOnly );
+  root.setRights( Akonadi::Collection::CanCreateCollection );
   root.setParentCollection( Akonadi::Collection::root() );
   root.addAttribute( new NoSelectAttribute( true ) );
 
@@ -120,7 +120,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
                           ? descriptor.name.left( descriptor.name.size()-1 )
                           : descriptor.name;
 
-    const QStringList pathParts = boxName.split(separator);
+    const QStringList pathParts = boxName.split( separator );
 
     QString parentPath;
     QString currentPath;
@@ -149,7 +149,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
         continue;
       }
 
-      const QList<QByteArray> currentFlags = isDummy ? (QList<QByteArray>() << "\\noselect") : flags[i];
+      const QList<QByteArray> currentFlags = isDummy ? ( QList<QByteArray>() << "\\noselect" ) : flags[i];
 
       Akonadi::Collection c;
       c.setName( pathPart );
@@ -159,7 +159,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       c.setContentMimeTypes( contentTypes );
 
       // If the folder is the Inbox, make some special settings.
-      if ( currentPath.compare( separator + QLatin1String("INBOX") , Qt::CaseInsensitive ) == 0 ) {
+      if ( currentPath.compare( separator + QLatin1String( "INBOX" ) , Qt::CaseInsensitive ) == 0 ) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Inbox" ) );
         attr->setIconName( "mail-folder-inbox" );
@@ -167,7 +167,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       }
 
       // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
-      if ( currentPath == (separator + QLatin1String( "user" )) && currentFlags.contains( "\\noselect" ) ) {
+      if ( currentPath == ( separator + QLatin1String( "user" ) ) && currentFlags.contains( "\\noselect" ) ) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Shared Folders" ) );
         attr->setIconName( "x-mail-distribution-list" );

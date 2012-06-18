@@ -38,8 +38,7 @@ class EmptyResourceCleaner : public QObject
   Q_OBJECT
 
   public:
-    enum CleaningOption
-    {
+    enum CleaningOption {
       CheckOnly = 0x00,
       DeleteEmptyCollections = 0x01,
       DeleteEmptyResource = 0x02

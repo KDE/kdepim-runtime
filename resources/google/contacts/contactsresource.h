@@ -24,10 +24,10 @@
 #include <Akonadi/Item>
 #include <KDateTime>
 
-#include <libkgoogle/common.h>
-#include <libkgoogle/account.h>
+#include <libkgapi/common.h>
+#include <libkgapi/account.h>
 
-namespace KGoogle {
+namespace KGAPI {
   class AccessManager;
   class Reply;
   class Request;
@@ -36,7 +36,7 @@ namespace KGoogle {
 class QNetworkAccessManager;
 class QNetworkReply;
 
-using namespace KGoogle;
+using namespace KGAPI;
 
 class ContactsResource: public Akonadi::ResourceBase,
                         public Akonadi::AgentBase::ObserverV2
@@ -71,7 +71,7 @@ class ContactsResource: public Akonadi::ResourceBase,
     void aboutToQuit();
 
   private Q_SLOTS:
-    void error( KGoogle::Error errCode, const QString &msg );
+    void error( KGAPI::Error errCode, const QString &msg );
 
     void slotAbortRequested();
 
@@ -80,12 +80,12 @@ class ContactsResource: public Akonadi::ResourceBase,
 
     void photoRequestFinished( QNetworkReply *reply );
 
-    void replyReceived( KGoogle::Reply *reply );
+    void replyReceived( KGAPI::Reply *reply );
 
-    void contactReceived( KGoogle::Reply *reply );
-    void contactUpdated( KGoogle::Reply *reply );
-    void contactCreated( KGoogle::Reply *reply );
-    void contactRemoved( KGoogle::Reply *reply );
+    void contactReceived( KGAPI::Reply *reply );
+    void contactUpdated( KGAPI::Reply *reply );
+    void contactCreated( KGAPI::Reply *reply );
+    void contactRemoved( KGAPI::Reply *reply );
 
     void emitPercent( KJob *job, ulong progress );
 
@@ -97,9 +97,9 @@ class ContactsResource: public Akonadi::ResourceBase,
 
     Account::Ptr getAccount();
 
-    KGoogle::Account::Ptr m_account;
+    KGAPI::Account::Ptr m_account;
 
-    KGoogle::AccessManager *m_gam;
+    KGAPI::AccessManager *m_gam;
     QNetworkAccessManager *m_photoNam;
 
     QMap< QString, Akonadi::Collection > m_collections;

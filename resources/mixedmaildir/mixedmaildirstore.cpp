@@ -521,7 +521,7 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
   if ( col.remoteId().isEmpty() ) {
     errorText = i18nc( "@info:status", "Given folder name is empty" );
     kWarning() << "Incomplete ancestor chain for collection.";
-    Q_ASSERT(!col.remoteId().isEmpty()); // abort! Look at backtrace to see where we came from.
+    Q_ASSERT( !col.remoteId().isEmpty() ); // abort! Look at backtrace to see where we came from.
     return InvalidFolder;
   }
 
@@ -932,7 +932,7 @@ void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, co
       }
     }
 
-    if ( !key.isEmpty() ){
+    if ( !key.isEmpty() ) {
       mdPtr->updatePath( key );
       maildirs.insert( key, mdPtr );
     }
@@ -1718,7 +1718,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
   bool payloadChanged = false;
   bool flagsChanged = false;
   Q_FOREACH( const QByteArray &part, parts )  {
-    if( part.startsWith( "PLD:" ) ) {
+    if ( part.startsWith( "PLD:" ) ) {
       payloadChanged = true;
     }
     if ( part.contains( "FLAGS" ) ) {
@@ -1863,7 +1863,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
     if ( flagsChanged ) {
       Maildir md( mdPtr->maildir() );
       newKey = md.changeEntryFlags( item.remoteId(), item.flags() );
-      if (newKey.isEmpty()) {
+      if ( newKey.isEmpty() ) {
         errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
                             collection.name() );
         kError() << errorText << "FolderType=" << folderType;

@@ -69,7 +69,7 @@ class InvitationsCollectionRequestJob : public SpecialCollectionsRequestJob
       setDefaultResourceType( QLatin1String( "akonadi_ical_resource" ) );
 
       QVariantMap options;
-      options.insert( QLatin1String( "Path" ), QString(KGlobal::dirs()->localxdgdatadir() + QLatin1String("akonadi_invitations")) );
+      options.insert( QLatin1String( "Path" ), QString( KGlobal::dirs()->localxdgdatadir() + QLatin1String( "akonadi_invitations" ) ) );
       options.insert( QLatin1String( "Name" ), i18n( "Invitations" ) );
       setDefaultResourceOptions( options );
 
@@ -269,11 +269,11 @@ void InvitationsAgent::initStart()
   m_invitations = Akonadi::Collection();
   AgentInstance resource = AgentManager::self()->instance( m_resourceId );
   if ( resource.isValid() ) {
-    emit status( AgentBase::Running, i18n("Reading...") );
+    emit status( AgentBase::Running, i18n( "Reading..." ) );
     QMetaObject::invokeMethod( this, "createAgentResult", Qt::QueuedConnection );
   } else {
-    emit status( AgentBase::Running, i18n("Creating...") );
-    AgentType type = AgentManager::self()->type( QLatin1String("akonadi_ical_resource") );
+    emit status( AgentBase::Running, i18n( "Creating..." ) );
+    AgentType type = AgentManager::self()->type( QLatin1String( "akonadi_ical_resource" ) );
     AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
     connect( job, SIGNAL(result(KJob*)), this, SLOT(createAgentResult(KJob*)) );
     job->start();
@@ -304,7 +304,7 @@ Collection InvitationsAgent::collection()
 #if 0
 KPIMIdentities::IdentityManager* InvitationsAgent::identityManager()
 {
-  if ( !m_IdentityManager)
+  if ( !m_IdentityManager )
     m_IdentityManager = new KPIMIdentities::IdentityManager( true /* readonly */, this );
   return m_IdentityManager;
 }
@@ -337,7 +337,7 @@ void InvitationsAgent::createAgentResult( KJob *job )
 
     AgentInstanceCreateJob *j = static_cast<AgentInstanceCreateJob*>( job );
     agent = j->instance();
-    agent.setName( i18n("Invitations") );
+    agent.setName( i18n( "Invitations" ) );
     m_resourceId = agent.identifier();
 
     QDBusInterface conf( QString::fromLatin1( "org.freedesktop.Akonadi.Resource." ) + m_resourceId,
@@ -417,7 +417,7 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
     // a collection with the defined collectionId but that this is not a valid one
     // and therefore not in the resultset.
     const int id = collectionId.toInt();
-    foreach( const Collection &c, fj->collections() ) {
+    foreach ( const Collection &c, fj->collections() ) {
       if ( c.id() == id ) {
         m_invitations = c;
         initDone();
@@ -509,7 +509,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
 
   //TODO check if we are the sender and need to ignore the message...
   //const QString sender = message->sender()->asUnicodeString();
-  //if( identityManager()->thatIsMe(sender) ) return;
+  //if ( identityManager()->thatIsMe( sender ) ) return;
 
   KCalCore::MemoryCalendar::Ptr calendar( new KCalCore::MemoryCalendar( KSystemTimeZones::local() ) );
   if ( message->contentType()->isMultipart() ) {
@@ -519,7 +519,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
     foreach ( KMime::Content *content, message->contents() ) {
 
       KMime::Headers::ContentType *ct = content->contentType();
-      Q_ASSERT(ct);
+      Q_ASSERT( ct );
       kDebug() << "Mimetype of the body part is " << ct->mimeType();
       if ( ct->mimeType() != "text/calendar" )
         continue;
@@ -530,7 +530,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
         continue;
       }
 
-      if ( !it)
+      if ( !it )
         it = new InvitationsAgentItem( this, item );
 
       it->add( newItem );
@@ -539,7 +539,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
     kDebug() << "message is not multipart";
 
     KMime::Headers::ContentType *ct = message->contentType();
-    Q_ASSERT(ct);
+    Q_ASSERT( ct );
     kDebug() << "Mimetype of the body is " << ct->mimeType();
     if ( ct->mimeType() != "text/calendar" )
       return;

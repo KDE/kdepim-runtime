@@ -8,7 +8,7 @@
   <group name="General">
     <entry name="Path" type="Path">
       <label>Path to maildir</label>
-      <default></default>
+      <default>$HOME/.local/share/local-mail/</default>
     </entry>
     <entry name="TopLevelIsContainer" type="Bool">
       <label>Path points to a folder containing Maildirs instead of to a maildir itself.</label>

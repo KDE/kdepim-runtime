@@ -92,7 +92,7 @@ void NntpResource::retrieveCollections()
   QDate lastList = Settings::self()->lastGroupList().date();
   if ( lastList.isValid() ) {
     mIncremental = true;
-    url.addQueryItem( "since",  QString("%1%2%3 000000")
+    url.addQueryItem( "since",  QString( "%1%2%3 000000" )
         .arg( lastList.year() % 100, 2, 10, QChar( '0' ) )
         .arg( lastList.month(), 2, 10, QChar( '0' ) )
         .arg( lastList.day(), 2, 10, QChar( '0' ) ) );
@@ -197,7 +197,7 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
         if ( hdrName == "Subject" ) {
           art->subject()->from7BitString( hdrValue.toLatin1() );
           if ( art->subject()->isEmpty() )
-            art->subject()->fromUnicodeString( i18n("no subject"), art->defaultCharset() );
+            art->subject()->fromUnicodeString( i18n( "no subject" ), art->defaultCharset() );
         } else if ( hdrName == "From" ) {
           art->from()->from7BitString( hdrValue.toLatin1() );
         } else if ( hdrName == "Date" ) {
@@ -205,7 +205,7 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
         } else if ( hdrName == "Message-ID" ) {
           art->messageID()->from7BitString( hdrValue.simplified().toLatin1() );
         } else if ( hdrName == "References" ) {
-          if( !hdrValue.isEmpty() )
+          if ( !hdrValue.isEmpty() )
             art->references()->from7BitString( hdrValue.toLatin1() );
         } else if ( hdrName == "Lines" ) {
           art->lines()->setNumberOfLines( hdrValue.toInt() );
@@ -233,7 +233,7 @@ void NntpResource::listGroupResult(KJob * job)
     NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>( Collection::AddIfMissing );
     KIO::Job *j = static_cast<KIO::Job*>( job );
     if ( j->metaData().contains( "LastSerialNumber" ) )
-      attr->setLastArticle( j->metaData().value("LastSerialNumber").toInt() );
+      attr->setLastArticle( j->metaData().value( "LastSerialNumber" ).toInt() );
     CollectionModifyJob *modify = new CollectionModifyJob( col );
     // TODO: check result signal
     Q_UNUSED( modify )

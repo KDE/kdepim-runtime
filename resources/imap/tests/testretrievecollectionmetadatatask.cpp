@@ -46,12 +46,12 @@ private slots:
 
   void shouldCollectionRetrieveMetadata_data()
   {
-    QTest::addColumn<Akonadi::Collection>("collection");
-    QTest::addColumn<QStringList>("capabilities");
-    QTest::addColumn< QList<QByteArray> >("scenario");
-    QTest::addColumn<QStringList>("callNames");
-    QTest::addColumn<Akonadi::Collection::Rights>("expectedRights");
-    QTest::addColumn<bool>("spontaneous");
+    QTest::addColumn<Akonadi::Collection>( "collection" );
+    QTest::addColumn<QStringList>( "capabilities" );
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+    QTest::addColumn<QStringList>( "callNames" );
+    QTest::addColumn<Akonadi::Collection::Rights>( "expectedRights" );
+    QTest::addColumn<bool>( "spontaneous" );
 
     Akonadi::Collection collection;
     QStringList capabilities;
@@ -236,9 +236,9 @@ private slots:
     // Test that NoInferiors overrides acl rigths and disallows creating new mailboxes
     //
     collection.setParentCollection( Akonadi::Collection() );
-    collection.setRemoteId("/INBOX");
+    collection.setRemoteId( "/INBOX" );
     collection.setRights( Akonadi::Collection::AllRights );
-    collection.addAttribute( new NoInferiorsAttribute(true) );
+    collection.addAttribute( new NoInferiorsAttribute( true ) );
     collection.removeAttribute<TimestampAttribute>();
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -286,7 +286,7 @@ private slots:
     QVERIFY( pool.connect( createDefaultAccount() ) );
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
-    DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+    DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setCollection( collection );
     state->setServerCapabilities( capabilities );
     state->setUserName( "Hans" );
@@ -297,11 +297,11 @@ private slots:
     QTest::qWait( 100 );
 
     QCOMPARE( state->calls().count(), callNames.size() );
-    for (int i=0; i<callNames.size(); i++) {
-      QString command = QString::fromUtf8(state->calls().at(i).first);
-      QVariant parameter = state->calls().at(i).second;
+    for ( int i = 0; i < callNames.size(); i++ ) {
+      QString command = QString::fromUtf8(state->calls().at( i ).first);
+      QVariant parameter = state->calls().at( i ).second;
 
-      if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
+      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 

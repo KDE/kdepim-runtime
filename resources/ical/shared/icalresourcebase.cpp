@@ -61,7 +61,7 @@ bool ICalResourceBase::retrieveItem( const Akonadi::Item &item,
   kDebug( 5251 ) << "Item:" << item.url();
 
   if ( !mCalendar ) {
-    emit error( i18n("Calendar not loaded.") );
+    emit error( i18n( "Calendar not loaded.") );
     return false;
   }
 
@@ -83,7 +83,7 @@ void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Set
 #else
   dlg->setFilter( "*.ics *.vcs" );
 #endif
-  dlg->setCaption( i18n("Select Calendar") );
+  dlg->setCaption( i18n( "Select Calendar" ) );
 }
 
 bool ICalResourceBase::readFromFile( const QString &fileName )
@@ -103,7 +103,7 @@ void ICalResourceBase::itemRemoved( const Akonadi::Item &item )
 {
   if ( !mCalendar ) {
     kError() << "mCalendar is 0!";
-    cancelTask( i18n("Calendar not loaded.") );
+    cancelTask( i18n( "Calendar not loaded." ) );
     return;
   }
 
@@ -150,7 +150,7 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
   bool success = true;
   if ( !fileStorage->save() ) {
     kError() << "Failed to save calendar to file " + fileName;
-    emit error( i18n("Failed to save calendar file to %1", fileName ) );
+    emit error( i18n( "Failed to save calendar file to %1", fileName ) );
     success = false;
   }
 

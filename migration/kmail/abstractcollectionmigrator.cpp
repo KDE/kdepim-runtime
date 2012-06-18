@@ -192,19 +192,19 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         //????
       } else if ( annotationFolderType == "event" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "event";
-        attribute->setIconName("view-calendar");
+        attribute->setIconName( "view-calendar" );
       } else if ( annotationFolderType == "task" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "task";
-        attribute->setIconName("view-pim-tasks");
+        attribute->setIconName( "view-pim-tasks" );
       } else if ( annotationFolderType == "contact" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "contact";
-        attribute->setIconName("view-pim-contacts");
+        attribute->setIconName( "view-pim-contacts" );
       } else if ( annotationFolderType == "note" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "note";
-        attribute->setIconName("view-pim-notes");
+        attribute->setIconName( "view-pim-notes" );
       } else if ( annotationFolderType == "journal" ) {
         annotations[ KOLAB_FOLDERTYPE ] = "journal";
-        attribute->setIconName("view-pim-journal");
+        attribute->setIconName( "view-pim-journal" );
       } else {
         //????
       }
@@ -215,7 +215,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     if ( !whofield.isEmpty() ) {
       Akonadi::MessageFolderAttribute *messageFolder  = mCurrentCollection.attribute<Akonadi::MessageFolderAttribute>( Akonadi::Entity::AddIfMissing );
 
-      if ( whofield ==  QLatin1String( "To" ) )
+      if ( whofield == QLatin1String( "To" ) )
         messageFolder->setOutboundFolder( true );
       else if( whofield == QLatin1String( "From" ) )
         messageFolder->setOutboundFolder( false );
@@ -304,7 +304,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   // check emailidentity
   const QStringList identityGroups = mEmailIdentityConfig->groupList().filter( QRegExp( "Identity #\\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "identityGroups=" << identityGroups;
-  Q_FOREACH( const QString &groupName, identityGroups ) {
+  Q_FOREACH ( const QString &groupName, identityGroups ) {
     KConfigGroup identityGroup( mEmailIdentityConfig, groupName );
     if ( identityGroup.readEntry( "Drafts" ) == mCurrentFolderId )
       identityGroup.writeEntry( "Drafts", mCurrentCollection.id() );
@@ -368,7 +368,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   // check all expire folder
   const QStringList folderGroups = mKMailConfig->groupList().filter( "Folder-" );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "folderGroups=" << folderGroups;
-  Q_FOREACH( const QString &groupName, folderGroups ) {
+  Q_FOREACH ( const QString &groupName, folderGroups ) {
     KConfigGroup filterGroup( mKMailConfig, groupName );
     if ( filterGroup.readEntry( "ExpireToFolder" ) == mCurrentFolderId )
       filterGroup.writeEntry( "ExpireToFolder", mCurrentCollection.id() );
@@ -377,10 +377,10 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   // check all account folder
   const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( "Account \\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
-  Q_FOREACH( const QString &groupName, accountGroups ) {
+  Q_FOREACH ( const QString &groupName, accountGroups ) {
     KConfigGroup accountGroup( mKMailConfig, groupName );
 
-    if ( accountGroup.readEntry( "Folder" ) == mCurrentFolderId ){
+    if ( accountGroup.readEntry( "Folder" ) == mCurrentFolderId ) {
       accountGroup.writeEntry( "Folder", mCurrentCollection.id() );
     }
 
@@ -399,13 +399,13 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   // check all filters
   const QStringList filterGroups = mKMailConfig->groupList().filter( QRegExp( "Filter #\\d+" ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "filterGroups=" << filterGroups;
-  Q_FOREACH( const QString &groupName, filterGroups ) {
+  Q_FOREACH ( const QString &groupName, filterGroups ) {
     KConfigGroup filterGroup( mKMailConfig, groupName );
 
     const QStringList actionKeys = filterGroup.keyList().filter( QRegExp( "action-args-\\d+" ) );
     //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "actionKeys=" << actionKeys;
 
-    Q_FOREACH( const QString &actionKey, actionKeys ) {
+    Q_FOREACH ( const QString &actionKey, actionKeys ) {
       if ( filterGroup.readEntry( actionKey, QString() ) == mCurrentFolderId ) {
         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "replacing folder id for action" << actionKey
                                          << "in group" << groupName;
@@ -417,7 +417,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   // check MessageListView::StorageModelAggregations
   KConfigGroup storageModelAggregationGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelAggregations" ) );
   const QString setForStorageAggregationModelPattern = QLatin1String( "SetForStorageModel%1" );
-  if ( storageModelAggregationGroup.hasKey(setForStorageAggregationModelPattern.arg( mCurrentFolderId ) ) ) {
+  if ( storageModelAggregationGroup.hasKey( setForStorageAggregationModelPattern.arg( mCurrentFolderId ) ) ) {
     const QString value = storageModelAggregationGroup.readEntry( setForStorageAggregationModelPattern.arg( mCurrentFolderId ) );
     storageModelAggregationGroup.writeEntry( setForStorageAggregationModelPattern.arg( mCurrentCollection.id() ),value );
     storageModelAggregationGroup.deleteEntry( setForStorageAggregationModelPattern.arg( mCurrentFolderId ) );
@@ -426,7 +426,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   // check MessageListView::StorageModelThemes
   KConfigGroup storageModelThemesGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelThemes" ) );
   const QString setForStorageModelPattern = QLatin1String( "SetForStorageModel%1" );
-  if ( storageModelThemesGroup.hasKey(setForStorageModelPattern.arg( mCurrentFolderId ) ) ) {
+  if ( storageModelThemesGroup.hasKey( setForStorageModelPattern.arg( mCurrentFolderId ) ) ) {
     const QString value = storageModelThemesGroup.readEntry( setForStorageModelPattern.arg( mCurrentFolderId ) );
     storageModelThemesGroup.writeEntry( setForStorageModelPattern.arg( mCurrentCollection.id() ),value );
     storageModelThemesGroup.deleteEntry( setForStorageModelPattern.arg( mCurrentFolderId ) );
@@ -441,13 +441,13 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
   if ( sortOrderGroup.hasKey( groupSortDirectionPattern.arg( mCurrentFolderId ) ) ) {
     const QString value = sortOrderGroup.readEntry( groupSortDirectionPattern.arg( mCurrentFolderId ) );
-    sortOrderGroup.writeEntry( groupSortDirectionPattern.arg( mCurrentCollection.id()), value );
+    sortOrderGroup.writeEntry( groupSortDirectionPattern.arg( mCurrentCollection.id() ), value );
     sortOrderGroup.deleteEntry( groupSortDirectionPattern.arg( mCurrentFolderId ) );
   }
 
   if ( sortOrderGroup.hasKey( groupSortingPattern.arg( mCurrentFolderId ) ) ) {
     const QString value = sortOrderGroup.readEntry( groupSortingPattern.arg( mCurrentFolderId ) );
-    sortOrderGroup.writeEntry( groupSortingPattern.arg( mCurrentCollection.id()), value );
+    sortOrderGroup.writeEntry( groupSortingPattern.arg( mCurrentCollection.id() ), value );
     sortOrderGroup.deleteEntry( groupSortingPattern.arg( mCurrentFolderId ) );
   }
 
@@ -790,8 +790,7 @@ void AbstractCollectionMigrator::registerAsSpecialCollection( int type )
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Registering collection" << d->mCurrentCollection.name() << "for type" << type;
   SpecialMailCollections::self()->registerCollection( colType, d->mCurrentCollection );
 
-  if ( Private::mIconNamesBySpecialType.isEmpty() )
-  {
+  if ( Private::mIconNamesBySpecialType.isEmpty() ) {
     Private::mIconNamesBySpecialType.insert( SpecialMailCollections::Root,
                                              QLatin1String( "folder" ) );
     Private::mIconNamesBySpecialType.insert( SpecialMailCollections::Inbox,

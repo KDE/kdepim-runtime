@@ -48,8 +48,8 @@ int main( int argc, char **argv )
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
-  options.add( "interactive", ki18n( "Show reporting dialog") );
-  options.add( "interactive-on-change", ki18n("Show report only if changes were made") );
+  options.add( "interactive", ki18n( "Show reporting dialog" ) );
+  options.add( "interactive-on-change", ki18n( "Show report only if changes were made" ) );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
@@ -95,10 +95,10 @@ int main( int argc, char **argv )
   const int result = app->exec();
   if ( InfoDialog::hasError() )
     return 3;
-  
+
   // if we have succeeded, update version information
   migrationCfg.writeEntry( "Version", targetVersion );
   migrationCfg.sync();
-  
+
   return result;
 }

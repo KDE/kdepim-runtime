@@ -129,7 +129,7 @@ void DupeTest::testDupes()
   // clean sink
   ItemFetchJob *fjob = new ItemFetchJob( sink, this );
   AKVERIFYEXEC( fjob );
-  if( fjob->items().count() > 0 ) {
+  if ( fjob->items().count() > 0 ) {
     // this test is needed because ItemDeleteJob gives error if no items are found
     ItemDeleteJob *djob = new ItemDeleteJob( sink, this );
     AKVERIFYEXEC( djob );
@@ -142,7 +142,7 @@ void DupeTest::testDupes()
   Q_ASSERT( monitor );
   QSignalSpy *addSpy = new QSignalSpy( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)) );
   kDebug() << "Queuing" << count << "messages...";
-  for( int i = 0; i < count; i++ ) {
+  for ( int i = 0; i < count; i++ ) {
     //kDebug() << "Queuing message" << i + 1 << "of" << count;
 
     Message::Ptr msg = Message::Ptr( new Message );
@@ -163,15 +163,15 @@ void DupeTest::testDupes()
 
   // wait for the MDA to send them
   int seconds = 0;
-  while( true ) {
+  while ( true ) {
     seconds++;
     QTest::qWait( 1000 );
     kDebug() << seconds << "seconds elapsed." << addSpy->count() << "messages got to sink.";
-    if( addSpy->count() >= count )
+    if ( addSpy->count() >= count )
       break;
 
 #if 0
-    if( seconds >= TIMEOUT_SECONDS ) {
+    if ( seconds >= TIMEOUT_SECONDS ) {
       kDebug() << "Timeout, gdb master!";
       QTest::qWait( 1000*1000 );
     }
@@ -188,10 +188,10 @@ void DupeTest::testDupes()
   AKVERIFYEXEC( fjob );
   const Item::List items = fjob->items();
   int found[ MAXCOUNT ];
-  for( int i = 0; i < count; i++ ) {
+  for ( int i = 0; i < count; i++ ) {
     found[i] = 0;
   }
-  for( int i = 0; i < items.count(); i++ ) {
+  for ( int i = 0; i < items.count(); i++ ) {
     QVERIFY( items[i].hasPayload<Message::Ptr>() );
     Message::Ptr msg = items[i].payload<Message::Ptr>();
     const QByteArray content = msg->encodedContent();
@@ -205,10 +205,10 @@ void DupeTest::testDupes()
     QVERIFY( who > 0 && who <= count );
     found[ who - 1 ]++;
   }
-  for( int i = 0; i < count; i++ ) {
-    if( found[i] > 1 ) {
+  for ( int i = 0; i < count; i++ ) {
+    if ( found[i] > 1 ) {
       kDebug() << "found duplicate message" << i + 1 << "(" << found[i] << "times )";
-    } else if( found[i] < 1 ) {
+    } else if ( found[i] < 1 ) {
       kDebug() << "didn't find message" << i + 1;
     }
     QCOMPARE( found[i], 1 );

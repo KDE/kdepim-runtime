@@ -43,7 +43,7 @@ class ItemQueue : public QObject {
 public:
     explicit ItemQueue(int batchSize, int fetchSize, QObject* parent = 0);
     ~ItemQueue();
-  
+
   /** add item to queue */
   void addItem(const Akonadi::Item &);
   void addItems(const Akonadi::Item::List &);
@@ -60,12 +60,12 @@ signals:
   void finished();
   /** current batch has been processed and new Items can be added */
   void batchFinished();
-  
+
 private slots:
   void batchJobResult( KJob* job );
   void fetchJobResult( KJob* job );
   void continueProcessing();
-  
+
 private:
   bool processBatch();
 
@@ -103,13 +103,13 @@ private:
  *  -addItem: to index a single item (high priority)
  *
  */
-class FeederQueue: public QObject 
+class FeederQueue: public QObject
 {
   Q_OBJECT
 public:
   explicit FeederQueue( QObject* parent = 0 );
   virtual ~FeederQueue();
-  
+
   ///add the collection to the queue, all items of it will be fetched and indexed
   void addCollection(const Akonadi::Collection &);
   ///adds the item to the highPrioQueue
@@ -119,12 +119,12 @@ public:
    * The flag will be reset once all collections/items have been indexed
    */
   void setReindexing(bool);
-  
+
   bool isEmpty();
-  
+
   /** returns the collection currently being processed */
   const Akonadi::Collection &currentCollection();
-  
+
   /** start/stop indexing */
   void setOnline(bool);
 
@@ -153,7 +153,7 @@ signals:
   void progress(int);
   void idle(QString);
   void running(QString);
-  
+
 private slots:
   void processNextCollection();
   void itemFetchResult( KJob* job );
@@ -166,7 +166,7 @@ private:
   void continueIndexing(); //start the indexing if work is to be done
   void collectionFullyIndexed();
   int mTotalAmount, mProcessedAmount, mPendingJobs;
-    
+
   Akonadi::Collection::List mCollectionQueue;
   Akonadi::Collection mCurrentCollection;
   bool mReIndex;
