@@ -368,7 +368,7 @@ void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
 
   Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
   Q_ASSERT( fetchJob->items().size() <= 1 );
-  if ( fetchJob->items().size() == 1 ) {
+  if ( fetchJob->items().size() == 1 ) { //TODO remove this hack
     Akonadi::Item imapItem = fetchJob->items().first();
 
     KolabHandler::Ptr handler = m_monitoredCollections.value( imapItem.storageCollectionId() );

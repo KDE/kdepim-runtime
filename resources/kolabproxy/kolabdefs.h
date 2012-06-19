@@ -26,6 +26,8 @@
 
 namespace KolabV2 {
 
+#define PRODUCT_ID "Akonadi-KolabResource"
+
   enum FolderType {
     Mail = 0,
     Contact,

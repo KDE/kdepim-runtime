@@ -68,7 +68,7 @@ void AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     const KABC::Addressee &addressee = item.payload<KABC::Addressee>();
 
     const KMime::Message::Ptr &message =
-      Kolab::KolabObjectWriter::writeContact( addressee, m_formatVersion );
+      Kolab::KolabObjectWriter::writeContact( addressee, m_formatVersion, PRODUCT_ID );
 
     if ( checkForErrors( item.id() ) ) {
       return;
@@ -79,7 +79,7 @@ void AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
 
     const KMime::Message::Ptr &message =
-      Kolab::KolabObjectWriter::writeDistlist( contactGroup, m_formatVersion );
+      Kolab::KolabObjectWriter::writeDistlist( contactGroup, m_formatVersion, PRODUCT_ID );
 
     if ( checkForErrors( item.id() ) ) {
       return;
