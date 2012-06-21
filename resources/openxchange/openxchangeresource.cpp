@@ -36,6 +36,7 @@
 #include <kstandarddirs.h>
 
 #include <oxa/davmanager.h>
+#include <oxa/oxerrors.h>
 #include <oxa/foldercreatejob.h>
 #include <oxa/folderdeletejob.h>
 #include <oxa/foldermodifyjob.h>
@@ -781,7 +782,21 @@ void OpenXchangeResource::onObjectRequestJobFinished( KJob *job )
 void OpenXchangeResource::onObjectCreateJobFinished( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( job->errorText() );
+    QString errorText = job->errorText();
+    if ( job->error() == KJob::UserDefinedError ) {
+      switch ( OXA::OXErrors::getEditErrorID( job->errorText() ) ) {
+        case OXA::OXErrors::ConcurrentModification : errorText = i18n( "The object was edited by another participant in the meantime. Please check." ); break;
+        case OXA::OXErrors::ObjectNotFound : errorText = i18n( "Object not found. Maybe it was deleted by another participant in the meantime." ); break;
+        case OXA::OXErrors::NoPermissionForThisAction : errorText = i18n( "You don't have the permission do perform this action on this object." ); break;
+        case OXA::OXErrors::ConflictsDetected : errorText = i18n( "A conflict detected. Please check if there are other objects in conflict with this one." ); break;
+        case OXA::OXErrors::MissingMandatoryFields : errorText = i18n( "A mandatory data field is missing. Please check. Otherwise contact your administrator." ); break;
+        case OXA::OXErrors::AppointmentConflicts : errorText = i18n( "An appointment conflict detected.\nPlease check if there are other appointments in conflict with this one." ); break;
+        case OXA::OXErrors::InternalServerError : errorText = i18n( "Internal server error. Please contact your administrator." ); break;
+        case OXA::OXErrors::EditErrorUndefined :
+        default : ;
+      }
+    }
+    cancelTask( errorText );
     return;
   }
 

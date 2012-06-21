@@ -59,9 +59,9 @@ namespace DAVUtils
 
   /**
    * Checks whether the response @p document contains an error message.
-   * If so, @c true is returned and @p errorText set to the error message.
+   * If so, @c true is returned, @p errorText set to the error message and @p errorStatus set to error status.
    */
-  bool davErrorOccurred( const QDomDocument &document, QString &errorText );
+  bool davErrorOccurred( const QDomDocument &document, QString &errorText, QString &errorStatus );
 }
 
 }

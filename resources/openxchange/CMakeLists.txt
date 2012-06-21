@@ -23,6 +23,7 @@ set( openxchangeresource_SRCS
   oxa/objectsrequestjob.cpp
   oxa/objectutils.cpp
   oxa/oxutils.cpp
+  oxa/oxerrors.cpp
   oxa/updateusersjob.cpp
   oxa/user.cpp
   oxa/users.cpp
