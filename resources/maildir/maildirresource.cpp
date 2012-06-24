@@ -46,6 +46,7 @@
 #include <kwindowsystem.h>
 
 #include "libmaildir/maildir.h"
+#include <kstandarddirs.h>
 
 using namespace Akonadi;
 using KPIM::Maildir;
@@ -97,6 +98,18 @@ MaildirResource::MaildirResource( const QString &id )
     mSettings( new MaildirSettings( componentData().config() ) ),
      mFsWatcher( new KDirWatch( this ) )
 {
+  // we cannot be sure that a config file is existing
+  // the MaildirResource will always be build
+  // look for a resource of this name
+  QString configFile = componentData().dirs()->findResource( "config", id + "rc" );
+  // if not present, create it
+  if ( configFile.isEmpty() ) {
+    // check if the resource was used before
+    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), Akonadi::CollectionFetchJob::FirstLevel, this );
+    job->fetchScope().setResource( id );
+    connect( job, SIGNAL(result(KJob*)), SLOT(attemptConfigRestoring(KJob*)) );
+    job->start();
+  }
   new MaildirSettingsAdaptor( mSettings );
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                               mSettings, QDBusConnection::ExportAdaptors );
@@ -125,6 +138,49 @@ MaildirResource::MaildirResource( const QString &id )
   connect( mFsWatcher, SIGNAL(dirty(QString)), SLOT(slotDirChanged(QString)) );
 
   synchronizeCollectionTree();
+}
+
+void MaildirResource::attemptConfigRestoring( KJob * job )
+{
+  if ( job->error() ) {
+    kDebug() << job->errorString();
+    return;
+  }
+  // we cannot be sure that a config file is existing
+  QString id = identifier();
+  QString configFile = componentData().dirs()->findResource( "config", id + "rc" );
+  // we test it again, to be sure
+  if ( configFile.isEmpty() ) {
+    // it is still empty, create it
+    kWarning() << "the resource is not properly configured:";
+    kWarning() << "there is no config file for the resource.";
+    kWarning() << "we create a new one.";
+    const Collection::List cols = qobject_cast<CollectionFetchJob*>( job )->collections();
+    QString path;
+    if ( !cols.isEmpty() ) {
+      kDebug() << "the collections list is not empty";
+      Collection col = cols.first();
+      // get the path of the collection
+      path = col.remoteId();
+    }
+    // test the path
+    if ( path.isEmpty() ) {
+      kDebug() << "build a new path";
+      QString dataDir = componentData().dirs()->localxdgdatadir();
+      // we use "id" to get an unique path
+      path = dataDir + id;
+      kDebug() << "set the path" << path;
+      mSettings->setPath( path );
+      // set the resource into container mode for its top level
+      mSettings->setTopLevelIsContainer( true );
+    } else {
+      // check how the directory looks like the actual check is missing.
+      Maildir root( mSettings->path(), true );
+      mSettings->setTopLevelIsContainer( root.isValid() );
+    }
+    kDebug() << "synchronize";
+    configurationChanged();
+  }
 }
 
 MaildirResource::~ MaildirResource()
