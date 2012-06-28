@@ -71,7 +71,7 @@ find_package(LibXml2)
 macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applications" "http://xmlsoft.org" FALSE "" "Needed for building the knut Akonadi resource.")
 
 set(SDO_MIN_VERSION 0.10)
-set(SOPRANO_MIN_VERSION 2.3.70)
+set(SOPRANO_MIN_VERSION 2.7.56)
 
 if(NOT KDEPIM_NO_NEPOMUK)
 
