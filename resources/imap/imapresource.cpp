@@ -454,7 +454,8 @@ void ImapResource::doSetOnline(bool online)
   if ( !online ) {
     if ( m_pool->isConnected() )
       m_pool->disconnect();
-    qDeleteAll( m_taskList );
+    Q_FOREACH(ResourceTask* task, m_taskList)
+      task->kill();
     m_taskList.clear();
     delete m_idle;
     m_idle = 0;
@@ -617,7 +618,7 @@ void ImapResource::abortActivity()
   }
 }
 
-void ImapResource::queueTask( QObject *task )
+void ImapResource::queueTask( ResourceTask *task )
 {
   connect( task, SIGNAL(destroyed(QObject*)),
            this, SLOT(taskDestroyed(QObject*)) );
@@ -626,7 +627,7 @@ void ImapResource::queueTask( QObject *task )
 
 void ImapResource::taskDestroyed( QObject *task )
 {
-  m_taskList.removeAll( task );
+  m_taskList.removeAll( static_cast<ResourceTask *>( task ) );
 }
 
 

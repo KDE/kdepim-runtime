@@ -54,6 +54,8 @@ public:
 
   void start( SessionPool *pool );
 
+  void kill();
+
 protected:
   virtual void doStart( KIMAP::Session *session ) = 0;
 

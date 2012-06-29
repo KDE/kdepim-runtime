@@ -28,6 +28,7 @@
 
 #include <akonadi/resourcebase.h>
 
+class ResourceTask;
 namespace KIMAP
 {
   class Session;
@@ -115,13 +116,13 @@ private Q_SLOTS:
 private:
   friend class ResourceState;
 
-  void queueTask( QObject *task );
+  void queueTask( ResourceTask *task );
   bool needsNetwork() const;
 
   friend class ImapIdleManager;
 
   SessionPool *m_pool;
-  QList<QObject*> m_taskList;
+  QList<ResourceTask*> m_taskList;
   ImapIdleManager *m_idle;
   bool m_fastSync;
 };
