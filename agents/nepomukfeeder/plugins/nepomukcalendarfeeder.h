@@ -35,13 +35,13 @@ class NepomukCalendarFeeder: public NepomukFeederPlugin
   Q_INTERFACES( Akonadi::NepomukFeederPlugin )
 public:
   NepomukCalendarFeeder( QObject *parent, const QVariantList &): NepomukFeederPlugin(parent ){};
-  virtual void updateItem( const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
+  virtual void updateItem( const Akonadi::Item& item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph );
 private:
-  void updateEventItem( const Akonadi::Item& item, const KCalCore::Event::Ptr&, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
-  void updateJournalItem( const Akonadi::Item& item, const KCalCore::Journal::Ptr&, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
-  void updateTodoItem( const Akonadi::Item& item, const KCalCore::Todo::Ptr&, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
+  void updateEventItem( const Akonadi::Item& item, const KCalCore::Event::Ptr&, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph );
+  void updateJournalItem( const Akonadi::Item& item, const KCalCore::Journal::Ptr&, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph );
+  void updateTodoItem( const Akonadi::Item& item, const KCalCore::Todo::Ptr&, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph );
 
-  void updateIncidenceItem( const KCalCore::Incidence::Ptr &calInc, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
+  void updateIncidenceItem( const KCalCore::Incidence::Ptr &calInc, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph );
 };
 
 }

@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/ncalperiod.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * An aggregate of a period and a freebusy type. This class has been 
@@ -25,7 +25,7 @@ namespace NCAL {
 class FreebusyPeriod : public NCAL::NcalPeriod
 {
 public:
-    FreebusyPeriod(Nepomuk::SimpleResource* res)
+    FreebusyPeriod(Nepomuk2::SimpleResource* res)
       : NCAL::NcalPeriod(res), m_res(res)
     {}
 
@@ -78,7 +78,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#FreebusyPeriod", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

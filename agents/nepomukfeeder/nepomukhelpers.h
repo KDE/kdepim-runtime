@@ -17,7 +17,7 @@
 #ifndef NEPOMUKHELPERS_H
 #define NEPOMUKHELPERS_H
 
-namespace Nepomuk {
+namespace Nepomuk2 {
 class SimpleResourceGraph;
 class SimpleResource;
 }
@@ -33,14 +33,14 @@ class KJob;
 namespace  NepomukHelpers {
 
 /** Set the parent collection of the entity @param entity */
-void setParentCollection( const Akonadi::Entity &entity, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
+void setParentCollection( const Akonadi::Entity &entity, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph );
 
 KJob *addCollectionToNepomuk( const Akonadi::Collection &collection);
 KJob *markCollectionAsIndexed( const Akonadi::Collection &collection );
-void addItemToGraph( const Akonadi::Item &item, Nepomuk::SimpleResourceGraph &graph );
+void addItemToGraph( const Akonadi::Item &item, Nepomuk2::SimpleResourceGraph &graph );
 
 /** Saves the graph, and marks the data as discardable. Use this function to store data created by the feeder */
-KJob *addGraphToNepomuk( const Nepomuk::SimpleResourceGraph &graph );
+KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph );
 
 
 }

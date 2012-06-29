@@ -38,7 +38,7 @@ using namespace Nepomuk;
 
 namespace Akonadi {
 
-void NepomukNoteFeeder::updateItem(const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
+void NepomukNoteFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph)
 {
     //kDebug() << item.id();
     Q_ASSERT( item.hasPayload() );

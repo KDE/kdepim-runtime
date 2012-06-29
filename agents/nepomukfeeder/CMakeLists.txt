@@ -2,15 +2,13 @@ include_directories(
   ${kdepim-runtime_SOURCE_DIR}
   ${Boost_INCLUDE_DIR}
   ${NEPOMUK_INCLUDES}
-  dms-copy
+  ${NEPOMUK_CORE_INCLUDE_DIR}
   plugin
   ./
   ${CMAKE_CURRENT_BINARY_DIR}
   )
 
 include( SopranoAddOntology )
-
-add_subdirectory( dms-copy )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
 
@@ -25,7 +23,6 @@ kde4_add_executable(akonadi_nepomuk_feeder nepomukfeederagent.cpp pluginloader.c
 
 set( NEPOMUKFEEDER_SHARED_LIBS
     niefast
-    kdepim-runtime-dms-copy
     ${SOPRANO_LIBRARIES}
     ${KDE4_KDEUI_LIBRARY}
     ${KDE4_KDECORE_LIBS}
@@ -33,6 +30,7 @@ set( NEPOMUKFEEDER_SHARED_LIBS
     ${QT_QTCORE_LIBRARY}
     ${QT_QTDBUS_LIBRARY}
     ${NEPOMUK_LIBRARIES}
+    ${NEPOMUK_CORE_LIBRARY}
     ${STRIGI_STREAMANALYZER_LIBRARY}
     ${STRIGI_STREAMS_LIBRARY}
     ${KDE4_KIDLETIME_LIBRARY}

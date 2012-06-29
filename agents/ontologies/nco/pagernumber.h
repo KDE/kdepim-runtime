@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "nco/messagingnumber.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCO {
 /**
  * A pager phone number. Inspired by the (TYPE=pager) parameter 
@@ -21,7 +21,7 @@ namespace NCO {
 class PagerNumber : public NCO::MessagingNumber
 {
 public:
-    PagerNumber(Nepomuk::SimpleResource* res)
+    PagerNumber(Nepomuk2::SimpleResource* res)
       : NCO::MessagingNumber(res), m_res(res)
     {}
 
@@ -31,7 +31,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#PagerNumber", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

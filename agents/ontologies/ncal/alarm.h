@@ -9,13 +9,13 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/unionofalarmeventtodo.h"
 #include "ncal/unionofalarmeventfreebusytodo.h"
 #include "ncal/unionofalarmeventfreebusyjournaltodo.h"
 #include "ncal/unionofalarmeventjournaltodo.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * Provide a grouping of component properties that define an alarm. 
@@ -23,7 +23,7 @@ namespace NCAL {
 class Alarm : public NCAL::UnionOfAlarmEventTodo, public NCAL::UnionOfAlarmEventFreebusyTodo, public NCAL::UnionOfAlarmEventFreebusyJournalTodo, public NCAL::UnionOfAlarmEventJournalTodo
 {
 public:
-    Alarm(Nepomuk::SimpleResource* res)
+    Alarm(Nepomuk2::SimpleResource* res)
       : NCAL::UnionOfAlarmEventTodo(res), NCAL::UnionOfAlarmEventFreebusyTodo(res), NCAL::UnionOfAlarmEventFreebusyJournalTodo(res), NCAL::UnionOfAlarmEventJournalTodo(res), m_res(res)
     {}
 
@@ -111,7 +111,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Alarm", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

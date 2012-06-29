@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/unionparentclass.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * 
@@ -20,7 +20,7 @@ namespace NCAL {
 class UnionOfEventTodo : public NCAL::UnionParentClass
 {
 public:
-    UnionOfEventTodo(Nepomuk::SimpleResource* res)
+    UnionOfEventTodo(Nepomuk2::SimpleResource* res)
       : NCAL::UnionParentClass(res), m_res(res)
     {}
 
@@ -311,7 +311,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#UnionOfEventTodo", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

@@ -9,9 +9,9 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCO {
 /**
  * Capabilities of a cetain IMAccount. 
@@ -19,7 +19,7 @@ namespace NCO {
 class IMCapability
 {
 public:
-    IMCapability(Nepomuk::SimpleResource* res)
+    IMCapability(Nepomuk2::SimpleResource* res)
       : m_res(res)
     {}
 
@@ -29,7 +29,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#IMCapability", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

@@ -25,7 +25,7 @@
 #include <QTimer>
 #include <QQueue>
 #include <QUrl>
-#include <dms-copy/simpleresourcegraph.h>
+#include <nepomuk2/simpleresourcegraph.h>
 
 class FeederPluginloader;
 class KJob;
@@ -70,7 +70,7 @@ private:
   bool processBatch();
 
   QQueue<Akonadi::Item::Id> mItemPipeline;
-  Nepomuk::SimpleResourceGraph mResourceGraph;
+  Nepomuk2::SimpleResourceGraph mResourceGraph;
   //Nepomuk::SimpleResourceGraph m_debugGraph;
   QList<QUrl> mBatch;
   Akonadi::Item::List mItemFetchList;

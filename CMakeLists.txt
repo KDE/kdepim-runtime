@@ -84,6 +84,9 @@ macro_log_feature(Soprano_FOUND "Soprano" "Semantic Desktop Storing" "http://sop
 find_package(Nepomuk)
 macro_log_feature(Nepomuk_FOUND "Nepomuk" "The Nepomuk libraries" "http://www.kde.org" TRUE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
 
+find_package(NepomukCore)
+macro_log_feature(NepomukCore_FOUND "NepomukCore" "The NepomukCore libraries" "http://www.kde.org" TRUE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
+
 else( NOT KDEPIM_NO_NEPOMUK )
 
 message( STATUS "Skipping detection of Nepomuk dependencies, feature is disabled." )

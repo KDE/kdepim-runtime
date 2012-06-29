@@ -9,9 +9,9 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * A calendar. Inspirations for this class can be traced to the 
@@ -21,7 +21,7 @@ namespace NCAL {
 class Calendar
 {
 public:
-    Calendar(Nepomuk::SimpleResource* res)
+    Calendar(Nepomuk2::SimpleResource* res)
       : m_res(res)
     {}
 
@@ -216,7 +216,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Calendar", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

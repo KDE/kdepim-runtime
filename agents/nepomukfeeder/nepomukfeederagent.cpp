@@ -34,9 +34,9 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entityhiddenattribute.h>
 
-#include <dms-copy/simpleresource.h>
-#include <dms-copy/simpleresourcegraph.h>
-#include <dms-copy/datamanagement.h>
+#include <nepomuk2/simpleresource.h>
+#include <nepomuk2/simpleresourcegraph.h>
+#include <nepomuk2/datamanagement.h>
 #include <nepomuk/resourcemanager.h>
 
 #include <KLocale>
@@ -153,7 +153,7 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
   //kDebug() << item.url();
-  Nepomuk::removeResources( QList <QUrl>() << item.url(), Nepomuk::RemoveSubResoures );
+  Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
 }
 
 void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
@@ -174,7 +174,7 @@ void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection)
 {
-  Nepomuk::removeResources( QList <QUrl>() << collection.url() );
+  Nepomuk2::removeResources( QList <QUrl>() << collection.url() );
 }
 
 void NepomukFeederAgent::updateAll()

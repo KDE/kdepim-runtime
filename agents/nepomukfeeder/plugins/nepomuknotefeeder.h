@@ -31,7 +31,7 @@ class NepomukNoteFeeder: public NepomukFeederPlugin
   Q_INTERFACES( Akonadi::NepomukFeederPlugin )
 public:
   NepomukNoteFeeder( QObject *parent, const QVariantList & ): NepomukFeederPlugin( parent ){};
-  virtual void updateItem( const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
+  virtual void updateItem( const Akonadi::Item& item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph );
 };
 
 }

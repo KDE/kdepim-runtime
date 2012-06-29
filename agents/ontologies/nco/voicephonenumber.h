@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "nco/phonenumber.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCO {
 /**
  * A telephone number with voice communication capabilities. 
@@ -22,7 +22,7 @@ namespace NCO {
 class VoicePhoneNumber : public NCO::PhoneNumber
 {
 public:
-    VoicePhoneNumber(Nepomuk::SimpleResource* res)
+    VoicePhoneNumber(Nepomuk2::SimpleResource* res)
       : NCO::PhoneNumber(res), m_res(res)
     {}
 
@@ -69,7 +69,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#VoicePhoneNumber", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

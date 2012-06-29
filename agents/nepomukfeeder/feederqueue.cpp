@@ -18,9 +18,9 @@
 
 #include "feederqueue.h"
 
-#include <dms-copy/datamanagement.h>
-#include <dms-copy/simpleresourcegraph.h>
-#include "dms-copy/simpleresource.h"
+#include <nepomuk2/datamanagement.h>
+#include <nepomuk2/simpleresourcegraph.h>
+#include <nepomuk2/simpleresource.h>
 #include <Nepomuk/ResourceManager>
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>

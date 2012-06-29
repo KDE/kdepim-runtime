@@ -35,17 +35,17 @@ class NepomukMailFeeder: public NepomukFeederPlugin
   Q_INTERFACES( Akonadi::NepomukFeederPlugin )
 public:
   NepomukMailFeeder(QObject *parent, const QVariantList &);
-  virtual void updateItem(const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
+  virtual void updateItem(const Akonadi::Item& item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph);
 
 private:
-  QList<QUrl> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, Nepomuk::SimpleResourceGraph& graph );
-  void addTranslatedTag( const char* tagName, const QString &tagLabel, const QString &icon , Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
+  QList<QUrl> extractContactsFromMailboxes( const KMime::Types::Mailbox::List& mbs, Nepomuk2::SimpleResourceGraph& graph );
+  void addTranslatedTag( const char* tagName, const QString &tagLabel, const QString &icon , Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph);
 
-  void processContent( const KMime::Message::Ptr &msg, const Akonadi::Item &item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
-  void processFlags( const Akonadi::Item::Flags &flags, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
-  void processHeaders( const KMime::Message::Ptr &msg, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
-  void processPart( KMime::Content *content, const Akonadi::Item &item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
-  void addSpecificHeader( const KMime::Message::Ptr& msg, const QByteArray& headerName, Nepomuk::NMO::Email& mail, Nepomuk::SimpleResourceGraph& graph );
+  void processContent( const KMime::Message::Ptr &msg, const Akonadi::Item &item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph);
+  void processFlags( const Akonadi::Item::Flags &flags, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph);
+  void processHeaders( const KMime::Message::Ptr &msg, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph);
+  void processPart( KMime::Content *content, const Akonadi::Item &item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph );
+  void addSpecificHeader( const KMime::Message::Ptr& msg, const QByteArray& headerName, Nepomuk2::NMO::Email& mail, Nepomuk2::SimpleResourceGraph& graph );
 
   KMime::Content *m_mainBodyPart;
 };
