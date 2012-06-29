@@ -23,6 +23,7 @@
 #include "nepomukfeederagent.h"
 #include <aneo.h>
 
+#include <akonadi/agentmanager.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
@@ -116,6 +117,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 
   checkOnline();
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
+  QTimer::singleShot( 1000, this, SLOT(checkMigration()) );
 
   mQueue.setIndexingSpeed( mIdleDetectionDisabled ? FeederQueue::FullSpeed : FeederQueue::ReducedSpeed );
 
@@ -189,6 +191,23 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
     if ( indexingDisabled( collection ) )
       continue;
     mQueue.addCollection( collection );
+  }
+}
+
+void NepomukFeederAgent::checkMigration()
+{
+  kDebug();
+
+  // Cleanup agentsrc after migration to 4.9
+  AgentManager* agentManager = AgentManager::self();
+  const AgentInstance::List allAgents = agentManager->instances();
+  const QStringList oldFeeders = QStringList() << "akonadi_nepomuk_email_feeder" << "akonadi_nepomuk_contact_feeder" << "akonadi_nepomuk_calendar_feeder";
+  // Cannot use agentManager->instance(oldInstanceName) here, it wouldn't find broken instances.
+  Q_FOREACH( const AgentInstance& inst, allAgents ) {
+    if ( oldFeeders.contains( inst.identifier() ) ) {
+      kDebug() << "Removing old nepomuk feeder" << inst.identifier();
+      agentManager->removeInstance( inst );
+    }
   }
 }
 
