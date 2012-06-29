@@ -659,13 +659,13 @@ QStringList ImapResource::serverCapabilities() const
 
 QString ImapResource::dumpResourceToString() const
 {
-  QString ret = QLatin1String("IMAP tasks:");
+  QString ret;
   Q_FOREACH(ResourceTask* task, m_taskList) {
     if (!ret.isEmpty())
       ret += QLatin1String(", ");
     ret += task->metaObject()->className();
   }
-  return ret;
+  return QLatin1String("IMAP tasks: ") + ret;
 }
 
 // ----------------------------------------------------------------------------------
