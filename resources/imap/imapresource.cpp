@@ -635,6 +635,18 @@ QStringList ImapResource::serverCapabilities() const
 {
   return m_pool->serverCapabilities();
 }
+
+QString ImapResource::dumpResourceToString() const
+{
+  QString ret = QLatin1String("IMAP tasks:");
+  Q_FOREACH(ResourceTask* task, m_taskList) {
+    if (!ret.isEmpty())
+      ret += QLatin1String(", ");
+    ret += task->metaObject()->className();
+  }
+  return ret;
+}
+
 // ----------------------------------------------------------------------------------
 
 AKONADI_RESOURCE_MAIN( ImapResource )

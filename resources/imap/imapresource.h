@@ -63,6 +63,9 @@ public Q_SLOTS:
   Q_SCRIPTABLE bool isFastSyncEnabled() const;
   Q_SCRIPTABLE int configureSubscription();
 
+  // pseudo-virtual called by ResourceBase
+  QString dumpResourceToString() const;
+
 protected Q_SLOTS:
   void startIdleIfNeeded();
   void startIdle();
