@@ -66,8 +66,8 @@ void ObjectRequestJob::davJobFinished( KJob *job )
 
   const QDomDocument document = davJob->response();
 
-  QString errorText;
-  if ( DAVUtils::davErrorOccurred( document, errorText ) ) {
+  QString errorText, errorStatus;
+  if ( DAVUtils::davErrorOccurred( document, errorText, errorStatus ) ) {
     setError( UserDefinedError );
     setErrorText( errorText );
     emitResult();

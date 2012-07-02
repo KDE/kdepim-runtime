@@ -36,7 +36,7 @@ KMime::Message::Ptr JournalHandler::incidenceToMime( const KCalCore::Incidence::
   return
     Kolab::KolabObjectWriter::writeJournal(
       incidence.dynamicCast<KCalCore::Journal>(),
-      m_formatVersion, m_calendar.timeZoneId() );
+      m_formatVersion, PRODUCT_ID, m_calendar.timeZoneId() );
 }
 
 QStringList  JournalHandler::contentMimeTypes()

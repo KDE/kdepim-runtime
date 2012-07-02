@@ -35,10 +35,10 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set( KDEPIM_RUNTIME_DEV_VERSION "beta2" )
+    set( KDEPIM_RUNTIME_DEV_VERSION "pre" )
 endif ()
 
-set( KDEPIM_RUNTIME_VERSION "4.9${KDEPIM_RUNTIME_DEV_VERSION}" )
+set( KDEPIM_RUNTIME_VERSION "4.10${KDEPIM_RUNTIME_DEV_VERSION}" )
 
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
@@ -59,7 +59,7 @@ find_package(KdepimLibs 4.7.41 REQUIRED)
 find_package(Boost 1.34.0)
 macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.34.0" "Required by Akonadi.")
 
-set(AKONADI_MIN_VERSION 1.4.91)
+set(AKONADI_MIN_VERSION 1.7.90)
 find_package(Akonadi)
 macro_log_feature(Akonadi_FOUND "Akonadi" "Akonadi server libraries" "http://pim.kde.org/akonadi" TRUE "${AKONADI_MIN_VERSION}" "Akonadi is required to build kdepim-runtime.")
 
@@ -70,8 +70,8 @@ macro_log_feature(SHARED_MIME_INFO_FOUND "SMI" "SharedMimeInfo" "http://freedesk
 find_package(LibXml2)
 macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applications" "http://xmlsoft.org" FALSE "" "Needed for building the knut Akonadi resource.")
 
-set(SDO_MIN_VERSION 0.6.51)
-set(SOPRANO_MIN_VERSION 2.3.70)
+set(SDO_MIN_VERSION 0.10)
+set(SOPRANO_MIN_VERSION 2.7.56)
 
 if(NOT KDEPIM_NO_NEPOMUK)
 

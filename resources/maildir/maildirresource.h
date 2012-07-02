@@ -75,6 +75,8 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     void fsWatchDirFetchResult( KJob* job );
     void fsWatchFileFetchResult( KJob* job );
     void fsWatchFileModifyResult( KJob* job );
+    // Try to restore some config values from Akonadi data
+    void attemptConfigRestoring( KJob* job );
 
   private:
     bool ensureDirExists();

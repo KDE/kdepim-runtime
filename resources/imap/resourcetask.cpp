@@ -368,6 +368,10 @@ QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
   return newFlags;
 }
 
+void ResourceTask::kill()
+{
+  kDebug();
+  cancelTask("killed");
+}
+
 #include "resourcetask.moc"
-
-

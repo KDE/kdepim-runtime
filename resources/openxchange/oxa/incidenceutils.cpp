@@ -365,6 +365,13 @@ static void createEventAttributes( QDomDocument &document, QDomElement &parent,
 
   DAVUtils::addOxElement( document, parent, QLatin1String( "location" ), OXUtils::writeString( event->location() ) );
   DAVUtils::addOxElement( document, parent, QLatin1String( "full_time" ), OXUtils::writeBoolean( event->allDay() ) );
+
+  if ( event->transparency() == KCalCore::Event::Transparent ) {
+    DAVUtils::addOxElement( document, parent, QLatin1String( "shown_as" ), OXUtils::writeNumber( 4 ) );
+  } else if ( event->transparency() == KCalCore::Event::Opaque ) {
+    DAVUtils::addOxElement( document, parent, QLatin1String( "shown_as" ), OXUtils::writeNumber( 1 ) );
+  }
+
 }
 
 static void createTaskAttributes( QDomDocument &document, QDomElement &parent,
@@ -489,6 +496,16 @@ void OXA::IncidenceUtils::parseEvent( const QDomElement &propElement, Object &ob
   const QDomElement fullTimeElement = propElement.firstChildElement( "full_time" );
   if ( !fullTimeElement.isNull() )
     event->setAllDay( OXUtils::readBoolean( fullTimeElement.text() ) );
+
+  const QDomElement ShowAsElement = propElement.firstChildElement( "shown_as" );
+  if ( !ShowAsElement.isNull() ) {
+    int showAs = OXUtils::readNumber( ShowAsElement.text() );
+    switch (showAs) {
+      case 1 : event->setTransparency(KCalCore::Event::Transparent); break;
+      case 4 : event->setTransparency(KCalCore::Event::Opaque); break;
+      default : event->setTransparency(KCalCore::Event::Opaque);
+    }
+  }
 
   bool doesRecur = false;
   const QDomElement recurrenceTypeElement = propElement.firstChildElement( "recurrence_type" );

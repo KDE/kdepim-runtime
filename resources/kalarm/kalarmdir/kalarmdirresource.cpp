@@ -1,7 +1,7 @@
 /*
  *  kalarmdirresource.cpp  -  Akonadi directory resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2011 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2011-2012 by David Jarvie <djarvie@kde.org>
  *  Copyright (c) 2008 Tobias Koenig <tokoe@kde.org>
  *  Copyright (c) 2008 Bertjan Broeksema <broeksema@kde.org>
  *
@@ -76,7 +76,8 @@ KAlarmDirResource::KAlarmDirResource(const QString& id)
       mSettings(new Settings(componentData().config())),
       mCollectionId(-1),
       mCompatibility(KACalendar::Incompatible),
-      mCollectionFetched(true)
+      mCollectionFetched(false),
+      mWaitingToRetrieve(false)
 {
     kDebug() << id;
     KAlarmResourceCommon::initialise(this);
@@ -97,8 +98,6 @@ KAlarmDirResource::KAlarmDirResource(const QString& id)
     // Find the collection which this resource manages
     CollectionFetchJob* job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
     job->fetchScope().setResource(identifier());
-    connect(job, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
-                 SLOT(collectionsReceived(Akonadi::Collection::List)));
     connect(job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)));
 
     QTimer::singleShot(0, this, SLOT(loadFiles()));
@@ -113,38 +112,72 @@ void KAlarmDirResource::aboutToQuit()
     mSettings->writeConfig();
 }
 
-void KAlarmDirResource::collectionsReceived(const Akonadi::Collection::List& collections)
+void KAlarmDirResource::collectionFetchResult(KJob* j)
 {
     kDebug();
-    int count = collections.count();
-    kDebug() << "Count:" << count;
-    if (!count)
-        kError() << "Cannot retrieve this resource's collection";
+    if (j->error())
+        kError() << "CollectionFetchJob error: " << j->errorString();
     else
     {
-        if (count > 1)
-            kError() << "Multiple collections for this resource:" << count;
-        for (int i = 0;  i < count;  ++i)
+        CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
+        Collection::List collections = job->collections();
+        int count = collections.count();
+        kDebug() << "Count:" << count;
+        if (!count)
+            kError() << "Cannot retrieve this resource's collection";
+        else
         {
-            if (collections[i].remoteId() == mSettings->path())
+            if (count > 1)
+                kError() << "Multiple collections for this resource:" << count;
+            Collection& c(collections[0]);
+            kDebug() << "Id:" << c.id() << ", remote id:" << c.remoteId();
+            if (!mCollectionFetched)
             {
-                mCollectionId = collections[i].id();
+                bool recreate = mSettings->path().isEmpty();
+                if (!recreate)
+                {
+                    // Remote ID could be path or URL, depending on which version
+                    // of Akonadi created it.
+                    QString rid = c.remoteId();
+                    KUrl url(mSettings->path());
+                    if (!url.isLocalFile()
+                    ||  (rid != url.toLocalFile() && rid != url.url() && rid != url.prettyUrl()))
+                    {
+                        kError() << "Collection remote ID does not match settings: changing settings";
+                        recreate = true;
+                    }
+                }
+                if (recreate)
+                {
+                    // Initialising a resource which seems to have no stored
+                    // settings config file. Recreate the settings.
+                    static Collection::Rights writableRights = Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem;
+                    kDebug() << "Recreating config for remote id:" << c.remoteId();
+                    mSettings->setPath(c.remoteId());
+                    mSettings->setDisplayName(c.name());
+                    mSettings->setAlarmTypes(c.contentMimeTypes());
+                    mSettings->setReadOnly((c.rights() & writableRights) != writableRights);
+                    mSettings->writeConfig();
+                }
+                mCollectionId = c.id();
+                if (recreate)
+                {
+                    // Load items from the backend files now that their location is known
+                    loadFiles(true);
+                }
 
                 // Set collection's format compatibility flag now that the collection
                 // and its attributes have been fetched.
-                KAlarmResourceCommon::setCollectionCompatibility(collections[i], mCompatibility, mVersion);
-                break;
+                KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
             }
         }
     }
     mCollectionFetched = true;
-}
-
-void KAlarmDirResource::collectionFetchResult(KJob* j)
-{
-    mCollectionFetched = true;
-    if (j->error())
-        kError() << "CollectionFetchJob error: " << j->errorString();
+    if (mWaitingToRetrieve)
+    {
+        mWaitingToRetrieve = false;
+        retrieveCollections();
+    }
 }
 
 void KAlarmDirResource::configure(WId windowId)
@@ -369,6 +402,8 @@ kDebug()<<"Monitored changed";
 bool KAlarmDirResource::loadFiles(bool sync)
 {
     const QString dirPath = directoryName();
+    if (dirPath.isEmpty())
+        return false;
     kDebug() << dirPath;
     const QDir dir(dirPath);
 
@@ -695,10 +730,19 @@ bool KAlarmDirResource::writeToFile(const KAEvent& event)
 */
 void KAlarmDirResource::retrieveCollections()
 {
+    QString rid = mSettings->path();
+    if (!mCollectionFetched  &&  rid.isEmpty())
+    {
+        // The resource config seems to be missing. Execute this function
+        // once the collection config has been set up.
+        mWaitingToRetrieve = true;
+        return;
+    }
+
     kDebug();
     Collection c;
     c.setParentCollection(Collection::root());
-    c.setRemoteId(directoryName());
+    c.setRemoteId(rid);
     c.setContentMimeTypes(mSettings->alarmTypes());
     setNameRights(c);
 
@@ -735,6 +779,7 @@ void KAlarmDirResource::setNameRights(Collection& c)
         rights |= Collection::CanChangeCollection;
         c.setRights(rights);
     }
+    kDebug()<<"end";
 }
 
 /******************************************************************************

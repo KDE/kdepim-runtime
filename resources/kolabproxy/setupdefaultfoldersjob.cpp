@@ -53,13 +53,13 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
     return; // Akonadi::Job propagates that automatically
   }
 
-  Akonadi::Collection::List collections;
+  const Akonadi::Collection::List &collections = static_cast<Akonadi::CollectionFetchJob*>( job )->collections();
 
   //FIXME: This should really look for the personal namespace, and use the folder there.
   //        As a workaround we try to use the inbox, and fallback to toplevel otherwise.
+
   // look for inbox
   Akonadi::Collection defaultParent;
-  collections = static_cast<Akonadi::CollectionFetchJob*>( job )->collections();
   foreach ( const Akonadi::Collection &col, collections ) {
     if ( !( col.rights() & Akonadi::Collection::CanCreateCollection ) ) {
       continue;
@@ -72,10 +72,24 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
     }
   }
 
+  if (!defaultParent.isValid()) { //get the toplevel collection as fallback
+    foreach ( const Akonadi::Collection &col, collections ) {
+      if ( col.parentCollection() == Akonadi::Collection::root() ) {
+        defaultParent = col;
+      }
+    }
+  }
+
+  if (!defaultParent.isValid()) {
+    setError(KJob::UserDefinedError);
+    setErrorText("Could not find valid parent collection.");
+    emitResult();
+  }
+  kDebug() << "default parent " << defaultParent.id();
+
   // look for existing folders
   QVector<Akonadi::Collection> existingDefaultFolders( KolabV2::FolderTypeSize );
   QVector<Akonadi::Collection> recoveryCandidates( KolabV2::FolderTypeSize );
-  collections = static_cast<Akonadi::CollectionFetchJob*>( job )->collections();
   foreach ( const Akonadi::Collection &col, collections ) {
     if ( col.parentCollection() != defaultParent ) {
       continue;
@@ -114,9 +128,14 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
     }
 
     if ( existingDefaultFolders[ i ].isValid() ) {
+      kDebug() << "Existing collection ok: " << iconName;
       continue; // all good
     } else if ( recoveryCandidates[ i ].isValid() ) {
       Akonadi::Collection col = recoveryCandidates[ i ];
+      if ( !( col.rights() & Akonadi::Collection::CanChangeCollection ) ) {
+        kWarning() << "no change rights on collection";
+        continue;
+      }
       Akonadi::CollectionAnnotationsAttribute *attr =
         col.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Entity::AddIfMissing );
 
@@ -131,7 +150,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
           col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
         attribute->setIconName( iconName );
       }
-
+      kDebug() << "Fixing collection: " << col.id() << iconName;
       new Akonadi::CollectionModifyJob( col, 0 );
     } else {
       Akonadi::Collection col;
@@ -151,6 +170,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
           col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
         attribute->setIconName( iconName );
       }
+      kDebug() << "Creating new collection: " << iconName;
       new Akonadi::CollectionCreateJob( col, 0 );
     }
   }

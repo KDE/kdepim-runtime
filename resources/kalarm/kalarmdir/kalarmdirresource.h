@@ -1,7 +1,7 @@
 /*
  *  kalarmdirresource.h  -  Akonadi directory resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2011 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2011-2012 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -58,7 +58,6 @@ class KAlarmDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
         void    fileChanged(const QString& path);
         void    fileDeleted(const QString& path);
         void    loadFiles()         { loadFiles(true); }
-        void    collectionsReceived(const Akonadi::Collection::List&);
         void    collectionFetchResult(KJob*);
         void    jobDone(KJob*);
 
@@ -98,6 +97,7 @@ class KAlarmDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
         int                       mVersion;        // calendar format version
         QStringList               mChangedFiles;   // files being written to
         bool                      mCollectionFetched;  // mCollectionId has been initialised
+        bool                      mWaitingToRetrieve;  // retrieveCollections() needs to be called
 };
 
 #endif

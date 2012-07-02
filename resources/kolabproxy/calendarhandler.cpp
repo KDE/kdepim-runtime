@@ -35,7 +35,7 @@ KMime::Message::Ptr CalendarHandler::incidenceToMime( const KCalCore::Incidence:
   return
     Kolab::KolabObjectWriter::writeEvent(
       incidence.dynamicCast<KCalCore::Event>(),
-     m_formatVersion, m_calendar.timeZoneId() );
+     m_formatVersion, PRODUCT_ID, m_calendar.timeZoneId() );
 }
 
 QStringList CalendarHandler::contentMimeTypes()

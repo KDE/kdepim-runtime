@@ -28,6 +28,7 @@
 
 #include <akonadi/resourcebase.h>
 
+class ResourceTask;
 namespace KIMAP
 {
   class Session;
@@ -61,6 +62,9 @@ public Q_SLOTS:
   Q_SCRIPTABLE void setFastSyncEnabled( bool fastSync );
   Q_SCRIPTABLE bool isFastSyncEnabled() const;
   Q_SCRIPTABLE int configureSubscription();
+
+  // pseudo-virtual called by ResourceBase
+  QString dumpResourceToString() const;
 
 protected Q_SLOTS:
   void startIdleIfNeeded();
@@ -115,13 +119,13 @@ private Q_SLOTS:
 private:
   friend class ResourceState;
 
-  void queueTask( QObject *task );
+  void queueTask( ResourceTask *task );
   bool needsNetwork() const;
 
   friend class ImapIdleManager;
 
   SessionPool *m_pool;
-  QList<QObject*> m_taskList;
+  QList<ResourceTask*> m_taskList;
   ImapIdleManager *m_idle;
   bool m_fastSync;
 };
