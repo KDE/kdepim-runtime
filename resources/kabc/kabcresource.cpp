@@ -150,9 +150,11 @@ void KABCResource::configure( WId windowId )
 
   if ( kresAssistant.exec() != QDialog::Accepted ) {
     emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    emit configurationDialogRejected();
     return;
   }
 
+  emit configurationDialogAccepted();
   KABC::Resource *resource = dynamic_cast<KABC::Resource*>( kresAssistant.resource() );
   Q_ASSERT( resource != 0 );
 
