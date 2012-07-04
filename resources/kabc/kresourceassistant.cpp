@@ -32,6 +32,13 @@
 #include <QLayout>
 #include <QStackedWidget>
 
+
+static bool isBlackListed( const QString &name )
+{
+  static const QSet<QString> blackList = QSet<QString>() << "akonadi" << "file" << "dir" << "net";
+  return blackList.contains( name );
+}
+
 class CompatibilityIntroductionLabel : public QWidget
 {
   public:
@@ -106,9 +113,12 @@ class KResourceCreationWidget : public QWidget
       mainLayout->addWidget( mPageWidget );
 
       mTypes = mFactory->typeNames();
-      int index = mTypes.indexOf( QLatin1String( "akonadi" ) );
-      if ( index != -1 )
-        mTypes.removeAt( index );
+
+      // Filter-out types for which we have a native akonadi resource
+      foreach( const QString &type, mTypes ) {
+        if ( isBlackListed( type ) )
+          mTypes.removeAll( type );
+      }
 
       foreach ( const QString &type, mTypes ) {
         QString description = mFactory->typeDescription( type );
