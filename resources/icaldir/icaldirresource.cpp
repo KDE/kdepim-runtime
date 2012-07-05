@@ -47,8 +47,8 @@ static Incidence::Ptr readFromFile( const QString &fileName )
   Incidence::Ptr incidence;
   if ( fileStorage->load() ) {
     Incidence::List incidences = calendar->incidences();
-    Q_ASSERT( incidences.count() == 1 );
-    incidence = incidences.first();
+    if ( !incidences.isEmpty() )
+      incidence = incidences.first();
   } else {
     kError() << "Error loading file " << fileName;
   }
