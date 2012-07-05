@@ -25,6 +25,8 @@
 
 #include <KCalCore/Incidence>
 
+#include <QHash>
+
 class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
   Q_OBJECT
@@ -54,7 +56,7 @@ class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     void initializeICalDirectory() const;
 
   private:
-    QMap<QString, KCalCore::Incidence::Ptr> mIncidences;
+    QHash<QString, KCalCore::Incidence::Ptr> mIncidences;
 };
 
 #endif
