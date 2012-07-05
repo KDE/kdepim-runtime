@@ -112,6 +112,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
   private slots:
     void selfTest();
+    void checkMigration();
     void slotFullyIndexed();
     void systemIdle();
     void systemResumed();

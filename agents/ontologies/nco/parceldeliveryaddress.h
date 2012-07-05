@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "nco/postaladdress.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCO {
 /**
  * Parcel Delivery Addresse. Class inspired by TYPE=parcel parameter 
@@ -21,7 +21,7 @@ namespace NCO {
 class ParcelDeliveryAddress : public NCO::PostalAddress
 {
 public:
-    ParcelDeliveryAddress(Nepomuk::SimpleResource* res)
+    ParcelDeliveryAddress(Nepomuk2::SimpleResource* res)
       : NCO::PostalAddress(res), m_res(res)
     {}
 
@@ -31,7 +31,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#ParcelDeliveryAddress", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

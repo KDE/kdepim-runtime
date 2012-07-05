@@ -9,9 +9,9 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * Access classification of a calendar component. Introduced 
@@ -23,7 +23,7 @@ namespace NCAL {
 class AccessClassification
 {
 public:
-    AccessClassification(Nepomuk::SimpleResource* res)
+    AccessClassification(Nepomuk2::SimpleResource* res)
       : m_res(res)
     {}
 
@@ -33,7 +33,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#AccessClassification", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

@@ -20,8 +20,8 @@
 
 #include "nepomukfeederutils.h"
 
-#include <dms-copy/simpleresource.h>
-#include <dms-copy/simpleresourcegraph.h>
+#include <nepomuk2/simpleresource.h>
+#include <nepomuk2/simpleresourcegraph.h>
 
 #include <nao/tag.h>
 #include <nao/freedesktopicon.h>
@@ -39,26 +39,26 @@
 namespace NepomukFeederUtils
 {
 
-void tagsFromCategories(const QStringList& categories, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
+void tagsFromCategories(const QStringList& categories, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph)
 {
   foreach ( const QString &category, categories ) {
     addTag( res, graph, category );
   }
 }
 
-void setIcon(const QString& iconName, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
+void setIcon(const QString& iconName, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph)
 {
-  Nepomuk::SimpleResource iconRes;
-  Nepomuk::NAO::FreeDesktopIcon icon( &iconRes );
+  Nepomuk2::SimpleResource iconRes;
+  Nepomuk2::NAO::FreeDesktopIcon icon( &iconRes );
   icon.setIconNames( QStringList() << iconName );
   graph << iconRes;
   res.setProperty( Soprano::Vocabulary::NAO::prefSymbol(), iconRes.uri() );
 }
 
-Nepomuk::SimpleResource addTag( Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph, const QString& identifier, const QString &prefLabel )
+Nepomuk2::SimpleResource addTag( Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph, const QString& identifier, const QString &prefLabel )
 {
-  Nepomuk::SimpleResource tagResource;
-  Nepomuk::NAO::Tag tag( &tagResource );
+  Nepomuk2::SimpleResource tagResource;
+  Nepomuk2::NAO::Tag tag( &tagResource );
   tagResource.addProperty( Soprano::Vocabulary::NAO::identifier(), identifier );
   if ( !prefLabel.isEmpty() ) {
     tag.setPrefLabel( prefLabel );
@@ -71,14 +71,14 @@ Nepomuk::SimpleResource addTag( Nepomuk::SimpleResource& res, Nepomuk::SimpleRes
 }
 
 
-Nepomuk::SimpleResource addContact( const QString &emailAddress, const QString &name, Nepomuk::SimpleResourceGraph &graph )
+Nepomuk2::SimpleResource addContact( const QString &emailAddress, const QString &name, Nepomuk2::SimpleResourceGraph &graph )
 {
-  Nepomuk::SimpleResource contactRes;
-  Nepomuk::NCO::Contact contact( &contactRes );
+  Nepomuk2::SimpleResource contactRes;
+  Nepomuk2::NCO::Contact contact( &contactRes );
   contactRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), name.isEmpty() ? emailAddress : name );
   if ( !emailAddress.isEmpty() ) {
-    Nepomuk::SimpleResource emailRes;
-    Nepomuk::NCO::EmailAddress email( &emailRes );
+    Nepomuk2::SimpleResource emailRes;
+    Nepomuk2::NCO::EmailAddress email( &emailRes );
     email.setEmailAddress( emailAddress.toLower() );
     graph << emailRes;
     contact.addHasEmailAddress( emailRes.uri() );

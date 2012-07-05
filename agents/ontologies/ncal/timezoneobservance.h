@@ -9,12 +9,12 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/unionoftimezoneobservanceeventfreebusytimezonetodo.h"
 #include "ncal/unionoftimezoneobservanceeventfreebusyjournaltimezonetodo.h"
 #include "ncal/unionoftimezoneobservanceeventjournaltimezonetodo.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * 
@@ -22,7 +22,7 @@ namespace NCAL {
 class TimezoneObservance : public NCAL::UnionOfTimezoneObservanceEventFreebusyTimezoneTodo, public NCAL::UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo, public NCAL::UnionOfTimezoneObservanceEventJournalTimezoneTodo
 {
 public:
-    TimezoneObservance(Nepomuk::SimpleResource* res)
+    TimezoneObservance(Nepomuk2::SimpleResource* res)
       : NCAL::UnionOfTimezoneObservanceEventFreebusyTimezoneTodo(res), NCAL::UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo(res), NCAL::UnionOfTimezoneObservanceEventJournalTimezoneTodo(res), m_res(res)
     {}
 
@@ -180,7 +180,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#TimezoneObservance", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

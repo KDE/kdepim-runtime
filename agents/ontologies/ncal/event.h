@@ -9,7 +9,7 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/unionofeventjournaltimezonetodo.h"
 #include "ncal/unionoftimezoneobservanceeventfreebusytimezonetodo.h"
@@ -23,7 +23,7 @@
 #include "ncal/unionofeventjournaltodo.h"
 #include "ncal/unionofeventtodo.h"
 #include "ncal/unionofalarmeventtodo.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * Provide a grouping of component properties that describe an 
@@ -32,7 +32,7 @@ namespace NCAL {
 class Event : public NCAL::UnionOfEventJournalTimezoneTodo, public NCAL::UnionOfTimezoneObservanceEventFreebusyTimezoneTodo, public NCAL::UnionOfAlarmEventJournalTodo, public NCAL::UnionOfTimezoneObservanceEventJournalTimezoneTodo, public NCAL::UnionOfAlarmEventFreebusyJournalTodo, public NCAL::UnionOfEventFreebusyJournalTodo, public NCAL::UnionOfAlarmEventFreebusyTodo, public NCAL::UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo, public NCAL::UnionOfEventFreebusy, public NCAL::UnionOfEventJournalTodo, public NCAL::UnionOfEventTodo, public NCAL::UnionOfAlarmEventTodo
 {
 public:
-    Event(Nepomuk::SimpleResource* res)
+    Event(Nepomuk2::SimpleResource* res)
       : NCAL::UnionOfEventJournalTimezoneTodo(res), NCAL::UnionOfTimezoneObservanceEventFreebusyTimezoneTodo(res), NCAL::UnionOfAlarmEventJournalTodo(res), NCAL::UnionOfTimezoneObservanceEventJournalTimezoneTodo(res), NCAL::UnionOfAlarmEventFreebusyJournalTodo(res), NCAL::UnionOfEventFreebusyJournalTodo(res), NCAL::UnionOfAlarmEventFreebusyTodo(res), NCAL::UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo(res), NCAL::UnionOfEventFreebusy(res), NCAL::UnionOfEventJournalTodo(res), NCAL::UnionOfEventTodo(res), NCAL::UnionOfAlarmEventTodo(res), m_res(res)
     {}
 
@@ -116,7 +116,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Event", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

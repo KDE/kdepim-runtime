@@ -23,6 +23,7 @@
 #include "nepomukfeederagent.h"
 #include <aneo.h>
 
+#include <akonadi/agentmanager.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
@@ -34,9 +35,9 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entityhiddenattribute.h>
 
-#include <dms-copy/simpleresource.h>
-#include <dms-copy/simpleresourcegraph.h>
-#include <dms-copy/datamanagement.h>
+#include <nepomuk2/simpleresource.h>
+#include <nepomuk2/simpleresourcegraph.h>
+#include <nepomuk2/datamanagement.h>
 #include <nepomuk/resourcemanager.h>
 
 #include <KLocale>
@@ -116,6 +117,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 
   checkOnline();
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
+  QTimer::singleShot( 1000, this, SLOT(checkMigration()) );
 
   mQueue.setIndexingSpeed( mIdleDetectionDisabled ? FeederQueue::FullSpeed : FeederQueue::ReducedSpeed );
 
@@ -153,7 +155,7 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
   //kDebug() << item.url();
-  Nepomuk::removeResources( QList <QUrl>() << item.url(), Nepomuk::RemoveSubResoures );
+  Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
 }
 
 void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
@@ -174,7 +176,7 @@ void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection)
 {
-  Nepomuk::removeResources( QList <QUrl>() << collection.url() );
+  Nepomuk2::removeResources( QList <QUrl>() << collection.url() );
 }
 
 void NepomukFeederAgent::updateAll()
@@ -189,6 +191,23 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
     if ( indexingDisabled( collection ) )
       continue;
     mQueue.addCollection( collection );
+  }
+}
+
+void NepomukFeederAgent::checkMigration()
+{
+  kDebug();
+
+  // Cleanup agentsrc after migration to 4.9
+  AgentManager* agentManager = AgentManager::self();
+  const AgentInstance::List allAgents = agentManager->instances();
+  const QStringList oldFeeders = QStringList() << "akonadi_nepomuk_email_feeder" << "akonadi_nepomuk_contact_feeder" << "akonadi_nepomuk_calendar_feeder";
+  // Cannot use agentManager->instance(oldInstanceName) here, it wouldn't find broken instances.
+  Q_FOREACH( const AgentInstance& inst, allAgents ) {
+    if ( oldFeeders.contains( inst.identifier() ) ) {
+      kDebug() << "Removing old nepomuk feeder" << inst.identifier();
+      agentManager->removeInstance( inst );
+    }
   }
 }
 

@@ -18,7 +18,7 @@ endif( STRIGI_FOUND AND AKONADI_USE_STRIGI_SEARCH )
 
 if(NOT WINCE)
 add_subdirectory( invitations )
-add_subdirectory( calendarsearch )
+#add_subdirectory( calendarsearch )
 
 if( NOT KDEPIM_NO_NEPOMUK AND Nepomuk_FOUND AND STRIGI_FOUND )
     include_directories( ${CMAKE_CURRENT_BINARY_DIR}/ontologies ontologies ${SOPRANO_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR} )

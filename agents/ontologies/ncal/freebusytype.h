@@ -9,9 +9,9 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * Type of a Freebusy indication. This class has been introduced 
@@ -21,7 +21,7 @@ namespace NCAL {
 class FreebusyType
 {
 public:
-    FreebusyType(Nepomuk::SimpleResource* res)
+    FreebusyType(Nepomuk2::SimpleResource* res)
       : m_res(res)
     {}
 
@@ -31,7 +31,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#FreebusyType", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

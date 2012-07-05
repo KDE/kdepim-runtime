@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "nao/symbol.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NAO {
 /**
  * Represents a desktop icon as defined in the FreeDesktop Icon 
@@ -21,7 +21,7 @@ namespace NAO {
 class FreeDesktopIcon : public NAO::Symbol
 {
 public:
-    FreeDesktopIcon(Nepomuk::SimpleResource* res)
+    FreeDesktopIcon(Nepomuk2::SimpleResource* res)
       : NAO::Symbol(res), m_res(res)
     {}
 
@@ -66,7 +66,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/08/15/nao#FreeDesktopIcon", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

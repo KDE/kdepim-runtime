@@ -47,7 +47,7 @@ using namespace Nepomuk;
 
 namespace Akonadi {
 
-void NepomukCalendarFeeder::updateItem(const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
+void NepomukCalendarFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph)
 {
   //kDebug() << item.id();
   if ( item.hasPayload<KCalCore::Event::Ptr>() ) {
@@ -62,7 +62,7 @@ void NepomukCalendarFeeder::updateItem(const Akonadi::Item& item, Nepomuk::Simpl
   }
 }
 
-void NepomukCalendarFeeder::updateIncidenceItem( const KCalCore::Incidence::Ptr &calInc, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
+void NepomukCalendarFeeder::updateIncidenceItem( const KCalCore::Incidence::Ptr &calInc, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph )
 {
   res.setProperty( Soprano::Vocabulary::NAO::prefLabel(), calInc->summary() );
   res.setProperty( Vocabulary::NCAL::summary(), calInc->summary() );
@@ -79,11 +79,11 @@ void NepomukCalendarFeeder::updateIncidenceItem( const KCalCore::Incidence::Ptr 
   NepomukFeederUtils::tagsFromCategories( calInc->categories(), res, graph );
 }
 
-void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCalCore::Event::Ptr &calEvent, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
+void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KCalCore::Event::Ptr &calEvent, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph )
 {
   Q_UNUSED( item );
   // create event with the graph reference
-  Nepomuk::NCAL::Event event( &res );
+  Nepomuk2::NCAL::Event event( &res );
   //the wrapper class doesn't set the type if no memberfunction is called
   res.addType( Vocabulary::NCAL::Event() );
   //NepomukFeederUtils::setIcon( "view-pim-calendar", res, graph ); //Disable Icon until we know how to properly set them
@@ -110,8 +110,8 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
 
   foreach ( const KCalCore::Attendee::Ptr &calAttendee, calEvent->attendees() ) {
     QUrl contactUri = NepomukFeederUtils::addContact( calAttendee->email(), calAttendee->name(), graph ).uri();
-    Nepomuk::SimpleResource attendeeResource;
-    Nepomuk::NCAL::Attendee attendee( &attendeeResource );
+    Nepomuk2::SimpleResource attendeeResource;
+    Nepomuk2::NCAL::Attendee attendee( &attendeeResource );
     attendee.addInvolvedContact( contactUri );
 
     uri.clear();
@@ -144,21 +144,21 @@ void NepomukCalendarFeeder::updateEventItem( const Akonadi::Item &item, const KC
   }
 }
 
-void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCalCore::Journal::Ptr &calJournal, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
+void NepomukCalendarFeeder::updateJournalItem( const Akonadi::Item &item, const KCalCore::Journal::Ptr &calJournal, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph )
 {
   Q_UNUSED( item );
   // create journal entry with the graph reference
-  Nepomuk::NCAL::Journal journal( &res );
+  Nepomuk2::NCAL::Journal journal( &res );
   //the wrapper class doesn't set the type if no memberfunction is called
   res.addType( Vocabulary::NCAL::Journal() );
   //NepomukFeederUtils::setIcon( "view-pim-journal", res, graph );
   updateIncidenceItem( calJournal, res, graph );
 }
 
-void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCalCore::Todo::Ptr &calTodo, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph )
+void NepomukCalendarFeeder::updateTodoItem( const Akonadi::Item &item, const KCalCore::Todo::Ptr &calTodo, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph )
 {
   Q_UNUSED( item );
-  Nepomuk::NCAL::Todo todo( &res );
+  Nepomuk2::NCAL::Todo todo( &res );
   //the wrapper class doesn't set the type if no memberfunction is called
   res.addType( Vocabulary::NCAL::Todo() );
   //NepomukFeederUtils::setIcon( "view-pim-task", res, graph );

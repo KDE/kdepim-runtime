@@ -57,7 +57,7 @@ NepomukMailFeeder::NepomukMailFeeder(QObject *parent, const QVariantList &)
 {
 }
 
-void NepomukMailFeeder::updateItem(const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
+void NepomukMailFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph)
 {
   //kDebug() << item.id();
   Q_ASSERT( item.hasPayload() );
@@ -87,7 +87,7 @@ void NepomukMailFeeder::updateItem(const Akonadi::Item& item, Nepomuk::SimpleRes
 }
 
 
-void NepomukMailFeeder::processContent(const KMime::Message::Ptr& msg, const Akonadi::Item &item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph )
+void NepomukMailFeeder::processContent(const KMime::Message::Ptr& msg, const Akonadi::Item &item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph )
 {
   // before we walk the part node tree, let's see if there is a main plain text body, so we don't interpret that as an attachment later on
   m_mainBodyPart = msg->mainBodyPart( "text/plain" );
@@ -95,14 +95,14 @@ void NepomukMailFeeder::processContent(const KMime::Message::Ptr& msg, const Ako
     const QString text = m_mainBodyPart->decodedText( true, true );
     if ( !text.isEmpty() ) {
       //kDebug() << "indexingText";
-      Nepomuk::NMO::Message message( &res ); //The email wrapper doesn't contain the functions from Message
+      Nepomuk2::NMO::Message message( &res ); //The email wrapper doesn't contain the functions from Message
       message.setPlainTextMessageContents( QStringList( text ) );
     }
   }
   processPart( msg.get(), item, res, graph );
 }
 
-void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Item &item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph )
+void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Item &item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph )
 {
   // multipart -> recurse
   if ( content->contentType()->isMultipart() ) {
@@ -142,7 +142,7 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
     //KUrl attachmentUrl = res.uri();
     //attachmentUrl.setHTMLRef( index.toString() );
     //kDebug() << attachmentUrl;
-    SimpleResource attachmentRes;
+    Nepomuk2::SimpleResource attachmentRes;
     attachmentRes.addType( Vocabulary::NFO::Attachment() );
     attachmentRes.addType( Vocabulary::NIE::InformationElement() ); //it needs to be an informationElement in order to set nie:description
     attachmentRes.addProperty( Vocabulary::NIE::isPartOf(), res.uri() );
@@ -154,7 +154,7 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
     if ( content->contentDescription( false ) && !content->contentDescription()->asUnicodeString().isEmpty() )
       attachmentRes.setProperty( Vocabulary::NIE::description(), content->contentDescription()->asUnicodeString() );
 
-    Nepomuk::NMO::Email email( &res );
+    Nepomuk2::NMO::Email email( &res );
     email.addHasAttachment( attachmentRes.uri() );
     graph << attachmentRes;
     //TODO defer to post-processing
@@ -164,12 +164,12 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
 
 }
 
-void NepomukMailFeeder::processFlags(const Akonadi::Item::Flags& flags, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
+void NepomukMailFeeder::processFlags(const Akonadi::Item::Flags& flags, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph)
 {
   Akonadi::MessageStatus status;
   status.setStatusFromFlags( flags );
 
-  Nepomuk::NMO::Email mail( &res );
+  Nepomuk2::NMO::Email mail( &res );
   mail.setIsRead( status.isRead() );
 
   if ( status.isImportant() )
@@ -181,19 +181,19 @@ void NepomukMailFeeder::processFlags(const Akonadi::Item::Flags& flags, Nepomuk:
 }
 
 
-void NepomukMailFeeder::addTranslatedTag(const char* tagName, const QString& tagLabel, const QString &icon , Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
+void NepomukMailFeeder::addTranslatedTag(const char* tagName, const QString& tagLabel, const QString &icon , Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph)
 {
-  Nepomuk::SimpleResource tagResource = NepomukFeederUtils::addTag( res, graph, QString::fromLatin1( tagName ), tagLabel );
-  Nepomuk::NAO::Tag tag( &tagResource );
+  Nepomuk2::SimpleResource tagResource = NepomukFeederUtils::addTag( res, graph, QString::fromLatin1( tagName ), tagLabel );
+  Nepomuk2::NAO::Tag tag( &tagResource );
   if ( !icon.isEmpty() ) {
     NepomukFeederUtils::setIcon( icon, tagResource, graph );
   }
   graph << tagResource;
 }
 
-void NepomukMailFeeder::processHeaders(const KMime::Message::Ptr& msg, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph)
+void NepomukMailFeeder::processHeaders(const KMime::Message::Ptr& msg, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph)
 {
-  Nepomuk::NMO::Email mail( &res );
+  Nepomuk2::NMO::Email mail( &res );
   if ( msg->subject( false ) ) {
     mail.setMessageSubject( msg->subject()->asUnicodeString() );
     res.setProperty( Soprano::Vocabulary::NAO::prefLabel(), msg->subject()->asUnicodeString() );
@@ -235,11 +235,11 @@ void NepomukMailFeeder::processHeaders(const KMime::Message::Ptr& msg, Nepomuk::
   addSpecificHeader( msg, "Organization", mail, graph );
 }
 
-void NepomukMailFeeder::addSpecificHeader( const KMime::Message::Ptr& msg, const QByteArray& headerName, Nepomuk::NMO::Email& mail, Nepomuk::SimpleResourceGraph& graph )
+void NepomukMailFeeder::addSpecificHeader( const KMime::Message::Ptr& msg, const QByteArray& headerName, Nepomuk2::NMO::Email& mail, Nepomuk2::SimpleResourceGraph& graph )
 {
   if ( msg->headerByType( headerName ) ) {
-    Nepomuk::SimpleResource headerRes;
-    Nepomuk::NMO::MessageHeader header( &headerRes );
+    Nepomuk2::SimpleResource headerRes;
+    Nepomuk2::NMO::MessageHeader header( &headerRes );
     header.setHeaderName( headerName );
     header.setHeaderValue( msg->headerByType( headerName )->asUnicodeString() );
     graph << headerRes;
@@ -247,7 +247,7 @@ void NepomukMailFeeder::addSpecificHeader( const KMime::Message::Ptr& msg, const
   }
 }
 
-QList<QUrl> NepomukMailFeeder::extractContactsFromMailboxes(const KMime::Types::Mailbox::List& mbs, Nepomuk::SimpleResourceGraph &graph )
+QList<QUrl> NepomukMailFeeder::extractContactsFromMailboxes(const KMime::Types::Mailbox::List& mbs, Nepomuk2::SimpleResourceGraph &graph )
 {
   QList<QUrl> contacts;
   foreach ( const KMime::Types::Mailbox& mbox, mbs ) {

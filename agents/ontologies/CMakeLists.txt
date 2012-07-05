@@ -1,7 +1,7 @@
 project(akonadi_ontologies)
 
 include(NepomukAddOntologyClasses)
-include_directories(${SOPRANO_INCLUDE_DIR})
+include_directories(${SOPRANO_INCLUDE_DIR} ${NEPOMUK_CORE_INCLUDE_DIR})
 
 configure_file(aneo.ontology.in ${CMAKE_CURRENT_BINARY_DIR}/aneo.ontology)
 install(FILES
@@ -15,5 +15,5 @@ soprano_add_ontology(nie_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nco.trig "
 soprano_add_ontology(nie_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nmo.trig "NMO" "Vocabulary" "trig")
 
 kde4_add_library(niefast STATIC ${nie_SRCS})
-target_link_libraries(niefast ${QT_QTCORE_LIBRARY} ${NEPOMUK_LIBRARIES})
+target_link_libraries(niefast ${QT_QTCORE_LIBRARY} ${NEPOMUK_LIBRARIES} ${NEPOMUK_CORE_LIBRARY})
 

@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/ncaltimeentity.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * A period of time. Inspired by the PERIOD datatype specified 
@@ -21,7 +21,7 @@ namespace NCAL {
 class NcalPeriod : public NCAL::NcalTimeEntity
 {
 public:
-    NcalPeriod(Nepomuk::SimpleResource* res)
+    NcalPeriod(Nepomuk2::SimpleResource* res)
       : NCAL::NcalTimeEntity(res), m_res(res)
     {}
 
@@ -148,7 +148,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#NcalPeriod", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

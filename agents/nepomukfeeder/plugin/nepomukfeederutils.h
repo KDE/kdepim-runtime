@@ -21,9 +21,9 @@
 #ifndef NEPOMUKFEEDERUTILS_H
 #define NEPOMUKFEEDERUTILS_H
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
-namespace Nepomuk
+namespace Nepomuk2
 {
   class SimpleResourceGraph;
 }
@@ -37,13 +37,13 @@ class QStringList;
 namespace NepomukFeederUtils
 {
     /** Adds tags to @p resource based on the given string list*/
-    void tagsFromCategories(const QStringList& categories, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
-    void setIcon(const QString& iconName, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph);
-    Nepomuk::SimpleResource addTag(Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph, const QString& identifier, const QString &label = QString() );
+    void tagsFromCategories(const QStringList& categories, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph);
+    void setIcon(const QString& iconName, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph);
+    Nepomuk2::SimpleResource addTag(Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph, const QString& identifier, const QString &label = QString() );
     /** Creates a PersonContact object for the given name and address,
     *   adds it to @param graph and returns it's url.
     */
-    Nepomuk::SimpleResource addContact( const QString &email, const QString &name, Nepomuk::SimpleResourceGraph &graph );
+    Nepomuk2::SimpleResource addContact( const QString &email, const QString &name, Nepomuk2::SimpleResourceGraph &graph );
 
     /** Indexes the given QByteArray using Strigi. Use for e.g. attachments of types that you can't handle yourself. */
     void indexData( const KUrl &uri, const QByteArray &data, const QDateTime &mtime );

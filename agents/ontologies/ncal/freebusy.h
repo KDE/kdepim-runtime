@@ -9,7 +9,7 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/unionofeventfreebusyjournaltodo.h"
 #include "ncal/unionoftimezoneobservanceeventfreebusytimezonetodo.h"
@@ -17,7 +17,7 @@
 #include "ncal/unionofalarmeventfreebusytodo.h"
 #include "ncal/unionoftimezoneobservanceeventfreebusyjournaltimezonetodo.h"
 #include "ncal/unionofalarmeventfreebusyjournaltodo.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * Provide a grouping of component properties that describe either 
@@ -27,7 +27,7 @@ namespace NCAL {
 class Freebusy : public NCAL::UnionOfEventFreebusyJournalTodo, public NCAL::UnionOfTimezoneObservanceEventFreebusyTimezoneTodo, public NCAL::UnionOfEventFreebusy, public NCAL::UnionOfAlarmEventFreebusyTodo, public NCAL::UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo, public NCAL::UnionOfAlarmEventFreebusyJournalTodo
 {
 public:
-    Freebusy(Nepomuk::SimpleResource* res)
+    Freebusy(Nepomuk2::SimpleResource* res)
       : NCAL::UnionOfEventFreebusyJournalTodo(res), NCAL::UnionOfTimezoneObservanceEventFreebusyTimezoneTodo(res), NCAL::UnionOfEventFreebusy(res), NCAL::UnionOfAlarmEventFreebusyTodo(res), NCAL::UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo(res), NCAL::UnionOfAlarmEventFreebusyJournalTodo(res), m_res(res)
     {}
 
@@ -81,7 +81,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Freebusy", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

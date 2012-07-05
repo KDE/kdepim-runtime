@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "nco/contact.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCO {
 /**
  * A Contact that denotes a Person. A person can have multiple Affiliations. 
@@ -20,7 +20,7 @@ namespace NCO {
 class PersonContact : public NCO::Contact
 {
 public:
-    PersonContact(Nepomuk::SimpleResource* res)
+    PersonContact(Nepomuk2::SimpleResource* res)
       : NCO::Contact(res), m_res(res)
     {}
 
@@ -328,7 +328,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#PersonContact", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

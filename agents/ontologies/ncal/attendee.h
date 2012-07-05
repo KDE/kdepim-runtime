@@ -9,10 +9,10 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/attendeeororganizer.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * An attendee of an event. This class has been introduced to serve 
@@ -22,7 +22,7 @@ namespace NCAL {
 class Attendee : public NCAL::AttendeeOrOrganizer
 {
 public:
-    Attendee(Nepomuk::SimpleResource* res)
+    Attendee(Nepomuk2::SimpleResource* res)
       : NCAL::AttendeeOrOrganizer(res), m_res(res)
     {}
 
@@ -348,7 +348,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Attendee", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

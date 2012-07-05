@@ -9,7 +9,7 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
 #include "ncal/unionofeventjournaltimezonetodo.h"
 #include "ncal/unionofalarmeventjournaltodo.h"
@@ -22,7 +22,7 @@
 #include "ncal/unionofeventtodo.h"
 #include "ncal/unionofalarmeventfreebusyjournaltodo.h"
 #include "ncal/unionofalarmeventfreebusytodo.h"
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NCAL {
 /**
  * Provide a grouping of calendar properties that describe a to-do. 
@@ -30,7 +30,7 @@ namespace NCAL {
 class Todo : public NCAL::UnionOfEventJournalTimezoneTodo, public NCAL::UnionOfAlarmEventJournalTodo, public NCAL::UnionOfEventFreebusyJournalTodo, public NCAL::UnionOfTimezoneObservanceEventFreebusyTimezoneTodo, public NCAL::UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo, public NCAL::UnionOfTimezoneObservanceEventJournalTimezoneTodo, public NCAL::UnionOfAlarmEventTodo, public NCAL::UnionOfEventJournalTodo, public NCAL::UnionOfEventTodo, public NCAL::UnionOfAlarmEventFreebusyJournalTodo, public NCAL::UnionOfAlarmEventFreebusyTodo
 {
 public:
-    Todo(Nepomuk::SimpleResource* res)
+    Todo(Nepomuk2::SimpleResource* res)
       : NCAL::UnionOfEventJournalTimezoneTodo(res), NCAL::UnionOfAlarmEventJournalTodo(res), NCAL::UnionOfEventFreebusyJournalTodo(res), NCAL::UnionOfTimezoneObservanceEventFreebusyTimezoneTodo(res), NCAL::UnionOfTimezoneObservanceEventFreebusyJournalTimezoneTodo(res), NCAL::UnionOfTimezoneObservanceEventJournalTimezoneTodo(res), NCAL::UnionOfAlarmEventTodo(res), NCAL::UnionOfEventJournalTodo(res), NCAL::UnionOfEventTodo(res), NCAL::UnionOfAlarmEventFreebusyJournalTodo(res), NCAL::UnionOfAlarmEventFreebusyTodo(res), m_res(res)
     {}
 
@@ -183,7 +183,7 @@ protected:
     virtual QUrl resourceType() const { return QUrl::fromEncoded("http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Todo", QUrl::StrictMode); }
 
 private:
-    Nepomuk::SimpleResource* m_res;
+    Nepomuk2::SimpleResource* m_res;
 };
 }
 }

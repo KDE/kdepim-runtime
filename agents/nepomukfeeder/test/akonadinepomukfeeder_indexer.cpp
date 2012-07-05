@@ -22,7 +22,7 @@
 #include <aneo.h>
 #include <QtCore/QStringList>
 #include <akonadi/item.h>
-#include <dms-copy/datamanagement.h>
+#include <nepomuk2/datamanagement.h>
 #include <KJob>
 #include <KUrl>
 #include <Nepomuk/ResourceManager>
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
         QObject::connect( queue, SIGNAL(finished()), &app, SLOT(quit()));
     } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "rm-item" ) ) {
         kDebug() << "removing item: " << Akonadi::Item( id ).url().url();
-        KJob *job = Nepomuk::removeDataByApplication( QList<QUrl>() << Akonadi::Item( id ).url().url(), Nepomuk::RemoveSubResoures, KGlobal::mainComponent() );
+        KJob *job = Nepomuk2::removeDataByApplication( QList<QUrl>() << Akonadi::Item( id ).url().url(), Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
         QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
     } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "collection" ) ) {
         FeederQueue *feederq = new FeederQueue( &app );

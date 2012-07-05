@@ -34,10 +34,10 @@ class NepomukContactFeeder: public NepomukFeederPlugin
   Q_INTERFACES( Akonadi::NepomukFeederPlugin )
 public:
   NepomukContactFeeder( QObject *parent, const QVariantList & ): NepomukFeederPlugin( parent ){};
-  virtual void updateItem( const Akonadi::Item& item, Nepomuk::SimpleResource& res, Nepomuk::SimpleResourceGraph& graph );
+  virtual void updateItem( const Akonadi::Item& item, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph );
 private:
-  void updateContactItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
-  void updateGroupItem( const Akonadi::Item &item, Nepomuk::SimpleResource &res, Nepomuk::SimpleResourceGraph &graph );
+  void updateContactItem( const Akonadi::Item &item, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph );
+  void updateGroupItem( const Akonadi::Item &item, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph );
 };
 
 }

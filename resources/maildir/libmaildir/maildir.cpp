@@ -350,18 +350,15 @@ bool Maildir::removeSubFolder( const QString& folderName )
 
 Maildir Maildir::subFolder( const QString& subFolder ) const
 {
-    if ( isValid() ) {
-        // make the subdir dir
-        QDir dir( d->path );
-        if ( !d->isRoot ) {
-            dir.cdUp();
-            if ( dir.exists( d->subDirPath() ) ) {
-                dir.cd( d->subDirPath() );
-            }
+    // make the subdir dir
+    QDir dir( d->path );
+    if ( !d->isRoot ) {
+        dir.cdUp();
+        if ( dir.exists( d->subDirPath() ) ) {
+            dir.cd( d->subDirPath() );
         }
-        return Maildir( dir.path() + QLatin1Char( '/' ) + subFolder );
     }
-    return Maildir();
+    return Maildir( dir.path() + QLatin1Char( '/' ) + subFolder );
 }
 
 Maildir Maildir::parent() const

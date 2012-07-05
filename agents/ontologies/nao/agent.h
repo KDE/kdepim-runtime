@@ -9,9 +9,9 @@
 #include <QtCore/QDateTime>
 #include <Soprano/Vocabulary/RDF>
 
-#include <dms-copy/simpleresource.h>
+#include <nepomuk2/simpleresource.h>
 
-namespace Nepomuk {
+namespace Nepomuk2 {
 namespace NAO {
 /**
  * An agent is the artificial counterpart to nao:Party. It can 
@@ -20,7 +20,7 @@ namespace NAO {
 class Agent
 {
 public:
-    Agent(Nepomuk::SimpleResource* res)
+    Agent(Nepomuk2::SimpleResource* res)
       : m_res(res)
     {}
 

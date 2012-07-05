@@ -112,8 +112,11 @@ void KCalResource::configure( WId windowId )
 
   if ( kresAssistant.exec() != QDialog::Accepted ) {
     emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit configurationDialogRejected();
     return;
   }
+
+  emit configurationDialogAccepted();
 
   mResource = dynamic_cast<KCal::ResourceCalendar*>( kresAssistant.resource() );
   Q_ASSERT( mResource != 0 );
