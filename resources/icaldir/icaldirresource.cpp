@@ -39,7 +39,7 @@
 using namespace Akonadi;
 using namespace KCalCore;
 
-static Incidence::Ptr readFromFile( const QString &fileName )
+static Incidence::Ptr readFromFile( const QString &fileName, const QString &expectedUid )
 {
   MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr( new MemoryCalendar( QLatin1String( "UTC" ) ) );
   FileStorage::Ptr fileStorage = FileStorage::Ptr( new FileStorage( calendar, fileName, new ICalFormat() ) );
@@ -47,7 +47,7 @@ static Incidence::Ptr readFromFile( const QString &fileName )
   Incidence::Ptr incidence;
   if ( fileStorage->load() ) {
     Incidence::List incidences = calendar->incidences();
-    if ( !incidences.isEmpty() )
+    if ( incidences.count() == 1 && incidences.first()->uid() == expectedUid )
       incidence = incidences.first();
   } else {
     kError() << "Error loading file " << fileName;
@@ -120,7 +120,7 @@ bool ICalDirResource::loadIncidences()
   while ( it.hasNext() ) {
     it.next();
     if ( it.fileName() != "." && it.fileName() != ".." && it.fileName() != "WARNING_README.txt" ) {
-      const KCalCore::Incidence::Ptr incidence = readFromFile( it.filePath() );
+      const KCalCore::Incidence::Ptr incidence = readFromFile( it.filePath(), it.fileName() );
       if ( incidence ) {
         mIncidences.insert( incidence->uid(), incidence );
       }
