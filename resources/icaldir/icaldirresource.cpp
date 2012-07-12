@@ -165,11 +165,14 @@ void ICalDirResource::itemAdded( const Akonadi::Item &item, const Akonadi::Colle
     // ... and write it through to the file system
     const bool success = writeToFile( iCalDirectoryFileName( incidence->uid() ), incidence );
 
-    // report everything ok
-    Item newItem( item );
-    newItem.setRemoteId( incidence->uid() );
-    changeCommitted( newItem );
-
+    if ( success ) {
+      // report everything ok
+      Item newItem( item );
+      newItem.setRemoteId( incidence->uid() );
+      changeCommitted( newItem );
+    } else {
+      cancelTask();
+    }
   } else {
     changeProcessed();
   }
@@ -194,10 +197,13 @@ void ICalDirResource::itemChanged( const Akonadi::Item &item, const QSet<QByteAr
     // ... and write it through to the file system
     const bool success = writeToFile( iCalDirectoryFileName( incidence->uid() ), incidence );
 
-    Item newItem( item );
-    newItem.setRemoteId( incidence->uid() );
-    changeCommitted( newItem );
-
+    if ( success ) {
+      Item newItem( item );
+      newItem.setRemoteId( incidence->uid() );
+      changeCommitted( newItem );
+    } else {
+      cancelTask();
+    }
   } else {
     changeProcessed();
   }
