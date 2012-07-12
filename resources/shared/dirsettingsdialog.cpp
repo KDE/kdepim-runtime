@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include "settingsdialog.h"
+#include "dirsettingsdialog.h"
 
 #include "settings.h"
 

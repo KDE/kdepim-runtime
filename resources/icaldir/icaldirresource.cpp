@@ -22,7 +22,7 @@
 #include "icaldirresource.h"
 
 #include "settingsadaptor.h"
-#include "settingsdialog.h"
+#include "../shared/dirsettingsdialog.h"
 
 #include <akonadi/changerecorder.h>
 #include <akonadi/entitydisplayattribute.h>

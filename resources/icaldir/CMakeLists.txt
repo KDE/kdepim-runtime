@@ -10,7 +10,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 set( icaldirresource_SRCS
   icaldirresource.cpp
-  settingsdialog.cpp
+  ../shared/dirsettingsdialog.cpp
 )
 
 kde4_add_ui_files(icaldirresource_SRCS settingsdialog.ui)
