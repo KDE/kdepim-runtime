@@ -91,8 +91,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
-  // initialize Nepomuk
-  Nepomuk2::ResourceManager::instance()->init();
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
