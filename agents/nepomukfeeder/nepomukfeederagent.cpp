@@ -38,7 +38,7 @@
 #include <nepomuk2/simpleresource.h>
 #include <nepomuk2/simpleresourcegraph.h>
 #include <nepomuk2/datamanagement.h>
-#include <nepomuk/resourcemanager.h>
+#include <nepomuk2/resourcemanager.h>
 
 #include <KLocale>
 #include <KUrl>
@@ -92,7 +92,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
   // initialize Nepomuk
-  Nepomuk::ResourceManager::instance()->init();
+  Nepomuk2::ResourceManager::instance()->init();
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
@@ -103,8 +103,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mNepomukStartupTimeout.setInterval( 300 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
   connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
-  connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
-  connect( Nepomuk::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
+  connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
+  connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(selfTest()) );
   connect( this, SIGNAL(fullyIndexed()), this, SLOT(slotFullyIndexed()) );
 
@@ -228,7 +228,7 @@ void NepomukFeederAgent::selfTest()
   }
 
   // if Nepomuk is not running, try to start it
-  if ( !mNepomukStartupAttempted && !Nepomuk::ResourceManager::instance()->initialized() ) {
+  if ( !mNepomukStartupAttempted && !Nepomuk2::ResourceManager::instance()->initialized() ) {
     KProcess process;
     const QString nepomukserver = KStandardDirs::findExe( QLatin1String( "nepomukserver" ) );
     if ( process.startDetached( nepomukserver ) == 0 ) {
@@ -243,7 +243,7 @@ void NepomukFeederAgent::selfTest()
     }
   }
 
-  if ( !Nepomuk::ResourceManager::instance()->initialized() ) {
+  if ( !Nepomuk2::ResourceManager::instance()->initialized() ) {
     if ( mNepomukStartupAttempted && mNepomukStartupTimeout.isActive() ) {
       // still waiting for Nepomuk to start
       setOnline( false );
