@@ -80,6 +80,7 @@ void BirthdaysResource::configure( WId windowId )
     emit configurationDialogRejected();
   }
   doFullSearch();
+  synchronizeCollectionTree();
 }
 
 void BirthdaysResource::retrieveCollections()
