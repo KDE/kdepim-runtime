@@ -175,7 +175,7 @@ void BirthdaysResource::contactChanged( const Akonadi::Item& item )
 void BirthdaysResource::addPendingEvent( const KCalCore::Event::Ptr &event, const QString &remoteId )
 {
   KCalCore::Incidence::Ptr evptr( event );
-  Item i( "application/x-vnd.akonadi.calendar.event" );
+  Item i( KCalCore::Event::eventMimeType() );
   i.setRemoteId( remoteId );
   i.setPayload( evptr );
   mPendingItems[ remoteId ] = i;
@@ -185,7 +185,7 @@ void BirthdaysResource::addPendingEvent( const KCalCore::Event::Ptr &event, cons
 
 void BirthdaysResource::contactRemoved( const Akonadi::Item& item )
 {
-  Item i( "application/x-vnd.akonadi.calendar.event" );
+  Item i( KCalCore::Event::eventMimeType() );
   i.setRemoteId( QString::fromLatin1( "b%1" ).arg( item.id() ) );
   mDeletedItems[ i.remoteId() ] = i;
   i.setRemoteId( QString::fromLatin1( "a%1" ).arg( item.id() ) );
