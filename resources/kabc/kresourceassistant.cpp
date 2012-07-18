@@ -35,7 +35,7 @@
 
 static bool isBlackListed( const QString &name )
 {
-  static const QSet<QString> blackList = QSet<QString>() << "akonadi" << "file" << "dir" << "net";
+  static const QSet<QString> blackList = QSet<QString>() << "akonadi" << "file" << "dir" << "net" << "localdir";
   return blackList.contains( name );
 }
 

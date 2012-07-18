@@ -20,6 +20,8 @@
 */
 
 #include "addressbookhandler.h"
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 
 AddressBookHandler::AddressBookHandler( const Akonadi::Collection &imapCollection )
   : KolabHandler( imapCollection )
@@ -77,6 +79,37 @@ void AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     imapItem.setPayload( message );
   } else if ( item.hasPayload<KABC::ContactGroup>() ) {
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+
+    // Replace all references with real data-sets
+    // Hopefully all resources are available during saving, so we can look up
+    // in the addressbook to get name+email from the UID.
+    // TODO proxy should at least know the addressees it created
+    for ( uint index = 0; index < contactGroup.contactReferenceCount(); ++index ) {
+      const KABC::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
+
+      const Akonadi::Item item( reference.uid().toLongLong() );
+      Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
+      job->fetchScope().fetchFullPayload();
+      if ( !job->exec() )
+        continue;
+
+      const Akonadi::Item::List items = job->items();
+      if ( items.count() != 1 )
+        continue;
+
+      const KABC::Addressee addressee = job->items().first().payload<KABC::Addressee>();
+
+      if ( !addressee.isEmpty() ) {
+        const QString name = addressee.formattedName();
+        QString email = reference.preferredEmail();
+        if ( email.isEmpty() )
+          email = addressee.preferredEmail();
+
+        const KABC::ContactGroup::Data data(name, email);
+        contactGroup.append(data);
+      }
+    }
+    contactGroup.removeAllContactReferences();
 
     const KMime::Message::Ptr &message =
       Kolab::KolabObjectWriter::writeDistlist( contactGroup, m_formatVersion, PRODUCT_ID );
