@@ -31,7 +31,7 @@ AkonotesResource::~AkonotesResource()
 {
 }
 
-QString AkonotesResource::itemMimeType()
+QString AkonotesResource::itemMimeType() const
 {
   return QLatin1String( "text/x-vnd.akonadi.note" );
 }

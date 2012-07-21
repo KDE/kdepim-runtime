@@ -31,7 +31,7 @@ class AkonotesResource : public MaildirResource
     ~AkonotesResource();
 
   protected:
-    virtual QString itemMimeType();
+    virtual QString itemMimeType() const;
 
 };
 

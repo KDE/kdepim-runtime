@@ -50,7 +50,7 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   protected:
-    virtual QString itemMimeType();
+    virtual QString itemMimeType() const;
 
     virtual void aboutToQuit();
 

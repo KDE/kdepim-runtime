@@ -210,7 +210,7 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
   return true;
 }
 
-QString MaildirResource::itemMimeType()
+QString MaildirResource::itemMimeType() const
 {
   return KMime::Message::mimeType();
 }
