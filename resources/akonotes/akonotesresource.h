@@ -30,9 +30,11 @@ class AkonotesResource : public MaildirResource
     AkonotesResource( const QString &id );
     ~AkonotesResource();
 
+  public Q_SLOTS:
+    virtual void configure( WId windowId );
+
   protected:
     virtual QString itemMimeType() const;
-
 };
 
 #endif
