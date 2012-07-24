@@ -54,7 +54,7 @@ Akonadi::Item::List AddressBookHandler::translateItems( const Akonadi::Item::Lis
       newItem.setPayload( reader.getDistlist() );
       newItems << newItem;
     }
-    if ( checkForErrors( item.id() ) ) {
+    if ( checkForErrors( item.id() ) && !newItems.isEmpty() ) {
       newItems.removeLast(); //TODO: does this delete the item?
                              //rather set it to read-only (v2 never sets an error,
                              //so we should be safe for now).
