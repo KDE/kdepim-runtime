@@ -31,6 +31,21 @@ qt4_add_dbus_adaptor(calendarresource_SRCS
 
 kde4_add_executable(akonadi_googlecalendar_resource RUN_UNINSTALLED ${calendarresource_SRCS})
 
+if(Q_WS_MAC)
+  set_target_properties(akonadi_googlecalendar_resource PROPERTIES
+    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template
+  )
+  set_target_properties(akonadi_googlecalendar_resource PROPERTIES
+    MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.googlecalendar"
+  )
+  set_target_properties(akonadi_googlecalendar_resource PROPERTIES
+    MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Google Calendar Resource"
+  )
+endif()
+
+
+
+
 target_link_libraries(akonadi_googlecalendar_resource
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_KCAL_LIBS}
@@ -43,6 +58,7 @@ target_link_libraries(akonadi_googlecalendar_resource
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEWEBKIT_LIBS}
   ${QJSON_LIBRARIES}
+  ${QJSON_LIBRARY} # for Mac OSX
   ${LibKGAPI_LIBRARY}
 )
 
