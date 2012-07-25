@@ -59,7 +59,7 @@ find_package(KdepimLibs 4.9.0 REQUIRED)
 find_package(Boost 1.34.0)
 macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.34.0" "Required by Akonadi.")
 
-set(AKONADI_MIN_VERSION 1.7.90)
+set(AKONADI_MIN_VERSION 1.8.0)
 find_package(Akonadi)
 macro_log_feature(Akonadi_FOUND "Akonadi" "Akonadi server libraries" "http://pim.kde.org/akonadi" TRUE "${AKONADI_MIN_VERSION}" "Akonadi is required to build kdepim-runtime.")
 
