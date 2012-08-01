@@ -23,7 +23,7 @@
 #include <Akonadi/AgentInstance>
 #include <Akonadi/Job>
 
-#include <kolab/kolabobject.h> //libkolab
+#include <kolabobject.h> //libkolab
 
 /**
  * Fetch all items of an imap resource, read them, and write them out in the target version.
