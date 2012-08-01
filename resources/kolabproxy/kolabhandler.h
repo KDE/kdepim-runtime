@@ -27,7 +27,7 @@
 
 #include <QSharedPointer>
 
-#include <kolab/kolabobject.h> //libkolab
+#include <kolabobject.h> //libkolab
 
 /**
 	@author Andras Mantia <amantia@kde.org>

@@ -25,7 +25,7 @@
 #include "notehandler.h"
 #include "taskshandler.h"
 
-#include <kolab/errorhandler.h> //libkolab
+#include <errorhandler.h> //libkolab
 
 #include <KLocale>
 #include <KPassivePopup>
