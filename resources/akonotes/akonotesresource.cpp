@@ -31,9 +31,15 @@ AkonotesResource::~AkonotesResource()
 {
 }
 
-QString AkonotesResource::itemMimeType()
+QString AkonotesResource::itemMimeType() const
 {
   return QLatin1String( "text/x-vnd.akonadi.note" );
+}
+
+void AkonotesResource::configure( WId windowId )
+{
+  MaildirResource::configure( windowId );
+  synchronize(); // heavy to do it in the MaildirResource method, which already has sync on demand working properly
 }
 
 #include "akonotesresource.moc"

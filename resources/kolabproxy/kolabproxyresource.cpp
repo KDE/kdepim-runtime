@@ -247,8 +247,14 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
         Akonadi::Item::List newItems = handler->translateItems( items );
         if ( m_retrieveState == RetrieveItems ) {
           itemsRetrieved( newItems );
-        } else {
-          itemRetrieved( newItems[0] );
+        } else { //RetrieveItem
+          if ( !newItems.isEmpty() ) {
+            itemRetrieved( newItems[0] );
+          } else {
+            kWarning() << "Could not translate item";
+            cancelTask();
+            return;
+          }
         }
       }
       kDebug() << "RETRIEVEITEM DONE";

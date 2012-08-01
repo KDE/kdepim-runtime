@@ -22,6 +22,19 @@ qt4_add_dbus_adaptor(contactsresource_SRCS
 
 kde4_add_executable(akonadi_googlecontacts_resource RUN_UNINSTALLED ${contactsresource_SRCS})
 
+if(Q_WS_MAC)
+  set_target_properties(akonadi_googlecontacts_resource PROPERTIES
+    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template
+  )
+  set_target_properties(akonadi_googlecontacts_resource PROPERTIES
+    MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.googlecontacts"
+  )
+  set_target_properties(akonadi_googlecontacts_resource PROPERTIES
+    MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Google Contacts Resource"
+  )
+endif()
+
+
 target_link_libraries(akonadi_googlecontacts_resource
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_KABC_LIBS}
