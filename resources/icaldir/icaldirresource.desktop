@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=ICal Calendar Folder
-Comment="Provides access to calendar items, each stored in a single file, in a given directory"
+Comment=Provides access to calendar items, each stored in a single file, in a given directory
 
 Type=AkonadiResource
 Exec=akonadi_icaldir_resource
