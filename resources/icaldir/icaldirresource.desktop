@@ -1,5 +1,12 @@
 [Desktop Entry]
 Name=ICal Calendar Folder
+Name[cs]=Složka iCal kalendáře
+Name[hu]=ICal naptármappa
+Name[pt]=Pasta de Calendários ICal
+Name[pt_BR]=Pasta de calendário ICal
+Name[sv]=ICal-kalenderkatalog
+Name[uk]=Тека календаря ICal
+Name[x-test]=xxICal Calendar Folderxx
 Comment=Provides access to calendar items, each stored in a single file, in a given directory
 
 Type=AkonadiResource
