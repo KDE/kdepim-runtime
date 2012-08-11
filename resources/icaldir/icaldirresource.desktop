@@ -8,6 +8,10 @@ Name[sv]=ICal-kalenderkatalog
 Name[uk]=Тека календаря ICal
 Name[x-test]=xxICal Calendar Folderxx
 Comment=Provides access to calendar items, each stored in a single file, in a given directory
+Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado num único ficheiro de uma dada pasta
+Comment[pt_BR]=Fornece acesso aos itens do calendário, cada um armazenado em um único arquivo na pasta indicada
+Comment[uk]=Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі
+Comment[x-test]=xxProvides access to calendar items, each stored in a single file, in a given directoryxx
 
 Type=AkonadiResource
 Exec=akonadi_icaldir_resource
