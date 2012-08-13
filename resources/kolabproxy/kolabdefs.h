@@ -22,7 +22,7 @@
 
 #include <QByteArray>
 
-#include <kolab/kolabdefinitions.h> //libkolab
+#include <kolabdefinitions.h> //libkolab
 
 namespace KolabV2 {
 
