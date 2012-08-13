@@ -119,6 +119,9 @@ macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "Strigi Qt D-Bus client library" "S
 find_package(Libkolab 0.2)
 macro_log_feature(Libkolab_FOUND "KolabLibraries" "The Kolab Format libraries" "http://git.kolab.org/" FALSE "0.2" "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
+find_package(Libkolabxml)
+macro_log_feature(Libkolabxml_FOUND "Kolabxml" "The Kolab XML Format Schema Definitions Library" "http://git.kolab.org/" FALSE "" "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
+
 ############### Load the CTest options ###############
 
 # CMake is irritating and doesn't allow setting the tests timeout globally.
