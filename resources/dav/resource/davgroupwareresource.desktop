@@ -40,6 +40,7 @@ Name[zh_CN]=DAV 群件资源
 Name[zh_TW]=DAV 群組資源
 Comment=Resource to manage DAV calendars and address books (CalDAV, GroupDAV)
 Comment[fi]=DAV-kalenterien ja -osoitekirjojen (CalDAV, GroupDAV) hallintaresurssi
+Comment[nb]=Ressurs som håndterer DAV-kalendere og adressebøker (CalDAV, GroupDAV)
 Comment[nl]=Hulpbron om DAV-agenda's en adresboeken (CalDAV, GroupDAV) te beheren
 Comment[pt]=Recurso para gerir os calendários e livros de endereços em DAV (CalDAV, GroupDAV)
 Comment[pt_BR]=Recurso para gerenciar calendários e livros de endereços por DAV (CalDAV, GroupDAV)
