@@ -44,6 +44,7 @@ Name[x-test]=xxOpen-Xchange Groupware Serverxx
 Name[zh_CN]=Open-Xchange 群件服务器
 Name[zh_TW]=Open-Xchange 群組伺服器
 Comment=Provides access to the appointments, tasks, and contacts of an Open-Xchange groupware server.
+Comment[es]=Proporciona acceso a las citas, tareas y contactos almacenados en un servidor de colaboración Open-Xchange.
 Comment[fi]=Tarjoaa pääsyn Open-Xchange-työryhmäpalvelimen tapaamis-, tehtävä- ja yhteystietoihin.
 Comment[nb]=Gir tilgang til avtaler, oppgaver og kontakter lagret på en Open-Xchange gruppevare-tjener
 Comment[nl]=Geeft toegang tot afspraken, taken en contactpersonen op een Open-Xchange-groupware-server 
