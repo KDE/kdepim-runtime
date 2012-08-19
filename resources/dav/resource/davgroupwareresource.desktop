@@ -41,6 +41,7 @@ Name[zh_TW]=DAV 群組資源
 Comment=Resource to manage DAV calendars and address books (CalDAV, GroupDAV)
 Comment[es]=Recurso para gestionar calendarios DAV y libretas de direcciones (CalDAV, GroupDAV)
 Comment[fi]=DAV-kalenterien ja -osoitekirjojen (CalDAV, GroupDAV) hallintaresurssi
+Comment[hu]=Erőforrás DAV naptárak és címjegyzékek (CalDAV, GroupDAV) kezeléséhez
 Comment[nb]=Ressurs som håndterer DAV-kalendere og adressebøker (CalDAV, GroupDAV)
 Comment[nl]=Hulpbron om DAV-agenda's en adresboeken (CalDAV, GroupDAV) te beheren
 Comment[pt]=Recurso para gerir os calendários e livros de endereços em DAV (CalDAV, GroupDAV)
