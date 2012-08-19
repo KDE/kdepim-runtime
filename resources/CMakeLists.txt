@@ -53,6 +53,7 @@ add_subdirectory( maildir )
 
 macro_optional_add_subdirectory( microblog )
 macro_optional_add_subdirectory( openxchange )
+add_subdirectory( owncloud )
 add_subdirectory( pop3 )
 
 if( LibKGAPI_FOUND )

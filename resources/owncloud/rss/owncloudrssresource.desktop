@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Akonadi Owncloud RSS Resource
+Comment=An Akonadi resource for the Owncloud RSS reader
+Type=AkonadiResource
+Exec=akonadi_owncloudrss_resource
+Icon=akregator
+
+X-Akonadi-MimeTypes=application/rss+xml
+X-Akonadi-Capabilities=Resource,RssResource
+X-Akonadi-Identifier=akonadi_owncloudrss_resource
