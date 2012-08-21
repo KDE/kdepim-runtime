@@ -39,6 +39,7 @@ Name[x-test]=xxDAV groupware resourcexx
 Name[zh_CN]=DAV 群件资源
 Name[zh_TW]=DAV 群組資源
 Comment=Resource to manage DAV calendars and address books (CalDAV, GroupDAV)
+Comment[de]=Ressource zur Verwaltung von DAV-Kalendern und -Adressbüchern (CalDAV, GroupDAV)
 Comment[es]=Recurso para gestionar calendarios DAV y libretas de direcciones (CalDAV, GroupDAV)
 Comment[fi]=DAV-kalenterien ja -osoitekirjojen (CalDAV, GroupDAV) hallintaresurssi
 Comment[hu]=Erőforrás DAV naptárak és címjegyzékek (CalDAV, GroupDAV) kezeléséhez
