@@ -16,6 +16,7 @@ Name[sv]=ICal-kalenderkatalog
 Name[uk]=Тека календаря ICal
 Name[x-test]=xxICal Calendar Folderxx
 Comment=Provides access to calendar items, each stored in a single file, in a given directory
+Comment[cs]=Poskytuje přístup k položkám kalendáře, každé uložené v jednom souboru v daném adresáři
 Comment[es]=Proporciona acceso a elementos de calendario, cada uno almacenado en un solo archivo, en un directorio dado
 Comment[hu]=Hozzáférést biztosít a naptárelemekhez, mindegyiket külön fájlban tárolva a megadott könyvtárban
 Comment[nl]=Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand in een opgegeven map
