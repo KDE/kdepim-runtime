@@ -1,19 +1,37 @@
 [Desktop Entry]
 Name=ICal Calendar Folder
 Name[cs]=Složka iCal kalendáře
+Name[de]=ICal-Kalenderordner
+Name[es]=Carpeta de calendario ICal
 Name[hu]=ICal naptármappa
+Name[nb]=ICal kalendermappe
 Name[nl]=ICal-agendamap
 Name[pt]=Pasta de Calendários ICal
 Name[pt_BR]=Pasta de calendário ICal
 Name[sk]=Priečinok kalendára iCal
+Name[sr]=И‑календарски фасцикла
+Name[sr@ijekavian]=И‑календарски фасцикла
+Name[sr@ijekavianlatin]=I‑kalendarski fascikla
+Name[sr@latin]=I‑kalendarski fascikla
 Name[sv]=ICal-kalenderkatalog
 Name[uk]=Тека календаря ICal
 Name[x-test]=xxICal Calendar Folderxx
 Comment=Provides access to calendar items, each stored in a single file, in a given directory
+Comment[cs]=Poskytuje přístup k položkám kalendáře, každé uložené v jednom souboru v daném adresáři
+Comment[es]=Proporciona acceso a elementos de calendario, cada uno almacenado en un solo archivo, en un directorio dado
+Comment[hu]=Hozzáférést biztosít a naptárelemekhez, mindegyiket külön fájlban tárolva a megadott könyvtárban
+Comment[nb]=Gir tilgang til kalenderelementer, hver lagret i én enkelt fil, i en gitt mappe
 Comment[nl]=Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand in een opgegeven map
+Comment[nn]=Gjev tilgang til kalenderelement i ei viss mappe, der dei er lagra i kvar sine filer.
 Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado num único ficheiro de uma dada pasta
 Comment[pt_BR]=Fornece acesso aos itens do calendário, cada um armazenado em um único arquivo na pasta indicada
+Comment[se]=Dáinna beasat kaleandarmerkošidda, vurkejuvvon okta fiilan, dihto katalogas
 Comment[sk]=Poskytuje prístup do položiek adresára, každá uložená v jednoduchom súbore v danom adresári.
+Comment[sr]=Омогућава приступ календарским ставкама, складиштеним у по једном фајлу у датој фасцикли
+Comment[sr@ijekavian]=Омогућава приступ календарским ставкама, складиштеним у по једном фајлу у датој фасцикли
+Comment[sr@ijekavianlatin]=Omogućava pristup kalendarskim stavkama, skladištenim u po jednom fajlu u datoj fascikli
+Comment[sr@latin]=Omogućava pristup kalendarskim stavkama, skladištenim u po jednom fajlu u datoj fascikli
+Comment[sv]=Ger tillgång till kalenderobjekt, vart och ett lagrat i en enda fil i en angiven katalog
 Comment[uk]=Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі
 Comment[x-test]=xxProvides access to calendar items, each stored in a single file, in a given directoryxx
 
