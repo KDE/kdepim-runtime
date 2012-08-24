@@ -45,6 +45,7 @@ Name[zh_TW]=郵件配送代理程式
 Comment=Dispatches email messages
 Comment[es]=Remite mensajes de correo
 Comment[hu]=E-mail üzeneteket kézbesít
+Comment[nb]=Sender ut e-postmeldinger
 Comment[nl]=Verstuurt e-mailberichten
 Comment[pt]=Trata das mensagens de e-mail
 Comment[pt_BR]=Encaminhamento de e-mails
