@@ -43,7 +43,6 @@ if (KDEPIMLIBS_KRESOURCES_LIBS)
   add_subdirectory( kcal )
 endif()
 macro_optional_add_subdirectory( kdeaccounts )
-
 if (Libkolab_FOUND AND Libkolabxml_FOUND)
     macro_optional_add_subdirectory( kolabproxy )
 endif()
