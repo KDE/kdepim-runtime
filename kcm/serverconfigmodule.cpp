@@ -57,6 +57,7 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
   // supported drivers
   ui_driver.driverBox->addItem( "Mysql", QVariant( "QMYSQL" ) );
   ui_driver.driverBox->addItem( "PostgreSQL", QVariant( "QPSQL" ) );
+  ui_driver.driverBox->addItem( "SQLite", QVariant( "QSQLITE3" ) );
 
   setButtons( KCModule::Default | KCModule::Apply );
 
@@ -69,6 +70,12 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
   m_psqlWidget = new QWidget( this );
   m_stackWidget->addWidget( m_psqlWidget );
   ui_psql.setupUi( m_psqlWidget );
+
+  // SQLite
+  m_sqliteWidget = new QWidget( this );
+  m_stackWidget->addWidget( m_sqliteWidget );
+  // ui_sqlite.setupUi( m_sqliteWidget );
+
   m_stackWidget->setCurrentWidget( m_mysqlWidget );
 
   QWidget *widget = new QWidget( this );
@@ -167,6 +174,12 @@ void ServerConfigModule::save()
   settings.setValue( "Port", ui_psql.port->text() );
   settings.endGroup();
 
+  // sqlite group
+  settings.beginGroup( "SQLITE" );
+  // TODO: make it configurable
+  settings.setValue( "Name", "akonadi" );
+  settings.endGroup();
+
   // selected driver
   settings.beginGroup( "GENERAL" );
   settings.setValue( "Driver", ui_driver.driverBox->itemData( ui_driver.driverBox->currentIndex() ).toString() );
@@ -220,8 +233,10 @@ void ServerConfigModule::driverChanged( int index )
 {
   if ( ui_driver.driverBox->itemData( index ).toString() == "QMYSQL" ) {
     m_stackWidget->setCurrentWidget( m_mysqlWidget );
-  } else {
+  } else if ( ui_driver.driverBox->itemData( index ).toString() == "QPSQL" ) {
     m_stackWidget->setCurrentWidget( m_psqlWidget );
+  } else {
+    m_stackWidget->setCurrentWidget( m_sqliteWidget );
   }
 }
 

@@ -56,6 +56,7 @@ class ServerConfigModule : public KCModule
     QStackedWidget *m_stackWidget;
     QWidget *m_mysqlWidget;
     QWidget *m_psqlWidget;
+    QWidget *m_sqliteWidget;
 
     QComboBox *m_driverBox;
 };
