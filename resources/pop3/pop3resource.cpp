@@ -191,27 +191,32 @@ void POP3Resource::walletOpenedForSaving( bool success )
 
 void POP3Resource::showPasswordDialog( const QString &queryText )
 {
-  // FIXME: give this a proper parent widget
-  KPasswordDialog dlg( 0, KPasswordDialog::ShowUsernameLine );
-  dlg.setUsername( Settings::self()->login() );
-  dlg.setPassword( mPassword );
-  dlg.setPrompt( queryText );
-  dlg.setCaption( name() );
-  dlg.addCommentLine( i18n( "Account:" ), name() );
+  QPointer<KPasswordDialog> dlg =
+    new KPasswordDialog(
+      0,
+      KPasswordDialog::ShowUsernameLine );
+  dlg->setUsername( Settings::self()->login() );
+  dlg->setPassword( mPassword );
+  dlg->setPrompt( queryText );
+  dlg->setCaption( name() );
+  dlg->addCommentLine( i18n( "Account:" ), name() );
 
-  if ( dlg.exec() != KDialog::Accepted ) {
-    cancelSync( i18n( "No username and password supplied." ) );
-    return;
-  } else {
-    mPassword = dlg.password();
-    Settings::self()->setLogin( dlg.username() );
+  bool gotIt = false;
+  if ( dlg->exec() ) {
+    mPassword = dlg->password();
+    Settings::self()->setLogin( dlg->username() );
     Settings::self()->writeConfig();
-    if ( !dlg.password().isEmpty()  ) {
+    if ( !dlg->password().isEmpty()  ) {
       mSavePassword = true;
     }
 
     mAskAgain = false;
     advanceState( Connect );
+    gotIt = true;
+  }
+  delete dlg;
+  if ( !gotIt ) {
+    cancelSync( i18n( "No username and password supplied." ) );
   }
 }
 
