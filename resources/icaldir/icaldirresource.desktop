@@ -2,6 +2,7 @@
 Name=ICal Calendar Folder
 Name[cs]=Složka iCal kalendáře
 Name[de]=ICal-Kalenderordner
+Name[el]=Φάκελος ημερολογίου ICal
 Name[es]=Carpeta de calendario ICal
 Name[hu]=ICal naptármappa
 Name[nb]=ICal kalendermappe
@@ -18,6 +19,7 @@ Name[uk]=Тека календаря ICal
 Name[x-test]=xxICal Calendar Folderxx
 Comment=Provides access to calendar items, each stored in a single file, in a given directory
 Comment[cs]=Poskytuje přístup k položkám kalendáře, každé uložené v jednom souboru v daném adresáři
+Comment[el]=Παρέχει πρόσβαση σε αντικείμενα ημερολογίου, καθένα αποθηκευμένο σε ένα αρχείο, σε δοσμένο κατάλογο
 Comment[es]=Proporciona acceso a elementos de calendario, cada uno almacenado en un solo archivo, en un directorio dado
 Comment[hu]=Hozzáférést biztosít a naptárelemekhez, mindegyiket külön fájlban tárolva a megadott könyvtárban
 Comment[nb]=Gir tilgang til kalenderelementer, hver lagret i én enkelt fil, i en gitt mappe

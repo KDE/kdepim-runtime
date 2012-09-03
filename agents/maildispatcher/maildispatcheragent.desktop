@@ -43,6 +43,7 @@ Name[x-test]=xxMail Dispatcher Agentxx
 Name[zh_CN]=邮件签发代理
 Name[zh_TW]=郵件配送代理程式
 Comment=Dispatches email messages
+Comment[el]=Διανέμει μηνύματα ηλ. ταχυδρομείου
 Comment[es]=Remite mensajes de correo
 Comment[hu]=E-mail üzeneteket kézbesít
 Comment[nb]=Sender ut e-postmeldinger
