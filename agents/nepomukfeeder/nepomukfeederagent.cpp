@@ -55,6 +55,7 @@
 #include "pluginloader.h"
 #include "nepomukhelpers.h"
 #include "nepomukfeeder-config.h"
+#include "nepomukfeederadaptor.h"
 
 namespace Akonadi {
 
@@ -91,6 +92,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
+  new NepomukFeederAdaptor( this );
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
@@ -128,6 +130,12 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 NepomukFeederAgent::~NepomukFeederAgent()
 {
 
+}
+
+void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
+{
+  CollectionFetchJob *job = new CollectionFetchJob( Collection(id), Akonadi::CollectionFetchJob::Base, this );
+  connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)));
 }
 
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
