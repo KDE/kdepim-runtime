@@ -5,5 +5,8 @@
     <method name="forceReindexCollection" >
       <arg name="item" type="x" direction="in"/>
     </method>
+    <method name="disableIdleDetection" >
+      <arg name="disable" type="b" direction="in"/>
+    </method>
   </interface>
 </node>
