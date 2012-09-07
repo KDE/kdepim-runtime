@@ -91,6 +91,10 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     void forceReindexCollection(const qlonglong id);
 
+    bool queueIsEmpty();
+
+    QString currentCollectionName();
+
   public slots:
     /** Trigger a complete update of all items. */
     void updateAll();

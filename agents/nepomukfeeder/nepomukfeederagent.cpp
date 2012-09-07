@@ -366,6 +366,20 @@ bool NepomukFeederAgent::isDisableIdleDetection() const
   return mIdleDetectionDisabled;
 }
 
+bool NepomukFeederAgent::queueIsEmpty()
+{
+  return mQueue.isEmpty();
+}
+
+QString NepomukFeederAgent::currentCollectionName()
+{
+  if(queueIsEmpty()) {
+    return QString();
+  } else {
+    return mQueue.currentCollection().name();
+  }
+}
+
 }
 
 AKONADI_AGENT_MAIN( Akonadi::NepomukFeederAgent )
