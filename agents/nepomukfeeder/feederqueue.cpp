@@ -21,7 +21,7 @@
 #include <nepomuk2/datamanagement.h>
 #include <nepomuk2/simpleresourcegraph.h>
 #include <nepomuk2/simpleresource.h>
-#include <Nepomuk/ResourceManager>
+#include <Nepomuk2/ResourceManager>
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>
 #include <nie.h>
@@ -144,7 +144,7 @@ void FeederQueue::processNextCollection()
   // - nie:url needs to be set
   // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
   if ( !mReIndex &&
-        Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
+        Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
                                                                         .arg( Soprano::Node::resourceToN3( Vocabulary::NIE::url() ),
                                                                               Soprano::Node::resourceToN3( mCurrentCollection.url() ),
                                                                               Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
@@ -179,7 +179,7 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
     // - nie:lastModified needs to match the item's modification time
     // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
     if ( mReIndex ||
-         !Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }" )
+         !Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }" )
                                                                            .arg( Soprano::Node::resourceToN3( Vocabulary::NIE::url() ),
                                                                                  Soprano::Node::resourceToN3( item.url() ),
                                                                                  Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiItemId() ),
