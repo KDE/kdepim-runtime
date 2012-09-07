@@ -109,6 +109,9 @@ void FeederQueue::addCollection( const Akonadi::Collection &collection )
   // be more important than the full text index of mail.
   // Bit of a hack, yes, would probably be better to have priorties
   // in the plugins and then keep a priority queue properly.
+  if(mCollectionQueue.contains(collection)) {
+    return;
+  }
   if ( collection.contentMimeTypes().contains( QLatin1String( "message/rfc822" ) ) )
     mCollectionQueue.append( collection );
   else
