@@ -32,6 +32,9 @@
 #include <KLocalizedString>
 #include <KUrl>
 #include <KJob>
+#include <KIcon>
+#include <KNotification>
+#include <KIconLoader>
 
 #include <QDateTime>
 
@@ -237,8 +240,18 @@ void FeederQueue::continueIndexing()
 void FeederQueue::collectionFullyIndexed()
 {
     NepomukHelpers::markCollectionAsIndexed( mCurrentCollection );
+    const QString summary = i18n( "Indexing collection '%1' completed.", mCurrentCollection.name() );
     mCurrentCollection = Collection();
     emit idle( i18n( "Indexing completed." ) );
+    const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+    KNotification::event( QLatin1String("indexingcollectioncompleted"),
+                            summary,
+                            pixmap,
+                            0,
+                            KNotification::CloseOnTimeout,
+                            KGlobal::mainComponent());
+
+
     //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
     processNextCollection();
 }

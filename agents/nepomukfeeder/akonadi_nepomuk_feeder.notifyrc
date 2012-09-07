@@ -1,0 +1,12 @@
+[Global]
+Comment=Nepomuk Feeder Agent
+Name=Nepomuk Feeder Agent
+
+[Event/startindexingcollection]
+Name=Starting to index collection
+Action=None
+
+[Event/indexingcollectioncompleted]
+Name=Indexing completed
+Action=None
+

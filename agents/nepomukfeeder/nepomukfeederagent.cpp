@@ -46,6 +46,9 @@
 #include <KStandardDirs>
 #include <KIdleTime>
 #include <KConfigGroup>
+#include <KNotification>
+#include <KIconLoader>
+#include <KIcon>
 
 #include <Soprano/Vocabulary/NAO>
 #include <Soprano/Vocabulary/RDF>
@@ -323,8 +326,17 @@ void NepomukFeederAgent::setRunning( bool running )
   changeRecorder()->setChangeRecordingEnabled( !running );
   mQueue.setOnline( running );
   if ( running && !mQueue.isEmpty() ) {
-    if ( mQueue.currentCollection().isValid() )
-      emit status( AgentBase::Running, i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() ) );
+    if ( mQueue.currentCollection().isValid() ) {
+      const QString summary = i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() );
+      const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+      KNotification::event( QLatin1String("startindexingcollection"),
+                              summary,
+                              pixmap,
+                              0,
+                              KNotification::CloseOnTimeout,
+                              KGlobal::mainComponent());
+      emit status( AgentBase::Running, summary );
+    }
     else
       emit status( AgentBase::Running, i18n( "Indexing recent changes..." ) );
   }

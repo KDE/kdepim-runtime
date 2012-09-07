@@ -56,6 +56,7 @@ target_link_libraries(akonadi_nepomuk_feeder
 
 
 install(TARGETS akonadi_nepomuk_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES akonadi_nepomuk_feeder.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_nepomuk_feeder" )
 install(FILES akonadinepomukfeederagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 install(
    FILES akonadinepomukfeeder.desktop
