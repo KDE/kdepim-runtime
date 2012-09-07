@@ -8,5 +8,8 @@
     <method name="disableIdleDetection" >
       <arg name="disable" type="b" direction="in"/>
     </method>
+    <method name="isDisableIdleDetection" >
+      <arg type="b" direction="out"/>
+    </method>
   </interface>
 </node>
