@@ -380,6 +380,16 @@ QString NepomukFeederAgent::currentCollectionName()
   }
 }
 
+QStringList NepomukFeederAgent::listOfCollection() const
+{
+  QStringList names;
+  Akonadi::Collection::List listQueueCollection = mQueue.listOfCollection();
+  Q_FOREACH(const Akonadi::Collection& collection, listQueueCollection) {
+    names << collection.name();
+  }
+  return names;
+}
+
 }
 
 AKONADI_AGENT_MAIN( Akonadi::NepomukFeederAgent )

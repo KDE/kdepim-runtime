@@ -148,6 +148,7 @@ public:
 
   void setIndexingSpeed( IndexingSpeed speed );
 
+  Akonadi::Collection::List listOfCollection() const;
 signals:
   void fullyIndexed();
   void progress(int);

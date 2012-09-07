@@ -17,5 +17,8 @@
     <method name="currentCollectionName" >
       <arg type="s" direction="out"/>
     </method>
+    <method name="listOfCollection" >
+      <arg type="as" direction="out"/>
+    </method>
   </interface>
 </node>

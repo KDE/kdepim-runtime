@@ -306,6 +306,12 @@ const Akonadi::Collection& FeederQueue::currentCollection()
   return mCurrentCollection;
 }
 
+Akonadi::Collection::List FeederQueue::listOfCollection() const
+{
+  return mCollectionQueue;
+}
+
+
 ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
 : QObject(parent),
   mBatchSize( batchSize ),

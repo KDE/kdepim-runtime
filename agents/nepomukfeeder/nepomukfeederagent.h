@@ -95,6 +95,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     QString currentCollectionName();
 
+    QStringList listOfCollection() const;
   public slots:
     /** Trigger a complete update of all items. */
     void updateAll();
