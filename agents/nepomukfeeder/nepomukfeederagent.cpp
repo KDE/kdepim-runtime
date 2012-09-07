@@ -361,6 +361,11 @@ void NepomukFeederAgent::running(const QString &string)
   emit status( AgentBase::Running, string );
 }
 
+bool NepomukFeederAgent::isDisableIdleDetection() const
+{
+  return mIdleDetectionDisabled;
+}
+
 }
 
 AKONADI_AGENT_MAIN( Akonadi::NepomukFeederAgent )

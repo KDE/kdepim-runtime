@@ -87,6 +87,8 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
      */
     void disableIdleDetection( bool value );
 
+    bool isDisableIdleDetection() const;
+
     void forceReindexCollection(const qlonglong id);
 
   public slots:
