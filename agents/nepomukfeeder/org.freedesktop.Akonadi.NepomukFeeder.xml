@@ -11,5 +11,11 @@
     <method name="isDisableIdleDetection" >
       <arg type="b" direction="out"/>
     </method>
+    <method name="queueIsEmpty" >
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="currentCollectionName" >
+      <arg type="s" direction="out"/>
+    </method>
   </interface>
 </node>
