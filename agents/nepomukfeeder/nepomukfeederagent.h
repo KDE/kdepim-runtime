@@ -87,6 +87,15 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
      */
     void disableIdleDetection( bool value );
 
+    bool isDisableIdleDetection() const;
+
+    void forceReindexCollection(const qlonglong id);
+
+    bool queueIsEmpty();
+
+    QString currentCollectionName();
+
+    QStringList listOfCollection() const;
   public slots:
     /** Trigger a complete update of all items. */
     void updateAll();

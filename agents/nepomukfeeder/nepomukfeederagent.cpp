@@ -46,6 +46,9 @@
 #include <KStandardDirs>
 #include <KIdleTime>
 #include <KConfigGroup>
+#include <KNotification>
+#include <KIconLoader>
+#include <KIcon>
 
 #include <Soprano/Vocabulary/NAO>
 #include <Soprano/Vocabulary/RDF>
@@ -55,6 +58,7 @@
 #include "pluginloader.h"
 #include "nepomukhelpers.h"
 #include "nepomukfeeder-config.h"
+#include "nepomukfeederadaptor.h"
 
 namespace Akonadi {
 
@@ -91,6 +95,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
+  new NepomukFeederAdaptor( this );
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
@@ -128,6 +133,12 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 NepomukFeederAgent::~NepomukFeederAgent()
 {
 
+}
+
+void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
+{
+  CollectionFetchJob *job = new CollectionFetchJob( Collection(id), Akonadi::CollectionFetchJob::Base, this );
+  connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)));
 }
 
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
@@ -315,8 +326,17 @@ void NepomukFeederAgent::setRunning( bool running )
   changeRecorder()->setChangeRecordingEnabled( !running );
   mQueue.setOnline( running );
   if ( running && !mQueue.isEmpty() ) {
-    if ( mQueue.currentCollection().isValid() )
-      emit status( AgentBase::Running, i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() ) );
+    if ( mQueue.currentCollection().isValid() ) {
+      const QString summary = i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() );
+      const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+      KNotification::event( QLatin1String("startindexingcollection"),
+                              summary,
+                              pixmap,
+                              0,
+                              KNotification::CloseOnTimeout,
+                              KGlobal::mainComponent());
+      emit status( AgentBase::Running, summary );
+    }
     else
       emit status( AgentBase::Running, i18n( "Indexing recent changes..." ) );
   }
@@ -351,6 +371,35 @@ void NepomukFeederAgent::idle(const QString &string)
 void NepomukFeederAgent::running(const QString &string)
 {
   emit status( AgentBase::Running, string );
+}
+
+bool NepomukFeederAgent::isDisableIdleDetection() const
+{
+  return mIdleDetectionDisabled;
+}
+
+bool NepomukFeederAgent::queueIsEmpty()
+{
+  return mQueue.isEmpty();
+}
+
+QString NepomukFeederAgent::currentCollectionName()
+{
+  if(queueIsEmpty()) {
+    return QString();
+  } else {
+    return mQueue.currentCollection().name();
+  }
+}
+
+QStringList NepomukFeederAgent::listOfCollection() const
+{
+  QStringList names;
+  Akonadi::Collection::List listQueueCollection = mQueue.listOfCollection();
+  Q_FOREACH(const Akonadi::Collection& collection, listQueueCollection) {
+    names << collection.name();
+  }
+  return names;
 }
 
 }

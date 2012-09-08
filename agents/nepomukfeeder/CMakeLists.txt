@@ -19,7 +19,12 @@ add_subdirectory( test )
 set(CMAKE_NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL 3)
 configure_file(nepomukfeeder-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/nepomukfeeder-config.h)
 
-kde4_add_executable(akonadi_nepomuk_feeder nepomukfeederagent.cpp pluginloader.cpp feederqueue.cpp nepomukhelpers.cpp)
+set(akonadi_nepomuk_feeder_SRCS nepomukfeederagent.cpp pluginloader.cpp feederqueue.cpp nepomukhelpers.cpp)
+
+qt4_add_dbus_adaptor(akonadi_nepomuk_feeder_SRCS org.freedesktop.Akonadi.NepomukFeeder.xml nepomukfeederagent.h Akonadi::NepomukFeederAgent)
+
+kde4_add_executable(akonadi_nepomuk_feeder ${akonadi_nepomuk_feeder_SRCS})
+
 
 set( NEPOMUKFEEDER_SHARED_LIBS
     niefast
@@ -51,6 +56,7 @@ target_link_libraries(akonadi_nepomuk_feeder
 
 
 install(TARGETS akonadi_nepomuk_feeder ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES akonadi_nepomuk_feeder.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_nepomuk_feeder" )
 install(FILES akonadinepomukfeederagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 install(
    FILES akonadinepomukfeeder.desktop
