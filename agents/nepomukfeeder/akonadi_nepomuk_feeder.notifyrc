@@ -1,12 +1,28 @@
 [Global]
 Comment=Nepomuk Feeder Agent
+Comment[sk]=Agent podávača Nepomuk
+Comment[sv]=Inmatningsmodul till Nepomuk
+Comment[uk]=Агент передавання даних Nepomuk
+Comment[x-test]=xxNepomuk Feeder Agentxx
 Name=Nepomuk Feeder Agent
+Name[sk]=Agent podávača Nepomuk
+Name[sv]=Inmatningsmodul till Nepomuk
+Name[uk]=Агент передавання даних Nepomuk
+Name[x-test]=xxNepomuk Feeder Agentxx
 
 [Event/startindexingcollection]
 Name=Starting to index collection
+Name[sk]=Spúšťam indexovanie kolekcie
+Name[sv]=Startar indexering av samling
+Name[uk]=Розпочинаємо індексування збірки
+Name[x-test]=xxStarting to index collectionxx
 Action=None
 
 [Event/indexingcollectioncompleted]
 Name=Indexing completed
+Name[sk]=Indexovanie ukončené
+Name[sv]=Indexering klar
+Name[uk]=Індексування завершено
+Name[x-test]=xxIndexing completedxx
 Action=None
 
