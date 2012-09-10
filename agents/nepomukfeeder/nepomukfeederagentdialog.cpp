@@ -23,6 +23,7 @@
 #include <QLabel>
 #include <KIntNumInput>
 #include <KLocale>
+#include <KConfigGroup>
 
 NepomukFeederAgentDialog::NepomukFeederAgentDialog(QWidget *parent)
   :KDialog(parent)
@@ -44,6 +45,8 @@ NepomukFeederAgentDialog::NepomukFeederAgentDialog(QWidget *parent)
   lay->addWidget(lab);
 
   mTimeOut = new KIntNumInput;
+  mTimeOut->setMinimum(120);
+  mTimeOut->setSuffix(i18n(" ms"));
   lay->addWidget(mTimeOut);
 
   mainLayout->addLayout(lay);
@@ -60,10 +63,17 @@ NepomukFeederAgentDialog::~NepomukFeederAgentDialog()
 
 void NepomukFeederAgentDialog::slotSave()
 {
-
+  KConfig config(QLatin1String("akonadi_nepomuk_feederrc"));
+  KConfigGroup grp = config.group(QLatin1String("akonadi_nepomuk_feeder"));
+  grp.writeEntry( "IdleTimeout", mTimeOut->value() );
+  grp.readEntry( "DisableIdleDetection", mDisableIdleTimeOut->isChecked() );
+  grp.sync();
 }
 
 void NepomukFeederAgentDialog::readConfig()
 {
-
+  KConfig config(QLatin1String("akonadi_nepomuk_feederrc"));
+  KConfigGroup grp = config.group(QLatin1String("akonadi_nepomuk_feeder"));
+  mTimeOut->setValue(grp.readEntry( "IdleTimeout", 120 ));
+  mDisableIdleTimeOut->setChecked(grp.readEntry( "DisableIdleDetection", false ));
 }
