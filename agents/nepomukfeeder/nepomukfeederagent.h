@@ -128,6 +128,8 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void collectionsReceived( const Akonadi::Collection::List &collections );
     void idle(const QString &);
     void running(const QString &);
+    void configure( WId windowId );
+
   private:
     QTimer mNepomukStartupTimeout;
 

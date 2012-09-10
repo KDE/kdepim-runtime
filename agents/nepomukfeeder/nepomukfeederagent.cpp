@@ -21,6 +21,7 @@
 */
 
 #include "nepomukfeederagent.h"
+#include "nepomukfeederagentdialog.h"
 #include <aneo.h>
 
 #include <akonadi/agentmanager.h>
@@ -133,6 +134,13 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 NepomukFeederAgent::~NepomukFeederAgent()
 {
 
+}
+
+void NepomukFeederAgent::configure( WId windowId )
+{
+  Q_UNUSED( windowId );
+  NepomukFeederAgentDialog dlg;
+  dlg.exec();
 }
 
 void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
