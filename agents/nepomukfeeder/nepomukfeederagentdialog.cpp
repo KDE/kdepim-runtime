@@ -47,7 +47,7 @@ NepomukFeederAgentDialog::NepomukFeederAgentDialog(QWidget *parent)
 
   mTimeOut = new KIntNumInput;
   mTimeOut->setMinimum(120);
-  mTimeOut->setSuffix(i18n(" ms"));
+  mTimeOut->setSuffix(i18nc("define timeout in seconds", " s"));
   lay->addWidget(mTimeOut);
 
   mainLayout->addLayout(lay);
