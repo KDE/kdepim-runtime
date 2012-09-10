@@ -25,11 +25,12 @@ class KIntNumInput;
 
 class NepomukFeederAgentDialog : public KDialog
 {
+  Q_OBJECT
 public:
   explicit NepomukFeederAgentDialog(QWidget *parent = 0);
   ~NepomukFeederAgentDialog();
 
-private Q_SLOTS:
+public Q_SLOTS:
   void slotSave();
 
 private:
