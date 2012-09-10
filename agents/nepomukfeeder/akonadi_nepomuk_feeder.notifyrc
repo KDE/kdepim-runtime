@@ -1,10 +1,18 @@
 [Global]
 Comment=Nepomuk Feeder Agent
+Comment[es]=Agente proveedor de Nepomuk
+Comment[hu]=Nepomuk feltöltő ügynök
+Comment[pt]=Agente de Fontes do Nepomuk
+Comment[pt_BR]=Agente de fontes do Nepomuk
 Comment[sk]=Agent podávača Nepomuk
 Comment[sv]=Inmatningsmodul till Nepomuk
 Comment[uk]=Агент передавання даних Nepomuk
 Comment[x-test]=xxNepomuk Feeder Agentxx
 Name=Nepomuk Feeder Agent
+Name[es]=Agente proveedor de Nepomuk
+Name[hu]=Nepomuk feltöltő ügynök
+Name[pt]=Agente de Fontes do Nepomuk
+Name[pt_BR]=Agente de fontes do Nepomuk
 Name[sk]=Agent podávača Nepomuk
 Name[sv]=Inmatningsmodul till Nepomuk
 Name[uk]=Агент передавання даних Nepomuk
@@ -12,6 +20,10 @@ Name[x-test]=xxNepomuk Feeder Agentxx
 
 [Event/startindexingcollection]
 Name=Starting to index collection
+Name[es]=Comienzo de indexado de colección
+Name[hu]=Gyűjtemény indexelésének elkezdése
+Name[pt]=A iniciar a indexação da colecção
+Name[pt_BR]=Iniciando a indexação da coleção
 Name[sk]=Spúšťam indexovanie kolekcie
 Name[sv]=Startar indexering av samling
 Name[uk]=Розпочинаємо індексування збірки
@@ -20,6 +32,10 @@ Action=None
 
 [Event/indexingcollectioncompleted]
 Name=Indexing completed
+Name[es]=Indexado completado
+Name[hu]=Az indexelés befejeződött
+Name[pt]=A indexação terminou
+Name[pt_BR]=A indexação foi concluída
 Name[sk]=Indexovanie ukončené
 Name[sv]=Indexering klar
 Name[uk]=Індексування завершено
