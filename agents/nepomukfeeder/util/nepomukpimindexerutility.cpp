@@ -31,6 +31,7 @@
 #include <KJob>
 #include <KUrl>
 #include <QUrl>
+#include <QClipboard>
 #include <kstatusbar.h>
 
 NepomukPIMindexerUtility::NepomukPIMindexerUtility()
@@ -64,6 +65,11 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     action = actionCollection->addAction( "remove" );
     action->setText( i18n( "Remove Data" ) );
     connect( action, SIGNAL(triggered()), this, SLOT(removeDataOfCurrentlySelected()) );
+
+    action = actionCollection->addAction( "copy" );
+    action->setText( i18n( "Copy Url" ) );
+    connect( action, SIGNAL(triggered()), this, SLOT(copyUrlFromDataCurrentlySelected()) );
+
     
     mFeederQueue->setIndexingSpeed(FeederQueue::FullSpeed);
     mFeederQueue->setOnline(true);
@@ -73,8 +79,7 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     QObject::connect(mFeederQueue, SIGNAL(progress(int)), this, SLOT(progress(int)));
     QObject::connect(mFeederQueue, SIGNAL(running(QString)), this, SLOT(running(QString)));
 
-    //setupGUI( Keys | StatusBar | Save | Create, "nepomukpimindexerutility.rc");
-    setupGUI();
+    setupGUI( Keys | StatusBar | Save | Create, "nepomukpimindexerutility.rc");
 
     m_ui.treeView->setXmlGuiClient(this);
 }
@@ -146,6 +151,14 @@ void NepomukPIMindexerUtility::removalComplete(KJob *job) {
 //     static_cast<IndexHelperModel*>(m_ui.treeView->model())->updateItem(mRemovedItem);
     if (job->error())
         kDebug() << job->errorString();
+}
+
+void NepomukPIMindexerUtility::copyUrlFromDataCurrentlySelected() {
+    const QModelIndex &index = m_ui.treeView->currentIndex();
+    Akonadi::Item item = index.data(Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
+    kDebug() << "url of item " << item.url();
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(item.url().url());
 }
 
 #include "nepomukpimindexerutility.moc"
