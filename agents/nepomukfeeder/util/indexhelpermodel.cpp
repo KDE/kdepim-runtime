@@ -95,3 +95,5 @@ QVariant IndexHelperModel::entityData(const Akonadi::Collection& collection, int
     return Akonadi::EntityTreeModel::entityData(collection, column, role);
 }
 
+
+#include "indexhelpermodel.moc"
