@@ -42,7 +42,7 @@ NepomukFeederAgentDialog::NepomukFeederAgentDialog(QWidget *parent)
   mainLayout->addWidget(mDisableIdleTimeOut);
 
   QHBoxLayout *lay = new QHBoxLayout;
-  QLabel *lab = new QLabel(i18n("Idle TimeOut"));
+  QLabel *lab = new QLabel(i18n("Idle Timeout"));
   lay->addWidget(lab);
 
   mTimeOut = new KIntNumInput;
