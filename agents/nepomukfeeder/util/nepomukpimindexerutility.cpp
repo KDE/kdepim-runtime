@@ -33,6 +33,7 @@
 #include <QUrl>
 #include <QClipboard>
 #include <kstatusbar.h>
+#include <KStandardAction>
 
 NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     : KXmlGuiWindow(),
@@ -42,7 +43,6 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     QWidget* w = new QWidget(this);
     setCentralWidget(w);
     m_ui.setupUi(w);
-
     Akonadi::ChangeRecorder *monitor = new Akonadi::ChangeRecorder(this);
     monitor->itemFetchScope().fetchAttribute<Akonadi::EntityDisplayAttribute>();
     monitor->itemFetchScope().fetchFullPayload(false);
@@ -69,6 +69,8 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     action = actionCollection->addAction( "copy" );
     action->setText( i18n( "Copy Url" ) );
     connect( action, SIGNAL(triggered()), this, SLOT(copyUrlFromDataCurrentlySelected()) );
+
+    (void) KStandardAction::quit(this, SLOT(close()), actionCollection);
 
     
     mFeederQueue->setIndexingSpeed(FeederQueue::FullSpeed);
