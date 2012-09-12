@@ -36,6 +36,7 @@
 #include <KMenu>
 #include <KMessageBox>
 #include <KMimeType>
+#include <KLineEdit>
 
 class ResourcesManagementWidget::Private
 {
@@ -63,6 +64,9 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     connect( d->ui.addButton, SIGNAL(clicked()), SLOT(addClicked()) );
     connect( d->ui.editButton, SIGNAL(clicked()), SLOT(editClicked()) );
     connect( d->ui.removeButton, SIGNAL(clicked()), SLOT(removeClicked()) );
+    
+    d->ui.mFilterAccount->setProxy( d->ui.resourcesList->agentFilterProxyModel() );
+    d->ui.mFilterAccount->lineEdit()->setTrapReturnKey( true );
 
     updateButtonState();
     Akonadi::Control::widgetNeedsAkonadi( this );

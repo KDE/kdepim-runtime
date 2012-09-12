@@ -60,7 +60,10 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0" rowspan="5">
+   <item row="0" column="0">
+    <widget class="KFilterProxySearchLine" name="mFilterAccount"/>
+   </item>
+   <item row="1" column="0" rowspan="4">
     <widget class="Akonadi::AgentInstanceWidget" name="resourcesList" native="true"/>
    </item>
   </layout>
