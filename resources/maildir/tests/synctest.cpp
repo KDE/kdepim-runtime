@@ -53,7 +53,7 @@ void SyncTest::testSync()
     QTime t;
     t.start();
     instance.synchronize();
-    QVERIFY( QTest::kWaitForSignal( interface, SIGNAL(synchronized() ), TIMEOUT * 1000 ) );
+    QVERIFY( QTest::kWaitForSignal( interface, SIGNAL(synchronized()), TIMEOUT * 1000 ) );
     kDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
   }
 }
