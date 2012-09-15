@@ -1,5 +1,6 @@
 [Global]
 Comment=Nepomuk Feeder Agent
+Comment[el]=Πράκτορας Τροφοδότης του Nepomuk
 Comment[es]=Agente proveedor de Nepomuk
 Comment[hu]=Nepomuk feltöltő ügynök
 Comment[nl]=Nepumuk feeder-agent
@@ -10,6 +11,7 @@ Comment[sv]=Inmatningsmodul till Nepomuk
 Comment[uk]=Агент передавання даних Nepomuk
 Comment[x-test]=xxNepomuk Feeder Agentxx
 Name=Nepomuk Feeder Agent
+Name[el]=Nepomuk Feeder Agent
 Name[es]=Agente proveedor de Nepomuk
 Name[hu]=Nepomuk feltöltő ügynök
 Name[nl]=Nepumuk feeder-agent
@@ -22,6 +24,7 @@ Name[x-test]=xxNepomuk Feeder Agentxx
 
 [Event/startindexingcollection]
 Name=Starting to index collection
+Name[el]=Έναρξη δεικτοδότησης συλλογής
 Name[es]=Comienzo de indexado de colección
 Name[hu]=Gyűjtemény indexelésének elkezdése
 Name[nl]=Beginnen met indexeren van verzameling
@@ -35,6 +38,7 @@ Action=None
 
 [Event/indexingcollectioncompleted]
 Name=Indexing completed
+Name[el]=Η δεικτοδότηση ολοκληρώθηκε
 Name[es]=Indexado completado
 Name[hu]=Az indexelés befejeződött
 Name[nl]=Indexering is voltooid
@@ -48,6 +52,7 @@ Action=None
 
 [Event/statusindexing]
 Name=Indexing status
+Name[el]=Κατάσταση δεικτοδότησης
 Name[nl]=Status van indexeren
 Name[pt]=Estado da indexação
 Name[pt_BR]=Status da indexação
