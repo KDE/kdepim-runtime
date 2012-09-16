@@ -100,7 +100,7 @@ void NepomukPIMindexerUtility::indexCurrentlySelected()
         mFeederQueue->addItem(item);
     } else {
         Akonadi::Collection collection = index.data(Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-        if (collection.isValid()) {
+        if (collection.isValid() && !collection.isVirtual() ) {
             statusBar()->showMessage(QString::fromLatin1("Indexing collection: ").append(collection.url().url()));
             mFeederQueue->addCollection(collection);
         }
@@ -124,7 +124,7 @@ void NepomukPIMindexerUtility::removeDataOfCurrentlySelected()
         QObject::connect( job, SIGNAL(finished(KJob*)), this, SLOT(removalComplete(KJob*)) );
     } else {
         const Akonadi::Collection &collection =  index.data(Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-        if (collection.isValid()) {
+        if (collection.isValid() && !collection.isVirtual()) {
             KJob *job = Nepomuk2::removeResources(QList<QUrl>() << collection.url().url(), Nepomuk2::RemoveSubResoures);
             QObject::connect( job, SIGNAL(finished(KJob*)), this, SLOT(removalComplete(KJob*)) );
         }
