@@ -1,3 +1,3 @@
 #! /bin/sh
 
-$XGETTEXT *.cpp -o $podir/akonadi_nepomukfeeder.pot
+$XGETTEXT *.cpp -o $podir/akonadi_nepomuk_feeder.pot

@@ -1,7 +1,6 @@
 include_directories(
   ${kdepim-runtime_SOURCE_DIR}
   ${Boost_INCLUDE_DIR}
-  ${NEPOMUK_INCLUDES}
   ${NEPOMUK_CORE_INCLUDE_DIR}
   plugin
   ./
@@ -15,11 +14,12 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
 add_subdirectory( plugin )
 add_subdirectory( plugins )
 add_subdirectory( test )
+add_subdirectory( util )
 
 set(CMAKE_NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL 3)
 configure_file(nepomukfeeder-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/nepomukfeeder-config.h)
 
-set(akonadi_nepomuk_feeder_SRCS nepomukfeederagent.cpp pluginloader.cpp feederqueue.cpp nepomukhelpers.cpp)
+set(akonadi_nepomuk_feeder_SRCS nepomukfeederagent.cpp pluginloader.cpp feederqueue.cpp nepomukhelpers.cpp nepomukfeederagentdialog.cpp)
 
 qt4_add_dbus_adaptor(akonadi_nepomuk_feeder_SRCS org.freedesktop.Akonadi.NepomukFeeder.xml nepomukfeederagent.h Akonadi::NepomukFeederAgent)
 
@@ -34,7 +34,6 @@ set( NEPOMUKFEEDER_SHARED_LIBS
     ${KDEPIMLIBS_AKONADI_LIBS}
     ${QT_QTCORE_LIBRARY}
     ${QT_QTDBUS_LIBRARY}
-    ${NEPOMUK_LIBRARIES}
     ${NEPOMUK_CORE_LIBRARY}
     ${STRIGI_STREAMANALYZER_LIBRARY}
     ${STRIGI_STREAMS_LIBRARY}

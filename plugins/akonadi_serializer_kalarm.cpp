@@ -49,14 +49,14 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
     KCalCore::Incidence::Ptr i = mFormat.fromString(QString::fromUtf8(data.readAll()));
     if (!i)
     {
-        kWarning(5263) << "Failed to parse incidence!";
+        kWarning(5954) << "Failed to parse incidence!";
         data.seek(0);
-        kWarning(5263) << QString::fromUtf8(data.readAll());
+        kWarning(5954) << QString::fromUtf8(data.readAll());
         return false;
     }
     if (i->type() != KCalCore::Incidence::TypeEvent)
     {
-        kWarning(5263) << "Incidence with uid" << i->uid() << "is not an Event!";
+        kWarning(5954) << "Incidence with uid" << i->uid() << "is not an Event!";
         data.seek(0);
         return false;
     }
@@ -64,7 +64,7 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
     const QString mime = CalEvent::mimeType(event.category());
     if (mime.isEmpty()  ||  !event.isValid())
     {
-        kWarning(5263) << "Event with uid" << event.id() << "contains no usable alarms!";
+        kWarning(5954) << "Event with uid" << event.id() << "contains no usable alarms!";
         data.seek(0);
         return false;
     }
@@ -76,10 +76,23 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
         AttributeFactory::registerAttribute<KAlarmCal::EventAttribute>();
         mRegistered = QLatin1String("x");   // set to any non-null string
     }
-    if (item.hasAttribute<EventAttribute>())
+    const EventAttribute dummy;
+    if (item.hasAttribute(dummy.type()))
     {
-        KAEvent::CmdErrType err = item.attribute<EventAttribute>()->commandError();
-        event.setCommandError(err);
+        Attribute* a = item.attribute(dummy.type());
+        if (!a)
+            kError(5954) << "deserialize(): Event with uid" << event.id() << "contains null attribute";
+        else
+        {
+            EventAttribute* evAttr = dynamic_cast<EventAttribute*>(a);
+            if (!evAttr)
+                kFatal(5954) << "deserialize(): Event with uid" << event.id() << "contains unknown type EventAttribute";
+            else
+            {
+                KAEvent::CmdErrType err = evAttr->commandError();
+                event.setCommandError(err);
+            }
+        }
     }
 
     item.setMimeType(mime);

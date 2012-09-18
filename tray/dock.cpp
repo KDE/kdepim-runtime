@@ -36,6 +36,7 @@
 #include <KMessageBox>
 #include <KNotification>
 #include <KStandardShortcut>
+#include <KStandardDirs>
 
 #include <akonadi/control.h>
 #include <akonadi/agentinstance.h>
@@ -210,8 +211,7 @@ qlonglong Dock::getWinId()
 
 void Dock::slotConfigure()
 {
-    QProcess *proc = new QProcess( this );
-    proc->start( "kcmshell4", QStringList() << "kcm_akonadi" );
+    QProcess::startDetached( KStandardDirs::findExe( QLatin1String( "kcmshell4" ) ), QStringList() << "kcm_akonadi" );
 }
 
 #include "dock.moc"

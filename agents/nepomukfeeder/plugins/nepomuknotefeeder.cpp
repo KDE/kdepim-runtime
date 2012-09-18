@@ -68,3 +68,5 @@ K_PLUGIN_FACTORY(factory, registerPlugin<NepomukNoteFeeder>();)
 K_EXPORT_PLUGIN(factory("akonadi_nepomuk_note_feeder"))
 
 }
+
+#include "nepomuknotefeeder.moc"

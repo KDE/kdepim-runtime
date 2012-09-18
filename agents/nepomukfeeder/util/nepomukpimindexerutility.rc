@@ -1,0 +1,24 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui name="nepomukpimindexerutility" version="2">
+<MenuBar>
+    <Menu name="file">
+        <Action name="quit"/>
+    </Menu>
+</MenuBar>
+
+<Menu name="akonadi_itemview_contextmenu">
+    <Action name="index" />
+    <Action name="reindex" />
+    <Action name="remove" />
+    <Separator />
+    <Action name="copy" />
+</Menu>
+
+<Menu name="akonadi_collectionview_contextmenu">
+    <Action name="index" />
+    <Action name="reindex" />
+    <Action name="remove" />
+    <Separator />
+    <Action name="copy" />
+</Menu>
+</kpartgui>
