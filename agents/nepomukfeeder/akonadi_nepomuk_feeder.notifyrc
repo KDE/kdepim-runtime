@@ -14,6 +14,7 @@ Comment[sr@latin]=Nepomukov agent uvodnika
 Comment[sv]=Inmatningsmodul till Nepomuk
 Comment[uk]=Агент передавання даних Nepomuk
 Comment[x-test]=xxNepomuk Feeder Agentxx
+Comment[zh_TW]=Nepomuk Feeder 代理程式
 Name=Nepomuk Feeder Agent
 Name[el]=Nepomuk Feeder Agent
 Name[es]=Agente proveedor de Nepomuk
@@ -29,6 +30,7 @@ Name[sr@latin]=Nepomukov agent uvodnika
 Name[sv]=Inmatningsmodul till Nepomuk
 Name[uk]=Агент передавання даних Nepomuk
 Name[x-test]=xxNepomuk Feeder Agentxx
+Name[zh_TW]=Nepomuk Feeder 代理程式
 
 [Event/startindexingcollection]
 Name=Starting to index collection
@@ -46,6 +48,7 @@ Name[sr@latin]=Započinjem indeksiranje zbirke
 Name[sv]=Startar indexering av samling
 Name[uk]=Розпочинаємо індексування збірки
 Name[x-test]=xxStarting to index collectionxx
+Name[zh_TW]=開始建立索引收藏
 Action=None
 
 [Event/indexingcollectioncompleted]
@@ -64,6 +67,7 @@ Name[sr@latin]=Indeksiranje završeno
 Name[sv]=Indexering klar
 Name[uk]=Індексування завершено
 Name[x-test]=xxIndexing completedxx
+Name[zh_TW]=索引已建立完成
 Action=None
 
 [Event/statusindexing]
@@ -80,4 +84,5 @@ Name[sr@latin]=Stanje indeksiranja
 Name[sv]=Indexeringsstatus
 Name[uk]=Стан індексування
 Name[x-test]=xxIndexing statusxx
+Name[zh_TW]=索引狀態
 Action=None
