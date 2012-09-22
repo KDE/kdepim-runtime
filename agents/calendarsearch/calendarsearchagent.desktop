@@ -58,6 +58,7 @@ Comment[sr@latin]=Agent za pretragu kalendara
 Comment[sv]=Modul för kalendersökning
 Comment[uk]=Агент для пошуку у календарях
 Comment[x-test]=xxAgent for calendar searchingxx
+Comment[zh_TW]=行事曆搜尋代理程式
 Type=AkonadiAgent
 Exec=akonadi_calendarsearch_agent
 Icon=text-calendar

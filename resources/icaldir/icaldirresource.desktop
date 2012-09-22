@@ -18,6 +18,7 @@ Name[sr@latin]=I‑kalendarski fascikla
 Name[sv]=ICal-kalenderkatalog
 Name[uk]=Тека календаря ICal
 Name[x-test]=xxICal Calendar Folderxx
+Name[zh_TW]=ICal 行事曆資料夾
 Comment=Provides access to calendar items, each stored in a single file, in a given directory
 Comment[cs]=Poskytuje přístup k položkám kalendáře, každé uložené v jednom souboru v daném adresáři
 Comment[el]=Παρέχει πρόσβαση σε αντικείμενα ημερολογίου, καθένα αποθηκευμένο σε ένα αρχείο, σε δοσμένο κατάλογο
@@ -38,6 +39,7 @@ Comment[sr@latin]=Omogućava pristup kalendarskim stavkama, skladištenim u po j
 Comment[sv]=Ger tillgång till kalenderobjekt, vart och ett lagrat i en enda fil i en angiven katalog
 Comment[uk]=Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі
 Comment[x-test]=xxProvides access to calendar items, each stored in a single file, in a given directoryxx
+Comment[zh_TW]=提供存取行事曆的項目。每個項目都以單一檔案存放在指定的目錄中
 
 Type=AkonadiResource
 Exec=akonadi_icaldir_resource
