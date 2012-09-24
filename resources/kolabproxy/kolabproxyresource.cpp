@@ -49,7 +49,7 @@
 #include <Akonadi/KMime/MessageFlags>
 
 #include <KLocale>
-
+#include <KWindowSystem>
 #include <QDBusInterface>
 #include <QDBusReply>
 
@@ -286,7 +286,10 @@ void KolabProxyResource::configure( WId windowId )
   // "on top of parent" behavior if the running window manager applies any kind
   // of focus stealing prevention technique
 
-  QPointer<SetupKolab> kolabConfigDialog( new SetupKolab( this, windowId ) );
+  QPointer<SetupKolab> kolabConfigDialog( new SetupKolab( this ) );
+  if ( windowId )
+    KWindowSystem::setMainWindow( kolabConfigDialog, windowId );
+
   kolabConfigDialog->exec();
   emit configurationDialogAccepted();
 
