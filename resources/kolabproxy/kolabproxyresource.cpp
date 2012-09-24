@@ -279,8 +279,6 @@ Kolab::Version readKolabVersion( const QString &resourceIdentifier )
 
 void KolabProxyResource::configure( WId windowId )
 {
-  Q_UNUSED( windowId );
-
   // TODO: this method is usually called when a new resource is being
   // added to the Akonadi setup. You can do any kind of user interaction here,
   // e.g. showing dialogs.
