@@ -80,5 +80,6 @@ else (NOT WINCE)
   add_subdirectory( agentserver )
 endif (NOT WINCE)
 
+add_subdirectory( krsslocal) 
 add_subdirectory( vcard )
 
