@@ -50,6 +50,7 @@
 #include <KNotification>
 #include <KIconLoader>
 #include <KIcon>
+#include <KWindowSystem>
 
 #include <Soprano/Vocabulary/NAO>
 #include <Soprano/Vocabulary/RDF>
@@ -140,6 +141,13 @@ void NepomukFeederAgent::configure( WId windowId )
 {
   Q_UNUSED( windowId );
   NepomukFeederAgentDialog dlg;
+  if(windowId) {
+#ifndef Q_WS_WIN
+    KWindowSystem::setMainWindow( &dlg, windowId );
+#else
+    KWindowSystem::setMainWindow( &dlg, (HWND)windowId );
+#endif
+  }
   dlg.exec();
 }
 

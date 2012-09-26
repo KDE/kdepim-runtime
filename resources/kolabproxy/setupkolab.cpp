@@ -33,13 +33,12 @@
 
 #define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
 
-SetupKolab::SetupKolab( KolabProxyResource *parentResource, WId parent )
-  :  KDialog( QWidget::find( parent ) ),
+SetupKolab::SetupKolab( KolabProxyResource *parentResource )
+  :  KDialog(),
      m_ui( new Ui::SetupKolabView ),
      m_versionUi( new Ui::ChangeFormatView ),
      m_parentResource( parentResource )
 {
-  Q_UNUSED( parent );
   m_ui->setupUi( mainWidget() );
   setButtons( Close );
   initConnection();

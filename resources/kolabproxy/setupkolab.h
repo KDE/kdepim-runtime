@@ -37,7 +37,7 @@ class SetupKolab : public KDialog
   Q_OBJECT
 
   public:
-    SetupKolab( KolabProxyResource *parentResource, WId parent );
+    explicit SetupKolab( KolabProxyResource *parentResource );
     ~SetupKolab();
 
   protected:
