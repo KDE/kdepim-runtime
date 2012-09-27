@@ -77,6 +77,8 @@ Action=None
 [Event/statusindexing]
 Name=Indexing status
 Name[el]=Κατάσταση δεικτοδότησης
+Name[es]=Estado del indexado
+Name[hu]=Az indexelés állapota
 Name[ia]=Stato de indicisation
 Name[nl]=Status van indexeren
 Name[pt]=Estado da indexação
