@@ -265,7 +265,7 @@ void ImportItemsJob::syncItems( const Akonadi::Item::List& items_ ) {
     RssItemSync * const syncer = new RssItemSync( m_collection );
     syncer->setIncrementalSyncItems( items_, Akonadi::Item::List() );
     syncer->setSynchronizeFlags( false );
-    connect( syncer, SIGNAL( result( KJob* ) ), this, SLOT( syncDone( KJob* ) ) );
+    connect( syncer, SIGNAL(result(KJob*)), this, SLOT(syncDone(KJob*)) );
     ++m_pendingCreateJobs;
     syncer->start();
 }
