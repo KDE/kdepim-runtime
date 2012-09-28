@@ -62,8 +62,9 @@ void ConfigDialog::getPath()
     const QString title = i18nc("@title:window", "Select an OPML Document");
     QString newPath = KFileDialog::getOpenFileName( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
                                               this, title );
-    
-    ui.linePath->setText( newPath );
+   
+    if(!newPath.isEmpty())
+      ui.linePath->setText( newPath );
     
 }
 

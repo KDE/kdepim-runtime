@@ -111,7 +111,7 @@ static bool ensureOpmlCreated( const QString& path, QString* errorString ) {
 
     KSaveFile out( path );
     if ( !out.open( QIODevice::WriteOnly ) ) {
-        *errorString = i18n("Could not create OPML file %1: %2").arg( path, out.errorString() );
+        *errorString = i18n("Could not create OPML file %1: %2", path, out.errorString() );
         return false;
     }
 
@@ -128,7 +128,7 @@ static bool ensureOpmlCreated( const QString& path, QString* errorString ) {
     writer.writeEndDocument();
 
     if ( writer.hasError() || !out.finalize() ) {
-        *errorString = i18n("Could not finish writing to OPML file %1: %2").arg( path, out.errorString() );
+        *errorString = i18n("Could not finish writing to OPML file %1: %2", path, out.errorString() );
         return false;
     }
 
